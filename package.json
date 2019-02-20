@@ -9,8 +9,6 @@
   },
   "dependencies": {
     "vue": "^2.5.22",
-    "vue-class-component": "^6.0.0",
-    "vue-property-decorator": "^7.0.0",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
@@ -40,8 +38,11 @@
       "@vue/typescript"
     ],
     "rules": {
-      "space-before-function-paren": [
-        2, "never"
+      "space-before-function-paren": [ 2, "never" ],
+      "comma-spacing": [ 2,{
+          "before": false,
+          "after": true
+        }
       ]
     },
     "parserOptions": {
