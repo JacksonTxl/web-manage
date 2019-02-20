@@ -8,8 +8,8 @@ import {
 import { tap } from 'rxjs/operators'
 import { authService } from '@/services/auth.service'
 
-export class LoginBusiness {
-  namespace = 'LoginBusiness'
+export class LoginService {
+  namespace = 'LoginService'
   beforeRouteEnter(to: Route, from: Route, next: any) {
     next()
   }
@@ -26,4 +26,4 @@ export class LoginBusiness {
   }
 }
 
-export const loginBusiness = new LoginBusiness()
+export const loginService = new LoginService()

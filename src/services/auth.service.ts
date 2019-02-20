@@ -1,9 +1,10 @@
 import Cookie from 'js-cookie'
 import { Route } from 'vue-router'
+import { CanActivate } from '@/types/route'
 
 const TOKEN_NAME = 'saas-token'
 
-export class AuthService {
+export class AuthService implements CanActivate {
   token: string | undefined = this.getAuthToken()
 
   getAuthToken() {
@@ -15,7 +16,7 @@ export class AuthService {
   removeAuthToken() {
     Cookie.remove(TOKEN_NAME)
   }
-  beforeEnter(to: Route, from: Route, next: any) {
+  canActivate(to: Route, from: Route, next: any) {
     if (!this.token) {
       location.href = '/login'
       return next(false)

@@ -6,21 +6,13 @@
   </div>
 </template>
 
-<script lang="js">
+<script lang="ts">
 import { userService } from '@/services/user.service'
 
 export default {
-  data() {
+  subscriptions() {
     return {
-      testEslint: '',
-      flag: true
-    }
-  },
-  methods: {
-    tEslint() {
-      if (this.flag) {
-        console.log('ddff')
-      }
+      user: userService.user
     }
   }
 }

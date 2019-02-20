@@ -15,7 +15,7 @@ export class HttpService {
   get(url: string) {
     const get$ = ajax
       .get(API_BASE + url, {
-        'Authorization': `Bearer ${authService.getAuthToken()}`,
+        Authorization: `Bearer ${authService.getAuthToken()}`,
         'Device-Type': 1
       })
       .pipe(ajaxErrorHandler())
@@ -26,7 +26,7 @@ export class HttpService {
   post(url: string, data: any) {
     const post$ = ajax
       .post(API_BASE + url, data, {
-        'Authorization': `Bearer ${authService.getAuthToken()}`,
+        Authorization: `Bearer ${authService.getAuthToken()}`,
         'Device-Type': 1
       })
       .pipe(ajaxErrorHandler())

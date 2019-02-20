@@ -4,6 +4,7 @@ import { ajaxRetry } from '@/operators/ajax-retry'
 export interface SendSmsCaptchaInput {
   mobile: string
 }
+
 export const sendSmsCaptcha = (data: SendSmsCaptchaInput) =>
   http.post('/user/send-sms-captcha', data).pipe(ajaxRetry(3, 200))
 

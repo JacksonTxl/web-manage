@@ -1,6 +1,11 @@
 {
+  "defaultSeverity": "error",
   "extends": "tslint-config-standard",
   "globals": {
     "require": true
+  },
+  "rules": {
+    "space-before-function-paren": [true, "never"],
+    "member-access": false
   }
 }

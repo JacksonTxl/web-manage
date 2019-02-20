@@ -8,7 +8,7 @@ import {
   shareReplay
 } from 'rxjs/operators'
 
-type Mutation= (state?: any) => any
+type Mutation = (state?: any) => any
 type Action = (observable: Observable<any>) => Observable<any>
 
 interface ObservableState<T> extends Observable<T> {
