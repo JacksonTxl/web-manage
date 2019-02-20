@@ -7,7 +7,6 @@ import {
 } from '@/api/user'
 import { tap } from 'rxjs/operators'
 import { authService } from '@/services/auth.service'
-
 export class LoginService {
   namespace = 'LoginService'
   beforeRouteEnter(to: Route, from: Route, next: any) {
