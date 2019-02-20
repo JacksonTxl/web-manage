@@ -39,7 +39,11 @@
       "@vue/standard",
       "@vue/typescript"
     ],
-    "rules": {},
+    "rules": {
+      "space-before-function-paren": [
+        2, "never"
+      ]
+    },
     "parserOptions": {
       "parser": "@typescript-eslint/parser"
     }

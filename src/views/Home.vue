@@ -14,7 +14,7 @@ import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
     HelloWorld
   },
   methods: {
-    testEslint () {
+    testEslints() {
       console.log('Eslint')
     }
   }
