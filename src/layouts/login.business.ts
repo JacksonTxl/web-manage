@@ -7,7 +7,7 @@ import {
 } from '@/api/user'
 import { tap } from 'rxjs/operators'
 import { authService } from '@/services/auth.service'
-
+console.log("dsd");;;;
 export class LoginBusiness {
   namespace = 'LoginBusiness'
   beforeRouteEnter(to: Route, from: Route, next: any) {
