@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   beforeRouteUpdate(to, from, next) {
     next()
@@ -15,6 +15,9 @@ export default {
     return {
       a: 1
     }
+  },
+  mounted() {
+    console.log(this.a)
   }
 }
 </script>

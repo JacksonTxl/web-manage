@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint --ext .js,.ts,.vue ./src",
+    "inspect": "vue inspect --mode development --verbose > inspect.js"
   },
   "dependencies": {
     "@types/lodash-es": "^4.17.2",
@@ -23,7 +24,7 @@
     "@types/js-cookie": "^2.2.1",
     "@types/nprogress": "^0.0.29",
     "@vue/cli-plugin-babel": "^3.0.5",
-    "@vue/cli-plugin-eslint": "^3.0.5",
+    "@vue/cli-plugin-eslint": "^3.4.1",
     "@vue/cli-plugin-typescript": "^3.0.5",
     "@vue/cli-service": "^3.0.5",
     "@vue/eslint-config-standard": "^4.0.0",
@@ -37,36 +38,8 @@
     "ts-loader": "^5.3.3",
     "tslint": "^5.12.1",
     "tslint-config-standard": "^8.0.1",
-    "tslint-loader": "^3.5.4",
-    "typescript": "~3.2.2",
+    "typescript": "^3.2.4",
     "vue-template-compiler": "^2.6.6"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "@vue/standard",
-      "@vue/typescript"
-    ],
-    "rules": {
-      "space-before-function-paren": [
-        2,
-        "never"
-      ],
-      "comma-spacing": [
-        2,
-        {
-          "before": false,
-          "after": true
-        }
-      ]
-    },
-    "parserOptions": {
-      "parser": "@typescript-eslint/parser"
-    }
   },
   "postcss": {
     "plugins": {
@@ -83,11 +56,15 @@
   },
   "lint-staged": {
     "*.js": [
-      "vue-cli-service lint",
+      "npm run lint",
+      "git add"
+    ],
+    "*.ts": [
+      "npm run lint",
       "git add"
     ],
     "*.vue": [
-      "vue-cli-service lint",
+      "npm run lint",
       "git add"
     ]
   }
