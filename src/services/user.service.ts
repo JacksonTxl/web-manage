@@ -1,16 +1,16 @@
-import { useState } from '@/lib/rx-hooks'
+import { useState } from '@/utils/rx-hooks'
 import { Route } from 'vue-router'
 import { getCurrentUserInfo } from '@/api/user'
 import { forkJoin } from 'rxjs'
 import { tap } from 'rxjs/operators'
-import { CanActivate } from '@/types/route'
+import { BeforeRouteEnter } from '@/types'
 
-export class UserServie implements CanActivate {
+export class UserServie implements BeforeRouteEnter {
   namespace = 'UserService'
   user = useState({}, `${this.namespace}/user`)
   menu = useState([], `${this.namespace}/menu`)
   role = useState({}, `${this.namespace}/role`)
-  canActivate(to: Route, from: Route, next: any) {
+  beforeRouteEnter(to: Route, from: Route, next: any) {
     this.initData().subscribe(() => {
       next()
     })

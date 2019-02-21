@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import App from './App.vue'
+import Antd from 'ant-design-vue'
+import VueRx from 'vue-rx'
 import { router } from './router/index'
-import './plugins/ant-design-vue'
-import './plugins/vue-rx'
+
+Vue.use(Antd)
+Vue.use(VueRx)
 
 const app = new Vue({
   el: '#app',

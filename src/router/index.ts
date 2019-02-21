@@ -3,7 +3,6 @@ import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import VueRouter, { Route } from 'vue-router'
 import multiguard from 'vue-router-multiguard'
-
 import { routes } from './routes'
 
 Vue.use(VueRouter)

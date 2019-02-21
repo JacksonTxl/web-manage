@@ -1,40 +1,25 @@
-import multiguard from 'vue-router-multiguard'
-import LayoutLogin from '@/layouts/login.vue'
-import LayoutDefault from '@/layouts/default.vue'
-import { GuardRouteConfig } from '@/types/route'
-
+import { StRouteConfig } from '@/types'
 import { authService } from '@/services/auth.service'
 import { userService } from '@/services/user.service'
+import { createRoutesFromStRoutes } from './generate'
+import LayoutDefault from '@/layouts/default.vue'
 
-const guardRoutes: GuardRouteConfig[] = [
+const stRoutes: StRouteConfig[] = [
   {
-    name: 'login',
-    path: '/login',
-    component: LayoutLogin
-  },
-  {
-    name: 'app',
     path: '/',
     component: LayoutDefault,
-    canActivate: [authService, userService]
+    beforeRouteEnter: [authService, userService],
+    children: [
+      {
+        name: 'dashboard',
+        path: 'dashboard',
+        beforeRouteEnter: [],
+        queryOptions: {
+          a: { type: String, default: 3 }
+        }
+      }
+    ]
   }
 ]
 
-const makeGuardRouteConfig = (guardRoutes: GuardRouteConfig[] = []) => {
-  guardRoutes.forEach(route => {
-    if (route.beforeEnter) {
-      console.warn(
-        'beforeEnter should not used in GuardRouteConfig,use canActivate instead'
-      )
-    }
-    if (route.canActivate) {
-      const beforeEnterGuard = multiguard(
-        route.canActivate.map(ins => ins.canActivate.bind(ins))
-      )
-      route.beforeEnter = beforeEnterGuard
-    }
-  })
-  return guardRoutes
-}
-
-export const routes = makeGuardRouteConfig(guardRoutes)
+export const routes = createRoutesFromStRoutes(stRoutes)

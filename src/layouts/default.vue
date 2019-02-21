@@ -1,7 +1,6 @@
 <template>
-  <div>
-    this is app layout
-    {{user}}
+  <div class="layout-default">
+    layout-default
     <router-view></router-view>
   </div>
 </template>
