@@ -7,15 +7,15 @@
 </template>
 
 <script lang='ts'>
+import Vue from 'vue'
 // @ts-ignore
 import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
-
-export default {
+export default Vue.extend({
   name: 'app',
   data() {
     return {
       zhCN
     }
   }
-}
+})
 </script>
