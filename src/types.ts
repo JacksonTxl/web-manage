@@ -10,11 +10,15 @@ interface QueryOption {
 }
 
 interface QueryOptions {
-  [key: string]: QueryOption
+  [queryName: string]: QueryOption
 }
 
 export interface StRouteConfig extends RouteConfig {
   beforeRouteEnter?: BeforeRouteEnter[]
   queryOptions?: QueryOptions
   children?: StRouteConfig[]
+}
+
+export interface StRouteExpandConfig {
+  [routeName: string]: StRouteConfig
 }
