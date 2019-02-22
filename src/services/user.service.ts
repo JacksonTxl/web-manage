@@ -1,9 +1,16 @@
 import { useState } from '@/utils/rx-hooks'
 import { Route } from 'vue-router'
 import { getCurrentUserInfo } from '@/api/user'
-import { forkJoin } from 'rxjs'
-import { tap } from 'rxjs/operators'
+import {
+  tap,
+  filter,
+  skipWhile,
+  switchMap,
+  map,
+  withLatestFrom
+} from 'rxjs/operators'
 import { BeforeRouteEnter } from '@/types'
+import { EMPTY, merge, iif, combineLatest } from 'rxjs'
 
 export class UserServie implements BeforeRouteEnter {
   namespace = 'UserService'
@@ -11,12 +18,15 @@ export class UserServie implements BeforeRouteEnter {
   menu = useState([], `${this.namespace}/menu`)
   role = useState({}, `${this.namespace}/role`)
   beforeRouteEnter(to: Route, from: Route, next: any) {
-    this.initData().subscribe(() => {
-      next()
+    this.user.subscribe((user: any) => {
+      if (!user.id) {
+        this.getCurrentUserInfo().subscribe(() => {
+          return next()
+        })
+      } else {
+        return next()
+      }
     })
-  }
-  initData() {
-    return forkJoin(this.getCurrentUserInfo())
   }
   getCurrentUserInfo() {
     return getCurrentUserInfo().pipe(

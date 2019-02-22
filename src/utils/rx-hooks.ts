@@ -7,6 +7,7 @@ import {
   refCount,
   shareReplay
 } from 'rxjs/operators'
+import { STATE_DEBUG } from '@/constants/config'
 
 type Mutation = (state?: any) => any
 type Action = (observable: Observable<any>) => Observable<any>
@@ -26,9 +27,11 @@ export function useState<T>(initialState: T, tag = 'unknown state') {
     .pipe(distinctUntilChanged())
     .pipe(shareReplay(1))
 
-  state$.forEach(state => {
-    console.log(`${tag} state is ->`, state)
-  })
+  if (STATE_DEBUG.test(tag)) {
+    state$.forEach(state => {
+      console.log(`${tag} state is ->`, state)
+    })
+  }
 
   const commitState = (mutation: Mutation) => {
     commitState$.next(mutation)
