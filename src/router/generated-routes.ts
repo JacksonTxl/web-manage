@@ -1,10 +1,36 @@
 import { parse } from '@/utils/webpack-key-path'
 
 const pagesContext = require.context('../pages', true, /\.vue$/)
+const pageServiceContext = require.context('../pages', true, /\.service\.ts$/)
+const pageServiceKeys = pageServiceContext.keys()
 const pagesKeys = pagesContext.keys()
 
 const pageRoutes: any = []
 const pageMap: any = {}
+
+const serviceMap: any = {}
+
+pageServiceKeys.forEach(keyPath => {
+  const file = pageServiceContext(keyPath)
+  const parsed = parse(keyPath)
+  let exportedService = null
+  Object.keys(file).forEach(name => {
+    if (name.indexOf('Service') > -1 && typeof file[name] === 'object') {
+      exportedService = file[name]
+    }
+  })
+  if (!exportedService) {
+    console &&
+      console.warn(
+        `file [pages/${parsed.entry}] has not export any service instance yet`
+      )
+    return
+  }
+  // @ts-ignore
+  if (exportedService.beforeRouteEnter) {
+    serviceMap[parsed.entry_dash.replace('.service', '')] = exportedService
+  }
+})
 
 pagesKeys.forEach(keyPath => {
   const file = pagesContext(keyPath)
@@ -17,6 +43,9 @@ pagesKeys.forEach(keyPath => {
     name: parsed.entry_dash,
     parent: hasParent ? parsed.dir_dash : '',
     path: hasParent ? parsed.name : '/' + parsed.entry,
+    beforeRouteEnter: serviceMap[parsed.entry_dash]
+      ? [serviceMap[parsed.entry_dash]]
+      : [],
     component,
     redirect: undefined
   }

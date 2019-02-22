@@ -10,6 +10,7 @@
 <script lang='ts'>
 import Vue from 'vue'
 import { Route } from 'vue-router'
+
 export default Vue.extend({
   beforeRouteUpdate(to, from, next) {
     next()
