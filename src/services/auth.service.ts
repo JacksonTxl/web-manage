@@ -1,6 +1,5 @@
 import Cookie from 'js-cookie'
-import { Route } from 'vue-router'
-import { BeforeRouteEnter } from '@/types'
+import { BeforeRouteEnter, StRoute } from '@/types'
 const TOKEN_NAME = 'saas-token'
 
 export class AuthService implements BeforeRouteEnter {
@@ -14,9 +13,10 @@ export class AuthService implements BeforeRouteEnter {
   removeAuthToken() {
     Cookie.remove(TOKEN_NAME)
   }
-  beforeRouteEnter(to: Route, from: Route, next: any) {
+  beforeRouteEnter(to: StRoute, from: StRoute, next: any) {
+    console.log('auth')
     if (!this.token) {
-      location.href = '/login'
+      location.href = '/user/login'
       return next(false)
     }
     return next()

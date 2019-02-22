@@ -5,6 +5,8 @@ import { router } from './router/index'
 import '@/layouts/register'
 import App from './App.vue'
 
+import 'ant-design-vue/dist/antd.less'
+
 Vue.use(Antd)
 Vue.use(VueRx)
 

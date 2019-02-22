@@ -1,16 +1,9 @@
 import { useState } from '@/utils/rx-hooks'
 import { Route } from 'vue-router'
-import { getCurrentUserInfo } from '@/api/user'
-import {
-  tap,
-  filter,
-  skipWhile,
-  switchMap,
-  map,
-  withLatestFrom
-} from 'rxjs/operators'
+import { getCurrentUserInfo, SignInInput, signIn } from '@/api/user'
+import { tap } from 'rxjs/operators'
 import { BeforeRouteEnter } from '@/types'
-import { EMPTY, merge, iif, combineLatest } from 'rxjs'
+import { authService } from './auth.service'
 
 export class UserServie implements BeforeRouteEnter {
   namespace = 'UserService'
@@ -18,6 +11,7 @@ export class UserServie implements BeforeRouteEnter {
   menu = useState([], `${this.namespace}/menu`)
   role = useState({}, `${this.namespace}/role`)
   beforeRouteEnter(to: Route, from: Route, next: any) {
+    console.log('userGuard')
     this.user.subscribe((user: any) => {
       if (!user.id) {
         this.getCurrentUserInfo().subscribe(() => {
@@ -27,6 +21,15 @@ export class UserServie implements BeforeRouteEnter {
         return next()
       }
     })
+  }
+  signIn(input: SignInInput) {
+    return signIn(input).pipe(
+      tap(res => {
+        const token: string = res.token
+        authService.setAuthToken(token)
+        location.href = '/'
+      })
+    )
   }
   getCurrentUserInfo() {
     return getCurrentUserInfo().pipe(

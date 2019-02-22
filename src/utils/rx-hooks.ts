@@ -5,7 +5,8 @@ import {
   distinctUntilChanged,
   publishReplay,
   refCount,
-  shareReplay
+  shareReplay,
+  tap
 } from 'rxjs/operators'
 import { STATE_DEBUG } from '@/constants/config'
 
@@ -27,11 +28,11 @@ export function useState<T>(initialState: T, tag = 'unknown state') {
     .pipe(distinctUntilChanged())
     .pipe(shareReplay(1))
 
-  if (STATE_DEBUG.test(tag)) {
-    state$.forEach(state => {
+  state$.forEach(state => {
+    if (STATE_DEBUG.test(tag)) {
       console.log(`${tag} state is ->`, state)
-    })
-  }
+    }
+  })
 
   const commitState = (mutation: Mutation) => {
     commitState$.next(mutation)

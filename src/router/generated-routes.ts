@@ -61,5 +61,4 @@ pagesKeys.forEach(keyPath => {
   }
 })
 
-console.log(pageRoutes)
 export default pageRoutes

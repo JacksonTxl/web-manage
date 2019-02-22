@@ -18,12 +18,13 @@ const appendEnterGuard = (
       transformer(route)
     }
     if (route.beforeRouteEnter.length) {
-      const beforeEnterGuard = multiguard(
-        route.beforeRouteEnter.map(ins => {
-          return ins.beforeRouteEnter.bind(ins)
-        })
-      )
-      route.beforeEnter = beforeEnterGuard
+      const beforeGuardFns = route.beforeRouteEnter.map(ins => {
+        return ins.beforeRouteEnter.bind(ins)
+      })
+      console.log(route, beforeGuardFns)
+
+      const beforeEnter = multiguard(beforeGuardFns)
+      route.beforeEnter = beforeEnter
       if (route.children && route.children.length) {
         appendEnterGuard(route.children)
       }

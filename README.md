@@ -24,3 +24,10 @@ npm run test
 ```
 npm run lint
 ```
+
+#### 更新日志
+
+
+#### Bugfix
+* 降less版本为2.7.2 修复引入ant-design包less .bezierEasingMixin() 错误问题
+* 去除tslint校验 使用eslint校验格式 使用typescript进行编译时错误

@@ -1,8 +1,9 @@
-import { BeforeRouteEnter } from '@/types'
-import { Route } from 'vue-router'
+import { BeforeRouteEnter, StRoute } from '@/types'
 
+console.log(1)
 class SidebarService implements BeforeRouteEnter {
-  beforeRouteEnter(to: Route, from: Route, next: any) {
+  beforeRouteEnter(to: StRoute, from: StRoute, next: Function) {
+    console.log('sidebar haha')
     next()
   }
 }
