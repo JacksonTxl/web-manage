@@ -1,9 +1,9 @@
-import { NavigationGuard, RouteConfig } from 'vue-router'
+import { NavigationGuard, RouteConfig, Route } from 'vue-router'
 
 export interface BeforeRouteEnter {
   beforeRouteEnter: NavigationGuard
 }
-
+export interface StRoute extends Route {}
 interface QueryOption {
   default?: number | string
   type: NumberConstructor | StringConstructor
@@ -14,7 +14,7 @@ interface QueryOptions {
 }
 
 export interface StRouteConfig extends RouteConfig {
-  beforeRouteEnter?: BeforeRouteEnter[]
+  beforeRouteEnter: BeforeRouteEnter[]
   queryOptions?: QueryOptions
   children?: StRouteConfig[]
 }

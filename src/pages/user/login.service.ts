@@ -1,7 +1,7 @@
-import { BeforeRouteEnter } from '@/types'
+import { BeforeRouteEnter, StRoute } from '@/types'
 
 export class LoginService implements BeforeRouteEnter {
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to: StRoute, from: StRoute, next: Function) {
     console.log('this is called beforeRouteEnter')
     next()
   }

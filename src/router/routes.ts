@@ -17,10 +17,11 @@ const stRoutes: StRouteConfig[] = [
 ]
 
 export const routes = createRoutesFromStRoutes(stRoutes, guardRoute => {
-  if (guardRoute.name !== 'user.login') {
-    if (!guardRoute.beforeRouteEnter) {
-      guardRoute.beforeRouteEnter = []
-    }
+  if (
+    guardRoute.path.startsWith('/') &&
+    guardRoute.name !== 'user-login' &&
+    guardRoute.name !== '404'
+  ) {
     guardRoute.beforeRouteEnter.unshift(authService, userService)
   }
   switch (guardRoute.name) {

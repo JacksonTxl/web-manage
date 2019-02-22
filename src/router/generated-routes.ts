@@ -37,7 +37,7 @@ pagesKeys.forEach(keyPath => {
   const component = file.default || file
   const parsed = parse(keyPath)
   const hasParent = !!pageMap[parsed.dir_dash]
-  const redirect = component.redirect
+
   const route = {
     // custom/info/detail -> custom-info-detail
     name: parsed.entry_dash,
@@ -50,9 +50,6 @@ pagesKeys.forEach(keyPath => {
     redirect: undefined
   }
   pageMap[parsed.entry_dash] = route
-  if (redirect) {
-    route.redirect = redirect
-  }
   if (hasParent) {
     const routeParent = pageMap[route.parent]
     routeParent.children = routeParent.children || []
@@ -64,4 +61,5 @@ pagesKeys.forEach(keyPath => {
   }
 })
 
+console.log(pageRoutes)
 export default pageRoutes
