@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <layout-default>
     this is plugins first
     <router-view></router-view>
-  </div>
+  </layout-default>
 </template>
 
 <script lang='ts'>

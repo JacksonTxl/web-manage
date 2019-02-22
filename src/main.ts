@@ -3,6 +3,7 @@ import App from './App.vue'
 import Antd from 'ant-design-vue'
 import VueRx from 'vue-rx'
 import { router } from './router/index'
+import '@/layouts/register'
 
 Vue.use(Antd)
 Vue.use(VueRx)

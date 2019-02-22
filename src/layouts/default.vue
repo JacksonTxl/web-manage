@@ -1,7 +1,7 @@
 <template>
   <div class="layout-default">
-    layout-default
-    <router-view></router-view>
+    <h1>this is layout default</h1>
+    <slot></slot>
   </div>
 </template>
 
@@ -13,6 +13,9 @@ export default {
     return {
       user: userService.user
     }
+  },
+  created() {
+    console.log('layout created')
   }
 }
 </script>

@@ -1,6 +1,7 @@
 <template>
   <div>
-    hello
+    couse page
+    <router-link :to="{name:'dashboard'}">dashboard</router-link>
   </div>
 </template>
 <script lang="ts">
