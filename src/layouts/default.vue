@@ -1,6 +1,7 @@
 <template>
   <div class="layout-default">
     <h1>this is layout default</h1>
+    {{user}}
     <slot></slot>
   </div>
 </template>
@@ -11,7 +12,7 @@ import { userService } from '@/services/user.service'
 export default {
   subscriptions() {
     return {
-      user: userService.user
+      user: userService.user$
     }
   },
   created() {
