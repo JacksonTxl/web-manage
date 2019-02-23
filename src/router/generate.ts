@@ -9,6 +9,9 @@ const appendEnterGuard = (
     if (!route.beforeRouteEnter) {
       route.beforeRouteEnter = []
     }
+    if (!route.meta) {
+      route.meta = {}
+    }
     if (route.beforeEnter) {
       console.warn(
         'beforeEnter should not used in StRouteConfig,use beforeRouteEnter instead'
@@ -21,8 +24,6 @@ const appendEnterGuard = (
       const beforeGuardFns = route.beforeRouteEnter.map(ins => {
         return ins.beforeRouteEnter.bind(ins)
       })
-      console.log(route, beforeGuardFns)
-
       const beforeEnter = multiguard(beforeGuardFns)
       route.beforeEnter = beforeEnter
       if (route.children && route.children.length) {

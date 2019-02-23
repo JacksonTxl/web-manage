@@ -14,7 +14,6 @@ export class AuthService implements BeforeRouteEnter {
     Cookie.remove(TOKEN_NAME)
   }
   beforeRouteEnter(to: StRoute, from: StRoute, next: any) {
-    console.log('auth')
     if (!this.token) {
       location.href = '/user/login'
       return next(false)

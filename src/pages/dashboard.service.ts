@@ -1,20 +1,11 @@
-import { BeforeRouteEnter } from '@/types'
-import { Route } from 'vue-router'
-import { useState } from '@/utils/rx-hooks'
-import { of } from 'rxjs'
+import { IsState, State } from '@/utils/rx-state'
+import { BeforeRouteEnter, StRoute } from '@/types'
 
 class DashboardService implements BeforeRouteEnter {
-  namespace = 'Dashboard'
-  mobile = useState('', `${this.namespace}/mobile`)
-  list = useState([], `${this.namespace}/list`)
-
-  beforeRouteEnter(to: Route, from: Route, next: Function) {
-    this.initData().subscribe(() => {
-      next()
-    })
-  }
-  initData() {
-    return of(1)
+  @IsState([]) list$!: State<any[]>
+  beforeRouteEnter(to: StRoute, from: StRoute, next: any) {
+    console.log('dashboard')
+    next()
   }
 }
 

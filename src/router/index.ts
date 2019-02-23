@@ -4,6 +4,7 @@ import 'nprogress/nprogress.css'
 import VueRouter, { Route } from 'vue-router'
 import multiguard from 'vue-router-multiguard'
 import { routes } from './routes'
+import { queryService } from '@/services/query.service'
 
 Vue.use(VueRouter)
 
@@ -17,7 +18,9 @@ const nProgressStart = (to: Route, from: Route, next: any) => {
   return next()
 }
 
-router.beforeEach(multiguard([nProgressStart]))
+router.beforeEach(
+  multiguard([nProgressStart, queryService.beforeEach.bind(queryService)])
+)
 
 router.afterEach(() => {
   nProgress.done()
