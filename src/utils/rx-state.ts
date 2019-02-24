@@ -49,19 +49,6 @@ export function useState<T>(initialState: any, tag: string) {
   return new State<T>(initialState, tag)
 }
 
-/**
- * 流式状态装饰器
- *
- * @param initialState 初始状态
- */
-export function IsState<T>(initialState: T) {
-  return function(target: any, propKey: string) {
-    const namespace = target.constructor.name
-    const stateTag = namespace + '/' + propKey
-    target[propKey] = new State(initialState, stateTag)
-  }
-}
-
 export class Action<PAYLOAD> {
   trigger$!: Subject<PAYLOAD>
   action$: Observable<any>

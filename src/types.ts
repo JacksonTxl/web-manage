@@ -2,7 +2,7 @@ import { NavigationGuard, RouteConfig, Route } from 'vue-router'
 import { Dictionary } from 'vue-router/types/router'
 
 export interface BeforeRouteEnter {
-  beforeRouteEnter: NavigationGuard
+  beforeRouteEnter:any
 }
 
 interface QueryOption {
@@ -15,6 +15,7 @@ interface QueryOptions {
 }
 
 export interface StRoute extends Route {
+  name: string
   meta?: {
     query?: Dictionary<any>
   }
@@ -22,8 +23,9 @@ export interface StRoute extends Route {
 
 export interface StRouteConfig extends RouteConfig {
   beforeRouteEnter: BeforeRouteEnter[]
-  meta:{
+  meta: {
     queryOptions?: QueryOptions
+    query?: Dictionary<any>
   }
   children?: StRouteConfig[]
 }

@@ -1,22 +1,88 @@
 <template>
   <div class="layout-default">
-    <h1>this is layout default</h1>
-    {{user}}
-    <slot></slot>
+    <a-layout>
+      <a-layout-sider collapsible @collapse="onSidebarCollapse" :collapsed="collapsed">
+        <div class="logo">logo</div>
+        <a-menu
+          theme="dark"
+          mode="inline"
+          :defaultSelectedKeys="selectedKeys"
+          :defaultOpenKeys="openKeys"
+        >
+          <a-menu-item key="1">
+            <a-icon type="user"></a-icon>
+            <span>nav 1</span>
+          </a-menu-item>
+          <a-sub-menu key="sub2">
+            <span slot="title">
+              <a-icon type="appstore"/>
+              <span>Navigation Two</span>
+            </span>
+            <a-menu-item key="9">Option 9</a-menu-item>
+            <a-menu-item key="10">Option 10</a-menu-item>
+            <a-sub-menu key="sub3" title="Submenu">
+              <a-menu-item key="11">Option 11</a-menu-item>
+              <a-menu-item key="12">
+                <router-link :to="{name:'plugins-course'}">plugins-course</router-link>
+              </a-menu-item>
+            </a-sub-menu>
+          </a-sub-menu>
+          <a-menu-item key="3">
+            <a-icon type="upload"/>
+            <span class="nav-text">nav 3</span>
+          </a-menu-item>
+          <a-menu-item key="4">
+            <a-icon type="user"/>
+            <span class="nav-text">nav 4</span>
+          </a-menu-item>
+        </a-menu>
+      </a-layout-sider>
+      <a-layout>
+        <a-layout-header></a-layout-header>
+        <a-layout-content>
+          <a-tabs :defaultActiveKeys="activeKey" @change="onTabChange">
+            <a-tab-pane v-for="tabItem in tabs" :key="tabItem.key" :tab="tabItem.name"></a-tab-pane>
+          </a-tabs>
+          <div>content</div>
+          <div>
+            selectedKeys {{selectedKeys}}
+            openKeys {{openKeys}}
+            colla {{collapsed}}
+            tabs {{tabs}}
+          </div>
+
+          <slot></slot>
+        </a-layout-content>
+        <a-layout-footer>Ant Design ©2018 Created by Ant UED</a-layout-footer>
+      </a-layout>
+    </a-layout>
   </div>
 </template>
 
 <script lang="ts">
 import { userService } from '@/services/user.service'
+import { sidebarService } from '@/services/sidebar.service'
+import { tabService } from '@/services/tab.service'
 
 export default {
   subscriptions() {
     return {
-      user: userService.user$
+      user: userService.user$,
+      selectedKeys: sidebarService.selectedKeys$,
+      openKeys: sidebarService.openKeys$,
+      collapsed: sidebarService.collapsed$,
+
+      tabs: tabService.tabs$,
+      activeKey: tabService.activeKey$
     }
   },
-  created() {
-    console.log('layout created')
+  methods: {
+    onSidebarCollapse(collapsed: Boolean) {
+      sidebarService.TOGGLE_COLLAPSED(collapsed)
+    },
+    onTabChange(tabKey: string) {
+      tabService.SET_ACTIVE_KEY(tabKey)
+    }
   }
 }
 </script>

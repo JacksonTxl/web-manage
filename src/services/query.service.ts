@@ -15,9 +15,8 @@ class QueryService {
           formatedQuery[queryName] = queryDefaultValue
         }
       }
-      to.meta.query = formatedQuery
     }
-    console.log(to)
+    to.meta.query = formatedQuery
     next()
   }
 }

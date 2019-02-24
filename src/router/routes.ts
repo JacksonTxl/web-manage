@@ -4,6 +4,7 @@ import pages from './pages'
 import { authService } from '@/services/auth.service'
 import { userService } from '@/services/user.service'
 import { sidebarService } from '@/services/sidebar.service'
+import { tabService } from '@/services/tab.service'
 
 const stRoutes: StRouteConfig[] = [
   {
@@ -26,7 +27,12 @@ export const routes = createRoutesFromStRoutes(stRoutes, route => {
     route.name !== 'user-login' &&
     route.name !== '404'
   ) {
-    route.beforeRouteEnter.unshift(authService, userService, sidebarService)
+    route.beforeRouteEnter.unshift(
+      authService,
+      userService,
+      sidebarService,
+      tabService
+    )
   }
   switch (route.name) {
     case 'dashboard':

@@ -12,6 +12,9 @@ const appendEnterGuard = (
     if (!route.meta) {
       route.meta = {}
     }
+    if (!route.meta.query) {
+      route.meta.query = {}
+    }
     if (route.beforeEnter) {
       console.warn(
         'beforeEnter should not used in StRouteConfig,use beforeRouteEnter instead'

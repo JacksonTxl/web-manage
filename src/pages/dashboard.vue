@@ -14,9 +14,6 @@ import Vue from 'vue'
 import { dashboardService } from '@/pages/dashboard.service'
 
 export default Vue.extend({
-  beforeRouteUpdate(to, from, next) {
-    next()
-  },
   subscriptions() {
     return {
       list: dashboardService.list$

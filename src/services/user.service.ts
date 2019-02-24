@@ -1,6 +1,6 @@
-import { State, IsState, Action } from '@/utils/rx-state'
+import { State } from '@/utils/rx-state'
 import { getCurrentUserInfo, SignInInput, signIn } from '@/api/user'
-import { tap, debounceTime } from 'rxjs/operators'
+import { tap } from 'rxjs/operators'
 import { BeforeRouteEnter, StRoute } from '@/types'
 import { authService } from './auth.service'
 
@@ -10,11 +10,12 @@ interface User {
 }
 
 export class UserServie implements BeforeRouteEnter {
-  @IsState({}) user$!: State<User>
-  @IsState([]) menu$!: State<any[]>
-  @IsState({}) role$!: State<object>
+  user$ = new State<User>({})
+  menu$ = new State<any[]>([])
+  role$ = new State<object>({})
 
   beforeRouteEnter(to: StRoute, from: StRoute, next: any) {
+    console.log(this)
     if (!this.user$.snapshot.id) {
       this.getCurrentUserInfo().subscribe(() => {
         next()
