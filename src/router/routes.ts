@@ -23,7 +23,6 @@ export const routes = createRoutesFromStRoutes(stRoutes, route => {
   route.guards = route.guards || []
   route.meta = route.meta || {}
 
-  route.guards.unshift(queryService)
   if (
     route.path.startsWith('/') &&
     route.name !== 'user-login' &&
@@ -41,4 +40,5 @@ export const routes = createRoutesFromStRoutes(stRoutes, route => {
     default:
       break
   }
+  route.guards.unshift(queryService)
 })
