@@ -1,8 +1,9 @@
 import { StRoute, StRouteGuard } from '@/types'
-import { State } from '@/utils/rx-state'
+import { State, withNamespace } from '@/utils/rx-state'
 import { find, findIndex, last } from 'lodash-es'
 import { router } from '@/router'
 
+const t = withNamespace('tab')
 interface Tab {
   name: string
   key: string
@@ -10,8 +11,8 @@ interface Tab {
 }
 
 class TabService implements StRouteGuard {
-  tabs$ = new State<Tab[]>([], 'tabs')
-  activeKey$ = new State<string>('')
+  tabs$ = new State<Tab[]>([], t('tabs'))
+  activeKey$ = new State<string>('', t('activeKey'))
   ADD_TAB(tab: Tab) {
     this.tabs$.commit(tabs => {
       tabs.push(tab)

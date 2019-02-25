@@ -36,6 +36,7 @@
     "less": "^2.7.2",
     "less-loader": "^4.1.0",
     "lint-staged": "^8.1.0",
+    "rxact": "^1.0.0-beta.0",
     "ts-loader": "^5.3.3",
     "tslint": "^5.12.1",
     "tslint-config-standard": "^8.0.1",

@@ -25,11 +25,20 @@ export const routes = createRoutesFromStRoutes(stRoutes, route => {
 
   if (
     route.path.startsWith('/') &&
+    route.path !== '/' &&
     route.name !== 'user-login' &&
     route.name !== '404'
   ) {
-    route.guards.unshift(authService, userService, sidebarService, tabService)
+    route.guards = [
+      authService,
+      userService,
+      sidebarService,
+      tabService,
+      ...route.guards
+    ]
   }
+  // 参数normalize化
+  route.guards = [queryService, ...route.guards]
 
   switch (route.name) {
     case 'dashboard':
@@ -40,5 +49,4 @@ export const routes = createRoutesFromStRoutes(stRoutes, route => {
     default:
       break
   }
-  route.guards.unshift(queryService)
 })

@@ -51,6 +51,12 @@ export function useState<T>(initialState: any, tag: string) {
   return new State<T>(initialState, tag)
 }
 
+export function withNamespace(namespace: string) {
+  return function(tag: string) {
+    return namespace + '/' + tag
+  }
+}
+
 export class Action<PAYLOAD> {
   trigger$!: Subject<PAYLOAD>
   action$: Observable<any>

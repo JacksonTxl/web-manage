@@ -1,11 +1,15 @@
 import { StRouteGuard, StRoute } from '@/types'
-import { State } from '@/utils/rx-state'
+import { State, withNamespace } from '@/utils/rx-state'
 import Cookie from 'js-cookie'
+const ns = withNamespace('sidebar')
 
 class SidebarService implements StRouteGuard {
-  selectedKeys$ = new State<string[]>([])
-  openKeys$ = new State<string[]>([])
-  collapsed$ = new State<Boolean>(Boolean(Cookie.get('collapsed') || ''))
+  selectedKeys$ = new State<string[]>([], ns('selectedKeys'))
+  openKeys$ = new State<string[]>([], ns('openKeys'))
+  collapsed$ = new State<Boolean>(
+    Boolean(Cookie.get('collapsed') || ''),
+    ns('collapsed')
+  )
 
   constructor() {
     this.collapsed$.subscribe(v => {

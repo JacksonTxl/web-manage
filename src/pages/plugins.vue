@@ -11,6 +11,9 @@ export default {
     return {
       form: this.$form.createForm(this)
     }
+  },
+  subscriptions() {
+    return {}
   }
 }
 </script>

@@ -7,6 +7,7 @@ import App from './App.vue'
 import './layouts/register'
 
 import 'ant-design-vue/dist/antd.less'
+import { Subject, BehaviorSubject } from 'rxjs'
 
 Vue.use(Antd)
 Vue.use(VueRx)
