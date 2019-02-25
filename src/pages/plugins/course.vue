@@ -5,10 +5,9 @@
     <router-link :to="{name:'dashboard'}">dashboard</router-link>
   </div>
 </template>
-<script lang="ts">
-import Vue from 'vue'
+<script>
 import { courseService } from '@/pages/plugins/course.service'
-export default Vue.extend({
+export default {
   data() {
     return {}
   },
@@ -17,5 +16,5 @@ export default Vue.extend({
       list: courseService.list$
     }
   }
-})
+}
 </script>

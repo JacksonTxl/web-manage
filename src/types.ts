@@ -1,8 +1,10 @@
 import { NavigationGuard, RouteConfig, Route } from 'vue-router'
 import { Dictionary } from 'vue-router/types/router'
 
-export interface BeforeRouteEnter {
-  beforeRouteEnter:any
+export interface StRouteGuard {
+  beforeEach?: any
+  beforeRouteEnter?: any
+  beforeRouteUpdate?: any
 }
 
 interface QueryOption {
@@ -20,14 +22,15 @@ export interface StRoute extends Route {
     query?: Dictionary<any>
   }
 }
+interface StRouteConfigMeta {
+  [key: string]: any
+  queryOptions?: QueryOptions
+}
 
 export interface StRouteConfig extends RouteConfig {
-  beforeRouteEnter: BeforeRouteEnter[]
-  meta: {
-    queryOptions?: QueryOptions
-    query?: Dictionary<any>
-  }
+  guards?: StRouteGuard[]
   children?: StRouteConfig[]
+  meta?: StRouteConfigMeta
 }
 
 export interface StRouteExpandConfig {

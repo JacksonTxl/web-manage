@@ -1,7 +1,7 @@
 import { State } from '@/utils/rx-state'
 import { getCurrentUserInfo, SignInInput, signIn } from '@/api/user'
 import { tap } from 'rxjs/operators'
-import { BeforeRouteEnter, StRoute } from '@/types'
+import { StRoute, StRouteGuard } from '@/types'
 import { authService } from './auth.service'
 
 interface User {
@@ -9,14 +9,13 @@ interface User {
   name: string
 }
 
-export class UserServie implements BeforeRouteEnter {
+export class UserServie implements StRouteGuard {
   user$ = new State<User>({})
   menu$ = new State<any[]>([])
   role$ = new State<object>({})
 
   beforeRouteEnter(to: StRoute, from: StRoute, next: any) {
-    console.log(this)
-    if (!this.user$.snapshot.id) {
+    if (!this.user$.state.id) {
       this.getCurrentUserInfo().subscribe(() => {
         next()
       })

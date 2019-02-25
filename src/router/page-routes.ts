@@ -26,10 +26,8 @@ pageServiceKeys.forEach(keyPath => {
       )
     return
   }
-  // @ts-ignore
-  if (exportedService.beforeRouteEnter) {
-    serviceMap[parsed.entry_dash.replace('.service', '')] = exportedService
-  }
+
+  serviceMap[parsed.entry_dash.replace('.service', '')] = exportedService
 })
 
 pagesKeys.forEach(keyPath => {
@@ -38,16 +36,14 @@ pagesKeys.forEach(keyPath => {
   const parsed = parse(keyPath)
   const hasParent = !!pageMap[parsed.dir_dash]
 
+  const routeService = serviceMap[parsed.entry_dash]
   const route = {
     // custom/info/detail -> custom-info-detail
     name: parsed.entry_dash,
     parent: hasParent ? parsed.dir_dash : '',
     path: hasParent ? parsed.name : '/' + parsed.entry,
-    beforeRouteEnter: serviceMap[parsed.entry_dash]
-      ? [serviceMap[parsed.entry_dash]]
-      : [],
-    component,
-    redirect: undefined
+    guards: routeService ? [routeService] : [],
+    component
   }
   pageMap[parsed.entry_dash] = route
   if (hasParent) {

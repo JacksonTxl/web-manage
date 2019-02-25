@@ -1,26 +1,27 @@
 <template>
   <div class="layout-default">
     <a-layout>
-      <a-layout-sider collapsible @collapse="onSidebarCollapse" :collapsed="collapsed">
+      <a-layout-sider collapsible
+        @collapse="onSidebarCollapse"
+        :collapsed="collapsed">
         <div class="logo">logo</div>
-        <a-menu
-          theme="dark"
+        <a-menu theme="dark"
           mode="inline"
           :defaultSelectedKeys="selectedKeys"
-          :defaultOpenKeys="openKeys"
-        >
+          :defaultOpenKeys="openKeys">
           <a-menu-item key="1">
             <a-icon type="user"></a-icon>
             <span>nav 1</span>
           </a-menu-item>
           <a-sub-menu key="sub2">
             <span slot="title">
-              <a-icon type="appstore"/>
+              <a-icon type="appstore" />
               <span>Navigation Two</span>
             </span>
             <a-menu-item key="9">Option 9</a-menu-item>
             <a-menu-item key="10">Option 10</a-menu-item>
-            <a-sub-menu key="sub3" title="Submenu">
+            <a-sub-menu key="sub3"
+              title="Submenu">
               <a-menu-item key="11">Option 11</a-menu-item>
               <a-menu-item key="12">
                 <router-link :to="{name:'plugins-course'}">plugins-course</router-link>
@@ -28,11 +29,11 @@
             </a-sub-menu>
           </a-sub-menu>
           <a-menu-item key="3">
-            <a-icon type="upload"/>
+            <a-icon type="upload" />
             <span class="nav-text">nav 3</span>
           </a-menu-item>
           <a-menu-item key="4">
-            <a-icon type="user"/>
+            <a-icon type="user" />
             <span class="nav-text">nav 4</span>
           </a-menu-item>
         </a-menu>
@@ -40,8 +41,15 @@
       <a-layout>
         <a-layout-header></a-layout-header>
         <a-layout-content>
-          <a-tabs :defaultActiveKeys="activeKey" @change="onTabChange">
-            <a-tab-pane v-for="tabItem in tabs" :key="tabItem.key" :tab="tabItem.name"></a-tab-pane>
+          <a-tabs type='editable-card'
+            hideAdd
+            :defaultActiveKey="activeKey"
+            @edit='onTabEdit'
+            @change="onTabChange">
+            <a-tab-pane v-for="tabItem in tabs"
+              :key="tabItem.key"
+              :tab="tabItem.name">
+            </a-tab-pane>
           </a-tabs>
           <div>content</div>
           <div>
@@ -59,10 +67,11 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import { userService } from '@/services/user.service'
 import { sidebarService } from '@/services/sidebar.service'
 import { tabService } from '@/services/tab.service'
+import { find } from 'lodash-es'
 
 export default {
   subscriptions() {
@@ -77,11 +86,17 @@ export default {
     }
   },
   methods: {
-    onSidebarCollapse(collapsed: Boolean) {
+    onSidebarCollapse(collapsed) {
       sidebarService.TOGGLE_COLLAPSED(collapsed)
     },
-    onTabChange(tabKey: string) {
-      tabService.SET_ACTIVE_KEY(tabKey)
+    onTabChange(tabKey) {
+      const tab = find(this.tabs, { key: tabKey })
+      this.$router.push(tab.lastUrl)
+    },
+    onTabEdit(tabKey, action) {
+      if (action === 'remove') {
+        tabService.removeTab(tabKey)
+      }
     }
   }
 }

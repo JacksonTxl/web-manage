@@ -2,8 +2,9 @@ import Vue from 'vue'
 import Antd from 'ant-design-vue'
 import VueRx from 'vue-rx'
 import { router } from './router/index'
-import '@/layouts/register'
+// @ts-ignore
 import App from './App.vue'
+import './layouts/register'
 
 import 'ant-design-vue/dist/antd.less'
 

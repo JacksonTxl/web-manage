@@ -5,13 +5,12 @@
   </layout-default>
 </template>
 
-<script lang='ts'>
-import Vue from 'vue'
-export default Vue.extend({
+<script>
+export default {
   data() {
     return {
       form: this.$form.createForm(this)
     }
   }
-})
+}
 </script>

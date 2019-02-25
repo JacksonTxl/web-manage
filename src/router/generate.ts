@@ -1,46 +1,58 @@
 import { StRouteConfig } from '@/types'
 import multiguard from 'vue-router-multiguard'
+import { routeGuardsMap } from './route-guards-map'
 
-const appendEnterGuard = (
+const _updateRoutes = (
   routes: StRouteConfig[] = [],
   transformer?: (stRoute: StRouteConfig) => void
 ) => {
   routes.forEach(route => {
-    if (!route.beforeRouteEnter) {
-      route.beforeRouteEnter = []
-    }
     if (!route.meta) {
       route.meta = {}
     }
     if (!route.meta.query) {
       route.meta.query = {}
     }
-    if (route.beforeEnter) {
-      console.warn(
-        'beforeEnter should not used in StRouteConfig,use beforeRouteEnter instead'
-      )
+    if (!route.guards) {
+      route.guards = []
     }
+
     if (transformer && typeof transformer === 'function') {
       transformer(route)
     }
-    if (route.beforeRouteEnter.length) {
-      const beforeGuardFns = route.beforeRouteEnter.map(ins => {
-        return ins.beforeRouteEnter.bind(ins)
+    if (route.guards && route.guards.length) {
+      const beforeEachMiddwares = route.guards
+        .filter(s => s.beforeEach)
+        .map(s => s.beforeEach.bind(s))
+      const beforeRouteEnterMiddlewares = route.guards
+        .filter(s => s.beforeRouteEnter)
+        .map(s => s.beforeRouteEnter.bind(s))
+      const beforeRouteUpdateMiddlewares = route.guards
+        .filter(s => s.beforeRouteUpdate)
+        .map(s => s.beforeRouteUpdate.bind(s))
+
+      routeGuardsMap.set(route.name || '', {
+        beforeRouteEnterHandler: multiguard([
+          ...beforeEachMiddwares,
+          ...beforeRouteEnterMiddlewares
+        ]),
+        beforeRouteUpdateHandler: multiguard([
+          ...beforeEachMiddwares,
+          ...beforeRouteUpdateMiddlewares
+        ])
       })
-      const beforeEnter = multiguard(beforeGuardFns)
-      route.beforeEnter = beforeEnter
-      if (route.children && route.children.length) {
-        appendEnterGuard(route.children)
-      }
+    }
+    if (route.children && route.children.length) {
+      _updateRoutes(route.children, transformer)
     }
   })
   return routes
 }
 
 export const createRoutesFromStRoutes = (
-  guardRoutes: StRouteConfig[] = [],
+  routes: StRouteConfig[] = [],
   transformer?: (stRoute: StRouteConfig) => void
 ) => {
-  appendEnterGuard(guardRoutes, transformer)
-  return guardRoutes
+  _updateRoutes(routes, transformer)
+  return routes
 }

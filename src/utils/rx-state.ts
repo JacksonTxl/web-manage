@@ -3,7 +3,7 @@ import { refCount, publish } from 'rxjs/operators'
 
 import { STATE_DEBUG } from '@/constants/config'
 
-export type Mutation<T> = (state: T) => T
+export type Mutation<T> = (state: T) => T | void
 export type Epic = (observable: Observable<any>) => Observable<any>
 
 export class State<T> extends BehaviorSubject<T> {
@@ -13,11 +13,13 @@ export class State<T> extends BehaviorSubject<T> {
     this.mutations$ = new Subject()
 
     this.mutations$.forEach(mutation => {
-      const prevState = this.value
-      const newState = mutation(prevState)
-      if (newState === prevState) {
-        console.warn('same state with ->', this.value)
-        return
+      const prevState = JSON.parse(JSON.stringify(this.value))
+      let newState
+      const returned = mutation(prevState)
+      if (returned === undefined) {
+        newState = prevState
+      } else {
+        newState = returned
       }
       if (STATE_DEBUG.test(stateTag)) {
         console.log(`state ${stateTag} mutated ->`, newState)
@@ -40,7 +42,7 @@ export class State<T> extends BehaviorSubject<T> {
    * @description
    * 返回当前流式状态的最新值快照
    */
-  get snapshot() {
+  get state() {
     return this.getValue()
   }
 }

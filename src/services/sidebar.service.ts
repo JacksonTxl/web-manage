@@ -1,8 +1,8 @@
-import { BeforeRouteEnter, StRoute } from '@/types'
+import { StRouteGuard, StRoute } from '@/types'
 import { State } from '@/utils/rx-state'
 import Cookie from 'js-cookie'
 
-class SidebarService implements BeforeRouteEnter {
+class SidebarService implements StRouteGuard {
   selectedKeys$ = new State<string[]>([])
   openKeys$ = new State<string[]>([])
   collapsed$ = new State<Boolean>(Boolean(Cookie.get('collapsed') || ''))
@@ -17,7 +17,7 @@ class SidebarService implements BeforeRouteEnter {
     this.selectedKeys$.commit(() => selectedKeys)
   }
   SET_OPEN_KEYS(openKeys: string[]) {
-    if (!this.collapsed$.snapshot) {
+    if (!this.collapsed$.state) {
       this.openKeys$.commit(() => openKeys)
     }
   }

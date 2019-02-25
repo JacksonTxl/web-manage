@@ -1,17 +1,18 @@
 import { StRouteConfig } from '@/types'
 import { createRoutesFromStRoutes } from './generate'
-import pages from './pages'
 import { authService } from '@/services/auth.service'
 import { userService } from '@/services/user.service'
 import { sidebarService } from '@/services/sidebar.service'
 import { tabService } from '@/services/tab.service'
+import { queryService } from '@/services/query.service'
+import pageRoutes from './page-routes'
 
 const stRoutes: StRouteConfig[] = [
   {
     path: '/',
-    redirect: 'dashboard'
+    redirect: '/dashboard'
   },
-  ...pages,
+  ...pageRoutes,
   {
     path: '*',
     redirect: '404'
@@ -19,28 +20,22 @@ const stRoutes: StRouteConfig[] = [
 ]
 
 export const routes = createRoutesFromStRoutes(stRoutes, route => {
-  // 应用全局中间件
+  route.guards = route.guards || []
+  route.meta = route.meta || {}
+
+  route.guards.unshift(queryService)
   if (
-    // 只对根路由添加中间件
     route.path.startsWith('/') &&
-    route.path !== '/' &&
     route.name !== 'user-login' &&
     route.name !== '404'
   ) {
-    route.beforeRouteEnter.unshift(
-      authService,
-      userService,
-      sidebarService,
-      tabService
-    )
+    route.guards.unshift(authService, userService, sidebarService, tabService)
   }
+
   switch (route.name) {
     case 'dashboard':
       route.meta.queryOptions = {
-        a: {
-          type: Number,
-          default: 99
-        }
+        a: { type: Number, default: 99 }
       }
       break
     default:

@@ -1,8 +1,8 @@
 import Cookie from 'js-cookie'
-import { BeforeRouteEnter, StRoute } from '@/types'
+import { StRoute, StRouteGuard } from '@/types'
 const TOKEN_NAME = 'saas-token'
 
-export class AuthService implements BeforeRouteEnter {
+export class AuthService implements StRouteGuard {
   token: string | undefined = this.getAuthToken()
   getAuthToken() {
     return Cookie.get(TOKEN_NAME)
