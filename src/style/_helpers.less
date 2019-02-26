@@ -1,0 +1,45 @@
+@gutters: 0, 8, 16, 24, 32, 40;
+
+.generate-spaces();
+
+.generate-spaces(@i: 1) when (@i =< length(@gutters)) {
+  @n: extract(@gutters, @i);
+  #body {
+    .mg-t@{n} {
+      .mg-t(1px * @n);
+    }
+    .mg-b@{n} {
+      .mg-b(1px * @n);
+    }
+    .mg-l@{n} {
+      .mg-l(1px * @n);
+    }
+    .mg-r@{n} {
+      .mg-r(1px * @n);
+    }
+    .mg-x@{n} {
+      .mg-l(1px * @n);
+      .mg-r(1px * @n);
+    }
+    .mg-y@{n} {
+      .mg-t(1px * @n);
+      .mg-b(1px * @n);
+    }
+  }
+  .generate-spaces(@i + 1);
+}
+
+#body {
+  .fl-r {
+    .fl-r;
+  }
+  .ta-r {
+    text-align: right;
+  }
+  .ta-c {
+    text-align: center;
+  }
+  .ta-l {
+    text-align: left;
+  }
+}

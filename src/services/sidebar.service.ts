@@ -1,6 +1,6 @@
-import { StRouteGuard, StRoute } from '@/types'
-import { State, withNamespace } from '@/utils/rx-state'
+import { State, withNamespace, getState } from '@/utils/rx-state'
 import Cookie from 'js-cookie'
+import { StRouteGuard, StRoute } from '@/types/route'
 const ns = withNamespace('sidebar')
 
 class SidebarService implements StRouteGuard {
@@ -21,19 +21,14 @@ class SidebarService implements StRouteGuard {
     this.selectedKeys$.commit(() => selectedKeys)
   }
   SET_OPEN_KEYS(openKeys: string[]) {
-    if (!this.collapsed$.state) {
+    if (!getState(this.collapsed$)) {
       this.openKeys$.commit(() => openKeys)
     }
-  }
-  RESET_KEYS() {
-    this.openKeys$.commit(() => [])
-    this.selectedKeys$.commit(() => [])
   }
   TOGGLE_COLLAPSED(collapsed: Boolean) {
     this.collapsed$.commit(() => collapsed)
   }
-  beforeRouteEnter(to: StRoute, from: StRoute, next: Function) {
-    this.RESET_KEYS()
+  beforeRouteEnter(to: StRoute, from: StRoute, next: any) {
     next()
   }
 }

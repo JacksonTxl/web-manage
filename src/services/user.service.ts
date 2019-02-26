@@ -1,9 +1,10 @@
-import { State, withNamespace } from '@/utils/rx-state'
+import { withNamespace, getState, $, State } from '@/utils/rx-state'
+import { combineLatest } from 'rxjs'
 import { getCurrentUserInfo, SignInInput, signIn } from '@/api/user'
 import { tap } from 'rxjs/operators'
-import { StRoute, StRouteGuard } from '@/types'
+import { StRoute, StRouteGuard } from '@/types/route'
 import { authService } from './auth.service'
-const t = withNamespace('user')
+const ns = withNamespace('user')
 
 interface User {
   id: string
@@ -11,12 +12,12 @@ interface User {
 }
 
 export class UserServie implements StRouteGuard {
-  user$ = new State<User>({}, t('user'))
-  menu$ = new State<any[]>([], t('menu'))
-  role$ = new State<object>({}, t('role'))
+  user$ = new State<User>({}, ns('user'))
+  menu$ = new State<string[]>([], ns('menu'))
+  role$ = new State<object>({}, ns('role'))
 
   beforeRouteEnter(to: StRoute, from: StRoute, next: any) {
-    if (!this.user$.state.id) {
+    if (!getState(this.user$).id) {
       this.getCurrentUserInfo().subscribe(() => {
         next()
       })

@@ -1,5 +1,5 @@
 import Cookie from 'js-cookie'
-import { StRoute, StRouteGuard } from '@/types'
+import { StRoute, StRouteGuard } from '@/types/route'
 const TOKEN_NAME = 'saas-token'
 
 export class AuthService implements StRouteGuard {

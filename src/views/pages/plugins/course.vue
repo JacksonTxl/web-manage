@@ -6,7 +6,7 @@
   </div>
 </template>
 <script>
-import { courseService } from '@/pages/plugins/course.service'
+import { courseService } from './course.service'
 export default {
   data() {
     return {}

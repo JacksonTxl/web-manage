@@ -1,4 +1,4 @@
-import { StRouteConfig } from '@/types'
+import { StRouteConfig } from '@/types/route'
 import multiguard from 'vue-router-multiguard'
 import { routeGuardsMap } from './route-guards-map'
 

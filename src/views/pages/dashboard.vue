@@ -9,12 +9,15 @@
     </li>
     <router-link :to="{name:'plugins-course'}">course</router-link>
     {{list}}
-    {{$route.meta.query}}
+    <modal-link tag='a-button'
+      :to="{name:'test'}">
+      hello
+    </modal-link>
   </layout-default>
 </template>
 
 <script>
-import { dashboardService } from '@/pages/dashboard.service'
+import { dashboardService } from './dashboard.service'
 
 export default {
   subscriptions() {

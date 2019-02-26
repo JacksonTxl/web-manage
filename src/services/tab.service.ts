@@ -1,7 +1,7 @@
-import { StRoute, StRouteGuard } from '@/types'
-import { State, withNamespace } from '@/utils/rx-state'
+import { State, withNamespace, getState } from '@/utils/rx-state'
 import { find, findIndex, last } from 'lodash-es'
 import { router } from '@/router'
+import { StRouteGuard, StRoute } from '@/types/route'
 
 const t = withNamespace('tab')
 interface Tab {
@@ -36,7 +36,8 @@ class TabService implements StRouteGuard {
     this.activeKey$.commit(() => key)
   }
   init(tabName: string, to: StRoute) {
-    const finedTab = find(this.tabs$.state, { key: to.name })
+    const tabs = getState(this.tabs$)
+    const finedTab = find(tabs, { key: to.name })
     if (!finedTab) {
       this.ADD_TAB({
         name: tabName,
@@ -49,10 +50,9 @@ class TabService implements StRouteGuard {
     this.SET_ACTIVE_KEY(to.name)
   }
   removeTab(tabKey: string) {
-    const tabsState = this.tabs$.state
-    if (tabsState.length > 1) {
+    if (getState(this.tabs$).length > 1) {
       this.REMOVE_TAB(tabKey)
-      const lastTab = last(this.tabs$.state)
+      const lastTab = last(getState(this.tabs$))
       if (lastTab && lastTab.lastUrl) {
         router.push(lastTab.lastUrl)
       }

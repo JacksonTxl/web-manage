@@ -1,5 +1,6 @@
 import { http } from '@/services/http.service'
 import { ajaxRetry } from '@/operators/ajax-retry'
+import { timeout } from 'rxjs/operators'
 
 export interface SendSmsCaptchaInput {
   mobile: string
@@ -15,4 +16,8 @@ export interface SignInInput {
 
 export const signIn = (data: SignInInput) => http.post('/user/signin', data)
 
-export const getCurrentUserInfo = () => http.get('/user/current')
+export const getCurrentUserInfo = () =>
+  http
+    .get('/user/current')
+    .pipe(timeout(2000))
+    .pipe(ajaxRetry(3, 200))

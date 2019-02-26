@@ -1,4 +1,4 @@
-import { StRoute, StRouteGuard } from '@/types'
+import { StRoute, StRouteGuard } from '@/types/route'
 import { sidebarService } from '@/services/sidebar.service'
 import { State, withNamespace } from '@/utils/rx-state'
 import { of, forkJoin } from 'rxjs'

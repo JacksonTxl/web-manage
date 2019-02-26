@@ -1,7 +1,7 @@
 import { parse } from '@/utils/webpack-key-path'
 
-const pagesContext = require.context('../pages', true, /\.vue$/)
-const pageServiceContext = require.context('../pages', true, /\.service\.ts$/)
+const pagesContext = require.context('../views/pages', true, /\.vue$/)
+const pageServiceContext = require.context('../views/pages', true, /\.service\.ts$/)
 const pageServiceKeys = pageServiceContext.keys()
 const pagesKeys = pagesContext.keys()
 
@@ -10,6 +10,7 @@ const pageMap: any = {}
 
 const serviceMap: any = {}
 
+console.log(pageServiceKeys)
 pageServiceKeys.forEach(keyPath => {
   const file = pageServiceContext(keyPath)
   const parsed = parse(keyPath)
@@ -22,7 +23,7 @@ pageServiceKeys.forEach(keyPath => {
   if (!exportedService) {
     console &&
       console.warn(
-        `file [pages/${parsed.entry}] has not export any service instance yet`
+        `file [views/pages/${parsed.entry}] has not export any service instance yet`
       )
     return
   }

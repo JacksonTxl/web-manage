@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Antd from 'ant-design-vue'
 import VueRx from 'vue-rx'
+// @ts-ignore
+import VueModalRouter from 'vue-modal-router'
 import { router } from './router/index'
+import { modalRouter } from './modal-router/index'
 // @ts-ignore
 import App from './App.vue'
-import './layouts/register'
-
-import 'ant-design-vue/dist/antd.less'
-import { Subject, BehaviorSubject } from 'rxjs'
+import './views/layouts/register'
+import './style/app.less'
 
 Vue.use(Antd)
 Vue.use(VueRx)
@@ -15,5 +16,7 @@ Vue.use(VueRx)
 const app = new Vue({
   el: '#app',
   router,
+  // @ts-ignore
+  modalRouter,
   render: h => h(App)
 })

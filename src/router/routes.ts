@@ -1,4 +1,4 @@
-import { StRouteConfig } from '@/types'
+import { StRouteConfig } from '@/types/route'
 import { createRoutesFromStRoutes } from './generate'
 import { authService } from '@/services/auth.service'
 import { userService } from '@/services/user.service'
@@ -6,6 +6,7 @@ import { sidebarService } from '@/services/sidebar.service'
 import { tabService } from '@/services/tab.service'
 import { queryService } from '@/services/query.service'
 import pageRoutes from './page-routes'
+import { DEBUG_ROUTE } from '@/constants/config'
 
 const stRoutes: StRouteConfig[] = [
   {
@@ -25,7 +26,7 @@ export const routes = createRoutesFromStRoutes(stRoutes, route => {
 
   if (
     route.path.startsWith('/') &&
-    route.path !== '/' &&
+    !route.redirect &&
     route.name !== 'user-login' &&
     route.name !== '404'
   ) {
@@ -38,7 +39,9 @@ export const routes = createRoutesFromStRoutes(stRoutes, route => {
     ]
   }
   // 参数normalize化
-  route.guards = [queryService, ...route.guards]
+  if (route.path.startsWith('/') && !route.redirect) {
+    route.guards = [queryService, ...route.guards]
+  }
 
   switch (route.name) {
     case 'dashboard':
@@ -50,3 +53,8 @@ export const routes = createRoutesFromStRoutes(stRoutes, route => {
       break
   }
 })
+
+// debug route
+if (DEBUG_ROUTE) {
+  console.log(routes)
+}

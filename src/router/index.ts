@@ -4,6 +4,7 @@ import 'nprogress/nprogress.css'
 import VueRouter from 'vue-router'
 import { routeGuardsMap } from './route-guards-map'
 import { routes } from './routes'
+import multiguard from 'vue-router-multiguard'
 Vue.use(VueRouter)
 
 export const router = new VueRouter({
@@ -21,11 +22,17 @@ router.beforeEach((to, from, next) => {
  */
 router.beforeEach((to, from, next) => {
   if (to.name !== from.name) {
-    const guard = routeGuardsMap.get(to.name || '')
-    guard.beforeRouteEnterHandler(to, from, next)
+    const matched = to.matched
+    const allBeforeArray = matched.map(
+      Comp => routeGuardsMap.get(Comp.name || '').beforeRouteEnterHandler
+    )
+    multiguard(allBeforeArray)(to, from, next)
   } else {
-    const guard = routeGuardsMap.get(to.name || '')
-    guard.beforeRouteUpdateHandler(to, from, next)
+    const matched = to.matched
+    const allBeforeArray = matched.map(
+      Comp => routeGuardsMap.get(Comp.name || '').beforeRouteUpdateHandler
+    )
+    multiguard(allBeforeArray)(to, from, next)
   }
 })
 

@@ -1,8 +1,7 @@
-import { StRouteGuard, StRoute } from '@/types'
+import { StRouteGuard, StRoute } from '@/types/route'
 
 class PluginsService implements StRouteGuard {
   beforeRouteEnter(to: StRoute, from: StRoute, next: Function) {
-    console.log('this is plugins.service')
     next()
   }
 }
