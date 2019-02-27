@@ -7,7 +7,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --ext .js,.ts,.vue ./src",
-    "inspect": "vue inspect --mode development --verbose > inspect.js"
+    "inspect": "vue inspect --mode development --verbose > inspect.js",
+    "vsa": "git subtree push --prefix=vue-service-app git@gitlab.corp.rrr.me:frontend/vue-service-app.git master"
   },
   "dependencies": {
     "@types/lodash-es": "^4.17.2",

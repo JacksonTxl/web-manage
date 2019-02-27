@@ -58,9 +58,6 @@ class TabService extends Service {
       }
     }
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    next()
-  }
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.UPDATE_LAST_URL(to.name, to.fullPath)
     next()
