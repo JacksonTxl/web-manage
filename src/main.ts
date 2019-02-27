@@ -9,7 +9,6 @@ import './views/layouts/register'
 import './style/app.less'
 Vue.use(Antd)
 Vue.use(VueRx)
-// @ts-ignore
 
 const app = new Vue({
   el: '#app',
