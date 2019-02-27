@@ -6,12 +6,14 @@ const _ = require('lodash')
 const PAGES_PATH = './src/views/pages/**/*.vue'
 const SERVICES_PATH = './src/views/pages/**/*.service.ts'
 const MODEL_PATH = './model.ejs'
-const pages = globby.sync(PAGES_PATH)
+const ROUTES_PATH = './src/router/auto-generated-routes.js'
+
+const pages = globby.sync(PAGES_PATH).filter(item => !item.includes('#'))
 const services = globby.sync(SERVICES_PATH)
 
 const tplInit = ({ importServiceArray, importArr, pageRoutes }) => {
-  var tpl = fse.readFileSync(MODEL_PATH).toString()
-  var compiled = _.template(tpl)
+  const tpl = fse.readFileSync(MODEL_PATH).toString()
+  const compiled = _.template(tpl)
 
   return compiled({ importServiceArray, importArr, pageRoutes })
 }
@@ -72,7 +74,7 @@ const createRoute = (pages) => {
     const route = {
       name: parsed.name,
       parent: hasParent ? parsed.dir_dash : '',
-      path: '/' + parsed.entry,
+      path: hasParent ? parsed.name : '/' + parsed.entry,
       guards: routeService ? [routeService] : [],
       component
     }
@@ -92,8 +94,8 @@ const createRoute = (pages) => {
   return { importServiceArray, importArr, pageRoutes }
 }
 try {
-  fse.outputFileSync('./src/router/routes.js', tplInit(createRoute(pages)), 'utf8')
-  console.log('create routes success!!!')
+  fse.outputFileSync(ROUTES_PATH, tplInit(createRoute(pages)), 'utf8')
+  console.log(`create routes success!!!`, ROUTES_PATH)
 } catch (error) {
   console.log(error)
 }
