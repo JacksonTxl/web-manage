@@ -3,7 +3,7 @@ import { userService } from '@/services/user.service'
 import { sidebarService } from '@/services/sidebar.service'
 import { tabService } from '@/services/tab.service'
 import pageRoutes from './page-routes'
-import { DEBUG_ROUTE } from '@/constants/config'
+import { DEBUG_ROUTE, IS_DEV } from '@/constants/config'
 import { nProgressService } from '@/services/nprogress.service'
 import { ServiceRouteConfig } from 'vue-service-app'
 
@@ -38,7 +38,7 @@ routes.forEach(route => {
   }
 })
 
-if (DEBUG_ROUTE) {
-  console.log(routes)
+if (DEBUG_ROUTE && IS_DEV) {
+  console.log('routes debug', routes)
 }
 export default routes

@@ -23,16 +23,13 @@ export class State<T> extends BehaviorSubject<T> {
       newState = returned
     }
 
-    if (STATE_DEBUG.test(this.tag)) {
-      console.log(`[${this.tag}] mutated ->`, newState)
+    if (STATE_DEBUG) {
+      console.log(`[${this.tag}] mutated ->`, newState, mutation)
     }
     this.next(newState)
   }
 }
 
-export function $<T>(initialState: any, tag?: string) {
-  return new State<T>(initialState, tag)
-}
 /**
  * 获得一个流最后的值状态
  */

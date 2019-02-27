@@ -1,9 +1,17 @@
 
+<<<<<<< HEAD
 import { dashboardService } from '@/views/pages/dashboard.service.ts'
 import { pluginsService } from '@/views/pages/plugins.service.ts'
 import { courseService } from '@/views/pages/plugins/course.service.ts'
 import { llfService } from '@/views/pages/test/llf.service.ts'
 import { loginService } from '@/views/pages/user/login.service.ts'
+=======
+import dashboardService from '@/views/pages/dashboard.service.ts'
+import pluginsService from '@/views/pages/plugins.service.ts'
+import courseService from '@/views/pages/plugins/course.service.ts'
+import llfService from '@/views/pages/test/llf.service.ts'
+import loginService from '@/views/pages/user/login.service.ts'
+>>>>>>> bd7251217fb79675211a244cabd8e2b3eca34173
 
 const page404 = () => import('@/views/pages/404.vue')
 const pageDashboard = () => import('@/views/pages/dashboard.vue')
@@ -37,6 +45,10 @@ const pageRoutes = [{
   ]
 }, {
   name: 'llf',
+<<<<<<< HEAD
+=======
+  parent: '',
+>>>>>>> bd7251217fb79675211a244cabd8e2b3eca34173
   path: '/test/llf',
   component: pageTestLlf,
   guards: [llfService]
