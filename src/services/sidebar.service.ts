@@ -29,8 +29,5 @@ class SidebarService extends Service {
   TOGGLE_COLLAPSED(collapsed: Boolean) {
     this.collapsed$.commit(() => collapsed)
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    next()
-  }
 }
 export const sidebarService = new SidebarService()

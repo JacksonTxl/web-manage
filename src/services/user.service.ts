@@ -1,5 +1,4 @@
-import { withNamespace, getState, $, State } from '@/utils/rx-state'
-import { combineLatest } from 'rxjs'
+import { withNamespace, getState, State } from '@/utils/rx-state'
 import { getCurrentUserInfo, SignInInput, signIn } from '@/api/user'
 import { tap } from 'rxjs/operators'
 import { authService } from './auth.service'
@@ -17,6 +16,7 @@ export class UserServie extends Service {
   role$ = new State<object>({}, ns('role'))
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    console.log('user service here')
     if (!getState(this.user$).id) {
       this.getCurrentUserInfo().subscribe(() => {
         next()
