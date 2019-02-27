@@ -1,0 +1,39 @@
+<% for(var i = 0; i < importServiceArray.length; i++){%>
+import <%- importServiceArray[i].service%> from '<%- importServiceArray[i].servicePath%>'<% }; %>
+<% for(var i = 0; i < importArr.length; i++){%>
+const <%- importArr[i].component%> = () => import('<%- importArr[i].pagePath%>')<% }; %>
+
+// service
+const pageRoutes = [<% for(var i = 0; i < pageRoutes.length; i++) {%>{
+  name: '<%- pageRoutes[i].name %>',
+  parent: '<%- pageRoutes[i].parent %>',
+  path: '<%- pageRoutes[i].path %>',
+  component: <%- pageRoutes[i].component %>,
+  guards: [<%- pageRoutes[i].guards %>]<% if(pageRoutes[i].children){%>,<%};%><% if(pageRoutes[i].children){%>
+  children: [<%for(var j = 0; j < pageRoutes[i].children.length; j++){%>{
+    name: '<%- pageRoutes[i].children[j].name %>',
+    parent: '<%- pageRoutes[i].children[j].parent %>',
+    path: '<%- pageRoutes[i].children[j].path %>',
+    component: <%- pageRoutes[i].children[j].component %>,
+    guards: [<%- pageRoutes[i].children[j].guards %>]<% if(pageRoutes[i].children[j].children){%>,<%};%><% if(pageRoutes[i].children[j].children){%>
+    children: [
+      <%for(var n = 0; n < pageRoutes[i].children[j].children.length; i++){%>
+        name: '<%- pageRoutes[i].children[j].children[n].name %>',
+        parent: '<%- pageRoutes[i].children[j].children[n].parent %>',
+        path: '<%- pageRoutes[i].children[j].children[n].path %>',
+        guards: [<%- pageRoutes[i].children[j].children[n].guards %>],
+        component: <%- pageRoutes[i].children[j].children[n].component %>
+          children: [
+            <%for(var i = 0; i < children.length; i++){%>
+              name: '<%- children[i].name %>',
+              parent: '<%- children[i].parent %>',
+              path: '<%- children[i].path %>',
+              component: <%- children[i].component %>
+            <%};%>
+          ]
+      <%}%>
+    ]<%};%>
+  }<%};%>
+  ]<%};%>
+}<%if(i !== pageRoutes.length-1){%>, <%}%><% }; %>
+]
