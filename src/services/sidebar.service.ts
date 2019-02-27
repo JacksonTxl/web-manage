@@ -1,9 +1,9 @@
 import { State, withNamespace, getState } from '@/utils/rx-state'
 import Cookie from 'js-cookie'
-import { StRouteGuard, StRoute } from '@/types/route'
+import { Service, ServiceRoute } from 'vue-service-app'
 const ns = withNamespace('sidebar')
 
-class SidebarService implements StRouteGuard {
+class SidebarService extends Service {
   selectedKeys$ = new State<string[]>([], ns('selectedKeys'))
   openKeys$ = new State<string[]>([], ns('openKeys'))
   collapsed$ = new State<Boolean>(
@@ -12,6 +12,7 @@ class SidebarService implements StRouteGuard {
   )
 
   constructor() {
+    super()
     this.collapsed$.subscribe(v => {
       Cookie.set('collapsed', v ? '1' : '')
     })
@@ -28,7 +29,7 @@ class SidebarService implements StRouteGuard {
   TOGGLE_COLLAPSED(collapsed: Boolean) {
     this.collapsed$.commit(() => collapsed)
   }
-  beforeRouteEnter(to: StRoute, from: StRoute, next: any) {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     next()
   }
 }

@@ -1,15 +1,15 @@
-import { StRoute, StRouteGuard } from '@/types/route'
 import { sidebarService } from '@/services/sidebar.service'
 import { State, withNamespace } from '@/utils/rx-state'
 import { of, forkJoin } from 'rxjs'
 import { tap } from 'rxjs/operators'
 import { tabService } from '@/services/tab.service'
+import { Service, ServiceRoute } from 'vue-service-app'
 const t = withNamespace('course')
 
-class CourseService implements StRouteGuard {
+class CourseService extends Service {
   list$ = new State<any[]>([], t('list'))
 
-  beforeRouteEnter(to: StRoute, from: StRoute, next: Function) {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
     sidebarService.SET_SELECTED_KEYS(['12'])
     sidebarService.SET_OPEN_KEYS(['sub2', 'sub3'])
 

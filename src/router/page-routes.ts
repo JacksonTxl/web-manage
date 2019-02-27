@@ -10,7 +10,6 @@ const pageMap: any = {}
 
 const serviceMap: any = {}
 
-console.log(pageServiceKeys)
 pageServiceKeys.forEach(keyPath => {
   const file = pageServiceContext(keyPath)
   const parsed = parse(keyPath)

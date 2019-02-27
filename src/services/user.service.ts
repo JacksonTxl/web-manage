@@ -2,8 +2,8 @@ import { withNamespace, getState, $, State } from '@/utils/rx-state'
 import { combineLatest } from 'rxjs'
 import { getCurrentUserInfo, SignInInput, signIn } from '@/api/user'
 import { tap } from 'rxjs/operators'
-import { StRoute, StRouteGuard } from '@/types/route'
 import { authService } from './auth.service'
+import { ServiceRoute, Service } from 'vue-service-app'
 const ns = withNamespace('user')
 
 interface User {
@@ -11,12 +11,12 @@ interface User {
   name: string
 }
 
-export class UserServie implements StRouteGuard {
+export class UserServie extends Service {
   user$ = new State<User>({}, ns('user'))
   menu$ = new State<string[]>([], ns('menu'))
   role$ = new State<object>({}, ns('role'))
 
-  beforeRouteEnter(to: StRoute, from: StRoute, next: any) {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     if (!getState(this.user$).id) {
       this.getCurrentUserInfo().subscribe(() => {
         next()

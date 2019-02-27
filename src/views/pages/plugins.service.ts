@@ -1,7 +1,7 @@
-import { StRouteGuard, StRoute } from '@/types/route'
+import { Service, ServiceRoute } from 'vue-service-app'
 
-class PluginsService implements StRouteGuard {
-  beforeRouteEnter(to: StRoute, from: StRoute, next: Function) {
+class PluginsService implements Service {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
     next()
   }
 }

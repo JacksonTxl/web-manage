@@ -1,8 +1,7 @@
 import Cookie from 'js-cookie'
-import { StRoute, StRouteGuard } from '@/types/route'
+import { Service, ServiceRoute } from 'vue-service-app'
 const TOKEN_NAME = 'saas-token'
-
-export class AuthService implements StRouteGuard {
+export class AuthService extends Service {
   token: string | undefined = this.getAuthToken()
   getAuthToken() {
     return Cookie.get(TOKEN_NAME)
@@ -13,7 +12,8 @@ export class AuthService implements StRouteGuard {
   removeAuthToken() {
     Cookie.remove(TOKEN_NAME)
   }
-  beforeRouteEnter(to: StRoute, from: StRoute, next: any) {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
+    console.log('authService here')
     if (!this.token) {
       location.href = '/user/login'
       return next(false)

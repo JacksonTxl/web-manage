@@ -71,6 +71,8 @@ module.exports = {
         config.module.rules.delete('eslint')
       })
 
+    config.resolve.alias.set('vue-service-app', path.join(__dirname, '/vue-service-app'))
+
     config.resolve.symlinks(true)
     return config
   }

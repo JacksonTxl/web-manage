@@ -1,7 +1,7 @@
 import { State, withNamespace, getState } from '@/utils/rx-state'
 import { find, findIndex, last } from 'lodash-es'
-import { router } from '@/router'
-import { StRouteGuard, StRoute } from '@/types/route'
+import router from '@/router'
+import { ServiceRoute, Service } from 'vue-service-app'
 
 const t = withNamespace('tab')
 interface Tab {
@@ -10,7 +10,7 @@ interface Tab {
   lastUrl: string
 }
 
-class TabService implements StRouteGuard {
+class TabService extends Service {
   tabs$ = new State<Tab[]>([], t('tabs'))
   activeKey$ = new State<string>('', t('activeKey'))
   ADD_TAB(tab: Tab) {
@@ -35,7 +35,7 @@ class TabService implements StRouteGuard {
   SET_ACTIVE_KEY(key: string) {
     this.activeKey$.commit(() => key)
   }
-  init(tabName: string, to: StRoute) {
+  init(tabName: string, to: ServiceRoute) {
     const tabs = getState(this.tabs$)
     const finedTab = find(tabs, { key: to.name })
     if (!finedTab) {
@@ -58,10 +58,10 @@ class TabService implements StRouteGuard {
       }
     }
   }
-  beforeRouteEnter(to: StRoute, from: StRoute, next: any) {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     next()
   }
-  beforeRouteUpdate(to: StRoute, from: StRoute, next: any) {
+  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.UPDATE_LAST_URL(to.name, to.fullPath)
     next()
   }

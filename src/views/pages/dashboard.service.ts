@@ -1,16 +1,16 @@
 import { State, withNamespace } from '@/utils/rx-state'
-import { StRoute, StRouteGuard } from '@/types/route'
 import { sidebarService } from '@/services/sidebar.service'
 import { tabService } from '@/services/tab.service'
+import { Service, ServiceRoute } from 'vue-service-app'
 const t = withNamespace('dashboard')
-class DashboardService implements StRouteGuard {
+class DashboardService extends Service {
   list$ = new State<any[]>([], t('list'))
-  beforeRouteEnter(to: StRoute, from: StRoute, next: any) {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     sidebarService.SET_SELECTED_KEYS(['1'])
     tabService.init(`首页`, to)
     next()
   }
-  beforeRouteUpdate(to: StRoute, from: StRoute, next: any) {
+  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
     console.log('dashboard update')
     next()
   }
