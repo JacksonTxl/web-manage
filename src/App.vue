@@ -2,7 +2,6 @@
   <a-locale-provider :locale="zhCN">
     <div id="app">
       <router-view></router-view>
-      hello
       <modal-router-view></modal-router-view>
     </div>
   </a-locale-provider>

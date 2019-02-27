@@ -16,7 +16,6 @@ export class UserServie extends Service {
   role$ = new State<object>({}, ns('role'))
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    console.log('user service here')
     if (!getState(this.user$).id) {
       this.getCurrentUserInfo().subscribe(() => {
         next()

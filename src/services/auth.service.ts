@@ -13,7 +13,6 @@ export class AuthService extends Service {
     Cookie.remove(TOKEN_NAME)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    console.log('authService here')
     if (!this.token) {
       location.href = '/user/login'
       return next(false)
