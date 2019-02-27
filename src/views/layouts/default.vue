@@ -53,10 +53,7 @@
           </a-tabs>
           <div>content</div>
           <div>
-            selectedKeys {{selectedKeys}}
-            openKeys {{openKeys}}
-            colla {{collapsed}}
-            tabs {{tabs}}
+
           </div>
 
           <slot></slot>
