@@ -1,8 +1,7 @@
-import { State, withNamespace, getState } from '@/utils/rx-state'
+import { State, withNamespace, getState } from 'rx-state'
 import Cookie from 'js-cookie'
 import { Service, ServiceRoute } from 'vue-service-app'
 const ns = withNamespace('sidebar')
-
 class SidebarService extends Service {
   selectedKeys$ = new State<string[]>([], ns('selectedKeys'))
   openKeys$ = new State<string[]>([], ns('openKeys'))

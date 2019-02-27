@@ -1,9 +1,9 @@
-import { sidebarService } from '@/services/sidebar.service'
-import { State, withNamespace } from '@/utils/rx-state'
+import { Service, ServiceRoute } from 'vue-service-app'
+import { State, withNamespace } from 'rx-state'
 import { of, forkJoin } from 'rxjs'
 import { tap } from 'rxjs/operators'
+import { sidebarService } from '@/services/sidebar.service'
 import { tabService } from '@/services/tab.service'
-import { Service, ServiceRoute } from 'vue-service-app'
 const t = withNamespace('course')
 
 class CourseService extends Service {

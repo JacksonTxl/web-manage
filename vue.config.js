@@ -72,6 +72,7 @@ module.exports = {
       })
 
     config.resolve.alias.set('vue-service-app', path.join(__dirname, '/vue-service-app'))
+    config.resolve.alias.set('rx-state', path.join(__dirname, '/rx-state'))
 
     config.resolve.symlinks(true)
     return config

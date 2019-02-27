@@ -14,7 +14,8 @@
     "types": ["webpack-env"],
     "paths": {
       "@/*": ["src/*"],
-      "vue-service-app/*": ["./vue-service-app/*"]
+      "vue-service-app/*": ["./vue-service-app/*"],
+      "rx-state/*": ["./rx-state/*"]
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
@@ -26,5 +27,5 @@
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ],
-  "exclude": ["node_modules","vue-service-app"]
+  "exclude": ["node_modules", "vue-service-app", "rx-state"]
 }

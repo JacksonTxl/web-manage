@@ -1,4 +1,4 @@
-import { State, withNamespace } from '@/utils/rx-state'
+import { State, withNamespace } from 'rx-state'
 import { sidebarService } from '@/services/sidebar.service'
 import { tabService } from '@/services/tab.service'
 import { Service, ServiceRoute } from 'vue-service-app'

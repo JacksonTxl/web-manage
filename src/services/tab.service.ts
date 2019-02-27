@@ -1,4 +1,4 @@
-import { State, withNamespace, getState } from '@/utils/rx-state'
+import { State, withNamespace, getState } from 'rx-state'
 import { find, findIndex, last } from 'lodash-es'
 import router from '@/router'
 import { ServiceRoute, Service } from 'vue-service-app'

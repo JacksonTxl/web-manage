@@ -1,4 +1,4 @@
-import { withNamespace, getState, State } from '@/utils/rx-state'
+import { withNamespace, getState, State } from 'rx-state'
 import { getCurrentUserInfo, SignInInput, signIn } from '@/api/user'
 import { tap } from 'rxjs/operators'
 import { authService } from './auth.service'

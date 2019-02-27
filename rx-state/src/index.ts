@@ -1,7 +1,7 @@
 import { Subject, Observable, BehaviorSubject } from 'rxjs'
 import { refCount, publish } from 'rxjs/operators'
 
-import { STATE_DEBUG } from '@/constants/config'
+let STATE_DEBUG = true
 
 export type Mutation<T> = (state: T) => T | void
 export type Epic = (stream: Observable<any>) => Observable<any>
@@ -24,7 +24,7 @@ export class State<T> extends BehaviorSubject<T> {
     }
 
     if (STATE_DEBUG) {
-      console.log(`[${this.tag}] mutated ->`, newState, mutation)
+      console.log(`[${this.tag}] mutated ->`, newState)
     }
     this.next(newState)
   }
