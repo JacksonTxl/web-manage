@@ -24,7 +24,7 @@ a$.subscribe(v => {
 getState(a$) // 1
 ```
 
-## rxjs 实现计算状态流
+rxjs 实现计算状态流
 
 ```js
 import { combineLastest } from 'rxjs'
@@ -42,11 +42,35 @@ state$.subscribe(v => {
 
 // 一样可以通过getState获取当前值
 getState(state$) // {todos:[],count:0}
+```
 
+不可变对象
+
+```js
 // 对象型的状态是immutable的 可以直接操作
 todos$.commit(todos => {
   todos.push({ id: 1, title: '3' })
 })
 
 getState(state$) // {todos:[{id:1,title:'3'}],count:0}
+```
+
+创建一步动作流
+
+```js
+import { Action } from 'rx-state'
+import { debounceTime } from 'rxjs/operators'
+
+const clickAction$ = new Action(data$ =>
+  data$.pipe(debounceTime(200)).pipe(
+    tap(() => {
+      console.log('点击触发')
+    })
+  )
+)
+
+// 触发该动作 只会接收5这个值
+clickAction$.dispatch(3)
+clickAction$.dispatch(4)
+clickAction$.dispatch(5)
 ```
