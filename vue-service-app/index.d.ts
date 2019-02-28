@@ -36,23 +36,34 @@ export interface ServiceRouteConfig extends RouteConfig {
   meta?: ServiceRouteConfigMeta
 }
 
-export class Service {
-  beforeEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
-  beforeRouteEnter?(to: ServiceRoute, from: ServiceRoute, next: Function): void
-  beforeRouteUpdate?(to: ServiceRoute, from: ServiceRoute, next: Function): void
-  afterEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
-}
-
 interface RouterConfig {
   base?: string
   routes?: ServiceRouteConfig[]
 }
-export class Router {
-  constructor(options?: RouterConfig)
-  router: VueRouter
-}
+
 export class VueServiceApp {
   static install: PluginFunction<never>
+}
+
+declare module 'vue-service-app' {
+  export class Service {
+    beforeEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
+    beforeRouteEnter?(
+      to: ServiceRoute,
+      from: ServiceRoute,
+      next: Function
+    ): void
+    beforeRouteUpdate?(
+      to: ServiceRoute,
+      from: ServiceRoute,
+      next: Function
+    ): void
+    afterEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
+  }
+  export class Router {
+    constructor(options?: RouterConfig)
+    router: VueRouter
+  }
 }
 
 export default VueServiceApp
