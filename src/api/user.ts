@@ -7,14 +7,15 @@ export interface SendSmsCaptchaInput {
 }
 
 export const sendSmsCaptcha = (data: SendSmsCaptchaInput) =>
-  http.post('/user/send-sms-captcha', data).pipe(ajaxRetry(3, 200))
+  http.post('/user/send-sms-captcha', { params: data }).pipe(ajaxRetry(3, 200))
 
 export interface SignInInput {
   mobile: string
   password: string
 }
 
-export const signIn = (data: SignInInput) => http.post('/user/signin', data)
+export const signIn = (data: SignInInput) =>
+  http.post('/user/signin', { params: data })
 
 export const getCurrentUserInfo = () =>
   http
