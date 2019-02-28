@@ -7,11 +7,12 @@
 * vue-router-multiguard
 
 ```js
-import VueServiceApp, { Router, Service } from 'vue-service-app'
+import VueServiceApp, { Router, RouteGuard } from 'vue-service-app'
 
 Vue.use(VueServiceApp)
 
-class TestService extends Service {
+// 只要类的方法上部署了钩子方法就会执行
+class TestService implements RouteGuard {
   beforeEach(to, from, next) {
     console.log('不论是路由进入前和路由更新都会触发的钩子')
     next()
@@ -31,6 +32,7 @@ class TestService extends Service {
   }
 }
 
+const testService = new TestService()
 /**
  * 导出的router为vue-router实例
  */
@@ -41,7 +43,7 @@ const { router } = new Router({
       name: 'a',
       path: '/',
       // 扩展了guards选项
-      guards: [],
+      guards: [testService],
       // 扩展了query处理选项
       queryOptions: {
         a: { type: Number, default: 99 },

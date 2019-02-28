@@ -10,6 +10,7 @@ const pageDashboard = () => import('@/views/pages/dashboard.vue')
 const pagePlugins = () => import('@/views/pages/plugins.vue')
 const pagePluginsCourse = () => import('@/views/pages/plugins/course.vue')
 const pageTestLlf = () => import('@/views/pages/test/llf.vue')
+const pageTestZlx = () => import('@/views/pages/test/zlx.vue')
 const pageUserLogin = () => import('@/views/pages/user/login.vue')
 
 // service
@@ -40,6 +41,11 @@ const pageRoutes = [{
   path: '/test/llf',
   component: pageTestLlf,
   guards: [llfService]
+}, {
+  name: 'zlx',
+  path: '/test/zlx',
+  component: pageTestZlx,
+  guards: []
 }, {
   name: 'login',
   path: '/user/login',

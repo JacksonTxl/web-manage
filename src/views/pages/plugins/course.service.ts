@@ -1,4 +1,4 @@
-import { Service, ServiceRoute } from 'vue-service-app'
+import { RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, withNamespace } from 'rx-state'
 import { of, forkJoin } from 'rxjs'
 import { tap } from 'rxjs/operators'
@@ -6,7 +6,7 @@ import { sidebarService } from '@/services/sidebar.service'
 import { tabService } from '@/services/tab.service'
 const t = withNamespace('course')
 
-class CourseService extends Service {
+class CourseService implements RouteGuard {
   list$ = new State<any[]>([], t('list'))
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {

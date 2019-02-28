@@ -9,7 +9,7 @@ const log = console.log
 const PAGES_PATH = './src/views/pages/**/*.vue'
 const SERVICES_PATH = './src/views/pages/**/*.service.ts'
 const MODEL_PATH = './model.ejs'
-const ROUTES_PATH = './src/router/routes.js'
+const ROUTES_PATH = './src/router/generate-page-routes.js'
 const WATCH_DIR_PATH = './src/views/pages'
 
 const tplInit = ({ importServiceArray, importArr, pageRoutes }) => {

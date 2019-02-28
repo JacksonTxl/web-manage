@@ -4,7 +4,7 @@ import { refCount, publish } from 'rxjs/operators'
 let STATE_DEBUG = true
 interface SetupOptions {
   debug: boolean
-  onStateChange(value: any, tag: string): void
+  onStateChange(value: any, tag: string, timestamp: number): void
 }
 
 export type Mutation<T> = (state: T) => T | void
@@ -12,7 +12,7 @@ export type Epic = (stream: Observable<any>) => Observable<any>
 
 const setupOptions: SetupOptions = {
   debug: false,
-  onStateChange(value: any, tag: string) {}
+  onStateChange(value: any, tag: string, timestamp: number) {}
 }
 
 export function setup(userOptions: SetupOptions) {
@@ -43,7 +43,7 @@ export class State<T> extends BehaviorSubject<T> {
     }
 
     if (setupOptions.debug) {
-      setupOptions.onStateChange(newState, this.tag)
+      setupOptions.onStateChange(newState, this.tag, new Date().getTime())
     }
     this.next(newState)
   }

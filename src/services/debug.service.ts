@@ -2,7 +2,7 @@ import { Observable } from 'rxjs'
 import { Action } from 'rx-state/src'
 import { bufferTime, tap, filter } from 'rxjs/operators'
 
-class DebugService {
+export class DebugService {
   stateEvent$: Action<any>
   constructor() {
     this.stateEvent$ = new Action(data$ =>

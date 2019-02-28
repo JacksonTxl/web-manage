@@ -41,25 +41,18 @@ interface RouterConfig {
   routes?: ServiceRouteConfig[]
 }
 
+export interface RouteGuard {
+  beforeEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
+  beforeRouteEnter?(to: ServiceRoute, from: ServiceRoute, next: Function): void
+  beforeRouteUpdate?(to: ServiceRoute, from: ServiceRoute, next: Function): void
+  afterEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
+}
+
 export class VueServiceApp {
   static install: PluginFunction<never>
 }
 
 declare module 'vue-service-app' {
-  export class Service {
-    beforeEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
-    beforeRouteEnter?(
-      to: ServiceRoute,
-      from: ServiceRoute,
-      next: Function
-    ): void
-    beforeRouteUpdate?(
-      to: ServiceRoute,
-      from: ServiceRoute,
-      next: Function
-    ): void
-    afterEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
-  }
   export class Router {
     constructor(options?: RouterConfig)
     router: VueRouter

@@ -2,7 +2,7 @@ import { withNamespace, getState, State } from 'rx-state'
 import { getCurrentUserInfo, SignInInput, signIn } from '@/api/user'
 import { tap } from 'rxjs/operators'
 import { authService } from './auth.service'
-import { ServiceRoute, Service } from 'vue-service-app'
+import { ServiceRoute, RouteGuard } from 'vue-service-app'
 const ns = withNamespace('user')
 
 interface User {
@@ -10,7 +10,7 @@ interface User {
   name: string
 }
 
-export class UserServie extends Service {
+export class UserServie implements RouteGuard {
   user$ = new State<User>({}, ns('user'))
   menu$ = new State<string[]>([], ns('menu'))
   role$ = new State<object>({}, ns('role'))

@@ -1,9 +1,9 @@
 import { State, withNamespace } from 'rx-state'
 import { sidebarService } from '@/services/sidebar.service'
 import { tabService } from '@/services/tab.service'
-import { Service, ServiceRoute } from 'vue-service-app'
+import { ServiceRoute, RouteGuard } from 'vue-service-app'
 const t = withNamespace('dashboard')
-class DashboardService extends Service {
+class DashboardService implements RouteGuard {
   list$ = new State<any[]>([], t('list'))
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     console.log('dashboard service')

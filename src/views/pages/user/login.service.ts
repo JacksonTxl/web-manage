@@ -1,5 +1,3 @@
-import { Service } from 'vue-service-app'
-
-class LoginService extends Service {}
+class LoginService {}
 
 export const loginService = new LoginService()

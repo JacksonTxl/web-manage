@@ -1,7 +1,7 @@
 import { State, withNamespace, getState } from 'rx-state'
 import { find, findIndex, last } from 'lodash-es'
 import router from '@/router'
-import { ServiceRoute, Service } from 'vue-service-app'
+import { ServiceRoute, RouteGuard } from 'vue-service-app'
 
 const t = withNamespace('tab')
 interface Tab {
@@ -10,7 +10,7 @@ interface Tab {
   lastUrl: string
 }
 
-class TabService extends Service {
+class TabService implements RouteGuard {
   tabs$ = new State<Tab[]>([], t('tabs'))
   activeKey$ = new State<string>('', t('activeKey'))
   ADD_TAB(tab: Tab) {

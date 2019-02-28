@@ -1,8 +1,8 @@
 import { State, withNamespace, getState } from 'rx-state'
 import Cookie from 'js-cookie'
-import { Service, ServiceRoute } from 'vue-service-app'
+import { RouteGuard } from 'vue-service-app'
 const ns = withNamespace('sidebar')
-class SidebarService extends Service {
+class SidebarService implements RouteGuard {
   selectedKeys$ = new State<string[]>([], ns('selectedKeys'))
   openKeys$ = new State<string[]>([], ns('openKeys'))
   collapsed$ = new State<Boolean>(
@@ -11,7 +11,6 @@ class SidebarService extends Service {
   )
 
   constructor() {
-    super()
     this.collapsed$.subscribe(v => {
       Cookie.set('collapsed', v ? '1' : '')
     })

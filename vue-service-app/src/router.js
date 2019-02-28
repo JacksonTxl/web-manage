@@ -1,7 +1,6 @@
 import VueRouter from 'vue-router'
 import { routeGuardsMap, routeQueryOptionsMap } from './route-maps'
 import multiguard from 'vue-router-multiguard'
-import { Service } from './service'
 
 const syncRouteGuards = guards => (to, from) => {
   guards.forEach(fn => {

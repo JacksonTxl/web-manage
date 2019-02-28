@@ -16,7 +16,10 @@ Vue.use(VueRx)
 setup({
   debug: IS_DEV,
   onStateChange: (value, tag) => {
-    debugService.stateEvent$.dispatch({ tag, value })
+    debugService.stateEvent$.dispatch({
+      tag,
+      value
+    })
   }
 })
 
