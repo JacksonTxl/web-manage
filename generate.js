@@ -75,7 +75,7 @@ const createRoute = () => {
 
     const routeService = serviceMap[parsed.entry_dash]
     const route = {
-      name: parsed.name,
+      name: parsed.entry_dash,
       parent: hasParent ? parsed.dir_dash : '',
       path: hasParent ? parsed.name : '/' + parsed.entry,
       guards: routeService ? [routeService] : [],

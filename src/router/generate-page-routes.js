@@ -30,24 +30,24 @@ const pageRoutes = [{
   component: pagePlugins,
   guards: [pluginsService],
   children: [{
-    name: 'course',
+    name: 'plugins-course',
     path: 'course',
     component: pagePluginsCourse,
     guards: [courseService]
   }
   ]
 }, {
-  name: 'llf',
+  name: 'test-llf',
   path: '/test/llf',
   component: pageTestLlf,
   guards: [llfService]
 }, {
-  name: 'zlx',
+  name: 'test-zlx',
   path: '/test/zlx',
   component: pageTestZlx,
   guards: []
 }, {
-  name: 'login',
+  name: 'user-login',
   path: '/user/login',
   component: pageUserLogin,
   guards: [loginService]
