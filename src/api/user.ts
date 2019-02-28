@@ -18,6 +18,8 @@ export const signIn = (data: SignInInput) => http.post('/user/signin', data)
 
 export const getCurrentUserInfo = () =>
   http
-    .get('/user/current')
+    .post('/user/current', {
+      mock: { status: 200 }
+    })
     .pipe(timeout(2000))
     .pipe(ajaxRetry(3, 200))

@@ -12,5 +12,5 @@ export interface ImgFilterOptions {
 export interface StResponse {
   code: number | string
   data: any
-  message: string
+  msg: string
 }

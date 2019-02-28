@@ -1,8 +1,7 @@
 import { State, withNamespace, getState } from 'rx-state'
 import Cookie from 'js-cookie'
-import { RouteGuard } from 'vue-service-app'
 const ns = withNamespace('sidebar')
-class SidebarService implements RouteGuard {
+class SidebarService {
   selectedKeys$ = new State<string[]>([], ns('selectedKeys'))
   openKeys$ = new State<string[]>([], ns('openKeys'))
   collapsed$ = new State<Boolean>(
