@@ -2,14 +2,15 @@
 const globby = require('globby')
 const fse = require('fs-extra')
 const _ = require('lodash')
+const chokidar = require('chokidar')
+const chalk = require('chalk')
+const log = console.log
 
 const PAGES_PATH = './src/views/pages/**/*.vue'
 const SERVICES_PATH = './src/views/pages/**/*.service.ts'
 const MODEL_PATH = './model.ejs'
-const ROUTES_PATH = './src/router/auto-generated-routes.js'
-
-const pages = globby.sync(PAGES_PATH).filter(item => !item.includes('#'))
-const services = globby.sync(SERVICES_PATH)
+const ROUTES_PATH = './src/router/routes.js'
+const WATCH_DIR_PATH = './src/views/pages'
 
 const tplInit = ({ importServiceArray, importArr, pageRoutes }) => {
   const tpl = fse.readFileSync(MODEL_PATH).toString()
@@ -58,7 +59,9 @@ const getPageService = (services) => {
   return { importServiceArray, serviceMap }
 }
 // const serviceMap = {}
-const createRoute = (pages) => {
+const createRoute = () => {
+  const pages = globby.sync(PAGES_PATH).filter(item => !item.includes('#'))
+  const services = globby.sync(SERVICES_PATH)
   const importArr = []
   const pageMap = {}
   const pageRoutes = []
@@ -93,9 +96,29 @@ const createRoute = (pages) => {
   })
   return { importServiceArray, importArr, pageRoutes }
 }
+const init = (path, op) => {
+  if (path.includes('#')) return
+  const tpl = tplInit(createRoute())
+  fse.outputFileSync(ROUTES_PATH, tpl, 'utf8')
+  if (path.includes('ts')) {
+    log(chalk.bgYellow(chalk.keyword('black')(op)), chalk.blue.underline.bold(path), 'update service')
+  } else {
+    log(chalk.yellow(op), chalk.blue.underline.bold(path), 'update routes')
+  }
+}
 try {
-  fse.outputFileSync(ROUTES_PATH, tplInit(createRoute(pages)), 'utf8')
-  console.log(`create routes success!!!`, ROUTES_PATH)
+  fse.outputFileSync(ROUTES_PATH, tplInit(createRoute()), 'utf8')
+  chokidar.watch(WATCH_DIR_PATH)
+    .on('ready', () => { log(chalk.green('create routes success') + chalk.red('!!!')) })
+    .on('add', (path) => {
+      init(path, '  add  ')
+    })
+    .on('unlink', (path) => {
+      init(path, 'remove file')
+    })
+    .on('unlinkDir', (path) => {
+      init(path, 'remove Dir')
+    })
 } catch (error) {
   console.log(error)
 }

@@ -8,8 +8,9 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --ext .js,.ts,.vue ./src",
     "inspect": "vue inspect --mode development --verbose > inspect.js",
+    "gr": "node ./generate.js",
     "push:vsa": "git subtree push --prefix=vue-service-app git@gitlab.styd.cn:fe/packages/vue-service-app.git master",
-    "push:rx":"git subtree push --prefix=rx-state git@gitlab.styd.cn:fe/packages/rx-state.git master"
+    "push:rx": "git subtree push --prefix=rx-state git@gitlab.styd.cn:fe/packages/rx-state.git master"
   },
   "dependencies": {
     "@types/lodash-es": "^4.17.2",
@@ -43,6 +44,10 @@
     "less-loader": "^4.1.0",
     "lint-staged": "^8.1.0",
     "rxact": "^1.0.0-beta.0",
+    "chalk": "^2.4.2",
+    "chokidar": "^2.1.2",
+    "fs-extra": "^7.0.1",
+    "globby": "^9.0.0",
     "style-resources-loader": "^1.2.1",
     "ts-loader": "^5.3.3",
     "typescript": "^3.2.4",
