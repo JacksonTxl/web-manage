@@ -2,9 +2,28 @@ import { Subject, Observable, BehaviorSubject } from 'rxjs'
 import { refCount, publish } from 'rxjs/operators'
 
 let STATE_DEBUG = true
+interface SetupOptions {
+  debug: boolean
+  onStateChange(value: any, tag: string): void
+}
 
 export type Mutation<T> = (state: T) => T | void
 export type Epic = (stream: Observable<any>) => Observable<any>
+
+const setupOptions: SetupOptions = {
+  debug: false,
+  onStateChange(value: any, tag: string) {}
+}
+
+export function setup(userOptions: SetupOptions) {
+  setupOptions.debug = userOptions.debug || false
+  if (
+    userOptions.onStateChange &&
+    typeof userOptions.onStateChange === 'function'
+  ) {
+    setupOptions.onStateChange = userOptions.onStateChange
+  }
+}
 
 let stateIndex = 1
 export class State<T> extends BehaviorSubject<T> {
@@ -23,8 +42,8 @@ export class State<T> extends BehaviorSubject<T> {
       newState = returned
     }
 
-    if (STATE_DEBUG) {
-      console.log(`[${this.tag}] mutated ->`, newState)
+    if (setupOptions.debug) {
+      setupOptions.onStateChange(newState, this.tag)
     }
     this.next(newState)
   }

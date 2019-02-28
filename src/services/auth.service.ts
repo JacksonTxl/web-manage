@@ -1,5 +1,6 @@
 import Cookie from 'js-cookie'
 import { Service, ServiceRoute } from 'vue-service-app'
+
 const TOKEN_NAME = 'saas-token'
 export class AuthService extends Service {
   token: string | undefined = this.getAuthToken()
