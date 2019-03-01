@@ -1,10 +1,11 @@
-import { Observable, queueScheduler } from 'rxjs'
+import { Observable } from 'rxjs'
 import { ajax, AjaxError } from 'rxjs/ajax'
 import { catchError, pluck } from 'rxjs/operators'
 import { API_BASE, API_BASE_MOCK } from '@/constants/config'
 import { notification } from 'ant-design-vue'
 import { authService } from './auth.service'
 import { StResponse } from '@/types/app'
+import router from '@/router'
 import qs from 'qs'
 
 interface MockOptions {
@@ -17,8 +18,17 @@ interface Params {
   [key: string]: any
 }
 interface RequestOptions {
+  /**
+   * mock参数
+   */
   mock?: MockOptions
+  /**
+   * get 请求query参数
+   */
   query?: Query
+  /**
+   * post put 请求bo           dy参数
+   */
   params?: Params
 }
 
@@ -95,12 +105,9 @@ export class HttpService {
           case 401:
             notification.warn({
               message: serverResponse.msg,
-              description: err.message,
-              duration: 100,
-              onClose() {
-                location.href = '/user/login'
-              }
+              description: err.message
             })
+            router.push({ name: 'user-login' })
             break
           case 403:
             notification.warn({
