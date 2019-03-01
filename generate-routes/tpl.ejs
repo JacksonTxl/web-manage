@@ -1,3 +1,6 @@
+/**
+* this js file is auto generated, you should not modifyed this file
+**/
 <% for(var i = 0; i < importServiceArray.length; i++){%>
 import { <%- importServiceArray[i].service%> } from '<%- importServiceArray[i].servicePath%>'<% }; %>
 <% for(var i = 0; i < importArr.length; i++){%>
@@ -33,3 +36,5 @@ const pageRoutes = [<% for(var i = 0; i < pageRoutes.length; i++) {%>{
   ]<%};%>
 }<%if(i !== pageRoutes.length-1){%>, <%}%><% }; %>
 ]
+
+export default pageRoutes

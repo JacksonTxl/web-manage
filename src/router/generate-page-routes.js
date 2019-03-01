@@ -1,3 +1,6 @@
+/**
+* this js file is auto generated, you should not modifyed this file
+**/
 
 import { dashboardService } from 'src/views/pages/dashboard.service.ts'
 import { pluginsService } from 'src/views/pages/plugins.service.ts'
@@ -53,3 +56,5 @@ const pageRoutes = [{
   guards: [loginService]
 }
 ]
+
+export default pageRoutes
