@@ -1,5 +1,5 @@
 <template>
-  <layout-default>
+  <div>
     Dashboard
     <li>
       <router-link :to="{query:{a:'1'}}">测试a1</router-link>
@@ -7,13 +7,14 @@
     <li>
       <router-link :to="{query:{a:'2'}}">测试a2</router-link>
     </li>
-    <router-link :to="{name:'plugins-course'}">course</router-link>
+    <router-link :to="{name:'test-llf'}">test-llf</router-link>
     {{list}}
+    <a-input placeholder='haha'></a-input>
     <modal-link tag='a-button'
       :to="{name:'test'}">
       hello
     </modal-link>
-  </layout-default>
+  </div>
 </template>
 
 <script>

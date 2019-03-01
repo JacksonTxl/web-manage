@@ -8,6 +8,7 @@ class DashboardService implements RouteGuard {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     console.log('dashboard service')
     sidebarService.SET_SELECTED_KEYS(['1'])
+    sidebarService.SET_OPEN_KEYS([])
     tabService.init(`首页`, to)
     next()
   }

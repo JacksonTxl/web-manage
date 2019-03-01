@@ -1,9 +1,7 @@
 <template>
   <a-locale-provider :locale='antdLocaleMessages'>
-    <div id="app">
-      <router-view></router-view>
-      <modal-router-view></modal-router-view>
-    </div>
+    <router-view></router-view>
+    <modal-router-view></modal-router-view>
   </a-locale-provider>
 </template>
 
