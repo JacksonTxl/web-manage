@@ -5,7 +5,7 @@
     <a-form :form='form'>
       <a-tabs>
         <a-tab-pane v-model='activeLoginMode'
-          tab='账号密码登陆'
+          :tab="t('login.pwdSignIn')"
           key='tab1'>
           <a-form-item>
             <a-input size="large"
@@ -37,7 +37,7 @@
           </a-form-item>
         </a-tab-pane>
 
-        <a-tab-pane tab='手机号登陆'
+        <a-tab-pane :tab="t('login.mobileSignIn')"
           key='tab2'>
           <a-form-item>
             <a-input size="large"
@@ -76,7 +76,7 @@
       </a-tabs>
 
       <a-form-item>
-        <a-checkbox v-decorator="['rememberMe']">自动登陆</a-checkbox>
+        <a-checkbox v-decorator="['rememberMe']">{{t('login.agree')}}</a-checkbox>
         <router-link :to="{ name: 'recover', params: { user: 'aaa'} }"
           class="forge-password"
           style="float: right;">忘记密码</router-link>
@@ -110,12 +110,21 @@
       </div>
 
     </a-form>
+    <a-select :defaultValue="locale"
+      @change="onToggle">
+      <a-select-option value="zh_CN">zh_CN</a-select-option>
+      <a-select-option value="en_US">en_US</a-select-option>
+    </a-select>
+    <a-time-picker></a-time-picker>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import { userService } from '@/services/user.service'
+import { localeService } from '@/services/locale.service'
+
+const t = localeService.translate.bind(localeService)
 
 export default {
   data() {
@@ -127,7 +136,13 @@ export default {
       }
     }
   },
+  subscriptions() {
+    return {
+      locale: localeService.locale$
+    }
+  },
   methods: {
+    t,
     onSubmit() {
       this.form.validateFields((err, values) => {
         if (!err) {
@@ -143,6 +158,9 @@ export default {
         state.loginType = 1
       }
       callback()
+    },
+    onToggle(value) {
+      localeService.SET_LOCALE(value)
     }
   }
 }

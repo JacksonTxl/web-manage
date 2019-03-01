@@ -19,8 +19,6 @@ export const signIn = (data: SignInInput) =>
 
 export const getCurrentUserInfo = () =>
   http
-    .post('/user/current', {
-      // mock: { status: 200 }
-    })
+    .post('/user/current')
     .pipe(timeout(2000))
     .pipe(ajaxRetry(3, 200))
