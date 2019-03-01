@@ -1,13 +1,13 @@
 import { Observable } from 'rxjs'
 import { Action } from 'rx-state/src'
-import { bufferTime, tap, filter } from 'rxjs/operators'
+import { bufferTime, tap, filter, throttleTime } from 'rxjs/operators'
 
 export class DebugService {
   stateEvent$: Action<any>
   constructor() {
     this.stateEvent$ = new Action(data$ =>
       data$
-        .pipe(bufferTime(200))
+        .pipe(throttleTime(200))
         .pipe(filter(res => !!res.length))
         .pipe(
           tap(mutatedStates => {

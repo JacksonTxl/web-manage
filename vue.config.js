@@ -29,7 +29,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/_api': {
-        target: 'http://oaapi.dev.styd.cn',
+        target: 'http://saas-dev.styd.cn',
         changeOrigin: true,
         pathRewrite: {
           '^/_api/': '/'

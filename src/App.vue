@@ -1,5 +1,5 @@
 <template>
-  <a-locale-provider :locale="zh_CN">
+  <a-locale-provider :locale='antdLocaleMessages'>
     <div id="app">
       <router-view></router-view>
       <modal-router-view></modal-router-view>
@@ -7,16 +7,15 @@
   </a-locale-provider>
 </template>
 
-<script lang='ts'>
-import Vue from 'vue'
+<script>
+import { localeService } from '@/services/locale.service'
 // @ts-ignore
-import zh_CN from 'ant-design-vue/lib/locale-provider/zh_CN'
-export default Vue.extend({
+export default {
   name: 'app',
-  data() {
+  subscriptions() {
     return {
-      zh_CN
+      antdLocaleMessages: localeService.antdLocaleMessages$
     }
   }
-})
+}
 </script>

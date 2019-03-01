@@ -1,20 +1,14 @@
 /**
 * this js file is auto generated, you should not modifyed this file
 **/
+import { dashboardService } from '@/views/pages/dashboard.service.ts'
+import { llfService } from '@/views/pages/test/llf.service.ts'
+import { loginService } from '@/views/pages/user/login.service.ts'
 
-import { dashboardService } from 'src/views/pages/dashboard.service.ts'
-import { pluginsService } from 'src/views/pages/plugins.service.ts'
-import { courseService } from 'src/views/pages/plugins/course.service.ts'
-import { llfService } from 'src/views/pages/test/llf.service.ts'
-import { loginService } from 'src/views/pages/user/login.service.ts'
-
-const pageCViewsPages404 = () => import('src/views/pages/404.vue')
-const pageCViewsPagesDashboard = () => import('src/views/pages/dashboard.vue')
-const pageCViewsPagesPlugins = () => import('src/views/pages/plugins.vue')
-const pageCViewsPagesPluginsCourse = () => import('src/views/pages/plugins/course.vue')
-const pageCViewsPagesTestLlf = () => import('src/views/pages/test/llf.vue')
-const pageCViewsPagesTestZlx = () => import('src/views/pages/test/zlx.vue')
-const pageCViewsPagesUserLogin = () => import('src/views/pages/user/login.vue')
+const page404 = () => import('@/views/pages/404.vue')
+const pageDashboard = () => import('@/views/pages/dashboard.vue')
+const pageTestLlf = () => import('@/views/pages/test/llf.vue')
+const pageUserLogin = () => import('@/views/pages/user/login.vue')
 
 // service
 const pageRoutes = [{
@@ -28,31 +22,14 @@ const pageRoutes = [{
   component: pageCViewsPagesDashboard,
   guards: [dashboardService]
 }, {
-  name: 'c-views-pages-plugins',
-  path: '/c/views/pages/plugins',
-  component: pageCViewsPagesPlugins,
-  guards: [pluginsService],
-  children: [{
-    name: 'c-views-pages-plugins-course',
-    path: 'course',
-    component: pageCViewsPagesPluginsCourse,
-    guards: [courseService]
-  }
-  ]
-}, {
-  name: 'c-views-pages-test-llf',
-  path: '/c/views/pages/test/llf',
-  component: pageCViewsPagesTestLlf,
+  name: 'test-llf',
+  path: '/test/llf',
+  component: pageTestLlf,
   guards: [llfService]
 }, {
-  name: 'c-views-pages-test-zlx',
-  path: '/c/views/pages/test/zlx',
-  component: pageCViewsPagesTestZlx,
-  guards: []
-}, {
-  name: 'c-views-pages-user-login',
-  path: '/c/views/pages/user/login',
-  component: pageCViewsPagesUserLogin,
+  name: 'user-login',
+  path: '/user/login',
+  component: pageUserLogin,
   guards: [loginService]
 }
 ]
