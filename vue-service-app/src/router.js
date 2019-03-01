@@ -82,21 +82,17 @@ export class Router {
       routeQueryOptionsMap.set(route.name, route.queryOptions)
       if (route.guards.length) {
         const beforeEachMiddwares = route.guards
-
-          .filter(s => s.beforeEach)
+          .filter(s => s && s.beforeEach)
           .map(s => s.beforeEach.bind(s))
         const beforeRouteEnterMiddlewares = route.guards
-
-          .filter(s => s.beforeRouteEnter)
+          .filter(s => s && s.beforeRouteEnter)
           .map(s => s.beforeRouteEnter.bind(s))
         const beforeRouteUpdateMiddlewares = route.guards
-
-          .filter(s => s.beforeRouteUpdate)
+          .filter(s => s && s.beforeRouteUpdate)
           .map(s => s.beforeRouteUpdate.bind(s))
 
         const afterEachMiddlewares = route.guards
-
-          .filter(s => s.afterEach)
+          .filter(s => s && s.afterEach)
           .map(s => s.afterEach.bind(s))
 
         routeGuardsMap.set(route.name, {
