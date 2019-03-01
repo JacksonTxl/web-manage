@@ -120,9 +120,9 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import { userService } from '@/services/user.service'
 import { localeService } from '@/services/locale.service'
+import { loginService } from '@/views/pages/user/login.service'
 
 const t = localeService.translate.bind(localeService)
 
