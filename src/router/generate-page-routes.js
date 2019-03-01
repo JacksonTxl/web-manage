@@ -1,6 +1,7 @@
 /**
 * this js file is auto generated, you should not modifyed this file
 **/
+
 import { dashboardService } from '@/views/pages/dashboard.service.ts'
 import { llfService } from '@/views/pages/test/llf.service.ts'
 import { loginService } from '@/views/pages/user/login.service.ts'
@@ -12,14 +13,14 @@ const pageUserLogin = () => import('@/views/pages/user/login.vue')
 
 // service
 const pageRoutes = [{
-  name: 'c-views-pages-404',
-  path: '/c/views/pages/404',
-  component: pageCViewsPages404,
+  name: '404',
+  path: '/404',
+  component: page404,
   guards: []
 }, {
-  name: 'c-views-pages-dashboard',
-  path: '/c/views/pages/dashboard',
-  component: pageCViewsPagesDashboard,
+  name: 'dashboard',
+  path: '/dashboard',
+  component: pageDashboard,
   guards: [dashboardService]
 }, {
   name: 'test-llf',

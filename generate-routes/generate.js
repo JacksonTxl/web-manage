@@ -6,12 +6,11 @@ const chokidar = require('chokidar')
 const chalk = require('chalk')
 const log = console.log
 
-const PAGES_PATH = 'src/views/pages/**/*.vue'
-const SERVICES_PATH = 'src/views/pages/**/*.service.ts'
-const MODEL_PATH = 'generate-routes/tpl.ejs'
-const ROUTES_PATH = 'src/router/generate-page-routes.js'
-const WATCH_DIR_PATH = 'src/views/pages'
-const normalize = require('normalize-path')
+const PAGES_PATH = './src/views/pages/**/*.vue'
+const SERVICES_PATH = './src/views/pages/**/*.service.ts'
+const MODEL_PATH = './generate-routes/tpl.ejs'
+const ROUTES_PATH = './src/router/generate-page-routes.js'
+const WATCH_DIR_PATH = './src/views/pages'
 
 const tplInit = ({ importServiceArray, importArr, pageRoutes }) => {
   const tpl = fse.readFileSync(MODEL_PATH).toString()
