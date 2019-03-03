@@ -1,6 +1,6 @@
 import { sendSmsCaptcha, SendSmsCaptchaInput } from '@/api/user'
 import { getCaptchaPhone, CaptchaPhoneInput } from '@/api/captcha'
-import { State } from 'rx-state/src'
+import { State } from 'rx-state'
 class LoginService {
   captcha$ = new State<string>('')
   sendSmsCaptcha(data: SendSmsCaptchaInput) {

@@ -43,7 +43,7 @@
         <a-layout-content>
           <a-tabs type='editable-card'
             hideAdd
-            :defaultActiveKey="activeKey"
+            :activeKey="activeKey"
             @edit='onTabEdit'
             @change="onTabChange">
             <a-tab-pane v-for="tabItem in tabs"
@@ -90,6 +90,9 @@ export default {
         tabService.removeTab(tabKey)
       }
     }
+  },
+  created() {
+    console.log('layout default created')
   }
 }
 </script>

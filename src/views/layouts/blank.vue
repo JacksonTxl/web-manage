@@ -1,3 +1,5 @@
 <template>
-  <router-view></router-view>
+  <div>
+    this is blank
+  </div>
 </template>

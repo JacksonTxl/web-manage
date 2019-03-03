@@ -14,10 +14,10 @@ Vue.use(VueRx)
 
 setup({
   debug: IS_DEV,
-  onStateChange: (value, tag) => {
+  onStateChange: (stateSnapshot, tag) => {
     debugService.stateEvent$.dispatch({
       tag,
-      value
+      stateSnapshot
     })
   }
 })

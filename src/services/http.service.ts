@@ -7,7 +7,8 @@ import { authService } from './auth.service'
 import { StResponse } from '@/types/app'
 import router from '@/router'
 import qs from 'qs'
-
+import { localeService } from './locale.service'
+const t = localeService.translate.bind(localeService)
 interface MockOptions {
   status?: number
 }
@@ -99,37 +100,37 @@ export class HttpService {
           case 400:
             notification.warn({
               message: serverResponse.msg,
-              description: err.message
+              description: t('http.400')
             })
             break
           case 401:
             notification.warn({
               message: serverResponse.msg,
-              description: err.message
+              description: t('http.401')
             })
             router.push({ name: 'user-login' })
             break
           case 403:
             notification.warn({
               message: serverResponse.msg,
-              description: err.message
+              description: t('http.403')
             })
             break
           case 404:
             notification.error({
-              message: '请求的服务不存在',
+              message: t('http.404'),
               description: err.message
             })
             break
           case 500:
             notification.error({
-              message: '服务器错误',
+              message: t('http.500'),
               description: err.message
             })
             break
           default:
             notification.error({
-              message: '未知错误',
+              message: t('http.other'),
               description: err.message
             })
             break
