@@ -14,7 +14,7 @@ export default {
     other: 'Unknown Error'
   },
   title: {
-    login: 'Login',
+    'user-login': 'Login',
     404: 'Page Not Found',
     dashboard: 'dashboard'
   }

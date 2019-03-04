@@ -1,14 +1,15 @@
 <template>
-  <div>
-    <list-loader></list-loader>
+  <div class="page-loader-container">
+    <div class="loader">
+      <div class="inner one"></div>
+      <div class="inner two"></div>
+      <div class="inner three"></div>
+    </div>
   </div>
 </template>
 
 <script>
-import { ListLoader } from 'vue-content-loader'
 export default {
-  components: {
-    ListLoader
-  }
+  components: {}
 }
 </script>
