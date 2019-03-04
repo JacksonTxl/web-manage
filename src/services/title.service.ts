@@ -4,10 +4,12 @@ import { State, withNamespace } from 'rx-state/src'
 import { combineLatest } from 'rxjs'
 
 const ns = withNamespace('title')
+const t = localeService.translate.bind(localeService)
+
 class TitleService implements RouteGuard {
-  titleKey$ = new State<string>('', ns('title'))
+  titleKey$ = new State<string>('title.default', ns('title'))
   title$ = combineLatest(this.titleKey$, localeService.locale$, titleKey => {
-    const title = localeService.translate(titleKey)
+    const title = t(titleKey)
     return title
   })
   constructor() {
@@ -15,7 +17,8 @@ class TitleService implements RouteGuard {
       document.title = `saas-${title}`
     })
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
+  // 只在路由切换时更新title
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
     this.titleKey$.commit(() => to.meta.title)
     next()
   }

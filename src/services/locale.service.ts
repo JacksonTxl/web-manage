@@ -13,7 +13,7 @@ import { get } from 'lodash-es'
 import { Observable } from 'rxjs'
 
 type Locale = 'zh_CN' | 'en_US'
-const ns = withNamespace('locale')
+const ns = withNamespace('localeService')
 class LocaleService {
   antdLocales = {
     zh_CN: AntdLocaleZhCN,

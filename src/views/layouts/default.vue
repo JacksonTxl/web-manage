@@ -47,7 +47,7 @@
             @edit='onTabEdit'
             @change="onTabChange">
             <a-tab-pane v-for="tabItem in tabs"
-              :closabe='canCloseTab'
+              :closable='canCloseTab'
               :key="tabItem.key"
               :tab="$t(tabItem.name)">
             </a-tab-pane>

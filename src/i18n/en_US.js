@@ -14,6 +14,7 @@ export default {
     other: 'Unknown Error'
   },
   title: {
+    'default': 'advanced Business management',
     'user-login': 'Login',
     404: 'Page Not Found',
     dashboard: 'dashboard',

@@ -22,7 +22,7 @@ class TabService implements RouteGuard {
   canCloseTab$ = this.tabs$.pipe(map(tabs => tabs.length > 1))
   private ADD_TAB(tab: Tab) {
     this.tabs$.commit(tabs => {
-      tabs.push(tab)
+      tabs && tabs.push(tab)
     })
   }
   private UPDATE_TAB(tab: Tab) {
@@ -37,7 +37,7 @@ class TabService implements RouteGuard {
   private REMOVE_TAB(key: string) {
     this.tabs$.commit(tabs => {
       const tabIndex = findIndex(tabs, { key })
-      tabs.splice(tabIndex, 1)
+      tabs && tabs.splice(tabIndex, 1)
     })
   }
   private SET_ACTIVE_KEY(key: string) {

@@ -55,7 +55,7 @@ walk(routes, route => {
     route.name !== 'user-login' &&
     route.name !== '404'
   ) {
-    unshiftGuards.push(tabService)
+    unshiftGuards.push(authService, tabService)
   }
 
   switch (route.name) {
