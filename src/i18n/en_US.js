@@ -16,6 +16,7 @@ export default {
   title: {
     'user-login': 'Login',
     404: 'Page Not Found',
-    dashboard: 'dashboard'
+    dashboard: 'dashboard',
+    'test-llf': 'test-llf'
   }
 }

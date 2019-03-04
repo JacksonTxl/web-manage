@@ -15,6 +15,7 @@ export default {
   title: {
     'user-login': '登陆',
     404: '页面未找到',
-    dashboard: '仪表盘'
+    dashboard: '仪表盘',
+    'test-llf': 'llf标题'
   }
 }

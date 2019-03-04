@@ -8,6 +8,7 @@ import { forEach } from 'lodash-es'
 import { userService } from '@/services/user.service'
 import { tabService } from '@/services/tab.service'
 import { titleService } from '@/services/title.service'
+import { localeService } from '@/services/locale.service'
 
 const routes: ServiceRouteConfig[] = [
   {
@@ -54,7 +55,7 @@ walk(routes, route => {
     route.name !== 'user-login' &&
     route.name !== '404'
   ) {
-    unshiftGuards.push(authService, tabService)
+    unshiftGuards.push(tabService)
   }
 
   switch (route.name) {
