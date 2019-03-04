@@ -47,8 +47,9 @@
             @edit='onTabEdit'
             @change="onTabChange">
             <a-tab-pane v-for="tabItem in tabs"
+              :closable='canCloseTab'
               :key="tabItem.key"
-              :tab="tabItem.name">
+              :tab="$t(tabItem.name)">
             </a-tab-pane>
           </a-tabs>
           <router-view></router-view>
@@ -64,7 +65,6 @@ import { userService } from '@/services/user.service'
 import { sidebarService } from '@/services/sidebar.service'
 import { tabService } from '@/services/tab.service'
 import { find } from 'lodash-es'
-
 export default {
   subscriptions() {
     return {
@@ -74,7 +74,8 @@ export default {
       collapsed: sidebarService.collapsed$,
 
       tabs: tabService.tabs$,
-      activeKey: tabService.activeKey$
+      activeKey: tabService.activeKey$,
+      canCloseTab: tabService.canCloseTab$
     }
   },
   methods: {

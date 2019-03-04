@@ -1,8 +1,10 @@
 import { State, withNamespace, getState } from 'rx-state'
-import { find, findIndex, last } from 'lodash-es'
+import { find, findIndex, last, clone } from 'lodash-es'
 import router from '@/router'
 import { ServiceRoute, RouteGuard } from 'vue-service-app'
 import { localeService } from './locale.service'
+import { combineLatest } from 'rxjs'
+import { map } from 'rxjs/operators'
 
 const ns = withNamespace('tab')
 interface Tab {
@@ -14,35 +16,40 @@ interface Tab {
 class TabService implements RouteGuard {
   tabs$ = new State<Tab[]>([], ns('tabs'))
   activeKey$ = new State<string>('', ns('activeKey'))
-  ADD_TAB(tab: Tab) {
+  activeTab$ = combineLatest(this.tabs$, this.activeKey$, (tabs, activeKey) =>
+    find(tabs, activeKey)
+  )
+  canCloseTab$ = this.tabs$.pipe(map(tabs => tabs.length > 1))
+  private ADD_TAB(tab: Tab) {
     this.tabs$.commit(tabs => {
-      tabs.push(tab)
+      tabs && tabs.push(tab)
     })
   }
-  UPDATE_LAST_URL(key: string, lastUrl: string) {
+  private UPDATE_TAB(tab: Tab) {
     this.tabs$.commit(tabs => {
-      const findedTab = find(tabs, { key: key })
+      const findedTab = find(tabs, { key: tab.key })
       if (findedTab) {
-        findedTab.lastUrl = lastUrl
+        findedTab.name = tab.name
+        findedTab.lastUrl = tab.lastUrl
       }
     })
   }
-  REMOVE_TAB(key: string) {
+  private REMOVE_TAB(key: string) {
     this.tabs$.commit(tabs => {
       const tabIndex = findIndex(tabs, { key })
-      tabs.splice(tabIndex, 1)
+      tabs && tabs.splice(tabIndex, 1)
     })
   }
-  SET_ACTIVE_KEY(key: string) {
+  private SET_ACTIVE_KEY(key: string) {
     this.activeKey$.commit(() => key)
   }
-  init(tab: Tab) {
+  make(tab: Tab) {
     const tabs = getState(this.tabs$)
     const finedTab = find(tabs, { key: tab.key })
     if (!finedTab) {
       this.ADD_TAB(tab)
     } else {
-      this.UPDATE_LAST_URL(tab.key, tab.lastUrl)
+      this.UPDATE_TAB(tab)
     }
     this.SET_ACTIVE_KEY(tab.key)
   }
@@ -56,13 +63,12 @@ class TabService implements RouteGuard {
     }
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    const tabName = localeService.translate(to.meta.title)
-    const tabKey = to.name
-    const tab = { name: tabName, key: tabKey, lastUrl: to.fullPath }
-    this.init(tab)
-    setTimeout(() => {
-      next()
-    }, 1000)
+    this.make({
+      name: to.meta.title,
+      key: to.name,
+      lastUrl: to.fullPath
+    })
+    next()
   }
 }
 

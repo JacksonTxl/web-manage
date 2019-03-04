@@ -1,24 +1,34 @@
 import { http } from '@/services/http.service'
-import { ajaxRetry } from '@/operators/ajax-retry'
-import { timeout } from 'rxjs/operators'
 
-export interface SendSmsCaptchaInput {
-  mobile: string
-}
-
-export const sendSmsCaptcha = (data: SendSmsCaptchaInput) =>
-  http.post('/user/send-sms-captcha', { params: data }).pipe(ajaxRetry(3, 200))
-
-export interface SignInInput {
-  mobile: string
+export interface LoginAccountInput {
+  /**
+   * 商户的账户名
+   */
+  name: string
+  /**
+   * 商户的账户密码
+   */
   password: string
 }
 
-export const signIn = (data: SignInInput) =>
-  http.post('/user/signin', { params: data })
+/**
+ * 账户密码登录
+ */
+export const loginAccount = (params: LoginAccountInput) =>
+  http.post('/login/account', { params, mock: {} })
 
-export const getCurrentUserInfo = () =>
-  http
-    .post('/user/current')
-    .pipe(timeout(2000))
-    .pipe(ajaxRetry(3, 200))
+interface LoginPhoneInput {
+  /**
+   * 国家编号id
+   */
+  country_code: number | string
+  /**
+   * 登录的手机号码
+   */
+  phone: string
+}
+/**
+ * 手机登录API
+ */
+export const loginPhone = (params: LoginPhoneInput) =>
+  http.post('/login/phone', { params })

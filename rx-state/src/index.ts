@@ -6,7 +6,7 @@ interface SetupOptions {
   onStateChange(value: any, tag: string, timestamp: number): void
 }
 
-export type Mutation<T> = (state: T) => T | void
+export type Mutation<T> = (state?: T) => T | void
 export type Epic = (stream: Observable<any>) => Observable<any>
 
 const setupOptions: SetupOptions = {
@@ -32,23 +32,30 @@ export class State<T> extends BehaviorSubject<T> {
     this.tag = tag || `@@${stateIndex++}`
   }
   commit(mutation: Mutation<T>) {
-    const prevState = JSON.parse(JSON.stringify(this.value))
     let newState
-    const returned = mutation(prevState)
-    if (returned === undefined) {
-      newState = prevState
+    if (mutation.length < 1) {
+      newState = mutation()
     } else {
-      newState = returned
+      const clonedState = JSON.parse(JSON.stringify(this.value))
+
+      const returned = mutation(clonedState)
+      if (returned === undefined) {
+        newState = clonedState
+      } else {
+        newState = returned
+      }
     }
 
-    if (setupOptions.debug) {
-      setupOptions.onStateChange(
-        JSON.parse(JSON.stringify(newState)),
-        this.tag,
-        new Date().getTime()
-      )
+    if (newState !== this.value) {
+      if (setupOptions.debug) {
+        setupOptions.onStateChange(
+          JSON.parse(JSON.stringify(newState)),
+          this.tag,
+          new Date().getTime()
+        )
+      }
+      this.next(newState)
     }
-    this.next(newState)
   }
 }
 

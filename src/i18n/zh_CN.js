@@ -13,8 +13,10 @@ export default {
     other: '未知错误'
   },
   title: {
+    'default': '领先的商业系统提供商',
     'user-login': '登陆',
     404: '页面未找到',
-    dashboard: '仪表盘'
+    dashboard: '仪表盘',
+    'test-llf': 'llf标题'
   }
 }
