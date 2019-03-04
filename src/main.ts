@@ -4,7 +4,6 @@ import VueRx from 'vue-rx'
 import router from './router/index'
 import { modalRouter } from './modal-router/index'
 import App from './App.vue'
-import './views/layouts/register'
 import './style/app.less'
 import { setup } from 'rx-state'
 import { IS_DEV } from './constants/config'
@@ -15,10 +14,10 @@ Vue.use(VueRx)
 
 setup({
   debug: IS_DEV,
-  onStateChange: (value, tag) => {
+  onStateChange: (stateSnapshot, tag) => {
     debugService.stateEvent$.dispatch({
       tag,
-      value
+      stateSnapshot
     })
   }
 })

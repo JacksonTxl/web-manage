@@ -1,4 +1,3 @@
-
 const globby = require('globby')
 const fse = require('fs-extra')
 const _ = require('lodash')
@@ -6,10 +5,14 @@ const chokidar = require('chokidar')
 const chalk = require('chalk')
 const log = console.log
 
-const PAGES_PATH = './src/views/pages/**/*.vue'
-const SERVICES_PATH = './src/views/pages/**/*.service.ts'
+const PAGES_PATH = [
+  './src/views/pages/**/*.vue'
+]
+const SERVICES_PATH = [
+  './src/views/pages/**/*.service.ts'
+]
 const MODEL_PATH = './generate-routes/tpl.ejs'
-const ROUTES_PATH = './src/router/generate-page-routes.js'
+const ROUTES_PATH = './src/router/auto-generated-routes.js'
 const WATCH_DIR_PATH = './src/views/pages'
 
 const tplInit = ({ importServiceArray, importArr, pageRoutes }) => {
@@ -19,7 +22,7 @@ const tplInit = ({ importServiceArray, importArr, pageRoutes }) => {
   return compiled({ importServiceArray, importArr, pageRoutes })
 }
 
-const parse = (keyPath) => {
+const parse = keyPath => {
   keyPath = keyPath.replace('/src/views/pages', '').slice(2)
   const lastDotIndex = keyPath.lastIndexOf('.')
   const lastSlashIndex = keyPath.lastIndexOf('/')
@@ -46,7 +49,7 @@ const parse = (keyPath) => {
     component: entry.replace(/\//g, '-')
   }
 }
-const getPageService = (services) => {
+const getPageService = services => {
   const serviceMap = {}
   const importServiceArray = []
   services.forEach(keyPath => {
@@ -54,7 +57,10 @@ const getPageService = (services) => {
     let exportedService = _.camelCase(`--${parsed.name.replace('.', '-')}--`)
 
     serviceMap[parsed.entry_dash.replace('.service', '')] = exportedService
-    importServiceArray.push({ service: exportedService, servicePath: keyPath.replace('./src', '@') })
+    importServiceArray.push({
+      service: exportedService,
+      servicePath: keyPath.replace('./src', '@')
+    })
   })
   return { importServiceArray, serviceMap }
 }
@@ -101,22 +107,29 @@ const init = (path, op) => {
   const tpl = tplInit(createRoute())
   fse.outputFileSync(ROUTES_PATH, tpl, 'utf8')
   if (path.includes('ts')) {
-    log(chalk.bgYellow(chalk.keyword('black')(op)), chalk.blue.underline.bold(path), 'update service')
+    log(
+      chalk.bgYellow(chalk.keyword('black')(op)),
+      chalk.blue.underline.bold(path),
+      'update service'
+    )
   } else {
     log(chalk.yellow(op), chalk.blue.underline.bold(path), 'update routes')
   }
 }
 try {
   fse.outputFileSync(ROUTES_PATH, tplInit(createRoute()), 'utf8')
-  chokidar.watch(WATCH_DIR_PATH)
-    .on('ready', () => { log(chalk.green('create routes success') + chalk.red('!!!')) })
-    .on('add', (path) => {
+  chokidar
+    .watch(WATCH_DIR_PATH)
+    .on('ready', () => {
+      log(chalk.green('create routes success') + chalk.red('!!!'))
+    })
+    .on('add', path => {
       init(path, '  add  ')
     })
-    .on('unlink', (path) => {
+    .on('unlink', path => {
       init(path, 'remove file')
     })
-    .on('unlinkDir', (path) => {
+    .on('unlinkDir', path => {
       init(path, 'remove Dir')
     })
 } catch (error) {

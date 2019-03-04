@@ -1,5 +1,6 @@
 import Cookie from 'js-cookie'
 import { ServiceRoute, RouteGuard } from 'vue-service-app'
+import { timer } from 'rxjs'
 
 const TOKEN_NAME = 'saas-token'
 

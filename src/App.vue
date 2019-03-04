@@ -1,7 +1,7 @@
 <template>
   <a-locale-provider :locale='antdLocaleMessages'>
     <div id="app">
-      <router-view></router-view>
+      <component :is='layoutComponent'></component>
       <modal-router-view></modal-router-view>
     </div>
   </a-locale-provider>
@@ -9,12 +9,21 @@
 
 <script>
 import { localeService } from '@/services/locale.service'
-// @ts-ignore
+import { layoutMap } from '@/views/layouts/index.ts'
+
 export default {
   name: 'app',
   subscriptions() {
     return {
       antdLocaleMessages: localeService.antdLocaleMessages$
+    }
+  },
+  computed: {
+    layoutName() {
+      return this.$route.meta.layout || 'loading'
+    },
+    layoutComponent() {
+      return layoutMap[this.layoutName]
     }
   }
 }

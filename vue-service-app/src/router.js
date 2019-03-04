@@ -44,23 +44,23 @@ export class Router {
     this.router.beforeEach((to, from, next) => {
       if (to.name !== from.name) {
         const matched = to.matched
-        const allBeforeArray = matched.map(
-          Comp => routeGuardsMap.get(Comp.name).beforeRouteEnterHandler
-        )
+        const allBeforeArray = matched
+          .filter(Comp => routeGuardsMap.get(Comp.name))
+          .map(Comp => routeGuardsMap.get(Comp.name).beforeRouteEnterHandler)
         multiguard(allBeforeArray)(to, from, next)
       } else {
         const matched = to.matched
-        const allBeforeArray = matched.map(
-          Comp => routeGuardsMap.get(Comp.name).beforeRouteUpdateHandler
-        )
+        const allBeforeArray = matched
+          .filter(Comp => routeGuardsMap.get(Comp.name))
+          .map(Comp => routeGuardsMap.get(Comp.name).beforeRouteUpdateHandler)
         multiguard(allBeforeArray)(to, from, next)
       }
     })
     this.router.afterEach((to, from) => {
       const matched = to.matched
-      const allAfterArray = matched.map(
-        Comp => routeGuardsMap.get(Comp.name).afterEachHandler
-      )
+      const allAfterArray = matched
+        .filter(Comp => routeGuardsMap.get(Comp.name))
+        .map(Comp => routeGuardsMap.get(Comp.name).afterEachHandler)
       syncRouteGuards(allAfterArray)(to, from)
     })
   }

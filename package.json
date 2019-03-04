@@ -21,6 +21,7 @@
     "rxjs": "^6.4.0",
     "styd-less-base": "^1.0.5",
     "vue": "^2.6.6",
+    "vue-content-loader": "^0.2.1",
     "vue-modal-router": "^0.2.9",
     "vue-router": "^3.0.1",
     "vue-router-multiguard": "^1.0.3",

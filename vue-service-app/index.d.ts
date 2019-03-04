@@ -25,6 +25,7 @@ interface ServiceRouteConfigMeta {
 export interface ServiceRoute extends Route {
   name: string
   meta: {
+    [key: string]: any
     query: Dictionary<any>
   }
 }

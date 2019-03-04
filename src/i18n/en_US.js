@@ -4,5 +4,18 @@ export default {
     mobileSignIn: 'Mobile Sign In',
     agree: 'Agree'
   },
-  msg: 'message'
+  msg: 'message',
+  http: {
+    400: 'Bad Request',
+    404: 'Servie Not Found',
+    401: 'Unauthorized',
+    403: 'Frobidden',
+    500: 'Internal Server Error',
+    other: 'Unknown Error'
+  },
+  title: {
+    login: 'Login',
+    404: 'Page Not Found',
+    dashboard: 'dashboard'
+  }
 }

@@ -1,7 +1,6 @@
 import { Subject, Observable, BehaviorSubject } from 'rxjs'
 import { refCount, publish } from 'rxjs/operators'
 
-let STATE_DEBUG = true
 interface SetupOptions {
   debug: boolean
   onStateChange(value: any, tag: string, timestamp: number): void
@@ -43,7 +42,11 @@ export class State<T> extends BehaviorSubject<T> {
     }
 
     if (setupOptions.debug) {
-      setupOptions.onStateChange(newState, this.tag, new Date().getTime())
+      setupOptions.onStateChange(
+        JSON.parse(JSON.stringify(newState)),
+        this.tag,
+        new Date().getTime()
+      )
     }
     this.next(newState)
   }
@@ -68,7 +71,7 @@ export function withNamespace(namespace: string) {
 }
 
 export class Action<PAYLOAD> {
-  trigger$!: Subject<PAYLOAD>
+  trigger$: Subject<PAYLOAD>
   action$: Observable<any>
   constructor(epic: Epic, actionTag = 'untaged Action') {
     this.trigger$ = new Subject()

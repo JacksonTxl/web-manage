@@ -2,8 +2,9 @@ import { State, withNamespace, getState } from 'rx-state'
 import { find, findIndex, last } from 'lodash-es'
 import router from '@/router'
 import { ServiceRoute, RouteGuard } from 'vue-service-app'
+import { localeService } from './locale.service'
 
-const t = withNamespace('tab')
+const ns = withNamespace('tab')
 interface Tab {
   name: string
   key: string
@@ -11,8 +12,8 @@ interface Tab {
 }
 
 class TabService implements RouteGuard {
-  tabs$ = new State<Tab[]>([], t('tabs'))
-  activeKey$ = new State<string>('', t('activeKey'))
+  tabs$ = new State<Tab[]>([], ns('tabs'))
+  activeKey$ = new State<string>('', ns('activeKey'))
   ADD_TAB(tab: Tab) {
     this.tabs$.commit(tabs => {
       tabs.push(tab)
@@ -35,19 +36,15 @@ class TabService implements RouteGuard {
   SET_ACTIVE_KEY(key: string) {
     this.activeKey$.commit(() => key)
   }
-  init(tabName: string, to: ServiceRoute) {
+  init(tab: Tab) {
     const tabs = getState(this.tabs$)
-    const finedTab = find(tabs, { key: to.name })
+    const finedTab = find(tabs, { key: tab.key })
     if (!finedTab) {
-      this.ADD_TAB({
-        name: tabName,
-        key: to.name,
-        lastUrl: to.fullPath
-      })
+      this.ADD_TAB(tab)
     } else {
-      this.UPDATE_LAST_URL(to.name, to.fullPath)
+      this.UPDATE_LAST_URL(tab.key, tab.lastUrl)
     }
-    this.SET_ACTIVE_KEY(to.name)
+    this.SET_ACTIVE_KEY(tab.key)
   }
   removeTab(tabKey: string) {
     if (getState(this.tabs$).length > 1) {
@@ -58,9 +55,14 @@ class TabService implements RouteGuard {
       }
     }
   }
-  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.UPDATE_LAST_URL(to.name, to.fullPath)
-    next()
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
+    const tabName = localeService.translate(to.meta.title)
+    const tabKey = to.name
+    const tab = { name: tabName, key: tabKey, lastUrl: to.fullPath }
+    this.init(tab)
+    setTimeout(() => {
+      next()
+    }, 1000)
   }
 }
 

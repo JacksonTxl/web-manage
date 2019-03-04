@@ -7,18 +7,19 @@
         <div class="logo">logo</div>
         <a-menu theme="dark"
           mode="inline"
-          :defaultSelectedKeys="selectedKeys"
-          :defaultOpenKeys="openKeys">
+          :openKeys.sync="openKeys"
+          :selectedKeys.sync='selectedKeys'>
           <a-menu-item key="1">
-            <a-icon type="user"></a-icon>
-            <span>nav 1</span>
+            <router-link :to="{name:'dashboard'}">dashboard</router-link>
           </a-menu-item>
           <a-sub-menu key="sub2">
             <span slot="title">
               <a-icon type="appstore" />
               <span>Navigation Two</span>
             </span>
-            <a-menu-item key="9">Option 9</a-menu-item>
+            <a-menu-item key="9">
+              <router-link :to="{name:'test-llf'}">test-llf</router-link>
+            </a-menu-item>
             <a-menu-item key="10">Option 10</a-menu-item>
             <a-sub-menu key="sub3"
               title="Submenu">
@@ -29,8 +30,7 @@
             </a-sub-menu>
           </a-sub-menu>
           <a-menu-item key="3">
-            <a-icon type="upload" />
-            <span class="nav-text">nav 3</span>
+            <router-link :to="{name:'test-llf'}">test-llf</router-link>
           </a-menu-item>
           <a-menu-item key="4">
             <a-icon type="user" />
@@ -43,7 +43,7 @@
         <a-layout-content>
           <a-tabs type='editable-card'
             hideAdd
-            :defaultActiveKey="activeKey"
+            :activeKey="activeKey"
             @edit='onTabEdit'
             @change="onTabChange">
             <a-tab-pane v-for="tabItem in tabs"
@@ -51,12 +51,7 @@
               :tab="tabItem.name">
             </a-tab-pane>
           </a-tabs>
-          <div>content</div>
-          <div>
-
-          </div>
-
-          <slot></slot>
+          <router-view></router-view>
         </a-layout-content>
         <a-layout-footer>Ant Design ©2018 Created by Ant UED</a-layout-footer>
       </a-layout>
@@ -95,6 +90,9 @@ export default {
         tabService.removeTab(tabKey)
       }
     }
+  },
+  created() {
+    console.log('layout default created')
   }
 }
 </script>
