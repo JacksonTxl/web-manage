@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs'
-import { ajax, AjaxError } from 'rxjs/ajax'
-import { catchError, pluck } from 'rxjs/operators'
+import { ajax, AjaxError, AjaxResponse } from 'rxjs/ajax'
+import { catchError, pluck, map } from 'rxjs/operators'
 import { API_BASE, API_BASE_MOCK } from '@/constants/config'
 import { notification } from 'ant-design-vue'
 import { authService } from './auth.service'

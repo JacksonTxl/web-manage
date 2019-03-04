@@ -8,7 +8,6 @@ import { forEach } from 'lodash-es'
 import { userService } from '@/services/user.service'
 import { tabService } from '@/services/tab.service'
 import { titleService } from '@/services/title.service'
-import { localeService } from '@/services/locale.service'
 
 const routes: ServiceRouteConfig[] = [
   {

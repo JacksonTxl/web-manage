@@ -4,7 +4,6 @@
 
 import { dashboardService } from '@/views/pages/dashboard.service.ts'
 import { zlxService } from '@/views/pages/test/zlx.service.ts'
-import { loginService } from '@/views/pages/user/login.service.ts'
 
 const page404 = () => import('@/views/pages/404.vue')
 const pageDashboard = () => import('@/views/pages/dashboard.vue')
@@ -37,7 +36,7 @@ const pageRoutes = [{
   name: 'user-login',
   path: '/user/login',
   component: pageUserLogin,
-  guards: [loginService]
+  guards: []
 }]
 
 export default pageRoutes

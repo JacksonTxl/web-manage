@@ -15,7 +15,7 @@ export interface LoginAccountInput {
  * 账户密码登录
  */
 export const loginAccount = (params: LoginAccountInput) =>
-  http.post('/login/account', { params })
+  http.post('/login/account', { params, mock: {} })
 
 interface LoginPhoneInput {
   /**
