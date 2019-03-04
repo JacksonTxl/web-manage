@@ -2,7 +2,7 @@
   <div>
     Ant Design
 
-    <a-form :form='form'>
+    <a-form :form='form' @submit="onSubmit">
       <a-tabs>
         <a-tab-pane v-model='activeLoginMode'
           :tab="t('login.pwdSignIn')"
@@ -143,9 +143,11 @@ export default {
   },
   methods: {
     t,
-    onSubmit() {
+    onSubmit(e) {
+      e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
+          loginService.signIn({ values }).subscribe()
         }
       })
     },
