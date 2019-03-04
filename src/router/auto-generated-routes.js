@@ -38,7 +38,6 @@ const pageRoutes = [{
   path: '/user/login',
   component: pageUserLogin,
   guards: [loginService]
-}
-]
+}]
 
 export default pageRoutes
