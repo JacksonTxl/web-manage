@@ -1,40 +1,39 @@
 /**
 * this js file is auto generated, you should not modifyed this file
 **/
-<% for(var i = 0; i < importServiceArray.length; i++){%>
-import { <%- importServiceArray[i].service%> } from '<%- importServiceArray[i].servicePath%>'<% }; %>
-<% for(var i = 0; i < importArr.length; i++){%>
-const <%- importArr[i].component%> = () => import('<%- importArr[i].pagePath%>')<% }; %>
+<% importServiceArray.forEach(item => {%>
+import { <%- item.service%> } from '<%- item.servicePath%>'<% }); %>
+<% importArr.forEach(item => {%>
+const <%- item.component%> = () => import('<%- item.pagePath%>')<% }); %>
 
 // service
-const pageRoutes = [<% for(var i = 0; i < pageRoutes.length; i++) {%>{
-  name: '<%- pageRoutes[i].name %>',
-  path: '<%- pageRoutes[i].path %>',
-  component: <%- pageRoutes[i].component %>,
-  guards: [<%- pageRoutes[i].guards %>]<% if(pageRoutes[i].children){%>,<%};%><% if(pageRoutes[i].children){%>
-  children: [<%for(var j = 0; j < pageRoutes[i].children.length; j++){%>{
-    name: '<%- pageRoutes[i].children[j].name %>',
-    path: '<%- pageRoutes[i].children[j].path %>',
-    component: <%- pageRoutes[i].children[j].component %>,
-    guards: [<%- pageRoutes[i].children[j].guards %>]<% if(pageRoutes[i].children[j].children){%>,<%};%><% if(pageRoutes[i].children[j].children){%>
+const pageRoutes = [<% pageRoutes.forEach((item, index) => {%>{
+  name: '<%- item.name %>',
+  path: '<%- item.path %>',
+  component: <%- item.component %>,
+  guards: [<%- item.guards %>]<% if(item.children){%>,<%};%><% if(item.children){%>
+  children: [<%item.children.forEach(c1Item => {%>{
+    name: '<%- c1Item.name %>',
+    path: '<%- c1Item.path %>',
+    component: <%- c1Item.component %>,
+    guards: [<%- c1Item.guards %>]<% if(c1Item.children){%>,<%};%><% if(c1Item.children){%>
     children: [
-      <%for(var n = 0; n < pageRoutes[i].children[j].children.length; i++){%>
-        name: '<%- pageRoutes[i].children[j].children[n].name %>',
-        path: '<%- pageRoutes[i].children[j].children[n].path %>',
-        guards: [<%- pageRoutes[i].children[j].children[n].guards %>],
-        component: <%- pageRoutes[i].children[j].children[n].component %>
+      <%c1Item.forEach( c2Item => {%>
+        name: '<%- c2Item.name %>',
+        path: '<%- c2Item.path %>',
+        component: <%- c2Item.component %>
+        guards: [<%- c2Item.guards %>]<% if(c1Item.children){%>,<%};%><% if(c1Item.children){%>
           children: [
-            <%for(var i = 0; i < children.length; i++){%>
-              name: '<%- children[i].name %>',
-              path: '<%- children[i].path %>',
-              component: <%- children[i].component %>
-            <%};%>
-          ]
-      <%}%>
+            <%c2Item.forEach(c3Item => {%>
+              name: '<%- c3Item.name %>',
+              path: '<%- c3Item.path %>',
+              guards: [<%- c3Item.guards %>],
+              component: <%- c3Item.component %>
+            <%});%>
+          ]<%};%><%})%>
     ]<%};%>
-  }<%};%>
+  }<%});%>
   ]<%};%>
-}<%if(i !== pageRoutes.length-1){%>, <%}%><% }; %>
-]
+}<%if(index !== pageRoutes.length-1){%>, <%}%><% }); %>]
 
 export default pageRoutes
