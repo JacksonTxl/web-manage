@@ -25,7 +25,8 @@ interface LoginPhoneInput {
   /**
    * 登录的手机号码
    */
-  phone: string
+  phone: string,
+  a: ''
 }
 /**
  * 手机登录API

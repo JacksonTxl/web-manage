@@ -14,7 +14,6 @@ const relaseInfo = {
   git_branch: git.branch(),
   git_date: git.date()
 }
-
 fs.writeFileSync(
   resolve('./public/release.json'),
   JSON.stringify(relaseInfo, null, 2)
@@ -86,7 +85,20 @@ module.exports = {
       .when(IS_DEV, config => {
         config.module.rules.delete('eslint')
       })
-
+    config
+      .plugin('define')
+      .tap(definitions => {
+        console.log(definitions)
+        const { NODE_ENV } = process.env
+        definitions[0] = Object.assign(definitions[0], {
+          'process.env': {
+            BASE_URL: '"/"',
+            NODE_ENV: `"${NODE_ENV}"`,
+            GIT_COMMIT: `"${git.short()}"`
+          }
+        })
+        return definitions
+      })
     config.resolve.alias.set('vue-service-app', path.join(__dirname, '/vue-service-app'))
     config.resolve.alias.set('rx-state', path.join(__dirname, '/rx-state'))
 
