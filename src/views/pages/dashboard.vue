@@ -16,6 +16,7 @@
       <router-link :to="{query:{a:'2'}}">测试a2</router-link>
     </li>
     <router-link :to="{name:'test-llf'}">test-llf</router-link>
+    <a-skeleton loading active avatar></a-skeleton>
     <a-input placeholder='haha'></a-input>
     <modal-link tag='a-button'
       :to="{name:'test'}">
