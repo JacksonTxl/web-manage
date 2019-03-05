@@ -5,12 +5,8 @@ const chokidar = require('chokidar')
 const chalk = require('chalk')
 const log = console.log
 
-const PAGES_PATH = [
-  './src/views/pages/**/*.vue'
-]
-const SERVICES_PATH = [
-  './src/views/pages/**/*.service.ts'
-]
+const PAGES_PATH = ['./src/views/pages/**/*.vue']
+const SERVICES_PATH = ['./src/views/pages/**/*.service.ts']
 const MODEL_PATH = './generate-routes/tpl.ejs'
 const ROUTES_PATH = './src/router/auto-generated-routes.js'
 const WATCH_DIR_PATH = './src/views/pages'
@@ -21,7 +17,7 @@ const tplInit = ({ importServiceArray, importArr, pageRoutes }) => {
 
   return compiled({ importServiceArray, importArr, pageRoutes })
 }
-
+// 获取文件
 const parse = keyPath => {
   keyPath = keyPath.replace('/src/views/pages', '').slice(2)
   const lastDotIndex = keyPath.lastIndexOf('.')
@@ -49,6 +45,8 @@ const parse = keyPath => {
     component: entry.replace(/\//g, '-')
   }
 }
+
+// 插入路由服务
 const getPageService = services => {
   const serviceMap = {}
   const importServiceArray = []
@@ -102,6 +100,7 @@ const createRoute = () => {
   })
   return { importServiceArray, importArr, pageRoutes }
 }
+// 初始化
 const init = (path, op) => {
   if (path.includes('#')) return
   const tpl = tplInit(createRoute())
@@ -116,6 +115,7 @@ const init = (path, op) => {
     log(chalk.yellow(op), chalk.blue.underline.bold(path), 'update routes')
   }
 }
+
 try {
   fse.outputFileSync(ROUTES_PATH, tplInit(createRoute()), 'utf8')
   chokidar

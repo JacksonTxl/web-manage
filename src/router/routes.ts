@@ -8,6 +8,7 @@ import { forEach } from 'lodash-es'
 import { userService } from '@/services/user.service'
 import { tabService } from '@/services/tab.service'
 import { titleService } from '@/services/title.service'
+import { hotReleaseService } from '@/services/hot-release.service'
 
 const routes: ServiceRouteConfig[] = [
   {
@@ -46,7 +47,7 @@ walk(routes, route => {
   }
   const unshiftGuards = []
   if (route.path.startsWith('/') && !route.redirect) {
-    unshiftGuards.push(nProgressService, titleService)
+    unshiftGuards.push(nProgressService, titleService, hotReleaseService)
   }
   if (
     route.path.startsWith('/') &&

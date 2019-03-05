@@ -1,8 +1,24 @@
 const path = require('path')
+const fs = require('fs')
 const resolve = dir => path.resolve(__dirname, dir)
 const env = process.env.NODE_ENV || 'development'
+const git = require('git-rev-sync')
 const WebpackExternalVendorPlugin = require('webpack-external-vendor-plugin')
 const IS_DEV = env !== 'production'
+
+const relaseInfo = {
+  mode: env,
+  git_commit: git.short(),
+  git_commit_long: git.long(),
+  git_message: git.message(),
+  git_branch: git.branch(),
+  git_date: git.date()
+}
+
+fs.writeFileSync(
+  resolve('./public/release.json'),
+  JSON.stringify(relaseInfo, null, 2)
+)
 
 module.exports = {
   lintOnSave: false,
