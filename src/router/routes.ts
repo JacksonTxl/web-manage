@@ -47,7 +47,7 @@ walk(routes, route => {
   }
   const unshiftGuards = []
   if (route.path.startsWith('/') && !route.redirect) {
-    unshiftGuards.push(nProgressService, titleService, hotReleaseService)
+    unshiftGuards.push(hotReleaseService, nProgressService, titleService)
   }
   if (
     route.path.startsWith('/') &&

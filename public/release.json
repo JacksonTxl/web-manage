@@ -1,8 +1,8 @@
 {
-  "mode": "production",
-  "git_commit": "a01e9e5",
-  "git_commit_long": "a01e9e5bb21fd36c89aae6eea98ce2259a41ee29",
+  "mode": "development",
+  "git_commit": "dab743e",
+  "git_commit_long": "dab743e12577404f0b772e36ce4141bc84f78b20",
   "git_message": "Merge branch 'master' of gitlab.styd.cn:fe/saas/web",
   "git_branch": "master",
-  "git_date": "2019-03-05T03:48:01.000Z"
+  "git_date": "2019-03-05T09:20:16.000Z"
 }
