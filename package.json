@@ -34,6 +34,7 @@
     "@types/nprogress": "^0.0.29",
     "@types/qs": "^6.5.1",
     "@types/webpack-env": "^1.13.7",
+    "@vue/cli": "^3.4.1",
     "@vue/cli-plugin-babel": "^3.0.5",
     "@vue/cli-plugin-e2e-cypress": "^3.4.1",
     "@vue/cli-plugin-eslint": "^3.4.1",
