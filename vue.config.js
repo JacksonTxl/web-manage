@@ -89,7 +89,6 @@ module.exports = {
     config
       .plugin('define')
       .tap(definitions => {
-        console.log(definitions)
         const { NODE_ENV } = process.env
         definitions[0] = Object.assign(definitions[0], {
           'process.env': {

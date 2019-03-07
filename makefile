@@ -1,2 +1,8 @@
+# 构建脚本
 build:
-	@echo 'hello world'
+	npm run build
+
+# 部署脚本
+release:
+  echo 'release'
+
