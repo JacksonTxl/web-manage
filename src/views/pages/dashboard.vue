@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import { ListLoader } from 'vue-content-loader'
 import { dashboardService } from './dashboard.service'
 import { localeService } from '@/services/locale.service'
 import { tabService } from '@/services/tab.service'

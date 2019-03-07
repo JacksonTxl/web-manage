@@ -6,7 +6,7 @@ interface SetupOptions {
   onStateChange(value: any, tag: string, timestamp: number): void
 }
 
-export type Mutation<T> = (state?: T) => T | void
+export type Mutation<T> = (state: T) => T | void
 export type Epic = (stream: Observable<any>) => Observable<any>
 
 const setupOptions: SetupOptions = {
@@ -34,7 +34,7 @@ export class State<T> extends BehaviorSubject<T> {
   commit(mutation: Mutation<T>) {
     let newState
     if (mutation.length < 1) {
-      newState = mutation()
+      newState = mutation(this.value)
     } else {
       const clonedState = JSON.parse(JSON.stringify(this.value))
 
