@@ -42,6 +42,7 @@ module.exports = {
     }
   },
   devServer: {
+    https: true,
     proxy: {
       '/_api': {
         target: 'http://saas-dev.styd.cn',
