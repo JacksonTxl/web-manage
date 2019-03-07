@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "init":"cnpm i",
+    "init": "cnpm i",
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --ext .js,.ts,.vue ./src",
@@ -46,6 +46,7 @@
     "babel-eslint": "^10.0.1",
     "chalk": "^2.4.2",
     "chokidar": "^2.1.2",
+    "core-js": "^2.6.5",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.2.2",
     "fs-extra": "^7.0.1",
