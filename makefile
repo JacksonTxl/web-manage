@@ -4,7 +4,7 @@ NAME = frontend_saas_web
 DOCKER_IMAGE = hub.styd.cn/hello-world
 
 pull-image:
-	curl https://hub.styd.cn/v2/
+	sudo docker pull $(DOCKER_IMAGE)
 
 # 构建脚本
 build:pull-image
