@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint --ext .js,.ts,.vue ./src",
     "dev": "npm run serve",
     "gr": "node ./generate-routes/index.js",
-    "ci": "echo ci",
+    "ci": "npm run build",
     "inspect": "vue inspect --mode development --verbose > inspect.js",
     "push:rx": "git subtree push --prefix=rx-state git@gitlab.styd.cn:fe/packages/rx-state.git master",
     "push:vsa": "git subtree push --prefix=vue-service-app git@gitlab.styd.cn:fe/packages/vue-service-app.git master",
