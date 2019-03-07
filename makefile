@@ -1,7 +1,7 @@
 # 项目名
 NAME = frontend_saas_web
 # 使用的docker镜像
-DOCKER_IMAGE = hub.styd.cn/hello-world
+DOCKER_IMAGE = hub.styd.cn/node:sr-8.12.0
 
 pull-image:
 	sudo docker pull $(DOCKER_IMAGE)
