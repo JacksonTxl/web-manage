@@ -1,7 +1,6 @@
 # 构建脚本
 build:
 	@echo "build"
-	npm run build
 
 # 部署脚本
 release:
