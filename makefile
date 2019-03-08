@@ -40,8 +40,3 @@ rsync:
 release:
 	ssh $(to) -t "mkdir -p $(HTDOCS_PATH)"
 	ssh $(to) -t "ln -sfTv $(CONTENT_PATH)/$(NAME) $(HTDOCS_PATH)/$(NAME)"
-
-# 更新nginx配置
-post-release:
-	rsync -auz $(PWD)/nginx/ $(to):$(NGINX_CONF_PATH)/
-	nginx -s reload
