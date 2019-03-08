@@ -35,6 +35,5 @@ rsync:
 # @params {to} 推送服务器主机名
 # @example :: make release to=saas-dev
 release:
-	echo 'release'
-	# ssh $(to) -t "mkdir -p $(HTDOCS_PATH)"
-	# ssh $(to) -t "ln -sfTv $(CONTENT_PATH)/$(NAME) $(HTDOCS_PATH)/$(NAME)"
+	ssh $(to) -t "mkdir -p $(HTDOCS_PATH)"
+	ssh $(to) -t "ln -sfTv $(CONTENT_PATH)/$(NAME) $(HTDOCS_PATH)/$(NAME)"
