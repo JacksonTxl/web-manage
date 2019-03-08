@@ -1,4 +1,4 @@
-# 项目名
+# 项目名 会作为部署的文件夹
 NAME = frontend_saas_web
 
 # 目标主机内容存放目录
@@ -6,6 +6,9 @@ CONTENT_PATH = /data/release
 
 # 目标主机 web 服务目录
 HTDOCS_PATH = /data/htdocs
+
+# nginx 目录
+NGINX_CONF_PATH = /application/nginx/conf
 
 # 使用的docker镜像
 DOCKER_IMAGE = hub.styd.cn/node:sr-8.12.0
@@ -37,3 +40,8 @@ rsync:
 release:
 	ssh $(to) -t "mkdir -p $(HTDOCS_PATH)"
 	ssh $(to) -t "ln -sfTv $(CONTENT_PATH)/$(NAME) $(HTDOCS_PATH)/$(NAME)"
+
+# 更新nginx配置
+post-release:
+	rsync -auz $(PWD)/nginx/ $(to):$(NGINX_CONF_PATH)/
+	nginx -s reload
