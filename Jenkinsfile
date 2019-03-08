@@ -3,18 +3,29 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building4'
+                sh 'make build'
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing'
+                echo 'Test'
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying'
-            }
+        stage('rsync dev') {
+          when {
+            branch 'dev'
+          }
+          steps {
+            sh 'make rsync to=saas-dev'
+          }
+        }
+        stage('release dev') {
+          when {
+            branch 'dev'
+          }
+          steps {
+            sh 'make release to=saas-dev'
+          }
         }
     }
 }
