@@ -1,5 +1,12 @@
 # 项目名
 NAME = frontend_saas_web
+
+# 目标主机内容存放目录
+CONTENT_PATH = /data/release
+
+# 目标主机 web 服务目录
+HTDOCS_PATH = /data/htdocs
+
 # 使用的docker镜像
 DOCKER_IMAGE = hub.styd.cn/node:sr-8.12.0
 
@@ -16,5 +23,18 @@ build:pull-image
 	$(DOCKER_IMAGE) \
 	npm run ci
 
-# 部署脚本
+# 同步文件
+# @params {to} 推送服务器主机名
+# @example :: make rsync to=saas-dev
+rsync:
+	ssh $(to) -t "mkdir -p $(CONTENT_PATH)/$(NAME)"
+	rsync -auz --exclude=.git $(PWD)/ $(to):$(CONTENT_PATH)/$(NAME)
+
+
+# 切换软连接
+# @params {to} 推送服务器主机名
+# @example :: make release to=saas-dev
 release:
+	echo 'release'
+	# ssh $(to) -t "mkdir -p $(HTDOCS_PATH)"
+	# ssh $(to) -t "ln -sfTv $(CONTENT_PATH)/$(NAME) $(HTDOCS_PATH)/$(NAME)"
