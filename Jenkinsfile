@@ -1,6 +1,13 @@
 pipeline {
   agent any
   stages {
+    stage('Info') {
+      steps {
+        sh 'id'
+        sh 'uname -a'
+        sh 'tree -du -L 4'
+      }
+    }
     stage('Build') {
       steps {
         sh 'make build'
