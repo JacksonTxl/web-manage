@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker pull hello-world'
+        sh 'make build'
       }
     }
     stage('Rsync') {
