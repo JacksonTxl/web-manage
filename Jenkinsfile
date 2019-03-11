@@ -13,6 +13,11 @@ pipeline {
         sh 'make build'
       }
     }
+    stage('Archive') {
+      steps {
+        archiveArtifacts artifacts: 'dist/**/*.*', fingerprint: true
+      }
+    }
     stage('to=saas-dev') {
       when {
         expression { BRANCH_NAME ==~ /(feat|dev).*/}
