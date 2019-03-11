@@ -19,7 +19,9 @@ pull-image:
 # 构建脚本
 build:pull-image
 	# dns=101.132.119.70 为了修正dns解析
+	# user=1001 使用styd用户来构建文件 否则会产生权限问题
 	sudo docker run -i --rm \
+	--user 1001 \
 	--dns=101.132.119.70 \
 	-v $(PWD):/app \
 	-v $(NAME)_nm:/app/node_modules \
