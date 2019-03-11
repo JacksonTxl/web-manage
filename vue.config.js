@@ -94,7 +94,8 @@ module.exports = {
           'process.env': {
             BASE_URL: '"/"',
             NODE_ENV: `"${NODE_ENV}"`,
-            GIT_COMMIT: `"${git.short()}"`
+            GIT_COMMIT: `"${git.short()}"`,
+            GIT_MESSAGE: `"${git.message()}"`
           }
         })
         return definitions

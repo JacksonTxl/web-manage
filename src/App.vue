@@ -25,12 +25,9 @@ export default {
   data() {
     return {
       count: 0,
-      gitNumber: '',
       tips: [
-        '被你发现了 🐷',
-        '再点一下试试 👋',
-        '会有彩蛋哟 ',
-        '离宝藏就差一步了'
+        `commitNumber: ${process.env.GIT_COMMIT}`,
+        `gitMessage: ${process.env.GIT_MESSAGE}`
       ]
     }
   },
