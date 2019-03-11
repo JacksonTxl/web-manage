@@ -31,4 +31,4 @@ npm run lint
 #### Bugfix
 * 降less版本为2.7.2 修复引入ant-design包less .bezierEasingMixin() 错误问题
 * 去除tslint校验 使用eslint校验格式 使用typescript进行编译时错误
-* fix使用docker构建无法第二次构建的问题 借助docker的用户是root
+* fix使用docker构建无法第二次构建的问题 借助docker的用户是root的机制
