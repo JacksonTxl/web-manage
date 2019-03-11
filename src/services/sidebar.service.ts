@@ -1,7 +1,7 @@
 import { State, withNamespace, getState } from 'rx-state'
 import Cookie from 'js-cookie'
 const ns = withNamespace('sidebar')
-class SidebarService {
+export class SidebarService {
   selectedKeys$ = new State<string[]>([], ns('selectedKeys'))
   openKeys$ = new State<string[]>([], ns('openKeys'))
   collapsed$ = new State<Boolean>(

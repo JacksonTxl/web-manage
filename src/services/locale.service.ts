@@ -14,7 +14,7 @@ import { Observable } from 'rxjs'
 
 type Locale = 'zh_CN' | 'en_US'
 const ns = withNamespace('localeService')
-class LocaleService {
+export class LocaleService {
   antdLocales = {
     zh_CN: AntdLocaleZhCN,
     en_US: AntdLocaleEnUS

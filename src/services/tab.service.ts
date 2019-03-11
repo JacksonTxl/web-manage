@@ -2,7 +2,6 @@ import { State, withNamespace, getState } from 'rx-state'
 import { find, findIndex, last, clone } from 'lodash-es'
 import router from '@/router'
 import { ServiceRoute, RouteGuard } from 'vue-service-app'
-import { localeService } from './locale.service'
 import { combineLatest } from 'rxjs'
 import { map } from 'rxjs/operators'
 
