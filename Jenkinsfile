@@ -13,76 +13,14 @@ pipeline {
         sh 'make build'
       }
     }
-    stage('Rsync') {
-      parallel {
-        stage('dev') {
-          when {
-            expression { BRANCH_NAME ==~ /(feat|dev).*/}
-          }
-          steps {
-            sh 'make rsync to=saas-dev'
-          }
-        }
-        stage('test') {
-          when {
-            branch 'test'
-          }
-          steps {
-            echo 'to test server'
-          }
-        }
-        stage('pre') {
-          when {
-            branch 'master'
-          }
-          steps {
-            echo 'to pre server'
-          }
-        }
-        stage('prod') {
-          when {
-            branch 'production'
-          }
-          steps {
-            echo 'to production server'
-          }
-        }
+    stage('to=saas-dev') {
+      when {
+        expression { BRANCH_NAME ==~ /(feat|dev).*/}
       }
-    }
-    stage('Release') {
-      parallel {
-        stage('dev') {
-          when {
-            expression { BRANCH_NAME ==~ /(feat|dev).*/}
-          }
-          steps {
-            sh 'make release to=saas-dev'
-          }
-        }
-        stage('test') {
-          when {
-            branch 'test'
-          }
-          steps {
-            echo 'release to test server'
-          }
-        }
-        stage('pre') {
-          when {
-            branch 'master'
-          }
-          steps {
-            echo 'release to pre server'
-          }
-        }
-        stage('prod') {
-          when {
-            branch 'production'
-          }
-          steps {
-            echo 'release to production server'
-          }
-        }
+      steps {
+        sh 'make rsync to=saas-dev'
+        sh 'make release to=saas-dev'
+        echo "部署成功 请访问https://saas-dev-ui.styd.cn"
       }
     }
   }
