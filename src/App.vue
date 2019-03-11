@@ -3,8 +3,8 @@
     <div id="app">
       <component :is='layoutComponent'></component>
       <modal-router-view></modal-router-view>
-      <div :class="{'git': true, 'is-git': !!gitNumber}" @click="getCommitHead">
-        <span>{{gitNumber}}</span>
+      <div :class="{'git': true, 'is-git': !!tips[count]}" @click="getCommitHead">
+        <span>{{tips[count]}}</span>
       </div>
     </div>
   </a-locale-provider>
@@ -24,19 +24,15 @@ export default {
   data() {
     return {
       count: 0,
-      gitNumber: '',
       tips: [
-        '被你发现了 🐷',
-        '再点一下试试 👋',
-        '会有彩蛋哟 ',
-        '离宝藏就差一步了'
+        `commitNumber: ${process.env.GIT_COMMIT}`,
+        `gitMessage: ${process.env.GIT_MESSAGE}`
       ]
     }
   },
   methods: {
     getCommitHead() {
-      this.count < 5 && this.count++
-      this.gitNumber = this.count >= 5 ? process.env.GIT_COMMIT : this.tips[this.count - 1]
+      this.count = this.count ? 0 : 1
     }
   },
   computed: {

@@ -68,7 +68,6 @@ walk(routes, route => {
     default:
       break
   }
-
   route.guards = [...unshiftGuards, ...route.guards]
 })
 console.log(routes)
