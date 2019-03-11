@@ -20,7 +20,7 @@ pipeline {
       steps {
         sh 'make rsync to=saas-dev'
         sh 'make release to=saas-dev'
-        echo "部署成功 请访问https://saas-dev-ui.styd.cn"
+        echo "https://saas-dev-ui.styd.cn"
       }
     }
   }
