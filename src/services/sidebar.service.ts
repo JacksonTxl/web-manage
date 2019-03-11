@@ -1,15 +1,18 @@
 import { State, withNamespace, getState } from 'rx-state'
 import Cookie from 'js-cookie'
 const ns = withNamespace('sidebar')
-class SidebarService {
-  selectedKeys$ = new State<string[]>([], ns('selectedKeys'))
-  openKeys$ = new State<string[]>([], ns('openKeys'))
-  collapsed$ = new State<Boolean>(
-    Boolean(Cookie.get('collapsed') || ''),
-    ns('collapsed')
-  )
+export class SidebarService {
+  selectedKeys$: State<string[]>
+  openKeys$: State<string[]>
+  collapsed$: State<boolean>
 
   constructor() {
+    this.selectedKeys$ = new State([], ns('selectedKeys'))
+    this.openKeys$ = new State([], ns('openKeys'))
+    this.collapsed$ = new State(
+      Boolean(Cookie.get('collapsed') || ''),
+      ns('collapsed')
+    )
     this.collapsed$.subscribe(v => {
       Cookie.set('collapsed', v ? '1' : '')
     })
@@ -23,7 +26,7 @@ class SidebarService {
       this.openKeys$.commit(() => openKeys)
     }
   }
-  TOGGLE_COLLAPSED(collapsed: Boolean) {
+  TOGGLE_COLLAPSED(collapsed: boolean) {
     this.collapsed$.commit(() => collapsed)
   }
 }

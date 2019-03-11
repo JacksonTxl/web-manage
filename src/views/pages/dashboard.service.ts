@@ -1,13 +1,18 @@
 import { State, withNamespace } from 'rx-state'
-import { sidebarService } from '@/services/sidebar.service'
+import { sidebarService, SidebarService } from '@/services/sidebar.service'
 import { ServiceRoute, RouteGuard } from 'vue-service-app'
-import { timer } from 'rxjs'
 const t = withNamespace('dashboard')
 class DashboardService implements RouteGuard {
+  // injected
+  sidebar: SidebarService
+
   list$ = new State<any[]>([], t('list'))
+  constructor(sidebar: SidebarService) {
+    this.sidebar = sidebar
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    sidebarService.SET_SELECTED_KEYS(['1'])
-    sidebarService.SET_OPEN_KEYS([])
+    this.sidebar.SET_SELECTED_KEYS(['1'])
+    this.sidebar.SET_OPEN_KEYS([])
     next()
   }
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
@@ -16,4 +21,4 @@ class DashboardService implements RouteGuard {
   }
 }
 
-export const dashboardService = new DashboardService()
+export const dashboardService = new DashboardService(sidebarService)

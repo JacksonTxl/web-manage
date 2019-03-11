@@ -1,14 +1,13 @@
 import { Observable } from 'rxjs'
-import { ajax, AjaxError, AjaxResponse } from 'rxjs/ajax'
-import { catchError, pluck, map } from 'rxjs/operators'
+import { ajax, AjaxError } from 'rxjs/ajax'
+import { catchError, pluck } from 'rxjs/operators'
 import { API_BASE, API_BASE_MOCK } from '@/constants/config'
 import { notification } from 'ant-design-vue'
 import { authService } from './auth.service'
 import { StResponse } from '@/types/app'
 import router from '@/router'
 import qs from 'qs'
-import { localeService } from './locale.service'
-const t = localeService.translate.bind(localeService)
+import { localeService, LocaleService } from './locale.service'
 interface MockOptions {
   status?: number
 }
@@ -34,6 +33,12 @@ interface RequestOptions {
 }
 
 export class HttpService {
+  // inject
+  locale: LocaleService
+
+  constructor(locale: LocaleService) {
+    this.locale = locale
+  }
   get(url: string, options: RequestOptions = {}) {
     let requestUrl = this.makeRequestUrl(url, options)
     const get$ = ajax
@@ -100,37 +105,37 @@ export class HttpService {
           case 400:
             notification.warn({
               message: serverResponse.msg,
-              description: t('http.400')
+              description: this.locale.translate('http.400')
             })
             break
           case 401:
             notification.warn({
               message: serverResponse.msg,
-              description: t('http.401')
+              description: this.locale.translate('http.401')
             })
             router.push({ name: 'user-login' })
             break
           case 403:
             notification.warn({
               message: serverResponse.msg,
-              description: t('http.403')
+              description: this.locale.translate('http.403')
             })
             break
           case 404:
             notification.error({
-              message: t('http.404'),
+              message: this.locale.translate('http.404'),
               description: err.message
             })
             break
           case 500:
             notification.error({
-              message: t('http.500'),
+              message: this.locale.translate('http.500'),
               description: err.message
             })
             break
           default:
             notification.error({
-              message: t('http.other'),
+              message: this.locale.translate('http.other'),
               description: err.message
             })
             break
@@ -141,4 +146,4 @@ export class HttpService {
   }
 }
 
-export const http = new HttpService()
+export const http = new HttpService(localeService)

@@ -1,18 +1,25 @@
 import { RouteGuard, ServiceRoute } from 'vue-service-app'
-import { localeService } from './locale.service'
+import { localeService, LocaleService } from './locale.service'
 import { State, withNamespace } from 'rx-state/src'
-import { combineLatest } from 'rxjs'
+import { combineLatest, Observable } from 'rxjs'
 
 const ns = withNamespace('title')
-const t = localeService.translate.bind(localeService)
 
 class TitleService implements RouteGuard {
-  titleKey$ = new State<string>('title.default', ns('title'))
-  title$ = combineLatest(this.titleKey$, localeService.locale$, titleKey => {
-    const title = t(titleKey)
-    return title
-  })
-  constructor() {
+  locale: LocaleService
+  titleKey$: State<string>
+  title$: Observable<string>
+  constructor(locale: LocaleService) {
+    this.locale = localeService
+    this.titleKey$ = new State('title.default', ns('titleKey'))
+    this.title$ = combineLatest(
+      this.titleKey$,
+      this.locale.locale$,
+      titleKey => {
+        const title = this.locale.translate(titleKey)
+        return title
+      }
+    )
     this.title$.subscribe(title => {
       document.title = `saas-${title}`
     })
@@ -24,4 +31,4 @@ class TitleService implements RouteGuard {
   }
 }
 
-export const titleService = new TitleService()
+export const titleService = new TitleService(localeService)
