@@ -48,3 +48,9 @@ rsync:
 release:
 	ssh $(to) -t "mkdir -p $(HTDOCS_PATH)"
 	ssh $(to) -t "ln -sfTv $(CONTENT_PATH)/$(NAME) $(HTDOCS_PATH)/$(NAME)"
+
+clean:
+	docker run -i --rm \
+	-v $(PWD):/app \
+	$(DOCKER_IMAGE) \
+	rm -r ./*

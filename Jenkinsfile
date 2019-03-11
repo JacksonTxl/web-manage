@@ -79,4 +79,10 @@ pipeline {
       }
     }
   }
+  post {
+    always {
+      // 始终删除构建过程中产出的文件
+      sh 'make clean'
+    }
+  }
 }
