@@ -1,11 +1,19 @@
 import Cookie from 'js-cookie'
 import { ServiceRoute, RouteGuard } from 'vue-service-app'
 import router from '@/router'
+import { State } from 'rx-state/src'
 
 const TOKEN_NAME = 'saas-token'
 
 export class AuthService implements RouteGuard {
+  token$: State<string>
   token: string | undefined = this.getAuthToken()
+  constructor() {
+    this.token$ = new State(Cookie.get(TOKEN_NAME))
+  }
+  SET_TOKEN(token: string) {
+    this.token$.commit(() => token)
+  }
   getAuthToken() {
     return Cookie.get(TOKEN_NAME)
   }
