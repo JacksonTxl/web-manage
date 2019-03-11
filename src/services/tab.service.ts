@@ -2,7 +2,7 @@ import { State, withNamespace, getState } from 'rx-state'
 import { find, findIndex, last, clone } from 'lodash-es'
 import router from '@/router'
 import { ServiceRoute, RouteGuard } from 'vue-service-app'
-import { combineLatest } from 'rxjs'
+import { combineLatest, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
 const ns = withNamespace('tab')
@@ -13,12 +13,23 @@ interface Tab {
 }
 
 class TabService implements RouteGuard {
-  tabs$ = new State<Tab[]>([], ns('tabs'))
-  activeKey$ = new State<string>('', ns('activeKey'))
-  activeTab$ = combineLatest(this.tabs$, this.activeKey$, (tabs, activeKey) =>
-    find(tabs, activeKey)
-  )
-  canCloseTab$ = this.tabs$.pipe(map(tabs => tabs.length > 1))
+  tabs$: State<Tab[]>
+  activeKey$: State<string>
+  activeTab$: Observable<Tab | {}>
+  canCloseTab$: Observable<boolean>
+  constructor() {
+    this.tabs$ = new State([], ns('tabs'))
+    this.activeKey$ = new State('', ns('activeKey'))
+    this.activeTab$ = combineLatest(
+      this.tabs$,
+      this.activeKey$,
+      (tabs, activeKey) => {
+        return find(tabs, activeKey) || {}
+      }
+    )
+    this.canCloseTab$ = this.tabs$.pipe(map(tabs => tabs.length > 1))
+  }
+
   private ADD_TAB(tab: Tab) {
     this.tabs$.commit(tabs => {
       tabs && tabs.push(tab)

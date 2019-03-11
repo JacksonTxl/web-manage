@@ -12,11 +12,15 @@ interface User {
 }
 
 export class UserServie implements RouteGuard {
-  user$ = new State<User>({}, ns('user'))
-  menu$ = new State<string[]>([], ns('menu'))
-  role$ = new State<object>({}, ns('role'))
+  user$: State<User>
+  menu$: State<any[]>
+  role$: State<object>
   loginAccountLoading$ = new State<boolean>(false, ns('loginAccountLoading'))
-
+  constructor() {
+    this.user$ = new State({}, ns('user'))
+    this.menu$ = new State([], ns('menu'))
+    this.role$ = new State({}, ns('role'))
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     // if (!getState(this.user$).id) {
     //   this.getCurrentUserInfo().subscribe(() => {
