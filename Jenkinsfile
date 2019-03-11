@@ -2,13 +2,8 @@ pipeline {
   agent any
   stages {
     stage('Build') {
-      agent {
-        docker {
-          image 'hub.styd.cn/node:sr-8.12.0'
-        }
-      }
       steps {
-        sh 'npm run ci'
+        sh 'make build'
       }
     }
     stage('Rsync') {

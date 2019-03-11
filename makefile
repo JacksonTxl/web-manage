@@ -13,6 +13,13 @@ NGINX_CONF_PATH = /application/nginx/conf
 # 使用的docker镜像
 DOCKER_IMAGE = hub.styd.cn/node:sr-8.12.0
 
+connect:
+	docker run -it --rm \
+	--dns=101.132.119.70 \
+	-v $(PWD):/app \
+	-v $(NAME)_nm:/app/node_modules \
+	$(DOCKER_IMAGE)
+
 pull-image:
 	docker pull $(DOCKER_IMAGE)
 
