@@ -1,4 +1,22 @@
-import { http } from '@/services/http.service'
+import { HttpService } from '@/services/http.service'
+import { Injectable } from 'vue-service-app'
+
+@Injectable()
+export class ManageApi {
+  constructor(private http: HttpService) {}
+  /**
+   * 通过手机找回密码
+   */
+  findManagePhone(params: ManagePhoneInput) {
+    return this.http.post('/v1/account/manage/phone', { params })
+  }
+  /**
+   * 通过邮件找回密码
+   */
+  findManageMail(params: ManageMailInput) {
+    return this.http.post('/v1/account/manage/mail', { params })
+  }
+}
 
 export interface ManagePhoneInput {
   /**
@@ -15,9 +33,6 @@ export interface ManagePhoneInput {
   captcha: string
 }
 
-export const findManagePhone = (params: ManagePhoneInput) =>
-  http.post('/v1/account/manage/phone', { params })
-
 export interface ManageMailInput {
   /**
    * 邮箱
@@ -29,5 +44,3 @@ export interface ManageMailInput {
      */
   captcha: string
 }
-export const findManageMail = (params: ManageMailInput) =>
-  http.post('/v1/account/manage/mail', { params })

@@ -7,6 +7,3 @@ export const HOST_IMAGE = '//pic3-s.styd.cn'
 
 export const IS_DEV = process.env.NODE_ENV === 'development'
 export const IS_PROD = process.env.NODE_ENV === 'production'
-
-export const STATE_DEBUG = true
-export const DEBUG_ROUTE = true

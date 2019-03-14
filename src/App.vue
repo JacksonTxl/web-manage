@@ -1,45 +1,33 @@
 <template>
-  <a-locale-provider :locale='antdLocaleMessages'>
+  <a-locale-provider :locale="antdLocale">
     <div id="app">
       <component :is='layoutComponent'></component>
       <modal-router-view></modal-router-view>
-      <div :class="{'git': true, 'is-git': !!gitNumber}"
-        @click="getCommitHead">
-        <span>{{gitNumber}}</span>
-      </div>
     </div>
   </a-locale-provider>
 </template>
 
 <script>
-import { localeService } from '@/services/locale.service'
 import { layoutMap } from '@/views/layouts/index.ts'
+import { I18NService } from '@/services/i18n.service'
 
 export default {
   name: 'app',
+  serviceInject() {
+    return {
+      i18n: I18NService
+    }
+  },
   subscriptions() {
     return {
-      antdLocaleMessages: localeService.antdLocaleMessages$
-    }
-  },
-  data() {
-    return {
-      count: 0,
-      tips: [
-        `commitNumber: ${process.env.GIT_COMMIT}`,
-        `gitMessage: ${process.env.GIT_MESSAGE}`
-      ]
-    }
-  },
-  methods: {
-    getCommitHead() {
-      this.count < 5 && this.count++
-      this.gitNumber =
-        this.count >= 5 ? process.env.GIT_COMMIT : this.tips[this.count - 1]
+      antdLocale: this.i18n.antdLocale$
     }
   },
   computed: {
     layoutName() {
+      if (!this.$route.meta.layout && this.$route.name) {
+        console.warn(`can not find meta.layout on route -> ${this.$route.name}`)
+      }
       return this.$route.meta.layout || 'loading'
     },
     layoutComponent() {
@@ -48,7 +36,6 @@ export default {
   }
 }
 </script>
-
 <style >
 .git {
   position: absolute;
