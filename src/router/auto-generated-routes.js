@@ -22,7 +22,7 @@ const pageRoutes = [{
   name: 'dashboard',
   path: '/dashboard',
   component: pageDashboard,
-  guards: [dashboardService]
+  guards: [DashboardService]
 }, {
   name: 'test-llf',
   path: '/test/llf',
@@ -32,7 +32,7 @@ const pageRoutes = [{
   name: 'test-zlx',
   path: '/test/zlx',
   component: pageTestZlx,
-  guards: [zlxService]
+  guards: [ZlxService]
 }, {
   name: 'test-zlxFull',
   path: '/test/zlxFull',
