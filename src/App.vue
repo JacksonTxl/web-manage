@@ -10,6 +10,7 @@
 <script>
 import { layoutMap } from '@/views/layouts/index.ts'
 import { I18NService } from '@/services/i18n.service'
+import { imgFilter } from '@/filters/img'
 
 export default {
   name: 'app',

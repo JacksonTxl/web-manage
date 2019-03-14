@@ -1,11 +1,14 @@
-import { HOST_IMAGE } from '@/constants/config'
+import { AppConfig } from '@/constants/config'
+
+const container = window.getContainer()
+const appConfig = container.get(AppConfig)
 
 interface Options {
   w?: string | number
   h?: string | number
 }
 export const imgFilter = (key: string, options: Options = {}) => {
-  let imgUrl = `${HOST_IMAGE}/${key}`
+  let imgUrl = `${appConfig.HOST_IMAGE}/${key}`
   let imageView = ''
 
   if (options.w) {

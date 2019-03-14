@@ -58,6 +58,7 @@ export interface RouteGuard {
 }
 
 export class Container {
+  get<T>(provide: Ctor<T>): T
   get(provide: any): any
   useClass(Cls: any): this
   useValue(provide: any, value: any): this
@@ -83,11 +84,17 @@ declare module 'vue-service-app' {
   }
 }
 
+declare global {
+  interface Window {
+    getContainer(): Container
+  }
+}
+
 declare module 'vue/types/options' {
   interface ComponentOptions<V extends Vue> {
     /**
      * injects
      */
-    serviceInject?: ((this: V) => object)
+    serviceInject?: (this: V) => object
   }
 }
