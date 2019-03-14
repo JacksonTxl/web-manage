@@ -31,6 +31,7 @@ export class UserService {
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
     console.log('userService start')
+    console.log(this.loginApi)
     next()
   }
 }

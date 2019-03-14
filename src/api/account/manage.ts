@@ -1,9 +1,6 @@
-import { HttpService } from '@/services/http.service'
-import { Injectable } from 'vue-service-app'
+import { Api } from '../api'
 
-@Injectable()
-export class ManageApi {
-  constructor(private http: HttpService) {}
+export class ManageApi extends Api {
   /**
    * 通过手机找回密码
    */
