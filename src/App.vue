@@ -3,9 +3,9 @@
     <div id="app">
       <component :is='layoutComponent'></component>
       <modal-router-view></modal-router-view>
-      <div :class="{'git': true, 'is-git': !!gitNumber}"
+      <div class="git is-git"
         @click="getCommitHead">
-        <span>{{gitNumber}}</span>
+        <span>{{tips[count]}}</span>
       </div>
     </div>
   </a-locale-provider>
@@ -26,16 +26,15 @@ export default {
     return {
       count: 0,
       tips: [
-        `commitNumber: ${process.env.GIT_COMMIT}`,
-        `gitMessage: ${process.env.GIT_MESSAGE}`
+        `commitNumber: ${process.env.GIT_COMMIT} \n
+          msg: ${process.env.GIT_MESSAGE}`,
+        `Date: ${process.env.GIT_DATE}`
       ]
     }
   },
   methods: {
     getCommitHead() {
-      this.count < 5 && this.count++
-      this.gitNumber =
-        this.count >= 5 ? process.env.GIT_COMMIT : this.tips[this.count - 1]
+      this.count = this.count ? 0 : 1
     }
   },
   computed: {

@@ -8,8 +8,13 @@ import { setup } from 'rx-state'
 import { IS_DEV } from './constants/config'
 import { debugService } from './services/debug.service'
 import { localeService } from './services/locale.service'
+import FullCalendar from 'vue-full-calendar'
 
 import './style/app.less'
+
+import 'fullcalendar/dist/fullcalendar.min.css'
+
+Vue.use(FullCalendar)
 
 Vue.use(Antd)
 Vue.use(VueRx)
