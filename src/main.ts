@@ -1,7 +1,9 @@
+import '@abraham/reflection'
 import Vue from 'vue'
 import Antd from 'ant-design-vue'
 import VueRx from 'vue-rx'
-import router from './router/index'
+import routes from './router/routes'
+import VueServiceApp from 'vue-service-app'
 import { modalRouter } from './modal-router/index'
 import App from './App.vue'
 import { setup } from 'rx-state'
@@ -11,6 +13,7 @@ import { localeService } from './services/locale.service'
 import FullCalendar from 'vue-full-calendar'
 
 import './style/app.less'
+import { providers } from './providers'
 
 import 'fullcalendar/dist/fullcalendar.min.css'
 
@@ -18,39 +21,16 @@ Vue.use(FullCalendar)
 
 Vue.use(Antd)
 Vue.use(VueRx)
+Vue.use(VueServiceApp)
 
-setup({
-  debug: IS_DEV,
-  onStateChange: (stateSnapshot, tag) => {
-    debugService.stateEvent$.dispatch({
-      tag,
-      stateSnapshot
-    })
-  }
-})
-
-Vue.mixin({
-  methods: {
-    $t(...args) {
-      // @ts-ignore
-      return this.$root.localeTranslateVue(...args)
-    }
-  }
+const { router } = new VueServiceApp({
+  routes,
+  providers
 })
 
 const app = new Vue({
   el: '#app',
-  subscriptions() {
-    return {
-      appLocaleMessages: localeService.appLocaleMessages$
-    }
-  },
-  methods: {
-    localeTranslateVue(key: string): string {
-      // @ts-ignore
-      return localeService.translateGet(this.appLocaleMessages, key)
-    }
-  },
+  mounted() {},
   router,
   // @ts-ignore
   modalRouter,

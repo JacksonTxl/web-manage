@@ -2,8 +2,8 @@
 * this js file is auto generated, you should not modifyed this file
 **/
 
-import { dashboardService } from '@/views/pages/dashboard.service.ts'
-import { zlxService } from '@/views/pages/test/zlx.service.ts'
+import { DashboardService } from '@/views/pages/dashboard.service.ts'
+import { ZlxService } from '@/views/pages/test/zlx.service.ts'
 
 const page404 = () => import('@/views/pages/404.vue')
 const pageDashboard = () => import('@/views/pages/dashboard.vue')

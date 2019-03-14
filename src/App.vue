@@ -1,5 +1,5 @@
 <template>
-  <a-locale-provider :locale='antdLocaleMessages'>
+  <a-locale-provider :locale="antdLocale">
     <div id="app">
       <component :is='layoutComponent'></component>
       <modal-router-view></modal-router-view>
@@ -12,14 +12,14 @@
 </template>
 
 <script>
-import { localeService } from '@/services/locale.service'
 import { layoutMap } from '@/views/layouts/index.ts'
+import { I18NService } from '@/services/i18n.service'
 
 export default {
   name: 'app',
-  subscriptions() {
+  serviceInject() {
     return {
-      antdLocaleMessages: localeService.antdLocaleMessages$
+      i18n: I18NService
     }
   },
   data() {
@@ -32,6 +32,11 @@ export default {
       ]
     }
   },
+  subscriptions() {
+    return {
+      antdLocale: this.i18n.antdLocale$
+    }
+  },
   methods: {
     getCommitHead() {
       this.count = this.count ? 0 : 1
@@ -39,6 +44,9 @@ export default {
   },
   computed: {
     layoutName() {
+      if (!this.$route.meta.layout && this.$route.name) {
+        console.warn(`can not find meta.layout on route -> ${this.$route.name}`)
+      }
       return this.$route.meta.layout || 'loading'
     },
     layoutComponent() {
@@ -47,7 +55,6 @@ export default {
   }
 }
 </script>
-
 <style >
 .git {
   position: absolute;

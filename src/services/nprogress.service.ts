@@ -3,8 +3,9 @@ import { RouteGuard, ServiceRoute } from 'vue-service-app'
 import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
-class NProgressService implements RouteGuard {
+export class NProgressService implements RouteGuard {
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
+    console.log('nprogressService start')
     nProgress.start()
     next()
   }

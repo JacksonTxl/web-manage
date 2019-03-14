@@ -1,14 +1,18 @@
 import Cookie from 'js-cookie'
-import { ServiceRoute, RouteGuard } from 'vue-service-app'
-import router from '@/router'
-import { State } from 'rx-state/src'
+import {
+  ServiceRoute,
+  RouteGuard,
+  Injectable,
+  ServiceRouter
+} from 'vue-service-app'
+import { State } from 'rx-state'
 
 const TOKEN_NAME = 'saas-token'
-
+@Injectable()
 export class AuthService implements RouteGuard {
   token$: State<string>
   token: string | undefined = this.getAuthToken()
-  constructor() {
+  constructor(private router: ServiceRouter) {
     this.token$ = new State(Cookie.get(TOKEN_NAME))
   }
   SET_TOKEN(token: string) {
@@ -25,11 +29,9 @@ export class AuthService implements RouteGuard {
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
     if (!this.token) {
-      location.href = '/user/login'
+      this.router.push({ name: 'user-login' })
       return next(false)
     }
     return next()
   }
 }
-
-export const authService = new AuthService()

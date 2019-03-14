@@ -1,4 +1,6 @@
 export default {
+  scope: '应用',
+  locale: 'zh-cn',
   login: {
     pwdSignIn: '账户密码登录',
     mobileSignIn: '手机动态密码登录',
@@ -13,7 +15,7 @@ export default {
     other: '未知错误'
   },
   title: {
-    'default': '领先的商业系统提供商',
+    default: '领先的商业系统提供商',
     'user-login': '登陆',
     404: '页面未找到',
     dashboard: '仪表盘',

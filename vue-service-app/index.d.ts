@@ -1,10 +1,15 @@
 import VueRouter, { Route, RouteConfig } from 'vue-router'
 import { VueConstructor } from 'vue'
+import { Vue } from 'vue/types/vue'
 
 type PluginFunction<T> = (Vue: VueConstructor, options?: T) => void
 
 interface Dictionary<T> {
   [key: string]: T
+}
+
+interface Ctor<T> {
+  new (...args: any[]): T
 }
 
 interface QueryOption {
@@ -37,10 +42,13 @@ export interface ServiceRouteConfig extends RouteConfig {
   meta?: ServiceRouteConfigMeta
 }
 
-interface RouterConfig {
-  base?: string
-  routes?: ServiceRouteConfig[]
-}
+type ServiceProvideConfig =
+  | Ctor<any>
+  | {
+      provide: any
+      useValue?: any
+      useClass?: Ctor<any>
+    }
 
 export interface RouteGuard {
   beforeEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
@@ -49,15 +57,37 @@ export interface RouteGuard {
   afterEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
 }
 
-export class VueServiceApp {
-  static install: PluginFunction<never>
+export class Container {
+  get(provide: any): any
+  useClass(Cls: any): this
+  useValue(provide: any, value: any): this
+}
+
+interface VueServiceAppConfig {
+  base?: string
+  routes?: ServiceRouteConfig[]
+  providers?: ServiceProvideConfig[]
 }
 
 declare module 'vue-service-app' {
-  export class Router {
-    constructor(options?: RouterConfig)
-    router: VueRouter
+  export class ServiceRouter extends VueRouter {}
+  export class InjectionToken {
+    constructor(desc: string)
+  }
+  export function Injectable(): any
+  export function Inject(provide: any): any
+  export default class VueServiceApp {
+    static install: PluginFunction<never>
+    constructor(config: VueServiceAppConfig)
+    router: ServiceRouter
   }
 }
 
-export default VueServiceApp
+declare module 'vue/types/options' {
+  interface ComponentOptions<V extends Vue> {
+    /**
+     * injects
+     */
+    serviceInject?: ((this: V) => object)
+  }
+}

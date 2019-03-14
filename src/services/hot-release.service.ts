@@ -3,7 +3,7 @@ import { debounceTime } from 'rxjs/operators'
 
 import { RouteGuard, ServiceRoute } from 'vue-service-app'
 
-class HotReleaseService implements RouteGuard {
+export class HotReleaseService implements RouteGuard {
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
     console.log('hotReleaseService start')
     const suffix = new Date().getTime()
@@ -27,4 +27,3 @@ class HotReleaseService implements RouteGuard {
     next()
   }
 }
-export const hotReleaseService = new HotReleaseService()

@@ -3,11 +3,12 @@ import { ajax, AjaxError } from 'rxjs/ajax'
 import { catchError, pluck } from 'rxjs/operators'
 import { API_BASE, API_BASE_MOCK } from '@/constants/config'
 import { notification } from 'ant-design-vue'
-import { authService } from './auth.service'
 import { StResponse } from '@/types/app'
-import router from '@/router'
 import qs from 'qs'
-import { localeService, LocaleService } from './locale.service'
+import { Injectable, ServiceRouter } from 'vue-service-app'
+import { I18NService } from './i18n.service'
+import { AuthService } from './auth.service'
+
 interface MockOptions {
   status?: number
 }
@@ -32,13 +33,13 @@ interface RequestOptions {
   params?: Params
 }
 
+@Injectable()
 export class HttpService {
-  // inject
-  locale: LocaleService
-
-  constructor(locale: LocaleService) {
-    this.locale = locale
-  }
+  constructor(
+    private i18n: I18NService,
+    private auth: AuthService,
+    private router: ServiceRouter
+  ) {}
   get(url: string, options: RequestOptions = {}) {
     let requestUrl = this.makeRequestUrl(url, options)
     const get$ = ajax
@@ -91,7 +92,7 @@ export class HttpService {
   }
   get headers() {
     return {
-      token: authService.getAuthToken(),
+      token: this.auth.getAuthToken(),
       'App-Id': '123',
       'App-Version': '1123',
       'Content-Type': 'application/json;charset=UTF-8;'
@@ -105,37 +106,37 @@ export class HttpService {
           case 400:
             notification.warn({
               message: serverResponse.msg,
-              description: this.locale.translate('http.400')
+              description: this.i18n.translate('http.400')
             })
             break
           case 401:
             notification.warn({
               message: serverResponse.msg,
-              description: this.locale.translate('http.401')
+              description: this.i18n.translate('http.401')
             })
-            router.push({ name: 'user-login' })
+            this.router.push({ name: 'user-login' })
             break
           case 403:
             notification.warn({
               message: serverResponse.msg,
-              description: this.locale.translate('http.403')
+              description: this.i18n.translate('http.403')
             })
             break
           case 404:
             notification.error({
-              message: this.locale.translate('http.404'),
+              message: this.i18n.translate('http.404'),
               description: err.message
             })
             break
           case 500:
             notification.error({
-              message: this.locale.translate('http.500'),
+              message: this.i18n.translate('http.500'),
               description: err.message
             })
             break
           default:
             notification.error({
-              message: this.locale.translate('http.other'),
+              message: this.i18n.translate('http.other'),
               description: err.message
             })
             break
@@ -145,5 +146,3 @@ export class HttpService {
     )
   }
 }
-
-export const http = new HttpService(localeService)
