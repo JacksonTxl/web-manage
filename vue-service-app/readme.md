@@ -2,9 +2,14 @@
 
 使用服务管理全局 vue 应用的数据流
 
+## 特性
+* 依赖注入
+* 自动类实例注入
+
 依赖于
 * vue-router
 * vue-router-multiguard
+* reflect-metadata
 
 ```js
 import VueServiceApp, { Router, RouteGuard } from 'vue-service-app'
@@ -31,8 +36,6 @@ class TestService implements RouteGuard {
     console.log('路由结束时的钩子')
   }
 }
-
-const testService = new TestService()
 /**
  * 导出的router为vue-router实例
  */
@@ -43,7 +46,7 @@ const { router } = new Router({
       name: 'a',
       path: '/',
       // 扩展了guards选项
-      guards: [testService],
+      guards: [TestService],
       // 扩展了query处理选项
       queryOptions: {
         a: { type: Number, default: 99 },

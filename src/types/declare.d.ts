@@ -17,4 +17,7 @@ declare module '*.jpg' {
   export default value
 }
 
-declare module 'vue-full-calendar'
+declare module 'vue-full-calendar' {
+  const value: any
+  export default value
+}

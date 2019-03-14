@@ -1,13 +1,13 @@
 import { Observable } from 'rxjs'
 import { ajax, AjaxError } from 'rxjs/ajax'
 import { catchError, pluck } from 'rxjs/operators'
-import { API_BASE, API_BASE_MOCK } from '@/constants/config'
 import { notification } from 'ant-design-vue'
 import { StResponse } from '@/types/app'
 import qs from 'qs'
 import { Injectable, ServiceRouter } from 'vue-service-app'
 import { I18NService } from './i18n.service'
 import { AuthService } from './auth.service'
+import { AppConfig } from '@/constants/config'
 
 interface MockOptions {
   status?: number
@@ -38,7 +38,8 @@ export class HttpService {
   constructor(
     private i18n: I18NService,
     private auth: AuthService,
-    private router: ServiceRouter
+    private router: ServiceRouter,
+    private appConfig: AppConfig
   ) {}
   get(url: string, options: RequestOptions = {}) {
     let requestUrl = this.makeRequestUrl(url, options)
@@ -78,12 +79,12 @@ export class HttpService {
     const { mock, query } = options
     if (mock) {
       if (mock.status && mock.status !== 200) {
-        requestUrl = API_BASE_MOCK + '/' + mock.status
+        requestUrl = this.appConfig.API_BASE_MOCK + '/' + mock.status
       } else {
-        requestUrl = API_BASE_MOCK + url
+        requestUrl = this.appConfig.API_BASE_MOCK + url
       }
     } else {
-      requestUrl = API_BASE + url
+      requestUrl = this.appConfig.API_BASE + url
     }
     if (query && Object.keys(query)) {
       requestUrl = requestUrl + '?' + qs.stringify(query)

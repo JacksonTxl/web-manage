@@ -9,21 +9,6 @@ interface SetupOptions {
 export type Mutation<T> = (state: T) => T | void
 export type Epic = (stream: Observable<any>) => Observable<any>
 
-const setupOptions: SetupOptions = {
-  debug: false,
-  onStateChange(value: any, tag: string, timestamp: number) {}
-}
-
-export function setup(userOptions: SetupOptions) {
-  setupOptions.debug = userOptions.debug || false
-  if (
-    userOptions.onStateChange &&
-    typeof userOptions.onStateChange === 'function'
-  ) {
-    setupOptions.onStateChange = userOptions.onStateChange
-  }
-}
-
 let stateIndex = 1
 export class State<T> extends BehaviorSubject<T> {
   tag: string
@@ -47,12 +32,8 @@ export class State<T> extends BehaviorSubject<T> {
     }
 
     if (newState !== this.value) {
-      if (setupOptions.debug) {
-        setupOptions.onStateChange(
-          JSON.parse(JSON.stringify(newState)),
-          this.tag,
-          new Date().getTime()
-        )
+      if (process.env.NODE_ENV === 'development') {
+        console.log(this.tag, JSON.parse(JSON.stringify(newState)))
       }
       this.next(newState)
     }
