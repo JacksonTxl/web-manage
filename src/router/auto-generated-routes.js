@@ -9,6 +9,7 @@ const page404 = () => import('@/views/pages/404.vue')
 const pageDashboard = () => import('@/views/pages/dashboard.vue')
 const pageTestLlf = () => import('@/views/pages/test/llf.vue')
 const pageTestZlx = () => import('@/views/pages/test/zlx.vue')
+const pageTestZlxFull = () => import('@/views/pages/test/zlxFull.vue')
 const pageUserLogin = () => import('@/views/pages/user/login.vue')
 
 // service
@@ -32,6 +33,11 @@ const pageRoutes = [{
   path: '/test/zlx',
   component: pageTestZlx,
   guards: [zlxService]
+}, {
+  name: 'test-zlxFull',
+  path: '/test/zlxFull',
+  component: pageTestZlxFull,
+  guards: []
 }, {
   name: 'user-login',
   path: '/user/login',

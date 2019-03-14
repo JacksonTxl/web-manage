@@ -3,6 +3,10 @@
     <div id="app">
       <component :is='layoutComponent'></component>
       <modal-router-view></modal-router-view>
+      <div class="git is-git"
+        @click="getCommitHead">
+        <span>{{tips[count]}}</span>
+      </div>
     </div>
   </a-locale-provider>
 </template>
@@ -19,9 +23,24 @@ export default {
       i18n: I18NService
     }
   },
+  data() {
+    return {
+      count: 0,
+      tips: [
+        `commitNumber: ${process.env.GIT_COMMIT} \n
+          msg: ${process.env.GIT_MESSAGE}`,
+        `Date: ${process.env.GIT_DATE}`
+      ]
+    }
+  },
   subscriptions() {
     return {
       antdLocale: this.i18n.antdLocale$
+    }
+  },
+  methods: {
+    getCommitHead() {
+      this.count = this.count ? 0 : 1
     }
   },
   computed: {
