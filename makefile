@@ -53,4 +53,4 @@ clean:
 	docker run -i --rm \
 	-v $(PWD):/app \
 	$(DOCKER_IMAGE) \
-	rm -r ./*
+	rm -r ./dist/*

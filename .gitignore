@@ -2,6 +2,7 @@
 node_modules
 /dist
 public/release.json
+public/themes
 
 package-lock.json
 # local env files

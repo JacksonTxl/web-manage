@@ -14,10 +14,11 @@
 <script>
 import { layoutMap } from '@/views/layouts/index.ts'
 import { I18NService } from '@/services/i18n.service'
-import { imgFilter } from '@/filters/img'
+import { appConfig } from '@/constants/config'
 
 export default {
   name: 'app',
+  // 服务注入
   serviceInject() {
     return {
       i18n: I18NService
@@ -27,9 +28,9 @@ export default {
     return {
       count: 0,
       tips: [
-        `commitNumber: ${process.env.GIT_COMMIT} \n
-          msg: ${process.env.GIT_MESSAGE}`,
-        `Date: ${process.env.GIT_DATE}`
+        `commitNumber: ${appConfig.GIT_COMMIT} \n
+          msg: ${appConfig.GIT_MESSAGE}`,
+        `Date: ${appConfig.GIT_DATE}`
       ]
     }
   },

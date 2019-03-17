@@ -1,23 +1,25 @@
 export default {
-  login: {
-    pwdSignIn: 'SignIn',
-    mobileSignIn: 'Mobile Sign In',
-    agree: 'Agree'
+  locale: 'en_US',
+  // app 作用域的文字
+  app: {
+    title: '三体云动',
+    http: {
+      400: 'Bad Request',
+      404: 'Servie Not Found',
+      401: 'Unauthorized',
+      403: 'Frobidden',
+      500: 'Internal Server Error',
+      other: 'Unknown Error'
+    }
   },
-  msg: 'message',
-  http: {
-    400: 'Bad Request',
-    404: 'Servie Not Found',
-    401: 'Unauthorized',
-    403: 'Frobidden',
-    500: 'Internal Server Error',
-    other: 'Unknown Error'
+  // 和页面的name一致
+  'user-login': {
+    title: 'Login'
   },
-  title: {
-    'default': 'advanced Business management',
-    'user-login': 'Login',
-    404: 'Page Not Found',
-    dashboard: 'dashboard',
-    'test-llf': 'test-llf'
+  dashboard: {
+    title: 'Dashboard'
+  },
+  404: {
+    title: 'Page Not Found'
   }
 }

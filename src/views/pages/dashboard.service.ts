@@ -1,11 +1,10 @@
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
-import { HttpService } from '@/services/http.service'
 
 @Injectable()
 export class DashboardService implements RouteGuard {
-  constructor(private http: HttpService) {}
+  constructor() {}
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    console.log(this.http)
+    console.log('dashboard service start')
     next()
   }
 }

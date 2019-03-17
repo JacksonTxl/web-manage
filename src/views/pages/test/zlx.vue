@@ -12,7 +12,7 @@
     @dayClick="dayClick"
     @moreClick="moreClick">
     <template slot="fc-event-card"
-      scope="p">
+      slot-scope="p">
       <p><i class="fa">sadfsd</i> {{ p.event.title }} test</p>
     </template>
     </full-calendar>

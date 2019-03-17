@@ -63,7 +63,7 @@ export class I18NService {
   }
   translate(appMsgKey: string) {
     const appMessages = getState(this.appLocale$)
-    const text = get(appMessages, appMsgKey)
+    const text = get(appMessages, appMsgKey) || ''
     if (!text) {
       console.warn(
         `i18nService can not translate [${appMsgKey}],are you declared?`

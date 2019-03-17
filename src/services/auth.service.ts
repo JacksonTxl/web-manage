@@ -5,33 +5,36 @@ import {
   Injectable,
   ServiceRouter
 } from 'vue-service-app'
-import { State } from 'rx-state'
+import { appConfig } from '@/constants/config'
 
-const TOKEN_NAME = 'saas-token'
 @Injectable()
 export class AuthService implements RouteGuard {
-  token$: State<string>
+  appConfig = appConfig
   token: string | undefined = this.getAuthToken()
-  constructor(private router: ServiceRouter) {
-    this.token$ = new State(Cookie.get(TOKEN_NAME))
-  }
-  SET_TOKEN(token: string) {
-    this.token$.commit(() => token)
-  }
+  constructor(private router: ServiceRouter) {}
   getAuthToken() {
-    return Cookie.get(TOKEN_NAME)
+    return Cookie.get(this.appConfig.TOKEN_NAME)
   }
   setAuthToken(token: string) {
-    Cookie.set(TOKEN_NAME, token, { expires: 7 })
+    Cookie.set(this.appConfig.TOKEN_NAME, token, { expires: 7 })
   }
   removeAuthToken() {
-    Cookie.remove(TOKEN_NAME)
+    Cookie.remove(this.appConfig.TOKEN_NAME)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
+    console.log('authService start')
     if (!this.token) {
-      this.router.push({ name: 'user-login' })
-      return next(false)
+      this.router.push({
+        name: 'user-login',
+        query: {
+          radom: Math.random()
+            .toString(16)
+            .slice(2)
+        }
+      })
+      next(false)
+    } else {
+      next()
     }
-    return next()
   }
 }
