@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>
-      Here is the demo of vue-fullcalendar, no jquery fullcalendar.js required!
+      Here is the demo of vue-fullcalendar, no jquery fullcalendar.j
     </p>
     <full-calendar class="test-fc"
     :events="fcEvents"
