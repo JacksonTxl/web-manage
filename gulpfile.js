@@ -15,6 +15,9 @@ gulp.task('less', done => {
 })
 
 gulp.task('route', done => {
+  done()
+})
+gulp.task('initRoute', done => {
   RouteTask.run('init', 'init')
   done()
 })
