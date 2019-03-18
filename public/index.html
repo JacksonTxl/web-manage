@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title>三体云动</title>
-    <link rel="stylesheet/less" href="./app.less" />
+    <link rel="stylesheet/less" href="<%= BASE_URL %>app.less" />
     <style>
       .page-loader-container {
         position: absolute;
@@ -110,10 +110,12 @@
         javascriptEnabled:true
       }
     </script>
-    <script src="./js/less.js/3.9.0/less.min.js"></script>
+    <script src="<%= BASE_URL %>js/less.js/3.9.0/less.min.js"></script>
     <script>
      <% if (NODE_ENV==='development') { %>
-      less.watch()
+     setTimeout(()=>{
+        less.watch()
+     },10000)
       <% } %>
     </script>
 

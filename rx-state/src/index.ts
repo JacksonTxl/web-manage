@@ -72,7 +72,7 @@ export class Action<PAYLOAD> {
   subscribe(...args: any[]) {
     return this.action$.subscribe(...args)
   }
-  dispatch(payload: PAYLOAD) {
+  dispatch(payload?: PAYLOAD) {
     this.trigger$.next(payload)
   }
 }
