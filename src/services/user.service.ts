@@ -1,6 +1,6 @@
 import { LoginApi, LoginAccountInput, LoginPhoneInput } from '@/api/login'
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, withNamespace } from 'rx-state/src'
+import { State, withNamespace } from 'rx-state'
 import { tap } from 'rxjs/operators'
 
 interface User {
@@ -31,7 +31,6 @@ export class UserService {
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
     console.log('userService start')
-    console.log(this.loginApi)
     next()
   }
 }

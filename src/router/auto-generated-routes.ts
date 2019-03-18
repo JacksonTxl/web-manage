@@ -1,6 +1,7 @@
 /**
 * this js file is auto generated, you should not modifyed this file
 **/
+
 import { DashboardService } from '@/views/pages/dashboard.service.ts'
 import { PluginsService } from '@/views/pages/plugins.service.ts'
 import { ListService as PluginsListService } from '@/views/pages/plugins/list.service.ts'

@@ -8,12 +8,9 @@ import App from './App.vue'
 import FullCalendar from 'vue-full-calendar'
 import 'fullcalendar/dist/fullcalendar.min.css'
 
-import './style/app.less'
-
+Vue.use(Antd)
 Vue.use(VueRx)
 Vue.use(FullCalendar)
-Vue.use(Antd)
-
 const app = new Vue({
   el: '#app',
   router,

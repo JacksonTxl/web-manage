@@ -7,7 +7,7 @@ import qs from 'qs'
 import { Injectable, ServiceRouter } from 'vue-service-app'
 import { I18NService } from './i18n.service'
 import { AuthService } from './auth.service'
-import { AppConfig } from '@/constants/config'
+import { appConfig } from '@/constants/config'
 
 interface MockOptions {
   status?: number
@@ -35,11 +35,11 @@ interface RequestOptions {
 
 @Injectable()
 export class HttpService {
+  appConfig = appConfig
   constructor(
     private i18n: I18NService,
     private auth: AuthService,
-    private router: ServiceRouter,
-    private appConfig: AppConfig
+    private router: ServiceRouter
   ) {}
   get(url: string, options: RequestOptions = {}) {
     let requestUrl = this.makeRequestUrl(url, options)
@@ -107,37 +107,37 @@ export class HttpService {
           case 400:
             notification.warn({
               message: serverResponse.msg,
-              description: this.i18n.translate('http.400')
+              description: this.i18n.translate('app.http.400')
             })
             break
           case 401:
             notification.warn({
               message: serverResponse.msg,
-              description: this.i18n.translate('http.401')
+              description: this.i18n.translate('app.http.401')
             })
             this.router.push({ name: 'user-login' })
             break
           case 403:
             notification.warn({
               message: serverResponse.msg,
-              description: this.i18n.translate('http.403')
+              description: this.i18n.translate('app.http.403')
             })
             break
           case 404:
             notification.error({
-              message: this.i18n.translate('http.404'),
+              message: this.i18n.translate('app.http.404'),
               description: err.message
             })
             break
           case 500:
             notification.error({
-              message: this.i18n.translate('http.500'),
+              message: this.i18n.translate('app.http.500'),
               description: err.message
             })
             break
           default:
             notification.error({
-              message: this.i18n.translate('http.other'),
+              message: this.i18n.translate('app.http.other'),
               description: err.message
             })
             break

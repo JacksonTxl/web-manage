@@ -24,9 +24,6 @@ module.exports = {
   css: {
     loaderOptions: {
       less: {
-        modifyVars: {
-          'primary-color': '#1890ff'
-        },
         javascriptEnabled: true
       }
     }
@@ -35,14 +32,10 @@ module.exports = {
     // https://www.npmjs.com/package/vue-cli-plugin-style-resources-loader
     'style-resources-loader': {
       preProcessor: 'less',
-      patterns: [
-        resolve('src/style/_vars.less'),
-        resolve('src/style/_mixins.less')
-      ]
+      patterns: []
     }
   },
   devServer: {
-    // https: true,
     proxy: {
       '/_api': {
         target: 'http://saas-dev.styd.cn',
@@ -86,25 +79,25 @@ module.exports = {
       .when(IS_DEV, config => {
         config.module.rules.delete('eslint')
       })
-    config
-      .plugin('define')
-      .tap(definitions => {
-        const { NODE_ENV } = process.env
-        definitions[0] = Object.assign(definitions[0], {
-          'process.env': {
-            BASE_URL: '"/"',
-            NODE_ENV: `"${NODE_ENV}"`,
-            GIT_COMMIT: `"${git.short()}"`,
-            GIT_MESSAGE: `"${git.message()}"`,
-            GIT_DATE: `"${git.date()}"`
-          }
-        })
-        return definitions
+    config.plugin('define').tap(definitions => {
+      const { NODE_ENV } = process.env
+      definitions[0] = Object.assign(definitions[0], {
+        'process.env': {
+          BASE_URL: '"/"',
+          NODE_ENV: `"${NODE_ENV}"`,
+          GIT_COMMIT: `"${git.short()}"`,
+          GIT_MESSAGE: `"${git.message()}"`,
+          GIT_DATE: `"${git.date()}"`
+        }
       })
-    config.resolve.alias.set('vue-service-app', path.join(__dirname, '/vue-service-app'))
+      return definitions
+    })
+    config.resolve.alias.set(
+      'vue-service-app',
+      path.join(__dirname, '/vue-service-app')
+    )
     config.resolve.alias.set('rx-state', path.join(__dirname, '/rx-state'))
 
-    config.resolve.symlinks(true)
     return config
   }
 }

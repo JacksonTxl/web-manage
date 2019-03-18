@@ -10,8 +10,6 @@ const syncRouteGuards = guards => (to, from) => {
 }
 
 const rootContainer = new Container()
-const getContainer = () => rootContainer
-window.getContainer = getContainer
 class VueServiceApp {
   static install(Vue) {
     Vue.use(VueRouter)
@@ -51,7 +49,6 @@ class VueServiceApp {
 
     // router.beforeEach && router.afterEach
     this.queryOptionsHandler()
-    this.beforeEachHandler()
     this.beforeRouteEnterHandler()
     this.beforeRouteUpdateHandler()
     this.afterEachHandler()
@@ -69,16 +66,27 @@ class VueServiceApp {
     }
   }
   initRouter() {
-    this.vueRouterOptions.routes.forEach(route => {
-      if (route.guards) {
-        this.guardMap[route.name] = route.guards || []
-      }
-      if (route.queryOptions) {
-        this.queryMap[route.name] = route.queryOptions || {}
-      }
-    })
+    const walkRoutes = routes => {
+      routes.forEach(route => {
+        if (route.guards) {
+          this.guardMap[route.name] = route.guards || []
+        }
+        if (route.queryOptions) {
+          this.queryMap[route.name] = route.queryOptions || {}
+        }
+        if (route.children && route.children.length) {
+          walkRoutes(route.children)
+        }
+      })
+    }
+    walkRoutes(this.vueRouterOptions.routes)
+
     this.router = new VueRouter(this.vueRouterOptions)
-    rootContainer.bind(ServiceRouter).toValue(this.router)
+
+    rootContainer.useProvider({
+      provide: ServiceRouter,
+      useValue: this.router
+    })
   }
   queryOptionsHandler() {
     this.router.beforeEach((to, from, next) => {
@@ -100,29 +108,27 @@ class VueServiceApp {
       next()
     })
   }
-  beforeEachHandler() {
-    this.router.beforeEach((to, from, next) => {
-      const guardCtors = this.guardMap[to.name] || []
-      const guards = guardCtors.map(G => {
-        return rootContainer.get(G)
-      })
-      const beforeEachMiddlewares = guards
-        .filter(g => g.beforeEach)
-        .map(g => g.beforeEach.bind(g))
-      if (!beforeEachMiddlewares.length) {
-        return next()
-      }
-      return multiguard(beforeEachMiddlewares)(to, from, next)
-    })
-  }
   beforeRouteEnterHandler() {
     this.router.beforeEach((to, from, next) => {
-      const guardCtors = this.guardMap[to.name] || []
+      const guardCtors = []
+      to.matched.forEach(Comp => {
+        guardCtors.push(...(this.guardMap[Comp.name] || []))
+      })
       if (to.name !== from.name) {
-        const guards = guardCtors.map(G => rootContainer.get(G))
-        const beforeRouteEnterMiddlewares = guards
-          .filter(g => g.beforeRouteEnter)
-          .map(g => g.beforeRouteEnter.bind(g))
+        const guards = guardCtors
+          .filter(G => !!G)
+          .map(G => rootContainer.get(G))
+
+        const beforeRouteEnterMiddlewares = []
+        guards
+          .filter(g => g.beforeEach || g.beforeRouteEnter)
+          .forEach(g => {
+            g.beforeEach &&
+              beforeRouteEnterMiddlewares.push(g.beforeEach.bind(g))
+            g.beforeRouteEnter &&
+              beforeRouteEnterMiddlewares.push(g.beforeRouteEnter.bind(g))
+          })
+
         if (!beforeRouteEnterMiddlewares.length) {
           return next()
         }
@@ -135,12 +141,24 @@ class VueServiceApp {
   beforeRouteUpdateHandler() {
     this.router.beforeEach((to, from, next) => {
       if (to.name === from.name) {
-        const guardCtors = this.guardMap[to.name] || []
+        const guardCtors = []
+        to.matched.forEach(Comp => {
+          guardCtors.push(...(this.guardMap[Comp.name] || []))
+        })
 
-        const guards = guardCtors.map(G => rootContainer.get(G))
-        const beforeRouteUpdateMiddlewares = guards
-          .filter(g => g.beforeRouteUpdate)
-          .map(g => g.beforeRouteUpdate.bind(g))
+        const guards = guardCtors
+          .filter(G => !!G)
+          .map(G => rootContainer.get(G))
+
+        const beforeRouteUpdateMiddlewares = []
+        guards
+          .filter(g => g.beforeEach || g.beforeRouteUpdate)
+          .forEach(g => {
+            g.beforeEach &&
+              beforeRouteUpdateMiddlewares.push(g.beforeEach.bind(g))
+            g.beforeRouteUpdate &&
+              beforeRouteUpdateMiddlewares.push(g.beforeRouteUpdate.bind(g))
+          })
         if (!beforeRouteUpdateMiddlewares.length) {
           return next()
         }
@@ -152,8 +170,11 @@ class VueServiceApp {
   }
   afterEachHandler() {
     this.router.afterEach((to, from) => {
-      const guardCtors = this.guardMap[to.name] || []
-      const guards = guardCtors.map(G => rootContainer.get(G))
+      const guardCtors = []
+      to.matched.forEach(Comp => {
+        guardCtors.push(...(this.guardMap[Comp.name] || []))
+      })
+      const guards = guardCtors.filter(G => !!G).map(G => rootContainer.get(G))
       const afterEachMiddlewares = guards
         .filter(g => g.afterEach)
         .map(g => g.afterEach.bind(g))
