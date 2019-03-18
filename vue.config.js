@@ -22,10 +22,9 @@ fs.writeFileSync(
 module.exports = {
   lintOnSave: false,
   css: {
+    extract: true,
     loaderOptions: {
-      less: {
-        javascriptEnabled: true
-      }
+      less: {}
     }
   },
   pluginOptions: {
@@ -36,6 +35,7 @@ module.exports = {
     }
   },
   devServer: {
+    watchContentBase: false,
     proxy: {
       '/_api': {
         target: 'http://saas-dev.styd.cn',

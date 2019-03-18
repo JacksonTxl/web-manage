@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title>三体云动</title>
+    <link rel="stylesheet/less" href="./app.less" />
     <style>
       .page-loader-container {
         position: absolute;
@@ -103,6 +104,18 @@
         </div>
       </div>
     </div>
+
+    <script>
+      window.less = {
+        javascriptEnabled:true
+      }
+    </script>
+    <script src="./js/less.js/3.9.0/less.min.js"></script>
+    <script>
+     <% if (NODE_ENV==='development') { %>
+      less.watch()
+      <% } %>
+    </script>
 
     <!-- built files will be auto injected -->
   </body>

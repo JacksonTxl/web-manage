@@ -6,7 +6,6 @@ import VueRx from 'vue-rx'
 import { modalRouter } from './modal-router/index'
 import App from './App.vue'
 import FullCalendar from 'vue-full-calendar'
-import 'fullcalendar/dist/fullcalendar.min.css'
 
 Vue.use(Antd)
 Vue.use(VueRx)
