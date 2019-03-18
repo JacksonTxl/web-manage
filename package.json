@@ -11,8 +11,8 @@
     "build": "vue-cli-service build",
     "ci": "yarn install && yarn build",
     "gr": "node ./generate-routes/index.js",
-    "push:rx":"git subtree push git@gitlab.styd.cn:fe/packages/rx-state.git --prefix=rx-state master",
-    "push:vsa":"git subtree push git@gitlab.styd.cn:fe/packages/vue-service-app.git --prefix=vue-service-app master"
+    "push:rx": "git subtree push git@gitlab.styd.cn:fe/packages/rx-state.git --prefix=rx-state master",
+    "push:vsa": "git subtree push git@gitlab.styd.cn:fe/packages/vue-service-app.git --prefix=vue-service-app master"
   },
   "dependencies": {
     "@abraham/reflection": "^0.5.1",
