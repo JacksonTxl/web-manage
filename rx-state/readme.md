@@ -59,8 +59,8 @@ const reload$ = new Action(data$ => {
     switchMap(() =>
       ajax.get('/release.json?123').pipe(catchError(() => EMPTY))
     ),
-    tap(_ => {
-      console.log('延迟更新成功')
+    tap(res => {
+      console.log('延迟更新成功',res)
     })
   )
 })
