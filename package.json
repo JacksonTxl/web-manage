@@ -3,12 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "less": "gulp less",
-    "gr": "gulp route",
     "inspect": "vue-cli-service inspect > inspect.js",
     "lint": "vue-cli-service lint",
     "dev": "npm run serve",
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve & gulp dev",
     "build": "vue-cli-service build",
     "ci": "yarn install && yarn build",
     "push:rx": "git subtree push git@gitlab.styd.cn:fe/packages/rx-state.git --prefix=rx-state master",
