@@ -53,11 +53,13 @@ const getPageService = services => {
   services.forEach(keyPath => {
     const parsed = parse(keyPath)
     let exportedService = _.camelCase(`--${parsed.name.replace('.', '-')}--`)
+    let asExportedService = _.camelCase(`--${parsed.entry_dash.replace('.', '-')}--`)
     exportedService = exportedService[0].toUpperCase() + exportedService.slice(1)
-
-    serviceMap[parsed.entry_dash.replace('.service', '')] = exportedService
+    asExportedService = asExportedService[0].toUpperCase() + asExportedService.slice(1)
+    serviceMap[parsed.entry_dash.replace('.service', '')] = asExportedService
     importServiceArray.push({
       service: exportedService,
+      asService: asExportedService,
       servicePath: keyPath.replace('./src', '@')
     })
   })
