@@ -2,7 +2,7 @@
 * this js file is auto generated, you should not modifyed this file
 **/
 <% importServiceArray.forEach(item => {%>
-import { <%- item.service%> } from '<%- item.servicePath%>'<% }); %>
+import { <%- item.service%><% if(item.asService !== item.service) {%> as <%- item.asService %><%};%> } from '<%- item.servicePath%>'<% }); %>
 <% importArr.forEach(item => {%>
 const <%- item.component%> = () => import('<%- item.pagePath%>')<% }); %>
 
@@ -12,28 +12,24 @@ const pageRoutes = [<% pageRoutes.forEach((item, index) => {%>{
   path: '<%- item.path %>',
   component: <%- item.component %>,
   guards: [<%- item.guards %>]<% if(item.children){%>,<%};%><% if(item.children){%>
-  children: [<%item.children.forEach(c1Item => {%>{
+  children: [<%item.children.forEach((c1Item, c1Index) => {%>{
     name: '<%- c1Item.name %>',
     path: '<%- c1Item.path %>',
     component: <%- c1Item.component %>,
     guards: [<%- c1Item.guards %>]<% if(c1Item.children){%>,<%};%><% if(c1Item.children){%>
-    children: [
-      <%c1Item.forEach( c2Item => {%>
-        name: '<%- c2Item.name %>',
-        path: '<%- c2Item.path %>',
-        component: <%- c2Item.component %>
-        guards: [<%- c2Item.guards %>]<% if(c1Item.children){%>,<%};%><% if(c1Item.children){%>
-          children: [
-            <%c2Item.forEach(c3Item => {%>
-              name: '<%- c3Item.name %>',
-              path: '<%- c3Item.path %>',
-              guards: [<%- c3Item.guards %>],
-              component: <%- c3Item.component %>
-            <%});%>
-          ]<%};%><%})%>
-    ]<%};%>
-  }<%});%>
-  ]<%};%>
+    children: [<%c1Item.children.forEach( ( c2Item, c2Index )=> {%>{
+      name: '<%- c2Item.name %>',
+      path: '<%- c2Item.path %>',
+      component: <%- c2Item.component %>,
+      guards: [<%- c2Item.guards %>]<% if(c2Item.children){%>,<%};%><% if(c2Item.children){%>
+      children: [<%c2Item.children.forEach(c3Item => {%>{
+          name: '<%- c3Item.name %>',
+          path: 'aaa<%- c3Item.path %>',
+          component: <%- c3Item.component %>,
+          guards: [<%- c3Item.guards %>]}adds<%});%>
+        ]<% if(c2Index !== c1Item.children.length-1){%>, <%};%><%};%>
+    }<% if(c2Index !== c1Item.children.length-1){%>, <%};%><%});%>]<%};%>
+  }<% if(c1Index !== item.children.length-1){%>, <%};%><%});%>]<%};%>
 }<%if(index !== pageRoutes.length-1){%>, <%}%><% }); %>]
 
 export default pageRoutes

@@ -1,7 +1,6 @@
 /**
 * this js file is auto generated, you should not modifyed this file
 **/
-
 import { DashboardService } from '@/views/pages/dashboard.service.ts'
 import { PluginsService } from '@/views/pages/plugins.service.ts'
 import { ListService as PluginsListService } from '@/views/pages/plugins/list.service.ts'
@@ -14,7 +13,6 @@ const page404 = () => import('@/views/pages/404.vue')
 const pageDashboard = () => import('@/views/pages/dashboard.vue')
 const pagePlugins = () => import('@/views/pages/plugins.vue')
 const pagePluginsList = () => import('@/views/pages/plugins/list.vue')
-const pagePluginsTheme = () => import('@/views/pages/plugins/theme.vue')
 const pageTestLlf = () => import('@/views/pages/test/llf.vue')
 const pageTestZlx = () => import('@/views/pages/test/zlx.vue')
 const pageTestZlxFull = () => import('@/views/pages/test/zlxFull.vue')
