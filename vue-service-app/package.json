@@ -1,8 +1,4 @@
 {
-  "scripts": {
-    "dev:docs":"vuepress dev docs",
-    "build:docs":"vuepress build docs"
-  },
   "name": "vue-service-app",
   "version": "0.0.1",
   "main": "./src/index.js"
