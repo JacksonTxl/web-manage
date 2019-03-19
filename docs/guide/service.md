@@ -17,6 +17,10 @@ class TestService {
 }
 ```
 
+:::tip 命名规范
+服务以 Service 作为后缀
+:::
+
 App.vue
 在 html 中注入该服务
 
@@ -34,15 +38,15 @@ App.vue
         testService: TestService
       }
     },
-    mounted(){
+    mounted() {
       this.testService.sayHello()
     }
   }
 </script>
-
 ```
 
-如果该服务依赖于其他服务,此处以依赖router为例
+如果该服务依赖于其他服务,此处以依赖 router 为例
+
 ```js {5,7}
 import { Injectable, ServiceRouter } from 'vue-service-app'
 
@@ -55,16 +59,13 @@ class TestService {
   }
 }
 ```
-这样在该类中就可以调用router实例了
 
-:::tip
-在constructor中
-
-:::
+这样在该类中就可以调用 router 实例了，这里使用了 ts 的修饰语法,在 constructor 中的属性添加如(privated,protected)时会自动执行 this.router = router
 
 ## 单例
 
 框架默认注入类的行为是单例的
+
 ```html {12,16}
 <template>
   <div>
@@ -80,8 +81,8 @@ class TestService {
         testService2: TestService
       }
     },
-    mounted(){
-      console.log(this.testService === this.testService2 )  // true
+    mounted() {
+      console.log(this.testService === this.testService2) // true
     }
   }
 </script>
