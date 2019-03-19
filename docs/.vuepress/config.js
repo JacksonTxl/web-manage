@@ -22,11 +22,11 @@ module.exports = {
         '',
         'getting-start',
         'di',
-        'theme',
         'service',
         'router',
+        'package',
         'i18n',
-        'package'
+        'theme'
       ],
       '/services/': ['', 'search']
     }
