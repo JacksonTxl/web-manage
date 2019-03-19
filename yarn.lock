@@ -2233,10 +2233,6 @@ consolidate@^0.15.1:
   dependencies:
     bluebird "^3.1.1"
 
-const@^1.0.0:
-  version "1.0.0"
-  resolved "http://registry.npm.taobao.org/const/download/const-1.0.0.tgz#d159191665b6885f5d65c55335626a87cc6ec13c"
-
 constants-browserify@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/constants-browserify/download/constants-browserify-1.0.0.tgz#c20b96d8c617748aaf1c16021760cd27fcb8cb75"
@@ -5974,6 +5970,11 @@ parallel-transform@^1.1.0:
     inherits "^2.0.3"
     readable-stream "^2.1.5"
 
+parallelshell@^3.0.2:
+  version "3.0.2"
+  resolved "http://registry.npm.taobao.org/parallelshell/download/parallelshell-3.0.2.tgz#fffc55aaa145bdd44b5381cf7fd5e521fc21aa7b"
+  integrity sha1-//xVqqFFvdRLU4HPf9XlIfwhqns=
+
 param-case@2.1.x:
   version "2.1.1"
   resolved "http://registry.npm.taobao.org/param-case/download/param-case-2.1.1.tgz#df94fd8cf6531ecf75e6bef9a0858fbc72be2247"
@@ -6227,12 +6228,6 @@ postcss-discard-overridden@^4.0.1:
   resolved "http://registry.npm.taobao.org/postcss-discard-overridden/download/postcss-discard-overridden-4.0.1.tgz#652aef8a96726f029f5e3e00146ee7a4e755ff57"
   dependencies:
     postcss "^7.0.0"
-
-postcss-less@^3.1.4:
-  version "3.1.4"
-  resolved "http://registry.npm.taobao.org/postcss-less/download/postcss-less-3.1.4.tgz#369f58642b5928ef898ffbc1a6e93c958304c5ad"
-  dependencies:
-    postcss "^7.0.14"
 
 postcss-load-config@^2.0.0:
   version "2.0.0"
@@ -7601,9 +7596,10 @@ strip-json-comments@^2.0.1, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "http://registry.npm.taobao.org/strip-json-comments/download/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-styd-less-base@^1.0.5:
-  version "1.0.5"
-  resolved "http://registry.npm.taobao.org/styd-less-base/download/styd-less-base-1.0.5.tgz#ec0f2d50171350e8455878f1dc8d295272f9ea50"
+styd-less-base@1.0.6:
+  version "1.0.6"
+  resolved "http://registry.npm.taobao.org/styd-less-base/download/styd-less-base-1.0.6.tgz?cache=0&other_urls=http%3A%2F%2Fregistry.npm.taobao.org%2Fstyd-less-base%2Fdownload%2Fstyd-less-base-1.0.6.tgz#7c59e3d8767ba1e27358a6377c98342611510a46"
+  integrity sha1-fFnj2HZ7oeJzWKY3fJg0JhFRCkY=
 
 stylehacks@^4.0.0:
   version "4.0.3"
