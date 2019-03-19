@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title>三体云动</title>
-    <link rel="stylesheet/less" href="<%= BASE_URL %>app.less" />
     <style>
       .page-loader-container {
         position: absolute;
@@ -108,19 +107,19 @@
     <script>
       window.less = {
         javascriptEnabled: true,
-        poll: 1000,
+        // 不会添加 body display:none
+        async: true,
         env: <%= JSON.stringify(NODE_ENV) %>
       }
     </script>
-    <script src="<%= BASE_URL %>js/less.js/3.9.0/less.min.js"></script>
+    <link rel="stylesheet/less" href="<%= BASE_URL %>app.less" />
     <script>
-      <% if( NODE_ENV ==='development') { %>
-      setTimeout(()=>{
-        less.watch()
-      },3000)
-      <% } %>
+      setTimeout(() => {
+        var lessScript = document.createElement('script')
+        lessScript.src = '<%= BASE_URL %>js/less.js/3.9.0/less.min.js'
+        document.body.appendChild(lessScript)
+      }, 2000)
     </script>
     <!-- built files will be auto injected -->
-
   </body>
 </html>

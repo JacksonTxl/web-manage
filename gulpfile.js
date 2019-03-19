@@ -6,7 +6,7 @@ const RouteTask = require('./build/route-task')
 const lessSrc = './src/style/index.less'
 const lessDest = './public/app.less'
 
-gulp.task('less', done => {
+gulp.task('less-browser', done => {
   const { content } = new LessTask().run(lessSrc)
   Fse.writeFile(lessDest, content).then(() => {
     done()
@@ -21,7 +21,7 @@ gulp.task('initRoute', done => {
   done()
 })
 
-gulp.watch(['./src/**/*.less'], gulp.series(['less']))
+gulp.watch(['./src/**/*.less'], gulp.series(['less-browser']))
 gulp
   .watch(
     ['./src/views/pages/**/*.vue', './src/views/pages/**/*.service.ts'],
@@ -37,4 +37,4 @@ gulp
     RouteTask.run(path, 'remove Dir')
   })
 
-gulp.task('dev', gulp.parallel(['less', 'route']))
+gulp.task('dev', gulp.parallel(['less-browser', 'route']))

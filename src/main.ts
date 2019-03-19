@@ -6,10 +6,13 @@ import VueRx from 'vue-rx'
 import { modalRouter } from './modal-router/index'
 import App from './App.vue'
 import FullCalendar from 'vue-full-calendar'
+// 默认样式加载
+import './style/index.less'
 
 Vue.use(Antd)
 Vue.use(VueRx)
 Vue.use(FullCalendar)
+
 const app = new Vue({
   el: '#app',
   router,

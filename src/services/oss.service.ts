@@ -1,6 +1,6 @@
 import { Injectable } from 'vue-service-app'
-import { ajax } from '_rxjs@6.4.0@rxjs/ajax'
-import { Subject } from '_rxjs@6.4.0@rxjs'
+import { ajax } from 'rxjs/ajax'
+import { Subject } from 'rxjs'
 
 interface RequestOptions {
     url: string;
