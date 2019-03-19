@@ -13,6 +13,7 @@ const pagePlugins = () => import('@/views/pages/plugins.vue')
 const pagePluginsList = () => import('@/views/pages/plugins/list.vue')
 const pagePluginsTheme = () => import('@/views/pages/plugins/theme.vue')
 const pageTestLlf = () => import('@/views/pages/test/llf.vue')
+const pageTestOss = () => import('@/views/pages/test/oss.vue')
 const pageTestZlx = () => import('@/views/pages/test/zlx.vue')
 const pageTestZlxFull = () => import('@/views/pages/test/zlxFull.vue')
 const pageUserLogin = () => import('@/views/pages/user/login.vue')
@@ -48,6 +49,11 @@ const pageRoutes = [{
   name: 'test-llf',
   path: '/test/llf',
   component: pageTestLlf,
+  guards: []
+}, {
+  name: 'test-oss',
+  path: '/test/oss',
+  component: pageTestOss,
   guards: []
 }, {
   name: 'test-zlx',
