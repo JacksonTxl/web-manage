@@ -11,19 +11,24 @@ module.exports = {
       {
         text: '指南',
         link: '/guide/'
+      },
+      {
+        text: '服务',
+        link: '/services/'
       }
     ],
     sidebar: {
       '/guide/': [
-        '/guide/',
-        '/guide/getting-start',
-        '/guide/di',
-        '/guide/theme',
-        '/guide/service',
-        '/guide/router',
-        '/guide/i18n',
-        '/guide/package'
-      ]
+        '',
+        'getting-start',
+        'di',
+        'theme',
+        'service',
+        'router',
+        'i18n',
+        'package'
+      ],
+      '/services/': ['', 'search']
     }
   }
 }
