@@ -68,8 +68,10 @@ export class
   }
 }
 ```
-1. 使用vue-rxsubscriptions映射到视图服务的搜索条件对象。然后输入框绑定搜索条件对象的其中一个值
-  这一步完成搜索条件对路由的meta.query绑定
+**1. 完成搜索条件对路由的meta.query绑定**
+
+使用vue-rxsubscriptions映射到视图服务的搜索条件对象。然后输入框绑定搜索条件对象的其中一个值
+
   ```js
   # searchService对应视图的服务
   <a-input v-model='searchQuery.a'></a-input>
@@ -79,3 +81,4 @@ export class
     }
   }
   ```
+2
