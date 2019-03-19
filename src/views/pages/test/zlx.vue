@@ -1,5 +1,6 @@
 <template>
   <div>
+    <a-button @click="alert">点我</a-button>
     <full-calendar class="test-fc"
     :events="fcEvents"
     first-day='1'
@@ -65,6 +66,9 @@
 <script>
 import draggable from 'vuedraggable'
 import fullCalendar from 'vue-fullcalendar'
+import { MessageService } from '@/services/message.service'
+import { NotificationService } from '@/services/notification.service'
+
 let demoEvents = [
   {
     title: 'Sunny 725-727',
@@ -144,6 +148,12 @@ export default {
     draggable,
     fullCalendar
   },
+  serviceInject() {
+    return {
+      messageService: MessageService,
+      notificationService: NotificationService
+    }
+  },
   computed: {
     dragOptions() {
       return {
@@ -172,6 +182,14 @@ export default {
     }
   },
   methods: {
+    alert() {
+      this.messageService.warn({ content: 'ddddd' })
+      this.notificationService.warn({ title: '提示', content: '怎么高兴不起来' })
+      // this.notificationService.info({title: '提示', content: '怎么高兴不起来'})
+      // this.notificationService.warning({title: '提示', content: '怎么高兴不起来'})
+      // this.notificationService.success({title: '提示', content: '怎么高兴不起来'})
+      // this.notificationService.error({title: '提示', content: '怎么高兴不起来'})
+    },
     orderList() {
       this.list = this.list.sort((one, two) => {
         return one.order - two.order

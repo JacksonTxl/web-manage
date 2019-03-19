@@ -37,4 +37,4 @@ gulp
     RouteTask.run(path, 'remove Dir')
   })
 
-gulp.task('dev', gulp.parallel(['less', 'route']))
+gulp.task('dev', gulp.parallel(['less', 'initRoute', 'route']))

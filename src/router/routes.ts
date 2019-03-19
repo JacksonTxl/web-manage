@@ -40,7 +40,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       prependGuards(route, [
         HotReleaseService,
         NProgressService,
-        AuthService,
+        // AuthService,
         TitleService,
         UserService
       ])

@@ -8,7 +8,6 @@ const PAGES_PATH = ['./src/views/pages/**/*.vue']
 const SERVICES_PATH = ['./src/views/pages/**/*.service.ts']
 const MODEL_PATH = './build/tpl.ejs'
 const ROUTES_PATH = './src/router/auto-generated-routes.ts'
-const WATCH_DIR_PATH = './src/views/pages'
 
 const tplInit = ({ importServiceArray, importArr, pageRoutes }) => {
   const tpl = fse.readFileSync(MODEL_PATH).toString()
@@ -64,7 +63,6 @@ const getPageService = services => {
   })
   return { importServiceArray, serviceMap }
 }
-// const serviceMap = {}
 const createRoute = () => {
   const pages = globby.sync(PAGES_PATH).filter(item => !item.includes('#'))
   const services = globby.sync(SERVICES_PATH)
