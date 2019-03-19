@@ -1,13 +1,12 @@
 const globby = require('globby')
 const fse = require('fs-extra')
 const _ = require('lodash')
-const chokidar = require('chokidar')
 const chalk = require('chalk')
 const log = console.log
 
 const PAGES_PATH = ['./src/views/pages/**/*.vue']
 const SERVICES_PATH = ['./src/views/pages/**/*.service.ts']
-const MODEL_PATH = './generate-routes/tpl.ejs'
+const MODEL_PATH = './build/tpl.ejs'
 const ROUTES_PATH = './src/router/auto-generated-routes.ts'
 const WATCH_DIR_PATH = './src/views/pages'
 
@@ -53,11 +52,13 @@ const getPageService = services => {
   services.forEach(keyPath => {
     const parsed = parse(keyPath)
     let exportedService = _.camelCase(`--${parsed.name.replace('.', '-')}--`)
+    let asExportedService = _.camelCase(`--${parsed.entry_dash.replace('.', '-')}--`)
     exportedService = exportedService[0].toUpperCase() + exportedService.slice(1)
-
-    serviceMap[parsed.entry_dash.replace('.service', '')] = exportedService
+    asExportedService = asExportedService[0].toUpperCase() + asExportedService.slice(1)
+    serviceMap[parsed.entry_dash.replace('.service', '')] = asExportedService
     importServiceArray.push({
       service: exportedService,
+      asService: asExportedService,
       servicePath: keyPath.replace('./src', '@')
     })
   })
@@ -112,27 +113,20 @@ const init = (path, op) => {
       chalk.blue.underline.bold(path),
       'update service'
     )
+  } else if (path === 'init') {
+    log(chalk.green('create routes success') + chalk.red('!!!'))
   } else {
     log(chalk.yellow(op), chalk.blue.underline.bold(path), 'update routes')
   }
 }
-
-try {
-  fse.outputFileSync(ROUTES_PATH, tplInit(createRoute()), 'utf8')
-  chokidar
-    .watch(WATCH_DIR_PATH)
-    .on('ready', () => {
-      log(chalk.green('create routes success') + chalk.red('!!!'))
-    })
-    .on('add', path => {
-      init(path, '  add  ')
-    })
-    .on('unlink', path => {
-      init(path, 'remove file')
-    })
-    .on('unlinkDir', path => {
-      init(path, 'remove Dir')
-    })
-} catch (error) {
-  console.log(error)
+const RouteTask = {
+  run(path, op) {
+    if (path === 'init') {
+      log(chalk.yellow('init...'))
+      fse.outputFileSync(ROUTES_PATH, tplInit(createRoute()), 'utf8')
+    }
+    return init(path, op)
+  }
 }
+
+module.exports = RouteTask

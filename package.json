@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "inspect": "vue-cli-service inspect > inspect.js",
     "lint": "vue-cli-service lint",
     "dev": "npm run serve",
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve & gulp dev",
     "build": "vue-cli-service build",
     "ci": "yarn install && yarn build",
-    "gr": "node ./generate-routes/index.js"
+    "push:rx": "git subtree push git@gitlab.styd.cn:fe/packages/rx-state.git --prefix=rx-state master",
+    "push:vsa": "git subtree push git@gitlab.styd.cn:fe/packages/vue-service-app.git --prefix=vue-service-app master"
   },
   "dependencies": {
     "@abraham/reflection": "^0.5.1",
@@ -43,11 +45,15 @@
     "@vue/cli-service": "^3.1.0",
     "@vue/eslint-config-standard": "^4.0.0",
     "@vue/eslint-config-typescript": "^4.0.0",
+    "const": "^1.0.0",
     "eslint": "^5.15.1",
     "eslint-plugin-vue": "^5.2.2",
     "git-rev-sync": "^1.12.0",
-    "less": "^3.0.4",
+    "globby": "^9.1.0",
+    "gulp": "^4.0.0",
+    "less": "^3.9.0",
     "less-loader": "^4.1.0",
+    "less-plugin-glob": "^3.0.0",
     "lint-staged": "^8.1.5",
     "lodash-es": "^4.17.11",
     "rxjs": "^6.4.0",

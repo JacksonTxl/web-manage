@@ -50,3 +50,21 @@ todos$.commit(todos => {
 
 getState(state$) // {todos:[{id:1,title:'3'}],count:0}
 ```
+
+```js
+const reload$ = new Action(data$ => {
+  data$.pipe(
+    debounceTime(1000),
+    // 捕获子流的错误 错误冒泡会导致父流中断
+    switchMap(() =>
+      ajax.get('/release.json?123').pipe(catchError(() => EMPTY))
+    ),
+    tap(res => {
+      console.log('延迟更新成功',res)
+    })
+  )
+})
+
+// 派发事件 注意该事件流本身一般是高阶流 要捕获子流的错误
+reload$.dispatch()
+```

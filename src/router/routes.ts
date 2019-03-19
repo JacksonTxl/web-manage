@@ -33,24 +33,13 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     }
     // guards 配置
     if (route.name === 'user-login') {
-      prependGuards(route, [
-        HotReleaseService,
-        NProgressService,
-        ThemeService,
-        TitleService
-      ])
+      prependGuards(route, [HotReleaseService, NProgressService, TitleService])
     } else if (route.name === '404') {
-      prependGuards(route, [
-        HotReleaseService,
-        NProgressService,
-        ThemeService,
-        TitleService
-      ])
+      prependGuards(route, [HotReleaseService, NProgressService, TitleService])
     } else if (route.path.startsWith('/') && !route.redirect) {
       prependGuards(route, [
         HotReleaseService,
         NProgressService,
-        ThemeService,
         AuthService,
         TitleService,
         UserService
