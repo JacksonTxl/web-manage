@@ -19,6 +19,7 @@ module.exports = {
         '/guide/getting-start',
         '/guide/di',
         '/guide/theme',
+        '/guide/service',
         '/guide/router',
         '/guide/i18n',
         '/guide/package'

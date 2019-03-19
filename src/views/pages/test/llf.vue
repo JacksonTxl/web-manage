@@ -1,19 +1,27 @@
 <template>
   <div>
     LLF
+    {{searchQuery}}
+    <a-input v-model='searchQuery.a'></a-input>
     <a-button :loading='isSwitching'
-      @click='changeTheme'>changeTheme</a-button>
-    <a-button type='primary'>primary</a-button>
+      @click='onSubmit'>onSubmit</a-button>
   </div>
 </template>
 
 <script>
 import { ThemeService } from '@/services/theme.service'
+import { LlfService } from '@/views/pages/test/llf.service'
 var i = 0
 export default {
   serviceInject() {
     return {
-      themeService: ThemeService
+      themeService: ThemeService,
+      llfService: LlfService
+    }
+  },
+  subscriptions() {
+    return {
+      searchQuery: this.llfService.searchQuery$
     }
   },
   data() {
@@ -22,22 +30,9 @@ export default {
     }
   },
   methods: {
-    changeTheme() {
-      this.isSwitching = true
-      var vars = ['pink', 'green', 'red']
-      i++
-      console.log(i)
-      window.less
-        .modifyVars({
-          '@primary-color': vars[i % 3]
-        })
-        .then(() => {
-          this.isSwitching = false
-          this.$notification.info({
-            message: 'haha',
-            description: '编译陈工'
-          })
-        })
+    onSubmit() {
+      console.log('submit')
+      this.$router.push({ query: this.searchQuery })
     }
   }
 }

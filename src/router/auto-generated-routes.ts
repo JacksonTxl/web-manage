@@ -5,6 +5,7 @@
 import { DashboardService } from '@/views/pages/dashboard.service.ts'
 import { PluginsService } from '@/views/pages/plugins.service.ts'
 import { ListService as PluginsListService } from '@/views/pages/plugins/list.service.ts'
+import { LlfService as TestLlfService } from '@/views/pages/test/llf.service.ts'
 import { ZlxService as TestZlxService } from '@/views/pages/test/zlx.service.ts'
 
 const page404 = () => import('@/views/pages/404.vue')
@@ -49,7 +50,7 @@ const pageRoutes = [{
   name: 'test-llf',
   path: '/test/llf',
   component: pageTestLlf,
-  guards: []
+  guards: [TestLlfService]
 }, {
   name: 'test-oss',
   path: '/test/oss',

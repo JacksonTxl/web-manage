@@ -33,7 +33,7 @@ export class State<T> extends BehaviorSubject<T> {
 
     if (newState !== this.value) {
       if (process.env.NODE_ENV === 'development') {
-        console.log(this.tag, JSON.parse(JSON.stringify(newState)))
+        console.log(this.tag, newState)
       }
       this.next(newState)
     }
