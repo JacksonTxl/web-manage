@@ -1,9 +1,7 @@
 const Fse = require('fs-extra')
 const Path = require('path')
+const ImportReg = /\s*@import (.+);/g
 
-const ImportReg = /@import (.+);\n*/g
-const DeclReg = /([@A-Za-z-0-9]+)\s*:\s*(.+);/g
-const FunctionReg = /@functions: ~`/
 class LessFile {
   constructor({ name = '', parent = null, resourceCache = null } = {}) {
     this.encoding = 'utf-8'
@@ -35,7 +33,9 @@ class LessFile {
     return Path.extname(this.name)
   }
   get sourcePreprocess() {
-    return this.source
+    // 去除注释的import语句
+    // return this.source
+    return this.source.replace(/\n*\/\/\s*@import (.+);/g, '')
   }
   get content() {
     return this.sourcePreprocess.replace(ImportReg, (_, depName) => {

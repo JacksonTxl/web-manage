@@ -4,24 +4,24 @@
   @n: extract(@gutters, @i);
   #body {
     .mg-t@{n} {
-      margin-top: (1px * @n);
+      .mg-t(1px * @n);
     }
     .mg-b@{n} {
-      margin-bottom: (1px * @n);
+      .mg-b(1px * @n);
     }
     .mg-l@{n} {
-      margin-left: (1px * @n);
+      .mg-l(1px * @n);
     }
     .mg-r@{n} {
-      margin-right: (1px * @n);
+      .mg-r(1px * @n);
     }
     .mg-x@{n} {
-      margin-left: (1px * @n);
-      margin-right: (1px * @n);
+      .mg-l(1px * @n);
+      .mg-r(1px * @n);
     }
     .mg-y@{n} {
-      margin-top: (1px * @n);
-      margin-bottom: (1px * @n);
+      .mg-t(1px * @n);
+      .mg-b(1px * @n);
     }
   }
   .generate-spaces(@i + 1);
