@@ -67,12 +67,4 @@ computed: {
 queryOptions
 
 type: 对字段类型进行校验 必填
-
 default: 初始化字段 选填
-    - 当没有default时链接上不会有该值, 有的话会加上初始值
-  
-  ```
-  # a没有default值所以初始化query时没有
-  http://sss.dee.com/test/zlx?b=3333
-  ```
-
