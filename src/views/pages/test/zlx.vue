@@ -1,6 +1,7 @@
 <template>
   <div>
     <a-button @click="alert">点我</a-button>
+    <a-input v-model='searchQuery.a'></a-input>
     <full-calendar class="test-fc"
     :events="fcEvents"
     first-day='1'
