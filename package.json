@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "init": "yarn install",
     "inspect": "vue-cli-service inspect > inspect.js",
     "lint": "vue-cli-service lint",
     "dev": "npm run serve",
