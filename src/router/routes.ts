@@ -6,6 +6,7 @@ import { UserService } from '@/services/user.service'
 import { ThemeService } from '@/services/theme.service'
 import pageRoutes from './auto-generated-routes'
 import { TitleService } from '@/services/title.service'
+import { RouteService } from '@/services/route.service'
 
 const routes: ServiceRouteConfig[] = [
   {
@@ -33,16 +34,27 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     }
     // guards 配置
     if (route.name === 'user-login') {
-      prependGuards(route, [HotReleaseService, NProgressService, TitleService])
+      prependGuards(route, [
+        HotReleaseService,
+        NProgressService,
+        TitleService,
+        RouteService
+      ])
     } else if (route.name === '404') {
-      prependGuards(route, [HotReleaseService, NProgressService, TitleService])
+      prependGuards(route, [
+        HotReleaseService,
+        NProgressService,
+        TitleService,
+        RouteService
+      ])
     } else if (route.path.startsWith('/') && !route.redirect) {
       prependGuards(route, [
         HotReleaseService,
         NProgressService,
         // AuthService,
         TitleService,
-        UserService
+        UserService,
+        RouteService
       ])
     }
     // 规范title i18n 名称

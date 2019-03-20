@@ -1,8 +1,8 @@
-import { SearchService } from '@/services/search.service'
+import { Injectable, ServiceRoute } from 'vue-service-app'
 
-interface LlfSearchQuery {
-  a: number
-  b: number
+@Injectable()
+export class LlfService {
+  beforeRouteEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+    next()
+  }
 }
-
-export class LlfService extends SearchService<LlfSearchQuery> {}

@@ -5,13 +5,12 @@ import {
   Injectable,
   ServiceRouter
 } from 'vue-service-app'
-import { appConfig } from '@/constants/config'
+import { AppConfig } from '@/constants/config'
 
 @Injectable()
 export class AuthService implements RouteGuard {
-  appConfig = appConfig
   token: string | undefined = this.getAuthToken()
-  constructor(private router: ServiceRouter) {}
+  constructor(private router: ServiceRouter, private appConfig: AppConfig) {}
   getAuthToken() {
     return Cookie.get(this.appConfig.TOKEN_NAME)
   }

@@ -7,7 +7,7 @@ import qs from 'qs'
 import { Injectable, ServiceRouter } from 'vue-service-app'
 import { I18NService } from './i18n.service'
 import { AuthService } from './auth.service'
-import { appConfig } from '@/constants/config'
+import { AppConfig } from '@/constants/config'
 
 interface MockOptions {
   status?: number
@@ -35,11 +35,11 @@ interface RequestOptions {
 
 @Injectable()
 export class HttpService {
-  appConfig = appConfig
   constructor(
     private i18n: I18NService,
     private auth: AuthService,
-    private router: ServiceRouter
+    private router: ServiceRouter,
+    private appConfig: AppConfig
   ) {}
   get(url: string, options: RequestOptions = {}) {
     let requestUrl = this.makeRequestUrl(url, options)
