@@ -1,3 +1,5 @@
+const INJECTED = '__injectedTypes'
+
 class Provider {
   constructor(token, containerInstance) {
     this.token = token
@@ -9,10 +11,10 @@ class Provider {
     this.toClass(Cls)
   }
   toClass(Cls) {
-    if (Cls.__injectedTypes) {
+    if (Cls[INJECTED]) {
       this.getValue = () => {
         if (!this.instance) {
-          const injects = Cls.__injectedTypes.map(token =>
+          const injects = Cls[INJECTED].map(token =>
             this.containerInstance.get(token)
           )
           this.instance = new Cls(...injects)
@@ -20,6 +22,13 @@ class Provider {
         return this.instance
       }
     } else {
+      if (Cls.length) {
+        throw new Error(
+          `[vue-service-app] detect [${
+            Cls.name
+          }] has depency services but,but no @Injectable() or @Inject() decorate it`
+        )
+      }
       this.getValue = () => {
         if (!this.instance) {
           this.instance = new Cls()
@@ -75,22 +84,22 @@ export function Inject(token) {
     console && console.error('[vue-service-app] Inject() params got ->', token)
   }
   return function(target, propKey, propIndex) {
-    if (!target.__injectedTypes) {
-      target.__injectedTypes = []
+    if (!target[INJECTED]) {
+      target[INJECTED] = []
     }
-    target.__injectedTypes[propIndex] = token
+    target[INJECTED][propIndex] = token
   }
 }
 export function Injectable() {
   return function(target) {
     const outerInjected = Reflect.getMetadata('design:paramtypes', target)
-    const innerInjected = target.__injectedTypes
+    const innerInjected = target[INJECTED]
     if (!innerInjected) {
-      target.__injectedTypes = outerInjected
+      target[INJECTED] = outerInjected
     } else {
       outerInjected.forEach((outer, index) => {
         if (!innerInjected[index]) {
-          target.__injectedTypes[index] = outer
+          target[INJECTED][index] = outer
         }
       })
     }
