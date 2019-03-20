@@ -34,6 +34,7 @@ module.exports = {
             'std',
             'layout',
             'router',
+            'service',
             'filters',
             'config',
             'mock',
