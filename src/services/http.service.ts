@@ -1,13 +1,13 @@
 import { Observable } from 'rxjs'
 import { ajax, AjaxError } from 'rxjs/ajax'
 import { catchError, pluck } from 'rxjs/operators'
-import { notification } from 'ant-design-vue'
 import { StResponse } from '@/types/app'
 import qs from 'qs'
 import { Injectable, ServiceRouter } from 'vue-service-app'
 import { I18NService } from './i18n.service'
 import { AuthService } from './auth.service'
 import { AppConfig } from '@/constants/config'
+import { NotificationService } from './notification.service'
 
 interface MockOptions {
   status?: number
@@ -39,13 +39,14 @@ export class HttpService {
     private i18n: I18NService,
     private auth: AuthService,
     private router: ServiceRouter,
+    private notification: NotificationService,
     private appConfig: AppConfig
   ) {}
   get(url: string, options: RequestOptions = {}) {
     let requestUrl = this.makeRequestUrl(url, options)
     const get$ = ajax
       .get(requestUrl, this.headers)
-      .pipe(this.ajaxErrorHandler)
+      .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
 
     return get$
@@ -54,7 +55,7 @@ export class HttpService {
     const requestUrl = this.makeRequestUrl(url, options)
     const post$ = ajax
       .post(requestUrl, options.params, this.headers)
-      .pipe(this.ajaxErrorHandler)
+      .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return post$
   }
@@ -62,7 +63,7 @@ export class HttpService {
     const requestUrl = this.makeRequestUrl(url, options)
     const put$ = ajax
       .put(requestUrl, options.params, this.headers)
-      .pipe(this.ajaxErrorHandler)
+      .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return put$
   }
@@ -70,7 +71,7 @@ export class HttpService {
     const requestUrl = this.makeRequestUrl(url, options)
     const delete$ = ajax
       .delete(requestUrl, this.headers)
-      .pipe(this.ajaxErrorHandler)
+      .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return delete$
   }
@@ -100,45 +101,47 @@ export class HttpService {
     }
   }
   private ajaxErrorHandler(source$: Observable<any>) {
+    console.log(this)
     return source$.pipe(
       catchError((err: AjaxError) => {
+        console.log(this)
         const serverResponse: StResponse = err.response
         switch (err.status) {
           case 400:
-            notification.warn({
-              message: serverResponse.msg,
-              description: this.i18n.translate('app.http.400')
+            this.notification.warn({
+              title: serverResponse.msg,
+              content: this.i18n.translate('app.http.400')
             })
             break
           case 401:
-            notification.warn({
-              message: serverResponse.msg,
-              description: this.i18n.translate('app.http.401')
+            this.notification.warn({
+              title: serverResponse.msg,
+              content: this.i18n.translate('app.http.401')
             })
             this.router.push({ name: 'user-login' })
             break
           case 403:
-            notification.warn({
-              message: serverResponse.msg,
-              description: this.i18n.translate('app.http.403')
+            this.notification.warn({
+              title: serverResponse.msg,
+              content: this.i18n.translate('app.http.403')
             })
             break
           case 404:
-            notification.error({
-              message: this.i18n.translate('app.http.404'),
-              description: err.message
+            this.notification.error({
+              title: this.i18n.translate('app.http.404'),
+              content: err.message
             })
             break
           case 500:
-            notification.error({
-              message: this.i18n.translate('app.http.500'),
-              description: err.message
+            this.notification.error({
+              title: this.i18n.translate('app.http.500'),
+              content: err.message
             })
             break
           default:
-            notification.error({
-              message: this.i18n.translate('app.http.other'),
-              description: err.message
+            this.notification.error({
+              title: this.i18n.translate('app.http.other'),
+              content: err.message
             })
             break
         }

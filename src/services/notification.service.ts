@@ -4,9 +4,9 @@ import { notification } from 'ant-design-vue'
  * description: 通知提醒内容，必选
  */
 interface NotificationOptions {
-  title: string,
-  content: string,
-  duration: number,
+  title: string
+  content: string
+  duration?: number
 }
 /**
  *

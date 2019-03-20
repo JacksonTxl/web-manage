@@ -14,7 +14,10 @@ export class ListService {
     this.list$.commit(() => data)
   }
   getList() {
-    return of([1, 2, 3]).pipe(delay(200))
+    return this.manageApi.findManageMail({
+      mail: '123',
+      captcha: '456'
+    })
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getList().subscribe(res => {
