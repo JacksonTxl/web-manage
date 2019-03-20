@@ -67,5 +67,6 @@ computed: {
 queryOptions
 
 type: 对字段类型进行校验 必填
+
 default: 初始化字段 选填
 
