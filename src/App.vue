@@ -14,23 +14,24 @@
 <script>
 import { layoutMap } from '@/views/layouts/index.ts'
 import { I18NService } from '@/services/i18n.service'
-import { appConfig } from '@/constants/config'
+import { AppConfig } from '@/constants/config'
 
 export default {
   name: 'app',
   // 服务注入
   serviceInject() {
     return {
-      i18n: I18NService
+      i18n: I18NService,
+      appConfig: AppConfig
     }
   },
   data() {
     return {
       count: 0,
       tips: [
-        `commitNumber: ${appConfig.GIT_COMMIT} \n
-          msg: ${appConfig.GIT_MESSAGE}`,
-        `Date: ${appConfig.GIT_DATE}`
+        `commitNumber: ${this.appConfig.GIT_COMMIT} \n
+          msg: ${this.appConfig.GIT_MESSAGE}`,
+        `Date: ${this.appConfig.GIT_DATE}`
       ]
     }
   },

@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'vue-service-app',
+  title: 'saas 2.0',
   description: 'this is vue-service-app descriptions',
 
   markdown: {
@@ -10,25 +10,39 @@ module.exports = {
     nav: [
       {
         text: '指南',
-        link: '/guide/'
+        link: '/saas/basic/intro.html'
       },
       {
-        text: '服务',
-        link: '/services/'
+        text: 'vue-service-app',
+        link: '/vue-service-app/intro.html'
       }
     ],
     sidebar: {
-      '/guide/': [
-        '',
-        'getting-start',
-        'di',
-        'theme',
-        'service',
-        'router',
-        'i18n',
-        'package'
+      '/vue-service-app/': [
+        {
+          title: '基础',
+          collapsable: false,
+          children: ['intro', 'start', 'di', 'service', 'router']
+        }
       ],
-      '/services/': ['', 'search']
+      '/saas/': [
+        {
+          title: '基础',
+          collapsable: false,
+          children: [
+            'intro',
+            'std',
+            'layout',
+            'router',
+            'filters',
+            'config',
+            'mock',
+            'auth',
+            'i18n',
+            'theme'
+          ]
+        }
+      ]
     }
   }
 }

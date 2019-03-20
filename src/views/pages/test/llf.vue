@@ -1,8 +1,8 @@
 <template>
   <div>
     LLF
-    {{searchQuery}}
-    <a-input v-model='searchQuery.a'></a-input>
+    {{query}}
+    <a-input v-model='query.a'></a-input>
     <a-button :loading='isSwitching'
       @click='onSubmit'>onSubmit</a-button>
   </div>
@@ -11,17 +11,19 @@
 <script>
 import { ThemeService } from '@/services/theme.service'
 import { LlfService } from '@/views/pages/test/llf.service'
+import { RouteService } from '@/services/route.service'
 var i = 0
 export default {
   serviceInject() {
     return {
       themeService: ThemeService,
-      llfService: LlfService
+      llfService: LlfService,
+      route: RouteService
     }
   },
   subscriptions() {
     return {
-      searchQuery: this.llfService.searchQuery$
+      query: this.route.query$
     }
   },
   data() {
@@ -31,8 +33,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log('submit')
-      this.$router.push({ query: this.searchQuery })
+      this.$router.push({ query: this.query })
     }
   }
 }

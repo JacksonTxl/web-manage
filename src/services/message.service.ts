@@ -1,13 +1,16 @@
 import { message } from 'ant-design-vue'
 
-/**
- * content: 提示内容
- * duration: 自动关闭的延时，单位秒。设为 0 时不自动关闭。
- */
 interface MessageOptions {
-  content: string,
-  duration: number,
+  /**
+   * 提示内容
+   */
+  content: string
+  /**
+   * 自动关闭的延时，单位秒。设为 0 时不自动关闭。
+   */
+  duration?: number
 }
+
 export class MessageService {
   warning(config: MessageOptions) {
     message.warning(config.content, config.duration)
