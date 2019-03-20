@@ -5,6 +5,9 @@ import { Action } from 'rx-state/src'
 import { EMPTY } from 'rxjs'
 import { AppConfig } from '@/constants/config'
 
+/**
+ * 热更新服务
+ */
 @Injectable()
 export class HotReleaseService implements RouteGuard {
   constructor(private appConfig: AppConfig) {}

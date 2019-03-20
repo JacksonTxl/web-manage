@@ -1,6 +1,6 @@
 <template>
   <div class="plugins">
-    Plugins
+    Plugins Layout
     <router-view></router-view>
   </div>
 </template>

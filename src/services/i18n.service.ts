@@ -61,6 +61,13 @@ export class I18NService {
   setLanguage(language: Language) {
     this.language$.commit(() => language)
   }
+  /**
+   *
+   * @param appMsgKey 翻译key
+   * @example
+   *
+   * this.localeService.translate('app.title')
+   */
   translate(appMsgKey: string) {
     const appMessages = getState(this.appLocale$)
     const text = get(appMessages, appMsgKey) || ''

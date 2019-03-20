@@ -4,6 +4,7 @@
 
 import { DashboardService } from '@/views/pages/dashboard.service.ts'
 import { PluginsService } from '@/views/pages/plugins.service.ts'
+import { ListService as BrandListService } from '@/views/pages/brand/list.service.ts'
 import { ListService as PluginsListService } from '@/views/pages/plugins/list.service.ts'
 import { LlfService as TestLlfService } from '@/views/pages/test/llf.service.ts'
 import { ZlxService as TestZlxService } from '@/views/pages/test/zlx.service.ts'
@@ -11,6 +12,7 @@ import { ZlxService as TestZlxService } from '@/views/pages/test/zlx.service.ts'
 const page404 = () => import('@/views/pages/404.vue')
 const pageDashboard = () => import('@/views/pages/dashboard.vue')
 const pagePlugins = () => import('@/views/pages/plugins.vue')
+const pageBrandList = () => import('@/views/pages/brand/list.vue')
 const pagePluginsList = () => import('@/views/pages/plugins/list.vue')
 const pagePluginsTheme = () => import('@/views/pages/plugins/theme.vue')
 const pageTestLlf = () => import('@/views/pages/test/llf.vue')
@@ -46,6 +48,11 @@ const pageRoutes = [{
     component: pagePluginsTheme,
     guards: []
   }]
+}, {
+  name: 'brand-list',
+  path: '/brand/list',
+  component: pageBrandList,
+  guards: [BrandListService]
 }, {
   name: 'test-llf',
   path: '/test/llf',

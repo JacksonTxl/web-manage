@@ -7,6 +7,9 @@ import {
 } from 'vue-service-app'
 import { AppConfig } from '@/constants/config'
 
+/**
+ * token验证
+ */
 @Injectable()
 export class AuthService implements RouteGuard {
   token: string | undefined = this.getAuthToken()
