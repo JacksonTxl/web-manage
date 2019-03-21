@@ -104,22 +104,6 @@
       </div>
     </div>
 
-    <script>
-      window.less = {
-        javascriptEnabled: true,
-        // 不会添加 body display:none
-        async: true,
-        env: <%= JSON.stringify(NODE_ENV) %>
-      }
-    </script>
-    <link rel="stylesheet/less" href="<%= BASE_URL %>app.less" />
-    <script>
-      setTimeout(() => {
-        var lessScript = document.createElement('script')
-        lessScript.src = '<%= BASE_URL %>js/less.js/3.9.0/less.min.js'
-        document.body.appendChild(lessScript)
-      }, 3000)
-    </script>
     <!-- built files will be auto injected -->
   </body>
 </html>

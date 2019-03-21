@@ -36,6 +36,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     if (route.name === 'user-login') {
       prependGuards(route, [
         HotReleaseService,
+        ThemeService,
         NProgressService,
         TitleService,
         RouteService
@@ -43,6 +44,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     } else if (route.name === '404') {
       prependGuards(route, [
         HotReleaseService,
+        ThemeService,
         NProgressService,
         TitleService,
         RouteService
@@ -50,6 +52,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     } else if (route.path.startsWith('/') && !route.redirect) {
       prependGuards(route, [
         HotReleaseService,
+        ThemeService,
         NProgressService,
         // AuthService,
         TitleService,

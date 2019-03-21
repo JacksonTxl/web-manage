@@ -1,16 +1,30 @@
 const gulp = require('gulp')
 const Fse = require('fs-extra')
-const LessTask = require('./build/less-task')
+const Path = require('path')
 const RouteTask = require('./build/route-task')
+const ThemeTask = require('./build/theme-task')
+const themeConfig = require('./themes.config')
 
-const lessSrc = './src/style/index.less'
-const lessDest = './public/app.less'
+const LESS_MAIN_FILE = './src/style/index.less'
+const LESS_DIST = './public/themes'
 
-gulp.task('less-browser', done => {
-  const { content } = new LessTask().run(lessSrc)
-  Fse.writeFile(lessDest, content).then(() => {
-    done()
-  })
+gulp.task('less-theme', done => {
+  const themeTask = new ThemeTask(LESS_MAIN_FILE, themeConfig)
+  themeTask
+    .process()
+    .then(({ cssList }) => {
+      const patchTasks = cssList.map(theme => {
+        const distFile = Path.resolve(LESS_DIST, theme.name + '.css')
+        return Fse.writeFile(distFile, theme.patch)
+      })
+      return Promise.all(patchTasks)
+    })
+    .then(() => {
+      done()
+    })
+    .catch(e => {
+      done(e)
+    })
 })
 
 gulp.task('initRoute', done => {
@@ -18,11 +32,8 @@ gulp.task('initRoute', done => {
   done()
 })
 
-gulp.watch(['./src/**/*.less'], gulp.series(['less-browser']))
 gulp
-  .watch(
-    ['./src/views/pages/**/*.vue', './src/views/pages/**/*.service.ts']
-  )
+  .watch(['./src/views/pages/**/*.vue', './src/views/pages/**/*.service.ts'])
   .on('add', path => {
     RouteTask.run(path, '  add  ')
   })
@@ -33,4 +44,4 @@ gulp
     RouteTask.run(path, 'remove Dir')
   })
 
-gulp.task('dev', gulp.parallel(['less-browser', 'initRoute']))
+gulp.task('dev', gulp.parallel(['less-theme', 'initRoute']))
