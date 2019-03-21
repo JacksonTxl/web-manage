@@ -48,13 +48,15 @@ export class RouteService implements RouteGuard {
   > 操作全局的user以及menu状态。
 
 ## write Service
-写Service时，应当遵循以下规则：  
+写Service时，应当遵循以下规则：
 1. Service里有流时，流的命名应该以'$'结尾，如
 ```js
 import { ajax } from 'rxjs/ajax'
 let gymList$ = ajax.get('https://xxx.xxx.xxx/gym/list')
+
 ```
-2. 命名需为类似xxx.service.ts格式，views页面的js文件也须如此命名。如 
+
+2. 命名需为类似xxx.service.ts格式，views页面的js文件也须如此命名。如
 ```js
 `user.service.ts`
 ```

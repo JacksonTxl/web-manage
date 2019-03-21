@@ -5,13 +5,13 @@
   "scripts": {
     "dev:docs": "vuepress dev docs --port 8062",
     "build:docs": "vuepress build docs",
-    "init": "yarn install",
+    "init": "npm install",
     "inspect": "vue-cli-service inspect > inspect.js",
     "lint": "vue-cli-service lint",
     "dev": "parallelshell \"npm run serve\" \"gulp dev\"",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "ci": "npm run init && yarn build",
+    "ci": "npm run init && npm run build",
     "gulp-dev": "gulp dev",
     "push:rx": "git subtree push git@gitlab.styd.cn:fe/packages/rx-state.git --prefix=rx-state master",
     "push:vsa": "git subtree push git@gitlab.styd.cn:fe/packages/vue-service-app.git --prefix=vue-service-app master"
@@ -57,6 +57,7 @@
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "less-plugin-glob": "^3.0.0",
+    "less-plugin-npm-import": "^2.1.0",
     "lint-staged": "^8.1.5",
     "lodash-es": "^4.17.11",
     "parallelshell": "^3.0.2",
@@ -64,6 +65,8 @@
     "tslint": "^5.14.0",
     "typescript": "^3.2.1",
     "vue-template-compiler": "^2.5.21",
+    "vuepress": "^0.14.10",
+    "webpack-dev-middleware": "3.6.0",
     "webpack-external-vendor-plugin": "^1.0.0"
   },
   "postcss": {
