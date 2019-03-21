@@ -73,11 +73,6 @@ const pageRoutes = [{
   path: '/test/zlxFull',
   component: pageTestZlxFull,
   guards: []
-}, {
-  name: 'user-login',
-  path: '/user/login',
-  component: pageUserLogin,
-  guards: []
-}]
+} ]
 
 export default pageRoutes
