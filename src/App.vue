@@ -15,6 +15,7 @@
 import { layoutMap } from '@/views/layouts/index.ts'
 import { I18NService } from '@/services/i18n.service'
 import { AppConfig } from '@/constants/config'
+import { ResourceFilters } from '@/filters/resource.filters'
 
 export default {
   name: 'app',

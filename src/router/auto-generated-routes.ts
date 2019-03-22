@@ -20,6 +20,7 @@ const pageTestOss = () => import('@/views/pages/test/oss.vue')
 const pageTestZlx = () => import('@/views/pages/test/zlx.vue')
 const pageTestZlxFull = () => import('@/views/pages/test/zlxFull.vue')
 const pageUserLogin = () => import('@/views/pages/user/login.vue')
+const pageUserLogin2 = () => import('@/views/pages/user/login2.vue')
 
 // service
 const pageRoutes = [{
@@ -73,6 +74,16 @@ const pageRoutes = [{
   path: '/test/zlxFull',
   component: pageTestZlxFull,
   guards: []
-} ]
+}, {
+  name: 'user-login',
+  path: '/user/login',
+  component: pageUserLogin,
+  guards: []
+}, {
+  name: 'user-login2',
+  path: '/user/login2',
+  component: pageUserLogin2,
+  guards: []
+}]
 
 export default pageRoutes

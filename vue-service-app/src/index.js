@@ -10,6 +10,8 @@ const syncRouteGuards = guards => (to, from) => {
 }
 
 const rootContainer = new Container()
+window.appContainer = rootContainer
+
 class VueServiceApp {
   static install(Vue) {
     Vue.use(VueRouter)

@@ -24,7 +24,9 @@ export class ThemeService {
   loadTheme(theme: Theme) {
     const link = document.createElement('link')
     link.rel = 'stylesheet'
-    link.href = `${this.appConfig.BASE_URL}themes/${theme}.css`
+    link.href = `${
+      this.appConfig.BASE_URL
+    }themes/${theme}.css?${new Date().getTime()}`
     document.head.appendChild(link)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
