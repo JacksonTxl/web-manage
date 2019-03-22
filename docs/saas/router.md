@@ -1,6 +1,6 @@
 # Router 路由
 
-router 是基于vue-router进行一些本框架的依赖注入服务 和 查询搜索优化的扩展
+router 是基于vue-router进行依赖注入服务 和 url query的扩展
 ## 特性
 - 自动生成路由
 - 根据路由自动注入服务
