@@ -1,0 +1,12 @@
+// 需要使用less glob 引入语法 引入第三方的模块请使用相对引入
+@import (less) '../../node_modules/nprogress/nprogress.css';
+@import (less) '../../node_modules/fullcalendar/dist/fullcalendar.css';
+@import '../../node_modules/styd-less-base/main-atom.less';
+
+@import '_vars.less';
+@import '_helpers.less';
+@import '_nprogress.less';
+
+// views style
+@import '../App.less';
+@import '../views/**/*.less';
