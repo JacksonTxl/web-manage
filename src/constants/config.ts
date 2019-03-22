@@ -9,7 +9,7 @@ export class AppConfig {
   API_BASE = '/_api'
   /**
    * easy mock 路径
-   * @see https = //www.easy-mock.com/project/5c77a2c8df6f65489b3c3308
+   * @see https://www.easy-mock.com/project/5c77a2c8df6f65489b3c3308
    */
   API_BASE_MOCK =
     'https = //www.easy-mock.com/mock/5c77a2c8df6f65489b3c3308/web'

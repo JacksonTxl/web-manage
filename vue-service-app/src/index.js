@@ -1,5 +1,6 @@
 import { Container, Inject, InjectionToken, Injectable } from './di'
 import multiguard from 'vue-router-multiguard'
+import { Hooks } from './hooks'
 
 class ServiceRouter extends VueRouter {}
 
@@ -35,21 +36,27 @@ class VueServiceApp {
     base = '/',
     mode = 'history',
     routes = [],
+    onInit = [],
     providers = []
   } = {}) {
     this.guardMap = {}
     this.queryMap = {}
+    this.onInit = onInit
     this.vueRouterOptions = {
       base,
       mode,
       routes
     }
     this.providers = providers
+    this.isFirstRouter = true
     // init
     this.initProviders()
+    this.initAppInitHooks()
     this.initRouter()
 
+    this.vueRouteInitNextFunction = null
     // router.beforeEach && router.afterEach
+    this.routerInitHandler()
     this.queryOptionsHandler()
     this.beforeRouteEnterHandler()
     this.beforeRouteUpdateHandler()
@@ -66,6 +73,22 @@ class VueServiceApp {
         }
       })
     }
+  }
+  initAppInitHooks() {
+    const initMiddlewares = this.onInit
+      .map(Init => rootContainer.get(Init))
+      .filter(s => s.onInit)
+      .map(s => {
+        return s.onInit.bind(s)
+      })
+
+    const onInitLifeCycle = new Hooks().addHooks(initMiddlewares)
+    onInitLifeCycle.run(() => {
+      console.log('done')
+      // 触发vueRouterInit行为
+      this.vueRouteInitNextFunction && this.vueRouteInitNextFunction()
+      this.isFirstRouter = false
+    })
   }
   initRouter() {
     const walkRoutes = routes => {
@@ -88,6 +111,15 @@ class VueServiceApp {
     rootContainer.useProvider({
       provide: ServiceRouter,
       useValue: this.router
+    })
+  }
+  routerInitHandler() {
+    this.router.beforeEach((to, from, next) => {
+      if (this.isFirstRouter) {
+        this.vueRouteInitNextFunction = next
+      } else {
+        next()
+      }
     })
   }
   queryOptionsHandler() {

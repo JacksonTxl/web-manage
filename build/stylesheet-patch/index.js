@@ -13,6 +13,7 @@ class StylesheetPatch {
     this.aRules = null
     this.bRules = null
     this.allChangedProps = new Set()
+    this.addedDecls = []
     this.excludeSelectors = excludeSelectors
   }
   _loadRules() {
@@ -48,9 +49,9 @@ class StylesheetPatch {
           return
         }
         if (bExpr.type === STYLE_RULE_TYPE) {
-          const bDecls = bExpr.decls
-          bDecls.forEach(decl => {
-            this.allChangedProps.add(decl.prop)
+          this.addedDecls.push({
+            selectorText: bExpr.selectorText,
+            cssText: bExpr.cssText
           })
         }
         // MediaType 暂时不处理
@@ -141,6 +142,7 @@ class StylesheetPatch {
     this.bSource = bSource
     this.aRules = null
     this.bRules = null
+    this.addedDecls = []
     this.allChangedProps = new Set()
     this._loadRules()
     this._generateChangedProps()
@@ -174,8 +176,10 @@ class StylesheetPatch {
       if (bExpr.type === MEDIA_RULE_TYPE) {
       }
     })
+    const changedCssResult = cssReultArray.map(item => item.cssText).join('\n')
+    const addedCssResult = this.addedDecls.map(item => item.cssText).join('\n')
     return {
-      css: cssReultArray.map(item => item.cssText).join('\n')
+      css: changedCssResult + '\n' + addedCssResult
     }
   }
 }

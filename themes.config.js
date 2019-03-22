@@ -1,6 +1,6 @@
 module.exports = {
   // base样式包入口
-  baseSrc: './src/style/index.less',
+  baseSrc: './src/style/antd.less',
   output: './public/themes',
   // 不需要打包进patch包的选择器
   excludeSelectors: [/^.fc/],

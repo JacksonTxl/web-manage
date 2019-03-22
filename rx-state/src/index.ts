@@ -1,4 +1,4 @@
-import { Subject, Observable, BehaviorSubject } from 'rxjs'
+import { Subject, Observable, BehaviorSubject, of } from 'rxjs'
 import { refCount, publish } from 'rxjs/operators'
 
 interface SetupOptions {
@@ -79,4 +79,8 @@ export class Action<PAYLOAD> {
 
 export const useAction = (epic: Epic, tag: string) => {
   return new Action(epic, tag)
+}
+
+export const complete = (value?: any) => {
+  return of(value || 'COMPLETE')
 }

@@ -3,7 +3,6 @@ const Path = require('path')
 const less = require('less')
 const NpmImportPlugin = require('less-plugin-npm-import')
 const GlobPlugin = require('less-plugin-glob')
-const StylesheetPatch = require('./stylesheet-patch')
 
 class LessTask {
   constructor(name, renderOptions = {}) {
@@ -47,26 +46,21 @@ class ThemeTask {
     const baseResult = await new LessTask(this.lessMainFile).process()
     this.baseCss = baseResult.css
 
-    this.stylesheetPatch = new StylesheetPatch({
-      excludeSelectors: this.excludeSelectors
+    const themesLessTasks = this.themeList.map(theme => {
+      return new LessTask(theme.src).process()
     })
 
-    const themesLessTasks = this.themeList.map(theme =>
-      new LessTask(theme.src).process()
-    )
-
     const themeResults = await Promise.all(themesLessTasks)
-    const patchCssList = []
+    const cssList = []
     themeResults.forEach((result, index) => {
       const themeCss = result.css
       const theme = this.themeList[index]
-      const patchCss = this.stylesheetPatch.process(this.baseCss, themeCss).css
-      patchCssList.push({
+      cssList.push({
         name: theme.name,
-        css: patchCss
+        css: themeCss
       })
     })
-    this.cssList = patchCssList
+    this.cssList = cssList
     return this
   }
 }

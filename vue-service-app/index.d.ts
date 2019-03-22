@@ -56,6 +56,9 @@ export interface RouteGuard {
   beforeRouteUpdate?(to: ServiceRoute, from: ServiceRoute, next: Function): void
   afterEach?(to: ServiceRoute, from: ServiceRoute, next: Function): void
 }
+export interface OnInit {
+  onInit?(next: Function): void
+}
 
 export class Container {
   get<T>(provide: Ctor<T>): T
@@ -67,6 +70,7 @@ export class Container {
 interface VueServiceAppConfig {
   base?: string
   routes?: ServiceRouteConfig[]
+  onInit?: Function[]
   providers?: ServiceProvideConfig[]
 }
 
