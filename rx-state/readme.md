@@ -3,7 +3,7 @@
 及简单的基于 rx 的 state 管理方案
 
 ```js
-import { State, getState } from 'rx-state'
+import { State, getSnapshot } from 'rx-state'
 
 // 初始化一个流 第一参为值 第二个参为标签名称
 const count$ = new State(0, 'a')
@@ -21,34 +21,53 @@ a$.subscribe(v => {
 })
 
 // 获取流状态的当前值
-getState(a$) // 1
+getSnapshot(a$) // 1
 ```
 
-## rxjs 实现计算状态流
+## rxjs 与 ts 结合 复杂一点的状态
 
-```js
-import { combineLastest } from 'rxjs'
+```ts
+import { State } from 'rx-state'
+import { pluck } from 'rxjs/operators'
+interface User {
+  name: string
+  age: number
+}
+interface UserState {
+  user: User
+  menu: string[]
+}
+const initialState = {
+  user: {},
+  menu: []
+}
 
-const todos$ = new State([])
-const count$ = new State(0)
+const userState$ = new State(initialState, 'userState')
 
-const state$ = combineLastest(todos$, count$, (todos, count) => ({
-  todos,
-  count
-}))
-state$.subscribe(v => {
-  console.log(v) // {todos:[],count:0}
+// 可以直接进行pipe操作来定义user流
+const user$ = userState$.pipe(
+  pluck('user'),
+  filter(user => user.name)
+)
+// 菜单流
+const menu$ = userState$.pipe(pluck('menu'))
+
+// 更新 user 这个会生效
+userState$.commit(state => {
+  state.user = {
+    name: 'hello',
+    age: 38
+  }
 })
 
-// 一样可以通过getState获取当前值
-getState(state$) // {todos:[],count:0}
-
-// 对象型的状态是immutable的 可以直接操作
-todos$.commit(todos => {
-  todos.push({ id: 1, title: '3' })
+// 这个state$会发射 但user$不会发射 因为上面定义了filter()
+userState$.commit(state => {
+  state.user = {
+    name: '',
+    age: 38
+  }
 })
 
-getState(state$) // {todos:[{id:1,title:'3'}],count:0}
 ```
 
 ```js
@@ -60,7 +79,7 @@ const reload$ = new Action(data$ => {
       ajax.get('/release.json?123').pipe(catchError(() => EMPTY))
     ),
     tap(res => {
-      console.log('延迟更新成功',res)
+      console.log('延迟更新成功', res)
     })
   )
 })

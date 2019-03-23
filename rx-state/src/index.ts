@@ -41,21 +41,15 @@ export class State<T> extends BehaviorSubject<T> {
 }
 
 /**
- * 获得一个流最后的值状态
+ * 获得一个流最后的值状态快照
  */
-export function getState<T>(stream: Observable<T>): T {
+export function getSnapshot<T>(stream: Observable<T>): T {
   let currentState: any = null
   const subscribtion = stream.subscribe(v => {
     currentState = v
   })
   subscribtion.unsubscribe()
   return currentState
-}
-
-export function withNamespace(namespace: string) {
-  return function(tag: string) {
-    return namespace + '/' + tag
-  }
 }
 
 export class Action<PAYLOAD> {

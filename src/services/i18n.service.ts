@@ -1,5 +1,5 @@
-import { State, withNamespace, getState } from 'rx-state'
-import { map } from 'rxjs/operators'
+import { State, getSnapshot } from 'rx-state'
+import { map, pluck } from 'rxjs/operators'
 import { Observable } from 'rxjs'
 import { Injectable } from 'vue-service-app'
 import { get } from 'lodash-es'
@@ -13,37 +13,41 @@ import zh_CN_App from '@/i18n/zh_CN'
 // @ts-ignore
 import en_US_App from '@/i18n/en_US'
 
-const ns = withNamespace('i18nService')
 // type reference https://vue.ant.design/docs/vue/i18n/
-type Language = 'zh_CN' | 'en_US'
+type Locale = 'zh_CN' | 'en_US'
 
-interface Locale {
+interface LocaleMessages {
   antd: {}
   app: {}
+}
+interface I18NState {
+  locale: Locale
+  localeMessages: LocaleMessages
 }
 
 @Injectable()
 export class I18NService {
-  language$: State<Language>
+  state$: State<I18NState>
   locale$: Observable<Locale>
-  appLocale$: Observable<{}>
-  antdLocale$: Observable<{}>
+  localeMessages$: Observable<LocaleMessages>
+  antdLocaleMessages$: Observable<{}>
+  appLocaleMessages$: Observable<{}>
   constructor() {
-    const defaultLan = Cookie.get('language') || 'zh_CN'
-
-    this.language$ = new State(defaultLan, ns('language'))
-    this.language$.forEach(language => {
-      Cookie.set('language', language)
-    })
-    this.locale$ = this.language$.pipe(
-      map(language => {
-        if (language === 'zh_CN') {
+    const initialState = {
+      locale: Cookie.get('language') || 'zh_CN'
+    }
+    this.state$ = new State(initialState, 'I18NService.state$')
+    this.locale$ = this.state$.pipe(pluck('locale'))
+    this.localeMessages$ = this.state$.pipe(
+      pluck('locale'),
+      map(locale => {
+        if (locale === 'zh_CN') {
           return {
             antd: zh_CN_Antd,
             app: zh_CN_App
           }
         }
-        if (language === 'en_US') {
+        if (locale === 'en_US') {
           return {
             antd: en_US_Antd,
             app: en_US_App
@@ -55,27 +59,44 @@ export class I18NService {
         }
       })
     )
-    this.appLocale$ = this.locale$.pipe(map(locale => locale.app))
-    this.antdLocale$ = this.locale$.pipe(map(locale => locale.antd))
+    this.appLocaleMessages$ = this.localeMessages$.pipe(pluck('app'))
+    this.antdLocaleMessages$ = this.localeMessages$.pipe(pluck('antd'))
   }
-  setLanguage(language: Language) {
-    this.language$.commit(() => language)
+  SET_LOCALE(locale: Locale) {
+    this.state$.commit(state => {
+      state.locale = locale
+    })
   }
-  /**
-   *
-   * @param appMsgKey 翻译key
-   * @example
-   *
-   * this.localeService.translate('app.title')
-   */
-  translate(appMsgKey: string) {
-    const appMessages = getState(this.appLocale$)
-    const text = get(appMessages, appMsgKey) || ''
+  get appLocaleMessagesSnapshot() {
+    return getSnapshot(this.appLocaleMessages$)
+  }
+  private getText(messages: any, index: string) {
+    const text = get(messages, index) || ''
     if (!text) {
-      console.warn(
-        `i18nService can not translate [${appMsgKey}],are you declared?`
-      )
+      console.warn(`i18nService can not translate [${index}],are you declared?`)
     }
     return text
+  }
+  /**
+   * @param appMsgKey 翻译key
+   * @example
+   * this.i18n.translate('app.title')
+   */
+  translate(appMsgKey: string) {
+    return this.getText(this.appLocaleMessagesSnapshot, appMsgKey)
+  }
+  t(appMsgKey: string) {
+    return this.translate(appMsgKey)
+  }
+  /**
+   * 通过关键字返回指定的文本的流
+   * @param appMsgKey 翻译key
+   * @example
+   * this.i18n.t$('app.title') => title$
+   */
+  t$(appMsgKey: string): Observable<string> {
+    return this.appLocaleMessages$.pipe(appMessages => {
+      return this.getText(appMessages, appMsgKey)
+    })
   }
 }

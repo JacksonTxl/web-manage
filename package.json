@@ -6,6 +6,7 @@
     "tasks": "gulp --tasks",
     "dev:docs": "vuepress dev docs --port 8062",
     "build:docs": "vuepress build docs",
+    "theme": "gulp theme",
     "init": "npm install",
     "inspect": "vue-cli-service inspect > inspect.js",
     "lint": "vue-cli-service lint",

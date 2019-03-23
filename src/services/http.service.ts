@@ -94,7 +94,7 @@ export class HttpService {
   }
   get headers() {
     return {
-      token: this.auth.getAuthToken(),
+      token: this.auth.tokenSnapshot,
       'App-Id': '123',
       'App-Version': '1123',
       'Content-Type': 'application/json;charset=UTF-8;'

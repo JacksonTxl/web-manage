@@ -1,6 +1,6 @@
 module.exports = {
   // base样式包入口
-  baseSrc: './src/style/antd.less',
+  baseSrc: './src/style/index.less',
   output: './public/themes',
   // 不需要打包进patch包的选择器
   excludeSelectors: [/^.fc/],
@@ -8,9 +8,9 @@ module.exports = {
   themeList: [
     {
       // 主题包名称
-      name: 'pink',
+      name: 'club-default',
       // 主题包主入口路径
-      src: './src/style/themes/pink/index.less'
+      src: './src/style/themes/club-default/index.less'
     }
   ]
 }

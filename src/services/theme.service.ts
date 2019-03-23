@@ -1,78 +1,67 @@
-import { State, withNamespace, getState, complete } from 'rx-state'
+import { State } from 'rx-state'
 import Cookie from 'js-cookie'
-import { Injectable, OnInit } from 'vue-service-app'
+import { Injectable } from 'vue-service-app'
 import { AppConfig } from '@/constants/config'
-import { Observable, Subject, interval } from 'rxjs'
+import { Observable } from 'rxjs'
+import { pluck, tap, filter, distinctUntilChanged, take } from 'rxjs/operators'
 
-const ns = withNamespace('ThemeService')
+/**
+ *  可用主题
+ * */
 
 type Theme = 'default' | 'blue' | 'green' | 'pink'
 
-@Injectable()
-export class ThemeService implements OnInit {
+interface ThemeState {
   /**
    *  当前主题
    */
-  theme$: State<Theme>
-  /**
-   * 可选主题
-   */
-  themeOptions$: State<Theme[]>
+  theme: Theme
+}
+
+@Injectable()
+export class ThemeService {
+  // 可选主题选项
+  private themeOptions = ['default']
+  state$: State<ThemeState>
+  theme$: Observable<Theme>
   constructor(private appConfig: AppConfig) {
-    this.theme$ = new State(Cookie.get('theme') || '', ns('theme$'))
-    this.themeOptions$ = new State(['default', 'pink'], ns('themeOptions$'))
+    const initialState = {
+      theme: Cookie.get('theme') || 'default'
+    }
+    this.state$ = new State(initialState, 'ThemeService.state$')
+    this.theme$ = this.state$.pipe(
+      pluck('theme'),
+      // 同样的不更新
+      distinctUntilChanged(),
+      // 只有在主题状态在主题列表中才更新
+      filter(theme => this.themeOptions.includes(theme))
+    )
     this.theme$.subscribe(theme => {
+      console.log(theme)
       Cookie.set('theme', theme)
+    })
+    this.theme$.subscribe(theme => {
+      const linkEl = this.createThemeLink(theme)
     })
   }
   SET_THEME(theme: Theme) {
-    if (getState(this.themeOptions$).includes(theme)) {
-      this.theme$.commit(() => theme)
-    } else {
-      console.warn('should change a theme in themeOptions')
-    }
+    this.state$.commit(state => {
+      state.theme = theme
+    })
   }
-  private createThemeLink(theme: string) {
+  /**
+   * 开发环境使用时间，生产环境使用GIT_COMMIT作为后缀
+   */
+  private get linkHash() {
+    return this.appConfig.IS_DEV
+      ? new Date().getTime()
+      : this.appConfig.GIT_COMMIT
+  }
+  private createThemeLink(theme: Theme) {
     const link = document.createElement('link')
     link.rel = 'stylesheet'
     link.setAttribute('data-theme', theme)
-    link.href = `${
-      this.appConfig.BASE_URL
-    }themes/${theme}.css?${new Date().getTime()}`
+    link.href = `${this.appConfig.BASE_URL}themes/${theme}.css?${this.linkHash}`
     return link
-  }
-  changeTheme(theme: Theme) {
-    if (theme === getState(this.theme$)) {
-      return complete()
-    }
-    const subject$ = new Subject()
-    const appendedTheme = document.querySelector('[data-theme]')
-    if (appendedTheme) {
-      document.head.removeChild(appendedTheme)
-    }
-    const link = this.createThemeLink(theme)
-    document.head.appendChild(link)
-    link.onload = () => {
-      subject$.complete()
-    }
-    return subject$
-  }
-  initTheme() {
-    const theme = getState(this.theme$)
-    if (!theme || theme === 'default') {
-      return complete()
-    }
-    const init$ = new Subject()
-    const link = this.createThemeLink(theme)
-    document.head.appendChild(link)
-    link.onload = () => {
-      init$.complete()
-    }
-    return init$
-  }
-  onInit(next: any) {
-    this.initTheme().subscribe(() => {
-      next()
-    })
   }
 }
