@@ -84,7 +84,6 @@ class VueServiceApp {
 
     const onInitLifeCycle = new Hooks().addHooks(initMiddlewares)
     onInitLifeCycle.run(() => {
-      console.log('done')
       // 触发vueRouterInit行为
       this.vueRouteInitNextFunction && this.vueRouteInitNextFunction()
       this.isFirstRouter = false

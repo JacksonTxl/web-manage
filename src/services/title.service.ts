@@ -6,7 +6,6 @@ import { Observable, combineLatest } from 'rxjs'
 
 interface TitleState {
   titleIndex: string
-  title: string
 }
 
 @Injectable()
@@ -17,18 +16,20 @@ export class TitleService implements RouteGuard {
   constructor(private i18n: I18NService) {
     this.state$ = new State(
       {
-        titleIndex: '',
-        title: ''
+        titleIndex: ''
       },
       'TitleService.state$'
     )
     this.titleIndex$ = this.state$.pipe(pluck('titleIndex'))
 
     this.title$ = combineLatest(this.titleIndex$, this.i18n.locale$).pipe(
-      map(
-        ([titleIndex]) =>
-          `${this.i18n.t('app.title')} - ${this.i18n.t(titleIndex)}`
-      )
+      map(([titleIndex]) => {
+        if (titleIndex) {
+          return `${this.i18n.t('app.title')} - ${this.i18n.t(titleIndex)}`
+        } else {
+          return this.i18n.t('app.title')
+        }
+      })
     )
     this.title$.subscribe(title => {
       document.title = title

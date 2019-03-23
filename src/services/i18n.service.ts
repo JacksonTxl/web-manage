@@ -16,51 +16,48 @@ import en_US_App from '@/i18n/en_US'
 // type reference https://vue.ant.design/docs/vue/i18n/
 type Locale = 'zh_CN' | 'en_US'
 
-interface LocaleMessages {
-  antd: {}
-  app: {}
-}
 interface I18NState {
   locale: Locale
-  localeMessages: LocaleMessages
+  antdLocaleMessages: {}
+  appLocaleMessages: {}
 }
 
 @Injectable()
 export class I18NService {
   state$: State<I18NState>
   locale$: Observable<Locale>
-  localeMessages$: Observable<LocaleMessages>
   antdLocaleMessages$: Observable<{}>
   appLocaleMessages$: Observable<{}>
   constructor() {
     const initialState = {
-      locale: Cookie.get('language') || 'zh_CN'
+      locale: Cookie.get('language') || 'zh_CN',
+      antdLocaleMessages: {},
+      appLocaleMessages: {}
     }
     this.state$ = new State(initialState, 'I18NService.state$')
     this.locale$ = this.state$.pipe(pluck('locale'))
-    this.localeMessages$ = this.state$.pipe(
-      pluck('locale'),
+    this.appLocaleMessages$ = this.locale$.pipe(
       map(locale => {
         if (locale === 'zh_CN') {
-          return {
-            antd: zh_CN_Antd,
-            app: zh_CN_App
-          }
+          return zh_CN_App
         }
         if (locale === 'en_US') {
-          return {
-            antd: en_US_Antd,
-            app: en_US_App
-          }
+          return en_US_App
         }
-        return {
-          antd: {},
-          app: {}
-        }
+        return {}
       })
     )
-    this.appLocaleMessages$ = this.localeMessages$.pipe(pluck('app'))
-    this.antdLocaleMessages$ = this.localeMessages$.pipe(pluck('antd'))
+    this.antdLocaleMessages$ = this.locale$.pipe(
+      map(locale => {
+        if (locale === 'zh_CN') {
+          return zh_CN_Antd
+        }
+        if (locale === 'en_US') {
+          return en_US_Antd
+        }
+        return {}
+      })
+    )
   }
   SET_LOCALE(locale: Locale) {
     this.state$.commit(state => {
@@ -95,8 +92,10 @@ export class I18NService {
    * this.i18n.t$('app.title') => title$
    */
   t$(appMsgKey: string): Observable<string> {
-    return this.appLocaleMessages$.pipe(appMessages => {
-      return this.getText(appMessages, appMsgKey)
-    })
+    return this.appLocaleMessages$.pipe(
+      map(appMessages => {
+        return this.getText(appMessages, appMsgKey)
+      })
+    )
   }
 }
