@@ -1,9 +1,8 @@
-import { LoginApi, LoginAccountInput, LoginPhoneInput } from '@/api/login'
+import { LoginApi, LoginPhoneInput, LoginAccountInput } from '@/api/login'
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State } from 'rx-state'
-import { tap, map, pluck } from 'rxjs/operators'
-import { Observable } from 'rxjs'
-import { AuthService } from './auth.service'
+import { State, Request, Computed } from 'rx-state'
+import { tap, pluck } from 'rxjs/operators'
+import { Store } from './store'
 
 interface UserState {
   user: User
@@ -15,20 +14,26 @@ interface User {
 }
 
 @Injectable()
-export class UserService {
+export class UserService extends Store<UserState> {
   state$: State<UserState>
-  user$: Observable<User>
-  menu$: Observable<any[]>
-  constructor(private loginApi: LoginApi, private authService: AuthService) {
-    this.state$ = new State({}, 'UserService.state$')
-    this.user$ = this.state$.pipe(pluck('user'))
-    this.menu$ = this.state$.pipe(pluck('menu'))
+  user$: Computed<User>
+  menu$: Computed<any[]>
+  constructor(private loginApi: LoginApi) {
+    super()
+    const initialState = {
+      user: {},
+      menu: []
+    }
+    this.state$ = new State(initialState)
+    this.user$ = new Computed(this.state$.pipe(pluck('user')))
+    this.menu$ = new Computed(this.state$.pipe(pluck('menu')))
   }
   SET_USER(user: User) {
     this.state$.commit(state => {
       state.user = user
     })
   }
+  @Request()
   loginAccount(data: LoginAccountInput) {
     return this.loginApi.loginAccount(data).pipe(
       tap(res => {
@@ -36,7 +41,8 @@ export class UserService {
       })
     )
   }
-  loginMail(data: LoginPhoneInput) {
+  @Request()
+  loginPhone(data: LoginPhoneInput) {
     return this.loginApi.loginPhone(data)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {

@@ -1,6 +1,6 @@
-import VueRouter, { Route, RouteConfig } from 'vue-router'
+import VueRouter, { Route as VueRoute, RouteConfig as VueRouteConfig } from 'vue-router'
 import { VueConstructor } from 'vue'
-import { Vue } from 'vue/types/vue'
+import Vue from 'vue'
 
 type PluginFunction<T> = (Vue: VueConstructor, options?: T) => void
 
@@ -21,13 +21,13 @@ interface QueryOptions {
   [queryName: string]: QueryOption
 }
 
-interface ServiceRouteConfigMeta {
+interface RouteConfigMeta {
   [key: string]: any
   queryOptions?: QueryOptions
 }
 
 // 全局声明类型 declares
-export interface ServiceRoute extends Route {
+export interface ServiceRoute extends VueRoute {
   name: string
   meta: {
     [key: string]: any
@@ -35,11 +35,11 @@ export interface ServiceRoute extends Route {
   }
 }
 
-export interface ServiceRouteConfig extends RouteConfig {
+export interface ServiceRouteConfig extends VueRouteConfig {
   guards?: any[] | never[]
   queryOptions?: QueryOptions
   children?: ServiceRouteConfig[]
-  meta?: ServiceRouteConfigMeta
+  meta?: RouteConfigMeta
 }
 
 type ServiceProvideConfig =

@@ -1,9 +1,9 @@
-import { State } from 'rx-state'
+import { State, Computed } from 'rx-state'
 import Cookie from 'js-cookie'
 import { Injectable } from 'vue-service-app'
 import { AppConfig } from '@/constants/config'
-import { Observable } from 'rxjs'
-import { pluck, tap, filter, distinctUntilChanged, take } from 'rxjs/operators'
+import { pluck, filter } from 'rxjs/operators'
+import { Store } from './store'
 
 /**
  *  可用主题
@@ -19,32 +19,32 @@ interface ThemeState {
 }
 
 @Injectable()
-export class ThemeService {
+export class ThemeService extends Store<ThemeState> {
   // 可选主题选项
   private themeOptions = ['default']
   state$: State<ThemeState>
-  theme$: Observable<Theme>
+  theme$: Computed<Theme>
   constructor(private appConfig: AppConfig) {
+    super()
     const initialState = {
       theme: Cookie.get('theme') || 'default'
     }
-    this.state$ = new State(initialState, 'ThemeService.state$')
-    this.theme$ = this.state$.pipe(
-      pluck('theme'),
-      // 同样的不更新
-      distinctUntilChanged(),
-      // 只有在主题状态在主题列表中才更新
-      filter(theme => this.themeOptions.includes(theme))
+    this.state$ = new State(initialState)
+    this.theme$ = new Computed(
+      this.state$.pipe(
+        pluck('theme'),
+        // 只有在主题状态在主题列表中才更新
+        filter(theme => this.themeOptions.includes(theme))
+      )
     )
     this.theme$.subscribe(theme => {
-      console.log(theme)
       Cookie.set('theme', theme)
     })
     this.theme$.subscribe(theme => {
       const linkEl = this.createThemeLink(theme)
     })
   }
-  SET_THEME(theme: Theme) {
+  setTheme(theme: Theme) {
     this.state$.commit(state => {
       state.theme = theme
     })

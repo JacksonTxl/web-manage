@@ -1,27 +1,27 @@
 import { Subject, Observable, BehaviorSubject, of } from 'rxjs'
-import { refCount, publish } from 'rxjs/operators'
-
-interface SetupOptions {
-  debug: boolean
-  onStateChange(value: any, tag: string, timestamp: number): void
-}
+import {
+  refCount,
+  publish,
+  tap,
+  finalize,
+  shareReplay,
+  map
+} from 'rxjs/operators'
+import { cloneDeep } from 'lodash-es'
 
 export type Mutation<T> = (state: T) => T | void
-export type Epic = (stream: Observable<any>) => Observable<any>
+export type Epic<T> = (source$: Observable<T>) => Observable<any>
 
-let stateIndex = 1
 export class State<T> extends BehaviorSubject<T> {
-  tag: string
-  constructor(initialState: any, tag?: string) {
+  constructor(initialState: any) {
     super(initialState)
-    this.tag = tag || `@@${stateIndex++}`
   }
   commit(mutation: Mutation<T>) {
     let newState
     if (mutation.length < 1) {
       newState = mutation(this.value)
     } else {
-      const clonedState = JSON.parse(JSON.stringify(this.value))
+      const clonedState: any = cloneDeep(this.value)
 
       const returned = mutation(clonedState)
       if (returned === undefined) {
@@ -32,9 +32,6 @@ export class State<T> extends BehaviorSubject<T> {
     }
 
     if (newState !== this.value) {
-      if (process.env.NODE_ENV === 'development') {
-        console.log(this.tag, 'mutated', newState)
-      }
       this.next(newState)
     }
   }
@@ -52,10 +49,10 @@ export function getSnapshot<T>(stream: Observable<T>): T {
   return currentState
 }
 
-export class Action<PAYLOAD> {
-  trigger$: Subject<PAYLOAD>
+export class Action<Payload> {
+  trigger$: Subject<Payload>
   action$: Observable<any>
-  constructor(epic: Epic, actionTag = 'untaged Action') {
+  constructor(epic: Epic<Payload>) {
     this.trigger$ = new Subject()
     this.action$ = epic(this.trigger$).pipe(
       publish(),
@@ -63,18 +60,62 @@ export class Action<PAYLOAD> {
     )
     this.action$.subscribe()
   }
-  subscribe(...args: any[]) {
-    return this.action$.subscribe(...args)
-  }
-  dispatch(payload?: PAYLOAD) {
+  dispatch(payload?: Payload) {
     this.trigger$.next(payload)
   }
-}
-
-export const useAction = (epic: Epic, tag: string) => {
-  return new Action(epic, tag)
+  subscribe(...args: any[]) {
+    this.action$.subscribe(...args)
+  }
 }
 
 export const complete = (value?: any) => {
   return of(value || 'COMPLETE')
+}
+
+let i = 0
+export function log(tag?: string) {
+  return function(source$: Observable<any>) {
+    return source$.pipe(
+      tap((v: any) => {
+        if (tag) {
+          console.log(`[rx-state] state [${tag}] -> `, v)
+        } else {
+          console.log(`[rx-state] state ->`, v)
+        }
+      })
+    )
+  }
+}
+
+const PATCH = (tag: string, value: any) => (state: any) => {
+  state[tag] = value
+}
+
+export function Request() {
+  return function(target: any, propKey: string, descriptor: any) {
+    const originalFn = target[propKey]
+    descriptor.value = function() {
+      if (!this.loading$) {
+        this.loading$ = new State({})
+      }
+      this.loading$.commit(PATCH(propKey, true))
+      const oriRequest$: Observable<any> = originalFn.apply(this, arguments)
+      const request$ = oriRequest$.pipe(
+        tap(() => {
+          this.loading$.commit(PATCH(propKey, false))
+        }),
+        finalize(() => {
+          this.loading$.commit(PATCH(propKey, false))
+        })
+      )
+      return request$
+    }
+  }
+}
+
+export class Computed<T> extends Observable<T> {
+  constructor(source$: Observable<T>) {
+    super()
+    return source$.pipe(shareReplay(1))
+  }
 }

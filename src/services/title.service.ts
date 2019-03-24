@@ -1,25 +1,24 @@
 import { I18NService } from './i18n.service'
 import { ServiceRoute, Injectable, RouteGuard } from 'vue-service-app'
-import { State } from 'rx-state/src'
+import { State } from 'rx-state'
 import { pluck, map } from 'rxjs/operators'
 import { Observable, combineLatest } from 'rxjs'
+import { Store } from './store'
 
 interface TitleState {
   titleIndex: string
 }
 
 @Injectable()
-export class TitleService implements RouteGuard {
+export class TitleService extends Store<TitleState> implements RouteGuard {
   state$: State<TitleState>
   titleIndex$: Observable<string>
   title$: Observable<string>
   constructor(private i18n: I18NService) {
-    this.state$ = new State(
-      {
-        titleIndex: ''
-      },
-      'TitleService.state$'
-    )
+    super()
+    this.state$ = new State({
+      titleIndex: ''
+    })
     this.titleIndex$ = this.state$.pipe(pluck('titleIndex'))
 
     this.title$ = combineLatest(this.titleIndex$, this.i18n.locale$).pipe(

@@ -1,4 +1,4 @@
-import { State, getSnapshot } from 'rx-state'
+import { State, getSnapshot, Computed, log } from 'rx-state'
 import { map, pluck } from 'rxjs/operators'
 import { Observable } from 'rxjs'
 import { Injectable } from 'vue-service-app'
@@ -12,54 +12,55 @@ import en_US_Antd from 'ant-design-vue/lib/locale-provider/en_US'
 import zh_CN_App from '@/i18n/zh_CN'
 // @ts-ignore
 import en_US_App from '@/i18n/en_US'
+import { Store } from './store'
 
 // type reference https://vue.ant.design/docs/vue/i18n/
 type Locale = 'zh_CN' | 'en_US'
 
 interface I18NState {
   locale: Locale
-  antdLocaleMessages: {}
-  appLocaleMessages: {}
 }
 
 @Injectable()
-export class I18NService {
+export class I18NService extends Store<I18NState> {
   state$: State<I18NState>
-  locale$: Observable<Locale>
-  antdLocaleMessages$: Observable<{}>
-  appLocaleMessages$: Observable<{}>
+  locale$: Computed<Locale>
+  antdLocaleMessages$: Computed<{}>
+  appLocaleMessages$: Computed<{}>
   constructor() {
-    const initialState = {
-      locale: Cookie.get('language') || 'zh_CN',
-      antdLocaleMessages: {},
-      appLocaleMessages: {}
-    }
-    this.state$ = new State(initialState, 'I18NService.state$')
-    this.locale$ = this.state$.pipe(pluck('locale'))
-    this.appLocaleMessages$ = this.locale$.pipe(
-      map(locale => {
-        if (locale === 'zh_CN') {
-          return zh_CN_App
-        }
-        if (locale === 'en_US') {
-          return en_US_App
-        }
-        return {}
-      })
+    super()
+    this.state$ = new State({
+      locale: Cookie.get('language') || 'zh_CN'
+    })
+    this.locale$ = new Computed(this.state$.pipe(pluck('locale')))
+    this.appLocaleMessages$ = new Computed(
+      this.locale$.pipe(
+        map(locale => {
+          if (locale === 'zh_CN') {
+            return zh_CN_App
+          }
+          if (locale === 'en_US') {
+            return en_US_App
+          }
+          return {}
+        })
+      )
     )
-    this.antdLocaleMessages$ = this.locale$.pipe(
-      map(locale => {
-        if (locale === 'zh_CN') {
-          return zh_CN_Antd
-        }
-        if (locale === 'en_US') {
-          return en_US_Antd
-        }
-        return {}
-      })
+    this.antdLocaleMessages$ = new Computed(
+      this.locale$.pipe(
+        map(locale => {
+          if (locale === 'zh_CN') {
+            return zh_CN_Antd
+          }
+          if (locale === 'en_US') {
+            return en_US_Antd
+          }
+          return {}
+        })
+      )
     )
   }
-  SET_LOCALE(locale: Locale) {
+  setLocale(locale: Locale) {
     this.state$.commit(state => {
       state.locale = locale
     })

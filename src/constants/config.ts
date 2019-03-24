@@ -8,6 +8,10 @@ export class AppConfig {
    */
   API_BASE = '/_api'
   /**
+   * global ajax request timeout
+   */
+  HTTP_TIMEOUT = 5000
+  /**
    * easy mock 路径
    * @see https://www.easy-mock.com/project/5c77a2c8df6f65489b3c3308
    */

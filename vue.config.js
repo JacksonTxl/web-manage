@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const lessGlobPlugin = require('less-plugin-glob')
-const lessImportPlugin = require('less-plugin-npm-import')
+const IgnoreNotFoundExportPlugin = require('./build/ignore-not-found-plugin')
 
 const resolve = dir => path.resolve(__dirname, dir)
 const env = process.env.NODE_ENV || 'development'
@@ -81,6 +81,10 @@ module.exports = {
           }
         }
       ])
+      .end()
+      .plugin('ignore-not-found-export')
+      .before('vue-loader')
+      .use(IgnoreNotFoundExportPlugin)
       .end()
       .when(IS_DEV, config => {
         config.module.rules.delete('eslint')

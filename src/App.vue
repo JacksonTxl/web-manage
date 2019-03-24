@@ -1,7 +1,6 @@
 <template>
   <a-locale-provider :locale="antdLocaleMessages">
     <div id="app">
-      {{title}}
       <component :is="layoutComponent"></component>
       <modal-router-view></modal-router-view>
       <div class="git is-git" @click="getCommitHead">
@@ -28,16 +27,6 @@ export default {
       route: RouteService
     }
   },
-  data() {
-    return {
-      count: 0,
-      tips: [
-        `commitNumber: ${this.appConfig.GIT_COMMIT} \n
-          msg: ${this.appConfig.GIT_MESSAGE}`,
-        `Date: ${this.appConfig.GIT_DATE}`
-      ]
-    }
-  },
   subscriptions() {
     const { layout$, query$ } = this.route
     const t$ = this.i18n.t$.bind(this.i18n)
@@ -46,6 +35,16 @@ export default {
       layout: layout$,
       query: query$,
       title: t$('app.title')
+    }
+  },
+  data() {
+    return {
+      count: 0,
+      tips: [
+        `commitNumber: ${this.appConfig.GIT_COMMIT} \n
+          msg: ${this.appConfig.GIT_MESSAGE}`,
+        `Date: ${this.appConfig.GIT_DATE}`
+      ]
     }
   },
   methods: {
