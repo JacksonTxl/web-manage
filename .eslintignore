@@ -1,2 +1,3 @@
 *.d.ts
 public/js/*.js
+/src/assets/iconfont/font.js
