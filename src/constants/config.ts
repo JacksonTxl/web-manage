@@ -38,4 +38,9 @@ export class AppConfig {
   GIT_COMMIT = process.env.GIT_COMMIT
   GIT_MESSAGE = process.env.GIT_MESSAGE
   GIT_DATE = process.env.GIT_DATE
+  /**
+   * html 产出的files相关配置
+   */
+  // @ts-ignore
+  HTML_WEBPACK_FILES = window.htmlWebpackFiles
 }
