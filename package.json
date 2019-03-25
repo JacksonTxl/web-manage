@@ -38,7 +38,8 @@
     "vue-router": "^3.0.2",
     "vue-router-multiguard": "^1.0.3",
     "vue-rx": "^6.1.0",
-    "vuedraggable": "^2.19.2"
+    "vuedraggable": "^2.19.2",
+    "vuepress": "^0.14.10"
   },
   "devDependencies": {
     "@types/js-cookie": "^2.2.1",

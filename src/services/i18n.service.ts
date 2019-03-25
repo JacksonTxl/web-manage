@@ -83,7 +83,7 @@ export class I18NService extends Store<I18NState> {
   translate(appMsgKey: string) {
     return this.getText(this.appLocaleMessagesSnapshot, appMsgKey)
   }
-  t(appMsgKey: string) {
+  t(appMsgKey: string): string {
     return this.translate(appMsgKey)
   }
   /**
