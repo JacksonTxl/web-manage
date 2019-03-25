@@ -20,7 +20,6 @@ const pageTestOss = () => import('@/views/pages/test/oss.vue')
 const pageTestZlx = () => import('@/views/pages/test/zlx.vue')
 const pageTestZlxFull = () => import('@/views/pages/test/zlxFull.vue')
 const pageUserLogin = () => import('@/views/pages/user/login.vue')
-const pageUserLogin2 = () => import('@/views/pages/user/login2.vue')
 const pageUserRegister = () => import('@/views/pages/user/register.vue')
 
 // service
@@ -79,11 +78,6 @@ const pageRoutes = [{
   name: 'user-login',
   path: '/user/login',
   component: pageUserLogin,
-  guards: []
-}, {
-  name: 'user-register',
-  path: '/user/register',
-  component: pageUserRegister,
   guards: []
 }, {
   name: 'user-register',
