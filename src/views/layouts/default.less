@@ -1,3 +1,23 @@
 .layout-default {
-
+  font-size: 20px;
+  .header {
+    .bg(#f0f2f5);
+    &__title {
+      .c(@brand-color);
+      .fz(16px);
+      font-weight: 500;
+      .lh(24px);
+    }
+    &__divider {
+      display: inline-block;
+      .va(middle);
+      .w(1px);
+      .h(30px);
+      .mg-lr(20px);
+      .bg(fade(@black, 10%));
+    }
+    &__breadcrumb {
+      display: inline-block;
+    }
+  }
 }
