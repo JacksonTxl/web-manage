@@ -27,9 +27,7 @@ module.exports = {
   css: {
     loaderOptions: {
       less: {
-        javascriptEnabled: true,
-        plugins: [lessGlobPlugin],
-        paths: ['./src/style']
+        javascriptEnabled: true
       }
     }
   },
