@@ -9,20 +9,68 @@
     .bg(#fff);
     box-shadow:0px 0px 20px 0px rgba(196,193,219,0.2);
     border-radius:4px;
-    .left{
-      position: relative;
-      .w(580px);
-      .h(100%);
-      .introduce{
-        position: absolute;
-        top: -14px;
-        right: 0;
-        .s(506px, 546px);
-        background:linear-gradient(46deg,rgba(24,144,255,1) 0%,rgba(24,56,255,1) 100%);
-        box-shadow:0px 0px 20px 0px rgba(196,193,219,0.2);
-        border-radius:4px;
+    display: flex;
+  }
+  .lf{
+    position: relative;
+    .w(580px);
+    .h(100%);
+    &-introduce{
+      position: absolute;
+      top: -14px;
+      right: 0;
+      .pd-t(251px);
+      .pd-l(64px);
+      .s(506px, 546px);
+      background:linear-gradient(46deg,rgba(24,144,255,1) 0%,rgba(24,56,255,1) 100%);
+      box-shadow:0px 0px 20px 0px rgba(196,193,219,0.2);
+      border-radius:4px;
+    }
+    &-logo{
+      .mg-b(31px);
+    }
+    &-title{
+      .fz(22px);
+      .lh(1);
+      font-weight: 600;
+      .c(#fff);
+      .mg-b(16px);
+    }
+    &-sub-title{
+      .fz(14px);
+      font-weight: 400;
+      .c(rgba(255, 255, 255, .8));
+      .lh(1);
+      .mg-b(50px);
+    }
+    &-help{
+      list-style-type: none;
+      display: flex;
+      padding-left: 0;
+      .item{
+        margin-right:44px;
+        a{
+          .fz(12px);
+          .c(rgba(255,255,255,.45));
+        }
       }
     }
+    &-copyright{
+      .fz(12px);
+      font-weight: 400;
+      .c(rgba(255,255,255,.45));
+      .lh(20px);
+    }
+    &-bg{
+      position: absolute;
+      top: 0;
+      right: 0;
+      .s(335px, 546px);
+      background: url(https://static-s.styd.cn/201903251641/introduce.png) top center no-repeat;
+      background-size: cover;
+    }
   }
-  
+  .st-icon{
+    color: #fff;
+  }
 }
