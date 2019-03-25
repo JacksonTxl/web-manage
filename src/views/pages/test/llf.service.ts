@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Request, Action } from 'rx-state'
+import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { ManageApi, ManagePhoneInput } from '@/api/account/manage'
@@ -20,7 +20,7 @@ export class LlfService extends Store<LlfState> {
     })
     this.name$ = new Computed(this.state$.pipe(pluck('name')))
   }
-  @Request()
+  @Effect()
   test(data: ManagePhoneInput) {
     return this.manageApi.findManagePhone(data)
   }

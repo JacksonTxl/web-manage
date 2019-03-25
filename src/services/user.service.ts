@@ -1,6 +1,6 @@
 import { LoginApi, LoginPhoneInput, LoginAccountInput } from '@/api/login'
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Request, Computed } from 'rx-state'
+import { State, Effect, Computed } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
 import { Store } from './store'
 
@@ -33,7 +33,7 @@ export class UserService extends Store<UserState> {
       state.user = user
     })
   }
-  @Request()
+  @Effect()
   loginAccount(data: LoginAccountInput) {
     return this.loginApi.loginAccount(data).pipe(
       tap(res => {
@@ -41,7 +41,7 @@ export class UserService extends Store<UserState> {
       })
     )
   }
-  @Request()
+  @Effect()
   loginPhone(data: LoginPhoneInput) {
     return this.loginApi.loginPhone(data)
   }

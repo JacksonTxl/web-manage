@@ -68,11 +68,6 @@ export class Action<Payload> {
   }
 }
 
-export const complete = (value?: any) => {
-  return of(value || 'COMPLETE')
-}
-
-let i = 0
 export function log(tag?: string) {
   return function(source$: Observable<any>) {
     return source$.pipe(
@@ -91,12 +86,16 @@ const PATCH = (tag: string, value: any) => (state: any) => {
   state[tag] = value
 }
 
-export function Request() {
+export function Effect() {
   return function(target: any, propKey: string, descriptor: any) {
     const originalFn = target[propKey]
     descriptor.value = function() {
       if (!this.loading$) {
-        this.loading$ = new State({})
+        console &&
+          console.warn(
+            '[rx-state]  Effect decorator can not find  loading$ stream!'
+          )
+        return originalFn.apply(this, arguments)
       }
       this.loading$.commit(PATCH(propKey, true))
       const oriRequest$: Observable<any> = originalFn.apply(this, arguments)

@@ -19,7 +19,6 @@ import { Action } from 'rx-state'
 import { switchMap, catchError, filter } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'
 
-var i = 0
 export default {
   serviceInject() {
     return {
@@ -32,7 +31,6 @@ export default {
   subscriptions() {
     this.submit$ = new Action(data$ =>
       data$.pipe(
-        filter(data => data.a !== 1),
         switchMap(data =>
           this.llfService.test(data).pipe(catchError(() => EMPTY))
         )
