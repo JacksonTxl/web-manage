@@ -1,12 +1,12 @@
 <template>
   <a-button-group>
-    <slot></slot>
+    <slot @change="aaa" @click="aaa"></slot>
   </a-button-group>
 </template>
 <script>
 export default {
   props: {
-    name: String
+    arr: String
   },
   methods: {
     aaa(a) {
