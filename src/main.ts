@@ -11,7 +11,6 @@ import './style/index.less'
 import './style/app.less'
 
 import './views/components/register'
-import './assets/iconfont/font.js'
 
 Vue.use(Antd)
 Vue.use(VueRx)
