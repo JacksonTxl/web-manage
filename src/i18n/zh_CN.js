@@ -12,6 +12,8 @@ export default {
       other: '未知错误'
     }
   },
+  component: {},
+  modal: {},
   // 和页面的name一致
   'user-login': {
     title: '登录'
