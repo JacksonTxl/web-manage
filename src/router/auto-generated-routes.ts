@@ -15,6 +15,7 @@ const pagePlugins = () => import('@/views/pages/plugins.vue')
 const pageBrandList = () => import('@/views/pages/brand/list.vue')
 const pagePluginsList = () => import('@/views/pages/plugins/list.vue')
 const pagePluginsTheme = () => import('@/views/pages/plugins/theme.vue')
+const pageTestCheckbox = () => import('@/views/pages/test/checkbox.vue')
 const pageTestLlf = () => import('@/views/pages/test/llf.vue')
 const pageTestOss = () => import('@/views/pages/test/oss.vue')
 const pageTestZlx = () => import('@/views/pages/test/zlx.vue')
@@ -54,6 +55,11 @@ const pageRoutes = [{
   path: '/brand/list',
   component: pageBrandList,
   guards: [BrandListService]
+}, {
+  name: 'test-checkbox',
+  path: '/test/checkbox',
+  component: pageTestCheckbox,
+  guards: []
 }, {
   name: 'test-llf',
   path: '/test/llf',
