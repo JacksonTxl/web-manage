@@ -2,6 +2,7 @@
 node_modules
 /dist
 public/release.json
+docs/.vuepress/dist
 
 package-lock.json
 # local env files
