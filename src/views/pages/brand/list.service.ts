@@ -1,8 +1,6 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State } from 'rx-state/src'
+import { State } from 'rx-state'
 import { ManageApi } from '@/api/account/manage'
-import { of, from } from 'rxjs'
-import { delay } from 'rxjs/operators'
 
 @Injectable()
 export class ListService {

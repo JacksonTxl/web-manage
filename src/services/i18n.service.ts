@@ -1,5 +1,5 @@
-import { State, withNamespace, getState } from 'rx-state'
-import { map } from 'rxjs/operators'
+import { State, getSnapshot, Computed, log } from 'rx-state'
+import { map, pluck } from 'rxjs/operators'
 import { Observable } from 'rxjs'
 import { Injectable } from 'vue-service-app'
 import { get } from 'lodash-es'
@@ -12,70 +12,91 @@ import en_US_Antd from 'ant-design-vue/lib/locale-provider/en_US'
 import zh_CN_App from '@/i18n/zh_CN'
 // @ts-ignore
 import en_US_App from '@/i18n/en_US'
+import { Store } from './store'
 
-const ns = withNamespace('i18nService')
 // type reference https://vue.ant.design/docs/vue/i18n/
-type Language = 'zh_CN' | 'en_US'
+type Locale = 'zh_CN' | 'en_US'
 
-interface Locale {
-  antd: {}
-  app: {}
+interface I18NState {
+  locale: Locale
 }
 
 @Injectable()
-export class I18NService {
-  language$: State<Language>
-  locale$: Observable<Locale>
-  appLocale$: Observable<{}>
-  antdLocale$: Observable<{}>
+export class I18NService extends Store<I18NState> {
+  state$: State<I18NState>
+  locale$: Computed<Locale>
+  antdLocaleMessages$: Computed<{}>
+  appLocaleMessages$: Computed<{}>
   constructor() {
-    const defaultLan = Cookie.get('language') || 'zh_CN'
-
-    this.language$ = new State(defaultLan, ns('language'))
-    this.language$.forEach(language => {
-      Cookie.set('language', language)
+    super()
+    this.state$ = new State({
+      locale: Cookie.get('language') || 'zh_CN'
     })
-    this.locale$ = this.language$.pipe(
-      map(language => {
-        if (language === 'zh_CN') {
-          return {
-            antd: zh_CN_Antd,
-            app: zh_CN_App
+    this.locale$ = new Computed(this.state$.pipe(pluck('locale')))
+    this.appLocaleMessages$ = new Computed(
+      this.locale$.pipe(
+        map(locale => {
+          if (locale === 'zh_CN') {
+            return zh_CN_App
           }
-        }
-        if (language === 'en_US') {
-          return {
-            antd: en_US_Antd,
-            app: en_US_App
+          if (locale === 'en_US') {
+            return en_US_App
           }
-        }
-        return {
-          antd: {},
-          app: {}
-        }
-      })
-    )
-    this.appLocale$ = this.locale$.pipe(map(locale => locale.app))
-    this.antdLocale$ = this.locale$.pipe(map(locale => locale.antd))
-  }
-  setLanguage(language: Language) {
-    this.language$.commit(() => language)
-  }
-  /**
-   *
-   * @param appMsgKey 翻译key
-   * @example
-   *
-   * this.localeService.translate('app.title')
-   */
-  translate(appMsgKey: string) {
-    const appMessages = getState(this.appLocale$)
-    const text = get(appMessages, appMsgKey) || ''
-    if (!text) {
-      console.warn(
-        `i18nService can not translate [${appMsgKey}],are you declared?`
+          return {}
+        })
       )
+    )
+    this.antdLocaleMessages$ = new Computed(
+      this.locale$.pipe(
+        map(locale => {
+          if (locale === 'zh_CN') {
+            return zh_CN_Antd
+          }
+          if (locale === 'en_US') {
+            return en_US_Antd
+          }
+          return {}
+        })
+      )
+    )
+  }
+  setLocale(locale: Locale) {
+    this.state$.commit(state => {
+      state.locale = locale
+    })
+  }
+  get appLocaleMessagesSnapshot() {
+    return getSnapshot(this.appLocaleMessages$)
+  }
+  private getText(messages: any, index: string) {
+    const text = get(messages, index) || ''
+    if (!text) {
+      console.warn(`i18nService can not translate [${index}],are you declared?`)
     }
     return text
+  }
+  /**
+   * @param appMsgKey 翻译key
+   * @example
+   * this.i18n.translate('app.title')
+   */
+  translate(appMsgKey: string) {
+    return this.getText(this.appLocaleMessagesSnapshot, appMsgKey)
+  }
+  t(appMsgKey: string) {
+    return this.translate(appMsgKey)
+  }
+  /**
+   * 通过关键字返回指定的文本的流
+   * @param appMsgKey 翻译key
+   * @example
+   * this.i18n.t$('app.title') => title$
+   */
+  t$(appMsgKey: string): Observable<string> {
+    return this.appLocaleMessages$.pipe(
+      map(appMessages => {
+        return this.getText(appMessages, appMsgKey)
+      })
+    )
   }
 }

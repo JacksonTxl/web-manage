@@ -2,7 +2,7 @@ const Fse = require('fs-extra')
 const Path = require('path')
 const less = require('less')
 const NpmImportPlugin = require('less-plugin-npm-import')
-const diffCss = require('@romainberger/css-diff')
+const GlobPlugin = require('less-plugin-glob')
 
 class LessTask {
   constructor(name, renderOptions = {}) {
@@ -24,7 +24,7 @@ class LessTask {
   async process() {
     await this.loadSource()
     const res = await less.render(this.source, {
-      plugins: [new NpmImportPlugin({ prefix: '~' })],
+      plugins: [new NpmImportPlugin({ prefix: '~' }), GlobPlugin],
       javascriptEnabled: true,
       paths: [this.dir],
       ...this.renderOptions
@@ -35,40 +35,32 @@ class LessTask {
 }
 
 class ThemeTask {
-  constructor(lessMainFile, themeConfig = {}) {
-    this.themeConfig = themeConfig
+  constructor(lessMainFile, { excludeSelectors = [], themeList = [] } = {}) {
+    this.themeList = themeList
+    this.excludeSelectors = excludeSelectors
     this.lessMainFile = lessMainFile
     this.baseCss = ''
     this.cssList = []
   }
-  get themeList() {
-    const list = []
-    Object.keys(this.themeConfig).forEach(name => {
-      list.push({
-        name,
-        modifyVars: this.themeConfig[name]
-      })
-    })
-    return list
-  }
   async process() {
     const baseResult = await new LessTask(this.lessMainFile).process()
     this.baseCss = baseResult.css
-    const themesLessTasks = this.themeList.map(theme =>
-      new LessTask(this.lessMainFile, {
-        modifyVars: theme.modifyVars
-      }).process()
-    )
+
+    const themesLessTasks = this.themeList.map(theme => {
+      return new LessTask(theme.src).process()
+    })
+
     const themeResults = await Promise.all(themesLessTasks)
-    const diffCssList = []
+    const cssList = []
     themeResults.forEach((result, index) => {
+      const themeCss = result.css
       const theme = this.themeList[index]
-      diffCssList.push({
+      cssList.push({
         name: theme.name,
-        patch: diffCss(this.baseCss, result.css)
+        css: themeCss
       })
     })
-    this.cssList = diffCssList
+    this.cssList = cssList
     return this
   }
 }

@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs'
 import { ajax, AjaxError } from 'rxjs/ajax'
-import { catchError, pluck } from 'rxjs/operators'
+import { catchError, pluck, timeout } from 'rxjs/operators'
 import { StResponse } from '@/types/app'
 import qs from 'qs'
 import { Injectable, ServiceRouter } from 'vue-service-app'
@@ -45,7 +45,8 @@ export class HttpService {
   get(url: string, options: RequestOptions = {}) {
     let requestUrl = this.makeRequestUrl(url, options)
     const get$ = ajax
-      .get(requestUrl, this.headers)
+      .get(requestUrl, this.appHeaders)
+      .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
 
@@ -54,7 +55,8 @@ export class HttpService {
   post(url: string, options: RequestOptions = {}) {
     const requestUrl = this.makeRequestUrl(url, options)
     const post$ = ajax
-      .post(requestUrl, options.params, this.headers)
+      .post(requestUrl, options.params, this.appHeaders)
+      .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return post$
@@ -62,7 +64,8 @@ export class HttpService {
   put(url: string, options: RequestOptions = {}) {
     const requestUrl = this.makeRequestUrl(url, options)
     const put$ = ajax
-      .put(requestUrl, options.params, this.headers)
+      .put(requestUrl, options.params, this.appHeaders)
+      .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return put$
@@ -70,7 +73,8 @@ export class HttpService {
   delete(url: string, options: RequestOptions = {}) {
     const requestUrl = this.makeRequestUrl(url, options)
     const delete$ = ajax
-      .delete(requestUrl, this.headers)
+      .delete(requestUrl, this.appHeaders)
+      .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return delete$
@@ -92,9 +96,9 @@ export class HttpService {
     }
     return requestUrl
   }
-  get headers() {
+  get appHeaders() {
     return {
-      token: this.auth.getAuthToken(),
+      token: this.auth.tokenSnapshot,
       'App-Id': '123',
       'App-Version': '1123',
       'Content-Type': 'application/json;charset=UTF-8;'

@@ -1,5 +1,8 @@
 const path = require('path')
 const fs = require('fs')
+const lessGlobPlugin = require('less-plugin-glob')
+const IgnoreNotFoundExportPlugin = require('./build/ignore-not-found-plugin')
+
 const resolve = dir => path.resolve(__dirname, dir)
 const env = process.env.NODE_ENV || 'development'
 const git = require('git-rev-sync')
@@ -24,7 +27,9 @@ module.exports = {
   css: {
     loaderOptions: {
       less: {
-        javascriptEnabled: true
+        javascriptEnabled: true,
+        plugins: [lessGlobPlugin],
+        paths: ['./src/style']
       }
     }
   },
@@ -36,7 +41,7 @@ module.exports = {
     }
   },
   devServer: {
-    // watchContentBase: false,
+    watchContentBase: false,
     proxy: {
       '/_api': {
         target: 'http://api-saas-dev.styd.cn',
@@ -76,6 +81,10 @@ module.exports = {
           }
         }
       ])
+      .end()
+      .plugin('ignore-not-found-export')
+      .before('vue-loader')
+      .use(IgnoreNotFoundExportPlugin)
       .end()
       .when(IS_DEV, config => {
         config.module.rules.delete('eslint')

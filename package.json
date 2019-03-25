@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "tasks": "gulp --tasks",
     "dev:docs": "vuepress dev docs --port 8062",
     "build:docs": "vuepress build docs",
-    "init": "npm install",
+    "theme": "gulp theme",
+    "init": "yarn install",
     "inspect": "vue-cli-service inspect > inspect.js",
     "lint": "vue-cli-service lint",
     "dev": "parallelshell \"npm run serve\" \"gulp dev\"",
@@ -22,6 +24,7 @@
     "@types/lodash-es": "^4.17.3",
     "@types/nprogress": "^0.0.29",
     "ant-design-vue": "^1.3.5",
+    "core-js": "2",
     "fullcalendar-scheduler": "^1.9.4",
     "js-cookie": "^2.2.0",
     "nprogress": "^0.2.0",
@@ -35,8 +38,7 @@
     "vue-router": "^3.0.2",
     "vue-router-multiguard": "^1.0.3",
     "vue-rx": "^6.1.0",
-    "vuedraggable": "^2.19.2",
-    "vuex": "^3.0.1"
+    "vuedraggable": "^2.19.2"
   },
   "devDependencies": {
     "@types/js-cookie": "^2.2.1",
@@ -62,11 +64,8 @@
     "lodash-es": "^4.17.11",
     "parallelshell": "^3.0.2",
     "rxjs": "^6.4.0",
-    "tslint": "^5.14.0",
     "typescript": "^3.2.1",
     "vue-template-compiler": "^2.5.21",
-    "vuepress": "^0.14.10",
-    "webpack-dev-middleware": "3.6.0",
     "webpack-external-vendor-plugin": "^1.0.0"
   },
   "postcss": {
