@@ -23,6 +23,11 @@ export default {
       default: false
     }
   },
+  computed: {
+    stValue() {
+      return this.value
+    }
+  },
   data() {
     return {
       stChecked: false
