@@ -1,5 +1,5 @@
 <template>
-  <a-button class="checked" @click="check" :disabled="disabled">
+  <a-button class="checkbox-item" :class="{checked: stChecked}" @click="check" :disabled="disabled">
     {{label}}
     <slot v-if="label===''"></slot>
   </a-button>
@@ -42,8 +42,3 @@ export default {
   }
 }
 </script>
-<style lang="less" scoped>
-.checked{
-  color: $primary;
-}
-</style>

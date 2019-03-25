@@ -1,6 +1,6 @@
 <template>
   <svg v-if='!isAntIcon'
-    class="oa-icon"
+    class="st-icon"
     aria-hidden="true">
     <use :xlink:href="linkHref">
     </use>
@@ -21,7 +21,7 @@ export default {
   },
   computed: {
     linkHref() {
-      return `#icon-${this.type}`
+      return `#sticon-${this.type}`
     },
     isAntIcon() {
       return this.type.indexOf('anticon:') > -1
