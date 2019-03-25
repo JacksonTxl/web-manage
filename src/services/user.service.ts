@@ -3,6 +3,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
 import { Store } from './store'
+import { forkJoin } from 'rxjs'
 
 interface UserState {
   user: User

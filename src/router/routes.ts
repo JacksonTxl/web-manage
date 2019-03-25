@@ -36,25 +36,25 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     if (route.name === 'user-login') {
       prependGuards(route, [
         HotReleaseService,
-        RouteService,
         NProgressService,
-        TitleService
+        TitleService,
+        RouteService
       ])
     } else if (route.name === '404') {
       prependGuards(route, [
         HotReleaseService,
-        RouteService,
         NProgressService,
-        TitleService
+        TitleService,
+        RouteService
       ])
     } else if (route.path.startsWith('/') && !route.redirect) {
       prependGuards(route, [
         HotReleaseService,
-        RouteService,
         NProgressService,
         // AuthService,
         TitleService,
-        UserService
+        UserService,
+        RouteService
       ])
     }
     // 规范title i18n 名称

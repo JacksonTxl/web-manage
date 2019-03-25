@@ -9,6 +9,7 @@ import FullCalendar from 'vue-full-calendar'
 // 默认样式加载
 import './style/index.less'
 import './style/app.less'
+import './components/register'
 Vue.use(Antd)
 Vue.use(VueRx)
 Vue.use(FullCalendar)
