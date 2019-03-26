@@ -6715,13 +6715,6 @@ ini@^1.3.4, ini@~1.3.0:
   resolved "http://registry.npm.taobao.org/ini/download/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
   integrity sha1-7uJfVtscnsYIXgwid4CD9Zar+Sc=
 
-inline-chunk-manifest-html-webpack-plugin@^2.0.0:
-  version "2.0.0"
-  resolved "http://registry.npm.taobao.org/inline-chunk-manifest-html-webpack-plugin/download/inline-chunk-manifest-html-webpack-plugin-2.0.0.tgz#ce60016daca3a14a4bac259514425dbc2957949e"
-  integrity sha1-zmABbayjoUpLrCWVFEJdvClXlJ4=
-  dependencies:
-    webpack-sources "^1.0.1"
-
 inquirer@^3.0.6:
   version "3.3.0"
   resolved "http://registry.npm.taobao.org/inquirer/download/inquirer-3.3.0.tgz#9dd2f2ad765dcab1ff0443b491442a20ba227dc9"
@@ -12777,7 +12770,7 @@ webpack-serve@^1.0.2:
     webpack-hot-client "^3.0.0"
     webpack-log "^1.1.2"
 
-webpack-sources@^1.0.1, webpack-sources@^1.1.0, webpack-sources@^1.3.0:
+webpack-sources@^1.1.0, webpack-sources@^1.3.0:
   version "1.3.0"
   resolved "http://registry.npm.taobao.org/webpack-sources/download/webpack-sources-1.3.0.tgz#2a28dcb9f1f45fe960d8f1493252b5ee6530fa85"
   integrity sha1-KijcufH0X+lg2PFJMlK17mUw+oU=

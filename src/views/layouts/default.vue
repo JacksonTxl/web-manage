@@ -1,7 +1,19 @@
 <template>
   <a-layout class="layout-default">
     <a-layout-sider>
-      hello
+      <div class="sider">
+        <div class="brand-box">
+          <div class="brand-box__logo">
+            <img class="brand-box__logo-img"
+              src="~@/assets/img/logo.png"
+              alt="brand-logo">
+            <img class='brand-box__badge-img'
+              src='~@/assets/img/brand_badge.png'
+              alt="brand-badge">
+          </div>
+        </div>
+
+      </div>
 
     </a-layout-sider>
     <a-layout>
@@ -12,10 +24,17 @@
         <div class="header__divider"></div>
         <a-breadcrumb class="header__breadcrumb"
           separator="-">
-          <a-breadcrumb-item>Home</a-breadcrumb-item>
-          <a-breadcrumb-item href="">Application Center</a-breadcrumb-item>
-          <a-breadcrumb-item href="">Application List</a-breadcrumb-item>
-          <a-breadcrumb-item>An Application</a-breadcrumb-item>
+          <a-breadcrumb-item href>
+            <router-link to='/'>
+              <st-icon type='home'></st-icon>
+            </router-link>
+          </a-breadcrumb-item>
+          <a-breadcrumb-item href>
+            <router-link to='/'>首页</router-link>
+          </a-breadcrumb-item>
+          <a-breadcrumb-item href>
+            <router-link to='/shop/add'>创建门店</router-link>
+          </a-breadcrumb-item>
         </a-breadcrumb>
       </a-layout-header>
       <a-layout-content>
