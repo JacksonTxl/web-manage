@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="page-dashboard">
     Dashboard
-    <a-button type='primary'>primary</a-button>
+    <a-button type='primary'
+      circle>primary</a-button>
     <router-link :to="{name:'user-login'}">user-login</router-link>
     <a-list></a-list>
   </div>

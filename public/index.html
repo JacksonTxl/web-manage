@@ -6,9 +6,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <script src="//at.alicdn.com/t/font_1106512_luo2cyuokoj.js"></script>
-    <title>三体云动</title>
     <style>
-      .page-loader-container {
+      .layout-loading {
         position: absolute;
         left: 0;
         right: 0;
@@ -87,6 +86,7 @@
         }
       }
     </style>
+    <title>三体云动</title>
   </head>
   <body id="body">
     <noscript>
@@ -96,7 +96,7 @@
       >
     </noscript>
     <div id="app">
-      <div class="page-loader-container">
+      <div class="layout-loading">
         <div class="loader">
           <div class="inner one"></div>
           <div class="inner two"></div>
@@ -104,6 +104,9 @@
         </div>
       </div>
     </div>
+    <script>
+      window.htmlWebpackFiles = <%= JSON.stringify(htmlWebpackPlugin.files) %>
+    </script>
 
     <!-- built files will be auto injected -->
   </body>

@@ -1,5 +1,5 @@
 <template>
-  <div class="page-loader-container">
+  <div class="layout-loading">
     <div class="loader">
       <div class="inner one"></div>
       <div class="inner two"></div>
@@ -7,9 +7,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  components: {}
-}
-</script>

@@ -7,8 +7,7 @@ import { modalRouter } from './modal-router/index'
 import App from './App.vue'
 import FullCalendar from 'vue-full-calendar'
 // 默认样式加载
-import './style/index.less'
-import './style/app.less'
+import './style/index'
 
 import './views/components/register'
 

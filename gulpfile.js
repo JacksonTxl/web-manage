@@ -1,9 +1,8 @@
 const gulp = require('gulp')
-const Fse = require('fs-extra')
-const Path = require('path')
 const RouteTask = require('./build/route-task')
-const ThemeTask = require('./build/theme-task')
-const themeConfig = require('./themes.config')
+const globby = require('globby')
+const Path = require('path')
+const Fse = require('fs-extra')
 
 gulp.task('route', () => {
   RouteTask.run('init', 'init')
@@ -20,23 +19,30 @@ gulp.task('route', () => {
     })
 })
 
-gulp.task('theme', () => {
-  const themeTask = new ThemeTask(themeConfig.baseSrc, themeConfig)
-  return themeTask.process().then(({ cssList }) => {
-    const patchTasks = cssList.map(theme => {
-      const distFile = Path.resolve(themeConfig.output, theme.name + '.css')
-      return Fse.writeFile(distFile, theme.css)
-    })
-    return Promise.all(patchTasks)
+gulp.task('less', () => {
+  const lessFiles = globby.sync('./src/views/**/*.less')
+  const basePath = Path.resolve('./src')
+
+  const importList = lessFiles.map(lessPath => {
+    const lessImportPath = `@import '~@/${Path.relative(basePath, lessPath)}';`
+    return lessImportPath
   })
+  const distLessContent =
+    ` // this file is auto generated for import less files,do'nt modify this file \n` +
+    importList.join('\n')
+
+  return Fse.outputFile('./src/style/_views.less', distLessContent)
 })
 
-gulp.task('theme:dev', () => {
-  gulp.series('theme')()
-  gulp.watch(
-    ['./src/style/**/*.less', './src/views/**.*.less'],
-    gulp.series(['theme'])
-  )
+gulp.task('less:watch', () => {
+  gulp
+    .watch('./src/views/**/*.less')
+    .on('add', () => {
+      gulp.series(['less'])()
+    })
+    .on('unlink', () => {
+      gulp.series(['less'])()
+    })
 })
 
-gulp.task('dev', gulp.parallel(['theme:dev', 'route']))
+gulp.task('dev', gulp.parallel(['route', 'less', 'less:watch']))
