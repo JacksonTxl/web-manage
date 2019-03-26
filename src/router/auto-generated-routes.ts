@@ -18,6 +18,7 @@ const pagePluginsTheme = () => import('@/views/pages/plugins/theme.vue')
 const pageTestKael = () => import('@/views/pages/test/kael.vue')
 const pageTestLlf = () => import('@/views/pages/test/llf.vue')
 const pageTestOss = () => import('@/views/pages/test/oss.vue')
+const pageTestStyguide = () => import('@/views/pages/test/styguide.vue')
 const pageTestZlx = () => import('@/views/pages/test/zlx.vue')
 const pageTestZlxFull = () => import('@/views/pages/test/zlxFull.vue')
 const pageUserLogin = () => import('@/views/pages/user/login.vue')
@@ -69,6 +70,11 @@ const pageRoutes = [{
   name: 'test-oss',
   path: '/test/oss',
   component: pageTestOss,
+  guards: []
+}, {
+  name: 'test-styguide',
+  path: '/test/styguide',
+  component: pageTestStyguide,
   guards: []
 }, {
   name: 'test-zlx',

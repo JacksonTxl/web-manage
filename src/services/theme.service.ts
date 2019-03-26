@@ -9,7 +9,7 @@ import { Store } from './store'
  *  可用主题
  * */
 
-type Theme = 'default' | 'blue' | 'green' | 'pink'
+type Theme = 'club' | 'web'
 
 interface ThemeState {
   /**
@@ -21,13 +21,13 @@ interface ThemeState {
 @Injectable()
 export class ThemeService extends Store<ThemeState> {
   // 可选主题选项
-  private themeOptions = ['default']
+  private themeOptions = ['club']
   state$: State<ThemeState>
   theme$: Computed<Theme>
   constructor(private appConfig: AppConfig) {
     super()
     const initialState = {
-      theme: Cookie.get('theme') || 'default'
+      theme: Cookie.get('theme') || 'club'
     }
     this.state$ = new State(initialState)
     this.theme$ = new Computed(
@@ -37,31 +37,10 @@ export class ThemeService extends Store<ThemeState> {
         filter(theme => this.themeOptions.includes(theme))
       )
     )
-    this.theme$.subscribe(theme => {
-      Cookie.set('theme', theme)
-    })
-    this.theme$.subscribe(theme => {
-      const linkEl = this.createThemeLink(theme)
-    })
   }
   setTheme(theme: Theme) {
     this.state$.commit(state => {
       state.theme = theme
     })
-  }
-  /**
-   * 开发环境使用时间，生产环境使用GIT_COMMIT作为后缀
-   */
-  private get linkHash() {
-    return this.appConfig.IS_DEV
-      ? new Date().getTime()
-      : this.appConfig.GIT_COMMIT
-  }
-  private createThemeLink(theme: Theme) {
-    const link = document.createElement('link')
-    link.rel = 'stylesheet'
-    link.setAttribute('data-theme', theme)
-    link.href = `${this.appConfig.BASE_URL}themes/${theme}.css?${this.linkHash}`
-    return link
   }
 }
