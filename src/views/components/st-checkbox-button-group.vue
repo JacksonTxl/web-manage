@@ -7,6 +7,7 @@
 </template>
 <script>
 export default {
+  name: 'StCheckboxButtonGroup',
   provide() {
     return {
       groupProvide: {
@@ -29,6 +30,7 @@ export default {
             arr.splice(index, 1, data.key)
           }
         })
+        arr = [...new Set(arr)]
         this.$set(this.stValueData, 'value', arr)
         this.$emit('modelChange', arr)
         this.$emit('change', arr)

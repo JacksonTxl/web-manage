@@ -33,14 +33,7 @@
 </section>
 </template>
 <script>
-import stCheckboxButtonGroup from '@/views/components/st-checkbox-button-group.vue'
-import stCheckboxButtonItem from '@/views/components/st-checkbox-button-item.vue'
-
 export default {
-  components: {
-    stCheckboxButtonGroup,
-    stCheckboxButtonItem
-  },
 
   data() {
     return {

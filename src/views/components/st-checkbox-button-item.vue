@@ -11,6 +11,7 @@
 </template>
 <script>
 export default {
+  name: 'StCheckboxButtonItem',
   inject: {
     groupProvide: 'groupProvide',
     emitGroup: 'emitGroup',
