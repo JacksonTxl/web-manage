@@ -3,18 +3,15 @@
 **/
 
 import { DashboardService } from '@/views/pages/dashboard.service.ts'
-import { PluginsService } from '@/views/pages/plugins.service.ts'
 import { ListService as BrandListService } from '@/views/pages/brand/list.service.ts'
-import { ListService as PluginsListService } from '@/views/pages/plugins/list.service.ts'
 import { LlfService as TestLlfService } from '@/views/pages/test/llf.service.ts'
 import { ZlxService as TestZlxService } from '@/views/pages/test/zlx.service.ts'
 
 const page404 = () => import('@/views/pages/404.vue')
 const pageDashboard = () => import('@/views/pages/dashboard.vue')
-const pagePlugins = () => import('@/views/pages/plugins.vue')
+const pageBrandId = () => import('@/views/pages/brand/_id.vue')
 const pageBrandList = () => import('@/views/pages/brand/list.vue')
-const pagePluginsList = () => import('@/views/pages/plugins/list.vue')
-const pagePluginsTheme = () => import('@/views/pages/plugins/theme.vue')
+const pageShopId = () => import('@/views/pages/shop/_id.vue')
 const pageTestKael = () => import('@/views/pages/test/kael.vue')
 const pageTestLlf = () => import('@/views/pages/test/llf.vue')
 const pageTestOss = () => import('@/views/pages/test/oss.vue')
@@ -36,26 +33,20 @@ const pageRoutes = [{
   component: pageDashboard,
   guards: [DashboardService]
 }, {
-  name: 'plugins',
-  path: '/plugins',
-  component: pagePlugins,
-  guards: [PluginsService],
-  children: [{
-    name: 'plugins-list',
-    path: 'list',
-    component: pagePluginsList,
-    guards: [PluginsListService]
-  }, {
-    name: 'plugins-theme',
-    path: 'theme',
-    component: pagePluginsTheme,
-    guards: []
-  }]
+  name: 'brand-_id',
+  path: '/brand/_id',
+  component: pageBrandId,
+  guards: []
 }, {
   name: 'brand-list',
   path: '/brand/list',
   component: pageBrandList,
   guards: [BrandListService]
+}, {
+  name: 'shop-_id',
+  path: '/shop/_id',
+  component: pageShopId,
+  guards: []
 }, {
   name: 'test-kael',
   path: '/test/kael',
