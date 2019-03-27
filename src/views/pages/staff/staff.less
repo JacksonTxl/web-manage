@@ -1,5 +1,4 @@
 .page-staff{
-  border-top: 1px salmon solid;
   display: flex;
   margin: 0 24px;
   background: rgba(246,247,250,1);
@@ -15,6 +14,9 @@
 }
 .staff-lf{
   &__search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 64px;
     border-bottom: 2px solid #DCE0EB;
   }
@@ -26,8 +28,15 @@
   &__operation {
     height: 64px;
     border-bottom: 2px solid #DCE0EB;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
   }
   &__table{
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .pd(16px);
   }
 }

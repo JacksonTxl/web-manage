@@ -7,6 +7,7 @@ import StCheckboxButtonItem from './checkbox-button/checkbox-button-item.vue'
 import StSteps from './steps/steps.vue'
 import StStep from './steps/step.vue'
 import StTable from './table/table.vue'
+import StInputSearch from './input-search/input-search.vue'
 Vue.component(StIcon.name, StIcon)
 Vue.component(StButton.name, StButton)
 Vue.component(StSteps.name, StSteps)
@@ -16,3 +17,4 @@ Vue.component(StTable.name, StTable)
 Vue.component(StIcon.name, StIcon)
 Vue.component(StCheckboxButtonGroup.name, StCheckboxButtonGroup)
 Vue.component(StCheckboxButtonItem.name, StCheckboxButtonItem)
+Vue.component(StInputSearch.name, StInputSearch)
