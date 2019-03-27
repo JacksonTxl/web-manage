@@ -32,6 +32,9 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     if (!route.meta) {
       route.meta = {}
     }
+    if (!route.name) {
+      route.name = ''
+    }
     // guards 配置
     if (route.name === 'user-login') {
       prependGuards(route, [
@@ -62,7 +65,12 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       route.meta.title = `${route.name}.title`
     }
 
-    route.meta.layout = 'default'
+    route.meta.layout = 'default-brand'
+
+    if (route.name.startsWith('shop')) {
+      route.meta.layout = 'default-shop'
+    }
+
     switch (route.name) {
       case 'user-login':
         route.meta.layout = 'login'

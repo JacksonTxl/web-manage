@@ -1,5 +1,5 @@
 <template>
   <div>
-    shop _id
+    Shop Dashboard
   </div>
 </template>

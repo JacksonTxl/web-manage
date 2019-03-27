@@ -9,9 +9,9 @@ import { ZlxService as TestZlxService } from '@/views/pages/test/zlx.service.ts'
 
 const page404 = () => import('@/views/pages/404.vue')
 const pageDashboard = () => import('@/views/pages/dashboard.vue')
-const pageBrandId = () => import('@/views/pages/brand/_id.vue')
+const pageBrandDashboard = () => import('@/views/pages/brand/dashboard.vue')
 const pageBrandList = () => import('@/views/pages/brand/list.vue')
-const pageShopId = () => import('@/views/pages/shop/_id.vue')
+const pageShopDashboard = () => import('@/views/pages/shop/dashboard.vue')
 const pageTestKael = () => import('@/views/pages/test/kael.vue')
 const pageTestLlf = () => import('@/views/pages/test/llf.vue')
 const pageTestOss = () => import('@/views/pages/test/oss.vue')
@@ -33,9 +33,9 @@ const pageRoutes = [{
   component: pageDashboard,
   guards: [DashboardService]
 }, {
-  name: 'brand-_id',
-  path: '/brand/_id',
-  component: pageBrandId,
+  name: 'brand-dashboard',
+  path: '/brand/dashboard',
+  component: pageBrandDashboard,
   guards: []
 }, {
   name: 'brand-list',
@@ -43,9 +43,9 @@ const pageRoutes = [{
   component: pageBrandList,
   guards: [BrandListService]
 }, {
-  name: 'shop-_id',
-  path: '/shop/_id',
-  component: pageShopId,
+  name: 'shop-dashboard',
+  path: '/shop/dashboard',
+  component: pageShopDashboard,
   guards: []
 }, {
   name: 'test-kael',

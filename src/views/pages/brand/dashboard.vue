@@ -1,5 +1,5 @@
 <template>
   <div>
-    _di
+    Brand Dashboard
   </div>
 </template>

@@ -6,7 +6,8 @@ import LayoutLoading from './loading.vue'
 // this is will used in router/routes
 export const layoutMap = {
   blank: LayoutBlank,
-  default: LayoutDefault,
+  'default-brand': LayoutDefault,
+  'default-shop': LayoutDefault,
   login: LayoutLogin,
   loading: LayoutLoading
 }
