@@ -14,7 +14,7 @@
 | ---- | ---- | ---- | ---- |
 | value   | 唯一键| string\|number| 必传|
 | disabled   | 是否禁用| boolean| false  |
-| label   | 显示内容| string| ''  |
+| label   | 显示item的内容。\<item label="label1"\>label2\<\/item\>，label1将覆盖label2| string| ''  |
 ### checkbox-button-item  event
 | 参数 | 说明 | 类型 | 默认值 |
 | ---- | ---- | ---- | ---- |
