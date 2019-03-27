@@ -64,7 +64,7 @@ const getPageService = services => {
   return { importServiceArray, serviceMap }
 }
 const createRoute = () => {
-  const pages = globby.sync(PAGES_PATH).filter(item => !item.includes('#'))
+  const pages = globby.sync(PAGES_PATH).filter(item => !item.includes('#') && !item.includes('/components'))
   const services = globby.sync(SERVICES_PATH)
   const importArr = []
   const pageMap = {}
