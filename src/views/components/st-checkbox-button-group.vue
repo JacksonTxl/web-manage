@@ -14,7 +14,8 @@ export default {
         groupValue: this.stValueData
       },
       emitGroup: data => {
-        let arr = [...this.stValueData.value]
+        let arr = [...new Set([...this.stValueData.value])]
+        let newArr = []
         if (data.value) {
           // 选中
           arr.push(data.key)
@@ -26,14 +27,14 @@ export default {
         }
         // 去除value里无用的key
         arr.forEach((i, index) => {
-          if (!this.initArr.includes(i)) {
-            arr.splice(index, 1, data.key)
+          if (this.initArr.includes(i)) {
+            newArr.push(i)
           }
         })
-        arr = [...new Set(arr)]
-        this.$set(this.stValueData, 'value', arr)
-        this.$emit('modelChange', arr)
-        this.$emit('change', arr)
+        newArr = [...new Set(newArr)]
+        this.$set(this.stValueData, 'value', newArr)
+        this.$emit('modelChange', newArr)
+        this.$emit('change', newArr)
       },
       initGroup: data => {
         this.initArr.push(data)
