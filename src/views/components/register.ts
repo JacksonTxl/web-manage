@@ -2,12 +2,11 @@
 import Vue from 'vue'
 import StIcon from './icon/icon.vue'
 import StButton from './button/button.vue'
+import StCheckboxButtonGroup from './checkbox-button/checkbox-button-group.vue'
+import StCheckboxButtonItem from './checkbox-button/checkbox-button-item.vue'
 import StSteps from './steps/steps.vue'
 import StStep from './steps/step.vue'
 import StTable from './table/table.vue'
-import StCheckboxButtonGroup from './st-checkbox-button-group.vue'
-import StCheckboxButtonItem from './st-checkbox-button-item.vue'
-
 Vue.component(StIcon.name, StIcon)
 Vue.component(StButton.name, StButton)
 Vue.component(StSteps.name, StSteps)
