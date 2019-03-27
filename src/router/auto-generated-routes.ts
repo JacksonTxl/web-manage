@@ -12,6 +12,7 @@ const pageDashboard = () => import('@/views/pages/dashboard.vue')
 const pageBrandDashboard = () => import('@/views/pages/brand/dashboard.vue')
 const pageBrandList = () => import('@/views/pages/brand/list.vue')
 const pageShopDashboard = () => import('@/views/pages/shop/dashboard.vue')
+const pageStaffIndex = () => import('@/views/pages/staff/index.vue')
 const pageTestKael = () => import('@/views/pages/test/kael.vue')
 const pageTestLlf = () => import('@/views/pages/test/llf.vue')
 const pageTestMg20 = () => import('@/views/pages/test/mg20.vue')
@@ -47,6 +48,11 @@ const pageRoutes = [{
   name: 'shop-dashboard',
   path: '/shop/dashboard',
   component: pageShopDashboard,
+  guards: []
+}, {
+  name: 'staff-index',
+  path: '/staff/index',
+  component: pageStaffIndex,
   guards: []
 }, {
   name: 'test-kael',
