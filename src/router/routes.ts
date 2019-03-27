@@ -18,7 +18,7 @@ const routes: ServiceRouteConfig[] = [
     redirect: '/brand/dashboard'
   },
   {
-    path: '/shop/',
+    path: '/shop/:id',
     redirect: '/shop/dashboard'
   },
   ...pageRoutes,
