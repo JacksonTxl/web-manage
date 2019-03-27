@@ -11,7 +11,15 @@ import { RouteService } from '@/services/route.service'
 const routes: ServiceRouteConfig[] = [
   {
     path: '/',
-    redirect: '/dashboard'
+    redirect: '/brand/'
+  },
+  {
+    path: '/brand/',
+    redirect: '/brand/dashboard'
+  },
+  {
+    path: '/shop/',
+    redirect: '/shop/dashboard'
   },
   ...pageRoutes,
   {
