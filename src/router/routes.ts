@@ -11,7 +11,15 @@ import { RouteService } from '@/services/route.service'
 const routes: ServiceRouteConfig[] = [
   {
     path: '/',
-    redirect: '/dashboard'
+    redirect: '/brand/'
+  },
+  {
+    path: '/brand/',
+    redirect: '/brand/dashboard'
+  },
+  {
+    path: '/shop/:id',
+    redirect: '/shop/dashboard'
   },
   ...pageRoutes,
   {
@@ -31,6 +39,9 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
   routes.forEach(route => {
     if (!route.meta) {
       route.meta = {}
+    }
+    if (!route.name) {
+      route.name = ''
     }
     // guards 配置
     if (route.name === 'user-login') {
@@ -62,7 +73,12 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       route.meta.title = `${route.name}.title`
     }
 
-    route.meta.layout = 'default'
+    route.meta.layout = 'default-brand'
+
+    if (route.name.startsWith('shop')) {
+      route.meta.layout = 'default-shop'
+    }
+
     switch (route.name) {
       case 'user-login':
         route.meta.layout = 'login'

@@ -1,8 +1,9 @@
 const path = require('path')
 const fs = require('fs')
-const lessGlobPlugin = require('less-plugin-glob')
 const IgnoreNotFoundExportPlugin = require('./build/ignore-not-found-plugin')
+const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin')
 
+const buildConfig = require('./build.config')
 const resolve = dir => path.resolve(__dirname, dir)
 const env = process.env.NODE_ENV || 'development'
 const git = require('git-rev-sync')
@@ -25,6 +26,7 @@ fs.writeFileSync(
 module.exports = {
   lintOnSave: false,
   css: {
+    extract: true,
     loaderOptions: {
       less: {
         javascriptEnabled: true
@@ -39,7 +41,7 @@ module.exports = {
     }
   },
   devServer: {
-    watchContentBase: false,
+    watchContentBase: true,
     proxy: {
       '/_api': {
         target: 'http://api-saas-dev.styd.cn',
@@ -53,6 +55,50 @@ module.exports = {
   },
   // webpack-chain docs see https://www.npmjs.com/package/webpack-chain
   chainWebpack: config => {
+    // inline style ignore
+    config.module.rule('less').include.add(/themes/)
+    // add theme entry to extract css
+    config.module
+      .rule('less-extract')
+      .test(/\.less/)
+      .exclude.add(/themes/)
+      .end()
+      // Even create named uses (loaders)
+      .use('vue-style-loader')
+      .loader('vue-style-loader')
+      .options({
+        sourceMap: false,
+        shadowMode: false
+      })
+      .end()
+      .use('css-loader')
+      .loader('css-loader')
+      .options({
+        sourceMap: false,
+        importLoaders: 2
+      })
+      .end()
+      .use('postcss-loader')
+      .loader('postcss-loader')
+      .options({
+        sourceMap: false
+      })
+      .end()
+      .use('less-loader')
+      .loader('less-loader')
+      .options({
+        sourceMap: false,
+        javascriptEnabled: true
+      })
+      .end()
+
+    // add themes entry config
+    Object.keys(buildConfig.themeConfig).forEach((themeName) => {
+      config
+        .entry(`theme-${themeName}`)
+        .add(resolve(buildConfig.themeConfig[themeName]))
+        .end()
+    })
     config
       .externals({
         vue: 'window.Vue',
@@ -80,13 +126,30 @@ module.exports = {
         }
       ])
       .end()
+
+    // exclude theme css file assets
+    config
+      .plugin('exclude-assets-plugin')
+      .use(HtmlWebpackExcludeAssetsPlugin)
+      .end()
+      .plugin('html')
+      .tap(args => {
+        console.log(args)
+        args[0].excludeAssets = [/theme-(.+)\.css/, /theme-(.+)\.js/]
+        return args
+      })
+      .end()
+
+    // ignore no export warning by ts
+    config
       .plugin('ignore-not-found-export')
       .before('vue-loader')
       .use(IgnoreNotFoundExportPlugin)
       .end()
-      .when(IS_DEV, config => {
-        config.module.rules.delete('eslint')
-      })
+
+    config.when(IS_DEV, config => {
+      config.module.rules.delete('eslint')
+    })
     config.plugin('define').tap(definitions => {
       const { NODE_ENV } = process.env
       definitions[0] = Object.assign(definitions[0], {

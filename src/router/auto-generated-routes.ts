@@ -3,22 +3,20 @@
 **/
 
 import { DashboardService } from '@/views/pages/dashboard.service.ts'
-import { PluginsService } from '@/views/pages/plugins.service.ts'
 import { ListService as BrandListService } from '@/views/pages/brand/list.service.ts'
-import { ListService as PluginsListService } from '@/views/pages/plugins/list.service.ts'
 import { LlfService as TestLlfService } from '@/views/pages/test/llf.service.ts'
 import { ZlxService as TestZlxService } from '@/views/pages/test/zlx.service.ts'
 
 const page404 = () => import('@/views/pages/404.vue')
 const pageDashboard = () => import('@/views/pages/dashboard.vue')
-const pagePlugins = () => import('@/views/pages/plugins.vue')
+const pageBrandDashboard = () => import('@/views/pages/brand/dashboard.vue')
 const pageBrandList = () => import('@/views/pages/brand/list.vue')
-const pagePluginsList = () => import('@/views/pages/plugins/list.vue')
-const pagePluginsTheme = () => import('@/views/pages/plugins/theme.vue')
-const pageTestCheckbox = () => import('@/views/pages/test/checkbox.vue')
+const pageShopDashboard = () => import('@/views/pages/shop/dashboard.vue')
+const pageTestKael = () => import('@/views/pages/test/kael.vue')
 const pageTestLlf = () => import('@/views/pages/test/llf.vue')
 const pageTestMg20 = () => import('@/views/pages/test/mg20.vue')
 const pageTestOss = () => import('@/views/pages/test/oss.vue')
+const pageTestStyguide = () => import('@/views/pages/test/styguide.vue')
 const pageTestZlx = () => import('@/views/pages/test/zlx.vue')
 const pageTestZlxFull = () => import('@/views/pages/test/zlxFull.vue')
 const pageUserLogin = () => import('@/views/pages/user/login.vue')
@@ -36,30 +34,24 @@ const pageRoutes = [{
   component: pageDashboard,
   guards: [DashboardService]
 }, {
-  name: 'plugins',
-  path: '/plugins',
-  component: pagePlugins,
-  guards: [PluginsService],
-  children: [{
-    name: 'plugins-list',
-    path: 'list',
-    component: pagePluginsList,
-    guards: [PluginsListService]
-  }, {
-    name: 'plugins-theme',
-    path: 'theme',
-    component: pagePluginsTheme,
-    guards: []
-  }]
+  name: 'brand-dashboard',
+  path: '/brand/dashboard',
+  component: pageBrandDashboard,
+  guards: []
 }, {
   name: 'brand-list',
   path: '/brand/list',
   component: pageBrandList,
   guards: [BrandListService]
 }, {
-  name: 'test-checkbox',
-  path: '/test/checkbox',
-  component: pageTestCheckbox,
+  name: 'shop-dashboard',
+  path: '/shop/dashboard',
+  component: pageShopDashboard,
+  guards: []
+}, {
+  name: 'test-kael',
+  path: '/test/kael',
+  component: pageTestKael,
   guards: []
 }, {
   name: 'test-llf',
@@ -75,6 +67,11 @@ const pageRoutes = [{
   name: 'test-oss',
   path: '/test/oss',
   component: pageTestOss,
+  guards: []
+}, {
+  name: 'test-styguide',
+  path: '/test/styguide',
+  component: pageTestStyguide,
   guards: []
 }, {
   name: 'test-zlx',

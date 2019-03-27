@@ -1,12 +1,27 @@
 <template>
   <div>
     LLF
+    <ul>
+      <li>
+        hello
+      </li>
+      <span>
+        hello
+      </span>
+      <h2>
+        hello
+      </h2>
+    </ul>
+    <h1>
+      niu
+    </h1>
     {{query}}
     {{llfLoading}}
     {{name}}
     <a-input v-model="query.a"></a-input>
     <a-button @click="onUrlPush">onUrlPush</a-button>
-    <a-button @click="submit$.dispatch({a:1,b:2})" :loading="llfLoading.test">loading</a-button>
+    <a-button @click="submit$.dispatch({a:1,b:2})"
+      :loading="llfLoading.test">loading</a-button>
   </div>
 </template>
 

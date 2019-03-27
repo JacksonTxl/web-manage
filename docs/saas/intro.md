@@ -12,6 +12,10 @@ saas 项目使用了如下技术栈 如以前从未接触过的，可至以下�
 - [vue-router 官方网站](https://router.vuejs.org/zh/)
 - [vue-service-app](/vue-service-app/intro.html) 基于 vue-router 的依赖注入框架
 
+## 项目架构图
+
+
+
 ## 前序准备
 
 - nodejs 8.12.0 以上版本
@@ -106,6 +110,9 @@ npm run dev
 ```
 npm run dev:docs
 ```
+
+
+
 
 ## Git 分支模型
 
