@@ -1,7 +1,7 @@
 <template>
   <a-button class="checkbox-item" :class="{checked: stChecked}" @click="check" :disabled="disabled">
     {{label}}
-    <slot v-if="label===''"></slot>
+    <slot v-if="label===''" :value="stChecked"></slot>
   </a-button>
 </template>
 <script>

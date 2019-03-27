@@ -17,6 +17,7 @@ const pagePluginsList = () => import('@/views/pages/plugins/list.vue')
 const pagePluginsTheme = () => import('@/views/pages/plugins/theme.vue')
 const pageTestCheckbox = () => import('@/views/pages/test/checkbox.vue')
 const pageTestLlf = () => import('@/views/pages/test/llf.vue')
+const pageTestMg20 = () => import('@/views/pages/test/mg20.vue')
 const pageTestOss = () => import('@/views/pages/test/oss.vue')
 const pageTestZlx = () => import('@/views/pages/test/zlx.vue')
 const pageTestZlxFull = () => import('@/views/pages/test/zlxFull.vue')
@@ -65,6 +66,11 @@ const pageRoutes = [{
   path: '/test/llf',
   component: pageTestLlf,
   guards: [TestLlfService]
+}, {
+  name: 'test-mg20',
+  path: '/test/mg20',
+  component: pageTestMg20,
+  guards: []
 }, {
   name: 'test-oss',
   path: '/test/oss',

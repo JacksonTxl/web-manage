@@ -70,6 +70,9 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       case '404':
         route.meta.layout = 'blank'
         break
+      case 'test-zlx':
+        route.meta.layout = 'blank'
+        break
       case 'plugins-list':
         route.queryOptions = {
           a: { type: Number },
