@@ -14,6 +14,7 @@ const pageBrandList = () => import('@/views/pages/brand/list.vue')
 const pageShopDashboard = () => import('@/views/pages/shop/dashboard.vue')
 const pageTestKael = () => import('@/views/pages/test/kael.vue')
 const pageTestLlf = () => import('@/views/pages/test/llf.vue')
+const pageTestMg20 = () => import('@/views/pages/test/mg20.vue')
 const pageTestOss = () => import('@/views/pages/test/oss.vue')
 const pageTestStyguide = () => import('@/views/pages/test/styguide.vue')
 const pageTestZlx = () => import('@/views/pages/test/zlx.vue')
@@ -57,6 +58,11 @@ const pageRoutes = [{
   path: '/test/llf',
   component: pageTestLlf,
   guards: [TestLlfService]
+}, {
+  name: 'test-mg20',
+  path: '/test/mg20',
+  component: pageTestMg20,
+  guards: []
 }, {
   name: 'test-oss',
   path: '/test/oss',

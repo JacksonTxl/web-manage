@@ -20311,6 +20311,52 @@ be a descendant of the grid when it is being dragged.
   padding: 1px;
   background: palevioletred;
 }
+.layout-default {
+  font-size: 20px;
+}
+.layout-default .header {
+  background: #f0f2f5;
+}
+.layout-default .header__title {
+  color: #2c3153;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+.layout-default .header__divider {
+  display: inline-block;
+  vertical-align: middle;
+  width: 1px;
+  height: 30px;
+  margin-left: 20px;
+  margin-right: 20px;
+  background: rgba(0, 0, 0, 0.1);
+}
+.layout-default .header__breadcrumb {
+  display: inline-block;
+}
+.st-icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+.ant-menu-item .st-icon,
+.ant-menu-submenu-title .st-icon {
+  margin-right: 10px;
+}
+.ant-menu-inline-collapsed .ant-menu-item .st-icon,
+.ant-menu-inline-collapsed .ant-menu-submenu-title .st-icon {
+  font-size: 16px;
+  margin: 0;
+}
+.ant-menu-inline-collapsed .ant-menu-item .st-icon + span,
+.ant-menu-inline-collapsed .ant-menu-submenu-title .st-icon + span {
+  max-width: 0;
+  display: inline-block;
+  opacity: 0;
+}
 .page-login-wapper {
   display: flex;
   align-items: center;
@@ -20325,19 +20371,69 @@ be a descendant of the grid when it is being dragged.
   background: #fff;
   box-shadow: 0px 0px 20px 0px rgba(196, 193, 219, 0.2);
   border-radius: 4px;
+  display: flex;
 }
-.page-login-wapper .page-login .left {
+.page-login-wapper .lf {
   position: relative;
   width: 580px;
   height: 100%;
 }
-.page-login-wapper .page-login .left .introduce {
+.page-login-wapper .lf-introduce {
   position: absolute;
   top: -14px;
   right: 0;
+  padding-top: 251px;
+  padding-left: 64px;
   width: 506px;
   height: 546px;
   background: linear-gradient(46deg, #1890ff 0%, #1838ff 100%);
   box-shadow: 0px 0px 20px 0px rgba(196, 193, 219, 0.2);
   border-radius: 4px;
+}
+.page-login-wapper .lf-logo {
+  margin-bottom: 31px;
+}
+.page-login-wapper .lf-title {
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 16px;
+}
+.page-login-wapper .lf-sub-title {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1;
+  margin-bottom: 50px;
+}
+.page-login-wapper .lf-help {
+  list-style-type: none;
+  display: flex;
+  padding-left: 0;
+}
+.page-login-wapper .lf-help .item {
+  margin-right: 44px;
+}
+.page-login-wapper .lf-help .item a {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.45);
+}
+.page-login-wapper .lf-copyright {
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 20px;
+}
+.page-login-wapper .lf-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 335px;
+  height: 546px;
+  background: url(https://static-s.styd.cn/201903251641/introduce.png) top center no-repeat;
+  background-size: cover;
+}
+.page-login-wapper .st-icon {
+  color: #fff;
 }

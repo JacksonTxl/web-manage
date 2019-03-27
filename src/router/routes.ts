@@ -18,7 +18,7 @@ const routes: ServiceRouteConfig[] = [
     redirect: '/brand/dashboard'
   },
   {
-    path: '/shop/',
+    path: '/shop/:id',
     redirect: '/shop/dashboard'
   },
   ...pageRoutes,
@@ -84,6 +84,9 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
         route.meta.layout = 'login'
         break
       case '404':
+        route.meta.layout = 'blank'
+        break
+      case 'test-zlx':
         route.meta.layout = 'blank'
         break
       case 'plugins-list':
