@@ -21,7 +21,7 @@
       >i {
         .pos-a();
         .s(20px,20px);
-        .bg(#1890FF);
+        .bg(url('~@/assets/img/brand_badge.png') center/20px 20px no-repeat);
         right: -12px;
         bottom: -8px;
       }
@@ -36,10 +36,10 @@
         .lh(24px);
         font-weight: 500;
       }
-      >i{
-        .s(14px,14px);
-        .bg(#ccc);
-      }
+    }
+    &__scrollbox{
+      height: calc(100vh - 150px);
+      overflow: auto;
     }
     &__often {
       .pd-l(8px);
@@ -81,8 +81,17 @@
     margin-left: 200px;
     min-height: 100vh;
     .bg(rgba(240,242,245,1));
+    .pd-lr(24px);
     &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .pd-lr(0);
       .bg(rgba(240,242,245,1));
+    }
+    &__footer {
+      text-align: center;
+      .pd-tb(24px);
     }
   }
 }

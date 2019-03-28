@@ -1,6 +1,6 @@
 import LayoutBlank from './blank.vue'
 import LayoutDefault from './default.vue'
-import LayoutDefaultBrand from './kael-default-brand.vue'
+import LayoutDefaultBrand from './default-brand.vue'
 import LayoutLogin from './login.vue'
 import LayoutLoading from './loading.vue'
 
