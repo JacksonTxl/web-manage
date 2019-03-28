@@ -12,6 +12,7 @@ import StTable from './table/table.vue'
 import StInputSearch from './input-search/input-search.vue'
 import StAvatarUpload from './avatar-upload/avatar-upload.vue'
 import StPictureUpload from './picture-upload/picture-upload.vue'
+import StTree from './tree/tree.vue'
 Vue.component(StIcon.name, StIcon)
 Vue.component(StButton.name, StButton)
 Vue.component(StSteps.name, StSteps)
@@ -24,3 +25,4 @@ Vue.component(StCheckboxFacilityItem.name, StCheckboxFacilityItem)
 Vue.component(StInputSearch.name, StInputSearch)
 Vue.component(StAvatarUpload.name, StAvatarUpload)
 Vue.component(StPictureUpload.name, StAvatarUpload)
+Vue.component(StTree.name, StTree)

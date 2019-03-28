@@ -1,7 +1,7 @@
 <template>
-  <st-table :columns="columns" :dataSource="data">
+  <a-table :columns="columns" :dataSource="data" :scroll="{ x: 1500, y: 300 }">
     <a slot="action"  href="javascript:;">action</a>
-  </st-table>
+  </a-table>
 </template>
 <script>
 const columns = [
@@ -35,7 +35,6 @@ for (let i = 0; i < 100; i++) {
 }
 
 export default {
-  name: 'StaffTable',
   data() {
     return {
       data,

@@ -41,6 +41,7 @@ module.exports = {
     }
   },
   devServer: {
+    disableHostCheck: true,
     watchContentBase: true,
     proxy: {
       '/_api': {
