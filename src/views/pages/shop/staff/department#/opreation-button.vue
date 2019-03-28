@@ -10,7 +10,7 @@ export default {
   name: 'OpreationButton',
   methods: {
     onClickAddStaff() {
-      this.$route.push('')
+      this.$emit('add-staff')
     }
   }
 }

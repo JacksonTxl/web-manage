@@ -5,7 +5,7 @@
     @click="check"
     :disabled="stDisabled"
   >
-    {{stLabelComputed}}{{stDisabled}}
+    {{stLabelComputed}}
     <slot v-if="stLabelComputed===''"></slot>
   </a-button>
 </template>

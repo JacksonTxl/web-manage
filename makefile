@@ -49,11 +49,14 @@ release:
 	ssh $(to) -t "mkdir -p $(HTDOCS_PATH)"
 	ssh $(to) -t "ln -sfTv $(CONTENT_PATH)/$(NAME) $(HTDOCS_PATH)/$(NAME)"
 
-clean:
+clean1:
 	sudo docker run -i --rm \
 	-v $(PWD):/app \
-	$(DOCKER_IMAGE) \
-	id && \
-	ls -la && \
-	rm -r ./dist/* && \
-	rm -r ./docs/.vuepress/dist/*
+	$(DOCKER_IMAGE) rm -r ./dist/
+
+clean2:
+	sudo docker run -i --rm \
+	-v $(PWD):/app \
+	$(DOCKER_IMAGE) rm -r ./docs/.vuepress/dist/
+
+clean: clean1 clean2
