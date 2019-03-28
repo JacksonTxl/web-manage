@@ -1,0 +1,42 @@
+.item {
+  cursor: pointer;
+}
+// .st-tree-item {
+//   .item{
+//     padding-left: 1em;
+//   }
+// }
+.tree-unit{
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  &:hover{
+    &:after{
+      content: '';
+      height: 100%;
+      width: 10000px;
+      display: block;
+      position: absolute;
+      top:0;
+      left:-2000px;
+      background: rgba(24,144,255,0.1);
+      z-index: 99999;
+    }
+  }
+  &__content{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    padding-left: 16px;
+  }
+  .tree-switch{
+    .s(16px,16px);
+    .mg-r(8px);
+    .lh(16px);
+    font-size: 10px;
+    .ta-c;
+    display: block;
+    background:rgba(0,0,0,0.05);
+    color: rgba(0,0,0,0.25);
+  }
+}
