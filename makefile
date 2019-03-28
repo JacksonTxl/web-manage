@@ -53,4 +53,5 @@ clean:
 	docker run -i --rm \
 	-v $(PWD):/app \
 	$(DOCKER_IMAGE) \
-	rm -r ./dist/*
+	rm -r ./dist/* && \
+	rm -r ./docs/.vuepress/dist/*
