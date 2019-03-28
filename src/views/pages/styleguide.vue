@@ -3,6 +3,7 @@
     <h2>styleguide</h2>
     <h4>st-button 按钮</h4>
     <div class="mg-t16">
+
       <st-button pill
         size='small'>默认24px</st-button>
       <st-button pill
@@ -115,6 +116,10 @@
             type='primary'>绑定</st-button>
         </a-col>
       </a-row>
+      <div>
+        <st-button block
+          type='dashed'>dashed</st-button>
+      </div>
     </div>
     <div class="mg-t16">
       头像上传(未完成)
