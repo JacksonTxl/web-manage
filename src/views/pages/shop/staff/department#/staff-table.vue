@@ -1,6 +1,6 @@
 <template>
   <st-table :columns="columns" :dataSource="data">
-    <a slot="action"  href="javascript:;">action</a>
+    <a slot="action" href="javascript:;">action</a>
   </st-table>
 </template>
 <script>

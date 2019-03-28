@@ -4,14 +4,14 @@
       <header class="staff-lf__search">
         <st-input-search placeholder="请输入部门/员工名称" style="width:226px" round="round"></st-input-search>
       </header>
-      <main class="staff-lf__tree">组织架构树<st-icon type="home"></st-icon>
+      <main class="staff-lf__tree">组织架构树
         <organization-tree></organization-tree>
       </main>
     </section>
     <section class="page-staff-rg">
       <header class="staff-rg__operation">
         <filter-staff></filter-staff>
-        <opreation-button></opreation-button>
+        <opreation-button @add-staff="addStaff"></opreation-button>
       </header>
       <main class="staff-rg__table">
         <staff-table></staff-table>
@@ -32,6 +32,11 @@ export default {
     FilterStaff,
     OpreationButton,
     StaffTable
+  },
+  methods: {
+    addStaff() {
+      this.$router.push('/shop/staff/add')
+    }
   }
 }
 </script>
