@@ -1,5 +1,5 @@
 <template>
-  <st-table :columns="columns" :dataSource="data" :scroll="{ x: 1000, y: 300 }">
+  <st-table :columns="columns" :dataSource="data">
     <a slot="action"  href="javascript:;">action</a>
   </st-table>
 </template>
