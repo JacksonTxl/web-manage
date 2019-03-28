@@ -4,8 +4,11 @@ const globby = require('globby')
 const Path = require('path')
 const Fse = require('fs-extra')
 
-gulp.task('route', () => {
+gulp.task('route', done => {
   RouteTask.run('init', 'init')
+  done()
+})
+gulp.task('route:watch', () => {
   gulp
     .watch(['./src/views/pages/**/*.vue', './src/views/pages/**/*.service.ts'])
     .on('add', path => {
@@ -45,4 +48,6 @@ gulp.task('less:watch', () => {
     })
 })
 
-gulp.task('dev', gulp.parallel(['route', 'less', 'less:watch']))
+gulp.task('dev', gulp.parallel(['route', 'route:watch', 'less', 'less:watch']))
+
+gulp.task('build', gulp.series(['route', 'less']))
