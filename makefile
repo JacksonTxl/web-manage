@@ -50,7 +50,7 @@ release:
 	ssh $(to) -t "ln -sfTv $(CONTENT_PATH)/$(NAME) $(HTDOCS_PATH)/$(NAME)"
 
 clean:
-	docker run -i --rm \
+	sudo docker run -i --rm \
 	-v $(PWD):/app \
 	$(DOCKER_IMAGE) \
 	id && \
