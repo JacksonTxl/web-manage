@@ -4,7 +4,7 @@
       <header class="staff-lf__search">
         <st-input-search placeholder="请输入部门/员工名称" style="width:226px" round="round"></st-input-search>
       </header>
-      <main class="staff-lf__tree">组织架构树
+      <main class="staff-lf__tree">组织架构树<st-icon type="home"></st-icon>
         <organization-tree></organization-tree>
       </main>
     </section>
@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import OrganizationTree from './components/organization-tree.vue'
-import FilterStaff from './components/filter-staff.vue'
-import OpreationButton from './components/opreation-button.vue'
-import StaffTable from './components/staff-table'
+import OrganizationTree from './staff#/organization-tree.vue'
+import FilterStaff from './staff#/filter-staff.vue'
+import OpreationButton from './staff#/opreation-button.vue'
+import StaffTable from './staff#/staff-table'
 export default {
   name: 'Staff',
   components: {

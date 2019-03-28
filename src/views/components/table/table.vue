@@ -5,7 +5,7 @@ export default {
   render(h) {
     const props = merge(
       {
-        scroll: { x: 1024 },
+        scroll: { x: true },
         pagination: {
           pageSize: 20,
           hideOnSinglePage: true,

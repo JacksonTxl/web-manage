@@ -5,7 +5,6 @@ public/release.json
 docs/.vuepress/dist
 src/router/auto-generated-routes.ts
 src/style/_views.less
-src/router/auto-generated-routes.ts
 
 
 package-lock.json
