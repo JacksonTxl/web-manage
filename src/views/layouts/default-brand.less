@@ -1,3 +1,4 @@
+// club
 .layout-default-brand {
   &-sider {
     position: fixed;
@@ -5,6 +6,7 @@
     .pd-t(26px);
     top: 0;
     left: 0;
+    .bg(@brand-color);
     &__brand {
       display: flex;
       flex-direction: column;
@@ -75,19 +77,35 @@
     }
     &__menu {
       .w(200px);
+      &.ant-menu-dark{
+        .bg(@brand-color);
+      }
+      &.ant-menu-dark .ant-menu-sub{
+        .bg(@brand-color);
+      }
     }
   }
   &-body {
     margin-left: 200px;
     min-height: 100vh;
     .bg(rgba(240,242,245,1));
-    .pd-lr(24px);
     &__header {
+      .pos-r();
       display: flex;
       align-items: center;
       justify-content: space-between;
-      .pd-lr(0);
+      .pd-lr(24px);
       .bg(rgba(240,242,245,1));
+      &::after {
+        content: '';
+        .pos-a();
+        bottom: -76px;
+        left: 0;
+        width: 100%;
+        height: 76px;
+        .bg(rgba(240,242,245,1));
+        z-index: 0;
+      }
     }
     &__location {
       display: flex;
@@ -157,6 +175,11 @@
     &__breadtext {
       .fz(12px);
     }
+    &__content {
+      .pos-r();
+      z-index: 1;
+      .mg-lr(24px);
+    }
     &__footer {
       text-align: center;
       .fz(12px);
@@ -166,3 +189,72 @@
   }
 }
 
+// team 
+.layout-default-brand {
+  &-sider {
+    .bg(@white);
+    &__logo {
+      .bg(#fdfdfd);
+      border: 2px solid #8B8DA0;
+    }
+    &__name {
+      .c(#000);
+    }
+    &__often {
+      &-title {
+        .c(rgba(0,0,0,.45));
+      }
+      &-list {
+        .c(rgba(0,0,0,.25));
+      }
+      &-item {
+        &::before{
+          .bg(rgba(0,0,0,.25));
+        }
+        &&--active {
+          .c(@primary-color);
+          &::before{
+            .bg(@primary-color);
+          }
+        }
+      }
+    }
+    &__menu {
+      &.ant-menu-dark{
+        .bg(@white);
+      }
+      &.ant-menu-dark .ant-menu-sub{
+        .bg(@white);
+      }
+    }
+  }
+  &-body {
+    &__header {
+      .bg(@brand-color);
+      &::after {
+        .bg(@brand-color);
+      }
+    }
+    &__location {
+      > h2 {
+        color: @white;
+      }
+    }
+    &__line {
+      .bg(rgba(255,255,255,.25));
+    }
+    &__avatar {
+      > img {
+        .bg(#ccc);
+      }
+    }
+    &__location {
+      .ant-breadcrumb-separator {
+        .c(@white);
+      }
+    }
+    &__breadtext {
+      .c(@white);
+    }
+  }
+}

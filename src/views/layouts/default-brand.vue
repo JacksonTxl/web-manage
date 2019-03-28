@@ -26,11 +26,18 @@
             </li>
           </ul>
         </div>
-        <a-menu
-          class="layout-default-brand-sider___menu"
+        <!-- <a-menu
+          class="layout-default-brand-sider__menu"
           :openKeys="openKeys"
           @openChange="onOpenChange"
           theme="dark"
+          mode="inline"
+        > -->
+        <a-menu
+          class="layout-default-brand-sider__menu"
+          :openKeys="openKeys"
+          @openChange="onOpenChange"
+          theme="light"
           mode="inline"
         >
           <a-menu-item key="item1">
@@ -109,7 +116,8 @@
           <span class="layout-default-brand-body__line"></span>
           <a-breadcrumb separator="-">
             <a-breadcrumb-item>
-              <a-icon type="home"/>
+              <!-- <st-icon type="home"/> -->
+              <st-icon type="home" color="#fff"/>
             </a-breadcrumb-item>
             <a-breadcrumb-item>
               <span class="layout-default-brand-body__breadtext">首页</span>
@@ -120,7 +128,12 @@
           </a-breadcrumb>
         </div>
         <div class="layout-default-brand-body__personal">
-          <st-icon type="bell" size="20px"></st-icon>
+          <!-- <a-badge dot>
+            <st-icon type="bell" size="20px"/>
+          </a-badge> -->
+          <a-badge dot>
+            <st-icon type="bell" size="20px" color="red"/>
+          </a-badge>
           <a-dropdown :trigger="['click']" placement="bottomRight">
             <div class="layout-default-brand-body__avatar">
               <img src="~@/assets/img/avatar_default.png" width="32" height="32" alt="avatar">
