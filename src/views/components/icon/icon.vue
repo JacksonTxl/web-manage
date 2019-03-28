@@ -1,7 +1,7 @@
 <template>
   <svg v-if='!isAntIcon'
     class="st-icon"
-    :style="{'font-size': size}"
+    :style="{'font-size': size, 'color': 'red'}"
     aria-hidden="true">
     <use :xlink:href="linkHref">
     </use>
@@ -21,7 +21,11 @@ export default {
     },
     size: {
       type: String,
-      default: '16px'
+      default: '1em'
+    },
+    color: {
+      type: String,
+      default: 'currentColor'
     }
   },
   computed: {
