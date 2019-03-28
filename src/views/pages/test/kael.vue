@@ -1,7 +1,20 @@
 <template>
-  <section>
+  <section class="container-basis">
     <st-avatar-upload></st-avatar-upload>
     <st-picture-upload></st-picture-upload>
-    <st-icon type="renzheng"></st-icon>
+    <st-avatar-upload></st-avatar-upload>
+    <st-picture-upload></st-picture-upload>
+    <st-avatar-upload></st-avatar-upload>
+    <st-picture-upload></st-picture-upload>
+    <st-avatar-upload></st-avatar-upload>
+    <st-picture-upload></st-picture-upload>
+    <st-avatar-upload></st-avatar-upload>
+    <st-picture-upload></st-picture-upload>
+    <st-avatar-upload></st-avatar-upload>
+    <st-picture-upload></st-picture-upload>
+    <st-avatar-upload></st-avatar-upload>
+    <st-picture-upload></st-picture-upload>
+    <st-avatar-upload></st-avatar-upload>
+    <st-picture-upload></st-picture-upload>
   </section>
 </template>

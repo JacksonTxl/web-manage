@@ -1,10 +1,12 @@
 <template>
   <div class="page-staffDetail">
-    <section class="page-staffDetail-lf">这是步骤轴。。。。。。。。。。。{{     }}</section>
+    <section class="page-staffDetail-lf">
+      <AddStep :currentIndex="currentIndex" />
+    </section>
     <!-- 基础信息 -->
-    <StaffDetailBasics v-if="currentIndex == 1" @goNext="goNext"/>
-    <StaffDetailDetailedInfo v-if="currentIndex == 2" @goNext="goNext"/>
-    <StaffDetailCoachInfo v-if="currentIndex == 3" @goNext="goNext"/>
+    <StaffDetailBasics v-if="currentIndex == 0" @goNext="goNext"/>
+    <StaffDetailDetailedInfo v-if="currentIndex == 1" @goNext="goNext"/>
+    <StaffDetailCoachInfo v-if="currentIndex == 2" @goNext="goNext"/>
     <!-- <div class="page-staffDetail-divider"></div>
     <section class="page-staffDetail-lf">这是详细信息...................</section>
     <div class="page-staffDetail-divider"></div>
@@ -13,20 +15,21 @@
 </template>
 
 <script>
-
-import StaffDetailBasics from './add#/staff-detail-basicsInfo'
-import StaffDetailDetailedInfo from './add#/staff-detail-detailedInfo'
-import StaffDetailCoachInfo from './add#/staff-detail-coachInfo'
+import AddStep from './add#/add-detail-steps'
+import StaffDetailBasics from './add#/add-detail-basicsInfo'
+import StaffDetailDetailedInfo from './add#/add-detail-detailedInfo'
+import StaffDetailCoachInfo from './add#/add-detail-coachInfo'
 export default {
-  name: 'staffDetail',
+  name: 'addDetail',
   components: {
+    AddStep,
     StaffDetailBasics,
     StaffDetailDetailedInfo,
     StaffDetailCoachInfo
   },
   data() {
     return {
-      currentIndex: 1
+      currentIndex: 0
     }
   },
   methods: {
@@ -35,8 +38,8 @@ export default {
       console.log(currentIndex)
       this.currentIndex = currentIndex + 1
       console.log(currentIndex)
-      if (this.currentIndex === 4) {
-        this.currentIndex = 1
+      if (this.currentIndex === 3) {
+        this.currentIndex = 0
       }
     }
   }
