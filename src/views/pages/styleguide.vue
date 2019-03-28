@@ -1,5 +1,5 @@
 <template>
-  <div style='background:#fff;padding:24px'>
+  <div class="container-basis">
     <h2>styleguide</h2>
     <div class="mg-t16">
       按钮(需变更)
@@ -37,6 +37,7 @@
       <st-icon type='anticon:setting'></st-icon>
     </h3>
     <div class="mg-t16">
+      步骤条（须变更）
       <st-steps :stepList="[{title:'hello'},{title:'2'},{title:'3'}]"></st-steps>
     </div>
     <div class="mg-t16">
