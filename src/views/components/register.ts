@@ -4,6 +4,8 @@ import StIcon from './icon/icon.vue'
 import StButton from './button/button.vue'
 import StCheckboxButtonGroup from './checkbox-button/checkbox-button-group.vue'
 import StCheckboxButtonItem from './checkbox-button/checkbox-button-item.vue'
+import StCheckboxFacilityGroup from './checkbox-facility/checkbox-facility-group.vue'
+import StCheckboxFacilityItem from './checkbox-facility/checkbox-facility-item.vue'
 import StSteps from './steps/steps.vue'
 import StStep from './steps/step.vue'
 import StTable from './table/table.vue'
@@ -17,6 +19,8 @@ Vue.component(StStep.name, StStep)
 Vue.component(StTable.name, StTable)
 Vue.component(StCheckboxButtonGroup.name, StCheckboxButtonGroup)
 Vue.component(StCheckboxButtonItem.name, StCheckboxButtonItem)
+Vue.component(StCheckboxFacilityGroup.name, StCheckboxFacilityGroup)
+Vue.component(StCheckboxFacilityItem.name, StCheckboxFacilityItem)
 Vue.component(StInputSearch.name, StInputSearch)
 Vue.component(StAvatarUpload.name, StAvatarUpload)
 Vue.component(StPictureUpload.name, StAvatarUpload)

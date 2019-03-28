@@ -1,12 +1,12 @@
 
 <template>
-  <a-button-group class="st-checkbox-button-group">
+  <div class="st-checkbox-facility-group">
     <slot></slot>
-  </a-button-group>
+  </div>
 </template>
 <script>
 export default {
-  name: 'StCheckboxButtonGroup',
+  name: 'StCheckboxFacilityGroup',
   provide() {
     return {
       groupProvide: {

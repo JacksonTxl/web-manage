@@ -5,13 +5,13 @@
     @click="check"
     :disabled="stDisabled"
   >
-    {{stLabelComputed}}
+    {{stLabelComputed}}{{stDisabled}}
     <slot v-if="stLabelComputed===''"></slot>
   </a-button>
 </template>
 <script>
 export default {
-  name: 'StCheckboxButtonItem',
+  name: 'StCheckboxFacilityItem',
   inject: {
     groupProvide: 'groupProvide',
     emitGroup: 'emitGroup',
