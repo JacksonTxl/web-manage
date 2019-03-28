@@ -1,4 +1,5 @@
 <template>
+<div  class="organization-tree">
   <a-tree
     showLine
     :defaultExpandedKeys="['0-0-0']"
@@ -20,6 +21,8 @@
       </a-tree-node>
     </a-tree-node>
   </a-tree>
+</div>
+
 </template>
 
 <script>

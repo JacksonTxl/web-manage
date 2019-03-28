@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import OrganizationTree from './components/organization-tree.vue'
-import FilterStaff from './components/filter-staff.vue'
-import OpreationButton from './components/opreation-button.vue'
-import StaffTable from './components/staff-table'
+import OrganizationTree from './staff#/organization-tree.vue'
+import FilterStaff from './staff#/filter-staff.vue'
+import OpreationButton from './staff#/opreation-button.vue'
+import StaffTable from './staff#/staff-table'
 export default {
   name: 'Staff',
   components: {
