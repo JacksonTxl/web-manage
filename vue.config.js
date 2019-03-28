@@ -134,7 +134,6 @@ module.exports = {
       .end()
       .plugin('html')
       .tap(args => {
-        console.log(args)
         args[0].excludeAssets = [/theme-(.+)\.css/, /theme-(.+)\.js/]
         return args
       })
