@@ -27,11 +27,12 @@
           </ul>
         </div>
         <a-menu
-        class="layout-default-brand-sider___menu"
-        :openKeys="openKeys"
-        @openChange="onOpenChange"
-        theme="dark"
-        mode="inline">
+          class="layout-default-brand-sider___menu"
+          :openKeys="openKeys"
+          @openChange="onOpenChange"
+          theme="dark"
+          mode="inline"
+        >
           <a-menu-item key="item1">
             <span>
               <a-icon type="file"/>
@@ -104,10 +105,52 @@
     <a-layout class="layout-default-brand-body">
       <a-layout-header class="layout-default-brand-body__header">
         <div class="layout-default-brand-body__location">
-          location
+          <h2>创建门店</h2>
+          <span class="layout-default-brand-body__line"></span>
+          <a-breadcrumb separator="-">
+            <a-breadcrumb-item>
+              <a-icon type="home"/>
+            </a-breadcrumb-item>
+            <a-breadcrumb-item>
+              <span class="layout-default-brand-body__breadtext">首页</span>
+            </a-breadcrumb-item>
+            <a-breadcrumb-item>
+              <span class="layout-default-brand-body__breadtext">创建门店</span>
+            </a-breadcrumb-item>
+          </a-breadcrumb>
         </div>
         <div class="layout-default-brand-body__personal">
-          personal
+          <st-icon type="bell" size="20px"></st-icon>
+          <a-dropdown :trigger="['click']" placement="bottomRight">
+            <div class="layout-default-brand-body__avatar">
+              <img src="~@/assets/img/avatar_default.png" width="32" height="32" alt="avatar">
+            </div>
+            <div slot="overlay" class="layout-default-brand-body__dropdown">
+              <div class="layout-default-brand-body__username">
+                <p class="layout-default-brand-body__name">Elaine</p>
+                <p class="layout-default-brand-body__mobile">18101881916</p>
+              </div>
+              <a-menu>
+                <a-menu-item class="layout-default-brand-body__options">
+                  <st-icon type="inbox"></st-icon>
+                  <span>账号安全</span>
+                </a-menu-item>
+                <a-menu-item class="layout-default-brand-body__options">
+                  <st-icon type="inbox"></st-icon>
+                  <span>切换品牌</span>
+                </a-menu-item>
+                <a-menu-item class="layout-default-brand-body__options">
+                  <st-icon type="inbox"></st-icon>
+                  <span>中文 / English</span>
+                </a-menu-item>
+                <a-menu-divider />
+                <a-menu-item class="layout-default-brand-body__options">
+                  <st-icon type="inbox"></st-icon>
+                  <span>退出</span>
+                </a-menu-item>
+              </a-menu>
+            </div>
+          </a-dropdown>
         </div>
       </a-layout-header>
       <a-layout-content class="layout-default-brand-body__content">
