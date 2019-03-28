@@ -5,6 +5,7 @@
 import { DashboardService } from '@/views/pages/dashboard.service.ts'
 import { ListService as BrandListService } from '@/views/pages/brand/list.service.ts'
 import { StaffService as StaffStaffService } from '@/views/pages/staff/staff.service.ts'
+import { StaffDetailService as StaffStaffDetailService } from '@/views/pages/staff/staffDetail.service.ts'
 import { LlfService as TestLlfService } from '@/views/pages/test/llf.service.ts'
 import { ZlxService as TestZlxService } from '@/views/pages/test/zlx.service.ts'
 
@@ -14,6 +15,7 @@ const pageBrandDashboard = () => import('@/views/pages/brand/dashboard.vue')
 const pageBrandList = () => import('@/views/pages/brand/list.vue')
 const pageShopDashboard = () => import('@/views/pages/shop/dashboard.vue')
 const pageStaffStaff = () => import('@/views/pages/staff/staff.vue')
+const pageStaffStaffDetail = () => import('@/views/pages/staff/staffDetail.vue')
 const pageTestKael = () => import('@/views/pages/test/kael.vue')
 const pageTestLlf = () => import('@/views/pages/test/llf.vue')
 const pageTestMg20 = () => import('@/views/pages/test/mg20.vue')
@@ -55,6 +57,11 @@ const pageRoutes = [{
   path: '/staff/staff',
   component: pageStaffStaff,
   guards: [StaffStaffService]
+}, {
+  name: 'staff-staffDetail',
+  path: '/staff/staffDetail',
+  component: pageStaffStaffDetail,
+  guards: [StaffStaffDetailService]
 }, {
   name: 'test-kael',
   path: '/test/kael',
