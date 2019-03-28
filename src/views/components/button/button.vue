@@ -1,54 +1,50 @@
 <script>
-const style = {
-  'round-small': {
-    'padding': '0 26px',
-    'border-radius': '10000px',
-    'height': '28px',
-    'font-size': '12px'
-  },
-  'round': {
-    'border-radius': '10000px',
-    'height': '40px',
-    'width': '158px',
-    'font-size': '14px'
-  },
-  'round-middle': {
-    'padding': '0 26px',
-    'border-radius': '10000px',
-    'height': '40px',
-    'font-size': '14px'
-  },
-  'round-large': {
-    'padding': '0 26px',
-    'border-radius': '10000px',
-    'height': '28px',
-    'font-size': '12px'
-  },
-  'round-full': {
-    'width': '100%',
-    'padding': '0 26px',
-    'border-radius': '10000px',
-    'height': '40px',
-    'font-size': '14px'
-  }
-}
 export default {
   name: 'StButton',
   props: {
-    round: { type: String, default: '' }
+    pill: {
+      type: Boolean,
+      default: false
+    },
+    // 添加了 size medium 对应按钮高度为 28px
+    size: {
+      type: String,
+      default: 'default'
+    },
+    // 支持st-icon的图标直接使用
+    icon: {
+      type: String,
+      default: ''
+    }
   },
   // round
   render(h) {
+    let props = {}
+    if (this.size === 'medium') {
+      props = { ...this.$attrs }
+    } else {
+      props = {
+        ...this.$attrs,
+        size: this.size
+      }
+    }
     return h(
       'a-button',
       {
-        props: {
-          ...this.$attrs
-        },
-        style: style[this.round],
+        props,
+        class: [
+          'st-button',
+          'st-button--' + this.size,
+          {
+            'st-button--pill': this.pill
+          }
+        ],
         on: this.$listeners
       },
-      this.$slots.default
+      [
+        this.icon && h('st-icon', { props: { type: this.icon } }),
+        ...this.$slots.default
+      ]
     )
   }
 }

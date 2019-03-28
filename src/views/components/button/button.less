@@ -1,0 +1,25 @@
+.st-button {
+  &--pill {
+    border-radius: 100px;
+  }
+  &--small {
+    .fz(12px);
+  }
+  &--medium {
+    .fz(12px);
+    .h(28px);
+  }
+  .st-icon + span {
+    .mg-l(8px);
+  }
+  &[disabled] {
+    .bg(#ccc);
+    .c(@white);
+    &:hover,
+    &:active {
+      border: 1px solid #ccc;
+      .bg(#ccc);
+      .c(@white);
+    }
+  }
+}
