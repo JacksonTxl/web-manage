@@ -6,7 +6,7 @@
       @make-folder="makeFolder"
       @add-item="addItem"
     ></tree-item>
-    </ul>
+  </ul>
 
 </template>
 

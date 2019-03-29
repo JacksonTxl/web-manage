@@ -14,6 +14,49 @@
     <st-table
     :dataSource="data" :columns="columns">
     </st-table>
+    <mg></mg>
+    <a-row :gutter="8" style="border: 1px solid #3ea">
+      <a-col span="2" style="text-align: right">
+        会员卡名称
+      </a-col>
+      <a-col span="6" style="text-align: left;padding-left:16px">
+        万晋健身房年卡
+      </a-col>
+    </a-row>
+    <a-row>
+      <a-col span="4">
+        <st-info-item label="会员卡名称">万晋健身房年卡</st-info-item>
+      </a-col>
+      <a-col  span="4">
+        <st-info-item label="所属会员">会员名称</st-info-item>
+      </a-col>
+      <a-col  span="4">
+        <st-info-item label="类型">会员期限卡</st-info-item>
+      </a-col>
+      <a-col  span="4">
+        <st-info-item label="类型">会员期限卡</st-info-item>
+      </a-col>
+    </a-row>
+    <mg></mg>
+    <a-row style="border: 1px solid #3ea">
+      <st-info-item label="会员卡名称">万晋健身房年卡</st-info-item>
+      <st-info-item label="所属会员">会员名称</st-info-item>
+      <st-info-item label="类型">会员期限卡</st-info-item>
+      <st-info-item label="有效期">2019-03-07 14:33 至 2019-09-06 14:33</st-info-item>
+      <st-info-item label="会员卡名称">万晋健身房年卡</st-info-item>
+      <st-info-item label="所属会员">会员名称</st-info-item>
+      <st-info-item label="类型">会员期限卡</st-info-item>
+      <st-info-item label="有效期">2019-03-07 14:33 至 2019-09-06 14:33</st-info-item>
+    </a-row>
+    <mg></mg>
+    <a-row style="border: 1px solid #3ea">
+      <st-info-item label="备注">
+        <div style="width:300px">
+          2019-03饭卡上风口浪尖啊是尽快发哈苏里科夫就好啦上课哦龙卷风撒了克己复礼撒咖啡机阿斯利康减肥啦上课肌肤浪费空间阿斯利康减肥啦上课肌肤-07 14:33 至 2019-09-06 14:33
+        </div>
+      </st-info-item>
+    </a-row>
+    <st-route-tabs :options="tabs"></st-route-tabs>
   </div>
 </template>
 
@@ -44,6 +87,9 @@ export default {
   name: 'ZlxTest',
   data() {
     return {
+      info: {
+        id: 3333
+      },
       data,
       columns: [{
         title: 'Name',
@@ -104,6 +150,14 @@ export default {
       }, {
         title: '绑定其他手机号'
       }]
+    }
+  },
+  computed: {
+    cardId() {
+      return this.info.id
+    },
+    tabs() {
+      return [{ label: '会员卡详情', route: { name: 'test-zlx-info', query: { id: 3333 } } }, { label: '操作日志', route: { name: 'test-zlx-log', query: { id: 3333 } } }]
     }
   },
   components: {

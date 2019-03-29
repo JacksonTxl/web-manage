@@ -1,13 +1,14 @@
 <template>
   <li>
     <div
-      class="tree-unit"
+      class="tree-node"
       :class="{bold: isFolder}"
       @click="toggle"
       @dblclick="makeFolder">
-      <div class="tree-unit__content" :style="{'padding-left': paddingLeft}">
+      <div v-if="level === 0" class="tree-node__content" :style="{'padding-left': paddingLeft}">
         <span class="tree-switch" v-if="isFolder">{{ isOpen ? '-' : '+' }}</span>
-        <span>{{ item.name }}</span>
+        <span class="tree-switch__empty" v-else></span>
+        <span class="tree-name">{{ item.name }}</span>
       </div>
     </div>
     <ul class="st-tree-item" v-show="isOpen" v-if="isFolder">

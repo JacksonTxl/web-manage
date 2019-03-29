@@ -6,7 +6,7 @@
 //     padding-left: 1em;
 //   }
 // }
-.tree-unit{
+.tree-node{
   width: 100%;
   overflow: hidden;
   position: relative;
@@ -27,16 +27,28 @@
     display: flex;
     justify-items: center;
     align-items: center;
-    padding-left: 16px;
+    padding: 7px 0 7px 16px;
+  }
+  .tree-name{
+    .fz(12px);
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(0,0,0,0.85);
+    line-height:17px;
   }
   .tree-switch{
     .s(16px,16px);
     .mg-r(8px);
     .lh(16px);
-    font-size: 10px;
+    font-size: 18px;
     .ta-c;
     display: block;
     background:rgba(0,0,0,0.05);
     color: rgba(0,0,0,0.25);
+    &__empty{
+      .s(16px,16px);
+      display: block;
+      .mg-r(8px);
+    }
   }
 }

@@ -11,12 +11,13 @@ export default {
   data() {
     return {
       treeData: {
-        name: 'My Tree',
+        name: '组织架构树',
         children: [
-          { name: 'hello' },
-          { name: 'wat' },
+          { name: '上海总部' },
+          { name: '上海一部' },
+          { name: '上海二部' },
           {
-            name: 'child folder',
+            name: '上海三部',
             children: [
               {
                 name: 'child folder',
