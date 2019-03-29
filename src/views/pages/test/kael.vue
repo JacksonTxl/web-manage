@@ -9,9 +9,9 @@
     <br>
     选择{{JSON.stringify(arr)}}：
     <st-checkbox-facility-group v-model="arr" :disabled="false" @change="gc">
-      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="aaa" :value="1" :disabled="true" @change="kael"></st-checkbox-facility-item>
-      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="2" :disabled="false" @change="kael"></st-checkbox-facility-item>
-      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="3" :disabled="false" @change="kael"></st-checkbox-facility-item>
+      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="" :value="1" :disabled="true" @change="kael"></st-checkbox-facility-item>
+      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="" :value="2" :disabled="false" @change="kael"></st-checkbox-facility-item>
+      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="" :value="3" :disabled="false" @change="kael"></st-checkbox-facility-item>
       <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="4" :disabled="false" @change="kael"></st-checkbox-facility-item>
       <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="5" :disabled="false" @change="kael"></st-checkbox-facility-item>
       <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="6" :disabled="false" @change="kael"></st-checkbox-facility-item>
