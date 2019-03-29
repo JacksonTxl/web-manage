@@ -8,7 +8,10 @@ export default {
   name: 'Steps',
   props: {
     stepArr: {
-      type: Array
+      type: Array,
+      default: () => {
+        return []
+      }
     },
     value: {
       type: Number,
