@@ -1,5 +1,8 @@
 <template>
-  <div class="container-basis">
+  <st-app-content>
+    <div slot='header'>
+
+    </div>
     <h2>styleguide</h2>
     <h4>st-button 按钮</h4>
     <div class="mg-t16">
@@ -157,14 +160,16 @@
     <div class="mg-t16">
       <st-table :columns='columns'
         rowKey='id'
+        no-scroll
+        :pagination="{current:1}"
         :dataSource='dataSource'></st-table>
     </div>
-    <a-button type="primary"
-      pill>进入门店</a-button>
-  </div>
+
+  </st-app-content>
 </template>
 
 <script>
+const tableData = new Array(40).fill(1).map((item, i) => ({ id: i, name: i }))
 export default {
   data() {
     return {
@@ -179,7 +184,7 @@ export default {
           dataIndex: 'name'
         }
       ],
-      dataSource: [{ id: 'id', name: 'lee' }, { id: 'id2', name: 'lee2' }]
+      dataSource: tableData
     }
   }
 }

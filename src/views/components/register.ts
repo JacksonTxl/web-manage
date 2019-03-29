@@ -13,6 +13,8 @@ import StInputSearch from './input-search/input-search.vue'
 import StAvatarUpload from './avatar-upload/avatar-upload.vue'
 import StPictureUpload from './picture-upload/picture-upload.vue'
 import StTree from './tree/tree.vue'
+import StAppContent from './app-content/app-content.vue'
+
 Vue.component(StIcon.name, StIcon)
 Vue.component(StButton.name, StButton)
 Vue.component(StSteps.name, StSteps)
@@ -26,3 +28,4 @@ Vue.component(StInputSearch.name, StInputSearch)
 Vue.component(StAvatarUpload.name, StAvatarUpload)
 Vue.component(StPictureUpload.name, StAvatarUpload)
 Vue.component(StTree.name, StTree)
+Vue.component(StAppContent.name, StAppContent)
