@@ -1,18 +1,45 @@
 <template>
-  <section class="page-test-kael container-basis">1111
-    <st-checkbox-button-group v-model="a">
-      <st-checkbox-button-item :value='1' label="11">1</st-checkbox-button-item>
-      <st-checkbox-button-item :value='2'>2</st-checkbox-button-item>
-      <st-checkbox-button-item :value='3'>3</st-checkbox-button-item>
-    </st-checkbox-button-group>
+  <section class="page-test-kael">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    选择{{JSON.stringify(arr)}}：
+    <st-checkbox-facility-group v-model="arr" :disabled="false" @change="gc">
+      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="" :value="1" :disabled="true" @change="kael"></st-checkbox-facility-item>
+      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="" :value="2" :disabled="false" @change="kael"></st-checkbox-facility-item>
+      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="" :value="3" :disabled="false" @change="kael"></st-checkbox-facility-item>
+      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="4" :disabled="false" @change="kael"></st-checkbox-facility-item>
+      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="5" :disabled="false" @change="kael"></st-checkbox-facility-item>
+      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="6" :disabled="false" @change="kael"></st-checkbox-facility-item>
+      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="7" :disabled="false" @change="kael"></st-checkbox-facility-item>
+      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="8" :disabled="false" @change="kael"></st-checkbox-facility-item>
+      <st-checkbox-facility-item icon="home" label="ccc9" :value="9" :disabled="false" @change="kael"></st-checkbox-facility-item>
+    </st-checkbox-facility-group>
   </section>
 </template>
 <script>
 export default {
   data() {
     return {
-      a: ['1']
+      arr: [1]
     }
+  },
+  methods: {
+    kael(data) {
+      console.log(data)
+    },
+    gc(data) {
+      console.log(data)
+    }
+  },
+  mounted() {
+    setTimeout(i => {
+      this.arr = [6, 7, 8, 10, 11, 23]
+    }, 2000)
   }
 }
 </script>

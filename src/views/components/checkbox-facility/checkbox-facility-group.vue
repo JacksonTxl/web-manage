@@ -9,10 +9,10 @@ export default {
   name: 'StCheckboxFacilityGroup',
   provide() {
     return {
-      groupProvide: {
+      checkboxFacilityGroupProvide: {
         groupValue: this.stValueData
       },
-      emitGroup: data => {
+      emitCheckboxFacilityGroup: data => {
         let arr = [...new Set([...this.stValueData.value])]
         let newArr = []
         if (data.value) {
@@ -32,10 +32,10 @@ export default {
         })
         newArr = [...new Set(newArr)]
         this.$set(this.stValueData, 'value', newArr)
-        this.$emit('modelChange', newArr)
+        this.$emit('modelCheckboxFacilityChange', newArr)
         this.$emit('change', newArr)
       },
-      initGroup: data => {
+      initCheckboxFacilityGroup: data => {
         this.initArr.push(data)
       }
     }
@@ -50,11 +50,11 @@ export default {
     }
   },
   model: {
-    prop: 'modelValue',
-    event: 'modelChange'
+    prop: 'modelCheckboxFacilityValue',
+    event: 'modelCheckboxFacilityChange'
   },
   props: {
-    modelValue: {
+    modelCheckboxFacilityValue: {
       type: Array,
       default() {
         return []
@@ -66,7 +66,7 @@ export default {
     }
   },
   watch: {
-    modelValue: {
+    modelCheckboxFacilityValue: {
       deep: true,
       handler(newVal, oldVal) {
         this.stValueData.value = [...newVal]
@@ -81,7 +81,7 @@ export default {
   },
   methods: {
     init() {
-      this.stValueData.value = [...this.modelValue]
+      this.stValueData.value = [...this.modelCheckboxFacilityValue]
       this.stValueData.disabled = this.disabled
     }
   }

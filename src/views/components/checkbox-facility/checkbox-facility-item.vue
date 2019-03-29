@@ -1,30 +1,35 @@
 <template>
-  <a-button
-    class="st-checkbox-button-item"
-    :class="{select: stSelect}"
+  <div
+    class="st-checkbox-facility-item"
     @click="check"
-    :disabled="stDisabled"
+    :class="{select: stSelect,disabled: stDisabled}"
   >
-    {{stLabelComputed}}{{stDisabled}}
-    <slot v-if="stLabelComputed===''"></slot>
-  </a-button>
+    <div class="st-checkbox-facility-item-icon">
+      <st-icon :type="stIconComputed" size="24px"></st-icon>
+    </div>
+    <p class="st-checkbox-facility-item-label">{{stLabelComputed}}</p>
+  </div>
 </template>
 <script>
 export default {
   name: 'StCheckboxFacilityItem',
   inject: {
-    groupProvide: 'groupProvide',
-    emitGroup: 'emitGroup',
-    initGroup: 'initGroup'
+    groupProvide: 'checkboxFacilityGroupProvide',
+    emitGroup: 'emitCheckboxFacilityGroup',
+    initGroup: 'initCheckboxFacilityGroup'
   },
   props: {
-    value: {
-      type: [String, Number],
+    icon: {
+      type: String,
       required: true
     },
     label: {
       type: String,
       default: ''
+    },
+    value: {
+      type: [String, Number],
+      required: true
     },
     disabled: {
       type: Boolean,
@@ -32,14 +37,17 @@ export default {
     }
   },
   computed: {
+    stIconComputed() {
+      return this.icon
+    },
+    stLabelComputed() {
+      return this.label
+    },
     stValueComputed() {
       return this.value
     },
     stDisabledComputed() {
       return this.disabled
-    },
-    stLabelComputed() {
-      return this.label
     },
     stGroupValueComputed() {
       return this.groupProvide.groupValue.value
@@ -49,13 +57,13 @@ export default {
     }
   },
   watch: {
-    stGroupValueComputed: {
+    stIconComputed: {
       handler(newVal, oldVal) {
         this.init()
       },
       deep: true
     },
-    stGroupDisabledComputed: {
+    stLabelComputed: {
       handler(newVal, oldVal) {
         this.init()
       },
@@ -73,7 +81,13 @@ export default {
       },
       deep: true
     },
-    stLabelComputed: {
+    stGroupValueComputed: {
+      handler(newVal, oldVal) {
+        this.init()
+      },
+      deep: true
+    },
+    stGroupDisabledComputed: {
       handler(newVal, oldVal) {
         this.init()
       },
@@ -88,6 +102,7 @@ export default {
   },
   methods: {
     check() {
+      if (this.stDisabled) return false
       this.stSelect = !this.stSelect
       this.$emit('change', this.stSelect)
       this.emitGroup({ key: this.stValueComputed, value: this.stSelect })

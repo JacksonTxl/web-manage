@@ -1,7 +1,7 @@
 <template>
   <div class="page-staffDetail">
     <section class="page-staffDetail-lf">
-      <AddStep :currentIndex="currentIndex" />
+      <Steps :value="currentIndex" :stepArr="stepArr" />
     </section>
     <!-- 基础信息 -->
     <StaffDetailBasics v-if="currentIndex == 0" @goNext="goNext"/>
@@ -15,21 +15,35 @@
 </template>
 
 <script>
-import AddStep from './add#/add-detail-steps'
+import Steps from './add#/st-steps'
 import StaffDetailBasics from './add#/add-detail-basicsInfo'
 import StaffDetailDetailedInfo from './add#/add-detail-detailedInfo'
 import StaffDetailCoachInfo from './add#/add-detail-coachInfo'
 export default {
   name: 'addDetail',
   components: {
-    AddStep,
+    Steps,
     StaffDetailBasics,
     StaffDetailDetailedInfo,
     StaffDetailCoachInfo
   },
   data() {
     return {
-      currentIndex: 0
+      currentIndex: 1,
+      stepArr: [
+        {
+          title: '基础信息',
+          key: 1
+        },
+        {
+          title: '详细信息',
+          key: 2
+        },
+        {
+          title: '教练信息',
+          key: 3
+        }
+      ]
     }
   },
   methods: {

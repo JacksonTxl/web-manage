@@ -1,26 +1,43 @@
-.ant-btn-group {
-  .st-checkbox-button-item {
-    &.ant-btn{
-      &:focus{
-        color: rgba(0,0,0,.65);;
-        border-color: rgba(217,217,217,1);
-        z-index: 0;
-      }
-      &:active{
-        color: rgba(0,0,0,.65);;
-        border-color: rgba(217,217,217,1);
-        z-index: 0;
-      }
-      &:hover{
-        color: rgba(0,0,0,.65);;
-        border-color: rgba(217,217,217,1);
-        z-index: 0;
-      }
-      &.select {
-        color: @primary-color;
-        border-color: @primary-color;
-        z-index: 2;
-      }
+.st-checkbox-facility-item {
+  float: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  &-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .s(72px,38px);
+    border-radius:6px;
+    border:1px solid rgba(0,0,0,0.15);
+    .mg-b(6px);
+    .c(#000);
+    .bg(@white);
+  }
+  &-label {
+    .fz(14px);
+    .lh(22px);
+    .c(rgba(0,0,0,.65));
+    .mg-b(0);
+  }
+  &.disabled {
+    cursor: not-allowed;
+    .st-checkbox-facility-item-icon {
+      .bg(#f5f5f5);
+      .c(#b8b8b8);
+    }
+    .st-checkbox-facility-item-label {
+      .c(#b8b8b8);
+    }
+  }
+  &.select {
+    .st-checkbox-facility-item-icon {
+      border-color: @primary-color;
+      .c(@primary-color);
+    }
+    .st-checkbox-facility-item-label {
+      .c(@primary-color);
     }
   }
 }

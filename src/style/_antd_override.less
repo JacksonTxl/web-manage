@@ -1,0 +1,30 @@
+.ant-pagination-item {
+  &-active {
+    .bg(@primary-color);
+    a {
+      .c(@white);
+    }
+    &:hover a,
+    &:focus a {
+      .c(@white);
+    }
+  }
+  &:focus {
+    border-color: #d9d9d9;
+  }
+}
+
+// 表单重置
+.ant-form-item-label {
+  .pd-r(24px);
+  line-height: 32px;
+  label {
+    &:after {
+      content: none;
+    }
+  }
+}
+
+.ant-form-item-control {
+  line-height: 32px;
+}
