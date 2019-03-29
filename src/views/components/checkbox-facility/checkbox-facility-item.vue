@@ -1,30 +1,31 @@
 <template>
-  <a-button
-    class="st-checkbox-button-item"
-    :class="{select: stSelect}"
-    @click="check"
-    :disabled="stDisabled"
-  >
-    {{stLabelComputed}}{{stDisabled}}
-    <slot v-if="stLabelComputed===''"></slot>
-  </a-button>
+  <div class="st-checkbox-facility-item checked">
+    <div class="st-checkbox-facility-item-icon">
+      <st-icon :type="icon" size="24px"></st-icon>
+    </div>
+    <p class="st-checkbox-facility-item-label">{{label}}</p>
+  </div>
 </template>
 <script>
 export default {
   name: 'StCheckboxFacilityItem',
-  inject: {
-    groupProvide: 'groupProvide',
-    emitGroup: 'emitGroup',
-    initGroup: 'initGroup'
-  },
+  // inject: {
+  //   groupProvide: 'groupProvide',
+  //   emitGroup: 'emitGroup',
+  //   initGroup: 'initGroup'
+  // },
   props: {
-    value: {
-      type: [String, Number],
+    icon: {
+      type: String,
       required: true
     },
     label: {
       type: String,
-      default: ''
+      required: true
+    },
+    value: {
+      type: [String, Number],
+      required: true
     },
     disabled: {
       type: Boolean,

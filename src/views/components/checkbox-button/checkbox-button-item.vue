@@ -13,9 +13,9 @@
 export default {
   name: 'StCheckboxButtonItem',
   inject: {
-    groupProvide: 'groupProvide',
-    emitGroup: 'emitGroup',
-    initGroup: 'initGroup'
+    groupProvide: 'checkboxButtonGroupProvide',
+    emitGroup: 'emitCheckboxButtonGroup',
+    initGroup: 'initCheckboxButtonGroup'
   },
   props: {
     value: {
