@@ -60,9 +60,9 @@ export default {
         return []
       }
     },
-    gutter: {
-      type: String,
-      default: '0px'
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   watch: {
