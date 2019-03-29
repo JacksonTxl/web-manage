@@ -5,30 +5,31 @@ export default {
   render(h) {
     const props = merge(
       {
-        scroll: { x: 1200 },
         pagination: {
           pageSize: 20,
-          hideOnSinglePage: true,
           showTotal: function(total, range) {
-            return `总共${total}条记录`
+            return `共${total}条`
           },
-          showQuickJumper: true
+          showSizeChanger: true
         },
         locale: {
-          emptyText: <div class='mg-y24'>
-            <img width='150' src='https://static-s.styd.cn/201811161629/no-data.png'></img>
-            <p class='mg-t16'>暂无数据</p>
-          </div>
+          emptyText: (
+            <div class="mg-y24">
+              <img
+                width="150"
+                src="https://static-s.styd.cn/201811161629/no-data.png"
+              />
+              <p class="mg-t16">暂无数据</p>
+            </div>
+          )
         }
       },
       this.$attrs
     )
-    if ('noScroll' in this.$attrs) {
-      delete props.scroll
-    }
     return h(
       'a-table',
       {
+        class: 'st-table',
         props,
         on: this.$listeners,
         scopedSlots: this.$scopedSlots,
