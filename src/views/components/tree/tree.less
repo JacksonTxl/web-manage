@@ -20,14 +20,13 @@
       top:0;
       left:-2000px;
       background: rgba(24,144,255,0.1);
-      z-index: 99999;
     }
   }
   &__content{
     display: flex;
     justify-items: center;
     align-items: center;
-    padding: 7px 0 7px 16px;
+    padding: 7px 0;
   }
   .tree-name{
     .fz(12px);
@@ -35,6 +34,12 @@
     font-weight:400;
     color:rgba(0,0,0,0.85);
     line-height:17px;
+  }
+  .tree-opreation{
+    position: absolute;
+    top:0;
+    right: 0;
+    z-index: 1;
   }
   .tree-switch{
     .s(16px,16px);

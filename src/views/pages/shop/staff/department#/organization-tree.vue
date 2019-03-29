@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       treeData: {
-        name: '组织架构树',
+        name: '三体云动健身（600）',
         children: [
           { name: '上海总部' },
           { name: '上海一部' },

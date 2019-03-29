@@ -13,7 +13,7 @@ import StInputSearch from './input-search/input-search.vue'
 import StAvatarUpload from './avatar-upload/avatar-upload.vue'
 import StPictureUpload from './picture-upload/picture-upload.vue'
 import StTree from './tree/tree.vue'
-import StAppContent from './app-content/app-content.vue'
+// import StAppContent from './app-content/app-content.vue'
 import StInfoItem from './info-item/info-item.vue'
 import StRouteTabs from './route-tabs/route-tabs.vue'
 import StT1 from './title/t1.vue'
@@ -31,7 +31,7 @@ Vue.component(StInputSearch.name, StInputSearch)
 Vue.component(StAvatarUpload.name, StAvatarUpload)
 Vue.component(StPictureUpload.name, StAvatarUpload)
 Vue.component(StTree.name, StTree)
-Vue.component(StAppContent.name, StAppContent)
+// Vue.component(StAppContent.name, StAppContent)
 Vue.component(StInfoItem.name, StInfoItem)
 Vue.component(StRouteTabs.name, StRouteTabs)
 Vue.component(StT1.name, StT1)

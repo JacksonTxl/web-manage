@@ -5,10 +5,20 @@
       :class="{bold: isFolder}"
       @click="toggle"
       @dblclick="makeFolder">
-      <div v-if="level === 0" class="tree-node__content" :style="{'padding-left': paddingLeft}">
-        <span class="tree-switch" v-if="isFolder">{{ isOpen ? '-' : '+' }}</span>
-        <span class="tree-switch__empty" v-else></span>
+      <div class="tree-node__content" :style="{'padding-left': paddingLeft}">
+        <span class="tree-switch" v-if="isFolder&&level!==0">{{ isOpen ? '-' : '+' }}</span>
+        <span class="tree-switch__empty" v-else-if="level!==0"></span>
         <span class="tree-name">{{ item.name }}</span>
+        <a-popover  placement="bottom">
+          <template slot="content">
+            <p>Content</p>
+            <p>Content</p>
+          </template>
+          <template slot="title">
+            <span>Title</span>
+          </template>
+          <a-button class="tree-opreation">RB</a-button>
+        </a-popover>
       </div>
     </div>
     <ul class="st-tree-item" v-show="isOpen" v-if="isFolder">
@@ -37,6 +47,7 @@ export default {
   },
   data: function() {
     return {
+      visible: false,
       isOpen: false
     }
   },
@@ -46,7 +57,7 @@ export default {
           this.item.children.length
     },
     paddingLeft() {
-      return (this.level * 16) + 'px'
+      return ((this.level - 1) * 16) + 'px'
     }
   },
   methods: {
@@ -55,16 +66,21 @@ export default {
         this.isOpen = !this.isOpen
       }
     },
+    hide() {
+      console.log(111)
+      this.visible = false
+    },
     makeFolder: function() {
       if (!this.isFolder) {
         this.$emit('make-folder', this.item)
         this.isOpen = true
       }
     }
+  },
+  mounted() {
+    if (this.level === 0) {
+      this.isOpen = true
+    }
   }
 }
 </script>
-
-<style scoped>
-
-</style>
