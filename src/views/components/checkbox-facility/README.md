@@ -1,5 +1,5 @@
 ## API
-### checkbox-button-group  
+### checkbox-button-group
 | 参数 | 说明 | 类型 | 默认值 |
 | ---- | ---- | ---- | ---- |
 | v-model   | 双向绑定的值| array| []  |
@@ -9,7 +9,7 @@
 | ---- | ---- | ---- | ---- |
 | change   | 参数为选中的值| function|   |
 
-### checkbox-button-item  
+### checkbox-button-item
 | 参数 | 说明 | 类型 | 默认值 |
 | ---- | ---- | ---- | ---- |
 | value   | 唯一键| string\|number| 必传|
