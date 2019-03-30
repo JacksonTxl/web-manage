@@ -17,6 +17,7 @@ import StTree from './tree/tree.vue'
 import StInfoItem from './info-item/info-item.vue'
 import StRouteTabs from './route-tabs/route-tabs.vue'
 import StT1 from './title/t1.vue'
+import StHr from './hr/hr.vue'
 
 Vue.component(StIcon.name, StIcon)
 Vue.component(StButton.name, StButton)
@@ -31,7 +32,7 @@ Vue.component(StInputSearch.name, StInputSearch)
 Vue.component(StAvatarUpload.name, StAvatarUpload)
 Vue.component(StPictureUpload.name, StAvatarUpload)
 Vue.component(StTree.name, StTree)
-// Vue.component(StAppContent.name, StAppContent)
 Vue.component(StInfoItem.name, StInfoItem)
 Vue.component(StRouteTabs.name, StRouteTabs)
 Vue.component(StT1.name, StT1)
+Vue.component(StHr.name, StHr)

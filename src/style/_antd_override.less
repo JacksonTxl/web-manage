@@ -1,3 +1,4 @@
+// 分页样式覆盖
 .ant-pagination-item {
   &-active {
     .bg(@primary-color);
@@ -15,16 +16,45 @@
 }
 
 // 表单重置
-.ant-form-item-label {
-  .pd-r(24px);
-  line-height: 32px;
-  label {
-    &:after {
-      content: none;
+
+.st-form {
+  .ant-form-item {
+    display: flex;
+  }
+  .ant-form-item-label {
+    .lh(32px);
+    .w(88px);
+    label {
+      .mg-r(0);
+      &:after {
+        content: none;
+      }
     }
   }
-}
 
-.ant-form-item-control {
-  line-height: 32px;
+  .ant-form-item-control-wrapper {
+    flex: 1;
+  }
+  .ant-form-item-control {
+    .lh(32px);
+    .mg-l(24px);
+  }
+  // 修正checkbox位置
+  .ant-checkbox-wrapper {
+    .mg-l(0);
+    .mg-r(16px);
+  }
+  &__submit {
+    // 88 + 24 px
+    .mg-l(112px);
+  }
+  &--is-label-3 {
+    .ant-form-item-label {
+      .w(136px);
+    }
+    .st-form__submit {
+      // 136 + 24 px
+      .mg-l(160px);
+    }
+  }
 }
