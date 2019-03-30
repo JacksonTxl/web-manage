@@ -31,18 +31,14 @@
     <h3 class="mg-t24">One Col 单栏表单</h3>
     <ul>
       默认表单项目fabel与input项的间距已调整,使用a-row gutter=8 和 a-col lg=10
-      务必添加st-form类使label样式生效
       <li>表单label与input区域间隔固定为24px</li>
       <li>label默认定宽为88px两个格子宽度</li>
       <li>使用.st-form__offset-label修正按钮位置margin-left</li>
     </ul>
     <section class="sg-app-content">
-      <div class="st-panel">
-        <a-form class="st-form st-form--is-label-3">
-          <div class="st-panel__header">
-            <st-t1>基础信息</st-t1>
-          </div>
-          <div class="st-panel__body">
+      <st-panel initial>
+        <st-form>
+          <st-form-section title="基础设置">
             <div class="sg-box">block 拉到本块到1144px看对齐效果</div>
             <a-row :gutter="8">
               <a-col :span="1" v-for="n in 24" :key="n">
@@ -50,7 +46,7 @@
               </a-col>
             </a-row>
             <a-row :gutter="8">
-              <a-col :lg="10" :xs="22" :offset="1">
+              <a-col :lg="12" :xs="22" :offset="1">
                 <a-form-item
                   label="从业时间"
                   validate-status="error"
@@ -58,12 +54,15 @@
                   help="Should be combination of numbers & alphabets"
                   required
                 >
-                  <a-date-picker placeholder="请选择日期"></a-date-picker>
+                  <a-date-picker style="width:100%" placeholder="请选择日期"></a-date-picker>
+                </a-form-item>
+                <a-form-item label="文本框" required>
+                  <a-input placeholder="填写点什么吧"></a-input>
                 </a-form-item>
               </a-col>
             </a-row>
             <a-row :gutter="8">
-              <a-col :lg="21" :offset="1">
+              <a-col :offset="1" :lg="22">
                 <a-form-item required>
                   <span slot="label">
                     多选&nbsp;
@@ -82,10 +81,6 @@
                   </a-checkbox-group>
                   {{checkbox1}}
                 </a-form-item>
-              </a-col>
-            </a-row>
-            <a-row :gutter="8">
-              <a-col :lg="20" :offset="1">
                 <a-form-item required>
                   <span slot="label">
                     单选&nbsp;
@@ -104,40 +99,17 @@
                 </a-form-item>
               </a-col>
             </a-row>
+          </st-form-section>
+          <st-form-section title="售卖设置">这是第二个</st-form-section>
+          <st-form-section title="售卖设置">
             <a-row :gutter="8">
-              <a-col :lg="10" :offset="1">
-                <a-form-item label="专业认证" required>
-                  <a-select>
-                    <a-select-option value=".com">.com</a-select-option>
-                  </a-select>
-                </a-form-item>
+              <a-col :lg="12" :offset="1">
+                <st-button class="st-form__offset-label" type="primary">保存</st-button>
               </a-col>
             </a-row>
-            <a-row :gutter="8">
-              <a-col :lg="10" :offset="1">
-                <a-form-item label="个人经历" required>
-                  <a-textarea rows="5" placeholder="请输入员工简洁"></a-textarea>
-                </a-form-item>
-              </a-col>
-            </a-row>
-          </div>
-          <div class="st-panel__header">
-            <st-t1>售卖设置</st-t1>
-          </div>
-          <div class="st-panel__body"></div>
-          <div class="st-panel__header">
-            <st-t1>更多设置</st-t1>
-          </div>
-          <div class="st-panel__body">
-            <a-row :gutter="8" class="mg-b0">
-              <a-col :offset="1" :lg="10">
-                <st-button class="st-form__offset-label" type="primary">提交</st-button>
-                <st-button type="primary" ghost class="mg-l16">保存 继续</st-button>
-              </a-col>
-            </a-row>
-          </div>
-        </a-form>
-      </div>
+          </st-form-section>
+        </st-form>
+      </st-panel>
     </section>
 
     <section class="mg-t16">
@@ -147,64 +119,62 @@
         分割线使用 st-hr
       </p>
       <div class="sg-app-content">
-        <div class="st-panel">
-          <div class="st-panel__body">
-            <a-form class="st-form">
-              <a-row :gutter="8">
-                <a-col :lg="10" :offset="1">
-                  <a-form-item label="员工头像">
-                    <a-upload style="width:164px;display:inline-block;height:164px;" type="drag">
-                      <st-icon type="anticon:plus"></st-icon>
-                    </a-upload>
-                  </a-form-item>
-                  <a-form-item label="姓名" required>
-                    <a-input placeholder="姓名"></a-input>
-                  </a-form-item>
-                  <a-form-item label="手机号" required>
-                    <a-input-group compact>
-                      <a-select style="width: 20%" defaultValue="+86">
-                        <a-select-option value="86">+86</a-select-option>
-                      </a-select>
-                      <a-input style="width:80%" placeholder="手机号"></a-input>
-                    </a-input-group>
-                  </a-form-item>
-                  <a-form-item label="性别" required>
-                    <a-input placeholder="性别"></a-input>
-                  </a-form-item>
-                </a-col>
-                <a-col :lg="10" :offset="1">
-                  <a-form-item label="员工头像">
-                    <a-upload style="width:164px;display:inline-block;height:164px;" type="drag">
-                      <st-icon type="anticon:plus"></st-icon>
-                    </a-upload>
-                  </a-form-item>
-                  <a-form-item label="姓名" required>
-                    <a-input placeholder="姓名"></a-input>
-                  </a-form-item>
-                  <a-form-item label="手机号" required>
-                    <a-input-group compact>
-                      <a-select style="width: 20%" defaultValue="+86">
-                        <a-select-option value="86">+86</a-select-option>
-                      </a-select>
-                      <a-input style="width:80%" placeholder="手机号"></a-input>
-                    </a-input-group>
-                  </a-form-item>
-                </a-col>
-              </a-row>
-              <a-row :gutter="8">
-                <a-col :offset="1" :lg="22">
-                  <st-hr></st-hr>
-                </a-col>
-              </a-row>
-              <a-row :gutter="8" class="mg-t24">
-                <a-col :offset="1">
-                  <st-button class="st-form__offset-label" type="primary" ghost>保存</st-button>
-                  <st-button class="mg-l16" type="primary">继续 填写</st-button>
-                </a-col>
-              </a-row>
-            </a-form>
-          </div>
-        </div>
+        <st-panel>
+          <st-form>
+            <a-row :gutter="8">
+              <a-col :lg="10" :offset="1">
+                <a-form-item label="员工头像">
+                  <a-upload style="width:164px;display:inline-block;height:164px;" type="drag">
+                    <st-icon type="anticon:plus"></st-icon>
+                  </a-upload>
+                </a-form-item>
+                <a-form-item label="姓名" required>
+                  <a-input placeholder="姓名"></a-input>
+                </a-form-item>
+                <a-form-item label="手机号" required>
+                  <a-input-group compact>
+                    <a-select style="width: 20%" defaultValue="+86">
+                      <a-select-option value="86">+86</a-select-option>
+                    </a-select>
+                    <a-input style="width:80%" placeholder="手机号"></a-input>
+                  </a-input-group>
+                </a-form-item>
+                <a-form-item label="性别" required>
+                  <a-input placeholder="性别"></a-input>
+                </a-form-item>
+              </a-col>
+              <a-col :lg="10" :offset="1">
+                <a-form-item label="员工头像">
+                  <a-upload style="width:164px;display:inline-block;height:164px;" type="drag">
+                    <st-icon type="anticon:plus"></st-icon>
+                  </a-upload>
+                </a-form-item>
+                <a-form-item label="姓名" required>
+                  <a-input placeholder="姓名"></a-input>
+                </a-form-item>
+                <a-form-item label="手机号" required>
+                  <a-input-group compact>
+                    <a-select style="width: 20%" defaultValue="+86">
+                      <a-select-option value="86">+86</a-select-option>
+                    </a-select>
+                    <a-input style="width:80%" placeholder="手机号"></a-input>
+                  </a-input-group>
+                </a-form-item>
+              </a-col>
+            </a-row>
+            <a-row :gutter="8">
+              <a-col :offset="1" :lg="22">
+                <st-hr></st-hr>
+              </a-col>
+            </a-row>
+            <a-row :gutter="8" class="mg-t24">
+              <a-col :offset="1">
+                <st-button class="st-form__offset-label" type="primary" ghost>保存</st-button>
+                <st-button class="mg-l16" type="primary">继续 填写</st-button>
+              </a-col>
+            </a-row>
+          </st-form>
+        </st-panel>
       </div>
     </section>
   </div>

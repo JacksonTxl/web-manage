@@ -12,6 +12,10 @@
   }
   &__title {
     flex: 1;
+    .fz(16px);
+    .lh(24px);
+    font-weight: bold;
+    .c(@title);
   }
   &__actions {
     text-align: right;
@@ -28,12 +32,20 @@
       border: none;
       .pd-b(0);
     }
+    .ant-tabs {
+      .w(100%);
+    }
     .ant-tabs-bar {
       .mg-b(0);
     }
     // tabs actions区域头部居中
     .ant-tabs-extra-content {
       .mg-t(-4px);
+    }
+  }
+  &--initial {
+    .st-panel__body {
+      .pd(0);
     }
   }
 }

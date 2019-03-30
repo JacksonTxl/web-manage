@@ -1,5 +1,3 @@
 <template>
-  <div>
-    Brand Dashboard
-  </div>
+  <st-panel app title="来吧">Hello world</st-panel>
 </template>
