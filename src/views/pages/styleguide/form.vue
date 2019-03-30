@@ -8,10 +8,10 @@
       </st-checkbox-button-group>
     </div>
     <section class='mg-t16'>
-
+      <h3>Form Two Cols</h3>
       <a-form class="st-form">
         <a-row :gutter='8'>
-          <a-col :span='10'
+          <a-col :lg='10'
             :offset='1'>
             <a-form-item label='员工头像'>
               <a-upload style='width:164px;display:inline-block;height:164px;'
@@ -39,7 +39,7 @@
               <a-input placeholder='性别'></a-input>
             </a-form-item>
           </a-col>
-          <a-col :span='10'
+          <a-col :lg='10'
             :offset='1'>
             <a-form-item label='员工头像'>
               <a-upload style='width:164px;display:inline-block;height:164px;'
@@ -66,7 +66,7 @@
         </a-row>
         <a-row :gutter="8">
           <a-col :offset="1"
-            :span="22">
+            :lg="22">
             <st-hr></st-hr>
           </a-col>
         </a-row>
