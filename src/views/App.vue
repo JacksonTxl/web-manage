@@ -4,7 +4,7 @@
       <component :is="layoutComponent"></component>
       <modal-router-view></modal-router-view>
       <div class="git is-git" @click="getCommitHead">
-        <span>{{tips[count]}}</span>
+        <span class='git__content'>{{tips[count]}}</span>
       </div>
     </div>
   </a-locale-provider>

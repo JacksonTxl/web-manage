@@ -1,0 +1,39 @@
+@panel-pd-lr: unit(24, px);
+
+.st-panel {
+  .bg(@white);
+
+  &__header {
+    .pd-tb(16px);
+    .pd-lr(@panel-pd-lr);
+    border-bottom: 1px solid #e8e8e8;
+    display: flex;
+    align-items: center;
+  }
+  &__title {
+    flex: 1;
+  }
+  &__actions {
+    text-align: right;
+  }
+  &__body {
+    .pd-tb(24px);
+    .pd-lr(@panel-pd-lr);
+  }
+  &--app {
+    min-height: 100%;
+  }
+  &--tabs {
+    .st-panel__header {
+      border: none;
+      .pd-b(0);
+    }
+    .ant-tabs-bar {
+      .mg-b(0);
+    }
+    // tabs actions区域头部居中
+    .ant-tabs-extra-content {
+      .mg-t(-4px);
+    }
+  }
+}
