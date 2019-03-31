@@ -196,6 +196,26 @@
                       placeholder="手机号"></a-input>
                   </a-input-group>
                 </st-form-item>
+                <st-form-item label="程程时长"
+                  required>
+                  <a-input defaultValue="mySite"
+                    placeholder='输入时间'>
+                    <div slot="addonAfter"
+                      style='width:50px'>
+                      分钟
+                    </div>
+                  </a-input>
+                </st-form-item>
+                <st-form-item label="参考定价"
+                  required>
+                  <a-input defaultValue="mySite"
+                    placeholder='输入时间'>
+                    <div slot="addonAfter"
+                      style='width:50px'>
+                      元/节
+                    </div>
+                  </a-input>
+                </st-form-item>
               </a-col>
             </a-row>
             <a-row :gutter="8">
