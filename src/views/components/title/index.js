@@ -1,4 +1,4 @@
 import Vue from 'vue'
-import StTitle from './title.vue'
+import StT3 from './t3.vue'
 
-Vue.component(StTitle.name, StTitle)
+Vue.component('StT3', StT3)

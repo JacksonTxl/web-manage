@@ -52,19 +52,20 @@
           </a-col>
           <a-col :span='14'>
             <st-form>
-              <st-title>基础设置</st-title>
+              <st-t3>基础设置</st-t3>
               <st-form-item label='会员卡类型'>
-                <a-select>
+                <a-select placeholder='请输入会员卡类型'>
                   <a-select-option value='1'>1</a-select-option>
                   <a-select-option value='2'>2</a-select-option>
                   <a-select-option value='3'>3</a-select-option>
                 </a-select>
               </st-form-item>
+
               <st-form-item label='会员卡名称'>
-                <a-input></a-input>
+                <a-input placeholder='请输入会员卡名称'></a-input>
               </st-form-item>
 
-              <st-title>售卖设置</st-title>
+              <st-t3>售卖设置</st-t3>
               <st-form-item label='支持入场范围'>
                 <a-checkbox-group>
                   <a-checkbox value='1'>单个门店</a-checkbox>
@@ -78,7 +79,7 @@
                 </a>
               </st-form-item>
 
-              <st-title>更多设置</st-title>
+              <st-t3>更多设置</st-t3>
               <st-form-item label='卡背景'>
                 <a-row>
                   <a-col :lg='5'>

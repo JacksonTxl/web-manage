@@ -1,5 +1,11 @@
 <template>
   <div>
+    <h3>Title类型</h3>
+    <section class="sg-app-content">
+      <st-panel>
+        <st-t3>这是 st-t3 标题 .fz(16px) .lh(24px)</st-t3>
+      </st-panel>
+    </section>
     <h3>st-button 按钮</h3>
     <div class="mg-t16">
       <!-- button -->

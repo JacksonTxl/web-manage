@@ -2,7 +2,7 @@
   <div>
     <!-- 图片预览 -->
     <h4>v-viewer</h4>
-    <p>使用st-preview-item 类 添加预览图片样式</p>
+    <p>使用.st-preview-item 类 添加预览图片样式</p>
     <viewer-demo />
     <!-- 数字动画 -->
     <h4>vue-countup-v2</h4>

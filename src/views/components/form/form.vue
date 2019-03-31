@@ -8,6 +8,24 @@
 
 <script>
 export default {
-  name: 'StForm'
+  name: 'StForm',
+  provide() {
+    return {
+      stFormConfig: {
+        labelWidth: this.labelWidth,
+        controlOffset: this.controlOffset
+      }
+    }
+  },
+  props: {
+    labelWidth: {
+      type: String,
+      default: ''
+    },
+    controlOffset: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>
