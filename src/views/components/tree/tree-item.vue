@@ -9,13 +9,10 @@
         <span class="tree-switch" v-if="isFolder&&level!==0">{{ isOpen ? '-' : '+' }}</span>
         <span class="tree-switch__empty" v-else-if="level!==0"></span>
         <span class="tree-name">{{ item.name }}</span>
-        <a-popover  placement="bottom">
+        <a-popover  placement="leftTop">
           <template slot="content">
             <p>Content</p>
             <p>Content</p>
-          </template>
-          <template slot="title">
-            <span>Title</span>
           </template>
           <a-button class="tree-opreation">RB</a-button>
         </a-popover>
