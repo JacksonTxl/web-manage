@@ -60,7 +60,7 @@
               <a-col :lg="12"
                 :xs="22"
                 :offset="1">
-                <st-form-item  label="从业时间"
+                <st-form-item label="从业时间"
                   validate-status="error"
                   has-feedback
                   help="Should be combination of numbers & alphabets"
@@ -167,7 +167,6 @@
                   </a-input-group>
                 </st-form-item>
                 <st-form-item label="性别"
-                  class="mg-b0"
                   required>
                   <a-input placeholder="性别"></a-input>
                 </st-form-item>
