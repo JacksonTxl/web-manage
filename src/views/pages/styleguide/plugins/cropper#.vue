@@ -3,8 +3,11 @@
     <a-row>
       <a-col :span="8">
         <a-row>
+          <input type="file" title="">
+        </a-row>
+        <a-row>
           <a-col :span="16" style="height: 300px;">
-            <img id="image" src="https://pic3-s.styd.cn/o_1d78oa7b91hvd10a21pr91c5v1viki.jpg"/>
+            <img id="image" src="https://pic3-s.styd.cn/o_1d78oa7b91hvd10a21pr91c5v1viki.jpg" style="max-width: 100%;"/>
           </a-col>
           <a-col :span="8">
             <p class="st-crop__preview mg-l16" id="crop_preview"></p>
@@ -29,9 +32,9 @@ export default {
       aspectRatio: 16 / 9,
       preview: '#crop_preview',
       // responsive 在调整窗口大小的时候重新渲染 cropper，默认为 true
-      responsive: false,
+      responsive: false
       // restore 在调整窗口大小后恢复裁剪的区域。
-      restore: false
+      // restore: false
       // zoomable 是否允许放大图像
       // ,zoomable: false
     })
