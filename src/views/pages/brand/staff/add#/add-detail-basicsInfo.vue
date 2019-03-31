@@ -81,13 +81,13 @@
                 <st-form-item label="部门">
                   <a-input placeholder="填写点什么吧"></a-input>
                 </st-form-item>
-                <st-form-item label="教练等级" required>
+                <st-form-item label="教练等级" >
                   <a-input placeholder="填写点什么吧"></a-input>
                 </st-form-item>
-                <st-form-item label="入职时间" required>
+                <st-form-item label="入职时间" >
                   <a-input placeholder="填写点什么吧"></a-input>
                 </st-form-item>
-                <st-form-item label="所属门店" required>
+                <st-form-item label="所属门店" >
                   <a-input placeholder="填写点什么吧"></a-input>
                 </st-form-item>
               </a-col>
@@ -97,7 +97,7 @@
                 <st-form-item label="职务">
                   <a-input placeholder="填写点什么吧"></a-input>
                 </st-form-item>
-                <st-form-item label="昵称" required>
+                <st-form-item label="昵称" >
                   <a-input placeholder="填写点什么吧"></a-input>
                 </st-form-item>
                 <st-form-item label="工号" >
@@ -111,7 +111,7 @@
             <a-row :gutter="8">
               <a-col :offset="1"
                 :lg="22">
-                <st-form-item required
+                <st-form-item
                   label='复选'>
                   <span slot="label">
                     多选&nbsp;
@@ -131,7 +131,7 @@
                   </a-checkbox-group>
                   {{checkbox1}}
                 </st-form-item>
-                <st-form-item required
+                <st-form-item
                   label='单选'>
                   <span slot="label">
                     单选&nbsp;
