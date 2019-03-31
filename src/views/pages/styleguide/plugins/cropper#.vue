@@ -44,11 +44,9 @@ export default {
       // responsive 在调整窗口大小的时候重新渲染 cropper，默认为 true
       responsive: false,
       // 是否允许拖动图片
-      movable: false
-      // restore 在调整窗口大小后恢复裁剪的区域。
-      // restore: false
-      // zoomable 是否允许放大图像
-      // ,zoomable: false
+      movable: false,
+      // The minimum width of the crop box
+      minCropBoxWidth: 100
     })
   },
   methods: {
