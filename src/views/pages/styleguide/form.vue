@@ -2,7 +2,7 @@
   <div>
     <h3 class="mg-t32">按钮样式复选st-checkbox-button-group</h3>
     <section>
-      <a-form class="st-form">
+      <st-form>
         <st-form-item label="营业时间">
           <st-checkbox-button-group v-model="checkBoxModel1">
             <st-checkbox-button-item disabled
@@ -16,7 +16,7 @@
           </st-checkbox-button-group>
           {{checkBoxModel1}}
         </st-form-item>
-      </a-form>
+      </st-form>
     </section>
 
     <h3 class="mg-t24">按钮样式复选st-checkbox-button-group</h3>
@@ -167,7 +167,6 @@
                   </a-input-group>
                 </st-form-item>
                 <st-form-item label="性别"
-                  class="mg-b0"
                   required>
                   <a-input placeholder="性别"></a-input>
                 </st-form-item>
