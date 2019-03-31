@@ -12,6 +12,8 @@
         to="/styleguide/table">Table(表格)</router-link>
       <router-link class="mg-l8"
         to="/styleguide/business">Business(业务组件)</router-link>
+      <router-link class="mg-l8"
+        to="/styleguide/viewer">v-viewer(图片预览)</router-link>
     </div>
     <st-hr></st-hr>
     <router-view></router-view>

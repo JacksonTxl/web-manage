@@ -31,6 +31,7 @@
     "qs": "^6.6.0",
     "rxjs": "^6.4.0",
     "styd-less-base": "1.0.6",
+    "v-viewer": "^1.4.0",
     "vue": "^2.6.6",
     "vue-full-calendar": "^2.7.0",
     "vue-modal-router": "^0.2.9",
