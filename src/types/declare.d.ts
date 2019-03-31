@@ -21,3 +21,13 @@ declare module 'vue-full-calendar' {
   const value: any
   export default value
 }
+
+declare module 'v-viewer' {
+  const value: any
+  export default value
+}
+
+declare module 'vue-countup-v2' {
+  const value: any
+  export default value
+}
