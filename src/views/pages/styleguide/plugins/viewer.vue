@@ -1,15 +1,16 @@
 <template>
-  <div>
-    <h4>v-viewer</h4>
-    <div v-viewer="{ url: 'data-src' }">
-      <img v-for="(imgKey, index) in imgKeys" :key="index" :src="imgKey|imgFilter({ w: 100 })"
-        :data-src="imgKey|imgFilter({ w: 1000 })" class="viewer-img"/>
-    </div>
+  <div v-viewer="{ url: 'data-src' }">
+    <img v-for="(imgKey, index) in imgKeys" :key="index" :src="imgKey|imgFilter({ w: 100 })"
+      :data-src="imgKey|imgFilter({ w: 1000 })" class="viewer-img"/>
   </div>
 </template>
 <script>
 import { imgFilter } from '@/filters/resource.filters'
 export default {
+  name: 'ViewerDemo',
+  filters: {
+    imgFilter
+  },
   data() {
     return {
       imgKeys: [
@@ -18,9 +19,6 @@ export default {
         'o_1d78oa7b9kuj135b1ipq1cvf1k0rl.jpg'
       ]
     }
-  },
-  filters: {
-    imgFilter
   }
 }
 </script>
