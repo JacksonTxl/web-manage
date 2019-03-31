@@ -6,7 +6,6 @@ import VueRx from 'vue-rx'
 import { modalRouter } from './modal-router/index'
 import App from './views/App.vue'
 import FullCalendar from 'vue-full-calendar'
-import 'viewerjs/dist/viewer.css'
 // @ts-ignore
 import Viewer from 'v-viewer'
 // 默认样式加载
