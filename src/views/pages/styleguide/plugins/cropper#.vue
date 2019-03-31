@@ -3,11 +3,11 @@
     <a-row>
       <a-col :span="8">
         <a-row>
-          <input type="file" title="">
+          <input type="file" title="" id="input_image">
         </a-row>
-        <a-row>
+        <a-row class="mg-t16">
           <a-col :span="16" style="height: 300px;">
-            <img id="image" src="https://pic3-s.styd.cn/o_1d78oa7b91hvd10a21pr91c5v1viki.jpg" style="max-width: 100%;"/>
+            <img id="image" hidden src="https://pic3-s.styd.cn/o_1d78oa7b91hvd10a21pr91c5v1viki.jpg"/>
           </a-col>
           <a-col :span="8">
             <p class="st-crop__preview mg-l16" id="crop_preview"></p>
@@ -22,11 +22,12 @@
 </template>
 <script>
 import Cropper from 'cropperjs'
+let cropper
 export default {
   name: 'CropperDemo',
   mounted() {
     const image = document.getElementById('image')
-    this.cropper = new Cropper(image, {
+    cropper = new Cropper(image, {
       // viewMode 定义 cropper 的视图模式 默认：0；可以使用0, 1, 2, 3
       viewMode: 1,
       aspectRatio: 16 / 9,
@@ -38,15 +39,37 @@ export default {
       // zoomable 是否允许放大图像
       // ,zoomable: false
     })
+
+    const inputImage = document.getElementById('input_image')
+    const URL = window.URL || window.webkitURL
+    let blobURL
+    if (!URL) {
+      return
+    }
+    inputImage.onchange = function() {
+      console.log(this.files)
+      const files = this.files
+      let file
+      if (cropper && files && files.length) {
+        file = files[0]
+        if (/^image\/\w+/.test(file.type)) {
+          blobURL = URL.createObjectURL(file)
+          console.log('file changed', blobURL)
+          cropper.reset().replace(blobURL)
+        } else {
+          alert('Please choose an image file.')
+        }
+      }
+    }
   },
   methods: {
     crop() {
-      this.cropper.getCroppedCanvas().toBlob((blob) => {
+      cropper.getCroppedCanvas().toBlob((blob) => {
         const formData = new FormData()
         formData.append('croppedImage', blob)
         console.log(blob)
       })
-      console.log(this.cropper.getCroppedCanvas().toDataURL())
+      console.log(cropper.getCroppedCanvas().toDataURL())
     }
   }
 }
