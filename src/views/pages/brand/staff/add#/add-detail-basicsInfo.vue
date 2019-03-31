@@ -13,13 +13,21 @@
         :xs="22"
         :offset="1">
         <st-form-item label="员工头像">
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-upload style="width:164px;display:inline-block;height:164px;"
+            type="drag">
+            <st-icon type="anticon:plus"></st-icon>
+          </a-upload>
         </st-form-item>
         <st-form-item label="姓名" required>
           <a-input placeholder="填写点什么吧"></a-input>
         </st-form-item>
         <st-form-item label="手机号" required>
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-input-group compact>
+            <a-select defaultValue="Option1">
+              <a-select-option value="Option1">+86</a-select-option>
+            </a-select>
+            <a-input style="width: 50%" defaultValue="input content" />
+          </a-input-group>
         </st-form-item>
         <st-form-item label="性别" required>
           <a-input placeholder="填写点什么吧"></a-input>
@@ -29,7 +37,10 @@
         :xs="22"
         :offset="1">
         <st-form-item label="员工人脸">
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-upload style="width:164px;display:inline-block;height:164px;"
+            type="drag">
+            <st-icon type="anticon:plus"></st-icon>
+          </a-upload>
         </st-form-item>
         <st-form-item label="昵称" required>
           <a-input placeholder="填写点什么吧"></a-input>
@@ -116,7 +127,7 @@
         :xs="22"
         :offset="1">
         <st-form-item label="系统权限">
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-checkbox value="1">开通系统使用权限</a-checkbox>
         </st-form-item>
         <st-form-item label="登录账号" required>
           <a-input placeholder="填写点什么吧"></a-input>
