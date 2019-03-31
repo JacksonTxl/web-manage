@@ -136,7 +136,7 @@
       <h3>Form Two Cols 多栏目表单</h3>
       <p>
         row的gutter固定为8 col的lg=10
-        分割线使用 st-hr
+        分割线使用 st-hr 分割线上下margin为32px
       </p>
       <div class="sg-app-content">
         <st-panel>
@@ -165,7 +165,7 @@
                       placeholder="手机号"></a-input>
                   </a-input-group>
                 </st-form-item>
-                <st-form-item label="性别"
+                <st-form-item label="性别" class="mg-b0"
                   required>
                   <a-input placeholder="性别"></a-input>
                 </st-form-item>
@@ -201,8 +201,7 @@
                 <st-hr></st-hr>
               </a-col>
             </a-row>
-            <a-row :gutter="8"
-              class="mg-t24">
+            <a-row :gutter="8">
               <a-col :offset="1">
                 <st-form-item label=' '>
                   <st-button type="primary"
