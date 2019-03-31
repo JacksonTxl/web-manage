@@ -6,6 +6,7 @@
   &__header {
     .pd-tb(16px);
     .pd-lr(@panel-pd-lr);
+    .pos-r;
     border-bottom: 1px solid #e8e8e8;
     display: flex;
     align-items: center;
@@ -30,6 +31,7 @@
   &--tabs {
     .st-panel__header {
       border: none;
+      .pd-lr(0);
       .pd-b(0);
     }
     .ant-tabs {
@@ -37,10 +39,11 @@
     }
     .ant-tabs-bar {
       .mg-b(0);
+      .pd-lr(@panel-pd-lr);
     }
     // tabs actions区域头部居中
     .ant-tabs-extra-content {
-      .mg-t(-4px);
+      .mg-t(-3px);
     }
   }
   &--initial {
