@@ -4,7 +4,7 @@
     <section class="sg-app-content">
       <st-panel>
         <modal-link tag='st-button'
-          :to="{name:'test'}">test</modal-link>
+          :to="{name:'staff-add'}">staff-add</modal-link>
 
       </st-panel>
 
