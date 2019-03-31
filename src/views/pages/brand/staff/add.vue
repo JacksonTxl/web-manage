@@ -1,17 +1,14 @@
 <template>
-  <div class="page-staffDetail">
-    <section class="page-staffDetail-lf">
-      <Steps :value="currentIndex" :stepArr="stepArr" />
-    </section>
+  <st-panel app>
+    <a-row :gutter="8">
+      <a-col offset="1" :span="22"><Steps :value="currentIndex" :stepArr="stepArr" /></a-col>
+    </a-row>
+
     <!-- 基础信息 -->
     <StaffDetailBasics v-if="currentIndex == 0" @goNext="goNext"/>
     <StaffDetailDetailedInfo v-if="currentIndex == 1" @goNext="goNext"/>
     <StaffDetailCoachInfo v-if="currentIndex == 2" @goNext="goNext"/>
-    <!-- <div class="page-staffDetail-divider"></div>
-    <section class="page-staffDetail-lf">这是详细信息...................</section>
-    <div class="page-staffDetail-divider"></div>
-    <section class="page-staffDetail-lf">这是权限信息...................</section> -->
-  </div>
+  </st-panel>
 </template>
 
 <script>
@@ -29,7 +26,7 @@ export default {
   },
   data() {
     return {
-      currentIndex: 1,
+      currentIndex: 0,
       stepArr: [
         {
           title: '基础信息',
