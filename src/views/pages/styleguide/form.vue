@@ -42,7 +42,7 @@
       <li>使用st-form-item 作为表单项容器 用法同a-form-item</li>
       <li>表单label与input区域间隔固定为24px</li>
       <li>label默认定宽为88px两个格子宽度</li>
-      <li>保存按钮一样使用st</li>
+      <li>保存按钮等带有标签间隔的使用st-form-item 的labelOffset属性</li>
     </ul>
     <section class="sg-app-content">
       <st-panel initial>
@@ -122,7 +122,7 @@
             <a-row :gutter="8">
               <a-col :lg="12"
                 :offset="1">
-                <st-form-item label=' '>
+                <st-form-item labelOffset>
                   <st-button type="primary">保存</st-button>
                 </st-form-item>
               </a-col>
@@ -143,6 +143,7 @@
           <st-form>
             <a-row :gutter="8">
               <a-col :lg="10"
+                :xs='22'
                 :offset="1">
                 <st-form-item label="员工头像">
                   <a-upload style="width:164px;display:inline-block;height:164px;"
@@ -165,12 +166,14 @@
                       placeholder="手机号"></a-input>
                   </a-input-group>
                 </st-form-item>
-                <st-form-item label="性别" class="mg-b0"
+                <st-form-item label="性别"
+                  class="mg-b0"
                   required>
                   <a-input placeholder="性别"></a-input>
                 </st-form-item>
               </a-col>
               <a-col :lg="10"
+                :xs='22'
                 :offset="1">
                 <st-form-item label="员工头像">
                   <a-upload style="width:164px;display:inline-block;height:164px;"
@@ -203,7 +206,7 @@
             </a-row>
             <a-row :gutter="8">
               <a-col :offset="1">
-                <st-form-item label=' '>
+                <st-form-item labelOffset>
                   <st-button type="primary"
                     ghost>保存</st-button>
                   <st-button class="mg-l16"
