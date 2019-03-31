@@ -1,8 +1,10 @@
 <template>
   <div v-viewer="{ url: 'data-src' }">
-    <span class="viewer-img-item" v-for="(imgKey, index) in imgKeys" :key="index" >
+    <span class="st-preview-item"
+      v-for="(imgKey, index) in imgKeys"
+      :key="index">
       <img :src="imgKey|imgFilter({ w: 100, h: 56 })"
-      :data-src="imgKey|imgFilter({ w: 1000 })" class="viewer-img-item__img"/>
+        :data-src="imgKey|imgFilter({ w: 1000 })" />
     </span>
   </div>
 </template>
@@ -24,19 +26,3 @@ export default {
   }
 }
 </script>
-<style lang="less" scope>
-.viewer-img-item {
-  display: inline-block;
-  width: 100px;
-  height: 56px;
-  margin: 10px;
-  overflow: hidden;
-}
-.viewer-img-item__img {
-  &:hover {
-    cursor: pointer;
-    transform: scale(1.25);
-  }
-  transition: all .5s;
-}
-</style>
