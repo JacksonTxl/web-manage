@@ -45,90 +45,59 @@
       <li>保存按钮等带有标签间隔的使用st-form-item 的labelOffset属性</li>
     </ul>
     <section class="sg-app-content">
-      <st-panel initial>
-        <st-form>
-          <st-form-section title="基础设置">
-            <div class="sg-box">block 拉到本块到1144px看对齐效果</div>
-            <a-row :gutter="8">
-              <a-col :span="1"
-                v-for="n in 24"
-                :key="n">
-                <div class="sg-box">{{n}}</div>
-              </a-col>
-            </a-row>
-            <a-row :gutter="8">
-              <a-col :lg="12"
-                :xs="22"
-                :offset="1">
-                <st-form-item label="从业时间"
-                  validate-status="error"
-                  has-feedback
-                  help="Should be combination of numbers & alphabets"
-                  required>
-                  <a-date-picker style="width:100%"
-                    placeholder="请选择日期"></a-date-picker>
-                </st-form-item>
-                <st-form-item label="文本框"
-                  required>
-                  <a-input placeholder="填写点什么吧"></a-input>
-                </st-form-item>
-              </a-col>
-            </a-row>
-            <a-row :gutter="8">
-              <a-col :offset="1"
-                :lg="22">
-                <st-form-item required
-                  label='复选'>
-                  <span slot="label">
-                    多选&nbsp;
-                    <a-tooltip placement="right"
-                      title="What do you want others to call you?">
-                      <st-icon type="anticon:question-circle-o" />
-                    </a-tooltip>
-                  </span>
-                  <a-checkbox-group v-model="checkbox1">
-                    <a-checkbox value="1">单车</a-checkbox>
-                    <a-checkbox value="2">瑜伽</a-checkbox>
-                    <a-checkbox value="3">舞蹈</a-checkbox>
-                    <a-checkbox value="4">拳击/舞蹈</a-checkbox>
-                    <a-checkbox value="5">杠铃</a-checkbox>
-                    <a-checkbox value="6">踏板</a-checkbox>
-                    <a-checkbox value="7">高强度间歇训练</a-checkbox>
-                  </a-checkbox-group>
-                  {{checkbox1}}
-                </st-form-item>
-                <st-form-item required
-                  label='单选'>
-                  <span slot="label">
-                    单选&nbsp;
-                    <a-tooltip title="What do you want others to call you?">
-                      <st-icon type="anticon:question-circle-o" />
-                    </a-tooltip>
-                  </span>
-                  <a-radio-group v-model="radio1">
-                    <a-radio value="1">单车</a-radio>
-                    <a-radio value="2">瑜伽</a-radio>
-                    <a-radio value="3">舞蹈</a-radio>
-                    <a-radio value="4">拳击/舞蹈</a-radio>
-                    <a-radio value="5">杠铃</a-radio>
-                  </a-radio-group>
-                  {{radio1}}
-                </st-form-item>
-              </a-col>
-            </a-row>
-          </st-form-section>
-          <st-form-section title="售卖设置">这是第二个</st-form-section>
-          <st-form-section title="售卖设置">
-            <a-row :gutter="8">
-              <a-col :lg="12"
-                :offset="1">
-                <st-form-item labelOffset>
-                  <st-button type="primary">保存</st-button>
-                </st-form-item>
-              </a-col>
-            </a-row>
-          </st-form-section>
-        </st-form>
+      <st-panel>
+        <a-row :gutter='8'>
+          <a-col :span='7'>
+            left
+          </a-col>
+          <a-col :span='14'>
+            <st-form>
+              <st-title>基础设置</st-title>
+              <st-form-item label='会员卡类型'>
+                <a-select>
+                  <a-select-option value='1'>1</a-select-option>
+                  <a-select-option value='2'>2</a-select-option>
+                  <a-select-option value='3'>3</a-select-option>
+                </a-select>
+              </st-form-item>
+              <st-form-item label='会员卡名称'>
+                <a-input></a-input>
+              </st-form-item>
+
+              <st-title>售卖设置</st-title>
+              <st-form-item label='支持入场范围'>
+                <a-checkbox-group>
+                  <a-checkbox value='1'>单个门店</a-checkbox>
+                  <a-checkbox value='2'>多个门店</a-checkbox>
+                  <a-checkbox value='3'>全部门店</a-checkbox>
+                </a-checkbox-group>
+              </st-form-item>
+              <st-form-item label='支持入场范围'>
+                <a href="">
+                  <st-icon type='anticon:plus'></st-icon>添加门店
+                </a>
+              </st-form-item>
+
+              <st-title>更多设置</st-title>
+              <st-form-item label='卡背景'>
+                <a-row>
+                  <a-col :lg='5'>
+                    <a-radio-group>
+                      <a-radio value='1'>默认背景图</a-radio>
+                      <a-radio value='2'>自定义背景</a-radio>
+                    </a-radio-group>
+                  </a-col>
+                  <a-col :lg='15'>
+                    <div class="sg-box"
+                      style="width:172px;height:94px">
+                    </div>
+                  </a-col>
+                </a-row>
+              </st-form-item>
+            </st-form>
+          </a-col>
+        </a-row>
+
       </st-panel>
     </section>
 

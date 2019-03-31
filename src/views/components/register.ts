@@ -19,9 +19,8 @@ import StRouteTabs from './route-tabs/route-tabs.vue'
 import StHr from './hr/hr.vue'
 import StTag from './tag/tag.vue'
 import StPanel from './panel/panel.vue'
-import StFormSection from './form/form-section.vue'
-import StForm from './form/form.vue'
-import StFormItem from './form/form-item.vue'
+import './form/index.js'
+import './title/index.js'
 
 Vue.component(StIcon.name, StIcon)
 Vue.component(StButton.name, StButton)
@@ -42,6 +41,3 @@ Vue.component(StRouteTabs.name, StRouteTabs)
 Vue.component(StHr.name, StHr)
 Vue.component(StTag.name, StTag)
 Vue.component(StPanel.name, StPanel)
-Vue.component(StFormSection.name, StFormSection)
-Vue.component(StForm.name, StForm)
-Vue.component(StFormItem.name, StFormItem)
