@@ -9,8 +9,8 @@
   </div>
 </template>
 <script>
-import CountupDemo from './plugins/countup.vue'
-import ViewerDemo from './plugins/viewer.vue'
+import CountupDemo from './plugins/countup#.vue'
+import ViewerDemo from './plugins/viewer#.vue'
 export default {
   components: {
     ViewerDemo,
