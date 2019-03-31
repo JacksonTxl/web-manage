@@ -7,7 +7,7 @@
         </a-row>
         <a-row>
           <a-col :span="16" style="height: 300px;">
-            <img id="image" src="https://pic3-s.styd.cn/o_1d78oa7b91hvd10a21pr91c5v1viki.jpg" style="max-width: 100%;"/>
+            <img hidden id="image" src="https://pic3-s.styd.cn/o_1d78oa7b91hvd10a21pr91c5v1viki.jpg"/>
           </a-col>
           <a-col :span="8">
             <p class="st-crop__preview mg-l16" id="crop_preview"></p>
