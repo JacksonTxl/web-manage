@@ -6,14 +6,14 @@
       <st-button pill
         size='small'>默认24px</st-button>
       <st-button pill
-        size='medium'>28px</st-button>
+        size='medium'>28px size=medium</st-button>
       <st-button pill
         loading>32px</st-button>
       <st-button pill
         size='large'>40px</st-button>
       <st-button pill
         type='primary'
-        size='small'>primary 24px</st-button>
+        size='small'>pill 24px</st-button>
       <st-button pill
         type='primary'
         size='medium'

@@ -1,10 +1,8 @@
 <template>
-  <div>
-    <a-tabs v-model="currentValue" @change="OnChange">
-      <a-tab-pane v-for="tab in options" :tab="tab.label" :key="tab.route.name" style="height: 0"><slot></slot></a-tab-pane>
-    </a-tabs>
-    <router-view></router-view>
-  </div>
+  <a-tabs v-model="currentValue" @change="OnChange" class="st-route-tabs">
+    <a-tab-pane v-for="tab in options" :tab="tab.label" :key="tab.route.name"></a-tab-pane>
+    <slot name="actions" slot="tabBarExtraContent"></slot>
+  </a-tabs>
 </template>
 
 <script>
@@ -22,7 +20,7 @@ export default {
         return []
       },
       required: true,
-      validator: (value) => {
+      validator: value => {
         let flag
         value.forEach(tab => {
           flag = !tab.label || !tab.route || !tab.route.name
@@ -67,5 +65,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

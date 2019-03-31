@@ -1,99 +1,67 @@
 <template>
   <div>
-    <h4>容器类组件</h4>
+    <h2 class="mg-t16">容器类组件</h2>
 
-    <div class='mg-t16'
-      style="background:#f0f2f5;height:400px;padding:24px;">
-      <div class="st-box">
-        <div class="st-box__hd">
-          hello
-        </div>
-        <div class="st-box__bd">
-          这是内容
-        </div>
-      </div>
-      <div class="st-box mg-t16">
-        <div class="st-box__hd">
-          <div class="st-box__title">
-            <st-t1>这是标题</st-t1>
-          </div>
-          <div class="st-box__actions">
-            <st-button type='primary'>操作</st-button>
-          </div>
-        </div>
-        <div class="st-box__bd">
-          这是内容
-        </div>
-      </div>
-    </div>
+    <h3>st-panel</h3>
 
-    <div class='mg-t16'
-      style="background:#f0f2f5;height:400px;padding:24px;">
-      <div class="st-box st-box--app">
-        <div class="st-box__hd">
-          <div class="st-box__title">
-            <st-t1>这是标题</st-t1>
-          </div>
+    <section class="mg-t16 sg-app-content">
+      <st-panel title="只有一个标题">这是内容 请将内容放到st-panel__body中</st-panel>
+      <st-panel class="mg-t16" title="带有操作区域带有操作区域带有操作区域带有操作区域">
+        <div slot="actions">
+          <st-button type="primary">操作</st-button>
+        </div>这是内容
+      </st-panel>
+    </section>
+
+    <section class="mg-t16 sg-app-content" style="height:400px">
+      <st-panel app title="标题">这是一个全高的面板</st-panel>
+    </section>
+
+    <p>包含tabs的panel面板</p>
+    <section class="sg-app-content mg-t16">
+      <st-panel
+        :tabs="[{label:'container/a',route:{name:'styleguide-container-a'}},{label:'container/b',route:{name:'styleguide-container-b'}}]"
+      >
+        <div slot="actions">
+          <a-input-search placeholder="私教课名称"></a-input-search>
         </div>
-        <div class="st-box__bd">
-          这是一个全高的面板
+        <router-view></router-view>
+      </st-panel>
+    </section>
+
+    <h3 class="mg-t16">默认st-panel包含24px的padding，如果不需要 某些表单页面下可能不需要 添加initial属性使其只有背景色,没有padding</h3>
+    <section class="sg-app-content">
+      <st-panel initial>hello world</st-panel>
+    </section>
+    <h3 class="mg-t16">title区域放置操作类按钮</h3>
+    <section class="sg-app-content">
+      <st-panel>
+        <div slot="title" style="width:280px">
+          <a-input-search placeholder="请输入"></a-input-search>
         </div>
-      </div>
-    </div>
-
-    <div class='mg-t16'
-      style="background:#f0f2f5;height:600px;padding:24px;">
-      <div class="st-box st-box--app">
-        <a-form>
-          <div class="st-box__hd">
-            <st-t1>基础信息</st-t1>
-
-          </div>
-          <div class="st-box__bd">
-            <a-form-item label='储值卡金额'
-              :labelCol="{span:2,offset:2}"
-              :wrapperCol="{span:10}"
-              required>
-              <a-input placeholder='请输入储值卡名称'></a-input>
-            </a-form-item>
-            <a-form-item label='储值金额'
-              :labelCol="{span:2,offset:2}"
-              :wrapperCol="{span:10}"
-              required>
-              <a-input placeholder='测试'></a-input>
-            </a-form-item>
-          </div>
-          <div class="st-box__hd">
-            <st-t1>售卖设置</st-t1>
-          </div>
-          <div class="st-box__bd">
-          </div>
-          <div class="st-box__hd">
-            <st-t1>更多设置</st-t1>
-          </div>
-          <div class="st-box__bd">
-            <a-form-item :wrapperCol="{span:10,offset:4}">
-              <st-button type='primary'>提交</st-button>
-            </a-form-item>
-          </div>
-        </a-form>
-      </div>
-    </div>
-
-    <h3>无hd</h3>
-    <div class='mg-t16'
-      style="background:#f0f2f5;height:400px;padding:24px;">
-      <div class="st-box st-box--app">
-        <div class="st-box__bd">
-          <a-row :gutter='8'>
-            <a-col :span='13'
-              :offset="5">
-              <a-input placeholder='test'></a-input>
-            </a-col>
-          </a-row>
-        </div>
-      </div>
-    </div>
-
+        <div slot="actions">
+          <st-button type="primary">操作</st-button>
+        </div>这是一个内容
+      </st-panel>
+    </section>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      tabsOptions: [
+        {
+          label: 'container/a',
+          route: { name: 'styleguide-container-a', query: { a: 1, b: 2 } }
+        },
+        {
+          label: 'container/b',
+          route: { name: 'styleguide-container-b', query: { a: 1, b: 2 } }
+        }
+      ]
+    }
+  }
+}
+</script>

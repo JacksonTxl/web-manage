@@ -16,7 +16,11 @@ import StTree from './tree/tree.vue'
 // import StAppContent from './app-content/app-content.vue'
 import StInfoItem from './info-item/info-item.vue'
 import StRouteTabs from './route-tabs/route-tabs.vue'
-import StT1 from './title/t1.vue'
+import StHr from './hr/hr.vue'
+import StTag from './tag/tag.vue'
+import StPanel from './panel/panel.vue'
+import StFormSection from './form/form-section.vue'
+import StForm from './form/form.vue'
 
 Vue.component(StIcon.name, StIcon)
 Vue.component(StButton.name, StButton)
@@ -31,7 +35,10 @@ Vue.component(StInputSearch.name, StInputSearch)
 Vue.component(StAvatarUpload.name, StAvatarUpload)
 Vue.component(StPictureUpload.name, StAvatarUpload)
 Vue.component(StTree.name, StTree)
-// Vue.component(StAppContent.name, StAppContent)
 Vue.component(StInfoItem.name, StInfoItem)
 Vue.component(StRouteTabs.name, StRouteTabs)
-Vue.component(StT1.name, StT1)
+Vue.component(StHr.name, StHr)
+Vue.component(StTag.name, StTag)
+Vue.component(StPanel.name, StPanel)
+Vue.component(StFormSection.name, StFormSection)
+Vue.component(StForm.name, StForm)
