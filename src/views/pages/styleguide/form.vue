@@ -2,7 +2,7 @@
   <div>
     <h3 class="mg-t32">按钮样式复选st-checkbox-button-group</h3>
     <section>
-      <a-form class="st-form">
+      <st-form>
         <st-form-item label="营业时间">
           <st-checkbox-button-group v-model="checkBoxModel1">
             <st-checkbox-button-item disabled
@@ -16,7 +16,7 @@
           </st-checkbox-button-group>
           {{checkBoxModel1}}
         </st-form-item>
-      </a-form>
+      </st-form>
     </section>
 
     <h3 class="mg-t24">按钮样式复选st-checkbox-button-group</h3>
@@ -60,7 +60,7 @@
               <a-col :lg="12"
                 :xs="22"
                 :offset="1">
-                <st-form-item label="从业时间"
+                <st-form-item  label="从业时间"
                   validate-status="error"
                   has-feedback
                   help="Should be combination of numbers & alphabets"
