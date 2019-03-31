@@ -1,30 +1,24 @@
 <template>
   <div class="page-staff">
-    <a-row>
-      <a-col :span="4">
-        <section class="page-staff-lf">
-          <header class="staff-lf__search">
-            <st-input-search placeholder="请输入部门/员工名称" style="width:226px" round="round"></st-input-search>
-          </header>
-          <main class="staff-lf__tree">组织架构树
-            <organization-tree></organization-tree>
-          </main>
-        </section>
-      </a-col>
-      <a-col :span="20">
-        <section class="page-staff-rg">
-          <header class="staff-rg__operation">
-            <filter-staff></filter-staff>
-            <opreation-button @add-staff="addStaff"></opreation-button>
-          </header>
-          <main class="staff-rg__table">
-            <div  style="width:100%">
-              <staff-table></staff-table>
-            </div>
-          </main>
-        </section>
-      </a-col>
-    </a-row>
+    <section class="page-staff-lf">
+      <header class="staff-lf__search">
+        <st-input-search placeholder="请输入部门/员工名称" style="width:226px" round="round"></st-input-search>
+      </header>
+      <main class="staff-lf__tree">组织架构树
+        <organization-tree></organization-tree>
+      </main>
+    </section>
+    <section class="page-staff-rg">
+      <header class="staff-rg__operation">
+        <filter-staff></filter-staff>
+        <opreation-button @add-staff="addStaff"></opreation-button>
+      </header>
+      <main class="staff-rg__table">
+        <div  style="width:100%">
+          <staff-table></staff-table>
+        </div>
+      </main>
+    </section>
   </div>
 </template>
 
@@ -43,7 +37,7 @@ export default {
   },
   methods: {
     addStaff() {
-      this.$router.push('/shop/staff/add')
+      this.$router.push('/brand/staff/add')
     }
   }
 }
