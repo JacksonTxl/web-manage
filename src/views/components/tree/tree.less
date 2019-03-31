@@ -1,32 +1,25 @@
 .item {
   cursor: pointer;
 }
-// .st-tree-item {
-//   .item{
-//     padding-left: 1em;
-//   }
-// }
 .tree-node{
   width: 100%;
   overflow: hidden;
   position: relative;
   &:hover{
-    &:after{
-      content: '';
-      height: 100%;
-      width: 10000px;
-      display: block;
-      position: absolute;
-      top:0;
-      left:-2000px;
-      background: rgba(24,144,255,0.1);
-    }
+    background: rgba(24,144,255,0.1);
   }
   &__content{
     display: flex;
     justify-items: center;
     align-items: center;
     padding: 7px 0;
+  }
+  .active{
+    background:rgba(24,144,255,1);
+    .tree-name,
+    .tree-switch{
+      color: #fff
+    }
   }
   .tree-name{
     .fz(12px);
@@ -38,7 +31,7 @@
   .tree-opreation{
     position: absolute;
     top:0;
-    right: 0;
+    right: 12px;
     z-index: 1;
   }
   .tree-switch{

@@ -5,6 +5,7 @@
       :item="treeData"
       @make-folder="makeFolder"
       @add-item="addItem"
+      @node-item-detail="getNodeItemDetail"
     ></tree-item>
   </ul>
 
@@ -30,6 +31,9 @@ export default {
       Vue.set(item, 'children', [])
       this.addItem(item)
     },
+    getNodeItemDetail(item) {
+      this.$emit('node-click', item)
+    },
     addItem: function(item) {
       item.children.push({
         name: 'new stuff'
@@ -38,7 +42,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
