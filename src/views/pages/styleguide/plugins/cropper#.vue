@@ -3,7 +3,11 @@
     <a-row>
       <a-col :span="8">
         <a-row>
-          <input type="file" title="" id="input_image">
+          <a-upload :beforeUpload="beforeUpload" :showUploadList="false">
+            <a-button>
+              <a-icon type="upload"/> Select File
+            </a-button>
+          </a-upload>
         </a-row>
         <a-row class="mg-t16">
           <a-col :span="16" style="height: 300px;">
@@ -25,6 +29,11 @@ import Cropper from 'cropperjs'
 let cropper
 export default {
   name: 'CropperDemo',
+  data() {
+    return {
+      fileList: []
+    }
+  },
   mounted() {
     const image = document.getElementById('image')
     cropper = new Cropper(image, {
@@ -39,30 +48,16 @@ export default {
       // zoomable 是否允许放大图像
       // ,zoomable: false
     })
-
-    const inputImage = document.getElementById('input_image')
-    const URL = window.URL || window.webkitURL
-    let blobURL
-    if (!URL) {
-      return
-    }
-    inputImage.onchange = function() {
-      console.log(this.files)
-      const files = this.files
-      let file
-      if (cropper && files && files.length) {
-        file = files[0]
-        if (/^image\/\w+/.test(file.type)) {
-          blobURL = URL.createObjectURL(file)
-          console.log('file changed', blobURL)
-          cropper.reset().replace(blobURL)
-        } else {
-          alert('Please choose an image file.')
-        }
-      }
-    }
   },
   methods: {
+    beforeUpload(file) {
+      if (/^image\/\w+/.test(file.type)) {
+        const URL = window.URL || window.webkitURL
+        const blobURL = URL.createObjectURL(file)
+        cropper.reset().replace(blobURL)
+      }
+      return false
+    },
     crop() {
       cropper.getCroppedCanvas().toBlob((blob) => {
         const formData = new FormData()
