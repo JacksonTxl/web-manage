@@ -72,37 +72,37 @@ export default {
         infoList: [
           {
             title: '周一',
-            value: [0, 13],
-            week: [
-              {
-                key: '周一',
-                disabled: false
-              },
-              {
-                key: '周二',
-                disabled: false
-              },
-              {
-                key: '周三',
-                disabled: true
-              },
-              {
-                key: '周四',
-                disabled: true
-              },
-              {
-                key: '周五',
-                disabled: false
-              },
-              {
-                key: '周六',
-                disabled: true
-              },
-              {
-                key: '周日',
-                disabled: true
-              }
-            ]
+            value: [0, 13]
+            // week: [
+            //   {
+            //     key: '周一',
+            //     disabled: false
+            //   },
+            //   {
+            //     key: '周二',
+            //     disabled: false
+            //   },
+            //   {
+            //     key: '周三',
+            //     disabled: true
+            //   },
+            //   {
+            //     key: '周四',
+            //     disabled: true
+            //   },
+            //   {
+            //     key: '周五',
+            //     disabled: false
+            //   },
+            //   {
+            //     key: '周六',
+            //     disabled: true
+            //   },
+            //   {
+            //     key: '周日',
+            //     disabled: true
+            //   }
+            // ]
           },
           {
             title: '周二',
