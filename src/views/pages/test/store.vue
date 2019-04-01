@@ -241,7 +241,7 @@ export default {
     }
   },
   created() {
-    this.tooltip()
+    // this.tooltip()
   },
   methods: {
     formatter(value) {
