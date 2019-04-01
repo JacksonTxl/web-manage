@@ -1,14 +1,15 @@
 <template>
-  <div
-    :class="['st-panel',{
+  <div :class="['st-panel',{
         'st-panel--app':app,
         'st-panel--tabs':tabs,
         'st-panel--initial':initial
-    }]"
-  >
-    <div v-if="title || $slots.actions || $slots.title" class="st-panel__header">
-      <st-route-tabs v-if="tabs" :options="tabs">
-        <slot name="actions" slot="actions"></slot>
+    }]">
+    <div v-if="title || $slots.actions || $slots.title"
+      class="st-panel__header">
+      <st-route-tabs v-if="tabs"
+        :options="tabs">
+        <slot name="actions"
+          slot="actions"></slot>
       </st-route-tabs>
       <template v-else>
         <div class="st-panel__title">

@@ -27,6 +27,7 @@
     "core-js": "^2.6.5",
     "countup.js": "^2.0.4",
     "cropperjs": "^1.5.1",
+    "flex.css": "^1.1.7",
     "fullcalendar-scheduler": "^1.9.4",
     "js-cookie": "^2.2.0",
     "nprogress": "^0.2.0",
