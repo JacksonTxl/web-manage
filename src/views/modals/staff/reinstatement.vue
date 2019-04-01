@@ -17,7 +17,7 @@
         </ul>
       </div>
       <st-form labelWidth='60px'>
-        <st-form-item  labelWidth='60px' label="离职日期">
+        <st-form-item  labelWidth='60px' label="复职日期">
           <a-input placeholder="支持中英文、数字,不超过10个字" />
         </st-form-item>
       </st-form>
@@ -26,7 +26,7 @@
 </template>
 <script>
 export default {
-  name: 'turnover',
+  name: 'Reinstatement',
   data() {
     return {
       show: false,
