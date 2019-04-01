@@ -1,7 +1,10 @@
 <template>
-  <a-form-item v-bind='$attrs'
-    :label="labelOffset?' ':$attrs.label"
-    v-on="$listeners">
+  <a-form-item
+    v-bind="$attrs"
+    class="st-form-item"
+    :label="labelFix ? ' ' : $attrs.label"
+    v-on="$listeners"
+  >
     <slot></slot>
   </a-form-item>
 </template>
@@ -14,15 +17,21 @@ export default {
   },
   props: {
     // 用于修正label的margin-left值
-    labelOffset: {
+    labelFix: {
       type: Boolean,
       default: false
     },
+    /**
+     * 表单label宽度 如88px
+     */
     labelWidth: {
       type: String,
       default: ''
     },
-    controlOffset: {
+    /**
+     * 表单label右侧和表单空间的间隔 默认为24px，该属性会传递给st-form-item组件
+     */
+    labelGutter: {
       type: String,
       default: ''
     }
@@ -31,15 +40,15 @@ export default {
     computedLabelWidth() {
       return this.labelWidth || this.stFormConfig.labelWidth || '88px'
     },
-    computedControlOffset() {
-      return this.controlOffset || this.stFormConfig.controlOffset || '24px'
+    computedLabelGutter() {
+      return this.labelGutter || this.stFormConfig.labelGutter || '24px'
     }
   },
   mounted() {
     const labelEl = this.$el.querySelector('.ant-form-item-label')
-    const controlEl = this.$el.querySelector('.ant-form-item-control')
-    labelEl.style.width = this.computedLabelWidth
-    controlEl.style.marginLeft = this.computedControlOffset
+    const wrapperEl = this.$el.querySelector('.ant-form-item-control-wrapper')
+    labelEl && (labelEl.style.width = this.computedLabelWidth)
+    wrapperEl && (wrapperEl.style.paddingLeft = this.labelGutter)
   }
 }
 </script>

@@ -1,15 +1,10 @@
 // 表单重置
 .st-form {
-  .ant-form-item {
-    display: flex;
-    &:last-child {
-      .mg-b(0);
-    }
-    // 第一个form-item 的样式bottom
-    &:first-child {
-      .mg-b(24px);
-    }
-  }
+  width: 100%;
+}
+
+.st-form-item {
+  display: flex;
   .ant-form-item-label {
     .lh(32px);
     .w(88px);
@@ -23,10 +18,10 @@
 
   .ant-form-item-control-wrapper {
     flex: 1;
+    .pd-l(24px);
   }
   .ant-form-item-control {
     .lh(32px);
-    .mg-l(24px);
   }
   // 修正checkbox位置
   .ant-checkbox-wrapper {
@@ -37,20 +32,5 @@
   .ant-radio-wrapper {
     .mg-l(0);
     .mg-r(16px);
-  }
-}
-
-.st-form-section {
-  &__header {
-    .pd(16px);
-  }
-  &__title {
-    .fz(16px);
-    .lh(24px);
-    font-weight: 500;
-    .c(@title);
-  }
-  &__body {
-    .pd(24px);
   }
 }

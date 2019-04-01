@@ -13,16 +13,22 @@ export default {
     return {
       stFormConfig: {
         labelWidth: this.labelWidth,
-        controlOffset: this.controlOffset
+        labelGutter: this.labelGutter
       }
     }
   },
   props: {
+    /**
+     * 表单label宽度 如88px,该属性会传递给st-form-item组件
+     */
     labelWidth: {
       type: String,
       default: ''
     },
-    controlOffset: {
+    /**
+     * 表单label右侧和表单空间的间隔，该属性会传递给st-form-item组件
+     */
+    labelGutter: {
       type: String,
       default: ''
     }
