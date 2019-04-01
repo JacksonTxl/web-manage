@@ -1,6 +1,0 @@
-.st-slider .ant-tooltip-inner {
-  background: #1890ff;
-}
-.st-slider .ant-tooltip-arrow {
-  border-top-color: #1890ff;
-}
