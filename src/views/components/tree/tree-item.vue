@@ -17,8 +17,8 @@
             <a-menu-item>
               <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">新增字部门</a>
             </a-menu-item>
-            <a-menu-item>
-              <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">删除</a>
+            <a-menu-item @click="deleteTreeNode">
+              删除
             </a-menu-item>
           </a-menu>
         </a-dropdown>
@@ -33,6 +33,7 @@
         :item="child"
         @make-folder="$emit('make-folder', $event)"
         @add-item="$emit('add-item', $event)"
+        @delete-item="$emit('delete-item', $event)"
         @node-item-detail="$emit('node-item-detail', $event)"
       ></tree-item>
     </ul>
@@ -66,6 +67,9 @@ export default {
     }
   },
   methods: {
+    deleteTreeNode() {
+      this.$emit('delete-item', this.item)
+    },
     toggle(e) {
       if (this.isFolder) {
         this.isOpen = !this.isOpen

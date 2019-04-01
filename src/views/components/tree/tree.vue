@@ -6,6 +6,7 @@
       @make-folder="makeFolder"
       @add-item="addItem"
       @node-item-detail="getNodeItemDetail"
+      @delete-item="deleteItem"
     ></tree-item>
   </ul>
 
@@ -38,6 +39,9 @@ export default {
       item.children.push({
         name: 'new stuff'
       })
+    },
+    deleteItem(item) {
+      this.$emit('delete-item', item)
     }
   }
 }

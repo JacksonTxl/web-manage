@@ -2,9 +2,12 @@
   <div class="page-staff">
     <section class="page-staff-lf">
       <header class="staff-lf__search">
+        <modal-link tag='a-button' :to="{ name: 'staff-turnover' }">
+          modal
+        </modal-link>
         <st-input-search placeholder="请输入部门/员工名称" style="width:226px" round="round"></st-input-search>
       </header>
-      <main class="staff-lf__tree">组织架构树
+      <main class="staff-lf__tree">
         <organization-tree></organization-tree>
       </main>
     </section>
