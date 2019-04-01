@@ -149,7 +149,7 @@
     </section>
 
     <p class="mg-t24">
-      st-info ，如需改变如三栏宽度可传labelWidth= 40*3 + 16 =136px
+      st-info ，可定制 labelWidth 和 labelGutter,
     </p>
     <section class="sg-app-content">
       <st-panel>
@@ -162,7 +162,7 @@
               <st-info-item label="所属会员">
                 会员名称
               </st-info-item>
-              <st-info-item label="允许转让">
+              <st-info-item label="允许转让" label-gutter="80px">
                 允许
               </st-info-item>
               <st-info-item label="类型">
