@@ -222,10 +222,7 @@ export default {
   },
   methods: {
     goNext() {
-      let data = {
-        isGoNext: true
-      }
-      this.$emit('goNext', data)
+      this.$emit('goNext')
     },
     save(e) { // form submit
       e.preventDefault()
@@ -233,6 +230,9 @@ export default {
         if (!err) {
           console.log('form submit: ', values)
         }
+        this.$emit('save', {
+          data: values
+        })
       })
     }
   }
