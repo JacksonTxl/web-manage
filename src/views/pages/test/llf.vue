@@ -1,8 +1,6 @@
 <template>
   <st-panel app title="这是一个标题">
-    <div slot="actions">
-      <st-button type="primary">操作</st-button>
-    </div>
+    <modal-link :to="{ name: 'brand-switch' }">门店切换</modal-link>
     Hello
   </st-panel>
 </template>
