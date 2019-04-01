@@ -8,6 +8,7 @@
       <st-tag type="role-staff" />
       <st-tag type="role-saler" />
       <st-tag type="shop-opening" />
+      <st-tag type="shop-trial" />
       <st-t3 style="display:inline-block">上海旗舰店</st-t3>
     </section>
   </div>
