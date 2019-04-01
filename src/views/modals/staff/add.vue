@@ -1,6 +1,5 @@
 <template>
-  <a-modal title='员工添加'
-    v-model='show'>
+  <a-modal title="员工添加" width="90%" v-model="show">
     员工添加
   </a-modal>
 </template>
