@@ -4,9 +4,11 @@
     @ok='onSubmit'
     v-model='show'>
     <section>
-      <st-tag type="coach-personal"/>
-      <st-tag type="coach-team"/>
-      <st-tag type="role-staff"/>
+      <div class="staff-tag">
+        <st-tag class="mg-r4" type="coach-personal"/>
+        <st-tag class="mg-r4" type="coach-team"/>
+        <st-tag class="mg-r8" type="role-staff"/>
+      </div>
     </section>
   </a-modal>
 </template>
