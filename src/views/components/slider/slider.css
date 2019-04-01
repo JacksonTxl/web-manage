@@ -25,12 +25,6 @@
   cursor: pointer;
   color: #40a9ff;
 }
-.st-slider .slider-copy {
-  display: block;
-}
-.st-slider .slider-copy .ant-checkbox-wrapper {
-  padding: 6px;
-}
 .st-slider__title-box {
   height: 54px;
 }
@@ -59,4 +53,13 @@
 }
 .st-slider__title-box-operate {
   text-align: right;
+}
+.slider-copy {
+  display: block;
+}
+.slider-copy .ant-checkbox-wrapper {
+  padding: 6px;
+}
+.slider-copy .ant-checkbox-wrapper:nth-child(1) {
+  padding-left: 12px;
 }

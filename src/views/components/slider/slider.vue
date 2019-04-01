@@ -1,6 +1,6 @@
 <template>
   <div class="st-slider">
-    <a-row class="st-slider__title-box" v-if="setSlider.infoList[0].week">
+    <a-row class="st-slider__title-box" v-if="setSlider.infoList && setSlider.infoList[0].week">
       <a-col :span="2">时间段</a-col>
       <a-col :span="18">
         <ul class="st-slider__title-box-time">
@@ -36,18 +36,19 @@
             trigger="click"
             class="slider-copy-bottom"
             v-if="item.week"
+            @visibleChange="visibleChange"
           >
             <template slot="content">
               <a-checkbox-group
                 @change="onChange"
+                class="slider-copy"
                 v-for=" (weekInfo,index) in item.week"
                 :key="index"
-                class="slider-copy"
               >
-                <a-checkbox :value="weekInfo.key" :disabled="weekInfo.disabled">{{weekInfo.key}}</a-checkbox>
+                <a-checkbox :value="index" :disabled="weekInfo.disabled">{{weekInfo.key}}</a-checkbox>
               </a-checkbox-group>
             </template>
-            <span>复制到</span>
+            <span @click="copyTo(index)">复制到</span>
           </a-popover>
         </a-col>
       </a-row>
@@ -60,23 +61,44 @@ export default {
   data() {
     return {
       setSlider: [],
-      value: []
+
+      checkedValues: [],
+      copyToIndex: null
     }
   },
   mounted() {
     this.setSlider = this.getSlider
   },
   methods: {
-    onChange(checkedValues) {
-      console.log('checked = ', checkedValues)
-      console.log('value = ', this.value)
+    // 复制到
+    copyTo(index) {
+      this.copyToIndex = index
+      console.log(index)
     },
+    // 多选
+    onChange(checkedValues) {
+      if (checkedValues.length > 0) {
+        this.setSlider.infoList[checkedValues[0]].value = this.setSlider.infoList[this.copyToIndex].value
+        console.log(
+          'checkedValues',
+          checkedValues1,
+          copyToIndex,
+          this.setSlider.infoList[checkedValues1].value
+        )
+        this.setSlider = JSON.parse(JSON.stringify(this.setSlider))
+      }
+    },
+    // tooltip格式处理
     formatter(value) {
       if (value % 1 === 0) {
         return `${value}:00`
       } else {
         return `${parseInt(value)}:30`
       }
+    },
+    // 气泡卡消失
+    visibleChange(value) {
+      console.log(value)
     }
   },
   created() {},

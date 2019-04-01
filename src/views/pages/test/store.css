@@ -70,6 +70,7 @@
   color: rgba(0, 0, 0, 0.85);
   vertical-align: middle;
   padding-left: 8px;
+  vertical-align: -webkit-baseline-middle;
 }
 .pages-test-store__info-list {
   margin-bottom: 16px;
