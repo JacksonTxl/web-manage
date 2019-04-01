@@ -1,34 +1,43 @@
 <template>
   <div>
     <div class="slider" v-for="(item,index) in setSlider.infoList" :key="index">
-      <span class="slider__title">{{setSlider.infoList[index].title}}</span>
-      <a-slider
-        range
-        :min="0"
-        :max="24"
-        :step="0.5"
-        :tipFormatter="formatter"
-        :tooltipVisible="true"
-        :disabled="setSlider.disabled"
-        v-model="setSlider.infoList[index].value"
-      />
-      <a-popover
-        placement="bottomRight"
-        style="    float: right;    margin-top: 10px;"
-        v-if="item.week"
-      >
-        <template slot="content">
-          <a-checkbox-group
-            @change="onChange"
-            v-for=" (weekInfo,index) in item.week"
-            :key="index"
-            class="slider-copy"
+      <a-row>
+        <a-col :span="2">
+          <span class="slider__title">{{setSlider.infoList[index].title}}</span>
+        </a-col>
+        <a-col :span="18">
+          <a-slider
+            range
+            :min="0"
+            :max="24"
+            :step="0.5"
+            :tipFormatter="formatter"
+            :tooltipVisible="true"
+            :disabled="setSlider.disabled"
+            v-model="setSlider.infoList[index].value"
+          />
+        </a-col>
+        <a-col :span="4">
+          <a-popover
+            placement="bottomRight"
+            trigger="click"
+            class="slider-copy-bottom"
+            v-if="item.week"
           >
-            <a-checkbox :value="weekInfo.key" :disabled="weekInfo.disabled">{{weekInfo.key}}</a-checkbox>
-          </a-checkbox-group>
-        </template>
-        <span>复制到</span>
-      </a-popover>
+            <template slot="content">
+              <a-checkbox-group
+                @change="onChange"
+                v-for=" (weekInfo,index) in item.week"
+                :key="index"
+                class="slider-copy"
+              >
+                <a-checkbox :value="weekInfo.key" :disabled="weekInfo.disabled">{{weekInfo.key}}</a-checkbox>
+              </a-checkbox-group>
+            </template>
+            <span>复制到</span>
+          </a-popover>
+        </a-col>
+      </a-row>
     </div>
   </div>
 </template>

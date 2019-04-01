@@ -1,5 +1,6 @@
 .slider {
   position: relative;
+  height: 70px;
 }
 .slider .ant-slider-disabled .ant-slider-track {
   background-color: #40a9ff !important;
@@ -15,16 +16,18 @@
   color: rgba(0, 0, 0, 0.85);
 }
 .slider .ant-slider {
-  width: 890px;
+  width: 100%;
   display: inline-block;
-  margin-left: 62px;
+}
+.slider .slider-copy-bottom {
+  float: right;
+  margin-top: 10px;
+  cursor: pointer;
+  color: #40a9ff;
 }
 .slider-copy {
   display: block;
 }
 .slider-copy .ant-checkbox-wrapper {
   padding: 6px;
-}
-.slider {
-  height: 70px;
 }
