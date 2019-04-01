@@ -1,5 +1,18 @@
 <template>
-  <div>
+  <div class="st-slider">
+    <a-row class="st-slider__title-box" v-if="setSlider.infoList[0].week">
+      <a-col :span="2">时间段</a-col>
+      <a-col :span="18">
+        <ul class="st-slider__title-box-time">
+          <li class="st-slider__title-box-time-comment">00:00</li>
+          <li class="st-slider__title-box-time-06 st-slider__title-box-time-comment">06:00</li>
+          <li class="st-slider__title-box-time-12 st-slider__title-box-time-comment">12:00</li>
+          <li class="st-slider__title-box-time-18 st-slider__title-box-time-comment">18:00</li>
+          <li class="st-slider__title-box-time-24 st-slider__title-box-time-comment">24:00</li>
+        </ul>
+      </a-col>
+      <a-col :span="4" class="st-slider__title-box-operate">操作</a-col>
+    </a-row>
     <div class="slider" v-for="(item,index) in setSlider.infoList" :key="index">
       <a-row>
         <a-col :span="2">

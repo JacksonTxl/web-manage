@@ -72,7 +72,7 @@ export default {
         infoList: [
           {
             title: '周一',
-            value: [2, 13],
+            value: [0, 13],
             week: [
               {
                 key: '周一',
@@ -106,15 +106,15 @@ export default {
           },
           {
             title: '周二',
-            value: [5.5, 13]
+            value: [6, 13]
           },
           {
             title: '周三',
-            value: [5, 13.5]
+            value: [12, 13.5]
           },
           {
             title: '周四',
-            value: [5, 13]
+            value: [18, 24]
           },
           {
             title: '周五',
