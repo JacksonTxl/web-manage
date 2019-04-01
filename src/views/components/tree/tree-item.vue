@@ -8,8 +8,8 @@
         <span class="tree-switch"  @click.stop="toggle" v-if="isFolder&&level!==0">{{ isOpen ? '-' : '+' }}</span>
         <span class="tree-switch__empty" v-else-if="level!==0"></span>
         <span class="tree-name">{{ item.name }}</span>
-        <a-dropdown class="tree-opreation" placement="bottomLeft">
-          <a-button>:</a-button>
+        <a-dropdown v-if="level!==0" class="tree-opreation" placement="bottomLeft">
+          <div><st-icon type="more"></st-icon></div>
           <a-menu slot="overlay">
             <a-menu-item>
               <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">编辑</a>

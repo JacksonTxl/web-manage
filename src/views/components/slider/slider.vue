@@ -12,6 +12,24 @@
         :disabled="setSlider.disabled"
         v-model="setSlider.infoList[index].value"
       />
+      <a-popover
+        placement="bottomRight"
+        trigger="click"
+        class="slider-copy-bottom"
+        v-if="item.week"
+      >
+        <template slot="content">
+          <a-checkbox-group
+            @change="onChange"
+            v-for=" (weekInfo,index) in item.week"
+            :key="index"
+            class="slider-copy"
+          >
+            <a-checkbox :value="weekInfo.key" :disabled="weekInfo.disabled">{{weekInfo.key}}</a-checkbox>
+          </a-checkbox-group>
+        </template>
+        <span>复制到</span>
+      </a-popover>
     </div>
   </div>
 </template>
@@ -20,14 +38,18 @@ export default {
   props: ['getSlider'],
   data() {
     return {
-      setSlider: []
+      setSlider: [],
+      value: []
     }
   },
   mounted() {
     this.setSlider = this.getSlider
-    console.log(this.getSlider, 11111)
   },
   methods: {
+    onChange(checkedValues) {
+      console.log('checked = ', checkedValues)
+      console.log('value = ', this.value)
+    },
     formatter(value) {
       if (value % 1 === 0) {
         return `${value}:00`
