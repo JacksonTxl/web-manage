@@ -44,7 +44,7 @@
         <st-form-item label="工号" >
           <a-input placeholder="请输入员工工号"></a-input>
         </st-form-item>
-         <st-form-item label="证件" required>
+        <st-form-item label="证件" required>
           <a-input-group compact>
             <a-select defaultValue="Option1" style="width:20%">
               <a-select-option value="Option1">身份证</a-select-option>

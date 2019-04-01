@@ -16,9 +16,8 @@
   color: rgba(0, 0, 0, 0.85);
 }
 .slider .ant-slider {
-  width: 890px;
+  width: 100%;
   display: inline-block;
-  margin-left: 62px;
 }
 .slider .slider-copy-bottom {
   float: right;
