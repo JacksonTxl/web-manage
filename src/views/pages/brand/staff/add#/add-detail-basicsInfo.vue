@@ -89,13 +89,13 @@
         :xs="22"
         :offset="1">
         <st-form-item label="部门">
-           <a-select :v-decorator="genderRule" placeholder="请选择" @change="handleSelectChange">
+           <a-select :v-decorator="genderRule" placeholder="请选择" >
             <a-select-option value="male">男</a-select-option>
             <a-select-option value="female">女</a-select-option>
           </a-select>
         </st-form-item>
         <st-form-item label="教练等级" >
-           <a-select :v-decorator="genderRule" placeholder="请选择" @change="handleSelectChange">
+           <a-select :v-decorator="genderRule" placeholder="请选择" >
             <a-select-option value="male">男</a-select-option>
             <a-select-option value="female">女</a-select-option>
           </a-select>
@@ -104,7 +104,7 @@
           <a-date-picker v-decorator="['date-picker', dataPickerConfig]"  />
         </st-form-item>
         <st-form-item label="所属门店" >
-           <a-select :v-decorator="genderRule" placeholder="请选择" @change="handleSelectChange">
+           <a-select :v-decorator="genderRule" placeholder="请选择" >
             <a-select-option value="male">男</a-select-option>
             <a-select-option value="female">女</a-select-option>
           </a-select>
@@ -117,13 +117,13 @@
           <a-input placeholder="填写点什么吧"></a-input>
         </st-form-item>
         <st-form-item label="工作性质" >
-           <a-select :v-decorator="genderRule" placeholder="请选择" @change="handleSelectChange">
+           <a-select :v-decorator="genderRule" placeholder="请选择" >
             <a-select-option value="male">男</a-select-option>
             <a-select-option value="female">女</a-select-option>
           </a-select>
         </st-form-item>
         <st-form-item label="角色" >
-           <a-select :v-decorator="genderRule" placeholder="请选择" @change="handleSelectChange">
+           <a-select :v-decorator="genderRule" placeholder="请选择" >
             <a-select-option value="male">男</a-select-option>
             <a-select-option value="female">女</a-select-option>
           </a-select>
@@ -182,6 +182,7 @@
   </st-form>
 </template>
 <script>
+
 export default {
   name: 'StaffDetailBasics',
   data() {
@@ -215,9 +216,6 @@ export default {
           console.log('form submit: ', values)
         }
       })
-    },
-    handleSelectChange() { // select changeHandle
-
     }
   }
 }

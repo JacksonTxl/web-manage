@@ -2,7 +2,7 @@
   <st-panel app
     initial>
     <st-form labelWidth='88px'>
-      <st-form-section title='基础设置'>
+      <!-- <st-form-section title='基础设置'>
         <a-row :gutter="8">
           <a-col :lg='10'
             :offset='1'>
@@ -58,7 +58,7 @@
         <st-form-item>
           <a-input placeholder='你好'></a-input>
         </st-form-item>
-      </st-form-section>
+      </st-form-section> -->
 
     </st-form>
 
