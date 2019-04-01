@@ -1,13 +1,5 @@
 <template>
   <st-form>
-    <!-- <div class="sg-box">block 拉到本块到1144px看对齐效果</div>
-    <a-row :gutter="8">
-      <a-col :span="1"
-        v-for="n in 24"
-        :key="n">
-        <div class="sg-box">{{n}}</div>
-      </a-col>
-    </a-row> -->
     <a-row :gutter="8">
       <a-col :lg="10"
         :xs="22"
@@ -30,7 +22,7 @@
             </a-tooltip>
           </span>
           <a-checkbox-group v-model="checkbox1">
-            <a-checkbox value="1">普通员工</a-checkbox>
+            <a-checkbox value="1" >普通员工</a-checkbox>
             <a-checkbox value="2">会籍销售</a-checkbox>
             <a-checkbox value="3">团课教练</a-checkbox>
             <a-checkbox value="4">私人教练</a-checkbox>
@@ -52,8 +44,9 @@
         <st-form-item label="员工风采">
           <a-input placeholder="填写点什么吧"></a-input>
         </st-form-item>
-        <st-form-item label="对外展示">
-          <a-input placeholder="填写点什么吧"></a-input>
+        <st-form-item
+          label='对外展示'>
+          <a-checkbox value="1" :defaultChecked="defaultChecked">展示在会员端</a-checkbox>
         </st-form-item>
       </a-col>
     </a-row>
