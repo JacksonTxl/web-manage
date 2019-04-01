@@ -1,14 +1,21 @@
 import { Api } from '../api'
-import { of } from 'rxjs'
-import { delay } from 'rxjs/operators'
-
-export interface BrandInfoInput {
-  name: string
-  age: number
-}
 
 export class BrandApi extends Api {
-  getInfo(query: BrandInfoInput) {
-    return of({ name: 'agn', age: 444 }).pipe(delay(500))
+  getInfo() {
+    return this.http.get('/v1/brand')
   }
+  update(params: BrandInput) {
+    return this.http.put('/v1/brand', { params })
+  }
+}
+
+export interface BrandInput {
+  /**
+   * 品牌LOGO
+   */
+  logo_image: string
+  /**
+   * 品牌描述
+   */
+  description: string
 }

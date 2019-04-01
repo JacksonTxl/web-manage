@@ -1,5 +1,5 @@
 <template>
   <div>
-    门店列表
+    门店详情
   </div>
 </template>

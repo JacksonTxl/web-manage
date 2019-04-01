@@ -14,7 +14,8 @@
       />
       <a-popover
         placement="bottomRight"
-        style="    float: right;    margin-top: 10px;"
+        trigger="click"
+        class="slider-copy-bottom"
         v-if="item.week"
       >
         <template slot="content">
