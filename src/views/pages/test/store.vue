@@ -106,207 +106,57 @@ export default {
           },
           {
             title: '周二',
-            value: [5.5, 13],
-            week: [
-              {
-                key: '周一',
-                disabled: false
-              },
-              {
-                key: '周二',
-                disabled: false
-              },
-              {
-                key: '周三',
-                disabled: true
-              },
-              {
-                key: '周四',
-                disabled: true
-              },
-              {
-                key: '周五',
-                disabled: false
-              },
-              {
-                key: '周六',
-                disabled: true
-              },
-              {
-                key: '周日',
-                disabled: true
-              }
-            ]
+            value: [5.5, 13]
           },
           {
             title: '周三',
-            value: [5, 13.5],
-            week: [
-              {
-                key: '周一',
-                disabled: false
-              },
-              {
-                key: '周二',
-                disabled: false
-              },
-              {
-                key: '周三',
-                disabled: true
-              },
-              {
-                key: '周四',
-                disabled: true
-              },
-              {
-                key: '周五',
-                disabled: false
-              },
-              {
-                key: '周六',
-                disabled: true
-              },
-              {
-                key: '周日',
-                disabled: true
-              }
-            ]
+            value: [5, 13.5]
           },
           {
             title: '周四',
-            value: [5, 13],
-            week: [
-              {
-                key: '周一',
-                disabled: false
-              },
-              {
-                key: '周二',
-                disabled: false
-              },
-              {
-                key: '周三',
-                disabled: true
-              },
-              {
-                key: '周四',
-                disabled: true
-              },
-              {
-                key: '周五',
-                disabled: false
-              },
-              {
-                key: '周六',
-                disabled: true
-              },
-              {
-                key: '周日',
-                disabled: true
-              }
-            ]
+            value: [5, 13]
           },
           {
             title: '周五',
-            value: [9, 13],
-            week: [
-              {
-                key: '周一',
-                disabled: false
-              },
-              {
-                key: '周二',
-                disabled: false
-              },
-              {
-                key: '周三',
-                disabled: true
-              },
-              {
-                key: '周四',
-                disabled: true
-              },
-              {
-                key: '周五',
-                disabled: false
-              },
-              {
-                key: '周六',
-                disabled: true
-              },
-              {
-                key: '周日',
-                disabled: true
-              }
-            ]
+            value: [9, 13]
           },
           {
             title: '周六',
-            value: [5, 13],
-            week: [
-              {
-                key: '周一',
-                disabled: false
-              },
-              {
-                key: '周二',
-                disabled: false
-              },
-              {
-                key: '周三',
-                disabled: true
-              },
-              {
-                key: '周四',
-                disabled: true
-              },
-              {
-                key: '周五',
-                disabled: false
-              },
-              {
-                key: '周六',
-                disabled: true
-              },
-              {
-                key: '周日',
-                disabled: true
-              }
-            ]
+            value: [5, 13]
+            // week: [
+            //   {
+            //     key: '周一',
+            //     disabled: false
+            //   },
+            //   {
+            //     key: '周二',
+            //     disabled: false
+            //   },
+            //   {
+            //     key: '周三',
+            //     disabled: true
+            //   },
+            //   {
+            //     key: '周四',
+            //     disabled: true
+            //   },
+            //   {
+            //     key: '周五',
+            //     disabled: false
+            //   },
+            //   {
+            //     key: '周六',
+            //     disabled: true
+            //   },
+            //   {
+            //     key: '周日',
+            //     disabled: true
+            //   }
+            // ]
           },
           {
             title: '周日',
-            value: [6, 24],
-            week: [
-              {
-                key: '周一',
-                disabled: false
-              },
-              {
-                key: '周二',
-                disabled: false
-              },
-              {
-                key: '周三',
-                disabled: true
-              },
-              {
-                key: '周四',
-                disabled: true
-              },
-              {
-                key: '周五',
-                disabled: false
-              },
-              {
-                key: '周六',
-                disabled: true
-              },
-              {
-                key: '周日',
-                disabled: true
-              }
-            ]
+            value: [6, 24]
           }
         ]
       },
