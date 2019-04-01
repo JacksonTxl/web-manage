@@ -1,11 +1,12 @@
 <template>
-  <st-form :form="form" @submit="save">
+
+  <st-form :form="form" @submit="save" class="page-add-container">
     <a-row :gutter="8">
       <a-col :lg="10"
         :xs="22"
         :offset="1">
         <st-form-item label="员工头像">
-          <a-upload style="width:164px;display:inline-block;height:164px;"
+          <a-upload class="page-add-upload" style="width:164px;display:inline-block;height:164px;"
             type="drag">
             <st-icon type="anticon:plus"></st-icon>
           </a-upload>
@@ -32,7 +33,7 @@
         :xs="22"
         :offset="1">
         <st-form-item label="员工人脸">
-          <a-upload style="width:164px;display:inline-block;height:164px;"
+          <a-upload class="page-add-upload" style=""
             type="drag">
             <st-icon type="anticon:plus"></st-icon>
           </a-upload>
