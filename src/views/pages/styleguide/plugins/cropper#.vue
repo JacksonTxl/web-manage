@@ -26,12 +26,16 @@
 </template>
 <script>
 import Cropper from 'cropperjs'
-import { CROPPER_DEFAULT_CONFIG } from '@/constants/defaults'
-Cropper.setDefaults(CROPPER_DEFAULT_CONFIG)
+import { AppConfig } from '@/constants/config'
 
 let cropper
 export default {
   name: 'CropperDemo',
+  serviceInject() {
+    return {
+      appConfig: AppConfig
+    }
+  },
   data() {
     return {
       fileList: []
@@ -39,6 +43,7 @@ export default {
   },
   mounted() {
     const image = document.getElementById('image')
+    Cropper.setDefaults(this.appConfig.CROPPER_DEFAULT_CONFIG)
     cropper = new Cropper(image)
   },
   methods: {

@@ -9,12 +9,8 @@
 </template>
 
 <script>
-import ICountUp from 'vue-countup-v2'
 export default {
   name: 'CountupDemo',
-  components: {
-    ICountUp
-  },
   data() {
     return {
       // 开始值
