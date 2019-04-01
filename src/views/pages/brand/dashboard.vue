@@ -9,16 +9,30 @@
             <a-col :span="8">
               <st-panel initial class="page-dashboard__chart">
                 <h3 class="page-dashboard__chart-title">2月用户数（人）</h3>
+                <div class="page-dashboard__chart-figure-primary">
+                  <ICountUp :endVal="9999"/>
+                </div>
+                <div class="page-dashboard__chart-figure-secondary">
+                  <span class="color-text-light">本周</span><span class="color-text mg-l8"><ICountUp :endVal="9999"/></span>
+                </div>
               </st-panel>
             </a-col>
             <a-col :span="8">
               <st-panel initial class="page-dashboard__chart">
                 <h3 class="page-dashboard__chart-title">本月营收（元）</h3>
+                <div class="page-dashboard__chart-figure-primary"><ICountUp :endVal="9999"/></div>
+                <div class="page-dashboard__chart-figure-secondary">
+                  <span class="color-text-light">本周</span><span class="color-text mg-l8"><ICountUp :endVal="9999"/></span>
+                </div>
               </st-panel>
             </a-col>
             <a-col :span="8">
               <st-panel initial class="page-dashboard__chart">
                 <h3 class="page-dashboard__chart-title">本月消课数（节）</h3>
+                <div class="page-dashboard__chart-figure-primary"><ICountUp :endVal="9999"/></div>
+                <div class="page-dashboard__chart-figure-secondary">
+                  <span class="color-text-light">本周</span><span class="color-text mg-l8"><ICountUp :endVal="9999"/></span>
+                </div>
               </st-panel>
             </a-col>
           </a-row>
@@ -36,9 +50,11 @@
                     </div>
                   </div>
                   <div class="page-dashboard__shop-info">
-                    <div class="page-dashboard__shop-address">{{shop.shop_address}}</div>
+                    <div class="page-dashboard__shop-address">
+                      {{shop.shop_address}}
+                    </div>
                     <div class="page-dashboard__shop-tel">{{shop.shop_tel}}</div>
-                    <div>
+                    <div class="mg-t24">
                       <label class="page-dashboard__shop-label">会员</label>
                       <span>{{shop.shop_member_num}}人</span>
                       <label class="page-dashboard__shop-label mg-l40">员工</label>
@@ -62,9 +78,12 @@
             </a-col>
             <a-col :span="8">
               <st-panel initial>
-                <div class="page-dashboard__placeholder"></div>
-                <div class="page-dashboard__add-shop">
-                  <p class="page-dashboard__add-shop-text">添加门店</p>
+                <div class="page-dashboard__add-shop cursor-pointer">
+                  <div class="page-dashboard__placeholder"></div>
+                  <div class="page-dashboard__add-shop-content centered">
+                    <div class="page-dashboard__add-shop-icon"><st-icon type="add"></st-icon></div>
+                    <div class="page-dashboard__add-shop-text">添加门店</div>
+                  </div>
                 </div>
               </st-panel>
             </a-col>
@@ -92,12 +111,25 @@
           </st-panel>
         </section>
         <section class="mg-t16">
-          <a href="#" class="page-dashboard__link-item">在线咨询</a>
-          <a href="#" class="page-dashboard__link-item">成功案例</a>
-          <a href="#" class="page-dashboard__link-item">最新功能</a>
-          <a href="#" class="page-dashboard__link-item">评价与反馈</a>
-          <a href="#" class="page-dashboard__link-item">帮助中心</a>
-          <st-button block pill type="primary" icon="plus" size="large">添加门店</st-button>
+          <a href="#" class="page-dashboard__link-item">
+            在线咨询
+            <span class="page-dashboard__link-icon page-dashboard__link-icon--wechat">
+              <st-icon type="wechat"></st-icon>
+            </span>
+          </a>
+          <a href="#" class="page-dashboard__link-item">
+            最新功能
+            <span class="page-dashboard__link-icon">
+              <st-icon type="arrow-right-double"></st-icon>
+            </span>
+          </a>
+          <a href="#" class="page-dashboard__link-item">
+            帮助中心
+            <span class="page-dashboard__link-icon">
+              <st-icon type="arrow-right-double"></st-icon>
+            </span>
+          </a>
+          <st-button block pill type="primary" icon="add" size="large">添加门店</st-button>
         </section>
       </a-col>
       <!-- right end -->

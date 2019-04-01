@@ -7,6 +7,13 @@
     .fz(14px);
     .c(@text-light);
   }
+  &__chart-figure-primary {
+    .fz(32px);
+    .c(@title);
+  }
+  &__chart-figure-secondary {
+    .fz(12px);
+  }
   &__shop-img {
     .bg(#f2f2f2);
     .h(0);
@@ -34,6 +41,7 @@
     .pos-a;
     right: 0;
     top: 0;
+    opacity: .8;
   }
   &__shop-info {
     .pd(16px 24px);
@@ -42,8 +50,15 @@
   }
   &__shop-address,
   &__shop-tel {
-    .pd(4px 0);
     .tov-e;
+  }
+  &__shop-address {
+    .c(#333);
+  }
+  &__shop-tel {
+    .fz(12px);
+    .c(@text);
+    .mg-t(12px);
   }
   &__shop-label {
     .c(@text-light);
@@ -57,17 +72,23 @@
   &__placeholder {
     .w(0);
     .pd-b(60%);
-    border-bottom: 184px solid transparent;
+    border-bottom: 202px solid transparent;
   }
-  &__add-shop {
+  &__add-shop-content {
     .pos-a;
     top: 50%;
     .w(100%);
+    transform: translate(0, -50%);
+  }
+  &__add-shop-icon {
+    .fz(60px);
+    .c(#F0F0F0);
   }
   &__add-shop-text {
     .ta-c;
     .fz(16px);
     .c(@text-light);
+    .mg-t(16px);
   }
   &__link-item {
     .d-b;
@@ -77,5 +98,23 @@
     border-radius: 4px;
     .fz(14px);
     .c(@title);
+    &:after {
+      content: '';
+      .d-b;
+      clear: both;
+    }
+    &:hover {
+      .page-dashboard__link-icon {
+        .c(@link-color);
+      }
+    }
+  }
+  &__link-icon {
+    .fl-r;
+    .c(#ccc);
+    transition: all .5s;
+    &--wechat {
+      .c(#24DB5A);
+    }
   }
 }
