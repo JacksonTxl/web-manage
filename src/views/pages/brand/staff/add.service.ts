@@ -1,16 +1,20 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { StaffApi } from '@/api/staff/staff'
-// import { State, Computed, Effect, Action } from 'rx-state'
-// import { pluck } from 'rxjs/operators'
-// import { Store } from '@/services/store'
+import { StaffPubApi } from '@/api/staff/staff-pub'
+import { Store } from '@/services/store'
 
-// interface StaffState {
-//   name: string
-//   age: number
-// }
-// @Injectable()
-export class AddService {}
+@Injectable()
+export class AddService {
+  constructor(private StaffPubApi: StaffPubApi) {
 
-//   beforeRouteEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-//     next()
-//   }
+  }
+  getCounty() {
+    return this.StaffPubApi.getCountry()
+  }
+  beforeRouteEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+    console.log(to)
+    console.log(from)
+    console.log(next)
+    next()
+  }
+}
