@@ -2,8 +2,7 @@
   <a-modal
     class="bind-entity-card"
     title='绑定实体卡'
-    confirmLoading
-    @ok='onSubmit'
+    @ok='save'
     v-model='show'>
     <section>
       <div class="staff-tag">
@@ -12,6 +11,16 @@
         <st-tag class="mg-r8" type="role-staff"/>
       </div>
     </section>
+    <section>
+      <st-form :form="form" @submit="save" class="page-add-container">
+         <st-form-item label="实体卡号" >
+          <a-input placeholder="请输入实体卡号"  v-decorator="entityCardIdRule"/>
+        </st-form-item>
+         <st-form-item label="物理ID" >
+          <a-input placeholder="请将实体卡置于读卡器上" v-decorator="physicalIdRule"/>
+        </st-form-item>
+      </st-form>
+    </section>
   </a-modal>
 </template>
 <script>
@@ -19,12 +28,26 @@ export default {
   name: 'BindEntityCard',
   data() {
     return {
-      show: false
+      show: false,
+      form: this.$form.createForm(this),
+      entityCardIdRule: [
+        'entityCardId',
+        { rules: [{ required: true, message: '请输入实体卡号' }] }
+      ],
+      physicalIdRule: [
+        'physicalID',
+        { rules: [{ required: true, message: '请录入物理ID' }] }
+      ]
     }
   },
   methods: {
-    onSubmit() {
-      console.log('ok')
+    save(e) {
+      e.preventDefault()
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+        }
+      })
     }
   }
 }

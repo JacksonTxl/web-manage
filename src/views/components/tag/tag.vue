@@ -8,7 +8,8 @@ const tagMap = {
   'role-saler': '会籍销售',
   'coach-personal': '私人教练',
   'coach-team': '团课教练',
-  'shop-opening': '营业中'
+  'shop-opening': '营业中',
+  'shop-trial': '试运营'
 }
 export default {
   name: 'StTag',
