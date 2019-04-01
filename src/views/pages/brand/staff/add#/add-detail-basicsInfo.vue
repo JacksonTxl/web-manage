@@ -11,18 +11,18 @@
           </a-upload>
         </st-form-item>
         <st-form-item label="姓名" required>
-          <a-input placeholder="支持中英文、数字,不超过10个字" :v-decorator="usernameRule" />
+          <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="usernameRule" />
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact>
-            <a-select defaultValue="Option1">
+            <a-select defaultValue="Option1" style="width: 15%;">
               <a-select-option value="Option1">+86</a-select-option>
             </a-select>
-            <a-input style="width: 87%" placeholder="请输入手机号" :v-decorator="phoneRule"/>
+            <a-input style="width: 85%" placeholder="请输入手机号" v-decorator="phoneRule"/>
           </a-input-group>
         </st-form-item>
         <st-form-item label="性别" required>
-          <a-select :v-decorator="genderRule" placeholder="请选择" >
+          <a-select v-decorator="genderRule" placeholder="请选择" >
             <a-select-option value="male">男</a-select-option>
             <a-select-option value="female">女</a-select-option>
           </a-select>
@@ -38,17 +38,17 @@
           </a-upload>
         </st-form-item>
         <st-form-item label="昵称" required>
-          <a-input placeholder="请输入昵称"  :v-decorator="nicknameRule"/>
+          <a-input placeholder="请输入昵称"  v-decorator="nicknameRule"/>
         </st-form-item>
         <st-form-item label="工号" >
           <a-input placeholder="请输入员工工号"></a-input>
         </st-form-item>
-         <st-form-item label="证件" required>
+        <st-form-item label="证件" required>
           <a-input-group compact>
-            <a-select defaultValue="Option1">
+            <a-select defaultValue="Option1" style="width:20%">
               <a-select-option value="Option1">身份证</a-select-option>
             </a-select>
-            <a-input style="width: 80%" :v-decorator="idcardRule"/>
+            <a-input style="width: 80%" v-decorator="idcardRule"/>
           </a-input-group>
         </st-form-item>
       </a-col>
@@ -145,13 +145,13 @@
           <a-checkbox value="1" :defaultChecked="defaultChecked">开通系统使用权限</a-checkbox>
         </st-form-item>
         <st-form-item label="登录账号" required>
-          <a-input placeholder="6-18个字符，可使用字母、数字、下划线" :v-decorator="loginRule"></a-input>
+          <a-input placeholder="6-18个字符，可使用字母、数字、下划线" v-decorator="loginRule"></a-input>
         </st-form-item>
         <st-form-item label="登录密码" required>
-          <a-input placeholder="6-15个字符，区分大小写" :v-decorator="passwordRule"></a-input>
+          <a-input placeholder="6-15个字符，区分大小写" v-decorator="passwordRule"></a-input>
         </st-form-item>
         <st-form-item label="确认密码" required>
-          <a-input placeholder="请再次填写密码" :v-decorator="comfirmPasswordRule"></a-input>
+          <a-input placeholder="请再次填写密码" v-decorator="comfirmPasswordRule"></a-input>
         </st-form-item>
       </a-col>
       <a-col :lg="10"
@@ -186,18 +186,18 @@ export default {
   data() {
     return {
       defaultChecked: true, // checkbox 默认选中
-      usernameRule: ['name', { rules: [{ required: true, message: '请填写姓名' }] }],
-      nicknameRule: ['name', { rules: [{ required: true, message: '请填写昵称' }] }],
-      idcardRule: ['idcard', { rules: [{ required: true, message: '请填写正确的身份证号', pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/ }] }],
+      usernameRule: ['username', { rules: [{ required: true, message: '请填写姓名' }] }],
+      nicknameRule: ['nickname', { rules: [{ required: true, message: '请填写昵称' }] }],
       genderRule: ['gender', { rules: [{ required: true, message: '请选择你的性别' }] }], // 角色select rule
+      phoneRule: ['phone', { rules: [{ required: true, message: '手机号格式错误', pattern: /^1[34578]\d{9}$/ }] }],
+      idcardRule: ['idcard', { rules: [{ required: true, message: '请填写正确的身份证号', pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/ }] }],
       dataPickerConfig: { // data picker config
         rules: [{ type: 'object', required: true, message: '请选择时间' }]
       },
       form: this.$form.createForm(this),
-      phoneRule: [{ rules: [{ required: true, message: '手机号格式错误', pattern: /^1[34578]\d{9}$/ }] }],
-      loginRule: [{ rule: [{ required: true, message: '请输入登录账号' }] }],
-      passwordRule: [{ rule: [{ required: true, message: '请输入登录密码' }] }],
-      comfirmPasswordRule: [{ rule: [{ required: true, message: '请输入确认密码' }] }]
+      loginRule: ['login', { rules: [{ required: true, message: '请输入登录账号' }] }],
+      passwordRule: ['password', { rules: [{ required: true, message: '请输入登录密码' }] }],
+      comfirmPasswordRule: ['confirmPassword', { rules: [{ required: true, message: '请输入确认密码' }] }]
     }
   },
   methods: {
