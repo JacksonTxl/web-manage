@@ -6,6 +6,7 @@ import VueRx from 'vue-rx'
 import { modalRouter } from './modal-router/index'
 import App from './views/App.vue'
 import FullCalendar from 'vue-full-calendar'
+import ICountUp from 'vue-countup-v2'
 // @ts-ignore
 import Viewer from 'v-viewer'
 // 默认样式加载
@@ -17,6 +18,8 @@ Vue.use(Antd)
 Vue.use(VueRx)
 Vue.use(FullCalendar)
 Vue.use(Viewer)
+
+Vue.component(ICountUp.name, ICountUp)
 
 const app = new Vue({
   el: '#app',
