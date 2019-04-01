@@ -1,0 +1,30 @@
+.slider {
+  position: relative;
+}
+.slider .ant-slider-disabled .ant-slider-track {
+  background-color: #40a9ff !important;
+}
+.slider .ant-slider-disabled .ant-slider-handle {
+  border-color: #1890ff !important;
+}
+.slider__title {
+  position: absolute;
+  font-size: 14px;
+  left: 0;
+  top: 10px;
+  color: rgba(0, 0, 0, 0.85);
+}
+.slider .ant-slider {
+  width: 890px;
+  display: inline-block;
+  margin-left: 62px;
+}
+.slider-copy {
+  display: block;
+}
+.slider-copy .ant-checkbox-wrapper {
+  padding: 6px;
+}
+.slider {
+  height: 70px;
+}
