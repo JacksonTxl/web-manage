@@ -26,9 +26,16 @@
 </template>
 <script>
 import Cropper from 'cropperjs'
+import { AppConfig } from '@/constants/config'
+
 let cropper
 export default {
   name: 'CropperDemo',
+  serviceInject() {
+    return {
+      appConfig: AppConfig
+    }
+  },
   data() {
     return {
       fileList: []
@@ -36,18 +43,8 @@ export default {
   },
   mounted() {
     const image = document.getElementById('image')
-    cropper = new Cropper(image, {
-      // viewMode 定义 cropper 的视图模式 默认：0；可以使用0, 1, 2, 3
-      viewMode: 1,
-      aspectRatio: 16 / 9,
-      preview: '#crop_preview',
-      // responsive 在调整窗口大小的时候重新渲染 cropper，默认为 true
-      responsive: false,
-      // 是否允许拖动图片
-      movable: false,
-      // The minimum width of the crop box
-      minCropBoxWidth: 100
-    })
+    Cropper.setDefaults(this.appConfig.CROPPER_DEFAULT_CONFIG)
+    cropper = new Cropper(image)
   },
   methods: {
     beforeUpload(file) {

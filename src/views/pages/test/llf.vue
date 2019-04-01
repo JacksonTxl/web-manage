@@ -1,95 +1,9 @@
 <template>
-  <st-panel app>
-    <div class="page-test-llf">
-      <st-form>
-        <a-row :gutter='8'>
-          <a-col :offset='1'
-            :lg='10'
-            :xs='20'>
-            <st-form-item label='测试1'
-              offset='1'
-              lg='10'>
-              <a-input style='width:100%'
-                placeholder='here'></a-input>
-            </st-form-item>
-          </a-col>
-          <a-col :offset='1'
-            :lg='10'
-            :xs='20'>
-            <st-form-item label='你好2'
-              offset='1'
-              lg='10'>
-              <a-input placeholder='here'></a-input>
-            </st-form-item>
-          </a-col>
-          <a-col :offset='1'
-            :lg='10'
-            :xs='20'>
-            <st-form-item label='你好3'
-              offset='1'
-              lg='10'>
-              <a-input placeholder='here'></a-input>
-            </st-form-item>
-          </a-col>
-          <a-col :offset='1'
-            :lg='10'
-            :xs='20'>
-            <st-form-item label='你好4'
-              offset='1'
-              lg='10'>
-              <a-input placeholder='here'></a-input>
-            </st-form-item>
-          </a-col>
-          <a-col :offset='1'
-            :lg='10'
-            :xs='20'>
-            <st-form-item label='你好5'
-              offset='1'
-              lg='10'>
-              <a-input placeholder='here'></a-input>
-            </st-form-item>
-          </a-col>
-          <a-col :offset='1'
-            :lg='10'
-            :xs='20'>
-            <st-form-item label='你好6'
-              offset='1'
-              lg='10'>
-              <a-input placeholder='here'></a-input>
-            </st-form-item>
-          </a-col>
-          <a-col :offset='1'
-            :lg='10'
-            :xs='20'>
-            <st-form-item label='你好7'
-              offset='1'
-              lg='10'>
-              <a-input placeholder='here'></a-input>
-            </st-form-item>
-          </a-col>
-          <a-col :offset='1'
-            :lg='10'
-            :xs='20'>
-            <st-form-item label='你好8'
-              offset='1'
-              lg='10'>
-              <a-input placeholder='here'></a-input>
-            </st-form-item>
-          </a-col>
-          <a-col :offset='1'
-            :lg='10'
-            :xs='20'>
-            <st-form-item class='mg-b0'
-              label='你好9'
-              offset='1'
-              lg='10'>
-              <a-input placeholder='here'></a-input>
-            </st-form-item>
-          </a-col>
-        </a-row>
-
-      </st-form>
+  <st-panel app title="这是一个标题">
+    <div slot="actions">
+      <st-button type="primary">操作</st-button>
     </div>
+    Hello
   </st-panel>
 </template>
 

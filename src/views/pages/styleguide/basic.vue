@@ -149,20 +149,20 @@
     </section>
 
     <p class="mg-t24">
-      st-info ，如需改变如三栏宽度可传labelWidth= 40*3 + 16 =136px
+      st-info ，可定制 labelWidth 和 labelGutter,
     </p>
     <section class="sg-app-content">
       <st-panel>
         <a-row :gutter="8">
           <a-col :offset="1" :lg="10">
-            <st-info labelWidth="136px">
+            <st-info labelWidth="136px" labelGutter="16px">
               <st-info-item label="会员卡名称">
                 万晋健身房年卡
               </st-info-item>
               <st-info-item label="所属会员">
                 会员名称
               </st-info-item>
-              <st-info-item label="允许转让">
+              <st-info-item label="允许转让" label-gutter="80px">
                 允许
               </st-info-item>
               <st-info-item label="类型">
@@ -177,7 +177,7 @@
             </st-info>
           </a-col>
           <a-col :offset="1" :lg="10">
-            <st-info labelWidth="136px">
+            <st-info labelWidth="136px" labelGutter="16px">
               <st-info-item label="会员卡名称">
                 万晋健身房年卡
               </st-info-item>

@@ -4,7 +4,6 @@
     <h4>业务标签类</h4>
     <section flex="cross:center">
       <st-tag type="coach-personal" />
-      这是一段文字
       <st-tag type="coach-team" />
       <st-tag type="role-staff" />
       <st-tag type="role-saler" />

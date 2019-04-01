@@ -10,7 +10,8 @@
   display: flex;
 }
 .pages-test-store__img-box {
-  width: 332px;
+  width: 320px;
+  height: 200px;
   display: inline-block;
   position: relative;
 }
@@ -25,24 +26,22 @@
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
 }
-.pages-test-store__bg-img {
-  margin: 12px 0 0 12px;
-}
 .pages-test-store__sign-icon {
   position: absolute;
-  width: 48px;
+  width: 76px;
   height: 24px;
-  background: rgba(24, 144, 255, 0.65);
-  border-radius: 4px 0px 16px 0px;
-  top: 0;
-  left: 0;
+  background: rgba(0, 0, 0, 0.65);
+  border-radius: 8px 0px 4px 0px;
+  bottom: 0;
+  right: 0;
   text-align: center;
   line-height: 24px;
   font-size: 12px;
-  font-family: PingFangSC-Regular;
   font-weight: 400;
   color: #ffffff;
-  line-height: 22px;
+}
+.pages-test-store__sign-icon span {
+  margin-right: 4px;
 }
 .pages-test-store__slider {
   margin: 25px 0;
@@ -67,7 +66,6 @@
 .pages-test-store__info-title h2 {
   display: inline-block;
   font-size: 18px;
-  font-family: PingFangSC-Medium;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.85);
   vertical-align: middle;
@@ -76,7 +74,29 @@
 .pages-test-store__info-list {
   margin-bottom: 16px;
   font-size: 14px;
+  display: flex;
+  flex-direction: row;
 }
 .pages-test-store__info-list span:nth-child(2) {
   padding-left: 16px;
+}
+.pages-test-store__info-list a {
+  padding-left: 14px;
+}
+.pages-test-store__info-facilities {
+  margin-top: 10px;
+}
+.pages-test-store__info-facilities-list {
+  display: flex;
+}
+.pages-test-store__info-facilities-list div {
+  margin: 0 21px;
+  text-align: center;
+}
+.pages-test-store__info-facilities-list div p {
+  font-size: 14px;
+  padding-top: 4px;
+}
+.pages-test-store__time {
+  margin-bottom: 40px;
 }
