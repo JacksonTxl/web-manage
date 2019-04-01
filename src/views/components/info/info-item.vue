@@ -1,8 +1,12 @@
 <template>
   <div class="st-info-item">
-    <div class="st-info-item__label"
-      :style="{width:computedLabelWidth}">{{label}}</div>
-    <div class="st-info-item__content">
+    <div class="st-info-item__label" :style="{ width: computedLabelWidth }">
+      {{ label }}
+    </div>
+    <div
+      class="st-info-item__content"
+      :style="{ paddingLeft: computedLabelGutter }"
+    >
       <slot></slot>
     </div>
   </div>
@@ -16,7 +20,17 @@ export default {
       type: String,
       default: ''
     },
+    /**
+     * label 宽度 css单位
+     */
     labelWidth: {
+      type: String,
+      default: ''
+    },
+    /**
+     *label 与内容区的间距 css单位
+     */
+    labelGutter: {
       type: String,
       default: ''
     }
@@ -27,6 +41,9 @@ export default {
   computed: {
     computedLabelWidth() {
       return this.labelWidth || this.stInfoConfig.labelWidth || '88px'
+    },
+    computedLabelGutter() {
+      return this.labelGutter || this.stInfoConfig.labelGutter || '24px'
     }
   }
 }

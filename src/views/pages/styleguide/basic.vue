@@ -155,7 +155,7 @@
       <st-panel>
         <a-row :gutter="8">
           <a-col :offset="1" :lg="10">
-            <st-info labelWidth="136px">
+            <st-info labelWidth="136px" labelGutter="16px">
               <st-info-item label="会员卡名称">
                 万晋健身房年卡
               </st-info-item>
@@ -177,7 +177,7 @@
             </st-info>
           </a-col>
           <a-col :offset="1" :lg="10">
-            <st-info labelWidth="136px">
+            <st-info labelWidth="136px" labelGutter="16px">
               <st-info-item label="会员卡名称">
                 万晋健身房年卡
               </st-info-item>
