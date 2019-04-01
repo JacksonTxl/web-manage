@@ -102,7 +102,7 @@
       </a-row>
       <a-row type="flex" justify="center" align="middle">
         <a-col>
-          <st-button type="primary">32px</st-button>
+          <st-button type="primary">提交</st-button>
         </a-col>
       </a-row>
     </st-form>

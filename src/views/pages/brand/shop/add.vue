@@ -39,14 +39,14 @@
         <a-col offset="1" :lg="23">
           <st-form-item label="服务设施">
             <st-checkbox-facility-group v-model="facilityArr">
-              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="home" value="1"></st-checkbox-facility-item>
-              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="home" value="2"></st-checkbox-facility-item>
-              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="home" value="3"></st-checkbox-facility-item>
-              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="home" value="4"></st-checkbox-facility-item>
-              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="home" value="5"></st-checkbox-facility-item>
-              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="home" value="6"></st-checkbox-facility-item>
-              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="home" value="7"></st-checkbox-facility-item>
-              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="home" value="8"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="WIFI" value="1"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="shower" value="2"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="snow" value="3"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="nosmoking" value="4"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="heating" value="5"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="medical" value="6"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="park" value="7"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="energy" value="8"></st-checkbox-facility-item>
             </st-checkbox-facility-group>
           </st-form-item>
         </a-col>
@@ -102,7 +102,7 @@
       </a-row>
       <a-row type="flex" justify="center" align="middle">
         <a-col>
-          <st-button type="primary">32px</st-button>
+          <st-button type="primary">提交</st-button>
         </a-col>
       </a-row>
     </st-form>
