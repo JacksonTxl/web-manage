@@ -13,16 +13,25 @@
         :xs="22"
         :offset="1">
         <st-form-item label="毕业学校">
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-input placeholder="支持中英文、数字,不超过10个字"></a-input>
         </st-form-item>
         <st-form-item label="学历">
-          <a-input placeholder="填写点什么吧"></a-input>
+           <a-select :v-decorator="genderRule" placeholder="请选择学历" @change="handleSelectChange">
+            <a-select-option value="male">男</a-select-option>
+            <a-select-option value="female">女</a-select-option>
+          </a-select>
         </st-form-item>
         <st-form-item label="生日">
-          <a-input placeholder="填写点什么吧"></a-input>
+           <a-select :v-decorator="genderRule" placeholder="请选择" @change="handleSelectChange">
+            <a-select-option value="male">男</a-select-option>
+            <a-select-option value="female">女</a-select-option>
+          </a-select>
         </st-form-item>
         <st-form-item label="婚姻状况">
-          <a-input placeholder="填写点什么吧"></a-input>
+           <a-select :v-decorator="genderRule" placeholder="请选择" @change="handleSelectChange">
+            <a-select-option value="male">男</a-select-option>
+            <a-select-option value="female">女</a-select-option>
+          </a-select>
         </st-form-item>
       </a-col>
       <a-col :lg="10"
@@ -38,7 +47,10 @@
           <a-input placeholder="填写点什么吧"></a-input>
         </st-form-item>
         <st-form-item label="子女状态" >
-          <a-input placeholder="填写点什么吧"></a-input>
+           <a-select :v-decorator="genderRule" placeholder="请选择" @change="handleSelectChange">
+            <a-select-option value="male">男</a-select-option>
+            <a-select-option value="female">女</a-select-option>
+          </a-select>
         </st-form-item>
       </a-col>
     </a-row>
@@ -48,7 +60,7 @@
         :xs="22"
         :offset="1">
         <st-form-item label="家庭住址">
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-input placeholder="省市联动记者换"></a-input>
         </st-form-item>
         <st-form-item label="详细住址">
           <a-input placeholder="填写点什么吧"></a-input>

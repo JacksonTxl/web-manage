@@ -1,13 +1,5 @@
 <template>
-  <st-form>
-    <!-- <div class="sg-box">block 拉到本块到1144px看对齐效果</div> -->
-    <!-- <a-row :gutter="8">
-      <a-col :span="1"
-        v-for="n in 24"
-        :key="n">
-        <div class="sg-box">{{n}}</div>
-      </a-col>
-    </a-row> -->
+  <st-form :form="form" @submit="save">
     <a-row :gutter="8">
       <a-col :lg="10"
         :xs="22"
@@ -19,18 +11,21 @@
           </a-upload>
         </st-form-item>
         <st-form-item label="姓名" required>
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-input placeholder="支持中英文、数字,不超过10个字" :v-decorator="usernameRule" />
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact>
             <a-select defaultValue="Option1">
               <a-select-option value="Option1">+86</a-select-option>
             </a-select>
-            <a-input style="width: 50%" defaultValue="input content" />
+            <a-input style="width: 87%" placeholder="请输入手机号" :v-decorator="phoneRule"/>
           </a-input-group>
         </st-form-item>
         <st-form-item label="性别" required>
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-select :v-decorator="genderRule" placeholder="请选择" >
+            <a-select-option value="male">男</a-select-option>
+            <a-select-option value="female">女</a-select-option>
+          </a-select>
         </st-form-item>
       </a-col>
       <a-col :lg="10"
@@ -43,13 +38,18 @@
           </a-upload>
         </st-form-item>
         <st-form-item label="昵称" required>
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-input placeholder="请输入昵称"  :v-decorator="nicknameRule"/>
         </st-form-item>
         <st-form-item label="工号" >
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-input placeholder="请输入员工工号"></a-input>
         </st-form-item>
-        <st-form-item label="证件" >
-          <a-input placeholder="填写点什么吧"></a-input>
+         <st-form-item label="证件" required>
+          <a-input-group compact>
+            <a-select defaultValue="Option1">
+              <a-select-option value="Option1">身份证</a-select-option>
+            </a-select>
+            <a-input style="width: 80%" :v-decorator="idcardRule"/>
+          </a-input-group>
         </st-form-item>
       </a-col>
     </a-row>
@@ -73,8 +73,8 @@
               <st-icon type="anticon:question-circle-o" />
             </a-tooltip>
           </span>
-          <a-checkbox-group v-model="checkbox1">
-            <a-checkbox value="1">普通员工</a-checkbox>
+          <a-checkbox-group >
+            <a-checkbox value="1" :defaultChecked="defaultChecked">普通员工</a-checkbox>
             <a-checkbox value="2">会籍销售</a-checkbox>
             <a-checkbox value="3">团课教练</a-checkbox>
             <a-checkbox value="4">私人教练</a-checkbox>
@@ -88,16 +88,25 @@
         :xs="22"
         :offset="1">
         <st-form-item label="部门">
-          <a-input placeholder="填写点什么吧"></a-input>
+           <a-select :v-decorator="genderRule" placeholder="请选择" @change="handleSelectChange">
+            <a-select-option value="male">男</a-select-option>
+            <a-select-option value="female">女</a-select-option>
+          </a-select>
         </st-form-item>
         <st-form-item label="教练等级" >
-          <a-input placeholder="填写点什么吧"></a-input>
+           <a-select :v-decorator="genderRule" placeholder="请选择" @change="handleSelectChange">
+            <a-select-option value="male">男</a-select-option>
+            <a-select-option value="female">女</a-select-option>
+          </a-select>
         </st-form-item>
         <st-form-item label="入职时间" >
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-date-picker v-decorator="['date-picker', dataPickerConfig]"  />
         </st-form-item>
         <st-form-item label="所属门店" >
-          <a-input placeholder="填写点什么吧"></a-input>
+           <a-select :v-decorator="genderRule" placeholder="请选择" @change="handleSelectChange">
+            <a-select-option value="male">男</a-select-option>
+            <a-select-option value="female">女</a-select-option>
+          </a-select>
         </st-form-item>
       </a-col>
       <a-col :lg="10"
@@ -107,10 +116,16 @@
           <a-input placeholder="填写点什么吧"></a-input>
         </st-form-item>
         <st-form-item label="工作性质" >
-          <a-input placeholder="填写点什么吧"></a-input>
+           <a-select :v-decorator="genderRule" placeholder="请选择" @change="handleSelectChange">
+            <a-select-option value="male">男</a-select-option>
+            <a-select-option value="female">女</a-select-option>
+          </a-select>
         </st-form-item>
         <st-form-item label="角色" >
-          <a-input placeholder="填写点什么吧"></a-input>
+           <a-select :v-decorator="genderRule" placeholder="请选择" @change="handleSelectChange">
+            <a-select-option value="male">男</a-select-option>
+            <a-select-option value="female">女</a-select-option>
+          </a-select>
         </st-form-item>
       </a-col>
     </a-row>
@@ -127,16 +142,16 @@
         :xs="22"
         :offset="1">
         <st-form-item label="系统权限">
-          <a-checkbox value="1">开通系统使用权限</a-checkbox>
+          <a-checkbox value="1" :defaultChecked="defaultChecked">开通系统使用权限</a-checkbox>
         </st-form-item>
         <st-form-item label="登录账号" required>
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-input placeholder="6-18个字符，可使用字母、数字、下划线" :v-decorator="loginRule"></a-input>
         </st-form-item>
         <st-form-item label="登录密码" required>
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-input placeholder="6-15个字符，区分大小写" :v-decorator="passwordRule"></a-input>
         </st-form-item>
         <st-form-item label="确认密码" required>
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-input placeholder="请再次填写密码" :v-decorator="comfirmPasswordRule"></a-input>
         </st-form-item>
       </a-col>
       <a-col :lg="10"
@@ -156,7 +171,7 @@
       <a-col :offset="1">
         <st-form-item labelOffset>
           <st-button type="primary"
-            ghost>保存</st-button>
+            ghost html-type="submit">保存</st-button>
           <st-button class="mg-l16"
             @click="goNext"
             type="primary">继续 填写</st-button>
@@ -168,6 +183,23 @@
 <script>
 export default {
   name: 'StaffDetailBasics',
+  data() {
+    return {
+      defaultChecked: true, // checkbox 默认选中
+      usernameRule: ['name', { rules: [{ required: true, message: '请填写姓名' }] }],
+      nicknameRule: ['name', { rules: [{ required: true, message: '请填写昵称' }] }],
+      idcardRule: ['idcard', { rules: [{ required: true, message: '请填写正确的身份证号', pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/ }] }],
+      genderRule: ['gender', { rules: [{ required: true, message: '请选择你的性别' }] }], // 角色select rule
+      dataPickerConfig: { // data picker config
+        rules: [{ type: 'object', required: true, message: '请选择时间' }]
+      },
+      form: this.$form.createForm(this),
+      phoneRule: [{ rules: [{ required: true, message: '手机号格式错误', pattern: /^1[34578]\d{9}$/ }] }],
+      loginRule: [{ rule: [{ required: true, message: '请输入登录账号' }] }],
+      passwordRule: [{ rule: [{ required: true, message: '请输入登录密码' }] }],
+      comfirmPasswordRule: [{ rule: [{ required: true, message: '请输入确认密码' }] }]
+    }
+  },
   methods: {
     goNext() {
       let data = {
@@ -175,7 +207,15 @@ export default {
       }
       this.$emit('goNext', data)
     },
-    save() {
+    save(e) { // form submit
+      e.preventDefault()
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('form submit: ', values)
+        }
+      })
+    },
+    handleSelectChange() { // select changeHandle
 
     }
   }

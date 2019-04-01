@@ -52,8 +52,7 @@
         </div>
       </div>
     </div>
-
-    <div>营业时间</div>
+    <div class="pages-test-store__time">营业时间</div>
     <slider class="pages-test-store__slider" :getSlider="getSlider"></slider>
   </div>
 </template>
@@ -69,35 +68,245 @@ export default {
       disabled: true,
       sliderArr: [],
       getSlider: {
-        disabled: false,
+        disabled: true,
         infoList: [
           {
             title: '周一',
-            value: [5, 13]
+            value: [2, 13],
+            week: [
+              {
+                key: '周一',
+                disabled: false
+              },
+              {
+                key: '周二',
+                disabled: false
+              },
+              {
+                key: '周三',
+                disabled: true
+              },
+              {
+                key: '周四',
+                disabled: true
+              },
+              {
+                key: '周五',
+                disabled: false
+              },
+              {
+                key: '周六',
+                disabled: true
+              },
+              {
+                key: '周日',
+                disabled: true
+              }
+            ]
           },
           {
             title: '周二',
-            value: [5.5, 13]
+            value: [5.5, 13],
+            week: [
+              {
+                key: '周一',
+                disabled: false
+              },
+              {
+                key: '周二',
+                disabled: false
+              },
+              {
+                key: '周三',
+                disabled: true
+              },
+              {
+                key: '周四',
+                disabled: true
+              },
+              {
+                key: '周五',
+                disabled: false
+              },
+              {
+                key: '周六',
+                disabled: true
+              },
+              {
+                key: '周日',
+                disabled: true
+              }
+            ]
           },
           {
             title: '周三',
-            value: [5, 13.5]
+            value: [5, 13.5],
+            week: [
+              {
+                key: '周一',
+                disabled: false
+              },
+              {
+                key: '周二',
+                disabled: false
+              },
+              {
+                key: '周三',
+                disabled: true
+              },
+              {
+                key: '周四',
+                disabled: true
+              },
+              {
+                key: '周五',
+                disabled: false
+              },
+              {
+                key: '周六',
+                disabled: true
+              },
+              {
+                key: '周日',
+                disabled: true
+              }
+            ]
           },
           {
             title: '周四',
-            value: [5, 13]
+            value: [5, 13],
+            week: [
+              {
+                key: '周一',
+                disabled: false
+              },
+              {
+                key: '周二',
+                disabled: false
+              },
+              {
+                key: '周三',
+                disabled: true
+              },
+              {
+                key: '周四',
+                disabled: true
+              },
+              {
+                key: '周五',
+                disabled: false
+              },
+              {
+                key: '周六',
+                disabled: true
+              },
+              {
+                key: '周日',
+                disabled: true
+              }
+            ]
           },
           {
             title: '周五',
-            value: [9, 13]
+            value: [9, 13],
+            week: [
+              {
+                key: '周一',
+                disabled: false
+              },
+              {
+                key: '周二',
+                disabled: false
+              },
+              {
+                key: '周三',
+                disabled: true
+              },
+              {
+                key: '周四',
+                disabled: true
+              },
+              {
+                key: '周五',
+                disabled: false
+              },
+              {
+                key: '周六',
+                disabled: true
+              },
+              {
+                key: '周日',
+                disabled: true
+              }
+            ]
           },
           {
             title: '周六',
-            value: [5, 13]
+            value: [5, 13],
+            week: [
+              {
+                key: '周一',
+                disabled: false
+              },
+              {
+                key: '周二',
+                disabled: false
+              },
+              {
+                key: '周三',
+                disabled: true
+              },
+              {
+                key: '周四',
+                disabled: true
+              },
+              {
+                key: '周五',
+                disabled: false
+              },
+              {
+                key: '周六',
+                disabled: true
+              },
+              {
+                key: '周日',
+                disabled: true
+              }
+            ]
           },
           {
             title: '周日',
-            value: [0, 24]
+            value: [6, 24],
+            week: [
+              {
+                key: '周一',
+                disabled: false
+              },
+              {
+                key: '周二',
+                disabled: false
+              },
+              {
+                key: '周三',
+                disabled: true
+              },
+              {
+                key: '周四',
+                disabled: true
+              },
+              {
+                key: '周五',
+                disabled: false
+              },
+              {
+                key: '周六',
+                disabled: true
+              },
+              {
+                key: '周日',
+                disabled: true
+              }
+            ]
           }
         ]
       },
