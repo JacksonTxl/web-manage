@@ -80,7 +80,7 @@
               <st-panel initial>
                 <div class="page-dashboard__add-shop cursor-pointer">
                   <div class="page-dashboard__placeholder"></div>
-                  <div class="page-dashboard__add-shop-content centered">
+                  <div class="page-dashboard__add-shop-content ta-c">
                     <div class="page-dashboard__add-shop-icon"><st-icon type="add"></st-icon></div>
                     <div class="page-dashboard__add-shop-text">添加门店</div>
                   </div>
@@ -88,7 +88,7 @@
               </st-panel>
             </a-col>
           </a-row>
-          <p class="centered mg-t24">
+          <p class="ta-c mg-t24">
             <a-pagination showSizeChanger :defaultCurrent="1" :total="500" @change="onPageChange" />
           </p>
         </section>
