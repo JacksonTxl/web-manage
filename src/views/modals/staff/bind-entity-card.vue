@@ -1,5 +1,7 @@
 <template>
-  <a-modal title='绑定实体卡'
+  <a-modal
+    class="bind-entity-card"
+    title='绑定实体卡'
     confirmLoading
     @ok='onSubmit'
     v-model='show'>

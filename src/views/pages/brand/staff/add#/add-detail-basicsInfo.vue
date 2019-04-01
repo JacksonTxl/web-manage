@@ -15,10 +15,10 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact>
-            <a-select defaultValue="Option1">
+            <a-select style="width:20%" defaultValue="Option1">
               <a-select-option value="Option1">+86</a-select-option>
             </a-select>
-            <a-input style="width: 87%" placeholder="请输入手机号" :v-decorator="phoneRule"/>
+            <a-input style="width: 80%" placeholder="请输入手机号" v-decorator="phoneRule"/>
           </a-input-group>
         </st-form-item>
         <st-form-item label="性别" required>
@@ -43,7 +43,7 @@
         <st-form-item label="工号" >
           <a-input placeholder="请输入员工工号"></a-input>
         </st-form-item>
-         <st-form-item label="证件" required>
+        <st-form-item label="证件" required>
           <a-input-group compact>
             <a-select defaultValue="Option1">
               <a-select-option value="Option1">身份证</a-select-option>
@@ -194,7 +194,7 @@ export default {
         rules: [{ type: 'object', required: true, message: '请选择时间' }]
       },
       form: this.$form.createForm(this),
-      phoneRule: [{ rules: [{ required: true, message: '手机号格式错误', pattern: /^1[34578]\d{9}$/ }] }],
+      phoneRule: ['phone', { rules: [{ required: true, message: '手机号格式错误', pattern: /^1[34578]\d{9}$/ }] }],
       loginRule: [{ rule: [{ required: true, message: '请输入登录账号' }] }],
       passwordRule: [{ rule: [{ required: true, message: '请输入登录密码' }] }],
       comfirmPasswordRule: [{ rule: [{ required: true, message: '请输入确认密码' }] }]
