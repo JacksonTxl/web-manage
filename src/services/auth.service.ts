@@ -23,7 +23,7 @@ export class AuthService extends Store<AuthState> implements RouteGuard {
   constructor(private router: ServiceRouter, private appConfig: AppConfig) {
     super()
     this.state$ = new State({
-      token: Cookie.get(this.appConfig.TOKEN_NAME) || ''
+      token: Cookie.get(this.appConfig.TOKEN_NAME) || 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhcGktc2Fhcy1kZXYuc3R5ZC5jbiIsImlhdCI6MTU1NDExMjg1OSwiYXVkIjoiIiwianRpIjoiaEg2M1JKV3ExdlpWeGNLd28zQUZyVGprT1JiQXZmZlQiLCJuYmYiOjE1NTQxMTI4NDksImV4cCI6MTU1NDExNDY1OSwibG9naW5fdHlwZSI6MSwiaXNfbXVsdGkiOjAsInN0YWZmX2lkIjoxfQ.lYsUxvsF_l2JfXPDwLT_DzqCtA-7XfC9B0oSDGokivo'
     })
     this.token$ = new Computed(this.state$.pipe(pluck('token')))
     this.token$.subscribe(token => {

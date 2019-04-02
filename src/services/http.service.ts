@@ -99,8 +99,8 @@ export class HttpService {
   get appHeaders() {
     return {
       token: this.auth.tokenSnapshot,
-      'App-Id': '123',
-      'App-Version': '1123',
+      'app-id': '11111',
+      'app-version': '11111',
       'Content-Type': 'application/json;charset=UTF-8;'
     }
   }

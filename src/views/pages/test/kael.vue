@@ -1,45 +1,91 @@
 <template>
-  <section class="page-test-kael">
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    选择{{JSON.stringify(arr)}}：
-    <st-checkbox-facility-group v-model="arr" :disabled="false" @change="gc">
-      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="" :value="1" :disabled="true" @change="kael"></st-checkbox-facility-item>
-      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="" :value="2" :disabled="false" @change="kael"></st-checkbox-facility-item>
-      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="" :value="3" :disabled="false" @change="kael"></st-checkbox-facility-item>
-      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="4" :disabled="false" @change="kael"></st-checkbox-facility-item>
-      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="5" :disabled="false" @change="kael"></st-checkbox-facility-item>
-      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="6" :disabled="false" @change="kael"></st-checkbox-facility-item>
-      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="7" :disabled="false" @change="kael"></st-checkbox-facility-item>
-      <st-checkbox-facility-item style="margin-right:20px" icon="home" label="b" :value="8" :disabled="false" @change="kael"></st-checkbox-facility-item>
-      <st-checkbox-facility-item icon="home" label="ccc9" :value="9" :disabled="false" @change="kael"></st-checkbox-facility-item>
-    </st-checkbox-facility-group>
-  </section>
+  <a-form :form="form">
+    <a-form-item
+      :label-col="formItemLayout.labelCol"
+      :wrapper-col="formItemLayout.wrapperCol"
+      label="Name"
+      required
+    >
+      <a-input
+        v-decorator="[
+          'username',
+          {rules: [{ required: true, message: 'Please input your name' }]}
+        ]"
+        placeholder="Please input your name"
+      />
+    </a-form-item>
+    <a-form-item
+      :label-col="formItemLayout.labelCol"
+      :wrapper-col="formItemLayout.wrapperCol"
+      label="Nickname"
+    >
+      <a-input
+        v-decorator="[
+          'nickname',
+          {rules: [{ required: checkNick, message: 'Please input your nickname' }]}
+        ]"
+        placeholder="Please input your nickname"
+      />
+    </a-form-item>
+    <a-form-item
+      :label-col="formTailLayout.labelCol"
+      :wrapper-col="formTailLayout.wrapperCol"
+    >
+      <a-checkbox
+        :checked="checkNick"
+        @change="handleChange"
+      >
+        Nickname is required
+      </a-checkbox>
+    </a-form-item>
+    <a-form-item
+      :label-col="formTailLayout.labelCol"
+      :wrapper-col="formTailLayout.wrapperCol"
+    >
+      <a-button
+        type="primary"
+        @click="check"
+      >
+        Check
+      </a-button>
+    </a-form-item>
+  </a-form>
 </template>
+
 <script>
+const formItemLayout = {
+  labelCol: { span: 4 },
+  wrapperCol: { span: 8 }
+}
+const formTailLayout = {
+  labelCol: { span: 4 },
+  wrapperCol: { span: 8, offset: 4 }
+}
 export default {
   data() {
     return {
-      arr: [1]
+      checkNick: false,
+      formItemLayout,
+      formTailLayout,
+      form: this.$form.createForm(this)
     }
   },
   methods: {
-    kael(data) {
-      console.log(data)
+    check() {
+      this.form.validateFields(
+        (err) => {
+          if (!err) {
+            console.info('success')
+          }
+        }
+      )
     },
-    gc(data) {
-      console.log(data)
+    handleChange(e) {
+      this.checkNick = e.target.checked
+      this.$nextTick(() => {
+        this.form.validateFields(['nickname'], { force: true })
+      })
     }
-  },
-  mounted() {
-    setTimeout(i => {
-      this.arr = [6, 7, 8, 10, 11, 23]
-    }, 2000)
   }
 }
 </script>

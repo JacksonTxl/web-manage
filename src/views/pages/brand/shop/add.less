@@ -3,6 +3,13 @@
     .mg-t(32px);
   }
   .add-shop-mobile {
+    &-button {
+      width:50px;
+      cursor:pointer;
+      &.disabled {
+        cursor: not-allowed;
+      }
+    }
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -28,6 +35,24 @@
     }
     
   }
+  // upload
+  .ant-upload.ant-upload-select-picture-card {
+    width: 240px;
+  }
+  .ant-upload.ant-upload-select-picture-card > .ant-upload {
+    padding: 18px;
+  }
+  .ant-upload-text:nth-of-type(1) {
+    .fz(14px);
+    .lh(22px);
+    .c(@text);
+  }
+  .ant-upload-text:nth-of-type(2) {
+    .fz(12px);
+    .lh(17px);
+    .c(@text-light);
+  }
+  // week
   .brand-shop-add__slider {
     border:1px solid rgba(217,217,217,1);
     border-radius: 4px;

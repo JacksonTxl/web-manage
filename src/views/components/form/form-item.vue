@@ -45,10 +45,12 @@ export default {
     }
   },
   mounted() {
-    const labelEl = this.$el.querySelector('.ant-form-item-label')
-    const wrapperEl = this.$el.querySelector('.ant-form-item-control-wrapper')
-    labelEl && (labelEl.style.width = this.computedLabelWidth)
-    wrapperEl && (wrapperEl.style.paddingLeft = this.labelGutter)
+    this.$nextTick().then(() => {
+      const labelEl = this.$el.querySelector('.ant-form-item-label')
+      const wrapperEl = this.$el.querySelector('.ant-form-item-control-wrapper')
+      labelEl && (labelEl.style.width = this.computedLabelWidth)
+      wrapperEl && (wrapperEl.style.paddingLeft = this.labelGutter)
+    })
   }
 }
 </script>
