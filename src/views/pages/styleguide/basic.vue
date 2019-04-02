@@ -9,6 +9,34 @@
         </st-t3>
       </st-panel>
     </section>
+    <h3>color类型</h3>
+    <section class="sg-app-content">
+      <st-panel>
+        <p>
+          <span class="color-title">color-title</span>
+          <span class="color-text mg-l16">color-text</span>
+          <span class="color-text mg-l16">color-text-light</span>
+        </p>
+      </st-panel>
+    </section>
+    <h3>全局样式</h3>
+    <section class="sg-app-content">
+      <st-panel>
+        <p>
+          <span>ta-l (text-align: left)</span>
+          <span class="mg-l16">ta-c (text-align: center)</span>
+          <span class="mg-l16">ta-r (text-align: right)</span>
+          <span class="mg-l16">fl-r (float: right)</span>
+        </p>
+        <p>
+          <span class="cursor-pointer">cursor-pointer</span>
+        </p>
+        <p>
+          <span class="full-width" style="background: #ccc">full-width(this is a inline element)</span>
+        </p>
+        <p><a class="st-link-secondary" href="#">st-link-secondary</a></p>
+      </st-panel>
+    </section>
     <h3>st-button 按钮</h3>
     <div class="mg-t16">
       <!-- button -->
