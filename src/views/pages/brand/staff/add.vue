@@ -58,9 +58,9 @@ export default {
       }
     },
     save(data) {
-      console.log('提交', data)
-      // debugger
-      this.addService.save(data)
+      this.addService.save().subscribe(res => {
+        console.log('提交', res)
+      })
     }
   }
 }
