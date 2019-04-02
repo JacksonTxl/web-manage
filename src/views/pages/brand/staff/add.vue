@@ -3,10 +3,9 @@
     <a-row class="mg-b48" :gutter="8">
       <a-col offset="1" :span="22"><Steps :value="currentIndex" :stepArr="stepArr" /></a-col>
     </a-row>
-
     <StaffDetailBasics v-if="currentIndex == 0" @goNext="goNext" @save="save"/>
-    <StaffDetailDetailedInfo v-if="currentIndex == 1" @goNext="goNext"/>
-    <StaffDetailCoachInfo v-if="currentIndex == 2" @goNext="goNext"/>
+    <StaffDetailDetailedInfo v-if="currentIndex == 1" @goNext="goNext" @save="save"/>
+    <StaffDetailCoachInfo v-if="currentIndex == 2" @goNext="goNext" @save="save"/>
   </st-panel>
 </template>
 
@@ -15,6 +14,7 @@ import Steps from './add#/st-steps'
 import StaffDetailBasics from './add#/add-detail-basicsInfo'
 import StaffDetailDetailedInfo from './add#/add-detail-detailedInfo'
 import StaffDetailCoachInfo from './add#/add-detail-coachInfo'
+import { AddService } from './add.service'
 export default {
   name: 'addDetail',
   components: {
@@ -23,9 +23,14 @@ export default {
     StaffDetailDetailedInfo,
     StaffDetailCoachInfo
   },
+  serviceInject() {
+    return {
+      addService: AddService
+    }
+  },
   data() {
     return {
-      currentIndex: 1,
+      currentIndex: 0,
       stepArr: [
         {
           title: '基础信息',
@@ -53,7 +58,9 @@ export default {
       }
     },
     save(data) {
-      console.log('提交', data)
+      this.addService.save().subscribe(res => {
+        console.log('提交', res)
+      })
     }
   }
 }

@@ -47,7 +47,8 @@
 </template>
 
 <script>
-import { LoginService } from '@/views/pages/user/login.service'
+import { UserService } from '../../../services/user.service'
+import { LoginService } from './login.service'
 export default {
   name: 'Login',
   serviceInject() {
@@ -66,6 +67,7 @@ export default {
         if (err) return
         this.loginService.loginAccount(values).subscribe(res => {
           console.log(res)
+          this.$router.push('/')
         })
       })
     }
