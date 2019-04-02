@@ -5,7 +5,7 @@
         :xs="22"
         :offset="1">
         <st-form-item label="从业时间">
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-input placeholder="填写点什么吧" v-decorator="coachInfoRule.employment_timeRule"></a-input>
         </st-form-item>
       </a-col>
     </a-row>
@@ -13,16 +13,16 @@
       <a-col :offset="1"
         :lg="22">
         <st-form-item
-          label='身份'>
+          label='擅长的项目'>
           <span slot="label">
-            身份&nbsp;
+            擅长的项目&nbsp;
             <a-tooltip placement="right"
               title="What do you want others to call you?">
               <st-icon type="anticon:question-circle-o" />
             </a-tooltip>
           </span>
-          <a-checkbox-group v-model="checkbox1">
-            <a-checkbox value="1" >普通员工</a-checkbox>
+          <a-checkbox-group v-decorator="coachInfoRule.specialtyRule">
+            <a-checkbox value="1">普通员工</a-checkbox>
             <a-checkbox value="2">会籍销售</a-checkbox>
             <a-checkbox value="3">团课教练</a-checkbox>
             <a-checkbox value="4">私人教练</a-checkbox>
@@ -36,17 +36,17 @@
         :xs="22"
         :offset="1">
         <st-form-item label="专业认证">
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-input placeholder="上传文件记者换"></a-input>
         </st-form-item>
         <st-form-item label="个人经历">
-          <a-input type="textarea"  :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧"></a-input>
+          <a-input type="textarea"  :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧" v-decorator="coachInfoRule.introductionRule"></a-input>
         </st-form-item>
         <st-form-item label="员工风采">
-          <a-input placeholder="填写点什么吧"></a-input>
+          <a-input placeholder="上传"></a-input>
         </st-form-item>
         <st-form-item
           label='对外展示'>
-          <a-checkbox value="1" :defaultChecked="defaultChecked">展示在会员端</a-checkbox>
+          <a-checkbox value="1" :defaultChecked="defaultChecked" v-decorator="coachInfoRule.isShowRule">展示在会员端</a-checkbox>
         </st-form-item>
       </a-col>
     </a-row>
@@ -68,6 +68,16 @@
 <script>
 export default {
   name: 'StaffDetailCoachInfo',
+  data() {
+    return {
+      defaultChecked: true,
+      coachInfoRule: {
+        employment_timeRule: ['employment_time'], // 从业时间
+        specialtyRule: ['specialty_id'], // 擅长的项目
+        isShowRule: ['is_show'] // 对外展示：0-不展示 1-展示在会员端
+      }
+    }
+  },
   methods: {
     goNext() {
       let data = {
@@ -75,8 +85,16 @@ export default {
       }
       this.$emit('goNext', data)
     },
-    save() {
-
+    save(e) {
+      e.preventDefault()
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('form submit: ', values)
+        }
+        this.$emit('save', {
+          data: values
+        })
+      })
     }
 
   }

@@ -101,7 +101,7 @@ export class HttpService {
       token: this.auth.tokenSnapshot,
       'app-id': '11111',
       'app-version': '11111',
-      'Content-Type': 'application/json;charset=UTF-8;'
+      'Content-Type': 'application/json'
     }
   }
   private ajaxErrorHandler(source$: Observable<any>) {
