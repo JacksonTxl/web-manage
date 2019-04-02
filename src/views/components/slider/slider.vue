@@ -1,5 +1,5 @@
 <template>
-  <div class="st-slider">
+  <div class="st-slider"  :class="setSlider.className ? setSlider.className : ''">
     <a-row class="st-slider__title-box" v-if="setSlider.infoList && setSlider.infoList[0].week">
       <a-col :span="2">时间段</a-col>
       <a-col :span="18">
@@ -57,11 +57,14 @@
 </template>
 <script>
 export default {
-  props: ['getSlider'],
+  props: {
+    getSlider: {
+      type: Object
+    }
+  },
   data() {
     return {
       setSlider: [],
-
       checkedValues: [],
       copyToIndex: null
     }
@@ -79,12 +82,6 @@ export default {
     onChange(checkedValues) {
       if (checkedValues.length > 0) {
         this.setSlider.infoList[checkedValues[0]].value = this.setSlider.infoList[this.copyToIndex].value
-        console.log(
-          'checkedValues',
-          checkedValues1,
-          copyToIndex,
-          this.setSlider.infoList[checkedValues1].value
-        )
         this.setSlider = JSON.parse(JSON.stringify(this.setSlider))
       }
     },
@@ -102,6 +99,14 @@ export default {
     }
   },
   created() {},
-  watch: {}
+  watch: {
+    'setSlider': {
+      handler() {
+        console.log('asdasd')
+        this.$emit('change', this.setSlider)
+      },
+      deep: true
+    }
+  }
 }
 </script>

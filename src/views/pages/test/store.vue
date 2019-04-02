@@ -112,75 +112,18 @@ export default {
         ]
       },
       getSlider: {
-        disabled: false,
+        className: 'st-slider-box',
+        disabled: true,
         infoList: [
           {
             title: '周一',
-            value: [0.5, 13],
-            week: [
-              {
-                key: '周一',
-                disabled: true
-              },
-              {
-                key: '周二',
-                disabled: false
-              },
-              {
-                key: '周三',
-                disabled: false
-              },
-              {
-                key: '周四',
-                disabled: false
-              },
-              {
-                key: '周五',
-                disabled: true
-              },
-              {
-                key: '周六',
-                disabled: true
-              },
-              {
-                key: '周日',
-                disabled: true
-              }
-            ]
+            value: [0.5, 13]
+
           },
           {
             title: '周二',
-            value: [6, 13],
-            week: [
-              {
-                key: '周一',
-                disabled: true
-              },
-              {
-                key: '周二',
-                disabled: false
-              },
-              {
-                key: '周三',
-                disabled: false
-              },
-              {
-                key: '周四',
-                disabled: false
-              },
-              {
-                key: '周五',
-                disabled: true
-              },
-              {
-                key: '周六',
-                disabled: true
-              },
-              {
-                key: '周日',
-                disabled: true
-              }
-            ]
+            value: [6, 13]
+
           },
           {
             title: '周三',

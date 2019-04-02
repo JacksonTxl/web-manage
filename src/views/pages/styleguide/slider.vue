@@ -1,6 +1,6 @@
 <template>
   <div>
-    <slider class="pages-test-store__slider" :getSlider="getSlider"></slider>
+    <slider :getSlider="getSlider" @change="onChange"></slider>
   </div>
 </template>
 
@@ -13,6 +13,7 @@ export default {
   data() {
     return {
       getSlider: {
+        className: 'st-slider-box',
         disabled: false,
         infoList: [
           {
@@ -90,49 +91,49 @@ export default {
           {
             title: '周四',
             value: [18, 24]
+          },
+          {
+            title: '周五',
+            value: [9, 13]
+          },
+          {
+            title: '周六',
+            value: [5, 13],
+            week: [
+              {
+                key: '周一',
+                disabled: false
+              },
+              {
+                key: '周二',
+                disabled: false
+              },
+              {
+                key: '周三',
+                disabled: false
+              },
+              {
+                key: '周四',
+                disabled: false
+              },
+              {
+                key: '周五',
+                disabled: false
+              },
+              {
+                key: '周六',
+                disabled: false
+              },
+              {
+                key: '周日',
+                disabled: false
+              }
+            ]
+          },
+          {
+            title: '周日',
+            value: [6, 24]
           }
-          // {
-          //   title: '周五',
-          //   value: [9, 13]
-          // },
-          // {
-          //   title: '周六',
-          //   value: [5, 13]
-          //   // week: [
-          //   //   {
-          //   //     key: '周一',
-          //   //     disabled: false
-          //   //   },
-          //   //   {
-          //   //     key: '周二',
-          //   //     disabled: false
-          //   //   },
-          //   //   {
-          //   //     key: '周三',
-          //   //     disabled: true
-          //   //   },
-          //   //   {
-          //   //     key: '周四',
-          //   //     disabled: true
-          //   //   },
-          //   //   {
-          //   //     key: '周五',
-          //   //     disabled: false
-          //   //   },
-          //   //   {
-          //   //     key: '周六',
-          //   //     disabled: true
-          //   //   },
-          //   //   {
-          //   //     key: '周日',
-          //   //     disabled: true
-          //   //   }
-          //   // ]
-          // },
-          // {
-          //   title: '周日',
-          //   value: [6, 24]
-          // }
         ]
       }
 
@@ -140,7 +141,11 @@ export default {
   },
   created() {
 
+  },
+  methods: {
+    onChange(value) {
+      console.log(value)
+    }
   }
-
 }
 </script>
