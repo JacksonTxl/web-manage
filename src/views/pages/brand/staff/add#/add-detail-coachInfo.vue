@@ -42,7 +42,21 @@
           <a-input type="textarea"  :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧" v-decorator="coachInfoRule.introductionRule"></a-input>
         </st-form-item>
         <st-form-item label="员工风采">
-          <a-input placeholder="上传"></a-input>
+          <a-upload
+            action="//jsonplaceholder.typicode.com/posts/"
+            listType="picture-card"
+            :fileList="fileList"
+            @preview="handlePreview"
+            @change="handleChange"
+          >
+            <div v-if="fileList.length < 3">
+                <a-icon type="plus" />
+                <div class="ant-upload-text">Upload</div>
+            </div>
+          </a-upload>
+          <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+            <img alt="example" style="width: 100%" :src="previewImage" />
+          </a-modal>
         </st-form-item>
         <st-form-item
           label='对外展示'>
@@ -75,7 +89,16 @@ export default {
         employment_timeRule: ['employment_time'], // 从业时间
         specialtyRule: ['specialty_id'], // 擅长的项目
         isShowRule: ['is_show'] // 对外展示：0-不展示 1-展示在会员端
-      }
+      },
+
+      previewVisible: false,
+      previewImage: '',
+      fileList: [{
+        uid: '-1',
+        name: 'xxx.png',
+        status: 'done',
+        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png'
+      }]
     }
   },
   methods: {
@@ -95,6 +118,17 @@ export default {
           data: values
         })
       })
+    },
+
+    handleCancel() {
+      this.previewVisible = false
+    },
+    handlePreview(file) {
+      this.previewImage = file.url || file.thumbUrl
+      this.previewVisible = true
+    },
+    handleChange({ fileList }) {
+      this.fileList = fileList
     }
 
   }
