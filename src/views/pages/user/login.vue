@@ -1,4 +1,5 @@
 <template>
+
   <div class="page-login-wapper">
     <div class="page-login">
       <section class="lf">
@@ -26,21 +27,47 @@
           <li>账户密码登录</li>
           <li>手机动态密码登录</li>
         </ul>
-        <a-form :form="loginForm">
-
-        </a-form>
+        <st-form :form="form" @submit.prevent="login" class="page-login__form">
+          <st-form-item >
+            <a-input placeholder="请输入实体卡号"  v-decorator="['name']"/>
+          </st-form-item>
+          <st-form-item   class="mg-b0">
+            <a-input type="password" placeholder="请将实体卡置于读卡器上" v-decorator="['password']"/>
+          </st-form-item>
+          <st-form-item  class="mg-b0">
+            <a-checkbox>我已阅读并同意<a href="">《用户注册协议》</a></a-checkbox><a href="">忘记密码</a>
+          </st-form-item>
+          <st-form-item  class="mg-b0">
+            <st-button type="primary"  html-type="submit"  block>登录</st-button>
+          </st-form-item>
+        </st-form>
       </section>
     </div>
   </div>
 </template>
 
 <script>
+import { LoginService } from '@/views/pages/user/login.service'
 export default {
   name: 'Login',
+  serviceInject() {
+    return {
+      loginService: LoginService
+    }
+  },
   data() {
     return {
-      loginForm: {
-      }
+      form: this.$form.createForm(this)
+    }
+  },
+  methods: {
+    login() {
+      this.form.validateFields((err, values) => {
+        if (err) return
+        this.loginService.loginAccount(values).subscribe(res => {
+          console.log(res)
+        })
+      })
     }
   }
 }
