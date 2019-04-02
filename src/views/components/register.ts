@@ -19,6 +19,7 @@ import StRouteTabs from './route-tabs/route-tabs.vue'
 import StHr from './hr/hr.vue'
 import StTag from './tag/tag.vue'
 import StPanel from './panel/panel.vue'
+import StSlider from './slider/slider.vue'
 import './form/index.js'
 import './title/index.js'
 
@@ -41,3 +42,4 @@ Vue.component(StRouteTabs.name, StRouteTabs)
 Vue.component(StHr.name, StHr)
 Vue.component(StTag.name, StTag)
 Vue.component(StPanel.name, StPanel)
+Vue.component(StSlider.name, StSlider)

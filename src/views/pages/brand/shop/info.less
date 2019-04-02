@@ -1,0 +1,128 @@
+.pages-test-store {
+  padding: 0 36px;
+  padding-top: 36px;
+  box-sizing: border-box;
+  background: #ffffff;
+  height: 100%;
+  position: relative;
+
+  &__container {
+    display: flex;
+  }
+
+  &__img-box {
+    width: 320px;
+    height: 200px;
+    display: inline-block;
+    position: relative;
+  }
+
+  &__sign-img {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  &__img {
+    width: 320px;
+    height: 200px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+
+  // &__bg-img {
+  //   margin: 12px 0 0 12px;
+  // }
+
+  &__sign-icon {
+    position: absolute;
+    width: 76px;
+    height: 24px;
+    background: rgba(0, 0, 0, 0.65);
+    border-radius: 8px 0px 4px 0px;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    line-height: 24px;
+    font-size: 12px;
+
+    font-weight: 400;
+    color: rgba(255, 255, 255, 1);
+
+    span {
+      margin-right: 4px;
+    }
+
+  }
+
+  &__slider {
+    margin: 25px 0
+  }
+
+  &__info {
+    margin-left: 36px;
+
+    &-title {
+      margin-bottom: 16px;
+
+      span {
+        width: 64px;
+        height: 24px;
+        display: inline-block;
+        background: rgba(24, 144, 255, 1);
+        border-radius: 0px 100px 100px 0px;
+        text-align: center;
+        line-height: 24px;
+        font-size: 12px;
+        color: #fff;
+      }
+
+      h2 {
+        display: inline-block;
+        font-size: 18px;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.85);
+        vertical-align: middle;
+        padding-left: 8px;
+        vertical-align: -webkit-baseline-middle;
+      }
+    }
+  }
+
+  &__info-list {
+    margin-bottom: 16px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+
+    span:nth-child(2) {
+      padding-left: 16px
+    }
+
+    a {
+      padding-left: 14px;
+    }
+  }
+
+  &__info-facilities {
+    margin-top: 10px;
+
+    &-list {
+      display: flex;
+
+      div {
+        margin: 0 21px;
+        text-align: center;
+
+        p {
+          font-size: 14px;
+          padding-top: 4px;
+        }
+      }
+    }
+  }
+
+  &__time {
+    margin-bottom: 40px
+  }
+}
