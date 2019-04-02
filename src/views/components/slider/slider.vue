@@ -138,9 +138,9 @@ export default {
     'getSlider': {
       handler() {
         this.setSlider = this.getSlider
-      }
-    },
-    deep: true
+      },
+      deep: true
+    }
   }
 }
 </script>

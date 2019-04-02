@@ -99,11 +99,10 @@
         <a-col offset="1" :lg="10">
           <st-form-item label="店招">
             <a-upload
-              name="avatar"
               listType="picture-card"
+              class="avatar-uploader"
               :showUploadList="false"
-              :beforeUpload="beforeUpload"
-              @change="handleChange"
+              :customRequest="upload"
             >
               <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
               <div v-else>
@@ -128,20 +127,15 @@
         </a-col>
       </a-row>
       <a-row :gutter="8">
-        <a-col offset="1" :lg="23">
+        <a-col offset="1" :lg="22">
           <st-form-item label="营业时间">
-            <st-checkbox-button-group>
-              <st-checkbox-button-item value="1">周一</st-checkbox-button-item>
-              <st-checkbox-button-item value="2">周二</st-checkbox-button-item>
-              <st-checkbox-button-item value="3">周三</st-checkbox-button-item>
-              <st-checkbox-button-item value="4">周四</st-checkbox-button-item>
-              <st-checkbox-button-item value="5">周五</st-checkbox-button-item>
-              <st-checkbox-button-item value="6">周六</st-checkbox-button-item>
-              <st-checkbox-button-item value="7">周日</st-checkbox-button-item>
+            <st-checkbox-button-group v-model="weekArr">
+              <st-checkbox-button-item
+              v-for="item in weekList"
+              :key="item.value"
+              :value="item.value">{{item.label}}</st-checkbox-button-item>
             </st-checkbox-button-group>
-            <div class="brand-shop-add__slider">
-              <slider class="pages-test-store__slider" :getSlider="getSlider"></slider>
-            </div>
+            <st-slider class="page-brand-shop-add__slider" :getSlider="getSlider"></st-slider>
           </st-form-item>
         </a-col>
       </a-row>
@@ -155,15 +149,13 @@
 </template>
 <script>
 import { RuleConfig } from '@/constants/rule'
-import slider from '../../../components/slider/slider.vue'
+import { OssService } from '@/services/oss.service'
 export default {
   serviceInject() {
     return {
-      rules: RuleConfig
+      rules: RuleConfig,
+      OSS: OssService
     }
-  },
-  components: {
-    slider
   },
   data() {
     return {
@@ -205,90 +197,26 @@ export default {
         { value: 2, label: '正式营业' },
         { value: 3, label: '已关店' }
       ],
-
+      // week
+      weekArr: [],
+      weekList: [
+        { value: 0, label: '周一' },
+        { value: 1, label: '周二' },
+        { value: 2, label: '周三' },
+        { value: 3, label: '周四' },
+        { value: 4, label: '周五' },
+        { value: 5, label: '周六' },
+        { value: 6, label: '周日' }
+      ],
+      // upload
       loading: false,
+
       imageUrl: '',
       mobileArr: ['1356654', '15845644567', '15845644567', '15845644567', '15845644567'],
       getSlider: {
         disabled: false,
-        infoList: [
-          {
-            title: '周一',
-            value: [0.5, 13],
-            week: [
-              {
-                key: '周一',
-                disabled: true
-              },
-              {
-                key: '周二',
-                disabled: false
-              },
-              {
-                key: '周三',
-                disabled: false
-              },
-              {
-                key: '周四',
-                disabled: false
-              },
-              {
-                key: '周五',
-                disabled: true
-              },
-              {
-                key: '周六',
-                disabled: true
-              },
-              {
-                key: '周日',
-                disabled: true
-              }
-            ]
-          },
-          {
-            title: '周二',
-            value: [6, 13],
-            week: [
-              {
-                key: '周一',
-                disabled: true
-              },
-              {
-                key: '周二',
-                disabled: false
-              },
-              {
-                key: '周三',
-                disabled: false
-              },
-              {
-                key: '周四',
-                disabled: false
-              },
-              {
-                key: '周五',
-                disabled: true
-              },
-              {
-                key: '周六',
-                disabled: true
-              },
-              {
-                key: '周日',
-                disabled: true
-              }
-            ]
-          },
-          {
-            title: '周三',
-            value: [12, 13.5]
-          },
-          {
-            title: '周四',
-            value: [18, 24]
-          }
-        ]
+        className: 'st-slider-box',
+        infoList: []
       },
       options: [{
         value: 'zhejiang',
@@ -381,6 +309,28 @@ export default {
         }
       }
     },
+    // 店招上传
+    upload(data) {
+      this.loading = true
+      if (this.checkUploadFile(data.file)) {
+        console.log(data.file)
+      } else {
+
+      }
+      this.loading = false
+      // this.OSS.put({
+      //   file: data.file,
+      //   uploadProgress(res) {
+      //     console.log(`${res.loaded / res.total * 100}%`)
+      //   }
+      // }).then(res => {
+      //   res.subscribe({
+      //     next: val => console.log(val),
+      //     complete: () => console.log('Complete!'),
+      //     error: val => console.log(`Error: ${val}`)
+      //   })
+      // })
+    },
     // shop_address validatorFn
     shop_address_validator(rule, value, callback) {
       callback()// eslint-disable-line
@@ -389,18 +339,18 @@ export default {
       console.log(value)
     },
     handleChange(info) {
-
+      console.log(info)
     },
-    beforeUpload(file) {
+    checkUploadFile(file) {
       const isJPG = file.type === 'image/jpeg'
       if (!isJPG) {
         this.$message.error('You can only upload JPG file!')
       }
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isLt2M) {
+      const isLt5M = file.size / 1024 / 1024 < 5
+      if (!isLt5M) {
         this.$message.error('Image must smaller than 2MB!')
       }
-      return isJPG && isLt2M
+      return isJPG && isLt5M
     }
   }
 }

@@ -30,18 +30,16 @@ export default {
   methods: {
     upload(data) {
       this.OSS.put({
-        url: 'http://kaelyp.oss-cn-shanghai.aliyuncs.com',
-        policy: 'eyJleHBpcmF0aW9uIjoiMjAyMC0wMS0wMVQxMjowMDowMC4wMDBaIiwiY29uZGl0aW9ucyI6W1siY29udGVudC1sZW5ndGgtcmFuZ2UiLDAsMTA0ODU3NjAwMF1dfQ==',
-        OSSAccessKeyId: 'LTAIwMXc8QPtYmGd',
-        signature: '3A8SnJy7sgE0d5Yf9wvbLPCZXcA=',
         file: data.file,
         uploadProgress(res) {
           console.log(`${res.loaded / res.total * 100}%`)
         }
-      }).subscribe({
-        next: val => console.log(val),
-        complete: () => console.log('Complete!'),
-        error: val => console.log(`Error: ${val}`)
+      }).then(res => {
+        res.subscribe({
+          next: val => console.log(val),
+          complete: () => console.log('Complete!'),
+          error: val => console.log(`Error: ${val}`)
+        })
       })
     }
   }
