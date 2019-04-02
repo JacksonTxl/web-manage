@@ -1,9 +1,10 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
-import { pluck } from 'rxjs/operators'
+import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { ManageApi, ManagePhoneInput } from '@/api/account/manage'
 import { LoginApi, LoginAccountInput } from '@/api/login'
+import { AuthService } from '@/services/auth.service'
 
 interface StaffState {
   name: string
@@ -13,7 +14,7 @@ interface StaffState {
 export class LoginService extends Store<StaffState> {
   state$: State<StaffState>
   name$: Computed<string>
-  constructor(private loginApi: LoginApi) {
+  constructor(private loginApi: LoginApi, private authService:AuthService) {
     super()
     this.state$ = new State({
       name: 'lee',
@@ -23,7 +24,11 @@ export class LoginService extends Store<StaffState> {
   }
   @Effect()
   loginAccount(data: LoginAccountInput) {
-    return this.loginApi.loginAccount(data)
+    return this.loginApi.loginAccount(data).pipe(
+      tap(res => {
+        this.authService.SET_TOKEN(res.token)
+      })
+    )
   }
   beforeRouteEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     next()

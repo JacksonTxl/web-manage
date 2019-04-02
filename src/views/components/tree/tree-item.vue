@@ -7,15 +7,15 @@
       <div class="tree-node__content" :style="{'padding-left': paddingLeft}" @click="getTreeNodeOnclick">
         <span class="tree-switch"  @click.stop="toggle" v-if="isFolder&&level!==0">{{ isOpen ? '-' : '+' }}</span>
         <span class="tree-switch__empty" v-else-if="level!==0"></span>
-        <span class="tree-name">{{ item.name }}</span>
+        <span class="tree-name">{{ item.name }}{{item.isEdit}}</span>
         <a-dropdown v-if="level!==0" class="tree-opreation" placement="bottomLeft">
           <div><st-icon type="more"></st-icon></div>
           <a-menu slot="overlay">
             <a-menu-item>
               <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">编辑</a>
             </a-menu-item>
-            <a-menu-item>
-              <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">新增字部门</a>
+            <a-menu-item @click="addTreeNode">
+              新增新部门
             </a-menu-item>
             <a-menu-item @click="deleteTreeNode">
               删除
@@ -23,6 +23,8 @@
           </a-menu>
         </a-dropdown>
       </div>
+      <div v-if="item.isEdit"><a-input></a-input><a href="">保存</a><span>x</span></div>
+
     </div>
     <ul class="st-tree-item" v-show="isOpen" v-if="isFolder">
       <tree-item
@@ -48,11 +50,16 @@ export default {
     level: {
       type: Number,
       default: () => 0
+    },
+    isEdit: {
+      type: Boolean,
+      default: false
     }
   },
   data: function() {
     return {
       placements: ['bottomLeft'],
+      isEditSelf: false,
       visible: false,
       isOpen: false
     }
@@ -67,6 +74,10 @@ export default {
     }
   },
   methods: {
+    addTreeNode() {
+      this.$emit('add-item', this.item)
+      this.item.isEdit = true
+    },
     deleteTreeNode() {
       this.$emit('delete-item', this.item)
     },
@@ -98,6 +109,8 @@ export default {
   mounted() {
     if (this.level === 0) {
       this.isOpen = true
+    } else {
+      this.$set(this.item, 'isEdit', this.isEdit)
     }
   }
 }

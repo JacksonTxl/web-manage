@@ -26,9 +26,9 @@ export class DepartmentService extends Store<StaffState> implements RouteGuard {
     return this.staffApi.getDetail(data)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    // this.getStaffList({}).subscribe((res: StResponse) => {
-    //   console.log(res)
-    // })
+    this.getStaffList({}).subscribe((res: StResponse) => {
+      console.log(res)
+    })
     next()
   }
 }
