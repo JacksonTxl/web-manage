@@ -8,15 +8,15 @@
   >
     <div class="brand-content">
       <a-row :gutter="80">
-        <a-col :lg="8" v-for="n in 3" :key="n">
+        <a-col :lg="8" v-for="(brand, index) in brandInfo" :key="index">
           <div class="brand-item">
             <img
               class="brand-item__img"
-              src="~@/assets/img/logo.png"
+              :src="brand.image_url|imgFilter({ w:  200 })"
               alt="brand-logo"
             />
-            <st-t3 class="brand-item__title">KING KONG KIT</st-t3>
-            <p class="brand-item__desc">门店数量：7</p>
+            <st-t3 class="brand-item__title">{{brand.brand_name}}</st-t3>
+            <p class="brand-item__desc">门店数量：{{brand.shop_num}}</p>
             <st-button
               @click="onClickItem"
               class="brand-item__btn"
@@ -30,11 +30,30 @@
   </a-modal>
 </template>
 <script>
+import { SwitchService } from './switch.service'
+import { Action } from 'rx-state'
+import { switchMap, catchError, filter } from 'rxjs/operators'
+import { EMPTY } from 'rxjs'
+import { imgFilter } from '@/filters/resource.filters'
 export default {
+  serviceInject() {
+    return {
+      switchService: SwitchService
+    }
+  },
+  filters: {
+    imgFilter
+  },
   data() {
     return {
-      show: false
+      show: false,
+      brandInfo: []
     }
+  },
+  created() {
+    this.switchService.getBrands().subscribe(res => {
+      this.brandInfo = res.brand_info
+    })
   },
   methods: {
     onClickItem() {
