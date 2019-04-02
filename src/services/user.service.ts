@@ -34,18 +34,6 @@ export class UserService extends Store<UserState> {
       state.user = user
     })
   }
-  @Effect()
-  loginAccount(data: LoginAccountInput) {
-    return this.loginApi.loginAccount(data).pipe(
-      tap(res => {
-        this.SET_USER(res.user)
-      })
-    )
-  }
-  @Effect()
-  loginPhone(data: LoginPhoneInput) {
-    return this.loginApi.loginPhone(data)
-  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
     console.log('userService start')
     next()

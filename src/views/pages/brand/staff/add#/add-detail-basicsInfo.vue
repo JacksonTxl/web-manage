@@ -90,13 +90,13 @@
         :xs="22"
         :offset="1">
         <st-form-item label="部门">
-           <a-select v-decorator="basicInfoRuleList.departmentRule" placeholder="请选择" >
+          <a-select v-decorator="basicInfoRuleList.departmentRule" placeholder="请选择" >
             <a-select-option value="1">黄埔</a-select-option>
             <a-select-option value="2">北大</a-select-option>
           </a-select>
         </st-form-item>
         <st-form-item label="教练等级" >
-           <a-select v-decorator="basicInfoRuleList.coach_levelRule" placeholder="请选择" >
+          <a-select v-decorator="basicInfoRuleList.coach_levelRule" placeholder="请选择" >
             <a-select-option value="male">男</a-select-option>
             <a-select-option value="female">女</a-select-option>
           </a-select>
@@ -105,7 +105,7 @@
           <a-date-picker v-decorator="basicInfoRuleList.entry_dateRule"  />
         </st-form-item>
         <st-form-item label="所属门店" >
-           <a-select v-decorator="basicInfoRuleList.shopRule" placeholder="请选择" >
+          <a-select v-decorator="basicInfoRuleList.shopRule" placeholder="请选择" >
             <a-select-option value="male">男</a-select-option>
             <a-select-option value="female">女</a-select-option>
           </a-select>
@@ -118,15 +118,15 @@
           <a-input placeholder="填写点什么吧" v-decorator="basicInfoRuleList.working_postRule"></a-input>
         </st-form-item>
         <st-form-item label="工作性质" >
-           <a-select v-decorator="basicInfoRuleList.nature_workRule" placeholder="请选择" >
-             <!-- 1-全职；2-兼职；3-实习 -->
+          <a-select v-decorator="basicInfoRuleList.nature_workRule" placeholder="请选择" >
+            <!-- 1-全职；2-兼职；3-实习 -->
             <a-select-option value="1">全职</a-select-option>
             <a-select-option value="2">简直</a-select-option>
             <a-select-option value="3">实习</a-select-option>
           </a-select>
         </st-form-item>
         <st-form-item label="角色" >
-           <a-select :v-decorator="basicInfoRuleList.roleRule" placeholder="请选择" >
+          <a-select :v-decorator="basicInfoRuleList.roleRule" placeholder="请选择" >
             <a-select-option value="male">男</a-select-option>
             <a-select-option value="female">女</a-select-option>
           </a-select>

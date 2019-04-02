@@ -1,6 +1,7 @@
 import { SaveData } from './../../../../api/staff/staff-add'
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { StaffAddApi } from '@/api/staff/staff-add'
+import { tap } from 'rxjs/operators'
 import { StaffPubApi } from '@/api/staff/staff-pub'
 import { StaffApi } from '@/api/v1/staff'
 

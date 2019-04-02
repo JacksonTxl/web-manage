@@ -91,6 +91,6 @@ export interface SaveData {
   }
 export class StaffAddApi extends Api {
   saveStaffInfo(params: SaveData) {
-    return this.http.post('/v1/brand/staff', { params })
+    return this.http.put('/v1/brand/staff', { params })
   }
 }
