@@ -4,8 +4,7 @@
       <a-col offset="1" :span="22"><Steps :value="currentIndex" :stepArr="stepArr" /></a-col>
     </a-row>
 
-    <!-- 基础信息 -->
-    <StaffDetailBasics v-if="currentIndex == 0" @goNext="goNext"/>
+    <StaffDetailBasics v-if="currentIndex == 0" @goNext="goNext" @save="save"/>
     <StaffDetailDetailedInfo v-if="currentIndex == 1" @goNext="goNext"/>
     <StaffDetailCoachInfo v-if="currentIndex == 2" @goNext="goNext"/>
   </st-panel>
@@ -26,7 +25,7 @@ export default {
   },
   data() {
     return {
-      currentIndex: 0,
+      currentIndex: 1,
       stepArr: [
         {
           title: '基础信息',
@@ -52,6 +51,9 @@ export default {
       if (this.currentIndex === 3) {
         this.currentIndex = 0
       }
+    },
+    save(data) {
+      console.log('提交', data)
     }
   }
 }

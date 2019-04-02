@@ -12,10 +12,10 @@
     </section>
     <section>
       <st-form :form="form" @submit="save" class="page-add-container">
-         <st-form-item label="实体卡号" >
+        <st-form-item label="实体卡号" >
           <a-input placeholder="请输入实体卡号"  v-decorator="entityCardIdRule"/>
         </st-form-item>
-         <st-form-item label="物理ID" >
+        <st-form-item label="物理ID" class="mg-b0">
           <a-input placeholder="请将实体卡置于读卡器上" v-decorator="physicalIdRule"/>
         </st-form-item>
       </st-form>

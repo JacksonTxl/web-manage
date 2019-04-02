@@ -45,8 +45,17 @@ import OrganizationTree from './department#/organization-tree.vue'
 import FilterStaff from './department#/filter-staff.vue'
 import OpreationButton from './department#/opreation-button.vue'
 import StaffTable from './department#/staff-table'
+import { DepartmentService } from '@/views/pages/shop/staff/department.service'
 export default {
   name: 'Staff',
+  serviceInject() {
+    return {
+      department: DepartmentService
+    }
+  },
+  subscriptions() {
+
+  },
   components: {
     OrganizationTree,
     FilterStaff,
