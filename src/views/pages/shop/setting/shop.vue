@@ -475,7 +475,8 @@ export default {
         console.log('weekData', this.weekData, filter)
         this.getSlider.infoList = filter
         this.getSlider = JSON.parse(JSON.stringify(this.getSlider))
-      }
+      },
+      deep: true
     }
   }
 }
