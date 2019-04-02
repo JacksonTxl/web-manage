@@ -149,8 +149,10 @@
                   <span>账号安全</span>
                 </a-menu-item>
                 <a-menu-item class="layout-default-brand-body__options">
-                  <st-icon type="inbox"></st-icon>
-                  <span>切换品牌</span>
+                  <modal-link tag="a" :to="{ name: 'brand-switch' }">
+                    <st-icon type="inbox"></st-icon>
+                    <span>切换品牌</span>
+                  </modal-link>
                 </a-menu-item>
                 <a-menu-item class="layout-default-brand-body__options">
                   <st-icon type="inbox"></st-icon>
