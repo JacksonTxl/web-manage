@@ -1,18 +1,20 @@
 <template>
-  <st-panel app class="page-brand-shop-add">
+  <st-panel app class="page-shop-setting-shop">
     <st-form
     :form="form"
     @submit="onHandleSubmit">
       <a-row :gutter="8" class="add-shop-name-row">
         <a-col offset="1" :lg="10">
-          <st-form-item label="门店名称" required>
-            <a-input
-            v-decorator="[
-              'shop_name',
-              {rules: [{ validator: shop_name_validator}]}
-            ]"
-            maxlength="20"
-            placeholder="支持中英文、数字,不超过20个字"></a-input>
+          <st-form-item label="营业中" class="page-shop-setting-shop__address">
+            上海旗舰店
+          </st-form-item>
+        </a-col>
+      </a-row>
+       <a-row :gutter="8">
+        <a-col :lg="10" :xs="22" :offset="1">
+          <st-form-item  >
+            上海市 徐汇区 徐汇中山南二路107号丑奂大厦3楼
+            <span class="look-location">查看地位</span>
           </st-form-item>
         </a-col>
       </a-row>
@@ -54,7 +56,7 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="详细地址" required>
+          <st-form-item label="详细地址"  required>
             <a-input
             v-decorator="[
               'shop_address',
@@ -97,7 +99,7 @@
       </a-row>
       <a-row :gutter="8">
         <a-col offset="1" :lg="10">
-          <st-form-item label="店招">
+          <st-form-item label="门店图片">
             <a-upload
               name="avatar"
               listType="picture-card"
@@ -131,17 +133,15 @@
         <a-col offset="1" :lg="23">
           <st-form-item label="营业时间">
             <st-checkbox-button-group  v-model="weekData">
-              <st-checkbox-button-item value="1">周一</st-checkbox-button-item>
-              <st-checkbox-button-item value="2">周二</st-checkbox-button-item>
-              <st-checkbox-button-item value="3">周三</st-checkbox-button-item>
-              <st-checkbox-button-item value="4">周四</st-checkbox-button-item>
-              <st-checkbox-button-item value="5">周五</st-checkbox-button-item>
-              <st-checkbox-button-item value="6">周六</st-checkbox-button-item>
-              <st-checkbox-button-item value="7">周日</st-checkbox-button-item>
+              <st-checkbox-button-item value="0">周一</st-checkbox-button-item>
+              <st-checkbox-button-item value="1">周二</st-checkbox-button-item>
+              <st-checkbox-button-item value="2">周三</st-checkbox-button-item>
+              <st-checkbox-button-item value="3">周四</st-checkbox-button-item>
+              <st-checkbox-button-item value="4">周五</st-checkbox-button-item>
+              <st-checkbox-button-item value="5">周六</st-checkbox-button-item>
+              <st-checkbox-button-item value="6">周日</st-checkbox-button-item>
             </st-checkbox-button-group>
-            <div class="brand-shop-add__slider">
-              <st-slider class="pages-test-store__slider" :getSlider="getSlider"></st-slider>
-            </div>
+            <st-slider class="pages-test-store__slider" :getSlider="getSlider"></st-slider>
           </st-form-item>
         </a-col>
       </a-row>
