@@ -78,11 +78,38 @@ export default {
       this.copyToIndex = index
       console.log(index)
     },
+    filterWeek(name) {
+      let self = this
+      this.setSlider.infoList.map(function(item) {
+        if (item.title === name) {
+          item.value = self.setSlider.infoList[self.copyToIndex].value
+          self.setSlider = JSON.parse(JSON.stringify(self.setSlider))
+        }
+      })
+    },
     // 多选
     onChange(checkedValues) {
-      if (checkedValues.length > 0) {
-        this.setSlider.infoList[checkedValues[0]].value = this.setSlider.infoList[this.copyToIndex].value
-        this.setSlider = JSON.parse(JSON.stringify(this.setSlider))
+      let self = this
+      if (checkedValues[0] === 0) {
+        self.filterWeek('周一')
+      }
+      if (checkedValues[0] === 1) {
+        self.filterWeek('周二')
+      }
+      if (checkedValues[0] === 2) {
+        self.filterWeek('周三')
+      }
+      if (checkedValues[0] === 3) {
+        self.filterWeek('周四')
+      }
+      if (checkedValues[0] === 4) {
+        self.filterWeek('周五')
+      }
+      if (checkedValues[0] === 5) {
+        self.filterWeek('周六')
+      }
+      if (checkedValues[0] === 6) {
+        self.filterWeek('周日')
       }
     },
     // tooltip格式处理
