@@ -48,7 +48,6 @@
       </a-col>
     </a-row>
 
-    {{ cities }}
     <a-row :gutter="8" class="mg-t48">
       <a-col :lg="10"
         :xs="22"
@@ -57,7 +56,7 @@
           <a-select :defaultValue="province" style="width: 120px;margin-right: 24px;" @change="handleProvinceChange">
             <a-select-option v-for="(item, index) in provinceData" :value="index" :key="item.province_id">{{ item.province }}</a-select-option>
           </a-select>
-          {{ city }}
+
           <a-select style="width: 120px;margin-right: 24px;" v-model="city" @change="handleCityChange">
             <a-select-option v-for="(item, index) in cities" :value="index" :key="index">{{ item.city }}</a-select-option>
           </a-select>
