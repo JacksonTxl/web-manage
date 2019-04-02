@@ -1,7 +1,7 @@
 <template>
   <st-panel app class="page-brand-shop-add">
     <st-form>
-      <a-row :gutter="8">
+      <a-row class="add-shop-name-row">
         <a-col offset="1" :lg="10">
           <st-form-item label="门店名称" required>
             <a-input placeholder="支持中英文、数字,不超过20个字"></a-input>
@@ -12,11 +12,16 @@
         <a-col offset="1" :lg="10">
           <st-form-item label="门店电话" required>
             <a-input defaultValue="" placeholder="请输入门店电话">
-              <div slot="addonAfter" style="width:50px">
+              <div slot="addonAfter" style="width:50px;cursor:pointer;">
                 添加
               </div>
             </a-input>
-            <span>021-968-9899</span>
+            <div class="add-shop-mobile">
+              <p v-for="(item,index) in mobileArr" :key="index">
+                <span>{{item}}</span>
+                <st-icon type="anticon:close" style="cursor:pointer;"></st-icon>
+              </p>
+            </div>
           </st-form-item>
         </a-col>
       </a-row>
@@ -116,6 +121,7 @@ export default {
   },
   data() {
     return {
+      mobileArr: ['1356654', '15845644567', '15845644567', '15845644567', '15845644567'],
       getSlider: {
         disabled: false,
         infoList: [
