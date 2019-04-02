@@ -8,7 +8,7 @@ import pageRoutes from './auto-generated-routes'
 import { TitleService } from '@/services/title.service'
 import { RouteService } from '@/services/route.service'
 
-const routes: ServiceRouteConfig[] = [
+const routes: any[] = [
   {
     path: '/',
     redirect: '/brand/'

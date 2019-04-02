@@ -13,7 +13,7 @@
       </div>
       <div class="pages-test-store__info">
         <div class="pages-test-store__info-title">
-          <span>营业中</span>
+          <span>营业中 {{data.shop_status === 1 ? '试运营' : '试运营'}}</span>
           <h2>上海旗舰店</h2>
         </div>
         <div class="pages-test-store__info-list">
@@ -66,6 +66,51 @@ export default {
   data() {
     return {
       sliderArr: [],
+      data: {
+        'shop_name': '更新测试',
+        'shop_status': 0,
+        'lat': 2.374767,
+        'lng': 6.24567,
+        'shop_position': {
+          'province_id': 1,
+          'city_id': 2,
+          'district_id': 810012,
+          'address': '越界创意园',
+          'province_name': '香港特别行政区',
+          'city_name': '香港特别行政区',
+          'district_name': '元朗区',
+          'address_detail': '香港特别行政区香港特别行政区元朗区越界创意园'
+        },
+        'email': 'test@gmail.com',
+        'shop_phones': [
+          '13900000001',
+          '13800000001'
+        ],
+        'business_time': [
+          {
+            'week_day': 2,
+            'start_time': '10:00',
+            'end_time': '24:00'
+          },
+          {
+            'week_day': 5,
+            'start_time': '22:00',
+            'end_time': '24:00'
+          }
+        ],
+        'shop_services': [
+          {
+            'service_id': 2,
+            'service_name': '停车场',
+            'img_url': ''
+          },
+          {
+            'service_id': 3,
+            'service_name': '桑拿房',
+            'img_url': 'xxxxxx'
+          }
+        ]
+      },
       getSlider: {
         disabled: false,
         infoList: [
@@ -196,7 +241,7 @@ export default {
     }
   },
   created() {
-    this.tooltip()
+    // this.tooltip()
   },
   methods: {
     formatter(value) {

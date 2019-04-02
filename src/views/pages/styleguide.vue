@@ -15,6 +15,7 @@
       <router-link class="mg-l8"
         to="/styleguide/business">Business(业务组件)</router-link>
       <router-link class="mg-l8" to="/styleguide/plugins">plugins(插件)</router-link>
+        <router-link class="mg-l8" to="/styleguide/slider">slider(滑动条)</router-link>
     </div>
     <st-hr></st-hr>
     <router-view></router-view>

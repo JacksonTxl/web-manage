@@ -1,5 +1,5 @@
 <template>
-  <st-panel app class="pages-brandshop-add">
+  <st-panel app class="page-brand-shop-add">
     <st-form>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
@@ -36,111 +36,234 @@
           </st-form-item>
         </a-col>
       </a-row>
-      <a-row :gutter="8">
-        <a-col :lg="23" :xs="22" :offset="1">
+      <a-row>
+        <a-col offset="1" :lg="23">
           <st-form-item label="服务设施">
             <st-checkbox-facility-group v-model="facilityArr">
-              <st-checkbox-facility-item
-                style="margin-right:24px;"
-                value="1"
-                label="wifi"
-                icon="home"
-              ></st-checkbox-facility-item>
-              <st-checkbox-facility-item
-                style="margin-right:24px;"
-                value="2"
-                label="wifi"
-                icon="home"
-              ></st-checkbox-facility-item>
-              <st-checkbox-facility-item
-                style="margin-right:24px;"
-                value="3"
-                label="wifi"
-                icon="home"
-              ></st-checkbox-facility-item>
-              <st-checkbox-facility-item
-                style="margin-right:24px;"
-                value="1"
-                label="wifi"
-                icon="home"
-              ></st-checkbox-facility-item>
-              <st-checkbox-facility-item
-                style="margin-right:24px;"
-                value="2"
-                label="wifi"
-                icon="home"
-              ></st-checkbox-facility-item>
-              <st-checkbox-facility-item
-                style="margin-right:24px;"
-                value="3"
-                label="wifi"
-                icon="home"
-              ></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="WIFI" value="1"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="shower" value="2"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="snow" value="3"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="nosmoking" value="4"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="heating" value="5"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="medical" value="6"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="park" value="7"></st-checkbox-facility-item>
+              <st-checkbox-facility-item style="margin-right:24px" label="wifi" icon="energy" value="8"></st-checkbox-facility-item>
             </st-checkbox-facility-group>
           </st-form-item>
         </a-col>
       </a-row>
-      <a-row :gutter="8">
-        <a-col :lg="23" :xs="22" :offset="1">
+      <a-row>
+        <a-col offset="1" :lg="10">
           <st-form-item label="店招">
             <a-upload
               name="avatar"
-              style="width: 240px"
               listType="picture-card"
               :showUploadList="false"
               :beforeUpload="beforeUpload"
               @change="handleChange"
             >
               <div>
-                <a-icon :type="false ? 'loading' : 'plus'"/>
-                <div class="ant-upload-text">上传店招</div>
-                <div class="ant-upload-text">大小不超过5M，建议尺寸16:9</div>
+                  <a-icon :type="false ? 'loading' : 'plus'" />
+                  <div class="ant-upload-text">上传店招</div>
+                  <div class="ant-upload-text">大小不超过5M</div>
               </div>
             </a-upload>
           </st-form-item>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col offset="1" :lg="12">
+          <st-form-item label="营业状态">
+            <a-radio-group>
+              <a-radio :value="1">预售</a-radio>
+              <a-radio :value="2">试运营</a-radio>
+              <a-radio :value="3">正式营业</a-radio>
+              <a-radio :value="4">已关店</a-radio>
+            </a-radio-group>
+          </st-form-item>
+        </a-col>
+      </a-row>
+      <a-row>
+        <a-col offset="1" :lg="23">
+          <st-form-item label="营业时间">
+            <st-checkbox-button-group>
+              <st-checkbox-button-item value="1">周一</st-checkbox-button-item>
+              <st-checkbox-button-item value="2">周二</st-checkbox-button-item>
+              <st-checkbox-button-item value="3">周三</st-checkbox-button-item>
+              <st-checkbox-button-item value="4">周四</st-checkbox-button-item>
+              <st-checkbox-button-item value="5">周五</st-checkbox-button-item>
+              <st-checkbox-button-item value="6">周六</st-checkbox-button-item>
+              <st-checkbox-button-item value="7">周日</st-checkbox-button-item>
+            </st-checkbox-button-group>
+            <div class="brand-shop-add__slider">
+              <slider class="pages-test-store__slider" :getSlider="getSlider"></slider>
+            </div>
+          </st-form-item>
+        </a-col>
+      </a-row>
+      <a-row type="flex" justify="center" align="middle">
+        <a-col>
+          <st-button type="primary">提交</st-button>
         </a-col>
       </a-row>
     </st-form>
   </st-panel>
 </template>
 <script>
+import slider from '../../../components/slider/slider.vue'
 export default {
+  components: {
+    slider
+  },
   data() {
     return {
-      options: [
-        {
-          value: 'zhejiang',
-          label: 'Zhejiang',
-          children: [
-            {
-              value: 'hangzhou',
-              label: 'Hangzhou',
-              children: [
-                {
-                  value: 'xihu',
-                  label: 'West Lake'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: 'jiangsu',
-          label: 'Jiangsu',
-          children: [
-            {
-              value: 'nanjing',
-              label: 'Nanjing',
-              children: [
-                {
-                  value: 'zhonghuamen',
-                  label: 'Zhong Hua Men'
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      getSlider: {
+        disabled: false,
+        infoList: [
+          {
+            title: '周一',
+            value: [0.5, 13],
+            week: [
+              {
+                key: '周一',
+                disabled: true
+              },
+              {
+                key: '周二',
+                disabled: false
+              },
+              {
+                key: '周三',
+                disabled: false
+              },
+              {
+                key: '周四',
+                disabled: false
+              },
+              {
+                key: '周五',
+                disabled: true
+              },
+              {
+                key: '周六',
+                disabled: true
+              },
+              {
+                key: '周日',
+                disabled: true
+              }
+            ]
+          },
+          {
+            title: '周二',
+            value: [6, 13],
+            week: [
+              {
+                key: '周一',
+                disabled: true
+              },
+              {
+                key: '周二',
+                disabled: false
+              },
+              {
+                key: '周三',
+                disabled: false
+              },
+              {
+                key: '周四',
+                disabled: false
+              },
+              {
+                key: '周五',
+                disabled: true
+              },
+              {
+                key: '周六',
+                disabled: true
+              },
+              {
+                key: '周日',
+                disabled: true
+              }
+            ]
+          },
+          {
+            title: '周三',
+            value: [12, 13.5]
+          },
+          {
+            title: '周四',
+            value: [18, 24]
+          }
+          // {
+          //   title: '周五',
+          //   value: [9, 13]
+          // },
+          // {
+          //   title: '周六',
+          //   value: [5, 13]
+          //   // week: [
+          //   //   {
+          //   //     key: '周一',
+          //   //     disabled: false
+          //   //   },
+          //   //   {
+          //   //     key: '周二',
+          //   //     disabled: false
+          //   //   },
+          //   //   {
+          //   //     key: '周三',
+          //   //     disabled: true
+          //   //   },
+          //   //   {
+          //   //     key: '周四',
+          //   //     disabled: true
+          //   //   },
+          //   //   {
+          //   //     key: '周五',
+          //   //     disabled: false
+          //   //   },
+          //   //   {
+          //   //     key: '周六',
+          //   //     disabled: true
+          //   //   },
+          //   //   {
+          //   //     key: '周日',
+          //   //     disabled: true
+          //   //   }
+          //   // ]
+          // },
+          // {
+          //   title: '周日',
+          //   value: [6, 24]
+          // }
+        ]
+      },
+      facilityArr: [],
+      options: [{
+        value: 'zhejiang',
+        label: 'Zhejiang',
+        children: [{
+          value: 'hangzhou',
+          label: 'Hangzhou',
+          children: [{
+            value: 'xihu',
+            label: 'West Lake'
+          }]
+        }]
+      }, {
+        value: 'jiangsu',
+        label: 'Jiangsu',
+        children: [{
+          value: 'nanjing',
+          label: 'Nanjing',
+          children: [{
+            value: 'zhonghuamen',
+            label: 'Zhong Hua Men'
+          }]
+        }]
+      }]
     }
   },
   methods: {
