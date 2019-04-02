@@ -58,8 +58,8 @@ export default {
       }
     },
     save(data) {
-      this.addService.save(data).subscribe(res => {
-        console.log(res)
+      this.addService.save().subscribe(res => {
+        console.log('提交', res)
       })
     }
   }

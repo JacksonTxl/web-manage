@@ -3,18 +3,19 @@ import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { StaffAddApi } from '@/api/staff/staff-add'
 import { tap } from 'rxjs/operators'
 import { StaffPubApi } from '@/api/staff/staff-pub'
+import { StaffApi } from '@/api/v1/staff'
 
 @Injectable()
 export class AddService {
-  constructor(private staffPubApi: StaffPubApi, private staffAddApi: StaffAddApi) {
+  constructor(private StaffApi: StaffApi) {
 
   }
-  getCounty() { // 获取国际化手机号前缀
-    return this.staffPubApi.getCountry()
-  }
+  // getCounty() { // 获取国际化手机号前缀
+  //   return this.StaffPubApi.getCountry()
+  // }
 
   save(data: SaveData) {
-    return this.staffAddApi.saveStaffInfo(data)
+    return this.StaffApi.saveStaffInfo(data)
   }
 
   beforeRouteEach(to: ServiceRoute, from: ServiceRoute, next: any) {
