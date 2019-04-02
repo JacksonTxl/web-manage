@@ -228,11 +228,10 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('form submit: ', values)
+          this.$emit('save', {
+            data: values
+          })
         }
-        this.$emit('save', {
-          data: values
-        })
       })
     }
   }
