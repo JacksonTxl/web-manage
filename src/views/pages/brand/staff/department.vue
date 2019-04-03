@@ -34,7 +34,7 @@
       </header>
       <main class="staff-rg__table">
         <div  style="width:100%">
-          <staff-table></staff-table>
+          <staff-table :staffList="staffList"></staff-table>
         </div>
       </main>
     </section>
@@ -56,7 +56,7 @@ export default {
   },
   subscriptions() {
     return {
-      list: this.department.state$
+      staffList: this.department.staffList$
     }
   },
   components: {

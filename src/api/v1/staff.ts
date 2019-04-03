@@ -114,7 +114,7 @@ export interface SaveData {
 }
 export class StaffApi extends Api {
   getDetail(query: Params) {
-    return this.http.get('/v1/staff/manage/staff-list', { query })
+    return this.http.get('/v1/staff/staff-list', { query, mock: {} })
   }
 
   saveStaffInfo(params: SaveData) {
