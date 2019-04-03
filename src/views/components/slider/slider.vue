@@ -1,5 +1,5 @@
 <template>
-  <div class="st-slider" :class="!setSlider.disabled ? setSlider.className : ''">
+  <div class="st-slider" :class="setSlider.disabled ?'' :  setSlider.className">
     <a-row class="st-slider__title-box" v-if="!setSlider.disabled">
       <a-col :span="2">时间段</a-col>
       <a-col :span="18">
@@ -13,7 +13,7 @@
       </a-col>
       <a-col :span="4" class="st-slider__title-box-operate">操作</a-col>
     </a-row>
-    <div class="slider" v-for="(item,index) in setSlider.infoList" :key="index" >
+    <div class="slider" v-for="(item,index) in setSlider.infoList" :key="index">
       <a-row>
         <a-col :span="2">
           <span class="slider__title">{{setSlider.infoList[index].title}}</span>
@@ -36,7 +36,6 @@
             trigger="click"
             class="slider-copy-bottom"
             v-if="item.week"
-            @visibleChange="visibleChange"
           >
             <template slot="content">
               <a-checkbox-group
@@ -71,9 +70,27 @@ export default {
     }
   },
   mounted() {
-    this.setSlider = this.getSlider
+    if (this.setSlider.length === 0) {
+      this.setSlider = this.getSlider
+    }
   },
   methods: {
+    // 获取的数据对格式进行处理
+    getFilterSlider() {
+      if (this.getSlider.business_time) {
+        let filterSlider = []
+        this.getSlider.business_time.map(function(item) {
+          filterSlider.push({
+            title: item.title === 1 ? '周一' : item.week_day === 2 ? '周二' : item.week_day === 3 ? '周三' : item.week_day === 4 ? '周四' : item.week_day === 5 ? '周五' : item.week_day === 6 ? '周六' : '周日',
+            value: [
+              item.start_time.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0,
+              item.end_time.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0
+            ]
+          })
+        })
+        this.getSlider.infoList = filterSlider
+      }
+    },
     // 复制到
     copyTo(index) {
       this.copyToIndex = index
@@ -121,22 +138,32 @@ export default {
         return `${parseInt(value)}:30`
       }
     },
-    // 气泡卡消失
-    visibleChange(value) {
-      console.log(value)
+    // 传出去的值的格式进行处理
+    setFilterSlider() {
+      let setSlider = JSON.parse(JSON.stringify(this.setSlider))
+      let filterData = []
+      setSlider.infoList.map(function(item) {
+        filterData.push({
+          'week_day': item.title === '周一' ? 1 : item.title === '周二' ? 2 : item.title === '周三' ? 3 : item.title === '周四' ? 4 : item.title === '周五' ? 5 : item.title === '周六' ? 6 : 7,
+          'start_time': /^([^0][0-9]+|0)$/.test(item.value[0]) ? item.value[1] + ':00' : (item.value[0] + '').replace(/.5/gi, ':30') + '',
+          'end_time': /^([^0][0-9]+|0)$/.test(item.value[1]) ? item.value[1] + ':00' : (item.value[1] + '').replace(/.5/gi, ':30') + ''
+        })
+      })
+      setSlider.infoList = filterData
+      return setSlider
     }
   },
   created() {},
   watch: {
-    'setSlider': {
+    setSlider: {
       handler() {
-        console.log('asdasd')
-        this.$emit('change', this.setSlider)
+        this.$emit('setFilterSlider', this.setFilterSlider())
       },
       deep: true
     },
-    'getSlider': {
+    getSlider: {
       handler() {
+        this.getFilterSlider()
         this.setSlider = this.getSlider
       }
     },

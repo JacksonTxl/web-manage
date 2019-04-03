@@ -141,7 +141,7 @@
               <st-checkbox-button-item value="5">周六</st-checkbox-button-item>
               <st-checkbox-button-item value="6">周日</st-checkbox-button-item>
             </st-checkbox-button-group>
-            <st-slider class="pages-test-store__slider" :getSlider="getSlider"></st-slider>
+            <st-slider class="pages-test-store__slider" :getSlider="getSlider" @setFilterSlider="setFilterSlider"></st-slider>
           </st-form-item>
         </a-col>
       </a-row>
@@ -245,6 +245,10 @@ export default {
     }
   },
   methods: {
+    // 获取slider数据
+    setFilterSlider(data) {
+      console.log(data)
+    },
     // 添加电话
     onValidtorPhone() {
       if (this.form.getFieldValue('shop_phone') && !this.phoneAddDisabled) {
@@ -328,7 +332,6 @@ export default {
     weekData: {
       handler() {
         let filter = []
-        // this.weekData.sort()
         this.weekData.forEach(item => {
           if (parseInt(item) === 0) {
             filter.push({
