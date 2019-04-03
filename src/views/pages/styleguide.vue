@@ -14,6 +14,7 @@
         to="/styleguide/popup">Popup(弹层类)</router-link>
       <router-link class="mg-l8"
         to="/styleguide/business">Business(业务组件)</router-link>
+      <router-link class="mg-l8" to="/styleguide/oss">OSS上传service使用示例</router-link>
       <router-link class="mg-l8" to="/styleguide/plugins">plugins(插件)</router-link>
         <router-link class="mg-l8" to="/styleguide/slider">slider(滑动条)</router-link>
     </div>
