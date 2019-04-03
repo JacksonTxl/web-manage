@@ -1,91 +1,78 @@
 <template>
-  <a-form :form="form">
-    <a-form-item
-      :label-col="formItemLayout.labelCol"
-      :wrapper-col="formItemLayout.wrapperCol"
-      label="Name"
-      required
-    >
-      <a-input
-        v-decorator="[
-          'username',
-          {rules: [{ required: true, message: 'Please input your name' }]}
-        ]"
-        placeholder="Please input your name"
-      />
-    </a-form-item>
-    <a-form-item
-      :label-col="formItemLayout.labelCol"
-      :wrapper-col="formItemLayout.wrapperCol"
-      label="Nickname"
-    >
-      <a-input
-        v-decorator="[
-          'nickname',
-          {rules: [{ required: checkNick, message: 'Please input your nickname' }]}
-        ]"
-        placeholder="Please input your nickname"
-      />
-    </a-form-item>
-    <a-form-item
-      :label-col="formTailLayout.labelCol"
-      :wrapper-col="formTailLayout.wrapperCol"
-    >
-      <a-checkbox
-        :checked="checkNick"
-        @change="handleChange"
-      >
-        Nickname is required
-      </a-checkbox>
-    </a-form-item>
-    <a-form-item
-      :label-col="formTailLayout.labelCol"
-      :wrapper-col="formTailLayout.wrapperCol"
-    >
-      <a-button
-        type="primary"
-        @click="check"
-      >
-        Check
-      </a-button>
-    </a-form-item>
-  </a-form>
+  <a-upload
+    name="avatar"
+    listType="picture-card"
+    class="avatar-uploader"
+    :showUploadList="false"
+    action="//jsonplaceholder.typicode.com/posts/"
+    :beforeUpload="beforeUpload"
+    @change="handleChange"
+  >
+    <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+    <div v-else>
+        <a-icon :type="loading ? 'loading' : 'plus'" />
+        <div class="ant-upload-text">Upload</div>
+    </div>
+  </a-upload>
 </template>
-
 <script>
-const formItemLayout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 8 }
-}
-const formTailLayout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 8, offset: 4 }
+function getBase64(img, callback) {
+  const reader = new FileReader()
+  reader.addEventListener('load', () => callback(reader.result))
+  reader.readAsDataURL(img)
 }
 export default {
   data() {
     return {
-      checkNick: false,
-      formItemLayout,
-      formTailLayout,
-      form: this.$form.createForm(this)
+      loading: false,
+      imageUrl: ''
     }
   },
   methods: {
-    check() {
-      this.form.validateFields(
-        (err) => {
-          if (!err) {
-            console.info('success')
-          }
-        }
-      )
-    },
-    handleChange(e) {
-      this.checkNick = e.target.checked
-      this.$nextTick(() => {
-        this.form.validateFields(['nickname'], { force: true })
+    handleChange(info) {
+      console.log(info.file)
+      getBase64(info.file.originFileObj, (imageUrl) => {
+        this.imageUrl = imageUrl
+        this.loading = false
       })
+      if (info.file.status === 'uploading') {
+        this.loading = true
+        return
+      }
+      if (info.file.status === 'done') {
+        // Get this url from response in real world.
+        getBase64(info.file.originFileObj, (imageUrl) => {
+          this.imageUrl = imageUrl
+          this.loading = false
+        })
+      }
+    },
+    beforeUpload(file) {
+      const isJPG = file.type === 'image/jpeg'
+      if (!isJPG) {
+        this.$message.error('You can only upload JPG file!')
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isLt2M) {
+        this.$message.error('Image must smaller than 2MB!')
+      }
+      return isJPG && isLt2M
     }
   }
 }
 </script>
+<style>
+  .avatar-uploader > .ant-upload {
+    width: 128px;
+    height: 128px;
+  }
+  .ant-upload-select-picture-card i {
+    font-size: 32px;
+    color: #999;
+  }
+
+  .ant-upload-select-picture-card .ant-upload-text {
+    margin-top: 8px;
+    color: #666;
+  }
+</style>

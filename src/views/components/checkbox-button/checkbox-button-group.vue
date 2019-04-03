@@ -50,11 +50,11 @@ export default {
     }
   },
   model: {
-    prop: 'modelCheckboxButtonValue',
+    prop: 'value',
     event: 'modelCheckboxButtonChange'
   },
   props: {
-    modelCheckboxButtonValue: {
+    value: {
       type: Array,
       default() {
         return []
@@ -66,7 +66,7 @@ export default {
     }
   },
   watch: {
-    modelCheckboxButtonValue: {
+    value: {
       deep: true,
       handler(newVal, oldVal) {
         this.stValueData.value = [...newVal]
@@ -81,7 +81,7 @@ export default {
   },
   methods: {
     init() {
-      this.stValueData.value = [...this.modelCheckboxButtonValue]
+      this.stValueData.value = [...this.value]
       this.stValueData.disabled = this.disabled
     }
   }

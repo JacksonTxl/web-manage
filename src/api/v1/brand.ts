@@ -7,6 +7,12 @@ export class BrandApi extends Api {
   update(params: BrandInput) {
     return this.http.put('/v1/brand', { params })
   }
+  /**
+   * 品牌下门店列表
+   */
+  getBrandIndex(params: GetBrandIndexInput) {
+    return this.http.get('/v1/brand/index', { params, mock: {} })
+  }
 }
 
 export interface BrandInput {
@@ -19,3 +25,5 @@ export interface BrandInput {
    */
   description: string
 }
+
+export interface GetBrandIndexInput {}

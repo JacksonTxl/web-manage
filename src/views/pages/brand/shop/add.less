@@ -1,8 +1,8 @@
-.page-brand-shop-add {
-  .add-shop-name-row {
+.page-brand-shop-add { 
+  .page-add-shop-name-row {
     .mg-t(32px);
   }
-  .add-shop-mobile {
+  .page-add-shop-mobile {
     &-button {
       width:50px;
       cursor:pointer;
@@ -42,12 +42,19 @@
   .ant-upload.ant-upload-select-picture-card > .ant-upload {
     padding: 18px;
   }
-  .ant-upload-text:nth-of-type(1) {
+  .page-show-image .ant-upload.ant-upload-select-picture-card > .ant-upload {
+    padding: 0;
+  }
+  .page-show-image .ant-upload.ant-upload-select-picture-card {
+    border-style: solid;
+    overflow: hidden;
+  }
+  .page-upload-text:nth-of-type(1) {
     .fz(14px);
     .lh(22px);
     .c(@text);
   }
-  .ant-upload-text:nth-of-type(2) {
+  .page-upload-text:nth-of-type(2) {
     .fz(12px);
     .lh(17px);
     .c(@text-light);
