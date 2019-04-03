@@ -5,7 +5,7 @@
     @ok='onSubmit'
     v-model='show'>
     <section>
-      <div class="modal-staff-delete__tag">
+      <div class="modal-staff-delete__tag mg-b24">
         <st-tag class="mg-r4" type="coach-personal"/>
         <st-tag class="mg-r4" type="coach-team"/>
         <st-tag class="mg-r8" type="role-staff"/>
@@ -13,10 +13,10 @@
     </section>
     <section>
       <div class="modal-staff-delete__tip modal-staff-tip">
-        <div class="title">无法删除员工，该员工有以下几个事项待处理</div>
-        <div class="item">① 5节未上的团体课程，<span class="search">查看详情</span></div>
-        <div class="item">① 5节未上的团体课程，<span class="search">查看详情</span></div>
-        <div class="item">① 5节未上的团体课程，<span class="search">查看详情</span></div>
+        <p>无法删除员工，该员工有以下几个事项待处理</p>
+        <ul>
+          <li v-for="(tip, index) in tips" :key="index" class="item"><span class="count">{{index + 1}}</span> {{tip}}</li>
+        </ul>
       </div>
     </section>
     <section>
@@ -31,7 +31,8 @@ export default {
   name: 'DeleteStaff',
   data() {
     return {
-      show: false
+      show: false,
+      tips: ['5节未上的团体课程', '5个服务中的私教课程', '5个服务中的私教课程']
     }
   },
   methods: {

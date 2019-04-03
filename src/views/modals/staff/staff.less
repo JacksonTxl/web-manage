@@ -7,37 +7,27 @@
     border:1px solid rgba(255,163,158,1);
   }
 }
-.modal-turnover{
-  &-tag {
-
+.modal-staff-tip{
+  background:rgba(245,245,245,0.5);
+  border-radius:2px;
+  .s(100%, 128px);
+  .pd-l(12px);
+  .pd-t(12px);
+  .fz(12px);
+  .mg-b(24px);
+  .item{
+    .mg-b(8px);
   }
-  &-form{
-    display: flex;
-    label{
-      width: 48px;
-    }
+  .count{
+    .s(14px, 14px);
+    display: inline-block;
+    text-align: center;
+    .lh(12px);
+    border: 1px solid rgba(0,0,0,0.65);
+    border-radius: 100%;
   }
-  &-tip{
-    .s(100%, 128px);
-    background:rgba(255,241,240,1);
-    border-radius:4px;
-    border:1px solid rgba(255,163,158,1);
-    .pd-l(12px);
-    .pd-t(12px);
-    .fz(12px);
-    .mg-b(24px);
-    &__item{
-      .mg-b(8px);
-    }
-    &__count{
-      .s(14px, 14px);
-      display: inline-block;
-      text-align: center;
-      .lh(12px);
-      border: 1px solid rgba(0,0,0,0.65);
-      border-radius: 100%;
-    }
-  }
+}
+.modal-staff-turnover{
 }
 
 .staff-tip-containerb{

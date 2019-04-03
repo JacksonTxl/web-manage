@@ -17,7 +17,7 @@
       </div>
     </section>
     <section>
-      <st-form :form="form" @submit="save" class="modal-bind-entity-card__form mg-t24">
+      <st-form labelWidth="68px" :form="form" @submit="save" class="modal-bind-entity-card__form mg-t24">
         <st-form-item label="实体卡号" >
           <a-input placeholder="请输入实体卡号"  v-decorator="entityCardIdRule"/>
         </st-form-item>
