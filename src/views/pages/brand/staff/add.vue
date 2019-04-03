@@ -3,9 +3,9 @@
     <a-row class="mg-b48" :gutter="8">
       <a-col offset="1" :span="22"><Steps :value="currentIndex" :stepArr="stepArr" @skip="skip"/></a-col>
     </a-row>
-    <StaffDetailBasics v-show="currentIndex == 0" @goNext="goNext" @save="save"/>
-    <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" @save="save"/>
-    <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" @save="save"/>
+    <StaffDetailBasics v-show="currentIndex == 0" @goNext="goNext" @save="onSave"/>
+    <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" @save="onSave"/>
+    <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" @save="onSave"/>
   </st-panel>
 </template>
 
@@ -45,29 +45,30 @@ export default {
           key: 3
         }
       ],
-
       staingData: {}
     }
   },
   methods: {
     skip(data) {
-      console.log('跳转', data)
+      console.log('跳页', data)
       this.currentIndex = data.index
-      // 记着保存
     },
-    goNext(e) { // 切换提交信息
+    goNext(e) { // 下一步
+      this.onSave(this.staingData)
       let currentIndex = this.currentIndex
-      console.log(currentIndex)
       this.currentIndex = currentIndex + 1
-      console.log(currentIndex)
       if (this.currentIndex === 3) {
         this.currentIndex = 0
       }
     },
-    onSave(form) {
-      this.addService.getplicy({}).subscribe(res => {
-        console.log('提ssss交', res)
+    submit(data) {
+      this.addService.save(data).subscribe(res => {
+        console.log('保存', res)
       })
+    },
+    onSave(form) { // 保存
+      this.submit(form)
+      this.staing(form)
     },
     staing(data) { // 跳页 下一个都调用下暂存
       this.staingData = data
