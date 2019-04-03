@@ -45,7 +45,7 @@ export class HttpService {
   get(url: string, options: RequestOptions = {}) {
     let requestUrl = this.makeRequestUrl(url, options)
     const get$ = ajax
-      .get(requestUrl, this.appHeaders)
+      .get(requestUrl, this.appGetHeaders)
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
@@ -95,6 +95,13 @@ export class HttpService {
       requestUrl = requestUrl + '?' + qs.stringify(query)
     }
     return requestUrl
+  }
+  get appGetHeaders() {
+    return {
+      token: this.auth.tokenSnapshot,
+      'app-id': '11111',
+      'app-version': '11111'
+    }
   }
   get appHeaders() {
     return {

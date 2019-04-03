@@ -6,6 +6,7 @@
       </header>
       <main class="staff-lf__tree">
         <organization-tree></organization-tree>
+        {{list}}
         <modal-link tag='a-button' :to="{ name: 'staff-turnover' }">
           离职
         </modal-link>
@@ -45,7 +46,7 @@ import OrganizationTree from './department#/organization-tree.vue'
 import FilterStaff from './department#/filter-staff.vue'
 import OpreationButton from './department#/opreation-button.vue'
 import StaffTable from './department#/staff-table'
-import { DepartmentService } from '@/views/pages/shop/staff/department.service'
+import { DepartmentService } from '@/views/pages/brand/staff/department.service'
 export default {
   name: 'Staff',
   serviceInject() {
@@ -54,7 +55,9 @@ export default {
     }
   },
   subscriptions() {
-
+    return {
+      list: this.department.state$
+    }
   },
   components: {
     OrganizationTree,
