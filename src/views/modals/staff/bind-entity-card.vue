@@ -1,27 +1,27 @@
 <template>
   <a-modal
-    class="bind-entity-card"
+    class="modal-bind-entity-card"
     title='绑定实体卡'
     @ok='save'
     v-model='show'>
     <section>
-      <div class="staff-tag">
+      <div class="modal-bind-entity-card__tag modal-staff-tag">
         <st-tag class="mg-r4" type="coach-personal"/>
         <st-tag class="mg-r4" type="coach-team"/>
         <st-tag class="mg-r8" type="role-staff"/>
       </div>
     </section>
     <section>
-      <div class="tip">
+      <div class="modal-bind-entity-card__tip">
 
       </div>
     </section>
     <section>
-      <st-form :form="form" @submit="save" class="page-add-container">
-         <st-form-item label="实体卡号" >
+      <st-form labelWidth='60px' :form="form" @submit="save" class="modal-bind-entity-card__form mg-t24">
+        <st-form-item label="实体卡号" >
           <a-input placeholder="请输入实体卡号"  v-decorator="entityCardIdRule"/>
         </st-form-item>
-         <st-form-item label="物理ID" >
+        <st-form-item label="物理ID" >
           <a-input placeholder="请将实体卡置于读卡器上" v-decorator="physicalIdRule"/>
         </st-form-item>
       </st-form>
@@ -34,15 +34,9 @@ export default {
   data() {
     return {
       show: false,
-      form: this.$form.createForm(this),
-      entityCardIdRule: [
-        'entityCardId',
-        { rules: [{ required: true, message: '请输入实体卡号' }] }
-      ],
-      physicalIdRule: [
-        'physicalID',
-        { rules: [{ required: true, message: '请录入物理ID' }] }
-      ]
+      form: this.$form.createForm(this)
+      // entityCardIdRule: ['entityCardId', { rules: [ { message: '请输入实体卡号' }] }],
+      // physicalIdRule: ['physicalID', { rules: [{ message: '请录入物理ID' }] }]
     }
   },
   methods: {

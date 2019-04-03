@@ -9,7 +9,9 @@ const tagMap = {
   'coach-personal': '私人教练',
   'coach-team': '团课教练',
   'shop-opening': '营业中',
-  'shop-trial': '试运营'
+  'shop-presale': '预售',
+  'shop-trial': '试运营',
+  'shop-close': '已关店'
 }
 export default {
   name: 'StTag',
