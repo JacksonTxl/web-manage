@@ -4,6 +4,9 @@
     <div class="pages-brand-shop-info__container">
       <div class="pages-brand-shop-info__img-box">
         <img class="pages-brand-shop-info__sign-img pages-brand-shop-info__img" :src="signUrl" alt>
+        <div class="pages-brand-shop-info__Identification">
+          <st-tag type="shop-trial" />
+        </div>
         <span class="pages-brand-shop-info__sign-icon">
           <span>
             <st-icon type="home"></st-icon>
