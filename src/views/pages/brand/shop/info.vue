@@ -42,8 +42,10 @@
         </div>
       </div>
     </div>
-    <div class="pages-brand-shop-info__time">营业时间</div>
-    <st-slider class="pages-brand-shop-info__slider" :getSlider="getSlider"></st-slider>
+    <template v-if="shopInfo.shop_info.business_time.length">
+      <div class="pages-brand-shop-info__time">营业时间</div>
+      <st-slider class="pages-brand-shop-info__slider" :getSlider="getSlider"></st-slider>
+    </template>
     <!-- <pre>
        {{shopInfo.shop_info.business_time}}
     </pre> -->
