@@ -111,7 +111,7 @@ export interface SaveData {
      * 确认密码
      */
     repeat_password? : string;
-  }
+}
 export class StaffApi extends Api {
   getDetail(query: Params) {
     return this.http.get('/v1/staff/manage/staff-list', { query })

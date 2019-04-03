@@ -54,7 +54,8 @@ export default {
       this.currentIndex = data.index
     },
     goNext(e) { // 下一步
-      this.onSave(this.staingData)
+      console.log(e)
+      // this.submit(e.formData)
       let currentIndex = this.currentIndex
       this.currentIndex = currentIndex + 1
       if (this.currentIndex === 3) {
@@ -68,14 +69,13 @@ export default {
     },
     onSave(form) { // 保存
       this.submit(form)
-      this.staing(form)
-    },
-    staing(data) { // 跳页 下一个都调用下暂存
-      this.staingData = data
-      Object.keys(data).forEach((key) => {
-        this.staingData[key] = data[key]
-      })
     }
+    // staing(data) { // 跳页 下一个都调用下暂存
+    //   this.staingData = data
+    //   Object.keys(data).forEach((key) => {
+    //     this.staingData[key] = data[key]
+    //   })
+    // }
   }
 }
 </script>

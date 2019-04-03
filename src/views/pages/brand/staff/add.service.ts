@@ -17,9 +17,6 @@ export class AddService {
   save(data: SaveData) {
     return this.staffApi.saveStaffInfo(data)
   }
-  getplicy(params: SaveData) {
-    return this.staffApi.getPlicy(params)
-  }
 
   beforeRouteEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     console.log(to)
