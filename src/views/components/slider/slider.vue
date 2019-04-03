@@ -72,6 +72,7 @@ export default {
   mounted() {
     if (this.setSlider.length === 0) {
       this.setSlider = this.getSlider
+      this.getFilterSlider()
     }
   },
   methods: {
@@ -175,9 +176,9 @@ export default {
       handler() {
         this.getFilterSlider()
         this.setSlider = this.getSlider
-      },
-      deep: true
-    }
+      }
+    },
+    deep: true
   }
 }
 </script>

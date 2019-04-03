@@ -151,14 +151,21 @@
         </a-col>
       </a-row>
     </st-form>
+    {{shopInfo}}
   </st-panel>
 </template>
 <script>
 import { RuleConfig } from '@/constants/rule'
+import { ShopService } from '@/views/pages/shop/setting/shop.service'
 export default {
   serviceInject() {
     return {
-      rules: RuleConfig
+      shopService: ShopService
+    }
+  },
+  subscriptions() {
+    return {
+      shopInfo: this.shopService.shopInfo$
     }
   },
   data() {

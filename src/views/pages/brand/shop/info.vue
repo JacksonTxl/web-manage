@@ -5,11 +5,11 @@
       <div class="pages-brand-shop-info__img-box">
         <img class="pages-brand-shop-info__sign-img pages-brand-shop-info__img" :src="shopInfo.shop_info.shop_images[0].image_url" alt>
         <div class="pages-brand-shop-info__Identification">
-          <st-tag type="shop-trial" />
+          <st-tag :type="shopStatusFun(shopInfo.shop_info.shop_status)" />
         </div>
         <span class="pages-brand-shop-info__sign-icon">
           <span>
-            <st-icon type="home"></st-icon>
+            <st-icon type="image-count"></st-icon>
           </span>
           {{shopInfo.shop_info.shop_images.length}}
         </span>
@@ -20,7 +20,7 @@
         </div>
         <div class="pages-brand-shop-info__info-list">
           <span>门店电话</span>
-          <span>{{shopInfo.shop_info.shop_phones.join(', ')}}</span>
+          <span>{{shopInfo.shop_info.shop_phones.join(' ，')}}</span>
         </div>
         <div class="pages-brand-shop-info__info-list">
           <span>门店邮箱</span>
@@ -34,29 +34,21 @@
         <div class="pages-brand-shop-info__info-list">
           <span class="pages-brand-shop-info__info-facilities">门店设施</span>
           <div class="pages-brand-shop-info__info-facilities-list">
-            <div>
-              <st-icon type="home"></st-icon>
-              <p>Wi-Fi</p>
-            </div>
-            <div>
-              <st-icon type="home"></st-icon>
-              <p>空调</p>
-            </div>
-            <div>
-              <st-icon type="home"></st-icon>
-              <p>充电宝</p>
-            </div>
-            <div>
-              <st-icon type="home"></st-icon>
-              <p>无烟区</p>
+            <div v-for="(item,index) in shopInfo.shop_info.shop_services" :key="index" class="facilities">
+              <st-icon :type="item.img_url"></st-icon>
+              <p>{{item.service_name}}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="pages-brand-shop-info__time">营业时间</div>
-    <st-slider class="pages-brand-shop-info__slider" :getSlider="getSlider"></st-slider>
-    {{shopInfo}}
+    <template v-if="shopInfo.shop_info.business_time.length">
+      <div class="pages-brand-shop-info__time">营业时间</div>
+      <st-slider class="pages-brand-shop-info__slider" :getSlider="getSlider"></st-slider>
+    </template>
+    <!-- <pre>
+       {{shopInfo.shop_info.business_time}}
+    </pre> -->
   </div>
 </template>
 
@@ -115,7 +107,14 @@ export default {
         'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1986179278,1118313821&fm=27&gp=0.jpg'
     }
   },
-  created() {},
-  methods: {}
+  created() {
+    this.getSlider.business_time = this.shopInfo.shop_info.business_time
+  },
+  methods: {
+    shopStatusFun(flag) {
+      const flagData = ['shop-trial', 'shop-opening', 'shop-presale', 'shop-close']
+      return flagData[flag - 1]
+    }
+  }
 }
 </script>
