@@ -16,7 +16,7 @@ export class AppConfig {
    * @see https://www.easy-mock.com/project/5c77a2c8df6f65489b3c3308
    */
   API_BASE_MOCK =
-    'https = //www.easy-mock.com/mock/5c77a2c8df6f65489b3c3308/web'
+    'https://mock.styd.cn/mock/5ca41bca1b15c5002090e2e4/v1'
   /**
    * 图片基础路径
    */
