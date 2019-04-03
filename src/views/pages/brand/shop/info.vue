@@ -4,7 +4,6 @@
     <div class="pages-brand-shop-info__container">
       <div class="pages-brand-shop-info__img-box">
         <img class="pages-brand-shop-info__sign-img pages-brand-shop-info__img" :src="signUrl" alt>
-        <!-- <img class="pages-brand-shop-info__bg-img pages-brand-shop-info__img" :src="bgUrl" alt> -->
         <span class="pages-brand-shop-info__sign-icon">
           <span>
             <st-icon type="home"></st-icon>
@@ -14,8 +13,7 @@
       </div>
       <div class="pages-brand-shop-info__info">
         <div class="pages-brand-shop-info__info-title">
-          <span>营业中</span>
-          <h2>上海旗舰店</h2>
+            <st-t3 style="display:inline-block">上海旗舰店</st-t3>
         </div>
         <div class="pages-brand-shop-info__info-list">
           <span>门店电话</span>
@@ -55,7 +53,7 @@
     </div>
     <div class="pages-brand-shop-info__time">营业时间</div>
     <st-slider class="pages-brand-shop-info__slider" :getSlider="getSlider"></st-slider>
-    {{shopInfo}}
+    <!-- {{shopInfo}} -->
   </div>
 </template>
 
