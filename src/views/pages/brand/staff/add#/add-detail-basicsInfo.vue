@@ -177,7 +177,7 @@
           <st-button type="primary"
             ghost html-type="submit">保存</st-button>
           <st-button class="mg-l16"
-            @click="goNext"
+          @click="goNext"
             type="primary">继续 填写</st-button>
         </st-form-item>
       </a-col>
@@ -222,12 +222,24 @@ export default {
   },
   methods: {
     goNext() {
-      this.$emit('goNext')
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+          this.$emit('goNext', {
+            formData: this.form.getFieldsValue()
+          })
+        }
+      })
     },
     save(e) { // form submit
       e.preventDefault()
-      this.$emit('save', {
-        data: this.form
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+          this.$emit('save', {
+            data: values
+          })
+        }
       })
     }
   }

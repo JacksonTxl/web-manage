@@ -84,6 +84,7 @@ export default {
   name: 'StaffDetailCoachInfo',
   data() {
     return {
+      form: this.$form.createForm(this),
       defaultChecked: true,
       coachInfoRule: {
         employment_timeRule: ['employment_time'], // 从业时间
@@ -103,20 +104,24 @@ export default {
   },
   methods: {
     goNext() {
-      let data = {
-        isGoNext: true
-      }
-      this.$emit('goNext', data)
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+          this.$emit('goNext', {
+            formData: this.form.getFieldsValue()
+          })
+        }
+      })
     },
-    save(e) {
+    save(e) { // form submit
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('form submit: ', values)
+          console.log('Received values of form: ', values)
+          this.$emit('save', {
+            data: values
+          })
         }
-        this.$emit('save', {
-          data: values
-        })
       })
     },
 
