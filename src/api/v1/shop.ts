@@ -7,8 +7,8 @@ export class ShopApi extends Api {
   update(params: ShopInput) {
     return this.http.put('/v1/shops', { params })
   }
-  getInfo(query: ShopGetInfoInput) {
-    return this.http.get('/v1/shops', { query })
+  getInfo(id:string) {
+    return this.http.get(`/v1/shops/${id}`, { mock: {} })
   }
   updateStatus(id: number, params: ShopStatusInput) {
     return this.http.put(`/v1/shops/${id}/status`, { params })
