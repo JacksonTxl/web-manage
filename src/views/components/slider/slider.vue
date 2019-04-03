@@ -1,6 +1,6 @@
 <template>
-  <div class="st-slider"  :class="setSlider.className ? setSlider.className : ''">
-    <a-row class="st-slider__title-box" v-if="setSlider.infoList && setSlider.infoList[0].week">
+  <div class="st-slider" :class="!setSlider.disabled ? setSlider.className : ''">
+    <a-row class="st-slider__title-box" v-if="!setSlider.disabled">
       <a-col :span="2">时间段</a-col>
       <a-col :span="18">
         <ul class="st-slider__title-box-time">
@@ -13,7 +13,7 @@
       </a-col>
       <a-col :span="4" class="st-slider__title-box-operate">操作</a-col>
     </a-row>
-    <div class="slider" v-for="(item,index) in setSlider.infoList" :key="index">
+    <div class="slider" v-for="(item,index) in setSlider.infoList" :key="index" >
       <a-row>
         <a-col :span="2">
           <span class="slider__title">{{setSlider.infoList[index].title}}</span>
@@ -57,6 +57,7 @@
 </template>
 <script>
 export default {
+  name: 'StSlider',
   props: {
     getSlider: {
       type: Object
@@ -78,11 +79,38 @@ export default {
       this.copyToIndex = index
       console.log(index)
     },
+    filterWeek(name) {
+      let self = this
+      this.setSlider.infoList.map(function(item) {
+        if (item.title === name) {
+          item.value = self.setSlider.infoList[self.copyToIndex].value
+          self.setSlider = JSON.parse(JSON.stringify(self.setSlider))
+        }
+      })
+    },
     // 多选
     onChange(checkedValues) {
-      if (checkedValues.length > 0) {
-        this.setSlider.infoList[checkedValues[0]].value = this.setSlider.infoList[this.copyToIndex].value
-        this.setSlider = JSON.parse(JSON.stringify(this.setSlider))
+      let self = this
+      if (checkedValues[0] === 0) {
+        self.filterWeek('周一')
+      }
+      if (checkedValues[0] === 1) {
+        self.filterWeek('周二')
+      }
+      if (checkedValues[0] === 2) {
+        self.filterWeek('周三')
+      }
+      if (checkedValues[0] === 3) {
+        self.filterWeek('周四')
+      }
+      if (checkedValues[0] === 4) {
+        self.filterWeek('周五')
+      }
+      if (checkedValues[0] === 5) {
+        self.filterWeek('周六')
+      }
+      if (checkedValues[0] === 6) {
+        self.filterWeek('周日')
       }
     },
     // tooltip格式处理
@@ -104,6 +132,12 @@ export default {
       handler() {
         console.log('asdasd')
         this.$emit('change', this.setSlider)
+      },
+      deep: true
+    },
+    'getSlider': {
+      handler() {
+        this.setSlider = this.getSlider
       },
       deep: true
     }

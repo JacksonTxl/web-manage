@@ -11,6 +11,14 @@
       </div>
     </section>
     <section>
+      <div class="staff-tip-containerb">
+          <div class="staff-tip-container__itemb">
+             <span class="staff-tip-container__sameb">当前绑定实体卡号：</span>23456783435</div>
+          <div class="staff-tip-container__itemb">
+            <span class="staff-tip-container__sameb">当前物理ID：</span>213212</div>
+      </div>
+    </section>
+    <section>
       <st-form :form="form" @submit="save" class="page-add-container">
         <st-form-item label="实体卡号" >
           <a-input placeholder="请输入实体卡号"  v-decorator="entityCardIdRule"/>

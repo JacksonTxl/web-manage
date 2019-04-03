@@ -1,11 +1,11 @@
 <template>
   <st-panel app>
-    <a-row class="mg-t24 mg-b48" :gutter="8">
-      <a-col offset="1" :span="18"><Steps :value="currentIndex" :stepArr="stepArr" /></a-col>
+    <a-row class="mg-b48" :gutter="8">
+      <a-col offset="1" :span="22"><Steps :value="currentIndex" :stepArr="stepArr" @skip="skip"/></a-col>
     </a-row>
-    <StaffDetailBasics v-if="currentIndex == 0" @goNext="goNext" @save="onSave"/>
-    <StaffDetailDetailedInfo v-if="currentIndex == 1" @goNext="goNext" @save="save"/>
-    <StaffDetailCoachInfo v-if="currentIndex == 2" @goNext="goNext" @save="save"/>
+    <StaffDetailBasics v-show="currentIndex == 0" @goNext="goNext" @save="save"/>
+    <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" @save="save"/>
+    <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" @save="save"/>
   </st-panel>
 </template>
 
@@ -44,10 +44,17 @@ export default {
           title: '教练信息',
           key: 3
         }
-      ]
+      ],
+
+      staingData: {}
     }
   },
   methods: {
+    skip(data) {
+      console.log('跳转', data)
+      this.currentIndex = data.index
+      // 记着保存
+    },
     goNext(e) { // 切换提交信息
       let currentIndex = this.currentIndex
       console.log(currentIndex)
@@ -61,11 +68,12 @@ export default {
       this.addService.getplicy({}).subscribe(res => {
         console.log('提ssss交', res)
       })
-      // form.data.validateFields((err, values) => {
-      //   this.addService.save(values).subscribe(res => {
-      //     console.log('提交', res)
-      //   })
-      // })
+    },
+    staing(data) { // 跳页 下一个都调用下暂存
+      this.staingData = data
+      Object.keys(data).forEach((key) => {
+        this.staingData[key] = data[key]
+      })
     }
   }
 }

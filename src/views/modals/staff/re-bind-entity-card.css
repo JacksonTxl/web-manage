@@ -1,3 +1,19 @@
-.page-add-container {
-  margin-top: 24px;
+.staff-tip-containerb {
+  padding: 12px;
+  box-sizing: border-box;
+  border: 1px solid #91D5FF;
+  background-color: #E6F7FF;
+  border-radius: 4px;
+  margin: 24px 0;
+}
+.staff-tip-containerb__itemb {
+  font-size: 12px;
+  font-family: PingFangSC-Regular;
+  color: #000;
+  opacity: .65;
+  line-height: 20px;
+}
+.staff-tip-containerb__sameb {
+  min-width: 108px;
+  text-align: right;
 }

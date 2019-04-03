@@ -135,16 +135,279 @@ export default {
             value: [6, 24]
           }
         ]
-      }
-
+      },
+      weekData: []
     }
   },
   created() {
-
+    this.weekData = [1, 2, 3, 4, 5, 6]
   },
   methods: {
     onChange(value) {
       console.log(value)
+    }
+  },
+  watch: {
+    weekData: {
+      handler() {
+        let filter = []
+        this.weekData.forEach(item => {
+          if (item === 0) {
+            filter.push({
+              title: '周一',
+              value: [9, 18],
+              week: [
+                {
+                  key: '周一',
+                  disabled: true
+                },
+                {
+                  key: '周二',
+                  disabled: !(this.weekData.indexOf(1) >= 0)
+                },
+                {
+                  key: '周三',
+                  disabled: !(this.weekData.indexOf(2) >= 0)
+                },
+                {
+                  key: '周四',
+                  disabled: !(this.weekData.indexOf(3) >= 0)
+                },
+                {
+                  key: '周五',
+                  disabled: !(this.weekData.indexOf(4) >= 0)
+                },
+                {
+                  key: '周六',
+                  disabled: !(this.weekData.indexOf(5) >= 0)
+                },
+                {
+                  key: '周日',
+                  disabled: !(this.weekData.indexOf(6) >= 0)
+                }
+              ]
+            })
+          }
+          if (item === 1) {
+            filter.push({
+              title: '周二',
+              value: [9, 18],
+              week: [
+                {
+                  key: '周一',
+                  disabled: !(this.weekData.indexOf(0) >= 0)
+                },
+                {
+                  key: '周二',
+                  disabled: true
+                },
+                {
+                  key: '周三',
+                  disabled: !(this.weekData.indexOf(2) >= 0)
+                },
+                {
+                  key: '周四',
+                  disabled: !(this.weekData.indexOf(3) >= 0)
+                },
+                {
+                  key: '周五',
+                  disabled: !(this.weekData.indexOf(4) >= 0)
+                },
+                {
+                  key: '周六',
+                  disabled: !(this.weekData.indexOf(5) >= 0)
+                },
+                {
+                  key: '周日',
+                  disabled: !(this.weekData.indexOf(6) >= 0)
+                }
+              ]
+            })
+          }
+          if (item === 2) {
+            filter.push({
+              title: '周三',
+              value: [9, 18],
+              week: [
+                {
+                  key: '周一',
+                  disabled: !(this.weekData.indexOf(0) >= 0)
+                },
+                {
+                  key: '周二',
+                  disabled: !(this.weekData.indexOf(1) >= 0)
+                },
+                {
+                  key: '周三',
+                  disabled: true
+                },
+                {
+                  key: '周四',
+                  disabled: !(this.weekData.indexOf(3) >= 0)
+                },
+                {
+                  key: '周五',
+                  disabled: !(this.weekData.indexOf(4) >= 0)
+                },
+                {
+                  key: '周六',
+                  disabled: !(this.weekData.indexOf(5) >= 0)
+                },
+                {
+                  key: '周日',
+                  disabled: !(this.weekData.indexOf(6) >= 0)
+                }
+              ]
+            })
+          }
+          if (item === 3) {
+            filter.push({
+              title: '周四',
+              value: [9, 18],
+              week: [
+                {
+                  key: '周一',
+                  disabled: !(this.weekData.indexOf(0) >= 0)
+                },
+                {
+                  key: '周二',
+                  disabled: !(this.weekData.indexOf(1) >= 0)
+                },
+                {
+                  key: '周三',
+                  disabled: !(this.weekData.indexOf(2) >= 0)
+                },
+                {
+                  key: '周四',
+                  disabled: true
+                },
+                {
+                  key: '周五',
+                  disabled: !(this.weekData.indexOf(4) >= 0)
+                },
+                {
+                  key: '周六',
+                  disabled: !(this.weekData.indexOf(5) >= 0)
+                },
+                {
+                  key: '周日',
+                  disabled: !(this.weekData.indexOf(6) >= 0)
+                }
+              ]
+            })
+          }
+          if (item === 4) {
+            filter.push({
+              title: '周五',
+              value: [9, 18],
+              week: [
+                {
+                  key: '周一',
+                  disabled: !(this.weekData.indexOf(0) >= 0)
+                },
+                {
+                  key: '周二',
+                  disabled: !(this.weekData.indexOf(1) >= 0)
+                },
+                {
+                  key: '周三',
+                  disabled: !(this.weekData.indexOf(2) >= 0)
+                },
+                {
+                  key: '周四',
+                  disabled: !(this.weekData.indexOf(3) >= 0)
+                },
+                {
+                  key: '周五',
+                  disabled: true
+                },
+                {
+                  key: '周六',
+                  disabled: !(this.weekData.indexOf(5) >= 0)
+                },
+                {
+                  key: '周日',
+                  disabled: !(this.weekData.indexOf(6) >= 0)
+                }
+              ]
+            })
+          }
+          if (item === 5) {
+            filter.push({
+              title: '周六',
+              value: [9, 18],
+              week: [
+                {
+                  key: '周一',
+                  disabled: !(this.weekData.indexOf(0) >= 0)
+                },
+                {
+                  key: '周二',
+                  disabled: !(this.weekData.indexOf(1) >= 0)
+                },
+                {
+                  key: '周三',
+                  disabled: !(this.weekData.indexOf(2) >= 0)
+                },
+                {
+                  key: '周四',
+                  disabled: !(this.weekData.indexOf(3) >= 0)
+                },
+                {
+                  key: '周五',
+                  disabled: !(this.weekData.indexOf(4) >= 0)
+                },
+                {
+                  key: '周六',
+                  disabled: true
+                },
+                {
+                  key: '周日',
+                  disabled: !(this.weekData.indexOf(6) >= 0)
+                }
+              ]
+            })
+          }
+          if (item === 6) {
+            filter.push({
+              title: '周日',
+              value: [9, 18],
+              week: [
+                {
+                  key: '周一',
+                  disabled: !(this.weekData.indexOf(0) >= 0)
+                },
+                {
+                  key: '周二',
+                  disabled: !(this.weekData.indexOf(1) >= 0)
+                },
+                {
+                  key: '周三',
+                  disabled: !(this.weekData.indexOf(2) >= 0)
+                },
+                {
+                  key: '周四',
+                  disabled: !(this.weekData.indexOf(3) >= 0)
+                },
+                {
+                  key: '周五',
+                  disabled: !(this.weekData.indexOf(4) >= 0)
+                },
+                {
+                  key: '周六',
+                  disabled: !(this.weekData.indexOf(5) >= 0)
+                },
+                {
+                  key: '周日',
+                  disabled: true
+                }
+              ]
+            })
+          }
+        })
+        this.getSlider.infoList = filter
+        this.getSlider = JSON.parse(JSON.stringify(this.getSlider))
+      }
     }
   }
 }

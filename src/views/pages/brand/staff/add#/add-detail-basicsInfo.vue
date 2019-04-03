@@ -17,7 +17,7 @@
         <st-form-item label="手机号" required>
           <a-input-group compact>
             <a-select style="width: 15%;" v-decorator="basicInfoRuleList.country_codeRule">
-              <a-select-option value="Option1">+86</a-select-option>
+              <a-select-option value="1">+86</a-select-option>
             </a-select>
             <a-input style="width: 85%" placeholder="请输入手机号" v-decorator="basicInfoRuleList.phoneRule"/>
           </a-input-group>
@@ -195,11 +195,11 @@ export default {
       basicInfoRuleList: {
         usernameRule: ['staff_name', { rules: [{ required: true, message: '请填写姓名' }] }], // 姓名
         nicknameRule: ['nickname', { rules: [{ required: true, message: '请填写昵称' }] }], // 昵称
-        country_codeRule: ['country_code_id'], // 国家编码id，例如中国的id是37
+        country_codeRule: ['country_code_id', { initialValue: '1' }], // 国家编码id，例如中国的id是37
         phoneRule: ['mobile', { rules: [{ required: true, message: '手机号格式错误', pattern: /^1[34578]\d{9}$/ }] }],
         staff_numRule: ['staff_num'], // 工号
         genderRule: ['sex', { rules: [{ required: true, message: '请选择你的性别' }] }], // 角色select rule
-        id_typeRule: ['id_type'], // 证件类型
+        id_typeRule: ['id_type', { initialValue: '1' }], // 证件类型
         idcardRule: ['id_number', { rules: [{ required: true, message: '请填写正确的身份证号', pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/ }] }],
 
         identityRule: ['identity'], // 身份

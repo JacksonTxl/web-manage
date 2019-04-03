@@ -25,20 +25,9 @@ export class DepartmentService extends Store<StaffState> implements RouteGuard {
   getStaffList(data: Params) {
     return this.staffApi.getDetail(data)
   }
-  SET_STAFF(data: any) {
-    this.state$.commit(state => {
-      console.log(state)
-      state.staffList = data
-    })
-  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    let res1 = [{ a: 1 }]
-    this.SET_STAFF(res1)
-    // this.getStaffList({}).subscribe((res) => {
-
-    //   console.log(res)
-    //   this.SET_STAFF(res1)
-    // })
-    next()
+    this.getStaffList({}).subscribe((res: StResponse) => {
+      console.log(res)
+    })
   }
 }
