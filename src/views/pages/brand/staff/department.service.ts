@@ -3,15 +3,14 @@ import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { StaffApi, Params } from '@/api/v1/staff'
-import { StResponse } from '@/types/app'
 
 interface StaffState {
-  staffList: []
+  staffList: any
 }
 @Injectable()
 export class DepartmentService extends Store<StaffState> implements RouteGuard {
   state$: State<StaffState>
-  name$: Computed<string>
+  staffList$: Computed<any>
   // staffList$: Computed<StaffState>
   constructor(private staffApi: StaffApi) {
     super()
@@ -19,15 +18,21 @@ export class DepartmentService extends Store<StaffState> implements RouteGuard {
       staffList: []
     })
     // this.staffList$ = new Computed(this.state$.pipe(pluck('staffList')))
-    this.name$ = new Computed(this.state$.pipe(pluck('name')))
+    this.staffList$ = new Computed(this.state$.pipe(pluck('staffList')))
   }
   @Effect()
   getStaffList(data: Params) {
     return this.staffApi.getDetail(data)
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getStaffList({}).subscribe((res: StResponse) => {
-      console.log(res)
+  SET_STAFF_LIST(list: StaffState) {
+    this.state$.commit(state => {
+      state.staffList = list
     })
+  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.getStaffList({}).subscribe((res: any) => {
+      this.SET_STAFF_LIST(res.list)
+    })
+    next()
   }
 }

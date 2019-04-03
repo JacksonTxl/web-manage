@@ -5,7 +5,7 @@ export class LoginApi extends Api {
    * 账户密码登录
    */
   loginAccount(params: LoginAccountInput) {
-    return this.http.post('/login/account', { mock: {} })
+    return this.http.post('/login/account', { params })
   }
   /**
    * 手机登录API
