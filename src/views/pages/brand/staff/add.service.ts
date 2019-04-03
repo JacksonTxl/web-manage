@@ -7,7 +7,7 @@ import { StaffApi } from '@/api/v1/staff'
 
 @Injectable()
 export class AddService {
-  constructor(private StaffApi: StaffApi) {
+  constructor(private staffApi: StaffApi) {
 
   }
   // getCounty() { // 获取国际化手机号前缀
@@ -15,7 +15,10 @@ export class AddService {
   // }
 
   save(data: SaveData) {
-    return this.StaffApi.saveStaffInfo(data)
+    return this.staffApi.saveStaffInfo(data)
+  }
+  getplicy(params: SaveData) {
+    return this.staffApi.getPlicy(params)
   }
 
   beforeRouteEach(to: ServiceRoute, from: ServiceRoute, next: any) {

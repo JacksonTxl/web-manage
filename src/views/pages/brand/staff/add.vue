@@ -1,9 +1,9 @@
 <template>
   <st-panel app>
-    <a-row class="mg-b48" :gutter="8">
-      <a-col offset="1" :span="22"><Steps :value="currentIndex" :stepArr="stepArr" /></a-col>
+    <a-row class="mg-t24 mg-b48" :gutter="8">
+      <a-col offset="1" :span="18"><Steps :value="currentIndex" :stepArr="stepArr" /></a-col>
     </a-row>
-    <StaffDetailBasics v-if="currentIndex == 0" @goNext="goNext" @save="save"/>
+    <StaffDetailBasics v-if="currentIndex == 0" @goNext="goNext" @save="onSave"/>
     <StaffDetailDetailedInfo v-if="currentIndex == 1" @goNext="goNext" @save="save"/>
     <StaffDetailCoachInfo v-if="currentIndex == 2" @goNext="goNext" @save="save"/>
   </st-panel>
@@ -57,10 +57,15 @@ export default {
         this.currentIndex = 0
       }
     },
-    save(data) {
-      this.addService.save().subscribe(res => {
-        console.log('提交', res)
+    onSave(form) {
+      this.addService.getplicy({}).subscribe(res => {
+        console.log('提ssss交', res)
       })
+      // form.data.validateFields((err, values) => {
+      //   this.addService.save(values).subscribe(res => {
+      //     console.log('提交', res)
+      //   })
+      // })
     }
   }
 }

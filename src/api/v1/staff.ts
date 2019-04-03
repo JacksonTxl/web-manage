@@ -118,6 +118,11 @@ export class StaffApi extends Api {
   }
 
   saveStaffInfo(params: SaveData) {
-    return this.http.put('/v1/brand/staff', { params })
+    console.log(params)
+    return this.http.put('/v1/staff/brand', { params })
+  }
+  getPlicy(params: SaveData) {
+    console.log(params)
+    return this.http.get('/upload/aliyun/policy', { query: {} })
   }
 }
