@@ -19,7 +19,7 @@
       </div>
     </section>
     <section>
-      <st-form :form="form" @submit="save" class="page-add-container">
+      <st-form labelWidth='60px' :form="form" @submit="save" class="page-add-container">
         <st-form-item label="实体卡号" >
           <a-input placeholder="请输入实体卡号"  v-decorator="entityCardIdRule"/>
         </st-form-item>
