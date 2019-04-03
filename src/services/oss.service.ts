@@ -10,14 +10,18 @@ interface PutOptions {
    */
   file: any
   /**
+   * 上传的文件类型，可用类型为 image
+   */
+  type: string
+  /**
    * 上传进度cb
    */
   uploadProgress?: (val: any) => any
 }
 @Injectable()
 export class OssService extends Api {
-  put({ file, uploadProgress = () => {} }: PutOptions) {
-    return this.getOssPolicy().pipe(
+  put({ file, type = 'image', uploadProgress = () => {} }: PutOptions) {
+    return this.getOssPolicy(type).pipe(
       mergeMap(({ policy_info: res }:any) => {
         let key = this.getKey(file)
         let formData = new FormData()
@@ -46,8 +50,8 @@ export class OssService extends Api {
       })
     )
   }
-  private getOssPolicy() {
-    return this.http.get('/upload/aliyun/policy')
+  private getOssPolicy(type:string) {
+    return this.http.get(`/upload/${type}/policy`)
   }
   private getKey(file: any): string {
     // 获取文件后缀

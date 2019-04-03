@@ -16,7 +16,7 @@
       上传成功返回的KEY: {{key}}
     </h1>
     <h2>
-      调用put方法，传入文件。成功回调next返回对象{fileKey: key}，上传成功返回，把key传给后台。失败回调error。
+      调用put方法，传入参数为{file[,type[,uploadProgress]]},file是文件对象（必传），type是文件类型（选用）目前只有image类型默认image，uploadProgress是上传进度回调（选用）。成功回调next返回对象{fileKey: key}，上传成功返回，把key传给后台。失败回调error。
     </h2>
     <h2>备注：oss.service只提供图片上传功能。不包含上传组件的样式或上传之前对图片操作的逻辑。</h2>
   </div>
