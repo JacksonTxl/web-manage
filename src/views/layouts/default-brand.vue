@@ -3,7 +3,7 @@
     <a-layout-sider class="layout-default-brand-sider">
       <div class="layout-default-brand-sider__brand">
         <div class="layout-default-brand-sider__logo">
-          <i></i>
+          <i class="layout-default-brand-sider__certification st-icon-certified"></i>
         </div>
         <div class="layout-default-brand-sider__name">
           <span>STYD健身学院</span>

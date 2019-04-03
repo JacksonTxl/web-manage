@@ -16,6 +16,9 @@ export class ShopApi extends Api {
   updateStatus(id: number, params: ShopStatusInput) {
     return this.http.put(`/v1/shops/${id}/status`, { params })
   }
+  getShopList() {
+    return this.http.get('/v1/shops')
+  }
 }
 
 export interface ShopGetInfoInput {
