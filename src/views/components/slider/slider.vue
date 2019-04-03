@@ -165,9 +165,9 @@ export default {
       handler() {
         this.getFilterSlider()
         this.setSlider = this.getSlider
-      }
-    },
-    deep: true
+      },
+      deep: true
+    }
   }
 }
 </script>
