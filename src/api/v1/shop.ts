@@ -26,6 +26,21 @@ export interface ShopStatusInput {
   shop_status: number
 }
 
+export interface WeekDay {
+  /**
+   * 星期
+   */
+  week_day: number
+  /**
+   * 开始时间
+   */
+  start_time: string
+  /**
+   *  结束时间
+   */
+  end_time: string
+}
+
 export interface ShopInput {
   /**
    * 商户的账户名
@@ -64,29 +79,13 @@ export interface ShopInput {
    */
   lng: string
   /**
-   * 店招相册id
-   */
-  album_id: number
-  /**
    * 门店服务的ids
    */
   service_ids: any[]
   /**
    * 门店营业时间
    */
-  business_time: any[]
-  /**
-   * 星期
-   */
-  week_day: number
-  /**
-   * 开始时间
-   */
-  start_time: string
-  /**
-   *  结束时间
-   */
-  end_time: string
+  business_time: WeekDay[]
   /**
    * 门店邮箱
    */

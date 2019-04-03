@@ -135,7 +135,7 @@
               :key="item.value"
               :value="item.value">{{item.label}}</st-checkbox-button-item>
             </st-checkbox-button-group>
-            <st-slider class="page-brand-shop-add__slider" :getSlider="getSlider"></st-slider>
+            <st-slider class="page-brand-shop-add__slider" :getSlider="getSlider" @change="sliderChange"></st-slider>
           </st-form-item>
         </a-col>
       </a-row>
@@ -151,12 +151,14 @@
 import { RuleConfig } from '@/constants/rule'
 import { OssService } from '@/services/oss.service'
 import { MessageService } from '@/services/message.service'
+import { AddService } from './add.service'
 export default {
   serviceInject() {
     return {
       rules: RuleConfig,
       OSS: OssService,
-      MessageService: MessageService
+      messageService: MessageService,
+      addService: AddService
     }
   },
   data() {
@@ -166,16 +168,16 @@ export default {
       shopData: {
         shop_name: '',
         shop_phones: [],
-        province_id: '',
-        city_id: '',
-        district_id: '',
+        province_id: 11,
+        city_id: 2,
+        district_id: 1,
         address: '',
         email: '',
         service_ids: [],
         shop_cover_image: '',
         shop_status: 1,
-        lat: '',
-        lng: '',
+        lat: '31.230416',
+        lng: '121.473701',
         business_time: []
       },
       // 服务id
@@ -194,10 +196,10 @@ export default {
       serviceIcon_list: ['WIFI', 'shower', 'snow', 'nosmoking', 'heating', 'medical', 'park', 'energy'],
       // 营业状态
       shop_status_list: [
-        { value: 0, label: '预售' },
+        { value: 3, label: '预售' },
         { value: 1, label: '试运营' },
         { value: 2, label: '正式营业' },
-        { value: 3, label: '已关店' }
+        { value: 4, label: '已关店' }
       ],
       // week
       weekArr: [],
@@ -214,8 +216,6 @@ export default {
       // upload
       loading: false,
       imageUrl: '',
-
-      mobileArr: ['1356654', '15845644567', '15845644567', '15845644567', '15845644567'],
       getSlider: {
         disabled: false,
         className: 'st-slider-box',
@@ -323,7 +323,12 @@ export default {
       this.form.validateFieldsAndScroll((err, values) => {
         this.phoneValidtorType = 1
         if (!err) {
-          console.log('Received values of form: ', values)
+          this.shopData.shop_name = values.shop_name
+          this.shopData.address = values.shop_address
+          this.shopData.email = values.email
+          this.addService.save(this.shopData).subscribe(res => {
+            console.log(res)
+          })
         } else {
 
         }
@@ -373,28 +378,19 @@ export default {
             this.shopData.shop_cover_image = val.fileKey
             this.imageUrl = await this.fileReader(data.file)
             this.loading = false
-            this.MessageService.success({ content: '上传成功' })
+            this.messageService.success({ content: '上传成功' })
           },
           error: val => {
             this.loading = false
-            this.MessageService.error({ content: '上传失败' })
+            this.messageService.error({ content: '上传失败' })
           }
         })
       } else {
         this.loading = false
       }
     },
-
-    // shop_address validatorFn
-    shop_address_validator(rule, value, callback) {
-      // eslint-disable-next-line
-      callback()
-    },
-    onChange(value) {
-      console.log(value)
-    },
-    handleChange(info) {
-      console.log(info)
+    sliderChange(data) {
+      this.shopData.business_time = data.infoList
     },
     fileReader(img) {
       return new Promise((resolve, reject) => {
@@ -408,13 +404,17 @@ export default {
     checkUploadFile(file) {
       const isJPG = this.rules.img_type.test(file.type)
       if (!isJPG) {
-        this.MessageService.error({ content: 'You can only upload JPG/PNG file!' })
+        this.messageService.error({ content: 'You can only upload JPG/PNG file!' })
       }
       const isLt5M = file.size / 1024 / 1024 < 5
       if (!isLt5M) {
-        this.MessageService.error({ content: 'Image must smaller than 5MB!' })
+        this.messageService.error({ content: 'Image must smaller than 5MB!' })
       }
       return isJPG && isLt5M
+    },
+
+    onChange(value) {
+      console.log(value)
     }
   }
 }
