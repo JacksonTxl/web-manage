@@ -133,9 +133,17 @@ export default {
     // tooltip格式处理
     formatter(value) {
       if (value % 1 === 0) {
-        return `${value}:00`
+        if (value >= 9) {
+          return `${value}:00`
+        } else {
+          return `0${value}:00`
+        }
       } else {
-        return `${parseInt(value)}:30`
+        if (value >= 9) {
+          return `${parseInt(value)}:30`
+        } else {
+          return `0${parseInt(value)}:30`
+        }
       }
     },
     // 传出去的值的格式进行处理
@@ -145,8 +153,10 @@ export default {
       setSlider.infoList.map(function(item) {
         filterData.push({
           'week_day': item.title === '周一' ? 1 : item.title === '周二' ? 2 : item.title === '周三' ? 3 : item.title === '周四' ? 4 : item.title === '周五' ? 5 : item.title === '周六' ? 6 : 7,
-          'start_time': /^([^0][0-9]+|0)$/.test(item.value[0]) ? item.value[1] + ':00' : (item.value[0] + '').replace(/.5/gi, ':30') + '',
-          'end_time': /^([^0][0-9]+|0)$/.test(item.value[1]) ? item.value[1] + ':00' : (item.value[1] + '').replace(/.5/gi, ':30') + ''
+          start_time:
+            /^\d+$/.test(item.value[0]) && item.value[0] > 9 ? item.value[0] + ':00' : /^\d+$/.test(item.value[0]) && item.value[0] <= 9 ? '0' + item.value[0] + ':00' : !/^\d+$/.test(item.value[0]) && item.value[0] <= 9 ? '0' + (item.value[0] + '').replace(/.5/gi, ':30') : (item.value[0] + '').replace(/.5/gi, ':30') + '',
+          end_time:
+            /^\d+$/.test(item.value[1]) && item.value[1] > 9 ? item.value[1] + ':00' : /^\d+$/.test(item.value[1]) && item.value[1] <= 9 ? '0' + item.value[1] + ':00' : !/^\d+$/.test(item.value[1]) && item.value[1] <= 9 ? '0' + (item.value[1] + '').replace(/.5/gi, ':30') : (item.value[1] + '').replace(/.5/gi, ':30') + ''
         })
       })
       setSlider.infoList = filterData
