@@ -34,12 +34,10 @@ export default {
         uploadProgress(res) {
           console.log(`${res.loaded / res.total * 100}%`)
         }
-      }).then(res => {
-        res.subscribe({
-          next: val => console.log(val),
-          complete: () => console.log('Complete!'),
-          error: val => console.log(`Error: ${val}`)
-        })
+      }).subscribe({
+        next: val => console.log(val),
+        complete: () => console.log('Complete!'),
+        error: val => console.log(`Error: ${val}`)
       })
     }
   }
