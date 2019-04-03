@@ -6,10 +6,31 @@
         :xs="22"
         :offset="1">
         <st-form-item label="员工头像">
-          <a-upload class="page-add-upload" style="width:164px;display:inline-block;height:164px;"
+          <!-- <a-upload
+            v-if="imageUrl"
+            class="page-add-upload"
+            listType="picture-card"
+            :showUploadList="false"
+            :customRequest="upload"
             type="drag">
             <st-icon type="anticon:plus"></st-icon>
-          </a-upload>
+            <img v-if="imageUrl" :src="imageUrl" width="164px" height="auto" alt="avatar">
+            <div v-else>
+              <st-icon type="anticon:plus"></st-icon>
+            </div>
+          </a-upload> -->
+            <a-upload
+              listType="picture-card"
+              class="page-add-upload"
+              :showUploadList="false"
+              :customRequest="upload"
+            >
+              <img v-if="imageUrl" :src="imageUrl" width="164" height="auto" alt="avatar">
+              <div v-else>
+                <a-icon :type="loading ? 'loading' : 'plus'"/>
+                <div class="ant-upload-text">上传头像</div>
+              </div>
+            </a-upload>
         </st-form-item>
         <st-form-item label="姓名" required>
           <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="basicInfoRuleList.usernameRule" />
@@ -185,13 +206,17 @@
   </st-form>
 </template>
 <script>
-
+import { OssService } from '@/services/oss.service'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'StaffDetailBasics',
   data() {
     return {
       form: this.$form.createForm(this),
       defaultChecked: true, // checkbox 默认选中
+      loading: false,
+      imageUrl: '',
+      key: '', // 上传头像返回的key
       basicInfoRuleList: {
         usernameRule: ['staff_name', { rules: [{ required: true, message: '请填写姓名' }] }], // 姓名
         nicknameRule: ['nickname', { rules: [{ required: true, message: '请填写昵称' }] }], // 昵称
@@ -220,6 +245,12 @@ export default {
       }
     }
   },
+  serviceInject() {
+    return {
+      OSS: OssService,
+      MessageService: MessageService
+    }
+  },
   methods: {
     goNext() {
       this.form.validateFields((err, values) => {
@@ -239,6 +270,28 @@ export default {
           this.$emit('save', {
             data: values
           })
+        }
+      })
+    },
+    upload(data) {
+      this.loading = true
+      this.imageUrl = ''
+      this.OSS.put({
+        file: data.file
+      }).subscribe({
+        next: val => {
+          this.key = val.fileKey
+          this.MessageService.success({ content: `success: ${val}` })
+          this.imageUrl = `http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/${
+            val.fileKey
+          }`
+          this.loading = false
+          console.log(val.fileKey)
+          console.log(this.imageUrl)
+        },
+        error: val => {
+          this.MessageService.error({ content: `Error ${val.message}` })
+          this.loading = false
         }
       })
     }

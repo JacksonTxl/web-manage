@@ -1,9 +1,65 @@
-.ant-upload-select-picture-card i {
-    font-size: 32px;
-    color: #999;
+.page-add-coachInfo{
+    .ant-upload-select-picture-card i {
+        font-size: 32px;
+        color: #999;
+    }
+    
+    .ant-upload-select-picture-card .ant-upload-text {
+        margin-top: 8px;
+        color: #666;
+    }
+    
+    .page-coachInfo-upload{
+        display: flex;
+        align-items: center;
+        .ant-upload{
+            margin-bottom: 0;
+            width: 100px;
+            height: 100px;
+        }
+        .page-coachInfo-itemImgCont{
+            width: 100px;
+            height: 100px;
+            margin-right: 8px;
+        }
+        .page-coachInfo-itemImg{
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .add-profess-card {
+        &-button {
+          width:50px;
+          cursor:pointer;
+          &.disabled {
+            cursor: not-allowed;
+          }
+        }
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        .mg-t(8px);
+        > p {
+          display: flex;
+          display: inline-block;
+          align-items: center;
+          .mg(0);
+          .pd-tb(0);
+          .pd-lr(8px);
+          .mg-r(8px);
+          .mg-b(8px);
+          border: 1px solid @normal-color;
+          background: #f5f5f5;
+          border-radius: 4px;
+          .fz(12px);
+          .lh(20px);
+          .c(@text);
+          > span {
+            margin-right: 8px;
+          }
+        }
+        
+      }
 }
 
-.ant-upload-select-picture-card .ant-upload-text {
-    margin-top: 8px;
-    color: #666;
-}

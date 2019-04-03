@@ -24,7 +24,7 @@ export class LlfService extends Store<LlfState> {
   test(data: ManagePhoneInput) {
     return this.manageApi.findManagePhone(data)
   }
-  beforeRouteEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     next()
   }
 }
