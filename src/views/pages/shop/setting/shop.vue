@@ -141,7 +141,7 @@
               <st-checkbox-button-item value="5">周六</st-checkbox-button-item>
               <st-checkbox-button-item value="6">周日</st-checkbox-button-item>
             </st-checkbox-button-group>
-            <st-slider class="pages-test-store__slider" :getSlider="getSlider" @setFilterSlider="setFilterSlider"></st-slider>
+            <st-slider class="pages-test-store__slider" :getSlider="getSlider" @change="setFilterSlider"></st-slider>
           </st-form-item>
         </a-col>
       </a-row>

@@ -133,13 +133,13 @@ export default {
     // tooltip格式处理
     formatter(value) {
       if (value % 1 === 0) {
-        if (value >= 9) {
+        if (value > 9) {
           return `${value}:00`
         } else {
           return `0${value}:00`
         }
       } else {
-        if (value >= 9) {
+        if (value > 9) {
           return `${parseInt(value)}:30`
         } else {
           return `0${parseInt(value)}:30`
@@ -167,7 +167,7 @@ export default {
   watch: {
     setSlider: {
       handler() {
-        this.$emit('setFilterSlider', this.setFilterSlider())
+        this.$emit('change', this.setFilterSlider())
       },
       deep: true
     },
