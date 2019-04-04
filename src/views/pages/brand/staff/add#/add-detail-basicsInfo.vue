@@ -6,19 +6,6 @@
         :xs="22"
         :offset="1">
         <st-form-item label="员工头像">
-          <!-- <a-upload
-            v-if="imageUrl"
-            class="page-add-upload"
-            listType="picture-card"
-            :showUploadList="false"
-            :customRequest="upload"
-            type="drag">
-            <st-icon type="anticon:plus"></st-icon>
-            <img v-if="imageUrl" :src="imageUrl" width="164px" height="auto" alt="avatar">
-            <div v-else>
-              <st-icon type="anticon:plus"></st-icon>
-            </div>
-          </a-upload> -->
             <a-upload
               listType="picture-card"
               class="page-add-upload"
@@ -96,7 +83,7 @@
               <st-icon type="anticon:question-circle-o" />
             </a-tooltip>
           </span>
-          <a-checkbox-group v-decorator="basicInfoRuleList.identityRule">
+          <a-checkbox-group v-decorator="basicInfoRuleList.identityRule" >
             <a-checkbox value="1" :defaultChecked="defaultChecked">普通员工</a-checkbox>
             <a-checkbox value="2">会籍销售</a-checkbox>
             <a-checkbox value="3">团课教练</a-checkbox>
@@ -251,7 +238,22 @@ export default {
       MessageService: MessageService
     }
   },
+  watch: {
+    form(a) {
+      console.log(a)
+    }
+  },
   methods: {
+    // watchChooesed(e){
+    //   let flag = e.every(value=>{
+    //     return value == 4 || value == 5
+    //   })
+
+    //   console.log(flag)
+    //   if(flag){
+    //     this.$emit('addCoachInfo')
+    //   }
+    // },
     goNext() {
       this.form.validateFields((err, values) => {
         if (!err) {
