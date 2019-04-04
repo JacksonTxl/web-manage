@@ -1,18 +1,17 @@
 <template>
   <st-panel app class="page-brand-shop-add">
-    <st-form
-    :form="form"
-    @submit="onHandleSubmit">
+    <st-form :form="form" @submit="onHandleSubmit">
       <a-row :gutter="8" class="page-add-shop-name-row">
         <a-col offset="1" :lg="10">
           <st-form-item label="门店名称" required>
             <a-input
-            v-decorator="[
+              v-decorator="[
               'shop_name',
               {rules: [{ validator: shop_name_validator}]}
             ]"
-            maxlength="20"
-            placeholder="支持中英文、数字,不超过20个字"></a-input>
+              maxlength="20"
+              placeholder="支持中英文、数字,不超过20个字"
+            ></a-input>
           </st-form-item>
         </a-col>
       </a-row>
@@ -20,14 +19,18 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="门店电话" required>
             <a-input
-            v-decorator="[
+              v-decorator="[
               'shop_phone',
               { validateTrigger: 'blur',rules: [{validator: shop_phone_validator}]}
             ]"
-            placeholder="请输入门店电话">
-              <div slot="addonAfter" @click="onValidtorPhone" class="page-add-shop-mobile-button" :class="{disabled:phoneAddDisabled}">
-                添加
-              </div>
+              placeholder="请输入门店电话"
+            >
+              <div
+                slot="addonAfter"
+                @click="onValidtorPhone"
+                class="page-add-shop-mobile-button"
+                :class="{disabled:phoneAddDisabled}"
+              >添加</div>
             </a-input>
             <div class="page-add-shop-mobile">
               <p v-for="(item,index) in shopData.shop_phones" :key="index">
@@ -42,13 +45,14 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="门店地址" required>
             <a-cascader
-            v-decorator="[
+              v-decorator="[
               'shop_PCD',
               {rules: [{ required: true, message: '请输入门店地址'}]}
             ]"
-            :options="options"
-            @change="onChange"
-            placeholder="请选择省/市/区"/>
+              :options="options"
+              @change="onChange"
+              placeholder="请选择省/市/区"
+            />
           </st-form-item>
         </a-col>
       </a-row>
@@ -56,11 +60,12 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="详细地址" required>
             <a-input
-            v-decorator="[
+              v-decorator="[
               'shop_address',
               {rules: [{ required: true, message: '请输入详细地址'}]}
             ]"
-            placeholder="请输入详细地址"></a-input>
+              placeholder="请输入详细地址"
+            ></a-input>
           </st-form-item>
         </a-col>
       </a-row>
@@ -68,7 +73,7 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="邮箱">
             <a-input
-            v-decorator="[
+              v-decorator="[
               'email',
               {
                 rules: [{
@@ -76,7 +81,8 @@
                 }]
               }
             ]"
-            placeholder="请输入门店邮箱"></a-input>
+              placeholder="请输入门店邮箱"
+            ></a-input>
           </st-form-item>
         </a-col>
       </a-row>
@@ -85,30 +91,37 @@
           <st-form-item label="服务设施">
             <st-checkbox-facility-group v-model="service_ids">
               <st-checkbox-facility-item
-              style="margin-right:24px"
-              v-for="item in service_list"
-              :label="item.label"
-              :icon="serviceIcon_list[item.value]"
-              :key="item.value"
-              :value="item.value"></st-checkbox-facility-item>
+                style="margin-right:24px"
+                v-for="item in serviceList"
+                :label="item.service_name"
+                :icon="serviceIcon_icon_list[item.service_id]"
+                :key="item.service_id"
+                :value="item.service_id"
+              ></st-checkbox-facility-item>
             </st-checkbox-facility-group>
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
         <a-col offset="1" :lg="23">
-          <st-form-item label="店招">
+          <st-form-item label="店招" v-viewer="{ url: 'data-src' }">
             <a-upload
               listType="picture-card"
               :class="{'page-show-image':imageUrl}"
               :showUploadList="false"
-              :customRequest="upload"
+              :disabled="imageUrl!==''"
+              :customRequest="uploadCrop"
             >
-              <img v-if="imageUrl" width="240" height="auto" :src="imageUrl" alt="avatar" />
+              <div class="page-image" v-if="imageUrl">
+                <div class="page-image-button">
+                  <span @click="removeImage">删除</span>
+                </div>
+                <img :dataSrc="imageUrl" width="240" height="135" :src="imageUrl" alt="店招">
+              </div>
               <div v-else>
-                  <a-icon :type="loading ? 'loading' : 'plus'" />
-                  <div class="page-upload-text">上传店招</div>
-                  <div class="page-upload-text">大小不超过5M</div>
+                <a-icon :type="loading ? 'loading' : 'plus'"/>
+                <div class="page-upload-text">上传店招</div>
+                <div class="page-upload-text">大小不超过5M</div>
               </div>
             </a-upload>
           </st-form-item>
@@ -119,9 +132,10 @@
           <st-form-item label="营业状态">
             <a-radio-group v-model="shopData.shop_status">
               <a-radio
-              v-for="item in shop_status_list"
-              :key="item.value"
-              :value="item.value">{{item.label}}</a-radio>
+                v-for="item in shop_status_list"
+                :key="item.value"
+                :value="item.value"
+              >{{item.label}}</a-radio>
             </a-radio-group>
           </st-form-item>
         </a-col>
@@ -131,20 +145,35 @@
           <st-form-item label="营业时间">
             <st-checkbox-button-group v-model="weekArr">
               <st-checkbox-button-item
-              v-for="item in weekList"
-              :key="item.value"
-              :value="item.value">{{item.label}}</st-checkbox-button-item>
+                v-for="item in weekList"
+                :key="item.value"
+                :value="item.value"
+              >{{item.label}}</st-checkbox-button-item>
             </st-checkbox-button-group>
-            <st-slider class="page-brand-shop-add__slider" :getSlider="getSlider" @change="sliderChange"></st-slider>
+            <st-slider
+              class="page-brand-shop-add__slider"
+              :getSlider="getSlider"
+              @change="sliderChange"
+            ></st-slider>
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8" type="flex" justify="center" align="middle">
         <a-col>
-          <st-button type="primary" html-type="submit">提交</st-button>
+          <st-button type="primary" html-type="submit" :loading="submitLoading">提交</st-button>
         </a-col>
       </a-row>
     </st-form>
+    <st-modal-cropper
+    v-if="cropperData.visible"
+    :visible="cropperData.visible"
+    :title="cropperData.title"
+    :image="cropperData.image"
+    :aspectRatioW="cropperData.aspectRatioW"
+    :aspectRatioH="cropperData.aspectRatioH"
+    @cancel="cropperCancel"
+    @ok="upload"
+    ></st-modal-cropper>
   </st-panel>
 </template>
 <script>
@@ -161,8 +190,20 @@ export default {
       addService: AddService
     }
   },
+  subscriptions() {
+    return {
+      serviceList: this.addService.serviceList$
+    }
+  },
   data() {
     return {
+      cropperData: {
+        title: '上传会员卡背景',
+        visible: false,
+        image: '',
+        aspectRatioW: 1,
+        aspectRatioH: 1
+      },
       // 电话校验方式 1为点击添加校验，0为点击提交校验
       phoneValidtorType: 1,
       shopData: {
@@ -182,18 +223,16 @@ export default {
       },
       // 服务id
       service_ids: [],
-      // 服务列表
-      service_list: [
-        { value: 0, label: 'WIFI' },
-        { value: 1, label: '停车位' },
-        { value: 2, label: '淋浴' },
-        { value: 3, label: '急救包' },
-        { value: 4, label: '暖气' },
-        { value: 5, label: '空调' },
-        { value: 6, label: '无烟区' },
-        { value: 7, label: '充电宝' }
-      ],
-      serviceIcon_list: ['WIFI', 'shower', 'snow', 'nosmoking', 'heating', 'medical', 'park', 'energy'],
+      serviceIcon_icon_list: {
+        1: 'WIFI',
+        2: 'shower',
+        3: 'snow',
+        4: 'nosmoking',
+        5: 'heating',
+        6: 'medical',
+        7: 'park',
+        8: 'energy'
+      },
       // 营业状态
       shop_status_list: [
         { value: 3, label: '预售' },
@@ -221,29 +260,41 @@ export default {
         className: 'st-slider-box',
         infoList: []
       },
-      options: [{
-        value: 'zhejiang',
-        label: 'Zhejiang',
-        children: [{
-          value: 'hangzhou',
-          label: 'Hangzhou',
-          children: [{
-            value: 'xihu',
-            label: 'West Lake'
-          }]
-        }]
-      }, {
-        value: 'jiangsu',
-        label: 'Jiangsu',
-        children: [{
-          value: 'nanjing',
-          label: 'Nanjing',
-          children: [{
-            value: 'zhonghuamen',
-            label: 'Zhong Hua Men'
-          }]
-        }]
-      }]
+      options: [
+        {
+          value: 'zhejiang',
+          label: 'Zhejiang',
+          children: [
+            {
+              value: 'hangzhou',
+              label: 'Hangzhou',
+              children: [
+                {
+                  value: 'xihu',
+                  label: 'West Lake'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          value: 'jiangsu',
+          label: 'Jiangsu',
+          children: [
+            {
+              value: 'nanjing',
+              label: 'Nanjing',
+              children: [
+                {
+                  value: 'zhonghuamen',
+                  label: 'Zhong Hua Men'
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      submitLoading: false
     }
   },
   watch: {
@@ -299,6 +350,14 @@ export default {
     }
   },
   methods: {
+    //
+    cropperCancel() {
+      this.cropperData.visible = false
+    },
+    // 移除店招
+    removeImage() {
+      this.imageUrl = ''
+    },
     // 添加电话
     onValidtorPhone() {
       if (this.form.getFieldValue('shop_phone') && !this.phoneAddDisabled) {
@@ -326,11 +385,12 @@ export default {
           this.shopData.shop_name = values.shop_name
           this.shopData.address = values.shop_address
           this.shopData.email = values.email
+          this.submitLoading = true
           this.addService.save(this.shopData).subscribe(res => {
             console.log(res)
+            this.submitLoading = false
           })
         } else {
-
         }
       })
     },
@@ -338,7 +398,7 @@ export default {
     shop_name_validator(rule, value, callback) {
       if (value === undefined) {
         // eslint-disable-next-line
-        callback('请填写门店名称') 
+        callback('请填写门店名称')
       } else if (value && !this.rules.shop_name.test(value)) {
         // eslint-disable-next-line
         callback('输入的门店名称格式错误，请重新输入')
@@ -350,7 +410,11 @@ export default {
     // shop_phone validatorFn
     shop_phone_validator(rule, value, callback) {
       if (this.phoneValidtorType) {
-        if (value !== undefined && value !== '' && !this.rules.mobile.test(value)) {
+        if (
+          value !== undefined &&
+          value !== '' &&
+          !this.rules.mobile.test(value)
+        ) {
           // eslint-disable-next-line
           callback('输入的门店电话格式错误，请重新输入')
         } else {
@@ -367,27 +431,32 @@ export default {
         }
       }
     },
+    async uploadCrop(data) {
+      this.cropperData.image = await this.fileReader(data.file)
+      this.cropperData.visible = true
+    },
     // 店招上传
     upload(data) {
-      this.loading = true
-      if (this.checkUploadFile(data.file)) {
-        this.OSS.put({
-          file: data.file
-        }).subscribe({
-          next: async val => {
-            this.shopData.shop_cover_image = val.fileKey
-            this.imageUrl = await this.fileReader(data.file)
-            this.loading = false
-            this.messageService.success({ content: '上传成功' })
-          },
-          error: val => {
-            this.loading = false
-            this.messageService.error({ content: '上传失败' })
-          }
-        })
-      } else {
-        this.loading = false
-      }
+      console.log(data)
+      // this.loading = true
+      // if (this.checkUploadFile(data.file)) {
+      //   this.OSS.put({
+      //     file: data.file
+      //   }).subscribe({
+      //     next: async val => {
+      //       this.shopData.shop_cover_image = val.fileKey
+      //       this.imageUrl = await this.fileReader(data.file)
+      //       this.loading = false
+      //       this.messageService.success({ content: '上传成功' })
+      //     },
+      //     error: val => {
+      //       this.loading = false
+      //       this.messageService.error({ content: '上传失败' })
+      //     }
+      //   })
+      // } else {
+      //   this.loading = false
+      // }
     },
     sliderChange(data) {
       this.shopData.business_time = data.infoList
@@ -404,7 +473,9 @@ export default {
     checkUploadFile(file) {
       const isJPG = this.rules.img_type.test(file.type)
       if (!isJPG) {
-        this.messageService.error({ content: 'You can only upload JPG/PNG file!' })
+        this.messageService.error({
+          content: 'You can only upload JPG/PNG file!'
+        })
       }
       const isLt5M = file.size / 1024 / 1024 < 5
       if (!isLt5M) {

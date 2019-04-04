@@ -50,6 +50,26 @@
     border-style: solid;
     overflow: hidden;
   }
+  .page-image {
+    position: relative;
+    &-button {
+      position: absolute;
+      width: 100%;
+      padding: 6px 12px;
+      bottom: 0;
+      left: 0;
+      .bg(rgba(0,0,0,.45));
+      text-align: right;
+      span {
+        .fz(12px);
+        .lh(20px);
+        .c(rgba(255,255,255,.65));
+      }
+    }
+    img {
+      object-fit: cover;
+    }
+  }
   .page-upload-text:nth-of-type(1) {
     .fz(14px);
     .lh(22px);
