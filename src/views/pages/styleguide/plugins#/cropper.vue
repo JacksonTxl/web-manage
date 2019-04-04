@@ -11,7 +11,7 @@
         </a-row>
         <a-row class="mg-t16">
           <a-col :span="16" style="height: 300px;">
-            <img id="image" hidden src="https://pic3-s.styd.cn/o_1d78oa7b91hvd10a21pr91c5v1viki.jpg"/>
+            <img id="image" hidden src="http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg"/>
           </a-col>
           <a-col :span="8">
             <p class="st-crop__preview mg-l16" id="crop_preview"></p>

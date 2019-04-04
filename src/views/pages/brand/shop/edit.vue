@@ -148,18 +148,26 @@
   </st-panel>
 </template>
 <script>
-import { RuleConfig } from '@/constants/rule'
-import { OssService } from '@/services/oss.service'
-import { MessageService } from '@/services/message.service'
-import { AddService } from './add.service'
+// import { RuleConfig } from '@/constants/rule'
+// import { OssService } from '@/services/oss.service'
+// import { MessageService } from '@/services/message.service'
+import { EditService } from './edit.service'
 export default {
   serviceInject() {
     return {
-      rules: RuleConfig,
-      OSS: OssService,
-      messageService: MessageService,
-      addService: AddService
+      // rules: RuleConfig,
+      // OSS: OssService,
+      // messageService: MessageService,
+      editService: EditService
     }
+  },
+  subscriptions() {
+    return {
+      shopInfo: this.editService.shopInfo$
+    }
+  },
+  mounted() {
+    this.getShopInfo(this.shopInfo)
   },
   data() {
     return {
@@ -204,15 +212,16 @@ export default {
       // week
       weekArr: [],
       weekList: [
-        { value: 0, label: '周一' },
-        { value: 1, label: '周二' },
-        { value: 2, label: '周三' },
-        { value: 3, label: '周四' },
-        { value: 4, label: '周五' },
-        { value: 5, label: '周六' },
-        { value: 6, label: '周日' }
+        { value: 1, label: '周一' },
+        { value: 2, label: '周二' },
+        { value: 3, label: '周三' },
+        { value: 4, label: '周四' },
+        { value: 5, label: '周五' },
+        { value: 6, label: '周六' },
+        { value: 7, label: '周日' }
       ],
-      defaultWeekList: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+      weekTimeDefault: ['', [9, 18], [9, 18], [9, 18], [9, 18], [9, 18], [9, 18], [9, 18]],
+      defaultWeekList: ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日'],
       // upload
       loading: false,
       imageUrl: '',
@@ -276,7 +285,7 @@ export default {
           w[i].disabled = false
           s.push({
             title: this.defaultWeekList[i],
-            value: [9, 18],
+            value: this.weekTimeDefault[i],
             key: i,
             week: []
           })
@@ -299,6 +308,41 @@ export default {
     }
   },
   methods: {
+    // 获取门店信息
+    getShopInfo(data) {
+      if (data.shop_phones && data.shop_phones.length > 3) {
+        data.shop_phones.splice(3, data.shop_phones.length)
+      }
+      this.form.setFieldsValue({
+        shop_name: data.shop_name,
+        shop_address: data.shop_position.address,
+        email: data.email
+      })
+      this.shopData.shop_phones = data.shop_phones
+      // 省市区
+      this.shopData.province_id = data.shop_position.province_id
+      this.shopData.city_id = data.shop_position.city_id
+      this.shopData.district_id = data.shop_position.district_id
+      // 经纬度
+      this.shopData.lat = data.lat
+      this.shopData.lng = data.lng
+
+      data.shop_services.forEach(i => {
+        this.service_ids.push(i.service_id)
+      })
+      this.shopData.shop_cover_image = ''
+      this.shopData.shop_status = data.shop_status
+      // week
+      data.business_time.forEach(i => {
+        let start = (i.start_time.split(':')[0] * 60) + (i.start_time.split(':')[1] * 1)
+        let end = (i.end_time.split(':')[0] * 60) + (i.end_time.split(':')[1] * 1)
+        this.weekTimeDefault[i.week_day] = [start / 60, end / 60]
+      })
+      data.business_time.forEach(i => {
+        this.weekArr.push(i.week_day)
+      })
+    },
+
     // 添加电话
     onValidtorPhone() {
       if (this.form.getFieldValue('shop_phone') && !this.phoneAddDisabled) {

@@ -18,9 +18,9 @@ export default {
   data() {
     return {
       imgKeys: [
-        'o_1d78oa7b917021g2v1ien1lsg1uguh.jpg',
-        'o_1d78oa7b91hvd10a21pr91c5v1viki.jpg',
-        'o_1d78oa7b9kuj135b1ipq1cvf1k0rl.jpg'
+        'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg',
+        'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg',
+        'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg'
       ]
     }
   }
