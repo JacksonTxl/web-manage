@@ -31,6 +31,7 @@ export class ShopService extends Store<ShopINfoState> {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     console.log(to.query)
     this.getShopSettingStopInfo(to.query.id).subscribe(res => {
+      console.log('门店设置详情', res)
       this.SET_SHOP_INFO(res)
     })
     next()
