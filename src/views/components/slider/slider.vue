@@ -149,19 +149,23 @@ export default {
     },
     // 传出去的值的格式进行处理
     setFilterSlider() {
+      let self = this
       let setSlider = JSON.parse(JSON.stringify(this.setSlider))
       let filterData = []
       setSlider.infoList.map(function(item) {
-        filterData.push({
-          'week_day': item.title === '周一' ? 1 : item.title === '周二' ? 2 : item.title === '周三' ? 3 : item.title === '周四' ? 4 : item.title === '周五' ? 5 : item.title === '周六' ? 6 : 7,
-          start_time:
-            /^\d+$/.test(item.value[0]) && item.value[0] > 9 ? item.value[0] + ':00' : /^\d+$/.test(item.value[0]) && item.value[0] <= 9 ? '0' + item.value[0] + ':00' : !/^\d+$/.test(item.value[0]) && item.value[0] <= 9 ? '0' + (item.value[0] + '').replace(/.5/gi, ':30') : (item.value[0] + '').replace(/.5/gi, ':30') + '',
-          end_time:
-            /^\d+$/.test(item.value[1]) && item.value[1] > 9 ? item.value[1] + ':00' : /^\d+$/.test(item.value[1]) && item.value[1] <= 9 ? '0' + item.value[1] + ':00' : !/^\d+$/.test(item.value[1]) && item.value[1] <= 9 ? '0' + (item.value[1] + '').replace(/.5/gi, ':30') : (item.value[1] + '').replace(/.5/gi, ':30') + ''
-        })
+        filterData.push(self.filterSlider(item))
       })
       setSlider.infoList = filterData
       return setSlider
+    },
+    filterSlider(item) {
+      return {
+        'week_day': item.title === '周一' ? 1 : item.title === '周二' ? 2 : item.title === '周三' ? 3 : item.title === '周四' ? 4 : item.title === '周五' ? 5 : item.title === '周六' ? 6 : 7,
+        start_time:
+                /^\d+$/.test(item.value[0]) && item.value[0] > 9 ? item.value[0] + ':00' : /^\d+$/.test(item.value[0]) && item.value[0] <= 9 ? '0' + item.value[0] + ':00' : !/^\d+$/.test(item.value[0]) && item.value[0] <= 9 ? '0' + (item.value[0] + '').replace(/.5/gi, ':30') : (item.value[0] + '').replace(/.5/gi, ':30') + '',
+        end_time:
+                /^\d+$/.test(item.value[1]) && item.value[1] > 9 ? item.value[1] + ':00' : /^\d+$/.test(item.value[1]) && item.value[1] <= 9 ? '0' + item.value[1] + ':00' : !/^\d+$/.test(item.value[1]) && item.value[1] <= 9 ? '0' + (item.value[1] + '').replace(/.5/gi, ':30') : (item.value[1] + '').replace(/.5/gi, ':30') + ''
+      }
     }
   },
   created() {},

@@ -1,20 +1,23 @@
 <template>
   <st-panel app class="page-shop-setting-shop">
-    {{shopInfo}}
+    <pre>
+       {{shopInfo}}
+    </pre>
     <st-form
     :form="form"
     @submit="onHandleSubmit">
       <a-row :gutter="8" class="page-add-shop-name-row">
         <a-col offset="1" :lg="10">
-          <st-form-item label="营业中" class="page-shop-setting-shop__address">
-            上海旗舰店
+          <st-form-item  class="page-shop-setting-shop__address">
+            <st-tag type="shop-opening" />
+            <st-t3 style="display:inline-block;margin-left:24px">{{shop_info.shop_name}}</st-t3>
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item  >
-            上海市 徐汇区 徐汇中山南二路107号丑奂大厦3楼
+            {{shop_info.shop_position.address_detail}}
             <span class="look-location">查看地位</span>
           </st-form-item>
         </a-col>
@@ -33,7 +36,7 @@
               </div>
             </a-input>
             <div class="page-add-shop-mobile">
-              <p v-for="(item,index) in shopData.shop_phones" :key="index">
+              <p v-for="(item,index) in shop_info.shop_phones" :key="index">
                 <span>{{item}}</span>
                 <st-icon type="anticon:close" @click="onRemovePhone(index)" style="cursor:pointer;"></st-icon>
               </p>
@@ -47,7 +50,8 @@
             <a-cascader
             v-decorator="[
               'shop_PCD',
-              {rules: [{ required: true, message: '请输入门店地址'}]}
+              {
+                rules: [{ required: true, message: '请输入门店地址'}]}
             ]"
             :options="options"
             @change="onChange"
@@ -61,7 +65,9 @@
             <a-input
             v-decorator="[
               'shop_address',
-              {rules: [{ required: true, message: '请输入详细地址'}]}
+              {
+                 initialValue: shop_info.shop_position.address,
+                rules: [{ required: true, message: '请输入详细地址'}]}
             ]"
             placeholder="请输入详细地址"></a-input>
           </st-form-item>
@@ -74,6 +80,7 @@
             v-decorator="[
               'email',
               {
+                initialValue: shop_info.email,
                 rules: [{
                   type: 'email', message: '输入的邮箱格式错误，请重新输入!',
                 }]
@@ -88,13 +95,22 @@
           <st-form-item label="服务设施">
             <st-checkbox-facility-group v-model="service_ids">
               <st-checkbox-facility-item
-              style="margin-right:24px"
-              v-for="item in service_list"
-              :label="item.label"
-              :icon="serviceIcon_list[item.value]"
-              :key="item.value"
-              :value="item.value"></st-checkbox-facility-item>
+                style="margin-right:24px"
+                v-for="item in service_list"
+                :label="item.label"
+                :icon="serviceIcon_list[item.value]"
+                :key="item.value"
+                :value="item.value"></st-checkbox-facility-item>
             </st-checkbox-facility-group>
+            <div class="facilities">
+              <template v-for="(item,index) in shop_info.service_options">
+                <div :class="item.is_choose  ? 'facilities-icon facilities-active' :'facilities-icon'"  :key="index" >
+                  <div><img class="facilities-icon-img" :src="item.img_url"></div>
+                  <p>{{item.service_name}}</p>
+                </div>
+              </template>
+
+            </div>
           </st-form-item>
         </a-col>
       </a-row>
@@ -120,7 +136,7 @@
       <a-row :gutter="8">
         <a-col offset="1" :lg="23">
           <st-form-item label="营业状态">
-            <a-radio-group v-model="shopData.shop_status">
+            <a-radio-group v-model="shop_info.shop_status">
               <a-radio
               v-for="item in shop_status_list"
               :key="item.value"
@@ -138,7 +154,7 @@
               :key="item.value"
               :value="item.value">{{item.label}}</st-checkbox-button-item>
             </st-checkbox-button-group>
-            <st-slider class="page-brand-shop-add__slider" :getSlider="getSlider"  @change="setFilterSlider"></st-slider>
+            <st-slider class="page-brand-shop-add__slider" :getSlider="getSlider" @change="setFilterSlider"></st-slider>
           </st-form-item>
         </a-col>
       </a-row>
@@ -172,6 +188,60 @@ export default {
   },
   data() {
     return {
+      shop_info: {
+        shop_name: '更新1111测1试',
+        shop_status: 0,
+        lat: 2.374767,
+        lng: 6.24567,
+        shop_position: {
+          province_id: 1,
+          city_id: 2,
+          district_id: 1,
+          address: '越界创意园',
+          province_name: '辽宁省',
+          city_name: '沈阳市',
+          district_name: '铁西区',
+          address_detail: '辽宁省 沈阳市 铁西区 越界创意园'
+        },
+        email: 'test@gmail.com',
+        shop_phones: ['13800000001', '13900000001'],
+        business_time: [
+          { week_day: 2, start_time: '10:00', end_time: '24:00' },
+          { week_day: 3, start_time: '22:00', end_time: '24:00' }
+        ],
+        business_status: '放假',
+        shop_services: [{ service_id: 2, service_name: 'xxx', img_url: 'xxx' }],
+        service_options: [
+          {
+            service_id: 1,
+            service_name: 'xxx',
+            img_url: 'xxx',
+            'is_choose': 0
+          },
+          {
+            service_id: 2,
+            service_name: 'xxx',
+            img_url: 'xxx',
+            'is_choose': 1
+          }
+        ],
+        shop_images: [
+          {
+            image_id: 6,
+            image_key: '1.xxx.com/xxxx',
+            image_url:
+              'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/1.xxx.com/xxxx',
+            is_cover: 1
+          },
+          {
+            image_id: 7,
+            image_key: '2.xxx.com/xxxx',
+            image_url:
+              'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/2.xxx.com/xxxx',
+            is_cover: 0
+          }
+        ]
+      },
       // 电话校验方式 1为点击添加校验，0为点击提交校验
       phoneValidtorType: 1,
       shopData: {
@@ -225,12 +295,23 @@ export default {
       // upload
       loading: false,
       imageUrl: '',
-
       mobileArr: ['1356654', '15845644567', '15845644567', '15845644567', '15845644567'],
       getSlider: {
         disabled: false,
         className: 'st-slider-box',
-        infoList: []
+        infoList: [],
+        business_time: [
+          {
+            week_day: 2,
+            start_time: '10:00',
+            end_time: '24:00'
+          },
+          {
+            week_day: 5,
+            start_time: '22:30',
+            end_time: '24:00'
+          }
+        ]
       },
       options: [{
         value: 'zhejiang',
@@ -306,10 +387,21 @@ export default {
   },
   computed: {
     phoneAddDisabled() {
-      return this.shopData.shop_phones.length > 2
+      return this.shop_info.shop_phones.length > 2
     }
   },
+  created() {
+    let self = this
+    self.shop_info = self.shopInfo.shop_info
+    this.getSlider.business_time = this.shop_info.business_time
+    this.shop_info.business_time.map(function(item) {
+      self.weekArr.push(item.week_day)
+    })
+  },
   methods: {
+    getFiterData(index) {
+
+    },
     // 获取slider数据
     setFilterSlider(data) {
       console.log(data)
@@ -319,15 +411,15 @@ export default {
       if (this.form.getFieldValue('shop_phone') && !this.phoneAddDisabled) {
         // input框里有值才添加
         this.form.validateFields(['shop_phone'], { force: true }).then(res => {
-          let arr = [...this.shopData.shop_phones]
+          let arr = [...this.shop_info.shop_phones]
           arr.push(res.shop_phone)
-          this.shopData.shop_phones = [...new Set(arr)]
+          this.shop_info.shop_phones = [...new Set(arr)]
         })
       }
     },
     // 移除电话
     onRemovePhone(index) {
-      this.shopData.shop_phones.splice(index, 1)
+      this.shop_info.shop_phones.splice(index, 1)
     },
     // 表单提交
     onHandleSubmit(e) {
