@@ -83,7 +83,7 @@
               <st-icon type="anticon:question-circle-o" />
             </a-tooltip>
           </span>
-          <a-checkbox-group v-decorator="basicInfoRuleList.identityRule" >
+          <a-checkbox-group v-decorator="basicInfoRuleList.identityRule" @change="watchChooesed">
             <a-checkbox value="1" :defaultChecked="defaultChecked">普通员工</a-checkbox>
             <a-checkbox value="2">会籍销售</a-checkbox>
             <a-checkbox value="3">团课教练</a-checkbox>
@@ -103,7 +103,7 @@
             <a-select-option value="2">北大</a-select-option>
           </a-select>
         </st-form-item>
-        <st-form-item label="教练等级" >
+        <st-form-item label="教练等级" v-if="isShowLevel">
           <a-select v-decorator="basicInfoRuleList.coach_levelRule" placeholder="请选择" >
             <a-select-option value="male">男</a-select-option>
             <a-select-option value="female">女</a-select-option>
@@ -229,7 +229,12 @@ export default {
         loginRule: ['account', { rules: [{ required: true, message: '请输入登录账号' }] }],
         passwordRule: ['password', { rules: [{ required: true, message: '请输入登录密码' }] }],
         comfirmPasswordRule: ['repeat_password', { rules: [{ required: true, message: '请输入确认密码' }] }]
-      }
+      },
+
+      isAdd: [],
+      flag: true,
+
+      isShowLevel: false
     }
   },
   serviceInject() {
@@ -239,21 +244,28 @@ export default {
     }
   },
   watch: {
-    form(a) {
-      console.log(a)
+    isAdd(a) {
+      if (!a.length) {
+        this.$emit('deletStep')
+        this.isShowLevel = false
+        this.flag = true
+      }
+      let flag = a.some(val => {
+        return val === '4' || val === '5'
+      })
+
+      if (!this.flag) return
+      if (flag) {
+        this.flag = false
+        this.isShowLevel = true
+        this.$emit('addStep')
+      }
     }
   },
   methods: {
-    // watchChooesed(e){
-    //   let flag = e.every(value=>{
-    //     return value == 4 || value == 5
-    //   })
-
-    //   console.log(flag)
-    //   if(flag){
-    //     this.$emit('addCoachInfo')
-    //   }
-    // },
+    watchChooesed(e) {
+      this.isAdd = e
+    },
     goNext() {
       this.form.validateFields((err, values) => {
         if (!err) {
