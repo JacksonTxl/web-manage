@@ -49,7 +49,6 @@ export class HttpService {
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
-
     return get$
   }
   post(url: string, options: RequestOptions = {}) {

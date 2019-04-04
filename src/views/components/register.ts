@@ -20,9 +20,11 @@ import StHr from './hr/hr.vue'
 import StTag from './tag/tag.vue'
 import StPanel from './panel/panel.vue'
 import StSlider from './slider/slider.vue'
+import StRegionCascader from './region/region-cascader.vue'
 import './form/index.js'
 import './title/index.js'
 
+Vue.component(StRegionCascader.name, StRegionCascader)
 Vue.component(StIcon.name, StIcon)
 Vue.component(StButton.name, StButton)
 Vue.component(StSteps.name, StSteps)

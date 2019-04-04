@@ -6,7 +6,6 @@
       </header>
       <main class="staff-lf__tree">
         <organization-tree></organization-tree>
-        {{list}}
         <modal-link tag='a-button' :to="{ name: 'staff-turnover' }">
           离职
         </modal-link>
@@ -22,7 +21,7 @@
         <modal-link tag='a-button' :to="{ name: 'staff-re-bind-entity-card' }">
           重新绑定实体卡
         </modal-link>
-        <modal-link tag='a-button' :to="{ name: 'staff-delete' }">
+        <modal-link tag='a-button' :to="{ name: 'staff-delete'}">
           删除员工
         </modal-link>
       </main>
@@ -34,7 +33,7 @@
       </header>
       <main class="staff-rg__table">
         <div  style="width:100%">
-          <staff-table :staffList="staffList"></staff-table>
+          <staff-table :loading="loading.getStaffList" :staffList="staffList"></staff-table>
         </div>
       </main>
     </section>
@@ -56,7 +55,8 @@ export default {
   },
   subscriptions() {
     return {
-      staffList: this.department.staffList$
+      staffList: this.department.staffList$,
+      loading: this.department.loading$
     }
   },
   components: {
@@ -69,6 +69,9 @@ export default {
     addStaff() {
       this.$router.push('/brand/staff/add')
     }
+  },
+  mounted() {
+    console.log(this.loading.getStaffList)
   }
 }
 </script>

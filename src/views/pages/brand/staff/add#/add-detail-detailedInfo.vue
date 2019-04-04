@@ -97,9 +97,9 @@
       <a-col :lg="10" :xs="22" :offset="2"></a-col>
     </a-row>
 
-    <a-row :gutter="8" class="mg-t32">
-      <a-col :offset="1">
-        <st-form-item labelOffset>
+    <a-row :gutter="8">
+      <a-col :offset="2">
+        <st-form-item labelOffset class="mg-l24">
           <st-button type="primary" ghost>保存</st-button>
           <st-button class="mg-l16" @click="goNext" type="primary">继续 填写</st-button>
         </st-form-item>

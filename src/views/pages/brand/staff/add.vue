@@ -6,6 +6,7 @@
     <StaffDetailBasics v-show="currentIndex == 0" @goNext="goNext" @save="onSave"/>
     <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" @save="onSave"/>
     <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" @save="onSave"/>
+    {{state}}
   </st-panel>
 </template>
 
@@ -28,9 +29,15 @@ export default {
       addService: AddService
     }
   },
+  subscriptions() {
+    return {
+      state: this.addService.state$,
+      loading: this.addService.loading$
+    }
+  },
   data() {
     return {
-      currentIndex: 2,
+      currentIndex: 0,
       stepArr: [
         {
           title: '基础信息',
@@ -52,6 +59,7 @@ export default {
     skip(data) {
       console.log('跳页', data)
       this.currentIndex = data.index
+      // this.loading.getCountryCodes
     },
     goNext(e) { // 下一步
       console.log(e)
@@ -76,6 +84,9 @@ export default {
     //     this.staingData[key] = data[key]
     //   })
     // }
+  },
+  mounted() {
+    console.log(this.addService)
   }
 }
 </script>

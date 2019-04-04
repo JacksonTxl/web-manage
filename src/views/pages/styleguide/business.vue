@@ -11,5 +11,53 @@
       <st-tag type="shop-trial" />
       <st-t3 style="display:inline-block">上海旗舰店</st-t3>
     </section>
+    <section flex="cross:center" class="mg-t48">
+
+      <st-form :form="form" @submit="save">
+        <a-row :gutter="8">
+          <a-col :lg="10">
+            <st-form-item label="城市选择" required>
+              <st-region-cascader v-decorator="basicInfoRuleList.usernameRule1"></st-region-cascader>
+            </st-form-item>
+            <st-form-item label="姓名"  required>
+              <a-input v-decorator="basicInfoRuleList.usernameRule"></a-input>
+            </st-form-item>
+            <st-form-item  class="mg-l24" labelOffset>
+                <st-button type="primary"
+                  ghost html-type="submit">保存</st-button>
+            </st-form-item>
+          </a-col>
+        </a-row>
+
+      </st-form>
+    </section>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'ZlxTest',
+  data() {
+    return {
+      basicInfoRuleList: {
+        usernameRule1: ['stff_name', { rules: [{ type: 'array', required: true, message: '请填写地址' }] }],
+        usernameRule: ['staff_name', { rules: [{ required: true, message: '请填写姓名' }] }]// 姓名
+      },
+      form: this.$form.createForm(this)
+    }
+  },
+  methods: {
+    save(e) {
+      e.preventDefault()
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+          this.$emit('save', {
+            data: values
+          })
+        }
+      })
+    }
+  }
+}
+</script>
