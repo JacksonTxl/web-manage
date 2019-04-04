@@ -141,7 +141,7 @@
               <st-checkbox-button-item value="5">周六</st-checkbox-button-item>
               <st-checkbox-button-item value="6">周日</st-checkbox-button-item>
             </st-checkbox-button-group>
-            <st-slider class="pages-test-store__slider" :getSlider="getSlider" @setFilterSlider="setFilterSlider"></st-slider>
+            <st-slider class="pages-test-store__slider" :getSlider="getSlider" @change="setFilterSlider"></st-slider>
           </st-form-item>
         </a-col>
       </a-row>
@@ -151,14 +151,21 @@
         </a-col>
       </a-row>
     </st-form>
+    {{shopInfo}}
   </st-panel>
 </template>
 <script>
 import { RuleConfig } from '@/constants/rule'
+import { ShopService } from '@/views/pages/shop/setting/shop.service'
 export default {
   serviceInject() {
     return {
-      rules: RuleConfig
+      shopService: ShopService
+    }
+  },
+  subscriptions() {
+    return {
+      shopInfo: this.shopService.shopInfo$
     }
   },
   data() {

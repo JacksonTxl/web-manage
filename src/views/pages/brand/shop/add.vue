@@ -3,7 +3,7 @@
     <st-form
     :form="form"
     @submit="onHandleSubmit">
-      <a-row :gutter="8" class="add-shop-name-row">
+      <a-row :gutter="8" class="page-add-shop-name-row">
         <a-col offset="1" :lg="10">
           <st-form-item label="门店名称" required>
             <a-input
@@ -25,11 +25,11 @@
               { validateTrigger: 'blur',rules: [{validator: shop_phone_validator}]}
             ]"
             placeholder="请输入门店电话">
-              <div slot="addonAfter" @click="onValidtorPhone" class="add-shop-mobile-button" :class="{disabled:phoneAddDisabled}">
+              <div slot="addonAfter" @click="onValidtorPhone" class="page-add-shop-mobile-button" :class="{disabled:phoneAddDisabled}">
                 添加
               </div>
             </a-input>
-            <div class="add-shop-mobile">
+            <div class="page-add-shop-mobile">
               <p v-for="(item,index) in shopData.shop_phones" :key="index">
                 <span>{{item}}</span>
                 <st-icon type="anticon:close" @click="onRemovePhone(index)" style="cursor:pointer;"></st-icon>
@@ -96,26 +96,26 @@
         </a-col>
       </a-row>
       <a-row :gutter="8">
-        <a-col offset="1" :lg="10">
+        <a-col offset="1" :lg="23">
           <st-form-item label="店招">
             <a-upload
               listType="picture-card"
-              class="avatar-uploader"
+              :class="{'page-show-image':imageUrl}"
               :showUploadList="false"
               :customRequest="upload"
             >
-              <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+              <img v-if="imageUrl" width="240" height="auto" :src="imageUrl" alt="avatar" />
               <div v-else>
                   <a-icon :type="loading ? 'loading' : 'plus'" />
-                  <div class="ant-upload-text">上传店招</div>
-                  <div class="ant-upload-text">大小不超过5M</div>
+                  <div class="page-upload-text">上传店招</div>
+                  <div class="page-upload-text">大小不超过5M</div>
               </div>
             </a-upload>
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
-        <a-col offset="1" :lg="12">
+        <a-col offset="1" :lg="23">
           <st-form-item label="营业状态">
             <a-radio-group v-model="shopData.shop_status">
               <a-radio
@@ -135,7 +135,7 @@
               :key="item.value"
               :value="item.value">{{item.label}}</st-checkbox-button-item>
             </st-checkbox-button-group>
-            <st-slider class="page-brand-shop-add__slider" :getSlider="getSlider"></st-slider>
+            <st-slider class="page-brand-shop-add__slider" :getSlider="getSlider" @change="sliderChange"></st-slider>
           </st-form-item>
         </a-col>
       </a-row>
@@ -150,11 +150,15 @@
 <script>
 import { RuleConfig } from '@/constants/rule'
 import { OssService } from '@/services/oss.service'
+import { MessageService } from '@/services/message.service'
+import { AddService } from './add.service'
 export default {
   serviceInject() {
     return {
       rules: RuleConfig,
-      OSS: OssService
+      OSS: OssService,
+      messageService: MessageService,
+      addService: AddService
     }
   },
   data() {
@@ -163,17 +167,17 @@ export default {
       phoneValidtorType: 1,
       shopData: {
         shop_name: '',
-        province_id: '',
-        city_id: '',
-        district_id: '',
-        address: '',
         shop_phones: [],
-        shop_status: 1,
-        lat: '',
-        lng: '',
-        shop_cover_image: '',
+        province_id: 11,
+        city_id: 2,
+        district_id: 1,
+        address: '',
         email: '',
         service_ids: [],
+        shop_cover_image: '',
+        shop_status: 1,
+        lat: '31.230416',
+        lng: '121.473701',
         business_time: []
       },
       // 服务id
@@ -192,10 +196,10 @@ export default {
       serviceIcon_list: ['WIFI', 'shower', 'snow', 'nosmoking', 'heating', 'medical', 'park', 'energy'],
       // 营业状态
       shop_status_list: [
-        { value: 0, label: '预售' },
+        { value: 3, label: '预售' },
         { value: 1, label: '试运营' },
         { value: 2, label: '正式营业' },
-        { value: 3, label: '已关店' }
+        { value: 4, label: '已关店' }
       ],
       // week
       weekArr: [],
@@ -208,11 +212,10 @@ export default {
         { value: 5, label: '周六' },
         { value: 6, label: '周日' }
       ],
+      defaultWeekList: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
       // upload
       loading: false,
-
       imageUrl: '',
-      mobileArr: ['1356654', '15845644567', '15845644567', '15845644567', '15845644567'],
       getSlider: {
         disabled: false,
         className: 'st-slider-box',
@@ -241,6 +244,50 @@ export default {
           }]
         }]
       }]
+    }
+  },
+  watch: {
+    service_ids: {
+      deep: true,
+      handler(newVal, oldVal) {
+        this.shopData.service_ids = newVal
+      }
+    },
+    weekArr: {
+      deep: true,
+      handler(newVal, oldVal) {
+        // copy
+        let a = [...newVal]
+        // 排序
+        a.sort((a, b) => a > b)
+        // 传入slider的数组
+        let s = []
+        // slider里`操作到`的数组
+        let w = []
+        // 生成w数组
+        this.defaultWeekList.forEach(i => {
+          w.push({
+            key: i,
+            disabled: true
+          })
+        })
+        // 生成slider的数组
+        a.forEach(i => {
+          w[i].disabled = false
+          s.push({
+            title: this.defaultWeekList[i],
+            value: [9, 18],
+            key: i,
+            week: []
+          })
+        })
+        let sOld = [...s]
+        sOld.forEach((item, index) => {
+          s[index].week = JSON.parse(JSON.stringify(w))
+          s[index].week[item.key].disabled = true
+        })
+        this.getSlider.infoList = s
+      }
     }
   },
   beforeCreate() {
@@ -276,7 +323,12 @@ export default {
       this.form.validateFieldsAndScroll((err, values) => {
         this.phoneValidtorType = 1
         if (!err) {
-          console.log('Received values of form: ', values)
+          this.shopData.shop_name = values.shop_name
+          this.shopData.address = values.shop_address
+          this.shopData.email = values.email
+          this.addService.save(this.shopData).subscribe(res => {
+            console.log(res)
+          })
         } else {
 
         }
@@ -285,9 +337,11 @@ export default {
     // shop_name validatorFn
     shop_name_validator(rule, value, callback) {
       if (value === undefined) {
-        callback('请填写门店名称') // eslint-disable-line
+        // eslint-disable-next-line
+        callback('请填写门店名称') 
       } else if (value && !this.rules.shop_name.test(value)) {
-        callback('输入的门店名称格式错误，请重新输入')// eslint-disable-line
+        // eslint-disable-next-line
+        callback('输入的门店名称格式错误，请重新输入')
       } else {
         // eslint-disable-next-line
         callback()
@@ -297,15 +351,19 @@ export default {
     shop_phone_validator(rule, value, callback) {
       if (this.phoneValidtorType) {
         if (value !== undefined && value !== '' && !this.rules.mobile.test(value)) {
-          callback('输入的门店电话格式错误，请重新输入')// eslint-disable-line
+          // eslint-disable-next-line
+          callback('输入的门店电话格式错误，请重新输入')
         } else {
-          callback()// eslint-disable-line
+          // eslint-disable-next-line
+          callback()
         }
       } else {
         if (!this.shopData.shop_phones.length) {
-          callback('请填写门店电话')// eslint-disable-line
+          // eslint-disable-next-line
+          callback('请填写门店电话')
         } else {
-          callback()// eslint-disable-line
+          // eslint-disable-next-line
+          callback()
         }
       }
     },
@@ -313,44 +371,50 @@ export default {
     upload(data) {
       this.loading = true
       if (this.checkUploadFile(data.file)) {
-        console.log(data.file)
+        this.OSS.put({
+          file: data.file
+        }).subscribe({
+          next: async val => {
+            this.shopData.shop_cover_image = val.fileKey
+            this.imageUrl = await this.fileReader(data.file)
+            this.loading = false
+            this.messageService.success({ content: '上传成功' })
+          },
+          error: val => {
+            this.loading = false
+            this.messageService.error({ content: '上传失败' })
+          }
+        })
       } else {
-
+        this.loading = false
       }
-      this.loading = false
-      // this.OSS.put({
-      //   file: data.file,
-      //   uploadProgress(res) {
-      //     console.log(`${res.loaded / res.total * 100}%`)
-      //   }
-      // }).then(res => {
-      //   res.subscribe({
-      //     next: val => console.log(val),
-      //     complete: () => console.log('Complete!'),
-      //     error: val => console.log(`Error: ${val}`)
-      //   })
-      // })
     },
-    // shop_address validatorFn
-    shop_address_validator(rule, value, callback) {
-      callback()// eslint-disable-line
+    sliderChange(data) {
+      this.shopData.business_time = data.infoList
     },
-    onChange(value) {
-      console.log(value)
-    },
-    handleChange(info) {
-      console.log(info)
+    fileReader(img) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.addEventListener('load', () => {
+          resolve(reader.result)
+        })
+        reader.readAsDataURL(img)
+      })
     },
     checkUploadFile(file) {
-      const isJPG = file.type === 'image/jpeg'
+      const isJPG = this.rules.img_type.test(file.type)
       if (!isJPG) {
-        this.$message.error('You can only upload JPG file!')
+        this.messageService.error({ content: 'You can only upload JPG/PNG file!' })
       }
       const isLt5M = file.size / 1024 / 1024 < 5
       if (!isLt5M) {
-        this.$message.error('Image must smaller than 2MB!')
+        this.messageService.error({ content: 'Image must smaller than 5MB!' })
       }
       return isJPG && isLt5M
+    },
+
+    onChange(value) {
+      console.log(value)
     }
   }
 }
