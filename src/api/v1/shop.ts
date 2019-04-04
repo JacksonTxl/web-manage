@@ -19,6 +19,9 @@ export class ShopApi extends Api {
   getServiceList() {
     return this.http.get(`/v1/shop/services`)
   }
+  getShopList() {
+    return this.http.get('/v1/shops')
+  }
 }
 
 export interface ShopGetInfoInput {

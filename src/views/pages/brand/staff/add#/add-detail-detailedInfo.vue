@@ -202,7 +202,6 @@ export default {
         native_placeRule: ['native_place'], // 籍贯
         children_statusRule: ['children_status'], // 子女状态
 
-        wocao: ['wocao'],
         addressRule: ['address'], // 详细地址
         descriptionRule: ['description'] // 备注
       },

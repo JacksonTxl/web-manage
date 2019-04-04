@@ -13,9 +13,9 @@
   </div>
 </template>
 <script>
-import CountupDemo from './plugins/countup#.vue'
-import ViewerDemo from './plugins/viewer#.vue'
-import CropperDemo from './plugins/cropper#.vue'
+import CountupDemo from './plugins#/countup.vue'
+import ViewerDemo from './plugins#/viewer.vue'
+import CropperDemo from './plugins#/cropper.vue'
 export default {
   components: {
     ViewerDemo,

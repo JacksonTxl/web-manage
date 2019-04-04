@@ -177,8 +177,7 @@ export default {
         this.getFilterSlider()
         this.setSlider = this.getSlider
       }
-    },
-    deep: true
+    }
   }
 }
 </script>

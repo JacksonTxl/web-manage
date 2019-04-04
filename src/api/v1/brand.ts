@@ -2,7 +2,7 @@ import { Api } from '../api'
 
 export class BrandApi extends Api {
   getInfo() {
-    return this.http.get('/v1/brand')
+    return this.http.get('/v1/brand', { mock: {} })
   }
   update(params: BrandInput) {
     return this.http.put('/v1/brand', { params })

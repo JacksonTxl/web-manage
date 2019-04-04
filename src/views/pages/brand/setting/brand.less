@@ -1,5 +1,49 @@
-.page-brandSetting{
-  .st-btn__edit,.st-btn__save{
-    width: 102px;
+.page-brand-info {
+  .pd(170px 0 200px 0);
+  &__brand-logo {
+    max-width: 100px;
+    max-height: 100px;
+  }
+  &__brand-name {
+    .fz(24px);
+    .c(@title);
+    .mg-t(24px);
+  }
+  &__certification {
+    .lh(20px);
+  }
+  &__certification-text {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  &__des {
+    .fz(14px);
+    .c(@text);
+    .lh(1.5);
+    .ta-c;
+    .mg-t(24px);
+  }
+  &__contact,
+  &__tel {
+    .fz(14px);
+    .c(@text-light);
+  }
+  &__contact {
+    .mg-t(18px);
+  }
+  &__tel {
+    .mg-t(6px);
+  }
+}
+
+.page-brand-setting {
+  .pd(60px 0 100px 0);
+  .ant-upload {
+    .s(100px, 100px);
+  }
+  .ant-upload-text {
+    .fz(14px);
+    .c(@text);
+    .mg-t(12px);
   }
 }
