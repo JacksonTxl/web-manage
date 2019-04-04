@@ -1,30 +1,29 @@
 <template>
-  <ul class="st-steps">
-    <li class="st-step" v-for="(step, index) in stepList" :key="step.title">
-      <div class="st-step__title">{{step.title}}</div>
-      <div class="st-step__index">{{index}}</div>
-    </li>
-  </ul>
+    <a-steps :current="value">
+        <a-step  v-for="(item,index) in stepArr" :title="item.title" :key="item.key" @click="skip(index)"/>
+    </a-steps>
 </template>
-
 <script>
 export default {
   name: 'StSteps',
   props: {
-    nowStep: {
-      type: Number,
-      default: 0
-    },
-    stepList: {
+    stepArr: {
       type: Array,
       default: () => {
         return []
       }
+    },
+    value: {
+      type: Number,
+      default: 0
+    }
+  },
+  methods: {
+    skip(idx) {
+      this.$emit('skip', {
+        index: idx
+      })
     }
   }
 }
 </script>
-
-<style scoped>
-
-</style>
