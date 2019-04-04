@@ -8,10 +8,19 @@ export class ShopApi extends Api {
     return this.http.put('/v1/shops', { params })
   }
   getInfo(id:string) {
-    return this.http.get(`/v1/shops/${id}`, { mock: {} })
+    return this.http.get(`/v1/shops/${id}`)
+  }
+  getShopSettingStopInfo(id:string) {
+    return this.http.get(`/v1/shops/setting/stop/${id}`, { mock: {} })
   }
   updateStatus(id: number, params: ShopStatusInput) {
     return this.http.put(`/v1/shops/${id}/status`, { params })
+  }
+  getServiceList() {
+    return this.http.get(`/v1/shop/services`)
+  }
+  getShopList() {
+    return this.http.get('/v1/shops')
   }
 }
 
@@ -24,6 +33,21 @@ export interface ShopStatusInput {
    * 门店状态 1：预售；2：试运营；3：正常运行； 4：已关店
    */
   shop_status: number
+}
+
+export interface WeekDay {
+  /**
+   * 星期
+   */
+  week_day: number
+  /**
+   * 开始时间
+   */
+  start_time: string
+  /**
+   *  结束时间
+   */
+  end_time: string
 }
 
 export interface ShopInput {
@@ -64,29 +88,13 @@ export interface ShopInput {
    */
   lng: string
   /**
-   * 店招相册id
-   */
-  album_id: number
-  /**
    * 门店服务的ids
    */
   service_ids: any[]
   /**
    * 门店营业时间
    */
-  business_time: any[]
-  /**
-   * 星期
-   */
-  week_day: number
-  /**
-   * 开始时间
-   */
-  start_time: string
-  /**
-   *  结束时间
-   */
-  end_time: string
+  business_time: WeekDay[]
   /**
    * 门店邮箱
    */

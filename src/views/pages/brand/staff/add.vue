@@ -3,7 +3,7 @@
     <a-row class="mg-b48" :gutter="8">
       <a-col offset="1" :span="22"><Steps :value="currentIndex" :stepArr="stepArr" @skip="skip"/></a-col>
     </a-row>
-    <StaffDetailBasics v-show="currentIndex == 0" @goNext="goNext" @save="onSave"/>
+    <StaffDetailBasics v-show="currentIndex == 0" @goNext="goNext" @save="onSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
     <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" @save="onSave"/>
     <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" @save="onSave"/>
     {{state}}
@@ -46,16 +46,21 @@ export default {
         {
           title: '详细信息',
           key: 2
-        },
-        {
-          title: '教练信息',
-          key: 3
         }
       ],
       staingData: {}
     }
   },
   methods: {
+    deletStep(e) {
+      this.stepArr.pop()
+    },
+    addCoachInfo(e) {
+      this.stepArr.push({
+        title: '教练信息',
+        key: 3
+      })
+    },
     skip(data) {
       console.log('跳页', data)
       this.currentIndex = data.index

@@ -6,19 +6,6 @@
         :xs="22"
         :offset="1">
         <st-form-item label="员工头像">
-          <!-- <a-upload
-            v-if="imageUrl"
-            class="page-add-upload"
-            listType="picture-card"
-            :showUploadList="false"
-            :customRequest="upload"
-            type="drag">
-            <st-icon type="anticon:plus"></st-icon>
-            <img v-if="imageUrl" :src="imageUrl" width="164px" height="auto" alt="avatar">
-            <div v-else>
-              <st-icon type="anticon:plus"></st-icon>
-            </div>
-          </a-upload> -->
             <a-upload
               listType="picture-card"
               class="page-add-upload"
@@ -67,11 +54,11 @@
         </st-form-item>
         <st-form-item label="证件" required>
           <a-input-group compact>
-            <a-select  style="width:20%" v-decorator="basicInfoRuleList.id_typeRule">
+            <a-select  style="width:20%" v-decorator="basicInfoRuleList.id_typeRule" @change="chooseType">
               <a-select-option value="1">身份证</a-select-option>
               <a-select-option value="2">护照</a-select-option>
             </a-select>
-            <a-input style="width: 80%" v-decorator="basicInfoRuleList.idcardRule"/>
+            <a-input style="width: 80%" :placeholder="dateinit" v-decorator="basicInfoRuleList.idcardRule"/>
           </a-input-group>
         </st-form-item>
       </a-col>
@@ -88,15 +75,15 @@
       <a-col :offset="1"
         :lg="22">
         <st-form-item
-          label='身份'>
+          label='员工职能'>
           <span slot="label">
-            身份&nbsp;
+            员工职能&nbsp;
             <a-tooltip placement="right"
               title="What do you want others to call you?">
               <st-icon type="anticon:question-circle-o" />
             </a-tooltip>
           </span>
-          <a-checkbox-group v-decorator="basicInfoRuleList.identityRule">
+          <a-checkbox-group v-decorator="basicInfoRuleList.identityRule" @change="watchChooesed">
             <a-checkbox value="1" :defaultChecked="defaultChecked">普通员工</a-checkbox>
             <a-checkbox value="2">会籍销售</a-checkbox>
             <a-checkbox value="3">团课教练</a-checkbox>
@@ -116,7 +103,7 @@
             <a-select-option value="2">北大</a-select-option>
           </a-select>
         </st-form-item>
-        <st-form-item label="教练等级" >
+        <st-form-item label="教练等级" v-if="isShowLevel">
           <a-select v-decorator="basicInfoRuleList.coach_levelRule" placeholder="请选择" >
             <a-select-option value="male">男</a-select-option>
             <a-select-option value="female">女</a-select-option>
@@ -146,7 +133,7 @@
             <a-select-option value="3">实习</a-select-option>
           </a-select>
         </st-form-item>
-        <st-form-item label="角色" >
+        <st-form-item label="系统角色" >
           <a-select :v-decorator="basicInfoRuleList.roleRule" placeholder="请选择" >
             <a-select-option value="male">男</a-select-option>
             <a-select-option value="female">女</a-select-option>
@@ -167,16 +154,32 @@
         :xs="22"
         :offset="1">
         <st-form-item label="系统权限">
-          <a-checkbox :defaultChecked="defaultChecked" v-decorator="basicInfoRuleList.is_permissionRule">开通系统使用权限</a-checkbox>
+          <a-checkbox v-decorator="basicInfoRuleList.is_permissionRule" @change="permissionChange">开通系统使用权限</a-checkbox>
         </st-form-item>
-        <st-form-item label="登录账号" required>
-          <a-input placeholder="6-18个字符，可使用字母、数字、下划线" v-decorator="basicInfoRuleList.loginRule"></a-input>
+        <st-form-item label="登录账号" >
+          <a-input placeholder="6-18个字符，可使用字母、数字、下划线"
+            v-decorator="['account',
+            { rules: [{
+                required: isChoosePermission,
+                message: '请输入登录账号'
+              }]
+            }]"></a-input>
         </st-form-item>
-        <st-form-item label="登录密码" required>
-          <a-input placeholder="6-15个字符，区分大小写" v-decorator="basicInfoRuleList.passwordRule"></a-input>
+        <st-form-item label="登录密码" >
+          <a-input placeholder="6-15个字符，区分大小写" v-decorator="['password',
+            { rules: [{
+                required: isChoosePermission,
+                message: '请输入登录密码'
+              }]
+            }]"></a-input>
         </st-form-item>
-        <st-form-item label="确认密码" required>
-          <a-input placeholder="请再次填写密码" v-decorator="basicInfoRuleList.comfirmPasswordRule"></a-input>
+        <st-form-item label="确认密码" >
+          <a-input placeholder="请再次填写密码" v-decorator="['repeat_password',
+            { rules: [{
+                required: isChoosePermission,
+                message: '请输入确认密码'
+              }]
+            }]"></a-input>
         </st-form-item>
       </a-col>
       <a-col :lg="10"
@@ -231,11 +234,16 @@ export default {
         nature_workRule: ['nature_workRule'], // 工作性质
         roleRule: ['role_id'], // 角色
 
-        is_permissionRule: ['is_permission'], // 系统权限
-        loginRule: ['account', { rules: [{ required: true, message: '请输入登录账号' }] }],
-        passwordRule: ['password', { rules: [{ required: true, message: '请输入登录密码' }] }],
-        comfirmPasswordRule: ['repeat_password', { rules: [{ required: true, message: '请输入确认密码' }] }]
-      }
+        is_permissionRule: ['is_permission'] // 系统权限
+      },
+
+      isAdd: [],
+      flag: true,
+      isShowLevel: false, // 是否展示教练等级
+      dateinit: '请输入身份证号码',
+
+      isChoosePermission: false
+
     }
   },
   serviceInject() {
@@ -244,7 +252,46 @@ export default {
       MessageService: MessageService
     }
   },
+  watch: {
+    isAdd(a) { // 监听是否选中了教练
+      if (!a.length) {
+        this.$emit('deletStep')
+        this.isShowLevel = false
+        this.flag = true
+      }
+      let flag = a.some(val => {
+        return val === '4' || val === '5'
+      })
+
+      if (!this.flag) return
+      if (flag) {
+        this.flag = false
+        this.isShowLevel = true
+        this.$emit('addStep')
+      }
+    }
+  },
   methods: {
+    // 身份证 护照 选择事件
+    chooseType(e) {
+      let { tip1, tip2 } = {
+        tip1: '请输入身份证号码',
+        tip2: '请输入护照号码'
+      }
+      e === '1' ? this.dateinit = tip1 : this.dateinit = tip2
+    },
+    // 员工职能 选择事件
+    watchChooesed(e) {
+      this.isAdd = e
+    },
+    permissionChange(e) {
+      this.isChoosePermission = e.target.checked
+      this.$nextTick(() => {
+        this.form.validateFields(['account'], { force: true })
+        this.form.validateFields(['password'], { force: true })
+        this.form.validateFields(['repeat_password'], { force: true })
+      })
+    },
     goNext() {
       this.form.validateFields((err, values) => {
         if (!err) {

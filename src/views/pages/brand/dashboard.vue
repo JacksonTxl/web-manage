@@ -43,7 +43,7 @@
             <a-col :span="8" v-for="(shop, index) in shopList" :key="index">
               <st-panel initial>
                 <div class="page-dashboard__shop">
-                  <div class="page-dashboard__shop-img" :style="`background-image: url('${shop.shop_img}')`">
+                  <div class="page-dashboard__shop-img" :style="`background-image: url('${shop.image_url}')`">
                     <h4 class="page-dashboard__shop-name">{{shop.shop_name}}</h4>
                     <div class="page-dashboard__shop-status">
                       <st-tag type="shop-trial" />
@@ -51,14 +51,14 @@
                   </div>
                   <div class="page-dashboard__shop-info">
                     <div class="page-dashboard__shop-address">
-                      {{shop.shop_address}}
+                      {{shop.address}}
                     </div>
                     <div class="page-dashboard__shop-tel">{{shop.shop_tel}}</div>
                     <div class="mg-t24">
                       <label class="page-dashboard__shop-label">会员</label>
-                      <span>{{shop.shop_member_num}}人</span>
+                      <span>{{shop.members}}人</span>
                       <label class="page-dashboard__shop-label mg-l40">员工</label>
-                      <span>{{shop.shop_staff_num}}人</span>
+                      <span>{{shop.staffs}}人</span>
                     </div>
                   </div>
                   <div class="page-dashboard__action">
@@ -89,7 +89,8 @@
             </a-col>
           </a-row>
           <p class="ta-c mg-t24">
-            <a-pagination showSizeChanger :defaultCurrent="1" :total="500" @change="onPageChange" />
+            <a-pagination showSizeChanger :defaultCurrent="page.current_page"
+              :total="page.total_counts" @change="onPageChange"/>
           </p>
         </section>
       </a-col>
@@ -139,43 +140,47 @@
 </template>
 <script>
 import { imgFilter } from '@/filters/resource.filters'
+import { DashboardService } from './dashboard.service'
 export default {
+  serviceInject() {
+    return {
+      dashboardService: DashboardService
+    }
+  },
   data() {
     return {
-      shopList: []
+      shopList: [],
+      page: {}
+    }
+  },
+  filters: {
+    imgFilter
+  },
+  subscriptions() {
+    const shopList = this.dashboardService.shopInfo$
+    const page = this.dashboardService.page$
+    return {
+      shopList,
+      page
     }
   },
   created() {
-    this.getShopList()
+    this.shopList = this.shopListHandler(this.shopList)
   },
   methods: {
-    getShopList() {
-      const shopList = [{
-        shop_id: 1000000,
-        shop_img: 'o_1d78oa7b911lb6bq1ogh6v61nbkk.jpg',
-        shop_name: '三体云动上海店',
-        shop_address: '上海市徐汇区古美路1528号后鸿源中心',
-        shop_tel: '022-28282828',
-        shop_member_num: 100,
-        shop_staff_num: 10
-      }, {
-        shop_id: 1000001,
-        shop_img: 'o_1d78oa7b9kuj135b1ipq1cvf1k0rl.jpg',
-        shop_name: '三体云动北京店',
-        shop_address: 'xxxxxxxxx',
-        shop_tel: '010-28282828',
-        shop_member_num: 200,
-        shop_staff_num: 18
-      }]
-      shopList.map(shop => {
-        shop.shop_img = imgFilter(shop.shop_img, { w: 500, h: 300 })
-        return shop
+    shopListHandler(list) {
+      return list.map(item => {
+        item.image_url = imgFilter(item.image_url, {
+          w: 640,
+          h: 360
+        })
+        return item
       })
-      this.shopList = shopList
     },
-    onPageChange() {
-
+    onPageChange(pageNumber) {
+      console.log(pageNumber)
     }
   }
 }
+
 </script>
