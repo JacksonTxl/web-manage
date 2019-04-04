@@ -1,20 +1,19 @@
 <template>
   <st-panel app class="page-shop-setting-shop">
+    {{shopInfo}}
     <st-form
     :form="form"
     @submit="onHandleSubmit">
-      <a-row :gutter="8" class="add-shop-name-row">
+      <a-row :gutter="8" class="page-add-shop-name-row">
         <a-col offset="1" :lg="10">
-          <st-form-item label="营业中" class="page-shop-setting-shop__address">
-            上海旗舰店
-          </st-form-item>
-        </a-col>
-      </a-row>
-       <a-row :gutter="8">
-        <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item  >
-            上海市 徐汇区 徐汇中山南二路107号丑奂大厦3楼
-            <span class="look-location">查看地位</span>
+          <st-form-item label="门店名称" required>
+            <a-input
+            v-decorator="[
+              'shop_name',
+              {rules: [{ validator: shop_name_validator}]}
+            ]"
+            maxlength="20"
+            placeholder="支持中英文、数字,不超过20个字"></a-input>
           </st-form-item>
         </a-col>
       </a-row>
@@ -27,11 +26,11 @@
               { validateTrigger: 'blur',rules: [{validator: shop_phone_validator}]}
             ]"
             placeholder="请输入门店电话">
-              <div slot="addonAfter" @click="onValidtorPhone" class="add-shop-mobile-button" :class="{disabled:phoneAddDisabled}">
+              <div slot="addonAfter" @click="onValidtorPhone" class="page-add-shop-mobile-button" :class="{disabled:phoneAddDisabled}">
                 添加
               </div>
             </a-input>
-            <div class="add-shop-mobile">
+            <div class="page-add-shop-mobile">
               <p v-for="(item,index) in shopData.shop_phones" :key="index">
                 <span>{{item}}</span>
                 <st-icon type="anticon:close" @click="onRemovePhone(index)" style="cursor:pointer;"></st-icon>
@@ -56,7 +55,7 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="详细地址"  required>
+          <st-form-item label="详细地址" required>
             <a-input
             v-decorator="[
               'shop_address',
@@ -98,27 +97,26 @@
         </a-col>
       </a-row>
       <a-row :gutter="8">
-        <a-col offset="1" :lg="10">
-          <st-form-item label="门店图片">
+        <a-col offset="1" :lg="23">
+          <st-form-item label="店招">
             <a-upload
-              name="avatar"
               listType="picture-card"
+              :class="{'page-show-image':imageUrl}"
               :showUploadList="false"
-              :beforeUpload="beforeUpload"
-              @change="handleChange"
+              :customRequest="upload"
             >
-              <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+              <img v-if="imageUrl" width="240" height="auto" :src="imageUrl" alt="avatar" />
               <div v-else>
                   <a-icon :type="loading ? 'loading' : 'plus'" />
-                  <div class="ant-upload-text">上传店招</div>
-                  <div class="ant-upload-text">大小不超过5M</div>
+                  <div class="page-upload-text">上传店招</div>
+                  <div class="page-upload-text">大小不超过5M</div>
               </div>
             </a-upload>
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
-        <a-col offset="1" :lg="12">
+        <a-col offset="1" :lg="23">
           <st-form-item label="营业状态">
             <a-radio-group v-model="shopData.shop_status">
               <a-radio
@@ -130,18 +128,15 @@
         </a-col>
       </a-row>
       <a-row :gutter="8">
-        <a-col offset="1" :lg="23">
+        <a-col offset="1" :lg="22">
           <st-form-item label="营业时间">
-            <st-checkbox-button-group  v-model="weekData">
-              <st-checkbox-button-item value="0">周一</st-checkbox-button-item>
-              <st-checkbox-button-item value="1">周二</st-checkbox-button-item>
-              <st-checkbox-button-item value="2">周三</st-checkbox-button-item>
-              <st-checkbox-button-item value="3">周四</st-checkbox-button-item>
-              <st-checkbox-button-item value="4">周五</st-checkbox-button-item>
-              <st-checkbox-button-item value="5">周六</st-checkbox-button-item>
-              <st-checkbox-button-item value="6">周日</st-checkbox-button-item>
+            <st-checkbox-button-group v-model="weekArr">
+              <st-checkbox-button-item
+              v-for="item in weekList"
+              :key="item.value"
+              :value="item.value">{{item.label}}</st-checkbox-button-item>
             </st-checkbox-button-group>
-            <st-slider class="pages-test-store__slider" :getSlider="getSlider" @change="setFilterSlider"></st-slider>
+            <st-slider class="page-brand-shop-add__slider" :getSlider="getSlider"  @change="setFilterSlider"></st-slider>
           </st-form-item>
         </a-col>
       </a-row>
@@ -151,41 +146,45 @@
         </a-col>
       </a-row>
     </st-form>
-    {{shopInfo}}
   </st-panel>
 </template>
 <script>
 import { RuleConfig } from '@/constants/rule'
+import { OssService } from '@/services/oss.service'
+import { MessageService } from '@/services/message.service'
 import { ShopService } from '@/views/pages/shop/setting/shop.service'
+
 export default {
   serviceInject() {
     return {
-      shopService: ShopService
+      rules: RuleConfig,
+      OSS: OssService,
+      MessageService: MessageService,
+      infoService: ShopService
     }
   },
   subscriptions() {
     return {
-      shopInfo: this.shopService.shopInfo$
+      shopInfo: this.infoService.shopInfo$
     }
   },
   data() {
     return {
-      weekData: [],
       // 电话校验方式 1为点击添加校验，0为点击提交校验
       phoneValidtorType: 1,
       shopData: {
         shop_name: '',
+        shop_phones: [],
         province_id: '',
         city_id: '',
         district_id: '',
         address: '',
-        shop_phones: [],
+        email: '',
+        service_ids: [],
+        shop_cover_image: '',
         shop_status: 1,
         lat: '',
         lng: '',
-        shop_cover_image: '',
-        email: '',
-        service_ids: [],
         business_time: []
       },
       // 服务id
@@ -209,9 +208,22 @@ export default {
         { value: 2, label: '正式营业' },
         { value: 3, label: '已关店' }
       ],
-
+      // week
+      weekArr: [],
+      weekList: [
+        { value: 0, label: '周一' },
+        { value: 1, label: '周二' },
+        { value: 2, label: '周三' },
+        { value: 3, label: '周四' },
+        { value: 4, label: '周五' },
+        { value: 5, label: '周六' },
+        { value: 6, label: '周日' }
+      ],
+      defaultWeekList: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+      // upload
       loading: false,
       imageUrl: '',
+
       mobileArr: ['1356654', '15845644567', '15845644567', '15845644567', '15845644567'],
       getSlider: {
         disabled: false,
@@ -241,6 +253,50 @@ export default {
           }]
         }]
       }]
+    }
+  },
+  watch: {
+    service_ids: {
+      deep: true,
+      handler(newVal, oldVal) {
+        this.shopData.service_ids = newVal
+      }
+    },
+    weekArr: {
+      deep: true,
+      handler(newVal, oldVal) {
+        // copy
+        let a = [...newVal]
+        // 排序
+        a.sort((a, b) => a > b)
+        // 传入slider的数组
+        let s = []
+        // slider里`操作到`的数组
+        let w = []
+        // 生成w数组
+        this.defaultWeekList.forEach(i => {
+          w.push({
+            key: i,
+            disabled: true
+          })
+        })
+        // 生成slider的数组
+        a.forEach(i => {
+          w[i].disabled = false
+          s.push({
+            title: this.defaultWeekList[i],
+            value: [9, 18],
+            key: i,
+            week: []
+          })
+        })
+        let sOld = [...s]
+        sOld.forEach((item, index) => {
+          s[index].week = JSON.parse(JSON.stringify(w))
+          s[index].week[item.key].disabled = true
+        })
+        this.getSlider.infoList = s
+      }
     }
   },
   beforeCreate() {
@@ -289,9 +345,11 @@ export default {
     // shop_name validatorFn
     shop_name_validator(rule, value, callback) {
       if (value === undefined) {
-        callback('请填写门店名称') // eslint-disable-line
+        // eslint-disable-next-line
+        callback('请填写门店名称')
       } else if (value && !this.rules.shop_name.test(value)) {
-        callback('输入的门店名称格式错误，请重新输入')// eslint-disable-line
+        // eslint-disable-next-line
+        callback('输入的门店名称格式错误，请重新输入')
       } else {
         // eslint-disable-next-line
         callback()
@@ -301,303 +359,75 @@ export default {
     shop_phone_validator(rule, value, callback) {
       if (this.phoneValidtorType) {
         if (value !== undefined && value !== '' && !this.rules.mobile.test(value)) {
-          callback('输入的门店电话格式错误，请重新输入')// eslint-disable-line
+          // eslint-disable-next-line
+          callback('输入的门店电话格式错误，请重新输入')
         } else {
-          callback()// eslint-disable-line
+          // eslint-disable-next-line
+          callback()
         }
       } else {
         if (!this.shopData.shop_phones.length) {
-          callback('请填写门店电话')// eslint-disable-line
+          // eslint-disable-next-line
+          callback('请填写门店电话')
         } else {
-          callback()// eslint-disable-line
+          // eslint-disable-next-line
+          callback()
         }
       }
     },
+    // 店招上传
+    upload(data) {
+      this.loading = true
+      if (this.checkUploadFile(data.file)) {
+        this.OSS.put({
+          file: data.file
+        }).subscribe({
+          next: async val => {
+            this.shopData.shop_cover_image = val.fileKey
+            this.imageUrl = await this.fileReader(data.file)
+            this.loading = false
+            this.MessageService.success({ content: '上传成功' })
+          },
+          error: val => {
+            this.loading = false
+            this.MessageService.error({ content: '上传失败' })
+          }
+        })
+      } else {
+        this.loading = false
+      }
+    },
+
     // shop_address validatorFn
     shop_address_validator(rule, value, callback) {
-      callback()// eslint-disable-line
+      // eslint-disable-next-line
+      callback()
     },
     onChange(value) {
       console.log(value)
     },
     handleChange(info) {
-
+      console.log(info)
     },
-    beforeUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      if (!isJPG) {
-        this.$message.error('You can only upload JPG file!')
-      }
-      const isLt2M = file.size / 1024 / 1024 < 2
-      if (!isLt2M) {
-        this.$message.error('Image must smaller than 2MB!')
-      }
-      return isJPG && isLt2M
-    }
-  },
-  watch: {
-    weekData: {
-      handler() {
-        let filter = []
-        this.weekData.forEach(item => {
-          if (parseInt(item) === 0) {
-            filter.push({
-              title: '周一',
-              value: [9, 18],
-              week: [
-                {
-                  key: '周一',
-                  disabled: true
-                },
-                {
-                  key: '周二',
-                  disabled: !(this.weekData.indexOf('1') >= 0)
-                },
-                {
-                  key: '周三',
-                  disabled: !(this.weekData.indexOf('2') >= 0)
-                },
-                {
-                  key: '周四',
-                  disabled: !(this.weekData.indexOf('3') >= 0)
-                },
-                {
-                  key: '周五',
-                  disabled: !(this.weekData.indexOf('4') >= 0)
-                },
-                {
-                  key: '周六',
-                  disabled: !(this.weekData.indexOf('5') >= 0)
-                },
-                {
-                  key: '周日',
-                  disabled: !(this.weekData.indexOf('6') >= 0)
-                }
-              ]
-            })
-          }
-          if (parseInt(item) === 1) {
-            filter.push({
-              title: '周二',
-              value: [9, 18],
-              week: [
-                {
-                  key: '周一',
-                  disabled: !(this.weekData.indexOf('0') >= 0)
-                },
-                {
-                  key: '周二',
-                  disabled: true
-                },
-                {
-                  key: '周三',
-                  disabled: !(this.weekData.indexOf('2') >= 0)
-                },
-                {
-                  key: '周四',
-                  disabled: !(this.weekData.indexOf('3') >= 0)
-                },
-                {
-                  key: '周五',
-                  disabled: !(this.weekData.indexOf('4') >= 0)
-                },
-                {
-                  key: '周六',
-                  disabled: !(this.weekData.indexOf('5') >= 0)
-                },
-                {
-                  key: '周日',
-                  disabled: !(this.weekData.indexOf('6') >= 0)
-                }
-              ]
-            })
-          }
-          if (parseInt(item) === 2) {
-            filter.push({
-              title: '周三',
-              value: [9, 18],
-              week: [
-                {
-                  key: '周一',
-                  disabled: !(this.weekData.indexOf('0') >= 0)
-                },
-                {
-                  key: '周二',
-                  disabled: !(this.weekData.indexOf('1') >= 0)
-                },
-                {
-                  key: '周三',
-                  disabled: true
-                },
-                {
-                  key: '周四',
-                  disabled: !(this.weekData.indexOf('3') >= 0)
-                },
-                {
-                  key: '周五',
-                  disabled: !(this.weekData.indexOf('4') >= 0)
-                },
-                {
-                  key: '周六',
-                  disabled: !(this.weekData.indexOf('5') >= 0)
-                },
-                {
-                  key: '周日',
-                  disabled: !(this.weekData.indexOf('6') >= 0)
-                }
-              ]
-            })
-          }
-          if (parseInt(item) === 3) {
-            filter.push({
-              title: '周四',
-              value: [9, 18],
-              week: [
-                {
-                  key: '周一',
-                  disabled: !(this.weekData.indexOf('0') >= 0)
-                },
-                {
-                  key: '周二',
-                  disabled: !(this.weekData.indexOf('1') >= 0)
-                },
-                {
-                  key: '周三',
-                  disabled: !(this.weekData.indexOf('2') >= 0)
-                },
-                {
-                  key: '周四',
-                  disabled: true
-                },
-                {
-                  key: '周五',
-                  disabled: !(this.weekData.indexOf('4') >= 0)
-                },
-                {
-                  key: '周六',
-                  disabled: !(this.weekData.indexOf('5') >= 0)
-                },
-                {
-                  key: '周日',
-                  disabled: !(this.weekData.indexOf('6') >= 0)
-                }
-              ]
-            })
-          }
-          if (parseInt(item) === 4) {
-            filter.push({
-              title: '周五',
-              value: [9, 18],
-              week: [
-                {
-                  key: '周一',
-                  disabled: !(this.weekData.indexOf('0') >= 0)
-                },
-                {
-                  key: '周二',
-                  disabled: !(this.weekData.indexOf('1') >= 0)
-                },
-                {
-                  key: '周三',
-                  disabled: !(this.weekData.indexOf('2') >= 0)
-                },
-                {
-                  key: '周四',
-                  disabled: !(this.weekData.indexOf('3') >= 0)
-                },
-                {
-                  key: '周五',
-                  disabled: true
-                },
-                {
-                  key: '周六',
-                  disabled: !(this.weekData.indexOf('5') >= 0)
-                },
-                {
-                  key: '周日',
-                  disabled: !(this.weekData.indexOf('6') >= 0)
-                }
-              ]
-            })
-          }
-          if (parseInt(item) === 5) {
-            filter.push({
-              title: '周六',
-              value: [9, 18],
-              week: [
-                {
-                  key: '周一',
-                  disabled: !(this.weekData.indexOf('0') >= 0)
-                },
-                {
-                  key: '周二',
-                  disabled: !(this.weekData.indexOf('1') >= 0)
-                },
-                {
-                  key: '周三',
-                  disabled: !(this.weekData.indexOf('2') >= 0)
-                },
-                {
-                  key: '周四',
-                  disabled: !(this.weekData.indexOf('3') >= 0)
-                },
-                {
-                  key: '周五',
-                  disabled: !(this.weekData.indexOf('4') >= 0)
-                },
-                {
-                  key: '周六',
-                  disabled: true
-                },
-                {
-                  key: '周日',
-                  disabled: !(this.weekData.indexOf('6') >= 0)
-                }
-              ]
-            })
-          }
-          if (parseInt(item) === 6) {
-            filter.push({
-              title: '周日',
-              value: [9, 18],
-              week: [
-                {
-                  key: '周一',
-                  disabled: !(this.weekData.indexOf('0') >= 0)
-                },
-                {
-                  key: '周二',
-                  disabled: !(this.weekData.indexOf('1') >= 0)
-                },
-                {
-                  key: '周三',
-                  disabled: !(this.weekData.indexOf('2') >= 0)
-                },
-                {
-                  key: '周四',
-                  disabled: !(this.weekData.indexOf('3') >= 0)
-                },
-                {
-                  key: '周五',
-                  disabled: !(this.weekData.indexOf('4') >= 0)
-                },
-                {
-                  key: '周六',
-                  disabled: !(this.weekData.indexOf('5') >= 0)
-                },
-                {
-                  key: '周日',
-                  disabled: true
-                }
-              ]
-            })
-          }
+    fileReader(img) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.addEventListener('load', () => {
+          resolve(reader.result)
         })
-        console.log('weekData', this.weekData, filter)
-        this.getSlider.infoList = filter
-        this.getSlider = JSON.parse(JSON.stringify(this.getSlider))
-      },
-      deep: true
+        reader.readAsDataURL(img)
+      })
+    },
+    checkUploadFile(file) {
+      const isJPG = this.rules.img_type.test(file.type)
+      if (!isJPG) {
+        this.MessageService.error({ content: 'You can only upload JPG/PNG file!' })
+      }
+      const isLt5M = file.size / 1024 / 1024 < 5
+      if (!isLt5M) {
+        this.MessageService.error({ content: 'Image must smaller than 5MB!' })
+      }
+      return isJPG && isLt5M
     }
   }
 }
