@@ -1,10 +1,7 @@
-import { SaveData } from './../../../../api/staff/staff-add'
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { StaffAddApi } from '@/api/staff/staff-add'
 import { tap } from 'rxjs/operators'
-import { StaffPubApi } from '@/api/staff/staff-pub'
 import { State, Computed, Effect, Action } from 'rx-state'
-import { StaffApi } from '@/api/v1/staff'
+import { StaffApi, SaveData } from '@/api/v1/staff'
 import { Store } from '@/services/store'
 interface CountryCodesState {
   codeList: any
