@@ -189,15 +189,8 @@
     </a-row>
 
     <a-row :gutter="8">
-      <a-col :offset="1"
-        :lg="22">
-        <st-hr></st-hr>
-      </a-col>
-    </a-row>
-
-    <a-row :gutter="8">
-      <a-col :offset="1">
-        <st-form-item labelOffset>
+      <a-col :offset="2">
+        <st-form-item  class="mg-l24" labelOffset>
           <st-button type="primary"
             ghost html-type="submit">保存</st-button>
           <st-button class="mg-l16"

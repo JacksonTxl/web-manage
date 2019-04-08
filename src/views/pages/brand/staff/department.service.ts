@@ -17,7 +17,6 @@ export class DepartmentService extends Store<StaffState> implements RouteGuard {
     this.state$ = new State({
       staffList: []
     })
-    // this.staffList$ = new Computed(this.state$.pipe(pluck('staffList')))
     this.staffList$ = new Computed(this.state$.pipe(pluck('staffList')))
   }
   @Effect()

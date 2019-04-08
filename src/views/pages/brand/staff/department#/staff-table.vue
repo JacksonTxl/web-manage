@@ -1,5 +1,5 @@
 <template>
-  <st-table :columns="columns" :dataSource="staffList" :scroll="{ x: 1500}">
+  <st-table :loading="loading" :columns="columns" :dataSource="staffList" :scroll="{ x: 1500}">
     <div slot="action"  href="javascript:;">
         <div>
           <a href="">详情</a>
@@ -56,6 +56,10 @@ export default {
       default: () => {
         return []
       }
+    },
+    loading: {
+      type: Boolean,
+      defalut: false
     }
   }
 }

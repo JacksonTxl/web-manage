@@ -6,6 +6,7 @@
     <StaffDetailBasics v-show="currentIndex == 0" @goNext="goNext" @save="onSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
     <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" @save="onSave"/>
     <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" @save="onSave"/>
+    {{state}}
   </st-panel>
 </template>
 
@@ -26,6 +27,12 @@ export default {
   serviceInject() {
     return {
       addService: AddService
+    }
+  },
+  subscriptions() {
+    return {
+      state: this.addService.state$,
+      loading: this.addService.loading$
     }
   },
   data() {
@@ -57,6 +64,7 @@ export default {
     skip(data) {
       console.log('跳页', data)
       this.currentIndex = data.index
+      // this.loading.getCountryCodes
     },
     goNext(e) { // 下一步
       console.log(e)
@@ -81,6 +89,9 @@ export default {
     //     this.staingData[key] = data[key]
     //   })
     // }
+  },
+  mounted() {
+    console.log(this.addService)
   }
 }
 </script>

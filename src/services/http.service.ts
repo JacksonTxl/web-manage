@@ -49,7 +49,6 @@ export class HttpService {
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
-
     return get$
   }
   post(url: string, options: RequestOptions = {}) {
@@ -115,26 +114,25 @@ export class HttpService {
     console.log(this)
     return source$.pipe(
       catchError((err: AjaxError) => {
-        console.log(this)
         const serverResponse: StResponse = err.response
         switch (err.status) {
           case 400:
             this.notification.warn({
-              title: serverResponse.msg,
-              content: this.i18n.translate('app.http.400')
+              title: this.i18n.translate('app.http.400'),
+              content: serverResponse.msg
             })
             break
           case 401:
             this.notification.warn({
-              title: serverResponse.msg,
-              content: this.i18n.translate('app.http.401')
+              title: this.i18n.translate('app.http.401'),
+              content: serverResponse.msg
             })
             this.router.push({ name: 'user-login' })
             break
           case 403:
             this.notification.warn({
-              title: serverResponse.msg,
-              content: this.i18n.translate('app.http.403')
+              title: this.i18n.translate('app.http.403'),
+              content: serverResponse.msg
             })
             break
           case 404:

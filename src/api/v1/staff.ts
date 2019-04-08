@@ -117,6 +117,10 @@ export class StaffApi extends Api {
     return this.http.get('/v1/staff/staff-list', { query, mock: {} })
   }
 
+  getCountryCodes(query: any) {
+    return this.http.get('/country/codes', { query })
+  }
+
   saveStaffInfo(params: SaveData) {
     return this.http.put('/v1/staff/brand', { params })
   }
