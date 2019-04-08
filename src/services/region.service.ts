@@ -8,7 +8,6 @@ export class RegionService {
   constructor(private regionApi: RegionApi) {}
   private filterCityId(cityOptions: any = []) {
     return cityOptions.map((item: any) => {
-      item.id = '' + item.id
       this.filterCityId(item.children)
       return item
     })

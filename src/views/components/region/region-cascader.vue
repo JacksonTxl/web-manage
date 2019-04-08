@@ -2,9 +2,9 @@
 <div>
   <a-cascader
   :fieldNames="{label:'name',value:'id',children:'children'}"
-  :options="province"
-  :defaultValue="values | parseStringData"
-  :showSearch="{filter}"
+  :options="COptions"
+  :showSearch="{filterRegionsName}"
+  :defaultValue="value"
   @change="onChange"
   :placeholder="placeholder"/>
 </div>
@@ -26,15 +26,9 @@ export default {
       regionService: RegionService
     }
   },
-  filters: {
-    parseStringData(values) {
-      return parseStringData(values)
-    }
-  },
   data(vm) {
     return {
-      province: [],
-      DValues: vm.values || []
+      regions: []
     }
   },
   props: {
@@ -46,7 +40,14 @@ export default {
       type: Boolean,
       default: false
     },
-    values: {
+    value: {
+      type: Array
+    },
+    isAutoInitOptions: {
+      type: Boolean,
+      default: false
+    },
+    options: {
       type: Array,
       default: () => {
         return []
@@ -54,27 +55,23 @@ export default {
     }
   },
   computed: {
-    model: {
-      get() {
-        return this.DValues.length > 0 ? this.DValues : this.values
-      },
-      set(newVal) {
-        this.DValues = newVal
-      }
+    COptions() {
+      return this.isAutoInitOptions ? this.options : this.regions
     }
   },
   methods: {
     getRegions() {
+      if (this.isAutoInitOptions) return
       this.regionService.getRegions().subscribe(res => {
-        this.province = res
+        this.regions = res
       })
     },
-    filter(inputValue, path) {
+    filterRegionsName(inputValue, path) {
       if (!isSearch) return
       return (path.some(option => (option.name).indexOf(inputValue) > -1))
     },
     onChange(value) {
-      this.$emit('change', parseIntData(value))
+      this.$emit('change', value)
     }
   },
   mounted() {

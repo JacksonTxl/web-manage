@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    门店私教课程库
   </div>
 </template>
 

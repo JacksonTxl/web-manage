@@ -19,7 +19,7 @@
         <a-row :gutter="8">
           <a-col :lg="10">
             <st-form-item label="城市选择" required>
-              <st-region-cascader @change="onChangeGetRegionValues" :values="[1, 1, 398]" v-decorator="basicInfoRuleList.usernameRule1"></st-region-cascader>
+              <st-region-cascader @change="onChangeGetRegionValues" v-decorator="basicInfoRuleList.usernameRule1"></st-region-cascader>
             </st-form-item>
             <st-form-item label="姓名"  required>
               <a-input v-decorator="basicInfoRuleList.usernameRule"></a-input>
@@ -42,9 +42,10 @@ export default {
   data() {
     return {
       basicInfoRuleList: {
-        usernameRule1: ['stff_name', { rules: [{ type: 'array', required: true, message: '请填写地址' }] }],
-        usernameRule: ['staff_name', { rules: [{ required: true, message: '请填写姓名' }] }]// 姓名
+        usernameRule1: ['stff_name', { rules: [{ type: 'array', required: true, message: '请填写地址' }], initialValue: [1, 1, 398] }],
+        usernameRule: ['staff_name', { rules: [{ required: true, message: '请填写姓名' }], initialValue: 'sdsdd' }]// 姓名
       },
+      values: [],
       form: this.$form.createForm(this)
     }
   },
@@ -63,6 +64,16 @@ export default {
         }
       })
     }
+  },
+  mounted() {
+    this.$nextTick().then(() => {
+      this.values = [1, 1, 398]
+    })
+    setTimeout(() => {
+      this.form.setFieldsValue({
+        stff_name: [1, 1, 389]
+      })
+    }, 3000)
   }
 }
 </script>
