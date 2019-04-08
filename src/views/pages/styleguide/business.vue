@@ -9,6 +9,8 @@
       <st-tag type="role-saler" />
       <st-tag type="shop-opening" />
       <st-tag type="shop-trial" />
+      <st-tag type="shop-presale" />
+      <st-tag type="shop-close" />
       <st-t3 style="display:inline-block">上海旗舰店</st-t3>
     </section>
     <section flex="cross:center" class="mg-t48">
@@ -17,7 +19,7 @@
         <a-row :gutter="8">
           <a-col :lg="10">
             <st-form-item label="城市选择" required>
-              <st-region-cascader v-decorator="basicInfoRuleList.usernameRule1"></st-region-cascader>
+              <st-region-cascader @change="onChangeGetRegionValues" :values="[1, 1, 398]" v-decorator="basicInfoRuleList.usernameRule1"></st-region-cascader>
             </st-form-item>
             <st-form-item label="姓名"  required>
               <a-input v-decorator="basicInfoRuleList.usernameRule"></a-input>
@@ -47,6 +49,9 @@ export default {
     }
   },
   methods: {
+    onChangeGetRegionValues(value) {
+      console.log(value)
+    },
     save(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {

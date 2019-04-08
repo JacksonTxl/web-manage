@@ -1,7 +1,7 @@
 <template>
   <a-modal
     class="modal-turnover"
-    title='员工离职'
+    title='员工复职'
     confirmLoading
     @ok='onSubmit'
     okText="保存"
