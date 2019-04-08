@@ -5,7 +5,6 @@ import { providers } from '@/providers'
 Vue.use(VueServiceApp)
 
 const { router } = new VueServiceApp({
-  onInit: [],
   routes,
   providers
 })
