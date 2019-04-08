@@ -9,6 +9,8 @@
       <st-tag type="role-saler" />
       <st-tag type="shop-opening" />
       <st-tag type="shop-trial" />
+      <st-tag type="shop-presale" />
+      <st-tag type="shop-close" />
       <st-t3 style="display:inline-block">上海旗舰店</st-t3>
     </section>
     <section flex="cross:center" class="mg-t48">
