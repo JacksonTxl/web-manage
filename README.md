@@ -21,7 +21,8 @@ npm run gulp:dev
 ```
 
 ## 开发mock账号
-ab
+abc123
+abc123
 
 ## Todo List
 
