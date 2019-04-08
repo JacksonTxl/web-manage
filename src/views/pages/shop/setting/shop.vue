@@ -46,7 +46,7 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="门店地址" required>
+          <!-- <st-form-item label="门店地址" required>
             <a-cascader
               v-decorator="[
               'shop_PCD',
@@ -56,6 +56,12 @@
               @change="onChange"
               placeholder="请选择省/市/区"
             />
+          </st-form-item>-->
+          <st-form-item label="城市选择" required>
+            <st-region-cascader
+              v-decorator="['stff_name',{ rules: [{ type: 'array', required: true, message: '请填写地址' }] }]"
+              :values="[shopData.city_id,shopData.province_id,shopData.district_id]"
+            ></st-region-cascader>
           </st-form-item>
         </a-col>
       </a-row>
@@ -225,9 +231,9 @@ export default {
       shopData: {
         shop_name: '',
         shop_phones: [],
-        province_id: 11,
-        city_id: 2,
-        district_id: 1,
+        province_id: '40',
+        city_id: '2',
+        district_id: '400',
         address: '',
         email: '',
         service_ids: [],
@@ -400,13 +406,22 @@ export default {
       console.log(item)
       this.infoService.save(item).subscribe(res => {
         console.log(res)
+        this.getShopSettingStopInfo().subscribe(res1 => {
+          console.log(res1)
+        })
       })
     },
     // 设置为店招
     settingSign(item) {
-      console.log(item)
-      this.infoService.save(item).subscribe(res => {
-        console.log(res)
+      // console.log(item)
+      // this.infoService.save(item).subscribe(res => {
+      //   console.log(res)
+      //   this.getShopSettingStopInfo().subscribe(res1 => {
+      //     console.log(res1)
+      //   })
+      // })
+      this.infoService.getShopSettingStopInfo().subscribe(res1 => {
+        console.log(res1)
       })
     },
     // 获取门店信息
