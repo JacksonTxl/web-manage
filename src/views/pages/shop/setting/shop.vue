@@ -145,11 +145,11 @@
                 :showUploadList="false"
                 :customRequest="upload"
               >
-                <img v-if="imageUrl" width="240" height="auto" src="imageUrl" alt="avatar">
-                <div v-else>
+                <div>
                   <a-icon :type="loading ? 'loading' : 'plus'"/>
                   <div class="page-upload-text">上传门店图片</div>
                   <div class="page-upload-text">大小不超过5M，建议尺寸16：9</div>
+                  <div class="page-upload-num-text">可添加20张门店图片</div>
                 </div>
               </a-upload>
             </div>
