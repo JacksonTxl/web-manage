@@ -157,7 +157,7 @@
       </a-row>
       <a-row :gutter="8" type="flex" justify="center" align="middle">
         <a-col>
-          <st-button type="primary" html-type="submit" :loading="submitLoading">提交</st-button>
+          <st-button type="primary" html-type="submit" :loading="addLoading.save">提交</st-button>
         </a-col>
       </a-row>
     </st-form>
@@ -179,7 +179,8 @@ export default {
   },
   subscriptions() {
     return {
-      serviceList: this.addService.serviceList$
+      serviceList: this.addService.serviceList$,
+      addLoading: this.addService.loading$
     }
   },
   data() {
@@ -245,8 +246,7 @@ export default {
         disabled: false,
         className: 'st-slider-box',
         infoList: []
-      },
-      submitLoading: false
+      }
     }
   },
   watch: {
@@ -336,14 +336,8 @@ export default {
           this.shopData.province_id = +values.shop_PCD[0]
           this.shopData.city_id = +values.shop_PCD[1]
           this.shopData.district_id = +values.shop_PCD[2]
-          this.submitLoading = true
-          this.addService.save(this.shopData).subscribe({
-            next: res => {
-              this.submitLoading = false
-            },
-            error: () => {
-              this.submitLoading = false
-            }
+          this.addService.save(this.shopData).subscribe(() => {
+
           })
         } else {
         }

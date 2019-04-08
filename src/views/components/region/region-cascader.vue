@@ -5,6 +5,7 @@
   :options="COptions"
   :showSearch="{filterRegionsName}"
   :defaultValue="value"
+  v-model="model"
   @change="onChange"
   :placeholder="placeholder"/>
 </div>
@@ -28,10 +29,25 @@ export default {
   },
   data(vm) {
     return {
+      valueSelf: [],
       regions: []
     }
   },
+  watch: {
+    value(newVal) {
+      this.valueSelf = newVal
+    }
+  },
   props: {
+    form: {
+      type: Object
+    },
+    fileds: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
     placeholder: {
       type: String,
       default: '请选择'
@@ -57,6 +73,22 @@ export default {
   computed: {
     COptions() {
       return this.isAutoInitOptions ? this.options : this.regions
+    },
+    model: {
+      get() {
+        return this.value
+      },
+      set(newVal) {
+        const form = {}
+        newVal.forEach((item, index) => {
+          form[`${this.fileds[index]}`] = item
+        })
+        if (this.fileds.length) {
+          this.form.setFieldsValue({
+            ...form
+          })
+        }
+      }
     }
   },
   methods: {

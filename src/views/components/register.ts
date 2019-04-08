@@ -9,7 +9,6 @@ import StCheckboxFacilityItem from './checkbox-facility/checkbox-facility-item.v
 import StTable from './table/table.vue'
 import StInputSearch from './input-search/input-search.vue'
 import StAvatarUpload from './avatar-upload/avatar-upload.vue'
-import StPictureUpload from './picture-upload/picture-upload.vue'
 import StTree from './tree/tree.vue'
 import StInfo from './info/info.vue'
 import StInfoItem from './info/info-item.vue'
@@ -33,7 +32,6 @@ Vue.component(StCheckboxFacilityGroup.name, StCheckboxFacilityGroup)
 Vue.component(StCheckboxFacilityItem.name, StCheckboxFacilityItem)
 Vue.component(StInputSearch.name, StInputSearch)
 Vue.component(StAvatarUpload.name, StAvatarUpload)
-Vue.component(StPictureUpload.name, StAvatarUpload)
 Vue.component(StTree.name, StTree)
 Vue.component(StInfo.name, StInfo)
 Vue.component(StInfoItem.name, StInfoItem)

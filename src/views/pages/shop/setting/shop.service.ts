@@ -31,8 +31,8 @@ export class ShopService extends Store<ShopINfoState> {
   save(data: ShopInput) {
     return this.shopApi.add(data)
   }
-  delImg(data: any) {
-    return this.shopApi.update(data)
+  delImg(id: string, data: ShopInput) {
+    return this.shopApi.update(id, data)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     console.log(to.query)
