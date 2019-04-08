@@ -327,7 +327,8 @@ export default {
         // copy
         let a = [...newVal]
         // 排序
-        a.sort((a, b) => a > b)
+
+        a.sort()
         // 传入slider的数组
         let s = []
         // slider里`操作到`的数组
