@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { ManageApi, ManagePhoneInput } from '@/api/account/manage'
+import { ManageApi, ManagePhoneInput } from '@/api/v1/account/manage'
 
 interface LlfState {
   name: string
