@@ -16,10 +16,24 @@
     <section flex="cross:center" class="mg-t48">
 
       <st-form :form="form" @submit="save">
+        <st-form-item  class="mg-l24" labelOffset>
+          <a-input v-decorator="basicInfoRuleList.usernameRule2"></a-input>
+        </st-form-item>
+        <st-form-item  class="mg-l24" labelOffset>
+          <a-input v-decorator="basicInfoRuleList.usernameRule3"></a-input>
+        </st-form-item>
+        <st-form-item  class="mg-l24" labelOffset>
+          <a-input v-decorator="basicInfoRuleList.usernameRule4"></a-input>
+        </st-form-item>
         <a-row :gutter="8">
           <a-col :lg="10">
             <st-form-item label="城市选择" required>
-              <st-region-cascader @change="onChangeGetRegionValues" v-decorator="basicInfoRuleList.usernameRule1"></st-region-cascader>
+              <st-region-cascader
+                :form.sync="form"
+                :fileds="['a', 'bf', 'c']"
+                @change="onChangeGetRegionValues"
+                v-decorator="basicInfoRuleList.usernameRule1">
+              </st-region-cascader>
             </st-form-item>
             <st-form-item label="姓名"  required>
               <a-input v-decorator="basicInfoRuleList.usernameRule"></a-input>
@@ -42,10 +56,15 @@ export default {
   data() {
     return {
       basicInfoRuleList: {
-        usernameRule1: ['stff_name', { rules: [{ type: 'array', required: true, message: '请填写地址' }], initialValue: [1, 1, 398] }],
-        usernameRule: ['staff_name', { rules: [{ required: true, message: '请填写姓名' }], initialValue: 'sdsdd' }]// 姓名
+        usernameRulee: ['regions1', { rules: [{ type: 'array', required: true, message: '请填写地址' }] }],
+        usernameRule2: ['a', { rules: [{ required: true, message: '请填写地址' }] }],
+        usernameRule3: ['bf', { rules: [{ required: true, message: '请填写地址' }] }],
+        usernameRule4: ['c', { rules: [{ required: true, message: '请填写地址' }] }],
+        usernameRule1: ['regions', { rules: [{ type: 'array', required: true, message: '请填写地址' }] }],
+        usernameRule: ['staff_name', { rules: [{ required: true, message: '请填写姓名' }] }]// 姓名
       },
       values: [],
+      province: 0,
       form: this.$form.createForm(this)
     }
   },
@@ -66,14 +85,17 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick().then(() => {
-      this.values = [1, 1, 398]
-    })
-    setTimeout(() => {
-      this.form.setFieldsValue({
-        stff_name: [1, 1, 389]
-      })
-    }, 3000)
+    // this.$nextTick().then(() => {
+    //   setTimeout(() => {
+    //     this.form.setFieldsValue({
+    //       regions: [1, 1, 398],
+    //       province: 1,
+    //       city: 1,
+    //       district: 398,
+    //       staff_name: 'sss'
+    //     })
+    //   }, 300)
+    // })
   }
 }
 </script>
