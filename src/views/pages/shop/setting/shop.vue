@@ -5,7 +5,7 @@
         <a-col offset="1" :lg="10">
           <st-form-item class="page-shop-setting-shop__address">
             <st-tag type="shop-opening"/>
-            <st-t3 style="display:inline-block;margin-left:24px">{{shopInfo.shop_info.shop_name}}</st-t3>
+            <st-t3 style="display:inline-block;margin-left:24px">{{shopData.shop_name}}</st-t3>
           </st-form-item>
         </a-col>
       </a-row>
@@ -59,7 +59,7 @@
           </st-form-item>-->
           <st-form-item label="城市选择" required>
             <st-region-cascader
-              v-decorator="['stff_name',{ rules: [{ type: 'array', required: true, message: '请填写地址' }] }]"
+              v-decorator="['shop_PCD',{ rules: [{ type: 'array', required: true, message: '请填写地址' }] }]"
               :values="[shopData.city_id,shopData.province_id,shopData.district_id]"
             ></st-region-cascader>
           </st-form-item>
@@ -403,25 +403,14 @@ export default {
   methods: {
     // 删除店招
     settingDel(item) {
-      console.log(item)
       this.infoService.save(item).subscribe(res => {
-        console.log(res)
-        this.getShopSettingStopInfo().subscribe(res1 => {
-          console.log(res1)
-        })
+        this.infoService.getShopSettingStopInfo().subscribe(res1 => {})
       })
     },
     // 设置为店招
     settingSign(item) {
-      // console.log(item)
-      // this.infoService.save(item).subscribe(res => {
-      //   console.log(res)
-      //   this.getShopSettingStopInfo().subscribe(res1 => {
-      //     console.log(res1)
-      //   })
-      // })
-      this.infoService.getShopSettingStopInfo().subscribe(res1 => {
-        console.log(res1)
+      this.infoService.save(item).subscribe(res => {
+        this.infoService.getShopSettingStopInfo().subscribe(res1 => {})
       })
     },
     // 获取门店信息
@@ -429,17 +418,23 @@ export default {
       if (data.shop_phones && data.shop_phones.length > 3) {
         data.shop_phones.splice(3, data.shop_phones.length)
       }
-      console.log(data.shop_info, 1)
+
       this.form.setFieldsValue({
-        shop_name: data.shop_name,
         shop_address: data.shop_position.address,
-        email: data.email
+        email: data.email,
+        shop_PCD: [
+          data.shop_position.city_id,
+          data.shop_position.province_id,
+          data.shop_position.district_id
+        ]
       })
+      this.shopData.shop_name = data.shop_name
       this.shopData.shop_phones = data.shop_phones
       // 省市区
       this.shopData.province_id = data.shop_position.province_id
       this.shopData.city_id = data.shop_position.city_id
       this.shopData.district_id = data.shop_position.district_id
+
       // 经纬度
       this.shopData.lat = data.lat
       this.shopData.lng = data.lng
@@ -485,9 +480,12 @@ export default {
       this.form.validateFieldsAndScroll((err, values) => {
         this.phoneValidtorType = 1
         if (!err) {
-          this.shopData.shop_name = values.shop_name
           this.shopData.address = values.shop_address
           this.shopData.email = values.email
+          this.shopData.province_id = values.shop_PCD[1]
+          this.shopData.city_id = values.shop_PCD[0]
+          this.shopData.district_id = values.shop_PCD[2]
+          console.log(this.shopData, values)
           this.infoService.save(this.shopData).subscribe(res => {
             console.log(res)
           })
