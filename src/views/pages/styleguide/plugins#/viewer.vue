@@ -1,6 +1,6 @@
 <template>
   <div v-viewer="{ url: 'data-src' }">
-    <span class="st-preview-item"
+    <span class="st-preview-item" style="margin: 8px;"
       v-for="(imgKey, index) in imgKeys"
       :key="index">
       <img :src="imgKey|imgFilter({ w: 100, h: 56 })"
