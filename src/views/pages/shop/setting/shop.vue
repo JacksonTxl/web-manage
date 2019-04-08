@@ -109,8 +109,25 @@
         <a-col offset="1" :lg="23">
           <st-form-item label="门店图片">
             <div class="shop-setting-shop-img">
-              <div class="shop-setting-shop-img-box">
-                <st-tag type="shop-opening" style="position: absolute;"/>
+              <!-- <pre>{{shopInfo.shop_info.service_options}}</pre> -->
+              <div
+                class="shop-setting-shop-img-box"
+                v-for="(item,index) in shopInfo.shop_info.service_options"
+                :key="index"
+              >
+                <st-tag type="shop-opening" style="position: absolute;" v-if="item.is_choose"/>
+                <img
+                  width="240"
+                  height="auto"
+                  src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1986179278,1118313821&fm=27&gp=0.jpg"
+                  alt="avatar"
+                >
+                <div class="shop-setting-shop-img-sign" v-if="!item.is_choose">
+                  <p class="shop-setting-shop-img-set" @click="settingSign(item)">设为店招</p>
+                  <p class="shop-setting-shop-img-del" @click="settingDel(item)">删除</p>
+                </div>
+              </div>
+              <!-- <div class="shop-setting-shop-img-box">
                 <img
                   width="240"
                   height="auto"
@@ -121,19 +138,7 @@
                   <p class="shop-setting-shop-img-set">设为店招</p>
                   <p class="shop-setting-shop-img-del">删除</p>
                 </div>
-              </div>
-              <div class="shop-setting-shop-img-box">
-                <img
-                  width="240"
-                  height="auto"
-                  src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1986179278,1118313821&fm=27&gp=0.jpg"
-                  alt="avatar"
-                >
-                <div class="shop-setting-shop-img-sign">
-                  <p class="shop-setting-shop-img-set">设为店招</p>
-                  <p class="shop-setting-shop-img-del">删除</p>
-                </div>
-              </div>
+              </div>-->
               <a-upload
                 listType="picture-card"
                 :class="{'page-show-image':imageUrl}"
@@ -390,6 +395,20 @@ export default {
     }
   },
   methods: {
+    // 删除店招
+    settingDel(item) {
+      console.log(item)
+      this.infoService.save(item).subscribe(res => {
+        console.log(res)
+      })
+    },
+    // 设置为店招
+    settingSign(item) {
+      console.log(item)
+      this.infoService.save(item).subscribe(res => {
+        console.log(res)
+      })
+    },
     // 获取门店信息
     getShopInfo(data) {
       if (data.shop_phones && data.shop_phones.length > 3) {
