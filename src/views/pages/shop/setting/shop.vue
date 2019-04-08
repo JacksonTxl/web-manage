@@ -121,7 +121,7 @@
                 v-for="(item,index) in shopInfo.shop_info.service_options"
                 :key="index"
               >
-                <st-tag type="shop-opening" style="position: absolute;" v-if="item.is_choose"/>
+                <st-tag type="shop-sign" style="position: absolute;" v-if="item.is_choose"/>
                 <img
                   width="240"
                   height="auto"
@@ -311,41 +311,7 @@ export default {
         disabled: false,
         className: 'st-slider-box',
         infoList: []
-      },
-      options: [
-        {
-          value: 'zhejiang',
-          label: 'Zhejiang',
-          children: [
-            {
-              value: 'hangzhou',
-              label: 'Hangzhou',
-              children: [
-                {
-                  value: 'xihu',
-                  label: 'West Lake'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: 'jiangsu',
-          label: 'Jiangsu',
-          children: [
-            {
-              value: 'nanjing',
-              label: 'Nanjing',
-              children: [
-                {
-                  value: 'zhonghuamen',
-                  label: 'Zhong Hua Men'
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      }
     }
   },
   watch: {
