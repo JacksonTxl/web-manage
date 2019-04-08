@@ -1,5 +1,5 @@
 import LayoutBlank from './blank.vue'
-import LayoutDefault from './default.vue'
+import LayoutDefaultShop from './default-shop.vue'
 import LayoutDefaultBrand from './default-brand.vue'
 import LayoutLogin from './login.vue'
 import LayoutLoading from './loading.vue'
@@ -8,7 +8,7 @@ import LayoutLoading from './loading.vue'
 export const layoutMap = {
   blank: LayoutBlank,
   'default-brand': LayoutDefaultBrand,
-  'default-shop': LayoutDefault,
+  'default-shop': LayoutDefaultShop,
   login: LayoutLogin,
   loading: LayoutLoading
 }
