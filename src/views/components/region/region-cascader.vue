@@ -5,14 +5,14 @@
   :options="province"
   :defaultValue="values"
   :showSearch="{filter}"
-  @change="onChange"/>
+  @change="onChange"
+  :placeholder="placeholder"/>
 </div>
 
 </template>
 
 <script>
 import { RegionService } from '../../../services/region.service'
-import { forkJoin } from 'rxjs'
 
 export default {
   name: 'StRegionCascader',
@@ -28,6 +28,10 @@ export default {
     }
   },
   props: {
+    placeholder: {
+      type: String,
+      default: '请选择'
+    },
     isSearch: {
       type: Boolean,
       default: false
@@ -60,7 +64,6 @@ export default {
       return (path.some(option => (option.name).indexOf(inputValue) > -1))
     },
     onChange(value) {
-      console.log(value)
       this.$emit('change', value)
     }
   },

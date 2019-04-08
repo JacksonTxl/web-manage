@@ -76,7 +76,7 @@ export default {
   methods: {
     addTreeNode() {
       this.$emit('add-item', this.item)
-      this.item.isEdit = true
+      this.item.isEditSelf = true
     },
     deleteTreeNode() {
       this.$emit('delete-item', this.item)

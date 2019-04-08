@@ -9,6 +9,9 @@ import { config } from 'rxjs'
 interface ImgFilterOptions {
   w?: string | number
   h?: string | number
+  /**
+   * 裁切模式 lfit|mfit|fill|pad|fixed
+   */
   m?: string
   [propName: string]: any
 }
@@ -49,5 +52,26 @@ export const imgFilter = (key: string, opts: ImgFilterOptions): string => {
  * 头像类过滤器
  */
 export function avatarFilter(key: string, options: ImgFilterOptions): string {
+  return imgFilter(key, options) || avatarDefault
+}
+
+/**
+ * 门店图过滤器
+ */
+export function shopImgFilter(key: string, options: ImgFilterOptions): string {
+  return imgFilter(key, options) || avatarDefault
+}
+
+/**
+ * 品牌logo过滤器
+ */
+export function brandLogoFilter(key: string, options: ImgFilterOptions): string {
+  return imgFilter(key, options) || avatarDefault
+}
+
+/**
+ * 卡片图片过滤器
+ */
+export function cardImgFilter(key: string, options: ImgFilterOptions): string {
   return imgFilter(key, options) || avatarDefault
 }
