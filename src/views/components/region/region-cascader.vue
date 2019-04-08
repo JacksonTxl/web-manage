@@ -5,7 +5,8 @@
   :options="province"
   :defaultValue="values"
   :showSearch="{filter}"
-  @change="onChange"/>
+  @change="onChange"
+  :placeholder="placeholder"/>
 </div>
 
 </template>
