@@ -24,6 +24,7 @@
     "@types/lodash-es": "^4.17.3",
     "@types/nprogress": "^0.0.29",
     "ant-design-vue": "^1.3.5",
+    "bem-helpers": "^1.1.0",
     "core-js": "^2.6.5",
     "countup.js": "^2.0.4",
     "cropperjs": "^1.5.1",

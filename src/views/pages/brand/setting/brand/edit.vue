@@ -12,16 +12,18 @@
                 </a-upload>
               </st-form-item>
               <st-form-item label="品牌名称">
-                <a-input placeholder="请输入品牌名称" v-decorator="brandRules.brand_name"></a-input>
+                <a-input placeholder="请输入品牌名称" v-decorator="brandRules.brand_name" maxlength="20" ></a-input>
               </st-form-item>
               <st-form-item label="品牌介绍">
-                <a-textarea placeholder="请输入品牌介绍" v-decorator="brandRules.description"></a-textarea>
+                <a-textarea placeholder="请输入品牌介绍" v-decorator="brandRules.description"
+                  maxlength="300" style="height: 180px">
+                </a-textarea>
               </st-form-item>
               <st-form-item label="联系人">
-                <a-input placeholder="请输入联系人" v-decorator="brandRules.staff_name"></a-input>
+                <a-input placeholder="请输入联系人" v-decorator="brandRules.staff_name" maxlength="10"></a-input>
               </st-form-item>
               <st-form-item label="联系电话">
-                <a-input placeholder="请输入联系电话" v-decorator="brandRules.mobile"></a-input>
+                <a-input placeholder="请输入联系电话" v-decorator="brandRules.mobile" maxlength="20">></a-input>
               </st-form-item>
             </st-form>
           </a-col>
@@ -40,25 +42,44 @@
 <script>
 import { imgFilter } from '@/filters/resource.filters'
 import { MessageService } from '@/services/message.service'
-import { BrandService } from './brand.service'
+import { EditService } from './edit.service'
 const brandRules = {
   brand_name: [
-    'brand_name', { rules: [{ required: true, message: '请输入品牌名称' }] }
+    'brand_name', {
+      rules: [{
+        required: true,
+        message: '请输入品牌名称'
+      }]
+    }
   ],
   description: [
-    'description', { rules: [{ required: true, message: '请输入品牌介绍' }] }
+    'description', {
+      rules: [{
+        message: '请输入品牌介绍'
+      }]
+    }
   ],
   staff_name: [
-    'staff_name', { rules: [{ required: true, message: '请输入联系人' }] }
+    'staff_name', {
+      rules: [{
+        required: true,
+        message: '请输入联系人'
+      }]
+    }
   ],
   mobile: [
-    'mobile', { rules: [{ required: true, message: '请输入联系人电话' }] }
+    'mobile', {
+      rules: [{
+        required: true,
+        message: '请输入联系人电话'
+      }]
+    }
   ]
 }
 export default {
   serviceInject() {
     return {
-      brandService: BrandService,
+      editService: EditService,
       messageService: MessageService
     }
   },
@@ -70,17 +91,30 @@ export default {
   },
   subscriptions() {
     return {
-      brand: this.brandService.brand$
+      brand: this.editService.brand$
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.setFieldsValue()
+    })
+  },
   methods: {
-    onSave() {
+    onSave(e) {
+      e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
-        this.brandService.saveBrandInfo(data).subscribe(res => {
+        this.editService.saveBrandInfo(data).subscribe(res => {
           this.messageService.success({
             content: '提交成功'
           })
+        })
+      })
+    },
+    setFieldsValue() {
+      this.editService.brand$.subscribe(brand => {
+        this.form.setFieldsValue({
+          ...brand
         })
       })
     }

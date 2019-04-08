@@ -2906,6 +2906,11 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
+bem-helpers@^1.1.0:
+  version "1.1.0"
+  resolved "http://registry.npm.taobao.org/bem-helpers/download/bem-helpers-1.1.0.tgz#1a1d6e99a4b232da2a0e81b9934310c3a79143c6"
+  integrity sha1-Gh1umaSyMtoqDoG5k0MQw6eRQ8Y=
+
 bfj@^6.1.1:
   version "6.1.1"
   resolved "http://registry.npm.taobao.org/bfj/download/bfj-6.1.1.tgz#05a3b7784fbd72cfa3c22e56002ef99336516c48"

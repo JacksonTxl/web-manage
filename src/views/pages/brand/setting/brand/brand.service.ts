@@ -31,7 +31,6 @@ export class BrandService extends Store<BrandState> {
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    console.log('before enter')
     this.getBrandInfo().subscribe(res => {
       this.SET_BRAND(res)
     })

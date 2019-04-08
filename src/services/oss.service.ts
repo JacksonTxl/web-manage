@@ -4,6 +4,10 @@ import { ajax } from 'rxjs/ajax'
 import { mergeMap, map } from 'rxjs/operators'
 import { Api } from '@/api/api'
 
+const typeSuffix = {
+  'image/png': '.png'
+}
+
 interface PutOptions {
   /**
    * 上传的文件
@@ -20,6 +24,10 @@ interface PutOptions {
 }
 @Injectable()
 export class OssService extends Api {
+  typeSuffix=[{
+    type: 'image/png',
+    suffix: '.png'
+  }]
   put({ file, type = 'image', uploadProgress = () => {} }: PutOptions) {
     return this.getOssPolicy(type).pipe(
       mergeMap(({ policy_info: res }:any) => {
@@ -54,15 +62,6 @@ export class OssService extends Api {
     return this.http.get(`/upload/${type}/policy`)
   }
   private getKey(file: any): string {
-    // 获取文件后缀
-    function getSuffix(filename: string) {
-      let pos: number = filename.lastIndexOf('.')
-      let suffix: string = ''
-      if (pos !== -1) {
-        suffix = filename.substring(pos)
-      }
-      return suffix
-    }
     // 生成随机字符串
     function randomString(len: number = 32) {
       var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_-'
@@ -73,6 +72,12 @@ export class OssService extends Api {
       }
       return pwd
     }
-    return `${randomString(16)}${getSuffix(file.name)}`
+    let s = ''
+    this.typeSuffix.forEach(i => {
+      if (i.type === file.type) {
+        s = i.suffix
+      }
+    })
+    return `${randomString(16)}${s}`
   }
 }

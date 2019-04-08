@@ -46,7 +46,7 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="门店地址" required>
+          <!-- <st-form-item label="门店地址" required>
             <a-cascader
               v-decorator="[
               'shop_PCD',
@@ -56,6 +56,12 @@
               @change="onChange"
               placeholder="请选择省/市/区"
             />
+          </st-form-item>-->
+          <st-form-item label="城市选择" required>
+            <st-region-cascader
+              v-decorator="['stff_name',{ rules: [{ type: 'array', required: true, message: '请填写地址' }] }]"
+              :values="[shopData.city_id,shopData.province_id,shopData.district_id]"
+            ></st-region-cascader>
           </st-form-item>
         </a-col>
       </a-row>
@@ -109,8 +115,25 @@
         <a-col offset="1" :lg="23">
           <st-form-item label="门店图片">
             <div class="shop-setting-shop-img">
-              <div class="shop-setting-shop-img-box">
-                <st-tag type="shop-opening" style="position: absolute;"/>
+              <!-- <pre>{{shopInfo.shop_info.service_options}}</pre> -->
+              <div
+                class="shop-setting-shop-img-box"
+                v-for="(item,index) in shopInfo.shop_info.service_options"
+                :key="index"
+              >
+                <st-tag type="shop-opening" style="position: absolute;" v-if="item.is_choose"/>
+                <img
+                  width="240"
+                  height="auto"
+                  src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1986179278,1118313821&fm=27&gp=0.jpg"
+                  alt="avatar"
+                >
+                <div class="shop-setting-shop-img-sign" v-if="!item.is_choose">
+                  <p class="shop-setting-shop-img-set" @click="settingSign(item)">设为店招</p>
+                  <p class="shop-setting-shop-img-del" @click="settingDel(item)">删除</p>
+                </div>
+              </div>
+              <!-- <div class="shop-setting-shop-img-box">
                 <img
                   width="240"
                   height="auto"
@@ -121,30 +144,18 @@
                   <p class="shop-setting-shop-img-set">设为店招</p>
                   <p class="shop-setting-shop-img-del">删除</p>
                 </div>
-              </div>
-              <div class="shop-setting-shop-img-box">
-                <img
-                  width="240"
-                  height="auto"
-                  src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1986179278,1118313821&fm=27&gp=0.jpg"
-                  alt="avatar"
-                >
-                <div class="shop-setting-shop-img-sign">
-                  <p class="shop-setting-shop-img-set">设为店招</p>
-                  <p class="shop-setting-shop-img-del">删除</p>
-                </div>
-              </div>
+              </div>-->
               <a-upload
                 listType="picture-card"
                 :class="{'page-show-image':imageUrl}"
                 :showUploadList="false"
                 :customRequest="upload"
               >
-                <img v-if="imageUrl" width="240" height="auto" src="imageUrl" alt="avatar">
-                <div v-else>
+                <div>
                   <a-icon :type="loading ? 'loading' : 'plus'"/>
                   <div class="page-upload-text">上传门店图片</div>
                   <div class="page-upload-text">大小不超过5M，建议尺寸16：9</div>
+                  <div class="page-upload-num-text">可添加20张门店图片</div>
                 </div>
               </a-upload>
             </div>
@@ -220,9 +231,9 @@ export default {
       shopData: {
         shop_name: '',
         shop_phones: [],
-        province_id: 11,
-        city_id: 2,
-        district_id: 1,
+        province_id: '40',
+        city_id: '2',
+        district_id: '400',
         address: '',
         email: '',
         service_ids: [],
@@ -390,6 +401,29 @@ export default {
     }
   },
   methods: {
+    // 删除店招
+    settingDel(item) {
+      console.log(item)
+      this.infoService.save(item).subscribe(res => {
+        console.log(res)
+        this.getShopSettingStopInfo().subscribe(res1 => {
+          console.log(res1)
+        })
+      })
+    },
+    // 设置为店招
+    settingSign(item) {
+      // console.log(item)
+      // this.infoService.save(item).subscribe(res => {
+      //   console.log(res)
+      //   this.getShopSettingStopInfo().subscribe(res1 => {
+      //     console.log(res1)
+      //   })
+      // })
+      this.infoService.getShopSettingStopInfo().subscribe(res1 => {
+        console.log(res1)
+      })
+    },
     // 获取门店信息
     getShopInfo(data) {
       if (data.shop_phones && data.shop_phones.length > 3) {

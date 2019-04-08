@@ -3,8 +3,10 @@
     <a-row :gutter="8" class="page-brand-info">
       <a-col :span="14" :push="5" align="center">
         <p v-viewer="{ url: 'data-src' }">
-          <img :src="brand.image_url|imgFilter({ w: 200 })" class="page-brand-info__brand-logo"
+          <span class="st-preview-item">
+            <img :src="brand.image_url|imgFilter({ w: 200 })" class="page-brand-info__brand-logo"
             :data-src="brand.image_url|imgFilter({ w: 800 })">
+          </span>
         </p>
         <h2 class="page-brand-info__brand-name">{{brand.brand_name}}</h2>
         <p class="page-brand-info__certification">
@@ -21,11 +23,11 @@
 </template>
 <script>
 import { imgFilter } from '@/filters/resource.filters'
-import { BrandService } from './brand.service'
+import { InfoService } from './info.service'
 export default {
   serviceInject() {
     return {
-      brandService: BrandService
+      infoService: InfoService
     }
   },
   filters: {
@@ -38,12 +40,12 @@ export default {
   },
   subscriptions() {
     return {
-      brand: this.brandService.brand$
+      brand: this.infoService.brand$
     }
   },
   methods: {
     onEdit() {
-      this.$router.push('/brand/setting/set')
+      this.$router.push('/brand/setting/brand/edit')
     }
   }
 }

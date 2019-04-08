@@ -12,11 +12,11 @@
           <div class="brand-item">
             <img
               class="brand-item__img"
-              :src="brand.image_url|imgFilter({ w:  200 })"
+              :src="brand.image_url | imgFilter({ w: 200 })"
               alt="brand-logo"
             />
-            <st-t3 class="brand-item__title">{{brand.brand_name}}</st-t3>
-            <p class="brand-item__desc">门店数量：{{brand.shop_num}}</p>
+            <st-t3 class="brand-item__title">{{ brand.brand_name }}</st-t3>
+            <p class="brand-item__desc">门店数量：{{ brand.shop_num }}</p>
             <st-button
               @click="onClickItem"
               class="brand-item__btn"
@@ -58,6 +58,7 @@ export default {
   methods: {
     onClickItem() {
       console.log('click')
+      this.$emit('change', { a: 1 })
     }
   }
 }
