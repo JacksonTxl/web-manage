@@ -3,7 +3,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="私教课程">
-          <a-input placeholder="课程名称"/>
+          <a-input placeholder="课程名称" disabled/>
         </st-form-item>
         <st-form-item label="上课门店" required>
           <a-radio-group :defaultValue="1" @change="onChange">
