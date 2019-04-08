@@ -4,9 +4,7 @@
     <section class="sg-app-content">
       <st-panel>
         <st-t2>st-t2 .fz(18px) .lh(22px) 适用于门店名称</st-t2>
-        <st-t3>
-          st-t3 .fz(16px) .lh(24px) 适用于表单标题
-        </st-t3>
+        <st-t3>st-t3 .fz(16px) .lh(24px) 适用于表单标题</st-t3>
       </st-panel>
     </section>
     <h3>color类型</h3>
@@ -17,6 +15,20 @@
           <span class="color-text mg-l16">color-text</span>
           <span class="color-text mg-l16">color-text-light</span>
         </p>
+      </st-panel>
+    </section>
+    <h3 class="mg-t24">bem辅助类名函数</h3>
+    <p>使用辅助函数帮忙生成类名 方便书写bem规范的class名称 查看类名以观察效果</p>
+    <section class="sg-app-content">
+      <st-panel>
+        <ul>
+          <li :class="b()"></li>
+          <li :class="b('title')">b('title')</li>
+          <li :class="b('title',{active:true})">b('title',{active:true})</li>
+          <li :class="bSider()">bSider()</li>
+          <li :class="bHeader()">bHeader()</li>
+          <a-button @click="isActive = true">active</a-button>
+        </ul>
       </st-panel>
     </section>
     <h3>全局样式</h3>
@@ -32,11 +44,11 @@
           <span class="cursor-pointer">cursor-pointer</span>
         </p>
         <p>
-          <span class="full-width" style="background: #ccc"
-            >full-width(this is a inline element)</span
-          >
+          <span class="full-width" style="background: #ccc">full-width(this is a inline element)</span>
         </p>
-        <p><a class="st-link-secondary" href="#">st-link-secondary</a></p>
+        <p>
+          <a class="st-link-secondary" href="#">st-link-secondary</a>
+        </p>
       </st-panel>
     </section>
     <h3>st-button 按钮</h3>
@@ -81,25 +93,19 @@
         <a-col :span="6">
           <!-- start -->
           <div style="width:172px;" class="mg-t16">
-            <st-button block pill type="primary" icon="wechat" size="large">
-              添加门店
-            </st-button>
+            <st-button block pill type="primary" icon="wechat" size="large">添加门店</st-button>
           </div>
           <!-- end -->
         </a-col>
         <a-col :span="8">
           <!-- start -->
           <div style="width:336px;" class="mg-t16">
-            <st-button disabled block pill type="primary" size="large">
-              下一步
-            </st-button>
+            <st-button disabled block pill type="primary" size="large">下一步</st-button>
           </div>
           <!-- end -->
         </a-col>
         <a-col :span="4">
-          <st-button style="width:84px" size="medium" pill ghost type="primary"
-            >绑定</st-button
-          >
+          <st-button style="width:84px" size="medium" pill ghost type="primary">绑定</st-button>
         </a-col>
       </a-row>
       <div>
@@ -111,21 +117,19 @@
     <a
       target="blank"
       href="https://www.iconfont.cn/manage/index?spm=a313x.7781069.1998910419.11&manage_type=myprojects&projectId=1106512&keyword="
-      >iconfont saas2.0链接</a
-    >
+    >iconfont saas2.0链接</a>
     <section>
-      <li><st-icon type="wechat"></st-icon> 默认为父级容器字号</li>
       <li>
-        <st-icon type="wechat" size="28px"></st-icon>
-        变更大小
+        <st-icon type="wechat"></st-icon>默认为父级容器字号
       </li>
       <li>
-        <st-icon type="wechat" color="red"></st-icon>
-        变更颜色
+        <st-icon type="wechat" size="28px"></st-icon>变更大小
       </li>
       <li>
-        <st-icon type="anticon:setting" color="red"></st-icon>
-        使用iconfont的图标
+        <st-icon type="wechat" color="red"></st-icon>变更颜色
+      </li>
+      <li>
+        <st-icon type="anticon:setting" color="red"></st-icon>使用iconfont的图标
       </li>
       <li>
         <st-button icon="wechat" type="primary">按钮中使用图标</st-button>
@@ -139,34 +143,18 @@
         <a-row :gutter="8">
           <a-col :offset="1" :lg="7">
             <st-info>
-              <st-info-item label="会员卡名称">
-                万晋健身房年卡
-              </st-info-item>
-              <st-info-item label="所属会员">
-                会员名称
-              </st-info-item>
-              <st-info-item label="允许转让">
-                允许
-              </st-info-item>
-              <st-info-item label="类型">
-                会员期限卡
-              </st-info-item>
-              <st-info-item label="手机号">
-                13345667788
-              </st-info-item>
-              <st-info-item label="转让手续费">
-                5%
-              </st-info-item>
+              <st-info-item label="会员卡名称">万晋健身房年卡</st-info-item>
+              <st-info-item label="所属会员">会员名称</st-info-item>
+              <st-info-item label="允许转让">允许</st-info-item>
+              <st-info-item label="类型">会员期限卡</st-info-item>
+              <st-info-item label="手机号">13345667788</st-info-item>
+              <st-info-item label="转让手续费">5%</st-info-item>
             </st-info>
           </a-col>
           <a-col :offset="1" :lg="9">
             <st-info>
-              <st-info-item label="剩余额度">
-                180天
-              </st-info-item>
-              <st-info-item label="物理ID">
-                34453464355
-              </st-info-item>
+              <st-info-item label="剩余额度">180天</st-info-item>
+              <st-info-item label="物理ID">34453464355</st-info-item>
               <st-info-item label="约课范围">
                 团体课 团体课 团体课 团体课 团体课 团体课 团体课 团体课 团体课
                 团体课 团体课 团体课 团体课 团体课 团体课 团体课 团体课 团体课
@@ -178,54 +166,28 @@
       </st-panel>
     </section>
 
-    <p class="mg-t24">
-      st-info ，可定制 labelWidth 和 labelGutter,
-    </p>
+    <p class="mg-t24">st-info ，可定制 labelWidth 和 labelGutter,</p>
     <section class="sg-app-content">
       <st-panel>
         <a-row :gutter="8">
           <a-col :offset="1" :lg="10">
             <st-info labelWidth="136px" labelGutter="16px">
-              <st-info-item label="会员卡名称">
-                万晋健身房年卡
-              </st-info-item>
-              <st-info-item label="所属会员">
-                会员名称
-              </st-info-item>
-              <st-info-item label="允许转让" label-gutter="80px">
-                允许
-              </st-info-item>
-              <st-info-item label="类型">
-                会员期限卡
-              </st-info-item>
-              <st-info-item label="手机号">
-                13345667788
-              </st-info-item>
-              <st-info-item label="转让手续费">
-                5%
-              </st-info-item>
+              <st-info-item label="会员卡名称">万晋健身房年卡</st-info-item>
+              <st-info-item label="所属会员">会员名称</st-info-item>
+              <st-info-item label="允许转让" label-gutter="80px">允许</st-info-item>
+              <st-info-item label="类型">会员期限卡</st-info-item>
+              <st-info-item label="手机号">13345667788</st-info-item>
+              <st-info-item label="转让手续费">5%</st-info-item>
             </st-info>
           </a-col>
           <a-col :offset="1" :lg="10">
             <st-info labelWidth="136px" labelGutter="16px">
-              <st-info-item label="会员卡名称">
-                万晋健身房年卡
-              </st-info-item>
-              <st-info-item label="所属会员">
-                会员名称
-              </st-info-item>
-              <st-info-item label="允许转让">
-                允许
-              </st-info-item>
-              <st-info-item label="类型">
-                会员期限卡
-              </st-info-item>
-              <st-info-item label="手机号">
-                13345667788
-              </st-info-item>
-              <st-info-item label="转让手续费">
-                5%
-              </st-info-item>
+              <st-info-item label="会员卡名称">万晋健身房年卡</st-info-item>
+              <st-info-item label="所属会员">会员名称</st-info-item>
+              <st-info-item label="允许转让">允许</st-info-item>
+              <st-info-item label="类型">会员期限卡</st-info-item>
+              <st-info-item label="手机号">13345667788</st-info-item>
+              <st-info-item label="转让手续费">5%</st-info-item>
             </st-info>
           </a-col>
         </a-row>
@@ -233,3 +195,16 @@
     </section>
   </div>
 </template>
+
+<script>
+import { mapBem } from '@/utils/bem'
+export default {
+  methods: {
+    ...mapBem({
+      b: 'sg-layout-default',
+      bSider: 'sg-layout-default-sider',
+      bHeader: 'sg-layout-default-header'
+    })
+  }
+}
+</script>
