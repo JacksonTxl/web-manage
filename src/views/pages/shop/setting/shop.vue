@@ -295,7 +295,6 @@ export default {
         [9, 18]
       ],
       defaultWeekList: [
-        '',
         '周一',
         '周二',
         '周三',
@@ -327,7 +326,6 @@ export default {
         // copy
         let a = [...newVal]
         // 排序
-
         a.sort()
         // 传入slider的数组
         let s = []
