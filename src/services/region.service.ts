@@ -1,6 +1,6 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { map, tap } from 'rxjs/operators'
-import { RegionApi, GetRegionInput } from '@/api/basic/region'
+import { RegionApi, GetRegionInput } from '@/api/region'
 import { of } from 'rxjs'
 
 @Injectable()
