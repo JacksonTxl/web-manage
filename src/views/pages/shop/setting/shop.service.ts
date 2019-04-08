@@ -31,12 +31,15 @@ export class ShopService extends Store<ShopINfoState> {
   save(data: ShopInput) {
     return this.shopApi.add(data)
   }
+  delImg(data: any) {
+    return this.shopApi.update(data)
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     console.log(to.query)
     this.getShopSettingStopInfo(to.query.id).subscribe(res => {
       console.log('门店设置详情', res)
       this.SET_SHOP_INFO(res)
+      next()
     })
-    next()
   }
 }
