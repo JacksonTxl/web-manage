@@ -32,7 +32,9 @@
           <span class="cursor-pointer">cursor-pointer</span>
         </p>
         <p>
-          <span class="full-width" style="background: #ccc">full-width(this is a inline element)</span>
+          <span class="full-width" style="background: #ccc"
+            >full-width(this is a inline element)</span
+          >
         </p>
         <p><a class="st-link-secondary" href="#">st-link-secondary</a></p>
       </st-panel>
