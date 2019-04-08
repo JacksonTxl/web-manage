@@ -1,5 +1,6 @@
 <template>
   <div>
-    default-shop
+    layout-default-shop
+    <router-view></router-view>
   </div>
 </template>

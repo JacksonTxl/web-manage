@@ -13,7 +13,6 @@
 
 <script>
 import { RegionService } from '../../../services/region.service'
-import { forkJoin } from 'rxjs'
 
 export default {
   name: 'StRegionCascader',
