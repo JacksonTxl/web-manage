@@ -108,10 +108,8 @@
       <a-row :gutter="8">
         <a-col offset="1" :lg="23">
           <st-form-item label="门店图片">
-            <div style="display:flex">
-              <div
-                style="border-radius:4px;overflow: hidden;margin-right:12px;width:240px;height:135px;position: relative;cursor: pointer;"
-              >
+            <div class="shop-setting-shop-img">
+              <div class="shop-setting-shop-img-box">
                 <st-tag type="shop-opening" style="position: absolute;"/>
                 <img
                   width="240"
@@ -119,47 +117,21 @@
                   src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1986179278,1118313821&fm=27&gp=0.jpg"
                   alt="avatar"
                 >
-                <div
-                  style="position: absolute;
-                            bottom: 0;
-                            display: flex;
-                            line-height: 34px;
-                            height: 34px;
-                            width: 100%;
-                            align-items: right;
-                            justify-content: flex-end;
-                            background: rgba(0,0,0,0.45);"
-                >
-                  <p
-                    style="height: 34px;padding-right: 12px;color: rgba(255,255,255,0.85);cursor: pointer;"
-                  >设为店招</p>
-                  <p
-                    style="height: 34px;padding-right: 12px;color: rgba(255,255,255,0.85);cursor: pointer;"
-                  >删除</p>
+                <div class="shop-setting-shop-img-sign">
+                  <p class="shop-setting-shop-img-set">设为店招</p>
+                  <p class="shop-setting-shop-img-del">删除</p>
                 </div>
               </div>
-              <div
-                style="border-radius:4px;overflow: hidden;margin-right:12px;width:240px;height:135px;position: relative;"
-              >
+              <div class="shop-setting-shop-img-box">
                 <img
                   width="240"
                   height="auto"
                   src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1986179278,1118313821&fm=27&gp=0.jpg"
                   alt="avatar"
                 >
-                <div
-                  style="position: absolute;
-                            bottom: 0;
-                            display: flex;
-                            line-height: 34px;
-                            height: 34px;
-                            width: 100%;
-                            align-items: right;
-                            justify-content: flex-end;
-                            background: rgba(0,0,0,0.45);"
-                >
-                  <p style="height: 34px;padding-right: 12px;color: rgba(255,255,255,0.85);">设为店招</p>
-                  <p style="height: 34px;padding-right: 12px;color: rgba(255,255,255,0.85);">删除</p>
+                <div class="shop-setting-shop-img-sign">
+                  <p class="shop-setting-shop-img-set">设为店招</p>
+                  <p class="shop-setting-shop-img-del">删除</p>
                 </div>
               </div>
               <a-upload
