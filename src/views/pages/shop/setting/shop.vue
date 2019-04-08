@@ -295,6 +295,7 @@ export default {
         [9, 18]
       ],
       defaultWeekList: [
+        '',
         '周一',
         '周二',
         '周三',
@@ -352,6 +353,11 @@ export default {
         sOld.forEach((item, index) => {
           s[index].week = JSON.parse(JSON.stringify(w))
           s[index].week[item.key].disabled = true
+        })
+
+        s.map((item, index) => {
+          item.week = item.week.slice(1)
+          return item
         })
         this.getSlider.infoList = s
       }
