@@ -1,4 +1,4 @@
-import { Api } from '../api'
+import { Api } from '../../api'
 
 export class SwitchApi extends Api {
   /**

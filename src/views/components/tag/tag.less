@@ -3,6 +3,7 @@
   .fz(12px);
   border-radius: 2px;
   .c(@white);
+
   &--coach-personal,
   &--coach-team,
   &--role-staff,
@@ -10,15 +11,19 @@
     .pd-lr(8px);
     .lh(22px);
   }
+
   &--coach-personal {
     .bg(#a88add);
   }
+
   &--coach-team {
     .bg(#fd9f45);
   }
+
   &--role-saler {
     .bg(#fd6445);
   }
+
   &--role-staff {
     .bg(#1890ff);
   }
@@ -27,24 +32,30 @@
   &--shop-opening,
   &--shop-trial,
   &--shop-presale,
-  &--shop-close{
-    width:56px;
-    height:22px;
+  &--shop-sign,
+  &--shop-close {
+    width: 56px;
+    height: 22px;
     .lh(22px);
     .ta-c;
-    border-radius:4px 0px 16px 0px;
+    border-radius: 4px 0px 16px 0px;
     .c(#fff)
   }
-  &--shop-opening {
-    .bg(rgba(24,144,255,0.7));
+
+  &--shop-opening,
+  &--shop-sign {
+    .bg(rgba(24, 144, 255, 0.7));
   }
-  &--shop-presale{
-    .bg(rgba(255,144,49,0.7));
+
+  &--shop-presale {
+    .bg(rgba(255, 144, 49, 0.7));
   }
-  &--shop-trial{
-    .bg(rgba(21,192,158,0.7));
+
+  &--shop-trial {
+    .bg(rgba(21, 192, 158, 0.7));
   }
-  &--shop-close{
-    .bg(rgba(245,70,70,0.7));
+
+  &--shop-close {
+    .bg(rgba(245, 70, 70, 0.7));
   }
 }
