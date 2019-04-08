@@ -11,9 +11,9 @@
     <section class="sg-app-content">
       <st-panel>
         <p>
-          <span class="color-title">color-title</span>
-          <span class="color-text mg-l16">color-text</span>
-          <span class="color-text mg-l16">color-text-light</span>
+          <span class="color-title">.color-title</span>
+          <span class="color-text mg-l16">.color-text</span>
+          <span class="color-text mg-l16">.color-text-light</span>
         </p>
       </st-panel>
     </section>
@@ -22,23 +22,24 @@
     <section class="sg-app-content">
       <st-panel>
         <ul>
-          <li :class="b()"></li>
-          <li :class="b('title')">b('title')</li>
-          <li :class="b('title',{active:true})">b('title',{active:true})</li>
-          <li :class="bSider()">bSider()</li>
-          <li :class="bHeader()">bHeader()</li>
-          <a-button @click="isActive = true">active</a-button>
+          <li :class="b()">b() -> {{b()}}</li>
+          <li :class="b('title')">b('title') -> {{b('title')}}</li>
+          <li :class="b('title',{active:true})">b('title',{active:true}) -> {{b('title',{active:true})}}</li>
+          <li :class="bSider()">bSider() -> {{bSider()}}</li>
+          <li :class="bHeader()">bHeader() -> {{bHeader()}}</li>
         </ul>
       </st-panel>
     </section>
-    <h3>全局样式</h3>
+
+    <h3 class="mg-t24">全局辅助类样式</h3>
+    <p>用于简单的样式修正，切勿滥用</p>
     <section class="sg-app-content">
       <st-panel>
         <p>
-          <span>ta-l (text-align: left)</span>
-          <span class="mg-l16">ta-c (text-align: center)</span>
-          <span class="mg-l16">ta-r (text-align: right)</span>
-          <span class="mg-l16">fl-r (float: right)</span>
+          <span>.ta-l (text-align: left)</span>
+          <span class="mg-l16">.ta-c (text-align: center)</span>
+          <span class="mg-l16">.ta-r (text-align: right)</span>
+          <span class="mg-l16">.fl-r (float: right)</span>
         </p>
         <p>
           <span class="cursor-pointer">cursor-pointer</span>
@@ -47,7 +48,25 @@
           <span class="full-width" style="background: #ccc">full-width(this is a inline element)</span>
         </p>
         <p>
-          <a class="st-link-secondary" href="#">st-link-secondary</a>
+          <span class="tablefix" href="#">.tablefix 修复ant-design表格组件的样式问题，放置于a-table父级容器即可</span>
+        </p>
+      </st-panel>
+    </section>
+    <h3 class="mg-t24">全局组件类样式</h3>
+    <p>一些纯样式的组件 用class类实现更能复用</p>
+    <section class="sg-app-content">
+      <st-panel>
+        <p>
+          <a class="st-link-secondary" href="#">.st-link-secondary 次级链接效果</a>
+        </p>
+        <p>
+          .st-preview-item 悬浮放大效果
+          <span class="st-preview-item" v-viewer>
+            <img
+              :src="'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg' | imgFilter({ w: 100, h: 56 })"
+              :data-src="'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg' | imgFilter({ w: 1000 })"
+            >
+          </span>
         </p>
       </st-panel>
     </section>
@@ -123,16 +142,16 @@
         <st-icon type="wechat"></st-icon>默认为父级容器字号
       </li>
       <li>
-        <st-icon type="wechat" size="28px"></st-icon>变更大小
+        <st-icon type="wechat" size="28px"></st-icon>使用[size]变更大小
       </li>
       <li>
-        <st-icon type="wechat" color="red"></st-icon>变更颜色
+        <st-icon type="wechat" color="red"></st-icon>使用[color]变更颜色
       </li>
       <li>
-        <st-icon type="anticon:setting" color="red"></st-icon>使用iconfont的图标
+        <st-icon type="anticon:setting" color="red"></st-icon>使用[anticon:__] ant design自带的图标
       </li>
       <li>
-        <st-button icon="wechat" type="primary">按钮中使用图标</st-button>
+        <st-button icon="wechat" type="primary">按钮中使用[icon]图标</st-button>
       </li>
     </section>
 
@@ -198,7 +217,11 @@
 
 <script>
 import { mapBem } from '@/utils/bem'
+import { imgFilter } from '@/filters/resource.filters'
 export default {
+  filters: {
+    imgFilter
+  },
   methods: {
     ...mapBem({
       b: 'sg-layout-default',
