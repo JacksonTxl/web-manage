@@ -3,7 +3,7 @@ import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
 
-import { ShopApi } from '@/api/v1/shop'
+import { ShopApi, ShopInput } from '@/api/v1/shop'
 
 interface ShopINfoState {
   shopInfo: any
@@ -25,8 +25,11 @@ export class ShopService extends Store<ShopINfoState> {
     })
   }
   @Effect()
-  getShopSettingStopInfo(id:any) {
+  getShopSettingStopInfo(id: any) {
     return this.shopApi.getShopSettingStopInfo(id)
+  }
+  save(data: ShopInput) {
+    return this.shopApi.add(data)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     console.log(to.query)
