@@ -1,7 +1,7 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { ShopApi, ShopInput } from '@/api/v1/shop'
 import { Store } from '@/services/store'
-import { Computed, State } from 'rx-state'
+import { Computed, State, Effect } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 interface ShopState {
   serviceList: any
@@ -25,13 +25,14 @@ export class AddService extends Store<ShopState> implements RouteGuard {
       state.serviceList = list
     })
   }
+  @Effect()
   save(data: ShopInput) {
     return this.shopApi.add(data)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getServiceList().subscribe((res:any) => {
       this.SET_SERVICE_LIST(res.services)
+      next()
     })
-    next()
   }
 }

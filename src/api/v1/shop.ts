@@ -4,8 +4,9 @@ export class ShopApi extends Api {
   add(params: ShopInput) {
     return this.http.post('/v1/shops', { params })
   }
-  update(params: ShopInput) {
-    return this.http.put('/v1/shops', { params })
+  // 品牌维度下修改门店
+  brandUpdate(id: string, params: ShopInput) {
+    return this.http.put(`/v1/brand/shops/${id}`, { params })
   }
   getInfo(id: string) {
     return this.http.get(`/v1/shops/${id}`)
@@ -24,8 +25,23 @@ export class ShopApi extends Api {
   }
 }
 
-export interface ShopGetInfoInput {
-  id: number
+export interface ShopImages {
+  /**
+   * 图片id
+   */
+  image_id?: number
+  /**
+   * 是否是店招 0不是，1是
+   */
+  is_cover: number
+  /**
+   * 图片key
+   */
+  image_key: string
+  /**
+   * 图片url
+   */
+  image_url?: string
 }
 
 export interface ShopStatusInput {
@@ -68,7 +84,7 @@ export interface ShopInput {
    */
   district_id: number
   /**
-   * 门店省份id
+   * 门店详细地址
    */
   address: string
   /**
@@ -102,5 +118,9 @@ export interface ShopInput {
   /**
    * 门店封面图片
    */
-  shop_cover_image: string
+  shop_cover_image?: string
+  /**
+   * 门店图片
+   */
+  shop_images?: ShopImages[]
 }
