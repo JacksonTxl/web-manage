@@ -44,15 +44,12 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="门店地址" required>
-            <a-cascader
-              v-decorator="[
+            <st-region-cascader
+            placeholder="请选择省/市/区"
+            v-decorator="[
               'shop_PCD',
               {rules: [{ required: true, message: '请输入门店地址'}]}
-            ]"
-              :options="options"
-              @change="onChange"
-              placeholder="请选择省/市/区"
-            />
+            ]"></st-region-cascader>
           </st-form-item>
         </a-col>
       </a-row>
@@ -164,16 +161,6 @@
         </a-col>
       </a-row>
     </st-form>
-    <st-modal-cropper
-    v-if="cropperData.visible"
-    :visible="cropperData.visible"
-    :title="cropperData.title"
-    :image="cropperData.image"
-    :aspectRatioW="cropperData.aspectRatioW"
-    :aspectRatioH="cropperData.aspectRatioH"
-    @cancel="cropperCancel"
-    @ok="upload"
-    ></st-modal-cropper>
   </st-panel>
 </template>
 <script>
@@ -199,10 +186,9 @@ export default {
     return {
       cropperData: {
         title: '上传会员卡背景',
-        visible: false,
-        image: '',
-        aspectRatioW: 1,
-        aspectRatioH: 1
+        image: null,
+        aspectRatioW: 16,
+        aspectRatioH: 9
       },
       // 电话校验方式 1为点击添加校验，0为点击提交校验
       phoneValidtorType: 1,
@@ -260,40 +246,6 @@ export default {
         className: 'st-slider-box',
         infoList: []
       },
-      options: [
-        {
-          value: 'zhejiang',
-          label: 'Zhejiang',
-          children: [
-            {
-              value: 'hangzhou',
-              label: 'Hangzhou',
-              children: [
-                {
-                  value: 'xihu',
-                  label: 'West Lake'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: 'jiangsu',
-          label: 'Jiangsu',
-          children: [
-            {
-              value: 'nanjing',
-              label: 'Nanjing',
-              children: [
-                {
-                  value: 'zhonghuamen',
-                  label: 'Zhong Hua Men'
-                }
-              ]
-            }
-          ]
-        }
-      ],
       submitLoading: false
     }
   },
@@ -350,13 +302,9 @@ export default {
     }
   },
   methods: {
-    //
-    cropperCancel() {
-      this.cropperData.visible = false
-    },
     // 移除店招
     removeImage() {
-      this.imageUrl = ''
+      this.imageUrl = this.shopData.shop_cover_image = ''
     },
     // 添加电话
     onValidtorPhone() {
@@ -385,10 +333,17 @@ export default {
           this.shopData.shop_name = values.shop_name
           this.shopData.address = values.shop_address
           this.shopData.email = values.email
+          this.shopData.province_id = +values.shop_PCD[0]
+          this.shopData.city_id = +values.shop_PCD[1]
+          this.shopData.district_id = +values.shop_PCD[2]
           this.submitLoading = true
-          this.addService.save(this.shopData).subscribe(res => {
-            console.log(res)
-            this.submitLoading = false
+          this.addService.save(this.shopData).subscribe({
+            next: res => {
+              this.submitLoading = false
+            },
+            error: () => {
+              this.submitLoading = false
+            }
           })
         } else {
         }
@@ -432,31 +387,47 @@ export default {
       }
     },
     async uploadCrop(data) {
-      this.cropperData.image = await this.fileReader(data.file)
-      this.cropperData.visible = true
+      let that = this
+      let image = await this.fileReader(data.file)
+      this.$modalRouter.push({
+        name: 'image-cropper',
+        props: {
+          title: this.cropperData.title,
+          image,
+          aspectRatioH: this.cropperData.aspectRatioH,
+          aspectRatioW: this.cropperData.aspectRatioW
+        },
+        on: {
+          cancel() {
+            console.log('cancel')
+          },
+          ok(data) {
+            that.upload(data)
+          }
+        }
+      })
     },
     // 店招上传
     upload(data) {
-      console.log(data)
-      // this.loading = true
-      // if (this.checkUploadFile(data.file)) {
-      //   this.OSS.put({
-      //     file: data.file
-      //   }).subscribe({
-      //     next: async val => {
-      //       this.shopData.shop_cover_image = val.fileKey
-      //       this.imageUrl = await this.fileReader(data.file)
-      //       this.loading = false
-      //       this.messageService.success({ content: '上传成功' })
-      //     },
-      //     error: val => {
-      //       this.loading = false
-      //       this.messageService.error({ content: '上传失败' })
-      //     }
-      //   })
-      // } else {
-      //   this.loading = false
-      // }
+      this.loading = true
+      if (this.checkUploadFile(data.file)) {
+        this.OSS.put({
+          file: data.file
+        }).subscribe({
+          next: async val => {
+            this.shopData.shop_cover_image = val.fileKey
+            this.imageUrl = await this.fileReader(data.file)
+            this.loading = false
+            this.messageService.success({ content: '上传成功' })
+          },
+          error: val => {
+            this.loading = false
+            this.messageService.error({ content: '上传失败' })
+          }
+        })
+      } else {
+        this.loading = false
+      }
     },
     sliderChange(data) {
       this.shopData.business_time = data.infoList
@@ -482,10 +453,6 @@ export default {
         this.messageService.error({ content: 'Image must smaller than 5MB!' })
       }
       return isJPG && isLt5M
-    },
-
-    onChange(value) {
-      console.log(value)
     }
   }
 }

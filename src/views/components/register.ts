@@ -19,7 +19,6 @@ import StTag from './tag/tag.vue'
 import StPanel from './panel/panel.vue'
 import StSlider from './slider/slider.vue'
 import StRegionCascader from './region/region-cascader.vue'
-import StModalCropper from './modal-cropper/modal-cropper.vue'
 import StSteps from './steps/steps.vue'
 import './form/index.js'
 import './title/index.js'
@@ -43,5 +42,4 @@ Vue.component(StHr.name, StHr)
 Vue.component(StTag.name, StTag)
 Vue.component(StPanel.name, StPanel)
 Vue.component(StSlider.name, StSlider)
-Vue.component(StModalCropper.name, StModalCropper)
 Vue.component(StSteps.name, StSteps)

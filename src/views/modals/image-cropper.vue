@@ -1,6 +1,6 @@
 
 <template>
-  <a-modal class="st-modal-cropper" :title="_title" v-model="_visible" @cancel="handleCancel" @ok="handleOk">
+  <a-modal class="st-modal-cropper" :title="_title" v-model="show" @cancel="handleCancel" @ok="handleOk">
     <div class="st-modal-cropper-content">
       <div class="st-modal-cropper-image">
         <img :src="_image" id="modal_cropper_image" hidden alt="">
@@ -23,7 +23,8 @@ export default {
   },
   data() {
     return {
-
+      show: false,
+      filename: ''
     }
   },
   props: {
@@ -33,10 +34,6 @@ export default {
     },
     image: {
       type: [String, Object],
-      required: true
-    },
-    visible: {
-      type: Boolean,
       required: true
     },
     aspectRatioW: {
@@ -54,9 +51,14 @@ export default {
     },
     _image() {
       return this.image
-    },
-    _visible() {
-      return this.visible
+    }
+  },
+  watch: {
+    image: {
+      deep: true,
+      handler(newVal, oldVal) {
+        console.log(newVal)
+      }
     }
   },
   mounted() {
@@ -71,11 +73,11 @@ export default {
       })
     },
     handleCancel() {
-      this.visible = false
       this.$emit('cancel')
     },
     handleOk() {
       cropper.getCroppedCanvas().toBlob(blob => {
+        this.show = false
         this.$emit('ok', { file: blob })
       })
     }
