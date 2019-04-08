@@ -3,7 +3,7 @@
   <a-cascader
   :fieldNames="{label:'name',value:'id',children:'children'}"
   :options="province"
-  :defaultValue="values"
+  :defaultValue="values | parseStringData"
   :showSearch="{filter}"
   @change="onChange"
   :placeholder="placeholder"/>
@@ -13,12 +13,22 @@
 
 <script>
 import { RegionService } from '../../../services/region.service'
-
+const parseStringData = (data) => {
+  return data.map(item => item.toString())
+}
+const parseIntData = (data) => {
+  return data.map(item => parseInt(item))
+}
 export default {
   name: 'StRegionCascader',
   serviceInject() {
     return {
       regionService: RegionService
+    }
+  },
+  filters: {
+    parseStringData(values) {
+      return parseStringData(values)
     }
   },
   data(vm) {
@@ -64,7 +74,7 @@ export default {
       return (path.some(option => (option.name).indexOf(inputValue) > -1))
     },
     onChange(value) {
-      this.$emit('change', value)
+      this.$emit('change', parseIntData(value))
     }
   },
   mounted() {

@@ -8,14 +8,8 @@
         <a-dropdown class="tree-opreation" placement="bottomLeft">
           <div><st-icon type="more"></st-icon></div>
           <a-menu slot="overlay">
-            <a-menu-item>
-              <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">编辑</a>
-            </a-menu-item>
-            <a-menu-item>
-              <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">新增字部门</a>
-            </a-menu-item>
-            <a-menu-item>
-              <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">删除</a>
+            <a-menu-item v-for="(op, index) in opreations" :key="index" @click="op.clickName">
+              <modal-link tag="a" :to="op.route">{{op.name}}</modal-link>
             </a-menu-item>
           </a-menu>
         </a-dropdown>
@@ -47,7 +41,14 @@ const columns = [
 export default {
   data() {
     return {
-      columns
+      columns,
+      opreations: [
+        { clickName: this.onClickSettingSalary, tag: 'a', name: '设置薪资账户', route: { name: 'staff-bind-entity-card' } },
+        { clickName: this.onClickUpdateStaffPosition, tag: 'a', name: '更改员工职位', route: { name: 'staff-update-staff-position' } },
+        { clickName: this.onClickTurnover, tag: 'a', name: '离职', route: { name: 'staff-turnover' } },
+        { clickName: this.onCLickReinstatement, tag: 'a', name: '复职', route: { name: 'staff-reinstatement' } },
+        { clickName: this.onCLickDeleteStaff, tag: 'a', name: '删除', route: { name: 'staff-delete' } }
+      ]
     }
   },
   props: {
@@ -60,6 +61,20 @@ export default {
     loading: {
       type: Boolean,
       defalut: false
+    }
+  },
+  methods: {
+    onClickSettingSalary() {
+      console.log('onClickSettingSalary')
+    },
+    onClickUpdateStaffPosition() {
+      console.log('onClickUpdateStaffPosition')
+    },
+    onClickTurnover() {
+      console.log('onClickTurnover')
+    },
+    onCLickReinstatement() {
+      console.log('onCLickReinstatement')
     }
   }
 }
