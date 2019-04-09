@@ -1,14 +1,16 @@
 <template>
   <st-panel app>
-    <ul>
-      <li :class="b()">{{b('title')}}</li>
-      <li :class="b()">{{b('logo',{active:true})}}</li>
-      <li
-        :class="b('title',{active:isActive})"
-      >b('title',{active:{{isActive}}}) {{b('title',{active:isActive})}}</li>
-      <li :class="bSider()">bSider() }</li>
-      <a-button @click="isActive = !isActive">active</a-button>
-    </ul>
+     <st-more-dropdown>
+       <a-menu-item @click='onClickOne'>
+         转让
+       </a-menu-item>
+       <a-menu-item>
+         出售
+       </a-menu-item>
+       <a-menu-item>
+         你好
+       </a-menu-item>
+     </st-more-dropdown>
   </st-panel>
 </template>
 
@@ -22,6 +24,11 @@ export default {
   data() {
     return {
       isActive: false
+    }
+  },
+  methods: {
+    onClickOne() {
+      console.log('hello')
     }
   }
 }

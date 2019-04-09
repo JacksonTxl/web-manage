@@ -157,6 +157,17 @@
       </li>
     </section>
 
+    <h3 class="mg-t24">st-more-dropdown</h3>
+    <p>显示更多的菜单dropdown组件</p>
+    <section class="sg-app-content">
+      <st-panel>
+        <st-more-dropdown>
+          <a-menu-item>转让</a-menu-item>
+          <a-menu-item>出售</a-menu-item>
+          <a-menu-item>你好</a-menu-item>
+        </st-more-dropdown>
+      </st-panel>
+    </section>
     <h3 class="mg-t24">st-info</h3>
     <p>信息展示 默认使用两栏宽度 40 *2 +8 =88px作为label宽度</p>
     <section class="sg-app-content">

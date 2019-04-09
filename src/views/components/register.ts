@@ -19,6 +19,7 @@ import StPanel from './panel/panel.vue'
 import StSlider from './slider/slider.vue'
 import StRegionCascader from './region/region-cascader.vue'
 import StSteps from './steps/steps.vue'
+import StMoreDropdown from './more-dropdown/more-dropdown.vue'
 import './form/index.js'
 import './title/index.js'
 
@@ -41,3 +42,4 @@ Vue.component(StTag.name, StTag)
 Vue.component(StPanel.name, StPanel)
 Vue.component(StSlider.name, StSlider)
 Vue.component(StSteps.name, StSteps)
+Vue.component(StMoreDropdown.name, StMoreDropdown)
