@@ -24,7 +24,9 @@
         <ul>
           <li :class="b()">b() -> {{b()}}</li>
           <li :class="b('title')">b('title') -> {{b('title')}}</li>
-          <li :class="b('title',{active:true})">b('title',{active:true}) -> {{b('title',{active:true})}}</li>
+          <li
+            :class="b('title',{active:true})"
+          >b('title',{active:true}) -> {{b('title',{active:true})}}</li>
           <li :class="bSider()">bSider() -> {{bSider()}}</li>
           <li :class="bHeader()">bHeader() -> {{bHeader()}}</li>
         </ul>
@@ -216,18 +218,15 @@
 </template>
 
 <script>
-import { mapBem } from '@/utils/bem'
 import { imgFilter } from '@/filters/resource.filters'
 export default {
   filters: {
     imgFilter
   },
-  methods: {
-    ...mapBem({
-      b: 'sg-layout-default',
-      bSider: 'sg-layout-default-sider',
-      bHeader: 'sg-layout-default-header'
-    })
+  bem: {
+    b: 'sg-layout-default',
+    bSider: 'sg-layout-default-sider',
+    bHeader: 'sg-layout-default-header'
   }
 }
 </script>

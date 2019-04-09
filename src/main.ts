@@ -6,6 +6,8 @@ import VueRx from 'vue-rx'
 import { modalRouter } from './modal-router/index'
 import App from './views/App.vue'
 import FullCalendar from 'vue-full-calendar'
+// @ts-ignore
+import VueBemHelper from '@/vendor/vue-bem-helper'
 import ICountUp from 'vue-countup-v2'
 // @ts-ignore
 import Viewer from 'v-viewer'
@@ -18,6 +20,7 @@ Vue.use(Antd)
 Vue.use(VueRx)
 Vue.use(FullCalendar)
 Vue.use(Viewer)
+Vue.use(VueBemHelper)
 
 Vue.component(ICountUp.name, ICountUp)
 
