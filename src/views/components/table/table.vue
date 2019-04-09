@@ -26,17 +26,26 @@ export default {
       },
       this.$attrs
     )
-    return h(
-      'a-table',
-      {
-        class: 'st-table',
-        props,
-        on: this.$listeners,
-        scopedSlots: this.$scopedSlots,
-        slot: this.$slots
-      },
-      this.$slots
-    )
+    return h('div', { class: 'test' }, [
+      h('a-alert', {
+        class: 'st-table-alert',
+        props: { type: 'info', showIcon: true },
+        scopedSlots: {
+          message: props => h('span', 'hello world')
+        }
+      }),
+      h(
+        'a-table',
+        {
+          class: 'st-table',
+          props,
+          on: this.$listeners,
+          scopedSlots: this.$scopedSlots,
+          slot: this.$slots
+        },
+        this.$slots
+      )
+    ])
   }
 }
 </script>
