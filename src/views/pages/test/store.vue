@@ -1,15 +1,11 @@
 <template>
   <div class="pages-test-store container-basis">
-    <slider class="pages-test-store__slider" :getSlider="getSlider"></slider>
+    <st-shop-hour-picker :getSlider="getSlider"></st-shop-hour-picker>
   </div>
 </template>
 
 <script>
-import slider from '../../components/slider/slider.1.vue'
 export default {
-  components: {
-    slider
-  },
   data() {
     return {
       getSlider: {

@@ -63,7 +63,7 @@
 <script>
 import { constant } from 'lodash-es'
 export default {
-  name: 'StSlider',
+  name: 'stShopHourPicker',
   props: {
     getSlider: {
       type: Object
@@ -270,6 +270,7 @@ export default {
         end_time: self.timeFilter(item, 1)
       }
     },
+    // 时间处理函数
     timeFilter(item, index) {
       return /^\d+$/.test(item.value[index]) && item.value[index] > 9
         ? item.value[index] + ':00'
@@ -289,7 +290,7 @@ export default {
   watch: {
     setSlider: {
       handler() {
-        console.log(this.setFilterSlider().infoList)
+        // console.log(this.setFilterSlider().infoList)
         this.$emit('change', this.setFilterSlider().infoList)
       },
       deep: true
