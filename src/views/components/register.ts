@@ -4,6 +4,8 @@ import StIcon from './icon/icon.vue'
 import StButton from './button/button.vue'
 import StCheckboxButtonGroup from './checkbox-button/checkbox-button-group.vue'
 import StCheckboxButtonItem from './checkbox-button/checkbox-button-item.vue'
+import StRadioButtonGroup from './radio-button/radio-button-group.vue'
+import StRadioButtonItem from './radio-button/radio-button-item.vue'
 import StCheckboxFacilityGroup from './checkbox-facility/checkbox-facility-group.vue'
 import StCheckboxFacilityItem from './checkbox-facility/checkbox-facility-item.vue'
 import StTable from './table/table.vue'
@@ -31,6 +33,8 @@ Vue.component(StButton.name, StButton)
 Vue.component(StTable.name, StTable)
 Vue.component(StCheckboxButtonGroup.name, StCheckboxButtonGroup)
 Vue.component(StCheckboxButtonItem.name, StCheckboxButtonItem)
+Vue.component(StRadioButtonGroup.name, StRadioButtonGroup)
+Vue.component(StRadioButtonItem.name, StRadioButtonItem)
 Vue.component(StCheckboxFacilityGroup.name, StCheckboxFacilityGroup)
 Vue.component(StCheckboxFacilityItem.name, StCheckboxFacilityItem)
 Vue.component(StInputSearch.name, StInputSearch)
