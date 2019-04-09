@@ -3,7 +3,7 @@ import { State, Computed } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { ShopApi } from '@/api/v1/shop'
-import { imgFilter } from '@/filters/resource.filters'
+import { SwitchApi, SwitchShopInput } from '@/api/v1/account/switch'
 
 interface ShopState {
   shopList: Array<Object>
@@ -12,7 +12,7 @@ interface ShopState {
 export class SwitchShopService extends Store<ShopState> {
   state$: State<ShopState>
   shopList$: Computed<Object>
-  constructor(private shopApi: ShopApi) {
+  constructor(private shopApi: ShopApi, private switchApi: SwitchApi) {
     super()
     this.state$ = new State({
       shopList: []
@@ -21,5 +21,8 @@ export class SwitchShopService extends Store<ShopState> {
   }
   getShopList() {
     return this.shopApi.getShopList()
+  }
+  switchShop(params: SwitchShopInput) {
+    return this.switchApi.switchShop(params)
   }
 }

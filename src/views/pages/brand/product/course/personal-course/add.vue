@@ -42,9 +42,8 @@ export default {
 
   methods: {
     goNext(e) {
-      this.currentIndex = this.currentIndex + 1
-      if (this.currentIndex === 3) {
-        this.currentIndex = 0
+      if (this.currentIndex < 2) {
+        this.currentIndex = this.currentIndex + 1
       }
     }
   }
