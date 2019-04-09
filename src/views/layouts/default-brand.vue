@@ -32,7 +32,7 @@
           @openChange="onOpenChange"
           theme="dark"
           mode="inline"
-        > -->
+        >-->
         <a-menu
           class="layout-default-brand-sider__menu"
           :openKeys="openKeys"
@@ -117,20 +117,21 @@
           <a-breadcrumb separator="-">
             <a-breadcrumb-item>
               <!-- <st-icon type="home"/> -->
-              <st-icon type="home" color="#fff"/>
+              <router-link to="/brand/">
+                <st-icon type="home" color="#fff"/>
+              </router-link>
             </a-breadcrumb-item>
-            <a-breadcrumb-item>
-              <span class="layout-default-brand-body__breadtext">首页</span>
-            </a-breadcrumb-item>
-            <a-breadcrumb-item>
-              <span class="layout-default-brand-body__breadtext">创建门店</span>
+            <a-breadcrumb-item v-for='b in breadcrumbs' :key="b.title">
+              <router-link :to='b.href'>
+                <span class="layout-default-brand-body__breadtext">{{b.label}}</span>
+              </router-link>
             </a-breadcrumb-item>
           </a-breadcrumb>
         </div>
         <div class="layout-default-brand-body__personal">
           <!-- <a-badge dot>
             <st-icon type="bell" size="20px"/>
-          </a-badge> -->
+          </a-badge>-->
           <a-badge dot>
             <st-icon type="bell" size="20px" color="red"/>
           </a-badge>
@@ -158,7 +159,7 @@
                   <st-icon type="inbox"></st-icon>
                   <span>中文 / English</span>
                 </a-menu-item>
-                <a-menu-divider />
+                <a-menu-divider/>
                 <a-menu-item class="layout-default-brand-body__options">
                   <st-icon type="inbox"></st-icon>
                   <span>退出</span>
@@ -176,11 +177,22 @@
   </a-layout>
 </template>
 <script>
+import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
 export default {
   data() {
     return {
       rootSubmenuKeys: ['sub1', 'sub2', 'sub3', 'sub4', 'sub5', 'sub6'],
       openKeys: ['sub1']
+    }
+  },
+  serviceInject() {
+    return {
+      layoutBrandSerivce: LayoutBrandService
+    }
+  },
+  subscriptions() {
+    return {
+      breadcrumbs: this.layoutBrandSerivce.breadcrumbs$
     }
   },
   methods: {
