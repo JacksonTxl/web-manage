@@ -157,8 +157,9 @@
       </li>
     </section>
 
-    <h3 class="mg-t24">st-more-dropdown</h3>
+    <h3 class="mg-t24">st-more-dropdown st-help-popover</h3>
     <p>显示更多的菜单dropdown组件</p>
+    <p>表格中使用的帮助文本popover组件 可使用[max-width]控制最大popover宽度</p>
     <section class="sg-app-content">
       <st-panel>
         <st-more-dropdown>
@@ -166,6 +167,10 @@
           <a-menu-item>出售</a-menu-item>
           <a-menu-item>你好</a-menu-item>
         </st-more-dropdown>
+        <st-help-popover class="mg-l64">
+          <span slot='title'>操作人：AAA 操作时间：2018/10/10 23:59:59</span>
+          <span slot='content'>停售原因是不想停售原因是不想停售原因是不想停售原因是不想</span>
+        </st-help-popover>
       </st-panel>
     </section>
     <h3 class="mg-t24">st-info</h3>
