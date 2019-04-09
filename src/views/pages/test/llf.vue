@@ -1,6 +1,6 @@
 <template>
   <st-panel app>
-    <st-table></st-table>
+    <st-card-hour-picker></st-card-hour-picker>
   </st-panel>
 </template>
 
