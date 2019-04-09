@@ -3,9 +3,8 @@
     <ul>
       <li :class="b">{{b('title')}}</li>
       <li :class="b">{{b('logo',{active:true})}}</li>
-      <li :class="b('title',{active:isActive})">b('title',{active:{{isActive}}})</li>
-      <li :class="bSider()">bSider()</li>
-      <li :class="bHeader()">bHeader()</li>
+      <li :class="b('title',{active:isActive})">b('title',{active:{{isActive}}}) {{b('title',{active:isActive})}}</li>
+      <li :class="bSider()">bSider() }</li>
       <a-button @click="isActive = !isActive">active</a-button>
     </ul>
   </st-panel>
