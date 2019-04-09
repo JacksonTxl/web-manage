@@ -6,10 +6,8 @@
           <a-col :span="10" :push="7">
             <st-form :form="form">
               <st-form-item label="品牌logo">
-                <a-upload type="drag">
-                  <st-icon type="anticon:plus"></st-icon>
-                  <div class="ant-upload-text">上传logo</div>
-                </a-upload>
+                <input type="hidden" v-decorator="brandRules.image_url">
+                <file-upload :list="fileList" :width="100" :height="100" @change="onImgChange"></file-upload>
               </st-form-item>
               <st-form-item label="品牌名称">
                 <a-input placeholder="请输入品牌名称" v-decorator="brandRules.brand_name" disabled></a-input>
@@ -44,6 +42,7 @@ import { imgFilter } from '@/filters/resource.filters'
 import { MessageService } from '@/services/message.service'
 import { EditService } from './edit.service'
 const brandRules = {
+  image_url: ['image_url'],
   brand_name: ['brand_name'],
   description: [
     'description', {
@@ -65,7 +64,11 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      brandRules
+      brandRules,
+      fileList: [{
+        image_id: 10000,
+        image_key: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/pLOFb5kCPN4gPQ8H'
+      }]
     }
   },
   subscriptions() {
@@ -95,6 +98,11 @@ export default {
         this.form.setFieldsValue({
           ...brand
         })
+      })
+    },
+    onImgChange(fileList) {
+      this.form.setFieldsValue({
+        image_url: fileList[0]
       })
     }
   }
