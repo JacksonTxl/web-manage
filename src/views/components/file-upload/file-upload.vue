@@ -60,11 +60,18 @@ export default {
       default: 1
     },
     /**
-     * 图片及上传按钮的尺寸
+     * 图片及上传按钮的宽度
      */
-    size: {
-      type: Array,
-      default: () => [defaultSize.w, defaultSize.h]
+    width: {
+      type: Number,
+      default: defaultSize.w
+    },
+    /**
+     * 图片及上传按钮的宽度
+     */
+    height: {
+      type: Number,
+      default: defaultSize.h
     },
     /**
      * 初始图片列表 example: [{ image_id: 10000, image_key: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/pLOFb5kCPN4gPQ8H' }]
@@ -94,30 +101,16 @@ export default {
       return this.max > 1
     },
     imgFilterOpts() {
-      let w, h
-      const size = this.size
-      if (size.length === 2) {
-        w = size[0] * 2
-        h = size[1] * 2
-      } else {
-        w = defaultSize.w
-        h = defaultSize.h
-      }
+      const w = (this.width || defaultSize.w) * 2
+      const h = (this.height || defaultSize.h) * 2
       return {
         w,
         h
       }
     },
     sizeStyle() {
-      let w, h
-      const size = this.size
-      if (size.length === 2) {
-        w = size[0]
-        h = size[1]
-      } else {
-        w = defaultSize.w
-        h = defaultSize.h
-      }
+      const w = this.width || defaultSize.w
+      const h = this.height || defaultSize.h
       return `width: ${w}px;  height: ${h}px`
     }
   },

@@ -58,6 +58,9 @@
         </a-row>
       </div>
     </div>
+    <pre>
+      {{setSlider}}
+    </pre>
   </div>
 </template>
 <script>
@@ -109,16 +112,17 @@ export default {
         if (item.title === toCopy) {
           item.value = self.setSlider.infoList[self.copyIndex].value
           self.setSlider = JSON.parse(JSON.stringify(self.setSlider))
-          self.$forceUpdate()
         }
       })
     },
     // 数据改变后改变data数据
     onAfterChange(data, index) {
+      let self = this
       if (this.getSliderArr.length > 0) {
         data.value = this.getSliderArr
         this.setSlider.infoList[index] = data
         this.getSliderArr = []
+        self.setSlider.business_time = this.setFilterSlider().infoList
       }
     },
     // 获取改变后的slider数据
@@ -210,9 +214,10 @@ export default {
         for (let i = 0; i < 7; i++) {
           w.push({
             key: self.defaultWeekList[i],
-            disabled:
-              !(self.getWeek.indexOf(self.defaultWeekList[i]) >= 0 &&
-              item.title !== self.defaultWeekList[i])
+            disabled: !(
+              self.getWeek.indexOf(self.defaultWeekList[i]) >= 0 &&
+              item.title !== self.defaultWeekList[i]
+            )
           })
         }
         item.week = w
@@ -246,6 +251,7 @@ export default {
       setSlider.infoList = filterData
       return setSlider
     },
+    filterWeek() {},
     filterSlider(item) {
       return {
         week_day:
