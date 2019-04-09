@@ -2,7 +2,7 @@ import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { ShopApi, ShopInput } from '@/api/v1/shop'
 import { Store } from '@/services/store'
 import { Computed, State, Effect } from 'rx-state'
-import { pluck } from 'rxjs/operators'
+import { pluck, catchError } from 'rxjs/operators'
 interface ShopState {
   serviceList: any
 }
