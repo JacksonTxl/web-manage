@@ -117,17 +117,16 @@
           <a-breadcrumb separator="-">
             <a-breadcrumb-item>
               <!-- <st-icon type="home"/> -->
-              <st-icon type="home" color="#fff"/>
+              <router-link to="/brand/">
+                <st-icon type="home" color="#fff"/>
+              </router-link>
             </a-breadcrumb-item>
-            <a-breadcrumb-item>
-              <span class="layout-default-brand-body__breadtext">首页</span>
-            </a-breadcrumb-item>
-            <a-breadcrumb-item>
-              <span class="layout-default-brand-body__breadtext">创建门店</span>
+            <a-breadcrumb-item v-for='b in breadcrumbs' :key="b.title">
+              <router-link :to='b.href'>
+                <span class="layout-default-brand-body__breadtext">{{b.label}}</span>
+              </router-link>
             </a-breadcrumb-item>
           </a-breadcrumb>
-
-          {{breadcrumbs}}
         </div>
         <div class="layout-default-brand-body__personal">
           <!-- <a-badge dot>
