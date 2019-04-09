@@ -2,7 +2,7 @@
 <div>
   <a-cascader
   :fieldNames="{label:'name',value:'id',children:'children'}"
-  :options="COptions"
+  :options="regions"
   :showSearch="{filterRegionsName}"
   :defaultValue="value"
   v-model="model"
@@ -14,12 +14,6 @@
 
 <script>
 import { RegionService } from '../../../services/region.service'
-const parseStringData = (data) => {
-  return data.map(item => item.toString())
-}
-const parseIntData = (data) => {
-  return data.map(item => parseInt(item))
-}
 export default {
   name: 'StRegionCascader',
   serviceInject() {
@@ -33,21 +27,7 @@ export default {
       regions: []
     }
   },
-  watch: {
-    value(newVal) {
-      this.valueSelf = newVal
-    }
-  },
   props: {
-    form: {
-      type: Object
-    },
-    fileds: {
-      type: Array,
-      default: () => {
-        return []
-      }
-    },
     placeholder: {
       type: String,
       default: '请选择'
@@ -60,36 +40,26 @@ export default {
       type: Array
     },
     options: {
-      type: Array,
-      default: () => {
-        return []
-      }
+      type: Array
     }
   },
   computed: {
-    COptions() {
-      return this.isAutoInitOptions ? this.options : this.regions
-    },
     model: {
       get() {
         return this.value
       },
       set(newVal) {
-        const form = {}
-        newVal.forEach((item, index) => {
-          form[`${this.fileds[index]}`] = item
-        })
-        if (this.fileds.length) {
-          this.form.setFieldsValue({
-            ...form
-          })
-        }
+        this.valueSelf = newVal
       }
     }
   },
   methods: {
     getRegions() {
-      if (this.$attrs.options) return
+      // 如果options传了则不去拿全量options
+      if (typeof this.$props.options !== 'undefined') {
+        this.regions = this.options
+        return
+      }
       this.regionService.getRegions().subscribe(res => {
         this.regions = res
       })
