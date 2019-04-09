@@ -7,19 +7,20 @@
           <a-select></a-select><a-select></a-select>
         </div>
       </div>
-      <div class="page-shop-sale-list__brand--count mg-t16">
-        <span>i</span><span>已选</span>
-      </div>
     </header>
     <main class="page-shop-sale-list__brand--table mg-t8">
-      <st-table></st-table>
+      <shop-sale-list-table></shop-sale-list-table>
     </main>
   </div>
 </template>
 
 <script>
+import ShopSaleListTable from './shop-sale-list#/table'
 export default {
-  name: 'ShopSaleListShop'
+  name: 'ShopSaleListShop',
+  components: {
+    ShopSaleListTable
+  }
 }
 </script>
 

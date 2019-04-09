@@ -27,15 +27,34 @@ export default {
       this.$attrs
     )
     return h(
-      'a-table',
-      {
-        class: 'st-table',
-        props,
-        on: this.$listeners,
-        scopedSlots: this.$scopedSlots,
-        slot: this.$slots
-      },
-      this.$slots
+      'div',
+      {},
+      [h(
+        'a-alert',
+        {
+          class: 'st-table__alert',
+          on: this.$listeners,
+          props: {
+            type: 'info',
+            showIcon: true
+          },
+          scopedSlots: this.$scopedSlots,
+          slot: {
+            ...this.$slots,
+            message: '<span>已选</span>'
+          }
+        }
+      ), h(
+        'a-table',
+        {
+          class: 'st-table',
+          props,
+          on: this.$listeners,
+          scopedSlots: this.$scopedSlots,
+          slot: this.$slots
+        },
+        this.$slots
+      )]
     )
   }
 }
