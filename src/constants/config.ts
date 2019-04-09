@@ -20,7 +20,9 @@ export class AppConfig {
   /**
    * 图片基础路径
    */
-  HOST_IMAGE = '//pic3-s.styd.cn'
+  get HOST_IMAGE() {
+    return this.IS_DEV ? '//styd-saas-test.oss-cn-shanghai.aliyuncs.com' : ''
+  }
 
   /**
    * 应用根基路径
