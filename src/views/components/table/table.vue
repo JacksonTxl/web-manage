@@ -2,6 +2,18 @@
 import { merge } from 'lodash-es'
 export default {
   name: 'StTable',
+  methods: {
+    clickHandler() {
+      console.log('clickHandler')
+      this.$emit('resetSelection')
+    }
+  },
+  props: {
+    withSelectionAlert: {
+      type: Boolean,
+      default: false
+    }
+  },
   render(h) {
     const props = merge(
       {
@@ -26,25 +38,18 @@ export default {
       },
       this.$attrs
     )
-    return h(
-      'div',
-      {},
-      [h(
-        'a-alert',
-        {
-          class: 'st-table__alert',
-          on: this.$listeners,
-          props: {
-            type: 'info',
-            showIcon: true
-          },
-          scopedSlots: this.$scopedSlots,
-          slot: {
-            ...this.$slots,
-            message: '<span>已选</span>'
-          }
+    const ce = this.withSelectionAlert ? h('div', { class: 'st-table-wapper' }, [
+      h('a-alert', {
+        class: 'st-table-alert mg-b8',
+        props: { type: 'info', showIcon: true },
+        scopedSlots: {
+          message: props => h('div', { class: 'st-table-alert__content' }, ['已选 ', h('span', { class: 'st-table-alert__count' }, this.$attrs.rowSelection.selectedRowKeys.length || 0), ' 条数据', h('a', { class: 'mg-l24 st-table-alert__reload',
+            on: {
+              click: this.clickHandler
+            } }, '清空')])
         }
-      ), h(
+      }),
+      h(
         'a-table',
         {
           class: 'st-table',
@@ -55,7 +60,18 @@ export default {
         },
         this.$slots
       )]
+    ) : h(
+      'a-table',
+      {
+        class: 'st-table',
+        props,
+        on: this.$listeners,
+        scopedSlots: this.$scopedSlots,
+        slot: this.$slots
+      },
+      this.$slots
     )
+    return ce
   }
 }
 </script>

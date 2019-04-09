@@ -1,15 +1,10 @@
 <template>
 <div>
-  <div class="page-shop-sale-list__brand--count mg-t16 pd-x16 pd-y8">
-    <span>i</span><span>已选</span>
-  </div>
   <st-table
-      class="mg-t8"
+      class="mg-t16"
       rowKey="id"
-      :loading="loading"
       :columns="columns"
       :dataSource="data"
-      :rowSelection="rowSelection"
       :scroll="{ x: 1300}"
       @change="onChange"
     >
@@ -70,23 +65,13 @@
 </template>
 
 <script>
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {
-    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows)
-  },
-  onSelect: (record, selected, selectedRows) => {
-    console.log(record, selected, selectedRows)
-  },
-  onSelectAll: (selected, selectedRows, changeRows) => {
-    console.log(selected, selectedRows, changeRows)
-  }
-}
-
+import { columns } from './brand.config'
 export default {
   name: 'ShopSaleListTable',
   data() {
     return {
-      rowSelection,
+      columns,
+      selectedRowKeys: [],
       data: [
         {
           id: 1,
@@ -112,54 +97,12 @@ export default {
           sellStatus: '停售',
           action: 'New York No. 1 Lake Park'
         }
-      ],
-      columns: [
-        {
-          title: '会员卡名称',
-          dataIndex: 'member',
-          scopedSlots: { customRender: 'member' }
-          // sorter: (a, b) => a.name.length - b.name.length
-        },
-        {
-          title: '类型',
-          dataIndex: 'type',
-          sorter: (a, b) => a.name.length - b.name.length
-        },
-        {
-          title: '有效期/有效次数',
-          dataIndex: 'effective'
-        },
-        {
-          title: '支持入场门店',
-          dataIndex: 'admission',
-          scopedSlots: { customRender: 'admission' }
-        },
-        {
-          title: '支持售卖门店',
-          dataIndex: 'sell'
-        },
-        {
-          title: '发布渠道',
-          dataIndex: 'release'
-        },
-        {
-          title: '售卖状态',
-          dataIndex: 'sellStatus',
-          scopedSlots: { customRender: 'sellStatus' }
-        },
-        // {
-        //   title: 'Age',
-        //   dataIndex: 'age',
-        //   sorter: (a, b) => a.age - b.age
-        // },
-        {
-          title: 'action',
-          dataIndex: 'action',
-          fixed: 'right',
-          width: 140,
-          scopedSlots: { customRender: 'action' }
-        }
       ]
+    }
+  },
+  methods: {
+    onChange() {
+
     }
   }
 }

@@ -3,7 +3,7 @@
     <a-row class="mg-b48" :gutter="8">
       <a-col offset="1" :span="22"><Steps :value="currentIndex" :stepArr="stepArr" @skip="skip"/></a-col>
     </a-row>
-    <StaffDetailBasics v-show="currentIndex == 0" @goNext="goNext" @save="onSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
+    <StaffDetailBasics :codeList="codeList" v-show="currentIndex == 0" @goNext="goNext" @save="onSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
     <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" @save="onSave"/>
     <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" @save="onSave"/>
     {{state}}
@@ -32,6 +32,7 @@ export default {
   subscriptions() {
     return {
       state: this.addService.state$,
+      codeList: this.addService.codeList$,
       loading: this.addService.loading$
     }
   },
