@@ -193,7 +193,6 @@ export default {
     return {
       cropperData: {
         title: '上传会员卡背景',
-        image: null,
         aspectRatioW: 16,
         aspectRatioH: 9
       },
@@ -209,7 +208,6 @@ export default {
         email: '',
         service_ids: [],
         shop_images: [],
-        album_id: 85,
         shop_status: 1,
         lat: '31.230416',
         lng: '121.473701',
