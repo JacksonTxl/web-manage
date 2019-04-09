@@ -8,6 +8,9 @@ export class ShopApi extends Api {
   brandUpdate(id: string, params: ShopInput) {
     return this.http.put(`/v1/brand/shops/${id}`, { params })
   }
+  update(id: string, params: ShopInput) {
+    return this.http.put(`/v1/brand/shops/${id}`, { params })
+  }
   getInfo(id: string) {
     return this.http.get(`/v1/shops/${id}`)
   }

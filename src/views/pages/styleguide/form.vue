@@ -49,7 +49,7 @@
       <li>使用st-form-item 作为表单项容器 用法同a-form-item</li>
       <li>表单label与input区域间隔固定为24px</li>
       <li>label默认定宽为88px两个格子宽度</li>
-      <li>保存按钮等带有标签间隔的使用st-form-item 的labelOffset属性</li>
+      <li>保存按钮等带有标签间隔的使用st-form-item 的labelFix属性</li>
     </ul>
     <section class="sg-app-content">
       <st-panel initial class="pd-x24">
