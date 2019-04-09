@@ -20,44 +20,119 @@
         <a-select-option value="tom">Tom</a-select-option>
       </a-select>
     </div>
-    <st-table :columns="columns" rowKey="id" @change="onTableChange" :dataSource="tableData">
+    <a-table :columns="columns" :dataSource="data" @change="onChange" :scroll="{ x: 1300 }">
+      <a
+        slot="member"
+        slot-scope="text,record"
+        href="javascript:;"
+        @click="name(text,record)"
+      >{{text}}</a>
+      <a
+        slot="admission"
+        slot-scope="text,record"
+        href="javascript:;"
+        @click="name(text,record)"
+      >{{text}}</a>
+      <a
+        slot="sellStatus"
+        slot-scope="text,record"
+        href="javascript:;"
+        @click="name(text,record)"
+      >{{text}}</a>
       <div slot="action" slot-scope="record">
-        <modal-link tag="a" :to="{name:'test'}">打开 {{record.name}}</modal-link>
+        <modal-link tag="a" :to="{name:'test'}">打开</modal-link>
         <a-divider type="vertical"></a-divider>
         <a-popconfirm title="确认删除该权限么?" @confirm="onDelete(record.id)">
           <a>删除</a>
         </a-popconfirm>
       </div>
-    </st-table>
+    </a-table>
   </div>
 </template>
 <script>
-const tableData = new Array(60).fill(1).map((item, i) => ({
-  id: i,
-  id1: i,
-  id2: i,
-  id3: i,
-  id4: i,
-  id5: i,
-  name: i
-}))
 export default {
   data() {
     return {
-      tableData,
+      data: [
+        {
+          member: 'John Brown',
+          age: 32,
+          type: '期限卡',
+          effective: '720天',
+          admission: '古美路店天',
+          sell: '古美路店天',
+          release: '门店',
+          sellStatus: '可售卖',
+          action: 'New York No. 1 Lake Park'
+        },
+        {
+          member: 'John Brown',
+          age: 32,
+          type: '期限卡',
+          effective: '720天',
+          admission: '古美路店天',
+          sell: '古美路店天',
+          release: '门店',
+          sellStatus: '可售卖',
+          action: 'New York No. 1 Lake Park'
+        }
+      ],
       columns: [
-        { title: '会员卡名称', dataIndex: 'id' },
-        { title: '类型', dataIndex: 'id1', sorter: true },
-        { title: '有效期/有效次数', dataIndex: 'id2' },
-        { title: '支持入场门店', dataIndex: 'id3' },
-        { title: '支持售卖门店', dataIndex: 'id4' },
-        { title: '发布渠道', dataIndex: 'id5' },
-        { title: '售卖状态', dataIndex: 'name' },
-        { title: '操作', width: 180, scopedSlots: { customRender: 'action' } }
+        {
+          title: '会员卡名称',
+          dataIndex: 'member',
+          scopedSlots: { customRender: 'member' }
+          // sorter: (a, b) => a.name.length - b.name.length
+        },
+        {
+          title: '类型',
+          dataIndex: 'type',
+          sorter: (a, b) => a.name.length - b.name.length
+        },
+        {
+          title: '有效期/有效次数',
+          dataIndex: 'effective'
+        },
+        {
+          title: '支持入场门店',
+          dataIndex: 'admission',
+          scopedSlots: { customRender: 'admission' }
+        },
+        {
+          title: '支持售卖门店',
+          dataIndex: 'sell'
+        },
+        {
+          title: '发布渠道',
+          dataIndex: 'release'
+        },
+        {
+          title: '售卖状态',
+          dataIndex: 'sellStatus',
+          scopedSlots: { customRender: 'sellStatus' }
+        },
+        // {
+        //   title: 'Age',
+        //   dataIndex: 'age',
+        //   sorter: (a, b) => a.age - b.age
+        // },
+        {
+          title: 'action',
+          dataIndex: 'action',
+          fixed: 'right',
+          width: 120,
+          scopedSlots: { customRender: 'action' }
+        }
       ]
     }
   },
   methods: {
+    name(text, record) {
+      console.log(text, record)
+    },
+    onChange(pagination, filters, sorter) {
+      console.log('params', pagination, filters, sorter)
+    },
     handleChange(value) {
       console.log(`selected ${value}`)
     },
