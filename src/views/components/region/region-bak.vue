@@ -2,19 +2,24 @@
 <div>
   <a-cascader
   :fieldNames="{label:'name',value:'id',children:'children'}"
-  :options="province"
-  :defaultValue="values"
-  :loadData="loadData"
+  :options="COptions"
+  :showSearch="{filterRegionsName}"
+  :defaultValue="value"
+  v-model="model"
   @change="onChange"
-  placeholder="请选择"/>
+  :placeholder="placeholder"/>
 </div>
 
 </template>
 
 <script>
 import { RegionService } from '../../../services/region.service'
-import { forkJoin } from 'rxjs'
-
+const parseStringData = (data) => {
+  return data.map(item => item.toString())
+}
+const parseIntData = (data) => {
+  return data.map(item => parseInt(item))
+}
 export default {
   name: 'StRegionCascader',
   serviceInject() {
@@ -24,92 +29,74 @@ export default {
   },
   data(vm) {
     return {
-      province: [],
-      DValues: vm.values || []
+      valueSelf: [],
+      regions: []
+    }
+  },
+  watch: {
+    value(newVal) {
+      this.valueSelf = newVal
     }
   },
   props: {
-    isLoadData: {
-      type: Boolean,
-      default: false
+    form: {
+      type: Object
     },
-    values: {
+    fileds: {
       type: Array,
       default: () => {
         return []
       }
+    },
+    placeholder: {
+      type: String,
+      default: '请选择'
+    },
+    isSearch: {
+      type: Boolean,
+      default: false
+    },
+    value: {
+      type: Array
+    },
+    dasdsa: String,
+    options: {
+      type: Array
     }
   },
   computed: {
+    COptions() {
+      return this.isAutoInitOptions ? this.options : this.regions
+    },
     model: {
       get() {
-        return this.DValues.length > 0 ? this.DValues : this.values
+        return this.value
       },
       set(newVal) {
-        this.DValues = newVal
+        const form = {}
+        newVal.forEach((item, index) => {
+          form[`${this.fileds[index]}`] = item
+        })
+        if (this.fileds.length) {
+          this.form.setFieldsValue({
+            ...form
+          })
+        }
       }
     }
   },
   methods: {
-    initRegionsTree() {
-      forkJoin(this.getRegionProvinces(), this.getRegionCitys({ value: values[1] }), this.getRegionCitys({ value: values[2] })).subscribe()
-    },
-    getRegionCitys(targetOption) {
-      targetOption.loading = true
-      return this.regionService.getRegionCitys(targetOption.value).subscribe(res => {
-        targetOption.loading = false
-        targetOption.children = res.city_source[0].city.map(item => {
-          return {
-            tag: 'city',
-            item,
-            label: item.city_name,
-            value: item.city_id + ''
-          }
-        })
-        this.province = [...this.province]
-      })
-    },
     getRegions() {
+      if (typeof this.$props.options !== 'undefined') return
       this.regionService.getRegions().subscribe(res => {
-        this.province = res
+        this.regions = res
       })
     },
-    getRegionDistricts(targetOption) {
-      targetOption.loading = true
-      this.regionService.getRegionDistricts(targetOption.value).subscribe(res => {
-        targetOption.loading = false
-        targetOption.children = res.district_source[0].district.map(item => {
-          return {
-            tag: 'district',
-            item,
-            label: item.district_name,
-            value: item.district_id + ''
-          }
-        })
-        this.province = [...this.province]
-      })
-    },
-    getRegionProvinces() {
-      this.regionService.getRegionProvinces().subscribe(res => {
-        this.province = res.province_source.map(item => {
-          const targetOption = { item, tag: 'province', label: item.province_name, value: item.province_id + '' }
-          this.getRegionCitys(targetOption)
-          return targetOption
-        })
-      })
-    },
-    loadData(selectedOptions) {
-      if (!this.isLoadData) return
-      const targetOption = selectedOptions[selectedOptions.length - 1]
-      console.log(targetOption)
-      if (targetOption.tag === 'city') {
-        this.getRegionDistricts(targetOption)
-      } else if (targetOption.tag === 'province') {
-        this.getRegionCitys(targetOption)
-      }
+    filterRegionsName(inputValue, path) {
+      if (!isSearch) return
+      return (path.some(option => (option.name).indexOf(inputValue) > -1))
     },
     onChange(value) {
-      console.log(value)
       this.$emit('change', value)
     }
   },

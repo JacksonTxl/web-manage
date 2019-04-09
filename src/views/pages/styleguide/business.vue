@@ -16,21 +16,10 @@
     <section flex="cross:center" class="mg-t48">
 
       <st-form :form="form" @submit="save">
-        <st-form-item  class="mg-l24" labelOffset>
-          <a-input v-decorator="basicInfoRuleList.usernameRule2"></a-input>
-        </st-form-item>
-        <st-form-item  class="mg-l24" labelOffset>
-          <a-input v-decorator="basicInfoRuleList.usernameRule3"></a-input>
-        </st-form-item>
-        <st-form-item  class="mg-l24" labelOffset>
-          <a-input v-decorator="basicInfoRuleList.usernameRule4"></a-input>
-        </st-form-item>
         <a-row :gutter="8">
           <a-col :lg="10">
             <st-form-item label="城市选择" required>
               <st-region-cascader
-                :form.sync="form"
-                :fileds="['a', 'bf', 'c']"
                 @change="onChangeGetRegionValues"
                 v-decorator="basicInfoRuleList.usernameRule1">
               </st-region-cascader>
@@ -85,17 +74,14 @@ export default {
     }
   },
   mounted() {
-    // this.$nextTick().then(() => {
-    //   setTimeout(() => {
-    //     this.form.setFieldsValue({
-    //       regions: [1, 1, 398],
-    //       province: 1,
-    //       city: 1,
-    //       district: 398,
-    //       staff_name: 'sss'
-    //     })
-    //   }, 300)
-    // })
+    this.$nextTick().then(() => {
+      setTimeout(() => {
+        this.form.setFieldsValue({
+          regions: [1, 1, 398],
+          staff_name: 'sss'
+        })
+      }, 300)
+    })
   }
 }
 </script>
