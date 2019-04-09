@@ -1,3 +1,193 @@
 <template>
-  <div>this is tab b</div>
+  <div>
+    <st-button type="primary">
+      <a-icon type="plus"/>新增私教课程
+    </st-button>
+    <div style="display: inline-block;float: right;">
+      <a-select defaultValue="所有类型" style="width: 184px;margin-left:24px" @change="handleChange">
+        <a-select-option value="所有类型">所有类型</a-select-option>
+        <a-select-option value="lucy">Lucy</a-select-option>
+        <a-select-option value="tom">Tom</a-select-option>
+      </a-select>
+      <a-select defaultValue="所有类型" style="width: 184px;margin-left:24px" @change="handleChange">
+        <a-select-option value="所有类型">所有类型</a-select-option>
+        <a-select-option value="lucy">Lucy</a-select-option>
+        <a-select-option value="tom">Tom</a-select-option>
+      </a-select>
+      <a-select defaultValue="所有类型" style="width: 184px;margin-left:24px" @change="handleChange">
+        <a-select-option value="所有类型">所有类型</a-select-option>
+        <a-select-option value="lucy">Lucy</a-select-option>
+        <a-select-option value="tom">Tom</a-select-option>
+      </a-select>
+    </div>
+    <st-table
+      rowKey="id"
+      :loading="loading"
+      :columns="columns"
+      :dataSource="data"
+      :scroll="{ x: 1300}"
+      @change="onChange"
+    >
+      <a
+        slot="member"
+        slot-scope="text,record"
+        href="javascript:;"
+        @click="name(text,record)"
+      >{{text}}</a>
+      <a
+        slot="admission"
+        slot-scope="text,record"
+        href="javascript:;"
+        @click="name(text,record)"
+      >{{text}}</a>
+      <a slot="sellStatus" slot-scope="text,record" href="javascript:;" @click="name(text,record)">
+        <span
+          v-if="text ==='可售卖'"
+          style="width:8px;
+                 height:8px;
+                 display: inline-block;
+                 border-radius: 50%;
+                 background:rgba(82,196,26,1);"
+        ></span>
+        <span
+          v-if="text ==='停售'"
+          style="width:8px;
+                 height:8px;
+                 display: inline-block;
+                 border-radius: 50%;
+                 background:rgba(245,34,45,1);"
+        ></span>
+        {{text}}
+        <a-popover title="Title" placement="bottomRight">
+          <template slot="content">
+            <p>Content</p>
+            <p>Content</p>
+          </template>
+          <a-icon type="exclamation-circle" v-if="text ==='停售'"/>
+        </a-popover>
+      </a>
+      <div slot="action" slot-scope="record">
+        <modal-link tag="a" @click="onDelete(record.id)">详情</modal-link>
+        <a-divider type="vertical"></a-divider>
+        <!-- <modal-link tag="a" @click="onDelete(record.id)">上架</modal-link>
+        <a-divider type="vertical"></a-divider>-->
+        <modal-link tag="a" @click="onDelete(record.id)">恢复售卖</modal-link>
+        <!-- <a-divider type="vertical"></a-divider>
+        <st-more-dropdown>
+          <a-menu-item>转让</a-menu-item>
+          <a-menu-item>出售</a-menu-item>
+          <a-menu-item>你好</a-menu-item>
+        </st-more-dropdown>-->
+      </div>
+    </st-table>
+  </div>
 </template>
+<script>
+export default {
+  props: {
+    loading: {
+      type: Boolean,
+      defalut: false
+    }
+  },
+  data() {
+    return {
+      data: [
+        {
+          id: 1,
+          member: 'John Brown',
+          age: 32,
+          type: '期限卡',
+          effective: '720天',
+          admission: '古美路店天',
+          sell: '古美路店天',
+          release: '门店',
+          sellStatus: '可售卖',
+          action: 'New York No. 1 Lake Park'
+        },
+        {
+          id: 2,
+          member: 'John Brown',
+          age: 32,
+          type: '期限卡',
+          effective: '720天',
+          admission: '古美路店天',
+          sell: '古美路店天',
+          release: '门店',
+          sellStatus: '停售',
+          action: 'New York No. 1 Lake Park'
+        }
+      ],
+      columns: [
+        {
+          title: '会员卡名称',
+          dataIndex: 'member',
+          scopedSlots: { customRender: 'member' }
+          // sorter: (a, b) => a.name.length - b.name.length
+        },
+        {
+          title: '类型',
+          dataIndex: 'type',
+          sorter: (a, b) => a.name.length - b.name.length
+        },
+        {
+          title: '有效期/有效次数',
+          dataIndex: 'effective'
+        },
+        {
+          title: '支持入场门店',
+          dataIndex: 'admission',
+          scopedSlots: { customRender: 'admission' }
+        },
+        {
+          title: '支持售卖门店',
+          dataIndex: 'sell'
+        },
+        {
+          title: '发布渠道',
+          dataIndex: 'release'
+        },
+        {
+          title: '售卖状态',
+          dataIndex: 'sellStatus',
+          scopedSlots: { customRender: 'sellStatus' }
+        },
+        // {
+        //   title: 'Age',
+        //   dataIndex: 'age',
+        //   sorter: (a, b) => a.age - b.age
+        // },
+        {
+          title: '操作',
+          dataIndex: 'action',
+          fixed: 'right',
+          width: 140,
+          scopedSlots: { customRender: 'action' }
+        }
+      ]
+    }
+  },
+  methods: {
+    name(text, record) {
+      console.log(text, record)
+    },
+    onChange(pagination, filters, sorter) {
+      console.log('params', pagination, filters, sorter)
+    },
+    handleChange(value) {
+      console.log(`selected ${value}`)
+    },
+    onDelete(record) {
+      console.log('delete ', record)
+    },
+    onTableChange(pagination) {
+      this.$router.push({
+        query: {
+          p: pagination.current
+        }
+      })
+      console.log('pagination', pagination)
+    }
+  }
+}
+</script>
