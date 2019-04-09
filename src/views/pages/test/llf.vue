@@ -1,31 +1,35 @@
 <template>
   <st-panel app>
-    <ul>
-      <li :class="b()"></li>
-      <li :class="b('title')">b('title')</li>
-      <li :class="b('title',{active:true})">b('title',{active:true})</li>
-      <li :class='bSider()'>bSider()</li>
-      <li :class='bHeader()'>bHeader()</li>
-      <a-button @click="isActive = true">active</a-button>
-    </ul>
+     <st-more-dropdown>
+       <a-menu-item @click='onClickOne'>
+         转让
+       </a-menu-item>
+       <a-menu-item>
+         出售
+       </a-menu-item>
+       <a-menu-item>
+         你好
+       </a-menu-item>
+     </st-more-dropdown>
   </st-panel>
 </template>
 
 <script>
-import { mapBem } from '@/utils/bem'
-
 export default {
+  bem: {
+    b: 'default-brand',
+    bSider: 'default-brand-sider',
+    bHeader: 'default-brand-header'
+  },
   data() {
     return {
       isActive: false
     }
   },
   methods: {
-    ...mapBem({
-      b: 'default-brand',
-      bSider: 'default-brand-sider',
-      bHeader: 'default-brand-header'
-    })
+    onClickOne() {
+      console.log('hello')
+    }
   }
 }
 </script>

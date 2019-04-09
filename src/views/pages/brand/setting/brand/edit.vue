@@ -12,7 +12,7 @@
                 </a-upload>
               </st-form-item>
               <st-form-item label="品牌名称">
-                <a-input placeholder="请输入品牌名称" v-decorator="brandRules.brand_name" maxlength="20" ></a-input>
+                <a-input placeholder="请输入品牌名称" v-decorator="brandRules.brand_name" disabled></a-input>
               </st-form-item>
               <st-form-item label="品牌介绍">
                 <a-textarea placeholder="请输入品牌介绍" v-decorator="brandRules.description"
@@ -20,10 +20,10 @@
                 </a-textarea>
               </st-form-item>
               <st-form-item label="联系人">
-                <a-input placeholder="请输入联系人" v-decorator="brandRules.staff_name" maxlength="10"></a-input>
+                <a-input placeholder="请输入联系人" v-decorator="brandRules.staff_name" disabled></a-input>
               </st-form-item>
               <st-form-item label="联系电话">
-                <a-input placeholder="请输入联系电话" v-decorator="brandRules.mobile" maxlength="20">></a-input>
+                <a-input placeholder="请输入联系电话" v-decorator="brandRules.mobile" disabled></a-input>
               </st-form-item>
             </st-form>
           </a-col>
@@ -44,14 +44,7 @@ import { imgFilter } from '@/filters/resource.filters'
 import { MessageService } from '@/services/message.service'
 import { EditService } from './edit.service'
 const brandRules = {
-  brand_name: [
-    'brand_name', {
-      rules: [{
-        required: true,
-        message: '请输入品牌名称'
-      }]
-    }
-  ],
+  brand_name: ['brand_name'],
   description: [
     'description', {
       rules: [{
@@ -59,22 +52,8 @@ const brandRules = {
       }]
     }
   ],
-  staff_name: [
-    'staff_name', {
-      rules: [{
-        required: true,
-        message: '请输入联系人'
-      }]
-    }
-  ],
-  mobile: [
-    'mobile', {
-      rules: [{
-        required: true,
-        message: '请输入联系人电话'
-      }]
-    }
-  ]
+  staff_name: ['staff_name'],
+  mobile: ['mobile']
 }
 export default {
   serviceInject() {
