@@ -1,26 +1,25 @@
 <template>
   <st-panel app>
-    <ul>
-      <li :class="b">{{b('title')}}</li>
-      <li :class="b">{{b('logo',{active:true})}}</li>
-      <li :class="b('title',{active:isActive})">b('title',{active:{{isActive}}}) {{b('title',{active:isActive})}}</li>
-      <li :class="bSider()">bSider() }</li>
-      <a-button @click="isActive = !isActive">active</a-button>
-    </ul>
+    <st-card-hour-picker></st-card-hour-picker>
   </st-panel>
 </template>
 
 <script>
 export default {
+  bem: {
+    b: 'default-brand',
+    bSider: 'default-brand-sider',
+    bHeader: 'default-brand-header'
+  },
   data() {
     return {
       isActive: false
     }
   },
-  bem: {
-    b: 'default-brand',
-    bSider: 'default-brand-sider',
-    bHeader: 'default-brand-header'
+  methods: {
+    onClickOne() {
+      console.log('hello')
+    }
   }
 }
 </script>
