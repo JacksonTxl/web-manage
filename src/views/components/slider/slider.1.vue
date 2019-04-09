@@ -58,9 +58,6 @@
         </a-row>
       </div>
     </div>
-    <pre>
-      {{setSlider}}
-    </pre>
   </div>
 </template>
 <script>
