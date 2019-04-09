@@ -1,5 +1,5 @@
 <template>
-  <a-dropdown placement="bottomRight">
+  <a-dropdown placement="bottomRight" :class="bMore()">
     <a href="javascript:;">
       <st-icon type="more" color="rgba(0,0,0,.15)"></st-icon>
     </a>
