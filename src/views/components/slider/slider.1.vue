@@ -250,6 +250,7 @@ export default {
     },
     filterWeek() {},
     filterSlider(item) {
+      let self = this
       return {
         week_day:
           item.title === '周一'
@@ -265,23 +266,18 @@ export default {
                     : item.title === '周六'
                       ? 6
                       : 7,
-        start_time:
-          /^\d+$/.test(item.value[0]) && item.value[0] > 9
-            ? item.value[0] + ':00'
-            : /^\d+$/.test(item.value[0]) && item.value[0] <= 9
-              ? '0' + item.value[0] + ':00'
-              : !/^\d+$/.test(item.value[0]) && item.value[0] <= 9
-                ? '0' + (item.value[0] + '').replace(/.5/gi, ':30')
-                : (item.value[0] + '').replace(/.5/gi, ':30') + '',
-        end_time:
-          /^\d+$/.test(item.value[1]) && item.value[1] > 9
-            ? item.value[1] + ':00'
-            : /^\d+$/.test(item.value[1]) && item.value[1] <= 9
-              ? '0' + item.value[1] + ':00'
-              : !/^\d+$/.test(item.value[1]) && item.value[1] <= 9
-                ? '0' + (item.value[1] + '').replace(/.5/gi, ':30')
-                : (item.value[1] + '').replace(/.5/gi, ':30') + ''
+        start_time: self.timeFilter(item, 0),
+        end_time: self.timeFilter(item, 1)
       }
+    },
+    timeFilter(item, index) {
+      return /^\d+$/.test(item.value[index]) && item.value[index] > 9
+        ? item.value[index] + ':00'
+        : /^\d+$/.test(item.value[index]) && item.value[index] <= 9
+          ? '0' + item.value[index] + ':00'
+          : !/^\d+$/.test(item.value[index]) && item.value[index] <= 9
+            ? '0' + (item.value[index] + '').replace(/.5/gi, ':30')
+            : (item.value[index] + '').replace(/.5/gi, ':30') + ''
     },
     getArrDifference(arr1, arr2) {
       return arr1.concat(arr2).filter(function(v, i, arr) {
