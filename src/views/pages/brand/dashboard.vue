@@ -7,7 +7,7 @@
         <section>
           <a-row :gutter="24">
             <a-col :span="8">
-              <st-panel initial class="page-dashboard__chart">
+              <div class="page-dashboard__chart bg-white">
                 <h3 class="page-dashboard__chart-title">2月用户数（人）</h3>
                 <div class="page-dashboard__chart-figure-primary">
                   <ICountUp :endVal="9999"/>
@@ -15,25 +15,25 @@
                 <div class="page-dashboard__chart-figure-secondary">
                   <span class="color-text-light">本周</span><span class="color-text mg-l8"><ICountUp :endVal="9999"/></span>
                 </div>
-              </st-panel>
+              </div>
             </a-col>
             <a-col :span="8">
-              <st-panel initial class="page-dashboard__chart">
+              <div initial class="page-dashboard__chart bg-white">
                 <h3 class="page-dashboard__chart-title">本月营收（元）</h3>
                 <div class="page-dashboard__chart-figure-primary"><ICountUp :endVal="9999"/></div>
                 <div class="page-dashboard__chart-figure-secondary">
                   <span class="color-text-light">本周</span><span class="color-text mg-l8"><ICountUp :endVal="9999"/></span>
                 </div>
-              </st-panel>
+              </div>
             </a-col>
             <a-col :span="8">
-              <st-panel initial class="page-dashboard__chart">
+              <div initial class="page-dashboard__chart bg-white">
                 <h3 class="page-dashboard__chart-title">本月消课数（节）</h3>
                 <div class="page-dashboard__chart-figure-primary"><ICountUp :endVal="9999"/></div>
                 <div class="page-dashboard__chart-figure-secondary">
                   <span class="color-text-light">本周</span><span class="color-text mg-l8"><ICountUp :endVal="9999"/></span>
                 </div>
-              </st-panel>
+              </div>
             </a-col>
           </a-row>
         </section>
@@ -41,7 +41,7 @@
         <section class="mg-t16">
           <a-row :gutter="24">
             <a-col :span="8" v-for="(shop, index) in shopList" :key="index">
-              <st-panel initial>
+              <div class="bg-white">
                 <div class="page-dashboard__shop">
                   <div class="page-dashboard__shop-img" :style="`background-image: url('${shop.image_url}')`">
                     <h4 class="page-dashboard__shop-name">{{shop.shop_name}}</h4>
@@ -74,10 +74,10 @@
                     </a-row>
                   </div>
                 </div>
-              </st-panel>
+              </div>
             </a-col>
             <a-col :span="8">
-              <st-panel initial>
+              <div class="bg-white">
                 <div class="page-dashboard__add-shop cursor-pointer">
                   <div class="page-dashboard__placeholder"></div>
                   <div class="page-dashboard__add-shop-content ta-c">
@@ -85,10 +85,10 @@
                     <div class="page-dashboard__add-shop-text">添加门店</div>
                   </div>
                 </div>
-              </st-panel>
+              </div>
             </a-col>
           </a-row>
-          <p class="ta-c mg-t24">
+          <p class="ta-c mg-t24" v-if="shopList.length">
             <a-pagination showSizeChanger :defaultCurrent="page.current_page"
               :total="page.total_counts" @change="onPageChange"/>
           </p>
@@ -97,19 +97,15 @@
       <!-- left end -->
       <!-- right -->
       <a-col :span="5">
-        <section>
-          <st-panel initial>
-            <a href="#">
-              <img class="full-width" src="https://pic3-s.styd.cn/o_1d78oa7b95lp1l291etkv7h1fk7m.jpg?imageView2/1/w/300/h/170/interlace/1" alt="广告位">
-            </a>
-          </st-panel>
+        <section class="bg-white">
+           <a href="#">
+            <img class="full-width" src="https://pic3-s.styd.cn/o_1d78oa7b95lp1l291etkv7h1fk7m.jpg?imageView2/1/w/300/h/170/interlace/1" alt="广告位">
+          </a>
         </section>
-        <section class="mg-t16">
-          <st-panel initial>
-            <a href="#">
-              <img class="full-width" src="https://pic3-s.styd.cn/o_1d78oa7b95lp1l291etkv7h1fk7m.jpg?imageView2/1/w/300/h/170/interlace/1" alt="广告位">
-            </a>
-          </st-panel>
+        <section class="bg-white mg-t16">
+          <a href="#">
+            <img class="full-width" src="https://pic3-s.styd.cn/o_1d78oa7b95lp1l291etkv7h1fk7m.jpg?imageView2/1/w/300/h/170/interlace/1" alt="广告位">
+          </a>
         </section>
         <section class="mg-t16">
           <a href="#" class="page-dashboard__link-item">

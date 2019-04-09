@@ -16,7 +16,8 @@
       </section>
       <section class="mg-t24">
         <ul class="drawer-shops">
-          <li class="drawer-shops__item cursor-pointer" v-for="(shop, index) in shopList" :key="index">
+          <li class="drawer-shops__item cursor-pointer" v-for="(shop, index) in shopList" :key="index"
+            @click="onSwitchShop(shop.shop_id)">
             <img class="drawer-shops__img" :src="shop.image_url" alt="店招">
             <div>
               <div class="drawer-shops__name">{{shop.shop_name}}</div>
@@ -60,6 +61,15 @@ export default {
     },
     onSearchShop() {
 
+    },
+    onSwitchShop(shop_id) {
+      console.log('switch shop', shop_id)
+      const params = {
+        shop_id
+      }
+      this.switchShopService.switchShop(params).subscribe(res => {
+        console.log(res)
+      })
     }
   }
 }

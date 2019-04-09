@@ -59,10 +59,6 @@ export default {
     value: {
       type: Array
     },
-    isAutoInitOptions: {
-      type: Boolean,
-      default: false
-    },
     options: {
       type: Array,
       default: () => {
@@ -93,7 +89,7 @@ export default {
   },
   methods: {
     getRegions() {
-      if (this.isAutoInitOptions) return
+      if (this.$attrs.options) return
       this.regionService.getRegions().subscribe(res => {
         this.regions = res
       })

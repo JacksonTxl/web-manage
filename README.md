@@ -20,6 +20,10 @@ npm run gulp:dev
 
 ```
 
+## 开发mock账号
+abc123
+abc123
+
 ## Todo List
 
 - import {State} from 'rx-state' 的语法提示默认会是 rx-state/src 要修正.d.ts 文件
