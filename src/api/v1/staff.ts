@@ -112,16 +112,34 @@ export interface SaveData {
      */
     repeat_password? : string;
 }
+const URL = '/v1/staff/brand'
 export class StaffApi extends Api {
-  getDetail(query: Params) {
-    return this.http.get('/v1/staff/staff-list', { query, mock: {} })
+  // 获取某部门员工列表
+  getStaffBrandList(query: Params) {
+    return this.http.get('/v1/staff/brand', { query, mock: {} })
   }
 
   getCountryCodes(query: any) {
     return this.http.get('/country/codes', { query })
   }
-
-  saveStaffInfo(params: SaveData) {
+  // 添加某部门员工
+  addStaffBrandInfo(params: SaveData) {
+    return this.http.post('/v1/staff/brand', { params })
+  }
+  // 获取员工详情
+  getStaffBrandInfo(id: string) {
+    return this.http.get(`/v1/staff/brand${id}`)
+  }
+  // 获取编辑员工回显
+  getStaffBrandReview(id: string, params: SaveData) {
+    return this.http.get(`v1/staff/brand/review/${id}`, { params })
+  }
+  // 编辑员工信息
+  updateStaffBrandInfo(params: SaveData) {
     return this.http.put('/v1/staff/brand', { params })
+  }
+  // 删除员工
+  deleteStaffBrandInfo(id: string) {
+    return this.http.delete(`/v1/staff/brand${id}`)
   }
 }

@@ -1,5 +1,5 @@
 import { ajax } from 'rxjs/ajax'
-import { debounceTime, switchMap, catchError, tap } from 'rxjs/operators'
+import { switchMap, catchError, tap, throttleTime } from 'rxjs/operators'
 import { ServiceRoute, Injectable } from 'vue-service-app'
 import { Action } from 'rx-state'
 import { EMPTY } from 'rxjs'
@@ -15,7 +15,7 @@ export class HotReleaseService {
   constructor(private appConfig: AppConfig) {
     this.reloadAction$ = new Action(data$ =>
       data$.pipe(
-        debounceTime(1000),
+        throttleTime(10000),
         // 捕获子流的错误 错误冒泡会导致父流中断
         switchMap(() =>
           ajax

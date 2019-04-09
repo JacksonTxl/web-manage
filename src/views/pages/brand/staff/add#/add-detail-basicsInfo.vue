@@ -24,8 +24,8 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact>
-            <a-select style="width: 15%;" v-decorator="basicInfoRuleList.country_codeRule">
-              <a-select-option value="1">+86</a-select-option>
+            <a-select style="width: 15%;" :defaultValue="37" v-decorator="basicInfoRuleList.country_codeRule">
+              <a-select-option :value="code.code_id" v-for="code in codeList" :key="code.code_id">+{{code.phone_code}}</a-select-option>
             </a-select>
             <a-input style="width: 85%" placeholder="请输入手机号" v-decorator="basicInfoRuleList.phoneRule"/>
           </a-input-group>
@@ -216,7 +216,7 @@ export default {
       basicInfoRuleList: {
         usernameRule: ['staff_name', { rules: [{ required: true, message: '请填写姓名' }] }], // 姓名
         nicknameRule: ['nickname', { rules: [{ required: true, message: '请填写昵称' }] }], // 昵称
-        country_codeRule: ['country_code_id', { initialValue: '1' }], // 国家编码id，例如中国的id是37
+        country_codeRule: ['country_code_id', { initialValue: 37 }], // 国家编码id，例如中国的id是37
         phoneRule: ['mobile', { rules: [{ required: true, message: '手机号格式错误', pattern: /^1[34578]\d{9}$/ }] }],
         staff_numRule: ['staff_num'], // 工号
         genderRule: ['sex', { rules: [{ required: true, message: '请选择你的性别' }] }], // 角色select rule
@@ -269,6 +269,12 @@ export default {
         this.isShowLevel = true
         this.$emit('addStep')
       }
+    }
+  },
+  props: {
+    codeList: {
+      type: Array,
+      default: () => []
     }
   },
   methods: {

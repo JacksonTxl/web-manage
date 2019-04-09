@@ -21,7 +21,7 @@ export class DepartmentService extends Store<StaffState> implements RouteGuard {
   }
   @Effect()
   getStaffList(data: Params) {
-    return this.staffApi.getDetail(data)
+    return this.staffApi.getStaffBrandList(data)
   }
   SET_STAFF_LIST(list: StaffState) {
     this.state$.commit(state => {

@@ -48,29 +48,19 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="图片" >
-            <div class="page-upload-container">
-          <a-upload
-            listType="picture-card"
-            class="page-add-upload"
-            :showUploadList="false"
-            :customRequest="upload"
-          >
-            <img v-if="imageUrl" :src="imageUrl" width="164" height="auto" alt="avatar">
-            <div v-else>
-              <a-icon :type="loading ? 'loading' : 'plus'"/>
-              <div class="ant-upload-text">上传照片</div>
+          <div class="page-upload-container">
+            <file-upload :list="fileList" @change="onImgChange"></file-upload>
+            <input type="hidden" v-decorator="formRules.course_image">
+            <div class="page-course-photo-des mg-l16">
+              <div class="page-course-item">
+                <div class="page-course-item-tip">1.</div>
+                <div class="page-course-item-cont">图片格式必须为：png,bmp, jpeg,jpg,gif,建议使用png格式图片，以保存最佳效果</div>
+              </div>
+              <div class="page-course-item">
+                <div class="page-course-item-tip">2.</div>
+                <div class="page-course-item-cont">建议尺寸为?px * ?px， 不可大于2M</div>
+              </div>
             </div>
-          </a-upload>
-          <div class="page-course-photo-des">
-            <div class="page-course-item">
-              <div class="page-course-item-tip">1.</div>
-              <div class="page-course-item-cont">图片格式必须为：png,bmp, jpeg,jpg,gif,建议使用png格式图片，以保存最佳效果</div>
-            </div>
-            <div class="page-course-item">
-              <div class="page-course-item-tip">2.</div>
-              <div class="page-course-item-cont">建议尺寸为?px * ?px， 不可大于2M</div>
-            </div>
-          </div>
           </div>
         </st-form-item>
       </a-col>
@@ -136,7 +126,8 @@ const formRules = {
         message: '请输入参考定价'
       }]
     }
-  ]
+  ],
+  course_image: ['course_image']
 }
 export default {
   name: 'create-personal-course',
@@ -144,9 +135,10 @@ export default {
     return {
       form: this.$form.createForm(this),
       formRules,
-      loading: false,
-      imageUrl: '',
-      key: '' // 上传头像返回的key
+      fileList: [{
+        image_id: 10000,
+        image_key: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/pLOFb5kCPN4gPQ8H'
+      }]
     }
   },
   methods: {
@@ -158,26 +150,9 @@ export default {
         this.$emit('goNext')
       })
     },
-    upload(data) {
-      this.loading = true
-      this.imageUrl = ''
-      this.OSS.put({
-        file: data.file
-      }).subscribe({
-        next: val => {
-          this.key = val.fileKey
-          this.MessageService.success({ content: `success: ${val}` })
-          this.imageUrl = `http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/${
-            val.fileKey
-          }`
-          this.loading = false
-          console.log(val.fileKey)
-          console.log(this.imageUrl)
-        },
-        error: val => {
-          this.MessageService.error({ content: `Error ${val.message}` })
-          this.loading = false
-        }
+    onImgChange(fileList) {
+      this.form.setFieldsValue({
+        course_image: fileList[0]
       })
     }
   }

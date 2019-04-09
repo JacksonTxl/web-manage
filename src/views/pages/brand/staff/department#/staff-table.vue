@@ -5,14 +5,9 @@
           <a href="">详情</a>
           <a href="">编辑</a>
         </div>
-        <a-dropdown class="tree-opreation" placement="bottomLeft">
-          <div><st-icon type="more"></st-icon></div>
-          <a-menu slot="overlay">
-            <a-menu-item v-for="(op, index) in opreations" :key="index" @click="op.clickName">
-              <modal-link tag="a" :to="op.route">{{op.name}}</modal-link>
-            </a-menu-item>
-          </a-menu>
-        </a-dropdown>
+        <st-more-dropdown>
+          <a-menu-item v-for="(op, index) in opreations" :key="index" @click="op.clickName"><modal-link tag="a" :to="op.route">{{op.name}}</modal-link></a-menu-item>
+        </st-more-dropdown>
     </div>
     <span slot="name"  slot-scope="staff_name">
       <span class="avt" style="">{{name.avatar}}</span><span class="name">{{staff_name}}</span>

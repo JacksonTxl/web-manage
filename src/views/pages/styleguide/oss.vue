@@ -26,16 +26,25 @@
     <p>
       &lt;img :src="imgKey|imgFilter({ w: 320, h: 180 })"/&gt;
     </p>
+
     <h4>图片裁剪示例</h4>
     <p>
       <img :src="demoImgKey|imgFilter({ w: 320, h: 180 })" alt="">
     </p>
+
+    <h4 class="mg-t32">file-upload component</h4>
+    <p>demo1 长方形 && 有初始图片 && 最多上传1张</p>
+    <demo-a/>
+    <p>demo2 正方形 && 最多上传4张 && 自定义宽高</p>
+    <demo-b/>
   </div>
 </template>
 <script>
 import { OssService } from '@/services/oss.service'
 import { MessageService } from '@/services/message.service'
 import { imgFilter } from '@/filters/resource.filters'
+import DemoA from './oss#/demo-a.vue'
+import DemoB from './oss#/demo-b.vue'
 export default {
   data() {
     return {
@@ -47,6 +56,10 @@ export default {
   },
   filters: {
     imgFilter
+  },
+  components: {
+    DemoA,
+    DemoB
   },
   serviceInject() {
     return {

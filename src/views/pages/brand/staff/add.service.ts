@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { tap } from 'rxjs/operators'
+import { pluck } from 'rxjs/operators'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { StaffApi, SaveData } from '@/api/v1/staff'
 import { Store } from '@/services/store'
@@ -9,11 +9,13 @@ interface CountryCodesState {
 @Injectable()
 export class AddService extends Store<CountryCodesState> {
   state$: State<CountryCodesState>
+  codeList$: Computed<any>
   constructor(private staffApi: StaffApi) {
     super()
     this.state$ = new State({
       codeList: []
     })
+    this.codeList$ = new Computed(this.state$.pipe(pluck('codeList')))
   }
   @Effect()
   getCountryCodes(query: any) { // 获取国际化手机号前缀
@@ -25,7 +27,7 @@ export class AddService extends Store<CountryCodesState> {
     })
   }
   save(data: SaveData) {
-    return this.staffApi.saveStaffInfo(data)
+    return this.staffApi.addStaffBrandInfo(data)
   }
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {

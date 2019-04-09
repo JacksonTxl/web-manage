@@ -26,6 +26,9 @@ export const imgFilter = (key: string, opts: ImgFilterOptions): string => {
   if (/x-oss-process/.test(key)) {
     return key
   }
+  if (/^image\//.test(key)) {
+    key = appConfig.HOST_IMAGE + '/' + key
+  }
   console.log('opts', opts)
   const configs: ImgFilterOptions = {
     interlace: 1,

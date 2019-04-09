@@ -7,6 +7,8 @@ import { ThemeService } from '@/services/theme.service'
 import pageRoutes from './auto-generated-routes'
 import { TitleService } from '@/services/title.service'
 import { RouteService } from '@/services/route.service'
+import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
+import { LayoutShopService } from '@/services/layouts/layout-shop.service'
 
 const routes: any[] = [
   {
@@ -20,6 +22,10 @@ const routes: any[] = [
   {
     path: '/shop/',
     redirect: '/shop/dashboard'
+  },
+  {
+    path: '/brand/product/card/deposite-card/shop-sale-list',
+    redirect: '/brand/product/card/deposite-card/shop-sale-list/brand'
   },
   ...pageRoutes,
   {
@@ -59,20 +65,26 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
         RouteService
       ])
     } else if (route.path.startsWith('/') && !route.redirect) {
-      prependGuards(route, [
+      const appGuards: any[] = [
         HotReleaseService,
         NProgressService,
         // AuthService,
         TitleService,
         UserService,
         RouteService
-      ])
+      ]
+      if (route.name.startsWith('brand')) {
+        appGuards.push(LayoutBrandService)
+      }
+      if (route.name.startsWith('shop')) {
+        appGuards.push(LayoutShopService)
+      }
+      prependGuards(route, appGuards)
     }
     // 规范title i18n 名称
     if (route.name) {
       route.meta.title = `${route.name}.title`
     }
-
     route.meta.layout = 'default-brand'
 
     if (route.name.startsWith('shop')) {
