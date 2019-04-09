@@ -28,18 +28,23 @@
       :scroll="{ x: 1300}"
       @change="onChange"
     >
+      <!-- 会员卡名称start -->
       <a
         slot="member"
         slot-scope="text,record"
         href="javascript:;"
-        @click="name(text,record)"
+        @click="memberFun(text,record)"
       >{{text}}</a>
+      <!-- 会员卡名称end -->
+      <!-- 支持入场门店start -->
       <a
         slot="admission"
         slot-scope="text,record"
         href="javascript:;"
         @click="name(text,record)"
       >{{text}}</a>
+      <!-- 支持入场门店end -->
+      <!-- 售卖状态start -->
       <a slot="sellStatus" slot-scope="text,record" href="javascript:;" @click="name(text,record)">
         <span
           v-if="text ==='可售卖'"
@@ -58,16 +63,21 @@
                  background:rgba(245,34,45,1);"
         ></span>
         {{text}}
-        <a-popover title="Title" placement="bottomRight">
+        <a-popover
+          title="操作人:AAA   操作时间:2018/10/10 23:59:59"
+          placement="bottomRight"
+          :overlayStyle="{width:'336px'}"
+        >
           <template slot="content">
-            <p>Content</p>
-            <p>Content</p>
+            <p>停售原因是不想停售原因是不想停售原因是不想停售原因是不想停售原因是不想</p>
           </template>
           <a-icon type="exclamation-circle" v-if="text ==='停售'"/>
         </a-popover>
       </a>
+      <!-- 售卖状态end -->
+      <!-- 操作end -->
       <div slot="action" slot-scope="record">
-        <modal-link tag="a" :to="{name:'test'}">打开</modal-link>
+        <a href="javascript:;">打开</a>
         <a-divider type="vertical"></a-divider>
         <a-popconfirm title="确认删除该权限么?" @confirm="onDelete(record.id)">
           <a>删除</a>
@@ -78,6 +88,7 @@
           <a-menu-item>你好</a-menu-item>
         </st-more-dropdown>
       </div>
+      <!-- 操作end -->
     </st-table>
   </div>
 </template>
@@ -167,6 +178,10 @@ export default {
     }
   },
   methods: {
+    // 会员卡名称点击事件
+    memberFun(text, record) {
+      console.log(text, record, '会员卡名称点击事件')
+    },
     name(text, record) {
       console.log(text, record)
     },
