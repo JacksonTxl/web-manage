@@ -1,7 +1,7 @@
 <template>
   <st-form :form="form" @submit="save" class="page-shop-container" labelWidth="100px">
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="10" :offset="1">
         <st-form-item label="私教课程">
           <a-input placeholder="课程名称" disabled/>
         </st-form-item>
@@ -24,11 +24,14 @@
         </a-col>
       </a-row>
       <a-row :gutter="8">
-        <a-col :lg="10" :xs="22" :offset="1">
+        <a-col :lg="22" :xs="22" :offset="1">
           <st-form-item label="课程定价">
             <div class="page-shop-coach-container-coach">
-              <a-table :columns="columns">
-                <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
+              <a-table :columns="priceTableColumns" :dataSource="priceTableData" :pagination="false">
+                <span slot="action">
+                  <a href="javascript:;">编辑</a>
+                  <a href="javascript:;" class="mg-l8">删除</a>
+                </span>
               </a-table>
               <st-button type="dashed" block class="mg-t8">添加</st-button>
             </div>
@@ -46,25 +49,33 @@
   </st-form>
 </template>
 <script>
-const columns = [{
-  title: '教练',
-  dataIndex: 'name'
-},
-{
-  title: '教练等级',
-  dataIndex: 'gender'
-},
-{
-  title: '工作性质',
-  dataIndex: 'email'
-},
-{
-  title: '在职状态',
-  dataIndex: 'emai'
-},
-{
+const priceTableColumns = [{
+  title: '价格等级',
+  dataIndex: 'priceGrade'
+}, {
+  title: '售卖梯度（节）',
+  dataIndex: 'saleGrad'
+}, {
+  title: '售卖价格（元/节）',
+  dataIndex: 'price'
+}, {
+  title: '转让手续费',
+  dataIndex: 'serviceFee'
+}, {
+  title: '是否在线购买',
+  dataIndex: 'online'
+}, {
   title: '操作',
-  dataIndex: 'em'
+  key: 'action',
+  scopedSlots: { customRender: 'action' }
+}]
+const priceTableData = [{
+  key: '1',
+  priceGrade: '等级名称A',
+  saleGrad: '1-10',
+  price: '200',
+  serviceFee: '1%',
+  online: '支持'
 }]
 
 const formRules = {
@@ -82,7 +93,9 @@ export default {
     return {
       form: this.$form.createForm(this),
       formRules,
-      isShowUnitSet: false
+      isShowUnitSet: false,
+      priceTableColumns,
+      priceTableData
     }
   },
   methods: {

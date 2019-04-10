@@ -1,13 +1,12 @@
 <template>
   <a-modal
     title="选择场馆"
-    width="50%"
     :footer="null"
     class="modal-brand-switch"
     v-model="show"
   >
     <div>
-      <st-panel class="bordered">
+      <div class="pd-md bordered">
         <a-tree
           checkable
           v-model="checkedKeys"
@@ -15,11 +14,11 @@
           :treeData="treeData"
           @check="onCheck"
         />
-      </st-panel>
-    <p class="color-text-light mg-t8">共5家场馆，已选择3家场馆</p>
-    <p class="ta-r">
-      <st-button type="primary">确定</st-button>
-    </p>
+      </div>
+      <p class="color-text-light mg-t8">共5家场馆，已选择3家场馆</p>
+      <p class="ta-r">
+        <st-button type="primary">确定</st-button>
+      </p>
     </div>
   </a-modal>
 </template>
