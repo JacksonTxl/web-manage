@@ -14,7 +14,9 @@
             <a-table :columns="shopRule">
               <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
             </a-table>
-            <st-button type="dashed" block class="mg-t8">添加</st-button>
+            <modal-link tag="a" :to="{ name: 'shop-select' }">
+              <st-button type="dashed" block class="mg-t8">添加</st-button>
+            </modal-link>
           </div>
         </st-form-item>
       </a-col>
@@ -26,7 +28,9 @@
             <a-table :columns="columns">
               <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
             </a-table>
-            <st-button type="dashed" block class="mg-t8">添加</st-button>
+            <modal-link tag="a" :to="{ name: 'coach-select' }">
+              <st-button type="dashed" block class="mg-t8">添加</st-button>
+            </modal-link>
           </div>
         </st-form-item>
       </a-col>
