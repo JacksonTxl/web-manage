@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
+import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { BrandApi, GetBrandIndexInput } from '@/api/v1/brand'
@@ -7,9 +7,6 @@ import { BrandApi, GetBrandIndexInput } from '@/api/v1/brand'
 interface DashboardState {
   shopInfo: Array<Object>
   page: Object
-   [propName: string]: any
-}
-interface StateData {
   [propName: string]: any
 }
 @Injectable()
@@ -19,30 +16,29 @@ export class DashboardService extends Store<DashboardState> {
   page$: Computed<Object>
   constructor(private brandApi: BrandApi) {
     super()
-    this.state$ = new State({})
-    this.shopInfo$ = new State([])
-    this.page$ = new State({})
+    this.state$ = new State({
+      shopInfo: [],
+      page: {}
+    })
+    this.shopInfo$ = new Computed(this.state$.pipe(pluck('shopInfo')))
+    this.page$ = new Computed(this.state$.pipe(pluck('page')))
   }
+  @Effect()
   getBrands(data: GetBrandIndexInput = {}) {
     return this.brandApi.getBrandIndex(data)
   }
-  protected SET_DASHBOARD_STATE(data: StateData = {}) {
+  protected SET_DASHBOARD_STATE(data: DashboardState) {
     this.state$.commit(state => {
-      for (let key in data) {
-        state[key] = data[key]
-      }
-      return state
+      state.shopInfo = data.shop_info
+      state.page = data.page
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getBrands().subscribe(res => {
-      this.SET_DASHBOARD_STATE({
-        shopInfo: res.shop_info,
-        page: res.page
-      })
-      this.shopInfo$ = new Computed(this.state$.pipe(pluck('shopInfo')))
-      this.page$ = new Computed(this.state$.pipe(pluck('page')))
+    this.getBrands().subscribe((res) => {
+      this.SET_DASHBOARD_STATE(res)
+      next()
+    }, () => {
+      next(false)
     })
-    next()
   }
 }

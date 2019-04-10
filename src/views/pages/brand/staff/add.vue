@@ -1,6 +1,6 @@
 <template>
   <st-panel app>
-    <a-row class="mg-b48" :gutter="8">
+    <a-row :class="bstep()" class="mg-b48" :gutter="8">
       <a-col offset="1" :span="stepsSpan"><Steps :value="currentIndex" :stepArr="stepArr" @skip="skip"/></a-col>
     </a-row>
     <StaffDetailBasics :codeList="codeList" v-show="currentIndex == 0" @goNext="goNext" @save="onSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
@@ -36,14 +36,14 @@ export default {
     }
   },
   bem: {
-    b: 'default-brand',
-    bSider: 'default-brand-sider',
+    b: 'page-add-staff',
+    bstep: 'page-add-staff-steps',
     bHeader: 'default-brand-header'
   },
   data() {
     return {
       currentIndex: 0,
-      stepsSpan: 11,
+      stepsSpan: 12,
       stepArr: [
         {
           title: '基础信息',
@@ -59,10 +59,11 @@ export default {
   },
   methods: {
     deletStep(e) {
+      this.stepsSpan = 12
       this.stepArr.pop()
     },
     addCoachInfo(e) {
-      this.stepsSpan = 22
+      this.stepsSpan = 18
       this.stepArr.push({
         title: '教练信息',
         key: 3

@@ -1,5 +1,13 @@
 <template>
-  <file-upload :max="4" :width="100" :height="100" @change="onImgChange"></file-upload>
+  <file-upload
+    :numLimit="4"
+    width="100px"
+    height="100px"
+    uploadText="支持自定义"
+    fileType="bmp"
+    :sizeLimit="0.1"
+    @change="onImgChange">
+  </file-upload>
 </template>
 <script>
 export default {

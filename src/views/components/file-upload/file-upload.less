@@ -1,0 +1,45 @@
+.st-file-upload {
+  position: relative;
+  margin-bottom: -16px;
+  margin-right: -16px;
+  &__item {
+    display: inline-block;
+    margin-right: 16px;
+    margin-bottom: 16px;
+    position: relative;
+    transition: all .5s;
+  }
+  &__item-img,
+  &__btn {
+    display: inline-block;
+  }
+  &__btn {
+    margin-right: 16px;
+    margin-bottom: 16px;
+  }
+  &__list,
+  &__btn {
+    vertical-align: top;
+  }
+  &__actions {
+    position: absolute;
+    width: 100%;
+    height: 32px;
+    left: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .45);
+    text-align: right;
+    padding: 0 6px;
+  }
+  &__actions-item {
+    font-size: 12px;
+    cursor: pointer;
+    line-height: 32px;
+    padding: 0 6px;
+    color: rgba(255, 255, 255, .85);
+  }
+  .ant-upload {
+    width: 100%;
+    height: 100%;
+  }
+}
