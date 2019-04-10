@@ -74,8 +74,8 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="2">
-        <st-form-item labelOffset class="mg-l24">
+      <a-col :lg="10" :xs="22" :offset="1">
+        <st-form-item labelFix>
           <st-button type="primary" html-type="submit">保存，继续设置上课门店</st-button>
         </st-form-item>
       </a-col>
