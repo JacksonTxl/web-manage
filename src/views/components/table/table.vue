@@ -2,6 +2,11 @@
 import { merge } from 'lodash-es'
 export default {
   name: 'StTable',
+  methods: {
+    onCLick() {
+      this.alertSelection.onReset()
+    }
+  },
   props: {
     alertSelection: {
       type: Object,
@@ -32,14 +37,14 @@ export default {
       },
       this.$attrs
     )
-    const ce = typeof this.alertSelection.onReset !== 'undefined' ? h('div', { class: 'st-table-wapper' }, [
+    const ce = this.alertSelection.onReset ? h('div', { class: 'st-table-wapper' }, [
       h('a-alert', {
         class: 'st-table-alert mg-b8',
         props: { type: 'info', showIcon: true },
         scopedSlots: {
           message: props => h('div', { class: 'st-table-alert__content' }, ['已选 ', h('span', { class: 'st-table-alert__count' }, this.$attrs.rowSelection.selectedRowKeys.length || 0), ' 条数据', h('a', { class: 'mg-l24 st-table-alert__reload',
             on: {
-              click: this.alertSelection.onReset()
+              click: this.onCLick
             } }, '清空')])
         }
       }),
