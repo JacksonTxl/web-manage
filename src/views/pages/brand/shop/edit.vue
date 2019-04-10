@@ -46,7 +46,6 @@
           <st-form-item label="门店地址" required>
             <st-region-cascader
               placeholder="请选择省/市/区"
-              :values="PCD"
               v-decorator="[
               'shop_PCD',
               {rules: [{ required: true, message: '请输入门店地址'}]}
@@ -213,7 +212,6 @@ export default {
         lng: '121.473701',
         business_time: []
       },
-      PCD: [130000, 130200, 130225],
       // 服务id
       service_ids: [],
       serviceIcon_icon_list: {
@@ -317,13 +315,13 @@ export default {
       this.form.setFieldsValue({
         shop_name: data.shop_name,
         shop_address: data.shop_position.address,
-        email: data.email
+        email: data.email,
+        shop_PCD: [
+          data.shop_position.province_id,
+          data.shop_position.city_id,
+          data.shop_position.district_id
+        ]
       })
-      // this.PCD = [
-      //     data.shop_position.province_id,
-      //     data.shop_position.city_id,
-      //     data.shop_position.district_id
-      //   ]
       this.shopData.shop_phones = data.shop_phones
       // 经纬度
       this.shopData.lat = data.lat
