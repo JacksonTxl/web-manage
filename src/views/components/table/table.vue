@@ -9,9 +9,9 @@ export default {
     }
   },
   props: {
-    withSelectionAlert: {
-      type: Boolean,
-      default: false
+    alertSelection: {
+      type: Object,
+      default: () => { return {} }
     }
   },
   render(h) {
@@ -38,14 +38,14 @@ export default {
       },
       this.$attrs
     )
-    const ce = this.withSelectionAlert ? h('div', { class: 'st-table-wapper' }, [
+    return this.alertSelection.onReset ? h('div', { class: 'st-table-wapper' }, [
       h('a-alert', {
         class: 'st-table-alert mg-b8',
         props: { type: 'info', showIcon: true },
         scopedSlots: {
           message: props => h('div', { class: 'st-table-alert__content' }, ['已选 ', h('span', { class: 'st-table-alert__count' }, this.$attrs.rowSelection.selectedRowKeys.length || 0), ' 条数据', h('a', { class: 'mg-l24 st-table-alert__reload',
             on: {
-              click: this.clickHandler
+              click: this.alertSelection.onReset()
             } }, '清空')])
         }
       }),
@@ -71,7 +71,6 @@ export default {
       },
       this.$slots
     )
-    return ce
   }
 }
 </script>

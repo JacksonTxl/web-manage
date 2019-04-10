@@ -1,12 +1,11 @@
 <template>
   <st-panel app>
     <a-row class="mg-b48" :gutter="8">
-      <a-col offset="1" :span="22"><Steps :value="currentIndex" :stepArr="stepArr" @skip="skip"/></a-col>
+      <a-col offset="1" :span="stepsSpan"><Steps :value="currentIndex" :stepArr="stepArr" @skip="skip"/></a-col>
     </a-row>
     <StaffDetailBasics :codeList="codeList" v-show="currentIndex == 0" @goNext="goNext" @save="onSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
     <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" @save="onSave"/>
     <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" @save="onSave"/>
-    {{state}}
   </st-panel>
 </template>
 
@@ -36,9 +35,15 @@ export default {
       loading: this.addService.loading$
     }
   },
+  bem: {
+    b: 'default-brand',
+    bSider: 'default-brand-sider',
+    bHeader: 'default-brand-header'
+  },
   data() {
     return {
       currentIndex: 0,
+      stepsSpan: 11,
       stepArr: [
         {
           title: '基础信息',
@@ -57,6 +62,7 @@ export default {
       this.stepArr.pop()
     },
     addCoachInfo(e) {
+      this.stepsSpan = 22
       this.stepArr.push({
         title: '教练信息',
         key: 3

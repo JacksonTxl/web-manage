@@ -71,7 +71,7 @@
 <script>
 import { constant } from 'lodash-es'
 export default {
-  name: 'stShopHourPicker',
+  name: 'shopHourPicker',
   model: {
     prop: 'value',
     event: 'shop-hour-picker'
