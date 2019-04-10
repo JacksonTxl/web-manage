@@ -179,7 +179,7 @@
         {{business_time}}
         <a-col offset="1" :lg="22">
           <st-form-item label="营业时间">
-            <st-shop-hour-picker v-model="business_time" @shopHourPicker="shopHourPicker"></st-shop-hour-picker>
+            <st-shop-hour-picker v-model="business_time"></st-shop-hour-picker>
           </st-form-item>
         </a-col>
       </a-row>
