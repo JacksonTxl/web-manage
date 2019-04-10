@@ -178,7 +178,7 @@
       <a-row :gutter="8">
         <a-col offset="1" :lg="22">
           <st-form-item label="营业时间">
-            <shop-hour-picker v-model="shopInfo.shop_info.business_time" @change="sliderCange"></shop-hour-picker>
+            <st-shop-hour-picker v-model="shopInfo.shop_info.business_time" @change="sliderCange"></st-shop-hour-picker>
           </st-form-item>
         </a-col>
       </a-row>
