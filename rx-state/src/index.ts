@@ -1,13 +1,7 @@
-import { Subject, Observable, BehaviorSubject, of } from 'rxjs'
-import {
-  refCount,
-  publish,
-  tap,
-  finalize,
-  shareReplay,
-  map
-} from 'rxjs/operators'
-import { cloneDeep } from 'lodash-es'
+import { Subject, Observable, BehaviorSubject } from 'rxjs'
+import produce from 'immer'
+
+import { refCount, publish, tap, finalize, shareReplay } from 'rxjs/operators'
 
 export type Mutation<T> = (state: T) => T | void
 export type Epic<T> = (source$: Observable<T>) => Observable<any>
@@ -16,24 +10,11 @@ export class State<T> extends BehaviorSubject<T> {
   constructor(initialState: any) {
     super(initialState)
   }
-  commit(mutation: Mutation<T>) {
-    let newState
-    if (mutation.length < 1) {
-      newState = mutation(this.value)
-    } else {
-      const clonedState: any = cloneDeep(this.value)
-
-      const returned = mutation(clonedState)
-      if (returned === undefined) {
-        newState = clonedState
-      } else {
-        newState = returned
-      }
-    }
-
-    if (newState !== this.value) {
-      this.next(newState)
-    }
+  commit(mutation: Mutation<T>): void {
+    this.next(
+      // @ts-ignore
+      produce(this.value, mutation)
+    )
   }
 }
 
