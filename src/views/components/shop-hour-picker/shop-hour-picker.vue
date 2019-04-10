@@ -73,8 +73,7 @@ import { constant } from 'lodash-es'
 export default {
   name: 'shopHourPicker',
   model: {
-    prop: 'value',
-    event: 'shop-hour-picker'
+    prop: 'value'
   },
   props: {
     value: {
@@ -150,20 +149,7 @@ export default {
       if (getSlider.business_time) {
         let filterSlider = []
         getSlider.business_time.map(function(item) {
-          let week_day =
-            item.week_day === 1
-              ? '周一'
-              : item.week_day === 2
-                ? '周二'
-                : item.week_day === 3
-                  ? '周三'
-                  : item.week_day === 4
-                    ? '周四'
-                    : item.week_day === 5
-                      ? '周五'
-                      : item.week_day === 6
-                        ? '周六'
-                        : '周日'
+          let week_day = self.defaultWeekList[item.week_day + 1]
           weekArr.push(item.week_day)
           filterSlider.push({
             title: week_day,
