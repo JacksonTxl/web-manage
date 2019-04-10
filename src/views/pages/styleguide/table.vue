@@ -4,10 +4,13 @@
     <p>
       使用与
       <a href="https://vue.ant.design/components/table-cn/">a-table</a> 相同的api，只是增加了默认无数据的占位图，以及默认应用的分页条数,分页器样式已包含
+      添加了alertSelection属性 以支持 ·已选中几项· 清空的功能
     </p>
     <st-table :dataSource="[]" :columns="columns"></st-table>
     <st-table
       :columns="columns"
+      :alertSelection="{onReset:onSelectionReset}"
+      :rowSelection="{selectedRowKeys:selectedRowKeys,onChange:onSelectionChange}"
       rowKey="id"
       @change="onTableChange"
       :pagination="{current:+query.p || 1}"
@@ -40,6 +43,7 @@ export default {
   data() {
     return {
       tableData,
+      selectedRowKeys: [],
       columns: [
         { title: 'id', dataIndex: 'id' },
         { title: '名称', dataIndex: 'name' },
@@ -48,6 +52,12 @@ export default {
     }
   },
   methods: {
+    onSelectionReset() {
+      this.selectedRowKeys = []
+    },
+    onSelectionChange(keys) {
+      this.selectedRowKeys = keys
+    },
     onDelete(record) {
       console.log('delete ', record)
     },
