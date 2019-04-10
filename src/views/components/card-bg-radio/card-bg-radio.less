@@ -1,0 +1,46 @@
+.st-card-bg-radio {
+  &__image {
+    margin-top: 14px;
+  }
+  &__upload {
+    display: flex;
+  }
+  &__describe {
+    margin-left: 8px;
+    .fz(12px);
+    .lh(17px);
+    .c(rgba(0,0,0,0.25));
+    p {
+      display: flex;
+      align-items: flex-start;
+      margin: 0;
+      >span:last-child{
+        .w(148px);
+        word-break: break-all;
+        text-align: justify;
+      }
+    }
+    > p:first-child{
+      margin-bottom: 16px;
+    }
+  }
+  .custom .ant-radio-inner:after {
+    transform: scale(0.875);
+    opacity: 1;
+    .s(12px,12px);
+    left: 1px;
+    top: 1px;
+  }
+  .first .ant-radio-inner:after {
+    background-color: @card-bg-color-first;
+  }
+  .second .ant-radio-inner:after {
+    background-color: @card-bg-color-second;
+  }
+  .third .ant-radio-inner:after {
+    background-color: @card-bg-color-third;
+  }
+  .fourth .ant-radio-inner:after {
+    background-color: @card-bg-color-fourth;
+  }
+}
