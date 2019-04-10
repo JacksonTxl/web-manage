@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-on:change="$emit('change', this.setFilterSlider().infoList)">
     <st-checkbox-button-group v-model="weekArr">
       <st-checkbox-button-item
         v-for="item in weekList"
@@ -73,7 +73,8 @@ import { constant } from 'lodash-es'
 export default {
   name: 'StShopHourPicker',
   model: {
-    prop: 'value'
+    prop: 'value',
+    event: 'change'
   },
   props: {
     value: {
