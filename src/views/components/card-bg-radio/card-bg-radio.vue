@@ -1,12 +1,19 @@
 <template>
   <div :class="cardRadio()">
-    <a-radio-group v-model="value">
-      <a-radio :class="i.className" v-for="(i,index) in cardBgList" :key="index" :value="i.id">{{i.label}}</a-radio>
+    <a-radio-group v-model="radioIndex">
+      <a-radio :class="i.className" v-for="(i,index) in cardBgList" :key="index" :value="i.index"></a-radio>
+      <a-radio :value="0">自定义背景</a-radio>
     </a-radio-group>
     <div :class="cardRadio('image')">
-      <img v-if="value!==4" :src="cardBgList[value].url" width="192" height="108" alt="会员卡背景">
+      <img
+        v-if="radioIndex!==0&&cardBgList[bgIndex]"
+        :src="cardBgList[bgIndex].url"
+        width="192"
+        height="108"
+        alt="会员卡背景"
+      >
       <div v-else :class="cardRadio('upload')">
-        <file-upload :list="fileList" @change="onImgChange"></file-upload>
+        <file-upload width="192px" height="108px" :list="fileList" @change="onImgChange"></file-upload>
         <div :class="cardRadio('describe')">
           <p>
             <span>1.</span>
@@ -19,6 +26,11 @@
         </div>
       </div>
     </div>
+    {{fileList}}
+    <p>
+
+    {{cardBgList}}
+    </p>
   </div>
 </template>
 <script>
@@ -35,56 +47,141 @@ export default {
   },
   subscriptions() {
     return {
-      cardBgList1: this.cardBgService.cardBgList$
+      cardBgList: this.cardBgService.cardBgList$,
+      backups: this.cardBgService.cardBgList$
     }
   },
+  beforeCreate() {
+    this.cardBgService.getCardBgListAction$.dispatch()
+  },
   mounted() {
-    console.log(this.cardBgList1)
+    this.init()
+  },
+  computed: {
+    bgIndex() {
+      return this.radioIndex === 0 ? 4 : this.radioIndex - 1
+    }
   },
   data() {
     return {
-      fileList: [],
-      value: 4,
-      cardBgList: [
-        {
-          id: 0,
-          className: 'first custom',
-          label: '',
-          url: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/VZ0RGBwTX7FA1yKb.png'
-        },
-        {
-          id: 1,
-          className: 'second custom',
-          label: '',
-          url: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/oRoVYhYc26wVMKb9.png'
-        },
-        {
-          id: 2,
-          className: 'third custom',
-          label: '',
-          url: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/CHrzOBv71D5_rK1i.png'
-        },
-        {
-          id: 3,
-          className: 'fourth custom',
-          label: '',
-          url: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/pAc7WsQ0BFhFBzGK.png'
-        },
-        {
-          id: 4,
-          className: '',
-          label: '自定义背景',
-          url: ''
+      // radioIndex
+      radioIndex: 0,
+      // 选择的cardBg
+      cardBg: {
+        id: 0,
+        path: '',
+        url: '',
+        index: 1
+      },
+      // 自定义cardBg
+      customCardBg: {
+        id: 0,
+        path: '',
+        url: '',
+        index: 0
+      },
+      // 回显的自定义bg
+      fileList: []
+    }
+  },
+  watch: {
+    value: {
+      handler(newVal, oldVal) {
+        this.radioIndex = newVal.index
+        if (newVal.index === 0) {
+          this.cardBg = JSON.parse(JSON.stringify(newVal))
+          this.customCardBg = JSON.parse(JSON.stringify(newVal))
+          this.fileList = [
+            {
+              image_id: newVal.id,
+              image_key: newVal.url
+            }
+          ]
+        } else {
+          this.cardBgList = JSON.parse(JSON.stringify(this.backups))
+          let i = newVal.index
+          --i
+          this.cardBgList[i].id = newVal.id
+          this.cardBg.id = this.cardBgList[i].id
+          this.cardBg.path = this.cardBgList[i].path
+          this.cardBg.url = this.cardBgList[i].url
+          this.cardBg.index = this.cardBgList[i].index
         }
-      ]
+      },
+      deep: true
+    },
+    radioIndex(newVal, oldVal) {
+      console.log(this.customCardBg)
+      if (newVal !== 0) {
+        let i = newVal
+        --i
+        this.cardBg.id = this.cardBgList[i].id
+        this.cardBg.path = this.cardBgList[i].path
+        this.cardBg.url = this.cardBgList[i].url
+        this.cardBg.index = this.cardBgList[i].index
+      } else {
+        this.cardBg.id = this.customCardBg.id
+        this.cardBg.path = this.customCardBg.path
+        this.cardBg.url = this.customCardBg.url
+        this.cardBg.index = this.customCardBg.index
+      }
+      this.$emit('input', this.cardBg)
+      this.$emit('change', this.cardBg)
+    }
+  },
+  props: {
+    value: {
+      type: Object,
+      default() {
+        return {
+          id: 0,
+          path: '',
+          url: '',
+          index: 1
+        }
+      }
     }
   },
   methods: {
-    onChange(e) {
-      console.log('radio checked', e.target.value)
+    init() {
+      this.radioIndex = this.value.index
+      if (this.value.index === 0) {
+        this.cardBg = JSON.parse(JSON.stringify(this.value))
+        this.customCardBg = JSON.parse(JSON.stringify(this.value))
+        this.fileList = [
+          {
+            image_id: this.value.id,
+            image_key: this.value.url
+          }
+        ]
+      } else {
+        let i = this.value.index
+        --i
+        console.log(i)
+        console.log(this.cardBgList)
+        this.cardBgList[i].id = this.value.id
+        this.cardBg.id = this.cardBgList[i].id
+        this.cardBg.path = this.cardBgList[i].path
+        this.cardBg.url = this.cardBgList[i].url
+        this.cardBg.index = this.cardBgList[i].index
+      }
     },
     onImgChange(fileList) {
-      console.log('file changed, fileList: ', fileList)
+      if (fileList.length) {
+        this.customCardBg.id = fileList[0].image_id
+        this.customCardBg.path = fileList[0].image_key
+        this.customCardBg.url = ''
+        this.customCardBg.index = 0
+      } else {
+        this.customCardBg.id = undefined
+        this.customCardBg.path = ''
+        this.customCardBg.url = ''
+        this.customCardBg.index = 0
+        this.fileList = []
+      }
+      this.cardBg = JSON.parse(JSON.stringify(this.customCardBg))
+      this.$emit('input', this.cardBg)
+      this.$emit('change', this.cardBg)
     }
   }
 }
