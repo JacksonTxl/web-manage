@@ -178,18 +178,11 @@
       <a-row :gutter="8">
         <a-col offset="1" :lg="22">
           <st-form-item label="营业时间">
-            <st-checkbox-button-group v-model="weekArr">
-              <st-checkbox-button-item
-                v-for="item in weekList"
-                :key="item.value"
-                :value="item.value"
-              >{{item.label}}</st-checkbox-button-item>
-            </st-checkbox-button-group>
-            <st-slider
-              class="page-brand-shop-add__slider"
-              :getSlider="getSlider"
-              @change="sliderChange"
-            ></st-slider>
+            <shop-hour-picker
+              v-model="shopInfo.shop_info.business_time"
+              type="shop-hour-picker"
+              @change="sliderCange"
+            ></shop-hour-picker>
           </st-form-item>
         </a-col>
       </a-row>
@@ -206,7 +199,7 @@ import { RuleConfig } from '@/constants/rule'
 import { OssService } from '@/services/oss.service'
 import { MessageService } from '@/services/message.service'
 import { ShopService } from '@/views/pages/shop/setting/shop.service'
-
+import shopHourPicker from '@/views/components/shop-hour-picker/shop-hour-picker.vue'
 export default {
   serviceInject() {
     return {
@@ -223,6 +216,9 @@ export default {
   },
   mounted() {
     this.getShopInfo(this.shopInfo.shop_info)
+  },
+  components: {
+    'shop-hour-picker': shopHourPicker
   },
   data() {
     return {
@@ -273,45 +269,10 @@ export default {
         { value: 2, label: '正式营业' },
         { value: 4, label: '已关店' }
       ],
-      // week
-      weekArr: [],
-      weekList: [
-        { value: 1, label: '周一' },
-        { value: 2, label: '周二' },
-        { value: 3, label: '周三' },
-        { value: 4, label: '周四' },
-        { value: 5, label: '周五' },
-        { value: 6, label: '周六' },
-        { value: 7, label: '周日' }
-      ],
-      weekTimeDefault: [
-        '',
-        [9, 18],
-        [9, 18],
-        [9, 18],
-        [9, 18],
-        [9, 18],
-        [9, 18],
-        [9, 18]
-      ],
-      defaultWeekList: [
-        '',
-        '周一',
-        '周二',
-        '周三',
-        '周四',
-        '周五',
-        '周六',
-        '周日'
-      ],
+
       // upload
       loading: false,
-      imageUrl: '',
-      getSlider: {
-        disabled: false,
-        className: 'st-slider-box',
-        infoList: []
-      }
+      imageUrl: ''
     }
   },
   watch: {
@@ -319,47 +280,6 @@ export default {
       deep: true,
       handler(newVal, oldVal) {
         this.shopData.service_ids = newVal
-      }
-    },
-    weekArr: {
-      deep: true,
-      handler(newVal, oldVal) {
-        // copy
-        let a = [...newVal]
-        // 排序
-        a.sort()
-        // 传入slider的数组
-        let s = []
-        // slider里`操作到`的数组
-        let w = []
-        // 生成w数组
-        this.defaultWeekList.forEach(i => {
-          w.push({
-            key: i,
-            disabled: true
-          })
-        })
-        // 生成slider的数组
-        a.forEach(i => {
-          w[i].disabled = false
-          s.push({
-            title: this.defaultWeekList[i],
-            value: this.weekTimeDefault[i],
-            key: i,
-            week: []
-          })
-        })
-        let sOld = [...s]
-        sOld.forEach((item, index) => {
-          s[index].week = JSON.parse(JSON.stringify(w))
-          s[index].week[item.key].disabled = true
-        })
-
-        s.map((item, index) => {
-          item.week = item.week.slice(1)
-          return item
-        })
-        this.getSlider.infoList = s
       }
     }
   },
@@ -383,6 +303,10 @@ export default {
       this.infoService.save(item).subscribe(res => {
         this.infoService.getShopSettingStopInfo().subscribe(res1 => {})
       })
+    },
+    // 获取信息
+    sliderCange(data) {
+      console.log(data)
     },
     // 获取门店信息
     getShopInfo(data) {
@@ -415,16 +339,6 @@ export default {
       })
       this.shopData.shop_cover_image = ''
       this.shopData.shop_status = data.shop_status
-      // week
-      data.business_time.forEach(i => {
-        let start =
-          i.start_time.split(':')[0] * 60 + i.start_time.split(':')[1] * 1
-        let end = i.end_time.split(':')[0] * 60 + i.end_time.split(':')[1] * 1
-        this.weekTimeDefault[i.week_day] = [start / 60, end / 60]
-      })
-      data.business_time.forEach(i => {
-        this.weekArr.push(i.week_day)
-      })
     },
 
     // 添加电话
