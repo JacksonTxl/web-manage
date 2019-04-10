@@ -24,12 +24,8 @@ export default {
   methods: {
     addPersonalCourse() {
       console.log('d')
-      this.$router.push({ name: 'brand-product-course-personal-course-add' })
+      this.$router.push({ name: 'brand-product-course-personal-add' })
     }
   }
 }
 </script>
-
-<style scoped>
-
-</style>
