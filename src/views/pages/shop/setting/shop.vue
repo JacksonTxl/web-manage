@@ -176,9 +176,10 @@
         </a-col>
       </a-row>
       <a-row :gutter="8">
+        <!-- {{shopInfo.shop_info.business_time}} -->
         <a-col offset="1" :lg="22">
           <st-form-item label="营业时间">
-            <st-shop-hour-picker v-model="shopInfo.shop_info.business_time" @change="sliderCange"></st-shop-hour-picker>
+            <st-shop-hour-picker v-model="shopInfo.shop_info.business_time"></st-shop-hour-picker>
           </st-form-item>
         </a-col>
       </a-row>
@@ -295,10 +296,6 @@ export default {
       this.infoService.save(item).subscribe(res => {
         this.infoService.getShopSettingStopInfo().subscribe(res1 => {})
       })
-    },
-    // 获取信息
-    sliderCange(data) {
-      console.log(data)
     },
     // 获取门店信息
     getShopInfo(data) {
