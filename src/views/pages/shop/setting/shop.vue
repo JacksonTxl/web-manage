@@ -176,10 +176,10 @@
         </a-col>
       </a-row>
       <a-row :gutter="8">
-        <!-- {{shopInfo.shop_info.business_time}} -->
+        {{business_time}}
         <a-col offset="1" :lg="22">
           <st-form-item label="营业时间">
-            <st-shop-hour-picker v-model="shopInfo.shop_info.business_time"></st-shop-hour-picker>
+            <st-shop-hour-picker v-model="business_time" @shopHourPicker="shopHourPicker"></st-shop-hour-picker>
           </st-form-item>
         </a-col>
       </a-row>
@@ -210,11 +210,22 @@ export default {
       shopInfo: this.infoService.shopInfo$
     }
   },
+  created() {
+    this.business_time = [
+      { week_day: 2, start_time: '10:00', end_time: '24:00' },
+      { week_day: 3, start_time: '22:00', end_time: '24:00' }
+    ]
+  },
   mounted() {
+    this.business_time = [
+      { week_day: 1, start_time: '10:00', end_time: '24:00' },
+      { week_day: 3, start_time: '22:00', end_time: '24:00' }
+    ]
     this.getShopInfo(this.shopInfo.shop_info)
   },
   data() {
     return {
+      business_time: [],
       // 电话校验方式 1为点击添加校验，0为点击提交校验
       phoneValidtorType: 1,
       shopData: {
@@ -285,6 +296,9 @@ export default {
     }
   },
   methods: {
+    shopHourPicker(data) {
+      console.log(data, '组件传回来的数据')
+    },
     // 删除店招
     settingDel(item) {
       this.infoService.save(item).subscribe(res => {
