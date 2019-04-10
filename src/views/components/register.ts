@@ -12,5 +12,9 @@ ComponentsKeys.forEach(keyPath => {
   if (/(#)/.test(parsed.name)) {
     return
   }
+  if (!component.name) {
+    console && console.warn(`component [${parsed.name}] should give a name`)
+    return
+  }
   Vue.component(component.name, component)
 })
