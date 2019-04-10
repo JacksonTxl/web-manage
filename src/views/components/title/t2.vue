@@ -3,3 +3,9 @@
     <slot></slot>
   </h2>
 </template>
+
+<script>
+export default {
+  name: 'StT2'
+}
+</script>

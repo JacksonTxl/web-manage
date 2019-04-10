@@ -1,5 +1,5 @@
 <template>
-  <div v-on:change="$emit('change', this.setFilterSlider().infoList)">
+  <div>
     <st-checkbox-button-group v-model="weekArr">
       <st-checkbox-button-item
         v-for="item in weekList"
@@ -111,6 +111,7 @@ export default {
   },
   mounted() {
     // 初始话数据
+    console.log(this.value, '初始话数据')
     this.setSlider = this.getFilterSlider({ business_time: this.value })
   },
   methods: {
@@ -140,7 +141,7 @@ export default {
     // 获取改变后的slider数据
     sliderFunc(data) {
       this.getSliderArr = data
-      // console.log('sliderFunc', data)
+      this.$emit('shopHourPicker', this.setFilterSlider().infoList)
     },
     // 获取的数据对格式进行处理
     getFilterSlider(getSliderData) {
@@ -263,7 +264,6 @@ export default {
       setSlider.infoList = filterData
       return setSlider
     },
-    filterWeek() {},
     filterSlider(item) {
       let self = this
       return {
@@ -303,12 +303,8 @@ export default {
   },
   created() {},
   watch: {
-    setSlider: {
-      handler() {
-        // console.log(this.setFilterSlider().infoList)
-        this.$emit('change', this.setFilterSlider().infoList)
-      },
-      deep: true
+    value() {
+      this.setSlider = this.getFilterSlider({ business_time: this.value })
     },
     weekArr: {
       handler() {
@@ -340,6 +336,7 @@ export default {
           return a.week_day - b.week_day
         })
         self.setSlider = self.getFilterSlider1(self.setSlider)
+        this.$emit('shopHourPicker', this.setFilterSlider().infoList)
       }
     }
   }

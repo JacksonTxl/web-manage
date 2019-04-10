@@ -22,7 +22,7 @@ export default {
   },
   data() {
     return {
-      currentIndex: 0,
+      currentIndex: 2,
       stepArr: [
         {
           title: '创建私教课',
