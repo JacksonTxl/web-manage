@@ -2,12 +2,6 @@
 import { merge } from 'lodash-es'
 export default {
   name: 'StTable',
-  methods: {
-    clickHandler() {
-      console.log('clickHandler')
-      this.$emit('resetSelection')
-    }
-  },
   props: {
     alertSelection: {
       type: Object,
@@ -38,7 +32,7 @@ export default {
       },
       this.$attrs
     )
-    return this.alertSelection.onReset ? h('div', { class: 'st-table-wapper' }, [
+    const ce = typeof this.alertSelection.onReset !== 'undefined' ? h('div', { class: 'st-table-wapper' }, [
       h('a-alert', {
         class: 'st-table-alert mg-b8',
         props: { type: 'info', showIcon: true },
@@ -71,6 +65,7 @@ export default {
       },
       this.$slots
     )
+    return ce
   }
 }
 </script>
