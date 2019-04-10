@@ -74,7 +74,6 @@ export default {
   },
   methods: {
     addTreeNode() {
-      this.isEditSelf = true
       this.$emit('add-item', this.item)
     },
     cancelEdit() {
@@ -112,7 +111,7 @@ export default {
     if (this.level === 0) {
       this.isOpen = true
     } else {
-      this.$set(this.item, 'isEdit', this.isEdit)
+      this.$set(this.item, 'isEdit', false)
     }
   }
 }

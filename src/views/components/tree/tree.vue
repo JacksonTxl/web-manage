@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { TreeToMap } from '@/utils/tree-to-map.js'
 import TreeItem from './tree-item.vue'
 import { cloneDeep } from 'lodash-es'
 export default {
@@ -43,6 +44,11 @@ export default {
       this.$emit('node-click', item)
     },
     addItem(item) {
+      // const isChildren = true
+      // while (isChildren) {
+      //   this.treeData.children
+      // }
+      // console.log(this.treeData)
       this.treeDataSelf = cloneDeep(this.treeData)
     },
     deleteItem(item) {
