@@ -7,7 +7,7 @@
             <st-form :form="form">
               <st-form-item label="品牌logo">
                 <input type="hidden" v-decorator="brandRules.image_url">
-                <file-upload :list="fileList" :width="100" :height="100" @change="onImgChange"></file-upload>
+                <file-upload :list="fileList" width="100px" height="100px" @change="onImgChange"></file-upload>
               </st-form-item>
               <st-form-item label="品牌名称">
                 <a-input placeholder="请输入品牌名称" v-decorator="brandRules.brand_name" disabled></a-input>
