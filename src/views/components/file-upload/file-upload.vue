@@ -29,8 +29,8 @@ import { AppConfig } from '@/constants/config'
 import { MessageService } from '@/services/message.service'
 import { imgFilter } from '@/filters/resource.filters'
 const defaultSize = {
-  w: 182,
-  h: 114
+  w: '182px',
+  h: '114px'
 }
 export default {
   name: 'FileUpload',
@@ -55,22 +55,36 @@ export default {
     /**
      * 最多可上传图片数量
      */
-    max: {
+    numLimit: {
       type: Number,
       default: 1
+    },
+    /**
+     * 单张图片最大 size，单位 M
+     */
+    sizeLimit: {
+      type: Number,
+      default: 2
+    },
+    /**
+     * 图片类型
+     */
+    fileType: {
+      type: String,
+      default: 'jpg, jpeg, png, bmp'
     },
     /**
      * 图片及上传按钮的宽度
      */
     width: {
-      type: Number,
+      type: String,
       default: defaultSize.w
     },
     /**
      * 图片及上传按钮的宽度
      */
     height: {
-      type: Number,
+      type: String,
       default: defaultSize.h
     },
     /**
@@ -89,20 +103,20 @@ export default {
   },
   computed: {
     isShowUploadBtn() {
-      return this.fileList.length < this.max
+      return this.fileList.length < this.numLimit
     },
     isShowFileList() {
       return this.fileList.length
     },
     isUploadBtnInvisible() {
-      return this.max === 1 && this.fileList.length
+      return this.numLimit === 1 && this.fileList.length
     },
     multiple() {
-      return this.max > 1
+      return this.numLimit > 1
     },
     imgFilterOpts() {
-      const w = (this.width || defaultSize.w) * 2
-      const h = (this.height || defaultSize.h) * 2
+      const w = parseInt(this.width || defaultSize.w) * 2
+      const h = parseInt(this.height || defaultSize.h) * 2
       return {
         w,
         h
@@ -111,11 +125,16 @@ export default {
     sizeStyle() {
       const w = this.width || defaultSize.w
       const h = this.height || defaultSize.h
-      return `width: ${w}px;  height: ${h}px`
+      return `width: ${w};  height: ${h}`
     }
   },
   methods: {
     upload(data) {
+      const fileCheckRet = this.fileCheck(data)
+      if (!fileCheckRet.isValid) {
+        this.MessageService.error({ content: fileCheckRet.msg })
+        return
+      }
       this.isLoading = true
       this.Oss.put({
         file: data.file
@@ -140,50 +159,26 @@ export default {
       fileList.splice(index, 1)
       this.fileList = fileList
       this.$emit('change', this.fileList)
+    },
+    fileCheck(data) {
+      const { size, type } = data.file
+      const { sizeLimit, fileType } = this
+      if (!fileType.includes(type.split('/')[1])) {
+        return {
+          isValid: false,
+          msg: `请上传${fileType}格式的文件`
+        }
+      }
+      if (size > sizeLimit * 1024 * 1024) {
+        return {
+          isValid: false,
+          msg: `最大不能超过${sizeLimit}M`
+        }
+      }
+      return {
+        isValid: true
+      }
     }
   }
 }
 </script>
-<style lang="less">
-.st-file-upload {
-  position: relative;
-  margin-bottom: -16px;
-  margin-right: -16px;
-  &__item {
-    display: inline-block;
-    margin-right: 16px;
-    margin-bottom: 16px;
-    position: relative;
-    transition: all .5s;
-  }
-  &__item-img,
-  &__btn {
-    display: inline-block;
-  }
-  &__btn {
-    margin-right: 16px;
-    margin-bottom: 16px;
-  }
-  &__list,
-  &__btn {
-    vertical-align: top;
-  }
-  &__actions {
-    position: absolute;
-    width: 100%;
-    height: 32px;
-    left: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, .45);
-    text-align: right;
-    padding: 0 6px;
-  }
-  &__actions-item {
-    font-size: 12px;
-    cursor: pointer;
-    line-height: 32px;
-    padding: 0 6px;
-    color: rgba(255, 255, 255, .85);
-  }
-}
-</style>

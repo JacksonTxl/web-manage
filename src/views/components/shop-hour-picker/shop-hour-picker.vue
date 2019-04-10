@@ -1,5 +1,5 @@
 <template>
-  <div v-on:change="$emit('change', this.setFilterSlider().infoList)">
+  <div>
     <st-checkbox-button-group v-model="weekArr">
       <st-checkbox-button-item
         v-for="item in weekList"
@@ -72,6 +72,39 @@
 import { constant } from 'lodash-es'
 export default {
   name: 'StShopHourPicker',
+  provide() {
+    return {
+      checkboxButtonGroupProvide: {
+        groupValue: this.stValueData
+      },
+      emitCheckboxButtonGroup: data => {
+        let arr = [...new Set([...this.stValueData.value])]
+        let newArr = []
+        if (data.value) {
+          // 选中
+          arr.push(data.key)
+        } else {
+          // 移除
+          if (arr.includes(data.key)) {
+            arr.splice(arr.indexOf(data.key), 1)
+          }
+        }
+        // 去除value里无用的key
+        arr.forEach((i, index) => {
+          if (this.initArr.includes(i)) {
+            newArr.push(i)
+          }
+        })
+        newArr = [...new Set(newArr)]
+        this.$set(this.stValueData, 'value', newArr)
+        this.$emit('modelCheckboxButtonChange', newArr)
+        this.$emit('change', newArr)
+      },
+      initCheckboxButtonGroup: data => {
+        this.initArr.push(data)
+      }
+    }
+  },
   model: {
     prop: 'value',
     event: 'change'
@@ -111,6 +144,7 @@ export default {
   },
   mounted() {
     // 初始话数据
+    console.log(this.value, '初始话数据')
     this.setSlider = this.getFilterSlider({ business_time: this.value })
   },
   methods: {
@@ -140,7 +174,7 @@ export default {
     // 获取改变后的slider数据
     sliderFunc(data) {
       this.getSliderArr = data
-      // console.log('sliderFunc', data)
+      this.$emit('shopHourPicker', this.setFilterSlider().infoList)
     },
     // 获取的数据对格式进行处理
     getFilterSlider(getSliderData) {
@@ -263,7 +297,6 @@ export default {
       setSlider.infoList = filterData
       return setSlider
     },
-    filterWeek() {},
     filterSlider(item) {
       let self = this
       return {
@@ -303,12 +336,8 @@ export default {
   },
   created() {},
   watch: {
-    setSlider: {
-      handler() {
-        // console.log(this.setFilterSlider().infoList)
-        this.$emit('change', this.setFilterSlider().infoList)
-      },
-      deep: true
+    value() {
+      this.setSlider = this.getFilterSlider({ business_time: this.value })
     },
     weekArr: {
       handler() {
@@ -340,6 +369,7 @@ export default {
           return a.week_day - b.week_day
         })
         self.setSlider = self.getFilterSlider1(self.setSlider)
+        this.$emit('shopHourPicker', this.setFilterSlider().infoList)
       }
     }
   }

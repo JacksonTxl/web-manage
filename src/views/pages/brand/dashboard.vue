@@ -153,6 +153,7 @@ export default {
     imgFilter
   },
   subscriptions() {
+    console.log('sub', this.dashboardService.shopInfo$)
     const shopList = this.dashboardService.shopInfo$
     const page = this.dashboardService.page$
     return {

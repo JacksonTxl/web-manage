@@ -43,12 +43,23 @@ export default {
     getNodeItemDetail(item) {
       this.$emit('node-click', item)
     },
+    traverseTree(node, tree) {
+      const isChildren = true
+      console.log(tree)
+      tree.children.map(item => {
+        if (item.name === node.name) {
+          item.isEdit = true
+        }
+        if (item.children) {
+          this.traverseTree(node, item.children)
+        } else {
+          return item
+        }
+      })
+      console.log(this.treeData)
+    },
     addItem(item) {
-      // const isChildren = true
-      // while (isChildren) {
-      //   this.treeData.children
-      // }
-      // console.log(this.treeData)
+      this.traverseTree(item, cloneDeep(this.treeData))
       this.treeDataSelf = cloneDeep(this.treeData)
     },
     deleteItem(item) {
