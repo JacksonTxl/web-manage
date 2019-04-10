@@ -26,6 +26,7 @@ import StMoreDropdown from './more-dropdown/more-dropdown.vue'
 import StHelpPopover from './help-popover/help-popover.vue'
 import StCardHourPicker from './card-hour-picker/card-hour-picker.vue'
 import FileUpload from './file-upload/file-upload.vue'
+import shopHourPicker from './shop-hour-picker/shop-hour-picker.vue'
 import './form/index.js'
 import './title/index.js'
 
@@ -55,3 +56,4 @@ Vue.component(StMoreDropdown.name, StMoreDropdown)
 Vue.component(StHelpPopover.name, StHelpPopover)
 Vue.component(StCardHourPicker.name, StCardHourPicker)
 Vue.component(FileUpload.name, FileUpload)
+Vue.component(shopHourPicker.name, shopHourPicker)

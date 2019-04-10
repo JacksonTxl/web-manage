@@ -199,7 +199,6 @@ import { RuleConfig } from '@/constants/rule'
 import { OssService } from '@/services/oss.service'
 import { MessageService } from '@/services/message.service'
 import { ShopService } from '@/views/pages/shop/setting/shop.service'
-import shopHourPicker from '@/views/components/shop-hour-picker/shop-hour-picker.vue'
 export default {
   serviceInject() {
     return {
@@ -216,9 +215,6 @@ export default {
   },
   mounted() {
     this.getShopInfo(this.shopInfo.shop_info)
-  },
-  components: {
-    'shop-hour-picker': shopHourPicker
   },
   data() {
     return {
