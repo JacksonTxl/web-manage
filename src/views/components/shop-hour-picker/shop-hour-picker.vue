@@ -1,6 +1,6 @@
 <template>
   <div>
-    <st-checkbox-button-group v-model="weekArr">
+    <st-checkbox-button-group v-model="weekArr" @change="buttonchange">
       <st-checkbox-button-item
         v-for="item in weekList"
         :key="item.value"
@@ -74,7 +74,7 @@ export default {
   name: 'StShopHourPicker',
   model: {
     prop: 'value',
-    event: 'change'
+    event: 'shopHourPicker'
   },
   props: {
     value: {
@@ -115,6 +115,37 @@ export default {
     this.setSlider = this.getFilterSlider({ business_time: this.value })
   },
   methods: {
+    buttonchange() {
+      let self = this
+      let weekArr = JSON.parse(JSON.stringify(this.weekArr))
+      weekArr.sort()
+      if (weekArr.length > self.weekArrRetain.length) {
+        if (self.getArrDifference(weekArr, self.weekArrRetain).length > 0) {
+          self.setSlider.business_time.push({
+            week_day: self.getArrDifference(weekArr, self.weekArrRetain)[0],
+            start_time: '09:00',
+            end_time: '18:00'
+          })
+        }
+      } else {
+        if (self.getArrDifference(weekArr, self.weekArrRetain).length > 0) {
+          self.setSlider.business_time.forEach((item, index) => {
+            if (
+              self.getArrDifference(weekArr, self.weekArrRetain)[0] ===
+              item.week_day
+            ) {
+              self.setSlider.business_time.splice(index, 1)
+            }
+          })
+        }
+      }
+      self.weekArrRetain = weekArr
+      self.setSlider.business_time.sort((a, b) => {
+        return a.week_day - b.week_day
+      })
+
+      self.setSlider = self.getFilterSlider1(self.setSlider)
+    },
     copyTo(copyIndex) {
       this.copyIndex = copyIndex
     },
@@ -215,6 +246,10 @@ export default {
           self.getWeek.push(week_day)
         })
         getSlider.infoList = filterSlider
+        setTimeout(() => {
+          self.$emit('shopHourPicker', self.setFilterSlider().infoList)
+        })
+
         return self.copyWeek(getSlider)
       }
     },
@@ -305,40 +340,12 @@ export default {
   watch: {
     value() {
       this.setSlider = this.getFilterSlider({ business_time: this.value })
-    },
-    weekArr: {
-      handler() {
-        let self = this
-        let weekArr = JSON.parse(JSON.stringify(this.weekArr))
-        weekArr.sort()
-        if (weekArr.length > self.weekArrRetain.length) {
-          if (self.getArrDifference(weekArr, self.weekArrRetain).length > 0) {
-            self.setSlider.business_time.push({
-              week_day: self.getArrDifference(weekArr, self.weekArrRetain)[0],
-              start_time: '09:00',
-              end_time: '18:00'
-            })
-          }
-        } else {
-          if (self.getArrDifference(weekArr, self.weekArrRetain).length > 0) {
-            self.setSlider.business_time.forEach((item, index) => {
-              if (
-                self.getArrDifference(weekArr, self.weekArrRetain)[0] ===
-                item.week_day
-              ) {
-                self.setSlider.business_time.splice(index, 1)
-              }
-            })
-          }
-        }
-        self.weekArrRetain = weekArr
-        self.setSlider.business_time.sort((a, b) => {
-          return a.week_day - b.week_day
-        })
-        self.setSlider = self.getFilterSlider1(self.setSlider)
-        this.$emit('shopHourPicker', this.setFilterSlider().infoList)
-      }
     }
+    // weekArr: {
+    //   handler() {
+
+    //   }
+    // }
   }
 }
 </script>
