@@ -35,6 +35,7 @@
 </template>
 <script>
 import { CardBgService } from './card-bg-radio.service'
+import _ from 'lodash'
 export default {
   name: 'StCardBgRadio',
   bem: {
@@ -56,6 +57,8 @@ export default {
   },
   mounted() {
     this.init()
+    var a = { x: 1 }
+    console.log(_.cloneDeep(a))
   },
   computed: {
     bgIndex() {
@@ -89,8 +92,8 @@ export default {
       handler(newVal, oldVal) {
         this.radioIndex = newVal.index
         if (newVal.index === 0) {
-          this.cardBg = JSON.parse(JSON.stringify(newVal))
-          this.customCardBg = JSON.parse(JSON.stringify(newVal))
+          this.cardBg = _.cloneDeep(newVal)
+          this.customCardBg = _.cloneDeep(newVal)
           this.fileList = [
             {
               image_id: newVal.id,
@@ -98,7 +101,7 @@ export default {
             }
           ]
         } else {
-          this.cardBgList = JSON.parse(JSON.stringify(this.backups))
+          this.cardBgList = _.cloneDeep(this.backups)
           let i = newVal.index
           --i
           this.cardBgList[i].id = newVal.id
@@ -146,8 +149,8 @@ export default {
     init() {
       this.radioIndex = this.value.index
       if (this.value.index === 0) {
-        this.cardBg = JSON.parse(JSON.stringify(this.value))
-        this.customCardBg = JSON.parse(JSON.stringify(this.value))
+        this.cardBg = _.cloneDeep(this.value)
+        this.customCardBg = _.cloneDeep(this.value)
         this.fileList = [
           {
             image_id: this.value.id,
@@ -179,7 +182,7 @@ export default {
         this.customCardBg.index = 0
         this.fileList = []
       }
-      this.cardBg = JSON.parse(JSON.stringify(this.customCardBg))
+      this.cardBg = _.cloneDeep(this.customCardBg)
       this.$emit('input', this.cardBg)
       this.$emit('change', this.cardBg)
     }

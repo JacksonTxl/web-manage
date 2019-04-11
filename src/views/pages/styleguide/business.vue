@@ -11,6 +11,7 @@
       <st-tag type="shop-trial"/>
       <st-tag type="shop-presale"/>
       <st-tag type="shop-close"/>
+      <st-tag type="period-card"/>
       <st-t3 style="display:inline-block">上海旗舰店</st-t3>
     </section>
     <section class="mg-t48">
