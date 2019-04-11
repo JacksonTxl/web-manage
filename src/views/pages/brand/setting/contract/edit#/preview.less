@@ -1,0 +1,77 @@
+.page-setting-contract-edit {
+  .preview {
+    min-width: 768px;
+    .pd-t(40px);
+    .pd-lr(8px);
+    .info-item {
+      display: flex;
+      .mg-b(24px);
+    }
+    .info-label {
+      float: left;
+      .fz(14px);
+      .lh(22px);
+      font-weight: 500;
+      .c(@title);
+    }
+    .info-text {
+      flex: 1;
+      .fz(14px);
+      .lh(22px);
+      .c(@text);
+      overflow: hidden;
+    }
+    &__header {
+      .pos-r;
+    }
+    &__brand-logo {
+      .pos-a;
+      left: 0;
+      top: 0;
+      .s(48px, 48px);
+    }
+    &__title {
+      .fz(24px);
+      .c(@title);
+      .lh(32px);
+      .ta-c;
+    }
+    &__subtitle {
+      .fz(16px);
+      .lh(24px);
+      .ta-c;
+      .c(@text-light);
+      font-weight: 400;
+    }
+    &__contract-no {
+      .pos-a;
+      right: 0;
+      top: 0;
+      .fz(14px);
+      .lh(22px);
+    }
+    &__basic {
+      .mg-t(32px);
+      display: flex;
+      justify-content: space-between;
+    }
+    &__basic-list {
+      flex: 1;
+    }
+    &__basic-list-item {
+      .w(33.33%);
+    }
+    &__avatar {
+      flex: 0 0 90px;
+      .bg(#333);
+      .w(90px);
+      .h(120px);
+    }
+    &__advanced {
+      .mg-t(24px);
+    }
+    &__footer {
+      .mg-t(56px);
+    }
+  }
+}
