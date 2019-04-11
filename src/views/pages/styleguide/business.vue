@@ -33,12 +33,23 @@
         </a-row>
       </st-form>
     </section>
+
+    <h3 class="mg-t48">st-image-upload</h3>
+    <section class="sg-app-content">
+      <st-panel>
+        <image-upload-demo></image-upload-demo>
+      </st-panel>
+    </section>
   </div>
 </template>
 
 <script>
+import ImageUploadDemo from './business#/image-upload.vue'
 export default {
   name: 'ZlxTest',
+  components: {
+    ImageUploadDemo
+  },
   data() {
     return {
       basicInfoRuleList: {
