@@ -18,8 +18,8 @@ export class SetService extends Store<SetState> {
     })
     this.formData$ = new Computed(this.state$.pipe(pluck('formData')))
   }
-  getPersonalBrand(query: GetPersonalBrandInput) {
-    return this.personalApi.getPersonalBrand(query)
+  getPersonalBrandInfo(query: GetPersonalBrandInput) {
+    return this.personalApi.getPersonalBrandInfo(query)
   }
   @Effect()
   addPersonalBrand(params: SetPersonalBrandInput) {
