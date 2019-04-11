@@ -7,8 +7,8 @@
     >
       <img
         class="st-image-upload__item-img"
-        :src="item[fileKey] | imgFilter(computedFilterOptions)"
-        :data-src="item[fileKey] | imgFilter"
+        :src="item[imageUrl] || item[imageKey] | imgFilter(computedFilterOptions)"
+        :data-src="item[imageUrl] || item[imageKey] | imgFilter"
         :style="sizeStyle"
       >
       <slot name="item-extra" :item="item" :index="index"></slot>
@@ -107,7 +107,7 @@ export default {
       default: defaultSize.h
     },
     /**
-     * 初始图片列表 example: [{ file_id: 10000, file_key: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/pLOFb5kCPN4gPQ8H' }]
+     * 初始图片列表 example: [{ image_id: 10000, image_key: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/pLOFb5kCPN4gPQ8H',image_url:'http://...' }]
      */
     list: {
       type: Array,
@@ -121,14 +121,14 @@ export default {
       default: () => ({})
     },
     /**
-     * 后端字段映射 默认file_id,file_key,file_url
+     * 后端字段映射 image_id,image_key,image_url
      */
     props: {
       type: Object,
       default: () => ({
-        file_id: 'file_id',
-        file_key: 'file_key',
-        file_url: 'file_url'
+        image_id: 'image_id',
+        image_key: 'image_key',
+        image_url: 'image_url'
       })
     }
   },
@@ -141,14 +141,14 @@ export default {
     }
   },
   computed: {
-    fileId() {
-      return this.props.file_id
+    imageId() {
+      return this.props.image_id
     },
-    fileKey() {
-      return this.props.file_key
+    imageKey() {
+      return this.props.image_key
     },
-    fileUrl() {
-      return this.props.file_url
+    imageUrl() {
+      return this.props.image_url
     },
     isShowUploadBtn() {
       return this.fileList.length < this.numLimit
@@ -216,8 +216,8 @@ export default {
         .subscribe({
           next: val => {
             this.fileList.push({
-              [this.fileId]: 0,
-              [this.fileKey]: val.fileKey
+              [this.imageId]: 0,
+              [this.imageKey]: val.fileKey
             })
             this.$emit('change', this.fileList)
           },

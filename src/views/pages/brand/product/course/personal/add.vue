@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      currentIndex: 2,
+      currentIndex: 0,
       stepArr: [
         {
           title: '创建私教课',
@@ -42,7 +42,6 @@ export default {
       ]
     }
   },
-
   methods: {
     goNext(e) {
       if (this.currentIndex < 2) {

@@ -36,6 +36,12 @@
     </section>
 
     <h3 class="mg-t48">st-image-upload</h3>
+    <p>
+      [sizeLimit] 自定义图片大小m
+      [numLimit] 最多啊上传图片数量
+      [placeholder] 自定义文字
+      支持图片裁剪，裁剪选项，自定义图片filter,自定义操作区，更多参数参看st-image-upload.vue
+    </p>
     <section class="sg-app-content">
       <st-panel>
         <image-upload-demo></image-upload-demo>

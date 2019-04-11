@@ -9,12 +9,7 @@
       :list="list3"
       placeholder="带裁剪的上传"
       :cropperModal="{title:'标题',cropper:{aspectRatio:1/1}}"
-    >
-      <template slot="actions">
-        <span class="action">设为店招</span>
-        <span class="action">招聘</span>
-      </template>
-    </st-image-upload>
+    ></st-image-upload>
     <st-t3>4 自定义上传区样式</st-t3>
     <st-image-upload :list="list4">
       <st-icon type="wechat"></st-icon>请上传拉
@@ -42,10 +37,10 @@ export default {
       list3: [],
       list4: [],
       list5: [
-        { file_id: '123', file_key: 'image/20190411/nmdNRC_cVqWSjCNg.png' }
+        { image_id: '123', image_key: 'image/20190411/nmdNRC_cVqWSjCNg.png' }
       ],
       list6: [
-        { file_id: '123', file_key: 'image/20190411/nmdNRC_cVqWSjCNg.png' }
+        { image_id: '123', image_key: 'image/20190411/nmdNRC_cVqWSjCNg.png' }
       ]
     }
   }
