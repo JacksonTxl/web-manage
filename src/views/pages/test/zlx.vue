@@ -12,20 +12,34 @@
             ghost html-type="submit">保存</st-button>
         </st-form-item>
     </st-form>
+    <input type="text" v-model="sd">
+    <zlxFull v-model="sd"></zlxFull>
+    {{sd}}
   </div>
 </template>
 
 <script>
+import zlxFull from './zlxFull'
 export default {
   name: 'ZlxTest',
   data() {
     return {
+      sd: [{ h: 9 }],
       basicInfoRuleList: {
         usernameRule1: ['stff_name', { rules: [{ required: true, message: '请填写地址' }] }],
         usernameRule: ['staff_name', { rules: [{ required: true, message: '请填写姓名' }] }]// 姓名
       },
       form: this.$form.createForm(this)
     }
+  },
+  mounted() {
+    this.sd = [{ a: 9 }]
+  },
+  created() {
+    this.sd = [{ c: 8 }]
+  },
+  components: {
+    zlxFull
   },
   methods: {
     save(e) {

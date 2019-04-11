@@ -7,7 +7,7 @@
       <div class="tree-node__content" :style="{'padding-left': paddingLeft}" @click="getTreeNodeOnclick">
         <span class="tree-switch"  @click.stop="toggle" v-if="isFolder&&level!==0">{{ isOpen ? '-' : '+' }}</span>
         <span class="tree-switch__empty" v-else-if="level!==0"></span>
-        <span class="tree-name">{{ item.name }}{{isEditSelf}}</span>
+        <span class="tree-name">{{ item.name }}</span>
         <a-dropdown v-if="level!==0" class="tree-opreation" placement="bottomLeft">
           <div><st-icon type="more"></st-icon></div>
           <a-menu slot="overlay">
@@ -23,7 +23,7 @@
           </a-menu>
         </a-dropdown>
       </div>
-      <div v-if="isEditSelf" stay><a-input></a-input><a href="">保存</a><span @click="cancelEdit">x</span></div>
+      <div v-if="item.isEdit" stay><a-input></a-input><a href="">保存</a><span @click="cancelEdit">x</span></div>
     </div>
     <ul class="st-tree-item" v-show="isOpen" v-if="isFolder">
       <tree-item
