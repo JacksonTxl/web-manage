@@ -1,7 +1,7 @@
 <template>
   <st-panel app>
     <a-row class="mg-b48 mg-t48" :gutter="8">
-      <a-col offset="1" :span="22" >
+      <a-col offset="1" :span="stepsSpan" >
         <st-steps class="mg-l16" :value="currentIndex" :stepArr="stepArr"/>
       </a-col>
     </a-row>
