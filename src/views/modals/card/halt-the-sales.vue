@@ -23,7 +23,7 @@
     <section>
       <footer class="footer">
         <a-button class="cancel">取消</a-button>
-        <a-popconfirm title="确认删除该权限么?" @confirm="onDelete(record.id)">
+        <a-popconfirm title="确认停售该会员卡?" @confirm="onDelete(record.id)">
           <a-button type="danger">确认停售</a-button>
         </a-popconfirm>
       </footer>
