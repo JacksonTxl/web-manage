@@ -15,18 +15,9 @@
     </a-row>
     <section v-if="isShowUnitSet">
       <a-row :gutter="8">
-        <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="单节课有效期">
-            <a-input v-decorator="formRules.unit_valid_days">
-              <div slot="addonAfter" class="st-form-item-unit">天</div>
-            </a-input>
-          </st-form-item>
-        </a-col>
-      </a-row>
-      <a-row :gutter="8">
         <a-col :lg="22" :xs="22" :offset="1">
           <st-form-item label="课程定价">
-            <div class="page-shop-coach-container-coach">
+            <st-container>
               <a-table :columns="priceTableColumns" :dataSource="priceTableData" :pagination="false">
                 <!-- 教练等级 -->
                 <template slot="priceGrade" slot-scope="text, record">
@@ -94,7 +85,7 @@
                 </template>
               </a-table>
               <st-button type="dashed" block class="mg-t8" @click="addPriceRecord">添加</st-button>
-            </div>
+            </st-container>
           </st-form-item>
         </a-col>
       </a-row>
@@ -144,12 +135,7 @@ const priceTableData = [{
 }]
 
 const formRules = {
-  unit_valid_days: [
-    'unit_valid_days', {
-      rules: [],
-      initialValue: 7
-    }
-  ]
+
 }
 
 export default {

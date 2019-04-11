@@ -38,9 +38,18 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="参考定价" required>
+        <st-form-item label="参考定价">
           <a-input v-decorator="formRules.course_price">
             <div slot="addonAfter" class="st-form-item-unit">元/节</div>
+          </a-input>
+        </st-form-item>
+      </a-col>
+    </a-row>
+    <a-row :gutter="8">
+      <a-col :lg="10" :xs="22" :offset="1">
+        <st-form-item label="课有效期">
+          <a-input v-decorator="formRules.unit_valid_days">
+            <div slot="addonAfter" class="st-form-item-unit">天/节</div>
           </a-input>
         </st-form-item>
       </a-col>
@@ -121,10 +130,13 @@ const formRules = {
   ],
   course_price: [
     'course_price', {
-      rules: [{
-        required: true,
-        message: '请输入参考定价'
-      }]
+      rules: []
+    }
+  ],
+  unit_valid_days: [
+    'unit_valid_days', {
+      rules: [],
+      initialValue: 7
     }
   ],
   course_image: ['course_image']
