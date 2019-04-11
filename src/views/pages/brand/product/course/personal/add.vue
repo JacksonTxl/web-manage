@@ -43,7 +43,7 @@ export default {
     }
   },
   methods: {
-    goNext(e) {
+    goNext() {
       if (this.currentIndex < 2) {
         this.currentIndex = this.currentIndex + 1
       }

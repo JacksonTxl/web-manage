@@ -13,15 +13,16 @@
     }
     .page-content {
       flex: auto;
-      min-width: 690px;
       padding: 0 24px;
       .bg(#fff);
       &-card-name {
-        min-width: 640px;
         padding: 32px 0;
+        &__row {
+          border-bottom: 1px solid #e9e9e9;
+          margin-bottom: 32px;
+        }
       }
       &-card-admission-range {
-        min-width: 640px;
         .page-admission-range-shop {
           position: relative;
           padding: 0 12px;
@@ -51,7 +52,6 @@
         }
       }
       &-card-price-setting {
-        min-width: 640px;
         .page-price-setting-set {
           position: relative;
           padding: 12px 12px 0;
@@ -85,7 +85,6 @@
         }
       }
       &-card-support-sales {
-        min-width: 640px;
         .page-support-sales-shop {
           position: relative;
           padding: 0 12px;
@@ -115,10 +114,8 @@
         }
       }
       &-card-time {
-        min-width: 640px;
       }
       &-card-transfer {
-        min-width: 640px;
         &-body {
           display: flex;
           align-items: center;
@@ -132,7 +129,6 @@
         }
       }
       &-card-bg{
-        min-width: 640px;
         .page-card-bg {
           display: flex;
           align-items: center;

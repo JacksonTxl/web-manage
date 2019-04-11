@@ -10,7 +10,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
-          <a-select placeholder="请选择" v-decorator="formRules.category_id">
+          <a-select placeholder="请选择课程类型" v-decorator="formRules.category_id">
             <a-select-option value="2">课程类型A</a-select-option>
             <a-select-option value="1">课程类型B</a-select-option>
           </a-select>
@@ -20,7 +20,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
-          <a-select placeholder="请选择" v-decorator="formRules.train_aim">
+          <a-select placeholder="请选择训练目的" v-decorator="formRules.train_aim">
             <a-select-option value="2">训练目的A</a-select-option>
             <a-select-option value="1">训练目的B</a-select-option>
           </a-select>
@@ -58,7 +58,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="图片" >
           <div class="page-upload-container">
-            <file-upload :list="fileList" @change="onImgChange"></file-upload>
+            <st-image-upload :list="fileList" @change="onImgChange"></st-image-upload>
             <input type="hidden" v-decorator="formRules.image_id">
             <div class="page-course-photo-des mg-l16">
               <div class="page-course-item">
@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { CreatePersonalCourseService } from './create-personal-course.service'
+import { AddService } from '../add.service'
 const formRules = {
   course_name: [
     'course_name', {
@@ -147,7 +147,7 @@ export default {
   name: 'create-personal-course',
   serviceInject() {
     return {
-      createPersonalCourseService: CreatePersonalCourseService
+      addService: AddService
     }
   },
   subscriptions() {
@@ -156,10 +156,7 @@ export default {
     return {
       form: this.$form.createForm(this),
       formRules,
-      fileList: [{
-        image_id: 10000,
-        image_key: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/pLOFb5kCPN4gPQ8H'
-      }]
+      fileList: []
     }
   },
   methods: {
@@ -168,7 +165,7 @@ export default {
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
         console.log('step 1 data', data)
-        this.createPersonalCourseService.addPersonalBrand(data).subscribe(() => {
+        this.addService.addPersonalBrand(data).subscribe(() => {
           this.$emit('goNext')
         })
       })
