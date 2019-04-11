@@ -2,11 +2,12 @@
   <st-form :form="form" @submit="save" class="page-set-sell-price" labelWidth="100px">
     <a-row :gutter="8">
       <a-col :lg="10" :offset="1">
+        <input type="hidden" v-decorator="formRules.course_id">
         <st-form-item label="私教课程">
-          <a-input placeholder="课程名称" disabled/>
+          <a-input placeholder="课程名称" disabled v-decorator="formRules.course_name"/>
         </st-form-item>
         <st-form-item label="售价设置" required>
-          <a-radio-group :defaultValue="1" @change="onChange">
+          <a-radio-group @change="onChange" v-decorator="formRules.price_setting">
             <a-radio :value="1">售卖场馆自主定价</a-radio>
             <a-radio :value="2">品牌统一定价</a-radio>
           </a-radio-group>
@@ -100,6 +101,7 @@
   </st-form>
 </template>
 <script>
+import { AddService } from '../add.service'
 const priceTableColumns = [{
   title: '价格等级',
   dataIndex: 'priceGrade',
@@ -135,11 +137,40 @@ const priceTableData = [{
 }]
 
 const formRules = {
-
+  course_name: [
+    'course_name', {
+      rules: [{
+        required: true,
+        message: '请输入课程名称'
+      }, {
+        min: 4,
+        message: '支持输入4~30个字的课程名称'
+      }],
+      initialValue: 'XXXX'
+    }
+  ],
+  course_id: [
+    'course_id'
+  ],
+  price_setting: [
+    'price_setting', {
+      initialValue: 1
+    }
+  ],
+  price_gradient: [
+    'price_gradient', {
+      rules: []
+    }
+  ]
 }
 
 export default {
   name: 'SetSellPrice',
+  serviceInject() {
+    return {
+      addService: AddService
+    }
+  },
   data() {
     return {
       form: this.$form.createForm(this),
@@ -152,7 +183,13 @@ export default {
   methods: {
     save(e) {
       e.preventDefault()
-      this.$emit('goNext')
+      this.form.validateFields().then(() => {
+        const data = this.form.getFieldsValue()
+        console.log('step 3 data', data)
+        this.addService.setPrice(data).subscribe(() => {
+
+        })
+      })
     },
     onChange(e) {
       console.log(e.target.value)

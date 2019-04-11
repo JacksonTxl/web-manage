@@ -11,7 +11,7 @@ interface SetState {
 export class SetService extends Store<SetState> {
   state$: State<SetState>
   formData$: Computed<Object>
-  constructor(private personalApi: PersonalApi) {
+  constructor(protected personalApi: PersonalApi) {
     super()
     this.state$ = new State({
       formData: {}
