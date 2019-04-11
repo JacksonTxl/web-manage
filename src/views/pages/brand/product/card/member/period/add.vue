@@ -4,7 +4,7 @@
       <div class="page-preview">实时预览</div>
       <div class="page-content">
         <st-form :form="form" labelWidth="96px">
-          <a-row :gutter="8" style="border-bottom: 1px solid #e9e9e9;margin-bottom: 32px;">
+          <a-row :gutter="8" class="page-content-card-name__row">
             <a-col :lg="16">
               <st-form-item class="mg-b0 page-content-card-name" label="期限卡名称" required>
                 <a-input placeholder="请输入储值卡名称" style="width: 360px"></a-input>
@@ -14,7 +14,7 @@
           <a-row :gutter="8">
             <a-col :lg="22">
               <st-form-item class="page-content-card-admission-range" label="支持入场门店" required>
-                <a-radio-group v-model="cardData.admission_range" style="min-width: 314px;">
+                <a-radio-group v-model="cardData.admission_range">
                   <a-radio
                     v-for="item in admission_range_list"
                     :key="item.value"
