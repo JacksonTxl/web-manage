@@ -1,7 +1,6 @@
 <template>
   <st-panel app>
-    <st-image-upload :num-limit="9" :list="list">
-    </st-image-upload>
+    <div>Hello world</div>
   </st-panel>
 </template>
 
@@ -12,13 +11,6 @@ export default {
       list: []
     }
   },
-  methods: {
-    onDelete(data) {
-      console.log(data)
-    },
-    onSet(item) {
-      console.log(item)
-    }
-  }
+  methods: {}
 }
 </script>
