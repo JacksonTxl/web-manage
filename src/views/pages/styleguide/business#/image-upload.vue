@@ -37,10 +37,10 @@ export default {
       list3: [],
       list4: [],
       list5: [
-        { file_id: '123', file_key: 'image/20190411/nmdNRC_cVqWSjCNg.png' }
+        { image_id: '123', image_key: 'image/20190411/nmdNRC_cVqWSjCNg.png' }
       ],
       list6: [
-        { file_id: '123', file_key: 'image/20190411/nmdNRC_cVqWSjCNg.png' }
+        { image_id: '123', image_key: 'image/20190411/nmdNRC_cVqWSjCNg.png' }
       ]
     }
   }
