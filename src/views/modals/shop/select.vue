@@ -6,7 +6,7 @@
     v-model="show"
   >
     <div>
-      <div class="pd-md bordered">
+      <st-container>
         <a-tree
           checkable
           v-model="checkedKeys"
@@ -14,7 +14,7 @@
           :treeData="treeData"
           @check="onCheck"
         />
-      </div>
+      </st-container>
       <p class="color-text-light mg-t8">共5家场馆，已选择3家场馆</p>
       <p class="ta-r">
         <st-button type="primary">确定</st-button>
