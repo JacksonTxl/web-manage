@@ -10,7 +10,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
-          <a-select placeholder="请选择" v-decorator="formRules.course_type">
+          <a-select placeholder="请选择" v-decorator="formRules.category_id">
             <a-select-option value="2">课程类型A</a-select-option>
             <a-select-option value="1">课程类型B</a-select-option>
           </a-select>
@@ -20,7 +20,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
-          <a-select placeholder="请选择" v-decorator="formRules.training_purpose">
+          <a-select placeholder="请选择" v-decorator="formRules.train_aim">
             <a-select-option value="2">训练目的A</a-select-option>
             <a-select-option value="1">训练目的B</a-select-option>
           </a-select>
@@ -30,7 +30,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程时长" required>
-          <a-input v-decorator="formRules.course_length">
+          <a-input v-decorator="formRules.duration">
             <div slot="addonAfter" class="st-form-item-unit">分钟</div>
           </a-input>
         </st-form-item>
@@ -39,7 +39,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="参考定价">
-          <a-input v-decorator="formRules.course_price">
+          <a-input v-decorator="formRules.price">
             <div slot="addonAfter" class="st-form-item-unit">元/节</div>
           </a-input>
         </st-form-item>
@@ -59,7 +59,7 @@
         <st-form-item label="图片" >
           <div class="page-upload-container">
             <file-upload :list="fileList" @change="onImgChange"></file-upload>
-            <input type="hidden" v-decorator="formRules.course_image">
+            <input type="hidden" v-decorator="formRules.image_id">
             <div class="page-course-photo-des mg-l16">
               <div class="page-course-item">
                 <div class="page-course-item-tip">1.</div>
@@ -91,7 +91,9 @@
     </a-row>
   </st-form>
 </template>
+
 <script>
+import { CreatePersonalCourseService } from './create-personal-course.service'
 const formRules = {
   course_name: [
     'course_name', {
@@ -104,32 +106,32 @@ const formRules = {
       }]
     }
   ],
-  course_type: [
-    'course_type', {
+  category_id: [
+    'category_id', {
       rules: [{
         required: true,
         message: '请选择课程类型'
       }]
     }
   ],
-  training_purpose: [
-    'training_purpose', {
+  train_aim: [
+    'train_aim', {
       rules: [{
         required: true,
         message: '请选择训练目的'
       }]
     }
   ],
-  course_length: [
-    'course_length', {
+  duration: [
+    'duration', {
       rules: [{
         required: true,
         message: '请输入课程时长'
       }]
     }
   ],
-  course_price: [
-    'course_price', {
+  price: [
+    'price', {
       rules: []
     }
   ],
@@ -139,10 +141,17 @@ const formRules = {
       initialValue: 7
     }
   ],
-  course_image: ['course_image']
+  image_id: ['image_id']
 }
 export default {
   name: 'create-personal-course',
+  serviceInject() {
+    return {
+      createPersonalCourseService: CreatePersonalCourseService
+    }
+  },
+  subscriptions() {
+  },
   data() {
     return {
       form: this.$form.createForm(this),
@@ -159,12 +168,14 @@ export default {
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
         console.log('step 1 data', data)
-        this.$emit('goNext')
+        this.createPersonalCourseService.addPersonalBrand(data).subscribe(() => {
+          this.$emit('goNext')
+        })
       })
     },
     onImgChange(fileList) {
       this.form.setFieldsValue({
-        course_image: fileList[0]
+        image_id: fileList[0]
       })
     }
   }
