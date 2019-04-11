@@ -1,5 +1,9 @@
 // club
 .layout-default-brand {
+  &.ant-layout.ant-layout-has-sider > .ant-layout, 
+  &.ant-layout.ant-layout-has-sider > .ant-layout-content {
+    overflow-x: auto;
+  }
   &-sider {
     position: fixed;
     .h(100vh);
@@ -7,6 +11,7 @@
     top: 0;
     left: 0;
     .bg(@brand-color);
+    z-index: 99;
     &__brand {
       display: flex;
       flex-direction: column;
@@ -88,22 +93,15 @@
     min-height: 100vh;
     .bg(rgba(240,242,245,1));
     &__header {
-      .pos-r();
+      position: fixed;
       display: flex;
       align-items: center;
       justify-content: space-between;
       .pd-lr(24px);
       .bg(rgba(240,242,245,1));
-      &::after {
-        content: '';
-        .pos-a();
-        bottom: -76px;
-        left: 0;
-        width: 100%;
-        height: 76px;
-        .bg(rgba(240,242,245,1));
-        z-index: 0;
-      }
+      left: 200px;
+      right: 0;
+      z-index: 99;
     }
     &__location {
       display: flex;
@@ -178,6 +176,17 @@
       z-index: 1;
       .mg-lr(24px);
       .h(100%);
+      padding-top: 64px;
+      &::after {
+        content: '';
+        position: fixed;
+        top: 64px;
+        left: 200px;
+        right: 0;
+        height: 76px;
+        .bg(rgba(240,242,245,1));
+        z-index: -1;
+      }
     }
     &__footer {
       text-align: center;
@@ -191,6 +200,15 @@
 // team 
 .layout-default-brand {
   &-sider {
+    &::after {
+      content: '';
+      position: absolute;
+      width: 1px;
+      height: 100%;
+      right: 0;
+      top: 0;
+      .bg(#e8e8e8);
+    }
     .bg(@white);
     &__logo {
       .bg(#fdfdfd);
@@ -230,6 +248,8 @@
   &-body {
     &__header {
       .bg(@brand-color);
+    }
+    &__content {
       &::after {
         .bg(@brand-color);
       }
