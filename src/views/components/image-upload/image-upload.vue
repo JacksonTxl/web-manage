@@ -121,14 +121,14 @@ export default {
       default: () => ({})
     },
     /**
-     * 后端字段映射 默认file_id,file_key,file_url
+     * 后端字段映射 image_id,image_key,image_url
      */
     props: {
       type: Object,
       default: () => ({
-        file_id: 'file_id',
-        file_key: 'file_key',
-        file_url: 'file_url'
+        image_id: 'image_id',
+        image_key: 'image_key',
+        image_url: 'image_url'
       })
     }
   },
