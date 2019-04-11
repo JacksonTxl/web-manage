@@ -1,20 +1,32 @@
 <template>
-  <div>
+  <div class="pages-brand-product-card-list-a">
     <st-button type="primary">
       <a-icon type="plus"/>新增私教课程
     </st-button>
-    <div style="display: inline-block;float: right;">
-      <a-select defaultValue="所有类型" style="width: 184px;margin-left:24px" @change="handleChange">
+    <div class="pages-brand-product-card-list-a-box">
+      <a-select
+        defaultValue="所有类型"
+        class="pages-brand-product-card-list-a-box-select"
+        @change="handleChange"
+      >
         <a-select-option value="所有类型">所有类型</a-select-option>
         <a-select-option value="lucy">Lucy</a-select-option>
         <a-select-option value="tom">Tom</a-select-option>
       </a-select>
-      <a-select defaultValue="所有类型" style="width: 184px;margin-left:24px" @change="handleChange">
+      <a-select
+        defaultValue="所有类型"
+        class="pages-brand-product-card-list-a-box-select"
+        @change="handleChange"
+      >
         <a-select-option value="所有类型">所有类型</a-select-option>
         <a-select-option value="lucy">Lucy</a-select-option>
         <a-select-option value="tom">Tom</a-select-option>
       </a-select>
-      <a-select defaultValue="所有类型" style="width: 184px;margin-left:24px" @change="handleChange">
+      <a-select
+        defaultValue="所有类型"
+        class="pages-brand-product-card-list-a-box-select"
+        @change="handleChange"
+      >
         <a-select-option value="所有类型">所有类型</a-select-option>
         <a-select-option value="lucy">Lucy</a-select-option>
         <a-select-option value="tom">Tom</a-select-option>
@@ -37,31 +49,27 @@
       >{{text}}</a>
       <!-- 会员卡名称end -->
       <!-- 支持入场门店start -->
-      <a
-        slot="admission"
-        slot-scope="text,record"
-        href="javascript:;"
-        @click="name(text,record)"
-      >{{text}}</a>
+      <a slot="admission" slot-scope="text,record" href="javascript:;" @click="name(text,record)">
+        <a-popover placement="bottomRight" :overlayStyle="{width:'520px'}" v-if="record.columns1">
+          <template slot="content">
+            <a-table
+              bordered
+              :dataSource="record.data1"
+              :columns="record.columns1"
+              :pagination="false"
+              rowKey="id"
+            ></a-table>
+          </template>
+          {{text}}
+        </a-popover>
+        <span v-else>{{text}}</span>
+      </a>
+
       <!-- 支持入场门店end -->
       <!-- 售卖状态start -->
       <a slot="sellStatus" slot-scope="text,record" href="javascript:;" @click="name(text,record)">
-        <span
-          v-if="text ==='可售卖'"
-          style="width:8px;
-                 height:8px;
-                 display: inline-block;
-                 border-radius: 50%;
-                 background:rgba(82,196,26,1);"
-        ></span>
-        <span
-          v-if="text ==='停售'"
-          style="width:8px;
-                 height:8px;
-                 display: inline-block;
-                 border-radius: 50%;
-                 background:rgba(245,34,45,1);"
-        ></span>
+        <span v-if="text ==='可售卖'" class="pages-brand-product-card-list-a-marketable"></span>
+        <span v-if="text ==='停售'" class="pages-brand-product-card-list-a-stopSell"></span>
         {{text}}
         <a-popover
           title="操作人:AAA   操作时间:2018/10/10 23:59:59"
@@ -77,16 +85,18 @@
       <!-- 售卖状态end -->
       <!-- 操作end -->
       <div slot="action" slot-scope="record">
-        <a href="javascript:;">打开</a>
+        <a href="javascript:;" @click="info(record)">详情</a>
         <a-divider type="vertical"></a-divider>
-        <a-popconfirm title="确认删除该权限么?" @confirm="onDelete(record.id)">
-          <a>删除</a>
-        </a-popconfirm>
-        <st-more-dropdown style="margin-left: 12px;">
-          <a-menu-item>转让</a-menu-item>
-          <a-menu-item>出售</a-menu-item>
-          <a-menu-item>你好</a-menu-item>
-        </st-more-dropdown>
+        <a href="javascript:;">上架</a>
+        <a href="javascript:;" v-if="false">恢复售卖</a>
+        <template v-if="true">
+          <a-divider type="vertical"></a-divider>
+          <st-more-dropdown>
+            <a-menu-item>转让</a-menu-item>
+            <a-menu-item>出售</a-menu-item>
+            <a-menu-item>你好</a-menu-item>
+          </st-more-dropdown>
+        </template>
       </div>
       <!-- 操作end -->
     </st-table>
@@ -113,7 +123,44 @@ export default {
           sell: '古美路店天',
           release: '门店',
           sellStatus: '可售卖',
-          action: 'New York No. 1 Lake Park'
+          action: 'New York No. 1 Lake Park',
+          columns1: [
+            {
+              title: '省',
+              dataIndex: 'member',
+              scopedSlots: { customRender: 'member' }
+            },
+            {
+              title: '市',
+              dataIndex: 'type'
+            },
+            {
+              title: '区',
+              dataIndex: 'effective'
+            },
+            {
+              title: '门店名称',
+              dataIndex: 'admission'
+            }
+          ],
+          data1: [
+            {
+              id: 1,
+              member: '徐汇1店',
+              age: '徐汇1店',
+              type: '徐汇1店',
+              effective: '徐汇1店',
+              admission: '徐汇1店'
+            },
+            {
+              id: 2,
+              member: '徐汇1店',
+              age: '徐汇1店',
+              type: '徐汇1店',
+              effective: '徐汇1店',
+              admission: '徐汇1店'
+            }
+          ]
         },
         {
           id: 2,
