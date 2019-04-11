@@ -75,7 +75,7 @@
       </st-panel>
     </aside>
     <main :class="bMain()">
-      <st-panel title="合同预览">
+      <st-panel title="合同预览" :class="bMain('panel')">
         <contract-preview></contract-preview>
       </st-panel>
     </main>
