@@ -178,6 +178,7 @@
       <a-row :gutter="8">
         <a-col offset="1" :lg="22">
           <st-form-item label="营业时间">
+            {{shopData.business_time}}
             <st-shop-hour-picker v-model="shopData.business_time"></st-shop-hour-picker>
           </st-form-item>
         </a-col>
@@ -196,6 +197,7 @@ import { OssService } from '@/services/oss.service'
 import { MessageService } from '@/services/message.service'
 import { ShopService } from '@/views/pages/shop/setting/shop.service'
 export default {
+  name: 'ShopSetting',
   serviceInject() {
     return {
       rules: RuleConfig,

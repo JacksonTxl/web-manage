@@ -10,10 +10,10 @@
         <a-tree
           checkable
           v-model="checkedKeys"
-          :selectedKeys="selectedKeys"
           :treeData="treeData"
           @check="onCheck"
         />
+
       </st-container>
       <p class="color-text-light mg-t8">共5家场馆，已选择3家场馆</p>
       <p class="ta-r">
@@ -27,48 +27,27 @@ import { Action } from 'rx-state'
 import { switchMap, catchError, filter } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'
 import { imgFilter } from '@/filters/resource.filters'
-const treeData = [{
-  title: '上海市',
-  key: '0-0',
-  children: [{
-    title: '徐汇区',
-    key: '0-0-0',
-    children: [
-      { title: '三体云动上海店', key: '0-0-0-0' },
-      { title: '三体云动上海2店', key: '0-0-0-1' }
-    ]
-  }, {
-    title: '黄浦区',
-    key: '0-0-1',
-    children: [
-      { title: '黄浦区1店', key: '0-0-1-0' },
-      { title: '黄浦区2店', key: '0-0-1-1' }
-    ]
-  }]
-}, {
-  title: '北京市',
-  key: '0-1',
-  children: [
-    { title: '北京1店', key: '0-1-0-0' },
-    { title: '北京2店', key: '0-1-0-1' },
-    { title: '北京3店', key: '0-1-0-2' }
-  ]
-}]
+import { SelectService } from './select.service'
+import { json2AntDesignTreeData } from '@/utils/json-2-tree-data'
 
 export default {
   serviceInject() {
     return {
+      selectService: SelectService
     }
   },
   data() {
     return {
       show: false,
-      checkedKeys: ['0-0-0'],
-      selectedKeys: [],
-      treeData
+      checkedKeys: ['shop_id#1', 'shop_id#7'],
+      treeData: []
     }
   },
   created() {
+    this.selectService.getShopListTree().subscribe(res => {
+      this.treeData = json2AntDesignTreeData(res.shop_list.province_list, { filterKey: 'shop_id' })
+      console.log(this.treeData)
+    })
   },
   methods: {
     onCheck(checkedKeys) {

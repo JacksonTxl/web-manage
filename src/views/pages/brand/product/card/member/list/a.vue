@@ -62,7 +62,7 @@
           </template>
           {{text}}
         </a-popover>
-        <span v-else>{{text}}</span>
+        <span v-else class="admission">{{text}}</span>
       </a>
 
       <!-- 支持入场门店end -->
@@ -100,6 +100,10 @@
       </div>
       <!-- 操作end -->
     </st-table>
+
+    <a-menu-item v-for="(op, index) in opreations" :key="index" @click="op.clickName">
+      <modal-link tag="a" :to="op.route">{{op.name}}</modal-link>
+    </a-menu-item>
   </div>
 </template>
 <script>
@@ -112,6 +116,27 @@ export default {
   },
   data() {
     return {
+      opreations: [
+        {
+          clickName: this.onClickSettingSalary,
+          tag: 'a',
+          name: '会员卡停售',
+          route: { name: 'card-halt-the-sales' }
+        },
+
+        {
+          clickName: this.onClickSettingSalary,
+          tag: 'a',
+          name: '删除',
+          route: { name: 'card-confirm-del' }
+        },
+        {
+          clickName: this.onClickSettingSalary,
+          tag: 'a',
+          name: '会员卡恢复售卖',
+          route: { name: 'card-recovery-sell' }
+        }
+      ],
       data: [
         {
           id: 1,
@@ -119,7 +144,7 @@ export default {
           age: 32,
           type: '期限卡',
           effective: '720天',
-          admission: '古美路店天',
+          admission: '多店（共3门店）',
           sell: '古美路店天',
           release: '门店',
           sellStatus: '可售卖',

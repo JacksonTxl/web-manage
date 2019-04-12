@@ -2,7 +2,7 @@
   <div class="page-shop-sale-list-shop">
     <header>
       <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
-        <st-button type="primary">转入品牌私教课程库</st-button>
+        <st-button type="primary">转入品牌团体课程库</st-button>
         <div>
           <a-select></a-select><a-select></a-select>
         </div>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import ShopSaleListTable from './shop#/shop-table'
+import ShopSaleListTable from './shop-sale-list#/shop-table'
 export default {
   name: 'ShopSaleListShop',
   components: {
