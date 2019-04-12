@@ -127,8 +127,8 @@ export default {
         {
           clickName: this.onClickSettingSalary,
           tag: 'a',
-          name: '设置薪资账户',
-          route: { name: 'staff-bind-entity-card' }
+          name: '删除',
+          route: { name: 'card-confirm-del' }
         }
       ],
       data: [
