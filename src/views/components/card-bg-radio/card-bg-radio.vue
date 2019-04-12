@@ -151,7 +151,6 @@ export default {
       this.setdata(this.value)
     },
     setdata(data) {
-      console.log(data.image_id)
       this.radioIndex = data.index
       if (data.index === 0) {
         this.customCardBg = _.cloneDeep(data)
