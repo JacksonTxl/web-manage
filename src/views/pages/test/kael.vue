@@ -14,11 +14,13 @@ export default {
   data() {
     return {
       cardbg: {
-        id: 323,
-        path: 'image/IUt_vXTl8zaWGwlO.jpg',
-        url: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg',
-        index: 0
-      }
+        image_id: 323,
+        image_key: 'image/IUt_vXTl8zaWGwlO.jpg',
+        image_url: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg',
+        index: 1
+      },
+      a: 11,
+      b: 0
     }
   },
   mounted() {
@@ -26,7 +28,16 @@ export default {
   },
   methods: {
     kael() {
-      this.cardbg.index++
+      console.log(this.b)
+      ++this.a
+      ++this.b
+      let i = (this.b) % 5
+      this.cardbg = {
+        image_id: this.a,
+        image_key: 'image/IUt_vXTl8zaWGwlO.jpg',
+        image_url: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg',
+        index: i
+      }
     }
   }
 }

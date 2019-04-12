@@ -1,19 +1,26 @@
 <template>
   <div :class="cardRadio()">
     <a-radio-group v-model="radioIndex">
-      <a-radio :class="i.className" v-for="(i,index) in cardBgList" :key="index" :value="i.index"></a-radio>
+      <a-radio v-for="(i,index) in cardBgList" :class="i.className" :key="index" :value="i.index">{{i.index}}</a-radio>
       <a-radio :value="0">自定义背景</a-radio>
     </a-radio-group>
     <div :class="cardRadio('image')">
       <img
         v-if="radioIndex!==0&&cardBgList[bgIndex]"
-        :src="cardBgList[bgIndex].url"
+        :src="cardBgList[bgIndex].image_url"
         width="192"
         height="108"
         alt="会员卡背景"
       >
       <div v-else :class="cardRadio('upload')">
-        <file-upload width="192px" height="108px" :list="fileList" @change="onImgChange"></file-upload>
+        <st-image-upload
+        @change="imageUploadChange"
+        width="192px"
+        height="108px"
+        :cropperModal="cropperModal"
+        :list="fileList"
+        :sizeLimit="2"
+        placeholder="上传照片"></st-image-upload>
         <div :class="cardRadio('describe')">
           <p>
             <span>1.</span>
@@ -26,61 +33,79 @@
         </div>
       </div>
     </div>
-    {{fileList}}
-    <p>
-
-    {{cardBgList}}
-    </p>
   </div>
 </template>
 <script>
-import { CardBgService } from './card-bg-radio.service'
 import _ from 'lodash'
+let className = ['first custom', 'second custom', 'third custom', 'fourth custom']
 export default {
   name: 'StCardBgRadio',
   bem: {
     cardRadio: 'st-card-bg-radio'
   },
-  serviceInject() {
-    return {
-      cardBgService: CardBgService
-    }
-  },
-  subscriptions() {
-    return {
-      cardBgList: this.cardBgService.cardBgList$,
-      backups: this.cardBgService.cardBgList$
-    }
-  },
-  beforeCreate() {
-    this.cardBgService.getCardBgListAction$.dispatch()
-  },
-  mounted() {
+  created() {
     this.init()
-    var a = { x: 1 }
-    console.log(_.cloneDeep(a))
   },
   computed: {
     bgIndex() {
       return this.radioIndex === 0 ? 4 : this.radioIndex - 1
+    },
+    cardBgList() {
+      let arr = []
+      this.card_bg_list.forEach((item, index) => {
+        item.className = className[index]
+        item.index = ++index
+        arr.push(item)
+      })
+      return arr
     }
   },
   data() {
     return {
+      // 截图参数对象
+      cropperModal: {},
+      card_bg_list: [
+        {
+          image_id: 0,
+          image_key: 'image/VZ0RGBwTX7FA1yKb.png',
+          image_url:
+            'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/VZ0RGBwTX7FA1yKb.png'
+        },
+        {
+          image_id: 0,
+          image_key: 'image/oRoVYhYc26wVMKb9.png',
+          image_url:
+            'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/oRoVYhYc26wVMKb9.png'
+        },
+        {
+          image_id: 0,
+          image_key: 'image/CHrzOBv71D5_rK1i.png',
+          image_url:
+            'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/CHrzOBv71D5_rK1i.png'
+        },
+        {
+          image_id: 0,
+          image_key: 'image/pAc7WsQ0BFhFBzGK.png',
+          image_url:
+            'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/pAc7WsQ0BFhFBzGK.png'
+        }
+      ],
+      // 备份
+      list: [],
       // radioIndex
-      radioIndex: 0,
+      radioIndex: 1,
       // 选择的cardBg
       cardBg: {
-        id: 0,
-        path: '',
-        url: '',
+        image_id: 0,
+        image_key: 'image/VZ0RGBwTX7FA1yKb.png',
+        image_url: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/VZ0RGBwTX7FA1yKb.png',
         index: 1
       },
       // 自定义cardBg
       customCardBg: {
-        id: 0,
-        path: '',
-        url: '',
+        image_id: 0,
+        image_key: '',
+        image_url: '',
         index: 0
       },
       // 回显的自定义bg
@@ -89,44 +114,19 @@ export default {
   },
   watch: {
     value: {
-      handler(newVal, oldVal) {
-        this.radioIndex = newVal.index
-        if (newVal.index === 0) {
-          this.cardBg = _.cloneDeep(newVal)
-          this.customCardBg = _.cloneDeep(newVal)
-          this.fileList = [
-            {
-              image_id: newVal.id,
-              image_key: newVal.url
-            }
-          ]
-        } else {
-          this.cardBgList = _.cloneDeep(this.backups)
-          let i = newVal.index
-          --i
-          this.cardBgList[i].id = newVal.id
-          this.cardBg.id = this.cardBgList[i].id
-          this.cardBg.path = this.cardBgList[i].path
-          this.cardBg.url = this.cardBgList[i].url
-          this.cardBg.index = this.cardBgList[i].index
-        }
+      handler(newVal) {
+        this.setdata(newVal)
       },
       deep: true
     },
-    radioIndex(newVal, oldVal) {
-      console.log(this.customCardBg)
-      if (newVal !== 0) {
+    radioIndex(newVal) {
+      if (newVal === 0) {
+        this.cardBg = _.cloneDeep(this.customCardBg)
+      } else {
         let i = newVal
         --i
-        this.cardBg.id = this.cardBgList[i].id
-        this.cardBg.path = this.cardBgList[i].path
-        this.cardBg.url = this.cardBgList[i].url
-        this.cardBg.index = this.cardBgList[i].index
-      } else {
-        this.cardBg.id = this.customCardBg.id
-        this.cardBg.path = this.customCardBg.path
-        this.cardBg.url = this.customCardBg.url
-        this.cardBg.index = this.customCardBg.index
+        this.cardBg = _.cloneDeep(this.card_bg_list[i])
+        this.cardBg.index = newVal
       }
       this.$emit('input', this.cardBg)
       this.$emit('change', this.cardBg)
@@ -137,9 +137,9 @@ export default {
       type: Object,
       default() {
         return {
-          id: 0,
-          path: '',
-          url: '',
+          image_id: 0,
+          image_key: '',
+          image_url: '',
           index: 1
         }
       }
@@ -147,40 +147,45 @@ export default {
   },
   methods: {
     init() {
-      this.radioIndex = this.value.index
-      if (this.value.index === 0) {
-        this.cardBg = _.cloneDeep(this.value)
-        this.customCardBg = _.cloneDeep(this.value)
-        this.fileList = [
-          {
-            image_id: this.value.id,
-            image_key: this.value.url
-          }
-        ]
+      this.list = _.cloneDeep(this.card_bg_list)
+      this.setdata(this.value)
+    },
+    setdata(data) {
+      console.log(data.image_id)
+      this.radioIndex = data.index
+      if (data.index === 0) {
+        this.customCardBg = _.cloneDeep(data)
+        if (data.image_url) {
+          this.fileList = [
+            {
+              image_id: data.image_id,
+              image_key: data.image_url
+            }
+          ]
+        }
       } else {
-        let i = this.value.index
+        this.card_bg_list = _.cloneDeep(this.list)
+        let i = data.index
         --i
-        console.log(i)
-        console.log(this.cardBgList)
-        this.cardBgList[i].id = this.value.id
-        this.cardBg.id = this.cardBgList[i].id
-        this.cardBg.path = this.cardBgList[i].path
-        this.cardBg.url = this.cardBgList[i].url
-        this.cardBg.index = this.cardBgList[i].index
+        this.card_bg_list[i].image_id = data.image_id
       }
     },
-    onImgChange(fileList) {
+    imageUploadChange(fileList) {
       if (fileList.length) {
-        this.customCardBg.id = fileList[0].image_id
-        this.customCardBg.path = fileList[0].image_key
-        this.customCardBg.url = ''
-        this.customCardBg.index = 0
+        this.customCardBg = {
+          image_id: fileList[0].image_id,
+          image_key: fileList[0].image_key,
+          image_url: '',
+          index: 0
+        }
       } else {
-        this.customCardBg.id = undefined
-        this.customCardBg.path = ''
-        this.customCardBg.url = ''
-        this.customCardBg.index = 0
         this.fileList = []
+        this.customCardBg = {
+          image_id: 0,
+          image_key: '',
+          image_url: '',
+          index: 0
+        }
       }
       this.cardBg = _.cloneDeep(this.customCardBg)
       this.$emit('input', this.cardBg)
