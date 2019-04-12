@@ -1,11 +1,16 @@
 /**
  * json 数据转 tree
  */
-export function json2AntDesignTreeData(list) {
+export function json2AntDesignTreeData(list, opts = {}) {
+  const { filterKey } = opts
   return list.map(item => {
     for (let i in item) {
       if (typeof item[i] === 'number') {
-        item.key = item[i]
+        if (i === filterKey) {
+          item.key = `${filterKey}#${item[i]}`
+        } else {
+          item.key = item[i]
+        }
         delete item[i]
       }
       if (typeof item[i] === 'string') {
@@ -15,7 +20,7 @@ export function json2AntDesignTreeData(list) {
       if (item[i] instanceof Array) {
         item.children = item[i]
         delete item[i]
-        item.children = json2AntDesignTreeData(item.children)
+        item.children = json2AntDesignTreeData(item.children, opts)
       }
     }
     return item
