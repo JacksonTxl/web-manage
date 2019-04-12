@@ -1,7 +1,7 @@
 <template>
-  <st-form :form="form" @submit="save" class="page-shop-container" labelWidth="100px">
+  <st-form :form="form" @submit="save" class="page-set-sell-price" labelWidth="100px">
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="10" :offset="1">
         <st-form-item label="私教课程">
           <a-input placeholder="课程名称" disabled/>
         </st-form-item>
@@ -24,13 +24,76 @@
         </a-col>
       </a-row>
       <a-row :gutter="8">
-        <a-col :lg="10" :xs="22" :offset="1">
+        <a-col :lg="22" :xs="22" :offset="1">
           <st-form-item label="课程定价">
             <div class="page-shop-coach-container-coach">
-              <a-table :columns="columns">
-                <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
+              <a-table :columns="priceTableColumns" :dataSource="priceTableData" :pagination="false">
+                <!-- 教练等级 -->
+                <template slot="priceGrade" slot-scope="text, record">
+                  <div v-if="record.editable">
+                    <a-select placeholder="选择教练等级" class="page-set-sell-price__select">
+                      <a-select-option value="a">等级A</a-select-option>
+                      <a-select-option value="b">等级B</a-select-option>
+                    </a-select>
+                  </div>
+                  <template v-else>{{text}}</template>
+                </template>
+                <!-- 售卖梯度 -->
+                <template slot="saleGrad" slot-scope="text, record">
+                  <div v-if="record.editable">
+                    <a-input class="page-set-sell-price__input"/>
+                    <span class="page-set-sell-price__label">节～</span>
+                    <a-input class="page-set-sell-price__input"/>
+                    <span class="page-set-sell-price__label">节</span>
+                  </div>
+                  <template v-else>{{text}}</template>
+                </template>
+                <!-- 售卖价格 -->
+                <template slot="price" slot-scope="text, record">
+                  <div v-if="record.editable">
+                    <a-input class="page-set-sell-price__input"/>
+                    <span class="page-set-sell-price__label">元/节</span>
+                  </div>
+                  <template v-else>{{text}}</template>
+                </template>
+                <!-- 转让手续费 -->
+                <template slot="serviceFee" slot-scope="text, record">
+                  <div v-if="record.editable">
+                    <a-select defaultValue="a" class="page-set-sell-price__select">
+                      <a-select-option value="a">百分比</a-select-option>
+                      <a-select-option value="b">xxx</a-select-option>
+                    </a-select>
+                    <a-input class="page-set-sell-price__input mg-l8"/>
+                    <span class="page-set-sell-price__label">%</span>
+                  </div>
+                  <template v-else>{{text}}</template>
+                </template>
+                <!-- 是否支持在线购买 -->
+                <template slot="online" slot-scope="text, record">
+                  <div v-if="record.editable">
+                    <a-radio-group>
+                      <a-radio :value="1">支持</a-radio>
+                      <a-radio :value="0">不支持</a-radio>
+                    </a-radio-group>
+                  </div>
+                  <template v-else>{{text}}</template>
+                </template>
+                <!-- 操作 -->
+                <template slot="action" slot-scope="text, record">
+                  <div>
+                    <span v-if="record.editable">
+                      <a @click="() => saveEdit(record.key)">保存</a>
+                      <a-popconfirm title='确定取消保存?' @confirm="() => cancelEdit(record.key)">
+                        <a class="mg-l8">取消</a>
+                      </a-popconfirm>
+                    </span>
+                    <span v-else>
+                      <a @click="edit(record.key)" class="mg-l8">编辑</a>
+                    </span>
+                  </div>
+                </template>
               </a-table>
-              <st-button type="dashed" block class="mg-t8">添加</st-button>
+              <st-button type="dashed" block class="mg-t8" @click="addPriceRecord">添加</st-button>
             </div>
           </st-form-item>
         </a-col>
@@ -38,7 +101,7 @@
     </section>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item style="margin-left: 100px;">
+        <st-form-item labelFix>
           <st-button type="primary" html-type="submit">完成</st-button>
         </st-form-item>
       </a-col>
@@ -46,25 +109,38 @@
   </st-form>
 </template>
 <script>
-const columns = [{
-  title: '教练',
-  dataIndex: 'name'
-},
-{
-  title: '教练等级',
-  dataIndex: 'gender'
-},
-{
-  title: '工作性质',
-  dataIndex: 'email'
-},
-{
-  title: '在职状态',
-  dataIndex: 'emai'
-},
-{
+const priceTableColumns = [{
+  title: '价格等级',
+  dataIndex: 'priceGrade',
+  scopedSlots: { customRender: 'priceGrade' }
+}, {
+  title: '售卖梯度（节）',
+  dataIndex: 'saleGrad',
+  scopedSlots: { customRender: 'saleGrad' }
+}, {
+  title: '售卖价格（元/节）',
+  dataIndex: 'price',
+  scopedSlots: { customRender: 'price' }
+}, {
+  title: '转让手续费',
+  dataIndex: 'serviceFee',
+  scopedSlots: { customRender: 'serviceFee' }
+}, {
+  title: '是否在线购买',
+  dataIndex: 'online',
+  scopedSlots: { customRender: 'online' }
+}, {
   title: '操作',
-  dataIndex: 'em'
+  key: 'action',
+  scopedSlots: { customRender: 'action' }
+}]
+const priceTableData = [{
+  key: 1,
+  priceGrade: '等级名称A',
+  saleGrad: '1-10',
+  price: '200',
+  serviceFee: '1%',
+  online: '支持'
 }]
 
 const formRules = {
@@ -82,7 +158,9 @@ export default {
     return {
       form: this.$form.createForm(this),
       formRules,
-      isShowUnitSet: false
+      isShowUnitSet: false,
+      priceTableColumns,
+      priceTableData
     }
   },
   methods: {
@@ -93,6 +171,38 @@ export default {
     onChange(e) {
       console.log(e.target.value)
       e.target.value === 2 ? this.isShowUnitSet = true : this.isShowUnitSet = false
+    },
+    edit(key, record) {
+      console.log(key)
+      const newPriceTableData = [...this.priceTableData]
+      const target = newPriceTableData.filter(item => key === item.key)[0]
+      if (target) {
+        target.editable = true
+        this.priceTableData = newPriceTableData
+      }
+    },
+    saveEdit(key) {
+
+    },
+    cancelEdit(key) {
+      const newPriceTableData = [...this.priceTableData]
+      const target = newPriceTableData.filter(item => key === item.key)[0]
+      if (target) {
+        delete target.editable
+        this.priceTableData = newPriceTableData
+      }
+    },
+    addPriceRecord() {
+      const newRecord = {
+        key: 2,
+        priceGrade: '',
+        saleGrad: '',
+        price: '',
+        serviceFee: '',
+        online: '',
+        editable: true
+      }
+      this.priceTableData.push(newRecord)
     }
   }
 }

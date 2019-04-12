@@ -52,6 +52,7 @@
         <p>
           <span class="tablefix" href="#">.tablefix 修复ant-design表格组件的样式问题，放置于a-table父级容器即可</span>
         </p>
+        <p class="pd-md bordered">pd-md bordered</p>
       </st-panel>
     </section>
     <h3 class="mg-t24">全局组件类样式</h3>
