@@ -120,7 +120,7 @@ export default {
         {
           clickName: this.onClickSettingSalary,
           tag: 'a',
-          name: '设置薪资账户cq',
+          name: '会员卡停售',
           route: { name: 'card-halt-the-sales' }
         },
 
@@ -129,6 +129,12 @@ export default {
           tag: 'a',
           name: '删除',
           route: { name: 'card-confirm-del' }
+        },
+        {
+          clickName: this.onClickSettingSalary,
+          tag: 'a',
+          name: '会员卡恢复售卖',
+          route: { name: 'card-recovery-sell' }
         }
       ],
       data: [
