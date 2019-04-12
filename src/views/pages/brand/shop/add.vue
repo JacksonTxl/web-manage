@@ -200,12 +200,12 @@ export default {
       service_ids: [],
       serviceIcon_icon_list: {
         1: 'WIFI',
-        2: 'shower',
-        3: 'snow',
-        4: 'nosmoking',
+        2: 'park',
+        3: 'shower',
+        4: 'medical',
         5: 'heating',
-        6: 'medical',
-        7: 'park',
+        6: 'snow',
+        7: 'nosmoking',
         8: 'energy'
       },
       // 营业状态
@@ -317,9 +317,9 @@ export default {
         }
       }
     },
-    async uploadCrop(data) {
+    uploadCrop(data) {
       let that = this
-      let image = await this.fileReader(data.file)
+      let image = URL.createObjectURL(data.file)
       this.$modalRouter.push({
         name: 'image-cropper',
         props: {
@@ -345,9 +345,9 @@ export default {
         this.OSS.put({
           file: data.file
         }).subscribe({
-          next: async val => {
+          next: val => {
             this.shopData.shop_cover_image = val.fileKey
-            this.imageUrl = await this.fileReader(data.file)
+            this.imageUrl = URL.createObjectURL(data.file)
             this.loading = false
             this.messageService.success({ content: '上传成功' })
           },
@@ -359,18 +359,6 @@ export default {
       } else {
         this.loading = false
       }
-    },
-    // sliderChange(data) {
-    //   this.shopData.business_time = data.infoList
-    // },
-    fileReader(img) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader()
-        reader.addEventListener('load', () => {
-          resolve(reader.result)
-        })
-        reader.readAsDataURL(img)
-      })
     },
     checkUploadFile(file) {
       const isJPG = this.rules.img_type.test(file.type)

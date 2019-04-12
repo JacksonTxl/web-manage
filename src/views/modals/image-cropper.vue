@@ -1,9 +1,15 @@
 
 <template>
-  <a-modal class="st-modal-cropper" :title="_title" v-model="show" @cancel="handleCancel" @ok="handleOk">
+  <a-modal
+    class="st-modal-cropper"
+    :title="_title"
+    v-model="show"
+    @cancel="handleCancel"
+    @ok="handleOk"
+  >
     <div class="st-modal-cropper-content">
       <div class="st-modal-cropper-image">
-        <img :src="_image" id="modal_cropper_image" hidden alt="">
+        <img :src="_imageUrl" id="modal_cropper_image" hidden alt>
       </div>
       <p class="st-modal-cropper-preview" id="crop_preview"></p>
     </div>
@@ -32,25 +38,26 @@ export default {
       type: String,
       default: '图片裁剪'
     },
-    image: {
-      type: [String, Object],
+    file: {
+      type: null,
       required: true
     },
-    aspectRatioW: {
-      type: Number,
-      default: 16
-    },
-    aspectRatioH: {
-      type: Number,
-      default: 9
+    cropper: {
+      type: Object,
+      default: () => ({
+        aspectRatio: 16 / 9
+      })
     }
   },
   computed: {
     _title() {
       return this.title
     },
-    _image() {
-      return this.image
+    _imageUrl() {
+      return URL.createObjectURL(this.file)
+    },
+    _cropperOptions() {
+      return Object.assign(this.appConfig.CROPPER_DEFAULT_CONFIG, this.cropper)
     }
   },
   watch: {
@@ -66,11 +73,8 @@ export default {
   },
   methods: {
     init() {
-      const image = document.getElementById('modal_cropper_image')
-      Cropper.setDefaults(this.appConfig.CROPPER_DEFAULT_CONFIG)
-      cropper = new Cropper(image, {
-        aspectRatio: this.aspectRatioW / this.aspectRatioH
-      })
+      const imageEl = document.getElementById('modal_cropper_image')
+      cropper = new Cropper(imageEl, this._cropperOptions)
     },
     handleCancel() {
       this.$emit('cancel')

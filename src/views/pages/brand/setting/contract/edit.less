@@ -1,0 +1,32 @@
+.page-setting-contract-edit {
+  display: flex;
+  height: 100%;
+  &-sider {
+    flex: 0 0 370px;
+    min-height: 100%;
+    .bg(@white);
+    &__form-item {
+      &--switch {
+        .mg-b(20px);
+        .ant-switch {
+          .fl-r;
+        }
+      }
+      &--radio {
+        .ant-radio-wrapper {
+          .mg-r(8px);
+        }
+        .ant-input-number {
+          .w(76px);
+        }
+      }
+    }
+  }
+  &-main {
+    flex: 1;
+    .mg-l(24px);
+    min-height: 100%;
+    overflow: hidden;
+    .bg(@white);
+  }
+}

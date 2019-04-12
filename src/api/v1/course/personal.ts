@@ -1,32 +1,105 @@
-// import { Api } from '../../api'
-// const URL = '/v1/staff/brand'
+import { Api } from '../../api'
 
-// export interface addPersonalCourseListInBrandForm {
-//   // brand_id: string,
-//   // course_name: ,
-//   // category_id: 1,
-//   // duration: 30,
-//   // price: 60,
-//   // train_aim: 燃脂,力量,
-//   // image_id: 2,
-//   // description: "课程介绍",
-// }
-// export class PersonalApi extends Api {
-//   //品牌私教课程库列表
-//   getPersonalCourseListInBrand() {
-//     return this.http.get(`/v1/course/personal/brand`)
-//   }
-//   //创建品牌私教课程
-//   addPersonalCourseListInBrand(params: ) {
-//     return this.http.post(`/v1/course/personal/brand`)
-//   }
-//   //设置上课门店
+export class PersonalApi extends Api {
+  /**
+   * 获取品牌私教课信息
+   */
+  getPersonalBrand(query: GetPersonalBrandInput) {
+    return this.http.get('/v1/course/personal/brand/', { query })
+  }
+  /**
+   * 添加品牌私教课
+   */
+  addPersonalBrand(params: SetPersonalBrandInput) {
+    return this.http.post('/v1/course/personal/brand', { params })
+  }
+  /**
+   * 编辑品牌私教课
+   */
+  updatePersonalBrand(params: SetPersonalBrandInput) {
+    return this.http.put('/v1/course/personal/brand', { params })
+  }
+  /**
+   * 设置上课门店
+   */
+  setShop(params: SetShopInput) {
+    return this.http.post('/v1/course/personal/set_shop', { params })
+  }
+  /**
+   * 设置售卖价格
+   */
+  setPrice(params: SetPriceInput) {
+    return this.http.post('/v1/course/personal/set_price', { params })
+  }
+}
 
-//   //设置售卖价格
+export interface GetPersonalBrandInput {
+  /**
+   * 课程id
+   */
+  course_id: number
+}
+export interface SetPersonalBrandInput {
+  /**
+   * 课程名称
+   */
+  course_name: string
+  /**
+   * 课程分类id
+   */
+  category_id: number
+  /**
+   * 训练目的
+   */
+  train_aim: any[],
+  /**
+   * 课程时长
+   */
+  duration: number,
+  /**
+   * 参考价格
+   */
+  price?: number,
+  /**
+   * 图片id
+   */
+  image_id?: number,
+  /**
+   * 课程介绍
+   */
+  description: string
+}
 
-//   //品牌私教课删除
+export interface SetShopInput {
+  /**
+   * 课程id
+   */
+  course_id: number,
+  /**
+   * 上课门店 1为全店 2为指定门店
+   */
+  shop_setting: number,
+  /**
+   * 门店ID shop_setting为1时空
+   */
+  shop_id: any[],
+  /**
+   * 教练ID
+   */
+  coach_id?: any[]
+}
 
-//   //品牌私教课编辑
-
-//   //品牌私教课详情
-// }
+export interface SetPriceInput {
+  /**
+   * 课程id
+   */
+  course_id: number,
+  /**
+   * 售卖价格 1为统一售价 2为门店售价
+   */
+  price_setting: number,
+  /**
+   * 价格梯度price_setting等于1时必填
+   */
+  price_gradient?: any[]
+}

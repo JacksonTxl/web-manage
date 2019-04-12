@@ -17,7 +17,7 @@ export default {
         id: 323,
         path: 'image/IUt_vXTl8zaWGwlO.jpg',
         url: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg',
-        index: 1
+        index: 0
       }
     }
   },
