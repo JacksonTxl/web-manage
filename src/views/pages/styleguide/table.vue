@@ -17,7 +17,7 @@
       :dataSource="tableData"
     >
       <div slot="action" slot-scope="record">
-        <modal-link tag="a" :to="{name:'test'}">打开 {{record.name}}</modal-link>
+        <modal-link tag="a" :to="{name:'test-sg'}">打开 {{record.name}}</modal-link>
         <a-divider type="vertical"></a-divider>
         <a-popconfirm title="确认删除该权限么?" @confirm="onDelete(record.id)">
           <a>删除</a>

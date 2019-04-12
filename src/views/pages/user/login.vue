@@ -38,7 +38,7 @@
             <a-checkbox>我已阅读并同意<a href="">《用户注册协议》</a></a-checkbox><a href="">忘记密码</a>
           </st-form-item>
           <st-form-item  class="mg-b0">
-            <st-button type="primary"  html-type="submit"  block>登录</st-button>
+            <st-button type="primary"  html-type="submit"  block :loading='loading.loginAccount'>登录</st-button>
           </st-form-item>
         </st-form>
       </section>
@@ -59,6 +59,11 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this)
+    }
+  },
+  subscriptions() {
+    return {
+      loading: this.loginService.loading$
     }
   },
   methods: {

@@ -58,6 +58,16 @@
         这是一个内容
       </st-panel>
     </section>
+
+     <h3 class="mg-t32">st-container</h3>
+     <st-container>
+       <div>st-container（默认type为1）</div>
+       <div>padding: 12px; border-radius: 4px; border: 1px solid #d9d9d9;</div>
+     </st-container>
+     <st-container type="2" class="mg-t16">
+       <div>st-container type="2"</div>
+       <div>padding: 24px; </div>
+     </st-container>
   </div>
 </template>
 

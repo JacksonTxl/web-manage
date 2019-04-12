@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import ShopSaleListTable from './shop-sale-list#/brand-table'
+import ShopSaleListTable from './brand#/brand-table'
 export default {
   name: 'ShopSaleListShop',
   components: {

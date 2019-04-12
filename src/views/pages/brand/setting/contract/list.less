@@ -1,0 +1,71 @@
+.page-brand-setting-contract-list {
+  .contract-item {
+    border: 1px solid @border-color;
+    border-radius: 2px;
+    .bg(@white);
+    .mg-b(24px);
+    &:hover {
+      box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.09);
+      transition: all 0.3s;
+    }
+    &__body {
+      .pd(24px);
+      .h(160px);
+      display: flex;
+    }
+    &__body-lt {
+      flex: 0 0 24px;
+    }
+    &__body-rt {
+      flex: 1;
+      .mg-l(16px);
+    }
+    &__logo-link {
+    }
+    &__logo-img {
+      .s(24px, 24px);
+      border-radius: 50%;
+    }
+    &__title-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    &__title {
+      .mg-b(0);
+    }
+    &__status {
+      .fz(12px);
+      .lh(24px);
+      .ant-badge-status-dot {
+        .s(4px, 4px);
+      }
+      &--success {
+        .c(@success-color);
+      }
+      &--warning {
+        .c(@warning-color);
+      }
+    }
+    &__desc {
+      .mg-t(16px);
+    }
+    &__footer {
+      display: flex;
+      align-items: center;
+      .bg(#f7f9fa);
+      .h(48px);
+      border-top: 1px solid @border-color;
+    }
+    &__divider {
+      .h(16px);
+      .w(1px);
+      .bg(#e8e8e8);
+    }
+    &__action {
+      flex: 1;
+      .ta-c;
+      .lh(48px);
+    }
+  }
+}

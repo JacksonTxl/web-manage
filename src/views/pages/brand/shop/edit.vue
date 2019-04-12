@@ -141,18 +141,7 @@
       <a-row :gutter="8">
         <a-col offset="1" :lg="22">
           <st-form-item label="营业时间">
-            <st-checkbox-button-group v-model="weekArr">
-              <st-checkbox-button-item
-                v-for="item in weekList"
-                :key="item.value"
-                :value="item.value"
-              >{{item.label}}</st-checkbox-button-item>
-            </st-checkbox-button-group>
-            <st-slider
-              class="page-brand-shop-add__slider"
-              :getSlider="getSlider"
-              @change="sliderChange"
-            ></st-slider>
+            <st-shop-hour-picker v-model="shopData.business_time"></st-shop-hour-picker>
           </st-form-item>
         </a-col>
       </a-row>
@@ -216,12 +205,12 @@ export default {
       service_ids: [],
       serviceIcon_icon_list: {
         1: 'WIFI',
-        2: 'shower',
-        3: 'snow',
-        4: 'nosmoking',
+        2: 'park',
+        3: 'shower',
+        4: 'medical',
         5: 'heating',
-        6: 'medical',
-        7: 'park',
+        6: 'snow',
+        7: 'nosmoking',
         8: 'energy'
       },
       // 营业状态
@@ -231,27 +220,29 @@ export default {
         { value: 2, label: '正式营业' },
         { value: 4, label: '已关店' }
       ],
-      // week
-      weekArr: [],
-      weekList: [
-        { value: 1, label: '周一' },
-        { value: 2, label: '周二' },
-        { value: 3, label: '周三' },
-        { value: 4, label: '周四' },
-        { value: 5, label: '周五' },
-        { value: 6, label: '周六' },
-        { value: 7, label: '周日' }
+      weekTimeDefault: [
+        [],
+        [9, 18],
+        [9, 18],
+        [9, 18],
+        [9, 18],
+        [9, 18],
+        [9, 18],
+        [9, 18]
       ],
-      weekTimeDefault: [[], [9, 18], [9, 18], [9, 18], [9, 18], [9, 18], [9, 18], [9, 18]],
-      defaultWeekList: ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+      defaultWeekList: [
+        '',
+        '周一',
+        '周二',
+        '周三',
+        '周四',
+        '周五',
+        '周六',
+        '周日'
+      ],
       // upload
       loading: false,
-      imageUrl: '',
-      getSlider: {
-        disabled: false,
-        className: 'st-slider-box',
-        infoList: []
-      }
+      imageUrl: ''
     }
   },
   watch: {
@@ -259,42 +250,6 @@ export default {
       deep: true,
       handler(newVal, oldVal) {
         this.shopData.service_ids = newVal
-      }
-    },
-    weekArr: {
-      deep: true,
-      handler(newVal, oldVal) {
-        // copy
-        let a = [...newVal]
-        // 排序
-        a.sort((a, b) => a > b)
-        // 传入slider的数组
-        let s = []
-        // slider里`操作到`的数组
-        let w = []
-        // 生成w数组
-        this.defaultWeekList.forEach(i => {
-          w.push({
-            key: i,
-            disabled: true
-          })
-        })
-        // 生成slider的数组
-        a.forEach(i => {
-          w[i].disabled = false
-          s.push({
-            title: this.defaultWeekList[i],
-            value: this.weekTimeDefault[i],
-            key: i,
-            week: []
-          })
-        })
-        let sOld = [...s]
-        sOld.forEach((item, index) => {
-          s[index].week = JSON.parse(JSON.stringify(w))
-          s[index].week[item.key].disabled = true
-        })
-        this.getSlider.infoList = s
       }
     }
   },
@@ -339,15 +294,7 @@ export default {
         })
       }
       this.shopData.shop_status = data.shop_status
-      // week
-      data.business_time.forEach(i => {
-        let start = i.start_time.split(':')[0] * 60 + i.start_time.split(':')[1] * 1
-        let end = i.end_time.split(':')[0] * 60 + i.end_time.split(':')[1] * 1
-        this.weekTimeDefault[i.week_day] = [start / 60, end / 60]
-      })
-      data.business_time.forEach(i => {
-        this.weekArr.push(i.week_day)
-      })
+      this.shopData.business_time = data.business_time
     },
     // 移除店招
     removeImage() {
@@ -384,9 +331,11 @@ export default {
           this.shopData.province_id = +values.shop_PCD[0]
           this.shopData.city_id = +values.shop_PCD[1]
           this.shopData.district_id = +values.shop_PCD[2]
-          this.editService.edit(this.$route.meta.query.id, this.shopData).subscribe(() => {
-            // 修改门店
-          })
+          this.editService
+            .edit(this.$route.meta.query.id, this.shopData)
+            .subscribe(() => {
+              // 修改门店
+            })
         } else {
         }
       })
@@ -428,9 +377,9 @@ export default {
         }
       }
     },
-    async uploadCrop(data) {
+    uploadCrop(data) {
       let that = this
-      let image = await this.fileReader(data.file)
+      let image = URL.createObjectURL(data.file)
       this.$modalRouter.push({
         name: 'image-cropper',
         props: {
@@ -456,12 +405,14 @@ export default {
         this.OSS.put({
           file: data.file
         }).subscribe({
-          next: async val => {
-            this.shopData.shop_images = [{
-              image_key: val.fileKey,
-              is_cover: 1
-            }]
-            this.imageUrl = await this.fileReader(data.file)
+          next: val => {
+            this.shopData.shop_images = [
+              {
+                image_key: val.fileKey,
+                is_cover: 1
+              }
+            ]
+            this.imageUrl = URL.createObjectURL(data.file)
             this.loading = false
             this.messageService.success({ content: '上传成功' })
           },
@@ -473,18 +424,6 @@ export default {
       } else {
         this.loading = false
       }
-    },
-    sliderChange(data) {
-      this.shopData.business_time = data.infoList
-    },
-    fileReader(img) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader()
-        reader.addEventListener('load', () => {
-          resolve(reader.result)
-        })
-        reader.readAsDataURL(img)
-      })
     },
     checkUploadFile(file) {
       const isJPG = this.rules.img_type.test(file.type)

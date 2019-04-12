@@ -22,29 +22,30 @@ const appConfig = appContainer.get(AppConfig)
 /**
  * 图片资源过滤器
  */
-export const imgFilter = (key: string, opts: ImgFilterOptions): string => {
+export const imgFilter = (key: string, opts?: ImgFilterOptions): string => {
   if (/x-oss-process/.test(key)) {
     return key
   }
   if (/^image\//.test(key)) {
     key = appConfig.HOST_IMAGE + '/' + key
   }
-  console.log('opts', opts)
   const configs: ImgFilterOptions = {
     interlace: 1,
-    m: 'mfit'
+    m: 'fill'
   }
   let processConfigStr = ''
-  if (opts.m) {
+  if (opts && opts.m) {
     configs.m = opts.m
   }
-  if (opts.w) {
+  if (opts && opts.w) {
     configs.w = opts.w
   }
-  if (opts.h) {
+  if (opts && opts.h) {
     configs.h = opts.h
   }
-  console.log('configs', configs)
+  if (!opts) {
+    return key
+  }
   for (let i in configs) {
     processConfigStr += `,${i}_${configs[i]}`
   }
@@ -68,7 +69,10 @@ export function shopImgFilter(key: string, options: ImgFilterOptions): string {
 /**
  * 品牌logo过滤器
  */
-export function brandLogoFilter(key: string, options: ImgFilterOptions): string {
+export function brandLogoFilter(
+  key: string,
+  options: ImgFilterOptions
+): string {
   return imgFilter(key, options) || avatarDefault
 }
 
