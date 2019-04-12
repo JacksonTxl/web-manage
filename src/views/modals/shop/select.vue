@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       show: false,
-      checkedKeys: ['shop_id#1', 'shop_id#7'],
+      checkedKeys: ['3#1', '3#7'],
       treeData: []
     }
   },
@@ -53,6 +53,17 @@ export default {
     onCheck(checkedKeys) {
       console.log('onCheck', checkedKeys)
       this.checkedKeys = checkedKeys
+      const shopIds = this.filterShopIds(checkedKeys)
+      console.log('shopIds', shopIds)
+    },
+    filterShopIds(checkedKeys) {
+      const shopIds = []
+      checkedKeys.forEach(item => {
+        if (item.includes('3#')) {
+          shopIds.push(item.replace('3#', ''))
+        }
+      })
+      return shopIds
     }
   }
 }
