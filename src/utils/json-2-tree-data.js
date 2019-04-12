@@ -8,22 +8,21 @@ export function json2AntDesignTreeData(list, opts = {}, n = 0) {
     for (let i in item) {
       if (typeof item[i] === 'number') {
         item.key = item[i]
-        delete item[i]
+        // delete item[i]
       }
       if (typeof item[i] === 'string') {
         item.title = item[i]
-        delete item[i]
+        // delete item[i]
       }
       if (item[i] instanceof Array) {
         isLeaf = false
         item.children = item[i]
-        delete item[i]
+        // delete item[i]
         item.children = json2AntDesignTreeData(item.children, opts, ++_n)
       }
     }
     item.key = JSON.stringify({
       isLeaf,
-      level: n,
       key: item.key
     })
     return item

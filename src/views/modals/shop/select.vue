@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       show: false,
-      checkedKeys: ['3#1', '3#7'],
+      checkedKeys: [JSON.stringify({ isLeaf: true, key: 1 })],
       treeData: []
     }
   },
@@ -59,8 +59,9 @@ export default {
     filterShopIds(checkedKeys) {
       const shopIds = []
       checkedKeys.forEach(item => {
-        if (item.includes('3#')) {
-          shopIds.push(item.replace('3#', ''))
+        item = JSON.parse(item)
+        if (item.isLeaf) {
+          shopIds.push(item.key)
         }
       })
       return shopIds
