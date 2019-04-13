@@ -1,7 +1,14 @@
 import { Subject, Observable, BehaviorSubject } from 'rxjs'
 import produce from 'immer'
 
-import { refCount, publish, tap, finalize, shareReplay } from 'rxjs/operators'
+import {
+  refCount,
+  publish,
+  tap,
+  finalize,
+  shareReplay,
+  map
+} from 'rxjs/operators'
 
 export type Mutation<T> = (state: T) => T | void
 export type Epic<T> = (source$: Observable<T>) => Observable<any>
@@ -96,6 +103,8 @@ export function Effect() {
 export class Computed<T> extends Observable<T> {
   constructor(source$: Observable<T>) {
     super()
-    return source$.pipe(shareReplay(1))
+    return source$.pipe(
+      shareReplay(1)
+    )
   }
 }

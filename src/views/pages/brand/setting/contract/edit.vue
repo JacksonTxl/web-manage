@@ -34,38 +34,38 @@
           </st-form-item>
           <st-t4>字段设置</st-t4>
           <st-form-item class="mg-t24" :class="bSider('form-item',{switch:true})" label="品牌logo">
-            <st-switch v-model='info.is_brand_logo'></st-switch>
+            <st-switch v-model="info.is_brand_logo"></st-switch>
           </st-form-item>
           <st-form-item label="品牌名称" :class="bSider('form-item',{switch:true})">
-            <st-switch v-model='info.is_brand_name'></st-switch>
+            <st-switch v-model="info.is_brand_name"></st-switch>
           </st-form-item>
           <st-form-item label="合同编号" :class="bSider('form-item',{switch:true})">
-            <st-switch v-model='info.is_contract_number'></st-switch>
+            <st-switch v-model="info.is_contract_number"></st-switch>
           </st-form-item>
           <st-form-item label="会员人脸" :class="bSider('form-item',{switch:true})">
             待定
             <st-switch></st-switch>
           </st-form-item>
           <st-form-item label="会员姓名" :class="bSider('form-item',{switch:true})">
-            <st-switch v-model='info.is_member_name'></st-switch>
+            <st-switch v-model="info.is_member_name"></st-switch>
           </st-form-item>
           <st-form-item label="会员手机" :class="bSider('form-item',{switch:true})">
-            <st-switch v-model='info.is_member_mobile'></st-switch>
+            <st-switch v-model="info.is_member_mobile"></st-switch>
           </st-form-item>
           <st-form-item label="会员卡号" :class="bSider('form-item',{switch:true})">
-            <st-switch v-model='info.is_member_card'></st-switch>
+            <st-switch v-model="info.is_member_card"></st-switch>
           </st-form-item>
           <st-form-item label="性别" :class="bSider('form-item',{switch:true})">
-            <st-switch v-model='info.is_member_sex'></st-switch>
+            <st-switch v-model="info.is_member_sex"></st-switch>
           </st-form-item>
           <st-form-item label="身份证号" :class="bSider('form-item',{switch:true})">
-            <st-switch v-model='info.is_member_ID_card'></st-switch>
+            <st-switch v-model="info.is_member_ID_card"></st-switch>
           </st-form-item>
           <st-form-item label="家庭地址" :class="bSider('form-item',{switch:true})">
-            <st-switch v-model='info.is_member_address'></st-switch>
+            <st-switch v-model="info.is_member_address"></st-switch>
           </st-form-item>
           <st-form-item label="销售人员" :class="bSider('form-item',{switch:true})">
-            <st-switch v-model='info.is_salesman_name'></st-switch>
+            <st-switch v-model="info.is_salesman_name"></st-switch>
           </st-form-item>
           <st-form-item label="备注" :class="bSider('form-item',{switch:true})">
             待定
@@ -108,6 +108,11 @@ export default {
   subscriptions() {
     return {
       info: this.editService.info$
+    }
+  },
+  methods: {
+    setValue(field, value) {
+      this.editService.SET_INFO_FIELD(field, value)
     }
   }
 }
