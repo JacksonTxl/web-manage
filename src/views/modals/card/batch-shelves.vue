@@ -67,8 +67,8 @@
             <a-radio :style="radioStyle" :value="2">范围内课程</a-radio>
             <a-checkbox-group @change="onChange">
               <a-checkbox value="A">指定日期开卡</a-checkbox>
-              <a-checkbox value="A">指定日期开卡</a-checkbox>
-              <a-checkbox value="A">指定日期开卡</a-checkbox>
+              <a-checkbox value="B">指定日期开卡</a-checkbox>
+              <a-checkbox value="C">指定日期开卡</a-checkbox>
             </a-checkbox-group>
           </div>
           <div>
