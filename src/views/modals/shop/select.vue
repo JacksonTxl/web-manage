@@ -15,9 +15,9 @@
         />
 
       </st-container>
-      <p class="color-text-light mg-t8">共5家场馆，已选择3家场馆</p>
+      <p class="color-text-light mg-t8">共{{totalNum}}家场馆，已选择{{checedNum}}家场馆</p>
       <p class="ta-r">
-        <st-button type="primary">确定</st-button>
+        <st-button type="primary" @click="confirm">确定</st-button>
       </p>
     </div>
   </a-modal>
@@ -39,17 +39,45 @@ export default {
   data() {
     return {
       show: false,
-      checkedKeys: [JSON.stringify({ isLeaf: true, key: 1 })],
-      treeData: []
+      treeData: [],
+      checkedKeys: [],
+      shopIds: []
+    }
+  },
+  props: {
+    checked: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
+  watch: {
+  },
+  computed: {
+    totalNum() {
+      return 'xxx'
+    },
+    checedNum() {
+      return this.shopIds.length
     }
   },
   created() {
     this.selectService.getShopListTree().subscribe(res => {
-      this.treeData = json2AntDesignTreeData(res.shop_list.province_list, { filterKey: 'shop_id' })
+      this.treeData = json2AntDesignTreeData(res.shop_list.province_list)
+      this.initCheckedKeys()
       console.log(this.treeData)
     })
   },
   methods: {
+    initCheckedKeys() {
+      const shopIds = this.checked
+      this.shopIds = shopIds
+      this.checkedKeys = shopIds.map(item => JSON.stringify({
+        isLeaf: true,
+        key: item
+      }))
+    },
     onCheck(checkedKeys) {
       console.log('onCheck', checkedKeys)
       this.checkedKeys = checkedKeys
@@ -64,7 +92,12 @@ export default {
           shopIds.push(item.key)
         }
       })
+      this.shopIds = shopIds
       return shopIds
+    },
+    confirm() {
+      this.show = false
+      this.$emit('complete', this.shopIds)
     }
   }
 }

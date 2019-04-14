@@ -12,10 +12,15 @@
             <a-radio :value="2">指定门店</a-radio>
           </a-radio-group>
           <div class="page-shop-coach-container-shop mg-t8" v-if="isShow">
-            <!-- <a-table :columns="shopRule">
-              <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
-            </a-table> -->
-            <modal-link tag="a" :to="{ name: 'shop-select' }">
+           <a-table :columns="shopTableColumns" :dataSource="shopTableData" :pagination="false">
+             <template slot="operation" slot-scope="text, record">
+              <div>
+                <a @click="delShopTableRecord(record.key)">删除</a>
+              </div>
+            </template>
+           </a-table>
+            <modal-link tag="a" :to="{ name: 'shop-select', props: { checked: checkedShopIds }, on: {
+              complete: onSelectShopComplete } }">
               <st-button type="dashed" block class="mg-t8">添加</st-button>
             </modal-link>
             <input type="hidden" v-decorator="formRules.shop_id">
@@ -28,9 +33,7 @@
         <st-form-item label="上课教练">
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="formRules.coach_id">
-            <!-- <a-table :columns="columns">
-              <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
-            </a-table> -->
+            <a-table></a-table>
             <modal-link tag="a" :to="{ name: 'coach-select' }">
               <st-button type="dashed" block class="mg-t8">添加</st-button>
             </modal-link>
@@ -49,28 +52,23 @@
 </template>
 <script>
 import { AddService } from '../add.service'
-const columns = [
-  {
-    title: '教练',
-    dataIndex: 'name'
-  },
-  {
-    title: '教练等级',
-    dataIndex: 'gender'
-  },
-  {
-    title: '工作性质',
-    dataIndex: 'email'
-  },
-  {
-    title: '在职状态',
-    dataIndex: 'emai'
-  },
-  {
-    title: '操作',
-    dataIndex: 'em'
-  }
-]
+const shopTableColumns = [{
+  title: '省',
+  dataIndex: 'province_name'
+}, {
+  title: '市',
+  dataIndex: 'city_name'
+}, {
+  title: '区',
+  dataIndex: 'district_name'
+}, {
+  title: '门店名称',
+  dataIndex: 'shop_name'
+}, {
+  title: '操作',
+  dataIndex: 'operation',
+  scopedSlots: { customRender: 'operation' }
+}]
 
 const formRules = {
   course_name: [
@@ -118,10 +116,17 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      columns,
+      shopTableColumns,
+      shopTableData: [],
       formRules,
-      isShow: false
+      isShow: false,
+      checkedShopIds: [1, 7],
+      shop_selected: []
     }
+  },
+  created() {
+    const shopTableData = this.getShops(this.checkedShopIds)
+    this.shopTableData = shopTableData
   },
   methods: {
     save(e) {
@@ -137,6 +142,59 @@ export default {
     onChange(e) {
       console.log(e.target.value)
       e.target.value === 2 ? this.isShow = true : this.isShow = false
+    },
+    onSelectShopComplete(shopIds) {
+      console.log('ok', shopIds)
+      const shopTableData = this.getShops(shopIds)
+      this.shopTableData = shopTableData
+      this.checkedShopIds = shopIds
+    },
+    getShops(shopIds = []) {
+      const data = {
+        '1': {
+          'key': '1',
+          'province_name': '江苏省',
+          'city_name': '苏州市',
+          'district_name': '姑苏区',
+          'shop_name': '场馆A'
+        },
+        '2': {
+          'key': '2',
+          'province_name': '江苏省',
+          'city_name': '苏州市',
+          'district_name': '姑苏区',
+          'shop_name': '场馆B'
+        },
+        '7': {
+          'key': '7',
+          'province_name': '上海市',
+          'city_name': '上海市',
+          'district_name': '徐汇区',
+          'shop_name': '测试店铺'
+        }
+      }
+      const ret = []
+      shopIds.forEach(item => {
+        if (data[item]) {
+          ret.push(data[item])
+        }
+      })
+      return ret
+    },
+    delShopTableRecord(key) {
+      const { shopTableData, checkedShopIds } = this
+      shopTableData.forEach((item, index) => {
+        if (item.key === key) {
+          shopTableData.splice(index, 1)
+        }
+      })
+      checkedShopIds.forEach((item, index) => {
+        if (item === +key) {
+          checkedShopIds.splice(index, 1)
+        }
+      })
+      this.shopTableData = shopTableData
+      this.checkedShopIds = checkedShopIds
     }
   }
 }
