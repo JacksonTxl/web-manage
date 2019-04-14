@@ -4,7 +4,7 @@
       <img :class="b('brand-logo')" src="a.png" alt="brand-logo">
       <h1 :class="b('title')">private lessons</h1>
       <h4 :class="b('subtitle')">STYD健身学院</h4>
-      <div :class="b('contract-no')">
+      <div :class="b('contract-code')">
         <label class="info-label">合同编号：</label>
         <span class="info-text">294389802</span>
       </div>
@@ -139,9 +139,21 @@
   </div>
 </template>
 <script>
+import { EditService } from '../edit.service'
+
 export default {
   bem: {
-    b: 'preview'
+    b: 'contract-preview'
+  },
+  serviceInject() {
+    return {
+      editService: EditService
+    }
+  },
+  subscriptions() {
+    return {
+      info: this.editService.info$
+    }
   },
   data() {
     return {
