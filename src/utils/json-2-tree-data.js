@@ -1,23 +1,28 @@
 /**
- * json 数据转 tree
+ * json 数据转 AntDesign tree
+ * @param {Array} list
+ * @param {Object} opts
+ * @param {Number} n
  */
 export function json2AntDesignTreeData(list, opts = {}, n = 0) {
+  const defaultOpts = {
+    keyRegExp: /^\d+$/
+  }
+  opts = Object.assign(defaultOpts, opts)
   return list.map(item => {
     let _n = n
     let isLeaf = true
+    const { keyRegExp } = opts
     for (let i in item) {
-      if (typeof item[i] === 'number') {
+      if (keyRegExp.test(item[i])) {
         item.key = item[i]
-        // delete item[i]
       }
       if (typeof item[i] === 'string') {
         item.title = item[i]
-        // delete item[i]
       }
       if (item[i] instanceof Array) {
         isLeaf = false
         item.children = item[i]
-        // delete item[i]
         item.children = json2AntDesignTreeData(item.children, opts, ++_n)
       }
     }

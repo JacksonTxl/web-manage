@@ -12,12 +12,7 @@
             <a-radio :value="2">指定门店</a-radio>
           </a-radio-group>
           <div class="page-shop-coach-container-shop mg-t8" v-if="isShow">
-            <!-- <a-table :columns="shopRule">
-              <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
-            </a-table> -->
-            <modal-link tag="a" :to="{ name: 'shop-select' }">
-              <st-button type="dashed" block class="mg-t8">添加</st-button>
-            </modal-link>
+            <select-shop :shopIds="shopIds" @change="onSelectShop"></select-shop>
             <input type="hidden" v-decorator="formRules.shop_id">
           </div>
         </st-form-item>
@@ -28,9 +23,7 @@
         <st-form-item label="上课教练">
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="formRules.coach_id">
-            <!-- <a-table :columns="columns">
-              <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
-            </a-table> -->
+            <a-table></a-table>
             <modal-link tag="a" :to="{ name: 'coach-select' }">
               <st-button type="dashed" block class="mg-t8">添加</st-button>
             </modal-link>
@@ -49,28 +42,24 @@
 </template>
 <script>
 import { AddService } from '../add.service'
-const columns = [
-  {
-    title: '教练',
-    dataIndex: 'name'
-  },
-  {
-    title: '教练等级',
-    dataIndex: 'gender'
-  },
-  {
-    title: '工作性质',
-    dataIndex: 'email'
-  },
-  {
-    title: '在职状态',
-    dataIndex: 'emai'
-  },
-  {
-    title: '操作',
-    dataIndex: 'em'
-  }
-]
+import SelectShop from '@/views/fragments/select-shop'
+const shopTableColumns = [{
+  title: '省',
+  dataIndex: 'province_name'
+}, {
+  title: '市',
+  dataIndex: 'city_name'
+}, {
+  title: '区',
+  dataIndex: 'district_name'
+}, {
+  title: '门店名称',
+  dataIndex: 'shop_name'
+}, {
+  title: '操作',
+  dataIndex: 'operation',
+  scopedSlots: { customRender: 'operation' }
+}]
 
 const formRules = {
   course_name: [
@@ -115,12 +104,15 @@ export default {
       addService: AddService
     }
   },
+  components: {
+    SelectShop
+  },
   data() {
     return {
       form: this.$form.createForm(this),
-      columns,
       formRules,
-      isShow: false
+      isShow: false,
+      shopIds: [1, 7]
     }
   },
   methods: {
@@ -137,6 +129,9 @@ export default {
     onChange(e) {
       console.log(e.target.value)
       e.target.value === 2 ? this.isShow = true : this.isShow = false
+    },
+    onSelectShop(shopIds) {
+      console.log('your selected', shopIds)
     }
   }
 }
