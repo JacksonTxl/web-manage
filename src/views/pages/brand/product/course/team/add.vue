@@ -2,7 +2,10 @@
     <st-panel app>
     <a-row :class="bstep()" class="mg-b48" :gutter="8">
       <a-col offset="1" :span="stepsSpan">
-        <st-steps class="mg-l16" :value="currentIndex" :stepArr="stepArr"/>
+        <a-steps :current="currentIndex">
+          <a-step v-for="item in stepArr" :key="item.key" :title="item.title"
+            @click="changeStep(item.key)" class="cursor-pointer"/>
+        </a-steps>
       </a-col>
     </a-row>
     <create-team-course @goNext="goNext" v-show="currentIndex == 0"/>
@@ -44,6 +47,9 @@ export default {
       if (this.currentIndex < 2) {
         this.currentIndex = this.currentIndex + 1
       }
+    },
+    changeStep(step) {
+      this.currentIndex = step
     }
   }
 }

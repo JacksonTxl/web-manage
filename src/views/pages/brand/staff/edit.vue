@@ -9,24 +9,23 @@
       </a-col>
     </a-row>
     <edit-detail-basics-info v-show="currentIndex === 0" @goNext="goNext"/>
-    <!--
-    <set-shop-coach v-show="currentIndex === 1" @goNext="goNext"/>
-    <set-sell-price v-show="currentIndex === 2" @goNext="goNext"/> -->
+    <edit-detail-detailed-info v-show="currentIndex === 1" @goNext="goNext"/>
+    <edit-detail-coach-info v-show="currentIndex === 2" @goNext="goNext"/>
   </st-panel>
 </template>
 <script>
 import EditDetailBasicsInfo from './edit#/edit-detail-basicsInfo'
-// import SetShopCoach from './add#/set-shop-coach'
-// import SetSellPrice from './add#/set-sell-price'
+import EditDetailDetailedInfo from './edit#/edit-detail-detailedInfo'
+import EditDetailCoachInfo from './edit#/edit-detail-coachInfo'
 export default {
   components: {
-    EditDetailBasicsInfo // 编辑基础信息
-    // SetShopCoach, // 设置上课门店及教练
-    // SetSellPrice // 设置售卖价格
+    EditDetailBasicsInfo, // 编辑基础信息
+    EditDetailDetailedInfo, // 编辑详细信息
+    EditDetailCoachInfo // 编辑教练信息
   },
   data() {
     return {
-      currentIndex: 0,
+      currentIndex: 2,
       stepArr: [
         {
           title: '基础信息',
