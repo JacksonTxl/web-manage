@@ -218,15 +218,14 @@ export default {
           title: '类型',
           dataIndex: 'card_type',
           sorter: (a, b) => {
-            let stringA = a.card_type.toUpperCase()
-            let stringB = b.card_type.toUpperCase()
-            if (stringA < stringB) {
+            let A = a.card_type
+            let B = b.card_type
+            if (A < B) {
               return -1
             }
-            if (stringA > stringB) {
+            if (A > B) {
               return 1
             }
-            // names must be equal
             return 0
           }
         },
