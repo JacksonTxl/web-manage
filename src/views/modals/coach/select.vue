@@ -9,15 +9,16 @@
       <a-select
         mode="tags"
         style="width: 100%"
-        @change="handleChange"
         placeholder="请输入教练昵称、姓名、手机号进行查询"
+        :defaultValue="coachIds"
+        @change="change"
       >
-        <a-select-option v-for="i in 25" :key="(i + 9).toString(36) + i">{{(i + 9).toString(36) + i}}</a-select-option>
+        <a-select-option v-for="item in list" :key="`${item.coach_id}`">{{item.coach_name}}</a-select-option>
       </a-select>
       <p class="color-text-light mg-t8">已选择3个教练</p>
       <p class="ta-r">
-        <st-button>取消</st-button>
-        <st-button type="primary" class="mg-l8">确定</st-button>
+        <st-button @click="onCancelSelect">取消</st-button>
+        <st-button type="primary" class="mg-l8" @click="onConfirmSelect">确定</st-button>
       </p>
     </div>
   </a-modal>
@@ -26,22 +27,44 @@
 import { Action } from 'rx-state'
 import { switchMap, catchError, filter } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'
-import { imgFilter } from '@/filters/resource.filters'
+import { SelectService } from './select.service'
 export default {
   serviceInject() {
     return {
+      selectService: SelectService
     }
   },
   data() {
     return {
-      show: false
+      show: false,
+      list: [],
+      coachIds: []
+    }
+  },
+  props: {
+    selected: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   created() {
+    this.selectService.getCoachList().subscribe(res => {
+      this.list = res.list
+      this.coachIds = this.selected
+    })
   },
   methods: {
-    handleChange(value) {
-      console.log(`selected ${value}`)
+    change(coachIds) {
+      this.coachIds = coachIds
+    },
+    onConfirmSelect() {
+      this.show = false
+      this.$emit('change', this.coachIds)
+    },
+    onCancelSelect() {
+      this.show = false
     }
   }
 }

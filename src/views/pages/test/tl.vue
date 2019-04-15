@@ -1,14 +1,15 @@
 <template>
   <div>
     <st-panel app>
-    <p>
-      <modal-link tag="a" :to="{ name: 'brand-switch' }">切换品牌</modal-link>
-    </p>
-    <p>
-      <a href="javascript: void(0);" @click="switchShop">切换门店</a>
-    </p>
-  </st-panel>
-  <switch-shop-drawer v-if="isShowSwitchShop" @onClose="onCloseSwitchShop"></switch-shop-drawer >
+      <p>
+        <modal-link tag="a" :to="{ name: 'brand-switch' }">切换品牌</modal-link>
+      </p>
+      <p>
+        <a href="javascript: void(0);" @click="switchShop">切换门店</a>
+      </p>
+      <select-shop :shopIds="shopIds" @change="onSelectShop"></select-shop>
+    </st-panel>
+    <switch-shop-drawer v-if="isShowSwitchShop" @onClose="onCloseSwitchShop"></switch-shop-drawer >
   </div>
 </template>
 
@@ -22,6 +23,8 @@ import { switchMap, catchError, filter } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'
 import SwitchShopDrawer from '@/views/fragments/switch-shop-drawer'
 
+import SelectShop from '@/views/fragments/shop/select-shop'
+
 export default {
   serviceInject() {
     return {
@@ -32,11 +35,13 @@ export default {
     }
   },
   components: {
-    SwitchShopDrawer
+    SwitchShopDrawer,
+    SelectShop
   },
   data() {
     return {
-      isShowSwitchShop: false
+      isShowSwitchShop: false,
+      shopIds: [1]
     }
   },
   subscriptions() {
@@ -50,6 +55,9 @@ export default {
     },
     onSearchShop() {
 
+    },
+    onSelectShop(shopIds) {
+      console.log('your selected', shopIds)
     }
   }
 }

@@ -1,3 +1,4 @@
+import { TeamEditService } from './edit.service';
 <template>
   <st-panel app>
     <st-form :form="form" @submit="save" class="page-editteamcourse-container">
@@ -129,6 +130,7 @@
   </st-panel>
 </template>
 <script>
+import { TeamEditService } from './edit.service'
 const columns = [
   {
     title: '省',
@@ -217,6 +219,17 @@ const formRules = {
 }
 export default {
   name: 'create-personal-course',
+  serviceInject() {
+    return {
+      teamEditService: TeamEditService
+    }
+  },
+  subscriptions() {
+    console.log('sub', this.teamEditService)
+    return {
+      // formData: this.teamEditService.formData$
+    }
+  },
   data() {
     return {
       columns,
