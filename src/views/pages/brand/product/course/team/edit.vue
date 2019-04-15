@@ -227,7 +227,7 @@ export default {
   subscriptions() {
     console.log('sub', this.teamEditService)
     return {
-      formData: this.teamEditService.formData$
+      // formData: this.teamEditService.formData$
     }
   },
   data() {
