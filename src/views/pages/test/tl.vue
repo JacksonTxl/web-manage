@@ -23,7 +23,7 @@ import { switchMap, catchError, filter } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'
 import SwitchShopDrawer from '@/views/fragments/switch-shop-drawer'
 
-import SelectShop from '@/views/fragments/select-shop'
+import SelectShop from '@/views/fragments/shop/select-shop'
 
 export default {
   serviceInject() {
