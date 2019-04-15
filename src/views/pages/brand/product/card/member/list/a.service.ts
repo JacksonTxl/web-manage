@@ -8,7 +8,7 @@ interface CardsListInfoState {
   cardsListInfo: any
 }
 @Injectable()
-export class CardsListService extends Store<CardsListInfoState> {
+export class AService extends Store<CardsListInfoState> {
   state$: State<CardsListInfoState>
   cardsListInfo$: Computed<string>
   constructor(private cardsApi: CardsApi) {
