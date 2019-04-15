@@ -135,6 +135,12 @@ export default {
           tag: 'a',
           name: '会员卡恢复售卖',
           route: { name: 'card-recovery-sell' }
+        },
+        {
+          clickName: this.onClickSettingSalary,
+          tag: 'a',
+          name: '批量上架会员卡',
+          route: { name: 'card-batch-shelves' }
         }
       ],
       data: [

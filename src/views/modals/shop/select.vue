@@ -10,7 +10,6 @@
         <a-tree
           checkable
           v-model="checkedKeys"
-          :selectedKeys="selectedKeys"
           :treeData="treeData"
           @check="onCheck"
         />
@@ -40,14 +39,13 @@ export default {
   data() {
     return {
       show: false,
-      checkedKeys: [],
-      selectedKeys: [],
+      checkedKeys: [JSON.stringify({ isLeaf: true, key: 1 })],
       treeData: []
     }
   },
   created() {
     this.selectService.getShopListTree().subscribe(res => {
-      this.treeData = json2AntDesignTreeData(res.shop_list.province_list)
+      this.treeData = json2AntDesignTreeData(res.shop_list.province_list, { filterKey: 'shop_id' })
       console.log(this.treeData)
     })
   },
@@ -55,6 +53,18 @@ export default {
     onCheck(checkedKeys) {
       console.log('onCheck', checkedKeys)
       this.checkedKeys = checkedKeys
+      const shopIds = this.filterShopIds(checkedKeys)
+      console.log('shopIds', shopIds)
+    },
+    filterShopIds(checkedKeys) {
+      const shopIds = []
+      checkedKeys.forEach(item => {
+        item = JSON.parse(item)
+        if (item.isLeaf) {
+          shopIds.push(item.key)
+        }
+      })
+      return shopIds
     }
   }
 }
