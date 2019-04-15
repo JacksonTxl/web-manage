@@ -94,7 +94,7 @@ export default {
     },
     confirm() {
       this.show = false
-      this.$emit('complete', this.shopIds)
+      this.$emit('change', this.shopIds)
     }
   }
 }

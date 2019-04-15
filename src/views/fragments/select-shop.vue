@@ -8,7 +8,7 @@
     </template>
     </a-table>
     <modal-link tag="a" :to="{ name: 'shop-select', props: { checked: checkedShopIds }, on: {
-      complete: onSelectShopComplete } }">
+      change: onSelectShopComplete } }">
       <st-button type="dashed" block class="mg-t8">添加</st-button>
     </modal-link>
   </div>
@@ -58,7 +58,7 @@ export default {
       const shopTableData = this.getShops(shopIds)
       this.shopTableData = shopTableData
       this.checkedShopIds = shopIds
-      this.$emit('onComplete', shopIds)
+      this.$emit('change', shopIds)
     },
     getShops(shopIds = []) {
       const data = {
@@ -106,6 +106,7 @@ export default {
       })
       this.shopTableData = shopTableData
       this.checkedShopIds = checkedShopIds
+      this.$emit('change', checkedShopIds)
     }
   }
 }

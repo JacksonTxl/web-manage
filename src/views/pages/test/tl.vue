@@ -7,7 +7,7 @@
       <p>
         <a href="javascript: void(0);" @click="switchShop">切换门店</a>
       </p>
-      <select-shop :shopIds="shopIds" @onComplete="onSelectShopComplete"></select-shop>
+      <select-shop :shopIds="shopIds" @change="onSelectShop"></select-shop>
     </st-panel>
     <switch-shop-drawer v-if="isShowSwitchShop" @onClose="onCloseSwitchShop"></switch-shop-drawer >
   </div>
@@ -56,7 +56,7 @@ export default {
     onSearchShop() {
 
     },
-    onSelectShopComplete(shopIds) {
+    onSelectShop(shopIds) {
       console.log('your selected', shopIds)
     }
   }

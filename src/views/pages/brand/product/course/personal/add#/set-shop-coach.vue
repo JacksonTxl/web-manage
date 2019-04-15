@@ -12,7 +12,7 @@
             <a-radio :value="2">指定门店</a-radio>
           </a-radio-group>
           <div class="page-shop-coach-container-shop mg-t8" v-if="isShow">
-            <select-shop :shopIds="shopIds" @onComplete="onSelectShopComplete"></select-shop>
+            <select-shop :shopIds="shopIds" @change="onSelectShop"></select-shop>
             <input type="hidden" v-decorator="formRules.shop_id">
           </div>
         </st-form-item>
@@ -130,7 +130,7 @@ export default {
       console.log(e.target.value)
       e.target.value === 2 ? this.isShow = true : this.isShow = false
     },
-    onSelectShopComplete(shopIds) {
+    onSelectShop(shopIds) {
       console.log('your selected', shopIds)
     }
   }
