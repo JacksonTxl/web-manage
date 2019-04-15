@@ -3,24 +3,29 @@
     <!-- 图片预览 -->
     <h4>v-viewer</h4>
     <p>使用.st-preview-item 类 添加预览图片样式</p>
-    <viewer-demo />
+    <viewer-demo/>
     <!-- 数字动画 -->
     <h4>vue-countup-v2</h4>
-    <countup-demo />
+    <countup-demo/>
     <!-- 图片裁剪 -->
     <h4>cropper</h4>
-    <cropper-demo />
+    <cropper-demo/>
+
+    <h4>editor富文本编辑器</h4>
+    <editor-demo />
   </div>
 </template>
 <script>
 import CountupDemo from './plugins#/countup.vue'
 import ViewerDemo from './plugins#/viewer.vue'
 import CropperDemo from './plugins#/cropper.vue'
+import EditorDemo from './plugins#/editor.vue'
 export default {
   components: {
     ViewerDemo,
     CountupDemo,
-    CropperDemo
+    CropperDemo,
+    EditorDemo
   }
 }
 </script>
