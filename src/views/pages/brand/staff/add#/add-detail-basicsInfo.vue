@@ -24,7 +24,7 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact>
-            <a-select style="width: 15%;" :defaultValue="37" v-decorator="basicInfoRuleList.country_codeRule">
+            <a-select style="width: 15%;" :defaultValue="defaultCodeId" v-decorator="basicInfoRuleList.country_codeRule">
               <a-select-option :value="code.code_id" v-for="code in codeList" :key="code.code_id">+{{code.phone_code}}</a-select-option>
             </a-select>
             <a-input style="width: 85%" placeholder="请输入手机号" v-decorator="basicInfoRuleList.phoneRule"/>
@@ -272,6 +272,10 @@ export default {
     }
   },
   props: {
+    defaultCode: {
+      type: String,
+      default: ''
+    },
     codeList: {
       type: Array,
       default: () => []

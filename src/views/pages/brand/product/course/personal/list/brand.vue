@@ -9,15 +9,26 @@
       </div>
     </header>
     <main class="page-shop-sale-list-brand__table mg-t8">
-      <shop-sale-list-table></shop-sale-list-table>
+      <shop-sale-list-table :personalCourseList="personalCourseList"></shop-sale-list-table>
     </main>
   </div>
 </template>
 
 <script>
 import ShopSaleListTable from './brand#/brand-table'
+import { BrandService } from './brand.service'
 export default {
   name: 'ShopSaleListShop',
+  serviceInject() {
+    return {
+      brandService: BrandService
+    }
+  },
+  subscriptions() {
+    return {
+      personalCourseList: this.brandService.personalCourseList$
+    }
+  },
   components: {
     ShopSaleListTable
   },

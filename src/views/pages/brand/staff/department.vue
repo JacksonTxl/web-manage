@@ -6,7 +6,7 @@
       </header>
       <main class="staff-lf__tree">
         <organization-tree></organization-tree>
-        <modal-link tag='a-button' :to="{ name: 'staff-turnover' }">
+       <!--  <modal-link tag='a-button' :to="{ name: 'staff-turnover' }">
           离职
         </modal-link>
         <modal-link tag='a-button' :to="{ name: 'staff-update-staff-position' }">
@@ -23,7 +23,7 @@
         </modal-link>
         <modal-link tag='a-button' :to="{ name: 'staff-delete'}">
           删除员工
-        </modal-link>
+        </modal-link>-->
       </main>
     </section>
     <section class="page-staff-rg">
@@ -33,7 +33,7 @@
       </header>
       <main class="staff-rg__table">
         <div  style="width:100%">
-          <staff-table :loading="loading.getStaffList" :staffList="staffList"></staff-table>
+          <staff-table :staffList="staffList"></staff-table>
         </div>
       </main>
     </section>

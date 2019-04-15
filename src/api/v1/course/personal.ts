@@ -1,6 +1,13 @@
 import { Api } from '../../api'
 
+const mock = {}
 export class PersonalApi extends Api {
+  /**
+   * 获取品牌私教课列表
+   */
+  getPersonalBrandCourseList(query: GetPersonalBrandCourseListInput) {
+    return this.http.get('/v1/course/personal/brand/', { query, mock })
+  }
   /**
    * 获取品牌私教课信息
    */
@@ -31,6 +38,12 @@ export class PersonalApi extends Api {
   setPrice(params: SetPriceInput) {
     return this.http.post('/v1/course/personal/set_price', { params })
   }
+}
+export interface GetPersonalBrandCourseListInput {
+  category_id?: number,
+  course_name?: string,
+  page?: number,
+  size?: number
 }
 
 export interface GetPersonalBrandInput {
