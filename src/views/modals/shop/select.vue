@@ -66,7 +66,6 @@ export default {
     this.selectService.getShopListTree().subscribe(res => {
       this.treeData = json2AntDesignTreeData(res.shop_list.province_list)
       this.initCheckedKeys()
-      console.log(this.treeData)
     })
   },
   methods: {
@@ -79,10 +78,8 @@ export default {
       }))
     },
     onCheck(checkedKeys) {
-      console.log('onCheck', checkedKeys)
       this.checkedKeys = checkedKeys
       const shopIds = this.filterShopIds(checkedKeys)
-      console.log('shopIds', shopIds)
     },
     filterShopIds(checkedKeys) {
       const shopIds = []
