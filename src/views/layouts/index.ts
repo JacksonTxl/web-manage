@@ -8,7 +8,7 @@ import LayoutLoading from './loading.vue'
 export const layoutMap = {
   blank: LayoutBlank,
   'default-brand': LayoutDefaultBrand,
-  'default-shop': LayoutDefaultShop,
+  'default-shop': LayoutDefaultBrand,
   login: LayoutLogin,
   loading: LayoutLoading
 }

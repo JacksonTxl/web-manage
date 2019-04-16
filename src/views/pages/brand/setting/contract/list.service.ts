@@ -8,6 +8,7 @@ import { State, Computed, log } from 'rx-state'
 interface ListState {
   list: any[]
 }
+
 @Injectable()
 export class ListService extends Store<ListState> implements RouteGuard {
   state$: State<ListState>

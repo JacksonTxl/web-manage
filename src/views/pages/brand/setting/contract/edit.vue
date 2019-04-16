@@ -34,7 +34,7 @@
           </st-form-item>
           <st-t4>字段设置</st-t4>
           <st-form-item class="mg-t24" :class="bSider('form-item',{switch:true})" label="品牌logo">
-            <st-switch v-model="info.is_brand_logo"></st-switch>
+            <st-switch v-model="info.is_brand_logo.id"></st-switch>
           </st-form-item>
           <st-form-item label="品牌名称" :class="bSider('form-item',{switch:true})">
             <st-switch v-model="info.is_brand_name"></st-switch>
