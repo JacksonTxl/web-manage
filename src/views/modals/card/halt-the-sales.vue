@@ -28,11 +28,17 @@
         </a-popconfirm>
       </footer>
     </section>
+    {{a}}
   </a-modal>
 </template>
 <script>
 export default {
   name: 'haltTheSales',
+  props: {
+    a: {
+      type: Number
+    }
+  },
   data() {
     return {
       show: false,

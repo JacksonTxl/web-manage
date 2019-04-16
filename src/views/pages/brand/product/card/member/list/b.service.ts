@@ -8,7 +8,7 @@ interface CardsListInfoState {
   cardsListInfo: any
 }
 @Injectable()
-export class AService extends Store<CardsListInfoState> {
+export class BService extends Store<CardsListInfoState> {
   state$: State<CardsListInfoState>
   cardsListInfo$: Computed<string>
   constructor(private cardsApi: CardsApi) {
@@ -24,7 +24,7 @@ export class AService extends Store<CardsListInfoState> {
     })
   }
   getListInfo(paramsObj: any) {
-    return this.cardsApi.getCardsList(paramsObj)
+    return this.cardsApi.getCardsListA(paramsObj)
   }
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getListInfo({ card_name: to.query.cardName }).subscribe(res => {
@@ -33,9 +33,10 @@ export class AService extends Store<CardsListInfoState> {
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    console.log('cards')
     this.getListInfo({}).subscribe(res => {
       this.SET_CARDS_LIST_INFO(res)
+      next()
     })
-    next()
   }
 }
