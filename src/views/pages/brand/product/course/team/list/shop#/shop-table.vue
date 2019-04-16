@@ -72,7 +72,7 @@
 <script>
 import { columns } from './shop.config'
 export default {
-  name: 'ShopSaleListTable',
+  name: 'TeamTableShop',
   data() {
     return {
       columns,

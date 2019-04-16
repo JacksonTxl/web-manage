@@ -26,6 +26,12 @@ export class ShopApi extends Api {
   getShopList() {
     return this.http.get('/v1/shops')
   }
+  /**
+   * 门店列表 省市区门店树形
+   */
+  getShopListTree() {
+    return this.http.get('/v1/shops/list', { mock: {} })
+  }
 }
 
 export interface ShopImages {

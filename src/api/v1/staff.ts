@@ -113,10 +113,11 @@ export interface SaveData {
     repeat_password? : string;
 }
 const URL = '/v1/staff/brand'
+const mock = {}
 export class StaffApi extends Api {
   // 获取某部门员工列表
   getStaffBrandList(query: Params) {
-    return this.http.get('/v1/staff/brand', { query, mock: {} })
+    return this.http.get(URL, { query, mock })
   }
 
   getCountryCodes(query: any) {
@@ -124,22 +125,22 @@ export class StaffApi extends Api {
   }
   // 添加某部门员工
   addStaffBrandInfo(params: SaveData) {
-    return this.http.post('/v1/staff/brand', { params })
+    return this.http.post(URL, { params })
   }
   // 获取员工详情
   getStaffBrandInfo(id: string) {
-    return this.http.get(`/v1/staff/brand${id}`)
+    return this.http.get(`${URL}${id}`)
   }
   // 获取编辑员工回显
   getStaffBrandReview(id: string, params: SaveData) {
-    return this.http.get(`v1/staff/brand/review/${id}`, { params })
+    return this.http.get(`${URL}/review/${id}`, { params })
   }
   // 编辑员工信息
   updateStaffBrandInfo(params: SaveData) {
-    return this.http.put('/v1/staff/brand', { params })
+    return this.http.put(URL, { params })
   }
   // 删除员工
   deleteStaffBrandInfo(id: string) {
-    return this.http.delete(`/v1/staff/brand${id}`)
+    return this.http.delete(`${URL}${id}`)
   }
 }

@@ -5,14 +5,20 @@ export class PersonalApi extends Api {
   /**
    * 获取品牌私教课列表
    */
-  getPersonalBrandCourseList(query: GetPersonalBrandCourseListInput) {
+  getCourseListInBrand(query: GetPersonalBrandCourseListInput) {
     return this.http.get('/v1/course/personal/brand/', { query, mock })
+  }
+  /**
+   * 获取品牌门店下私教课列表
+   */
+  getCourseListInShop(query: GetPersonalBrandCourseListInput) {
+    return this.http.get('/v1/course/personal/brand/shop', { query, mock })
   }
   /**
    * 获取品牌私教课信息
    */
-  getPersonalBrand(query: GetPersonalBrandInput) {
-    return this.http.get('/v1/course/personal/brand/', { query })
+  getPersonalBrandInfo(query: GetPersonalBrandInfoInput) {
+    return this.http.get(`/v1/course/personal/brand/${query.course_id}`, { mock: {} })
   }
   /**
    * 添加品牌私教课
@@ -46,7 +52,7 @@ export interface GetPersonalBrandCourseListInput {
   size?: number
 }
 
-export interface GetPersonalBrandInput {
+export interface GetPersonalBrandInfoInput {
   /**
    * 课程id
    */

@@ -11,7 +11,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
-          <a-select placeholder="请选择" v-decorator="formRules.course_type">
+          <a-select placeholder="请选择课程类型" v-decorator="formRules.course_type">
             <a-select-option value="2">课程类型A</a-select-option>
             <a-select-option value="1">课程类型B</a-select-option>
           </a-select>
@@ -21,7 +21,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
-          <a-select placeholder="请选择" v-decorator="formRules.training_purpose">
+          <a-select placeholder="请选择训练目的" v-decorator="formRules.training_purpose">
             <a-select-option value="2">训练目的A</a-select-option>
             <a-select-option value="1">训练目的B</a-select-option>
           </a-select>
@@ -50,7 +50,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="图片" >
           <div class="page-upload-container">
-            <file-upload :list="fileList" @change="onImgChange"></file-upload>
+            <st-image-upload :list="fileList" @change="onImgChange"></st-image-upload>
             <input type="hidden" v-decorator="formRules.course_image">
             <div class="page-course-photo-des mg-l16">
               <div class="page-course-item">
@@ -85,13 +85,12 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="上课门店" required>
-          <a-radio-group :defaultValue="1" @change="onChange">
+          <a-radio-group :defaultValue="1">
             <a-radio :value="1">全店</a-radio>
             <a-radio :value="2">指定门店</a-radio>
           </a-radio-group>
           <div class="page-shop-coach-container-shop mg-t8">
-            <a-table :columns="shopRule">
-              <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
+            <a-table>
             </a-table>
             <st-button type="dashed" block class="mg-t8">添加</st-button>
           </div>
@@ -104,7 +103,7 @@
           <a-input placeholder="课程名称" disabled/>
         </st-form-item>
         <st-form-item label="售价设置" required>
-          <a-radio-group :defaultValue="1" @change="onChange">
+          <a-radio-group :defaultValue="1">
             <a-radio :value="1">售卖场馆自主定价</a-radio>
             <a-radio :value="2">品牌统一定价</a-radio>
           </a-radio-group>
@@ -122,6 +121,7 @@
   </st-panel>
 </template>
 <script>
+import { EditService } from './edit.service'
 const columns = [
   {
     title: '教练',
@@ -194,6 +194,17 @@ const formRules = {
 }
 export default {
   name: 'create-personal-course',
+  serviceInject() {
+    return {
+      editService: EditService
+    }
+  },
+  subscriptions() {
+    console.log('sub', this.editService)
+    return {
+      formData: this.editService.formData$
+    }
+  },
   data() {
     return {
       columns,
@@ -204,6 +215,11 @@ export default {
         image_key: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/pLOFb5kCPN4gPQ8H'
       }]
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.setFieldsValue()
+    })
   },
   methods: {
     save(e) {
@@ -217,6 +233,11 @@ export default {
     onImgChange(fileList) {
       this.form.setFieldsValue({
         course_image: fileList[0]
+      })
+    },
+    setFieldsValue() {
+      this.form.setFieldsValue({
+        ...this.formData
       })
     }
   }

@@ -18,7 +18,7 @@ export class BrandService {
     })
   }
   getCoursePersonalBrandList(params: GetPersonalBrandCourseListInput) {
-    return this.personalApi.getPersonalBrandCourseList(params).pipe(
+    return this.personalApi.getCourseListInBrand(params).pipe(
       tap(state => {
         this.SET_PERSONAL_COURSE_LIST(state)
       })

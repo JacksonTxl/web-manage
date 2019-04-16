@@ -1,6 +1,10 @@
 <template>
   <div :class="b()">
-    <st-checkbox-button-group :class="b('checkbox')" v-model="selectedDays">
+    <st-checkbox-button-group
+      @change="onCheckboxChange"
+      :class="b('checkbox')"
+      v-model="selectedDays"
+    >
       <st-checkbox-button-item :value="1">周一</st-checkbox-button-item>
       <st-checkbox-button-item :value="2">周二</st-checkbox-button-item>
       <st-checkbox-button-item :value="3">周三</st-checkbox-button-item>
@@ -20,7 +24,7 @@
         <th>24:00</th>
         <th>操作</th>
       </tr>
-      <tr v-show="isShowDay(n)" v-for="n in 7" :key="n">
+      <tr style="height:80px" v-show="isShowDay(n)" v-for="n in 7" :key="n">
         <td>{{n | dayFilter}}</td>
         <td colspan="5">
           <a-slider range :defaultValue="[20, 50]"></a-slider>

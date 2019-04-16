@@ -1,7 +1,7 @@
 <template>
   <st-panel app :class="bPage()">
     <a-row :gutter="24">
-      <a-col :xl="8" :xxl="6" :xs="12" v-for="n in 13" :key="n">
+      <a-col :xl="8" :xxl="6" :xs="12" v-for="tpl in list" :key="tpl.id">
         <div :class="bItem()">
           <div :class="bItem('body')">
             <div :class="bItem('body-lt')">
@@ -11,18 +11,25 @@
             </div>
             <div :class="bItem('body-rt')">
               <div :class="bItem('title-box')">
-                <st-t3 :class="bItem('title')">会员卡合同模版</st-t3>
-                <div :class="bItem('status',{success:true,warning:true})">
-                  <a-badge status="warning"></a-badge>待设置
+                <st-t3 :class="bItem('title')">{{tpl.contract_title}}</st-t3>
+                <div
+                  :class="bItem('status',{success:tpl.is_initialize_status,warning:!tpl.is_initialize_status})"
+                >
+                  <a-badge :status="tpl.is_initialize_status?'success':'warning'"></a-badge>
+                  {{tpl.is_initialize_status?'已设置':'待设置'}}
                 </div>
               </div>
-              <p :class="bItem('desc')">用户购买会员卡，即可查看或打印的会员卡合同,用户购买会员卡，即可查看或打印的会员卡合同</p>
+              <p :class="bItem('desc')">{{tpl.desc}}</p>
             </div>
           </div>
           <div :class="bItem('footer')">
-            <a :class="bItem('action')" href="javascript:;" class="st-link-secondary">查看</a>
+            <router-link :class="bItem('action')" to="/" class="st-link-secondary">查看</router-link>
             <div :class="bItem('divider')"></div>
-            <a :class="bItem('action')" href="javascript:;" class="st-link-secondary">编辑</a>
+            <router-link
+              :class="bItem('action')"
+              :to="{path:'./edit',query:{id:tpl.id}}"
+              class="st-link-secondary"
+            >编辑</router-link>
           </div>
         </div>
       </a-col>
@@ -30,10 +37,22 @@
   </st-panel>
 </template>
 <script>
+import { ListService } from './list.service'
 export default {
   bem: {
     bPage: 'page-brand-setting-contract-list',
     bItem: 'contract-item'
+  },
+  serviceInject() {
+    return {
+      listService: ListService
+    }
+  },
+  subscriptions() {
+    console.log(this.listService)
+    return {
+      list: this.listService.list$
+    }
   }
 }
 </script>
