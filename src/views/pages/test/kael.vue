@@ -1,86 +1,60 @@
 <template>
   <div>
-    <a-date-picker
-      :disabledDate="disabledStartDate"
-      showTime
-      format="YYYY-MM-DD HH:mm:ss"
-      v-model="startValue"
-      placeholder="Start"
-      @openChange="handleStartOpenChange"
-    />
-    <a-date-picker
-      :disabledDate="disabledEndDate"
-      showTime
-      format="YYYY-MM-DD HH:mm:ss"
-      placeholder="End"
-      v-model="endValue"
-      :open="endOpen"
-      @openChange="handleEndOpenChange"
-    />
+    <a-row :gutter="8">
+      <a-col :lg="20">
+        <st-form :form="form">
+          <st-form-item required>
+            <a-date-picker
+              format="YYYY-MM-DD HH:mm"
+              :disabledDate="disabledDate"
+              :disabledTime="disabledDateTime"
+              :showTime="{ defaultValue: moment('00:00', 'HH:mm'), format:'HH:mm' }"
+            />
+            <br>
+          </st-form-item>
+        </st-form>
+      </a-col>
+    </a-row>
   </div>
 </template>
 <script>
-import { findLastKey } from 'lodash-es'
+import moment from 'moment'
 export default {
-  data() {
-    return {
-      startValue: null,
-      endValue: null,
-      endOpen: false
-    }
-  },
-  watch: {
-    startValue(val) {
-      console.log('startValue', val)
-    },
-    endValue(val) {
-      console.log('endValue', val)
-    }
+  beforeCreate() {
+    this.form = this.$form.createForm(this)
   },
   methods: {
-    disabledStartDate(startValue) {
-      const endValue = this.endValue
-      if (!startValue || !endValue) {
-        return false
+    moment,
+    range(start, end) {
+      const result = []
+      for (let i = start; i < end; i++) {
+        result.push(i)
       }
-      // 当天
-      let flag = true
-      // if (startValue.valueOf() < moment().valueOf()) {
-      //   flag = true
-      // }
-      // 7*24
-      console.log("startValue.add(7, 'd').valueOf()", startValue)
-      console.log('endValue.valueOf()', endValue.valueOf())
-      console.log('startValue.valueOf()', startValue.valueOf())
-      if (startValue.valueOf() + 604800000 >= endValue.valueOf()) {
-        flag = false
-      }
-      // return startValue.valueOf() < moment().valueOf() || startValue.valueOf() < endValue.valueOf()
-      // return startValue.valueOf() > endValue.valueOf();
-      return flag || startValue.valueOf() > endValue.valueOf()
+      return result
     },
-    disabledEndDate(endValue) {
-      const startValue = this.startValue
-      if (!endValue || !startValue) {
-        return false
-      }
-      // 当天
-      let flag = true
-      // if (startValue.valueOf() < moment().valueOf()) {
-      //   flag = true
-      // }
-      // 7*24
-      console.log("startValue.add(7, 'd').valueOf()", startValue)
-      console.log('endValue.valueOf()', endValue.valueOf())
-      console.log('startValue.valueOf()', startValue.valueOf())
-      if (startValue.valueOf() + 604800000 >= endValue.valueOf()) {
-        flag = false
-      }
-      return flag || startValue.valueOf() >= endValue.valueOf()
+
+    disabledDate(current) {
+      // Can not select days before today and today
+      return current && current < moment().endOf('day')
     },
-    handleStartOpenChange(open) {
-      if (!open) {
-        this.endOpen = true
+
+    disabledDateTime() {
+      return {
+        disabledHours: () => this.range(0, 24).splice(1, 20),
+        disabledMinutes: () => this.range(30, 60)
+      }
+    },
+
+    disabledRangeTime(_, type) {
+      if (type === 'start') {
+        return {
+          disabledHours: () => this.range(0, 60).splice(1, 20),
+          disabledMinutes: () => this.range(30, 60)
+        }
+      }
+      return {
+        disabledHours: () => this.range(0, 60).splice(20, 4),
+        disabledMinutes: () => this.range(0, 31)
       }
     },
     handleEndOpenChange(open) {

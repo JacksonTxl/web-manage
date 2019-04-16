@@ -1,6 +1,7 @@
+import { TeamEditService } from './edit.service';
 <template>
   <st-panel app>
-    <st-form :form="form" @submit="save" class="page-create-container">
+    <st-form :form="form" @submit="save" class="page-editteamcourse-container">
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="课程名称" required>
@@ -52,24 +53,22 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="图片">
-            <div class="page-upload-container">
-              <file-upload :list="fileList" @change="onImgChange"></file-upload>
-              <input type="hidden" v-decorator="formRules.course_image">
-              <div class="page-course-photo-des mg-l16">
-                <div class="page-course-item">
-                  <div class="page-course-item-tip">1.</div>
-                  <div
-                    class="page-course-item-cont"
-                  >图片格式必须为：png,bmp, jpeg,jpg,gif,建议使用png格式图片，以保存最佳效果</div>
-                </div>
-                <div class="page-course-item">
-                  <div class="page-course-item-tip">2.</div>
-                  <div class="page-course-item-cont">建议尺寸为?px * ?px， 不可大于2M</div>
-                </div>
+          <st-form-item label="图片" >
+          <div class="page-upload-container">
+            <st-image-upload :list="fileList" @change="onImgChange"></st-image-upload>
+            <input type="hidden" />
+            <div class="page-course-photo-des mg-l16">
+              <div class="page-course-item">
+                <div class="page-course-item-tip">1.</div>
+                <div class="page-course-item-cont">图片格式必须为：png,bmp, jpeg,jpg,gif,建议使用png格式图片，以保存最佳效果</div>
+              </div>
+              <div class="page-course-item">
+                <div class="page-course-item-tip">2.</div>
+                <div class="page-course-item-cont">建议尺寸为?px * ?px， 不可大于2M</div>
               </div>
             </div>
-          </st-form-item>
+          </div>
+        </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
@@ -131,6 +130,7 @@
   </st-panel>
 </template>
 <script>
+import { TeamEditService } from './edit.service'
 const columns = [
   {
     title: '省',
@@ -219,6 +219,17 @@ const formRules = {
 }
 export default {
   name: 'create-personal-course',
+  serviceInject() {
+    return {
+      teamEditService: TeamEditService
+    }
+  },
+  subscriptions() {
+    console.log('sub', this.teamEditService)
+    return {
+      // formData: this.teamEditService.formData$
+    }
+  },
   data() {
     return {
       columns,
@@ -230,7 +241,8 @@ export default {
           image_key:
             'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/pLOFb5kCPN4gPQ8H'
         }
-      ]
+      ],
+      shopRule: []
     }
   },
   methods: {
@@ -245,7 +257,8 @@ export default {
       this.form.setFieldsValue({
         course_image: fileList[0]
       })
-    }
+    },
+    onChange() {}
   }
 }
 </script>

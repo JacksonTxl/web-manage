@@ -32,10 +32,10 @@
             <div slot="addonAfter" class="st-form-item-unit">Kcal/节</div>
           </a-input>
         </st-form-item>
-        <st-form-item label="图片">
+        <st-form-item label="图片" >
           <div class="page-upload-container">
-            <file-upload :list="fileList" @change="onImgChange"></file-upload>
-            <input type="hidden">
+            <st-image-upload :list="fileList" @change="onImgChange"></st-image-upload>
+            <input type="hidden" />
             <div class="page-course-photo-des mg-l16">
               <div class="page-course-item">
                 <div class="page-course-item-tip">1.</div>
@@ -75,7 +75,10 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      fileList: []
+      fileList: [{
+        image_id: 10000,
+        image_key: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/pLOFb5kCPN4gPQ8H'
+      }]
     }
   },
   methods: {
