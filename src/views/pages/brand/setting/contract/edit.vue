@@ -109,11 +109,6 @@ export default {
     return {
       info: this.editService.info$
     }
-  },
-  methods: {
-    setValue(field, value) {
-      this.editService.SET_INFO_FIELD(field, value)
-    }
   }
 }
 </script>
