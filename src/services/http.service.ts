@@ -111,7 +111,6 @@ export class HttpService {
     }
   }
   private ajaxErrorHandler(source$: Observable<any>) {
-    console.log(this)
     return source$.pipe(
       catchError((err: AjaxError) => {
         const serverResponse: StResponse = err.response
