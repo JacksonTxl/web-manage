@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, log, getSnapshot } from 'rx-state'
 import { tap, pluck, map } from 'rxjs/operators'
 import { Store } from './store'
-import { forkJoin } from 'rxjs'
+import { forkJoin, of } from 'rxjs'
 import { ConstApi } from '@/api/const'
 import { cloneDeep } from 'lodash-es'
 
@@ -72,9 +72,7 @@ export class UserService extends Store<UserState> {
       state.user = user
     })
   }
-  init() {
-    return forkJoin(this.getEnums())
-  }
+
   get enumsSnapshot() {
     return getSnapshot(this.enums$)
   }
@@ -88,8 +86,14 @@ export class UserService extends Store<UserState> {
       log('const/enums')
     )
   }
+  init() {
+    if (!Object.keys(this.enumsSnapshot).length) {
+      return this.getEnums()
+    } else {
+      return of({})
+    }
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    console.log('userService start')
     this.init().subscribe(() => {
       next()
     })

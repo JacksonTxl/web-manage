@@ -49,7 +49,6 @@ export default {
     }
   },
   subscriptions() {
-    console.log(this.listService)
     return {
       list: this.listService.list$
     }
