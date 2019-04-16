@@ -74,9 +74,7 @@
       <div slot="action" slot-scope="text, record">
         <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
         <a-divider type="vertical"></a-divider>
-        <a href="javascript:;">
-          <modal-link tag="a" :to="{ name: 'card-batch-shelves' }">下架</modal-link>
-        </a>
+        <a href="javascript:;">下架</a>
 
         <template>
           <a-divider type="vertical"></a-divider>
