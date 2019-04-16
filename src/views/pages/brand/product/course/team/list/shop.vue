@@ -9,17 +9,17 @@
       </div>
     </header>
     <main class="page-shop-sale-list-shop__table mg-t8">
-      <shop-sale-list-table></shop-sale-list-table>
+      <team-table-shop></team-table-shop>
     </main>
   </div>
 </template>
 
 <script>
-import ShopSaleListTable from './shop-sale-list#/shop-table'
+import TeamTableShop from './shop#/shop-table'
 export default {
   name: 'ShopSaleListShop',
   components: {
-    ShopSaleListTable
+    TeamTableShop
   }
 }
 </script>

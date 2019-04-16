@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" @submit="save" class="page-set-sell-price" labelWidth="100px">
+  <st-form :form="form" class="page-set-sell-price" labelWidth="100px">
     <a-row :gutter="8">
       <a-col :lg="10" :offset="1">
         <input type="hidden" v-decorator="formRules.course_id">
@@ -192,7 +192,6 @@ export default {
       })
     },
     onChange(e) {
-      console.log(e.target.value)
       e.target.value === 2 ? this.isShowUnitSet = true : this.isShowUnitSet = false
     },
     edit(key, record) {
@@ -217,7 +216,7 @@ export default {
     },
     addPriceRecord() {
       const newRecord = {
-        key: 2,
+        key: +new Date(),
         priceGrade: '',
         saleGrad: '',
         price: '',

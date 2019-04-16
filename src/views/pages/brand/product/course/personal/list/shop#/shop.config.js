@@ -1,30 +1,29 @@
 export const columns = [
   {
     title: '上课场馆',
-    dataIndex: 'member',
-    scopedSlots: { customRender: 'member' }
+    dataIndex: 'shop_name'
     // sorter: (a, b) => a.name.length - b.name.length
   },
   {
     title: '课程类型',
-    dataIndex: 'effective'
+    dataIndex: 'category_name'
   },
   {
     title: '课程名称',
-    dataIndex: 'admission',
+    dataIndex: 'course_name',
     scopedSlots: { customRender: 'admission' }
   },
   {
     title: '时长（分钟）',
-    dataIndex: 'sell'
+    dataIndex: 'duration'
   },
   {
     title: '课程定价',
-    dataIndex: 'release'
+    dataIndex: 'price_setting'
   },
   {
     title: '授课教练数',
-    dataIndex: 'release'
+    dataIndex: 'coach_number'
   },
   {
     title: '操作',

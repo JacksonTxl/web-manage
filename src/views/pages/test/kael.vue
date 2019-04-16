@@ -1,43 +1,64 @@
 <template>
-  <st-panel app>
-    <st-card-bg-radio v-model="cardbg" />
-    <p>{{cardbg}}</p>
-    <st-button @click="kael">kael</st-button>
-  </st-panel>
+  <div>
+    <a-row :gutter="8">
+      <a-col :lg="20">
+        <st-form :form="form">
+          <st-form-item required>
+            <a-date-picker
+              format="YYYY-MM-DD HH:mm"
+              :disabledDate="disabledDate"
+              :disabledTime="disabledDateTime"
+              :showTime="{ defaultValue: moment('00:00', 'HH:mm'), format:'HH:mm' }"
+            />
+            <br>
+          </st-form-item>
+        </st-form>
+      </a-col>
+    </a-row>
+  </div>
 </template>
 <script>
-import StCardBgRadio from '@/views/components/card-bg-radio/card-bg-radio.vue'
+import moment from 'moment'
 export default {
-  components: {
-    StCardBgRadio
-  },
-  data() {
-    return {
-      cardbg: {
-        image_id: 323,
-        image_key: 'image/IUt_vXTl8zaWGwlO.jpg',
-        image_url: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg',
-        index: 1
-      },
-      a: 11,
-      b: 0
-    }
-  },
-  mounted() {
-
+  beforeCreate() {
+    this.form = this.$form.createForm(this)
   },
   methods: {
-    kael() {
-      console.log(this.b)
-      ++this.a
-      ++this.b
-      let i = (this.b) % 5
-      this.cardbg = {
-        image_id: this.a,
-        image_key: 'image/IUt_vXTl8zaWGwlO.jpg',
-        image_url: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg',
-        index: i
+    moment,
+    range(start, end) {
+      const result = []
+      for (let i = start; i < end; i++) {
+        result.push(i)
       }
+      return result
+    },
+
+    disabledDate(current) {
+      // Can not select days before today and today
+      return current && current < moment().endOf('day')
+    },
+
+    disabledDateTime() {
+      return {
+        disabledHours: () => this.range(0, 24).splice(1, 20),
+        disabledMinutes: () => this.range(30, 60)
+      }
+    },
+
+    disabledRangeTime(_, type) {
+      if (type === 'start') {
+        return {
+          disabledHours: () => this.range(0, 60).splice(1, 20),
+          disabledMinutes: () => this.range(30, 60)
+        }
+      }
+      return {
+        disabledHours: () => this.range(0, 60).splice(20, 4),
+        disabledMinutes: () => this.range(0, 31)
+      }
+    },
+    handleEndOpenChange(open) {
+      this.endOpen = open
     }
   }
 }

@@ -52,8 +52,6 @@ export default {
       }
     }
   },
-  watch: {
-  },
   computed: {
     totalNum() {
       return 'xxx'
@@ -94,7 +92,7 @@ export default {
     },
     confirm() {
       this.show = false
-      this.$emit('complete', this.shopIds)
+      this.$emit('change', this.shopIds)
     }
   }
 }

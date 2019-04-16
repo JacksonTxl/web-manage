@@ -5,6 +5,7 @@
     :label="labelFix ? ' ' : $attrs.label"
     v-on="$listeners"
   >
+    <slot slot="label" name="label"></slot>
     <slot></slot>
   </a-form-item>
 </template>

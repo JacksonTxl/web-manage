@@ -2,60 +2,45 @@
 <div>
   <st-table
       class="mg-t16"
-      rowKey="id"
+      rowKey="course_id"
       :columns="columns"
-      :dataSource="data"
+      :dataSource="personalCourseList"
       :scroll="{ x: 1300}"
       @change="onChange"
     >
-      <a
-        slot="member"
-        slot-scope="text,record"
-        href="javascript:;"
-        @click="name(text,record)"
-      >{{text}}</a>
-      <a
-        slot="admission"
-        slot-scope="text,record"
-        href="javascript:;"
-        @click="name(text,record)"
-      >{{text}}</a>
-      <a slot="sellStatus" slot-scope="text,record" href="javascript:;" @click="name(text,record)">
+      <div slot="shopNumber" slot-scope="shopNumber">
+        <a
+          v-if="shopNumber !== '全门店'"
+          href="javascript:;"
+        >{{shopNumber}}</a>
         <span
-          v-if="text ==='可售卖'"
-          style="width:8px;
-                 height:8px;
-                 display: inline-block;
-                 border-radius: 50%;
-                 background:rgba(82,196,26,1);"
-        ></span>
+          v-else
+        >{{shopNumber}}</span>
+      </div>
+      <div slot="coachNumber" slot-scope="coachNumber">
+        <a
+          href="javascript:;"
+        >{{coachNumber}}</a>
+      </div>
+      <div slot="pricing" slot-scope="text, record">
+        <a
+          v-if="record.pricing_type !== '品牌统一定价'"
+          href="javascript:;"
+        >{{text}}</a>
         <span
-          v-if="text ==='停售'"
-          style="width:8px;
-                 height:8px;
-                 display: inline-block;
-                 border-radius: 50%;
-                 background:rgba(245,34,45,1);"
-        ></span>
-        {{text}}
-        <a-popover title="Title" placement="bottomRight">
-          <template slot="content">
-            <p>Content</p>
-            <p>Content</p>
-          </template>
-          <a-icon type="exclamation-circle" v-if="text ==='停售'"/>
-        </a-popover>
-      </a>
+          v-else
+        >{{text}}</span>
+      </div>
+      <div slot="status" slot-scope="status">
+          <span><a-badge :status="status === '有效'?'success':'error'" />{{status}}</span>
+
+      </div>
       <div slot="action" slot-scope="record">
-        <modal-link tag="a" :to="{name:'test'}">打开</modal-link>
-        <a-divider type="vertical"></a-divider>
-        <a-popconfirm title="确认删除该权限么?" @confirm="onDelete(record.id)">
-          <a>删除</a>
-        </a-popconfirm>
+        <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {id: record}}">详情{{record}}</router-link>
+        <router-link :to="{name: 'brand-product-course-personal-edit', query: {id: record}}">编辑</router-link>
         <st-more-dropdown style="margin-left: 12px;">
-          <a-menu-item>转让</a-menu-item>
-          <a-menu-item>出售</a-menu-item>
-          <a-menu-item>你好</a-menu-item>
+          <a-menu-item>置为无效</a-menu-item>
+          <a-menu-item>删除</a-menu-item>
         </st-more-dropdown>
       </div>
     </st-table>
@@ -65,39 +50,20 @@
 </template>
 
 <script>
-import { columns } from './brand.config'
+import { columns, mockTable } from './brand.config'
 export default {
   name: 'ShopSaleListTable',
   data() {
     return {
       columns,
       selectedRowKeys: [],
-      data: [
-        {
-          id: 1,
-          member: 'John Brown',
-          age: 32,
-          type: '期限卡',
-          effective: '720天',
-          admission: '古美路店天',
-          sell: '古美路店天',
-          release: '门店',
-          sellStatus: '可售卖',
-          action: 'New York No. 1 Lake Park'
-        },
-        {
-          id: 2,
-          member: 'John Brown',
-          age: 32,
-          type: '期限卡',
-          effective: '720天',
-          admission: '古美路店天',
-          sell: '古美路店天',
-          release: '门店',
-          sellStatus: '停售',
-          action: 'New York No. 1 Lake Park'
-        }
-      ]
+      data: mockTable
+    }
+  },
+  props: {
+    personalCourseList: {
+      type: Array,
+      default: () => []
     }
   },
   methods: {
