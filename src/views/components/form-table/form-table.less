@@ -19,7 +19,15 @@
     font-weight: 500;
     border-bottom: 1px solid #e8e8e8;
   }
-  tbody > tr:nth-child(even) {
-    background: rgba(0, 0, 0, 0.01);
+  &--striped {
+    tbody > tr:nth-child(even) {
+      background: rgba(0, 0, 0, 0.01);
+    }
+  }
+  &--hoverable.st-form-table--hoverable {
+    transition: all 0.3s;
+    tbody > tr:hover {
+      .bg(#e6f7ff);
+    }
   }
 }

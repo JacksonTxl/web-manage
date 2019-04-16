@@ -9,7 +9,7 @@
       <span class="mg-l32">座位模版（人）：4</span>
     </div>
 
-    <st-form-table>
+    <st-form-table hoverable>
       <thead>
         <tr>
           <th>座位</th>
@@ -20,16 +20,21 @@
       </thead>
       <tbody>
         <tr>
-          <td>1</td>
-          <td>2</td>
-          <td>3</td>
-          <td>4</td>
+          <td colspan="4">
+            <st-button type="dashed" block>添加座位</st-button>
+          </td>
         </tr>
         <tr>
-          <td>1</td>
-          <td>2</td>
-          <td>3</td>
-          <td>4</td>
+          <td>
+            <img width="80px" src="~@/assets/img/icon_vip.png" alt="site-img">
+          </td>
+          <td>座位模版1</td>
+          <td>座位模版2</td>
+          <td>
+            <modal-link tag="a" :to="{name:'test-sg'}">编辑</modal-link>
+            <a-divider type="vertical"></a-divider>
+            <modal-link tag="a" :to="{name:'test-sg'}">删除</modal-link>
+          </td>
         </tr>
       </tbody>
     </st-form-table>
