@@ -3,18 +3,28 @@
     <div class="page-brand-add-period-card-body">
       <div class="page-preview">实时预览</div>
       <div class="page-content">
-        <st-form :form="form" labelWidth="96px">
+        <st-form :form="form" labelWidth="116px">
           <a-row :gutter="8" class="page-content-card-name__row">
             <a-col :lg="16">
-              <st-form-item class="mg-b0 page-content-card-name" label="期限卡名称" required>
-                <a-input placeholder="请输入储值卡名称" style="width: 360px"></a-input>
+              <st-form-item class="page-content-card-name" label="期限卡名称" required>
+                <a-input
+                  v-decorator="[
+                  'cardData.card_name',
+                  {rules: [{ validator: card_name_validator}]}
+                ]"
+                  maxlength="20"
+                  style="width: 360px"
+                  placeholder="请输入期限卡名称"
+                ></a-input>
               </st-form-item>
             </a-col>
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="22">
               <st-form-item class="page-content-card-admission-range" label="支持入场门店" required>
-                <a-radio-group v-model="cardData.admission_range">
+                <a-radio-group
+                  @change="admission_range"
+                  v-decorator="['cardData.admission_range',{validateTrigger: 'blur',initialValue:1,rules:[{validator:admission_shop_list_validator}]}]">
                   <a-radio
                     v-for="item in admission_range_list"
                     :key="item.value"
@@ -26,7 +36,7 @@
                   <a-table
                     size="middle"
                     :columns="admission_columns"
-                    :dataSource="admission_range_shop_table"
+                    :dataSource="cardData.admission_shop_list"
                     :pagination="false"
                     :scroll="{ y: 230 }"
                   >
@@ -34,7 +44,7 @@
                       删除
                     </a>
                   </a-table>
-                  <st-button type="dashed" class="page-admission-range-shop__add" block>+ 添加</st-button>
+                  <st-button type="dashed" class="page-admission-range-shop__add" block @click="admissionAdd">+ 添加</st-button>
                 </div>
               </st-form-item>
             </a-col>
@@ -42,7 +52,10 @@
           <a-row :gutter="8">
             <a-col :lg="20">
               <st-form-item class="page-content-card-price-setting" label="价格设置" required>
-                <a-radio-group v-model="cardData.price_setting">
+                <a-radio-group
+                  @change="price_range"
+                  v-show="cardData.admission_range===1"
+                  v-decorator="['cardData.price_setting',{validateTrigger: 'blur',initialValue:1,rules:[{validator:price_gradient_list_validator}]}]">
                   <a-radio
                     v-for="item in price_setting_list"
                     :key="item.value"
@@ -53,54 +66,81 @@
                   <a-table
                     size="middle"
                     :columns="brand_price_columns"
-                    :dataSource="brand_price_table"
+                    :dataSource="rally_price_list"
                     :pagination="false"
                   >
-                    <template v-for="col in ['unit','rally_price','frozen_day','gift_unit']" :slot="col" slot-scope="text">
-                      <div :key="col">
-                        <a-input :value="text">
-                          <a-select slot="addonAfter" v-if="col===`unit`" :defaultValue="2" style="width: 50px">
-                            <a-select-option :value="item.value" :key="index" v-for="(item,index) in nuit_list">{{item.label}}</a-select-option>
-                          </a-select>
-                          <span slot="suffix" v-if="col===`rally_price`">元</span>
-                          <span slot="suffix" v-if="col===`frozen_day`">天</span>
-                          <span slot="suffix" v-if="col===`gift_unit`">天</span>
-                        </a-input>
-                      </div>
+                    <template slot="time" slot-scope="text, record, index">
+                      <a-input :value="text.num" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
+                        <a-select slot="addonAfter" :value="text.unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
+                          <a-select-option
+                          v-for="(item,index) in nuit_list"
+                          :value="item.value"
+                          :key="index" >{{item.label}}</a-select-option>
+                        </a-select>
+                      </a-input>
                     </template>
+                    <template slot="rally_price" slot-scope="text, record, index">
+                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price'})">
+                          <span slot="suffix">元</span>
+                        </a-input>
+                    </template>
+                    <template slot="frozen_day" slot-scope="text, record, index">
+                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
+                          <span slot="suffix">天</span>
+                        </a-input>
+                    </template>
+                    <template slot="gift_unit" slot-scope="text, record, index">
+                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
+                          <span slot="suffix">天</span>
+                        </a-input>
+                    </template>
+                    <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="brand_price_delete(index)">
+                      删除
+                    </a>
                   </a-table>
-                  <st-button type="dashed" class="page-price-setting-set__add" block>+ 添加定价规格（2/4）</st-button>
+                  <st-button :disabled="rally_price_list.length>3" type="dashed" class="page-price-setting-set__add" block @click="brand_price_add">+ 添加定价规格（{{rally_price_list.length}}/4）</st-button>
                 </div>
                 <div class="page-price-setting-set" :class="{'shop-set': cardData.price_setting===2&&cardData.admission_range===1}" v-if="cardData.price_setting===2">
                   <a-table
                     size="middle"
                     :columns="shop_price_columns"
-                    :dataSource="shop_price_table"
+                    :dataSource="shop_price_list"
                     :pagination="false"
                   >
-                    <template v-for="col in ['unit','rally_price','frozen_day','gift_unit']" :slot="col" slot-scope="text">
-                      <div :key="col" v-if="col!==`rally_price`">
-                        <a-input :value="text">
-                          <a-select slot="addonAfter" v-if="col===`unit`" :defaultValue="2" style="width: 50px">
-                            <a-select-option :value="item.value" :key="index" v-for="(item,index) in nuit_list">{{item.label}}</a-select-option>
-                          </a-select>
-                          <span slot="suffix" v-if="col===`rally_price`">元</span>
-                          <span slot="suffix" v-if="col===`frozen_day`">天</span>
-                          <span slot="suffix" v-if="col===`gift_unit`">天</span>
-                        </a-input>
-                      </div>
-                      <div :key="col" v-if="col===`rally_price`">
-                        <a-input :value="text" style="width:64px">
+                    <template slot="time" slot-scope="text, record, index">
+                      <a-input :value="text.num" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
+                        <a-select slot="addonAfter" :value="text.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
+                          <a-select-option
+                          v-for="(item,index) in nuit_list"
+                          :value="item.value"
+                          :key="index" >{{item.label}}</a-select-option>
+                        </a-select>
+                      </a-input>
+                    </template>
+                    <template slot="rally_price" slot-scope="text, record, index">
+                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'min_price'})" style="width:100px">
                           <span slot="suffix">元</span>
                         </a-input>
                         ~
-                        <a-input :value="text" style="width:64px">
+                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'max_price'})" style="width:100px">
                           <span slot="suffix">元</span>
                         </a-input>
-                      </div>
                     </template>
+                    <template slot="frozen_day" slot-scope="text, record, index">
+                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
+                          <span slot="suffix">天</span>
+                        </a-input>
+                    </template>
+                    <template slot="gift_unit" slot-scope="text, record, index">
+                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
+                          <span slot="suffix">天</span>
+                        </a-input>
+                    </template>
+                    <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="shop_price_delete(index)">
+                      删除
+                    </a>
                   </a-table>
-                  <st-button type="dashed" class="page-price-setting-set__add" block>+ 添加定价规格（2/4）</st-button>
+                  <st-button :disabled="shop_price_list.length>3" type="dashed" class="page-price-setting-set__add" block @click="shop_price_add">+ 添加定价规格（{{shop_price_list.length}}/4）</st-button>
                 </div>
               </st-form-item>
             </a-col>
@@ -108,11 +148,13 @@
           <a-row :gutter="8">
             <a-col :lg="20">
               <st-form-item class="page-content-card-support-sales" label="支持售卖门店" required>
-                <a-radio-group v-model="cardData.support_sales">
+                <a-radio-group
+                  @change="support_range"
+                  v-decorator="['cardData.support_sales',{validateTrigger: 'blur',initialValue:1,rules:[{validator:support_sales_list_validator}]}]">
                   <a-radio
                     v-for="item in support_sales_list"
-                    :key="item.value"
-                    :value="item.value"
+                    :key="item.key"
+                    :value="item.key"
                   >{{item.label}}</a-radio>
                 </a-radio-group>
                 <div class="page-support-sales-shop" v-if="cardData.support_sales===2">
@@ -120,7 +162,7 @@
                   <a-table
                     size="middle"
                     :columns="admission_columns"
-                    :dataSource="admission_range_shop_table"
+                    :dataSource="cardData.sell_shop_list"
                     :pagination="false"
                     :scroll="{ y: 230 }"
                   >
@@ -135,14 +177,40 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="20">
-              <st-form-item class="page-content-card-time" label="支持售卖时间" required>
-                <!-- <span slot="label">
-                  支持售卖时间&nbsp;
-                  <a-tooltip title="What do you want others to call you?">
-                    <a-icon type="question-circle-o" />
-                  </a-tooltip>
-                </span> -->
-                <a-range-picker style="width: 360px" />
+              <st-form-item class="page-content-card-time" required>
+                <span slot="label">
+                  支持售卖时间
+                  <a-popover
+                    trigger="hover"
+                    placement="bottomRight"
+                    arrowPointAtCenter
+                  >
+                    <div slot="content">
+                      设置此会员卡可售卖的时间范围
+                    </div>
+                    <a-icon class="page-content-card-time__icon" type="info-circle"></a-icon>
+                  </a-popover>
+                </span>
+                <a-date-picker
+                  :disabledDate="disabledStartDate"
+                  v-model='start_time'
+                  format="YYYY-MM-DD"
+                  placeholder="开始时间"
+                  :showToday="false"
+                  @openChange="handleStartOpenChange"
+                  @change="start_time_change"
+                />
+                ~
+                <a-date-picker
+                  :disabledDate="disabledEndDate"
+                  v-model='end_time'
+                  format="YYYY-MM-DD"
+                  placeholder="结束时间"
+                  :showToday="false"
+                  :open="cardData.endOpen"
+                  @openChange="handleEndOpenChange"
+                  @change="end_time_change"
+                />
               </st-form-item>
             </a-col>
           </a-row>
@@ -150,10 +218,10 @@
             <a-col :lg="20">
               <st-form-item class="page-content-card-transfer" label="转让设置">
                 <div class="page-content-card-transfer-body">
-                  <a-checkbox class="page-checkbox">支持转让</a-checkbox>
+                  <a-checkbox class="page-checkbox" @change="transfer">支持转让</a-checkbox>
                   <a-input-group compact class="page-input-group">
-                    <a-input-number/>
-                    <a-select defaultValue="2">
+                    <a-input-number :disabled="!cardData.is_transfer"/>
+                    <a-select defaultValue="2" :disabled="!cardData.is_transfer">
                       <a-select-option value="1">%</a-select-option>
                       <a-select-option value="2">元</a-select-option>
                     </a-select>
@@ -162,7 +230,7 @@
               </st-form-item>
             </a-col>
           </a-row>
-          <a-row :gutter="8">
+          <!-- <a-row :gutter="8">
             <a-col :lg="20">
               <st-form-item class="page-content-card-sell-type" label="售卖渠道" required>
                 <a-checkbox-group :options="sell_type_list"/>
@@ -199,11 +267,11 @@
                 <a-textarea placeholder="请输入" :rows="4"/>
               </st-form-item>
             </a-col>
-          </a-row>
+          </a-row> -->
           <a-row :gutter="8">
             <a-col :lg="20">
               <st-form-item class="page-content-card-submit" label=" ">
-                <st-button type="primary" html-type="submit">保 存</st-button>
+                <st-button type="primary" @click="onHandleSubmit">保 存</st-button>
               </st-form-item>
             </a-col>
           </a-row>
@@ -213,14 +281,63 @@
   </st-panel>
 </template>
 <script>
+import moment from 'moment'
+import _ from 'lodash'
+import { RuleConfig } from '@/constants/rule'
 export default {
+  bem: {
+    b: 'st-help-popover'
+  },
+  serviceInject() {
+    return {
+      rules: RuleConfig
+    }
+  },
   data() {
     return {
+      // cardData
       cardData: {
+        // 品牌id
+        brand_id: 11,
+        // 场馆id
+        shop_id: 22,
+        // 会员卡类型1-次卡 2-期限卡
+        card_type: 2,
+        // 会员卡名称
+        card_name: '',
+        // 支持入场范围 1-单店 2-多店 3-全店
         admission_range: 1,
+        // 支持入场门店
+        admission_shop_list: [],
+        // 价格设置类型 1-统一定价 2-门店定价
         price_setting: 1,
-        support_sales: 1
+        // 支持售卖场馆类型 1-全部门店 2-指定门店
+        support_sales: 1,
+        // 支持售卖门店
+        sell_shop_list: [],
+        // 支持售卖时间
+        start_time: '',
+        end_time: '',
+        // 结束时间面板是否显示
+        endOpen: false,
+        // 是否支持转让
+        is_transfer: false,
+        // 转让单位
+        unit: 2,
+        // 转让手续费
+        num: 0
+
       },
+      // admission_shop_add_modal
+      admission_shop_add_is_show: false,
+      // 品牌统一定价-价格梯度
+      rally_price_list: [],
+      // 门店自主定价-价格梯度
+      shop_price_list: [],
+      // 售卖时间
+      start_time: null,
+      end_time: null,
+
       // 支持入场门店
       admission_range_list: [
         { value: 1, label: '单个门店' },
@@ -232,18 +349,27 @@ export default {
         { value: 1, label: '品牌统一定价' },
         { value: 2, label: '场馆自主定价' }
       ],
-      // 支持售卖门店
-      support_sales_list: [
-        { value: 0, label: '支持入场门店' },
-        { value: 1, label: '全部门店' },
-        { value: 2, label: '指定门店' }
+      nuit_list: [
+        {
+          value: 2,
+          label: '天'
+        },
+        {
+          value: 3,
+          label: '月'
+        },
+        {
+          value: 4,
+          label: '年'
+        }
       ],
+
       // 售卖渠道
       sell_type_list: [
         { value: 2, label: '线下售卖' },
         { value: 1, label: '用户端售卖' }
       ],
-
+      // 门店表格表头
       admission_columns: [
         {
           title: '省',
@@ -272,55 +398,12 @@ export default {
           scopedSlots: { customRender: 'operation' }
         }
       ],
-      admission_range_shop_table: [
-        {
-          key: 1,
-          province: '上海',
-          city: '上海市',
-          district: '徐汇区',
-          shopname: '徐汇1店'
-        },
-        {
-          key: 2,
-          province: '上海',
-          city: '上海市',
-          district: '徐汇区',
-          shopname: '徐汇2店'
-        },
-        {
-          key: 3,
-          province: '上海',
-          city: '上海市',
-          district: '徐汇区',
-          shopname: '徐汇3店'
-        },
-        {
-          key: 4,
-          province: '上海',
-          city: '上海市',
-          district: '徐汇区',
-          shopname: '徐汇4店'
-        },
-        {
-          key: 5,
-          province: '上海',
-          city: '上海市',
-          district: '徐汇区',
-          shopname: '徐汇5店'
-        },
-        {
-          key: 6,
-          province: '上海',
-          city: '上海市',
-          district: '徐汇区',
-          shopname: '徐汇6店'
-        }
-      ],
+      // 品牌统一定价表格表头
       brand_price_columns: [
         {
           title: '期限',
-          scopedSlots: { customRender: 'unit' },
-          dataIndex: 'unit'
+          scopedSlots: { customRender: 'time' },
+          dataIndex: 'time'
         },
         {
           title: '售价',
@@ -336,8 +419,46 @@ export default {
           title: '赠送上限',
           scopedSlots: { customRender: 'gift_unit' },
           dataIndex: 'gift_unit'
+        },
+        {
+          title: '操作',
+          dataIndex: 'operation',
+          width: '10%',
+          scopedSlots: { customRender: 'operation' }
         }
       ],
+      // 门店自主定价表格表头
+      shop_price_columns: [
+        {
+          title: '期限',
+          scopedSlots: { customRender: 'time' },
+          dataIndex: 'time',
+          width: 120
+        },
+        {
+          title: '售价范围',
+          scopedSlots: { customRender: 'rally_price' },
+          dataIndex: 'rally_price',
+          width: 240
+        },
+        {
+          title: '允许冻结天数',
+          scopedSlots: { customRender: 'frozen_day' },
+          dataIndex: 'frozen_day'
+        },
+        {
+          title: '赠送上限',
+          scopedSlots: { customRender: 'gift_unit' },
+          dataIndex: 'gift_unit'
+        },
+        {
+          title: '操作',
+          dataIndex: 'operation',
+          width: '10%',
+          scopedSlots: { customRender: 'operation' }
+        }
+      ],
+
       brand_price_table: [
         {
           key: 1,
@@ -364,78 +485,217 @@ export default {
           frozen_day: 12,
           gift_unit: 13
         }
-      ],
-      shop_price_columns: [
-        {
-          title: '期限',
-          scopedSlots: { customRender: 'unit' },
-          dataIndex: 'unit'
-        },
-        {
-          title: '售价范围',
-          scopedSlots: { customRender: 'rally_price' },
-          dataIndex: 'rally_price',
-          width: 180
-        },
-        {
-          title: '允许冻结天数',
-          scopedSlots: { customRender: 'frozen_day' },
-          dataIndex: 'frozen_day'
-        },
-        {
-          title: '赠送上限',
-          scopedSlots: { customRender: 'gift_unit' },
-          dataIndex: 'gift_unit'
-        }
-      ],
-      shop_price_table: [
-        {
-          key: 1,
-          unit: 10,
-          rally_price: 11,
-          frozen_day: 12,
-          gift_unit: 13
-        }, {
-          key: 1,
-          unit: 10,
-          rally_price: 11,
-          frozen_day: 12,
-          gift_unit: 13
-        }, {
-          key: 1,
-          unit: 10,
-          rally_price: 11,
-          frozen_day: 12,
-          gift_unit: 13
-        }, {
-          key: 1,
-          unit: 10,
-          rally_price: 11,
-          frozen_day: 12,
-          gift_unit: 13
-        }
-      ],
-      nuit_list: [
-        {
-          value: 2,
-          label: '天'
-        },
-        {
-          value: 3,
-          label: '月'
-        },
-        {
-          value: 4,
-          label: '年'
-        }
       ]
+
     }
   },
+  beforeCreate() {
+    this.form = this.$form.createForm(this)
+  },
   methods: {
+    // 保存
+    onHandleSubmit(e) {
+      e.preventDefault()
+      this.form.validateFieldsAndScroll((err, values) => {
+        console.log(values)
+        if (!err) {
+
+        } else {
+
+        }
+      })
+    },
+    // card_name validatorFn
+    card_name_validator(rule, value, callback) {
+      if (value === undefined) {
+        // eslint-disable-next-line
+        callback('请填写会员卡名称')
+      } else if (value && !this.rules.card_name.test(value)) {
+        // eslint-disable-next-line
+        callback('输入的会员卡名称格式错误，请重新输入')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    // admission_shop_list validatorFn
+    admission_shop_list_validator(rule, value, callback) {
+      if (value === 2 && !this.cardData.admission_shop_list.length) {
+        // eslint-disable-next-line
+        callback('请添加入场门店')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    // price_gradient_list validatorFn
+    price_gradient_list_validator(rule, value, callback) {
+      if (value === 1 && !this.rally_price_list.length) {
+        // eslint-disable-next-line
+        callback('请添加价格设置')
+      } else if (value === 2 && !this.shop_price_list.length) {
+        // eslint-disable-next-line
+        callback('请添加价格设置')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    // support_sales_list validatorFn
+    support_sales_list_validator(rule, value, callback) {
+      if (value === 2 && !this.cardData.support_sales.length) {
+        // eslint-disable-next-line
+        callback('请添加支持售卖门店')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    // support_sales_list validatorFn
+    time_validator(rule, value, callback) {
+      // eslint-disable-next-line
+      callback()
+    },
+    // 增加入场门店
+    admissionAdd() {
+      this.admission_shop_add_is_show = true
+    },
+    // 入场门店支持方式change
+    admission_range(data) {
+      this.cardData.admission_range = data.target.value
+      // 入场门店变化时，售卖门店同时变化
+      this.form.setFieldsValue({
+        'cardData.support_sales': 1
+      })
+      this.cardData.support_sales = 1
+    },
+    // 价格设置方式change
+    price_range(data) {
+      this.cardData.price_setting = data.target.value
+    },
+    // 增加品牌价格
+    brand_price_add() {
+      let key = parseInt(Math.random() * 999999).toString()
+      this.rally_price_list.push({
+        key,
+        time: {
+          unit: 2,
+          num: null
+        },
+        rally_price: null,
+        frozen_day: null,
+        gift_unit: null
+      })
+    },
+    // 删除品牌价格
+    brand_price_delete(index) {
+      this.rally_price_list.splice(index, 1)
+    },
+    // 品牌价格梯度-期限
+    brandPriceSettingHandleChange({ value, key, col, prop }) {
+      if (prop !== undefined) {
+        this.rally_price_list[key][col][prop] = value
+      } else {
+        this.rally_price_list[key][col] = value
+      }
+    },
+    // 增加门店价格
+    shop_price_add() {
+      let key = parseInt(Math.random() * 999999).toString()
+      this.shop_price_list.push({
+        key,
+        time: {
+          unit: 2,
+          num: null
+        },
+        rally_price: {
+          min_price: null,
+          max_price: null
+        },
+        frozen_day: null,
+        gift_unit: null
+      })
+    },
+    // 删除门店价格
+    shop_price_delete(index) {
+      this.shop_price_list.splice(index, 1)
+    },
+    // 门店价格梯度-期限
+    shopPriceSettingHandleChange({ value, key, col, prop }) {
+      if (prop !== undefined) {
+        this.shop_price_list[key][col][prop] = value
+      } else {
+        this.shop_price_list[key][col] = value
+      }
+    },
+    // 支持售卖门店change
+    support_range(data) {
+      this.cardData.support_sales = data.target.value
+    },
+    // 售卖时间-start
+    start_time_change(data) {
+      console.log(data)
+    },
+    handleStartOpenChange(open) {
+      if (!open) {
+        this.cardData.endOpen = true
+      }
+    },
+    disabledStartDate(startValue) {
+      const endValue = this.end_time
+      if (!endValue) {
+        // 结束时间未选择
+        return startValue.valueOf() < moment().subtract(1, 'd').valueOf()
+      }
+      let start = endValue.valueOf() > moment().add(30, 'y').valueOf() ? moment(endValue).subtract(30, 'y').valueOf() : moment().subtract(1, 'd').add(1, 'ms').valueOf()
+      return startValue.valueOf() < start || startValue.valueOf() > moment(endValue).subtract(1, 'd').valueOf()
+    },
+    // 售卖时间-end
+    end_time_change(data) {
+      console.log(data)
+    },
+    handleEndOpenChange(open) {
+      this.cardData.endOpen = open
+    },
+    disabledEndDate(endValue) {
+      const startValue = this.start_time
+      if (!startValue) {
+        // 开始时间未选择
+        return endValue.valueOf() >= moment().add(30, 'y').valueOf() || endValue.valueOf() <= moment().valueOf()
+      }
+      return endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).add(1, 'd').valueOf()
+    },
+    // moment
+    moment,
+    range(start, end) {
+      const result = []
+      for (let i = start; i < end; i++) {
+        result.push(i)
+      }
+      return result
+    },
+    // 转让
+    transfer(e) {
+      this.cardData.is_transfer = e.target.checked
+    },
+
     admission_range_delate(a, b, c) {
       console.log(a)
       console.log(b)
       console.log(c)
+    }
+  },
+  computed: {
+    // 支持售卖门店
+    support_sales_list() {
+      let arr = [
+        { key: 0, label: '支持入场门店', value: 2 },
+        { key: 1, label: '全部门店', value: 1 },
+        { key: 2, label: '指定门店', value: 2 }
+      ]
+      let index = this.cardData.admission_range === 2 ? 999 : 0
+      arr.splice(index, 1)
+      return arr
     }
   }
 }

@@ -52,8 +52,6 @@ export default {
       }
     }
   },
-  watch: {
-  },
   computed: {
     totalNum() {
       return 'xxx'
