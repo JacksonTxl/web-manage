@@ -1,3 +1,5 @@
-export const mapFilter = (key: string, map: { [key: string]: any }) => {
-  return map[key]
+import { get } from 'lodash-es'
+
+export const enumFilter = (key: string, enumMap: any) => {
+  return get(enumMap.value, key)
 }
