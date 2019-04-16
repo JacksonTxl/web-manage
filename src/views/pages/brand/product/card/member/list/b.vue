@@ -261,11 +261,11 @@ export default {
     },
     // 点击分页获取数据
     onShowSizeChange(current, pageSize) {
-      console.log(current, pageSize)
+      console.log(current, pageSize, '点击分页获取数据')
     },
     // 点击详情获取数据
     infoFunc(text, record) {
-      console.log(text, record)
+      console.log(text, record, '点击详情获取数据')
     },
     // 会员卡名称点击事件
     memberFun(text, record) {
@@ -273,7 +273,7 @@ export default {
     },
     // 售卖状态
     sellStatus(text, record) {
-      console.log(text, record)
+      console.log(text, record, '售卖状态')
     },
     // 会员卡类型
     handleChange_card_type(value) {
