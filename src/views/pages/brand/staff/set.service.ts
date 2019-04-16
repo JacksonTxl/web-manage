@@ -2,7 +2,7 @@ import { Injectable } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { StaffApi, SaveData } from '@/api/v1/staff'
+import { StaffApi, SaveData, EditStaffBasicInfoQuery } from '@/api/v1/staff'
 
 interface SetState {
     formData: Object,
@@ -39,6 +39,10 @@ export class SetService extends Store<SetState> {
           this.SET_CODE_LIST(state)
         })
       )
+    }
+    // 提交员工基础信息修改
+    editStaffBasicInfo(id: number, params : EditStaffBasicInfoQuery) {
+      return this.staffApi.editStaffBasicInfo(id, params)
     }
     protected SET_CODE_LIST(codeList: any) {
       this.state$.commit(state => {

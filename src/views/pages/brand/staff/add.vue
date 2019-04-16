@@ -59,6 +59,7 @@ export default {
     }
   },
   methods: {
+
     deletStep(e) {
       this.stepsSpan = 12
       this.stepArr.pop()

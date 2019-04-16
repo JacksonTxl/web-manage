@@ -8,7 +8,7 @@
         </a-steps>
       </a-col>
     </a-row>
-    <edit-detail-basics-info v-show="currentIndex === 0" @goNext="goNext" :formData="formData.staff_info"/>
+    <edit-detail-basics-info v-show="currentIndex === 0" @goNext="goNext" :formData="formData.staff_info" @bacicInfoSave="onBasicsSave"/>
     <edit-detail-detailed-info v-show="currentIndex === 1" @goNext="goNext"/>
     <edit-detail-coach-info v-show="currentIndex === 2" @goNext="goNext"/>
   </st-panel>
@@ -55,6 +55,10 @@ export default {
     }
   },
   methods: {
+    onBasicsSave(data) {
+      console.log('员工基础信息保存', data)
+      this.editService.editBasicInfo(1, data.data)
+    },
     goNext() {
       if (this.currentIndex < 2) {
         this.currentIndex = this.currentIndex + 1
