@@ -1,7 +1,7 @@
 <template>
   <div :class="cardRadio()">
     <a-radio-group v-model="radioIndex">
-      <a-radio v-for="(i,index) in cardBgList" :class="i.className" :key="index" :value="i.index">{{i.index}}</a-radio>
+      <a-radio v-for="(i,index) in cardBgList" :class="i.className" :key="index" :value="i.index"></a-radio>
       <a-radio :value="0">自定义背景</a-radio>
     </a-radio-group>
     <div :class="cardRadio('image')">
@@ -36,7 +36,7 @@
   </div>
 </template>
 <script>
-import _ from 'lodash'
+import { cloneDeep } from 'lodash-es'
 let className = ['first custom', 'second custom', 'third custom', 'fourth custom']
 export default {
   name: 'StCardBgRadio',
@@ -121,11 +121,11 @@ export default {
     },
     radioIndex(newVal) {
       if (newVal === 0) {
-        this.cardBg = _.cloneDeep(this.customCardBg)
+        this.cardBg = cloneDeep(this.customCardBg)
       } else {
         let i = newVal
         --i
-        this.cardBg = _.cloneDeep(this.card_bg_list[i])
+        this.cardBg = cloneDeep(this.card_bg_list[i])
         this.cardBg.index = newVal
       }
       this.$emit('input', this.cardBg)
@@ -147,13 +147,13 @@ export default {
   },
   methods: {
     init() {
-      this.list = _.cloneDeep(this.card_bg_list)
+      this.list = cloneDeep(this.card_bg_list)
       this.setdata(this.value)
     },
     setdata(data) {
       this.radioIndex = data.index
       if (data.index === 0) {
-        this.customCardBg = _.cloneDeep(data)
+        this.customCardBg = cloneDeep(data)
         if (data.image_url) {
           this.fileList = [
             {
@@ -163,7 +163,7 @@ export default {
           ]
         }
       } else {
-        this.card_bg_list = _.cloneDeep(this.list)
+        this.card_bg_list = cloneDeep(this.list)
         let i = data.index
         --i
         this.card_bg_list[i].image_id = data.image_id
@@ -186,7 +186,7 @@ export default {
           index: 0
         }
       }
-      this.cardBg = _.cloneDeep(this.customCardBg)
+      this.cardBg = cloneDeep(this.customCardBg)
       this.$emit('input', this.cardBg)
       this.$emit('change', this.cardBg)
     }
