@@ -7,9 +7,9 @@
   selectedRowKeys, onChange: onSelectChange}"
   :columns="columns" :dataSource="staffList"
   :scroll="{ x: 1500}">
-    <div class="page-staff-table-action" slot="action">
-        <a href="" class="mg-r8">详情</a>
-        <a href="">编辑</a>
+    <div class="page-staff-table-action" slot="action" slot-scope="record">
+        <a href="javascript:void()" class="mg-r8">详情</a>
+        <a href="javascript:void()" @click="editStaff(record.staff_id)">编辑</a>
         <st-more-dropdown>
           <a-menu-item v-for="(op, index) in opreations" :key="index" @click="op.clickName"><modal-link tag="a" :to="op.route">{{op.name}}</modal-link></a-menu-item>
         </st-more-dropdown>
@@ -51,6 +51,9 @@ export default {
     }
   },
   methods: {
+    editStaff(staffId) {
+      this.$emit('edit-staff', staffId)
+    },
     onClickSettingSalary() {
       console.log('onClickSettingSalary')
     },
