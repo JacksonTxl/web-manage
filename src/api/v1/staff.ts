@@ -118,9 +118,9 @@ export class StaffApi extends Api {
   getStaffBrandList(query: Params) {
     return this.http.get('/v1/staff/brand', { query, mock: {} })
   }
-
-  getCountryCodes(query: any) {
-    return this.http.get('/country/codes', { query })
+  // 获取手机号区域
+  getCountryCodes() {
+    return this.http.get('/country/codes')
   }
   // 添加某部门员工
   addStaffBrandInfo(params: SaveData) {
@@ -131,8 +131,8 @@ export class StaffApi extends Api {
     return this.http.get(`/v1/staff/brand${id}`)
   }
   // 获取编辑员工回显
-  getStaffBrandReview(id: string, params: SaveData) {
-    return this.http.get(`v1/staff/brand/review/${id}`, { params })
+  getStaffBrandReview(id: string) {
+    return this.http.get(`/v1/staff/brand/review/${id}`)
   }
   // 编辑员工信息
   updateStaffBrandInfo(params: SaveData) {
