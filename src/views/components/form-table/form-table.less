@@ -1,0 +1,33 @@
+.st-form-table {
+  width: 100%;
+  font-size: 14px;
+  line-height: 1.5;
+  border-collapse: collapse;
+  border-radius: 4px 4px 0 0;
+  text-align: left;
+  .c(@text);
+  thead > tr > th,
+  tbody > tr > td {
+    padding: 16px 16px;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  tr > th {
+    background: #fafafa;
+    transition: background 0.3s ease;
+    text-align: left;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 500;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  &--striped {
+    tbody > tr:nth-child(even) {
+      background: rgba(0, 0, 0, 0.01);
+    }
+  }
+  &--hoverable.st-form-table--hoverable {
+    transition: all 0.3s;
+    tbody > tr:hover {
+      .bg(#e6f7ff);
+    }
+  }
+}

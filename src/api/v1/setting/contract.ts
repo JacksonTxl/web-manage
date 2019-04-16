@@ -38,7 +38,7 @@ export class ContractApi extends Api {
    * 获取合同编码信息
    */
   getCodeInfo(id: number) {
-    return this.http.get(`/v1/setting/contract/code-details/${id}`)
+    return this.http.get(`/v1/setting/contract/code/${id}`)
   }
   /**
    * 更新合同编号
