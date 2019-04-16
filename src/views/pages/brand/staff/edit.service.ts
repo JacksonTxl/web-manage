@@ -15,6 +15,6 @@ export class EditService extends SetService {
   }
   // 提交基础信息
   editBasicInfo(id: number, params : EditStaffBasicInfoQuery) {
-    this.editStaffBasicInfo(1, params)
+    return this.editStaffBasicInfo(1, params)
   }
 }
