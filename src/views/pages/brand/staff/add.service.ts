@@ -1,29 +1,38 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { pluck } from 'rxjs/operators'
+import { pluck, tap } from 'rxjs/operators'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { StaffApi, SaveData } from '@/api/v1/staff'
 import { Store } from '@/services/store'
 interface CountryCodesState {
-  codeList: any
+  codeList: any,
+  defaultCode: any
 }
 @Injectable()
 export class AddService extends Store<CountryCodesState> {
   state$: State<CountryCodesState>
   codeList$: Computed<any>
+  defaultCode$: Computed<any>
   constructor(private staffApi: StaffApi) {
     super()
     this.state$ = new State({
-      codeList: []
+      codeList: [],
+      defaultCode: ''
     })
     this.codeList$ = new Computed(this.state$.pipe(pluck('codeList')))
+    this.defaultCode$ = new Computed(this.state$.pipe(pluck('codeList')))
   }
   @Effect()
   getCountryCodes(query: any) { // 获取国际化手机号前缀
-    return this.staffApi.getCountryCodes(query)
+    return this.staffApi.getCountryCodes()
   }
   SET_CODE_LIST(codeList: CountryCodesState) {
     this.state$.commit(state => {
       state.codeList = codeList
+    })
+  }
+  SET_DEFAULT_CODE(defaultCode: string) {
+    this.state$.commit(state => {
+      state.defaultCode = defaultCode
     })
   }
   save(data: SaveData) {
@@ -33,8 +42,6 @@ export class AddService extends Store<CountryCodesState> {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     const query = { q: 2 }
     this.getCountryCodes(query).subscribe(res => {
-      console.log(res)
-      this.SET_CODE_LIST(res.code_list)
     })
     next()
   }

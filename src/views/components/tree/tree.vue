@@ -43,21 +43,17 @@ export default {
     getNodeItemDetail(item) {
       this.$emit('node-click', item)
     },
-    traverseTree(node, tree) {
-      tree.map(item => {
-        if (item.name === node.name) {
-          item.isEdit = true
-        }
-        if (item.children) {
-          this.traverseTree(node, item.children)
-        } else {
-          return item
-        }
-      })
-      return tree[0]
+    traverseTree(node, tree, opString) {
+      return tree.map(item => {
+        item[opString] = item.name === node.name
+        return item.children ? this.traverseTree(node, item.children) : item
+      })[0]
     },
     addItem(item) {
-      this.treeDataSelf = this.traverseTree(item, [cloneDeep(this.treeData)])
+      this.treeDataSelf = this.traverseTree(item, [cloneDeep(this.treeData)], 'isAdd')
+    },
+    editItem(item) {
+      this.treeDataSelf = this.traverseTree(item, [cloneDeep(this.treeData)], 'isEdit')
     },
     deleteItem(item) {
       this.$emit('delete-item', item)

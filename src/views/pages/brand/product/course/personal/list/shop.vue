@@ -9,17 +9,33 @@
       </div>
     </header>
     <main class="page-shop-sale-list-shop__table mg-t8">
-      <shop-sale-list-table></shop-sale-list-table>
+      <shop-sale-list-table :personalCourseList="personalCourseList"></shop-sale-list-table>
     </main>
   </div>
 </template>
 
 <script>
 import ShopSaleListTable from './shop#/shop-table'
+import { ShopService } from './shop.service'
 export default {
   name: 'ShopSaleListShop',
+  serviceInject() {
+    return {
+      shopService: ShopService
+    }
+  },
+  subscriptions() {
+    return {
+      personalCourseList: this.shopService.personalCourseList$
+    }
+  },
   components: {
     ShopSaleListTable
+  },
+  methods: {
+    addPersonalCourse() {
+      this.$router.push({ name: 'brand-product-course-team-add' })
+    }
   }
 }
 </script>

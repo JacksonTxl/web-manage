@@ -5,7 +5,7 @@
       rowKey="id"
       :alertSelection="{onReset: start}"
       :columns="columns"
-      :dataSource="data"
+      :dataSource="personalCourseList"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       :scroll="{ x: 1300}"
       @change="onChange"
@@ -73,33 +73,13 @@ export default {
   data() {
     return {
       columns,
-      selectedRowKeys: [],
-      data: [
-        {
-          id: 1,
-          member: 'John Brown',
-          age: 32,
-          type: '期限卡',
-          effective: '720天',
-          admission: '古美路店天',
-          sell: '古美路店天',
-          release: '门店',
-          sellStatus: '可售卖',
-          action: 'New York No. 1 Lake Park'
-        },
-        {
-          id: 2,
-          member: 'John Brown',
-          age: 32,
-          type: '期限卡',
-          effective: '720天',
-          admission: '古美路店天',
-          sell: '古美路店天',
-          release: '门店',
-          sellStatus: '停售',
-          action: 'New York No. 1 Lake Park'
-        }
-      ]
+      selectedRowKeys: []
+    }
+  },
+  props: {
+    personalCourseList: {
+      type: Array,
+      default: () => []
     }
   },
   methods: {

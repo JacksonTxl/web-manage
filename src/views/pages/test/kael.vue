@@ -56,6 +56,9 @@ export default {
         disabledHours: () => this.range(0, 60).splice(20, 4),
         disabledMinutes: () => this.range(0, 31)
       }
+    },
+    handleEndOpenChange(open) {
+      this.endOpen = open
     }
   }
 }

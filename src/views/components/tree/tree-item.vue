@@ -7,23 +7,14 @@
       <div class="tree-node__content" :style="{'padding-left': paddingLeft}" @click="getTreeNodeOnclick">
         <span class="tree-switch"  @click.stop="toggle" v-if="isFolder&&level!==0">{{ isOpen ? '-' : '+' }}</span>
         <span class="tree-switch__empty" v-else-if="level!==0"></span>
-        <span class="tree-name">{{ item.name }}</span>
-        <a-dropdown v-if="level!==0" class="tree-opreation" placement="bottomLeft">
-          <div><st-icon type="more"></st-icon></div>
-          <a-menu slot="overlay">
-            <a-menu-item>
-              <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">编辑</a>
-            </a-menu-item>
-            <a-menu-item @click="addTreeNode">
-              新增新部门
-            </a-menu-item>
-            <a-menu-item @click="deleteTreeNode">
-              删除
-            </a-menu-item>
-          </a-menu>
-        </a-dropdown>
+        <div class="tree-name" v-if="item.isEdit" stay><a-input :value="item.name"></a-input><a href="">保存</a><span @click="cancelEdit">x</span></div>
+        <span class="tree-name" v-else>{{ item.name }}</span>
+
+        <st-more-dropdown class="tree-opreation">
+          <a-menu-item v-for="(op, index) in opreations" :key="index" @click="op.clickName">{{op.name}}</a-menu-item>
+        </st-more-dropdown>
       </div>
-      <div v-if="item.isEdit" stay><a-input></a-input><a href="">保存</a><span @click="cancelEdit">x</span></div>
+      <div v-if="item.isAdd" stay><a-input></a-input><a href="">保存</a><span @click="cancelEdit">x</span></div>
     </div>
     <ul class="st-tree-item" v-show="isOpen" v-if="isFolder">
       <tree-item
@@ -57,6 +48,7 @@ export default {
   },
   data: function() {
     return {
+      opreations: [{ clickName: this.addTreeNade, name: '编辑' }, { clickName: this.editTreeNade, name: '新增' }, { clickName: this.deleteTreeNade, name: '删除' }],
       placements: ['bottomLeft'],
       isEditSelf: false,
       visible: false,
@@ -73,11 +65,13 @@ export default {
     }
   },
   methods: {
+    editTreeNode() {
+      this.$emit('edit-item', this.item)
+    },
     addTreeNode() {
       this.$emit('add-item', this.item)
     },
     cancelEdit() {
-      this.isEditSelf = false
     },
     deleteTreeNode() {
       this.$emit('delete-item', this.item)
@@ -112,6 +106,7 @@ export default {
       this.isOpen = true
     } else {
       this.$set(this.item, 'isEdit', false)
+      this.$set(this.item, 'isAdd', false)
     }
   }
 }
