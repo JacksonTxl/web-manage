@@ -118,6 +118,6 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
 }
 
 walkRoutes(routes)
-console.log(routes)
+console.log('routes is ->', routes)
 
 export default routes

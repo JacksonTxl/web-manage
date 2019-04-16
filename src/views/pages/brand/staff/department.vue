@@ -11,11 +11,11 @@
     <section class="page-staff-rg">
       <header class="staff-rg__operation">
         <filter-staff></filter-staff>
-        <opreation-button @add-staff="addStaff"></opreation-button>
+        <opreation-button @add-staff="onAddStaff"></opreation-button>
       </header>
       <main class="staff-rg__table">
         <div  style="width:100%">
-          <staff-table :staffList="staffList"></staff-table>
+          <staff-table @edit-staff="onEditStaff" :staffList="staffList"></staff-table>
         </div>
       </main>
     </section>
@@ -48,7 +48,11 @@ export default {
     StaffTable
   },
   methods: {
-    addStaff() {
+    onEditStaff(staffId) {
+      console.log(staffId)
+      this.$router.push({ name: 'brand-staff-edit', query: { staffId: 1 } })
+    },
+    onAddStaff() {
       this.$router.push('/brand/staff/add')
     }
   },
