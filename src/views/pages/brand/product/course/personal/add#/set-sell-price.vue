@@ -302,8 +302,9 @@ export default {
         }
         if (ret_in) {
           ret = false
-          alert(i)
-          console.log('hi', price_gradient, price_gradient[i])
+          this.messageService.error({
+            content: `第${i + 1}行课程定价输入有误`
+          })
           break
         }
       }
