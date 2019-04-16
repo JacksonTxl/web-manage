@@ -304,9 +304,6 @@ export default {
         self.cardsListInfo = state
       })
     }
-  },
-  watch: {
-    '$route.query.cardName'() {}
   }
 }
 </script>
