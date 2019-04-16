@@ -112,6 +112,76 @@ export interface SaveData {
      */
     repeat_password? : string;
 }
+export interface EditStaffBasicInfoQuery{
+  /**
+   * 员工id
+   */
+  // staff_id: number;
+  /**
+   * 相册id
+   */
+  album_id: number;
+  /**
+   * 员工头像
+   */
+  image_avatar?: object;
+  /**
+   * 员工人脸
+   */
+  image_face? : object;
+  /**
+   * 员工姓名
+   */
+  staff_name: string;
+  /**
+   * 员工昵称
+   */
+  nickname: string;
+  /**
+   * 国家编码id
+   */
+  country_code_id: number;
+  /**
+   * 手机号
+   */
+  mobile: string;
+  /**
+   * 员工工号
+   */
+  staff_num: string;
+  /**
+   * 员工性别
+   */
+  sex: number;
+  /**
+   * 证件类型
+   */
+  id_type? : number;
+  /**
+   * 证件号码
+   */
+  id_number : number;
+  /**
+   * 部门id
+   */
+  department_id: number;
+  /**
+   * 工作性质
+   */
+  nature_work: number;
+  /**
+   * 入职时间
+   */
+  entry_date? : string;
+  /**
+   * 角色Id
+   */
+  role_id : number[];
+  /**
+   * 门店id
+   */
+  shop_id : number[];
+}
 const URL = '/v1/staff/brand'
 const mock = {}
 export class StaffApi extends Api {
@@ -133,7 +203,11 @@ export class StaffApi extends Api {
   }
   // 获取编辑员工回显
   getStaffBrandReview(id: string) {
-    return this.http.get(`/v1/staff/brand/review/${id}`)
+    return this.http.get(`/v1/staff/brand/review/${id}`, { mock: {} })
+  }
+  // 修改员工基础信息
+  editStaffBasicInfo(staff_id: number, params: EditStaffBasicInfoQuery) {
+    return this.http.put(`/v1/staff/brand/review/${staff_id}`, { params })
   }
   // 编辑员工信息
   updateStaffBrandInfo(params: SaveData) {

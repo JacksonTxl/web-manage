@@ -7,6 +7,7 @@
     <div v-if="title || $slots.actions || $slots.title"
       class="st-panel__header">
       <st-route-tabs v-if="tabs"
+      @change="onChange"
         :options="tabs">
         <slot name="actions"
           slot="actions"></slot>
@@ -45,6 +46,11 @@ export default {
     initial: {
       type: Boolean,
       default: false
+    }
+  },
+  methods: {
+    onChange(key) {
+      this.$emit('change', key)
     }
   }
 }
