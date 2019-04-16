@@ -9,22 +9,32 @@
       </div>
     </header>
     <main class="page-shop-sale-list-brand__table mg-t8">
-      <shop-sale-list-table></shop-sale-list-table>
+      <team-table :teamCourseList="teamCourseList"></team-table>
     </main>
   </div>
 </template>
 
 <script>
-import ShopSaleListTable from './shop-sale-list#/brand-table'
+import TeamTable from './brand#/brand-table'
+import { BrandService } from './brand.service'
 export default {
-  name: 'ShopSaleListShop',
+  name: 'TeamCourseBrand',
+  serviceInject() {
+    return {
+      brandService: BrandService
+    }
+  },
+  subscriptions() {
+    return {
+      teamCourseList: this.brandService.teamCourseList$
+    }
+  },
   components: {
-    ShopSaleListTable
+    TeamTable
   },
   methods: {
     addPersonalCourse() {
-      console.log('d')
-      this.$router.push({ name: 'brand-product-course-personal-add' })
+      this.$router.push({ name: 'brand-product-course-team-add' })
     }
   }
 }

@@ -1,17 +1,27 @@
-import { LoginApi, LoginPhoneInput, LoginAccountInput } from '@/api/login'
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Effect, Computed } from 'rx-state'
-import { tap, pluck } from 'rxjs/operators'
+import { State, Computed, log, getSnapshot } from 'rx-state'
+import { tap, pluck, map } from 'rxjs/operators'
 import { Store } from './store'
-import { forkJoin } from 'rxjs'
+import { forkJoin, of } from 'rxjs'
+import { ConstApi } from '@/api/const'
+import { cloneDeep } from 'lodash-es'
 
 interface UserState {
   user: User
   menu: any[]
+  enums: {}
 }
 interface User {
   id: string
   name: string
+}
+interface ModuleEnums {
+  [enumName: string]: {
+    description: string
+    value: {
+      [key: string]: string
+    }
+  }
 }
 
 @Injectable()
@@ -19,23 +29,73 @@ export class UserService extends Store<UserState> {
   state$: State<UserState>
   user$: Computed<User>
   menu$: Computed<any[]>
-  constructor(private loginApi: LoginApi) {
+
+  enums$: Computed<any>
+  staffEnums$: Computed<ModuleEnums>
+  accountEnums$: Computed<ModuleEnums>
+  depositeCardEnums$: Computed<ModuleEnums>
+  memberEnums$: Computed<ModuleEnums>
+  memberCardEnums$: Computed<ModuleEnums>
+  personalCourseEnums$: Computed<ModuleEnums>
+  shopEnums$: Computed<ModuleEnums>
+
+  constructor(private constApi: ConstApi) {
     super()
     const initialState = {
       user: {},
-      menu: []
+      menu: [],
+      enums: {}
     }
     this.state$ = new State(initialState)
     this.user$ = new Computed(this.state$.pipe(pluck('user')))
     this.menu$ = new Computed(this.state$.pipe(pluck('menu')))
+    this.enums$ = new Computed(
+      this.state$.pipe(
+        pluck('enums'),
+        map(state => cloneDeep(state))
+      )
+    )
+    this.staffEnums$ = new Computed(this.enums$.pipe(pluck('staff')))
+    this.accountEnums$ = new Computed(this.enums$.pipe(pluck('account')))
+    this.depositeCardEnums$ = new Computed(
+      this.enums$.pipe(pluck('deposit_card'))
+    )
+    this.memberEnums$ = new Computed(this.enums$.pipe(pluck('member')))
+    this.memberCardEnums$ = new Computed(this.enums$.pipe(pluck('member_card')))
+    this.personalCourseEnums$ = new Computed(
+      this.enums$.pipe(pluck('personal_course'))
+    )
+    this.shopEnums$ = new Computed(this.enums$.pipe(pluck('shop')))
   }
   SET_USER(user: User) {
     this.state$.commit(state => {
       state.user = user
     })
   }
+
+  get enumsSnapshot() {
+    return getSnapshot(this.enums$)
+  }
+  getEnums() {
+    return this.constApi.getEnum().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.enums = res
+        })
+      }),
+      log('const/enums')
+    )
+  }
+  init() {
+    if (!Object.keys(this.enumsSnapshot).length) {
+      return this.getEnums()
+    } else {
+      return of({})
+    }
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    console.log('userService start')
-    next()
+    this.init().subscribe(() => {
+      next()
+    })
   }
 }

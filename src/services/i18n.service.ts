@@ -71,7 +71,7 @@ export class I18NService extends Store<I18NState> {
   private getText(messages: any, index: string) {
     const text = get(messages, index) || ''
     if (!text) {
-      console.warn(`i18nService can not translate [${index}],are you declared?`)
+      // console.warn(`i18nService can not translate [${index}],are you declared?`)
     }
     return text
   }

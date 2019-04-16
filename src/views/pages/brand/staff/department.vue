@@ -6,34 +6,16 @@
       </header>
       <main class="staff-lf__tree">
         <organization-tree></organization-tree>
-        <modal-link tag='a-button' :to="{ name: 'staff-turnover' }">
-          离职
-        </modal-link>
-        <modal-link tag='a-button' :to="{ name: 'staff-update-staff-position' }">
-          更改员工职位
-        </modal-link>
-        <modal-link tag='a-button' :to="{ name: 'staff-salary-account-setting' }">
-          工资账户设置
-        </modal-link>
-        <modal-link tag='a-button' :to="{ name: 'staff-bind-entity-card' }">
-          绑定实体卡
-        </modal-link>
-        <modal-link tag='a-button' :to="{ name: 'staff-re-bind-entity-card' }">
-          重新绑定实体卡
-        </modal-link>
-        <modal-link tag='a-button' :to="{ name: 'staff-delete'}">
-          删除员工
-        </modal-link>
       </main>
     </section>
     <section class="page-staff-rg">
       <header class="staff-rg__operation">
         <filter-staff></filter-staff>
-        <opreation-button @add-staff="addStaff"></opreation-button>
+        <opreation-button @add-staff="onAddStaff"></opreation-button>
       </header>
       <main class="staff-rg__table">
         <div  style="width:100%">
-          <staff-table :loading="loading.getStaffList" :staffList="staffList"></staff-table>
+          <staff-table @edit-staff="onEditStaff" :staffList="staffList"></staff-table>
         </div>
       </main>
     </section>
@@ -66,7 +48,11 @@ export default {
     StaffTable
   },
   methods: {
-    addStaff() {
+    onEditStaff(staffId) {
+      console.log(staffId)
+      this.$router.push({ name: 'brand-staff-edit', query: { staffId: 1 } })
+    },
+    onAddStaff() {
       this.$router.push('/brand/staff/add')
     }
   },

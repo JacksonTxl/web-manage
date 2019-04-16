@@ -8,7 +8,7 @@
         </a-steps>
       </a-col>
     </a-row>
-    <edit-detail-basics-info v-show="currentIndex === 0" @goNext="goNext"/>
+    <edit-detail-basics-info v-show="currentIndex === 0" @goNext="goNext" :formData="formData.staff_info" @bacicInfoSave="onBasicsSave"/>
     <edit-detail-detailed-info v-show="currentIndex === 1" @goNext="goNext"/>
     <edit-detail-coach-info v-show="currentIndex === 2" @goNext="goNext"/>
   </st-panel>
@@ -17,7 +17,19 @@
 import EditDetailBasicsInfo from './edit#/edit-detail-basicsInfo'
 import EditDetailDetailedInfo from './edit#/edit-detail-detailedInfo'
 import EditDetailCoachInfo from './edit#/edit-detail-coachInfo'
+import { EditService } from './edit.service'
 export default {
+  serviceInject() {
+    return {
+      editService: EditService
+    }
+  },
+  subscriptions() {
+    return {
+      formData: this.editService.formData$,
+      countryList: this.editService.countryList$
+    }
+  },
   components: {
     EditDetailBasicsInfo, // 编辑基础信息
     EditDetailDetailedInfo, // 编辑详细信息
@@ -25,7 +37,7 @@ export default {
   },
   data() {
     return {
-      currentIndex: 2,
+      currentIndex: 0,
       stepArr: [
         {
           title: '基础信息',
@@ -43,6 +55,10 @@ export default {
     }
   },
   methods: {
+    onBasicsSave(data) {
+      console.log('员工基础信息保存', data)
+      this.editService.editBasicInfo(1, data.data)
+    },
     goNext() {
       if (this.currentIndex < 2) {
         this.currentIndex = this.currentIndex + 1
@@ -51,6 +67,9 @@ export default {
     changeStep(step) {
       this.currentIndex = step
     }
+  },
+  mounted() {
+    console.log('editall', this)
   }
 }
 </script>

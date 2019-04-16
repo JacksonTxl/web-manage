@@ -31,7 +31,6 @@ export class HotReleaseService {
               response.git_commit,
               'release.commit：'
             )
-            console.log('延迟更新成功')
             if (this.appConfig.IS_PROD) {
               document.location.reload()
             }

@@ -3,7 +3,7 @@
     <a-row :class="bstep()" class="mg-b48" :gutter="8">
       <a-col offset="1" :span="stepsSpan"><Steps :value="currentIndex" :stepArr="stepArr" @skip="skip"/></a-col>
     </a-row>
-    <StaffDetailBasics :codeList="codeList" v-show="currentIndex == 0" @goNext="goNext" @save="onSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
+    <StaffDetailBasics :defaultCode="defaultCode" :codeList="codeList" v-show="currentIndex == 0" @goNext="goNext" @save="onSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
     <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" @save="onSave"/>
     <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" @save="onSave"/>
   </st-panel>
@@ -32,6 +32,7 @@ export default {
     return {
       state: this.addService.state$,
       codeList: this.addService.codeList$,
+      defaultCode: this.addService.defaultCode$,
       loading: this.addService.loading$
     }
   },
@@ -58,6 +59,7 @@ export default {
     }
   },
   methods: {
+
     deletStep(e) {
       this.stepsSpan = 12
       this.stepArr.pop()

@@ -77,7 +77,6 @@ const formRules = {
   ],
   shop_setting: [
     'shop_setting', {
-      initialValue: 1
     }
   ],
   shop_id: [
