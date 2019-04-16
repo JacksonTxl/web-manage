@@ -6,24 +6,6 @@
       </header>
       <main class="staff-lf__tree">
         <organization-tree></organization-tree>
-       <!--  <modal-link tag='a-button' :to="{ name: 'staff-turnover' }">
-          离职
-        </modal-link>
-        <modal-link tag='a-button' :to="{ name: 'staff-update-staff-position' }">
-          更改员工职位
-        </modal-link>
-        <modal-link tag='a-button' :to="{ name: 'staff-salary-account-setting' }">
-          工资账户设置
-        </modal-link>
-        <modal-link tag='a-button' :to="{ name: 'staff-bind-entity-card' }">
-          绑定实体卡
-        </modal-link>
-        <modal-link tag='a-button' :to="{ name: 'staff-re-bind-entity-card' }">
-          重新绑定实体卡
-        </modal-link>
-        <modal-link tag='a-button' :to="{ name: 'staff-delete'}">
-          删除员工
-        </modal-link>-->
       </main>
     </section>
     <section class="page-staff-rg">
