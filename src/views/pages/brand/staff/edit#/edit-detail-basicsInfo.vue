@@ -10,6 +10,7 @@
             :list="fileList"
             :sizeLimit="2"
             placeholder="上传头像"
+            v-decorator="basicsInfoRule.image_avatar"
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="姓名" required>
@@ -45,8 +46,8 @@
         <st-form-item label="昵称" required>
           <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="basicsInfoRule.nickname"/>
         </st-form-item>
-        <st-form-item label="工号" required>
-          <a-input placeholder="请输入员工工号" v-decorator="basicsInfoRule.staff_num"/>
+        <st-form-item label="邮箱" required>
+          <a-input placeholder="请输入邮箱" v-decorator="basicsInfoRule.mail"/>
         </st-form-item>
         <st-form-item label="证件" required>
           <a-input-group compact>
@@ -72,38 +73,56 @@
 
     <a-row :gutter="8">
       <a-col :offset="1" :lg="10" :xs="22">
-        <st-form-item label="部门">
-          <a-select placeholder="请选择">
-            <a-select-option value="1">黄埔</a-select-option>
-            <a-select-option value="2">北大</a-select-option>
+        <st-form-item label="部门" required>
+          <a-select placeholder="请选择" v-decorator="basicsInfoRule.department_id">
+            <a-select-option :value="1">黄埔</a-select-option>
+            <a-select-option :value="2">北大</a-select-option>
           </a-select>
         </st-form-item>
         <st-form-item label="工作性质">
-          <a-select placeholder="请选择">
-            <a-select-option value="1">全职</a-select-option>
-            <a-select-option value="2">简直</a-select-option>
-            <a-select-option value="3">实习</a-select-option>
+          <a-select placeholder="请选择" v-decorator="basicsInfoRule.nature_work">
+            <a-select-option :value="1">全职</a-select-option>
+            <a-select-option :value="2">简直</a-select-option>
+            <a-select-option :value="3">实习</a-select-option>
           </a-select>
         </st-form-item>
         <st-form-item label="系统角色">
-          <a-select placeholder="请选择">
-            <a-select-option value="1">总监</a-select-option>
-            <a-select-option value="2">团课经理</a-select-option>
-            <a-select-option value="3">会籍经理</a-select-option>
-            <a-select-option value="4">团课教练</a-select-option>
-            <a-select-option value="5">私教教练</a-select-option>
+          <a-select
+            mode="multiple"
+            @change="handleChange"
+            @popupScroll="popupScroll"
+            placeholder="请选择"
+            v-decorator="basicsInfoRule.nature_work"
+          >
+            <a-select-option :value="1">总监</a-select-option>
+            <a-select-option :value="2">团课经理</a-select-option>
+            <a-select-option :value="3">会籍经理</a-select-option>
+            <a-select-option :value="4">团课教练</a-select-option>
+            <a-select-option :value="5">私教教练</a-select-option>
           </a-select>
         </st-form-item>
       </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
+        <st-form-item label="工号" required>
+          <a-input placeholder="请输入员工工号" v-decorator="basicsInfoRule.staff_num"/>
+        </st-form-item>
         <st-form-item label="入职时间">
-          <a-date-picker style="width:100%"/>
+          <a-date-picker style="width:100%" v-decorator="basicsInfoRule.entry_date" @blur="openChange" />
         </st-form-item>
         <st-form-item label="所属门店">
-          <a-select placeholder="请选择">
-            <a-select-option value="1">店1</a-select-option>
-            <a-select-option value="2">店2</a-select-option>
-            <a-select-option value="3">店3</a-select-option>
+          <!-- shop_id -->
+           <a-select
+            mode="multiple"
+            @change="handleChange"
+            @popupScroll="popupScroll"
+            placeholder="请选择"
+            v-decorator="basicsInfoRule.shop_id"
+          >
+            <a-select-option :value="1">门店1</a-select-option>
+            <a-select-option :value="2">门店2</a-select-option>
+            <a-select-option :value="3">门店3</a-select-option>
+            <a-select-option :value="4">门店4</a-select-option>
+            <a-select-option :value="5">门店5</a-select-option>
           </a-select>
         </st-form-item>
       </a-col>
@@ -163,7 +182,29 @@ export default {
         staff_num: [
           'staff_num',
           { rules: [{ required: true, message: '请输入工号' }] }
-        ]
+        ],
+        department_id: [
+          'department_id',
+          { rules: [{ required: true, message: '请选择部门' }] }
+        ],
+        nature_work: [
+          'nature_work',
+          { rules: [{ required: true, message: '请选择工作性质' }] }
+        ],
+        role_id: [
+          'role_id',
+          { rules: [{ required: true, message: '请选择角色' }] }
+        ],
+        shop_id: [
+          'shop_id',
+          { rules: [{ required: true, message: '请选择门店' }] }
+        ],
+        entry_date: ['entry_date'],
+        mail: [
+          'mail',
+          { rules: [{ required: true, message: '请输入邮箱' }] }
+        ],
+        image_avatar: ['image_avatar']
       }
     }
   },
@@ -171,17 +212,29 @@ export default {
     formData: Object
   },
   methods: {
+    openChange(status) {
+      console.log('弹出日历和关闭日历', status)
+    },
+    handleChange(value) {
+      console.log(`Selected: ${value}`)
+    },
+    popupScroll() {
+      console.log('popupScroll')
+    },
     faceChange(data) {
       console.log('face', data)
     },
     imageUploadChange(data) {
-      console.log('img', data)
-      // console.log(this.fileList)
+      this.form.setFieldsValue({
+        image_avatar: {
+          image_key: data.image_key ? data.image_id : ''
+        }
+      })
     },
     goNext() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
+          // console.log('Received values of form: ', values)
           this.$emit('goNext', {
             formData: this.form.getFieldsValue()
           })
@@ -189,11 +242,10 @@ export default {
       })
     },
     save(e) {
-      // form submit
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
+          values.entry_date = values.entry_date.format('YYYY-MM-DD')
           this.$emit('bacicInfoSave', {
             data: values
           })
@@ -208,11 +260,19 @@ export default {
         mobile: obj.mobile,
         staff_num: obj.staff_num,
         sex: obj.sex,
-        id_number: obj.id_number
+        id_number: obj.id_number,
+        department_id: obj.department_id,
+        nature_work: obj.nature_work,
+        role_id: obj.role_id,
+        shop_id: obj.shop_id,
+        entry_date: moment(obj.entry_date),
+        mail: obj.mail
       })
-      this.fileList = [{
-        url: obj.image_avatar
-      }]
+      this.fileList = [
+        {
+          url: obj.image_avatar
+        }
+      ]
     }
   },
   mounted() {

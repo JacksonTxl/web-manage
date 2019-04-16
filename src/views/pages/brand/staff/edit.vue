@@ -57,7 +57,7 @@ export default {
   methods: {
     onBasicsSave(data) {
       console.log('员工基础信息保存', data)
-      this.editService.editBasicInfo(1, data.data)
+      this.editService.editBasicInfo(1, data.data).subscribe()
     },
     goNext() {
       if (this.currentIndex < 2) {
