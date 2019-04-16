@@ -1,4 +1,13 @@
 .page-brand-add-period-card {
+  .mt-4{
+    margin-top: 4px;
+  }
+  .page-a-form {
+    display: inline-block;
+    .ant-form-item-control-wrapper {
+      padding-left: 0;
+    }
+  }
   .st-panel__body{
     height: 100%;
   }
@@ -24,8 +33,9 @@
       }
       &-card-admission-range {
         .page-admission-range-shop {
+          min-width: 580px;
           position: relative;
-          padding: 0 12px;
+          padding: 0 12px 8px;
           margin-top: 8px;
           border: 1px solid #d9d9d9;
           border-radius: 4px;
@@ -34,9 +44,6 @@
             .lh(20px);
             .c(rgba(0,0,0,.25));
             .mg-tb(12px);
-          }
-          &__add{
-            .mg-tb(8px);
           }
           &::after {
             content: '';
@@ -53,6 +60,7 @@
       }
       &-card-price-setting {
         .page-price-setting-set {
+          min-width: 580px;
           position: relative;
           padding: 12px 12px 0;
           margin-top: 8px;
@@ -86,8 +94,9 @@
       }
       &-card-support-sales {
         .page-support-sales-shop {
+          min-width: 580px;
           position: relative;
-          padding: 0 12px;
+          padding: 0 12px 8px;
           margin-top: 8px;
           border: 1px solid #d9d9d9;
           border-radius: 4px;
@@ -106,10 +115,13 @@
             .s(10px,10px);
             transform: rotate(45deg);
             top: -6px;
-            left: 280px;
+            left: 130px;
             border-left: 1px solid #d9d9d9;
             border-top: 1px solid #d9d9d9;
             .bg(#fff);
+          }
+          &.page-lot-shop::after {
+            left: 270px;
           }
         }
       }
@@ -147,6 +159,9 @@
             border-radius: 4px;
           }
         }
+      }
+      &-card-textarea {
+        margin-top: 2px;
       }
     }
   }
