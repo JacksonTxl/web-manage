@@ -90,7 +90,7 @@
                       </a-popconfirm>
                     </span>
                     <span v-else>
-                      <a @click="edit(record.key)" class="mg-l8">编辑</a>
+                      <a @click="edit(record.key)">编辑</a>
                       <a @click="del(record.key)" class="mg-l8">删除</a>
                     </span>
                   </div>
