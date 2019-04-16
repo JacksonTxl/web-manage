@@ -5,13 +5,13 @@ export class ContractApi extends Api {
    * 合同模版列表
    */
   getList() {
-    return this.http.get('/v1/setting/contract')
+    return this.http.get('/v1/setting/contract', { mock: {} })
   }
   /**
    * 合同模版信息
    */
   getInfo(id: number) {
-    return this.http.get(`/v1/setting/contract/details/${id}`)
+    return this.http.get(`/v1/setting/contract/${id}`)
   }
   /**
    * 合同设置更新

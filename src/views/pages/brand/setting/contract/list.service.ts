@@ -3,7 +3,7 @@ import { ContractApi } from '@/api/v1/setting/contract'
 import { forkJoin } from 'rxjs'
 import { tap, pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { State, Computed } from 'rx-state'
+import { State, Computed, log } from 'rx-state'
 
 interface ListState {
   list: any[]
@@ -17,7 +17,12 @@ export class ListService extends Store<ListState> implements RouteGuard {
     this.state$ = new State({
       list: []
     })
-    this.list$ = new Computed(this.state$.pipe(pluck('list')))
+    this.list$ = new Computed(
+      this.state$.pipe(
+        pluck('list'),
+        log('contract/list')
+      )
+    )
   }
   SET_LIST(list: any[]) {
     this.state$.commit(state => {
@@ -27,7 +32,7 @@ export class ListService extends Store<ListState> implements RouteGuard {
   getList() {
     return this.contractApi.getList().pipe(
       tap(res => {
-        this.SET_LIST(res)
+        this.SET_LIST(res.list)
       })
     )
   }
