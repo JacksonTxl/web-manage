@@ -23,12 +23,7 @@ export class AddService extends Store<CountryCodesState> {
   }
   @Effect()
   getCountryCodes(query: any) { // 获取国际化手机号前缀
-    return this.staffApi.getCountryCodes(query).pipe(
-      tap(state => {
-        this.SET_CODE_LIST(state.code_list)
-        this.SET_DEFAULT_CODE(state.default_code)
-      })
-    )
+    return this.staffApi.getCountryCodes()
   }
   SET_CODE_LIST(codeList: CountryCodesState) {
     this.state$.commit(state => {

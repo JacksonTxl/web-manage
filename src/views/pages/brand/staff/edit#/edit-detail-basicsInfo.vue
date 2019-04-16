@@ -30,8 +30,8 @@
         </st-form-item>
         <st-form-item label="性别" required>
           <a-select placeholder="请选择" v-decorator="basicsInfoRule.sex">
-            <a-select-option value="2">男</a-select-option>
-            <a-select-option value="1">女</a-select-option>
+            <a-select-option :value="2">男</a-select-option>
+            <a-select-option :value="1">女</a-select-option>
           </a-select>
         </st-form-item>
       </a-col>
@@ -67,7 +67,7 @@
         </st-form-item>
       </a-col>
     </a-row>
-    <!-- hr -->
+
     <a-row :gutter="8">
       <a-col :offset="1" :lg="22">
         <st-hr></st-hr>
@@ -156,6 +156,9 @@ export default {
       }
     }
   },
+  props: {
+    formData: Object
+  },
   methods: {
     upload(data) {
       this.loading = true
@@ -199,7 +202,21 @@ export default {
           })
         }
       })
+    },
+    setData(obj) {
+      // console.log('set',obj)
+      this.form.setFieldsValue({
+        staff_name: obj.staff_name,
+        nickname: obj.nickname,
+        mobile: obj.mobile,
+        staff_num: obj.staff_num,
+        sex: obj.sex,
+        id_number: obj.id_number
+      })
     }
+  },
+  mounted() {
+    this.setData(this.formData)
   }
 }
 </script>
