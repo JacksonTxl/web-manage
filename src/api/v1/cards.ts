@@ -19,7 +19,20 @@ export class CardsApi extends Api {
   getCardInfo(id:string) {
     return this.http.get(`/v1/cards/${id}`)
   }
+  /**
+   *获取卡列表
+   */
+  getCardsList(query: any) {
+    return this.http.get('/v1/cards', { query })
+  }
+  /**
+   *获取卡列表
+   */
+  getCardsListA(query: any) {
+    return this.http.get('/v1/cards/shelf', { query })
+  }
 }
 export interface CardsInput {
   [propName: string]: any;
+
 }

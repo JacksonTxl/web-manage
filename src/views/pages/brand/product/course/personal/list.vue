@@ -11,3 +11,8 @@
     <router-view></router-view>
   </st-panel>
 </template>
+<script>
+export default {
+  name: 'list'
+}
+</script>

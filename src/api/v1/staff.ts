@@ -116,7 +116,7 @@ export interface EditStaffBasicInfoQuery{
   /**
    * 员工id
    */
-  // staff_id: number;
+  staff_id: number;
   /**
    * 相册id
    */

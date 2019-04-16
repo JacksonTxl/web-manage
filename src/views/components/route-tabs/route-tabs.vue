@@ -31,6 +31,7 @@ export default {
   },
   methods: {
     OnChange(key) {
+      this.$emit('change', key)
       this.$router.push({ name: key })
     },
     initCurrentValue() {
