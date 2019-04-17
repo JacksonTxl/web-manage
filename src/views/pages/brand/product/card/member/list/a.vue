@@ -10,18 +10,17 @@
         @change="handleChange_card_type"
       >
         <a-select-option value>所有类型</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
-        <a-select-option value="tom">Tom</a-select-option>
+        <a-select-option value="期限卡">期限卡</a-select-option>
+        <a-select-option value="次卡">次卡</a-select-option>
       </a-select>
       <a-select
-        defaultValue="所有渠道"
         class="pages-brand-product-card-list-a-box-select"
         v-model="publish_channel"
         @change="handleChange_publish_channel"
       >
         <a-select-option value>所有渠道</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
-        <a-select-option value="tom">Tom</a-select-option>
+        <a-select-option value="品牌">品牌</a-select-option>
+        <a-select-option value="门店">门店</a-select-option>
       </a-select>
       <a-select
         class="pages-brand-product-card-list-a-box-select"
@@ -29,8 +28,8 @@
         v-model="sell_status"
       >
         <a-select-option value>所有售卖状态</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
-        <a-select-option value="tom">Tom</a-select-option>
+        <a-select-option value="可售卖">可售卖</a-select-option>
+        <a-select-option value="不可售卖">不可售卖</a-select-option>
       </a-select>
     </div>
     <st-table
@@ -113,7 +112,10 @@
               <modal-link tag="a" :to=" { name: 'card-halt-the-sales', props:{a: 3}}">停售</modal-link>
             </a-menu-item>
             <a-menu-item v-if=" !(record.shelf_upper || record.shelf_lower)">
-              <modal-link tag="a" :to=" { name: 'card-confirm-del', props:{title: record.card_name}}">删除</modal-link>
+              <modal-link
+                tag="a"
+                :to=" { name: 'card-confirm-del', props:{title: record.card_name}}"
+              >删除</modal-link>
             </a-menu-item>
           </st-more-dropdown>
         </template>
