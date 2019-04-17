@@ -6,24 +6,22 @@
     <st-button style="margin-left:24px" type="danger">批量下架</st-button>
     <div class="pages-brand-product-card-list-b-box">
       <a-select
-        defaultValue="所有类型"
         class="pages-brand-product-card-list-b-box-select"
         v-model="card_type"
         @change="handleChange_card_type"
       >
-        <a-select-option value="所有类型">所有类型</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
-        <a-select-option value="tom">Tom</a-select-option>
+        <a-select-option value>所有类型</a-select-option>
+        <a-select-option value="期限卡">期限卡</a-select-option>
+        <a-select-option value="次卡">次卡</a-select-option>
       </a-select>
       <a-select
-        defaultValue="所有渠道"
         class="pages-brand-product-card-list-b-box-select"
         v-model="publish_channel"
         @change="handleChange_publish_channel"
       >
         <a-select-option value>所有渠道</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
-        <a-select-option value="tom">Tom</a-select-option>
+        <a-select-option value="品牌">品牌</a-select-option>
+        <a-select-option value="门店">门店</a-select-option>
       </a-select>
       <a-select
         class="pages-brand-product-card-list-b-box-select"
@@ -76,7 +74,7 @@
         <a-divider type="vertical"></a-divider>
         <a href="javascript:;">下架</a>
 
-        <template>
+        <!-- <template>
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
             <a-menu-item>编辑</a-menu-item>
@@ -87,7 +85,7 @@
               <modal-link tag="a" :to=" { name: 'card-confirm-del' }">删除</modal-link>
             </a-menu-item>
           </st-more-dropdown>
-        </template>
+        </template>-->
       </div>
       <!-- 操作end -->
     </st-table>
@@ -125,7 +123,6 @@ export default {
       card_type: '所以类型',
       publish_channel: '所以渠道',
       sell_status: '所有门店',
-
       getHeaders: {
         current_page: '',
         size: '',
@@ -231,7 +228,7 @@ export default {
           title: '操作',
           dataIndex: 'action',
           fixed: 'right',
-          width: 140,
+          width: 110,
           scopedSlots: { customRender: 'action' }
         }
       ]
@@ -256,6 +253,8 @@ export default {
     onChange(pagination, filters, sorter) {
       this.getHeaders.current_page = pagination.current
       this.getHeaders.size = pagination.pageSize
+      this.pagination.current = pagination.current
+      this.pagination.pageSize = pagination.pageSize
       this.getListInfoFunc()
       console.log('params', pagination, filters, sorter)
     },
@@ -301,6 +300,13 @@ export default {
       this.bService.getListInfo(obj).subscribe(state => {
         self.cardsListInfo = state
       })
+    }
+  },
+  watch: {
+    $route() {
+      this.card_type = '所以类型'
+      this.publish_channel = '所以渠道'
+      this.sell_status = '所有门店'
     }
   }
 }

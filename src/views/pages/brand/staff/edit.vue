@@ -19,8 +19,16 @@
       :formData="formData.staff_info"
       @bacicInfoSave="onBasicsSave"
     />
-    <edit-detail-detailed-info v-show="currentIndex === 1" @goNext="goNext"/>
-    <edit-detail-coach-info v-show="currentIndex === 2" @goNext="goNext"/>
+    <edit-detail-detailed-info
+      v-show="currentIndex === 1"
+      @goNext="goNext"
+      :formData="formData.staff_info"
+      @detailInfoSave="onDetailInfoSave"/>
+    <edit-detail-coach-info
+      v-show="currentIndex === 2"
+      @goNext="goNext"
+      :formData="formData.staff_info"
+      @coachInfoSave="onCoachInfoSave"/>
   </st-panel>
 </template>
 <script>
@@ -47,7 +55,7 @@ export default {
   },
   data() {
     return {
-      currentIndex: 0,
+      currentIndex: 2,
       stepArr: [
         {
           title: '基础信息',
@@ -119,8 +127,15 @@ export default {
         is_show: 1,
         album_id: 0
       }
-      // return
       this.editService.editBasicInfo(36, data.data).subscribe()
+    },
+    onDetailInfoSave(data) {
+      console.log('员工详细信息保存', data)
+      this.editService.editDetailInfo(36, data.data).subscribe()
+    },
+    onCoachInfoSave(data) {
+      console.log('教练信息保存', data.data)
+      this.editService.editCoachInfo(36, data.data).subscribe()
     },
     goNext() {
       if (this.currentIndex < 2) {

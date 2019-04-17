@@ -24,7 +24,7 @@ export class PersonalApi extends Api {
    * 添加品牌私教课
    */
   addPersonalBrand(params: SetPersonalBrandInput) {
-    return this.http.post('/v1/course/personal/brand', { params, mock: {} })
+    return this.http.post('/v1/course/personal/brand', { params })
   }
   /**
    * 编辑品牌私教课

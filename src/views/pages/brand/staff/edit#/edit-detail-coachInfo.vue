@@ -3,9 +3,8 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="从业时间">
-          <a-input placeholder="填写点什么吧"></a-input>
+           <a-date-picker style="width:100%" v-decorator="coachRules.employment_time"/>
         </st-form-item>
-
         <st-form-item label="擅长的项目">
           <span slot="label">
             擅长的项目&nbsp;
@@ -13,16 +12,16 @@
               <st-icon type="anticon:question-circle-o"/>
             </a-tooltip>
           </span>
-          <a-checkbox-group>
-            <a-checkbox value="1">普通员工</a-checkbox>
-            <a-checkbox value="2">会籍销售</a-checkbox>
-            <a-checkbox value="3">团课教练</a-checkbox>
-            <a-checkbox value="4">私人教练</a-checkbox>
-            <a-checkbox value="5">游泳教练</a-checkbox>
+          <a-checkbox-group @change="onChooseSpecialty" v-decorator="coachRules.specialty_id">
+            <a-checkbox :value="1">普通员工</a-checkbox>
+            <a-checkbox :value="2">会籍销售</a-checkbox>
+            <a-checkbox :value="3">团课教练</a-checkbox>
+            <a-checkbox :value="4">私人教练</a-checkbox>
+            <a-checkbox :value="5">游泳教练</a-checkbox>
           </a-checkbox-group>
         </st-form-item>
         <st-form-item label="专业认证">
-          <a-input placeholder="请输入专业证书名称">
+          <a-input placeholder="请输入专业证书名称" v-decorator="coachRules.certification_name">
             <div slot="addonAfter" @click="onAddProfess" class="add-profess-button">添加</div>
           </a-input>
           <div class="add-profess-card">
@@ -33,36 +32,28 @@
           </div>
         </st-form-item>
         <st-form-item label="个人经历">
-          <a-input type="textarea" :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧"/>
+          <a-input type="textarea" :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧" v-decorator="coachRules.introduction"/>
         </st-form-item>
-        <st-form-item label="员工风采">
-          <div class="page-coachInfo-upload">
-            <a-upload listType="picture-card" :showUploadList="false" :customRequest="upload">
-              <div v-if="fileList.length < 10">
-                <a-icon type="plus"/>
-                <div class="ant-upload-text">Upload</div>
-              </div>
-            </a-upload>
-            <div class="page-coachInfo-itemImgCont" v-for="item in fileList" :key="item.url">
-              <img
-                class="page-coachInfo-itemImg"
-                :src="item.url"
-                width="128"
-                height="auto"
-                alt="avatar"
-              >
-            </div>
-          </div>
-          <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-            <img alt="example" style="width: 100%" :src="previewImage">
-          </a-modal>
+        </a-col>
+    </a-row>
+      <a-row :gutter="8">
+      <a-col :lg="24" :xs="22" :offset="1">
+        <st-form-item label="员工风采" class="page-image-personal">
+          <st-image-upload
+            @change="imageUploadChange"
+            width="100px"
+            height="100px"
+            :list="fileList"
+            :sizeLimit="2"
+            placeholder="上传照片"
+            :numLimit=10
+            v-decorator="coachRules.image_personal"
+          ></st-image-upload>
         </st-form-item>
         <st-form-item label="对外展示">
-          <a-checkbox
-            value="1"
-          >展示在会员端</a-checkbox>
+          <a-checkbox v-decorator="coachRules.is_show" :checked="checked" @change="check">展示在会员端</a-checkbox>
         </st-form-item>
-      </a-col>
+       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :offset="2">
@@ -78,18 +69,53 @@
 <script>
 export default {
   name: 'EditDetailCoachInfo',
+  props: {
+    formData: {
+      type: Object
+    }
+  },
   data() {
     return {
       form: this.$form.createForm(this),
       coachInfoData: {
         certification_name: []
       },
-      previewVisible: false,
-      previewImage: '',
-      fileList: []
+      fileList: [],
+
+      checked: false,
+      coachRules: {
+        employment_time: ['employment_time'],
+        specialty_id: ['specialty_id'],
+        certification_name: ['certification_name'],
+        introduction: ['introduction'],
+        is_show: ['is_show']
+      },
+      image_personal: []
     }
   },
+  mounted() {
+    this.setData(this.formData)
+  },
   methods: {
+    imageUploadChange(e) {
+      this.image_personal = e
+    },
+    check(e) {
+      this.checked = e.target.checked
+    },
+    onChooseSpecialty(e) {
+      console.log(e)
+    },
+    setData(obj) {
+      this.form.setFieldsValue({
+        employment_time: moment(obj.employment_time),
+        specialty_id: obj.specialty_id,
+        introduction: obj.introduction
+      })
+      this.fileList = obj.image_personal
+      obj.is_show ? this.checked = true : this.checked = false
+      this.coachInfoData.certification_name = obj.certification_name ? obj.certification_name : []
+    },
     goNext() {
       this.form.validateFields((err, values) => {
         if (!err) {
@@ -101,12 +127,15 @@ export default {
       })
     },
     save(e) {
-      // form submit
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
+          values.employment_time = values.employment_time.format('YYYY-MM-DD')
+          values.certification_name = this.coachInfoData.certification_name
+          values.is_show = this.checked ? 1 : 0
+          values.image_personal = this.image_personal
           console.log('Received values of form: ', values)
-          this.$emit('save', {
+          this.$emit('coachInfoSave', {
             data: values
           })
         }
@@ -114,18 +143,17 @@ export default {
     },
     // 添加证书
     onAddProfess() {
-      if (
-        this.form.getFieldValue('certification_name') &&
-        !this.phoneAddDisabled
-      ) {
+      let value = this.form.getFieldValue('certification_name')
+      let that = this
+      if (value) {
         // input框里有值才添加
-        this.form
-          .validateFields(['certification_name'], { force: true })
-          .then(res => {
+        this.form.validateFields(['certification_name'], { force: true }, (error, value) => {
+          if (!error) {
             let arr = [...this.coachInfoData.certification_name]
-            arr.push(res.certification_name)
+            arr.push(value.certification_name)
             this.coachInfoData.certification_name = [...new Set(arr)]
-          })
+          }
+        })
       }
     },
     // 移除证书
