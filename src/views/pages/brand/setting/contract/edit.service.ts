@@ -17,17 +17,11 @@ export class EditService extends Store<EditState> implements RouteGuard {
     this.state$ = new State({ info: {} })
     this.info$ = new Computed(this.state$.pipe(pluck('info')))
   }
-  SET_INFO_FIELD(field: string, value: any) {
-    console.log(field, value)
-    this.state$.commit(state => {
-      state.info[field] = value
-    })
-  }
   getInfo(id: number) {
     return this.contractApi.getInfo(id).pipe(
       tap(res => {
         this.state$.commit(state => {
-          state.info = res
+          state.info = res.info
         })
       })
     )

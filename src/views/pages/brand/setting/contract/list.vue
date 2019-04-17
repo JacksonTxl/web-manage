@@ -12,33 +12,31 @@
             <div :class="bItem('body-rt')">
               <div :class="bItem('title-box')">
                 <st-t3 :class="bItem('title')">{{item.contract_title}}</st-t3>
-                <div
-                  :class="bItem('status',{success:isInitial(item),warning:!isInitial(item)})"
-                >
+                <div :class="bItem('status',{success:isInitial(item),warning:!isInitial(item)})">
                   <a-badge :status="isInitial(item)?'success':'warning'"></a-badge>
-                  {{item.is_initialize_status.name}}
+                  {{item.is_initialize_status | enumFilter(settingEnums.is_initialize_status)}}
                 </div>
               </div>
               <p :class="bItem('desc')">{{item.contract_describe}}</p>
             </div>
           </div>
           <div :class="bItem('footer')">
-            <template v-if="item.is_initialize_status.id">
+            <!-- <template v-if="isInitial(item)">
               <router-link :class="bItem('action')" to="/" class="st-link-secondary">查看</router-link>
               <div :class="bItem('divider')"></div>
               <router-link
                 :class="bItem('action')"
-                :to="{path:'./edit',query:{id:bItem.id}}"
+                :to="{path:'./edit',query:{id:item.id}}"
                 class="st-link-secondary"
               >编辑</router-link>
             </template>
-            <template v-else>
-              <router-link
-                :class="bItem('action')"
-                :to="{path:'./edit',query:{id:bItem.id}}"
-                class="st-link-secondary"
-              >去设置</router-link>
-            </template>
+            <template v-else>-->
+            <router-link
+              :class="bItem('action')"
+              :to="{path:'./edit',query:{id:item.id}}"
+              class="st-link-secondary"
+            >去设置</router-link>
+            <!-- </template> -->
           </div>
         </div>
       </a-col>
@@ -48,24 +46,35 @@
 </template>
 <script>
 import { ListService } from './list.service'
+import { UserService } from '@/services/user.service'
+import { enumFilter } from '@/filters/other.filters'
 export default {
   bem: {
     bPage: 'page-brand-setting-contract-list',
     bItem: 'contract-item'
   },
+  filters: {
+    enumFilter
+  },
   serviceInject() {
     return {
-      listService: ListService
+      listService: ListService,
+      userService: UserService
     }
   },
   subscriptions() {
+    /**
+     * @type {UserService}
+     */
+    const user = this.userService
     return {
-      list: this.listService.list$
+      list: this.listService.list$,
+      settingEnums: user.settingEnums$
     }
   },
-  computed: {
+  methods: {
     isInitial(item) {
-      return !!item.is_initialize_status.id
+      return !!item.is_initialize_status
     }
   }
 }

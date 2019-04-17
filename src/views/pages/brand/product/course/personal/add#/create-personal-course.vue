@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" @submit="save" class="page-create-container">
+  <st-form :form="form" class="page-create-container">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程名称" required>
@@ -48,7 +48,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课有效期">
-          <a-input v-decorator="formRules.unit_valid_days">
+          <a-input v-decorator="formRules.effective_unit">
             <div slot="addonAfter" class="st-form-item-unit">天/节</div>
           </a-input>
         </st-form-item>
@@ -59,7 +59,7 @@
         <st-form-item label="图片" >
           <div class="page-upload-container">
             <st-image-upload :list="fileList" @change="onImgChange"></st-image-upload>
-            <input type="hidden" v-decorator="formRules.image_id">
+            <input type="hidden" v-decorator="formRules.image">
             <div class="page-course-photo-des mg-l16">
               <div class="page-course-item">
                 <div class="page-course-item-tip">1.</div>
@@ -77,7 +77,8 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程介绍">
-          <a-textarea type="textarea" :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧"
+          <a-textarea type="textarea" v-decorator="formRules.description"
+           :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧"
            maxlength="500"/>
         </st-form-item>
       </a-col>
@@ -85,7 +86,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" html-type="submit">保存，继续设置上课门店</st-button>
+          <st-button type="primary" @click="save">保存，继续设置上课门店</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -94,6 +95,7 @@
 
 <script>
 import { AddService } from '../add.service'
+import { MessageService } from '@/services/message.service'
 const formRules = {
   course_name: [
     'course_name', {
@@ -135,19 +137,21 @@ const formRules = {
       rules: []
     }
   ],
-  unit_valid_days: [
-    'unit_valid_days', {
+  effective_unit: [
+    'effective_unit', {
       rules: [],
       initialValue: 7
     }
   ],
-  image_id: ['image_id']
+  image: ['image'],
+  description: ['description']
 }
 export default {
   name: 'create-personal-course',
   serviceInject() {
     return {
-      addService: AddService
+      addService: AddService,
+      messageService: MessageService
     }
   },
   subscriptions() {
@@ -166,13 +170,16 @@ export default {
         const data = this.form.getFieldsValue()
         console.log('step 1 data', data)
         this.addService.addPersonalBrand(data).subscribe(() => {
+          this.messageService.success({
+            content: '提交成功'
+          })
           this.$emit('goNext')
         })
       })
     },
     onImgChange(fileList) {
       this.form.setFieldsValue({
-        image_id: fileList[0]
+        image: fileList[0]
       })
     }
   }

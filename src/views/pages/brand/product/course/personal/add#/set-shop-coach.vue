@@ -13,7 +13,7 @@
           </a-radio-group>
           <div class="page-shop-coach-container-shop mg-t8" v-if="isShow">
             <select-shop :shopIds="shopIds" @change="onSelectShopChange"></select-shop>
-            <input type="hidden" v-decorator="formRules.shop_id">
+            <input type="hidden" v-decorator="formRules.shop_ids">
           </div>
         </st-form-item>
       </a-col>
@@ -22,7 +22,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="上课教练">
           <div class="page-shop-coach-container-coach">
-            <input type="hidden" v-decorator="formRules.coach_id">
+            <input type="hidden" v-decorator="formRules.coach_ids">
             <select-coach :coachIds="['1']" @change="onSelectCoachChange"></select-coach>
           </div>
         </st-form-item>
@@ -31,7 +31,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" html-type="submit">保存，继续设置上课门店</st-button>
+          <st-button type="primary" html-type="submit">保存，继续设置售卖价格</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -39,6 +39,7 @@
 </template>
 <script>
 import { AddService } from '../add.service'
+import { MessageService } from '@/services/message.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import SelectCoach from '@/views/fragments/coach/select-coach'
 const shopTableColumns = [{
@@ -79,16 +80,16 @@ const formRules = {
     'shop_setting', {
     }
   ],
-  shop_id: [
-    'shop_id', {
+  shop_ids: [
+    'shop_ids', {
       rules: [{
         required: true,
         message: '请选择上课门店'
       }]
     }
   ],
-  coach_id: [
-    'coach_id', {
+  coach_ids: [
+    'coach_ids', {
       rules: []
     }
   ]
@@ -98,7 +99,8 @@ export default {
   name: 'SetShopCoach',
   serviceInject() {
     return {
-      addService: AddService
+      addService: AddService,
+      messageService: MessageService
     }
   },
   components: {
@@ -120,6 +122,9 @@ export default {
         const data = this.form.getFieldsValue()
         console.log('step 2 data', data)
         this.addService.setShop(data).subscribe(() => {
+          this.messageService.success({
+            content: '提交成功'
+          })
           this.$emit('goNext')
         })
       })
@@ -130,9 +135,15 @@ export default {
     },
     onSelectShopChange(shopIds) {
       console.log('your selected', shopIds)
+      this.form.setFieldsValue({
+        shop_ids: shopIds
+      })
     },
     onSelectCoachChange(coachIds) {
       console.log('your selected', coachIds)
+      this.form.setFieldsValue({
+        coach_ids: coachIds
+      })
     }
   }
 }
