@@ -205,6 +205,13 @@ export default {
       price_gradient: []
     }
   },
+  watch: {
+    course_name(val) {
+      this.form.setFieldsValue({
+        course_name: val
+      })
+    }
+  },
   mounted() {
     this.$nextTick(() => {
       this.form.setFieldsValue({

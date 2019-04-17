@@ -44,6 +44,7 @@ import SelectShop from '@/views/fragments/shop/select-shop'
 import SelectCoach from '@/views/fragments/coach/select-coach'
 import { UserService } from '@/services/user.service'
 import { enumFilter } from '@/filters/other.filters'
+import { valuesIn } from 'lodash-es'
 const shopTableColumns = [{
   title: '省',
   dataIndex: 'province_name'
@@ -113,9 +114,16 @@ export default {
     enumFilter
   },
   props: {
-    name: {
+    course_name: {
       type: String,
       default: ''
+    }
+  },
+  watch: {
+    course_name(val) {
+      this.form.setFieldsValue({
+        course_name: val
+      })
     }
   },
   data() {
@@ -131,13 +139,6 @@ export default {
     return {
       personalCourseEnums: user.personalCourseEnums$
     }
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.form.setFieldsValue({
-        course_name: this.course_name
-      })
-    })
   },
   methods: {
     save(e) {
