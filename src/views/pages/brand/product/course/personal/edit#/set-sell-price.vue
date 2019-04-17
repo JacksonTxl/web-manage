@@ -189,12 +189,6 @@ export default {
   filters: {
     enumFilter
   },
-  props: {
-    course_name: {
-      type: String,
-      default: ''
-    }
-  },
   data() {
     return {
       form: this.$form.createForm(this),
@@ -205,12 +199,13 @@ export default {
       price_gradient: []
     }
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.form.setFieldsValue({
-        course_name: this.course_name
-      })
-    })
+  props: {
+    info: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
   },
   methods: {
     save(e) {

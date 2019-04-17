@@ -71,7 +71,8 @@ const formRules = {
       }, {
         min: 4,
         message: '支持输入4~30个字的课程名称'
-      }]
+      }],
+      initialValue: 'XXXX'
     }
   ],
   course_id: [
@@ -112,18 +113,20 @@ export default {
   filters: {
     enumFilter
   },
-  props: {
-    name: {
-      type: String,
-      default: ''
-    }
-  },
   data() {
     return {
       form: this.$form.createForm(this),
       formRules,
       isShow: false,
-      shopIds: []
+      shopIds: [1, 7]
+    }
+  },
+  props: {
+    info: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   subscriptions() {
@@ -135,7 +138,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.form.setFieldsValue({
-        course_name: this.course_name
+        ...this.info
       })
     })
   },

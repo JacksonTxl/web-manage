@@ -62,7 +62,7 @@ export default {
   },
   created() {
     this.selectService.getShopListTree().subscribe(res => {
-      this.treeData = json2AntDesignTreeData(res.shop_list.province_list)
+      this.treeData = json2AntDesignTreeData(res.list)
       this.initCheckedKeys()
     })
   },
