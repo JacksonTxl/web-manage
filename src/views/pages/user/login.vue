@@ -23,24 +23,41 @@
         </div>
       </section>
       <section class="rt">
-        <ul>
-          <li>账户密码登录</li>
-          <li>手机动态密码登录</li>
-        </ul>
-        <st-form :form="form" @submit.prevent="login" class="page-login__form">
-          <st-form-item >
-            <a-input placeholder="请输入实体卡号"  v-decorator="['name']"/>
-          </st-form-item>
-          <st-form-item   class="mg-b0">
-            <a-input type="password" placeholder="请将实体卡置于读卡器上" v-decorator="['password']"/>
-          </st-form-item>
-          <st-form-item  class="mg-b0">
-            <a-checkbox>我已阅读并同意<a href="">《用户注册协议》</a></a-checkbox><a href="">忘记密码</a>
-          </st-form-item>
-          <st-form-item  class="mg-b0">
-            <st-button type="primary"  html-type="submit"  block :loading='loading.loginAccount'>登录</st-button>
-          </st-form-item>
-        </st-form>
+        <!-- 书的最后一页 -->
+        <!-- <div class="book-page-box book-page-4 preserve-3d">
+          <div class="book-page page-front">
+            <div v-show="loginType === 'user' || loginType === 'mobile'" class="login-user-and-mobile">
+              <ul class="page-login-tabs mg-l24 mg-b24">
+                <li v-for="item in loginTypes" :key="item.key" class="page-login-tab-item pd-y8" :class="{'page-login-tab-item--active': item.key === loginType}"><span @click.stop="onClickChangeType(item.key)">{{item.name}}</span></li>
+              </ul>
+              <login-user @login="onLogin" v-show="loginType==='user'"></login-user>
+              <login-mobile v-show="loginType==='mobile'"></login-mobile>
+            </div>
+          </div>
+        </div> -->
+        <!-- 书的第三页 -->
+        <!-- <div class="book-page-box book-page-3 preserve-3d flip-animation-3">
+          <div class="book-page page-front">
+
+          </div>
+        </div> -->
+        <!-- 书的第二页 -->
+        <!-- <div class="book-page-box book-page-2 preserve-3d flip-animation-2">
+
+        </div> -->
+
+        <div v-show="loginType === 'user' || loginType === 'mobile'" class="login-user-and-mobile">
+          <ul class="page-login-tabs mg-l24 mg-b24">
+            <li v-for="item in loginTypes" :key="item.key" class="page-login-tab-item pd-y8" :class="{'page-login-tab-item--active': item.key === loginType}"><span @click.stop="onClickChangeType(item.key)">{{item.name}}</span></li>
+          </ul>
+          <login-user @login="onLogin" v-show="loginType==='user'"></login-user>
+          <login-mobile v-show="loginType==='mobile'"></login-mobile>
+        </div>
+        <div v-show="loginType === 'wechat'" class="page-login-wechat">
+              <ul class="page-login-tabs mg-b24">
+                <li  class="page-login-tab-item page-login-tab-item-wechat pd-y8"><span>微信登录</span></li>
+              </ul>
+            </div>
       </section>
     </div>
   </div>
@@ -49,6 +66,8 @@
 <script>
 import { UserService } from '../../../services/user.service'
 import { LoginService } from './login.service'
+import mobile from './login#/mobile'
+import user from './login#/user'
 export default {
   name: 'Login',
   serviceInject() {
@@ -58,8 +77,13 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this)
+      loginType: 'user',
+      loginTypes: [{ key: 'user', name: '用户密码登录' }, { key: 'mobile', name: '手机动态密码登录' }]
     }
+  },
+  components: {
+    LoginMobile: mobile,
+    LoginUser: user
   },
   subscriptions() {
     return {
@@ -67,13 +91,13 @@ export default {
     }
   },
   methods: {
-    login() {
-      this.form.validateFields((err, values) => {
-        if (err) return
-        this.loginService.loginAccount(values).subscribe(res => {
-          console.log(res)
-          this.$router.push('/')
-        })
+    onClickChangeType(key) {
+      this.loginType = key
+    },
+    onLogin(values) {
+      this.loginService.loginAccount(values).subscribe(res => {
+        console.log(res)
+        this.$router.push('/')
       })
     }
   }

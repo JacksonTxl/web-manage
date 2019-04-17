@@ -6,13 +6,13 @@ export class PersonalApi extends Api {
    * 获取品牌私教课列表
    */
   getCourseListInBrand(query: GetPersonalBrandCourseListInput) {
-    return this.http.get('/v1/course/personal/brand/', { query, mock })
+    return this.http.get('/v1/course/personal/brand', { query })
   }
   /**
    * 获取品牌门店下私教课列表
    */
   getCourseListInShop(query: GetPersonalBrandCourseListInput) {
-    return this.http.get('/v1/course/personal/brand/shop', { query, mock })
+    return this.http.get('/v1/course/personal/brand/shop', { query })
   }
   /**
    * 获取品牌私教课信息

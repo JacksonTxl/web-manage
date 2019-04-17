@@ -8,38 +8,37 @@
       :scroll="{ x: 1300}"
       @change="onChange"
     >
-      <div slot="shopNumber" slot-scope="shopNumber">
+      <div slot="shop_setting" slot-scope="shop_setting">
         <a
-          v-if="shopNumber !== '全门店'"
+          v-if="shop_setting.code !== 1"
           href="javascript:;"
-        >{{shopNumber}}</a>
+        >{{shop_setting.text}}</a>
         <span
           v-else
-        >{{shopNumber}}</span>
+        >{{shop_setting.text}}</span>
       </div>
       <div slot="coachNumber" slot-scope="coachNumber">
         <a
           href="javascript:;"
         >{{coachNumber}}</a>
       </div>
-      <div slot="pricing" slot-scope="text, record">
+      <div slot="price_setting" slot-scope="price_setting">
+        {{price_setting.text}}
+      </div>
+      <div slot="course_pricing" slot-scope="course_pricing">
         <a
-          v-if="record.pricing_type !== '品牌统一定价'"
           href="javascript:;"
-        >{{text}}</a>
-        <span
-          v-else
-        >{{text}}</span>
+        >{{course_pricing}}</a>
       </div>
-      <div slot="status" slot-scope="status">
-          <span><a-badge :status="status === '有效'?'success':'error'" />{{status}}</span>
-
+      <div slot="is_available" slot-scope="is_available">
+          <span><a-badge :status="is_available.code === 1?'success':'error'" />{{is_available.text}}</span>
       </div>
-      <div slot="action" slot-scope="record">
-        <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {id: record}}">详情{{record}}</router-link>
+      <div slot="action" slot-scope="text, record">
+        <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {id: record}}">详情</router-link>
         <router-link :to="{name: 'brand-product-course-personal-edit', query: {id: record}}">编辑</router-link>
         <st-more-dropdown style="margin-left: 12px;">
-          <a-menu-item>置为无效</a-menu-item>
+          <a-menu-item v-if="record.is_available.code === 1">置为无效</a-menu-item>
+          <a-menu-item v-else>恢复有效</a-menu-item>
           <a-menu-item>删除</a-menu-item>
         </st-more-dropdown>
       </div>
