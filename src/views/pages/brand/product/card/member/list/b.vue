@@ -6,7 +6,6 @@
     <st-button style="margin-left:24px" type="danger">批量下架</st-button>
     <div class="pages-brand-product-card-list-b-box">
       <a-select
-        defaultValue="所有类型"
         class="pages-brand-product-card-list-b-box-select"
         v-model="card_type"
         @change="handleChange_card_type"
@@ -16,7 +15,6 @@
         <a-select-option value="tom">Tom</a-select-option>
       </a-select>
       <a-select
-        defaultValue="所有渠道"
         class="pages-brand-product-card-list-b-box-select"
         v-model="publish_channel"
         @change="handleChange_publish_channel"
@@ -125,7 +123,6 @@ export default {
       card_type: '所以类型',
       publish_channel: '所以渠道',
       sell_status: '所有门店',
-
       getHeaders: {
         current_page: '',
         size: '',
@@ -303,6 +300,13 @@ export default {
       this.bService.getListInfo(obj).subscribe(state => {
         self.cardsListInfo = state
       })
+    }
+  },
+  watch: {
+    $route() {
+      this.card_type = '所以类型'
+      this.publish_channel = '所以渠道'
+      this.sell_status = '所有门店'
     }
   }
 }

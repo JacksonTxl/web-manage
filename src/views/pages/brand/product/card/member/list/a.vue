@@ -391,6 +391,13 @@ export default {
         self.cardsListInfo = state
       })
     }
+  },
+  watch: {
+    $route() {
+      this.card_type = '所以类型'
+      this.sell_status = '所以渠道'
+      this.publish_channel = '所有售卖状态'
+    }
   }
 }
 </script>
