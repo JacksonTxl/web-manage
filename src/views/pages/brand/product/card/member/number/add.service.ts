@@ -4,7 +4,7 @@ import { CardsApi, CardsInput } from '@/api/v1/cards'
 import { Store } from '@/services/store'
 
 @Injectable()
-export class EditService extends Store<any> {
+export class AddService extends Store<any> {
   constructor(private cardsApi: CardsApi) {
     super()
   }

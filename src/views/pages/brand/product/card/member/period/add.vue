@@ -1,6 +1,6 @@
 <template>
-  <st-panel app class="page-brand-add-period-card" initial>
-    <div class="page-brand-add-period-card-body">
+  <st-panel app class="page-brand-basic-card page-brand-add-period-card" initial>
+    <div class="page-brand-basic-card-body">
       <div class="page-preview">实时预览</div>
       <div class="page-content">
         <st-form :form="form" labelWidth="116px">

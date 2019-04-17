@@ -1,6 +1,6 @@
 <template>
-  <st-panel app class="page-brand-add-period-card" initial>
-    <div class="page-brand-add-period-card-body">
+  <st-panel app class="page-brand-basic-card page-brand-edit-period-card" initial>
+    <div class="page-brand-basic-card-body">
       <div class="page-preview">实时预览</div>
       <div class="page-content">
         <st-form :form="form" labelWidth="116px">
@@ -276,12 +276,12 @@ import moment from 'moment'
 import { RuleConfig } from '@/constants/rule'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { cloneDeep } from 'lodash-es'
-import { AddService } from './add.service'
+import { EditService } from './edit.service'
 export default {
   serviceInject() {
     return {
       rules: RuleConfig,
-      addService: AddService
+      addService: EditService
     }
   },
   subscriptions() {
