@@ -8,7 +8,7 @@ interface CardsTableModelState {
   cardsTableModel: any
 }
 @Injectable()
-export class TableStopService extends Store<CardsTableModelState> {
+export class SaleStopService extends Store<CardsTableModelState> {
   state$: State<CardsTableModelState>
   cardsTableModel$: Computed<string>
   constructor(private cardsApi: CardsApi) {
@@ -26,6 +26,6 @@ export class TableStopService extends Store<CardsTableModelState> {
     })
   }
   getListInfo(paramsObj: any) {
-    return this.cardsApi.getCardsUseStop(paramsObj)
+    return this.cardsApi.getCardsSaleStop(paramsObj)
   }
 }

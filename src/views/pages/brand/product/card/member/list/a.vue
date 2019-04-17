@@ -67,7 +67,7 @@
       <!-- 支持入场门店end -->
       <a slot="support_sales.name" slot-scope="text,record" href="javascript:;">
         <span v-if="text !=='0个门店'">
-          <modal-link tag="a" :to="{ name: 'card-table-stop' , props:{a: record.id}}">{{text}}</modal-link>
+          <modal-link tag="a" :to="{ name: 'card-sale-stop' , props:{a: record.id}}">{{text}}</modal-link>
         </span>
         <span v-else class="use_num">{{text}}</span>
       </a>

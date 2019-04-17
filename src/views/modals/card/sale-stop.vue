@@ -1,5 +1,13 @@
 <template>
-  <a-modal class="modal-card-table-stop" title="支持入场门店" @ok="save" v-model="show" :footer="null">
+  <a-modal class="modal-card-table-stop" title="支持售卖门店" @ok="save" v-model="show" :footer="null">
+    <!-- <st-table
+      bordered
+      :dataSource="table.list"
+      :columns="table.columns1"
+      rowKey="shop_id"
+      :pagination="pagination"
+      @showSizeChange="onShowSizeChange"
+    ></st-table>-->
     <st-table
       rowKey="id"
       :dataSource="table.list"
@@ -11,11 +19,11 @@
   </a-modal>
 </template>
 <script>
-import { SaleStopService } from './sale-stop.service'
+import { TableStopService } from './table-stop.service'
 export default {
   serviceInject() {
     return {
-      aService: SaleStopService
+      aService: TableStopService
     }
   },
   // subscriptions() {

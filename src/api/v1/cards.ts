@@ -44,6 +44,13 @@ export class CardsApi extends Api {
     console.log('会员卡售卖门店列表', query)
     return this.http.get(`/v1/cards/sale/shop`, { query })
   }
+  /**
+   *支持入场门店
+   */
+  getCardsUseStop(query: any) {
+    console.log('支持入场门店', query)
+    return this.http.get(`/v1/cards/use/shop`, { query })
+  }
 }
 export interface CardsInput {
   [propName: string]: any
