@@ -61,12 +61,17 @@
               <a @click="onDelete">删除</a>
             </td>
           </template>
+          <!-- 编辑状态 -->
           <template v-else>
             <td>
               <st-image-upload :list="[item.img]" width="80px" height="80px"></st-image-upload>
             </td>
-            <td>2</td>
-            <td>3</td>
+            <td>
+              <a-input v-model="editInfo.name" placeholder="请输入模版名称"></a-input>
+            </td>
+            <td>
+              <a-input-number style="width:300px" v-model="editInfo.count" placeholder="请输入数位数量"></a-input-number>
+            </td>
             <td>
               <a @click="onEditSubmit">保存</a>
               <a-divider type="vertical"></a-divider>
@@ -137,7 +142,7 @@ export default {
       this.editInfo = cloneDeep(record)
     },
     onEditSubmit() {
-      consolel.log(this.editInfo)
+      console.log(this.editInfo)
     },
     onEditCancel() {
       this.editInfo = {}
