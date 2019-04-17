@@ -256,6 +256,8 @@ export default {
     onChange(pagination, filters, sorter) {
       this.getHeaders.current_page = pagination.current
       this.getHeaders.size = pagination.pageSize
+      this.pagination.current = pagination.current
+      this.pagination.pageSize = pagination.pageSize
       this.getListInfoFunc()
       console.log('params', pagination, filters, sorter)
     },
