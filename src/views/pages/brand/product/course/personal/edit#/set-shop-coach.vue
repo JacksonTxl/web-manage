@@ -44,7 +44,6 @@ import SelectShop from '@/views/fragments/shop/select-shop'
 import SelectCoach from '@/views/fragments/coach/select-coach'
 import { UserService } from '@/services/user.service'
 import { enumFilter } from '@/filters/other.filters'
-import { valuesIn } from 'lodash-es'
 const shopTableColumns = [{
   title: '省',
   dataIndex: 'province_name'
@@ -72,7 +71,8 @@ const formRules = {
       }, {
         min: 4,
         message: '支持输入4~30个字的课程名称'
-      }]
+      }],
+      initialValue: 'XXXX'
     }
   ],
   course_id: [
@@ -113,25 +113,20 @@ export default {
   filters: {
     enumFilter
   },
-  props: {
-    course_name: {
-      type: String,
-      default: ''
-    }
-  },
-  watch: {
-    course_name(val) {
-      this.form.setFieldsValue({
-        course_name: val
-      })
-    }
-  },
   data() {
     return {
       form: this.$form.createForm(this),
       formRules,
       isShow: false,
-      shopIds: []
+      shopIds: [1, 7]
+    }
+  },
+  props: {
+    info: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   subscriptions() {
@@ -139,6 +134,13 @@ export default {
     return {
       personalCourseEnums: user.personalCourseEnums$
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.form.setFieldsValue({
+        ...this.info
+      })
+    })
   },
   methods: {
     save(e) {

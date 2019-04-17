@@ -7,7 +7,7 @@
         </st-form-item>
         <st-form-item label="课程名称" required>
           <a-input placeholder="支持输入4~30个字的课程名称" maxlength="30"
-          v-decorator="formRules.course_name" @change="onCourseNameChange"/>
+          v-decorator="formRules.course_name"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -15,7 +15,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
           <input type="hidden" v-decorator="formRules.category_id">
-          <st-select-course-type @change="onCourseTypeChange"/>
+          <st-select-course-type :checkedId="info.category_id" @change="onCourseTypeChange"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -23,14 +23,14 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
           <input type="hidden" v-decorator="formRules.train_aim">
-          <st-select-training-aim @change="onTrainingAimChange"/>
+          <st-select-training-aim :checkedIds="info.train_aim"  @change="onTrainingAimChange"/>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程时长" required>
-          <a-input-number :min="0" v-decorator="formRules.duration">
+          <a-input-number v-decorator="formRules.duration">
             <div slot="addonAfter" class="st-form-item-unit">分钟</div>
           </a-input-number>
         </st-form-item>
@@ -39,7 +39,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="参考定价">
-          <a-input-number :min="0" v-decorator="formRules.price">
+          <a-input-number v-decorator="formRules.price">
             <div slot="addonAfter" class="st-form-item-unit">元/节</div>
           </a-input-number>
         </st-form-item>
@@ -48,7 +48,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课有效期">
-          <a-input-number :min="0" v-decorator="formRules.effective_unit">
+          <a-input-number v-decorator="formRules.effective_unit">
             <div slot="addonAfter" class="st-form-item-unit">天/节</div>
           </a-input-number>
         </st-form-item>
@@ -163,6 +163,14 @@ export default {
     StSelectCourseType,
     StSelectTrainingAim
   },
+  props: {
+    info: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  },
   data() {
     return {
       form: this.$form.createForm(this),
@@ -170,18 +178,26 @@ export default {
       fileList: []
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.form.setFieldsValue({
+        ...this.info
+      })
+    })
+  },
   methods: {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
-        data.course_id = 0
         console.log('step 1 data', data)
         this.addService.addPersonalBrand(data).subscribe(() => {
           this.messageService.success({
             content: '提交成功'
           })
-          this.$emit('goNext')
+          this.$emit('goNext', {
+            course_name: data.course_name
+          })
         })
       })
     },
@@ -201,9 +217,6 @@ export default {
       this.form.setFieldsValue({
         train_aim
       })
-    },
-    onCourseNameChange(e) {
-      this.$emit('onCourseNameChange', e.target.value)
     }
   }
 }
