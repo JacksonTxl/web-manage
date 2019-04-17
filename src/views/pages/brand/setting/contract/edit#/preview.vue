@@ -63,7 +63,7 @@
     <section :class="b('product')">
       <st-form-table>
         <thead>
-          <tr>
+          <tr v-if="info.contra">
             <th>商品名称</th>
             <th>价格</th>
             <th>优惠</th>
@@ -75,40 +75,38 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr v-if="info.contract_type === CONTRACT_TYPE.MEMBER_CARD">
             <td>会员年卡</td>
             <td>10000.00元</td>
             <td>400.00元</td>
             <td>9600.00元</td>
           </tr>
-          <tr>
+          <tr v-if="info.contract_type === CONTRACT_TYPE.PERSONAL">
             <td>减脂塑型</td>
             <td>10000.00元</td>
             <td>400.00元</td>
             <td>9600.00元</td>
           </tr>
-          <tr>
+          <tr v-if="info.contract_type === CONTRACT_TYPE.PACKAGE">
             <td>综合课程训练</td>
             <td>10000.00元</td>
             <td>400.00元</td>
             <td>9600.00元</td>
           </tr>
-          <tr>
+          <tr v-if="info.contract_type === CONTRACT_TYPE.DEPOSITE">
             <td>储值</td>
             <td>10000.00元</td>
             <td>400.00元</td>
             <td>9600.00元</td>
           </tr>
-          <tr>
+          <tr v-if="info.contract_type === CONTRACT_TYPE.CABINET">
             <td>租凭柜</td>
             <td>10000.00元</td>
             <td>400.00元</td>
             <td>9600.00元</td>
           </tr>
-          <tr>
+          <tr v-if="info.contract_type === CONTRACT_TYPE.MONEY">
             <td>定金</td>
-            <td>10000.00元</td>
-            <td>400.00元</td>
             <td>9600.00元</td>
           </tr>
         </tbody>
@@ -214,6 +212,28 @@ export default {
     return {
       info: this.editService.info$,
       htmlLawContent: this.editService.htmlLawContent$
+    }
+  },
+  computed: {
+    showAllTh() {
+      switch (this.info.contract_type) {
+        case CONTRACT_TYPE.MEMBER_CARD:
+        case CONTRACT_TYPE.PERSONAL:
+        case CONTRACT_TYPE.PACKAGE:
+        case CONTRACT_TYPE.CABINET:
+        case CONTRACT_TYPE.DEPOSITE:
+          return true
+        default:
+          return false
+      }
+    },
+    showSomeTh() {
+      switch (this.info.contract_type) {
+        case CONTRACT_TYPE.MONEY:
+          return true
+        default:
+          return false
+      }
     }
   },
   data() {

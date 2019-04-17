@@ -3,7 +3,7 @@
     <aside :class="bSider()">
       <st-panel title="合同设置">
         <div slot="actions">
-          <st-button type="primary">保存</st-button>
+          <st-button type="primary" @click='onUpdateContract'>保存</st-button>
         </div>
         <st-t4>全局设置</st-t4>
         <st-form class="mg-t24" labelWidth="56px" labelGutter="16px">
@@ -95,6 +95,7 @@
 <script>
 import ContractPreview from './edit#/preview.vue'
 import { EditService } from './edit.service.ts'
+import { MessageService } from '@/services/message.service'
 const pageName = 'page-setting-contract-edit'
 export default {
   name: pageName,
@@ -108,7 +109,8 @@ export default {
   },
   serviceInject() {
     return {
-      editService: EditService
+      editService: EditService,
+      message: MessageService
     }
   },
   subscriptions() {
@@ -121,6 +123,13 @@ export default {
   methods: {
     onLawContentDone() {
       this.editService.getConstitutionInfo().subscribe()
+    },
+    onUpdateContract() {
+      this.editService.updateContract(this.info).subscribe(() => {
+        this.message.success({
+          content: '保存合同模版成功！'
+        })
+      })
     }
   },
   data() {

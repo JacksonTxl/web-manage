@@ -1,10 +1,11 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
-import { ContractApi } from '@/api/v1/setting/contract'
+import { ContractApi, ContractInput } from '@/api/v1/setting/contract'
 import { forkJoin } from 'rxjs'
 import { tap, pluck, map } from 'rxjs/operators'
 import { State, log, Computed, Effect } from 'rx-state/src'
 import { Store } from '@/services/store'
 import { RouteService } from '@/services/route.service'
+import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
 
 interface EditState {
   info: any
@@ -18,7 +19,8 @@ export class EditService extends Store<EditState> implements RouteGuard {
   htmlLawContent$: Computed<string>
   constructor(
     private contractApi: ContractApi,
-    private routeService: RouteService
+    private routeService: RouteService,
+    private layoutBrandService: LayoutBrandService
   ) {
     super()
     this.state$ = new State({ info: {} })
@@ -69,10 +71,20 @@ export class EditService extends Store<EditState> implements RouteGuard {
     )
   }
   @Effect()
+  updateContract(data: ContractInput) {
+    return this.contractApi.update(data)
+  }
+  @Effect()
   init() {
     return forkJoin(this.getInfo(), this.getConstitutionInfo())
   }
+  initPageBreadcrumbs() {
+    this.layoutBrandService.SET_BREADCRUMBS([
+      { label: '合同预览', route: { name: 'brand-setting-contract-edit' } }
+    ])
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.initPageBreadcrumbs()
     this.init().subscribe(() => {
       next()
     })
