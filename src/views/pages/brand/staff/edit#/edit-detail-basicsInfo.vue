@@ -18,7 +18,7 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact>
-            <a-select :defaultValue="1" v-decorator="basicsInfoRule.country_code_id" style="width: 15%;">
+            <a-select v-decorator="basicsInfoRule.country_code_id" style="width: 15%;">
               <a-select-option :value="1">+86</a-select-option>
               <a-select-option :value="2">Option2</a-select-option>
             </a-select>
@@ -52,7 +52,7 @@
         </st-form-item>
         <st-form-item label="证件" required>
           <a-input-group compact>
-            <a-select :defaultValue="1" v-decorator="basicsInfoRule.id_type" style="width: 20%;">
+            <a-select v-decorator="basicsInfoRule.id_type" style="width: 20%;">
               <a-select-option :value="1">身份证</a-select-option>
               <a-select-option :value="2">护照</a-select-option>
             </a-select>

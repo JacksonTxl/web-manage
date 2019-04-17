@@ -182,6 +182,72 @@ export interface EditStaffBasicInfoQuery{
    */
   shop_id : number[];
 }
+export interface EditStaffDetailInfoQuery{
+  /**
+   * 毕业院校
+   */
+  graduated_school? : string;
+  /**
+   * 毕业时间
+   */
+  graduation_time? : string;
+  /**
+   * 学历
+   */
+  education? : number;
+  /**
+   * 专业
+   */
+  profession? : number;
+  /**
+   * 生日
+   */
+  birthday? : string;
+  /**
+   * 籍贯
+   */
+  native_place? : string;
+  /**
+   * 婚姻状态
+   */
+  marry_status? : number;
+  /**
+   * 有无子女
+   */
+  children_status? : number;
+  /**
+   * 详细地址
+   */
+  address? : string;
+  /**
+   * 描述
+   */
+  description? : string;
+  /**
+   * 省id
+   */
+  province_id? : number;
+  /**
+   * 省名字
+   */
+  province_name? : string;
+  /**
+   * 市Id
+   */
+  city_id? : number;
+  /**
+   * 市名
+   */
+  city_name? : string;
+  /**
+   * 区id
+   */
+  district_id? : number;
+   /**
+   * 区名
+   */
+  district_name? : string;
+}
 const URL = '/v1/staff/brand'
 const mock = {}
 export class StaffApi extends Api {
@@ -208,6 +274,10 @@ export class StaffApi extends Api {
   // 修改员工基础信息
   editStaffBasicInfo(staff_id: number, params: EditStaffBasicInfoQuery) {
     return this.http.put(`/v1/staff/brand/basic/${staff_id}`, { params })
+  }
+  // 修改员工详细信息
+  editStaffDetailInfo(id: number, params: EditStaffDetailInfoQuery) {
+    return this.http.put(`/v1/staff/brand/detail/${id}`, { params })
   }
   // 编辑员工信息
   updateStaffBrandInfo(params: SaveData) {
