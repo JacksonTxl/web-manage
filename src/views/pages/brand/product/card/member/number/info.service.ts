@@ -1,14 +1,13 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
-import { Effect, State, Computed } from 'rx-state'
-import { CardsApi, CardsInput } from '@/api/v1/cards'
+import { State, Computed } from 'rx-state'
+import { CardsApi } from '@/api/v1/cards'
 import { Store } from '@/services/store'
 import { pluck, tap } from 'rxjs/operators'
-
 interface CardState {
   cardInfo: any
 }
 @Injectable()
-export class EditService extends Store<CardState> implements RouteGuard {
+export class InfoService extends Store<CardState> implements RouteGuard {
   state$: State<CardState>
   cardInfo$: Computed<any>
   constructor(private cardsApi: CardsApi) {
@@ -18,12 +17,9 @@ export class EditService extends Store<CardState> implements RouteGuard {
     })
     this.cardInfo$ = new Computed(this.state$.pipe(pluck('cardInfo')))
   }
-  @Effect()
-  editCard(data: CardsInput) {
-    return this.cardsApi.editCards(data)
-  }
   getCardInfo(id:string) {
     return this.cardsApi.getCardInfo(id).pipe(tap((res:any) => {
+      console.log(res)
       this.SET_CARD_INFO(res.info)
     }))
   }
