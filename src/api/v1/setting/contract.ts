@@ -5,7 +5,7 @@ export class ContractApi extends Api {
    * 合同模版列表
    */
   getList() {
-    return this.http.get('/v1/setting/contract', { mock: {} })
+    return this.http.get('/v1/setting/contract', {})
   }
   /**
    * 合同模版信息
