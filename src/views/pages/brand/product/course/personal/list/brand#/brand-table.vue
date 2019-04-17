@@ -6,8 +6,7 @@
       :columns="columns"
       :dataSource="personalCourseList"
       :scroll="{ x: 1300}"
-      @change="onChange"
-    >
+      @change="onChange">
       <div slot="shop_setting" slot-scope="shop_setting">
         <a
           v-if="shop_setting.code !== 1"
@@ -43,7 +42,6 @@
         </st-more-dropdown>
       </div>
     </st-table>
-
 </div>
 
 </template>

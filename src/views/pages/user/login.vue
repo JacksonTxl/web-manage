@@ -23,41 +23,29 @@
         </div>
       </section>
       <section class="rt">
-        <!-- 书的最后一页 -->
-        <!-- <div class="book-page-box book-page-4 preserve-3d">
-          <div class="book-page page-front">
-            <div v-show="loginType === 'user' || loginType === 'mobile'" class="login-user-and-mobile">
-              <ul class="page-login-tabs mg-l24 mg-b24">
-                <li v-for="item in loginTypes" :key="item.key" class="page-login-tab-item pd-y8" :class="{'page-login-tab-item--active': item.key === loginType}"><span @click.stop="onClickChangeType(item.key)">{{item.name}}</span></li>
-              </ul>
-              <login-user @login="onLogin" v-show="loginType==='user'"></login-user>
-              <login-mobile v-show="loginType==='mobile'"></login-mobile>
-            </div>
-          </div>
-        </div> -->
-        <!-- 书的第三页 -->
-        <!-- <div class="book-page-box book-page-3 preserve-3d flip-animation-3">
-          <div class="book-page page-front">
 
-          </div>
-        </div> -->
-        <!-- 书的第二页 -->
-        <!-- <div class="book-page-box book-page-2 preserve-3d flip-animation-2">
-
-        </div> -->
-
-        <div v-show="loginType === 'user' || loginType === 'mobile'" class="login-user-and-mobile">
+        <div v-if="loginType === 'user' || loginType === 'mobile'" class="login-user-and-mobile">
           <ul class="page-login-tabs mg-l24 mg-b24">
             <li v-for="item in loginTypes" :key="item.key" class="page-login-tab-item pd-y8" :class="{'page-login-tab-item--active': item.key === loginType}"><span @click.stop="onClickChangeType(item.key)">{{item.name}}</span></li>
           </ul>
-          <login-user @login="onLogin" v-show="loginType==='user'"></login-user>
+          <login-user @findps="onFindPassword" @third="onThird" @login="onLogin" v-show="loginType==='user'"></login-user>
           <login-mobile v-show="loginType==='mobile'"></login-mobile>
         </div>
-        <div v-show="loginType === 'wechat'" class="page-login-wechat">
-              <ul class="page-login-tabs mg-b24">
-                <li  class="page-login-tab-item page-login-tab-item-wechat pd-y8"><span>微信登录</span></li>
-              </ul>
-            </div>
+
+        <div v-if="loginType === 'mobilefind' || loginType === 'emailfind'" class="login-user-and-mobile">
+          <ul class="page-login-tabs mg-l24 mg-b24">
+            <li v-for="item in findPasswordTypes" :key="item.key" class="page-login-tab-item pd-y8" :class="{'page-login-tab-item--active': item.key === loginType}"><span @click.stop="onClickChangeType(item.key)">{{item.name}}</span></li>
+          </ul>
+          <login-mobile v-show="loginType==='mobilefind'"></login-mobile>
+          <div v-show="loginType==='emailfind'">邮件找回表单</div>
+          <a-button @click="onClickBack">返回</a-button>
+        </div>
+        <div v-else-if="loginType==='weibo' || loginType==='qq' || loginType==='alipay' || loginType==='wechat'" class="page-login-wechat">
+          <ul class="page-login-tabs mg-b24">
+            <li  class="page-login-tab-item page-login-tab-item-wechat pd-y8"><span>{{typeNames[loginType]}}</span></li>
+          </ul>
+          <login-third @back="loginType = 'user'"></login-third>
+        </div>
       </section>
     </div>
   </div>
@@ -68,6 +56,7 @@ import { UserService } from '../../../services/user.service'
 import { LoginService } from './login.service'
 import mobile from './login#/mobile'
 import user from './login#/user'
+import third from './login#/third'
 export default {
   name: 'Login',
   serviceInject() {
@@ -78,12 +67,15 @@ export default {
   data() {
     return {
       loginType: 'user',
+      typeNames: { weibo: '微博登录', qq: 'qq登录', alipay: '支付宝登录', wechat: '微信登录' },
+      findPasswordTypes: [{ key: 'mobilefind', name: '手机找回' }, { key: 'emailfind', name: '邮件找回' }],
       loginTypes: [{ key: 'user', name: '用户密码登录' }, { key: 'mobile', name: '手机动态密码登录' }]
     }
   },
   components: {
     LoginMobile: mobile,
-    LoginUser: user
+    LoginUser: user,
+    LoginThird: third
   },
   subscriptions() {
     return {
@@ -93,6 +85,17 @@ export default {
   methods: {
     onClickChangeType(key) {
       this.loginType = key
+    },
+    onFindPassword() {
+      this.loginType = 'mobilefind'
+    },
+    onThird(type) {
+      console.log(type)
+      this.loginType = type
+    },
+    onClickBack() {
+      console.log('sss')
+      this.loginType = 'user'
     },
     onLogin(values) {
       this.loginService.loginAccount(values).subscribe(res => {
