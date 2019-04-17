@@ -202,12 +202,12 @@ export class StaffApi extends Api {
     return this.http.get(`${URL}${id}`)
   }
   // 获取编辑员工回显
-  getStaffBrandReview(id: string) {
-    return this.http.get(`/v1/staff/brand/review/${id}`, { mock: {} })
+  getStaffBrandReview(id: number) {
+    return this.http.get(`/v1/staff/brand/review/${id}`)
   }
   // 修改员工基础信息
   editStaffBasicInfo(staff_id: number, params: EditStaffBasicInfoQuery) {
-    return this.http.put(`/v1/staff/brand/review/${staff_id}`, { params })
+    return this.http.put(`/v1/staff/brand/basic/${staff_id}`, { params })
   }
   // 编辑员工信息
   updateStaffBrandInfo(params: SaveData) {
