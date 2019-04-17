@@ -112,7 +112,11 @@
               <modal-link tag="a" :to=" { name: 'card-halt-the-sales', props:{a: 3} }">停售</modal-link>
             </a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'card-confirm-del' }">删除</modal-link>
+              <modal-link
+                tag="a"
+                :to=" { name: 'card-confirm-del' }"
+                v-if="record.shelf_upper || record.shelf_lower"
+              >删除</modal-link>
             </a-menu-item>
           </st-more-dropdown>
         </template>
