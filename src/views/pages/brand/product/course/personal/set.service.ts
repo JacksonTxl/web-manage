@@ -1,6 +1,6 @@
 import { Injectable } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
-import { pluck } from 'rxjs/operators'
+import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { PersonalApi, GetPersonalBrandInfoInput, SetPersonalBrandInput } from '@/api/v1/course/personal'
 
@@ -19,7 +19,11 @@ export class SetService extends Store<SetState> {
     this.formData$ = new Computed(this.state$.pipe(pluck('formData')))
   }
   getPersonalBrandInfo(query: GetPersonalBrandInfoInput) {
-    return this.personalApi.getPersonalBrandInfo(query)
+    return this.personalApi.getPersonalBrandInfo(query).pipe(
+      tap(res => {
+        this.SET_PERSONAL_BRND(res)
+      })
+    )
   }
   @Effect()
   addPersonalBrand(params: SetPersonalBrandInput) {

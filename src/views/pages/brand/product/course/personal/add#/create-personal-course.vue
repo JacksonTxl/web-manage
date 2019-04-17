@@ -10,47 +10,43 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
-          <a-select placeholder="请选择课程类型" v-decorator="formRules.category_id">
-            <a-select-option value="2">课程类型A</a-select-option>
-            <a-select-option value="1">课程类型B</a-select-option>
-          </a-select>
+          <input type="hidden" v-decorator="formRules.category_id">
+          <st-select-course-type @change="onCourseTypeChange"/>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
-          <a-select placeholder="请选择训练目的" v-decorator="formRules.train_aim">
-            <a-select-option value="2">训练目的A</a-select-option>
-            <a-select-option value="1">训练目的B</a-select-option>
-          </a-select>
+          <input type="hidden" v-decorator="formRules.train_aim">
+          <st-select-training-aim @change="onTrainingAimChange"/>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程时长" required>
-          <a-input v-decorator="formRules.duration">
+          <a-input-number v-decorator="formRules.duration">
             <div slot="addonAfter" class="st-form-item-unit">分钟</div>
-          </a-input>
+          </a-input-number>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="参考定价">
-          <a-input v-decorator="formRules.price">
+          <a-input-number v-decorator="formRules.price">
             <div slot="addonAfter" class="st-form-item-unit">元/节</div>
-          </a-input>
+          </a-input-number>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课有效期">
-          <a-input v-decorator="formRules.effective_unit">
+          <a-input-number v-decorator="formRules.effective_unit">
             <div slot="addonAfter" class="st-form-item-unit">天/节</div>
-          </a-input>
+          </a-input-number>
         </st-form-item>
       </a-col>
     </a-row>
@@ -96,6 +92,8 @@
 <script>
 import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
+import StSelectCourseType from '@/views/fragments/course/select-course-type'
+import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 const formRules = {
   course_name: [
     'course_name', {
@@ -156,6 +154,10 @@ export default {
   },
   subscriptions() {
   },
+  components: {
+    StSelectCourseType,
+    StSelectTrainingAim
+  },
   data() {
     return {
       form: this.$form.createForm(this),
@@ -168,6 +170,7 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
+        data.course_id = 0
         console.log('step 1 data', data)
         this.addService.addPersonalBrand(data).subscribe(() => {
           this.messageService.success({
@@ -180,6 +183,18 @@ export default {
     onImgChange(fileList) {
       this.form.setFieldsValue({
         image: fileList[0]
+      })
+    },
+    onCourseTypeChange(category_id) {
+      console.log('change', category_id)
+      this.form.setFieldsValue({
+        category_id
+      })
+    },
+    onTrainingAimChange(train_aim) {
+      console.log('change', train_aim)
+      this.form.setFieldsValue({
+        train_aim
       })
     }
   }
