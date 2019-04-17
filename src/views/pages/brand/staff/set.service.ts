@@ -6,7 +6,8 @@ import {
   StaffApi,
   SaveData,
   EditStaffBasicInfoQuery,
-  EditStaffDetailInfoQuery
+  EditStaffDetailInfoQuery,
+  EditStaffCoachInfoQuery
 } from '@/api/v1/staff'
 
 interface SetState {
@@ -52,6 +53,10 @@ export class SetService extends Store<SetState> {
     // 提交员工详细信息修改
     editStaffDetailInfo(id: number, params: EditStaffDetailInfoQuery) {
       return this.staffApi.editStaffDetailInfo(id, params)
+    }
+    // 提交教练信息修改
+    editStaffCoachInfo(id: number, params: EditStaffCoachInfoQuery) {
+      return this.staffApi.editStaffCoachInfo(id, params)
     }
     protected SET_CODE_LIST(codeList: any) {
       this.state$.commit(state => {

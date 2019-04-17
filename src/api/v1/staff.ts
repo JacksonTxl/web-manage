@@ -248,6 +248,32 @@ export interface EditStaffDetailInfoQuery{
    */
   district_name? : string;
 }
+export interface EditStaffCoachInfoQuery{
+  /**
+   * 从业时间
+   */
+  employment_time? : string;
+  /**
+   * 擅长的项目
+   */
+  specialty_id? : number[];
+  /**
+   * 专业认证
+   */
+  certification_name? : string[];
+  /**
+   * 个人简介
+   */
+  introduction? : string;
+  /**
+   * 是否展示在会员端
+   */
+  is_show: number;
+  /**
+   * 员工风采
+   */
+  image_personal: any[];
+}
 const URL = '/v1/staff/brand'
 const mock = {}
 export class StaffApi extends Api {
@@ -279,6 +305,11 @@ export class StaffApi extends Api {
   editStaffDetailInfo(id: number, params: EditStaffDetailInfoQuery) {
     return this.http.put(`/v1/staff/brand/detail/${id}`, { params })
   }
+  // 修改教练信息
+  editStaffCoachInfo(id: number, params: EditStaffCoachInfoQuery) {
+    return this.http.put(`/v1/staff/brand/coach/${id}`, { params })
+  }
+
   // 编辑员工信息
   updateStaffBrandInfo(params: SaveData) {
     return this.http.put(URL, { params })
