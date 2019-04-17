@@ -1,6 +1,6 @@
 import { SetService } from './set.service'
 import { ServiceRoute } from 'vue-service-app'
-import { EditStaffBasicInfoQuery, EditStaffDetailInfoQuery } from '../../../../api/v1/staff'
+import { EditStaffBasicInfoQuery, EditStaffDetailInfoQuery, EditStaffCoachInfoQuery } from '../../../../api/v1/staff'
 
 export class EditService extends SetService {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
@@ -19,7 +19,10 @@ export class EditService extends SetService {
   }
   // 提交详细信息
   editDetailInfo(id: number, params : EditStaffDetailInfoQuery) {
-    return this.editStaffDetailInfo(36, params
-    )
+    return this.editStaffDetailInfo(36, params)
+  }
+  // 提交教练信息
+  editCoachInfo(id: number, params: EditStaffCoachInfoQuery) {
+    return this.editStaffCoachInfo(36, params)
   }
 }
