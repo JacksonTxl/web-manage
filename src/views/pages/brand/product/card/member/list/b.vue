@@ -74,7 +74,7 @@
         <a-divider type="vertical"></a-divider>
         <a href="javascript:;">下架</a>
 
-        <template>
+        <!-- <template>
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
             <a-menu-item>编辑</a-menu-item>
@@ -85,7 +85,7 @@
               <modal-link tag="a" :to=" { name: 'card-confirm-del' }">删除</modal-link>
             </a-menu-item>
           </st-more-dropdown>
-        </template>
+        </template>-->
       </div>
       <!-- 操作end -->
     </st-table>
@@ -228,7 +228,7 @@ export default {
           title: '操作',
           dataIndex: 'action',
           fixed: 'right',
-          width: 140,
+          width: 110,
           scopedSlots: { customRender: 'action' }
         }
       ]
