@@ -7,7 +7,7 @@
     @change="handleChange"
   >
     <div slot="actions">
-      <a-input-search placeholder="会员卡名称" v-model="cardName" @search="onSearch"></a-input-search>
+      <a-input-search placeholder="会员卡名称" v-model="cardName" @search="onSearch" maxlength="50"></a-input-search>
     </div>
     <router-view></router-view>
   </st-panel>

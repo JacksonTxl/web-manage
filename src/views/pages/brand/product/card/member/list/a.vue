@@ -110,10 +110,10 @@
           <st-more-dropdown>
             <a-menu-item>编辑</a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'card-halt-the-sales', props:{a: 3} }">停售</modal-link>
+              <modal-link tag="a" :to=" { name: 'card-halt-the-sales', props:{a: 3}}">停售</modal-link>
             </a-menu-item>
             <a-menu-item v-if=" !(record.shelf_upper || record.shelf_lower)">
-              <modal-link tag="a" :to=" { name: 'card-confirm-del' }">删除</modal-link>
+              <modal-link tag="a" :to=" { name: 'card-confirm-del', props:{title: record.card_name}}">删除</modal-link>
             </a-menu-item>
           </st-more-dropdown>
         </template>
