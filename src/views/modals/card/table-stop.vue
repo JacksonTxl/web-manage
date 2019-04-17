@@ -1,26 +1,37 @@
 <template>
-  <a-modal class="modal-card-table-stop" title="会员卡停售" @ok="save" v-model="show" :footer="null">
+  <a-modal class="modal-card-table-stop" title="支持入场门店" @ok="save" v-model="show" :footer="null">
     <!-- <st-table
       bordered
-      :dataSource="table.use_shop_list"
+      :dataSource="table.list"
       :columns="table.columns1"
       rowKey="shop_id"
       :pagination="pagination"
       @showSizeChange="onShowSizeChange"
     ></st-table>-->
     <st-table
-      rowKey="shop_id"
-      :dataSource="table.use_shop_list"
+      rowKey="id"
+      :dataSource="table.list"
       :columns="table.columns1"
       @change="onChange"
       :pagination="pagination"
       @showSizeChange="onShowSizeChange"
     ></st-table>
-    <!-- {{a}} -->
+    {{a}}
   </a-modal>
 </template>
 <script>
+import { TableStopService } from './table-stop.service'
 export default {
+  serviceInject() {
+    return {
+      aService: TableStopService
+    }
+  },
+  // subscriptions() {
+  //   return {
+  //     cardsListInfo: this.aService.cardsListInfo$
+  //   }
+  // },
   name: 'tableStop',
   props: {
     a: {
@@ -56,7 +67,7 @@ export default {
             dataIndex: 'shop_name'
           }
         ],
-        use_shop_list: [
+        list: [
           {
             shop_id: 1,
             shop_name: 22222,
@@ -74,6 +85,13 @@ export default {
         ]
       }
     }
+  },
+  created() {
+    let self = this
+    this.aService.getListInfo({ card_id: self.a }).subscribe(state => {
+      self.table.list = state.list
+      console.log(123123, state)
+    })
   },
   methods: {
     save(e) {

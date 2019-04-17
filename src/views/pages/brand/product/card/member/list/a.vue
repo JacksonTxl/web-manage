@@ -57,17 +57,17 @@
       >{{text.length > 1? `${text[0]}-${text[1]}`:`${text[0]}`}}</span>
 
       <!-- 支持入场门店start -->
-      <a slot="admission_range.name" slot-scope="text" href="javascript:;">
+      <a slot="admission_range.name" slot-scope="text,record" href="javascript:;">
         <span v-if="text !=='多门店 (共0家)'">
-          <modal-link tag="a" :to="{ name: 'card-table-stop' , props:{a: 3}}">{{text}}</modal-link>
+          <modal-link tag="a" :to="{ name: 'card-table-stop' , props:{a: record.id}}">{{text}}</modal-link>
         </span>
         <span v-else class="use_num">{{text}}</span>
       </a>
 
       <!-- 支持入场门店end -->
-      <a slot="support_sales.name" slot-scope="text" href="javascript:;">
+      <a slot="support_sales.name" slot-scope="text,record" href="javascript:;">
         <span v-if="text !=='0个门店'">
-          <modal-link tag="a" :to="{ name: 'card-table-stop' , props:{a: 3}}">{{text}}</modal-link>
+          <modal-link tag="a" :to="{ name: 'card-table-stop' , props:{a: record.id}}">{{text}}</modal-link>
         </span>
         <span v-else class="use_num">{{text}}</span>
       </a>
@@ -82,13 +82,14 @@
         <span v-if="text.name ==='停售'" class="pages-brand-product-card-list-a-stopSell"></span>
         {{text.name}}
         <a-popover
-          title="操作人:AAA   操作时间:2018/10/10 23:59:59"
+          :title="popoverTitle"
           trigger="click"
+          @click="popoverStopReason(text,record)"
           placement="bottomRight"
           :overlayStyle="{width:'336px'}"
         >
           <template slot="content">
-            <p>停售原因是不想停售原因是不想停售原因是不想停售原因是不想停售原因是不想</p>
+            <p>{{popoverContent}}</p>
           </template>
           <a-icon type="exclamation-circle" v-if="text.name ==='停售'"/>
         </a-popover>
@@ -136,6 +137,8 @@ export default {
   },
   data() {
     return {
+      popoverTitle: '',
+      popoverContent: '',
       card_type: '所以类型',
       sell_status: '所以渠道',
       publish_channel: '所有售卖状态',
@@ -223,6 +226,11 @@ export default {
           scopedSlots: { customRender: 'admission_range.name' }
         },
         {
+          title: '支持售卖门店',
+          dataIndex: 'support_sales.name',
+          scopedSlots: { customRender: 'support_sales.name' }
+        },
+        {
           title: '支持售卖时间',
           dataIndex: 'sell_time',
           scopedSlots: { customRender: 'sell_time' }
@@ -277,11 +285,7 @@ export default {
             return 0
           }
         },
-        {
-          title: '支持售卖门店',
-          dataIndex: 'support_sales.name',
-          scopedSlots: { customRender: 'support_sales.name' }
-        },
+
         {
           title: '发布渠道',
           dataIndex: 'publish_channel.name'
@@ -310,6 +314,20 @@ export default {
     this.getInfoData(this.cardsListInfo)
   },
   methods: {
+    // 停售原因
+    popoverStopReason(text, record) {
+      let self = this
+      self.popoverTitle = ''
+      self.popoverContent = ''
+      this.aService
+        .getCardsSaleStopReason({ card_id: record.id })
+        .subscribe(state => {
+          self.popoverTitle = `操作人:${state.info.staff_name}   操作时间:${
+            state.info.operate_time
+          }`
+          self.popoverContent = state.info.reason
+        })
+    },
     getInfoData(data) {
       this.pagination = {
         pageSizeOptions: ['10', '20', '30', '40', '50'],
@@ -325,6 +343,8 @@ export default {
     onChange(pagination, filters, sorter) {
       this.getHeaders.current_page = pagination.current
       this.getHeaders.size = pagination.pageSize
+      this.pagination.current = pagination.current
+      this.pagination.pageSize = pagination.pageSize
       this.getListInfoFunc()
       console.log('params', pagination, filters, sorter)
     },
