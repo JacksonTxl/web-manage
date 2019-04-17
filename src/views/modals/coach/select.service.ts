@@ -1,16 +1,16 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck } from 'rxjs/operators'
+import { Injectable } from 'vue-service-app'
+import { State, Computed } from 'rx-state'
+import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { CoachApi } from '@/api/coach'
 
-interface CoachSelectState {
-  list: any[]
+interface CoachState {
+  list: Array<Object>
 }
 @Injectable()
-export class SelectService extends Store<CoachSelectState> {
-  state$: State<CoachSelectState>
-  list$: Computed<any>
+export class SelectService extends Store<CoachState> {
+  state$: State<CoachState>
+  list$: Computed<Object>
   constructor(private coachApi: CoachApi) {
     super()
     this.state$ = new State({
@@ -18,7 +18,13 @@ export class SelectService extends Store<CoachSelectState> {
     })
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
   }
-  protected getCoachList(query = {}) {
-    return this.coachApi.getCoachList(query)
+  getCoachList() {
+    return this.coachApi.getCoachList({}).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.list = res.list
+        })
+      })
+    )
   }
 }

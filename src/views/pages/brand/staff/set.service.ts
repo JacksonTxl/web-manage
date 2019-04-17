@@ -2,7 +2,13 @@ import { Injectable } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { StaffApi, SaveData, EditStaffBasicInfoQuery } from '@/api/v1/staff'
+import {
+  StaffApi,
+  SaveData,
+  EditStaffBasicInfoQuery,
+  EditStaffDetailInfoQuery,
+  EditStaffCoachInfoQuery
+} from '@/api/v1/staff'
 
 interface SetState {
     formData: Object,
@@ -23,7 +29,7 @@ export class SetService extends Store<SetState> {
       this.countryList$ = new Computed(this.state$.pipe(pluck('countryList')))
     }
     // 员工编辑回显
-    getStaffBrandReview(id: string) {
+    getStaffBrandReview(id: number) {
       return this.staffApi.getStaffBrandReview(id)
     }
     @Effect()
@@ -43,6 +49,14 @@ export class SetService extends Store<SetState> {
     // 提交员工基础信息修改
     editStaffBasicInfo(id: number, params : EditStaffBasicInfoQuery) {
       return this.staffApi.editStaffBasicInfo(id, params)
+    }
+    // 提交员工详细信息修改
+    editStaffDetailInfo(id: number, params: EditStaffDetailInfoQuery) {
+      return this.staffApi.editStaffDetailInfo(id, params)
+    }
+    // 提交教练信息修改
+    editStaffCoachInfo(id: number, params: EditStaffCoachInfoQuery) {
+      return this.staffApi.editStaffCoachInfo(id, params)
     }
     protected SET_CODE_LIST(codeList: any) {
       this.state$.commit(state => {

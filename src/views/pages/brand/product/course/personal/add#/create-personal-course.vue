@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" @submit="save" class="page-create-container">
+  <st-form :form="form" class="page-create-container">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程名称" required>
@@ -10,47 +10,43 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
-          <a-select placeholder="请选择课程类型" v-decorator="formRules.category_id">
-            <a-select-option value="2">课程类型A</a-select-option>
-            <a-select-option value="1">课程类型B</a-select-option>
-          </a-select>
+          <input type="hidden" v-decorator="formRules.category_id">
+          <st-select-course-type @change="onCourseTypeChange"/>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
-          <a-select placeholder="请选择训练目的" v-decorator="formRules.train_aim">
-            <a-select-option value="2">训练目的A</a-select-option>
-            <a-select-option value="1">训练目的B</a-select-option>
-          </a-select>
+          <input type="hidden" v-decorator="formRules.train_aim">
+          <st-select-training-aim @change="onTrainingAimChange"/>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程时长" required>
-          <a-input v-decorator="formRules.duration">
+          <a-input-number v-decorator="formRules.duration">
             <div slot="addonAfter" class="st-form-item-unit">分钟</div>
-          </a-input>
+          </a-input-number>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="参考定价">
-          <a-input v-decorator="formRules.price">
+          <a-input-number v-decorator="formRules.price">
             <div slot="addonAfter" class="st-form-item-unit">元/节</div>
-          </a-input>
+          </a-input-number>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课有效期">
-          <a-input v-decorator="formRules.unit_valid_days">
+          <a-input-number v-decorator="formRules.effective_unit">
             <div slot="addonAfter" class="st-form-item-unit">天/节</div>
-          </a-input>
+          </a-input-number>
         </st-form-item>
       </a-col>
     </a-row>
@@ -59,7 +55,7 @@
         <st-form-item label="图片" >
           <div class="page-upload-container">
             <st-image-upload :list="fileList" @change="onImgChange"></st-image-upload>
-            <input type="hidden" v-decorator="formRules.image_id">
+            <input type="hidden" v-decorator="formRules.image">
             <div class="page-course-photo-des mg-l16">
               <div class="page-course-item">
                 <div class="page-course-item-tip">1.</div>
@@ -77,7 +73,8 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程介绍">
-          <a-textarea type="textarea" :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧"
+          <a-textarea type="textarea" v-decorator="formRules.description"
+           :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧"
            maxlength="500"/>
         </st-form-item>
       </a-col>
@@ -85,7 +82,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" html-type="submit">保存，继续设置上课门店</st-button>
+          <st-button type="primary" @click="save">保存，继续设置上课门店</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -94,6 +91,9 @@
 
 <script>
 import { AddService } from '../add.service'
+import { MessageService } from '@/services/message.service'
+import StSelectCourseType from '@/views/fragments/course/select-course-type'
+import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 const formRules = {
   course_name: [
     'course_name', {
@@ -135,22 +135,28 @@ const formRules = {
       rules: []
     }
   ],
-  unit_valid_days: [
-    'unit_valid_days', {
+  effective_unit: [
+    'effective_unit', {
       rules: [],
       initialValue: 7
     }
   ],
-  image_id: ['image_id']
+  image: ['image'],
+  description: ['description']
 }
 export default {
   name: 'create-personal-course',
   serviceInject() {
     return {
-      addService: AddService
+      addService: AddService,
+      messageService: MessageService
     }
   },
   subscriptions() {
+  },
+  components: {
+    StSelectCourseType,
+    StSelectTrainingAim
   },
   data() {
     return {
@@ -164,15 +170,31 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
+        data.course_id = 0
         console.log('step 1 data', data)
         this.addService.addPersonalBrand(data).subscribe(() => {
+          this.messageService.success({
+            content: '提交成功'
+          })
           this.$emit('goNext')
         })
       })
     },
     onImgChange(fileList) {
       this.form.setFieldsValue({
-        image_id: fileList[0]
+        image: fileList[0]
+      })
+    },
+    onCourseTypeChange(category_id) {
+      console.log('change', category_id)
+      this.form.setFieldsValue({
+        category_id
+      })
+    },
+    onTrainingAimChange(train_aim) {
+      console.log('change', train_aim)
+      this.form.setFieldsValue({
+        train_aim
       })
     }
   }

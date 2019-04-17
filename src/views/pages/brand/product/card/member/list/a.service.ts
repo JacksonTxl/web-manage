@@ -24,13 +24,21 @@ export class AService extends Store<CardsListInfoState> {
     })
   }
   getListInfo(paramsObj: any) {
-    return this.cardsApi.getCardsBgList()
+    return this.cardsApi.getCardsList(paramsObj)
+  }
+  getCardsSaleStopReason(id: string) {
+    return this.cardsApi.getCardsSaleStopReason(id)
+  }
+  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.getListInfo({ card_name: to.query.cardName }).subscribe(res => {
+      this.SET_CARDS_LIST_INFO(res)
+      next()
+    })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    console.log('cards')
-    this.getListInfo({ name: 1, age: 10 }).subscribe(res => {
+    this.getListInfo({}).subscribe(res => {
       this.SET_CARDS_LIST_INFO(res)
+      next()
     })
-    next()
   }
 }

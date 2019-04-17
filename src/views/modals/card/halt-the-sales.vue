@@ -17,7 +17,7 @@
       </div>
       <div class="modal-card-halt-the-sales-stop-reason">
         <div class="ant-form-item-required stop-info">停售原因</div>
-        <a-textarea placeholder="请输入停售原因" :rows="4"/>
+        <a-textarea placeholder="请输入停售原因" maxlength="300" :rows="4"/>
       </div>
     </section>
     <section>
@@ -28,11 +28,17 @@
         </a-popconfirm>
       </footer>
     </section>
+    {{a}}
   </a-modal>
 </template>
 <script>
 export default {
   name: 'haltTheSales',
+  props: {
+    a: {
+      type: Number
+    }
+  },
   data() {
     return {
       show: false,

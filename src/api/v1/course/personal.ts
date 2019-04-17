@@ -30,19 +30,19 @@ export class PersonalApi extends Api {
    * 编辑品牌私教课
    */
   updatePersonalBrand(params: SetPersonalBrandInput) {
-    return this.http.put('/v1/course/personal/brand', { params })
+    return this.http.put('/v1/course/personal/brand', { params, mock: {} })
   }
   /**
    * 设置上课门店
    */
   setShop(params: SetShopInput) {
-    return this.http.post('/v1/course/personal/set_shop', { params })
+    return this.http.post('/v1/course/personal/brand/set_shop', { params, mock: {} })
   }
   /**
    * 设置售卖价格
    */
   setPrice(params: SetPriceInput) {
-    return this.http.post('/v1/course/personal/set_price', { params })
+    return this.http.post('/v1/course/personal/brand/set_price', { params, mock: {} })
   }
 }
 export interface GetPersonalBrandCourseListInput {

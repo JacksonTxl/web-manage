@@ -1,6 +1,6 @@
 import { SetService } from './set.service'
 import { ServiceRoute } from 'vue-service-app'
-import { EditStaffBasicInfoQuery } from '../../../../api/v1/staff'
+import { EditStaffBasicInfoQuery, EditStaffDetailInfoQuery, EditStaffCoachInfoQuery } from '../../../../api/v1/staff'
 
 export class EditService extends SetService {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
@@ -8,13 +8,21 @@ export class EditService extends SetService {
     this.getCountryCodes().subscribe(res => {
       console.log('mobel', res)
     })
-    this.getStaffBrandReview('1').subscribe(res => {
+    this.getStaffBrandReview(36).subscribe(res => {
       this.SET_STAFF_BRND(res)
       next()
     })
   }
   // 提交基础信息
   editBasicInfo(id: number, params : EditStaffBasicInfoQuery) {
-    this.editStaffBasicInfo(1, params)
+    return this.editStaffBasicInfo(36, params)
+  }
+  // 提交详细信息
+  editDetailInfo(id: number, params : EditStaffDetailInfoQuery) {
+    return this.editStaffDetailInfo(36, params)
+  }
+  // 提交教练信息
+  editCoachInfo(id: number, params: EditStaffCoachInfoQuery) {
+    return this.editStaffCoachInfo(36, params)
   }
 }

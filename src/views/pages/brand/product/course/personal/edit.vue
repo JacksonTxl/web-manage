@@ -51,7 +51,7 @@
         <st-form-item label="图片" >
           <div class="page-upload-container">
             <st-image-upload :list="fileList" @change="onImgChange"></st-image-upload>
-            <input type="hidden" v-decorator="formRules.course_image">
+            <input type="hidden" v-decorator="formRules.image">
             <div class="page-course-photo-des mg-l16">
               <div class="page-course-item">
                 <div class="page-course-item-tip">1.</div>
@@ -190,7 +190,8 @@ const formRules = {
       }]
     }
   ],
-  course_image: ['course_image']
+  image: ['image'],
+  description: ['description']
 }
 export default {
   name: 'create-personal-course',
@@ -232,10 +233,11 @@ export default {
     },
     onImgChange(fileList) {
       this.form.setFieldsValue({
-        course_image: fileList[0]
+        image: fileList[0]
       })
     },
     setFieldsValue() {
+      console.log('set fields', this.formData)
       this.form.setFieldsValue({
         ...this.formData
       })

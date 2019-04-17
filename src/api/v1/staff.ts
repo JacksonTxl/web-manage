@@ -116,7 +116,7 @@ export interface EditStaffBasicInfoQuery{
   /**
    * 员工id
    */
-  // staff_id: number;
+  staff_id: number;
   /**
    * 相册id
    */
@@ -182,6 +182,98 @@ export interface EditStaffBasicInfoQuery{
    */
   shop_id : number[];
 }
+export interface EditStaffDetailInfoQuery{
+  /**
+   * 毕业院校
+   */
+  graduated_school? : string;
+  /**
+   * 毕业时间
+   */
+  graduation_time? : string;
+  /**
+   * 学历
+   */
+  education? : number;
+  /**
+   * 专业
+   */
+  profession? : number;
+  /**
+   * 生日
+   */
+  birthday? : string;
+  /**
+   * 籍贯
+   */
+  native_place? : string;
+  /**
+   * 婚姻状态
+   */
+  marry_status? : number;
+  /**
+   * 有无子女
+   */
+  children_status? : number;
+  /**
+   * 详细地址
+   */
+  address? : string;
+  /**
+   * 描述
+   */
+  description? : string;
+  /**
+   * 省id
+   */
+  province_id? : number;
+  /**
+   * 省名字
+   */
+  province_name? : string;
+  /**
+   * 市Id
+   */
+  city_id? : number;
+  /**
+   * 市名
+   */
+  city_name? : string;
+  /**
+   * 区id
+   */
+  district_id? : number;
+   /**
+   * 区名
+   */
+  district_name? : string;
+}
+export interface EditStaffCoachInfoQuery{
+  /**
+   * 从业时间
+   */
+  employment_time? : string;
+  /**
+   * 擅长的项目
+   */
+  specialty_id? : number[];
+  /**
+   * 专业认证
+   */
+  certification_name? : string[];
+  /**
+   * 个人简介
+   */
+  introduction? : string;
+  /**
+   * 是否展示在会员端
+   */
+  is_show: number;
+  /**
+   * 员工风采
+   */
+  image_personal: any[];
+}
 const URL = '/v1/staff/brand'
 const mock = {}
 export class StaffApi extends Api {
@@ -202,13 +294,22 @@ export class StaffApi extends Api {
     return this.http.get(`${URL}${id}`)
   }
   // 获取编辑员工回显
-  getStaffBrandReview(id: string) {
-    return this.http.get(`/v1/staff/brand/review/${id}`, { mock: {} })
+  getStaffBrandReview(id: number) {
+    return this.http.get(`/v1/staff/brand/review/${id}`)
   }
   // 修改员工基础信息
   editStaffBasicInfo(staff_id: number, params: EditStaffBasicInfoQuery) {
-    return this.http.put(`/v1/staff/brand/review/${staff_id}`, { params })
+    return this.http.put(`/v1/staff/brand/basic/${staff_id}`, { params })
   }
+  // 修改员工详细信息
+  editStaffDetailInfo(id: number, params: EditStaffDetailInfoQuery) {
+    return this.http.put(`/v1/staff/brand/detail/${id}`, { params })
+  }
+  // 修改教练信息
+  editStaffCoachInfo(id: number, params: EditStaffCoachInfoQuery) {
+    return this.http.put(`/v1/staff/brand/coach/${id}`, { params })
+  }
+
   // 编辑员工信息
   updateStaffBrandInfo(params: SaveData) {
     return this.http.put(URL, { params })
