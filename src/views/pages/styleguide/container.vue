@@ -5,17 +5,11 @@
     <h3>st-panel</h3>
 
     <section class="mg-t16 sg-app-content">
-      <st-panel title="只有一个标题"
-        >这是内容 请将内容放到st-panel__body中</st-panel
-      >
-      <st-panel
-        class="mg-t16"
-        title="带有操作区域带有操作区域带有操作区域带有操作区域"
-      >
+      <st-panel title="只有一个标题">这是内容 请将内容放到st-panel__body中</st-panel>
+      <st-panel class="mg-t16" title="带有操作区域带有操作区域带有操作区域带有操作区域">
         <div slot="actions">
           <st-button type="primary">操作</st-button>
-        </div>
-        这是内容
+        </div>这是内容
       </st-panel>
     </section>
 
@@ -54,20 +48,28 @@
         </div>
         <div slot="actions">
           <st-button type="primary">操作</st-button>
-        </div>
-        这是一个内容
+        </div>这是一个内容
       </st-panel>
     </section>
 
-     <h3 class="mg-t32">st-container</h3>
-     <st-container>
-       <div>st-container（默认type为1）</div>
-       <div>padding: 12px; border-radius: 4px; border: 1px solid #d9d9d9;</div>
-     </st-container>
-     <st-container type="2" class="mg-t16">
-       <div>st-container type="2"</div>
-       <div>padding: 24px; </div>
-     </st-container>
+    <h3 class="mg-t16">带有加载状态的panel</h3>
+    <section class="sg-app-content">
+      <st-panel title="hello" loading>
+        <div slot="actions">
+          <st-button type="primary">操作</st-button>
+        </div>这是一个内容
+      </st-panel>
+    </section>
+
+    <h3 class="mg-t32">st-container</h3>
+    <st-container>
+      <div>st-container（默认type为1）</div>
+      <div>padding: 12px; border-radius: 4px; border: 1px solid #d9d9d9;</div>
+    </st-container>
+    <st-container type="2" class="mg-t16">
+      <div>st-container type="2"</div>
+      <div>padding: 24px;</div>
+    </st-container>
   </div>
 </template>
 
