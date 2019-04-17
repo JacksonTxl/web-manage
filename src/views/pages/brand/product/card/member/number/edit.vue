@@ -1,12 +1,12 @@
 <template>
-  <st-panel app class="page-brand-basic-card page-brand-edit-period-card" initial>
+  <st-panel app class="page-brand-basic-card page-brand-edit-number-card" initial>
     <div class="page-brand-basic-card-body">
       <div class="page-preview">实时预览</div>
       <div class="page-content">
         <st-form :form="form" labelWidth="116px">
           <a-row :gutter="8" class="page-content-card-line__row">
             <a-col :lg="16">
-              <st-form-item class="page-content-card-line" label="期限卡名称" required>
+              <st-form-item class="page-content-card-line" label="次卡名称" required>
                 <a-input
                   v-decorator="[
                   'cardData.card_name',
@@ -14,7 +14,7 @@
                 ]"
                   maxlength="30"
                   style="width: 360px"
-                  placeholder="请输入期限卡名称"
+                  placeholder="请输入次卡名称"
                 ></a-input>
               </st-form-item>
             </a-col>
@@ -59,14 +59,9 @@
                     :pagination="false"
                   >
                     <template slot="time" slot-scope="text, record, index">
-                      <a-input :value="text.num" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
-                        <a-select slot="addonAfter" :value="text.unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
-                          <a-select-option
-                          v-for="(item,index) in nuit_list"
-                          :value="item.value"
-                          :key="index" >{{item.label}}</a-select-option>
-                        </a-select>
-                      </a-input>
+                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'time'})">
+                          <span slot="suffix">次</span>
+                        </a-input>
                     </template>
                     <template slot="rally_price" slot-scope="text, record, index">
                         <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price'})">
@@ -96,15 +91,10 @@
                     :dataSource="shop_price_list"
                     :pagination="false"
                   >
-                    <template slot="time" slot-scope="text, record, index">
-                      <a-input :value="text.num" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
-                        <a-select slot="addonAfter" :value="text.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
-                          <a-select-option
-                          v-for="(item,index) in nuit_list"
-                          :value="item.value"
-                          :key="index" >{{item.label}}</a-select-option>
-                        </a-select>
-                      </a-input>
+                     <template slot="time" slot-scope="text, record, index">
+                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'time'})">
+                          <span slot="suffix">次</span>
+                        </a-input>
                     </template>
                     <template slot="rally_price" slot-scope="text, record, index">
                         <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'min_price'})" style="width:80px">
@@ -276,7 +266,7 @@ import moment from 'moment'
 import { RuleConfig } from '@/constants/rule'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { cloneDeep } from 'lodash-es'
-import { EditService } from './edit.service'
+import { EditService } from './add.service'
 export default {
   serviceInject() {
     return {
@@ -304,7 +294,7 @@ export default {
         // 场馆id
         shop_id: 2,
         // 会员卡类型1-次卡 2-期限卡
-        card_type: 2,
+        card_type: 1,
         // 会员卡名称
         card_name: '',
         // 支持入场范围 1-单店 2-多店 3-全店
@@ -368,20 +358,6 @@ export default {
       price_setting_list: [
         { value: 1, label: '品牌统一定价' },
         { value: 2, label: '场馆自主定价' }
-      ],
-      nuit_list: [
-        {
-          value: 2,
-          label: '天'
-        },
-        {
-          value: 3,
-          label: '月'
-        },
-        {
-          value: 4,
-          label: '年'
-        }
       ],
       // 品牌统一定价表格表头
       brand_price_columns: [
@@ -508,10 +484,10 @@ export default {
     card_name_validator(rule, value, callback) {
       if (value === undefined || value === '') {
         // eslint-disable-next-line
-        callback('请填写期限卡名称')
+        callback('请填写次卡名称')
       } else if (value && !this.rules.card_name.test(value)) {
         // eslint-disable-next-line
-        callback('输入的期限卡名称格式错误，请重新输入')
+        callback('输入的次卡名称格式错误，请重新输入')
       } else {
         // eslint-disable-next-line
         callback()
@@ -614,7 +590,7 @@ export default {
       this.rally_price_list.push({
         key,
         time: {
-          unit: 2,
+          unit: 1,
           num: null
         },
         rally_price: null,
@@ -640,7 +616,7 @@ export default {
       this.shop_price_list.push({
         key,
         time: {
-          unit: 2,
+          unit: 1,
           num: null
         },
         rally_price: {

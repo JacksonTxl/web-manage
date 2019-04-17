@@ -4,9 +4,9 @@
       <div class="page-preview">实时预览</div>
       <div class="page-content">
         <st-form :form="form" labelWidth="116px">
-          <a-row :gutter="8" class="page-content-card-name__row">
+          <a-row :gutter="8" class="page-content-card-line__row">
             <a-col :lg="16">
-              <st-form-item class="page-content-card-name" label="期限卡名称" required>
+              <st-form-item class="page-content-card-line" label="期限卡名称" required>
                 <a-input
                   v-decorator="[
                   'cardData.card_name',
@@ -24,7 +24,7 @@
               <st-form-item class="page-content-card-admission-range mt-4" label="支持入场门店" required>
                 <a-radio-group
                   @change="admission_range"
-                  v-decorator="['cardData.admission_range',{validateTrigger: 'blur',initialValue:1,rules:[{validator:admission_shop_list_validator}]}]">
+                  v-decorator="['cardData.admission_range',{initialValue:1,rules:[{validator:admission_shop_list_validator}]}]">
                   <a-radio
                     v-for="item in admission_range_list"
                     :key="item.value"
@@ -593,7 +593,7 @@ export default {
     // 增加入场门店
     admission_range_change(data) {
       // this.cardData.admission_shop_list = cloneDeep(data)
-      this.cardData.admission_shop_list = [1]
+      this.cardData.admission_shop_list = [1, 2]
     },
     // 入场门店支持方式change
     admission_range(data) {
