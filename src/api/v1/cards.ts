@@ -22,7 +22,7 @@ export class CardsApi extends Api {
   /**
    *
    */
-  getCardInfo(id:string) {
+  getCardInfo(id: string) {
     return this.http.get(`/v1/cards/${id}`)
   }
   /**
@@ -37,8 +37,27 @@ export class CardsApi extends Api {
   getCardsListA(query: any) {
     return this.http.get('/v1/cards/shelf', { query })
   }
+  /**
+   *会员卡停售原因
+   */
+  getCardsSaleStopReason(query: any) {
+    return this.http.get(`/v1/cards/sale/stop/reason`, { query })
+  }
+  /**
+   *会员卡售卖门店列表
+   */
+  getCardsSaleStop(query: any) {
+    console.log('会员卡售卖门店列表', query)
+    return this.http.get(`/v1/cards/sale/shop`, { query })
+  }
+  /**
+   *支持入场门店
+   */
+  getCardsUseStop(query: any) {
+    console.log('支持入场门店', query)
+    return this.http.get(`/v1/cards/use/shop`, { query })
+  }
 }
 export interface CardsInput {
-  [propName: string]: any;
-
+  [propName: string]: any
 }

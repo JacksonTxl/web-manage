@@ -125,10 +125,7 @@ export default {
   methods: {
     // 添加证书
     onAddProfess() {
-      if (
-        this.form.getFieldValue('certification_name') &&
-        !this.phoneAddDisabled
-      ) {
+      if (this.form.getFieldValue('certification_name')) {
         // input框里有值才添加
         this.form.validateFields(['certification_name'], { force: true }).then(res => {
           let arr = [...this.coachInfoData.certification_name]

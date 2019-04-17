@@ -36,9 +36,9 @@
                 <!-- 售卖梯度 -->
                 <template slot="saleGrad" slot-scope="text, record, index">
                   <div v-if="record.editable">
-                    <a-input class="page-set-sell-price__input" v-model="tableData[index].min_sale" />
+                    <a-input-number :min="0" class="page-set-sell-price__input" v-model="tableData[index].min_sale" />
                     <span class="page-set-sell-price__label">节～</span>
-                    <a-input class="page-set-sell-price__input" v-model="tableData[index].max_sale" />
+                    <a-input-number :min="0"  class="page-set-sell-price__input" v-model="tableData[index].max_sale" />
                     <span class="page-set-sell-price__label">节</span>
                   </div>
                   <template v-else>{{tableData[index].min_sale}}~{{tableData[index].max_sale}}</template>
@@ -47,7 +47,7 @@
                 <template slot="price" slot-scope="text, record, index">
                   <div key="price">
                     <div v-if="record.editable">
-                      <a-input class="page-set-sell-price__input" v-model="tableData[index].price"/>
+                      <a-input-number :min="0"  class="page-set-sell-price__input" v-model="tableData[index].price"/>
                       <span class="page-set-sell-price__label">元/节</span>
                     </div>
                     <template v-else>{{tableData[index].price}}</template>
@@ -62,7 +62,7 @@
                         :key="index" :value="index">{{item}}
                       </a-select-option>
                     </a-select>
-                    <a-input class="page-set-sell-price__input mg-l8" v-model="tableData[index].transfer_num" />
+                    <a-input-number :min="0"  class="page-set-sell-price__input mg-l8" v-model="tableData[index].transfer_num" />
                     <span class="page-set-sell-price__label">
                       {{tableData[index].transfer_unit === '1' ? '%' : '元'}}
                     </span>
@@ -207,10 +207,12 @@ export default {
       console.log('price_gradient', price_gradient)
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
+        data.course_id = 6
         console.log('step 3 data', data)
-        if (!this.inputCheck()) {
+        if (!this.inputCheck(price_gradient)) {
           return
         }
+        data.price_gradient = price_gradient
         this.addService.setPrice(data).subscribe(() => {
           this.messageService.success({
             content: '提交成功'
@@ -290,9 +292,8 @@ export default {
     onTransferUnitChange(val, index) {
       this.tableData[index].transfer_unit = val
     },
-    inputCheck() {
+    inputCheck(price_gradient) {
       let ret = true
-      const price_gradient = this.getPriceGradient()
       for (let i = 0; i < price_gradient.length; i++) {
         let ret_in = false
         for (let j in price_gradient[i]) {

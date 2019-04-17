@@ -4,6 +4,11 @@
 <script>
 export default {
   name: 'confirmDel',
+  props: {
+    title: {
+      type: String
+    }
+  },
   data() {
     return {
       show: false,
@@ -19,7 +24,7 @@ export default {
     showDeleteConfirm() {
       this.$confirm({
         title: '确认要删除?',
-        content: '确认删除此xxxxxxxxxx会员卡吗',
+        content: `确认删除此${this.title}会员卡吗`,
         onOk() {
           console.log('OK')
         },

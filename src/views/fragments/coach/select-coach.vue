@@ -33,6 +33,14 @@ const tableColumns = [{
 }]
 export default {
   name: 'SelectCoach',
+  serviceInject() {
+    return {
+    }
+  },
+  subscription() {
+    return {
+    }
+  },
   props: {
     coachIds: {
       type: Array,

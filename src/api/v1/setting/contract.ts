@@ -5,7 +5,7 @@ export class ContractApi extends Api {
    * 合同模版列表
    */
   getList() {
-    return this.http.get('/v1/setting/contract', { mock: {} })
+    return this.http.get('/v1/setting/contract', {})
   }
   /**
    * 合同模版信息
@@ -26,13 +26,13 @@ export class ContractApi extends Api {
    * 获取合同章程
    */
   getConstitutionInfo(id: number) {
-    return this.http.get(`/v1/setting/contract/constitution-details/${id}`)
+    return this.http.get(`/v1/setting/contract/constitution/${id}`)
   }
   /**
    * 更新合同章程
    */
   updateConstitution(params: ContractConstitutionInput) {
-    return this.http.put('/v1/setting/contract/constitution-edit', { params })
+    return this.http.put('/v1/setting/contract/constitution', { params })
   }
   /**
    * 获取合同编码信息

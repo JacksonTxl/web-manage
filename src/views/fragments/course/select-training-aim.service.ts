@@ -2,29 +2,32 @@ import { Injectable } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { CoachApi } from '@/api/coach'
+import { TrainingApi, AddTrainingAimInput } from '@/api/v1/setting/training'
 
-interface CoachState {
+interface TrainingAimState {
   list: Array<Object>
 }
 @Injectable()
-export class SelectService extends Store<CoachState> {
-  state$: State<CoachState>
+export class SelectTrainingAimService extends Store<TrainingAimState> {
+  state$: State<TrainingAimState>
   list$: Computed<Object>
-  constructor(private coachApi: CoachApi) {
+  constructor(private trainingApi: TrainingApi) {
     super()
     this.state$ = new State({
       list: []
     })
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
   }
-  getCoachList() {
-    return this.coachApi.getCoachList({}).pipe(
+  protected getTrainingAims() {
+    return this.trainingApi.getTrainingAims().pipe(
       tap(res => {
         this.state$.commit(state => {
           state.list = res.list
         })
       })
     )
+  }
+  protected addTrainingAims(params: AddTrainingAimInput) {
+    this.trainingApi.addTrainingAim(params)
   }
 }
