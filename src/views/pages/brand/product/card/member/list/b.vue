@@ -10,9 +10,9 @@
         v-model="card_type"
         @change="handleChange_card_type"
       >
-        <a-select-option value="所有类型">所有类型</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
-        <a-select-option value="tom">Tom</a-select-option>
+        <a-select-option value>所有类型</a-select-option>
+        <a-select-option value="期限卡">期限卡</a-select-option>
+        <a-select-option value="次卡">次卡</a-select-option>
       </a-select>
       <a-select
         class="pages-brand-product-card-list-b-box-select"
@@ -20,8 +20,8 @@
         @change="handleChange_publish_channel"
       >
         <a-select-option value>所有渠道</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
-        <a-select-option value="tom">Tom</a-select-option>
+        <a-select-option value="品牌">品牌</a-select-option>
+        <a-select-option value="门店">门店</a-select-option>
       </a-select>
       <a-select
         class="pages-brand-product-card-list-b-box-select"
