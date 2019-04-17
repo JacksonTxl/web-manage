@@ -107,9 +107,23 @@
   </st-panel>
 </template>
 <script>
+import { InfoService } from './info.service'
 export default {
   bem: {
     item: 'brand-period-card'
+  },
+  serviceInject() {
+    return {
+      infoService: InfoService
+    }
+  },
+  subscriptions() {
+    return {
+      cardInfo: this.infoService.cardInfo$
+    }
+  },
+  mounted() {
+    console.log(this.cardInfo)
   },
   data() {
     return {

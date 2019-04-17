@@ -18,9 +18,9 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact>
-            <a-select defaultValue="Option1" style="width: 15%;">
-              <a-select-option value="Option1">+86</a-select-option>
-              <a-select-option value="Option2">Option2</a-select-option>
+            <a-select :defaultValue="1" v-decorator="basicsInfoRule.country_code_id" style="width: 15%;">
+              <a-select-option :value="1">+86</a-select-option>
+              <a-select-option :value="2">Option2</a-select-option>
             </a-select>
             <a-input style="width: 85%" v-decorator="basicsInfoRule.mobile" placeholder="请输入手机号"/>
           </a-input-group>
@@ -41,6 +41,7 @@
             :list="faceList"
             :sizeLimit="2"
             placeholder="上传人脸"
+            v-decorator="basicsInfoRule.image_face"
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="昵称" required>
@@ -51,9 +52,9 @@
         </st-form-item>
         <st-form-item label="证件" required>
           <a-input-group compact>
-            <a-select defaultValue="Option1" style="width: 20%;">
-              <a-select-option value="Option1">身份证</a-select-option>
-              <a-select-option value="Option2">护照</a-select-option>
+            <a-select :defaultValue="1" v-decorator="basicsInfoRule.id_type" style="width: 20%;">
+              <a-select-option :value="1">身份证</a-select-option>
+              <a-select-option :value="2">护照</a-select-option>
             </a-select>
             <a-input
               style="width: 80%"
@@ -92,7 +93,7 @@
             @change="handleChange"
             @popupScroll="popupScroll"
             placeholder="请选择"
-            v-decorator="basicsInfoRule.nature_work"
+            v-decorator="basicsInfoRule.role_id"
           >
             <a-select-option :value="1">总监</a-select-option>
             <a-select-option :value="2">团课经理</a-select-option>
@@ -107,7 +108,7 @@
           <a-input placeholder="请输入员工工号" v-decorator="basicsInfoRule.staff_num"/>
         </st-form-item>
         <st-form-item label="入职时间">
-          <a-date-picker style="width:100%" v-decorator="basicsInfoRule.entry_date" @blur="openChange" />
+          <a-date-picker style="width:100%" v-decorator="basicsInfoRule.entry_date" />
         </st-form-item>
         <st-form-item label="所属门店">
           <!-- shop_id -->
@@ -204,7 +205,8 @@ export default {
           'mail',
           { rules: [{ required: true, message: '请输入邮箱' }] }
         ],
-        image_avatar: ['image_avatar']
+        image_avatar: ['image_avatar'],
+        image_face: ['image_face']
       }
     }
   },
@@ -212,12 +214,7 @@ export default {
     formData: Object
   },
   methods: {
-    openChange(status) {
-      console.log('弹出日历和关闭日历', status)
-    },
-    handleChange(value) {
-      console.log(`Selected: ${value}`)
-    },
+    handleChange() {},
     popupScroll() {
       console.log('popupScroll')
     },
@@ -227,14 +224,13 @@ export default {
     imageUploadChange(data) {
       this.form.setFieldsValue({
         image_avatar: {
-          image_key: data.image_key ? data.image_id : ''
+          image_url: data.image_url ? data.image_url : ''
         }
       })
     },
     goNext() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          // console.log('Received values of form: ', values)
           this.$emit('goNext', {
             formData: this.form.getFieldsValue()
           })
@@ -246,6 +242,11 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           values.entry_date = values.entry_date.format('YYYY-MM-DD')
+          values.staff_id = this.formData.staff_id
+          values.album_id = this.formData.album_id
+          values.image_avatar = this.formData.image_avatar
+          values.image_face = this.formData.image_face
+          // console.log(values)
           this.$emit('bacicInfoSave', {
             data: values
           })
@@ -266,11 +267,13 @@ export default {
         role_id: obj.role_id,
         shop_id: obj.shop_id,
         entry_date: moment(obj.entry_date),
-        mail: obj.mail
+        mail: obj.mail,
+        country_code_id: obj.country_code_id,
+        id_type: obj.id_type
       })
       this.fileList = [
         {
-          url: obj.image_avatar
+          url: obj.image_avatar.image_url
         }
       ]
     }

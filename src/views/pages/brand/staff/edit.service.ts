@@ -8,13 +8,13 @@ export class EditService extends SetService {
     this.getCountryCodes().subscribe(res => {
       console.log('mobel', res)
     })
-    this.getStaffBrandReview('1').subscribe(res => {
+    this.getStaffBrandReview(36).subscribe(res => {
       this.SET_STAFF_BRND(res)
       next()
     })
   }
   // 提交基础信息
   editBasicInfo(id: number, params : EditStaffBasicInfoQuery) {
-    return this.editStaffBasicInfo(1, params)
+    return this.editStaffBasicInfo(36, params)
   }
 }

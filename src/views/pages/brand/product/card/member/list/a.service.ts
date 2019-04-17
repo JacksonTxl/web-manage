@@ -35,7 +35,7 @@ export class AService extends Store<CardsListInfoState> {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getListInfo({}).subscribe(res => {
       this.SET_CARDS_LIST_INFO(res)
+      next()
     })
-    next()
   }
 }

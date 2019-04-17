@@ -33,7 +33,6 @@ export class BService extends Store<CardsListInfoState> {
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    console.log('cards')
     this.getListInfo({}).subscribe(res => {
       this.SET_CARDS_LIST_INFO(res)
       next()

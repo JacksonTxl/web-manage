@@ -1,0 +1,168 @@
+.page-brand-basic-card {
+  .mt-4{
+    margin-top: 4px;
+  }
+  .page-a-form {
+    display: inline-block;
+    .ant-form-item-control-wrapper {
+      padding-left: 0;
+    }
+  }
+  .st-panel__body{
+    height: 100%;
+  }
+  &-body {
+    display: flex;
+    height: 100%;
+    align-items: stretch;
+    .page-preview {
+      flex: none;
+      flex-basis: 354px;
+      border-right: 1px solid #e9e9e9;
+    }
+    .page-content {
+      flex: auto;
+      padding: 0 24px;
+      .bg(#fff);
+      &-card-name {
+        padding: 32px 0 8px;
+        &__row {
+          border-bottom: 1px solid #e9e9e9;
+          margin-bottom: 32px;
+        }
+      }
+      &-card-admission-range {
+        .page-admission-range-shop {
+          min-width: 580px;
+          position: relative;
+          padding: 0 12px 8px;
+          margin-top: 8px;
+          border: 1px solid #d9d9d9;
+          border-radius: 4px;
+          &__describe{
+            font-size: 14px;
+            .lh(20px);
+            .c(rgba(0,0,0,.25));
+            .mg-tb(12px);
+          }
+          &::after {
+            content: '';
+            position: absolute;
+            .s(10px,10px);
+            transform: rotate(45deg);
+            top: -6px;
+            left: 130px;
+            border-left: 1px solid #d9d9d9;
+            border-top: 1px solid #d9d9d9;
+            .bg(#fff);
+          }
+        }
+      }
+      &-card-price-setting {
+        .page-price-setting-set {
+          min-width: 580px;
+          position: relative;
+          padding: 12px 12px 0;
+          margin-top: 8px;
+          border: 1px solid #d9d9d9;
+          border-radius: 4px;
+          &__add {
+            .mg-tb(8px);
+          }
+          &::after {
+            content: '';
+            position: absolute;
+            transform: rotate(45deg);
+            top: -6px;
+            border-left: 1px solid #d9d9d9;
+            border-top: 1px solid #d9d9d9;
+            .bg(#fff);
+          }
+          &.brand-set {
+            &::after {
+              .s(10px,10px);
+              left: 30px;
+            }
+          }
+          &.shop-set {
+            &::after {
+              .s(10px,10px);
+              left: 180px;
+            }
+          }
+        }
+      }
+      &-card-support-sales {
+        .page-support-sales-shop {
+          min-width: 580px;
+          position: relative;
+          padding: 0 12px 8px;
+          margin-top: 8px;
+          border: 1px solid #d9d9d9;
+          border-radius: 4px;
+          &__describe{
+            font-size: 14px;
+            .lh(20px);
+            .c(rgba(0,0,0,.25));
+            .mg-tb(12px);
+          }
+          &__add{
+            .mg-tb(8px);
+          }
+          &::after {
+            content: '';
+            position: absolute;
+            .s(10px,10px);
+            transform: rotate(45deg);
+            top: -6px;
+            left: 130px;
+            border-left: 1px solid #d9d9d9;
+            border-top: 1px solid #d9d9d9;
+            .bg(#fff);
+          }
+          &.page-lot-shop::after {
+            left: 270px;
+          }
+        }
+      }
+      &-card-time {
+        &__icon{
+          .cur-p;
+        }
+      }
+      &-card-transfer {
+        &-body {
+          display: flex;
+          align-items: center;
+          height: 34px;
+          .page-checkbox {
+            flex: none;
+          }
+          .page-input-group {
+            flex: none;
+          }
+        }
+      }
+      &-card-bg{
+        .page-card-bg {
+          display: flex;
+          align-items: center;
+          &-default {
+            .s(192px,108px);
+            .bg(#ccc);
+            border-radius: 4px;
+            margin-right: 10px;
+          }
+          &-upload {
+            .s(192px,108px);
+            .bg(#d9d9d9);
+            border-radius: 4px;
+          }
+        }
+      }
+      &-card-textarea {
+        margin-top: 2px;
+      }
+    }
+  }
+}

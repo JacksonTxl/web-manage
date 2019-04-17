@@ -23,7 +23,7 @@ export class SetService extends Store<SetState> {
       this.countryList$ = new Computed(this.state$.pipe(pluck('countryList')))
     }
     // 员工编辑回显
-    getStaffBrandReview(id: string) {
+    getStaffBrandReview(id: number) {
       return this.staffApi.getStaffBrandReview(id)
     }
     @Effect()
