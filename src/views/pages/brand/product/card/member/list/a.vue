@@ -102,7 +102,7 @@
           <modal-link tag="a" :to="{ name: 'card-batch-shelves' }">上架</modal-link>
         </a>
         <a href="javascript:;" v-if="record.sell_status.id === 2">
-          <modal-link tag="a" :to=" { name: 'card-recovery-sell' }">恢复售卖</modal-link>
+          <modal-link tag="a" :to=" { name: 'card-recovery-sell', props:{a:record} }">恢复售卖</modal-link>
         </a>
         <template v-if="record.sell_status.name === '可售卖'">
           <a-divider type="vertical"></a-divider>
@@ -325,9 +325,11 @@ export default {
       this.aService
         .getCardsSaleStopReason({ card_id: record.id })
         .subscribe(state => {
-          self.popoverTitle = `操作人:${state.info.staff_name}   操作时间:${
-            state.info.operate_time
-          }`
+          if (state.info.staff_name) {
+            self.popoverTitle = `操作人:${state.info.staff_name}   操作时间:${
+              state.info.operate_time
+            }`
+          }
           self.popoverContent = state.info.reason
         })
     },
