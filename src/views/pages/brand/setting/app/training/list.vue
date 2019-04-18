@@ -1,7 +1,7 @@
 <template>
   <st-panel app>
     <p class="ta-r">
-      <modal-link tag="st-button" :to="{ name: 'brand-setting-app-course-type-add', on: {
+      <modal-link tag="st-button" :to="{ name: 'brand-setting-app-training-add', on: {
         change: onListChange } }">添加</modal-link>
     </p>
     <st-table
@@ -12,10 +12,10 @@
       :pagination="{ current: +query.page || 1, total: page.total_counts }"
     >
       <div slot="action" slot-scope="record">
-        <modal-link tag="a" :to="{ name: 'brand-setting-app-course-type-edit',
+        <modal-link tag="a" :to="{ name: 'brand-setting-app-training-edit',
           props: { id: record.id, setting_name: record.setting_name }, on: { change: onListChange } }">编辑
         </modal-link>
-        <a-popconfirm title="删除后不可进行恢复，确定删除此课程类型？" @confirm="onDelete(record.id)">
+        <a-popconfirm :title="`删除后不可进行恢复，${record.used_number ? '已标记的课程将删除此训练目的，' : ''}确定删除此训练目的？`" @confirm="onDelete(record.id)">
           <a class="mg-l8">删除</a>
         </a-popconfirm>
       </div>
@@ -27,7 +27,7 @@ import { ListService } from './list.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
 const columns = [{
-  title: '课程类型',
+  title: '训练目的',
   dataIndex: 'setting_name'
 }, {
   title: '标记课程数',
@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     onDelete(id) {
-      this.listService.deleteCourseType({ id }).subscribe(() => {
+      this.listService.deleteTrainingAim({ id }).subscribe(() => {
         this.messageService.success({
           content: '删除成功'
         })
@@ -89,7 +89,7 @@ export default {
           }
         })
       } else {
-        this.listService.refreshCourseTypeList({
+        this.listService.refreshTrainingAimList({
           page: 1,
           size: 20
         })

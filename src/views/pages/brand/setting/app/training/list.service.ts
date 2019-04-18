@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { CourseApi, DeleteCourseTypeInput, GetCourseTypeListInput } from '@/api/v1/setting/course'
+import { TrainingApi, GetTrainingAimListInput, DeleteTrainingAimInput } from '@/api/v1/setting/training'
 
 interface ListState {
   list: any[],
@@ -13,7 +13,7 @@ export class ListService extends Store<ListState> {
   state$: State<ListState>
   list$: Computed<any[]>
   page$: Computed<object>
-  constructor(protected courseApi: CourseApi) {
+  constructor(protected trainingApi: TrainingApi) {
     super()
     this.state$ = new State({
       list: [],
@@ -22,18 +22,18 @@ export class ListService extends Store<ListState> {
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
     this.page$ = new Computed(this.state$.pipe(pluck('page')))
   }
-  getCourseTypeList(query: GetCourseTypeListInput) {
-    return this.courseApi.getCourseTypeList(query).pipe(
+  getTrainingAimList(query: GetTrainingAimListInput) {
+    return this.trainingApi.getTrainingAimList(query).pipe(
       tap(res => {
         this.SET_STATE(res)
       })
     )
   }
-  refreshCourseTypeList(query: GetCourseTypeListInput) {
-    this.getCourseTypeList(query).subscribe()
+  refreshTrainingAimList(query: GetTrainingAimListInput) {
+    this.getTrainingAimList(query).subscribe()
   }
-  deleteCourseType(params: DeleteCourseTypeInput) {
-    return this.courseApi.deleteCourseType(params)
+  deleteTrainingAim(params: DeleteTrainingAimInput) {
+    return this.trainingApi.deleteTrainingAim(params)
   }
   protected SET_STATE(data: ListState) {
     this.state$.commit(state => {
@@ -42,7 +42,7 @@ export class ListService extends Store<ListState> {
     })
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCourseTypeList({ page: to.meta.query.page, size: 20 }).subscribe(() => {
+    this.getTrainingAimList({ page: to.meta.query.page, size: 20 }).subscribe(() => {
       next()
     }, () => {
       next(false)

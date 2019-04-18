@@ -1,29 +1,29 @@
 import { Api } from '../../api'
-
+const url = '/v1/setting/course'
 export class CourseApi extends Api {
   /**
    * 课程类型列表
    */
   getCourseTypeList(query: GetCourseTypeListInput) {
-    return this.http.get('/v1/setting/course', { query })
+    return this.http.get(url, { query })
   }
   /**
    * 添加课程类型
    */
   addCourseType(params: AddCourseTypeInput) {
-    return this.http.post('/v1/setting/course', { params })
+    return this.http.post(url, { params })
   }
   /**
    * 编辑课程类型
    */
   updateCourseType(params: UpdateCourseTypeInput) {
-    return this.http.put('/v1/setting/course', { params })
+    return this.http.put(url, { params })
   }
   /**
    * 删除课程类型
    */
   deleteCourseType(params: DeleteCourseTypeInput) {
-    return this.http.delete(`/v1/setting/course/${params.id}`)
+    return this.http.delete(`${url}/${params.id}`)
   }
 }
 
