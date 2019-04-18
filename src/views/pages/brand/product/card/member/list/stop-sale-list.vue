@@ -1,8 +1,8 @@
 <template>
   <div class="pages-brand-product-card-list-b">
-    <st-button type="primary">
+    <!-- <st-button type="primary">
       <a-icon type="plus"/>新增私教课程
-    </st-button>
+    </st-button>-->
     <st-button style="margin-left:24px" type="danger">批量下架</st-button>
     <div class="pages-brand-product-card-list-b-box">
       <a-select
