@@ -144,7 +144,7 @@
             <span class="info-text">{{today | dateFilter('YYYY年M月D日') }}至2022年1月1日</span>
           </div>
         </a-col>
-        <a-col :span="24">
+        <a-col :span="24" v-if='info.is_comment'>
           <div class="info-item">
             <label class="info-label">备注：</label>
             <span class="info-text">添加备注消息，方便了解具体请情况</span>

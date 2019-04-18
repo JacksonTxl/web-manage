@@ -76,8 +76,7 @@
             <st-switch v-model="info.is_salesman_name"></st-switch>
           </st-form-item>
           <st-form-item label="备注" :class="bSider('form-item',{switch:true})">
-            待定
-            <st-switch></st-switch>
+            <st-switch v-model='info.is_comment'></st-switch>
           </st-form-item>
           <st-form-item label="合同章程" :class="bSider('form-item',{switch:true})">
             <modal-link

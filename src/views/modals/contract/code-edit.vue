@@ -4,11 +4,11 @@
     width="676px"
     title="会员卡合同编号设置"
     v-model="show"
-    :confirmLoading='loading.updateCode'
+    :confirmLoading="loading.updateCode"
     @ok="onOk"
   >
     <p>配置合同编码生成规则，最多可以添加20位长度的合同编码，直接在表格中拖动行排序</p>
-    <st-form-table>
+    <st-form-table hoverable>
       <thead>
         <tr>
           <th width="60px">位数</th>
