@@ -1,9 +1,9 @@
 <template>
   <st-panel app>
-    <draggable v-model="arr">
-      <transition-group>
-        <div v-for="item in arr" :key="item.id">{{item.name}}</div>
-      </transition-group>
+    <draggable v-model='list' :move='onMove'>
+        <li v-for='item in list' :key="item.id">
+          {{item.name}}
+        </li>
     </draggable>
   </st-panel>
 </template>
@@ -14,9 +14,15 @@ export default {
   components: {
     draggable
   },
+  methods: {
+    onMove(e) {
+      console.log(e.draggedContext)
+      return false
+    }
+  },
   data() {
     return {
-      arr: [
+      list: [
         {
           id: 1,
           name: '1'
@@ -30,3 +36,17 @@ export default {
   }
 }
 </script>
+<style>
+.item {
+  background: lightblue;
+  border: 1px solid #d9d9d9;
+}
+.slide-enter-active,
+.slide-leave-active {
+  transition: opacity 0.5s;
+}
+.slide-enter,
+.slide-leave-to {
+  opacity: 0;
+}
+</style>

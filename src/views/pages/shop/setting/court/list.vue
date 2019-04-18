@@ -1,6 +1,6 @@
 <template>
   <st-panel app title="共3个场地" :class="bPage()">
-    <a-row :gutter="24">
+    <draggable tag="a-row" :component-data="{props:{gutter:24}}" v-model="list" :animation="200">
       <a-col :xl="8" :xxl="6" :xs="12" v-for="item in list" :key="item.id">
         <div :class="bItem()">
           <div :class="bItem('body')">
@@ -16,7 +16,7 @@
                 <div :class="bItem('content-item')">
                   <label :class="bItem('label')">容纳人数</label>
                   <p :class="bItem('text')">
-                    23
+                    {{item.count}}
                     <span :class="bItem('sub-text')">人</span>
                   </p>
                 </div>
@@ -47,12 +47,16 @@
           <span class="mg-l8">添加场地</span>
         </div>
       </a-col>
-    </a-row>
+    </draggable>
   </st-panel>
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 export default {
+  components: {
+    draggable
+  },
   bem: {
     bPage: 'page-shop-setting-court-list',
     bItem: 'court-item',
@@ -60,7 +64,32 @@ export default {
   },
   data() {
     return {
-      list: [{}, {}, {}, {}, {}, {}]
+      list: [
+        {
+          id: 1,
+          count: 1
+        },
+        {
+          id: 2,
+          count: 2
+        },
+        {
+          id: 3,
+          count: 3
+        },
+        {
+          id: 4,
+          count: 4
+        },
+        {
+          id: 5,
+          count: 5
+        },
+        {
+          id: 6,
+          count: 6
+        }
+      ]
     }
   },
   methods: {

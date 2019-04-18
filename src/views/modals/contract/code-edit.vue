@@ -8,7 +8,7 @@
     @ok="onOk"
   >
     <p>配置合同编码生成规则，最多可以添加20位长度的合同编码，直接在表格中拖动行排序</p>
-    <st-form-table hoverable>
+    <st-form-table>
       <thead>
         <tr>
           <th width="60px">位数</th>
@@ -16,8 +16,8 @@
           <th width="140px">操作</th>
         </tr>
       </thead>
-      <tbody>
-        <tr v-for="(rule,index) in rules" :key="rule.name">
+      <draggable tag='tbody' v-model='rules' :animation="200">
+        <tr v-for="(rule,index) in rules" :key="rule.sn_rule + rule._value + index">
           <td>{{index+1}}</td>
           <td>
             <a-radio-group @change="rule._value = 'RANDOM'" v-model="rule.sn_rule">
@@ -45,7 +45,7 @@
             <a @click="onDelete(index)">删除</a>
           </td>
         </tr>
-      </tbody>
+      </draggable>
     </st-form-table>
     <st-button :disabled="rules.length>=20" @click="onAdd" block type="dashed" class="mg-t16">
       <a-icon type="plus"></a-icon>添加
@@ -53,6 +53,7 @@
   </a-modal>
 </template>
 <script>
+import draggable from 'vuedraggable'
 import { CodeEditService } from './code-edit.service'
 import { MessageService } from '@/services/message.service'
 import { cloneDeep } from 'lodash-es'
@@ -70,6 +71,9 @@ export default {
       type: Array,
       required: true
     }
+  },
+  components: {
+    draggable
   },
   serviceInject() {
     return {
