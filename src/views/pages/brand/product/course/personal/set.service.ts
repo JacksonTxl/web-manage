@@ -5,18 +5,18 @@ import { Store } from '@/services/store'
 import { PersonalApi, GetPersonalBrandInfoInput, SetPersonalBrandInput } from '@/api/v1/course/personal'
 
 interface SetState {
-  formData: Object
+  info: Object
 }
 @Injectable()
 export class SetService extends Store<SetState> {
   state$: State<SetState>
-  formData$: Computed<Object>
+  info$: Computed<Object>
   constructor(protected personalApi: PersonalApi) {
     super()
     this.state$ = new State({
-      formData: {}
+      info: {}
     })
-    this.formData$ = new Computed(this.state$.pipe(pluck('formData')))
+    this.info$ = new Computed(this.state$.pipe(pluck('formData')))
   }
   getPersonalBrandInfo(query: GetPersonalBrandInfoInput) {
     return this.personalApi.getPersonalBrandInfo(query).pipe(
@@ -31,7 +31,7 @@ export class SetService extends Store<SetState> {
   }
   protected SET_PERSONAL_BRND(data: SetState) {
     this.state$.commit(state => {
-      state.formData = data
+      state.info = data
     })
   }
 }

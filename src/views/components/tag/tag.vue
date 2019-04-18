@@ -13,7 +13,9 @@ const tagMap = {
   'shop-trial': '试运营',
   'shop-close': '已关店',
   'shop-sign': '店招',
-  'period-card': '期限卡'
+  'period-card': '期限卡',
+  'number-card': '次卡',
+  'deposite-card': '储值卡'
 }
 export default {
   name: 'StTag',

@@ -1,29 +1,30 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
-import { pluck } from 'rxjs/operators'
+import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { ShopApi } from '@/api/v1/shop'
 
 interface ShopSelectState {
-  shopListTree: any
+  list: any
 }
 @Injectable()
 export class SelectService extends Store<ShopSelectState> {
   state$: State<ShopSelectState>
-  shopListTree$: Computed<any>
+  list$: Computed<any>
   constructor(private shopApi: ShopApi) {
     super()
     this.state$ = new State({
-      shopListTree: []
+      list: []
     })
-    this.shopListTree$ = new Computed(this.state$.pipe(pluck('shopListTree')))
+    this.list$ = new Computed(this.state$.pipe(pluck('list')))
   }
   getShopListTree() {
-    return this.shopApi.getShopListTree()
+    return this.shopApi.getShopListTree().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.list = res.list
+        })
+      })
+    )
   }
-  // protected SET_STATE(data: ShopSelectState) {
-  //   this.state$.commit(state => {
-  //     state.shopListTree = data
-  //   })
-  // }
 }

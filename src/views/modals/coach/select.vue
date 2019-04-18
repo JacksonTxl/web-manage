@@ -15,7 +15,7 @@
       >
         <a-select-option v-for="item in list" :key="`${item.coach_id}`">{{item.coach_name}}</a-select-option>
       </a-select>
-      <p class="color-text-light mg-t8">已选择3个教练</p>
+      <p class="color-text-light mg-t8">已选择{{coachIds.length}}个教练</p>
       <p class="ta-r">
         <st-button @click="onCancelSelect">取消</st-button>
         <st-button type="primary" class="mg-l8" @click="onConfirmSelect">确定</st-button>

@@ -1,7 +1,7 @@
 <template>
   <st-form :form="form" @submit="save" class="page-shop-container">
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="22" :xs="22" :offset="1">
         <input type="hidden" v-decorator="formRules.course_id">
         <st-form-item label="私教课程">
           <a-input placeholder="课程名称" disabled v-decorator="formRules.course_name"/>
@@ -19,7 +19,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="上课教练">
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="formRules.coach_ids">
@@ -44,6 +44,7 @@ import SelectShop from '@/views/fragments/shop/select-shop'
 import SelectCoach from '@/views/fragments/coach/select-coach'
 import { UserService } from '@/services/user.service'
 import { enumFilter } from '@/filters/other.filters'
+import { valuesIn } from 'lodash-es'
 const shopTableColumns = [{
   title: '省',
   dataIndex: 'province_name'
@@ -71,8 +72,7 @@ const formRules = {
       }, {
         min: 4,
         message: '支持输入4~30个字的课程名称'
-      }],
-      initialValue: 'XXXX'
+      }]
     }
   ],
   course_id: [
@@ -113,12 +113,25 @@ export default {
   filters: {
     enumFilter
   },
+  props: {
+    course_name: {
+      type: String,
+      default: ''
+    }
+  },
+  watch: {
+    course_name(val) {
+      this.form.setFieldsValue({
+        course_name: val
+      })
+    }
+  },
   data() {
     return {
       form: this.$form.createForm(this),
       formRules,
       isShow: false,
-      shopIds: [1, 7]
+      shopIds: []
     }
   },
   subscriptions() {
@@ -132,7 +145,7 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
-        data.course_id = 6
+        data.course_id = this.dataInfo.course_id
         console.log('step 2 data', data)
         this.addService.setShop(data).subscribe(() => {
           this.messageService.success({
@@ -143,8 +156,8 @@ export default {
       })
     },
     onChange(e) {
-      console.log(e.target.value)
-      e.target.value === 2 ? this.isShow = true : this.isShow = false
+      console.log(typeof e.target.value)
+      e.target.value === '2' ? this.isShow = true : this.isShow = false
     },
     onSelectShopChange(shopIds) {
       console.log('your selected', shopIds)

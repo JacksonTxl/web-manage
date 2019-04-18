@@ -25,6 +25,10 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+    lawContent: {
+      type: String,
+      default: ''
     }
   },
   bem: {
@@ -32,7 +36,8 @@ export default {
   },
   data() {
     return {
-      show: true
+      show: true,
+      content: ''
     }
   },
   serviceInject() {
@@ -43,12 +48,11 @@ export default {
   },
   subscriptions() {
     return {
-      content: this.constitutionService.content$,
       loading: this.constitutionService.loading$
     }
   },
   created() {
-    this.constitutionService.getConstitutionInfo(this.id).subscribe()
+    this.content = this.lawContent
   },
   computed: {
     contentLength() {
@@ -57,20 +61,17 @@ export default {
   },
   methods: {
     onSubmit() {
-      const htmlContent = this.content
-        .replace(/\r\n/g, '<br>')
-        .replace(/\n/g, '<br>')
-        .replace(/\s/g, '&nbsp;')
       this.constitutionService
         .updateConstitution({
           id: this.id,
-          brand_law_content: htmlContent
+          brand_law_content: this.content
         })
         .subscribe(() => {
           this.messageService.success({
             content: '更新合同章程成功！'
           })
           this.show = false
+          this.$emit('done')
         })
     }
   }

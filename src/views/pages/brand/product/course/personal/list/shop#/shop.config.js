@@ -19,7 +19,7 @@ export const columns = [
   },
   {
     title: '课程定价',
-    dataIndex: 'price_setting'
+    dataIndex: 'course_pricing'
   },
   {
     title: '授课教练数',

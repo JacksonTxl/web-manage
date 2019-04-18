@@ -180,8 +180,20 @@ export default {
       userService: UserService
     }
   },
+  subscriptions() {
+    const user = this.userService
+    return {
+      personalCourseEnums: user.personalCourseEnums$
+    }
+  },
   filters: {
     enumFilter
+  },
+  props: {
+    course_name: {
+      type: String,
+      default: ''
+    }
   },
   data() {
     return {
@@ -193,11 +205,19 @@ export default {
       price_gradient: []
     }
   },
-  subscriptions() {
-    const user = this.userService
-    return {
-      personalCourseEnums: user.personalCourseEnums$
+  watch: {
+    course_name(val) {
+      this.form.setFieldsValue({
+        course_name: val
+      })
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.form.setFieldsValue({
+        course_name: this.course_name
+      })
+    })
   },
   methods: {
     save(e) {
