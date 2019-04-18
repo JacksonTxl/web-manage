@@ -21,7 +21,7 @@ interface LayoutState {
 }
 
 @Injectable()
-export class LayoutService extends Store<LayoutState> implements RouteGuard {
+export class LayoutService extends Store<LayoutState> {
   state$: State<LayoutState>
   breadcrumbs$: Computed<Breadcrumb[]>
   constructor() {
