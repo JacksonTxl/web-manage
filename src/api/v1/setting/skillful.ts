@@ -1,50 +1,50 @@
 import { Api } from '../../api'
-const url = '/v1/setting/training'
+const url = '/v1/setting/skillful'
 
-export class TrainingApi extends Api {
+export class SkillfulApi extends Api {
   /**
    * 训练目的列表
    */
-  getTrainingAimList(query: GetTrainingAimListInput) {
+  getSkillfulList(query: GetSkillfulListInput) {
     return this.http.get(url, { query })
   }
   /**
    * 新增训练目的
    */
-  addTrainingAim(params: AddTrainingAimInput) {
+  addSkillful(params: AddSkillfulInput) {
     return this.http.post(url, { params })
   }
   /**
    * 编辑课程类型
    */
-  updateTrainingAim(params: UpdateTrainingAimInput) {
+  updateSkillful(params: UpdateSkillfulInput) {
     return this.http.put(url, { params })
   }
   /**
    * 删除课程类型
    */
-  deleteTrainingAim(params: DeleteTrainingAimInput) {
+  deleteSkillful(params: DeleteSkillfulInput) {
     return this.http.delete(`${url}/${params.id}`)
   }
 }
 
-export interface GetTrainingAimListInput {
+export interface GetSkillfulListInput {
   page?: number,
   size?: number
 }
-export interface AddTrainingAimInput {
+export interface AddSkillfulInput {
   /**
    * 训练目的名称
    */
   setting_name: string
 }
-export interface UpdateTrainingAimInput {
+export interface UpdateSkillfulInput {
   /**
    * 编辑课程类型名称
    */
   setting_name: string
 }
-export interface DeleteTrainingAimInput {
+export interface DeleteSkillfulInput {
   /**
    * 课程类型设置ID
    */
