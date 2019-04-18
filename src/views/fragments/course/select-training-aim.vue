@@ -34,7 +34,7 @@ export default {
     }
   },
   created() {
-    this.selectTrainingAimService.getTrainingAims().subscribe()
+    this.selectTrainingAimService.getTrainingAimList().subscribe()
   },
   methods: {
     change(val) {

@@ -18,8 +18,8 @@ export class SelectTrainingAimService extends Store<TrainingAimState> {
     })
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
   }
-  protected getTrainingAims() {
-    return this.trainingApi.getTrainingAims().pipe(
+  protected getTrainingAimList() {
+    return this.trainingApi.getTrainingAimList({ size: 100 }).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.list = res.list
