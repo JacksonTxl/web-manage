@@ -10,8 +10,8 @@
         @change="handleChange_card_type"
       >
         <a-select-option value>所有类型</a-select-option>
-        <a-select-option value="期限卡">期限卡</a-select-option>
-        <a-select-option value="次卡">次卡</a-select-option>
+        <a-select-option value="1">次卡</a-select-option>
+        <a-select-option value="2">期限卡</a-select-option>
       </a-select>
       <a-select
         class="pages-brand-product-card-list-a-box-select"
@@ -19,8 +19,8 @@
         @change="handleChange_publish_channel"
       >
         <a-select-option value>所有渠道</a-select-option>
-        <a-select-option value="品牌">品牌</a-select-option>
-        <a-select-option value="门店">门店</a-select-option>
+        <a-select-option value="1">品牌</a-select-option>
+        <a-select-option value="2">门店</a-select-option>
       </a-select>
       <a-select
         class="pages-brand-product-card-list-a-box-select"
@@ -28,15 +28,15 @@
         v-model="sell_status"
       >
         <a-select-option value>所有售卖状态</a-select-option>
-        <a-select-option value="可售卖">可售卖</a-select-option>
-        <a-select-option value="不可售卖">不可售卖</a-select-option>
+        <a-select-option value="1">可售卖</a-select-option>
+        <a-select-option value="2">不可售卖</a-select-option>
       </a-select>
     </div>
     <st-table
       rowKey="id"
       :columns="columns"
       :dataSource="data"
-      :scroll="{ x: 1500}"
+      :scroll="{ x: 1550}"
       @change="onChange"
       :pagination="pagination"
       @showSizeChange="onShowSizeChange"
@@ -143,8 +143,8 @@ export default {
       popoverTitle: '',
       popoverContent: '',
       card_type: '所以类型',
-      sell_status: '所以渠道',
-      publish_channel: '所有售卖状态',
+      publish_channel: '所有渠道',
+      sell_status: '所有售卖状态',
       getHeaders: {
         current_page: '',
         size: '',
@@ -375,7 +375,7 @@ export default {
     },
     // 发布渠道
     handleChange_publish_channel(value) {
-      this.getHeaders.publish_channel = this.pagination.value
+      this.getHeaders.publish_channel = this.publish_channel
       this.getListInfoFunc()
     },
     // 售卖渠道
@@ -401,6 +401,7 @@ export default {
       this.card_type = '所以类型'
       this.sell_status = '所以渠道'
       this.publish_channel = '所有售卖状态'
+      this.getInfoData(this.cardsListInfo)
     }
   }
 }

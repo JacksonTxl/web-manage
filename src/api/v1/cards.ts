@@ -10,13 +10,13 @@ export class CardsApi extends Api {
   /**
    * 会员卡新增
    */
-  addCards(params:CardsInput) {
+  addCards(params: CardsInput) {
     return this.http.post('/v1/cards', { params })
   }
   /**
    * 会员卡编辑
    */
-  editCards(params:CardsInput) {
+  editCards(params: CardsInput) {
     return this.http.put('/v1/cards', { params })
   }
   /**
