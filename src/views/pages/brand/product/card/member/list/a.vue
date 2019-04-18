@@ -10,18 +10,17 @@
         @change="handleChange_card_type"
       >
         <a-select-option value>所有类型</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
-        <a-select-option value="tom">Tom</a-select-option>
+        <a-select-option value="1">次卡</a-select-option>
+        <a-select-option value="2">期限卡</a-select-option>
       </a-select>
       <a-select
-        defaultValue="所有渠道"
         class="pages-brand-product-card-list-a-box-select"
         v-model="publish_channel"
         @change="handleChange_publish_channel"
       >
         <a-select-option value>所有渠道</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
-        <a-select-option value="tom">Tom</a-select-option>
+        <a-select-option value="1">品牌</a-select-option>
+        <a-select-option value="2">门店</a-select-option>
       </a-select>
       <a-select
         class="pages-brand-product-card-list-a-box-select"
@@ -29,15 +28,15 @@
         v-model="sell_status"
       >
         <a-select-option value>所有售卖状态</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
-        <a-select-option value="tom">Tom</a-select-option>
+        <a-select-option value="1">可售卖</a-select-option>
+        <a-select-option value="2">不可售卖</a-select-option>
       </a-select>
     </div>
     <st-table
       rowKey="id"
       :columns="columns"
       :dataSource="data"
-      :scroll="{ x: 1500}"
+      :scroll="{ x: 1550}"
       @change="onChange"
       :pagination="pagination"
       @showSizeChange="onShowSizeChange"
@@ -58,7 +57,7 @@
 
       <!-- 支持入场门店start -->
       <a slot="admission_range.name" slot-scope="text,record" href="javascript:;">
-        <span v-if="text !=='多门店 (共0家)'">
+        <span v-if="text !=='单门店'">
           <modal-link tag="a" :to="{ name: 'card-table-stop' , props:{a: record.id}}">{{text}}</modal-link>
         </span>
         <span v-else class="use_num">{{text}}</span>
@@ -110,10 +109,13 @@
           <st-more-dropdown>
             <a-menu-item>编辑</a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'card-halt-the-sales', props:{a: 3}}">停售</modal-link>
+              <modal-link tag="a" :to=" { name: 'card-halt-the-sales', props:{a:record.id}}">停售</modal-link>
             </a-menu-item>
             <a-menu-item v-if=" !(record.shelf_upper || record.shelf_lower)">
-              <modal-link tag="a" :to=" { name: 'card-confirm-del', props:{title: record.card_name}}">删除</modal-link>
+              <modal-link
+                tag="a"
+                :to=" { name: 'card-confirm-del', props:{title: {title:record.card_name,id:record.id}}}"
+              >删除</modal-link>
             </a-menu-item>
           </st-more-dropdown>
         </template>
@@ -135,13 +137,14 @@ export default {
       cardsListInfo: this.aService.cardsListInfo$
     }
   },
+
   data() {
     return {
       popoverTitle: '',
       popoverContent: '',
       card_type: '所以类型',
-      sell_status: '所以渠道',
-      publish_channel: '所有售卖状态',
+      publish_channel: '所有渠道',
+      sell_status: '所有售卖状态',
       getHeaders: {
         current_page: '',
         size: '',
@@ -339,6 +342,7 @@ export default {
       this.getHeaders.size = this.pagination.pageSize
 
       this.data = data.list
+      this.data = JSON.parse(JSON.stringify(this.data))
     },
     onChange(pagination, filters, sorter) {
       this.getHeaders.current_page = pagination.current
@@ -371,7 +375,7 @@ export default {
     },
     // 发布渠道
     handleChange_publish_channel(value) {
-      this.getHeaders.publish_channel = this.pagination.value
+      this.getHeaders.publish_channel = this.publish_channel
       this.getListInfoFunc()
     },
     // 售卖渠道
@@ -388,7 +392,7 @@ export default {
         }
       })
       this.aService.getListInfo(obj).subscribe(state => {
-        self.cardsListInfo = state
+        self.getInfoData(state)
       })
     }
   },
@@ -397,6 +401,7 @@ export default {
       this.card_type = '所以类型'
       this.sell_status = '所以渠道'
       this.publish_channel = '所有售卖状态'
+      this.getInfoData(this.cardsListInfo)
     }
   }
 }

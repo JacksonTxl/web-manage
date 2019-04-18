@@ -51,40 +51,33 @@ export default {
           },
           {
             title: '区',
-            dataIndex: 'district'
+            dataIndex: 'district_name'
           },
           {
             title: '门店名称',
             dataIndex: 'shop_name'
           }
         ],
-        list: [
-          {
-            shop_id: 1,
-            shop_name: 22222,
-            province_name: '省份名称',
-            city_name: '城市名称',
-            district: '地区名称'
-          },
-          {
-            shop_id: 2,
-            shop_name: 22222,
-            province_name: '省份名称',
-            city_name: '城市名称',
-            district: '地区名称'
-          }
-        ]
+        list: []
       }
     }
   },
   created() {
     let self = this
-    this.aService.getListInfo({ card_id: self.a }).subscribe(state => {
-      self.table.list = state.list
-      console.log(123123, state)
-    })
+    this.getListInfo({ card_id: self.a })
   },
   methods: {
+    getListInfo(data) {
+      let self = this
+      this.aService.getListInfo(data).subscribe(state => {
+        self.table.list = state.list
+        self.pagination.current = state.page.current_page
+        self.pagination.pageSize = state.page.size
+        self.pagination.total = state.page.total_counts
+
+        console.log(123123, state)
+      })
+    },
     save(e) {
       e.preventDefault()
     },
@@ -93,7 +86,15 @@ export default {
       console.log(current, pageSize)
     },
     onChange(pagination, filters, sorter) {
-      this.pagination = pagination
+      let self = this
+      self.pagination = pagination
+      let data = {
+        card_id: self.a,
+        size: self.pagination.pageSize,
+        current_page: self.pagination.current
+      }
+
+      this.getListInfo(data)
       console.log('params', pagination, filters, sorter)
     }
   }

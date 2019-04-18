@@ -279,7 +279,7 @@ const mock = {}
 export class StaffApi extends Api {
   // 获取某部门员工列表
   getStaffBrandList(query: Params) {
-    return this.http.get(URL, { query, mock })
+    return this.http.get(URL, { query })
   }
   // 获取手机号区域
   getCountryCodes() {

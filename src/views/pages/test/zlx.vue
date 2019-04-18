@@ -1,57 +1,93 @@
 <template>
-  <div style="padding: 30px">
-    <st-form :form="form" @submit="save">
-      <st-form-item label="系统权限" required>
-        <st-region-cascader v-decorator="basicInfoRuleList.usernameRule1"></st-region-cascader>
-      </st-form-item>
-      <st-form-item label="姓名"  required>
-        <a-input v-decorator="basicInfoRuleList.usernameRule"></a-input>
-      </st-form-item>
-      <st-form-item  class="mg-l24" labelOffset>
-          <st-button type="primary"
-            ghost html-type="submit">保存</st-button>
+<div>
+  <st-icon type="alipay" size="24px" />
+  <st-form :form="formTime">
+  <st-table :columns="columns"
+    :pagination="false"
+    :dataSource="data"
+  >
+    <template slot="time">
+        <st-form-item label="">
+          <a-input  v-decorator="[
+            'note1',
+            {rules: [{ required: true, message: 'Please input your note!' }]}
+          ]"/>
         </st-form-item>
-    </st-form>
-    <input type="text" v-model="sd">
-    <zlxFull v-model="sd"></zlxFull>
-    {{sd}}
-  </div>
-</template>
+    </template>
+    <template slot="rally_price">
+        <st-form-item label="">
+          <a-input  v-decorator="[
+            'note2',
+            {rules: [{ required: true, message: 'Please input your note!' }]}
+          ]"/>
+        </st-form-item>
+    </template>
+    <template slot="frozen_day">
+        <st-form-item label="">
+          <a-input  v-decorator="[
+            'note3',
+            {rules: [{ required: true, message: 'Please input your note!' }]}
+          ]"/>
+        </st-form-item>
+    </template>
+    <template slot="gift_unit">
+        <st-form-item label="">
+          <a-input  v-decorator="[
+            'note4',
+            {rules: [{ required: true, message: 'Please input your note!' }]}
+          ]"/>
+        </st-form-item>
+    </template>
+    <template slot="operation">
+        <st-form-item label="">
+          <a-input/>
+        </st-form-item>
+    </template>
+  </st-table>
+  </st-form>
+</div>
 
+</template>
 <script>
-import zlxFull from './zlxFull'
+const columns = [
+  {
+    title: '期限',
+    scopedSlots: { customRender: 'time' },
+    dataIndex: 'time',
+    width: 200
+  },
+  {
+    title: '售价范围',
+    scopedSlots: { customRender: 'rally_price' },
+    dataIndex: 'rally_price',
+    width: 200
+  },
+  {
+    title: '允许冻结天数',
+    scopedSlots: { customRender: 'frozen_day' },
+    dataIndex: 'frozen_day',
+    width: 200
+  },
+  {
+    title: '赠送上限',
+    scopedSlots: { customRender: 'gift_unit' },
+    dataIndex: 'gift_unit',
+    width: 200
+  },
+  {
+    title: '操作',
+    dataIndex: 'operation',
+    width: 200,
+    scopedSlots: { customRender: 'operation' }
+  }
+]
+
 export default {
-  name: 'ZlxTest',
   data() {
     return {
-      sd: [{ h: 9 }],
-      basicInfoRuleList: {
-        usernameRule1: ['stff_name', { rules: [{ required: true, message: '请填写地址' }] }],
-        usernameRule: ['staff_name', { rules: [{ required: true, message: '请填写姓名' }] }]// 姓名
-      },
-      form: this.$form.createForm(this)
-    }
-  },
-  mounted() {
-    this.sd = [{ a: 9 }]
-  },
-  created() {
-    this.sd = [{ c: 8 }]
-  },
-  components: {
-    zlxFull
-  },
-  methods: {
-    save(e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-          this.$emit('save', {
-            data: values
-          })
-        }
-      })
+      formTime: this.$form.createForm(this),
+      data: [{ gift_unit: 'edrqased' }, { gift_unit: 'edrqased' }],
+      columns
     }
   }
 }

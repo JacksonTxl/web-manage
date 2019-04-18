@@ -2,8 +2,12 @@
   <st-form :form="form" class="page-create-container">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
+        <st-form-item v-show="false">
+          <input type="hidden" v-decorator="formRules.course_id"/>
+        </st-form-item>
         <st-form-item label="课程名称" required>
-          <a-input placeholder="支持输入4~30个字的课程名称" maxlength="30" v-decorator="formRules.course_name"/>
+          <a-input placeholder="支持输入4~30个字的课程名称" maxlength="30"
+          v-decorator="formRules.course_name" @change="onCourseNameChange"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -26,7 +30,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程时长" required>
-          <a-input-number v-decorator="formRules.duration">
+          <a-input-number :min="0" v-decorator="formRules.duration">
             <div slot="addonAfter" class="st-form-item-unit">分钟</div>
           </a-input-number>
         </st-form-item>
@@ -35,7 +39,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="参考定价">
-          <a-input-number v-decorator="formRules.price">
+          <a-input-number :min="0" v-decorator="formRules.price">
             <div slot="addonAfter" class="st-form-item-unit">元/节</div>
           </a-input-number>
         </st-form-item>
@@ -44,7 +48,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课有效期">
-          <a-input-number v-decorator="formRules.effective_unit">
+          <a-input-number :min="0" v-decorator="formRules.effective_unit">
             <div slot="addonAfter" class="st-form-item-unit">天/节</div>
           </a-input-number>
         </st-form-item>
@@ -95,6 +99,7 @@ import { MessageService } from '@/services/message.service'
 import StSelectCourseType from '@/views/fragments/course/select-course-type'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 const formRules = {
+  course_id: ['course_id'],
   course_name: [
     'course_name', {
       rules: [{
@@ -196,6 +201,9 @@ export default {
       this.form.setFieldsValue({
         train_aim
       })
+    },
+    onCourseNameChange(e) {
+      this.$emit('onCourseNameChange', e.target.value)
     }
   }
 }
