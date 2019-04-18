@@ -28,4 +28,7 @@ export class HaltTheSalesService extends Store<CardsTableModelState> {
   getListInfo(paramsObj: any) {
     return this.cardsApi.getCardsSaleInfo(paramsObj)
   }
+  setListInfo(paramsObj: any) {
+    return this.cardsApi.setCardsSaleStop(paramsObj)
+  }
 }

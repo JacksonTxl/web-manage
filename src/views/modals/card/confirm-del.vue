@@ -36,7 +36,7 @@ export default {
         content: `确认删除此${self.title.title}会员卡吗`,
         onOk() {
           self.aService
-            .getListInfo({ card_id: self.title.id })
+            .getListInfo(self.title.id)
             .subscribe(state => {
               console.log(123123, state)
             })
