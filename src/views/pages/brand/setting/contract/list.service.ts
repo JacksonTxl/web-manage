@@ -4,6 +4,7 @@ import { forkJoin } from 'rxjs'
 import { tap, pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { State, Computed, log } from 'rx-state'
+import { LayoutService } from '@/services/layouts/layout.service'
 
 interface ListState {
   list: any[]
@@ -13,7 +14,10 @@ interface ListState {
 export class ListService extends Store<ListState> implements RouteGuard {
   state$: State<ListState>
   list$: Computed<any[]>
-  constructor(private contractApi: ContractApi) {
+  constructor(
+    private contractApi: ContractApi,
+    private layoutService: LayoutService
+  ) {
     super()
     this.state$ = new State({
       list: []
@@ -40,18 +44,18 @@ export class ListService extends Store<ListState> implements RouteGuard {
   init() {
     return forkJoin(this.getList())
   }
+  initBreadcrumbs() {
+    this.layoutService.SET_BREADCRUMBS([
+      {
+        label: '合同模版列表',
+        route: { name: '' }
+      }
+    ])
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.init().subscribe(() => {
+      this.initBreadcrumbs()
       next()
     })
-    // const xhr = new XMLHttpRequest()
-    // xhr.open('GET', '/_api/v1/setting/contract/code-details/1')
-    // xhr.setRequestHeader('app-id', '11111')
-    // xhr.setRequestHeader('app-version', '11111')
-    // xhr.setRequestHeader(
-    //   'token',
-    //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE1NTUwNTEwNDYsImF1ZCI6IiIsImp0aSI6ImNiTjRDX1NWcklxM0ctOFM4T2N0S1EtaDRFQTRaUzI1IiwibmJmIjoxNTU1MDUxMDM2LCJleHAiOjE1NTUwNTI4NDYsImxvZ2luX3R5cGUiOjEsImlzX211bHRpIjowLCJzdGFmZl9pZCI6MX0.9b9g-XVdrjSxCePuVJYrBwXn0RjqgrCGghqn9Wi4AaA'
-    // )
-    // xhr.send(null)
   }
 }

@@ -20,18 +20,26 @@
             >设置规则</modal-link>
           </st-form-item>
           <st-form-item label="页面缩放" :class="bSider('form-item',{radio:true})">
-            <a-radio-group v-model='info.contract_page_type'>
+            <a-radio-group @change="onPageTypeChange" v-model="info.contract_page_type">
               <a-radio :value="0">默认</a-radio>
               <a-radio :value="1">缩放</a-radio>
             </a-radio-group>
-            <a-input-number v-model="info.contract_page" :min="0" :max="100"></a-input-number>%
+            <a-input-number
+              :disabled="info.contract_page_type===0"
+              v-model="info.contract_page"
+              :min="0"
+            ></a-input-number> %
           </st-form-item>
           <st-form-item :class="bSider('form-item',{radio:true})" label="首行边距">
-            <a-radio-group v-model='info.contract_marget_type'>
+            <a-radio-group @change="onPageMargetChange" v-model="info.contract_marget_type">
               <a-radio :value="0">默认</a-radio>
-              <a-radio :value="1">缩放</a-radio>
+              <a-radio :value="1">行距</a-radio>
             </a-radio-group>
-            <a-input-number v-model="info.contract_marget" :min="0" :max="100"></a-input-number>mm
+            <a-input-number
+              :disabled="info.contract_marget_type===0"
+              v-model="info.contract_marget"
+              :min="0"
+            ></a-input-number> mm
           </st-form-item>
           <st-t4>字段设置</st-t4>
           <st-form-item class="mg-t24" :class="bSider('form-item',{switch:true})" label="品牌logo">
@@ -138,6 +146,16 @@ export default {
     onLawContentDone() {
       this.editService.getConstitutionInfo().subscribe()
     },
+    onPageTypeChange(e) {
+      if (e.target.value === 0) {
+        this.info.contract_page = 100
+      }
+    },
+    onPageMargetChange(e) {
+      if (e.target.value === 0) {
+        this.info.contract_marget = 20
+      }
+    },
     onUpdateContract() {
       this.editService.updateContract(this.info).subscribe(() => {
         this.message.success({
@@ -154,9 +172,6 @@ export default {
         '）'
       )
     }
-  },
-  data() {
-    return {}
   }
 }
 </script>
