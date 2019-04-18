@@ -4,6 +4,7 @@
     v-model="show"
     @ok="onSubmit"
     @cancel="onCancel"
+    :confirmLoading="loading.addTrainingAim"
   >
     <div>
       <st-form :form="form">
@@ -37,6 +38,11 @@ export default {
     return {
       addService: AddService,
       messageService: MessageService
+    }
+  },
+  subscriptions() {
+    return {
+      loading: this.addService.loading$
     }
   },
   data() {
