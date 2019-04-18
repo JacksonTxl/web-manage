@@ -4,6 +4,7 @@
     v-model="show"
     @ok="onSubmit"
     @cancel="onCancel"
+    :confirmLoading="loading.updateCourseType"
   >
     <div>
       <st-form :form="form">
@@ -41,6 +42,11 @@ export default {
     return {
       editService: EditService,
       messageService: MessageService
+    }
+  },
+  subscriptions() {
+    return {
+      loading: this.editService.loading$
     }
   },
   props: {
