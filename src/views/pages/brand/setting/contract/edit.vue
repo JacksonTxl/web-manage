@@ -3,7 +3,7 @@
     <aside :class="bSider()">
       <st-panel title="合同设置">
         <div slot="actions">
-          <st-button type="primary" @click='onUpdateContract'>保存</st-button>
+          <st-button type="primary" :loading="loading.updateContract" @click="onUpdateContract">保存</st-button>
         </div>
         <st-t4>全局设置</st-t4>
         <st-form class="mg-t24" labelWidth="56px" labelGutter="16px">
@@ -11,11 +11,12 @@
             <a-textarea v-model="info.contract_title" placeholder="请输入衡量标准"></a-textarea>
           </st-form-item>
           <st-form-item label="合同编号">
-            <span>10位编号</span>
+            <span v-if="codeRules.length">{{codeRules.length}}位编号</span>
+            <span v-else>暂无编号位数</span>
             <modal-link
               class="mg-l16"
               tag="a"
-              :to="{name:'contract-code-edit',props:{id:info.id}}"
+              :to="{name:'contract-code-edit',props:{id:info.id,codeRules},on:{done:onCodeDone}}"
             >设置规则</modal-link>
           </st-form-item>
           <st-form-item label="页面缩放" :class="bSider('form-item',{radio:true})">
@@ -82,9 +83,9 @@
     </aside>
     <main :class="bMain()">
       <st-panel
-        title="合同预览"
+        :title="previewTitle"
         :class="bMain('panel')"
-        :loading="loading.getInfo || loading.getConstitutionInfo"
+        :loading="loading.getInfo || loading.getConstitutionInfo || loading.getCodeInfo"
       >
         <contract-preview></contract-preview>
       </st-panel>
@@ -96,6 +97,8 @@
 import ContractPreview from './edit#/preview.vue'
 import { EditService } from './edit.service.ts'
 import { MessageService } from '@/services/message.service'
+import { UserService } from '@/services/user.service'
+import { enumFilter } from '@/filters/other.filters'
 const pageName = 'page-setting-contract-edit'
 export default {
   name: pageName,
@@ -110,17 +113,28 @@ export default {
   serviceInject() {
     return {
       editService: EditService,
-      message: MessageService
+      message: MessageService,
+      user: UserService
     }
   },
   subscriptions() {
+    /**
+     * @type {EditService}
+     */
+    const edit = this.editService
     return {
-      info: this.editService.info$,
-      lawContent: this.editService.lawContent$,
-      loading: this.editService.loading$
+      info: edit.info$,
+      codeRules: edit.codeRules$,
+      lawContent: edit.lawContent$,
+      codeDemo: edit.codeDemo$,
+      loading: edit.loading$,
+      settingEnums: this.user.settingEnums$
     }
   },
   methods: {
+    onCodeDone() {
+      this.editService.getCodeInfo().subscribe()
+    },
     onLawContentDone() {
       this.editService.getConstitutionInfo().subscribe()
     },
@@ -130,6 +144,15 @@ export default {
           content: '保存合同模版成功！'
         })
       })
+    }
+  },
+  computed: {
+    previewTitle() {
+      return (
+        '合同预览（' +
+        enumFilter(this.info.contract_type, this.settingEnums.contract_type) +
+        '）'
+      )
     }
   },
   data() {

@@ -45,7 +45,7 @@ export class HttpService {
   get(url: string, options: RequestOptions = {}) {
     let requestUrl = this.makeRequestUrl(url, options)
     const get$ = ajax
-      .get(requestUrl, this.appGetHeaders)
+      .get(requestUrl, this.appHeaders)
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
@@ -54,7 +54,13 @@ export class HttpService {
   post(url: string, options: RequestOptions = {}) {
     const requestUrl = this.makeRequestUrl(url, options)
     const post$ = ajax
-      .post(requestUrl, options.params, this.appHeaders)
+      .post(
+        requestUrl,
+        options.params,
+        Object.assign(this.appHeaders, {
+          'Content-Type': 'application/json;utf-8'
+        })
+      )
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
@@ -63,7 +69,13 @@ export class HttpService {
   put(url: string, options: RequestOptions = {}) {
     const requestUrl = this.makeRequestUrl(url, options)
     const put$ = ajax
-      .put(requestUrl, options.params, this.appHeaders)
+      .put(
+        requestUrl,
+        options.params,
+        Object.assign(this.appHeaders, {
+          'Content-Type': 'application/json;utf-8'
+        })
+      )
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
@@ -95,19 +107,11 @@ export class HttpService {
     }
     return requestUrl
   }
-  get appGetHeaders() {
-    return {
-      token: this.auth.tokenSnapshot,
-      'app-id': '11111',
-      'app-version': '11111'
-    }
-  }
   get appHeaders() {
     return {
       token: this.auth.tokenSnapshot,
       'app-id': '11111',
-      'app-version': '11111',
-      'Content-Type': 'application/json'
+      'app-version': '11111'
     }
   }
   private ajaxErrorHandler(source$: Observable<any>) {

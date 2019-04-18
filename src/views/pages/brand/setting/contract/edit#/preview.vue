@@ -6,7 +6,7 @@
       <h4 v-if="info.is_brand_name" :class="b('brand-name')">这里是品牌名称</h4>
       <div v-if="info.is_contract_number" :class="b('contract-code')">
         <label class="info-label">合同编号：</label>
-        <span class="info-text">294389802</span>
+        <span class="info-text">{{codeDemo || '暂无'}}</span>
       </div>
     </header>
     <section :class="b('basic')">
@@ -63,13 +63,13 @@
     <section :class="b('product')">
       <st-form-table>
         <thead>
-          <tr v-if="info.contra">
+          <tr v-if="showAllTh">
             <th>商品名称</th>
             <th>价格</th>
             <th>优惠</th>
             <th>小计</th>
           </tr>
-          <tr>
+          <tr v-if="showSomeTh">
             <th>商品名称</th>
             <th>小计</th>
           </tr>
@@ -153,7 +153,7 @@
         <a-col :span="24" v-if="info.is_law_content">
           <div class="info-item">
             <label class="info-label">合同章程：</label>
-            <span class="info-text" v-html="htmlLawContent"></span>
+            <pre class="info-text">{{lawContent}}</pre>
           </div>
         </a-col>
       </a-row>
@@ -209,9 +209,14 @@ export default {
     }
   },
   subscriptions() {
+    /**
+     * @type {EditService}
+     */
+    const edit = this.editService
     return {
-      info: this.editService.info$,
-      htmlLawContent: this.editService.htmlLawContent$
+      info: edit.info$,
+      lawContent: edit.lawContent$,
+      codeDemo: edit.codeDemo$
     }
   },
   computed: {

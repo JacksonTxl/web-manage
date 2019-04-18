@@ -15,12 +15,8 @@ export class RouteService extends Store<ServiceRoute> {
   constructor() {
     super()
     this.state$ = new State({})
-
     this.query$ = new Computed(this.state$.pipe(pluck('meta', 'query')))
     this.layout$ = new Computed(this.state$.pipe(pluck('meta', 'layout')))
-  }
-  get querySnapshot() {
-    return getSnapshot(this.query$)
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     if (!to.meta.layout && to.name) {
