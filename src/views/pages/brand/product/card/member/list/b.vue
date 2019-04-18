@@ -298,7 +298,7 @@ export default {
         }
       })
       this.bService.getListInfo(obj).subscribe(state => {
-        self.cardsListInfo = state
+        self.getInfoData(state)
       })
     }
   },

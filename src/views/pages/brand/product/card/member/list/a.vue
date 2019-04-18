@@ -57,7 +57,7 @@
 
       <!-- 支持入场门店start -->
       <a slot="admission_range.name" slot-scope="text,record" href="javascript:;">
-        <span v-if="text !=='多门店 (共0家)'">
+        <span v-if="text !=='单门店'">
           <modal-link tag="a" :to="{ name: 'card-table-stop' , props:{a: record.id}}">{{text}}</modal-link>
         </span>
         <span v-else class="use_num">{{text}}</span>
@@ -109,12 +109,12 @@
           <st-more-dropdown>
             <a-menu-item>编辑</a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'card-halt-the-sales', props:{a: 3}}">停售</modal-link>
+              <modal-link tag="a" :to=" { name: 'card-halt-the-sales', props:{a:record.id}}">停售</modal-link>
             </a-menu-item>
             <a-menu-item v-if=" !(record.shelf_upper || record.shelf_lower)">
               <modal-link
                 tag="a"
-                :to=" { name: 'card-confirm-del', props:{title: record.card_name}}"
+                :to=" { name: 'card-confirm-del', props:{title: {title:record.card_name,id:record.id}}}"
               >删除</modal-link>
             </a-menu-item>
           </st-more-dropdown>
@@ -137,6 +137,7 @@ export default {
       cardsListInfo: this.aService.cardsListInfo$
     }
   },
+
   data() {
     return {
       popoverTitle: '',
@@ -341,6 +342,7 @@ export default {
       this.getHeaders.size = this.pagination.pageSize
 
       this.data = data.list
+      this.data = JSON.parse(JSON.stringify(this.data))
     },
     onChange(pagination, filters, sorter) {
       this.getHeaders.current_page = pagination.current
@@ -390,7 +392,7 @@ export default {
         }
       })
       this.aService.getListInfo(obj).subscribe(state => {
-        self.cardsListInfo = state
+        self.getInfoData(state)
       })
     }
   },

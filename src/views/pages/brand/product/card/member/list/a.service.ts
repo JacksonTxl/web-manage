@@ -29,6 +29,7 @@ export class AService extends Store<CardsListInfoState> {
   getCardsSaleStopReason(id: string) {
     return this.cardsApi.getCardsSaleStopReason(id)
   }
+
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getListInfo({ card_name: to.query.cardName }).subscribe(res => {
       this.SET_CARDS_LIST_INFO(res)

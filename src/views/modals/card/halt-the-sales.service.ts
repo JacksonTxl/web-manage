@@ -8,7 +8,7 @@ interface CardsTableModelState {
   cardsTableModel: any
 }
 @Injectable()
-export class TableStopService extends Store<CardsTableModelState> {
+export class HaltTheSalesService extends Store<CardsTableModelState> {
   state$: State<CardsTableModelState>
   cardsTableModel$: Computed<string>
   constructor(private cardsApi: CardsApi) {

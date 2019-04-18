@@ -41,15 +41,25 @@ export class CardsApi extends Api {
    *会员卡售卖门店列表
    */
   getCardsSaleStop(query: any) {
-    console.log('会员卡售卖门店列表', query)
     return this.http.get(`/v1/cards/sale/shop`, { query })
   }
   /**
    *支持入场门店
    */
   getCardsUseStop(query: any) {
-    console.log('支持入场门店', query)
     return this.http.get(`/v1/cards/use/shop`, { query })
+  }
+  /**
+   *会员卡停售信息
+   */
+  getCardsSaleInfo(query: any) {
+    return this.http.get(`/v1/cards/sale/info`, { query })
+  }
+  /**
+   *会员卡删除(未)
+   */
+  getCardsDel(params: any) {
+    return this.http.delete(`/v1/cards`, { params })
   }
 }
 export interface CardsInput {
