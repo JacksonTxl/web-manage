@@ -2,50 +2,51 @@
 
   <st-form :form="form" @submit="save" class="page-add-container">
     <a-row :gutter="8">
-      <a-col :lg="10"
-        :xs="22"
-        :offset="1">
+      <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工头像">
-            <a-upload
-              listType="picture-card"
-              class="page-add-upload"
-              :showUploadList="false"
-              :customRequest="upload"
-            >
-              <img v-if="imageUrl" :src="imageUrl" width="164" height="auto" alt="avatar">
-              <div v-else>
-                <a-icon :type="loading ? 'loading' : 'plus'"/>
-                <div class="ant-upload-text">上传头像</div>
-              </div>
-            </a-upload>
+            <st-image-upload
+            width="164px"
+            height="164px"
+            :sizeLimit="2"
+            placeholder="上传头像"
+            v-decorator="basicInfoRuleList.image_avatar"
+          ></st-image-upload>
         </st-form-item>
+      </a-col>
+      <a-col :lg="10" :xs="22" :offset="1">
+        <st-form-item label="员工人脸">
+            <st-image-upload
+            width="164px"
+            height="164px"
+            :sizeLimit="2"
+            placeholder="上传人脸"
+            v-decorator="basicInfoRuleList.image_face"
+          ></st-image-upload>
+        </st-form-item>
+      </a-col>
+    </a-row>
+    <a-row :gutter="8">
+      <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="姓名" required>
-          <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="basicInfoRuleList.usernameRule" />
+          <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="basicInfoRuleList.usernameRule" />
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact>
-            <a-select style="width: 15%;" :defaultValue="defaultCodeId" v-decorator="basicInfoRuleList.country_codeRule">
-              <a-select-option :value="code.code_id" v-for="code in codeList" :key="code.code_id">+{{code.phone_code}}</a-select-option>
+            <a-select style="width: 15%;" v-decorator="basicInfoRuleList.country_codeRule">
+              <a-select-option :value="code.code_id" v-for="code in codeList.code_list" :key="code.code_id">+{{code.phone_code}}</a-select-option>
             </a-select>
             <a-input style="width: 85%" placeholder="请输入手机号" v-decorator="basicInfoRuleList.phoneRule"/>
           </a-input-group>
         </st-form-item>
         <st-form-item label="性别" required>
           <a-select v-decorator="basicInfoRuleList.genderRule" placeholder="请选择" >
-            <a-select-option value="2">男</a-select-option>
-            <a-select-option value="1">女</a-select-option>
+             <a-select-option :value="0">男</a-select-option>
+            <a-select-option :value="2">男</a-select-option>
+            <a-select-option :value="1">女</a-select-option>
           </a-select>
         </st-form-item>
       </a-col>
-      <a-col :lg="10"
-        :xs="22"
-        :offset="1">
-        <st-form-item label="员工人脸">
-          <a-upload class="page-add-upload" style=""
-            type="drag">
-            <st-icon type="anticon:plus"></st-icon>
-          </a-upload>
-        </st-form-item>
+      <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="昵称" required>
           <a-input placeholder="请输入昵称"  v-decorator="basicInfoRuleList.nicknameRule"/>
         </st-form-item>
@@ -55,8 +56,8 @@
         <st-form-item label="证件" required>
           <a-input-group compact>
             <a-select  style="width:20%" v-decorator="basicInfoRuleList.id_typeRule" @change="chooseType">
-              <a-select-option value="1">身份证</a-select-option>
-              <a-select-option value="2">护照</a-select-option>
+              <a-select-option :value="1">身份证</a-select-option>
+              <a-select-option :value="2">护照</a-select-option>
             </a-select>
             <a-input style="width: 80%" :placeholder="dateinit" v-decorator="basicInfoRuleList.idcardRule"/>
           </a-input-group>
@@ -74,21 +75,13 @@
     <a-row :gutter="8">
       <a-col :offset="1"
         :lg="22">
-        <st-form-item
-          label='员工职能'>
-          <span slot="label">
-            员工职能&nbsp;
-            <a-tooltip placement="right"
-              title="What do you want others to call you?">
-              <st-icon type="anticon:question-circle-o" />
-            </a-tooltip>
-          </span>
+        <st-form-item label='员工职能'>
           <a-checkbox-group v-decorator="basicInfoRuleList.identityRule" @change="watchChooesed">
-            <a-checkbox value="1" :defaultChecked="defaultChecked">普通员工</a-checkbox>
-            <a-checkbox value="2">会籍销售</a-checkbox>
-            <a-checkbox value="3">团课教练</a-checkbox>
-            <a-checkbox value="4">私人教练</a-checkbox>
-            <a-checkbox value="5">游泳教练</a-checkbox>
+            <a-checkbox :value="1" >普通员工</a-checkbox>
+            <a-checkbox :value="2">会籍销售</a-checkbox>
+            <a-checkbox :value="3">团课教练</a-checkbox>
+            <a-checkbox :value="4">私人教练</a-checkbox>
+            <a-checkbox :value="5">游泳教练</a-checkbox>
           </a-checkbox-group>
         </st-form-item>
       </a-col>
@@ -99,8 +92,9 @@
         :offset="1">
         <st-form-item label="部门">
           <a-select v-decorator="basicInfoRuleList.departmentRule" placeholder="请选择" >
-            <a-select-option value="1">黄埔</a-select-option>
-            <a-select-option value="2">北大</a-select-option>
+             <a-select-option :value="0">未选择</a-select-option>
+            <a-select-option :value="1">黄埔</a-select-option>
+            <a-select-option :value="2">北大</a-select-option>
           </a-select>
         </st-form-item>
         <st-form-item label="教练等级" v-if="isShowLevel">
@@ -110,7 +104,7 @@
           </a-select>
         </st-form-item>
         <st-form-item label="入职时间" >
-          <a-date-picker v-decorator="basicInfoRuleList.entry_dateRule"  />
+          <a-date-picker v-decorator="basicInfoRuleList.entry_dateRule"  style="width:100%" />
         </st-form-item>
         <st-form-item label="所属门店" >
           <a-select v-decorator="basicInfoRuleList.shopRule" placeholder="请选择" >
@@ -202,82 +196,77 @@
   </st-form>
 </template>
 <script>
-import { OssService } from '@/services/oss.service'
-import { MessageService } from '@/services/message.service'
 export default {
   name: 'StaffDetailBasics',
   data() {
     return {
       form: this.$form.createForm(this),
-      defaultChecked: true, // checkbox 默认选中
-      loading: false,
-      imageUrl: '',
-      key: '', // 上传头像返回的key
       basicInfoRuleList: {
-        usernameRule: ['staff_name', { rules: [{ required: true, message: '请填写姓名' }] }], // 姓名
-        nicknameRule: ['nickname', { rules: [{ required: true, message: '请填写昵称' }] }], // 昵称
-        country_codeRule: ['country_code_id', { initialValue: 37 }], // 国家编码id，例如中国的id是37
+        image_avatar: ['image_avatar'],
+        image_face: ['image_face'],
+        // 姓名
+        usernameRule: ['staff_name', { rules: [{ required: true, message: '请填写姓名', max: 10 }] }],
+        // 昵称
+        nicknameRule: ['nickname', { rules: [{ required: true, message: '请填写昵称' }] }],
+        // 国家编码
+        country_codeRule: ['country_code_id', { initialValue: 37 }],
+        // 手机号
         phoneRule: ['mobile', { rules: [{ required: true, message: '手机号格式错误', pattern: /^1[34578]\d{9}$/ }] }],
-        staff_numRule: ['staff_num'], // 工号
-        genderRule: ['sex', { rules: [{ required: true, message: '请选择你的性别' }] }], // 角色select rule
-        id_typeRule: ['id_type', { initialValue: '1' }], // 证件类型
+        // 工号
+        staff_numRule: ['staff_num'],
+        // 性别
+        genderRule: ['sex', { initialValue: 2, rules: [{ required: true, message: '请选择你的性别' }] }],
+        // 证件类型
+        id_typeRule: ['id_type', { initialValue: 1 }],
+        // 证件号码
         idcardRule: ['id_number', { rules: [{ required: true, message: '请填写正确的身份证号', pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/ }] }],
-
-        identityRule: ['identity'], // 身份
-        departmentRule: ['department_id'], // 部门
-        coach_levelRule: ['coach_level_id'], // 教练等级ID
-        entry_dateRule: { // 入职时间
-          rules: ['entry_date', { type: 'object', required: true, message: '请选择时间' }]
-        },
-        shopRule: ['shop_id'], // 所属门店
-        working_postRule: ['working_post'], // 职务
-        nature_workRule: ['nature_workRule'], // 工作性质
-        roleRule: ['role_id'], // 角色
-
-        is_permissionRule: ['is_permission'] // 系统权限
+        // 身份
+        identityRule: ['identity'],
+        // 部门
+        departmentRule: ['department_id', { initialValue: 0 }],
+        // 教练等级ID
+        coach_levelRule: ['coach_level_id'],
+        // 入职时间
+        entry_dateRule: ['entry_date'],
+        // 所属门店
+        shopRule: ['shop_id'],
+        // 职务
+        working_postRule: ['working_post'],
+        // 工作性质
+        nature_workRule: ['nature_workRule'],
+        // 角色
+        roleRule: ['role_id'],
+        // 系统权限
+        is_permissionRule: ['is_permission']
       },
 
       isAdd: [],
-      flag: true,
+      addflag: true,
       isShowLevel: false, // 是否展示教练等级
       dateinit: '请输入身份证号码',
-
       isChoosePermission: false
-
-    }
-  },
-  serviceInject() {
-    return {
-      OSS: OssService,
-      MessageService: MessageService
     }
   },
   watch: {
     isAdd(a) { // 监听是否选中了教练
-      if (!a.length) {
+      let flag = a.some(val => {
+        return val === 4 || val === 5
+      })
+      if (!flag) {
         this.$emit('deletStep')
         this.isShowLevel = false
-        this.flag = true
-      }
-      let flag = a.some(val => {
-        return val === '4' || val === '5'
-      })
-
-      if (!this.flag) return
-      if (flag) {
-        this.flag = false
+        this.addflag = true
+      } else {
+        if (!this.addflag) return
         this.isShowLevel = true
         this.$emit('addStep')
+        this.addflag = false
       }
     }
   },
   props: {
-    defaultCode: {
-      type: String,
-      default: ''
-    },
     codeList: {
-      type: Array,
+      type: Object,
       default: () => []
     }
   },
@@ -288,11 +277,12 @@ export default {
         tip1: '请输入身份证号码',
         tip2: '请输入护照号码'
       }
-      e === '1' ? this.dateinit = tip1 : this.dateinit = tip2
+      e === 1 ? this.dateinit = tip1 : this.dateinit = tip2
     },
     // 员工职能 选择事件
     watchChooesed(e) {
       this.isAdd = e
+      console.log(this.isAdd)
     },
     permissionChange(e) {
       this.isChoosePermission = e.target.checked
@@ -316,35 +306,40 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
-          this.$emit('save', {
-            data: values
-          })
-        }
-      })
-    },
-    upload(data) {
-      this.loading = true
-      this.imageUrl = ''
-      this.OSS.put({
-        file: data.file
-      }).subscribe({
-        next: val => {
-          this.key = val.fileKey
-          this.MessageService.success({ content: `success: ${val}` })
-          this.imageUrl = `http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/${
-            val.fileKey
-          }`
-          this.loading = false
-          console.log(val.fileKey)
-          console.log(this.imageUrl)
-        },
-        error: val => {
-          this.MessageService.error({ content: `Error ${val.message}` })
-          this.loading = false
+          //  console.log('Received values of form: ', values)
+          values.entry_date = values.entry_date ? values.entry_date.format('YYYY-MM-DD') : ''
+          // console.log('Received values of form: ', values)
+          let testData = {
+            staff_name: '张三',
+            nickname: '里斯',
+            country_code_id: 37,
+            mobile: '13012345678',
+            mail: 'styn@sin.com',
+            sex: 1,
+            staff_num: '007',
+            id_type: 1,
+            id_number: 152716192809001122,
+            department_id: 1,
+            image_avatar: 'image_avatar',
+            image_face: 'image_avatar',
+            working_post: '董事长',
+            identity: [1, 2, 3],
+            coach_level_id: 1,
+            nature_work: 1,
+            entry_date: '1901-01-01',
+            role_id: [1, 2, 3],
+            shop_id: [1, 2, 3],
+            is_permission: 1,
+            account: '123',
+            password: '123',
+            repeat_password: '123'
+          }
+          this.$emit('basicInfoSave', testData)
         }
       })
     }
+  },
+  mounted() {
   }
 }
 </script>
