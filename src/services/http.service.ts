@@ -104,7 +104,7 @@ export class HttpService {
   }
   get appHeadersWithContentType() {
     return Object.assign(this.appHeaders, {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json; charset=UTF-8'
     })
   }
   private ajaxErrorHandler(source$: Observable<any>) {

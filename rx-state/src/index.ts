@@ -6,25 +6,35 @@ import {
   publish,
   tap,
   finalize,
-  shareReplay,
-  map
+  shareReplay
 } from 'rxjs/operators'
 
 export type Mutation<T> = (state: T) => T | void
 export type Epic<T> = (source$: Observable<T>) => Observable<any>
 
-export class State<T> extends BehaviorSubject<T> {
-  constructor(initialState: any) {
-    super(initialState)
-  }
+class BehaviorSubjectState<T> extends BehaviorSubject<T> {
   commit(mutation: Mutation<T>): void {
-    this.next(
-      // @ts-ignore
-      produce(this.value, mutation)
-    )
+    // @ts-ignore
+    this.next(produce(this.value, mutation))
   }
   snapshot() {
     return this.value
+  }
+}
+
+export class State<T> extends BehaviorSubjectState<T> {
+  constructor(initialState: any) {
+    super(initialState)
+    // @ts-ignore
+    const state$ = this
+    state$.commit = (mutation: Mutation<T>) => {
+      // @ts-ignore
+      this.next(produce(this.value, mutation))
+    }
+    state$.snapshot = () => {
+      return this.value
+    }
+    return state$
   }
 }
 
