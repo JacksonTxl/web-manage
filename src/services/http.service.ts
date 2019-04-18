@@ -54,11 +54,7 @@ export class HttpService {
   post(url: string, options: RequestOptions = {}) {
     const requestUrl = this.makeRequestUrl(url, options)
     const post$ = ajax
-      .post(
-        requestUrl,
-        options.params,
-        this.appHeaders
-      )
+      .post(requestUrl, options.params, this.appHeadersWithContentType)
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
@@ -67,11 +63,7 @@ export class HttpService {
   put(url: string, options: RequestOptions = {}) {
     const requestUrl = this.makeRequestUrl(url, options)
     const put$ = ajax
-      .put(
-        requestUrl,
-        options.params,
-        this.appHeaders
-      )
+      .put(requestUrl, options.params, this.appHeadersWithContentType)
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
       .pipe(pluck('response', 'data'))
@@ -107,9 +99,13 @@ export class HttpService {
     return {
       token: this.auth.tokenSnapshot,
       'app-id': '11111',
-      'app-version': '11111',
-      'Content-Type': 'application/json'
+      'app-version': '11111'
     }
+  }
+  get appHeadersWithContentType() {
+    return Object.assign(this.appHeaders, {
+      'Content-Type': 'application/json'
+    })
   }
   private ajaxErrorHandler(source$: Observable<any>) {
     return source$.pipe(
