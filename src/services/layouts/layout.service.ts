@@ -21,7 +21,7 @@ interface LayoutState {
 }
 
 @Injectable()
-export class LayoutService extends Store<LayoutState> implements RouteGuard {
+export class LayoutService extends Store<LayoutState> {
   state$: State<LayoutState>
   breadcrumbs$: Computed<Breadcrumb[]>
   constructor() {
@@ -43,9 +43,5 @@ export class LayoutService extends Store<LayoutState> implements RouteGuard {
     this.state$.commit(state => {
       state.breadcrumbs = breadcrumbs
     })
-  }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.SET_BREADCRUMBS([])
-    next()
   }
 }

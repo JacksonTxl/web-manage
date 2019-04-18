@@ -1,5 +1,5 @@
 <template>
-  <div :class="b()">
+  <div :class="b()" :style="{'margin-top':info.contract_marget + 'mm'}">
     <header :class="b('header')">
       <img v-if="info.is_brand_logo" :class="b('brand-logo')" src="a.png" alt="brand-logo">
       <h1 :class="b('title')">{{info.contract_title}}</h1>
@@ -141,7 +141,7 @@
         <a-col :span="24">
           <div class="info-item">
             <label class="info-label">合同有效期：</label>
-            <span class="info-text">2019年1月1日至2020年1月1日</span>
+            <span class="info-text">{{today | dateFilter('YYYY年M月D日') }}至2022年1月1日</span>
           </div>
         </a-col>
         <a-col :span="24">
@@ -174,13 +174,13 @@
         <a-col :span="12">
           <div class="info-item">
             <label class="info-lable">签订日期：</label>
-            <span class="info-text">2019年1月1日</span>
+            <span class="info-text">{{today | dateFilter('YYYY年M月D日') }}</span>
           </div>
         </a-col>
         <a-col :span="12">
           <div class="info-item">
             <label class="info-lable">签订日期：</label>
-            <span class="info-text">2019年1月1日</span>
+            <span class="info-text">{{today | dateFilter('YYYY年M月D日') }}</span>
           </div>
         </a-col>
       </a-row>
@@ -189,19 +189,16 @@
 </template>
 <script>
 import { EditService } from '../edit.service'
-
-const CONTRACT_TYPE = {
-  MEMBER_CARD: 1,
-  PERSONAL: 2,
-  PACKAGE: 3,
-  DEPOSITE: 4,
-  CABINET: 5,
-  MONEY: 6
-}
+import { dateFilter } from '@/filters/date.filters'
+import { CONTRACT_TYPE } from '@/constants/enums/contract'
+import moment from 'moment'
 
 export default {
   bem: {
     b: 'contract-preview'
+  },
+  filters: {
+    dateFilter
   },
   serviceInject() {
     return {
@@ -217,6 +214,12 @@ export default {
       info: edit.info$,
       lawContent: edit.lawContent$,
       codeDemo: edit.codeDemo$
+    }
+  },
+  data() {
+    return {
+      CONTRACT_TYPE,
+      today: moment()
     }
   },
   computed: {
@@ -239,11 +242,6 @@ export default {
         default:
           return false
       }
-    }
-  },
-  data() {
-    return {
-      CONTRACT_TYPE
     }
   }
 }

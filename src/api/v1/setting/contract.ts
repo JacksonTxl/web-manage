@@ -17,7 +17,7 @@ export class ContractApi extends Api {
    * 合同设置更新
    */
   update(params: ContractInput) {
-    return this.http.put('/v1/setting/contract', { params })
+    return this.http.put(`/v1/setting/contract`, { params })
   }
   add(params: ContractInput) {
     return this.http.post('/v1/setting/contract', { params })
@@ -49,6 +49,7 @@ export class ContractApi extends Api {
 }
 
 export interface ContractInput {
+  id?: number
   /**
    * 合同标题
    */
