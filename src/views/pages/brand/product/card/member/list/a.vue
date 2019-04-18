@@ -78,7 +78,7 @@
         @click="sellStatus(text,record)"
       >
         <span v-if="text.name ==='可售卖'" class="pages-brand-product-card-list-a-marketable"></span>
-        <span v-if="text.name ==='停售'" class="pages-brand-product-card-list-a-stopSell"></span>
+        <span v-if="text.id ===2" class="pages-brand-product-card-list-a-stopSell"></span>
         {{text.name}}
         <a-popover
           :title="popoverTitle"
@@ -90,7 +90,7 @@
           <template slot="content">
             <p>{{popoverContent}}</p>
           </template>
-          <a-icon type="exclamation-circle" v-if="text.name ==='停售'"/>
+          <a-icon type="exclamation-circle" v-if="text.id ===2"/>
         </a-popover>
       </a>
       <!-- 售卖状态end -->
@@ -101,7 +101,7 @@
         <a href="javascript:;" v-if="record.sell_status.name === '可售卖'">
           <modal-link tag="a" :to="{ name: 'card-batch-shelves' }">上架</modal-link>
         </a>
-        <a href="javascript:;" v-if="record.sell_status.name === '停售'">
+        <a href="javascript:;" v-if="record.sell_status.id === 2">
           <modal-link tag="a" :to=" { name: 'card-recovery-sell' }">恢复售卖</modal-link>
         </a>
         <template v-if="record.sell_status.name === '可售卖'">

@@ -62,10 +62,17 @@ export class CardsApi extends Api {
     return this.http.get(`/v1/cards/sale/info`, { query })
   }
   /**
-   *会员卡删除(未)
+   *会员卡删除
    */
-  getCardsDel(params: any) {
-    return this.http.delete(`/v1/cards`, { params })
+  getCardsDel(id: string) {
+    console.log('id', id)
+    return this.http.delete(`/v1/cards/${id}`, { params: {} })
+  }
+  /**
+   *填写会员卡停售
+   */
+  setCardsSaleStop(params: any) {
+    return this.http.post('/v1/cards/sale/stop', { params })
   }
 }
 export interface CardsInput {

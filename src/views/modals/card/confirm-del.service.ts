@@ -25,7 +25,7 @@ export class ConfimDelService extends Store<CardsTableModelState> {
       state.cardsTableModel = cardsTableModel
     })
   }
-  getListInfo(paramsObj: any) {
+  getListInfo(paramsObj: string) {
     return this.cardsApi.getCardsDel(paramsObj)
   }
 }

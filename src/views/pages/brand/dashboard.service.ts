@@ -25,7 +25,11 @@ export class DashboardService extends Store<DashboardState> {
   }
   @Effect()
   getBrands(data: GetBrandIndexInput = {}) {
-    return this.brandApi.getBrandIndex(data)
+    return this.brandApi.getBrandIndex(data).pipe(
+      tap(res => {
+        this.SET_DASHBOARD_STATE(res)
+      })
+    )
   }
   protected SET_DASHBOARD_STATE(data: DashboardState) {
     this.state$.commit(state => {
@@ -34,8 +38,7 @@ export class DashboardService extends Store<DashboardState> {
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getBrands().subscribe((res) => {
-      this.SET_DASHBOARD_STATE(res)
+    this.getBrands().subscribe(() => {
       next()
     }, () => {
       next(false)
