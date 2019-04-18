@@ -4,7 +4,7 @@ import { forkJoin } from 'rxjs'
 import { tap, pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { State, Computed, log } from 'rx-state'
-import { LayoutService } from '@/services/layouts/layout.service'
+import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
 
 interface ListState {
   list: any[]
@@ -16,7 +16,7 @@ export class ListService extends Store<ListState> implements RouteGuard {
   list$: Computed<any[]>
   constructor(
     private contractApi: ContractApi,
-    private layoutService: LayoutService
+    private layoutBrand: LayoutBrandService
   ) {
     super()
     this.state$ = new State({
@@ -45,7 +45,7 @@ export class ListService extends Store<ListState> implements RouteGuard {
     return forkJoin(this.getList())
   }
   initBreadcrumbs() {
-    this.layoutService.SET_BREADCRUMBS([
+    this.layoutBrand.SET_BREADCRUMBS([
       {
         label: '合同模版列表',
         route: { name: '' }

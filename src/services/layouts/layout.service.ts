@@ -44,8 +44,4 @@ export class LayoutService extends Store<LayoutState> implements RouteGuard {
       state.breadcrumbs = breadcrumbs
     })
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.SET_BREADCRUMBS([])
-    next()
-  }
 }
