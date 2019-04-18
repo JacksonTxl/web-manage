@@ -58,7 +58,7 @@ export class HttpService {
         requestUrl,
         options.params,
         Object.assign(this.appHeaders, {
-          'Content-Type': 'application/json;utf-8'
+          'Content-Type': 'application/json'
         })
       )
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
@@ -73,7 +73,7 @@ export class HttpService {
         requestUrl,
         options.params,
         Object.assign(this.appHeaders, {
-          'Content-Type': 'application/json;utf-8'
+          'Content-Type': 'application/json'
         })
       )
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))

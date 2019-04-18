@@ -20,16 +20,16 @@
             >设置规则</modal-link>
           </st-form-item>
           <st-form-item label="页面缩放" :class="bSider('form-item',{radio:true})">
-            <a-radio-group>
-              <a-radio value="1">默认</a-radio>
-              <a-radio value="2">缩放</a-radio>
+            <a-radio-group v-model='info.contract_page_type'>
+              <a-radio :value="0">默认</a-radio>
+              <a-radio :value="1">缩放</a-radio>
             </a-radio-group>
             <a-input-number v-model="info.contract_page" :min="0" :max="100"></a-input-number>%
           </st-form-item>
           <st-form-item :class="bSider('form-item',{radio:true})" label="首行边距">
-            <a-radio-group>
-              <a-radio value="1">默认</a-radio>
-              <a-radio value="2">缩放</a-radio>
+            <a-radio-group v-model='info.contract_marget_type'>
+              <a-radio :value="0">默认</a-radio>
+              <a-radio :value="1">缩放</a-radio>
             </a-radio-group>
             <a-input-number v-model="info.contract_marget" :min="0" :max="100"></a-input-number>mm
           </st-form-item>
