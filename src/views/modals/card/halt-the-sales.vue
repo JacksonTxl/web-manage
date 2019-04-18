@@ -99,10 +99,7 @@ export default {
         reason: self.textareaInfo
       }
       self.aService.setListInfo(data).subscribe(state => {
-        console.log(state.code, state)
-        self.$router.push(
-          `/brand/product/card/member/list/a?time=${new Date().getTime()}`
-        )
+        this.$emit('done', true)
       })
     }
   },

@@ -109,12 +109,15 @@
           <st-more-dropdown>
             <a-menu-item>编辑</a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'card-halt-the-sales', props:{a:record.id}}">停售</modal-link>
+              <modal-link
+                tag="a"
+                :to=" { name: 'card-halt-the-sales', props:{a:record.id}, on:{done: onModalTest }}"
+              >停售</modal-link>
             </a-menu-item>
             <a-menu-item v-if=" !(record.shelf_upper || record.shelf_lower)">
               <modal-link
                 tag="a"
-                :to=" { name: 'card-confirm-del', props:{title: {title:record.card_name,id:record.id}}}"
+                :to=" { name: 'card-confirm-del', props:{title: {title:record.card_name,id:record.id}}, on:{del: onModalTest }}"
               >删除</modal-link>
             </a-menu-item>
           </st-more-dropdown>
@@ -125,11 +128,11 @@
   </div>
 </template>
 <script>
-import { AService } from './a.service'
+import { MemberListService } from './member-list.service'
 export default {
   serviceInject() {
     return {
-      aService: AService
+      aService: MemberListService
     }
   },
   subscriptions() {
@@ -317,6 +320,9 @@ export default {
     this.getInfoData(this.cardsListInfo)
   },
   methods: {
+    onModalTest(data) {
+      this.getListInfoFunc()
+    },
     // 停售原因
     popoverStopReason(text, record) {
       let self = this
