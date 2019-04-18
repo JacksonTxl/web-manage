@@ -91,17 +91,6 @@
               :pagination="false"
               :scroll="{ y: 230 }"
             >
-              <template slot="num" slot-scope="text, record, index">
-                <!-- <a-input :value="text.num" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
-                  <a-select slot="addonAfter" :value="text.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
-                    <a-select-option
-                    v-for="(item,index) in nuit_list"
-                    :value="item.value"
-                    :key="index" >{{item.label}}</a-select-option>
-                  </a-select>
-                </a-input> -->
-                {{text}}-{{record}}-{{index}}
-              </template>
             </a-table>
             <a-table
               v-if="cardInfo.price_setting.id===2"
@@ -112,17 +101,6 @@
               :pagination="false"
               :scroll="{ y: 230 }"
             >
-              <template slot="num" slot-scope="text, record, index">
-                <!-- <a-input :value="text.num" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
-                  <a-select slot="addonAfter" :value="text.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
-                    <a-select-option
-                    v-for="(item,index) in nuit_list"
-                    :value="item.value"
-                    :key="index" >{{item.label}}</a-select-option>
-                  </a-select>
-                </a-input> -->
-                {{text}}-{{record}}-{{index}}
-              </template>
             </a-table>
           </st-container>
         </div>
@@ -200,45 +178,53 @@ export default {
         brand: [
           {
             title: '期限',
-            scopedSlots: { customRender: 'num' },
-            dataIndex: 'num'
+            scopedSlots: { customRender: 'validity_period' },
+            dataIndex: 'validity_period',
+            width: '25%'
           },
           {
             title: '售价',
-            scopedSlots: { customRender: 'rally_price' },
-            dataIndex: 'rally_price'
+            scopedSlots: { customRender: 'sale_price' },
+            dataIndex: 'sale_price',
+            width: '25%'
           },
           {
             title: '允许冻结天数',
             scopedSlots: { customRender: 'frozen_day' },
-            dataIndex: 'frozen_day'
+            dataIndex: 'frozen_day',
+            width: '25%'
           },
           {
             title: '赠送上限',
             scopedSlots: { customRender: 'gift_unit' },
-            dataIndex: 'gift_unit'
+            dataIndex: 'gift_unit',
+            width: '25%'
           }
         ],
         shop: [
           {
             title: '期限',
-            scopedSlots: { customRender: 'unit' },
-            dataIndex: 'unit'
+            scopedSlots: { customRender: 'validity_period' },
+            dataIndex: 'validity_period',
+            width: '25%'
           },
           {
             title: '售价',
-            scopedSlots: { customRender: 'rally_price' },
-            dataIndex: 'rally_price'
+            scopedSlots: { customRender: 'sale_price' },
+            dataIndex: 'sale_price',
+            width: '25%'
           },
           {
             title: '允许冻结天数',
             scopedSlots: { customRender: 'frozen_day' },
-            dataIndex: 'frozen_day'
+            dataIndex: 'frozen_day',
+            width: '25%'
           },
           {
             title: '赠送上限',
             scopedSlots: { customRender: 'gift_unit' },
-            dataIndex: 'gift_unit'
+            dataIndex: 'gift_unit',
+            width: '25%'
           }
         ]
       },

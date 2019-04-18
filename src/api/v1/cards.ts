@@ -2,28 +2,28 @@ import { Api } from '../api'
 
 export class CardsApi extends Api {
   /**
-   * 获取默认卡背景
+   * 会员卡新增,品牌
    */
-  getCardsBgList() {
-    return this.http.get('/v1/cards/bg_list', { mock: {} })
+  addCardsBrand(params:CardsInput) {
+    return this.http.post('/v1/cards/brand', { params })
   }
   /**
-   * 会员卡新增
+   * 会员卡详情
    */
-  addCards(params:CardsInput) {
-    return this.http.post('/v1/cards', { params })
+  getCardInfo(id: string) {
+    return this.http.get(`/v1/cards/${id}`)
+  }
+  /**
+   * 会员卡编辑详情
+   */
+  getCardInfoBack(id: string) {
+    return this.http.get(`/v1/cards/back/${id}`)
   }
   /**
    * 会员卡编辑
    */
   editCards(params:CardsInput) {
     return this.http.put('/v1/cards', { params })
-  }
-  /**
-   *
-   */
-  getCardInfo(id: string) {
-    return this.http.get(`/v1/cards/${id}`)
   }
   /**
    *获取卡列表

@@ -1,5 +1,5 @@
 <template>
-  <st-panel app class="page-brand-card-info page-brand-number-card-info" initial>
+  <st-panel app class="page-brand-card-info page-brand-period-card-info" initial>
     <div class="page-brand-card-info-body">
       <div class="page-preview">实时预览</div>
       <div class="page-content">
@@ -7,19 +7,31 @@
           <!-- 卡名称 -->
           <img
           :class="item('card_bg')"
-          src="http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/oRoVYhYc26wVMKb9.png"
+          :src="cardInfo.card_bg.image_url"
           width="192"
           height="108"
           alt="">
           <div :class="item('name_time')">
             <p :class="item('name')">
-              <st-tag type="period-card"/>
-              <span>会员卡名称</span>
-              <span>售卖中</span>
+              <st-tag type="number-card"/>
+              <span>{{cardInfo.card_name}}</span>
+              <span :class="{'brand-card__selling':cardInfo.sell_status.id===1,'brand-card__sellstop':cardInfo.sell_status.id===2}">{{cardInfo.sell_status.name}}
+                <a-popover
+                  v-if="cardInfo.sell_status.id===2"
+                  trigger="hover"
+                  placement="bottomRight"
+                  arrowPointAtCenter
+                >
+                  <div slot="content">
+                    {{cardInfo.sell_status.addition}}
+                  </div>
+                  <a-icon type="info-circle"></a-icon>
+                </a-popover>
+              </span>
             </p>
             <p :class="item('time')">
               <span class="label">售卖时间：</span>
-              <span class="value">2018/09/10 ~ 2019/10/10</span>
+              <span class="value">{{cardInfo.start_time}} ~ {{cardInfo.end_time}}</span>
             </p>
           </div>
         </div>
@@ -27,13 +39,14 @@
           <!-- 售卖门店 -->
           <p class="mb-8">
             <span class="label">售卖门店：</span>
-            <span class="value">全门店（已上架30家门店/共40家门店）</span>
+            <span class="value">{{cardInfo.support_sales.name}}</span>
           </p>
-          <st-container>
+          <st-container v-if="cardInfo.support_sales.id===2">
             <a-table
               size="middle"
+              rowKey="shop_id"
               :columns="shop_columns"
-              :dataSource="shop_table"
+              :dataSource="cardInfo.sell_shop_list"
               :pagination="false"
               :scroll="{ y: 230 }"
             />
@@ -43,13 +56,14 @@
           <!-- 支持入场范围 -->
           <p class="mb-8">
             <span class="label">支持入场范围：</span>
-            <span class="value">共3家门店</span>
+            <span class="value">{{cardInfo.admission_range.name}}</span>
           </p>
-          <st-container>
+          <st-container v-if="cardInfo.admission_range.id===2">
             <a-table
               size="middle"
+              rowKey="shop_id"
               :columns="shop_columns"
-              :dataSource="shop_table"
+              :dataSource="cardInfo.admission_shop_list"
               :pagination="false"
               :scroll="{ y: 230 }"
             />
@@ -59,7 +73,7 @@
           <!-- 定价方式 -->
           <p class="mb-8">
             <span class="label">定价方式：</span>
-            <span class="value">门店自主定价</span>
+            <span class="value">{{cardInfo.price_setting.name}}</span>
           </p>
         </div>
         <div :class="item('price_gradient')" class="mb-24">
@@ -69,19 +83,32 @@
           </p>
           <st-container>
             <a-table
+              v-if="cardInfo.price_setting.id===1"
               size="middle"
-              :columns="shop_columns"
-              :dataSource="shop_table"
+              rowKey="id"
+              :columns="price_gradient_columns.brand"
+              :dataSource="cardInfo.price_gradient"
               :pagination="false"
               :scroll="{ y: 230 }"
-            />
+            >
+            </a-table>
+            <a-table
+              v-if="cardInfo.price_setting.id===2"
+              size="middle"
+              rowKey="id"
+              :columns="price_gradient_columns.shop"
+              :dataSource="cardInfo.price_gradient"
+              :pagination="false"
+              :scroll="{ y: 230 }"
+            >
+            </a-table>
           </st-container>
         </div>
         <div :class="item('transfer')" class="mb-24">
           <!-- 转让设置 -->
           <p class="mb-8">
             <span class="label">转让设置：</span>
-            <span class="value">支持转让，收费交易金额8%手续费</span>
+            <span class="value">{{cardInfo.is_transfer.name}}</span>
           </p>
         </div>
         <div :class="item('card_introduction')" class="mb-24">
@@ -89,18 +116,14 @@
           <p class="mb-8">
             <span class="label">会员卡说明：</span>
           </p>
-          <st-container>
-            会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明
-          </st-container>
+          <st-container>{{cardInfo.card_introduction}}</st-container>
         </div>
         <div :class="item('card_contents')" class="mb-24">
           <!-- 备注 -->
           <p class="mb-8">
             <span class="label">备注：</span>
           </p>
-          <st-container>
-            会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明会员卡说明
-          </st-container>
+          <st-container>{{cardInfo.card_contents}}</st-container>
         </div>
       </div>
     </div>
@@ -127,6 +150,104 @@ export default {
   },
   data() {
     return {
+      // 门店表头
+      shop_columns: [
+        {
+          title: '省',
+          dataIndex: 'province_name',
+          width: '22%'
+        },
+        {
+          title: '市',
+          dataIndex: 'city_name',
+          width: '22%'
+        },
+        {
+          title: '区',
+          dataIndex: 'district_name',
+          width: '22%'
+        },
+        {
+          title: '门店名称',
+          dataIndex: 'shop_name',
+          width: '34%'
+        }
+      ],
+      // 售卖定价表头
+      price_gradient_columns: {
+        brand: [
+          {
+            title: '入场次数',
+            scopedSlots: { customRender: 'validity_times' },
+            dataIndex: 'validity_times',
+            width: '20%'
+          },
+          {
+            title: '售价',
+            scopedSlots: { customRender: 'sale_price' },
+            dataIndex: 'sale_price',
+            width: '20%'
+          },
+          {
+            title: '有效期',
+            scopedSlots: { customRender: 'validity_period' },
+            dataIndex: 'validity_period',
+            width: '20%'
+          },
+          {
+            title: '允许冻结天数',
+            scopedSlots: { customRender: 'frozen_day' },
+            dataIndex: 'frozen_day',
+            width: '20%'
+          },
+          {
+            title: '赠送上限',
+            scopedSlots: { customRender: 'gift_unit' },
+            dataIndex: 'gift_unit',
+            width: '20%'
+          }
+        ],
+        shop: [
+          {
+            title: '入场次数',
+            scopedSlots: { customRender: 'validity_times' },
+            dataIndex: 'validity_times',
+            width: '20%'
+          },
+          {
+            title: '售价',
+            scopedSlots: { customRender: 'sale_price' },
+            dataIndex: 'sale_price',
+            width: '20%'
+          },
+          {
+            title: '有效期',
+            scopedSlots: { customRender: 'validity_period' },
+            dataIndex: 'validity_period',
+            width: '20%'
+          },
+          {
+            title: '允许冻结天数',
+            scopedSlots: { customRender: 'frozen_day' },
+            dataIndex: 'frozen_day',
+            width: '20%'
+          },
+          {
+            title: '赠送上限',
+            scopedSlots: { customRender: 'gift_unit' },
+            dataIndex: 'gift_unit',
+            width: '20%'
+          }
+        ]
+      },
+
+      // 期限单位
+      nuit_list: {
+        2: '天',
+        3: '月',
+        4: '年'
+      },
+
       cardData: {
         admission_range: 1,
         price_setting: 1,
@@ -155,28 +276,6 @@ export default {
         { value: 1, label: '用户端售卖' }
       ],
 
-      shop_columns: [
-        {
-          title: '省',
-          dataIndex: 'province',
-          width: '22%'
-        },
-        {
-          title: '市',
-          dataIndex: 'city',
-          width: '22%'
-        },
-        {
-          title: '区',
-          dataIndex: 'district',
-          width: '22%'
-        },
-        {
-          title: '门店名称',
-          dataIndex: 'shopname',
-          width: '34%'
-        }
-      ],
       shop_table: [
         {
           key: 1,
@@ -318,20 +417,6 @@ export default {
           rally_price: 11,
           frozen_day: 12,
           gift_unit: 13
-        }
-      ],
-      nuit_list: [
-        {
-          value: 2,
-          label: '天'
-        },
-        {
-          value: 3,
-          label: '月'
-        },
-        {
-          value: 4,
-          label: '年'
         }
       ]
     }

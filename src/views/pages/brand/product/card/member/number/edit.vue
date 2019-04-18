@@ -39,7 +39,7 @@
             </a-col>
           </a-row>
           <a-row :gutter="8">
-            <a-col :lg="22">
+            <a-col :lg="23">
               <st-form-item class="page-content-card-price-setting mt-4" label="价格设置" required>
                 <a-radio-group
                   @change="price_range"
@@ -97,11 +97,11 @@
                         </a-input>
                     </template>
                     <template slot="rally_price" slot-scope="text, record, index">
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'min_price'})" style="width:80px">
+                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'min_price'})" style="width:70px">
                           <span slot="suffix">元</span>
                         </a-input>
                         ~
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'max_price'})" style="width:80px">
+                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'max_price'})" style="width:70px">
                           <span slot="suffix">元</span>
                         </a-input>
                     </template>
@@ -362,14 +362,20 @@ export default {
       // 品牌统一定价表格表头
       brand_price_columns: [
         {
-          title: '期限',
-          scopedSlots: { customRender: 'time' },
-          dataIndex: 'time'
+          title: '入场次数',
+          scopedSlots: { customRender: 'validity_times' },
+          dataIndex: 'validity_times'
         },
         {
           title: '售价',
           scopedSlots: { customRender: 'rally_price' },
           dataIndex: 'rally_price'
+        },
+        {
+          title: '有效期',
+          scopedSlots: { customRender: 'time' },
+          dataIndex: 'time',
+          width: 120
         },
         {
           title: '允许冻结天数',
@@ -391,16 +397,21 @@ export default {
       // 门店自主定价表格表头
       shop_price_columns: [
         {
-          title: '期限',
-          scopedSlots: { customRender: 'time' },
-          dataIndex: 'time',
-          width: 120
+          title: '入场次数',
+          scopedSlots: { customRender: 'validity_times' },
+          dataIndex: 'validity_times'
         },
         {
           title: '售价范围',
           scopedSlots: { customRender: 'rally_price' },
           dataIndex: 'rally_price',
-          width: 200
+          width: 180
+        },
+        {
+          title: '有效期',
+          scopedSlots: { customRender: 'time' },
+          dataIndex: 'time',
+          width: 120
         },
         {
           title: '允许冻结天数',
@@ -589,8 +600,9 @@ export default {
       let key = parseInt(Math.random() * 999999).toString()
       this.rally_price_list.push({
         key,
+        validity_times: null,
         time: {
-          unit: 1,
+          unit: 2,
           num: null
         },
         rally_price: null,
@@ -615,8 +627,9 @@ export default {
       let key = parseInt(Math.random() * 999999).toString()
       this.shop_price_list.push({
         key,
+        validity_times: null,
         time: {
-          unit: 1,
+          unit: 2,
           num: null
         },
         rally_price: {
