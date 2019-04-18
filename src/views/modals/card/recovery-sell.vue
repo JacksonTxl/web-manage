@@ -11,7 +11,8 @@
         <a-icon class="icon" type="exclamation-circle"/>注：仅恢复会员卡为可售卖状态，该会员卡需要重新上架至门店。
       </div>
       <div class="modal-card-recovery-sell-type-box">
-        <span class="modal-card-recovery-sell-type">期限卡</span>会员卡名称
+        <span class="modal-card-recovery-sell-type">{{a.card_type.name}}</span>
+        {{a.card_name}}
       </div>
       <div>
         <span style="margin-right:16px">支持售卖时间</span>
@@ -30,12 +31,18 @@
         </a-popconfirm>-->
       </footer>
     </section>
+    {{a}}
   </a-modal>
 </template>
 <script>
 import moment from 'moment'
 export default {
   name: 'recoverySell',
+  props: {
+    a: {
+      type: Object
+    }
+  },
   data() {
     return {
       show: false,

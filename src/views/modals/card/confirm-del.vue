@@ -35,11 +35,11 @@ export default {
         title: '确认要删除?',
         content: `确认删除此${self.title.title}会员卡吗`,
         onOk() {
-          self.aService
-            .getListInfo(self.title.id)
-            .subscribe(state => {
-              console.log(123123, state)
-            })
+          self.aService.getListInfo(self.title.id).subscribe(state => {
+            self.$router.push(
+              `/brand/product/card/member/list/a?time=${new Date().getTime()}`
+            )
+          })
         },
         onCancel() {
           console.log('Cancel')

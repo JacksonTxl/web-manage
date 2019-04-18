@@ -66,7 +66,7 @@ export class CardsApi extends Api {
    */
   getCardsDel(id: string) {
     console.log('id', id)
-    return this.http.delete(`/v1/cards/${id}`, { params: {} })
+    return this.http.delete(`/v1/cards/${id}`)
   }
   /**
    *填写会员卡停售
