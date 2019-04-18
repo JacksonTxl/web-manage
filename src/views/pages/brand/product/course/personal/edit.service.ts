@@ -1,12 +1,38 @@
-import { ServiceRoute } from 'vue-service-app'
-import { SetService } from './set.service'
+import { Injectable, ServiceRoute } from 'vue-service-app'
+import { State, Computed, Effect } from 'rx-state'
+import { pluck, tap } from 'rxjs/operators'
+import { Store } from '@/services/store'
+import { PersonalApi, GetPersonalBrandInfoInput, SetPersonalBrandInput } from '@/api/v1/course/personal'
 
-export class EditService extends SetService {
+interface EditState {
+  info: Object
+}
+@Injectable()
+export class EditService extends Store<EditState> {
+  state$: State<EditState>
+  info$: Computed<Object>
+  constructor(protected personalApi: PersonalApi) {
+    super()
+    this.state$ = new State({
+      info: {}
+    })
+    this.info$ = new Computed(this.state$.pipe(pluck('info')))
+  }
+  getPersonalBrandInfo(query: GetPersonalBrandInfoInput) {
+    return this.personalApi.getPersonalBrandInfo(query)
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getPersonalBrandInfo({
-      course_id: 6
-    }).subscribe(() => {
+    const course_id = to.meta.query.id
+    this.getPersonalBrandInfo({ course_id }).subscribe((res) => {
+      this.state$.commit(state => {
+        if (course_id) {
+          res.course_id = course_id
+        }
+        state.info = res
+      })
       next()
+    }, () => {
+      next(false)
     })
   }
 }

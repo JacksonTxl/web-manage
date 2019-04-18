@@ -74,8 +74,6 @@ export default {
         self.pagination.current = state.page.current_page
         self.pagination.pageSize = state.page.size
         self.pagination.total = state.page.total_counts
-
-        console.log(123123, state)
       })
     },
     save(e) {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-select placeholder="请选择课程类型" @change="change">
+    <a-select :defaultValue="checkedId" placeholder="请选择课程类型" @change="change">
       <a-select-option :value="item.id" v-for="item in list" :key="item.id">{{item.setting_name}}</a-select-option>
     </a-select>
   </div>
@@ -15,6 +15,12 @@ export default {
       selectCourseTypeService: SelectCourseTypeService
     }
   },
+  props: {
+    checkedId: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     return {
       list: []
@@ -26,7 +32,7 @@ export default {
     }
   },
   created() {
-    this.selectCourseTypeService.getCourseTypes().subscribe()
+    this.selectCourseTypeService.getCourseTypeList().subscribe()
   },
   methods: {
     change(val) {

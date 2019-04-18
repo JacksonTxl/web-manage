@@ -9,7 +9,6 @@ import {
   shareReplay,
   map
 } from 'rxjs/operators'
-import { cloneDeep } from 'lodash-es'
 
 export type Mutation<T> = (state: T) => T | void
 export type Epic<T> = (source$: Observable<T>) => Observable<any>
@@ -23,6 +22,9 @@ export class State<T> extends BehaviorSubject<T> {
       // @ts-ignore
       produce(this.value, mutation)
     )
+  }
+  snapshot() {
+    return this.value
   }
 }
 
@@ -101,9 +103,19 @@ export function Effect() {
   }
 }
 
-export class Computed<T> extends Observable<T> {
+class ObservableWithSnapshot<T> extends Observable<T> {
+  snapshot() {
+    return getSnapshot(this)
+  }
+}
+
+export class Computed<T> extends ObservableWithSnapshot<T> {
   constructor(source$: Observable<T>) {
     super()
-    return source$.pipe(shareReplay(1))
+    const computed$ = source$.pipe(shareReplay(1)) as ObservableWithSnapshot<T>
+    computed$.snapshot = function() {
+      return getSnapshot(computed$)
+    }
+    return computed$
   }
 }

@@ -52,16 +52,7 @@
         <a-rate :defaultValue="rate" disabled />
       </div>
       <div slot="action" slot-scope="record">
-        <modal-link tag="a" :to="{name:'test'}">打开</modal-link>
-        <a-divider type="vertical"></a-divider>
-        <a-popconfirm title="确认删除该权限么?" @confirm="onDelete(record.id)">
-          <a>删除</a>
-        </a-popconfirm>
-        <st-more-dropdown style="margin-left: 12px;">
-          <a-menu-item>转让</a-menu-item>
-          <a-menu-item>出售</a-menu-item>
-          <a-menu-item>你好</a-menu-item>
-        </st-more-dropdown>
+        <a href="http://" :record="record">查看</a>
       </div>
     </st-table>
 

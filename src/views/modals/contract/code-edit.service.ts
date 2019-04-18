@@ -1,66 +1,39 @@
 import { Injectable } from 'vue-service-app'
 import { ContractApi } from '@/api/v1/setting/contract'
-import { tap, pluck, map } from 'rxjs/operators'
-import { State, Effect, Computed, getSnapshot } from 'rx-state/src'
-import { forkJoin } from 'rxjs'
 import { Store } from '@/services/store'
-import { cloneDeep } from 'lodash-es'
+import { Effect, getSnapshot } from 'rx-state/src'
+import { SN_RULE, SN_GENERATE_RULE } from '@/constants/enums/contract'
+import { RouteService } from '@/services/route.service'
 
-interface Info {
-  id: number
-  _mode?: 'edit' | 'add'
-  [key: string]: any
+interface ViewRule {
+  sn_rule: number
+  _value: any
+  sn_pos?: number
+  sn_generate_rule?: number
+  sn_generate_value?: string | number
 }
-interface CodeEditState {
-  list: Info[]
-}
-
 @Injectable()
-export class CodeEditService extends Store<CodeEditState> {
-  state$ = new State<CodeEditState>({
-    list: [],
-    editInfo: {}
-  })
-  list$ = new Computed(this.state$.pipe(pluck('list'))).pipe(
-    map(list => cloneDeep(list))
-  )
-  constructor(private contractApi: ContractApi) {
+export class CodeEditService extends Store<{}> {
+  constructor(private contractApi: ContractApi, private route: RouteService) {
     super()
   }
-  get listSnapshot() {
-    return getSnapshot(this.list$)
-  }
-  SET_LIST(list: Info[]) {
-    this.state$.commit(state => {
-      state.list = list
-    })
-  }
-  editRow(id: number) {
-    const idx = this.listSnapshot.findIndex(item => item.id === id)
-    this.state$.commit(state => {
-      state.list.forEach(item => {
-        item._mode = undefined
-      })
-      state.list[idx]._mode = 'edit'
-    })
-  }
-  quitEditRow(id: number) {
-    const idx = this.listSnapshot.findIndex(item => item.id === id)
-    this.state$.commit(state => {
-      state.list[idx]._mode = undefined
-    })
-  }
   @Effect()
-  getCodeInfo(id: number) {
-    return this.contractApi.getCodeInfo(id).pipe(
-      tap(res => {
-        this.state$.commit(state => {
-          state.list = res
-        })
-      })
-    )
-  }
-  init(id: number) {
-    return forkJoin(this.getCodeInfo(id))
+  updateCode(viewRules: ViewRule[]) {
+    const rules = viewRules.map((rule, index) => {
+      if (rule._value === 'RANDOM') {
+        rule.sn_generate_rule = SN_GENERATE_RULE.RANDOM
+        rule.sn_generate_value = ''
+      } else {
+        rule.sn_generate_rule = SN_GENERATE_RULE.FIXED
+        rule.sn_generate_value = rule._value
+      }
+      rule.sn_pos = index + 1
+      return rule
+    })
+    const query = this.route.query$.snapshot()
+    return this.contractApi.updateCode({
+      id: query.id,
+      rules
+    })
   }
 }

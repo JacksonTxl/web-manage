@@ -12,7 +12,6 @@
     display: flex;
   }
   .lf{
-    border: 1px solid red;
     position: relative;
     .w(580px);
     .h(100%);
@@ -71,17 +70,57 @@
       background-size: cover;
     }
   }
+.book {
+    background-color: #fff;
+    transform: rotateX(30deg);
+  }
+  .preserve-3d {
+    /*transform-style属性指定了，该元素的子元素是（看起来）位于三维空间内，还是在该元素所在的平面内被扁平化。*/
+    transform-style: preserve-3d;
+  }
   .rt{
     display:flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
     flex: 1;
-    .page-login__form{
-      .w(336px)
-    }
+    .mg-t(118px);
   }
   .st-icon{
     color: #fff;
   }
 }
+@keyframes mymove
+{
+from {width:0px;}
+to {width:32px;}
+}
+.page-login-tabs{
+  display: flex;
+  .w(336px);
+  .page-login-tab-item{
+    flex: 1;
+    position: relative;
+    .fz(14px);
+    .c(rgba(0,0,0,0.45));
+    .lh(20px);
+    
+    &--active{
+      .fz(16px);
+      font-weight: 500;
+      .c(rgba(0,0,0,0.85));
+      .lh(22px);
+      &:before{
+        content: '';
+        .s(32px, 4px);
+        animation:mymove .3s;
+        display: inline-block;
+        .bg(rgba(50,91,242,1));
+        position: absolute;
+        bottom: 0;
+        left: 0
+      }
+    }
+  }
+}
+
+

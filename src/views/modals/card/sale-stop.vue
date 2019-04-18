@@ -19,11 +19,11 @@
   </a-modal>
 </template>
 <script>
-import { TableStopService } from './table-stop.service'
+import { SaleStopService } from './sale-stop.service'
 export default {
   serviceInject() {
     return {
-      aService: TableStopService
+      aService: SaleStopService
     }
   },
   // subscriptions() {

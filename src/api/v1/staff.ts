@@ -279,7 +279,7 @@ const mock = {}
 export class StaffApi extends Api {
   // 获取某部门员工列表
   getStaffBrandList(query: Params) {
-    return this.http.get(URL, { query, mock })
+    return this.http.get(URL, { query })
   }
   // 获取手机号区域
   getCountryCodes() {
@@ -293,6 +293,7 @@ export class StaffApi extends Api {
   getStaffBrandInfo(id: string) {
     return this.http.get(`${URL}${id}`)
   }
+
   // 获取编辑员工回显
   getStaffBrandReview(id: number) {
     return this.http.get(`/v1/staff/brand/review/${id}`)
@@ -310,6 +311,11 @@ export class StaffApi extends Api {
     return this.http.put(`/v1/staff/brand/coach/${id}`, { params })
   }
 
+  // 新建员工基础信息
+  addStaffBasicInfo(params: AddStaffBasicInfoParams) {
+    return this.http.post(`/v1/staff/brand/basic`, { params })
+  }
+
   // 编辑员工信息
   updateStaffBrandInfo(params: SaveData) {
     return this.http.put(URL, { params })
@@ -318,4 +324,99 @@ export class StaffApi extends Api {
   deleteStaffBrandInfo(id: string) {
     return this.http.delete(`${URL}${id}`)
   }
+}
+
+export interface AddStaffBasicInfoParams{
+  /**
+   * 员工
+   */
+  staff_name : string;
+  /**
+   * 昵称
+   */
+  nickname : string;
+  /**
+   * 国家编码
+   */
+  country_code_id : number;
+  /**
+   * 手机号
+   */
+  mobile : string;
+  /**
+   * 邮箱
+   */
+  mail? : string;
+  /**
+   * 性别
+   */
+  sex : number;
+  /**
+   * 工号
+   */
+  staff_num : string;
+  /**
+   * 证件类型
+   */
+  id_type? : number;
+  /**
+   * 证件号码
+   */
+  id_number : number;
+  /**
+   * 部门Id
+   */
+  department_id : number;
+  /**
+   * 员工头像
+   */
+  image_avatar? : object;
+  /**
+   * 员工人脸
+   */
+  image_face? : object;
+  /**
+   * 职务
+   */
+  working_post : string;
+  /**
+   * 身份
+   */
+  identity? : number[];
+  /**
+   * 教练等级Id
+   */
+  coach_level_id? : number;
+  /**
+   * 工作性质
+   */
+  nature_work? : number;
+  /**
+   * 入职时间
+   */
+  entry_date? : string;
+  /**
+   * 角色id
+   */
+  role_id : number[];
+  /**
+   * 门店id
+   */
+  shop_id : number[];
+  /**
+   * 系统使用权限
+   */
+  is_permission : number;
+  /**
+   * 登陆账号
+   */
+  account? : string;
+  /**
+   * 登陆密码
+   */
+  password? : string;
+  /**
+  * 确认密码
+  */
+  repeat_password? : string;
 }

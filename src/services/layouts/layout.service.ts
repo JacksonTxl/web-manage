@@ -1,6 +1,6 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { Store } from '../store'
-import { State, Computed } from 'rx-state'
+import { State, Computed, log } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 
 interface Breadcrumb {
@@ -9,16 +9,19 @@ interface Breadcrumb {
    */
   label: string
   /**
-   * 面包屑链接地址
+   * 面包屑链接路由对象
    */
-  href: string
+  route: {
+    name: string
+    query?: Object
+  }
 }
 interface LayoutState {
   breadcrumbs: Breadcrumb[]
 }
 
 @Injectable()
-export class LayoutService extends Store<LayoutState> implements RouteGuard {
+export class LayoutService extends Store<LayoutState> {
   state$: State<LayoutState>
   breadcrumbs$: Computed<Breadcrumb[]>
   constructor() {
@@ -26,7 +29,12 @@ export class LayoutService extends Store<LayoutState> implements RouteGuard {
     this.state$ = new State({
       breadcrumbs: []
     })
-    this.breadcrumbs$ = new Computed(this.state$.pipe(pluck('breadcrumbs')))
+    this.breadcrumbs$ = new Computed(
+      this.state$.pipe(
+        pluck('breadcrumbs'),
+        log('layout/breadcrumbs')
+      )
+    )
   }
   /**
    * 各业务页面设定面包屑
@@ -35,9 +43,5 @@ export class LayoutService extends Store<LayoutState> implements RouteGuard {
     this.state$.commit(state => {
       state.breadcrumbs = breadcrumbs
     })
-  }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.SET_BREADCRUMBS([])
-    next()
   }
 }

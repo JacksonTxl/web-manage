@@ -121,8 +121,8 @@
                 <st-icon type="home" color="#fff"/>
               </router-link>
             </a-breadcrumb-item>
-            <a-breadcrumb-item v-for='b in breadcrumbs' :key="b.title">
-              <router-link :to='b.href'>
+            <a-breadcrumb-item v-for='b in breadcrumbs' :key="b.label">
+              <router-link :to='b.route'>
                 <span class="layout-default-brand-body__breadtext">{{b.label}}</span>
               </router-link>
             </a-breadcrumb-item>

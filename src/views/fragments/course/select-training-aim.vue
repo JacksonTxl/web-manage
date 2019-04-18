@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-select mode="tags" placeholder="请选择训练目的" @change="change">
+    <a-select mode="tags" :defaultValues="checkedIds" placeholder="请选择训练目的" @change="change">
       <a-select-option v-for="item in list" :key="`${item.id}`">{{item.setting_name}}</a-select-option>
     </a-select>
   </div>
@@ -15,6 +15,14 @@ export default {
       selectTrainingAimService: SelectTrainingAimService
     }
   },
+  props: {
+    checkedIds: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
   data() {
     return {
       list: []
@@ -26,7 +34,7 @@ export default {
     }
   },
   created() {
-    this.selectTrainingAimService.getTrainingAims().subscribe()
+    this.selectTrainingAimService.getTrainingAimList().subscribe()
   },
   methods: {
     change(val) {
