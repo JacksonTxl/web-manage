@@ -1,9 +1,16 @@
 <template>
   <st-panel app>
-    <p class="ta-r">
-      <modal-link tag="st-button" :to="{ name: 'brand-setting-app-coach-level-add', on: {
-        change: onListChange } }">添加</modal-link>
-    </p>
+    <a-row>
+      <a-col :span="16">
+        <span>（已添加7个/支持添加10个）</span>
+      </a-col>
+      <a-col :span="8">
+        <p class="ta-r">
+          <modal-link tag="st-button" :to="{ name: 'brand-setting-app-coach-level-add', on: {
+            change: onListChange } }">添加</modal-link>
+        </p>
+      </a-col>
+    </a-row>
     <st-table
       :columns="columns"
       rowKey="id"
