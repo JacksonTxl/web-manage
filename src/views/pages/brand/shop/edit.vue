@@ -167,7 +167,7 @@ export default {
       editService: EditService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       serviceList: this.editService.serviceList$,
       shopInfo: this.editService.shopInfo$,

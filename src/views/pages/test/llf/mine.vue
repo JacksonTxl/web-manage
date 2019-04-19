@@ -21,7 +21,7 @@ export default {
       mineService: MineService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       query: this.routeService.query$,
       list: this.mineService.list$

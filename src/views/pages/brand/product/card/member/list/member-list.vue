@@ -135,7 +135,7 @@ export default {
       aService: MemberListService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       cardsListInfo: this.aService.cardsListInfo$
     }

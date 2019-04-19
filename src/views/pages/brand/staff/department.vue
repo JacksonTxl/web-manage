@@ -35,7 +35,7 @@ export default {
       department: DepartmentService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       staffList: this.department.staffList$,
       loading: this.department.loading$

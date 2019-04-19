@@ -141,7 +141,7 @@ export default {
       infoService: InfoService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       cardInfo: this.infoService.cardInfo$
     }

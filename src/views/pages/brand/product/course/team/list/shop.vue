@@ -38,7 +38,7 @@ export default {
       shopService: ShopService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       teamCourseList: this.shopService.teamCourseList$
     }

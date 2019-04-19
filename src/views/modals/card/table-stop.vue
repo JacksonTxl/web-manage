@@ -18,7 +18,7 @@ export default {
       aService: SaleStopService
     }
   },
-  // subscriptions() {
+  // rxState() {
   //   return {
   //     cardsListInfo: this.aService.cardsListInfo$
   //   }

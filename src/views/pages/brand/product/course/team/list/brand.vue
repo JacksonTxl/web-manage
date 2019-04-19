@@ -32,7 +32,7 @@ export default {
       routeService: RouteService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       teamCourseList: this.brandService.teamCourseList$,
       query: this.routeService.query$

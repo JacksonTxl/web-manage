@@ -77,7 +77,7 @@ export default {
     LoginUser: user,
     LoginThird: third
   },
-  subscriptions() {
+  rxState() {
     return {
       loading: this.loginService.loading$
     }

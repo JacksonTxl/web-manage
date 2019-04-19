@@ -63,7 +63,7 @@ export default {
       route: RouteService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       query: this.route.query$
     }

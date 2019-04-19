@@ -35,7 +35,7 @@ export default {
       courseStatus: [{ label: '所有状态', value: '' }, { label: '有效', value: '1' }, { label: '无效', value: '0' }]
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       personalCourseList: this.brandService.personalCourseList$
     }

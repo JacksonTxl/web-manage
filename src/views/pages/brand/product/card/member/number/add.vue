@@ -295,7 +295,7 @@ export default {
       addService: AddService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       addLoading: this.addService.loading$
     }

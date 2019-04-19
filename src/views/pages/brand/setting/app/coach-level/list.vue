@@ -58,7 +58,7 @@ export default {
       messageService: MessageService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       tableData: this.listService.list$,
       page: this.listService.page$,
