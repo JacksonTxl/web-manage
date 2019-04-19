@@ -33,30 +33,10 @@ export class EditService extends Store<EditState> implements RouteGuard {
       codeRules: [],
       codeDemo: ''
     })
-    this.info$ = new Computed(
-      this.state$.pipe(
-        pluck('info'),
-        log('contract/info')
-      )
-    )
-    this.lawContent$ = new Computed(
-      this.state$.pipe(
-        pluck('lawContent'),
-        log('contract/lawContent')
-      )
-    )
-    this.codeRules$ = new Computed(
-      this.state$.pipe(
-        pluck('codeRules'),
-        log('contract/codeRules')
-      )
-    )
-    this.codeDemo$ = new Computed(
-      this.state$.pipe(
-        pluck('codeDemo'),
-        log('contract/codeDemo')
-      )
-    )
+    this.info$ = new Computed(this.state$.pipe(pluck('info')))
+    this.lawContent$ = new Computed(this.state$.pipe(pluck('lawContent')))
+    this.codeRules$ = new Computed(this.state$.pipe(pluck('codeRules')))
+    this.codeDemo$ = new Computed(this.state$.pipe(pluck('codeDemo')))
   }
   SET_CODE(ruleList: any[], codeDemo: string) {
     this.state$.commit(state => {

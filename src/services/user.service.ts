@@ -86,8 +86,7 @@ export class UserService extends Store<UserState> {
         this.state$.commit(state => {
           state.enums = res
         })
-      }),
-      log('const/enums')
+      })
     )
   }
   init() {

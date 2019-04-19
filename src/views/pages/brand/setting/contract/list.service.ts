@@ -24,8 +24,7 @@ export class ListService extends Store<ListState> implements RouteGuard {
     })
     this.list$ = new Computed(
       this.state$.pipe(
-        pluck('list'),
-        log('contract/list')
+        pluck('list')
       )
     )
   }

@@ -31,8 +31,7 @@ export class LayoutService extends Store<LayoutState> {
     })
     this.breadcrumbs$ = new Computed(
       this.state$.pipe(
-        pluck('breadcrumbs'),
-        log('layout/breadcrumbs')
+        pluck('breadcrumbs')
       )
     )
   }
