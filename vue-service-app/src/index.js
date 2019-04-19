@@ -120,25 +120,29 @@ class VueServiceApp {
 
     this.router = new VueRouter(this.vueRouterOptions)
     const oriPush = this.router.push.bind(this.router)
-
-    this.router.push = function(to) {
+    const self = this
+    this.router.push = function(to, onComplete, onError) {
       if (isString(to)) {
-        oriPush(to)
+        oriPush(to, onComplete, onError)
         return
       }
       if (!to.force) {
-        oriPush(to)
+        oriPush(to, onComplete, onError)
         return
       }
       const oriHref = this.resolve(to).href
-      console.log(oriHref)
       to.query = to.query || {}
       to.query._f = forceCount++
-      oriPush(to, () => {
-        console.log('ok')
-        // const oriState = window.history.state
-        window.history.replaceState({}, null, oriHref)
-      })
+      oriPush(
+        to,
+        () => {
+          setTimeout(() => {
+            window.history.replaceState(null, null, oriHref)
+            onComplete()
+          })
+        },
+        onError
+      )
     }
     rootContainer.useProvider({
       provide: ServiceRouter,
