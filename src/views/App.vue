@@ -1,7 +1,7 @@
 <template>
   <a-locale-provider :locale="antdLocaleMessages">
     <div id="app">
-      {{layout}}
+      <!-- <h1 style="color:black;position:absolute;z-index:300;">{{layout}}</h1> -->
       <component :is="layoutComponent"></component>
       <modal-router-view></modal-router-view>
       <div class="git is-git" @click="getCommitHead">
@@ -28,14 +28,11 @@ export default {
       route: RouteService
     }
   },
-  subscriptions() {
+  rxState() {
     const { layout$, query$ } = this.route
-    const t$ = this.i18n.t$.bind(this.i18n)
     return {
       antdLocaleMessages: this.i18n.antdLocaleMessages$,
-      layout: layout$,
-      query: query$,
-      title: t$('app.title')
+      layout: layout$
     }
   },
   data() {
@@ -55,9 +52,11 @@ export default {
   },
   computed: {
     layoutComponent() {
-      console.log(this.layout)
       return layoutMap[this.layout]
     }
+  },
+  mounted() {
+    console.log(this)
   }
 }
 </script>

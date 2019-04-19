@@ -19,9 +19,9 @@ import './style/index'
 
 import './views/components/register'
 
+Vue.use(VueRxState)
 Vue.use(Antd)
 Vue.use(VueRx)
-Vue.use(VueRxState)
 Vue.use(FullCalendar)
 Vue.use(Viewer)
 Vue.use(VueBemHelper)
