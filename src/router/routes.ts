@@ -68,7 +68,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       const appGuards: any[] = [
         HotReleaseService,
         NProgressService,
-        // AuthService,
+        AuthService,
         TitleService,
         UserService,
         RouteService

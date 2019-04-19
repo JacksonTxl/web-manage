@@ -1,4 +1,8 @@
-import VueRouter, { Route as VueRoute, RouteConfig as VueRouteConfig } from 'vue-router'
+import VueRouter, {
+  Route as VueRoute,
+  RouteConfig as VueRouteConfig,
+  Location
+} from 'vue-router'
 import { VueConstructor } from 'vue'
 import Vue from 'vue'
 
@@ -10,6 +14,14 @@ interface Dictionary<T> {
 
 interface Ctor<T> {
   new (...args: any[]): T
+}
+
+interface MyLocation extends Location {
+  /**
+   * 强制更新replaceState当前页，即使没有任何query更新
+   */
+  force?: Boolean
+  query?: Dictionary<any>
 }
 
 interface QueryOption {
@@ -75,7 +87,13 @@ interface VueServiceAppConfig {
 }
 
 declare module 'vue-service-app' {
-  export class ServiceRouter extends VueRouter {}
+  export class ServiceRouter extends VueRouter {
+    push(
+      location: string | MyLocation,
+      onComplete?: Function,
+      onAbort?: (err: Error) => void
+    ): void
+  }
   export class InjectionToken {
     constructor(desc: string)
   }

@@ -8,7 +8,7 @@
       <span>容纳人数（人）：100</span>
       <span class="mg-l32">座位模版（人）：4</span>
     </div>
-    <st-form-table hoverable>
+    <st-form-table>
       <thead>
         <tr>
           <th width="10%">座位</th>

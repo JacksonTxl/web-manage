@@ -6,7 +6,7 @@ import {
   ServiceRoute
 } from 'vue-service-app'
 import { AppConfig } from '@/constants/config'
-import { State, getSnapshot, Computed } from 'rx-state'
+import { State, Computed } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from './store'
 
@@ -40,20 +40,13 @@ export class AuthService extends Store<AuthState> implements RouteGuard {
       state.token = ''
     })
   }
-  // token当前状态
-  get tokenSnapshot(): string {
-    return getSnapshot(this.token$)
-  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
     console.log('authService start')
-    if (!this.tokenSnapshot) {
+    console.log(this.token$.snapshot())
+    if (!this.token$.snapshot()) {
       this.router.push({
         name: 'user-login',
-        query: {
-          radom: Math.random()
-            .toString(16)
-            .slice(2)
-        }
+        force: true
       })
       next(false)
     } else {
