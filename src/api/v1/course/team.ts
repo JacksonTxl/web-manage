@@ -15,7 +15,7 @@ export class TeamApi extends Api {
    * 获取品牌私教课列表
    */
   getTeamCourseListInBrand(query: GetTeamBrandCourseListInput) {
-    return this.http.get('/v1/course/team', { query, mock: {} })
+    return this.http.get('/v1/course/team', { query })
   }
   /**
    * 获取品牌门店私教课列表
