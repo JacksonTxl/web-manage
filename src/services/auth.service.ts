@@ -41,8 +41,6 @@ export class AuthService extends Store<AuthState> implements RouteGuard {
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    console.log('authService start')
-    console.log(this.token$.snapshot())
     if (!this.token$.snapshot()) {
       this.router.push({
         name: 'user-login',

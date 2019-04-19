@@ -134,9 +134,11 @@ class VueServiceApp {
       console.log(oriHref)
       to.query = to.query || {}
       to.query._f = forceCount++
-      oriPush(to)
-      const oriState = window.history.state
-      window.history.replaceState(oriState, null, oriHref)
+      oriPush(to, () => {
+        console.log('ok')
+        // const oriState = window.history.state
+        window.history.replaceState({}, null, oriHref)
+      })
     }
     rootContainer.useProvider({
       provide: ServiceRouter,
