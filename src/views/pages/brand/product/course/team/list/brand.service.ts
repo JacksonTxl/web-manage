@@ -17,7 +17,7 @@ export class BrandService {
       state.teamCourseList = data.list
     })
   }
-  getCourseTeamBrandList(query: GetTeamBrandCourseListInput) {
+  getCourseTeamBrandList(query: any) {
     return this.teamApi.getTeamCourseListInBrand(query).pipe(
       tap(res => {
         this.SET_TEAM_COURSE_LIST(res)

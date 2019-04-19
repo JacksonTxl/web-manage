@@ -10,34 +10,34 @@ interface SetState { // 注解formData类型
 }
 @Injectable()
 export class TeamService extends Store<SetState> {
-    state$: State<SetState>
-    formData$: Computed<Object>
+  state$: State<SetState>
+  formData$: Computed<Object>
 
-    constructor(protected teamApi : TeamApi) {
-      super() // bind this
+  constructor(protected teamApi : TeamApi) {
+    super() // bind this
 
-      this.state$ = new State({
-        formData: {}
-      })
+    this.state$ = new State({
+      formData: {}
+    })
 
-      this.formData$ = new Computed(this.state$.pipe(pluck('formData')))
-    }
+    this.formData$ = new Computed(this.state$.pipe(pluck('formData')))
+  }
 
-    getDetail(query: GetTeamCourseDetailQuery) {
-      return this.teamApi.getTeamCourseDetail(query)
-    }
-    @Effect()
-    getTrainPurpose(query: GetTrainPurposeQuery) {
-      return this.teamApi.getTrainPurpose(query)
-    }
-    @Effect()
-    getTeamCourseType(query: GetTeamCourseTypeQuery) {
-      return this.teamApi.getTrainPurpose(query)
-    }
+  getDetail(query: any) {
+    return this.teamApi.getTeamCourseDetail(query)
+  }
+  @Effect()
+  getTrainPurpose(query: GetTrainPurposeQuery) {
+    return this.teamApi.getTrainPurpose(query)
+  }
+  @Effect()
+  getTeamCourseType(query: GetTeamCourseTypeQuery) {
+    return this.teamApi.getTrainPurpose(query)
+  }
 
-    protected SET_PERSONAL_BRND(data: SetState) {
-      this.state$.commit(state => {
-        state.formData = data
-      })
-    }
+  protected SET_PERSONAL_BRND(data: SetState) {
+    this.state$.commit(state => {
+      state.formData = data
+    })
+  }
 }
