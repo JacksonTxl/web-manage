@@ -21,6 +21,7 @@ export class RouteService extends Store<ServiceRoute> {
     if (!to.meta.layout && to.name) {
       console.warn(`can not find meta.layout on route -> ${to.name}`)
     } else {
+      console.log(to)
       this.state$.commit(() => to)
       next()
     }

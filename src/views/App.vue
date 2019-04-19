@@ -1,6 +1,7 @@
 <template>
   <a-locale-provider :locale="antdLocaleMessages">
     <div id="app">
+      {{layout}}
       <component :is="layoutComponent"></component>
       <modal-router-view></modal-router-view>
       <div class="git is-git" @click="getCommitHead">
@@ -27,7 +28,7 @@ export default {
       route: RouteService
     }
   },
-  rxState() {
+  subscriptions() {
     const { layout$, query$ } = this.route
     const t$ = this.i18n.t$.bind(this.i18n)
     return {
@@ -54,6 +55,7 @@ export default {
   },
   computed: {
     layoutComponent() {
+      console.log(this.layout)
       return layoutMap[this.layout]
     }
   }
