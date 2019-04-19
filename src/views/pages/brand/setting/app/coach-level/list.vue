@@ -6,8 +6,10 @@
       </a-col>
       <a-col :span="8">
         <p class="ta-r">
-          <modal-link tag="st-button" :to="{ name: 'brand-setting-app-coach-level-add', on: {
-            change: onListChange } }">添加</modal-link>
+          <modal-link tag="a" :to="{ name: 'brand-setting-app-coach-level-add', on: {
+            change: onListChange } }">
+            <st-button type="primary" icon="add">添加</st-button>
+          </modal-link>
         </p>
       </a-col>
     </a-row>
