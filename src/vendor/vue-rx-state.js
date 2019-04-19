@@ -29,10 +29,10 @@ export default {
             }
             ob.subscribe(v => {
               if (obName in this) {
-                Vue.set(this, obName, v)
+                Vue.set(this, obName, cloneDeep(v))
                 return
               }
-              Vue.util.defineReactive(this, obName, v)
+              Vue.util.defineReactive(this, obName, cloneDeep(v))
             })
           }
         }
