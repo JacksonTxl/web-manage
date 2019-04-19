@@ -1,7 +1,7 @@
 import { Injectable } from 'vue-service-app'
 import { Effect } from 'rx-state'
 import { Store } from '@/services/store'
-import { CoachLevelApi, UpdateCoachLevelInput } from '@/api/v1/setting/training'
+import { CoachLevelApi, UpdateCoachLevelInput } from '@/api/v1/setting/coach/level'
 
 interface EditState {
 }
