@@ -9,7 +9,7 @@ export class EditService extends Store<any> {
     super()
   }
   @Effect()
-  addCard(data: CardsInput) {
+  editCard(data: CardsInput) {
     return this.cardsApi.editCards(data)
   }
 }

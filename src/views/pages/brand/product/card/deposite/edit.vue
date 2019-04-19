@@ -236,17 +236,17 @@ import moment from 'moment'
 import { RuleConfig } from '@/constants/rule'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { cloneDeep } from 'lodash-es'
-import { AddService } from './add.service'
+import { EditService } from './edit.service'
 export default {
   serviceInject() {
     return {
       rules: RuleConfig,
-      addService: AddService
+      editService: EditService
     }
   },
   subscriptions() {
     return {
-      addLoading: this.addService.loading$
+      addLoading: this.editService.loading$
     }
   },
   bem: {
