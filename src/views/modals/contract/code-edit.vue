@@ -1,166 +1,127 @@
 <template>
-  <a-modal class="modal-contract-code-edit" width="676px" title="会员卡合同编号设置" v-model="show">
+  <a-modal
+    class="modal-contract-code-edit"
+    width="676px"
+    title="会员卡合同编号设置"
+    v-model="show"
+    :confirmLoading="loading.updateCode"
+    @ok="onOk"
+  >
     <p>配置合同编码生成规则，最多可以添加20位长度的合同编码，直接在表格中拖动行排序</p>
-    <st-table
-      :loading="loading.getCodeInfo"
-      :columns="columns"
-      :dataSource="list"
-      rowKey="id"
-      :pagination="false"
-    >
-      <div slot="rule" slot-scope="record">
-        <!-- 编辑 -->
-        <template v-if="record._mode==='edit' || record._mode==='add'">
-          <a-select size="small" v-model="editInfo.sn_rule">
-            <a-select-option :value="CODE_RULE.LETTER">字母</a-select-option>
-            <a-select-option :value="CODE_RULE.NUMBER">数字</a-select-option>
-          </a-select>
-          <a-select class="mg-l8" size="small" v-model="editInfo.sn_generate_rule">
-            <a-select-option :value="CODE_GENERATE_RULE.RANDOM">随机生成</a-select-option>
-            <a-select-option :value="CODE_GENERATE_RULE.FIXED">固定值</a-select-option>
-          </a-select>
-          <a-input
-            v-if="editInfo.sn_rule===CODE_RULE.LETTER && editInfo.sn_generate_rule===CODE_GENERATE_RULE.FIXED"
-            size="small"
-            placeholder="请输入固定字母"
-            class="mg-l8"
-            style="width:140px"
-            v-model="editInfo.sn_generate_value"
-          ></a-input>
-          <a-input-number
-            v-if="editInfo.sn_rule===CODE_RULE.NUMBER && editInfo.sn_generate_rule===CODE_GENERATE_RULE.FIXED"
-            :min="0"
-            size="small"
-            placeholder="请输入固定数字"
-            class="mg-l8"
-            v-model="editInfo.sn_generate_value"
-            style="width:140px"
-          ></a-input-number>
-        </template>
-        <!-- 编辑end -->
-
-        <template v-if="!record._mode">
-          <span>{{record.sn_rule | codeRuleFilter}} {{record.sn_generate_value}}</span>
-          <span class="mg-l4">{{record.sn_generate_rule | codeGenerateRuleFilter }}</span>
-        </template>
-      </div>
-
-      <div slot="action" slot-scope="record">
-        <!-- 编辑 -->
-        <template v-if="record._mode==='edit'">
-          <a href="javascript:;">保存</a>
-          <a-divider type="vertical"></a-divider>
-          <a href="javascript:;" @click="onRowEditCancel(record)">取消</a>
-        </template>
-        <!-- 添加 -->
-        <template v-if="record._mode==='add'">
-          <a href="javascript:;">保存</a>
-          <a-divider type="vertical"></a-divider>
-          <a href="javascript:;" @click="onRowAddCancel(record)">取消</a>
-        </template>
-        <!-- 查看模式 -->
-        <template v-if="!record._mode">
-          <a href="javascript:;" @click="onRowEdit(record)">编辑</a>
-          <a-divider type="vertical"></a-divider>
-          <a href="javascript:;">删除</a>
-        </template>
-      </div>
-    </st-table>
-    <st-button
-      :disabled="isAdding || isEditing"
-      @click="onRowAdd"
-      block
-      type="dashed"
-      class="mg-t16"
-    >
+    <st-form-table>
+      <thead>
+        <tr>
+          <th width="60px">位数</th>
+          <th>规则</th>
+          <th width="140px">操作</th>
+        </tr>
+      </thead>
+      <draggable tag='tbody' v-model='rules' :animation="200">
+        <tr v-for="(rule,index) in rules" :key="rule.sn_rule + rule._value + index">
+          <td>{{index+1}}</td>
+          <td>
+            <a-radio-group @change="rule._value = 'RANDOM'" v-model="rule.sn_rule">
+              <a-radio :value="SN_RULE.LETTER">{{SN_RULE.LETTER | enumFilter(settingEnums.sn_rule)}}</a-radio>
+              <a-radio :value="SN_RULE.NUMBER">{{SN_RULE.NUMBER | enumFilter(settingEnums.sn_rule)}}</a-radio>
+              <a-select
+                v-if="rule.sn_rule === SN_RULE.LETTER"
+                style="width:140px"
+                v-model="rule._value"
+              >
+                <a-select-option value="RANDOM">随机生成字母</a-select-option>
+                <a-select-option v-for="letter in letters" :key="letter" :value="letter">{{letter}}</a-select-option>
+              </a-select>
+              <a-select
+                v-if="rule.sn_rule === SN_RULE.NUMBER"
+                style="width:140px"
+                v-model="rule._value"
+              >
+                <a-select-option value="RANDOM">随机生成数字</a-select-option>
+                <a-select-option v-for="n in numbers" :key="n" :value="n">{{n}}</a-select-option>
+              </a-select>
+            </a-radio-group>
+          </td>
+          <td>
+            <a @click="onDelete(index)">删除</a>
+          </td>
+        </tr>
+      </draggable>
+    </st-form-table>
+    <st-button :disabled="rules.length>=20" @click="onAdd" block type="dashed" class="mg-t16">
       <a-icon type="plus"></a-icon>添加
     </st-button>
   </a-modal>
 </template>
 <script>
+import draggable from 'vuedraggable'
 import { CodeEditService } from './code-edit.service'
-import { CODE_RULE, CODE_GENERATE_RULE } from '@/constants/enums/contract.ts'
-import { cloneDeep, find } from 'lodash-es'
+import { MessageService } from '@/services/message.service'
+import { cloneDeep } from 'lodash-es'
+import { UserService } from '@/services/user.service'
+import { enumFilter } from '@/filters/other.filters'
+import { SN_RULE } from '@/constants/enums/contract'
 
 export default {
   props: {
     id: {
       type: Number,
       required: true
-    }
-  },
-  data() {
-    return {
-      show: true,
-      editInfo: {},
-      isAdding: false,
-      isEditing: false,
-      CODE_RULE,
-      CODE_GENERATE_RULE,
-      columns: [
-        { title: '位数', width: 80, dataIndex: 'sn_pos' },
-        { title: '规则', scopedSlots: { customRender: 'rule' } },
-        { title: '操作', width: 110, scopedSlots: { customRender: 'action' } }
-      ]
-    }
-  },
-  filters: {
-    codeRuleFilter(key) {
-      return {
-        [CODE_RULE.LETTER]: '字母',
-        [CODE_RULE.NUMBER]: '数字'
-      }[key]
     },
-    codeGenerateRuleFilter(key) {
-      return {
-        [CODE_GENERATE_RULE.RANDOM]: '随机生成',
-        [CODE_GENERATE_RULE.FIXED]: '固定值'
-      }[key]
+    codeRules: {
+      type: Array,
+      required: true
     }
+  },
+  components: {
+    draggable
   },
   serviceInject() {
     return {
-      codeEditService: CodeEditService
+      user: UserService,
+      codeEditService: CodeEditService,
+      message: MessageService
     }
   },
   subscriptions() {
     return {
-      list: this.codeEditService.list$,
+      settingEnums: this.user.settingEnums$,
       loading: this.codeEditService.loading$
     }
   },
-  methods: {
-    onRowEdit(record) {
-      this.isEditing = true
-      this.editInfo = cloneDeep(record)
-      if (this.isAdding) {
-        this.onRowAddCancel()
-      }
-      this.codeEditService.editRow(record.id)
-    },
-    onRowEditCancel(record) {
-      this.isEditing = false
-      this.codeEditService.quitEditRow(record.id)
-    },
-    onRowAddCancel(record) {
-      this.list.pop()
-      this.isAdding = false
-    },
-    onRowAdd() {
-      this.editInfo = {
-        id: 0,
-        _mode: 'add',
-        sn_pos: 1,
-        sn_rule: 1,
-        sn_generate_rule: 1,
-        sn_generate_value: ''
-      }
-      this.list.push(this.editInfo)
-      this.isAdding = true
+  filters: {
+    enumFilter
+  },
+  data() {
+    return {
+      SN_RULE,
+      letters: 'ABCDEFGHIJKLMOPQRSTUVWXYZ'.split(''),
+      numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      show: true,
+      rules: []
     }
   },
   created() {
-    this.codeEditService.init(this.id).subscribe()
+    this.rules = this.codeRules
+  },
+  methods: {
+    onAdd() {
+      this.rules.push({
+        sn_rule: 1,
+        _value: 'RANDOM'
+      })
+    },
+    onOk() {
+      this.codeEditService.updateCode(this.rules).subscribe(() => {
+        this.message.success({
+          content: '更新合同编码成功！'
+        })
+        this.show = false
+        this.$emit('done')
+      })
+    },
+    onDelete(index) {
+      this.rules.splice(index, 1)
+    }
   }
 }
 </script>

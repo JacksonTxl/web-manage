@@ -18,12 +18,8 @@ export class EditService extends Store<CardState> implements RouteGuard {
     })
     this.cardInfo$ = new Computed(this.state$.pipe(pluck('cardInfo')))
   }
-  @Effect()
-  editCard(data: CardsInput) {
-    return this.cardsApi.editCards(data)
-  }
   getCardInfo(id:string) {
-    return this.cardsApi.getCardInfo(id).pipe(tap((res:any) => {
+    return this.cardsApi.getCardInfoBack(id).pipe(tap((res:any) => {
       this.SET_CARD_INFO(res.info)
     }))
   }
@@ -31,6 +27,10 @@ export class EditService extends Store<CardState> implements RouteGuard {
     this.state$.commit(state => {
       state.cardInfo = info
     })
+  }
+  @Effect()
+  editCard(data: CardsInput) {
+    return this.cardsApi.editCards(data)
   }
   beforeRouteEnter(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
     this.getCardInfo(to.meta.query.id).subscribe(() => {

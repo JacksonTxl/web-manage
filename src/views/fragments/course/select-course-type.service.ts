@@ -18,8 +18,8 @@ export class SelectCourseTypeService extends Store<CourseTypeState> {
     })
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
   }
-  getCourseTypes() {
-    return this.courseApi.getCourseTypes().pipe(
+  getCourseTypeList() {
+    return this.courseApi.getCourseTypeList({}).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.list = res.list

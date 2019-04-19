@@ -1,12 +1,12 @@
 <template>
-  <div :class="b()">
+  <div :class="b()" :style="{'margin-top':info.contract_marget + 'mm'}">
     <header :class="b('header')">
       <img v-if="info.is_brand_logo" :class="b('brand-logo')" src="a.png" alt="brand-logo">
       <h1 :class="b('title')">{{info.contract_title}}</h1>
       <h4 v-if="info.is_brand_name" :class="b('brand-name')">这里是品牌名称</h4>
       <div v-if="info.is_contract_number" :class="b('contract-code')">
         <label class="info-label">合同编号：</label>
-        <span class="info-text">294389802</span>
+        <span class="info-text">{{codeDemo || '暂无'}}</span>
       </div>
     </header>
     <section :class="b('basic')">
@@ -63,13 +63,13 @@
     <section :class="b('product')">
       <st-form-table>
         <thead>
-          <tr v-if="info.contra">
+          <tr v-if="showAllTh">
             <th>商品名称</th>
             <th>价格</th>
             <th>优惠</th>
             <th>小计</th>
           </tr>
-          <tr>
+          <tr v-if="showSomeTh">
             <th>商品名称</th>
             <th>小计</th>
           </tr>
@@ -141,10 +141,10 @@
         <a-col :span="24">
           <div class="info-item">
             <label class="info-label">合同有效期：</label>
-            <span class="info-text">2019年1月1日至2020年1月1日</span>
+            <span class="info-text">{{today | dateFilter('YYYY年M月D日') }}至2022年1月1日</span>
           </div>
         </a-col>
-        <a-col :span="24">
+        <a-col :span="24" v-if='info.is_comment'>
           <div class="info-item">
             <label class="info-label">备注：</label>
             <span class="info-text">添加备注消息，方便了解具体请情况</span>
@@ -153,7 +153,7 @@
         <a-col :span="24" v-if="info.is_law_content">
           <div class="info-item">
             <label class="info-label">合同章程：</label>
-            <span class="info-text" v-html="htmlLawContent"></span>
+            <pre class="info-text">{{lawContent}}</pre>
           </div>
         </a-col>
       </a-row>
@@ -174,13 +174,13 @@
         <a-col :span="12">
           <div class="info-item">
             <label class="info-lable">签订日期：</label>
-            <span class="info-text">2019年1月1日</span>
+            <span class="info-text">{{today | dateFilter('YYYY年M月D日') }}</span>
           </div>
         </a-col>
         <a-col :span="12">
           <div class="info-item">
             <label class="info-lable">签订日期：</label>
-            <span class="info-text">2019年1月1日</span>
+            <span class="info-text">{{today | dateFilter('YYYY年M月D日') }}</span>
           </div>
         </a-col>
       </a-row>
@@ -188,30 +188,33 @@
   </div>
 </template>
 <script>
-import { EditService } from '../edit.service'
-
-const CONTRACT_TYPE = {
-  MEMBER_CARD: 1,
-  PERSONAL: 2,
-  PACKAGE: 3,
-  DEPOSITE: 4,
-  CABINET: 5,
-  MONEY: 6
-}
+import { dateFilter } from '@/filters/date.filters'
+import { CONTRACT_TYPE } from '@/constants/enums/contract'
+import moment from 'moment'
 
 export default {
+  props: {
+    info: {
+      type: Object,
+      default: () => ({})
+    },
+    codeDemo: {
+      type: String,
+      default: ''
+    },
+    lawContent: {
+      type: String,
+      default: ''
+    }
+  },
   bem: {
     b: 'contract-preview'
   },
-  serviceInject() {
+  filters: { dateFilter },
+  data() {
     return {
-      editService: EditService
-    }
-  },
-  subscriptions() {
-    return {
-      info: this.editService.info$,
-      htmlLawContent: this.editService.htmlLawContent$
+      CONTRACT_TYPE,
+      today: moment()
     }
   },
   computed: {
@@ -234,11 +237,6 @@ export default {
         default:
           return false
       }
-    }
-  },
-  data() {
-    return {
-      CONTRACT_TYPE
     }
   }
 }

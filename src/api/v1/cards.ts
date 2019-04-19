@@ -2,28 +2,28 @@ import { Api } from '../api'
 
 export class CardsApi extends Api {
   /**
-   * 获取默认卡背景
+   * 会员卡新增,品牌
    */
-  getCardsBgList() {
-    return this.http.get('/v1/cards/bg_list', { mock: {} })
+  addCardsBrand(params:CardsInput) {
+    return this.http.post('/v1/cards/brand', { params })
   }
   /**
-   * 会员卡新增
+   * 会员卡详情
    */
-  addCards(params:CardsInput) {
-    return this.http.post('/v1/cards', { params })
+  getCardInfo(id: string) {
+    return this.http.get(`/v1/cards/${id}`)
+  }
+  /**
+   * 会员卡编辑详情
+   */
+  getCardInfoBack(id: string) {
+    return this.http.get(`/v1/cards/back/${id}`)
   }
   /**
    * 会员卡编辑
    */
   editCards(params:CardsInput) {
     return this.http.put('/v1/cards', { params })
-  }
-  /**
-   *
-   */
-  getCardInfo(id: string) {
-    return this.http.get(`/v1/cards/${id}`)
   }
   /**
    *获取卡列表
@@ -47,15 +47,32 @@ export class CardsApi extends Api {
    *会员卡售卖门店列表
    */
   getCardsSaleStop(query: any) {
-    console.log('会员卡售卖门店列表', query)
     return this.http.get(`/v1/cards/sale/shop`, { query })
   }
   /**
    *支持入场门店
    */
   getCardsUseStop(query: any) {
-    console.log('支持入场门店', query)
     return this.http.get(`/v1/cards/use/shop`, { query })
+  }
+  /**
+   *会员卡停售信息
+   */
+  getCardsSaleInfo(query: any) {
+    return this.http.get(`/v1/cards/sale/info`, { query })
+  }
+  /**
+   *会员卡删除
+   */
+  getCardsDel(id: string) {
+    console.log('id', id)
+    return this.http.delete(`/v1/cards/${id}`)
+  }
+  /**
+   *填写会员卡停售
+   */
+  setCardsSaleStop(params: any) {
+    return this.http.post('/v1/cards/sale/stop', { params })
   }
 }
 export interface CardsInput {

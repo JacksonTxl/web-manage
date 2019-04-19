@@ -7,7 +7,8 @@ import {
   SaveData,
   EditStaffBasicInfoQuery,
   EditStaffDetailInfoQuery,
-  EditStaffCoachInfoQuery
+  EditStaffCoachInfoQuery,
+  AddStaffBasicInfoParams
 } from '@/api/v1/staff'
 
 interface SetState {
@@ -33,11 +34,6 @@ export class SetService extends Store<SetState> {
       return this.staffApi.getStaffBrandReview(id)
     }
     @Effect()
-    // 提交编辑
-    updateStaffBrandInfo(params: SaveData) {
-      return this.staffApi.updateStaffBrandInfo(params)
-    }
-    @Effect()
     // 获取手机号区域
     getCountryCodes() {
       return this.staffApi.getCountryCodes().pipe(
@@ -57,6 +53,11 @@ export class SetService extends Store<SetState> {
     // 提交教练信息修改
     editStaffCoachInfo(id: number, params: EditStaffCoachInfoQuery) {
       return this.staffApi.editStaffCoachInfo(id, params)
+    }
+
+    // 新建员工基础信息
+    addStaffBasicInfo(params : AddStaffBasicInfoParams) {
+      return this.staffApi.addStaffBasicInfo(params)
     }
     protected SET_CODE_LIST(codeList: any) {
       this.state$.commit(state => {

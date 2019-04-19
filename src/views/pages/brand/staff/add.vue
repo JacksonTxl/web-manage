@@ -3,10 +3,9 @@
     <a-row :class="bstep()" class="mg-b48" :gutter="8">
       <a-col offset="1" :span="stepsSpan"><Steps :value="currentIndex" :stepArr="stepArr" @skip="skip"/></a-col>
     </a-row>
-
-    <StaffDetailBasics :defaultCode="defaultCode" :codeList="codeList" v-show="currentIndex == 0" @goNext="goNext" @save="onSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
-    <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" @save="onSave"/>
-    <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" @save="onSave"/>
+    <StaffDetailBasics :codeList="countryList" v-show="currentIndex == 0" @goNext="goNext" @basicInfoSave="onBasicInfoSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
+    <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" />
+    <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" />
   </st-panel>
 </template>
 
@@ -30,11 +29,9 @@ export default {
     }
   },
   subscriptions() {
+    console.log(this.addService.countryList$)
     return {
-      state: this.addService.state$,
-      codeList: this.addService.codeList$,
-      defaultCode: this.addService.defaultCode$,
-      loading: this.addService.loading$
+      countryList: this.addService.countryList$
     }
   },
   bem: {
@@ -60,9 +57,12 @@ export default {
     }
   },
   methods: {
-
     deletStep(e) {
       this.stepsSpan = 12
+      let index = this.stepArr.findIndex(function(value, index, arr) {
+        return value.title === '教练信息'
+      })
+      if (index === -1) return
       this.stepArr.pop()
     },
     addCoachInfo(e) {
@@ -75,11 +75,9 @@ export default {
     skip(data) {
       console.log('跳页', data)
       this.currentIndex = data.index
-      // this.loading.getCountryCodes
     },
     goNext(e) { // 下一步
       console.log(e)
-      // this.submit(e.formData)
       let currentIndex = this.currentIndex
       this.currentIndex = currentIndex + 1
       if (this.currentIndex === 3) {
@@ -87,11 +85,13 @@ export default {
       }
     },
     submit(data) {
-      this.addService.save(data).subscribe(res => {
+      this.addService.addBasicInfo(data).subscribe(res => {
         console.log('保存', res)
       })
     },
-    onSave(form) { // 保存
+    onBasicInfoSave(form) { // 保存
+      console.log(form)
+
       this.submit(form)
     }
     // staing(data) { // 跳页 下一个都调用下暂存

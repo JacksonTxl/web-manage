@@ -8,31 +8,45 @@
         <span class="modal-card-halt-the-sales-type">期限卡</span>会员卡名称
       </div>
       <div class="modal-card-halt-the-sales-info-box">
-        <span class>当前上架门店（家）：3</span>
+        <span class>当前上架门店（家）：{{info.shelf_shop}}</span>
         <span class="modal-card-halt-the-sales-notes">(不含已下架门店)</span>
       </div>
       <div class="modal-card-halt-the-sales-info-box">
-        <span>当前有效卡数（张）：93</span>
+        <span>当前有效卡数（张）：{{info.valid_card}}</span>
         <span class="modal-card-halt-the-sales-notes">(不含已过期卡)</span>
       </div>
       <div class="modal-card-halt-the-sales-stop-reason">
         <div class="ant-form-item-required stop-info">停售原因</div>
-        <a-textarea placeholder="请输入停售原因" maxlength="300" :rows="4"/>
+        <a-textarea
+          v-focus
+          placeholder="请输入停售原因"
+          maxlength="300"
+          :rows="4"
+          @blur="blurTextarea"
+          v-model="textareaInfo"
+        />
+        <div v-if="showHide" style="color:#f5222d">请填写停售原因！</div>
       </div>
     </section>
     <section>
       <footer class="footer">
-        <a-button class="cancel">取消</a-button>
-        <a-popconfirm title="确认停售该会员卡?" @confirm="onDelete(record.id)">
+        <a-button class="cancel" @click="show=false">取消</a-button>
+        <a-popconfirm title="确认停售该会员卡?" @confirm="onDelete(a)" v-if="textareaInfo.length > 0">
           <a-button type="danger">确认停售</a-button>
         </a-popconfirm>
+        <a-button type="danger" disabled v-else>确认停售</a-button>
       </footer>
     </section>
-    {{a}}
   </a-modal>
 </template>
 <script>
+import { HaltTheSalesService } from './halt-the-sales.service'
 export default {
+  serviceInject() {
+    return {
+      aService: HaltTheSalesService
+    }
+  },
   name: 'haltTheSales',
   props: {
     a: {
@@ -42,14 +56,56 @@ export default {
   data() {
     return {
       show: false,
-      form: this.$form.createForm(this)
-      // entityCardIdRule: ['entityCardId', { rules: [ { message: '请输入实体卡号' }] }],
-      // physicalIdRule: ['physicalID', { rules: [{ message: '请录入物理ID' }] }]
+      showHide: false,
+      textareaInfo: '',
+      form: this.$form.createForm(this),
+      info: {
+        shelf_shop: 0,
+        valid_card: 0
+      }
+    }
+  },
+  created() {
+    let self = this
+    this.getListInfo({ card_id: self.a })
+  },
+  directives: {
+    focus: {
+      inserted: function(el) {
+        el.focus()
+      }
     }
   },
   methods: {
+    blurTextarea() {
+      if (this.textareaInfo.length === 0) {
+        this.showHide = true
+      } else {
+        this.showHide = false
+      }
+    },
+    getListInfo(data) {
+      let self = this
+      this.aService.getListInfo(data).subscribe(state => {})
+    },
     save(e) {
       e.preventDefault()
+    },
+    onDelete(a) {
+      let self = this
+      self.show = false
+      let data = {
+        card_id: self.a,
+        reason: self.textareaInfo
+      }
+      self.aService.setListInfo(data).subscribe(state => {
+        this.$emit('done', true)
+      })
+    }
+  },
+  watch: {
+    textareaInfo() {
+      this.showHide = !(this.textareaInfo.length > 0)
     }
   }
 }

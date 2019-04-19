@@ -6,23 +6,35 @@ import {
   publish,
   tap,
   finalize,
-  shareReplay,
-  map
+  shareReplay
 } from 'rxjs/operators'
-import { cloneDeep } from 'lodash-es'
 
 export type Mutation<T> = (state: T) => T | void
 export type Epic<T> = (source$: Observable<T>) => Observable<any>
 
-export class State<T> extends BehaviorSubject<T> {
+class BehaviorSubjectState<T> extends BehaviorSubject<T> {
+  commit(mutation: Mutation<T>): void {
+    // @ts-ignore
+    this.next(produce(this.value, mutation))
+  }
+  snapshot() {
+    return this.value
+  }
+}
+
+export class State<T> extends BehaviorSubjectState<T> {
   constructor(initialState: any) {
     super(initialState)
-  }
-  commit(mutation: Mutation<T>): void {
-    this.next(
+    // @ts-ignore
+    const state$ = this
+    state$.commit = (mutation: Mutation<T>) => {
       // @ts-ignore
-      produce(this.value, mutation)
-    )
+      this.next(produce(this.value, mutation))
+    }
+    state$.snapshot = () => {
+      return this.value
+    }
+    return state$
   }
 }
 
@@ -101,9 +113,19 @@ export function Effect() {
   }
 }
 
-export class Computed<T> extends Observable<T> {
+class ObservableWithSnapshot<T> extends Observable<T> {
+  snapshot() {
+    return getSnapshot(this)
+  }
+}
+
+export class Computed<T> extends ObservableWithSnapshot<T> {
   constructor(source$: Observable<T>) {
     super()
-    return source$.pipe(shareReplay(1))
+    const computed$ = source$.pipe(shareReplay(1)) as ObservableWithSnapshot<T>
+    computed$.snapshot = function() {
+      return getSnapshot(computed$)
+    }
+    return computed$
   }
 }

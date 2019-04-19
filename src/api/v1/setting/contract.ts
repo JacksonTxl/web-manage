@@ -5,19 +5,19 @@ export class ContractApi extends Api {
    * 合同模版列表
    */
   getList() {
-    return this.http.get('/v1/setting/contract', {})
+    return this.http.get('/v1/setting/contract', { mock: {} })
   }
   /**
    * 合同模版信息
    */
   getInfo(id: number) {
-    return this.http.get(`/v1/setting/contract/${id}`)
+    return this.http.get(`/v1/setting/contract/${id}`, { mock: {} })
   }
   /**
    * 合同设置更新
    */
   update(params: ContractInput) {
-    return this.http.put('/v1/setting/contract', { params })
+    return this.http.put(`/v1/setting/contract`, { params })
   }
   add(params: ContractInput) {
     return this.http.post('/v1/setting/contract', { params })
@@ -26,7 +26,9 @@ export class ContractApi extends Api {
    * 获取合同章程
    */
   getConstitutionInfo(id: number) {
-    return this.http.get(`/v1/setting/contract/constitution/${id}`)
+    return this.http.get(`/v1/setting/contract/constitution/${id}`, {
+      mock: {}
+    })
   }
   /**
    * 更新合同章程
@@ -38,17 +40,18 @@ export class ContractApi extends Api {
    * 获取合同编码信息
    */
   getCodeInfo(id: number) {
-    return this.http.get(`/v1/setting/contract/code/${id}`)
+    return this.http.get(`/v1/setting/contract/code/${id}`, { mock: {} })
   }
   /**
    * 更新合同编号
    */
-  updateCode(params: ContractCodeInput) {
-    return this.http.put('/v1/setting/contract/code-edit', { params })
+  updateCode(params: any) {
+    return this.http.put('/v1/setting/contract/code', { params })
   }
 }
 
 export interface ContractInput {
+  id?: number
   /**
    * 合同标题
    */
@@ -116,35 +119,4 @@ export interface ContractConstitutionInput {
    * 合同章程
    */
   brand_law_content: string
-}
-
-export interface ContractCodeInput {
-  /**
-   * 合同编码位置号ID 新增位数则填 0 编辑已有位数规则则填 ID
-   */
-  id: number
-  /**
-   * 合同ID
-   */
-  contract_template_id: number
-  /**
-   * 合同编号位置号
-   */
-  sn_pos: number
-  /**
-   * 合同位规则: 1 字母Ａ-Z ２ 数据 0-9
-   */
-  sn_rule: number
-  /**
-   * 合同生成规则: 1随机生成 2固定生成
-   */
-  sn_generate_rule: number
-  /**
-   * 固定生成时的值
-   */
-  sn_generate_value: number
-  /**
-   * 状态0:未删除；1：已删除
-   */
-  is_del: number
 }

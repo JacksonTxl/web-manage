@@ -39,7 +39,7 @@
             </a-col>
           </a-row>
           <a-row :gutter="8">
-            <a-col :lg="22">
+            <a-col :lg="23">
               <st-form-item class="page-content-card-price-setting mt-4" label="价格设置" required>
                 <a-radio-group
                   @change="price_range"
@@ -107,11 +107,11 @@
                       </a-input>
                     </template>
                     <template slot="rally_price" slot-scope="text, record, index">
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'min_price'})" style="width:80px">
+                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'min_price'})" style="width:70px">
                           <span slot="suffix">元</span>
                         </a-input>
                         ~
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'max_price'})" style="width:80px">
+                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'max_price'})" style="width:70px">
                           <span slot="suffix">元</span>
                         </a-input>
                     </template>
@@ -278,6 +278,7 @@ import SelectShop from '@/views/fragments/shop/select-shop'
 import { cloneDeep } from 'lodash-es'
 import { AddService } from './add.service'
 export default {
+  name: 'BrandPeriodCardAdd',
   serviceInject() {
     return {
       rules: RuleConfig,
@@ -299,10 +300,6 @@ export default {
     return {
       // cardData
       cardData: {
-        // 品牌id
-        brand_id: 1,
-        // 场馆id
-        shop_id: 2,
         // 会员卡类型1-次卡 2-期限卡
         card_type: 2,
         // 会员卡名称
@@ -347,9 +344,7 @@ export default {
         // 卡介绍
         card_introduction: '',
         // 备注
-        card_contents: '',
-        // 发布渠道
-        publish_channel: 1
+        card_contents: ''
       },
       // 品牌统一定价-价格梯度
       rally_price_list: [],
@@ -464,6 +459,8 @@ export default {
             // 多门店 && 支持入场门店
             this.cardData.sell_shop_list = cloneDeep(this.cardData.admission_shop_list)
           }
+          this.cardData.admission_shop_list = [1, 2]
+          this.cardData.sell_shop_list = [1, 2]
           // 价格梯度
           let p = []
           switch (this.cardData.price_setting) {
@@ -598,11 +595,19 @@ export default {
     // 入场门店支持方式change
     admission_range(data) {
       this.cardData.admission_range = data.target.value
-      // 入场门店变化时，售卖门店同时变化
+      // 售卖价格变化
+      if (data.target.value !== 1) {
+        // 只能有品牌统一定价
+
+      }
+      // 入场门店变化时，售卖门店/售卖价格同时变化
       this.form.setFieldsValue({
-        'cardData._support_sales': 1
+        'cardData._support_sales': 1,
+        'cardData.price_setting': 1
       })
       this.cardData._support_sales = 1
+      this.rally_price_list = []
+      this.shop_price_list = []
     },
     // 价格设置方式change
     price_range(data) {

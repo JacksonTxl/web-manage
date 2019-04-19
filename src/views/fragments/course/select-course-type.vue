@@ -32,7 +32,7 @@ export default {
     }
   },
   created() {
-    this.selectCourseTypeService.getCourseTypes().subscribe()
+    this.selectCourseTypeService.getCourseTypeList().subscribe()
   },
   methods: {
     change(val) {

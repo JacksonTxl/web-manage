@@ -1,7 +1,9 @@
 <template>
-  <table :class="b({striped,hoverable})">
-    <slot></slot>
-  </table>
+  <a-spin :spinning="loading">
+    <table :class="b({striped,hoverable})">
+      <slot></slot>
+    </table>
+  </a-spin>
 </template>
 
 <script>
@@ -18,6 +20,10 @@ export default {
     striped: {
       type: Boolean,
       default: true
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   }
 }

@@ -39,7 +39,7 @@
             </a-col>
           </a-row>
           <a-row :gutter="8">
-            <a-col :lg="22">
+            <a-col :lg="23">
               <st-form-item class="page-content-card-price-setting mt-4" label="价格设置" required>
                 <a-radio-group
                   @change="price_range"
@@ -58,8 +58,8 @@
                     :dataSource="rally_price_list"
                     :pagination="false"
                   >
-                    <template slot="time" slot-scope="text, record, index">
-                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'time'})">
+                    <template slot="validity_times" slot-scope="text, record, index">
+                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'validity_times'})">
                           <span slot="suffix">次</span>
                         </a-input>
                     </template>
@@ -67,6 +67,16 @@
                         <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price'})">
                           <span slot="suffix">元</span>
                         </a-input>
+                    </template>
+                    <template slot="time" slot-scope="text, record, index">
+                      <a-input :value="text.num" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
+                        <a-select slot="addonAfter" :value="text.unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
+                          <a-select-option
+                          v-for="(item,index) in nuit_list"
+                          :value="item.value"
+                          :key="index" >{{item.label}}</a-select-option>
+                        </a-select>
+                      </a-input>
                     </template>
                     <template slot="frozen_day" slot-scope="text, record, index">
                         <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
@@ -91,19 +101,29 @@
                     :dataSource="shop_price_list"
                     :pagination="false"
                   >
-                     <template slot="time" slot-scope="text, record, index">
-                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'time'})">
+                     <template slot="validity_times" slot-scope="text, record, index">
+                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'validity_times'})">
                           <span slot="suffix">次</span>
                         </a-input>
                     </template>
                     <template slot="rally_price" slot-scope="text, record, index">
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'min_price'})" style="width:80px">
+                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'min_price'})" style="width:70px">
                           <span slot="suffix">元</span>
                         </a-input>
                         ~
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'max_price'})" style="width:80px">
+                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'max_price'})" style="width:70px">
                           <span slot="suffix">元</span>
                         </a-input>
+                    </template>
+                    <template slot="time" slot-scope="text, record, index">
+                      <a-input :value="text.num" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
+                        <a-select slot="addonAfter" :value="text.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
+                          <a-select-option
+                          v-for="(item,index) in nuit_list"
+                          :value="item.value"
+                          :key="index" >{{item.label}}</a-select-option>
+                        </a-select>
+                      </a-input>
                     </template>
                     <template slot="frozen_day" slot-scope="text, record, index">
                         <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
@@ -268,6 +288,7 @@ import SelectShop from '@/views/fragments/shop/select-shop'
 import { cloneDeep } from 'lodash-es'
 import { AddService } from './add.service'
 export default {
+  name: 'BrandNumberCardAdd',
   serviceInject() {
     return {
       rules: RuleConfig,
@@ -289,10 +310,6 @@ export default {
     return {
       // cardData
       cardData: {
-        // 品牌id
-        brand_id: 1,
-        // 场馆id
-        shop_id: 2,
         // 会员卡类型1-次卡 2-期限卡
         card_type: 1,
         // 会员卡名称
@@ -337,9 +354,7 @@ export default {
         // 卡介绍
         card_introduction: '',
         // 备注
-        card_contents: '',
-        // 发布渠道
-        publish_channel: 1
+        card_contents: ''
       },
       // 品牌统一定价-价格梯度
       rally_price_list: [],
@@ -359,17 +374,37 @@ export default {
         { value: 1, label: '品牌统一定价' },
         { value: 2, label: '场馆自主定价' }
       ],
+      nuit_list: [
+        {
+          value: 2,
+          label: '天'
+        },
+        {
+          value: 3,
+          label: '月'
+        },
+        {
+          value: 4,
+          label: '年'
+        }
+      ],
       // 品牌统一定价表格表头
       brand_price_columns: [
         {
-          title: '期限',
-          scopedSlots: { customRender: 'time' },
-          dataIndex: 'time'
+          title: '入场次数',
+          scopedSlots: { customRender: 'validity_times' },
+          dataIndex: 'validity_times'
         },
         {
           title: '售价',
           scopedSlots: { customRender: 'rally_price' },
           dataIndex: 'rally_price'
+        },
+        {
+          title: '有效期',
+          scopedSlots: { customRender: 'time' },
+          dataIndex: 'time',
+          width: 120
         },
         {
           title: '允许冻结天数',
@@ -391,16 +426,22 @@ export default {
       // 门店自主定价表格表头
       shop_price_columns: [
         {
-          title: '期限',
-          scopedSlots: { customRender: 'time' },
-          dataIndex: 'time',
-          width: 120
+          title: '入场次数',
+          scopedSlots: { customRender: 'validity_times' },
+          dataIndex: 'validity_times',
+          width: 80
         },
         {
           title: '售价范围',
           scopedSlots: { customRender: 'rally_price' },
           dataIndex: 'rally_price',
-          width: 200
+          width: 180
+        },
+        {
+          title: '有效期',
+          scopedSlots: { customRender: 'time' },
+          dataIndex: 'time',
+          width: 120
         },
         {
           title: '允许冻结天数',
@@ -440,6 +481,8 @@ export default {
             // 多门店 && 支持入场门店
             this.cardData.sell_shop_list = cloneDeep(this.cardData.admission_shop_list)
           }
+          this.cardData.admission_shop_list = [1, 2]
+          this.cardData.sell_shop_list = [1, 2]
           // 价格梯度
           let p = []
           switch (this.cardData.price_setting) {
@@ -451,6 +494,7 @@ export default {
                   num: +i.time.num,
                   rally_price: +i.rally_price,
                   frozen_day: +i.frozen_day,
+                  validity_times: +i.validity_times,
                   gift_unit: +i.gift_unit
                 })
               })
@@ -464,6 +508,7 @@ export default {
                   min_price: +i.rally_price.min_price,
                   max_price: +i.rally_price.max_price,
                   frozen_day: +i.frozen_day,
+                  validity_times: +i.validity_times,
                   gift_unit: +i.gift_unit
                 })
               })
@@ -589,8 +634,9 @@ export default {
       let key = parseInt(Math.random() * 999999).toString()
       this.rally_price_list.push({
         key,
+        validity_times: null,
         time: {
-          unit: 1,
+          unit: 2,
           num: null
         },
         rally_price: null,
@@ -615,8 +661,9 @@ export default {
       let key = parseInt(Math.random() * 999999).toString()
       this.shop_price_list.push({
         key,
+        validity_times: null,
         time: {
-          unit: 1,
+          unit: 2,
           num: null
         },
         rally_price: {
