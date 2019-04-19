@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     login() {
-      this.$form.validateFields((err, values) => {
+      this.form.validateFields((err, values) => {
         if (!err) {
           this.$emit('login', values)
         }

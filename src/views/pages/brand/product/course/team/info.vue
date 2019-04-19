@@ -38,12 +38,24 @@
 import { shopColumns, coachColumns, priceConfigColumns } from './info#table.config'
 export default {
   name: 'TeamCourseInfo',
+  serviceInject() {
+    return {
+      teamEditService: TeamEditService
+    }
+  },
+  rxState() {
+    console.log('sub', this.teamEditService)
+    return {
+
+    }
+  },
   data() {
     return {
       shopColumns,
       coachColumns,
       priceConfigColumns
     }
-  }
+  },
+  method
 }
 </script>
