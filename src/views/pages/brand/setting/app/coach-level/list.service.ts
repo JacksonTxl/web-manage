@@ -5,22 +5,18 @@ import { Store } from '@/services/store'
 import { CoachLevelApi, GetCoachLevelListInput, DeleteCoachLevelInput } from '@/api/v1/setting/coach/level'
 
 interface ListState {
-  list: any[],
-  page: object
+  resData: object
 }
 @Injectable()
 export class ListService extends Store<ListState> {
   state$: State<ListState>
-  list$: Computed<any[]>
-  page$: Computed<object>
+  resData$: Computed<object>
   constructor(protected coachLevelApi: CoachLevelApi) {
     super()
     this.state$ = new State({
-      list: [],
-      page: {}
+      resData: {}
     })
-    this.list$ = new Computed(this.state$.pipe(pluck('list')))
-    this.page$ = new Computed(this.state$.pipe(pluck('page')))
+    this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
   }
   getCoachLevelList(query: GetCoachLevelListInput) {
     return this.coachLevelApi.getCoachLevelList(query).pipe(
@@ -37,8 +33,7 @@ export class ListService extends Store<ListState> {
   }
   protected SET_STATE(data: any) {
     this.state$.commit(state => {
-      state.list = data.levels
-      state.page = data.page
+      state.resData = data
     })
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
