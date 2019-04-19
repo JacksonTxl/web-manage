@@ -3,7 +3,6 @@
     {{query}}
     <a-input v-model="query.courseName"></a-input>{
     <a-button @click="onSearch">搜索</a-button>
-
     {{list}}
   </st-panel>
 </template>
@@ -12,6 +11,9 @@
 import draggable from 'vuedraggable'
 import { RouteService } from '@/services/route.service'
 import { MineService } from './mine.service'
+import { BehaviorSubject } from 'rxjs'
+
+let forceCount = 0
 export default {
   serviceInject() {
     return {
@@ -31,9 +33,23 @@ export default {
       return false
     },
     onSearch() {
-      this.$router.push({
-        query: this.query
-      })
+      const to = {
+        query: {
+          a: 1,
+          b: 2,
+          c: 6
+        }
+      }
+      to.query = to.query || {}
+      const finalQuery = {
+        ...to.query,
+        __force: forceCount++
+      }
+      const originalHref = this.$router.resolve(to).href
+      to.query = finalQuery
+      this.$router.push(to)
+      const originalState = window.history.state
+      window.history.replaceState(originalState, null, originalHref)
     }
   },
   mounted() {

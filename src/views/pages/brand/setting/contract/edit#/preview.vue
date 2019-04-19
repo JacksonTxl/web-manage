@@ -188,34 +188,29 @@
   </div>
 </template>
 <script>
-import { EditService } from '../edit.service'
 import { dateFilter } from '@/filters/date.filters'
 import { CONTRACT_TYPE } from '@/constants/enums/contract'
 import moment from 'moment'
 
 export default {
+  props: {
+    info: {
+      type: Object,
+      default: () => ({})
+    },
+    codeDemo: {
+      type: String,
+      default: ''
+    },
+    lawContent: {
+      type: String,
+      default: ''
+    }
+  },
   bem: {
     b: 'contract-preview'
   },
-  filters: {
-    dateFilter
-  },
-  serviceInject() {
-    return {
-      editService: EditService
-    }
-  },
-  subscriptions() {
-    /**
-     * @type {EditService}
-     */
-    const edit = this.editService
-    return {
-      info: edit.info$,
-      lawContent: edit.lawContent$,
-      codeDemo: edit.codeDemo$
-    }
-  },
+  filters: { dateFilter },
   data() {
     return {
       CONTRACT_TYPE,
