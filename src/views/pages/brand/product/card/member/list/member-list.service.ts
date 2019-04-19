@@ -38,6 +38,7 @@ export class MemberListService extends Store<CardsListInfoState> {
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getListInfo({}).subscribe(res => {
+      console.log(res, '获取数据')
       this.SET_CARDS_LIST_INFO(res)
       next()
     })
