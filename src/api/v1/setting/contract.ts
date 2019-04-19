@@ -5,19 +5,19 @@ export class ContractApi extends Api {
    * 合同模版列表
    */
   getList() {
-    return this.http.get('/v1/setting/contract', { mock: {} })
+    return this.http.get('/v1/setting/contract')
   }
   /**
    * 合同模版信息
    */
   getInfo(id: number) {
-    return this.http.get(`/v1/setting/contract/${id}`, { mock: {} })
+    return this.http.get(`/v1/setting/contract/${id}`, {})
   }
   /**
    * 合同设置更新
    */
   update(params: ContractInput) {
-    return this.http.put(`/v1/setting/contract`, { params })
+    return this.http.put(`/v1/setting/contract/${params.id}`, { params })
   }
   add(params: ContractInput) {
     return this.http.post('/v1/setting/contract', { params })
@@ -26,27 +26,27 @@ export class ContractApi extends Api {
    * 获取合同章程
    */
   getConstitutionInfo(id: number) {
-    return this.http.get(`/v1/setting/contract/constitution/${id}`, {
-      mock: {}
-    })
+    return this.http.get(`/v1/setting/contract/constitution/${id}`, {})
   }
   /**
    * 更新合同章程
    */
   updateConstitution(params: ContractConstitutionInput) {
-    return this.http.put('/v1/setting/contract/constitution', { params })
+    return this.http.put(`/v1/setting/contract/constitution/${params.id}`, {
+      params
+    })
   }
   /**
    * 获取合同编码信息
    */
   getCodeInfo(id: number) {
-    return this.http.get(`/v1/setting/contract/code/${id}`, { mock: {} })
+    return this.http.get(`/v1/setting/contract/code/${id}`, {})
   }
   /**
    * 更新合同编号
    */
   updateCode(params: any) {
-    return this.http.put('/v1/setting/contract/code', { params })
+    return this.http.put(`/v1/setting/contract/code/${params.id}`, { params })
   }
 }
 
