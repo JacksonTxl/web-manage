@@ -14,12 +14,13 @@ export const routeMapConfig = {
   'user-login'(routeConfig: RouteConfig) {
     routeConfig.meta.layout = 'login'
   },
-  'brand-setting-contract-list'(routeConfig: RouteConfig) {
+  'test-llf-mine'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
-      a: {
-        type: Number,
-        default: '1'
-      }
+      courseName: { type: String, default: '-1' },
+      b: { type: Number, default: 2 },
+      c: { type: String, default: '3' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
     }
   }
 }
