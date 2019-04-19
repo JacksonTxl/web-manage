@@ -10,7 +10,7 @@ import FullCalendar from 'vue-full-calendar'
 // @ts-ignore
 import VueBemHelper from '@/vendor/vue-bem-helper'
 // @ts-ignore
-import VueRxState from '@/vendor/vue-rx-state'
+import VuerxState from '@/vendor/vue-rx-state'
 import ICountUp from 'vue-countup-v2'
 // @ts-ignore
 import Viewer from 'v-viewer'
@@ -19,7 +19,7 @@ import './style/index'
 
 import './views/components/register'
 
-Vue.use(VueRxState)
+Vue.use(VuerxState)
 Vue.use(Antd)
 Vue.use(VueRx)
 Vue.use(FullCalendar)

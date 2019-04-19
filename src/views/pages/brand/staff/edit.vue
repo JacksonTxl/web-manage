@@ -55,7 +55,7 @@ export default {
   },
   data() {
     return {
-      currentIndex: 2,
+      currentIndex: 0,
       stepArr: [
         {
           title: '基础信息',
@@ -147,7 +147,10 @@ export default {
     }
   },
   mounted() {
-    console.log('editall', this)
+    let { currentIndex } = this.$route.query
+    if (currentIndex) {
+      this.currentIndex = currentIndex - 0
+    }
   }
 }
 </script>

@@ -6,10 +6,11 @@ import {
 
 export class AddService extends SetService {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCountryCodes().subscribe(res => {
-      console.log('mobel', res)
-      next()
-    })
+    // this.getCountryCodes().subscribe(res => {
+    //   console.log('mobel', res)
+    //   next()
+    // })
+    next()
   }
 
   // 新建基础信息

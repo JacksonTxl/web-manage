@@ -3,12 +3,17 @@ import { ServiceRoute } from 'vue-service-app'
 import { EditStaffBasicInfoQuery, EditStaffDetailInfoQuery, EditStaffCoachInfoQuery } from '../../../../api/v1/staff'
 
 export class EditService extends SetService {
+  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
+    // 格式化后的query快照对象 可使用此对象进行请求
+    console.log(to)
+    next()
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    console.log('this', this)
+    let { staffId } = to.query
     this.getCountryCodes().subscribe(res => {
       console.log('mobel', res)
     })
-    this.getStaffBrandReview(36).subscribe(res => {
+    this.getStaffBrandReview(Number(staffId)).subscribe(res => {
       this.SET_STAFF_BRND(res)
       next()
     })
