@@ -202,7 +202,7 @@ export default {
       route: RouteService // 将我们提供的路由基类服务添加
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       query: this.route.query$ // 获取初始化的路由query
     }

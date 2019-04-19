@@ -82,7 +82,7 @@ export default {
       message: MessageService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       settingEnums: this.user.settingEnums$,
       loading: this.codeEditService.loading$

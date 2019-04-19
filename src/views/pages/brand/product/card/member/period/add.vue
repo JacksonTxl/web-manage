@@ -278,13 +278,14 @@ import SelectShop from '@/views/fragments/shop/select-shop'
 import { cloneDeep } from 'lodash-es'
 import { AddService } from './add.service'
 export default {
+  name: 'BrandPeriodCardAdd',
   serviceInject() {
     return {
       rules: RuleConfig,
       addService: AddService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       addLoading: this.addService.loading$
     }

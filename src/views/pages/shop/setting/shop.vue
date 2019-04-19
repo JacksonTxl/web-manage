@@ -206,7 +206,7 @@ export default {
       infoService: ShopService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       shopInfo: this.infoService.shopInfo$
     }

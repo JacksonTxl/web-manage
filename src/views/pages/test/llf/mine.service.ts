@@ -1,9 +1,10 @@
-import { RouteGuard, ServiceRoute } from 'vue-service-app'
+import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
 import { State, Computed } from 'rx-state/src'
 import { Store } from '@/services/store'
 import { pluck } from 'rxjs/operators'
 import { RouteService } from '@/services/route.service'
 
+@Injectable()
 export class MineService extends Store<any> implements RouteGuard {
   state$: State<any>
   list$: Computed<any[]>

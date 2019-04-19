@@ -28,7 +28,7 @@ export default {
       addService: AddService
     }
   },
-  subscriptions() {
+  rxState() {
     console.log(this.addService.countryList$)
     return {
       countryList: this.addService.countryList$

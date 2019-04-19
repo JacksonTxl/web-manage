@@ -14,7 +14,7 @@
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="姓名" required>
-          <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="basicsInfoRule.staff_name"/>
+          <a-input placeholder="支持中英文、数字、不超过15个字" max="15" v-decorator="basicsInfoRule.staff_name"/>
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact>

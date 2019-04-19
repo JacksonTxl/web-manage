@@ -26,7 +26,7 @@ export default {
       list: []
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       list: this.selectCourseTypeService.list$
     }

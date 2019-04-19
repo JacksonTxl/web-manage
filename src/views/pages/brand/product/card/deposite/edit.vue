@@ -244,7 +244,7 @@ export default {
       editService: EditService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       addLoading: this.editService.loading$
     }

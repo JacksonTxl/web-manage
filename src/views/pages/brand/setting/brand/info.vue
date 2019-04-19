@@ -38,7 +38,7 @@ export default {
       brand: {}
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       brand: this.infoService.brand$
     }

@@ -5,13 +5,13 @@ export class ContractApi extends Api {
    * 合同模版列表
    */
   getList() {
-    return this.http.get('/v1/setting/contract', {})
+    return this.http.get('/v1/setting/contract', { mock: {} })
   }
   /**
    * 合同模版信息
    */
   getInfo(id: number) {
-    return this.http.get(`/v1/setting/contract/${id}`)
+    return this.http.get(`/v1/setting/contract/${id}`, { mock: {} })
   }
   /**
    * 合同设置更新
@@ -26,7 +26,9 @@ export class ContractApi extends Api {
    * 获取合同章程
    */
   getConstitutionInfo(id: number) {
-    return this.http.get(`/v1/setting/contract/constitution/${id}`)
+    return this.http.get(`/v1/setting/contract/constitution/${id}`, {
+      mock: {}
+    })
   }
   /**
    * 更新合同章程
@@ -38,7 +40,7 @@ export class ContractApi extends Api {
    * 获取合同编码信息
    */
   getCodeInfo(id: number) {
-    return this.http.get(`/v1/setting/contract/code/${id}`)
+    return this.http.get(`/v1/setting/contract/code/${id}`, { mock: {} })
   }
   /**
    * 更新合同编号

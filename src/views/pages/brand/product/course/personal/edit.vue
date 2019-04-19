@@ -30,7 +30,7 @@ export default {
       editService: EditService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       info: this.editService.info$
     }

@@ -40,11 +40,13 @@ export default {
     }
   },
   methods: {
-    // login() {
-    //   this.form.validateFields((err, values) => {
-    //     this.$emit('login', values)
-    //   })
-    // },
+    login() {
+      this.$form.validateFields((err, values) => {
+        if (!err) {
+          this.$emit('login', values)
+        }
+      })
+    },
     onClickFindPassword() {
       this.$emit('findps')
     },

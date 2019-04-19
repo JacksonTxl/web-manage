@@ -42,7 +42,7 @@ export default {
       editService: EditService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       formData: this.editService.formData$,
       countryList: this.editService.countryList$

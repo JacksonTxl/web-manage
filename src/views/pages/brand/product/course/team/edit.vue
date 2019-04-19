@@ -224,7 +224,7 @@ export default {
       teamEditService: TeamEditService
     }
   },
-  subscriptions() {
+  rxState() {
     console.log('sub', this.teamEditService)
     return {
       // formData: this.teamEditService.formData$

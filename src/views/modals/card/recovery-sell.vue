@@ -18,28 +18,37 @@
         <span style="margin-right:16px">支持售卖时间</span>
         <a-range-picker
           @change="onChange"
-          :defaultValue="[moment('2015-06-06', dateFormat), moment('2015-06-06', dateFormat)]"
+          :disabledDate="disabledDate"
+          :defaultValue="[moment(times[0], dateFormat), moment(times[1], dateFormat)]"
         />
       </div>
     </section>
     <section>
       <footer class="footer">
         <a-button class="cancel">取消</a-button>
-        <a-button>恢复售卖</a-button>
-        <!-- <a-popconfirm title="确认停售该会员卡?" @confirm="onDelete(record.id)">
+        <a-popconfirm title="确认停售该会员卡?" @confirm="onDelete(a)">
           <a-button type="danger">恢复售卖</a-button>
-        </a-popconfirm>-->
+        </a-popconfirm>
       </footer>
     </section>
-    {{a}}
+    {{times}}
   </a-modal>
 </template>
 <script>
 import moment from 'moment'
+import { RecoverySellService } from './recovery-sell.service'
 export default {
+  serviceInject() {
+    return {
+      aService: RecoverySellService
+    }
+  },
   name: 'recoverySell',
   props: {
     a: {
+      type: Object
+    },
+    time: {
       type: Object
     }
   },
@@ -47,10 +56,12 @@ export default {
     return {
       show: false,
       form: this.$form.createForm(this),
-      dateFormat: 'YYYY-MM-DD'
-      // entityCardIdRule: ['entityCardId', { rules: [ { message: '请输入实体卡号' }] }],
-      // physicalIdRule: ['physicalID', { rules: [{ message: '请录入物理ID' }] }]
+      dateFormat: 'YYYY-MM-DD',
+      times: []
     }
+  },
+  created() {
+    this.times = [this.a.start_time, this.a.end_time]
   },
   methods: {
     moment,
@@ -58,7 +69,23 @@ export default {
       e.preventDefault()
     },
     onChange(date, dateString) {
+      this.times = dateString
       console.log(date, dateString)
+    },
+    disabledDate(current) {
+      return current && current < new Date(this.time.current_time) - 8.64e7
+    },
+    onDelete(a) {
+      let self = this
+      self.show = false
+      let data = {
+        card_id: self.a.id,
+        start_time: self.times[0],
+        end_time: self.times[1]
+      }
+      self.aService.setListInfo(data).subscribe(state => {
+        // this.$emit('done', true)
+      })
     }
   }
 }

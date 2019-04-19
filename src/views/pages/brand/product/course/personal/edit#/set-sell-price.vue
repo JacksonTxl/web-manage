@@ -180,7 +180,7 @@ export default {
       userService: UserService
     }
   },
-  subscriptions() {
+  rxState() {
     const user = this.userService
     return {
       personalCourseEnums: user.personalCourseEnums$

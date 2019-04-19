@@ -132,6 +132,7 @@
 <script>
 import { InfoService } from './info.service'
 export default {
+  name: 'BrandNumberCardInfo',
   bem: {
     item: 'brand-card'
   },
@@ -140,13 +141,10 @@ export default {
       infoService: InfoService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       cardInfo: this.infoService.cardInfo$
     }
-  },
-  mounted() {
-    console.log(this.cardInfo)
   },
   data() {
     return {
@@ -239,193 +237,7 @@ export default {
             width: '20%'
           }
         ]
-      },
-
-      // 期限单位
-      nuit_list: {
-        2: '天',
-        3: '月',
-        4: '年'
-      },
-
-      cardData: {
-        admission_range: 1,
-        price_setting: 1,
-        support_sales: 1
-      },
-      // 支持入场门店
-      admission_range_list: [
-        { value: 1, label: '单个门店' },
-        { value: 2, label: '多个门店' },
-        { value: 3, label: '全部门店' }
-      ],
-      // 价格设置
-      price_setting_list: [
-        { value: 1, label: '品牌统一定价' },
-        { value: 2, label: '场馆自主定价' }
-      ],
-      // 支持售卖门店
-      support_sales_list: [
-        { value: 0, label: '支持入场门店' },
-        { value: 1, label: '全部门店' },
-        { value: 2, label: '指定门店' }
-      ],
-      // 售卖渠道
-      sell_type_list: [
-        { value: 2, label: '线下售卖' },
-        { value: 1, label: '用户端售卖' }
-      ],
-
-      shop_table: [
-        {
-          key: 1,
-          province: '上海',
-          city: '上海市',
-          district: '徐汇区',
-          shopname: '徐汇1店'
-        },
-        {
-          key: 2,
-          province: '上海',
-          city: '上海市',
-          district: '徐汇区',
-          shopname: '徐汇2店'
-        },
-        {
-          key: 3,
-          province: '上海',
-          city: '上海市',
-          district: '徐汇区',
-          shopname: '徐汇3店'
-        },
-        {
-          key: 4,
-          province: '上海',
-          city: '上海市',
-          district: '徐汇区',
-          shopname: '徐汇4店'
-        },
-        {
-          key: 5,
-          province: '上海',
-          city: '上海市',
-          district: '徐汇区',
-          shopname: '徐汇5店'
-        },
-        {
-          key: 6,
-          province: '上海',
-          city: '上海市',
-          district: '徐汇区',
-          shopname: '徐汇6店'
-        }
-      ],
-      brand_price_columns: [
-        {
-          title: '期限',
-          scopedSlots: { customRender: 'unit' },
-          dataIndex: 'unit'
-        },
-        {
-          title: '售价',
-          scopedSlots: { customRender: 'rally_price' },
-          dataIndex: 'rally_price'
-        },
-        {
-          title: '允许冻结天数',
-          scopedSlots: { customRender: 'frozen_day' },
-          dataIndex: 'frozen_day'
-        },
-        {
-          title: '赠送上限',
-          scopedSlots: { customRender: 'gift_unit' },
-          dataIndex: 'gift_unit'
-        }
-      ],
-      brand_price_table: [
-        {
-          key: 1,
-          unit: 10,
-          rally_price: 11,
-          frozen_day: 12,
-          gift_unit: 13
-        }, {
-          key: 1,
-          unit: 10,
-          rally_price: 11,
-          frozen_day: 12,
-          gift_unit: 13
-        }, {
-          key: 1,
-          unit: 10,
-          rally_price: 11,
-          frozen_day: 12,
-          gift_unit: 13
-        }, {
-          key: 1,
-          unit: 10,
-          rally_price: 11,
-          frozen_day: 12,
-          gift_unit: 13
-        }
-      ],
-      shop_price_columns: [
-        {
-          title: '期限',
-          scopedSlots: { customRender: 'unit' },
-          dataIndex: 'unit'
-        },
-        {
-          title: '售价范围',
-          scopedSlots: { customRender: 'rally_price' },
-          dataIndex: 'rally_price',
-          width: 180
-        },
-        {
-          title: '允许冻结天数',
-          scopedSlots: { customRender: 'frozen_day' },
-          dataIndex: 'frozen_day'
-        },
-        {
-          title: '赠送上限',
-          scopedSlots: { customRender: 'gift_unit' },
-          dataIndex: 'gift_unit'
-        }
-      ],
-      shop_price_table: [
-        {
-          key: 1,
-          unit: 10,
-          rally_price: 11,
-          frozen_day: 12,
-          gift_unit: 13
-        }, {
-          key: 1,
-          unit: 10,
-          rally_price: 11,
-          frozen_day: 12,
-          gift_unit: 13
-        }, {
-          key: 1,
-          unit: 10,
-          rally_price: 11,
-          frozen_day: 12,
-          gift_unit: 13
-        }, {
-          key: 1,
-          unit: 10,
-          rally_price: 11,
-          frozen_day: 12,
-          gift_unit: 13
-        }
-      ]
-    }
-  },
-  methods: {
-    admission_range_delate(a, b, c) {
-      console.log(a)
-      console.log(b)
-      console.log(c)
+      }
     }
   }
 }
