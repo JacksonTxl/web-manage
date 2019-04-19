@@ -3,25 +3,25 @@
     <a-row :class="bstep()" class="mg-b48" :gutter="8">
       <a-col offset="1" :span="stepsSpan"><Steps :value="currentIndex" :stepArr="stepArr" @skip="skip"/></a-col>
     </a-row>
-    <StaffDetailBasics :codeList="countryList" v-show="currentIndex == 0" @goNext="goNext" @basicInfoSave="onBasicInfoSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
-    <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" />
-    <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" />
+    <StaffDetailBasics :codeList="countryList" v-show="currentIndex == 0" @skiptoedit="skiptoedit" @basicInfoSave="onBasicInfoSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
+    <!-- <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" />
+    <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" /> -->
   </st-panel>
 </template>
 
 <script>
 import Steps from './add#/st-steps'
 import StaffDetailBasics from './add#/add-detail-basicsInfo'
-import StaffDetailDetailedInfo from './add#/add-detail-detailedInfo'
-import StaffDetailCoachInfo from './add#/add-detail-coachInfo'
+// import StaffDetailDetailedInfo from './add#/add-detail-detailedInfo'
+// import StaffDetailCoachInfo from './add#/add-detail-coachInfo'
 import { AddService } from './add.service'
 export default {
   name: 'addDetail',
   components: {
     Steps,
-    StaffDetailBasics,
-    StaffDetailDetailedInfo,
-    StaffDetailCoachInfo
+    StaffDetailBasics
+    // StaffDetailDetailedInfo,
+    // StaffDetailCoachInfo
   },
   serviceInject() {
     return {
@@ -57,7 +57,7 @@ export default {
     }
   },
   methods: {
-    deletStep(e) {
+    deletStep(e) { //
       this.stepsSpan = 12
       let index = this.stepArr.findIndex(function(value, index, arr) {
         return value.title === '教练信息'
@@ -76,23 +76,31 @@ export default {
       console.log('跳页', data)
       this.currentIndex = data.index
     },
-    goNext(e) { // 下一步
-      console.log(e)
-      let currentIndex = this.currentIndex
-      this.currentIndex = currentIndex + 1
-      if (this.currentIndex === 3) {
-        this.currentIndex = 0
-      }
+    skiptoedit(e) { // 下一步
+      console.log('跳到编辑', e)
+      this.submit(e, 'skip')
     },
-    submit(data) {
+    submit(data, saveOrskip) {
       this.addService.addBasicInfo(data).subscribe(res => {
         console.log('保存', res)
+        console.log('ssdsd', typeof this.stepArr.length)
+        if (saveOrskip === 'skip') {
+          this.$router.push({
+            name: 'brand-staff-edit',
+            query: {
+              staffId: res.staff_id,
+              currentIndex: 1
+            }
+          })
+        } else if (saveOrskip === 'save') {
+          console.log('返回列表')
+          // this.$router.go(-1)
+        }
       })
     },
     onBasicInfoSave(form) { // 保存
       console.log(form)
-
-      this.submit(form)
+      this.submit(form, 'save')
     }
     // staing(data) { // 跳页 下一个都调用下暂存
     //   this.staingData = data
