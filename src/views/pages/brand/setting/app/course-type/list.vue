@@ -1,9 +1,16 @@
 <template>
   <st-panel app>
-    <p class="ta-r">
-      <modal-link tag="st-button" :to="{ name: 'brand-setting-app-course-type-add', on: {
-        change: onListChange } }">添加</modal-link>
-    </p>
+    <a-row>
+      <a-col :span="16">
+        <span>已添加{{listNum}}个，支持添加{{limit}}个</span>
+      </a-col>
+      <a-col :span="8">
+        <p class="ta-r">
+          <modal-link tag="st-button" :to="{ name: 'brand-setting-app-course-type-add', on: {
+            change: onListChange } }">添加</modal-link>
+        </p>
+      </a-col>
+    </a-row>
     <st-table
       :columns="columns"
       rowKey="id"
@@ -61,7 +68,13 @@ export default {
   data() {
     return {
       columns,
-      tableData: []
+      tableData: [],
+      limit: 30
+    }
+  },
+  computed: {
+    listNum() {
+      return this.tableData.length
     }
   },
   methods: {

@@ -8,6 +8,7 @@ import { TitleService } from '@/services/title.service'
 import { RouteService } from '@/services/route.service'
 import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
 import { LayoutShopService } from '@/services/layouts/layout-shop.service'
+import { routeMapConfig } from './route-map.config'
 
 const routes: any[] = [
   {
@@ -90,24 +91,9 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       route.meta.layout = 'default-shop'
     }
 
-    switch (route.name) {
-      case 'user-login':
-        route.meta.layout = 'login'
-        break
-      case '404':
-        route.meta.layout = 'blank'
-        break
-      case 'test-zlx':
-        route.meta.layout = 'blank'
-        break
-      case 'plugins-list':
-        route.queryOptions = {
-          a: { type: Number },
-          b: { type: Number }
-        }
-        break
-      default:
-        break
+    if (route.name in routeMapConfig) {
+      // @ts-ignore
+      routeMapConfig[route.name](route)
     }
 
     if (route.children && route.children.length) {
