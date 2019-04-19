@@ -6,7 +6,10 @@ interface RouteConfig extends ServiceRouteConfig {
     title: string
   }
 }
-
+interface StaffEdit extends ServiceRouteConfig{
+  staff_id?: number;
+  currentIndex?: number;
+}
 export const routeMapConfig = {
   '404'(routeConfig: RouteConfig) {
     routeConfig.meta.layout = 'blank'

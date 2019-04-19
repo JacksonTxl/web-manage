@@ -2,9 +2,10 @@ import { Injectable } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
+import { RouteService } from '@/services/route.service'
+
 import {
   StaffApi,
-  SaveData,
   EditStaffBasicInfoQuery,
   EditStaffDetailInfoQuery,
   EditStaffCoachInfoQuery,
@@ -24,7 +25,7 @@ export class SetService extends Store<SetState> {
       super()
       this.state$ = new State({
         formData: {},
-        countryList: []
+        countryList: {}
       })
       this.formData$ = new Computed(this.state$.pipe(pluck('formData')))
       this.countryList$ = new Computed(this.state$.pipe(pluck('countryList')))
