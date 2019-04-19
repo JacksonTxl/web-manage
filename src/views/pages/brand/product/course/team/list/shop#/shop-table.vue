@@ -1,62 +1,26 @@
 <template>
-<div>
-  <st-table
-      class="mg-t16"
-      rowKey="id"
-      :alertSelection="{onReset: start}"
-      :columns="columns"
-      :dataSource="data"
-      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-      :scroll="{ x: 1300}"
-      @change="onChange"
-    >
-      <a
-        slot="member"
-        slot-scope="text,record"
-        href="javascript:;"
-        @click="name(text,record)"
-      >{{text}}</a>
-      <a
-        slot="admission"
-        slot-scope="text,record"
-        href="javascript:;"
-        @click="name(text,record)"
-      >{{text}}</a>
-      <a slot="sellStatus" slot-scope="text,record" href="javascript:;" @click="name(text,record)">
-        <span
-          v-if="text ==='可售卖'"
-          style="width:8px;
-                 height:8px;
-                 display: inline-block;
-                 border-radius: 50%;
-                 background:rgba(82,196,26,1);"
-        ></span>
-        <span
-          v-if="text ==='停售'"
-          style="width:8px;
-                 height:8px;
-                 display: inline-block;
-                 border-radius: 50%;
-                 background:rgba(245,34,45,1);"
-        ></span>
-        {{text}}
-        <a-popover title="Title" placement="bottomRight">
-          <template slot="content">
-            <p>Content</p>
-            <p>Content</p>
-          </template>
-          <a-icon type="exclamation-circle" v-if="text ==='停售'"/>
-        </a-popover>
-      </a>
-      <div slot="rate" slot-scope="rate">
-        <a-rate :defaultValue="rate" disabled />
-      </div>
-      <div slot="action" slot-scope="record">
-        <a href="http://" :record="record">查看</a>
-      </div>
-    </st-table>
-
+<st-table
+  class="mg-t16"
+  rowKey="id"
+  :columns="columns"
+  :dataSource="teamCourseList"
+  :scroll="{ x: 1300}"
+  :alertSelection="{onReset: start}"
+  :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+  @change="onChange"
+>
+<a href="javascript:;" slot="course_name" slot-scope="text,record"  @click="onClickCourseInfo(record)">{{text}}</a>
+<a-rate slot="strength_level" slot-scope="strength_level" :defaultValue="strength_level" disabled />
+<div slot="action" slot-scope="text,record">
+  <a href="javascript:;" class="mg-r8" @click="onClickCourseInfo(record)">详情</a>
+  <a href="javascript:;" @click="onClickEditCourseInfo(record)">编辑</a>
+  <st-more-dropdown style="margin-left: 12px;">
+    <a-menu-item>置为无效</a-menu-item>
+    <a-menu-item>恢复有效</a-menu-item>
+    <a-menu-item>删除</a-menu-item>
+  </st-more-dropdown>
 </div>
+</st-table>
 
 </template>
 
@@ -67,35 +31,13 @@ export default {
   data() {
     return {
       columns,
-      selectedRowKeys: [],
-      data: [
-        {
-          id: 1,
-          member: 'John Brown',
-          rate: 5,
-          age: 32,
-          type: '期限卡',
-          effective: '720天',
-          admission: '古美路店天',
-          sell: '古美路店天',
-          release: '门店',
-          sellStatus: '可售卖',
-          action: 'New York No. 1 Lake Park'
-        },
-        {
-          id: 2,
-          member: 'John Brown',
-          age: 32,
-          rate: 4,
-          type: '期限卡',
-          effective: '720天',
-          admission: '古美路店天',
-          sell: '古美路店天',
-          release: '门店',
-          sellStatus: '停售',
-          action: 'New York No. 1 Lake Park'
-        }
-      ]
+      selectedRowKeys: []
+    }
+  },
+  props: {
+    teamCourseList: {
+      type: Array,
+      default: () => []
     }
   },
   methods: {
@@ -104,6 +46,12 @@ export default {
     },
     onChange() {
 
+    },
+    onClickCourseInfo(val) {
+      console.log(val)
+    },
+    onClickEditCourseInfo(val) {
+      console.log(val)
     },
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys

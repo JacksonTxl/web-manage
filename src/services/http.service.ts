@@ -1,6 +1,6 @@
-import { Observable } from 'rxjs'
+import { Observable, throwError } from 'rxjs'
 import { ajax, AjaxError } from 'rxjs/ajax'
-import { catchError, pluck, timeout } from 'rxjs/operators'
+import { catchError, pluck, timeout, tap } from 'rxjs/operators'
 import { StResponse } from '@/types/app'
 import qs from 'qs'
 import { Injectable, ServiceRouter } from 'vue-service-app'
@@ -48,6 +48,7 @@ export class HttpService {
       .get(requestUrl, this.appGetHeaders)
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
+      .pipe(this.ajaxResponseHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return get$
   }
@@ -57,6 +58,7 @@ export class HttpService {
       .post(requestUrl, options.params, this.appHeaders)
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
+      .pipe(this.ajaxResponseHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return post$
   }
@@ -66,6 +68,7 @@ export class HttpService {
       .put(requestUrl, options.params, this.appHeaders)
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
+      .pipe(this.ajaxResponseHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return put$
   }
@@ -75,6 +78,7 @@ export class HttpService {
       .delete(requestUrl, this.appHeaders)
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
       .pipe(this.ajaxErrorHandler.bind(this))
+      .pipe(this.ajaxResponseHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return delete$
   }
@@ -109,6 +113,15 @@ export class HttpService {
       'app-version': '11111',
       'Content-Type': 'application/json'
     }
+  }
+  private ajaxResponseHandler(source$: Observable<any>) {
+    return source$.pipe(tap(userResponse => {
+      ['code', 'msg', 'data'].forEach(filed => {
+        if (userResponse.status === 200 && userResponse.response[filed] === undefined) {
+          console.warn(`[httpService] response field [${filed}] not found in Api[${userResponse.request.url}]`)
+        }
+      })
+    }))
   }
   private ajaxErrorHandler(source$: Observable<any>) {
     return source$.pipe(

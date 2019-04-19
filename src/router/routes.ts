@@ -107,6 +107,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
           b: { type: Number }
         }
         break
+
       default:
         break
     }

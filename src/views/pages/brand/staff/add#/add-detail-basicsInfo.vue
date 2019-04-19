@@ -20,7 +20,7 @@
             </a-upload>
         </st-form-item>
         <st-form-item label="姓名" required>
-          <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="basicInfoRuleList.usernameRule" />
+          <a-input placeholder="支持中英文、数字、不超过15个字" v-decorator="basicInfoRuleList.usernameRule" />
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact>
@@ -214,8 +214,8 @@ export default {
       imageUrl: '',
       key: '', // 上传头像返回的key
       basicInfoRuleList: {
-        usernameRule: ['staff_name', { rules: [{ required: true, message: '请填写姓名' }] }], // 姓名
-        nicknameRule: ['nickname', { rules: [{ required: true, message: '请填写昵称' }] }], // 昵称
+        usernameRule: ['staff_name', { rules: [{ required: true, message: '请填写姓名', max: 15 }, { required: false, message: '姓名长度不超过15个字 ', max: 15 }] }], // 姓名
+        nicknameRule: ['nickname', { rules: [{ required: true, message: '请填写昵称' }, { required: false, message: '姓名长度不超过15个字 ', max: 15 }] }], // 昵称
         country_codeRule: ['country_code_id', { initialValue: 37 }], // 国家编码id，例如中国的id是37
         phoneRule: ['mobile', { rules: [{ required: true, message: '手机号格式错误', pattern: /^1[34578]\d{9}$/ }] }],
         staff_numRule: ['staff_num'], // 工号
