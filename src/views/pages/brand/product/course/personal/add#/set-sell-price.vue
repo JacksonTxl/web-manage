@@ -105,7 +105,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save">完成</st-button>
+          <st-button type="primary" @click="save" :loading="loading.setPrice">完成</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -182,7 +182,9 @@ export default {
   },
   rxState() {
     const user = this.userService
+    console.log('sub', this.addService.loading$)
     return {
+      loading: this.addService.loading$,
       personalCourseEnums: user.personalCourseEnums$
     }
   },
@@ -190,9 +192,13 @@ export default {
     enumFilter
   },
   props: {
-    course_name: {
+    courseName: {
       type: String,
       default: ''
+    },
+    courseId: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -206,9 +212,14 @@ export default {
     }
   },
   watch: {
-    course_name(val) {
+    courseName(val) {
       this.form.setFieldsValue({
         course_name: val
+      })
+    },
+    courseId(val) {
+      this.form.setFieldsValue({
+        course_id: val
       })
     }
   },
@@ -227,7 +238,7 @@ export default {
       console.log('price_gradient', price_gradient)
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
-        data.course_id = 6
+        data.course_id = this.courseId
         console.log('step 3 data', data)
         if (!this.inputCheck(price_gradient)) {
           return
