@@ -24,6 +24,27 @@ export class TeamApi extends Api {
     return this.http.get('/v1/course/team/shop', { query })
   }
   /**
+   *
+   * 获取团课课程详情
+   */
+  getTeamCourseInfo(course_id: string) {
+    return this.http.get(`/v1/course/team/${course_id}`)
+  }
+  /**
+   *
+   * 删除团课课程
+   */
+  deleteTeamCourse(course_id: string) {
+    return this.http.delete(`/v1/course/team/${course_id}`)
+  }
+  /**
+   *
+   * 编辑团课课程
+   */
+  putTeamCourse(course_id: string) {
+    return this.http.put(`/v1/course/team/${course_id}`)
+  }
+  /**
    * 获取课程类型
    */
   getTeamCourseType(query: GetTeamCourseTypeQuery) {

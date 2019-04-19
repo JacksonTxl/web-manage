@@ -3,7 +3,7 @@ import { tap, pluck } from 'rxjs/operators'
 import { State, Computed } from 'rx-state/src'
 import { TeamApi, GetTeamBrandCourseListInput } from '@/api/v1/course/team'
 @Injectable()
-export class BrandService {
+export class BrandService implements RouteGuard {
   state$: State<any>
   teamCourseList$: Computed<any>
   constructor(private teamApi: TeamApi) {
