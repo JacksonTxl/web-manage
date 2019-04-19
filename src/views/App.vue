@@ -54,9 +54,6 @@ export default {
     layoutComponent() {
       return layoutMap[this.layout]
     }
-  },
-  mounted() {
-    console.log(this)
   }
 }
 </script>
