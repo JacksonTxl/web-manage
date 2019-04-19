@@ -6,7 +6,8 @@ import {
   publish,
   tap,
   finalize,
-  shareReplay
+  shareReplay,
+  distinctUntilChanged
 } from 'rxjs/operators'
 
 export type Mutation<T> = (state: T) => T | void
@@ -94,16 +95,13 @@ export function Effect() {
       if (!this.loading$) {
         console &&
           console.warn(
-            '[rx-state]  Effect decorator can not find  loading$ stream!'
+            '[rx-state]  Effect decorator can not find loading$ state!'
           )
         return originalFn.apply(this, arguments)
       }
       this.loading$.commit(PATCH(propKey, true))
       const oriRequest$: Observable<any> = originalFn.apply(this, arguments)
       const request$ = oriRequest$.pipe(
-        tap(() => {
-          this.loading$.commit(PATCH(propKey, false))
-        }),
         finalize(() => {
           this.loading$.commit(PATCH(propKey, false))
         })
@@ -122,7 +120,10 @@ class ObservableWithSnapshot<T> extends Observable<T> {
 export class Computed<T> extends ObservableWithSnapshot<T> {
   constructor(source$: Observable<T>) {
     super()
-    const computed$ = source$.pipe(shareReplay(1)) as ObservableWithSnapshot<T>
+    const computed$ = source$.pipe(
+      distinctUntilChanged(),
+      shareReplay(1)
+    ) as ObservableWithSnapshot<T>
     computed$.snapshot = function() {
       return getSnapshot(computed$)
     }
