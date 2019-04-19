@@ -2,19 +2,21 @@
   <st-panel app>
     <a-row>
       <a-col :span="16">
-        <span>已添加{{listNum}}个，支持添加{{limit}}个</span>
+        <span>已添加{{resData.total}}个，支持添加{{resData.max}}个</span>
       </a-col>
       <a-col :span="8">
         <p class="ta-r">
-          <modal-link tag="st-button" :to="{ name: 'brand-setting-app-course-type-add', on: {
-            change: onListChange } }">添加</modal-link>
+          <modal-link tag="a" :to="{ name: 'brand-setting-app-course-type-add', on: {
+            change: onListChange } }">
+            <st-button type="primary" icon="add">添加</st-button>
+          </modal-link>
         </p>
       </a-col>
     </a-row>
     <st-table
       :columns="columns"
       rowKey="id"
-      :dataSource="tableData"
+      :dataSource="resData.list"
       @change="onTableChange"
       :pagination="{ current: +query.page || 1, total: page.total_counts }"
     >
@@ -60,21 +62,18 @@ export default {
   },
   rxState() {
     return {
-      tableData: this.listService.list$,
-      page: this.listService.page$,
+      resData: this.listService.resData$,
       query: this.routeService.query$
     }
   },
   data() {
     return {
-      columns,
-      tableData: [],
-      limit: 30
+      columns
     }
   },
   computed: {
-    listNum() {
-      return this.tableData.length
+    page() {
+      return this.resData.page
     }
   },
   methods: {
@@ -92,7 +91,6 @@ export default {
           page: pagination.current
         }
       })
-      console.log('pagination', pagination)
     },
     onListChange() {
       if (this.page.current_page !== 1) {
