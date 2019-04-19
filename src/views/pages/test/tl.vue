@@ -44,7 +44,7 @@ export default {
       shopIds: [1]
     }
   },
-  subscriptions() {
+  rxState() {
   },
   methods: {
     switchShop() {

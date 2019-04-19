@@ -100,7 +100,7 @@ export default {
       bService: StopSaleListService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       cardsListInfo: this.bService.cardsListInfo$
     }

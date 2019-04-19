@@ -157,7 +157,7 @@ export default {
       messageService: MessageService
     }
   },
-  subscriptions() {
+  rxState() {
   },
   components: {
     StSelectCourseType,

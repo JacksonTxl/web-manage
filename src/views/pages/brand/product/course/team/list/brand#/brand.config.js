@@ -1,13 +1,12 @@
 export const columns = [
   {
     title: '课程类型',
-    dataIndex: 'category_name',
-    scopedSlots: { customRender: 'category_name' }
-    // sorter: (a, b) => a.name.length - b.name.length
+    dataIndex: 'category_name'
   },
   {
     title: '课程名称',
-    dataIndex: 'course_name'
+    dataIndex: 'course_name',
+    scopedSlots: { customRender: 'course_name' }
   },
   {
     title: '课程强度',
@@ -29,10 +28,12 @@ export const columns = [
   },
   {
     title: '状态',
-    dataIndex: 'is_available'
+    dataIndex: 'is_available',
+    scopedSlots: { customRender: 'is_available' }
   },
   {
     title: '操作',
-    dataIndex: 'action'
+    dataIndex: 'action',
+    scopedSlots: { customRender: 'action' }
   }
 ]

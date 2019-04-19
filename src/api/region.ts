@@ -5,7 +5,7 @@ export class RegionApi extends Api {
    * 获取省市区树
    */
   getRegions() {
-    return this.http.get('/regions', { mock: {} })
+    return this.http.get('/regions')
   }
   /**
    * 获取省

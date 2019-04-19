@@ -190,7 +190,7 @@ export default {
       layoutBrandSerivce: LayoutBrandService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       breadcrumbs: this.layoutBrandSerivce.breadcrumbs$
     }

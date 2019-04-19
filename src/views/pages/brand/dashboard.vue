@@ -152,7 +152,7 @@ export default {
   filters: {
     imgFilter
   },
-  subscriptions() {
+  rxState() {
     const shopList = this.dashboardService.shopInfo$
     const page = this.dashboardService.page$
     return {

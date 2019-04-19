@@ -27,7 +27,7 @@ export default {
       route: RouteService
     }
   },
-  subscriptions() {
+  rxState() {
     const { layout$, query$ } = this.route
     const t$ = this.i18n.t$.bind(this.i18n)
     return {

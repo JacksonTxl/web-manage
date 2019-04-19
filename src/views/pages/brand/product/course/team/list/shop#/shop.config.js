@@ -1,33 +1,33 @@
 export const columns = [
   {
     title: '售卖场馆',
-    dataIndex: 'effective'
+    dataIndex: 'shop_name'
   },
   {
     title: '课程类型',
-    dataIndex: 'effective'
+    dataIndex: 'category_name'
   },
   {
     title: '课程名称',
-    dataIndex: 'admission',
-    scopedSlots: { customRender: 'admission' }
+    dataIndex: 'course_name',
+    scopedSlots: { customRender: 'course_name' }
   },
   {
     title: '课程强度',
-    dataIndex: 'rate',
-    scopedSlots: { customRender: 'rate' }
+    dataIndex: 'strength_level',
+    scopedSlots: { customRender: 'strength_level' }
   },
   {
     title: '时长（分钟）',
-    dataIndex: 'sell'
+    dataIndex: 'duration'
   },
   {
     title: '参考课时费',
-    dataIndex: 'release'
+    dataIndex: 'price'
   },
   {
     title: '状态',
-    dataIndex: 'release'
+    dataIndex: 'is_available'
   },
   {
     title: '操作',

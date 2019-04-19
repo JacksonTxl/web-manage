@@ -44,7 +44,7 @@ export default {
       messageService: MessageService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       loading: this.editService.loading$
     }

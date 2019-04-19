@@ -32,7 +32,7 @@ export default {
       shopService: ShopService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       personalCourseList: this.shopService.personalCourseList$
     }
