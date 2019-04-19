@@ -86,7 +86,10 @@ export default {
     },
     getListInfo(data) {
       let self = this
-      this.aService.getListInfo(data).subscribe(state => {})
+      this.aService.getListInfo(data).subscribe(state => {
+        console.log(state)
+        self.info = state.info
+      })
     },
     save(e) {
       e.preventDefault()

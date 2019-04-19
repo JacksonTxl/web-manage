@@ -73,7 +73,7 @@ export class CardsApi extends Api {
    *填写会员卡停售
    */
   setCardsSaleStop(params: any) {
-    return this.http.put('/v1/cards/sale/stop', { params })
+    return this.http.put('/v1/cards/sale/brand/stop', { params })
   }
   /**
    *会员卡恢复售卖
