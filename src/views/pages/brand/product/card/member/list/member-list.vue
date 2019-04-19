@@ -104,7 +104,7 @@
         <a href="javascript:;" v-if="record.sell_status.id === 2">
           <modal-link
             tag="a"
-            :to=" { name: 'card-recovery-sell', props:{a:record,time:cardsListInfo.time} }"
+            :to=" { name: 'card-recovery-sell', props:{a:record,time:cardsListInfo.time}, on:{done: onModalTest } }"
           >恢复售卖</modal-link>
         </a>
         <template v-if="record.sell_status.name === '可售卖'">

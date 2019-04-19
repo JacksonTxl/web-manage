@@ -14,13 +14,17 @@
         <span class="modal-card-recovery-sell-type">{{a.card_type.name}}</span>
         {{a.card_name}}
       </div>
-      <div>
-        <span style="margin-right:16px">支持售卖时间</span>
-        <a-range-picker
-          @change="onChange"
-          :disabledDate="disabledDate"
-          :defaultValue="[moment(times[0], dateFormat), moment(times[1], dateFormat)]"
-        />
+      <div class="supporting-sales-time-box">
+        <div class="supporting-sales-time-title">支持售卖时间</div>
+        <div class="supporting-sales-time">
+          <a-range-picker
+            @change="onChange"
+            :disabledDate="disabledDate"
+            :defaultValue="[moment(times[0], dateFormat), moment(times[1], dateFormat)]"
+          />
+
+          <span class="supporting-sales-time-tips" v-if="salesTimeTips">支持售卖时间已过，请重新设置</span>
+        </div>
       </div>
     </section>
     <section>
@@ -31,12 +35,12 @@
         </a-popconfirm>
       </footer>
     </section>
-    {{times}}
   </a-modal>
 </template>
 <script>
 import moment from 'moment'
 import { RecoverySellService } from './recovery-sell.service'
+import { clone } from '../../../operators/clone'
 export default {
   serviceInject() {
     return {
@@ -55,12 +59,14 @@ export default {
   data() {
     return {
       show: false,
+      salesTimeTips: false,
       form: this.$form.createForm(this),
       dateFormat: 'YYYY-MM-DD',
       times: []
     }
   },
   created() {
+    this.salesTimeTips = new Date(this.time.current_time) > new Date(this.a.end_time)
     this.times = [this.a.start_time, this.a.end_time]
   },
   methods: {
@@ -83,8 +89,10 @@ export default {
         start_time: self.times[0],
         end_time: self.times[1]
       }
+      self.salesTimeTips = fasle
       self.aService.setListInfo(data).subscribe(state => {
-        // this.$emit('done', true)
+        console.log('done', state)
+        self.$emit('done', true)
       })
     }
   }
