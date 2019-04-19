@@ -1,7 +1,13 @@
 <template>
   <st-panel app title="共3个场地" :class="bPage()">
-    <draggable tag="a-row" :component-data="{props:{gutter:24}}" v-model="list" :animation="200">
-      <a-col :xl="8" :xxl="6" :xs="12" v-for="item in list" :key="item.id">
+    <draggable tag="a-row" :component-data="{props:{gutter:24}}" v-model="list"  :animation="200">
+      <a-col
+        :xl="8"
+        :xxl="6"
+        :xs="12"
+        v-for="item in list"
+        :key="item.id"
+      >
         <div :class="bItem()">
           <div :class="bItem('body')">
             <div :class="bItem('body-lt')">

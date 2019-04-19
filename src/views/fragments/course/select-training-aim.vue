@@ -28,7 +28,7 @@ export default {
       list: []
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       list: this.selectTrainingAimService.list$
     }

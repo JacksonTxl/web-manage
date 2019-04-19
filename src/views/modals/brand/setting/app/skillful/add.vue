@@ -40,7 +40,7 @@ export default {
       messageService: MessageService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       loading: this.addService.loading$
     }

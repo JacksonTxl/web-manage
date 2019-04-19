@@ -17,14 +17,19 @@ export class BrandService {
       state.teamCourseList = data.list
     })
   }
-  getCourseTeamBrandList(params: GetTeamBrandCourseListInput) {
-    return this.teamApi.getTeamBrandCourseList(params).pipe(
-      tap(state => {
-        this.SET_TEAM_COURSE_LIST(state)
+  getCourseTeamBrandList(query: any) {
+    return this.teamApi.getTeamCourseListInBrand(query).pipe(
+      tap(res => {
+        this.SET_TEAM_COURSE_LIST(res)
       })
     )
   }
+  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
+    const course_name = to.query.courseName
+    const is_available = to.query.isAvailable
+    this.getCourseTeamBrandList({ course_name, is_available }).subscribe(() => { next() })
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCourseTeamBrandList({}).subscribe(state$ => next())
+    this.getCourseTeamBrandList({}).subscribe(state$ => { next() })
   }
 }

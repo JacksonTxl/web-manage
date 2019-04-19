@@ -129,7 +129,7 @@ export default {
       }
     }
   },
-  subscriptions() {
+  rxState() {
     const user = this.userService
     return {
       personalCourseEnums: user.personalCourseEnums$

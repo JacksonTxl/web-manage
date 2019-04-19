@@ -18,7 +18,7 @@ export default {
       userService: UserService
     }
   },
-  subscriptions() {
+  rxState() {
     /**
      * @type {UserService}
      */

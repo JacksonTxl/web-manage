@@ -1,13 +1,22 @@
 <template>
   <st-panel app>
-    <p class="ta-r">
-      <modal-link tag="st-button" :to="{ name: 'brand-setting-app-training-add', on: {
-        change: onListChange } }">添加</modal-link>
-    </p>
+    <a-row>
+      <a-col :span="16">
+        <span>已添加{{resData.total}}个，支持添加{{resData.max}}个</span>
+      </a-col>
+      <a-col :span="8">
+        <p class="ta-r">
+          <modal-link tag="a" :to="{ name: 'brand-setting-app-training-add', on: {
+            change: onListChange } }">
+            <st-button type="primary" icon="add">添加</st-button>
+          </modal-link>
+        </p>
+      </a-col>
+    </a-row>
     <st-table
       :columns="columns"
       rowKey="id"
-      :dataSource="tableData"
+      :dataSource="resData.list"
       @change="onTableChange"
       :pagination="{ current: +query.page || 1, total: page.total_counts }"
     >
@@ -51,10 +60,9 @@ export default {
       messageService: MessageService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
-      tableData: this.listService.list$,
-      page: this.listService.page$,
+      resData: this.listService.resData$,
       query: this.routeService.query$
     }
   },
@@ -62,6 +70,11 @@ export default {
     return {
       columns,
       tableData: []
+    }
+  },
+  computed: {
+    page() {
+      return this.resData.page
     }
   },
   methods: {

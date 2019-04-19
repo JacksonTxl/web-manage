@@ -166,7 +166,7 @@ export default {
       addService: AddService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       serviceList: this.addService.serviceList$,
       addLoading: this.addService.loading$

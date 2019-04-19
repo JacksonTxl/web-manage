@@ -73,7 +73,7 @@ export default {
       }]
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       brand: this.editService.brand$
     }

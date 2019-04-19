@@ -3,11 +3,14 @@ import { router } from './bootstrap'
 import Vue from 'vue'
 import Antd from 'ant-design-vue'
 import VueRx from 'vue-rx'
+
 import { modalRouter } from './modal-router/index'
 import App from './views/App.vue'
 import FullCalendar from 'vue-full-calendar'
 // @ts-ignore
 import VueBemHelper from '@/vendor/vue-bem-helper'
+// @ts-ignore
+import VueRxState from '@/vendor/vue-rx-state'
 import ICountUp from 'vue-countup-v2'
 // @ts-ignore
 import Viewer from 'v-viewer'
@@ -16,6 +19,7 @@ import './style/index'
 
 import './views/components/register'
 
+Vue.use(VueRxState)
 Vue.use(Antd)
 Vue.use(VueRx)
 Vue.use(FullCalendar)

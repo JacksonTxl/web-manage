@@ -28,7 +28,7 @@
               :disabled="info.contract_page_type===0"
               v-model="info.contract_page"
               :min="0"
-            ></a-input-number> %
+            ></a-input-number>%
           </st-form-item>
           <st-form-item :class="bSider('form-item',{radio:true})" label="首行边距">
             <a-radio-group @change="onPageMargetChange" v-model="info.contract_marget_type">
@@ -39,7 +39,7 @@
               :disabled="info.contract_marget_type===0"
               v-model="info.contract_marget"
               :min="0"
-            ></a-input-number> mm
+            ></a-input-number>mm
           </st-form-item>
           <st-t4>字段设置</st-t4>
           <st-form-item class="mg-t24" :class="bSider('form-item',{switch:true})" label="品牌logo">
@@ -76,7 +76,7 @@
             <st-switch v-model="info.is_salesman_name"></st-switch>
           </st-form-item>
           <st-form-item label="备注" :class="bSider('form-item',{switch:true})">
-            <st-switch v-model='info.is_comment'></st-switch>
+            <st-switch v-model="info.is_comment"></st-switch>
           </st-form-item>
           <st-form-item label="合同章程" :class="bSider('form-item',{switch:true})">
             <modal-link
@@ -94,7 +94,7 @@
         :class="bMain('panel')"
         :loading="loading.getInfo || loading.getConstitutionInfo || loading.getCodeInfo"
       >
-        <contract-preview></contract-preview>
+        <contract-preview :info="info" :codeDemo="codeDemo" :lawContent="lawContent"></contract-preview>
       </st-panel>
     </main>
   </div>
@@ -124,7 +124,7 @@ export default {
       user: UserService
     }
   },
-  subscriptions() {
+  rxState() {
     /**
      * @type {EditService}
      */
