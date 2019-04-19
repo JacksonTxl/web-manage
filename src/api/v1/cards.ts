@@ -79,7 +79,7 @@ export class CardsApi extends Api {
    *会员卡恢复售卖
    */
   setCardsSaleRecover(params: any) {
-    return this.http.post('/v1/cards/sale/recover', { params })
+    return this.http.put('/v1/cards/sale/recover', { params })
   }
 }
 export interface CardsInput {

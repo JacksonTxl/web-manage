@@ -38,6 +38,17 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
+        <st-form-item label="是否支持在线购买" required>
+          <a-radio-group v-decorator="formRules.is_online_sale">
+            <a-radio v-for="(item, index) in personalCourseEnums.is_online_sale.value"
+              :key="index" :value="index">{{item}}
+            </a-radio>
+          </a-radio-group>
+        </st-form-item>
+      </a-col>
+    </a-row>
+    <a-row :gutter="8">
+      <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="参考定价">
           <a-input-number :min="0" v-decorator="formRules.price">
             <div slot="addonAfter" class="st-form-item-unit">元/节</div>
@@ -98,6 +109,8 @@ import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
 import StSelectCourseType from '@/views/fragments/course/select-course-type'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
+import { UserService } from '@/services/user.service'
+import { enumFilter } from '@/filters/other.filters'
 const formRules = {
   course_id: ['course_id'],
   course_name: [
@@ -135,6 +148,14 @@ const formRules = {
       }]
     }
   ],
+  is_online_sale: [
+    'is_online_sale', {
+      rules: [{
+        required: true,
+        message: '请选择是否支持在线购买'
+      }]
+    }
+  ],
   price: [
     'price', {
       rules: []
@@ -154,14 +175,22 @@ export default {
   serviceInject() {
     return {
       addService: AddService,
-      messageService: MessageService
+      messageService: MessageService,
+      userService: UserService
     }
   },
   rxState() {
+    const user = this.userService
+    return {
+      personalCourseEnums: user.personalCourseEnums$
+    }
   },
   components: {
     StSelectCourseType,
     StSelectTrainingAim
+  },
+  filters: {
+    enumFilter
   },
   data() {
     return {

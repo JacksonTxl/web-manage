@@ -2,7 +2,7 @@
   <st-panel app>
     <a-row>
       <a-col :span="16">
-        <span>（已添加7个/支持添加10个）</span>
+        <span>已添加{{resData.total}}个，支持添加{{resData.max}}个</span>
       </a-col>
       <a-col :span="8">
         <p class="ta-r">
@@ -16,7 +16,7 @@
     <st-table
       :columns="columns"
       rowKey="id"
-      :dataSource="tableData"
+      :dataSource="resData.list"
       @change="onTableChange"
       :pagination="{ current: +query.page || 1, total: page.total_counts }"
     >
@@ -62,15 +62,18 @@ export default {
   },
   rxState() {
     return {
-      tableData: this.listService.list$,
-      page: this.listService.page$,
+      resData: this.listService.resData$,
       query: this.routeService.query$
     }
   },
   data() {
     return {
-      columns,
-      tableData: []
+      columns
+    }
+  },
+  computed: {
+    page() {
+      return this.resData.page
     }
   },
   methods: {

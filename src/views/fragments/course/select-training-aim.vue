@@ -38,6 +38,7 @@ export default {
   },
   methods: {
     change(val) {
+      val = val.map(v => +v)
       this.$emit('change', val)
     }
   }
