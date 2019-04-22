@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-select :defaultValue="checkedId" placeholder="请选择课程类型" @change="change">
+    <a-select placeholder="请选择课程类型" @change="change">
       <a-select-option :value="item.id" v-for="item in list" :key="item.id">{{item.setting_name}}</a-select-option>
     </a-select>
   </div>
