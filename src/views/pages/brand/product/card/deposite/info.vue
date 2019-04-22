@@ -13,7 +13,7 @@
           alt="">
           <div :class="item('name_time')">
             <p :class="item('name')">
-              <st-tag type="period-card"/>
+              <st-tag type="deposite-card"/>
               <span>{{cardInfo.card_name}}</span>
               <span :class="{'brand-card__selling':cardInfo.sell_status.id===1,'brand-card__sellstop':cardInfo.sell_status.id===2}">{{cardInfo.sell_status.name}}
                 <a-popover
@@ -54,7 +54,7 @@
         </div>
         <div :class="item('admission_range')" class="mb-24">
           <!-- 支持入场范围 -->
-          <p class="mb-8">
+          <!-- <p class="mb-8">
             <span class="label">支持入场范围：</span>
             <span class="value">{{cardInfo.admission_range.name}}</span>
           </p>
@@ -67,18 +67,18 @@
               :pagination="false"
               :scroll="{ y: 230 }"
             />
-          </st-container>
+          </st-container> -->
         </div>
         <div :class="item('price_setting')" class="mb-24">
           <!-- 定价方式 -->
-          <p class="mb-8">
+          <!-- <p class="mb-8">
             <span class="label">定价方式：</span>
             <span class="value">{{cardInfo.price_setting.name}}</span>
-          </p>
+          </p> -->
         </div>
         <div :class="item('price_gradient')" class="mb-24">
           <!-- 售卖定价 -->
-          <p class="mb-8">
+          <!-- <p class="mb-8">
             <span class="label">售卖定价：</span>
           </p>
           <st-container>
@@ -90,8 +90,8 @@
               :dataSource="cardInfo.price_gradient"
               :pagination="false"
               :scroll="{ y: 230 }"
-            >
-              <template slot="num" slot-scope="text, record, index">
+            > -->
+              <!-- <template slot="num" slot-scope="text, record, index"> -->
                 <!-- <a-input :value="text.num" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
                   <a-select slot="addonAfter" :value="text.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
                     <a-select-option
@@ -100,10 +100,10 @@
                     :key="index" >{{item.label}}</a-select-option>
                   </a-select>
                 </a-input> -->
-                {{text}}-{{record}}-{{index}}
+                <!-- {{text}}-{{record}}-{{index}}
               </template>
-            </a-table>
-            <a-table
+            </a-table> -->
+            <!-- <a-table
               v-if="cardInfo.price_setting.id===2"
               size="middle"
               rowKey="id"
@@ -112,7 +112,7 @@
               :pagination="false"
               :scroll="{ y: 230 }"
             >
-              <template slot="num" slot-scope="text, record, index">
+              <template slot="num" slot-scope="text, record, index"> -->
                 <!-- <a-input :value="text.num" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
                   <a-select slot="addonAfter" :value="text.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
                     <a-select-option
@@ -121,31 +121,31 @@
                     :key="index" >{{item.label}}</a-select-option>
                   </a-select>
                 </a-input> -->
-                {{text}}-{{record}}-{{index}}
+                <!-- {{text}}-{{record}}-{{index}}
               </template>
             </a-table>
-          </st-container>
+          </st-container> -->
         </div>
         <div :class="item('transfer')" class="mb-24">
           <!-- 转让设置 -->
-          <p class="mb-8">
+          <!-- <p class="mb-8">
             <span class="label">转让设置：</span>
             <span class="value">{{cardInfo.is_transfer.name}}</span>
-          </p>
+          </p> -->
         </div>
         <div :class="item('card_introduction')" class="mb-24">
           <!-- 会员卡说明 -->
-          <p class="mb-8">
+          <!-- <p class="mb-8">
             <span class="label">会员卡说明：</span>
           </p>
-          <st-container>{{cardInfo.card_introduction}}</st-container>
+          <st-container>{{cardInfo.card_introduction}}</st-container> -->
         </div>
         <div :class="item('card_contents')" class="mb-24">
           <!-- 备注 -->
-          <p class="mb-8">
+          <!-- <p class="mb-8">
             <span class="label">备注：</span>
           </p>
-          <st-container>{{cardInfo.card_contents}}</st-container>
+          <st-container>{{cardInfo.card_contents}}</st-container> -->
         </div>
       </div>
     </div>

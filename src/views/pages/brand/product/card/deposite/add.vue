@@ -51,12 +51,12 @@
             <a-col :lg="22">
               <st-form-item label="期限" required>
                 <a-input v-decorator="[
-                  'cardData.num1',
-                  {rules: [{ validator: num1_validator}]}
+                  'cardData.num',
+                  {rules: [{ validator: num_validator}]}
                 ]"
                   style="width: 360px"
                   placeholder="请输入期限">
-                  <a-select v-model="cardData.unit1" slot="addonAfter" style="width: 50px">
+                  <a-select v-model="cardData.unit" slot="addonAfter" style="width: 50px">
                     <a-select-option
                     v-for="(item,index) in nuit_list"
                     :value="item.value"
@@ -167,10 +167,10 @@
                   <a-checkbox class="page-checkbox" @change="transfer">支持转让</a-checkbox>
                   <a-input-group compact class="page-input-group">
                     <a-input-number
-                    v-decorator="['cardData.num',{rules:[{validator:transfer_validator}]}]"
+                    v-decorator="['cardData.transfer_num',{rules:[{validator:transfer_validator}]}]"
                     @change="transfter_change"
                     :disabled="!cardData._is_transfer"/>
-                    <a-select v-model="cardData.unit" defaultValue="2" :disabled="!cardData._is_transfer">
+                    <a-select v-model="cardData.transfer_unit" defaultValue="2" :disabled="!cardData._is_transfer">
                       <a-select-option :value="1">%</a-select-option>
                       <a-select-option :value="2">元</a-select-option>
                     </a-select>
@@ -195,7 +195,7 @@
           <a-row :gutter="8">
             <a-col :lg="20">
               <st-form-item class="page-content-card-bg" label="卡背景" required>
-                <st-card-bg-radio v-model="cardData.card_bg" />
+                <st-card-bg-radio v-model="cardData.bg_image" />
               </st-form-item>
             </a-col>
           </a-row>
@@ -203,7 +203,7 @@
             <a-col :lg="22">
               <st-form-item class="page-content-card-introduction mt-4" label="会员卡介绍">
                 <a-textarea
-                v-model="cardData.card_introduction"
+                v-model="cardData.card_contents"
                 maxlength="500"
                 class="page-content-card-textarea"
                 placeholder="请输入"
@@ -215,7 +215,7 @@
             <a-col :lg="22">
               <st-form-item class="page-content-card-contents mt-4" label="备注">
                 <a-textarea
-                v-model="cardData.card_contents"
+                v-model="cardData.description"
                 maxlength="500"
                 class="page-content-card-textarea"
                 placeholder="请输入"
@@ -271,9 +271,9 @@ export default {
         // 售卖价格
         sell_price: null,
         // 期限
-        num1: null, // kael
+        num: null,
         // 期限单位
-        unit1: 2, // kael
+        unit: 1,
         // 消费类目
         card_consumer_id: [],
         // 支持入场范围 1-单店 2-多店 3-全店
@@ -291,7 +291,7 @@ export default {
         // 结束时间面板是否显示
         endOpen: false, // kael
         // 卡背景
-        card_bg: {
+        bg_image: {
           image_id: 0,
           image_key: 'image/VZ0RGBwTX7FA1yKb.png',
           image_url: '',
@@ -300,31 +300,31 @@ export default {
         // 是否配置了用户端
         appConfig: false,
         // 卡介绍
-        card_introduction: '',
-        // 备注
         card_contents: '',
+        // 备注
+        description: '',
         // 是否支持转让
         _is_transfer: false, // kael
         is_transfer: 0,
         // 转让单位
-        unit: 2,
+        transfer_unit: 2,
         // 转让手续费
-        num: 0,
+        transfer_num: 0,
         // 售卖渠道
         sell_list: [2], // kael
-        sell_type: 2
+        card_sell_type: 2
       },
       nuit_list: [
         {
-          value: 2,
+          value: 1,
           label: '天'
         },
         {
-          value: 3,
+          value: 2,
           label: '月'
         },
         {
-          value: 4,
+          value: 3,
           label: '年'
         }
       ],
@@ -371,54 +371,32 @@ export default {
       e.preventDefault()
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log(values)
-          // 入场门店
-          // if (this.cardData.consumption_range !== 2) {
-          //   // 不是多门店
-          //   this.cardData.consumer_shop_list = []
-          // }
-          // // 售卖门店
-          // if (this.cardData.consumption_range === 2 && this.cardData._support_sales === 0) {
-          //   // 多门店 && 支持入场门店
-          //   this.cardData.sell_shop_list = cloneDeep(this.cardData.consumer_shop_list)
-          // }
-          // // 价格梯度
-          // let p = []
-          // switch (this.cardData.price_setting) {
-          //   case 1:
-          //     // 品牌统一定价
-          //     this.rally_price_list.forEach(i => {
-          //       p.push({
-          //         unit: +i.time.unit,
-          //         num: +i.time.num,
-          //         rally_price: +i.rally_price,
-          //         frozen_day: +i.frozen_day,
-          //         gift_unit: +i.gift_unit
-          //       })
-          //     })
-          //     break
-          //   case 2:
-          //     // 门店自主定价
-          //     this.shop_price_list.forEach(i => {
-          //       p.push({
-          //         unit: +i.time.unit,
-          //         num: +i.time.num,
-          //         min_price: +i.rally_price.min_price,
-          //         max_price: +i.rally_price.max_price,
-          //         frozen_day: +i.frozen_day,
-          //         gift_unit: +i.gift_unit
-          //       })
-          //     })
-          //     break
-          // }
-          // this.cardData.card_name = values.cardData.card_name
-          // this.cardData.price_gradient = cloneDeep(p)
-          // // 时间
-          // this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
-          // this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')} 00:00:00`
-          // this.addService.addCard(this.cardData).subscribe(res => {
-          //   console.log(res)
-          // })
+          // 卡名称
+          this.cardData.card_name = values.cardData.card_name
+          // 储值金额
+          this.cardData.card_price = values.cardData.card_price
+          // 售卖价格
+          this.cardData.sell_price = values.cardData.sell_price
+          // 期限
+          this.cardData.num = values.cardData.num
+          // 消费类目
+          this.cardData.card_consumer_id = cloneDeep(values.cardData.card_consumer_id)
+          // 消费门店
+          if (this.cardData.consumption_range !== 2) {
+            // 不是多门店
+            this.cardData.consumer_shop_list = []
+          }
+          // 售卖门店
+          if (this.cardData.consumption_range === 2 && this.cardData._support_sales === 0) {
+            // 多门店 && 支持入场门店
+            this.cardData.sell_shop_list = cloneDeep(this.cardData.consumer_shop_list)
+          }
+          // 时间
+          this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
+          this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')} 00:00:00`
+          this.addService.addCard(this.cardData).subscribe(res => {
+            console.log(res)
+          })
         }
       })
     },
@@ -427,7 +405,7 @@ export default {
       if (value === undefined || value === '') {
         // eslint-disable-next-line
         callback('请填写储值卡名称')
-      } else if (value && !this.rules.card_name.test(value)) {
+      } else if (value && !this.rules.cardName.test(value)) {
         // eslint-disable-next-line
         callback('输入的储值卡名称格式错误，请重新输入')
       } else {
@@ -461,8 +439,8 @@ export default {
         callback()
       }
     },
-    // num1 validatorFn
-    num1_validator(rule, value, callback) {
+    // num validatorFn
+    num_validator(rule, value, callback) {
       if (value === undefined || value === '') {
         // eslint-disable-next-line
         callback('请填写期限')
@@ -604,17 +582,17 @@ export default {
     transfer(e) {
       this.cardData._is_transfer = e.target.checked
       // 重置转让费用的校验
-      this.form.resetFields(['cardData.num'])
+      this.form.resetFields(['cardData.transfer_num'])
     },
     transfter_change(data) {
-      this.cardData.num = data
+      this.cardData.transfer_num = data
     }
   },
   watch: {
     'cardData.sell_list': {
       deep: true,
       handler(newVal, oldVal) {
-        this.cardData.sell_type = newVal.length > 1 ? 3 : 2
+        this.cardData.card_sell_type = newVal.length > 1 ? 3 : 2
       }
     },
     'cardData._is_transfer': {
@@ -623,10 +601,10 @@ export default {
         this.cardData.is_transfer = +newVal
       }
     },
-    'cardData.unit': {
+    'cardData.transfer_unit': {
       deep: true,
       handler() {
-        this.form.resetFields(['cardData.num'])
+        this.form.resetFields(['cardData.transfer_num'])
       }
     },
     'cardData._support_sales': {

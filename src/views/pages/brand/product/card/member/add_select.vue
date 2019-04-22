@@ -17,12 +17,12 @@ export default {
     return {
       cardTypeList: [
         {
-          bg: require('@/assets/img/period-card-bg.png'),
+          bg: require('@/assets/img/bg_cardperiod.png'),
           title: '会员期限卡',
           describe: '支持会员在有效时间段内进入场馆'
         },
         {
-          bg: require('@/assets/img/number-card-bg.png'),
+          bg: require('@/assets/img/bg_cardnumber.png'),
           title: '会员次卡',
           describe: '支持会员在有效次数内进入场馆并消耗次数'
         }
