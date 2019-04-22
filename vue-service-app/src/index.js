@@ -138,7 +138,7 @@ class VueServiceApp {
         () => {
           setTimeout(() => {
             window.history.replaceState(null, null, oriHref)
-            onComplete()
+            onComplete && onComplete()
           })
         },
         onError
