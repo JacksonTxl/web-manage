@@ -1,7 +1,42 @@
 .sg-box {
-  .bg(lightblue);
+  .s(100px, 100px);
+  display: inline-block;
+  vertical-align: top;
+  .pd(16px);
+  border-radius: 2px;
+  .c(@white);
+  .mg(8px);
+  &--primary {
+    .bg(@primary-color);
+  }
+  &--warning {
+    .bg(@warning-color);
+  }
+  &--error {
+    .bg(@error-color);
+  }
+  &--success {
+    .bg(@success-color);
+  }
+  &--border {
+    .bg(@border-color);
+  }
+  &--divider {
+    .bg(@divider);
+  }
+  &--title {
+    .bg(@title);
+  }
+  &--text {
+    .bg(@text);
+  }
+  &--text-light {
+    .bg(@text-light);
+  }
 }
-
+.sg-section {
+  .mg-t(24px);
+}
 .sg-app-content {
   .bg(#f0f2f5);
   .pd(32px);
