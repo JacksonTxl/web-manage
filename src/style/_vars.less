@@ -1,20 +1,34 @@
-// antd colors
-@primary-color: #1890ff;
+// antd colors 
+// https://github.com/vueComponent/ant-design-vue/blob/master/components/style/themes/default.less
+// --colors--
+@primary-color: #3F66F6;
+@info-color:@primary-color;
 @link-color: #1890ff; // 链接色
-@success-color: #52c41a; // 成功色
+@success-color: #00E881; // 成功色
 @warning-color: #faad14; // 警告色
-@error-color: #f5222d;
+@error-color: #FF5E41;
 @normal-color: #d9d9d9;
 @white: #fff;
 @black: #000;
-@card-bg-color-first: #636AEC; 
-@card-bg-color-second: #FA756C; 
-@card-bg-color-third: #525864; 
-@card-bg-color-fourth: #43CEF0; 
+
+// base
+@heading-color:#252A2E;
+@text-color:#3E4D5C;
+@text-color-secondary:#9BACB9;
+@border-color-base: #CDD4DF;
+@link-color:@primary-color;
 
 // app colors
 @brand-color: #2c3153;
-@title: fade(@black, 85);
-@text: fade(@black, 65);
-@text-light: fade(@black, 45);
-@border-color: fade(@black, 8);
+@border-color:@border-color-base;
+@title:@heading-color;
+@text: @text-color;
+@text-light: @text-color-secondary;
+// 分割线
+@divider:#E6E9EF;
+
+@card-bg-color-first: #636AEC;
+@card-bg-color-second: #FA756C;
+@card-bg-color-third: #525864;
+@card-bg-color-fourth: #43CEF0;
+
