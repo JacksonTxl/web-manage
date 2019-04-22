@@ -7,7 +7,7 @@
           <!-- 卡名称 -->
           <img
           :class="item('card_bg')"
-          :src="cardInfo.card_bg.image_url"
+          :src="cardInfo.card_bg.image_url | imgFilter({w:192,h:108})"
           width="192"
           height="108"
           alt="">
@@ -131,6 +131,7 @@
 </template>
 <script>
 import { InfoService } from './info.service'
+import { imgFilter } from '@/filters/resource.filters'
 export default {
   name: 'BrandPeriodCardInfo',
   bem: {
@@ -145,6 +146,9 @@ export default {
     return {
       cardInfo: this.infoService.cardInfo$
     }
+  },
+  filters: {
+    imgFilter
   },
   data() {
     return {
