@@ -10,7 +10,7 @@
           <st-icon type="arrow-right"></st-icon>
         </div>
       </div>
-      <div class="layout-default-brand-sider__scrollbox">
+      <div class="layout-default-brand-sider__scrollbox" v-scrollBar>
         <div class="layout-default-brand-sider__often">
           <h2 class="layout-default-brand-sider__often-title">常用</h2>
           <ul class="layout-default-brand-sider__often-list">
@@ -46,6 +46,20 @@
               <span>首页</span>
             </span>
           </a-menu-item>
+          <a-sub-menu key="sub000">
+            <span slot="title">
+              <a-icon type="file"/>
+              <span>营销中心11</span>
+            </span>
+            <a-menu-item key="item111">Option 1</a-menu-item>
+            <a-menu-item key="item112">Option 2</a-menu-item>
+            <a-menu-item key="item113">Option 3</a-menu-item>
+            <a-menu-item key="item114">Option 4</a-menu-item>
+            <a-menu-item key="item115">Option 1</a-menu-item>
+            <a-menu-item key="item116">Option 2</a-menu-item>
+            <a-menu-item key="item117">Option 3</a-menu-item>
+            <a-menu-item key="item118">Option 4</a-menu-item>
+          </a-sub-menu>
           <a-sub-menu key="sub1">
             <span slot="title">
               <a-icon type="file"/>
@@ -181,8 +195,8 @@ import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
 export default {
   data() {
     return {
-      rootSubmenuKeys: ['sub1', 'sub2', 'sub3', 'sub4', 'sub5', 'sub6'],
-      openKeys: ['sub1']
+      rootSubmenuKeys: ['sub000', 'sub1', 'sub2', 'sub3', 'sub4', 'sub5', 'sub6'],
+      openKeys: ['sub000']
     }
   },
   serviceInject() {

@@ -18,7 +18,7 @@ export class InfoService extends Store<CardState> implements RouteGuard {
     this.cardInfo$ = new Computed(this.state$.pipe(pluck('cardInfo')))
   }
   getCardInfo(id:string) {
-    return this.cardsApi.getCardInfo(id).pipe(tap((res:any) => {
+    return this.cardsApi.getCardDepositInfoBrand(id).pipe(tap((res:any) => {
       this.SET_CARD_INFO(res.info)
     }))
   }

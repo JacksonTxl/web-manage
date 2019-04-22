@@ -27,6 +27,18 @@ export class CardsApi extends Api {
     return this.http.put('/v1/cards', { params })
   }
   /**
+   * 储值卡新增,品牌
+   */
+  addCardsDepositBrand(params: CardsInput) {
+    return this.http.post('/v1/cards/deposit/brand', { params })
+  }
+  /**
+   * 储值卡详情,品牌
+   */
+  getCardDepositInfoBrand(id: string) {
+    return this.http.get(`/v1/cards/deposit/brand/${id}`)
+  }
+  /**
    *获取卡列表
    */
   getCardsList(query: any) {

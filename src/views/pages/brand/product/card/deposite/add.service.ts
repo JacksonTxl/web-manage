@@ -10,6 +10,6 @@ export class AddService extends Store<any> {
   }
   @Effect()
   addCard(data: CardsInput) {
-    return this.cardsApi.addCardsBrand(data)
+    return this.cardsApi.addCardsDepositBrand(data)
   }
 }
