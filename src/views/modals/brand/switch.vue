@@ -34,15 +34,11 @@ import { SwitchService } from './switch.service'
 import { Action } from 'rx-state'
 import { switchMap, catchError, filter } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'
-import { imgFilter } from '@/filters/resource.filters'
 export default {
   serviceInject() {
     return {
       switchService: SwitchService
     }
-  },
-  filters: {
-    imgFilter
   },
   data() {
     return {

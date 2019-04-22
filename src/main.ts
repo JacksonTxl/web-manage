@@ -2,7 +2,6 @@ import '@abraham/reflection'
 import { router } from './bootstrap'
 import Vue from 'vue'
 import Antd from 'ant-design-vue'
-import VueRx from 'vue-rx'
 
 import { modalRouter } from './modal-router/index'
 import App from './views/App.vue'
@@ -10,14 +9,17 @@ import FullCalendar from 'vue-full-calendar'
 // @ts-ignore
 import VueBemHelper from '@/vendor/vue-bem-helper'
 // @ts-ignore
-import VuerxState from '@/vendor/vue-rx-state'
+import VueRxState from '@/vendor/vue-rx-state'
 import ICountUp from 'vue-countup-v2'
 // @ts-ignore
 import Viewer from 'v-viewer'
 // 默认样式加载
 import './style/index'
 
+// 注册组件
 import './views/components/register'
+// 注册过滤器
+import './filters/register'
 
 // scrollbar
 import PerfectScrollbar from 'perfect-scrollbar'
@@ -53,9 +55,8 @@ Vue.directive('scrollBar', {
   }
 })
 
-Vue.use(VuerxState)
+Vue.use(VueRxState)
 Vue.use(Antd)
-Vue.use(VueRx)
 Vue.use(FullCalendar)
 Vue.use(Viewer)
 Vue.use(VueBemHelper)

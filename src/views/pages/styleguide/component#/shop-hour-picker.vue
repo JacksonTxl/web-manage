@@ -1,15 +1,16 @@
 <template>
-  <div>
-    <st-shop-hour-picker :getSlider="business_time" @change="sliderCange"></st-shop-hour-picker>
-  </div>
+  <section class="sg-section">
+    <h3>st-shop-hour-picker</h3>
+
+    <st-shop-hour-picker v-model="model" @change="onChange"></st-shop-hour-picker>
+  </section>
 </template>
 
 <script>
 export default {
   data() {
     return {
-
-      business_time: [
+      model: [
         {
           week_day: 1,
           start_time: '00:00',
@@ -26,11 +27,10 @@ export default {
           end_time: '24:00'
         }
       ]
-
     }
   },
   methods: {
-    sliderCange(data) {
+    onChange(data) {
       console.log(data)
     }
   }

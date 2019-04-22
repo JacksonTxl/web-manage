@@ -28,7 +28,6 @@
     "core-js": "^2.6.5",
     "countup.js": "^2.0.4",
     "cropperjs": "^1.5.1",
-    "flex.css": "^1.1.7",
     "fullcalendar-scheduler": "^1.9.4",
     "immer": "^2.1.5",
     "js-cookie": "^2.2.0",
@@ -44,7 +43,6 @@
     "vue-modal-router": "^0.2.9",
     "vue-router": "^3.0.2",
     "vue-router-multiguard": "^1.0.3",
-    "vue-rx": "^6.1.0",
     "vuedraggable": "^2.19.2",
     "vuepress": "^0.14.10",
     "webpack-dev-middleware": "^3.6.0"

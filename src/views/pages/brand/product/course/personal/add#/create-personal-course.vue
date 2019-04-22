@@ -110,7 +110,6 @@ import { MessageService } from '@/services/message.service'
 import StSelectCourseType from '@/views/fragments/course/select-course-type'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 import { UserService } from '@/services/user.service'
-import { enumFilter } from '@/filters/other.filters'
 const formRules = {
   course_id: ['course_id'],
   course_name: [
@@ -189,9 +188,6 @@ export default {
   components: {
     StSelectCourseType,
     StSelectTrainingAim
-  },
-  filters: {
-    enumFilter
   },
   data() {
     return {

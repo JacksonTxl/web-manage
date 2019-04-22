@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h4>st-table</h4>
+  <section class="sg-section">
+    <h3>st-table</h3>
     <p>
       使用与
       <a href="https://vue.ant.design/components/table-cn/">a-table</a> 相同的api，只是增加了默认无数据的占位图，以及默认应用的分页条数,分页器样式已包含
@@ -24,35 +24,7 @@
         </a-popconfirm>
       </div>
     </st-table>
-
-    <h3>st-form-table</h3>
-    <p>纯样式table 适用于表单场景的表格和内联编辑的场景</p>
-    <p>
-      [hoverable] 添加鼠标hover样式
-      [loading] 加载状态
-    </p>
-    <st-form-table hoverable>
-      <thead>
-        <tr>
-          <th>标题1</th>
-          <th>标题2</th>
-          <th>标题3</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>2</td>
-          <td>3</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>2</td>
-          <td>3</td>
-        </tr>
-      </tbody>
-    </st-form-table>
-  </div>
+  </section>
 </template>
 <script>
 import { RouteService } from '@/services/route.service'

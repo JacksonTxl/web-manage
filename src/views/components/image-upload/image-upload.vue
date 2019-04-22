@@ -40,7 +40,6 @@
 import { OssService } from '@/services/oss.service'
 import { AppConfig } from '@/constants/config'
 import { MessageService } from '@/services/message.service'
-import { imgFilter } from '@/filters/resource.filters'
 const defaultSize = {
   w: '182px',
   h: '114px'
@@ -53,9 +52,6 @@ export default {
       appConfig: AppConfig,
       messageService: MessageService
     }
-  },
-  filters: {
-    imgFilter
   },
   props: {
     /**

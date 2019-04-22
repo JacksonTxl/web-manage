@@ -1,56 +1,7 @@
 <template>
-  <div>
-    <h3 class="mg-t32">按钮样式复选st-checkbox-button-group</h3>
-    <section>
-      <st-form>
-        <st-form-item label="营业时间">
-          <st-checkbox-button-group v-model="checkBoxModel1">
-            <st-checkbox-button-item disabled value="1"
-              >周一</st-checkbox-button-item
-            >
-            <st-checkbox-button-item value="2">周二</st-checkbox-button-item>
-            <st-checkbox-button-item value="3">周三</st-checkbox-button-item>
-            <st-checkbox-button-item value="4">周四</st-checkbox-button-item>
-            <st-checkbox-button-item value="5">周五</st-checkbox-button-item>
-            <st-checkbox-button-item value="6">周六</st-checkbox-button-item>
-            <st-checkbox-button-item value="7">周日</st-checkbox-button-item>
-          </st-checkbox-button-group>
-          {{ checkBoxModel1 }}
-        </st-form-item>
-      </st-form>
-    </section>
+  <section class="sg-section">
+    <h3>st-form</h3>
 
-    <h3 class="mg-t24">按钮样式复选st-checkbox-button-group</h3>
-    <section>
-      <st-checkbox-facility-group v-model="checkBoxModel2">
-        <st-checkbox-facility-item
-          disabled
-          value="wechat"
-          icon="wechat"
-          label="wifi"
-        ></st-checkbox-facility-item>
-        <st-checkbox-facility-item
-          value="weibo"
-          icon="weibo"
-          label="weibo"
-        ></st-checkbox-facility-item>
-        <st-checkbox-facility-item
-          value="home"
-          icon="home"
-          label="home"
-        ></st-checkbox-facility-item>
-      </st-checkbox-facility-group>
-      {{ checkBoxModel2 }}
-    </section>
-
-    <h3 class="mg-t24">One Col 单栏表单</h3>
-    <ul>
-      默认表单项目fabel与input项的间距已调整,使用a-row gutter=8 和 a-col lg=10
-      <li>使用st-form-item 作为表单项容器 用法同a-form-item</li>
-      <li>表单label与input区域间隔固定为24px</li>
-      <li>label默认定宽为88px两个格子宽度</li>
-      <li>保存按钮等带有标签间隔的使用st-form-item 的labelFix属性</li>
-    </ul>
     <section class="sg-app-content">
       <st-panel initial class="pd-x24">
         <a-row :gutter="8">
@@ -79,7 +30,9 @@
                 </a-checkbox-group>
               </st-form-item>
               <st-form-item label="支持入场范围">
-                <a href=""> <st-icon type="anticon:plus"></st-icon>添加门店 </a>
+                <a href>
+                  <st-icon type="anticon:plus"></st-icon>添加门店
+                </a>
               </st-form-item>
 
               <st-t3 class="mg-y32">更多设置</st-t3>
@@ -103,20 +56,14 @@
     </section>
 
     <section class="mg-t16">
-      <h3>Form Two Cols 多栏目表单</h3>
-      <p>
-        row的gutter固定为8 col的lg=10 分割线使用 st-hr 分割线上下margin为32px
-      </p>
+      <p>row的gutter固定为8 col的lg=10 分割线使用 st-hr 分割线上下margin为32px</p>
       <div class="sg-app-content">
         <st-panel>
           <st-form>
             <a-row :gutter="8">
               <a-col :lg="10" :xs="22" :offset="1">
                 <st-form-item label="员工头像">
-                  <a-upload
-                    style="width:164px;display:inline-block;height:164px;"
-                    type="drag"
-                  >
+                  <a-upload style="width:164px;display:inline-block;height:164px;" type="drag">
                     <st-icon type="anticon:plus"></st-icon>
                   </a-upload>
                 </st-form-item>
@@ -137,10 +84,7 @@
               </a-col>
               <a-col :lg="10" :xs="22" :offset="1">
                 <st-form-item label="员工头像">
-                  <a-upload
-                    style="width:164px;display:inline-block;height:164px;"
-                    type="drag"
-                  >
+                  <a-upload style="width:164px;display:inline-block;height:164px;" type="drag">
                     <st-icon type="anticon:plus"></st-icon>
                   </a-upload>
                 </st-form-item>
@@ -157,21 +101,15 @@
                 </st-form-item>
                 <st-form-item label="程程时长" required>
                   <a-input defaultValue="mySite" placeholder="输入时间">
-                    <div slot="addonAfter" class="st-form-item-unit">
-                      分钟
-                    </div>
+                    <div slot="addonAfter" class="st-form-item-unit">分钟</div>
                   </a-input>
                 </st-form-item>
                 <st-form-item label="参考定价" required>
                   <a-input defaultValue="mySite" placeholder="输入时间">
-                    <div slot="addonAfter" class="st-form-item-unit">
-                      元/节
-                    </div>
+                    <div slot="addonAfter" class="st-form-item-unit">元/节</div>
                   </a-input>
                 </st-form-item>
-                <st-form-item class="mg-b0" label="注意" required>
-                  在最后一行st-form-item 添加.mg-b0 修正
-                </st-form-item>
+                <st-form-item class="mg-b0" label="注意" required>在最后一行st-form-item 添加.mg-b0 修正</st-form-item>
               </a-col>
             </a-row>
             <a-row :gutter="8">
@@ -182,9 +120,7 @@
             <a-row :gutter="8">
               <a-col :offset="1">
                 <st-form-item labelFix>
-                  <st-button type="primary" ghost
-                    >保存 使用labelFix修正margin-left</st-button
-                  >
+                  <st-button type="primary" ghost>保存 使用labelFix修正margin-left</st-button>
                   <st-button class="mg-l16" type="primary">继续 填写</st-button>
                 </st-form-item>
               </a-col>
@@ -194,7 +130,6 @@
       </div>
     </section>
 
-    <st-t3>单个row实现多栏布局</st-t3>
     <section class="sg-app-content">
       <st-panel>
         <st-form>
@@ -238,18 +173,5 @@
         </st-form>
       </st-panel>
     </section>
-  </div>
+  </section>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      checkBoxModel1: [],
-      checkBoxModel2: [],
-      checkbox1: [],
-      radio1: ''
-    }
-  }
-}
-</script>

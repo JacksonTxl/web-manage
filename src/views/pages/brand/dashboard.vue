@@ -135,7 +135,6 @@
   </div>
 </template>
 <script>
-import { imgFilter } from '@/filters/resource.filters'
 import { DashboardService } from './dashboard.service'
 export default {
   serviceInject() {
@@ -148,9 +147,6 @@ export default {
       shopList: [],
       page: {}
     }
-  },
-  filters: {
-    imgFilter
   },
   rxState() {
     const shopList = this.dashboardService.shopInfo$

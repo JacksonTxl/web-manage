@@ -115,7 +115,6 @@
 import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
-import { enumFilter } from '@/filters/other.filters'
 import { remove } from 'lodash-es'
 const tableColumns = [{
   title: '价格等级',
@@ -187,9 +186,6 @@ export default {
       loading: this.addService.loading$,
       personalCourseEnums: user.personalCourseEnums$
     }
-  },
-  filters: {
-    enumFilter
   },
   props: {
     courseName: {

@@ -42,7 +42,6 @@ import { MessageService } from '@/services/message.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import SelectCoach from '@/views/fragments/coach/select-coach'
 import { UserService } from '@/services/user.service'
-import { enumFilter } from '@/filters/other.filters'
 const shopTableColumns = [{
   title: '省',
   dataIndex: 'province_name'
@@ -111,9 +110,6 @@ export default {
   components: {
     SelectShop,
     SelectCoach
-  },
-  filters: {
-    enumFilter
   },
   props: {
     courseName: {
