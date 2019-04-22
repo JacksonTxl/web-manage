@@ -23,7 +23,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
           <input type="hidden" v-decorator="formRules.train_aim">
-          <st-select-training-aim :value="info.train_aim" @change="onTrainingAimChange"/>
+          <st-select-training-aim :value="info.train_aim|formatFilter" @change="onTrainingAimChange"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -202,7 +202,10 @@ export default {
     StSelectTrainingAim
   },
   filters: {
-    enumFilter
+    enumFilter,
+    formatFilter(arr = []) {
+      return arr.map(v => `${v}`)
+    }
   },
   props: {
     info: {
