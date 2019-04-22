@@ -15,7 +15,7 @@ export default {
   component: {},
   modal: {},
   // 和页面的name一致
-  'user-login': {
+  'account-login': {
     title: '登录'
   },
   dashboard: {

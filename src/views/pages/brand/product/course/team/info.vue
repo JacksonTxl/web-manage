@@ -1,16 +1,17 @@
 <template>
   <st-panel app class="page-personal-info">
     <div class="page-personal-header">
+      {{teamCourseInfo}}
         <div class="page-personal-header__left mg-r24">
-          <st-t3 class="mg-b16">腹肌训练入门（游泳）</st-t3>
+          <st-t3 class="mg-b16">{{teamCourseInfo.course_name}}（{{teamCourseInfo.course_category_name}}）</st-t3>
           <div class="course-detail-item mg-b16">
-            <div class="course-detail-item__left"><span class="label">时长:</span><span class="value">60分钟</span></div><div class="course-detail-item__right"><span class="label">参考定价:</span><span class="value">210元/节</span></div>
+            <div class="course-detail-item__left"><span class="label">时长:</span><span class="value">{{teamCourseInfo.duration}}分钟</span></div><div class="course-detail-item__right"><span class="label">参考定价:</span><span class="value">{{teamCourseInfo.price}}元/节</span></div>
           </div>
           <div class="course-detail-item__content mg-b16">
-            这套课程选用的是最基础的腹肌训练动作，帮助你循序渐进地增强腹肌力量，为更高级的腹肌训练做好准备。这套课程选用的是最基础的腹肌训练动作，帮助你循序渐进地增强腹肌力量，为更高级的腹肌训练做好准备。这套课程选用的是最基础的腹肌训练动作，帮助你循序渐进地增强腹肌力量，为更高级的腹肌训练做好准备。这套课程选用的是最基础的腹肌训练动作，帮助你循序渐进地增强腹肌力量，为更高级的腹肌训练做好准备。
+            {{teamCourseInfo.description}}
           </div>
           <div class="course-detail-item__tip mg-b24">
-            # 燃脂 / 力量
+            # {{teamCourseInfo.description}} / {{teamCourseInfo.description}}
           </div>
         </div>
         <div class="page-personal-header__right">
@@ -36,17 +37,18 @@
 </template>
 <script>
 import { shopColumns, coachColumns, priceConfigColumns } from './info#table.config'
+import { InfoService } from './info.service'
 export default {
   name: 'TeamCourseInfo',
   serviceInject() {
     return {
-      teamEditService: TeamEditService
+      infoService: InfoService
     }
   },
   rxState() {
-    console.log('sub', this.teamEditService)
+    console.log('this.infoService', this.infoService)
     return {
-
+      teamCourseInfo: this.infoService.teamCourseInfo$
     }
   },
   data() {
@@ -56,6 +58,7 @@ export default {
       priceConfigColumns
     }
   },
-  method
+  methods: {
+  }
 }
 </script>

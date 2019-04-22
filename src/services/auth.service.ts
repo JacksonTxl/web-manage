@@ -48,7 +48,7 @@ export class AuthService extends Store<AuthState> implements RouteGuard {
     console.log('authService start')
     if (!this.tokenSnapshot) {
       this.router.push({
-        name: 'user-login',
+        name: 'account-login',
         query: {
           radom: Math.random()
             .toString(16)

@@ -1,63 +1,41 @@
 export const shopColumns = [{
   title: '省',
-  dataIndex: 'name',
-  sorter: true,
-  width: '20%',
-  scopedSlots: { customRender: 'name' }
+  dataIndex: 'province',
+  width: '20%'
 }, {
   title: '市',
-  dataIndex: 'gender',
-  filters: [
-    { text: 'Male', value: 'male' },
-    { text: 'Female', value: 'female' }
-  ],
+  dataIndex: 'city',
   width: '20%'
 }, {
   title: '区',
-  dataIndex: 'email'
+  dataIndex: 'district',
+  width: '20%'
 }, {
   title: '门店名称',
-  dataIndex: 'email'
+  dataIndex: 'shop_name',
+  width: '30%'
 }]
 export const coachColumns = [{
   title: '教练',
-  dataIndex: 'name',
-  sorter: true,
-  width: '20%',
-  scopedSlots: { customRender: 'name' }
+  dataIndex: 'name'
 }, {
   title: '教练等级',
-  dataIndex: 'gender',
-  filters: [
-    { text: 'Male', value: 'male' },
-    { text: 'Female', value: 'female' }
-  ],
-  width: '20%'
+  dataIndex: 'level'
 }, {
   title: '在职状态',
-  dataIndex: 'email'
+  dataIndex: 'nature_work'
 }]
 export const priceConfigColumns = [{
   title: '价格等级',
-  dataIndex: 'name',
-  sorter: true,
-  width: '20%',
-  scopedSlots: { customRender: 'name' }
+  dataIndex: 'level'
 }, {
   title: '售卖梯度（节）',
-  dataIndex: 'gender',
-  filters: [
-    { text: 'Male', value: 'male' },
-    { text: 'Female', value: 'female' }
-  ],
-  width: '20%'
+  dataIndex: 'sale',
+  scopedSlots: { customRender: 'sale' }
 }, {
   title: '售卖价格（元/节）',
-  dataIndex: 'email'
+  dataIndex: 'price'
 }, {
   title: '转让手续费',
-  dataIndex: 'email'
-}, {
-  title: '是否在线购买',
-  dataIndex: 'email'
+  dataIndex: 'transfer'
 }]

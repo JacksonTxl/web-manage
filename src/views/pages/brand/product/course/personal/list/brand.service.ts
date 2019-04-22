@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { PersonalApi, GetPersonalBrandCourseListInput } from '@/api/v1/course/personal'
+import { PersonalApi, GetPersonalBrandCourseListInput, SetAvailableInput } from '@/api/v1/course/personal'
 import { tap, pluck } from 'rxjs/operators'
 import { State, Computed } from 'rx-state/src'
 @Injectable()
@@ -16,6 +16,9 @@ export class BrandService {
     this.state$.commit(state => {
       state.personalCourseList = data.list
     })
+  }
+  setAvailableInBrand(params: SetAvailableInput) {
+    return this.personalApi.setAvailableInBrand(params)
   }
   getCoursePersonalBrandList(params: GetPersonalBrandCourseListInput) {
     return this.personalApi.getCourseListInBrand(params).pipe(

@@ -30,7 +30,7 @@ export class DepartmentService extends Store<StaffState> implements RouteGuard {
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getStaffList({}).subscribe((res: any) => {
-      this.SET_STAFF_LIST(res.list)
+      this.SET_STAFF_LIST(res.staffInfo)
     })
     next()
   }

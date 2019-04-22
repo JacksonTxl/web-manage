@@ -7,20 +7,20 @@
           <a-select showSearch :filterOption="filterOption" optionFilterProp="children" class="mg-r8" defaultValue="" style="width: 160px" @change="handleChange">
             <a-select-option v-for="course in courses" :key="course.value" :value="course.value">{{course.label}}</a-select-option>
           </a-select>
-          <a-select  defaultValue="" style="width: 160px" @change="handleChange">
+          <a-select  defaultValue="" style="width: 160px" @change="onChange">
             <a-select-option v-for="status in courseStatus" :key="status.value" :value="status.value">{{status.label}}</a-select-option>
           </a-select>
         </div>
       </div>
     </header>
     <main class="page-shop-sale-list-brand__table mg-t8">
-      <shop-sale-list-table :personalCourseList="personalCourseList"></shop-sale-list-table>
+      <brand-table @set-available="onSetAvailable" :personalCourseList="personalCourseList"></brand-table>
     </main>
   </div>
 </template>
 
 <script>
-import ShopSaleListTable from './brand#/brand-table'
+import BrandTable from './brand#/brand-table'
 import { BrandService } from './brand.service'
 export default {
   name: 'ShopSaleListShop',
@@ -41,11 +41,20 @@ export default {
     }
   },
   components: {
-    ShopSaleListTable
+    BrandTable
   },
   methods: {
+    onSetAvailable(record) {
+      console.log(record)
+      const available = record.is_available === 1 ? 0 : 1
+      this.brandService.setAvailableInBrand({ course_id: record.course_Id, available }).subscribe(() => {
+        this.$router.push({ force: true })
+      })
+    },
     filterOption(input, option) {
       return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+    },
+    onChange() {
     },
     addPersonalCourse() {
       console.log('d')

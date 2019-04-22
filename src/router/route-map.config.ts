@@ -14,7 +14,7 @@ export const routeMapConfig = {
   '404'(routeConfig: RouteConfig) {
     routeConfig.meta.layout = 'blank'
   },
-  'user-login'(routeConfig: RouteConfig) {
+  'account-login'(routeConfig: RouteConfig) {
     routeConfig.meta.layout = 'login'
   },
   'test-llf-mine'(routeConfig: RouteConfig) {
