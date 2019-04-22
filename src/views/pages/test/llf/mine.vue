@@ -1,6 +1,7 @@
 <template>
   <st-panel app>
     {{query}}
+    $route.query {{$route.query}}
     <a-input v-model="query.courseName"></a-input>{
     <a-button @click="onSearch">搜索</a-button>
     {{list}}
@@ -28,34 +29,16 @@ export default {
     }
   },
   methods: {
-    onMove(e) {
-      console.log(e.draggedContext)
-      return false
-    },
     onSearch() {
-      const to = {
-        query: {
-          a: 1,
-          b: 2,
-          c: 6
-        }
-      }
-      to.query = to.query || {}
-      const finalQuery = {
-        ...to.query,
-        __force: forceCount++
-      }
-      const originalHref = this.$router.resolve(to).href
-      to.query = finalQuery
-      this.$router.push(to)
-      const originalState = window.history.state
-      window.history.replaceState(originalState, null, originalHref)
+      this.$router.push({
+        query: this.query,
+        force: true
+      })
     }
   },
   mounted() {
     console.log(this)
   },
-
   data() {
     return {
       list: [

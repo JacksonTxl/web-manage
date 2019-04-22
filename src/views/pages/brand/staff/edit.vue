@@ -1,7 +1,7 @@
 <template>
   <st-panel app>
-    <a-row class="mg-b48 mg-t48" :gutter="8">
-      <a-col offset="1" :span="22">
+    <a-row :class="bstep()" class="mg-b48 mg-t48" :gutter="8">
+      <a-col offset="1" :span="stepsSpan">
         <a-steps :current="currentIndex">
           <a-step
             v-for="item in stepArr"
@@ -48,6 +48,11 @@ export default {
       countryList: this.editService.countryList$
     }
   },
+  bem: {
+    b: 'page-add-staff',
+    bstep: 'page-add-staff-steps',
+    bHeader: 'default-brand-header'
+  },
   components: {
     EditDetailBasicsInfo, // 编辑基础信息
     EditDetailDetailedInfo, // 编辑详细信息
@@ -55,6 +60,7 @@ export default {
   },
   data() {
     return {
+      stepsSpan: 18,
       currentIndex: 0,
       stepArr: [
         {
@@ -147,9 +153,23 @@ export default {
     }
   },
   mounted() {
-    let { currentIndex } = this.$route.query
+    let { currentIndex, isShowCoach } = this.$route.query
+    console.log(isShowCoach)
     if (currentIndex) {
       this.currentIndex = currentIndex - 0
+      // if(!isShowCoach){
+      //   console.log('不展示')
+      //   this.stepArr.pop()
+      // }else{
+      //   console.log('展示')
+      // }
+      if (isShowCoach === '1') {
+        console.log('展示')
+      } else {
+        console.log('不展示')
+        this.stepsSpan = 12
+        this.stepArr.pop()
+      }
     }
   }
 }

@@ -36,13 +36,13 @@ export class PersonalApi extends Api {
    * 设置上课门店
    */
   setShop(params: SetShopInput) {
-    return this.http.post('/v1/course/personal/brand/set_shop', { params, mock: {} })
+    return this.http.put(`/v1/course/personal/brand/set_shop/${params.course_id}`, { params })
   }
   /**
    * 设置售卖价格
    */
   setPrice(params: SetPriceInput) {
-    return this.http.post('/v1/course/personal/brand/set_price', { params, mock: {} })
+    return this.http.put(`/v1/course/personal/brand/set_price/${params.course_id}`, { params })
   }
   /**
    * 品牌私教课设置有效无效

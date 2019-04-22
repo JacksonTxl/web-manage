@@ -17,7 +17,7 @@ export class CourseApi extends Api {
    * 编辑课程类型
    */
   updateCourseType(params: UpdateCourseTypeInput) {
-    return this.http.put(url, { params })
+    return this.http.put(`${url}/${params.id}`, { params })
   }
   /**
    * 删除课程类型
@@ -40,6 +40,10 @@ export interface AddCourseTypeInput {
 }
 
 export interface UpdateCourseTypeInput {
+  /**
+   * 课程类型id
+   */
+  id: number
   /**
    * 编辑课程类型名称
    */

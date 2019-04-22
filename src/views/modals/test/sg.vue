@@ -15,6 +15,7 @@ export default {
     },
     onOk() {
       this.$emit('ok')
+      this.show = false
     }
   }
 }

@@ -3,25 +3,25 @@ const url = '/v1/setting/skillful'
 
 export class SkillfulApi extends Api {
   /**
-   * 训练目的列表
+   * 擅长项目列表
    */
   getSkillfulList(query: GetSkillfulListInput) {
     return this.http.get(url, { query })
   }
   /**
-   * 新增训练目的
+   * 新增擅长项目
    */
   addSkillful(params: AddSkillfulInput) {
     return this.http.post(url, { params })
   }
   /**
-   * 编辑课程类型
+   * 编辑擅长项目
    */
   updateSkillful(params: UpdateSkillfulInput) {
-    return this.http.put(url, { params })
+    return this.http.put(`${url}/${params.id}`, { params })
   }
   /**
-   * 删除课程类型
+   * 删除擅长项目
    */
   deleteSkillful(params: DeleteSkillfulInput) {
     return this.http.delete(`${url}/${params.id}`)
@@ -34,19 +34,23 @@ export interface GetSkillfulListInput {
 }
 export interface AddSkillfulInput {
   /**
-   * 训练目的名称
+   * 擅长项目名称
    */
   setting_name: string
 }
 export interface UpdateSkillfulInput {
   /**
-   * 编辑课程类型名称
+   * 擅长项目id
+   */
+  id: number
+  /**
+   * 编辑擅长项目名称
    */
   setting_name: string
 }
 export interface DeleteSkillfulInput {
   /**
-   * 课程类型设置ID
+   * 擅长项目设置ID
    */
   id: number
 }

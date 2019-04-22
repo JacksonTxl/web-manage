@@ -157,8 +157,6 @@ export default {
       messageService: MessageService
     }
   },
-  rxState() {
-  },
   components: {
     StSelectCourseType,
     StSelectTrainingAim

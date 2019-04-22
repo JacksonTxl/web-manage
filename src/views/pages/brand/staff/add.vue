@@ -89,7 +89,8 @@ export default {
             name: 'brand-staff-edit',
             query: {
               staffId: res.staff_id,
-              currentIndex: 1
+              currentIndex: 1,
+              isShowCoach: this.stepArr.length === 3 ? 1 : 0
             }
           })
         } else if (saveOrskip === 'save') {

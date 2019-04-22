@@ -1,7 +1,7 @@
 import { Injectable } from 'vue-service-app'
 import { ContractApi } from '@/api/v1/setting/contract'
 import { Store } from '@/services/store'
-import { Effect, getSnapshot } from 'rx-state/src'
+import { Effect } from 'rx-state/src'
 import { SN_RULE, SN_GENERATE_RULE } from '@/constants/enums/contract'
 import { RouteService } from '@/services/route.service'
 

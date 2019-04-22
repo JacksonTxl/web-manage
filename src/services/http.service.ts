@@ -101,7 +101,7 @@ export class HttpService {
   }
   get appHeaders() {
     return {
-      token: this.auth.tokenSnapshot,
+      token: this.auth.token$.snapshot(),
       'app-id': '11111',
       'app-version': '11111'
     }

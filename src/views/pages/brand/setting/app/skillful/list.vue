@@ -94,18 +94,12 @@ export default {
       console.log('pagination', pagination)
     },
     onListChange() {
-      if (this.page.current_page !== 1) {
-        this.$router.push({
-          query: {
-            page: 1
-          }
-        })
-      } else {
-        this.listService.refreshSkillfulList({
-          page: 1,
-          size: 20
-        })
-      }
+      this.$router.push({
+        query: {
+          page: 1
+        },
+        force: true
+      })
     }
   }
 }

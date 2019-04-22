@@ -1,11 +1,11 @@
 <template>
-  <div class="pages-brand-product-card-list-a">
+  <div class="pages-brand-product-card-list-member-list">
     <st-button type="primary">
       <a-icon type="plus"/>新增私教课程
     </st-button>
-    <div class="pages-brand-product-card-list-a-box">
+    <div class="pages-brand-product-card-list-member-list__box">
       <a-select
-        class="pages-brand-product-card-list-a-box-select"
+        class="pages-brand-product-card-list-member-list__box-select"
         v-model="card_type"
         @change="handleChange_card_type"
       >
@@ -14,7 +14,7 @@
         <a-select-option value="2">期限卡</a-select-option>
       </a-select>
       <a-select
-        class="pages-brand-product-card-list-a-box-select"
+        class="pages-brand-product-card-list-member-list__box-select"
         v-model="publish_channel"
         @change="handleChange_publish_channel"
       >
@@ -23,7 +23,7 @@
         <a-select-option value="2">门店</a-select-option>
       </a-select>
       <a-select
-        class="pages-brand-product-card-list-a-box-select"
+        class="pages-brand-product-card-list-member-list__box-select"
         @change="handleChange_sell_status"
         v-model="sell_status"
       >
@@ -77,8 +77,11 @@
         href="javascript:;"
         @click="sellStatus(text,record)"
       >
-        <span v-if="text.name ==='可售卖'" class="pages-brand-product-card-list-a-marketable"></span>
-        <span v-if="text.id ===2" class="pages-brand-product-card-list-a-stopSell"></span>
+        <span
+          v-if="text.name ==='可售卖'"
+          class="pages-brand-product-card-list-member-list__marketable"
+        ></span>
+        <span v-if="text.id ===2" class="pages-brand-product-card-list-member-list__stopSell"></span>
         {{text.name}}
         <a-popover
           :title="popoverTitle"

@@ -1,4 +1,4 @@
-import { State, getSnapshot, Computed, log } from 'rx-state'
+import { State, Computed } from 'rx-state'
 import { map, pluck } from 'rxjs/operators'
 import { Observable } from 'rxjs'
 import { Injectable } from 'vue-service-app'
@@ -65,9 +65,6 @@ export class I18NService extends Store<I18NState> {
       state.locale = locale
     })
   }
-  get appLocaleMessagesSnapshot() {
-    return getSnapshot(this.appLocaleMessages$)
-  }
   private getText(messages: any, index: string) {
     const text = get(messages, index) || ''
     if (!text) {
@@ -81,7 +78,7 @@ export class I18NService extends Store<I18NState> {
    * this.i18n.translate('app.title')
    */
   translate(appMsgKey: string) {
-    return this.getText(this.appLocaleMessagesSnapshot, appMsgKey)
+    return this.getText(this.appLocaleMessages$.snapshot(), appMsgKey)
   }
   t(appMsgKey: string): string {
     return this.translate(appMsgKey)

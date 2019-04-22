@@ -19,6 +19,40 @@ import './style/index'
 
 import './views/components/register'
 
+// scrollbar
+import PerfectScrollbar from 'perfect-scrollbar'
+import 'perfect-scrollbar/css/perfect-scrollbar.css'
+
+const el_scrollBar = (el:any) => {
+  if (el._ps_ instanceof PerfectScrollbar) {
+    el._ps_.update()
+  } else {
+    el._ps_ = new PerfectScrollbar(el, { suppressScrollX: true })
+  }
+}
+
+Vue.directive('scrollBar', {
+  inserted(el:any) {
+    const rules = ['fixed', 'absolute', 'relative']
+    if (!rules.includes(window.getComputedStyle(el).position || '')) {
+      console.error(`perfect-scrollbar所在的容器的position属性必须是以下之一：${rules.join('、')}`)
+    }
+    el_scrollBar(el)
+  },
+  componentUpdated(el:any, binding:any, vnode:any) {
+    try {
+      vnode.context.$nextTick(
+        () => {
+          el_scrollBar(el)
+        }
+      )
+    } catch (error) {
+      console.error(error)
+      el_scrollBar(el)
+    }
+  }
+})
+
 Vue.use(VuerxState)
 Vue.use(Antd)
 Vue.use(VueRx)

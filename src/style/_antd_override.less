@@ -20,7 +20,7 @@
     .lh(24px);
   }
   .ant-modal-close {
-    .c(fade(@black, 25));
+    .c(@text-light);
     &:focus,
     &:hover {
       .c(#444);
@@ -37,7 +37,7 @@
 
 // slider滑块的tooltip样式覆盖
 .ant-tooltip-inner {
-  background: #1890ff;
+  background: @primary-color;
 }
 
 // checkbox 样式修正
@@ -45,5 +45,5 @@
   left: 4px;
 }
 .ant-tooltip-placement-top .ant-tooltip-arrow {
-  border-top-color: #1890ff;
+  border-top-color: @primary-color;
 }

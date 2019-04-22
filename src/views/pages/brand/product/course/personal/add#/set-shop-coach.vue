@@ -2,7 +2,6 @@
   <st-form :form="form" @submit="save" class="page-shop-container">
     <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
-        <input type="hidden" v-decorator="formRules.course_id">
         <st-form-item label="私教课程">
           <a-input placeholder="课程名称" disabled v-decorator="formRules.course_name"/>
         </st-form-item>
@@ -31,7 +30,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" html-type="submit">保存，继续设置售卖价格</st-button>
+          <st-button type="primary" html-type="submit" :loading="loading.setShop">保存，继续设置售卖价格</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -44,7 +43,6 @@ import SelectShop from '@/views/fragments/shop/select-shop'
 import SelectCoach from '@/views/fragments/coach/select-coach'
 import { UserService } from '@/services/user.service'
 import { enumFilter } from '@/filters/other.filters'
-import { valuesIn } from 'lodash-es'
 const shopTableColumns = [{
   title: '省',
   dataIndex: 'province_name'
@@ -75,9 +73,6 @@ const formRules = {
       }]
     }
   ],
-  course_id: [
-    'course_id'
-  ],
   shop_setting: [
     'shop_setting', {
     }
@@ -106,6 +101,13 @@ export default {
       userService: UserService
     }
   },
+  rxState() {
+    const user = this.userService
+    return {
+      loading: this.addService.loading$,
+      personalCourseEnums: user.personalCourseEnums$
+    }
+  },
   components: {
     SelectShop,
     SelectCoach
@@ -114,15 +116,24 @@ export default {
     enumFilter
   },
   props: {
-    course_name: {
+    courseName: {
       type: String,
       default: ''
+    },
+    courseId: {
+      type: Number,
+      default: 0
     }
   },
   watch: {
-    course_name(val) {
+    courseName(val) {
       this.form.setFieldsValue({
         course_name: val
+      })
+    },
+    courseId(val) {
+      this.form.setFieldsValue({
+        course_id: val
       })
     }
   },
@@ -134,18 +145,12 @@ export default {
       shopIds: []
     }
   },
-  rxState() {
-    const user = this.userService
-    return {
-      personalCourseEnums: user.personalCourseEnums$
-    }
-  },
   methods: {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
-        data.course_id = this.dataInfo.course_id
+        data.course_id = this.courseId
         console.log('step 2 data', data)
         this.addService.setShop(data).subscribe(() => {
           this.messageService.success({

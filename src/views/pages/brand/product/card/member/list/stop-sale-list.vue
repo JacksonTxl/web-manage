@@ -1,12 +1,12 @@
 <template>
-  <div class="pages-brand-product-card-list-b">
+  <div class="pages-brand-product-card-liet-stop-sale-list">
     <!-- <st-button type="primary">
       <a-icon type="plus"/>新增私教课程
     </st-button>-->
     <st-button style="margin-left:24px" type="danger">批量下架</st-button>
-    <div class="pages-brand-product-card-list-b-box">
+    <div class="pages-brand-product-card-liet-stop-sale-list__box">
       <a-select
-        class="pages-brand-product-card-list-b-box-select"
+        class="pages-brand-product-card-liet-stop-sale-list__box-select"
         v-model="card_type"
         @change="handleChange_card_type"
       >
@@ -16,7 +16,7 @@
         <a-select-option value="2">期限卡</a-select-option>
       </a-select>
       <a-select
-        class="pages-brand-product-card-list-b-box-select"
+        class="pages-brand-product-card-liet-stop-sale-list__box-select"
         v-model="publish_channel"
         @change="handleChange_publish_channel"
       >
@@ -25,7 +25,7 @@
         <a-select-option value="2">门店</a-select-option>
       </a-select>
       <a-select
-        class="pages-brand-product-card-list-b-box-select"
+        class="pages-brand-product-card-liet-stop-sale-list__box-select"
         @change="handleChange_sell_status"
         v-model="sell_status"
       >

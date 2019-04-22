@@ -1,15 +1,25 @@
-import { ServiceRoute } from 'vue-service-app'
-import { SetService } from './set.service'
-import { PersonalApi, SetShopInput, SetPriceInput } from '@/api/v1/course/personal'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { Effect } from 'rx-state/src'
+import { Store } from '@/services/store'
+import { PersonalApi, SetPersonalBrandInput, SetShopInput, SetPriceInput } from '@/api/v1/course/personal'
+interface AddState {
 
-export class AddService extends SetService {
-  constructor(personalApi: PersonalApi) {
-    super(personalApi)
+}
+@Injectable()
+export class AddService extends Store<AddState> {
+  constructor(private personalApi: PersonalApi) {
+    super()
   }
-  protected setShop(params: SetShopInput) {
+  @Effect()
+  addPersonalBrand(params: SetPersonalBrandInput) {
+    return this.personalApi.addPersonalBrand(params)
+  }
+  @Effect()
+  setShop(params: SetShopInput) {
     return this.personalApi.setShop(params)
   }
-  protected setPrice(params: SetPriceInput) {
+  @Effect()
+  setPrice(params: SetPriceInput) {
     return this.personalApi.setPrice(params)
   }
 }

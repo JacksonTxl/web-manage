@@ -66,7 +66,8 @@ export default {
     }
   },
   created() {
-    this.salesTimeTips = new Date(this.time.current_time) > new Date(this.a.end_time)
+    this.salesTimeTips =
+      new Date(this.time.current_time) > new Date(this.a.end_time)
     this.times = [this.a.start_time, this.a.end_time]
   },
   methods: {
@@ -83,15 +84,16 @@ export default {
     },
     onDelete(a) {
       let self = this
-      self.show = false
+
       let data = {
         card_id: self.a.id,
         start_time: self.times[0],
         end_time: self.times[1]
       }
-      self.salesTimeTips = fasle
+      // self.salesTimeTips = fasle
       self.aService.setListInfo(data).subscribe(state => {
         console.log('done', state)
+        self.show = false
         self.$emit('done', true)
       })
     }
