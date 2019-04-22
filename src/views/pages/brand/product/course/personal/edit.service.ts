@@ -2,7 +2,13 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { PersonalApi, GetPersonalBrandInfoInput, SetPersonalBrandInput } from '@/api/v1/course/personal'
+import {
+  PersonalApi,
+  GetPersonalCourseEditInput,
+  SetPersonalBrandInput,
+  SetShopInput,
+  SetPriceInput
+} from '@/api/v1/course/personal'
 
 interface EditState {
   info: Object
@@ -18,18 +24,30 @@ export class EditService extends Store<EditState> {
     })
     this.info$ = new Computed(this.state$.pipe(pluck('info')))
   }
-  getPersonalBrandInfo(query: GetPersonalBrandInfoInput) {
-    return this.personalApi.getPersonalBrandInfo(query)
+  getPersonalCourseEdit(query: GetPersonalCourseEditInput) {
+    return this.personalApi.getPersonalCourseEdit(query).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.info = res.info
+        })
+      })
+    )
+  }
+  @Effect()
+  updatePersonalBrand(params: SetPersonalBrandInput) {
+    return this.personalApi.updatePersonalBrand(params)
+  }
+  @Effect()
+  setShop(params: SetShopInput) {
+    return this.personalApi.setShop(params)
+  }
+  @Effect()
+  setPrice(params: SetPriceInput) {
+    return this.personalApi.setPrice(params)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     const course_id = to.meta.query.id
-    this.getPersonalBrandInfo({ course_id }).subscribe((res) => {
-      this.state$.commit(state => {
-        if (course_id) {
-          res.course_id = course_id
-        }
-        state.info = res
-      })
+    this.getPersonalCourseEdit({ course_id }).subscribe(() => {
       next()
     }, () => {
       next(false)

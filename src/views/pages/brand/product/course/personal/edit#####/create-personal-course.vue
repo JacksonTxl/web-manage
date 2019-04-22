@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" class="page-create-container" labelWidth="130px">
+  <st-form :form="form" class="page-create-container">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item v-show="false">
@@ -7,7 +7,7 @@
         </st-form-item>
         <st-form-item label="课程名称" required>
           <a-input placeholder="支持输入4~30个字的课程名称" maxlength="30"
-          v-decorator="formRules.course_name" @change="onCourseNameChange"/>
+          v-decorator="formRules.course_name"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -15,7 +15,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
           <input type="hidden" v-decorator="formRules.category_id">
-          <st-select-course-type @change="onCourseTypeChange"/>
+          <st-select-course-type :checkedId="info.category_id" @change="onCourseTypeChange"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -23,14 +23,14 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
           <input type="hidden" v-decorator="formRules.train_aim">
-          <st-select-training-aim @change="onTrainingAimChange"/>
+          <st-select-training-aim :checkedIds="info.train_aim"  @change="onTrainingAimChange"/>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程时长" required>
-          <a-input-number :min="0" v-decorator="formRules.duration">
+          <a-input-number v-decorator="formRules.duration">
             <div slot="addonAfter" class="st-form-item-unit">分钟</div>
           </a-input-number>
         </st-form-item>
@@ -38,19 +38,8 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="是否支持在线购买" required>
-          <a-radio-group v-decorator="formRules.is_online_sale">
-            <a-radio v-for="(item, index) in personalCourseEnums.is_online_sale.value"
-              :key="+index" :value="+index">{{item}}
-            </a-radio>
-          </a-radio-group>
-        </st-form-item>
-      </a-col>
-    </a-row>
-    <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="参考定价">
-          <a-input-number :min="0" v-decorator="formRules.price">
+          <a-input-number v-decorator="formRules.price">
             <div slot="addonAfter" class="st-form-item-unit">元/节</div>
           </a-input-number>
         </st-form-item>
@@ -59,7 +48,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课有效期">
-          <a-input-number :min="0" v-decorator="formRules.effective_unit">
+          <a-input-number v-decorator="formRules.effective_unit">
             <div slot="addonAfter" class="st-form-item-unit">天/节</div>
           </a-input-number>
         </st-form-item>
@@ -97,7 +86,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.addPersonalBrand">保存，继续设置上课门店</st-button>
+          <st-button type="primary" @click="save">保存，继续设置上课门店</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -109,8 +98,6 @@ import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
 import StSelectCourseType from '@/views/fragments/course/select-course-type'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
-import { UserService } from '@/services/user.service'
-import { enumFilter } from '@/filters/other.filters'
 const formRules = {
   course_id: ['course_id'],
   course_name: [
@@ -148,14 +135,6 @@ const formRules = {
       }]
     }
   ],
-  is_online_sale: [
-    'is_online_sale', {
-      rules: [{
-        required: true,
-        message: '请选择是否支持在线购买'
-      }]
-    }
-  ],
   price: [
     'price', {
       rules: []
@@ -167,39 +146,28 @@ const formRules = {
       initialValue: 7
     }
   ],
-  image: [
-    'image', {
-      initialValue: {}
-    }
-  ],
-  description: [
-    'description', {
-      initialValue: ''
-    }
-  ]
+  image: ['image'],
+  description: ['description']
 }
 export default {
   name: 'create-personal-course',
   serviceInject() {
     return {
       addService: AddService,
-      messageService: MessageService,
-      userService: UserService
-    }
-  },
-  rxState() {
-    const user = this.userService
-    return {
-      loading: this.addService.loading$,
-      personalCourseEnums: user.personalCourseEnums$
+      messageService: MessageService
     }
   },
   components: {
     StSelectCourseType,
     StSelectTrainingAim
   },
-  filters: {
-    enumFilter
+  props: {
+    info: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
   },
   data() {
     return {
@@ -208,18 +176,26 @@ export default {
       fileList: []
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.form.setFieldsValue({
+        ...this.info
+      })
+    })
+  },
   methods: {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
-        data.course_id = 0
         console.log('step 1 data', data)
-        this.addService.addPersonalBrand(data).subscribe((res) => {
+        this.addService.addPersonalBrand(data).subscribe(() => {
           this.messageService.success({
             content: '提交成功'
           })
-          this.$emit('goNext', res.course_id)
+          this.$emit('goNext', {
+            course_name: data.course_name
+          })
         })
       })
     },
@@ -239,9 +215,6 @@ export default {
       this.form.setFieldsValue({
         train_aim
       })
-    },
-    onCourseNameChange(e) {
-      this.$emit('onCourseNameChange', e.target.value)
     }
   }
 }

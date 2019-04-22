@@ -188,10 +188,10 @@ export default {
       console.log('detail', obj)
       this.form.setFieldsValue({
         graduated_school: obj.graduated_school,
-        graduation_time: moment(obj.graduation_time),
+        graduation_time: obj.graduation_time ? moment(obj.graduation_time) : '',
         education: obj.education,
         profession: obj.profession,
-        birthday: moment(obj.birthday),
+        birthday: obj.birthday ? moment(obj.birthday) : '',
         native_place: obj.native_place,
         marry_status: obj.marry_status,
         children_status: obj.children_status,
