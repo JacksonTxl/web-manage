@@ -18,7 +18,7 @@ export class TrainingApi extends Api {
    * 编辑课程类型
    */
   updateTrainingAim(params: UpdateTrainingAimInput) {
-    return this.http.put(url, { params })
+    return this.http.put(`${url}/${params.id}`, { params })
   }
   /**
    * 删除课程类型
@@ -39,6 +39,10 @@ export interface AddTrainingAimInput {
   setting_name: string
 }
 export interface UpdateTrainingAimInput {
+  /**
+   * 训练目的id
+   */
+  id: number
   /**
    * 编辑课程类型名称
    */

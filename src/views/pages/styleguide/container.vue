@@ -64,7 +64,7 @@
     <h3 class="mg-t32">st-container</h3>
     <st-container>
       <div>st-container（默认type为1）</div>
-      <div>padding: 12px; border-radius: 4px; border: 1px solid #d9d9d9;</div>
+      <div>padding: 12px; border-radius: 4px; border: 1px solid @border-color;</div>
     </st-container>
     <st-container type="2" class="mg-t16">
       <div>st-container type="2"</div>

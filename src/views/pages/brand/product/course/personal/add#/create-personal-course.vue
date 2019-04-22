@@ -97,7 +97,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save">保存，继续设置上课门店</st-button>
+          <st-button type="primary" @click="save" :loading="loading.addPersonalBrand">保存，继续设置上课门店</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -182,6 +182,7 @@ export default {
   rxState() {
     const user = this.userService
     return {
+      loading: this.addService.loading$,
       personalCourseEnums: user.personalCourseEnums$
     }
   },
@@ -206,11 +207,11 @@ export default {
         const data = this.form.getFieldsValue()
         data.course_id = 0
         console.log('step 1 data', data)
-        this.addService.addPersonalBrand(data).subscribe(() => {
+        this.addService.addPersonalBrand(data).subscribe((res) => {
           this.messageService.success({
             content: '提交成功'
           })
-          this.$emit('goNext')
+          this.$emit('goNext', res.course_id)
         })
       })
     },

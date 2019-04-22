@@ -3,25 +3,25 @@ const url = '/v1/setting/coach/levels'
 
 export class CoachLevelApi extends Api {
   /**
-   * 训练目的列表
+   * 教练等级列表
    */
   getCoachLevelList(query: GetCoachLevelListInput) {
     return this.http.get(url, { query })
   }
   /**
-   * 新增训练目的
+   * 新增教练等级
    */
   addCoachLevel(params: AddCoachLevelInput) {
     return this.http.post(url, { params })
   }
   /**
-   * 编辑课程类型
+   * 编辑教练等级
    */
   updateCoachLevel(params: UpdateCoachLevelInput) {
-    return this.http.put(url, { params })
+    return this.http.put(`${url}/${params.id}`, { params })
   }
   /**
-   * 删除课程类型
+   * 删除教练等级
    */
   deleteCoachLevel(params: DeleteCoachLevelInput) {
     return this.http.delete(`${url}/${params.id}`)
@@ -34,19 +34,23 @@ export interface GetCoachLevelListInput {
 }
 export interface AddCoachLevelInput {
   /**
-   * 训练目的名称
+   * 教练等级名称
    */
   setting_name: string
 }
 export interface UpdateCoachLevelInput {
   /**
-   * 编辑课程类型名称
+   * 教练等级id
+   */
+  id: number
+  /**
+   * 教练等级名称
    */
   setting_name: string
 }
 export interface DeleteCoachLevelInput {
   /**
-   * 课程类型设置ID
+   * 教练等级设置ID
    */
   id: number
 }
