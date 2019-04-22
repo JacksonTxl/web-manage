@@ -12,11 +12,7 @@
 </template>
 
 <script>
-import { imgFilter } from '@/filters/resource.filters'
 export default {
-  filters: {
-    imgFilter
-  },
   data() {
     return {
       demoImgKey:

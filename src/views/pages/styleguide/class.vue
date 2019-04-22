@@ -66,12 +66,3 @@
     </section>
   </div>
 </template>
-
-<script>
-import { imgFilter } from '@/filters/resource.filters'
-export default {
-  filters: {
-    imgFilter
-  }
-}
-</script>

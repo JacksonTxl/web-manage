@@ -16,6 +16,7 @@ import Viewer from 'v-viewer'
 // 默认样式加载
 import './style/index'
 import './views/components/register'
+import './filters/register'
 // @ts-ignore
 import Scrollbar from '@/vendor/vue-scrollbar'
 

@@ -11,10 +11,10 @@
   </div>
 </template>
 <script>
-import CountupDemo from './plugins#/countup.vue'
-import ViewerDemo from './plugins#/viewer.vue'
-import CropperDemo from './plugins#/cropper.vue'
-import EditorDemo from './plugins#/editor.vue'
+import CountupDemo from './plugin#/countup.vue'
+import ViewerDemo from './plugin#/viewer.vue'
+import CropperDemo from './plugin#/cropper.vue'
+import EditorDemo from './plugin#/editor.vue'
 export default {
   components: {
     ViewerDemo,
