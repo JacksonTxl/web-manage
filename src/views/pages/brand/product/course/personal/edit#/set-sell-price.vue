@@ -164,7 +164,6 @@ export default {
   },
   rxState() {
     const user = this.userService
-    console.log('sub', this.addService.loading$)
     return {
       loading: this.addService.loading$,
       personalCourseEnums: user.personalCourseEnums$,
@@ -186,7 +185,7 @@ export default {
     return {
       form: this.$form.createForm(this),
       formRules,
-      isShowUnitSet: false,
+      priceSetting: 1,
       tableColumns,
       tableData: [],
       priceGradient: []
@@ -194,6 +193,11 @@ export default {
   },
   components: {
     SelectCoachLevel
+  },
+  computed: {
+    isShowUnitSet() {
+      return this.priceSetting === 2
+    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -203,7 +207,6 @@ export default {
   methods: {
     save(e) {
       e.preventDefault()
-      console.log(this.tableData)
       const priceGradient = this.getPriceGradient()
       console.log('price_gradient', priceGradient)
       this.form.validateFields().then(() => {
@@ -221,7 +224,7 @@ export default {
       })
     },
     onChange(e) {
-      e.target.value === 2 ? this.isShowUnitSet = true : this.isShowUnitSet = false
+      this.priceSetting = e.target.value
     },
     operation(type, key, record) {
       const newTableData = [...this.tableData]
@@ -316,6 +319,7 @@ export default {
         price_setting: info.price_setting,
         price_gradient: info.priceGradient
       })
+      this.priceSetting = info.price_setting
     },
     getData() {
       const data = this.form.getFieldsValue()
