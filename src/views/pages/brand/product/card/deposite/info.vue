@@ -7,7 +7,7 @@
           <!-- 卡名称 -->
           <img
           :class="item('card_bg')"
-          :src="cardInfo.card_bg.image_url"
+          :src="cardInfo.card_bg.image_url | imgFilter({w:192,h:108})"
           width="192"
           height="108"
           alt="">
@@ -54,11 +54,11 @@
         </div>
         <div :class="item('admission_range')" class="mb-24">
           <!-- 支持入场范围 -->
-          <!-- <p class="mb-8">
+          <p class="mb-8">
             <span class="label">支持入场范围：</span>
-            <span class="value">{{cardInfo.admission_range.name}}</span>
+            <span class="value">{{cardInfo.consumption_range.name}}</span>
           </p>
-          <st-container v-if="cardInfo.admission_range.id===2">
+          <st-container v-if="cardInfo.consumption_range===2">
             <a-table
               size="middle"
               rowKey="shop_id"
@@ -67,85 +67,50 @@
               :pagination="false"
               :scroll="{ y: 230 }"
             />
-          </st-container> -->
+          </st-container>
         </div>
-        <div :class="item('price_setting')" class="mb-24">
+        <!-- <div :class="item('price_setting')" class="mb-24"> -->
           <!-- 定价方式 -->
           <!-- <p class="mb-8">
             <span class="label">定价方式：</span>
             <span class="value">{{cardInfo.price_setting.name}}</span>
           </p> -->
-        </div>
+        <!-- </div> -->
         <div :class="item('price_gradient')" class="mb-24">
           <!-- 售卖定价 -->
-          <!-- <p class="mb-8">
+          <p class="mb-8">
             <span class="label">售卖定价：</span>
           </p>
           <st-container>
             <a-table
-              v-if="cardInfo.price_setting.id===1"
               size="middle"
               rowKey="id"
-              :columns="price_gradient_columns.brand"
-              :dataSource="cardInfo.price_gradient"
+              :columns="price_gradient_columns"
+              :dataSource="cardInfo.price"
               :pagination="false"
-              :scroll="{ y: 230 }"
-            > -->
-              <!-- <template slot="num" slot-scope="text, record, index"> -->
-                <!-- <a-input :value="text.num" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
-                  <a-select slot="addonAfter" :value="text.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
-                    <a-select-option
-                    v-for="(item,index) in nuit_list"
-                    :value="item.value"
-                    :key="index" >{{item.label}}</a-select-option>
-                  </a-select>
-                </a-input> -->
-                <!-- {{text}}-{{record}}-{{index}}
-              </template>
-            </a-table> -->
-            <!-- <a-table
-              v-if="cardInfo.price_setting.id===2"
-              size="middle"
-              rowKey="id"
-              :columns="price_gradient_columns.shop"
-              :dataSource="cardInfo.price_gradient"
-              :pagination="false"
-              :scroll="{ y: 230 }"
-            >
-              <template slot="num" slot-scope="text, record, index"> -->
-                <!-- <a-input :value="text.num" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
-                  <a-select slot="addonAfter" :value="text.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
-                    <a-select-option
-                    v-for="(item,index) in nuit_list"
-                    :value="item.value"
-                    :key="index" >{{item.label}}</a-select-option>
-                  </a-select>
-                </a-input> -->
-                <!-- {{text}}-{{record}}-{{index}}
-              </template>
-            </a-table>
-          </st-container> -->
+            />
+          </st-container>
         </div>
         <div :class="item('transfer')" class="mb-24">
           <!-- 转让设置 -->
-          <!-- <p class="mb-8">
+          <p class="mb-8">
             <span class="label">转让设置：</span>
             <span class="value">{{cardInfo.is_transfer.name}}</span>
-          </p> -->
+          </p>
         </div>
         <div :class="item('card_introduction')" class="mb-24">
           <!-- 会员卡说明 -->
-          <!-- <p class="mb-8">
-            <span class="label">会员卡说明：</span>
+          <p class="mb-8">
+            <span class="label">储值卡说明：</span>
           </p>
-          <st-container>{{cardInfo.card_introduction}}</st-container> -->
+          <st-container>{{cardInfo.card_contents}}</st-container>
         </div>
         <div :class="item('card_contents')" class="mb-24">
           <!-- 备注 -->
-          <!-- <p class="mb-8">
+          <p class="mb-8">
             <span class="label">备注：</span>
           </p>
-          <st-container>{{cardInfo.card_contents}}</st-container> -->
+          <st-container>{{cardInfo.description}}</st-container>
         </div>
       </div>
     </div>
@@ -153,6 +118,7 @@
 </template>
 <script>
 import { InfoService } from './info.service'
+import { imgFilter } from '@/filters/resource.filters'
 export default {
   bem: {
     item: 'brand-card'
@@ -166,6 +132,9 @@ export default {
     return {
       cardInfo: this.infoService.cardInfo$
     }
+  },
+  filters: {
+    imgFilter
   },
   mounted() {
     console.log(this.cardInfo)
@@ -196,52 +165,20 @@ export default {
         }
       ],
       // 售卖定价表头
-      price_gradient_columns: {
-        brand: [
-          {
-            title: '期限',
-            scopedSlots: { customRender: 'num' },
-            dataIndex: 'num'
-          },
-          {
-            title: '售价',
-            scopedSlots: { customRender: 'rally_price' },
-            dataIndex: 'rally_price'
-          },
-          {
-            title: '允许冻结天数',
-            scopedSlots: { customRender: 'frozen_day' },
-            dataIndex: 'frozen_day'
-          },
-          {
-            title: '赠送上限',
-            scopedSlots: { customRender: 'gift_unit' },
-            dataIndex: 'gift_unit'
-          }
-        ],
-        shop: [
-          {
-            title: '期限',
-            scopedSlots: { customRender: 'unit' },
-            dataIndex: 'unit'
-          },
-          {
-            title: '售价',
-            scopedSlots: { customRender: 'rally_price' },
-            dataIndex: 'rally_price'
-          },
-          {
-            title: '允许冻结天数',
-            scopedSlots: { customRender: 'frozen_day' },
-            dataIndex: 'frozen_day'
-          },
-          {
-            title: '赠送上限',
-            scopedSlots: { customRender: 'gift_unit' },
-            dataIndex: 'gift_unit'
-          }
-        ]
-      },
+      price_gradient_columns: [
+        {
+          title: '储值金额',
+          dataIndex: 'card_price'
+        },
+        {
+          title: '售卖价格',
+          dataIndex: 'sell_price'
+        },
+        {
+          title: '有效期限',
+          dataIndex: 'time'
+        }
+      ],
 
       // 期限单位
       nuit_list: {

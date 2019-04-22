@@ -19,18 +19,17 @@
     <section v-if="isShowUnitSet">
       <a-row :gutter="8">
         <a-col :lg="22" :xs="22" :offset="1">
-          <st-form-item label="课程定价" required>
+          <st-form-item label="课程定价">
             <st-container>
               <a-table :columns="tableColumns" :dataSource="tableData" :pagination="false">
                 <!-- 教练等级 -->
                 <template slot="level_id" slot-scope="text, record, index">
                   <div v-if="record.editable">
-                    <select-coach-level @change="(val) => onLevelChange(val, index)"></select-coach-level>
-                    <!-- <a-select @change="(val) => onLevelChange(val, index)"  placeholder="选择教练等级"
+                    <a-select @change="(val) => onLevelChange(val, index)"  placeholder="选择教练等级"
                       class="page-set-sell-price__select">
                       <a-select-option value="1">等级A</a-select-option>
                       <a-select-option value="2">等级B</a-select-option>
-                    </a-select> -->
+                    </a-select>
                   </div>
                   <template v-else>{{({'1': '等级A', '2': '等级B'})[tableData[index].level_id]}}</template>
                 </template>
@@ -70,6 +69,17 @@
                   </div>
                   <template v-else>{{tableData[index].transfer_num}}{{tableData[index].transfer_unit === '1' ? '%' : '元'}}</template>
                 </template>
+                <!-- 是否支持在线购买 -->
+                <template slot="online" slot-scope="text, record, index">
+                  <div v-if="record.editable">
+                    <a-radio-group v-model="tableData[index].buy_type" >
+                      <a-radio v-for="(item, index) in personalCourseEnums.is_online_sale.value"
+                        :key="index" :value="index">{{item}}
+                      </a-radio>
+                    </a-radio-group>
+                  </div>
+                  <template v-else>{{tableData[index].buy_type | enumFilter(personalCourseEnums.is_online_sale)}}</template>
+                </template>
                 <!-- 操作 -->
                 <template slot="action" slot-scope="text, record">
                   <div>
@@ -95,7 +105,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.setPrice">完成</st-button>
+          <st-button type="primary" @click="save">完成</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -105,8 +115,8 @@
 import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
+import { enumFilter } from '@/filters/other.filters'
 import { remove } from 'lodash-es'
-import SelectCoachLevel from '@/views/fragments/coach/select-coach-level'
 const tableColumns = [{
   title: '价格等级',
   dataIndex: 'level_id',
@@ -123,6 +133,10 @@ const tableColumns = [{
   title: '转让手续费',
   dataIndex: 'serviceFee',
   scopedSlots: { customRender: 'serviceFee' }
+}, {
+  title: '是否在线购买',
+  dataIndex: 'online',
+  scopedSlots: { customRender: 'online' }
 }, {
   title: '操作',
   key: 'action',
@@ -168,73 +182,45 @@ export default {
   },
   rxState() {
     const user = this.userService
-    console.log('sub', this.addService.loading$)
     return {
-      loading: this.addService.loading$,
       personalCourseEnums: user.personalCourseEnums$
     }
   },
-  components: {
-    SelectCoachLevel
-  },
-  props: {
-    courseName: {
-      type: String,
-      default: ''
-    },
-    courseId: {
-      type: Number,
-      default: 0
-    }
+  filters: {
+    enumFilter
   },
   data() {
     return {
       form: this.$form.createForm(this),
       formRules,
-      priceSetting: 1,
+      isShowUnitSet: false,
       tableColumns,
       tableData: [],
-      priceGradient: []
+      price_gradient: []
     }
   },
-  computed: {
-    isShowUnitSet() {
-      return this.priceSetting === 2
+  props: {
+    info: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
-  },
-  watch: {
-    courseName(val) {
-      this.form.setFieldsValue({
-        course_name: val
-      })
-    },
-    courseId(val) {
-      this.form.setFieldsValue({
-        course_id: val
-      })
-    }
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.form.setFieldsValue({
-        course_name: this.course_name
-      })
-    })
   },
   methods: {
     save(e) {
       e.preventDefault()
       console.log(this.tableData)
-      const priceGradient = this.getPriceGradient()
-      console.log('priceGradient', priceGradient)
+      const price_gradient = this.getPriceGradient()
+      console.log('price_gradient', price_gradient)
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
-        data.course_id = this.courseId
+        data.course_id = 6
         console.log('step 3 data', data)
-        if (!this.inputCheck(priceGradient)) {
+        if (!this.inputCheck(price_gradient)) {
           return
         }
-        data.price_gradient = priceGradient
+        data.price_gradient = price_gradient
         this.addService.setPrice(data).subscribe(() => {
           this.messageService.success({
             content: '提交成功'
@@ -243,7 +229,7 @@ export default {
       })
     },
     onChange(e) {
-      this.priceSetting = e.target.value
+      e.target.value === 2 ? this.isShowUnitSet = true : this.isShowUnitSet = false
     },
     operation(type, key, record) {
       const newTableData = [...this.tableData]
@@ -287,6 +273,7 @@ export default {
         saleGrad: '',
         price: '',
         serviceFee: '',
+        online: '',
         editable: true
       }
       this.tableData.push(newRecord)
@@ -301,7 +288,8 @@ export default {
           max_sale: item.max_sale,
           price: item.price,
           transfer_num: item.transfer_num,
-          transfer_unit: item.transfer_unit
+          transfer_unit: item.transfer_unit,
+          buy_type: item.buy_type
         })
       })
       return ret
@@ -312,16 +300,16 @@ export default {
     onTransferUnitChange(val, index) {
       this.tableData[index].transfer_unit = val
     },
-    inputCheck(priceGradient) {
+    inputCheck(price_gradient) {
       let ret = true
-      for (let i = 0; i < priceGradient.length; i++) {
-        let retIn = false
-        for (let j in priceGradient[i]) {
-          if (priceGradient[i][j] === undefined || priceGradient[i][j] === '') {
-            retIn = true
+      for (let i = 0; i < price_gradient.length; i++) {
+        let ret_in = false
+        for (let j in price_gradient[i]) {
+          if (price_gradient[i][j] === undefined || price_gradient[i][j] === '') {
+            ret_in = true
           }
         }
-        if (retIn) {
+        if (ret_in) {
           ret = false
           this.messageService.error({
             content: `第${i + 1}行课程定价输入有误`

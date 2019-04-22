@@ -1,7 +1,9 @@
 <template>
   <div>
-    <a-select mode="tags" :defaultValues="checkedIds" placeholder="请选择训练目的" @change="change">
-      <a-select-option v-for="item in list" :key="`${item.id}`">{{item.setting_name}}</a-select-option>
+    <a-select mode="tags" :defaultValue="value" placeholder="请选择训练目的" @change="change">
+      <a-select-option v-for="item in list" :key="`${item.id}`">
+        {{item.setting_name}}
+      </a-select-option>
     </a-select>
   </div>
 </template>
@@ -16,7 +18,7 @@ export default {
     }
   },
   props: {
-    checkedIds: {
+    value: {
       type: Array,
       default() {
         return []

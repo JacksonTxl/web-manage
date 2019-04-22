@@ -30,7 +30,7 @@ export class PersonalApi extends Api {
    * 编辑品牌私教课
    */
   updatePersonalBrand(params: SetPersonalBrandInput) {
-    return this.http.put('/v1/course/personal/brand', { params, mock: {} })
+    return this.http.put(`/v1/course/personal/brand/${params.course_id}`, { params })
   }
   /**
    * 设置上课门店
@@ -38,11 +38,18 @@ export class PersonalApi extends Api {
   setShop(params: SetShopInput) {
     return this.http.put(`/v1/course/personal/brand/set_shop/${params.course_id}`, { params })
   }
+
   /**
    * 设置售卖价格
    */
   setPrice(params: SetPriceInput) {
     return this.http.put(`/v1/course/personal/brand/set_price/${params.course_id}`, { params })
+  }
+  /**
+   * 编辑品牌私教课回显详情
+   */
+  getPersonalCourseEdit(query: GetPersonalCourseEditInput) {
+    return this.http.get(`/v1/course/personal/brand/edit/${query.course_id}`)
   }
 }
 export interface GetPersonalBrandCourseListInput {
@@ -59,6 +66,10 @@ export interface GetPersonalBrandInfoInput {
   course_id: number
 }
 export interface SetPersonalBrandInput {
+  /**
+   * 课程id
+   */
+  course_id: number
   /**
    * 课程名称
    */
@@ -121,4 +132,8 @@ export interface SetPriceInput {
    * 价格梯度price_setting等于1时必填
    */
   price_gradient?: any[]
+}
+
+export interface GetPersonalCourseEditInput {
+  course_id: number
 }

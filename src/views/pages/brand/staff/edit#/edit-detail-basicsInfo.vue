@@ -266,7 +266,7 @@ export default {
         nature_work: obj.nature_work,
         role_id: obj.role_id,
         shop_id: obj.shop_id,
-        entry_date: moment(obj.entry_date),
+        entry_date: obj.entry_date ? moment(obj.entry_date) : '',
         mail: obj.mail,
         country_code_id: obj.country_code_id,
         id_type: obj.id_type

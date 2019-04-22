@@ -251,7 +251,10 @@ export default {
           }
         ],
         // 工号
-        staff_numRule: ['staff_num', { initialValue: '' }],
+        staff_numRule: ['staff_num', {
+          initialValue: '',
+          rules: [{ required: true, message: '请填写工号' }]
+        }],
         // 性别
         genderRule: [
           'sex',
@@ -284,7 +287,13 @@ export default {
         // 入职时间
         entry_dateRule: ['entry_date', { initialValue: '' }],
         // 所属门店 // 多选select
-        shopRule: ['shop_id', { initialValue: [] }],
+        shopRule: ['shop_id', { initialValue: [],
+          rules: [
+            {
+              required: true,
+              message: '请选择门店'
+            }
+          ] }],
         // 职务
         working_postRule: ['working_post', { initialValue: '' }],
         // 工作性质
@@ -294,7 +303,7 @@ export default {
         // 系统权限
         is_permissionRule: ['is_permission', { initialValue: 0 }]
       },
-
+      // ?staffId=108&currentIndex=1&isShowCoach=1
       isAdd: [],
       addflag: true,
       isShowLevel: false, // 是否展示教练等级
