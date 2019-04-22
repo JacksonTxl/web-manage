@@ -39,10 +39,10 @@ export default {
     return {
       currentIndex: 0,
       stepArr: [{
-        title: '创建私教课',
+        title: '编辑私教课',
         key: 0
       }, {
-        title: '设置上课门店及教练',
+        title: '设置上课门店',
         key: 1
       }, {
         title: '设置售卖价格',

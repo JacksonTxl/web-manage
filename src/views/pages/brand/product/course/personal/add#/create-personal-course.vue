@@ -167,8 +167,16 @@ const formRules = {
       initialValue: 7
     }
   ],
-  image: ['image'],
-  description: ['description']
+  image: [
+    'image', {
+      initialValue: {}
+    }
+  ],
+  description: [
+    'description', {
+      initialValue: ''
+    }
+  ]
 }
 export default {
   name: 'create-personal-course',
