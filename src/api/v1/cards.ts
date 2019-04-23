@@ -54,7 +54,7 @@ export class CardsApi extends Api {
    *会员卡停售原因
    */
   getCardsSaleStopReason(query: any) {
-    return this.http.get(`/v1/cards/sale/stop/reason`, { query })
+    return this.http.get(`/v1/cards/brand/sale/stop/reason/${query.card_id}`)
   }
   /**
    *会员卡售卖门店列表
@@ -85,7 +85,7 @@ export class CardsApi extends Api {
    *填写会员卡停售
    */
   setCardsSaleStop(params: any) {
-    return this.http.put('/v1/cards/sale/brand/stop', { params })
+    return this.http.put('/v1/cards/brand/sale/stop', { params })
   }
   /**
    *会员卡恢复售卖

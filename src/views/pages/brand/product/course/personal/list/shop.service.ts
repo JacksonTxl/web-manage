@@ -3,7 +3,7 @@ import { PersonalApi, GetPersonalBrandCourseListInput } from '@/api/v1/course/pe
 import { tap, pluck } from 'rxjs/operators'
 import { State, Computed } from 'rx-state/src'
 @Injectable()
-export class ShopService {
+export class ShopService implements RouteGuard {
   state$: State<any>
   personalCourseList$: Computed<any>
   constructor(private personalApi: PersonalApi) {
@@ -23,6 +23,12 @@ export class ShopService {
         this.SET_PERSONAL_COURSE_LIST(state)
       })
     )
+  }
+  init() {
+
+  }
+  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
+
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getCourseListInShop({}).subscribe(state$ => next())

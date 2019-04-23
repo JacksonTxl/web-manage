@@ -96,13 +96,17 @@ export default {
     },
     onDelete(a) {
       let self = this
-      self.show = false
+
       let data = {
         card_id: self.a,
         reason: self.textareaInfo
       }
       self.aService.setListInfo(data).subscribe(state => {
-        this.$emit('done', true)
+        console.log(
+          '停止售卖会员卡，将自动下架在门店售卖的本会员卡；已购买会员卡的会员仍然享有该会员卡权益。'
+        )
+        self.show = false
+        self.$emit('done', true)
       })
     }
   },

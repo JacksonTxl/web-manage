@@ -19,10 +19,10 @@
     <section>
       <st-form labelWidth='60px' :form="form" @submit="save" class="modal-bind-entity-card__form mg-t24">
         <st-form-item label="实体卡号" >
-          <a-input placeholder="请输入实体卡号"  v-decorator="entityCardIdRule"/>
+          <a-input placeholder="请输入实体卡号" />
         </st-form-item>
         <st-form-item label="物理ID" >
-          <a-input placeholder="请将实体卡置于读卡器上" v-decorator="physicalIdRule"/>
+          <a-input placeholder="请将实体卡置于读卡器上"/>
         </st-form-item>
       </st-form>
     </section>
@@ -35,8 +35,12 @@ export default {
     return {
       show: false,
       form: this.$form.createForm(this)
-      // entityCardIdRule: ['entityCardId', { rules: [ { message: '请输入实体卡号' }] }],
-      // physicalIdRule: ['physicalID', { rules: [{ message: '请录入物理ID' }] }]
+    }
+  },
+  props: {
+    staffId: {
+      type: Number,
+      default: -1
     }
   },
   methods: {

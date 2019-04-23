@@ -5,6 +5,7 @@ import { tap, pluck } from 'rxjs/operators'
 import { State, Computed, Effect } from 'rx-state/src'
 import { Store } from '@/services/store'
 import { CourseApi } from '@/api/v1/setting/course'
+import { ShopApi } from '@/api/v1/shop'
 export interface SetState {
   personalCourseList: any[],
   categoryList: any[]
@@ -14,7 +15,7 @@ export class BrandService extends Store<SetState> {
   state$: State<SetState>
   personalCourseList$: Computed<any>
   categoryList$: Computed<any>
-  constructor(private personalApi: PersonalApi, private courseApi: CourseApi) {
+  constructor(private personalApi: PersonalApi, private courseApi: CourseApi, private shopApi: ShopApi) {
     super()
     this.state$ = new State({
       personalCourseList: [],
