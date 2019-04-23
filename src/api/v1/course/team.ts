@@ -39,10 +39,17 @@ export class TeamApi extends Api {
   }
   /**
    *
+   * 新增团课课程
+   */
+  PostTeamCourse(params: any) {
+    return this.http.post(`/v1/course/team`, { params })
+  }
+  /**
+   *
    * 编辑团课课程
    */
-  putTeamCourse(course_id: string) {
-    return this.http.put(`/v1/course/team/${course_id}`)
+  putTeamCourse(params: PutTeamCourseInput) {
+    return this.http.put(`/v1/course/team/${params.course_id}`, { params })
   }
   /**
    * 获取课程类型
@@ -69,7 +76,12 @@ export class TeamApi extends Api {
     // return this.http.post('/v1/course/personal/set_shop', { params })
   }
 }
+export interface PutTeamCourseInput {
+  course_id: string
+}
+export interface PostTeamCourseInput {
 
+}
 export interface GetTeamCourseTypeQuery{
 
 }

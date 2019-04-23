@@ -36,7 +36,7 @@
 
 <script>
 import { MessageService } from '@/services/message.service'
-import { SwitchShopService } from './switch-shop-drawer.service'
+import { SwitchShopService } from './switch.service'
 
 export default {
   name: 'SwtichShopDrawer',
@@ -67,9 +67,7 @@ export default {
       const params = {
         shop_id
       }
-      this.switchShopService.switchShop(params).subscribe(res => {
-        console.log(res)
-      })
+      this.switchShopService.switchShop(params).subscribe()
     }
   }
 }

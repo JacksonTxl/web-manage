@@ -46,7 +46,7 @@ export class EditService extends Store<EditState> {
     return this.personalApi.setPrice(params)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    const course_id = to.meta.query.id
+    const course_id = to.meta.query.id || to.query.courseId
     this.getPersonalCourseEdit({ course_id }).subscribe(() => {
       next()
     }, () => {

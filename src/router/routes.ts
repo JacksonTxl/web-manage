@@ -50,7 +50,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       route.name = ''
     }
     // guards 配置
-    if (route.name === 'user-login') {
+    if (route.name === 'account-login') {
       prependGuards(route, [
         HotReleaseService,
         NProgressService,

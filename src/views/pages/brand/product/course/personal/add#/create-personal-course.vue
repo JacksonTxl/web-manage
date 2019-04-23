@@ -2,9 +2,6 @@
   <st-form :form="form" class="page-create-container" labelWidth="130px">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item v-show="false">
-          <input type="hidden" v-decorator="formRules.course_id"/>
-        </st-form-item>
         <st-form-item label="课程名称" required>
           <a-input placeholder="支持输入4~30个字的课程名称" maxlength="30"
           v-decorator="formRules.course_name" @change="onCourseNameChange"/>
@@ -111,7 +108,6 @@ import StSelectCourseType from '@/views/fragments/course/select-course-type'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 import { UserService } from '@/services/user.service'
 const formRules = {
-  course_id: ['course_id'],
   course_name: [
     'course_name', {
       rules: [{
@@ -209,7 +205,6 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
-        data.course_id = 0
         console.log('step 1 data', data)
         this.addService.addPersonalBrand(data).subscribe((res) => {
           this.messageService.success({

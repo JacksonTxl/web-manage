@@ -5,7 +5,8 @@ export const columns = [
   },
   {
     title: '课程名称',
-    dataIndex: 'course_name'
+    dataIndex: 'course_name',
+    scopedSlots: { customRender: 'course_name' }
   },
   {
     title: '时长（分钟）',

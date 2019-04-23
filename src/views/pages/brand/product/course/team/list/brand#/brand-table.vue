@@ -32,6 +32,18 @@
 import { columns } from './brand.config'
 export default {
   name: 'TeamTableBrand',
+  serviceInject() {
+    return {
+      brandService: BrandService,
+      routeService: RouteService
+    }
+  },
+  rxState() {
+    return {
+      teamCourseList: this.brandService.teamCourseList$,
+      query: this.routeService.query$
+    }
+  },
   data() {
     return {
       columns,
