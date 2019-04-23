@@ -9,7 +9,7 @@
       </p>
       <select-shop :shopIds="shopIds" @change="onSelectShop"></select-shop>
     </st-panel>
-    <switch-shop-drawer v-if="isShowSwitchShop" @onClose="onCloseSwitchShop"></switch-shop-drawer >
+    <switch-shop v-if="isShowSwitchShop" @onClose="onCloseSwitchShop"></switch-shop>
   </div>
 </template>
 
@@ -21,7 +21,7 @@ import { MessageService } from '@/services/message.service'
 import { Action } from 'rx-state'
 import { switchMap, catchError, filter } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'
-import SwitchShopDrawer from '@/views/fragments/switch-shop-drawer'
+import SwitchShop from '@/views/fragments/shop/switch'
 
 import SelectShop from '@/views/fragments/shop/select-shop'
 
@@ -35,7 +35,7 @@ export default {
     }
   },
   components: {
-    SwitchShopDrawer,
+    SwitchShop,
     SelectShop
   },
   data() {
@@ -43,8 +43,6 @@ export default {
       isShowSwitchShop: false,
       shopIds: [1]
     }
-  },
-  rxState() {
   },
   methods: {
     switchShop() {
