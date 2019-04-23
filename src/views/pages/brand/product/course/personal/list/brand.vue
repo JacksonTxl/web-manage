@@ -7,7 +7,7 @@
           <a-select showSearch v-model="query.category_id" :filterOption="filterOption" optionFilterProp="children" class="mg-r8" defaultValue="" style="width: 160px" @change="onChange">
             <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
           </a-select>
-          <a-select  v-model="query.available" style="width: 160px" @change="onChange">
+          <a-select  v-model="query.is_available" style="width: 160px" @change="onChange">
             <a-select-option v-for="status in courseStatus" :key="status.value" :value="status.value">{{status.label}}</a-select-option>
           </a-select>
         </div>
