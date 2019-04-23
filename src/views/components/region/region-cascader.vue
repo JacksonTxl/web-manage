@@ -1,5 +1,4 @@
 <template>
-<div>
   <a-cascader
   :fieldNames="{label:'name',value:'id',children:'children'}"
   :options="regions"
@@ -8,8 +7,6 @@
   v-model="model"
   @change="onChange"
   :placeholder="placeholder"/>
-</div>
-
 </template>
 
 <script>
@@ -69,6 +66,7 @@ export default {
       return (path.some(option => (option.name).indexOf(inputValue) > -1))
     },
     onChange(value) {
+      this.$emit('input', value)
       this.$emit('change', value)
     }
   },

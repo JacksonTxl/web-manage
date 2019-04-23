@@ -26,7 +26,6 @@
 import { Action } from 'rx-state'
 import { switchMap, catchError, filter } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'
-import { imgFilter } from '@/filters/resource.filters'
 import { SelectService } from './select.service'
 import { json2AntDesignTreeData } from '@/utils/json-2-tree-data'
 

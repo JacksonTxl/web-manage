@@ -249,7 +249,7 @@ export default {
       addService: AddService
     }
   },
-  subscriptions() {
+  rxState() {
     return {
       addLoading: this.addService.loading$
     }
@@ -370,6 +370,7 @@ export default {
     onHandleSubmit(e) {
       e.preventDefault()
       this.form.validateFieldsAndScroll((err, values) => {
+        console.log(123333)
         if (!err) {
           // 卡名称
           this.cardData.card_name = values.cardData.card_name
@@ -405,7 +406,7 @@ export default {
       if (value === undefined || value === '') {
         // eslint-disable-next-line
         callback('请填写储值卡名称')
-      } else if (value && !this.rules.cardName.test(value)) {
+      } else if (value && !this.rules.card_name.test(value)) {
         // eslint-disable-next-line
         callback('输入的储值卡名称格式错误，请重新输入')
       } else {

@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" class="page-create-container">
+  <st-form :form="form" class="page-create-container" labelWidth="130px">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item v-show="false">
@@ -41,7 +41,7 @@
         <st-form-item label="是否支持在线购买" required>
           <a-radio-group v-decorator="formRules.is_online_sale">
             <a-radio v-for="(item, index) in personalCourseEnums.is_online_sale.value"
-              :key="index" :value="index">{{item}}
+              :key="+index" :value="+index">{{item}}
             </a-radio>
           </a-radio-group>
         </st-form-item>
@@ -110,7 +110,6 @@ import { MessageService } from '@/services/message.service'
 import StSelectCourseType from '@/views/fragments/course/select-course-type'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 import { UserService } from '@/services/user.service'
-import { enumFilter } from '@/filters/other.filters'
 const formRules = {
   course_id: ['course_id'],
   course_name: [
@@ -167,8 +166,16 @@ const formRules = {
       initialValue: 7
     }
   ],
-  image: ['image'],
-  description: ['description']
+  image: [
+    'image', {
+      initialValue: {}
+    }
+  ],
+  description: [
+    'description', {
+      initialValue: ''
+    }
+  ]
 }
 export default {
   name: 'create-personal-course',
@@ -189,9 +196,6 @@ export default {
   components: {
     StSelectCourseType,
     StSelectTrainingAim
-  },
-  filters: {
-    enumFilter
   },
   data() {
     return {

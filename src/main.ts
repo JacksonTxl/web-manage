@@ -2,7 +2,6 @@ import '@abraham/reflection'
 import { router } from './bootstrap'
 import Vue from 'vue'
 import Antd from 'ant-design-vue'
-import VueRx from 'vue-rx'
 
 import { modalRouter } from './modal-router/index'
 import App from './views/App.vue'
@@ -10,52 +9,20 @@ import FullCalendar from 'vue-full-calendar'
 // @ts-ignore
 import VueBemHelper from '@/vendor/vue-bem-helper'
 // @ts-ignore
-import VuerxState from '@/vendor/vue-rx-state'
+import VueRxState from '@/vendor/vue-rx-state'
 import ICountUp from 'vue-countup-v2'
 // @ts-ignore
 import Viewer from 'v-viewer'
 // 默认样式加载
 import './style/index'
-
 import './views/components/register'
+import './filters/register'
+// @ts-ignore
+import Scrollbar from '@/vendor/vue-scrollbar'
 
-// scrollbar
-import PerfectScrollbar from 'perfect-scrollbar'
-import 'perfect-scrollbar/css/perfect-scrollbar.css'
-
-const el_scrollBar = (el:any) => {
-  if (el._ps_ instanceof PerfectScrollbar) {
-    el._ps_.update()
-  } else {
-    el._ps_ = new PerfectScrollbar(el, { suppressScrollX: true })
-  }
-}
-
-Vue.directive('scrollBar', {
-  inserted(el:any) {
-    const rules = ['fixed', 'absolute', 'relative']
-    if (!rules.includes(window.getComputedStyle(el).position || '')) {
-      console.error(`perfect-scrollbar所在的容器的position属性必须是以下之一：${rules.join('、')}`)
-    }
-    el_scrollBar(el)
-  },
-  componentUpdated(el:any, binding:any, vnode:any) {
-    try {
-      vnode.context.$nextTick(
-        () => {
-          el_scrollBar(el)
-        }
-      )
-    } catch (error) {
-      console.error(error)
-      el_scrollBar(el)
-    }
-  }
-})
-
-Vue.use(VuerxState)
+Vue.use(Scrollbar)
+Vue.use(VueRxState)
 Vue.use(Antd)
-Vue.use(VueRx)
 Vue.use(FullCalendar)
 Vue.use(Viewer)
 Vue.use(VueBemHelper)

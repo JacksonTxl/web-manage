@@ -58,7 +58,6 @@ import { CodeEditService } from './code-edit.service'
 import { MessageService } from '@/services/message.service'
 import { cloneDeep } from 'lodash-es'
 import { UserService } from '@/services/user.service'
-import { enumFilter } from '@/filters/other.filters'
 import { SN_RULE } from '@/constants/enums/contract'
 
 export default {
@@ -87,9 +86,6 @@ export default {
       settingEnums: this.user.settingEnums$,
       loading: this.codeEditService.loading$
     }
-  },
-  filters: {
-    enumFilter
   },
   data() {
     return {

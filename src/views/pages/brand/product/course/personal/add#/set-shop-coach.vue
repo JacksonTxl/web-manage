@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" @submit="save" class="page-shop-container">
+  <st-form :form="form" class="page-shop-container">
     <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="私教课程">
@@ -30,7 +30,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" html-type="submit" :loading="loading.setShop">保存，继续设置售卖价格</st-button>
+          <st-button type="primary" @click="save" :loading="loading.setShop">保存，继续设置售卖价格</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -42,7 +42,6 @@ import { MessageService } from '@/services/message.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import SelectCoach from '@/views/fragments/coach/select-coach'
 import { UserService } from '@/services/user.service'
-import { enumFilter } from '@/filters/other.filters'
 const shopTableColumns = [{
   title: '省',
   dataIndex: 'province_name'
@@ -74,20 +73,21 @@ const formRules = {
     }
   ],
   shop_setting: [
-    'shop_setting', {
-    }
+    'shop_setting'
   ],
   shop_ids: [
     'shop_ids', {
       rules: [{
         required: true,
         message: '请选择上课门店'
+        // initialValue: []
       }]
     }
   ],
   coach_ids: [
     'coach_ids', {
       rules: []
+      // initialValue: []
     }
   ]
 }
@@ -111,9 +111,6 @@ export default {
   components: {
     SelectShop,
     SelectCoach
-  },
-  filters: {
-    enumFilter
   },
   props: {
     courseName: {
@@ -175,6 +172,26 @@ export default {
       this.form.setFieldsValue({
         coach_ids: coachIds
       })
+    },
+    setFieldsValue() {
+      const info = this.info
+      this.form.setFieldsValue({
+        course_name: info.course_name,
+        course_category: info.course_category,
+        train_aim: info.train_aim,
+        duration: info.duration,
+        is_online_sale: info.is_online_sale,
+        price: info.price,
+        effective_unit: info.effective_unit,
+        image: info.image,
+        description: info.description
+      })
+      this.fileList = [this.info.image]
+    },
+    getData() {
+      const data = this.form.getFieldsValue()
+      data.course_id = +this.query.id
+      return data
     }
   }
 }
