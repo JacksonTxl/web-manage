@@ -2,7 +2,7 @@
   <div class="vue-funnel-graph-lib-dev">
     {{dataSetNum}}
     <div class="funnels">
-      <vue-funnel-graph
+      <!-- <vue-funnel-graph
         :width="width"
         :height="height"
         :labels="labels"
@@ -13,7 +13,7 @@
         :gradient-direction="gradientDirection"
         animated
         display-percentage
-      ></vue-funnel-graph>
+      ></vue-funnel-graph> -->
     </div>
     <div class="controls">
       <button @click="getNextSet()">Change Data</button>
@@ -24,11 +24,11 @@
 </template>
 
 <script>
-import { VueFunnelGraph } from 'vue-funnel-graph-js'
+// import { VueFunnelGraph } from 'vue-funnel-graph-js'
 export default {
   name: 'VueFunnelGraphDev', // vue library dev component
   components: {
-    VueFunnelGraph
+    // VueFunnelGraph
   },
   data() {
     const values = [12345678, 2345678, 345678, 45678, 5678]
