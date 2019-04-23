@@ -8,6 +8,10 @@
         <a href="javascript: void(0);" @click="switchShop">切换门店</a>
       </p>
       <select-shop :shopIds="shopIds" @change="onSelectShop"></select-shop>
+      <p class="mg-t16">
+        <router-link to="/brand/product/course/personal/add">添加品牌私教课</router-link>
+        <router-link class="mg-l8" to="/shop/product/course/manage/personal/add">添加门店私教课</router-link>
+      </p>
     </st-panel>
     <switch-shop v-if="isShowSwitchShop" @onClose="onCloseSwitchShop"></switch-shop>
   </div>

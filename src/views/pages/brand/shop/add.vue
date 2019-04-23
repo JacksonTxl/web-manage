@@ -318,25 +318,26 @@ export default {
       }
     },
     uploadCrop(data) {
-      let that = this
-      let image = URL.createObjectURL(data.file)
-      this.$modalRouter.push({
-        name: 'image-cropper',
-        props: {
-          title: this.cropperData.title,
-          image,
-          aspectRatioH: this.cropperData.aspectRatioH,
-          aspectRatioW: this.cropperData.aspectRatioW
-        },
-        on: {
-          cancel() {
-            console.log('cancel')
-          },
-          ok(data) {
-            that.upload(data)
-          }
-        }
-      })
+      console.log(data)
+      // let that = this
+      // let image = URL.createObjectURL(data.file)
+      // this.$modalRouter.push({
+      //   name: 'image-cropper',
+      //   props: {
+      //     title: this.cropperData.title,
+      //     image,
+      //     aspectRatioH: this.cropperData.aspectRatioH,
+      //     aspectRatioW: this.cropperData.aspectRatioW
+      //   },
+      //   on: {
+      //     cancel() {
+      //       console.log('cancel')
+      //     },
+      //     ok(data) {
+      //       that.upload(data)
+      //     }
+      //   }
+      // })
     },
     // 店招上传
     upload(data) {

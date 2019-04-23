@@ -8,6 +8,7 @@
     </p>
     <st-table :dataSource="[]" :columns="columns"></st-table>
     <st-table
+      class="mg-t24"
       :columns="columns"
       :alertSelection="{onReset:onSelectionReset}"
       :rowSelection="{selectedRowKeys:selectedRowKeys,onChange:onSelectionChange}"

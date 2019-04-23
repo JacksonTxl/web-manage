@@ -6,8 +6,8 @@
   >
     <div class="st-checkbox-facility-item-icon">
       <st-icon :type="stIconComputed" size="24px"></st-icon>
+      <p class="st-checkbox-facility-item-label">{{stLabelComputed}}</p>
     </div>
-    <p class="st-checkbox-facility-item-label">{{stLabelComputed}}</p>
   </div>
 </template>
 <script>

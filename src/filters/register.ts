@@ -12,7 +12,6 @@ FilterKeys.forEach(keyPath => {
     return
   }
   Object.keys(filters).forEach(name => {
-    console.log(name)
     Vue.filter(name, filters[name])
   })
 })
