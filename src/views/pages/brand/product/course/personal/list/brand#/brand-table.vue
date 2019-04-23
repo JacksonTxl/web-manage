@@ -3,6 +3,7 @@
   <st-table
       class="mg-t16"
       rowKey="course_id"
+      :loading="loading"
       :columns="columns"
       :dataSource="personalCourseList"
       :scroll="{ x: 1300}"
@@ -37,8 +38,8 @@
           <span><a-badge :status="is_available.id === 1?'success':'error'" />{{is_available.name}}</span>
       </div>
       <div slot="action" slot-scope="text, record">
-        <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_Id}}">详情</router-link>
-        <router-link :to="{name: 'brand-product-course-personal-edit', query: {id: record}}">编辑</router-link>
+        <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}">详情</router-link>
+        <router-link :to="{name: 'brand-product-course-personal-edit', query: {courseId: record.course_id}}">编辑</router-link>
         <st-more-dropdown style="margin-left: 12px;">
 
             <a-menu-item>
@@ -47,7 +48,11 @@
               </a-popconfirm>
             </a-menu-item>
 
-          <a-menu-item>删除</a-menu-item>
+          <a-menu-item>
+            <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" @cancel="cancel" okText="确定" cancelText="取消">
+              删除
+            </a-popconfirm>
+          </a-menu-item>
         </st-more-dropdown>
       </div>
     </st-table>
@@ -67,6 +72,10 @@ export default {
     }
   },
   props: {
+    loading: {
+      type: Boolean,
+      default: false
+    },
     personalCourseList: {
       type: Array,
       default: () => []
@@ -75,6 +84,9 @@ export default {
   methods: {
     onChange() {
 
+    },
+    onConfirmDeleteCourse(record) {
+      this.$emit('delete-course', record)
     },
     onConfirmSetAvailable(record) {
       this.$message.success('Click on Yes')

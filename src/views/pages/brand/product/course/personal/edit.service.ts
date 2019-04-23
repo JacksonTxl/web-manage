@@ -22,7 +22,7 @@ export class EditService extends Store<EditState> {
     return this.personalApi.getPersonalBrandInfo(query)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    const course_id = to.meta.query.id
+    const course_id = to.meta.query.id || to.query.courseId
     this.getPersonalBrandInfo({ course_id }).subscribe((res) => {
       this.state$.commit(state => {
         if (course_id) {

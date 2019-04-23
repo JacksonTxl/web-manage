@@ -41,7 +41,7 @@ export class TeamApi extends Api {
    *
    * 新增团课课程
    */
-  PostTeamCourse(params: PostTeamCourseInput) {
+  PostTeamCourse(params: any) {
     return this.http.post(`/v1/course/team`, { params })
   }
   /**
@@ -79,9 +79,9 @@ export class TeamApi extends Api {
 export interface PutTeamCourseInput {
   course_id: string
 }
-// export interface PutTeamCourseInput {
+export interface PostTeamCourseInput {
 
-// }
+}
 export interface GetTeamCourseTypeQuery{
 
 }

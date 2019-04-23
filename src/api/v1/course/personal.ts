@@ -51,6 +51,12 @@ export class PersonalApi extends Api {
     return this.http.put(`/v1/course/personal/brand/available/${params.course_id}`, { params })
   }
   /**
+   * 品牌私教课删除
+   */
+  deleteCourse(course_id: string) {
+    return this.http.delete(`/v1/course/personal/brand/${course_id}`)
+  }
+  /**
    * 门店私教课设置有效无效
    */
   setAvailableInShop(params: SetAvailableInput) {
