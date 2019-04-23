@@ -25,9 +25,6 @@ export class ListService extends Store<ListState> {
       })
     )
   }
-  refreshCourseTypeList(query: GetCourseTypeListInput) {
-    this.getCourseTypeList(query).subscribe()
-  }
   deleteCourseType(params: DeleteCourseTypeInput) {
     return this.courseApi.deleteCourseType(params)
   }

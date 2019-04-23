@@ -85,16 +85,17 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程介绍">
-          <a-textarea type="textarea" v-decorator="formRules.description"
+          <a-input type="textarea" v-decorator="formRules.description"
            :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧"
-           maxlength="500"/>
+           maxlength="500" @change="onDescriptionChange"/>
+           <div class="ta-r ">{{descriptionLength}} / 500</div>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.addPersonalCourse">保存，继续设置上课门店</st-button>
+          <st-button type="primary" @click="save" :loading="loading.addCourse">保存，继续设置上课门店</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -197,7 +198,8 @@ export default {
     return {
       form: this.$form.createForm(this),
       formRules,
-      fileList: []
+      fileList: [],
+      descriptionLength: 0
     }
   },
   methods: {
@@ -206,7 +208,7 @@ export default {
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
         console.log('step 1 data', data)
-        this.addService.addPersonalCourse(data).subscribe((res) => {
+        this.addService.addCourse(data).subscribe((res) => {
           this.messageService.success({
             content: '提交成功'
           })
@@ -233,6 +235,9 @@ export default {
     },
     onCourseNameChange(e) {
       this.$emit('onCourseNameChange', e.target.value)
+    },
+    onDescriptionChange(e) {
+      this.descriptionLength = e.target.value.length
     }
   }
 }

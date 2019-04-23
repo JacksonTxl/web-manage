@@ -23,8 +23,11 @@ export class ShopApi extends Api {
   getServiceList() {
     return this.http.get(`/v1/shop/services`)
   }
-  getShopList() {
-    return this.http.get('/v1/shops')
+  getShopList(query: GetShopListInput = {}) {
+    query = Object.assign({
+      size: 99
+    }, query)
+    return this.http.get('/v1/shops', { query })
   }
   /**
    * 门店列表 省市区门店树形
@@ -74,7 +77,10 @@ export interface WeekDay {
    */
   end_time: string
 }
-
+export interface GetShopListInput {
+  page?: number,
+  size?: number
+}
 export interface ShopInput {
   /**
    * 商户的账户名

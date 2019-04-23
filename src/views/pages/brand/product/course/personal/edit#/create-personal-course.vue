@@ -97,7 +97,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.updatePersonalCourse">保存，继续设置上课门店</st-button>
+          <st-button type="primary" @click="save" :loading="loading.updateCourse">保存，继续设置上课门店</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -233,7 +233,7 @@ export default {
       this.form.validateFields().then(() => {
         const data = this.getData()
         console.log('step 1 data', data)
-        this.editService.updatePersonalCourse(data).subscribe((res) => {
+        this.editService.updateCourse(data).subscribe((res) => {
           this.messageService.success({
             content: '提交成功'
           })
