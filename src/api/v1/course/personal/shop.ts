@@ -2,6 +2,12 @@ import { Api } from '@/api/api'
 
 export class ShopPersonalCourseApi extends Api {
   /**
+   * 获取品牌门店下私教课列表
+   */
+  getCourseList(query: GetPersonalBrandCourseListInput) {
+    return this.http.get('/v1/course/personal/brand/shop', { query })
+  }
+  /**
    * 添加品牌私教课
    */
   addPersonalCourse(params: SetPersonalCourseInput) {
@@ -33,7 +39,12 @@ export class ShopPersonalCourseApi extends Api {
     return this.http.get(`/v1/course/personal/shop/edit/${query.course_id}`)
   }
 }
-
+export interface GetPersonalBrandCourseListInput {
+  category_id?: number,
+  course_name?: string,
+  page?: number,
+  size?: number
+}
 export interface SetPersonalCourseInput {
   /**
    * 课程id

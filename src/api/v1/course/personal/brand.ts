@@ -2,6 +2,12 @@ import { Api } from '@/api/api'
 
 export class BrandPersonalCourseApi extends Api {
   /**
+   * 获取品牌私教课列表
+   */
+  getCourseList(query: GetPersonalBrandCourseListInput) {
+    return this.http.get('/v1/course/personal/brand', { query })
+  }
+  /**
    * 添加品牌私教课
    */
   addPersonalCourse(params: SetPersonalCourseInput) {
@@ -32,8 +38,29 @@ export class BrandPersonalCourseApi extends Api {
   getPersonalCourseEdit(query: GetPersonalCourseEditInput) {
     return this.http.get(`/v1/course/personal/brand/edit/${query.course_id}`)
   }
+  /**
+   * 品牌私教课设置有效无效
+   */
+  setAvailable(params: SetAvailableInput) {
+    return this.http.put(`/v1/course/personal/brand/available/${params.course_id}`, { params })
+  }
+  /**
+   * 品牌私教课删除
+   */
+  deleteCourse(course_id: string) {
+    return this.http.delete(`/v1/course/personal/brand/${course_id}`)
+  }
 }
-
+export interface GetPersonalBrandCourseListInput {
+  category_id?: number,
+  course_name?: string,
+  page?: number,
+  size?: number
+}
+export interface SetAvailableInput {
+  course_id: string,
+  available: number
+}
 export interface SetPersonalCourseInput {
   /**
    * 课程id

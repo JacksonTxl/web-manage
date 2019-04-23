@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { PersonalApi, GetPersonalBrandCourseListInput, SetAvailableInput } from '@/api/v1/course/personal'
+import { BrandPersonalCourseApi, GetPersonalBrandCourseListInput, SetAvailableInput } from '@/api/v1/course/personal/brand'
 import { forkJoin } from 'rxjs'
 import { tap, pluck } from 'rxjs/operators'
 import { State, Computed, Effect } from 'rx-state/src'
@@ -15,7 +15,7 @@ export class BrandService extends Store<SetState> {
   state$: State<SetState>
   personalCourseList$: Computed<any>
   categoryList$: Computed<any>
-  constructor(private personalApi: PersonalApi, private courseApi: CourseApi, private shopApi: ShopApi) {
+  constructor(private personalApi: BrandPersonalCourseApi, private courseApi: CourseApi, private shopApi: ShopApi) {
     super()
     this.state$ = new State({
       personalCourseList: [],
@@ -37,15 +37,15 @@ export class BrandService extends Store<SetState> {
   getCategoryList() {
     return this.courseApi.getCourseTypeList({})
   }
-  setAvailableInBrand(params: SetAvailableInput) {
-    return this.personalApi.setAvailableInBrand(params)
+  setAvailable(params: SetAvailableInput) {
+    return this.personalApi.setAvailable(params)
   }
   deleteCourse(courseId: string) {
     return this.personalApi.deleteCourse(courseId)
   }
   @Effect()
   getCoursePersonalBrandList(params: GetPersonalBrandCourseListInput) {
-    return this.personalApi.getCourseListInBrand(params).pipe(
+    return this.personalApi.getCourseList(params).pipe(
       tap(state => {
         this.SET_PERSONAL_COURSE_LIST(state)
       })

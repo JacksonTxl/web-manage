@@ -1,7 +1,6 @@
 <template>
   <st-panel app class="page-personal-info">
     <div class="page-personal-header">
-      {{teamCourseInfo}}
         <div class="page-personal-header__left mg-r24">
           <st-t3 class="mg-b16">{{teamCourseInfo.course_name}}（{{teamCourseInfo.course_category_name}}）</st-t3>
           <div class="course-detail-item mg-b16">

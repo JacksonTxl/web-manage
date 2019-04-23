@@ -14,13 +14,21 @@
     </div>
     <a-rate slot="strength_level" slot-scope="strength_level" :defaultValue="strength_level" disabled />
     <div slot="action" slot-scope="text,record">
-      <a href="javascript:;" class="mg-r8" @click="onClickCourseInfo(record)">详情</a>
+      <a href="javascript:;" class="mg-r8" @click="onClickCourseInfo(record.id)">详情</a>
       <a href="javascript:;" @click="onClickEditCourseInfo(record)">编辑</a>
       <st-more-dropdown style="margin-left: 12px;">
-        <a-menu-item v-if="record.is_available.id">置为无效</a-menu-item>
-        <a-menu-item v-if="!record.is_available.id">恢复有效</a-menu-item>
-        <a-menu-item>删除</a-menu-item>
-      </st-more-dropdown>
+          <a-menu-item>
+            <a-popconfirm  :title="record.is_available.id === 0?'确认将'+record.course_name+'进行恢复':'当前课程不再支持购买、排课，确认将'+record.course_name+'置为无效'" @confirm="onConfirmSetAvailable(record)" @cancel="cancel" okText="确定" cancelText="取消">
+            {{record.is_available.id === 1 ? "置为无效":"恢复有效"}}
+            </a-popconfirm>
+          </a-menu-item>
+
+          <a-menu-item>
+            <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" @cancel="cancel" okText="确定" cancelText="取消">
+              删除
+            </a-popconfirm>
+          </a-menu-item>
+        </st-more-dropdown>
     </div>
     </st-table>
 
@@ -57,9 +65,14 @@ export default {
     }
   },
   methods: {
+    onConfirmSetAvailable(record) {
+
+    },
+    onConfirmDeleteCourse(record) {
+
+    },
     onClickCourseInfo(val) {
-      console.log(val)
-      this.$router.push({ name: 'brand-product-course-team-info', query: { course_id: val.course_id } })
+      this.$router.push({ name: 'brand-product-course-team-info', query: { courseId: val } })
     },
     onClickEditCourseInfo(val) {
       console.log(val)

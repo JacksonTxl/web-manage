@@ -27,6 +27,7 @@ export class InfoService implements RouteGuard {
     }))
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getTeamCourseInfo('1').subscribe(() => next())
+    const courseId = to.query.courseId as string
+    this.getTeamCourseInfo(courseId).subscribe(() => next())
   }
 }
