@@ -92,7 +92,6 @@ export default {
       }
       // self.salesTimeTips = fasle
       self.aService.setListInfo(data).subscribe(state => {
-        console.log('done', state)
         self.show = false
         self.$emit('done', true)
       })

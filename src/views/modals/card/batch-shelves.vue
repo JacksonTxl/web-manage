@@ -23,15 +23,11 @@
       </div>
     </section>
     <section class="modal-card-batch-shelves-table">
-      <a-table :dataSource="data" :columns="columns" :pagination="false" rowKey="id">
-        <a slot="type" slot-scope="text,record" href="javascript:;" @click="memberFun(text,record)">
-          <a-input placeholder="1000-2000" style="width:140px" v-model="record.type"/>
-          <span class="money">元</span>
-        </a>
-      </a-table>
+      <groundCardsTablePrice v-model="groundCardsTablePriceData"></groundCardsTablePrice>
+      <!-- <pre>{{groundCardsTablePriceData}}</pre> -->
     </section>
     <section class="selling-mode">
-      <a-checkbox-group @change="onChange" class="selling-mode-checkbox-group">
+      <a-checkbox-group @change="sellingModeFunc" class="selling-mode-checkbox-group">
         <span style="margin-right:24px">开卡方式</span>
         <span>
           <a-checkbox value="A">指定日期开卡</a-checkbox>
@@ -49,7 +45,7 @@
               <a-icon type="info-circle"/>
             </a-tooltip>
           </a-checkbox>
-          <div class="autoplay-card-day">
+          <div class="autoplay-card-day" v-if="sellingMode">
             <a-input class="autoplay-card-day-input"/>
             <span class="autoplay-card-day-text">天</span> 内未开卡，则自动开卡
           </div>
@@ -65,14 +61,13 @@
           </div>
           <div>
             <a-radio :style="radioStyle" :value="2">范围内课程</a-radio>
-            <a-checkbox-group @change="onChange">
+            <a-checkbox-group @change="onChange" v-if="checkedValues===2">
               <a-checkbox value="A">指定日期开卡</a-checkbox>
               <a-checkbox value="B">指定日期开卡</a-checkbox>
               <a-checkbox value="C">指定日期开卡</a-checkbox>
             </a-checkbox-group>
           </div>
           <div>
-            <!-- <a-radio :style="radioStyle" :value="3">指定课程</a-radio> -->
             <a-radio :style="radioStyle" :value="3">指定课程</a-radio>
           </div>
         </div>
@@ -96,18 +91,20 @@
       <footer class="footer">
         <a-button class="cancel">取消</a-button>
         <a-button>确认上架</a-button>
-        <!-- <a-popconfirm title="确认停售该会员卡?" @confirm="onDelete(record.id)">
-          <a-button type="danger">恢复售卖</a-button>
-        </a-popconfirm>-->
       </footer>
     </section>
   </a-modal>
 </template>
 <script>
+import groundCardsTablePrice from './batch-seelves#/ground-cards-table-price.vue'
 export default {
   name: 'batchShelves',
+  components: {
+    groundCardsTablePrice
+  },
   data() {
     return {
+      sellingMode: false,
       checkedValues: -1,
       value: 1,
       radioStyle: {
@@ -151,7 +148,44 @@ export default {
           effective: '22',
           admission: '22'
         }
-      ]
+      ],
+      groundCardsTablePriceData: {
+        columns: [
+          {
+            title: '有效期',
+            dataIndex: 'member'
+          },
+          {
+            title: '售卖价格',
+            dataIndex: 'type',
+            scopedSlots: { customRender: 'type' }
+          },
+          {
+            title: '允许冻结',
+            dataIndex: 'effective'
+          },
+          {
+            title: '赠送上限',
+            dataIndex: 'admission'
+          }
+        ],
+        data: [
+          {
+            id: 1,
+            member: '徐汇1店',
+            type: '',
+            effective: '徐汇1店',
+            admission: '徐汇1店'
+          },
+          {
+            id: 2,
+            member: '徐汇1店',
+            type: '',
+            effective: '22',
+            admission: '22'
+          }
+        ]
+      }
     }
   },
   computed: {
@@ -183,6 +217,16 @@ export default {
     memberFun() {},
     onChange(checkedValues) {
       this.checkedValues = checkedValues.target.value
+      console.log('checked = ', checkedValues)
+    },
+    sellingModeFunc(checkedValues) {
+      console.log(checkedValues.indexOf('C'))
+      if (checkedValues.indexOf('C') >= 0) {
+        this.sellingMode = true
+      } else {
+        this.sellingMode = false
+      }
+      // this.checkedValues = checkedValues.target.value
       console.log('checked = ', checkedValues)
     }
   }

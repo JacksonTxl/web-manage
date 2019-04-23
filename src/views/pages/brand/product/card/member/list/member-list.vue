@@ -327,6 +327,7 @@ export default {
   },
   methods: {
     onModalTest(data) {
+      console.log('onModalTest')
       this.getListInfoFunc()
     },
     // 停售原因
@@ -337,7 +338,7 @@ export default {
       this.aService
         .getCardsSaleStopReason({ card_id: record.id })
         .subscribe(state => {
-          if (state.info.staff_name) {
+          if (state.info.operate_time || state.info.staff_name) {
             self.popoverTitle = `操作人:${state.info.staff_name}   操作时间:${
               state.info.operate_time
             }`
