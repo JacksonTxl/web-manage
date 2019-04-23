@@ -11,7 +11,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
-          <input type="hidden" v-decorator="formRules.course_category">
+          <input type="hidden" v-decorator="formRules.category_id">
           <st-select-course-type @change="onCourseTypeChange"/>
         </st-form-item>
       </a-col>
@@ -27,7 +27,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="强度" required>
-
+          <a-rate v-decorator="formRules.strength_level"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -106,8 +106,8 @@ const formRules = {
       }]
     }
   ],
-  course_category: [
-    'course_category', {
+  category_id: [
+    'category_id', {
       rules: [{
         required: true,
         message: '请选择课程类型'
@@ -122,7 +122,12 @@ const formRules = {
       }]
     }
   ],
-  strength_level: ['strength_level'],
+  strength_level: ['strength_level', {
+    rules: [{
+      required: true,
+      message: '请选择训练强度'
+    }]
+  }],
   calories: ['calories'],
   duration: [
     'duration', {
@@ -176,7 +181,7 @@ export default {
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
         console.log('step 1 data', data)
-        this.addService.addPersonalCourse(data).subscribe((res) => {
+        this.addService.addCourse(data).subscribe((res) => {
           this.messageService.success({
             content: '提交成功'
           })
@@ -189,10 +194,10 @@ export default {
         image: fileList[0]
       })
     },
-    onCourseTypeChange(course_category) {
-      console.log('change', course_category)
+    onCourseTypeChange(category_id) {
+      console.log('change', category_id)
       this.form.setFieldsValue({
-        course_category
+        category_id
       })
     },
     onTrainingAimChange(train_aim) {

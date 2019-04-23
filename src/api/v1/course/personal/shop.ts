@@ -5,19 +5,19 @@ export class ShopPersonalCourseApi extends Api {
    * 添加品牌私教课
    */
   addPersonalCourse(params: SetPersonalCourseInput) {
-    return this.http.post('/v1/course/team', { params })
+    return this.http.post('/v1/course/personal/shop', { params })
   }
   /**
    * 编辑品牌私教课
    */
   updatePersonalCourse(params: SetPersonalCourseInput) {
-    return this.http.put(`/v1/course/team/${params.course_id}`, { params })
+    return this.http.put(`/v1/course/personal/shop/${params.course_id}`, { params })
   }
   /**
    * 设置上课门店
    */
   setShop(params: SetShopInput) {
-    return this.http.put(`/v1/course/team/set/shop/${params.course_id}`, { params })
+    return this.http.put(`/v1/course/personal/shop/set_shop/${params.course_id}`, { params })
   }
 
   /**

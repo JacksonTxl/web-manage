@@ -2,22 +2,22 @@ import { Injectable } from 'vue-service-app'
 import { Effect } from 'rx-state/src'
 import { Store } from '@/services/store'
 import {
-  ShopPersonalCourseApi,
-  SetPersonalCourseInput,
+  BrandTeamCourseApi,
+  SetCourseInput,
   SetShopInput
-} from '@/api/v1/course/personal/shop'
+} from '@/api/v1/course/team/brand'
 interface AddState {}
 @Injectable()
 export class AddService extends Store<AddState> {
-  constructor(private personalApi: ShopPersonalCourseApi) {
+  constructor(private courseApi: BrandTeamCourseApi) {
     super()
   }
   @Effect()
-  addPersonalCourse(params: SetPersonalCourseInput) {
-    return this.personalApi.addPersonalCourse(params)
+  addCourse(params: SetCourseInput) {
+    return this.courseApi.addCourse(params)
   }
   @Effect()
   setShop(params: SetShopInput) {
-    return this.personalApi.setShop(params)
+    return this.courseApi.setShop(params)
   }
 }
