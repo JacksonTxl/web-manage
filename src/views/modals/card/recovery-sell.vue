@@ -30,7 +30,8 @@
     <section>
       <footer class="footer">
         <a-button class="cancel">取消</a-button>
-        <a-popconfirm title="确认停售该会员卡?" @confirm="onDelete(a)">
+        <a-button type="danger" v-if="salesTimeTips" disabled>恢复售卖</a-button>
+        <a-popconfirm title="确认停售该会员卡?" @confirm="onDelete(a)" v-else>
           <a-button type="danger">恢复售卖</a-button>
         </a-popconfirm>
       </footer>
@@ -76,7 +77,9 @@ export default {
       e.preventDefault()
     },
     onChange(date, dateString) {
+      let self = this
       this.times = dateString
+      self.salesTimeTips = false
       console.log(date, dateString)
     },
     disabledDate(current) {
@@ -90,9 +93,7 @@ export default {
         start_time: self.times[0],
         end_time: self.times[1]
       }
-      // self.salesTimeTips = fasle
       self.aService.setListInfo(data).subscribe(state => {
-        console.log('done', state)
         self.show = false
         self.$emit('done', true)
       })

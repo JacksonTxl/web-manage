@@ -3,7 +3,10 @@
     <!-- <st-button type="primary">
       <a-icon type="plus"/>新增私教课程
     </st-button>-->
-    <st-button style="margin-left:24px" type="danger">批量下架</st-button>
+    <modal-link tag="a" :to=" { name: 'card-lower-shelf'}">
+      <st-button style="margin-left:24px" type="danger">批量下架</st-button>
+    </modal-link>
+
     <div class="pages-brand-product-card-liet-stop-sale-list__box">
       <a-select
         class="pages-brand-product-card-liet-stop-sale-list__box-select"
@@ -73,20 +76,7 @@
       <div slot="action" slot-scope="text, record">
         <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
         <a-divider type="vertical"></a-divider>
-        <a href="javascript:;">下架</a>
-
-        <!-- <template>
-          <a-divider type="vertical"></a-divider>
-          <st-more-dropdown>
-            <a-menu-item>编辑</a-menu-item>
-            <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'card-halt-the-sales', props:{a: 3} }">停售</modal-link>
-            </a-menu-item>
-            <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'card-confirm-del' }">删除</modal-link>
-            </a-menu-item>
-          </st-more-dropdown>
-        </template>-->
+        <modal-link tag="a" :to=" { name: 'card-lower-shelf' }">下架</modal-link>
       </div>
       <!-- 操作end -->
     </st-table>
@@ -239,6 +229,7 @@ export default {
     this.getInfoData(this.cardsListInfo)
   },
   methods: {
+    onModalTest(data) {},
     getInfoData(data) {
       this.pagination = {
         pageSizeOptions: ['10', '20', '30', '40', '50'],

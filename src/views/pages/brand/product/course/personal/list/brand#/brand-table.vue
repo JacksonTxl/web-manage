@@ -22,9 +22,10 @@
           href="javascript:;"
         >{{coachNumber}}</a>
       </div>
-      <a @click="onClickGetInfo(record.course_id)" slot="course_name" slot-scope="course_name, record">
+      <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}"
+      slot="course_name" slot-scope="course_name, record">
         {{course_name}}
-      </a>
+      </router-link>
       <div slot="price_setting" slot-scope="price_setting">
         {{price_setting.name}}
       </div>

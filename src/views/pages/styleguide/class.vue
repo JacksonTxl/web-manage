@@ -4,15 +4,31 @@
     <section id="vars" class="sg-section">
       <h4>vars 颜色定义</h4>
       <st-container type="1">
-        <div class="sg-box sg-box--primary">@primary-color 主要</div>
-        <div class="sg-box sg-box--warning">@warning-color</div>
-        <div class="sg-box sg-box--success">@success-color</div>
-        <div class="sg-box sg-box--error">@error-color</div>
-        <div class="sg-box sg-box--border">@border-color 边框</div>
-        <div class="sg-box sg-box--title">@title 标题</div>
-        <div class="sg-box sg-box--text">@text 文字</div>
-        <div class="sg-box sg-box--text-light">@text-light 淡色文字</div>
-        <div class="sg-box sg-box--divider color-title">@divider 分割线</div>
+        <div class="sg-box sg-box--primary" v-bg>@primary-color 主要</div>
+        <div class="sg-box sg-box--warning" v-bg>@warning-color</div>
+        <div class="sg-box sg-box--success" v-bg>@success-color</div>
+        <div class="sg-box sg-box--error" v-bg>@error-color</div>
+        <div class="sg-box sg-box--border" v-bg>@border-color 边框</div>
+        <div class="sg-box sg-box--title" v-bg>@title 标题</div>
+        <div class="sg-box sg-box--text" v-bg>@text 文字</div>
+        <div class="sg-box sg-box--text-light" v-bg>@text-light 淡色文字</div>
+        <div class="sg-box sg-box--divider color-title" v-bg>@divider 分割线</div>
+      </st-container>
+    </section>
+
+    <section id="palette" class="sg-section">
+      <h4>Palette 调色盘</h4>
+      <st-container type="1">
+        <div class="sg-box sg-box--primary-1 color-text" v-bg>@primary-1</div>
+        <div class="sg-box sg-box--primary-2 color-text" v-bg>@primary-2</div>
+        <div class="sg-box sg-box--primary-3 color-text" v-bg>@primary-3</div>
+        <div class="sg-box sg-box--primary-4" v-bg>@primary-4</div>
+        <div class="sg-box sg-box--primary-5" v-bg>@primary-5</div>
+        <div class="sg-box sg-box--primary-6" v-bg>@primary-color</div>
+        <div class="sg-box sg-box--primary-7" v-bg>@primary-7</div>
+        <div class="sg-box sg-box--primary-8" v-bg>@primary-8</div>
+        <div class="sg-box sg-box--primary-9" v-bg>@primary-9</div>
+        <div class="sg-box sg-box--primary-10" v-bg>@primary-10</div>
       </st-container>
     </section>
 
@@ -44,10 +60,20 @@
         <p>
           <span class="tablefix" href="#">.tablefix 修复ant-design表格组件的样式问题，放置于a-table父级容器即可</span>
         </p>
+        <p>
+          .st-form-item-unit  定义input右侧样式
+        </p>
+        <st-form>
+          <st-form-item>
+            <a-input placeholder=".st-form-item-unit 定义input右侧样式">
+              <div slot="addonAfter" class="st-form-item-unit">分钟</div>
+            </a-input>
+          </st-form-item>
+        </st-form>
       </st-container>
     </section>
 
-    <section id='components' class="sg-section">
+    <section id="components" class="sg-section">
       <h4>components 组件型全局类样式 命名空间为.st</h4>
       <st-container type="1">
         <p>
@@ -66,3 +92,20 @@
     </section>
   </div>
 </template>
+
+<script>
+import rgbHex from 'rgb-hex'
+export default {
+  directives: {
+    bg(el) {
+      const computedStyle = window.getComputedStyle(el, null)
+      setTimeout(() => {
+        const bgColorRgb = computedStyle.getPropertyValue('background-color')
+        const bgColorHex = rgbHex(bgColorRgb)
+        el.innerHTML =
+          el.textContent + '<br>' + '#' + bgColorHex + '<br>' + bgColorRgb
+      })
+    }
+  }
+}
+</script>
