@@ -6,9 +6,9 @@ interface RouteConfig extends ServiceRouteConfig {
     title: string
   }
 }
-interface StaffEdit extends ServiceRouteConfig{
-  staff_id?: number;
-  currentIndex?: number;
+interface StaffEdit extends ServiceRouteConfig {
+  staff_id?: number
+  currentIndex?: number
 }
 export const routeMapConfig = {
   '404'(routeConfig: RouteConfig) {
@@ -16,6 +16,9 @@ export const routeMapConfig = {
   },
   'user-login'(routeConfig: RouteConfig) {
     routeConfig.meta.layout = 'login'
+  },
+  styleguide(routeConfig: RouteConfig) {
+    routeConfig.redirect = { name: 'styleguide-component' }
   },
   'test-llf-mine'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
