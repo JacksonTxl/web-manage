@@ -7,11 +7,15 @@
   selectedRowKeys, onChange: onSelectChange}"
   :columns="columns" :dataSource="staffList"
   :scroll="{ x: 1500}">
-    <div class="page-staff-table-action" slot="action" slot-scope="record">
+    <div class="page-staff-table-action" slot="action" slot-scope="text, record">
         <a href="javascript:void()" class="mg-r8">详情</a>
         <a href="javascript:void()" @click="editStaff(record.staff_id)">编辑</a>
         <st-more-dropdown>
-          <a-menu-item v-for="(op, index) in opreations" :key="index" @click="op.clickName"><modal-link tag="a" :to="op.route">{{op.name}}</modal-link></a-menu-item>
+          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staffId: record.staff_id || 1} }">设置薪资账户</modal-link></a-menu-item>
+          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-update-staff-position', props: {staffId: record.staff_id || 1} }">更改员工职位</modal-link></a-menu-item>
+          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-turnover', props: {staffId: record.staff_id || 1} } ">离职</modal-link></a-menu-item>
+          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-reinstatement', props: {staffId: record.staff_id || 1} }">复职</modal-link></a-menu-item>
+          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-delete', props: {staffId: record.staff_id || 1} }">删除</modal-link></a-menu-item>
         </st-more-dropdown>
     </div>
     <div slot="status" slot-scope="status">
@@ -28,14 +32,7 @@ export default {
   data() {
     return {
       columns,
-      selectedRowKeys: [],
-      opreations: [
-        { clickName: this.onClickSettingSalary, tag: 'a', name: '设置薪资账户', route: { name: 'staff-bind-entity-card' } },
-        { clickName: this.onClickUpdateStaffPosition, tag: 'a', name: '更改员工职位', route: { name: 'staff-update-staff-position' } },
-        { clickName: this.onClickTurnover, tag: 'a', name: '离职', route: { name: 'staff-turnover' } },
-        { clickName: this.onCLickReinstatement, tag: 'a', name: '复职', route: { name: 'staff-reinstatement' } },
-        { clickName: this.onCLickDeleteStaff, tag: 'a', name: '删除', route: { name: 'staff-delete' } }
-      ]
+      selectedRowKeys: []
     }
   },
   props: {
@@ -54,7 +51,7 @@ export default {
     editStaff(staffId) {
       this.$emit('edit-staff', staffId)
     },
-    onClickSettingSalary() {
+    onClickSettingSalary(id) {
       console.log('onClickSettingSalary')
     },
     onClickUpdateStaffPosition() {

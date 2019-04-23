@@ -1,35 +1,16 @@
-import { Api } from '../../api'
+import { Api } from '@/api/api'
 
-const mock = {}
-export class PersonalApi extends Api {
-  /**
-   * 获取品牌私教课列表
-   */
-  getCourseListInBrand(query: GetPersonalBrandCourseListInput) {
-    return this.http.get('/v1/course/personal/brand', { query })
-  }
-  /**
-   * 获取品牌门店下私教课列表
-   */
-  getCourseListInShop(query: GetPersonalBrandCourseListInput) {
-    return this.http.get('/v1/course/personal/brand/shop', { query })
-  }
-  /**
-   * 获取品牌私教课信息
-   */
-  getPersonalBrandInfo(query: GetPersonalBrandInfoInput) {
-    return this.http.get(`/v1/course/personal/brand/${query.course_id}`)
-  }
+export class BrandPersonalCourseApi extends Api {
   /**
    * 添加品牌私教课
    */
-  addPersonalBrand(params: SetPersonalBrandInput) {
+  addPersonalCourse(params: SetPersonalCourseInput) {
     return this.http.post('/v1/course/personal/brand', { params })
   }
   /**
    * 编辑品牌私教课
    */
-  updatePersonalBrand(params: SetPersonalBrandInput) {
+  updatePersonalCourse(params: SetPersonalCourseInput) {
     return this.http.put(`/v1/course/personal/brand/${params.course_id}`, { params })
   }
   /**
@@ -46,53 +27,14 @@ export class PersonalApi extends Api {
     return this.http.put(`/v1/course/personal/brand/set_price/${params.course_id}`, { params })
   }
   /**
-   * 品牌私教课设置有效无效
-   */
-  setAvailableInBrand(params: SetAvailableInput) {
-    return this.http.put(`/v1/course/personal/brand/available/${params.course_id}`, { params })
-  }
-  /**
-   * 品牌私教课删除
-   */
-  deleteCourse(course_id: string) {
-    return this.http.delete(`/v1/course/personal/brand/${course_id}`)
-  }
-  /**
-   * 门店私教课设置有效无效
-   */
-  setAvailableInShop(params: SetAvailableInput) {
-    return this.http.put(`/v1/course/personal/shop/available/${params.course_id}`, { params })
-  }
-  /**
    * 编辑品牌私教课回显详情
    */
   getPersonalCourseEdit(query: GetPersonalCourseEditInput) {
     return this.http.get(`/v1/course/personal/brand/edit/${query.course_id}`)
   }
 }
-export interface SetAvailableInput {
-  course_id: string,
-  available: number
-}
-export interface SetAvailableInShopInput {
-  course_id: string,
-  available: number,
-  shop_id: number
-}
-export interface GetPersonalBrandCourseListInput {
-  category_id?: number,
-  course_name?: string,
-  page?: number,
-  size?: number
-}
 
-export interface GetPersonalBrandInfoInput {
-  /**
-   * 课程id
-   */
-  course_id: string
-}
-export interface SetPersonalBrandInput {
+export interface SetPersonalCourseInput {
   /**
    * 课程id
    */

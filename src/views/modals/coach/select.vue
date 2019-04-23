@@ -7,10 +7,10 @@
   >
     <div>
       <a-select
-        mode="tags"
+        mode="multiple"
         style="width: 100%"
         placeholder="请输入教练昵称、姓名、手机号进行查询"
-        :defaultValue="coachIds"
+        :defaultValue="selected"
         @change="change"
       >
         <a-select-option v-for="item in list" :key="`${item.coach_id}`">{{item.coach_name}}</a-select-option>
@@ -24,24 +24,20 @@
   </a-modal>
 </template>
 <script>
-import { Action } from 'rx-state'
-import { switchMap, catchError, filter } from 'rxjs/operators'
-import { EMPTY } from 'rxjs'
-import { SelectService } from './select.service'
 export default {
-  serviceInject() {
-    return {
-      selectService: SelectService
-    }
-  },
   data() {
     return {
       show: false,
-      list: [],
       coachIds: []
     }
   },
   props: {
+    list: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
     selected: {
       type: Array,
       default() {
@@ -49,11 +45,10 @@ export default {
       }
     }
   },
-  created() {
-    this.selectService.getCoachList().subscribe(res => {
-      this.list = res.list
-      this.coachIds = this.selected
-    })
+  watch: {
+    selected(val) {
+      this.coachIds = val
+    }
   },
   methods: {
     change(coachIds) {

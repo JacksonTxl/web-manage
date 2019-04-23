@@ -22,7 +22,7 @@
 
 route.meta.layout = 'default' // 默认就是 default
 switch (route.name) {
-  case 'user-login':
+  case 'account-login':
     route.meta.layout = 'login' // 设置 login layout
     break
   case '404':

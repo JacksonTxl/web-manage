@@ -49,7 +49,7 @@ pages/
 ```js
 // auto-generated-routes.ts
 {
-  name: 'user-login',
+  name: 'account-login',
   path: '/user/login',
   component: pageUserLogin,
   guards: [userLoginService]
@@ -101,7 +101,7 @@ const prependGuards = (route: ServiceRouteConfig, guards: any[]) => {
   route.guards = [...guards, ...route.guards]
 }
 // guards 配置
-if (route.name === 'user-login') {
+if (route.name === 'account-login') {
   // 登录页面
   prependGuards(route, [
     HotReleaseService, 
@@ -138,7 +138,7 @@ if (route.name) {
   // route.ts
    route.meta.layout = 'default' // 默认就是 default
     switch (route.name) {
-      case 'user-login':
+      case 'account-login':
         route.meta.layout = 'login' // 设置 login layout
         break
       case '404':

@@ -1,6 +1,6 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
-import { pluck } from 'rxjs/operators'
+import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { StaffApi, Params } from '@/api/v1/staff'
 
@@ -21,7 +21,9 @@ export class DepartmentService extends Store<StaffState> implements RouteGuard {
   }
   @Effect()
   getStaffList(data: Params) {
-    return this.staffApi.getStaffBrandList(data)
+    return this.staffApi.getStaffBrandList(data).pipe(tap(state => {
+      this.SET_STAFF_LIST(state.staff_list)
+    }))
   }
   SET_STAFF_LIST(list: StaffState) {
     this.state$.commit(state => {
@@ -30,8 +32,7 @@ export class DepartmentService extends Store<StaffState> implements RouteGuard {
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getStaffList({}).subscribe((res: any) => {
-      this.SET_STAFF_LIST(res.list)
+      next()
     })
-    next()
   }
 }

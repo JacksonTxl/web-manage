@@ -13,7 +13,7 @@ export default {
     }
   },
   // 和页面的name一致
-  'user-login': {
+  'account-login': {
     title: 'Login'
   },
   dashboard: {

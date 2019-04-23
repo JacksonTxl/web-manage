@@ -7,13 +7,14 @@
       </div>
     </template>
     </a-table>
-    <modal-link tag="a" :to="{ name: 'coach-select', props: { selected: selectedCoachIds }, on: {
+    <modal-link tag="a" :to="{ name: 'coach-select', props: { list, selected }, on: {
       change: onSelectComplete } }">
       <st-button type="dashed" block class="mg-t8">添加</st-button>
     </modal-link>
   </div>
 </template>
 <script>
+import { SelectService } from './select-coach.service'
 const tableColumns = [{
   title: '教练',
   dataIndex: 'coach_name'
@@ -35,10 +36,12 @@ export default {
   name: 'SelectCoach',
   serviceInject() {
     return {
+      selectService: SelectService
     }
   },
-  subscription() {
+  rxState() {
     return {
+      list: this.selectService.list$
     }
   },
   props: {
@@ -53,68 +56,51 @@ export default {
     return {
       tableColumns,
       tableData: [],
-      selectedCoachIds: []
+      selected: []
     }
   },
   created() {
-    this.selectedCoachIds = this.coachIds
-    const tableData = this.getCoaches(this.coachIds)
+    this.selectService.getCoachList().subscribe()
+    this.selected = this.coachIds
+    const tableData = this.getSelectedList(this.coachIds)
     this.tableData = tableData
   },
   methods: {
     onSelectComplete(coachIds) {
-      const tableData = this.getCoaches(coachIds)
+      const tableData = this.getSelectedList(coachIds)
       this.tableData = tableData
-      this.selectedCoachIds = coachIds
+      this.selected = coachIds
       this.$emit('change', coachIds)
     },
-    getCoaches(coachIds = []) {
-      const data = {
-        '1': {
-          'key': '1',
-          'coach_name': '教练A',
-          'coach_level': 1,
-          'coach_work_name': '全职',
-          'coach_id': 1
-        },
-        '2': {
-          'key': '2',
-          'coach_name': '教练B',
-          'coach_level': 2,
-          'coach_work_name': '全职',
-          'coach_id': 2
-        },
-        '3': {
-          'key': '3',
-          'coach_name': '教练C',
-          'coach_level': 3,
-          'coach_work_name': '全职',
-          'coach_id': 3
-        }
-      }
+    getSelectedList(coachIds = []) {
+      const list = this.list
       const ret = []
-      coachIds.forEach(item => {
-        if (data[item]) {
-          ret.push(data[item])
-        }
+      coachIds.forEach(id => {
+        list.forEach(item => {
+          if (+id === +item.coach_id) {
+            item.key = item.coach_id
+            ret.push(item)
+          }
+        })
       })
+      console.log('get selected list', ret)
       return ret
     },
     delTableRecord(key) {
-      const { tableData, selectedCoachIds } = this
+      const { tableData, selected } = this
       tableData.forEach((item, index) => {
         if (+item.key === +key) {
           tableData.splice(index, 1)
         }
       })
-      selectedCoachIds.forEach((item, index) => {
+      selected.forEach((item, index) => {
         if (+item === +key) {
-          selectedCoachIds.splice(index, 1)
+          selected.splice(index, 1)
         }
       })
       this.tableData = tableData
-      this.selectedCoachIds = selectedCoachIds
-      this.$emit('change', selectedCoachIds)
+      this.selected = selected
+      this.$emit('change', selected)
     }
   }
 }

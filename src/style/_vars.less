@@ -1,34 +1,51 @@
-// antd colors 
+// antd colors
 // https://github.com/vueComponent/ant-design-vue/blob/master/components/style/themes/default.less
 // --colors--
-@primary-color: #3F66F6;
-@info-color:@primary-color;
+@primary-color: #3f66f6;
+@info-color: @primary-color;
 @link-color: #1890ff; // 链接色
-@success-color: #00E881; // 成功色
+@success-color: #00e881; // 成功色
 @warning-color: #faad14; // 警告色
-@error-color: #FF5E41;
+@error-color: #ff5e41;
 @normal-color: #d9d9d9;
 @white: #fff;
 @black: #000;
 
+// Palette
+@primary-1: ~`colorPalette('@{primary-color}', 1) `;
+@primary-2: ~`colorPalette('@{primary-color}', 2) `;
+@primary-3: ~`colorPalette('@{primary-color}', 3) `;
+@primary-4: ~`colorPalette('@{primary-color}', 4) `;
+@primary-5: ~`colorPalette('@{primary-color}', 5) `;
+@primary-7: ~`colorPalette('@{primary-color}', 7) `;
+@primary-8: ~`colorPalette('@{primary-color}', 8) `;
+@primary-9: ~`colorPalette('@{primary-color}', 9) `;
+@primary-10: ~`colorPalette('@{primary-color}', 10) `;
+
 // base
-@heading-color:#252A2E;
-@text-color:#3E4D5C;
-@text-color-secondary:#9BACB9;
-@border-color-base: #CDD4DF;
-@link-color:@primary-color;
+@heading-color: #252a2e;
+@text-color: #3e4d5c;
+@text-color-secondary: #9bacb9;
+@border-color-base: #cdd4df;
+@link-color: @primary-color;
 
 // app colors
 @brand-color: #2c3153;
-@border-color:@border-color-base;
-@title:@heading-color;
+@border-color: @border-color-base;
+@title: @heading-color;
 @text: @text-color;
 @text-light: @text-color-secondary;
 // 分割线
-@divider:#E6E9EF;
+@divider: #e6e9ef;
 
-@card-bg-color-first: #636AEC;
-@card-bg-color-second: #FA756C;
+
+// Alert
+@alert-info-bg-color: @primary-2;
+
+
+@card-bg-color-first: #636aec;
+@card-bg-color-second: #fa756c;
 @card-bg-color-third: #525864;
-@card-bg-color-fourth: #43CEF0;
+@card-bg-color-fourth: #43cef0;
+
 
