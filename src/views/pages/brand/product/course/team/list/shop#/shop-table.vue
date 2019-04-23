@@ -17,7 +17,7 @@
   <st-more-dropdown style="margin-left: 12px;">
     <a-menu-item>置为无效</a-menu-item>
     <a-menu-item>恢复有效</a-menu-item>
-    <a-menu-item>删除</a-menu-item>
+    <a-menu-item @click="onClickDeleteTeamCourse(record.course_id)">删除</a-menu-item>
   </st-more-dropdown>
 </div>
 </st-table>
@@ -52,6 +52,9 @@ export default {
     },
     onClickEditCourseInfo(val) {
       console.log(val)
+    },
+    onClickDeleteTeamCourse() {
+
     },
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys

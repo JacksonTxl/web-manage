@@ -136,7 +136,7 @@ export class HttpService {
               title: this.i18n.translate('app.http.401'),
               content: serverResponse.msg
             })
-            this.router.push({ name: 'user-login' })
+            this.router.push({ name: 'account-login' })
             break
           case 403:
             this.notification.warn({

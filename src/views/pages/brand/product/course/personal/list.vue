@@ -6,13 +6,29 @@
       { label: '门店私教课程库', route: { name: 'brand-product-course-personal-list-shop' } }
     ]">
     <div slot="actions">
-      <a-input-search placeholder="私教课名称"></a-input-search>
+      <a-input-search v-model="query.course_name" @search="onSearchCourseName" placeholder="私教课名称"></a-input-search>
     </div>
     <router-view></router-view>
   </st-panel>
 </template>
 <script>
+import { RouteService } from '../../../../../../services/route.service'
 export default {
-  name: 'list'
+  name: 'PersonalCourseList',
+  serviceInject() {
+    return {
+      routeService: RouteService
+    }
+  },
+  rxState() {
+    return {
+      query: this.routeService.query$
+    }
+  },
+  methods: {
+    onSearchCourseName(val) {
+      this.$router.push({ query: this.query })
+    }
+  }
 }
 </script>

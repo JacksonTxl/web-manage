@@ -6,19 +6,21 @@
   cursor: pointer;
   &-icon {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    .s(72px,38px);
+    justify-content: space-between;
+    padding:8px 0;
+    .s(72px,72px);
     border-radius:6px;
-    border:1px solid rgba(0,0,0,0.15);
+    border:1px solid @border-color-base;
     .mg-b(6px);
-    .c(#000);
+    .c(@text-color);
     .bg(@white);
   }
   &-label {
     .fz(14px);
     .lh(22px);
-    .c(rgba(0,0,0,.65));
+    .c(@text-color-secondary);
     .mg-b(0);
   }
   &.disabled {
