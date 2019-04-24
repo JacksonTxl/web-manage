@@ -40,6 +40,9 @@ export default {
     }
   },
   computed: {
+    isAdd() {
+      return this.lat === '' || this.lng === ''
+    },
     st_province() {
       return this.province
     },
@@ -110,15 +113,17 @@ export default {
     }
   },
   mounted() {
+    this.init()
     this.getRegions()
-    this.st_address = this.address
     console.log(this.st_city)
   },
   methods: {
     init() {
       // 获取省市区
       this.getRegions()
+      this.st_address = this.address
     },
+
     handleOk() {
 
     },
