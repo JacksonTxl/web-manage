@@ -60,6 +60,16 @@
         <p>
           <span class="tablefix" href="#">.tablefix 修复ant-design表格组件的样式问题，放置于a-table父级容器即可</span>
         </p>
+        <p>
+          .st-form-item-unit  定义input右侧样式
+        </p>
+        <st-form>
+          <st-form-item>
+            <a-input placeholder=".st-form-item-unit 定义input右侧样式">
+              <div slot="addonAfter" class="st-form-item-unit">分钟</div>
+            </a-input>
+          </st-form-item>
+        </st-form>
       </st-container>
     </section>
 

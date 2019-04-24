@@ -31,6 +31,10 @@ interface RequestOptions {
    * post put 请求bo           dy参数
    */
   params?: Params
+  /**
+   * 自定义header头
+   */
+  headers?: Object
 }
 
 @Injectable()
@@ -51,6 +55,22 @@ export class HttpService {
       .pipe(this.ajaxResponseHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return get$
+  }
+  /**
+   * @param url 请求url
+   * @param headers headers头
+   */
+  originalGet(url: string, headers?: Object) {
+    const get$ = ajax
+      .get(url, headers)
+      .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
+    return get$
+  }
+  originalPost(url: string, headers?: Object) {
+    const post$ = ajax
+      .post(url, headers)
+      .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
+    return post$
   }
   post(url: string, options: RequestOptions = {}) {
     const requestUrl = this.makeRequestUrl(url, options)
@@ -112,13 +132,22 @@ export class HttpService {
     })
   }
   private ajaxResponseHandler(source$: Observable<any>) {
-    return source$.pipe(tap(userResponse => {
-      ['code', 'msg', 'data'].forEach(filed => {
-        if (userResponse.status === 200 && userResponse.response[filed] === undefined) {
-          console.warn(`[httpService] response field [${filed}] not found in Api[${userResponse.request.url}]`)
-        }
+    return source$.pipe(
+      tap(userResponse => {
+        ;['code', 'msg', 'data'].forEach(filed => {
+          if (
+            userResponse.status === 200 &&
+            userResponse.response[filed] === undefined
+          ) {
+            console.warn(
+              `[httpService] response field [${filed}] not found in Api[${
+                userResponse.request.url
+              }]`
+            )
+          }
+        })
       })
-    }))
+    )
   }
   private ajaxErrorHandler(source$: Observable<any>) {
     return source$.pipe(

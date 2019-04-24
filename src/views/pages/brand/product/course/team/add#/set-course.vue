@@ -3,7 +3,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程名称" required>
-          <a-input placeholder="支持输入4~30个字的课程名称" maxlength="30"
+          <a-input placeholder="支持输入4~30个字的课程名称，中文占2个字符" maxlength="30"
           v-decorator="formRules.course_name" @change="onCourseNameChange"/>
         </st-form-item>
       </a-col>
@@ -26,38 +26,25 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
+        <st-form-item label="强度" required>
+          <a-rate v-decorator="formRules.strength_level"/>
+        </st-form-item>
+      </a-col>
+    </a-row>
+    <a-row :gutter="8">
+      <a-col :lg="10" :xs="22" :offset="1">
+        <st-form-item label="消耗卡路里" required>
+          <a-input-number :min="0" v-decorator="formRules.calories">
+            <div slot="addonAfter" class="st-form-item-unit">Kcal/节</div>
+          </a-input-number>
+        </st-form-item>
+      </a-col>
+    </a-row>
+    <a-row :gutter="8">
+      <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程时长" required>
           <a-input-number :min="0" v-decorator="formRules.duration">
             <div slot="addonAfter" class="st-form-item-unit">分钟</div>
-          </a-input-number>
-        </st-form-item>
-      </a-col>
-    </a-row>
-    <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="是否支持在线购买" required>
-          <a-radio-group v-decorator="formRules.is_online_sale">
-            <a-radio v-for="(item, index) in personalCourseEnums.is_online_sale.value"
-              :key="+index" :value="+index">{{item}}
-            </a-radio>
-          </a-radio-group>
-        </st-form-item>
-      </a-col>
-    </a-row>
-    <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="参考定价">
-          <a-input-number :min="0" v-decorator="formRules.price">
-            <div slot="addonAfter" class="st-form-item-unit">元/节</div>
-          </a-input-number>
-        </st-form-item>
-      </a-col>
-    </a-row>
-    <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="课有效期">
-          <a-input-number :min="0" v-decorator="formRules.effective_unit">
-            <div slot="addonAfter" class="st-form-item-unit">天/节</div>
           </a-input-number>
         </st-form-item>
       </a-col>
@@ -85,17 +72,16 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程介绍">
-          <a-input type="textarea" v-decorator="formRules.description"
+          <a-textarea type="textarea" v-decorator="formRules.description"
            :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧"
-           maxlength="500" @change="onDescriptionChange"/>
-           <div class="ta-r ">{{descriptionLength}} / 500</div>
+           maxlength="500"/>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.addCourse">保存，继续设置上课门店</st-button>
+          <st-button type="primary" @click="save" :loading="loading.addPersonalCourse">保存，继续设置上课门店</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -136,31 +122,19 @@ const formRules = {
       }]
     }
   ],
+  strength_level: ['strength_level', {
+    rules: [{
+      required: true,
+      message: '请选择训练强度'
+    }]
+  }],
+  calories: ['calories'],
   duration: [
     'duration', {
       rules: [{
         required: true,
         message: '请输入课程时长'
       }]
-    }
-  ],
-  is_online_sale: [
-    'is_online_sale', {
-      rules: [{
-        required: true,
-        message: '请选择是否支持在线购买'
-      }]
-    }
-  ],
-  price: [
-    'price', {
-      rules: []
-    }
-  ],
-  effective_unit: [
-    'effective_unit', {
-      rules: [],
-      initialValue: 7
     }
   ],
   image: [
@@ -175,7 +149,7 @@ const formRules = {
   ]
 }
 export default {
-  name: 'create-personal-course',
+  name: 'SetCourse',
   serviceInject() {
     return {
       addService: AddService,
@@ -198,8 +172,7 @@ export default {
     return {
       form: this.$form.createForm(this),
       formRules,
-      fileList: [],
-      descriptionLength: 0
+      fileList: []
     }
   },
   methods: {
@@ -235,9 +208,6 @@ export default {
     },
     onCourseNameChange(e) {
       this.$emit('onCourseNameChange', e.target.value)
-    },
-    onDescriptionChange(e) {
-      this.descriptionLength = e.target.value.length
     }
   }
 }

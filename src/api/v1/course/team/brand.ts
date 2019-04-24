@@ -1,36 +1,29 @@
 import { Api } from '@/api/api'
 
-export class ShopPersonalCourseApi extends Api {
+export class BrandTeamCourseApi extends Api {
   /**
    * 添加品牌私教课
    */
   addCourse(params: SetCourseInput) {
-    return this.http.post('/v1/course/personal/shop', { params })
+    return this.http.post('/v1/course/brand/team', { params })
   }
   /**
    * 编辑品牌私教课
    */
   updateCourse(params: SetCourseInput) {
-    return this.http.put(`/v1/course/personal/shop/${params.course_id}`, { params })
+    return this.http.put(`/v1/course/brand/team/${params.course_id}`, { params })
   }
   /**
    * 设置上课门店
    */
   setShop(params: SetShopInput) {
-    return this.http.put(`/v1/course/personal/shop/set_shop/${params.course_id}`, { params })
-  }
-
-  /**
-   * 设置售卖价格
-   */
-  setPrice(params: SetPriceInput) {
-    return this.http.put(`/v1/course/personal/shop/set_price/${params.course_id}`, { params })
+    return this.http.put(`/v1/course/brand/team/set/shop/${params.course_id}`, { params })
   }
   /**
    * 编辑品牌私教课回显详情
    */
   getCourseEdit(query: GetCourseEditInput) {
-    return this.http.get(`/v1/course/personal/shop/edit/${query.course_id}`)
+    return this.http.get(`/v1/course/team/brand/edit/${query.course_id}`)
   }
 }
 
@@ -86,21 +79,6 @@ export interface SetShopInput {
    * 教练ID
    */
   coach_id?: any[]
-}
-
-export interface SetPriceInput {
-  /**
-   * 课程id
-   */
-  course_id: number,
-  /**
-   * 售卖价格 1为统一售价 2为门店售价
-   */
-  price_setting: number,
-  /**
-   * 价格梯度price_setting等于1时必填
-   */
-  price_gradient?: any[]
 }
 
 export interface GetCourseEditInput {

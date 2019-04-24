@@ -1,55 +1,57 @@
 <template>
-    <st-panel app>
-    <a-row :class="bstep()" class="mg-b48" :gutter="8">
-      <a-col offset="1" :span="stepsSpan">
+  <st-panel app>
+    <a-row class="mg-b48 mg-t48" :gutter="8">
+      <a-col offset="1" :span="22" >
         <a-steps :current="currentIndex">
           <a-step v-for="item in stepArr" :key="item.key" :title="item.title"
             @click="changeStep(item.key)" class="cursor-pointer"/>
         </a-steps>
       </a-col>
     </a-row>
-    <create-team-course @goNext="goNext" v-show="currentIndex == 0"/>
-    <set-course-lesson v-show="currentIndex == 1"/>
+    <set-course  v-show="currentIndex === 0" @goNext="goNext"
+      @onCourseNameChange="onCourseNameChange"/>
+    <set-shop-coach v-show="currentIndex === 1" :courseName="courseName" :courseId="courseId"
+      @goNext="goNext"
+    />
   </st-panel>
 </template>
 <script>
-import CreateTeamCourse from './add#/create-team-course'
-import SetCourseLesson from './add#/set-course-lesson'
+import SetCourse from './add#/set-course'
+import SetShopCoach from './add#/set-shop-coach'
 export default {
   components: {
-    CreateTeamCourse,
-    SetCourseLesson
-  },
-  bem: {
-    b: 'page-add-staff',
-    bstep: 'page-add-staff-steps',
-    bHeader: 'default-brand-header'
+    SetCourse, // 创建团体课程
+    SetShopCoach // 设置上课门店及教练
   },
   data() {
     return {
       currentIndex: 0,
-      stepsSpan: 12,
-      stepArr: [
-        {
-          title: '创建团体课程',
-          key: 1
-        },
-        {
-          title: '设置上课门店',
-          key: 2
-        }
-      ]
+      courseId: 0,
+      courseName: '',
+      stepArr: [{
+        title: '创建团体课',
+        key: 0
+      }, {
+        title: '设置上课门店',
+        key: 1
+      }]
     }
   },
   methods: {
-    goNext(e) {
-      console.log(e)
-      if (this.currentIndex < 2) {
+    goNext(courseId) {
+      if (courseId) {
+        this.courseId = courseId
+      }
+      if (this.currentIndex < 1) {
         this.currentIndex = this.currentIndex + 1
       }
     },
     changeStep(step) {
       this.currentIndex = step
+    },
+    onCourseNameChange(courseName) {
+      this.courseName = courseName
+      console.log('courseName', courseName)
     }
   }
 }

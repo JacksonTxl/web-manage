@@ -1,7 +1,7 @@
 <template>
   <st-panel app class="page-brand-basic-card page-brand-add-deposite-card" initial>
     <div class="page-brand-basic-card-body">
-      <div class="page-preview">实时预览</div>
+      <div class="page-preview">实时预览{{deposit_card}}</div>
       <div class="page-content">
         <st-form :form="form" labelWidth="116px">
           <a-row :gutter="8">
@@ -58,9 +58,9 @@
                   placeholder="请输入期限">
                   <a-select v-model="cardData.unit" slot="addonAfter" style="width: 50px">
                     <a-select-option
-                    v-for="(item,index) in nuit_list"
-                    :value="item.value"
-                    :key="index" >{{item.label}}</a-select-option>
+                    v-for="(item,index) in Object.entries(deposit_card.unit.value)"
+                    :value="+item[0]"
+                    :key="index" >{{item[1]}}</a-select-option>
                   </a-select>
                 </a-input>
               </st-form-item>
@@ -72,9 +72,9 @@
                 <a-checkbox-group
                 v-decorator="['cardData.card_consumer_id',{rules:[{validator:card_consumer_validator}]}]">
                   <a-checkbox
-                  v-for="item in card_consumer_list"
-                  :key="item.value"
-                  :value="item.value">{{item.label}}</a-checkbox>
+                  v-for="item in Object.entries(deposit_card.consumer_type.value)"
+                  :key="+item[0]"
+                  :value="+item[0]">{{item[1]}}</a-checkbox>
                 </a-checkbox-group>
               </st-form-item>
             </a-col>
@@ -86,10 +86,9 @@
                   @change="consumption_range"
                   v-decorator="['cardData.consumption_range',{initialValue:1,rules:[{validator:admission_shop_list_validator}]}]">
                   <a-radio
-                    v-for="item in admission_range_list"
-                    :key="item.value"
-                    :value="item.value"
-                  >{{item.label}}</a-radio>
+                    v-for="item in Object.entries(deposit_card.consumption_range.value)"
+                    :key="+item[0]"
+                    :value="+item[0]">{{item[1]}}</a-radio>
                 </a-radio-group>
                 <div class="page-admission-range-shop" v-if="cardData.consumption_range===2">
                   <p class="page-admission-range-shop__describe">设置支持此会员卡出入场馆范围</p>
@@ -171,8 +170,7 @@
                     @change="transfter_change"
                     :disabled="!cardData._is_transfer"/>
                     <a-select v-model="cardData.transfer_unit" defaultValue="2" :disabled="!cardData._is_transfer">
-                      <a-select-option :value="1">%</a-select-option>
-                      <a-select-option :value="2">元</a-select-option>
+                      <a-select-option v-for="item in Object.entries(deposit_card.transfer_unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
                     </a-select>
                   </a-input-group>
                 </div>
@@ -236,6 +234,7 @@
   </st-panel>
 </template>
 <script>
+import { UserService } from '@/services/user.service'
 import moment from 'moment'
 import { RuleConfig } from '@/constants/rule'
 import SelectShop from '@/views/fragments/shop/select-shop'
@@ -246,12 +245,16 @@ export default {
   serviceInject() {
     return {
       rules: RuleConfig,
-      addService: AddService
+      addService: AddService,
+      userService: UserService
     }
   },
   rxState() {
+    const user = this.userService
+    console.log(user)
     return {
-      addLoading: this.addService.loading$
+      addLoading: this.addService.loading$,
+      deposit_card: user.depositeCardEnums$
     }
   },
   bem: {
@@ -619,7 +622,7 @@ export default {
     // 支持售卖门店
     support_sales_list() {
       let arr = [
-        { key: 0, label: '支持入场门店', value: 2 },
+        { key: 0, label: '支持消费门店', value: 2 },
         { key: 1, label: '全部门店', value: 1 },
         { key: 2, label: '指定门店', value: 2 }
       ]
