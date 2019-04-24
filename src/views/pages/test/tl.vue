@@ -8,9 +8,19 @@
         <a href="javascript: void(0);" @click="switchShop">切换门店</a>
       </p>
       <select-shop :shopIds="shopIds" @change="onSelectShop"></select-shop>
-      <p class="mg-t16">
+      <p class="mg-t32">
         <router-link to="/brand/product/course/personal/add">添加品牌私教课</router-link>
         <router-link class="mg-l8" to="/shop/product/course/manage/personal/add">添加门店私教课</router-link>
+      </p>
+      <p class="mg-t8">
+        <router-link to="/brand/product/course/team/add">添加品牌团体课</router-link>
+        <router-link class="mg-l8" to="/shop/product/course/manage/team/add">添加门店团体课</router-link>
+      </p>
+      <p class="mg-t8">
+        <router-link to="/brand/setting/app/course-type/list">课程类型设置</router-link>
+        <router-link class="mg-l8" to="/brand/setting/app/coach-level/list">教练等级</router-link>
+        <router-link class="mg-l8" to="/brand/setting/app/skillful/list">擅长项目</router-link>
+        <router-link class="mg-l8" to="/brand/setting/app/training/list">训练目的</router-link>
       </p>
     </st-panel>
     <switch-shop v-if="isShowSwitchShop" @onClose="onCloseSwitchShop"></switch-shop>

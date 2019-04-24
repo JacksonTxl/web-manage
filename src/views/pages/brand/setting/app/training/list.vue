@@ -6,7 +6,7 @@
       </a-col>
       <a-col :span="8">
         <p class="ta-r">
-          <modal-link tag="a" :to="{ name: 'brand-setting-app-training-add', on: {
+          <modal-link tag="a" :to="{ name: 'training-add', on: {
             change: onListChange } }">
             <st-button type="primary" icon="add">添加</st-button>
           </modal-link>
@@ -21,7 +21,7 @@
       :pagination="{ current: +query.page || 1, total: page.total_counts }"
     >
       <div slot="action" slot-scope="record">
-        <modal-link tag="a" :to="{ name: 'brand-setting-app-training-edit',
+        <modal-link tag="a" :to="{ name: 'training-edit',
           props: { id: record.id, setting_name: record.setting_name }, on: { change: onListChange } }">编辑
         </modal-link>
         <a-popconfirm :title="`删除后不可进行恢复，${record.used_number ? '已标记的课程将删除此训练目的，' : ''}确定删除此训练目的？`" @confirm="onDelete(record.id)">
