@@ -91,7 +91,6 @@ export default {
           page: pagination.current
         }
       })
-      console.log('pagination', pagination)
     },
     onListChange() {
       this.$router.push({

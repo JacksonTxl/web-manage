@@ -1,5 +1,6 @@
 <template>
   <st-form :form="form" class="page-create-container" labelWidth="130px">
+    {{info}}
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程名称" required>
@@ -81,7 +82,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.addPersonalCourse">保存，继续设置上课门店</st-button>
+          <st-button type="primary" @click="save" :loading="loading.updateCourse">保存，继续设置上课门店</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -89,8 +90,9 @@
 </template>
 
 <script>
-import { AddService } from '../add.service'
+import { EditService } from '../edit.service'
 import { MessageService } from '@/services/message.service'
+import { RouteService } from '@/services/route.service'
 import StSelectCourseType from '@/views/fragments/course/select-course-type'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 import { UserService } from '@/services/user.service'
@@ -150,21 +152,31 @@ export default {
   name: 'SetCourse',
   serviceInject() {
     return {
-      addService: AddService,
+      editService: EditService,
       messageService: MessageService,
-      userService: UserService
+      userService: UserService,
+      routeService: RouteService
     }
   },
   rxState() {
     const user = this.userService
     return {
-      loading: this.addService.loading$,
-      personalCourseEnums: user.personalCourseEnums$
+      loading: this.editService.loading$,
+      personalCourseEnums: user.personalCourseEnums$,
+      query: this.routeService.query$
     }
   },
   components: {
     StSelectCourseType,
     StSelectTrainingAim
+  },
+  props: {
+    info: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
   },
   data() {
     return {
@@ -173,13 +185,18 @@ export default {
       fileList: []
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.setFieldsValue()
+    })
+  },
   methods: {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(() => {
-        const data = this.form.getFieldsValue()
+        const data = this.getData()
         console.log('step 1 data', data)
-        this.addService.addCourse(data).subscribe((res) => {
+        this.editService.updateCourse(data).subscribe((res) => {
           this.messageService.success({
             content: '提交成功'
           })
@@ -206,6 +223,28 @@ export default {
     },
     onCourseNameChange(e) {
       this.$emit('onCourseNameChange', e.target.value)
+    },
+    setFieldsValue() {
+      const info = this.info
+      this.form.setFieldsValue({
+        course_name: info.course_name,
+        category_id: info.category_id,
+        train_aim: info.train_aim,
+        strength_level: info.strength_level,
+        calories: info.calories,
+        duration: info.duration,
+        image: info.image,
+        description: info.description
+      })
+      if (this.info.image) {
+        this.fileList = [this.info.image]
+      }
+    },
+    getData() {
+      console.log('getData', this.query.id)
+      const data = this.form.getFieldsValue()
+      data.course_id = +this.query.id
+      return data
     }
   }
 }
