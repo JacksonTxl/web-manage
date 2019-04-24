@@ -2,7 +2,7 @@ import { ShopApi } from '@/api/v1/shop'
 import { LayoutService } from './layout.service'
 import { RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state/src'
-import { pluck } from 'rxjs/operators'
+import { pluck, tap } from 'rxjs/operators'
 export interface LayoutBrand {
   shopList: any[]
 }
@@ -16,11 +16,18 @@ export class LayoutBrandService extends LayoutService implements RouteGuard {
     })
     this.shopList$ = new Computed(this.state$.pipe(pluck('shopList')))
   }
-
+  protected SET_SHOP_LIST(data: any[]) {
+    console.log(data)
+    this.state$.commit(state => {
+      state.shopList = data
+    })
+  }
   getShopList() {
-    return this.shopApi.getShopList()
+    return this.shopApi.getShopList().pipe(tap(res => {
+      this.SET_SHOP_LIST(res)
+    }))
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    next()
+    this.getShopList().subscribe(() => next())
   }
 }

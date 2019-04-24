@@ -25,9 +25,6 @@ export class ListService extends Store<ListState> {
       })
     )
   }
-  refreshTrainingAimList(query: GetTrainingAimListInput) {
-    this.getTrainingAimList(query).subscribe()
-  }
   deleteTrainingAim(params: DeleteTrainingAimInput) {
     return this.trainingApi.deleteTrainingAim(params)
   }

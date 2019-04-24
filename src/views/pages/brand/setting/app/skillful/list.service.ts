@@ -25,9 +25,6 @@ export class ListService extends Store<ListState> {
       })
     )
   }
-  refreshSkillfulList(query: GetSkillfulListInput) {
-    this.getSkillfulList(query).subscribe()
-  }
   deleteSkillful(params: DeleteSkillfulInput) {
     return this.skillfulApi.deleteSkillful(params)
   }

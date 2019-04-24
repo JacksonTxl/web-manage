@@ -91,14 +91,12 @@ export default {
           page: pagination.current
         }
       })
-      console.log('pagination', pagination)
     },
     onListChange() {
       this.$router.push({
         query: {
           page: 1
-        },
-        force: true
+        }
       })
     }
   }

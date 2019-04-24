@@ -1,0 +1,38 @@
+.st-modal-map {
+  .ant-modal-body {
+    padding: 24px;
+  }
+  &__search {
+    display: flex;
+    align-items: center;
+  }
+  &__cascader {
+    width: 74px;
+    flex: none;
+  }
+  &__cascader__btn {
+    .fz(14px);
+    .lh(22px);
+    .c(@text-color);
+    &:focus {
+      text-decoration: none;
+    }
+    cursor: pointer;
+    > .st-modal-map__icon {
+      margin-left: 12px;
+    }
+  }
+  &__map {
+    height: 180px;
+    margin-top: 16px;
+    outline: 1px solid grey;
+  }
+  &__address {
+    margin-top: 16px;
+  }
+  &__button {
+    margin-top: 24px;
+    text-align: right;
+
+  }
+}

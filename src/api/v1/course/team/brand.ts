@@ -5,19 +5,19 @@ export class BrandTeamCourseApi extends Api {
    * 添加品牌私教课
    */
   addCourse(params: SetCourseInput) {
-    return this.http.post('/v1/course/team', { params })
+    return this.http.post('/v1/course/brand/team', { params })
   }
   /**
    * 编辑品牌私教课
    */
   updateCourse(params: SetCourseInput) {
-    return this.http.put(`/v1/course/team/${params.course_id}`, { params })
+    return this.http.put(`/v1/course/brand/team/${params.course_id}`, { params })
   }
   /**
    * 设置上课门店
    */
   setShop(params: SetShopInput) {
-    return this.http.put(`/v1/course/team/set/shop/${params.course_id}`, { params })
+    return this.http.put(`/v1/course/brand/team/set/shop/${params.course_id}`, { params })
   }
   /**
    * 编辑品牌私教课回显详情

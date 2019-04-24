@@ -55,6 +55,18 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
+          <st-form-item label="门店地址" required>
+            <st-region-cascader
+            placeholder="请选择省/市/区"
+            v-decorator="[
+              'shop_PCD',
+              {rules: [{ required: true, message: '请输入门店地址'}]}
+            ]"></st-region-cascader>
+          </st-form-item>
+        </a-col>
+      </a-row>
+      <a-row :gutter="8">
+        <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="详细地址" required>
             <a-input
               v-decorator="[
