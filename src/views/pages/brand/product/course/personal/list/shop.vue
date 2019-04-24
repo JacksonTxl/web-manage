@@ -4,8 +4,8 @@
       <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
         <st-button type="primary">转入品牌私教课程库</st-button>
         <div>
-          <a-select defaultValue="" class="mg-r8" style="width: 160px" @change="handleChange">
-            <a-select-option v-for="shop in shops" :key="shop.value" :value="shop.value">{{shop.label}}</a-select-option>
+          <a-select :defaultValue="-1" class="mg-r8" style="width: 160px" @change="handleChange">
+            <a-select-option v-for="shop in shopsOptions" :key="shop.shop_id" :value="shop.shop_id">{{shop.shop_name}}</a-select-option>
           </a-select>
           <a-select class="mg-r8" defaultValue="" style="width: 160px" @change="handleChange">
             <a-select-option v-for="course in courses" :key="course.value" :value="course.value">{{course.label}}</a-select-option>
@@ -25,21 +25,23 @@
 <script>
 import ShopSaleListTable from './shop#/shop-table'
 import { ShopService } from './shop.service'
+import { ListService } from '../list.service'
 export default {
   name: 'ShopSaleListShop',
   serviceInject() {
     return {
+      listService: ListService,
       shopService: ShopService
     }
   },
   rxState() {
     return {
-      personalCourseList: this.shopService.personalCourseList$
+      personalCourseList: this.shopService.personalCourseList$,
+      shopsOptions: this.listService.shopSelectOptions$
     }
   },
   data() {
     return {
-      shops: [{ label: '所有门店', value: '' }, { label: '门店A名称', value: '1' }, { label: '门店B名称', value: '2' }, { label: '门店C名称', value: '3' }, { label: '门店D名称', value: '4' }],
       courses: [{ label: '所有课程类型', value: '' }, { label: '瑜伽', value: '1' }, { label: '单车', value: '2' }, { label: '杠铃', value: '3' }, { label: '蹦床', value: '4' }, { label: '舞蹈', value: '5' }, { label: '功能性课程', value: '6' }],
       courseStatus: [{ label: '所有状态', value: '' }, { label: '有效', value: '1' }, { label: '无效', value: '0' }]
     }
@@ -54,7 +56,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -39,6 +39,12 @@ export class ShopPersonalCourseApi extends Api {
     return this.http.get(`/v1/course/personal/shop/edit/${query.course_id}`)
   }
 }
+export interface GetPersonalBrandCourseListInput {
+  category_id?: number,
+  course_name?: string,
+  page?: number,
+  size?: number
+}
 
 export interface SetCourseInput {
   /**

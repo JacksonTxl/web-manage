@@ -21,26 +21,25 @@
 
 <script>
 import BrandTable from './brand#/brand-table'
-import { BrandService } from './brand.service'
 import { RouteService } from '../../../../../../../services/route.service'
+import { ListService } from '../list.service'
 export default {
   name: 'PersonalCourseListInBrand',
   serviceInject() {
     return {
-      brandService: BrandService,
+      listService: ListService,
       routeService: RouteService
     }
   },
   data() {
     return {
       courses: [{ label: '所有课程类型', value: '-1' }, { label: '瑜伽', value: '1' }, { label: '单车', value: '2' }, { label: '杠铃', value: '3' }, { label: '蹦床', value: '4' }, { label: '舞蹈', value: '5' }, { label: '功能性课程', value: '6' }],
-      courseStatus: [{ label: '所有状态', value: '' }, { label: '有效', value: '1' }, { label: '无效', value: '0' }]
+      courseStatus: [{ label: '所有状态', value: -1 }, { label: '有效', value: 1 }, { label: '无效', value: 0 }]
     }
   },
   rxState() {
     return {
-      // getCoursePersonalBrandList
-      categoryList: this.brandService.categoryList$,
+      categoryList: this.ListService.categoryList$,
       personalCourseList: this.brandService.personalCourseList$,
       loading: this.brandService.loading$,
       query: this.routeService.query$

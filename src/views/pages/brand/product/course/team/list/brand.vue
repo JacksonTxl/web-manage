@@ -5,7 +5,7 @@
         <st-button type="primary"
           @click="addPersonalCourse">+ 新增团体课</st-button>
         <div>
-          <a-select  defaultValue="" v-model="query.isAvailable" style="width: 160px" @change="handleChange">
+          <a-select  defaultValue="" v-model="query.isAvailable" class="mg-r16" style="width: 160px" @change="handleChange">
             <a-select-option v-for="status in courseStatus" :key="status.value" :value="status.value">{{status.label}}</a-select-option>
           </a-select>
           <a-select  defaultValue="" v-model="query.category_id" style="width: 160px" @change="handleChange">

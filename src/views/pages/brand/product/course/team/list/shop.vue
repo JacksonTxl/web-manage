@@ -4,8 +4,8 @@
       <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
         <st-button type="primary">转入品牌团体课程库</st-button>
         <div>
-          <a-select class="mg-r8" defaultValue="" style="width: 120px" @change="handleChange">
-            <a-select-option v-for="shop in shops" :key="shop.value" :value="shop.value">{{shop.label}}</a-select-option>
+          <a-select class="mg-r8" :defaultValue="defaultShops" style="width: 120px" @change="handleChange">
+            <a-select-option v-for="shop in shopSelectOptions" :key="shop.shop_id" :value="shop.shop_id">{{shop.shop_name}}</a-select-option>
           </a-select>
           <a-select class="mg-r8" defaultValue="lucy" style="width: 120px" @change="handleChange">
             <a-select-option value="jack">Jack</a-select-option>
@@ -31,25 +31,37 @@
 <script>
 import TeamTableShop from './shop#/shop-table'
 import { ShopService } from './shop.service'
+import { ListService } from '../list.service'
 export default {
   name: 'TeamCourseList',
   serviceInject() {
     return {
+      listService: ListService,
       shopService: ShopService
     }
   },
   rxState() {
     return {
-      teamCourseList: this.shopService.teamCourseList$
+      teamCourseList: this.shopService.teamCourseList$,
+      shopSelectOptions: this.listService.shopSelectOptions$
     }
   },
   data() {
     return {
+      defaultShops: -1,
       shops: [{ label: '所有门店', value: '' }, { label: '门店A名称', value: '1' }, { label: '门店B名称', value: '2' }, { label: '门店C名称', value: '3' }, { label: '门店D名称', value: '4' }]
     }
   },
+  created() {
+    console.log(this.listService)
+  },
   components: {
     TeamTableShop
+  },
+  methods: {
+    handleChange() {
+      console.log('dsa')
+    }
   }
 }
 </script>
