@@ -12,7 +12,7 @@ export class CardsApi extends Api {
    * 会员卡详情
    */
   getCardInfo(id: string) {
-    return this.http.get(`/v1/cards/${id}`)
+    return this.http.get(`/v1/cards/member/brand/${id}`)
   }
   /**
    * 会员卡编辑详情
@@ -23,20 +23,32 @@ export class CardsApi extends Api {
   /**
    * 会员卡编辑
    */
-  editCards(params: CardsInput) {
+  editCard(params: CardsInput) {
     return this.http.put('/v1/cards', { params })
   }
   /**
    * 储值卡新增,品牌
    */
   addCardsDepositBrand(params: CardsInput) {
-    return this.http.post('/v1/cards/deposit/brand', { params })
+    return this.http.post('/v1/cards/brand/deposit', { params })
   }
   /**
    * 储值卡详情,品牌
    */
   getCardDepositInfoBrand(id: string) {
-    return this.http.get(`/v1/cards/deposit/brand/${id}`)
+    return this.http.get(`/v1/cards/brand/deposit/${id}`)
+  }
+  /**
+   * 储值卡编辑详情
+   */
+  getCardDepositInfoBackBrand(id: string) {
+    return this.http.get(`/v1/cards/brand/deposit/back/${id}`)
+  }
+  /**
+   * 储值卡编辑
+   */
+  editCardDepositBrand(params: CardsInput) {
+    return this.http.put('/v1/cards/brand/deposit', { params })
   }
   /**
    *获取卡列表

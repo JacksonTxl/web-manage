@@ -59,4 +59,12 @@ export class AppConfig {
     // The minimum width of the crop box
     minCropBoxWidth: 100
   }
+  /**
+   * map key
+   */
+  QQ_MAP_KEY = 'ZEGBZ-46CK6-6NCSC-M63GX-L7JGJ-XWB2D'
+  /**
+   * map location key
+   */
+  QQ_LOCATION_KEY = 'OMWBZ-VTT3X-ZS34Z-7GDQ6-S6QTJ-ZVBWS'
 }

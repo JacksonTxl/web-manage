@@ -30,7 +30,7 @@ export class EditService extends Store<CardState> implements RouteGuard {
   }
   @Effect()
   editCard(data: CardsInput) {
-    return this.cardsApi.editCards(data)
+    return this.cardsApi.editCard(data)
   }
   beforeRouteEnter(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
     this.getCardInfo(to.meta.query.id).subscribe(() => {
