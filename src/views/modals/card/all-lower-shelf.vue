@@ -9,10 +9,10 @@ export default {
       aService: LowerShelfService
     }
   },
-  name: 'lowerShelf',
+  name: 'allLowerShelf',
   props: {
     a: {
-      type: Object
+      type: Array
     }
   },
   data() {
@@ -25,16 +25,18 @@ export default {
     showDeleteConfirm() {
       let self = this
       let data = {
-        card_shop: [
-          {
-            card_id: self.a.id,
-            shelf_shop_id: self.a.shop_id
-          }
-        ]
+        card_shop: []
       }
+      self.a.map((item, index) => {
+        data.card_shop.push({
+          card_id: item.id,
+          shelf_shop_id: item.shop_id
+        })
+      })
+      console.log(data)
       this.$confirm({
-        title: '单个下架',
-        content: `确定下架《${self.a.card_name}》会员卡吗？`,
+        title: '批量下架',
+        content: `确定下架会员卡吗？`,
         onOk() {
           self.aService.getListInfo(data).subscribe(state => {
             self.$emit('done', true)

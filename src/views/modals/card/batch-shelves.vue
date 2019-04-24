@@ -6,24 +6,28 @@
     v-model="show"
     :footer="null"
     width="668px"
+    v-if="getBatchShelvesData.card_name"
   >
     <section class="modal-card-batch-shelves-title">
-      <div class="modal-card-batch-shelves-img"></div>
+      <div class="modal-card-batch-shelves-img">
+        <img style="width: 100%;" :src="getBatchShelvesData.card_bg.image_url" alt>
+      </div>
       <div class="modal-card-batch-shelves-info">
         <div class="modal-card-batch-shelves-info-term-card">
-          <span class="term-card">期限卡</span> 超级贵宾VIP
+          <span class="term-card">{{getBatchShelvesData.card_type.name}}</span>
+          {{getBatchShelvesData.card_name}}
         </div>
         <div class="modal-card-batch-shelves-info-batch">
-          本次共上架10家门店，
+          本次共上架{{getBatchShelvesData.shelf_shop_num}}家门店，
           <a href="javascript:;">查看明显</a>
         </div>
         <div class="modal-card-batch-shelves-info-channel">
-          <span class="channel">客户端售卖</span> 线下售卖
+          <span class="channel">{{getBatchShelvesData.sell_type.name}}</span>
         </div>
       </div>
     </section>
     <section class="modal-card-batch-shelves-table">
-      <groundCardsTablePrice v-model="groundCardsTablePriceData"></groundCardsTablePrice>
+      <groundCardsTablePrice v-model="getBatchShelvesData.price_gradient"></groundCardsTablePrice>
       <!-- <pre>{{groundCardsTablePriceData}}</pre> -->
     </section>
     <section class="selling-mode">
@@ -97,8 +101,19 @@
 </template>
 <script>
 import groundCardsTablePrice from './batch-seelves#/ground-cards-table-price.vue'
+import { BatchShelvesService } from './batch-shelves.service'
 export default {
+  serviceInject() {
+    return {
+      aService: BatchShelvesService
+    }
+  },
   name: 'batchShelves',
+  props: {
+    a: {
+      type: Object
+    }
+  },
   components: {
     groundCardsTablePrice
   },
@@ -149,44 +164,13 @@ export default {
           admission: '22'
         }
       ],
-      groundCardsTablePriceData: {
-        columns: [
-          {
-            title: '有效期',
-            dataIndex: 'member'
-          },
-          {
-            title: '售卖价格',
-            dataIndex: 'type',
-            scopedSlots: { customRender: 'type' }
-          },
-          {
-            title: '允许冻结',
-            dataIndex: 'effective'
-          },
-          {
-            title: '赠送上限',
-            dataIndex: 'admission'
-          }
-        ],
-        data: [
-          {
-            id: 1,
-            member: '徐汇1店',
-            type: '',
-            effective: '徐汇1店',
-            admission: '徐汇1店'
-          },
-          {
-            id: 2,
-            member: '徐汇1店',
-            type: '',
-            effective: '22',
-            admission: '22'
-          }
-        ]
-      }
+      groundCardsTablePriceData: [],
+      getBatchShelvesData: {}
     }
+  },
+  created() {
+    let self = this
+    this.getListInfo(self.a.id)
   },
   computed: {
     rowSelection() {
@@ -209,6 +193,13 @@ export default {
     }
   },
   methods: {
+    getListInfo(data) {
+      let self = this
+      this.aService.getListInfo(data).subscribe(state => {
+        self.getBatchShelvesData = state.info
+        console.log(self.getBatchShelvesData)
+      })
+    },
     handleAdd() {},
     moment,
     save(e) {

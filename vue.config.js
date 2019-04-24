@@ -51,6 +51,13 @@ module.exports = {
         pathRewrite: {
           '^/_api/': '/'
         }
+      },
+      '/_api_map_qq': {
+        target: 'https://apis.map.qq.com',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/_api_map_qq': '/'
+        }
       }
     },
     port: 8060
@@ -95,7 +102,7 @@ module.exports = {
       .end()
 
     // add themes entry config
-    Object.keys(buildConfig.themeConfig).forEach((themeName) => {
+    Object.keys(buildConfig.themeConfig).forEach(themeName => {
       config
         .entry(`theme-${themeName}`)
         .add(resolve(buildConfig.themeConfig[themeName]))

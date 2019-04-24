@@ -38,6 +38,11 @@ class VueServiceApp {
             )
           }
           for (let name in injects) {
+            if (injects[name] === undefined) {
+              throw new Error(
+                `[vue-service-app] serviceInject you just inject undefined in [${name}]`
+              )
+            }
             this[name] = rootContainer.get(injects[name])
           }
         }

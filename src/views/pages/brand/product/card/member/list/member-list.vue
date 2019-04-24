@@ -102,7 +102,7 @@
         <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
         <a-divider type="vertical"></a-divider>
         <a href="javascript:;" v-if="record.sell_status.name === '可售卖'">
-          <modal-link tag="a" :to="{ name: 'card-batch-shelves' }">上架</modal-link>
+          <modal-link tag="a" :to="{ name: 'card-batch-shelves' ,props:{a:record}, on:{done: onModalTest }  }">上架</modal-link>
         </a>
         <a href="javascript:;" v-if="record.sell_status.id === 2">
           <modal-link

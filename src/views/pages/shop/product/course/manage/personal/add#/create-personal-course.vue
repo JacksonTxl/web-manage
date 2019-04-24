@@ -12,7 +12,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
           <input type="hidden" v-decorator="formRules.category_id">
-          <st-select-course-type @change="onCourseTypeChange"/>
+          <st-select-course-category @change="onCourseTypeChange"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -94,7 +94,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.addPersonalCourse">保存，继续设置上课门店</st-button>
+          <st-button type="primary" @click="save" :loading="loading.addCourse">保存，继续设置上课门店</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -104,7 +104,7 @@
 <script>
 import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
-import StSelectCourseType from '@/views/fragments/course/select-course-type'
+import StSelectCourseCategory from '@/views/fragments/course/select-course-category'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 import { UserService } from '@/services/user.service'
 const formRules = {
@@ -190,7 +190,7 @@ export default {
     }
   },
   components: {
-    StSelectCourseType,
+    StSelectCourseCategory,
     StSelectTrainingAim
   },
   data() {
@@ -206,7 +206,7 @@ export default {
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
         console.log('step 1 data', data)
-        this.addService.addPersonalCourse(data).subscribe((res) => {
+        this.addService.addCourse(data).subscribe((res) => {
           this.messageService.success({
             content: '提交成功'
           })
