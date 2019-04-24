@@ -14,3 +14,22 @@ export interface StResponse {
   data: any
   msg: string
 }
+
+export interface StPage {
+  /**
+   * 总页数
+   */
+  total_pages: number
+  /**
+   * 总条数
+   */
+  total_counts: number
+  /**
+   * 每页几条
+   */
+  size: number
+  /**
+   * 当前页
+   */
+  current_page: number
+}
