@@ -3,7 +3,11 @@
     <!-- <st-button type="primary">
       <a-icon type="plus"/>新增私教课程
     </st-button>-->
-    <modal-link tag="a" :to=" { name: 'card-lower-shelf'}">
+    <modal-link
+      tag="a"
+      :to=" { name: 'card-all-lower-shelf',props:{a:selectedRows}, on:{done: onModalTest } }"
+      v-if="selectedRows.length >1"
+    >
       <st-button style="margin-left:24px" type="danger">批量下架</st-button>
     </modal-link>
 
@@ -62,8 +66,14 @@
         </span>
         <span v-else class="use_num">{{text}}</span>
       </a>
-
       <!-- 支持入场门店end -->
+      <a slot="support_sales.name" slot-scope="text,record" href="javascript:;">
+        <span v-if="text !=='0个门店'">
+          <modal-link tag="a" :to="{ name: 'card-sale-stop' , props:{a: record.id}}">{{text}}</modal-link>
+        </span>
+        <span v-else class="use_num">{{text}}</span>
+      </a>
+      <!-- 售卖门店 -->
       <!-- 售卖状态start -->
       <span slot="sell_time" slot-scope="text,record">{{record.start_time}}~{{record.end_time}}</span>
       <span
@@ -76,7 +86,10 @@
       <div slot="action" slot-scope="text, record">
         <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
         <a-divider type="vertical"></a-divider>
-        <modal-link tag="a" :to=" { name: 'card-lower-shelf' }">下架</modal-link>
+        <modal-link
+          tag="a"
+          :to=" { name: 'card-lower-shelf',props:{a:record}, on:{done: onModalTest } }"
+        >下架</modal-link>
       </div>
       <!-- 操作end -->
     </st-table>
@@ -98,6 +111,7 @@ export default {
   computed: {
     rowSelection() {
       const { selectedRowKeys } = this
+      let self = this
       return {
         onChange: (selectedRowKeys, selectedRows) => {
           console.log(
@@ -105,12 +119,14 @@ export default {
             'selectedRows: ',
             selectedRows
           )
+          self.selectedRows = selectedRows
         }
       }
     }
   },
   data() {
     return {
+      selectedRows: [],
       card_type: '所以类型',
       publish_channel: '所以渠道',
       sell_status: '所有门店',
@@ -170,7 +186,8 @@ export default {
       columns: [
         {
           title: '售卖门店',
-          dataIndex: 'shop_name'
+          dataIndex: 'support_sales.name',
+          scopedSlots: { customRender: 'support_sales.name' }
         },
         {
           title: '会员卡名称',
@@ -229,7 +246,10 @@ export default {
     this.getInfoData(this.cardsListInfo)
   },
   methods: {
-    onModalTest(data) {},
+    onModalTest(data) {
+      console.log('onModalTest')
+      this.getListInfoFunc()
+    },
     getInfoData(data) {
       this.pagination = {
         pageSizeOptions: ['10', '20', '30', '40', '50'],
