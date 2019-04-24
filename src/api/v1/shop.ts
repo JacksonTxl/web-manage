@@ -12,7 +12,7 @@ export class ShopApi extends Api {
     return this.http.put(`/v1/brand/shops/${id}`, { params })
   }
   getInfo(id: string) {
-    return this.http.get(`/v1/shops/${id}`)
+    return this.http.get(`/v1/shops/${id}`, { mock: {} })
   }
   getShopSettingStopInfo(id: string) {
     return this.http.get(`/v1/shops/setting/stop/${id}`, { mock: {} })
