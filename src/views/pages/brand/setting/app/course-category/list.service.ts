@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { CourseApi, DeleteCourseTypeInput, GetCourseTypeListInput } from '@/api/v1/setting/course'
+import { CourseApi, DeleteCourseCategoryInput, GetCourseCategoryListInput } from '@/api/v1/setting/course'
 
 interface ListState {
   resData: object
@@ -18,18 +18,15 @@ export class ListService extends Store<ListState> {
     })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
   }
-  getCourseTypeList(query: GetCourseTypeListInput) {
-    return this.courseApi.getCourseTypeList(query).pipe(
+  getCourseCategoryList(query: GetCourseCategoryListInput) {
+    return this.courseApi.getCourseCategoryList(query).pipe(
       tap(res => {
         this.SET_STATE(res)
       })
     )
   }
-  refreshCourseTypeList(query: GetCourseTypeListInput) {
-    this.getCourseTypeList(query).subscribe()
-  }
-  deleteCourseType(params: DeleteCourseTypeInput) {
-    return this.courseApi.deleteCourseType(params)
+  deleteCourseCategory(params: DeleteCourseCategoryInput) {
+    return this.courseApi.deleteCourseCategory(params)
   }
   protected SET_STATE(data: ListState) {
     this.state$.commit(state => {
@@ -37,7 +34,7 @@ export class ListService extends Store<ListState> {
     })
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCourseTypeList({ page: to.meta.query.page, size: 20 }).subscribe(() => {
+    this.getCourseCategoryList({ page: to.meta.query.page, size: 20 }).subscribe(() => {
       next()
     }, () => {
       next(false)

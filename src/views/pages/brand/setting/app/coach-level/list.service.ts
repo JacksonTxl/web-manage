@@ -25,9 +25,6 @@ export class ListService extends Store<ListState> {
       })
     )
   }
-  refreshCoachLevelList(query: GetCoachLevelListInput) {
-    this.getCoachLevelList(query).subscribe()
-  }
   deleteCoachLevel(params: DeleteCoachLevelInput) {
     return this.coachLevelApi.deleteCoachLevel(params)
   }

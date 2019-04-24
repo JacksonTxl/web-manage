@@ -7,12 +7,12 @@
 </template>
 
 <script>
-import { SelectCourseTypeService } from './select-course-type.service'
+import { SelectCourseCategoryService } from './select-course-category.service'
 export default {
-  name: 'StSelectCourseType',
+  name: 'StSelectCourseCategory',
   serviceInject() {
     return {
-      selectCourseTypeService: SelectCourseTypeService
+      selectCourseCategoryService: SelectCourseCategoryService
     }
   },
   props: {
@@ -28,11 +28,11 @@ export default {
   },
   rxState() {
     return {
-      list: this.selectCourseTypeService.list$
+      list: this.selectCourseCategoryService.list$
     }
   },
   created() {
-    this.selectCourseTypeService.getCourseTypeList().subscribe()
+    this.selectCourseCategoryService.getCourseCategoryList().subscribe()
   },
   methods: {
     change(val) {

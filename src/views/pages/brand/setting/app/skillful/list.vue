@@ -8,7 +8,7 @@
         <p class="ta-r">
           <modal-link tag="a" :to="{ name: 'skillful-add', on: {
             change: onListChange } }">
-            <st-button type="primary" icon="add">添加</st-button>
+            <st-button type="primary" icon="add" :disabled="resData.total >= resData.max">添加</st-button>
           </modal-link>
         </p>
       </a-col>
@@ -91,7 +91,6 @@ export default {
           page: pagination.current
         }
       })
-      console.log('pagination', pagination)
     },
     onListChange() {
       this.$router.push({
