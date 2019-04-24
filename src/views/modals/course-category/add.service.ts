@@ -1,7 +1,7 @@
 import { Injectable } from 'vue-service-app'
 import { Effect } from 'rx-state'
 import { Store } from '@/services/store'
-import { CourseApi, AddCourseTypeInput } from '@/api/v1/setting/course'
+import { CourseApi, AddCourseCategoryInput } from '@/api/v1/setting/course'
 
 interface AddState {
 }
@@ -11,7 +11,7 @@ export class AddService extends Store<AddState> {
     super()
   }
   @Effect()
-  addCourseType(params: AddCourseTypeInput) {
-    return this.courseApi.addCourseType(params)
+  addCourseCategory(params: AddCourseCategoryInput) {
+    return this.courseApi.addCourseCategory(params)
   }
 }

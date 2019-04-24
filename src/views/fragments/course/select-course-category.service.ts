@@ -4,12 +4,12 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { CourseApi } from '@/api/v1/setting/course'
 
-interface CourseTypeState {
+interface CourseCategoryState {
   list: Array<Object>
 }
 @Injectable()
-export class SelectCourseTypeService extends Store<CourseTypeState> {
-  state$: State<CourseTypeState>
+export class SelectCourseCategoryService extends Store<CourseCategoryState> {
+  state$: State<CourseCategoryState>
   list$: Computed<Object>
   constructor(private courseApi: CourseApi) {
     super()
@@ -18,8 +18,8 @@ export class SelectCourseTypeService extends Store<CourseTypeState> {
     })
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
   }
-  getCourseTypeList() {
-    return this.courseApi.getCourseTypeList({}).pipe(
+  getCourseCategoryList() {
+    return this.courseApi.getCourseCategoryList({}).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.list = res.list

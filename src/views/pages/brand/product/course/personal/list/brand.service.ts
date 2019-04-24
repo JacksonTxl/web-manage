@@ -35,7 +35,7 @@ export class BrandService extends Store<SetState> {
     })
   }
   getCategoryList() {
-    return this.courseApi.getCourseTypeList({})
+    return this.courseApi.getCourseCategoryList({})
   }
   setAvailable(params: SetAvailableInput) {
     return this.personalApi.setAvailable(params)
