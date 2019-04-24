@@ -4,42 +4,42 @@ export class CourseApi extends Api {
   /**
    * 课程类型列表
    */
-  getCourseTypeList(query: GetCourseTypeListInput) {
+  getCourseCategoryList(query: GetCourseCategoryListInput) {
     return this.http.get(url, { query })
   }
   /**
    * 添加课程类型
    */
-  addCourseType(params: AddCourseTypeInput) {
+  addCourseCategory(params: AddCourseCategoryInput) {
     return this.http.post(url, { params })
   }
   /**
    * 编辑课程类型
    */
-  updateCourseType(params: UpdateCourseTypeInput) {
+  updateCourseCategory(params: UpdateCourseCategoryInput) {
     return this.http.put(`${url}/${params.id}`, { params })
   }
   /**
    * 删除课程类型
    */
-  deleteCourseType(params: DeleteCourseTypeInput) {
+  deleteCourseCategory(params: DeleteCourseCategoryInput) {
     return this.http.delete(`${url}/${params.id}`)
   }
 }
 
-export interface GetCourseTypeListInput {
+export interface GetCourseCategoryListInput {
   page?: number,
   size?: number
 }
 
-export interface AddCourseTypeInput {
+export interface AddCourseCategoryInput {
   /**
    * 添加课程类型名称
    */
   setting_name: string
 }
 
-export interface UpdateCourseTypeInput {
+export interface UpdateCourseCategoryInput {
   /**
    * 课程类型id
    */
@@ -50,7 +50,7 @@ export interface UpdateCourseTypeInput {
   setting_name: string
 }
 
-export interface DeleteCourseTypeInput {
+export interface DeleteCourseCategoryInput {
   /**
    * 课程类型设置ID
    */
