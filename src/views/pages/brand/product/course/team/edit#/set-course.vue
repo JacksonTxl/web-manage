@@ -13,7 +13,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
           <input type="hidden" v-decorator="formRules.category_id">
-          <st-select-course-category @change="onCourseTypeChange"/>
+          <st-select-course-category :value="info.category_id" @change="onCourseTypeChange"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -21,7 +21,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
           <input type="hidden" v-decorator="formRules.train_aim">
-          <st-select-training-aim @change="onTrainingAimChange"/>
+          <st-select-training-aim :value="info.train_aim|formatFilter" @change="onTrainingAimChange"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -169,6 +169,11 @@ export default {
   components: {
     StSelectCourseCategory,
     StSelectTrainingAim
+  },
+  filters: {
+    formatFilter(arr = []) {
+      return arr.map(v => `${v}`)
+    }
   },
   props: {
     info: {

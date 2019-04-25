@@ -1,5 +1,6 @@
 <template>
   <st-form :form="form" class="page-create-container" labelWidth="130px">
+    {{info}}
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程名称" required>
@@ -12,7 +13,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
           <input type="hidden" v-decorator="formRules.category_id">
-          <st-select-course-category @change="onCourseTypeChange"/>
+          <st-select-course-category :value="info.category_id" @change="onCourseTypeChange"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -20,7 +21,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
           <input type="hidden" v-decorator="formRules.train_aim">
-          <st-select-training-aim @change="onTrainingAimChange"/>
+          <st-select-training-aim :value="info.train_aim|formatFilter" @change="onTrainingAimChange"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -81,7 +82,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.addCourse">保存，继续设置上课门店</st-button>
+          <st-button type="primary" @click="save" :loading="loading.updateCourse">保存</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -89,82 +90,48 @@
 </template>
 
 <script>
-import { AddService } from '../add.service'
+import { EditService } from '../edit.service'
 import { MessageService } from '@/services/message.service'
+import { RouteService } from '@/services/route.service'
 import StSelectCourseCategory from '@/views/fragments/course/select-course-category'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 import { UserService } from '@/services/user.service'
-const formRules = {
-  course_name: [
-    'course_name', {
-      rules: [{
-        required: true,
-        message: '请输入课程名称'
-      }, {
-        min: 4,
-        message: '支持输入4~30个字的课程名称'
-      }]
-    }
-  ],
-  category_id: [
-    'category_id', {
-      rules: [{
-        required: true,
-        message: '请选择课程类型'
-      }]
-    }
-  ],
-  train_aim: [
-    'train_aim', {
-      rules: [{
-        required: true,
-        message: '请选择训练目的'
-      }]
-    }
-  ],
-  strength_level: ['strength_level', {
-    rules: [{
-      required: true,
-      message: '请选择训练强度'
-    }]
-  }],
-  calories: ['calories'],
-  duration: [
-    'duration', {
-      rules: [{
-        required: true,
-        message: '请输入课程时长'
-      }]
-    }
-  ],
-  image: [
-    'image'
-  ],
-  description: [
-    'description', {
-      initialValue: ''
-    }
-  ]
-}
+import formRules from '../set.validate'
+
 export default {
   name: 'SetCourse',
   serviceInject() {
     return {
-      addService: AddService,
+      editService: EditService,
       messageService: MessageService,
-      userService: UserService
+      userService: UserService,
+      routeService: RouteService
     }
   },
   rxState() {
     const user = this.userService
     return {
-      loading: this.addService.loading$,
-      personalCourseEnums: user.personalCourseEnums$
+      loading: this.editService.loading$,
+      personalCourseEnums: user.personalCourseEnums$,
+      query: this.routeService.query$
     }
   },
   components: {
     StSelectCourseCategory,
     StSelectTrainingAim
+  },
+  filters: {
+    formatFilter(arr = []) {
+      return arr.map(v => `${v}`)
+    }
+  },
+  props: {
+    info: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
   },
   data() {
     return {
@@ -173,13 +140,18 @@ export default {
       fileList: []
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.setFieldsValue()
+    })
+  },
   methods: {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(() => {
-        const data = this.form.getFieldsValue()
+        const data = this.getData()
         console.log('step 1 data', data)
-        this.addService.addCourse(data).subscribe((res) => {
+        this.editService.updateCourse(data).subscribe((res) => {
           this.messageService.success({
             content: '提交成功'
           })
@@ -206,6 +178,28 @@ export default {
     },
     onCourseNameChange(e) {
       this.$emit('onCourseNameChange', e.target.value)
+    },
+    setFieldsValue() {
+      const info = this.info
+      this.form.setFieldsValue({
+        course_name: info.course_name,
+        category_id: info.category_id,
+        train_aim: info.train_aim,
+        strength_level: info.strength_level,
+        calories: info.calories,
+        duration: info.duration,
+        image: info.image,
+        description: info.description
+      })
+      if (this.info.image) {
+        this.fileList = [this.info.image]
+      }
+    },
+    getData() {
+      console.log('getData', this.query.id)
+      const data = this.form.getFieldsValue()
+      data.course_id = +this.query.id
+      return data
     }
   }
 }

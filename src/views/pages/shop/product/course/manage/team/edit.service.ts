@@ -3,11 +3,11 @@ import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import {
-  BrandTeamCourseApi,
+  ShopTeamCourseApi,
   GetCourseEditInput,
   SetCourseInput,
   SetShopInput
-} from '@/api/v1/course/team/brand'
+} from '@/api/v1/course/team/shop'
 
 interface EditState {
   info: Object
@@ -16,7 +16,7 @@ interface EditState {
 export class EditService extends Store<EditState> {
   state$: State<EditState>
   info$: Computed<Object>
-  constructor(protected courseApi: BrandTeamCourseApi) {
+  constructor(protected courseApi: ShopTeamCourseApi) {
     super()
     this.state$ = new State({
       info: {}

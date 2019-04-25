@@ -22,7 +22,7 @@
         <st-form-item label="上课教练">
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="formRules.coach_ids">
-            <select-coach @change="onSelectCoachChange"></select-coach>
+            <select-coach :shopIds="shopIds" @change="onSelectCoachChange"></select-coach>
           </div>
         </st-form-item>
       </a-col>
@@ -73,7 +73,9 @@ const formRules = {
     }
   ],
   shop_setting: [
-    'shop_setting'
+    'shop_setting', {
+      initialValue: '1'
+    }
   ],
   shop_ids: [
     'shop_ids', {
@@ -158,11 +160,11 @@ export default {
       })
     },
     onChange(e) {
-      console.log(typeof e.target.value)
       e.target.value === '2' ? this.isShow = true : this.isShow = false
     },
     onSelectShopChange(shopIds) {
       console.log('your selected', shopIds)
+      this.shopIds = shopIds
       this.form.setFieldsValue({
         shop_ids: shopIds
       })
