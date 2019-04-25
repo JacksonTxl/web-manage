@@ -81,7 +81,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.addCourse">保存，继续设置上课门店</st-button>
+          <st-button type="primary" @click="save" :loading="loading.addCourse">保存</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -94,58 +94,8 @@ import { MessageService } from '@/services/message.service'
 import StSelectCourseCategory from '@/views/fragments/course/select-course-category'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 import { UserService } from '@/services/user.service'
-const formRules = {
-  course_name: [
-    'course_name', {
-      rules: [{
-        required: true,
-        message: '请输入课程名称'
-      }, {
-        min: 4,
-        message: '支持输入4~30个字的课程名称'
-      }]
-    }
-  ],
-  category_id: [
-    'category_id', {
-      rules: [{
-        required: true,
-        message: '请选择课程类型'
-      }]
-    }
-  ],
-  train_aim: [
-    'train_aim', {
-      rules: [{
-        required: true,
-        message: '请选择训练目的'
-      }]
-    }
-  ],
-  strength_level: ['strength_level', {
-    rules: [{
-      required: true,
-      message: '请选择训练强度'
-    }]
-  }],
-  calories: ['calories'],
-  duration: [
-    'duration', {
-      rules: [{
-        required: true,
-        message: '请输入课程时长'
-      }]
-    }
-  ],
-  image: [
-    'image'
-  ],
-  description: [
-    'description', {
-      initialValue: ''
-    }
-  ]
-}
+import formRules from '../set.validate'
+
 export default {
   name: 'SetCourse',
   serviceInject() {

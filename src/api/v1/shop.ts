@@ -12,7 +12,7 @@ export class ShopApi extends Api {
     return this.http.put(`/v1/brand/shops/${id}`, { params })
   }
   getInfo(id: string) {
-    return this.http.get(`/v1/shops/${id}`, { mock: {} })
+    return this.http.get(`/v1/shops/${id}`)
   }
   getShopSettingStopInfo(id: string) {
     return this.http.get(`/v1/shops/setting/stop/${id}`, { mock: {} })
@@ -24,9 +24,12 @@ export class ShopApi extends Api {
     return this.http.get(`/v1/shop/services`)
   }
   getShopList(query: GetShopListInput = {}) {
-    query = Object.assign({
-      size: 99
-    }, query)
+    query = Object.assign(
+      {
+        size: 99
+      },
+      query
+    )
     return this.http.get('/v1/shops', { query })
   }
   /**
@@ -78,7 +81,7 @@ export interface WeekDay {
   end_time: string
 }
 export interface GetShopListInput {
-  page?: number,
+  page?: number
   size?: number
 }
 export interface ShopInput {

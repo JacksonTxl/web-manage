@@ -102,14 +102,13 @@
               <st-form-item class="page-content-card-support-sales" label="支持售卖门店" required>
                 <a-radio-group
                   @change="support_range"
-                  v-decorator="['cardData._support_sales',{validateTrigger: 'blur',initialValue:1,rules:[{validator:support_sales_list_validator}]}]">
+                  v-decorator="['cardData.support_sales',{validateTrigger: 'blur',initialValue:1,rules:[{validator:support_sales_list_validator}]}]">
                   <a-radio
                     v-for="item in support_sales_list"
-                    :key="item.key"
-                    :value="item.key"
-                  >{{item.label}}</a-radio>
+                    :key="+item[0]"
+                    :value="+item[0]">{{item[1]}}</a-radio>
                 </a-radio-group>
-                <div class="page-support-sales-shop" :class="{'page-lot-shop':cardData.consumption_range===2}" v-if="cardData._support_sales===2">
+                <div class="page-support-sales-shop" :class="{'page-lot-shop':cardData.consumption_range===2}" v-if="cardData.support_sales===2">
                   <p class="page-support-sales-shop__describe">设置支持此会员卡售卖场馆范围</p>
                   <select-shop @change="sales_shop_change"></select-shop>
                 </div>
@@ -250,11 +249,9 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
-    console.log(user)
     return {
       addLoading: this.addService.loading$,
-      deposit_card: user.depositeCardEnums$
+      deposit_card: this.userService.depositeCardEnums$
     }
   },
   bem: {
@@ -284,7 +281,6 @@ export default {
         // 支持入场门店
         consumer_shop_list: [],
         // 支持售卖场馆类型 1-全部门店 2-指定门店
-        _support_sales: 1,
         support_sales: 1,
         // 支持售卖门店
         sell_shop_list: [],
@@ -292,7 +288,7 @@ export default {
         start_time: '',
         end_time: '',
         // 结束时间面板是否显示
-        endOpen: false, // kael
+        endOpen: false,
         // 卡背景
         bg_image: {
           image_id: 0,
@@ -307,62 +303,19 @@ export default {
         // 备注
         description: '',
         // 是否支持转让
-        _is_transfer: false, // kael
+        _is_transfer: false,
         is_transfer: 0,
         // 转让单位
         transfer_unit: 2,
         // 转让手续费
         transfer_num: 0,
         // 售卖渠道
-        sell_list: [2], // kael
+        sell_list: [2],
         card_sell_type: 2
       },
-      nuit_list: [
-        {
-          value: 1,
-          label: '天'
-        },
-        {
-          value: 2,
-          label: '月'
-        },
-        {
-          value: 3,
-          label: '年'
-        }
-      ],
-      // 类目list
-      card_consumer_list: [
-        {
-          value: 1,
-          label: '购买单节团体课'
-        },
-        {
-          value: 2,
-          label: '购买单节私教课'
-        },
-        {
-          value: 3,
-          label: '购买周边商品'
-        },
-        {
-          value: 4,
-          label: '购买单节团体课'
-        },
-        {
-          value: 5,
-          label: '购买课程包'
-        }
-      ],
       // 售卖时间
       start_time: null,
-      end_time: null,
-      // 支持入场门店
-      admission_range_list: [
-        { value: 1, label: '单个门店' },
-        { value: 2, label: '多个门店' },
-        { value: 3, label: '全部门店' }
-      ]
+      end_time: null
     }
   },
   beforeCreate() {
@@ -373,7 +326,6 @@ export default {
     onHandleSubmit(e) {
       e.preventDefault()
       this.form.validateFieldsAndScroll((err, values) => {
-        console.log(123333)
         if (!err) {
           // 卡名称
           this.cardData.card_name = values.cardData.card_name
@@ -391,7 +343,12 @@ export default {
             this.cardData.consumer_shop_list = []
           }
           // 售卖门店
-          if (this.cardData.consumption_range === 2 && this.cardData._support_sales === 0) {
+          if (this.cardData.support_sales !== 2) {
+            // 不是多门店
+            this.cardData.sell_shop_list = []
+          }
+          // 售卖门店
+          if (this.cardData.consumption_range === 2 && this.cardData.support_sales === 3) {
             // 多门店 && 支持入场门店
             this.cardData.sell_shop_list = cloneDeep(this.cardData.consumer_shop_list)
           }
@@ -527,7 +484,7 @@ export default {
     },
     // 增加入场门店
     admission_range_change(data) {
-      // this.cardData.consumer_shop_list = cloneDeep(data)
+      // this.cardData.consumer_shop_list = cloneDeep(data)  kael
       this.cardData.consumer_shop_list = [1, 2]
     },
     // 入场门店支持方式change
@@ -535,17 +492,18 @@ export default {
       this.cardData.consumption_range = data.target.value
       // 入场门店变化时，售卖门店同时变化
       this.form.setFieldsValue({
-        'cardData._support_sales': 1
+        'cardData.support_sales': 1
       })
-      this.cardData._support_sales = 1
+      this.cardData.support_sales = 1
     },
     // 支持售卖门店change
     support_range(data) {
-      this.cardData._support_sales = data.target.value
+      this.cardData.support_sales = data.target.value
     },
     // 增加售卖门店
     sales_shop_change(data) {
-      this.cardData.sell_shop_list = cloneDeep(data)
+      // this.cardData.sell_shop_list = cloneDeep(data)  kael
+      this.cardData.sell_shop_list = [1]
     },
     // 售卖时间-start
     start_time_change(data) {
@@ -610,23 +568,13 @@ export default {
       handler() {
         this.form.resetFields(['cardData.transfer_num'])
       }
-    },
-    'cardData._support_sales': {
-      deep: true,
-      handler(newVal) {
-        this.cardData.support_sales = this.support_sales_list.filter(i => i.key === newVal)[0].value
-      }
     }
   },
   computed: {
     // 支持售卖门店
     support_sales_list() {
-      let arr = [
-        { key: 0, label: '支持消费门店', value: 2 },
-        { key: 1, label: '全部门店', value: 1 },
-        { key: 2, label: '指定门店', value: 2 }
-      ]
-      let index = this.cardData.consumption_range === 2 ? 999 : 0
+      let arr = cloneDeep(Object.entries(this.deposit_card.support_sales.value))
+      let index = this.cardData.consumption_range === 2 ? 999 : 2
       arr.splice(index, 1)
       return arr
     },

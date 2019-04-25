@@ -18,16 +18,6 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="22" :xs="22" :offset="1">
-        <st-form-item label="上课教练">
-          <div class="page-shop-coach-container-coach">
-            <input type="hidden" v-decorator="formRules.coach_ids">
-            <select-coach @change="onSelectCoachChange"></select-coach>
-          </div>
-        </st-form-item>
-      </a-col>
-    </a-row>
-    <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
           <st-button type="primary" @click="save" :loading="loading.setShop">保存，继续设置售卖价格</st-button>
@@ -40,7 +30,6 @@
 import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
-import SelectCoach from '@/views/fragments/coach/select-coach'
 import { UserService } from '@/services/user.service'
 const shopTableColumns = [{
   title: '省',
@@ -73,7 +62,9 @@ const formRules = {
     }
   ],
   shop_setting: [
-    'shop_setting'
+    'shop_setting', {
+      initialValue: '1'
+    }
   ],
   shop_ids: [
     'shop_ids', {
@@ -82,12 +73,6 @@ const formRules = {
         message: '请选择上课门店'
         // initialValue: []
       }]
-    }
-  ],
-  coach_ids: [
-    'coach_ids', {
-      rules: []
-      // initialValue: []
     }
   ]
 }
@@ -109,8 +94,7 @@ export default {
     }
   },
   components: {
-    SelectShop,
-    SelectCoach
+    SelectShop
   },
   props: {
     courseName: {
@@ -165,12 +149,6 @@ export default {
       console.log('your selected', shopIds)
       this.form.setFieldsValue({
         shop_ids: shopIds
-      })
-    },
-    onSelectCoachChange(coachIds) {
-      console.log('your selected', coachIds)
-      this.form.setFieldsValue({
-        coach_ids: coachIds
       })
     },
     setFieldsValue() {

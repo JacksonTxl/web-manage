@@ -7,14 +7,13 @@
       </div>
     </template>
     </a-table>
-    <modal-link tag="a" :to="{ name: 'coach-select', props: { list, selected }, on: {
+    <modal-link tag="a" :to="{ name: 'coach-select', props: { selected, shopIds }, on: {
       change: onSelectComplete } }">
       <st-button type="dashed" block class="mg-t8">添加</st-button>
     </modal-link>
   </div>
 </template>
 <script>
-import { SelectService } from './select-coach.service'
 const tableColumns = [{
   title: '教练',
   dataIndex: 'coach_name'
@@ -34,22 +33,23 @@ const tableColumns = [{
 }]
 export default {
   name: 'SelectCoach',
-  serviceInject() {
-    return {
-      selectService: SelectService
-    }
-  },
-  rxState() {
-    return {
-      list: this.selectService.list$
-    }
-  },
   props: {
     coachIds: {
       type: Array,
       default() {
         return []
       }
+    },
+    shopIds: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
+  watch: {
+    shopIds(val) {
+      console.log('shop change', val)
     }
   },
   data() {
@@ -60,7 +60,6 @@ export default {
     }
   },
   created() {
-    this.selectService.getCoachList().subscribe()
     this.selected = this.coachIds
     const tableData = this.getSelectedList(this.coachIds)
     this.tableData = tableData
@@ -73,7 +72,7 @@ export default {
       this.$emit('change', coachIds)
     },
     getSelectedList(coachIds = []) {
-      const list = this.list
+      const list = []
       const ret = []
       coachIds.forEach(id => {
         list.forEach(item => {

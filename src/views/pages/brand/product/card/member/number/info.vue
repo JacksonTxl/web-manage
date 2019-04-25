@@ -35,6 +35,23 @@
             </p>
           </div>
         </div>
+        <div :class="item('admission_range')" class="mb-24">
+          <!-- 支持入场范围 -->
+          <p class="mb-8">
+            <span class="label">支持入场门店：</span>
+            <span class="value">{{cardInfo.admission_range.name}}</span>
+          </p>
+          <st-container v-if="cardInfo.admission_range.id===2">
+            <a-table
+              size="middle"
+              rowKey="shop_id"
+              :columns="shop_columns"
+              :dataSource="cardInfo.admission_shop_list"
+              :pagination="false"
+              :scroll="{ y: 230 }"
+            />
+          </st-container>
+        </div>
         <div :class="item('support_sales')" class="mb-24">
           <!-- 售卖门店 -->
           <p class="mb-8">
@@ -47,23 +64,6 @@
               rowKey="shop_id"
               :columns="shop_columns"
               :dataSource="cardInfo.sell_shop_list"
-              :pagination="false"
-              :scroll="{ y: 230 }"
-            />
-          </st-container>
-        </div>
-        <div :class="item('admission_range')" class="mb-24">
-          <!-- 支持入场范围 -->
-          <p class="mb-8">
-            <span class="label">支持入场范围：</span>
-            <span class="value">{{cardInfo.admission_range.name}}</span>
-          </p>
-          <st-container v-if="cardInfo.admission_range.id===2">
-            <a-table
-              size="middle"
-              rowKey="shop_id"
-              :columns="shop_columns"
-              :dataSource="cardInfo.admission_shop_list"
               :pagination="false"
               :scroll="{ y: 230 }"
             />
@@ -131,14 +131,10 @@
 </template>
 <script>
 import { InfoService } from './info.service'
-import { imgFilter } from '@/filters/resource.filters'
 export default {
   name: 'BrandNumberCardInfo',
   bem: {
     item: 'brand-card'
-  },
-  filters: {
-    imgFilter
   },
   serviceInject() {
     return {

@@ -29,6 +29,12 @@
 </template>
 <script>
 import { RegionService } from '../../../services/region.service'
+import { MapService } from './map.service.ts'
+import { AppConfig } from '@/constants/config'
+function function1(data) {
+  console.log(4321)
+  console.log(data)
+}
 export default {
   bem: {
     map: 'st-modal-map'
@@ -36,7 +42,9 @@ export default {
   name: 'StModalMap',
   serviceInject() {
     return {
-      regionService: RegionService
+      regionService: RegionService,
+      appConfig: AppConfig,
+      mapService: MapService
     }
   },
   computed: {
@@ -115,7 +123,9 @@ export default {
   mounted() {
     this.init()
     this.getRegions()
-    console.log(this.st_city)
+    this.mapService.getLocation({ key: this.appConfig.QQ_LOCATION_KEY, callback: function1 }).subscribe(res => {
+      console.log(res)
+    })
   },
   methods: {
     init() {
@@ -123,7 +133,9 @@ export default {
       this.getRegions()
       this.st_address = this.address
     },
-
+    kael(data) {
+      console.log(data)
+    },
     handleOk() {
 
     },
