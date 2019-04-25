@@ -20,7 +20,7 @@
         </div>
         <div slot="prepend">
           <div style="background: #F7F9FC; padding: 24px">
-            <div>repend</div>
+            <div>prepend</div>
             <div>这里可以通过 slot name="prepend" 的方式，传入筛选项等内容，统称为 prepend</div>
           </div>
         </div>
