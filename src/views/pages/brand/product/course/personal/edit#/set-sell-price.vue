@@ -103,7 +103,6 @@ import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import { UserService } from '@/services/user.service'
-import { enumFilter } from '@/filters/other.filters'
 import { remove } from 'lodash-es'
 import SelectCoachLevel from '@/views/fragments/coach/select-coach-level'
 import { RuleConfig } from '@/constants/course/rule'
@@ -148,9 +147,6 @@ export default {
       personalCourseEnums: user.personalCourseEnums$,
       query: this.routeService.query$
     }
-  },
-  filters: {
-    enumFilter
   },
   props: {
     info: {

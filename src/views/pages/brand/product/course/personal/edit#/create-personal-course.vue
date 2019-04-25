@@ -111,7 +111,6 @@ import { RouteService } from '@/services/route.service'
 import StSelectCourseCategory from '@/views/fragments/course/select-course-category'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 import { UserService } from '@/services/user.service'
-import { enumFilter } from '@/filters/other.filters'
 import { RuleConfig } from '@/constants/course/rule'
 
 export default {
@@ -138,7 +137,6 @@ export default {
     StSelectTrainingAim
   },
   filters: {
-    enumFilter,
     formatFilter(arr = []) {
       return arr.map(v => `${v}`)
     }

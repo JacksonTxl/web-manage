@@ -43,7 +43,6 @@ import { RouteService } from '@/services/route.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import SelectCoach from '@/views/fragments/coach/select-coach'
 import { UserService } from '@/services/user.service'
-import { enumFilter } from '@/filters/other.filters'
 import { RuleConfig } from '@/constants/course/rule'
 
 const shopTableColumns = [{
@@ -86,9 +85,6 @@ export default {
   components: {
     SelectShop,
     SelectCoach
-  },
-  filters: {
-    enumFilter
   },
   props: {
     info: {

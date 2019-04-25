@@ -32,7 +32,6 @@ import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { UserService } from '@/services/user.service'
-import { enumFilter } from '@/filters/other.filters'
 import { RuleConfig } from '@/constants/course/rule'
 
 const shopTableColumns = [{
@@ -74,9 +73,6 @@ export default {
   },
   components: {
     SelectShop
-  },
-  filters: {
-    enumFilter
   },
   props: {
     info: {
