@@ -56,8 +56,7 @@ export class UserService extends Store<UserState> {
     this.menu$ = new Computed(this.state$.pipe(pluck('menu')))
     this.enums$ = new Computed(
       this.state$.pipe(
-        pluck('enums'),
-        map(state => cloneDeep(state))
+        pluck('enums')
       )
     )
     this.staffEnums$ = new Computed(this.enums$.pipe(pluck('staff')))
