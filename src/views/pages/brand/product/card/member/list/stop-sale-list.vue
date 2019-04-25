@@ -49,7 +49,7 @@
       @change="onChange"
       :pagination="pagination"
       @showSizeChange="onShowSizeChange"
-      :rowSelection="rowSelection"
+      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
     >
       <!-- 会员卡名称start -->
       <a
@@ -108,24 +108,10 @@ export default {
       cardsListInfo: this.bService.cardsListInfo$
     }
   },
-  computed: {
-    rowSelection() {
-      const { selectedRowKeys } = this
-      let self = this
-      return {
-        onChange: (selectedRowKeys, selectedRows) => {
-          console.log(
-            `selectedRowKeys: ${selectedRowKeys}`,
-            'selectedRows: ',
-            selectedRows
-          )
-          self.selectedRows = selectedRows
-        }
-      }
-    }
-  },
+  computed: {},
   data() {
     return {
+      selectedRowKeys: [],
       selectedRows: [],
       card_type: '所以类型',
       publish_channel: '所以渠道',
@@ -246,11 +232,18 @@ export default {
     this.getInfoData(this.cardsListInfo)
   },
   methods: {
+    onSelectChange(selectedRowKeys, selectedRows) {
+      console.log('selectedRowKeys changed: ', selectedRowKeys, selectedRows)
+      this.selectedRowKeys = selectedRowKeys
+      this.selectedRows = selectedRows
+    },
     onModalTest(data) {
       console.log('onModalTest')
       this.getListInfoFunc()
     },
     getInfoData(data) {
+      this.selectedRowKeys = []
+      this.selectedRows = []
       this.pagination = {
         pageSizeOptions: ['10', '20', '30', '40', '50'],
         current: data.page.current_page,

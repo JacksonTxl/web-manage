@@ -2,7 +2,7 @@
   <st-panel
     :tabs="[
           { label: '会员卡项', route: { name: 'brand-product-card-member-list-member-list' } },
-          { label: '门店售卖卡项', route: { name: 'brand-product-card-member-list-stop-sale-list' } }
+          { label: '门店上架卡项', route: { name: 'brand-product-card-member-list-stop-sale-list' } }
         ]"
     @change="handleChange"
   >
