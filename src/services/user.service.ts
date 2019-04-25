@@ -23,6 +23,9 @@ interface ModuleEnums {
     }
   }
 }
+/**
+ * 用户的全局初始信息
+ */
 
 @Injectable()
 export class UserService extends Store<UserState> {

@@ -31,7 +31,7 @@
             </p>
             <p :class="item('time')">
               <span class="label">售卖时间：</span>
-              <span class="value">{{cardInfo.start_time}} ~ {{cardInfo.end_time}}</span>
+              <span class="value">{{cardInfo.sale_time}}</span>
             </p>
           </div>
         </div>
@@ -39,14 +39,14 @@
           <!-- 售卖门店 -->
           <p class="mb-8">
             <span class="label">售卖门店：</span>
-            <span class="value">{{cardInfo.support_sales.name}}</span>
+            <span class="value">{{cardInfo.support_sale_shop}}</span>
           </p>
-          <st-container v-if="cardInfo.support_sales.id===2">
+          <st-container v-if="cardInfo.support_sales.id!==1">
             <a-table
               size="middle"
               rowKey="shop_id"
               :columns="shop_columns"
-              :dataSource="cardInfo.sell_shop_list"
+              :dataSource="cardInfo.support_sale_shop_list"
               :pagination="false"
               :scroll="{ y: 230 }"
             />
@@ -55,27 +55,20 @@
         <div :class="item('admission_range')" class="mb-24">
           <!-- 支持入场范围 -->
           <p class="mb-8">
-            <span class="label">支持入场范围：</span>
-            <span class="value">{{cardInfo.consumption_range.name}}</span>
+            <span class="label">支持消费范围：</span>
+            <span class="value">{{cardInfo.support_consume_shop}}</span>
           </p>
-          <st-container v-if="cardInfo.consumption_range===2">
+          <st-container v-if="cardInfo.consumption_range.id===2">
             <a-table
               size="middle"
               rowKey="shop_id"
               :columns="shop_columns"
-              :dataSource="cardInfo.admission_shop_list"
+              :dataSource="cardInfo.support_consume_shop_list"
               :pagination="false"
               :scroll="{ y: 230 }"
             />
           </st-container>
         </div>
-        <!-- <div :class="item('price_setting')" class="mb-24"> -->
-          <!-- 定价方式 -->
-          <!-- <p class="mb-8">
-            <span class="label">定价方式：</span>
-            <span class="value">{{cardInfo.price_setting.name}}</span>
-          </p> -->
-        <!-- </div> -->
         <div :class="item('price_gradient')" class="mb-24">
           <!-- 售卖定价 -->
           <p class="mb-8">
@@ -95,7 +88,7 @@
           <!-- 转让设置 -->
           <p class="mb-8">
             <span class="label">转让设置：</span>
-            <span class="value">{{cardInfo.is_transfer.name}}</span>
+            <span class="value">{{cardInfo.is_transfer}}</span>
           </p>
         </div>
         <div :class="item('card_introduction')" class="mb-24">
@@ -118,7 +111,6 @@
 </template>
 <script>
 import { InfoService } from './info.service'
-import { imgFilter } from '@/filters/resource.filters'
 export default {
   bem: {
     item: 'brand-card'
@@ -132,9 +124,6 @@ export default {
     return {
       cardInfo: this.infoService.cardInfo$
     }
-  },
-  filters: {
-    imgFilter
   },
   mounted() {
     console.log(this.cardInfo)
