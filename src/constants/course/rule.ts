@@ -1,14 +1,19 @@
 import { I18NService } from '@/services/i18n.service'
-import { State } from 'rx-state/src'
 import { Injectable } from 'vue-service-app'
 
 @Injectable()
 export class RuleConfig {
   constructor(private i18n: I18NService) { }
   /**
+   * 课程 id
+   */
+  get courseId() {
+    return ['course_id']
+  }
+  /**
    * 课程名称
    */
-  get courseCname() {
+  get courseName() {
     return [
       'course_name', {
         rules: [{
@@ -73,6 +78,9 @@ export class RuleConfig {
       }
     ]
   }
+  /**
+   * 参考定价
+   */
   get price() {
     return [
       'price', {
@@ -80,6 +88,9 @@ export class RuleConfig {
       }
     ]
   }
+  /**
+   * 课程有效期
+   */
   get effectiveUnit() {
     return [
       'effective_unit', {
@@ -88,14 +99,86 @@ export class RuleConfig {
       }
     ]
   }
+  /**
+   * 课程图片
+   */
   get image() {
+    return ['image']
+  }
+  /**
+   * 课程描述
+   */
+  get description() {
+    return ['description']
+  }
+  /**
+   * 上课门店类型（全店/指定门店）
+   */
+  get shopSetting() {
     return [
-      'image'
+      'shop_setting', {
+        initialValue: '1'
+      }
     ]
   }
-  get description() {
+  /**
+   * 上课门店 门店ids
+   */
+  get shopIds() {
     return [
-      'description'
+      'shop_ids', {
+        rules: [{
+          required: true,
+          message: '请选择上课门店'
+        }]
+      }
     ]
+  }
+  /**
+ * 上课教练 教练ids
+ */
+  get coachIds() {
+    return [
+      'coach_ids', {
+        rules: []
+      }
+    ]
+  }
+  /**
+   * 售价设置(售卖场馆自主定价/品牌统一定价)
+   */
+  get priceSetting() {
+    return [
+      'price_setting', {
+        initialValue: 1
+      }
+    ]
+  }
+  /**
+   * 课程定价
+   */
+  get priceGradient() {
+    return [
+      'price_gradient', {
+        rules: []
+      }
+    ]
+  }
+  /**
+   * 训练强度
+   */
+  get strengthLevel() {
+    return ['strength_level', {
+      rules: [{
+        required: true,
+        message: '请选择训练强度'
+      }]
+    }]
+  }
+  /**
+   * 卡路里
+   */
+  get calories() {
+    return ['calories']
   }
 }
