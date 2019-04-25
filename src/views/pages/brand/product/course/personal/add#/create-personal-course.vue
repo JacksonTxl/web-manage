@@ -164,14 +164,10 @@ const formRules = {
     }
   ],
   image: [
-    'image', {
-      initialValue: {}
-    }
+    'image'
   ],
   description: [
-    'description', {
-      initialValue: ''
-    }
+    'description'
   ]
 }
 export default {
