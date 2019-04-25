@@ -13,9 +13,9 @@
         <st-more-dropdown>
           <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staffId: record.staff_id || 1} }">设置薪资账户</modal-link></a-menu-item>
           <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-update-staff-position', props: {staffId: record.staff_id || 1} }">更改员工职位</modal-link></a-menu-item>
-          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-turnover', props: {staffId: record.staff_id || 1} } ">离职</modal-link></a-menu-item>
-          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-reinstatement', props: {staffId: record.staff_id || 1} }">复职</modal-link></a-menu-item>
-          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-delete', props: {staffId: record.staff_id || 1} }">删除</modal-link></a-menu-item>
+          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-turnover', props: {staff_id: record.staff_id || 1} } ">离职</modal-link></a-menu-item>
+          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-reinstatement', props: {staff_id: record.staff_id || 1} }">复职</modal-link></a-menu-item>
+          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-delete', props: {staff_id: record.staff_id || 1} }">删除</modal-link></a-menu-item>
         </st-more-dropdown>
     </div>
     <div slot="status" slot-scope="status">

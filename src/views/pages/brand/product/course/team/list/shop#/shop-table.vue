@@ -54,7 +54,7 @@ export default {
       console.log(val)
     },
     onClickDeleteTeamCourse() {
-
+      // this.
     },
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys

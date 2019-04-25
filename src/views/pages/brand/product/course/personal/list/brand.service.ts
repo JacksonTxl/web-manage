@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { BrandPersonalCourseApi, GetPersonalBrandCourseListInput, SetAvailableInput } from '@/api/v1/course/personal/brand'
+import { BrandPersonalCourseApi, GetPersonalBrandCourseListInput, SetAvailableInput, CoursePersonalSupportInput } from '@/api/v1/course/personal/brand'
 import { forkJoin } from 'rxjs'
 import { tap, pluck } from 'rxjs/operators'
 import { State, Computed, Effect } from 'rx-state/src'
@@ -8,40 +8,56 @@ import { CourseApi } from '@/api/v1/setting/course'
 import { ShopApi } from '@/api/v1/shop'
 export interface SetState {
   personalCourseList: any[],
-  categoryList: any[]
+  supportShopList: any[],
+  supportCoachList: any[]
 }
 @Injectable()
 export class BrandService extends Store<SetState> {
   state$: State<SetState>
   personalCourseList$: Computed<any>
-  categoryList$: Computed<any>
+  supportShopList$: Computed<any>
+  supportCoachList$: Computed<any>
   constructor(private personalApi: BrandPersonalCourseApi, private courseApi: CourseApi, private shopApi: ShopApi) {
     super()
     this.state$ = new State({
       personalCourseList: [],
-      categoryList: []
+      supportShopList: [],
+      supportCoachList: []
     })
     this.personalCourseList$ = new Computed(this.state$.pipe(pluck('personalCourseList')))
-    this.categoryList$ = new Computed(this.state$.pipe(pluck('categoryList')))
+    this.supportShopList$ = new Computed(this.state$.pipe(pluck('supportCourseList')))
+    this.supportCoachList$ = new Computed(this.state$.pipe(pluck('supportCoachList')))
   }
   SET_PERSONAL_COURSE_LIST(data: any) {
     this.state$.commit(state => {
       state.personalCourseList = data.list
     })
   }
-  SET_CATEGORY_LIST(data: any) {
+  SET_SUPPORT_COACH_LIST(data: any) {
     this.state$.commit(state => {
-      state.categoryList = data.list
+      state.supportCoachList = data.list
     })
   }
-  getCategoryList() {
-    return this.courseApi.getCourseCategoryList({})
+  SET_SUPPORT_SHOP_LIST(data: any) {
+    this.state$.commit(state => {
+      state.supportShopList = data.list
+    })
   }
   setAvailable(params: SetAvailableInput) {
     return this.personalApi.setAvailable(params)
   }
   deleteCourse(courseId: string) {
     return this.personalApi.deleteCourse(courseId)
+  }
+  getCoursePersonalSupportShops(query: CoursePersonalSupportInput) {
+    return this.personalApi.getCoursePersonalSupportShops(query).pipe(tap(res => {
+      this.SET_SUPPORT_SHOP_LIST(res)
+    }))
+  }
+  getCoursePersonalSupportCoaches(query: CoursePersonalSupportInput) {
+    return this.personalApi.getCoursePersonalSupportCoaches(query).pipe(tap(res => {
+      this.SET_SUPPORT_COACH_LIST(res)
+    }))
   }
   @Effect()
   getCoursePersonalBrandList(params: GetPersonalBrandCourseListInput) {
@@ -51,15 +67,7 @@ export class BrandService extends Store<SetState> {
       })
     )
   }
-  init(query: any) {
-    return forkJoin(this.getCoursePersonalBrandList(query), this.getCategoryList()).pipe(tap(state => {
-      this.SET_CATEGORY_LIST(state[1])
-    }))
-  }
-  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getCoursePersonalBrandList(to.query).subscribe(state$ => next())
-  }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.init(to.query).subscribe(state$ => next())
   }
 }

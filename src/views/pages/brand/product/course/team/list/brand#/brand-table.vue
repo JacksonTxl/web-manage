@@ -10,7 +10,7 @@
     >
     <a href="javascript:;" slot="course_name" slot-scope="text,record"  @click="onClickCourseInfo(record)">{{text}}</a>
     <div slot="is_available" slot-scope="is_available">
-        <span><a-badge :status="is_available.id === 1?'success':'error'" />{{is_available.name}}</span>
+        <span><a-badge :status="is_available === 1 ?'success':'error'" />{{is_available | enumFilter('personal_course.is_available')}}</span>
     </div>
     <a-rate slot="strength_level" slot-scope="strength_level" :defaultValue="strength_level" disabled />
     <div slot="action" slot-scope="text,record">
@@ -24,7 +24,7 @@
           </a-menu-item>
 
           <a-menu-item>
-            <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" @cancel="cancel" okText="确定" cancelText="取消">
+            <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" okText="确定" cancelText="取消">
               删除
             </a-popconfirm>
           </a-menu-item>
@@ -69,9 +69,10 @@ export default {
 
     },
     onConfirmDeleteCourse(record) {
-
+      this.$emit('delete-course', record)
     },
     onClickCourseInfo(val) {
+      console.log(val)
       this.$router.push({ name: 'brand-product-course-team-info', query: { courseId: val } })
     },
     onClickEditCourseInfo(val) {

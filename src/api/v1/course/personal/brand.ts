@@ -50,6 +50,25 @@ export class BrandPersonalCourseApi extends Api {
   deleteCourse(course_id: string) {
     return this.http.delete(`/v1/course/personal/brand/${course_id}`)
   }
+  /**
+   * 查询和这门课程关联的门店的详细信息
+   */
+  getCoursePersonalSupportShops(query: CoursePersonalSupportInput) {
+    return this.http.get('/v1/course/personal/support_shops', { query })
+  }
+  /**
+   * 查询和这门课程关联的门店的详细信息
+   */
+  getCoursePersonalSupportCoaches(query: CoursePersonalSupportInput) {
+    return this.http.get('/v1/course/personal/support_coachs', { query })
+  }
+}
+export interface CoursePersonalSupportInput{
+  course_id: number,
+  shop_id?: number,
+  page: number,
+  size: number,
+  is_Pagination?: number
 }
 export interface GetPersonalBrandCourseListInput {
   category_id?: number,

@@ -2,6 +2,12 @@ import { Api } from '@/api/api'
 
 export class BrandTeamCourseApi extends Api {
   /**
+   * 获取品牌私教课列表
+   */
+  getTeamCourseList(query: GetTeamBrandCourseListInput) {
+    return this.http.get('/v1/course/team/brand', { query })
+  }
+  /**
    * 添加品牌私教课
    */
   addCourse(params: SetCourseInput) {
@@ -12,6 +18,12 @@ export class BrandTeamCourseApi extends Api {
    */
   updateCourse(params: SetCourseInput) {
     return this.http.put(`/v1/course/team/brand/${params.course_id}`, { params })
+  }
+  /**
+   * 删除品牌私教课
+   */
+  deleteCourse(courseId: string) {
+    return this.http.delete(`/v1/course/team/brand/${courseId}`)
   }
   /**
    * 设置上课门店
@@ -26,7 +38,13 @@ export class BrandTeamCourseApi extends Api {
     return this.http.get(`/v1/course/team/brand/edit/${query.course_id}`)
   }
 }
-
+export interface GetTeamBrandCourseListInput {
+  category_id?: number,
+  course_name?: string,
+  page?: number,
+  size?: number,
+  is_available?: number
+}
 export interface SetCourseInput {
   /**
    * 课程id
