@@ -47,6 +47,7 @@ module.exports = {
       '/_api': {
         // target: 'http://10.10.31.181:10000',
         target: 'https://api-saas-dev.styd.cn',
+        // target: 'http://10.10.31.166:80',
         changeOrigin: true,
         pathRewrite: {
           '^/_api/': '/'
