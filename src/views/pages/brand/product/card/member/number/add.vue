@@ -1,7 +1,7 @@
 <template>
   <st-panel app class="page-brand-basic-card page-brand-add-number-card" initial>
     <div class="page-brand-basic-card-body">
-      <div class="page-preview">实时预览</div>
+      <div class="page-preview">实时预览{{member_card}}</div>
       <div class="page-content">
         <st-form :form="form" labelWidth="116px">
           <a-row :gutter="8" class="page-content-card-line__row">
@@ -26,10 +26,9 @@
                   @change="admission_range"
                   v-decorator="['cardData.admission_range',{validateTrigger: 'blur',initialValue:1,rules:[{validator:admission_shop_list_validator}]}]">
                   <a-radio
-                    v-for="item in admission_range_list"
-                    :key="item.value"
-                    :value="item.value"
-                  >{{item.label}}</a-radio>
+                    v-for="item in Object.entries(member_card.admission_range.value)"
+                    :key="+item[0]"
+                    :value="+item[0]">{{item[1]}}</a-radio>
                 </a-radio-group>
                 <div class="page-admission-range-shop" v-if="cardData.admission_range===2">
                   <p class="page-admission-range-shop__describe">设置支持此会员卡出入场馆范围</p>
@@ -46,10 +45,9 @@
                   v-show="cardData.admission_range===1"
                   v-decorator="['cardData.price_setting',{validateTrigger: 'blur',initialValue:1,rules:[{validator:price_gradient_list_validator}]}]">
                   <a-radio
-                    v-for="item in price_setting_list"
-                    :key="item.value"
-                    :value="item.value"
-                  >{{item.label}}</a-radio>
+                    v-for="item in Object.entries(member_card.price_setting.value)"
+                    :key="+item[0]"
+                    :value="+item[0]">{{item[1]}}</a-radio>
                 </a-radio-group>
                 <div class="page-price-setting-set" :class="{'brand-set': cardData.price_setting===1&&cardData.admission_range===1}" v-if="cardData.price_setting===1">
                   <a-table
@@ -149,14 +147,13 @@
               <st-form-item class="page-content-card-support-sales mt-4" label="支持售卖门店" required>
                 <a-radio-group
                   @change="support_range"
-                  v-decorator="['cardData._support_sales',{validateTrigger: 'blur',initialValue:1,rules:[{validator:support_sales_list_validator}]}]">
+                  v-decorator="['cardData.support_sales',{validateTrigger: 'blur',initialValue:1,rules:[{validator:support_sales_list_validator}]}]">
                   <a-radio
                     v-for="item in support_sales_list"
-                    :key="item.key"
-                    :value="item.key"
-                  >{{item.label}}</a-radio>
+                    :key="+item[0]"
+                    :value="+item[0]">{{item[1]}}</a-radio>
                 </a-radio-group>
-                <div class="page-support-sales-shop" :class="{'page-lot-shop':cardData.admission_range===2}" v-if="cardData._support_sales===2">
+                <div class="page-support-sales-shop" :class="{'page-lot-shop':cardData.admission_range===2}" v-if="cardData.support_sales===2">
                   <p class="page-support-sales-shop__describe">设置支持此会员卡售卖场馆范围</p>
                   <select-shop @change="sales_shop_change"></select-shop>
                 </div>
@@ -217,8 +214,7 @@
                     @change="transfter_change"
                     :disabled="!cardData._is_transfer"/>
                     <a-select v-model="cardData.unit" defaultValue="2" :disabled="!cardData._is_transfer">
-                      <a-select-option :value="1">%</a-select-option>
-                      <a-select-option :value="2">元</a-select-option>
+                      <a-select-option v-for="item in Object.entries(member_card.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
                     </a-select>
                   </a-input-group>
                 </div>
@@ -282,6 +278,7 @@
   </st-panel>
 </template>
 <script>
+import { UserService } from '@/services/user.service'
 import moment from 'moment'
 import { RuleConfig } from '@/constants/rule'
 import SelectShop from '@/views/fragments/shop/select-shop'
@@ -292,12 +289,14 @@ export default {
   serviceInject() {
     return {
       rules: RuleConfig,
-      addService: AddService
+      addService: AddService,
+      userService: UserService
     }
   },
   rxState() {
     return {
-      addLoading: this.addService.loading$
+      addLoading: this.addService.loading$,
+      member_card: this.userService.memberCardEnums$
     }
   },
   bem: {
@@ -323,7 +322,6 @@ export default {
         // 价格梯度
         price_gradient: [],
         // 支持售卖场馆类型 1-全部门店 2-指定门店
-        _support_sales: 1,
         support_sales: 1,
         // 支持售卖门店
         sell_shop_list: [],
@@ -331,16 +329,16 @@ export default {
         start_time: '',
         end_time: '',
         // 结束时间面板是否显示
-        endOpen: false, // kael
+        endOpen: false,
         // 是否支持转让
-        _is_transfer: false, // kael
+        _is_transfer: false,
         is_transfer: 0,
         // 转让单位
         unit: 2,
         // 转让手续费
         num: 0,
         // 售卖渠道
-        sell_list: [2], // kael
+        sell_list: [2],
         sell_type: 2,
         // 卡背景
         card_bg: {
@@ -363,17 +361,6 @@ export default {
       // 售卖时间
       start_time: null,
       end_time: null,
-      // 支持入场门店
-      admission_range_list: [
-        { value: 1, label: '单个门店' },
-        { value: 2, label: '多个门店' },
-        { value: 3, label: '全部门店' }
-      ],
-      // 价格设置
-      price_setting_list: [
-        { value: 1, label: '品牌统一定价' },
-        { value: 2, label: '场馆自主定价' }
-      ],
       nuit_list: [
         {
           value: 2,
@@ -476,13 +463,14 @@ export default {
             // 不是多门店
             this.cardData.admission_shop_list = []
           }
+          if (this.cardData.support_sales !== 2) {
+            this.cardData.sell_shop_list = []
+          }
           // 售卖门店
-          if (this.cardData.admission_range === 2 && this.cardData._support_sales === 0) {
+          if (this.cardData.admission_range === 2 && this.cardData.support_sales === 3) {
             // 多门店 && 支持入场门店
             this.cardData.sell_shop_list = cloneDeep(this.cardData.admission_shop_list)
           }
-          this.cardData.admission_shop_list = [1, 2]
-          this.cardData.sell_shop_list = [1, 2]
           // 价格梯度
           let p = []
           switch (this.cardData.price_setting) {
@@ -613,17 +601,17 @@ export default {
     },
     // 增加入场门店
     admission_range_change(data) {
-      // this.cardData.admission_shop_list = cloneDeep(data)
-      this.cardData.admission_shop_list = [1]
+      // this.cardData.admission_shop_list = cloneDeep(data) kael
+      this.cardData.admission_shop_list = [1, 2]
     },
     // 入场门店支持方式change
     admission_range(data) {
       this.cardData.admission_range = data.target.value
       // 入场门店变化时，售卖门店同时变化
       this.form.setFieldsValue({
-        'cardData._support_sales': 1
+        'cardData.support_sales': 1
       })
-      this.cardData._support_sales = 1
+      this.cardData.support_sales = 1
     },
     // 价格设置方式change
     price_range(data) {
@@ -688,11 +676,12 @@ export default {
     },
     // 支持售卖门店change
     support_range(data) {
-      this.cardData._support_sales = data.target.value
+      this.cardData.support_sales = data.target.value
     },
     // 增加售卖门店
     sales_shop_change(data) {
-      this.cardData.sell_shop_list = cloneDeep(data)
+      // this.cardData.sell_shop_list = cloneDeep(data) kael
+      this.cardData.sell_shop_list = [1]
     },
     // 售卖时间-start
     start_time_change(data) {
@@ -764,23 +753,13 @@ export default {
       handler() {
         this.form.resetFields(['cardData.num'])
       }
-    },
-    'cardData._support_sales': {
-      deep: true,
-      handler(newVal) {
-        this.cardData.support_sales = this.support_sales_list.filter(i => i.key === newVal)[0].value
-      }
     }
   },
   computed: {
     // 支持售卖门店
     support_sales_list() {
-      let arr = [
-        { key: 0, label: '支持入场门店', value: 2 },
-        { key: 1, label: '全部门店', value: 1 },
-        { key: 2, label: '指定门店', value: 2 }
-      ]
-      let index = this.cardData.admission_range === 2 ? 999 : 0
+      let arr = cloneDeep(Object.entries(this.member_card.support_sales.value))
+      let index = this.cardData.admission_range === 2 ? 999 : 2
       arr.splice(index, 1)
       return arr
     },

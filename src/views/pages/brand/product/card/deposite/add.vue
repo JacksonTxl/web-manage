@@ -249,10 +249,9 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     return {
       addLoading: this.addService.loading$,
-      deposit_card: user.depositeCardEnums$
+      deposit_card: this.userService.depositeCardEnums$
     }
   },
   bem: {

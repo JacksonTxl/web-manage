@@ -1,12 +1,11 @@
 import { Api } from '../api'
-import { Params } from './staff'
 
 export class CardsApi extends Api {
   /**
    * 会员卡新增,品牌
    */
-  addCardsBrand(params: CardsInput) {
-    return this.http.post('/v1/cards/brand', { params })
+  addCardBrand(params: CardsInput) {
+    return this.http.post('/v1/cards/member/brand', { params })
   }
   /**
    * 会员卡详情
@@ -18,13 +17,13 @@ export class CardsApi extends Api {
    * 会员卡编辑详情
    */
   getCardInfoBack(id: string) {
-    return this.http.get(`/v1/cards/back/${id}`)
+    return this.http.get(`/v1/cards/member/brand/back/${id}`)
   }
   /**
    * 会员卡编辑
    */
   editCard(params: CardsInput) {
-    return this.http.put('/v1/cards', { params })
+    return this.http.put('/v1/cards/member/brand', { params })
   }
   /**
    * 储值卡新增,品牌

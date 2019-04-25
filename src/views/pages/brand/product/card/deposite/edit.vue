@@ -216,7 +216,7 @@
           <a-row :gutter="8">
             <a-col :lg="20">
               <st-form-item class="page-content-card-submit" label=" ">
-                <st-button :loading="addLoading.addCard" type="primary" @click="onHandleSubmit">保 存</st-button>
+                <st-button :loading="addLoading.editCard" type="primary" @click="onHandleSubmit">保 存</st-button>
               </st-form-item>
             </a-col>
           </a-row>
