@@ -37,6 +37,13 @@ export class BrandTeamCourseApi extends Api {
   getCourseEdit(query: GetCourseEditInput) {
     return this.http.get(`/v1/course/team/brand/edit/${query.course_id}`)
   }
+  /**
+   *
+   * 获取团课课程详情
+   */
+  getTeamCourseInfo(course_id: string) {
+    return this.http.get(`/v1/course/team/brand/${course_id}`)
+  }
 }
 export interface GetTeamBrandCourseListInput {
   category_id?: number,
