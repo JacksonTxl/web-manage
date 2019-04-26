@@ -59,7 +59,7 @@ export class CardsApi extends Api {
    *获取卡列表
    */
   getCardsListA(query: any) {
-    return this.http.get('/v1/cards/member/brand', { query })
+    return this.http.get('/v1/cards/member/brand/shelf', { query })
   }
   /**
    *品牌会员卡停售原因
