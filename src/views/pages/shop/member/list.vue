@@ -34,7 +34,7 @@
                 v-if="expand"
                 :label-col="{span:2}"
                 :wrapper-col="{ span: 12 }"
-                label="Name"
+                label="入会时间："
               >
                 <a-range-picker @change="onChange"/>
               </a-form-item>
@@ -42,9 +42,13 @@
                 v-if="expand"
                 :label-col="{span:2}"
                 :wrapper-col="{ span: 12 }"
-                label="Name"
+                label="员工跟进"
               >
-                <a-range-picker @change="onChange"/>
+                <a-radio-group buttonStyle="solid" v-model="form.value">
+                  <a-radio-button value="a">全部</a-radio-button>
+                  <a-radio-button value="b">有</a-radio-button>
+                  <a-radio-button value="c">无</a-radio-button>
+                </a-radio-group>
               </a-form-item>
             </a-row>
             <a-row>
@@ -64,10 +68,42 @@
           </a-form>
         </div>
       </div>
+      <st-button type="primary" class="shop-member-list-button">
+        <a-icon type="plus"/>添加用户
+      </st-button>
+      <st-button class="shop-member-list-button">导入用户</st-button>
+      <st-button class="shop-member-list-button">加标签</st-button>
+      <st-button class="shop-member-list-button">分配员工</st-button>
+      <st-button class="shop-member-list-button">批量导出</st-button>
+
+      <st-table
+        class="mg-t24"
+        :columns="columns"
+        :alertSelection="{onReset:onSelectionReset}"
+        :rowSelection="{selectedRowKeys:selectedRowKeys,onChange:onSelectionChange}"
+        rowKey="id"
+        @change="onTableChange"
+        :dataSource="tableData"
+      >
+        <div slot="action" slot-scope="record">
+          <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
+          <a-divider type="vertical"></a-divider>
+          <a href="javascript:;" @click="infoFunc(text, record)">编辑</a>
+          <a-divider type="vertical"></a-divider>
+          <st-more-dropdown>
+            <a-menu-item>分配员工</a-menu-item>
+            <a-menu-item>绑实体卡</a-menu-item>
+            <a-menu-item>转店</a-menu-item>
+            <a-menu-item>冻结用户</a-menu-item>
+            <a-menu-item>解除微信绑定</a-menu-item>
+          </st-more-dropdown>
+        </div>
+      </st-table>
     </st-panel>
   </div>
 </template>
 <script>
+const tableData = new Array(60).fill(1).map((item, i) => ({ id: i, name: i }))
 export default {
   data() {
     return {
@@ -76,7 +112,22 @@ export default {
       form: {
         value: '',
         source: ''
-      }
+      },
+
+      tableData,
+      selectedRowKeys: [],
+      columns: [
+        { title: '人脸', dataIndex: 'id' },
+        { title: '姓名', dataIndex: 'name' },
+        { title: '手机号', dataIndex: 'name' },
+        { title: '用户等级', dataIndex: 'name' },
+        { title: '跟进销售', dataIndex: 'name' },
+        { title: '跟进教练', dataIndex: 'name' },
+        { title: '注册时间', dataIndex: 'name' },
+        { title: '成为会员时间', dataIndex: 'name' },
+        { title: '累计消费(元)', dataIndex: 'name' },
+        { title: '操作', width: 140, scopedSlots: { customRender: 'action' } }
+      ]
     }
   },
   computed: {},
@@ -87,7 +138,14 @@ export default {
     },
     toggle() {
       this.expand = !this.expand
-    }
+    },
+    onSelectionReset() {
+      this.selectedRowKeys = []
+    },
+    onSelectionChange(keys) {
+      this.selectedRowKeys = keys
+    },
+    onTableChange(pagination) {}
   }
 }
 </script>
