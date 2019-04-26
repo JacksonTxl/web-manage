@@ -5,14 +5,14 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程名称" required>
           <a-input placeholder="支持输入4~30个字的课程名称，中文占2个字符" maxlength="30"
-          v-decorator="formRules.course_name" @change="onCourseNameChange"/>
+          v-decorator="ruleConfig.courseName" @change="onCourseNameChange"/>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
-          <input type="hidden" v-decorator="formRules.category_id">
+          <input type="hidden" v-decorator="ruleConfig.categoryId">
           <st-select-course-category :value="info.category_id" @change="onCourseTypeChange"/>
         </st-form-item>
       </a-col>
@@ -20,7 +20,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
-          <input type="hidden" v-decorator="formRules.train_aim">
+          <input type="hidden" v-decorator="ruleConfig.trainAim">
           <st-select-training-aim :value="info.train_aim|formatFilter" @change="onTrainingAimChange"/>
         </st-form-item>
       </a-col>
@@ -28,14 +28,14 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="强度" required>
-          <a-rate v-decorator="formRules.strength_level"/>
+          <a-rate v-decorator="ruleConfig.strengthLevel"/>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="消耗卡路里" required>
-          <a-input-number :min="0" v-decorator="formRules.calories">
+          <a-input-number :min="0" v-decorator="ruleConfig.calories">
             <div slot="addonAfter" class="st-form-item-unit">Kcal/节</div>
           </a-input-number>
         </st-form-item>
@@ -44,7 +44,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程时长" required>
-          <a-input-number :min="0" v-decorator="formRules.duration">
+          <a-input-number :min="0" v-decorator="ruleConfig.duration">
             <div slot="addonAfter" class="st-form-item-unit">分钟</div>
           </a-input-number>
         </st-form-item>
@@ -55,7 +55,7 @@
         <st-form-item label="图片" >
           <div class="page-upload-container">
             <st-image-upload :list="fileList" @change="onImgChange"></st-image-upload>
-            <input type="hidden" v-decorator="formRules.image">
+            <input type="hidden" v-decorator="ruleConfig.image">
             <div class="page-course-photo-des mg-l16">
               <div class="page-course-item">
                 <div class="page-course-item-tip">1.</div>
@@ -73,7 +73,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程介绍">
-          <a-textarea type="textarea" v-decorator="formRules.description"
+          <a-textarea type="textarea" v-decorator="ruleConfig.description"
            :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧"
            maxlength="500"/>
         </st-form-item>
@@ -96,7 +96,7 @@ import { RouteService } from '@/services/route.service'
 import StSelectCourseCategory from '@/views/fragments/course/select-course-category'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 import { UserService } from '@/services/user.service'
-import formRules from '../set.validate'
+import { RuleConfig } from '@/constants/course/rule'
 
 export default {
   name: 'SetCourse',
@@ -105,7 +105,8 @@ export default {
       editService: EditService,
       messageService: MessageService,
       userService: UserService,
-      routeService: RouteService
+      routeService: RouteService,
+      ruleConfig: RuleConfig
     }
   },
   rxState() {
@@ -136,7 +137,6 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      formRules,
       fileList: []
     }
   },
