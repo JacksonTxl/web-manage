@@ -70,13 +70,13 @@ export class CardsApi extends Api {
   /**
    *会员卡售卖门店列表
    */
-  getCardsSaleStop(query: any) {
+  getCardsSaleShop(query: any) {
     return this.http.get(`/v1/cards/member/sale/shop`, { query })
   }
   /**
    *支持入场门店
    */
-  getCardsUseStop(query: any) {
+  getCardsUseShop(query: any) {
     return this.http.get(`/v1/cards/member/use/shop`, { query })
   }
   /**
