@@ -28,6 +28,9 @@ export default {
         size: this.size
       }
     }
+    console.log(this)
+    console.log('this.$props', this.$props)
+    console.log('this.$attrs', this.$attrs)
     return h(
       'a-button',
       {

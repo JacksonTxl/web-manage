@@ -2,7 +2,14 @@
   <div class="page-shop-sale-list-shop">
     <header>
       <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
-        <st-button type="primary">转入品牌团体课程库</st-button>
+        <st-button v-if="!this.selectedRowKeys.length" disabled>
+          转入品牌团体课程库
+        </st-button>
+        <modal-link
+        type="primary"
+        tag="st-button"
+        v-else
+        :to="{name: 'course-transfrom-brand-course', props:{coursIds: this.selectedRowKeys}}">转入品牌团体课程库</modal-link>
         <div>
           <div>
           <a-select class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onChange">
@@ -19,7 +26,7 @@
       </div>
     </header>
     <main class="page-shop-sale-list-shop__table mg-t8">
-      <team-table-shop :teamCourseList="teamCourseList"></team-table-shop>
+      <team-table-shop @delete-course="onDeleteCourse" @change="onChangeSelectedRowKeys" :teamCourseList="teamCourseList"></team-table-shop>
     </main>
   </div>
 </template>
@@ -49,7 +56,10 @@ export default {
   },
   data() {
     return {
+      disable: true,
+      selectedRowKeys: [],
       defaultShops: -1,
+      toRoute: {},
       courseStatus: [{ label: '所有状态', value: -1 }, { label: '有效', value: '1' }, { label: '无效', value: '0' }]
     }
   },
@@ -60,6 +70,15 @@ export default {
     TeamTableShop
   },
   methods: {
+    onChangeSelectedRowKeys(selectedRowKeys) {
+      console.log(selectedRowKeys)
+      this.selectedRowKeys = selectedRowKeys
+    },
+    onDeleteCourse(record) {
+      this.shopService.deleteCourse(record.id).subscribe(() => {
+        this.$router.push({ force: true })
+      })
+    },
     onChange() {
       this.$router.push({ query: { ...this.query, course_name: '' } })
     }
