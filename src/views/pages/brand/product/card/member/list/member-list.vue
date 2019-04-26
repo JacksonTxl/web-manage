@@ -393,7 +393,7 @@ export default {
     },
     // 发布渠道
     handleChange_publish_channel(value) {
-      this.getHeaders.publish_channel = this.publish_channel
+      this.getHeaders.publish_channel = value
       this.getListInfoFunc()
     },
     // 售卖渠道
@@ -410,7 +410,6 @@ export default {
         }
       })
       this.aService.getListInfo(obj).subscribe(state => {
-        console.log(state)
         self.getInfoData(state)
       })
     }
