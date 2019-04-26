@@ -10,7 +10,7 @@
     @change="change"
     ></st-map-button>
     <br>
-    <p v-for="(item,index) in Object.entries(update)" :key="`${index}update`">{{item[0]}}---{{item[1]}}</p>
+    <p v-for="(item,index) in Object.entries(update)" :key="index+`update`">{{item[0]}}---{{item[1]}}</p>
     <st-map-button
     :lat="add.lat"
     :lng="add.lng"
