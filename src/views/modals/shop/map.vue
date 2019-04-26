@@ -1,40 +1,32 @@
 <template>
-  <a-modal
-      :title="title"
-      :class="map()"
-      v-model="show"
-      :footer="null"
-      :width="484"
-      @ok="handleOk"
-    >
-      <div :class="map('search')">
-        <a-cascader :class="map('cascader')" :options="regions" :fieldNames="fieldNames" @change="onChange">
-          <a href="javascript:void(0)" :class="map('cascader__btn')">{{selectCity}}<st-icon type="down" size="12px" :class="map('icon')"></st-icon></a>
-        </a-cascader>
-        <a-input-search
-          placeholder="请输入街道、小区或商圈名称"
-          @search="onSearch"
-        />
-      </div>
-      <div :class="map('map')">
-        map
-      </div>
-      <div :class="map('address')">
-        <a-textarea placeholder="详细地址，例：16号楼5层502" v-model="st_address" :rows="3"/>
-      </div>
-      <div :class="map('button')">
-        <st-button type="primary">提交</st-button>
-      </div>
-    </a-modal>
+  <a-modal :title="title" :class="map()" v-model="show" :footer="null" :width="484" @ok="handleOk">
+    <div :class="map('search')">
+      <a-cascader
+        :class="map('cascader')"
+        :options="regions"
+        :fieldNames="fieldNames"
+        @change="onChange"
+      >
+        <a href="javascript:void(0)" :class="map('cascader__btn')">
+          {{selectCity}}
+          <st-icon type="down" size="12px" :class="map('icon')"></st-icon>
+        </a>
+      </a-cascader>
+      <a-input-search placeholder="请输入街道、小区或商圈名称" @search="onSearch"/>
+    </div>
+    <div :class="map('map')">map</div>
+    <div :class="map('address')">
+      <a-textarea placeholder="详细地址，例：16号楼5层502" v-model="st_address" :rows="3"/>
+    </div>
+    <div :class="map('button')">
+      <st-button type="primary">提交</st-button>
+    </div>
+  </a-modal>
 </template>
 <script>
 import { RegionService } from '../../../services/region.service'
 import { MapService } from './map.service.ts'
 import { AppConfig } from '@/constants/config'
-function function1(data) {
-  console.log(4321)
-  console.log(data)
-}
 export default {
   bem: {
     map: 'st-modal-map'
@@ -117,15 +109,16 @@ export default {
       regions: [],
       selectCity: '上海',
       PC: []
-
     }
   },
   mounted() {
     this.init()
     this.getRegions()
-    this.mapService.getLocation({ key: this.appConfig.QQ_LOCATION_KEY, callback: function1 }).subscribe(res => {
-      console.log(res)
-    })
+    this.mapService
+      .getLocation(`https://apis.map.qq.com/ws/location/v1/ip?output=jsonp&key=${this.appConfig.QQ_MAP_KEY}&callback=`)
+      .subscribe(res => {
+        console.log(res)
+      })
   },
   methods: {
     init() {
@@ -136,9 +129,7 @@ export default {
     kael(data) {
       console.log(data)
     },
-    handleOk() {
-
-    },
+    handleOk() {},
     onChange(data) {
       console.log(data)
     },

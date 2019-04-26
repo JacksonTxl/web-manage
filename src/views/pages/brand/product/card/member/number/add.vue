@@ -20,7 +20,7 @@
             </a-col>
           </a-row>
           <a-row :gutter="8">
-            <a-col :lg="22">
+            <a-col :lg="23">
               <st-form-item class="page-content-card-admission-range mt-4" label="支持入场门店" required>
                 <a-radio-group
                   @change="admission_range"
@@ -143,7 +143,7 @@
             </a-col>
           </a-row>
           <a-row :gutter="8">
-            <a-col :lg="22">
+            <a-col :lg="23">
               <st-form-item class="page-content-card-support-sales mt-4" label="支持售卖门店" required>
                 <a-radio-group
                   @change="support_range"
