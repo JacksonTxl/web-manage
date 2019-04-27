@@ -1,4 +1,4 @@
-import { Api } from '../../api'
+import { Api } from '@/api/api'
 const url = '/v1/setting/training'
 
 export class TrainingApi extends Api {

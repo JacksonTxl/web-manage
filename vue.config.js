@@ -47,9 +47,17 @@ module.exports = {
       '/_api': {
         // target: 'http://10.10.31.181:10000',
         target: 'https://api-saas-dev.styd.cn',
+        // target: 'http://10.10.31.166:80',
         changeOrigin: true,
         pathRewrite: {
           '^/_api/': '/'
+        }
+      },
+      '/_api_map_qq': {
+        target: 'https://apis.map.qq.com',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/_api_map_qq': '/'
         }
       }
     },
@@ -95,7 +103,7 @@ module.exports = {
       .end()
 
     // add themes entry config
-    Object.keys(buildConfig.themeConfig).forEach((themeName) => {
+    Object.keys(buildConfig.themeConfig).forEach(themeName => {
       config
         .entry(`theme-${themeName}`)
         .add(resolve(buildConfig.themeConfig[themeName]))

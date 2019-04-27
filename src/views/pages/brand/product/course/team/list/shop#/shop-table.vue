@@ -15,9 +15,14 @@
   <a href="javascript:;" class="mg-r8" @click="onClickCourseInfo(record)">详情</a>
   <a href="javascript:;" @click="onClickEditCourseInfo(record)">编辑</a>
   <st-more-dropdown style="margin-left: 12px;">
-    <a-menu-item>置为无效</a-menu-item>
-    <a-menu-item>恢复有效</a-menu-item>
-    <a-menu-item @click="onClickDeleteTeamCourse(record.course_id)">删除</a-menu-item>
+    <!-- <a-menu-item>置为无效</a-menu-item>
+    <a-menu-item>恢复有效</a-menu-item> -->
+
+    <a-menu-item>
+      <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" okText="确定" cancelText="取消">
+        删除
+      </a-popconfirm>
+    </a-menu-item>
   </st-more-dropdown>
 </div>
 </st-table>
@@ -53,11 +58,12 @@ export default {
     onClickEditCourseInfo(val) {
       console.log(val)
     },
-    onClickDeleteTeamCourse() {
-
+    onConfirmDeleteCourse(record) {
+      this.$emit('delete-course', record)
     },
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
+      this.$emit('change', selectedRowKeys)
     }
   }
 }

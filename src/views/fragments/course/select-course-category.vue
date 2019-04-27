@@ -1,24 +1,25 @@
 <template>
   <div>
     <a-select :defaultValue="value" placeholder="请选择课程类型" @change="change">
+      <a-select-option :value="-1">请选择课程类型</a-select-option>
       <a-select-option :value="item.id" v-for="item in list" :key="item.id">{{item.setting_name}}</a-select-option>
     </a-select>
   </div>
 </template>
 
 <script>
-import { SelectCourseTypeService } from './select-course-type.service'
+import { SelectCourseCategoryService } from './select-course-category.service'
 export default {
-  name: 'StSelectCourseType',
+  name: 'StSelectCourseCategory',
   serviceInject() {
     return {
-      selectCourseTypeService: SelectCourseTypeService
+      selectCourseCategoryService: SelectCourseCategoryService
     }
   },
   props: {
     value: {
       type: Number,
-      default: 0
+      default: -1
     }
   },
   data() {
@@ -28,11 +29,11 @@ export default {
   },
   rxState() {
     return {
-      list: this.selectCourseTypeService.list$
+      list: this.selectCourseCategoryService.list$
     }
   },
   created() {
-    this.selectCourseTypeService.getCourseTypeList().subscribe()
+    this.selectCourseCategoryService.getCourseCategoryList().subscribe()
   },
   methods: {
     change(val) {

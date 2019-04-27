@@ -19,6 +19,9 @@
         </div>
       </template>
     </div>
+    <div v-if="$slots.prepend" class="st-panel__prepend">
+      <slot name="prepend"></slot>
+    </div>
     <a-spin :spinning="loading">
       <div class="st-panel__body">
         <slot></slot>

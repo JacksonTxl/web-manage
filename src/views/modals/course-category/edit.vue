@@ -4,7 +4,7 @@
     v-model="show"
     @ok="onSubmit"
     @cancel="onCancel"
-    :confirmLoading="loading.updateCourseType"
+    :confirmLoading="loading.updateCourseCategory"
   >
     <div>
       <st-form :form="form">
@@ -82,7 +82,7 @@ export default {
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
         console.log('data', data)
-        this.editService.updateCourseType(data).subscribe(() => {
+        this.editService.updateCourseCategory(data).subscribe(() => {
           this.messageService.success({
             content: '编辑成功'
           })

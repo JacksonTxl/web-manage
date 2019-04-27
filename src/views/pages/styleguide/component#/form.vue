@@ -7,7 +7,7 @@
         <a-row :gutter="8">
           <a-col :span="7">Left</a-col>
           <a-col :span="14">
-            <st-form>
+            <st-form :form="form">
               <st-t3 class="mg-y32">基础设置</st-t3>
               <st-form-item label="会员卡类型">
                 <a-select placeholder="请输入会员卡类型">
@@ -48,6 +48,14 @@
                     <div class="sg-box" style="width:172px;height:94px"></div>
                   </a-col>
                 </a-row>
+              </st-form-item>
+              <st-t3 class="mg-y32">表单校验</st-t3>
+              <st-form-item label="课程名称" required>
+                <a-input placeholder="支持输入4~30个字的课程名称" maxlength="30"
+                  v-decorator="ruleConfig.courseName"/>
+              </st-form-item>
+              <st-form-item labelFix>
+                <st-button type="primary" @click="save">保存</st-button>
               </st-form-item>
             </st-form>
           </a-col>
@@ -175,3 +183,30 @@
     </section>
   </section>
 </template>
+
+<script>
+import { MessageService } from '@/services/message.service'
+import { RuleConfig } from '@/constants/course/rule'
+export default {
+  serviceInject() {
+    return {
+      messageService: MessageService,
+      ruleConfig: RuleConfig
+    }
+  },
+  data() {
+    return {
+      form: this.$form.createForm(this)
+    }
+  },
+  methods: {
+    save() {
+      this.form.validateFields().then(() => {
+        this.messageService.success({
+          content: '提交成功'
+        })
+      })
+    }
+  }
+}
+</script>

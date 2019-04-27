@@ -10,6 +10,23 @@
         </div>这是内容
       </st-panel>
     </section>
+    <section class="mg-t16 sg-app-content">
+      <st-panel class="mg-t16">
+        <div slot="title">
+          <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 290px;"/>
+        </div>
+        <div slot="actions">
+          <st-button type="primary">操作</st-button>
+        </div>
+        <div slot="prepend">
+          <div style="background: #F7F9FC; padding: 24px">
+            <div>prepend</div>
+            <div>这里可以通过 slot name="prepend" 的方式，传入筛选项等内容，统称为 prepend</div>
+          </div>
+        </div>
+        content
+      </st-panel>
+    </section>
     <section class="mg-t16 sg-app-content" style="height:400px">
       <st-panel app title="标题">这是一个全高的面板</st-panel>
     </section>

@@ -4,8 +4,8 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import {
   BrandPersonalCourseApi,
-  GetPersonalCourseEditInput,
-  SetPersonalCourseInput,
+  GetCourseEditInput,
+  SetCourseInput,
   SetShopInput,
   SetPriceInput
 } from '@/api/v1/course/personal/brand'
@@ -17,15 +17,15 @@ interface EditState {
 export class EditService extends Store<EditState> {
   state$: State<EditState>
   info$: Computed<Object>
-  constructor(protected personalApi: BrandPersonalCourseApi) {
+  constructor(protected courseApi: BrandPersonalCourseApi) {
     super()
     this.state$ = new State({
       info: {}
     })
     this.info$ = new Computed(this.state$.pipe(pluck('info')))
   }
-  getPersonalCourseEdit(query: GetPersonalCourseEditInput) {
-    return this.personalApi.getPersonalCourseEdit(query).pipe(
+  getCourseEdit(query: GetCourseEditInput) {
+    return this.courseApi.getCourseEdit(query).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.info = res.info
@@ -34,20 +34,20 @@ export class EditService extends Store<EditState> {
     )
   }
   @Effect()
-  updatePersonalCourse(params: SetPersonalCourseInput) {
-    return this.personalApi.updatePersonalCourse(params)
+  updateCourse(params: SetCourseInput) {
+    return this.courseApi.updateCourse(params)
   }
   @Effect()
   setShop(params: SetShopInput) {
-    return this.personalApi.setShop(params)
+    return this.courseApi.setShop(params)
   }
   @Effect()
   setPrice(params: SetPriceInput) {
-    return this.personalApi.setPrice(params)
+    return this.courseApi.setPrice(params)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     const course_id = to.meta.query.id || to.query.courseId
-    this.getPersonalCourseEdit({ course_id }).subscribe(() => {
+    this.getCourseEdit({ course_id }).subscribe(() => {
       next()
     }, () => {
       next(false)

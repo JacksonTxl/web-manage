@@ -2,22 +2,34 @@ import { Api } from '@/api/api'
 
 export class BrandTeamCourseApi extends Api {
   /**
+   * 获取品牌私教课列表
+   */
+  getTeamCourseList(query: GetTeamBrandCourseListInput) {
+    return this.http.get('/v1/course/team/brand', { query })
+  }
+  /**
    * 添加品牌私教课
    */
   addCourse(params: SetCourseInput) {
-    return this.http.post('/v1/course/team', { params })
+    return this.http.post('/v1/course/team/brand', { params })
   }
   /**
    * 编辑品牌私教课
    */
   updateCourse(params: SetCourseInput) {
-    return this.http.put(`/v1/course/team/${params.course_id}`, { params })
+    return this.http.put(`/v1/course/team/brand/${params.course_id}`, { params })
+  }
+  /**
+   * 删除品牌私教课
+   */
+  deleteCourse(courseId: string) {
+    return this.http.delete(`/v1/course/team/brand/${courseId}`)
   }
   /**
    * 设置上课门店
    */
   setShop(params: SetShopInput) {
-    return this.http.put(`/v1/course/team/set/shop/${params.course_id}`, { params })
+    return this.http.put(`/v1/course/team/brand/set/shop/${params.course_id}`, { params })
   }
   /**
    * 编辑品牌私教课回显详情
@@ -25,8 +37,21 @@ export class BrandTeamCourseApi extends Api {
   getCourseEdit(query: GetCourseEditInput) {
     return this.http.get(`/v1/course/team/brand/edit/${query.course_id}`)
   }
+  /**
+   *
+   * 获取团课课程详情
+   */
+  getTeamCourseInfo(course_id: string) {
+    return this.http.get(`/v1/course/team/brand/${course_id}`)
+  }
 }
-
+export interface GetTeamBrandCourseListInput {
+  category_id?: number,
+  course_name?: string,
+  page?: number,
+  size?: number,
+  is_available?: number
+}
 export interface SetCourseInput {
   /**
    * 课程id

@@ -2,15 +2,21 @@ import { Api } from '@/api/api'
 
 export class BrandPersonalCourseApi extends Api {
   /**
+   * 获取品牌私教课列表
+   */
+  getCourseList(query: GetPersonalBrandCourseListInput) {
+    return this.http.get('/v1/course/personal/brand', { query })
+  }
+  /**
    * 添加品牌私教课
    */
-  addPersonalCourse(params: SetPersonalCourseInput) {
+  addCourse(params: SetCourseInput) {
     return this.http.post('/v1/course/personal/brand', { params })
   }
   /**
    * 编辑品牌私教课
    */
-  updatePersonalCourse(params: SetPersonalCourseInput) {
+  updateCourse(params: SetCourseInput) {
     return this.http.put(`/v1/course/personal/brand/${params.course_id}`, { params })
   }
   /**
@@ -29,12 +35,54 @@ export class BrandPersonalCourseApi extends Api {
   /**
    * 编辑品牌私教课回显详情
    */
-  getPersonalCourseEdit(query: GetPersonalCourseEditInput) {
+  getCourseEdit(query: GetCourseEditInput) {
     return this.http.get(`/v1/course/personal/brand/edit/${query.course_id}`)
   }
+  /**
+   * 品牌私教课设置有效无效
+   */
+  setAvailable(params: SetAvailableInput) {
+    return this.http.put(`/v1/course/personal/brand/available/${params.course_id}`, { params })
+  }
+  /**
+   * 品牌私教课删除
+   */
+  deleteCourse(course_id: string) {
+    return this.http.delete(`/v1/course/personal/brand/${course_id}`)
+  }
+  /**
+   * 查询和这门课程关联的门店的详细信息
+   */
+  getCoursePersonalSupportShops(query: CoursePersonalSupportInput) {
+    return this.http.get('/v1/course/personal/support_shops', { query })
+  }
+  /**
+   * 查询和这门课程关联的门店的详细信息
+   */
+  getCoursePersonalSupportCoaches(query: CoursePersonalSupportInput) {
+    return this.http.get('/v1/course/personal/support_coachs', { query })
+  }
 }
-
+export interface CoursePersonalSupportInput{
+  course_id: number,
+  shop_id?: number,
+  page: number,
+  size: number,
+  is_Pagination?: number
+}
+export interface GetPersonalBrandCourseListInput {
+  category_id?: number,
+  course_name?: string,
+  page?: number,
+  size?: number
+}
+export interface SetAvailableInput {
+  course_id: string,
+  available: number
+}
 export interface SetPersonalCourseInput {
+}
+export interface SetCourseInput {
   /**
    * 课程id
    */
@@ -103,6 +151,6 @@ export interface SetPriceInput {
   price_gradient?: any[]
 }
 
-export interface GetPersonalCourseEditInput {
+export interface GetCourseEditInput {
   course_id: number
 }

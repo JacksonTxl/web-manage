@@ -17,7 +17,7 @@
         <router-link class="mg-l8" to="/shop/product/course/manage/team/add">添加门店团体课</router-link>
       </p>
       <p class="mg-t8">
-        <router-link to="/brand/setting/app/course-type/list">课程类型设置</router-link>
+        <router-link to="/brand/setting/app/course-category/list">课程类型设置</router-link>
         <router-link class="mg-l8" to="/brand/setting/app/coach-level/list">教练等级</router-link>
         <router-link class="mg-l8" to="/brand/setting/app/skillful/list">擅长项目</router-link>
         <router-link class="mg-l8" to="/brand/setting/app/training/list">训练目的</router-link>

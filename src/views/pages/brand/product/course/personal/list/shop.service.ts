@@ -24,13 +24,7 @@ export class ShopService implements RouteGuard {
       })
     )
   }
-  init() {
-
-  }
-  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
-
-  }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCourseListInShop({}).subscribe(state$ => next())
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.getCourseListInShop(to.query).subscribe(state$ => next())
   }
 }

@@ -1,12 +1,12 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
 import { State, Computed } from 'rx-state/src'
-import { TeamApi, GetTeamBrandCourseListInput } from '@/api/v1/course/team'
+import { BrandTeamCourseApi, GetTeamBrandCourseListInput } from '@/api/v1/course/team/brand'
 @Injectable()
 export class BrandService implements RouteGuard {
   state$: State<any>
   teamCourseList$: Computed<any>
-  constructor(private teamApi: TeamApi) {
+  constructor(private brandTeamCourseApi: BrandTeamCourseApi) {
     this.state$ = new State({
       teamCourseList: []
     })
@@ -17,19 +17,18 @@ export class BrandService implements RouteGuard {
       state.teamCourseList = data.list
     })
   }
+  deleteCourse(courseId: string) {
+    return this.brandTeamCourseApi.deleteCourse(courseId)
+  }
   getCourseTeamBrandList(query: any) {
-    return this.teamApi.getTeamCourseListInBrand(query).pipe(
+    return this.brandTeamCourseApi.getTeamCourseList(query).pipe(
       tap(res => {
         this.SET_TEAM_COURSE_LIST(res)
       })
     )
   }
-  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
-    const course_name = to.query.courseName
-    const is_available = to.query.isAvailable
-    this.getCourseTeamBrandList({ course_name, is_available }).subscribe(() => { next() })
-  }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCourseTeamBrandList({}).subscribe(state$ => { next() })
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+    console.log(to.query)
+    this.getCourseTeamBrandList(to.query).subscribe(state$ => { next() })
   }
 }

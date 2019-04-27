@@ -1,5 +1,5 @@
 import { State, Computed } from 'rx-state/src'
-import { TeamApi } from './../../../../../../api/v1/course/team'
+import { BrandTeamCourseApi } from './../../../../../../api/v1/course/team/brand'
 import { GetTeamBrandCourseListInput } from '@/api/v1/course/team'
 import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
@@ -10,7 +10,7 @@ export interface TeamCourseInfo {
 export class InfoService implements RouteGuard {
   state$: State<TeamCourseInfo>
   teamCourseInfo$: Computed<any>
-  constructor(private teamApi: TeamApi) {
+  constructor(private brandTeamCourseApi: BrandTeamCourseApi) {
     this.state$ = new State({
       teamCourseInfo: {}
     })
@@ -22,11 +22,12 @@ export class InfoService implements RouteGuard {
     })
   }
   getTeamCourseInfo(courseId: string) {
-    return this.teamApi.getTeamCourseInfo(courseId).pipe(tap(res => {
+    return this.brandTeamCourseApi.getTeamCourseInfo(courseId).pipe(tap(res => {
       this.SET_TEAM_COURSE_INFO(res)
     }))
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getTeamCourseInfo('1').subscribe(() => next())
+    const courseId = to.query.courseId as string
+    this.getTeamCourseInfo(courseId).subscribe(() => next())
   }
 }

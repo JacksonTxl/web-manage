@@ -2,14 +2,11 @@
   <st-form :form="form" class="page-set-sell-price" labelWidth="100px">
     <a-row :gutter="8">
       <a-col :lg="10" :offset="1">
-        <st-form-item v-show="false">
-          <input type="hidden" v-decorator="formRules.course_id">
-        </st-form-item>
         <st-form-item label="私教课程">
-          <a-input placeholder="课程名称" disabled v-decorator="formRules.course_name"/>
+          <a-input placeholder="课程名称" disabled v-decorator="ruleConfig.courseName"/>
         </st-form-item>
         <st-form-item label="售价设置" required>
-          <a-radio-group @change="onChange" v-decorator="formRules.price_setting">
+          <a-radio-group @change="onChange" v-decorator="ruleConfig.priceSetting">
             <a-radio :value="1">售卖场馆自主定价</a-radio>
             <a-radio :value="2">品牌统一定价</a-radio>
           </a-radio-group>
@@ -107,6 +104,8 @@ import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
 import { remove } from 'lodash-es'
 import SelectCoachLevel from '@/views/fragments/coach/select-coach-level'
+import { RuleConfig } from '@/constants/course/rule'
+
 const tableColumns = [{
   title: '价格等级',
   dataIndex: 'level_id',
@@ -129,41 +128,14 @@ const tableColumns = [{
   scopedSlots: { customRender: 'action' }
 }]
 
-const formRules = {
-  course_name: [
-    'course_name', {
-      rules: [{
-        required: true,
-        message: '请输入课程名称'
-      }, {
-        min: 4,
-        message: '支持输入4~30个字的课程名称'
-      }],
-      initialValue: 'XXXX'
-    }
-  ],
-  course_id: [
-    'course_id'
-  ],
-  price_setting: [
-    'price_setting', {
-      initialValue: 1
-    }
-  ],
-  price_gradient: [
-    'price_gradient', {
-      rules: []
-    }
-  ]
-}
-
 export default {
   name: 'SetSellPrice',
   serviceInject() {
     return {
       addService: AddService,
       messageService: MessageService,
-      userService: UserService
+      userService: UserService,
+      ruleConfig: RuleConfig
     }
   },
   rxState() {
@@ -190,7 +162,6 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      formRules,
       priceSetting: 1,
       tableColumns,
       tableData: [],
