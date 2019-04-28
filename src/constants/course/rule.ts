@@ -181,4 +181,10 @@ export class RuleConfig {
   get calories() {
     return ['calories']
   }
+  /**
+   * 售卖渠道
+   */
+  get saleType() {
+    return ['sale_type']
+  }
 }
