@@ -25,7 +25,6 @@
   &__map {
     height: 180px;
     margin-top: 16px;
-    outline: 1px solid grey;
   }
   &__address {
     margin-top: 16px;
@@ -35,4 +34,15 @@
     text-align: right;
 
   }
+  div[n=targetElement]~div[draggable=false]{
+    display: none;
+  }
+  div[n=targetElement]~div[onpositionupdate^=return]{
+    display: none;
+  }
+  // #mapcontainer {
+  //   .csssprite {
+  //     display: none;
+  //   }
+  // }
 }
