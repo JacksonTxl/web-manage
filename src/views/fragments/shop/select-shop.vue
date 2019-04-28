@@ -18,13 +18,13 @@ import { SelectShopService } from './select-shop.service'
 
 const shopTableColumns = [{
   title: '省',
-  dataIndex: 'province_name'
+  dataIndex: 'province'
 }, {
   title: '市',
-  dataIndex: 'city_name'
+  dataIndex: 'city'
 }, {
   title: '区',
-  dataIndex: 'district_name'
+  dataIndex: 'district'
 }, {
   title: '门店名称',
   dataIndex: 'shop_name'
