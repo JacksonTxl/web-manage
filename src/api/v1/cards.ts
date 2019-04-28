@@ -115,6 +115,12 @@ export class CardsApi extends Api {
   getCardsMemberShopShelfDown(params: any) {
     return this.http.put('/v1/cards/member/shop/shelf/down', { params })
   }
+  /***
+   *  品牌储值卡列表 /v1/cards/brand/deposit
+   */
+  getCardsBrandDeposit(query: any) {
+    return this.http.get(`/v1/cards/brand/deposit`, { query })
+  }
 }
 export interface CardsInput {
   [propName: string]: any
