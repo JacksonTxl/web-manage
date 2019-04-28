@@ -1,37 +1,24 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { ShopApi, ShopInput } from '@/api/v1/shop'
-import { Store } from '@/services/store'
-import { Computed, State, Effect } from 'rx-state'
-import { pluck, catchError } from 'rxjs/operators'
-interface ShopState {
-  serviceList: any
-}
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
+
 @Injectable()
-export class AddService extends Store<ShopState> implements RouteGuard {
-  state$: State<ShopState>
-  serviceList$: Computed<any>
-  constructor(private shopApi: ShopApi) {
-    super()
-    this.state$ = new State({
-      serviceList: []
-    })
-    this.serviceList$ = new Computed(this.state$.pipe(pluck('serviceList')))
-  }
+export class AddService implements RouteGuard {
+  serviceList$ = new State({})
+  loading$ = new State({})
+  constructor(private shopApi: ShopApi) {}
   getServiceList() {
-    return this.shopApi.getServiceList()
-  }
-  SET_SERVICE_LIST(list:any) {
-    this.state$.commit(state => {
-      state.serviceList = list
-    })
+    return this.shopApi.getServiceList().pipe(tap((res:any) => {
+      this.serviceList$.commit(() => res.services)
+    }))
   }
   @Effect()
   save(data: ShopInput) {
     return this.shopApi.add(data)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getServiceList().subscribe((res:any) => {
-      this.SET_SERVICE_LIST(res.services)
+    this.getServiceList().subscribe(() => {
       next()
     })
   }

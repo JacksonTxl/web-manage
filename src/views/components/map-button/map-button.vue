@@ -85,8 +85,14 @@ export default {
           city: this.st_city,
           district: this.st_district,
           address: this.address
+        },
+        on: {
+          ok: this.mapOk
         }
       })
+    },
+    mapOk(data) {
+      this.$emit('select', data)
     }
   }
 }
