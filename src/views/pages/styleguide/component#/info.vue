@@ -4,26 +4,29 @@
     <p>信息展示 默认使用两栏宽度 40 *2 +8 =88px作为label宽度</p>
     <section class="sg-app-content">
       <st-panel>
-        <a-row :gutter="8">
-          <a-col :offset="1" :lg="7">
+        <st-t4>基础信息</st-t4>
+        <a-row :gutter="24" class="mg-t16">
+          <a-col :lg="8">
             <st-info>
-              <st-info-item label="会员卡名称">万晋健身房年卡</st-info-item>
-              <st-info-item label="所属会员">会员名称</st-info-item>
-              <st-info-item label="允许转让">允许</st-info-item>
-              <st-info-item label="类型">会员期限卡</st-info-item>
-              <st-info-item label="手机号">13345667788</st-info-item>
-              <st-info-item label="转让手续费">5%</st-info-item>
+              <st-info-item label="员工邮箱">ST0000001@styd.cn</st-info-item>
+              <st-info-item label="专业">体育</st-info-item>
             </st-info>
           </a-col>
-          <a-col :offset="1" :lg="9">
+          <a-col :lg="8">
             <st-info>
-              <st-info-item label="剩余额度">180天</st-info-item>
-              <st-info-item label="物理ID">34453464355</st-info-item>
-              <st-info-item label="约课范围">
-                团体课 团体课 团体课 团体课 团体课 团体课 团体课 团体课 团体课
-                团体课 团体课 团体课 团体课 团体课 团体课 团体课 团体课 团体课
-                团体课 团体课 团体课
-              </st-info-item>
+              <st-info-item label="毕业时间">2018/01/01</st-info-item>
+            </st-info>
+          </a-col>
+          <a-col :lg="8">
+            <st-info>
+              <st-info-item label="学历">本科</st-info-item>
+            </st-info>
+          </a-col>
+        </a-row>
+        <a-row :gutter="24">
+          <a-col :lg="16">
+            <st-info>
+              <st-info-item label="文案比较长">这里文案如果比较长的话，占16/24栅格，后面8个栅格空着。这里文案如果比较长的话，占16/24栅格，后面8个栅格空着。这里文案如果比较长的话，占16/24栅格，后面8个栅格空着。这里文案如果比较长的话，占16/24栅格，后面8个栅格空着</st-info-item>
             </st-info>
           </a-col>
         </a-row>

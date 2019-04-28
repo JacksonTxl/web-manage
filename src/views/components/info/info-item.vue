@@ -1,7 +1,7 @@
 <template>
   <div class="st-info-item">
     <div class="st-info-item__label" :style="{ width: computedLabelWidth }">
-      {{ label }}
+      {{ label }}：
     </div>
     <div
       class="st-info-item__content"
@@ -40,10 +40,10 @@ export default {
   },
   computed: {
     computedLabelWidth() {
-      return this.labelWidth || this.stInfoConfig.labelWidth || '88px'
+      return this.labelWidth || this.stInfoConfig.labelWidth || 'auto'
     },
     computedLabelGutter() {
-      return this.labelGutter || this.stInfoConfig.labelGutter || '24px'
+      return this.labelGutter || this.stInfoConfig.labelGutter || 0
     }
   }
 }
