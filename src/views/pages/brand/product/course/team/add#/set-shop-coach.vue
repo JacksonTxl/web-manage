@@ -33,24 +33,6 @@ import SelectShop from '@/views/fragments/shop/select-shop'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
 
-const shopTableColumns = [{
-  title: '省',
-  dataIndex: 'province_name'
-}, {
-  title: '市',
-  dataIndex: 'city_name'
-}, {
-  title: '区',
-  dataIndex: 'district_name'
-}, {
-  title: '门店名称',
-  dataIndex: 'shop_name'
-}, {
-  title: '操作',
-  dataIndex: 'operation',
-  scopedSlots: { customRender: 'operation' }
-}]
-
 export default {
   name: 'SetShopCoach',
   serviceInject() {
