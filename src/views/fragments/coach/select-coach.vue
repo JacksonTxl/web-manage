@@ -56,11 +56,6 @@ export default {
       }
     }
   },
-  watch: {
-    shopIds(val) {
-      console.log('shop change', val)
-    }
-  },
   data() {
     return {
       tableColumns,
@@ -79,7 +74,6 @@ export default {
       this.$emit('change', coachIds)
     },
     getSelectedList(coachIds = []) {
-      console.log('get selected', coachIds)
       if (coachIds.length) {
         this.selectCoachService.getCoachBasic({
           coach_ids: coachIds
