@@ -11,7 +11,12 @@
       </st-panel>
     </section>
     <section class="mg-t16 sg-app-content">
-      <st-panel class="mg-t16">
+      <st-panel>
+        这是内容
+      </st-panel>
+    </section>
+    <section class="mg-t16 sg-app-content">
+      <st-panel>
         <div slot="title">
           <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 290px;"/>
         </div>

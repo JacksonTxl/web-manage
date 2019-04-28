@@ -25,17 +25,36 @@
   </a-modal>
 </template>
 <script>
+import { Updatepostion } from './update-staff-postiton.service'
 export default {
+  serviceInject() {
+    return {
+      updatepostion: Updatepostion
+    }
+  },
   name: 'UpdateStaffPosition',
   data() {
     return {
-      show: false
+      show: false,
+      formdata: null
+    }
+  },
+  props: {
+    staffId: {
+      type: Number,
+      default: -1
     }
   },
   methods: {
     onSubmit() {
       console.log('ok')
     }
+  },
+  mounted() {
+    this.updatepostion.updateStaffPostion(this.staffId).subscribe(res => {
+      this.formdata = res.position
+      console.log('==============', this.formdata)
+    })
   }
 }
 </script>
