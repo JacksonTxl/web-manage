@@ -38,6 +38,11 @@ export class ShopApi extends Api {
   getShopListTree() {
     return this.http.get('/v1/shops/list')
   }
+  getShopBasic(params: GetShopBasicInput) {
+    return this.http.post('/v1/shops/basic', {
+      params
+    })
+  }
 }
 
 export interface ShopImages {
@@ -141,4 +146,7 @@ export interface ShopInput {
    * 门店图片
    */
   shop_images?: ShopImages[]
+}
+export interface GetShopBasicInput {
+  shop_ids: number[]
 }

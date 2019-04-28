@@ -10,7 +10,7 @@
   >
     <section class="modal-card-batch-shelves-title">
       <div class="modal-card-batch-shelves-img">
-        <img style="width: 100%;" :src="getBatchShelvesData.card_bg.image_url" alt>
+        <!-- <img style="width: 100%;" :src="getBatchShelvesData.card_bg.image_url" alt> -->
       </div>
       <div class="modal-card-batch-shelves-info">
         <div class="modal-card-batch-shelves-info-term-card">

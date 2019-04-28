@@ -3,44 +3,47 @@
     <!-- <st-button type="primary">
       <a-icon type="plus"/>新增私教课程
     </st-button>-->
-    <modal-link
-      tag="a"
-      :to=" { name: 'card-all-lower-shelf',props:{a:selectedRows}, on:{done: onModalTest } }"
-      v-if="selectedRows.length >1"
-    >
-      <st-button style="margin-left:24px" type="danger">批量下架</st-button>
-    </modal-link>
+    <div style="overflow: hidden;">
+      <modal-link
+        tag="a"
+        :to=" { name: 'card-all-lower-shelf',props:{a:selectedRows}, on:{done: onModalTest } }"
+        v-show="selectedRows.length >1"
+      >
+        <st-button style="margin-left:24px" type="danger">批量下架</st-button>
+      </modal-link>
 
-    <div class="pages-brand-product-card-liet-stop-sale-list__box">
-      <a-select
-        class="pages-brand-product-card-liet-stop-sale-list__box-select"
-        v-model="card_type"
-        @change="handleChange_card_type"
-      >
-        <a-select-option value>所有类型</a-select-option>
+      <div class="pages-brand-product-card-liet-stop-sale-list__box">
+        <a-select
+          class="pages-brand-product-card-liet-stop-sale-list__box-select"
+          v-model="card_type"
+          @change="handleChange_card_type"
+        >
+          <a-select-option value>所有类型</a-select-option>
 
-        <a-select-option value="1">次卡</a-select-option>
-        <a-select-option value="2">期限卡</a-select-option>
-      </a-select>
-      <a-select
-        class="pages-brand-product-card-liet-stop-sale-list__box-select"
-        v-model="publish_channel"
-        @change="handleChange_publish_channel"
-      >
-        <a-select-option value>所有渠道</a-select-option>
-        <a-select-option value="1">品牌</a-select-option>
-        <a-select-option value="2">门店</a-select-option>
-      </a-select>
-      <a-select
-        class="pages-brand-product-card-liet-stop-sale-list__box-select"
-        @change="handleChange_sell_status"
-        v-model="sell_status"
-      >
-        <a-select-option value>所有门店</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
-        <a-select-option value="tom">Tom</a-select-option>
-      </a-select>
+          <a-select-option value="1">次卡</a-select-option>
+          <a-select-option value="2">期限卡</a-select-option>
+        </a-select>
+        <a-select
+          class="pages-brand-product-card-liet-stop-sale-list__box-select"
+          v-model="publish_channel"
+          @change="handleChange_publish_channel"
+        >
+          <a-select-option value>所有渠道</a-select-option>
+          <a-select-option value="1">品牌</a-select-option>
+          <a-select-option value="2">门店</a-select-option>
+        </a-select>
+        <a-select
+          class="pages-brand-product-card-liet-stop-sale-list__box-select"
+          @change="handleChange_sell_status"
+          v-model="sell_status"
+        >
+          <a-select-option value>所有门店</a-select-option>
+          <a-select-option value="lucy">Lucy</a-select-option>
+          <a-select-option value="tom">Tom</a-select-option>
+        </a-select>
+      </div>
     </div>
+
     <st-table
       rowKey="id"
       :columns="columns"
@@ -67,12 +70,12 @@
         <span v-else class="use_num">{{text}}</span>
       </a>
       <!-- 支持入场门店end -->
-      <a slot="support_sales.name" slot-scope="text,record" href="javascript:;">
+      <!-- <a slot="shop_name" slot-scope="text,record" href="javascript:;">
         <span v-if="text !=='0个门店'">
           <modal-link tag="a" :to="{ name: 'card-sale-stop' , props:{a: record.id}}">{{text}}</modal-link>
         </span>
         <span v-else class="use_num">{{text}}</span>
-      </a>
+      </a>-->
       <!-- 售卖门店 -->
       <!-- 售卖状态start -->
       <span slot="sell_time" slot-scope="text,record">{{record.start_time}}~{{record.end_time}}</span>
@@ -172,12 +175,13 @@ export default {
       columns: [
         {
           title: '售卖门店',
-          dataIndex: 'support_sales.name',
-          scopedSlots: { customRender: 'support_sales.name' }
+          dataIndex: 'shop_name',
+          scopedSlots: { customRender: 'shop_name' }
         },
         {
           title: '会员卡名称',
           dataIndex: 'card_name'
+          // scopedSlots: { customRender: 'card_name' }
         },
         {
           title: '类型',
@@ -286,7 +290,7 @@ export default {
     },
     // 发布渠道
     handleChange_publish_channel(value) {
-      this.getHeaders.publish_channel = this.pagination.value
+      this.getHeaders.publish_channel = value
       this.getListInfoFunc()
     },
     // 售卖渠道
@@ -297,6 +301,7 @@ export default {
     getListInfoFunc() {
       let self = this
       let obj = {}
+      console.log(self.getHeaders)
       Object.keys(self.getHeaders).map(item => {
         if (self.getHeaders[item] !== '') {
           obj[item] = self.getHeaders[item]

@@ -11,7 +11,7 @@
               :value="+index">{{item}}</a-radio>
           </a-radio-group>
           <div class="page-shop-coach-container-shop mg-t8" v-if="isShow">
-            <select-shop @change="onSelectShopChange"></select-shop>
+            <select-shop :shopIds="info.shop_ids" @change="onSelectShopChange"></select-shop>
             <input type="hidden" v-decorator="ruleConfig.shopIds">
           </div>
         </st-form-item>
