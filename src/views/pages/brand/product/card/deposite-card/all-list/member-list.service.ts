@@ -31,7 +31,6 @@ export class MemberListService extends Store<CardsListInfoState> {
   getCardsSaleStopReason(id: string) {
     return this.cardsApi.getCardsSaleStopReason(id)
   }
-  @Effect()
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getListInfo(to.query).subscribe(res => {
       this.SET_CARDS_LIST_INFO(res)

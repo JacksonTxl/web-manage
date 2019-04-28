@@ -165,9 +165,6 @@ export default {
       personalCourseEnums: user.personalCourseEnums$
     }
   },
-  created() {
-    console.log('c', this.personalCourseEnums)
-  },
   components: {
     SelectCoachLevel
   },
