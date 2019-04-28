@@ -2,10 +2,31 @@
   <st-form :form="form" class="page-set-sell-price" labelWidth="100px">
     <a-row :gutter="8">
       <a-col :lg="10" :offset="1">
+        {{personalCourseEnums}}
+        <!-- 课程名称 -->
         <st-form-item label="私教课程">
           <a-input placeholder="课程名称" disabled v-decorator="ruleConfig.courseName"/>
         </st-form-item>
-        <st-form-item label="售价设置" required>
+        <!-- 售卖渠道 -->
+        <st-form-item label="售卖渠道" v-decorator="ruleConfig.saleType">
+          <a-checkbox-group :options="saleTypeOptions" @change="onSaleTypeChange">
+            <a-checkbox v-for="(item, index) in personalCourseEnums.sell_type.value" :key="index" :value="index">
+              {{item}}
+            </a-checkbox>
+          </a-checkbox-group>
+        </st-form-item>
+        <!-- 课程有效期 -->
+        <st-form-item label="课有效期">
+          <a-input-number :min="0" v-decorator="ruleConfig.effectiveUnit">
+            <div slot="addonAfter" class="st-form-item-unit">天/节</div>
+          </a-input-number>
+        </st-form-item>
+      </a-col>
+    </a-row>
+    <a-row :gutter="8">
+      <a-col :lg="10" :xs="22" :offset="1">
+        <!-- 售价设置 -->
+        <st-form-item label="定价权限" required>
           <a-radio-group @change="onChange" v-decorator="ruleConfig.priceSetting">
             <a-radio :value="1">售卖场馆自主定价</a-radio>
             <a-radio :value="2">品牌统一定价</a-radio>
@@ -140,7 +161,6 @@ export default {
   },
   rxState() {
     const user = this.userService
-    console.log('sub', this.addService.loading$)
     return {
       loading: this.addService.loading$,
       personalCourseEnums: user.personalCourseEnums$
@@ -163,6 +183,13 @@ export default {
     return {
       form: this.$form.createForm(this),
       priceSetting: 1,
+      saleTypeOptions: [{
+        label: '线下售卖',
+        value: 1
+      }, {
+        label: '用户端售卖',
+        value: 2
+      }],
       tableColumns,
       tableData: [],
       priceGradient: []
@@ -213,8 +240,11 @@ export default {
         })
       })
     },
-    onChange(e) {
-      this.priceSetting = e.target.value
+    onChange() {
+
+    },
+    onSaleTypeChange(checkedValue) {
+      console.log('sale channel changed', checkedValue)
     },
     operation(type, key, record) {
       const newTableData = [...this.tableData]
