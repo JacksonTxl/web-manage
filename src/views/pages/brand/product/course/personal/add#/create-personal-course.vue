@@ -35,17 +35,6 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="是否支持在线购买" required>
-          <a-radio-group v-decorator="ruleConfig.isOnlineSale">
-            <a-radio v-for="(item, index) in personalCourseEnums.is_online_sale.value"
-              :key="+index" :value="+index">{{item}}
-            </a-radio>
-          </a-radio-group>
-        </st-form-item>
-      </a-col>
-    </a-row>
-    <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="参考定价">
           <a-input-number :min="0" v-decorator="ruleConfig.price">
             <div slot="addonAfter" class="st-form-item-unit">元/节</div>
