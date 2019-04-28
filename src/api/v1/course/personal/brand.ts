@@ -62,6 +62,12 @@ export class BrandPersonalCourseApi extends Api {
   getCoursePersonalSupportCoaches(query: CoursePersonalSupportInput) {
     return this.http.get('/v1/course/personal/support_coachs', { query })
   }
+  /**
+   * 获取私教课全局设置
+   */
+  getSetting() {
+    return this.http.get('/v1/course/personal/setting')
+  }
 }
 export interface CoursePersonalSupportInput{
   course_id: number,

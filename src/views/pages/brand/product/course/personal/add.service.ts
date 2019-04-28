@@ -25,4 +25,8 @@ export class AddService extends Store<AddState> {
   setPrice(params: SetPriceInput) {
     return this.courseApi.setPrice(params)
   }
+  @Effect()
+  getSetting() {
+    return this.courseApi.getSetting()
+  }
 }

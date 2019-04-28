@@ -109,7 +109,9 @@ export class RuleConfig {
    * 课程描述
    */
   get description() {
-    return ['description']
+    return ['description', {
+      initialValue: ''
+    }]
   }
   /**
    * 上课门店类型（全店/指定门店）
@@ -186,5 +188,21 @@ export class RuleConfig {
    */
   get saleType() {
     return ['sale_type']
+  }
+  /**
+   * 是否支持单节售卖
+   */
+  get singleSell() {
+    return ['single_sell', {
+      initialValue: 0
+    }]
+  }
+  /**
+   * 单节售卖价格
+   */
+  get singlePrice() {
+    return ['single_price', {
+      initialValue: ''
+    }]
   }
 }
