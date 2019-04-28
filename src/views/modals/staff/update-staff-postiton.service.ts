@@ -31,9 +31,4 @@ export class Updatepostion extends Store<SetState> {
     bindStaffPostion(id: string, params: object) {
       return this.staffapi.bindStaffPostion(id, params)
     }
-    protected SET_STAFF_BRND(data: SetState) {
-      this.state$.commit(state => {
-        state.formData = data
-      })
-    }
 }

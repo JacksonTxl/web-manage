@@ -332,7 +332,12 @@ export class StaffApi extends Api {
 
   // 提交更改员工职位
   bindStaffPostion(id: string, params: any) {
-    return this.http.put(`v1/staff/bind/position/${id}`, { params })
+    return this.http.put(`/v1/staff/bind/position/${id}`, { params })
+  }
+
+  // 查看员工详情
+  staffDetailInfo(id: string) {
+    return this.http.get(`/v1/staff/brand/${id}`)
   }
 }
 
