@@ -27,9 +27,13 @@ export class MemberListService extends Store<CardsListInfoState> {
   getListInfo(paramsObj: any) {
     return this.cardsApi.getCardsBrandDeposit(paramsObj)
   }
-
+  // 会员
   getCardsSaleStopReason(id: string) {
     return this.cardsApi.getCardsSaleStopReason(id)
+  }
+  // 储值卡
+  getCardsBrandDepositStop(id: string) {
+    return this.cardsApi.getCardsBrandDepositStop(id)
   }
   setCardsDepositBrandOnLine(paramsObj: any) {
     return this.cardsApi.setCardsDepositBrandOnLine(paramsObj)
@@ -41,10 +45,12 @@ export class MemberListService extends Store<CardsListInfoState> {
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo({ size: 10, page: 1 }).subscribe(res => {
-      console.log(res, '获取数据')
-      this.SET_CARDS_LIST_INFO(res)
-      next()
-    })
+    this.getListInfo(to.query ? to.query : { size: 10, page: 1 }).subscribe(
+      res => {
+        console.log(res, '获取数据')
+        this.SET_CARDS_LIST_INFO(res)
+        next()
+      }
+    )
   }
 }
