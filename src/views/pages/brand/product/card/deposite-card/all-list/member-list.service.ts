@@ -27,9 +27,12 @@ export class MemberListService extends Store<CardsListInfoState> {
   getListInfo(paramsObj: any) {
     return this.cardsApi.getCardsBrandDeposit(paramsObj)
   }
-  @Effect()
+
   getCardsSaleStopReason(id: string) {
     return this.cardsApi.getCardsSaleStopReason(id)
+  }
+  setCardsDepositBrandOnLine(paramsObj: any) {
+    return this.cardsApi.setCardsDepositBrandOnLine(paramsObj)
   }
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getListInfo(to.query).subscribe(res => {

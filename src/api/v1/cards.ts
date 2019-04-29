@@ -116,10 +116,52 @@ export class CardsApi extends Api {
     return this.http.put('/v1/cards/member/shop/shelf/down', { params })
   }
   /***
-   *  品牌储值卡列表 /v1/cards/brand/deposit
+   *  品牌储值卡列表
    */
   getCardsBrandDeposit(query: any) {
     return this.http.get(`/v1/cards/brand/deposit`, { query })
+  }
+  /***
+   *  储值卡消费门店列表
+   */
+  getCardsDepositConsumeShop(query: any) {
+    return this.http.get(`/v1/cards/deposit/consume/shop`, { query })
+  }
+  /***
+   *  储值卡卡售卖门店列表
+   */
+  getCardsDepositSaleShop(query: any) {
+    return this.http.get(`/v1/cards/deposit/sale/shop`, { query })
+  }
+  /***
+   *   储值卡停售
+   */
+  setCardsDepositStopSell(params: any) {
+    return this.http.put(`/v1/cards/deposit/stop/sell`, { params })
+  }
+  /***
+   *   删除储值卡
+   */
+  getCardsDeposit(id: string) {
+    return this.http.delete(`/v1/cards/brand/deposit/${id}`)
+  }
+  /**
+   * 品牌储值卡上架
+   */
+  setCardsDepositBrandOnLine(params: any) {
+    return this.http.put(`/v1/cards/deposit/brand/on/line`, { params })
+  }
+  /**
+   *  品牌门店上架储值卡列表
+   */
+  getCardsShopDeposit(query: any) {
+    return this.http.get(`/v1/cards/brand/deposit/shop`, { query })
+  }
+  /**
+   *  品牌储值卡下架
+   */
+  setCardsDepositBrandOffLine(params: any) {
+    return this.http.put(`/v1/cards/brand/deposit/offline`, { params })
   }
 }
 export interface CardsInput {

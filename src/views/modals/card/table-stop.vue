@@ -1,5 +1,11 @@
 <template>
-  <a-modal class="modal-card-table-stop" title="支持入场门店" @ok="save" v-model="show" :footer="null">
+  <a-modal
+    class="modal-card-table-stop"
+    :title="title?title :'支持入场门店'"
+    @ok="save"
+    v-model="show"
+    :footer="null"
+  >
     <st-table
       rowKey="id"
       :dataSource="table.list"
@@ -27,6 +33,9 @@ export default {
   props: {
     a: {
       type: Number
+    },
+    title: {
+      type: String
     }
   },
   data() {
@@ -69,12 +78,21 @@ export default {
   methods: {
     getListInfo(data) {
       let self = this
-      this.aService.getListInfo(data).subscribe(state => {
-        self.table.list = state.list
-        self.pagination.current = state.page.current_page
-        self.pagination.pageSize = state.page.size
-        self.pagination.total = state.page.total_counts
-      })
+      if (self.title) {
+        this.aService.getCardsDepositSaleShop(data).subscribe(state => {
+          self.table.list = state.list
+          self.pagination.current = state.page.current_page
+          self.pagination.pageSize = state.page.size
+          self.pagination.total = state.page.total_counts
+        })
+      } else {
+        this.aService.getListInfo(data).subscribe(state => {
+          self.table.list = state.list
+          self.pagination.current = state.page.current_page
+          self.pagination.pageSize = state.page.size
+          self.pagination.total = state.page.total_counts
+        })
+      }
     },
     save(e) {
       e.preventDefault()

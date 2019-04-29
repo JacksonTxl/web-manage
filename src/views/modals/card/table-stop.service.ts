@@ -28,4 +28,7 @@ export class TableStopService extends Store<CardsTableModelState> {
   getListInfo(paramsObj: any) {
     return this.cardsApi.getCardsUseShop(paramsObj)
   }
+  getCardsDepositSaleShop(paramsObj: any) {
+    return this.cardsApi.getCardsDepositSaleShop(paramsObj)
+  }
 }

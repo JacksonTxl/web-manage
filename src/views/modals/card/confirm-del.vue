@@ -24,7 +24,7 @@ export default {
     }
   },
   created() {
-    console.log(this.aService)
+    console.log(this.title)
     this.showDeleteConfirm()
   },
   methods: {
@@ -33,11 +33,19 @@ export default {
       let self = this
       this.$confirm({
         title: '确认要删除?',
-        content: `确认删除此${self.title.title}会员卡吗`,
+        content: `确认删除此${self.title.title}${
+          self.title.flag ? '储值卡' : '会员卡'
+        }吗`,
         onOk() {
-          self.aService.getListInfo(self.title.id).subscribe(state => {
-            self.$emit('del', true)
-          })
+          if (self.title.flag) {
+            self.aService.getCardsDeposit(self.title.id).subscribe(state => {
+              self.$emit('del', true)
+            })
+          } else {
+            self.aService.getListInfo(self.title.id).subscribe(state => {
+              self.$emit('del', true)
+            })
+          }
         },
         onCancel() {
           console.log('Cancel')

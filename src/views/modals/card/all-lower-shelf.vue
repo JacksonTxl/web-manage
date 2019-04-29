@@ -13,6 +13,9 @@ export default {
   props: {
     a: {
       type: Array
+    },
+    flag: {
+      type: Boolean
     }
   },
   data() {
@@ -37,11 +40,17 @@ export default {
       console.log(data)
       this.$confirm({
         title: '批量下架',
-        content: `确定下架所选的${data.card_shop.length}张会员卡吗？`,
+        content: `确定下架所选的${data.card_shop.length}张${self.flag ? '储值卡' : '会员卡'}吗？`,
         onOk() {
-          self.aService.getListInfo(data).subscribe(state => {
-            self.$emit('done', true)
-          })
+          if (self.flag) {
+            self.aService.setCardsDepositBrandOffLine(data).subscribe(state => {
+              self.$emit('done', true)
+            })
+          } else {
+            self.aService.getListInfo(data).subscribe(state => {
+              self.$emit('done', true)
+            })
+          }
         },
         onCancel() {
           console.log('Cancel')

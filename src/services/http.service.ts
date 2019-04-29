@@ -134,12 +134,12 @@ export class HttpService {
   private ajaxResponseHandler(source$: Observable<any>) {
     return source$.pipe(
       tap(userResponse => {
-        ;['code', 'msg', 'data'].forEach(filed => {
+        ['code', 'data'].forEach(filed => {
           if (
             userResponse.status === 200 &&
             userResponse.response[filed] === undefined
           ) {
-            console.warn(
+            console.error(
               `[httpService] response field [${filed}] not found in Api[${
                 userResponse.request.url
               }]`
