@@ -6,30 +6,21 @@
     <div class="pages-brand-product-card-list-member-list__box">
       <a-select
         class="pages-brand-product-card-list-member-list__box-select"
-        v-model="card_type"
-        @change="handleChange_card_type"
-      >
-        <a-select-option :value="-1">所有类型</a-select-option>
-        <a-select-option :value="1">次卡</a-select-option>
-        <a-select-option :value="2">期限卡</a-select-option>
-      </a-select>
-      <a-select
-        class="pages-brand-product-card-list-member-list__box-select"
         v-model="publish_channel"
         @change="handleChange_publish_channel"
       >
-        <a-select-option :value="-1">所有渠道</a-select-option>
-        <a-select-option :value="1">品牌</a-select-option>
-        <a-select-option :value="2">门店</a-select-option>
+        <a-select-option value>所有渠道</a-select-option>
+        <a-select-option value="1">品牌</a-select-option>
+        <a-select-option value="2">门店</a-select-option>
       </a-select>
       <a-select
         class="pages-brand-product-card-list-member-list__box-select"
         @change="handleChange_sell_status"
         v-model="sell_status"
       >
-        <a-select-option :value="-1">所有售卖状态</a-select-option>
-        <a-select-option :value="1">可售卖</a-select-option>
-        <a-select-option :value="2">不可售卖</a-select-option>
+        <a-select-option value>所有售卖状态</a-select-option>
+        <a-select-option value="1">可售卖</a-select-option>
+        <a-select-option value="2">不可售卖</a-select-option>
       </a-select>
     </div>
     <st-table
@@ -49,6 +40,9 @@
         @click="memberFun(text,record)"
       >{{text}}</a>
       <!-- 储值卡名称end -->
+      <!-- shelf_statu上架状态 -->
+      <span slot="shelf_statu" slot-scope="text" href="javascript:;">{{text}}</span>
+      <!-- shelf_statu上架状态 -->
       <span
         slot="num"
         slot-scope="text,record"
@@ -61,33 +55,44 @@
       >{{text.length > 1? `${text[0]}-${text[1]}`:`${text[0]}`}}</span>
 
       <!-- 支持入场门店start -->
-      <!-- <a slot="admission_range.name" slot-scope="text,record" href="javascript:;">
-        <span v-if="text !=='单门店'">
-          <modal-link tag="a" :to="{ name: 'card-table-stop' , props:{a: record.id}}">{{text}}</modal-link>
+      <a slot="support_sales" slot-scope="text,record" href="javascript:;">
+        <span v-if="text !=='全部场馆'">
+          <modal-link
+            tag="a"
+            :to="{ name: 'card-table-stop' , props:{a: record.id,title:'支持售卖门店'}}"
+          >{{text}}</modal-link>
         </span>
         <span v-else class="use_num">{{text}}</span>
-      </a>-->
+      </a>
 
       <!-- 支持入场门店end -->
-      <!-- <a slot="support_sales.name" slot-scope="text,record" href="javascript:;">
-        <span v-if="text !=='0个门店'">
-          <modal-link tag="a" :to="{ name: 'card-sale-stop' , props:{a: record.id}}">{{text}}</modal-link>
+
+      <a slot="consumption_range" slot-scope="text,record" href="javascript:;">
+        <span v-if="text !=='单场馆'">
+          <modal-link
+            tag="a"
+            :to="{ name: 'card-sale-stop' , props:{a: record.id,title:'支持消费门店'}}"
+          >{{text}}</modal-link>
         </span>
         <span v-else class="use_num">{{text}}</span>
-      </a>-->
+      </a>
+
+      <!-- start 发布渠道-->
+      <span slot="publish_channel" slot-scope="text" href="javascript:;">{{text?'品牌':'门店'}}</span>
+      <!-- end 发布渠道-->
       <!-- 售卖状态start -->
-      <!-- <a
+      <a
         slot="sell_status"
         slot-scope="text,record"
         href="javascript:;"
         @click="sellStatus(text,record)"
       >
         <span
-          v-if="text.name ==='可售卖'"
+          v-if="record.shelf_status ==='可售'"
           class="pages-brand-product-card-list-member-list__marketable"
         ></span>
-        <span v-if="text.id ===2" class="pages-brand-product-card-list-member-list__stopSell"></span>
-        {{text.name}}
+        <span v-else class="pages-brand-product-card-list-member-list__stopSell"></span>
+        {{record.shelf_status}}
         <a-popover
           :title="popoverTitle"
           trigger="click"
@@ -98,27 +103,16 @@
           <template slot="content">
             <p>{{popoverContent}}</p>
           </template>
-          <a-icon type="exclamation-circle" v-if="text.id ===2"/>
+          <a-icon type="exclamation-circle" v-if="record.shelf_status !=='可售'"/>
         </a-popover>
-      </a>-->
+      </a>
       <!-- 售卖状态end -->
       <!-- 操作end -->
-      <!-- <div slot="action" slot-scope="text, record">
+      <div slot="action" slot-scope="text, record">
         <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
         <a-divider type="vertical"></a-divider>
-        <a href="javascript:;" v-if="record.sell_status.name === '可售卖'">
-          <modal-link
-            tag="a"
-            :to="{ name: 'card-batch-shelves' ,props:{a:record}, on:{done: onModalTest }  }"
-          >上架</modal-link>
-        </a>
-        <a href="javascript:;" v-if="record.sell_status.id === 2">
-          <modal-link
-            tag="a"
-            :to=" { name: 'card-recovery-sell', props:{a:record,time:cardsListInfo.time}, on:{done: onModalTest } }"
-          >恢复售卖</modal-link>
-        </a>
-        <template v-if="record.sell_status.name === '可售卖'">
+        <a href="javascript:;" @click="upperShelf(text, record)">上架</a>
+        <template>
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
             <a-menu-item>编辑</a-menu-item>
@@ -128,15 +122,15 @@
                 :to=" { name: 'card-halt-the-sales', props:{a:record.id}, on:{done: onModalTest }}"
               >停售</modal-link>
             </a-menu-item>
-            <a-menu-item v-if=" !(record.shelf_upper || record.shelf_lower)">
+            <a-menu-item>
               <modal-link
                 tag="a"
-                :to=" { name: 'card-confirm-del', props:{title: {title:record.card_name,id:record.id}}, on:{del: onModalTest }}"
+                :to=" { name: 'card-confirm-del', props:{title: {title:record.card_name,id:record.id,flag:true}}, on:{del: onModalTest }}"
               >删除</modal-link>
             </a-menu-item>
           </st-more-dropdown>
         </template>
-      </div>-->
+      </div>
       <!-- 操作end -->
     </st-table>
   </div>
@@ -159,16 +153,14 @@ export default {
     return {
       popoverTitle: '',
       popoverContent: '',
-      card_type: '所以类型',
       publish_channel: '所有渠道',
       sell_status: '所有售卖状态',
       getHeaders: {
         current_page: '',
         size: '',
-        card_type: -1,
-        publish_channel: -1,
+        publish_channel: '',
         card_name: '',
-        sell_status: -1
+        sell_status: ''
       },
       pagination: {
         pageSizeOptions: ['10', '20', '30', '40', '50'],
@@ -176,45 +168,7 @@ export default {
         pageSize: 10,
         total: 50
       },
-
-      data: [
-        {
-          id: 1,
-          brand_id: 1,
-          shop_id: 1,
-          card_name: '次卡',
-          price_gradient: [20000, 40000],
-          time_gradient: '100次~200次',
-          card_type: {
-            id: 1,
-            name: '次卡'
-          },
-          publish_channel: {
-            id: 1,
-            name: '品牌'
-          },
-          admission_range: {
-            id: 2,
-            name: '多门店 (共3家)'
-          },
-          price_setting: {
-            id: 1,
-            name: '统一定价'
-          },
-          support_sales: {
-            id: 2,
-            name: '3个门店'
-          },
-          sell_status: {
-            id: 1,
-            name: '可售卖'
-          },
-          start_time: '1970-01-01',
-          end_time: '1970-01-01',
-          shelf_upper: 0,
-          shelf_lower: 2
-        }
-      ],
+      data: [],
       columns: [
         {
           title: '储值卡名称',
@@ -229,49 +183,48 @@ export default {
         {
           title: '储值金额',
           dataIndex: 'card_price',
-          sorter: (a, b) => {
-            return a - b
-          }
+          sorter: (a, b) => a.card_price - b.card_price
         },
         {
           title: '售卖价格',
           dataIndex: 'sell_price',
-          sorter: (a, b) => {
-            let A = a.card_type.name
-            let B = b.card_type.name
-            if (A < B) {
-              return -1
-            }
-            if (A > B) {
-              return 1
-            }
-            return 0
-          }
+          sorter: (a, b) => a.sell_price - b.sell_price
+        },
+        {
+          title: '支持售卖门店',
+          dataIndex: 'support_sales',
+          scopedSlots: { customRender: 'support_sales' }
+        },
+        {
+          title: '支持消费门店',
+          dataIndex: 'consumption_range',
+          scopedSlots: { customRender: 'consumption_range' }
+        },
+        {
+          title: '支持售卖时间',
+          dataIndex: 'sell_time'
+        },
+        {
+          title: '上架门店数',
+          dataIndex: 'upper_shelf_num',
+          sorter: (a, b) => a.upper_shelf_num - b.upper_shelf_num
         },
         // {
-        //   title: '支持售卖门店()',
-        //   dataIndex: 'admission_range.name',
-        //   scopedSlots: { customRender: 'admission_range.name' }
+        //   title: '下架门店数',
+        //   dataIndex: 'upper_shelf_num',
+        //   sorter: (a, b) => a.upper_shelf_num - b.upper_shelf_num
         // },
-        // {
-        //   title: '支持消费门店',
-        //   dataIndex: 'consumption_range',
-        //   scopedSlots: { customRender: 'consumption_range' }
-        // },
-        // {
-        //   title: '支持售卖时间',
-        //   dataIndex: 'sell_time',
-        //   scopedSlots: { customRender: 'sell_time' }
-        // },
-        // {
-        //   title: '发布渠道',
-        //   dataIndex: 'publish_channel.name'
-        // },
-        // {
-        //   title: '售卖状态',
-        //   dataIndex: 'sell_status',
-        //   scopedSlots: { customRender: 'sell_status' }
-        // },
+        {
+          title: '发布渠道',
+          dataIndex: 'publish_channel',
+          scopedSlots: { customRender: 'publish_channel' }
+        },
+
+        {
+          title: '售卖状态',
+          dataIndex: 'sell_status',
+          scopedSlots: { customRender: 'sell_status' }
+        },
         {
           title: '操作',
           dataIndex: 'action',
@@ -289,6 +242,26 @@ export default {
     onModalTest(data) {
       console.log('onModalTest')
       this.getListInfoFunc()
+    },
+    upperShelf(text, record) {
+      let self = this
+      this.$confirm({
+        title: '确认要上架?',
+        content: `确认上架${record.card_name}至${record.support_sales}?`,
+        onOk() {
+          this.aService.getCardsDepositConsumeShop(data).subscribe(state => {})
+          self.aService
+            .setCardsDepositBrandOnLine([
+              { card_id: record.id, shop_id: record.shop_id }
+            ])
+            .subscribe(state => {
+              self.$emit('del', true)
+            })
+        },
+        onCancel() {
+          console.log('Cancel')
+        }
+      })
     },
     // 停售原因
     popoverStopReason(text, record) {
@@ -343,11 +316,7 @@ export default {
     sellStatus(text, record) {
       console.log(text, record)
     },
-    // 会员卡类型
-    handleChange_card_type(value) {
-      this.getHeaders.card_type = value
-      this.getListInfoFunc()
-    },
+
     // 发布渠道
     handleChange_publish_channel(value) {
       this.getHeaders.publish_channel = value
@@ -370,10 +339,11 @@ export default {
     }
   },
   watch: {
-    $route() {
-      this.card_type = '所以类型'
-      this.sell_status = '所以渠道'
-      this.publish_channel = '所有售卖状态'
+    $route(data) {
+      if (data.query.card_name) {
+        this.sell_status = '所以渠道'
+        this.publish_channel = '所有售卖状态'
+      }
       this.getInfoData(this.cardsListInfo)
     }
   }

@@ -15,7 +15,7 @@ export class ShopApi extends Api {
     return this.http.get(`/v1/shops/${id}`)
   }
   getShopSettingStopInfo(id: string) {
-    return this.http.get(`/v1/shops/setting/stop/${id}`, { mock: {} })
+    return this.http.get(`/v1/shops/${id}`)
   }
   updateStatus(id: number, params: ShopStatusInput) {
     return this.http.put(`/v1/shops/${id}/status`, { params })

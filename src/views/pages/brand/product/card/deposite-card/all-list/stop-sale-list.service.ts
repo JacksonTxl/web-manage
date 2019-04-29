@@ -24,7 +24,7 @@ export class StopSaleListService extends Store<CardsListInfoState> {
     })
   }
   getListInfo(paramsObj: any) {
-    return this.cardsApi.getCardsListA(paramsObj)
+    return this.cardsApi.getCardsShopDeposit(paramsObj)
   }
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getListInfo({ card_name: to.query.card_name }).subscribe(res => {
@@ -33,7 +33,7 @@ export class StopSaleListService extends Store<CardsListInfoState> {
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo({}).subscribe(res => {
+    this.getListInfo({ size: 10, page: 1 }).subscribe(res => {
       this.SET_CARDS_LIST_INFO(res)
       next()
     })
