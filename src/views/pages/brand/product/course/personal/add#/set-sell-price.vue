@@ -2,7 +2,6 @@
   <st-form :form="form" class="page-set-sell-price" labelWidth="100px">
     <a-row :gutter="8">
       <a-col :lg="10" :offset="1">
-        {{personalCourseEnums}}
         <!-- 课程名称 -->
         <st-form-item label="私教课程">
           <a-input placeholder="课程名称" disabled v-decorator="ruleConfig.courseName"/>

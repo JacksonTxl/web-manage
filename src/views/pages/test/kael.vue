@@ -7,7 +7,7 @@
     :province="update.province"
     :city="update.city"
     :district="update.district"
-    @change="change"
+    @select="change"
     ></st-map-button>
     <br>
     <p v-for="(item,index) in Object.entries(update)" :key="index+`update`">{{item[0]}}---{{item[1]}}</p>
@@ -18,7 +18,7 @@
     :province="add.province"
     :city="add.city"
     :district="add.district"
-    @change="addchange"
+    @select="addchange"
     ></st-map-button>
     <br>
     <p v-for="(item,index) in Object.entries(add)" :key="index">{{item[0]}}---{{item[1]}}</p>
@@ -26,6 +26,7 @@
 </template>
 <script>
 import StMapButton from '@/views/components/map-button/map-button.vue'
+import { findIndex, cloneDeep } from 'lodash-es'
 export default {
   components: {
     StMapButton
@@ -37,7 +38,7 @@ export default {
         lng: '116.426050',
         address: '北京市东城区金宝街52号',
         province: { id: 110000, name: '北京市' },
-        city: { id: 110100, name: '北京市市辖区' },
+        city: { id: 110100, name: '北京市' },
         district: { id: 110101, name: '东城区' }
       },
       add: {
@@ -53,8 +54,10 @@ export default {
   methods: {
     change(data) {
       console.log(data)
+      this.update = cloneDeep(data)
     },
     addchange(data) {
+      this.add = cloneDeep(data)
       console.log(data)
     }
   }

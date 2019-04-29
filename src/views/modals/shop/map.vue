@@ -1,5 +1,5 @@
 <template>
-  <a-modal :title="title" :class="map()" v-model="show" :footer="null" :width="484" @ok="handleOk">
+  <a-modal :title="title" :class="map()" v-model="show" :footer="null" :width="484">
     <div :class="map('search')">
       <a-cascader
         :class="map('cascader')"
@@ -13,14 +13,28 @@
           <st-icon type="down" size="12px" :class="map('icon')"></st-icon>
         </a>
       </a-cascader>
-      <a-input-search placeholder="请输入街道、小区或商圈名称" @search="onSearch"/>
+      <div :class="map('search-input')">
+        <a-dropdown :trigger="['click']">
+        <a-input-search @input="searchInput" :class="{error:!latlngIsOk}" placeholder="请输入街道、小区或商圈名称" v-model="searchText" @search="onSearch"/>
+        <ul slot="overlay" :class="map('search-menu')" v-scrollBar @mousewheel.stop>
+          <li :class="map('search-faild')" v-if="!poisList.length">无结果</li>
+          <template v-if="poisList.length">
+            <li @click="selectLocation(item)" :class="map('search-item')" v-for="(item,index) in poisList" :key="index">
+              <p :class="map('search-title')">{{item.name}}</p>
+              <span :class="map('search-describe')" v-if="item.location">{{item.location.detail.detail.split(',').reverse().join('')}}</span>
+            </li>
+          </template>
+        </ul>
+        </a-dropdown>
+      </div>
     </div>
     <div :class="map('map')" id="mapcontainer"></div>
     <div :class="map('address')">
-      <a-textarea placeholder="详细地址，例：16号楼5层502" v-model="st_address" :rows="3"/>
+      <a-textarea :class="{error:!addressIsOk}" placeholder="详细地址，例：16号楼5层502" v-model="st_address" :rows="3"/>
     </div>
     <div :class="map('button')">
-      <st-button type="primary">提交</st-button>
+      <span v-if="!latlngIsOk||!addressIsOk" :class="map('error-info')">{{errorText}}</span>
+      <st-button type="primary" @click="handleOk">提交</st-button>
     </div>
   </a-modal>
 </template>
@@ -44,15 +58,6 @@ export default {
   computed: {
     isAdd() {
       return this.lat === '' || this.lng === ''
-    },
-    st_province() {
-      return this.province
-    },
-    st_city() {
-      return this.city
-    },
-    st_district() {
-      return this.district
     }
   },
   props: {
@@ -102,21 +107,30 @@ export default {
   data() {
     return {
       show: false,
+      errorText: '',
+      latlngIsOk: true,
+      addressIsOk: true,
       fieldNames: {
         label: 'name',
         value: 'id',
         children: 'children'
       },
       regions: [],
-      selectCity: '北京市',
-      // selectCity: '上海',
-      PC: [110000, 110100],
-      // PC: [310000,310100],
+      searchText: '',
+      selectCity: '上海市',
+      PC: [310000, 310100],
       st_address: '',
+      st_province: {},
+      st_city: {},
+      st_district: {},
       // 定位data
       locationData: {},
       mapObject: null,
       markerObject: null,
+      searchServiceObject: null,
+      locationObject: null,
+      // 检索列表
+      poisList: [],
       selectData: {
         province: {},
         city: {},
@@ -130,17 +144,27 @@ export default {
   mounted() {
     this.init()
   },
+  watch: {
+    st_address(newVal, oldVal) {
+      this.selectData.address = newVal
+      this.addressIsOk = true
+      this.errorText = this.latlngIsOk ? '' : '请选择具体地址!'
+    }
+  },
   methods: {
     init() {
       // 获取省市区
       this.getRegions()
       this.st_address = this.address
+      this.st_province = this.province
+      this.st_city = this.city
+      this.st_district = this.district
       if (this.isAdd) {
         this.mapService
-          .getLocation(`https://apis.map.qq.com/ws/location/v1/ip?ip=118.250.155.34&output=jsonp&key=${this.appConfig.QQ_MAP_KEY}&callback=`)
+          .getLocation(`https://apis.map.qq.com/ws/location/v1/ip?output=jsonp&key=${this.appConfig.QQ_MAP_KEY}&callback=`)
           .subscribe(res => {
             if (res.status === 0) {
-            // 定位成功
+              // 定位成功
               this.selectData.province = {
                 id: ~~(res.result.ad_info.adcode / 10000) * 10000,
                 name: res.result.ad_info.province
@@ -151,37 +175,34 @@ export default {
               }
               this.PC = [~~(res.result.ad_info.adcode / 10000) * 10000, ~~(res.result.ad_info.adcode / 100) * 100, res.result.ad_info.adcode]
               this.selectCity = res.result.ad_info.city
+              this.locationData = cloneDeep(res.result)
             } else {
-            // 定位失败
+              // 定位失败,设置为上海市政府
               this.locationFailed()
+              this.locationData = {
+                location: {
+                  lat: '31.230350',
+                  lng: '121.473720'
+                }
+              }
             }
-            this.locationData = cloneDeep(res.result)
             // 实例化map
             this.initMap()
-            // this.loadJs(`https://map.qq.com/api/js?v=2.exp&key=${this.appConfig.QQ_MAP_KEY}&libraries=drawing,geometry,place,convertor,visualization`)
-            // .then(res => {
-
-          // })
+            this.initSearch({ location: this.selectCity, pageCapacity: 10 })
           })
       } else {
-
-      }
-    },
-    loadJs(src) {
-      const s = document.createElement('script')
-      if (document.querySelector(`script[src='${src}']`)) {
-        return Promise.resolve()
-      }
-      return new Promise((resolve, reject) => {
-        s.src = src
-        document.head.appendChild(s)
-        s.onload = () => {
-          resolve()
+        this.PC = [this.st_province.id, this.st_city.id]
+        this.selectCity = this.st_city.name
+        this.locationData = {
+          location: {
+            lat: this.lat,
+            lng: this.lng
+          }
         }
-        s.onerror = err => {
-          reject(err)
-        }
-      })
+        // 实例化map
+        this.initMap()
+        this.initSearch({ location: this.selectCity, pageCapacity: 10 })
+      }
     },
     getRegions() {
       this.regionService.getRegionPC().subscribe(res => {
@@ -213,38 +234,114 @@ export default {
         name: city.name
       }
       this.selectCity = city.name
+      this.initSearch({ location: this.selectCity, pageCapacity: 10 })
+      this.searchText = ''
+      this.poisList = []
+      this.selectData.address = this.st_address = ''
+      this.selectData.lat = ''
+      this.selectData.lng = ''
     },
-    // 实例地图
+    // 实例化地图
     initMap() {
-      console.log(this.locationData)
       let center = new qq.maps.LatLng(this.locationData.location.lat, this.locationData.location.lng)
       this.mapObject = new qq.maps.Map(document.getElementById('mapcontainer'), {
         center,
         zoom: 13,
         disableDefaultUI: true
       })
+      this.resetMap(center)
+    },
+    // 实例化检索服务
+    initSearch({ location, pageCapacity }) {
+      let that = this
+      this.searchServiceObject = new qq.maps.SearchService({
+        // 设置搜索范围
+        location,
+        // 设置搜索页码为1
+        pageIndex: 1,
+        // 设置每页的结果数为5
+        pageCapacity,
+        autoExtend: false,
+        // 若服务请求失败，则运行以下函数
+        // eslint-disable-next-line
+        error: function(error) {
+          that.poisList = []
+        },
+        complete: function(results) {
+          if (results.type === 'POI_LIST') {
+            if (results.detail.pois.length) {
+              results.detail.pois.forEach((i, index) => {
+                let latLng = new qq.maps.LatLng(i.latLng.lat, i.latLng.lng)
+                that.initLocation(index).searchCityByLatLng(latLng)
+              })
+            }
+            that.poisList = cloneDeep(results.detail.pois)
+          } else {
+            that.poisList = []
+          }
+        }
+      })
+    },
+    // 实例化坐标定位服务
+    initLocation(index) {
+      let that = this
+      return new qq.maps.CityService({
+        complete: function(results) {
+          that.$set(that.poisList[index], 'location', results)
+        }
+      })
+    },
+    onSearch(data) {
+      this.searchServiceObject.search(data)
+    },
+    selectLocation(data) {
+      this.searchText = data.name
+      this.selectData.address = this.st_address = data.address
+      let position = new qq.maps.LatLng(data.latLng.lat, data.latLng.lng)
+      this.resetMap(position)
+      this.selectData.lat = String(data.latLng.lat)
+      this.selectData.lng = String(data.latLng.lng)
+    },
+    // 重置地图
+    resetMap(position) {
       let anchor = new qq.maps.Point(8, 16)
       let size = new qq.maps.Size(16, 16)
       let origin = new qq.maps.Point(0, 0)
       let icon = new qq.maps.MarkerImage(require('@/assets/img/map_location.png'), size, origin, anchor, size)
-      var markerObject = new qq.maps.Marker({
-        position: center,
+      this.markerObject && this.markerObject.setMap(null)
+      this.markerObject = new qq.maps.Marker({
+        position,
         icon: icon,
         animation: qq.maps.MarkerAnimation.DROP,
         map: this.mapObject
       })
+      this.mapObject.panTo(position)
     },
-    // 重置地图
-    resetMap() {
-
+    searchInput() {
+      this.latlngIsOk = true
+      this.errorText = this.addressIsOk ? '' : '请输入详细地址！'
     },
-
-    handleOk() {},
-    onChange(data) {
-      // console.log(data)
-    },
-    onSearch(data) {
-      // console.log(data)
+    handleOk() {
+      this.latlngIsOk = this.selectData.lat !== '' && this.selectData.lng !== ''
+      this.addressIsOk = this.selectData.address !== ''
+      if (!this.latlngIsOk && !this.addressIsOk) {
+        this.errorText = '请选择具体地址并输入详细地址!'
+      } else {
+        if (!this.latlngIsOk) {
+          this.errorText = '请选择具体地址!'
+        } else if (!this.addressIsOk) {
+          this.errorText = '请输入详细地址!'
+        } else {
+          this.mapService
+            .getLocation(`https://apis.map.qq.com/ws/geocoder/v1/?location=${this.selectData.lat},${this.selectData.lng}&output=jsonp&key=${this.appConfig.QQ_MAP_KEY}&callback=`)
+            .subscribe(res => {
+              this.selectData.district.id = +res.result.ad_info.adcode
+              this.selectData.district.name = res.result.ad_info.district
+              this.$emit('ok', this.selectData)
+              this.show = false
+            })
+        }
+      }
     }
   }
 }

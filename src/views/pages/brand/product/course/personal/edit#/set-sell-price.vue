@@ -159,7 +159,6 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      ruleConfig,
       priceSetting: 1,
       tableColumns,
       tableData: [],
