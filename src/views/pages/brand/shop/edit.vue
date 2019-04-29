@@ -1,6 +1,6 @@
 <template>
   <st-panel app class="page-brand-shop-edit">
-    <st-form :form="form" @submit="onHandleSubmit">
+    <st-form :form="form">
       <a-row :gutter="8" class="page-edit-shop-name-row">
         <a-col offset="1" :lg="10">
           <st-form-item label="门店名称" required>
@@ -44,26 +44,15 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="门店地址" required>
-            <st-region-cascader
-              placeholder="请选择省/市/区"
-              v-decorator="[
-              'shop_PCD',
-              {rules: [{ required: true, message: '请输入门店地址'}]}
-            ]"
-            ></st-region-cascader>
-          </st-form-item>
-        </a-col>
-      </a-row>
-      <a-row :gutter="8">
-        <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="详细地址" required>
-            <a-input
-              v-decorator="[
-              'shop_address',
-              {rules: [{ required: true, message: '请输入详细地址'}]}
-            ]"
-              placeholder="请输入详细地址"
-            ></a-input>
+            <st-map-button
+            :lat="editMap.lat"
+            :lng="editMap.lng"
+            :address="editMap.address"
+            :province="editMap.province"
+            :city="editMap.city"
+            :district="editMap.district"
+            @select="editMapChange"
+            ></st-map-button>
           </st-form-item>
         </a-col>
       </a-row>
@@ -87,7 +76,7 @@
       <a-row :gutter="8">
         <a-col offset="1" :lg="23">
           <st-form-item label="服务设施">
-            <st-checkbox-facility-group v-model="service_ids">
+            <st-checkbox-facility-group v-model="shopData.service_ids">
               <st-checkbox-facility-item
                 style="margin-right:24px"
                 v-for="item in serviceList"
@@ -103,25 +92,17 @@
       <a-row :gutter="8">
         <a-col offset="1" :lg="23">
           <st-form-item label="店招" v-viewer="{ url: 'data-src' }">
-            <a-upload
-              listType="picture-card"
-              :class="{'page-show-image':imageUrl}"
-              :showUploadList="false"
-              :disabled="imageUrl!==''"
-              :customRequest="uploadCrop"
-            >
-              <div class="page-image" v-if="imageUrl">
-                <div class="page-image-button">
-                  <span @click="removeImage">删除</span>
-                </div>
-                <img :dataSrc="imageUrl" width="240" height="135" :src="imageUrl" alt="店招">
-              </div>
-              <div v-else>
-                <a-icon :type="loading ? 'loading' : 'plus'"/>
-                <div class="page-upload-text">上传店招</div>
-                <div class="page-upload-text">大小不超过5M</div>
-              </div>
-            </a-upload>
+            <st-image-upload
+            :cropperModal="cropperModal"
+            :sizeLimit="5"
+            :list="fileList"
+            @change="fileChange"
+            width="240px"
+            height="135px">
+              <a-icon type="plus"/>
+              <div class="page-upload-text">上传店招</div>
+              <div class="page-upload-text">大小不超过5M，建议尺寸16:9</div>
+            </st-image-upload>
           </st-form-item>
         </a-col>
       </a-row>
@@ -130,10 +111,9 @@
           <st-form-item label="营业状态">
             <a-radio-group v-model="shopData.shop_status">
               <a-radio
-                v-for="item in shop_status_list"
-                :key="item.value"
-                :value="item.value"
-              >{{item.label}}</a-radio>
+                v-for="item in Object.entries(shop.shop_status.value)"
+                :key="+item[0]"
+                :value="+item[0]">{{item[1]}}</a-radio>
             </a-radio-group>
           </st-form-item>
         </a-col>
@@ -147,62 +127,65 @@
       </a-row>
       <a-row :gutter="8" type="flex" justify="center" align="middle">
         <a-col>
-          <st-button type="primary" html-type="submit" :loading="editLoading.edit">提交</st-button>
+          <st-button type="primary" @click="onHandleSubmit" :loading="editLoading.edit">提交</st-button>
         </a-col>
       </a-row>
     </st-form>
   </st-panel>
 </template>
 <script>
+import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/rule'
-import { OssService } from '@/services/oss.service'
-import { MessageService } from '@/services/message.service'
 import { EditService } from './edit.service'
+import { cloneDeep } from 'lodash-es'
 export default {
   serviceInject() {
     return {
       rules: RuleConfig,
-      OSS: OssService,
-      messageService: MessageService,
-      editService: EditService
+      editService: EditService,
+      userService: UserService
     }
   },
   rxState() {
     return {
       serviceList: this.editService.serviceList$,
       shopInfo: this.editService.shopInfo$,
-      editLoading: this.editService.loading$
+      editLoading: this.editService.loading$,
+      shop: this.userService.shopEnums$
     }
   },
   mounted() {
-    this.getShopInfo(this.shopInfo)
+    this.init(this.shopInfo)
   },
   data() {
     return {
-      cropperData: {
-        title: '上传会员卡背景',
-        aspectRatioW: 16,
-        aspectRatioH: 9
+      editMap: {
+        lat: '',
+        lng: '',
+        address: '',
+        province: {},
+        city: {},
+        district: {}
       },
+      fileList: [],
+      cropperModal: {},
       // 电话校验方式 1为点击添加校验，0为点击提交校验
       phoneValidtorType: 1,
       shopData: {
         shop_name: '',
-        shop_phones: [],
-        province_id: 11,
-        city_id: 2,
-        district_id: 1,
+        province_id: null,
+        city_id: null,
+        district_id: null,
         address: '',
-        email: '',
-        service_ids: [],
-        shop_images: [],
+        shop_phones: [],
         shop_status: 1,
-        lat: '31.230416',
-        lng: '121.473701',
-        business_time: []
+        lat: '',
+        lng: '',
+        service_ids: [],
+        business_time: [],
+        email: '',
+        shop_images: []
       },
-      // 服务id
-      service_ids: [],
       serviceIcon_icon_list: {
         1: 'WIFI',
         2: 'park',
@@ -212,44 +195,6 @@ export default {
         6: 'snow',
         7: 'nosmoking',
         8: 'energy'
-      },
-      // 营业状态
-      shop_status_list: [
-        { value: 3, label: '预售' },
-        { value: 1, label: '试运营' },
-        { value: 2, label: '正式营业' },
-        { value: 4, label: '已关店' }
-      ],
-      weekTimeDefault: [
-        [],
-        [9, 18],
-        [9, 18],
-        [9, 18],
-        [9, 18],
-        [9, 18],
-        [9, 18],
-        [9, 18]
-      ],
-      defaultWeekList: [
-        '',
-        '周一',
-        '周二',
-        '周三',
-        '周四',
-        '周五',
-        '周六',
-        '周日'
-      ],
-      // upload
-      loading: false,
-      imageUrl: ''
-    }
-  },
-  watch: {
-    service_ids: {
-      deep: true,
-      handler(newVal, oldVal) {
-        this.shopData.service_ids = newVal
       }
     }
   },
@@ -263,43 +208,45 @@ export default {
   },
   methods: {
     // 获取门店信息
-    getShopInfo(data) {
-      if (data.shop_phones && data.shop_phones.length > 3) {
-        data.shop_phones.splice(3, data.shop_phones.length)
-      }
+    init(data) {
       this.form.setFieldsValue({
         shop_name: data.shop_name,
-        shop_address: data.shop_position.address,
-        email: data.email,
-        shop_PCD: [
-          data.shop_position.province_id,
-          data.shop_position.city_id,
-          data.shop_position.district_id
-        ]
+        email: data.email
       })
-      this.shopData.shop_phones = data.shop_phones
-      // 经纬度
-      this.shopData.lat = data.lat
-      this.shopData.lng = data.lng
+      // 门店电话
+      this.shopData.shop_phones = cloneDeep(data.shop_phones)
+      // 门店地址
+      this.editMap.lat = data.lat
+      this.editMap.lng = data.lng
+      this.editMap.address = data.shop_position.address
+      this.editMap.province.id = data.shop_position.province_id
+      this.editMap.province.name = data.shop_position.province_name
+      this.editMap.city.id = data.shop_position.city_id
+      this.editMap.city.name = data.shop_position.city_name
+      this.editMap.district.id = data.shop_position.district_id
+      this.editMap.district.name = data.shop_position.district_name
+      // 服务设施
       data.shop_services.forEach(i => {
-        this.service_ids.push(i.service_id)
+        this.shopData.service_ids.push(i.service_id)
       })
       // 店招
-      if (data.shop_images.length) {
-        data.shop_images.forEach(i => {
-          if (i.is_cover) {
-            this.shopData.shop_images = i
-            this.imageUrl = i.image_url
-          }
-        })
-      }
+      this.fileList = cloneDeep(data.shop_images)
+      // 营业状态
       this.shopData.shop_status = data.shop_status
+      // 营业时间
       this.shopData.business_time = data.business_time
     },
-    // 移除店招
-    removeImage() {
-      this.imageUrl = ''
-      this.shopData.shop_images = []
+    fileChange(data) {
+      if (data.length) {
+        this.shopData.shop_images = cloneDeep(data)
+        this.shopData.shop_images[0].is_cover = 1
+      } else {
+        this.shopData.shop_images = []
+      }
+    },
+    editMapChange(data) {
+      console.log(data)
+      this.editMap = cloneDeep(data)
     },
     // 添加电话
     onValidtorPhone() {
@@ -326,11 +273,13 @@ export default {
         this.phoneValidtorType = 1
         if (!err) {
           this.shopData.shop_name = values.shop_name
-          this.shopData.address = values.shop_address
+          this.shopData.province_id = this.editMap.province.id
+          this.shopData.city_id = this.editMap.city.id
+          this.shopData.district_id = this.editMap.district.id
+          this.shopData.address = this.editMap.address
+          this.shopData.lat = this.editMap.lat
+          this.shopData.lng = this.editMap.lng
           this.shopData.email = values.email
-          this.shopData.province_id = +values.shop_PCD[0]
-          this.shopData.city_id = +values.shop_PCD[1]
-          this.shopData.district_id = +values.shop_PCD[2]
           this.editService
             .edit(this.$route.meta.query.id, this.shopData)
             .subscribe(() => {
@@ -376,67 +325,6 @@ export default {
           callback()
         }
       }
-    },
-    uploadCrop(data) {
-      let that = this
-      let image = URL.createObjectURL(data.file)
-      this.$modalRouter.push({
-        name: 'image-cropper',
-        props: {
-          title: this.cropperData.title,
-          image,
-          aspectRatioH: this.cropperData.aspectRatioH,
-          aspectRatioW: this.cropperData.aspectRatioW
-        },
-        on: {
-          cancel() {
-            console.log('cancel')
-          },
-          ok(data) {
-            that.upload(data)
-          }
-        }
-      })
-    },
-    // 店招上传
-    upload(data) {
-      this.loading = true
-      if (this.checkUploadFile(data.file)) {
-        this.OSS.put({
-          file: data.file
-        }).subscribe({
-          next: val => {
-            this.shopData.shop_images = [
-              {
-                image_key: val.fileKey,
-                is_cover: 1
-              }
-            ]
-            this.imageUrl = URL.createObjectURL(data.file)
-            this.loading = false
-            this.messageService.success({ content: '上传成功' })
-          },
-          error: val => {
-            this.loading = false
-            this.messageService.error({ content: '上传失败' })
-          }
-        })
-      } else {
-        this.loading = false
-      }
-    },
-    checkUploadFile(file) {
-      const isJPG = this.rules.img_type.test(file.type)
-      if (!isJPG) {
-        this.messageService.error({
-          content: 'You can only upload JPG/PNG file!'
-        })
-      }
-      const isLt5M = file.size / 1024 / 1024 < 5
-      if (!isLt5M) {
-        this.messageService.error({ content: 'Image must smaller than 5MB!' })
-      }
-      return isJPG && isLt5M
     }
   }
 }
