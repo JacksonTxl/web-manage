@@ -209,11 +209,11 @@ export default {
           dataIndex: 'upper_shelf_num',
           sorter: (a, b) => a.upper_shelf_num - b.upper_shelf_num
         },
-        // {
-        //   title: '下架门店数',
-        //   dataIndex: 'upper_shelf_num',
-        //   sorter: (a, b) => a.upper_shelf_num - b.upper_shelf_num
-        // },
+        {
+          title: '下架门店数',
+          dataIndex: 'lower_shelf_num',
+          sorter: (a, b) => a.lower_shelf_num - b.lower_shelf_num
+        },
         {
           title: '发布渠道',
           dataIndex: 'publish_channel',
@@ -249,7 +249,6 @@ export default {
         title: '确认要上架?',
         content: `确认上架${record.card_name}至${record.support_sales}?`,
         onOk() {
-          this.aService.getCardsDepositConsumeShop(data).subscribe(state => {})
           self.aService
             .setCardsDepositBrandOnLine([
               { card_id: record.id, shop_id: record.shop_id }

@@ -157,6 +157,12 @@ export class CardsApi extends Api {
   getCardsShopDeposit(query: any) {
     return this.http.get(`/v1/cards/brand/deposit/shop`, { query })
   }
+  /**
+   *  品牌储值卡下架
+   */
+  setCardsDepositBrandOffLine(params: any) {
+    return this.http.put(`/v1/cards/brand/deposit/offline`, { params })
+  }
 }
 export interface CardsInput {
   [propName: string]: any
