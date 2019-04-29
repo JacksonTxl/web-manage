@@ -11,7 +11,9 @@
         <span class="tree-name" v-else>{{ item.name }}</span>
 
         <st-more-dropdown class="tree-opreation">
-          <a-menu-item v-for="(op, index) in opreations" :key="index" @click="op.clickName">{{op.name}}</a-menu-item>
+          <a-menu-item  @click="addTreeNode">添加</a-menu-item>
+          <a-menu-item  @click="editTreeNode">编辑</a-menu-item>
+          <a-menu-item  @click="deleteTreeNode">删除</a-menu-item>
         </st-more-dropdown>
       </div>
       <div v-if="item.isAdd" stay><a-input></a-input><a href="">保存</a><span @click="cancelEdit">x</span></div>
@@ -50,7 +52,6 @@ export default {
     return {
       opreations: [{ clickName: this.addTreeNade, name: '编辑' }, { clickName: this.editTreeNade, name: '新增' }, { clickName: this.deleteTreeNade, name: '删除' }],
       placements: ['bottomLeft'],
-      isEditSelf: false,
       visible: false,
       isOpen: false
     }

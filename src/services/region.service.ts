@@ -19,6 +19,7 @@ export class RegionService extends Store<any> {
   getRegionPC() {
     return this.regionApi.getRegions().pipe(
       map(data$ => {
+        console.log(data$)
         data$.forEach((i:any) => {
           i.children.forEach((inner:any) => {
             delete inner.children
@@ -28,6 +29,7 @@ export class RegionService extends Store<any> {
       })
     )
   }
+  // SET_REGION_PC
   private filterCityId(cityOptions: any = []) {
     return cityOptions.map((item: any) => {
       this.filterCityId(item.children)

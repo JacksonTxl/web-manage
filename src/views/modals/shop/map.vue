@@ -122,7 +122,6 @@ export default {
   },
   mounted() {
     this.init()
-    this.getRegions()
     this.mapService.getLocation({ key: this.appConfig.QQ_LOCATION_KEY, callback: function1 }).subscribe(res => {
       console.log(res)
     })

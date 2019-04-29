@@ -91,8 +91,6 @@ export default {
   watch: {
     slider: {
       handler() {
-        console.log('emit')
-        console.log(this.slider.filter(item => item.value.length))
         let value = this.slider.filter(item => item.value.length)
         value = value.map(item => {
           return {
@@ -106,7 +104,7 @@ export default {
       deep: true
     },
     weekArr(n, o) {
-      if (!o.length) return
+      if (n.length === o.length) return
       n.length > o.length ? this.addSlide(n, o) : this.deleteSlide(n, o)
     }
   },
@@ -116,7 +114,6 @@ export default {
     }
   },
   mounted() {
-    console.log('this.value', this.value)
     this.getWeekArr()
   },
   methods: {
@@ -134,6 +131,7 @@ export default {
     },
     addSlide(n, o) {
       const index = difference(n, o)
+      console.log(n, o)
       this.slider[n[n.length - 1]].title = n[n.length - 1]
       this.slider[n[n.length - 1]].value = [10, 24]
     },
