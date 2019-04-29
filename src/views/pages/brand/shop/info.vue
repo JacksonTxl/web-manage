@@ -2,7 +2,7 @@
   <div class="container-basis pages-brand-shop-box">
     <div class="pages-brand-shop-info">
       <div class="pages-brand-shop-info__container">
-        <div class="pages-brand-shop-info__img-box">
+        <div class="pages-brand-shop-info__img-box" v-if="shopInfo.shop_info">
           <img
             class="pages-brand-shop-info__sign-img pages-brand-shop-info__img"
             :src="shopInfo.shop_info.shop_images[0].image_url"
