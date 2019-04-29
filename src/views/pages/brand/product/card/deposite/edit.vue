@@ -95,7 +95,7 @@
               <st-form-item class="page-content-card-support-sales" label="支持售卖门店" required>
                 <a-radio-group
                   @change="support_range"
-                  v-decorator="['cardData.support_sales',{validateTrigger: 'blur',initialValue:1,rules:[{validator:support_sales_list_validator}]}]">
+                  v-decorator="['cardData.support_sales',{initialValue:1,rules:[{validator:support_sales_list_validator}]}]">
                   <a-radio
                     v-for="item in support_sales_list"
                     :key="+item[0]"
@@ -172,11 +172,11 @@
           <a-row :gutter="8">
             <a-col :lg="20">
               <st-form-item class="page-content-card-sell-type" label="售卖渠道" required>
-                <a-checkbox-group v-model="cardData.sell_list">
+                <a-checkbox-group v-model="cardData.card_sell_type">
                   <a-checkbox
                   v-for="item in sell_type_list"
                   :key="item.value"
-                  :disabled="item.disabled"
+                  :disabled="item.value===2"
                   :value="item.value">{{item.label}}</a-checkbox>
                 </a-checkbox-group>
               </st-form-item>
@@ -230,7 +230,7 @@ import { UserService } from '@/services/user.service'
 import moment from 'moment'
 import { RuleConfig } from '@/constants/rule'
 import SelectShop from '@/views/fragments/shop/select-shop'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, remove } from 'lodash-es'
 import { EditService } from './edit.service'
 export default {
   name: 'BrandDepositeCardEdit',
@@ -307,8 +307,7 @@ export default {
         // 转让手续费
         transfer_num: 0,
         // 售卖渠道
-        sell_list: [2],
-        card_sell_type: 2
+        card_sell_type: [2]
       },
       transfer_unit_is_first: true,
       // 售卖时间
@@ -349,7 +348,7 @@ export default {
       this.cardData.consumer_shop_list = this.cardInfo.consumer_shop_list
       // 售卖门店
       this.cardData.support_sales = this.cardInfo.support_sales
-      this.cardData.sell_shop_list = this.cardInfo.sell_shop_list
+      this.cardData.sell_shop_list = this.cardData.support_sales === 2 ? cloneDeep(this.cardInfo.sell_shop_list) : []
       // 支持售卖时间
       this.start_time = moment(this.cardInfo.start_time * 1000)
       this.end_time = moment(this.cardInfo.end_time * 1000)
@@ -358,7 +357,7 @@ export default {
       this.cardData.transfer_unit = this.cardInfo.transfer_unit
       this.cardData.transfer_num = this.cardInfo.transfer_num
       // 售卖渠道
-      this.cardData.sell_list = this.cardInfo.card_sell_type === 3 ? [1, 2] : [this.cardInfo.card_sell_type]
+      this.cardData.card_sell_type = this.cardInfo.card_sell_type
       // 卡背景
       this.cardData.bg_image = cloneDeep(this.cardInfo.bg_image)
       // 卡介绍
@@ -471,27 +470,23 @@ export default {
     },
     // consumer_shop_list validatorFn
     admission_shop_list_validator(rule, value, callback) {
-      // eslint-disable-next-line
-      callback()
-      // if (value === 2 && !this.cardData.consumer_shop_list.length) {
-      //   // eslint-disable-next-line
-      //   callback('请添加支持入场门店')
-      // } else {
-      //   // eslint-disable-next-line
-      //   callback()
-      // }
+      if (value === 2 && !this.cardData.consumer_shop_list.length) {
+        // eslint-disable-next-line
+        callback('请添加支持入场门店')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
     },
     // support_sales_list validatorFn
     support_sales_list_validator(rule, value, callback) {
-      // eslint-disable-next-line
-      callback()
-      // if (value === 2 && !this.cardData.support_sales.length) {
-      //   // eslint-disable-next-line
-      //   callback('请添加支持售卖门店')
-      // } else {
-      //   // eslint-disable-next-line
-      //   callback()
-      // }
+      if (value === 2 && !this.cardData.sell_shop_list.length) {
+        // eslint-disable-next-line
+        callback('请添加支持售卖门店')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
     },
     // start_time validatorFn
     start_time_validator(rule, value, callback) {
@@ -530,8 +525,7 @@ export default {
     },
     // 增加入场门店
     admission_range_change(data) {
-      // this.cardData.consumer_shop_list = cloneDeep(data)  kael
-      this.cardData.consumer_shop_list = [1, 2]
+      this.cardData.consumer_shop_list = cloneDeep(data)
     },
     // 入场门店支持方式change
     consumption_range(data) {
@@ -548,8 +542,7 @@ export default {
     },
     // 增加售卖门店
     sales_shop_change(data) {
-      // this.cardData.sell_shop_list = cloneDeep(data)  kael
-      this.cardData.sell_shop_list = [1]
+      this.cardData.sell_shop_list = cloneDeep(data)
     },
     // 售卖时间-start
     start_time_change(data) {
@@ -597,12 +590,6 @@ export default {
     }
   },
   watch: {
-    'cardData.sell_list': {
-      deep: true,
-      handler(newVal, oldVal) {
-        this.cardData.card_sell_type = newVal.length > 1 ? 3 : 2
-      }
-    },
     'cardData._is_transfer': {
       deep: true,
       handler(newVal, oldVal) {
@@ -617,6 +604,26 @@ export default {
         }
         this.transfer_unit_is_first = false
       }
+    },
+    'cardData.consumer_shop_list': {
+      deep: true,
+      handler() {
+        let v = this.cardData.consumption_range
+        this.cardData.consumption_range = v
+        this.form.setFieldsValue({
+          'cardData.consumption_range': v
+        })
+      }
+    },
+    'cardData.sell_shop_list': {
+      deep: true,
+      handler() {
+        let v = this.cardData.support_sales
+        this.cardData.support_sales = v
+        this.form.setFieldsValue({
+          'cardData.support_sales': v
+        })
+      }
     }
   },
   computed: {
@@ -629,12 +636,17 @@ export default {
     },
     // 售卖渠道
     sell_type_list() {
-      let arr = [
-        { value: 2, label: '线下售卖', disabled: true },
-        { value: 1, label: '用户端售卖', disabled: false }
-      ]
-      let index = this.cardData.appConfig ? 999 : 1
-      arr.splice(index, 1)
+      let sell_type = cloneDeep(Object.entries(this.deposit_card.sell_type.value))
+      let arr = []
+      sell_type.forEach(i => {
+        arr.push({
+          value: +i[0],
+          label: i[1]
+        })
+      })
+      if (!this.cardData.appConfig) {
+        remove(arr, i => i.value === 1)
+      }
       return arr
     }
   }
