@@ -1413,6 +1413,35 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
+"@fullcalendar/core@^4.1.0", "@fullcalendar/core@~4.1.0":
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/@fullcalendar/core/download/@fullcalendar/core-4.1.0.tgz#9f09c4c35e308a81a97e4d62c05f64548d0e5666"
+  integrity sha1-nwnEw14wioGpfk1iwF9kVI0OVmY=
+
+"@fullcalendar/daygrid@^4.1.0", "@fullcalendar/daygrid@~4.1.0":
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/@fullcalendar/daygrid/download/@fullcalendar/daygrid-4.1.0.tgz#058b02585d17a63f448e2ab42f65db7bacca2296"
+  integrity sha1-BYsCWF0Xpj9Ejiq0L2Xbe6zKIpY=
+
+"@fullcalendar/interaction@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/@fullcalendar/interaction/download/@fullcalendar/interaction-4.1.0.tgz#5d0c4c2c407934ff8bd45071ff76fb6736937da3"
+  integrity sha1-XQxMLEB5NP+L1FBx/3b7ZzaTfaM=
+
+"@fullcalendar/timegrid@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/@fullcalendar/timegrid/download/@fullcalendar/timegrid-4.1.0.tgz#6e825f0cab79d81875a73fbb563cc69844ff0ecf"
+  integrity sha1-boJfDKt52Bh1pz+7VjzGmET/Ds8=
+  dependencies:
+    "@fullcalendar/daygrid" "~4.1.0"
+
+"@fullcalendar/vue@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/@fullcalendar/vue/download/@fullcalendar/vue-4.1.0.tgz#4dcdc4d8c0971f01d649e607dee4c0dc40f658cb"
+  integrity sha1-Tc3E2MCXHwHWSeYH3uTA3ED2WMs=
+  dependencies:
+    "@fullcalendar/core" "~4.1.0"
+
 "@intervolga/optimize-cssnano-plugin@^1.0.5":
   version "1.0.6"
   resolved "http://registry.npm.taobao.org/@intervolga/optimize-cssnano-plugin/download/@intervolga/optimize-cssnano-plugin-1.0.6.tgz#be7c7846128b88f6a9b1d1261a0ad06eb5c0fdf8"
@@ -7326,6 +7355,11 @@ joi@^14.3.0:
 "jquery@2 - 3":
   version "3.4.0"
   resolved "http://registry.npm.taobao.org/jquery/download/jquery-3.4.0.tgz#8de513fa0fa4b2c7d2e48a530e26f0596936efdf"
+  integrity sha1-jeUT+g+kssfS5IpTDibwWWk2798=
+
+jquery@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.npm.taobao.org/jquery/download/jquery-3.4.0.tgz#8de513fa0fa4b2c7d2e48a530e26f0596936efdf"
   integrity sha1-jeUT+g+kssfS5IpTDibwWWk2798=
 
 js-base64@^2.1.9:

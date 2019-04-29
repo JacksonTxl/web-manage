@@ -9,7 +9,7 @@
         type="primary"
         tag="st-button"
         v-else
-        :to="{name: 'course-transfrom-brand-course', props:{coursIds: this.selectedRowKeys}}">转入品牌团体课程库</modal-link>
+        :to="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}">转入品牌团体课程库</modal-link>
         <div>
           <div>
           <a-select class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onChange">
@@ -38,7 +38,7 @@ import { ListService } from '../list.service'
 import { RouteService } from '../../../../../../../services/route.service'
 
 export default {
-  name: 'TeamCourseList',
+  name: 'DDDTeamCourseList',
   serviceInject() {
     return {
       listService: ListService,

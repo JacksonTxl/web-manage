@@ -30,6 +30,7 @@ export class RegionService extends Store<any> {
       })
     )
   }
+  // SET_REGION_PC
   private filterCityId(cityOptions: any = []) {
     return cityOptions.map((item: any) => {
       this.filterCityId(item.children)

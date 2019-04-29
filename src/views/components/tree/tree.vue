@@ -46,14 +46,15 @@ export default {
     traverseTree(node, tree, opString) {
       return tree.map(item => {
         item[opString] = item.name === node.name
-        return item.children ? this.traverseTree(node, item.children) : item
-      })[0]
+        return item.children ? { name: item.name, children: this.traverseTree(node, item.children, opString) } : item
+      })
     },
     addItem(item) {
-      this.treeDataSelf = this.traverseTree(item, [cloneDeep(this.treeData)], 'isAdd')
+      this.treeDataSelf = this.traverseTree(item, [cloneDeep(this.treeData)], 'isAdd')[0]
     },
     editItem(item) {
-      this.treeDataSelf = this.traverseTree(item, [cloneDeep(this.treeData)], 'isEdit')
+      const tree = cloneDeep(this.treeData)
+      this.treeDataSelf = this.traverseTree(item, [tree], 'isEdit')[0]
     },
     deleteItem(item) {
       this.$emit('delete-item', item)

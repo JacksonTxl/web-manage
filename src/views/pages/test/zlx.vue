@@ -1,94 +1,92 @@
 <template>
-<div>
-  <st-icon type="alipay" size="24px" />
-  <st-form :form="formTime">
-  <st-table :columns="columns"
-    :pagination="false"
-    :dataSource="data"
-  >
-    <template slot="time">
-        <st-form-item label="">
-          <a-input  v-decorator="[
-            'note1',
-            {rules: [{ required: true, message: 'Please input your note!' }]}
-          ]"/>
-        </st-form-item>
-    </template>
-    <template slot="rally_price">
-        <st-form-item label="">
-          <a-input  v-decorator="[
-            'note2',
-            {rules: [{ required: true, message: 'Please input your note!' }]}
-          ]"/>
-        </st-form-item>
-    </template>
-    <template slot="frozen_day">
-        <st-form-item label="">
-          <a-input  v-decorator="[
-            'note3',
-            {rules: [{ required: true, message: 'Please input your note!' }]}
-          ]"/>
-        </st-form-item>
-    </template>
-    <template slot="gift_unit">
-        <st-form-item label="">
-          <a-input  v-decorator="[
-            'note4',
-            {rules: [{ required: true, message: 'Please input your note!' }]}
-          ]"/>
-        </st-form-item>
-    </template>
-    <template slot="operation">
-        <st-form-item label="">
-          <a-input/>
-        </st-form-item>
-    </template>
-  </st-table>
-  </st-form>
-</div>
-
+  <st-panel class='demo-app'>
+    <div class='demo-app-top'>
+      <button @click="toggleWeekends">toggle weekends</button>
+      <button @click="gotoPast">go to a date in the past</button>
+      (also, click a date/time to add an event)
+    </div>
+    <FullCalendar
+      class='demo-app-calendar'
+      ref="fullCalendar"
+      defaultView="dayGridMonth"
+      :header="{
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      }"
+      :plugins="calendarPlugins"
+      :weekends="calendarWeekends"
+      :events="calendarEvents"
+      @dateClick="handleDateClick"
+      />
+      <st-shop-hour-picker></st-shop-hour-picker>
+  </st-panel>
 </template>
+
 <script>
-const columns = [
-  {
-    title: '期限',
-    scopedSlots: { customRender: 'time' },
-    dataIndex: 'time',
-    width: 200
-  },
-  {
-    title: '售价范围',
-    scopedSlots: { customRender: 'rally_price' },
-    dataIndex: 'rally_price',
-    width: 200
-  },
-  {
-    title: '允许冻结天数',
-    scopedSlots: { customRender: 'frozen_day' },
-    dataIndex: 'frozen_day',
-    width: 200
-  },
-  {
-    title: '赠送上限',
-    scopedSlots: { customRender: 'gift_unit' },
-    dataIndex: 'gift_unit',
-    width: 200
-  },
-  {
-    title: '操作',
-    dataIndex: 'operation',
-    width: 200,
-    scopedSlots: { customRender: 'operation' }
-  }
-]
+import FullCalendar from '@fullcalendar/vue'
+import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import interactionPlugin from '@fullcalendar/interaction'
 
 export default {
-  data() {
+  components: {
+    FullCalendar // make the <FullCalendar> tag available
+  },
+  data: function() {
     return {
-      formTime: this.$form.createForm(this),
-      data: [{ gift_unit: 'edrqased' }, { gift_unit: 'edrqased' }],
-      columns
+      calendarPlugins: [ // plugins must be defined in the JS
+        dayGridPlugin,
+        timeGridPlugin,
+        interactionPlugin // needed for dateClick
+      ],
+      calendarWeekends: true,
+      calendarEvents: [ // initial event data
+        { title: 'Event Now', start: new Date() }
+      ]
+    }
+  },
+  methods: {
+    toggleWeekends() {
+      this.calendarWeekends = !this.calendarWeekends // update a property
+    },
+    gotoPast() {
+      let calendarApi = this.$refs.fullCalendar.getApi() // from the ref="..."
+      calendarApi.gotoDate('2000-01-01') // call a method on the Calendar object
+    },
+    handleDateClick(arg) {
+      if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
+        this.calendarEvents.push({ // add new event data
+          title: 'New Event',
+          start: arg.date,
+          allDay: arg.allDay
+        })
+      }
     }
   }
 }
 </script>
+
+<style lang='less'>
+
+// you must include each plugins' css
+// paths prefixed with ~ signify node_modules
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
+@import '~@fullcalendar/timegrid/main.css';
+
+.demo-app {
+  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+.demo-app-top {
+  margin: 0 0 3em;
+}
+
+.demo-app-calendar {
+  margin: 0 auto;
+  max-width: 900px;
+}
+
+</style>

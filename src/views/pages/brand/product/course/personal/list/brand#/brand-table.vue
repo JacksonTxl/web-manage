@@ -37,7 +37,7 @@
         >{{course_pricing}}</a>
       </div>
       <div slot="is_available" slot-scope="is_available">
-          <span><a-badge :status="is_available.id === 1?'success':'error'" />{{is_available.name}}</span>
+          <span><a-badge :status="is_available === 1?'success':'error'" />{{is_available | enumFilter('personal_course.is_available')}}</span>
       </div>
       <div slot="action" slot-scope="text, record">
         <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}">详情</router-link>
