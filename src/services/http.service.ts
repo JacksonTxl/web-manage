@@ -28,7 +28,7 @@ interface RequestOptions {
    */
   query?: Query
   /**
-   * post put 请求bo           dy参数
+   * post put 请求body参数
    */
   params?: Params
   /**

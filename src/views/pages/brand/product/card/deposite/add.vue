@@ -80,7 +80,7 @@
             </a-col>
           </a-row>
           <a-row :gutter="8">
-            <a-col :lg="22">
+            <a-col :lg="23">
               <st-form-item class="page-content-card-admission-range" label="支持消费门店" required>
                 <a-radio-group
                   @change="consumption_range"
@@ -98,7 +98,7 @@
             </a-col>
           </a-row>
           <a-row :gutter="8">
-            <a-col :lg="22">
+            <a-col :lg="23">
               <st-form-item class="page-content-card-support-sales" label="支持售卖门店" required>
                 <a-radio-group
                   @change="support_range"

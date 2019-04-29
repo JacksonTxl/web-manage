@@ -22,17 +22,74 @@
       margin-left: 12px;
     }
   }
+  &__search-input{
+    position: relative;
+    flex: auto;
+    margin-left: 24px;
+    .error .ant-input {
+      border-color: @error-color;
+    }
+  }
+  &__search-menu{
+    width: 100%;
+    max-height: 227px;
+    position: absolute;
+    padding: 8px 0;
+    z-index: 9999;
+    border-radius: 4px;
+    box-shadow:0px 2px 8px 0px rgba(0,0,0,0.15);
+    background: @white;
+    border: none;
+  }
+  &__search-faild {
+    height: 48px;
+    .lh(48px);
+    text-align: center;
+    .c(@text-color-secondary);
+  }
+  &__search-item {
+    padding: 10px;
+    cursor: pointer;
+    &:hover{
+      .bg(#EBEFFF);
+    }
+  }
+  &__search-title {
+    margin-bottom: 4px;
+    .fz(14px);
+    .lh(24px);
+    .c(@heading-color);
+  }
+  &__search-describe {
+    .fz(12px);
+    .lh(17px);
+    .c(@text-color-secondary);
+  }
   &__map {
     height: 180px;
     margin-top: 16px;
-    outline: 1px solid grey;
   }
   &__address {
     margin-top: 16px;
+    .error.ant-input {
+      border-color: @error-color;
+    }
+  }
+  &__error-info{
+    position: absolute;
+    top: 0;
+    left: 0;
+    .c(@error-color);
   }
   &__button {
+    position: relative;
     margin-top: 24px;
     text-align: right;
-
+  }
+  div[n=targetElement]~div[draggable=false]{
+    display: none;
+  }
+  div[n=targetElement]~div[onpositionupdate^=return]{
+    display: none;
   }
 }

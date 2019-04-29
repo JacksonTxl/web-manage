@@ -19,12 +19,13 @@ export class RegionService extends Store<any> {
   getRegionPC() {
     return this.regionApi.getRegions().pipe(
       map(data$ => {
-        console.log(data$)
-        data$.forEach((i:any) => {
-          i.children.forEach((inner:any) => {
-            delete inner.children
+        if (data$) {
+          data$.forEach((i:any) => {
+            i.children.forEach((inner:any) => {
+              delete inner.children
+            })
           })
-        })
+        }
         return data$
       })
     )

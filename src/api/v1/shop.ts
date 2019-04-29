@@ -15,7 +15,7 @@ export class ShopApi extends Api {
     return this.http.get(`/v1/shops/${id}`)
   }
   getShopSettingStopInfo(id: string) {
-    return this.http.get(`/v1/shops/setting/stop/${id}`, { mock: {} })
+    return this.http.get(`/v1/shops/${id}`)
   }
   updateStatus(id: number, params: ShopStatusInput) {
     return this.http.put(`/v1/shops/${id}/status`, { params })
@@ -37,6 +37,11 @@ export class ShopApi extends Api {
    */
   getShopListTree() {
     return this.http.get('/v1/shops/list')
+  }
+  getShopBasic(params: GetShopBasicInput) {
+    return this.http.post('/v1/shops/basic', {
+      params
+    })
   }
 }
 
@@ -141,4 +146,7 @@ export interface ShopInput {
    * 门店图片
    */
   shop_images?: ShopImages[]
+}
+export interface GetShopBasicInput {
+  shop_ids: number[]
 }

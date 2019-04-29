@@ -11,7 +11,7 @@
               :value="+index">{{item}}</a-radio>
           </a-radio-group>
           <div class="page-shop-coach-container-shop mg-t8" v-if="isShow">
-            <select-shop @change="onSelectShopChange"></select-shop>
+            <select-shop :shopIds="info.shop_ids" @change="onSelectShopChange"></select-shop>
             <input type="hidden" v-decorator="ruleConfig.shopIds">
           </div>
         </st-form-item>
@@ -33,24 +33,6 @@ import { RouteService } from '@/services/route.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
-
-const shopTableColumns = [{
-  title: '省',
-  dataIndex: 'province_name'
-}, {
-  title: '市',
-  dataIndex: 'city_name'
-}, {
-  title: '区',
-  dataIndex: 'district_name'
-}, {
-  title: '门店名称',
-  dataIndex: 'shop_name'
-}, {
-  title: '操作',
-  dataIndex: 'operation',
-  scopedSlots: { customRender: 'operation' }
-}]
 
 export default {
   name: 'SetShopCoach',

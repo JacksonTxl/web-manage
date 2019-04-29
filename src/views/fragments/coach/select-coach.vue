@@ -1,9 +1,9 @@
 <template>
   <div>
-    <a-table :columns="tableColumns" :dataSource="tableData" :pagination="false">
+    <a-table :columns="tableColumns" :dataSource="list" :pagination="false" rowKey="id">
       <template slot="operation" slot-scope="text, record">
       <div>
-        <a @click="delTableRecord(record.key)">删除</a>
+        <a @click="delTableRecord(record.id)">删除</a>
       </div>
     </template>
     </a-table>
@@ -14,18 +14,17 @@
   </div>
 </template>
 <script>
+import { SelectCoachService } from './select-coach.service'
+
 const tableColumns = [{
   title: '教练',
-  dataIndex: 'coach_name'
+  dataIndex: 'name'
 }, {
   title: '教练等级',
-  dataIndex: 'coach_level'
+  dataIndex: 'level'
 }, {
   title: '工作性质',
-  dataIndex: 'coach_work_name'
-}, {
-  title: '在职状态',
-  dataIndex: 'coach_status'
+  dataIndex: 'nature_work'
 }, {
   title: '操作',
   dataIndex: 'operation',
@@ -33,6 +32,16 @@ const tableColumns = [{
 }]
 export default {
   name: 'SelectCoach',
+  serviceInject() {
+    return {
+      selectCoachService: SelectCoachService
+    }
+  },
+  rxState() {
+    return {
+      list: this.selectCoachService.list$
+    }
+  },
   props: {
     coachIds: {
       type: Array,
@@ -47,57 +56,43 @@ export default {
       }
     }
   },
-  watch: {
-    shopIds(val) {
-      console.log('shop change', val)
-    }
-  },
   data() {
     return {
       tableColumns,
-      tableData: [],
       selected: []
     }
   },
   created() {
     this.selected = this.coachIds
-    const tableData = this.getSelectedList(this.coachIds)
-    this.tableData = tableData
+    this.getSelectedList(this.coachIds)
   },
   methods: {
     onSelectComplete(coachIds) {
-      const tableData = this.getSelectedList(coachIds)
-      this.tableData = tableData
+      this.getSelectedList(coachIds)
       this.selected = coachIds
+      console.log('on select complete', coachIds)
       this.$emit('change', coachIds)
     },
     getSelectedList(coachIds = []) {
-      const list = []
-      const ret = []
-      coachIds.forEach(id => {
-        list.forEach(item => {
-          if (+id === +item.coach_id) {
-            item.key = item.coach_id
-            ret.push(item)
-          }
-        })
-      })
-      console.log('get selected list', ret)
-      return ret
+      if (coachIds.length) {
+        this.selectCoachService.getCoachBasic({
+          coach_ids: coachIds
+        }).subscribe()
+      }
     },
-    delTableRecord(key) {
-      const { tableData, selected } = this
-      tableData.forEach((item, index) => {
-        if (+item.key === +key) {
-          tableData.splice(index, 1)
+    delTableRecord(id) {
+      const { list, selected } = this
+      list.forEach((item, index) => {
+        if (+item.id === +id) {
+          list.splice(index, 1)
         }
       })
       selected.forEach((item, index) => {
-        if (+item === +key) {
+        if (+item === +id) {
           selected.splice(index, 1)
         }
       })
-      this.tableData = tableData
+      this.list = list
       this.selected = selected
       this.$emit('change', selected)
     }

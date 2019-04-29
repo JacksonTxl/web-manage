@@ -118,33 +118,16 @@
               <!-- <pre>{{shopInfo.shop_info.service_options}}</pre> -->
               <div
                 class="shop-setting-shop-img-box"
-                v-for="(item,index) in shopInfo.shop_info.service_options"
+                v-for="(item,index) in shopInfo.shop_info.shop_images"
                 :key="index"
               >
-                <st-tag type="shop-sign" style="position: absolute;" v-if="item.is_choose"/>
-                <img
-                  width="240"
-                  height="auto"
-                  src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1986179278,1118313821&fm=27&gp=0.jpg"
-                  alt="avatar"
-                >
-                <div class="shop-setting-shop-img-sign" v-if="!item.is_choose">
+                <st-tag type="shop-sign" style="position: absolute;" v-if="item.is_cover"/>
+                <img width="240" height="auto" :src="item.image_url" :alt="item.image_id">
+                <div class="shop-setting-shop-img-sign" v-if="!item.is_cover">
                   <p class="shop-setting-shop-img-set" @click="settingSign(item)">设为店招</p>
-                  <p class="shop-setting-shop-img-del" @click="settingDel(item)">删除</p>
+                  <p class="shop-setting-shop-img-del" @click="settingDel(item,index)">删除</p>
                 </div>
               </div>
-              <!-- <div class="shop-setting-shop-img-box">
-                <img
-                  width="240"
-                  height="auto"
-                  src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=1986179278,1118313821&fm=27&gp=0.jpg"
-                  alt="avatar"
-                >
-                <div class="shop-setting-shop-img-sign">
-                  <p class="shop-setting-shop-img-set">设为店招</p>
-                  <p class="shop-setting-shop-img-del">删除</p>
-                </div>
-              </div>-->
               <a-upload
                 listType="picture-card"
                 :class="{'page-show-image':imageUrl}"
@@ -178,7 +161,6 @@
       <a-row :gutter="8">
         <a-col offset="1" :lg="22">
           <st-form-item label="营业时间">
-            {{shopData.business_time}}
             <st-shop-hour-picker v-model="shopData.business_time"></st-shop-hour-picker>
           </st-form-item>
         </a-col>
@@ -189,6 +171,24 @@
         </a-col>
       </a-row>
     </st-form>
+    <pre>
+        设施
+      {{service_ids}}
+      营业状态
+      {{shopData.shop_status}}
+      营业时间
+      {{shopData.business_time}}
+      门店图片：
+      {{shopInfo.shop_info.shop_images}}
+      电话
+      {{shopData.shop_phones}}
+      城市选择
+      {{shopData.address}}
+      详细地址
+      {{shopData.province_id}} {{shopData.city_id}} {{shopData.district_id}}
+      邮箱
+      {{shopData.email}}
+    </pre>
   </st-panel>
 </template>
 <script>
@@ -292,16 +292,24 @@ export default {
       console.log(data, '组件传回来的数据')
     },
     // 删除店招
-    settingDel(item) {
-      this.infoService.save(item).subscribe(res => {
-        this.infoService.getShopSettingStopInfo().subscribe(res1 => {})
-      })
+    settingDel(item, index) {
+      console.log(item)
+
+      this.shopInfo.shop_info.shop_images.splice(index, 1)
+      // this.infoService.save(item).subscribe(res => {
+      //   this.infoService.getShopSettingStopInfo().subscribe(res1 => {})
+      // })
     },
     // 设置为店招
     settingSign(item) {
-      this.infoService.save(item).subscribe(res => {
-        this.infoService.getShopSettingStopInfo().subscribe(res1 => {})
+      console.log(item)
+      this.shopInfo.shop_info.shop_images.map(item => {
+        item.is_cover = 0
       })
+      item.is_cover = 1
+      // this.infoService.save(item).subscribe(res => {
+      //   this.infoService.getShopSettingStopInfo().subscribe(res1 => {})
+      // })
     },
     // 获取门店信息
     getShopInfo(data) {
@@ -320,6 +328,8 @@ export default {
       })
       this.shopData.shop_name = data.shop_name
       this.shopData.shop_phones = data.shop_phones
+      this.shopData.email = data.email
+      this.shopData.address = data.shop_position.address
       // 省市区
       this.shopData.province_id = data.shop_position.province_id
       this.shopData.city_id = data.shop_position.city_id

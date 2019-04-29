@@ -8,11 +8,11 @@
         <span class="modal-card-halt-the-sales-type">期限卡</span>会员卡名称
       </div>
       <div class="modal-card-halt-the-sales-info-box">
-        <span class>当前上架门店（家）：{{info.shelf_shop}}</span>
+        <span class>当前上架门店（家）：{{info.shelf_shop_num}}</span>
         <span class="modal-card-halt-the-sales-notes">(不含已下架门店)</span>
       </div>
       <div class="modal-card-halt-the-sales-info-box">
-        <span>当前有效卡数（张）：{{info.valid_card}}</span>
+        <span>当前有效卡数（张）：{{info.valid_card_num}}</span>
         <span class="modal-card-halt-the-sales-notes">(不含已过期卡)</span>
       </div>
       <div class="modal-card-halt-the-sales-stop-reason">
