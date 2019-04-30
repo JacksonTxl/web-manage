@@ -42,11 +42,21 @@
         </div>
       </div>
       <st-button type="primary" class="shop-member-list-button">
-        <a-icon type="plus"/>添加用户
+        <modal-link tag="a" :to=" { name: 'shop-add-user'}">
+          <a-icon type="plus"/>添加用户
+        </modal-link>
       </st-button>
       <st-button class="shop-member-list-button">导入用户</st-button>
-      <st-button class="shop-member-list-button">加标签</st-button>
-      <st-button class="shop-member-list-button">分配员工</st-button>
+      <st-button class="shop-member-list-button">
+        <modal-link tag="a" :to=" { name: 'shop-add-user'}">
+          <a-icon type="plus"/>加标签
+        </modal-link>
+      </st-button>
+      <st-button class="shop-member-list-button">
+        <modal-link tag="a" :to=" { name: 'shop-add-user'}">
+          <a-icon type="plus"/>分配销售
+        </modal-link>
+      </st-button>
       <st-button class="shop-member-list-button">批量导出</st-button>
       <st-table
         class="mg-t24"
@@ -63,10 +73,26 @@
           <a href="javascript:;" @click="infoFunc(text, record)">编辑</a>
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
-            <a-menu-item>分配员工</a-menu-item>
-            <a-menu-item>绑实体卡</a-menu-item>
-            <a-menu-item>转店</a-menu-item>
-            <a-menu-item>冻结用户</a-menu-item>
+            <a-menu-item>
+              <modal-link tag="a" :to=" { name: 'shop-add-user'}">
+                <a-icon type="plus"/>分配员工
+              </modal-link>
+            </a-menu-item>
+            <a-menu-item>
+              <modal-link tag="a" :to=" { name: 'shop-add-user'}">
+                <a-icon type="plus"/>绑实体卡
+              </modal-link>
+            </a-menu-item>
+            <a-menu-item>
+              <modal-link tag="a" :to=" { name: 'shop-add-user'}">
+                <a-icon type="plus"/>转店
+              </modal-link>
+            </a-menu-item>
+            <a-menu-item>
+              <modal-link tag="a" :to=" { name: 'shop-add-user'}">
+                <a-icon type="plus"/>冻结用户
+              </modal-link>
+            </a-menu-item>
             <a-menu-item>解除微信绑定</a-menu-item>
           </st-more-dropdown>
         </div>

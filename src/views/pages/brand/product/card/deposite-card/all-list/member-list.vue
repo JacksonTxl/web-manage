@@ -260,10 +260,15 @@ export default {
         title: '确认要上架?',
         content: `确认上架${record.card_name}至${record.support_sales}?`,
         onOk() {
+          let obj = {}
+          // publish_channel 1 品牌 0 门店
+          if (record.publish_channel) {
+            obj.card_id = record.id
+          } else {
+            obj.shop_id = record.shop_id
+          }
           self.aService
-            .setCardsDepositBrandOnLine([
-              { card_id: record.id, shop_id: record.shop_id }
-            ])
+            .setCardsDepositBrandOnLine(obj)
             .subscribe(state => {
               self.$emit('del', true)
             })
