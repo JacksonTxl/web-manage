@@ -58,6 +58,7 @@ export default {
   },
   data() {
     return {
+
       shopTableColumns,
       checkedShopIds: []
     }
@@ -78,7 +79,9 @@ export default {
       }
       this.selectService.getShopBasic({
         shop_ids: shopIds
-      }).subscribe()
+      }).subscribe(res => {
+        this.list = res.list
+      })
     },
     delShopTableRecord(id) {
       const { list, checkedShopIds } = this

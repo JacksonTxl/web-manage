@@ -10,6 +10,7 @@
     <hr-demo id="hr"></hr-demo>
     <checkbox-button-demo id="checkbox-button"></checkbox-button-demo>
     <checkbox-facility-demo id="checkbox-facility"></checkbox-facility-demo>
+    <modal-demo id="modal"></modal-demo>
     <more-dropdown-demo id="more-dropdown"></more-dropdown-demo>
     <help-popover-demo id="help-popover"></help-popover-demo>
     <tag-demo id="tag"></tag-demo>

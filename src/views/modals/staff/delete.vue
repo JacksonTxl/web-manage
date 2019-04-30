@@ -1,8 +1,9 @@
 <template>
-  <a-modal class="modal-staff-delete"
+  <st-modal class="modal-staff-delete"
     title='删除员工'
     confirmLoading
     @ok='onSubmit'
+    size="small"
     v-model='show'>
     <section>
       <div class="modal-staff-delete__tag mg-b24">
@@ -24,7 +25,7 @@
         删除员工后，将暂停进行中的服务，同时将无法恢复，确认删除？
       </div>
     </section>
-  </a-modal>
+  </st-modal>
 </template>
 <script>
 export default {

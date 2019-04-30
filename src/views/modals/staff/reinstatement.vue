@@ -1,10 +1,11 @@
 <template>
-  <a-modal
+  <st-modal
     class="modal-turnover"
     title='员工复职'
     confirmLoading
     @ok='onSubmit'
     okText="保存"
+    size="small"
     v-model='show'>
     <section>
       <div class="modal-turnover-tag mg-b24">
@@ -24,7 +25,7 @@
         </st-form-item>
       </st-form>
     </section>
-  </a-modal>
+  </st-modal>
 </template>
 <script>
 export default {

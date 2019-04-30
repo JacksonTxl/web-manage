@@ -1,7 +1,8 @@
 <template>
-  <a-modal title='员工账户设置'
+  <st-modal title='员工账户设置'
     confirmLoading
     @ok='onSubmit'
+    size="small"
     v-model='show'>
     <section>
       <div class="staff-tag mg-b24">
@@ -21,7 +22,7 @@
         <a-input placeholder="支持中英文、数字,不超过10个字" class="mg-b8"/>
       </st-form-item>
     </st-form>
-  </a-modal>
+  </st-modal>
 </template>
 <script>
 export default {

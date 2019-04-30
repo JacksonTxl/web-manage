@@ -15,52 +15,50 @@
       </div>
     </header>
     <main class="page-shop-sale-list-brand__table mg-t8">
-      <team-table @delete-course="onDeleteCourse" :teamCourseList="teamCourseList"></team-table>
+      <list-table @delete-course="onDeleteCourse" :personalCourseList="personalCourseList"></list-table>
     </main>
   </div>
 </template>
 
 <script>
-// import TeamTable from './brand#/brand-table'
-// import { RouteService } from '../../../../../../../services/route.service'
-// import { BrandService } from './brand.service'
-// // import { ListService } from '../list.service'
-// export default {
-//   name: 'PersonalCourseListInShop',
-//   serviceInject() {
-//     return {
-//       brandService: BrandService,
-//       listService: ListService,
-//       routeService: RouteService
-//     }
-//   },
-//   rxState() {
-//     return {
-//       categoryList: this.listService.categoryList$,
-//       teamCourseList: this.brandService.teamCourseList$,
-//       query: this.routeService.query$
-//     }
-//   },
-//   data() {
-//     return {
-//       courseStatus: [{ label: '所有状态', value: -1 }, { label: '有效', value: 1 }, { label: '无效', value: 0 }]
-//     }
-//   },
-//   components: {
-//     TeamTable
-//   },
-//   methods: {
-//     onChange() {
-//       this.$router.push({ query: { ...this.query, course_name: '' } })
-//     },
-//     onDeleteCourse(record) {
-//       this.brandService.deleteCourse(record.id).subscribe(() => {
-//         this.$router.push({ force: true })
-//       })
-//     },
-//     addPersonalCourse() {
-//       this.$router.push({ name: 'brand-product-course-team-add' })
-//     }
-//   }
-// }
+import ListTable from './list#/list-table'
+import { RouteService } from '../../../../../../../services/route.service'
+import { ListService } from './list.service'
+export default {
+  name: 'PersonalCourseListInShop',
+  serviceInject() {
+    return {
+      listService: ListService,
+      routeService: RouteService
+    }
+  },
+  rxState() {
+    return {
+      categoryList: this.listService.categoryList$,
+      personalCourseList: this.listService.personalCourseList$,
+      query: this.routeService.query$
+    }
+  },
+  data() {
+    return {
+      courseStatus: [{ label: '所有状态', value: -1 }, { label: '有效', value: 1 }, { label: '无效', value: 0 }]
+    }
+  },
+  components: {
+    ListTable
+  },
+  methods: {
+    onChange() {
+      this.$router.push({ query: { ...this.query, course_name: '' } })
+    },
+    onDeleteCourse(record) {
+      this.brandService.deleteCourse(record.id).subscribe(() => {
+        this.$router.push({ force: true })
+      })
+    },
+    addPersonalCourse() {
+      this.$router.push({ name: 'brand-product-course-team-add' })
+    }
+  }
+}
 </script>

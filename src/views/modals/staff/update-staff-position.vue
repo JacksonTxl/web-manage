@@ -1,7 +1,8 @@
 <template>
-  <a-modal title='更改员工职位'
+  <st-modal title='更改员工职位'
     confirmLoading
     @ok='onSubmit'
+    size="small"
     v-model='show'>
     <section>
       <div class="staff-tag mg-b24">
@@ -22,7 +23,7 @@
         <a-input placeholder="支持中英文、数字,不超过10个字" />
       </st-form-item>
     </st-form>
-  </a-modal>
+  </st-modal>
 </template>
 <script>
 import { Updatepostion } from './update-staff-postiton.service'
