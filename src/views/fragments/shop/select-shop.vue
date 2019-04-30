@@ -45,7 +45,6 @@ export default {
   rxState() {
     return {
       loading: this.selectService.loading$
-      // list: this.selectService.list$
     }
   },
   props: {
