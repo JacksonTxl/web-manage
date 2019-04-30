@@ -1,6 +1,6 @@
 <template>
-<div class="page-personal-course">
-  <st-panel class="page-personal-info mg-b16">
+<div class="page-personal-course-info">
+  <st-panel class=" mg-b16">
     <div class="page-personal-header">
         <div class="page-personal-header__left mg-r24">
           <st-t3 class="mg-b16">{{personalCourseInfo.course_name}}（{{personalCourseInfo.course_category.name || '暂无'}}）</st-t3>

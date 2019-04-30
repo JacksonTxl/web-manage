@@ -4,14 +4,14 @@ import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state/src'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
-import { BrandPersonalCourseApi, GetPersonalBrandCourseListInput } from '@/api/v1/course/personal/brand'
+import { ShopPersonalCourseApi, GetPersonalCourseListInShopInput } from '@/api/v1/course/personal/shop'
 
 @Injectable()
 export class ListService implements RouteGuard {
   personalCourseList$ = new State<any[]>([])
   categoryList$ = new State<any[]>([])
   shopSelectOptions$ = new State<any[]>([])
-  constructor(private brandPersonalCourseApi: BrandPersonalCourseApi, private shopApi: ShopApi, private courseApi: CourseApi) {
+  constructor(private shopPersonalCourseApi: ShopPersonalCourseApi, private shopApi: ShopApi, private courseApi: CourseApi) {
   }
   SET_PERSONAL_COURSE_LIST(data: any) {
     this.personalCourseList$.commit(() => data.list)
@@ -51,8 +51,8 @@ export class ListService implements RouteGuard {
     return forkJoin(this.getShopList(), this.getCategoryList())
   }
   @Effect()
-  getCoursePersonalBrandList(params: GetPersonalBrandCourseListInput) {
-    return this.brandPersonalCourseApi.getCourseList(params).pipe(
+  getCoursePersonalBrandList(params: any) {
+    return this.shopPersonalCourseApi.getCourseListInShop(params).pipe(
       tap(state => {
         this.SET_PERSONAL_COURSE_LIST(state)
       })

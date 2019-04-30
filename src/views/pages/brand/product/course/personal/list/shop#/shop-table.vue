@@ -19,7 +19,7 @@
       </router-link>
       <div slot="coaches" slot-scope="coaches, record">
         <modal-link tag="a"
-        :to="{name: 'course-support-course-coaches', props: {course: record}}"
+        :to="{name: 'course-support-course-cocahes-brand', props: {course: record}}"
         >{{coaches}}</modal-link>
       </div>
     </st-table>

@@ -1,12 +1,12 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { PersonalApi, GetPersonalBrandCourseListInput } from '@/api/v1/course/personal'
+import { ShopPersonalCourseApi, GetPersonalBrandCourseListInput } from '@/api/v1/course/personal/shop'
 import { tap, pluck } from 'rxjs/operators'
 import { State, Computed } from 'rx-state/src'
 @Injectable()
 export class ShopService implements RouteGuard {
   state$: State<any>
   personalCourseList$: Computed<any>
-  constructor(private personalApi: PersonalApi) {
+  constructor(private shopPersonalCourseApi: ShopPersonalCourseApi) {
     this.state$ = new State({
       personalCourseList: []
     })
@@ -17,14 +17,14 @@ export class ShopService implements RouteGuard {
       state.personalCourseList = data.list
     })
   }
-  getCourseListInShop(params: GetPersonalBrandCourseListInput) {
-    return this.personalApi.getCourseListInShop(params).pipe(
+  getCourseListInShop(params: any) {
+    return this.shopPersonalCourseApi.getCourseListInShop(params).pipe(
       tap(state => {
         this.SET_PERSONAL_COURSE_LIST(state)
       })
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCourseListInShop(to.query).subscribe(state$ => next())
+    this.getCourseListInShop(to.query).subscribe(() => next())
   }
 }

@@ -3,7 +3,7 @@ import { TeamApi } from './../../../../../../api/v1/course/team'
 import { GetTeamBrandCourseListInput } from '@/api/v1/course/team'
 import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
-import { PersonalApi, GetPersonalBrandInfoInput } from '@/api/v1/course/personal'
+import { BrandPersonalCourseApi, GetPersonalBrandInfoInput } from '@/api/v1/course/personal/brand'
 export interface PersonalCourseInfo {
   personalCourseInfo: any
 }
@@ -11,7 +11,7 @@ export interface PersonalCourseInfo {
 export class InfoService implements RouteGuard {
   state$: State<PersonalCourseInfo>
   personalCourseInfo$: Computed<any>
-  constructor(private personalApi: PersonalApi) {
+  constructor(private brandPersonalCourseApi: BrandPersonalCourseApi) {
     this.state$ = new State({
       personalCourseInfo: {}
     })
@@ -23,7 +23,7 @@ export class InfoService implements RouteGuard {
     })
   }
   getPersonalBrandInfo(query: GetPersonalBrandInfoInput) {
-    return this.personalApi.getPersonalBrandInfo(query).pipe(tap(res => {
+    return this.brandPersonalCourseApi.getPersonalBrandInfo(query).pipe(tap(res => {
       this.SET_TEAM_COURSE_INFO(res)
     }))
   }

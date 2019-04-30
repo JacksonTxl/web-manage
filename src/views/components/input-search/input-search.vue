@@ -1,6 +1,10 @@
 <script>
 export default {
   name: 'StInputSearch',
+  model: {
+    prop: 'value',
+    event: 'change.value'
+  },
   render(h) {
     return h(
       'a-input-search',
