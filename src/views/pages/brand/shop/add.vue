@@ -140,16 +140,12 @@
 <script>
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/rule'
-import { OssService } from '@/services/oss.service'
-import { MessageService } from '@/services/message.service'
 import { AddService } from './add.service'
 import { cloneDeep } from 'lodash-es'
 export default {
   serviceInject() {
     return {
       rules: RuleConfig,
-      OSS: OssService,
-      messageService: MessageService,
       addService: AddService,
       userService: UserService
     }
@@ -260,12 +256,10 @@ export default {
             this.shopMapValidate = 'error'
             this.shopMapValidateText = '请选择门店地址'
           } else {
-            console.log(this.shopData.shop_cover_image)
-            console.log(this.shopData)
             this.shopData.shop_name = values.shop_name
             this.shopData.email = values.email
             this.addService.save(this.shopData).subscribe(() => {
-              this.$message.success('新增门店成功了了了了了了')
+              console.log(654987)
             })
           }
         } else {

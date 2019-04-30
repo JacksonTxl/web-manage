@@ -14,7 +14,7 @@
         </a>
       </a-cascader>
       <div :class="map('search-input')">
-        <a-dropdown :trigger="['click']">
+        <a-dropdown :trigger="['click']" v-model="dropdownVisible">
         <a-input-search @input="searchInput" :class="{error:!latlngIsOk}" placeholder="请输入街道、小区或商圈名称" v-model="searchText" @search="onSearch"/>
         <ul slot="overlay" :class="map('search-menu')" v-scrollBar @mousewheel.stop>
           <li :class="map('search-faild')" v-if="!poisList.length">无结果</li>
@@ -107,6 +107,7 @@ export default {
   data() {
     return {
       show: false,
+      dropdownVisible: false,
       errorText: '',
       latlngIsOk: true,
       addressIsOk: true,
@@ -156,9 +157,9 @@ export default {
       // 获取省市区
       this.getRegions()
       this.st_address = this.address
-      this.st_province = this.province
-      this.st_city = this.city
-      this.st_district = this.district
+      this.st_province = cloneDeep(this.province)
+      this.st_city = cloneDeep(this.city)
+      this.st_district = cloneDeep(this.district)
       if (this.isAdd) {
         this.mapService
           .getLocation(`https://apis.map.qq.com/ws/location/v1/ip?output=jsonp&key=${this.appConfig.QQ_MAP_KEY}&callback=`)
@@ -191,6 +192,8 @@ export default {
             this.initSearch({ location: this.selectCity, pageCapacity: 10 })
           })
       } else {
+        this.selectData.province = cloneDeep(this.st_province)
+        this.selectData.city = cloneDeep(this.st_city)
         this.PC = [this.st_province.id, this.st_city.id]
         this.selectCity = this.st_city.name
         this.locationData = {
@@ -292,9 +295,11 @@ export default {
       })
     },
     onSearch(data) {
+      this.dropdownVisible = true
       this.searchServiceObject.search(data)
     },
     selectLocation(data) {
+      this.dropdownVisible = false
       this.searchText = data.name
       this.selectData.address = this.st_address = data.address
       let position = new qq.maps.LatLng(data.latLng.lat, data.latLng.lng)

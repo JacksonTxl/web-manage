@@ -137,8 +137,9 @@ export class CardsApi extends Api {
    *   储值卡停售
    */
   setCardsDepositStopSell(params: any) {
-    return this.http.put(`/v1/cards/deposit/stop/sell`, { params })
+    return this.http.put(`/v1/cards/stop/deposit/sell`, { params })
   }
+
   /***
    *   删除储值卡
    */
@@ -156,6 +157,24 @@ export class CardsApi extends Api {
    */
   getCardsShopDeposit(query: any) {
     return this.http.get(`/v1/cards/brand/deposit/shop`, { query })
+  }
+  /**
+   *  品牌储值卡下架
+   */
+  setCardsDepositBrandOffLine(params: any) {
+    return this.http.put(`/v1/cards/brand/deposit/offline`, { params })
+  }
+  /**
+   * 品牌储值卡停售原因
+   */
+  getCardsBrandDepositStop(query: any) {
+    return this.http.get(`/v1/cards/brand/deposit/stop/${query.card_id}`)
+  }
+  /**
+   * 储值卡恢复售卖
+   */
+  setCardsDepositRestartSell(params: any) {
+    return this.http.put('/v1/cards/brand/deposit/recover', { params })
   }
 }
 export interface CardsInput {

@@ -2,8 +2,9 @@
   <div class="container-basis pages-brand-shop-box">
     <div class="pages-brand-shop-info">
       <div class="pages-brand-shop-info__container">
-        <div class="pages-brand-shop-info__img-box">
+        <div class="pages-brand-shop-info__img-box" v-if="shopInfo.shop_info">
           <img
+            v-if="shopInfo.shop_info.shop_images.length > 0"
             class="pages-brand-shop-info__sign-img pages-brand-shop-info__img"
             :src="shopInfo.shop_info.shop_images[0].image_url"
             alt
@@ -36,14 +37,13 @@
             <a>查看定位</a>
           </div>
           <div class="pages-brand-shop-info__info-list">
-            <span class="pages-brand-shop-info__info-facilities">门店设施</span>
             <div class="pages-brand-shop-info__info-facilities-list">
               <div
                 v-for="(item,index) in shopInfo.shop_info.shop_services"
                 :key="index"
                 class="facilities"
               >
-                <st-icon :type="item.img_url"></st-icon>
+                <st-icon :type="serviceIcon_list[item.service_id]"></st-icon>
                 <p>{{item.service_name}}</p>
               </div>
             </div>
@@ -113,6 +113,16 @@ export default {
   data() {
     return {
       WEEK: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+      serviceIcon_list: [
+        'WIFI',
+        'shower',
+        'snow',
+        'nosmoking',
+        'heating',
+        'medical',
+        'park',
+        'energy'
+      ],
       sliderArr: [],
       getSlider: {
         disabled: true,

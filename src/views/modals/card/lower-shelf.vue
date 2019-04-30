@@ -13,6 +13,9 @@ export default {
   props: {
     a: {
       type: Object
+    },
+    flag: {
+      type: Boolean
     }
   },
   data() {
@@ -36,9 +39,15 @@ export default {
         title: '单个下架',
         content: `确定下架《${self.a.card_name}》会员卡吗？`,
         onOk() {
-          self.aService.getListInfo(data).subscribe(state => {
-            self.$emit('done', true)
-          })
+          if (self.flag) {
+            self.aService.setCardsDepositBrandOffLine(data).subscribe(state => {
+              self.$emit('done', true)
+            })
+          } else {
+            self.aService.getListInfo(data).subscribe(state => {
+              self.$emit('done', true)
+            })
+          }
         },
         onCancel() {
           console.log('Cancel')

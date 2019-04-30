@@ -110,7 +110,7 @@ export default {
       })
     },
     onChange(e) {
-      e.target.value === '2' ? this.isShow = true : this.isShow = false
+      this.isShow = (e.target.value === '2')
     },
     onSelectShopChange(shopIds) {
       console.log('your selected', shopIds)

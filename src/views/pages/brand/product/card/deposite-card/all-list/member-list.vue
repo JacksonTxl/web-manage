@@ -111,15 +111,25 @@
       <div slot="action" slot-scope="text, record">
         <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
         <a-divider type="vertical"></a-divider>
-        <a href="javascript:;" @click="upperShelf(text, record)">上架</a>
-        <template>
+        <a href="javascript:;" @click="infoFunc(text, record)" v-if="record.shelf_status !=='可售'">
+          <modal-link
+            tag="a"
+            :to=" { name: 'card-recovery-sell', props:{a:record,time:{current_time:record.time},flag:true}, on:{done: onModalTest } }"
+          >恢复售卖</modal-link>
+        </a>
+        <a
+          href="javascript:;"
+          @click="upperShelf(text, record)"
+          v-if="record.shelf_status==='可售'"
+        >上架</a>
+        <template v-if="record.shelf_status==='可售'">
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
             <a-menu-item>编辑</a-menu-item>
             <a-menu-item>
               <modal-link
                 tag="a"
-                :to=" { name: 'card-halt-the-sales', props:{a:record.id}, on:{done: onModalTest }}"
+                :to=" { name: 'card-halt-the-sales', props:{a:record.id,flag:true,time:[record.upper_shelf_num,record.lower_shelf_num]}, on:{done: onModalTest }}"
               >停售</modal-link>
             </a-menu-item>
             <a-menu-item>
@@ -209,11 +219,11 @@ export default {
           dataIndex: 'upper_shelf_num',
           sorter: (a, b) => a.upper_shelf_num - b.upper_shelf_num
         },
-        // {
-        //   title: '下架门店数',
-        //   dataIndex: 'upper_shelf_num',
-        //   sorter: (a, b) => a.upper_shelf_num - b.upper_shelf_num
-        // },
+        {
+          title: '下架门店数',
+          dataIndex: 'lower_shelf_num',
+          sorter: (a, b) => a.lower_shelf_num - b.lower_shelf_num
+        },
         {
           title: '发布渠道',
           dataIndex: 'publish_channel',
@@ -238,10 +248,11 @@ export default {
   mounted() {
     this.getInfoData(this.cardsListInfo)
   },
+  created() {},
   methods: {
     onModalTest(data) {
       console.log('onModalTest')
-      this.getListInfoFunc()
+      this.getListInfoFunc(true)
     },
     upperShelf(text, record) {
       let self = this
@@ -249,7 +260,6 @@ export default {
         title: '确认要上架?',
         content: `确认上架${record.card_name}至${record.support_sales}?`,
         onOk() {
-          this.aService.getCardsDepositConsumeShop(data).subscribe(state => {})
           self.aService
             .setCardsDepositBrandOnLine([
               { card_id: record.id, shop_id: record.shop_id }
@@ -269,7 +279,7 @@ export default {
       self.popoverTitle = ''
       self.popoverContent = ''
       this.aService
-        .getCardsSaleStopReason({ card_id: record.id })
+        .getCardsBrandDepositStop({ card_id: record.id })
         .subscribe(state => {
           if (state.info.operate_time || state.info.staff_name) {
             self.popoverTitle = `操作人:${state.info.staff_name}   操作时间:${
@@ -286,14 +296,14 @@ export default {
         pageSize: data.page.size,
         total: data.page.total_counts
       }
-      this.getHeaders.current_page = this.pagination.current
+      this.getHeaders.page = this.pagination.current
       this.getHeaders.size = this.pagination.pageSize
 
       this.data = data.list
       this.data = JSON.parse(JSON.stringify(this.data))
     },
     onChange(pagination, filters, sorter) {
-      this.getHeaders.current_page = pagination.current
+      this.getHeaders.page = pagination.current
       this.getHeaders.size = pagination.pageSize
       this.pagination.current = pagination.current
       this.pagination.pageSize = pagination.pageSize
@@ -327,7 +337,7 @@ export default {
       this.getHeaders.sell_status = value
       this.getListInfoFunc()
     },
-    getListInfoFunc() {
+    getListInfoFunc(falg) {
       let self = this
       let obj = {}
       Object.keys(self.getHeaders).map(item => {
@@ -336,6 +346,11 @@ export default {
         }
       })
       this.$router.push({ query: obj })
+      if (falg) {
+        this.aService.getListInfo(obj).subscribe(state => {
+          self.getInfoData(state)
+        })
+      }
     }
   },
   watch: {

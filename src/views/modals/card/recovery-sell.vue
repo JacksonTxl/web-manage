@@ -1,17 +1,18 @@
 <template>
   <a-modal
     class="modal-card-recovery-sell"
-    title="会员卡恢复售卖"
+    :title="flag ?'储值卡恢复售卖':'会员卡恢复售卖'"
     @ok="save"
     v-model="show"
     :footer="null"
   >
     <section>
       <div class="modal-card-recovery-sell-tips">
-        <a-icon class="icon" type="exclamation-circle"/>注：仅恢复会员卡为可售卖状态，该会员卡需要重新上架至门店。
+        <a-icon class="icon" type="exclamation-circle"/>
+        注：仅恢复{{flag ?'储值卡':'会员卡'}}为可售卖状态，该{{flag ?'储值卡':'会员卡'}}需要重新上架至门店。
       </div>
       <div class="modal-card-recovery-sell-type-box">
-        <span class="modal-card-recovery-sell-type">{{a.card_type.name}}</span>
+        <span class="modal-card-recovery-sell-type" v-if="a.card_type">{{a.card_type.name}}</span>
         {{a.card_name}}
       </div>
       <div class="supporting-sales-time-box">
@@ -55,6 +56,9 @@ export default {
     },
     time: {
       type: Object
+    },
+    flag: {
+      type: Boolean
     }
   },
   data() {
@@ -93,10 +97,17 @@ export default {
         start_time: self.times[0],
         end_time: self.times[1]
       }
-      self.aService.setListInfo(data).subscribe(state => {
-        self.show = false
-        self.$emit('done', true)
-      })
+      if (self.flag) {
+        self.aService.setCardsDepositRestartSell(data).subscribe(state => {
+          self.show = false
+          self.$emit('done', true)
+        })
+      } else {
+        self.aService.setListInfo(data).subscribe(state => {
+          self.show = false
+          self.$emit('done', true)
+        })
+      }
     }
   }
 }
