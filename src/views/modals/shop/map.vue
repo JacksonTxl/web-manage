@@ -189,7 +189,7 @@ export default {
             }
             // 实例化map
             this.initMap()
-            this.initSearch({ location: this.selectCity, pageCapacity: 10 })
+            this.initSearch({ location: this.selectCity })
           })
       } else {
         this.selectData.province = cloneDeep(this.st_province)
@@ -204,7 +204,7 @@ export default {
         }
         // 实例化map
         this.initMap()
-        this.initSearch({ location: this.selectCity, pageCapacity: 10 })
+        this.initSearch({ location: this.selectCity })
       }
     },
     getRegions() {
@@ -215,14 +215,14 @@ export default {
     // 定位失败
     locationFailed() {
       this.selectData.province = {
-        id: 110000,
-        name: '北京市'
+        id: 310000,
+        name: '上海市'
       }
       this.selectData.city = {
-        id: 110100,
-        name: '北京市市辖区'
+        id: 310100,
+        name: '上海市'
       }
-      this.selectCity = '北京市'
+      this.selectCity = '上海市'
     },
     // 省市change
     cascaderChange(data) {
@@ -237,7 +237,6 @@ export default {
         name: city.name
       }
       this.selectCity = city.name
-      this.initSearch({ location: this.selectCity, pageCapacity: 10 })
       this.searchText = ''
       this.poisList = []
       this.selectData.address = this.st_address = ''
@@ -255,17 +254,11 @@ export default {
       this.resetMap(center)
     },
     // 实例化检索服务
-    initSearch({ location, pageCapacity }) {
+    initSearch({ location }) {
       let that = this
       this.searchServiceObject = new qq.maps.SearchService({
-        // 设置搜索范围
-        location,
-        // 设置搜索页码为1
-        pageIndex: 1,
-        // 设置每页的结果数为5
-        pageCapacity,
+        location: '上海市',
         autoExtend: false,
-        // 若服务请求失败，则运行以下函数
         // eslint-disable-next-line
         error: function(error) {
           that.poisList = []
@@ -296,6 +289,7 @@ export default {
     },
     onSearch(data) {
       this.dropdownVisible = true
+      this.searchServiceObject.setLocation(this.selectCity)
       this.searchServiceObject.search(data)
     },
     selectLocation(data) {
