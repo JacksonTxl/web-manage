@@ -84,7 +84,9 @@
             <a-menu-item>
               <modal-link tag="a" :to=" { name: 'shop-binding-entity-card'}">绑实体卡</modal-link>
             </a-menu-item>
-            <a-menu-item><modal-link tag="a" :to=" { name: 'shop-missing-card'}">遗失补卡</modal-link></a-menu-item>
+            <a-menu-item>
+              <modal-link tag="a" :to=" { name: 'shop-missing-card'}">遗失补卡</modal-link>
+            </a-menu-item>
             <a-menu-item>转店</a-menu-item>
             <a-menu-item>
               <modal-link tag="a" :to=" { name: 'shop-frozen'}">冻结用户</modal-link>

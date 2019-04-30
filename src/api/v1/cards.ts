@@ -150,7 +150,7 @@ export class CardsApi extends Api {
    * 品牌储值卡上架
    */
   setCardsDepositBrandOnLine(params: any) {
-    return this.http.put(`/v1/cards/deposit/brand/on/line`, { params })
+    return this.http.put(`/v1/cards/brand/deposit/online`, { params })
   }
   /**
    *  品牌门店上架储值卡列表
