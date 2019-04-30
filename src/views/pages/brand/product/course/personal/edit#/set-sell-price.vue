@@ -30,76 +30,7 @@
       </a-col>
     </a-row>
      <section v-if="isShowUnitSet">
-      <a-row :gutter="8" v-for="(priceGradientRecord, key) in priceGradient" :key="key">
-        <a-col :lg="22" :xs="22" :offset="1">
-          <!-- 选择教练等级 如果定价方式为教练分级定价时，显示选择教练-->
-          <st-form-item label="教练等级" required v-if="priceModel === 2">
-            <select-coach-level :value="priceGradientRecord.level_id" @change="(val) => onLevelChange(val, key)"></select-coach-level>
-          </st-form-item>
-          <!-- 单节售卖 -->
-          <st-form-item label="单节售卖">
-            <a-checkbox :checked="!!priceGradientRecord.is_single_sell"
-              @change="(val) => onSingleSellChange(val, key)">支持单节课购买</a-checkbox>
-            <a-input-number v-model="priceGradientRecord.single_price"></a-input-number>
-            <span class="mg-l8">元/节</span>
-          </st-form-item>
-          <!-- 私教课程定价模式：教练平级定价；私教课程售卖模式：统一标价 -->
-          <st-form-item label="售卖定价" required>
-            <st-container>
-              <a-table :columns="tableColumns" :dataSource="priceGradientRecord.prices"
-                :pagination="false" :rowKey="record => record.id">
-                <!-- 售卖梯度 -->
-                <template slot="priceGradient" slot-scope="text, record, index">
-                  <div>
-                    <a-input-number :min="0" v-model="priceGradientRecord.prices[index].min_sale"></a-input-number>
-                    <span class="mg-l8">节及以上</span>
-                  </div>
-                </template>
-                <!-- 售卖价格范围 -->
-                <template slot="price" slot-scope="text, record, index">
-                  <div key="price">
-                    <!-- 教练谈单模式 价格为区间 -->
-                    <div v-if="saleModel === 1">
-                      <a-input-number :min="0" class="page-set-sell-price__input" v-model="priceGradientRecord.prices[index].min_sell_price"/>
-                      <span class="page-set-sell-price__label">元/节</span>~
-                      <a-input-number :min="0" class="page-set-sell-price__input" v-model="priceGradientRecord.prices[index].max_sell_price"/>
-                      <span class="page-set-sell-price__label">元/节</span>
-                    </div>
-                    <!-- 统一标价模式 价格为固定值 -->
-                    <div v-if="saleModel === 2">
-                      <a-input-number :min="0"  class="page-set-sell-price__input" v-model="priceGradientRecord.prices[index].sell_price"/>
-                      <span class="page-set-sell-price__label">元/节</span>
-                    </div>
-                  </div>
-                </template>
-                <!-- 转让手续费 -->
-                <template slot="serviceFee" slot-scope="text, record, index">
-                  <a-select placeholder="请选择" :defaultValue="priceGradientRecord.prices[index].transfer_unit"
-                    class="page-set-sell-price__select" v-model="priceGradientRecord.prices[index].transfer_unit">
-                    <a-select-option v-for="(item, index) in personalCourseEnums.transfer_type.value"
-                      :key="index" :value="+index">{{item}}
-                    </a-select-option>
-                  </a-select>
-                  <a-input-number :min="0"  class="page-set-sell-price__input mg-l8"
-                    v-model="priceGradientRecord.prices[index].transfer_num" />
-                  <span class="page-set-sell-price__label">
-                    {{priceGradientRecord.prices[index].transfer_unit === 1 ? '%' : '元'}}
-                  </span>
-                </template>
-                <!-- 操作 -->
-                <template slot="action" slot-scope="text, record">
-                  <a @click="del(record.key)" class="mg-l8">删除</a>
-                </template>
-              </a-table>
-              <st-button type="dashed" block class="mg-t8" @click="addPriceRecord(key)">添加梯度</st-button>
-            </st-container>
-          </st-form-item>
-        </a-col>
-      </a-row>
-
-      <div class="ta-c">
-        <st-button @click="addRecord">添加教练等级定价</st-button>
-      </div>
+      <set-price :value="priceGradient" @change="onPriceGradientChange"/>
     </section>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
@@ -115,27 +46,8 @@ import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import { UserService } from '@/services/user.service'
-import { remove } from 'lodash-es'
-import SelectCoachLevel from '@/views/fragments/coach/select-coach-level'
 import { RuleConfig } from '@/constants/course/rule'
-
-const tableColumns = [{
-  title: '购买节数',
-  dataIndex: 'priceGradient',
-  scopedSlots: { customRender: 'priceGradient' }
-}, {
-  title: '售卖价格范围',
-  dataIndex: 'price',
-  scopedSlots: { customRender: 'price' }
-}, {
-  title: '转让手续费',
-  dataIndex: 'serviceFee',
-  scopedSlots: { customRender: 'serviceFee' }
-}, {
-  title: '操作',
-  key: 'action',
-  scopedSlots: { customRender: 'action' }
-}]
+import SetPrice from '@/views/fragments/course/set-price'
 
 export default {
   name: 'SetSellPrice',
@@ -164,6 +76,9 @@ export default {
       }
     }
   },
+  components: {
+    SetPrice
+  },
   data() {
     return {
       form: this.$form.createForm(this),
@@ -175,18 +90,8 @@ export default {
         label: '用户端售卖',
         value: 2
       }],
-      tableColumns,
-      tableData: [],
-      priceGradient: [],
-      saleModel: 0,
-      priceModel: 0
+      priceGradient: []
     }
-  },
-  components: {
-    SelectCoachLevel
-  },
-  created() {
-    this.getSetting()
   },
   computed: {
     isShowUnitSet() {
@@ -219,39 +124,6 @@ export default {
     },
     onChange(e) {
       this.priceSetting = e.target.value
-    },
-    del(key) {
-      const newTableData = [...this.tableData]
-      const target = newTableData.filter(item => key === item.key)[0]
-      if (target) {
-        remove(newTableData, target)
-        this.tableData = newTableData
-      }
-    },
-    addRecord() {
-      const newRecord = {
-        level_id: 0,
-        single_sell: 0,
-        single_price: '',
-        prices: []
-      }
-      this.priceGradient.push(newRecord)
-      console.log(this.priceGradient)
-    },
-    addPriceRecord(key) {
-      const newRecord = {
-        priceGradient: '',
-        price: '',
-        serviceFee: '',
-        id: 0
-      }
-      this.priceGradient[key].prices.push(newRecord)
-    },
-    onLevelChange(val, key) {
-      this.priceGradient[key].level_id = val
-    },
-    onSingleSellChange(e, key) {
-      this.priceGradient[key].single_sell = e.target.value
     },
     inputCheck(priceGradient) {
       let ret = true
@@ -287,47 +159,12 @@ export default {
     getData() {
       const data = this.form.getFieldsValue()
       data.course_id = +this.query.id
-      data.price_gradient = this.priceGradientFilter()
+      data.price_gradient = this.priceGradient
       return data
     },
-    getSetting() {
-      this.addService.getSetting().subscribe(res => {
-        this.saleModel = res.sale_model
-        this.priceModel = res.price_model
-      })
-    },
-    priceGradientFilter() {
-      const priceGradient = [...this.priceGradient]
-      const DEFAULT_MAX_NUM = 10000
-      priceGradient.map((item, index) => {
-        const prices = item.prices
-        const pricesLen = prices.length
-        prices.map((price, i) => {
-          delete price.serviceFee
-          delete price.priceGradient
-          delete price.price
-          if (this.saleModel === 1) {
-            // 教练谈单模式，没有固定价格
-            price.sell_price = 0
-          } else {
-            // 统一标价模式下，没有价格梯度，传0
-            price.min_sell_price = 0
-            price.max_sell_price = 0
-          }
-          if (pricesLen === 1) {
-            prices[0].max_sale = DEFAULT_MAX_NUM
-          }
-          if (i > 0) {
-            prices[i - 1].max_sale = price.min_sale - 1
-            if (i === pricesLen - 1) {
-              price.max_sale = DEFAULT_MAX_NUM
-            }
-          }
-          return price
-        })
-        return item
-      })
-      return priceGradient
+    onPriceGradientChange(priceGradient) {
+      console.log('price gradient changed', priceGradient)
+      this.priceGradient = priceGradient
     }
   }
 }
