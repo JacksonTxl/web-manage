@@ -8,7 +8,7 @@
         </st-form-item>
         <!-- 售卖渠道 -->
         <st-form-item label="售卖渠道">
-          <a-checkbox-group :options="saleTypeOptions" @change="onSaleTypeChange" v-decorator="ruleConfig.saleType">
+          <a-checkbox-group :options="sellTypeOptions" v-decorator="ruleConfig.sellType">
             <a-checkbox v-for="(item, index) in personalCourseEnums.sell_type.value" :key="index" :value="index">
               {{item}}
             </a-checkbox>
@@ -31,7 +31,6 @@
     </a-row>
 
     <section v-if="isShowUnitSet">
-
       <a-row :gutter="8" v-for="(priceGradientRecord, key) in priceGradient" :key="key">
         <a-col :lg="22" :xs="22" :offset="1">
           <!-- 选择教练等级 如果定价方式为教练分级定价时，显示选择教练-->
@@ -48,11 +47,11 @@
           <st-form-item label="售卖定价" required>
             <st-container>
               <a-table :columns="tableColumns" :dataSource="priceGradientRecord.prices"
-                :pagination="false">
+                :pagination="false" :rowKey="(record, index) => index">
                 <!-- 售卖梯度 -->
                 <template slot="priceGradient" slot-scope="text, record, index">
                   <div>
-                    <a-input-number v-model="priceGradientRecord.prices[index].min_sale"></a-input-number>
+                    <a-input-number :min="0" v-model="priceGradientRecord.prices[index].min_sale"></a-input-number>
                     <span class="mg-l8">节及以上</span>
                   </div>
                 </template>
@@ -61,9 +60,9 @@
                   <div key="price">
                     <!-- 教练谈单模式 价格为区间 -->
                     <div v-if="saleModel === 1">
-                      <a-input-number :min="0"  class="page-set-sell-price__input" v-model="priceGradientRecord.prices[index].min_sell_price"/>
+                      <a-input-number :min="0" class="page-set-sell-price__input" v-model="priceGradientRecord.prices[index].min_sell_price"/>
                       <span class="page-set-sell-price__label">元/节</span>~
-                      <a-input-number :min="0"  class="page-set-sell-price__input" v-model="priceGradientRecord.prices[index].max_sell_price"/>
+                      <a-input-number :min="0" class="page-set-sell-price__input" v-model="priceGradientRecord.prices[index].max_sell_price"/>
                       <span class="page-set-sell-price__label">元/节</span>
                     </div>
                     <!-- 统一标价模式 价格为固定值 -->
@@ -75,10 +74,10 @@
                 </template>
                 <!-- 转让手续费 -->
                 <template slot="serviceFee" slot-scope="text, record, index">
-                  <a-select placeholder="请选择" @change="(val) => onTransferUnitChange(val, index)"
+                  <a-select placeholder="请选择"
                     class="page-set-sell-price__select" v-model="priceGradientRecord.prices[index].transfer_unit">
                     <a-select-option v-for="(item, index) in personalCourseEnums.transfer_type.value"
-                      :key="index" :value="index">{{item}}
+                      :key="index" :value="+index">{{item}}
                     </a-select-option>
                   </a-select>
                   <a-input-number :min="0"  class="page-set-sell-price__input mg-l8"
@@ -172,7 +171,7 @@ export default {
     return {
       form: this.$form.createForm(this),
       priceSetting: 1,
-      saleTypeOptions: [{
+      sellTypeOptions: [{
         label: '线下售卖',
         value: 1
       }, {
@@ -215,42 +214,23 @@ export default {
   },
   methods: {
     save(e) {
-      // console.log(this.priceGradient)
       console.log(this.priceGradientFilter())
-
-      // e.preventDefault()
-      // console.log(this.tableData)
-      // const priceGradient = this.getPriceGradient()
-      // console.log('priceGradient', priceGradient)
-
-      // const data = this.getData()
-      // console.log('step 3 data', data)
-      // // data.price_gradient = priceGradient
-      // this.addService.setPrice(data).subscribe(() => {
-      //   this.messageService.success({
-      //     content: '提交成功'
-      //   })
-      // })
-
-      // this.form.validateFields().then(() => {
-      //   const data = this.getData()
-      //   console.log('step 3 data', data)
-      //   if (!this.inputCheck(priceGradient)) {
-      //     return
-      //   }
-      //   data.price_gradient = priceGradient
-      //   this.addService.setPrice(data).subscribe(() => {
-      //     this.messageService.success({
-      //       content: '提交成功'
-      //     })
-      //   })
-      // })
+      e.preventDefault()
+      const data = this.getData()
+      this.form.validateFields().then(() => {
+        console.log('step 3 data', data)
+        // if (!this.inputCheck(this.priceGradient)) {
+        //   return
+        // }
+        this.addService.setPrice(data).subscribe(() => {
+          this.messageService.success({
+            content: '提交成功'
+          })
+        })
+      })
     },
     onChange(e) {
       this.priceSetting = e.target.value
-    },
-    onSaleTypeChange(checkedValue) {
-      console.log('sale channel changed', checkedValue)
     },
     del(key) {
       const newTableData = [...this.tableData]
@@ -275,41 +255,15 @@ export default {
         priceGradient: '',
         price: '',
         serviceFee: '',
-        id: 0,
-        key: +new Date()
+        id: 0
       }
       this.priceGradient[key].prices.push(newRecord)
     },
-    // getPriceGradient() {
-    //   const ret = {}
-    //   const prices = []
-    //   const { tableData } = this
-    //   const fieldsValue = this.form.getFieldsValue()
-    //   const singleSell = +fieldsValue.single_sell
-    //   const singlePrice = fieldsValue.single_price
-    //   tableData.forEach(item => {
-    //     prices.push({
-    //       id: 0,
-    //       min_sale: item.min_sale,
-    //       sell_price: item.sell_price,
-    //       transfer_num: item.transfer_num,
-    //       transfer_unit: item.transfer_unit
-    //     })
-    //   })
-    //   ret.prices = prices
-    //   ret.single_sell = singleSell
-    //   ret.single_price = singlePrice
-    //   ret.level_id = 0
-    //   return [ret]
-    // },
     onLevelChange(val, key) {
       this.priceGradient[key].level_id = val
     },
     onSingleSellChange(e, key) {
       this.priceGradient[key].single_sell = e.target.value
-    },
-    onTransferUnitChange(val, index) {
-
     },
     inputCheck(priceGradient) {
       let ret = true
@@ -340,188 +294,10 @@ export default {
       this.priceSetting = info.price_setting
     },
     getData() {
-      // 方式二： 统一标价 平级定价
-      // return {
-      //   course_id: 72,
-      //   price_setting: 1,
-      //   sell_type: [1, 2],
-      //   effective_unit: 7,
-      //   price_gradient: [{
-      //     single_sell: 1,
-      //     single_price: 200,
-      //     level_id: 0, // 没有，先传，后端后面去掉
-      //     prices: [{
-      //       id: 0,
-      //       min_sale: 1,
-      //       max_sale: 10,
-      //       sell_price: 200,
-      //       transfer_num: 10,
-      //       transfer_unit: 2,
-      //       min_sell_price: 0, // 没有，先传，后端后面去掉
-      //       max_sell_price: 0 // 没有，先传，后端后面去掉
-      //     }, {
-      //       id: 0,
-      //       min_sale: 11,
-      //       max_sale: 10000,
-      //       sell_price: 180,
-      //       transfer_num: 10,
-      //       transfer_unit: 2,
-      //       min_sell_price: 0, // 没有，先传，后端后面去掉
-      //       max_sell_price: 0 // 没有，先传，后端后面去掉
-      //     }]
-      //   }]
-      // }
-
-      // 方式一 教练谈单 平级定价
-      // return {
-      //   course_id: 73,
-      //   price_setting: 1,
-      //   sell_type: [1, 2],
-      //   effective_unit: 7,
-      //   price_gradient: [{
-      //     single_sell: 1,
-      //     single_price: 200,
-      //     level_id: 0, // 没有，先传，后端后面去掉
-      //     prices: [{
-      //       id: 0,
-      //       min_sale: 1,
-      //       max_sale: 10,
-      //       sell_price: 200,
-      //       transfer_num: 10,
-      //       transfer_unit: 2,
-      //       min_sell_price: 200, // 没有，先传，后端后面去掉
-      //       max_sell_price: 300 // 没有，先传，后端后面去掉
-      //     }, {
-      //       id: 0,
-      //       min_sale: 11,
-      //       max_sale: 10000,
-      //       sell_price: 180,
-      //       transfer_num: 10,
-      //       transfer_unit: 2,
-      //       min_sell_price: 180, // 没有，先传，后端后面去掉
-      //       max_sell_price: 280 // 没有，先传，后端后面去掉
-      //     }]
-      //   }]
-      // }
-
-      // 方式三 分级定价 教练谈单
-      // return {
-      //   course_id: 74,
-      //   price_setting: 1,
-      //   sell_type: [1, 2],
-      //   effective_unit: 7,
-      //   price_gradient: [{
-      //     single_sell: 1,
-      //     single_price: 200,
-      //     level_id: 54,
-      //     prices: [{
-      //       id: 0,
-      //       min_sale: 1,
-      //       max_sale: 10,
-      //       sell_price: 200,
-      //       transfer_num: 10,
-      //       transfer_unit: 2,
-      //       min_sell_price: 200, // 没有，先传，后端后面去掉
-      //       max_sell_price: 300 // 没有，先传，后端后面去掉
-      //     }, {
-      //       id: 0,
-      //       min_sale: 11,
-      //       max_sale: 10000,
-      //       sell_price: 180,
-      //       transfer_num: 10,
-      //       transfer_unit: 2,
-      //       min_sell_price: 180, // 没有，先传，后端后面去掉
-      //       max_sell_price: 280 // 没有，先传，后端后面去掉
-      //     }]
-      //   }, {
-      //     single_sell: 1,
-      //     single_price: 200,
-      //     level_id: 55,
-      //     prices: [{
-      //       id: 0,
-      //       min_sale: 1,
-      //       max_sale: 10,
-      //       sell_price: 200,
-      //       transfer_num: 10,
-      //       transfer_unit: 2,
-      //       min_sell_price: 200, // 没有，先传，后端后面去掉
-      //       max_sell_price: 300 // 没有，先传，后端后面去掉
-      //     }, {
-      //       id: 0,
-      //       min_sale: 11,
-      //       max_sale: 10000,
-      //       sell_price: 180,
-      //       transfer_num: 10,
-      //       transfer_unit: 2,
-      //       min_sell_price: 180, // 没有，先传，后端后面去掉
-      //       max_sell_price: 280 // 没有，先传，后端后面去掉
-      //     }]
-      //   }]
-      // }
-
-      // 教练分级定价 统一标价
-      return {
-        course_id: 75,
-        price_setting: 1,
-        sell_type: [1, 2],
-        effective_unit: 7,
-        price_gradient: [{
-          single_sell: 1,
-          single_price: 200,
-          level_id: 54, // 没有，先传，后端后面去掉
-          prices: [{
-            id: 0,
-            min_sale: 1,
-            max_sale: 10,
-            sell_price: 200,
-            transfer_num: 10,
-            transfer_unit: 2,
-            min_sell_price: 0, // 没有，先传，后端后面去掉
-            max_sell_price: 0 // 没有，先传，后端后面去掉
-          }, {
-            id: 0,
-            min_sale: 11,
-            max_sale: 10000,
-            sell_price: 180,
-            transfer_num: 10,
-            transfer_unit: 2,
-            min_sell_price: 0, // 没有，先传，后端后面去掉
-            max_sell_price: 0 // 没有，先传，后端后面去掉
-          }]
-        }, {
-          single_sell: 1,
-          single_price: 200,
-          level_id: 55,
-          prices: [{
-            id: 0,
-            min_sale: 1,
-            max_sale: 10,
-            sell_price: 200,
-            transfer_num: 10,
-            transfer_unit: 2,
-            min_sell_price: 0, // 没有，先传，后端后面去掉
-            max_sell_price: 0 // 没有，先传，后端后面去掉
-          }, {
-            id: 0,
-            min_sale: 11,
-            max_sale: 10000,
-            sell_price: 180,
-            transfer_num: 10,
-            transfer_unit: 2,
-            min_sell_price: 0, // 没有，先传，后端后面去掉
-            max_sell_price: 0 // 没有，先传，后端后面去掉
-          }]
-        }]
-      }
-
-      // const data = this.form.getFieldsValue()
-      // data.course_id = this.courseId
-      // data.single_sell = +data.single_sell
-      // /**
-      //  * 配合后端接口，传init值
-      //  */
-      // data.sell_type = 2
-      // return data
+      const data = this.form.getFieldsValue()
+      data.course_id = this.courseId
+      data.price_gradient = this.priceGradientFilter()
+      return data
     },
     getSetting() {
       this.addService.getSetting().subscribe(res => {
@@ -536,11 +312,14 @@ export default {
         const prices = item.prices
         const pricesLen = prices.length
         prices.map((price, i) => {
-          delete price.key
           delete price.serviceFee
           delete price.priceGradient
-          // 统一标价模式下，没有价格梯度，传0
-          if (this.saleModel === 2) {
+          delete price.price
+          if (this.saleModel === 1) {
+            // 教练谈单模式，没有固定价格
+            price.sell_price = 0
+          } else {
+            // 统一标价模式下，没有价格梯度，传0
             price.min_sell_price = 0
             price.max_sell_price = 0
           }

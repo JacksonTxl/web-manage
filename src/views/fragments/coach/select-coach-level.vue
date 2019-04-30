@@ -1,7 +1,8 @@
 <template>
   <div>
-    <a-select @change="(val) => onChange(val)"  placeholder="选择教练等级"
+    <a-select :defaultValue="value" @change="(val) => onChange(val)" placeholder="请选择等级"
       class="page-set-sell-price__select">
+      <a-select-option :value="-1">请选择等级</a-select-option>
       <a-select-option :value="item.id" v-for="item in list" :key="item.id">
         {{item.setting_name}}
       </a-select-option>
@@ -20,6 +21,12 @@ export default {
   rxState() {
     return {
       list: this.selectCoachLevelService.list$
+    }
+  },
+  props: {
+    value: {
+      type: Number,
+      default: -1
     }
   },
   created() {
