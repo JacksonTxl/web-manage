@@ -8,7 +8,9 @@
         </a-steps>
       </a-col>
     </a-row>
-    {{info}}
+    <pre>
+      {{info}}
+    </pre>
     <create-personal-course v-show="currentIndex === 0" :info="info" @goNext="goNext"/>
     <set-shop-coach v-show="currentIndex === 1" :info="info" @goNext="goNext"/>
     <set-sell-price v-show="currentIndex === 2" :info="info" @goNext="goNext"/>

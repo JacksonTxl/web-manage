@@ -15,7 +15,9 @@
         />
 
       </st-container>
-      <p class="color-text-light mg-t8">共{{totalNum}}家场馆，已选择{{checedNum}}家场馆</p>
+      <p class="color-text-light mg-t8">
+        <!-- 共{{totalNum}}家场馆， -->
+        已选择{{checedNum}}家场馆</p>
       <p class="ta-r">
         <st-button type="primary" @click="confirm">确定</st-button>
       </p>
