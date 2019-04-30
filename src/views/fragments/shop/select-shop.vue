@@ -44,8 +44,7 @@ export default {
   },
   rxState() {
     return {
-      loading: this.selectService.loading$,
-      list: this.selectService.list$
+      loading: this.selectService.loading$
     }
   },
   props: {
@@ -60,7 +59,8 @@ export default {
     return {
 
       shopTableColumns,
-      checkedShopIds: []
+      checkedShopIds: [],
+      list: []
     }
   },
   created() {
@@ -80,18 +80,18 @@ export default {
       this.selectService.getShopBasic({
         shop_ids: shopIds
       }).subscribe(res => {
-        this.list = res.list
+        this.list = res.shops
       })
     },
-    delShopTableRecord(id) {
+    delShopTableRecord(shopId) {
       const { list, checkedShopIds } = this
       list.forEach((item, index) => {
-        if (item.shop_id === id) {
+        if (item.shop_id === shopId) {
           list.splice(index, 1)
         }
       })
       checkedShopIds.forEach((item, index) => {
-        if (item === +id) {
+        if (item === +shopId) {
           checkedShopIds.splice(index, 1)
         }
       })
