@@ -42,20 +42,14 @@
         </div>
       </div>
       <st-button type="primary" class="shop-member-list-button">
-        <modal-link tag="a" :to=" { name: 'shop-add-user'}">
-          <a-icon type="plus"/>添加用户
-        </modal-link>
+        <modal-link tag="a" :to=" { name: 'shop-add-user'}">添加用户</modal-link>
       </st-button>
       <st-button class="shop-member-list-button">导入用户</st-button>
       <st-button class="shop-member-list-button">
-        <modal-link tag="a" :to=" { name: 'shop-add-user'}">
-          <a-icon type="plus"/>加标签
-        </modal-link>
+        <modal-link tag="a" :to=" { name: 'shop-add-lable'}">加标签</modal-link>
       </st-button>
       <st-button class="shop-member-list-button">
-        <modal-link tag="a" :to=" { name: 'shop-add-user'}">
-          <a-icon type="plus"/>分配销售
-        </modal-link>
+        <modal-link tag="a" :to=" { name: 'shop-add-user'}">分配员工</modal-link>
       </st-button>
       <st-button class="shop-member-list-button">批量导出</st-button>
       <st-table
@@ -74,24 +68,16 @@
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'shop-add-user'}">
-                <a-icon type="plus"/>分配员工
-              </modal-link>
+              <modal-link tag="a" :to=" { name: 'shop-add-user'}">分配员工</modal-link>
             </a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'shop-add-user'}">
-                <a-icon type="plus"/>绑实体卡
-              </modal-link>
+              <modal-link tag="a" :to=" { name: 'shop-binding-entity-card'}">绑实体卡</modal-link>
             </a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'shop-add-user'}">
-                <a-icon type="plus"/>转店
-              </modal-link>
+              <modal-link tag="a" :to=" { name: 'shop-add-user'}">转店</modal-link>
             </a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'shop-add-user'}">
-                <a-icon type="plus"/>冻结用户
-              </modal-link>
+              <modal-link tag="a" :to=" { name: 'shop-frozen'}">冻结用户</modal-link>
             </a-menu-item>
             <a-menu-item>解除微信绑定</a-menu-item>
           </st-more-dropdown>

@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="分配员工" @ok="save" v-model="show" size="small">
+  <st-modal title="添加标签" @ok="save" v-model="show">
     <section>content</section>
     <section>
       <!-- <footer class="footer">
@@ -11,7 +11,7 @@
 </template>
 <script>
 export default {
-  name: 'distributionAles',
+  name: 'addLable',
   props: {},
   data() {
     return {

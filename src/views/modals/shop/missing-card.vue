@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="遗失补卡" @ok="save" v-model="show" style="width:676px">
+  <st-modal title="遗失补卡" @ok="save" v-model="show" size="small">
     <section>content</section>
     <section>
       <!-- <footer class="footer">
