@@ -1,14 +1,14 @@
 <template>
-  <a-modal
+  <st-modal
     class="modal-support-course-shops"
-    title='绑定实体卡'
+    :title="course.course_name + ' 查看授课教练'"
     v-model='show'>
     <st-table
     :columns="columnsCoaches"
     :rowKey="record => record.id"
     :dataSource="supportCoachList">
     </st-table>
-  </a-modal>
+  </st-modal>
 </template>
 <script>
 import { columnsCoaches } from './support-table'
@@ -28,14 +28,14 @@ export default {
     }
   },
   props: {
-    courseId: {
-      type: Number,
-      default: -1
+    course: {
+      type: Object,
+      default: () => {}
     }
   },
   methods: {
     getShops() {
-      this.brandService.getCoursePersonalSupportCoaches({ course_id: this.courseId }).subscribe(state => {
+      this.brandService.getCoursePersonalSupportCoaches({ course_id: this.course.course_id }).subscribe(state => {
         this.supportCoachList = state.list
       })
     }

@@ -8,33 +8,33 @@
       :dataSource="personalCourseList"
       :scroll="{ x: 1300}"
       @change="onChange">
-      <div slot="shop_setting" slot-scope="shop_setting, record">
+      <div slot="shops" slot-scope="shops, record">
         <modal-link tag="a"
-          v-if="shop_setting.id !== 1"
+          v-if="record.shop_setting === 2"
         :to="{name: 'course-support-course-shops', props: {courseId: record.course_id}}"
-        >{{shop_setting.name}}</modal-link>
+        >共{{shops}}家门店</modal-link>
         <span
           v-else
-        >{{shop_setting.name}}</span>
+        >{{record.shop_setting | enumFilter('personal_course.shop_setting')}}</span>
       </div>
-      <div slot="coachNumber" slot-scope="coachNumber, record">
+      <div slot="coaches" slot-scope="coaches, record">
         <modal-link tag="a"
-        :to="{name: 'course-support-course-coaches', props: {courseId: record.course_id}}"
-        >{{coachNumber}}</modal-link>
+        :to="{name: 'course-support-course-coaches', props: {course: record}}"
+        >{{coaches}}</modal-link>
       </div>
-      <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}"
+      <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {course: record}}"
       slot="course_name" slot-scope="course_name, record">
         {{course_name}}
       </router-link>
 
       <div slot="price_setting" slot-scope="price_setting">
-        {{price_setting.name}}
+        {{price_setting | enumFilter('personal_course.price_setting')}}
       </div>
-      <div slot="course_pricing" slot-scope="course_pricing">
+      <div slot="sell_price" slot-scope="sell_price">
         <a
 
           href="javascript:;"
-        >{{course_pricing}}</a>
+        >{{sell_price}}</a>
       </div>
       <div slot="is_available" slot-scope="is_available">
           <span><a-badge :status="is_available === 1?'success':'error'" />{{is_available | enumFilter('personal_course.is_available')}}</span>

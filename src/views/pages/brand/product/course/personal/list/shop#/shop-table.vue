@@ -13,6 +13,15 @@
       <div slot="action">
         <modal-link tag="a" :to="{name:'test'}">查看</modal-link>
       </div>
+      <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}"
+      slot="course_name" slot-scope="course_name, record">
+        {{course_name}}
+      </router-link>
+      <div slot="coaches" slot-scope="coaches, record">
+        <modal-link tag="a"
+        :to="{name: 'course-support-course-coaches', props: {course: record}}"
+        >{{coaches}}</modal-link>
+      </div>
     </st-table>
 
 </div>

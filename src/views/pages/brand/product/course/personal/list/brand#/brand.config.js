@@ -14,8 +14,8 @@ export const columns = [
   },
   {
     title: '支持上课门店',
-    dataIndex: 'shop_setting',
-    scopedSlots: { customRender: 'shop_setting' }
+    dataIndex: 'shops',
+    scopedSlots: { customRender: 'shops' }
   },
   {
     title: '定价方式',
@@ -24,18 +24,13 @@ export const columns = [
   },
   {
     title: '课程定价',
-    dataIndex: 'course_pricing',
-    scopedSlots: { customRender: 'course_pricing' }
+    dataIndex: 'sell_price',
+    scopedSlots: { customRender: 'sell_price' }
   },
   {
     title: '授课教练数',
-    dataIndex: 'coach_number',
-    scopedSlots: { customRender: 'coachNumber' }
-  },
-  {
-    title: '状态',
-    dataIndex: 'is_available',
-    scopedSlots: { customRender: 'is_available' }
+    dataIndex: 'coaches',
+    scopedSlots: { customRender: 'coaches' }
   },
   {
     title: '操作',
