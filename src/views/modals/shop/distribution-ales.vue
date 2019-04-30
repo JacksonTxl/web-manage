@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="分配员工" @ok="save" v-model="show" size="small">
+  <st-modal title="分配销售" @ok="save" v-model="show" size="small">
     <section>content</section>
     <section>
       <!-- <footer class="footer">
