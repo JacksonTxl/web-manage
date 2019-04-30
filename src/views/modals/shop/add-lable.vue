@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="添加标签" @ok="save" v-model="show">
+  <st-modal title="添加标签" @ok="save" v-model="show" size="small">
     <section>content</section>
     <section>
       <!-- <footer class="footer">
