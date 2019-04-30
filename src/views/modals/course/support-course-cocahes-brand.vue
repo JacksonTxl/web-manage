@@ -14,7 +14,7 @@
 import { columnsCoaches } from './support-table'
 import { BrandService } from '../../pages/brand/product/course/personal/list/brand.service'
 export default {
-  name: 'SupportCourseCoaches',
+  name: 'SupportCourseCoachesBrand',
   serviceInject() {
     return {
       brandService: BrandService

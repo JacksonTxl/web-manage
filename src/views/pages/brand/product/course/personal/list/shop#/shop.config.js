@@ -11,7 +11,7 @@ export const columns = [
   {
     title: '课程名称',
     dataIndex: 'course_name',
-    scopedSlots: { customRender: 'admission' }
+    scopedSlots: { customRender: 'course_name' }
   },
   {
     title: '时长（分钟）',
@@ -19,11 +19,12 @@ export const columns = [
   },
   {
     title: '课程定价',
-    dataIndex: 'course_pricing'
+    dataIndex: 'sell_price'
   },
   {
     title: '授课教练数',
-    dataIndex: 'coach_number'
+    dataIndex: 'coaches',
+    scopedSlots: { customRender: 'coaches' }
   },
   {
     title: '操作',

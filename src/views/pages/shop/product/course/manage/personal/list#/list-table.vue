@@ -18,10 +18,8 @@
         >{{record.shop_setting | enumFilter('personal_course.shop_setting')}}</span>
       </div>
       <div slot="coaches" slot-scope="coaches, record">
-        <span v-if="!coaches">{{coaches}}</span>
         <modal-link tag="a"
-        v-else
-        :to="{name: 'course-support-course-cocahes-brand', props: {course: record}}"
+        :to="{name: 'course-support-course-coaches', props: {course: record}}"
         >{{coaches}}</modal-link>
       </div>
       <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {course: record}}"
@@ -65,7 +63,7 @@
 </template>
 
 <script>
-import { columns, mockTable } from './brand.config'
+import { columns, mockTable } from './list.config'
 export default {
   name: 'ShopSaleListTable',
   data() {

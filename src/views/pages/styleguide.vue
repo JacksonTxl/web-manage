@@ -24,6 +24,7 @@
               <a-anchor-link href="#checkbox-button" title="checkbox-button 复选按钮组"></a-anchor-link>
               <a-anchor-link href="#checkbox-facility" title="checkbox-facility 复选设施"></a-anchor-link>
               <a-anchor-link href="#more-dropdown" title="more-dropdown 更多"></a-anchor-link>
+              <a-anchor-link href="#modal" title="modal 模态窗"></a-anchor-link>
               <a-anchor-link href="#help-popover" title="help-popover 帮助气泡"></a-anchor-link>
               <a-anchor-link href="#tag" title="tag 标签"></a-anchor-link>
               <a-anchor-link href="#region-cascader" title="region-cascader 地址选择"></a-anchor-link>

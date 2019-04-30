@@ -54,7 +54,12 @@
         @click="memberFun(text,record)"
       >{{text}}</a>
       <!-- 会员卡名称end -->
-
+      <span
+        slot="num"
+        slot-scope="text,record"
+        href="javascript:;"
+      >{{text}}{{record.unit === 1 ? '天':'月'}}</span>
+      <span slot="sell_time" slot-scope="text,record">{{record.start_time}}~{{record.end_time}}</span>
       <!-- 支持入场门店start -->
       <a slot="consumption_range" slot-scope="text,record" href="javascript:;">
         <span v-if="text !=='0个场馆'">
@@ -165,8 +170,8 @@ export default {
         },
         {
           title: '有效期',
-          dataIndex: 'num'
-          // scopedSlots: { customRender: 'card_name' }
+          dataIndex: 'num',
+          scopedSlots: { customRender: 'num' }
         },
         {
           title: '储值金额',

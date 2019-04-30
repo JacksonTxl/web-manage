@@ -10,9 +10,6 @@
           <a-select class="mg-r8" v-model="query.category_id" style="width: 160px" @change="onChange">
             <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
           </a-select>
-          <a-select style="width: 160px" v-model="query.is_available" @change="onChange">
-            <a-select-option v-for="status in courseStatus" :key="status.value" :value="status.value">{{status.label}}</a-select-option>
-          </a-select>
         </div>
       </div>
     </header>

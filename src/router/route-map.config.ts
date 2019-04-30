@@ -31,7 +31,6 @@ export const routeMapConfig = {
   'brand-product-course-personal-list-brand'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
       category_id: { type: Number, default: -1 },
-      is_available: { type: Number, default: -1 },
       course_name: { type: String, default: '' }
     }
   },
@@ -39,14 +38,19 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: -1 },
       category_id: { type: Number, default: -1 },
-      is_available: { type: Number, default: -1 },
+      course_name: { type: String, default: '' }
+    }
+  },
+  'shop-product-course-manage-personal-list'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      category_id: { type: Number, default: -1 },
+      is_available: { type: Number, default: 1 },
       course_name: { type: String, default: '' }
     }
   },
   'brand-product-course-team-list-brand'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
       category_id: { type: Number, default: -1 },
-      is_available: { type: Number, default: -1 },
       course_name: { type: String, default: '' }
     }
   },

@@ -78,7 +78,7 @@
       </a>
 
       <!-- start 发布渠道-->
-      <span slot="publish_channel" slot-scope="text" href="javascript:;">{{text?'品牌':'门店'}}</span>
+      <span slot="publish_channel" slot-scope="text" href="javascript:;">{{text=== 1?'品牌':'门店'}}</span>
       <!-- end 发布渠道-->
       <!-- 售卖状态start -->
       <a
@@ -260,13 +260,17 @@ export default {
         title: '确认要上架?',
         content: `确认上架${record.card_name}至${record.support_sales}?`,
         onOk() {
-          self.aService
-            .setCardsDepositBrandOnLine([
-              { card_id: record.id, shop_id: record.shop_id }
-            ])
-            .subscribe(state => {
-              self.$emit('del', true)
-            })
+          let obj = {}
+          // publish_channel 1 品牌 2 门店
+          if (record.publish_channel === 1) {
+            obj.card_id = record.id
+          } else {
+            obj.card_id = record.id
+            obj.shop_id = record.shop_id
+          }
+          self.aService.setCardsDepositBrandOnLine(obj).subscribe(state => {
+            self.$emit('del', true)
+          })
         },
         onCancel() {
           console.log('Cancel')

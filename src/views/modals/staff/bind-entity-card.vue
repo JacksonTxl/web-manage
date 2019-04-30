@@ -1,8 +1,9 @@
 <template>
-  <a-modal
+  <st-modal
     class="modal-bind-entity-card"
     title='绑定实体卡'
     @ok='save'
+    size="small"
     v-model='show'>
     <section>
       <div class="modal-bind-entity-card__tag modal-staff-tag">
@@ -26,7 +27,7 @@
         </st-form-item>
       </st-form>
     </section>
-  </a-modal>
+  </st-modal>
 </template>
 <script>
 export default {

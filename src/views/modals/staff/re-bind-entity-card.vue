@@ -1,7 +1,8 @@
 <template>
-  <a-modal title='重新绑定实体卡'
+  <st-modal title='重新绑定实体卡'
     confirmLoading
     @ok='onSubmit'
+    size="small"
     v-model='show'>
     <section>
       <div class="staff-tag">
@@ -28,7 +29,7 @@
         </st-form-item>
       </st-form>
     </section>
-  </a-modal>
+  </st-modal>
 </template>
 <script>
 export default {

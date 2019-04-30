@@ -1,8 +1,9 @@
 <template>
-  <a-modal class="modal-staff-turnover" title='员工离职'
+  <st-modal class="modal-staff-turnover" title='员工离职'
     confirmLoading
     @ok='onSubmit'
     okText="保存"
+    size="small"
     v-model='show'>
     <section>
       <div class="modal-staff-turnover__tag mg-b24">
@@ -22,7 +23,7 @@
         </st-form-item>
       </st-form>
     </section>
-  </a-modal>
+  </st-modal>
 </template>
 <script>
 export default {
