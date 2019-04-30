@@ -1,5 +1,5 @@
 import { Api } from '@/api/api'
-const url = '/v1/setting/coach/levels'
+const url = '/v1/setting/coach'
 
 export class CoachLevelApi extends Api {
   /**

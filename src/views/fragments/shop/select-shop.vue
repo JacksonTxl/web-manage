@@ -3,7 +3,7 @@
     <a-table :columns="shopTableColumns" :dataSource="list" :pagination="false" rowKey="shop_id">
       <template slot="operation" slot-scope="text, record">
       <div>
-        <a @click="delShopTableRecord(record.key)">删除</a>
+        <a @click="delShopTableRecord(record.shop_id)">删除</a>
       </div>
     </template>
     </a-table>
@@ -15,6 +15,7 @@
 </template>
 <script>
 import { SelectShopService } from './select-shop.service'
+import { keys } from 'lodash-es'
 
 const shopTableColumns = [{
   title: '省',
@@ -79,15 +80,15 @@ export default {
         shop_ids: shopIds
       }).subscribe()
     },
-    delShopTableRecord(key) {
+    delShopTableRecord(id) {
       const { list, checkedShopIds } = this
       list.forEach((item, index) => {
-        if (item.key === key) {
+        if (item.shop_id === id) {
           list.splice(index, 1)
         }
       })
       checkedShopIds.forEach((item, index) => {
-        if (item === +key) {
+        if (item === +id) {
           checkedShopIds.splice(index, 1)
         }
       })

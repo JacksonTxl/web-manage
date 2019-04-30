@@ -31,4 +31,8 @@ export class HaltTheSalesService extends Store<CardsTableModelState> {
   setListInfo(paramsObj: any) {
     return this.cardsApi.setCardsSaleStop(paramsObj)
   }
+  // 储值卡
+  setCardsDepositStopSell(paramsObj: any) {
+    return this.cardsApi.setCardsDepositStopSell(paramsObj)
+  }
 }
