@@ -14,7 +14,13 @@
     <st-t4>体测记录</st-t4>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
-        <a-table rowKey="age" :dataSource="data" :columns="integral" :pagination="false"></a-table>
+        <a-table
+          class="user-experience-add-table"
+          rowKey="age"
+          :dataSource="data"
+          :columns="integral"
+          :pagination="false"
+        ></a-table>
       </a-col>
     </a-row>
   </div>
@@ -139,8 +145,20 @@ export default {
   },
   mounted() {
     this.echarts(this.g2)
+    this.nextTickAddEle()
   },
   methods: {
+    nextTickAddEle() {
+      this.$nextTick(() => {
+        // let ele = document
+        //   .getElementsByClassName('user-experience-add-table')[0]
+        //   .getElementsByClassName('ant-table-tbody')[0]
+        // console.log(ele)
+        // let oldEle = ele.innerHTML
+        // let newEle = `<tr><td>qweqweqweqwe</td></tr>` + oldEle
+        // ele.innerHTML = newEle
+      })
+    },
     echarts(data) {
       let self = this
       var chart = new G2.Chart({
