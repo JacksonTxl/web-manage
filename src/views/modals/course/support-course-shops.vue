@@ -1,11 +1,11 @@
 <template>
   <a-modal
     class="modal-support-course-shops"
-    title='绑定实体卡'
+    title='查看店详情'
     v-model='show'>
     <st-table
     :columns="columnsShops"
-    :rowKey="record => record.id"
+    :rowKey="record => record.shop_name"
     :dataSource="supportShopList">
     </st-table>
   </a-modal>
@@ -36,7 +36,7 @@ export default {
   methods: {
     getShops() {
       this.brandService.getCoursePersonalSupportShops({ course_id: this.courseId }).subscribe(state => {
-        this.supportShopList = state.list
+        this.supportShopList = state.shops
       })
     }
   },

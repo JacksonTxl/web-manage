@@ -3,11 +3,17 @@
     class="modal-support-course-shops"
     :title="course.course_name + ' 查看授课教练'"
     v-model='show'>
+    <div class="modal-support-course-shops__search">
+
+    </div>
+    <st-container>
     <st-table
     :columns="columnsCoaches"
     :rowKey="record => record.id"
+    :pagination="{simple: true}"
     :dataSource="supportCoachList">
     </st-table>
+    </st-container>
   </st-modal>
 </template>
 <script>
@@ -36,7 +42,7 @@ export default {
   methods: {
     getShops() {
       this.brandService.getCoursePersonalSupportCoaches({ course_id: this.course.course_id }).subscribe(state => {
-        this.supportCoachList = state.list
+        this.supportCoachList = state.coaches
       })
     }
   },

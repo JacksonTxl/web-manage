@@ -60,13 +60,13 @@ export class BrandPersonalCourseApi extends Api {
    * 查询和这门课程关联的门店的详细信息
    */
   getCoursePersonalSupportShops(query: CoursePersonalSupportInput) {
-    return this.http.get('/v1/course/personal/support_shops', { query })
+    return this.http.get('/v1/course/personal/brand/support_shops', { query })
   }
   /**
    * 查询和这门课程关联的门店的详细信息
    */
   getCoursePersonalSupportCoaches(query: CoursePersonalSupportInput) {
-    return this.http.get('/v1/course/personal/support_coachs', { query })
+    return this.http.get('/v1/course/personal/brand/support_coaches', { query })
   }
   /**
    * 获取私教课全局设置
