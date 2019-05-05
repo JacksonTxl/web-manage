@@ -4,75 +4,87 @@
       g2（图表插件）
       <a href="https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html" targe="_blank">g2 文档</a>
     </h3>
-    <div id="demoChart"></div>
+    <div class="mg-t24">
+      <st-area-chart id="chartDemo" :data="chartData"/>
+    </div>
+    <div class="mg-t24">
+      <st-area-chart id="chartDemo2" :data="chartData2" :options="options2"/>
+    </div>
   </section>
 </template>
 <script>
-import G2 from '@antv/g2'
 export default {
   name: 'ChartDemo',
-  mounted() {
-    this.renderChart()
-  },
-  methods: {
-    renderChart() {
-      const data = [{
-        year: '1991',
-        value: 15468
-      }, {
-        year: '1992',
-        value: 16100
-      }, {
-        year: '1993',
-        value: 15900
-      }, {
-        year: '1994',
-        value: 17409
-      }, {
-        year: '1995',
-        value: 17000
-      }, {
-        year: '1996',
-        value: 31056
-      }, {
-        year: '1997',
-        value: 31982
-      }, {
-        year: '1998',
-        value: 32040
-      }, {
-        year: '1999',
-        value: 33233
-      }]
-      const chart = new G2.Chart({
-        container: 'demoChart',
-        forceFit: true,
-        height: window.innerHeight
-      })
-      chart.source(data)
-      chart.scale({
-        value: {
-          min: 10000
+  data() {
+    return {
+      options2: {
+        fieldNames: {
+          x: 'whateverX',
+          y: 'whateverY'
         },
-        year: {
-          range: [0, 1]
+        lineColor: '#dd675c',
+        areaColor: '#f9ce53'
+      },
+      chartData: [
+        {
+          year: '2013',
+          value: 30900
+        },
+        {
+          year: '2014',
+          value: 27409
+        },
+        {
+          year: '2015',
+          value: 38000
+        },
+        {
+          year: '2016',
+          value: 31056
+        },
+        {
+          year: '2017',
+          value: 31982
+        },
+        {
+          year: '2018',
+          value: 32040
+        },
+        {
+          year: '2019',
+          value: 33233
         }
-      })
-      chart.axis('value', {
-        label: {
-          formatter: function formatter(val) {
-            return (val / 10000).toFixed(1) + 'k'
-          }
+      ],
+      chartData2: [
+        {
+          whateverX: '2013',
+          whateverY: 30900
+        },
+        {
+          whateverX: '2014',
+          whateverY: 27409
+        },
+        {
+          whateverX: '2015',
+          whateverY: 38000
+        },
+        {
+          whateverX: '2016',
+          whateverY: 31056
+        },
+        {
+          whateverX: '2017',
+          whateverY: 31982
+        },
+        {
+          whateverX: '2018',
+          whateverY: 32040
+        },
+        {
+          whateverX: '2019',
+          whateverY: 33233
         }
-      })
-      chart.tooltip({
-        crosshairs: {
-          type: 'line'
-        }
-      })
-      chart.area().position('year*value')
-      chart.line().position('year*value').size(2)
-      chart.render()
+      ]
     }
   }
 }

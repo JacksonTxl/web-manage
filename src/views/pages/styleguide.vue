@@ -47,6 +47,9 @@
           <li>
             <router-link to="/styleguide/function">Function(函数)</router-link>
           </li>
+          <li>
+            <router-link to="/styleguide/chart">G2(图表)</router-link>
+          </li>
         </ul>
       </aside>
       <main class="sg__main">
