@@ -58,7 +58,7 @@
             <span class="label">售卖门店：</span>
             <span class="value">{{cardInfo.support_sales.name}}</span>
           </p>
-          <st-container v-if="cardInfo.support_sales.id===2">
+          <st-container v-if="cardInfo.support_sales.id!==1">
             <a-table
               size="middle"
               rowKey="shop_id"

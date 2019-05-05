@@ -15,15 +15,15 @@
             <p :class="item('name')">
               <st-tag type="deposite-card"/>
               <span>{{cardInfo.card_name}}</span>
-              <span :class="{'brand-card__selling':cardInfo.sell_status.id===1,'brand-card__sellstop':cardInfo.sell_status.id===2}">{{cardInfo.sell_status.name}}
+              <span :class="{'brand-card__selling':cardInfo.sell_status===1,'brand-card__sellstop':cardInfo.sell_status===2}">{{cardInfo.sell_status | enumFilter('deposit_card.sell_status')}}
                 <a-popover
-                  v-if="cardInfo.sell_status.id===2"
+                  v-if="cardInfo.sell_status===2"
                   trigger="hover"
                   placement="bottomRight"
                   arrowPointAtCenter
                 >
                   <div slot="content">
-                    {{cardInfo.sell_status.addition}}
+                    {{cardInfo.stop_reason}}
                   </div>
                   <a-icon type="info-circle"></a-icon>
                 </a-popover>
@@ -31,7 +31,7 @@
             </p>
             <p :class="item('time')">
               <span class="label">售卖时间：</span>
-              <span class="value">{{cardInfo.sale_time}}</span>
+              <span class="value">{{cardInfo.start_time}} ~ {{cardInfo.end_time}}</span>
             </p>
           </div>
         </div>
@@ -39,14 +39,14 @@
           <!-- 支持入场范围 -->
           <p class="mb-8">
             <span class="label">支持消费门店：</span>
-            <span class="value">{{cardInfo.support_consume_shop}}</span>
+            <span class="value">{{cardInfo.consumption_range | enumFilter('deposit_card.consumption_range')}}</span>
           </p>
-          <st-container v-if="cardInfo.consumption_range.id===2">
+          <st-container v-if="cardInfo.consumption_range===2">
             <a-table
               size="middle"
               rowKey="shop_id"
               :columns="shop_columns"
-              :dataSource="cardInfo.support_consume_shop_list"
+              :dataSource="cardInfo.can_use_shop"
               :pagination="false"
               :scroll="{ y: 230 }"
             />
@@ -56,14 +56,14 @@
           <!-- 售卖门店 -->
           <p class="mb-8">
             <span class="label">售卖门店：</span>
-            <span class="value">{{cardInfo.support_sale_shop}}</span>
+            <span class="value">{{cardInfo.support_sales | enumFilter('deposit_card.support_sales')}}</span>
           </p>
-          <st-container v-if="cardInfo.support_sales.id!==1">
+          <st-container v-if="cardInfo.support_sales!==1">
             <a-table
               size="middle"
               rowKey="shop_id"
               :columns="shop_columns"
-              :dataSource="cardInfo.support_sale_shop_list"
+              :dataSource="cardInfo.support_shop"
               :pagination="false"
               :scroll="{ y: 230 }"
             />
@@ -77,18 +77,29 @@
           <st-container>
             <a-table
               size="middle"
-              rowKey="id"
+              rowKey="card_price"
               :columns="price_gradient_columns"
-              :dataSource="cardInfo.price"
+              :dataSource="[cardInfo.price]"
               :pagination="false"
-            />
+            >
+              <template slot="card_price" slot-scope="text">
+                {{text}} 元
+              </template>
+              <template slot="sell_price" slot-scope="text">
+                {{text}} 元
+              </template>
+              <template slot="deadline" slot-scope="text">
+                {{text.number}} {{text.type|enumFilter('deposit_card.unit')}}
+              </template>
+            </a-table>
           </st-container>
         </div>
         <div :class="item('transfer')" class="mb-24">
           <!-- 转让设置 -->
           <p class="mb-8">
             <span class="label">转让设置：</span>
-            <span class="value">{{cardInfo.is_transfer}}</span>
+            <span class="value" v-if="cardInfo.is_transfer">支持转让，收费交易金额{{cardInfo.transfer_fee.number}}{{cardInfo.transfer_fee.type|enumFilter('deposit_card.transfer_unit')}}手续费</span>
+            <span class="value" v-if="!cardInfo.is_transfer">不支持转让</span>
           </p>
         </div>
         <div :class="item('card_introduction')" class="mb-24">
@@ -96,14 +107,14 @@
           <p class="mb-8">
             <span class="label">储值卡说明：</span>
           </p>
-          <st-container>{{cardInfo.card_contents}}</st-container>
+          <st-container>{{cardInfo.card_contents?cardInfo.card_contents:'无'}}</st-container>
         </div>
         <div :class="item('card_contents')" class="mb-24">
           <!-- 备注 -->
           <p class="mb-8">
             <span class="label">备注：</span>
           </p>
-          <st-container>{{cardInfo.description}}</st-container>
+          <st-container>{{cardInfo.description?cardInfo.description:'无'}}</st-container>
         </div>
       </div>
     </div>
@@ -154,15 +165,18 @@ export default {
       price_gradient_columns: [
         {
           title: '储值金额',
+          scopedSlots: { customRender: 'card_price' },
           dataIndex: 'card_price'
         },
         {
           title: '售卖价格',
+          scopedSlots: { customRender: 'sell_price' },
           dataIndex: 'sell_price'
         },
         {
           title: '有效期限',
-          dataIndex: 'time'
+          scopedSlots: { customRender: 'deadline' },
+          dataIndex: 'deadline'
         }
       ]
     }
