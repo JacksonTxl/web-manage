@@ -17,6 +17,7 @@ import Viewer from 'v-viewer'
 import './style/index'
 import './views/components/register'
 import './filters/register'
+
 // @ts-ignore
 import Scrollbar from '@/vendor/vue-scrollbar'
 
