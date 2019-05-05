@@ -1,6 +1,6 @@
 <template>
   <div class="shop-member-info">
-    <st-panel class="shop-member-info-title">
+    <!-- <st-panel class="shop-member-info-title">
       <div class="shop-member-info-title-pannel">
         <div class="shop-member-info-title-pannel__img">
           <div class="img-box">
@@ -21,14 +21,15 @@
         <div class="shop-member-info-title-pannel__info">2</div>
         <div class="shop-member-info-title-pannel__action">3</div>
       </div>
-    </st-panel>
+    </st-panel>-->
     <st-panel
       :tabs="[
           { label: '用户资料', route: { name: 'shop-member-info-basic' } },
           { label: '员工跟进', route: { name: 'shop-member-info-follow-history' }},
           { label: '预约上课', route: { name: 'shop-member-info-reserve' } },
           { label: '卡课消费', route: { name: 'shop-member-info-sold' } },
-
+          { label: '销售权益', route: { name: 'shop-member-info-sales-interests' } },
+          { label: '用户体验', route: { name: 'shop-member-info-user-experience' } },
         ]"
     >
       <div slot="actions"></div>

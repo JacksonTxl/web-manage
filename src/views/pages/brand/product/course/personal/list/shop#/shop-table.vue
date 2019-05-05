@@ -10,8 +10,8 @@
       :scroll="{ x: 1300}"
       @change="onChange"
     >
-      <div slot="action">
-        <modal-link tag="a" :to="{name:'test'}">查看</modal-link>
+      <div slot="action" slot-scope="action, record">
+        <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}">详情</router-link>
       </div>
       <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}"
       slot="course_name" slot-scope="course_name, record">

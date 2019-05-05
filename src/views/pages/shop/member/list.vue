@@ -3,7 +3,7 @@
   <div class="shop-member-list">
     <st-panel class="mg-t16">
       <div slot="title">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 290px;"/>
+        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="form.keyword" style="width: 290px;"/>
       </div>
       <div slot="prepend">
         <div style="background: #F7F9FC; padding: 24px">
@@ -99,9 +99,20 @@
   </div>
 </template>
 <script>
+import { ListService } from './list.service'
 import sleter from './list#/seleter.vue'
 const tableData = new Array(60).fill(1).map((item, i) => ({ id: i, name: i }))
 export default {
+  serviceInject() {
+    return {
+      aService: ListService
+    }
+  },
+  rxState() {
+    return {
+      cardsListInfo: this.aService.cardsListInfo$
+    }
+  },
   components: {
     'st-sleter': sleter
   },
@@ -113,7 +124,8 @@ export default {
         source: '',
         register: [],
         Membership: [],
-        followUp: ''
+        followUp: '',
+        keyword: ''
       },
       tableData,
       selectedRowKeys: [],

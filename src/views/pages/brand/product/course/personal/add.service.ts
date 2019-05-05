@@ -7,10 +7,16 @@ import {
   SetShopInput,
   SetPriceInput
 } from '@/api/v1/course/personal/brand'
+import {
+  PersonalCourseApi
+} from '@/api/v1/course/personal'
 interface AddState {}
 @Injectable()
 export class AddService extends Store<AddState> {
-  constructor(private courseApi: BrandPersonalCourseApi) {
+  constructor(
+    private courseApi: BrandPersonalCourseApi,
+    private personalCourseApi: PersonalCourseApi
+  ) {
     super()
   }
   @Effect()
@@ -27,6 +33,6 @@ export class AddService extends Store<AddState> {
   }
   @Effect()
   getSetting() {
-    return this.courseApi.getSetting()
+    return this.personalCourseApi.getSetting()
   }
 }
