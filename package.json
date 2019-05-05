@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "@abraham/reflection": "^0.5.1",
+        "@antv/g2": "^3.5.3",
         "@fullcalendar/core": "^4.1.0",
         "@fullcalendar/daygrid": "^4.1.0",
         "@fullcalendar/interaction": "^4.1.0",
