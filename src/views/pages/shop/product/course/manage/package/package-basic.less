@@ -1,0 +1,76 @@
+.page-shop-add-basic-package {
+  .mr-8 {
+    margin-right: 8px;
+  }
+  &__saletime{
+    display: flex;
+    align-items: center;
+    >span{
+      flex: none;
+      height: 32px;
+      margin: 0 8px 24px;
+    }
+    .page-a-form {
+      flex: auto;
+      .ant-form-item-control-wrapper {
+        padding-left: 0;
+      }
+      .ant-calendar-picker {
+        width: 100%;
+      }
+    }
+  }
+  &__transfer{
+    display: flex;
+    align-items: center;
+    height: 34px;
+    width: 100%;
+    &-checkbox{
+      flex: none;
+    }
+    &-input {
+      flex: auto;
+    }
+  }
+  &__upload {
+    display: flex;
+  }
+  &__st-upload{
+    flex: none;
+    &-icon{
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      margin-bottom: 12px;
+      background: url('~@/assets/img/icon_upload_plus.png') center/cover no-repeat;
+    }
+    &-text{
+      font-size: 14px;
+      line-height: 20px;
+      .c(@text-color);
+    }
+  }
+  &__upload-describe {
+    flex: auto;
+    margin-left: 24px;
+    .fz(12px);
+    .lh(17px);
+    text-align: justify;
+    word-break: break-all;
+    .c(@text-color-secondary);
+    >P{
+      position: relative;
+      &:nth-of-type(1)::before{
+        content: '1.';
+      }
+      &:nth-of-type(2)::before{
+        content: '2.';
+      }
+      &::before{
+        position: absolute;
+        top: 0;
+        left: -14px;
+      }
+    }
+  }
+}

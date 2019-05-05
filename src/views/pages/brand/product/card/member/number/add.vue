@@ -71,7 +71,7 @@
                       <a-input :value="text.num" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
                         <a-select slot="addonAfter" :value="text.unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
                           <a-select-option
-                          v-for="(item,index) in nuit_list"
+                          v-for="(item,index) in unit_list"
                           :value="item.value"
                           :key="index" >{{item.label}}</a-select-option>
                         </a-select>
@@ -118,7 +118,7 @@
                       <a-input :value="text.num" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
                         <a-select slot="addonAfter" :value="text.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
                           <a-select-option
-                          v-for="(item,index) in nuit_list"
+                          v-for="(item,index) in unit_list"
                           :value="item.value"
                           :key="index" >{{item.label}}</a-select-option>
                         </a-select>
@@ -362,7 +362,7 @@ export default {
       // 售卖时间
       start_time: null,
       end_time: null,
-      nuit_list: [
+      unit_list: [
         {
           value: 2,
           label: '天'

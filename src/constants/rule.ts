@@ -4,5 +4,5 @@ export class RuleConfig {
   shop_name = /^[a-zA-Z0-9\u4e00-\u9fa5]{1,20}$/ // 门店名称
   card_name = /^[a-zA-Z0-9\u4e00-\u9fa5]{1,30}$/ // 卡名称
   img_type = /^(image\/png|image\/jpg|image\/jpeg)$/ // 图片类型
-  number = /^[0-9]+([.]{1}[0-9]+){0,1}$/ // 包含小数的数字
+  number = /^(\d+(\.\d?)?|\.\d+)$/ // 包含小数的数字  匹配 1.1 / 1. / .1 三种形式
 }
