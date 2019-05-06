@@ -73,6 +73,7 @@
         @change="onTableChange"
         :dataSource="tableData"
       >
+        <div slot="action" slot-scope="text">{{text}}</div>
         <div slot="action" slot-scope="record">
           <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
           <a-divider type="vertical"></a-divider>
@@ -99,14 +100,14 @@
         </div>
       </st-table>
     </st-panel>
-    {{form}}
+    {{memberListInfo}}
   </div>
 </template>
 <script>
 import { ListService } from './list.service'
 import sleter from './list#/seleter.vue'
 import moment from 'moment'
-const tableData = new Array(60).fill(1).map((item, i) => ({ id: i, name: i }))
+// const tableData = new Array(60).fill(1).map((item, i) => ({ id: i, name: i }))
 export default {
   serviceInject() {
     return {
@@ -135,18 +136,22 @@ export default {
         follow_salesman: '',
         keyword: ''
       },
-      tableData,
+      tableData: [],
       selectedRowKeys: [],
       columns: [
         { title: '人脸', dataIndex: 'id' },
-        { title: '姓名', dataIndex: 'name' },
-        { title: '手机号', dataIndex: 'name1' },
-        { title: '用户等级', dataIndex: 'name2' },
-        { title: '跟进销售', dataIndex: 'name3' },
-        { title: '跟进教练', dataIndex: 'name4' },
-        { title: '注册时间', dataIndex: 'name5' },
-        { title: '成为会员时间', dataIndex: 'name6' },
-        { title: '累计消费(元)', dataIndex: 'name7' },
+        { title: '姓名', dataIndex: 'member_name' },
+        { title: '手机号', dataIndex: 'mobile' },
+        {
+          title: '用户等级',
+          dataIndex: 'member_level',
+          scopedSlots: { customRender: 'member_level' }
+        },
+        { title: '跟进销售', dataIndex: 'follow_salesman' },
+        { title: '跟进教练', dataIndex: 'follow_coach' },
+        { title: '注册时间', dataIndex: 'register_time' },
+        { title: '成为会员时间', dataIndex: 'be_member_time' },
+        { title: '累计消费(元)', dataIndex: 'sum_consumption' },
         { title: '操作', width: 140, scopedSlots: { customRender: 'action' } }
       ]
     }
@@ -156,6 +161,7 @@ export default {
     if (this.$route.query) {
       this.form = this.$route.query
     }
+    this.tableData = this.memberListInfo.members_list
   },
   methods: {
     moment,

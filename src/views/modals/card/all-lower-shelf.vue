@@ -34,13 +34,15 @@ export default {
       self.a.map((item, index) => {
         data.card_shop.push({
           card_id: item.id,
-          shelf_shop_id: item.shop_id
+          shop_id: item.shop_id
         })
       })
       console.log(data)
       this.$confirm({
         title: '批量下架',
-        content: `确定下架所选的${data.card_shop.length}张${self.flag ? '储值卡' : '会员卡'}吗？`,
+        content: `确定下架所选的${data.card_shop.length}张${
+          self.flag ? '储值卡' : '会员卡'
+        }吗？`,
         onOk() {
           if (self.flag) {
             self.aService.setCardsDepositBrandOffLine(data).subscribe(state => {
