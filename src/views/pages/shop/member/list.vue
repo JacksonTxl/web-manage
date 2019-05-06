@@ -12,13 +12,16 @@
               <st-sleter v-model="form">
                 <div slot="custom" v-if="expand">
                   <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="入会时间：">
-                    <a-range-picker @change="MembershipTime"/>
+                    <a-range-picker
+                      :defaultValue="[moment(form.low_consumption, dateFormat), moment(form.high_consumption, dateFormat)]"
+                      @change="MembershipTime"
+                    />
                   </a-form-item>
                   <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="员工跟进">
-                    <a-radio-group buttonStyle="solid" v-model="form.followUp">
-                      <a-radio-button :value="-1">全部</a-radio-button>
-                      <a-radio-button :value="1">有</a-radio-button>
-                      <a-radio-button :value="2">无</a-radio-button>
+                    <a-radio-group buttonStyle="solid" v-model="form.follow_salesman">
+                      <a-radio-button value="-1">全部</a-radio-button>
+                      <a-radio-button value="1">有</a-radio-button>
+                      <a-radio-button value="2">无</a-radio-button>
                     </a-radio-group>
                   </a-form-item>
                 </div>
@@ -33,7 +36,7 @@
                   </a>
                 </div>
                 <div>
-                  <a-button type="primary">查询</a-button>
+                  <a-button type="primary" @click="queryFunc">查询</a-button>
                   <a-button :style="{ marginLeft: '8px' }" @click="handleReset">重置</a-button>
                 </div>
               </a-col>
@@ -96,11 +99,13 @@
         </div>
       </st-table>
     </st-panel>
+    {{form}}
   </div>
 </template>
 <script>
 import { ListService } from './list.service'
 import sleter from './list#/seleter.vue'
+import moment from 'moment'
 const tableData = new Array(60).fill(1).map((item, i) => ({ id: i, name: i }))
 export default {
   serviceInject() {
@@ -110,7 +115,7 @@ export default {
   },
   rxState() {
     return {
-      cardsListInfo: this.aService.cardsListInfo$
+      memberListInfo: this.aService.memberListInfo$
     }
   },
   components: {
@@ -118,13 +123,16 @@ export default {
   },
   data() {
     return {
+      dateFormat: 'YYYY/MM/DD',
       expand: false,
       form: {
-        grade: '',
-        source: '',
-        register: [],
-        Membership: [],
-        followUp: '',
+        member_level: '',
+        register_type: '',
+        start_time: '',
+        stop_time: '',
+        low_consumption: '',
+        high_consumption: '',
+        follow_salesman: '',
         keyword: ''
       },
       tableData,
@@ -144,7 +152,13 @@ export default {
     }
   },
   computed: {},
+  created() {
+    if (this.$route.query) {
+      this.form = this.$route.query
+    }
+  },
   methods: {
+    moment,
     handleReset() {
       let self = this
       for (let prop in self.form) {
@@ -152,7 +166,8 @@ export default {
       }
     },
     MembershipTime(date, dateString) {
-      this.form.Membership = dateString
+      this.form.low_consumption = dateString[0]
+      this.form.high_consumption = dateString[1]
     },
     toggle() {
       this.expand = !this.expand
@@ -163,7 +178,11 @@ export default {
     onSelectionChange(keys) {
       this.selectedRowKeys = keys
     },
-    onTableChange(pagination) {}
+    onTableChange(pagination) {},
+    queryFunc() {
+      console.log(this.form)
+      this.$router.push({ query: this.form })
+    }
   }
 }
 </script>
