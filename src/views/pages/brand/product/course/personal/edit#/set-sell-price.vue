@@ -122,6 +122,21 @@ export default {
         })
       })
     },
+    getPriceGradient() {
+      const ret = []
+      const { tableData } = this
+      tableData.forEach(item => {
+        ret.push({
+          level_id: item.level_id,
+          min_sale: item.min_sale,
+          max_sale: item.max_sale,
+          price: item.price,
+          transfer_num: item.transfer_num,
+          transfer_unit: item.transfer_unit
+        })
+      })
+      return ret
+    },
     onChange(e) {
       this.priceSetting = e.target.value
     },

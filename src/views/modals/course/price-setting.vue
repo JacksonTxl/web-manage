@@ -18,7 +18,7 @@
     :columns="filterColums"
     :rowKey="record => record.id"
     :pagination="{simple: true}"
-    :dataSource="prices">
+    :dataSource="dataSource">
     <div slot="transfer_num" slot-scope="transfer_num, record">
       {{transfer_num}}{{record.transfer_unit | enumFilter('personal_course.transfer_unit')}}
     </div>
@@ -30,6 +30,7 @@
 <script>
 import { columnsPrices } from './support-table'
 import { BrandService } from '../../pages/brand/product/course/personal/list/brand.service'
+import { cloneDeep, uniqWith, isEqual } from 'lodash-es'
 export default {
   name: 'CoursePrice',
   serviceInject() {
@@ -45,6 +46,7 @@ export default {
       defaultValue: -1,
       priceSetting: 1,
       priceModel: 1,
+      dataSource: [],
       columnsPrices,
       show: false
     }
@@ -68,33 +70,32 @@ export default {
 
     },
     onChangeShopName(val) {
-      this.prices = this.prices.filter(item => item.shop_id === val)
+      this.dataSource = val === -1 ? cloneDeep(this.prices) : this.prices.filter(item => item.shop_id === val)
     },
     onChangeCoachLevel(val) {
-      this.prices = this.prices.filter(item => item.coach_level_id === val)
+      this.dataSource = val === -1 ? cloneDeep(this.prices) : this.prices.filter(item => item.coach_level_id === val)
     },
     filterOption() {
-
     },
     initOptions(state) {
       this.priceSetting = state.price_setting
       this.priceModel = state.price_model
       const prices = state.prices
       if (this.priceModel === 2) {
-        this.coachLevel = [{ id: -1, name: '所有教练等级' }, ...Array.from(new Set(prices.map(item => {
+        this.coachLevel = [{ id: -1, name: '所有教练等级' }, ...uniqWith(prices.map(item => {
           return {
             id: item.coach_level_id,
             name: item.level || '没名字'
           }
-        })))]
+        }), isEqual)]
       }
       if (this.priceSetting === 0) {
-        this.shops = [{ id: -1, name: '所有门店' }, ...Array.from(new Set(prices.map(item => {
+        this.shops = [{ id: -1, name: '所有门店' }, ...uniqWith(prices.map(item => {
           return {
             id: item.shop_id,
             name: item.shop_name
           }
-        })))]
+        }), isEqual)]
       }
     },
     getShops() {
@@ -108,6 +109,7 @@ export default {
             ...item
           }
         })
+        this.dataSource = cloneDeep(this.prices)
         this.initOptions(state)
       })
     }
