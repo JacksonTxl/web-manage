@@ -20,11 +20,12 @@
     </a-form-item>
     <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="注册时间">
       <a-range-picker
+        v-model="time"
         v-if="value.start_time && value.stop_time"
         :defaultValue="[moment(value.start_time, dateFormat), moment(value.stop_time, dateFormat)]"
         @change="onChange"
       />
-      <a-range-picker v-else @change="onChange"/>
+      <a-range-picker v-else @change="onChange" v-model="time"/>
     </a-form-item>
     <slot name="custom"></slot>
   </div>
@@ -44,7 +45,8 @@ export default {
   },
   data() {
     return {
-      dateFormat: 'YYYY/MM/DD'
+      dateFormat: 'YYYY/MM/DD',
+      time: []
     }
   },
   computed: {},
@@ -53,6 +55,9 @@ export default {
     onChange(date, dateString) {
       this.value.start_time = dateString[0]
       this.value.stop_time = dateString[1]
+    },
+    handleResetItem() {
+      this.time = []
     }
   }
 }

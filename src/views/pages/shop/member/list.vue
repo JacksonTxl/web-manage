@@ -9,15 +9,16 @@
         <div style="background: #F7F9FC; padding: 24px">
           <a-form class="ant-advanced-search-form">
             <a-row :gutter="24">
-              <st-seleter v-model="form">
+              <st-seleter v-model="form" ref="stSeleter">
                 <div slot="custom" v-if="expand">
                   <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="入会时间：">
                     <a-range-picker
+                      v-model="consumption"
                       v-if="form.low_consumption && form.high_consumption"
                       :defaultValue="[moment(form.low_consumption, dateFormat), moment(form.high_consumption, dateFormat)]"
                       @change="MembershipTime"
                     />
-                    <a-range-picker v-else @change="MembershipTime"/>
+                    <a-range-picker v-else @change="MembershipTime" v-model="consumption"/>
                   </a-form-item>
                   <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="员工跟进">
                     <a-radio-group buttonStyle="solid" v-model="form.follow_salesman">
@@ -127,6 +128,7 @@ export default {
     return {
       dateFormat: 'YYYY/MM/DD',
       expand: false,
+      consumption: [],
       form: {
         member_level: '',
         register_type: '',
@@ -160,6 +162,7 @@ export default {
   computed: {},
   created() {
     // if (this.$route.query) {
+    this.tableData = this.memberListInfo.members_list
     this.form = { ...this.$route.query }
     // }
   },
@@ -170,6 +173,9 @@ export default {
       for (let prop in self.form) {
         self.form[prop] = ''
       }
+      this.$refs.stSeleter.handleResetItem()
+      this.consumption = []
+      this.$router.push({ query: {} })
     },
     MembershipTime(date, dateString) {
       this.form.low_consumption = dateString[0]
