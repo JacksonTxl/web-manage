@@ -2,6 +2,12 @@ import { Api } from '@/api/api'
 
 export class ShopPersonalCourseApi extends Api {
   /**
+   * 门店私教课转入品牌课程库
+   */
+  upgradePersonalCourseInBrand(params: any) {
+    return this.http.post('/v1/course/personal/upgrade', { params })
+  }
+  /**
    * 获取品牌门店下私教课列表
    */
   getCourseList(query: GetPersonalBrandCourseListInput) {
