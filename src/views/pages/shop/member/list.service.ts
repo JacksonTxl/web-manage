@@ -2,34 +2,42 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { MemberApi } from '@/api/v1/member'
+import { MemberAPi } from '@/api/v1/member'
 
 interface CardsListInfoState {
-  cardsListInfo: any
+  memberListInfo: any
 }
 @Injectable()
 export class ListService extends Store<CardsListInfoState> {
   state$: State<CardsListInfoState>
-  cardsListInfo$: Computed<string>
-  constructor(private cardsApi: MemberApi) {
+  memberListInfo$: Computed<string>
+  constructor(private cardsApi: MemberAPi) {
     super()
     this.state$ = new State({
-      cardsListInfo: {}
+      memberListInfo: {}
     })
-    this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))
+    this.memberListInfo$ = new Computed(
+      this.state$.pipe(pluck('memberListInfo'))
+    )
   }
-  SET_CARDS_LIST_INFO(cardsListInfo: CardsListInfoState) {
+  SET_CARDS_LIST_INFO(memberListInfo: CardsListInfoState) {
     this.state$.commit(state => {
-      state.cardsListInfo = cardsListInfo
+      state.memberListInfo = memberListInfo
     })
   }
 
   getListInfo(paramsObj: any) {
     return this.cardsApi.getMember(paramsObj)
   }
-
+  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.getListInfo(to.query).subscribe(res => {
+      console.log(res, '获取数据to.query', to.query)
+      this.SET_CARDS_LIST_INFO(res)
+      next()
+    })
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo({}).subscribe(res => {
+    this.getListInfo(to.query ? to.query : {}).subscribe(res => {
       console.log(res, '获取数据')
       this.SET_CARDS_LIST_INFO(res)
       next()

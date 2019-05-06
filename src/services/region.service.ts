@@ -16,6 +16,11 @@ export class RegionService extends Store<any> {
     })
     this.regionPC$ = new Computed(this.state$.pipe(pluck('regionPC')))
   }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
+    this.getRegions().subscribe(() => {
+      next()
+    })
+  }
   getRegionPC() {
     return this.regionApi.getRegions().pipe(
       map(data$ => {

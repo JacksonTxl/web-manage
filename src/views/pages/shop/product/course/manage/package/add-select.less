@@ -1,0 +1,35 @@
+.page-shop-add-select-package {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &__content {
+    display: flex;
+  }
+  &__item {
+    background:rgba(255,255,255,1);
+    border-radius:10px;
+    border:1px solid rgba(233,233,233,1);
+    margin: 0 12px;
+    overflow: hidden;
+    cursor: pointer;
+    &:hover {
+      box-shadow:0px 2px 8px 0px rgba(0,0,0,0.09);
+    }
+  }
+  &__text {
+    padding: 16px 24px;
+  }
+  &__title {
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 500;
+    .c(@text);
+    margin: 0 0 4px;
+  }
+  &__describe {
+    font-size: 14px;
+    .lh(22px);
+    .c(@text-light);
+    margin: 0;
+  }
+}

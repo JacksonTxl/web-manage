@@ -8,6 +8,7 @@
     <!-- 图片裁剪 -->
     <cropper-demo/>
     <editor-demo />
+    <!-- 图表 -->
     <chart-demo/>
   </div>
 </template>

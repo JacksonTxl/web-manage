@@ -24,7 +24,7 @@
       </a-select>
     </div>
     <st-table
-      rowKey="id"
+      rowKey="card_id"
       :columns="columns"
       :dataSource="data"
       :scroll="{ x: 1550}"

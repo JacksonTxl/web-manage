@@ -31,7 +31,7 @@ export default {
         card_shop: [
           {
             card_id: self.a.id,
-            shelf_shop_id: self.a.shop_id
+            shop_id: self.a.shop_id
           }
         ]
       }

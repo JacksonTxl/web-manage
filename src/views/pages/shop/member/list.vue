@@ -9,20 +9,26 @@
         <div style="background: #F7F9FC; padding: 24px">
           <a-form class="ant-advanced-search-form">
             <a-row :gutter="24">
-              <st-sleter v-model="form">
+              <st-seleter v-model="form" ref="stSeleter">
                 <div slot="custom" v-if="expand">
                   <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="入会时间：">
-                    <a-range-picker @change="MembershipTime"/>
+                    <a-range-picker
+                      v-model="consumption"
+                      v-if="form.low_consumption && form.high_consumption"
+                      :defaultValue="[moment(form.low_consumption, dateFormat), moment(form.high_consumption, dateFormat)]"
+                      @change="MembershipTime"
+                    />
+                    <a-range-picker v-else @change="MembershipTime" v-model="consumption"/>
                   </a-form-item>
                   <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="员工跟进">
-                    <a-radio-group buttonStyle="solid" v-model="form.followUp">
-                      <a-radio-button :value="-1">全部</a-radio-button>
-                      <a-radio-button :value="1">有</a-radio-button>
-                      <a-radio-button :value="2">无</a-radio-button>
+                    <a-radio-group buttonStyle="solid" v-model="form.follow_salesman">
+                      <a-radio-button value="-1">全部</a-radio-button>
+                      <a-radio-button value="1">有</a-radio-button>
+                      <a-radio-button value="2">无</a-radio-button>
                     </a-radio-group>
                   </a-form-item>
                 </div>
-              </st-sleter>
+              </st-seleter>
             </a-row>
             <a-row>
               <a-col :span="24" class="shop-member-list-handel">
@@ -33,7 +39,7 @@
                   </a>
                 </div>
                 <div>
-                  <a-button type="primary">查询</a-button>
+                  <a-button type="primary" @click="queryFunc">查询</a-button>
                   <a-button :style="{ marginLeft: '8px' }" @click="handleReset">重置</a-button>
                 </div>
               </a-col>
@@ -69,11 +75,13 @@
         rowKey="id"
         @change="onTableChange"
         :dataSource="tableData"
+        :pagination="pagination"
       >
+        <div slot="action" slot-scope="text">{{text}}</div>
         <div slot="action" slot-scope="record">
-          <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
+          <a href="javascript:;" @click="infoFunc(record)">详情</a>
           <a-divider type="vertical"></a-divider>
-          <a href="javascript:;" @click="infoFunc(text, record)">编辑</a>
+          <a href="javascript:;" @click="edit(record)">编辑</a>
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
             <a-menu-item>
@@ -100,8 +108,9 @@
 </template>
 <script>
 import { ListService } from './list.service'
-import sleter from './list#/seleter.vue'
-const tableData = new Array(60).fill(1).map((item, i) => ({ id: i, name: i }))
+import StSeleter from './list#/seleter.vue'
+import moment from 'moment'
+// const tableData = new Array(60).fill(1).map((item, i) => ({ id: i, name: i }))
 export default {
   serviceInject() {
     return {
@@ -110,49 +119,91 @@ export default {
   },
   rxState() {
     return {
-      cardsListInfo: this.aService.cardsListInfo$
+      memberListInfo: this.aService.memberListInfo$
     }
   },
   components: {
-    'st-sleter': sleter
+    StSeleter
   },
   data() {
     return {
+      dateFormat: 'YYYY/MM/DD',
       expand: false,
+      consumption: [],
       form: {
-        grade: '',
-        source: '',
-        register: [],
-        Membership: [],
-        followUp: '',
-        keyword: ''
+        member_level: '',
+        register_type: '',
+        start_time: '',
+        stop_time: '',
+        low_consumption: '',
+        high_consumption: '',
+        follow_salesman: '',
+        keyword: '',
+        current_page: '',
+        size: 20
       },
-      tableData,
+      pagination: {
+        pageSizeOptions: ['10', '20', '30', '40', '50'],
+        current: 1,
+        pageSize: 10,
+        total: 50
+      },
+      tableData: [],
       selectedRowKeys: [],
       columns: [
         { title: '人脸', dataIndex: 'id' },
-        { title: '姓名', dataIndex: 'name' },
-        { title: '手机号', dataIndex: 'name1' },
-        { title: '用户等级', dataIndex: 'name2' },
-        { title: '跟进销售', dataIndex: 'name3' },
-        { title: '跟进教练', dataIndex: 'name4' },
-        { title: '注册时间', dataIndex: 'name5' },
-        { title: '成为会员时间', dataIndex: 'name6' },
-        { title: '累计消费(元)', dataIndex: 'name7' },
+        { title: '姓名', dataIndex: 'member_name' },
+        { title: '手机号', dataIndex: 'mobile' },
+        {
+          title: '用户等级',
+          dataIndex: 'member_level',
+          scopedSlots: { customRender: 'member_level' }
+        },
+        { title: '跟进销售', dataIndex: 'follow_salesman' },
+        { title: '跟进教练', dataIndex: 'follow_coach' },
+        { title: '注册时间', dataIndex: 'register_time' },
+        { title: '成为会员时间', dataIndex: 'be_member_time' },
+        { title: '累计消费(元)', dataIndex: 'sum_consumption' },
         { title: '操作', width: 140, scopedSlots: { customRender: 'action' } }
       ]
     }
   },
   computed: {},
+  created() {
+    this.pageFilter(this.memberListInfo)
+    this.form = { ...this.$route.query }
+  },
   methods: {
+    edit(record) {
+      this.$router.push({ name: 'shop-member-edit', query: { id: record.id } })
+    },
+    infoFunc(record) {
+      this.$router.push({
+        name: 'shop-member-info-basic',
+        query: { id: record.id }
+      })
+    },
+    moment,
+    pageFilter(data) {
+      this.tableData = data.members_list
+      this.pagination.current = data.page.current_page
+      this.pagination.pageSize = data.page.size
+      this.pagination.total = data.page.total_counts
+      this.form.size = this.pagination.pageSize
+      this.form.current_page = this.pagination.current
+    },
     handleReset() {
       let self = this
       for (let prop in self.form) {
         self.form[prop] = ''
       }
+      this.$refs.stSeleter.handleResetItem()
+      this.consumption = []
+      this.$router.push({ query: {} })
     },
     MembershipTime(date, dateString) {
-      this.form.Membership = dateString
+      this.form.low_consumption = dateString[0]
+      this.form.high_consumption = dateString[1]
     },
     toggle() {
       this.expand = !this.expand
@@ -163,7 +214,17 @@ export default {
     onSelectionChange(keys) {
       this.selectedRowKeys = keys
     },
-    onTableChange(pagination) {}
+    onTableChange(pagination, filters, sorter) {
+      console.log(pagination, filters, sorter)
+      this.pagination = pagination
+      this.form.size = pagination.pageSize
+      this.form.current_page = pagination.current
+      this.$router.push({ query: this.form })
+    },
+    queryFunc() {
+      console.log(this.form)
+      this.$router.push({ query: this.form })
+    }
   }
 }
 </script>

@@ -2,7 +2,7 @@
   <st-panel app class="page-brand-shop-add">
     <st-form :form="form">
       <a-row :gutter="8" class="page-add-shop-name-row">
-        <a-col offset="1" :lg="10">
+        <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="门店名称" required>
             <a-input
               v-decorator="[
