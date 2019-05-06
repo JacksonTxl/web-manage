@@ -1,5 +1,5 @@
 <template>
-  <a-input type="text" :value="number" @change="numberChange" maxlength="12">
+  <a-input type="text" :value="number" @change="numberChange" :disabled="disabled" maxlength="12">
     <template slot="addonAfter">
       <slot name="addonAfter"></slot>
     </template>
@@ -21,6 +21,12 @@ export default {
   props: {
     value: {
       type: [String, Number]
+    },
+    disabled: {
+      type: Boolean,
+      default() {
+        return false
+      }
     },
     /**
      * input-number是否允许有小数。允许一位小数
@@ -50,6 +56,10 @@ export default {
   },
   methods: {
     init(data) {
+      if (data === null) {
+        this.number = data
+        return
+      }
       if (!this.float) {
         // 整数
         if (data === '') {

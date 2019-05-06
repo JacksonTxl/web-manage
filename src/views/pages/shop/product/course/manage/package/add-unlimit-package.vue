@@ -34,8 +34,16 @@
                   <tr class="bg-row-team">
                     <td class="tg-c"><a-checkbox @change="teamCheckboxChange"/></td>
                     <td>团体课程</td>
-                    <td class="pr-32"><a-input :value="packageData.team_times" @change="teamTimeChange" :disabled="packageData.is_team===0" addonAfter="节"/></td>
-                    <td class="pr-32"><a-input :value="packageData.team_unit_price" @change="teamPriceChange" :disabled="packageData.is_team===0" addonAfter="元"/></td>
+                    <td class="pr-32">
+                      <st-input-number v-model="packageData.team_times" :disabled="packageData.is_team===0">
+                        <template slot="addonAfter">节</template>
+                      </st-input-number>
+                    </td>
+                    <td class="pr-32">
+                      <st-input-number v-model="packageData.team_unit_price" :float="true" :disabled="packageData.is_team===0">
+                        <template slot="addonAfter">元</template>
+                      </st-input-number>
+                    </td>
                     <td>{{team_total}}</td>
                   </tr>
                   <tr class="bg-row-personal">
