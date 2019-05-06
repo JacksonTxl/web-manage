@@ -79,7 +79,7 @@
       >
         <div slot="action" slot-scope="text">{{text}}</div>
         <div slot="action" slot-scope="record">
-          <a href="javascript:;" @click="infoFunc( record)">详情</a>
+          <a href="javascript:;" @click="infoFunc(record)">详情</a>
           <a-divider type="vertical"></a-divider>
           <a href="javascript:;" @click="edit(record)">编辑</a>
           <a-divider type="vertical"></a-divider>
@@ -176,6 +176,12 @@ export default {
   methods: {
     edit(record) {
       this.$router.push({ name: 'shop-member-edit', query: { id: record.id } })
+    },
+    infoFunc(record) {
+      this.$router.push({
+        name: 'shop-member-info-basic',
+        query: { id: record.id }
+      })
     },
     moment,
     pageFilter(data) {
