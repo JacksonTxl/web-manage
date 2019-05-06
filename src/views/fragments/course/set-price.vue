@@ -46,7 +46,7 @@
                 <template slot="serviceFee" slot-scope="text, record, index">
                   <a-select placeholder="请选择"
                     class="page-set-sell-price__select" v-model="priceGradientRecord.prices[index].transfer_unit">
-                    <a-select-option v-for="(item, index) in personalCourseEnums.transfer_type.value"
+                    <a-select-option v-for="(item, index) in personalCourseEnums.transfer_unit.value"
                       :key="index" :value="+index">{{item}}
                     </a-select-option>
                   </a-select>

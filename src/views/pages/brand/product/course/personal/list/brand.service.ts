@@ -43,6 +43,10 @@ export class BrandService extends Store<SetState> {
       state.supportShopList = data.list
     })
   }
+  @Effect()
+  getCoursePrice(courseId: string) {
+    return this.personalApi.getCoursePrice(courseId)
+  }
   setAvailable(params: SetAvailableInput) {
     return this.personalApi.setAvailable(params)
   }

@@ -3,11 +3,13 @@
     class="modal-support-course-shops"
     title='查看店详情'
     v-model='show'>
+    <st-container>
     <st-table
     :columns="columnsShops"
     :rowKey="record => record.shop_name"
     :dataSource="supportShopList">
     </st-table>
+    </st-container>
   </a-modal>
 </template>
 <script>

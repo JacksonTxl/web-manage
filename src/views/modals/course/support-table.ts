@@ -21,3 +21,20 @@ export const columnsCoaches = [{
   title: '支持上本课程门店数',
   dataIndex: 'nature_work'
 }]
+export const columnsPrices = [{
+  title: '门店',
+  dataIndex: 'shop_name'
+}, {
+  title: '教练等级',
+  dataIndex: 'coach_level_name'
+}, {
+  title: '售卖梯度',
+  dataIndex: 'sell_range'
+}, {
+  title: '售卖价格',
+  dataIndex: 'sell_prices'
+}, {
+  title: '售卖转让手续费',
+  dataIndex: 'transfer_num',
+  scopedSlots: { customRender: 'transfer_num' }
+}]
