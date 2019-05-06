@@ -14,6 +14,7 @@
     <modal-demo id="modal"></modal-demo>
     <more-dropdown-demo id="more-dropdown"></more-dropdown-demo>
     <help-popover-demo id="help-popover"></help-popover-demo>
+    <help-tooltip-demo id="help-tooltip"></help-tooltip-demo>
     <tag-demo id="tag"></tag-demo>
     <region-cascader-demo id="region-cascader"></region-cascader-demo>
     <container-demo id="container"></container-demo>
