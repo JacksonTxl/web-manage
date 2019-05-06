@@ -24,12 +24,12 @@
               <st-t2>孙乐乐</st-t2>
               <div class="shop-member-info-title-pannel__info__phone">
                 <div>
-                  手机号:
+                  手机号：
                   <span>1888888888</span>
                 </div>
                 <div class="line"></div>
                 <div>
-                  首次成为会员时间:
+                  首次成为会员时间：
                   <span>1888888888</span>
                 </div>
               </div>
