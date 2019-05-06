@@ -1,6 +1,6 @@
 import { Api } from '@/api/api'
 
-export interface UpdateMemberEdit{
+export interface UpdateMemberEdit {
     /**
      * 会员ID
      */
@@ -12,79 +12,86 @@ export interface UpdateMemberEdit{
     /**
      * 生日日期
      */
-    birthday? : string;
+    birthday?: string;
     /**
      * 证件类型
      */
-    id_card_type? : string;
+    id_card_type?: string;
     /**
      * 证件号
      */
-    id_card? : string;
+    id_card?: string;
     /**
      * 婚姻状况
      */
-    married_type? : string;
+    married_type?: string;
     /**
      * 子女情况
      */
-    has_children? : string;
+    has_children?: string;
     /**
      * 国家Id
      */
-    country_id? : string;
+    country_id?: string;
     /**
      * 民族id
      */
-    nation_id? : string;
+    nation_id?: string;
     /**
      * 学历
      */
-    education_level? : string;
+    education_level?: string;
     /**
      * 职业
      */
-    jobs? : string;
+    jobs?: string;
     /**
      * 收入水平
      */
-    income_level? : string;
+    income_level?: string;
     /**
      * 健身目标
      */
-    fitness_goal? : string;
+    fitness_goal?: string;
     /**
      * 健身等级
      */
-    fitness_level? : string;
+    fitness_level?: string;
     /**
      * 邮箱
      */
-    email? : string;
+    email?: string;
     /**
      * 省会id
      */
-    province_id? : string;
+    province_id?: string;
     /**
      * 市区id
      */
-    city_id? : string;
+    city_id?: string;
     /**
      * 区Id
      */
-    district_id? : string;
+    district_id?: string;
 }
 export class MemberAPi extends Api {
   /**
-     * 用户编辑回显
-     */
+       * 用户编辑回显
+       */
   getMemberEdit(id: number) {
     return this.http.get(`/v1/member/info/${id}`)
   }
   /**
-     * 提交用户信息编辑
-     */
+       * 提交用户信息编辑
+       */
   updateMemberEdit(id: string, params: UpdateMemberEdit) {
     return this.http.put(`/v1/member/${id}`, { params })
+  }
+
+  /**
+     * 会员列表
+     */
+  getMember(query: any) {
+    return this.http.get(`/v1/member`, { query })
   }
 }

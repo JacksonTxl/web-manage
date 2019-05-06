@@ -24,7 +24,7 @@
         :to="{name: 'course-support-course-cocahes-brand', props: {course: record}}"
         >{{coaches}}</modal-link>
       </div>
-      <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {course: record}}"
+      <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}"
       slot="course_name" slot-scope="course_name, record">
         {{course_name}}
       </router-link>

@@ -5,6 +5,7 @@
 
     <title-demo id="title"></title-demo>
     <button-demo id="button"></button-demo>
+    <input-number-demo id="input-number"></input-number-demo>
     <switch-demo id="switch"></switch-demo>
     <icon-demo id="icon"></icon-demo>
     <hr-demo id="hr"></hr-demo>

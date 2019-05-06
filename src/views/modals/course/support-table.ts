@@ -16,7 +16,7 @@ export const columnsCoaches = [{
   dataIndex: 'nickname'
 }, {
   title: '教练等级',
-  dataIndex: 'setting_name'
+  dataIndex: 'level_name'
 }, {
   title: '支持上本课程门店数',
   dataIndex: 'nature_work'

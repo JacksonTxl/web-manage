@@ -1,65 +1,132 @@
 <template>
-  <st-panel app>
-    <st-map-button
-    :lat="update.lat"
-    :lng="update.lng"
-    :address="update.address"
-    :province="update.province"
-    :city="update.city"
-    :district="update.district"
-    @select="change"
-    ></st-map-button>
-    <br>
-    <p v-for="(item,index) in Object.entries(update)" :key="index+`update`">{{item[0]}}---{{item[1]}}</p>
-    <st-map-button
-    :lat="add.lat"
-    :lng="add.lng"
-    :address="add.address"
-    :province="add.province"
-    :city="add.city"
-    :district="add.district"
-    @select="addchange"
-    ></st-map-button>
-    <br>
-    <p v-for="(item,index) in Object.entries(add)" :key="index">{{item[0]}}---{{item[1]}}</p>
-  </st-panel>
+  <a-form
+    layout="inline"
+    :form="form"
+  >
+    <a-form-item label="Price">
+
+      <price-input
+        v-decorator="[
+          'price',
+          {
+            initialValue: { number: 0, currency: 'rmb' },
+            rules: [{ validator: checkPrice }],
+          }
+        ]"
+      />
+
+    </a-form-item>
+    <a-form-item>
+
+      <st-input-number :float="true" v-model="abc">
+        <!-- <template slot="addonAfter">元2</template> -->
+        <a-select slot="addonAfter" defaultValue=".com" style="width: 80px">
+          <a-select-option value=".com">.com</a-select-option>
+          <a-select-option value=".jp">.jp</a-select-option>
+          <a-select-option value=".cn">.cn</a-select-option>
+          <a-select-option value=".org">.org</a-select-option>
+        </a-select>
+      </st-input-number>
+
+    </a-form-item>
+
+{{typeof abc}}
+{{abc}}
+  </a-form>
 </template>
+
 <script>
-import StMapButton from '@/views/components/map-button/map-button.vue'
-import { findIndex, cloneDeep } from 'lodash-es'
-export default {
-  components: {
-    StMapButton
-  },
+const hasProp = (instance, prop) => {
+  const $options = instance.$options || {}
+  const propsData = $options.propsData || {}
+  return prop in propsData
+}
+const PriceInput = {
+  props: ['value'],
+  template: `
+    <span>
+      <a-input
+        type='text'
+        :value="number"
+        @change="handleNumberChange"
+        style="width: 63%; margin-right: 2%;"
+      />
+    </span>
+  `,
   data() {
+    const value = this.value || {}
     return {
-      update: {
-        lat: '39.915370',
-        lng: '116.426050',
-        address: '北京市东城区金宝街52号',
-        province: { id: 110000, name: '北京市' },
-        city: { id: 110100, name: '北京市' },
-        district: { id: 110101, name: '东城区' }
-      },
-      add: {
-        lat: '',
-        lng: '',
-        address: '',
-        province: {},
-        city: {},
-        district: {}
-      }
+      abc: 10,
+      number: value.number || 0,
+      currency: value.currency || 'rmb'
+    }
+  },
+  watch: {
+    value(val = {}) {
+      this.number = val.number || 0
+      this.currency = val.currency || 'rmb'
     }
   },
   methods: {
-    change(data) {
-      console.log(data)
-      this.update = cloneDeep(data)
+    handleNumberChange(e) {
+      const number = parseInt(e.target.value || 0, 10)
+      if (isNaN(number)) {
+        return
+      }
+      if (!hasProp(this, 'value')) {
+        this.number = number
+      }
+      this.triggerChange({ number })
     },
-    addchange(data) {
-      this.add = cloneDeep(data)
-      console.log(data)
+    handleCurrencyChange(currency) {
+      if (!hasProp(this, 'value')) {
+        this.currency = currency
+      }
+      this.triggerChange({ currency })
+    },
+    triggerChange(changedValue) {
+      // Should provide an event to pass value to Form.
+      this.$emit('change', Object.assign({}, this.$data, changedValue))
     }
   }
 }
+
+export default {
+  components: {
+    PriceInput
+  },
+  data() {
+    return {
+      abc: 11
+    }
+  },
+  beforeCreate() {
+    this.form = this.$form.createForm(this)
+  },
+  methods: {
+    handleSubmit(e) {
+      // e.preventDefault()
+      // this.form.validateFields((err, values) => {
+      //   if (!err) {
+      //     console.log('Received values of form: ', values)
+      //   }
+      // })
+    },
+    checkPrice(rule, value, callback) {
+      console.log(value)
+      if (value.number > 0) {
+        callback()
+        return
+      }
+      // eslint-disable-next-line
+      callback('Price must greater than zero!')
+    },
+    check(rule, value, callback) {
+      console.log(value)
+      // eslint-disable-next-line
+      callback()
+    }
+  }
+}
+
 </script>

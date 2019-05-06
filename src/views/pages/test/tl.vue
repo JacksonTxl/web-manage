@@ -23,6 +23,10 @@
         <router-link class="mg-l8" to="/brand/setting/app/skillful/list">擅长项目</router-link>
         <router-link class="mg-l8" to="/brand/setting/app/training/list">训练目的</router-link>
       </p>
+      <p>
+        <a-input-search v-model="query.keyword"/>
+        <st-button class="mg-t16" @click="onSearch">search</st-button>
+      </p>
     </st-panel>
     <switch-shop v-if="isShowSwitchShop" @onClose="onCloseSwitchShop"></switch-shop>
   </div>
@@ -37,7 +41,6 @@ import { Action } from 'rx-state'
 import { switchMap, catchError, filter } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'
 import SwitchShop from '@/views/fragments/shop/switch'
-
 import SelectShop from '@/views/fragments/shop/select-shop'
 
 export default {
@@ -46,7 +49,12 @@ export default {
       themeService: ThemeService,
       messageService: MessageService,
       tlService: TlService,
-      route: RouteService
+      routeService: RouteService
+    }
+  },
+  rxState() {
+    return {
+      query: this.routeService.query$
     }
   },
   components: {
@@ -74,6 +82,12 @@ export default {
     },
     onSelectShop2(shopIds) {
       console.log('your selected2', shopIds)
+    },
+    onSearch() {
+      console.log('query', this.query)
+      this.$router.push({
+        query: this.query
+      })
     }
   }
 }
