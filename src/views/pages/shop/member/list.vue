@@ -71,9 +71,9 @@
         :dataSource="tableData"
       >
         <div slot="action" slot-scope="record">
-          <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
+          <a href="javascript:;" @click="infoFunc( record)">详情</a>
           <a-divider type="vertical"></a-divider>
-          <a href="javascript:;" @click="infoFunc(text, record)">编辑</a>
+          <a href="javascript:;" @click="edit( record)">编辑</a>
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
             <a-menu-item>
@@ -133,6 +133,9 @@ export default {
   },
   computed: {},
   methods: {
+    edit(e) {
+      console.log(e)
+    },
     handleReset() {
       let self = this
       for (let prop in self.form) {

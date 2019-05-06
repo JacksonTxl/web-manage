@@ -92,7 +92,7 @@
       <a-row :gutter="8">
         <a-col :lg="13"></a-col>
         <a-col :lg="11">
-          <st-form-item class="mg-l24" labelOffset>
+          <st-form-item class="mg-l24" style="margin-bottom: 0;" labelOffset>
             <span class="mg-r24 more" @click="onShowMore">更多信息</span>
             <st-button  class="mg-r8" type="primary" >取消</st-button>
             <st-button type="primary" ghost html-type="submit">提交</st-button>
