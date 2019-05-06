@@ -43,6 +43,7 @@ export class UserService extends Store<UserState> {
   shopEnums$: Computed<ModuleEnums>
   settingEnums$: Computed<ModuleEnums>
   teamCourseEnums$: Computed<ModuleEnums>
+  packageCourseEnums$: Computed<ModuleEnums>
 
   constructor(private constApi: ConstApi) {
     super()
@@ -72,6 +73,7 @@ export class UserService extends Store<UserState> {
     this.shopEnums$ = new Computed(this.enums$.pipe(pluck('shop')))
     this.settingEnums$ = new Computed(this.enums$.pipe(pluck('setting')))
     this.teamCourseEnums$ = new Computed(this.enums$.pipe(pluck('team_course')))
+    this.packageCourseEnums$ = new Computed(this.enums$.pipe(pluck('package_course')))
   }
   SET_USER(user: User) {
     this.state$.commit(state => {
