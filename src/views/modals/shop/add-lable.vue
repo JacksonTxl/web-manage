@@ -1,5 +1,5 @@
 <template>
-  <st-modal :title="`给选中的${selectedRowData.length}个人添加标签`" @ok="save" v-model="show" width="328">
+  <st-modal :title="`给选中的${selectedRowData.length}个人添加标签`" @ok="save" v-model="show" width="328px">
     <section>
       <a-select defaultValue="lucy" style="width: 100%">
         <div slot="dropdownRender" slot-scope="menu">

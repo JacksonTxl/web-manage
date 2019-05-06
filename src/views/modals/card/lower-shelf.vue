@@ -30,7 +30,7 @@ export default {
       let data = {
         card_shop: [
           {
-            card_id: self.a.id,
+            card_id: self.a.card_id,
             shop_id: self.a.shop_id
           }
         ]
