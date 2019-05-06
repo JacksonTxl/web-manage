@@ -52,7 +52,10 @@
       </st-button>
       <st-button class="shop-member-list-button">导入用户</st-button>
       <st-button class="shop-member-list-button">
-        <modal-link tag="a" :to=" { name: 'shop-add-lable'}">加标签</modal-link>
+        <modal-link
+          tag="a"
+          :to=" { name: 'shop-add-lable',props:{selectedRowData:selectedRowData}}"
+        >加标签</modal-link>
       </st-button>
       <a-popover placement="bottom">
         <template slot="content">
@@ -65,7 +68,6 @@
         </template>
         <st-button class="shop-member-list-button">分配员工</st-button>
       </a-popover>
-
       <st-button class="shop-member-list-button">批量导出</st-button>
       <st-table
         class="mg-t24"
@@ -150,6 +152,7 @@ export default {
       },
       tableData: [],
       selectedRowKeys: [],
+      selectedRowData: [],
       columns: [
         { title: '人脸', dataIndex: 'id' },
         { title: '姓名', dataIndex: 'member_name' },
@@ -210,9 +213,11 @@ export default {
     },
     onSelectionReset() {
       this.selectedRowKeys = []
+      this.selectedRowData = []
     },
-    onSelectionChange(keys) {
+    onSelectionChange(keys, selectedRowData) {
       this.selectedRowKeys = keys
+      this.selectedRowData = selectedRowData
     },
     onTableChange(pagination, filters, sorter) {
       console.log(pagination, filters, sorter)

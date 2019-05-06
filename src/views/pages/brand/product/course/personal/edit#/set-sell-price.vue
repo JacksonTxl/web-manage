@@ -106,15 +106,12 @@ export default {
   methods: {
     save(e) {
       e.preventDefault()
-      const priceGradient = this.getPriceGradient()
-      console.log('price_gradient', priceGradient)
       this.form.validateFields().then(() => {
         const data = this.getData()
         console.log('step 3 data', data)
-        if (!this.inputCheck(priceGradient)) {
-          return
-        }
-        data.price_gradient = priceGradient
+        // if (!this.inputCheck(priceGradient)) {
+        //   return
+        // }
         this.addService.setPrice(data).subscribe(() => {
           this.messageService.success({
             content: '提交成功'

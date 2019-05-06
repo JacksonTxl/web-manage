@@ -5,13 +5,13 @@
   <st-button @click="onClickShow484" type="primary">width: 484</st-button>
   <st-modal
     class="modal-support-course-shops"
-    :title="只是个模态窗而已"
+    title="只是个模态窗而已"
     v-model='show'>
     只是默认大小 width: 676px
   </st-modal>
    <st-modal
     class="modal-support-course-shops"
-    :title="只是个模态窗而已"
+    title="只是个模态窗而已"
     size="small"
     v-model='show1'>
     小号模态窗 width: 484px
