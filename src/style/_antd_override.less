@@ -2,14 +2,17 @@
 .ant-pagination-item {
   &-active {
     .bg(@primary-color);
+
     a {
       .c(@white);
     }
+
     &:hover a,
     &:focus a {
       .c(@white);
     }
   }
+
   &:focus {
     border-color: #d9d9d9;
   }
@@ -19,35 +22,22 @@
   .ant-modal-title {
     .lh(24px);
   }
+
   .ant-modal-close {
     .c(@text-light);
+
     &:focus,
     &:hover {
       .c(#444);
     }
   }
+
   .ant-modal-close-x {
     .w(42px);
     .fz(10px);
   }
+
   .ant-modal-footer {
     border-top: none;
   }
-}
-
-// slider滑块的tooltip样式覆盖
-.ant-tooltip-inner {
-  background: @primary-color;
-}
-
-.ant-alert {
-  border: none;
-}
-
-// checkbox 样式修正
-.ant-checkbox-inner:after {
-  left: 4px;
-}
-.ant-tooltip-placement-top .ant-tooltip-arrow {
-  border-top-color: @primary-color;
 }

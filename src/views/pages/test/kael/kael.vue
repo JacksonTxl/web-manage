@@ -18,7 +18,7 @@
     </a-form-item>
     <a-form-item>
 
-      <st-input-number :float="true" v-model="abc">
+      <st-input-number :float="true" :min="10" :max="100" v-model="abc">
         <!-- <template slot="addonAfter">元2</template> -->
         <a-select slot="addonAfter" defaultValue=".com" style="width: 80px">
           <a-select-option value=".com">.com</a-select-option>

@@ -26,6 +26,7 @@
               <a-anchor-link href="#more-dropdown" title="more-dropdown 更多"></a-anchor-link>
               <a-anchor-link href="#modal" title="modal 模态窗"></a-anchor-link>
               <a-anchor-link href="#help-popover" title="help-popover 帮助气泡"></a-anchor-link>
+              <a-anchor-link href="#help-tooltip" title="help-tooltip 帮助tooltip"></a-anchor-link>
               <a-anchor-link href="#tag" title="tag 标签"></a-anchor-link>
               <a-anchor-link href="#region-cascader" title="region-cascader 地址选择"></a-anchor-link>
               <a-anchor-link href="#container" title="container 容器"></a-anchor-link>
