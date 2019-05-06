@@ -32,11 +32,11 @@
       <div slot="price_setting" slot-scope="price_setting">
         {{price_setting | enumFilter('personal_course.price_setting')}}
       </div>
-      <div slot="sell_price" slot-scope="sell_price">
-        <a
-
-          href="javascript:;"
-        >{{sell_price}}</a>
+      <div slot="sell_price" slot-scope="sell_price, record">
+        <modal-link
+        tag="a"
+        :to="{name: 'course-price-setting', props: {course: record}}"
+        >{{sell_price}}</modal-link>
       </div>
       <div slot="is_available" slot-scope="is_available">
           <span><a-badge :status="is_available === 1?'success':'error'" />{{is_available | enumFilter('personal_course.is_available')}}</span>
@@ -45,13 +45,6 @@
         <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}">详情</router-link>
         <router-link :to="{name: 'brand-product-course-personal-edit', query: {courseId: record.course_id}}">编辑</router-link>
         <st-more-dropdown style="margin-left: 12px;">
-
-          <!-- <a-menu-item>
-            <a-popconfirm  :title="record.is_available.id === 0?'确认将'+record.course_name+'进行恢复':'当前课程不再支持购买、排课，确认将'+record.course_name+'置为无效'" @confirm="onConfirmSetAvailable(record)" @cancel="cancel" okText="确定" cancelText="取消">
-            {{record.is_available.id === 1 ? "置为无效":"恢复有效"}}
-            </a-popconfirm>
-          </a-menu-item> -->
-
           <a-menu-item>
             <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" okText="确定" cancelText="取消">
               删除

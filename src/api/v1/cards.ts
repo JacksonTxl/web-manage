@@ -162,7 +162,7 @@ export class CardsApi extends Api {
    *  品牌储值卡下架
    */
   setCardsDepositBrandOffLine(params: any) {
-    return this.http.put(`/v1/cards/brand/deposit/offline`, { params })
+    return this.http.put(`/v1/cards/shop/deposit/offline`, { params })
   }
   /**
    * 品牌储值卡停售原因

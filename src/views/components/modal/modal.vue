@@ -9,6 +9,10 @@ export default {
     size: {
       type: String,
       default: 'default'
+    },
+    width: {
+      type: String,
+      default: ''
     }
   },
   // round
@@ -23,6 +27,12 @@ export default {
       }
     } else {
       props = this.$attrs
+    }
+    if (this.width) {
+      props = {
+        ...this.$attrs,
+        width: this.width
+      }
     }
     return h(
       'a-modal',

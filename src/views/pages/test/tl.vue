@@ -27,6 +27,30 @@
         <a-input-search v-model="query.keyword"/>
         <st-button class="mg-t16" @click="onSearch">search</st-button>
       </p>
+      <st-form-table hoverable>
+        <thead>
+          <tr>
+            <th>标题1</th>
+            <th>标题2</th>
+            <th>标题3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+          </tr>
+        </tbody>
+      </st-form-table>
+      <p class="mg-t24">
+        <st-help-tooltip :id="1"/>
+      </p>
     </st-panel>
     <switch-shop v-if="isShowSwitchShop" @onClose="onCloseSwitchShop"></switch-shop>
   </div>

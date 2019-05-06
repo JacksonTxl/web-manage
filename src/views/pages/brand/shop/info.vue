@@ -43,7 +43,7 @@
                 :key="index"
                 class="facilities"
               >
-                <st-icon :type="serviceIcon_list[item.service_id]"></st-icon>
+                <st-icon :type="serviceIcon_list[item.service_id - 1]"></st-icon>
                 <p>{{item.service_name}}</p>
               </div>
             </div>
@@ -165,6 +165,7 @@ export default {
   },
   created() {
     this.getSlider.business_time = this.shopInfo.shop_info.business_time
+    this.addClaaStyle()
   },
   methods: {
     shopStatusFun(flag) {
@@ -175,6 +176,18 @@ export default {
         'shop-close'
       ]
       return flagData[flag - 1]
+    },
+    addClaaStyle() {
+      this.$nextTick(function() {
+        setTimeout(() => {
+          let a = document.getElementsByClassName('ant-tooltip-inner')
+          let b = document.getElementsByClassName('ant-tooltip-arrow')
+          for (let i = 0; i <= a.length; i++) {
+            a[i].classList.add('c_ant-tooltip-inner')
+            b[i].classList.add('c_ant-tooltip-arrow')
+          }
+        })
+      })
     },
     getSliderInfoList(item) {
       return [

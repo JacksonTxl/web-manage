@@ -2,6 +2,14 @@ import { Api } from '@/api/api'
 
 export class BrandPersonalCourseApi extends Api {
   /**
+   *
+   * @param query
+   * 获取课程定价详情
+   */
+  getCoursePrice(course_id: string) {
+    return this.http.get(`/v1/course/personal/brand/price/${course_id}`)
+  }
+  /**
    * 获取品牌私教课信息
    */
   getPersonalBrandInfo(query: GetPersonalBrandInfoInput) {

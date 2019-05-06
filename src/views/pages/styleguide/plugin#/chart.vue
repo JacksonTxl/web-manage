@@ -4,6 +4,7 @@
       g2（图表插件）
       <a href="https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html" targe="_blank">g2 文档</a>
     </h3>
+    <h4>面积图</h4>
     <div class="mg-t24">
       <st-area-chart id="chartDemo" :data="chartData"/>
     </div>
@@ -13,8 +14,12 @@
   </section>
 </template>
 <script>
+import StAreaChart from '@/views/components/chart#/area'
 export default {
   name: 'ChartDemo',
+  components: {
+    StAreaChart
+  },
   data() {
     return {
       options2: {
