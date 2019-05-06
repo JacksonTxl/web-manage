@@ -19,6 +19,18 @@ export default {
     input: 'st-input-number'
   },
   props: {
+    min: {
+      type: Number,
+      default() {
+        return 0
+      }
+    },
+    max: {
+      type: Number,
+      default() {
+        return 999999999999
+      }
+    },
     value: {
       type: [String, Number]
     },
@@ -49,9 +61,6 @@ export default {
   watch: {
     value(newVal) {
       this.init(newVal)
-    },
-    number(newVal) {
-      this.triggerChange()
     }
   },
   methods: {
@@ -66,11 +75,12 @@ export default {
           this.number = data
           return
         }
-        const number = parseInt(data || 0, 10)
-        if (isNaN(number)) {
+        if (!/^\d\d*$/.test(data)) {
           return
         }
-        this.number = number
+        this.number = parseInt(data, 10)
+        this.number = this.min > this.number ? this.min : this.number
+        this.number = this.max < this.number ? this.max : this.number
       } else {
         // 允许小数
         if (data === '.' || data === '') {
@@ -81,37 +91,47 @@ export default {
           return
         }
         this.number = parseInt(data * 10, 10) / 10
+        this.number = this.min > this.number ? this.min : this.number
+        this.number = this.max < this.number ? this.max : this.number
         if (/\.$/.test(data)) {
           this.number += '.'
         }
       }
+      this.number += ''
     },
     numberChange(e) {
       if (!this.float) {
         // 整数
         if (e.target.value === '') {
           this.number = e.target.value
+          this.triggerChange()
           return
         }
-        const number = parseInt(e.target.value || 0, 10)
-        if (isNaN(number)) {
+        if (!/^\d\d*$/.test(e.target.value)) {
           return
         }
-        this.number = number
+        this.number = parseInt(e.target.value, 10)
+        this.number = this.min > this.number ? this.min : this.number
+        this.number = this.max < this.number ? this.max : this.number
       } else {
         // 允许小数
         if (e.target.value === '.' || e.target.value === '') {
           this.number = e.target.value
+          this.triggerChange()
           return
         }
         if (!this.rules.number.test(e.target.value)) {
           return
         }
         this.number = parseInt(e.target.value * 10, 10) / 10
+        this.number = this.min > this.number ? this.min : this.number
+        this.number = this.max < this.number ? this.max : this.number
         if (/\.$/.test(e.target.value)) {
           this.number += '.'
         }
       }
+      this.number += ''
+      this.triggerChange()
     },
     triggerChange() {
       this.$emit('change', `${this.number}`)
