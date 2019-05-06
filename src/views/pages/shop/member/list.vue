@@ -81,7 +81,7 @@
         <div slot="action" slot-scope="record">
           <a href="javascript:;" @click="infoFunc( record)">详情</a>
           <a-divider type="vertical"></a-divider>
-          <a href="javascript:;">编辑</a>
+          <a href="javascript:;" @click="edit(record)">编辑</a>
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
             <a-menu-item>
@@ -170,15 +170,13 @@ export default {
   },
   computed: {},
   created() {
-    // if (this.$route.query) {
-    // current: 1,
-    // pageSize: 10,
-    // total: 50
     this.pageFilter(this.memberListInfo)
     this.form = { ...this.$route.query }
-    // }
   },
   methods: {
+    edit(record) {
+      this.$router.push({ name: 'shop-member-edit', query: { id: record.id } })
+    },
     moment,
     pageFilter(data) {
       this.tableData = data.members_list
