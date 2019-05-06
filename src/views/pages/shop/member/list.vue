@@ -153,9 +153,9 @@ export default {
   },
   computed: {},
   created() {
-    if (this.$route.query) {
-      this.form = this.$route.query
-    }
+    // if (this.$route.query) {
+    this.form = { ...this.$route.query }
+    // }
   },
   methods: {
     moment,
