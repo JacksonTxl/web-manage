@@ -75,12 +75,13 @@
         rowKey="id"
         @change="onTableChange"
         :dataSource="tableData"
+        :pagination="pagination"
       >
         <div slot="action" slot-scope="text">{{text}}</div>
         <div slot="action" slot-scope="record">
           <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
           <a-divider type="vertical"></a-divider>
-          <a href="javascript:;" @click="infoFunc(text, record)">编辑</a>
+          <a href="javascript:;">编辑</a>
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
             <a-menu-item>
@@ -137,7 +138,15 @@ export default {
         low_consumption: '',
         high_consumption: '',
         follow_salesman: '',
-        keyword: ''
+        keyword: '',
+        current_page: '',
+        size: 20
+      },
+      pagination: {
+        pageSizeOptions: ['10', '20', '30', '40', '50'],
+        current: 1,
+        pageSize: 10,
+        total: 50
       },
       tableData: [],
       selectedRowKeys: [],
@@ -162,12 +171,23 @@ export default {
   computed: {},
   created() {
     // if (this.$route.query) {
-    this.tableData = this.memberListInfo.members_list
+    // current: 1,
+    // pageSize: 10,
+    // total: 50
+    this.pageFilter(this.memberListInfo)
     this.form = { ...this.$route.query }
     // }
   },
   methods: {
     moment,
+    pageFilter(data) {
+      this.tableData = data.members_list
+      this.pagination.current = data.page.current_page
+      this.pagination.pageSize = data.page.size
+      this.pagination.total = data.page.total_counts
+      this.form.size = this.pagination.pageSize
+      this.form.current_page = this.pagination.current
+    },
     handleReset() {
       let self = this
       for (let prop in self.form) {
@@ -190,7 +210,13 @@ export default {
     onSelectionChange(keys) {
       this.selectedRowKeys = keys
     },
-    onTableChange(pagination) {},
+    onTableChange(pagination, filters, sorter) {
+      console.log(pagination, filters, sorter)
+      this.pagination = pagination
+      this.form.size = pagination.pageSize
+      this.form.current_page = pagination.current
+      this.$router.push({ query: this.form })
+    },
     queryFunc() {
       console.log(this.form)
       this.$router.push({ query: this.form })
