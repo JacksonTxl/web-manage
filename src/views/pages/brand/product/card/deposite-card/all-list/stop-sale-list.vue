@@ -110,7 +110,7 @@ export default {
       publish_channel: '所以渠道',
       sell_status: '所有门店',
       getHeaders: {
-        current_page: '',
+        page: '',
         size: '',
         card_type: '',
         publish_channel: '',
@@ -226,13 +226,13 @@ export default {
         pageSize: data.page.size,
         total: data.page.total_counts
       }
-      this.getHeaders.current_page = this.pagination.current
+      this.getHeaders.page = this.pagination.current
       this.getHeaders.size = this.pagination.pageSize
 
       this.data = data.list
     },
     onChange(pagination, filters, sorter) {
-      this.getHeaders.current_page = pagination.current
+      this.getHeaders.page = pagination.current
       this.getHeaders.size = pagination.pageSize
       this.pagination.current = pagination.current
       this.pagination.pageSize = pagination.pageSize
@@ -280,6 +280,10 @@ export default {
         }
       })
       this.$router.push({ query: obj })
+
+      this.bService.getListInfo(obj).subscribe(state => {
+        self.getInfoData(state)
+      })
     }
   },
   watch: {
