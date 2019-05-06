@@ -32,7 +32,7 @@
                   <th colspan="2">小计</th>
                 </tr>
                 <tbody>
-                  <tr class="bg-row-team checkbox">
+                  <tr class="bg-row-odd checkbox">
                     <td class="tg-c"><a-checkbox @change="teamCheckboxChange"/></td>
                     <td class="rightline">团体课程</td>
                     <td class="pr-32 pl-56">
@@ -47,17 +47,49 @@
                     </td>
                     <td>{{team_total}}</td>
                     <td class="overflow-hidden">
-                      <a class="set-course-button" href="javascript:void(0)">配置上课范围&nbsp;&nbsp;<st-icon class="icon-down" type="down" /></a>
+                      <a class="set-course-button" href="javascript:void(0)">配置上课范围&nbsp;&nbsp;<st-icon class="icon-12" type="down" /></a>
                     </td>
                   </tr>
-                  <tr class="bg-row-team">
+                  <tr class="bg-row-odd">
                     <td class="rightline" colspan="2"></td>
                     <td class="team-course-table" colspan="4">
-
+                      <div :class="add('team-course-table')">
+                        <table>
+                          <colgroup>
+                            <col style="width:5%;">
+                            <col style="width:85%;">
+                            <col style="width:14%;">
+                          </colgroup>
+                          <tr class="bg-thead th">
+                            <th></th>
+                            <th>课程类型</th>
+                            <th>编辑</th>
+                          </tr>
+                          <tbody>
+                            <tr class="checkbox border-bottom">
+                              <td colspan="3" class="team-course-add-buton">
+                                <a-button block type="dashed">
+                                  <st-icon class="icon-12 mr-8" type="add"></st-icon>
+                                  添加团体课程
+                                </a-button>
+                              </td>
+                            </tr>
+                            <tr class="checkbox border-bottom" :class="{'bg-row-odd':i%2!==0,'bg-row-even':i%2===0}" v-for="i in 5" :key="i">
+                              <td class="tg-c"><a-checkbox /></td>
+                              <td>Produce</td>
+                              <td>删除</td>
+                            </tr>
+                            <tr class="bg-thead checkbox">
+                              <td class="tg-c"><a-checkbox /></td>
+                              <td>批量操作</td>
+                              <td>删除</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </td>
                   </tr>
-
-                  <tr class="bg-row-personal checkbox topline">
+                  <tr class="bg-row-even checkbox topline">
                     <td class="tg-c"><a-checkbox @change="personalCheckboxChange" /></td>
                     <td class="rightline">私教课程</td>
                     <td class="pr-32 pl-56">
@@ -72,13 +104,46 @@
                     </td>
                     <td>{{personal_total}}</td>
                     <td class="overflow-hidden">
-                      <a class="set-course-button" href="javascript:void(0)">配置上课范围&nbsp;&nbsp;<st-icon class="icon-down" type="down" /></a>
+                      <a class="set-course-button" href="javascript:void(0)">配置上课范围&nbsp;&nbsp;<st-icon class="icon-12" type="down" /></a>
                     </td>
                   </tr>
-                  <tr class="bg-row-personal">
+                  <tr class="bg-row-even">
                     <td class="rightline" colspan="2"></td>
                     <td class="personal-course-table" colspan="4">
-
+                      <div :class="add('team-course-table')">
+                        <table>
+                          <colgroup>
+                            <col style="width:5%;">
+                            <col style="width:85%;">
+                            <col style="width:14%;">
+                          </colgroup>
+                          <tr class="bg-thead th">
+                            <th></th>
+                            <th>课程类型</th>
+                            <th>编辑</th>
+                          </tr>
+                          <tbody>
+                            <tr class="checkbox border-bottom">
+                              <td colspan="3" class="team-course-add-buton">
+                                <a-button block type="dashed">
+                                  <st-icon class="icon-12 mr-8" type="add"></st-icon>
+                                  添加团体课程
+                                </a-button>
+                              </td>
+                            </tr>
+                            <tr class="checkbox border-bottom" :class="{'bg-row-odd':i%2!==0,'bg-row-even':i%2===0}" v-for="i in 5" :key="i">
+                              <td class="tg-c"><a-checkbox /></td>
+                              <td>Produce</td>
+                              <td>删除</td>
+                            </tr>
+                            <tr class="bg-thead checkbox">
+                              <td class="tg-c"><a-checkbox /></td>
+                              <td>批量操作</td>
+                              <td>删除</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </td>
                   </tr>
                 </tbody>
@@ -89,13 +154,19 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="总价">{{team_total+personal_total}}元</st-form-item>
+          <st-form-item :max="99999.9" label="总价">{{team_total+personal_total}}元</st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="售卖价格" required>
-            <st-input-number v-model="packageData.price" :float="true">
+            <st-input-number
+             :max="99999.9"
+              v-decorator="[
+                'price',
+                 {rules: [{ required: true, message: '请输入售卖价格' }]}
+              ]"
+              :float="true">
               <template slot="addonAfter">元</template>
             </st-input-number>
           </st-form-item>
@@ -137,8 +208,14 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="有效时间" required>
-            <st-input-number v-model="packageData.valid_time">
-              <a-select v-model="packageData.valid_time_unit" slot="addonAfter" :value="2" style="width: 60px">
+            <st-input-number
+              :min="1"
+              :max="99999"
+              v-decorator="[
+                'valid_time',
+                 {initialValue: null,rules: [{ required: true, message: '请输入有效时间' }]}
+              ]">
+              <a-select v-model="packageData.valid_time_unit" slot="addonAfter" style="width: 60px">
                 <a-select-option
                 v-for="(item,index) in unit_list"
                 :value="item.value"
@@ -151,7 +228,13 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="允许冻结天数" required>
-            <st-input-number v-model="packageData.frozen_days">
+            <st-input-number
+              :min="1"
+              :max="99999"
+              v-decorator="[
+                'frozen_days',
+                 {initialValue: null,rules: [{ required: true, message: '请输入允许冻结天数' }]}
+              ]">
               <template slot="addonAfter">天</template>
             </st-input-number>
           </st-form-item>
@@ -159,12 +242,17 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="转让设置" required>
+          <st-form-item label="转让设置">
             <div :class="basic('transfer')">
               <a-checkbox :class="basic('transfer-checkbox')" @change="transfer">支持转让</a-checkbox>
-              <st-input-number v-model="packageData.valid_time" :float="true" :class="basic('transfer-input')" style="padding-right:0;">
-                <a-select slot="addonAfter" :value="2" style="width: 60px">
-                  <a-select-option v-for="item in Object.entries(member_card.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
+              <st-input-number
+              :max="packageData.transfer_unit===1?100:99999.9"
+              v-decorator="[
+                'transfer_rate',
+                 {rules: [{initialValue: null,required: packageData.is_allow_transfer!==0, message: '请输入转让值数值'}]}
+              ]" :disabled="packageData.is_allow_transfer===0" :float="packageData.transfer_unit===2" :class="basic('transfer-input')" style="padding-right:0;">
+                <a-select :disabled="packageData.is_allow_transfer===0" slot="addonAfter" @change="transferUnitChange" v-model="packageData.transfer_unit" style="width: 60px">
+                  <a-select-option v-for="item in Object.entries(package_course.transfer_unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
                 </a-select>
               </st-input-number>
             </div>
@@ -174,7 +262,7 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="售卖方式" required>
-            <a-checkbox-group>
+            <a-checkbox-group v-model="packageData.sale_mode">
               <a-checkbox
               v-for="item in sell_type_list"
               :key="item.value"
@@ -186,7 +274,10 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="封面" required>
+          <st-form-item
+          validate-status="error"
+          :help="imageErrorText"
+          label="封面" required>
             <div :class="basic('upload')">
               <st-image-upload
               :class="basic('st-upload')"
@@ -207,22 +298,24 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="课程包介绍" required>
+          <st-form-item label="课程包介绍">
              <a-textarea
+                v-model="packageData.description"
                 maxlength="500"
                 class="page-content-card-textarea"
-                placeholder="请输入"
+                placeholder="请输入课程包介绍"
                 :rows="4"/>
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="备注" required>
+          <st-form-item label="备注">
              <a-textarea
+                v-model="packageData.remark"
                 maxlength="500"
                 class="page-content-card-textarea"
-                placeholder="请输入"
+                placeholder="请输入备注"
                 :rows="4"/>
           </st-form-item>
         </a-col>
@@ -230,7 +323,7 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label=" ">
-          <st-button type="primary" class="mr-8">保存</st-button>
+          <st-button type="primary" class="mr-8" @click="save" :loading="addLoading.addPackage">保存</st-button>
           <st-button>保存并上架</st-button>
           </st-form-item>
         </a-col>
@@ -242,18 +335,19 @@
 import moment from 'moment'
 import { UserService } from '@/services/user.service'
 import { cloneDeep, remove } from 'lodash-es'
-import { RuleConfig } from '@/constants/rule'
+import { AddPackageService } from './add-unlimit-package.service'
 export default {
-  name: 'ShopUnlimitPackageAdd',
+  name: 'ShopRangePackageAdd',
   serviceInject() {
     return {
-      rules: RuleConfig,
-      userService: UserService
+      userService: UserService,
+      addPackageService: AddPackageService
     }
   },
   rxState() {
     return {
-      member_card: this.userService.memberCardEnums$
+      addLoading: this.addPackageService.loading$,
+      package_course: this.userService.packageCourseEnums$
     }
   },
   bem: {
@@ -289,37 +383,38 @@ export default {
         valid_time_unit: 1,
         // 允许冻结天数
         frozen_days: null,
-
-        // 售卖方式
-        sale_mode: [],
         // 是否可以转让: 0 不可以 1 可以
-        is_allow_transfer: 1,
+        is_allow_transfer: 0,
         // 转让费率
-        transfer_rate: 30,
+        transfer_rate: null,
+        // 转让单位 1:百分比 2:元
+        transfer_unit: 1,
+        // 售卖方式
+        sale_mode: [2],
         // 封面对象
         image: {
-          image_id: 2,
-          image_key: 'www.baidu.com'
+          image_id: null,
+          image_key: ''
         },
         // 课程包介绍
-        description: '课程包介绍',
+        description: '',
         // 备注
-        remark: '备注'
+        remark: ''
       },
       form: this.$form.createForm(this),
       start_time: null,
       end_time: null,
-
+      endOpen: false,
+      // 课程范围是否未输入过
+      courseIsFirstInput: true,
+      // 课程范围是否未配置
+      courseIsNone: false,
+      courseErrorText: '',
       // 是否配置了用户端
       appConfig: false,
-      // 卡背景
-      card_bg: {
-        image_id: 0,
-        image_key: 'image/VZ0RGBwTX7FA1yKb.png',
-        image_url: '',
-        index: 1
-      },
-      endOpen: false,
+      // 是否未传了封面
+      imageIsNone: false,
+      imageErrorText: '',
       fileList: [],
       cropperModal: {},
       unit_list: [
@@ -339,87 +434,86 @@ export default {
     }
   },
   methods: {
+    // 保存
+    save() {
+      this.course_validator()
+      this.image_validator()
+      this.form.validateFieldsAndScroll((err, values) => {
+        if (!err && !this.courseIsNone && !this.imageIsNone) {
+          this.packageData.course_name = values.course_name
+          this.packageData.price = values.price
+          this.packageData.valid_time = values.valid_time
+          this.packageData.frozen_days = values.frozen_days
+          this.packageData.transfer_rate = values.transfer_rate
+          this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
+          this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 00:00:00`
+          this.addPackageService.addPackage(this.packageData).subscribe(res => {
+            console.log(res)
+          })
+        }
+      })
+    },
+    // course validatorFn
+    course_validator() {
+      this.courseIsFirstInput = false
+      if (this.team_total || this.personal_total) {
+        // 校验通过
+        this.courseIsNone = false
+        this.courseErrorText = ''
+      } else {
+        // 校验未通过
+        this.courseIsNone = true
+        this.courseErrorText = '请输入上课范围'
+      }
+    },
+    // image validatorFn
+    image_validator() {
+      if (this.packageData.image.image_key !== '') {
+        // 校验通过
+        this.imageIsNone = false
+        this.imageErrorText = ''
+      } else {
+        // 校验未通过
+        this.imageIsNone = true
+        this.imageErrorText = '请上传封面'
+      }
+    },
     // checkboxChange
     teamCheckboxChange(e) {
       this.packageData.is_team = +e.target.checked
+      this.courseIsFirstInput = false
     },
     personalCheckboxChange(e) {
       this.packageData.is_personal = +e.target.checked
-    },
-    // input change
-    teamTimeChange(e) {
-      if (e.target.value === '') {
-        this.packageData.team_times = e.target.value
-        return
-      }
-      const number = parseInt(e.target.value || 0, 10)
-      if (isNaN(number)) {
-        return
-      }
-      this.packageData.team_times = number
-    },
-    teamPriceChange(e) {
-      if (e.target.value === '.' || e.target.value === '') {
-        this.packageData.team_unit_price = e.target.value
-        return
-      }
-      if (!this.rules.number.test(e.target.value)) {
-        return
-      }
-      this.packageData.team_unit_price = parseInt(e.target.value * 10, 10) / 10
-      if (/\.$/.test(e.target.value)) {
-        this.packageData.team_unit_price += '.'
-      }
-    },
-    personalTimeChange(e) {
-      if (e.target.value === '') {
-        this.packageData.personal_times = e.target.value
-        return
-      }
-      const number = parseInt(e.target.value || 0, 10)
-      if (isNaN(number)) {
-        return
-      }
-      this.packageData.personal_times = number
-    },
-    personalPriceChange(e) {
-      if (e.target.value === '.' || e.target.value === '') {
-        this.packageData.personal_unit_price = e.target.value
-        return
-      }
-      if (!this.rules.number.test(e.target.value)) {
-        return
-      }
-      this.packageData.personal_unit_price = parseInt(e.target.value * 10, 10) / 10
-      if (/\.$/.test(e.target.value)) {
-        this.packageData.personal_unit_price += '.'
-      }
-    },
-    coursePriceChange(e) {
-      if (e.target.value === '.' || e.target.value === '') {
-        this.packageData.price = e.target.value
-        return
-      }
-      if (!this.rules.number.test(e.target.value)) {
-        return
-      }
-      this.packageData.price = parseInt(e.target.value * 10, 10) / 10
-      if (/\.$/.test(e.target.value)) {
-        this.packageData.price += '.'
-      }
-    },
-
-    fileChange(data) {
-      console.log(data)
+      this.courseIsFirstInput = false
     },
     // 转让
     transfer(e) {
-      this.packageData._is_transfer = e.target.checked
+      this.packageData.is_allow_transfer = +e.target.checked
       // 重置转让费用的校验
-      this.form.resetFields(['packageData.num'])
+      this.packageData.transfer_rate = null
+      this.form.resetFields(['transfer_rate'])
     },
-    transfter_change(data) {
-      this.packageData.num = data
+    fileChange(data) {
+      if (data.length) {
+        // 上传
+        this.packageData.image.image_id = data[0].image_id
+        this.packageData.image.image_key = data[0].image_key
+        this.imageIsNone = false
+        this.imageErrorText = ''
+      } else {
+        // 删除
+        this.packageData.image.image_id = null
+        this.packageData.image.image_key = ''
+        this.imageIsNone = true
+        this.imageErrorText = '请上传封面'
+      }
+    },
+    transferUnitChange() {
+      this.packageData.transfer_rate = null
+      this.form.setFieldsValue({
+        'transfer_rate': null
+      })
     },
     // start_time validatorFn
     start_time_validator(rule, value, callback) {
@@ -511,14 +605,7 @@ export default {
       )
     },
     // moment
-    moment,
-    range(start, end) {
-      const result = []
-      for (let i = start; i < end; i++) {
-        result.push(i)
-      }
-      return result
-    }
+    moment
   },
   computed: {
     // 团课小计
@@ -539,7 +626,7 @@ export default {
     },
     // 售卖渠道
     sell_type_list() {
-      let sell_type = cloneDeep(Object.entries(this.member_card.sell_type.value))
+      let sell_type = cloneDeep(Object.entries(this.package_course.sale_mode.value))
       let arr = []
       sell_type.forEach(i => {
         arr.push({
@@ -547,7 +634,7 @@ export default {
           label: i[1]
         })
       })
-      if (!this.packageData.appConfig) {
+      if (!this.appConfig) {
         remove(arr, i => i.value === 1)
       }
       return arr
