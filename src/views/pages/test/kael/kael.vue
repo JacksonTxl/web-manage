@@ -2,9 +2,9 @@
   <a-form
     layout="inline"
     :form="form"
-    @submit="handleSubmit"
   >
     <a-form-item label="Price">
+
       <price-input
         v-decorator="[
           'price',
@@ -14,15 +14,24 @@
           }
         ]"
       />
+
     </a-form-item>
     <a-form-item>
-      <a-button
-        type="primary"
-        html-type="submit"
-      >
-        Submit
-      </a-button>
+
+      <st-input-number :float="true" v-model="abc">
+        <!-- <template slot="addonAfter">元2</template> -->
+        <a-select slot="addonAfter" defaultValue=".com" style="width: 80px">
+          <a-select-option value=".com">.com</a-select-option>
+          <a-select-option value=".jp">.jp</a-select-option>
+          <a-select-option value=".cn">.cn</a-select-option>
+          <a-select-option value=".org">.org</a-select-option>
+        </a-select>
+      </st-input-number>
+
     </a-form-item>
+
+{{typeof abc}}
+{{abc}}
   </a-form>
 </template>
 
@@ -42,19 +51,12 @@ const PriceInput = {
         @change="handleNumberChange"
         style="width: 63%; margin-right: 2%;"
       />
-      <a-select
-        :value="currency"
-        style="width: 32%"
-        @change="handleCurrencyChange"
-      >
-        <a-select-option value='rmb'>RMB</a-select-option>
-        <a-select-option value='dollar'>Dollar</a-select-option>
-      </a-select>
     </span>
   `,
   data() {
     const value = this.value || {}
     return {
+      abc: 10,
       number: value.number || 0,
       currency: value.currency || 'rmb'
     }
@@ -93,17 +95,22 @@ export default {
   components: {
     PriceInput
   },
+  data() {
+    return {
+      abc: 11
+    }
+  },
   beforeCreate() {
     this.form = this.$form.createForm(this)
   },
   methods: {
     handleSubmit(e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-        }
-      })
+      // e.preventDefault()
+      // this.form.validateFields((err, values) => {
+      //   if (!err) {
+      //     console.log('Received values of form: ', values)
+      //   }
+      // })
     },
     checkPrice(rule, value, callback) {
       console.log(value)
@@ -113,6 +120,11 @@ export default {
       }
       // eslint-disable-next-line
       callback('Price must greater than zero!')
+    },
+    check(rule, value, callback) {
+      console.log(value)
+      // eslint-disable-next-line
+      callback()
     }
   }
 }

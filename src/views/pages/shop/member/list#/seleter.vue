@@ -27,7 +27,6 @@
       <a-range-picker v-else @change="onChange"/>
     </a-form-item>
     <slot name="custom"></slot>
-    {{value}}
   </div>
 </template>
 <script>
