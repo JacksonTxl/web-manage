@@ -92,9 +92,10 @@
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'shop-add-user'}">分配员工</modal-link>
-              <!-- <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">分配教练</modal-link>
-              <modal-link tag="a" :to=" { name: 'shop-distribution-ales'}">分配销售</modal-link>-->
+              <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">分配教练</modal-link>
+            </a-menu-item>
+            <a-menu-item>
+              <modal-link tag="a" :to=" { name: 'shop-distribution-ales'}">分配销售</modal-link>
             </a-menu-item>
             <a-menu-item>
               <modal-link tag="a" :to=" { name: 'shop-binding-entity-card'}">绑实体卡</modal-link>
