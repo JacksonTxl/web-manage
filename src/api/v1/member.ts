@@ -74,6 +74,61 @@ export interface UpdateMemberEdit {
      */
     district_id?: string;
 }
+
+export interface AddUserParams{
+  /**
+   * 姓名
+   */
+  member_name: string;
+  /**
+   * 手机号
+   */
+  mobile: string;
+  /**
+   * 来源渠道
+   */
+  register_type: number;
+  /**
+   * 来源方式
+   */
+  register_way: number;
+  /**
+   * 性别
+   */
+  sex? : number;
+  /**
+   * 职业
+   */
+  jobs? : string;
+  /**
+   * 收入水平
+   */
+  income_level? : string;
+  /**
+   * 证件类型
+   */
+  id_card_type? : number;
+  /**
+   * 证件号
+   */
+  id_card? : string;
+  /**
+   * 身高
+   */
+  height? : string;
+  /**
+   * 体重
+   */
+  weight? : string;
+  /**
+   * 健身目标
+   */
+  fitness_goal? : string;
+  /**
+   * 健身等级
+   */
+  fitness_level? : number;
+}
 export class MemberAPi extends Api {
   /**
          * 用户编辑回显
@@ -93,6 +148,12 @@ export class MemberAPi extends Api {
        */
   getMember(query: any) {
     return this.http.get(`/v1/member`, { query })
+  }
+  /**
+   * 添加员工
+   */
+  addUser(params: AddUserParams) {
+    return this.http.post(`/v1/member`, { params })
   }
   /**
      * 国籍
