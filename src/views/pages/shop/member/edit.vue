@@ -123,7 +123,8 @@ export default {
     return {
       form: this.$form.createForm(this),
       dateinit: '',
-      rules: { member_name: ['member_name', { rules: [{ required: true, message: '请输入姓名' }] }],
+      rules: {
+        member_name: ['member_name', { rules: [{ required: true, message: '请输入姓名' }] }],
         sex: ['sex'],
         country_id: ['country_id'],
         nation: ['nation'],
@@ -141,7 +142,6 @@ export default {
         mobile: ['mobile', { rules: [{ required: true, message: '请输入手机号' }] }],
         wechat: ['wechat'],
         cascader: ['cascader']
-
       },
       options: [],
       fieldNames: { label: 'name', value: 'id', children: 'children' }
