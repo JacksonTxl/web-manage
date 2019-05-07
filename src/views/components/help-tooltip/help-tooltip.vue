@@ -5,7 +5,7 @@
       v-bind="$attrs"
       v-on="$listeners">
       <template slot="title">
-        <span>{{info}}</span>
+        <span>{{tips}}</span>
       </template>
       <span><st-icon type="help"/></span><slot></slot>
     </a-tooltip>
@@ -32,7 +32,7 @@ export default {
   },
   data() {
     return {
-      info: ''
+      tips: '加载中...'
     }
   },
   created() {
@@ -44,8 +44,8 @@ export default {
       if (!id) {
         return
       }
-      this.helpTooltipService.getHelp(this.id).subscribe(res => {
-        this.info = res.info
+      this.helpTooltipService.getToolTip(this.id).subscribe(res => {
+        this.tips = res.tips
       })
     }
   }

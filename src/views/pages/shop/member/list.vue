@@ -48,14 +48,20 @@
         </div>
       </div>
       <st-button type="primary" class="shop-member-list-button">
-        <modal-link tag="a" :to=" { name: 'shop-add-user'}">添加用户</modal-link>
+        <a href="javascript:;" @click="addUser(record)">添加用户</a>
+        <!-- <modal-link tag="a" :to=" { name: 'shop-add-user'}">添加用户</modal-link> -->
       </st-button>
       <st-button class="shop-member-list-button">导入用户</st-button>
-      <st-button class="shop-member-list-button">
+      <st-button
+        class="shop-member-list-button"
+        :disabled="selectedRowData.length > 0 ? false :true"
+      >
         <modal-link
+          v-if="selectedRowData.length > 0"
           tag="a"
           :to=" { name: 'shop-add-lable',props:{selectedRowData:selectedRowData}}"
         >加标签</modal-link>
+        <span v-else>加标签</span>
       </st-button>
       <a-popover placement="bottom">
         <template slot="content">
@@ -87,9 +93,10 @@
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'shop-add-user'}">分配员工</modal-link>
-              <!-- <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">分配教练</modal-link>
-              <modal-link tag="a" :to=" { name: 'shop-distribution-ales'}">分配销售</modal-link>-->
+              <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">分配教练</modal-link>
+            </a-menu-item>
+            <a-menu-item>
+              <modal-link tag="a" :to=" { name: 'shop-distribution-ales'}">分配销售</modal-link>
             </a-menu-item>
             <a-menu-item>
               <modal-link tag="a" :to=" { name: 'shop-binding-entity-card'}">绑实体卡</modal-link>
@@ -179,6 +186,9 @@ export default {
   methods: {
     edit(record) {
       this.$router.push({ name: 'shop-member-edit', query: { id: record.id } })
+    },
+    addUser(record) {
+      this.$router.push({ name: 'shop-member-add' })
     },
     infoFunc(record) {
       this.$router.push({

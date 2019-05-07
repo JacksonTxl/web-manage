@@ -1,19 +1,14 @@
 import { Injectable } from 'vue-service-app'
-import { State, Computed } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { Effect } from 'rx-state/src'
-import {
-  HelpApi,
-  GetHelpInput
-} from '@/api/v1/help'
+import { ConstApi, GetToolTipInput } from '@/api/const'
 @Injectable()
 export class HelpTooltipService extends Store<any> {
-  constructor(private helpApi: HelpApi) {
+  constructor(private constApi: ConstApi) {
     super()
   }
   @Effect()
-  getHelp(id: GetHelpInput) {
-    return this.helpApi.getHelp(id)
+  getToolTip(id: GetToolTipInput) {
+    return this.constApi.getToolTip(id)
   }
 }

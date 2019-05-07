@@ -46,27 +46,31 @@
                       </st-input-number>
                     </td>
                     <td>{{team_total}}</td>
-                    <td class="overflow-hidden">
-                      <a class="set-course-button" href="javascript:void(0)">配置上课范围&nbsp;&nbsp;<st-icon class="icon-12" type="down" /></a>
+                    <td class="overflow-hidden" @click="teamCourseListShow">
+                      <a class="set-course-button" :class="{'hide':!teamCourseListIsShow}" href="javascript:void(0)">配置上课范围&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
                     </td>
                   </tr>
-                  <tr class="bg-row-odd">
+                  <tr class="bg-row-odd team-course-list-content" v-if="teamCourseListIsShow">
                     <td class="rightline" colspan="2"></td>
                     <td class="team-course-table" colspan="4">
                       <div :class="add('team-course-table')">
                         <table>
                           <colgroup>
                             <col style="width:5%;">
-                            <col style="width:85%;">
+                            <col style="width:81%;">
                             <col style="width:14%;">
                           </colgroup>
                           <tr class="bg-thead th">
                             <th></th>
                             <th>课程类型</th>
-                            <th>编辑</th>
+                            <th>
+                              <a href="javascript:void(0)" v-if="!teamCourseListIsEdit" @click="teamCourseListIsEdit=true">编辑</a>
+                              <a href="javascript:void(0)" class="mr-8" v-if="teamCourseListIsEdit" @click="teamCourseListIsEdit=false">保存</a>
+                              <a href="javascript:void(0)" v-if="teamCourseListIsEdit" @click="teamCourseListIsEdit=false">取消</a>
+                            </th>
                           </tr>
                           <tbody>
-                            <tr class="checkbox border-bottom">
+                            <tr class="checkbox border-bottom" v-if="teamCourseListIsEdit">
                               <td colspan="3" class="team-course-add-buton">
                                 <a-button block type="dashed">
                                   <st-icon class="icon-12 mr-8" type="add"></st-icon>
@@ -74,12 +78,27 @@
                                 </a-button>
                               </td>
                             </tr>
-                            <tr class="checkbox border-bottom" :class="{'bg-row-odd':i%2!==0,'bg-row-even':i%2===0}" v-for="i in 5" :key="i">
-                              <td class="tg-c"><a-checkbox /></td>
-                              <td>Produce</td>
-                              <td>删除</td>
+                            <tr>
+                              <td colspan="3">
+                                <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
+                                <ul class="team-course-content-table" v-if="!teamCourseListIsEdit" v-scrollBar='false' v-decorator="['teamCourseList1']">
+                                    <li class="checkbox border-bottom" :class="{'bg-row-odd':i%2!==0,'bg-row-even':i%2===0}" v-for="(i,index) in teamCourseList" :key="index">
+                                      <div></div>
+                                      <div>Produce</div>
+                                      <div></div>
+                                    </li>
+                                </ul>
+                                <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
+                                <ul class="team-course-content-table" v-if="teamCourseListIsEdit" v-scrollBar='false' v-decorator="['teamCourseList2']">
+                                    <li class="checkbox border-bottom" :class="{'bg-row-odd':i%2!==0,'bg-row-even':i%2===0}" v-for="(i,index) in teamCourseList" :key="index">
+                                      <div class="tg-c"><a-checkbox /></div>
+                                      <div>Produce</div>
+                                      <div>删除</div>
+                                    </li>
+                                </ul>
+                              </td>
                             </tr>
-                            <tr class="bg-thead checkbox">
+                            <tr class="bg-thead checkbox topline" v-if="teamCourseListIsEdit">
                               <td class="tg-c"><a-checkbox /></td>
                               <td>批量操作</td>
                               <td>删除</td>
@@ -103,42 +122,107 @@
                       </st-input-number>
                     </td>
                     <td>{{personal_total}}</td>
-                    <td class="overflow-hidden">
-                      <a class="set-course-button" href="javascript:void(0)">配置上课范围&nbsp;&nbsp;<st-icon class="icon-12" type="down" /></a>
+                    <td class="overflow-hidden" @click="personalCourseListShow">
+                      <a class="set-course-button" :class="{'hide':!personalCourseListIsShow}" href="javascript:void(0)">配置上课范围&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
                     </td>
                   </tr>
-                  <tr class="bg-row-even">
+                  <tr class="bg-row-even personal-course-list-content" v-if="personalCourseListIsShow">
                     <td class="rightline" colspan="2"></td>
                     <td class="personal-course-table" colspan="4">
-                      <div :class="add('team-course-table')">
+                      <div :class="add('personal-course-table')">
                         <table>
                           <colgroup>
                             <col style="width:5%;">
-                            <col style="width:85%;">
-                            <col style="width:14%;">
+                            <col style="width:29%;">
+                            <col style="width:34%;">
+                            <col style="width:16%;">
+                            <col style="width:16%;">
                           </colgroup>
                           <tr class="bg-thead th">
                             <th></th>
                             <th>课程类型</th>
-                            <th>编辑</th>
+                            <th>支持预约的教练等级</th>
+                            <th>授课教练数</th>
+                            <th>
+                              <a href="javascript:void(0)" v-if="!personalCourseListIsEdit" @click="personalCourseListIsEdit=true">编辑</a>
+                              <a href="javascript:void(0)" class="mr-8" v-if="personalCourseListIsEdit" @click="personalCourseListIsEdit=false">保存</a>
+                              <a href="javascript:void(0)" v-if="personalCourseListIsEdit" @click="personalCourseListIsEdit=false">取消</a>
+                            </th>
                           </tr>
                           <tbody>
-                            <tr class="checkbox border-bottom">
-                              <td colspan="3" class="team-course-add-buton">
+                            <tr class="checkbox border-bottom" v-if="personalCourseListIsEdit">
+                              <td colspan="5" class="personal-course-add-buton">
                                 <a-button block type="dashed">
                                   <st-icon class="icon-12 mr-8" type="add"></st-icon>
-                                  添加团体课程
+                                  添加私教课程
                                 </a-button>
                               </td>
                             </tr>
-                            <tr class="checkbox border-bottom" :class="{'bg-row-odd':i%2!==0,'bg-row-even':i%2===0}" v-for="i in 5" :key="i">
-                              <td class="tg-c"><a-checkbox /></td>
-                              <td>Produce</td>
-                              <td>删除</td>
+                            <tr>
+                              <td colspan="5">
+                                <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
+                                <ul class="personal-course-content-table" v-if="personalCourseListIsEdit" v-scrollBar='false' v-decorator="['personalCourseList1']">
+                                    <li class="checkbox border-bottom" :class="{'bg-row-odd':index%2!==0,'bg-row-even':index%2===0}" v-for="(item,index) in personalCourseList" :key="index">
+                                      <div class="tg-c"><a-checkbox /></div>
+                                      <div>Produce</div>
+                                      <div>
+                                        <a-dropdown placement="bottomRight" :trigger="['click']">
+                                          <a href="javascript:void(0)">3个等级{{index==2?'还有还有还有还有':''}}&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
+                                          <a-checkbox-group slot="overlay">
+                                            <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
+                                            <ul class="personal-course-coach-grade-dropdown" v-scrollBar='false' v-decorator="[`personalCourseListCoachGrade${index}`]">
+                                              <li><a-checkbox value="A">A</a-checkbox></li>
+                                              <li><a-checkbox value="B">B</a-checkbox></li>
+                                              <li><a-checkbox value="C">C</a-checkbox></li>
+                                              <li><a-checkbox value="D">D</a-checkbox></li>
+                                              <li><a-checkbox value="E">E</a-checkbox></li>
+                                              <li><a-checkbox value="F">F</a-checkbox></li>
+                                              <li><a-checkbox value="G">G</a-checkbox></li>
+                                              <li><a-checkbox value="H">H</a-checkbox></li>
+                                              <li><a-checkbox value="J">J</a-checkbox></li>
+                                            </ul>
+                                          </a-checkbox-group>
+                                        </a-dropdown>
+                                      </div>
+                                      <div>0</div>
+                                      <div>删除</div>
+                                    </li>
+                                </ul>
+                                <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
+                                <ul class="personal-course-content-table" v-if="!personalCourseListIsEdit" v-scrollBar='false' v-decorator="['personalCourseList2']">
+                                    <li class="checkbox border-bottom" :class="{'bg-row-odd':i%2!==0,'bg-row-even':i%2===0}" v-for="(i,index) in personalCourseList" :key="index">
+                                      <div class="tg-c"></div>
+                                      <div>Produce</div>
+                                      <div>等级1/等级2</div>
+                                      <div>0</div>
+                                      <div></div>
+                                    </li>
+                                </ul>
+                              </td>
                             </tr>
-                            <tr class="bg-thead checkbox">
+                            <tr class="bg-thead checkbox" v-if="personalCourseListIsEdit">
                               <td class="tg-c"><a-checkbox /></td>
                               <td>批量操作</td>
+                              <td>
+                                <a-dropdown placement="bottomRight" :trigger="['click']">
+                                  <a href="javascript:void(0)">批量设置等级&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
+                                  <a-checkbox-group slot="overlay">
+                                    <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
+                                    <ul class="personal-course-coach-grade-dropdown" v-scrollBar='false' v-decorator="['personalCourseListCoachGradeAll']">
+                                      <li><a-checkbox value="A">A</a-checkbox></li>
+                                      <li><a-checkbox value="B">B</a-checkbox></li>
+                                      <li><a-checkbox value="C">C</a-checkbox></li>
+                                      <li><a-checkbox value="D">D</a-checkbox></li>
+                                      <li><a-checkbox value="E">E</a-checkbox></li>
+                                      <li><a-checkbox value="F">F</a-checkbox></li>
+                                      <li><a-checkbox value="G">G</a-checkbox></li>
+                                      <li><a-checkbox value="H">H</a-checkbox></li>
+                                      <li><a-checkbox value="J">J</a-checkbox></li>
+                                    </ul>
+                                  </a-checkbox-group>
+                                </a-dropdown>
+                              </td>
+                              <td>0</td>
                               <td>删除</td>
                             </tr>
                           </tbody>
@@ -430,10 +514,46 @@ export default {
           value: 3,
           label: '年'
         }
-      ]
+      ],
+
+      // team course
+      teamCourseList: [1, 2, 3, 4, 5, 6],
+      teamCourseListIsEdit: false,
+      teamCourseListIsShow: false,
+      // personal course
+      personalCourseList: [{
+        value: 1,
+        coachGradeIsShow: false
+      }, {
+        value: 1,
+        coachGradeIsShow: false
+      }, {
+        value: 1,
+        coachGradeIsShow: false
+      }, {
+        value: 1,
+        coachGradeIsShow: false
+      }, {
+        value: 1,
+        coachGradeIsShow: false
+      }, {
+        value: 1,
+        coachGradeIsShow: false
+      }],
+      personalCourseListIsEdit: false,
+      personalCourseListIsShow: false
+
     }
   },
   methods: {
+    // team
+    teamCourseListShow() {
+      this.teamCourseListIsShow = !this.teamCourseListIsShow
+    },
+    // personal
+    personalCourseListShow() {
+      this.personalCourseListIsShow = !this.personalCourseListIsShow
+    },
     // 保存
     save() {
       this.course_validator()
