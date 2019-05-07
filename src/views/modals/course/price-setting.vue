@@ -89,7 +89,7 @@ export default {
           }
         }), isEqual)]
       }
-      if (this.priceSetting === 0) {
+      if (this.priceSetting === 2) {
         this.shops = [{ id: -1, name: '所有门店' }, ...uniqWith(prices.map(item => {
           return {
             id: item.shop_id,

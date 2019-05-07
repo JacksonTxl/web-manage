@@ -1,12 +1,12 @@
 export const columnsShops = [{
   title: '省',
-  dataIndex: 'province_name'
+  dataIndex: 'province'
 }, {
   title: '市',
-  dataIndex: 'city_name'
+  dataIndex: 'city'
 }, {
   title: '区',
-  dataIndex: 'district_name'
+  dataIndex: 'district'
 }, {
   title: '门店',
   dataIndex: 'shop_name'
