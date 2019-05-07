@@ -35,24 +35,6 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="参考定价">
-          <a-input-number :min="0" v-decorator="ruleConfig.price">
-            <div slot="addonAfter" class="st-form-item-unit">元/节</div>
-          </a-input-number>
-        </st-form-item>
-      </a-col>
-    </a-row>
-    <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="课有效期">
-          <a-input-number :min="0" v-decorator="ruleConfig.effectiveUnit">
-            <div slot="addonAfter" class="st-form-item-unit">天/节</div>
-          </a-input-number>
-        </st-form-item>
-      </a-col>
-    </a-row>
-    <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="图片" >
           <div class="page-upload-container">
             <st-image-upload :list="fileList" @change="onImgChange"></st-image-upload>

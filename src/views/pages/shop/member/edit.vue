@@ -3,8 +3,8 @@
     <st-form :form="form" @submit="save" class="page-add-container">
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="姓名" >
-            <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.member_name"/>
+          <st-form-item label="姓名" required>
+            <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.member_name" />
           </st-form-item>
           <st-form-item label="性别">
             <a-select placeholder="请选择" v-decorator="rules.sex">
@@ -39,16 +39,12 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="国籍">
             <a-select placeholder="请选择" v-decorator="rules.country_id">
-              <a-select-option :value="0">未选择</a-select-option>
-              <a-select-option :value="2">男</a-select-option>
-              <a-select-option :value="1">女</a-select-option>
+              <a-select-option v-for="(item, index) in countryInfo" :key="index" :value="item.id">{{item.name}}</a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item label="民族">
             <a-select placeholder="请选择" v-decorator="rules.nation">
-              <a-select-option :value="0">未选择</a-select-option>
-              <a-select-option :value="2">男</a-select-option>
-              <a-select-option :value="1">女</a-select-option>
+              <a-select-option v-for="(item, index) in nations" :key="index" :value="item.id">{{item.name}}</a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item label="学历">
@@ -76,11 +72,11 @@
 
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="手机号" >
+          <st-form-item label="手机号" required>
             <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.mobile"/>
           </st-form-item>
           <st-form-item label="微信号" >
-            <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.wechat"/>
+            <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.wechat" :disabled="true"/>
           </st-form-item>
         </a-col>
         <a-col :lg="10" :xs="22" :offset="1">
@@ -88,7 +84,7 @@
             <a-input placeholder="支持中英文、数字,不超过10个字"  v-decorator="rules.email"/>
           </st-form-item>
           <st-form-item label="家庭住址" >
-            <a-cascader :options="options" @change="onChange" placeholder="请选择省/市/区/县"/>
+            <a-cascader :options="options" v-decorator="rules.cascader" :fieldNames="fieldNames" @change="onChange" placeholder="请选择省/市/区/县"/>
           </st-form-item>
         </a-col>
       </a-row>
@@ -111,14 +107,16 @@ export default {
   serviceInject() {
     return {
       editService: EditService,
-      userService: UserService
-      // regionService: RegionService
+      userService: UserService,
+      regionService: RegionService
     }
   },
   rxState() {
     return {
       info: this.editService.info$,
-      staffEnums: this.userService.staffEnums$
+      staffEnums: this.userService.staffEnums$,
+      countryInfo: this.editService.countryInfo$,
+      nations: this.editService.nations$
     }
   },
   data() {
@@ -126,7 +124,7 @@ export default {
       form: this.$form.createForm(this),
       dateinit: '',
       rules: {
-        member_name: ['member_name'],
+        member_name: ['member_name', { rules: [{ required: true, message: '请输入姓名' }] }],
         sex: ['sex'],
         country_id: ['country_id'],
         nation: ['nation'],
@@ -141,81 +139,12 @@ export default {
         has_children: ['has_children'],
         fitness_level: ['fitness_level'],
         email: ['email'],
-        mobile: ['mobile'],
-        wechat: ['wechat']
+        mobile: ['mobile', { rules: [{ required: true, message: '请输入手机号' }] }],
+        wechat: ['wechat'],
+        cascader: ['cascader']
       },
-      options: [
-        {
-          value: 'zhejiang',
-          label: 'Zhejiang',
-          children: [
-            {
-              value: 'hangzhou',
-              label: 'Hangzhou',
-              children: [
-                {
-                  value: 'xihu',
-                  label: 'West Lake'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: 'jiangsu',
-          label: 'Jiangsu',
-          children: [
-            {
-              value: 'nanjing',
-              label: 'Nanjing',
-              children: [
-                {
-                  value: 'zhonghuamen',
-                  label: 'Zhong Hua Men'
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      educationList: [
-        {
-          value: 0,
-          cont: '未填写'
-        },
-        {
-          value: 1,
-          cont: '小学'
-        },
-        {
-          value: 2,
-          cont: '初中'
-        },
-        {
-          value: 3,
-          cont: '高中'
-        },
-        {
-          value: 4,
-          cont: '中专'
-        },
-        {
-          value: 5,
-          cont: '大专'
-        },
-        {
-          value: 6,
-          cont: '本科'
-        },
-        {
-          value: 7,
-          cont: '硕士'
-        },
-        {
-          value: 8,
-          cont: '博士'
-        }
-      ]
+      options: [],
+      fieldNames: { label: 'name', value: 'id', children: 'children' }
     }
   },
   methods: {
@@ -234,9 +163,10 @@ export default {
           values.birthday = values.birthday
             ? values.birthday.format('YYYY-MM-DD')
             : ''
-
-          values.id = this.id
-          console.log('==============', values)
+          values.province_id = values.cascader[0] || 110000
+          values.city_id = values.cascader[1] || 110100
+          values.district_id = values.cascader[2] || 110101
+          delete values.cascader
         }
         this.editService.updateMemberEdit(this.id, values).subscribe(res => {
           console.log('12333333333333')
@@ -244,7 +174,7 @@ export default {
       })
     },
     setEditInfo(obj) {
-      console.log('=========', obj)
+      console.log('======', obj)
       this.form.setFieldsValue({
         member_name: obj.member_name,
         sex: obj.sex - 0,
@@ -262,15 +192,15 @@ export default {
         fitness_level: obj.fitness_level,
         email: obj.email,
         mobile: obj.mobile,
-        wechat: obj.wechat
+        wechat: obj.wechat,
+        cascader: [obj.province_id, obj.city_id, obj.district_id]
       })
       this.id = obj.id
     }
   },
   mounted() {
-    // console.log('=====',this.staffEnums)
-    // this.options = window.localStorage.getItem('regionTree')
-    // console.log(this.options)
+    // console.log('========',this.countryInfo,this.nations)
+    this.options = JSON.parse(window.localStorage.getItem('regionTree'))
     this.setEditInfo(this.info)
   }
 }
