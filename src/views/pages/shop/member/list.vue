@@ -48,7 +48,8 @@
         </div>
       </div>
       <st-button type="primary" class="shop-member-list-button">
-        <modal-link tag="a" :to=" { name: 'shop-add-user'}">添加用户</modal-link>
+        <a href="javascript:;" @click="addUser(record)">添加用户</a>
+        <!-- <modal-link tag="a" :to=" { name: 'shop-add-user'}">添加用户</modal-link> -->
       </st-button>
       <st-button class="shop-member-list-button">导入用户</st-button>
       <st-button
@@ -185,6 +186,9 @@ export default {
   methods: {
     edit(record) {
       this.$router.push({ name: 'shop-member-edit', query: { id: record.id } })
+    },
+    addUser(record) {
+      this.$router.push({ name: 'shop-member-add' })
     },
     infoFunc(record) {
       this.$router.push({
