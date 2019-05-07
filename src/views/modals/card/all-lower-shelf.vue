@@ -33,7 +33,7 @@ export default {
 
       self.a.map((item, index) => {
         data.card_shop.push({
-          card_id: item.id,
+          card_id: item.card_id,
           shop_id: item.shop_id
         })
       })

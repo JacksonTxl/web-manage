@@ -1,7 +1,7 @@
 <template>
   <div class="pages-brand-product-card-list-member-list">
     <st-button type="primary">
-      <a-icon type="plus"/>新增私教课程
+      <a-icon type="plus"/>新增储值卡
     </st-button>
     <div class="pages-brand-product-card-list-member-list__box">
       <a-select
@@ -59,7 +59,7 @@
         <span v-if="text !=='全部场馆'">
           <modal-link
             tag="a"
-            :to="{ name: 'card-table-stop' , props:{a: record.id,title:'支持售卖门店'}}"
+            :to="{ name: 'card-table-stop' , props:{a: record.card_id,title:'支持售卖门店'}}"
           >{{text}}</modal-link>
         </span>
         <span v-else class="use_num">{{text}}</span>
@@ -71,7 +71,7 @@
         <span v-if="text !=='单场馆'">
           <modal-link
             tag="a"
-            :to="{ name: 'card-sale-stop' , props:{a: record.id,title:'支持消费门店'}}"
+            :to="{ name: 'card-sale-stop' , props:{a: record.card_id,title:'支持消费门店'}}"
           >{{text}}</modal-link>
         </span>
         <span v-else class="use_num">{{text}}</span>
@@ -110,18 +110,22 @@
       <!-- 操作end -->
       <div slot="action" slot-scope="text, record">
         <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
-        <a-divider type="vertical"></a-divider>
+
         <a href="javascript:;" @click="infoFunc(text, record)" v-if="record.shelf_status !=='可售'">
           <modal-link
             tag="a"
             :to=" { name: 'card-recovery-sell', props:{a:record,time:{current_time:record.time},flag:true}, on:{done: onModalTest } }"
-          >恢复售卖</modal-link>
+          >
+            <a-divider type="vertical"></a-divider>恢复售卖
+          </modal-link>
         </a>
         <a
           href="javascript:;"
           @click="upperShelf(text, record)"
-          v-if="record.shelf_status==='可售'"
-        >上架</a>
+          v-if="record.shelf_status==='可售' && record.upper_status"
+        >
+          <a-divider type="vertical"></a-divider>上架
+        </a>
         <template v-if="record.shelf_status==='可售'">
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
@@ -129,13 +133,14 @@
             <a-menu-item>
               <modal-link
                 tag="a"
-                :to=" { name: 'card-halt-the-sales', props:{a:record.id,flag:true,time:[record.upper_shelf_num,record.lower_shelf_num]}, on:{done: onModalTest }}"
+                :to=" { name: 'card-halt-the-sales', props:{a:record.card_id,flag:true,time:[record.upper_shelf_num,record.lower_shelf_num]}, on:{done: onModalTest }}"
               >停售</modal-link>
             </a-menu-item>
             <a-menu-item>
               <modal-link
+                v-if="record.upper_status && !record.publish_channel"
                 tag="a"
-                :to=" { name: 'card-confirm-del', props:{title: {title:record.card_name,id:record.id,flag:true}}, on:{del: onModalTest }}"
+                :to=" { name: 'card-confirm-del', props:{title: {title:record.card_name,id:record.card_id,flag:true}}, on:{del: onModalTest }}"
               >删除</modal-link>
             </a-menu-item>
           </st-more-dropdown>
@@ -263,13 +268,14 @@ export default {
           let obj = {}
           // publish_channel 1 品牌 2 门店
           if (record.publish_channel === 1) {
-            obj.card_id = record.id
+            obj.card_id = record.card_id
           } else {
-            obj.card_id = record.id
+            obj.card_id = record.card_id
             obj.shop_id = record.shop_id
           }
+          console.log(obj, record)
           self.aService.setCardsDepositBrandOnLine(obj).subscribe(state => {
-            self.$emit('del', true)
+            self.onModalTest()
           })
         },
         onCancel() {
@@ -283,7 +289,7 @@ export default {
       self.popoverTitle = ''
       self.popoverContent = ''
       this.aService
-        .getCardsBrandDepositStop({ card_id: record.id })
+        .getCardsBrandDepositStop({ card_id: record.card_id })
         .subscribe(state => {
           if (state.info.operate_time || state.info.staff_name) {
             self.popoverTitle = `操作人:${state.info.staff_name}   操作时间:${

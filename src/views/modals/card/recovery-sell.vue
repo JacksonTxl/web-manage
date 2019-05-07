@@ -93,7 +93,7 @@ export default {
       let self = this
 
       let data = {
-        card_id: self.a.id,
+        card_id: self.a.card_id,
         start_time: self.times[0],
         end_time: self.times[1]
       }

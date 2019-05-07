@@ -2,7 +2,7 @@
   <div class="page-shop-sale-list-shop">
     <header>
       <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
-        <st-button type="primary">转入品牌私教课程库</st-button>
+        <div></div>
         <div>
           <a-select class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onChange">
             <a-select-option v-for="shop in shopsOptions" :key="shop.shop_id" :value="shop.shop_id">{{shop.shop_name}}</a-select-option>

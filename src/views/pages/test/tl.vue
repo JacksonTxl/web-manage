@@ -49,7 +49,7 @@
         </tbody>
       </st-form-table>
       <p class="mg-t24">
-        <st-help :id="1"/>
+        <st-help-tooltip :id="1"/>
       </p>
     </st-panel>
     <switch-shop v-if="isShowSwitchShop" @onClose="onCloseSwitchShop"></switch-shop>

@@ -1,0 +1,101 @@
+.page-shop-add-range-package{
+  &__course{
+    padding: 12px;
+    border: 1px solid @border-color;
+    border-radius: 4px;
+    .set-course-button{
+      position: relative;
+      &::after {
+        content: '';
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        top: 35px;
+        right: 3px;
+        transform: rotate(45deg);
+        .bg(linear-gradient(360deg,rgba(255,255,255,0) 0%,rgba(229,229,229,1) 100%););
+      }
+    }
+    .icon-12{
+      .fz(12px);
+    }
+    .team-course-table {
+      padding: 24px;
+      box-shadow: 0px 17px 13px -16px #E5E5E5 inset;
+      .page-shop-add-range-package__team-course-table {
+        border: 1px solid @border-color;
+        border-radius: 4px;
+        overflow: hidden;
+        table{
+          width: 100%;
+          .th{
+            height: 48px;
+          }
+          .team-course-add-buton {
+            padding: 0 12px;
+          }
+        }
+      }
+    }
+    .personal-course-table {
+      padding: 24px;
+      box-shadow: 0px 17px 13px -16px #E5E5E5 inset;
+      .page-shop-add-range-package__team-course-table {
+        border: 1px solid @border-color;
+        border-radius: 4px;
+        overflow: hidden;
+        table{
+          width: 100%;
+          .th{
+            height: 48px;
+          }
+          .team-course-add-buton {
+            padding: 0 12px;
+          }
+        }
+      }
+    }
+    tr.checkbox{
+      height: 56px;
+    }
+    .overflow-hidden{
+      overflow: hidden;
+    }
+    .rightline{
+      border-right: 1px solid @divider;
+    }
+    .topline{
+      border-top: 1px solid @divider;
+    }
+    .tg-c{
+      text-align: center;
+    }
+    .pr-32{
+      padding-right: 32px;
+    }
+    .pr-148{
+      padding-right: 148px;
+    }
+    .pl-56{
+      padding-left: 56px;
+    }
+    .mr-8 {
+      margin-right: 8px;
+    }
+    .ant-checkbox-wrapper{
+      margin: 0;
+    }
+    .bg-thead {
+      .bg(@table-bg-color-thead);
+    }
+    .bg-row-odd {
+      .bg(@table-bg-color-row-1);
+    }
+    .bg-row-even {
+      .bg(@table-bg-color-row-2);
+    }
+    .border-bottom{
+      border-bottom: 1px solid @divider;
+    }
+  }
+}

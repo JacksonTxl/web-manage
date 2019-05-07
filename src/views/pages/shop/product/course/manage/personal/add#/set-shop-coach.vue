@@ -5,15 +5,8 @@
         <st-form-item label="私教课程">
           <a-input placeholder="课程名称" disabled v-decorator="ruleConfig.courseName"/>
         </st-form-item>
-        <st-form-item label="上课门店" required>
-          <a-radio-group @change="onChange" v-decorator="ruleConfig.shopSetting">
-            <a-radio v-for="(item, index) in personalCourseEnums.shop_setting.value" :key="index"
-              :value="index">{{item}}</a-radio>
-          </a-radio-group>
-          <div class="page-shop-coach-container-shop mg-t8" v-if="isShow">
-            <select-shop @change="onSelectShopChange"></select-shop>
-            <input type="hidden" v-decorator="ruleConfig.shopIds">
-          </div>
+        <st-form-item label="上课门店">
+          <span>某某上课门店</span>
         </st-form-item>
       </a-col>
     </a-row>
@@ -22,7 +15,7 @@
         <st-form-item label="上课教练">
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="ruleConfig.coachIds">
-            <select-coach @change="onSelectCoachChange"></select-coach>
+            <select-coach :shopIds="shopIds" @change="onSelectCoachChange"></select-coach>
           </div>
         </st-form-item>
       </a-col>
@@ -39,28 +32,9 @@
 <script>
 import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
-import SelectShop from '@/views/fragments/shop/select-shop'
 import SelectCoach from '@/views/fragments/coach/select-coach'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
-
-const shopTableColumns = [{
-  title: '省',
-  dataIndex: 'province_name'
-}, {
-  title: '市',
-  dataIndex: 'city_name'
-}, {
-  title: '区',
-  dataIndex: 'district_name'
-}, {
-  title: '门店名称',
-  dataIndex: 'shop_name'
-}, {
-  title: '操作',
-  dataIndex: 'operation',
-  scopedSlots: { customRender: 'operation' }
-}]
 
 export default {
   name: 'SetShopCoach',
@@ -80,7 +54,6 @@ export default {
     }
   },
   components: {
-    SelectShop,
     SelectCoach
   },
   props: {
@@ -108,8 +81,6 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      ruleConfig,
-      isShow: false,
       shopIds: []
     }
   },
@@ -126,16 +97,6 @@ export default {
           })
           this.$emit('goNext')
         })
-      })
-    },
-    onChange(e) {
-      console.log(typeof e.target.value)
-      e.target.value === '2' ? this.isShow = true : this.isShow = false
-    },
-    onSelectShopChange(shopIds) {
-      console.log('your selected', shopIds)
-      this.form.setFieldsValue({
-        shop_ids: shopIds
       })
     },
     onSelectCoachChange(coachIds) {
