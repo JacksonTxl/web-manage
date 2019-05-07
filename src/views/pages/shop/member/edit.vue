@@ -39,16 +39,12 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="国籍">
             <a-select placeholder="请选择" v-decorator="rules.country_id">
-              <a-select-option :value="0">未选择</a-select-option>
-              <a-select-option :value="2">男</a-select-option>
-              <a-select-option :value="1">女</a-select-option>
+              <a-select-option v-for="(item, index) in countryInfo" :key="index" :value="item.id">{{item.name}}</a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item label="民族">
             <a-select placeholder="请选择" v-decorator="rules.nation">
-              <a-select-option :value="0">未选择</a-select-option>
-              <a-select-option :value="2">男</a-select-option>
-              <a-select-option :value="1">女</a-select-option>
+              <a-select-option v-for="(item, index) in nations" :key="index" :value="item.id">{{item.name}}</a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item label="学历">
@@ -80,7 +76,7 @@
             <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.mobile"/>
           </st-form-item>
           <st-form-item label="微信号" >
-            <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.wechat"/>
+            <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.wechat" :disabled="true"/>
           </st-form-item>
         </a-col>
         <a-col :lg="10" :xs="22" :offset="1">
@@ -118,15 +114,16 @@ export default {
   rxState() {
     return {
       info: this.editService.info$,
-      staffEnums: this.userService.staffEnums$
+      staffEnums: this.userService.staffEnums$,
+      countryInfo: this.editService.countryInfo$,
+      nations: this.editService.nations$
     }
   },
   data() {
     return {
       form: this.$form.createForm(this),
       dateinit: '',
-      rules: {
-        member_name: ['member_name'],
+      rules: { member_name: ['member_name', { rules: [{ required: true, message: '请输入姓名' }] }],
         sex: ['sex'],
         country_id: ['country_id'],
         nation: ['nation'],
@@ -141,7 +138,7 @@ export default {
         has_children: ['has_children'],
         fitness_level: ['fitness_level'],
         email: ['email'],
-        mobile: ['mobile'],
+        mobile: ['mobile', { rules: [{ required: true, message: '请输入手机号' }] }],
         wechat: ['wechat'],
         cascader: ['cascader']
 
@@ -166,12 +163,10 @@ export default {
           values.birthday = values.birthday
             ? values.birthday.format('YYYY-MM-DD')
             : ''
-          values.id = this.id
-          values.province_id = values.cascader[0]
-          values.city_id = values.cascader[1]
-          values.district_id = values.cascader[2]
+          values.province_id = values.cascader[0] || 110000
+          values.city_id = values.cascader[1] || 110100
+          values.district_id = values.cascader[2] || 110101
           delete values.cascader
-          console.log('==============', values)
         }
         this.editService.updateMemberEdit(this.id, values).subscribe(res => {
           console.log('12333333333333')
@@ -179,7 +174,7 @@ export default {
       })
     },
     setEditInfo(obj) {
-      console.log('=========', obj)
+      console.log('======', obj)
       this.form.setFieldsValue({
         member_name: obj.member_name,
         sex: obj.sex - 0,
@@ -197,12 +192,14 @@ export default {
         fitness_level: obj.fitness_level,
         email: obj.email,
         mobile: obj.mobile,
-        wechat: obj.wechat
+        wechat: obj.wechat,
+        cascader: [obj.province_id, obj.city_id, obj.district_id]
       })
       this.id = obj.id
     }
   },
   mounted() {
+    // console.log('========',this.countryInfo,this.nations)
     this.options = JSON.parse(window.localStorage.getItem('regionTree'))
     this.setEditInfo(this.info)
   }
