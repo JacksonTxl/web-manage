@@ -78,6 +78,11 @@ export interface SetMemberLabel {
   // 标签名
   tag_name: string
 }
+export interface SetMemberLabelCreate {
+  // 标签名
+  id: Array<Number>
+  tag_id: Number
+}
 
 export class MemberAPi extends Api {
   /**
@@ -114,7 +119,12 @@ export class MemberAPi extends Api {
   setMemberLabel(params: SetMemberLabel) {
     return this.http.post(`/v1/member/label`, { params })
   }
-
+  /**
+   * 用户添加标签
+   */
+  setMemberLabelCreate(params: SetMemberLabelCreate) {
+    return this.http.post(`/v1/member/label/create`, { params })
+  }
   /**
    * 国籍
    */

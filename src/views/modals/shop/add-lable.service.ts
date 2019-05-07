@@ -15,4 +15,7 @@ export class AddLableService extends Store<CardsTableModelState> {
   getMemberLableList() {
     return this.cardsApi.getMemberLableList()
   }
+  setMemberLabelCreate(data: any) {
+    return this.cardsApi.setMemberLabelCreate(data)
+  }
 }

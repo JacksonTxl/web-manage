@@ -84,8 +84,19 @@ export default {
       })
     },
     save(e) {
+      let self = this
       e.preventDefault()
-      this.show = false
+
+      let data = {
+        id: [],
+        tag_id: self.selectLable
+      }
+      self.selectedRowData.map(item => {
+        data.id.push(item.id)
+      })
+      self.Service.setMemberLabelCreate(data).subscribe(state => {
+        self.show = false
+      })
     },
     addLable() {
       this.flag = false
