@@ -1,12 +1,20 @@
 <template>
   <st-modal title="绑定实体卡" @ok="save" v-model="show" size="small">
-    <section>content</section>
     <section>
-      <!-- <footer class="footer">
-        <a-button class="cancel" @click="show=false">取消</a-button>
-        <a-button type="danger">确认停售</a-button>
-      </footer>-->
+      <st-form :form="form" @submit="save" labelWidth="55px">
+        <st-info>
+          <st-info-item label="姓名">孙乐乐</st-info-item>
+          <st-info-item label="手机号">12345678901</st-info-item>
+        </st-info>
+        <st-form-item label="实体卡号" placeholder="输入实体卡号">
+          <a-input/>
+        </st-form-item>
+        <st-form-item label="物理ID" placeholder="请将实体卡置于读卡器上">
+          <a-input/>
+        </st-form-item>
+      </st-form>
     </section>
+    <section></section>
   </st-modal>
 </template>
 <script>
@@ -15,7 +23,8 @@ export default {
   props: {},
   data() {
     return {
-      show: false
+      show: false,
+      form: {}
     }
   },
   created() {},
