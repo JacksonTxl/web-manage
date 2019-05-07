@@ -3,8 +3,8 @@
     <st-form :form="form" @submit="save" class="page-add-container">
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="姓名" >
-            <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.member_name"/>
+          <st-form-item label="姓名" required>
+            <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.member_name" />
           </st-form-item>
           <st-form-item label="性别">
             <a-select placeholder="请选择" v-decorator="rules.sex">
@@ -76,7 +76,7 @@
 
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="手机号" >
+          <st-form-item label="手机号" required>
             <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.mobile"/>
           </st-form-item>
           <st-form-item label="微信号" >
@@ -88,7 +88,7 @@
             <a-input placeholder="支持中英文、数字,不超过10个字"  v-decorator="rules.email"/>
           </st-form-item>
           <st-form-item label="家庭住址" >
-            <a-cascader :options="options" @change="onChange" placeholder="请选择省/市/区/县"/>
+            <a-cascader :options="options" v-decorator="rules.cascader" :fieldNames="fieldNames" @change="onChange" placeholder="请选择省/市/区/县"/>
           </st-form-item>
         </a-col>
       </a-row>
@@ -111,8 +111,8 @@ export default {
   serviceInject() {
     return {
       editService: EditService,
-      userService: UserService
-      // regionService: RegionService
+      userService: UserService,
+      regionService: RegionService
     }
   },
   rxState() {
@@ -142,80 +142,12 @@ export default {
         fitness_level: ['fitness_level'],
         email: ['email'],
         mobile: ['mobile'],
-        wechat: ['wechat']
+        wechat: ['wechat'],
+        cascader: ['cascader']
+
       },
-      options: [
-        {
-          value: 'zhejiang',
-          label: 'Zhejiang',
-          children: [
-            {
-              value: 'hangzhou',
-              label: 'Hangzhou',
-              children: [
-                {
-                  value: 'xihu',
-                  label: 'West Lake'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: 'jiangsu',
-          label: 'Jiangsu',
-          children: [
-            {
-              value: 'nanjing',
-              label: 'Nanjing',
-              children: [
-                {
-                  value: 'zhonghuamen',
-                  label: 'Zhong Hua Men'
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      educationList: [
-        {
-          value: 0,
-          cont: '未填写'
-        },
-        {
-          value: 1,
-          cont: '小学'
-        },
-        {
-          value: 2,
-          cont: '初中'
-        },
-        {
-          value: 3,
-          cont: '高中'
-        },
-        {
-          value: 4,
-          cont: '中专'
-        },
-        {
-          value: 5,
-          cont: '大专'
-        },
-        {
-          value: 6,
-          cont: '本科'
-        },
-        {
-          value: 7,
-          cont: '硕士'
-        },
-        {
-          value: 8,
-          cont: '博士'
-        }
-      ]
+      options: [],
+      fieldNames: { label: 'name', value: 'id', children: 'children' }
     }
   },
   methods: {
@@ -234,8 +166,11 @@ export default {
           values.birthday = values.birthday
             ? values.birthday.format('YYYY-MM-DD')
             : ''
-
           values.id = this.id
+          values.province_id = values.cascader[0]
+          values.city_id = values.cascader[1]
+          values.district_id = values.cascader[2]
+          delete values.cascader
           console.log('==============', values)
         }
         this.editService.updateMemberEdit(this.id, values).subscribe(res => {
@@ -268,9 +203,7 @@ export default {
     }
   },
   mounted() {
-    // console.log('=====',this.staffEnums)
-    // this.options = window.localStorage.getItem('regionTree')
-    // console.log(this.options)
+    this.options = JSON.parse(window.localStorage.getItem('regionTree'))
     this.setEditInfo(this.info)
   }
 }
