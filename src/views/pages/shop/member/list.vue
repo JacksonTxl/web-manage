@@ -51,11 +51,16 @@
         <modal-link tag="a" :to=" { name: 'shop-add-user'}">添加用户</modal-link>
       </st-button>
       <st-button class="shop-member-list-button">导入用户</st-button>
-      <st-button class="shop-member-list-button">
+      <st-button
+        class="shop-member-list-button"
+        :disabled="selectedRowData.length > 0 ? false :true"
+      >
         <modal-link
+          v-if="selectedRowData.length > 0"
           tag="a"
           :to=" { name: 'shop-add-lable',props:{selectedRowData:selectedRowData}}"
         >加标签</modal-link>
+        <span v-else>加标签</span>
       </st-button>
       <a-popover placement="bottom">
         <template slot="content">
