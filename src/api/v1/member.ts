@@ -83,12 +83,14 @@ export class MemberAPi extends Api {
   /**
    * 用户编辑回显
    */
+
   getMemberEdit(id: number) {
     return this.http.get(`/v1/member/info/${id}`)
   }
   /**
    * 提交用户信息编辑
    */
+
   updateMemberEdit(id: string, params: UpdateMemberEdit) {
     return this.http.put(`/v1/member/${id}`, { params })
   }
@@ -111,5 +113,18 @@ export class MemberAPi extends Api {
    */
   setMemberLabel(params: SetMemberLabel) {
     return this.http.post(`/v1/member/label`, { params })
+  }
+
+  /**
+   * 国籍
+   */
+  getCountries() {
+    return this.http.get(`/countries`)
+  }
+  /**
+   * 民族
+   */
+  getNations() {
+    return this.http.get(`/nations`)
   }
 }

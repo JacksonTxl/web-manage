@@ -6,7 +6,7 @@
         'st-panel--initial':initial
     }]"
   >
-    <div v-if="title || $slots.actions || $slots.title" class="st-panel__header">
+    <div v-if="tabs || title || $slots.actions || $slots.title" class="st-panel__header">
       <st-route-tabs v-if="tabs" @change="onChange" :options="tabs">
         <slot name="actions" slot="actions"></slot>
       </st-route-tabs>
