@@ -23,6 +23,11 @@
         <router-link class="mg-l8" to="/brand/setting/app/skillful/list">擅长项目</router-link>
         <router-link class="mg-l8" to="/brand/setting/app/training/list">训练目的</router-link>
       </p>
+      <p class="mg-t8">
+        <modal-link tag="a" :to="{ name:'brand-setting-team-order' }">团体课程预约设置</modal-link>
+        <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-personal-order' }">私教课课程预约设置</modal-link>
+        <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-personal-price-model' }">私教课程定价设置</modal-link>
+      </p>
       <p>
         <a-input-search v-model="query.keyword"/>
         <st-button class="mg-t16" @click="onSearch">search</st-button>
@@ -30,8 +35,8 @@
       <st-form-table hoverable>
         <thead>
           <tr>
-            <th>标题1</th>
-            <th>标题2</th>
+            <th>标题1<st-help-tooltip :id="1"/></th>
+            <th>标题2<st-help-tooltip :id="2"/></th>
             <th>标题3</th>
           </tr>
         </thead>
@@ -48,8 +53,8 @@
           </tr>
         </tbody>
       </st-form-table>
-      <p class="mg-t24">
-        <st-help-tooltip :id="1"/>
+      <p class="mg-t24 st-des">
+       文字
       </p>
     </st-panel>
     <switch-shop v-if="isShowSwitchShop" @onClose="onCloseSwitchShop"></switch-shop>

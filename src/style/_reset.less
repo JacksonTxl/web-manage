@@ -13,3 +13,21 @@ li {
 body {
   min-width: 1440px;
 }
+
+// 课程包dropdown组件样式
+.personal-course-coach-grade-dropdown{
+  position: relative;
+  width:111px;
+  max-height:161px;
+  padding: 8px 0;
+  background:@white;
+  box-shadow:0px 2px 8px 0px rgba(0,0,0,0.15);
+  border-radius: 4px;
+  li{
+    padding: 8px 12px;
+    &:hover{
+      .bg(@dropdown-hover-bg-color);
+      .c(@primary-color);
+    }
+  }
+}
