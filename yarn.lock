@@ -1506,6 +1506,11 @@
   resolved "https://registry.npm.taobao.org/@fullcalendar/interaction/download/@fullcalendar/interaction-4.1.0.tgz#5d0c4c2c407934ff8bd45071ff76fb6736937da3"
   integrity sha1-XQxMLEB5NP+L1FBx/3b7ZzaTfaM=
 
+"@fullcalendar/list@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.npm.taobao.org/@fullcalendar/list/download/@fullcalendar/list-4.1.0.tgz#290274fc4e4616bea9238a31f49f53e295d11d3f"
+  integrity sha1-KQJ0/E5GFr6pI4ox9J9T4pXRHT8=
+
 "@fullcalendar/timegrid@^4.1.0":
   version "4.1.0"
   resolved "https://registry.npm.taobao.org/@fullcalendar/timegrid/download/@fullcalendar/timegrid-4.1.0.tgz#6e825f0cab79d81875a73fbb563cc69844ff0ecf"

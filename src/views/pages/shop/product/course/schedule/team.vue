@@ -1,24 +1,20 @@
 <template>
-  <div class='demo-app'>
-    <div class='demo-app-top'>
-      <button @click="toggleWeekends">toggle weekends</button>
-      <button @click="gotoPast">go to a date in the past</button>
-      (also, click a date/time to add an event)
-    </div>
+  <div class='page-team-personal'>
     <FullCalendar
-      class='demo-app-calendar'
+      class='page-team-personal__calendar'
       ref="fullCalendar"
-      defaultView="timeGridWeek"
-      :header="{
-        left: 'prev,next today',
-        center: 'title',
-        right: 'timeGridWeek,timeGridDay,listWeek'
-      }"
+      :defaultView="defaultView"
+      :header="header"
       @eventPositioned='onEventPositioned'
       :plugins="calendarPlugins"
       minTime="11:11:00"
-      maxTime="15:30:00"
+      :columnHeaderFormat="columnHeaderFormat"
+      locale="zh-cn"
+      :views="views"
+      maxTime="16:30:00"
       :weekends="calendarWeekends"
+      :customButtons="customButtons"
+      :slotLabelFormat="slotLabelFormat"
       eventBackgroundColor="#fff"
       @eventClick="onEventClick"
       @eventMouseEnter='onEventMouseEnter'
@@ -35,20 +31,85 @@
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
+import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
 
 export default {
+  name: 'ScheduleTeam',
   components: {
     FullCalendar // make the <FullCalendar> tag available
   },
-  data: function() {
+  data() {
+    console.log('this', this)
+    const that = this
     return {
+      columnHeaderFormat: { weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true },
+      slotLabelFormat: {
+        hour: '2-digit',
+        minute: '2-digit',
+        omitZeroMinute: false,
+        hour12: false
+      },
+      defaultView: 'timeGridWeek',
+      views: {
+        timeGridWeek: { buttonText: '周' },
+        timeGridDay: { buttonText: '日' }
+      },
+      header: {
+        left: 'custom1, custom2',
+        center: 'prev,next,title',
+        right: 'timeGridWeek,timeGridDay, custom3,custom4'
+      },
       calendarPlugins: [ // plugins must be defined in the JS
+        listPlugin,
         dayGridPlugin,
         timeGridPlugin,
         interactionPlugin // needed for dateClick
       ],
+      customButtons: {
+        custom1: {
+          text: '批量排期',
+          click: function() {
+            alert('clicked custom button 1!')
+          }
+        },
+        custom2: {
+          text: '复制排期',
+          click: function() {
+            alert('clicked custom button 2!')
+          }
+        },
+        custom3: {
+          text: '日历',
+          click: () => {
+            that.defaultView = 'timeGridWeek'
+            that.views = {
+              timeGridWeek: { buttonText: '周' },
+              timeGridDay: { buttonText: '日' }
+            }
+            that.$set(that.header, 'right', 'timeGridWeek,timeGridDay, custom3,custom4')
+            that.$nextTick().then(() => {
+              $('.fc-timeGridWeek-button').click()
+            })
+          }
+        },
+        custom4: {
+          text: '列表',
+          click() {
+            that.defaultView = 'listWeek'
+            that.views = {
+              listDay: { buttonText: '日' },
+              listWeek: { buttonText: '周' }
+            }
+            that.$set(that.header, 'right', 'listWeek,listDay, custom3,custom4')
+            that.$nextTick().then(() => {
+              $('.fc-listWeek-button').click()
+            })
+          }
+        }
+      },
       calendarWeekends: true,
       calendarEvents: [ // initial event data
         { title: 'Event Now', start: new Date() }
@@ -60,6 +121,7 @@ export default {
   },
   mounted() {
     this.setAddButton()
+    this.gotoPast()
   },
   methods: {
     setAddButton() {
@@ -105,7 +167,15 @@ export default {
     },
     gotoPast() {
       let calendarApi = this.$refs.fullCalendar.getApi() // from the ref="..."
-      calendarApi.gotoDate('2000-01-01') // call a method on the Calendar object
+      // calendarApi.gotoDate('2000-01-01') // call a method on the Calendar object
+      // this.$nextTick().then(()=>{
+      //   this.$refs.fullCalendar.setOption('locale', 'zh-cn')
+      //   this.$refs.fullCalendar.setOption('view', {
+      //     timeGridWeek:{ buttonText: '周' },
+      //     timeGridDay: { buttonText: '天' },
+      //     listWeek: { buttonText: '三' }
+      //   })
+      // })
     },
     onEventMouseEnter(e) {
       console.log('onEventMouseEnter', e)
