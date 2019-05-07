@@ -1,16 +1,27 @@
 <template>
   <st-modal :title="`给选中的${selectedRowData.length}个人添加标签`" @ok="save" v-model="show" width="328px">
     <section>
-      <a-select defaultValue="lucy" style="width: 100%">
+      <a-select
+        v-model="selectLable"
+        style="width: 100%"
+        :open="flag"
+        @mouseenter="focusFunc"
+        @change="changeFunc"
+      >
         <div slot="dropdownRender" slot-scope="menu">
           <v-nodes :vnodes="menu"/>
           <a-divider style="margin: 4px 0;"/>
           <div style="padding: 8px; cursor: pointer;" @click="addLable">
-            <a-icon type="plus"/>标签
+            <modal-link
+              tag="a"
+              :to=" { name: 'shop-new-lable',on:{done: onModalTest }}"
+              @click="addLable"
+            >
+              <a-icon type="plus"/>标签
+            </modal-link>
           </div>
         </div>
-        <a-select-option value="jack">Jack</a-select-option>
-        <a-select-option value="lucy">Lucy</a-select-option>
+        <a-select-option v-for="item in lableList" :value="item.id" :key="item.id">{{item.tag_name}}</a-select-option>
       </a-select>
     </section>
     <section>
@@ -22,14 +33,20 @@
   </st-modal>
 </template>
 <script>
+import { AddLableService } from './add-lable.service'
 export default {
+  serviceInject() {
+    return {
+      Service: AddLableService
+    }
+  },
   components: {
     VNodes: {
       functional: true,
       render: (h, ctx) => ctx.props.vnodes
     }
   },
-  name: 'addLable',
+  name: 'newLable',
   props: {
     selectedRowData: {
       type: Array
@@ -37,17 +54,41 @@ export default {
   },
   data() {
     return {
-      show: false
+      show: false,
+      lableList: [],
+      selectLable: '',
+      flag: false
     }
   },
-  created() {},
+  created() {
+    let self = this
+    this.getLableList()
+  },
   methods: {
+    onModalTest() {
+      this.getLableList()
+    },
+    changeFunc() {
+      this.flag = false
+    },
+    blurFunc() {
+      this.flag = false
+    },
+    focusFunc() {
+      this.flag = true
+    },
+    getLableList() {
+      let self = this
+      self.Service.getMemberLableList().subscribe(state => {
+        self.lableList = state.list
+      })
+    },
     save(e) {
       e.preventDefault()
-      console.log(e)
+      this.show = false
     },
     addLable() {
-      console.log('标签')
+      this.flag = false
     }
   },
   watch: {}
