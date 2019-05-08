@@ -9,7 +9,7 @@
           <st-form-item label="姓名" required>
             <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.member_name"/>
           </st-form-item>
-          {{ countryList }}
+          <!-- {{ countryList }} -->
           <st-form-item label="手机号" required>
             <a-input-group compact>
               <a-select style="width: 15%;" v-decorator="rules.country_prefix">
@@ -236,37 +236,15 @@ export default {
         tip1: '请输入身份证号码',
         tip2: '请输入护照号码'
       }
-      e === 1 ? (this.dateinit = tip1) : (this.dateinit = tip2)
+      e === 1 ? this.dateinit = tip1 : this.dateinit = tip2
     },
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(res => {
-        console.log('================================', res)
+        this.addService.addUser(res).subscribe(() => {
+          console.log('ok')
+        })
       })
-      // this.form.validateFields((err, values) => {
-      //   if (!err) {
-      //     //   console.log('=============',this.form.getFieldsValue())
-      //     //     //   console.log(values)
-      //     //   return
-      //       let params = this.filterSubmit(values)
-      //       console.log(params)
-      //       this.addService.addUser(params).subscribe(() => {
-      //           console.log('ok')
-      //       })
-      //   }
-      // })
-    },
-    filterSubmit(obj) {
-      console.log(obj)
-      delete obj.md
-      let newArr = Object.keys(obj).filter((item, index) => {
-        return typeof obj[item] !== 'undefined'
-      })
-      let newObj = {}
-      newArr.forEach(item => {
-        newObj[item] = obj[item]
-      })
-      return newObj
     }
   },
   mounted() {
