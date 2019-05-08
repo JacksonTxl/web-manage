@@ -12,7 +12,7 @@ export class BindingEntityCardService extends Store<CardsTableModelState> {
   constructor(private cardsApi: MemberAPi) {
     super()
   }
-  getMemberLableList(id: string, params: any) {
+  getMemberCard(id: string, params: any) {
     return this.cardsApi.getMemberCard(id, params)
   }
 }

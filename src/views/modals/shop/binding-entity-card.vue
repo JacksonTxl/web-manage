@@ -49,11 +49,9 @@ export default {
     },
     getLableList() {
       let self = this
-      self.Service.getMemberLableList(self.record.id, self.form).subscribe(
-        state => {
-          self.lableList = state.list
-        }
-      )
+      self.Service.getMemberCard(self.record.id, self.form).subscribe(state => {
+        self.show = false
+      })
     }
   },
   watch: {}

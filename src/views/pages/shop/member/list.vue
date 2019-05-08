@@ -85,7 +85,9 @@
         :dataSource="tableData"
         :pagination="pagination"
       >
-        <div slot="action" slot-scope="text">{{text}}</div>
+        <div slot="member_name" slot-scope="text,record">
+          <a href="javascript:;" @click="infoFunc(record)">{{text}}</a>
+        </div>
         <div slot="action" slot-scope="record">
           <a href="javascript:;" @click="infoFunc(record)">详情</a>
           <a-divider type="vertical"></a-divider>
@@ -165,7 +167,11 @@ export default {
       selectedRowData: [],
       columns: [
         { title: '人脸', dataIndex: 'id' },
-        { title: '姓名', dataIndex: 'member_name' },
+        {
+          title: '姓名',
+          dataIndex: 'member_name',
+          scopedSlots: { customRender: 'member_name' }
+        },
         { title: '手机号', dataIndex: 'mobile' },
         {
           title: '用户等级',
