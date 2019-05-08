@@ -26,10 +26,6 @@ export const columns = [
     dataIndex: 'price'
   },
   {
-    title: '状态',
-    dataIndex: 'is_available'
-  },
-  {
     title: '操作',
     dataIndex: 'action',
     fixed: 'right',

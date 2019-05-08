@@ -1,4 +1,5 @@
 import { Api } from '@/api/api'
+import { remove } from 'lodash-es'
 
 export interface UpdateMemberEdit {
   /**
@@ -203,5 +204,11 @@ export class MemberAPi extends Api {
    */
   getMemberCard(id: string, params: any) {
     return this.http.put(`/v1/member/card/${id}`, { params })
+  }
+  /**
+   * 解除微信绑定
+   */
+  removeWechatBind(id: number) {
+    return this.http.put(`/v1/member/wechat/remove/${id}`)
   }
 }

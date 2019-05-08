@@ -24,7 +24,7 @@ export default {
     return {
       tabs: [
         { label: '团操课', route: { name: 'shop-product-course-schedule-team' } },
-        { label: '私交1v1', route: { name: 'shop-product-course-schedule-personal' } },
+        { label: '私教课1v1', route: { name: 'shop-product-course-schedule-personal' } },
         { label: '私教小团课', route: { name: 'shop-product-course-schedule-personal-team' } }
       ]
     }

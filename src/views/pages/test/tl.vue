@@ -24,8 +24,8 @@
         <router-link class="mg-l8" to="/brand/setting/app/training/list">训练目的</router-link>
       </p>
       <p class="mg-t8">
-        <modal-link tag="a" :to="{ name:'brand-setting-team-order' }">团体课程预约设置</modal-link>
-        <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-personal-order' }">私教课课程预约设置</modal-link>
+        <modal-link tag="a" :to="{ name:'brand-setting-team-reserve' }">团体课程预约设置</modal-link>
+        <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-personal-reserve' }">私教课课程预约设置</modal-link>
         <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-personal-price-model' }">私教课程定价设置</modal-link>
       </p>
       <p>
