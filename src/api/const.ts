@@ -11,7 +11,7 @@ export class ConstApi extends Api {
    * 帮助信息 tooltip
    */
   getToolTip(id: GetToolTipInput) {
-    return this.http.get(`/const/tool_tip/${id}`)
+    return this.http.get(`/const/tooltip/${id}`)
   }
 }
 

@@ -79,59 +79,59 @@ export interface SetMemberLabel {
   tag_name: string
 }
 
-export interface AddUserParams{
+export interface AddUserParams {
   /**
    * 姓名
    */
-  member_name: string;
+  member_name: string
   /**
    * 手机号
    */
-  mobile: string;
+  mobile: string
   /**
    * 来源渠道
    */
-  register_type: number;
+  register_type: number
   /**
    * 来源方式
    */
-  register_way: number;
+  register_way: number
   /**
    * 性别
    */
-  sex? : number;
+  sex?: number
   /**
    * 职业
    */
-  jobs? : string;
+  jobs?: string
   /**
    * 收入水平
    */
-  income_level? : string;
+  income_level?: string
   /**
    * 证件类型
    */
-  id_card_type? : number;
+  id_card_type?: number
   /**
    * 证件号
    */
-  id_card? : string;
+  id_card?: string
   /**
    * 身高
    */
-  height? : string;
+  height?: string
   /**
    * 体重
    */
-  weight? : string;
+  weight?: string
   /**
    * 健身目标
    */
-  fitness_goal? : string;
+  fitness_goal?: string
   /**
    * 健身等级
    */
-  fitness_level? : number;
+  fitness_level?: number
 }
 export interface SetMemberLabelCreate {
   // 标签名
@@ -187,8 +187,8 @@ export class MemberAPi extends Api {
     return this.http.post(`/v1/member`, { params })
   }
   /**
-     * 国籍
-     */
+   * 国籍
+   */
   getCountries() {
     return this.http.get(`/countries`)
   }
@@ -197,5 +197,11 @@ export class MemberAPi extends Api {
    */
   getNations() {
     return this.http.get(`/nations`)
+  }
+  /**
+   * 绑定实体卡 v1/member/card/会员ID
+   */
+  getMemberCard(id: string, params: any) {
+    return this.http.put(`/v1/member/card/${id}`, { params })
   }
 }

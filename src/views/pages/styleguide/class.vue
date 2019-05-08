@@ -38,7 +38,10 @@
         <span class="color-title">.color-title</span>
         <span class="color-text mg-l16">.color-text</span>
         <span class="color-text-light mg-l16">.color-text-light</span>
+        <span class="st-des mg-l16">.st-des</span>
         <div class="sg-box bordered color-title">.bordered</div>
+        <st-container type="2" class="bg-gray">bg-gray</st-container>
+        <div class="st-des mg-t8">st-des 这里是一段描述文案这里是一段描述文案这里是一段描述文案这里是一段描述文案</div>
       </st-container>
     </section>
 
