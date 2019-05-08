@@ -1,5 +1,5 @@
 <template>
-  <a-input type="text" :value="number" @change="numberChange" :disabled="disabled" maxlength="12">
+  <a-input :placeholder="placeholder" type="text" :value="number" @change="numberChange" :disabled="disabled" maxlength="12">
     <template slot="addonAfter">
       <slot name="addonAfter"></slot>
     </template>
@@ -19,6 +19,12 @@ export default {
     input: 'st-input-number'
   },
   props: {
+    placeholder: {
+      type: String,
+      default() {
+        return ''
+      }
+    },
     min: {
       type: Number,
       default() {

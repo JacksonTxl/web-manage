@@ -1,28 +1,85 @@
 <template>
   <st-modal title="绑定实体卡" @ok="save" v-model="show" size="small">
-    <section>content</section>
     <section>
-      <!-- <footer class="footer">
-        <a-button class="cancel" @click="show=false">取消</a-button>
-        <a-button type="danger">确认停售</a-button>
-      </footer>-->
+      <st-form :form="form" @submit="save" labelWidth="55px">
+        <st-info>
+          <st-info-item label="姓名">{{record.member_name}}</st-info-item>
+          <st-info-item label="手机号">{{record.mobile}}</st-info-item>
+        </st-info>
+        <st-form-item label="实体卡号" required>
+          <a-input placeholder="输入实体卡号" v-decorator="basicInfoRuleList.physical_id"/>
+        </st-form-item>
+        <st-form-item label="物理ID" required>
+          <a-input placeholder="请将实体卡置于读卡器上" v-decorator="basicInfoRuleList.card_num"/>
+        </st-form-item>
+      </st-form>
     </section>
+    <section></section>
   </st-modal>
 </template>
 <script>
+import { BindingEntityCardService } from './binding-entity-card.service'
 export default {
+  serviceInject() {
+    return {
+      Service: BindingEntityCardService
+    }
+  },
   name: 'bindingEntityCard',
-  props: {},
+  props: {
+    record: {
+      type: Object
+    }
+  },
   data() {
     return {
-      show: false
+      show: false,
+      form: this.$form.createForm(this),
+      basicInfoRuleList: {
+        // 实体卡
+        physical_id: [
+          'physical_id',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请输入正确的实体卡号',
+                pattern: /\d$/
+              }
+            ]
+          }
+        ],
+        // 物理ID
+        card_num: [
+          'card_num',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请输入正确的物理ID',
+                pattern: /\d$/
+              }
+            ]
+          }
+        ]
+      }
     }
   },
   created() {},
   methods: {
     save(e) {
       e.preventDefault()
-      console.log(e)
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          this.getLableList(values)
+        }
+      })
+    },
+    getLableList(data) {
+      let self = this
+      self.Service.getMemberCard(self.record.id, data).subscribe(state => {
+        self.show = false
+      })
     }
   },
   watch: {}

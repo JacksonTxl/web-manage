@@ -6,6 +6,7 @@
         style="width: 100%"
         :open="flag"
         @mouseenter="focusFunc"
+        @blur="changeFunc"
         @change="changeFunc"
       >
         <div slot="dropdownRender" slot-scope="menu">

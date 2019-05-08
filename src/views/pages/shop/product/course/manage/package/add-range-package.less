@@ -3,7 +3,7 @@
     padding: 12px;
     border: 1px solid @border-color;
     border-radius: 4px;
-    .set-course-button{
+    .set-course-button:not(.hide){
       position: relative;
       &::after {
         content: '';
@@ -13,26 +13,44 @@
         top: 35px;
         right: 3px;
         transform: rotate(45deg);
-        .bg(linear-gradient(360deg,rgba(255,255,255,0) 0%,rgba(229,229,229,1) 100%););
+        .bg(linear-gradient(-45deg,rgba(255,255,255,0) 0%,rgba(229,229,229,1) 100%););
       }
     }
-    .icon-12{
-      .fz(12px);
-    }
-    .team-course-table {
-      padding: 24px;
-      box-shadow: 0px 17px 13px -16px #E5E5E5 inset;
-      .page-shop-add-range-package__team-course-table {
-        border: 1px solid @border-color;
-        border-radius: 4px;
-        overflow: hidden;
-        table{
-          width: 100%;
-          .th{
-            height: 48px;
-          }
-          .team-course-add-buton {
-            padding: 0 12px;
+    .team-course-list-content{
+      .team-course-table {
+        padding: 24px;
+        box-shadow: 0px 17px 13px -16px #E5E5E5 inset;
+        .page-shop-add-range-package__team-course-table {
+          border: 1px solid @border-color;
+          border-radius: 4px;
+          overflow: hidden;
+          table{
+            width: 100%;
+            .th{
+              height: 48px;
+            }
+            .team-course-add-buton {
+              padding: 0 12px;
+            }
+            .team-course-content-table{
+              position: relative;
+              max-height: 279px;
+              >li {
+                display: flex;
+                align-items: center;
+                >div{
+                  &:nth-of-type(1){
+                    width: 5%;
+                  }
+                  &:nth-of-type(2){
+                    width: 81%;
+                  }
+                  &:nth-of-type(3){
+                    width: 14%;
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -40,7 +58,7 @@
     .personal-course-table {
       padding: 24px;
       box-shadow: 0px 17px 13px -16px #E5E5E5 inset;
-      .page-shop-add-range-package__team-course-table {
+      .page-shop-add-range-package__personal-course-table {
         border: 1px solid @border-color;
         border-radius: 4px;
         overflow: hidden;
@@ -49,13 +67,41 @@
           .th{
             height: 48px;
           }
-          .team-course-add-buton {
+          .personal-course-add-buton {
             padding: 0 12px;
+          }
+          .personal-course-content-table{
+            position: relative;
+            max-height: 279px;
+            >li {
+              display: flex;
+              align-items: center;
+              >div{
+                &:nth-of-type(1){
+                  width: 5%;
+                }
+                &:nth-of-type(2){
+                  width: 29%;
+                }
+                &:nth-of-type(3){
+                  width: 34%;
+                }
+                &:nth-of-type(4){
+                  width: 16%;
+                }
+                &:nth-of-type(5){
+                  width: 16%;
+                }
+              }
+            }
           }
         }
       }
     }
-    tr.checkbox{
+    td{
+      padding: 0;
+    }
+    .checkbox{
       height: 56px;
     }
     .overflow-hidden{
@@ -96,6 +142,9 @@
     }
     .border-bottom{
       border-bottom: 1px solid @divider;
+    }
+    .icon-12{
+      .fz(12px);
     }
   }
 }
