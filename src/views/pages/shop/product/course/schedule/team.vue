@@ -23,7 +23,6 @@
       :events="calendarEvents"
       @dateClick="handleDateClick"
       />
-      <div class="add-button">添加排期</div>
   </div>
 </template>
 
@@ -190,8 +189,8 @@ export default {
       event.el.querySelector('.fc-title').remove()
       event.el.querySelector('.fc-time').remove()
       console.log('onEventRender')
-      this.start = moment(event.start).add(7 + Math.ceil(Math.random() * 10) * 10, 'm')
-      this.end = moment(event.start).add(37 + Math.ceil(Math.random() * 10) * 10, 'm')
+      this.start = event.start
+      this.end = event.end
       var new_description =
           this.start.format('HH:mm') + '-' +
           this.end.format('HH:mm') + '<br/>' +
@@ -215,7 +214,8 @@ export default {
           ok: res => {
             this.calendarEvents.push({ // add new event data
               title: 'New Event',
-              start: arg.date,
+              start: moment(arg.date),
+              end: moment(arg.date).add(60, 'm'),
               allDay: arg.allDay
             })
             console.log(res)

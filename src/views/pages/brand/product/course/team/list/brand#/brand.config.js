@@ -27,11 +27,6 @@ export const columns = [
     dataIndex: 'shop_setting'
   },
   {
-    title: '状态',
-    dataIndex: 'is_available',
-    scopedSlots: { customRender: 'is_available' }
-  },
-  {
     title: '操作',
     dataIndex: 'action',
     scopedSlots: { customRender: 'action' }

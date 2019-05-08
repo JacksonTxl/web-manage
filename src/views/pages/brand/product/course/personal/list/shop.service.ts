@@ -21,7 +21,7 @@ export class ShopService implements RouteGuard {
     return this.shopPersonalCourseApi.upgradePersonalCourseInBrand(res)
   }
   getCourseListInShop(params: any) {
-    return this.shopPersonalCourseApi.getCourseList(params).pipe(
+    return this.shopPersonalCourseApi.getCourseListInBrand(params).pipe(
       tap(state => {
         this.SET_PERSONAL_COURSE_LIST(state)
       })
