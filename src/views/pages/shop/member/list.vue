@@ -99,7 +99,10 @@
               <modal-link tag="a" :to=" { name: 'shop-distribution-ales'}">分配销售</modal-link>
             </a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'shop-binding-entity-card'}">绑实体卡</modal-link>
+              <modal-link
+                tag="a"
+                :to=" { name: 'shop-binding-entity-card', props:{record:record}}"
+              >绑实体卡</modal-link>
             </a-menu-item>
             <a-menu-item>
               <modal-link tag="a" :to=" { name: 'shop-missing-card'}">遗失补卡</modal-link>
