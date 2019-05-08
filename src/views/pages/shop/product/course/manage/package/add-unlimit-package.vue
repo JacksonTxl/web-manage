@@ -242,8 +242,8 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label=" ">
-          <st-button type="primary" class="mr-8" @click="save" :loading="addLoading.addPackage">保存</st-button>
-          <st-button>保存并上架</st-button>
+          <st-button type="primary" class="mr-8" @click="save" :loading="addLoading.add">保存</st-button>
+          <st-button @click="onsale" :loading="addLoading.addAndOnsale">保存并上架</st-button>
           </st-form-item>
         </a-col>
       </a-row>
@@ -365,8 +365,27 @@ export default {
           this.packageData.frozen_days = values.frozen_days
           this.packageData.transfer_rate = values.transfer_rate
           this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
-          this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 00:00:00`
-          this.addPackageService.addPackage(this.packageData).subscribe(res => {
+          this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
+          this.addPackageService.add(this.packageData).subscribe(res => {
+            console.log(res)
+          })
+        }
+      })
+    },
+    // 保存并上架
+    onsale() {
+      this.course_validator()
+      this.image_validator()
+      this.form.validateFieldsAndScroll((err, values) => {
+        if (!err && !this.courseIsNone && !this.imageIsNone) {
+          this.packageData.course_name = values.course_name
+          this.packageData.price = values.price
+          this.packageData.valid_time = values.valid_time
+          this.packageData.frozen_days = values.frozen_days
+          this.packageData.transfer_rate = values.transfer_rate
+          this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
+          this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
+          this.addPackageService.addAndOnsale(this.packageData).subscribe(res => {
             console.log(res)
           })
         }
