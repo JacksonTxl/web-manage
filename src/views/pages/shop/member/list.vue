@@ -113,7 +113,7 @@
             <a-menu-item>
               <modal-link tag="a" :to=" { name: 'shop-frozen'}">冻结用户</modal-link>
             </a-menu-item>
-            <a-menu-item>解除微信绑定</a-menu-item>
+            <a-menu-item @click="onRemoveBind(record)">解除微信绑定</a-menu-item>
           </st-more-dropdown>
         </div>
       </st-table>
@@ -193,6 +193,21 @@ export default {
     this.form = { ...this.$route.query }
   },
   methods: {
+    onRemoveBind(record) {
+      console.log(record)
+      let that = this
+      this.$confirm({
+        title: '提示信息',
+        content:
+          '确认解绑选中的会员关系？',
+        onOk() {
+          that.aService.removeWechatBind(record.id).subscribe(() => {
+            console.log('ok')
+          })
+        },
+        onCancel() {}
+      })
+    },
     edit(record) {
       this.$router.push({ name: 'shop-member-edit', query: { id: record.id } })
     },
