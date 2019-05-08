@@ -2,7 +2,7 @@
   <st-modal title="遗失补卡" @ok="save" v-model="show" size="small">
     <section>
       <section>
-        <st-form :form="form" @submit="save" labelWidth="70px">
+        <st-form :form="form" @submit="save" labelWidth="85px">
           <st-info>
             <st-info-item label="姓名">孙乐乐</st-info-item>
             <st-info-item label="手机号">12345678901</st-info-item>
@@ -24,7 +24,13 @@
           <st-form-item label="物理ID" required>
             <a-input placeholder="请将实体卡置于读卡器上" v-decorator="basicInfoRuleList.card_num"/>
           </st-form-item>
-          <st-form-item label="手续费" required>
+          <st-form-item label="有无手续费" required>
+            <a-radio-group v-decorator="basicInfoRuleList.moneyFlag" @change="radioChangeGroup">
+              <a-radio value="a">有手续费</a-radio>
+              <a-radio value="b">无手续费</a-radio>
+            </a-radio-group>
+          </st-form-item>
+          <st-form-item label="手续费" v-if="moneyFlag">
             <st-input-number
               :float="true"
               placeholder="请输入需要收取的手续费金额"
@@ -33,20 +39,17 @@
               <template slot="addonAfter">元</template>
             </st-input-number>
           </st-form-item>
-          <st-form-item label="支付方式" required>
-            <a-input placeholder="请输入收款的支付方式" v-decorator="basicInfoRuleList.payment"/>
+          <st-form-item label="支付方式">
+            <a-select placeholder="请输入收款的支付方式" v-decorator="basicInfoRuleList.receivables">
+              <a-select-option value="china">China</a-select-option>
+              <a-select-option value="usa">U.S.A</a-select-option>
+            </a-select>
           </st-form-item>
-          <st-form-item label="收款人员" required>
-            <a-input placeholder="请输入收款的工作人员" v-decorator="basicInfoRuleList.receivables"/>
+          <st-form-item label="收款人员">
+            <a-input placeholder="请输入收款的工作人员" v-decorator="basicInfoRuleList.payment"/>
           </st-form-item>
         </st-form>
       </section>
-    </section>
-    <section>
-      <!-- <footer class="footer">
-        <a-button class="cancel" @click="show=false">取消</a-button>
-        <a-button type="danger">确认停售</a-button>
-      </footer>-->
     </section>
   </st-modal>
 </template>
@@ -58,6 +61,7 @@ export default {
     return {
       show: false,
       form: this.$form.createForm(this),
+      moneyFlag: false,
       basicInfoRuleList: {
         // 实体卡
         physical_id: [
@@ -81,6 +85,17 @@ export default {
                 required: true,
                 message: '请输入正确的物理ID',
                 pattern: /\d$/
+              }
+            ]
+          }
+        ],
+        moneyFlag: [
+          'moneyFlag',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请选择有无手续费'
               }
             ]
           }
@@ -124,6 +139,13 @@ export default {
   },
   created() {},
   methods: {
+    radioChangeGroup(value) {
+      if (value.target.value === 'a') {
+        this.moneyFlag = true
+      } else {
+        this.moneyFlag = false
+      }
+    },
     save(e) {
       e.preventDefault()
       console.log(e)

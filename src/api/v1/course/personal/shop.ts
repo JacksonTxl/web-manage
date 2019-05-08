@@ -8,9 +8,15 @@ export class ShopPersonalCourseApi extends Api {
     return this.http.post('/v1/course/personal/upgrade', { params })
   }
   /**
-   * 获取品牌门店下私教课列表
+   * 获取门店维度下 门店下私教课列表
    */
   getCourseList(query: GetPersonalBrandCourseListInput) {
+    return this.http.get('/v1/course/personal/shop', { query })
+  }
+  /**
+   * 获取品牌维度下门店下私教课列表
+   */
+  getCourseListInBrand(query: GetPersonalBrandCourseListInput) {
     return this.http.get('/v1/course/personal/brand/shop', { query })
   }
   /**

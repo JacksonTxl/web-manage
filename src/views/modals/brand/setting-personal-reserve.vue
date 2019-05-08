@@ -5,6 +5,7 @@
     v-model="show"
     @ok="save"
     @cancel="cancel"
+    :confirmLoading="loading.update"
   >
     <div>
       <st-form :form="form" labelWidth="56px">
@@ -13,11 +14,21 @@
           <div>
             <span>用户可预约</span>
             <a-select class="mg-l8" style="width: 100px" v-model="info.reserve_start">
-              <a-select-option :value="1">1小时后</a-select-option>
+              <a-select-option
+                v-for="(item, index) in settingEnums.reserve_start.value"
+                :key="+index"
+                :value="+index"
+              >{{item}}
+              </a-select-option>
             </a-select>
             <span class="mg-l8" >到</span>
             <a-select class="mg-l8" style="width: 70px" v-model="info.reserve_range">
-              <a-select-option :value="1">1周</a-select-option>
+              <a-select-option
+                v-for="(item, index) in settingEnums.reserve_range.value"
+                :key="+index"
+                :value="+index"
+              >{{item}}
+              </a-select-option>
             </a-select>
             <span class="mg-l8">以内的私教课程，员工代预约不受此限制</span>
           </div>
@@ -27,7 +38,12 @@
           <div>
             <span>允许用户在私教课程开始前</span>
             <a-select class="mg-l8" style="width: 84px" v-model="info.cancel_reserve">
-              <a-select-option :value="1">1小时</a-select-option>
+              <a-select-option
+                v-for="(item, index) in settingEnums.cancel_reserve.value"
+                :key="+index"
+                :value="+index"
+              >{{item}}
+              </a-select-option>
             </a-select>
             <span class="mg-l8" >取消预约，员工代取消不受此限制</span>
           </div>
@@ -38,7 +54,12 @@
           <div>
             <span>在课程开始前</span>
             <a-select class="mg-l8" style="width: 84px" v-model="info.reserve_remind">
-              <a-select-option value="1">1小时</a-select-option>
+              <a-select-option
+                v-for="(item, index) in settingEnums.reserve_remind.value"
+                :key="+index"
+                :value="+index"
+              >{{item}}
+              </a-select-option>
             </a-select>
             <span class="mg-l8" >提醒用户上课</span>
           </div>
@@ -52,7 +73,12 @@
           <div>
             <span>开课</span>
             <a-select class="mg-l8" style="width: 120px" v-model="info.sign_time">
-              <a-select-option value="1">即刻</a-select-option>
+              <a-select-option
+                v-for="(item, index) in settingEnums.sign_time.value"
+                :key="+index"
+                :value="+index"
+              >{{item}}
+              </a-select-option>
             </a-select>
             <span class="mg-l8" >允许签到</span>
           </div>
@@ -62,7 +88,12 @@
           <div>
             <a-checkbox :checked="!!info.is_auto_sign" @change="onCheckboxChange('is_auto_sign')">支持系统自动签到，在</a-checkbox>
             <a-select class="mg-l8" style="width: 84px" v-model="info.auto_sign_limit">
-              <a-select-option value="1">1天</a-select-option>
+              <a-select-option
+                v-for="(item, index) in settingEnums.auto_sign_limit.value"
+                :key="+index"
+                :value="+index"
+              >{{item}}
+              </a-select-option>
             </a-select>
             <span class="mg-l8" >后系统自动将课程进行签到</span>
           </div>
@@ -73,13 +104,22 @@
   </st-modal>
 </template>
 <script>
+import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { PersonalReserveSettingService } from './setting-personal-reserve.service'
 export default {
   serviceInject() {
     return {
+      userService: UserService,
       messageService: MessageService,
       settingService: PersonalReserveSettingService
+    }
+  },
+  rxState() {
+    const user = this.userService
+    return {
+      loading: this.settingService.loading$,
+      settingEnums: user.settingEnums$
     }
   },
   data() {
@@ -107,6 +147,7 @@ export default {
           this.messageService.success({
             content: '提交成功'
           })
+          this.show = false
         }
       )
     }
