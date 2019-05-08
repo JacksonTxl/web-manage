@@ -5,7 +5,7 @@ export class ConstApi extends Api {
    * 静态枚举
    */
   getEnum() {
-    return this.http.get('/const/enum', { mock: {} })
+    return this.http.get('/const/enum')
   }
   /**
    * 帮助信息 tooltip
