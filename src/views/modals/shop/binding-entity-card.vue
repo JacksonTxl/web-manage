@@ -6,11 +6,11 @@
           <st-info-item label="姓名">{{record.member_name}}</st-info-item>
           <st-info-item label="手机号">{{record.mobile}}</st-info-item>
         </st-info>
-        <st-form-item label="实体卡号" placeholder="输入实体卡号">
-          <a-input v-model="form.physical_id"/>
+        <st-form-item label="实体卡号" required>
+          <a-input placeholder="输入实体卡号" v-decorator="basicInfoRuleList.physical_id"/>
         </st-form-item>
-        <st-form-item label="物理ID" placeholder="请将实体卡置于读卡器上">
-          <a-input v-model="form.card_num"/>
+        <st-form-item label="物理ID" required>
+          <a-input placeholder="请将实体卡置于读卡器上" v-decorator="basicInfoRuleList.card_num"/>
         </st-form-item>
       </st-form>
     </section>
@@ -34,9 +34,34 @@ export default {
   data() {
     return {
       show: false,
-      form: {
-        physical_id: '',
-        card_num: ''
+      form: this.$form.createForm(this),
+      basicInfoRuleList: {
+        // 实体卡
+        physical_id: [
+          'physical_id',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请输入正确的实体卡号',
+                pattern: /\d$/
+              }
+            ]
+          }
+        ],
+        // 物理ID
+        card_num: [
+          'card_num',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请输入正确的物理ID',
+                pattern: /\d$/
+              }
+            ]
+          }
+        ]
       }
     }
   },
@@ -44,12 +69,15 @@ export default {
   methods: {
     save(e) {
       e.preventDefault()
-      console.log(e)
-      this.getLableList()
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          this.getLableList(values)
+        }
+      })
     },
-    getLableList() {
+    getLableList(data) {
       let self = this
-      self.Service.getMemberCard(self.record.id, self.form).subscribe(state => {
+      self.Service.getMemberCard(self.record.id, data).subscribe(state => {
         self.show = false
       })
     }
