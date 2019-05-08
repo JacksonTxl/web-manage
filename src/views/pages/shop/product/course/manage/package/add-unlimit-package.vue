@@ -73,14 +73,15 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item :max="99999.9" label="总价">{{team_total+personal_total}}元</st-form-item>
+          <st-form-item label="总价">{{team_total+personal_total}}元</st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="售卖价格" required>
             <st-input-number
-             :max="99999.9"
+              placeholder="请输入售卖价格"
+              :max="99999.9"
               v-decorator="[
                 'price',
                  {rules: [{ required: true, message: '请输入售卖价格' }]}
@@ -128,6 +129,7 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="有效时间" required>
             <st-input-number
+              placeholder="请输入有效时间"
               :min="1"
               :max="99999"
               v-decorator="[
@@ -148,6 +150,7 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="允许冻结天数" required>
             <st-input-number
+              placeholder="请输入允许冻结天数"
               :min="1"
               :max="99999"
               v-decorator="[
@@ -394,7 +397,9 @@ export default {
     // course validatorFn
     course_validator() {
       this.courseIsFirstInput = false
-      if (this.team_total || this.personal_total) {
+      let teamIsOk = this.packageData.is_team ? !!this.team_total : true
+      let personalIsOk = this.packageData.is_personal ? !!this.personal_total : true
+      if (teamIsOk && personalIsOk) {
         // 校验通过
         this.courseIsNone = false
         this.courseErrorText = ''

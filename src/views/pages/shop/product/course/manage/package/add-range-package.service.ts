@@ -4,11 +4,11 @@ import { PackageApi, OnsalePackageInput } from '@/api/v1/course/package'
 import { mergeMap } from 'rxjs/operators'
 
 @Injectable()
-export class AddUnlimitPackageService {
+export class AddRangePackageService {
   loading$ = new State({})
   constructor(private packageApi: PackageApi) { }
   addPackage(data: any) {
-    return this.packageApi.AddCoursePackage(data, 'unlimit')
+    return this.packageApi.AddCoursePackage(data, 'range')
   }
   onsalePackage(data: OnsalePackageInput) {
     return this.packageApi.onsaleCoursePackage(data)

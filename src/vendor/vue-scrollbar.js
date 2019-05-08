@@ -14,7 +14,7 @@ export default {
 
     Vue.directive('scrollBar', {
       inserted(el, binding, vnode) {
-        let wheelPropagation = binding.value === undefined ? true : binding.value
+        let wheelPropagation = binding.value === undefined ? true : !binding.value
         const rules = ['fixed', 'absolute', 'relative']
         if (!rules.includes(window.getComputedStyle(el, null).position)) {
           console.error(`perfect-scrollbar所在的容器的position属性必须是以下之一：${rules.join('、')}`)
@@ -22,7 +22,7 @@ export default {
         el_scrollBar(el, wheelPropagation)
       },
       componentUpdated(el, binding, vnode, oldVnode) {
-        let wheelPropagation = binding.value === undefined ? true : binding.value
+        let wheelPropagation = binding.value === undefined ? true : !binding.value
         try {
           vnode.context.$nextTick(
             () => {
