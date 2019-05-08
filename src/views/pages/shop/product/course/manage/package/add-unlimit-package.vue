@@ -254,13 +254,13 @@
 import moment from 'moment'
 import { UserService } from '@/services/user.service'
 import { cloneDeep, remove } from 'lodash-es'
-import { AddPackageService } from './add-unlimit-package.service'
+import { AddUnlimitPackageService } from './add-unlimit-package.service'
 export default {
   name: 'ShopUnlimitPackageAdd',
   serviceInject() {
     return {
       userService: UserService,
-      addPackageService: AddPackageService
+      addPackageService: AddUnlimitPackageService
     }
   },
   rxState() {
