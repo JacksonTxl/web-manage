@@ -110,7 +110,7 @@
               <modal-link tag="a" :to=" { name: 'shop-missing-card', props:{record:record}}">遗失补卡</modal-link>
             </a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'shop-transfer-shop'}">转店</modal-link>
+              <modal-link tag="a" :to=" { name: 'shop-transfer-shop', props:{record:record}}">转店</modal-link>
             </a-menu-item>
             <a-menu-item>
               <modal-link tag="a" :to=" { name: 'shop-frozen'}">冻结用户</modal-link>
