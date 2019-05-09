@@ -16,7 +16,7 @@
       <div :class="map('search-input')">
         <a-dropdown :trigger="['click']" v-model="dropdownVisible">
           <a-input-search @input="searchInput" :class="{error:!latlngIsOk}" placeholder="请输入街道、小区或商圈名称" v-model="searchText" @search="onSearch"/>
-          <ul slot="overlay" :class="map('search-menu')" v-scrollBar='false'>
+          <ul slot="overlay" :class="map('search-menu')" v-scrollBar='{stopPropagation:true}'>
             <li :class="map('search-faild')" v-if="!poisList.length">无结果</li>
             <template v-if="poisList.length">
               <li @click="selectLocation(item)" :class="map('search-item')" v-for="(item,index) in poisList" :key="index">

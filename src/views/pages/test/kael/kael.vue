@@ -1,27 +1,40 @@
 <template>
   <st-panel app>
-    <a-button type="primary" @click="team">选择团体课</a-button>
-    <a-button type="dashed" @click="personal">选择私教课</a-button>
+    <div :style="{ borderBottom: '1px solid #E9E9E9' }">
+      <a-checkbox
+        :indeterminate="indeterminate"
+        @change="onCheckAllChange"
+        :checked="checkAll"
+      >
+        Check all
+      </a-checkbox>
+    </div>
+    <br />
+    <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="onChange" />
   </st-panel>
-  <!-- <div class="mg-y24">
-    <img
-      width="150"
-      src="https://static-s.styd.cn/201811161629/no-data.png"
-    />
-    <p class="mg-t16">暂无数据</p>
-  </div> -->
 </template>
 <script>
+const plainOptions = ['Apple', 'Pear', 'Orange']
+const defaultCheckedList = ['Apple', 'Orange']
 export default {
+  data() {
+    return {
+      checkedList: defaultCheckedList,
+      indeterminate: true,
+      checkAll: false,
+      plainOptions
+    }
+  },
   methods: {
-    team() {
-      this.$modalRouter.push({
-        name: 'course-select-course'
-      })
+    onChange(checkedList) {
+      this.indeterminate = !!checkedList.length && (checkedList.length < plainOptions.length)
+      this.checkAll = checkedList.length === plainOptions.length
     },
-    personal() {
-      this.$modalRouter.push({
-        name: 'course-select-course'
+    onCheckAllChange(e) {
+      Object.assign(this, {
+        checkedList: e.target.checked ? plainOptions : [],
+        indeterminate: false,
+        checkAll: e.target.checked
       })
     }
   }
