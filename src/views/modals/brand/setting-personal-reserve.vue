@@ -37,7 +37,7 @@
         <st-form-item label="取消预约">
           <div>
             <span>允许用户在私教课程开始前</span>
-            <a-select class="mg-l8" style="width: 84px" v-model="info.cancel_reserve">
+            <a-select class="mg-l8" style="width: 100px" v-model="info.cancel_reserve">
               <a-select-option
                 v-for="(item, index) in settingEnums.cancel_reserve.value"
                 :key="+index"
@@ -53,7 +53,7 @@
         <st-form-item label="预约提醒">
           <div>
             <span>在课程开始前</span>
-            <a-select class="mg-l8" style="width: 84px" v-model="info.reserve_remind">
+            <a-select class="mg-l8" style="width: 100px" v-model="info.reserve_remind">
               <a-select-option
                 v-for="(item, index) in settingEnums.reserve_remind.value"
                 :key="+index"
