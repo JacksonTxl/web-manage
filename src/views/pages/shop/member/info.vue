@@ -2,7 +2,7 @@
   <div class="shop-member-info">
     <st-panel class="shop-member-info-title">
       <a-row :gutter="24">
-        <a-col :span="12">
+        <a-col :span="14">
           <div class="shop-member-info-title-pannel-left">
             <div class="shop-member-info-title-pannel__img">
               <div class="img-box">
@@ -35,15 +35,23 @@
               </div>
               <div class="label-list">
                 <span class="lable-item">
-                  胖子
+                  快乐的小逗比一个一个
                   <a-icon type="close"/>
                 </span>
                 <span class="lable-item">
-                  快乐的小逗比一个
+                  快乐的小逗比一个一个
                   <a-icon type="close"/>
                 </span>
                 <span class="lable-item">
-                  胖子
+                  快乐的小逗比一个一个
+                  <a-icon type="close"/>
+                </span>
+                <span class="lable-item">
+                  快乐的小逗比一个一个
+                  <a-icon type="close"/>
+                </span>
+                <span class="lable-item">
+                  快乐的小逗比一个一个
                   <a-icon type="close"/>
                 </span>
               </div>
@@ -55,7 +63,7 @@
             </div>
           </div>
         </a-col>
-        <a-col :span="12">
+        <a-col :span="10">
           <div class="shop-member-info-title-pannel-right">
             <div class="pannel-right__operation">
               <a-button type="primary" class="pannel-right__operation__margin">编辑资料</a-button>
