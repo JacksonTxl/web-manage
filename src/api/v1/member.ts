@@ -211,4 +211,28 @@ export class MemberAPi extends Api {
   removeWechatBind(id: number) {
     return this.http.put(`/v1/member/wechat/remove/${id}`)
   }
+  /**
+   * 用户绑定实体卡信息
+   */
+  getMemberPhysical(id: number) {
+    return this.http.get(`/v1/member/physical/${id}`)
+  }
+  /**
+   * 重绑实体卡
+   */
+  getMemberPhysicalBind(id: string, params: any) {
+    return this.http.put(`/v1/member/physical/bind/${id}`, { params })
+  }
+  /**
+   * 转店用户购买的商品信息v1/member/buy/会员ID
+   */
+  getMemberBuy(id: number) {
+    return this.http.get(`/v1/member/buy/${id}`)
+  }
+  /**
+   * 转店
+   */
+  getMemberTransfer(params: any) {
+    return this.http.put(`/v1/member/transfer`, { params })
+  }
 }

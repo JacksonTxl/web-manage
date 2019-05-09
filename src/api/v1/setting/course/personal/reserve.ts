@@ -24,7 +24,7 @@ export interface UpdateInput {
   /**
    * 私教可预约范围: 1 1周 2 2 周 3 3周
    */
-  reserve_limit: number,
+  reserve_range: number,
   /**
    * 私教取消预约时间限制: 1 1小时后, 2 2小时后….12 12小时后
    */

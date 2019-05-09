@@ -107,10 +107,10 @@
               >绑实体卡</modal-link>
             </a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'shop-missing-card'}">遗失补卡</modal-link>
+              <modal-link tag="a" :to=" { name: 'shop-missing-card', props:{record:record}}">遗失补卡</modal-link>
             </a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'shop-transfer-shop'}">转店</modal-link>
+              <modal-link tag="a" :to=" { name: 'shop-transfer-shop', props:{record:record}}">转店</modal-link>
             </a-menu-item>
             <a-menu-item>
               <modal-link tag="a" :to=" { name: 'shop-frozen'}">冻结用户</modal-link>
@@ -200,8 +200,7 @@ export default {
       let that = this
       this.$confirm({
         title: '提示信息',
-        content:
-          '确认解绑选中的会员关系？',
+        content: '确认解绑选中的会员关系？',
         onOk() {
           that.aService.removeWechatBind(record.id).subscribe(() => {
             console.log('ok')
