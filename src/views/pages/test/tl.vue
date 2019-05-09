@@ -27,6 +27,7 @@
         <modal-link tag="a" :to="{ name:'brand-setting-team-reserve' }">团体课程预约设置</modal-link>
         <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-personal-reserve' }">私教课课程预约设置</modal-link>
         <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-personal-price-model' }">私教课程定价设置</modal-link>
+        <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-wechat-payment' }">微信支付设置</modal-link>
       </p>
       <p>
         <a-input-search v-model="query.keyword"/>
@@ -41,6 +42,11 @@
           </tr>
         </thead>
         <tbody>
+          <tr>
+            <td colspan="3" style="padding: 8px 0">
+              <st-button type="dashed" block>添加梯度</st-button>
+            </td>
+          </tr>
           <tr>
             <td>1</td>
             <td>2</td>
