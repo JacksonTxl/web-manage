@@ -5,7 +5,7 @@
     :title="course.course_name + ' 批量转入品牌课程库'"
     width="888px"
     v-model='show'>
-    <h3 class="modal-transfer-brand-course__title"><i class="modal-transfer-brand-course__title-icon mg-r16">?</i>确认要删除</h3>
+    <h3 class="modal-transfer-brand-course__title"><a-icon type="question-circle" /><i class="modal-transfer-brand-course__title-icon mg-r16">?</i>确认要删除</h3>
     <p class="modal-transfer-brand-course__content mg-l40">将课程转入品牌课程库后，门店仅能使用此课程，转入时可设置支持上课门店及定价，若品牌统一调整定价，将影响原门店课程售卖价格。</p>
     <st-form v-if="isEdit">
       <st-form-item  label="支持上课门店" required>
