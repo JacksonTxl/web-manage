@@ -4,8 +4,8 @@
       <section>
         <st-form :form="form" @submit="save" labelWidth="85px">
           <st-info>
-            <st-info-item label="姓名">孙乐乐</st-info-item>
-            <st-info-item label="手机号">12345678901</st-info-item>
+            <st-info-item label="姓名">{{record.member_name}}</st-info-item>
+            <st-info-item label="手机号">{{record.mobile}}</st-info-item>
           </st-info>
 
           <div
@@ -13,8 +13,8 @@
           >
             <st-form :form="form" @submit="save" labelWidth="125px">
               <st-info>
-                <st-info-item label="当前绑定的实体卡号">213456758987654</st-info-item>
-                <st-info-item label="当前物理ID">12345678901</st-info-item>
+                <st-info-item label="当前绑定的实体卡号">{{getData.card_num}}</st-info-item>
+                <st-info-item label="当前物理ID">{{getData.physical_id}}</st-info-item>
               </st-info>
             </st-form>
           </div>
@@ -34,34 +34,47 @@
             <st-input-number
               :float="true"
               placeholder="请输入需要收取的手续费金额"
-              v-decorator="basicInfoRuleList.money"
+              v-decorator="basicInfoRuleList.poundage"
             >
               <template slot="addonAfter">元</template>
             </st-input-number>
           </st-form-item>
-          <st-form-item label="支付方式">
-            <a-select placeholder="请输入收款的支付方式" v-decorator="basicInfoRuleList.receivables">
+          <st-form-item label="支付方式" v-if="moneyFlag">
+            <a-select placeholder="请输入收款的支付方式" v-decorator="basicInfoRuleList.pay_method">
               <a-select-option value="china">China</a-select-option>
               <a-select-option value="usa">U.S.A</a-select-option>
             </a-select>
           </st-form-item>
-          <st-form-item label="收款人员">
+          <st-form-item label="收款人员" v-if="moneyFlag">
             <a-input placeholder="请输入收款的工作人员" v-decorator="basicInfoRuleList.payment"/>
           </st-form-item>
         </st-form>
+        <!-- {{record}} -->
       </section>
     </section>
   </st-modal>
 </template>
 <script>
+import { MissingCaedService } from './missing-card.service'
 export default {
+  serviceInject() {
+    return {
+      Service: MissingCaedService
+    }
+  },
   name: 'missingCard',
-  props: {},
+  props: {
+    record: {
+      type: Object
+    }
+  },
   data() {
     return {
       show: false,
       form: this.$form.createForm(this),
       moneyFlag: false,
+      getData: {},
+      getCard_id: '',
       basicInfoRuleList: {
         // 实体卡
         physical_id: [
@@ -100,8 +113,8 @@ export default {
             ]
           }
         ],
-        money: [
-          'money',
+        poundage: [
+          'poundage',
           {
             rules: [
               {
@@ -112,8 +125,8 @@ export default {
             ]
           }
         ],
-        receivables: [
-          'receivables',
+        pay_method: [
+          'pay_method',
           {
             rules: [
               {
@@ -137,8 +150,25 @@ export default {
       }
     }
   },
-  created() {},
+  created() {
+    this.getMemberPhysical()
+  },
   methods: {
+    getMemberPhysical() {
+      let self = this
+      self.Service.getMemberPhysical(self.record.id).subscribe(state => {
+        console.log(state.info)
+        self.getData = state.info
+      })
+    },
+    getMemberPhysicalBind(data) {
+      let self = this
+      self.Service.getMemberPhysicalBind(self.record.id, data).subscribe(
+        state => {
+          self.show = false
+        }
+      )
+    },
     radioChangeGroup(value) {
       if (value.target.value === 'a') {
         this.moneyFlag = true
@@ -147,11 +177,16 @@ export default {
       }
     },
     save(e) {
+      let self = this
       e.preventDefault()
       console.log(e)
-      this.form.validateFields((err, values) => {
+      self.form.validateFields((err, values) => {
         console.log(err, values)
+        values.moneyFlag = undefined
+        values.id = self.record.id
+        values.card_id = self.getData.id
         if (!err) {
+          self.getMemberPhysicalBind(values)
         }
       })
     }

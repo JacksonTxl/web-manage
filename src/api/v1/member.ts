@@ -211,4 +211,16 @@ export class MemberAPi extends Api {
   removeWechatBind(id: number) {
     return this.http.put(`/v1/member/wechat/remove/${id}`)
   }
+  /**
+   * 用户绑定实体卡信息 v1/member/physical/会员ID
+   */
+  getMemberPhysical(id: number) {
+    return this.http.get(`/v1/member/physical/${id}`)
+  }
+  /**
+   * 重绑实体卡 v1/member/physical/bind/会员ID
+   */
+  getMemberPhysicalBind(id: string, params: any) {
+    return this.http.put(`/v1/member/physical/bind/${id}`, { params })
+  }
 }
