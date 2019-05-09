@@ -36,4 +36,10 @@ export class PackageApi extends Api {
       course_type: params.course_type
     } })
   }
+  /**
+   * 教练等级与教练数列表
+   */
+  getCoachList() {
+    return this.http.get(`/v1/course/package/coach`)
+  }
 }

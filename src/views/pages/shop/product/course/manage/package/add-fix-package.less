@@ -1,8 +1,19 @@
 .page-shop-add-fix-package{
+  .st-has-error {
+    .ant-form-explain{
+      .c(@error-color);
+    }
+    .page-shop-add-fix-package__course {
+      border-color: @error-color;
+    }
+  }
   &__course{
     padding: 12px;
     border: 1px solid @border-color;
     border-radius: 4px;
+    >table{
+      width: 100%;
+    }
     .set-course-button:not(.hide){
       position: relative;
       &::after {
@@ -43,10 +54,21 @@
                     width: 5%;
                   }
                   &:nth-of-type(2){
-                    width: 81%;
+                    width: 20%;
                   }
                   &:nth-of-type(3){
-                    width: 14%;
+                    width: 28%;
+                    padding-right: 24px;
+                  }
+                  &:nth-of-type(4){
+                    width: 28%;
+                    padding-right: 24px;
+                  }
+                  &:nth-of-type(5){
+                    width: 10%;
+                  }
+                  &:nth-of-type(6){
+                    width: 9%;
                   }
                 }
               }
@@ -69,6 +91,7 @@
           }
           .personal-course-add-buton {
             padding: 0 12px;
+            .bg(@white);
           }
           .personal-course-content-table{
             position: relative;
@@ -81,16 +104,25 @@
                   width: 5%;
                 }
                 &:nth-of-type(2){
-                  width: 29%;
+                  width: 20%;
                 }
                 &:nth-of-type(3){
-                  width: 34%;
+                  width: 18%;
+                  padding-right: 24px;
                 }
                 &:nth-of-type(4){
-                  width: 16%;
+                  width: 18%;
+                  padding-right: 24px;
                 }
                 &:nth-of-type(5){
-                  width: 16%;
+                  width: 23%;
+                  text-align: center;
+                }
+                &:nth-of-type(6){
+                  width: 8%;
+                }
+                &:nth-of-type(7){
+                  width: 8%;
                 }
               }
             }
@@ -118,6 +150,9 @@
     }
     .pr-32{
       padding-right: 32px;
+    }
+    .pr-24{
+      padding-right: 24px;
     }
     .pr-148{
       padding-right: 148px;
