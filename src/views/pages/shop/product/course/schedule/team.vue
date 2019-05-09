@@ -189,8 +189,8 @@ export default {
       event.el.querySelector('.fc-title').remove()
       event.el.querySelector('.fc-time').remove()
       console.log('onEventRender')
-      this.start = event.start
-      this.end = event.end
+      this.start = moment(event.start)
+      this.end = moment(event.end)
       var new_description =
           this.start.format('HH:mm') + '-' +
           this.end.format('HH:mm') + '<br/>' +

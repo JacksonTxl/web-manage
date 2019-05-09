@@ -2,23 +2,23 @@
   <st-modal title="复制排期" @ok="save" v-model="show">
     <st-form :form="form">
       <st-form-item label="时间" required>
-        <a-radio-group v-decorator="['radio-group']">
-          <a-radio value="a">
-            item 1
+        <a-radio-group v-model="timeType" @change="onChangeTimeType">
+          <a-radio value="month">
+            上月
           </a-radio>
-          <a-radio value="b">
-            item 2
+          <a-radio value="week">
+            上周
           </a-radio>
-          <a-radio value="c">
-            item 3
+          <a-radio value="custom">
+            自定义
           </a-radio>
         </a-radio-group>
       </st-form-item>
       <st-form-item label="复制排期" required>
-        <a-range-picker @change="onChange" />
+        <a-range-picker v-model="copyDefaulValue" :disabled="disabled" @change="onChangeCopyTime" />
       </st-form-item>
       <st-form-item label="应用排期" required>
-        <a-range-picker @change="onChange" />
+        <a-date-picker v-model="applyStartDate" @change="onChangeApplyStartDate"/> ~ <a-date-picker v-model="applyEndDate"  disabled />
       </st-form-item>
     </st-form>
   </st-modal>
@@ -29,13 +29,36 @@ export default {
   name: 'CopySchedule',
   data() {
     return {
+      timeType: 'week',
+      moment: moment,
       show: false,
-      form: this.$form.createForm(this)
+      disabled: true,
+      form: this.$form.createForm(this),
+      applyStartDate: moment(),
+      applyEndDate: moment(),
+      addTime: 0,
+      copyDefaulValue: []
     }
   },
   methods: {
-    onChange() {
-
+    onChangeTimeType(e) {
+      // .format('YYYY-MM-DD')
+      if (e.target.value === 'month') {
+        this.disabled = true
+        this.copyDefaulValue[0] = moment().month(moment().month() - 1).startOf('month')
+        this.copyDefaulValue[1] = moment().month(moment().month() - 1).endOf('month')
+        this.applyEndDate = moment(this.applyStartDate.valueOf() + (this.copyDefaulValue[1].valueOf() - this.copyDefaulValue[0].valueOf()))
+      } else if (e.target.value === 'week') {
+        this.disabled = true
+        this.copyDefaulValue[0] = moment().week(moment().week() - 1).startOf('week')
+        this.copyDefaulValue[1] = moment().week(moment().week() - 1).endOf('week')
+        this.applyEndDate = moment(this.applyStartDate.valueOf() + (this.copyDefaulValue[1].valueOf() - this.copyDefaulValue[0].valueOf()))
+      } else if (e.target.value === 'custom') {
+        this.disabled = false
+      }
+    },
+    onChangeCopyTime(val) {
+      this.applyEndDate = moment(this.applyStartDate.valueOf() + (this.copyDefaulValue[1].valueOf() - this.copyDefaulValue[0].valueOf()))
     },
     save() {
 
@@ -43,7 +66,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>
