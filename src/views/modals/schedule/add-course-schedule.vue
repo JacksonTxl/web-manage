@@ -26,16 +26,13 @@
           :span="24"
           :style="{ textAlign: 'right' }"
         >
-
-            <st-button  @click="onClick">批量设置</st-button>
+          <st-button  @click="onClick">批量设置</st-button>
           <st-button
             type="primary"
             @click="onSubmit"
-            :loading="loading.postScheduleTeam"
-          >
+            :loading="loading.postScheduleTeam">
             提交
           </st-button>
-
         </a-col>
       </a-row>
     </st-form>

@@ -1,9 +1,8 @@
 <template>
   <st-modal title="复制排期" @ok="save" v-model="show">
-    {{copyStartDate}}{{copyEndDate}}
     <st-form :form="form">
       <st-form-item label="时间" required>
-        <a-radio-group @change="onChangeTimeType">
+        <a-radio-group v-model="timeType" @change="onChangeTimeType">
           <a-radio value="month">
             上月
           </a-radio>
@@ -16,10 +15,10 @@
         </a-radio-group>
       </st-form-item>
       <st-form-item label="复制排期" required>
-        <a-range-picker @change="onChange" />
+        <a-range-picker v-model="copyDefaulValue" :disabled="disabled" @change="onChangeCopyTime" />
       </st-form-item>
       <st-form-item label="应用排期" required>
-        <a-range-picker @change="onChange" />
+        <a-date-picker v-model="applyStartDate" @change="onChangeApplyStartDate"/> ~ <a-date-picker v-model="applyEndDate"  disabled />
       </st-form-item>
     </st-form>
   </st-modal>
@@ -30,27 +29,36 @@ export default {
   name: 'CopySchedule',
   data() {
     return {
+      timeType: 'week',
+      moment: moment,
       show: false,
+      disabled: true,
       form: this.$form.createForm(this),
-      copyStartDate: '',
-      copyEndDate: ''
+      applyStartDate: moment(),
+      applyEndDate: moment(),
+      addTime: 0,
+      copyDefaulValue: []
     }
   },
   methods: {
     onChangeTimeType(e) {
+      // .format('YYYY-MM-DD')
       if (e.target.value === 'month') {
-        this.copyStartDate = moment().month(moment().month() - 1).startOf('month').format('L')
-        this.copyEndDate = moment().month(moment().month() - 1).endOf('month').format('L')
+        this.disabled = true
+        this.copyDefaulValue[0] = moment().month(moment().month() - 1).startOf('month')
+        this.copyDefaulValue[1] = moment().month(moment().month() - 1).endOf('month')
+        this.applyEndDate = moment(this.applyStartDate.valueOf() + (this.copyDefaulValue[1].valueOf() - this.copyDefaulValue[0].valueOf()))
       } else if (e.target.value === 'week') {
-        this.copyStartDate = moment().week(moment().week() - 1).startOf('week').format('L')
-        this.copyEndDate = moment().week(moment().week() - 1).endOf('week').format('L')
+        this.disabled = true
+        this.copyDefaulValue[0] = moment().week(moment().week() - 1).startOf('week')
+        this.copyDefaulValue[1] = moment().week(moment().week() - 1).endOf('week')
+        this.applyEndDate = moment(this.applyStartDate.valueOf() + (this.copyDefaulValue[1].valueOf() - this.copyDefaulValue[0].valueOf()))
       } else if (e.target.value === 'custom') {
-        this.copyStartDate = moment().month(moment().month() - 1).startOf('month').format('L')
-        this.copyEndDate = moment().month(moment().month() - 1).endOf('month').format('L')
+        this.disabled = false
       }
     },
-    onChange() {
-
+    onChangeCopyTime(val) {
+      this.applyEndDate = moment(this.applyStartDate.valueOf() + (this.copyDefaulValue[1].valueOf() - this.copyDefaulValue[0].valueOf()))
     },
     save() {
 
