@@ -57,12 +57,35 @@
   </st-modal>
 </template>
 <script>
+import { UserService } from '@/services/user.service'
+import { MessageService } from '@/services/message.service'
+import { CoursePriceModelSettingService } from './setting-personal-price-model.service'
 export default {
+  serviceInject() {
+    return {
+      userService: UserService,
+      messageService: MessageService,
+      settingService: CoursePriceModelSettingService
+    }
+  },
+  rxState() {
+    const user = this.userService
+    return {
+      loading: this.settingService.loading$,
+      settingEnums: user.settingEnums$
+    }
+  },
   data() {
     return {
       show: false,
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      info: {}
     }
+  },
+  created() {
+    this.settingService.getInfo().subscribe(res => {
+      this.info = res.info
+    })
   }
 }
 </script>

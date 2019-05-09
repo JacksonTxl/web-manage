@@ -96,16 +96,16 @@
             <a-input placeholder="请输入收入水平" v-decorator="rules.income_level"/>
           </st-form-item>
           <st-form-item label="证件类型">
-            <a-select v-decorator="rules.id_card_type"  @change="chooseType">
+            <a-select v-decorator="rules.id_card_type" @change="chooseType">
               <a-select-option
-                 v-for="(item, index) in staffEnums.id_type.value"
-                  :key="index"
-                  :value="+index"
+                v-for="(item, index) in staffEnums.id_type.value"
+                :key="index"
+                :value="+index"
               >{{item}}</a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item label="证件号">
-            <a-input  :placeholder="dateinit ? dateinit : '请输入身份证号码'" v-decorator="rules.id_card"/>
+            <a-input :placeholder="dateinit ? dateinit : '请输入身份证号码'" v-decorator="rules.id_card"/>
           </st-form-item>
         </a-col>
         <a-col :lg="10" :xs="22" :offset="1">
@@ -119,35 +119,49 @@
               <template slot="addonAfter">KG</template>
             </st-input-number>
           </st-form-item>
-           <st-form-item label="健身目标">
-            <a-input placeholder="" v-decorator="rules.fitness_goal"/>
+          <st-form-item label="健身目标">
+            <a-input placeholder v-decorator="rules.fitness_goal"/>
           </st-form-item>
-           <st-form-item label="健身等级" >
-             <a-rate v-decorator="rules.fitness_level" allowHalf />
+          <st-form-item label="健身等级">
+            <a-rate v-decorator="rules.fitness_level" allowHalf/>
           </st-form-item>
-           <st-form-item label="婚姻状况">
+          <st-form-item label="婚姻状况">
             <a-select placeholder="请选择" v-decorator="rules.married_type">
-               <a-select-option v-for="(item, index) in staffEnums.marry_status.value" :key="index" :value="+index">{{item}}</a-select-option>
+              <a-select-option
+                v-for="(item, index) in staffEnums.marry_status.value"
+                :key="index"
+                :value="+index"
+              >{{item}}</a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item label="子女状态">
             <a-select placeholder="请选择" v-decorator="rules.has_children">
-             <a-select-option v-for="(item, index) in staffEnums.children_status.value" :key="index" :value="+index">{{item}}</a-select-option>
+              <a-select-option
+                v-for="(item, index) in staffEnums.children_status.value"
+                :key="index"
+                :value="+index"
+              >{{item}}</a-select-option>
             </a-select>
           </st-form-item>
-            <st-form-item label="邮箱">
+          <st-form-item label="邮箱">
             <a-input placeholder="请输入邮箱" v-decorator="rules.email"/>
           </st-form-item>
-          <st-form-item label="家庭住址" >
-            <a-cascader :options="options" v-decorator="rules.cascader" :fieldNames="fieldNames" @change="onChange" placeholder="请选择省/市/区/县"/>
+          <st-form-item label="家庭住址">
+            <a-cascader
+              :options="options"
+              v-decorator="rules.cascader"
+              :fieldNames="fieldNames"
+              @change="onChange"
+              placeholder="请选择省/市/区/县"
+            />
           </st-form-item>
-           <st-form-item label="详细住址">
-          <a-input placeholder="填写点什么吧" v-decorator="rules.living_address"></a-input>
-        </st-form-item>
+          <st-form-item label="详细住址">
+            <a-input placeholder="填写点什么吧" v-decorator="rules.living_address"></a-input>
+          </st-form-item>
         </a-col>
       </a-row>
 
-         <a-row :gutter="8">
+      <a-row :gutter="8">
         <a-col :offset="1" :lg="22">
           <st-hr></st-hr>
         </a-col>
@@ -236,11 +250,12 @@ export default {
         tip1: '请输入身份证号码',
         tip2: '请输入护照号码'
       }
-      e === 1 ? this.dateinit = tip1 : this.dateinit = tip2
+      e === 1 ? (this.dateinit = tip1) : (this.dateinit = tip2)
     },
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(res => {
+        delete res.md
         this.addService.addUser(res).subscribe(() => {
           console.log('ok')
         })
@@ -251,8 +266,6 @@ export default {
     this.form.setFieldsValue({
       md: '1号门店'
     })
-    console.log(this.countryInfo)
-    console.log(this.nations)
     this.regionService.regionApi.getRegions().subscribe(() => {
       this.options = JSON.parse(window.localStorage.getItem('regionTree'))
     })
