@@ -260,4 +260,10 @@ export class MemberAPi extends Api {
   getBasicInfo(id: string) {
     return this.http.get(`/v1/member/basic/${id}`, { mock: {} })
   }
+  /**
+   *添加用户跟进记录 v1/member/follow/history/用户ID
+   */
+  getMemberFollowHistory(id: string, params: any) {
+    return this.http.put(`/v1/member/follow/history/${id}`, { params })
+  }
 }

@@ -16,7 +16,7 @@
       </a-col>
       <a-col :lg="8">
         <st-info>
-          <st-info-item label="更进销售">{{followInfo.info.ifollow_salesman_name}}</st-info-item>
+          <st-info-item label="跟进销售">{{followInfo.info.follow_salesman_name}}</st-info-item>
         </st-info>
       </a-col>
     </a-row>
@@ -28,7 +28,9 @@
     <st-t4>跟进记录</st-t4>
     <a-row :gutter="8">
       <a-col :lg="24">
-        <st-button block type="dashed" class="mg-t16 mg-b24">添加跟进记录</st-button>
+        <modal-link tag="a" :to=" { name: 'shop-add-follow-records', on:{done: onModalTest }}">
+          <st-button block type="dashed" class="mg-t16 mg-b24">添加跟进记录</st-button>
+        </modal-link>
       </a-col>
       <a-col :lg="24">
         <!-- <st-time-line v-model="timeLine">
@@ -92,6 +94,13 @@ export default {
         '已购卡'
       ]
       return arr[value]
+    }
+  },
+  created() {},
+  methods: {
+    onModalTest() {
+      console.log(1111)
+      this.aService.getListInfo('1').subscribe()
     }
   }
 }
