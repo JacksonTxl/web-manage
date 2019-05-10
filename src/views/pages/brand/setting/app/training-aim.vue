@@ -6,7 +6,7 @@
       </a-col>
       <a-col :span="8">
         <p class="ta-r">
-          <modal-link tag="a" :to="{ name: 'skillful-add', on: {
+          <modal-link tag="a" :to="{ name: 'training-add', on: {
             change: onListChange } }">
             <st-button type="primary" icon="add" :disabled="resData.total >= resData.max">添加</st-button>
           </modal-link>
@@ -21,10 +21,10 @@
       :pagination="{ current: +query.page || 1, total: page.total_counts }"
     >
       <div slot="action" slot-scope="record">
-        <modal-link tag="a" :to="{ name: 'skillful-edit',
+        <modal-link tag="a" :to="{ name: 'training-edit',
           props: { id: record.id, setting_name: record.setting_name }, on: { change: onListChange } }">编辑
         </modal-link>
-        <a-popconfirm :title="`删除后不可进行恢复，${record.used_number ? '已标记的员工将删除此擅长项目，' : ''}确定删除此擅长项目？`" @confirm="onDelete(record.id)">
+        <a-popconfirm :title="`删除后不可进行恢复，${record.used_number ? '已标记的课程将删除此训练目的，' : ''}确定删除此训练目的？`" @confirm="onDelete(record.id)">
           <a class="mg-l8">删除</a>
         </a-popconfirm>
       </div>
@@ -32,11 +32,11 @@
   </st-panel>
 </template>
 <script>
-import { ListService } from './list.service'
+import { TrainingAimService } from './training-aim.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
 const columns = [{
-  title: '擅长项目',
+  title: '训练目的',
   dataIndex: 'setting_name'
 }, {
   title: '标记课程数',
@@ -55,7 +55,7 @@ const columns = [{
 export default {
   serviceInject() {
     return {
-      listService: ListService,
+      listService: TrainingAimService,
       routeService: RouteService,
       messageService: MessageService
     }
@@ -68,7 +68,8 @@ export default {
   },
   data() {
     return {
-      columns
+      columns,
+      tableData: []
     }
   },
   computed: {
@@ -78,7 +79,7 @@ export default {
   },
   methods: {
     onDelete(id) {
-      this.listService.deleteSkillful({ id }).subscribe(() => {
+      this.listService.deleteTrainingAim({ id }).subscribe(() => {
         this.messageService.success({
           content: '删除成功'
         })

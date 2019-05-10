@@ -1,5 +1,10 @@
 <template>
-  <a-tabs v-model="currentValue" @change="OnChange" class="st-route-tabs">
+  <a-tabs
+    v-model="currentValue"
+    :tabPosition="tabPosition"
+    @change="OnChange"
+    class="st-route-tabs"
+  >
     <a-tab-pane v-for="tab in options" :tab="tab.label" :key="tab.route.name"></a-tab-pane>
     <slot name="actions" slot="tabBarExtraContent"></slot>
   </a-tabs>
@@ -27,6 +32,10 @@ export default {
         })
         return !flag
       }
+    },
+    tabPosition: {
+      type: String,
+      default: 'top'
     }
   },
   methods: {
