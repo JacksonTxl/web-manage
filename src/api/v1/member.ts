@@ -251,14 +251,14 @@ export class MemberAPi extends Api {
    * 详情公共头部信息
    */
   getHeaderInfo(id: string) {
-    return this.http.get(`/v1/member/common/${id}`, { mock: {} })
+    return this.http.get(`/v1/member/common/${id}`)
   }
 
   /**
    * 详情基础信息
    */
   getBasicInfo(id: string) {
-    return this.http.get(`/v1/member/basic/${id}`, { mock: {} })
+    return this.http.get(`/v1/member/basic/${id}`)
   }
   /**
    *添加用户跟进记录 v1/member/follow/history/用户ID
