@@ -399,7 +399,7 @@ export default {
       this.courseIsFirstInput = false
       let teamIsOk = this.packageData.is_team ? !!this.team_total : true
       let personalIsOk = this.packageData.is_personal ? !!this.personal_total : true
-      if (teamIsOk && personalIsOk) {
+      if (teamIsOk && personalIsOk && !(!this.packageData.is_team && !this.packageData.is_personal)) {
         // 校验通过
         this.courseIsNone = false
         this.courseErrorText = ''
