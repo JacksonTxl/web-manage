@@ -235,4 +235,16 @@ export class MemberAPi extends Api {
   getMemberTransfer(params: any) {
     return this.http.put(`/v1/member/transfer`, { params })
   }
+  /*
+   *员工详情—跟进信息 v1/member/follow/info
+   */
+  getMemberFollow(id: string) {
+    return this.http.get(`/v1/member/follow/info/${id}`)
+  }
+  /*
+   *员工详情—跟进记录 v1/member/follow/record
+   */
+  getMemberFollowRecord(id: string) {
+    return this.http.get(`/v1/member/follow/record/${id}`)
+  }
 }
