@@ -235,4 +235,35 @@ export class MemberAPi extends Api {
   getMemberTransfer(params: any) {
     return this.http.put(`/v1/member/transfer`, { params })
   }
+  /*
+   *员工详情—跟进信息 v1/member/follow/info
+   */
+  getMemberFollow(id: string) {
+    return this.http.get(`/v1/member/follow/info/${id}`)
+  }
+  /*
+   *员工详情—跟进记录 v1/member/follow/record
+   */
+  getMemberFollowRecord(id: string) {
+    return this.http.get(`/v1/member/follow/record/${id}`)
+  }
+  /**
+   * 详情公共头部信息
+   */
+  getHeaderInfo(id: string) {
+    return this.http.get(`/v1/member/common/${id}`)
+  }
+
+  /**
+   * 详情基础信息
+   */
+  getBasicInfo(id: string) {
+    return this.http.get(`/v1/member/basic/${id}`)
+  }
+  /**
+   *添加用户跟进记录 v1/member/follow/history/用户ID
+   */
+  getMemberFollowHistory(id: string, params: any) {
+    return this.http.put(`/v1/member/follow/history/${id}`, { params })
+  }
 }
