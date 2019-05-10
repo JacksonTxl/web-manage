@@ -21,44 +21,43 @@
             </div>
 
             <div class="shop-member-info-title-pannel__info">
-              <st-t2>孙乐乐</st-t2>
+              <st-t2>{{ info.member_name }}</st-t2>
               <div class="shop-member-info-title-pannel__info__phone">
                 <div>
                   手机号：
-                  <span>1888888888</span>
+                  <span>{{ info.mobile}}</span>
                 </div>
                 <div class="line"></div>
                 <div>
                   首次成为会员时间：
-                  <span>1888888888</span>
+                  <span>{{ info.be_member_time }}</span>
                 </div>
               </div>
               <div class="label-list">
-                <span class="lable-item">
-                  快乐的小逗比一个一个
-                  <a-icon type="close"/>
-                </span>
-                <span class="lable-item">
-                  快乐的小逗比一个一个
-                  <a-icon type="close"/>
-                </span>
-                <span class="lable-item">
-                  快乐的小逗比一个一个
-                  <a-icon type="close"/>
-                </span>
-                <span class="lable-item">
-                  快乐的小逗比一个一个
-                  <a-icon type="close"/>
-                </span>
-                <span class="lable-item">
-                  快乐的小逗比一个一个
-                  <a-icon type="close"/>
-                </span>
-              </div>
-              <div class="add-lable">
-                <span class="add-lable-item">
-                  <a-icon type="plus"/>标签
-                </span>
+                <template v-for="(tag, index) in info.member_tag">
+                  <a-tooltip :key="index" :title="tag.name">
+                    <a-tag
+                      class="tag-item"
+                      :key="tag.name"
+                      :closable="true"
+                      :afterClose="() => handleClose(tag)"
+                    >{{ tag.name }}</a-tag>
+                  </a-tooltip>
+                </template>
+                <a-input
+                  v-if="inputVisible"
+                  ref="input"
+                  type="text"
+                  size="small"
+                  :style="{ width: '78px' }"
+                  :value="inputValue"
+                  @change="handleInputChange"
+                  @blur="handleInputConfirm"
+                  @keyup.enter="handleInputConfirm"
+                />
+                <a-tag v-else @click="showInput" style="background: #fff; borderStyle: dashed;">
+                  <a-icon type="plus" style="margin-right: 8px;"/>标签
+                </a-tag>
               </div>
             </div>
           </div>
@@ -119,11 +118,53 @@
 </template>
 
 <script>
+import { InfoService } from './info.service'
 export default {
+  serviceInject() {
+    return {
+      infoService: InfoService
+    }
+  },
+  rxState() {
+    return {
+      info: this.infoService.info$
+    }
+  },
   name: 'list',
   data() {
-    return {}
+    return {
+      inputVisible: false,
+      inputValue: ''
+    }
   },
-  methods: {}
+  methods: {
+    handleClose(tag) {},
+    showInput() {
+      this.inputVisible = true
+      this.$nextTick(function() {
+        this.$refs.input.focus()
+      })
+    },
+    handleInputChange(e) {
+      this.inputValue = e.target.value
+    },
+
+    handleInputConfirm() {
+      const inputValue = this.inputValue
+      let tags = this.tags
+      if (inputValue && tags.indexOf(inputValue) === -1) {
+        tags = [...tags, inputValue]
+      }
+      console.log(tags)
+      Object.assign(this, {
+        tags,
+        inputVisible: false,
+        inputValue: ''
+      })
+    }
+  },
+  mounted() {
+    console.log('=========', this.info)
+  }
 }
 </script>

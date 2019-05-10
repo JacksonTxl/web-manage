@@ -61,3 +61,21 @@
     </a-row>
   </div>
 </template>
+<script>
+import { BasicService } from './basic.service'
+export default {
+  serviceInject() {
+    return {
+      basicService: BasicService
+    }
+  },
+  rxState() {
+    return {
+      basicInfo: this.infoService.basicInfo$
+    }
+  },
+  mounted() {
+    console.log('===', this.basicInfo)
+  }
+}
+</script>

@@ -235,4 +235,17 @@ export class MemberAPi extends Api {
   getMemberTransfer(params: any) {
     return this.http.put(`/v1/member/transfer`, { params })
   }
+  /**
+   * 详情公共头部信息
+   */
+  getHeaderInfo(id: string) {
+    return this.http.get(`/v1/member/common/${id}`, { mock: {} })
+  }
+
+  /**
+   * 详情基础信息
+   */
+  getBasicInfo(id: string) {
+    return this.http.get(`/v1/member/basic/${id}`, { mock: {} })
+  }
 }
