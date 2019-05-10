@@ -263,7 +263,7 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="总价">{{team_total+personal_total}}元</st-form-item>
+          <st-form-item label="总价">{{all_total}}元</st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
@@ -579,9 +579,11 @@ export default {
           this.packageData.transfer_rate = values.transfer_rate
           this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
           this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
+          this.packageData.team_range = []
           this.teamCourseList.forEach(i => {
             this.packageData.team_range.push(i.course_id)
           })
+          this.packageData.personal_range = []
           this.personalCourseList.forEach(i => {
             this.packageData.personal_range.push({
               course_id: i.course_id,
@@ -607,9 +609,11 @@ export default {
           this.packageData.transfer_rate = values.transfer_rate
           this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
           this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
+          this.packageData.team_range = []
           this.teamCourseList.forEach(i => {
             this.packageData.team_range.push(i.course_id)
           })
+          this.packageData.personal_range = []
           this.personalCourseList.forEach(i => {
             this.packageData.personal_range.push({
               course_id: i.course_id,
@@ -691,6 +695,7 @@ export default {
                   delete that.personalCoachTotalList[key]
                 }
               })
+              that.personalCoachListHistory = []
               // 缓存选择的教练等级
               data.list.forEach(i => {
                 that.personalCoachListHistory.push(i.coachGradeList)
@@ -790,6 +795,11 @@ export default {
           this.personalCoachTotalList[value.course_id].total = this.personalAllOperationCoachTotal
         }
       })
+      // 缓存选择的教练等级
+      this.personalCoachListHistory = []
+      forEach(this.personalCourseList, i => {
+        this.personalCoachListHistory.push(i.coachGradeList)
+      })
       // 清空
       this.personalAllOperationCoachList = []
       this.personalAllOperationCoachTotal = 0
@@ -811,7 +821,7 @@ export default {
       } else {
         personalIsOk = true
       }
-      if (teamIsOk && personalIsOk) {
+      if (teamIsOk && personalIsOk && !(!this.packageData.is_team && !this.packageData.is_personal)) {
         // 校验通过
         this.courseIsNone = false
         this.courseErrorText = ''
@@ -993,6 +1003,11 @@ export default {
       } else {
         return 0
       }
+    },
+    all_total() {
+      let teamTotal = this.packageData.is_team ? this.team_total : 0
+      let personalTotal = this.packageData.is_personal ? this.personal_total : 0
+      return teamTotal + personalTotal
     },
     // 售卖渠道
     sell_type_list() {

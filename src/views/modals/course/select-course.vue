@@ -144,7 +144,7 @@ export default {
       this.getCourseList()
     },
     onOk() {
-      this.$emit('ok', { list: this.selectCourseList })
+      this.$emit('ok', { list: cloneDeep(this.selectCourseList) })
       this.show = false
     },
     // 根据已选课程，过滤可选课程
