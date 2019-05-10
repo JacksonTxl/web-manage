@@ -31,8 +31,15 @@ export default {
   },
   methods: {
     OnChange(key) {
-      this.$emit('change', key)
-      this.$router.push({ name: key })
+      const { options } = this
+      let query = {}
+      options.forEach(tab => {
+        if (tab.route.name === key) {
+          query = { ...tab.route.query }
+        }
+      })
+      this.$emit('change', key, query)
+      this.$router.push({ name: key, query })
     },
     initCurrentValue() {
       let error = ''
