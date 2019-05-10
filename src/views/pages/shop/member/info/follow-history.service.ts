@@ -51,10 +51,10 @@ export class FollowHistoryService extends Store<CardsListInfoState> {
       })
     )
   }
-  init() {
-    return forkJoin(this.getListInfo('1'), this.getFollowInfo('1'))
+  init(id: string) {
+    return forkJoin(this.getListInfo(id), this.getFollowInfo(id))
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.init().subscribe(() => next())
+    this.init(to.meta.query.id).subscribe(() => next())
   }
 }
