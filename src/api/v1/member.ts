@@ -247,4 +247,17 @@ export class MemberAPi extends Api {
   getMemberFollowRecord(id: string) {
     return this.http.get(`/v1/member/follow/record/${id}`)
   }
+  /**
+   * 详情公共头部信息
+   */
+  getHeaderInfo(id: string) {
+    return this.http.get(`/v1/member/common/${id}`, { mock: {} })
+  }
+
+  /**
+   * 详情基础信息
+   */
+  getBasicInfo(id: string) {
+    return this.http.get(`/v1/member/basic/${id}`, { mock: {} })
+  }
 }
