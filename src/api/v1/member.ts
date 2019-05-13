@@ -261,9 +261,31 @@ export class MemberAPi extends Api {
     return this.http.get(`/v1/member/basic/${id}`)
   }
   /**
-   *添加用户跟进记录 v1/member/follow/history/用户ID
+   * 添加用户跟进记录 v1/member/follow/history/用户ID
    */
   getMemberFollowHistory(id: string, params: any) {
     return this.http.put(`/v1/member/follow/history/${id}`, { params })
   }
+  /**
+   * 卡消费
+   */
+  getCardConsumption(id: string, query: CardConsumptionQuery) {
+    return this.http.get(`/v1/member/card${id}`, { query })
+  }
+  /**
+   * 课消费
+   */
+  getCourseConsumption() {
+
+  }
+}
+export interface CardConsumptionQuery{
+  /**
+   * 卡类型
+   */
+  card_type: number;
+  /**
+   * 开卡日期
+   */
+  date: string
 }
