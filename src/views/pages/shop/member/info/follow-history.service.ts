@@ -7,6 +7,7 @@ import { forkJoin } from 'rxjs'
 
 interface CardsListInfoState {
   cardsListInfo: any
+  followInfo: any
 }
 @Injectable()
 export class FollowHistoryService extends Store<CardsListInfoState> {
