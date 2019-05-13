@@ -22,7 +22,7 @@ export default {
       navs: [{
         label: '课程定价及预约设置',
         route: {
-          name: 'brand-setting-app-personal'
+          name: 'brand-setting-app-course-personal'
         }
       }, {
         label: '支付设置',

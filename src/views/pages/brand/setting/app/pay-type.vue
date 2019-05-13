@@ -1,5 +1,5 @@
 <template>
-  <st-panel>
+  <st-panel v-if="info">
     <st-t2>配置支付方式</st-t2>
     <div class="mg-t24" v-for="(item, index) in payTypeDes" :key="index">
       <a-row class="align-items-center">
@@ -56,11 +56,9 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     const payTypeService = this.payTypeService
     return {
       loading: payTypeService.loading$,
-      settingEnums: user.settingEnums$,
       info: payTypeService.resData$
     }
   },
@@ -74,7 +72,7 @@ export default {
   },
   methods: {
     onSwitchChange(id) {
-      console.log(id)
+      console.log(id, this.info[id])
       const isEnable = this.info[id].is_enable
       this.payTypeService.update({
         id,
