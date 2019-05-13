@@ -7,11 +7,11 @@
       :header="header"
       @eventPositioned='onEventPositioned'
       :plugins="calendarPlugins"
-      minTime="11:11:00"
+      minTime="09:00:00"
       :columnHeaderFormat="columnHeaderFormat"
       locale="zh-cn"
       :views="views"
-      maxTime="16:30:00"
+      maxTime="24:00:00"
       :weekends="calendarWeekends"
       :customButtons="customButtons"
       :slotLabelFormat="slotLabelFormat"
@@ -34,11 +34,22 @@ import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
+import { TeamService } from './team.service'
 
 export default {
   name: 'ScheduleTeam',
   components: {
     FullCalendar // make the <FullCalendar> tag available
+  },
+  serviceInject() {
+    return {
+      teamService: TeamService
+    }
+  },
+  rxState() {
+    return {
+      scheduleTeamCourseList: this.teamService.scheduleTeamCourseList$
+    }
   },
   data() {
     console.log('this', this)
@@ -110,9 +121,7 @@ export default {
         }
       },
       calendarWeekends: true,
-      calendarEvents: [ // initial event data
-        { title: 'Event Now', start: new Date() }
-      ]
+      calendarEvents: []
     }
   },
   updated() {
@@ -121,6 +130,20 @@ export default {
   mounted() {
     this.setAddButton()
     this.gotoPast()
+    // this.$nextTick().then(() => {
+    //   this.scheduleTeamCourseList.forEach(item => {
+    //     this.calendarEvents.push({ // add new event data
+    //       title: item.course_name,
+    //       url: JSON.stringify(item),
+    //       start: `${item.start_date} ${item.start_time}`,
+    //       end: `${item.start_date} ${item.end_time}`
+    //       // cocah_name: item.coach_name,
+    //       // end: `${item.start_date} ${item.end_time}`,
+    //       // start: moment(item.start_time),
+    //       // course_name: item.course_name
+    //     })
+    //   })
+    // })
   },
   methods: {
     setAddButton() {
@@ -185,19 +208,15 @@ export default {
     onEventPositioned() {
       console.log('dds')
     },
-    onEventRender: function(event, element) {
+    onEventRender(event, element) {
       event.el.querySelector('.fc-title').remove()
       event.el.querySelector('.fc-time').remove()
       console.log('onEventRender')
-      this.start = moment(event.start)
-      this.end = moment(event.end)
+      const item = event.event
+      const renderObj = JSON.parse(item.url)
       var new_description =
-          this.start.format('HH:mm') + '-' +
-          this.end.format('HH:mm') + '<br/>' +
-          'event.customer' + '<br/>' +
-          '<strong>Address: </strong><br/>' + event.title + '<br/>' +
-          '<strong>Task: </strong><br/>' + 'event.tas' + '<br/>' +
-          '<strong>Place: </strong>' + 'event.place' + '<br/>'
+          moment(item.start).format('HH:mm') + '-' + moment(`${item.end}`).format('HH:mm') + '<br/>' +
+          '<strong>Address: </strong>' + item.title + '<br/>'
       event.el.querySelector('.fc-content').innerHTML = new_description
     },
     onEventClick(event) {
@@ -205,30 +224,28 @@ export default {
       window.alert('我这是详情')
     },
     handleDateClick(arg) {
+      // this.calendarEvents.push({ // add new event data
+      //   title: 'New fadfgafasdfsadfasdEvent',
+      //   start: moment(arg.date),
+      //   allDay: arg.allDay
+      // })
       this.$modalRouter.push({
-        name: 'course-add-course-schdules',
+        name: 'schedule-add-course-schedule',
         props: {
           time: arg.date
         },
         on: {
           ok: res => {
-            this.calendarEvents.push({ // add new event data
-              title: 'New Event',
-              start: moment(arg.date),
-              end: moment(arg.date).add(60, 'm'),
-              allDay: arg.allDay
-            })
-            console.log(res)
+            if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
+              this.calendarEvents.push({ // add new event data
+                title: 'New Event',
+                start: arg.date,
+                allDay: arg.allDay
+              })
+            }
           }
         }
       })
-      // if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
-      //   this.calendarEvents.push({ // add new event data
-      //     title: 'New Event',
-      //     start: arg.date,
-      //     allDay: arg.allDay
-      //   })
-      // }
     }
   }
 }
