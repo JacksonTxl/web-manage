@@ -266,4 +266,11 @@ export class MemberAPi extends Api {
   getMemberFollowHistory(id: string, params: any) {
     return this.http.put(`/v1/member/follow/history/${id}`, { params })
   }
+  /*
+   *员工详情—预约上课v1/member/reserve/员工id
+   */
+  getMemberReserve(id: string, query: any) {
+    console.log(query)
+    return this.http.get(`/v1/member/reserve/${id}`, { query })
+  }
 }

@@ -1,31 +1,41 @@
 <template>
   <div>
-    {{value}}
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
-        <a-date-picker style="width: 160px"/>
-        <a-select style="width: 160px;margin-left:12px">
-          <a-select-option value="jack">Jack</a-select-option>
-          <a-select-option value="lucy">Lucy</a-select-option>
-          <a-select-option value="Yiminghe">yiminghe</a-select-option>
+        <a-date-picker style="width: 160px" format="YYYY-MM-DD" @change="courseName"/>
+        <a-select
+          style="width: 160px;margin-left:12px"
+          placeholder="课程类型"
+          v-model="value.reserve_type"
+        >
+          <a-select-option :value="1">团课</a-select-option>
+          <a-select-option :value="2">私教课</a-select-option>
+          <a-select-option :value="3">私教小班课</a-select-option>
         </a-select>
-        <a-select style="width: 160px;margin-left:12px">
-          <a-select-option value="jack">Jack</a-select-option>
-          <a-select-option value="lucy">Lucy</a-select-option>
-
-          <a-select-option value="Yiminghe">yiminghe</a-select-option>
+        <a-select
+          style="width: 160px;margin-left:12px"
+          placeholder="预约状态"
+          v-model="value.reserve_status"
+        >
+          <a-select-option :value="-1">全部预约状态</a-select-option>
+          <a-select-option :value="1">预约失败</a-select-option>
+          <a-select-option :value="2">候补中</a-select-option>
+          <a-select-option :value="3">候补成功</a-select-option>
+          <a-select-option :value="4">取消预约</a-select-option>
         </a-select>
-        <a-select style="width: 160px;margin-left:12px">
-          <a-select-option value="jack">Jack</a-select-option>
-          <a-select-option value="lucy">Lucy</a-select-option>
-
-          <a-select-option value="Yiminghe">yiminghe</a-select-option>
+        <a-select
+          style="width: 160px;margin-left:12px"
+          placeholder="签到状态"
+          v-model="value.checkin_status"
+        >
+          <a-select-option :value="-1">全部签到状态</a-select-option>
+          <a-select-option :value="1">为签到</a-select-option>
+          <a-select-option :value="2">已签到</a-select-option>
         </a-select>
         <st-input-search
-          placeholder="可输入姓名、手机号、卡号"
+          placeholder="请输入课程名称"
           style="width: 290px;float: right;"
-          v-model="value.course_name"
-          @change="courseName"
+          @search="courseName1"
         />
       </a-col>
     </a-row>
@@ -44,26 +54,16 @@ export default {
     }
   },
   data() {
-    return {
-      form: {
-        start_date: '', // 上课日期
-        reserve_type: '预约课类型',
-        reserve_status: '预约状态',
-        checkin_status: '签到状态',
-        course_name: '课程名称',
-        size: '每页数量',
-        page: '当前页'
-      }
-    }
+    return {}
   },
   methods: {
-    courseName(value) {
-      console.log('courseName', this.value, value)
+    courseName(value, time) {
+      this.value.start_date = time
       this.$emit('dataChange', this.value)
     },
-    handleChange(value) {
-      console.log(value)
-      console.log(`selected ${value}`)
+    courseName1(value, time) {
+      this.value.course_name = value
+      this.$emit('dataChange', this.value)
     }
   }
 }
