@@ -4,7 +4,10 @@
     <a-row>
       <a-col :span="16"><st-t2>团体课程预约设置</st-t2></a-col>
       <a-col :span="8" class="ta-r">
-        <modal-link tag="a" :to="{ name:'brand-setting-team-reserve' }">编辑</modal-link>
+        <modal-link tag="a" :to="{ name:'brand-setting-team-reserve' }">
+          <st-icon type="edit"></st-icon>
+          <span class="mg-l4 color-text-light">编辑</span>
+        </modal-link>
       </a-col>
     </a-row>
     <!-- 预约范围 -->
