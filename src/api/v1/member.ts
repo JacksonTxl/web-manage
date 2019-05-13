@@ -212,15 +212,85 @@ export class MemberAPi extends Api {
     return this.http.put(`/v1/member/wechat/remove/${id}`)
   }
   /**
-   * 用户绑定实体卡信息 v1/member/physical/会员ID
+   * 用户绑定实体卡信息
    */
   getMemberPhysical(id: number) {
     return this.http.get(`/v1/member/physical/${id}`)
   }
   /**
-   * 重绑实体卡 v1/member/physical/bind/会员ID
+   * 重绑实体卡
    */
   getMemberPhysicalBind(id: string, params: any) {
     return this.http.put(`/v1/member/physical/bind/${id}`, { params })
   }
+  /**
+   * 转店用户购买的商品信息v1/member/buy/会员ID
+   */
+  getMemberBuy(id: number) {
+    return this.http.get(`/v1/member/buy/${id}`)
+  }
+  /**
+   * 转店
+   */
+  getMemberTransfer(params: any) {
+    return this.http.put(`/v1/member/transfer`, { params })
+  }
+  /*
+   *员工详情—跟进信息 v1/member/follow/info
+   */
+  getMemberFollow(id: string) {
+    return this.http.get(`/v1/member/follow/info/${id}`)
+  }
+  /*
+   *员工详情—跟进记录 v1/member/follow/record
+   */
+  getMemberFollowRecord(id: string) {
+    return this.http.get(`/v1/member/follow/record/${id}`)
+  }
+  /**
+   * 详情公共头部信息
+   */
+  getHeaderInfo(id: string) {
+    return this.http.get(`/v1/member/common/${id}`)
+  }
+
+  /**
+   * 详情基础信息
+   */
+  getBasicInfo(id: string) {
+    return this.http.get(`/v1/member/basic/${id}`)
+  }
+  /**
+   * 添加用户跟进记录 v1/member/follow/history/用户ID
+   */
+  getMemberFollowHistory(id: string, params: any) {
+    return this.http.put(`/v1/member/follow/history/${id}`, { params })
+  }
+  /*
+   *员工详情—预约上课v1/member/reserve/员工id
+   */
+  getMemberReserve(id: string, query: any) {
+    console.log(query)
+    return this.http.get(`/v1/member/reserve/${id}`, { query })
+  }
+  /**
+   * 卡消费
+   */
+  getCardConsumption(id: string, query: CardConsumptionQuery) {
+    return this.http.get(`/v1/member/card${id}`, { query })
+  }
+  /**
+   * 课消费
+   */
+  getCourseConsumption() {}
+}
+export interface CardConsumptionQuery {
+  /**
+   * 卡类型
+   */
+  card_type: number
+  /**
+   * 开卡日期
+   */
+  date: string
 }

@@ -73,7 +73,7 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="总价">{{team_total+personal_total}}元</st-form-item>
+          <st-form-item label="总价">{{all_total}}元</st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
@@ -399,7 +399,7 @@ export default {
       this.courseIsFirstInput = false
       let teamIsOk = this.packageData.is_team ? !!this.team_total : true
       let personalIsOk = this.packageData.is_personal ? !!this.personal_total : true
-      if (teamIsOk && personalIsOk) {
+      if (teamIsOk && personalIsOk && !(!this.packageData.is_team && !this.packageData.is_personal)) {
         // 校验通过
         this.courseIsNone = false
         this.courseErrorText = ''
@@ -566,6 +566,12 @@ export default {
       } else {
         return 0
       }
+    },
+    // 总价
+    all_total() {
+      let teamTotal = this.packageData.is_team ? this.team_total : 0
+      let personalTotal = this.packageData.is_personal ? this.personal_total : 0
+      return teamTotal + personalTotal
     },
     // 售卖渠道
     sell_type_list() {

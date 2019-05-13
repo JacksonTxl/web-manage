@@ -1,11 +1,11 @@
 <template>
   <st-modal title="转店" @ok="save" :footer="null" v-model="show" size="small">
-    <st-form :form="form" @submit="save" labelWidth="80px">
+    <st-form :form="form" labelWidth="80px">
       <a-row :gutter="8">
         <a-col :lg="24">
           <st-info>
-            <st-info-item label="姓名">孙乐乐</st-info-item>
-            <st-info-item label="手机号">12345678901</st-info-item>
+            <st-info-item label="姓名">{{record.member_name}}</st-info-item>
+            <st-info-item label="手机号">{{record.mobile}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -57,7 +57,7 @@
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item class="mg-l24" style="text-align:right;" labelOffset>
-            <st-button type="primary" ghost html-type="submit">确认提交</st-button>
+            <st-button type="primary" ghost html-type="submit" @click="save">确认提交</st-button>
           </st-form-item>
         </a-col>
       </a-row>
@@ -65,6 +65,7 @@
   </st-modal>
 </template>
 <script>
+import { TransferShopService } from './transfer-shop.service'
 const columns = [
   {
     title: '卡课',
@@ -95,8 +96,17 @@ const data = [
   }
 ]
 export default {
+  serviceInject() {
+    return {
+      Service: TransferShopService
+    }
+  },
   name: 'transferShop',
-  props: {},
+  props: {
+    record: {
+      type: Object
+    }
+  },
   data() {
     return {
       form: this.$form.createForm(this),
@@ -141,14 +151,31 @@ export default {
       }
     }
   },
-  created() {},
+  created() {
+    this.getMemberBuy()
+  },
   methods: {
+    getMemberBuy() {
+      let self = this
+      self.Service.getMemberBuy(self.record.id).subscribe(state => {
+        console.log(state.info)
+        self.getData = state.info
+      })
+    },
+    getMemberTransfer(data) {
+      let self = this
+      self.Service.getMemberTransfer(data).subscribe(state => {
+        self.show = false
+      })
+    },
     save(e) {
-      e.preventDefault()
-      console.log(e)
+      // e.preventDefault()
+      // console.log(e)
+      let self = this
       this.form.validateFields((err, values) => {
         console.log(err, values)
         if (!err) {
+          self.getMemberTransfer(values)
         }
       })
     },

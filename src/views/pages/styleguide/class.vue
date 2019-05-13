@@ -38,6 +38,7 @@
         <span class="color-title">.color-title</span>
         <span class="color-text mg-l16">.color-text</span>
         <span class="color-text-light mg-l16">.color-text-light</span>
+        <span class="color-danger mg-l16">.color-danger</span>
         <span class="st-des mg-l16">.st-des</span>
         <div class="sg-box bordered color-title">.bordered</div>
         <st-container type="2" class="bg-gray">bg-gray</st-container>

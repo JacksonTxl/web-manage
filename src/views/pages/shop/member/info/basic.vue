@@ -4,18 +4,18 @@
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="8">
         <st-info>
-          <st-info-item label="姓名">孙乐乐</st-info-item>
-          <st-info-item label="国籍">中国</st-info-item>
-           <st-info-item label="职业">设计师</st-info-item>
-          <st-info-item label="婚姻状况">未婚</st-info-item>
+          <st-info-item label="姓名">{{ basicInfo.member_name }}</st-info-item>
+          <st-info-item label="国籍">{{ basicInfo.country.name }}</st-info-item>
+           <st-info-item label="职业">{{ basicInfo.jobs }}</st-info-item>
+          <st-info-item label="婚姻状况">{{ basicInfo.married_type.name }}</st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
         <st-info>
-          <st-info-item label="性别">男</st-info-item>
-          <st-info-item label="民族">白族</st-info-item>
-           <st-info-item label="证件类型">身份证</st-info-item>
-          <st-info-item label="收入水平">10000-20000</st-info-item>
+          <st-info-item label="性别">{{ basicInfo.sex.name }}</st-info-item>
+          <st-info-item label="民族">{{ basicInfo.nation.name }}</st-info-item>
+           <st-info-item label="证件类型">{{ basicInfo.id_card_type.name }}</st-info-item>
+          <st-info-item label="收入水平">{{ basicInfo.sex.name }}</st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
@@ -61,3 +61,21 @@
     </a-row>
   </div>
 </template>
+<script>
+import { BasicService } from './basic.service'
+export default {
+  serviceInject() {
+    return {
+      basicService: BasicService
+    }
+  },
+  rxState() {
+    return {
+      basicInfo: this.basicService.basicInfo$
+    }
+  },
+  mounted() {
+    console.log('===', this.basicInfo)
+  }
+}
+</script>

@@ -15,7 +15,7 @@ export class MissingCaedService extends Store<CardsTableModelState> {
   getMemberPhysical(data: any) {
     return this.MemberAPi.getMemberPhysical(data)
   }
-  getMemberPhysicalBind(id: number, data: any) {
+  getMemberPhysicalBind(id: any, data: any) {
     return this.MemberAPi.getMemberPhysicalBind(id, data)
   }
 }

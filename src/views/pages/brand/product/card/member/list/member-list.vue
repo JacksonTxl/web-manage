@@ -222,6 +222,7 @@ export default {
           sorter: (a, b) => {
             let A = a.card_type.name
             let B = b.card_type.name
+            console.log(1111)
             if (A < B) {
               return -1
             }

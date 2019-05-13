@@ -1,14 +1,15 @@
-import { Injectable } from 'vue-service-app'
+import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { Effect, State } from 'rx-state'
 import { PackageApi, OnsalePackageInput } from '@/api/v1/course/package'
-import { mergeMap } from 'rxjs/operators'
+import { mergeMap, tap } from 'rxjs/operators'
 
 @Injectable()
-export class AddRangePackageService {
+export class AddRangePackageService implements RouteGuard {
   loading$ = new State({})
+  coachList$ = new State({})
   constructor(private packageApi: PackageApi) { }
   addPackage(data: any) {
-    return this.packageApi.AddCoursePackage(data, 'range')
+    return this.packageApi.addCoursePackage(data, 'range')
   }
   onsalePackage(data: OnsalePackageInput) {
     return this.packageApi.onsaleCoursePackage(data)
@@ -27,5 +28,15 @@ export class AddRangePackageService {
           end_time: data.end_time })
       })
     )
+  }
+  getCoachList() {
+    return this.packageApi.getCoachList().pipe(tap((res:any) => {
+      this.coachList$.commit(() => res.list)
+    }))
+  }
+  beforeRouteEnter(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
+    this.getCoachList().subscribe(() => {
+      next()
+    })
   }
 }

@@ -84,14 +84,14 @@
                             </tr>
                             <tr>
                               <td colspan="3">
-                                <p v-if="!teamCourseList.length" style="text-align:center;margin: 8px 0;">无数据</p>
+                                <p v-if="!teamCourseList.length" class="bg-row-even"  style="margin: 0;text-align:center;padding: 8px 0;">无数据</p>
                                 <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
                                 <ul class="team-course-content-table"
                                 v-if="teamCourseList.length"
                                 v-scrollBar='{stopPropagation:true}'
                                 v-decorator="['teamCourseList2']">
                                     <li class="checkbox border-bottom"
-                                    :class="{'bg-row-odd':i%2!==0,'bg-row-even':i%2===0}"
+                                    :class="{'bg-row-odd':index%2!==0,'bg-row-even':index%2===0}"
                                     v-for="(i,index) in teamCourseList"
                                     :key="i.course_id">
                                       <div class="tg-c">
@@ -158,7 +158,7 @@
                           </colgroup>
                           <tr class="bg-thead th">
                             <th></th>
-                            <th>课程类型</th>
+                            <th>课程名称</th>
                             <th>支持预约的教练等级</th>
                             <th>授课教练数</th>
                             <th>操作</th>
@@ -174,7 +174,7 @@
                             </tr>
                             <tr>
                               <td colspan="5">
-                                <p v-if="!personalCourseList.length" style="text-align:center;margin: 8px 0;">无数据</p>
+                                <p v-if="!personalCourseList.length" class="bg-row-even"  style="margin: 0;text-align:center;padding: 8px 0;">无数据</p>
                                 <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
                                 <ul class="personal-course-content-table"
                                 v-if="personalCourseList.length"
@@ -190,19 +190,19 @@
                                       <div>{{item.course_name}}</div>
                                       <div>
                                         <a-dropdown placement="bottomRight" :trigger="['click']">
-                                          <a href="javascript:void(0)">3个等级&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
-                                          <a-checkbox-group v-model="item.coachGradeList" slot="overlay">
+                                          <a href="javascript:void(0)">{{item.coachGradeList.length===coachList.length?'全部':`${item.coachGradeList.length}个`}}等级&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
+                                          <a-checkbox-group
+                                          :class="basic(`personal-dropdown`)"
+                                          v-model="item.coachGradeList"
+                                          @change="coachItemChange($event,item.course_id,index)"
+                                          slot="overlay">
                                             <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
                                             <ul class="personal-course-coach-grade-dropdown" v-scrollBar='{stopPropagation:true}' v-decorator="[`personalCourseListCoachGrade${index}`]">
-                                              <li><a-checkbox value="A">A</a-checkbox></li>
-                                              <li><a-checkbox value="B">B</a-checkbox></li>
-                                              <li><a-checkbox value="C">C</a-checkbox></li>
-                                              <li><a-checkbox value="D">D</a-checkbox></li>
-                                              <li><a-checkbox value="E">E</a-checkbox></li>
-                                              <li><a-checkbox value="F">F</a-checkbox></li>
-                                              <li><a-checkbox value="G">G</a-checkbox></li>
-                                              <li><a-checkbox value="H">H</a-checkbox></li>
-                                              <li><a-checkbox value="J">J</a-checkbox></li>
+                                              <li
+                                              v-for="(coachItem,coachIndex) in coachList"
+                                              :key="coachIndex">
+                                                <a-checkbox :value="coachItem.id">{{coachItem.setting_name}}</a-checkbox>
+                                              </li>
                                             </ul>
                                           </a-checkbox-group>
                                         </a-dropdown>
@@ -215,7 +215,7 @@
                                 </ul>
                               </td>
                             </tr>
-                            <tr class="bg-thead checkbox">
+                            <tr class="bg-thead checkbox topline">
                               <td class="tg-c"><a-checkbox
                                 :indeterminate="personalIndeterminate"
                                 @change="checkAllChange('personal')"
@@ -223,25 +223,29 @@
                               </td>
                               <td>批量操作</td>
                               <td>
-                                <a-dropdown placement="bottomRight" :trigger="['click']">
+                                <a-dropdown placement="bottomRight" :trigger="['click']" v-model="coachAllOperationDropdownIsShow">
                                   <a href="javascript:void(0)">批量设置等级&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
-                                  <a-checkbox-group slot="overlay">
+                                  <a-checkbox-group
+                                  :class="basic(`personal-dropdown`)"
+                                  v-model="personalAllOperationCoachList"
+                                  @change="coachAllChange"
+                                  class="all"
+                                  slot="overlay">
                                     <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
                                     <ul class="personal-course-coach-grade-dropdown" v-scrollBar='{stopPropagation:true}' v-decorator="['personalCourseListCoachGradeAll']">
-                                      <li><a-checkbox value="A">A</a-checkbox></li>
-                                      <li><a-checkbox value="B">B</a-checkbox></li>
-                                      <li><a-checkbox value="C">C</a-checkbox></li>
-                                      <li><a-checkbox value="D">D</a-checkbox></li>
-                                      <li><a-checkbox value="E">E</a-checkbox></li>
-                                      <li><a-checkbox value="F">F</a-checkbox></li>
-                                      <li><a-checkbox value="G">G</a-checkbox></li>
-                                      <li><a-checkbox value="H">H</a-checkbox></li>
-                                      <li><a-checkbox value="J">J</a-checkbox></li>
+                                      <li
+                                        v-for="(coachItem,coachIndex) in coachList"
+                                        :key="coachIndex">
+                                          <a-checkbox :value="coachItem.id">{{coachItem.setting_name}}</a-checkbox>
+                                      </li>
                                     </ul>
+                                    <div class="personal-course-coach-grade-dropdown-button">
+                                      <a href="javascript:void(0)" :disabled="!personalAllOperationCoachList.length" @click="coachAllOperationOk">确定</a>
+                                    </div>
                                   </a-checkbox-group>
                                 </a-dropdown>
                               </td>
-                              <td>0</td>
+                              <td>{{personalAllOperationCoachTotal}}</td>
                               <td>
                                 <a @click="removeCourseItems('personal')" href="javascript:void(0)">删除</a>
                               </td>
@@ -259,7 +263,7 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="总价">{{team_total+personal_total}}元</st-form-item>
+          <st-form-item label="总价">{{all_total}}元</st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
@@ -442,7 +446,7 @@
 <script>
 import moment from 'moment'
 import { UserService } from '@/services/user.service'
-import { cloneDeep, remove, every } from 'lodash-es'
+import { cloneDeep, remove, every, filter, reduce, forEach } from 'lodash-es'
 import { AddRangePackageService } from './add-range-package.service'
 export default {
   name: 'ShopRangePackageAdd',
@@ -455,6 +459,7 @@ export default {
   rxState() {
     return {
       addLoading: this.addPackageService.loading$,
+      coachList: this.addPackageService.coachList$,
       package_course: this.userService.packageCourseEnums$
     }
   },
@@ -522,9 +527,14 @@ export default {
       teamCheckAll: false,
       // personal course
       personalCourseList: [],
+      personalCoachTotalList: {},
+      personalCoachListHistory: [],
+      personalAllOperationCoachList: [],
+      personalAllOperationCoachTotal: 0,
       personalCourseListIsShow: false,
       personalIndeterminate: false,
       personalCheckAll: false,
+      coachAllOperationDropdownIsShow: false,
       // 课程范围是否未配置
       courseIsNone: false,
       courseErrorText: '',
@@ -569,13 +579,15 @@ export default {
           this.packageData.transfer_rate = values.transfer_rate
           this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
           this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
+          this.packageData.team_range = []
           this.teamCourseList.forEach(i => {
             this.packageData.team_range.push(i.course_id)
           })
+          this.packageData.personal_range = []
           this.personalCourseList.forEach(i => {
             this.packageData.personal_range.push({
               course_id: i.course_id,
-              coach_level: [1] // kael
+              coach_level: cloneDeep(i.coachGradeList)
             })
           })
           this.addPackageService.add(this.packageData).subscribe(res => {
@@ -597,13 +609,15 @@ export default {
           this.packageData.transfer_rate = values.transfer_rate
           this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
           this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
+          this.packageData.team_range = []
           this.teamCourseList.forEach(i => {
             this.packageData.team_range.push(i.course_id)
           })
+          this.packageData.personal_range = []
           this.personalCourseList.forEach(i => {
             this.packageData.personal_range.push({
               course_id: i.course_id,
-              coach_level: [1] // kael
+              coach_level: cloneDeep(i.coachGradeList)
             })
           })
           this.addPackageService.addAndOnsale(this.packageData).subscribe(res => {
@@ -659,10 +673,32 @@ export default {
           },
           on: {
             ok(data) {
+              let coachGradeList = []
+              forEach(that.coachList, i => {
+                coachGradeList.push(i.id)
+              })
+              let total = reduce(that.coachList, (sum, o) => sum + o.coach_number, 0)
               data.list.forEach(i => {
                 i.courseChecked = false
-                i.coachGradeList = []
-                i.coach = 0
+                i.coachGradeList = coachGradeList
+                i.coach = total
+              })
+              forEach(that.personalCoachTotalList, (value, key) => {
+                forEach(data.list, innerValue => {
+                  if (+innerValue.course_id === +key) {
+                    innerValue.coachGradeList = cloneDeep(value.list)
+                    innerValue.coach = cloneDeep(value.total)
+                  }
+                })
+                // 删除personalCoachTotalList里不存在的course_id项
+                if (!data.list.some(o => +o.course_id === +key)) {
+                  delete that.personalCoachTotalList[key]
+                }
+              })
+              that.personalCoachListHistory = []
+              // 缓存选择的教练等级
+              data.list.forEach(i => {
+                that.personalCoachListHistory.push(i.coachGradeList)
               })
               that.personalCourseList = cloneDeep(data.list)
             }
@@ -680,6 +716,10 @@ export default {
         let arr = cloneDeep(this.personalCourseList)
         remove(arr, o => o.course_id === id)
         this.personalCourseList = arr
+        // 移除备份选择的教练list
+        let coachList = cloneDeep(this.personalCoachTotalList)
+        delete coachList[id]
+        this.personalCoachTotalList = coachList
       }
     },
     // 移除选择的课程
@@ -690,8 +730,14 @@ export default {
         this.teamCourseList = arr
       } else if (type === 'personal') {
         let arr = cloneDeep(this.personalCourseList)
-        remove(arr, o => o.courseChecked)
+        let removeList = remove(arr, o => o.courseChecked)
         this.personalCourseList = arr
+        // 移除备份选择的教练list
+        let coachList = cloneDeep(this.personalCoachTotalList)
+        removeList.forEach(i => {
+          delete coachList[i.course_id]
+        })
+        this.personalCoachTotalList = coachList
       }
     },
     // 选择课程
@@ -714,6 +760,52 @@ export default {
         })
       }
     },
+    // item coach checkboxGroup changeEvent
+    coachItemChange(e, id, index) {
+      if (!e.length) {
+        this.personalCourseList[index].coachGradeList = this.personalCoachListHistory[index]
+        return
+      } else {
+        this.personalCoachListHistory[index] = cloneDeep(e)
+      }
+      this.personalCoachTotalList[id] = {}
+      this.personalCoachTotalList[id].list = cloneDeep(e)
+      let selectCoach = filter(this.coachList, o => e.includes(o.id))
+      let total = reduce(selectCoach, (sum, o) => sum + o.coach_number, 0)
+      this.personalCoachTotalList[id].total = total
+      // 设置教练总数
+      this.personalCourseList.forEach(i => {
+        if (i.course_id === id) {
+          i.coach = total
+        }
+      })
+    },
+    coachAllChange(e) {
+      let selectCoach = filter(this.coachList, o => e.includes(o.id))
+      this.personalAllOperationCoachTotal = reduce(selectCoach, (sum, o) => sum + o.coach_number, 0)
+    },
+    coachAllOperationOk() {
+      // 批量设置
+      forEach(this.personalCourseList, value => {
+        if (value.courseChecked) {
+          value.coachGradeList = cloneDeep(this.personalAllOperationCoachList)
+          value.coach = this.personalAllOperationCoachTotal
+          this.personalCoachTotalList[value.course_id] = {}
+          this.personalCoachTotalList[value.course_id].list = cloneDeep(this.personalAllOperationCoachList)
+          this.personalCoachTotalList[value.course_id].total = this.personalAllOperationCoachTotal
+        }
+      })
+      // 缓存选择的教练等级
+      this.personalCoachListHistory = []
+      forEach(this.personalCourseList, i => {
+        this.personalCoachListHistory.push(i.coachGradeList)
+      })
+      // 清空
+      this.personalAllOperationCoachList = []
+      this.personalAllOperationCoachTotal = 0
+      // 收起
+      this.coachAllOperationDropdownIsShow = false
+    },
     // course validatorFn
     course_validator() {
       this.courseIsFirstInput = false
@@ -729,7 +821,7 @@ export default {
       } else {
         personalIsOk = true
       }
-      if (teamIsOk && personalIsOk) {
+      if (teamIsOk && personalIsOk && !(!this.packageData.is_team && !this.packageData.is_personal)) {
         // 校验通过
         this.courseIsNone = false
         this.courseErrorText = ''
@@ -911,6 +1003,11 @@ export default {
       } else {
         return 0
       }
+    },
+    all_total() {
+      let teamTotal = this.packageData.is_team ? this.team_total : 0
+      let personalTotal = this.packageData.is_personal ? this.personal_total : 0
+      return teamTotal + personalTotal
     },
     // 售卖渠道
     sell_type_list() {

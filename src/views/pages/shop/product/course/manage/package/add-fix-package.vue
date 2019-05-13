@@ -13,95 +13,130 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="23" :xs="22" :offset="1">
-          <st-form-item label="上课范围" required>
+          <st-form-item
+          :class="{'st-has-error': !courseIsFirstInput&&courseIsNone}"
+          :help="courseErrorText"
+          label="上课范围"
+          required>
             <div :class="add('course')">
               <table>
                 <colgroup>
                   <col style="width:5%;">
                   <col style="width:10%;">
-                  <col style="width:21%;">
-                  <col style="width:27%;">
-                  <col style="width:20%;">
-                  <col style="width:17%;">
+                  <col style="width:24%;">
+                  <col style="width:18%;">
+                  <col style="width:18%;">
+                  <col style="width:25%;">
                 </colgroup>
                 <tr class="bg-thead">
                   <th></th>
                   <th class="rightline">课程类型</th>
-                  <th class="pl-56">节数</th>
-                  <th>课时费</th>
-                  <th colspan="2">小计</th>
+                  <th></th>
+                  <th>节数</th>
+                  <th>小计</th>
+                  <th></th>
                 </tr>
                 <tbody>
                   <tr class="bg-row-odd checkbox">
                     <td class="tg-c"><a-checkbox @change="teamCheckboxChange"/></td>
                     <td class="rightline">团体课程</td>
-                    <td class="pr-32 pl-56">
-                      <st-input-number v-model="packageData.team_times" :disabled="packageData.is_team===0">
-                        <template slot="addonAfter">节</template>
-                      </st-input-number>
-                    </td>
-                    <td class="pr-148">
-                      <st-input-number v-model="packageData.team_unit_price" :float="true" :disabled="packageData.is_team===0">
-                        <template slot="addonAfter">元</template>
-                      </st-input-number>
-                    </td>
-                    <td>{{team_total}}</td>
-                    <td class="overflow-hidden" @click="teamCourseListShow">
-                      <a class="set-course-button" :class="{'hide':!teamCourseListIsShow}" href="javascript:void(0)">配置上课范围&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
+                    <td></td>
+                    <td>{{teamCourseTotalObject.team_times}}节</td>
+                    <td>{{teamCourseTotalObject.total}}元</td>
+                    <td class="overflow-hidden">
+                      <a class="set-course-button"
+                      @click="teamCourseListShow"
+                      :disabled="!packageData.is_team"
+                      :class="{'hide':!(teamCourseListIsShow&&packageData.is_team)}"
+                      href="javascript:void(0)">配置上课范围&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
                     </td>
                   </tr>
-                  <tr class="bg-row-odd team-course-list-content" v-if="teamCourseListIsShow">
+                  <tr class="bg-row-odd team-course-list-content" v-if="teamCourseListIsShow&&packageData.is_team">
                     <td class="rightline" colspan="2"></td>
                     <td class="team-course-table" colspan="4">
                       <div :class="add('team-course-table')">
                         <table>
                           <colgroup>
                             <col style="width:5%;">
-                            <col style="width:81%;">
-                            <col style="width:14%;">
+                            <col style="width:20%;">
+                            <col style="width:28%;">
+                            <col style="width:28%;">
+                            <col style="width:10%;">
+                            <col style="width:9%;">
                           </colgroup>
                           <tr class="bg-thead th">
                             <th></th>
-                            <th>课程类型</th>
-                            <th>
-                              <a href="javascript:void(0)" v-if="!teamCourseListIsEdit" @click="teamCourseListIsEdit=true">编辑</a>
-                              <a href="javascript:void(0)" class="mr-8" v-if="teamCourseListIsEdit" @click="teamCourseListIsEdit=false">保存</a>
-                              <a href="javascript:void(0)" v-if="teamCourseListIsEdit" @click="teamCourseListIsEdit=false">取消</a>
-                            </th>
+                            <th>课程名称</th>
+                            <th>节数</th>
+                            <th>课时费</th>
+                            <th>总价</th>
+                            <th>操作</th>
                           </tr>
                           <tbody>
-                            <tr class="checkbox border-bottom" v-if="teamCourseListIsEdit">
-                              <td colspan="3" class="team-course-add-buton">
-                                <a-button block type="dashed">
+                            <tr class="checkbox border-bottom">
+                              <td colspan="6" class="team-course-add-buton">
+                                <a-button block type="dashed" @click="addCourse('team')">
                                   <st-icon class="icon-12 mr-8" type="add"></st-icon>
                                   添加团体课程
                                 </a-button>
                               </td>
                             </tr>
                             <tr>
-                              <td colspan="3">
+                              <td colspan="6">
+                                <p v-if="!teamCourseList.length" class="bg-row-even"  style="margin: 0;text-align:center;padding: 8px 0;">无数据</p>
                                 <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
-                                <ul class="team-course-content-table" v-if="!teamCourseListIsEdit" v-scrollBar='{stopPropagation:true}' v-decorator="['teamCourseList1']">
-                                    <li class="checkbox border-bottom" :class="{'bg-row-odd':i%2!==0,'bg-row-even':i%2===0}" v-for="(i,index) in teamCourseList" :key="index">
-                                      <div></div>
-                                      <div>Produce</div>
-                                      <div></div>
-                                    </li>
-                                </ul>
-                                <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
-                                <ul class="team-course-content-table" v-if="teamCourseListIsEdit" v-scrollBar='{stopPropagation:true}' v-decorator="['teamCourseList2']">
-                                    <li class="checkbox border-bottom" :class="{'bg-row-odd':i%2!==0,'bg-row-even':i%2===0}" v-for="(i,index) in teamCourseList" :key="index">
-                                      <div class="tg-c"><a-checkbox /></div>
-                                      <div>Produce</div>
-                                      <div>删除</div>
+                                <ul class="team-course-content-table"
+                                v-if="teamCourseList.length"
+                                v-scrollBar='{stopPropagation:true}'
+                                v-decorator="['teamCourseList2']">
+                                    <li class="checkbox border-bottom"
+                                    :class="{'bg-row-odd':index%2!==0,'bg-row-even':index%2===0}"
+                                    v-for="(i,index) in teamCourseList"
+                                    :key="i.course_id">
+                                      <div class="tg-c">
+                                        <a-checkbox :checked="i.courseChecked" @change="courseItemCheckedChange($event,'team',index)" />
+                                      </div>
+                                      <div>{{i.course_name}}</div>
+                                      <div>
+                                        <st-input-number @change="teamInputChange($event,'team_times',i.course_id)" v-model="i.team_times">
+                                          <template slot="addonAfter">节</template>
+                                        </st-input-number>
+                                      </div>
+                                      <div>
+                                        <st-input-number @change="teamInputChange($event,'team_unit_price',i.course_id)" v-model="i.team_unit_price" :float="true">
+                                          <template slot="addonAfter">元</template>
+                                        </st-input-number>
+                                      </div>
+                                      <div>{{ i.team_times | course_item_total(i.team_unit_price)}}</div>
+                                      <div>
+                                        <a @click="removeCourseItem('team',i.course_id)" href="javascript:void(0)">删除</a>
+                                      </div>
                                     </li>
                                 </ul>
                               </td>
                             </tr>
-                            <tr class="bg-thead checkbox topline" v-if="teamCourseListIsEdit">
-                              <td class="tg-c"><a-checkbox /></td>
+                            <tr class="bg-thead checkbox topline">
+                              <td class="tg-c">
+                                <a-checkbox
+                                :indeterminate="teamIndeterminate"
+                                @change="checkAllChange('team')"
+                                :checked="teamCheckAll" />
+                              </td>
                               <td>批量操作</td>
-                              <td>删除</td>
+                              <td class="pr-24">
+                                <st-input-number v-model="teamOperationObject.team_times">
+                                  <a :disabled="!+teamOperationObject.team_times" href="javascript:void(0)" slot="addonAfter" @click="times_operation_ok('team')">确定</a>
+                                </st-input-number>
+                              </td>
+                              <td class="pr-24">
+                                <st-input-number v-model="teamOperationObject.team_unit_price" :float="true">
+                                  <a :disabled="!+teamOperationObject.team_unit_price" href="javascript:void(0)" slot="addonAfter" @click="unit_price_operation_ok('team')">确定</a>
+                                </st-input-number>
+                              </td>
+                              <td>{{ teamOperationObject.team_times | course_item_total(teamOperationObject.team_unit_price)}}</td>
+                              <td>
+                                <a @click="removeCourseItems('team')" href="javascript:void(0)">删除</a>
+                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -111,119 +146,145 @@
                   <tr class="bg-row-even checkbox topline">
                     <td class="tg-c"><a-checkbox @change="personalCheckboxChange" /></td>
                     <td class="rightline">私教课程</td>
-                    <td class="pr-32 pl-56">
-                      <st-input-number v-model="packageData.personal_times" :disabled="packageData.is_personal===0">
-                        <template slot="addonAfter">节</template>
-                      </st-input-number>
-                    </td>
-                    <td class="pr-148">
-                      <st-input-number v-model="packageData.personal_unit_price" :float="true" :disabled="packageData.is_personal===0">
-                        <template slot="addonAfter">元</template>
-                      </st-input-number>
-                    </td>
-                    <td>{{personal_total}}</td>
-                    <td class="overflow-hidden" @click="personalCourseListShow">
-                      <a class="set-course-button" :class="{'hide':!personalCourseListIsShow}" href="javascript:void(0)">配置上课范围&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
+                    <td></td>
+                    <td>{{personalCourseTotalObject.personal_times}}节</td>
+                    <td>{{personalCourseTotalObject.total}}元</td>
+                    <td class="overflow-hidden">
+                      <a class="set-course-button"
+                      @click="personalCourseListShow"
+                      :disabled="!packageData.is_personal"
+                      :class="{'hide':!(personalCourseListIsShow&&packageData.is_personal)}"
+                      href="javascript:void(0)">配置上课范围&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
                     </td>
                   </tr>
-                  <tr class="bg-row-even personal-course-list-content" v-if="personalCourseListIsShow">
+                  <tr class="bg-row-even personal-course-list-content" v-if="personalCourseListIsShow&&packageData.is_personal">
                     <td class="rightline" colspan="2"></td>
                     <td class="personal-course-table" colspan="4">
                       <div :class="add('personal-course-table')">
                         <table>
                           <colgroup>
                             <col style="width:5%;">
-                            <col style="width:29%;">
-                            <col style="width:34%;">
-                            <col style="width:16%;">
-                            <col style="width:16%;">
+                            <col style="width:20%;">
+                            <col style="width:18%;">
+                            <col style="width:18%;">
+                            <col style="width:23%;">
+                            <col style="width:8%;">
+                            <col style="width:8%;">
                           </colgroup>
                           <tr class="bg-thead th">
                             <th></th>
-                            <th>课程类型</th>
-                            <th>支持预约的教练等级</th>
-                            <th>授课教练数</th>
-                            <th>
-                              <a href="javascript:void(0)" v-if="!personalCourseListIsEdit" @click="personalCourseListIsEdit=true">编辑</a>
-                              <a href="javascript:void(0)" class="mr-8" v-if="personalCourseListIsEdit" @click="personalCourseListIsEdit=false">保存</a>
-                              <a href="javascript:void(0)" v-if="personalCourseListIsEdit" @click="personalCourseListIsEdit=false">取消</a>
-                            </th>
+                            <th>课程名称</th>
+                            <th>节数</th>
+                            <th>课时费</th>
+                            <th class="tg-c">支持预约的教练等级</th>
+                            <th>总价</th>
+                            <th>操作</th>
                           </tr>
                           <tbody>
-                            <tr class="checkbox border-bottom" v-if="personalCourseListIsEdit">
-                              <td colspan="5" class="personal-course-add-buton">
-                                <a-button block type="dashed">
+                            <tr class="checkbox border-bottom">
+                              <td colspan="7" class="personal-course-add-buton">
+                                <a-button block type="dashed" @click="addCourse('personal')">
                                   <st-icon class="icon-12 mr-8" type="add"></st-icon>
                                   添加私教课程
                                 </a-button>
                               </td>
                             </tr>
                             <tr>
-                              <td colspan="5">
+                              <td colspan="7">
+                                <p v-if="!personalCourseList.length" class="bg-row-even"  style="margin: 0;text-align:center;padding: 8px 0;">无数据</p>
                                 <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
-                                <ul class="personal-course-content-table" v-if="personalCourseListIsEdit" v-scrollBar='{stopPropagation:true}' v-decorator="['personalCourseList1']">
-                                    <li class="checkbox border-bottom" :class="{'bg-row-odd':index%2!==0,'bg-row-even':index%2===0}" v-for="(item,index) in personalCourseList" :key="index">
-                                      <div class="tg-c"><a-checkbox /></div>
-                                      <div>Produce</div>
+                                <ul class="personal-course-content-table"
+                                v-if="personalCourseList.length"
+                                v-scrollBar='{stopPropagation:true}'
+                                v-decorator="['personalCourseList1']">
+                                    <li class="checkbox border-bottom"
+                                    :class="{'bg-row-odd':index%2!==0,'bg-row-even':index%2===0}"
+                                    v-for="(item,index) in personalCourseList"
+                                    :key="item.course_id">
+                                      <div class="tg-c">
+                                        <a-checkbox :checked="item.courseChecked" @change="courseItemCheckedChange($event,'personal',index)" />
+                                      </div>
+                                      <div>{{item.course_name}}</div>
+                                      <div>
+                                        <st-input-number @change="personalInputChange($event,'personal_times',item.course_id)" v-model="item.personal_times">
+                                          <template slot="addonAfter">节</template>
+                                        </st-input-number>
+                                      </div>
+                                      <div>
+                                        <st-input-number @change="personalInputChange($event,'personal_unit_price',item.course_id)" v-model="item.personal_unit_price" :float="true">
+                                          <template slot="addonAfter">元</template>
+                                        </st-input-number>
+                                      </div>
                                       <div>
                                         <a-dropdown placement="bottomRight" :trigger="['click']">
-                                          <a href="javascript:void(0)">3个等级{{index==2?'还有还有还有还有':''}}&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
-                                          <a-checkbox-group slot="overlay">
+                                          <a href="javascript:void(0)">{{item.coachGradeList.length===coachList.length?'全部':`${item.coachGradeList.length}个`}}等级&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
+                                          <a-checkbox-group
+                                          :class="basic(`personal-dropdown`)"
+                                          v-model="item.coachGradeList"
+                                          @change="coachItemChange($event,item.course_id,index)"
+                                          slot="overlay">
                                             <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
                                             <ul class="personal-course-coach-grade-dropdown" v-scrollBar='{stopPropagation:true}' v-decorator="[`personalCourseListCoachGrade${index}`]">
-                                              <li><a-checkbox value="A">A</a-checkbox></li>
-                                              <li><a-checkbox value="B">B</a-checkbox></li>
-                                              <li><a-checkbox value="C">C</a-checkbox></li>
-                                              <li><a-checkbox value="D">D</a-checkbox></li>
-                                              <li><a-checkbox value="E">E</a-checkbox></li>
-                                              <li><a-checkbox value="F">F</a-checkbox></li>
-                                              <li><a-checkbox value="G">G</a-checkbox></li>
-                                              <li><a-checkbox value="H">H</a-checkbox></li>
-                                              <li><a-checkbox value="J">J</a-checkbox></li>
+                                              <li
+                                              v-for="(coachItem,coachIndex) in coachList"
+                                              :key="coachIndex">
+                                                <a-checkbox :value="coachItem.id">{{coachItem.setting_name}}</a-checkbox>
+                                              </li>
                                             </ul>
                                           </a-checkbox-group>
                                         </a-dropdown>
                                       </div>
-                                      <div>0</div>
-                                      <div>删除</div>
-                                    </li>
-                                </ul>
-                                <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
-                                <ul class="personal-course-content-table" v-if="!personalCourseListIsEdit" v-scrollBar='{stopPropagation:true}' v-decorator="['personalCourseList2']">
-                                    <li class="checkbox border-bottom" :class="{'bg-row-odd':i%2!==0,'bg-row-even':i%2===0}" v-for="(i,index) in personalCourseList" :key="index">
-                                      <div class="tg-c"></div>
-                                      <div>Produce</div>
-                                      <div>等级1/等级2</div>
-                                      <div>0</div>
-                                      <div></div>
+                                      <div>{{ item.personal_times | course_item_total(item.personal_unit_price)}}</div>
+                                      <div>
+                                        <a @click="removeCourseItem('personal',item.course_id)" href="javascript:void(0)">删除</a>
+                                      </div>
                                     </li>
                                 </ul>
                               </td>
                             </tr>
-                            <tr class="bg-thead checkbox" v-if="personalCourseListIsEdit">
-                              <td class="tg-c"><a-checkbox /></td>
+                            <tr class="bg-thead checkbox topline">
+                              <td class="tg-c"><a-checkbox
+                                :indeterminate="personalIndeterminate"
+                                @change="checkAllChange('personal')"
+                                :checked="personalCheckAll" />
+                              </td>
                               <td>批量操作</td>
-                              <td>
-                                <a-dropdown placement="bottomRight" :trigger="['click']">
+                              <td class="pr-24">
+                                <st-input-number v-model="personalOperationObject.personal_times">
+                                  <a :disabled="!+personalOperationObject.personal_times" href="javascript:void(0)" slot="addonAfter" @click="times_operation_ok('personal')">确定</a>
+                                </st-input-number>
+                              </td>
+                              <td class="pr-24">
+                                <st-input-number v-model="personalOperationObject.personal_unit_price" :float="true">
+                                  <a :disabled="!+personalOperationObject.personal_unit_price" href="javascript:void(0)" slot="addonAfter" @click="unit_price_operation_ok('personal')">确定</a>
+                                </st-input-number>
+                              </td>
+                              <td class="tg-c">
+                                <a-dropdown placement="bottomRight" :trigger="['click']" v-model="coachAllOperationDropdownIsShow">
                                   <a href="javascript:void(0)">批量设置等级&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
-                                  <a-checkbox-group slot="overlay">
+                                  <a-checkbox-group
+                                  :class="basic(`personal-dropdown`)"
+                                  v-model="personalAllOperationCoachList"
+                                  class="all"
+                                  slot="overlay">
                                     <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
                                     <ul class="personal-course-coach-grade-dropdown" v-scrollBar='{stopPropagation:true}' v-decorator="['personalCourseListCoachGradeAll']">
-                                      <li><a-checkbox value="A">A</a-checkbox></li>
-                                      <li><a-checkbox value="B">B</a-checkbox></li>
-                                      <li><a-checkbox value="C">C</a-checkbox></li>
-                                      <li><a-checkbox value="D">D</a-checkbox></li>
-                                      <li><a-checkbox value="E">E</a-checkbox></li>
-                                      <li><a-checkbox value="F">F</a-checkbox></li>
-                                      <li><a-checkbox value="G">G</a-checkbox></li>
-                                      <li><a-checkbox value="H">H</a-checkbox></li>
-                                      <li><a-checkbox value="J">J</a-checkbox></li>
+                                      <li
+                                        v-for="(coachItem,coachIndex) in coachList"
+                                        :key="coachIndex">
+                                          <a-checkbox :value="coachItem.id">{{coachItem.setting_name}}</a-checkbox>
+                                      </li>
                                     </ul>
+                                    <div class="personal-course-coach-grade-dropdown-button">
+                                      <a href="javascript:void(0)" :disabled="!personalAllOperationCoachList.length" @click="coachAllOperationOk">确定</a>
+                                    </div>
                                   </a-checkbox-group>
                                 </a-dropdown>
                               </td>
-                              <td>0</td>
-                              <td>删除</td>
+                              <td>{{ personalOperationObject.personal_times | course_item_total(personalOperationObject.personal_unit_price)}}</td>
+                              <td>
+                                <a @click="removeCourseItems('personal')" href="javascript:void(0)">删除</a>
+                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -238,7 +299,7 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item :max="99999.9" label="总价">{{team_total+personal_total}}元</st-form-item>
+          <st-form-item label="总价">{{all_total}}元</st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
@@ -421,19 +482,20 @@
 <script>
 import moment from 'moment'
 import { UserService } from '@/services/user.service'
-import { cloneDeep, remove } from 'lodash-es'
-import { AddUnlimitPackageService } from './add-unlimit-package.service'
+import { cloneDeep, remove, every, filter, reduce, forEach } from 'lodash-es'
+import { AddFixPackageService } from './add-fix-package.service'
 export default {
-  name: 'ShopUnlimitPackageAdd',
+  name: 'ShopFixPackageAdd',
   serviceInject() {
     return {
       userService: UserService,
-      addPackageService: AddUnlimitPackageService
+      addPackageService: AddFixPackageService
     }
   },
   rxState() {
     return {
       addLoading: this.addPackageService.loading$,
+      coachList: this.addPackageService.coachList$,
       package_course: this.userService.packageCourseEnums$
     }
   },
@@ -446,20 +508,16 @@ export default {
       packageData: {
         // 课程包名称
         course_name: '',
-        // 是否支持团体课 0为不支持 1为支持
-        is_team: 0,
-        // 团体课总节数
-        team_times: null,
-        // 团体课单价
-        team_unit_price: null,
-        // 是否支持私教课 0为不支持 1为支持
-        is_personal: 0,
-        // 私教课总节数
-        personal_times: null,
-        // 私教课单价
-        personal_unit_price: null,
         // 售价
         price: null,
+        // 是否支持团体课 0为不支持 1为支持
+        is_team: 0,
+        // 团体课上课范围课程id
+        team_range: [],
+        // 是否支持私教课 0为不支持 1为支持
+        is_personal: 0,
+        // 私教课上课范围课程id course_id私教课课程id coach_level私教课支持预约的教练等级
+        personal_range: [],
         // 售卖开始时间
         start_time: '',
         // 售卖截止时间
@@ -470,14 +528,14 @@ export default {
         valid_time_unit: 1,
         // 允许冻结天数
         frozen_days: null,
+        // 售卖方式
+        sale_mode: [2],
         // 是否可以转让: 0 不可以 1 可以
         is_allow_transfer: 0,
         // 转让费率
         transfer_rate: null,
         // 转让单位 1:百分比 2:元
         transfer_unit: 1,
-        // 售卖方式
-        sale_mode: [2],
         // 封面对象
         image: {
           image_id: null,
@@ -488,15 +546,61 @@ export default {
         // 备注
         remark: ''
       },
+      // 课程范围是否未输入过
+      courseIsFirstInput: true,
+      // team course
+      teamCourseList: [],
+      // 备份课程已做的操作
+      teamCourseTotalList: {},
+      // 配置课程表格是否显示
+      teamCourseListIsShow: false,
+      // 配置的课程总计
+      teamCourseTotalObject: {
+        team_times: 0,
+        total: 0
+      },
+      // 批量操作的值
+      teamOperationObject: {
+        team_times: null,
+        team_unit_price: null
+      },
+      // 操作栏checkbox是否半选
+      teamIndeterminate: false,
+      // 操作栏checkbox是全选
+      teamCheckAll: false,
+      // personal course
+      personalCourseList: [],
+      // 备份课程已做的操作
+      personalCourseTotalList: {},
+      // 缓存最后一次选择的教练，用于阻止用户不选择任何一个
+      personalCoachListHistory: [],
+      // 操作栏教练等级选择的值
+      personalAllOperationCoachList: [],
+      // 配置的课程总计
+      personalCourseTotalObject: {
+        personal_times: 0,
+        total: 0
+      },
+      // 批量操作的值
+      personalOperationObject: {
+        personal_times: null,
+        personal_unit_price: null
+      },
+      // 配置课程表格是否显示
+      personalCourseListIsShow: false,
+      // 操作栏checkbox是否半选
+      personalIndeterminate: false,
+      // 操作栏checkbox是全选
+      personalCheckAll: false,
+      // 操作栏选择教练等级的dorpdown是否显示
+      coachAllOperationDropdownIsShow: false,
+      // 课程范围是否未配置
+      courseIsNone: false,
+      courseErrorText: '',
       form: this.$form.createForm(this),
       start_time: null,
       end_time: null,
       endOpen: false,
-      // 课程范围是否未输入过
-      courseIsFirstInput: true,
-      // 课程范围是否未配置
-      courseIsNone: false,
-      courseErrorText: '',
       // 是否配置了用户端
       appConfig: false,
       // 是否未传了封面
@@ -517,45 +621,10 @@ export default {
           value: 3,
           label: '年'
         }
-      ],
-
-      // team course
-      teamCourseList: [1, 2, 3, 4, 5, 6],
-      teamCourseListIsEdit: false,
-      teamCourseListIsShow: false,
-      // personal course
-      personalCourseList: [{
-        value: 1,
-        coachGradeIsShow: false
-      }, {
-        value: 1,
-        coachGradeIsShow: false
-      }, {
-        value: 1,
-        coachGradeIsShow: false
-      }, {
-        value: 1,
-        coachGradeIsShow: false
-      }, {
-        value: 1,
-        coachGradeIsShow: false
-      }, {
-        value: 1,
-        coachGradeIsShow: false
-      }],
-      personalCourseListIsEdit: false,
-      personalCourseListIsShow: false
+      ]
     }
   },
   methods: {
-    // team
-    teamCourseListShow() {
-      this.teamCourseListIsShow = !this.teamCourseListIsShow
-    },
-    // personal
-    personalCourseListShow() {
-      this.personalCourseListIsShow = !this.personalCourseListIsShow
-    },
     // 保存
     save() {
       this.course_validator()
@@ -569,6 +638,23 @@ export default {
           this.packageData.transfer_rate = values.transfer_rate
           this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
           this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
+          this.packageData.team_range = []
+          this.teamCourseList.forEach(i => {
+            this.packageData.team_range.push({
+              course_id: i.course_id,
+              team_times: i.team_times,
+              team_unit_price: i.team_unit_price
+            })
+          })
+          this.packageData.personal_range = []
+          this.personalCourseList.forEach(i => {
+            this.packageData.personal_range.push({
+              course_id: i.course_id,
+              personal_times: i.personal_times,
+              personal_unit_price: i.personal_unit_price,
+              coach_level: cloneDeep(i.coachGradeList)
+            })
+          })
           this.addPackageService.add(this.packageData).subscribe(res => {
             console.log(res)
           })
@@ -588,16 +674,300 @@ export default {
           this.packageData.transfer_rate = values.transfer_rate
           this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
           this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
+          this.teamCourseList.forEach(i => {
+            this.packageData.team_range.push({
+              course_id: i.course_id,
+              team_times: i.team_times,
+              team_unit_price: i.team_unit_price
+            })
+          })
+          this.personalCourseList.forEach(i => {
+            this.packageData.personal_range.push({
+              course_id: i.course_id,
+              personal_times: i.personal_times,
+              personal_unit_price: i.personal_unit_price,
+              coach_level: cloneDeep(i.coachGradeList)
+            })
+          })
           this.addPackageService.addAndOnsale(this.packageData).subscribe(res => {
             console.log(res)
           })
         }
       })
     },
-    // course validatorFn
+    // checkboxChange
+    teamCheckboxChange(e) {
+      this.packageData.is_team = +e.target.checked
+      this.courseIsFirstInput = false
+      this.teamCourseListIsShow = +e.target.checked
+    },
+    personalCheckboxChange(e) {
+      this.packageData.is_personal = +e.target.checked
+      this.courseIsFirstInput = false
+      this.personalCourseListIsShow = +e.target.checked
+    },
+    // team
+    teamCourseListShow() {
+      this.teamCourseListIsShow = !this.teamCourseListIsShow
+    },
+    // personal
+    personalCourseListShow() {
+      this.personalCourseListIsShow = !this.personalCourseListIsShow
+    },
+    // 批量操作团课课程包节数
+    times_operation_ok(type) {
+      if (type === 'team') {
+        forEach(this.teamCourseList, o => {
+          if (o.courseChecked) {
+            o.team_times = +this.teamOperationObject.team_times
+            // 备份批量操作的数据
+            this.teamCourseTotalList[o.course_id] = this.teamCourseTotalList[o.course_id] ? this.teamCourseTotalList[o.course_id] : {}
+            this.teamCourseTotalList[o.course_id].team_times = +this.teamOperationObject.team_times
+          }
+        })
+      } else if (type === 'personal') {
+        forEach(this.personalCourseList, o => {
+          if (o.courseChecked) {
+            o.personal_times = +this.personalOperationObject.personal_times
+            // 备份批量操作的数据
+            this.personalCourseTotalList[o.course_id] = this.personalCourseTotalList[o.course_id] ? this.personalCourseTotalList[o.course_id] : {}
+            this.personalCourseTotalList[o.course_id].personal_times = +this.personalOperationObject.personal_times
+          }
+        })
+      }
+    },
+    // 批量操作团课课程包价格
+    unit_price_operation_ok(type) {
+      if (type === 'team') {
+        forEach(this.teamCourseList, o => {
+          if (o.courseChecked) {
+            o.team_unit_price = +this.teamOperationObject.team_unit_price
+            // 备份批量操作的数据
+            this.teamCourseTotalList[o.course_id] = this.teamCourseTotalList[o.course_id] ? this.teamCourseTotalList[o.course_id] : {}
+            this.teamCourseTotalList[o.course_id].team_unit_price = +this.teamOperationObject.team_unit_price
+          }
+        })
+      } else if (type === 'personal') {
+        forEach(this.personalCourseList, o => {
+          if (o.courseChecked) {
+            o.personal_unit_price = +this.personalOperationObject.personal_unit_price
+            // 备份批量操作的数据
+            this.personalCourseTotalList[o.course_id] = this.personalCourseTotalList[o.course_id] ? this.personalCourseTotalList[o.course_id] : {}
+            this.personalCourseTotalList[o.course_id].personal_unit_price = +this.personalOperationObject.personal_unit_price
+          }
+        })
+      }
+    },
+    // teamItems input change
+    teamInputChange(e, type, id) {
+      this.teamCourseTotalList[id] = this.teamCourseTotalList[id] ? this.teamCourseTotalList[id] : {}
+      this.teamCourseTotalList[id][type] = e
+    },
+    // personalItems input change
+    personalInputChange(e, type, id) {
+      this.personalCourseTotalList[id] = this.personalCourseTotalList[id] ? this.personalCourseTotalList[id] : {}
+      this.personalCourseTotalList[id][type] = e
+    },
+    // 添加课程
+    addCourse(type) {
+      let that = this
+      if (type === 'team') {
+        this.$modalRouter.push({
+          name: 'course-select-course',
+          props: {
+            type,
+            courses: this.teamCourseList
+          },
+          on: {
+            ok(data) {
+              data.list.forEach(i => {
+                i.courseChecked = false
+                i.team_times = null
+                i.team_unit_price = null
+              })
+              forEach(that.teamCourseTotalList, (value, key) => {
+                forEach(data.list, innerValue => {
+                  if (+innerValue.course_id === +key) {
+                    innerValue.team_times = value.team_times
+                    innerValue.team_unit_price = value.team_unit_price
+                  }
+                })
+                // 删除teamCourseTotalList里不存在的course_id项
+                if (!data.list.some(o => +o.course_id === +key)) {
+                  delete that.teamCourseTotalList[key]
+                }
+              })
+              that.teamCourseList = cloneDeep(data.list)
+            }
+          }
+        })
+      } else if (type === 'personal') {
+        this.$modalRouter.push({
+          name: 'course-select-course',
+          props: {
+            type,
+            courses: this.personalCourseList
+          },
+          on: {
+            ok(data) {
+              let coachGradeList = []
+              forEach(that.coachList, i => {
+                coachGradeList.push(i.id)
+              })
+              data.list.forEach(i => {
+                i.courseChecked = false
+                i.coachGradeList = coachGradeList
+                i.personal_times = null
+                i.personal_unit_price = null
+              })
+              forEach(that.personalCourseTotalList, (value, key) => {
+                forEach(data.list, innerValue => {
+                  if (+innerValue.course_id === +key) {
+                    innerValue.coachGradeList = cloneDeep(value.list ? value.list : coachGradeList)
+                    innerValue.personal_times = value.personal_times
+                    innerValue.personal_unit_price = value.personal_unit_price
+                  }
+                })
+                // 删除personalCoachTotalList里不存在的course_id项
+                if (!data.list.some(o => +o.course_id === +key)) {
+                  delete that.personalCourseTotalList[key]
+                }
+              })
+              // 缓存选择的教练等级
+              that.personalCoachListHistory = []
+              data.list.forEach(i => {
+                that.personalCoachListHistory.push(i.coachGradeList)
+              })
+              that.personalCourseList = cloneDeep(data.list)
+            }
+          }
+        })
+      }
+    },
+    // 移除课程
+    removeCourseItem(type, id) {
+      if (type === 'team') {
+        let arr = cloneDeep(this.teamCourseList)
+        remove(arr, o => o.course_id === id)
+        this.teamCourseList = arr
+        // 移除备份
+        let list = cloneDeep(this.teamCourseTotalList)
+        delete list[id]
+        this.teamCourseTotalList = list
+      } else if (type === 'personal') {
+        let arr = cloneDeep(this.personalCourseList)
+        remove(arr, o => o.course_id === id)
+        this.personalCourseList = arr
+        // 移除备份
+        let coachList = cloneDeep(this.personalCourseTotalList)
+        delete coachList[id]
+        this.personalCourseTotalList = coachList
+      }
+    },
+    // 移除选择的课程
+    removeCourseItems(type) {
+      if (type === 'team') {
+        let arr = cloneDeep(this.teamCourseList)
+        let removeList = remove(arr, o => o.courseChecked)
+        this.teamCourseList = arr
+        // 移除备份
+        let list = cloneDeep(this.teamCourseTotalList)
+        removeList.forEach(i => {
+          delete list[i.course_id]
+        })
+        this.teamCourseTotalList = list
+      } else if (type === 'personal') {
+        let arr = cloneDeep(this.personalCourseList)
+        let removeList = remove(arr, o => o.courseChecked)
+        this.personalCourseList = arr
+        // 移除备份
+        let coachList = cloneDeep(this.personalCourseTotalList)
+        removeList.forEach(i => {
+          delete coachList[i.course_id]
+        })
+        this.personalCourseTotalList = coachList
+      }
+    },
+    // 选择课程
+    courseItemCheckedChange(e, type, index) {
+      if (type === 'team') {
+        this.teamCourseList[index].courseChecked = e.target.checked
+      } else if (type === 'personal') {
+        this.personalCourseList[index].courseChecked = e.target.checked
+      }
+    },
+    // 全选
+    checkAllChange(type) {
+      if (type === 'team') {
+        this.teamCourseList.forEach(i => {
+          i.courseChecked = !this.teamCheckAll
+        })
+      } else if (type === 'personal') {
+        this.personalCourseList.forEach(i => {
+          i.courseChecked = !this.personalCheckAll
+        })
+      }
+    },
+    // item coach checkboxGroup changeEvent
+    coachItemChange(e, id, index) {
+      if (!e.length) {
+        this.personalCourseList[index].coachGradeList = this.personalCoachListHistory[index]
+        return
+      } else {
+        this.personalCoachListHistory[index] = cloneDeep(e)
+      }
+      this.personalCourseTotalList[id] = this.personalCourseTotalList[id] ? this.personalCourseTotalList[id] : {}
+      this.personalCourseTotalList[id].list = cloneDeep(e)
+    },
+    coachAllOperationOk() {
+      // 批量设置
+      forEach(this.personalCourseList, value => {
+        if (value.courseChecked) {
+          value.coachGradeList = cloneDeep(this.personalAllOperationCoachList)
+          this.personalCourseTotalList[value.course_id] = this.personalCourseTotalList[value.course_id] ? this.personalCourseTotalList[value.course_id] : {}
+          this.personalCourseTotalList[value.course_id].list = cloneDeep(this.personalAllOperationCoachList)
+        }
+      })
+      // 缓存选择的教练等级
+      this.personalCoachListHistory = []
+      forEach(this.personalCourseList, i => {
+        this.personalCoachListHistory.push(i.coachGradeList)
+      })
+      // 清空
+      this.personalAllOperationCoachList = []
+      // 收起
+      this.coachAllOperationDropdownIsShow = false
+    },
+    // course validatorFn  kael
     course_validator() {
       this.courseIsFirstInput = false
-      if (this.team_total || this.personal_total) {
+      let teamIsOk = false
+      let personalIsOk = false
+      // 校验团课
+      if (this.packageData.is_team) {
+        let isOk = false
+        isOk = this.teamCourseList.every(o => {
+          let team_times = isNaN(+o.team_times) ? 0 : +o.team_times
+          let team_unit_price = isNaN(+o.team_unit_price) ? 0 : +o.team_unit_price
+          return team_times * team_unit_price !== 0
+        })
+        teamIsOk = isOk && this.teamCourseList.length
+      } else {
+        teamIsOk = true
+      }
+      // 校验私教
+      if (this.packageData.is_personal) {
+        let isOk = false
+        isOk = this.personalCourseList.every(o => {
+          let personal_times = isNaN(+o.personal_times) ? 0 : +o.personal_times
+          let personal_unit_price = isNaN(+o.personal_unit_price) ? 0 : +o.personal_unit_price
+          return personal_times * personal_unit_price !== 0
+        })
+        personalIsOk = isOk && this.personalCourseList.length
+      } else {
+        personalIsOk = true
+      }
+      if (teamIsOk && personalIsOk && !(!this.packageData.is_team && !this.packageData.is_personal)) {
         // 校验通过
         this.courseIsNone = false
         this.courseErrorText = ''
@@ -618,15 +988,6 @@ export default {
         this.imageIsNone = true
         this.imageErrorText = '请上传封面'
       }
-    },
-    // checkboxChange
-    teamCheckboxChange(e) {
-      this.packageData.is_team = +e.target.checked
-      this.courseIsFirstInput = false
-    },
-    personalCheckboxChange(e) {
-      this.packageData.is_personal = +e.target.checked
-      this.courseIsFirstInput = false
     },
     // 转让
     transfer(e) {
@@ -748,22 +1109,65 @@ export default {
     // moment
     moment
   },
-  computed: {
-    // 团课小计
-    team_total() {
-      if (+this.packageData.team_times && +this.packageData.team_unit_price) {
-        return this.packageData.team_times * (this.packageData.team_unit_price * 10) / 10
-      } else {
-        return 0
+  watch: {
+    teamCourseList: {
+      deep: true,
+      handler(newVal) {
+        let allSelect = false
+        let allNotSelect = false
+        allSelect = every(newVal, o => o.courseChecked)
+        allNotSelect = every(newVal, o => !o.courseChecked)
+        this.teamIndeterminate = !allSelect && !allNotSelect
+        this.teamCheckAll = newVal.length ? allSelect : false
+        // 计算团课总计
+        this.teamCourseTotalObject.team_times = reduce(newVal, (sum, o) => {
+          let team_times = isNaN(+o.team_times) ? 0 : +o.team_times
+          return sum + team_times
+        }, 0)
+        this.teamCourseTotalObject.total = reduce(newVal, (sum, o) => {
+          let team_times = isNaN(+o.team_times) ? 0 : +o.team_times
+          let team_unit_price = isNaN(+o.team_unit_price) ? 0 : +o.team_unit_price
+          return sum + (team_times * (team_unit_price * 10) / 10)
+        }, 0)
       }
     },
-    // 私教小计
-    personal_total() {
-      if (+this.packageData.personal_times && +this.packageData.personal_unit_price) {
-        return this.packageData.personal_times * (this.packageData.personal_unit_price * 10) / 10
+    personalCourseList: {
+      deep: true,
+      handler(newVal) {
+        let allSelect = false
+        let allNotSelect = false
+        allSelect = every(newVal, o => o.courseChecked)
+        allNotSelect = every(newVal, o => !o.courseChecked)
+        this.personalIndeterminate = !allSelect && !allNotSelect
+        this.personalCheckAll = newVal.length ? allSelect : false
+        // 计算私教课总计
+        this.personalCourseTotalObject.personal_times = reduce(newVal, (sum, o) => {
+          let personal_times = isNaN(+o.personal_times) ? 0 : +o.personal_times
+          return sum + personal_times
+        }, 0)
+        this.personalCourseTotalObject.total = reduce(newVal, (sum, o) => {
+          let personal_times = isNaN(+o.personal_times) ? 0 : +o.personal_times
+          let personal_unit_price = isNaN(+o.personal_unit_price) ? 0 : +o.personal_unit_price
+          return sum + (personal_times * (personal_unit_price * 10) / 10)
+        }, 0)
+      }
+    }
+  },
+  filters: {
+    // 单课价格统计
+    course_item_total(times, unit_price) {
+      if (+times && +unit_price) {
+        return +times * (+unit_price * 10) / 10
       } else {
         return 0
       }
+    }
+  },
+  computed: {
+    all_total() {
+      let teamTotal = this.packageData.is_team ? this.teamCourseTotalObject.total : 0
+      let personalTotal = this.packageData.is_personal ? this.personalCourseTotalObject.total : 0
+      return teamTotal + personalTotal
     },
     // 售卖渠道
     sell_type_list() {
