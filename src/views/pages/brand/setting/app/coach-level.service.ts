@@ -8,7 +8,7 @@ interface ListState {
   resData: object
 }
 @Injectable()
-export class ListService extends Store<ListState> {
+export class CoachLevelService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
   constructor(protected coachLevelApi: CoachLevelApi) {
