@@ -8,7 +8,7 @@ export class AddUnlimitPackageService {
   loading$ = new State({})
   constructor(private packageApi: PackageApi) { }
   addPackage(data: any) {
-    return this.packageApi.AddCoursePackage(data, 'unlimit')
+    return this.packageApi.addCoursePackage(data, 'unlimited')
   }
   onsalePackage(data: OnsalePackageInput) {
     return this.packageApi.onsaleCoursePackage(data)

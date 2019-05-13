@@ -4,10 +4,7 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="课程包名称" required>
-            <a-input v-decorator="[
-              'course_name',
-              {rules: [{ required: true, message: '请输入课程包名称' },{ min: 2, message: '最少2个字符' },{ max: 30, message: '最多30个字符' }]}
-            ]" placeholder="请输入课程包名称"/>
+            {{packageInfo.course_name}}
           </st-form-item>
         </a-col>
       </a-row>
@@ -36,7 +33,7 @@
                 </tr>
                 <tbody>
                   <tr class="bg-row-team">
-                    <td class="tg-c"><a-checkbox @change="teamCheckboxChange"/></td>
+                    <td class="tg-c"><a-checkbox :defaultChecked="!!packageInfo.is_team" @change="teamCheckboxChange"/></td>
                     <td>团体课程</td>
                     <td class="pr-32">
                       <st-input-number :max="99999" @change="courseIsFirstInput=false" v-model="packageData.team_times" :disabled="packageData.is_team===0">
@@ -51,7 +48,7 @@
                     <td>{{team_total}}</td>
                   </tr>
                   <tr class="bg-row-personal">
-                    <td class="tg-c"><a-checkbox @change="personalCheckboxChange" /></td>
+                    <td class="tg-c"><a-checkbox :defaultChecked="!!packageInfo.is_personal" @change="personalCheckboxChange" /></td>
                     <td>私教课程</td>
                     <td class="pr-32">
                       <st-input-number :max="99999" @change="courseIsFirstInput=false" v-model="packageData.personal_times" :disabled="packageData.is_personal===0">
@@ -166,7 +163,7 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="转让设置">
             <div :class="basic('transfer')">
-              <a-checkbox :class="basic('transfer-checkbox')" @change="transfer">支持转让</a-checkbox>
+              <a-checkbox :class="basic('transfer-checkbox')" :defaultChecked="!!packageInfo.is_allow_transfer" @change="transfer">支持转让</a-checkbox>
               <st-input-number
               :max="packageData.transfer_unit===1?100:99999.9"
               v-decorator="[
@@ -245,8 +242,7 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label=" ">
-          <st-button type="primary" class="mr-8" @click="save" :loading="addLoading.add">保存</st-button>
-          <st-button @click="onsale" :loading="addLoading.addAndOnsale">保存并上架</st-button>
+          <st-button type="primary" class="mr-8" @click="save" :loading="editLoading.editPackage">保存</st-button>
           </st-form-item>
         </a-col>
       </a-row>
@@ -257,18 +253,19 @@
 import moment from 'moment'
 import { UserService } from '@/services/user.service'
 import { cloneDeep, remove } from 'lodash-es'
-import { AddUnlimitPackageService } from './add-unlimit-package.service'
+import { EditUnlimitPackageService } from './edit-unlimit-package.service'
 export default {
   name: 'ShopUnlimitPackageAdd',
   serviceInject() {
     return {
       userService: UserService,
-      addPackageService: AddUnlimitPackageService
+      editPackageService: EditUnlimitPackageService
     }
   },
   rxState() {
     return {
-      addLoading: this.addPackageService.loading$,
+      editLoading: this.editPackageService.loading$,
+      packageInfo: this.editPackageService.packageInfo$,
       package_course: this.userService.packageCourseEnums$
     }
   },
@@ -279,8 +276,6 @@ export default {
   data() {
     return {
       packageData: {
-        // 课程包名称
-        course_name: '',
         // 是否支持团体课 0为不支持 1为支持
         is_team: 0,
         // 团体课总节数
@@ -355,40 +350,61 @@ export default {
       ]
     }
   },
+  mounted() {
+    this.init()
+  },
   methods: {
+    init() {
+      this.form.setFieldsValue({
+        'price': this.packageInfo.price,
+        'start_time': moment(this.packageInfo.start_time * 1000),
+        'end_time': moment(this.packageInfo.end_time * 1000),
+        'valid_time': this.packageInfo.valid_time,
+        'frozen_days': this.packageInfo.frozen_days,
+        'transfer_rate': `${this.packageInfo.transfer_rate}`
+      })
+      // 课程范围
+      this.packageData.is_team = this.packageInfo.is_team
+      this.packageData.team_times = this.packageInfo.team_time
+      this.packageData.team_unit_price = this.packageInfo.team_unit_price
+      this.packageData.is_personal = this.packageInfo.is_personal
+      this.packageData.personal_times = this.packageInfo.personal_times
+      this.packageData.personal_unit_price = this.packageInfo.personal_unit_price
+      // 售卖时间
+      this.start_time = moment(this.packageInfo.start_time * 1000)
+      this.end_time = moment(this.packageInfo.end_time * 1000)
+      // 有效时间单位
+      this.packageData.valid_time_unit = this.packageInfo.valid_time_unit
+      // 转让设置
+      this.packageData.is_allow_transfer = this.packageInfo.is_allow_transfer
+      this.packageData.transfer_unit = this.packageInfo.transfer_unit
+      // 售卖方式
+      this.packageData.sale_mode = this.packageInfo.sale_mode
+      // 封面
+      this.fileList = [this.packageInfo.image]
+      this.packageData.image.image_id = this.fileList[0].image_id
+      this.packageData.image.image_key = this.fileList[0].image_key
+      this.imageIsNone = false
+      this.imageErrorText = ''
+      // 介绍
+      this.packageData.description = this.packageInfo.intro
+      // 备注
+      this.packageData.remark = this.packageInfo.remarks
+    },
     // 保存
     save() {
       this.course_validator()
       this.image_validator()
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err && !this.courseIsNone && !this.imageIsNone) {
-          this.packageData.course_name = values.course_name
           this.packageData.price = values.price
           this.packageData.valid_time = values.valid_time
           this.packageData.frozen_days = values.frozen_days
           this.packageData.transfer_rate = values.transfer_rate
           this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
           this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
-          this.addPackageService.add(this.packageData).subscribe(res => {
-            console.log(res)
-          })
-        }
-      })
-    },
-    // 保存并上架
-    onsale() {
-      this.course_validator()
-      this.image_validator()
-      this.form.validateFieldsAndScroll((err, values) => {
-        if (!err && !this.courseIsNone && !this.imageIsNone) {
-          this.packageData.course_name = values.course_name
-          this.packageData.price = values.price
-          this.packageData.valid_time = values.valid_time
-          this.packageData.frozen_days = values.frozen_days
-          this.packageData.transfer_rate = values.transfer_rate
-          this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
-          this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
-          this.addPackageService.addAndOnsale(this.packageData).subscribe(res => {
+          this.packageData.album_id = this.packageInfo.album_id
+          this.editPackageService.editPackage(this.packageData).subscribe(res => {
             console.log(res)
           })
         }

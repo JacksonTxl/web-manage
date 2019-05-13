@@ -18,19 +18,20 @@
         <router-link class="mg-l8" to="/shop/product/course/manage/team/add">添加门店团体课</router-link>
       </p>
       <p class="mg-t8">
-        <router-link to="/brand/setting/app/course-category/list">课程类型设置</router-link>
-        <router-link class="mg-l8" to="/brand/setting/app/coach-level/list">教练等级</router-link>
-        <router-link class="mg-l8" to="/brand/setting/app/skillful/list">擅长项目</router-link>
-        <router-link class="mg-l8" to="/brand/setting/app/training/list">训练目的</router-link>
+        <router-link to="/brand/setting/app/course-category">课程类型设置</router-link>
+        <router-link class="mg-l8" to="/brand/setting/app/coach-level">教练等级</router-link>
+        <router-link class="mg-l8" to="/brand/setting/app/skillful">擅长项目</router-link>
+        <router-link class="mg-l8" to="/brand/setting/app/training-aim">训练目的</router-link>
       </p>
       <p class="mg-t8">
         <modal-link tag="a" :to="{ name:'brand-setting-team-reserve' }">团体课程预约设置</modal-link>
         <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-personal-reserve' }">私教课课程预约设置</modal-link>
         <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-personal-price-model' }">私教课程定价设置</modal-link>
+        <router-link class="mg-l8" tag="a" to="/brand/setting/app/pay-type">支付方式设置</router-link>
         <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-wechat-payment' }">微信支付设置</modal-link>
       </p>
       <p>
-        <a-input-search v-model="query.keyword"/>
+        <st-input-search v-model="query.keyword" @search="onSearch"/>
         <st-button class="mg-t16" @click="onSearch">search</st-button>
       </p>
       <st-form-table hoverable>

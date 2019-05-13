@@ -9,7 +9,7 @@ export class AddFixPackageService implements RouteGuard {
   coachList$ = new State({})
   constructor(private packageApi: PackageApi) { }
   addPackage(data: any) {
-    return this.packageApi.AddCoursePackage(data, 'fixation')
+    return this.packageApi.addCoursePackage(data, 'fixation')
   }
   onsalePackage(data: OnsalePackageInput) {
     return this.packageApi.onsaleCoursePackage(data)
