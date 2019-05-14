@@ -1,57 +1,32 @@
 <template>
-  <div>
+  <div class="member-info-sold">
     <st-t4>预约上课记录</st-t4>
     {{form}}
     <formDate v-model="form"></formDate>
-    <!-- <a-row :gutter="24" class="mg-t16">
-      <a-col :lg="24">
-        <a-date-picker v-model="form.start_date" style="width: 160px"/>
-        <a-select
-          defaultValue="lucy"
-          style="width: 160px;margin-left:12px"
-          v-model="form.reserve_type"
-        >
-          <a-select-option value="jack">Jack</a-select-option>
-          <a-select-option value="lucy">Lucy</a-select-option>
-
-          <a-select-option value="Yiminghe">yiminghe</a-select-option>
-        </a-select>
-        <a-select
-          defaultValue="lucy"
-          style="width: 160px;margin-left:12px"
-          v-model="form.reserve_status"
-        >
-          <a-select-option value="jack">Jack</a-select-option>
-          <a-select-option value="lucy">Lucy</a-select-option>
-
-          <a-select-option value="Yiminghe">yiminghe</a-select-option>
-        </a-select>
-        <a-select
-          defaultValue="lucy"
-          style="width: 160px;margin-left:12px"
-          v-model="form.checkin_status"
-        >
-          <a-select-option value="jack">Jack</a-select-option>
-          <a-select-option value="lucy">Lucy</a-select-option>
-
-          <a-select-option value="Yiminghe">yiminghe</a-select-option>
-        </a-select>
-        <st-input-search
-          placeholder="可输入姓名、手机号、卡号"
-          style="width: 290px;float: right;"
-          v-model="form.course_name"
-        />
-      </a-col>
-    </a-row>-->
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
-        <a-table
+        <st-table
           rowKey="id"
           :columns="classrecord"
-          :dataSource="tableData"
+          :dataSource="cardsListInfo.reserve_list"
           @change="onTableChange"
           :pagination="pagination"
-        ></a-table>
+        >
+          <div slot="is_checkin" slot-scope="text">
+            <div>
+              <span :class="text|isCheckin" v-if="text === '未签到'"></span>
+              {{text}}
+            </div>
+          </div>
+          <div slot="action" slot-scope="text,record" href="javascript:;">
+            <div v-if="record.reserve_status === '预约成功' && record.is_checkin === '未签到'">
+              <a href="javascript:;" @click="reserveStatus(record)">{{record.reserve_status}}</a>
+              <a-divider type="vertical"></a-divider>
+              <a href="javascript:;" @click="isCheckin(record)">{{record.is_checkin}}</a>
+            </div>
+            <div v-else>—</div>
+          </div>
+        </st-table>
       </a-col>
     </a-row>
     <a-row :gutter="8">
@@ -62,74 +37,111 @@
     <st-t4>入场记录</st-t4>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
-        <!-- <a-table :columns="admission"></a-table> -->
+        <a-table :columns="admission"></a-table>
       </a-col>
     </a-row>
+    {{cardsListInfo}}
   </div>
 </template>
 <script>
 import formDate from './sold#/form-date.vue'
+import { SoldService } from './sold.service'
+import { clone } from '../../../../../operators/clone'
 export default {
+  serviceInject() {
+    return {
+      Service: SoldService
+    }
+  },
+  rxState() {
+    return {
+      cardsListInfo: this.Service.cardsListInfo$,
+      followInfo: this.Service.followInfo$
+    }
+  },
   components: {
     formDate
+  },
+  filters: {
+    isCheckin(value) {
+      if (value === '未签到') {
+        return 'member-info-sold__is_checkin_no'
+      } else if (value === '已签到') {
+        return 'member-info-sold__is_checkin_yes'
+      } else {
+        return ''
+      }
+    }
   },
   data() {
     return {
       form: {
         start_date: '', // 上课日期
-        reserve_type: '预约课类型',
-        reserve_status: '预约状态',
-        checkin_status: '签到状态',
-        course_name: '课程名称',
-        size: '每页数量',
-        page: '当前页'
+        reserve_type: 1,
+        reserve_status: 0,
+        checkin_status: 0,
+        course_name: undefined,
+        size: 20,
+        page: 1
       },
       pagination: {
         pageSizeOptions: ['10', '20', '30', '40', '50'],
         current: 1,
-        pageSize: 10,
+        pageSize: 20,
         total: 50
       },
       classrecord: [
         {
           title: '课程类型',
-          dataIndex: 'reserve_type',
-          key: 'reserve_type'
+          dataIndex: 'reserve_type'
         },
         {
           title: '课程名称',
-          dataIndex: 'course_name',
-          key: 'course_name'
+          dataIndex: 'course_name'
         },
         {
           title: '上课时间',
           dataIndex: 'start_time',
-          key: 'start_time'
+          sorter: (a, b) => {
+            return (
+              new Date(a.start_time).getTime() >
+              new Date(b.start_time).getTime()
+            )
+          }
         },
         {
           title: '上课教练',
-          dataIndex: 'coach_name',
-          key: 'coach_name'
+          dataIndex: 'coach_name'
         },
         {
           title: '预约人数',
-          dataIndex: 'reserve_num',
-          key: 'reserve_num'
+          dataIndex: 'reserve_num'
         },
         {
           title: '预约状态',
-          dataIndex: 'reserve_status',
-          key: 'reserve_status'
+          dataIndex: 'reserve_status'
+        },
+        {
+          title: '签到状态',
+          dataIndex: 'is_checkin',
+          scopedSlots: { customRender: 'is_checkin' }
         },
         {
           title: '预约时间',
           dataIndex: 'created_time',
-          key: 'created_time'
+          sorter: (a, b) => {
+            return (
+              new Date(a.created_time).getTime() >
+              new Date(b.created_time).getTime()
+            )
+          }
         },
         {
           title: '操作',
-          dataIndex: 'age',
-          key: 'age'
+          dataIndex: 'action',
+          fixed: 'right',
+          width: 150,
+          scopedSlots: { customRender: 'action' }
         }
       ],
       tableData: [
@@ -154,38 +166,86 @@ export default {
         },
         {
           title: '会员卡',
-          dataIndex: 'age',
-          key: 'age'
+          dataIndex: 'age1',
+          key: 'age1'
         },
         {
           title: '入场时间',
-          dataIndex: 'age',
-          key: 'age'
+          dataIndex: 'age2',
+          key: 'age2'
         },
         {
           title: '扣除次数',
-          dataIndex: 'age',
-          key: 'age'
+          dataIndex: 'age3',
+          key: 'age3'
         },
         {
           title: '离场时间',
-          dataIndex: 'age',
-          key: 'age'
+          dataIndex: 'age4',
+          key: 'age4'
         },
         {
           title: '临时储物柜',
-          dataIndex: 'age',
-          key: 'age'
+          dataIndex: 'age5',
+          key: 'age5'
         }
       ]
     }
   },
+  created() {
+    let self = this
+    // this.Service.init(self.$route.query.id, self.form).subscribe()
+    this.pagination.pageSize = this.cardsListInfo.page.current_page
+    this.pagination.total = this.cardsListInfo.page.total_pages
+    this.pagination.pageSize = this.cardsListInfo.page.size
+  },
   methods: {
+    /* 预约状态 */
+    reserveStatus(record) {
+      this.$confirm({
+        title: '提示',
+        content: '确认取消预约并退还相应费用？',
+        okText: '确认取消',
+        cancelText: '再看看',
+        onOk() {},
+        onCancel() {}
+      })
+    },
+    /* 签到状态 */
+    isCheckin(record) {
+      this.$confirm({
+        title: '提示',
+        content: '确认签到',
+        onOk() {},
+        onCancel() {}
+      })
+    },
     handleChange(value) {
       console.log(`selected ${value}`)
     },
     onTableChange(pagination, filters, sorter) {
       console.log(pagination, filters, sorter)
+      this.pagination = pagination
+      this.form.page = pagination.current
+      this.form.size = pagination.pageSize
+    }
+  },
+  watch: {
+    form: {
+      handler() {
+        let self = this
+        this.Service.init(self.$route.query.id, self.form).subscribe()
+      },
+      deep: true
+    },
+    cardsListInfo: {
+      handler() {
+        let self = this
+        self.pagination.pageSize = self.cardsListInfo.page.current_page
+        self.pagination.total = self.cardsListInfo.page.total_pages
+        self.pagination.pageSize = self.cardsListInfo.page.size
+      },
+      deep: true
     }
   }
 }

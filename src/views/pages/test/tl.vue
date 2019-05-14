@@ -31,7 +31,7 @@
         <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-wechat-payment' }">微信支付设置</modal-link>
       </p>
       <p>
-        <a-input-search v-model="query.keyword"/>
+        <st-input-search v-model="query.keyword" @search="onSearch"/>
         <st-button class="mg-t16" @click="onSearch">search</st-button>
       </p>
       <st-form-table hoverable>

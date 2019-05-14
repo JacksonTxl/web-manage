@@ -1,5 +1,5 @@
 <template>
-  <st-panel>
+  <st-panel v-if="info">
     <st-t2>配置支付方式</st-t2>
     <div class="mg-t24" v-for="(item, index) in payTypeDes" :key="index">
       <a-row class="align-items-center">
@@ -8,7 +8,7 @@
           <div class="st-des mg-t4">{{item.content}}</div>
         </a-col>
         <a-col :span="4" class="ta-r">
-          <a-switch :checked="!!info[item.id].is_enable" @change="onSwitchChange(item.id)"/>
+          <a-switch :checked="!!info[item.key].is_enable" @change="onSwitchChange(item.key)"/>
         </a-col>
       </a-row>
       <st-hr></st-hr>
@@ -20,31 +20,31 @@ import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { PayTypeService } from './pay-type.service'
 const payTypeDes = [{
-  id: 1,
+  key: 1,
   name: '微信 [在线]',
   content: '品牌绑定“认证小程序”，开通小程序的“微信支付权限”，并完成支付参数配置，配置后支持用户在用户端完成商品的购买。'
 }, {
-  id: 2,
+  key: 2,
   name: '微信 [线下]',
   content: '门店可以通过下线微信收款二维码进行收款，收款记录标记为微信[线下]（仅针对线下收银）。'
 }, {
-  id: 3,
+  key: 3,
   name: '支付宝[线下]',
   content: '门店可以通过下线支付宝收款二维码进行收款，收款记录标记为支付宝[线下]（仅针对线下收银）。'
 }, {
-  id: 4,
+  key: 4,
   name: 'POS机刷卡[线下]',
   content: '门店可以通过线下POS机进行收款，收款记录标记为POS机刷卡[线下]（仅针对线下收银）。'
 }, {
-  id: 5,
+  key: 5,
   name: '银行转账',
   content: '支持用户以转账的形式转入品牌或门店账户，收款记录标记为银行转账[线下]（仅针对线下收银）。'
 }, {
-  id: 6,
+  key: 6,
   name: '现金',
   content: '门店可以收取现金进行收款，收款记录标记为现金（仅针对线下收银）。'
 }, {
-  id: 7,
+  key: 7,
   name: '其它',
   content: '当品牌有和其它支付形式有合作时，统一标记为其它（仅针对线下收银）。'
 }]
@@ -56,11 +56,9 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     const payTypeService = this.payTypeService
     return {
       loading: payTypeService.loading$,
-      settingEnums: user.settingEnums$,
       info: payTypeService.resData$
     }
   },
@@ -70,17 +68,20 @@ export default {
     }
   },
   created() {
-    this.payTypeService.getInfo().subscribe()
+    this.getInfo()
   },
   methods: {
-    onSwitchChange(id) {
-      console.log(id)
-      const isEnable = this.info[id].is_enable
+    getInfo() {
+      this.payTypeService.getInfo().subscribe()
+    },
+    onSwitchChange(key) {
+      const info = this.info
+      const { id, is_enable, payment_type } = this.info[key]
       this.payTypeService.update({
         id,
-        is_enable: isEnable
-      }).subscribe()
-      this.info[id].is_enable = +!isEnable
+        is_enable: +!is_enable,
+        payment_type
+      }).subscribe(this.getInfo)
     }
   }
 }

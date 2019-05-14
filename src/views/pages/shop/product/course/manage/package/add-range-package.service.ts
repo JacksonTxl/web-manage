@@ -9,7 +9,7 @@ export class AddRangePackageService implements RouteGuard {
   coachList$ = new State({})
   constructor(private packageApi: PackageApi) { }
   addPackage(data: any) {
-    return this.packageApi.AddCoursePackage(data, 'range')
+    return this.packageApi.addCoursePackage(data, 'range')
   }
   onsalePackage(data: OnsalePackageInput) {
     return this.packageApi.onsaleCoursePackage(data)

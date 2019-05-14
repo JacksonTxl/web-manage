@@ -4,7 +4,7 @@
     <modal-link :to="{name: 'schedule-add-course-schedule'}"><st-button>新增课程排期</st-button></modal-link>
     <modal-link :to="{name: 'schedule-add-course-schedule-batch'}"><st-button>批量新增课程排期</st-button></modal-link>
     <modal-link :to="{name: 'schedule-copy-schedule'}"><st-button>复制排期</st-button></modal-link>
-    <modal-link :to="{name: 'schedule-add-order'}"><st-button>添加预约</st-button></modal-link>
+    <modal-link :to="{name: 'schedule-add-order'}"><st-button>添加预约(私教课1v1)</st-button></modal-link>
     <modal-link :to="{name: 'schedule-edit-schedule-personal'}"><st-button>编辑排期(私教)</st-button></modal-link>
     <modal-link :to="{name: 'schedule-edit-schedule'}"><st-button>修改排期</st-button></modal-link>
     <modal-link :to="{name: 'schedule-order-info'}"><st-button>预约详情</st-button></modal-link>

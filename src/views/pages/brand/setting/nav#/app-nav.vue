@@ -22,7 +22,7 @@ export default {
       navs: [{
         label: '课程定价及预约设置',
         route: {
-          name: 'brand-setting-app-personal'
+          name: 'brand-setting-app-course-personal'
         }
       }, {
         label: '支付设置',
@@ -33,6 +33,11 @@ export default {
         label: '教练等级设置',
         route: {
           name: 'brand-setting-app-coach-level'
+        }
+      }, {
+        label: '用户等级设置',
+        route: {
+          name: 'brand-setting-app-user-level'
         }
       }]
     }

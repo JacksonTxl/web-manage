@@ -1,0 +1,43 @@
+.page-user-level {
+  min-height: 600px;
+  &__item {
+    box-shadow: 0 1px 10px 1px rgba(0,0,0,0.05);
+    border-radius: 2px;
+    .pd(24px);
+    .h(400px);
+    .pos-r;
+  }
+  &__item-edit {
+    .pos-a;
+    right: 12px;
+    top: 12px;
+  }
+  &__item-icon {
+    .s(100px, 100px);
+    .mg(24px auto);
+  }
+  &__sub-title {
+    .fz(14px);
+    .c(@text-light);
+  }
+  &__list-item {
+    font-weight: 500;
+    .mg(4px 0);
+  }
+}
+.icon-member-checked {
+  display: inline-block;
+  .s(16px, 14px);
+  .mg-r(4px);
+  .pos-r;
+  top: 2px;
+  background-image: url('~@/assets/img/member_checked.png');
+  background-size: 100%;
+  background-position: center center;
+  &--potential {
+    background-image: url('~@/assets/img/member_potential_checked.png')
+  }
+  &--lost {
+    background-image: url('~@/assets/img/member_lost_checked.png')
+  }
+}
