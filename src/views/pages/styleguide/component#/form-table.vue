@@ -16,6 +16,11 @@
       </thead>
       <tbody>
         <tr>
+          <td colspan="3" class="st-form-table__add">
+            <st-button type="dashed" block>添加教练等级</st-button>
+          </td>
+        </tr>
+        <tr>
           <td>1</td>
           <td>2</td>
           <td>3</td>
