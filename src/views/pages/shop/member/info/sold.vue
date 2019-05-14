@@ -103,10 +103,15 @@ export default {
           title: '上课时间',
           dataIndex: 'start_time',
           sorter: (a, b) => {
-            return (
-              new Date(a.start_time).getTime() >
-              new Date(b.start_time).getTime()
-            )
+            let A = new Date(a.start_time).getTime()
+            let B = new Date(b.start_time).getTime()
+            if (A < B) {
+              return -1
+            }
+            if (A > B) {
+              return 1
+            }
+            return 0
           }
         },
         {
@@ -130,10 +135,15 @@ export default {
           title: '预约时间',
           dataIndex: 'created_time',
           sorter: (a, b) => {
-            return (
-              new Date(a.created_time).getTime() >
-              new Date(b.created_time).getTime()
-            )
+            let A = new Date(a.created_time).getTime()
+            let B = new Date(b.created_time).getTime()
+            if (A < B) {
+              return -1
+            }
+            if (A > B) {
+              return 1
+            }
+            return 0
           }
         },
         {
