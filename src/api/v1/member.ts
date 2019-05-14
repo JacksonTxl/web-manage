@@ -1,4 +1,5 @@
 import { Api } from '../api'
+import { GetMemberInput } from './course/team/schedule'
 
 export interface UpdateMemberEdit {
   /**
@@ -308,6 +309,12 @@ export class MemberAPi extends Api {
    */
   getMemberCancel(params: any) {
     return this.http.put(`/v1/member/cancel/${params.id}`, { params })
+  }
+  /**
+   *取消预约v1/member/cancel/会员ID
+   */
+  getMemberSign(params: any) {
+    return this.http.put(`/v1/member/sign/${params.id}`, { params })
   }
   /**
    * 优惠券

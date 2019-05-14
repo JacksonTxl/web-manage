@@ -221,7 +221,7 @@ export default {
           }
           console.log(record, getdata)
           self.Service.getMemberCancel(getdata).subscribe(res => {
-            console.log(res)
+            self.Service.init(self.$route.query.id, self.form).subscribe()
           })
         },
         onCancel() {}
@@ -229,10 +229,26 @@ export default {
     },
     /* 签到状态 */
     isCheckin(record) {
+      let self = this
       this.$confirm({
         title: '提示',
         content: '确认签到?',
-        onOk() {},
+        onOk() {
+          let getdata = {
+            id: self.$route.query.id,
+            course_type:
+              record.reserve_type === '团课'
+                ? 1
+                : record.reserve_type === '私教课'
+                  ? 2
+                  : 3,
+            reserve_id: record.id
+          }
+          console.log(record, getdata)
+          self.Service.getMemberSign(getdata).subscribe(res => {
+            self.Service.init(self.$route.query.id, self.form).subscribe()
+          })
+        },
         onCancel() {}
       })
     },

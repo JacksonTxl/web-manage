@@ -41,6 +41,9 @@ export class SoldService extends Store<CardsListInfoState> {
   getMemberCancel(params: any) {
     return this.cardsApi.getMemberCancel(params)
   }
+  getMemberSign(params: any) {
+    return this.cardsApi.getMemberSign(params)
+  }
   init(id: string, params: any) {
     return forkJoin(this.getMemberReserve(id, params))
   }
