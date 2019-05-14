@@ -59,36 +59,39 @@
         <a-col :span="10">
           <div class="shop-member-info-title-pannel-right">
             <div class="pannel-right__operation">
-              <a-button type="primary" class="pannel-right__operation__margin">编辑资料</a-button>
+              <a-button type="primary" class="pannel-right__operation__margin" @click="editMember">编辑资料</a-button>
               <a-button class="pannel-right__operation__margin">绑定实体卡</a-button>
               <a-select
                 class="pannel-right__operation__margin"
                 defaultValue="更多操作"
                 style="width: 120px"
               >
-                <a-select-option value="jack">Jack</a-select-option>
-                <a-select-option value="lucy">Lucy</a-select-option>
-                <a-select-option value="Yiminghe">yiminghe</a-select-option>
+                <a-select-option value="jack">
+                  <modal-link tag="a" :to=" { name: 'shop-distribution-ales'}">更改跟进销售</modal-link>
+                </a-select-option>
+                <a-select-option value="lucy">
+                  <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">更改跟进教练</modal-link>
+                </a-select-option>
               </a-select>
             </div>
             <div class="pannel-right__operation">
               <div class="pannel-right__num__box">
-                <span class="pannel-right__num">3</span>
+                <span class="pannel-right__num">{{ info.valid_card }}</span>
                 <span class="pannel-right__num__margin">/</span>
                 <span>张</span>
                 <p>有效会员卡</p>
               </div>
               <div class="pannel-right__num__box">
-                <span class="pannel-right__num">3</span>
+                <span class="pannel-right__num">{{ info.valid_personal_class }}</span>
                 <span class="pannel-right__num__margin">/</span>
-                <span>张</span>
-                <p>有效会员卡</p>
+                <span>节</span>
+                <p>有效私教课</p>
               </div>
               <div class="pannel-right__num__box">
-                <span class="pannel-right__num">3</span>
+                <span class="pannel-right__num">{{ info.deposit_balance }}</span>
                 <span class="pannel-right__num__margin">/</span>
-                <span>张</span>
-                <p>有效会员卡</p>
+                <span>元</span>
+                <p>储值卡余额</p>
               </div>
             </div>
           </div>
@@ -136,6 +139,10 @@ export default {
         .getMemberLabelDelete({ user_id: self.$route.query.id, tag_id: tag.id })
         .subscribe(state => {})
     },
+    editMember() {
+      console.log(this.$route.query)
+      this.$router.push({ name: 'shop-member-edit', query: { id: this.$route.query.id } })
+    },
     onModalTest() {
       console.log(111111111111111111)
       let self = this
@@ -143,7 +150,7 @@ export default {
     }
   },
   mounted() {
-    console.log('=========', this.info)
+    // console.log('=========', this.info)
   }
 }
 </script>

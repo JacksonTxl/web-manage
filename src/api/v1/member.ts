@@ -1,5 +1,4 @@
-import { Api } from '@/api/api'
-import { remove } from 'lodash-es'
+import { Api } from '../api'
 
 export interface UpdateMemberEdit {
   /**
@@ -310,8 +309,23 @@ export class MemberAPi extends Api {
   getMemberCancel(params: any) {
     return this.http.put(`/v1/member/cancel/${params.id}`, { params })
   }
+  /**
+   * 优惠券
+   */
+  getCouponList(id: string, query: CouponQuery) {
+    return this.http.get(`/v1/member/coupon/${id}`, { query })
+  }
 }
-
+export interface CouponQuery {
+  /**
+   * 每页数量
+   */
+  size?: number
+  /**
+   * 当前页
+   */
+  page?: number
+}
 export interface CourseConsuptionQuery {
   /**
    * 购买日期
