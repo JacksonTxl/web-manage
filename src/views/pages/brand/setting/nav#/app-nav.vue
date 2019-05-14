@@ -34,6 +34,11 @@ export default {
         route: {
           name: 'brand-setting-app-coach-level'
         }
+      }, {
+        label: '用户等级设置',
+        route: {
+          name: 'brand-setting-app-user-level'
+        }
       }]
     }
   }

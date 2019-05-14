@@ -277,12 +277,9 @@ export class MemberAPi extends Api {
    * 卡消费
    */
   getCardConsumption(id: string, query: CardConsumptionQuery) {
-    return this.http.get(`/v1/member/card${id}`, { query })
+    return this.http.get(`/v1/member/card/${id}`, { query })
   }
-  /**
-   * 课消费
-   */
-  getCourseConsumption() {}
+
   /*
    *员工详情—体侧记录 v1/member/side/record
    */
@@ -301,7 +298,37 @@ export class MemberAPi extends Api {
   getMemberLabelDelete(params: any) {
     return this.http.put(`/v1/member/label/delete`, { params })
   }
+  /**
+   * 课消费
+   */
+  getCourseConsumption(id: string, query: CourseConsuptionQuery) {
+    return this.http.get(`/v1/member/course/${id}`, { query })
+  }
 }
+
+export interface CourseConsuptionQuery {
+  /**
+   * 购买日期
+   */
+  buy_time?: string
+  /**
+   * 课程类型
+   */
+  course_type: number
+  /**
+   * 课名称
+   */
+  keyword?: string
+  /**
+   * 每页数量
+   */
+  size?: number
+  /**
+   * 当前页
+   */
+  page?: number
+}
+
 export interface CardConsumptionQuery {
   /**
    * 卡类型
@@ -310,5 +337,17 @@ export interface CardConsumptionQuery {
   /**
    * 开卡日期
    */
-  date: string
+  start_time?: string
+  /**
+   * 卡名称
+   */
+  keyword?: string
+  /**
+   * 每页数量
+   */
+  size?: number
+  /**
+   * 当前页
+   */
+  page?: number
 }

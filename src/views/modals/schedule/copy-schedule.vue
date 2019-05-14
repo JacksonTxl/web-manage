@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="复制排期" @ok="save" v-model="show">
+  <st-modal title="复制排期" :footer="null" @ok="save" v-model="show">
     <st-form :form="form">
       <st-form-item label="时间" required>
         <a-radio-group v-model="timeType" @change="onChangeTimeType">
@@ -15,18 +15,39 @@
         </a-radio-group>
       </st-form-item>
       <st-form-item label="复制排期" required>
-        <a-range-picker v-model="copyDefaulValue" :disabled="disabled" @change="onChangeCopyTime" />
+        <a-range-picker
+        v-model="copyDefaulValue"
+        :disabled="disabled"
+        @change="onChangeCopyTime" />
       </st-form-item>
       <st-form-item label="应用排期" required>
         <a-date-picker v-model="applyStartDate" @change="onChangeApplyStartDate"/> ~ <a-date-picker v-model="applyEndDate"  disabled />
       </st-form-item>
+      <a-row>
+        <a-col
+          :span="24"
+          :style="{ textAlign: 'right' }"
+        >
+          <st-button
+            type="primary"
+            @click="onSubmit">
+            确认复制
+          </st-button>
+        </a-col>
+      </a-row>
     </st-form>
   </st-modal>
 </template>
 
 <script>
+import { ScheduleService } from './schedule.service'
 export default {
   name: 'CopySchedule',
+  serviceInject() {
+    return {
+      scheduleService: ScheduleService
+    }
+  },
   data() {
     return {
       timeType: 'week',
@@ -60,8 +81,14 @@ export default {
     onChangeCopyTime(val) {
       this.applyEndDate = moment(this.applyStartDate.valueOf() + (this.copyDefaulValue[1].valueOf() - this.copyDefaulValue[0].valueOf()))
     },
-    save() {
-
+    onSubmit() {
+      const form = {
+        copy_start_time: this.copyDefaulValue[0].format('YYYY-MM-DD'),
+        copy_end_time: this.copyDefaulValue[1].format('YYYY-MM-DD'),
+        apply_start_time: this.applyStartDate.format('YYYY-MM-DD'),
+        apply_end_time: this.applyEndDate.format('YYYY-MM-DD')
+      }
+      this.scheduleService.postScheduleTeamCopy(form).subscribe()
     }
   }
 }
