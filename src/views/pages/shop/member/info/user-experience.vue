@@ -37,9 +37,12 @@
           <tbody>
             <tr>
               <td :colspan="tableTitle.length">
-                <a-button class="editable-add-btn" type="dashed">
+                  <modal-link tag="a" :to=" { name: 'shop-add-lateral-recording'}">
+                     <a-button class="editable-add-btn" type="dashed">
                   <a-icon type="plus"/>添加体侧记录
                 </a-button>
+                  </modal-link>
+
               </td>
             </tr>
             <tr v-for="(item,index) in cardsListInfo.physical_list" :key="index">

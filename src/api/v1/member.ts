@@ -322,6 +322,12 @@ export class MemberAPi extends Api {
   getCouponList(id: string, query: CouponQuery) {
     return this.http.get(`/v1/member/coupon/${id}`, { query })
   }
+  /**
+   * 添加用户体测 v1/member/physical/用户ID
+   */
+  getAddMemberPhysical(params: any) {
+    return this.http.put(`/v1/member/physical/${params.id}`, { params })
+  }
 }
 export interface CouponQuery {
   /**
