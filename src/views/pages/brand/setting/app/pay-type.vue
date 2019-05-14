@@ -11,6 +11,29 @@
           <a-switch :checked="!!info[item.key].is_enable" @change="onSwitchChange(item.key)"/>
         </a-col>
       </a-row>
+      <st-container v-if="index===0" type="2" class="bg-gray mg-t16">
+        <a-row>
+          <a-col :span="20">
+            <a-row :gutter="24">
+              <a-col :span="8">
+                微信商户名称：xxx
+              </a-col>
+              <a-col :span="8">
+                微信商户号：xxx
+              </a-col>
+              <a-col :span="8">
+                API密钥：xxxx
+              </a-col>
+            </a-row>
+          </a-col>
+          <a-col :span="4" class="ta-r">
+            <modal-link tag="a" :to="{ name:'brand-setting-wechat-payment' }">
+              <st-icon type="edit"></st-icon>
+              <span class="mg-l4 color-text-light">编辑</span>
+            </modal-link>
+          </a-col>
+        </a-row>
+      </st-container>
       <st-hr></st-hr>
     </div>
   </st-panel>
