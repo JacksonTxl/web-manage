@@ -8,7 +8,8 @@ import { UpdateMemberEdit } from '../../../../api/v1/member'
 interface EditState {
     info: Object,
     countryInfo: Object,
-    nations: Object
+    nations: Object,
+    countryList: Object
 }
 @Injectable()
 export class EditService extends Store<EditState> {
@@ -16,6 +17,7 @@ export class EditService extends Store<EditState> {
     info$: Computed<Object>
     countryInfo$: Computed<Object>
     nations$: Computed<Object>
+    countryList$: Computed<Object>
     constructor(protected memberApi: MemberAPi) {
       super()
       this.state$ = new State({
@@ -25,6 +27,7 @@ export class EditService extends Store<EditState> {
       this.info$ = new Computed(this.state$.pipe(pluck('info')))
       this.countryInfo$ = new Computed(this.state$.pipe(pluck('countryInfo')))
       this.nations$ = new Computed(this.state$.pipe(pluck('nations')))
+      this.countryList$ = new Computed(this.state$.pipe(pluck('countryList')))
     }
     getMemberEdit(id: number) {
       return this.memberApi.getMemberEdit(id).pipe(
@@ -41,6 +44,15 @@ export class EditService extends Store<EditState> {
         tap(res => {
           this.state$.commit(state => {
             state.countryInfo = res.country_info
+          })
+        })
+      )
+    }
+    getCountryCodes() {
+      return this.memberApi.getCountryCodes().pipe(
+        tap(res => {
+          this.state$.commit(state => {
+            state.countryList = res.code_list
           })
         })
       )
@@ -63,6 +75,7 @@ export class EditService extends Store<EditState> {
       const member_id = to.meta.query.id
       this.getCountries().subscribe(() => {})
       this.getNations().subscribe(() => {})
+      this.getCountryCodes().subscribe(() => {})
       this.getMemberEdit(member_id).subscribe(() => {
         next()
       }, () => {

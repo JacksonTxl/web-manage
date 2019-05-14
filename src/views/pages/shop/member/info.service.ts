@@ -40,6 +40,11 @@ export class InfoService extends Store<InfoState> {
       })
     )
   }
+
+  removeWechatBind(id: number) {
+    return this.cardsApi.removeWechatBind(id)
+  }
+
   getMemberLabelDelete(obj: any) {
     return this.cardsApi.getMemberLabelDelete(obj)
   }

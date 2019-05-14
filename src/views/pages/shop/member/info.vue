@@ -59,20 +59,42 @@
         <a-col :span="10">
           <div class="shop-member-info-title-pannel-right">
             <div class="pannel-right__operation">
-              <a-button type="primary" class="pannel-right__operation__margin" @click="editMember">编辑资料</a-button>
-              <a-button class="pannel-right__operation__margin">绑定实体卡</a-button>
-              <a-select
+              <a-button
+                type="primary"
                 class="pannel-right__operation__margin"
-                defaultValue="更多操作"
-                style="width: 120px"
+                @click="editMember"
+              >编辑资料</a-button>
+              <modal-link
+                tag="a"
+                class="pannel-right__operation__margin"
+                :to="{name: 'shop-binding-entity-card', props: {record: {id, member_name: info.member_name, mobile: info.mobile}}}"
               >
-                <a-select-option value="jack">
-                  <modal-link tag="a" :to=" { name: 'shop-distribution-ales'}">更改跟进销售</modal-link>
-                </a-select-option>
-                <a-select-option value="lucy">
-                  <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">更改跟进教练</modal-link>
-                </a-select-option>
-              </a-select>
+                <a-button class="pannel-right__operation__margin">绑定实体卡</a-button>
+              </modal-link>
+              <a-dropdown>
+                <a-menu slot="overlay">
+                  <a-menu-item key="1">
+                    <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">更改跟进教练</modal-link>
+                  </a-menu-item>
+                  <a-menu-item key="2">
+                    <modal-link tag="a" :to=" { name: 'shop-distribution-ales'}">更改跟进销售</modal-link>
+                  </a-menu-item>
+                  <a-menu-item key="3" @click="onRemoveBind">解除微信绑定</a-menu-item>
+                  <a-menu-item key="4">
+                    <modal-link tag="a" :to=" { name: 'shop-transfer-shop',props: {record: {id, member_name: info.member_name, mobile: info.mobile}}}">转店</modal-link>
+                  </a-menu-item>
+                  <a-menu-item key="5">
+                    <modal-link tag="a" :to=" { name: 'shop-frozen'}">冻结用户</modal-link>
+                  </a-menu-item>
+                  <a-menu-item key="6">
+                    <modal-link tag="a" :to=" { name: 'shop-missing-card',props: {record: {id, member_name: info.member_name, mobile: info.mobile}}}">遗失补卡</modal-link>
+                  </a-menu-item>
+                </a-menu>
+                <a-button style="margin-left: 8px">
+                  更多操作
+                  <a-icon type="down"/>
+                </a-button>
+              </a-dropdown>
             </div>
             <div class="pannel-right__operation">
               <div class="pannel-right__num__box">
@@ -129,9 +151,24 @@ export default {
   },
   name: 'list',
   data() {
-    return {}
+    return {
+      id: ''
+    }
   },
   methods: {
+    onRemoveBind() {
+      let that = this
+      this.$confirm({
+        title: '提示信息',
+        content: '确认解绑选中的会员关系？',
+        onOk() {
+          that.infoService.removeWechatBind(that.id).subscribe(() => {
+            console.log('ok')
+          })
+        },
+        onCancel() {}
+      })
+    },
     handleClose(tag) {
       console.log(tag)
       let self = this
@@ -141,16 +178,19 @@ export default {
     },
     editMember() {
       console.log(this.$route.query)
-      this.$router.push({ name: 'shop-member-edit', query: { id: this.$route.query.id } })
+      this.$router.push({
+        name: 'shop-member-edit',
+        query: { id: this.$route.query.id }
+      })
     },
     onModalTest() {
-      console.log(111111111111111111)
       let self = this
       this.infoService.getHeaderInfo(self.$route.query.id).subscribe()
     }
   },
   mounted() {
-    // console.log('=========', this.info)
+    console.log('=========', this.info)
+    this.id = this.$route.query.id
   }
 }
 </script>

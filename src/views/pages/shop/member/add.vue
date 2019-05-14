@@ -9,11 +9,15 @@
           <st-form-item label="姓名" required>
             <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.member_name"/>
           </st-form-item>
-          <!-- {{ countryList }} -->
           <st-form-item label="手机号" required>
             <a-input-group compact>
               <a-select style="width: 15%;" v-decorator="rules.country_prefix">
-                <a-select-option :value="37">+86</a-select-option>
+                <!-- <a-select-option :value="37">+86</a-select-option> -->
+                <a-select-option
+                  :value="code.code_id"
+                  v-for="code in countryList.code_list"
+                  :key="code.code_id"
+                >+{{code.phone_code}}</a-select-option>
               </a-select>
               <a-input style="width: 85%" placeholder="请输入手机号" v-decorator="rules.mobile"/>
             </a-input-group>
@@ -96,7 +100,7 @@
             <a-input placeholder="请输入收入水平" v-decorator="rules.income_level"/>
           </st-form-item>
           <st-form-item label="证件类型">
-            <a-select v-decorator="rules.id_card_type" @change="chooseType">
+            <a-select v-decorator="rules.id_card_type" placeholder="请选择" @change="chooseType">
               <a-select-option
                 v-for="(item, index) in staffEnums.id_type.value"
                 :key="index"
@@ -180,12 +184,14 @@
 import { AddService } from './add.service'
 import { UserService } from '@/services/user.service'
 import { RegionService } from '@/services/region.service'
+import { MessageService } from '@/services/message.service'
 export default {
   serviceInject() {
     return {
       addService: AddService,
       userService: UserService,
-      regionService: RegionService
+      regionService: RegionService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -206,7 +212,7 @@ export default {
           'member_name',
           { rules: [{ required: true, message: '请输入姓名' }] }
         ],
-        country_prefix: ['country_prefix'],
+        country_prefix: ['country_prefix', { initialValue: 37 }],
         mobile: [
           'mobile',
           {
@@ -258,6 +264,8 @@ export default {
         delete res.md
         this.addService.addUser(res).subscribe(() => {
           console.log('ok')
+          this.messageService.success({ content: '添加成功' })
+          this.$router.go(-1)
         })
       })
     }

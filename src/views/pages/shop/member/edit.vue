@@ -72,11 +72,23 @@
 
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="手机号" required>
-            <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.mobile"/>
+           <st-form-item label="手机号" required>
+            <a-input-group compact>
+              <a-select style="width: 15%;" v-decorator="rules.country_prefix">
+                <a-select-option
+                  :value="code.code_id"
+                  v-for="code in countryList"
+                  :key="code.code_id"
+                >+{{code.phone_code}}</a-select-option>
+              </a-select>
+              <a-input style="width: 85%" placeholder="请输入手机号" v-decorator="rules.mobile"/>
+            </a-input-group>
           </st-form-item>
           <st-form-item label="微信号" >
             <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.wechat" :disabled="true"/>
+          </st-form-item>
+           <st-form-item label="详细住址" >
+            <a-input placeholder="请输入详细住址" v-decorator="rules.living_address"/>
           </st-form-item>
         </a-col>
         <a-col :lg="10" :xs="22" :offset="1">
@@ -103,12 +115,14 @@
 import { EditService } from './edit.service'
 import { UserService } from '@/services/user.service'
 import { RegionService } from '@/services/region.service'
+import { MessageService } from '@/services/message.service'
 export default {
   serviceInject() {
     return {
       editService: EditService,
       userService: UserService,
-      regionService: RegionService
+      regionService: RegionService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -116,7 +130,8 @@ export default {
       info: this.editService.info$,
       staffEnums: this.userService.staffEnums$,
       countryInfo: this.editService.countryInfo$,
-      nations: this.editService.nations$
+      nations: this.editService.nations$,
+      countryList: this.editService.countryList$
     }
   },
   data() {
@@ -141,7 +156,9 @@ export default {
         email: ['email'],
         mobile: ['mobile', { rules: [{ required: true, message: '请输入手机号' }] }],
         wechat: ['wechat'],
-        cascader: ['cascader']
+        cascader: ['cascader'],
+        country_prefix: ['country_prefix'],
+        living_address: ['living_address']
       },
       options: [],
       fieldNames: { label: 'name', value: 'id', children: 'children' }
@@ -170,6 +187,7 @@ export default {
         }
         this.editService.updateMemberEdit(this.id, values).subscribe(res => {
           console.log('12333333333333')
+          this.messageService.success({ content: '修改成功' })
           this.$router.go(-1)
         })
       })
@@ -194,7 +212,9 @@ export default {
         email: obj.email,
         mobile: obj.mobile,
         wechat: obj.wechat,
-        cascader: [obj.province_id, obj.city_id, obj.district_id]
+        cascader: [obj.province_id, obj.city_id, obj.district_id],
+        country_prefix: obj.country_prefix,
+        living_address: obj.living_address
       })
       this.id = obj.id
     }

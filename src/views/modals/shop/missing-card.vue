@@ -49,7 +49,6 @@
             <a-input placeholder="请输入收款的工作人员" v-decorator="basicInfoRuleList.payment"/>
           </st-form-item>
         </st-form>
-        <!-- {{record}} -->
       </section>
     </section>
   </st-modal>

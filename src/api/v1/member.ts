@@ -309,6 +309,10 @@ export class MemberAPi extends Api {
   getCouponList(id: string, query: CouponQuery) {
     return this.http.get(`/v1/member/coupon/${id}`, { query })
   }
+  // 获取手机号区域
+  getCountryCodes() {
+    return this.http.get('/country/codes')
+  }
 }
 export interface CouponQuery{
   /**

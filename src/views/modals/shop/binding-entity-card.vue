@@ -14,7 +14,8 @@
         </st-form-item>
       </st-form>
     </section>
-    <section></section>
+    <section>
+    </section>
   </st-modal>
 </template>
 <script>
