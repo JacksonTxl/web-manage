@@ -97,6 +97,7 @@ export default {
       })
       self.Service.setMemberLabelCreate(data).subscribe(state => {
         self.show = false
+        self.$emit('done', true)
       })
     },
     addLable() {

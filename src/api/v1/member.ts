@@ -283,6 +283,24 @@ export class MemberAPi extends Api {
    * 课消费
    */
   getCourseConsumption() {}
+  /*
+   *员工详情—体侧记录 v1/member/side/record
+   */
+  getMemberSideRecord(query: any) {
+    return this.http.get(`/v1/member/side/record`, { query })
+  }
+  /*
+   *员工详情—体侧图表 v1/member/side/chart
+   */
+  getMemberSideChart(query: any) {
+    return this.http.get(`/v1/member/side/chart`, { query })
+  }
+  /*
+   *用户删除标签
+   */
+  getMemberLabelDelete(params: any) {
+    return this.http.put(`/v1/member/label/delete`, { params })
+  }
 }
 export interface CardConsumptionQuery {
   /**
