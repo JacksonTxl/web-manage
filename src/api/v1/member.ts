@@ -304,6 +304,12 @@ export class MemberAPi extends Api {
   getCourseConsumption(id: string, query: CourseConsuptionQuery) {
     return this.http.get(`/v1/member/course/${id}`, { query })
   }
+  /*
+   *取消预约v1/member/cancel/会员ID
+   */
+  getMemberCancel(params: any) {
+    return this.http.put(`/v1/member/cancel/${params.id}`, { params })
+  }
 }
 
 export interface CourseConsuptionQuery {

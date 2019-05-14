@@ -202,12 +202,28 @@ export default {
   methods: {
     /* 预约状态 */
     reserveStatus(record) {
+      let self = this
       this.$confirm({
         title: '提示',
         content: '确认取消预约并退还相应费用？',
         okText: '确认取消',
         cancelText: '再看看',
-        onOk() {},
+        onOk() {
+          let getdata = {
+            id: self.$route.query.id,
+            course_type:
+              record.reserve_type === '团课'
+                ? 1
+                : record.reserve_type === '私教课'
+                  ? 2
+                  : 3,
+            reserve_id: record.id
+          }
+          console.log(record, getdata)
+          self.Service.getMemberCancel(getdata).subscribe(res => {
+            console.log(res)
+          })
+        },
         onCancel() {}
       })
     },
