@@ -2,20 +2,21 @@
   <div class="member-info-sales-interests">
     <div class="member-info-sales-interests-item">
       <st-t2 class="member-info-sales-interests-item__padding">优惠劵</st-t2>
-      <st-t4 class="member-info-sales-interests-item__padding">可用优惠劵:{{1}}</st-t4>
-      <st-t4 class="member-info-sales-interests-item__padding">已使用优惠劵:{{5}}</st-t4>
-      <st-t4 class="member-info-sales-interests-item__padding">过期优惠券:{{4}}</st-t4>
+      <st-t4 class="member-info-sales-interests-item__padding">可用优惠劵:{{ couponList.coupon_count.can_use }}</st-t4>
+      <st-t4 class="member-info-sales-interests-item__padding">已使用优惠劵:{{ couponList.coupon_count.used }}</st-t4>
+      <st-t4 class="member-info-sales-interests-item__padding">过期优惠券:{{ couponList.coupon_count.expire }}</st-t4>
     </div>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
-        <a-table rowKey="age" :dataSource="data" :columns="coupon" :pagination="false"></a-table>
+        <st-table rowKey="" :dataSource="couponList.coupon_list" :columns="coupon" :pagination="pagination" @change="onPageChange"></st-table>
       </a-col>
     </a-row>
-    <a-row :gutter="8">
+    <!-- <a-row :gutter="8">
       <a-col :lg="24">
         <st-hr></st-hr>
       </a-col>
     </a-row>
+
     <div class="member-info-sales-interests-item">
       <st-t2 class="member-info-sales-interests-item__padding">积分</st-t2>
       <st-t4 class="member-info-sales-interests-item__padding">可用积分:{{1}}</st-t4>
@@ -32,37 +33,45 @@
           >{{text >= 0 ? '+' + text: text}}</span>
         </a-table>
       </a-col>
-    </a-row>
+    </a-row> -->
   </div>
 </template>
 <script>
+import { SalesInterestsService } from './sales-interests.service'
 export default {
+  serviceInject() {
+    return {
+      salesInterrests: SalesInterestsService
+    }
+  },
+  rxState() {
+    return {
+      couponList: this.salesInterrests.couponList$
+    }
+  },
   data() {
     return {
-      data: [
-        {
-          age: 1,
-          age1: 1,
-          age2: 1,
-          age3: 1
-        }
-      ],
+      pagination: {
+        current: 1,
+        pageSize: 10
+      },
       coupon: [
         {
           title: '优惠劵',
-          dataIndex: 'age'
+          dataIndex: 'coupon_name',
+          key: 'coupon_name'
         },
         {
           title: '领券来源',
-          dataIndex: 'age1'
+          dataIndex: 'source'
         },
         {
           title: '全部状态',
-          dataIndex: 'age2'
+          dataIndex: 'status'
         },
         {
           title: '领取时间',
-          dataIndex: 'age3'
+          dataIndex: 'created_time'
         }
       ],
       integral: [
@@ -85,6 +94,21 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    onPageChange(e) {
+      this.pagination.current = e.current
+      this.pagination.pageSize = e.pageSize
+      this.salesInterrests.getCouponInfo(this.$route.query.id, {
+        size: e.pageSize,
+        page: e.current
+      }).subscribe(res => {
+        console.log('ok')
+      })
+    }
+  },
+  mounted() {
+    console.log(this.$route.query.id)
   }
 }
 </script>

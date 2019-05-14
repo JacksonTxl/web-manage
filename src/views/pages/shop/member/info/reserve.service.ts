@@ -50,6 +50,7 @@ export class ReserveService extends Store<CardsListInfoState> {
   }
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    console.log('route enter')
     const { id } = to.meta.query
     this.init(id, { card_type: 1 }, { course_type: 1 }).subscribe(() => next())
   }

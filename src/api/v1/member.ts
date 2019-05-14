@@ -285,8 +285,23 @@ export class MemberAPi extends Api {
   getCourseConsumption(id: string, query: CourseConsuptionQuery) {
     return this.http.get(`/v1/member/course/${id}`, { query })
   }
+  /**
+   * 优惠券
+   */
+  getCouponList(id: string, query: CouponQuery) {
+    return this.http.get(`/v1/member/coupon/${id}`, { query })
+  }
 }
-
+export interface CouponQuery{
+  /**
+   * 每页数量
+   */
+  size?: number;
+  /**
+   * 当前页
+   */
+  page?: number;
+}
 export interface CourseConsuptionQuery{
   /**
    * 购买日期
