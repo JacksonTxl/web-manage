@@ -10,7 +10,7 @@ interface CardsListInfoState {
   followInfo: any
 }
 @Injectable()
-export class SoldService extends Store<CardsListInfoState> {
+export class UserExperienceService extends Store<CardsListInfoState> {
   state$: State<CardsListInfoState>
   cardsListInfo$: Computed<string>
   followInfo$: Computed<string>
@@ -29,27 +29,42 @@ export class SoldService extends Store<CardsListInfoState> {
       state.cardsListInfo = cardsListInfo
     })
   }
-  getMemberReserve(id: string, params: any) {
-    return this.cardsApi.getMemberReserve(id, params).pipe(
+  SET_FOLLOW_INFO(followInfo: CardsListInfoState) {
+    this.state$.commit(state => {
+      state.followInfo = followInfo
+    })
+  }
+  getMemberSideRecord(id: any, query: any) {
+    return this.cardsApi.getMemberSideRecord(id, query).pipe(
       tap(res => {
         console.log(res, '获取数据')
-
         this.SET_CARDS_LIST_INFO(res)
       })
     )
   }
+  getMemberSideChart(id: any) {
+    return this.cardsApi.getMemberSideChart(id).pipe(
+      tap(res => {
+        console.log(res, '获取数据')
 
-  init(id: string, params: any) {
-    return forkJoin(this.getMemberReserve(id, params))
+        this.SET_FOLLOW_INFO(res)
+      })
+    )
+  }
+  init(id: string) {
+    return forkJoin(
+      this.getMemberSideRecord(id, {
+        size: 20,
+        page: 1
+      }),
+      this.getMemberSideChart({
+        id: id,
+        filed: 1
+      })
+    )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.init(to.meta.query.id, {
-      start_date: '',
-      reserve_type: 1,
-      reserve_status: -1,
-      checkin_status: -1,
-      size: 20,
-      page: 1
-    }).subscribe(() => next())
+    next()
+    this.init(to.meta.query.id).subscribe(() => next())
   }
 }

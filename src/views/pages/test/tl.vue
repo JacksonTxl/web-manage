@@ -63,7 +63,8 @@
       <p class="mg-t24 st-des">
        文字
       </p>
-      <st-pagination :total="1000" v-model="currentPage" @change="onPageChange"></st-pagination>
+      <st-pagination :page="page" @change="onPageChange"></st-pagination>
+      <p @click="test">test</p>
     </st-panel>
     <switch-shop v-if="isShowSwitchShop" @onClose="onCloseSwitchShop"></switch-shop>
   </div>
@@ -102,7 +103,12 @@ export default {
     return {
       isShowSwitchShop: false,
       shopIds: [1],
-      currentPage: 1
+      page: {
+        current_page: 1,
+        size: 20,
+        total_counts: 6,
+        total_pages: 1
+      }
     }
   },
   methods: {
@@ -127,8 +133,8 @@ export default {
         query: this.query
       })
     },
-    onPageChange(p) {
-      console.log(p)
+    onPageChange(page, pageSize) {
+      console.log(page, pageSize)
     }
   }
 }

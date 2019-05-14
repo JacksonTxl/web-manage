@@ -25,6 +25,7 @@
     <table-demo id="table"></table-demo>
     <form-table-demo id="form-table"></form-table-demo>
     <shop-hour-picker-demo id="shop-hour-picker"></shop-hour-picker-demo>
+    <pagination-demo id="pagination"/>
   </div>
 </template>
 

@@ -1,5 +1,4 @@
-import { Api } from '@/api/api'
-import { remove } from 'lodash-es'
+import { Api } from '../api'
 
 export interface UpdateMemberEdit {
   /**
@@ -279,6 +278,25 @@ export class MemberAPi extends Api {
   getCardConsumption(id: string, query: CardConsumptionQuery) {
     return this.http.get(`/v1/member/card/${id}`, { query })
   }
+
+  /*
+   *员工详情—体侧记录 v1/member/side/record
+   */
+  getMemberSideRecord(id: string, query: any) {
+    return this.http.get(`/v1/member/physical/record/${id}`, { query })
+  }
+  /*
+   *员工详情—体侧图表 v1/member/side/chart
+   */
+  getMemberSideChart(query: any) {
+    return this.http.get(`/v1/member/physical/chart/${query.id}`)
+  }
+  /*
+   *用户删除标签
+   */
+  getMemberLabelDelete(params: any) {
+    return this.http.put(`/v1/member/label/delete`, { params })
+  }
   /**
    * 课消费
    */
@@ -306,24 +324,23 @@ export interface CourseConsuptionQuery{
   /**
    * 购买日期
    */
-  buy_time?: string;
+  buy_time?: string
   /**
    * 课程类型
    */
-  course_type: number;
+  course_type: number
   /**
    * 课名称
    */
-  keyword?: string;
+  keyword?: string
   /**
    * 每页数量
    */
-  size?: number;
+  size?: number
   /**
    * 当前页
    */
-  page?: number;
-
+  page?: number
 }
 
 export interface CardConsumptionQuery {
@@ -334,18 +351,17 @@ export interface CardConsumptionQuery {
   /**
    * 开卡日期
    */
-  start_time?: string;
+  start_time?: string
   /**
    * 卡名称
    */
-  keyword?: string;
+  keyword?: string
   /**
    * 每页数量
    */
-  size?: number;
+  size?: number
   /**
    * 当前页
    */
-  page?: number;
-
+  page?: number
 }

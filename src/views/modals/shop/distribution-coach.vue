@@ -14,7 +14,7 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="24" class="distribution-container" style="padding-left:12px;padding-right:12px;">
-          <a-table :columns="columns" :dataSource="data" :rowSelection="rowSelection" />
+          <a-table :columns="columns" :dataSource="data" />
         </a-col>
       </a-row>
     </st-form>
@@ -43,7 +43,8 @@ export default {
     return {
       form: this.$form.createForm(this),
       show: false,
-      columns
+      columns,
+      data: []
     }
   },
   created() {},

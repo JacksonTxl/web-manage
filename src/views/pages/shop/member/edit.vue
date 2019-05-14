@@ -170,6 +170,7 @@ export default {
         }
         this.editService.updateMemberEdit(this.id, values).subscribe(res => {
           console.log('12333333333333')
+          this.$router.go(-1)
         })
       })
     },

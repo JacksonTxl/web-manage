@@ -20,11 +20,11 @@
           </div>
           <div slot="action" slot-scope="text,record" href="javascript:;">
             <div v-if="record.reserve_status === '预约成功' && record.is_checkin === '未签到'">
-              <a href="javascript:;" @click="reserveStatus(record)">{{record.reserve_status}}</a>
+              <a href="javascript:;" @click="reserveStatus(record)">取消预约</a>
               <a-divider type="vertical"></a-divider>
               <a href="javascript:;" @click="isCheckin(record)">{{record.is_checkin}}</a>
             </div>
-            <div v-else>—</div>
+            <!-- <div v-else>—</div> -->
           </div>
         </st-table>
       </a-col>
@@ -78,8 +78,8 @@ export default {
       form: {
         start_date: '', // 上课日期
         reserve_type: 1,
-        reserve_status: 0,
-        checkin_status: 0,
+        reserve_status: -1,
+        checkin_status: -1,
         course_name: undefined,
         size: 20,
         page: 1
@@ -215,7 +215,7 @@ export default {
     isCheckin(record) {
       this.$confirm({
         title: '提示',
-        content: '确认签到',
+        content: '确认签到?',
         onOk() {},
         onCancel() {}
       })

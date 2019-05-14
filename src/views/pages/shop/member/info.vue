@@ -40,24 +40,18 @@
                       class="tag-item"
                       :key="tag.name"
                       :closable="true"
-                      :afterClose="() => handleClose(tag)"
+                      @close="handleClose(tag)"
                     >{{ tag.name }}</a-tag>
                   </a-tooltip>
                 </template>
-                <a-input
-                  v-if="inputVisible"
-                  ref="input"
-                  type="text"
-                  size="small"
-                  :style="{ width: '78px' }"
-                  :value="inputValue"
-                  @change="handleInputChange"
-                  @blur="handleInputConfirm"
-                  @keyup.enter="handleInputConfirm"
-                />
-                <a-tag v-else @click="showInput" style="background: #fff; borderStyle: dashed;">
-                  <a-icon type="plus" style="margin-right: 8px;"/>标签
-                </a-tag>
+                <modal-link
+                  tag="a"
+                  :to=" { name: 'shop-add-lable',props:{selectedRowData:[{id:$route.query.id}]}, on:{done: onModalTest }}"
+                >
+                  <a-tag style="background: #fff; borderStyle: dashed;">
+                    <a-icon type="plus" style="margin-right: 8px;"/>标签
+                  </a-tag>
+                </modal-link>
               </div>
             </div>
           </div>
@@ -72,9 +66,12 @@
                 defaultValue="更多操作"
                 style="width: 120px"
               >
-                <a-select-option value="jack">Jack</a-select-option>
-                <a-select-option value="lucy">Lucy</a-select-option>
-                <a-select-option value="Yiminghe">yiminghe</a-select-option>
+                <a-select-option value="jack">
+                  <modal-link tag="a" :to=" { name: 'shop-distribution-ales'}">更改跟进销售</modal-link>
+                </a-select-option>
+                <a-select-option value="lucy">
+                  <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">更改跟进教练</modal-link>
+                </a-select-option>
               </a-select>
             </div>
             <div class="pannel-right__operation">
@@ -132,39 +129,24 @@ export default {
   },
   name: 'list',
   data() {
-    return {
-      inputVisible: false,
-      inputValue: ''
-    }
+    return {}
   },
   methods: {
-    handleClose(tag) {},
-    showInput() {
-      this.inputVisible = true
-      this.$nextTick(function() {
-        this.$refs.input.focus()
-      })
-    },
-    handleInputChange(e) {
-      this.inputValue = e.target.value
-    },
-
-    handleInputConfirm() {
-      const inputValue = this.inputValue
-      let tags = this.tags
-      if (inputValue && tags.indexOf(inputValue) === -1) {
-        tags = [...tags, inputValue]
-      }
-      console.log(tags)
-      Object.assign(this, {
-        tags,
-        inputVisible: false,
-        inputValue: ''
-      })
+    handleClose(tag) {
+      console.log(tag)
+      let self = this
+      this.infoService
+        .getMemberLabelDelete({ user_id: self.$route.query.id, tag_id: tag.id })
+        .subscribe(state => {})
     },
     editMember() {
       console.log(this.$route.query)
       this.$router.push({ name: 'shop-member-edit', query: { id: this.$route.query.id } })
+    },
+    onModalTest() {
+      console.log(111111111111111111)
+      let self = this
+      this.infoService.getHeaderInfo(self.$route.query.id).subscribe()
     }
   },
   mounted() {
