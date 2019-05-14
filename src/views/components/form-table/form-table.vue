@@ -3,6 +3,7 @@
     <table :class="b({striped,hoverable})">
       <slot></slot>
     </table>
+    <st-pagination v-if="page.total" :page="page" @change="onChange"/>
   </a-spin>
 </template>
 
@@ -24,6 +25,17 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    page: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  },
+  methods: {
+    onChange(current, pageSize) {
+      this.$emit('change', current, pageSize)
     }
   }
 }

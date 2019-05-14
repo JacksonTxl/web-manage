@@ -8,7 +8,7 @@ interface ListState {
   resData: object
 }
 @Injectable()
-export class CourseCategoryService extends Store<ListState> {
+export class CategoryService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
   constructor(protected courseApi: CourseApi) {
@@ -34,7 +34,7 @@ export class CourseCategoryService extends Store<ListState> {
     })
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCourseCategoryList({ page: to.meta.query.page, size: 20 }).subscribe(() => {
+    this.getCourseCategoryList({ page: to.meta.query.page, size: 100 }).subscribe(() => {
       next()
     }, () => {
       next(false)

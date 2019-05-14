@@ -103,10 +103,15 @@ export default {
           title: '上课时间',
           dataIndex: 'start_time',
           sorter: (a, b) => {
-            return (
-              new Date(a.start_time).getTime() >
-              new Date(b.start_time).getTime()
-            )
+            let A = new Date(a.start_time).getTime()
+            let B = new Date(b.start_time).getTime()
+            if (A < B) {
+              return -1
+            }
+            if (A > B) {
+              return 1
+            }
+            return 0
           }
         },
         {
@@ -130,10 +135,15 @@ export default {
           title: '预约时间',
           dataIndex: 'created_time',
           sorter: (a, b) => {
-            return (
-              new Date(a.created_time).getTime() >
-              new Date(b.created_time).getTime()
-            )
+            let A = new Date(a.created_time).getTime()
+            let B = new Date(b.created_time).getTime()
+            if (A < B) {
+              return -1
+            }
+            if (A > B) {
+              return 1
+            }
+            return 0
           }
         },
         {
@@ -202,21 +212,53 @@ export default {
   methods: {
     /* 预约状态 */
     reserveStatus(record) {
+      let self = this
       this.$confirm({
         title: '提示',
         content: '确认取消预约并退还相应费用？',
         okText: '确认取消',
         cancelText: '再看看',
-        onOk() {},
+        onOk() {
+          let getdata = {
+            id: self.$route.query.id,
+            course_type:
+              record.reserve_type === '团课'
+                ? 1
+                : record.reserve_type === '私教课'
+                  ? 2
+                  : 3,
+            reserve_id: record.id
+          }
+          console.log(record, getdata)
+          self.Service.getMemberCancel(getdata).subscribe(res => {
+            self.Service.init(self.$route.query.id, self.form).subscribe()
+          })
+        },
         onCancel() {}
       })
     },
     /* 签到状态 */
     isCheckin(record) {
+      let self = this
       this.$confirm({
         title: '提示',
         content: '确认签到?',
-        onOk() {},
+        onOk() {
+          let getdata = {
+            id: self.$route.query.id,
+            course_type:
+              record.reserve_type === '团课'
+                ? 1
+                : record.reserve_type === '私教课'
+                  ? 2
+                  : 3,
+            reserve_id: record.id
+          }
+          console.log(record, getdata)
+          self.Service.getMemberSign(getdata).subscribe(res => {
+            self.Service.init(self.$route.query.id, self.form).subscribe()
+          })
+        },
         onCancel() {}
       })
     },

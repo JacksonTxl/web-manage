@@ -6,7 +6,7 @@
       [hoverable] 添加鼠标hover样式
       [loading] 加载状态
     </p>
-    <st-form-table hoverable>
+    <st-form-table :page="page" hoverable>
       <thead>
         <tr>
           <th>标题1</th>
@@ -32,7 +32,7 @@
         </tr>
       </tbody>
     </st-form-table>
-    <st-form-table loading class="mg-t16">
+    <st-form-table :page="page" @change="onPageChange" loading class="mg-t16">
       <thead>
         <tr>
           <th>标题1</th>
@@ -55,3 +55,22 @@
     </st-form-table>
   </section>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      page: {
+        current_page: 1,
+        size: 20,
+        total_counts: 6,
+        total_pages: 1
+      }
+    }
+  },
+  methods: {
+    onPageChange(page, pageSize) {
+      console.log(page, pageSize)
+    }
+  }
+}
+</script>

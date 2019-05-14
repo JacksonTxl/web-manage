@@ -1,4 +1,5 @@
 import { Api } from '../api'
+import { GetMemberInput } from './course/team/schedule'
 
 export interface UpdateMemberEdit {
   /**
@@ -303,6 +304,18 @@ export class MemberAPi extends Api {
   getCourseConsumption(id: string, query: CourseConsuptionQuery) {
     return this.http.get(`/v1/member/course/${id}`, { query })
   }
+  /*
+   *取消预约v1/member/cancel/会员ID
+   */
+  getMemberCancel(params: any) {
+    return this.http.put(`/v1/member/cancel/${params.id}`, { params })
+  }
+  /**
+   *取消预约v1/member/cancel/会员ID
+   */
+  getMemberSign(params: any) {
+    return this.http.put(`/v1/member/sign/${params.id}`, { params })
+  }
   /**
    * 优惠券
    */
@@ -313,18 +326,24 @@ export class MemberAPi extends Api {
   getCountryCodes() {
     return this.http.get('/country/codes')
   }
+  /**
+   * 添加用户体测 v1/member/physical/用户ID
+   */
+  getAddMemberPhysical(params: any) {
+    return this.http.put(`/v1/member/physical/${params.id}`, { params })
+  }
 }
-export interface CouponQuery{
+export interface CouponQuery {
   /**
    * 每页数量
    */
-  size?: number;
+  size?: number
   /**
    * 当前页
    */
-  page?: number;
+  page?: number
 }
-export interface CourseConsuptionQuery{
+export interface CourseConsuptionQuery {
   /**
    * 购买日期
    */

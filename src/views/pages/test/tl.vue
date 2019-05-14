@@ -18,10 +18,14 @@
         <router-link class="mg-l8" to="/shop/product/course/manage/team/add">添加门店团体课</router-link>
       </p>
       <p class="mg-t8">
-        <router-link to="/brand/setting/app/course-category">课程类型设置</router-link>
-        <router-link class="mg-l8" to="/brand/setting/app/coach-level">教练等级</router-link>
-        <router-link class="mg-l8" to="/brand/setting/app/skillful">擅长项目</router-link>
-        <router-link class="mg-l8" to="/brand/setting/app/training-aim">训练目的</router-link>
+        <router-link to="/brand/setting/general/course-category">课程类型设置</router-link>
+        <router-link class="mg-l8" to="/brand/setting/general/coach-level">教练等级</router-link>
+        <router-link class="mg-l8" to="/brand/setting/general/skillful">擅长项目</router-link>
+        <router-link class="mg-l8" to="/brand/setting/general/training-aim">训练目的</router-link>
+      </p>
+      <p class="mg-t8">
+        <router-link to="/brand/setting/app">应用设置</router-link>
+        <router-link class="mg-l8" to="/brand/setting/general">通用设置</router-link>
       </p>
       <p class="mg-t8">
         <modal-link tag="a" :to="{ name:'brand-setting-team-reserve' }">团体课程预约设置</modal-link>
@@ -34,7 +38,7 @@
         <st-input-search v-model="query.keyword" @search="onSearch"/>
         <st-button class="mg-t16" @click="onSearch">search</st-button>
       </p>
-      <st-form-table hoverable>
+      <st-form-table :page="page" @change="onPageChange" hoverable>
         <thead>
           <tr>
             <th>标题1<st-help-tooltip :id="1"/></th>
@@ -64,7 +68,6 @@
        文字
       </p>
       <st-pagination :page="page" @change="onPageChange"></st-pagination>
-      <p @click="test">test</p>
     </st-panel>
     <switch-shop v-if="isShowSwitchShop" @onClose="onCloseSwitchShop"></switch-shop>
   </div>

@@ -1,6 +1,6 @@
 <template>
   <a-pagination
-    class="st-pagination"
+    class="st-pagination mg-t24"
     :total="total"
     :pageSize="pageSize"
     :defaultCurrent="current"

@@ -1,8 +1,8 @@
 <template>
   <st-panel
     :tabs="[
-      { label: '私教设置', route: { name: 'brand-setting-app-course-personal' } },
-      { label: '团课设置', route: { name: 'brand-setting-app-course-team' } }
+      { label: '课程类型', route: { name: 'brand-setting-app-course-category' } },
+      { label: '训练目的', route: { name: 'brand-setting-app-course-training-aim' } }
     ]"
   >
     <router-view></router-view>
