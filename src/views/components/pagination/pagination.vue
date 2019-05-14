@@ -2,8 +2,8 @@
   <a-pagination
     class="st-pagination"
     :total="total"
-    :pageSize="size"
-    :defaultCurrent="defaultCurrent"
+    :pageSize="pageSize"
+    :defaultCurrent="current"
     :showTotal="showTotal"
     :showSizeChanger="showSizeChanger"
     @change="onPageChange"
@@ -15,17 +15,11 @@
 export default {
   name: 'StPagination',
   props: {
-    total: {
-      type: Number,
-      default: 0
-    },
-    pageSize: {
-      type: Number,
-      default: 20
-    },
-    defaultCurrent: {
-      type: Number,
-      default: 1
+    page: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   data() {
@@ -34,16 +28,31 @@ export default {
       showTotal(total) {
         return `共${total}条`
       },
-      size: 20
+      current: 0,
+      pageSize: 20,
+      total: 0
     }
   },
+  watch: {
+    page(page) {
+      this.initPage(page)
+    }
+  },
+  created() {
+    this.initPage(this.page)
+  },
   methods: {
-    onPageChange(p) {
-      this.$emit('change', p, this.size)
+    initPage(page) {
+      this.current = page.current_page
+      this.pageSize = page.size
+      this.total = page.total_counts
     },
-    onShowSizeChange(p, size) {
-      this.size = size
-      this.$emit('change', p, size)
+    onPageChange(p) {
+      this.$emit('change', p, this.pageSize)
+    },
+    onShowSizeChange(p, pageSize) {
+      this.pageSize = pageSize
+      this.$emit('change', p, pageSize)
     }
   }
 }
