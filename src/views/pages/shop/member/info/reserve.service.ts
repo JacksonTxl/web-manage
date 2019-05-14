@@ -2,9 +2,8 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { MemberAPi } from '@/api/v1/member'
+import { MemberAPi, CardConsumptionQuery, CourseConsuptionQuery } from '@/api/v1/member'
 import { forkJoin } from 'rxjs'
-import { CardConsumptionQuery, CourseConsuptionQuery } from '../../../../../api/v1/member'
 
 interface CardsListInfoState {
     cardsListInfo: Object,
@@ -14,6 +13,7 @@ interface CardsListInfoState {
 export class ReserveService extends Store<CardsListInfoState> {
   state$: State<CardsListInfoState>
   cardsListInfo$: Computed<Object>
+  courseListInfo$: Computed<Object>
   constructor(private cardsApi: MemberAPi) {
     super()
     this.state$ = new State({
