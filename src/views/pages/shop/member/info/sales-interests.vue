@@ -99,12 +99,12 @@ export default {
     onPageChange(e) {
       this.pagination.current = e.current
       this.pagination.pageSize = e.pageSize
-      this.salesInterrests.getCouponInfo(this.$route.query.id, {
+
+      this.$router.push({ query: {
+        id: this.$route.query.id,
         size: e.pageSize,
         page: e.current
-      }).subscribe(res => {
-        console.log('ok')
-      })
+      } })
     }
   },
   mounted() {

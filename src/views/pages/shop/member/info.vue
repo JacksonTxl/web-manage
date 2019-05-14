@@ -65,7 +65,7 @@
         <a-col :span="10">
           <div class="shop-member-info-title-pannel-right">
             <div class="pannel-right__operation">
-              <a-button type="primary" class="pannel-right__operation__margin">编辑资料</a-button>
+              <a-button type="primary" class="pannel-right__operation__margin" @click="editMember">编辑资料</a-button>
               <a-button class="pannel-right__operation__margin">绑定实体卡</a-button>
               <a-select
                 class="pannel-right__operation__margin"
@@ -79,22 +79,22 @@
             </div>
             <div class="pannel-right__operation">
               <div class="pannel-right__num__box">
-                <span class="pannel-right__num">3</span>
+                <span class="pannel-right__num">{{ info.valid_card }}</span>
                 <span class="pannel-right__num__margin">/</span>
                 <span>张</span>
                 <p>有效会员卡</p>
               </div>
               <div class="pannel-right__num__box">
-                <span class="pannel-right__num">3</span>
+                <span class="pannel-right__num">{{ info.valid_personal_class }}</span>
                 <span class="pannel-right__num__margin">/</span>
-                <span>张</span>
-                <p>有效会员卡</p>
+                <span>节</span>
+                <p>有效私教课</p>
               </div>
               <div class="pannel-right__num__box">
-                <span class="pannel-right__num">3</span>
+                <span class="pannel-right__num">{{ info.deposit_balance }}</span>
                 <span class="pannel-right__num__margin">/</span>
-                <span>张</span>
-                <p>有效会员卡</p>
+                <span>元</span>
+                <p>储值卡余额</p>
               </div>
             </div>
           </div>
@@ -161,6 +161,10 @@ export default {
         inputVisible: false,
         inputValue: ''
       })
+    },
+    editMember() {
+      console.log(this.$route.query)
+      this.$router.push({ name: 'shop-member-edit', query: { id: this.$route.query.id } })
     }
   },
   mounted() {

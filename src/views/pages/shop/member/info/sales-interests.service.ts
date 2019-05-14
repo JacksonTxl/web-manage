@@ -33,7 +33,9 @@ export class SalesInterestsService extends Store<CouponListInfoState> {
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
     console.log('==', to)
     console.log('==', from)
-    next()
+    let { id, page, size } = to.meta.query
+    this.getCouponInfo(id, { page, size }).subscribe(() => next())
+    // next()
   }
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
