@@ -8,6 +8,7 @@
     <div class="mg-t24">
       <st-area-chart id="chartDemo" :data="chartData"/>
     </div>
+    <button @click="reRender">重绘</button>
     <div class="mg-t24">
       <st-area-chart id="chartDemo2" :data="chartData2" :options="options2"/>
     </div>
@@ -88,6 +89,20 @@ export default {
         {
           whateverX: '2019',
           whateverY: 33233
+        }
+      ]
+    }
+  },
+  methods: {
+    reRender() {
+      this.chartData = [
+        {
+          year: '2013',
+          value: 30900
+        },
+        {
+          year: '2014',
+          value: 27409
         }
       ]
     }

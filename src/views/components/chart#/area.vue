@@ -56,6 +56,11 @@ export default {
       }
     }
   },
+  watch: {
+    data(val) {
+      this.chart.changeData(val)
+    }
+  },
   mounted() {
     this.renderChart()
   },
@@ -69,6 +74,7 @@ export default {
         forceFit: true,
         ...opts
       })
+      this.chart = chart
       chart.source(this.data)
       chart.scale({
         [x]: {
