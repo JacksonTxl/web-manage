@@ -34,7 +34,7 @@ export class TrainingAimService extends Store<ListState> {
     })
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getTrainingAimList({ page: to.meta.query.page, size: 20 }).subscribe(() => {
+    this.getTrainingAimList({ page: to.meta.query.page, size: 100 }).subscribe(() => {
       next()
     }, () => {
       next(false)

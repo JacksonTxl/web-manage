@@ -34,7 +34,7 @@ export class SkillfulService extends Store<ListState> {
     })
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getSkillfulList({ page: to.meta.query.page, size: 20 }).subscribe(() => {
+    this.getSkillfulList({ page: to.meta.query.page, size: 100 }).subscribe(() => {
       next()
     }, () => {
       next(false)

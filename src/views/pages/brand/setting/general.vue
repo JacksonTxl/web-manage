@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <div :class="b('navs')">
-      <app-nav></app-nav>
+      <general-nav></general-nav>
     </div>
     <div :class="b('content')">
       <router-view></router-view>
@@ -9,13 +9,13 @@
   </div>
 </template>
 <script>
-import AppNav from './nav#/app'
+import GeneralNav from './nav#/general'
 export default {
   bem: {
     b: 'page-setting'
   },
   components: {
-    AppNav
+    GeneralNav
   }
 }
 </script>

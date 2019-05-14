@@ -1,0 +1,81 @@
+<template>
+  <div>
+    <div class="st-des">
+      已添加{{resData.total}}个，支持添加{{resData.max}}个
+    </div>
+    <st-form-table class="mg-t8">
+      <thead>
+        <tr>
+          <th>擅长项目</th>
+          <th>标记员工数</th>
+          <th>创建人</th>
+          <th>最后修改时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="5" class="st-form-table__add">
+            <modal-link tag="a" :to="{ name: 'skillful-add', on: {
+              change: onListChange } }">
+              <st-button type="dashed" block :disabled="resData.total >= resData.max">添加擅长项目</st-button>
+            </modal-link>
+          </td>
+        </tr>
+        <tr v-for="(item, index) in resData.list" :key="index">
+          <td>{{item.setting_name}}</td>
+          <td>{{item.used_number}}</td>
+          <td>{{item.operator_name}}</td>
+          <td>{{item.updated_time}}</td>
+          <td>
+            <modal-link tag="a" :to="{ name: 'coach-level-edit',
+              props: { id: item.id, setting_name: item.setting_name },
+              on: { change: onListChange } }">编辑
+            </modal-link>
+            <a-popconfirm
+              :title="`删除后不可进行恢复，${item.used_number ? '已标记的员工将删除此擅长项目，' : ''}确定删除此擅长项目？`"
+              @confirm="onDelete(item.id)">
+              <a class="mg-l8">删除</a>
+            </a-popconfirm>
+          </td>
+        </tr>
+      </tbody>
+    </st-form-table>
+  </div>
+</template>
+<script>
+import { SkillfulService } from './skillful.service'
+import { RouteService } from '@/services/route.service'
+import { MessageService } from '@/services/message.service'
+export default {
+  serviceInject() {
+    return {
+      listService: SkillfulService,
+      routeService: RouteService,
+      messageService: MessageService
+    }
+  },
+  rxState() {
+    return {
+      resData: this.listService.resData$,
+      query: this.routeService.query$
+    }
+  },
+  methods: {
+    onDelete(id) {
+      this.listService.deleteSkillful({ id }).subscribe(() => {
+        this.messageService.success({
+          content: '删除成功'
+        })
+        this.onListChange()
+      })
+    },
+    onListChange() {
+      this.$router.push({
+        query: {},
+        force: true
+      })
+    }
+  }
+}
+</script>
