@@ -1,4 +1,4 @@
-import value from '../../../../../../types/declare';
+
 <template>
   <div>
     <a-pagination
@@ -33,12 +33,15 @@ export default {
   },
   mounted() {},
   methods: {
-    onShowSizeChange(current, pageSize) {
-      console.log(current, pageSize)
-      this.value.pageSize = pageSize
+    onShowSizeChange(a, b) {
+      this.value.current = a
+      this.value.pageSize = b
+      this.$emit('dataChange', this.value)
     },
     onShowSizeChange1(a, b, c) {
-      console.log(a, b, c)
+      this.value.current = a
+      this.value.pageSize = b
+      this.$emit('dataChange', this.value)
     }
   }
 }

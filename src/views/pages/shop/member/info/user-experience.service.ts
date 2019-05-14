@@ -34,8 +34,8 @@ export class UserExperienceService extends Store<CardsListInfoState> {
       state.followInfo = followInfo
     })
   }
-  getMemberSideRecord(id: any) {
-    return this.cardsApi.getMemberSideRecord(id).pipe(
+  getMemberSideRecord(id: any, query: any) {
+    return this.cardsApi.getMemberSideRecord(id, query).pipe(
       tap(res => {
         console.log(res, '获取数据')
         this.SET_CARDS_LIST_INFO(res)
@@ -53,9 +53,8 @@ export class UserExperienceService extends Store<CardsListInfoState> {
   }
   init(id: string) {
     return forkJoin(
-      this.getMemberSideRecord({
-        id: id,
-        size: 10,
+      this.getMemberSideRecord(id, {
+        size: 20,
         page: 1
       }),
       this.getMemberSideChart({

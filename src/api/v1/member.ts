@@ -283,14 +283,14 @@ export class MemberAPi extends Api {
   /*
    *员工详情—体侧记录 v1/member/side/record
    */
-  getMemberSideRecord(query: any) {
-    return this.http.get(`/v1/member/side/record`, { query })
+  getMemberSideRecord(id: string, query: any) {
+    return this.http.get(`/v1/member/physical/record/${id}`, { query })
   }
   /*
    *员工详情—体侧图表 v1/member/side/chart
    */
   getMemberSideChart(query: any) {
-    return this.http.get(`/v1/member/side/chart`, { query })
+    return this.http.get(`/v1/member/physical/chart/${query.id}`)
   }
   /*
    *用户删除标签

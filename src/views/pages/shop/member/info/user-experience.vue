@@ -3,7 +3,17 @@
     <st-t4>体测数据</st-t4>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
+        <a-radio-group
+          v-model="tcData"
+          @change="tcDataFunc(tcData)"
+          style="position: absolute;right: 20px;top: -30px;"
+        >
+          <a-radio-button value="weight">体重</a-radio-button>
+          <a-radio-button value="body_fat_rate">体脂率</a-radio-button>
+          <a-radio-button value="basal_metabolism">基础代谢率</a-radio-button>
+        </a-radio-group>
         <div id="mountNode"></div>
+        <st-area-chart id="mountNode" :data="g2"/>
       </a-col>
     </a-row>
     <a-row :gutter="8">
@@ -14,13 +24,6 @@
     <st-t4>体测记录</st-t4>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
-        <!-- <a-table
-          class="user-experience-add-table"
-          rowKey="age"
-          :dataSource="data"
-          :columns="integral"
-          :pagination="false"
-        ></a-table>-->
         <st-form-table hoverable>
           <thead>
             <tr>
@@ -39,22 +42,23 @@
                 </a-button>
               </td>
             </tr>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-              <td>7</td>
-              <td>8</td>
-              <td>9</td>
+            <tr v-for="(item,index) in cardsListInfo.physical_list" :key="index">
+              <td>{{item.test_time}}</td>
+              <td>{{item.height}}</td>
+              <td>{{item.weight}}</td>
+              <td>{{item.body_fat_rate}}</td>
+              <td>{{item.basal_metabolism}}</td>
+              <td>{{item.fat_content}}</td>
+              <td>{{item.skeletal_muscle_content}}</td>
+              <td>{{item.bust}}</td>
+              <td>{{item.waistline}}</td>
+              <td>{{item.hipline}}</td>
             </tr>
           </tbody>
         </st-form-table>
       </a-col>
     </a-row>
-    <page v-model="pageData"></page>
+    <page v-model="pageData" @dataChange="dataChange" style="text-align: right;margin-top:20px"></page>
   </div>
 </template>
 <script>
@@ -71,7 +75,7 @@ const defaultOptions = {
    */
   padding: 'auto',
   fieldNames: {
-    x: 'year',
+    x: 'test_time',
     y: 'value'
   },
   lineColor: '#258EF9',
@@ -98,38 +102,15 @@ export default {
   },
   data() {
     return {
+      tcData: 'weight',
       pageData: {
         pageSizeOptions: ['10', '20', '30', '40', '50'],
         current: 1,
-        pageSize: 10,
-        total: 50
+        pageSize: 20,
+        total: 50000
       },
-      data: [
-        {
-          age: '2017/10/31 23:12:00',
-          age1: 1,
-          age2: 1,
-          age3: 1,
-          age4: 1,
-          age5: 1,
-          age6: 1,
-          age7: 1,
-          age8: 8
-        },
-        {
-          age: '2017/10/31 23:12:30',
-          age1: 2,
-          age2: 2,
-          age3: 2,
-          age4: 2,
-          age5: 2,
-          age6: 2,
-          age7: 2,
-          age8: 8
-        }
-      ],
       tableTitle: [
-        { title: '体测时间', width: '20%' },
+        { title: '体测时间', width: '13%' },
         { title: '身高', width: '10%' },
         { title: '体重', width: '10%' },
         { title: '体脂率', width: '10%' },
@@ -137,7 +118,8 @@ export default {
         { title: '脂肪含量', width: '10%' },
         { title: '骨骼肌含量', width: '10%' },
         { title: '胸围', width: '10%' },
-        { title: '腰围', width: '10%' }
+        { title: '腰围', width: '10%' },
+        { title: '臀围', width: '10%' }
       ],
       integral: [
         {
@@ -190,51 +172,53 @@ export default {
       ],
       g2: [
         {
-          year: '1991',
-          value: 10468
+          test_time: '04/19',
+          value: 65000
         },
         {
-          year: '1992',
-          value: 16100
+          test_time: '04/19',
+          value: 65000
         },
         {
-          year: '1993',
-          value: 12900
+          test_time: '04/23',
+          value: 65000
         },
         {
-          year: '1994',
-          value: 17409
+          test_time: '04/25',
+          value: 65000
         },
         {
-          year: '1995',
-          value: 10000
+          test_time: '04/25',
+          value: 65000
         },
         {
-          year: '1996',
-          value: 21056
-        },
-        {
-          year: '1997',
-          value: 31982
-        },
-        {
-          year: '1998',
-          value: 12040
-        },
-        {
-          year: '1999',
-          value: 33233
+          test_time: '05/08',
+          value: 65000
         }
       ],
       options: {}
     }
   },
-  mounted() {
-    this.echarts(this.g2)
-
-    // this.aService.getListInfo('1').subscribe()
+  created() {
+    this.g2 = this.followInfo.weight
+    this.pageData.current = this.cardsListInfo.page.current_page
+    this.pageData.pageSize = this.cardsListInfo.page.size
+    this.pageData.total = this.cardsListInfo.page.total_counts
   },
+  mounted() {},
   methods: {
+    tcDataFunc(value) {
+      this.g2 = this.followInfo[value]
+    },
+    dataChange(value) {
+      let self = this
+      this.aService
+        .getMemberSideRecord(self.$route.query.id, {
+          size: value.pageSize,
+          page: value.current
+        })
+        .subscribe()
+    },
     echarts(data) {
       const opts = Object.assign(defaultOptions, this.options)
       const { x, y } = opts.fieldNames
@@ -293,6 +277,20 @@ export default {
           ).toFixed(1)}kg</div>`
         }
       })
+      chart
+        .area()
+        .position([x, y])
+        .color(opts.areaColor)
+        .shape('smooth')
+      chart
+        .line()
+        .position([x, y])
+        .color(opts.lineColor)
+        .size(opts.lineWidth)
+        .shape('smooth')
+      chart.render()
+      chart.clear()
+      chart.source(data)
       chart
         .area()
         .position([x, y])

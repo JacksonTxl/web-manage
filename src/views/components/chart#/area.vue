@@ -13,7 +13,7 @@ const defaultOptions = {
    */
   padding: 'auto',
   fieldNames: {
-    x: 'year',
+    x: 'test_time',
     y: 'value'
   },
   lineColor: '#258EF9',
@@ -116,8 +116,17 @@ export default {
           type: 'line'
         }
       })
-      chart.area().position([x, y]).color(opts.areaColor).shape('smooth')
-      chart.line().position([x, y]).color(opts.lineColor).size(opts.lineWidth).shape('smooth')
+      chart
+        .area()
+        .position([x, y])
+        .color(opts.areaColor)
+        .shape('smooth')
+      chart
+        .line()
+        .position([x, y])
+        .color(opts.lineColor)
+        .size(opts.lineWidth)
+        .shape('smooth')
       chart.render()
     }
   }
