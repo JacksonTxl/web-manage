@@ -10,6 +10,7 @@
       @showSizeChange="onShowSizeChange"
       :showTotal="total => `共 ${total} 条`"
       @change="onShowSizeChange1"
+      v-if="value.total"
     >
       <template slot="buildOptionText" slot-scope="props">
         <span>{{props.value}}条/页</span>

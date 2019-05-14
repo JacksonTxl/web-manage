@@ -35,8 +35,8 @@ export class ListService extends Store<CardsListInfoState> {
   }
 
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo(to.query).subscribe(res => {
-      console.log(res, '获取数据to.query', to.query)
+    this.getListInfo(to.meta.query).subscribe(res => {
+      console.log(res, '获取数据to.query', to.meta.query)
       this.SET_CARDS_LIST_INFO(res)
       next()
     })

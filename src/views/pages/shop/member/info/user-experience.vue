@@ -110,7 +110,7 @@ export default {
         pageSizeOptions: ['10', '20', '30', '40', '50'],
         current: 1,
         pageSize: 20,
-        total: 50000
+        total: 0
       },
       tableTitle: [
         { title: '体测时间', width: '13%' },

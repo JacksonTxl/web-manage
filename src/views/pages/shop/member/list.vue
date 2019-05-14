@@ -82,7 +82,7 @@
         :rowSelection="{selectedRowKeys:selectedRowKeys,onChange:onSelectionChange}"
         rowKey="id"
         @change="onTableChange"
-        :dataSource="tableData"
+        :dataSource="memberListInfo.members_list"
         :pagination="pagination"
       >
         <div slot="member_name" slot-scope="text,record">
@@ -120,13 +120,13 @@
         </div>
       </st-table>
     </st-panel>
+    <!-- {{memberListInfo}} -->
   </div>
 </template>
 <script>
 import { ListService } from './list.service'
 import StSeleter from './list#/seleter.vue'
 import moment from 'moment'
-// const tableData = new Array(60).fill(1).map((item, i) => ({ id: i, name: i }))
 export default {
   serviceInject() {
     return {
@@ -164,7 +164,6 @@ export default {
         pageSize: 10,
         total: 50
       },
-      tableData: [],
       selectedRowKeys: [],
       selectedRowData: [],
       columns: [
@@ -223,7 +222,6 @@ export default {
     },
     moment,
     pageFilter(data) {
-      this.tableData = data.members_list
       this.pagination.current = data.page.current_page
       this.pagination.pageSize = data.page.size
       this.pagination.total = data.page.total_counts
@@ -258,7 +256,7 @@ export default {
       console.log(pagination, filters, sorter)
       this.pagination = pagination
       this.form.size = pagination.pageSize
-      this.form.current_page = pagination.current
+      this.form.page = pagination.current
       this.$router.push({ query: this.form })
     },
     queryFunc() {
