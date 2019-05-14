@@ -38,7 +38,7 @@
         <st-input-search v-model="query.keyword" @search="onSearch"/>
         <st-button class="mg-t16" @click="onSearch">search</st-button>
       </p>
-      <st-form-table hoverable>
+      <st-form-table :page="page" @change="onPageChange" hoverable>
         <thead>
           <tr>
             <th>标题1<st-help-tooltip :id="1"/></th>
