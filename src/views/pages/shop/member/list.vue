@@ -65,13 +65,22 @@
       <a-popover placement="bottom">
         <template slot="content">
           <p>
-            <modal-link tag="a" :to=" { name: 'shop-distribution-coach',props:{selectedRowData:selectDataList}}">分配教练</modal-link>
+            <modal-link
+              tag="a"
+              :to=" { name: 'shop-distribution-coach',props:{selectedRowData:selectDataList}}"
+            >分配教练</modal-link>
           </p>
           <p>
-            <modal-link tag="a" :to=" { name: 'shop-distribution-ales',props:{selectedRowData:selectDataList}}">分配销售</modal-link>
+            <modal-link
+              tag="a"
+              :to=" { name: 'shop-distribution-ales',props:{selectedRowData:selectDataList}}"
+            >分配销售</modal-link>
           </p>
         </template>
-        <st-button class="shop-member-list-button" :disabled="selectedRowData.length > 0 ? false :true">分配员工</st-button>
+        <st-button
+          class="shop-member-list-button"
+          :disabled="selectedRowData.length > 0 ? false :true"
+        >分配员工</st-button>
       </a-popover>
       <st-button class="shop-member-list-button">批量导出</st-button>
       <st-table
@@ -97,7 +106,10 @@
               <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">分配教练</modal-link>
             </a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'shop-distribution-ales',props: {selectedRowData: record.id}}">分配销售</modal-link>
+              <modal-link
+                tag="a"
+                :to=" { name: 'shop-distribution-ales',props: {selectedRowData: record.id}}"
+              >分配销售</modal-link>
             </a-menu-item>
             <a-menu-item>
               <modal-link
@@ -112,7 +124,7 @@
               <modal-link tag="a" :to=" { name: 'shop-transfer-shop', props:{record:record}}">转店</modal-link>
             </a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'shop-frozen'}">冻结用户</modal-link>
+              <modal-link tag="a" :to=" { name: 'shop-frozen', props:{record:record}}">冻结用户</modal-link>
             </a-menu-item>
             <a-menu-item @click="onRemoveBind(record)">解除微信绑定</a-menu-item>
           </st-more-dropdown>

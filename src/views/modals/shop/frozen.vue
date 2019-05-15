@@ -21,14 +21,25 @@
             :pagination="false"
             size="middle"
             :columns="columns"
-            :dataSource="data"
-          ></a-table>
+            :dataSource="getData"
+            rowKey="id"
+          >
+            <span
+              slot="start_end"
+              slot-scope="text,record"
+              href="javascript:;"
+            >{{record.start_time}}~{{record.end_time}}</span>
+          </a-table>
         </a-col>
       </a-row>
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
-          <st-form-item label="冻结日期" required>
-            <a-range-picker @change="onccccChange"/>
+          <st-form-item label="冻结日期">
+            <a-range-picker
+              format="YYYY-MM-DD"
+              @change="onccccChange"
+              v-decorator="basicInfoRuleList.to_shop"
+            />
             <br>
           </st-form-item>
         </a-col>
@@ -36,15 +47,20 @@
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item label="手续费">
-            <a-range-picker @change="onccccChange"/>
-            <br>
+            <st-input-number
+              :float="true"
+              placeholder="请输入转让手续费"
+              v-decorator="basicInfoRuleList.poundage"
+            >
+              <template slot="addonAfter">元</template>
+            </st-input-number>
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item label="支付方式">
-            <a-range-picker @change="onccccChange"/>
+            <a-input v-decorator="basicInfoRuleList.pay_method"/>
             <br>
           </st-form-item>
         </a-col>
@@ -52,83 +68,131 @@
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item label="收款人员">
-            <a-range-picker @change="onccccChange"/>
+            <a-input v-decorator="basicInfoRuleList.payee"/>
             <br>
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
-          <st-form-item class="mg-l24 " style="text-align:right;" labelOffset>
+          <st-form-item class="mg-l24" style="text-align:right;" labelOffset>
             <st-button type="primary" ghost html-type="submit">确认提交</st-button>
           </st-form-item>
-          </a-col>
+        </a-col>
       </a-row>
     </st-form>
   </st-modal>
 </template>
 <script>
-const columns = [
-  {
-    title: '卡课',
-    dataIndex: 'name',
-    scopedSlots: { customRender: 'name' }
-  },
-  {
-    title: '剩余',
-    dataIndex: 'age'
-  },
-  {
-    title: '有效期',
-    dataIndex: 'address'
-  }
-]
-const data = [
-  {
-    key: '1',
-    name: '塑形拉伸私教课',
-    age: '12次',
-    address: '2019-01-23 ~ 1233-23-23'
-  },
-  {
-    key: '2',
-    name: '一年会员卡',
-    age: '12次',
-    address: '2019-01-23 ~ 1233-23-23'
-  }
-]
+import { FrozenService } from './frozen.service'
 export default {
+  serviceInject() {
+    return {
+      Service: FrozenService
+    }
+  },
+  // rxState() {
+  //   return {
+  //     cardsListInfo: this.Service.cardsListInfo$
+  //   }
+  // },
   name: 'frozen',
-  props: {},
+  props: {
+    record: {
+      type: Object
+    }
+  },
   data() {
     return {
       form: this.$form.createForm(this),
-      columns,
-      data,
-      show: false
+      columns: [
+        {
+          title: '卡课',
+          dataIndex: 'card_name',
+          scopedSlots: { customRender: 'card_name' }
+        },
+        {
+          title: '剩余',
+          dataIndex: 'remain_amount'
+        },
+        {
+          title: '有效期',
+          dataIndex: 'start_end',
+          scopedSlots: { customRender: 'start_end' }
+        }
+      ],
+      show: false,
+      getData: [],
+      basicInfoRuleList: {
+        id: ['id'],
+        course_id: ['course_id'],
+        frozen_start_time: ['frozen_start_time'],
+        frozen_end_time: ['frozen_end_time'],
+        poundage: ['poundage'],
+        pay_method: ['pay_method'],
+        payee: ['payee'],
+        to_shop: [
+          'to_shop',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请填写冻结日期!'
+              }
+            ]
+          }
+        ]
+      },
+      selectedRows: [],
+      dateString: []
     }
   },
-  created() {},
+  created() {
+    this.getMemberBuy()
+  },
   methods: {
+    getMemberBuy() {
+      let self = this
+      self.Service.getMemberBuy(self.record.id).subscribe(state => {
+        self.getData = state
+      })
+    },
+    getMemberTransfer(data) {
+      let self = this
+      self.Service.getMemberTransfer(data).subscribe(state => {
+        self.show = false
+      })
+    },
     save(e) {
+      let self = this
       e.preventDefault()
-      console.log(e)
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          if (!err) {
+            values.course_id = self.selectedRows.map(item => {
+              return item.id
+            })
+            values.id = self.record.id
+            values.frozen_start_time = self.dateString[0]
+            values.frozen_end_time = self.dateString[1]
+            delete values.to_shop
+
+            self.getMemberTransfer(values)
+          }
+        }
+      })
     },
     onccccChange(date, dateString) {
-      console.log(date, dateString)
+      this.dateString = dateString
     }
   },
   computed: {
-
     rowSelection() {
+      let self = this
       const { selectedRowKeys } = this
       return {
         onChange: (selectedRowKeys, selectedRows) => {
-          console.log(
-            `selectedRowKeys: ${selectedRowKeys}`,
-            'selectedRows: ',
-            selectedRows
-          )
+          self.selectedRows = selectedRows
         },
         getCheckboxProps: record => ({
           props: {
