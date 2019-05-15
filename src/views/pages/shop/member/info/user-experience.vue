@@ -24,7 +24,7 @@
     <st-t4>体测记录</st-t4>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
-        <st-form-table hoverable  :page="cardsListInfo.page" @change="onPageChange" >
+        <st-form-table hoverable :page="cardsListInfo.page" @change="onPageChange">
           <thead>
             <tr>
               <th
@@ -37,12 +37,14 @@
           <tbody>
             <tr>
               <td :colspan="tableTitle.length">
-                  <modal-link tag="a" :to=" { name: 'shop-add-lateral-recording'}">
-                     <a-button class="editable-add-btn" type="dashed">
-                  <a-icon type="plus"/>添加体侧记录
-                </a-button>
-                  </modal-link>
-
+                <modal-link
+                  tag="a"
+                  :to=" { name: 'shop-add-lateral-recording', on:{done: onModalTest }}"
+                >
+                  <a-button class="editable-add-btn" type="dashed">
+                    <a-icon type="plus"/>添加体侧记录
+                  </a-button>
+                </modal-link>
               </td>
             </tr>
             <tr v-for="(item,index) in cardsListInfo.physical_list" :key="index">
@@ -121,81 +123,7 @@ export default {
         { title: '腰围', width: '10%' },
         { title: '臀围', width: '10%' }
       ],
-      integral: [
-        {
-          title: '体测时间',
-          dataIndex: 'age',
-          sorter: (a, b) => {
-            let A = new Date(a.age).getTime()
-            let B = new Date(b.age).getTime()
-            if (A < B) {
-              return -1
-            }
-            if (A > B) {
-              return 1
-            }
-            return 0
-          }
-        },
-        {
-          title: '身高',
-          dataIndex: 'age1'
-        },
-        {
-          title: '体重',
-          dataIndex: 'age2'
-        },
-        {
-          title: '体脂率',
-          dataIndex: 'age3'
-        },
-        {
-          title: '基础代谢值',
-          dataIndex: 'age4'
-        },
-        {
-          title: '脂肪含量',
-          dataIndex: 'age5'
-        },
-        {
-          title: '骨骼肌含量',
-          dataIndex: 'age6'
-        },
-        {
-          title: '胸围',
-          dataIndex: 'age7'
-        },
-        {
-          title: '腰围',
-          dataIndex: 'age8'
-        }
-      ],
-      g2: [
-        {
-          test_time: '04/19',
-          value: 65000
-        },
-        {
-          test_time: '04/19',
-          value: 65000
-        },
-        {
-          test_time: '04/23',
-          value: 65000
-        },
-        {
-          test_time: '04/25',
-          value: 65000
-        },
-        {
-          test_time: '04/25',
-          value: 65000
-        },
-        {
-          test_time: '05/08',
-          value: 65000
-        }
-      ],
+      g2: [],
       options: {}
     }
   },
@@ -213,10 +141,21 @@ export default {
     onPageChange(value) {
       console.log(value)
       let self = this
+      this.pageData.current = value.current
+      this.pageData.pageSize = value.pageSize
       this.aService
         .getMemberSideRecord(self.$route.query.id, {
-          size: value.pageSize,
-          page: value.current
+          size: this.pageData.pageSize,
+          page: this.pageData.current
+        })
+        .subscribe()
+    },
+    onModalTest() {
+      let self = this
+      this.aService
+        .getMemberSideRecord(self.$route.query.id, {
+          size: this.pageData.pageSize,
+          page: this.pageData.current
         })
         .subscribe()
     },

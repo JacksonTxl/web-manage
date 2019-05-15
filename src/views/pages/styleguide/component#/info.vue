@@ -58,6 +58,21 @@
             </st-info>
           </a-col>
         </a-row>
+        <st-t2>品牌信息</st-t2>
+        <a-row :gutter="24" class="mg-t16">
+          <a-col :lg="12">
+            <st-info :isWeakenLabel="true">
+              <st-info-item label="当前系统版本">俱乐部（单店版）</st-info-item>
+              <st-info-item label="首次开通时间">2019-04-11 17:39:25</st-info-item>
+            </st-info>
+          </a-col>
+          <a-col :lg="12">
+            <st-info :isWeakenLabel="true">
+              <st-info-item label="有效门店数">共3家门店</st-info-item>
+              <st-info-item label="有效插件数">共7个插件</st-info-item>
+            </st-info>
+          </a-col>
+        </a-row>
       </st-panel>
     </section>
   </section>

@@ -21,12 +21,19 @@
             :pagination="false"
             size="middle"
             :columns="columns"
-            :dataSource="data"
-          ></a-table>
+            :dataSource="getData"
+            rowKey="id"
+          >
+            <span
+              slot="start_end"
+              slot-scope="text,record"
+              href="javascript:;"
+            >{{record.start_time}}~{{record.end_time}}</span>
+          </a-table>
         </a-col>
       </a-row>
       <st-form-item label="转店至" style="margin-top:20px">
-        <a-select placeholder="请选择门店" v-decorator="basicInfoRuleList.payment">
+        <a-select placeholder="请选择门店" v-decorator="basicInfoRuleList.to_shop">
           <a-select-option value="china">China</a-select-option>
           <a-select-option value="usa">U.S.A</a-select-option>
         </a-select>
@@ -37,7 +44,7 @@
             <st-input-number
               :float="true"
               placeholder="请输入转让手续费"
-              v-decorator="basicInfoRuleList.money"
+              v-decorator="basicInfoRuleList.poundage"
             >
               <template slot="addonAfter">元</template>
             </st-input-number>
@@ -47,7 +54,7 @@
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item label="手续费归属">
-            <a-select placeholder="请选择手续费归属" v-decorator="basicInfoRuleList.receivables">
+            <a-select placeholder="请选择手续费归属" v-decorator="basicInfoRuleList.attribution">
               <a-select-option value="china">China</a-select-option>
               <a-select-option value="usa">U.S.A</a-select-option>
             </a-select>
@@ -66,39 +73,15 @@
 </template>
 <script>
 import { TransferShopService } from './transfer-shop.service'
-const columns = [
-  {
-    title: '卡课',
-    dataIndex: 'name',
-    scopedSlots: { customRender: 'name' }
-  },
-  {
-    title: '剩余',
-    dataIndex: 'age'
-  },
-  {
-    title: '有效期',
-    dataIndex: 'address'
-  }
-]
-const data = [
-  {
-    key: '1',
-    name: '塑形拉伸私教课',
-    age: '12次',
-    address: '2019-01-23 ~ 1233-23-23'
-  },
-  {
-    key: '2',
-    name: '一年会员卡',
-    age: '12次',
-    address: '2019-01-23 ~ 1233-23-23'
-  }
-]
 export default {
   serviceInject() {
     return {
       Service: TransferShopService
+    }
+  },
+  rxState() {
+    return {
+      cardsListInfo: this.Service.cardsListInfo$
     }
   },
   name: 'transferShop',
@@ -110,35 +93,30 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      columns,
-      data,
+      columns: [
+        {
+          title: '卡课',
+          dataIndex: 'card_name',
+          scopedSlots: { customRender: 'card_name' }
+        },
+        {
+          title: '剩余',
+          dataIndex: 'remain_amount'
+        },
+        {
+          title: '有效期',
+          dataIndex: 'start_end',
+          scopedSlots: { customRender: 'start_end' }
+        }
+      ],
+      getData: [],
       show: false,
       basicInfoRuleList: {
-        money: [
-          'money'
-          // {
-          //   rules: [
-          //     {
-          //       required: true,
-          //       message: '请填写手续费',
-          //       pattern: /\d$/
-          //     }
-          //   ]
-          // }
-        ],
-        receivables: [
-          'receivables'
-          // {
-          //   rules: [
-          //     {
-          //       required: true,
-          //       message: '请填写支付方式'
-          //     }
-          //   ]
-          // }
-        ],
-        payment: [
-          'payment',
+        poundage: ['poundage'],
+        attribution: ['attribution'],
+        course_id: ['course_id'],
+        to_shop: [
+          'to_shop',
           {
             rules: [
               {
@@ -148,7 +126,8 @@ export default {
             ]
           }
         ]
-      }
+      },
+      selectedRows: []
     }
   },
   created() {
@@ -158,8 +137,7 @@ export default {
     getMemberBuy() {
       let self = this
       self.Service.getMemberBuy(self.record.id).subscribe(state => {
-        console.log(state.info)
-        self.getData = state.info
+        self.getData = state
       })
     },
     getMemberTransfer(data) {
@@ -173,26 +151,23 @@ export default {
       // console.log(e)
       let self = this
       this.form.validateFields((err, values) => {
-        console.log(err, values)
         if (!err) {
+          values.course_id = self.selectedRows.map(item => {
+            return item.id
+          })
+          values.id = self.record.id
           self.getMemberTransfer(values)
         }
       })
-    },
-    onccccChange(date, dateString) {
-      console.log(date, dateString)
     }
   },
   computed: {
     rowSelection() {
+      let self = this
       const { selectedRowKeys } = this
       return {
         onChange: (selectedRowKeys, selectedRows) => {
-          console.log(
-            `selectedRowKeys: ${selectedRowKeys}`,
-            'selectedRows: ',
-            selectedRows
-          )
+          self.selectedRows = selectedRows
         },
         getCheckboxProps: record => ({
           props: {

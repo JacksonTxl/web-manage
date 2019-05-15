@@ -1,39 +1,42 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
-import { pluck } from 'rxjs/operators'
+import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { BrandApi, BrandInput } from '@/api/v1/brand'
+import { BrandApi, UpdateInput } from '@/api/v1/setting/brand'
 
 interface BrandState {
-  brand: Object
+  resData: Object
 }
 @Injectable()
 export class BrandService extends Store<BrandState> {
   state$: State<BrandState>
-  brand$: Computed<Object>
+  resData$: Computed<Object>
   constructor(private brandApi: BrandApi) {
     super()
     this.state$ = new State({
-      brand: {}
+      resData: {}
     })
-    this.brand$ = new Computed(this.state$.pipe(pluck('brand')))
+    this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
   }
-  getBrandInfo() {
-    return this.brandApi.getInfo()
+  getInfo() {
+    return this.brandApi.getInfo().pipe(
+      tap(res => {
+        this.SET_BRAND(res)
+      })
+    )
   }
   @Effect()
-  saveBrandInfo(data: BrandInput) {
+  update(data: UpdateInput) {
     return this.brandApi.update(data)
   }
   protected SET_BRAND(data: BrandState) {
     this.state$.commit(state => {
-      state.brand = data
+      state.resData = data
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getBrandInfo().subscribe(res => {
-      this.SET_BRAND(res)
+    this.getInfo().subscribe(next, () => {
+      next(false)
     })
-    next()
   }
 }

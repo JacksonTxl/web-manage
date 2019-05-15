@@ -1,54 +1,97 @@
 <template>
   <st-modal title="分配销售" @ok="save" v-model="show" size="small">
-    <st-form :form="form" @submit="save" labelWidth="56px">
-      <a-row :gutter="8">
-        <a-col :lg="24" style="padding: 0;">
-          <a-input-search
-            size="large"
-            placeholder="搜索会籍销售姓名，手机号，昵称"
-            style="width: 100%;"
-            @search="onSearch"
-          />
-        </a-col>
-      </a-row>
-      <a-row :gutter="8">
-        <a-col :lg="24" class="distribution-container" style="padding-left:12px;padding-right:12px;">
-          <a-table :columns="columns" :dataSource="data" :rowSelection="rowSelection" />
-        </a-col>
-      </a-row>
-    </st-form>
+    <a-row :gutter="8">
+      <a-col :lg="24" style="padding: 0;">
+        <a-input-search
+          size="large"
+          placeholder="搜索会籍销售姓名，手机号，昵称"
+          style="width: 100%;"
+          @search="onSearch"
+        />
+      </a-col>
+    </a-row>
+    <a-row :gutter="8">
+      <a-col :lg="24" class="distribution-container" style="padding-left:12px;padding-right:12px;">
+          <st-table
+            :rowSelection="{ fixed: true, columnTitle:'分配',type: 'radio',selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+            :columns="columns"
+            :dataSource="list"
+            @change="handleTableChange"
+            :pagination="pagination"
+            />
+      </a-col>
+    </a-row>
   </st-modal>
 </template>
 <script>
-const columns = [{
-  title: '会籍销售姓名',
-  dataIndex: 'name',
-  key: 'name'
-}, {
-  title: '签单率（近30天）',
-  dataIndex: 'age',
-  key: 'age',
-  width: '40%'
-}, {
-  title: '分配',
-  dataIndex: 'address',
-  width: '15%',
-  key: 'address'
-}]
+import { DistributionAlesService } from './distribution-ales.service'
+import { MessageService } from '@/services/message.service'
+const columns = [
+  {
+    title: '会籍销售姓名',
+    dataIndex: 'sale_name',
+    key: 'sale_name'
+  },
+  {
+    title: '签单率（近30天）',
+    dataIndex: 'sign_bill',
+    key: 'sign_bill'
+  }
+]
 export default {
   name: 'distributionAles',
-  props: {},
-  data() {
+  serviceInject() {
     return {
-      columns,
-      show: false
+      service: DistributionAlesService,
+      messageService: MessageService
     }
   },
-  created() {},
+  props: {
+    selectedRowData: {
+      type: Array
+    }
+  },
+  data() {
+    return {
+      selectedRowKeys: [],
+      pagination: {
+        current: 1,
+        pageSize: 10
+      },
+      columns,
+      show: false,
+      list: [], // 列表数据
+      chooseId: ''
+    }
+  },
+  mounted() {
+    this.service.getSaleList().subscribe(res => {
+      console.log(res)
+      this.list = res.list
+    })
+  },
   methods: {
-    save(e) {
-      e.preventDefault()
+    onChange(e) {
+      console.log(e.target)
+    },
+    onSelectChange(e, itemData) {
+      console.log(e, itemData)
+      this.selectedRowKeys = e
+      this.chooseId = itemData[0].id
+    },
+    handleTableChange(pagination, filters, sorter) {
+      console.log(pagination)
+    },
+    onSearch(e) {
       console.log(e)
+    },
+    save() {
+      console.log('this.selectedRowData', this.selectedRowData)
+      console.log('sale', this.chooseId)
+      this.service.addSale({ id: this.selectedRowData, sale_id: 1 }).subscribe(res => {
+        this.show = false
+        this.messageService.success({ content: '分配成功' })
+      })
     }
   },
   watch: {}

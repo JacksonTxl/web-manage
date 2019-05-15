@@ -1,7 +1,8 @@
 <template>
-  <div class="opreation-button">
-    <st-button  class="opreation-button__modal" type="primary" @click="onClickAddStaff" ghost>添加员工</st-button>
-    <st-button class="opreation-button__modal">批量导入员工</st-button>
+  <div>
+    <st-button class="mg-r8" @click="onBatchImport">批量导入部门</st-button>
+    <st-button class="mg-r8" @click="onClickAddStaff">添加员工</st-button>
+    <st-button @click="onImportStaff">导入员工</st-button>
   </div>
 </template>
 
@@ -11,6 +12,12 @@ export default {
   methods: {
     onClickAddStaff() {
       this.$emit('add-staff')
+    },
+    onBatchImport() {
+      this.$emit('batch-import')
+    },
+    onImportStaff() {
+      this.$emit('import-staff')
     }
   }
 }

@@ -10,8 +10,8 @@
     </section>
     <section class="page-staff-rg">
       <header class="staff-rg__operation">
-        <filter-staff></filter-staff>
-        <opreation-button @add-staff="onAddStaff"></opreation-button>
+        <opreation-button @add-staff="onAddStaff" @batch-import="onbatchImport" @import-staff="onImportStaff"></opreation-button>
+        <filter-staff @search="onSearch"></filter-staff>
       </header>
       <main class="staff-rg__table">
         <div  style="width:100%">
@@ -48,12 +48,25 @@ export default {
     StaffTable
   },
   methods: {
-    onEditStaff(staffId) {
-      console.log(staffId)
-      this.$router.push({ name: 'brand-staff-edit', query: { staffId: 1 } })
+    // 查询
+    onSearch(e) {
+      console.log('搜索条件', e)
     },
+    // 编辑
+    onEditStaff(staffId) {
+      this.$router.push({ name: 'brand-staff-edit', query: { staffId } })
+    },
+    // 添加员工
     onAddStaff() {
       this.$router.push('/brand/staff/add')
+    },
+    // 批量导入
+    onbatchImport() {
+      console.log('批量导入')
+    },
+    // 导入员工
+    onImportStaff() {
+      console.log('导入员工')
     }
   },
   mounted() {

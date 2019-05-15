@@ -8,7 +8,7 @@ interface CardsTableModelState {
   lableInfo: any
 }
 @Injectable()
-export class TransferShopService extends Store<CardsTableModelState> {
+export class FrozenService extends Store<CardsTableModelState> {
   state$: State<CardsTableModelState>
   cardsListInfo$: Computed<string>
   constructor(private MemberAPi: MemberAPi) {
@@ -20,9 +20,9 @@ export class TransferShopService extends Store<CardsTableModelState> {
   }
 
   getMemberBuy(data: any) {
-    return this.MemberAPi.getMemberBuy(data)
+    return this.MemberAPi.getMemberFreeze(data)
   }
   getMemberTransfer(data: any) {
-    return this.MemberAPi.getMemberTransfer(data)
+    return this.MemberAPi.getAddMemberFreeze(data)
   }
 }
