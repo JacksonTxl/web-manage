@@ -6,7 +6,7 @@
       [hoverable] 添加鼠标hover样式
       [loading] 加载状态
     </p>
-    <st-form-table :page="page" hoverable>
+    <st-form-table :page="page" @change="onPageChange" hoverable>
       <thead>
         <tr>
           <th>标题1</th>
@@ -32,7 +32,7 @@
         </tr>
       </tbody>
     </st-form-table>
-    <st-form-table :page="page" @change="onPageChange" loading class="mg-t16">
+    <st-form-table loading class="mg-t16">
       <thead>
         <tr>
           <th>标题1</th>

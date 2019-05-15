@@ -3,7 +3,7 @@
     <table :class="b({striped,hoverable})">
       <slot></slot>
     </table>
-    <st-pagination v-if="page.total" :page="page" @change="onChange"/>
+    <st-pagination v-if="page.total_counts" :page="page" @change="onChange"/>
   </a-spin>
 </template>
 
