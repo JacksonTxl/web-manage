@@ -49,6 +49,18 @@ export class PackageApi extends Api {
     } })
   }
   /**
+   * 课程包下架
+   */
+  offsaleCoursePackage(id:string) {
+    return this.http.put(`/v1/course/package/offsale/${id}`)
+  }
+  /**
+   * 课程包删除
+   */
+  deleteCoursePackage(id:string) {
+    return this.http.delete(`/v1/course/package/${id}`)
+  }
+  /**
    * 课程包列表
    */
   getList(params:GetPackageListInput) {

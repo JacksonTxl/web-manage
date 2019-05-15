@@ -25,7 +25,7 @@
       </div>
     </div>
     <st-table
-    :page="query.page"
+    :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
     :columns="columns"
     @change="onPageChange"
     rowKey="package_course_id"
@@ -56,19 +56,74 @@
         <a-divider type="vertical"></a-divider>
         <a @click="onDetail(record.package_course_id)">详情</a>
         <st-more-dropdown class="mgl-16">
-          <a-menu-item @click="onsale">上架</a-menu-item>
-          <a-menu-item @click="offsale">下架</a-menu-item>
-          <a-menu-item >
-            <a-popconfirm title="确认删除该权限么?" @confirm="onDelete(record.package_course_id)">
-              <a>删除</a>
-            </a-popconfirm>
-          </a-menu-item>
+          <a-menu-item @click="onsalePackage(record.package_course_id,record.course_name,record.start_time,record.end_time)" v-if="record.shelf_status!==1">上架</a-menu-item>
+          <a-menu-item @click="offsalePackage(record.package_course_id,record.course_name)" v-else>下架</a-menu-item>
+          <a-menu-item @click="deletePackage(record.package_course_id,record.course_name)">删除</a-menu-item>
         </st-more-dropdown>
       </div>
     </st-table>
+    <st-modal
+      title="上架课程包"
+      okText="确认上架"
+      @ok="onOnsale"
+      :confirmLoading="loading.onsalePackage"
+      v-model='onsaleIsShow'>
+        <st-form :form="form" labelWidth="96px">
+          <st-form-item label="课程包名称">{{`aaaa`}}</st-form-item>
+          <st-form-item label="支持售卖时间" required>
+            <div :class="listClass('saletime')">
+              <a-form-item class="page-a-form">
+                <a-date-picker
+                  style="width: 100%;"
+                  :disabledDate="disabledStartDate"
+                  v-decorator="['start_time',{rules:[{validator:start_time_validator}]}]"
+                  format="YYYY-MM-DD"
+                  placeholder="开始时间"
+                  :showToday="false"
+                  @openChange="handleStartOpenChange"
+                  @change="start_time_change"
+                />
+              </a-form-item>
+              <span>~</span>
+              <a-form-item class="page-a-form">
+                <a-date-picker
+                  :disabledDate="disabledEndDate"
+                  v-decorator="['end_time',{rules:[{validator:end_time_validator}]}]"
+                  format="YYYY-MM-DD"
+                  placeholder="结束时间"
+                  :showToday="false"
+                  :open="endOpen"
+                  @openChange="handleEndOpenChange"
+                  @change="end_time_change"
+                />
+              </a-form-item>
+            </div>
+          </st-form-item>
+        </st-form>
+    </st-modal>
+    <st-modal
+      title="下架课程包"
+      size="small"
+      okText="确认下架"
+      @ok="onOffsale"
+      :confirmLoading="loading.offsalePackage"
+      v-model='offsaleIsShow'>
+      确认下架{{packageName}}？
+    </st-modal>
+    <st-modal
+      title="删除课程包"
+      size="small"
+      okText="确认删除"
+      @ok="onDelete"
+      :confirmLoading="loading.deletePackage"
+      v-model='deleteIsShow'>
+      删除后不影响已购买的用户，一旦删除则无法恢复，确认删除{{packageName}}？
+    </st-modal>
   </st-panel>
 </template>
 <script>
+import moment from 'moment'
+import { cloneDeep } from 'lodash-es'
 import { ListService } from './list.service'
 import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
@@ -118,6 +173,7 @@ export default {
     return {
       list: this.listService.list$,
       page: this.listService.page$,
+      loading: this.listService.loading$,
       package_course: this.userService.packageCourseEnums$,
       query: this.routeService.query$
     }
@@ -128,10 +184,116 @@ export default {
   data() {
     return {
       columns,
+      offsaleIsShow: false,
+      deleteIsShow: false,
+      onsaleIsShow: false,
+      packageId: '',
+      packageName: '',
+      start_time: null,
+      end_time: null,
+      form: this.$form.createForm(this),
+      endOpen: false,
       type: ['', 'unlimit', 'range', 'fix']
     }
   },
   methods: {
+    // start_time validatorFn
+    start_time_validator(rule, value, callback) {
+      if (!value) {
+        // eslint-disable-next-line
+        callback('请选择开始售卖时间')
+      } else if (value.valueOf() < moment(moment().format().replace(/\d{2}:\d{2}:\d{2}/, '00:00:00')).valueOf()) {
+        // eslint-disable-next-line
+        callback('支持售卖时间已过，请重新设置')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    // end_time validatorFn
+    end_time_validator(rule, value, callback) {
+      if (!value) {
+        // eslint-disable-next-line
+        callback('请选择结束售卖时间')
+      } else if (value.valueOf() < moment(moment().format().replace(/\d{2}:\d{2}:\d{2}/, '23:59:59')).valueOf()) {
+        // eslint-disable-next-line
+        callback('支持售卖时间已过，请重新设置')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    // 售卖时间-start
+    start_time_change(data) {
+      this.start_time = cloneDeep(data)
+    },
+    handleStartOpenChange(open) {
+      if (!open) {
+        this.endOpen = true
+      }
+    },
+    disabledStartDate(startValue) {
+      const endValue = this.end_time
+      if (!endValue) {
+        // 结束时间未选择
+        return (
+          startValue.valueOf() <
+          moment()
+            .subtract(1, 'd')
+            .valueOf()
+        )
+      }
+      let start =
+        endValue.valueOf() >
+        moment()
+          .add(30, 'y')
+          .valueOf()
+          ? moment(endValue)
+            .subtract(30, 'y')
+            .valueOf()
+          : moment()
+            .subtract(1, 'd')
+            .add(1, 'ms')
+            .valueOf()
+      return (
+        startValue.valueOf() < start ||
+        startValue.valueOf() >
+          moment(endValue)
+            .subtract(1, 'd')
+            .valueOf()
+      )
+    },
+    // 售卖时间-end
+    end_time_change(data) {
+      this.end_time = cloneDeep(data)
+    },
+    handleEndOpenChange(open) {
+      this.endOpen = open
+    },
+    disabledEndDate(endValue) {
+      const startValue = this.start_time
+      if (!startValue) {
+        // 开始时间未选择
+        return (
+          endValue.valueOf() >=
+            moment()
+              .add(30, 'y')
+              .valueOf() || endValue.valueOf() <= moment().valueOf()
+        )
+      }
+      return (
+        endValue.valueOf() >=
+          moment(startValue)
+            .add(30, 'y')
+            .valueOf() ||
+        endValue.valueOf() <
+          moment(startValue)
+            .add(1, 'd')
+            .valueOf()
+      )
+    },
+    // moment
+    moment,
     onAddPackage() {
       console.log('add')
     },
@@ -156,14 +318,68 @@ export default {
     onDetail(id) {
       console.log(id)
     },
-    onsale() {
-
+    onsalePackage(id, name, start, end) {
+      if (end * 1000 >= moment(moment().format().replace(/\d{2}:\d{2}:\d{2}/, '23:59:59')).valueOf()) {
+        this.listService.onsalePackage({
+          id,
+          start_time: `${this.moment(start * 1000).format('YYYY-MM-DD')} 00:00:00`,
+          end_time: `${this.moment(end * 1000).format('YYYY-MM-DD')} 23:59:59`
+        }).subscribe(res => {
+          console.log(res)
+        })
+      } else {
+        this.onsaleIsShow = true
+        this.packageId = id
+        this.packageName = name
+        this.$nextTick().then(res => {
+          this.form.setFieldsValue({
+            'start_time': moment(start * 1000),
+            'end_time': moment(end * 1000)
+          })
+          this.form.validateFields(['start_time', 'end_time'])
+        })
+      }
     },
-    offsale() {
-
+    onOnsale() {
+      this.form.validateFields(['start_time', 'end_time']).then(res => {
+        this.listService.onsalePackage({
+          id: this.packageId,
+          start_time: `${res.start_time.format('YYYY-MM-DD')} 00:00:00`,
+          end_time: `${res.end_time.format('YYYY-MM-DD')} 23:59:59`
+        }).subscribe(res => {
+          this.onsaleIsShow = false
+          this.packageId = ''
+          this.packageName = ''
+        })
+      }).catch(error => {
+        console.log(error)
+      })
     },
-    onDelete(id) {
-      console.log(id)
+    offsalePackage(id, name) {
+      this.offsaleIsShow = true
+      this.packageId = id
+      this.packageName = name
+    },
+    onOffsale() {
+      this.listService.offsalePackage(`${this.packageId}`).subscribe(() => {
+        this.offsaleIsShow = false
+        this.packageId = ''
+        this.packageName = ''
+        // this.$router.push({force:false})  kael
+      })
+    },
+    deletePackage(id, name) {
+      this.deleteIsShow = true
+      this.packageId = id
+      this.packageName = name
+    },
+    onDelete() {
+      this.listService.deletePackage(`${this.packageId}`).subscribe(() => {
+        this.deleteIsShow = false
+        this.packageId = ''
+        this.packageName = ''
+        // this.$router.push({force:false})  kael
+      })
     }
   }
 }

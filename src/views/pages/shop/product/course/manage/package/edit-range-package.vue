@@ -591,7 +591,6 @@ export default {
       this.packageData.team_times = this.packageInfo.team_times
       this.packageData.team_unit_price = this.packageInfo.team_unit_price
       forEach(this.packageInfo.team_range, o => {
-        this.packageData.team_range.push(o.course_id)
         this.teamCourseList.push({
           courseChecked: false,
           course_category: o.course_category,
@@ -604,12 +603,8 @@ export default {
       this.packageData.personal_times = this.packageInfo.personal_times
       this.packageData.personal_unit_price = this.packageInfo.personal_unit_price
       forEach(this.packageInfo.personal_range, o => {
-        this.packageData.personal_range.push({
-          course_id: o.course_id,
-          coach_level: cloneDeep(o.coach_level)
-        })
         let selectCoach = filter(this.coachList, i => o.coach_level.includes(i.id))
-        let total = reduce(selectCoach, (sum, o) => sum + o.coach_number, 0)
+        let total = reduce(selectCoach, (sum, i) => sum + i.coach_number, 0)
         this.personalCourseList.push({
           courseChecked: false,
           course_category: o.course_category,
@@ -619,7 +614,10 @@ export default {
           coachGradeList: cloneDeep(o.coach_level),
           coach: total
         })
-        // 缓存  kael
+        this.personalCoachTotalList[o.course_id] = this.personalCoachTotalList[o.course_id] || {}
+        this.personalCoachTotalList[o.course_id].list = cloneDeep(o.coach_level)
+        this.personalCoachTotalList[o.course_id].total = total
+        this.personalCoachListHistory.push(cloneDeep(o.coach_level))
       })
       // 售卖时间
       this.start_time = moment(this.packageInfo.start_time * 1000)

@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="选择团课"
+    :title="titleList[type]"
     @ok="onOk"
     v-model='show'>
     <div :class="course()">
@@ -114,6 +114,10 @@ export default {
     return {
       show: false,
       courseTypeList: [],
+      titleList: {
+        team: '选择团课',
+        personal: '选择私教课'
+      },
       searchData: {
         course_type: null,
         search: ''
