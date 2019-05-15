@@ -214,6 +214,7 @@ export default {
       this.g2 = this.followInfo[value]
     },
     dataChange(value) {
+      console.log(value)
       let self = this
       this.aService
         .getMemberSideRecord(self.$route.query.id, {
