@@ -120,6 +120,7 @@
         </div>
       </st-table>
     </st-panel>
+    {{selectDataList}}
     <!-- {{memberListInfo}} -->
   </div>
 </template>
@@ -164,6 +165,7 @@ export default {
         pageSize: 10,
         total: 50
       },
+      selectDataList: [],
       selectedRowKeys: [],
       selectedRowData: [],
       columns: [
@@ -251,6 +253,9 @@ export default {
     onSelectionChange(keys, selectedRowData) {
       this.selectedRowKeys = keys
       this.selectedRowData = selectedRowData
+      this.selectDataList = selectedRowData.map(item => {
+        return item.id
+      })
     },
     onTableChange(pagination, filters, sorter) {
       console.log(pagination, filters, sorter)
