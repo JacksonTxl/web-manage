@@ -1,21 +1,29 @@
 <template>
-  <div :class="b()">
-    <div :class="b('navs')">
-      <app-nav></app-nav>
-    </div>
-    <div :class="b('content')">
-      <router-view></router-view>
-    </div>
-  </div>
+  <page-route-nav title="应用设置" v-model="navs"></page-route-nav>
 </template>
 <script>
-import AppNav from './nav#/app'
+import PageRouteNav from '@/views/components/page-route-nav#/nav'
 export default {
   bem: {
     b: 'page-setting'
   },
   components: {
-    AppNav
+    PageRouteNav
+  },
+  data() {
+    return {
+      navs: [{
+        label: '课程',
+        route: {
+          name: 'brand-setting-app-course-category'
+        }
+      }, {
+        label: '员工',
+        route: {
+          name: 'brand-setting-app-staff-skillful'
+        }
+      }]
+    }
   }
 }
 </script>

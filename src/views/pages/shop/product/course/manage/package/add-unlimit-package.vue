@@ -222,7 +222,7 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="课程包介绍">
              <a-textarea
-                v-model="packageData.description"
+                v-model="packageData.intro"
                 maxlength="500"
                 class="page-content-card-textarea"
                 placeholder="请输入课程包介绍"
@@ -234,7 +234,7 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="备注">
              <a-textarea
-                v-model="packageData.remark"
+                v-model="packageData.remarks"
                 maxlength="500"
                 class="page-content-card-textarea"
                 placeholder="请输入备注"
@@ -319,9 +319,9 @@ export default {
           image_key: ''
         },
         // 课程包介绍
-        description: '',
+        intro: '',
         // 备注
-        remark: ''
+        remarks: ''
       },
       form: this.$form.createForm(this),
       start_time: null,

@@ -1,21 +1,17 @@
 <template>
-  <div class="st-setting-nav">
-    <div :class="b('title')">
-      <st-t2>应用设置</st-t2>
-    </div>
-    <st-route-tabs
-      v-if="navs"
-      :options="navs"
-      tabPosition="right"
-    >
-    </st-route-tabs>
-  </div>
+  <section class="sg-section">
+    <h3>page route nav</h3>
+    <page-route-nav title="应用设置" v-model="navs"></page-route-nav>
+  </section>
 </template>
 <script>
+import PageRouteNav from '@/views/components/page-route-nav#/nav'
 export default {
-  name: 'generalNav',
   bem: {
-    b: 'st-setting-nav'
+    b: 'page-setting'
+  },
+  components: {
+    PageRouteNav
   },
   data() {
     return {

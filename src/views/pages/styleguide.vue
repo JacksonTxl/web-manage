@@ -38,6 +38,7 @@
               <a-anchor-link href="#form-table" title="form-table 纯样式表格"></a-anchor-link>
               <a-anchor-link href="#shop-hour-picker" title="shop-hour-picker 门店时间"></a-anchor-link>
               <a-anchor-link href="#pagination" title="pagination 分页"/>
+              <a-anchor-link href="#page-route-nav" title="page route nav页面导航"/>
             </a-anchor>
           </li>
           <li>
