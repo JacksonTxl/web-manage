@@ -47,9 +47,11 @@
         </st-form-item>
         <st-form-item label="性别" required>
           <a-select v-decorator="basicInfoRuleList.genderRule" placeholder="请选择">
-            <a-select-option :value="0">未选择</a-select-option>
-            <a-select-option :value="2">男</a-select-option>
-            <a-select-option :value="1">女</a-select-option>
+            <a-select-option
+                v-for="(item, index) in staffEnumslist.sex.value"
+                :key="index"
+                :value="+index"
+              >{{item}}</a-select-option>
           </a-select>
         </st-form-item>
       </a-col>
@@ -67,8 +69,11 @@
               v-decorator="basicInfoRuleList.id_typeRule"
               @change="chooseType"
             >
-              <a-select-option :value="1">身份证</a-select-option>
-              <a-select-option :value="2">护照</a-select-option>
+            <a-select-option
+                v-for="(item, index) in staffEnumslist.id_type.value"
+                :key="index"
+                :value="+index"
+              >{{item}}</a-select-option>
             </a-select>
             <a-input
               style="width: 80%"
@@ -90,11 +95,17 @@
       <a-col :offset="1" :lg="22">
         <st-form-item label="员工职能">
           <a-checkbox-group v-decorator="basicInfoRuleList.identityRule" @change="watchChooesed">
-            <a-checkbox :value="1">普通员工</a-checkbox>
+            <!-- <a-checkbox :value="1">普通员工</a-checkbox>
             <a-checkbox :value="2">会籍销售</a-checkbox>
             <a-checkbox :value="3">团课教练</a-checkbox>
             <a-checkbox :value="4">私人教练</a-checkbox>
-            <a-checkbox :value="5">游泳教练</a-checkbox>
+            <a-checkbox :value="5">游泳教练</a-checkbox> -->
+             <a-checkbox
+                v-for="(item, index) in staffEnumslist.identify.value"
+                :key="index"
+                :value="+index"
+              >{{item}}</a-checkbox>
+
           </a-checkbox-group>
         </st-form-item>
       </a-col>
@@ -133,10 +144,12 @@
         </st-form-item>
         <st-form-item label="工作性质">
           <a-select v-decorator="basicInfoRuleList.nature_workRule" placeholder="请选择">
-            <!-- 1-全职；2-兼职；3-实习 -->
-            <a-select-option :value="1">全职</a-select-option>
-            <a-select-option :value="2">简直</a-select-option>
-            <a-select-option :value="3">实习</a-select-option>
+               <a-select-option
+                v-for="(item, index) in staffEnumslist.nature_work.value"
+                :key="index"
+                :value="+index"
+              >{{item}}</a-select-option>
+
           </a-select>
         </st-form-item>
         <st-form-item label="系统角色">
@@ -259,7 +272,6 @@ export default {
         genderRule: [
           'sex',
           {
-            initialValue: 2,
             rules: [{ required: true, message: '请选择你的性别' }]
           }
         ],
@@ -279,13 +291,13 @@ export default {
           }
         ],
         // 身份
-        identityRule: ['identity', { initialValue: [1] }],
+        identityRule: ['identity'],
         // 部门
-        departmentRule: ['department_id', { initialValue: 1 }],
+        departmentRule: ['department_id'],
         // 教练等级ID
-        coach_levelRule: ['coach_level_id', { initialValue: 1 }],
+        coach_levelRule: ['coach_level_id'],
         // 入职时间
-        entry_dateRule: ['entry_date', { initialValue: '' }],
+        entry_dateRule: ['entry_date'],
         // 所属门店 // 多选select
         shopRule: ['shop_id', { initialValue: [],
           rules: [
@@ -295,9 +307,9 @@ export default {
             }
           ] }],
         // 职务
-        working_postRule: ['working_post', { initialValue: '' }],
+        working_postRule: ['working_post'],
         // 工作性质
-        nature_workRule: ['nature_workRule', { initialValue: 1 }],
+        nature_workRule: ['nature_workRule'],
         // 角色 // 多选select
         roleRule: ['role_id', { initialValue: [] }],
         // 系统权限
@@ -330,10 +342,8 @@ export default {
     }
   },
   props: {
-    codeList: {
-      type: Object,
-      default: () => []
-    }
+    codeList: Object,
+    staffEnumslist: Object
   },
   methods: {
     // 身份证 护照 选择事件
@@ -358,10 +368,6 @@ export default {
       })
     },
     skiptoedit() {
-      // this.$emit('skiptoedit', {
-      //   // formData: this.form.getFieldsValue()
-      // })
-      // return
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
