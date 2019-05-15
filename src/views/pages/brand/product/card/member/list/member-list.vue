@@ -421,10 +421,7 @@ export default {
           obj[item] = self.getHeaders[item]
         }
       })
-      // this.aService.getListInfo(obj).subscribe(state => {
-      //   self.getInfoData(state)
-      // })
-      self.$router.push({ query: obj })
+      self.$router.push({ query: obj, force: true })
     }
   },
   watch: {
