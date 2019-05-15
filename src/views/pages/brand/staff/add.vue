@@ -4,24 +4,18 @@
       <a-col offset="1" :span="stepsSpan"><Steps :value="currentIndex" :stepArr="stepArr" @skip="skip"/></a-col>
     </a-row>
     <StaffDetailBasics :codeList="countryList" v-show="currentIndex == 0" @skiptoedit="skiptoedit" @basicInfoSave="onBasicInfoSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
-    <!-- <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" />
-    <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" /> -->
   </st-panel>
 </template>
 
 <script>
 import Steps from './add#/st-steps'
 import StaffDetailBasics from './add#/add-detail-basicsInfo'
-// import StaffDetailDetailedInfo from './add#/add-detail-detailedInfo'
-// import StaffDetailCoachInfo from './add#/add-detail-coachInfo'
 import { AddService } from './add.service'
 export default {
   name: 'addDetail',
   components: {
     Steps,
     StaffDetailBasics
-    // StaffDetailDetailedInfo,
-    // StaffDetailCoachInfo
   },
   serviceInject() {
     return {
