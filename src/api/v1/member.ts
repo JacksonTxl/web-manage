@@ -332,6 +332,35 @@ export class MemberAPi extends Api {
   getAddMemberPhysical(params: any) {
     return this.http.put(`/v1/member/physical/${params.id}`, { params })
   }
+
+  /**
+   * 分配销售列表
+   */
+  getSaleList(query: SaleQuery) {
+    return this.http.get(`/v1/member/allocation/sales`, { query })
+  }
+  /**
+   * 分配销售
+   */
+  addSale(params: SalesParams) {
+    return this.http.put(`/v1/member/allocation/sales`, { params })
+  }
+}
+export interface SalesParams{
+  /**
+   * 批量或者单个添加的id集合
+   */
+  id: Array<number>;
+  /**
+   * 销售id
+   */
+  sale_id: number;
+}
+export interface SaleQuery {
+  /**
+   * 搜索条件 姓名 手机号 昵称
+   */
+  retrieve? : string
 }
 export interface CouponQuery {
   /**

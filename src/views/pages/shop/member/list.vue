@@ -49,7 +49,6 @@
       </div>
       <st-button type="primary" class="shop-member-list-button">
         <a href="javascript:;" @click="addUser(record)">添加用户</a>
-        <!-- <modal-link tag="a" :to=" { name: 'shop-add-user'}">添加用户</modal-link> -->
       </st-button>
       <st-button class="shop-member-list-button">导入用户</st-button>
       <st-button
@@ -66,13 +65,13 @@
       <a-popover placement="bottom">
         <template slot="content">
           <p>
-            <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">分配教练</modal-link>
+            <modal-link tag="a" :to=" { name: 'shop-distribution-coach',props:{selectedRowData:selectedRowData}}">分配教练</modal-link>
           </p>
           <p>
-            <modal-link tag="a" :to=" { name: 'shop-distribution-ales'}">分配销售</modal-link>
+            <modal-link tag="a" :to=" { name: 'shop-distribution-ales',props:{selectedRowData:selectedRowData}}">分配销售</modal-link>
           </p>
         </template>
-        <st-button class="shop-member-list-button">分配员工</st-button>
+        <st-button class="shop-member-list-button" :disabled="selectedRowData.length > 0 ? false :true">分配员工</st-button>
       </a-popover>
       <st-button class="shop-member-list-button">批量导出</st-button>
       <st-table
@@ -98,7 +97,7 @@
               <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">分配教练</modal-link>
             </a-menu-item>
             <a-menu-item>
-              <modal-link tag="a" :to=" { name: 'shop-distribution-ales'}">分配销售</modal-link>
+              <modal-link tag="a" :to=" { name: 'shop-distribution-ales',props: {selectedRowData: record.id}}">分配销售</modal-link>
             </a-menu-item>
             <a-menu-item>
               <modal-link
@@ -120,7 +119,6 @@
         </div>
       </st-table>
     </st-panel>
-    <!-- {{memberListInfo}} -->
   </div>
 </template>
 <script>
