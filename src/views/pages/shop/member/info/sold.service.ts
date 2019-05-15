@@ -49,12 +49,16 @@ export class SoldService extends Store<CardsListInfoState> {
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.init(to.meta.query.id, {
-      start_date: '',
       reserve_type: 1,
-      reserve_status: -1,
-      checkin_status: -1,
       size: 20,
       page: 1
     }).subscribe(() => next())
   }
 }
+/*
+  start_date: '',
+      reserve_type: 1,
+      reserve_status: -1,
+      checkin_status: -1,
+      size: 20,
+      page: 1 */

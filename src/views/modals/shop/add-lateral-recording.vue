@@ -118,14 +118,12 @@ export default {
     },
     getMemberFollowHistory(data) {
       let self = this
-      self.Service.getAddMemberPhysical(data).subscribe(
-        state => {
-          console.log(state.info)
-          self.getData = state.info
-          self.show = false
-          self.$emit('done', true)
-        }
-      )
+      self.Service.getAddMemberPhysical(data).subscribe(state => {
+        console.log(state.info)
+        self.getData = state.info
+        self.$emit('done', true)
+        self.show = false
+      })
     },
 
     save(e) {
