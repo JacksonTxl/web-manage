@@ -3,35 +3,33 @@
     <a-row :class="bstep()" class="mg-b48" :gutter="8">
       <a-col offset="1" :span="stepsSpan"><Steps :value="currentIndex" :stepArr="stepArr" @skip="skip"/></a-col>
     </a-row>
-    <StaffDetailBasics :codeList="countryList" v-show="currentIndex == 0" @skiptoedit="skiptoedit" @basicInfoSave="onBasicInfoSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
-    <!-- <StaffDetailDetailedInfo v-show="currentIndex == 1" @goNext="goNext" />
-    <StaffDetailCoachInfo v-show="currentIndex == 2" @goNext="goNext" /> -->
+    <StaffDetailBasics :codeList="countryList" v-show="currentIndex == 0" @skiptoedit="skiptoedit" @basicInfoSave="onBasicInfoSave" @addStep="addCoachInfo" @deletStep="deletStep" :staffEnumslist="staffEnums"/>
   </st-panel>
 </template>
 
 <script>
 import Steps from './add#/st-steps'
 import StaffDetailBasics from './add#/add-detail-basicsInfo'
-// import StaffDetailDetailedInfo from './add#/add-detail-detailedInfo'
-// import StaffDetailCoachInfo from './add#/add-detail-coachInfo'
 import { AddService } from './add.service'
+import { UserService } from '@/services/user.service'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'addDetail',
   components: {
     Steps,
     StaffDetailBasics
-    // StaffDetailDetailedInfo,
-    // StaffDetailCoachInfo
   },
   serviceInject() {
     return {
-      addService: AddService
+      userService: UserService,
+      addService: AddService,
+      messageService: MessageService
     }
   },
   rxState() {
-    console.log(this.addService.countryList$)
     return {
-      countryList: this.addService.countryList$
+      countryList: this.addService.countryList$,
+      staffEnums: this.userService.staffEnums$
     }
   },
   bem: {
@@ -57,7 +55,8 @@ export default {
     }
   },
   methods: {
-    deletStep(e) { //
+    // 删除步骤轴
+    deletStep(e) {
       this.stepsSpan = 12
       let index = this.stepArr.findIndex(function(value, index, arr) {
         return value.title === '教练信息'
@@ -65,6 +64,7 @@ export default {
       if (index === -1) return
       this.stepArr.pop()
     },
+    // 添加步骤轴
     addCoachInfo(e) {
       this.stepsSpan = 18
       this.stepArr.push({
@@ -72,14 +72,12 @@ export default {
         key: 3
       })
     },
-    skip(data) {
-      console.log('跳页', data)
-      this.currentIndex = data.index
-    },
-    skiptoedit(e) { // 下一步
+    // 继续填写跳转到编辑
+    skiptoedit(e) {
       console.log('跳到编辑', e)
       this.submit(e, 'skip')
     },
+    // 提交
     submit(data, saveOrskip) {
       this.addService.addBasicInfo(data).subscribe(res => {
         console.log('保存', res)
@@ -95,7 +93,8 @@ export default {
           })
         } else if (saveOrskip === 'save') {
           console.log('返回列表')
-          // this.$router.go(-1)
+          this.messageService.success({ content: '保存成功' })
+          this.$router.go(-1)
         }
       })
     },
@@ -103,15 +102,9 @@ export default {
       console.log(form)
       this.submit(form, 'save')
     }
-    // staing(data) { // 跳页 下一个都调用下暂存
-    //   this.staingData = data
-    //   Object.keys(data).forEach((key) => {
-    //     this.staingData[key] = data[key]
-    //   })
-    // }
   },
   mounted() {
-    console.log(this.addService)
+    console.log('===', this.staffEnums)
   }
 }
 </script>
