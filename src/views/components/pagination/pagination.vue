@@ -48,11 +48,17 @@ export default {
       this.total = page.total_counts
     },
     onPageChange(p) {
-      this.$emit('change', p, this.pageSize)
+      this.$emit('change', {
+        current: p,
+        pageSize: this.pageSize
+      })
     },
     onShowSizeChange(p, pageSize) {
       this.pageSize = pageSize
-      this.$emit('change', p, pageSize)
+      this.$emit('change', {
+        current: p,
+        pageSize
+      })
     }
   }
 }
