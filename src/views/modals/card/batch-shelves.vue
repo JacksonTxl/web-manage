@@ -22,7 +22,7 @@
           <a href="javascript:;">查看明显</a>
         </div>
         <div class="modal-card-batch-shelves-info-channel">
-          <span class="channel">{{getBatchShelvesData.sell_type.name}}</span>
+          <span class="channel">{{getBatchShelvesData.sell_type?getBatchShelvesData.sell_type.name :''}}</span>
         </div>
       </div>
     </section>
