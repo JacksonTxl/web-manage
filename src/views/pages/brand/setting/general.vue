@@ -1,12 +1,5 @@
 <template>
-  <div :class="b()">
-    <div :class="b('navs')">
-      <page-route-nav title="通用设置" v-model="navs"></page-route-nav>
-    </div>
-    <div :class="b('content')">
-      <router-view></router-view>
-    </div>
-  </div>
+  <page-route-nav title="通用设置" v-model="navs"></page-route-nav>
 </template>
 <script>
 import PageRouteNav from '@/views/components/page-route-nav#/nav'

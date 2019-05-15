@@ -1,6 +1,7 @@
 <template>
   <div class="st-info-item">
-    <div class="st-info-item__label" :style="{ width: computedLabelWidth }">
+    <div class="st-info-item__label" :style="{ width: computedLabelWidth }"
+      :class="{'st-info-item__label--light': isWeakenLabel}">
       {{ label }}：
     </div>
     <div
@@ -44,6 +45,9 @@ export default {
     },
     computedLabelGutter() {
       return this.labelGutter || this.stInfoConfig.labelGutter || 0
+    },
+    isWeakenLabel() {
+      return this.stInfoConfig.isWeakenLabel
     }
   }
 }

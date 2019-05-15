@@ -10,7 +10,8 @@ export default {
     return {
       stInfoConfig: {
         labelWidth: this.labelWidth,
-        labelGutter: this.labelGutter
+        labelGutter: this.labelGutter,
+        isWeakenLabel: this.isWeakenLabel
       }
     }
   },
@@ -28,6 +29,13 @@ export default {
     labelGutter: {
       type: String,
       default: ''
+    },
+    /**
+     * isWeakenLabel 是否弱化label
+     */
+    isWeakenLabel: {
+      type: Boolean,
+      default: false
     }
   }
 }

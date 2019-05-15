@@ -33,7 +33,7 @@ const routes: any[] = [
   },
   {
     path: '/brand/setting/general',
-    redirect: '/brand/setting/general/course/personal'
+    redirect: '/brand/setting/general/brand'
   },
   ...pageRoutes,
   {

@@ -27,6 +27,7 @@
     <shop-hour-picker-demo id="shop-hour-picker"></shop-hour-picker-demo>
     <pagination-demo id="pagination"/>
     <page-route-nav-demo id="page-route-nav"/>
+    <textarea-demo id="textarea"/>
   </div>
 </template>
 
