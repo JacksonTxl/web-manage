@@ -219,7 +219,7 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="课程包介绍">
              <a-textarea
-                v-model="packageData.description"
+                v-model="packageData.intro"
                 maxlength="500"
                 class="page-content-card-textarea"
                 placeholder="请输入课程包介绍"
@@ -231,7 +231,7 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="备注">
              <a-textarea
-                v-model="packageData.remark"
+                v-model="packageData.remarks"
                 maxlength="500"
                 class="page-content-card-textarea"
                 placeholder="请输入备注"
@@ -255,7 +255,7 @@ import { UserService } from '@/services/user.service'
 import { cloneDeep, remove } from 'lodash-es'
 import { EditUnlimitPackageService } from './edit-unlimit-package.service'
 export default {
-  name: 'ShopUnlimitPackageAdd',
+  name: 'ShopUnlimitPackageEdit',
   serviceInject() {
     return {
       userService: UserService,
@@ -314,9 +314,9 @@ export default {
           image_key: ''
         },
         // 课程包介绍
-        description: '',
+        intro: '',
         // 备注
-        remark: ''
+        remarks: ''
       },
       form: this.$form.createForm(this),
       start_time: null,
@@ -355,6 +355,17 @@ export default {
   },
   methods: {
     init() {
+      if (!this.packageInfo.is_allow_transfer) {
+        this.packageInfo.transfer_rate = null
+      }
+      if (!this.packageInfo.is_team) {
+        this.packageInfo.team_times = null
+        this.packageInfo.team_unit_price = null
+      }
+      if (!this.packageInfo.is_personal) {
+        this.packageInfo.personal_times = null
+        this.packageInfo.personal_unit_price = null
+      }
       this.form.setFieldsValue({
         'price': this.packageInfo.price,
         'start_time': moment(this.packageInfo.start_time * 1000),
@@ -365,7 +376,7 @@ export default {
       })
       // 课程范围
       this.packageData.is_team = this.packageInfo.is_team
-      this.packageData.team_times = this.packageInfo.team_time
+      this.packageData.team_times = this.packageInfo.team_times
       this.packageData.team_unit_price = this.packageInfo.team_unit_price
       this.packageData.is_personal = this.packageInfo.is_personal
       this.packageData.personal_times = this.packageInfo.personal_times
@@ -387,9 +398,9 @@ export default {
       this.imageIsNone = false
       this.imageErrorText = ''
       // 介绍
-      this.packageData.description = this.packageInfo.intro
+      this.packageData.intro = this.packageInfo.intro
       // 备注
-      this.packageData.remark = this.packageInfo.remarks
+      this.packageData.remarks = this.packageInfo.remarks
     },
     // 保存
     save() {

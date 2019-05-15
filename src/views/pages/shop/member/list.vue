@@ -65,10 +65,10 @@
       <a-popover placement="bottom">
         <template slot="content">
           <p>
-            <modal-link tag="a" :to=" { name: 'shop-distribution-coach',props:{selectedRowData:selectedRowData}}">分配教练</modal-link>
+            <modal-link tag="a" :to=" { name: 'shop-distribution-coach',props:{selectedRowData:selectDataList}}">分配教练</modal-link>
           </p>
           <p>
-            <modal-link tag="a" :to=" { name: 'shop-distribution-ales',props:{selectedRowData:selectedRowData}}">分配销售</modal-link>
+            <modal-link tag="a" :to=" { name: 'shop-distribution-ales',props:{selectedRowData:selectDataList}}">分配销售</modal-link>
           </p>
         </template>
         <st-button class="shop-member-list-button" :disabled="selectedRowData.length > 0 ? false :true">分配员工</st-button>
@@ -162,6 +162,7 @@ export default {
         pageSize: 10,
         total: 50
       },
+      selectDataList: [],
       selectedRowKeys: [],
       selectedRowData: [],
       columns: [
@@ -249,6 +250,9 @@ export default {
     onSelectionChange(keys, selectedRowData) {
       this.selectedRowKeys = keys
       this.selectedRowData = selectedRowData
+      this.selectDataList = selectedRowData.map(item => {
+        return item.id
+      })
     },
     onTableChange(pagination, filters, sorter) {
       console.log(pagination, filters, sorter)

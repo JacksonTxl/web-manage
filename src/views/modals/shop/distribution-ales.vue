@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="分配销售" onOk="save" v-model="show" size="small">
+  <st-modal title="分配销售" @ok="save" v-model="show" size="small">
     <a-row :gutter="8">
       <a-col :lg="24" style="padding: 0;">
         <a-input-search
@@ -25,6 +25,7 @@
 </template>
 <script>
 import { DistributionAlesService } from './distribution-ales.service'
+import { MessageService } from '@/services/message.service'
 const columns = [
   {
     title: '会籍销售姓名',
@@ -41,7 +42,8 @@ export default {
   name: 'distributionAles',
   serviceInject() {
     return {
-      service: DistributionAlesService
+      service: DistributionAlesService,
+      messageService: MessageService
     }
   },
   props: {
@@ -58,44 +60,24 @@ export default {
       },
       columns,
       show: false,
-      list: [
-        {
-          id: 1,
-          sale_name: '销售1',
-          sign_bill: 20
-        },
-        {
-          id: 2,
-          sale_name: '销售2',
-          sign_bill: 30
-        },
-        {
-          id: 3,
-          sale_name: '销售3',
-          sign_bill: 60
-        },
-        {
-          id: 4,
-          sale_name: '销售4',
-          sign_bill: 10
-        }
-      ]
+      list: [], // 列表数据
+      chooseId: ''
     }
   },
   mounted() {
     this.service.getSaleList().subscribe(res => {
       console.log(res)
+      this.list = res.list
     })
-    console.log('11111111', this.selectedRowData)
   },
   methods: {
     onChange(e) {
       console.log(e.target)
     },
-    onSelectChange(e) {
-      console.log('选中的', e)
+    onSelectChange(e, itemData) {
+      console.log(e, itemData)
       this.selectedRowKeys = e
-      console.log(this.selectedRowKeys)
+      this.chooseId = itemData[0].id
     },
     handleTableChange(pagination, filters, sorter) {
       console.log(pagination)
@@ -104,9 +86,12 @@ export default {
       console.log(e)
     },
     save() {
-      // this.service.addSale().subscribe(res => {
-      //   console.log(res)
-      // })
+      console.log('this.selectedRowData', this.selectedRowData)
+      console.log('sale', this.chooseId)
+      this.service.addSale({ id: this.selectedRowData, sale_id: 1 }).subscribe(res => {
+        this.show = false
+        this.messageService.success({ content: '分配成功' })
+      })
     }
   },
   watch: {}

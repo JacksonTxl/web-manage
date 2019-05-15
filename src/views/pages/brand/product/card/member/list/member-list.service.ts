@@ -33,13 +33,13 @@ export class MemberListService extends Store<CardsListInfoState> {
   }
   @Effect()
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo({ card_name: to.query.cardName }).subscribe(res => {
+    this.getListInfo(to.meta.query.cardName ? { card_name: to.meta.query.cardName } : to.meta.query).subscribe(res => {
       this.SET_CARDS_LIST_INFO(res)
       next()
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo({}).subscribe(res => {
+    this.getListInfo(to.meta.query ? to.meta.query : {}).subscribe(res => {
       console.log(res, '获取数据')
       this.SET_CARDS_LIST_INFO(res)
       next()

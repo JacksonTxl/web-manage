@@ -62,5 +62,14 @@ export const routeMapConfig = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
+  },
+  'shop-product-course-manage-package-list'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      package_type: { type: Number, default: -1 },
+      shelf_status: { type: Number, default: -1 },
+      course_name: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
   }
 }

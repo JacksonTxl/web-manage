@@ -24,7 +24,7 @@
     <st-t4>体测记录</st-t4>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
-        <st-form-table hoverable>
+        <st-form-table hoverable  :page="cardsListInfo.page" @change="onPageChange" >
           <thead>
             <tr>
               <th
@@ -61,12 +61,11 @@
         </st-form-table>
       </a-col>
     </a-row>
-    <page v-model="pageData" @dataChange="dataChange" style="text-align: right;margin-top:20px"></page>
   </div>
 </template>
 <script>
 import G2 from '@antv/g2'
-import page from './sold#/page'
+
 import { UserExperienceService } from './user-experience.service'
 const defaultOptions = {
   /**
@@ -100,9 +99,7 @@ export default {
       followInfo: this.aService.followInfo$
     }
   },
-  components: {
-    page
-  },
+
   data() {
     return {
       tcData: 'weight',
@@ -213,7 +210,8 @@ export default {
     tcDataFunc(value) {
       this.g2 = this.followInfo[value]
     },
-    dataChange(value) {
+    onPageChange(value) {
+      console.log(value)
       let self = this
       this.aService
         .getMemberSideRecord(self.$route.query.id, {

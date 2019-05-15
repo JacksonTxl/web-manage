@@ -329,6 +329,17 @@ export default {
   mounted() {
     this.getInfoData(this.cardsListInfo)
   },
+  created() {
+    let self = this
+    let query = self.$route.query
+    self.card_type = query.card_type ? query.card_type : '所以类型'
+    self.publish_channel = query.publish_channel
+      ? query.publish_channel
+      : '所有渠道'
+    self.sell_status = query.sell_status ? query.sell_status : '所有售卖状态'
+    self.pagination.current = parseInt(query.current_page)
+    self.pagination.pageSize = parseInt(query.size)
+  },
   methods: {
     onModalTest(data) {
       console.log('onModalTest')
@@ -410,9 +421,7 @@ export default {
           obj[item] = self.getHeaders[item]
         }
       })
-      this.aService.getListInfo(obj).subscribe(state => {
-        self.getInfoData(state)
-      })
+      self.$router.push({ query: obj, force: true })
     }
   },
   watch: {
