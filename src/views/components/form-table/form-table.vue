@@ -34,11 +34,8 @@ export default {
     }
   },
   methods: {
-    onChange(current, pageSize) {
-      this.$emit('change', {
-        current,
-        pageSize
-      })
+    onChange(pagination) {
+      this.$emit('change', pagination)
     }
   }
 }
