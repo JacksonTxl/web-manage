@@ -29,6 +29,9 @@ export default {
       content: ''
     }
   },
+  created() {
+    this.content = this.$attrs.value || ''
+  },
   computed: {
     currentLength() {
       return this.content.length
@@ -39,8 +42,8 @@ export default {
       let { value } = e.target
       const { maxlength } = this
       const content = value.substr(0, maxlength)
-      console.log(content)
       this.content = content
+      this.$emit('input', content)
     }
   }
 }
