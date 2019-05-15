@@ -29,6 +29,11 @@ export default {
       content: ''
     }
   },
+  watch: {
+    content(val) {
+      this.$emit('input', val)
+    }
+  },
   created() {
     this.content = this.$attrs.value || ''
   },
@@ -43,7 +48,6 @@ export default {
       const { maxlength } = this
       const content = value.substr(0, maxlength)
       this.content = content
-      this.$emit('input', content)
     }
   }
 }

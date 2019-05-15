@@ -13,13 +13,19 @@
     </a-row>
     <div class="mg-t24" :class="b()">
       <div :class="b('logo-wrap')">
-        <img :class="b('logo')" src="http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg?x-oss-process=image/resize,interlace_1,m_fill,w_1000" alt="brand logo">
+        <st-image-upload
+          width="90px"
+          height="90px"
+          :list="[]"
+          placeholder="上传品牌logo"
+          :cropperModal="{ title:'标题', cropper: { aspectRatio: 1/1 } }"
+        ></st-image-upload>
       </div>
       <div>
         <div>
           <h2>
             {{info.brand_name}}
-            <span :class="b('certify-status')">
+            <span v-if="info.is_authentic" :class="b('certify-status')">
               <i class="st-icon-certified"></i>
               <span :class="b('certify-des')">已认证</span>
             </span>
@@ -27,7 +33,7 @@
         </div>
         <div>
           <span>{{info.contact}}</span>
-          <span>{{info.mobile}}</span>
+          <span :class="b('mobile')">{{info.mobile}}</span>
         </div>
       </div>
     </div>
@@ -46,7 +52,13 @@
         </st-info>
       </a-col>
     </a-row>
-    <st-textarea v-model="info.description" v-if="isEdit" maxlength="300" placeholder="这个人很懒，什么都没留下"></st-textarea>
+    <div v-if="isEdit">
+      <st-textarea v-model="info.description" maxlength="300" placeholder="这个人很懒，什么都没留下" />
+      <div class="mg-t24 ta-c">
+        <st-button type="primary" @click="onSave">确定</st-button>
+        <st-button class="mg-l8" @click="onCancel">取消</st-button>
+      </div>
+    </div>
     <st-container v-if="!isEdit && info.description" type="2" class="bg-gray">
       {{info.description}}
     </st-container>
@@ -87,6 +99,25 @@ export default {
         query: {
           type: 'edit'
         }
+      })
+    },
+    onSave() {
+      const params = {
+        description: this.info.description
+      }
+      this.brandService.update(params).subscribe(() => {
+        this.messageService.success({
+          content: '保存成功'
+        })
+        this.$router.push({
+          query: {},
+          force: true
+        })
+      })
+    },
+    onCancel() {
+      this.$router.push({
+        query: {}
       })
     }
   }
