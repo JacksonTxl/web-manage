@@ -46,7 +46,7 @@
         </st-info>
       </a-col>
     </a-row>
-    <st-textarea v-if="isEdit" maxlength="300" placeholder="这个人很懒，什么都没留下"></st-textarea>
+    <st-textarea value="1111" v-if="isEdit" maxlength="300" placeholder="这个人很懒，什么都没留下"></st-textarea>
     <st-container v-if="!isEdit && info.description" type="2" class="bg-gray">
       {{info.description}}
     </st-container>
