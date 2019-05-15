@@ -35,7 +35,10 @@ export default {
   },
   methods: {
     onChange(current, pageSize) {
-      this.$emit('change', current, pageSize)
+      this.$emit('change', {
+        current,
+        pageSize
+      })
     }
   }
 }

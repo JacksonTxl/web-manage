@@ -17,8 +17,8 @@ export default {
     }
   },
   methods: {
-    onChange(current, size) {
-      console.log('current page and page size:', current, size)
+    onChange(pagination) {
+      console.log('page changed:', pagination)
     }
   }
 }

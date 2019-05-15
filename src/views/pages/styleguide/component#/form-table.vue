@@ -62,14 +62,14 @@ export default {
       page: {
         current_page: 1,
         size: 20,
-        total_counts: 6,
-        total_pages: 1
+        total_counts: 58,
+        total_pages: 3
       }
     }
   },
   methods: {
-    onPageChange(page, pageSize) {
-      console.log(page, pageSize)
+    onPageChange(pagination) {
+      console.log('page changed', pagination)
     }
   }
 }
