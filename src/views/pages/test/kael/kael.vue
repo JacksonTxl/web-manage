@@ -10,6 +10,13 @@
     </a-row>
   </a-checkbox-group>
   {{kael}}
+  <br/>
+  <a-tooltip placement="top">
+          <template slot="title">
+            <span>prompt text</span>
+          </template>
+          <span><st-icon type="help"/></span>
+        </a-tooltip>
 </st-panel>
 </template>
 <script>

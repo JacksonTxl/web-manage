@@ -10,6 +10,13 @@ export interface GetCourseInput {
   search?: string,
   course_type?: number
 }
+export interface GetPackageListInput {
+  package_type?: number,
+  shelf_status?: number,
+  course_name?: string,
+  page?: number
+  size?: number
+}
 export class PackageApi extends Api {
   /**
    * 创建课程包
@@ -40,6 +47,13 @@ export class PackageApi extends Api {
       start_time: params.start_time,
       end_time: params.end_time
     } })
+  }
+  /**
+   * 课程包列表
+   */
+  getList(params:GetPackageListInput) {
+    console.log(params)
+    return this.http.get(`/v1/course/package`, { query: params })
   }
   /**
    * 门店下课程列表
