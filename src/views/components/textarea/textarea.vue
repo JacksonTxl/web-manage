@@ -43,6 +43,7 @@ export default {
       const { maxlength } = this
       const content = value.substr(0, maxlength)
       this.content = content
+      this.$emit('input', content)
     }
   }
 }
