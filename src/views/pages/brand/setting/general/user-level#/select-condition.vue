@@ -3,10 +3,10 @@
     <template slot="content">
       <a-checkbox-group
         class="slider-copy"
-        v-model="checkedCondition"
+        v-model="checked"
         @change="onChange"
       >
-        <div v-for="(item, index) in list" :key="index">
+        <div v-for="(item, index) in value" :key="index">
           <a-checkbox :value="item.condition_id">
             {{item.condition_text}}
           </a-checkbox>
@@ -20,42 +20,40 @@
   </a-popover>
 </template>
 <script>
-import { SelectConditionService } from './select-condition.service'
 export default {
   name: 'SelectCondition',
-  serviceInject() {
-    return {
-      selectService: SelectConditionService
-    }
-  },
-  rxState() {
-    return {
-      resData: this.selectService.resData$
-    }
-  },
-  computed: {
-    list() {
-      console.log(this.resData)
-      return this.resData.list
-    },
-    checked() {
-      return this.resData.checked
-    }
-  },
-  watch: {
-    checked(val) {
-      this.checkedCondition = val
+  props: {
+    value: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   data() {
     return {
-      checkedCondition: []
+      checked: []
+    }
+  },
+  watch: {
+    value(val) {
+      this.setChecked()
     }
   },
   created() {
-    this.selectService.getCondition().subscribe()
+    this.setChecked()
   },
   methods: {
+    setChecked() {
+      const value = this.value
+      const checked = []
+      value.forEach(item => {
+        if (item.checked) {
+          checked.push(item.condition_id)
+        }
+      })
+      this.checked = checked
+    },
     onChange(val) {
       this.$emit('change', val)
     }
