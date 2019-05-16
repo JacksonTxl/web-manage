@@ -10,15 +10,15 @@
               </div>
             </div>
             <div class="staff-info-container">
-              <div class="staff-info-name">张三（二麻子）</div>
+              <div class="staff-info-name">{{ info.nickname }}（{{ info.nickname }}）</div>
               <div class="staff-info-cont">
-                <span class="mg-r8">手机号：123 1231 123</span>
-                <span class="mg-r8">工号：st1223</span>
-                <span>教练等级：SSR</span>
+                <span class="mg-r8">手机号：{{ info.mobile }}</span>
+                <span class="mg-r8">工号：{{ info.staff_num }}</span>
+                <span>教练等级：{{ info.coach_level }}</span>
               </div>
               <div class="staff-info-shops">
-                <span># 私教部 / </span>
-                <span>所在三家门店</span>
+                <span># {{ info.department }} / </span>
+                <span>所在{{ info.shop_num }}家门店</span>
               </div>
             </div>
           </a-col>
