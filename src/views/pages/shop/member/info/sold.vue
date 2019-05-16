@@ -1,7 +1,6 @@
 <template>
   <div class="member-info-sold">
     <st-t4>预约上课记录</st-t4>
-    {{form}}
     <formDate v-model="form"></formDate>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
@@ -40,7 +39,6 @@
         <a-table :columns="admission"></a-table>
       </a-col>
     </a-row>
-    {{cardsListInfo}}
   </div>
 </template>
 <script>
