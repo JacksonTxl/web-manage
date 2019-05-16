@@ -340,7 +340,8 @@ export class StaffApi extends Api {
     return this.http.get(`/v1/staff/brand/common/${id}`)
   }
   // 员工详情上课记录
-  getStaffCourseList() {}
+  getStaffCourseList() {
+  }
   // 员工详情跟进记录
   getStaffFollow() {}
   // 员工详情售卖订单
@@ -348,7 +349,9 @@ export class StaffApi extends Api {
   // 员工详情服务会员
   getStaffMember() {}
   // 员工详情员工资料
-  getStaffInfo() {}
+  getStaffInfo(id: string) {
+    return this.http.get(`/v1/staff/brand/basic/${id}`)
+  }
 }
 
 export interface AddStaffBasicInfoParams{
