@@ -20,11 +20,18 @@
                     />
                     <a-range-picker v-else @change="MembershipTime" v-model="consumption"/>
                   </a-form-item>
-                  <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="员工跟进">
+                  <a-form-item
+                    :label-col="{span:2}"
+                    :wrapper-col="{ span: 12 }"
+                    :label="memberEnums.is_follow.description"
+                  >
                     <a-radio-group buttonStyle="solid" v-model="form.follow_salesman">
                       <a-radio-button value="-1">全部</a-radio-button>
-                      <a-radio-button value="1">有</a-radio-button>
-                      <a-radio-button value="2">无</a-radio-button>
+                      <a-radio-button
+                        v-for="(item,key,index) in memberEnums.is_follow.value"
+                        :value="key"
+                        :key="index"
+                      >{{item}}</a-radio-button>
                     </a-radio-group>
                   </a-form-item>
                 </div>
@@ -131,6 +138,7 @@
         </div>
       </st-table>
     </st-panel>
+    {{memberEnums.is_follow}}
   </div>
 </template>
 <script>
@@ -152,9 +160,7 @@ export default {
     const user = this.userService
     return {
       memberListInfo: this.aService.memberListInfo$,
-      enums: user.enums$,
-      staffEnums: user.staffEnums$,
-      depositeCardEnums: user.depositeCardEnums$,
+      reserveEnums: user.reserveEnums$,
       memberEnums: user.memberEnums$
     }
   },

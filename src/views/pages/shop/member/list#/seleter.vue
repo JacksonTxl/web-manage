@@ -1,21 +1,28 @@
 
 <template>
   <div>
-    <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="用户等级">
+    <a-form-item
+      :label-col="{span:2}"
+      :wrapper-col="{ span: 12 }"
+      :label="shopMemberEnums.member_level.description"
+    >
       <a-radio-group buttonStyle="solid" v-model="value.member_level">
         <a-radio-button value="-1">全部用户</a-radio-button>
-        <a-radio-button value="1">潜在用户</a-radio-button>
-        <a-radio-button value="2">正式会员</a-radio-button>
-        <a-radio-button value="3">流失会员</a-radio-button>
+        <a-radio-button
+          :value="key"
+          v-for="(item,key,index) in shopMemberEnums.member_level.value"
+          :key="index"
+        >{{item}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="来源方式">
+    <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 20 }" label="来源方式">
       <a-radio-group buttonStyle="solid" v-model="value.register_type">
         <a-radio-button value="-1">全部</a-radio-button>
-        <a-radio-button value="1">外出获取</a-radio-button>
-        <a-radio-button value="2">直接到访</a-radio-button>
-        <a-radio-button value="3">小程序</a-radio-button>
-        <a-radio-button value="4">多人拼团</a-radio-button>
+        <a-radio-button
+          v-for="(item,key,index) in SourceRegisters"
+          :value="key"
+          :key="index"
+        >{{item}}</a-radio-button>
       </a-radio-group>
     </a-form-item>
     <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="注册时间">
@@ -32,7 +39,24 @@
 </template>
 <script>
 import moment from 'moment'
+import { SeleterService } from './seleter.service'
+import { UserService } from '@/services/user.service'
 export default {
+  serviceInject() {
+    return {
+      aService: SeleterService,
+      userService: UserService
+    }
+  },
+  rxState() {
+    /**
+     * @type {UserService}
+     */
+    const user = this.userService
+    return {
+      shopMemberEnums: user.shopMemberEnums$
+    }
+  },
   name: 'stSeleter',
   model: {
     prop: 'value',
@@ -46,15 +70,25 @@ export default {
   data() {
     return {
       dateFormat: 'YYYY/MM/DD',
-      time: []
+      time: [],
+      SourceRegisters: []
     }
   },
   computed: {},
+  created() {
+    this.sourceRegisters()
+  },
   methods: {
     moment,
     onChange(date, dateString) {
       this.value.start_time = dateString[0]
       this.value.stop_time = dateString[1]
+    },
+    sourceRegisters() {
+      let self = this
+      self.aService.getMemberSourceRegisters().subscribe(status => {
+        self.SourceRegisters = status
+      })
     },
     handleResetItem() {
       this.time = []

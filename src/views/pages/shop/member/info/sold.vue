@@ -77,9 +77,9 @@ export default {
     return {
       form: {
         start_date: '', // 上课日期
-        reserve_type: 1,
-        reserve_status: -1,
-        checkin_status: -1,
+        reserve_type: '1',
+        reserve_status: '-1',
+        checkin_status: '-1',
         course_name: undefined,
         size: 20,
         page: 1

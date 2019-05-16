@@ -33,7 +33,6 @@ export class ListService extends Store<CardsListInfoState> {
   removeWechatBind(id: number) {
     return this.cardsApi.removeWechatBind(id)
   }
-
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getListInfo(to.meta.query).subscribe(res => {
       console.log(res, '获取数据to.query', to.meta.query)
