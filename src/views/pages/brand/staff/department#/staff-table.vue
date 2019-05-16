@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     staffInfo(staffId) {
-      this.$router.push({ name: 'brand-staff-info-staffdata', query: { staffId } })
+      this.$router.push({ name: 'brand-staff-info-basic', query: { staffId } })
     },
     editStaff(staffId) {
       this.$emit('edit-staff', staffId)

@@ -7,7 +7,7 @@
           <st-t4 class="mg-t4">{{item.name}}</st-t4>
           <div class="st-des mg-t4">{{item.content}}</div>
         </a-col>
-        <a-col :span="4" class="ta-r">
+        <a-col :span="4" class="ta-r" v-if="index!==0">
           <a-switch :checked="!!info[item.key].is_enable" @change="onSwitchChange(item.key)"/>
         </a-col>
       </a-row>

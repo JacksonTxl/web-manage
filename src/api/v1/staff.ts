@@ -289,11 +289,6 @@ export class StaffApi extends Api {
   addStaffBrandInfo(params: SaveData) {
     return this.http.post(URL, { params })
   }
-  // 获取员工详情
-  getStaffBrandInfo(id: string) {
-    return this.http.get(`${URL}${id}`)
-  }
-
   // 获取编辑员工回显
   getStaffBrandReview(id: number) {
     return this.http.get(`/v1/staff/brand/review/${id}`)
@@ -339,6 +334,21 @@ export class StaffApi extends Api {
   staffDetailInfo(id: string) {
     return this.http.get(`/v1/staff/brand/${id}`)
   }
+
+  // 员工详情公共头
+  getStaffInfoCommonHeader(id: string) {
+    return this.http.get(`/v1/staff/brand/common/${id}`)
+  }
+  // 员工详情上课记录
+  getStaffCourseList() {}
+  // 员工详情跟进记录
+  getStaffFollow() {}
+  // 员工详情售卖订单
+  getStaffSold() {}
+  // 员工详情服务会员
+  getStaffMember() {}
+  // 员工详情员工资料
+  getStaffInfo() {}
 }
 
 export interface AddStaffBasicInfoParams{

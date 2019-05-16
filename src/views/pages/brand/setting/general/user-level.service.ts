@@ -1,6 +1,7 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
+import { forkJoin } from 'rxjs'
 import { Store } from '@/services/store'
 import { SettingMemberApi } from '@/api/v1/setting/member'
 
