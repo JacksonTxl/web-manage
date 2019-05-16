@@ -32,8 +32,8 @@
           </h2>
         </div>
         <div>
-          <span>{{info.contact}}</span>
-          <span :class="b('mobile')">{{info.mobile}}</span>
+          <span><st-icon type="contact" />{{info.contact}}</span>
+          <span :class="b('mobile')"><st-icon type="mobile" />{{info.mobile}}</span>
         </div>
       </div>
     </div>
