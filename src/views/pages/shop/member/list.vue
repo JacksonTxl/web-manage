@@ -134,18 +134,28 @@
   </div>
 </template>
 <script>
+import { UserService } from '@/services/user.service'
 import { ListService } from './list.service'
 import StSeleter from './list#/seleter.vue'
 import moment from 'moment'
 export default {
   serviceInject() {
     return {
-      aService: ListService
+      aService: ListService,
+      userService: UserService
     }
   },
   rxState() {
+    /**
+     * @type {UserService}
+     */
+    const user = this.userService
     return {
-      memberListInfo: this.aService.memberListInfo$
+      memberListInfo: this.aService.memberListInfo$,
+      enums: user.enums$,
+      staffEnums: user.staffEnums$,
+      depositeCardEnums: user.depositeCardEnums$,
+      memberEnums: user.memberEnums$
     }
   },
   components: {
