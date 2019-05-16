@@ -1,10 +1,10 @@
 <template>
   <a-checkbox-group
-    v-model="checkedRights"
+    v-model="checked"
     @change="onChange"
   >
     <a-checkbox
-      v-for="(item, index) in list"
+      v-for="(item, index) in value"
       :key="index"
       :value="item.rights_id">
       {{item.rights_text}}
@@ -12,42 +12,40 @@
   </a-checkbox-group>
 </template>
 <script>
-import { SelectRightsService } from './select-rights.service'
 export default {
   name: 'SelectRights',
-  serviceInject() {
-    return {
-      selectService: SelectRightsService
-    }
-  },
-  rxState() {
-    return {
-      resData: this.selectService.resData$
-    }
-  },
-  computed: {
-    list() {
-      console.log(this.resData)
-      return this.resData.list
-    },
-    checked() {
-      return this.resData.checked
-    }
-  },
-  watch: {
-    checked(val) {
-      this.checkedRights = val
+  props: {
+    value: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   data() {
     return {
-      checkedRights: []
+      checked: []
+    }
+  },
+  watch: {
+    value(val) {
+      this.setChecked()
     }
   },
   created() {
-    this.selectService.getRights().subscribe()
+    this.setChecked()
   },
   methods: {
+    setChecked() {
+      const value = this.value
+      const checked = []
+      value.forEach(item => {
+        if (item.checked) {
+          checked.push(item.rights_id)
+        }
+      })
+      this.checked = checked
+    },
     onChange(val) {
       this.$emit('change', val)
     }

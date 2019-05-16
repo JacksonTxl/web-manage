@@ -1,36 +1,85 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
-import { forkJoin } from 'rxjs'
 import { Store } from '@/services/store'
-import { SettingMemberApi } from '@/api/v1/setting/member'
+import { SettingMemberApi, UpdateInput } from '@/api/v1/setting/member'
 
 interface ListState {
-  resData: object
+  list: object[],
+  info: object
 }
 @Injectable()
 export class UserLevelService extends Store<ListState> {
   state$: State<ListState>
-  resData$: Computed<object>
+  list$: Computed<object[]>
+  info$: Computed<object>
   constructor(protected settingMemberApi: SettingMemberApi) {
     super()
     this.state$ = new State({
-      resData: {}
+      list: [],
+      info: {}
     })
-    this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
+    this.list$ = new Computed(this.state$.pipe(pluck('list')))
+    this.info$ = new Computed(this.state$.pipe(pluck('info')))
   }
-  @Effect()
   getList() {
     return this.settingMemberApi.getList().pipe(
       tap(res => {
         this.state$.commit(state => {
-          state.resData = res
+          state.list = res.list
         })
       })
     )
   }
+  getInfo() {
+    return this.settingMemberApi.getInfo().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.info = this.dataFilter(res.info)
+        })
+      })
+    )
+  }
+  @Effect()
+  update(params: UpdateInput) {
+    return this.settingMemberApi.update(params)
+  }
+  protected dataFilter(info: any) {
+    const { condition, rights } = info
+    const checkedCondition: number[] = []
+    const checkedRights: number[] = []
+    condition.forEach((item: any) => {
+      if (item.checked) {
+        checkedCondition.push(item.condition_id)
+      }
+    })
+    rights.forEach((item: any) => {
+      if (item.checked) {
+        checkedRights.push(item.rights_id)
+      }
+    })
+    return {
+      condition: {
+        list: condition,
+        checked: checkedCondition
+      },
+      rights: {
+        list: rights,
+        checked: checkedRights
+      }
+    }
+  }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getList().subscribe(next, () => {
+    const { type } = to.meta.query
+    this.getList().subscribe(() => {
+      if (type === 'edit') {
+        this.getInfo().subscribe(next, () => {
+          next(false)
+        })
+      } else {
+        next()
+      }
+    }, () => {
       next(false)
     })
   }
