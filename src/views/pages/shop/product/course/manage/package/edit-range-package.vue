@@ -25,7 +25,7 @@
                   <col style="width:20%;">
                   <col style="width:17%;">
                 </colgroup>
-                <tr class="bg-thead">
+                <tr class="bg-thead table-header">
                   <th></th>
                   <th class="rightline">课程类型</th>
                   <th class="pl-56">节数</th>
