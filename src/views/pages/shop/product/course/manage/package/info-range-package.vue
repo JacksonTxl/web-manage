@@ -153,19 +153,16 @@
 </template>
 <script>
 import { InfoRangePackageService } from './info-range-package.service'
-import { UserService } from '@/services/user.service'
 export default {
   name: 'ShopRangePackageInfo',
   serviceInject() {
     return {
-      userService: UserService,
       infoRangePackageService: InfoRangePackageService
     }
   },
   rxState() {
     return {
-      packageInfo: this.infoRangePackageService.packageInfo$,
-      package_course: this.userService.packageCourseEnums$
+      packageInfo: this.infoRangePackageService.packageInfo$
     }
   },
   bem: {

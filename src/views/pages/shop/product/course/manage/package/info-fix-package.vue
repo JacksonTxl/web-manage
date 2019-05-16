@@ -175,20 +175,17 @@
 </template>
 <script>
 import { InfoFixPackageService } from './info-fix-package.service'
-import { UserService } from '@/services/user.service'
 import { reduce } from 'lodash-es'
 export default {
   name: 'ShopRangePackageInfo',
   serviceInject() {
     return {
-      userService: UserService,
       infoFixPackageService: InfoFixPackageService
     }
   },
   rxState() {
     return {
-      packageInfo: this.infoFixPackageService.packageInfo$,
-      package_course: this.userService.packageCourseEnums$
+      packageInfo: this.infoFixPackageService.packageInfo$
     }
   },
   bem: {

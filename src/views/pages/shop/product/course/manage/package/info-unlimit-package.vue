@@ -68,19 +68,16 @@
 </template>
 <script>
 import { InfoUnlimitPackageService } from './info-unlimit-package.service'
-import { UserService } from '@/services/user.service'
 export default {
   name: 'ShopUnlimitPackageInfo',
   serviceInject() {
     return {
-      userService: UserService,
       infoUnlimitPackageService: InfoUnlimitPackageService
     }
   },
   rxState() {
     return {
-      packageInfo: this.infoUnlimitPackageService.packageInfo$,
-      package_course: this.userService.packageCourseEnums$
+      packageInfo: this.infoUnlimitPackageService.packageInfo$
     }
   },
   bem: {
