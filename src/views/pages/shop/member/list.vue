@@ -20,11 +20,18 @@
                     />
                     <a-range-picker v-else @change="MembershipTime" v-model="consumption"/>
                   </a-form-item>
-                  <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="员工跟进">
+                  <a-form-item
+                    :label-col="{span:2}"
+                    :wrapper-col="{ span: 12 }"
+                    :label="memberEnums.is_follow.description"
+                  >
                     <a-radio-group buttonStyle="solid" v-model="form.follow_salesman">
                       <a-radio-button value="-1">全部</a-radio-button>
-                      <a-radio-button value="1">有</a-radio-button>
-                      <a-radio-button value="2">无</a-radio-button>
+                      <a-radio-button
+                        v-for="(item,key,index) in memberEnums.is_follow.value"
+                        :value="key"
+                        :key="index"
+                      >{{item}}</a-radio-button>
                     </a-radio-group>
                   </a-form-item>
                 </div>
@@ -67,13 +74,13 @@
           <p>
             <modal-link
               tag="a"
-              :to=" { name: 'shop-distribution-coach',props:{selectedRowData:selectDataList}}"
+              :to=" { name: 'shop-distribution-coach', props:{selectedRowData:selectDataList}}"
             >分配教练</modal-link>
           </p>
           <p>
             <modal-link
               tag="a"
-              :to=" { name: 'shop-distribution-ales',props:{selectedRowData:selectDataList}}"
+              :to=" { name: 'shop-distribution-ales', props:{selectedRowData:selectDataList}}"
             >分配销售</modal-link>
           </p>
         </template>
@@ -131,21 +138,30 @@
         </div>
       </st-table>
     </st-panel>
+    {{memberEnums.is_follow}}
   </div>
 </template>
 <script>
+import { UserService } from '@/services/user.service'
 import { ListService } from './list.service'
 import StSeleter from './list#/seleter.vue'
 import moment from 'moment'
 export default {
   serviceInject() {
     return {
-      aService: ListService
+      aService: ListService,
+      userService: UserService
     }
   },
   rxState() {
+    /**
+     * @type {UserService}
+     */
+    const user = this.userService
     return {
-      memberListInfo: this.aService.memberListInfo$
+      memberListInfo: this.aService.memberListInfo$,
+      reserveEnums: user.reserveEnums$,
+      memberEnums: user.memberEnums$
     }
   },
   components: {

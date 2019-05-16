@@ -10,15 +10,15 @@
               </div>
             </div>
             <div class="staff-info-container">
-              <div class="staff-info-name">张三（二麻子）</div>
+              <div class="staff-info-name">{{ info.nickname }}（{{ info.nickname }}）<st-icon v-if="info.sex === 1" type="female" style="color:#FF5E41;"></st-icon><st-icon type="man" v-if="info.sex === 2"></st-icon></div>
               <div class="staff-info-cont">
-                <span class="mg-r8">手机号：123 1231 123</span>
-                <span class="mg-r8">工号：st1223</span>
-                <span>教练等级：SSR</span>
+                <span class="mg-r8">手机号：{{ info.mobile }}</span>
+                <span class="mg-r8">工号：{{ info.staff_num }}</span>
+                <span>教练等级：{{ info.coach_level }}</span>
               </div>
               <div class="staff-info-shops">
-                <span># 私教部 / </span>
-                <span>所在三家门店</span>
+                <span># {{ info.department }} / </span>
+                <span>所在{{ info.shop_num }}家门店</span>
               </div>
             </div>
           </a-col>
@@ -40,7 +40,11 @@
       </st-panel>
     <st-panel
         :tabs="[
-          { label: '员工资料', route: { name: 'brand-staff-info-staffdata' }}
+          { label: '上课记录', route: { name: 'brand-staff-info-course' }},
+          { label: '跟进记录', route: { name: 'brand-staff-info-follow' } },
+          { label: '售卖订单', route: { name: 'brand-staff-info-sold' } },
+          { label: '服务会员', route: { name: 'brand-staff-info-member' } },
+          { label: '员工资料', route: { name: 'brand-staff-info-basic' }}
         ]"
       >
         <div slot="actions">

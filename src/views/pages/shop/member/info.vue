@@ -5,7 +5,7 @@
         <a-col :span="14">
           <div class="shop-member-info-title-pannel-left">
             <div class="shop-member-info-title-pannel__img">
-              <div class="img-box">
+              <div class="img-box  st-preview-item">
                 <img
                   class="img-url"
                   src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=234634259,4236876085&fm=27&gp=0.jpg"
@@ -21,7 +21,9 @@
             </div>
 
             <div class="shop-member-info-title-pannel__info">
-              <st-t2>{{ info.member_name }}</st-t2>
+              <st-t2>{{ info.member_name }}
+                <st-icon  :type="info.sex=== 1? 'female':'man'" :style="info.sex=== 1? 'color:#FF5E41':'color:#3F66F6'"/>
+              </st-t2>
               <div class="shop-member-info-title-pannel__info__phone">
                 <div>
                   手机号：
@@ -74,7 +76,7 @@
               <a-dropdown>
                 <a-menu slot="overlay">
                   <a-menu-item key="1">
-                    <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">更改跟进教练</modal-link>
+                    <modal-link tag="a" :to=" { name: 'shop-distribution-coach',props: {selectedRowData: [id]}}">更改跟进教练</modal-link>
                   </a-menu-item>
                   <a-menu-item key="2">
                     <modal-link tag="a" :to=" { name: 'shop-distribution-ales',props: {selectedRowData: [id]}}">更改跟进销售</modal-link>

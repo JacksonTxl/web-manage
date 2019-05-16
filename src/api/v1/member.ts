@@ -357,6 +357,53 @@ export class MemberAPi extends Api {
   getAddMemberFreeze(params: any) {
     return this.http.put(`/v1/member/freeze/${params.id}`, { params })
   }
+  /**
+   * 教练列表
+   */
+  getCoachList(query: CoachQuery) {
+    return this.http.get(`/v1/member/allocation/coach`, { query })
+  }
+  /**
+   * 分配教练
+   */
+  addCoach(params: CoachParams) {
+    return this.http.put(`/v1/member/allocation/coach`, { params })
+  }
+  /*
+   *可转店得门店列表 v1/member/shop
+   */
+  getMemberShop() {
+    return this.http.get(`/v1/member/shop`)
+  }
+  /*
+   * 当前门店与被转店门店 v1/member/transfer/shop/被转店ID
+   */
+  getMemberTransferShop(id: string) {
+    return this.http.get(`/v1/member/transfer/shop/${id}`)
+  }
+  /*
+   *获取动态枚举值 /v1/member/source/registers
+   */
+  getMemberSourceRegisters() {
+    return this.http.get(`/v1/member/source/registers`)
+  }
+}
+
+export interface CoachParams {
+  /**
+   * 批量或者单个添加的id集合
+   */
+  id: Array<number>
+  /**
+   * 教练id
+   */
+  coach_id: number
+}
+export interface CoachQuery {
+  /**
+   * 搜索条件 姓名 手机号 昵称 教练
+   */
+  retrieve?: string
 }
 export interface SalesParams {
   /**

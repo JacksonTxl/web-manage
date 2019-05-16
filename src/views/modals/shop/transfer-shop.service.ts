@@ -25,4 +25,10 @@ export class TransferShopService extends Store<CardsTableModelState> {
   getMemberTransfer(data: any) {
     return this.MemberAPi.getMemberTransfer(data)
   }
+  getMemberShop() {
+    return this.MemberAPi.getMemberShop()
+  }
+  getMemberTransferShop(id: string) {
+    return this.MemberAPi.getMemberTransferShop(id)
+  }
 }

@@ -1,7 +1,6 @@
 <template>
   <div class="member-info-sold">
     <st-t4>预约上课记录</st-t4>
-    {{form}}
     <formDate v-model="form"></formDate>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
@@ -40,7 +39,6 @@
         <a-table :columns="admission"></a-table>
       </a-col>
     </a-row>
-    {{cardsListInfo}}
   </div>
 </template>
 <script>
@@ -77,9 +75,9 @@ export default {
     return {
       form: {
         start_date: '', // 上课日期
-        reserve_type: 1,
-        reserve_status: -1,
-        checkin_status: -1,
+        reserve_type: '1',
+        reserve_status: '-1',
+        checkin_status: '-1',
         course_name: undefined,
         size: 20,
         page: 1

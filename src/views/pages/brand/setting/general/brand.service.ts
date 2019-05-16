@@ -34,7 +34,7 @@ export class BrandService extends Store<BrandState> {
       state.resData = data
     })
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getInfo().subscribe(next, () => {
       next(false)
     })
