@@ -339,6 +339,8 @@ export class StaffApi extends Api {
   staffDetailInfo(id: string) {
     return this.http.get(`/v1/staff/brand/${id}`)
   }
+
+  //
 }
 
 export interface AddStaffBasicInfoParams{

@@ -29,9 +29,10 @@ export class InfoService extends Store<SetState> {
     }
     beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
       let { staffId } = to.query
-      this.getInfo(staffId + '').subscribe(res => {
-        this.SET_STAFF_BRND(res)
-        next()
-      })
+      next()
+
+      // this.getInfo(staffId + '').subscribe(res => {
+      //   this.SET_STAFF_BRND(res)
+      // })
     }
 }

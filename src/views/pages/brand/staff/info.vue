@@ -40,7 +40,11 @@
       </st-panel>
     <st-panel
         :tabs="[
-          { label: '员工资料', route: { name: 'brand-staff-info-staffdata' }}
+          { label: '上课记录', route: { name: 'brand-staff-info-course' }},
+          { label: '跟进记录', route: { name: 'brand-staff-info-follow' } },
+          { label: '售卖订单', route: { name: 'brand-staff-info-sold' } },
+          { label: '服务会员', route: { name: 'brand-staff-info-member' } },
+          { label: '员工资料', route: { name: 'brand-staff-info-basic' }}
         ]"
       >
         <div slot="actions">
