@@ -17,7 +17,7 @@
             :columns="columns"
             :dataSource="list"
             @change="handleTableChange"
-            :pagination="pagination"
+            :pagination="false"
             />
       </a-col>
     </a-row>
@@ -84,11 +84,17 @@ export default {
     },
     onSearch(e) {
       console.log(e)
+      this.service.getSaleList({
+        retrieve: e
+      }).subscribe(res => {
+        console.log(res)
+        this.list = res.list
+      })
     },
     save() {
       console.log('this.selectedRowData', this.selectedRowData)
       console.log('sale', this.chooseId)
-      this.service.addSale({ id: this.selectedRowData, sale_id: 1 }).subscribe(res => {
+      this.service.addSale({ id: this.selectedRowData, sale_id: this.chooseId }).subscribe(res => {
         this.show = false
         this.messageService.success({ content: '分配成功' })
       })

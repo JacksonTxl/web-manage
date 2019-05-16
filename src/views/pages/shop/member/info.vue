@@ -74,7 +74,7 @@
               <a-dropdown>
                 <a-menu slot="overlay">
                   <a-menu-item key="1">
-                    <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">更改跟进教练</modal-link>
+                    <modal-link tag="a" :to=" { name: 'shop-distribution-coach',props: {selectedRowData: [id]}}">更改跟进教练</modal-link>
                   </a-menu-item>
                   <a-menu-item key="2">
                     <modal-link tag="a" :to=" { name: 'shop-distribution-ales',props: {selectedRowData: [id]}}">更改跟进销售</modal-link>

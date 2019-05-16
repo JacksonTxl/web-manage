@@ -357,6 +357,35 @@ export class MemberAPi extends Api {
   getAddMemberFreeze(params: any) {
     return this.http.put(`/v1/member/freeze/${params.id}`, { params })
   }
+  /**
+   * 教练列表
+   */
+  getCoachList(query: CoachQuery) {
+    return this.http.get(`/v1/member/allocation/coach`, { query })
+  }
+  /**
+   * 分配教练
+   */
+  addCoach(params: CoachParams) {
+    return this.http.put(`/v1/member/allocation/coach`, { params })
+  }
+}
+
+export interface CoachParams{
+  /**
+   * 批量或者单个添加的id集合
+   */
+  id: Array<number>
+  /**
+   * 教练id
+   */
+  coach_id: number
+}
+export interface CoachQuery{
+  /**
+   * 搜索条件 姓名 手机号 昵称 教练
+   */
+  retrieve? : string;
 }
 export interface SalesParams {
   /**
