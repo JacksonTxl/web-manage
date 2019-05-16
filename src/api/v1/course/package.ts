@@ -33,6 +33,13 @@ export class PackageApi extends Api {
     return this.http.get(`/v1/course/package/${type}/${package_course_id}`)
   }
   /**
+   * 课程包详情
+   * type：不限范围 unlimit  限制范围 range   固定范围  fixation
+   */
+  getCoursePackageInfo(type: string, package_course_id: string) {
+    return this.http.get(`/v1/course/package/${type}/detail/${package_course_id}`)
+  }
+  /**
    * 编辑课程包
    * type：不限范围 unlimit  限制范围 range   固定范围  fixation
    */

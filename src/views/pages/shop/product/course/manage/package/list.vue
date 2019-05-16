@@ -54,7 +54,7 @@
       <div slot="action" slot-scope="text,record">
         <a @click="onEdit(record.package_course_id,record.package_type)">编辑</a>
         <a-divider type="vertical"></a-divider>
-        <a @click="onDetail(record.package_course_id)">详情</a>
+        <a @click="onDetail(record.package_course_id,record.package_type)">详情</a>
         <st-more-dropdown class="mgl-16">
           <a-menu-item @click="onsalePackage(record.package_course_id,record.course_name,record.start_time,record.end_time)" v-if="record.shelf_status!==1">上架</a-menu-item>
           <a-menu-item @click="offsalePackage(record.package_course_id,record.course_name)" v-else>下架</a-menu-item>
@@ -315,8 +315,11 @@ export default {
         query: { id }
       })
     },
-    onDetail(id) {
-      console.log(id)
+    onDetail(id, type) {
+      this.$router.push({
+        path: `/shop/product/course/manage/package/info-${this.type[type]}-package`,
+        query: { id }
+      })
     },
     onsalePackage(id, name, start, end) {
       if (end * 1000 >= moment(moment().format().replace(/\d{2}:\d{2}:\d{2}/, '23:59:59')).valueOf()) {
