@@ -15,7 +15,7 @@
           placeholder="预约状态"
           v-model="value.reserve_status"
         >
-          <a-select-option :value="-1">全部预约状态</a-select-option>
+          <a-select-option value="-1">全部预约状态</a-select-option>
           <a-select-option v-for="(item,key,index) in reserveEnums.reserve_status.value" :value="key" :key="index">{{item}}</a-select-option>
         </a-select>
         <a-select
