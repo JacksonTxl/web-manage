@@ -33,9 +33,12 @@
         </a-col>
       </a-row>
       <st-form-item label="转店至" style="margin-top:20px">
-        <a-select placeholder="请选择门店" v-decorator="basicInfoRuleList.to_shop">
-          <a-select-option value="china">China</a-select-option>
-          <a-select-option value="usa">U.S.A</a-select-option>
+        <a-select placeholder="请选择门店" v-decorator="basicInfoRuleList.to_shop" @change="shopId">
+          <a-select-option
+            v-for="item in getDataList.list"
+            :key="item.id"
+            :value="item.id"
+          >{{item.shop_name}}</a-select-option>
         </a-select>
       </st-form-item>
       <a-row :gutter="8" class="mg-t8">
@@ -55,8 +58,11 @@
         <a-col :lg="24">
           <st-form-item label="手续费归属">
             <a-select placeholder="请选择手续费归属" v-decorator="basicInfoRuleList.attribution">
-              <a-select-option value="china">China</a-select-option>
-              <a-select-option value="usa">U.S.A</a-select-option>
+              <a-select-option
+                v-for="item in getTransferShop.list"
+                :key="item.id"
+                :value="item.id"
+              >{{item.shop_name}}</a-select-option>
             </a-select>
           </st-form-item>
         </a-col>
@@ -69,6 +75,7 @@
         </a-col>
       </a-row>
     </st-form>
+    {{getTransferShop}}
   </st-modal>
 </template>
 <script>
@@ -109,7 +116,9 @@ export default {
           scopedSlots: { customRender: 'start_end' }
         }
       ],
+      getDataList: [],
       getData: [],
+      getTransferShop: [],
       show: false,
       basicInfoRuleList: {
         poundage: ['poundage'],
@@ -134,10 +143,19 @@ export default {
     this.getMemberBuy()
   },
   methods: {
+    shopId(value) {
+      let self = this
+      self.Service.getMemberTransferShop(value).subscribe(state => {
+        self.getTransferShop = state
+      })
+    },
     getMemberBuy() {
       let self = this
       self.Service.getMemberBuy(self.record.id).subscribe(state => {
         self.getData = state
+      })
+      self.Service.getMemberShop().subscribe(state => {
+        self.getDataList = state
       })
     },
     getMemberTransfer(data) {
@@ -147,8 +165,6 @@ export default {
       })
     },
     save(e) {
-      // e.preventDefault()
-      // console.log(e)
       let self = this
       this.form.validateFields((err, values) => {
         if (!err) {
