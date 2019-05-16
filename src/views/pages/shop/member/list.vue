@@ -67,13 +67,13 @@
           <p>
             <modal-link
               tag="a"
-              :to=" { name: 'shop-distribution-coach',props:{selectedRowData:selectDataList}}"
+              :to=" { name: 'shop-distribution-coach', props:{selectedRowData:selectDataList}}"
             >分配教练</modal-link>
           </p>
           <p>
             <modal-link
               tag="a"
-              :to=" { name: 'shop-distribution-ales',props:{selectedRowData:selectDataList}}"
+              :to=" { name: 'shop-distribution-ales', props:{selectedRowData:selectDataList}}"
             >分配销售</modal-link>
           </p>
         </template>
