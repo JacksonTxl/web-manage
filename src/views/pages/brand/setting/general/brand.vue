@@ -16,7 +16,7 @@
         <st-image-upload v-if="isEdit"
           width="90px"
           height="90px"
-          :list="[image]"
+          :list="[brandInfo.image]"
           placeholder="上传品牌logo"
           :cropperModal="{ title:'标题', cropper: { aspectRatio: 1/1 } }"
            @change="onImgChange"
@@ -115,10 +115,8 @@ export default {
       return this.query.type === 'edit'
     }
   },
-  watch: {
-    brandInfo(val) {
-      this.image = val.image
-    }
+  created() {
+    this.image = this.brandInfo.image
   },
   methods: {
     onEdit() {

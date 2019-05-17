@@ -1,11 +1,12 @@
 <template>
-  <a-modal title="创建场地" v-model="show" wrapClassName="modal-court-add" :footer="null">
+  <a-modal title="编辑场地" v-model="show" wrapClassName="modal-court-add" :footer="null">
     <st-form :form="form" labelWidth="68px" labelGutter="16px">
       <st-form-item label="场地名称" required>
         <a-input placeholder="请输入场地名称，不超过20个字" v-decorator="formRules.areaName"/>
       </st-form-item>
       <st-form-item labelFix>
-        <a-checkbox v-decorator="formRules.isVip">是否VIP区域</a-checkbox>
+        <a-checkbox v-model="info.is_vip">是否VIP区域
+        </a-checkbox>
       </st-form-item>
       <st-form-item label="容纳人数">
         <st-input-number placeholder="请输入最大容纳人数，不填无限制" v-decorator="formRules.containNumber"/>
@@ -18,7 +19,7 @@
 </template>
 
 <script>
-import { AddService } from './add.service'
+import { EditService } from './edit.service'
 import { MessageService } from '@/services/message.service'
 const formRules = {
   areaName: [
@@ -29,19 +30,25 @@ const formRules = {
       }]
     }
   ],
-  containNumber: ['contain_number'],
-  isVip: ['is_vip']
+  containNumber: ['contain_number']
 }
 export default {
   serviceInject() {
     return {
-      addService: AddService,
+      editService: EditService,
       messageService: MessageService
     }
   },
   rxState() {
     return {
-      loading: this.addService.loading$
+      info: this.editService.info$,
+      loading: this.editService.loading$
+    }
+  },
+  props: {
+    id: {
+      type: [Number, String],
+      default: 0
     }
   },
   data() {
@@ -52,13 +59,24 @@ export default {
   },
   created() {
     this.form = this.$form.createForm(this)
+    this.editService.getInfo(this.id).subscribe(this.setFieldsValue)
   },
   methods: {
+    setFieldsValue() {
+      const info = this.info
+      this.form.setFieldsValue({
+        area_name: info.area_name,
+        contain_number: info.contain_number
+      })
+    },
+    onIsVipChange() {
+
+    },
     onSubmit(e) {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.getData()
-        this.addService.add(data).subscribe(this.onSubmitSuccess)
+        this.editService.update(data).subscribe(this.onSubmitSuccess)
       })
     },
     onCancel() {
@@ -66,7 +84,8 @@ export default {
     },
     getData() {
       const data = this.form.getFieldsValue()
-      data.is_vip = !!data.is_vip
+      data.id = this.id
+      data.is_vip = +this.info.is_vip
       return data
     },
     onSubmitSuccess() {

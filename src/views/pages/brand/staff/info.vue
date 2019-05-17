@@ -6,11 +6,11 @@
             <div class="staff-avatar-container st-preview-item" >
               <img src="//styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/20190411/nmdNRC_cVqWSjCNg.png?x-oss-process=image/resize,interlace_1,m_fill,w_208,h_208"/>
               <div class="staff-avatar-tip">
-                在职/全职
+                {{ info.work_status.name }}/{{ info.nature_work.name }}
               </div>
             </div>
             <div class="staff-info-container">
-              <div class="staff-info-name">{{ info.nickname }}（{{ info.nickname }}）<st-icon v-if="info.sex === 1" type="female" style="color:#FF5E41;"></st-icon><st-icon type="man" v-if="info.sex === 2"></st-icon></div>
+              <div class="staff-info-name">{{ info.staff_name }}（{{ info.nickname }}）<st-icon v-if="info.sex === 1" type="female" style="color:#FF5E41;"></st-icon><st-icon type="man" v-if="info.sex === 2"></st-icon></div>
               <div class="staff-info-cont">
                 <span class="mg-r8">手机号：{{ info.mobile }}</span>
                 <span class="mg-r8">工号：{{ info.staff_num }}</span>
