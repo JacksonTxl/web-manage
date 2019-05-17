@@ -1,0 +1,41 @@
+<template>
+  <div :class="panel()">
+    <slot name="default"></slot>
+    <div class="st-search-panel__more" v-if="showMore">
+      <slot name="more"></slot>
+    </div>
+    <st-hr margin="0"></st-hr>
+    <div :class="panel('button')">
+      <div :class="panel('more-button')">
+        <a v-if="$slots.more" @click="showMore=!showMore" href="javascript:void(0)">展开&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
+      </div>
+      <div :class="panel('search-button')">
+        <slot name="button">
+          <st-button type="primary" @click="onSearch">查询</st-button>
+          <st-button class="mgl-8" @click="onReset">重置</st-button>
+        </slot>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  name: 'StSearchPanel',
+  bem: {
+    panel: 'st-search-panel'
+  },
+  data() {
+    return {
+      showMore: false
+    }
+  },
+  methods: {
+    onSearch() {
+      this.$emit('search')
+    },
+    onReset() {
+      this.$emit('reset')
+    }
+  }
+}
+</script>
