@@ -66,7 +66,7 @@ export default {
     },
     getData() {
       const data = this.form.getFieldsValue()
-      data.is_vip = !!data.is_vip
+      data.is_vip = +!!data.is_vip
       return data
     },
     onSubmitSuccess() {

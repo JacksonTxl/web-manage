@@ -26,6 +26,12 @@ export class CourtApi extends Api {
   getInfo(id: number) {
     return this.http.get(`${url}/${id}`)
   }
+  /**
+   * 删除场地
+   */
+  del(id: number) {
+    return this.http.delete(`${url}/${id}`)
+  }
 }
 export interface SetInput {
   id: number,
