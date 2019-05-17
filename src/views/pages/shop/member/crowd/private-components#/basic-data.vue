@@ -7,7 +7,7 @@
     >
       <st-button
         :style="{width:value.width+'px',marginBottom: '16px'}"
-        :class="value.selectionData ===item ?'active':''"
+        :class="value.selectionData.indexOf(item)>=0?'active':''"
         v-for="(item,index) in value.value"
         :key="index"
         @click="selectionFun(item)"
@@ -22,14 +22,29 @@ export default {
     event: 'dataChangge'
   },
   props: {
-    value: Object
+    value: {
+      type: Object
+    },
+    flag: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {}
   },
   methods: {
     selectionFun(item) {
-      this.value.selectionData = item
+      if (this.value.selectionData.indexOf(item) < 0) {
+        if (this.flag) {
+          this.value.selectionData.push(item)
+        }
+      } else {
+        this.value.selectionData.splice(
+          this.value.selectionData.indexOf(item),
+          1
+        )
+      }
       this.$emit('dataChangge', this.value)
     }
   },
