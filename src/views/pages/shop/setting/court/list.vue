@@ -39,11 +39,7 @@
           <div :class="bItem('footer')">
             <router-link :class="bItem('action')" to="/" class="st-link-secondary">设置座位</router-link>
             <div :class="bItem('divider')"></div>
-            <router-link
-              :class="bItem('action')"
-              :to="{path:'./edit',query:{id:bItem.id}}"
-              class="st-link-secondary"
-            >编辑</router-link>
+            <a :class="bItem('action')" class="st-link-secondary" @click="onUpdateCourt(item.id)">编辑</a>
           </div>
         </div>
       </a-col>
@@ -81,9 +77,34 @@ export default {
   },
   methods: {
     onAddCourt() {
-      console.log('click')
+      const that = this
       this.$modalRouter.push({
-        name: 'court-add'
+        name: 'court-add',
+        on: {
+          change() {
+            that.onListChange()
+          }
+        }
+      })
+    },
+    onUpdateCourt(id) {
+      const that = this
+      this.$modalRouter.push({
+        name: 'court-edit',
+        props: {
+          id
+        },
+        on: {
+          change() {
+            that.onListChange()
+          }
+        }
+      })
+    },
+    onListChange() {
+      this.$router.push({
+        query: {},
+        force: true
       })
     }
   }

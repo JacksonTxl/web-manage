@@ -33,7 +33,7 @@ export class ListService extends Store<ListState> {
       })
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getList().subscribe(next, () => { next(false) })
   }
 }
