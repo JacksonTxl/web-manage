@@ -13,6 +13,7 @@
             <div :class="b('sub-title')">条件</div>
             <ul>
               <li
+                v-if="potential.condition.length"
                 :class="b('list-item')"
               >
                 <i class="icon-member-checked icon-member-checked--potential"></i>
@@ -36,9 +37,14 @@
               <img :class="b('item-icon')" src="~@/assets/img/member.png" alt="正式会员">
             </div>
             <div :class="b('sub-title')">条件</div>
-            <select-condition v-if="isEdit" @change="onConditionChange" />
+            <select-condition
+              v-if="isEdit && info.condition"
+              v-model="info.condition.list"
+              @change="onConditionChange"
+            />
             <ul v-else>
               <li
+                v-if="member.condition.length"
                 :class="b('list-item')"
               >
                 <i class="icon-member-checked icon-member-checked--potential"></i>
@@ -49,15 +55,20 @@
               </li>
             </ul>
             <div class="mg-t24" :class="b('sub-title')">特权类目</div>
-            <select-rights v-if="isEdit" @change="onRightsChange"/>
+            <select-rights
+              v-if="isEdit && info.rights"
+              v-model="info.rights.list"
+              @change="onRightsChange"
+            />
             <ul v-else>
-              <li :class="b('list-item')">
+              <li :class="b('list-item')" v-if="member.rights.length">
                 <i class="icon-member-checked"></i>
                 <span v-for="(item, index) in member.rights"
                 :key="index">
                   {{item.rights_text | textFilter(member.rights, index)}}
                 </span>
               </li>
+              <li v-else class="st-des mg-t8">暂无特权类目～</li>
             </ul>
           </div>
         </a-col>
@@ -70,7 +81,7 @@
             </div>
             <div :class="b('sub-title')">条件</div>
             <ul>
-              <li
+              <li v-if="lost.condition.length"
                 :class="b('list-item')"
               >
                 <i class="icon-member-checked icon-member-checked--potential"></i>
@@ -84,7 +95,7 @@
         </a-col>
       </a-row>
       <div class="ta-c mg-t24" v-if="isEdit">
-        <st-button type="primary" @click="onSave">保存</st-button>
+        <st-button type="primary" @click="onSave" :loading="loading.update">保存</st-button>
       </div>
     </div>
   </st-panel>
@@ -101,20 +112,23 @@ export default {
   },
   serviceInject() {
     return {
-      listService: UserLevelService,
+      userLevelService: UserLevelService,
       routeService: RouteService,
       messageService: MessageService
     }
   },
   rxState() {
     return {
-      resData: this.listService.resData$,
-      query: this.routeService.query$
+      list: this.userLevelService.list$,
+      info: this.userLevelService.info$,
+      query: this.routeService.query$,
+      loading: this.userLevelService.loading$
     }
   },
   data() {
     return {
-      checkedCondition: []
+      condition: [],
+      rights: []
     }
   },
   filters: {
@@ -134,22 +148,33 @@ export default {
      * 潜在会员
      */
     potential() {
-      return this.resData.list[0]
+      return this.list[0]
     },
     /**
      * 正式会员
      */
     member() {
-      return this.resData.list[1]
+      return this.list[1]
     },
     /**
      * 流失会员
      */
     lost() {
-      return this.resData.list[2]
+      return this.list[2]
     }
   },
+  created() {
+    this.initChecked()
+  },
   methods: {
+    initChecked() {
+      if (!this.isEdit) {
+        return
+      }
+      const { info } = this
+      this.condition = info.condition.checked
+      this.rights = info.rights.checked
+    },
     onEdit() {
       this.$router.push({
         query: {
@@ -157,20 +182,42 @@ export default {
         }
       })
     },
-    onChange() {
-      console.log('changed')
-    },
     onSave() {
-      this.$router.push({
-        query: {}
+      const params = this.getData()
+      if (!this.inputCheck(params)) {
+        this.messageService.error({
+          content: '请至少选择一个升级到正式会员所需条件'
+        })
+        return
+      }
+      this.userLevelService.update(params).subscribe(() => {
+        this.messageService.success({
+          content: '保存成功'
+        })
+        this.$router.push({
+          query: {},
+          force: true
+        })
       })
     },
     onConditionChange(val) {
-      this.checkedCondition = val
+      this.condition = val
     },
     onRightsChange(val) {
-      console.log('rights changed', val)
-      this.checkedRights = val
+      this.rights = val
+    },
+    getData() {
+      return {
+        condition: this.condition,
+        rights: this.rights
+      }
+    },
+    inputCheck(params) {
+      const { condition } = params
+      if (!condition.length) {
+        return false
+      }
+      return true
     }
   }
 }

@@ -204,7 +204,7 @@ export default {
     let self = this
     // this.Service.init(self.$route.query.id, self.form).subscribe()
     this.pagination.pageSize = this.cardsListInfo.page.current_page
-    this.pagination.total = this.cardsListInfo.page.total_pages
+    this.pagination.total = this.cardsListInfo.page.total_counts
     this.pagination.pageSize = this.cardsListInfo.page.size
   },
   methods: {
@@ -282,7 +282,7 @@ export default {
       handler() {
         let self = this
         self.pagination.pageSize = self.cardsListInfo.page.current_page
-        self.pagination.total = self.cardsListInfo.page.total_pages
+        self.pagination.total = self.cardsListInfo.page.total_counts
         self.pagination.pageSize = self.cardsListInfo.page.size
       },
       deep: true
