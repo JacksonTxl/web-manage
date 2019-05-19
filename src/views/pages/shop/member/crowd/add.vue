@@ -42,10 +42,16 @@
             >
               <st-icon type="delete" style="color:#3F66F6"/>
             </div>
-            <!-- 难受<admission-times v-model="seleteData" :index="index"></admission-times> -->
             <component v-bind:is="item | componentFun"></component>
           </div>
         </template>
+        <div
+          v-if="seleteData.arrData.length"
+          style="padding-top:32px;display: flex;justify-content: center;"
+        >
+          <st-button style="margin-right:16px;width:102px">取消</st-button>
+          <st-button type="primary" style="margin-right:16px;width:102px">保存</st-button>
+        </div>
       </div>
     </div>
   </div>
