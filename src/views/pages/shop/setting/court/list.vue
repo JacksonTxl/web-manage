@@ -9,6 +9,11 @@
         :key="item.id"
       >
         <div :class="bItem()">
+          <div :class="bItem('del')" @click="onDel(item.id)">
+            <a-popconfirm title="Are you sure？">
+              <st-icon type="recycle-bin" :class="bItem('del-icon')"/>
+            </a-popconfirm>
+          </div>
           <div :class="bItem('body')">
             <div :class="bItem('body-lt')">
               <div :class="bItem('tag')">动</div>
@@ -37,13 +42,9 @@
             </div>
           </div>
           <div :class="bItem('footer')">
-            <router-link :class="bItem('action')" to="/" class="st-link-secondary">设置座位</router-link>
+            <router-link :class="bItem('action')" to="./site" class="st-link-secondary">设置座位</router-link>
             <div :class="bItem('divider')"></div>
-            <router-link
-              :class="bItem('action')"
-              :to="{path:'./edit',query:{id:bItem.id}}"
-              class="st-link-secondary"
-            >编辑</router-link>
+            <a :class="bItem('action')" class="st-link-secondary" @click="onUpdateCourt(item.id)">编辑</a>
           </div>
         </div>
       </a-col>
@@ -59,11 +60,13 @@
 
 <script>
 import draggable from 'vuedraggable'
+import { MessageService } from '@/services/message.service'
 import { ListService } from './list.service'
 export default {
   serviceInject() {
     return {
-      listService: ListService
+      listService: ListService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -81,10 +84,44 @@ export default {
   },
   methods: {
     onAddCourt() {
-      console.log('click')
+      const that = this
       this.$modalRouter.push({
-        name: 'court-add'
+        name: 'court-add',
+        on: {
+          change() {
+            that.onListChange()
+          }
+        }
       })
+    },
+    onUpdateCourt(id) {
+      const that = this
+      this.$modalRouter.push({
+        name: 'court-edit',
+        props: {
+          id
+        },
+        on: {
+          change() {
+            that.onListChange()
+          }
+        }
+      })
+    },
+    onListChange() {
+      this.$router.push({
+        query: {},
+        force: true
+      })
+    },
+    onDel(id) {
+      this.listService.del(id).subscribe(this.onDelSuccessed)
+    },
+    onDelSuccessed() {
+      this.messageService.success({
+        content: '删除成功'
+      })
+      this.onListChange()
     }
   }
 }
