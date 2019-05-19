@@ -4,11 +4,11 @@
       <div class="shop-member-crowd-add__left">
         <st-t2>人群定义维度</st-t2>
         <div style="padding-top:24px;coler:#9BACB9">单个人群最多可添加5个条件</div>
-        <basic-data v-model="seleteData.basicData" :flag="flag"></basic-data>
-        <basic-data v-model="seleteData.regSource" :flag="flag"></basic-data>
+        <basic-data v-model="seleteData" :flag="flag"></basic-data>
+        <!-- <basic-data v-model="seleteData.regSource" :flag="flag"></basic-data>
         <basic-data v-model="seleteData.concessionAward" :flag="flag"></basic-data>
         <basic-data v-model="seleteData.tradeInfo" :flag="flag"></basic-data>
-        <basic-data v-model="seleteData.activeInfo" :flag="flag"></basic-data>
+        <basic-data v-model="seleteData.activeInfo" :flag="flag"></basic-data>-->
       </div>
       <div class="shop-member-crowd-add__right">
         <st-t2>编辑人群</st-t2>
@@ -27,13 +27,14 @@
         </st-form>
         <div class="shop-member-crowd-add__right-condition">
           <div>创建的人群 同时满足 以下条件</div>
-          <div>已选 2/5 个条件</div>
+
+          <div>已选 {{seleteData.arrData.length}}/5 个条件</div>
         </div>
-        <template v-for="(item,index) in seleteArr">
+        <template v-for="(item,index) in seleteData.arrData">
           <div
             :key="index"
             class="shop-member-crowd-add__right-condition-box"
-            v-if="seleteArr.indexOf(item) >= 0"
+            v-if="seleteData.arrData.indexOf(item) >= 0"
           >
             <div
               class="shop-member-crowd-add__right-condition-box-delete"
@@ -41,6 +42,7 @@
             >
               <st-icon type="delete" style="color:#3F66F6"/>
             </div>
+            <!-- 难受<admission-times v-model="seleteData" :index="index"></admission-times> -->
             <component v-bind:is="item | componentFun"></component>
           </div>
         </template>
@@ -50,27 +52,53 @@
 </template>
 <script>
 import basicData from './private-components#/basic-data'
+import sex from './private-components#/sex'
+import age from './private-components#/age'
+import birthday from './private-components#/birthday'
 import regTime from './private-components#/reg-time'
+import affiliatedStore from './private-components#/affiliated-store'
+import availableIntegral from './private-components#/available-integral'
+import availableCoupons from './private-components#/available-coupons'
+import accumulateIntegrals from './private-components#/accumulate-integrals'
+import membershipExpires from './private-components#/membership-expires'
+import cardRemainingNumber from './private-components#/card-remaining-number'
+import privateClassNum from './private-components#/private-class-num'
+import cardMount from './private-components#/card-mount'
+import admissionTimes from './private-components#/admission-times'
+import lastAdmissionTime from './private-components#/last-admission-time'
 import sourceMode from './private-components#/source-mode.vue'
 import inductionTime from './private-components#/induction-time.vue'
 export default {
   components: {
-    'basic-data': basicData,
-    'reg-time': regTime,
-    'source-mode': sourceMode,
-    'induction-time': inductionTime
+    'basic-data': basicData, // 左侧组件
+    'reg-time': regTime, // 注册时间
+    'source-mode': sourceMode, // 来源方式
+    'induction-time': inductionTime, // 入会时间
+    birthday: birthday, // 生日
+    sex: sex, // 性别
+    age: age, // 年龄
+    'affiliated-store': affiliatedStore, // 所属门店
+    'available-integral': availableIntegral, // 可用积分
+    'available-coupons': availableCoupons, // 可用优惠劵
+    'accumulate-integrals': accumulateIntegrals, // 累计获取积分
+    'membership-expires': membershipExpires, // 会员卡即将到期
+    'card-remaining-number': cardRemainingNumber, // 会员卡剩余次数
+    'admission-times': admissionTimes, // 入场次数
+    'private-class-num': privateClassNum, // 私教课剩余次数
+    cardMount, // 储值卡剩余金额
+    lastAdmissionTime // 最后一次入场时间
   },
   data() {
     let self = this
     return {
       // 状态锁
       flag: true,
-      seleteArr: [],
+
       seleteData: {
         // 基础资料
         basicData: {
           title: '基础资料',
-          value: ['姓名', '年龄', '所属门店', '生日'],
+          value: ['性别', '年龄', '所属门店', '生日'],
           selectionData: [],
           width: 108
         },
@@ -103,6 +131,19 @@ export default {
           value: ['入场次数', '最后一次入场时间'],
           selectionData: [],
           width: 170
+        },
+        arrData: [],
+
+        getData: {
+          sex: 1,
+          availableIntegral: {
+            min: 1,
+            max: 2
+          },
+          age: {
+            min: 1,
+            max: 20
+          }
         }
       },
       form: this.$form.createForm(this),
@@ -124,27 +165,57 @@ export default {
   },
   filters: {
     componentFun(value) {
-      console.log(value)
       switch (value) {
+        case '最后一次入场时间':
+          return 'lastAdmissionTime'
+        case '入场次数':
+          return 'admission-times'
+        case '储值卡剩余金额':
+          return 'cardMount'
+        case '私教课剩余次数':
+          return 'private-class-num'
+        case '会员卡剩余次数':
+          return 'card-remaining-number'
+        case '会员卡即将到期':
+          return 'membership-expires'
+        case '累计获得积分':
+          return 'accumulate-integrals'
+        case '可用优惠券':
+          return 'available-coupons'
+        case '可用积分':
+          return 'available-integral'
+        case '所属门店':
+          return 'affiliated-store'
+        case '年龄':
+          return 'age'
+        case '性别':
+          return 'sex'
         case '注册时间':
           return 'reg-time'
         case '来源方式':
           return 'source-mode'
         case '入会时间':
           return 'induction-time'
+        case '生日':
+          return 'birthday'
       }
     }
   },
   methods: {
     deleteIcon(data, item) {
-      console.log(data, item)
       let k = Object.keys(data)
       k.map(item1 => {
-        if (data[item1].selectionData.indexOf(item) >= 0) {
-          data[item1].selectionData.splice(
-            data[item1].selectionData.indexOf(item),
-            1
-          )
+        if (item1 !== 'arrData') {
+          if (data[item1].selectionData.indexOf(item) >= 0) {
+            data[item1].selectionData.splice(
+              data[item1].selectionData.indexOf(item),
+              1
+            )
+          }
+        } else {
+          if (data.arrData.indexOf(item) >= 0) {
+            data.arrData.splice(data.arrData.indexOf(item), 1)
+          }
         }
       })
     },
@@ -174,16 +245,12 @@ export default {
       handler() {
         let k = Object.keys(this.seleteData)
         let arr = []
-        k.map(item => {
-          arr.push(...this.seleteData[item].selectionData)
-        })
-        console.log(arr)
+        arr.push(...this.seleteData.arrData)
         if (arr.length >= 5) {
           this.flag = false
         } else {
           this.flag = true
         }
-        this.seleteArr = arr
       },
       deep: true
     }
