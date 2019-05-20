@@ -40,11 +40,6 @@ export default {
     item: Object
   },
   methods: {
-    cancel(e) {
-      e.preventDefault()
-      console.log('取消')
-      this.show = true
-    },
     handleSubmit(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
