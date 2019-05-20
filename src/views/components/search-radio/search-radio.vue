@@ -3,7 +3,7 @@
     <a-radio-group :value="radioChecked" @change="onChange">
         <a-radio v-for="(item,index) in list" :key="index" :value="item.value">
           <div :class="radio('label')">
-            <span class="text">{{item.label}}--{{item.value}}</span>
+            <span class="text">{{item.label}}</span>
           </div>
         </a-radio>
       </a-radio-group>
