@@ -6,7 +6,7 @@ export class AreaSeatApi extends Api {
    * 座位详情
    */
   getInfo(id: number) {
-    return this.http.get(`${url}/${id}`, { mock: {} })
+    return this.http.get(`${url}/${id}`)
   }
   /**
    * 添加座位
