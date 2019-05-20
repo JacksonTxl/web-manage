@@ -65,7 +65,7 @@
         </tbody>
       </st-form-table>
       <p>
-        <modal-link tag="a" :to="{ name: 'test-tl', props: { name: 'lucy', age: 18 } }">modal test</modal-link>
+        <a href="javascript: void(0)" v-modal-link="{ name: 'test-tl', props: { name: 'lucy', age: 18 } }">modal test</a>
       </p>
       <p class="mg-t24 st-des">
        文字

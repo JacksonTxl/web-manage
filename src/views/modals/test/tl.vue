@@ -45,9 +45,9 @@ export default {
   },
   methods: {
     setFieldsValue() {
-      // this.form.setFieldsValue({
-      //   age: this.age
-      // })
+      this.form.setFieldsValue({
+        age: this.age
+      })
     }
   }
 }
