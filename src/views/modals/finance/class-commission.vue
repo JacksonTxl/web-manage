@@ -9,7 +9,7 @@
     </a-row>
     <a-row :gutter="8" >
         <a-col :lg="24">
-            <st-table :columns="classColumns" :dataSource="list" :pagination="pagination" @change="pageChange"/>
+            <st-table :columns="classColumns" :dataSource="list" :pagination="pagination" @change="pageChange" :scroll="{x: 800,y:400}"/>
         </a-col>
     </a-row>
     <a-row :gutter="8" >
