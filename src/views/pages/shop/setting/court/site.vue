@@ -5,13 +5,13 @@
       <img src="~@/assets/img/icon_vip.png" width="26px" alt>
     </div>
     <div slot="actions">
-      <span>容纳人数（人）：100</span>
-      <span class="mg-l32">座位模版（人）：4</span>
+      <span>容纳人数：100人</span>
+      <span class="mg-l32">座位模版：4个</span>
     </div>
     <st-form-table>
       <thead>
         <tr>
-          <th width="10%">座位</th>
+          <th width="10%">座位图</th>
           <th width="30%">座位模版名称</th>
           <th width="30%">座位数量</th>
           <th width="80px">操作</th>
@@ -19,20 +19,20 @@
       </thead>
       <tbody>
         <tr>
-          <td colspan="4">
+          <td colspan="4" class="st-form-table__add">
             <st-button :disabled="!canShowAddBtn" @click="onAdd" type="dashed" block>添加座位</st-button>
           </td>
         </tr>
         <tr v-if="isAdd">
-          <td>
+          <td class="align-items-center">
             <st-image-upload width="80px" height="80px" :size-limit="5"></st-image-upload>
-            <span>大小不超过5M，比例1:1</span>
+            <span class="st-des mg-l8" style="width: 100px">大小不超过5M，比例1:1</span>
           </td>
           <td>
             <a-input v-model="addInfo.name" placeholder="请输入模版名称"></a-input>
           </td>
           <td>
-            <a-input-number style="width:300px" v-model="addInfo.count" placeholder="请输入数位数量"></a-input-number>
+            <a-input-number style="width:300px" v-model="addInfo.count" placeholder="请输入座位数量"></a-input-number>
           </td>
           <td>
             <a @click="onAddSubmit">保存</a>
@@ -127,7 +127,7 @@ export default {
       this.addInfo = {
         img: {},
         name: '',
-        count: 0
+        count: ''
       }
     },
     onAddSubmit() {
