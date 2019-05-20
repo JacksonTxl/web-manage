@@ -54,7 +54,7 @@
         </div>
       </div>
     </div>
-    {{seleteData}}
+    {{seleteData.getData}}
   </div>
 </template>
 <script>
@@ -152,20 +152,34 @@ export default {
         },
         arrData: [],
         getData: {
-          crowd_name: null,
-          base_sex: null,
+          base_sex: '',
           base_age: {
-            min: null,
-            max: null
+            min: '',
+            max: ''
           },
+          base_birthday: {
+            min: '',
+            max: ''
+          },
+          base_shop: 'affiliated-store',
           register_time: {
-            min: null,
-            max: null
+            min: '',
+            max: ''
           },
-          sum_scores: {
-            min: null,
-            max: null
-          }
+          source_channel: 'source-mode',
+          member_time: {
+            min: '',
+            max: ''
+          },
+          available_scores: 'available-integral',
+          available_coupon_number: 'available-coupons',
+          sum_scores: 'accumulate-integrals',
+          member_expiring: 'membership-expires',
+          member_card_remain_times: 'card-remaining-number',
+          personal_course_remain_times: 'private-class-num',
+          deposit_remain_money: 'cardMount',
+          remain_enter_times: 'admission-times',
+          final_enter_time: 'lastAdmissionTime'
         },
         info: {}
       },
