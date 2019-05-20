@@ -4,7 +4,9 @@
     <st-panel>
       <div slot="title">
         <router-link tag="a" :to=" { name: 'shop-member-crowd-add'}">
-          <st-button type="primary">新建人群</st-button>
+          <st-button type="primary">
+            <a-icon type="plus"/>新建人群
+          </st-button>
         </router-link>
         <span class="shop-member-crowd-index-new__crowb_num" style>新建人群数量最多10个</span>
       </div>

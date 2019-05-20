@@ -42,7 +42,7 @@
             >
               <st-icon type="delete" style="color:#3F66F6"/>
             </div>
-            <component v-bind:is="item | componentFun"></component>
+            <component v-bind:is="item | componentFun" v-model="seleteData"></component>
           </div>
         </template>
         <div
@@ -54,6 +54,7 @@
         </div>
       </div>
     </div>
+    {{cardsListInfo}}
   </div>
 </template>
 <script>
@@ -74,7 +75,18 @@ import admissionTimes from './private-components#/admission-times'
 import lastAdmissionTime from './private-components#/last-admission-time'
 import sourceMode from './private-components#/source-mode.vue'
 import inductionTime from './private-components#/induction-time.vue'
+import { AddService } from './add.service'
 export default {
+  serviceInject() {
+    return {
+      aService: AddService
+    }
+  },
+  rxState() {
+    return {
+      cardsListInfo: this.aService.cardsListInfo$
+    }
+  },
   components: {
     'basic-data': basicData, // 左侧组件
     'reg-time': regTime, // 注册时间
@@ -139,18 +151,23 @@ export default {
           width: 170
         },
         arrData: [],
-
         getData: {
-          sex: 1,
-          availableIntegral: {
-            min: 1,
-            max: 2
+          crowd_name: null,
+          base_sex: null,
+          base_age: {
+            min: null,
+            max: null
           },
-          age: {
-            min: 1,
-            max: 20
+          register_time: {
+            min: null,
+            max: null
+          },
+          sum_scores: {
+            min: null,
+            max: null
           }
-        }
+        },
+        info: {}
       },
       form: this.$form.createForm(this),
       basicInfoRuleList: {
@@ -168,6 +185,9 @@ export default {
         ]
       }
     }
+  },
+  created() {
+    this.seleteData.info = this.cardsListInfo.info
   },
   filters: {
     componentFun(value) {
