@@ -13,7 +13,7 @@
             v-for="(item1,index) in item.value"
             :key="index"
             @click="selectionFun(item1)"
-          >{{item1}}</st-button>
+          >{{typeof value.info[item1] === 'object' ?value.info[item1].description :value.info[item1] }}</st-button>
         </div>
       </div>
     </div>
