@@ -4,7 +4,7 @@
     <div class="st-search-panel__more" v-if="showMore">
       <slot name="more"></slot>
     </div>
-    <st-hr margin="0"></st-hr>
+    <st-hr marginTop="24px" marginBottom="0"></st-hr>
     <div :class="panel('button')">
       <div :class="panel('more-button')">
         <a v-if="$slots.more" @click="showMore=!showMore" href="javascript:void(0)">{{showMore?'收起':'展开'}}&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
