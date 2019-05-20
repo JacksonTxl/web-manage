@@ -63,10 +63,7 @@
       <st-search-panel>
         <div style="display: flex;align-items: center;margin:16px 0;">
           <span style="width:70px;">条件1：</span>
-          <a-select defaultValue="lucy" style="width: 120px">
-            <a-select-option value="jack">Jack</a-select-option>
-            <a-select-option value="lucy">Lucy</a-select-option>
-          </a-select>
+          <st-search-radio v-model="searchRadio" @change="onSearchRadioChange" :list="searchRadioList" />
         </div>
         <div style="display: flex;align-items: center;margin:16px 0;">
           <span style="width:70px;">条件2：</span>
@@ -104,3 +101,27 @@
     <!-- st-panel end -->
   </section>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      searchRadio: 1,
+      searchRadioList: [{
+        value: 1,
+        label: '在呢'
+      }, {
+        value: 2,
+        label: '好吧'
+      }, {
+        value: 3,
+        label: '睡觉'
+      }]
+    }
+  },
+  methods: {
+    onSearchRadioChange(data) {
+      console.log(`searchRadio选择的值${data}`)
+    }
+  }
+}
+</script>

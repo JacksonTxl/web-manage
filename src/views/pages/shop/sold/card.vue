@@ -8,7 +8,7 @@
     ]"
   >
     <div slot="actions">
-      <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 290px;"/>
+      <st-input-search placeholder="请输入卡名、会员姓名或手机号查找" style="width: 290px;"/>
     </div>
     <router-view></router-view>
   </st-panel>
