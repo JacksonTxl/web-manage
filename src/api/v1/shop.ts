@@ -30,7 +30,7 @@ export class ShopApi extends Api {
       },
       query
     )
-    return this.http.get('/v1/shops', { query })
+    return this.http.get('/v1/shop', { query })
   }
   /**
    * 门店列表 省市区门店树形
