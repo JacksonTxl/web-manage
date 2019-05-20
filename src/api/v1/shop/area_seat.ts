@@ -5,8 +5,8 @@ export class AreaSeatApi extends Api {
   /**
    * 座位详情
    */
-  getInfo(id: String) {
-    return this.http.get(`${url}/${id}`)
+  getInfo(id: number) {
+    return this.http.get(`${url}/${id}`, { mock: {} })
   }
   /**
    * 添加座位
@@ -18,7 +18,7 @@ export class AreaSeatApi extends Api {
    * 编辑座位
    */
   update(params: UpdateInput) {
-    return this.http.put(url, { params })
+    return this.http.put(`${url}/${params.id}`, { params })
   }
   /**
    * 删除座位

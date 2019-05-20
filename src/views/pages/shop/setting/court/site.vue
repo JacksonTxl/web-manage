@@ -29,10 +29,10 @@
             <span class="st-des mg-l8" style="width: 100px">大小不超过5M，比例1:1</span>
           </td>
           <td>
-            <a-input v-model="addInfo.name" placeholder="请输入模版名称"></a-input>
+            <a-input v-model="addInfo.name" placeholder="请输入模版名称"/>
           </td>
           <td>
-            <a-input-number style="width:300px" v-model="addInfo.count" placeholder="请输入座位数量"></a-input-number>
+            <st-input-number style="width:300px" v-model="addInfo.count" placeholder="请输入座位数量"/>
           </td>
           <td>
             <a @click="onAddSubmit">保存</a>
@@ -58,7 +58,7 @@
             <td>
               <a @click="onEdit(item)">编辑</a>
               <a-divider type="vertical"></a-divider>
-              <a @click="onDelete">删除</a>
+              <a @click="onDelete(item.id)">删除</a>
             </td>
           </template>
           <!-- 编辑状态 -->
@@ -87,7 +87,22 @@
 <script>
 import { cloneDeep } from 'lodash-es'
 import { imgFilter } from '@/filters/resource.filters'
+import { MessageService } from '@/services/message.service'
+import { SiteService } from './site.service'
 export default {
+  serviceInject() {
+    return {
+      messageService: MessageService,
+      siteService: SiteService
+    }
+  },
+  rxState() {
+    const siteService = this.siteService
+    return {
+      resData: siteService.resData$,
+      loading: siteService.loading$
+    }
+  },
   bem: {
     bPage: 'page-shop-setting-court-site'
   },
@@ -131,8 +146,9 @@ export default {
       }
     },
     onAddSubmit() {
-      console.log(this.addInfo)
-      console.log('kaishi')
+      this.siteService.add(this.addInfo).subscribe(() => {
+        this.onActionSuccess('add')
+      })
     },
     onAddCancel() {
       this.isAdd = false
@@ -143,12 +159,34 @@ export default {
     },
     onEditSubmit() {
       console.log(this.editInfo)
+      this.siteService.update(this.editInfo).subscribe(() => {
+        this.onActionSuccess('edit')
+      })
     },
     onEditCancel() {
       this.editInfo = {}
     },
-    onDelete() {
-      console.log('delete')
+    onDelete(id) {
+      this.siteService.del(id).subscribe(() => {
+        this.onActionSuccess('del')
+      })
+    },
+    onActionSuccess(type) {
+      const msg = ({
+        add: '添加成功',
+        edit: '编辑成功',
+        del: '删除成功'
+      })[type]
+      this.messageService.success({
+        content: msg
+      })
+      this.onListChange()
+    },
+    onListChange() {
+      this.$router.push({
+        query: {},
+        force: true
+      })
     }
   }
 }
