@@ -7,7 +7,7 @@
     <st-hr margin="0"></st-hr>
     <div :class="panel('button')">
       <div :class="panel('more-button')">
-        <a v-if="$slots.more" @click="showMore=!showMore" href="javascript:void(0)">展开&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
+        <a v-if="$slots.more" @click="showMore=!showMore" href="javascript:void(0)">{{showMore?'收起':'展开'}}&nbsp;&nbsp;<st-icon class="icon-12" type="down-small" /></a>
       </div>
       <div :class="panel('search-button')">
         <slot name="button">
