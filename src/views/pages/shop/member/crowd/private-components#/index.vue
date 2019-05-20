@@ -30,7 +30,9 @@
           </div>
         </div>
         <div class="shop-member-crowd-index-box__btn">
-          <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
+          <router-link tag="span" :to=" { name: 'shop-member-crowd-analysis'}">
+            <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
+          </router-link>
           <span class="shop-member-crowd-index-box__btn-dx">
             <a-dropdown>
               <span class="ant-dropdown-link" href="#">
@@ -80,7 +82,9 @@
           </div>
         </div>
         <div class="shop-member-crowd-index-box__btn">
-          <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
+          <router-link tag="span" :to=" { name: 'shop-member-crowd-analysis'}">
+            <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
+          </router-link>
           <span class="shop-member-crowd-index-box__btn-dx">
             <a-dropdown>
               <span class="ant-dropdown-link" href="#">
@@ -130,7 +134,9 @@
           </div>
         </div>
         <div class="shop-member-crowd-index-box__btn">
-          <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
+          <router-link tag="span" :to=" { name: 'shop-member-crowd-analysis'}">
+            <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
+          </router-link>
           <span class="shop-member-crowd-index-box__btn-dx">
             <a-dropdown>
               <span class="ant-dropdown-link" href="#">

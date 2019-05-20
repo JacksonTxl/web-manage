@@ -8,19 +8,23 @@
         <a-tag :key="tag" :closable="true" :afterClose="() => handleClose(tag)">{{tag}}</a-tag>
       </a-tooltip>
     </template>
-    <a-input
-      v-if="inputVisible"
-      ref="input"
-      type="text"
-      size="small"
-      :style="{ width: '78px' }"
-      :value="inputValue"
-      @change="handleInputChange"
-      @blur="handleInputConfirm"
-      @keyup.enter="handleInputConfirm"
-    />
-    <a-tag v-else @click="showInput" style="background: #fff; borderStyle: dashed;">
-      <a-icon type="plus"/>添加
+    <a-tag style="background: #fff; borderStyle: dashed;">
+      <a-dropdown>
+        <a class="ant-dropdown-link" href="#">
+          <a-icon type="plus"/>添加
+        </a>
+        <a-menu slot="overlay">
+          <a-menu-item>
+            <a href="javascript:;" @click="dropdownFunc('1st menu item')">1st menu item</a>
+          </a-menu-item>
+          <a-menu-item>
+            <a href="javascript:;">2nd menu item</a>
+          </a-menu-item>
+          <a-menu-item>
+            <a href="javascript:;">3rd menu item</a>
+          </a-menu-item>
+        </a-menu>
+      </a-dropdown>
     </a-tag>
   </div>
 </template>
@@ -45,37 +49,11 @@ export default {
       },
       radioValue: '',
       tags: ['拉访'],
-      inputVisible: false,
       inputValue: ''
     }
   },
   methods: {
-    selectionFun(item) {
-      this.value.selectionData = item
-    },
-    onChange(date, dateString) {
-      console.log(date, dateString)
-      this.$emit('dataChangge', this.value)
-    },
-    handleClose(removedTag) {
-      const tags = this.tags.filter(tag => tag !== removedTag)
-      console.log(tags)
-      this.tags = tags
-    },
-
-    showInput() {
-      this.inputVisible = true
-      this.$nextTick(function() {
-        this.$refs.input.focus()
-      })
-    },
-
-    handleInputChange(e) {
-      this.inputValue = e.target.value
-    },
-
-    handleInputConfirm() {
-      const inputValue = this.inputValue
+    dropdownFunc(inputValue) {
       let tags = this.tags
       if (inputValue && tags.indexOf(inputValue) === -1) {
         tags = [...tags, inputValue]
@@ -86,6 +64,16 @@ export default {
         inputVisible: false,
         inputValue: ''
       })
+    },
+
+    onChange(date, dateString) {
+      console.log(date, dateString)
+      this.$emit('dataChangge', this.value)
+    },
+    handleClose(removedTag) {
+      const tags = this.tags.filter(tag => tag !== removedTag)
+      console.log(tags)
+      this.tags = tags
     }
   },
   mounted() {}
