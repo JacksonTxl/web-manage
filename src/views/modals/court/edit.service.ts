@@ -9,8 +9,8 @@ interface EditState {
 }
 @Injectable()
 export class EditService extends Store<EditState> {
-  state$: State<ShopINfoState>
-  info$: Computed<string>
+  state$: State<EditState>
+  info$: Computed<object>
   constructor(protected courtApi: CourtApi) {
     super()
     this.state$ = new State({

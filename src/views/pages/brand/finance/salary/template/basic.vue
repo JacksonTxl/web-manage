@@ -10,7 +10,9 @@
     <tbody>
       <tr>
         <td colspan="5" class="st-form-table__add">
-          <st-button type="dashed" block>薪资底薪模板</st-button>
+          <st-button type="dashed" block>
+             <modal-link tag="a" :to=" { name: 'finance-add-template'}">薪资底薪模板</modal-link>
+          </st-button>
         </td>
       </tr>
       <template  v-for="item in basicInfo.list">
