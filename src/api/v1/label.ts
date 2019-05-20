@@ -56,5 +56,5 @@ export interface ListParams{
   /**
    * 标签名
    */
-  tag_name: string;
+  tag_name?: string;
 }

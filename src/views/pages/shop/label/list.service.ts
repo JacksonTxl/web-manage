@@ -37,7 +37,7 @@ export class ListService extends Store<CardsListInfoState> {
     this.getListInfo({
       page: 1,
       size: 51,
-      tag_name: ''
+      tag_name: to.meta.query.tag_name
     }).subscribe(res => {
       this.SET_CARDS_LIST_INFO(res)
       next()
