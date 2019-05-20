@@ -6,7 +6,7 @@
           <st-form-item label="模板名称" required>
             <a-input
               placeholder="请输模板名称"
-              v-decorator="['template_name',{initialValue:this.item.template_name,rules: [{ required: true, message: '请输入模板名称' }]}]"
+              v-decorator="['template_name',{initialValue: item.template_name,rules: [{ required: true, message: '请输入模板名称' }]}]"
             />
           </st-form-item>
         </a-col>
@@ -15,7 +15,7 @@
             <st-input-number
               :float="true"
               placeholder="请输入月底薪"
-              v-decorator="['salary',{initialValue:this.item.salary, rules: [{ required: true, message: '请输入月底薪' }]}]"
+              v-decorator="['salary',{initialValue: item.salary, rules: [{ required: true, message: '请输入月底薪' }]}]"
             >
               <template slot="addonAfter">元</template>
             </st-input-number>
