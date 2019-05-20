@@ -42,7 +42,7 @@
             </div>
           </div>
           <div :class="bItem('footer')">
-            <router-link :class="bItem('action')" to="./site" class="st-link-secondary">设置座位</router-link>
+            <router-link :class="bItem('action')" :to="`./site?id=${item.id}`" class="st-link-secondary">设置座位</router-link>
             <div :class="bItem('divider')"></div>
             <a :class="bItem('action')" class="st-link-secondary" @click="onUpdateCourt(item.id)">编辑</a>
           </div>
