@@ -4,8 +4,8 @@ export class LabelApi extends Api {
   /**
      * 标签列表
      */
-  getLabelList() {
-    return this.http.get(`/v1/member/label`)
+  getLabelList(query: ListParams) {
+    return this.http.get(`/v1/member/label`, { query })
   }
   /**
      * 添加标签
@@ -42,4 +42,19 @@ export interface EditParams{
      * 标签名字
      */
     tag_name: string;
+}
+
+export interface ListParams{
+  /**
+   * size
+   */
+  size: number;
+  /**
+   * page
+   */
+  page: number;
+  /**
+   * 标签名
+   */
+  tag_name: string;
 }

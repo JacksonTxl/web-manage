@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { LabelApi, AddLabel, EditParams } from '@/api/v1/label'
+import { LabelApi, AddLabel, EditParams, ListParams } from '@/api/v1/label'
 
 interface CardsListInfoState {
   listInfo: Object
@@ -26,35 +26,21 @@ export class ListService extends Store<CardsListInfoState> {
     })
   }
 
-  getListInfo() {
-    return this.cardsApi.getLabelList()
+  getListInfo(params: ListParams) {
+    return this.cardsApi.getLabelList(params)
   }
 
   deleteLabel(id: number) {
     return this.cardsApi.deleteLabel(id)
   }
-
-  addLabel(params: AddLabel) {
-    return this.cardsApi.addLabel(params)
-  }
-
-  editLabel(id: number, params: EditParams) {
-    return this.cardsApi.editLabel(id, params)
-  }
-
-  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo().subscribe(res => {
-      console.log(res, '获取数据to.query')
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.getListInfo({
+      page: 1,
+      size: 51,
+      tag_name: ''
+    }).subscribe(res => {
       this.SET_CARDS_LIST_INFO(res)
       next()
     })
-  }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo().subscribe(res => {
-      console.log(res, '获取数据')
-      this.SET_CARDS_LIST_INFO(res)
-      next()
-    })
-    // next()
   }
 }
