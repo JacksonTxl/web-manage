@@ -2,42 +2,26 @@
   <div :class="basic()">
     <st-search-panel>
         <div style="display: flex;align-items: center;margin:16px 0;">
-            <span style="width:70px;">条件1：</span>
-            <a-select defaultValue="lucy" style="width: 120px">
-            <a-select-option value="jack">Jack</a-select-option>
-            <a-select-option value="lucy">Lucy</a-select-option>
-            </a-select>
+          <span style="width:90px;">会员卡类型：</span>
+          <st-search-radio v-model="searchData.card_type" :list="cardTypeList"/>
         </div>
         <div style="display: flex;align-items: center;margin:16px 0;">
-            <span style="width:70px;">条件2：</span>
-            <a-radio-group defaultValue="a" buttonStyle="solid">
-            <a-radio-button value="a">Hangzhou</a-radio-button>
-            <a-radio-button value="b">Shanghai</a-radio-button>
-            <a-radio-button value="c">Beijing</a-radio-button>
-            <a-radio-button value="d">Chengdu</a-radio-button>
-            </a-radio-group>
+          <span style="width:90px;">售卡状态：</span>
+          <st-search-radio v-model="searchData.card_status" :list="cardSaleStatusList"/>
         </div>
         <div slot="more">
-            <div style="display: flex;align-items: center;margin:16px 0;">
-            <span style="width:70px;">条件3：</span>
-            <a-select defaultValue="lucy" style="width: 120px">
-                <a-select-option value="jack">Jack</a-select-option>
-                <a-select-option value="lucy">Lucy</a-select-option>
-            </a-select>
-            </div>
-            <div style="display: flex;align-items: center;margin:16px 0;">
-            <span style="width:70px;">条件4：</span>
-            <a-radio-group defaultValue="a" buttonStyle="solid">
-                <a-radio-button value="a">Hangzhou</a-radio-button>
-                <a-radio-button value="b">Shanghai</a-radio-button>
-                <a-radio-button value="c">Beijing</a-radio-button>
-                <a-radio-button value="d">Chengdu</a-radio-button>
-            </a-radio-group>
-            </div>
+          <div style="display: flex;align-items: center;margin:16px 0;">
+            <span style="width:90px;">开卡状态：</span>
+            <st-search-radio v-model="searchData.is_open" :list="cardOpenStatusList"/>
+          </div>
+          <div style="display: flex;align-items: center;margin:16px 0;">
+            <span style="width:90px;">开卡时间：</span>
+            <st-search-radio v-model="searchData.is_open" :list="cardOpenStatusList"/>
+        </div>
         </div>
         <div slot="button">
-            <st-button type="primary">查询1</st-button>
-            <st-button class="mgl-8">重置1</st-button>
+            <st-button type="primary">查询</st-button>
+            <st-button class="mgl-8">重置</st-button>
         </div>
     </st-search-panel>
     <div :class="basic('content')">
@@ -127,6 +111,34 @@ export default {
   },
   data() {
     return {
+      // 会员卡类型
+      cardTypeList: [
+        { value: -1, label: '全部' },
+        { value: 1, label: '期限卡' },
+        { value: 2, label: '会员卡' }
+      ],
+      // 售卡状态
+      cardSaleStatusList: [
+        { value: 1, label: '有效' },
+        { value: 2, label: '失效' },
+        { value: 3, label: '已冻结' },
+        { value: 4, label: '即将到期' }
+      ],
+      // 开卡状态
+      cardOpenStatusList: [
+        { value: -1, label: '全部' },
+        { value: 1, label: '已开卡' },
+        { value: 2, label: '未开卡' }
+      ],
+      searchData: {
+        card_type: -1,
+        card_status: 1,
+        is_open: -1,
+        start_time: '',
+        end_time: '',
+        size: 20,
+        page: 1
+      },
       data,
       columns
     }

@@ -2,9 +2,9 @@
   <div :class="radio()">
     <a-radio-group :value="radioChecked" @change="onChange">
         <a-radio v-for="(item,index) in list" :key="index" :value="item.value">
-          <div :class="radio('label')">
+          <span :class="radio('label')">
             <span class="text">{{item.label}}</span>
-          </div>
+          </span>
         </a-radio>
       </a-radio-group>
   </div>
