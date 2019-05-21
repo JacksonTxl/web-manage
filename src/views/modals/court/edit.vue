@@ -5,7 +5,7 @@
         <a-input placeholder="请输入场地名称，不超过20个字" v-decorator="formRules.areaName"/>
       </st-form-item>
       <st-form-item labelFix>
-        <a-checkbox v-model="info.is_vip">是否VIP区域
+        <a-checkbox :value="1" :checked="!!info.is_vip" @change="onIsVipChange">是否VIP区域
         </a-checkbox>
       </st-form-item>
       <st-form-item label="容纳人数">
@@ -69,8 +69,8 @@ export default {
         contain_number: info.contain_number
       })
     },
-    onIsVipChange() {
-
+    onIsVipChange(e) {
+      this.info.is_vip = +!e.target.value
     },
     onSubmit(e) {
       e.preventDefault()
