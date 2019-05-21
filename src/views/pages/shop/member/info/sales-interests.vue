@@ -29,7 +29,7 @@
           <span
             slot="age"
             slot-scope="text"
-            :style="text < 0 ? 'color:#00E881':'color:#FF5E41' "
+            :style="text < 0 ? 'color:#3dd49f':'color:#FF5E41' "
           >{{text >= 0 ? '+' + text: text}}</span>
         </a-table>
       </a-col>
