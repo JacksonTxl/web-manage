@@ -4,7 +4,11 @@
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <div style="display: flex;align-items: center;">
       <span style="margin-right:16px">剩余次数</span>
-      <input-number v-model="value.getData.member_card_remain_times" :company="'次'"></input-number>
+      <input-number
+        v-model="value.getData.member_card_remain_times"
+        :company="'次'"
+        :minMax="{min:0,max:1000}"
+      ></input-number>
     </div>
   </div>
 </template>

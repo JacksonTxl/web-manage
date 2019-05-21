@@ -4,7 +4,11 @@
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <div style="display: flex;align-items: center;">
       <span style="margin-right:16px">剩余金额</span>
-      <input-number v-model="value.getData.deposit_remain_money" :company="'元'"></input-number>
+      <input-number
+        v-model="value.getData.deposit_remain_money"
+        :company="'元'"
+        :minMax="{min:0,max:100000}"
+      ></input-number>
     </div>
   </div>
 </template>
