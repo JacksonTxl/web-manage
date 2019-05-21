@@ -10,7 +10,9 @@
   &--period-card,
   &--number-card,
   &--deposite-card,
-  &--role-saler {
+  &--role-saler,
+  &--cabinet-available,
+  &--cabinet-inuse {
     .pd-lr(8px);
     .lh(22px);
   }
@@ -42,6 +44,14 @@
   &--deposite-card{
     .bg(#DFFFF5);
     .c(#3DC199);
+  }
+  &--cabinet-available {
+    .bg(rgba(@success-color, .15));
+    .c(@success-color);
+  }
+  &--cabinet-inuse {
+    .bg(rgba(@warning-color, .15));
+    .c(@warning-color);
   }
 
   &--shop-opening,

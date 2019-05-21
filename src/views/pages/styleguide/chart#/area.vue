@@ -1,23 +1,18 @@
 <template>
   <section class="sg-section">
-    <h3>
-      g2（图表插件）
-      <a href="https://antv.alipay.com/zh-cn/g2/3.x/demo/index.html" targe="_blank">g2 文档</a>
-    </h3>
     <h4>面积图</h4>
     <div class="mg-t24">
-      <st-area-chart id="chartDemo" :data="chartData"/>
+      <st-area-chart id="areaChartDemo" :data="chartData"/>
     </div>
     <button @click="reRender">重绘</button>
     <div class="mg-t24">
-      <st-area-chart id="chartDemo2" :data="chartData2" :options="options2"/>
+      <st-area-chart id="areaChartDemo2" :data="chartData2" :options="options2"/>
     </div>
   </section>
 </template>
 <script>
 import StAreaChart from '@/views/components/chart#/area'
 export default {
-  name: 'ChartDemo',
   components: {
     StAreaChart
   },
