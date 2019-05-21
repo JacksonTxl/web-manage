@@ -1,0 +1,26 @@
+.modal-sold-package-surplus{
+  &__info{
+    margin-bottom: 32px;
+  }
+  &__table{
+    margin-bottom: 32px;
+    .table-header{
+      height: 64px;
+      line-height: 64px;
+      .bg(@table-bg-color-thead-second);
+    }
+    .table-item{
+      height: 56px;
+      .lh(56px);
+      &:nth-child(even){
+        .bg(@table-bg-color-row-2);
+      }
+    }
+  }
+  .ant-modal-body{
+    padding-bottom: 0;
+  }
+  .ant-modal-footer{
+    padding: 24px;
+  }
+}

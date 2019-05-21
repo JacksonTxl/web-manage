@@ -1,15 +1,16 @@
 <template>
   <st-modal
-  title="退款"
+  title="订单收款"
   size="small"
   v-model="show"
-  wrapClassName="modal-sold-card-refund">
-    <div :class="refund('content')">
-      <a-row :class="refund('info')">
+  wrapClassName="modal-sold-deal-gathering"
+  @ok="onOk">
+    <div :class="gathering('content')">
+      <a-row :class="gathering('info')">
         <a-col :span="13" class="mgb-36">
           <st-info>
             <st-info-item label="订单号">1234567890123456</st-info-item>
-            <st-info-item class="mg-b0" label="下单时间">2020/02/21 14:20:59</st-info-item>
+            <st-info-item class="mg-b0" label="下单时间">2020/02/21 14:20</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11" class="mgb-36">
@@ -38,29 +39,27 @@
         <a-col :span="13" class="mgb-24">
           <st-info>
             <st-info-item label="订单总额">120元</st-info-item>
-            <st-info-item class="mg-b0" label="结转金额">10元</st-info-item>
+            <st-info-item class="mg-b0" label="优惠金额">10元</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11" class="mgb-24">
            <st-info>
-            <st-info-item label="应收金额">99元</st-info-item>
-            <st-info-item class="mg-b0" label="实收金额">99元</st-info-item>
+            <st-info-item label="减免金额">99元</st-info-item>
+            <st-info-item class="mg-b0" label="应付金额">99元</st-info-item>
           </st-info>
         </a-col>
       </a-row>
       <st-form labelWidth="72px">
-        <div :class="refund('refund')">
-          <st-form-item label="退款原因" class="mgb-18" required>
-            <a-radio-group>
-              <a-radio :value="1">仅退款（此商品仍然有效）</a-radio>
-              <a-radio :value="2">客户要求退款退货（此商品变为无效）</a-radio>
-              <a-radio :value="3">订单信息录入错误，退款重办</a-radio>
-            </a-radio-group>
+        <div :class="gathering('gathering')">
+          <st-form-item labelWidth="120px" label="已收金额/未收金额" class="mgb-18">
+            <span class="total">0元/120元</span>
           </st-form-item>
-          <st-form-item label="退款金额" class="mgb-18" required>
-            <st-input-number placeholder="请输入本次收款的实际金额"></st-input-number>
+          <st-form-item class="mgb-18" label="支付金额" required>
+            <st-input-number :float="true">
+              <template slot="addonAfter">元</template>
+            </st-input-number>
           </st-form-item>
-          <st-form-item label="退款方式" class="mgb-18" required>
+          <st-form-item label="支付方式" class="mgb-18" required>
             <a-radio-group>
               <a-radio :value="1">线下支付宝</a-radio>
               <a-radio :value="2">线下微信</a-radio>
@@ -76,17 +75,16 @@
       </st-form>
     </div>
     <template slot="footer">
-      <span class="info">提交后无法修改&nbsp;<st-icon type="help" /></span>
-      <st-button key="submit" type="primary"> 确认提交</st-button>
+      <st-button type="primary">立即支付</st-button>
     </template>
   </st-modal>
 </template>
 
 <script>
 export default {
-  name: 'ModalSoldCardRefund',
+  name: 'ModalSoldDealGathering',
   bem: {
-    refund: 'modal-sold-card-refund'
+    gathering: 'modal-sold-deal-gathering'
   },
 
   data() {

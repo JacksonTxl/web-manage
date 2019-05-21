@@ -3,6 +3,7 @@
   title="升级"
   size="small"
   v-model="show"
+  wrapClassName="modal-sold-card-upgrade"
   @ok="onOk">
     <div :class="upgrade('content')">
       <a-row :class="upgrade('old-card')">
@@ -23,20 +24,20 @@
             <st-info-item label="手机号">18974023375</st-info-item>
             <st-info-item label="实体卡号">34345234243</st-info-item>
             <st-info-item label="物理ID">453454545453</st-info-item>
-            <st-info-item label="订单号">11345677890567890</st-info-item>
+            <st-info-item label="订单号">1234567890123456</st-info-item>
             <st-info-item label="订单状态">已完成</st-info-item>
           </st-info>
         </a-col>
       </a-row>
       <st-form labelWidth="72px">
         <div :class="upgrade('upgrade-card')">
-          <st-form-item label="会员卡" required>
+          <st-form-item label="会员卡" class="mgb-18" required>
             <a-select placeholder="选择升级的会员卡">
               <a-select-option value="jack">Jack</a-select-option>
               <a-select-option value="lucy">Lucy</a-select-option>
             </a-select>
           </st-form-item>
-          <st-form-item label="规格" required>
+          <st-form-item label="规格" class="mgb-12" required>
             <a-radio-group>
               <a-radio :value="1">10天/120元</a-radio>
               <a-radio :value="2">20天/240元</a-radio>
@@ -44,42 +45,51 @@
               <a-radio :value="4">40天/450元</a-radio>
             </a-radio-group>
           </st-form-item>
-          <st-form-item label="开卡方式" required>
+          <st-form-item label="开卡方式" class="mgb-12" required>
             <a-radio-group>
               <a-radio :value="1">即时开卡</a-radio>
               <a-radio :value="2">到店开卡</a-radio>
               <a-radio :value="3">指定日期开卡</a-radio>
             </a-radio-group>
           </st-form-item>
-          <st-form-item label="有效日期">2019/03/08 14:20 至 2020/03/07 14:20</st-form-item>
+          <st-form-item class="mgb-18" label="有效日期">2019/03/08 14:20 至 2020/03/07 14:20</st-form-item>
           <st-form-item label="购买赠送">
             <st-input-number placeholder="请输入赠送的天数/次数"></st-input-number>
           </st-form-item>
-          <st-form-item label="合同编号" required>
+          <st-form-item label="合同编号" class="mgb-18" required>
             <div :class="upgrade('contract')">
               <a-input placeholder="请输入合同编号"></a-input>
               <st-button class="create-button">自动生成</st-button>
             </div>
           </st-form-item>
-          <st-form-item label="商品价格">120元</st-form-item>
-          <st-form-item label="优惠金额">
+          <st-form-item class="mgb-12" label="商品价格">120元</st-form-item>
+          <st-form-item class="mgb-12" label="优惠金额">
             <div :class="upgrade('discounts')">
               <div :class="upgrade('discounts-total')">
                 <span>40元</span>
                 <div :class="upgrade('discounts-promotion')">
-                  <span>促销活动</span>
+                  <span>2张可用优惠券</span>
                   <a-icon type="right" />
                 </div>
               </div>
-              <p>-20元 （活动A名称）</p>
-              <p>-20元 （活动B名称）</p>
             </div>
           </st-form-item>
-          <st-form-item label="减免金额">
+          <st-form-item class="mgb-18" label="定金抵扣">
+            <div :class="upgrade('discounts')">
+              <div :class="upgrade('discounts-total')">
+                <span>40元</span>
+                <div :class="upgrade('discounts-promotion')">
+                  <span>定金选择</span>
+                  <a-icon type="right" />
+                </div>
+              </div>
+            </div>
+          </st-form-item>
+          <st-form-item class="mgb-18" label="减免金额">
             <st-input-number placeholder="请输入"></st-input-number>
           </st-form-item>
-          <st-form-item label="小计">
-            <span>120元</span>
+          <st-form-item class="mg-b0" label="小计">
+            <span class="total">120元</span>
           </st-form-item>
         </div>
         <div :class="upgrade('remarks')">
