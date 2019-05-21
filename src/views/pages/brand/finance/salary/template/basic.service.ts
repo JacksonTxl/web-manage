@@ -28,8 +28,12 @@ export class BasicService extends Store<BasicState> {
       )
     }
 
-    beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-      this.getBasicInfo({}).subscribe(() => {
+    deleteTemplate(id: any) {
+      return this.cardsApi.deleteTemplate(id)
+    }
+
+    beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+      this.getBasicInfo({ size: to.meta.query.size, page: to.meta.query.page }).subscribe(() => {
         next()
       })
     }

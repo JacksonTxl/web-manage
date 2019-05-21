@@ -26,7 +26,15 @@
   </a-modal>
 </template>
 <script>
+import { AddTemplateService } from './add-template.service'
+import { MessageService } from '@/services/message.service'
 export default {
+  serviceInject() {
+    return {
+      service: AddTemplateService,
+      message: MessageService
+    }
+  },
   data() {
     return {
       form: this.$form.createForm(this),
@@ -39,6 +47,12 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('提交的数据', values)
+          this.service.addTemplate(values).subscribe(() => {
+            console.log('ok')
+            this.$emit('change')
+            this.message.success({ content: '添加成功' })
+            this.show = false
+          })
         }
       })
     }
