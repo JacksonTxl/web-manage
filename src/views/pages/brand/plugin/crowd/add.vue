@@ -232,6 +232,11 @@ export default {
     }
   },
   created() {
+    console.log(this.$route.query.id)
+    if (this.$route.query.id) {
+      this.getCrowdBrand(this.$route.query.id)
+    }
+
     this.getFilterData()
   },
   filters: {
@@ -258,6 +263,15 @@ export default {
     }
   },
   methods: {
+    getCrowdBrand(id) {
+      let self = this
+      this.aService.getCrowdBrand(id).subscribe(status => {
+        self.seleteData.arrData = status.info.array_index
+        status.info.array_index.map(item => {
+          self.seleteData.getData[item] = status.info[item]
+        })
+      })
+    },
     conserve() {
       let self = this
       this.form.validateFields((err, values) => {
@@ -267,6 +281,7 @@ export default {
           self.seleteData.arrData.map(item => {
             obj[item] = self.seleteData.getData[item]
           })
+          obj.array_index = self.seleteData.arrData
           obj.crowd_name = self.seleteData.getData.crowd_name
           self.aService.setCrowdBrandField(obj).subscribe(status => {
             console.log(status)

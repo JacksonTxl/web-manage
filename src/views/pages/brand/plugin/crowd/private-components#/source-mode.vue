@@ -4,8 +4,8 @@
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">选择来源</span>
     <template v-for="(tag,index) in tags">
-      <a-tooltip :key="index" :title="tag">
-        <a-tag :key="index" :closable="true" :afterClose="() => handleClose(tag,index)">{{tag}}</a-tag>
+      <a-tooltip :key="tag" :title="tag">
+        <a-tag :key="tag" :closable="true" :afterClose="() => handleClose(tag,index)">{{tag}}</a-tag>
       </a-tooltip>
     </template>
     <a-tag style="background: #fff; borderStyle: dashed;">
@@ -23,6 +23,7 @@
         </a-menu>
       </a-dropdown>
     </a-tag>
+
   </div>
 </template>
 <script>
@@ -71,16 +72,18 @@ export default {
     )
   },
   methods: {
-    dropdownFunc(inputValue, selectValue) {
+    dropdownFunc(inputValue, inputValueObj) {
       let tags = this.tags
-
       if (inputValue && tags.indexOf(inputValue) === -1) {
         tags = [...tags, inputValue]
       }
+      console.log(tags, inputValue, inputValueObj, this.value.getData.base_shop)
+      this.value.getData.source_channel.push(inputValueObj)
       Object.assign(this, {
-        tags
+        tags,
+        inputVisible: false,
+        inputValue: ''
       })
-      this.value.getData.source_channel.push(selectValue)
     },
 
     onChange(date, dateString) {
@@ -88,8 +91,9 @@ export default {
     },
     handleClose(removedTag, index) {
       const tags = this.tags.filter(tag => tag !== removedTag)
-      this.value.getData.source_channel.splice(index, 1)
+      console.log(tags)
       this.tags = tags
+      this.value.getData.source_channel.splice(index, 1)
     }
   },
   mounted() {}

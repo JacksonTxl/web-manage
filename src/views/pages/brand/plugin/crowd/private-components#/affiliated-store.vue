@@ -4,8 +4,8 @@
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">选择门店</span>
     <template v-for="(tag,index) in tags">
-      <a-tooltip :key="index" :title="tag">
-        <a-tag :key="index" :closable="true" :afterClose="() => handleClose(tag,index)">{{tag}}</a-tag>
+      <a-tooltip :key="tag" :title="tag">
+        <a-tag :key="tag" :closable="true" :afterClose="() => handleClose(tag,index)">{{tag}}</a-tag>
       </a-tooltip>
     </template>
     <a-tag style="background: #fff; borderStyle: dashed;">
@@ -23,7 +23,6 @@
         </a-menu>
       </a-dropdown>
     </a-tag>
-    {{this.value.getData.base_shop}}
   </div>
 </template>
 <script>
@@ -53,7 +52,7 @@ export default {
         info: '选择所属门店在以下范围内的用户'
       },
       radioValue: '',
-      tags: [],
+      tags: ['拉访', '拉访1'],
       inputValue: ''
     }
   },
@@ -66,17 +65,18 @@ export default {
     })
   },
   methods: {
-    dropdownFunc(inputValue, selectValue) {
+    dropdownFunc(inputValue, inputValueObj) {
       let tags = this.tags
-
       if (inputValue && tags.indexOf(inputValue) === -1) {
         tags = [...tags, inputValue]
       }
+      console.log(tags, inputValue, inputValueObj, this.value.getData.base_shop)
+      this.value.getData.base_shop.push(inputValueObj)
       Object.assign(this, {
-        tags
+        tags,
+        inputVisible: false,
+        inputValue: ''
       })
-      console.log(tags, selectValue)
-      this.value.getData.base_shop.push(selectValue)
     },
     onChange(date, dateString) {
       console.log(date, dateString)
@@ -84,8 +84,9 @@ export default {
     },
     handleClose(removedTag, index) {
       const tags = this.tags.filter(tag => tag !== removedTag)
-      this.value.getData.base_shop.splice(index, 1)
+      console.log(tags)
       this.tags = tags
+      this.value.getData.base_shop.splice(index, 1)
     }
   },
   mounted() {}
