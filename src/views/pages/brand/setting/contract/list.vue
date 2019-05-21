@@ -5,7 +5,9 @@
         <div :class="bItem()">
           <div :class="bItem('body')">
             <div :class="bItem('body-lt')">
-              <st-initials-tag value="会"/>
+              <st-initials-tag
+                :value="item.contract_title.indexOf('储物柜') > -1 ? '柜' : item.contract_title"
+              />
             </div>
             <div :class="bItem('body-rt')">
               <div :class="bItem('title-box')">
@@ -20,8 +22,8 @@
           </div>
           <div :class="bItem('footer')">
             <template v-if="isInitial(item)">
-              <router-link :class="bItem('action')" to="/" class="st-link-secondary">查看</router-link>
-              <div :class="bItem('divider')"></div>
+              <!-- <router-link :class="bItem('action')" to="/" class="st-link-secondary">查看</router-link>
+              <div :class="bItem('divider')"></div> -->
               <router-link
                 :class="bItem('action')"
                 :to="{path:'./edit',query:{id:item.id}}"

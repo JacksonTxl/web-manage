@@ -21,8 +21,8 @@
           <td>{{index+1}}</td>
           <td>
             <a-radio-group @change="rule._value = 'RANDOM'" v-model="rule.sn_rule">
-              <a-radio :value="SN_RULE.LETTER">{{SN_RULE.LETTER | enumFilter(settingEnums.sn_rule)}}</a-radio>
-              <a-radio :value="SN_RULE.NUMBER">{{SN_RULE.NUMBER | enumFilter(settingEnums.sn_rule)}}</a-radio>
+              <a-radio :value="SN_RULE.LETTER">{{SN_RULE.LETTER | enumFilter('setting.sn_rule')}}</a-radio>
+              <a-radio :value="SN_RULE.NUMBER">{{SN_RULE.NUMBER | enumFilter('setting.sn_rule')}}</a-radio>
               <a-select
                 v-if="rule.sn_rule === SN_RULE.LETTER"
                 style="width:140px"

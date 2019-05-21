@@ -13,7 +13,7 @@
       :autosize="{ minRows: 20, maxRows: 100 }"
       placeholder="请输入合同章程，支持换行，空格..."
     ></a-textarea>
-    <div :class="bModal('count')">{{contentLength}} / 5000</div>
+    <div class="st-des ta-r">{{contentLength}} / 5000</div>
   </a-modal>
 </template>
 
