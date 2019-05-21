@@ -14,7 +14,6 @@
     >
       <template slot="addonAfter">{{company}}</template>
     </st-input-number>
-    {{minMax}}---{{value}}
   </div>
 </template>
 <script>
