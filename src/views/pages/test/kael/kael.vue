@@ -1,38 +1,74 @@
 <template>
-  <st-panel app>
-    <st-search-panel>
-      <div style="display: flex;align-items: center;margin:16px 0;">
-        <span style="width:70px;">条件1：</span>
-        <st-search-radio v-model="kael" @change="onkael" :list="list"></st-search-radio>
-      </div>
-      {{kael}}
-      <div slot="button">
-        <st-button type="primary">查询1</st-button>
-        <st-button class="mgl-8">重置1</st-button>
-      </div>
-    </st-search-panel>
-  </st-panel>
+  <div>
+    <div style="margin-bottom: 16px">
+      <a-button
+        type="primary"
+        @click="start"
+        :disabled="!hasSelected"
+        :loading="loading"
+      >
+        Reload
+      </a-button>
+      <span style="margin-left: 8px">
+        <template v-if="hasSelected">
+          {{`Selected ${selectedRowKeys.length} items`}}
+        </template>
+      </span>
+    </div>
+    <a-table
+    :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+    :columns="columns"
+    :dataSource="data" />
+  </div>
 </template>
 <script>
+const columns = [{
+  title: 'Name',
+  dataIndex: 'name'
+}, {
+  title: 'Age',
+  dataIndex: 'age'
+}, {
+  title: 'Address',
+  dataIndex: 'address'
+}]
+
+const data = []
+for (let i = 0; i < 46; i++) {
+  data.push({
+    key: i,
+    name: `Edward King ${i}`,
+    age: 32,
+    address: `London, Park Lane no. ${i}`
+  })
+}
+
 export default {
   data() {
     return {
-      kael: 3,
-      list: [{
-        value: 1,
-        label: '在呢'
-      }, {
-        value: 2,
-        label: '好吧'
-      }, {
-        value: 3,
-        label: '睡觉'
-      }]
+      data,
+      columns,
+      selectedRowKeys: [], // Check here to configure the default column
+      loading: false
+    }
+  },
+  computed: {
+    hasSelected() {
+      return this.selectedRowKeys.length > 0
     }
   },
   methods: {
-    onkael(data) {
-      console.log(data)
+    start() {
+      this.loading = true
+      // ajax request after empty completing
+      setTimeout(() => {
+        this.loading = false
+        this.selectedRowKeys = []
+      }, 1000)
+    },
+    onSelectChange(selectedRowKeys) {
+      console.log('selectedRowKeys changed: ', selectedRowKeys)
+      this.selectedRowKeys = selectedRowKeys
     }
   }
 }

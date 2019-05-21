@@ -71,7 +71,6 @@ export class PackageApi extends Api {
    * 课程包列表
    */
   getList(params:GetPackageListInput) {
-    console.log(params)
     return this.http.get(`/v1/course/package`, { query: params })
   }
   /**

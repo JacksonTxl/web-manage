@@ -1,12 +1,12 @@
 <template>
   <st-panel app :class="bPage()">
     <div slot="title">
-      动感单车房子
-      <img src="~@/assets/img/icon_vip.png" width="26px" alt>
+      {{resData.area_name}}
+      <img v-if="resData.is_vip" src="~@/assets/img/icon_vip.png" width="26px" alt>
     </div>
     <div slot="actions">
-      <span>容纳人数：100人</span>
-      <span class="mg-l32">座位模版：4个</span>
+      <span>容纳人数：{{resData.contain_number}}人</span>
+      <span class="mg-l32">座位模版：{{resData.count}}个</span>
     </div>
     <st-form-table>
       <thead>
@@ -29,10 +29,10 @@
             <span class="st-des mg-l8" style="width: 100px">大小不超过5M，比例1:1</span>
           </td>
           <td>
-            <a-input v-model="addInfo.name" placeholder="请输入模版名称"></a-input>
+            <a-input v-model="addInfo.seat_name" placeholder="请输入模版名称"/>
           </td>
           <td>
-            <a-input-number style="width:300px" v-model="addInfo.count" placeholder="请输入座位数量"></a-input-number>
+            <st-input-number style="width:300px" v-model="addInfo.seat_num" placeholder="请输入座位数量"/>
           </td>
           <td>
             <a @click="onAddSubmit">保存</a>
@@ -53,12 +53,12 @@
                 >
               </div>
             </td>
-            <td>{{item.name}}</td>
-            <td>{{item.count}}</td>
+            <td>{{item.seat_name}}</td>
+            <td>{{item.seat_num}}</td>
             <td>
               <a @click="onEdit(item)">编辑</a>
               <a-divider type="vertical"></a-divider>
-              <a @click="onDelete">删除</a>
+              <a @click="onDelete(item.id)">删除</a>
             </td>
           </template>
           <!-- 编辑状态 -->
@@ -67,10 +67,10 @@
               <st-image-upload :list="[item.img]" width="80px" height="80px"></st-image-upload>
             </td>
             <td>
-              <a-input v-model="editInfo.name" placeholder="请输入模版名称"></a-input>
+              <a-input v-model="editInfo.seat_name" placeholder="请输入模版名称"></a-input>
             </td>
             <td>
-              <a-input-number style="width:300px" v-model="editInfo.count" placeholder="请输入数位数量"></a-input-number>
+              <a-input-number style="width:300px" v-model="editInfo.seat_num" placeholder="请输入数位数量"></a-input-number>
             </td>
             <td>
               <a @click="onEditSubmit">保存</a>
@@ -87,7 +87,25 @@
 <script>
 import { cloneDeep } from 'lodash-es'
 import { imgFilter } from '@/filters/resource.filters'
+import { MessageService } from '@/services/message.service'
+import { RouteService } from '@/services/route.service'
+import { SiteService } from './site.service'
 export default {
+  serviceInject() {
+    return {
+      messageService: MessageService,
+      siteService: SiteService,
+      routeService: RouteService
+    }
+  },
+  rxState() {
+    const siteService = this.siteService
+    return {
+      resData: siteService.resData$,
+      loading: siteService.loading$,
+      query: this.routeService.query$
+    }
+  },
   bem: {
     bPage: 'page-shop-setting-court-site'
   },
@@ -96,20 +114,6 @@ export default {
   },
   data() {
     return {
-      list: [
-        {
-          id: 1,
-          name: '1',
-          count: 5,
-          img: { image_id: 1, image_key: 'image/IUt_vXTl8zaWGwlO.jpg' }
-        },
-        {
-          id: 2,
-          name: '2',
-          count: 3,
-          img: { image_id: 2, image_key: 'image/IUt_vXTl8zaWGwlO.jpg' }
-        }
-      ],
       isAdd: false,
       addInfo: {},
       editInfo: {}
@@ -118,6 +122,9 @@ export default {
   computed: {
     canShowAddBtn() {
       return !this.isAdd && !this.editInfo.id
+    },
+    list() {
+      return this.resData.list
     }
   },
   methods: {
@@ -125,14 +132,16 @@ export default {
       this.isAdd = true
       this.editInfo = {}
       this.addInfo = {
+        shop_area_id: this.query.id,
         img: {},
-        name: '',
-        count: ''
+        seat_name: '',
+        seat_num: ''
       }
     },
     onAddSubmit() {
-      console.log(this.addInfo)
-      console.log('kaishi')
+      this.siteService.add(this.addInfo).subscribe(() => {
+        this.onActionSuccess('add')
+      })
     },
     onAddCancel() {
       this.isAdd = false
@@ -143,12 +152,34 @@ export default {
     },
     onEditSubmit() {
       console.log(this.editInfo)
+      this.siteService.update(this.editInfo).subscribe(() => {
+        this.onActionSuccess('edit')
+      })
     },
     onEditCancel() {
       this.editInfo = {}
     },
-    onDelete() {
-      console.log('delete')
+    onDelete(id) {
+      this.siteService.del(id).subscribe(() => {
+        this.onActionSuccess('del')
+      })
+    },
+    onActionSuccess(type) {
+      const msg = ({
+        add: '添加成功',
+        edit: '编辑成功',
+        del: '删除成功'
+      })[type]
+      this.messageService.success({
+        content: msg
+      })
+      this.onListChange()
+    },
+    onListChange() {
+      this.$router.push({
+        query: this.query,
+        force: true
+      })
     }
   }
 }

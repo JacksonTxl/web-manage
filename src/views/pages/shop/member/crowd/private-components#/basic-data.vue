@@ -42,7 +42,7 @@ export default {
       let keyData = Object.keys(this.value)
       let self = this
       keyData.map((key, index) => {
-        if (key !== 'arrData' && key !== 'getData') {
+        if (key !== 'arrData' && key !== 'getData' && key !== 'info') {
           if (self.value[key].selectionData.indexOf(item) < 0) {
             if (this.flag) {
               self.value[key].value.map(valueData => {
