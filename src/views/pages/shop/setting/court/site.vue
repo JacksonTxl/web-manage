@@ -25,7 +25,11 @@
         </tr>
         <tr v-if="isAdd">
           <td class="align-items-center">
-            <st-image-upload width="80px" height="80px" :size-limit="5"></st-image-upload>
+            <st-image-upload
+              width="80px" height="80px"
+              :size-limit="5"
+              @change="onAddImgChange"
+            />
             <span class="st-des mg-l8" style="width: 100px">大小不超过5M，比例1:1</span>
           </td>
           <td>
@@ -44,11 +48,12 @@
         <tr v-for="item in list" :key="item.id">
           <template v-if="editInfo.id!==item.id">
             <td>
-              <div class="st-preview-item" v-viewer="{ url: 'data-src' }">
+              <div v-if="item.seat_img" class="st-preview-item" v-viewer="{ url: 'data-src' }">
                 <img
+                  v-if="item.seat_img"
                   width="80px"
-                  :src="item.img.image_key | imgFilter({w:80})"
-                  :data-src="item.img.image_key | imgFilter"
+                  :src="item.seat_img.image_key | imgFilter({w:80})"
+                  :data-src="item.seat_img.image_key | imgFilter"
                   alt="site-img"
                 >
               </div>
@@ -64,7 +69,11 @@
           <!-- 编辑状态 -->
           <template v-else>
             <td>
-              <st-image-upload :list="[item.img]" width="80px" height="80px"></st-image-upload>
+              <st-image-upload
+                @change="onEditImgChange"
+                :list="[item.seat_img]"
+                width="80px" height="80px"
+              />
             </td>
             <td>
               <a-input v-model="editInfo.seat_name" placeholder="请输入模版名称"></a-input>
@@ -133,12 +142,15 @@ export default {
       this.editInfo = {}
       this.addInfo = {
         shop_area_id: this.query.id,
-        img: {},
+        seat_img: {},
         seat_name: '',
         seat_num: ''
       }
     },
     onAddSubmit() {
+      if (!this.inputCheck(this.addInfo)) {
+        return
+      }
       this.siteService.add(this.addInfo).subscribe(() => {
         this.onActionSuccess('add')
       })
@@ -151,7 +163,9 @@ export default {
       this.editInfo = cloneDeep(record)
     },
     onEditSubmit() {
-      console.log(this.editInfo)
+      if (!this.inputCheck(this.editInfo)) {
+        return
+      }
       this.siteService.update(this.editInfo).subscribe(() => {
         this.onActionSuccess('edit')
       })
@@ -176,9 +190,40 @@ export default {
       this.onListChange()
     },
     onListChange() {
+      this.isAdd = false
+      this.editInfo = {}
       this.$router.push({
         query: this.query,
         force: true
+      })
+    },
+    onAddImgChange(fileList) {
+      this.addInfo.seat_img = fileList[0]
+    },
+    onEditImgChange(fileList) {
+      this.editInfo.seat_img = fileList[0]
+    },
+    inputCheck(data = {}) {
+      const seatImg = data.seat_img
+      const seatName = data.seat_name
+      const seatNum = data.seat_num
+      if (!seatImg.image_key) {
+        this.onErrorTip('请上传座位图片')
+        return false
+      }
+      if (!seatName.length) {
+        this.onErrorTip('请输入座位模板名称')
+        return false
+      }
+      if (!seatNum.length) {
+        this.onErrorTip('请输入座位数量')
+        return false
+      }
+      return true
+    },
+    onErrorTip(msg) {
+      this.messageService.error({
+        content: msg
       })
     }
   }

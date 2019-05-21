@@ -16,6 +16,10 @@
     <div class="mg-t8">
       <router-link to="/shop/setting/court/list">场地列表</router-link>
     </div>
+    <st-t3 class="mg-t24">合同设置</st-t3>
+    <div class="mg-t8">
+      <router-link to="/brand/setting/contract/list">合同列表</router-link>
+    </div>
     <st-t3 class="mg-t24">薪资</st-t3>
     <div class="mg-t8">
       <router-link to="/brand/finance/salary/list">薪资列表</router-link>
