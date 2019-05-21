@@ -1,134 +1,240 @@
 <template>
   <div :class="basic()">
     <st-search-panel>
-        <div style="display: flex;align-items: center;margin:16px 0;">
-            <span style="width:70px;">条件1：</span>
-            <a-select defaultValue="lucy" style="width: 120px">
-            <a-select-option value="jack">Jack</a-select-option>
-            <a-select-option value="lucy">Lucy</a-select-option>
-            </a-select>
+        <div :class="basic('select')">
+          <span style="width:90px;">售卡状态：</span>
+          <st-search-radio v-model="is_valid" :list="cardSaleStatusList"/>
         </div>
-        <div style="display: flex;align-items: center;margin:16px 0;">
-            <span style="width:70px;">条件2：</span>
-            <a-radio-group defaultValue="a" buttonStyle="solid">
-            <a-radio-button value="a">Hangzhou</a-radio-button>
-            <a-radio-button value="b">Shanghai</a-radio-button>
-            <a-radio-button value="c">Beijing</a-radio-button>
-            <a-radio-button value="d">Chengdu</a-radio-button>
-            </a-radio-group>
-        </div>
-        <div slot="more">
-            <div style="display: flex;align-items: center;margin:16px 0;">
-            <span style="width:70px;">条件3：</span>
-            <a-select defaultValue="lucy" style="width: 120px">
-                <a-select-option value="jack">Jack</a-select-option>
-                <a-select-option value="lucy">Lucy</a-select-option>
-            </a-select>
-            </div>
-            <div style="display: flex;align-items: center;margin:16px 0;">
-            <span style="width:70px;">条件4：</span>
-            <a-radio-group defaultValue="a" buttonStyle="solid">
-                <a-radio-button value="a">Hangzhou</a-radio-button>
-                <a-radio-button value="b">Shanghai</a-radio-button>
-                <a-radio-button value="c">Beijing</a-radio-button>
-                <a-radio-button value="d">Chengdu</a-radio-button>
-            </a-radio-group>
-            </div>
+        <div :class="basic('select')">
+          <span style="width:90px;">开卡时间：</span>
+          <a-date-picker
+            :disabledDate="disabledStartDate"
+            format="YYYY-MM-DD"
+            v-model="start_time"
+            placeholder="开始日期"
+            :showToday="false"
+            @openChange="handleStartOpenChange"
+            @change="start_time_change"
+          />
+          ~
+          <a-date-picker
+            :disabledDate="disabledEndDate"
+            format="YYYY-MM-DD"
+            v-model="end_time"
+            placeholder="结束日期"
+            :showToday="false"
+            :open="endOpen"
+            @openChange="handleEndOpenChange"
+            @change="end_time_change"
+          />
         </div>
         <div slot="button">
-            <st-button type="primary">查询1</st-button>
-            <st-button class="mgl-8">重置1</st-button>
+            <st-button type="primary" @click="onSearch">查询</st-button>
+            <st-button class="mgl-8" @click="onReset">重置</st-button>
         </div>
     </st-search-panel>
     <div :class="basic('content')">
         <div :class="basic('content-batch')">
             <st-button type="primary" class="mgr-8">批量导出</st-button>
-            <st-button class="mgr-8">批量导出</st-button>
-            <st-button type="primary" class="mgr-8">批量导出</st-button>
-            <st-button class="mgr-8">批量导出</st-button>
-            <st-button type="primary" class="mgr-8">批量导出</st-button>
-            <st-button type="primary" class="mgr-8">批量导出</st-button>
+            <st-button type="primary" class="mgr-8">赠送额度</st-button>
+            <st-button type="primary" class="mgr-8">变更入场vip区域</st-button>
         </div>
         <div :class="basic('table-select-info')">
             <st-icon type="weibo" />
-            <span class="mgr-8">已选 <i>2</i> / 10 条数据</span>
+            <span class="mgl-8 mgr-16">已选 <i :class="basic('table-select-number')">{{selectedRowKeys.length}}</i> / 10 条数据</span>
             <a href="javascript:void(0)">删除</a>
         </div>
         <div :class="basic('table')">
-            <a-table :columns="columns" :dataSource="data" >
-                <a slot="name" slot-scope="text" href="javascript:;">{{text}}</a>
-                <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-                <span slot="tags" slot-scope="tags">
-                <a-tag v-for="tag in tags" color="blue" :key="tag">{{tag}}</a-tag>
-                </span>
-                <span slot="action" slot-scope="text, record">
-                <a href="javascript:;">Invite 一 {{record.name}}</a>
-                <a-divider type="vertical" />
-                <a href="javascript:;">Delete</a>
-                <a-divider type="vertical" />
-                <a href="javascript:;" class="ant-dropdown-link">
-                    More actions <a-icon type="down" />
-                </a>
-                </span>
-            </a-table>
+          <st-table
+          :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
+          :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
+          rowKey="id"
+          :columns="columns"
+          :dataSource="list" >
+            <template slot="is_valid" slot-scope="text">
+              {{text | enumFilter('sold.is_valid')}}
+            </template>
+            <template slot="end_time" slot-scope="text">
+              {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
+            </template>
+            <template slot="buy_time" slot-scope="text">
+              {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
+            </template>
+            <div slot="action" slot-scope="text,record">
+              <a @click="onDetail(record)">详情</a>
+              <a-divider type="vertical"></a-divider>
+              <a>续卡</a>
+              <st-more-dropdown class="mgl-16">
+                <a-menu-item>上架</a-menu-item>
+                <a-menu-item>上架</a-menu-item>
+                <a-menu-item>上架</a-menu-item>
+                <a-menu-item>上架</a-menu-item>
+              </st-more-dropdown>
+            </div>
+          </st-table>
         </div>
     </div>
   </div>
 </template>
 <script>
+import moment from 'moment'
+import { cloneDeep, filter } from 'lodash-es'
+import { DepositeService } from './deposite.service'
+import { UserService } from '@/services/user.service'
+import { RouteService } from '@/services/route.service'
+
 const columns = [{
-  dataIndex: 'name',
-  key: 'name',
-  slots: { title: 'customTitle' },
-  scopedSlots: { customRender: 'name' }
+  title: '卡名',
+  dataIndex: 'card_name',
+  scopedSlots: { customRender: 'card_name' }
 }, {
-  title: 'Age',
-  dataIndex: 'age',
-  key: 'age'
+  title: '剩余金额（元）',
+  dataIndex: 'now_amount',
+  scopedSlots: { customRender: 'now_amount' }
 }, {
-  title: 'Address',
-  dataIndex: 'address',
-  key: 'address'
+  title: '储值金额（元）',
+  dataIndex: 'init_amount',
+  scopedSlots: { customRender: 'init_amount' }
 }, {
-  title: 'Tags',
-  key: 'tags',
-  dataIndex: 'tags',
-  scopedSlots: { customRender: 'tags' }
+  title: '姓名',
+  dataIndex: 'member_name',
+  scopedSlots: { customRender: 'member_name' }
 }, {
-  title: 'Action',
-  key: 'action',
+  title: '手机号',
+  dataIndex: 'mobile',
+  scopedSlots: { customRender: 'mobile' }
+}, {
+  title: '实体卡号',
+  dataIndex: 'card_code',
+  scopedSlots: { customRender: 'card_code' }
+}, {
+  title: '状态',
+  dataIndex: 'is_valid',
+  scopedSlots: { customRender: 'is_valid' }
+}, {
+  title: '到期日期',
+  dataIndex: 'end_time',
+  scopedSlots: { customRender: 'end_time' }
+}, {
+  title: '购买日期',
+  dataIndex: 'buy_time',
+  scopedSlots: { customRender: 'buy_time' }
+}, {
+  title: '销售人员',
+  dataIndex: 'staff_name',
+  scopedSlots: { customRender: 'staff_name' }
+}, {
+  title: '操作',
+  dataIndex: 'action',
   scopedSlots: { customRender: 'action' }
 }]
-
-const data = [{
-  key: '1',
-  name: 'John Brown',
-  age: 32,
-  address: 'New York No. 1 Lake Park',
-  tags: ['nice', 'developer']
-}, {
-  key: '2',
-  name: 'Jim Green',
-  age: 42,
-  address: 'London No. 1 Lake Park',
-  tags: ['loser']
-}, {
-  key: '3',
-  name: 'Joe Black',
-  age: 32,
-  address: 'Sidney No. 1 Lake Park',
-  tags: ['cool', 'teacher']
-}]
-
 export default {
   name: 'PageShopSoldCardMemberList',
   bem: {
     basic: 'page-shop-sold'
   },
+  serviceInject() {
+    return {
+      userService: UserService,
+      routeService: RouteService,
+      depositeService: DepositeService
+    }
+  },
+  rxState() {
+    return {
+      list: this.depositeService.list$,
+      page: this.depositeService.page$,
+      package_course: this.userService.packageCourseEnums$,
+      query: this.routeService.query$
+    }
+  },
   data() {
     return {
-      data,
+      // 售卡状态
+      cardSaleStatusList: [
+        { value: 1, label: '有效' },
+        { value: 2, label: '失效' },
+        { value: 3, label: '已冻结' },
+        { value: 4, label: '即将到期' }
+      ],
+      is_valid: 1,
+      start_time: null,
+      end_time: null,
+      // 结束时间面板是否显示
+      endOpen: false,
+      selectedRowKeys: [],
       columns
+    }
+  },
+  mounted() {
+    this.setSearchData()
+  },
+  watch: {
+    query(newVal) {
+      this.setSearchData()
+    }
+  },
+  methods: {
+    onDetail() {},
+    // 查询
+    onSearch() {
+      let query = {
+        is_valid: this.is_valid,
+        start_time: this.start_time ? `${this.start_time.format('YYYY-MM-DD')} 00:00:00` : '',
+        end_time: this.end_time ? `${this.end_time.format('YYYY-MM-DD')} 23:59:59` : ''
+      }
+      this.$router.push({ query: { ...this.query, ...query } })
+    },
+    // 重置
+    onReset() {
+      let query = {
+        is_valid: 1,
+        start_time: '',
+        end_time: ''
+      }
+      this.$router.push({ query: { ...this.query, ...query } })
+    },
+    // 设置searchData
+    setSearchData() {
+      this.is_valid = this.query.is_valid
+      this.start_time = this.query.start_time ? cloneDeep(moment(this.query.start_time)) : null
+      this.end_time = this.query.end_time ? cloneDeep(moment(this.query.end_time)) : null
+    },
+
+    // 售卖时间-start
+    start_time_change(data) {
+      this.start_time = cloneDeep(data)
+    },
+    handleStartOpenChange(open) {
+      if (!open) {
+        this.endOpen = true
+      }
+    },
+    disabledStartDate(startValue) {
+      const endValue = this.end_time
+      if (endValue) {
+        // 选择了结束时间
+        return startValue.valueOf() < moment(endValue).subtract(31, 'd').valueOf() || startValue.valueOf() > moment(endValue).valueOf()
+      }
+    },
+    // 售卖时间-end
+    end_time_change(data) {
+      this.end_time = cloneDeep(data)
+    },
+    handleEndOpenChange(open) {
+      this.endOpen = open
+    },
+    disabledEndDate(endValue) {
+      const startValue = this.start_time
+      if (startValue) {
+        // 选择了开始时间
+        return endValue.valueOf() > moment(startValue).add(31, 'd').valueOf() || endValue.valueOf() < moment(startValue).valueOf()
+      }
+    },
+    // moment
+    moment,
+    onSelectChange(selectedRowKeys) {
+      this.selectedRowKeys = selectedRowKeys
     }
   }
 }

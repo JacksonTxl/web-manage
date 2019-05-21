@@ -1,0 +1,49 @@
+.modal-sold-card-transfer{
+  &__content{
+    .mgb-18{
+      margin-bottom: 18px;
+    }
+    .mgb-24{
+      margin-bottom: 24px;
+    }
+  }
+  &__info{
+    border-bottom: 1px solid @divider;
+  }
+  &__transfer{
+    padding: 24px 0 0;
+  }
+  &__time{
+    display: flex;
+    align-items: center;
+    >span{
+      flex: none;
+      height: 32px;
+      margin: 0 8px 0;
+    }
+    .page-a-form {
+      flex: auto;
+      .ant-form-item-control-wrapper {
+        padding-left: 0;
+      }
+      .ant-calendar-picker {
+        width: 100%;
+      }
+    }
+  }
+  &__contract{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .create-button{
+      flex: none;
+      margin-left: 8px;
+    }
+  }
+  .ant-modal-body{
+    padding-bottom: 0;
+  }
+  .ant-modal-footer{
+    padding: 24px;
+  }
+}

@@ -1,0 +1,60 @@
+.modal-sold-card-upgrade{
+  &__content{
+    .mgb-24{
+      margin-bottom: 24px;
+    }
+    .mgb-18{
+      margin-bottom: 18px;
+    }
+    .mgb-12{
+      margin-bottom: 12px;
+    }
+  }
+  &__old-card{
+    border-bottom: 1px solid @divider;
+  }
+  &__upgrade-card{
+    padding: 24px 0 18px;
+    border-bottom: 1px solid @divider;
+    .total{
+      .fz(20px);
+      .lh(32px);
+    }
+  }
+  &__contract{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .create-button{
+      flex: none;
+      margin-left: 8px;
+    }
+  }
+  &__discounts{
+    &-total{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      span{
+        .c(@success-color);
+      }
+    }
+    &-promotion{
+      display: flex;
+      align-items: center;
+      span{
+        .c(@link-color);
+      }
+      .c(@link-color);
+    }
+  }
+  &__remarks{
+    padding-top: 24px;
+  }
+  .ant-modal-body{
+    padding-bottom: 0;
+  }
+  .ant-modal-footer{
+    padding: 24px;
+  }
+}

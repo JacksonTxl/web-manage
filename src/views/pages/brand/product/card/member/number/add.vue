@@ -713,13 +713,6 @@ export default {
     },
     // moment
     moment,
-    range(start, end) {
-      const result = []
-      for (let i = start; i < end; i++) {
-        result.push(i)
-      }
-      return result
-    },
     // 转让
     transfer(e) {
       this.cardData._is_transfer = e.target.checked

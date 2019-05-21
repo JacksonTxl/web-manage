@@ -28,7 +28,8 @@
               :disabled="info.contract_page_type===0"
               v-model="info.contract_page"
               :min="0"
-            ></a-input-number>%
+            ></a-input-number>
+            <span class="mg-l4">%</span>
           </st-form-item>
           <st-form-item :class="bSider('form-item',{radio:true})" label="首行边距">
             <a-radio-group @change="onPageMargetChange" v-model="info.contract_marget_type">
@@ -39,7 +40,8 @@
               :disabled="info.contract_marget_type===0"
               v-model="info.contract_marget"
               :min="0"
-            ></a-input-number>mm
+            ></a-input-number>
+            <span class="mg-l4">mm</span>
           </st-form-item>
           <st-t4>字段设置</st-t4>
           <st-form-item class="mg-t24" :class="bSider('form-item',{switch:true})" label="品牌logo">
@@ -90,7 +92,7 @@
     </aside>
     <main :class="bMain()">
       <st-panel
-        :title="previewTitle"
+        title="合同预览"
         :class="bMain('panel')"
         :loading="loading.getInfo || loading.getConstitutionInfo || loading.getCodeInfo"
       >
@@ -105,7 +107,6 @@ import ContractPreview from './edit#/preview.vue'
 import { EditService } from './edit.service.ts'
 import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
-import { enumFilter } from '@/filters/other.filters'
 const pageName = 'page-setting-contract-edit'
 export default {
   name: pageName,
@@ -161,15 +162,6 @@ export default {
           content: '保存合同模版成功！'
         })
       })
-    }
-  },
-  computed: {
-    previewTitle() {
-      return (
-        '合同预览（' +
-        enumFilter(this.info.contract_type, this.settingEnums.contract_type) +
-        '）'
-      )
     }
   }
 }

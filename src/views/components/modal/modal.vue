@@ -38,9 +38,11 @@ export default {
       'a-modal',
       {
         props,
+        scopedSlots: this.$scopedSlots,
         on: this.$listeners
       },
       this.$slots.default
+
     )
   }
 }
