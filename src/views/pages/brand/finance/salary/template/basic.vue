@@ -11,7 +11,7 @@
       <tr>
         <td colspan="5" class="st-form-table__add">
           <st-button type="dashed" block>
-            <modal-link tag="a" :to=" { name: 'finance-add-template',on: {change: refresh}}">薪资底薪模板</modal-link>
+            <modal-link tag="a" :to=" { name: 'finance-add-template',on: {change: refresh}}">新增底薪模板</modal-link>
           </st-button>
         </td>
       </tr>
