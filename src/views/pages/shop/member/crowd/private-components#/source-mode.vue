@@ -48,7 +48,7 @@ export default {
         info: '选择来源方式为以下范围的用户'
       },
       radioValue: '',
-      tags: ['拉访'],
+      tags: ['拉访', '拉访1'],
       inputValue: ''
     }
   },

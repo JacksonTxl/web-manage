@@ -5,10 +5,6 @@
         <st-t2>人群定义维度</st-t2>
         <div style="padding-top:24px;coler:#9BACB9">单个人群最多可添加5个条件</div>
         <basic-data v-model="seleteData" :flag="flag"></basic-data>
-        <!-- <basic-data v-model="seleteData.source_info" :flag="flag"></basic-data>
-        <basic-data v-model="seleteData.discount_info" :flag="flag"></basic-data>
-        <basic-data v-model="seleteData.deal_info" :flag="flag"></basic-data>
-        <basic-data v-model="seleteData.active_info" :flag="flag"></basic-data>-->
       </div>
       <div class="shop-member-crowd-add__right">
         <st-t2>编辑人群</st-t2>
@@ -19,8 +15,10 @@
               placeholder="不超过20字，且不包含“/”"
               maxlength="20"
               v-decorator="[
-                  'basicInfoRuleList.physical_id',
-                  {rules: [{ validator: physicalId}]}
+                  'basicInfoRuleList.crowd_name',
+                  {
+                    initialValue:seleteData.getData.crowd_name,
+                    rules: [{ validator: physicalId}]}
                 ]"
             />
           </st-form-item>
@@ -50,11 +48,11 @@
           style="padding-top:32px;display: flex;justify-content: center;"
         >
           <st-button style="margin-right:16px;width:102px">取消</st-button>
-          <st-button type="primary" style="margin-right:16px;width:102px">保存</st-button>
+          <st-button type="primary" style="margin-right:16px;width:102px" @click="conserve">保存</st-button>
         </div>
       </div>
     </div>
-    {{seleteData.getData}}
+    <pre> {{seleteData.arrData}}</pre>
   </div>
 </template>
 <script>
@@ -152,6 +150,7 @@ export default {
         },
         arrData: [],
         getData: {
+          crowd_name: '',
           base_sex: '',
           base_age: {
             min: '',
@@ -161,33 +160,65 @@ export default {
             min: '',
             max: ''
           },
-          base_shop: 'affiliated-store',
+          base_shop: [],
           register_time: {
             min: '',
             max: ''
           },
-          source_channel: 'source-mode',
+          source_channel: [],
           member_time: {
             min: '',
             max: ''
           },
-          available_scores: 'available-integral',
-          available_coupon_number: 'available-coupons',
-          sum_scores: 'accumulate-integrals',
-          member_expiring: 'membership-expires',
-          member_card_remain_times: 'card-remaining-number',
-          personal_course_remain_times: 'private-class-num',
-          deposit_remain_money: 'cardMount',
-          remain_enter_times: 'admission-times',
-          final_enter_time: 'lastAdmissionTime'
+          available_scores: {
+            min: '',
+            max: ''
+          },
+          available_coupon_number: {
+            min: '',
+            max: ''
+          },
+          sum_scores: {
+            min: '',
+            max: ''
+          },
+          member_expiring: {
+            min: '',
+            max: ''
+          },
+          member_card_remain_times: {
+            min: '',
+            max: ''
+          },
+          personal_course_remain_times: {
+            min: '',
+            max: ''
+          },
+          deposit_remain_money: {
+            min: '',
+            max: ''
+          },
+          remain_enter_times: {
+            select_time: {
+              min: '',
+              max: ''
+            },
+            remain_times: {
+              min: '',
+              max: ''
+            }
+          },
+          final_enter_time: {
+            min: '',
+            max: ''
+          }
         },
         info: {}
       },
       form: this.$form.createForm(this),
       basicInfoRuleList: {
-        // 实体卡
-        physical_id: [
-          'physical_id',
+        crowd_name: [
+          'crowd_name',
           {
             rules: [
               {
@@ -227,6 +258,22 @@ export default {
     }
   },
   methods: {
+    conserve() {
+      let self = this
+      this.form.validateFields((err, values) => {
+        self.seleteData.getData.crowd_name = values.basicInfoRuleList.crowd_name
+        if (!err) {
+          let obj = {}
+          self.seleteData.arrData.map(item => {
+            obj[item] = self.seleteData.getData[item]
+          })
+          obj.crowd_name = self.seleteData.getData.crowd_name
+          self.aService.setCrowdBrandField(obj).subscribe(status => {
+            console.log(status)
+          })
+        }
+      })
+    },
     getFilterData() {
       let self = this
       Object.keys(self.cardsListInfo.info).map(item => {
@@ -238,8 +285,9 @@ export default {
     },
     deleteIcon(data, item) {
       let k = Object.keys(data)
+      console.log(k)
       k.map(item1 => {
-        if (item1 !== 'arrData') {
+        if (item1 !== 'arrData' && item1 !== 'getData' && item1 !== 'info') {
           if (data[item1].selectionData.indexOf(item) >= 0) {
             data[item1].selectionData.splice(
               data[item1].selectionData.indexOf(item),

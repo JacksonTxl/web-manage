@@ -42,9 +42,7 @@ export default {
       titleData: {
         title: '年龄',
         info: '在以下年龄范围内的用户'
-      },
-      inputnumber2: '',
-      inputnumber1: ''
+      }
     }
   },
   methods: {

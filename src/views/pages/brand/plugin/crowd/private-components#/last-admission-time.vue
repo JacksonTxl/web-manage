@@ -3,16 +3,13 @@
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">时间范围</span>
-    <a-range-picker @change="onChange" style="margin-right:8px"/>
-    <a-radio-group @change="onChange" v-model="radioValue">
-      <a-radio-button value="a">近7天</a-radio-button>
-      <a-radio-button value="b">近30天</a-radio-button>
-      <a-radio-button value="c">近90天</a-radio-button>
-    </a-radio-group>
+    <time-day v-model="value.getData.final_enter_time"></time-day>
   </div>
 </template>
 <script>
 import titleInfo from './title-info.vue'
+import timeDay from './time-day'
+
 export default {
   model: {
     type: 'value',
@@ -22,7 +19,8 @@ export default {
     value: Object
   },
   components: {
-    titleInfo
+    titleInfo,
+    timeDay
   },
   data() {
     return {
