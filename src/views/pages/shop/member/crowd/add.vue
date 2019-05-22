@@ -77,6 +77,7 @@ import lastAdmissionTime from './private-components#/last-admission-time'
 import sourceMode from './private-components#/source-mode.vue'
 import inductionTime from './private-components#/induction-time.vue'
 import userLable from './private-components#/user-lable.vue'
+import baseMemberLevel from './private-components#/base-member-level.vue'
 import { AddService } from './add.service'
 import routes from '@/router/routes'
 import { MessageService } from '@/services/message.service'
@@ -110,7 +111,8 @@ export default {
     'private-class-num': privateClassNum, // 私教课剩余次数
     cardMount, // 储值卡剩余金额
     lastAdmissionTime, // 最后一次入场时间
-    userLable
+    userLable,
+    baseMemberLevel
   },
   data() {
     let self = this
@@ -220,7 +222,8 @@ export default {
             min: '',
             max: ''
           },
-          base_member_label: []
+          base_member_label: [],
+          base_member_level: []
         },
         info: {}
       },
@@ -267,7 +270,8 @@ export default {
         deposit_remain_money: 'cardMount',
         remain_enter_times: 'admission-times',
         final_enter_time: 'lastAdmissionTime',
-        base_member_label: 'userLable'
+        base_member_label: 'userLable',
+        base_member_level: 'base-member-level'
       }
       return obj[value]
     }
@@ -320,7 +324,9 @@ export default {
                   self.$router.push({ name: 'shop-member-crowd-index' })
                 })
             } else {
-              self.aService.setCrowdBrandField(obj).subscribe(status => { self.$router.push({ name: 'shop-member-crowd-index' }) })
+              self.aService.setCrowdBrandField(obj).subscribe(status => {
+                self.$router.push({ name: 'shop-member-crowd-index' })
+              })
             }
           } else {
             this.messageService.warning({ content: '请完整填写！' })
