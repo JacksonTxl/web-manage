@@ -8,12 +8,15 @@ export class PackageService implements RouteGuard {
   list$ = new State({})
   page$ = new State({})
   loading$ = new State({})
-  constructor(private cardApi: CourseApi) {}
+  constructor(private courseApi: CourseApi) {}
   getList(params: GetCourseListInput) {
-    return this.cardApi.getCourseList(params, 'package').pipe(tap((res:any) => {
+    return this.courseApi.getCourseList(params, 'package').pipe(tap((res:any) => {
       this.list$.commit(() => res.list)
       this.page$.commit(() => res.page)
     }))
+  }
+  getPackageEditInfo(id:string) {
+    return this.courseApi.getCoursePackageEditInfo(id)
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getList(to.meta.query).subscribe(() => {

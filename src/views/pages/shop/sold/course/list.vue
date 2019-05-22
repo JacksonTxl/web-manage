@@ -3,8 +3,8 @@
     app
     initial
     :tabs="[
-      { label: '私教', route: { name: 'shop-sold-course-personal' } },
-      { label: '课程包', route: { name: 'shop-sold-course-package' } },
+      { label: '私教', route: { name: 'shop-sold-course-list-personal' } },
+      { label: '课程包', route: { name: 'shop-sold-course-list-package' } },
     ]"
   >
     <div slot="actions">
