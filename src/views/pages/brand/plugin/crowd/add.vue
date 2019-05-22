@@ -310,9 +310,9 @@ export default {
             if (self.$route.query.id) {
               self.aService
                 .getCrowdBrandCrowd(self.$route.query.id, obj)
-                .subscribe(status => {})
+                .subscribe(status => { self.$router.push({ name: 'brand-plugin-crowd-index' }) })
             } else {
-              self.aService.setCrowdBrandField(obj).subscribe(status => {})
+              self.aService.setCrowdBrandField(obj).subscribe(status => { self.$router.push({ name: 'brand-plugin-crowd-index' }) })
             }
           } else {
             this.messageService.warning({ content: '请完整填写！' })

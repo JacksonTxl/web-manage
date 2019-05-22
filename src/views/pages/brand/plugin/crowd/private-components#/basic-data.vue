@@ -39,26 +39,13 @@ export default {
     selectionFun(item) {
       let keyData = Object.keys(this.value)
       let self = this
-      keyData.map((key, index) => {
-        if (key !== 'arrData' && key !== 'getData' && key !== 'info') {
-          if (self.value[key].selectionData.indexOf(item) < 0) {
-            if (this.flag) {
-              self.value[key].value.map(valueData => {
-                if (valueData.indexOf(item) >= 0) {
-                  self.value[key].selectionData.unshift(item)
-                  self.value['arrData'].unshift(item)
-                }
-              })
-            }
-          } else {
-            self.value[key].selectionData.splice(
-              self.value[key].selectionData.indexOf(item),
-              1
-            )
-            self.value['arrData'].splice(self.value['arrData'].indexOf(item), 1)
-          }
+      if (self.value['arrData'].indexOf(item) >= 0) {
+        self.value['arrData'].splice(self.value['arrData'].indexOf(item), 1)
+      } else {
+        if (this.flag) {
+          self.value['arrData'].unshift(item)
         }
-      })
+      }
     }
   },
   mounted() {}
