@@ -7,21 +7,17 @@ import { forkJoin } from 'rxjs'
 
 interface CardsListInfoState {
   cardsListInfo: any
-  followInfo: any
 }
 @Injectable()
-export class AddService extends Store<CardsListInfoState> {
+export class IndexService extends Store<CardsListInfoState> {
   state$: State<CardsListInfoState>
   cardsListInfo$: Computed<string>
-  followInfo$: Computed<string>
   constructor(private crowdAPI: CrowdAPI) {
     super()
     this.state$ = new State({
-      cardsListInfo: {},
-      followInfo: {}
+      cardsListInfo: {}
     })
     this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))
-    this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
   }
   SET_CARDS_LIST_INFO(cardsListInfo: CardsListInfoState) {
     console.log(cardsListInfo)
@@ -29,14 +25,9 @@ export class AddService extends Store<CardsListInfoState> {
       state.cardsListInfo = cardsListInfo
     })
   }
-  SET_FOLLOW_INFO(followInfo: CardsListInfoState) {
-    this.state$.commit(state => {
-      state.followInfo = followInfo
-    })
-  }
   // 获取列表
   getListInfo() {
-    return this.crowdAPI.getCrowdShopField().pipe(
+    return this.crowdAPI.getCrowdShopIndex().pipe(
       tap(res => {
         console.log(res, '获取数据')
 
@@ -44,22 +35,13 @@ export class AddService extends Store<CardsListInfoState> {
       })
     )
   }
-  // 新增
-  setCrowdBrandField(params: any) {
-    return this.crowdAPI.setCrowdShopField(params)
-  }
-  // 详情
-  getCrowdBrand(params: string) {
-    return this.crowdAPI.getCrowdShop(params)
-  }
-  // 编辑
-  getCrowdBrandCrowd(id: string, params: any) {
-    return this.crowdAPI.getCrowdShopCrowd(id, params)
+  delCrowdBrandCrowd(id: string) {
+    return this.crowdAPI.delCrowdBrandCrowd(id)
   }
   init() {
     return forkJoin(this.getListInfo())
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.init().subscribe(() => next())
   }
 }

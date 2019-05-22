@@ -4,22 +4,12 @@
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <div style="display: flex;align-items: center;">
       <span style="margin-right:16px">年龄范围</span>
-      <st-input-number v-model="inputnumber1" :float="true" :min="1" style="width:130px">
-        <template slot="addonAfter">岁</template>
-      </st-input-number>
-      <div style="padding:0 10px">~</div>
-      <st-input-number
-        v-model="inputnumber2"
-        :float="true"
-        :min="inputnumber1?inputnumber1:1 "
-        style="width:130px"
-      >
-        <template slot="addonAfter">岁</template>
-      </st-input-number>
+      <input-number v-model="value.getData.base_age" :company="'岁'" :minMax="{min:1,max:100}"></input-number>
     </div>
   </div>
 </template>
 <script>
+import inputNumber from './input-number.vue'
 import titleInfo from './title-info.vue'
 export default {
   model: {
@@ -30,16 +20,15 @@ export default {
     value: Object
   },
   components: {
-    titleInfo
+    titleInfo,
+    inputNumber
   },
   data() {
     return {
       titleData: {
         title: '年龄',
         info: '在以下年龄范围内的用户'
-      },
-      inputnumber2: '',
-      inputnumber1: ''
+      }
     }
   },
   methods: {
