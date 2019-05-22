@@ -331,7 +331,6 @@ export default {
     },
     deleteIcon(data, item) {
       let k = Object.keys(data)
-      console.log(k)
       k.map(item1 => {
         if (item1 !== 'arrData' && item1 !== 'getData' && item1 !== 'info') {
           if (data[item1].selectionData.indexOf(item) >= 0) {

@@ -21,4 +21,12 @@ export class CrowdAPI extends Api {
   getCrowdBrandCrowd(id: string, params: any) {
     return this.http.put(`/v1/crowd/brand/crowd/${id}`, { params })
   }
+  /* 人群首页列表 v1/crowd/index */
+  getCrowdIndex() {
+    return this.http.get(`/v1/crowd/brand/index`)
+  }
+  /* 删除人群 v1/crowd/brand/crowd/<id:\d+> */
+  delCrowdBrandCrowd(id: string) {
+    return this.http.delete(`/v1/crowd/brand/crowd/${id}`)
+  }
 }

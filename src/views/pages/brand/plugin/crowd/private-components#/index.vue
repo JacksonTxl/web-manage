@@ -16,15 +16,21 @@
           </div>
           <div class="shop-member-crowd-index-box__num">
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.new_register_member.crowd_total_num}}</div>
               <div class="shop-member-crowd-index-box__num-describe">人群总数</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.new_register_member.yesterday_admission}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日入场</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.new_register_member.yesterday_deal_numb}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日交易</div>
             </div>
           </div>
@@ -66,15 +72,21 @@
           </div>
           <div class="shop-member-crowd-index-box__num">
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.person_course_expiring_crowd.crowd_total_num}}</div>
               <div class="shop-member-crowd-index-box__num-describe">人群总数</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.person_course_expiring_crowd.yesterday_admission}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日入场</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.person_course_expiring_crowd.yesterday_deal_numb}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日交易</div>
             </div>
           </div>
@@ -116,15 +128,21 @@
           </div>
           <div class="shop-member-crowd-index-box__num">
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.expiring_crowd.crowd_total_num}}</div>
               <div class="shop-member-crowd-index-box__num-describe">人群总数</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.expiring_crowd.yesterday_admission}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日入场</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.expiring_crowd.yesterday_deal_numb}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日交易</div>
             </div>
           </div>

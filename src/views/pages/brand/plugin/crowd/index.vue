@@ -1,6 +1,6 @@
 <template>
   <div class="shop-member-crowd-index">
-    <index v-model="indexData"></index>
+    <index v-model="cardsListInfo.info.important_crowd"></index>
     <st-panel>
       <div slot="title">
         <router-link tag="a" :to=" { name: 'brand-plugin-crowd-add'}">
@@ -11,10 +11,10 @@
       </div>
       <st-table
         rowKey="id"
-        :dataSource="table.list"
+        :dataSource="cardsListInfo.info.list"
         :columns="table.columns1"
         @change="onChange"
-        :pagination="pagination"
+        :pagination="false"
       >
         <div slot="shop_name1" slot-scope="text, record">
           <a-dropdown placement="bottomRight">
@@ -32,13 +32,15 @@
             </a-menu>
           </a-dropdown>
           <st-more-dropdown class="tree-opreation">
-            <a-menu-item @click="addTreeNode(record)">添加</a-menu-item>
-            <a-menu-item @click="editTreeNode(record)">编辑</a-menu-item>
+            <a-menu-item @click="addTreeNode(record)">导出</a-menu-item>
+            <a-menu-item>
+              <router-link tag="a" :to=" { name: 'brand-plugin-crowd-add',query:{id:record.id}}">编辑</router-link>
+            </a-menu-item>
             <a-menu-item @click="deleteTreeNode(record)">删除</a-menu-item>
           </st-more-dropdown>
         </div>
         <div
-          slot="city_name"
+          slot="description"
           slot-scope="text"
           style="width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"
         >
@@ -55,36 +57,40 @@
 </template>
 <script>
 import index from './private-components#/index'
+import { IndexService } from './index.service'
 export default {
+  serviceInject() {
+    return {
+      aService: IndexService
+    }
+  },
+  rxState() {
+    return {
+      cardsListInfo: this.aService.cardsListInfo$
+    }
+  },
   data() {
     return {
-      indexData: { aa: 1 },
-      pagination: {
-        pageSizeOptions: ['10', '20', '30', '40', '50'],
-        current: 1,
-        pageSize: 10,
-        total: 50
-      },
       table: {
         columns1: [
           {
             title: '人群名称',
-            dataIndex: 'province_name',
-            scopedSlots: { customRender: 'province_name' }
+            dataIndex: 'crowd_name',
+            scopedSlots: { customRender: 'crowd_name' }
           },
           {
             title: '人群定义',
             width: '30%',
-            dataIndex: 'city_name',
-            scopedSlots: { customRender: 'city_name' }
+            dataIndex: 'description',
+            scopedSlots: { customRender: 'description' }
           },
           {
             title: '人群总数',
-            dataIndex: 'district_name'
+            dataIndex: 'num'
           },
           {
             title: '更新时间',
-            dataIndex: 'shop_name'
+            dataIndex: 'updated_time'
           },
           {
             title: '操作',
@@ -120,11 +126,15 @@ export default {
     addTreeNode(value) {
       console.log(value)
     },
-    editTreeNode(value) {
-      console.log(value)
+    refresh() {
+      this.$router.push({ query: {}, force: true })
     },
     deleteTreeNode(value) {
       console.log(value)
+      let self = this
+      this.aService.delCrowdBrandCrowd(value.id).subscribe(res => {
+        self.refresh()
+      })
     }
   },
   mounted() {}
