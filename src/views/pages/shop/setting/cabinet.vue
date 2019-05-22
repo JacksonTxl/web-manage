@@ -28,7 +28,15 @@
       >
         <div slot="actions">
           <st-button icon="edit">编辑</st-button>
-          <st-button icon="recycle-bin" class="mg-l8 color-warning">删除</st-button>
+          <a-popconfirm
+            placement="bottom"
+            @confirm="onDel()"
+          >
+            <template slot="title">
+              删除该区域后，其区域下的储物柜会一起删除，<br/> 删除的区域不能恢复，是否继续?
+            </template>
+            <st-button icon="recycle-bin" class="mg-l8 color-warning">删除</st-button>
+          </a-popconfirm>
           <st-button type="primary" class="mg-l8">批量添加储物柜</st-button>
         </div>
       <router-view></router-view>
@@ -39,6 +47,11 @@
 export default {
   bem: {
     b: 'page-setting-cabinet'
+  },
+  methods: {
+    onDel() {
+
+    }
   }
 }
 </script>
