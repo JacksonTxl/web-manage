@@ -48,10 +48,10 @@
                   <a href="javascript:;">导出</a>
                 </a-menu-item>
                 <a-menu-item style="width:130px">
-                  <a href="javascript:;">群发短信</a>
+                  <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发短信</a>
                 </a-menu-item>
                 <a-menu-item style="width:130px">
-                  <a href="javascript:;">群发优惠</a>
+                  <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发优惠</a>
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
@@ -104,10 +104,10 @@
                   <a href="javascript:;">导出</a>
                 </a-menu-item>
                 <a-menu-item style="width:130px">
-                  <a href="javascript:;">群发短信</a>
+                  <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发短信</a>
                 </a-menu-item>
                 <a-menu-item style="width:130px">
-                  <a href="javascript:;">群发优惠</a>
+                  <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发优惠</a>
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
@@ -160,10 +160,10 @@
                   <a href="javascript:;">导出</a>
                 </a-menu-item>
                 <a-menu-item style="width:130px">
-                  <a href="javascript:;">群发短信</a>
+                  <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发短信</a>
                 </a-menu-item>
                 <a-menu-item style="width:130px">
-                  <a href="javascript:;">群发优惠</a>
+                  <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发优惠</a>
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
@@ -174,7 +174,14 @@
   </div>
 </template>
 <script>
+import { MessageService } from '@/services/message.service'
+
 export default {
+  serviceInject() {
+    return {
+      messageService: MessageService
+    }
+  },
   model: {
     type: 'value',
     event: 'dataChangge'
@@ -185,7 +192,11 @@ export default {
   data() {
     return {}
   },
-  methods: {},
+  methods: {
+    newCrowd(data) {
+      this.messageService.warning({ content: data })
+    }
+  },
   mounted() {}
 }
 </script>

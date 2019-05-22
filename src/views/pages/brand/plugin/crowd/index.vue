@@ -3,9 +3,14 @@
     <index v-model="cardsListInfo.info.important_crowd"></index>
     <st-panel>
       <div slot="title">
-        <router-link tag="a" :to=" { name: 'brand-plugin-crowd-add'}">
+        <router-link
+          tag="a"
+          :to=" { name: 'brand-plugin-crowd-add'}"
+          v-if="cardsListInfo.info.list.length <= 10"
+        >
           <st-button type="primary">新建人群</st-button>
         </router-link>
+        <st-button v-else type="primary" @click="newCrowd('人群数量已达到上限！')">新建人群</st-button>
 
         <span class="shop-member-crowd-index-new__crowb_num" style>新建人群数量最多10个</span>
       </div>
@@ -24,10 +29,10 @@
                 <a href="javascript:;">导出</a>
               </a-menu-item>
               <a-menu-item style="width:130px">
-                <a href="javascript:;" @click="groupSMS(record)">群发短信</a>
+                <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发短信</a>
               </a-menu-item>
               <a-menu-item style="width:130px">
-                <a href="javascript:;">群发优惠</a>
+                <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发优惠</a>
               </a-menu-item>
             </a-menu>
           </a-dropdown>
@@ -58,10 +63,12 @@
 <script>
 import index from './private-components#/index'
 import { IndexService } from './index.service'
+import { MessageService } from '@/services/message.service'
 export default {
   serviceInject() {
     return {
-      aService: IndexService
+      aService: IndexService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -117,6 +124,9 @@ export default {
     index
   },
   methods: {
+    newCrowd(data) {
+      this.messageService.warning({ content: data })
+    },
     onChange(pagination, filters, sorter) {
       console.log('params', pagination, filters, sorter, data)
     },
