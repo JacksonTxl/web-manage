@@ -80,16 +80,16 @@
               {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
             </template>
             <div slot="action" slot-scope="text,record">
-              <a @click="onUpgrade(record)">升级</a>
+              <a @click="onGathering(record)">订单收款</a>
               <a-divider type="vertical"></a-divider>
-              <a>续卡</a>
               <st-more-dropdown class="mgl-16">
-                <a-menu-item>详情</a-menu-item>
-                <a-menu-item>冻结</a-menu-item>
-                <a-menu-item>转让</a-menu-item>
-                <a-menu-item>退款</a-menu-item>
-                <a-menu-item>退款</a-menu-item>
-                <a-menu-item>退款</a-menu-item>
+                <a-menu-item @click="onUpgrade(record)">升级</a-menu-item>
+                <a-menu-item @click="onRefund(record)">退款</a-menu-item>
+                <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
+                <a-menu-item @click="onFreeze(record)">冻结</a-menu-item>
+                <a-menu-item @click="onSurplus(record)">修改剩余价值</a-menu-item>
+                <a-menu-item @click="onRelet(record)">续租</a-menu-item>
+                <a-menu-item @click="onSale(record)">交易签单</a-menu-item>
               </st-more-dropdown>
             </div>
           </st-table>
@@ -280,6 +280,48 @@ export default {
     onUpgrade() {
       this.$modalRouter.push({
         name: 'sold-card-upgrade'
+      })
+    },
+    // 退款
+    onRefund() {
+      this.$modalRouter.push({
+        name: 'sold-card-refund'
+      })
+    },
+    // 转让
+    onTransfer() {
+      this.$modalRouter.push({
+        name: 'sold-card-transfer'
+      })
+    },
+    // 冻结
+    onFreeze() {
+      this.$modalRouter.push({
+        name: 'sold-course-freeze'
+      })
+    },
+    // 修改剩余价值
+    onSurplus() {
+      this.$modalRouter.push({
+        name: 'sold-package-surplus'
+      })
+    },
+    // 续租
+    onRelet() {
+      this.$modalRouter.push({
+        name: 'sold-lease-relet'
+      })
+    },
+    // 交易签单
+    onSale() {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale'
+      })
+    },
+    // 交易签单
+    onGathering() {
+      this.$modalRouter.push({
+        name: 'sold-deal-gathering'
       })
     }
   }

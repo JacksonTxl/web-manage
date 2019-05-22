@@ -14,7 +14,7 @@ export class AddService extends Store<CardsListInfoState> {
   state$: State<CardsListInfoState>
   cardsListInfo$: Computed<string>
   followInfo$: Computed<string>
-  constructor(private cardsApi: CrowdAPI) {
+  constructor(private crowdAPI: CrowdAPI) {
     super()
     this.state$ = new State({
       cardsListInfo: {},
@@ -34,14 +34,23 @@ export class AddService extends Store<CardsListInfoState> {
       state.followInfo = followInfo
     })
   }
+  // 获取列表
   getListInfo() {
-    return this.cardsApi.getCrowdBrandField().pipe(
+    return this.crowdAPI.getCrowdBrandField().pipe(
       tap(res => {
         console.log(res, '获取数据')
 
         this.SET_CARDS_LIST_INFO(res)
       })
     )
+  }
+  // 新增
+  setCrowdBrandField(params: any) {
+    return this.crowdAPI.setCrowdBrandField(params)
+  }
+  // 详情
+  getCrowdBrand(params: string) {
+    return this.crowdAPI.getCrowdBrand(params)
   }
   init() {
     return forkJoin(this.getListInfo())

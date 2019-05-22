@@ -2,10 +2,10 @@
 <template>
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
-    <span style="margin-right:16px">选择门店</span>
-    <template v-for="tag in tags">
+    <span style="margin-right:16px">选择来源</span>
+    <template v-for="(tag,index) in tags">
       <a-tooltip :key="tag" :title="tag">
-        <a-tag :key="tag" :closable="true" :afterClose="() => handleClose(tag)">{{tag}}</a-tag>
+        <a-tag :key="tag" :closable="true" :afterClose="() => handleClose(tag,index)">{{tag}}</a-tag>
       </a-tooltip>
     </template>
     <a-tag style="background: #fff; borderStyle: dashed;">
@@ -14,23 +14,36 @@
           <a-icon type="plus"/>添加
         </a>
         <a-menu slot="overlay">
-          <a-menu-item>
-            <a href="javascript:;" @click="dropdownFunc('1st menu item')">1st menu item</a>
-          </a-menu-item>
-          <a-menu-item>
-            <a href="javascript:;">2nd menu item</a>
-          </a-menu-item>
-          <a-menu-item>
-            <a href="javascript:;">3rd menu item</a>
+          <a-menu-item
+            v-for="(item,key,index) in crowdEnums.crowd_source_channel.value"
+            :key="index"
+          >
+            <a href="javascript:;" @click="dropdownFunc(item,{[key]:item})">{{item}}</a>
           </a-menu-item>
         </a-menu>
       </a-dropdown>
     </a-tag>
+
   </div>
 </template>
 <script>
+import { UserService } from '@/services/user.service'
 import titleInfo from './title-info.vue'
 export default {
+  serviceInject() {
+    return {
+      userService: UserService
+    }
+  },
+  rxState() {
+    /**
+     * @type {UserService}
+     */
+    const user = this.userService
+    return {
+      crowdEnums: user.crowdEnums$
+    }
+  },
   model: {
     type: 'value',
     event: 'dataChangge'
@@ -48,17 +61,24 @@ export default {
         info: '选择来源方式为以下范围的用户'
       },
       radioValue: '',
-      tags: ['拉访'],
+      tags: [],
+
       inputValue: ''
     }
   },
+  created() {
+    this.tags = Object.values(
+      Object.assign({}, ...this.value.getData.source_channel)
+    )
+  },
   methods: {
-    dropdownFunc(inputValue) {
+    dropdownFunc(inputValue, inputValueObj) {
       let tags = this.tags
       if (inputValue && tags.indexOf(inputValue) === -1) {
         tags = [...tags, inputValue]
       }
-      console.log(tags)
+      console.log(tags, inputValue, inputValueObj, this.value.getData.base_shop)
+      this.value.getData.source_channel.push(inputValueObj)
       Object.assign(this, {
         tags,
         inputVisible: false,
@@ -67,13 +87,13 @@ export default {
     },
 
     onChange(date, dateString) {
-      console.log(date, dateString)
       this.$emit('dataChangge', this.value)
     },
-    handleClose(removedTag) {
+    handleClose(removedTag, index) {
       const tags = this.tags.filter(tag => tag !== removedTag)
       console.log(tags)
       this.tags = tags
+      this.value.getData.source_channel.splice(index, 1)
     }
   },
   mounted() {}

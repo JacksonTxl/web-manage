@@ -9,4 +9,12 @@ export class CrowdAPI extends Api {
   getCrowdBrandField() {
     return this.http.get(`/v1/crowd/brand/field`)
   }
+  /* 品牌新增人群v1/crowd/brand */
+  setCrowdBrandField(params: any) {
+    return this.http.post(`/v1/crowd/brand`, { params })
+  }
+  /* 品牌人群详情 v1/crowd/brand/<id:\d+> */
+  getCrowdBrand(id: string) {
+    return this.http.get(`/v1/crowd/brand/crowd/${id}`)
+  }
 }

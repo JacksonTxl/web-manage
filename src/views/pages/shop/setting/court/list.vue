@@ -16,7 +16,7 @@
           </div>
           <div :class="bItem('body')">
             <div :class="bItem('body-lt')">
-              <div :class="bItem('tag')">动</div>
+              <st-initials-tag :value="item.area_name[0]"/>
             </div>
             <div :class="bItem('body-rt')">
               <div :class="bItem('title-box')">

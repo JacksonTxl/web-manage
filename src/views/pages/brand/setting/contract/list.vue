@@ -5,38 +5,38 @@
         <div :class="bItem()">
           <div :class="bItem('body')">
             <div :class="bItem('body-lt')">
-              <a :class="bItem('logo-link')" href="#">
-                <img :class="bItem('logo-img')" src="a.png" alt="brand-logo">
-              </a>
+              <st-initials-tag
+                :value="item.contract_title.indexOf('储物柜') > -1 ? '柜' : item.contract_title"
+              />
             </div>
             <div :class="bItem('body-rt')">
               <div :class="bItem('title-box')">
                 <st-t3 :class="bItem('title')">{{item.contract_title}}</st-t3>
                 <div :class="bItem('status',{success:isInitial(item),warning:!isInitial(item)})">
                   <a-badge :status="isInitial(item)?'success':'warning'"></a-badge>
-                  {{item.is_initialize_status | enumFilter(settingEnums.is_initialize_status)}}
+                  {{item.is_initialize_status | enumFilter('setting.is_initialize_status')}}
                 </div>
               </div>
               <p :class="bItem('desc')">{{item.contract_describe}}</p>
             </div>
           </div>
           <div :class="bItem('footer')">
-            <!-- <template v-if="isInitial(item)">
-              <router-link :class="bItem('action')" to="/" class="st-link-secondary">查看</router-link>
-              <div :class="bItem('divider')"></div>
+            <template v-if="isInitial(item)">
+              <!-- <router-link :class="bItem('action')" to="/" class="st-link-secondary">查看</router-link>
+              <div :class="bItem('divider')"></div> -->
               <router-link
                 :class="bItem('action')"
                 :to="{path:'./edit',query:{id:item.id}}"
                 class="st-link-secondary"
               >编辑</router-link>
             </template>
-            <template v-else>-->
+            <template v-else>
             <router-link
               :class="bItem('action')"
               :to="{path:'./edit',query:{id:item.id}}"
               class="st-link-secondary"
             >去设置</router-link>
-            <!-- </template> -->
+            </template>
           </div>
         </div>
       </a-col>
@@ -47,14 +47,10 @@
 <script>
 import { ListService } from './list.service'
 import { UserService } from '@/services/user.service'
-import { enumFilter } from '@/filters/other.filters'
 export default {
   bem: {
     bPage: 'page-brand-setting-contract-list',
     bItem: 'contract-item'
-  },
-  filters: {
-    enumFilter
   },
   serviceInject() {
     return {
@@ -68,8 +64,7 @@ export default {
      */
     const user = this.userService
     return {
-      list: this.listService.list$,
-      settingEnums: user.settingEnums$
+      list: this.listService.list$
     }
   },
   methods: {

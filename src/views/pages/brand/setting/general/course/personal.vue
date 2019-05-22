@@ -4,7 +4,7 @@
     <a-row>
       <a-col :span="16"><st-t2>私教课程定价设置</st-t2></a-col>
       <a-col :span="8" class="ta-r">
-        <modal-link tag="a" :to="{ name:'brand-setting-personal-reserve' }">
+        <modal-link tag="a" :to="{ name:'brand-setting-personal-price-model' }">
           <st-icon type="edit"></st-icon>
           <span class="mg-l4 color-text-light">编辑</span>
         </modal-link>
@@ -20,7 +20,15 @@
     <st-hr></st-hr>
 
       <!-- 私教课程预约设置 -->
-    <st-t2>私教课程预约设置</st-t2>
+      <a-row>
+      <a-col :span="16"><st-t2>私教课程预约设置</st-t2></a-col>
+      <a-col :span="8" class="ta-r">
+        <modal-link tag="a" :to="{ name:'brand-setting-personal-reserve' }">
+          <st-icon type="edit"></st-icon>
+          <span class="mg-l4 color-text-light">编辑</span>
+        </modal-link>
+      </a-col>
+    </a-row>
     <!-- 私教课程定价模式 -->
     <st-t4 class="mg-t24">预约范围</st-t4>
     <div class="st-des">

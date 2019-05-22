@@ -38,7 +38,7 @@ export default {
       labels: ['获取', '激活', '留存', '下单', '推荐'],
       subLabels: [],
       values: values.map(v => v + first * 0.5),
-      colors: ['#3F66F6', '#00E881'],
+      colors: ['#3F66F6', '#3dd49f'],
       direction: 'horizontal',
       gradientDirection: 'horizontal',
       height: 260,
