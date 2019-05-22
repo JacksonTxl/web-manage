@@ -46,7 +46,7 @@ export default {
     checked: {
       type: Number || String,
       default() {
-        return ''
+        return 0
       }
     }
   }

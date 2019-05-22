@@ -72,7 +72,7 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-card-member'(routeConfig: RouteConfig) {
+  'shop-sold-card-list-member'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       card_type: { type: Number, default: -1 },
@@ -84,7 +84,7 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-card-deposite'(routeConfig: RouteConfig) {
+  'shop-sold-card-list-deposite'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       is_valid: { type: Number, default: 1 },
@@ -94,7 +94,7 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-course-personal'(routeConfig: RouteConfig) {
+  'shop-sold-course-list-personal'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       course_status: { type: Number, default: -1 },
@@ -104,7 +104,7 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-course-package'(routeConfig: RouteConfig) {
+  'shop-sold-course-list-package'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       course_status: { type: Number, default: -1 },
