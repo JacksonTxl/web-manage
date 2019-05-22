@@ -43,16 +43,18 @@
             <component v-bind:is="item | componentFun" v-model="seleteData"></component>
           </div>
         </template>
-        <div
-          v-if="seleteData.arrData.length"
-          style="padding-top:32px;display: flex;justify-content: center;"
-        >
+        <div style="padding-top:32px;display: flex;justify-content: center;">
           <st-button style="margin-right:16px;width:102px">取消</st-button>
-          <st-button type="primary" style="margin-right:16px;width:102px" @click="conserve">保存</st-button>
+          <st-button
+            v-if="seleteData.arrData.length"
+            type="primary"
+            style="margin-right:16px;width:102px"
+            @click="conserve"
+          >保存</st-button>
+          <st-button v-else disabled type="primary" style="margin-right:16px;width:102px">保存</st-button>
         </div>
       </div>
     </div>
-    <pre> {{seleteData.arrData}}</pre>
   </div>
 </template>
 <script>
@@ -74,10 +76,13 @@ import lastAdmissionTime from './private-components#/last-admission-time'
 import sourceMode from './private-components#/source-mode.vue'
 import inductionTime from './private-components#/induction-time.vue'
 import { AddService } from './add.service'
+import routes from '@/router/routes'
+import { MessageService } from '@/services/message.service'
 export default {
   serviceInject() {
     return {
-      aService: AddService
+      aService: AddService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -265,8 +270,10 @@ export default {
   methods: {
     getCrowdBrand(id) {
       let self = this
+
       this.aService.getCrowdBrand(id).subscribe(status => {
         self.seleteData.arrData = status.info.array_index
+        self.seleteData.getData.crowd_name = status.info.crowd_name
         status.info.array_index.map(item => {
           self.seleteData.getData[item] = status.info[item]
         })
@@ -278,14 +285,38 @@ export default {
         self.seleteData.getData.crowd_name = values.basicInfoRuleList.crowd_name
         if (!err) {
           let obj = {}
+          let [arrKey, arrValue] = [[], []]
           self.seleteData.arrData.map(item => {
             obj[item] = self.seleteData.getData[item]
+            if (
+              Object.prototype.toString
+                .call(self.seleteData.getData[item])
+                .slice(8, -1) === 'Object'
+            ) {
+              arrKey.push(...Object.keys(self.seleteData.getData[item]))
+              arrValue.push(...Object.values(self.seleteData.getData[item]))
+            } else {
+              arrKey.push(item)
+              arrValue.push(self.seleteData.getData[item])
+            }
           })
           obj.array_index = self.seleteData.arrData
           obj.crowd_name = self.seleteData.getData.crowd_name
-          self.aService.setCrowdBrandField(obj).subscribe(status => {
-            console.log(status)
-          })
+
+          if (
+            arrKey.length === arrValue.length &&
+            arrValue.every(item => item !== '')
+          ) {
+            if (self.$route.query.id) {
+              self.aService
+                .getCrowdBrandCrowd(self.$route.query.id, obj)
+                .subscribe(status => {})
+            } else {
+              self.aService.setCrowdBrandField(obj).subscribe(status => {})
+            }
+          } else {
+            this.messageService.warning({ content: '请完整填写！' })
+          }
         }
       })
     },
