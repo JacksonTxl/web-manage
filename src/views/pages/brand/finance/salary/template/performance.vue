@@ -29,7 +29,7 @@
             <template v-if="item.used != 0 ">
               <modal-link
                 tag="a"
-                :to=" { name: 'finance-performance-used-list', props: {id: item.id}}"
+                :to=" { name: 'finance-search-staff-list-performance', props: {id: item.id}}"
               >{{ item.used }}</modal-link>
             </template>
           </td>
@@ -37,15 +37,16 @@
           <td>
             <modal-link
               tag="a"
-              :to=" { name: 'finance-basic-template-edit', props: {item: item},on: {change: refresh}}"
+              :to=" { name: 'finance-edit-performance-template', props: {id: item.id},on: {change: refresh}}"
             >详情</modal-link>
             <a-divider type="vertical"></a-divider>
             <modal-link
               tag="a"
-              :to=" { name: 'finance-basic-template-edit', props: {item: item},on: {change: refresh}}"
+              :to=" { name: 'finance-edit-performance-template', props: {id: item.id},on: {change: refresh}}"
             >编辑</modal-link>
-            <a-divider type="vertical"></a-divider>
             <template v-if="item.used == 0">
+            <a-divider type="vertical"></a-divider>
+
               <a href="javascript:;" @click="onDelete(item.id)">删除</a>
             </template>
           </td>

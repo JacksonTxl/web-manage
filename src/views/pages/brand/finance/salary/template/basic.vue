@@ -19,7 +19,17 @@
         <tr :key="item.id">
           <td>{{ item.template_name }}</td>
           <td>{{ item.salary }}</td>
-          <td>{{ item.used }}</td>
+          <td>
+          <template v-if="item.used == 0 ">
+              <span>{{ item.used }}</span>
+            </template>
+            <template v-if="item.used != 0 ">
+              <modal-link
+                tag="a"
+                :to=" { name: 'search-staff-list-salary', props: {id: item.id}}"
+              >{{ item.used }}</modal-link>
+            </template>
+            </td>
           <td>{{ item.created_time }}</td>
           <td>
             <modal-link

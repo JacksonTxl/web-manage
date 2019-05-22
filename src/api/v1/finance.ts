@@ -46,6 +46,37 @@ export class FinanceAPi extends Api {
   addPerformance(params: AddPerformanceParams) {
     return this.http.post(`/v1/finance/salary/performance`, { params })
   }
+
+  /**
+   * 业绩模板详情
+   * @param id 模板id
+   */
+  getPerformanceInfo(id: any) {
+    return this.http.get(`/v1/finance/salary/performance/${id}`, { mock: {} })
+  }
+
+  /**
+   * 编辑业绩模板
+   * @param id 模板id
+   * @param params
+   */
+  editPerformance(id: any, params: AddPerformanceParams) {
+    return this.http.put(`/v1/finance/salary/performance/${id}`, { params })
+  }
+
+  /**
+   * 业绩模板查看应用员工
+   */
+  getSearchStaffListPerformance(id:any, query: SalaryBasicQuery) {
+    return this.http.get(`/v1/finance/salary/performance/staff/${id}`, { query })
+  }
+
+  /**
+   * 底薪模板查看应用员工
+   */
+  getSearchStaffListSalary(id:any, query: SalaryBasicQuery) {
+    return this.http.get(`/v1/finance/salary/basic/staff/${id}`, { query })
+  }
 }
 export interface AddPerformanceParams{
   /**
