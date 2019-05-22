@@ -4,11 +4,9 @@
     <div v-for="(item,key,index) in value" :key="index">
       <div v-if="key !== 'arrData'">
         <st-t4 style="margin-bottom:16px">{{item.title}}</st-t4>
-        <div
-          style="display: flex;justify-content: space-between; padding-bottom:16px;   flex-direction: row;    flex-wrap: wrap;"
-        >
+        <div style="display: flex; padding-bottom:16px;   flex-direction: row;    flex-wrap: wrap;">
           <st-button
-            :style="{width:item.width+'px',marginBottom: '16px'}"
+            :style="{width:item.width+'px',marginBottom: '16px',marginRight:'8px'}"
             :class="value.arrData.indexOf(item1)>=0?'active':''"
             v-for="(item1,index) in item.value"
             :key="index"
