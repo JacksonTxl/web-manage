@@ -93,5 +93,25 @@ export const routeMapConfig = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
+  },
+  'shop-sold-course-personal'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      search: { type: String, default: '' },
+      course_status: { type: Number, default: -1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-course-package'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      search: { type: String, default: '' },
+      course_status: { type: Number, default: -1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
   }
 }
