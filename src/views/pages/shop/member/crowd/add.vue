@@ -55,7 +55,6 @@
         </div>
       </div>
     </div>
-    {{seleteData.arrData}}
   </div>
 </template>
 <script>
