@@ -28,6 +28,7 @@
               <a-anchor-link href="#help-popover" title="help-popover 帮助气泡"></a-anchor-link>
               <a-anchor-link href="#help-tooltip" title="help-tooltip 帮助tooltip"></a-anchor-link>
               <a-anchor-link href="#tag" title="tag 标签"></a-anchor-link>
+              <a-anchor-link href="#initials-tag" title="initials tag 标签(首字母)"></a-anchor-link>
               <a-anchor-link href="#region-cascader" title="region-cascader 地址选择"></a-anchor-link>
               <a-anchor-link href="#container" title="container 容器"></a-anchor-link>
               <a-anchor-link href="#panel" title="panel 应用面板"></a-anchor-link>
@@ -50,6 +51,9 @@
           </li>
           <li>
             <router-link to="/styleguide/function">Function(函数)</router-link>
+          </li>
+          <li>
+            <router-link to="/styleguide/chart">Chart(图表)</router-link>
           </li>
         </ul>
       </aside>

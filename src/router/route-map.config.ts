@@ -71,5 +71,47 @@ export const routeMapConfig = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
+  },
+  'shop-sold-card-list-member'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      search: { type: String, default: '' },
+      card_type: { type: Number, default: -1 },
+      card_status: { type: Number, default: 1 },
+      is_open: { type: Number, default: -1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-card-list-deposite'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      search: { type: String, default: '' },
+      is_valid: { type: Number, default: 1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-course-list-personal'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      search: { type: String, default: '' },
+      course_status: { type: Number, default: -1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-course-list-package'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      search: { type: String, default: '' },
+      course_status: { type: Number, default: -1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
   }
 }

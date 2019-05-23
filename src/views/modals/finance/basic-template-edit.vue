@@ -19,7 +19,6 @@
             >
               <template slot="addonAfter">元</template>
             </st-input-number>
-            {{ item.salary }}
           </st-form-item>
         </a-col>
       </a-row>
@@ -28,8 +27,15 @@
 </template>
 
 <script>
-import { classColumns } from './columns'
+import { EditTemplateService } from './basic-template-edit.service'
+import { MessageService } from '@/services/message.service'
 export default {
+  serviceInject() {
+    return {
+      service: EditTemplateService,
+      message: MessageService
+    }
+  },
   data() {
     return {
       form: this.$form.createForm(this),
@@ -40,30 +46,23 @@ export default {
     item: Object
   },
   methods: {
-    cancel(e) {
-      e.preventDefault()
-      console.log('取消')
-      this.show = true
-    },
     handleSubmit(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('提交的数据', values)
+          this.service.editTemplate(this.item.id, values).subscribe(() => {
+            console.log('ok')
+            this.$emit('change')
+            this.message.success({ content: '编辑成功' })
+            this.show = false
+          })
         }
       })
     }
   },
   mounted() {
-    console.log('========', typeof this.item.salary)
-    // setTimeout(() => {
-    // this.$nextTick(() => {
-    //   this.form.setFieldsValue({
-    //     template_name: this.item.template_name,
-    //     // salary: this.item.salary
-    //   })
-    // })
-    // }, 0)
+    console.log('========', this.item)
   }
 }
 </script>

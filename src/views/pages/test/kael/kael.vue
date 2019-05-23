@@ -1,38 +1,71 @@
 <template>
-  <st-panel app>
-    <st-search-panel>
-      <div style="display: flex;align-items: center;margin:16px 0;">
-        <span style="width:70px;">条件1：</span>
-        <st-search-radio v-model="kael" @change="onkael" :list="list"></st-search-radio>
-      </div>
-      {{kael}}
-      <div slot="button">
-        <st-button type="primary">查询1</st-button>
-        <st-button class="mgl-8">重置1</st-button>
-      </div>
-    </st-search-panel>
-  </st-panel>
+  <a-table :columns="columns" :dataSource="data">
+    <a slot="name" slot-scope="text" href="javascript:;">{{text}}</a>
+    <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
+    <span slot="tags" slot-scope="tags">
+      <a-tag v-for="tag in tags" color="blue" :key="tag">{{tag}}</a-tag>
+    </span>
+    <span slot="action" slot-scope="text, record">
+      <a href="javascript:;">Invite 一 {{record.name}}</a>
+      <a-divider type="vertical" />
+      <a href="javascript:;">Delete</a>
+      <a-divider type="vertical" />
+      <a href="javascript:;" class="ant-dropdown-link">
+        More actions <a-icon type="down" />
+      </a>
+    </span>
+  </a-table>
 </template>
 <script>
+const columns = [{
+  dataIndex: 'name',
+  key: 'name',
+  slots: { title: 'customTitle' },
+  scopedSlots: { customRender: 'name' }
+}, {
+  title: 'Age',
+  dataIndex: 'age',
+  key: 'age'
+}, {
+  title: 'Address',
+  dataIndex: 'address',
+  key: 'address'
+}, {
+  title: 'Tags',
+  key: 'tags',
+  dataIndex: 'tags',
+  scopedSlots: { customRender: 'tags' }
+}, {
+  title: 'Action',
+  key: 'action',
+  scopedSlots: { customRender: 'action' }
+}]
+
+const data = [{
+  key: '1',
+  name: 'John Brown',
+  age: 32,
+  address: 'New York No. 1 Lake Park',
+  tags: ['nice', 'developer']
+}, {
+  key: '2',
+  name: 'Jim Green',
+  age: 42,
+  address: 'London No. 1 Lake Park',
+  tags: ['loser']
+}, {
+  key: '3',
+  name: 'Joe Black',
+  age: 32,
+  address: 'Sidney No. 1 Lake Park',
+  tags: ['cool', 'teacher']
+}]
+
 export default {
   data() {
     return {
-      kael: 3,
-      list: [{
-        value: 1,
-        label: '在呢'
-      }, {
-        value: 2,
-        label: '好吧'
-      }, {
-        value: 3,
-        label: '睡觉'
-      }]
-    }
-  },
-  methods: {
-    onkael(data) {
-      console.log(data)
+      data,
+      columns
     }
   }
 }

@@ -6,7 +6,7 @@
         <div style=" padding: 32px 28px 0 32px;">
           <div class="shop-member-crowd-index-box__item">
             <img
-              src="http://n.sinaimg.cn/sinacn14/39/w480h359/20181013/e040-hmivixm5109047.jpg"
+              src="../../../../../../assets/img/shop_crowd_new.png"
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
@@ -16,47 +16,40 @@
           </div>
           <div class="shop-member-crowd-index-box__num">
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.new_register_member.crowd_total_num}}</div>
               <div class="shop-member-crowd-index-box__num-describe">人群总数</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.new_register_member.yesterday_admission}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日入场</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.new_register_member.yesterday_deal_numb}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日交易</div>
             </div>
           </div>
         </div>
         <div class="shop-member-crowd-index-box__btn">
-          <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
-          <span class="shop-member-crowd-index-box__btn-dx">
-            <a-dropdown>
-              <span class="ant-dropdown-link" href="#">
-                定向运营
-                <a-icon type="down"/>
-              </span>
-              <a-menu slot="overlay">
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;">导出</a>
-                </a-menu-item>
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;">群发短信</a>
-                </a-menu-item>
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;">群发优惠</a>
-                </a-menu-item>
-              </a-menu>
-            </a-dropdown>
-          </span>
+          <router-link
+            class="shop-member-crowd-index-box__btn-rq"
+            tag="span"
+            :to="{name:'shop-member-crowd-analysis'}"
+          >人群分析</router-link>
+
+          <span class="shop-member-crowd-index-box__btn-rq">导出</span>
         </div>
       </div>
       <div class="shop-member-crowd-index-box-title" style="margin:0 12px;">
         <div style=" padding: 32px 28px 0 32px;">
           <div class="shop-member-crowd-index-box__item">
             <img
-              src="http://n.sinaimg.cn/sinacn14/39/w480h359/20181013/e040-hmivixm5109047.jpg"
+              src="../../../../../../assets/img/shop_crowd_expire.png"
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
@@ -66,47 +59,40 @@
           </div>
           <div class="shop-member-crowd-index-box__num">
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.person_course_expiring_crowd.crowd_total_num}}</div>
               <div class="shop-member-crowd-index-box__num-describe">人群总数</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.person_course_expiring_crowd.yesterday_admission}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日入场</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.person_course_expiring_crowd.yesterday_deal_numb}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日交易</div>
             </div>
           </div>
         </div>
         <div class="shop-member-crowd-index-box__btn">
-          <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
-          <span class="shop-member-crowd-index-box__btn-dx">
-            <a-dropdown>
-              <span class="ant-dropdown-link" href="#">
-                定向运营
-                <a-icon type="down"/>
-              </span>
-              <a-menu slot="overlay">
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;">导出</a>
-                </a-menu-item>
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;">群发短信</a>
-                </a-menu-item>
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;">群发优惠</a>
-                </a-menu-item>
-              </a-menu>
-            </a-dropdown>
-          </span>
+          <router-link
+            class="shop-member-crowd-index-box__btn-rq"
+            tag="span"
+            :to="{name:'shop-member-crowd-analysis'}"
+          >人群分析</router-link>
+
+          <span class="shop-member-crowd-index-box__btn-rq">导出</span>
         </div>
       </div>
       <div class="shop-member-crowd-index-box-title">
         <div style=" padding: 32px 28px 0 32px;">
           <div class="shop-member-crowd-index-box__item">
             <img
-              src="http://n.sinaimg.cn/sinacn14/39/w480h359/20181013/e040-hmivixm5109047.jpg"
+              src="../../../../../../assets/img/shop_crowd_private_teaching.png"
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
@@ -116,47 +102,46 @@
           </div>
           <div class="shop-member-crowd-index-box__num">
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.expiring_crowd.crowd_total_num}}</div>
               <div class="shop-member-crowd-index-box__num-describe">人群总数</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.expiring_crowd.yesterday_admission}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日入场</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
-              <div class="shop-member-crowd-index-box__number">10</div>
+              <div
+                class="shop-member-crowd-index-box__number"
+              >{{value.expiring_crowd.yesterday_deal_numb}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日交易</div>
             </div>
           </div>
         </div>
         <div class="shop-member-crowd-index-box__btn">
-          <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
-          <span class="shop-member-crowd-index-box__btn-dx">
-            <a-dropdown>
-              <span class="ant-dropdown-link" href="#">
-                定向运营
-                <a-icon type="down"/>
-              </span>
-              <a-menu slot="overlay">
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;">导出</a>
-                </a-menu-item>
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;">群发短信</a>
-                </a-menu-item>
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;">群发优惠</a>
-                </a-menu-item>
-              </a-menu>
-            </a-dropdown>
-          </span>
+          <router-link
+            class="shop-member-crowd-index-box__btn-rq"
+            tag="span"
+            :to="{name:'shop-member-crowd-analysis'}"
+          >人群分析</router-link>
+          <span class="shop-member-crowd-index-box__btn-rq">导出</span>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { MessageService } from '@/services/message.service'
+
 export default {
+  serviceInject() {
+    return {
+      messageService: MessageService
+    }
+  },
   model: {
     type: 'value',
     event: 'dataChangge'
@@ -167,7 +152,11 @@ export default {
   data() {
     return {}
   },
-  methods: {},
+  methods: {
+    newCrowd(data) {
+      this.messageService.warning({ content: data })
+    }
+  },
   mounted() {}
 }
 </script>

@@ -16,11 +16,27 @@
     <div class="mg-t8">
       <router-link to="/shop/setting/court/list">场地列表</router-link>
     </div>
+    <st-t3 class="mg-t24">合同设置</st-t3>
+    <div class="mg-t8">
+      <router-link to="/brand/setting/contract/list">合同列表</router-link>
+    </div>
     <st-t3 class="mg-t24">薪资</st-t3>
     <div class="mg-t8">
       <router-link to="/brand/finance/salary/list">薪资列表</router-link>
       <router-link to="/brand/finance/salary/template/basic" class="mg-l8">底薪模板</router-link>
       <router-link to="/brand/finance/salary/template/performance" class="mg-l8">业绩模板</router-link>
+    </div>
+    <st-t3 class="mg-t24">储物柜</st-t3>
+    <div class="mg-t8">
+      <router-link to="/shop/setting/cabinet">储物柜</router-link>
+      <a v-modal-link="{ name: 'shop-add-cabinet' }" class="mg-l8">新增储物柜</a>
+      <a v-modal-link="{ name: 'shop-edit-cabinet' }" class="mg-l8">编辑储物柜</a>
+      <a v-modal-link="{ name: 'shop-add-cabinet-area' }" class="mg-l8">添加储物柜区域</a>
+      <a v-modal-link="{ name: 'shop-update-cabinet-price' }" class="mg-l8">批量修改储物柜价格</a>
+    </div>
+    <st-t3 class="mg-t24">前台</st-t3>
+    <div class="mg-t8">
+      <router-link to="/shop/reception/cabinet">储物柜</router-link>
     </div>
   </st-panel>
 </template>

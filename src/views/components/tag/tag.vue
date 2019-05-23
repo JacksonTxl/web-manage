@@ -15,7 +15,9 @@ const tagMap = {
   'shop-sign': '店招',
   'period-card': '期限卡',
   'number-card': '次卡',
-  'deposite-card': '储值卡'
+  'deposite-card': '储值卡',
+  'cabinet-available': '空闲',
+  'cabinet-inuse': '使用中'
 }
 export default {
   name: 'StTag',

@@ -1,4 +1,9 @@
 .page-shop-sold {
+  &__select{
+    display: flex;
+    align-items: center;
+    margin:20px 0;
+  }
   &__content{
     padding: 24px;
     &-batch{
@@ -12,10 +17,39 @@
     padding-left: 16px;
     margin: 16px 0 8px;
     align-items: center;
+    .fz(14px);
+    .lh(22px);
     .bg(@dropdown-hover-bg-color);
     border-radius: 4px;
   }
+  &__table-select-number{
+    .c(@link-color);
+    font-style: normal;
+  }
   .mgr-8{
     margin-right: 8px;
+  }
+  .mgl-8{
+    margin-left: 8px;
+  }
+  .mgr-16{
+    margin-right: 16px;
+  }
+  .mgt-24{
+    margin-top: 24px;
+  }
+  .mgb-24{
+    margin-bottom: 24px;
+  }
+}
+.page-shop-sold-info{
+  .mgr-8{
+    margin-right: 8px;
+  }
+  .mgt-12{
+    margin-top: 12px;
+  }
+  .pd-24{
+    padding: 24px;
   }
 }
