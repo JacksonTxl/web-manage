@@ -368,7 +368,7 @@ export default {
         this.offsaleIsShow = false
         this.packageId = ''
         this.packageName = ''
-        // this.$router.push({force:false})  kael
+        this.$router.push({ force: true, query: this.query })
       })
     },
     deletePackage(id, name) {
@@ -381,7 +381,7 @@ export default {
         this.deleteIsShow = false
         this.packageId = ''
         this.packageName = ''
-        // this.$router.push({force:false})  kael
+        this.$router.push({ force: true, query: this.query })
       })
     }
   }

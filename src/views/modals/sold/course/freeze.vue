@@ -8,9 +8,9 @@
       <a-row :class="freeze('info')">
         <a-col :span="24">
           <st-info>
-            <st-info-item label="课程名称">腹肌撕裂训练</st-info-item>
-            <st-info-item label="剩余课时">36小时</st-info-item>
-            <st-info-item class="mgb-24" label="有效期">2019/02/21 14:59:59 至 2020/02/20 14:59:59</st-info-item>
+            <st-info-item label="课程名称">{{courseName}}</st-info-item>
+            <st-info-item label="剩余课时">{{courseNum}}</st-info-item>
+            <st-info-item class="mgb-24" label="有效期">{{time}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -47,17 +47,11 @@
               <a-select-option value="lucy">Lucy</a-select-option>
             </a-select>
           </st-form-item>
-          <st-form-item class="mg-b0" label="收款专员" required>
-            <a-select placeholder="选择支付方式">
-              <a-select-option value="jack">Jack</a-select-option>
-              <a-select-option value="lucy">Lucy</a-select-option>
-            </a-select>
-          </st-form-item>
         </div>
       </st-form>
     </div>
     <template slot="footer">
-      <st-button key="submit" type="primary">确认提交</st-button>
+      <st-button type="primary">确认提交</st-button>
     </template>
   </st-modal>
 </template>
@@ -68,6 +62,7 @@ export default {
   bem: {
     freeze: 'modal-sold-course-freeze'
   },
+  props: ['courseName', 'courseNum', 'time'],
 
   data() {
     return {

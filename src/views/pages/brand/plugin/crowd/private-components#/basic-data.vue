@@ -4,11 +4,9 @@
     <div v-for="(item,key,index) in value" :key="index">
       <div v-if="key !== 'arrData'">
         <st-t4 style="margin-bottom:16px">{{item.title}}</st-t4>
-        <div
-          style="display: flex;justify-content: space-between; padding-bottom:16px;   flex-direction: row;    flex-wrap: wrap;"
-        >
+        <div style="display: flex; padding-bottom:16px;   flex-direction: row;    flex-wrap: wrap;">
           <st-button
-            :style="{width:item.width+'px',marginBottom: '16px'}"
+            :style="{width:item.width+'px',marginBottom: '16px',marginRight:'8px'}"
             :class="value.arrData.indexOf(item1)>=0?'active':''"
             v-for="(item1,index) in item.value"
             :key="index"
@@ -41,26 +39,13 @@ export default {
     selectionFun(item) {
       let keyData = Object.keys(this.value)
       let self = this
-      keyData.map((key, index) => {
-        if (key !== 'arrData' && key !== 'getData' && key !== 'info') {
-          if (self.value[key].selectionData.indexOf(item) < 0) {
-            if (this.flag) {
-              self.value[key].value.map(valueData => {
-                if (valueData.indexOf(item) >= 0) {
-                  self.value[key].selectionData.unshift(item)
-                  self.value['arrData'].unshift(item)
-                }
-              })
-            }
-          } else {
-            self.value[key].selectionData.splice(
-              self.value[key].selectionData.indexOf(item),
-              1
-            )
-            self.value['arrData'].splice(self.value['arrData'].indexOf(item), 1)
-          }
+      if (self.value['arrData'].indexOf(item) >= 0) {
+        self.value['arrData'].splice(self.value['arrData'].indexOf(item), 1)
+      } else {
+        if (this.flag) {
+          self.value['arrData'].unshift(item)
         }
-      })
+      }
     }
   },
   mounted() {}

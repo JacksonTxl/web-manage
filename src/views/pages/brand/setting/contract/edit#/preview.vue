@@ -15,50 +15,50 @@
           <a-col :span="8" v-if="info.is_member_name">
             <div class="info-item">
               <label class="info-label">姓名：</label>
-              <span class="info-text">郭小小</span>
+              <span class="info-text">张三</span>
             </div>
           </a-col>
           <a-col :span="8" v-if="info.is_member_mobile">
             <div class="info-item">
               <label class="info-label">联系方式：</label>
-              <span class="info-text">15200008888</span>
+              <span class="info-text">13900000000</span>
             </div>
           </a-col>
           <a-col :span="8" v-if="info.is_member_card">
             <div class="info-item">
               <label class="info-label">会员卡号：</label>
-              <span class="info-text">ST0000001</span>
+              <span class="info-text">ST000001</span>
             </div>
           </a-col>
           <a-col :span="8" v-if="info.is_member_sex">
             <div class="info-item">
               <label class="info-label">性别：</label>
-              <span class="info-text">女</span>
+              <span class="info-text">男</span>
             </div>
           </a-col>
           <a-col :span="8" v-if="info.is_member_id_card">
             <div class="info-item">
               <label class="info-label">身份证：</label>
-              <span class="info-text">328077199911110011</span>
+              <span class="info-text">31010319900101000</span>
             </div>
           </a-col>
           <a-col :span="8" v-if="info.is_salesman_name">
             <div class="info-item">
               <label class="info-label">销售人员：</label>
-              <span class="info-text">杰森</span>
+              <span class="info-text">李四</span>
             </div>
           </a-col>
           <a-col :span="24" v-if="info.is_member_address">
             <div class="info-item">
               <label class="info-label">家庭住址：</label>
-              <span class="info-text">上海市徐汇区漕河泾街道华美嘉园23号楼1008室</span>
+              <span class="info-text">上海市黄浦区南京西路X号</span>
             </div>
           </a-col>
         </a-row>
       </div>
-      <div v-if="info.is_member_pic" :class="b('avatar')">
+      <!-- <div v-if="info.is_member_pic" :class="b('avatar')">
         <img src="a.png" alt>
-      </div>
+      </div> -->
     </section>
     <section :class="b('product')">
       <st-form-table>
@@ -135,7 +135,7 @@
         <a-col :span="8">
           <div class="info-item">
             <label class="info-label">购买门店：</label>
-            <span class="info-text">三体云动上海店</span>
+            <span class="info-text">三体云动总部</span>
           </div>
         </a-col>
         <a-col :span="24">
@@ -147,7 +147,7 @@
         <a-col :span="24" v-if='info.is_comment'>
           <div class="info-item">
             <label class="info-label">备注：</label>
-            <span class="info-text">添加备注消息，方便了解具体请情况</span>
+            <span class="info-text">展示订单的备注信息，以便了解当下订单的具体情况</span>
           </div>
         </a-col>
         <a-col :span="24" v-if="info.is_law_content">
@@ -174,13 +174,13 @@
         <a-col :span="12">
           <div class="info-item">
             <label class="info-lable">签订日期：</label>
-            <span class="info-text">{{today | dateFilter('YYYY年M月D日') }}</span>
+            <!-- <span class="info-text">{{today | dateFilter('YYYY年M月D日') }}</span> -->
           </div>
         </a-col>
         <a-col :span="12">
           <div class="info-item">
             <label class="info-lable">签订日期：</label>
-            <span class="info-text">{{today | dateFilter('YYYY年M月D日') }}</span>
+            <!-- <span class="info-text">{{today | dateFilter('YYYY年M月D日') }}</span> -->
           </div>
         </a-col>
       </a-row>

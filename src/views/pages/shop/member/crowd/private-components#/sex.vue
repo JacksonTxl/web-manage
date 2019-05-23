@@ -3,7 +3,7 @@
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">选择性别</span>
-    <a-radio-group name="radioGroup">
+    <a-radio-group name="radioGroup" v-model="value.getData.base_sex">
       <a-radio :value="1">男</a-radio>
       <a-radio :value="2">女</a-radio>
     </a-radio-group>

@@ -52,6 +52,10 @@ export class AddService extends Store<CardsListInfoState> {
   getCrowdBrand(params: string) {
     return this.crowdAPI.getCrowdBrand(params)
   }
+  // 编辑
+  getCrowdBrandCrowd(id: string, params: any) {
+    return this.crowdAPI.getCrowdBrandCrowd(id, params)
+  }
   init() {
     return forkJoin(this.getListInfo())
   }

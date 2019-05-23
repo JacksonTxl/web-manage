@@ -5,10 +5,6 @@
         <st-t2>人群定义维度</st-t2>
         <div style="padding-top:24px;coler:#9BACB9">单个人群最多可添加5个条件</div>
         <basic-data v-model="seleteData" :flag="flag"></basic-data>
-        <!-- <basic-data v-model="seleteData.regSource" :flag="flag"></basic-data>
-        <basic-data v-model="seleteData.concessionAward" :flag="flag"></basic-data>
-        <basic-data v-model="seleteData.tradeInfo" :flag="flag"></basic-data>
-        <basic-data v-model="seleteData.activeInfo" :flag="flag"></basic-data>-->
       </div>
       <div class="shop-member-crowd-add__right">
         <st-t2>编辑人群</st-t2>
@@ -19,8 +15,10 @@
               placeholder="不超过20字，且不包含“/”"
               maxlength="20"
               v-decorator="[
-                  'basicInfoRuleList.physical_id',
-                  {rules: [{ validator: physicalId}]}
+                  'basicInfoRuleList.crowd_name',
+                  {
+                    initialValue:seleteData.getData.crowd_name,
+                    rules: [{ validator: physicalId}]}
                 ]"
             />
           </st-form-item>
@@ -45,20 +43,23 @@
             <component v-bind:is="item | componentFun" v-model="seleteData"></component>
           </div>
         </template>
-        <div
-          v-if="seleteData.arrData.length"
-          style="padding-top:32px;display: flex;justify-content: center;"
-        >
+        <div style="padding-top:32px;display: flex;justify-content: center;">
           <st-button style="margin-right:16px;width:102px">取消</st-button>
-          <st-button type="primary" style="margin-right:16px;width:102px">保存</st-button>
+          <st-button
+            v-if="seleteData.arrData.length"
+            type="primary"
+            style="margin-right:16px;width:102px"
+            @click="conserve"
+          >保存</st-button>
+          <st-button v-else disabled type="primary" style="margin-right:16px;width:102px">保存</st-button>
         </div>
       </div>
     </div>
-    {{cardsListInfo}}
+    {{seleteData.arrData}}
   </div>
 </template>
 <script>
-import basicData from './private-components#/basic-data'
+import base_info from './private-components#/basic-data'
 import sex from './private-components#/sex'
 import age from './private-components#/age'
 import birthday from './private-components#/birthday'
@@ -75,11 +76,16 @@ import admissionTimes from './private-components#/admission-times'
 import lastAdmissionTime from './private-components#/last-admission-time'
 import sourceMode from './private-components#/source-mode.vue'
 import inductionTime from './private-components#/induction-time.vue'
+import userLable from './private-components#/user-lable.vue'
+import baseMemberLevel from './private-components#/base-member-level.vue'
 import { AddService } from './add.service'
+import routes from '@/router/routes'
+import { MessageService } from '@/services/message.service'
 export default {
   serviceInject() {
     return {
-      aService: AddService
+      aService: AddService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -88,7 +94,7 @@ export default {
     }
   },
   components: {
-    'basic-data': basicData, // 左侧组件
+    'basic-data': base_info, // 左侧组件
     'reg-time': regTime, // 注册时间
     'source-mode': sourceMode, // 来源方式
     'induction-time': inductionTime, // 入会时间
@@ -104,7 +110,9 @@ export default {
     'admission-times': admissionTimes, // 入场次数
     'private-class-num': privateClassNum, // 私教课剩余次数
     cardMount, // 储值卡剩余金额
-    lastAdmissionTime // 最后一次入场时间
+    lastAdmissionTime, // 最后一次入场时间
+    userLable,
+    baseMemberLevel
   },
   data() {
     let self = this
@@ -114,26 +122,26 @@ export default {
 
       seleteData: {
         // 基础资料
-        basicData: {
+        base_info: {
           title: '基础资料',
-          value: ['性别', '年龄', '所属门店', '生日'],
+          value: ['性别', 'base_age', '所属门店', '生日'],
           selectionData: [],
           width: 108
         },
         // 注册来源
-        regSource: {
+        source_info: {
           title: '注册来源',
           value: ['注册时间', '来源方式', '入会时间'],
           selectionData: [],
           width: 108
         },
-        concessionAward: {
+        discount_info: {
           title: '优惠奖励',
           value: ['可用积分', '可用优惠券', '累计获得积分'],
           selectionData: [],
           width: 108
         },
-        tradeInfo: {
+        deal_info: {
           title: '交易信息',
           value: [
             '会员卡即将到期',
@@ -144,7 +152,7 @@ export default {
           selectionData: [],
           width: 170
         },
-        activeInfo: {
+        active_info: {
           title: '活跃信息',
           value: ['入场次数', '最后一次入场时间'],
           selectionData: [],
@@ -152,28 +160,77 @@ export default {
         },
         arrData: [],
         getData: {
-          crowd_name: null,
-          base_sex: null,
+          crowd_name: '',
+          base_sex: '',
           base_age: {
-            min: null,
-            max: null
+            min: '',
+            max: ''
           },
+          base_birthday: {
+            min: '',
+            max: ''
+          },
+          base_shop: [],
           register_time: {
-            min: null,
-            max: null
+            min: '',
+            max: ''
+          },
+          source_channel: [],
+          member_time: {
+            min: '',
+            max: ''
+          },
+          available_scores: {
+            min: '',
+            max: ''
+          },
+          available_coupon_number: {
+            min: '',
+            max: ''
           },
           sum_scores: {
-            min: null,
-            max: null
-          }
+            min: '',
+            max: ''
+          },
+          member_expiring: {
+            min: '',
+            max: ''
+          },
+          member_card_remain_times: {
+            min: '',
+            max: ''
+          },
+          personal_course_remain_times: {
+            min: '',
+            max: ''
+          },
+          deposit_remain_money: {
+            min: '',
+            max: ''
+          },
+          remain_enter_times: {
+            select_time: {
+              min: '',
+              max: ''
+            },
+            remain_times: {
+              min: '',
+              max: ''
+            }
+          },
+          final_enter_time: {
+            min: '',
+            max: ''
+          },
+          base_member_label: [],
+          base_member_level: []
         },
         info: {}
       },
       form: this.$form.createForm(this),
       basicInfoRuleList: {
-        // 实体卡
-        physical_id: [
-          'physical_id',
+        crowd_name: [
+          'crowd_name',
           {
             rules: [
               {
@@ -187,51 +244,109 @@ export default {
     }
   },
   created() {
-    this.seleteData.info = this.cardsListInfo.info
+    console.log(this.$route.query.id)
+    if (this.$route.query.id) {
+      this.getCrowdBrand(this.$route.query.id)
+    }
+
+    this.getFilterData()
   },
   filters: {
     componentFun(value) {
-      switch (value) {
-        case '最后一次入场时间':
-          return 'lastAdmissionTime'
-        case '入场次数':
-          return 'admission-times'
-        case '储值卡剩余金额':
-          return 'cardMount'
-        case '私教课剩余次数':
-          return 'private-class-num'
-        case '会员卡剩余次数':
-          return 'card-remaining-number'
-        case '会员卡即将到期':
-          return 'membership-expires'
-        case '累计获得积分':
-          return 'accumulate-integrals'
-        case '可用优惠券':
-          return 'available-coupons'
-        case '可用积分':
-          return 'available-integral'
-        case '所属门店':
-          return 'affiliated-store'
-        case '年龄':
-          return 'age'
-        case '性别':
-          return 'sex'
-        case '注册时间':
-          return 'reg-time'
-        case '来源方式':
-          return 'source-mode'
-        case '入会时间':
-          return 'induction-time'
-        case '生日':
-          return 'birthday'
+      let obj = {
+        base_sex: 'sex',
+        base_age: 'age',
+        base_birthday: 'birthday',
+        base_shop: 'affiliated-store',
+        register_time: 'reg-time',
+        source_channel: 'source-mode',
+        member_time: 'induction-time',
+        available_scores: 'available-integral',
+        available_coupon_number: 'available-coupons',
+        sum_scores: 'accumulate-integrals',
+        member_expiring: 'membership-expires',
+        member_card_remain_times: 'card-remaining-number',
+        personal_course_remain_times: 'private-class-num',
+        deposit_remain_money: 'cardMount',
+        remain_enter_times: 'admission-times',
+        final_enter_time: 'lastAdmissionTime',
+        base_member_label: 'userLable',
+        base_member_level: 'base-member-level'
       }
+      return obj[value]
     }
   },
   methods: {
+    getCrowdBrand(id) {
+      let self = this
+
+      this.aService.getCrowdBrand(id).subscribe(status => {
+        self.seleteData.arrData = status.info.array_index
+        self.seleteData.getData.crowd_name = status.info.crowd_name
+        status.info.array_index.map(item => {
+          self.seleteData.getData[item] = status.info[item]
+        })
+      })
+    },
+    conserve() {
+      let self = this
+      this.form.validateFields((err, values) => {
+        self.seleteData.getData.crowd_name = values.basicInfoRuleList.crowd_name
+        if (!err) {
+          let obj = {}
+          let [arrKey, arrValue] = [[], []]
+          self.seleteData.arrData.map(item => {
+            obj[item] = self.seleteData.getData[item]
+            if (
+              Object.prototype.toString
+                .call(self.seleteData.getData[item])
+                .slice(8, -1) === 'Object'
+            ) {
+              arrKey.push(...Object.keys(self.seleteData.getData[item]))
+              arrValue.push(...Object.values(self.seleteData.getData[item]))
+            } else {
+              arrKey.push(item)
+              arrValue.push(self.seleteData.getData[item])
+            }
+          })
+          obj.array_index = self.seleteData.arrData
+          obj.crowd_name = self.seleteData.getData.crowd_name
+
+          if (
+            arrKey.length === arrValue.length &&
+            arrValue.every(item => item !== '')
+          ) {
+            console.log(arrKey, arrValue)
+            if (self.$route.query.id) {
+              self.aService
+                .getCrowdBrandCrowd(self.$route.query.id, obj)
+                .subscribe(status => {
+                  self.$router.push({ name: 'shop-member-crowd-index' })
+                })
+            } else {
+              self.aService.setCrowdBrandField(obj).subscribe(status => {
+                self.$router.push({ name: 'shop-member-crowd-index' })
+              })
+            }
+          } else {
+            this.messageService.warning({ content: '请完整填写！' })
+          }
+        }
+      })
+    },
+    getFilterData() {
+      let self = this
+      Object.keys(self.cardsListInfo.info).map(item => {
+        Object.assign(self.seleteData.info, self.cardsListInfo.info[item].value)
+        self.seleteData[item].value = Object.keys(
+          self.cardsListInfo.info[item].value
+        )
+      })
+    },
     deleteIcon(data, item) {
       let k = Object.keys(data)
       k.map(item1 => {
-        if (item1 !== 'arrData') {
+        if (item1 !== 'arrData' && item1 !== 'getData' && item1 !== 'info') {
           if (data[item1].selectionData.indexOf(item) >= 0) {
             data[item1].selectionData.splice(
               data[item1].selectionData.indexOf(item),

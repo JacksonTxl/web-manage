@@ -1,74 +1,71 @@
 <template>
-  <div>
-    <div style="margin-bottom: 16px">
-      <a-button
-        type="primary"
-        @click="start"
-        :disabled="!hasSelected"
-        :loading="loading"
-      >
-        Reload
-      </a-button>
-      <span style="margin-left: 8px">
-        <template v-if="hasSelected">
-          {{`Selected ${selectedRowKeys.length} items`}}
-        </template>
-      </span>
-    </div>
-    <a-table
-    :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-    :columns="columns"
-    :dataSource="data" />
-  </div>
+  <a-table :columns="columns" :dataSource="data">
+    <a slot="name" slot-scope="text" href="javascript:;">{{text}}</a>
+    <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
+    <span slot="tags" slot-scope="tags">
+      <a-tag v-for="tag in tags" color="blue" :key="tag">{{tag}}</a-tag>
+    </span>
+    <span slot="action" slot-scope="text, record">
+      <a href="javascript:;">Invite 一 {{record.name}}</a>
+      <a-divider type="vertical" />
+      <a href="javascript:;">Delete</a>
+      <a-divider type="vertical" />
+      <a href="javascript:;" class="ant-dropdown-link">
+        More actions <a-icon type="down" />
+      </a>
+    </span>
+  </a-table>
 </template>
 <script>
 const columns = [{
-  title: 'Name',
-  dataIndex: 'name'
+  dataIndex: 'name',
+  key: 'name',
+  slots: { title: 'customTitle' },
+  scopedSlots: { customRender: 'name' }
 }, {
   title: 'Age',
-  dataIndex: 'age'
+  dataIndex: 'age',
+  key: 'age'
 }, {
   title: 'Address',
-  dataIndex: 'address'
+  dataIndex: 'address',
+  key: 'address'
+}, {
+  title: 'Tags',
+  key: 'tags',
+  dataIndex: 'tags',
+  scopedSlots: { customRender: 'tags' }
+}, {
+  title: 'Action',
+  key: 'action',
+  scopedSlots: { customRender: 'action' }
 }]
 
-const data = []
-for (let i = 0; i < 46; i++) {
-  data.push({
-    key: i,
-    name: `Edward King ${i}`,
-    age: 32,
-    address: `London, Park Lane no. ${i}`
-  })
-}
+const data = [{
+  key: '1',
+  name: 'John Brown',
+  age: 32,
+  address: 'New York No. 1 Lake Park',
+  tags: ['nice', 'developer']
+}, {
+  key: '2',
+  name: 'Jim Green',
+  age: 42,
+  address: 'London No. 1 Lake Park',
+  tags: ['loser']
+}, {
+  key: '3',
+  name: 'Joe Black',
+  age: 32,
+  address: 'Sidney No. 1 Lake Park',
+  tags: ['cool', 'teacher']
+}]
 
 export default {
   data() {
     return {
       data,
-      columns,
-      selectedRowKeys: [], // Check here to configure the default column
-      loading: false
-    }
-  },
-  computed: {
-    hasSelected() {
-      return this.selectedRowKeys.length > 0
-    }
-  },
-  methods: {
-    start() {
-      this.loading = true
-      // ajax request after empty completing
-      setTimeout(() => {
-        this.loading = false
-        this.selectedRowKeys = []
-      }, 1000)
-    },
-    onSelectChange(selectedRowKeys) {
-      console.log('selectedRowKeys changed: ', selectedRowKeys)
-      this.selectedRowKeys = selectedRowKeys
+      columns
     }
   }
 }

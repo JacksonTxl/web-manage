@@ -3,6 +3,7 @@
     margin-bottom: 32px;
   }
   &__table{
+    width: 100%;
     margin-bottom: 32px;
     .table-header{
       height: 64px;
@@ -10,10 +11,20 @@
       .bg(@table-bg-color-thead-second);
     }
     .table-item{
-      height: 56px;
-      .lh(56px);
+      .lh(32px);
+      border-bottom: 1px solid @divider;
       &:nth-child(even){
         .bg(@table-bg-color-row-2);
+      }
+      td{
+        vertical-align: top;
+        padding-top: 12px;
+        .ant-form-item{
+          margin-bottom: 12px !important;
+        }
+        .ant-form-item-with-help{
+          margin-bottom: 0 !important;
+        }
       }
     }
   }
