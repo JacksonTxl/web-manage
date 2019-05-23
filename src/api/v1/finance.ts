@@ -52,7 +52,7 @@ export class FinanceAPi extends Api {
    * @param id 模板id
    */
   getPerformanceInfo(id: any) {
-    return this.http.get(`/v1/finance/salary/performance/${id}`, { mock: {} })
+    return this.http.get(`/v1/finance/salary/performance/${id}`)
   }
 
   /**

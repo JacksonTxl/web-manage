@@ -37,7 +37,7 @@
           <td>
             <modal-link
               tag="a"
-              :to=" { name: 'finance-edit-performance-template', props: {id: item.id},on: {change: refresh}}"
+              :to=" { name: 'finance-performance-info', props: {id: item.id},on: {change: refresh}}"
             >详情</modal-link>
             <a-divider type="vertical"></a-divider>
             <modal-link

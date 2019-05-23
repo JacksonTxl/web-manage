@@ -257,8 +257,12 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           values.gradients = this.data
+          if (values.performance_type === 3) {
+            values.performance_mode = 0
+          }
           this.service.editTemplate(this.id, values).subscribe(() => {
             console.log('ok')
+
             this.$emit('change')
             this.message.success({ content: '编辑成功' })
             this.show = false

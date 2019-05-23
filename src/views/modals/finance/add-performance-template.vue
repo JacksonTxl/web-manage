@@ -23,7 +23,7 @@
               @change="selectType"
             >
               <template v-for="(item,key) in finance.performance_type.value">
-                <a-select-option :key="key" :value="key">{{ item }}</a-select-option>
+                <a-select-option :key="key" :value="+key">{{ item }}</a-select-option>
               </template>
             </a-select>
           </st-form-item>
@@ -32,10 +32,10 @@
           <st-form-item label="提成模式" required>
             <a-radio-group
               @change="onChooseRadio"
-              v-decorator="['performance_mode',{initialValue: '1',rules: [{ required: true, message: '请选择提成模式' }]}]"
+              v-decorator="['performance_mode',{initialValue: 1,rules: [{ required: true, message: '请选择提成模式' }]}]"
             >
               <template v-for="(item,key) in finance.performance_mode.value">
-                <a-radio :key="item" :value="key">{{ item }}</a-radio>
+                <a-radio :key="item" :value="+key">{{ item }}</a-radio>
               </template>
             </a-radio-group>
           </st-form-item>
@@ -62,7 +62,7 @@
           </st-form-item>
         </a-col>
         <a-col :lg="24">
-          <st-form-item label="梯度提成" >
+          <st-form-item label="梯度提成">
             <div
               style="padding:12px; box-size: border-box; border-radius:4px;border:1px solid rgba(205,212,223,1); "
             >
@@ -232,6 +232,9 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           values.gradients = this.data
+          if (values.performance_type === 3) {
+            values.performance_mode = 0
+          }
           this.service.addTemplate(values).subscribe(() => {
             console.log('ok')
             this.$emit('change')
