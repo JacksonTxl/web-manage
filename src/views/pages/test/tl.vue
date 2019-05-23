@@ -64,7 +64,17 @@
           </tr>
         </tbody>
       </st-form-table>
-      <p>
+
+      <st-form-table :page="{ current_page: 1, size: 20, total_counts: 0, total_pages: 0 }" class="mg-t24">
+        <thead>
+          <tr>
+            <th>A</th>
+            <th>B</th>
+          </tr>
+        </thead>
+      </st-form-table>
+
+      <p class="mg-t24">
         <a href="javascript: void(0)" v-modal-link="{ name: 'test-tl', props: { name: 'lucy', age: 18 } }">modal test</a>
       </p>
       <p class="mg-t24 st-des">

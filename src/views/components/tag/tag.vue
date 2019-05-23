@@ -1,4 +1,4 @@
-<template>
+    <template>
   <div class="st-tag" :class="['st-tag--'+type]">{{labelText}}</div>
 </template>
 

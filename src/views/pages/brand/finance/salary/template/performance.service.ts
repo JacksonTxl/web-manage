@@ -4,37 +4,36 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { FinanceAPi, SalaryBasicQuery } from '@/api/v1/finance'
 
-interface BasicState {
-    basicInfo: Object
+interface PerFormanceState {
+    list: Object
 }
 @Injectable()
-export class BasicService extends Store<BasicState> {
-    state$: State<BasicState>
-    basicInfo$: Computed<Object>
+export class PerformanceService extends Store<PerFormanceState> {
+    state$: State<PerFormanceState>
+    list$: Computed<Object>
     constructor(private cardsApi: FinanceAPi) {
       super()
       this.state$ = new State({
-        basicInfo: {}
+        list: {}
       })
-      this.basicInfo$ = new Computed(this.state$.pipe(pluck('basicInfo')))
+      this.list$ = new Computed(this.state$.pipe(pluck('list')))
     }
-    getBasicInfo(query:SalaryBasicQuery) {
-      return this.cardsApi.getSalaryBasicList(query).pipe(
+    getList(query:SalaryBasicQuery) {
+      return this.cardsApi.getPerformanceList(query).pipe(
         tap(res => {
           this.state$.commit(state => {
-            state.basicInfo = res
+            state.list = res
           })
         })
       )
     }
 
     deleteTemplate(id: any) {
-      return this.cardsApi.deleteTemplate(id)
+      return this.cardsApi.deletePerformance(id)
     }
 
     beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-      console.log('-===========', to.meta.query)
-      this.getBasicInfo({ size: to.meta.query.size, page: to.meta.query.page }).subscribe(() => {
+      this.getList({ size: to.meta.query.size, page: to.meta.query.page }).subscribe(() => {
         next()
       })
     }

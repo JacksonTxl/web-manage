@@ -53,6 +53,28 @@
         </tr>
       </tbody>
     </st-form-table>
+    <st-form-table :page="{ current_page: 1, size: 20, total_counts: 0, total_pages: 0 }" class="mg-t16">
+      <thead>
+        <tr>
+          <th>表格无数据演示1，通过page对象判断</th>
+          <th>标题2</th>
+          <th>标题3</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </st-form-table>
+    <st-form-table :isEmpty="true" class="mg-t16">
+      <thead>
+        <tr>
+          <th>表格无数据演示1，通过isEmpty判断</th>
+          <th>标题2</th>
+          <th>标题3</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </st-form-table>
   </section>
 </template>
 <script>
