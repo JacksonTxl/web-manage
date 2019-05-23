@@ -8,7 +8,9 @@
           :to=" { name: 'brand-plugin-crowd-add'}"
           v-if="cardsListInfo.info.list.length <= 10"
         >
-          <st-button type="primary">新建人群</st-button>
+          <st-button type="primary">
+            <a-icon type="plus"/>新建人群
+          </st-button>
         </router-link>
         <st-button v-else type="primary" @click="newCrowd('人群数量已达到上限！')">新建人群</st-button>
 

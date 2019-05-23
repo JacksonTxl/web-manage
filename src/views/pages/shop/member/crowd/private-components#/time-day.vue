@@ -60,7 +60,6 @@ export default {
         min: str[0],
         max: str[1]
       }
-      console.log(data, str, obj.max, this.filterTime(new Date().getTime()))
       if (obj.max === this.filterTime(new Date().getTime())) {
         let flagTime = Math.round(
           (new Date(obj.max).getTime() - new Date(obj.min).getTime()) /
