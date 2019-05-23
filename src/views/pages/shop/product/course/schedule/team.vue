@@ -17,8 +17,6 @@
       :slotLabelFormat="slotLabelFormat"
       eventBackgroundColor="#fff"
       @eventClick="onEventClick"
-      @eventMouseEnter='onEventMouseEnter'
-      @eventMouseLeave='onEventMouseLeave'
       @eventRender="onEventRender($event)"
       :events="calendarEvents"
       @dateClick="handleDateClick"
@@ -125,25 +123,38 @@ export default {
     }
   },
   updated() {
-    this.setAddButton()
+    this.$nextTick().then(() => {
+      this.setAddButton()
+    })
+  },
+  watch: {
+    scheduleTeamCourseList(n, o) {
+      this.calendarEvents = []
+      n.forEach(item => {
+        this.calendarEvents.push({ // add new event data
+          title: item.course_name,
+          groupId: JSON.stringify(item),
+          id: item.id,
+          start: `${item.start_date} ${item.start_time}`,
+          end: `${item.start_date} ${item.end_time}`
+        })
+      })
+    }
   },
   mounted() {
     this.setAddButton()
     this.gotoPast()
-    // this.$nextTick().then(() => {
-    //   this.scheduleTeamCourseList.forEach(item => {
-    //     this.calendarEvents.push({ // add new event data
-    //       title: item.course_name,
-    //       url: JSON.stringify(item),
-    //       start: `${item.start_date} ${item.start_time}`,
-    //       end: `${item.start_date} ${item.end_time}`
-    //       // cocah_name: item.coach_name,
-    //       // end: `${item.start_date} ${item.end_time}`,
-    //       // start: moment(item.start_time),
-    //       // course_name: item.course_name
-    //     })
-    //   })
-    // })
+    this.$nextTick().then(() => {
+      this.scheduleTeamCourseList.forEach(item => {
+        this.calendarEvents.push({ // add new event data
+          title: item.course_name,
+          groupId: JSON.stringify(item),
+          id: item.id,
+          start: `${item.start_date} ${item.start_time}`,
+          end: `${item.start_date} ${item.end_time}`
+        })
+      })
+    })
   },
   methods: {
     setAddButton() {
@@ -206,43 +217,64 @@ export default {
       console.log('onEventMouseLeave', e)
     },
     onEventPositioned() {
-      console.log('dds')
     },
     onEventRender(event, element) {
-      event.el.querySelector('.fc-title').remove()
-      event.el.querySelector('.fc-time').remove()
-      console.log('onEventRender')
-      const item = event.event
-      const renderObj = JSON.parse(item.url)
-      var new_description =
-          moment(item.start).format('HH:mm') + '-' + moment(`${item.end}`).format('HH:mm') + '<br/>' +
-          '<strong>Address: </strong>' + item.title + '<br/>'
-      event.el.querySelector('.fc-content').innerHTML = new_description
+      this.$nextTick().then(() => {
+        event.el.querySelector('.fc-title').remove()
+        event.el.querySelector('.fc-time').remove()
+        const item = event.event
+        const renderObj = JSON.parse(item.groupId)
+        const current = moment().format('HH:mm:SS')
+        const courtHtml = renderObj.court_name ? `<div class="court-name"><span class="label">场地: </span><span>${renderObj.court_name}</span></div>` : ''
+        let new_description = `<div class="st-schedule-content mg-l8">
+                                <div class="time"><a-icon type="clock-circle"></a-icon>${moment(item.start).format('HH:mm')} - ${moment(item.end).format('HH:mm')}</div>
+                                <div class="course-name">${item.title}</div>
+                                <div class="coach-name"><span class="label">教练: </span><span>${renderObj.coach_name}</span></div>
+                                ${courtHtml}
+                              </div>`
+        let color = ''
+        if (moment(item.end) < moment()) {
+          color = '#DDDDDD'
+        } else if (moment(item.start) < moment() && moment(item.end) > moment()) {
+          color = '#FF805B'
+        } else if (moment(item.start) > moment()) {
+          color = '#3AA0FF'
+        }
+        event.el.querySelector('.fc-content').innerHTML = new_description
+        $(event.el).closest('.fc-time-grid-event').css('border-left', ` 3px ${color} solid`)
+      })
     },
     onEventClick(event) {
       console.log(event)
-      window.alert('我这是详情')
-    },
-    handleDateClick(arg) {
-      // this.calendarEvents.push({ // add new event data
-      //   title: 'New fadfgafasdfsadfasdEvent',
-      //   start: moment(arg.date),
-      //   allDay: arg.allDay
-      // })
       this.$modalRouter.push({
-        name: 'schedule-add-course-schedule',
+        name: 'schedule-order-info',
         props: {
-          time: arg.date
+          id: event.event.id
         },
         on: {
           ok: res => {
-            if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
-              this.calendarEvents.push({ // add new event data
-                title: 'New Event',
-                start: arg.date,
-                allDay: arg.allDay
-              })
-            }
+            this.calendarEvents.push({
+              title: 'New Event',
+              start: arg.date,
+              allDay: arg.allDay
+            })
+          }
+        }
+      })
+    },
+    handleDateClick(arg) {
+      this.$modalRouter.push({
+        name: 'schedule-add-course-schedule',
+        props: {
+          time: moment(arg.date)
+        },
+        on: {
+          ok: res => {
+            this.calendarEvents.push({
+              title: 'New Event',
+              start: arg.date,
+              allDay: arg.allDay
+            })
           }
         }
       })
@@ -282,7 +314,7 @@ export default {
   cursor: pointer;
 }
 .fc-content{
-  color: #e33
+  color: #000
 }
 .fc-time-grid-event.fc-event.fc-start.fc-end{
   background:rgba(255,255,255,0.9);

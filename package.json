@@ -50,7 +50,7 @@
         "vue-countup-v2": "^3.0.1",
         "vue-full-calendar": "^2.7.0",
         "vue-funnel-graph-js": "^0.1.3",
-        "vue-modal-router": "^0.2.9",
+        "vue-modal-router": "^0.3.0",
         "vue-router": "^3.0.2",
         "vue-router-multiguard": "^1.0.3",
         "vuedraggable": "^2.19.2",

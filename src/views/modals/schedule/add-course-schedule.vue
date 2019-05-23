@@ -4,7 +4,7 @@
       <st-form-item label="时间" required>
         <a-date-picker showTime format="YYYY-MM-DD HH:mm" v-decorator="[
           'start_time',
-          {rules: [{ required: true, message: 'Please input your note!' }]}
+          {rules: [{ required: true, message: 'Please input your note!'}], initialValue: time}
         ]">
           <a-icon slot="suffixIcon" type="clock-circle" />
         </a-date-picker>
@@ -18,7 +18,7 @@
         </a-select>
       </st-form-item>
       <st-form-item label="教练" required>
-        <a-select @change="onChange" v-decorator="[
+        <a-select v-decorator="[
           'coach_id',
           // {rules: [{ required: true, message: 'Please input your note!' }]}
         ]">
@@ -29,7 +29,6 @@
         <a-cascader
         :options="courtOptions"
         :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
-        @change="onChange"
         v-decorator="[
           'court_id',
           // {rules: [{ required: true, message: 'Please input your note!' }]}
@@ -39,13 +38,13 @@
         <a-input-search v-decorator="[
           'limit_num',
           {rules: [{ required: true, message: 'Please input your note!' }]}
-        ]"  @change="onChange"> <a-button slot="enterButton">人</a-button> </a-input-search>
+        ]"> <a-button slot="enterButton">人</a-button> </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required >
         <a-input-search v-decorator="[
           'course_fee',
           {rules: [{ required: true, message: 'Please input your note!' }]}]"
-        @change="onChange"> <a-button slot="enterButton">元/节</a-button> </a-input-search>
+        > <a-button slot="enterButton">元/节</a-button> </a-input-search>
       </st-form-item>
       <a-row>
         <a-col
@@ -55,8 +54,7 @@
           <st-button class="mg-r16" @click="onClick">批量设置</st-button>
           <st-button
             type="primary"
-            @click="onSubmit"
-            :loading="loading.postScheduleTeam">
+            @click="onSubmit">
             提交
           </st-button>
         </a-col>
@@ -66,27 +64,36 @@
 </template>
 
 <script>
-import { ScheduleService } from './schedule.service.ts'
 import { cloneDeep } from 'lodash-es'
+import { TeamService } from '../../pages/shop/product/course/schedule/team.service'
 export default {
   name: 'AddCourseSchedule',
   serviceInject() {
     return {
-      scheduleService: ScheduleService
+      teamScheduleService: TeamService
     }
   },
   rxState() {
+    const tss = this.teamScheduleService
     return {
-      loading: this.scheduleService.loading$
+      // loading: this.teamScheduleService.loading$,
+      coachOptions: tss.coachOptions$,
+      courseOptions: tss.courseOptions$,
+      courtOptions: tss.courtOptions$
     }
   },
   data() {
     return {
-      coachOptions: [],
-      courseOptions: [],
-      courtOptions: [],
       show: false,
       form: this.$form.createForm(this)
+    }
+  },
+  props: {
+    time: {
+      type: Object,
+      default: () => {
+        return moment()
+      }
     }
   },
   methods: {
@@ -99,10 +106,10 @@ export default {
           form.court_id = form.court_id[0]
           form.course_fee = parseInt(form.course_fee)
           form.limit_num = parseInt(form.limit_num)
-          this.scheduleService.postScheduleTeam({ ...form }).subscribe(() => {
-            this.$message('新增团课排期成功')
+          this.teamScheduleService.postScheduleTeam({ ...form }).subscribe(() => {
+            this.show = false
+            this.$emit('ok')
           })
-          this.$emit('ok')
         }
       })
     },
@@ -111,24 +118,7 @@ export default {
       this.$modalRouter.push({
         name: 'schedule-add-course-schedule-batch'
       })
-    },
-    handleReset() {
-
-    },
-    onChange() {
-
-    },
-    save() {
-      // this.show = false
-      // this.$emit('test')
     }
-  },
-  mounted() {
-    this.scheduleService.initOptions().subscribe(res => {
-      this.coachOptions = res.coachOptions
-      this.courseOptions = res.courseOptions
-      this.courtOptions = res.courtOptions
-    })
   }
 }
 </script>
