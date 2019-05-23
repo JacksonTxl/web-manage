@@ -14,8 +14,8 @@ export class ScheduleApi1v1 extends Api {
   /**
    * 私教排期列表
    */
-  getSchedulePersonalList() {
-    return this.http.get('/v1/schedule/personal/list')
+  getSchedulePersonalList(query: GetSchedulePersonalListInput) {
+    return this.http.get('/v1/schedule/personal/list', { query })
   }
   /**
    * 获取私教课教练列表
@@ -119,6 +119,16 @@ export class ScheduleApi1v1 extends Api {
   getSchedulePersonalDate(id: string) {
     return this.http.get(`/v1/schedule/personal/date/${id}`)
   }
+}
+export interface GetSchedulePersonalListInput{
+  /**
+   * 开始时间
+   */
+  start_time: string;
+  /**
+   * 结束时间
+   */
+  end_time: string;
 }
 export interface GetSchedulePersonalMemberInput{
   /**
