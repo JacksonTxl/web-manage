@@ -1,5 +1,6 @@
 <template>
   <div class='page-team-personal'>
+    <st-t3>私教课团</st-t3>
     <FullCalendar
       class='page-team-personal__calendar'
       ref="fullCalendar"
