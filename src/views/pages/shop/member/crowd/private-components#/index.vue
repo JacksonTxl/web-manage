@@ -6,7 +6,7 @@
         <div style=" padding: 32px 28px 0 32px;">
           <div class="shop-member-crowd-index-box__item">
             <img
-              src="http://n.sinaimg.cn/sinacn14/39/w480h359/20181013/e040-hmivixm5109047.jpg"
+              src="../../../../../../assets/img/shop_crowd_new.png"
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
@@ -36,7 +36,12 @@
           </div>
         </div>
         <div class="shop-member-crowd-index-box__btn">
-          <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
+          <router-link
+            class="shop-member-crowd-index-box__btn-rq"
+            tag="span"
+            :to="{name:'shop-member-crowd-analysis'}"
+          >人群分析</router-link>
+
           <span class="shop-member-crowd-index-box__btn-rq">导出</span>
         </div>
       </div>
@@ -44,7 +49,7 @@
         <div style=" padding: 32px 28px 0 32px;">
           <div class="shop-member-crowd-index-box__item">
             <img
-              src="http://n.sinaimg.cn/sinacn14/39/w480h359/20181013/e040-hmivixm5109047.jpg"
+              src="../../../../../../assets/img/shop_crowd_expire.png"
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
@@ -74,7 +79,11 @@
           </div>
         </div>
         <div class="shop-member-crowd-index-box__btn">
-          <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
+          <router-link
+            class="shop-member-crowd-index-box__btn-rq"
+            tag="span"
+            :to="{name:'shop-member-crowd-analysis'}"
+          >人群分析</router-link>
 
           <span class="shop-member-crowd-index-box__btn-rq">导出</span>
         </div>
@@ -83,7 +92,7 @@
         <div style=" padding: 32px 28px 0 32px;">
           <div class="shop-member-crowd-index-box__item">
             <img
-              src="http://n.sinaimg.cn/sinacn14/39/w480h359/20181013/e040-hmivixm5109047.jpg"
+              src="../../../../../../assets/img/shop_crowd_private_teaching.png"
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
@@ -113,7 +122,11 @@
           </div>
         </div>
         <div class="shop-member-crowd-index-box__btn">
-          <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
+          <router-link
+            class="shop-member-crowd-index-box__btn-rq"
+            tag="span"
+            :to="{name:'shop-member-crowd-analysis'}"
+          >人群分析</router-link>
           <span class="shop-member-crowd-index-box__btn-rq">导出</span>
         </div>
       </div>
