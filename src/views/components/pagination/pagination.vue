@@ -1,5 +1,6 @@
 <template>
   <a-pagination
+    v-if="total"
     class="st-pagination mg-t24"
     :total="total"
     :pageSize="pageSize"

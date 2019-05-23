@@ -26,12 +26,12 @@
 </template>
 
 <script>
-import { ScheduleService } from './schedule.service.ts'
+import { TeamService } from '../../pages/shop/product/course/schedule/team.service'
 export default {
   name: 'AddOrder',
   serviceInject() {
     return {
-      scheduleService: ScheduleService
+      scheduleService: TeamService
     }
   },
   rxState() {

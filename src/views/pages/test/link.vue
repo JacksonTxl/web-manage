@@ -38,5 +38,11 @@
     <div class="mg-t8">
       <router-link to="/shop/reception/cabinet">储物柜</router-link>
     </div>
+    <st-t3 class="mg-t24">课程排期</st-t3>
+    <div class="mg-t8">
+      <router-link to="/shop/product/course/schedule">课程排期</router-link>
+      <router-link to="/shop/product/course/manage/team" class="mg-l8">课程排期-团操课</router-link>
+      <router-link to="/shop/product/course/schedule/personal-team">课程排期-私教小团课</router-link>
+    </div>
   </st-panel>
 </template>

@@ -3,6 +3,10 @@
     <table :class="b({striped,hoverable})">
       <slot></slot>
     </table>
+    <div v-if="isNoData">
+      <st-no-data/>
+      <st-hr></st-hr>
+    </div>
     <st-pagination v-if="page.total_counts" :page="page" @change="onChange"/>
   </a-spin>
 </template>
@@ -31,6 +35,15 @@ export default {
       default() {
         return {}
       }
+    },
+    isEmpty: {
+      type: [Boolean, Number],
+      default: false
+    }
+  },
+  computed: {
+    isNoData() {
+      return this.isEmpty || !this.page.total_counts
     }
   },
   methods: {
