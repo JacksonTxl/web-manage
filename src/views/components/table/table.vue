@@ -24,15 +24,7 @@ export default {
           showSizeChanger: true
         },
         locale: {
-          emptyText: (
-            <div class="mg-y24">
-              <img
-                width="150"
-                src="https://static-s.styd.cn/201811161629/no-data.png"
-              />
-              <p class="mg-t16">暂无数据</p>
-            </div>
-          )
+          emptyText: <st-no-data/>
         }
       },
       this.$attrs
