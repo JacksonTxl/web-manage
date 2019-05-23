@@ -41,7 +41,10 @@ export default {
       radioValue: ''
     }
   },
-  created() {},
+  created() {
+    this.onChange([], [this.value.min, this.value.max])
+    console.log([this.value.min, this.value.max])
+  },
   methods: {
     moment,
     onChangeRadio(data) {
