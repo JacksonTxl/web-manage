@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     isNoData() {
-      return this.isEmpty || !this.page.total_counts
+      return this.isEmpty || this.page.total_counts === 0
     }
   },
   methods: {

@@ -24,7 +24,7 @@
             <div
               style="padding:12px; box-size: border-box; border-radius:4px;border:1px solid rgba(205,212,223,1);"
             >
-              <st-form-table hoverable>
+              <st-form-table hoverable :isEmpty="infodata.gradients.length === 0">
                 <thead>
                   <tr>
                     <template v-if="infodata.performance_type.id == 1">

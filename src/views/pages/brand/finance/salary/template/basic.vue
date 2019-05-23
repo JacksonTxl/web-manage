@@ -1,5 +1,5 @@
 <template>
-  <st-form-table :page="page" @change="onPageChange" hoverable>
+  <st-form-table :page="basicInfo.page" @change="onPageChange" hoverable >
     <thead>
       <tr>
         <template v-for="(item,index) in columsTitlelist">
@@ -63,6 +63,7 @@ export default {
   },
   data() {
     return {
+      list: [],
       columsTitlelist: [
         '模板名称',
         '月底薪(元)',
@@ -80,7 +81,11 @@ export default {
   },
   methods: {
     refresh() {
-      this.$router.push({ query: {}, force: true })
+      this.$router.push({ query: {
+        size: this.page.pageSize,
+        page: this.page.current
+      },
+      force: true })
     },
     onDelete(e) {
       console.log(e)

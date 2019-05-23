@@ -18,7 +18,7 @@
         <a-col :lg="24">
           <st-form-item label="业绩类型" required>
             <a-select
-              v-decorator="['performance_type',{initialValue: this.infodata.performance_type, rules: [{ required: true, message: '请选择业绩类型' }]}]"
+              v-decorator="['performance_type',{initialValue: this.infodata.performance_type.id, rules: [{ required: true, message: '请选择业绩类型' }]}]"
               placeholder="请选择"
               @change="selectType"
               disabled
@@ -33,7 +33,7 @@
           <st-form-item label="提成模式" required>
             <a-radio-group
               @change="onChooseRadio"
-              v-decorator="['performance_mode',{initialValue: this.infodata.performance_mode,rules: [{ required: true, message: '请选择提成模式' }]}]"
+              v-decorator="['performance_mode',{initialValue: this.infodata.performance_mode.id,rules: [{ required: true, message: '请选择提成模式' }]}]"
             >
               <template v-for="(item,key) in finance.performance_mode.value">
                 <a-radio :key="item" :value="+key">{{ item }}</a-radio>
@@ -67,7 +67,7 @@
             <div
               style="padding:12px; box-size: border-box; border-radius:4px;border:1px solid rgba(205,212,223,1); "
             >
-              <st-form-table hoverable>
+              <st-form-table hoverable :isEmpty="false">
                 <thead>
                   <tr>
                     <template v-if="performance_type == 1">
@@ -202,8 +202,8 @@ export default {
         this.$set(item, 'isEdit', false)
         this.data.push(item)
       })
-      this.performance_type = res.info.performance_type
-      this.performance_mode = res.info.performance_mode
+      this.performance_type = res.info.performance_type.id
+      this.performance_mode = res.info.performance_mode.id
     })
   },
   methods: {

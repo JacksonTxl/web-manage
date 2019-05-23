@@ -33,6 +33,7 @@ export class BasicService extends Store<BasicState> {
     }
 
     beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+      console.log('-===========', to.meta.query)
       this.getBasicInfo({ size: to.meta.query.size, page: to.meta.query.page }).subscribe(() => {
         next()
       })
