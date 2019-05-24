@@ -1,23 +1,10 @@
-import { Api } from '@/api/api'
-
-export class PersonalScheduleApi extends Api {
+import { ScheduleApi } from './index'
+export class PersonalTeamScheduleApi extends ScheduleApi {
   /**
-   * 获取门店私教课列表
+   * 获取私教小团课排期列表
    */
-  getCourseList() {
-    return this.http.get('/v1/schedule/personal/course')
-  }
-  /**
-   * 获取团体课排期列表
-   */
-  getScheduleList(query: GetScheduleListInput) {
+  getList(query: GetListInput) {
     return this.http.get('/v1/schedule/personal_team/shop', { query })
-  }
-  /**
-   * 获取教练列表
-   */
-  getCoachList() {
-    return this.http.get('/v1/schedule/personal_team/shop/coach_list')
   }
   /**
    * 添加排期
@@ -26,27 +13,27 @@ export class PersonalScheduleApi extends Api {
     return this.http.post('/v1/schedule/personal_team/shop', { params })
   }
 }
-export interface GetScheduleListInput {
+export interface GetListInput {
   /**
    * 教练id
    */
-  coach_id: number
+  coach_id?: number
   /**
    * 时间段类型 1 今天 2 周 3 日
    */
-  time_unit: number
+  time_unit?: number
   /**
    * 开始日期 time_unit=2传入，不传默认本周开始日期
    */
-  start_date: string
+  start_date?: string
   /**
    * 结束日期 time_unit=2传入，不传默认本周结束日期
    */
-  end_date: string
+  end_date?: string
   /**
    * 日期 time_unit=3传入，不传默认当天日期
    */
-  date: string
+  date?: string
 }
 export interface AddInput {
   /**

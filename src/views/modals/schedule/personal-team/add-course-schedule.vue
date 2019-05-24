@@ -48,7 +48,8 @@
         <st-button class="mg-r16" @click="onClick">批量设置</st-button>
         <st-button
           type="primary"
-          @click="onSubmit">
+          @click="onSubmit"
+        >
           提交
         </st-button>
       </div>
@@ -57,7 +58,7 @@
 </template>
 
 <script>
-import { cloneDeep } from 'lodash-es'
+import { MessageService } from '@/services/message.service'
 import { PersonalTeamService } from '@/views/pages/shop/product/course/schedule/personal-team.service'
 const formRules = {
   startTime: [
@@ -110,13 +111,13 @@ export default {
   name: 'AddCourseSchedule',
   serviceInject() {
     return {
+      messageService: MessageService,
       personalTeamService: PersonalTeamService
     }
   },
   rxState() {
     const personalTeamService = this.personalTeamService
     return {
-      // loading: this.personalTeamService.loading$,
       courseOptions: personalTeamService.courseOptions$,
       coachOptions: personalTeamService.coachOptions$
     }
@@ -136,12 +137,22 @@ export default {
       }
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.initStartTime()
+    })
+  },
   methods: {
+    initStartTime() {
+      this.form.setFieldsValue({
+        start_time: this.time
+      })
+    },
     onSubmit() {
       this.form.validateFields((err, values) => {
         if (!err) {
           const data = this.dataFilter(values)
-          this.personalTeamService.addSchedule(data).subscribe(this.onSubmitSuccess)
+          this.personalTeamService.add(data).subscribe(this.onSubmitSuccess)
         }
       })
     },
@@ -152,17 +163,16 @@ export default {
       })
     },
     dataFilter(data) {
-      data.start_time = data.start_time.format('YYYY-MM-DD HH:mm:ss')
+      data.start_time = data.start_time.format('YYYY-MM-DD HH:mm')
       return data
     },
     onSubmitSuccess() {
       this.show = false
+      this.messageService.success({
+        content: '添加成功'
+      })
       this.$emit('ok')
     }
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>
