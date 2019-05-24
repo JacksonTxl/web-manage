@@ -97,21 +97,26 @@
 </template>
 
 <script>
-import { TeamService } from '../../pages/shop/product/course/schedule/team.service'
+import { TeamService } from '../../../pages/shop/product/course/schedule/team.service'
 import { switchMap } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
+import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
+import { TeamScheduleReserveService } from '../../../pages/shop/product/course/schedule/team.service#/reserve.service'
 export default {
   name: 'OrderInfo',
   serviceInject() {
     return {
-      scheduleService: TeamService,
+      teamScheduleCommonService: TeamScheduleCommonService,
+      teamScheduleReserveService: TeamScheduleReserveService,
       messageService: MessageService
     }
   },
   rxState() {
+    const common = this.teamScheduleCommonService
     return {
-      consumeOptions: this.scheduleService.consumeOptions$,
-      unUsedSeatOptions: this.scheduleService.unUsedSeatOptions$
+      memberOptions: common.momberOptions$,
+      consumeOptions: common.consumeOptions$,
+      unUsedSeatOptions: common.unUsedSeatOptions$
     }
   },
   props: {
@@ -119,9 +124,6 @@ export default {
   },
   data() {
     return {
-      // consumeOptions: [],
-      // unUsedSeatOptions: [],
-      memberOptions: [],
       memberId: '',
       consumeType: '',
       consumeId: '',
@@ -174,12 +176,10 @@ export default {
   },
   methods: {
     onSearch(value) {
-      this.scheduleService.getMemberByMemberName({ member_name: value }).subscribe(res => {
-        this.memberOptions = res.list
-      })
+      this.teamScheduleCommonService.getMemberList({ member_name: value }).subscribe()
     },
     onChange(value) {
-      this.scheduleService.getScheduleConsume({ course_id: this.courseId, member_id: value }).subscribe()
+      this.teamScheduleCommonService.getScheduleConsume({ course_id: this.courseId, member_id: value }).subscribe()
     },
     onChangeConsumeType(val) {
       console.log('onChangeConsumeType', val)
@@ -205,7 +205,7 @@ export default {
         consume_type: this.consumeType,
         consume_id: this.consumeId
       }
-      this.scheduleService.postScheduleShopReserve(form).subscribe()
+      this.teamScheduleReserveService.add(form).subscribe()
     },
     edit(key) {
       const newData = [...this.data]
@@ -228,11 +228,11 @@ export default {
     }
   },
   mounted() {
-    const ss = this.scheduleService
-    ss.getScheduleById(this.id).pipe(
+    const ss = this.teamScheduleReserveService
+    ss.getInfo(this.id).pipe(
       switchMap(state => {
         this.info = state.info
-        return ss.getUnusedSeat({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
+        return this.teamScheduleCommonService.getUnusedSeat({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
       }))
       .subscribe()
   }

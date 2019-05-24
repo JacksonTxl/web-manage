@@ -32,7 +32,7 @@ import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
-import { TeamService } from './team.service'
+import { TeamScheduleScheduleService } from './team.service#/schedule.service'
 
 export default {
   name: 'Schedule',
@@ -41,12 +41,12 @@ export default {
   },
   serviceInject() {
     return {
-      teamService: TeamService
+      teamScheduleScheduleService: TeamScheduleScheduleService
     }
   },
   rxState() {
     return {
-      scheduleTeamCourseList: this.teamService.scheduleTeamCourseList$
+      scheduleTeamCourseList: this.teamScheduleScheduleService.scheduleTeamCourseList$
     }
   },
   data() {
@@ -145,15 +145,7 @@ export default {
     this.setAddButton()
     this.gotoPast()
     this.$nextTick().then(() => {
-      this.scheduleTeamCourseList.forEach(item => {
-        this.calendarEvents.push({ // add new event data
-          title: item.course_name,
-          groupId: JSON.stringify(item),
-          id: item.id,
-          start: `${item.start_date} ${item.start_time}`,
-          end: `${item.start_date} ${item.end_time}`
-        })
-      })
+      this.calendarEvents = this.scheduleTeamCourseList
     })
   },
   methods: {
@@ -247,7 +239,7 @@ export default {
     onEventClick(event) {
       console.log(event)
       this.$modalRouter.push({
-        name: 'schedule-order-info',
+        name: 'schedule-team-reserve-info',
         props: {
           id: event.event.id
         },

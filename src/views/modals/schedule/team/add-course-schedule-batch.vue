@@ -88,7 +88,9 @@
 </template>
 <script>
 import { cloneDeep } from 'lodash-es'
-import { TeamService } from '../../pages/shop/product/course/schedule/team.service'
+import { TeamService } from '../../../pages/shop/product/course/schedule/team.service'
+import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
+import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
 const columns = [{
   title: '日期',
   dataIndex: 'start_time',
@@ -122,11 +124,12 @@ export default {
   name: 'AddCourseScheduleBatch',
   serviceInject() {
     return {
-      teamSchedeleService: TeamService
+      teamScheduleCommonService: TeamScheduleCommonService,
+      teamScheduleScheduleService: TeamScheduleScheduleService
     }
   },
   rxState() {
-    const tss = this.teamSchedeleService
+    const tss = this.teamScheduleCommonService
     return {
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
@@ -178,7 +181,7 @@ export default {
           return item
         })
       console.log(data)
-      this.teamSchedeleService.postScheduleShopBatch(data).subscribe()
+      this.teamScheduleScheduleService.postScheduleShopBatch(data).subscribe()
       this.show = false
     },
     onChangeCourseList() {

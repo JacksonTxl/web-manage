@@ -66,17 +66,18 @@
 
 <script>
 import { cloneDeep } from 'lodash-es'
-import { TeamService } from '../../pages/shop/product/course/schedule/team.service'
+import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
+import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
 export default {
   name: 'EditCourseSchedule',
   serviceInject() {
     return {
-      scheduleService: ScheduleService,
-      teamSchedeleService: TeamService
+      teamScheduleScheduleService: TeamScheduleScheduleService,
+      teamScheduleCommonService: TeamScheduleCommonService
     }
   },
   rxState() {
-    const tss = this.teamSchedeleService
+    const tss = this.teamScheduleCommonService
     return {
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
@@ -95,7 +96,7 @@ export default {
     console.log(this.form)
   },
   mounted() {
-    this.teamSchedeleService.getScheduleInEdit('12034851274770').subscribe(res => {
+    this.teamScheduleScheduleService.getUpdateInfo('12034851274797').subscribe(res => {
       let { id, course_id, coach_id, course_fee, court_id, court_site_id, start_time, reserved_num, limit_num } = res.info
       start_time = moment(start_time)
       court_id = [court_id, court_site_id]
@@ -121,7 +122,7 @@ export default {
           form.court_id = form.court_id[0]
           form.course_fee = parseInt(form.course_fee)
           form.limit_num = parseInt(form.limit_num)
-          this.teamSchedeleService.putSchedule(this.id, { ...form }).subscribe(() => {
+          this.teamScheduleScheduleService.update(this.id, { ...form }).subscribe(() => {
             this.$message('修改团课排期成功')
           })
         }
