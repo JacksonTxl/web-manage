@@ -8,7 +8,7 @@ interface ListStata {
     listData: Object
 }
 @Injectable()
-export default class ListService extends Store<ListStata> {
+export class ListService extends Store<ListStata> {
     state$: State<ListStata>
     listData$: Computed<Object>
     constructor(private cardsApi: ScheduleApi1v1) {
@@ -21,9 +21,8 @@ export default class ListService extends Store<ListStata> {
     getList(query:GetSchedulePersonalListInput) {
       return this.cardsApi.getSchedulePersonalList(query).pipe(
         tap(res => {
-          console.log('==========', res)
           this.state$.commit(state => {
-            state.listData = res.list
+            state.listData = res
           })
         })
       )

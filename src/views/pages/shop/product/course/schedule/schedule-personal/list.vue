@@ -1,16 +1,23 @@
 <template>
-    <st-panel>
+  <st-panel>
     <div slot="title">
       <a-row :gutter="8">
         <a-col :lg="9">
           <st-button>私教预约表</st-button>
         </a-col>
         <a-col :lg="7">
-          <!-- <date/> -->
+          <date/>
         </a-col>
         <a-col :lg="8" style="text-align: right;">
-          <st-button class="mg-r8" type="primary">批量排期</st-button>
-          <st-button>添加排期</st-button>
+          <st-button class="mg-r8" type="primary">
+            <modal-link
+              tag="a"
+              :to="{ name: 'schedule-personal-inbatch-add', props: { id: 1 } }"
+            >批量排期</modal-link>
+          </st-button>
+          <st-button>
+            <modal-link tag="a" :to="{ name: 'schedule-personal-add', props: { id: 1 } }">添加排期</modal-link>
+          </st-button>
         </a-col>
       </a-row>
     </div>
@@ -18,22 +25,61 @@
       <st-form-table :page="page" @change="onPageChange" hoverable>
         <thead>
           <tr>
-            <template v-for="(item,index) in columsTitlelist">
-              <th :key="index">{{ item }}</th>
+            <th>教练名称</th>
+            <template v-for="(item,index) in listData.schedule_time">
+              <th :key="index" :class="item.date == currentTime ? 'thgl': ''">
+                <span style="display: block;">{{ item.date }}</span>
+                <span style="display: block;">{{ item.week }}</span>
+              </th>
             </template>
+            <th>操作</th>
           </tr>
         </thead>
         <tbody>
-          <template></template>
+          <template v-for="item in listData.list">
+            <tr :key="item.staff_name">
+              <td>
+                <a href="javascript:;">{{ item.staff_name }}</a>
+              </td>
+              <template v-for="items in item.schedule_info">
+                <template v-if="items.timing.length > 0">
+                  <td :key="items.id" :class="items.schedule_date == currentTime ? 'thgl': ''">
+                    <a-popover placement="rightTop">
+                      <template slot="content">
+                          <template v-for="timingItem in items.timing">
+                              <p :key="timingItem.start_time">{{ timingItem.start_time }}~{{ timingItem.end_time }}</p>
+                          </template>
+                      </template>
+                      <template slot="title">
+                        <span>排期</span>
+                      </template>
+                      {{ items.timing[0].start_time }}~{{ items.timing[0].end_time }}
+                    </a-popover>
+                  </td>
+                </template>
+                <template v-else>
+                  <td
+                    :key="items.id"
+                    :class="items.schedule_date == currentTime ? 'thgl': ''"
+                  >{{ items.timing[0].start_time }}~{{ items.timing[0].end_time }}</td>
+                </template>
+              </template>
+              <td>
+                <modal-link
+                  tag="a"
+                  :to="{ name: 'schedule-personal-edit', props: { id: item.id } }"
+                >编辑</modal-link>
+              </td>
+            </tr>
+          </template>
         </tbody>
       </st-form-table>
     </a-row>
-    {{ listData }}
   </st-panel>
 </template>
 
 <script>
-// import date from './date#/date'
+import date from './date#/date-component'
 import { ListService } from './list.service'
 
 export default {
@@ -48,25 +94,18 @@ export default {
     }
   },
   components: {
-    // date
+    date
   },
   data() {
     return {
-      columsTitlelist: [
-        '教练姓名',
-        '02/02 周一',
-        '02/03 周二',
-        '02/04 周三',
-        '02/05 周四',
-        '02/06 周五',
-        '02/07 周六',
-        '02/08 周日',
-        '操作'
-      ],
-      page: {}
+      page: {},
+      currentTime: ''
     }
   },
-  mounted() {},
+  mounted() {
+    this.currentTime = moment().format('YYYY-MM-DD')
+    //   console.log(moment().format("YYYY-MM-DD"))
+  },
   methods: {
     onPageChange() {}
   }

@@ -1,14 +1,18 @@
-import { PostCopyInput } from './../team/schedule'
+// import { PostCopyInput } from './../team/schedule'
 
 import { Api } from '@/api/api'
 import { GetScheduleSiteListInput } from '../team/schedule'
 
+export interface GetSchedulePersonalCoachInfoInput{
+  start_time: string;
+  end_time: string;
+}
 export class ScheduleApi1v1 extends Api {
   /**
    * 私教排期列表
    */
   getSchedulePersonalList(query: GetSchedulePersonalListInput) {
-    return this.http.get('/v1/schedule/personal/list', { query })
+    return this.http.get('/v1/schedule/personal/list', { mock: {} })
   }
   /**
    * 获取私教课教练列表
@@ -20,19 +24,19 @@ export class ScheduleApi1v1 extends Api {
  * 添加私教排期
  */
   PostSchedulePersonalSchedule(params: PostSchedulePersonalScheduleInput) {
-    return this.http.post('/v1/schedule/personal/schedule')
+    return this.http.post('/v1/schedule/personal/schedule', { params })
   }
   /**
    * 修改排期回显
    */
-  getSchedulePersonalCoachInfoById(id: string) {
-    return this.http.get(`v1/schedule/personal/coach/info/${id}`)
+  getSchedulePersonalCoachInfoById(id: string, query: GetSchedulePersonalCoachInfoInput) {
+    return this.http.get(`/v1/schedule/personal/coach/info/${id}`, { query })
   }
   /**
    * 编辑排期
    */
   putSchedulePersonalScheduleById(id: string, params: ScheduleInfo) {
-    return this.http.put(`v1/schedule/personal/schedule/${id}`)
+    return this.http.put(`v1/schedule/personal/schedule/${id}`, { params })
   }
   /**
    * 复制排期
@@ -50,7 +54,7 @@ export class ScheduleApi1v1 extends Api {
    * 添加预约
    */
   postSchedulePersonal(params: PostSchedulePersonalInput) {
-    return this.http.post(`/v1/schedule/personal`)
+    return this.http.post(`/v1/schedule/personal`, { params })
   }
   /**
    * 私教预约详情
