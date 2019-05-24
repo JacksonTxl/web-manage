@@ -35,7 +35,7 @@ import $ from 'jquery'
 import { TeamService } from './team.service'
 
 export default {
-  name: 'ScheduleTeam',
+  name: '',
   components: {
     FullCalendar // make the <FullCalendar> tag available
   },
