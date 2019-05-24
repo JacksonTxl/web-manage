@@ -3,8 +3,8 @@ import { State, Effect, Computed } from 'rx-state/src'
 import { tap, pluck, switchMap, debounce } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import {
-  PersonalScheduleApi,
-  GetScheduleListInput,
+  PersonalTeamScheduleApi,
+  GetListInput,
   AddInput
   // PostScheduleTeamInput,
   // GetScheduleTeamListQuery,
@@ -13,7 +13,7 @@ import {
   // ConsumeQuery,
   // PostScheduleTeamCopyInput,
   // UnUsedSeatQuery
-} from '@/api/v1/schedule/personal'
+} from '@/api/v1/schedule/personal-team'
 
 export interface ScheduleState {
   scheduleList: object[],
@@ -33,7 +33,7 @@ export class PersonalTeamService implements RouteGuard {
   // unUsedSeatOptions$: Computed<any[]>
   // consumeOptions$: Computed<any[]>
 
-  constructor(private scheduleApi: PersonalScheduleApi) {
+  constructor(private scheduleApi: PersonalTeamScheduleApi) {
     this.state$ = new State({
       scheduleList: [],
       courseOptions: [],
@@ -61,8 +61,12 @@ export class PersonalTeamService implements RouteGuard {
     })
   }
   @Effect()
-  addSchedule(params: AddInput) {
-    return this.scheduleApi.add(params)
+  add(params: AddInput) {
+    return this.scheduleApi.add(params).pipe(
+      switchMap(state => {
+        return this.getList({})
+      })
+    )
   }
 
   // getScheduleTeamInEdit(id: string) {
@@ -142,20 +146,20 @@ export class PersonalTeamService implements RouteGuard {
   }
   init(query: any) {
     return forkJoin(
-      this.getScheduleList(query),
+      this.getList(query),
       this.initOptions()
     )
   }
   @Effect()
-  getScheduleList(query: GetScheduleListInput) {
-    return this.scheduleApi.getScheduleList(query).pipe(
+  getList(query: GetListInput) {
+    return this.scheduleApi.getList(query).pipe(
       tap(res => {
         this.SET_SCHEDULE_LIST(res.list)
       })
     )
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute, next: any) {
-    this.getScheduleList(to.meta.query).subscribe(() => {
+    this.getList(to.meta.query).subscribe(() => {
       next()
     })
   }
