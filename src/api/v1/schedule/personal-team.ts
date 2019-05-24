@@ -1,6 +1,6 @@
 import { Api } from '@/api/api'
 
-export class PersonalScheduleApi extends Api {
+export class PersonalTeamScheduleApi extends Api {
   /**
    * 获取门店私教课列表
    */

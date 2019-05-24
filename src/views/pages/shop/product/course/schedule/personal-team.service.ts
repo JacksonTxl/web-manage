@@ -3,7 +3,7 @@ import { State, Effect, Computed } from 'rx-state/src'
 import { tap, pluck, switchMap, debounce } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import {
-  PersonalScheduleApi,
+  PersonalTeamScheduleApi,
   GetScheduleListInput,
   AddInput
   // PostScheduleTeamInput,
@@ -13,7 +13,7 @@ import {
   // ConsumeQuery,
   // PostScheduleTeamCopyInput,
   // UnUsedSeatQuery
-} from '@/api/v1/schedule/personal'
+} from '@/api/v1/schedule/personal-team'
 
 export interface ScheduleState {
   scheduleList: object[],
@@ -33,7 +33,7 @@ export class PersonalTeamService implements RouteGuard {
   // unUsedSeatOptions$: Computed<any[]>
   // consumeOptions$: Computed<any[]>
 
-  constructor(private scheduleApi: PersonalScheduleApi) {
+  constructor(private scheduleApi: PersonalTeamScheduleApi) {
     this.state$ = new State({
       scheduleList: [],
       courseOptions: [],
@@ -61,8 +61,12 @@ export class PersonalTeamService implements RouteGuard {
     })
   }
   @Effect()
-  addSchedule(params: AddInput) {
-    return this.scheduleApi.add(params)
+  add(params: AddInput) {
+    return this.scheduleApi.add(params).pipe(
+      switchMap(state => {
+        return this.getScheduleList({})
+      })
+    )
   }
 
   // getScheduleTeamInEdit(id: string) {
