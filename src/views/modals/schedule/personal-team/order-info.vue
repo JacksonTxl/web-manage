@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import { TeamService } from '@/views/pages/shop/product/course/schedule/team.service'
+import { TeamService } from '@/views/pages/shop/product/course/schedule/personal-team.service'
 import { switchMap } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
 export default {

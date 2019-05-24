@@ -4,7 +4,7 @@ import { tap, pluck, switchMap, debounce } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import {
   PersonalTeamScheduleApi,
-  GetScheduleListInput,
+  GetListInput,
   AddInput
   // PostScheduleTeamInput,
   // GetScheduleTeamListQuery,
@@ -64,7 +64,7 @@ export class PersonalTeamService implements RouteGuard {
   add(params: AddInput) {
     return this.scheduleApi.add(params).pipe(
       switchMap(state => {
-        return this.getScheduleList({})
+        return this.getList({})
       })
     )
   }
@@ -146,20 +146,20 @@ export class PersonalTeamService implements RouteGuard {
   }
   init(query: any) {
     return forkJoin(
-      this.getScheduleList(query),
+      this.getList(query),
       this.initOptions()
     )
   }
   @Effect()
-  getScheduleList(query: GetScheduleListInput) {
-    return this.scheduleApi.getScheduleList(query).pipe(
+  getList(query: GetListInput) {
+    return this.scheduleApi.getList(query).pipe(
       tap(res => {
         this.SET_SCHEDULE_LIST(res.list)
       })
     )
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute, next: any) {
-    this.getScheduleList(to.meta.query).subscribe(() => {
+    this.getList(to.meta.query).subscribe(() => {
       next()
     })
   }
