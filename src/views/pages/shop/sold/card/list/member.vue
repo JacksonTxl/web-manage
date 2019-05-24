@@ -303,7 +303,7 @@ export default {
     // 修改剩余价值
     onSurplus() {
       this.$modalRouter.push({
-        name: 'sold-package-surplus'
+        name: 'sold-course-surplus'
       })
     },
     // 续租
