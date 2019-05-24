@@ -14,7 +14,7 @@ export class ScheduleApi extends Api {
    * @param params
    * 获取团体课排期列表
    */
-  getList(query: GetListQuery) {
+  getScheduleList(query: GetScheduleListQuery) {
     return this.http.get('/v1/schedule/team/shop', { query })
   }
   /**
@@ -22,7 +22,7 @@ export class ScheduleApi extends Api {
    * @param params
    * 获取团体课排期列表
    */
-  getTable(query: GetListQuery) {
+  getScheduleTable(query: GetScheduleListQuery) {
     return this.http.get('/v1/schedule/team/shop/table', { query })
   }
   /**
@@ -30,7 +30,7 @@ export class ScheduleApi extends Api {
    * @param params
    * 新增团体课排期
    */
-  postSchedule(params: PostSchduleInput) {
+  postSchedule(params: PostScheduleInput) {
     return this.http.post('/v1/schedule/team/shop', { params })
   }
   /**
@@ -38,7 +38,7 @@ export class ScheduleApi extends Api {
  * @param params
  * 添加排期
  */
-  postShopReserve(params: ShopReserveInput) {
+  postScheduleShopReserve(params: ScheduleShopReserveInput) {
     return this.http.post('/v1/schedule/team/shop/reserve', { params })
   }
   /**
@@ -46,7 +46,7 @@ export class ScheduleApi extends Api {
    * @param params
    * 复制团体课排期
    */
-  postCopy(params: PostCopyInput) {
+  postScheduleCopy(params: PostScheduleCopyInput) {
     return this.http.post('/v1/schedule/team/shop/copy', { params })
   }
   /**
@@ -54,7 +54,7 @@ export class ScheduleApi extends Api {
    * @param params
    * 获取团体课排期列表
    */
-  getById(id: string) {
+  getScheduleById(id: string) {
     return this.http.get(`/v1/schedule/team/shop/${id}`)
   }
   /**
@@ -62,7 +62,7 @@ export class ScheduleApi extends Api {
    * @param id
    * 课程编辑回显
    */
-  getInEdit(id: string) {
+  getScheduleInEdit(id: string) {
     return this.http.get(`/v1/schedule/team/shop/edit/${id}`)
   }
   /**
@@ -74,18 +74,10 @@ export class ScheduleApi extends Api {
     return this.http.get(`/v1/schedule/team/shop/unused_seat`, { query })
   }
   /**
- *
- * @param id
- * 团体课排期可使用座位列表
- */
-  postShopBatch(params: any) {
-    return this.http.post(`/v1/schedule/team/shop/batch`, { params })
-  }
-  /**
   *
   * @param query
   */
-  getConsume(query: GetConsumeInput) {
+  getScheduleConsume(query: GetScheduleConsumeInput) {
     return this.http.get('/v1/schedule/team/shop/consume', { query })
   }
 
@@ -94,7 +86,7 @@ export class ScheduleApi extends Api {
    * @param params
    * 修改课程排期
    */
-  put(id: string, params: Put) {
+  putSchedule(id: string, params: PutSchedule) {
     return this.http.put(`/v1/schedule/team/shop/${id}`, { params })
   }
   /**
@@ -102,16 +94,16 @@ export class ScheduleApi extends Api {
    * @param params
    * 取消团体课排期
    */
-  deleteById(id: string) {
+  deleteScheduleById(id: string) {
     return this.http.delete(`/v1/schedule/team/shop/${id}`)
   }
-  getCourseList() {
+  getScheduleCourseList() {
     return this.http.get('/v1/schedule/team/shop/course_list')
   }
-  getCoachList() {
+  getScheduleCoachList() {
     return this.http.get('/v1/schedule/team/shop/coach_list')
   }
-  getCourtList() {
+  getScheduleCourtList() {
     return this.http.get('/v1/schedule/team/shop/court_list')
   }
   /**
@@ -123,7 +115,7 @@ export class ScheduleApi extends Api {
     return this.http.get('/v1/schedule/team/shop/member', { query })
   }
 }
-export interface ShopReserveInput {
+export interface ScheduleShopReserveInput {
   schedule_id: number,
   member_id: number,
   seat: any[],
@@ -133,7 +125,7 @@ export interface ShopReserveInput {
 /**
  * 获取团体课排期列表
  */
-export interface GetListQuery {
+export interface GetScheduleListQuery {
   is_paginate?: number // 是否分页 0 不分页 1 分页 默认0
   size?: number // 分页大小
   page?: number // 页码
@@ -147,7 +139,7 @@ export interface GetListQuery {
 /**
  * 新增团体课程排期request数据
  */
-export interface PostSchduleInput {
+export interface PostScheduleInput {
   course_id: number // 课程ID
   court_id: number // 场地id
   court_site_id: number // 座位模版Id
@@ -169,7 +161,7 @@ export interface ConsumeQuery{
 /**
  * 复制团体课排期数据
  */
-export interface PostCopyInput {
+export interface PostScheduleCopyInput {
   copy_start_time: string // 复制开始时间
   copy_end_time: string // 复制结束时间
   apply_start_time: string // 应用开始时间
@@ -186,17 +178,17 @@ export interface GetMemberInput {
 /**
  * 团体课排期可使用座位列表请求数据
  */
-export interface GetSiteListInput {
+export interface GetScheduleSiteListInput {
   schedule_id: number // 排期ID
   court_site_id: number // 座位模版ID
 }
-export interface Put {
+export interface PutSchedule {
   course_id: number
 }
 /**
  * 获取用户消费方式request
  */
-export interface GetConsumeInput {
+export interface GetScheduleConsumeInput {
   course_id: number,
   member_id: number
 }

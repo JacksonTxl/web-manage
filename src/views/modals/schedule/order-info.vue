@@ -179,7 +179,7 @@ export default {
       })
     },
     onChange(value) {
-      this.scheduleService.getConsume({ course_id: this.courseId, member_id: value }).subscribe()
+      this.scheduleService.getScheduleConsume({ course_id: this.courseId, member_id: value }).subscribe()
     },
     onChangeConsumeType(val) {
       console.log('onChangeConsumeType', val)
@@ -205,7 +205,7 @@ export default {
         consume_type: this.consumeType,
         consume_id: this.consumeId
       }
-      this.scheduleService.postShopReserve(form).subscribe()
+      this.scheduleService.postScheduleShopReserve(form).subscribe()
     },
     edit(key) {
       const newData = [...this.data]
@@ -229,7 +229,7 @@ export default {
   },
   mounted() {
     const ss = this.scheduleService
-    ss.getById(this.id).pipe(
+    ss.getScheduleById(this.id).pipe(
       switchMap(state => {
         this.info = state.info
         return ss.getUnusedSeat({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })

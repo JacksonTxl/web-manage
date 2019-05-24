@@ -178,7 +178,8 @@ export default {
           return item
         })
       console.log(data)
-      this.teamSchedeleService.postShopBatch(data).subscribe(() => { this.show = false })
+      this.teamSchedeleService.postScheduleShopBatch(data).subscribe()
+      this.show = false
     },
     onChangeCourseList() {
 
