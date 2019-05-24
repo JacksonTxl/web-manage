@@ -1,10 +1,11 @@
 <template>
   <st-modal
-  title="转让"
-  size="small"
-  v-model="show"
-  wrapClassName="modal-sold-card-transfer"
-  @ok="onOk">
+    title="转让"
+    size="small"
+    v-model="show"
+    wrapClassName="modal-sold-card-transfer"
+    @ok="onOk"
+  >
     <div :class="transfer('content')">
       <a-row :class="transfer('info')">
         <a-col :span="13">
@@ -18,7 +19,7 @@
           </st-info>
         </a-col>
         <a-col :span="11">
-           <st-info>
+          <st-info>
             <st-info-item label="会员姓名">王守仁</st-info-item>
             <st-info-item label="手机号">18974023375</st-info-item>
             <st-info-item label="实体卡号">34345234243</st-info-item>
@@ -45,11 +46,7 @@
               </a-form-item>
               <span>~</span>
               <a-form-item class="page-a-form mg-b0">
-                <a-date-picker
-                  format="YYYY-MM-DD"
-                  placeholder="结束时间"
-                  :showToday="false"
-                />
+                <a-date-picker format="YYYY-MM-DD" placeholder="结束时间" :showToday="false"/>
               </a-form-item>
             </div>
           </st-form-item>
@@ -79,8 +76,9 @@
       </st-form>
     </div>
     <template slot="footer">
-      <st-button key="submit" type="primary"> 确认提交</st-button>
+      <st-button key="submit" type="primary">确认提交</st-button>
     </template>
+    {{record}}
   </st-modal>
 </template>
 
@@ -90,7 +88,11 @@ export default {
   bem: {
     transfer: 'modal-sold-card-transfer'
   },
-
+  props: {
+    record: {
+      type: Object
+    }
+  },
   data() {
     return {
       show: false
