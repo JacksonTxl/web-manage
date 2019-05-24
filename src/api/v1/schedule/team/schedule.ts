@@ -20,7 +20,7 @@ export class TeamScheduleApi extends Api {
   /**
    *
    * @param params
-   * 获取团体课排期列表
+   * 获取团体课排期表格
    */
   getScheduleTable(query: GetScheduleListQuery) {
     return this.http.get('/v1/schedule/team/shop/table', { query })
@@ -33,14 +33,7 @@ export class TeamScheduleApi extends Api {
   add(params: PostScheduleInput) {
     return this.http.post('/v1/schedule/team/shop', { params })
   }
-  /**
- *
- * @param params
- * 添加预约
- */
-  postScheduleShopReserve(params: ScheduleShopReserveInput) {
-    return this.http.post('/v1/schedule/team/shop/reserve', { params })
-  }
+
   /**
    *
    * @param params
@@ -66,27 +59,11 @@ export class TeamScheduleApi extends Api {
     return this.http.get(`/v1/schedule/team/shop/edit/${id}`)
   }
   /**
-  *
-  * @param id
-  * 团体课排期可使用座位列表
-  */
-  getUnusedSeat(query: UnUsedSeatQuery) {
-    return this.http.get(`/v1/schedule/team/shop/unused_seat`, { query })
-  }
-  /**
-  *
-  * @param query
-  */
-  getScheduleConsume(query: GetScheduleConsumeInput) {
-    return this.http.get('/v1/schedule/team/shop/consume', { query })
-  }
-
-  /**
    *
    * @param params
    * 修改课程排期
    */
-  putSchedule(id: string, params: PutSchedule) {
+  update(id: string, params: PutSchedule) {
     return this.http.put(`/v1/schedule/team/shop/${id}`, { params })
   }
   /**
@@ -94,25 +71,8 @@ export class TeamScheduleApi extends Api {
    * @param params
    * 取消团体课排期
    */
-  deleteScheduleById(id: string) {
+  del(id: string) {
     return this.http.delete(`/v1/schedule/team/shop/${id}`)
-  }
-  getScheduleCourseList() {
-    return this.http.get('/v1/schedule/team/shop/course_list')
-  }
-  getScheduleCoachList() {
-    return this.http.get('/v1/schedule/team/shop/coach_list')
-  }
-  getScheduleCourtList() {
-    return this.http.get('/v1/schedule/team/shop/court_list')
-  }
-  /**
-   *
-   * @param params
-   * 会员搜索 按照会员名
-   */
-  getMemberByMemberName(query: GetMemberInput) {
-    return this.http.get('/v1/schedule/team/shop/member', { query })
   }
 }
 export interface ScheduleShopReserveInput {
@@ -153,7 +113,7 @@ export interface UnUsedSeatQuery {
   court_site_id: number
 }
 
-export interface ConsumeQuery{
+export interface ConsumeQuery {
   course_id: number,
   member_id: number
 }

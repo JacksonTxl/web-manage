@@ -22,7 +22,7 @@ export class PersonalScheduleApi extends Api {
   /**
    * 添加排期
    */
-  add(params: AddInput) {
+  post(params: AddInput) {
     return this.http.post('/v1/schedule/personal_team/shop', { params })
   }
 }

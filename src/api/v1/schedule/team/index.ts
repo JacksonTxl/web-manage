@@ -8,102 +8,39 @@ import { Api } from '@/api/api'
  * @extends {Api}
  * 团体课排期接口
  */
-export class TeamScheduleApi extends Api {
-  /**
-   *
-   * @param params
-   * 获取团体课排期列表
-   */
-  getList(query: GetScheduleListQuery) {
-    return this.http.get('/v1/schedule/team/shop', { query })
-  }
-  /**
-   *
-   * @param params
-   * 获取团体课排期列表
-   */
-  getScheduleTable(query: GetScheduleListQuery) {
-    return this.http.get('/v1/schedule/team/shop/table', { query })
-  }
-  /**
-   *
-   * @param params
-   * 新增团体课排期
-   */
-  add(params: PostScheduleInput) {
-    return this.http.post('/v1/schedule/team/shop', { params })
-  }
-  /**
- *
- * @param params
- * 添加预约
- */
-  postScheduleShopReserve(params: ScheduleShopReserveInput) {
-    return this.http.post('/v1/schedule/team/shop/reserve', { params })
-  }
-  /**
-   *
-   * @param params
-   * 复制团体课排期
-   */
-  postScheduleCopy(params: PostScheduleCopyInput) {
-    return this.http.post('/v1/schedule/team/shop/copy', { params })
-  }
-  /**
-   *
-   * @param params
-   * 获取团体课排期列表
-   */
-  getScheduleById(id: string) {
-    return this.http.get(`/v1/schedule/team/shop/${id}`)
-  }
-  /**
-   *
-   * @param id
-   * 课程编辑回显
-   */
-  getScheduleInEdit(id: string) {
-    return this.http.get(`/v1/schedule/team/shop/edit/${id}`)
-  }
+export class ScheduleApi extends Api {
   /**
   *
   * @param id
   * 团体课排期可使用座位列表
   */
-  getUnusedSeat(query: UnUsedSeatQuery) {
+  getUnusedSeatList(query: UnUsedSeatQuery) {
     return this.http.get(`/v1/schedule/team/shop/unused_seat`, { query })
   }
   /**
   *
   * @param query
+  * 获取消费方式列表
   */
-  getScheduleConsume(query: GetScheduleConsumeInput) {
+  getConsumeList(query: GetScheduleConsumeInput) {
     return this.http.get('/v1/schedule/team/shop/consume', { query })
   }
-
   /**
-   *
-   * @param params
-   * 修改课程排期
+   * 获取课程列表
    */
-  putSchedule(id: string, params: PutSchedule) {
-    return this.http.put(`/v1/schedule/team/shop/${id}`, { params })
-  }
-  /**
-   *
-   * @param params
-   * 取消团体课排期
-   */
-  deleteScheduleById(id: string) {
-    return this.http.delete(`/v1/schedule/team/shop/${id}`)
-  }
-  getScheduleCourseList() {
+  getCourseList() {
     return this.http.get('/v1/schedule/team/shop/course_list')
   }
-  getScheduleCoachList() {
+  /**
+   * 获取教练列表
+   */
+  getCoachList() {
     return this.http.get('/v1/schedule/team/shop/coach_list')
   }
-  getScheduleCourtList() {
+  /**
+   * 获取场地列表
+   */
+  getCourtList() {
     return this.http.get('/v1/schedule/team/shop/court_list')
   }
   /**
@@ -111,7 +48,7 @@ export class TeamScheduleApi extends Api {
    * @param params
    * 会员搜索 按照会员名
    */
-  getMemberByMemberName(query: GetMemberInput) {
+  getMemberList(query: GetMemberInput) {
     return this.http.get('/v1/schedule/team/shop/member', { query })
   }
 }
@@ -153,7 +90,7 @@ export interface UnUsedSeatQuery {
   court_site_id: number
 }
 
-export interface ConsumeQuery{
+export interface ConsumeQuery {
   course_id: number,
   member_id: number
 }
