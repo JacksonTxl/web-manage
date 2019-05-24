@@ -39,10 +39,13 @@
           <router-link
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
-            :to="{name:'shop-member-crowd-analysis'}"
+            :to="{name:'shop-member-crowd-analysis', query:{urlid:0,id:value.new_register_member.id}}"
           >人群分析</router-link>
 
-          <span class="shop-member-crowd-index-box__btn-rq">导出</span>
+          <span
+            class="shop-member-crowd-index-box__btn-rq"
+            @click="exportFunc(value.new_register_member.id)"
+          >导出</span>
         </div>
       </div>
       <div class="shop-member-crowd-index-box-title" style="margin:0 12px;">
@@ -82,10 +85,13 @@
           <router-link
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
-            :to="{name:'shop-member-crowd-analysis'}"
+            :to="{name:'shop-member-crowd-analysis', query:{urlid:1,id:value.person_course_expiring_crowd.id}}"
           >人群分析</router-link>
 
-          <span class="shop-member-crowd-index-box__btn-rq">导出</span>
+          <span
+            class="shop-member-crowd-index-box__btn-rq"
+            @click="exportFunc(value.person_course_expiring_crowd.id)"
+          >导出</span>
         </div>
       </div>
       <div class="shop-member-crowd-index-box-title">
@@ -125,9 +131,12 @@
           <router-link
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
-            :to="{name:'shop-member-crowd-analysis'}"
+            :to="{name:'shop-member-crowd-analysis', query:{urlid:2,id:value.expiring_crowd.id}}"
           >人群分析</router-link>
-          <span class="shop-member-crowd-index-box__btn-rq">导出</span>
+          <span
+            class="shop-member-crowd-index-box__btn-rq"
+            @click="exportFunc(value.expiring_crowd.id)"
+          >导出</span>
         </div>
       </div>
     </div>
@@ -135,11 +144,14 @@
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
-
+import { IndexService } from './index.service'
+import { CrowdAPI } from '@/api/v1/crowd'
 export default {
   serviceInject() {
     return {
-      messageService: MessageService
+      messageService: MessageService,
+      crowdAPI: CrowdAPI,
+      aService: IndexService
     }
   },
   model: {
@@ -152,9 +164,15 @@ export default {
   data() {
     return {}
   },
+  created() {
+    console.log(this.crowdAPI.crowdShopExport())
+  },
   methods: {
     newCrowd(data) {
       this.messageService.warning({ content: data })
+    },
+    exportFunc(id) {
+      this.aService.getListInfo(id).subscribe()
     }
   },
   mounted() {}

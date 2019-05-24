@@ -50,4 +50,20 @@ export class CrowdAPI extends Api {
   delCrowdShopCrowd(id: string) {
     return this.http.delete(`/v1/crowd/shop/crowd/${id}`)
   }
+  /* 品牌导出 v1/crowd/brand/export/ */
+  crowdBrandExport(id: string) {
+    return this.http.get(`/v1/crowd/brand/export/${id}`)
+  }
+  /* 门店导出 v1/crowd/shop/export/ */
+  crowdShopExport(id: string) {
+    return this.http.get(`/v1/crowd/shop/export/${id}`)
+  }
+  /* 品牌人群分析 v1/crowd/brand/analysis/<id:\d+> */
+  getCrowdBrandAnalysis(id: string) {
+    return this.http.get(`/v1/crowd/brand/analysis/${id}`)
+  }
+  /* 门店人群分析 v1/crowd/shop/analysis/<id:\d+> */
+  getCrowdShopAnalysis(id: string) {
+    return this.http.get(`/v1/crowd/shop/analysis/${id}`)
+  }
 }
