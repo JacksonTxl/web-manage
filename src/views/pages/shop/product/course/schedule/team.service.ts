@@ -1,11 +1,11 @@
-import { PostScheduleTeamInput, GetScheduleTeamListQuery, ScheduleTeamShopReserveInput, GetMemberInput, ConsumeQuery, PostScheduleTeamCopyInput, UnUsedSeatQuery } from './../../../../../../api/v1/course/team/schedule'
+import { PostScheduleInput, GetScheduleListQuery, ScheduleShopReserveInput, GetMemberInput, ConsumeQuery, PostScheduleCopyInput, UnUsedSeatQuery } from './../../../../../../api/v1/course/team/schedule'
 import { ScheduleApi } from '@/api/v1/course/team/schedule'
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state/src'
 import { tap, pluck, switchMap, debounce } from 'rxjs/operators'
 import { forkJoin, timer } from 'rxjs'
 
-export interface ScheduleTeamCourse {
+export interface ScheduleCourse {
   scheduleTeamCourseList?: any[],
   courseOptions: any[],
   coachOptions: any[],
@@ -15,7 +15,7 @@ export interface ScheduleTeamCourse {
 }
 @Injectable()
 export class TeamService implements RouteGuard {
-  state$: State<ScheduleTeamCourse>
+  state$: State<ScheduleCourse>
   scheduleTeamCourseList$: Computed<any>
   courseOptions$: Computed<any[]>
   coachOptions$: Computed<any[]>
@@ -44,58 +44,58 @@ export class TeamService implements RouteGuard {
       state.scheduleTeamCourseList = list
     })
   }
-  protected SET_OPTIONS(options: ScheduleTeamCourse) {
+  protected SET_OPTIONS(options: ScheduleCourse) {
     this.state$.commit(state => {
       return { ...state, ...options }
     })
   }
   @Effect()
-  postScheduleTeam(params: PostScheduleTeamInput) {
-    return this.scheduleApi.postScheduleTeam(params).pipe(switchMap(state => {
-      return this.getScheduleTeamList({})
+  postSchedule(params: PostScheduleInput) {
+    return this.scheduleApi.postSchedule(params).pipe(switchMap(state => {
+      return this.getScheduleList({})
     }))
   }
 
-  getScheduleTeamInEdit(id: string) {
-    return this.scheduleApi.getScheduleTeamInEdit(id)
+  getScheduleInEdit(id: string) {
+    return this.scheduleApi.getScheduleInEdit(id)
   }
 
-  putScheduleTeam(id: string, params: any) {
-    return this.scheduleApi.putScheduleTeam(id, params)
+  putSchedule(id: string, params: any) {
+    return this.scheduleApi.putSchedule(id, params)
   }
 
-  getScheduleTeamById(id: string) {
-    return this.scheduleApi.getScheduleTeamById(id)
+  getScheduleById(id: string) {
+    return this.scheduleApi.getScheduleById(id)
   }
 
-  postScheduleTeamCopy(params: PostScheduleTeamCopyInput) {
-    return this.scheduleApi.postScheduleTeamCopy(params).pipe(switchMap(state => {
-      return this.getScheduleTeamList({})
+  postScheduleCopy(params: PostScheduleCopyInput) {
+    return this.scheduleApi.postScheduleCopy(params).pipe(switchMap(state => {
+      return this.getScheduleList({})
     }))
   }
-  postScheduleTeamShopReserve(params: ScheduleTeamShopReserveInput) {
-    return this.scheduleApi.postScheduleTeamShopReserve(params)
+  postScheduleShopReserve(params: ScheduleShopReserveInput) {
+    return this.scheduleApi.postScheduleShopReserve(params)
   }
   getMemberByMemberName(query: GetMemberInput) {
     return this.scheduleApi.getMemberByMemberName(query)
   }
 
-  getScheduleTeamCourseList() {
-    return this.scheduleApi.getScheduleTeamCourseList().pipe(tap(res => {
+  getScheduleCourseList() {
+    return this.scheduleApi.getScheduleCourseList().pipe(tap(res => {
       this.state$.commit(state => {
         state.courseOptions = res.list
       })
     }))
   }
-  getScheduleTeamCoachList() {
-    return this.scheduleApi.getScheduleTeamCoachList().pipe(tap(res => {
+  getScheduleCoachList() {
+    return this.scheduleApi.getScheduleCoachList().pipe(tap(res => {
       this.state$.commit(state => {
         state.coachOptions = res.list
       })
     }))
   }
-  getScheduleTeamCourtList() {
-    return this.scheduleApi.getScheduleTeamCourtList().pipe(tap(res => {
+  getScheduleCourtList() {
+    return this.scheduleApi.getScheduleCourtList().pipe(tap(res => {
       this.state$.commit(state => {
         state.courtOptions = res.list
       })
@@ -109,8 +109,8 @@ export class TeamService implements RouteGuard {
       })
     }))
   }
-  getScheduleTeamConsume(query: ConsumeQuery) {
-    return this.scheduleApi.getScheduleTeamConsume(query).pipe(
+  getScheduleConsume(query: ConsumeQuery) {
+    return this.scheduleApi.getScheduleConsume(query).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.consumeOptions = res.list.map((ele: any) => {
@@ -125,21 +125,21 @@ export class TeamService implements RouteGuard {
   }
 
   initOptions() {
-    return forkJoin(this.getScheduleTeamCoachList(), this.getScheduleTeamCourseList(), this.getScheduleTeamCourtList())
+    return forkJoin(this.getScheduleCoachList(), this.getScheduleCourseList(), this.getScheduleCourtList())
   }
   init(query: any) {
-    return forkJoin(this.getScheduleTeamList(query), this.initOptions())
+    return forkJoin(this.getScheduleList(query), this.initOptions())
   }
   @Effect()
-  getScheduleTeamList(query: GetScheduleTeamListQuery) {
-    return this.scheduleApi.getScheduleTeamList(query).pipe(
+  getScheduleList(query: GetScheduleListQuery) {
+    return this.scheduleApi.getScheduleList(query).pipe(
       tap(res => {
         this.SET_SCHEDULE_TEAM_LIST(res.list)
       })
     )
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute, next: any) {
-    this.getScheduleTeamList(to.query).subscribe(() => {
+    this.getScheduleList(to.query).subscribe(() => {
       next()
     })
   }

@@ -1,4 +1,4 @@
-import { PostScheduleTeamCopyInput } from './../team/schedule'
+import { PostCopyInput } from './../team/schedule'
 
 import { Api } from '@/api/api'
 import { GetScheduleSiteListInput } from '../team/schedule'
