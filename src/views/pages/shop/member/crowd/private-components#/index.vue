@@ -6,7 +6,7 @@
         <div style=" padding: 32px 28px 0 32px;">
           <div class="shop-member-crowd-index-box__item">
             <img
-              src="http://n.sinaimg.cn/sinacn14/39/w480h359/20181013/e040-hmivixm5109047.jpg"
+              src="../../../../../../assets/img/shop_crowd_new.png"
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
@@ -36,15 +36,23 @@
           </div>
         </div>
         <div class="shop-member-crowd-index-box__btn">
-          <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
-          <span class="shop-member-crowd-index-box__btn-rq">导出</span>
+          <router-link
+            class="shop-member-crowd-index-box__btn-rq"
+            tag="span"
+            :to="{name:'shop-member-crowd-analysis', query:{urlid:0,id:value.new_register_member.id}}"
+          >人群分析</router-link>
+
+          <span
+            class="shop-member-crowd-index-box__btn-rq"
+            @click="exportFunc(value.new_register_member.id)"
+          >导出</span>
         </div>
       </div>
       <div class="shop-member-crowd-index-box-title" style="margin:0 12px;">
         <div style=" padding: 32px 28px 0 32px;">
           <div class="shop-member-crowd-index-box__item">
             <img
-              src="http://n.sinaimg.cn/sinacn14/39/w480h359/20181013/e040-hmivixm5109047.jpg"
+              src="../../../../../../assets/img/shop_crowd_expire.png"
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
@@ -74,16 +82,23 @@
           </div>
         </div>
         <div class="shop-member-crowd-index-box__btn">
-          <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
+          <router-link
+            class="shop-member-crowd-index-box__btn-rq"
+            tag="span"
+            :to="{name:'shop-member-crowd-analysis', query:{urlid:1,id:value.person_course_expiring_crowd.id}}"
+          >人群分析</router-link>
 
-          <span class="shop-member-crowd-index-box__btn-rq">导出</span>
+          <span
+            class="shop-member-crowd-index-box__btn-rq"
+            @click="exportFunc(value.person_course_expiring_crowd.id)"
+          >导出</span>
         </div>
       </div>
       <div class="shop-member-crowd-index-box-title">
         <div style=" padding: 32px 28px 0 32px;">
           <div class="shop-member-crowd-index-box__item">
             <img
-              src="http://n.sinaimg.cn/sinacn14/39/w480h359/20181013/e040-hmivixm5109047.jpg"
+              src="../../../../../../assets/img/shop_crowd_private_teaching.png"
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
@@ -113,8 +128,15 @@
           </div>
         </div>
         <div class="shop-member-crowd-index-box__btn">
-          <span class="shop-member-crowd-index-box__btn-rq">人群分析</span>
-          <span class="shop-member-crowd-index-box__btn-rq">导出</span>
+          <router-link
+            class="shop-member-crowd-index-box__btn-rq"
+            tag="span"
+            :to="{name:'shop-member-crowd-analysis', query:{urlid:2,id:value.expiring_crowd.id}}"
+          >人群分析</router-link>
+          <span
+            class="shop-member-crowd-index-box__btn-rq"
+            @click="exportFunc(value.expiring_crowd.id)"
+          >导出</span>
         </div>
       </div>
     </div>
@@ -122,11 +144,14 @@
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
-
+import { IndexService } from './index.service'
+import { CrowdAPI } from '@/api/v1/crowd'
 export default {
   serviceInject() {
     return {
-      messageService: MessageService
+      messageService: MessageService,
+      crowdAPI: CrowdAPI,
+      aService: IndexService
     }
   },
   model: {
@@ -139,9 +164,15 @@ export default {
   data() {
     return {}
   },
+  created() {
+    console.log(this.crowdAPI.crowdShopExport())
+  },
   methods: {
     newCrowd(data) {
       this.messageService.warning({ content: data })
+    },
+    exportFunc(id) {
+      this.aService.getListInfo(id).subscribe()
     }
   },
   mounted() {}

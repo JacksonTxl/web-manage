@@ -1,9 +1,5 @@
 <template>
-  <st-modal
-  title="退款"
-  size="small"
-  v-model="show"
-  wrapClassName="modal-sold-card-refund">
+  <st-modal title="退款" size="small" v-model="show" wrapClassName="modal-sold-card-refund">
     <div :class="refund('content')">
       <a-row :class="refund('info')">
         <a-col :span="13" class="mgb-36">
@@ -13,7 +9,7 @@
           </st-info>
         </a-col>
         <a-col :span="11" class="mgb-36">
-           <st-info>
+          <st-info>
             <st-info-item label="下单人">王守仁</st-info-item>
             <st-info-item class="mg-b0" label="销售">郑和</st-info-item>
           </st-info>
@@ -25,7 +21,7 @@
           </st-info>
         </a-col>
         <a-col :span="11" class="mgb-36">
-           <st-info>
+          <st-info>
             <st-info-item label="用户">Elaine 18516028817</st-info-item>
             <st-info-item class="mg-b0" label="赠送">182天</st-info-item>
           </st-info>
@@ -42,7 +38,7 @@
           </st-info>
         </a-col>
         <a-col :span="11" class="mgb-24">
-           <st-info>
+          <st-info>
             <st-info-item label="应收金额">99元</st-info-item>
             <st-info-item class="mg-b0" label="实收金额">99元</st-info-item>
           </st-info>
@@ -70,14 +66,17 @@
             </a-radio-group>
           </st-form-item>
           <st-form-item label="备注" class="mg-b0">
-            <a-textarea :autosize="{ minRows: 4, maxRows: 6 }" />
+            <a-textarea :autosize="{ minRows: 4, maxRows: 6 }"/>
           </st-form-item>
         </div>
       </st-form>
     </div>
     <template slot="footer">
-      <span class="info">提交后无法修改&nbsp;<st-icon type="help" /></span>
-      <st-button key="submit" type="primary"> 确认提交</st-button>
+      <span class="info">
+        提交后无法修改&nbsp;
+        <st-icon type="help"/>
+      </span>
+      <st-button key="submit" type="primary">确认提交</st-button>
     </template>
   </st-modal>
 </template>
@@ -88,7 +87,11 @@ export default {
   bem: {
     refund: 'modal-sold-card-refund'
   },
-
+  props: {
+    record: {
+      type: Object
+    }
+  },
   data() {
     return {
       show: false

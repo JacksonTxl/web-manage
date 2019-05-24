@@ -8,86 +8,103 @@ import { Api } from '@/api/api'
  * @extends {Api}
  * 团体课排期接口
  */
-export class ScheduleApi extends Api {
+export class TeamScheduleApi extends Api {
   /**
    *
    * @param params
    * 获取团体课排期列表
    */
-  getScheduleTeamList(query: GetScheduleTeamListQuery) {
-    return this.http.get('/v1/schedule/team', { query })
+  getList(query: GetScheduleListQuery) {
+    return this.http.get('/v1/schedule/team/shop', { query })
+  }
+  /**
+   *
+   * @param params
+   * 获取团体课排期列表
+   */
+  getScheduleTable(query: GetScheduleListQuery) {
+    return this.http.get('/v1/schedule/team/shop/table', { query })
   }
   /**
    *
    * @param params
    * 新增团体课排期
    */
-  postScheduleTeam(params: PostScheduleTeamInput) {
-    return this.http.post('/v1/schedule/team', { params })
+  add(params: PostScheduleInput) {
+    return this.http.post('/v1/schedule/team/shop', { params })
+  }
+  /**
+ *
+ * @param params
+ * 添加预约
+ */
+  postScheduleShopReserve(params: ScheduleShopReserveInput) {
+    return this.http.post('/v1/schedule/team/shop/reserve', { params })
   }
   /**
    *
    * @param params
    * 复制团体课排期
    */
-  postScheduleTeamCopy(params: PostScheduleTeamCopyInput) {
-    return this.http.post('/v1/schedule/team/copy', { params })
+  postScheduleCopy(params: PostScheduleCopyInput) {
+    return this.http.post('/v1/schedule/team/shop/copy', { params })
   }
   /**
    *
    * @param params
    * 获取团体课排期列表
    */
-  getScheduleTeamById(id: string) {
-    return this.http.get(`/v1/schedule/team${id}`)
+  getScheduleById(id: string) {
+    return this.http.get(`/v1/schedule/team/shop/${id}`)
   }
   /**
    *
    * @param id
    * 课程编辑回显
    */
-  getScheduleTeamInEdit(id: string) {
-    return this.http.get(`/v1/schedule/team/edit/${id}`)
+  getScheduleInEdit(id: string) {
+    return this.http.get(`/v1/schedule/team/shop/edit/${id}`)
   }
+  /**
+  *
+  * @param id
+  * 团体课排期可使用座位列表
+  */
+  getUnusedSeat(query: UnUsedSeatQuery) {
+    return this.http.get(`/v1/schedule/team/shop/unused_seat`, { query })
+  }
+  /**
+  *
+  * @param query
+  */
+  getScheduleConsume(query: GetScheduleConsumeInput) {
+    return this.http.get('/v1/schedule/team/shop/consume', { query })
+  }
+
   /**
    *
    * @param params
    * 修改课程排期
    */
-  putScheduleTeam(params: PutScheduleTeam) {
-    return this.http.put('/v1/schedule/team', { params })
+  putSchedule(id: string, params: PutSchedule) {
+    return this.http.put(`/v1/schedule/team/shop/${id}`, { params })
   }
   /**
    *
    * @param params
    * 取消团体课排期
    */
-  deleteScheduleTeamById(id: string) {
-    return this.http.delete(`/v1/schedule/team${id}`)
+  deleteScheduleById(id: string) {
+    return this.http.delete(`/v1/schedule/team/shop/${id}`)
   }
-  /**
-   *
-   * @param query
-   */
-  getScheduleTeamConsumeManner(query: GetScheduleTeamConsumeMannerInput) {
-    return this.http.get('v1/schedule/team/consume/manner', { query })
+  getScheduleCourseList() {
+    return this.http.get('/v1/schedule/team/shop/course_list')
   }
-  /**
-   *
-   * @param query: GetScheduleSiteListInput
-   * 团体课排期可使用座位列表
-   */
-  GetScheduleSiteList(query: GetScheduleSiteListInput) {
-    return this.http.get('/v1/schedule/team/unused/seat', { query })
+  getScheduleCoachList() {
+    return this.http.get('/v1/schedule/team/shop/coach_list')
   }
-  getScheduleTeamCourseList() {
-    return this.http.get('/v1/schedule/team/course/list')
-  }
-  getScheduleTeamCoachList() {
-    return this.http.get('/v1/schedule/team/coach/list')
-  }
-  getScheduleTeamCourtList() {
-    return this.http.get('/v1/schedule/team/court/list')
+  getScheduleCourtList() {
+    return this.http.get('/v1/schedule/team/shop/court_list')
   }
   /**
    *
@@ -95,13 +112,20 @@ export class ScheduleApi extends Api {
    * 会员搜索 按照会员名
    */
   getMemberByMemberName(query: GetMemberInput) {
-    return this.http.get('/v1/schedule/team/member', { query })
+    return this.http.get('/v1/schedule/team/shop/member', { query })
   }
+}
+export interface ScheduleShopReserveInput {
+  schedule_id: number,
+  member_id: number,
+  seat: any[],
+  consume_type: [],
+  consume_id: []
 }
 /**
  * 获取团体课排期列表
  */
-export interface GetScheduleTeamListQuery {
+export interface GetScheduleListQuery {
   is_paginate?: number // 是否分页 0 不分页 1 分页 默认0
   size?: number // 分页大小
   page?: number // 页码
@@ -115,7 +139,7 @@ export interface GetScheduleTeamListQuery {
 /**
  * 新增团体课程排期request数据
  */
-export interface PostScheduleTeamInput {
+export interface PostScheduleInput {
   course_id: number // 课程ID
   court_id: number // 场地id
   court_site_id: number // 座位模版Id
@@ -124,11 +148,20 @@ export interface PostScheduleTeamInput {
   limit_num: number // 上课人数
   course_fee: number // 课时费
 }
+export interface UnUsedSeatQuery {
+  schedule_id: number
+  court_site_id: number
+}
+
+export interface ConsumeQuery{
+  course_id: number,
+  member_id: number
+}
 
 /**
  * 复制团体课排期数据
  */
-export interface PostScheduleTeamCopyInput {
+export interface PostScheduleCopyInput {
   copy_start_time: string // 复制开始时间
   copy_end_time: string // 复制结束时间
   apply_start_time: string // 应用开始时间
@@ -149,13 +182,13 @@ export interface GetScheduleSiteListInput {
   schedule_id: number // 排期ID
   court_site_id: number // 座位模版ID
 }
-export interface PutScheduleTeam {
+export interface PutSchedule {
   course_id: number
 }
 /**
  * 获取用户消费方式request
  */
-export interface GetScheduleTeamConsumeMannerInput {
+export interface GetScheduleConsumeInput {
   course_id: number,
   member_id: number
 }

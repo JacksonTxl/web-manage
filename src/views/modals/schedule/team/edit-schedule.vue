@@ -1,5 +1,6 @@
 <template>
-  <st-modal title="新增课程排期" :footer="null" v-model="show" size="484px">
+  <st-modal :footer="null" title="编辑课程排期" @ok="save" v-model="show">
+    <div><span>已约</span><span>{{reserved_num}}人</span></div>
     <st-form :form="form">
       <st-form-item label="时间" required>
         <a-date-picker showTime format="YYYY-MM-DD HH:mm" v-decorator="[
@@ -44,20 +45,18 @@
       <st-form-item label="课时费" required >
         <a-input-search v-decorator="[
           'course_fee',
-          {rules: [{ required: true, message: 'Please input your note!' }]}]"
-        @change="onChange"> <a-button slot="enterButton">元/节</a-button> </a-input-search>
+          {rules: [{ required: true, message: 'Please input your note!' }]}]"> <a-button slot="enterButton">元/节</a-button> </a-input-search>
       </st-form-item>
       <a-row>
         <a-col
           :span="24"
           :style="{ textAlign: 'right' }"
         >
-          <st-button class="mg-r16" @click="onClick">批量设置</st-button>
+          <st-button class="mg-r16" @click="onClick">取消</st-button>
           <st-button
             type="primary"
-            @click="onSubmit"
-            :loading="loading.postScheduleTeam">
-            提交
+            @click="onSubmit">
+            确认
           </st-button>
         </a-col>
       </a-row>
@@ -66,30 +65,54 @@
 </template>
 
 <script>
-import { ScheduleService } from './schedule.service.ts'
 import { cloneDeep } from 'lodash-es'
+import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
+import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
 export default {
-  name: 'AddCourseSchedule',
+  name: 'EditCourseSchedule',
   serviceInject() {
     return {
-      scheduleService: ScheduleService
+      teamScheduleScheduleService: TeamScheduleScheduleService,
+      teamScheduleCommonService: TeamScheduleCommonService
     }
   },
   rxState() {
+    const tss = this.teamScheduleCommonService
     return {
-      loading: this.scheduleService.loading$
+      coachOptions: tss.coachOptions$,
+      courseOptions: tss.courseOptions$,
+      courtOptions: tss.courtOptions$
     }
   },
   data() {
     return {
-      coachOptions: [],
-      courseOptions: [],
-      courtOptions: [],
+      reserved_num: 0,
       show: false,
-      form: this.$form.createForm(this)
+      form: {}
     }
   },
+  created() {
+    this.form = this.$form.createForm(this)
+    console.log(this.form)
+  },
+  mounted() {
+    this.teamScheduleScheduleService.getUpdateInfo('12034851274797').subscribe(res => {
+      let { id, course_id, coach_id, course_fee, court_id, court_site_id, start_time, reserved_num, limit_num } = res.info
+      start_time = moment(start_time)
+      court_id = [court_id, court_site_id]
+      this.id = id
+      this.form.setFieldsValue({ course_id, coach_id, course_fee, court_id, start_time, limit_num })
+      this.reserved_num = reserved_num
+    })
+  },
   methods: {
+    onClick() {
+    },
+    onChange() {
+    },
+    save() {
+
+    },
     onSubmit() {
       this.form.validateFields((err, values) => {
         if (!err) {
@@ -99,36 +122,12 @@ export default {
           form.court_id = form.court_id[0]
           form.course_fee = parseInt(form.course_fee)
           form.limit_num = parseInt(form.limit_num)
-          this.scheduleService.postScheduleTeam({ ...form }).subscribe(() => {
-            this.$message('新增团课排期成功')
+          this.teamScheduleScheduleService.update(this.id, { ...form }).subscribe(() => {
+            this.$message('修改团课排期成功')
           })
-          this.$emit('ok')
         }
       })
-    },
-    onClick() {
-      this.show = false
-      this.$modalRouter.push({
-        name: 'schedule-add-course-schedule-batch'
-      })
-    },
-    handleReset() {
-
-    },
-    onChange() {
-
-    },
-    save() {
-      // this.show = false
-      // this.$emit('test')
     }
-  },
-  mounted() {
-    this.scheduleService.initOptions().subscribe(res => {
-      this.coachOptions = res.coachOptions
-      this.courseOptions = res.courseOptions
-      this.courtOptions = res.courtOptions
-    })
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <st-form-table :page="page" @change="onPageChange" hoverable>
+  <st-form-table :page="basicInfo.page" @change="onPageChange" hoverable >
     <thead>
       <tr>
         <template v-for="(item,index) in columsTitlelist">
@@ -11,7 +11,7 @@
       <tr>
         <td colspan="5" class="st-form-table__add">
           <st-button type="dashed" block>
-            <modal-link tag="a" :to=" { name: 'finance-add-template',on: {change: refresh}}">薪资底薪模板</modal-link>
+            <modal-link tag="a" :to=" { name: 'finance-add-template',on: {change: refresh}}">新增底薪模板</modal-link>
           </st-button>
         </td>
       </tr>
@@ -19,7 +19,17 @@
         <tr :key="item.id">
           <td>{{ item.template_name }}</td>
           <td>{{ item.salary }}</td>
-          <td>{{ item.used }}</td>
+          <td>
+          <template v-if="item.used == 0 ">
+              <span>{{ item.used }}</span>
+            </template>
+            <template v-if="item.used != 0 ">
+              <modal-link
+                tag="a"
+                :to=" { name: 'search-staff-list-salary', props: {id: item.id}}"
+              >{{ item.used }}</modal-link>
+            </template>
+            </td>
           <td>{{ item.created_time }}</td>
           <td>
             <modal-link
@@ -53,6 +63,7 @@ export default {
   },
   data() {
     return {
+      list: [],
       columsTitlelist: [
         '模板名称',
         '月底薪(元)',
@@ -70,7 +81,11 @@ export default {
   },
   methods: {
     refresh() {
-      this.$router.push({ query: {}, force: true })
+      this.$router.push({ query: {
+        size: this.page.pageSize,
+        page: this.page.current
+      },
+      force: true })
     },
     onDelete(e) {
       console.log(e)

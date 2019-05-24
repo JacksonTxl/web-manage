@@ -1,11 +1,10 @@
 <template>
-  <st-modal title="编辑课程排期" @ok="save" v-model="show">
-    <div><span>已约</span><span>{{reserved_num}}人</span></div>
+  <st-modal title="新增课程排期" :footer="null" v-model="show" size="484px">
     <st-form :form="form">
       <st-form-item label="时间" required>
         <a-date-picker showTime format="YYYY-MM-DD HH:mm" v-decorator="[
           'start_time',
-          {rules: [{ required: true, message: 'Please input your note!' }]}
+          {rules: [{ required: true, message: 'Please input your note!'}], initialValue: time}
         ]">
           <a-icon slot="suffixIcon" type="clock-circle" />
         </a-date-picker>
@@ -19,7 +18,7 @@
         </a-select>
       </st-form-item>
       <st-form-item label="教练" required>
-        <a-select @change="onChange" v-decorator="[
+        <a-select v-decorator="[
           'coach_id',
           // {rules: [{ required: true, message: 'Please input your note!' }]}
         ]">
@@ -30,7 +29,6 @@
         <a-cascader
         :options="courtOptions"
         :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
-        @change="onChange"
         v-decorator="[
           'court_id',
           // {rules: [{ required: true, message: 'Please input your note!' }]}
@@ -40,13 +38,13 @@
         <a-input-search v-decorator="[
           'limit_num',
           {rules: [{ required: true, message: 'Please input your note!' }]}
-        ]"  @change="onChange"> <a-button slot="enterButton">人</a-button> </a-input-search>
+        ]"> <a-button slot="enterButton">人</a-button> </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required >
         <a-input-search v-decorator="[
           'course_fee',
           {rules: [{ required: true, message: 'Please input your note!' }]}]"
-        @change="onChange"> <a-button slot="enterButton">元/节</a-button> </a-input-search>
+        > <a-button slot="enterButton">元/节</a-button> </a-input-search>
       </st-form-item>
       <a-row>
         <a-col
@@ -66,51 +64,61 @@
 </template>
 
 <script>
-import { ScheduleService } from './schedule.service.ts'
+import { cloneDeep } from 'lodash-es'
+import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
+import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
 export default {
-  name: 'EditCourseSchedule',
+  name: 'AddCourseSchedule',
   serviceInject() {
     return {
-      scheduleService: ScheduleService
+      teamScheduleCommomService: TeamScheduleCommonService,
+      teamScheduleScheduleService: TeamScheduleScheduleService
+    }
+  },
+  rxState() {
+    const tss = this.teamScheduleCommomService
+    return {
+      coachOptions: tss.coachOptions$,
+      courseOptions: tss.courseOptions$,
+      courtOptions: tss.courtOptions$
     }
   },
   data() {
     return {
-      coachOptions: [],
-      courseOptions: [],
-      courtOptions: [],
-      reserved_num: 0,
       show: false,
-      form: {}
+      form: this.$form.createForm(this)
     }
   },
-  created() {
-    this.form = this.$form.createForm(this)
-    console.log(this.form)
-  },
-  mounted() {
-    this.$nextTick().then(() => {
-      this.form.setFieldsValue({ 'course_id': 23 })
-    })
-    this.scheduleService.initEditSchedule('28').subscribe(res => {
-      let { course_id, coach_id, course_fee, court_id, court_site_id, start_time, reserved_num } = res.info
-      start_time = moment(start_time)
-      this.coachOptions = res.coachOptions
-      this.courseOptions = res.courseOptions
-      this.courtOptions = res.courtOptions
-      this.reserved_num = reserved_num
-    })
+  props: {
+    time: {
+      type: Object,
+      default: () => {
+        return moment()
+      }
+    }
   },
   methods: {
     onSubmit() {
-      // this.scheduleService
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          const form = cloneDeep(values)
+          form.start_time = form.start_time.format('YYYY-MM-DD HH:mm')
+          form.court_site_id = form.court_id[1]
+          form.court_id = form.court_id[0]
+          form.course_fee = parseInt(form.course_fee)
+          form.limit_num = parseInt(form.limit_num)
+          this.teamScheduleScheduleService.add({ ...form }).subscribe(() => {
+            this.show = false
+            this.$emit('ok')
+          })
+        }
+      })
     },
     onClick() {
-    },
-    onChange() {
-    },
-    save() {
-
+      this.show = false
+      this.$modalRouter.push({
+        name: 'schedule-add-course-schedule-batch'
+      })
     }
   }
 }

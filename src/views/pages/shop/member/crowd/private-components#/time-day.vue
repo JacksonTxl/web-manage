@@ -41,7 +41,10 @@ export default {
       radioValue: ''
     }
   },
-  created() {},
+  created() {
+    this.onChange([], [this.value.min, this.value.max])
+    console.log([this.value.min, this.value.max])
+  },
   methods: {
     moment,
     onChangeRadio(data) {
@@ -60,7 +63,6 @@ export default {
         min: str[0],
         max: str[1]
       }
-      console.log(data, str, obj.max, this.filterTime(new Date().getTime()))
       if (obj.max === this.filterTime(new Date().getTime())) {
         let flagTime = Math.round(
           (new Date(obj.max).getTime() - new Date(obj.min).getTime()) /
