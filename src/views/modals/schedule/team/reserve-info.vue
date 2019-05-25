@@ -113,8 +113,9 @@ export default {
   },
   rxState() {
     const common = this.teamScheduleCommonService
+    console.log(common)
     return {
-      memberOptions: common.momberOptions$,
+      memberOptions: common.memberOptions$,
       consumeOptions: common.consumeOptions$,
       unUsedSeatOptions: common.unUsedSeatOptions$
     }
@@ -179,7 +180,7 @@ export default {
       this.teamScheduleCommonService.getMemberList({ member_name: value }).subscribe()
     },
     onChange(value) {
-      this.teamScheduleCommonService.getScheduleConsume({ course_id: this.courseId, member_id: value }).subscribe()
+      this.teamScheduleCommonService.getConsumeList({ course_id: this.courseId, member_id: value }).subscribe()
     },
     onChangeConsumeType(val) {
       console.log('onChangeConsumeType', val)

@@ -79,14 +79,14 @@ export default {
       customButtons: {
         custom1: {
           text: '批量排期',
-          click: function() {
-            alert('clicked custom button 1!')
+          click() {
+            that.$modalRouter.push({ name: 'schedule-team-add-course-schedule-batch' })
           }
         },
         custom2: {
           text: '复制排期',
-          click: function() {
-            alert('clicked custom button 2!')
+          click() {
+            that.$modalRouter.push({ name: 'schedule-team-copy-course-schedule' })
           }
         },
         custom3: {
@@ -129,16 +129,7 @@ export default {
   },
   watch: {
     scheduleTeamCourseList(n, o) {
-      this.calendarEvents = []
-      n.forEach(item => {
-        this.calendarEvents.push({ // add new event data
-          title: item.course_name,
-          groupId: JSON.stringify(item),
-          id: item.id,
-          start: `${item.start_date} ${item.start_time}`,
-          end: `${item.start_date} ${item.end_time}`
-        })
-      })
+      this.calendarEvents = n
     }
   },
   mounted() {
@@ -192,23 +183,6 @@ export default {
     },
     gotoPast() {
       let calendarApi = this.$refs.fullCalendar.getApi() // from the ref="..."
-      // calendarApi.gotoDate('2000-01-01') // call a method on the Calendar object
-      // this.$nextTick().then(()=>{
-      //   this.$refs.fullCalendar.setOption('locale', 'zh-cn')
-      //   this.$refs.fullCalendar.setOption('view', {
-      //     timeGridWeek:{ buttonText: '周' },
-      //     timeGridDay: { buttonText: '天' },
-      //     listWeek: { buttonText: '三' }
-      //   })
-      // })
-    },
-    onEventMouseEnter(e) {
-      console.log('onEventMouseEnter', e)
-    },
-    onEventMouseLeave(e) {
-      console.log('onEventMouseLeave', e)
-    },
-    onEventPositioned() {
     },
     onEventRender(event, element) {
       this.$nextTick().then(() => {

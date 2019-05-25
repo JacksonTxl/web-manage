@@ -7,6 +7,7 @@ import { GetMemberInput } from '@/api/v1/course/team/schedule'
 export interface SetState {
   courseOptions: any[],
   coachOptions: any[],
+  memberOptions: any[],
   courtOptions: any[],
   unUsedSeatOptions: any[],
   consumeOptions: any[]
@@ -16,6 +17,7 @@ export class TeamScheduleCommonService {
   state$: State<SetState>
   courseOptions$: Computed<any[]>
   coachOptions$: Computed<any[]>
+  memberOptions$: Computed<any[]>
   courtOptions$: Computed<any[]>
   unUsedSeatOptions$: Computed<any[]>
   consumeOptions$: Computed<any[]>
@@ -25,6 +27,7 @@ export class TeamScheduleCommonService {
       courseOptions: [],
       coachOptions: [],
       unUsedSeatOptions: [],
+      memberOptions: [],
       consumeOptions: [],
       courtOptions: []
     })
@@ -32,6 +35,7 @@ export class TeamScheduleCommonService {
     this.unUsedSeatOptions$ = new Computed(this.state$.pipe(pluck('unUsedSeatOptions')))
     this.courseOptions$ = new Computed(this.state$.pipe(pluck('courseOptions')))
     this.coachOptions$ = new Computed(this.state$.pipe(pluck('coachOptions')))
+    this.memberOptions$ = new Computed(this.state$.pipe(pluck('memberOptions')))
     this.courtOptions$ = new Computed(this.state$.pipe(pluck('courtOptions')))
   }
   /**
@@ -40,12 +44,28 @@ export class TeamScheduleCommonService {
    * 获取会员Options
    */
   getMemberList(query: GetMemberInput) {
-    return this.teamScheduleCommonApi.getMemberList(query)
+    return this.teamScheduleCommonApi.getMemberList(query).pipe(tap(res => {
+      this.state$.commit(state => {
+        state.memberOptions = res.list
+      })
+    }))
   }
   /**
    *
    * @param query
-   * 获取会员Options
+   * 获取场地座位Options
+   */
+  getUnusedSeat(query: UnUsedSeatQuery) {
+    return this.teamScheduleCommonApi.getUnusedSeat(query).pipe(tap(res => {
+      this.state$.commit(state => {
+        state.unUsedSeatOptions = res.list
+      })
+    }))
+  }
+  /**
+   *
+   * @param query
+   * 获取课程Options
    */
   getCourseList() {
     return this.teamScheduleCommonApi.getCourseList().pipe(tap(res => {
@@ -57,7 +77,7 @@ export class TeamScheduleCommonService {
   /**
    *
    * @param query
-   * 获取会员Options
+   * 获取教练Options
    */
   getCoachList() {
     return this.teamScheduleCommonApi.getCoachList().pipe(tap(res => {
@@ -69,7 +89,7 @@ export class TeamScheduleCommonService {
   /**
   *
   * @param query
-  * 获取会员Options
+  * 获取场地Options
   */
   getCourtList() {
     return this.teamScheduleCommonApi.getCourtList().pipe(tap(res => {
@@ -81,7 +101,7 @@ export class TeamScheduleCommonService {
   /**
    *
    * @param query
-   * 获取会员Options
+   * 获取座位Options
    */
   getUnusedSeatList(query: UnUsedSeatQuery) {
     return this.teamScheduleCommonApi.getUnusedSeatList(query).pipe(tap(res => {
@@ -93,7 +113,7 @@ export class TeamScheduleCommonService {
   /**
    *
    * @param query
-   * 获取会员Options
+   * 获取消费方式Options
    */
   getConsumeList(query: ConsumeQuery) {
     return this.teamScheduleCommonApi.getConsumeList(query).pipe(

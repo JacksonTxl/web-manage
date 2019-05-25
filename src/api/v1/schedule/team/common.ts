@@ -43,6 +43,9 @@ export class TeamScheduleCommonApi extends Api {
   getCourtList() {
     return this.http.get('/v1/schedule/team/shop/court')
   }
+  getUnusedSeat(query: UnUsedSeatQuery) {
+    return this.http.get('/v1/schedule/team/shop/court', { query })
+  }
   /**
    *
    * @param params
