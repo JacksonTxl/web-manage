@@ -9,7 +9,6 @@
     <div :class="transfer('content')">
       <a-row :class="transfer('info')">
         <a-col :span="13">
-
           <st-info>
             <st-info-item label="商品名称">{{transferInfo.card_name}}</st-info-item>
             <st-info-item label="剩余金额">{{transferInfo.now_amount}}</st-info-item>
@@ -76,7 +75,6 @@
         </div>
       </st-form>
     </div>
-    {{finance.pay_channel}}{{infCode}}
     <template slot="footer">
       <st-button key="submit" type="primary">确认提交</st-button>
     </template>
@@ -134,7 +132,7 @@ export default {
     transferInfoFunc() {
       let self = this
       this.transferService
-        .getMemberTransferInfo('1', this.type)
+        .getMemberTransferInfo(self.record.id, this.type)
         .subscribe(res => {
           self.transferInfo = res.info
         })
