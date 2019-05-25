@@ -93,4 +93,10 @@ export class CourseApi extends Api {
   editCoursePackageRefund(params:RefundCoursePackageInput, id:string) {
     return this.http.put(`/v1/sold/course/package/refund/${id}`, { params })
   }
+  /**
+   * 售出课程包详情
+   */
+  getCoursePackageInfo(id:string) {
+    return this.http.get(`/v1/sold/course/package/detail/${id}`)
+  }
 }

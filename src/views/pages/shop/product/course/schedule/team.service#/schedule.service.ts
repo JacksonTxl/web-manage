@@ -1,8 +1,9 @@
 import { AddScheduleInput, UpdateScheduleInput, CopyScheduleInput, GetScheduleListQuery } from '../../../../../../../api/v1/schedule/team/schedule'
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state/src'
-import { tap, pluck } from 'rxjs/operators'
+import { tap, pluck, switchMap } from 'rxjs/operators'
 import { TeamScheduleScheduleApi } from '@/api/v1/schedule/team/schedule'
+import { bindCallback } from 'rxjs'
 
 export interface SetState {
   scheduleTeamCourseList: any[],
@@ -11,12 +12,15 @@ export interface SetState {
 export class TeamScheduleScheduleService {
   state$: State<SetState>
   scheduleTeamCourseList$: Computed<any>
+  refresh$: Computed<any>
 
-  constructor(private teamScheduleScheduleApi: TeamScheduleScheduleApi) {
+  constructor(private scheduleApi: TeamScheduleScheduleApi) {
     this.state$ = new State({
-      scheduleTeamCourseList: []
+      scheduleTeamCourseList: [],
+      refresh: 0
     })
     this.scheduleTeamCourseList$ = new Computed(this.state$.pipe(pluck('scheduleTeamCourseList')))
+    this.refresh$ = new Computed(this.state$.pipe(pluck('scheduleTeamCourseList')))
   }
   /**
    *
@@ -25,7 +29,7 @@ export class TeamScheduleScheduleService {
    */
   @Effect()
   getList(query: GetScheduleListQuery) {
-    return this.teamScheduleScheduleApi.getList(query).pipe(tap(res => {
+    return this.scheduleApi.getList(query).pipe(tap(res => {
       this.state$.commit(state => {
         state.scheduleTeamCourseList = res.list.map((item: any) => {
           return { // add new event data
@@ -45,7 +49,7 @@ export class TeamScheduleScheduleService {
    * 获取团体课排期表格
    */
   getScheduleTable(query: GetScheduleListQuery) {
-    return this.teamScheduleScheduleApi.getScheduleTable(query)
+    return this.scheduleApi.getScheduleTable(query)
   }
   /**
    *
@@ -53,10 +57,12 @@ export class TeamScheduleScheduleService {
    * 新增团体课排期
    */
   add(params: AddScheduleInput) {
-    return this.teamScheduleScheduleApi.add(params)
+    return this.scheduleApi.add(params)
   }
   addScheduleInBatch(params: AddScheduleInput[]) {
-    return this.teamScheduleScheduleApi.addScheduleInBatch(params)
+    return this.scheduleApi.addScheduleInBatch(params).pipe(switchMap(state => {
+      return this.getList({})
+    }))
   }
   /**
    *
@@ -64,7 +70,9 @@ export class TeamScheduleScheduleService {
    * 复制团体课排期
    */
   copy(params: CopyScheduleInput) {
-    return this.teamScheduleScheduleApi.copy(params)
+    return this.scheduleApi.copy(params).pipe(switchMap(state => {
+      return this.getList({})
+    }))
   }
   /**
    *
@@ -72,7 +80,9 @@ export class TeamScheduleScheduleService {
    * 编辑课程排期
    */
   update(params: UpdateScheduleInput) {
-    return this.teamScheduleScheduleApi.update(params)
+    return this.scheduleApi.update(params).pipe(switchMap(state => {
+      return this.getList({})
+    }))
   }
   /**
    *
@@ -80,7 +90,7 @@ export class TeamScheduleScheduleService {
    * 编辑课程排期回显
    */
   getUpdateInfo(id: string) {
-    return this.teamScheduleScheduleApi.getUpdateInfo(id)
+    return this.scheduleApi.getUpdateInfo(id)
   }
   /**
    *
@@ -88,6 +98,16 @@ export class TeamScheduleScheduleService {
    * 取消团体课排期
    */
   del(id: string) {
-    return this.teamScheduleScheduleApi.del(id)
+    return this.scheduleApi.del(id).pipe(switchMap(state => {
+      return this.getList({})
+    }))
+  }
+  curd(fun: string, payload: any, callback: any) {
+    const that = this as any
+    return that[fun](payload).pipe(switchMap(state => {
+      return this.getList({})
+    })).subscribe(() => {
+      callback()
+    })
   }
 }

@@ -11,7 +11,7 @@ export interface SetState {
 export class TeamScheduleReserveService {
   state$: State<SetState>
   reserveInfo$: Computed<any>
-  constructor(private teamScheduleReserveApi: TeamScheduleReserveApi) {
+  constructor(private reserveApi: TeamScheduleReserveApi) {
     this.state$ = new State({
       reserveInfo: []
     })
@@ -23,7 +23,7 @@ export class TeamScheduleReserveService {
  * 添加预约
  */
   add(params: AddReserveInput) {
-    return this.teamScheduleReserveApi.add(params)
+    return this.reserveApi.add(params)
   }
   /**
    *
@@ -31,7 +31,7 @@ export class TeamScheduleReserveService {
    * 团体课签到消费
    */
   check(params: CheckInput) {
-    return this.teamScheduleReserveApi.check(params)
+    return this.reserveApi.check(params)
   }
   /**
    *
@@ -40,7 +40,7 @@ export class TeamScheduleReserveService {
    */
   @Effect()
   getInfo(id: string) {
-    return this.teamScheduleReserveApi.getInfo(id).pipe(tap(res => {
+    return this.reserveApi.getInfo(id).pipe(tap(res => {
       this.state$.commit(state => {
         state.reserveInfo = res.info
         state.reserveList = res.info.reserve
@@ -51,6 +51,6 @@ export class TeamScheduleReserveService {
    * 取消预约
    */
   del(id: string) {
-    return this.teamScheduleReserveApi.del(id)
+    return this.reserveApi.del(id)
   }
 }

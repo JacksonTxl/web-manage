@@ -59,13 +59,14 @@
               {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
             </template>
             <div slot="action" slot-scope="text,record">
-              <a @click="onRefund(record)">退款</a>
+              <a @click="onDetail(record)">详情</a>
               <a-divider type="vertical"></a-divider>
               <st-more-dropdown class="mgl-16">
                 <a-menu-item @click="onSurplus(record)">修改剩余课时</a-menu-item>
                 <a-menu-item @click="onFreeze(record)">冻结</a-menu-item>
                 <a-menu-item @click="onUnfreeze(record)">取消冻结</a-menu-item>
                 <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
+                <a-menu-item @click="onRefund(record)">退款</a-menu-item>
               </st-more-dropdown>
             </div>
           </st-table>
@@ -253,7 +254,13 @@ export default {
         }
       })
     },
-    onDetail() {},
+    // 详情
+    onDetail(record) {
+      this.$router.push({
+        path: `/shop/sold/course/info/package/info/consumption-record`,
+        query: { id: record.id }
+      })
+    },
     // 查询
     onSearch() {
       let query = {

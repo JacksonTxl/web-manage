@@ -107,9 +107,8 @@ export default {
           form.court_id = form.court_id[0]
           form.course_fee = parseInt(form.course_fee)
           form.limit_num = parseInt(form.limit_num)
-          this.teamScheduleScheduleService.add({ ...form }).subscribe(() => {
+          this.teamScheduleScheduleService.curd('add', { ...form }, () => {
             this.show = false
-            this.$emit('ok')
           })
         }
       })

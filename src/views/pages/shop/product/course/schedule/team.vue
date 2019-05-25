@@ -18,7 +18,7 @@
       eventBackgroundColor="#fff"
       @eventClick="onEventClick"
       @eventRender="onEventRender($event)"
-      :events="calendarEvents"
+      :events="scheduleTeamCourseList"
       @dateClick="handleDateClick"
       />
   </div>
@@ -37,7 +37,7 @@ import { TeamScheduleScheduleService } from './team.service#/schedule.service'
 export default {
   name: 'Schedule',
   components: {
-    FullCalendar // make the <FullCalendar> tag available
+    FullCalendar
   },
   serviceInject() {
     return {
@@ -86,7 +86,7 @@ export default {
         custom2: {
           text: '复制排期',
           click() {
-            that.$modalRouter.push({ name: 'schedule-team-copy-course-schedule' })
+            that.$modalRouter.push({ name: 'schedule-team-copy-schedule' })
           }
         },
         custom3: {
@@ -127,17 +127,9 @@ export default {
       this.setAddButton()
     })
   },
-  watch: {
-    scheduleTeamCourseList(n, o) {
-      this.calendarEvents = n
-    }
-  },
   mounted() {
     this.setAddButton()
     this.gotoPast()
-    this.$nextTick().then(() => {
-      this.calendarEvents = this.scheduleTeamCourseList
-    })
   },
   methods: {
     setAddButton() {
@@ -211,7 +203,6 @@ export default {
       })
     },
     onEventClick(event) {
-      console.log(event)
       this.$modalRouter.push({
         name: 'schedule-team-reserve-info',
         props: {
@@ -230,7 +221,7 @@ export default {
     },
     handleDateClick(arg) {
       this.$modalRouter.push({
-        name: 'schedule-add-course-schedule',
+        name: 'schedule-team-add-course-schedule',
         props: {
           time: moment(arg.date)
         },
