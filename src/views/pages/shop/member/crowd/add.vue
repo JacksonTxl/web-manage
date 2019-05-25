@@ -315,17 +315,28 @@ export default {
             arrKey.length === arrValue.length &&
             arrValue.every(item => item !== '')
           ) {
-            console.log(arrKey, arrValue)
-            if (self.$route.query.id) {
-              self.aService
-                .getCrowdBrandCrowd(self.$route.query.id, obj)
-                .subscribe(status => {
+            let flag = true
+            arrValue.map(item => {
+              if (Array.isArray(item)) {
+                if (item.length === 0) {
+                  flag = false
+                }
+              }
+            })
+            if (flag) {
+              if (self.$route.query.id) {
+                self.aService
+                  .getCrowdBrandCrowd(self.$route.query.id, obj)
+                  .subscribe(status => {
+                    self.$router.push({ name: 'shop-member-crowd-index' })
+                  })
+              } else {
+                self.aService.setCrowdBrandField(obj).subscribe(status => {
                   self.$router.push({ name: 'shop-member-crowd-index' })
                 })
+              }
             } else {
-              self.aService.setCrowdBrandField(obj).subscribe(status => {
-                self.$router.push({ name: 'shop-member-crowd-index' })
-              })
+              this.messageService.warning({ content: '请完整填写！' })
             }
           } else {
             this.messageService.warning({ content: '请完整填写！' })

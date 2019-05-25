@@ -302,17 +302,33 @@ export default {
           })
           obj.array_index = self.seleteData.arrData
           obj.crowd_name = self.seleteData.getData.crowd_name
-
+          console.log(arrKey, arrValue)
           if (
             arrKey.length === arrValue.length &&
             arrValue.every(item => item !== '')
           ) {
-            if (self.$route.query.id) {
-              self.aService
-                .getCrowdBrandCrowd(self.$route.query.id, obj)
-                .subscribe(status => { self.$router.push({ name: 'brand-plugin-crowd-index' }) })
+            let flag = true
+            arrValue.map(item => {
+              if (Array.isArray(item)) {
+                if (item.length === 0) {
+                  flag = false
+                }
+              }
+            })
+            if (flag) {
+              if (self.$route.query.id) {
+                self.aService
+                  .getCrowdBrandCrowd(self.$route.query.id, obj)
+                  .subscribe(status => {
+                    self.$router.push({ name: 'brand-plugin-crowd-index' })
+                  })
+              } else {
+                self.aService.setCrowdBrandField(obj).subscribe(status => {
+                  self.$router.push({ name: 'brand-plugin-crowd-index' })
+                })
+              }
             } else {
-              self.aService.setCrowdBrandField(obj).subscribe(status => { self.$router.push({ name: 'brand-plugin-crowd-index' }) })
+              this.messageService.warning({ content: '请完整填写！' })
             }
           } else {
             this.messageService.warning({ content: '请完整填写！' })
