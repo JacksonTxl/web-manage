@@ -48,6 +48,13 @@ export const routeMapConfig = {
       course_name: { type: String, default: '' }
     }
   },
+  // 'shop-product-course-schedule-team'(routeConfig: RouteConfig) {
+  //   routeConfig.queryOptions = {
+  //     course_id: { type: Number, default: -1 },
+  //     curt_id: { type: Number, default: -1 },
+  //     course_name: { type: String, default: '' }
+  //   }
+  // },
   'brand-product-course-team-list-brand'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
       category_id: { type: Number, default: -1 },

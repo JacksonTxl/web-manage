@@ -22,7 +22,7 @@ export class TeamScheduleCommonService {
   unUsedSeatOptions$: Computed<any[]>
   consumeOptions$: Computed<any[]>
 
-  constructor(private teamScheduleCommonApi: TeamScheduleCommonApi) {
+  constructor(private commonApi: TeamScheduleCommonApi) {
     this.state$ = new State({
       courseOptions: [],
       coachOptions: [],
@@ -44,7 +44,7 @@ export class TeamScheduleCommonService {
    * 获取会员Options
    */
   getMemberList(query: GetMemberInput) {
-    return this.teamScheduleCommonApi.getMemberList(query).pipe(tap(res => {
+    return this.commonApi.getMemberList(query).pipe(tap(res => {
       this.state$.commit(state => {
         state.memberOptions = res.list
       })
@@ -56,7 +56,7 @@ export class TeamScheduleCommonService {
    * 获取场地座位Options
    */
   getUnusedSeat(query: UnUsedSeatQuery) {
-    return this.teamScheduleCommonApi.getUnusedSeat(query).pipe(tap(res => {
+    return this.commonApi.getUnusedSeat(query).pipe(tap(res => {
       this.state$.commit(state => {
         state.unUsedSeatOptions = res.list
       })
@@ -68,7 +68,7 @@ export class TeamScheduleCommonService {
    * 获取课程Options
    */
   getCourseList() {
-    return this.teamScheduleCommonApi.getCourseList().pipe(tap(res => {
+    return this.commonApi.getCourseList().pipe(tap(res => {
       this.state$.commit(state => {
         state.courseOptions = res.list
       })
@@ -80,7 +80,7 @@ export class TeamScheduleCommonService {
    * 获取教练Options
    */
   getCoachList() {
-    return this.teamScheduleCommonApi.getCoachList().pipe(tap(res => {
+    return this.commonApi.getCoachList().pipe(tap(res => {
       this.state$.commit(state => {
         state.coachOptions = res.list
       })
@@ -92,7 +92,7 @@ export class TeamScheduleCommonService {
   * 获取场地Options
   */
   getCourtList() {
-    return this.teamScheduleCommonApi.getCourtList().pipe(tap(res => {
+    return this.commonApi.getCourtList().pipe(tap(res => {
       this.state$.commit(state => {
         state.courtOptions = res.list
       })
@@ -104,7 +104,7 @@ export class TeamScheduleCommonService {
    * 获取座位Options
    */
   getUnusedSeatList(query: UnUsedSeatQuery) {
-    return this.teamScheduleCommonApi.getUnusedSeatList(query).pipe(tap(res => {
+    return this.commonApi.getUnusedSeatList(query).pipe(tap(res => {
       this.state$.commit(state => {
         state.unUsedSeatOptions = res.list.map((item: any) => { return { id: item, name: item } })
       })
@@ -116,7 +116,7 @@ export class TeamScheduleCommonService {
    * 获取消费方式Options
    */
   getConsumeList(query: ConsumeQuery) {
-    return this.teamScheduleCommonApi.getConsumeList(query).pipe(
+    return this.commonApi.getConsumeList(query).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.consumeOptions = res.list.map((ele: any) => {

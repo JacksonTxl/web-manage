@@ -176,6 +176,7 @@ export default {
         .map(item => {
           delete item.show
           delete item.key
+          delete item.editable
           item.start_time = moment(item.start_time).format('YYYY-MM-DD HH:mm:ss').valueOf()
           item.court_site_id = item.court_site_id[1]
           item.limit_num = parseInt(item.limit_num)
