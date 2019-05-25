@@ -7,7 +7,11 @@ export class SurplusService {
   loading$ = new State({})
   constructor(private courseApi: CourseApi) {}
   @Effect()
+  getPackageEditInfo(id:string) {
+    return this.courseApi.getCoursePackageEditInfo(id)
+  }
+  @Effect()
   edit(params: EditCoursePackageInput, id:string) {
-    return this.courseApi.EditCoursePackage(params, id)
+    return this.courseApi.editCoursePackage(params, id)
   }
 }

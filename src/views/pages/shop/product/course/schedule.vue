@@ -1,14 +1,11 @@
 <template>
 <st-panel class="page-schedule-st-panel" app :tabs="tabs">
   <section>
-    <modal-link :to="{name: 'schedule-add-course-schedule'}"><st-button>新增课程排期</st-button></modal-link>
-    <modal-link :to="{name: 'schedule-add-course-schedule-batch'}"><st-button>批量新增课程排期</st-button></modal-link>
-    <modal-link :to="{name: 'schedule-copy-schedule'}"><st-button>复制排期</st-button></modal-link>
-    <modal-link :to="{name: 'schedule-add-order'}"><st-button>添加预约(私教课1v1)</st-button></modal-link>
-    <modal-link :to="{name: 'schedule-edit-schedule-personal'}"><st-button>编辑排期(私教)</st-button></modal-link>
+    <modal-link :to="{name: 'schedule-team-add-course-schedule'}"><st-button>新增课程排期</st-button></modal-link>
+    <modal-link :to="{name: 'schedule-team-add-course-schedule-batch'}"><st-button>批量新增课程排期</st-button></modal-link>
+    <modal-link :to="{name: 'schedule-team-copy-schedule'}"><st-button>复制排期</st-button></modal-link>
     <st-button  @click="onClickEdit" >修改排期</st-button>
-    <modal-link :to="{name: 'schedule-order-info'}"><st-button>预约详情</st-button></modal-link>
-    <modal-link :to="{name: 'schedule-order-info-personal'}"><st-button>预约详情(私教)</st-button></modal-link>
+    <modal-link :to="{name: 'schedule-team-reserve-info'}"><st-button>预约详情</st-button></modal-link>
   </section>
   <div slot="actions">
     <a-select v-model="query.course_id" placeholder="请选择课程" @change="onChange" class="page-schedule__select mg-r8">
@@ -29,18 +26,18 @@
 </template>
 
 <script>
-import { TeamService } from './schedule/team.service'
+import { TeamScheduleCommonService } from './schedule/team.service#/common.service'
 import { RouteService } from '../../../../../services/route.service'
 export default {
   name: 'CourseSchedule',
   serviceInject() {
     return {
-      teamScheduleService: TeamService,
+      teamScheduleCommonService: TeamScheduleCommonService,
       routeService: RouteService
     }
   },
   rxState() {
-    const tss = this.teamScheduleService
+    const tss = this.teamScheduleCommonService
     return {
       query: this.routeService.query$,
       coachOptions: tss.coachOptions$,
@@ -65,7 +62,7 @@ export default {
       this.$router.push({ query: this.query })
     },
     onClickEdit() {
-      this.$modalRouter.push({ name: 'schedule-edit-schedule' })
+      this.$modalRouter.push({ name: 'schedule-team-edit-schedule' })
     }
   }
 }

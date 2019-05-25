@@ -1,6 +1,5 @@
 <template>
 <st-modal class="modal-reserved" title="批量新增课程排期" @ok="onOkSaveForm"  width="1366px" v-model="show">
-  {{courseOptions}}
   <st-table :columns="columns" :dataSource="data" bordered>
     <template  slot="start_time" slot-scope="text, record">
       <a-date-picker
@@ -88,7 +87,9 @@
 </template>
 <script>
 import { cloneDeep } from 'lodash-es'
-import { TeamService } from '../../pages/shop/product/course/schedule/team.service'
+import { TeamService } from '../../../pages/shop/product/course/schedule/team.service'
+import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
+import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
 const columns = [{
   title: '日期',
   dataIndex: 'start_time',
@@ -122,11 +123,12 @@ export default {
   name: 'AddCourseScheduleBatch',
   serviceInject() {
     return {
-      teamSchedeleService: TeamService
+      teamScheduleCommonService: TeamScheduleCommonService,
+      teamScheduleScheduleService: TeamScheduleScheduleService
     }
   },
   rxState() {
-    const tss = this.teamSchedeleService
+    const tss = this.teamScheduleCommonService
     return {
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
@@ -174,11 +176,14 @@ export default {
         .map(item => {
           delete item.show
           delete item.key
-          moment(item.start_time).format('YYYY-MM-DD HH:mm:SS').valueOf()
+          item.start_time = moment(item.start_time).format('YYYY-MM-DD HH:mm:ss').valueOf()
+          item.court_site_id = item.court_site_id[1]
+          item.limit_num = parseInt(item.limit_num)
+          item.course_fee = parseInt(item.course_fee)
           return item
         })
       console.log(data)
-      this.teamSchedeleService.postScheduleShopBatch(data).subscribe()
+      this.teamScheduleScheduleService.addScheduleInBatch(data).subscribe()
       this.show = false
     },
     onChangeCourseList() {

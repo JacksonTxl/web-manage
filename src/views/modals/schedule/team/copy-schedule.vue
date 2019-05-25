@@ -40,12 +40,12 @@
 </template>
 
 <script>
-import { TeamService } from '../../pages/shop/product/course/schedule/team.service'
+import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
 export default {
   name: 'CopySchedule',
   serviceInject() {
     return {
-      scheduleTeamService: TeamService
+      teamScheduleScheduleService: TeamScheduleScheduleService
     }
   },
   data() {
@@ -93,7 +93,7 @@ export default {
         apply_start_time: this.applyStartDate.format('YYYY-MM-DD'),
         apply_end_time: this.applyEndDate.format('YYYY-MM-DD')
       }
-      this.scheduleTeamService.postScheduleCopy(form).subscribe()
+      this.teamScheduleScheduleService.postScheduleCopy(form).subscribe()
     }
   }
 }

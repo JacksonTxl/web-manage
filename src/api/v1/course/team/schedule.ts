@@ -8,13 +8,13 @@ import { Api } from '@/api/api'
  * @extends {Api}
  * 团体课排期接口
  */
-export class ScheduleApi extends Api {
+export class TeamScheduleApi extends Api {
   /**
    *
    * @param params
    * 获取团体课排期列表
    */
-  getScheduleList(query: GetScheduleListQuery) {
+  getList(query: GetScheduleListQuery) {
     return this.http.get('/v1/schedule/team/shop', { query })
   }
   /**
@@ -30,13 +30,13 @@ export class ScheduleApi extends Api {
    * @param params
    * 新增团体课排期
    */
-  postSchedule(params: PostScheduleInput) {
+  add(params: PostScheduleInput) {
     return this.http.post('/v1/schedule/team/shop', { params })
   }
   /**
  *
  * @param params
- * 添加排期
+ * 添加预约
  */
   postScheduleShopReserve(params: ScheduleShopReserveInput) {
     return this.http.post('/v1/schedule/team/shop/reserve', { params })

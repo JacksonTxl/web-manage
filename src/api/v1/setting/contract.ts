@@ -48,6 +48,12 @@ export class ContractApi extends Api {
   updateCode(params: any) {
     return this.http.put(`/v1/setting/contract/code/${params.id}`, { params })
   }
+  /**
+   * 合同编号自动生成
+   */
+  getCodeNumber(id:string) {
+    return this.http.get(`/v1/setting/contract/codenumber/${id}`)
+  }
 }
 
 export interface ContractInput {

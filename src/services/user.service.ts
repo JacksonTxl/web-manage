@@ -48,6 +48,7 @@ export class UserService extends Store<UserState> {
   shopMemberEnums$: Computed<ModuleEnums>
   finance$: Computed<ModuleEnums>
   crowdEnums$: Computed<ModuleEnums>
+  soldEnums$: Computed<ModuleEnums>
   constructor(private constApi: ConstApi) {
     super()
     const initialState = {
@@ -79,6 +80,7 @@ export class UserService extends Store<UserState> {
     this.shopMemberEnums$ = new Computed(this.enums$.pipe(pluck('shop_member')))
     this.finance$ = new Computed(this.enums$.pipe(pluck('finance')))
     this.crowdEnums$ = new Computed(this.enums$.pipe(pluck('crowd')))
+    this.soldEnums$ = new Computed(this.enums$.pipe(pluck('sold')))
   }
   SET_USER(user: User) {
     this.state$.commit(state => {

@@ -32,7 +32,7 @@ import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
-import { TeamService } from './team.service'
+import { TeamScheduleScheduleService } from './team.service#/schedule.service'
 
 export default {
   name: 'Schedule',
@@ -41,12 +41,12 @@ export default {
   },
   serviceInject() {
     return {
-      teamService: TeamService
+      teamScheduleScheduleService: TeamScheduleScheduleService
     }
   },
   rxState() {
     return {
-      scheduleTeamCourseList: this.teamService.scheduleTeamCourseList$
+      scheduleTeamCourseList: this.teamScheduleScheduleService.scheduleTeamCourseList$
     }
   },
   data() {
@@ -79,14 +79,14 @@ export default {
       customButtons: {
         custom1: {
           text: '批量排期',
-          click: function() {
-            alert('clicked custom button 1!')
+          click() {
+            that.$modalRouter.push({ name: 'schedule-team-add-course-schedule-batch' })
           }
         },
         custom2: {
           text: '复制排期',
-          click: function() {
-            alert('clicked custom button 2!')
+          click() {
+            that.$modalRouter.push({ name: 'schedule-team-copy-course-schedule' })
           }
         },
         custom3: {
@@ -129,31 +129,14 @@ export default {
   },
   watch: {
     scheduleTeamCourseList(n, o) {
-      this.calendarEvents = []
-      n.forEach(item => {
-        this.calendarEvents.push({ // add new event data
-          title: item.course_name,
-          groupId: JSON.stringify(item),
-          id: item.id,
-          start: `${item.start_date} ${item.start_time}`,
-          end: `${item.start_date} ${item.end_time}`
-        })
-      })
+      this.calendarEvents = n
     }
   },
   mounted() {
     this.setAddButton()
     this.gotoPast()
     this.$nextTick().then(() => {
-      this.scheduleTeamCourseList.forEach(item => {
-        this.calendarEvents.push({ // add new event data
-          title: item.course_name,
-          groupId: JSON.stringify(item),
-          id: item.id,
-          start: `${item.start_date} ${item.start_time}`,
-          end: `${item.start_date} ${item.end_time}`
-        })
-      })
+      this.calendarEvents = this.scheduleTeamCourseList
     })
   },
   methods: {
@@ -200,23 +183,6 @@ export default {
     },
     gotoPast() {
       let calendarApi = this.$refs.fullCalendar.getApi() // from the ref="..."
-      // calendarApi.gotoDate('2000-01-01') // call a method on the Calendar object
-      // this.$nextTick().then(()=>{
-      //   this.$refs.fullCalendar.setOption('locale', 'zh-cn')
-      //   this.$refs.fullCalendar.setOption('view', {
-      //     timeGridWeek:{ buttonText: '周' },
-      //     timeGridDay: { buttonText: '天' },
-      //     listWeek: { buttonText: '三' }
-      //   })
-      // })
-    },
-    onEventMouseEnter(e) {
-      console.log('onEventMouseEnter', e)
-    },
-    onEventMouseLeave(e) {
-      console.log('onEventMouseLeave', e)
-    },
-    onEventPositioned() {
     },
     onEventRender(event, element) {
       this.$nextTick().then(() => {
@@ -247,7 +213,7 @@ export default {
     onEventClick(event) {
       console.log(event)
       this.$modalRouter.push({
-        name: 'schedule-order-info',
+        name: 'schedule-team-reserve-info',
         props: {
           id: event.event.id
         },

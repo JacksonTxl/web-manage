@@ -65,18 +65,19 @@
 
 <script>
 import { cloneDeep } from 'lodash-es'
-import { TeamService } from '../../pages/shop/product/course/schedule/team.service'
+import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
+import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
 export default {
   name: 'AddCourseSchedule',
   serviceInject() {
     return {
-      teamScheduleService: TeamService
+      teamScheduleCommomService: TeamScheduleCommonService,
+      teamScheduleScheduleService: TeamScheduleScheduleService
     }
   },
   rxState() {
-    const tss = this.teamScheduleService
+    const tss = this.teamScheduleCommomService
     return {
-      // loading: this.teamScheduleService.loading$,
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
       courtOptions: tss.courtOptions$
@@ -106,7 +107,7 @@ export default {
           form.court_id = form.court_id[0]
           form.course_fee = parseInt(form.course_fee)
           form.limit_num = parseInt(form.limit_num)
-          this.teamScheduleService.postSchedule({ ...form }).subscribe(() => {
+          this.teamScheduleScheduleService.add({ ...form }).subscribe(() => {
             this.show = false
             this.$emit('ok')
           })
