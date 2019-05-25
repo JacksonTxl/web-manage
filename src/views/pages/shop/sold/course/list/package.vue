@@ -197,6 +197,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-course-freeze',
         props: {
+          type: 'package',
           id: record.id,
           courseName: record.course_name,
           courseNum: record.remain_course_num,

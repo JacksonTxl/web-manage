@@ -6,7 +6,7 @@ import { CourseApi, FreezeCoursePackageInput } from '@/api/v1/sold/course'
 export class FreezeService {
   loading$ = new State({})
   constructor(private courseApi: CourseApi) {}
-  freeze(params: FreezeCoursePackageInput, id:string) {
-    return this.courseApi.freezeCoursePackage(params, id)
+  freeze(params: FreezeCoursePackageInput, id:string, type:string) {
+    return this.courseApi.freezeCourse(params, id, type)
   }
 }

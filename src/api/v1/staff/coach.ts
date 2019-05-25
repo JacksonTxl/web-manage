@@ -9,6 +9,12 @@ export class CoachApi extends Api {
   getCoachBasic(params: GetCoachBasicInput) {
     return this.http.post('/v1/staff/coach/basic', { params })
   }
+  /**
+   * 获取全部教练
+   */
+  getCoachList() {
+    return this.http.get('/v1/staff/coach')
+  }
 }
 
 export interface GetSelectCoachInput {

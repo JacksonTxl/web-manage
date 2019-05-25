@@ -15,7 +15,7 @@ export class InfoService implements RouteGuard {
     }))
   }
   unFreeze(id:string) {
-    return this.courseApi.unFreezeCoursePackage(id)
+    return this.courseApi.unFreezeCourse(id, 'package')
   }
   beforeEach(to: ServiceRoute, from:ServiceRoute, next: ()=>{}) {
     this.id = to.meta.query.id

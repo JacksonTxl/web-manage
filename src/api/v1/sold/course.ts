@@ -38,6 +38,10 @@ export interface RefundCoursePackageInput {
   frozen_pay_type:number
   description?:string
 }
+export interface EditCoursePersonalCoach {
+  coach_id: string
+  description?: string
+}
 export class CourseApi extends Api {
   /**
    * 课列表
@@ -58,16 +62,16 @@ export class CourseApi extends Api {
     return this.http.put(`/v1/sold/course/package/${id}`, { params })
   }
   /**
-   * 冻结售出课程包
+   * 冻结售出课程包/私教课
    */
-  freezeCoursePackage(params:FreezeCoursePackageInput, id:string) {
-    return this.http.put(`/v1/sold/course/package/frozen/${id}`, { params })
+  freezeCourse(params:FreezeCoursePackageInput, id:string, type:string) {
+    return this.http.put(`/v1/sold/course/${type}/frozen/${id}`, { params })
   }
   /**
-   * 取消冻结售出课程包
+   * 取消冻结售出课程包/私教课
    */
-  unFreezeCoursePackage(id:string) {
-    return this.http.put(`/v1/sold/course/package/unfrozen/${id}`)
+  unFreezeCourse(id:string, type:string) {
+    return this.http.put(`/v1/sold/course/${type}/unfrozen/${id}`)
   }
   /**
    * 售出课程包转让回显
@@ -98,5 +102,11 @@ export class CourseApi extends Api {
    */
   getCoursePackageInfo(id:string) {
     return this.http.get(`/v1/sold/course/package/detail/${id}`)
+  }
+  /**
+   * 售出私教修改教练
+   */
+  editCoursePersonalCoach(params:EditCoursePersonalCoach, id:string) {
+    return this.http.put(`/v1/sold/course/personal/coach/${id}`, { params })
   }
 }
