@@ -86,7 +86,7 @@ export default {
         custom2: {
           text: '复制排期',
           click() {
-            that.$modalRouter.push({ name: 'schedule-team-copy-course-schedule' })
+            that.$modalRouter.push({ name: 'schedule-personal-team-copy' })
           }
         },
         custom3: {

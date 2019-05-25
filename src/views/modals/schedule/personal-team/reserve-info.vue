@@ -108,17 +108,24 @@
 </template>
 
 <script>
-import { PersonalTeamService } from '@/views/pages/shop/product/course/schedule/personal-team.service'
 import { switchMap } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
-import { PersonalTeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/common.service'
-import { PersonalTeamScheduleReserveService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/reserve.service'
+import {
+  PersonalTeamScheduleCommonService as CommonService
+} from '@/views/pages/shop/product/course/schedule/personal-team.service#/common.service'
+import {
+  PersonalTeamScheduleReserveService as ReserveService
+} from '@/views/pages/shop/product/course/schedule/personal-team.service#/reserve.service'
+import {
+  PersonalTeamScheduleScheduleService as ScheduleService
+} from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
 export default {
   name: 'OrderInfo',
   serviceInject() {
     return {
-      commonService: PersonalTeamScheduleCommonService,
-      reserveService: PersonalTeamScheduleReserveService,
+      commonService: CommonService,
+      reserveService: ReserveService,
+      scheduleService: ScheduleService,
       messageService: MessageService
     }
   },
@@ -230,7 +237,7 @@ export default {
       }
     },
     cancelSchedule() {
-
+      this.scheduleService.del(this.id).subscribe(this.onDelScheduleScuccess)
     },
     updateSchedule() {
       this.show = false
@@ -262,6 +269,12 @@ export default {
       this.getReserveInfo()
       this.messageService.success({
         content: '签到成功'
+      })
+    },
+    onDelScheduleScuccess() {
+      this.show = false
+      this.messageService.success({
+        content: '取消成功'
       })
     }
   }
