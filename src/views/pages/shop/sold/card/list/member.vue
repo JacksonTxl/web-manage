@@ -311,16 +311,37 @@ export default {
     },
 
     // 转让
-    onTransfer(record, type) {
-      let routerName = [
-        'sold-card-upgrade',
-        'sold-card-refund',
-        'sold-card-transfer',
-        'sold-course-freeze',
-        'sold-package-surplus',
-        'sold-lease-relet',
-        'sold-deal-sale'
-      ]
+    onTransfer() {
+      this.$modalRouter.push({
+        name: 'sold-card-transfer'
+      })
+    },
+    // 冻结
+    onFreeze() {
+      this.$modalRouter.push({
+        name: 'sold-course-freeze'
+      })
+    },
+    // 修改剩余价值
+    onSurplus() {
+      this.$modalRouter.push({
+        name: 'sold-course-surplus'
+      })
+    },
+    // 续租
+    onRelet() {
+      this.$modalRouter.push({
+        name: 'sold-lease-relet'
+      })
+    },
+    // 交易签单
+    onSale() {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale'
+      })
+    },
+    // 交易签单
+    onGathering() {
       this.$modalRouter.push({
         name: routerName[type],
         props: {

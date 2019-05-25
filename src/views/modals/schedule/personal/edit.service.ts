@@ -10,7 +10,7 @@ import {
 } from '@/api/v1/course/personal/schedule1v1'
 
 @Injectable()
-export class editService {
+export class EditService {
   constructor(protected api: ScheduleApi1v1) { }
 
   // 编辑提交

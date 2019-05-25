@@ -15,8 +15,8 @@ export class PackageService implements RouteGuard {
       this.page$.commit(() => res.page)
     }))
   }
-  getPackageEditInfo(id:string) {
-    return this.courseApi.getCoursePackageEditInfo(id)
+  unFreeze(id:string) {
+    return this.courseApi.unFreezeCoursePackage(id)
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getList(to.meta.query).subscribe(() => {

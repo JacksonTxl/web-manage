@@ -50,6 +50,12 @@ export class ShopPersonalCourseApi extends Api {
   getCourseEdit(query: GetCourseEditInput) {
     return this.http.get(`/v1/course/personal/shop/edit/${query.course_id}`)
   }
+  /**
+   * 会员名称检索
+   */
+  getMemberList(member: string) {
+    return this.http.get(`/v1/schedule/personal/member`, { query: { member } })
+  }
 }
 export interface GetPersonalBrandCourseListInput {
   category_id?: number,
