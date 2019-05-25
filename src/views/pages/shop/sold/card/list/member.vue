@@ -324,7 +324,8 @@ export default {
       this.$modalRouter.push({
         name: routerName[type],
         props: {
-          record: record
+          record: record,
+          type: 'menber'
         },
         on: {
           ok: res => {

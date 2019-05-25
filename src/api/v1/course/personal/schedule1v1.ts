@@ -3,7 +3,7 @@
 import { Api } from '@/api/api'
 import { GetScheduleSiteListInput } from '../team/schedule'
 
-export interface GetSchedulePersonalCoachInfoInput{
+export interface GetSchedulePersonalCoachInfoInput {
   start_time: string;
   end_time: string;
 }
@@ -117,7 +117,7 @@ export class ScheduleApi1v1 extends Api {
     return this.http.get(`/v1/schedule/personal/date/${id}`)
   }
 }
-export interface GetSchedulePersonalListInput{
+export interface GetSchedulePersonalListInput {
   /**
    * 开始时间
    */
@@ -127,21 +127,21 @@ export interface GetSchedulePersonalListInput{
    */
   end_time: string;
 }
-export interface GetSchedulePersonalMemberInput{
+export interface GetSchedulePersonalMemberInput {
   /**
    * 搜索条件 手机号或者姓名
    */
   member: string;
 }
 
-export interface PutSchedulePersonalEditInput{
+export interface PutSchedulePersonalEditInput {
   /**
    * 教练id
    */
   coach_id: number;
 }
 
-export interface PostSchedulePersonalInput{
+export interface PostSchedulePersonalInput {
   /**
    * 教练id
    */

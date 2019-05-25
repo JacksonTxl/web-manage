@@ -9,23 +9,27 @@
     <div :class="transfer('content')">
       <a-row :class="transfer('info')">
         <a-col :span="13">
+
           <st-info>
-            <st-info-item label="商品名称">1000元储值卡</st-info-item>
-            <st-info-item label="剩余金额">182天</st-info-item>
-            <st-info-item label="储值金额">385天</st-info-item>
-            <st-info-item label="实付金额">3600元</st-info-item>
-            <st-info-item label="到期日期">2020/02/21 14:20:59</st-info-item>
-            <st-info-item label="销售人员" class="mgb-24">卡尔</st-info-item>
+            <st-info-item label="商品名称">{{transferInfo.card_name}}</st-info-item>
+            <st-info-item label="剩余金额">{{transferInfo.now_amount}}</st-info-item>
+            <st-info-item label="储值金额">{{transferInfo.init_amount}}</st-info-item>
+            <st-info-item label="实付金额">{{transferInfo.pay_price}}</st-info-item>
+            <st-info-item label="到期日期">{{transferInfo.end_time}}</st-info-item>
+            <st-info-item label="销售人员" class="mgb-24">{{transferInfo.staff_name}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
           <st-info>
-            <st-info-item label="会员姓名">王守仁</st-info-item>
-            <st-info-item label="手机号">18974023375</st-info-item>
-            <st-info-item label="实体卡号">34345234243</st-info-item>
-            <st-info-item label="订单号">1234567890123456</st-info-item>
-            <st-info-item label="订单状态">已完成</st-info-item>
-            <st-info-item label="转让手续费" class="mgb-24">5%</st-info-item>
+            <st-info-item label="会员姓名">{{transferInfo.member_name}}</st-info-item>
+            <st-info-item label="手机号">{{transferInfo.mobile}}</st-info-item>
+            <st-info-item label="实体卡号">{{transferInfo.card_code}}</st-info-item>
+            <st-info-item label="订单号">{{transferInfo.order_id}}</st-info-item>
+            <st-info-item label="订单状态">{{transferInfo.order_status}}</st-info-item>
+            <st-info-item
+              label="转让手续费"
+              class="mgb-24"
+            >{{transferInfo.transfer_num}}{{transferInfo.transfer_unit ===1 ? '%': '元'}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -55,34 +59,33 @@
           </st-form-item>
           <st-form-item label="合同编号" class="mgb-18" required>
             <div :class="transfer('contract')">
-              <a-input placeholder="请输入合同编号"></a-input>
-              <st-button class="create-button">自动生成</st-button>
+              <a-input placeholder="请输入合同编号" v-model="infCode"></a-input>
+              <st-button class="create-button" @click="settingContractCodenumber">自动生成</st-button>
             </div>
           </st-form-item>
-          <st-form-item label="手续费" class="mgb-18">50元</st-form-item>
-          <st-form-item label="支付方式" required>
+          <st-form-item label="手续费" class="mgb-18">{{transferInfo.poundage}}元</st-form-item>
+          <st-form-item :label="finance.pay_channel.description" required>
             <a-select placeholder="选择支付方式">
-              <a-select-option value="jack">Jack</a-select-option>
-              <a-select-option value="lucy">Lucy</a-select-option>
-            </a-select>
-          </st-form-item>
-          <st-form-item label="收款专员" class="mg-b0" required>
-            <a-select placeholder="选择收款专员">
-              <a-select-option value="jack">Jack</a-select-option>
-              <a-select-option value="lucy">Lucy</a-select-option>
+              <a-select-option
+                v-for="(item,key,index) in finance.pay_channel.value"
+                :value="key"
+                :key="index"
+              >{{item}}</a-select-option>
             </a-select>
           </st-form-item>
         </div>
       </st-form>
     </div>
+    {{finance.pay_channel}}{{infCode}}
     <template slot="footer">
       <st-button key="submit" type="primary">确认提交</st-button>
     </template>
-    {{record}}
   </st-modal>
 </template>
 
 <script>
+import { UserService } from '@/services/user.service'
+import { TransferService } from './transfer.service'
 export default {
   name: 'ModalSoldCardTransfer',
   bem: {
@@ -91,14 +94,51 @@ export default {
   props: {
     record: {
       type: Object
+    },
+    type: {
+      type: String
+    }
+  },
+  serviceInject() {
+    return {
+      transferService: TransferService,
+      userservice: UserService
+    }
+  },
+  rxState() {
+    return {
+      finance: this.userservice.finance$
     }
   },
   data() {
     return {
-      show: false
+      show: false,
+      transferInfo: {},
+      infCode: ''
     }
   },
+  created() {
+    this.transferInfoFunc()
+  },
   methods: {
+    /* 自动生成合同编号 */
+    settingContractCodenumber() {
+      let self = this
+      this.transferService
+        .settingContractCodenumber(self.transferInfo.contract_type)
+        .subscribe(res => {
+          self.infCode = res.info.code
+          console.log(res.info.code)
+        })
+    },
+    transferInfoFunc() {
+      let self = this
+      this.transferService
+        .getMemberTransferInfo('1', this.type)
+        .subscribe(res => {
+          self.transferInfo = res.info
+        })
+    },
     onOk() {
       this.$emit('ok')
       this.show = false

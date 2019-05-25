@@ -1,78 +1,80 @@
 <template>
   <div :class="basic()">
     <st-search-panel>
-        <div :class="basic('select')">
-          <span style="width:90px;">售卡状态：</span>
-          <st-search-radio v-model="is_valid" :list="cardSaleStatusList"/>
-        </div>
-        <div :class="basic('select')">
-          <span style="width:90px;">开卡时间：</span>
-          <a-date-picker
-            :disabledDate="disabledStartDate"
-            format="YYYY-MM-DD"
-            v-model="start_time"
-            placeholder="开始日期"
-            :showToday="false"
-            @openChange="handleStartOpenChange"
-            @change="start_time_change"
-          />
-          ~
-          <a-date-picker
-            :disabledDate="disabledEndDate"
-            format="YYYY-MM-DD"
-            v-model="end_time"
-            placeholder="结束日期"
-            :showToday="false"
-            :open="endOpen"
-            @openChange="handleEndOpenChange"
-            @change="end_time_change"
-          />
-        </div>
-        <div slot="button">
-            <st-button type="primary" @click="onSearch">查询</st-button>
-            <st-button class="mgl-8" @click="onReset">重置</st-button>
-        </div>
+      <div :class="basic('select')">
+        <span style="width:90px;">售卡状态：</span>
+        <st-search-radio v-model="is_valid" :list="cardSaleStatusList"/>
+      </div>
+      <div :class="basic('select')">
+        <span style="width:90px;">开卡时间：</span>
+        <a-date-picker
+          :disabledDate="disabledStartDate"
+          format="YYYY-MM-DD"
+          v-model="start_time"
+          placeholder="开始日期"
+          :showToday="false"
+          @openChange="handleStartOpenChange"
+          @change="start_time_change"
+        />~
+        <a-date-picker
+          :disabledDate="disabledEndDate"
+          format="YYYY-MM-DD"
+          v-model="end_time"
+          placeholder="结束日期"
+          :showToday="false"
+          :open="endOpen"
+          @openChange="handleEndOpenChange"
+          @change="end_time_change"
+        />
+      </div>
+      <div slot="button">
+        <st-button type="primary" @click="onSearch">查询</st-button>
+        <st-button class="mgl-8" @click="onReset">重置</st-button>
+      </div>
     </st-search-panel>
     <div :class="basic('content')">
-        <div :class="basic('content-batch')">
-            <st-button type="primary" class="mgr-8">批量导出</st-button>
-            <st-button type="primary" class="mgr-8">赠送额度</st-button>
-            <st-button type="primary" class="mgr-8">变更入场vip区域</st-button>
-        </div>
-        <div :class="basic('table-select-info')">
-            <st-icon type="weibo" />
-            <span class="mgl-8 mgr-16">已选 <i :class="basic('table-select-number')">{{selectedRowKeys.length}}</i> / 10 条数据</span>
-            <a href="javascript:void(0)">删除</a>
-        </div>
-        <div :class="basic('table')">
-          <st-table
+      <div :class="basic('content-batch')">
+        <st-button type="primary" class="mgr-8">批量导出</st-button>
+        <st-button type="primary" class="mgr-8">赠送额度</st-button>
+        <st-button type="primary" class="mgr-8">变更入场vip区域</st-button>
+      </div>
+      <div :class="basic('table-select-info')">
+        <st-icon type="weibo"/>
+        <span class="mgl-8 mgr-16">
+          已选
+          <i :class="basic('table-select-number')">{{selectedRowKeys.length}}</i> / 10 条数据
+        </span>
+        <a href="javascript:void(0)">删除</a>
+      </div>
+      <div :class="basic('table')">
+        <st-table
           :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
           rowKey="id"
           :columns="columns"
-          :dataSource="list" >
-            <template slot="is_valid" slot-scope="text">
-              {{text | enumFilter('sold.is_valid')}}
-            </template>
-            <template slot="end_time" slot-scope="text">
-              {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
-            </template>
-            <template slot="buy_time" slot-scope="text">
-              {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
-            </template>
-            <div slot="action" slot-scope="text,record">
-              <a @click="onDetail(record)">详情</a>
-              <a-divider type="vertical"></a-divider>
-              <a>续卡</a>
-              <st-more-dropdown class="mgl-16">
-                <a-menu-item>上架</a-menu-item>
-                <a-menu-item>上架</a-menu-item>
-                <a-menu-item>上架</a-menu-item>
-                <a-menu-item>上架</a-menu-item>
-              </st-more-dropdown>
-            </div>
-          </st-table>
-        </div>
+          :dataSource="list"
+        >
+          <template slot="is_valid" slot-scope="text">{{text | enumFilter('sold.is_valid')}}</template>
+          <template
+            slot="end_time"
+            slot-scope="text"
+          >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
+          <template
+            slot="buy_time"
+            slot-scope="text"
+          >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
+          <div slot="action" slot-scope="text,record">
+            <a @click="onDetail(record)">详情</a>
+            <a-divider type="vertical"></a-divider>
+            <a>查看合同</a>
+            <a-divider type="vertical"></a-divider>
+            <st-more-dropdown class="mgl-16">
+              <a-menu-item @click="onTransfer(record,0)">转让</a-menu-item>
+              <a-menu-item @click="onTransfer(record,1)">退款</a-menu-item>
+            </st-more-dropdown>
+          </div>
+        </st-table>
+      </div>
     </div>
   </div>
 </template>
@@ -83,51 +85,64 @@ import { DepositeService } from './deposite.service'
 import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 
-const columns = [{
-  title: '卡名',
-  dataIndex: 'card_name',
-  scopedSlots: { customRender: 'card_name' }
-}, {
-  title: '剩余金额（元）',
-  dataIndex: 'now_amount',
-  scopedSlots: { customRender: 'now_amount' }
-}, {
-  title: '储值金额（元）',
-  dataIndex: 'init_amount',
-  scopedSlots: { customRender: 'init_amount' }
-}, {
-  title: '姓名',
-  dataIndex: 'member_name',
-  scopedSlots: { customRender: 'member_name' }
-}, {
-  title: '手机号',
-  dataIndex: 'mobile',
-  scopedSlots: { customRender: 'mobile' }
-}, {
-  title: '实体卡号',
-  dataIndex: 'card_code',
-  scopedSlots: { customRender: 'card_code' }
-}, {
-  title: '状态',
-  dataIndex: 'is_valid',
-  scopedSlots: { customRender: 'is_valid' }
-}, {
-  title: '到期日期',
-  dataIndex: 'end_time',
-  scopedSlots: { customRender: 'end_time' }
-}, {
-  title: '购买日期',
-  dataIndex: 'buy_time',
-  scopedSlots: { customRender: 'buy_time' }
-}, {
-  title: '销售人员',
-  dataIndex: 'staff_name',
-  scopedSlots: { customRender: 'staff_name' }
-}, {
-  title: '操作',
-  dataIndex: 'action',
-  scopedSlots: { customRender: 'action' }
-}]
+const columns = [
+  {
+    title: '卡名',
+    dataIndex: 'card_name',
+    scopedSlots: { customRender: 'card_name' }
+  },
+  {
+    title: '剩余金额（元）',
+    dataIndex: 'now_amount',
+    scopedSlots: { customRender: 'now_amount' }
+  },
+  {
+    title: '储值金额（元）',
+    dataIndex: 'init_amount',
+    scopedSlots: { customRender: 'init_amount' }
+  },
+  {
+    title: '姓名',
+    dataIndex: 'member_name',
+    scopedSlots: { customRender: 'member_name' }
+  },
+  {
+    title: '手机号',
+    dataIndex: 'mobile',
+    scopedSlots: { customRender: 'mobile' }
+  },
+  {
+    title: '实体卡号',
+    dataIndex: 'card_code',
+    scopedSlots: { customRender: 'card_code' }
+  },
+  {
+    title: '状态',
+    dataIndex: 'is_valid',
+    scopedSlots: { customRender: 'is_valid' }
+  },
+  {
+    title: '到期日期',
+    dataIndex: 'end_time',
+    scopedSlots: { customRender: 'end_time' }
+  },
+  {
+    title: '购买日期',
+    dataIndex: 'buy_time',
+    scopedSlots: { customRender: 'buy_time' }
+  },
+  {
+    title: '销售人员',
+    dataIndex: 'staff_name',
+    scopedSlots: { customRender: 'staff_name' }
+  },
+  {
+    title: '操作',
+    dataIndex: 'action',
+    width: 170,
+    scopedSlots: { customRender: 'action' }
+  }
+]
 export default {
   name: 'PageShopSoldCardMemberList',
   bem: {
@@ -175,13 +190,33 @@ export default {
     }
   },
   methods: {
+    // 转让
+    onTransfer(record, type) {
+      let routerName = ['sold-card-transfer', 'sold-card-refund']
+      this.$modalRouter.push({
+        name: routerName[type],
+        props: {
+          record: record,
+          type: 'deposit'
+        },
+        on: {
+          ok: res => {
+            consoel.log(res)
+          }
+        }
+      })
+    },
     onDetail() {},
     // 查询
     onSearch() {
       let query = {
         is_valid: this.is_valid,
-        start_time: this.start_time ? `${this.start_time.format('YYYY-MM-DD')} 00:00:00` : '',
-        end_time: this.end_time ? `${this.end_time.format('YYYY-MM-DD')} 23:59:59` : ''
+        start_time: this.start_time
+          ? `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
+          : '',
+        end_time: this.end_time
+          ? `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
+          : ''
       }
       this.$router.push({ query: { ...this.query, ...query } })
     },
@@ -197,8 +232,12 @@ export default {
     // 设置searchData
     setSearchData() {
       this.is_valid = this.query.is_valid
-      this.start_time = this.query.start_time ? cloneDeep(moment(this.query.start_time)) : null
-      this.end_time = this.query.end_time ? cloneDeep(moment(this.query.end_time)) : null
+      this.start_time = this.query.start_time
+        ? cloneDeep(moment(this.query.start_time))
+        : null
+      this.end_time = this.query.end_time
+        ? cloneDeep(moment(this.query.end_time))
+        : null
     },
 
     // 售卖时间-start
@@ -214,7 +253,12 @@ export default {
       const endValue = this.end_time
       if (endValue) {
         // 选择了结束时间
-        return startValue.valueOf() < moment(endValue).subtract(31, 'd').valueOf() || startValue.valueOf() > moment(endValue).valueOf()
+        return (
+          startValue.valueOf() <
+            moment(endValue)
+              .subtract(31, 'd')
+              .valueOf() || startValue.valueOf() > moment(endValue).valueOf()
+        )
       }
     },
     // 售卖时间-end
@@ -228,7 +272,12 @@ export default {
       const startValue = this.start_time
       if (startValue) {
         // 选择了开始时间
-        return endValue.valueOf() > moment(startValue).add(31, 'd').valueOf() || endValue.valueOf() < moment(startValue).valueOf()
+        return (
+          endValue.valueOf() >
+            moment(startValue)
+              .add(31, 'd')
+              .valueOf() || endValue.valueOf() < moment(startValue).valueOf()
+        )
       }
     },
     // moment
