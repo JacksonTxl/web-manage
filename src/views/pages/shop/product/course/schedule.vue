@@ -1,12 +1,12 @@
 <template>
 <st-panel class="page-schedule-st-panel" app :tabs="tabs">
-  <section>
+  <!-- <section>
     <modal-link :to="{name: 'schedule-team-add-course-schedule'}"><st-button>新增课程排期</st-button></modal-link>
     <modal-link :to="{name: 'schedule-team-add-course-schedule-batch'}"><st-button>批量新增课程排期</st-button></modal-link>
     <modal-link :to="{name: 'schedule-team-copy-schedule'}"><st-button>复制排期</st-button></modal-link>
     <st-button  @click="onClickEdit" >修改排期</st-button>
     <modal-link :to="{name: 'schedule-team-reserve-info'}"><st-button>预约详情</st-button></modal-link>
-  </section>
+  </section> -->
   <div slot="actions">
     <a-select v-model="query.course_id" placeholder="请选择课程" @change="onChange" class="page-schedule__select mg-r8">
       <a-select-option :value="-1">全部</a-select-option>

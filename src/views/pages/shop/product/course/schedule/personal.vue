@@ -1,6 +1,5 @@
 <template>
   <div class='page-team-personal'>
-    <st-t3>私教1v1</st-t3>
     <FullCalendar
       class='page-team-personal__calendar'
       ref="fullCalendar"
@@ -19,7 +18,7 @@
       eventBackgroundColor="#fff"
       @eventClick="onEventClick"
       @eventRender="onEventRender($event)"
-      :events="calendarEvents"
+      :events="reserveList"
       @dateClick="handleDateClick"
       />
   </div>
@@ -34,6 +33,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
 import { TeamService } from './team.service'
+import { PersonalScheduleReserveService as ReserveService } from './personal.service#/reserve.service'
 
 export default {
   name: 'SchedulePersonalTeam',
@@ -42,12 +42,12 @@ export default {
   },
   serviceInject() {
     return {
-      teamService: TeamService
+      reserveService: ReserveService
     }
   },
   rxState() {
     return {
-      scheduleTeamCourseList: this.teamService.scheduleTeamCourseList$
+      reserveList: this.reserveService.reserveTable$
     }
   },
   data() {
@@ -128,34 +128,9 @@ export default {
       this.setAddButton()
     })
   },
-  watch: {
-    scheduleTeamCourseList(n, o) {
-      this.calendarEvents = []
-      n.forEach(item => {
-        this.calendarEvents.push({ // add new event data
-          title: item.course_name,
-          groupId: JSON.stringify(item),
-          id: item.id,
-          start: `${item.start_date} ${item.start_time}`,
-          end: `${item.start_date} ${item.end_time}`
-        })
-      })
-    }
-  },
   mounted() {
     this.setAddButton()
     this.gotoPast()
-    this.$nextTick().then(() => {
-      this.scheduleTeamCourseList.forEach(item => {
-        this.calendarEvents.push({ // add new event data
-          title: item.course_name,
-          groupId: JSON.stringify(item),
-          id: item.id,
-          start: `${item.start_date} ${item.start_time}`,
-          end: `${item.start_date} ${item.end_time}`
-        })
-      })
-    })
   },
   methods: {
     setAddButton() {
@@ -201,15 +176,6 @@ export default {
     },
     gotoPast() {
       let calendarApi = this.$refs.fullCalendar.getApi() // from the ref="..."
-      // calendarApi.gotoDate('2000-01-01') // call a method on the Calendar object
-      // this.$nextTick().then(()=>{
-      //   this.$refs.fullCalendar.setOption('locale', 'zh-cn')
-      //   this.$refs.fullCalendar.setOption('view', {
-      //     timeGridWeek:{ buttonText: '周' },
-      //     timeGridDay: { buttonText: '天' },
-      //     listWeek: { buttonText: '三' }
-      //   })
-      // })
     },
     onEventMouseEnter(e) {
       console.log('onEventMouseEnter', e)
@@ -265,7 +231,7 @@ export default {
     },
     handleDateClick(arg) {
       this.$modalRouter.push({
-        name: 'schedule-add-course-schedule',
+        name: 'schedule-personal-add-reserve',
         props: {
           time: moment(arg.date)
         },
