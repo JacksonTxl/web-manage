@@ -9,9 +9,10 @@ import { ContractApi } from '@/api/v1/setting/contract'
 export class TransferService {
   loading$ = new State({})
   memberList$ = new State({})
-  courseInfo$ = new State({})
-  transferInfo$ = new State({})
+  packageCourseInfo$ = new State({})
+  packageTransferInfo$ = new State({})
   timeScope$ = new State({})
+  personalCourseInfo$ = new State({})
   constructor(private contractApi:ContractApi, private memberApi: ShopPersonalCourseApi, private courseApi:CourseApi) {}
   @Effect()
   getMember(member:string) {
@@ -20,18 +21,25 @@ export class TransferService {
     }))
   }
   @Effect()
-  getCourseInfo(id:string) {
-    return this.courseApi.getCoursePackageTransferInfo(id).pipe(tap((res:any) => {
-      this.courseInfo$.commit(() => res.info.course_info)
-      this.transferInfo$.commit(() => res.info.transfer_info)
-      this.timeScope$.commit(() => {
-        return res.info.transfer_info.course_end_time * 1000 - Date.now()
-      })
+  getCourseInfo(id:string, type:string) {
+    return this.courseApi.getCourseTransferInfo(id, type).pipe(tap((res:any) => {
+      if (type === 'package') {
+        this.packageCourseInfo$.commit(() => res.info.course_info)
+        this.packageTransferInfo$.commit(() => res.info.transfer_info)
+        this.timeScope$.commit(() => {
+          return res.info.transfer_info.course_end_time * 1000 - Date.now()
+        })
+      } else if (type === 'personal') {
+        this.personalCourseInfo$.commit(() => res.info)
+        this.timeScope$.commit(() => {
+          return res.info.end_time * 1000 - Date.now()
+        })
+      }
     }))
   }
   @Effect()
-  editCoursePackageTransfer(params:TransferCoursePackageInput, id:string) {
-    return this.courseApi.editCoursePackageTransfer(params, id)
+  editCourseTransfer(params:TransferCoursePackageInput, id:string, type:string) {
+    return this.courseApi.editCourseTransfer(params, id, type)
   }
   @Effect()
   getCodeNumber(id:string) {

@@ -5,26 +5,47 @@
   v-model="show"
   wrapClassName="modal-sold-course-transfer">
     <div :class="transfer('content')">
-      <a-row :class="transfer('info')">
+      <a-row :class="transfer('info')" v-if="isPackage">
         <a-col :span="13">
           <st-info>
-            <st-info-item label="课程名称">{{transferInfo.course_name}}</st-info-item>
-            <st-info-item label="到期日期">{{moment(transferInfo.course_end_time*1000).format('YYYY-MM-DD hh:mm')}}</st-info-item>
-            <st-info-item label="实付金额">{{transferInfo.pay_price}}</st-info-item>
-            <st-info-item label="转让手续费" v-if="transferInfo.transfer_unit ">{{transferInfo.transfer_num}}{{transferInfo.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
-            <st-info-item label="订单状态" v-if="transferInfo.order_status">{{transferInfo.order_status | enumFilter('sold.order_status')}}</st-info-item>
+            <st-info-item label="课程名称">{{packageTransferInfo.course_name}}</st-info-item>
+            <st-info-item label="到期日期">{{moment(packageTransferInfo.course_end_time*1000).format('YYYY-MM-DD hh:mm')}}</st-info-item>
+            <st-info-item label="实付金额">{{packageTransferInfo.pay_price}}</st-info-item>
+            <st-info-item label="转让手续费" v-if="packageTransferInfo.transfer_unit ">{{packageTransferInfo.transfer_num}}{{packageTransferInfo.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
+            <st-info-item label="订单状态" v-if="packageTransferInfo.order_status">{{packageTransferInfo.order_status | enumFilter('sold.order_status')}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
            <st-info>
-            <st-info-item label="会员姓名">{{transferInfo.member_name}}</st-info-item>
-            <st-info-item label="手机号">{{transferInfo.mobile}}</st-info-item>
-            <st-info-item label="销售人员">{{transferInfo.staff_name}}</st-info-item>
-            <st-info-item label="订单号">{{transferInfo.order_id}}</st-info-item>
+            <st-info-item label="会员姓名">{{packageTransferInfo.member_name}}</st-info-item>
+            <st-info-item label="手机号">{{packageTransferInfo.mobile}}</st-info-item>
+            <st-info-item label="销售人员">{{packageTransferInfo.staff_name}}</st-info-item>
+            <st-info-item label="订单号">{{packageTransferInfo.order_id}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
-      <st-form-table :class="transfer('table')">
+      <a-row :class="transfer('info')" class="personal" v-if="isPersonal">
+        <a-col :span="13">
+          <st-info>
+            <st-info-item label="课程名称">{{personalCourseInfo.course_name}}</st-info-item>
+            <st-info-item label="剩余课时">{{personalCourseInfo.remain_course_num}}</st-info-item>
+            <st-info-item label="购买课时">{{personalCourseInfo.init_course_num}}</st-info-item>
+            <st-info-item label="到期日期">{{moment(personalCourseInfo.end_time*1000).format('YYYY-MM-DD hh:mm')}}</st-info-item>
+            <st-info-item label="实付金额">{{personalCourseInfo.pay_price}}</st-info-item>
+            <st-info-item label="销售人员">{{personalCourseInfo.staff_name}}</st-info-item>
+          </st-info>
+        </a-col>
+        <a-col :span="11">
+           <st-info>
+            <st-info-item label="会员姓名">{{personalCourseInfo.member_name}}</st-info-item>
+            <st-info-item label="手机号">{{personalCourseInfo.mobile}}</st-info-item>
+            <st-info-item label="订单号">{{personalCourseInfo.order_id}}</st-info-item>
+            <st-info-item label="订单状态" v-if="personalCourseInfo.order_status">{{personalCourseInfo.order_status | enumFilter('sold.order_status')}}</st-info-item>
+            <st-info-item label="转让手续费" v-if="personalCourseInfo.transfer_unit ">{{personalCourseInfo.transfer_num}}{{personalCourseInfo.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
+          </st-info>
+        </a-col>
+      </a-row>
+      <st-form-table :class="transfer('table')" v-if="isPackage">
         <colgroup>
           <col style="width:5%;">
           <col style="width:30%;">
@@ -42,7 +63,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="table-item" v-for="(item,index) in courseInfo" :key="index">
+          <tr class="table-item" v-for="(item,index) in packageCourseInfo" :key="index">
             <td></td>
             <td>{{item.course_name}}</td>
             <td>{{item.course_num_init}}</td>
@@ -144,7 +165,7 @@
       </st-form>
     </div>
     <template slot="footer">
-      <st-button @click="onSubmit" :loading="loading.editCoursePackageTransfer" type="primary">确认提交</st-button>
+      <st-button @click="onSubmit" :loading="loading.editCourseTransfer" type="primary">确认提交</st-button>
     </template>
   </st-modal>
 </template>
@@ -171,13 +192,22 @@ export default {
     return {
       loading: this.transferService.loading$,
       memberList: this.transferService.memberList$,
-      courseInfo: this.transferService.courseInfo$,
-      transferInfo: this.transferService.transferInfo$,
+      packageCourseInfo: this.transferService.packageCourseInfo$,
+      packageTransferInfo: this.transferService.packageTransferInfo$,
       timeScope: this.transferService.timeScope$,
+      personalCourseInfo: this.transferService.personalCourseInfo$,
       sold: this.userService.soldEnums$
     }
   },
-  props: ['id'],
+  computed: {
+    isPackage() {
+      return this.type === 'package'
+    },
+    isPersonal() {
+      return this.type === 'personal'
+    }
+  },
+  props: ['id', 'type'],
   data() {
     return {
       show: false,
@@ -201,16 +231,23 @@ export default {
     }
   },
   created() {
-    this.transferService.getCourseInfo(this.id).subscribe(res => {
-      this.endTime = moment(this.transferInfo.course_end_time * 1000)
-      this.poundage = this.transferInfo.transfer_unit === 1 ? (this.transferInfo.transfer_num * this.transferInfo.pay_price / 100) : this.transferInfo.transfer_num
+    this.transferService.getCourseInfo(this.id, this.type).subscribe(res => {
+      if (this.isPackage) {
+        this.endTime = moment(this.packageTransferInfo.course_end_time * 1000)
+        this.poundage = this.packageTransferInfo.transfer_unit === 1 ? (this.packageTransferInfo.transfer_num * this.packageTransferInfo.pay_price / 100) : this.packageTransferInfo.transfer_num
+      }
+      if (this.isPersonal) {
+        this.endTime = moment(res.info.end_time * 1000)
+        this.poundage = res.info.transfer_unit === 1 ? (res.info.transfer_num * res.info.pay_price / 100) : res.info.transfer_num
+      }
     })
   },
   methods: {
     onSubmit() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.transferService.editCoursePackageTransfer({
+          let sold_type = this.isPackage ? this.packageTransferInfo.sold_type : this.isPersonal ? this.personalCourseInfo.sold_type : '1'
+          this.transferService.editCourseTransfer({
             member_id: +values.memberId,
             member_name: values.memberName,
             mobile: values.memberMobile,
@@ -218,8 +255,8 @@ export default {
             remain_price: +values.remainPrice,
             contract_number: values.contractNumber,
             frozen_pay_type: +values.payType,
-            sold_type: +this.transferInfo.sold_type
-          }, this.id).subscribe(res => {
+            sold_type: +sold_type
+          }, this.id, this.type).subscribe(res => {
             this.$emit('success')
             this.show = false
           })
@@ -328,7 +365,8 @@ export default {
       this.endTime = cloneDeep(moment(data.valueOf() + this.timeScope))
     },
     onCodeNumber() {
-      this.transferService.getCodeNumber(`${this.transferInfo.sold_type}`).subscribe(res => {
+      let sold_type = this.isPackage ? this.packageTransferInfo.sold_type : this.isPersonal ? this.personalCourseInfo.sold_type : '1'
+      this.transferService.getCodeNumber(`${sold_type}`).subscribe(res => {
         this.form.setFieldsValue({
           contractNumber: res.info.code
         })

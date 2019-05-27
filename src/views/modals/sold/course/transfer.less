@@ -8,7 +8,9 @@
     }
   }
   &__info{
-    border-bottom: 1px solid @divider;
+    &:not('.personal'){
+      border-bottom: 1px solid @divider;
+    }
   }
   &__table{
     width: 100%;

@@ -110,7 +110,7 @@ export default {
       loading: this.refundService.loading$
     }
   },
-  props: ['id'],
+  props: ['id', 'type'],
   data() {
     return {
       show: false,
@@ -121,7 +121,7 @@ export default {
     }
   },
   created() {
-    this.refundService.getPackageInfo(this.id).subscribe()
+    this.refundService.getPackageInfo(this.id, this.type).subscribe()
   },
   methods: {
     moment,
@@ -133,7 +133,7 @@ export default {
             refund_price: +values.refundPrice,
             frozen_pay_type: +this.frozenPayType,
             description: this.description
-          }, this.id).subscribe(res => {
+          }, this.id, this.type).subscribe(res => {
             this.$emit('success')
             this.show = false
           })

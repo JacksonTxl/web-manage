@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { CourseApi, EditCoursePersonalCoach } from '@/api/v1/sold/course'
+import { CourseApi, EditCoursePersonalCoachInput } from '@/api/v1/sold/course'
 import { State, Effect } from 'rx-state/src'
 import { tap } from 'rxjs/operators'
 import { CoachApi } from '@/api/v1/staff/coach'
@@ -16,7 +16,7 @@ export class CoachService {
     }))
   }
   @Effect()
-  edit(params: EditCoursePersonalCoach, id:string) {
+  edit(params: EditCoursePersonalCoachInput, id:string) {
     return this.courseApi.editCoursePersonalCoach(params, id)
   }
 }
