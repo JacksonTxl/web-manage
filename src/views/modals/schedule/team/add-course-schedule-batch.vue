@@ -184,8 +184,7 @@ export default {
           return item
         })
       console.log(data)
-      this.teamScheduleScheduleService.addScheduleInBatch(data).subscribe()
-      this.show = false
+      this.teamScheduleScheduleService.curd('addScheduleInBatch', data, () => { this.show = false })
     },
     onChangeCourseList() {
 

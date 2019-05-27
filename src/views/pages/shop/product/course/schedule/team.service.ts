@@ -1,18 +1,18 @@
-import { TeamScheduleScheduleService } from './team.service#/schedule.service'
+import { TeamScheduleScheduleService as ScheduleService } from './team.service#/schedule.service'
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { forkJoin, timer } from 'rxjs'
-import { TeamScheduleCommonService } from './team.service#/common.service'
+import { TeamScheduleCommonService as CommonService } from './team.service#/common.service'
 
 @Injectable()
 export class TeamService implements RouteGuard {
-  constructor(private teamScheduleCommonService: TeamScheduleCommonService,
-    private teamScheduleScheduleService: TeamScheduleScheduleService) {}
+  constructor(private commonService: CommonService,
+    private scheduleService: ScheduleService) {}
 
   initOptions() {
-    return forkJoin(this.teamScheduleCommonService.getCoachList(), this.teamScheduleCommonService.getCourseList(), this.teamScheduleCommonService.getCourtList())
+    return forkJoin(this.commonService.getCoachList(), this.commonService.getCourseList(), this.commonService.getCourtList())
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute, next: any) {
-    this.teamScheduleScheduleService.getList(to.query).subscribe(() => {
+    this.scheduleService.getList(to.query).subscribe(() => {
       next()
     })
   }
