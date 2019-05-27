@@ -1,5 +1,5 @@
 <template>
-     <div>
+  <div>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="16">
@@ -25,12 +25,11 @@
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="soldColums"
-          :dataSource="list"
+          :dataSource="soldInfo.list"
           :scroll="{ x: 1750}"
           @change="pageChange"
           :pagination="pagination"
-        >
-        </st-table>
+        ></st-table>
       </a-col>
     </a-row>
   </div>
@@ -38,32 +37,34 @@
 
 <script>
 import { soldColums } from './columns'
+import { SoldService } from './sold.service'
 export default {
+  serviceInject() {
+    return {
+      soldservice: SoldService
+    }
+  },
+  rxState() {
+    return {
+      soldInfo: this.soldservice.soldInfo$
+    }
+  },
   data() {
     return {
       soldColums,
-      pagination: {},
-      list: [{
-        order_num: '5465456456',
-        sold_shop: '门店A',
-        shop_name: '商品名称 规格名',
-        shop_type: '会籍期限卡',
-        order_status: '创建',
-        pay_status: '部分支付',
-        user_name: '超人',
-        phone: '156****7701',
-        order_time: '2019-01-22 14:55:34',
-        resul_time: '2019-01-22 14:55'
-      }]
+      pagination: {
+        pageSize: 20,
+        current: 1
+      },
+      id: ''
     }
   },
   mounted() {
-
+    this.id = this.$route.meta.query.id
+    this.pagination.total = this.soldInfo.page.total_counts
   },
   methods: {
-    searchCourse(e) {
-
-    },
+    searchCourse(e) {},
     pageChange(a, b, c) {
       console.log(a, b, c)
     }

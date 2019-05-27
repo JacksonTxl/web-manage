@@ -48,8 +48,8 @@ export default {
     }
   },
   methods: {
-    staffInfo(staffId) {
-      this.$router.push({ name: 'brand-staff-info-basic', query: { staffId } })
+    staffInfo(id) {
+      this.$router.push({ name: 'brand-staff-info-basic', query: { id } })
     },
     editStaff(staffId) {
       this.$emit('edit-staff', staffId)

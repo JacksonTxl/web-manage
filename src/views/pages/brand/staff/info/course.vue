@@ -54,7 +54,18 @@
 
 <script>
 import { courseColums } from './columns'
+import { CourseService } from './course.service'
 export default {
+  serviceInject() {
+    return {
+      service: CourseService
+    }
+  },
+  rxState() {
+    return {
+      courseInfo: this.service.courseInfo$
+    }
+  },
   data() {
     return {
       pagination: {
@@ -76,6 +87,9 @@ export default {
         }
       ]
     }
+  },
+  mounted() {
+    console.log(this.courseInfo)
   },
   methods: {
     // 取消预约

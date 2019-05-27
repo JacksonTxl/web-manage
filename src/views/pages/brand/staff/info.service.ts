@@ -28,9 +28,9 @@ export class InfoService extends Store<SetState> {
       })
     }
     beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-      let { staffId } = to.meta.query
-      console.log('=====', staffId)
-      this.getInfo(staffId).subscribe(res => {
+      let { id } = to.meta.query
+      console.log('commonInfo service')
+      this.getInfo(id).subscribe(res => {
         this.SET_STAFF_BRND(res.common_info)
         next()
       })
