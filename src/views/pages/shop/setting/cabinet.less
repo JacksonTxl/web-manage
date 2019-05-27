@@ -5,13 +5,26 @@
     .mg-r(12px);
     .bg(@white);
     .pd(24px 0);
+    .pos-r;
   }
   &__nav-item {
     .fz(12px);
     .c(@title);
-    .pd(8px 16px);
+    .pd(8px 0)
+  }
+  &__nav-item-content {
     display: flex;
     justify-content: space-between;
+    .pd(0 16px);
+  }
+  &__nav-add {
+    .s(100%, 48px);
+    .pos-a;
+    bottom: 0;
+    left: 0;
+    .lh(48px);
+    .ta-c;
+    border-top: 1px solid @border-color;
   }
   &__content {
     flex: 1;

@@ -20,7 +20,7 @@
             :key="course.id"
             :value="course.id"
           >
-            {{course.course_name}}
+            {{course.name}}
           </a-select-option>
         </a-select>
       </st-form-item>
@@ -45,12 +45,13 @@
         > <a-button slot="enterButton">元/节</a-button> </a-input-search>
       </st-form-item>
       <div class="ta-r">
-        <st-button class="mg-r16" @click="onClick">批量设置</st-button>
+        <st-button @click="cancel">取消</st-button>
         <st-button
+          class="mg-l8"
           type="primary"
           @click="onSubmit"
         >
-          提交
+          确认
         </st-button>
       </div>
     </st-form>
@@ -59,7 +60,12 @@
 
 <script>
 import { MessageService } from '@/services/message.service'
-import { PersonalTeamService } from '@/views/pages/shop/product/course/schedule/personal-team.service'
+import {
+  PersonalTeamScheduleScheduleService as ScheduleService
+} from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
+import {
+  PersonalTeamScheduleCommonService as CommonService
+} from '@/views/pages/shop/product/course/schedule/personal-team.service#/common.service'
 const formRules = {
   startTime: [
     'start_time',
@@ -112,14 +118,15 @@ export default {
   serviceInject() {
     return {
       messageService: MessageService,
-      personalTeamService: PersonalTeamService
+      scheduleService: ScheduleService,
+      commonService: CommonService
     }
   },
   rxState() {
-    const personalTeamService = this.personalTeamService
+    const commonService = this.commonService
     return {
-      courseOptions: personalTeamService.courseOptions$,
-      coachOptions: personalTeamService.coachOptions$
+      courseOptions: commonService.courseOptions$,
+      coachOptions: commonService.coachOptions$
     }
   },
   data() {
@@ -130,37 +137,46 @@ export default {
     }
   },
   props: {
-    time: {
-      type: Object,
-      default: () => {
-        return moment()
-      }
+    id: {
+      type: Number,
+      default: 0
     }
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.initStartTime()
-    })
+  created() {
+    this.getUpdateInfo(this.id)
   },
   methods: {
-    initStartTime() {
-      this.form.setFieldsValue({
-        start_time: this.time
+    getUpdateInfo(id) {
+      this.scheduleService.getUpdateInfo(id).subscribe(res => {
+        const info = { ...res.info }
+        info.start_time = moment(info.start_time)
+        this.setFieldsValue(info, [
+          'start_time',
+          'course_id',
+          'coach_id',
+          'limit_num',
+          'course_fee'
+        ])
       })
+    },
+    setFieldsValue(info, keys) {
+      const data = {}
+      keys.forEach(key => {
+        data[key] = info[key]
+      })
+      this.form.setFieldsValue(data)
     },
     onSubmit() {
       this.form.validateFields((err, values) => {
         if (!err) {
           const data = this.dataFilter(values)
-          this.personalTeamService.add(data).subscribe(this.onSubmitSuccess)
+          data.id = this.id
+          this.scheduleService.update(data).subscribe(this.onSubmitSuccess)
         }
       })
     },
-    onClick() {
+    cancel() {
       this.show = false
-      this.$modalRouter.push({
-        name: 'schedule-add-course-schedule-batch'
-      })
     },
     dataFilter(data) {
       data.start_time = data.start_time.format('YYYY-MM-DD HH:mm')
@@ -169,7 +185,7 @@ export default {
     onSubmitSuccess() {
       this.show = false
       this.messageService.success({
-        content: '添加成功'
+        content: '修改成功'
       })
       this.$emit('ok')
     }

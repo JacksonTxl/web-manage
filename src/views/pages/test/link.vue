@@ -31,7 +31,6 @@
       <router-link to="/shop/setting/cabinet">储物柜</router-link>
       <a v-modal-link="{ name: 'shop-add-cabinet' }" class="mg-l8">新增储物柜</a>
       <a v-modal-link="{ name: 'shop-edit-cabinet' }" class="mg-l8">编辑储物柜</a>
-      <a v-modal-link="{ name: 'shop-add-cabinet-area' }" class="mg-l8">添加储物柜区域</a>
       <a v-modal-link="{ name: 'shop-update-cabinet-price' }" class="mg-l8">批量修改储物柜价格</a>
     </div>
     <st-t3 class="mg-t24">前台</st-t3>

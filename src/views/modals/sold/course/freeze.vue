@@ -90,7 +90,7 @@ export default {
   bem: {
     freeze: 'modal-sold-course-freeze'
   },
-  props: ['id', 'courseName', 'courseNum', 'time', 'courseEndTime'],
+  props: ['type', 'id', 'courseName', 'courseNum', 'time', 'courseEndTime'],
   data() {
     return {
       show: false,
@@ -143,7 +143,7 @@ export default {
             end_time: values.endTime.format('YYYY-MM-DD hh:mm'),
             frozen_fee: this.frozen_fee,
             frozen_pay_type: values.payType
-          }, this.id).subscribe(res => {
+          }, this.id, this.type).subscribe(res => {
             this.$emit('success')
             this.show = false
           })

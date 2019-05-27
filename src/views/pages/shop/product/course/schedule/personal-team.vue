@@ -1,6 +1,5 @@
 <template>
   <div class='page-team-personal'>
-    <st-t3>私教课团</st-t3>
     <FullCalendar
       class='page-team-personal__calendar'
       ref="fullCalendar"
@@ -33,21 +32,21 @@ import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
-import { PersonalTeamService } from './personal-team.service'
+import { PersonalTeamScheduleScheduleService } from './personal-team.service#/schedule.service'
 
 export default {
-  name: 'SchedulePersonalTeam',
+  name: 'Schedule',
   components: {
     FullCalendar // make the <FullCalendar> tag available
   },
   serviceInject() {
     return {
-      personalTeamService: PersonalTeamService
+      scheduleService: PersonalTeamScheduleScheduleService
     }
   },
   rxState() {
     return {
-      scheduleList: this.personalTeamService.scheduleList$
+      courseList: this.scheduleService.courseList$
     }
   },
   data() {
@@ -80,14 +79,14 @@ export default {
       customButtons: {
         custom1: {
           text: '批量排期',
-          click: function() {
-            alert('clicked custom button 1!')
+          click() {
+            that.$modalRouter.push({ name: 'schedule-team-add-course-schedule-batch' })
           }
         },
         custom2: {
           text: '复制排期',
-          click: function() {
-            alert('clicked custom button 2!')
+          click() {
+            that.$modalRouter.push({ name: 'schedule-personal-team-copy' })
           }
         },
         custom3: {
@@ -129,32 +128,15 @@ export default {
     })
   },
   watch: {
-    scheduleList(n, o) {
-      this.calendarEvents = []
-      n.forEach(item => {
-        this.calendarEvents.push({ // add new event data
-          title: item.course_name,
-          groupId: JSON.stringify(item),
-          id: item.id,
-          start: `${item.start_date} ${item.start_time}`,
-          end: `${item.start_date} ${item.end_time}`
-        })
-      })
+    courseList(n, o) {
+      this.calendarEvents = n
     }
   },
   mounted() {
     this.setAddButton()
     this.gotoPast()
     this.$nextTick().then(() => {
-      this.scheduleList.forEach(item => {
-        this.calendarEvents.push({ // add new event data
-          title: item.course_name,
-          groupId: JSON.stringify(item),
-          id: item.id,
-          start: `${item.start_date} ${item.start_time}`,
-          end: `${item.start_date} ${item.end_time}`
-        })
-      })
+      this.calendarEvents = this.courseList
     })
   },
   methods: {
@@ -201,24 +183,8 @@ export default {
     },
     gotoPast() {
       let calendarApi = this.$refs.fullCalendar.getApi() // from the ref="..."
-      // calendarApi.gotoDate('2000-01-01') // call a method on the Calendar object
-      // this.$nextTick().then(()=>{
-      //   this.$refs.fullCalendar.setOption('locale', 'zh-cn')
-      //   this.$refs.fullCalendar.setOption('view', {
-      //     timeGridWeek:{ buttonText: '周' },
-      //     timeGridDay: { buttonText: '天' },
-      //     listWeek: { buttonText: '三' }
-      //   })
-      // })
     },
-    onEventMouseEnter(e) {
-      console.log('onEventMouseEnter', e)
-    },
-    onEventMouseLeave(e) {
-      console.log('onEventMouseLeave', e)
-    },
-    onEventPositioned() {
-    },
+    onEventPositioned() {},
     onEventRender(event, element) {
       this.$nextTick().then(() => {
         event.el.querySelector('.fc-title').remove()
@@ -248,7 +214,7 @@ export default {
     onEventClick(event) {
       console.log(event)
       this.$modalRouter.push({
-        name: 'schedule-personal-team-order-info',
+        name: 'schedule-personal-team-reserve-info',
         props: {
           id: event.event.id
         },
@@ -265,7 +231,7 @@ export default {
     },
     handleDateClick(arg) {
       this.$modalRouter.push({
-        name: 'schedule-personal-team-add-course-schedule',
+        name: 'schedule-personal-team-add',
         props: {
           time: moment(arg.date)
         },

@@ -59,13 +59,12 @@
               {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
             </template>
             <div slot="action" slot-scope="text,record">
-              <a @click="onDetail(record)">详情</a>
+              <a @click="onSurplus(record)">修改剩余课时</a>
               <a-divider type="vertical"></a-divider>
-              <a>续卡</a>
               <st-more-dropdown class="mgl-16">
-                <a-menu-item>上架</a-menu-item>
-                <a-menu-item>上架</a-menu-item>
-                <a-menu-item>上架</a-menu-item>
+                <a-menu-item @click="onFreeze(record)">冻结</a-menu-item>
+                <a-menu-item @click="onUnfreeze(record)">取消冻结</a-menu-item>
+                <a-menu-item @click="onEditCoach(record)">修改教练</a-menu-item>
                 <a-menu-item>上架</a-menu-item>
               </st-more-dropdown>
             </div>
@@ -238,6 +237,72 @@ export default {
     moment,
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
+    },
+    // 冻结
+    onFreeze(record) {
+      this.$modalRouter.push({
+        name: 'sold-course-freeze',
+        props: {
+          type: 'personal',
+          id: record.id,
+          courseName: record.course_name,
+          courseNum: record.remain_course_num,
+          courseEndTime: moment(record.end_time * 1000),
+          time: `${moment(record.buy_time * 1000).format('YYYY-MM-DD HH:mm')} 至 ${moment(record.end_time * 1000).format('YYYY-MM-DD HH:mm')}`
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
+    // 取消冻结
+    onUnfreeze(record) {
+      this.$confirm({
+        title: '提示',
+        content: '是否取消冻结？',
+        maskClosable: true,
+        onOk: () => {
+          return this.personalService.unFreeze(record.id).toPromise().then(() => {
+            this.$router.push({ force: true, query: this.query })
+          })
+        }
+      })
+    },
+    // 修改教练
+    onEditCoach(record) {
+      this.$modalRouter.push({
+        name: 'sold-course-coach',
+        props: {
+          record
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
+    // 修改剩余课时
+    onSurplus(record) {
+      let data = {
+        id: record.id,
+        courseName: record.course_name,
+        time: `${moment(record.course_buy_time * 1000).format('YYYY-MM-DD HH:mm')} 至 ${moment(record.course_end_time * 1000).format('YYYY-MM-DD HH:mm')}`
+      }
+      this.$modalRouter.push({
+        name: 'sold-course-surplus',
+        props: {
+          courseType: 'coursePackage',
+          courseData: data
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
     }
   }
 }
