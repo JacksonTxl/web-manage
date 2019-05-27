@@ -4,23 +4,26 @@
   </div>
 </template>
 <script>
+import { LongTermService as CabinetService } from './long-term.service'
 import Cabinet from '../cabinet#/cabinet'
 export default {
+  serviceInject() {
+    return {
+      cabinetService: CabinetService
+    }
+  },
+  rxState() {
+    const cabinetService = this.cabinetService
+    return {
+      resData: cabinetService.resData$
+    }
+  },
   components: {
     Cabinet
   },
-  data() {
-    return {
-      list: [{
-        num: 'A001',
-        price: '¥2/天'
-      }, {
-        num: 'A002',
-        price: '¥5/天'
-      }, {
-        num: 'A003',
-        price: '¥10/天'
-      }]
+  computed: {
+    list() {
+      return this.resData.list
     }
   }
 }
