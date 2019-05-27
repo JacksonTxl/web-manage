@@ -11,7 +11,7 @@
         <div :class="bItem()">
           <div :class="bItem('del')" @click="onDel(item.id)">
             <a-popconfirm title="Are you sure？">
-              <st-icon type="recycle-bin" :class="bItem('del-icon')"/>
+              <st-icon type="delete" :class="bItem('del-icon')"/>
             </a-popconfirm>
           </div>
           <div :class="bItem('body')">
