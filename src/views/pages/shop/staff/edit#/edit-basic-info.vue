@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" @submit="save">
+     <st-form :form="form" @submit="save">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工头像">
@@ -72,17 +72,6 @@
     </a-row>
 
     <a-row :gutter="8">
-      <a-col :offset="1" :lg="23">
-        <st-form-item label="员工职能" required>
-          <a-checkbox-group v-decorator="rules.identityRule"  @change="watchChooesed">
-            <a-checkbox
-              v-for="(item, key) in enums.identity.value"
-              :key="key"
-              :value="+key"
-            >{{item}}</a-checkbox>
-          </a-checkbox-group>
-        </st-form-item>
-      </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
         <st-form-item label="部门">
           <a-tree-select
@@ -121,12 +110,6 @@
             </template>
           </a-select>
         </st-form-item>
-        <st-form-item label="教练等级" v-if="isShowLevel">
-          <a-select v-decorator="rules.coach_levelRule" placeholder="请选择">
-            <a-select-option :value="1">等级1</a-select-option>
-            <a-select-option :value="2">等级2</a-select-option>
-          </a-select>
-        </st-form-item>
       </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
         <st-form-item label="工号" >
@@ -154,50 +137,6 @@
     </a-row>
 
     <a-row :gutter="8">
-      <a-col :offset="1" :lg="10">
-        <st-form-item label="系统权限" required>
-          <a-checkbox @change="permissionChange" v-decorator="rules.is_permissionRule">开通系统使用权限</a-checkbox>
-        </st-form-item>
-        <st-form-item label="登录账号">
-          <a-input
-            placeholder="6-18个字符，可使用字母、数字、下划线"
-            v-decorator="['account',
-            { rules: [{
-                required: isChoosePermission,
-                message: '请输入登录账号'
-              }],
-              initialValue: ''
-            }]"
-          ></a-input>
-        </st-form-item>
-        <st-form-item label="登录密码">
-          <a-input
-            placeholder="6-15个字符，区分大小写"
-            v-decorator="['password',
-            { rules: [{
-                required: isChoosePermission,
-                message: '请输入登录密码'
-              }],
-              initialValue: ''
-            }]"
-          ></a-input>
-        </st-form-item>
-        <st-form-item label="确认密码">
-          <a-input
-            placeholder="请再次填写密码"
-            v-decorator="['repeat_password',
-            { rules: [{
-                required: isChoosePermission,
-                message: '请输入确认密码'
-              }],
-              initialValue: ''
-            }]"
-          ></a-input>
-        </st-form-item>
-      </a-col>
-    </a-row>
-
-    <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
           <st-button type="primary" ghost html-type="submit">保存</st-button>
@@ -209,15 +148,13 @@
 </template>
 <script>
 import { RuleConfig } from '@/constants/staff/rule'
-import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { AddService } from '../add.service'
 export default {
-  name: 'StaffDetailBasics',
+  name: 'EditBasicInfo',
   serviceInject() {
     return {
       rules: RuleConfig,
-      userservice: UserService,
       addservice: AddService
     }
   },
@@ -241,30 +178,7 @@ export default {
       value: undefined
     }
   },
-  watch: {
-    isAdd(a) {
-      // 监听是否选中了教练
-      console.log('watch new', a)
-      let flag = a.some(val => {
-        return val === 4 || val === 5
-      })
-      if (!flag) {
-        this.$emit('deletStep')
-        this.isShowLevel = false
-        this.addflag = true
-      } else {
-        if (!this.addflag) return
-        this.isShowLevel = true
-        this.$emit('addStep')
-        this.addflag = false
-      }
-    }
-  },
   methods: {
-    watchChooesed(e) {
-      this.isAdd = e
-      // console.log(this.isAdd)
-    },
     permissionChange(e) {
       this.isChoosePermission = e.target.checked
       this.$nextTick(() => {

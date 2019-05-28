@@ -30,7 +30,6 @@ export class ListService extends Store<FollowState> {
 
     beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
       let { page = 1, size = 20, shop_id } = to.meta.query
-      next()
       this.getStaffList({ page, size, shop_id }).subscribe(() => {
         next()
       })

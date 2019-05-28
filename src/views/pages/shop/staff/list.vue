@@ -57,6 +57,7 @@
         :dataSource="stafflist.staff_list"
         :scroll="{ x: 1500 }"
         class="page-shop-staff-table"
+        :rowKey="record => record.staff_id"
         @change="pageChange"
         :pagination="pagination"
       >
@@ -173,18 +174,18 @@ export default {
     return {
       columns,
       pagination: {
-        pageSize: 20,
-        current: 1,
-        total: 0
+        pageSize: this.stafflist.page.size,
+        current: this.stafflist.page.current_page,
+        total: this.stafflist.page.total_counts
       },
       selectedRowKeys: [],
       selectStaff: []
     }
   },
-  mounted() {
-    this.pagination.total = this.stafflist.page.total_counts
-    this.pagination.pageSize = this.stafflist.page.size
-    this.pagination.current = this.stafflist.page.current_page
+  created() {
+    // this.pagination.total = this.stafflist.page.total_counts
+    // this.pagination.pageSize = this.stafflist.page.size
+    // this.pagination.current = this.stafflist.page.current_page
   },
   methods: {
     joinok() {

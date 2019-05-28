@@ -47,7 +47,7 @@ export default {
   },
   data() {
     return {
-      stepsSpan: 18,
+      stepsSpan: 12,
       currentIndex: 0,
       stepArr: [
         {
