@@ -1,3 +1,4 @@
+import { AddInput, GetScheduleListInput } from './../../../../../../../api/v1/schedule/personal/schedule'
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state/src'
 import { tap, pluck, switchMap } from 'rxjs/operators'
@@ -49,7 +50,7 @@ export class PersonalScheduleScheduleService {
    * @param params
    * 获取团体课排期表格
    */
-  getScheduleTable(query: GetScheduleListQuery) {
+  getScheduleTable(query: GetScheduleListInput) {
     return this.scheduleApi.getScheduleTable(query)
   }
   /**
@@ -57,7 +58,7 @@ export class PersonalScheduleScheduleService {
    * @param params
    * 新增团体课排期
    */
-  add(params: AddScheduleInput) {
+  add(params: AddInput) {
     return this.scheduleApi.add(params)
   }
   addScheduleInBatch(params: AddScheduleInput[]) {

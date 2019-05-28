@@ -7,7 +7,7 @@
     <st-button  @click="onClickEdit" >修改排期</st-button>
     <modal-link :to="{name: 'schedule-team-reserve-info'}"><st-button>预约详情</st-button></modal-link>
   </section> -->
-  <div slot="actions">
+  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-team'">
     <a-select v-model="query.course_id" placeholder="请选择课程" @change="onChange" class="page-schedule__select mg-r8">
       <a-select-option :value="-1">全部</a-select-option>
       <a-select-option v-for="course in courseOptions" :key="course.id" :value="course.id">{{course.course_name}}</a-select-option>
@@ -52,6 +52,11 @@ export default {
         { label: '私教课1v1', route: { name: 'shop-product-course-schedule-personal' } },
         { label: '私教小团课', route: { name: 'shop-product-course-schedule-personal-team' } }
       ]
+    }
+  },
+  computed: {
+    routeName() {
+      return this.$route.name
     }
   },
   methods: {

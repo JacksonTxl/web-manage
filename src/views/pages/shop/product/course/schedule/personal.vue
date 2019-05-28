@@ -67,9 +67,9 @@ export default {
         timeGridDay: { buttonText: '日' }
       },
       header: {
-        left: 'custom1, custom2',
+        left: 'custom1',
         center: 'prev,next,title',
-        right: 'timeGridWeek,timeGridDay, custom3,custom4'
+        right: 'timeGridWeek,timeGridDay, custom4'
       },
       calendarPlugins: [ // plugins must be defined in the JS
         listPlugin,
@@ -79,9 +79,9 @@ export default {
       ],
       customButtons: {
         custom1: {
-          text: '批量排期',
-          click: function() {
-            alert('clicked custom button 1!')
+          text: '设置私教排期大洒店',
+          click() {
+            that.$router.push({ name: 'shop-product-course-schedule-schedule-personal-list' })
           }
         },
         custom2: {
@@ -98,7 +98,7 @@ export default {
               timeGridWeek: { buttonText: '周' },
               timeGridDay: { buttonText: '日' }
             }
-            that.$set(that.header, 'right', 'timeGridWeek,timeGridDay, custom3,custom4')
+            that.$set(that.header, 'right', 'timeGridWeek,timeGridDay, custom4')
             that.$nextTick().then(() => {
               $('.fc-timeGridWeek-button').click()
             })
@@ -112,7 +112,7 @@ export default {
               listDay: { buttonText: '日' },
               listWeek: { buttonText: '周' }
             }
-            that.$set(that.header, 'right', 'listWeek,listDay, custom3,custom4')
+            that.$set(that.header, 'right', 'listWeek,listDay, custom3')
             that.$nextTick().then(() => {
               $('.fc-listWeek-button').click()
             })

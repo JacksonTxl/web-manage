@@ -2,7 +2,7 @@ import { Api } from '@/api/api'
 
 export class PersonalReserveApi extends Api {
   add(params: AddInput) {
-    return this.http.post('/v1/schedule/personal')
+    return this.http.post('/v1/schedule/personal', { params })
   }
   getInfo(id: string) {
     return this.http.get(`/v1/schedule/personal/info/${id}`)
