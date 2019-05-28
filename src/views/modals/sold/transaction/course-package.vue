@@ -6,10 +6,10 @@
           <st-info>
             <st-info-item label="商品名称"></st-info-item>
             <st-info-item label="商品类型"></st-info-item>
-            <st-info-item label="有效时间"></st-info-item>
-            <st-info-item label="优惠赠送"></st-info-item>
-            <st-info-item label="开卡方式"></st-info-item>
-            <st-info-item label="约课权益"></st-info-item>
+            <st-info-item label="总课时"></st-info-item>
+            <st-info-item label="有效期"></st-info-item>
+            <st-info-item label="上课门店"></st-info-item>
+            <st-info-item label="上课范围"></st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
@@ -18,7 +18,6 @@
             <st-info-item label="转让手续费"></st-info-item>
             <st-info-item label="线上购买"></st-info-item>
             <st-info-item label="售卖群体"></st-info-item>
-            <st-info-item label="入场场馆"></st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -204,11 +203,9 @@ export default {
       form: this.$form.createForm(this),
       arrComponents: [
         'membershipName',
-        'specifications',
-        'cardOpeningMethod',
-        'effectiveTime',
-        'purchaseGift',
+        'dueTime',
         'contractNumber',
+        'commodityPrice',
         'coupon',
         'depositDeduction',
         'waiverAmount',

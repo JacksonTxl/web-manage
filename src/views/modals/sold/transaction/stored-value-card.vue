@@ -6,10 +6,10 @@
           <st-info>
             <st-info-item label="商品名称"></st-info-item>
             <st-info-item label="商品类型"></st-info-item>
+            <st-info-item label="储值金额"></st-info-item>
+            <st-info-item label="支持门店"></st-info-item>
+            <st-info-item label="消费类目"></st-info-item>
             <st-info-item label="有效时间"></st-info-item>
-            <st-info-item label="优惠赠送"></st-info-item>
-            <st-info-item label="开卡方式"></st-info-item>
-            <st-info-item label="约课权益"></st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
@@ -18,7 +18,6 @@
             <st-info-item label="转让手续费"></st-info-item>
             <st-info-item label="线上购买"></st-info-item>
             <st-info-item label="售卖群体"></st-info-item>
-            <st-info-item label="入场场馆"></st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -61,7 +60,6 @@
           <!-- <rentalDays></rentalDays> -->
           <!-- 租赁时间 -->
           <!-- <renewalTime v-model="basicInfoRuleList"></renewalTime> -->
-
           <component
             v-for="(item,index) in arrComponents"
             v-bind:is="item"
@@ -69,7 +67,6 @@
             v-model="basicInfoRuleList"
             :form="form"
           ></component>
-
           <!-- 分割线 -->
           <st-hr marginTop="0" marginBottom="20"/>
           <!-- 销售人员 -->
@@ -178,14 +175,8 @@ export default {
           'name',
           { rules: [{ required: true, message: '请填写会员名称' }] }
         ],
-        test_time: [
-          'test_time',
-          { rules: [{ required: true, message: '请选择规格' }] }
-        ],
-        open_type: [
-          'open_type',
-          { rules: [{ required: true, message: '请选择开卡方式' }] }
-        ],
+        test_time: ['test_time'],
+        open_type: ['open_type'],
         contract_number: [
           'contract_number',
           {
@@ -198,18 +189,15 @@ export default {
           { rules: [{ required: true, message: '请填写销售' }] }
         ],
         description: ['description'],
-        num: ['num', { rules: [{ required: true, message: '请填写购买数量' }] }]
+        num: ['num']
       },
       show: false,
       form: this.$form.createForm(this),
       arrComponents: [
         'membershipName',
-        'specifications',
-        'cardOpeningMethod',
-        'effectiveTime',
-        'purchaseGift',
+        'dueTime',
         'contractNumber',
-        'coupon',
+        'commodityPrice',
         'depositDeduction',
         'waiverAmount',
         'subtotal'

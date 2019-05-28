@@ -1,9 +1,8 @@
 <template>
-  <st-form-item label="租赁柜号">
-    <a-cascader :options="options" placeholder="选择XXX" v-decorator="value.sell_name"/>
+  <st-form-item label="租赁柜号" labelGutter="12px">
+    <a-cascader :options="options" placeholder="选择租赁柜" v-decorator="value.rentalCabinetNumber"/>
   </st-form-item>
 </template>
-
 <script>
 export default {
   model: {

@@ -89,9 +89,12 @@ export default {
     signing(record) {
       let that = this
       /* 期限卡/次卡 sold-transaction-membership-card */
+      /* 储值卡 sold-transaction-stored-value-card  */
+      /* 课程包 sold-transaction-course-package */
+      /* 储物柜 sold-transaction-lockers */
       /* 私教课 sold-transaction-private-teaching */
       this.$modalRouter.push({
-        name: 'sold-transaction-private-teaching',
+        name: 'sold-transaction-membership-card',
         /* type
             0 （期限卡/次卡）[0]
             1 （储值卡）
@@ -101,7 +104,7 @@ export default {
          */
         props: {
           id: record.id,
-          type: [0]
+          type: [3]
         },
         on: {
           success() {

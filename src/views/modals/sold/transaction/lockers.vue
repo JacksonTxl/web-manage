@@ -6,19 +6,14 @@
           <st-info>
             <st-info-item label="商品名称"></st-info-item>
             <st-info-item label="商品类型"></st-info-item>
-            <st-info-item label="有效时间"></st-info-item>
-            <st-info-item label="优惠赠送"></st-info-item>
-            <st-info-item label="开卡方式"></st-info-item>
-            <st-info-item label="约课权益"></st-info-item>
+            <st-info-item label="租赁计费"></st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
           <st-info>
+            <st-info-item label="售卖群体"></st-info-item>
             <st-info-item label="允许转让"></st-info-item>
             <st-info-item label="转让手续费"></st-info-item>
-            <st-info-item label="线上购买"></st-info-item>
-            <st-info-item label="售卖群体"></st-info-item>
-            <st-info-item label="入场场馆"></st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -197,6 +192,14 @@ export default {
           'sell_name',
           { rules: [{ required: true, message: '请填写销售' }] }
         ],
+        rentalCabinetNumber: [
+          'rentalCabinetNumber',
+          { rules: [{ required: true, message: '请选择租赁柜' }] }
+        ],
+        renewalTime: [
+          'renewalTime',
+          { rules: [{ required: true, message: '请选择续租时间' }] }
+        ],
         description: ['description'],
         num: ['num', { rules: [{ required: true, message: '请填写购买数量' }] }]
       },
@@ -204,12 +207,11 @@ export default {
       form: this.$form.createForm(this),
       arrComponents: [
         'membershipName',
-        'specifications',
-        'cardOpeningMethod',
-        'effectiveTime',
-        'purchaseGift',
+        'rentalCabinetNumber',
+        'renewalTime',
+        'rentalDays',
         'contractNumber',
-        'coupon',
+        'commodityPrice',
         'depositDeduction',
         'waiverAmount',
         'subtotal'

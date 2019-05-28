@@ -24,9 +24,7 @@ export default {
   },
   props: ['value', 'form'],
   data() {
-    return {
-
-    }
+    return {}
   },
   methods: {
     onCodeNumber() {

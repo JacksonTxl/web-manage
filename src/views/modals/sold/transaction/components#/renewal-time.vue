@@ -5,7 +5,7 @@
       <div>至</div>
       <div>
         <a-date-picker
-          v-decorator="value.sell_name"
+          v-decorator="value.renewalTime"
           showTime
           format="YYYY-MM-DD HH:mm:ss"
           placeholder="选择结束日期"

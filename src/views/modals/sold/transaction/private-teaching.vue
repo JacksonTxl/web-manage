@@ -4,19 +4,15 @@
       <a-row :class="transfer('info')">
         <a-col :span="13">
           <st-info>
-            <st-info-item label="课程名称"></st-info-item>
-            <st-info-item label="到期日期"></st-info-item>
-            <st-info-item label="实付金额"></st-info-item>
-            <st-info-item label="转让手续费"></st-info-item>
-            <st-info-item label="订单状态"></st-info-item>
+            <st-info-item label="商品名称"></st-info-item>
+            <st-info-item label="商品类型"></st-info-item>
+            <st-info-item label="时长"></st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
           <st-info>
-            <st-info-item label="会员姓名"></st-info-item>
-            <st-info-item label="手机号"></st-info-item>
-            <st-info-item label="销售人员"></st-info-item>
-            <st-info-item label="订单号"></st-info-item>
+            <st-info-item label="支持门店"></st-info-item>
+            <st-info-item label="售卖群体"></st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -59,15 +55,14 @@
           <!-- <rentalDays></rentalDays> -->
           <!-- 租赁时间 -->
           <!-- <renewalTime v-model="basicInfoRuleList"></renewalTime> -->
-
           <component
-            v-for="(item,index) in arrComponents"
+            v-for="(item,index) in arrComponents[type]"
             v-bind:is="item"
             :key="index"
             v-model="basicInfoRuleList"
             :form="form"
+            :flag="type === 0 || type === 1 ? true : false"
           ></component>
-
           <!-- 分割线 -->
           <st-hr marginTop="0" marginBottom="20"/>
           <!-- 销售人员 -->
@@ -178,12 +173,9 @@ export default {
         ],
         test_time: [
           'test_time',
-          { rules: [{ required: true, message: '请选择规格' }] }
+          { rules: [{ required: true, message: '请填写规格' }] }
         ],
-        open_type: [
-          'open_type',
-          { rules: [{ required: true, message: '请选择开卡方式' }] }
-        ],
+        open_type: ['open_type'],
         contract_number: [
           'contract_number',
           {
@@ -195,22 +187,74 @@ export default {
           'sell_name',
           { rules: [{ required: true, message: '请填写销售' }] }
         ],
+        coach_in_class: [
+          'coach_in_class',
+          { rules: [{ required: true, message: '请填写上课教练' }] }
+        ],
         description: ['description'],
-        num: ['num', { rules: [{ required: true, message: '请填写购买数量' }] }]
+        num: ['num']
       },
       show: false,
       form: this.$form.createForm(this),
       arrComponents: [
-        'membershipName',
-        'specifications',
-        'cardOpeningMethod',
-        'effectiveTime',
-        'purchaseGift',
-        'contractNumber',
-        'coupon',
-        'depositDeduction',
-        'waiverAmount',
-        'subtotal'
+        [
+          'membershipName',
+          'purchaseQuantity',
+          'singlePrice',
+          'dueTime',
+          'contractNumber',
+          'coachInClass',
+          'purchaseGift',
+          'contractNumber',
+          'coupon',
+          'depositDeduction',
+          'waiverAmount',
+          'subtotal'
+        ],
+        [
+          'membershipName',
+          'purchaseQuantity',
+          'singlePrice',
+          'dueTime',
+          'contractNumber',
+          'coachInClass',
+          'purchaseGift',
+          'contractNumber',
+          'coupon',
+          'depositDeduction',
+          'waiverAmount',
+          'subtotal'
+        ],
+        [
+          'membershipName',
+          'specifications',
+          'purchaseQuantity',
+          'singlePrice',
+          'dueTime',
+          'contractNumber',
+          'coachInClass',
+          'purchaseGift',
+          'contractNumber',
+          'coupon',
+          'depositDeduction',
+          'waiverAmount',
+          'subtotal'
+        ],
+        [
+          'membershipName',
+          'specifications',
+          'purchaseQuantity',
+          'singlePrice',
+          'dueTime',
+          'contractNumber',
+          'coachInClass',
+          'purchaseGift',
+          'contractNumber',
+          'coupon',
+          'depositDeduction',
+          'waiverAmount',
+          'subtotal'
+        ]
       ]
     }
   },
