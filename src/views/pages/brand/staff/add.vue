@@ -57,6 +57,7 @@ export default {
   methods: {
     // 删除步骤轴
     deletStep(e) {
+      console.log('删除')
       this.stepsSpan = 12
       let index = this.stepArr.findIndex(function(value, index, arr) {
         return value.title === '教练信息'
@@ -66,6 +67,7 @@ export default {
     },
     // 添加步骤轴
     addCoachInfo(e) {
+      console.log('增加')
       this.stepsSpan = 18
       this.stepArr.push({
         title: '教练信息',

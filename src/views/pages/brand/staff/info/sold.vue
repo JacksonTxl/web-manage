@@ -1,21 +1,22 @@
 <template>
-     <div>
+  <div>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="16">
-          <a-select style="width: 160px;margin-left:12px" :defaultValue="-1" placeholder="请选择门店">
+          <a-select style="width: 160px;margin-left:12px" :defaultValue="-1" placeholder="请选择门店" @change="onChooseShop">
             <a-select-option :value="1">门店1</a-select-option>
             <a-select-option :value="3">门店2</a-select-option>
             <a-select-option :value="2">门店3</a-select-option>
             <a-select-option :value="-1">全部</a-select-option>
           </a-select>
-          <a-select style="width: 160px;margin-left:12px" :defaultValue="-1" placeholder="请选择预约状态">
+          <a-select style="width: 160px;margin-left:12px" :defaultValue="-1" placeholder="请选择预约状态" @change="onChooseStatus">
             <a-select-option :value="-1">全部订单状态</a-select-option>
             <a-select-option :value="1">预约失败</a-select-option>
             <a-select-option :value="3">候补中</a-select-option>
             <a-select-option :value="2">预约成功</a-select-option>
             <a-select-option :value="4">取消预约</a-select-option>
           </a-select>
+           <a-range-picker class="mg-l8" @change="onChooseDate" format="YYYY-MM-DD"/>
         </a-col>
         <a-col :lg="2"></a-col>
         <a-col :lg="6">
@@ -25,11 +26,17 @@
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="soldColums"
-          :dataSource="list"
+          :dataSource="soldInfo.list"
           :scroll="{ x: 1750}"
           @change="pageChange"
           :pagination="pagination"
         >
+          <template slot="id" slot-scope="text, record">
+            <a href="javascript:;" class="mg-r8" @click="goOrderDetai(record)">{{ text }}</a>
+          </template>
+          <template slot="product_type" slot-scope="text, record">
+            <a href="javascript:;" class="mg-r8" @click="goCommodityDetai(record)">{{ text }}</a>
+          </template>
         </st-table>
       </a-col>
     </a-row>
@@ -38,34 +45,93 @@
 
 <script>
 import { soldColums } from './columns'
+import { SoldService } from './sold.service'
 export default {
+  serviceInject() {
+    return {
+      soldservice: SoldService
+    }
+  },
+  rxState() {
+    return {
+      soldInfo: this.soldservice.soldInfo$
+    }
+  },
   data() {
     return {
       soldColums,
-      pagination: {},
-      list: [{
-        order_num: '5465456456',
-        sold_shop: '门店A',
-        shop_name: '商品名称 规格名',
-        shop_type: '会籍期限卡',
-        order_status: '创建',
-        pay_status: '部分支付',
-        user_name: '超人',
-        phone: '156****7701',
-        order_time: '2019-01-22 14:55:34',
-        resul_time: '2019-01-22 14:55'
-      }]
+      pagination: {
+        pageSize: 20,
+        current: 1
+      },
+      id: ''
     }
   },
   mounted() {
-
+    this.id = this.$route.meta.query.id
+    this.pagination.total = this.soldInfo.page.total_counts
   },
   methods: {
-    searchCourse(e) {
-
+    // 订单编号：点击跳转至订单详情页
+    goOrderDetai(e) {
+      console.log('跳转到订单详情页', e)
     },
-    pageChange(a, b, c) {
-      console.log(a, b, c)
+    // 商品名称+规格名：点击跳转至商品详情页
+    goCommodityDetai(e) {
+      console.log('跳转到商品详情页', e)
+    },
+    onChooseStatus(e) {
+      this.$router.push({
+        query: {
+          id: this.id,
+          order_status: e
+        },
+        force: true
+      })
+    },
+    // 选择门店
+    onChooseShop(e) {
+      this.$router.push({
+        query: {
+          id: this.id,
+          shop_id: id
+        },
+        force: true
+      })
+    },
+    onChooseDate(e) {
+      console.log('选择到的日期', e)
+      this.$router.push({
+        query: {
+          id: this.id,
+          order_time_first: moment(e[0]).format('YYYY-MM-DD'),
+          order_time_last: moment(e[1]).format('YYYY-MM-DD')
+        },
+        force: true
+      })
+    },
+    // 搜索
+    searchCourse(e) {
+      this.$router.push({
+        query: {
+          id: this.id,
+          keyword: e
+        },
+        force: true
+      })
+    },
+    // 页码
+    pageChange(pagination) {
+      this.pagination.pageSize = pagination.pageSize
+      this.pagination.current = pagination.current
+      this.$router.push({
+        query: {
+          id: this.id,
+          page: pagination.current,
+          size: pagination.pageSize
+        },
+        force: true
+      })
     }
   }
 }

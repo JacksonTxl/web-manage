@@ -340,20 +340,106 @@ export class StaffApi extends Api {
     return this.http.get(`/v1/staff/brand/common/${id}`)
   }
   // 员工详情上课记录
-  getStaffCourseList() {
+  getStaffCourseList(id: string, query: GetStaffCourseListInput) {
+    return this.http.get(`/v1/staff/brand/reserve/${id}`, { query, mock: {} })
   }
   // 员工详情跟进记录
-  getStaffFollow() {}
+  getStaffFollow(id: string, query: GetStaffFollowInput) {
+    return this.http.get(`/v1/staff/brand/follow/${id}`, { query })
+  }
   // 员工详情售卖订单
-  getStaffSold() {}
-  // 员工详情服务会员
-  getStaffMember() {}
+  getStaffSold(id: string, query: GetStaffSoldInput) {
+    return this.http.get(`/v1/staff/brand/order/${id}`, { query, mock: {} })
+  }
+  // 员工详情服务课程
+  getStaffServiceCourses(id: string, query: GetStaffServiceCoursesInput) {
+    return this.http.get(`/v1/staff/brand/course/${id}`, { query })
+  }
   // 员工详情员工资料
   getStaffInfo(id: string) {
     return this.http.get(`/v1/staff/brand/basic/${id}`)
   }
-}
 
+  // 门店 shop
+}
+// 品牌
+export interface GetStaffCourseListInput{
+  /**
+   * 门店id
+   */
+  shop_id? : number;
+  /**
+   * 上课状态
+   */
+  course_status? : number;
+  /**
+   * 开始上课日期
+   */
+  start_time_first? : string;
+  /**
+   * 结束上课日期
+   */
+  start_time_last? : string;
+  /**
+   * 搜索课程名称
+   */
+  course_name? : string;
+}
+export interface GetStaffServiceCoursesInput{
+  /**
+   * 门店id
+   */
+  shop_id? : number;
+  /**
+   * 搜索关键字
+   */
+  keyword? : string;
+
+  page? : number;
+  size? : number;
+}
+export interface GetStaffSoldInput{
+  /**
+   * 门店id
+   */
+  shop_id? : number;
+  /**
+   * 订单状态
+   */
+  order_status? : number;
+   /**
+   * 开始下单时间
+   */
+  order_time_first? : string;
+  /**
+   * 结束下单时间
+   */
+  order_time_last? : string;
+  /**
+   * 搜索关键字
+   */
+  keyword? : string;
+
+  page? : number;
+  size? : number;
+}
+export interface GetStaffFollowInput{
+  /**
+   * 搜索开始时间
+   */
+  follow_date_first? : string;
+  /**
+   * 搜索结束时间
+   */
+  follow_date_last? : string;
+  /**
+   * 搜索用户时间
+   */
+  member_name? : string;
+
+  page? : number;
+  size? : number;
+}
 export interface AddStaffBasicInfoParams{
   /**
    * 员工

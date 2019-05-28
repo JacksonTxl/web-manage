@@ -29,8 +29,9 @@ export class BasicService extends Store<BasicState> {
     }
 
     beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-      const { staffId } = to.meta.query
-      this.getBasicInfo(staffId).subscribe(() => {
+      const { id } = to.meta.query
+      console.log('basic service')
+      this.getBasicInfo(id).subscribe(() => {
         next()
       })
     }
