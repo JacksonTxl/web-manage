@@ -222,6 +222,16 @@ export default {
       this.form.validateFields((error, values) => {
         console.log(error, values)
         if (!error) {
+          this.$modalRouter.push({
+            name: 'sold-transaction-order-collection',
+            props: {},
+            on: {
+              success() {
+                that.$router.push({ force: true, query: that.query })
+              }
+            }
+          })
+          this.show = false
         }
       })
     }

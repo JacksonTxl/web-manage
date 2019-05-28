@@ -93,6 +93,7 @@ export default {
       /* 课程包 sold-transaction-course-package */
       /* 储物柜 sold-transaction-lockers */
       /* 私教课 sold-transaction-private-teaching */
+
       this.$modalRouter.push({
         name: 'sold-transaction-membership-card',
         /* type
