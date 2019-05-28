@@ -2,36 +2,37 @@
 export const courseColums = [
   {
     title: '上课时间',
-    dataIndex: 'course_time',
-    key: 'course_time'
+    dataIndex: 'class_hours',
+    key: 'class_hours'
   }, {
     title: '上课门店',
-    dataIndex: 'course_shop',
-    key: 'course_shop'
+    dataIndex: 'shop_name',
+    key: 'shop_name'
   }, {
     title: '课程类型',
-    dataIndex: 'course_type',
-    key: 'course_type'
+    dataIndex: 'course_category',
+    key: 'course_category'
   }, {
     title: '课程名称',
     dataIndex: 'course_name',
-    key: 'course_name'
+    // key: 'course_name',
+    scopedSlots: { customRender: 'course_name' }
   }, {
     title: '上课教练',
-    dataIndex: 'course_coach',
-    key: 'course_coach'
+    dataIndex: 'coach_name',
+    key: 'coach_name'
   }, {
     title: '课程状态',
     dataIndex: 'course_status',
     key: 'course_status'
   }, {
-    title: '上课人数',
-    dataIndex: 'course_nums',
-    key: 'course_nums'
+    title: '预约人数',
+    dataIndex: 'reserve_num',
+    key: 'reserve_num'
   }, {
     title: '签到人数',
-    dataIndex: 'sign_nums',
-    key: 'sign_nums'
+    dataIndex: 'checkin_num',
+    key: 'checkin_num'
   }, {
     title: '操作',
     fixed: 'right',
@@ -53,7 +54,8 @@ export const followColumns = [
   }, {
     title: '跟进用户',
     dataIndex: 'member_name',
-    key: 'member_name'
+    // key: 'member_name',
+    scopedSlots: { customRender: 'member_name' }
   }, {
     title: '跟进方式',
     dataIndex: 'follow_way',
@@ -74,7 +76,8 @@ export const soldColums = [
   {
     title: '订单编号',
     dataIndex: 'id',
-    key: 'id'
+    // key: 'id',
+    scopedSlots: { customRender: 'id' }
   }, {
     title: '销售门店',
     dataIndex: 'shop_name',
@@ -86,7 +89,8 @@ export const soldColums = [
   }, {
     title: '商品类型',
     dataIndex: 'product_type',
-    key: 'product_type'
+    key: 'product_type',
+    scopedSlots: { customRender: 'product_type' }
   }, {
     title: '订单状态',
     dataIndex: 'order_status',
@@ -123,7 +127,8 @@ export const memberColums = [
   }, {
     title: '课程名称',
     dataIndex: 'course_name',
-    key: 'course_name'
+    key: 'course_name',
+    scopedSlots: { customRender: 'course_name' }
   }, {
     title: '课程分类',
     dataIndex: 'course_category',
@@ -131,7 +136,8 @@ export const memberColums = [
   }, {
     title: '会员姓名',
     dataIndex: 'member_name',
-    key: 'member_name'
+    key: 'member_name',
+    scopedSlots: { customRender: 'member_name' }
   }, {
     title: '手机号',
     dataIndex: 'mobile',
@@ -139,7 +145,8 @@ export const memberColums = [
   }, {
     title: '课程状态',
     dataIndex: 'course_status',
-    key: 'course_status'
+    key: 'course_status',
+    scopedSlots: { customRender: 'course_status' }
   }, {
     title: '购买课时',
     dataIndex: 'init_course_num',

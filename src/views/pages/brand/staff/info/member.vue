@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pages-brand-staff-info-member-container">
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="18">
@@ -26,7 +26,20 @@
           :scroll="{ x: 1750}"
           @change="pageChange"
           :pagination="pagination"
-        ></st-table>
+        >
+         <template slot="course_name" slot-scope="text, record">
+            <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">{{ text }}</a>
+          </template>
+          <template slot="member_name" slot-scope="text, record">
+            <a href="javascript:;" class="mg-r8" @click="goMemberDetai(record)">{{ text }}</a>
+          </template>
+           <template slot="course_status" slot-scope="text,record">
+            <span v-if="record.course_status ==='有效'" class="effective"></span>
+            <span v-if="record.course_status ==='失效'" class="invalid"></span>
+            <span v-if="record.course_status === '已冻结'" class="frozen"></span>
+            {{ text }}
+          </template>
+        </st-table>
       </a-col>
     </a-row>
   </div>
@@ -62,6 +75,12 @@ export default {
     this.pagination.total = this.memberInfo.page.total_counts
   },
   methods: {
+    goCourseDetai(e) {
+      console.log('跳转到课程详情', e)
+    },
+    goMemberDetai(e) {
+      console.log('跳转到用户详情', e)
+    },
     searchCourse(e) {
       this.$router.push({
         query: {

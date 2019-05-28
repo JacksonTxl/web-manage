@@ -340,7 +340,8 @@ export class StaffApi extends Api {
     return this.http.get(`/v1/staff/brand/common/${id}`)
   }
   // 员工详情上课记录
-  getStaffCourseList() {
+  getStaffCourseList(id: string, query: GetStaffCourseListInput) {
+    return this.http.get(`/v1/staff/brand/reserve/${id}`, { query, mock: {} })
   }
   // 员工详情跟进记录
   getStaffFollow(id: string, query: GetStaffFollowInput) {
@@ -348,7 +349,7 @@ export class StaffApi extends Api {
   }
   // 员工详情售卖订单
   getStaffSold(id: string, query: GetStaffSoldInput) {
-    return this.http.get(`/v1/staff/brand/order/${id}`, { query })
+    return this.http.get(`/v1/staff/brand/order/${id}`, { query, mock: {} })
   }
   // 员工详情服务课程
   getStaffServiceCourses(id: string, query: GetStaffServiceCoursesInput) {
@@ -362,6 +363,28 @@ export class StaffApi extends Api {
   // 门店 shop
 }
 // 品牌
+export interface GetStaffCourseListInput{
+  /**
+   * 门店id
+   */
+  shop_id? : number;
+  /**
+   * 上课状态
+   */
+  course_status? : number;
+  /**
+   * 开始上课日期
+   */
+  start_time_first? : string;
+  /**
+   * 结束上课日期
+   */
+  start_time_last? : string;
+  /**
+   * 搜索课程名称
+   */
+  course_name? : string;
+}
 export interface GetStaffServiceCoursesInput{
   /**
    * 门店id

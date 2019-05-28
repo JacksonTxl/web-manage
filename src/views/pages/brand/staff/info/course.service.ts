@@ -2,7 +2,8 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { StaffApi, GetStaffServiceCoursesInput } from '@/api/v1/staff'
+import { StaffApi, GetStaffCourseListInput } from '@/api/v1/staff'
+import { forEach } from 'lodash-es'
 
 interface CourseState{
     courseInfo: Object
@@ -18,11 +19,20 @@ export class CourseService extends Store<CourseState> {
       })
       this.courseInfo$ = new Computed(this.state$.pipe(pluck('courseInfo')))
     }
-    getCoursesList(id: string, query: GetStaffServiceCoursesInput) {
-      return this.staffapi.getStaffServiceCourses(id, query).pipe(
+    getCoursesList(id: string, query: GetStaffCourseListInput) {
+      return this.staffapi.getStaffCourseList(id, query).pipe(
         tap(res => {
+          console.log('====', res)
+          let result = {
+            page: res.page,
+            list: []
+          }
+          res.list.forEach(ele => {
+            ele.class_hours = `${ele.start_time} ${ele.stop_time}`
+            result.list.push(ele)
+          })
           this.state$.commit(state => {
-            state.courseInfo = res
+            state.courseInfo = result
           })
         })
       )

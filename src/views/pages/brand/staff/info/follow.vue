@@ -28,8 +28,10 @@
           :scroll="{ x: 1750}"
           @change="pageChange"
           :pagination="pagination"
-          @showSizeChange="showSizeChange"
         >
+         <template slot="member_name" slot-scope="text, record">
+            <a href="javascript:;" class="mg-r8" @click="goMemberDetai(record)">{{ text }}</a>
+          </template>
         </st-table>
       </a-col>
     </a-row>
@@ -66,6 +68,9 @@ export default {
     this.pagination.total = this.followList.page.total_counts
   },
   methods: {
+    goMemberDetai(e) {
+      console.log('跳转到用户详情', e)
+    },
     onChooseDate(e) {
       console.log('选择到的日期', e)
       this.$router.push({

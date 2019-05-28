@@ -22,7 +22,7 @@ export class SoldService extends Store<SoldState> {
       return this.staffapi.getStaffSold(id, query).pipe(
         tap(res => {
           this.state$.commit(state => {
-            state.soldInfo = res.common_info
+            state.soldInfo = res
           })
         })
       )
@@ -30,10 +30,16 @@ export class SoldService extends Store<SoldState> {
 
     beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
       console.log('sold service', to.meta.query)
-      const { id } = to.meta.query
+      const { id, shop_id, order_status, order_time_first, order_time_last, keyword, size, page } = to.meta.query
       console.log('sold service')
       this.getStaffSoldInfo(id, {
-
+        shop_id,
+        order_status,
+        order_time_first,
+        order_time_last,
+        keyword,
+        size,
+        page
       }).subscribe(() => {
         next()
       })
