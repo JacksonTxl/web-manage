@@ -36,10 +36,6 @@ const routes: any[] = [
     redirect: '/brand/setting/general/brand'
   },
   {
-    path: '/shop/setting/cabinet',
-    redirect: '/shop/setting/cabinet/temporary'
-  },
-  {
     path: '/shop/reception/cabinet',
     redirect: '/shop/reception/cabinet/temporary'
   },

@@ -32,52 +32,58 @@
       <add-cabinet-area v-if="isShowAddAreaBtn" @change="onAreaListChange"/>
       <a :class="b('nav-add')" @click="addArea">添加区域</a>
     </div>
-    <st-panel
-        :class="b('content')"
-        :tabs="[{
-          label: '临时储物柜',
-          route: {
-            name: 'shop-setting-cabinet-temporary',
-            query,
-            on: {
-              change: onChange
-            }
-          }
-        },
-        {
-          label: '长期储物柜',
-          route: {
-            name: 'shop-setting-cabinet-long-term',
-            query,
-            on: {
-              change: onChange
-            }
-          }
-        }]"
-      >
-        <div slot="actions">
-          <st-button icon="edit">编辑</st-button>
-          <a-popconfirm
-            placement="bottom"
-            @confirm="onDel()"
-          >
-            <template slot="title">
-              删除该区域后，其区域下的储物柜会一起删除，<br/> 删除的区域不能恢复，是否继续?
-            </template>
-            <st-button icon="delete" class="mg-l8 color-warning">删除</st-button>
-          </a-popconfirm>
-          <st-button type="primary" class="mg-l8">批量添加储物柜</st-button>
+    <st-panel :class="b('content')">
+      <div slot="prepend" class="page-setting-cabinet-tab">
+        <a-tabs :defaultActiveKey="type" class="st-route-tabs"
+          @change="onCabinetTabChange"
+        >
+          <a-tab-pane :tab="`临时储物柜`" key="temporary"></a-tab-pane>
+          <a-tab-pane :tab="`长期储物柜`" key="long-term"></a-tab-pane>
+        </a-tabs>
+        <div class="page-setting-cabinet-tab__actions">
+          <span v-if="checked.length">
+            <st-button icon="edit">编辑</st-button>
+            <a-popconfirm
+              placement="bottom"
+              @confirm="onDelCabinet()"
+            >
+              <template slot="title">
+                删除该区域后，其区域下的储物柜会一起删除，<br/> 删除的区域不能恢复，是否继续?
+              </template>
+              <st-button icon="delete" class="mg-l8 color-warning">删除</st-button>
+            </a-popconfirm>
+          </span>
+          <st-button
+            v-modal-link="{
+              name: `shop-cabinet-add-${type}`,
+              props: {
+                id: query.id,
+                type
+              },
+              on: {
+                change: onCabinetListChange
+              }
+            }"
+           type="primary" class="mg-l8">批量添加储物柜
+          </st-button>
         </div>
-      <router-view></router-view>
+      </div>
+      <!-- 临时储物柜 -->
+      <temporary-cabinet v-if="type === 'temporary'" @change="onCabinetSelectChange"/>
+      <!-- 长期储物柜 -->
+      <long-term-cabinet v-if="type === 'long-term'" @change="onCabinetSelectChange"/>
     </st-panel>
   </div>
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
+import { CabinetService } from './cabinet.service'
 import AddCabinetArea from './cabinet#/add-area'
 import EditCabinetArea from './cabinet#/edit-area'
 import { CabinetAreaService as AreaService } from './cabinet#/area.service'
+import TemporaryCabinet from './cabinet#/temporary'
+import LongTermCabinet from './cabinet#/long-term'
 export default {
   bem: {
     b: 'page-setting-cabinet'
@@ -86,6 +92,7 @@ export default {
     return {
       messageService: MessageService,
       routeService: RouteService,
+      cabinetService: CabinetService,
       areaService: AreaService
     }
   },
@@ -98,19 +105,36 @@ export default {
   data() {
     return {
       editId: 0,
-      isShowAddAreaBtn: false
+      isShowAddAreaBtn: false,
+      checked: []
     }
   },
   components: {
     AddCabinetArea,
-    EditCabinetArea
+    EditCabinetArea,
+    TemporaryCabinet,
+    LongTermCabinet
   },
   computed: {
+    type() {
+      return this.query.type || 'temporary'
+    },
     defaultActiveKey() {
-      return this.query.id || this.list[0].id
+      return this.query.id || 0
     }
   },
+  created() {
+    this.initQueryId()
+  },
   methods: {
+    initQueryId() {
+      const list = this.list
+      const queryId = this.query.id
+      const id = list[0].id || 0
+      if (!queryId) {
+        this.queryHandler({ id })
+      }
+    },
     addArea() {
       this.isShowAddAreaBtn = true
     },
@@ -134,16 +158,40 @@ export default {
       }
       this.areaService.getList().subscribe()
     },
-    onDel() {
-
-    },
     onAreaChange(id) {
+      this.queryHandler({ id })
+    },
+    onCabinetTabChange(key) {
+      console.log('changed', key)
+      this.queryHandler({ type: key })
+      this.checked = []
+    },
+    queryHandler(query) {
       this.$router.push({
-        query: Object.assign({ ...this.query }, { id })
+        query: Object.assign({ ...this.query }, query)
       })
     },
-    onChange() {
-      console.log('changed')
+    onCabinetListChange() {
+      this.$router.push({
+        query: this.query,
+        force: true
+      })
+      this.onAreaListChange()
+    },
+    onCabinetSelectChange(checked) {
+      console.log('changed', checked)
+      this.checked = checked
+    },
+    onDelCabinet() {
+      this.cabinetService.del({
+        ids: this.checked
+      }).subscribe(this.onDelCabinetSuccess)
+    },
+    onDelCabinetSuccess() {
+      this.messageService.success({
+        content: '删除成功'
+      })
+      this.onCabinetListChange()
     }
   }
 }
