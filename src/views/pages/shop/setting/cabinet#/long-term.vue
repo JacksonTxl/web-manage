@@ -1,12 +1,13 @@
 <template>
   <div>
-    <cabinet :value="list"/>
+    <cabinet :value="list" @change="onChange"/>
   </div>
 </template>
 <script>
 import { LongTermService as CabinetService } from './long-term.service'
 import Cabinet from '../cabinet#/cabinet'
 export default {
+  name: 'LongTermCabinet',
   serviceInject() {
     return {
       cabinetService: CabinetService
@@ -24,6 +25,11 @@ export default {
   computed: {
     list() {
       return this.resData.list
+    }
+  },
+  methods: {
+    onChange(checked) {
+      this.$emit('change', checked)
     }
   }
 }
