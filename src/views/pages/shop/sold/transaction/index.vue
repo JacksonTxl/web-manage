@@ -88,18 +88,20 @@ export default {
   methods: {
     signing(record) {
       let that = this
+      /* 期限卡/次卡 sold-transaction-membership-card */
+      /* 私教课 sold-transaction-private-teaching */
       this.$modalRouter.push({
-        name: 'sold-transaction-transfer',
+        name: 'sold-transaction-private-teaching',
         /* type
-            0 （期限卡/次卡）
+            0 （期限卡/次卡）[0]
             1 （储值卡）
-            2 （私教课）
+            2 （私教课）[2, 2]
             3 （课程包）
             4 （储物柜）
          */
         props: {
           id: record.id,
-          type: [2, 2]
+          type: [0]
         },
         on: {
           success() {

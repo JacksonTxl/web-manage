@@ -61,7 +61,7 @@
           <!-- <renewalTime v-model="basicInfoRuleList"></renewalTime> -->
 
           <component
-            v-for="(item,index) in type.length > 1 ? arrComponents[type[0]][type[1]] : arrComponents[type[0]]"
+            v-for="(item,index) in arrComponents"
             v-bind:is="item"
             :key="index"
             v-model="basicInfoRuleList"
@@ -190,12 +190,7 @@ export default {
             rules: [{ required: true, message: '请输入合同编号' }]
           }
         ],
-        reduce_amount: [
-          'reduce_amount'
-          //  {
-          //   rules: [{ required: true, message: '请输入减免金额' }]
-          // }
-        ],
+        reduce_amount: ['reduce_amount'],
         sell_name: [
           'sell_name',
           { rules: [{ required: true, message: '请填写销售' }] }
@@ -206,108 +201,16 @@ export default {
       show: false,
       form: this.$form.createForm(this),
       arrComponents: [
-        [
-          'membershipName',
-          'specifications',
-          'cardOpeningMethod',
-          'effectiveTime',
-          'purchaseGift',
-          'contractNumber',
-          'coupon',
-          'depositDeduction',
-          'waiverAmount',
-          'subtotal'
-        ],
-        [
-          'membershipName',
-          'dueTime',
-          'contractNumber',
-          'commodityPrice',
-          'depositDeduction',
-          'waiverAmount',
-          'subtotal'
-        ],
-        [
-          [
-            'membershipName',
-            'purchaseQuantity',
-            'singlePrice',
-            'dueTime',
-            'contractNumber',
-            'coachInClass',
-            'purchaseGift',
-            'contractNumber',
-            'coupon',
-            'depositDeduction',
-            'waiverAmount',
-            'subtotal'
-          ],
-          [
-            'membershipName',
-            'purchaseQuantity',
-            'singlePrice',
-            'dueTime',
-            'contractNumber',
-            'coachInClass',
-            'purchaseGift',
-            'contractNumber',
-            'coupon',
-            'depositDeduction',
-            'waiverAmount',
-            'subtotal'
-          ],
-          [
-            'membershipName',
-            'specifications',
-            'purchaseQuantity',
-            'singlePrice',
-            'dueTime',
-            'contractNumber',
-            'coachInClass',
-            'purchaseGift',
-            'contractNumber',
-            'coupon',
-            'depositDeduction',
-            'waiverAmount',
-            'subtotal'
-          ],
-          [
-            'membershipName',
-            'specifications',
-            'purchaseQuantity',
-            'singlePrice',
-            'dueTime',
-            'contractNumber',
-            'coachInClass',
-            'purchaseGift',
-            'contractNumber',
-            'coupon',
-            'depositDeduction',
-            'waiverAmount',
-            'subtotal'
-          ]
-        ],
-        [
-          'membershipName',
-          'dueTime',
-          'contractNumber',
-          'commodityPrice',
-          'coupon',
-          'depositDeduction',
-          'waiverAmount',
-          'subtotal'
-        ],
-        [
-          'membershipName',
-          'rentalCabinetNumber',
-          'renewalTime',
-          'rentalDays',
-          'contractNumber',
-          'commodityPrice',
-          'depositDeduction',
-          'waiverAmount',
-          'subtotal'
-        ]
+        'membershipName',
+        'specifications',
+        'cardOpeningMethod',
+        'effectiveTime',
+        'purchaseGift',
+        'contractNumber',
+        'coupon',
+        'depositDeduction',
+        'waiverAmount',
+        'subtotal'
       ]
     }
   },

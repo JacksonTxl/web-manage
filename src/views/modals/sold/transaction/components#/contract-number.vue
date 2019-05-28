@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { TransferService } from './transfer.service'
+import { TransferService } from '../transfer.service'
 export default {
   serviceInject() {
     return {

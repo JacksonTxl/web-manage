@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { TransferService } from './transfer.service'
+import { TransferService } from '../transfer.service'
 
 export default {
   name: 'ModalSoldCourseTransfer',
