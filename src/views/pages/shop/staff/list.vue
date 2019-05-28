@@ -37,7 +37,12 @@
           <a-select-option :value="2">离职</a-select-option>
           <a-select-option :value="-1">全部员工状态</a-select-option>
         </a-select>
-        <st-button class="mg-r8" @click="onJoinDepartment">批量加入部门</st-button>
+        <st-button class="mg-r8" :disabled="selectedRowKeys.length > 0 ? false : true" >
+           <modal-link
+                tag="a"
+                :to="{ name: 'shop-staff-join-department', props: {},on :{change: joinok} }"
+              >批量加入部门</modal-link>
+        </st-button>
         <st-button class="mg-r8" @click="onAddStaff">添加员工</st-button>
         <st-button @click="onExportStaff">导入员工</st-button>
       </a-col>
@@ -47,6 +52,7 @@
     </a-row>
     <a-row :gutter="8" class="mg-t8">
       <st-table
+        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         :columns="columns"
         :dataSource="stafflist.staff_list"
         :scroll="{ x: 1500 }"
@@ -170,7 +176,9 @@ export default {
         pageSize: 20,
         current: 1,
         total: 0
-      }
+      },
+      selectedRowKeys: [],
+      selectStaff: []
     }
   },
   mounted() {
@@ -179,6 +187,22 @@ export default {
     this.pagination.current = this.stafflist.page.current_page
   },
   methods: {
+    joinok() {
+      this.selectedRowKeys = []
+      this.selectStaff = []
+      this.$router.push({
+        query: {},
+        force: true
+      })
+    },
+    onSelectChange(selectedRowKeys, selectedRows) {
+      this.selectedRowKeys = selectedRowKeys
+      this.selectStaff = selectedRows.map(item => {
+        return item.staff_id
+      })
+
+      console.log('选中的行', this.selectStaff)
+    },
     onJoinDepartment(e) {
       console.log('批量加入部门')
     },
