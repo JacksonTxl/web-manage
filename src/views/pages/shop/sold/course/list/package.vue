@@ -231,6 +231,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-course-transfer',
         props: {
+          type: 'package',
           id: record.id
         },
         on: {
@@ -246,6 +247,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-course-refund',
         props: {
+          type: 'package',
           id: record.id
         },
         on: {

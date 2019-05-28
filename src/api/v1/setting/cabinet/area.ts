@@ -13,7 +13,7 @@ export class CabinetAreaApi extends Api {
    * 删除区域
    * @param id
    */
-  del(id: string) {
+  del(id: number) {
     return this.http.delete(`${url}/${id}`)
   }
   /**
@@ -26,7 +26,7 @@ export class CabinetAreaApi extends Api {
    * 储物柜区域编辑回显
    * @param id
    */
-  getUpdateInfo(id: string) {
+  getUpdateInfo(id: number) {
     return this.http.get(`${url}/${id}`)
   }
   /**
@@ -51,7 +51,12 @@ export interface AddInput {
    */
   area_name: string
 }
-export interface UpdateInput extends AddInput {}
+export interface UpdateInput extends AddInput {
+  /**
+   * 区域 id
+   */
+  id: number
+}
 export interface SortByDragInput {
   /**
    * 完整的储物柜区域列表

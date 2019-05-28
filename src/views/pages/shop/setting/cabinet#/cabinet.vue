@@ -8,7 +8,7 @@
       <a-row :gutter="16" :class="b()">
         <a-col v-for="(item, index) in value" :key="index" :md="6" :lg="4" :xl="3">
           <div :class="b('item')">
-            <div :class="b('item-num')">{{item.num}}</div>
+            <div :class="b('item-num')">{{item.serial_number}}</div>
             <div :class="b('item-price')">{{item.price}}</div>
             <a-checkbox :class="b('checkbox')"/>
           </div>

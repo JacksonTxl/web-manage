@@ -12,7 +12,7 @@ export class ScheduleApi1v1 extends Api {
    * 私教排期列表
    */
   getSchedulePersonalList(query: GetSchedulePersonalListInput) {
-    return this.http.get('/v1/schedule/personal/list', { mock: {} })
+    return this.http.get('/v1/schedule/personal', { query })
   }
   /**
    * 获取私教课教练列表

@@ -1,13 +1,12 @@
 <template>
   <st-modal title="添加预约" @ok="save" v-model="show">
-    {{consumeOptions}}
     <st-form :form="form">
       <st-form-item label="会员名称" required>
         <a-select
           labelInValue
           showSearch
-          :value="value"
           placeholder="Select users"
+          v-decorator="['member_id']"
           style="width: 100%"
           :filterOption="false"
           @search="onSearchMember"
@@ -19,6 +18,7 @@
       </st-form-item>
       <st-form-item label="消费方式" required>
         <a-select
+          v-decorator="['consume_type']"
           placeholder="选择消费方式">
           <a-select-opt-group v-for="consumeType in consumeOptions" :key="consumeType.id">
             <span slot="label"><a-icon type="snippets"/>{{consumeType.name}}</span>
@@ -27,35 +27,41 @@
         </a-select>
       </st-form-item>
       <st-form-item label="课程" required>
-        <a-select placeholder="请选择课程" >
+        <a-select placeholder="请选择课程"
+        v-decorator="['course_id']">
           <a-select-option v-for="course in courseOptions" :key="course.id" :value="course.id">{{course.course_name}}</a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item label="上课教练" required>
+      <st-form-item label="上课教练"
+      v-decorator="['coach_id']"
+      required>
         <a-select placeholder="请选择上课教练" @change="onChangeCourseCoach">
           <a-select-option v-for="courseCoach in courseCoachOptions" :key="courseCoach.id" :value="courseCoach.id">{{courseCoach.staff_name}}</a-select-option>
         </a-select>
       </st-form-item>
       <st-form-item label="预约日期" required>
 
-        <a-date-picker @change="onChangeDatePick" :disabledDate="disabledDate"/>
+        <a-date-picker @change="onChangeDatePick" v-decorator="['scheduling_id']" :disabledDate="disabledDate"/>
       </st-form-item>
       <st-form-item label="预约时间" required>
 
-        <a-time-picker format="HH:mm" :disabledMinutes="disabledMinutes" :disabledHours="disabledHours" />
+        <a-time-picker format="HH:mm" v-decorator="['reserve_start_time']" :disabledMinutes="disabledMinutes" :disabledHours="disabledHours" />
       </st-form-item>
     </st-form>
+
   </st-modal>
 </template>
 
 <script>
 import { PersonalScheduleCommonService as CommonService } from '../../../pages/shop/product/course/schedule/personal.service#/common.service'
-import { difference } from 'lodash-es'
+import { difference, cloneDeep } from 'lodash-es'
+import { PersonalScheduleReserveService as ReserveService } from '../../../pages/shop/product/course/schedule/personal.service#/reserve.service'
 export default {
   name: 'AddReserve',
   serviceInject() {
     return {
-      commonService: CommonService
+      commonService: CommonService,
+      reserveService: ReserveService
     }
   },
   rxState() {
@@ -135,7 +141,19 @@ export default {
       return difference(allTime, disabledHours)
     },
     save() {
-
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+          const consume = JSON.parse(values.consume_type)
+          let form = cloneDeep(values)
+          form.member_id = values.member_id.key
+          form.consume_type = consume.consume_type
+          form.consume_id = consume.id
+          form.reserve_start_time = values.reserve_start_time.format('HH:mm').valueOf()
+          form.scheduling_id = values.scheduling_id.format('YYYY-MM-DD').valueOf()
+          this.reserveService.curd('add', form, () => {})
+        }
+      })
     },
     onChangeMember(val) {
       this.value = val

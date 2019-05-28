@@ -59,13 +59,15 @@
               {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
             </template>
             <div slot="action" slot-scope="text,record">
-              <a @click="onSurplus(record)">修改剩余课时</a>
+              <a @click="onDetail(record)">详情</a>
               <a-divider type="vertical"></a-divider>
               <st-more-dropdown class="mgl-16">
                 <a-menu-item @click="onFreeze(record)">冻结</a-menu-item>
                 <a-menu-item @click="onUnfreeze(record)">取消冻结</a-menu-item>
                 <a-menu-item @click="onEditCoach(record)">修改教练</a-menu-item>
-                <a-menu-item>上架</a-menu-item>
+                <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
+                <a-menu-item @click="onSurplus(record)">修改剩余课时</a-menu-item>
+                <a-menu-item @click="onRefund(record)">退款</a-menu-item>
               </st-more-dropdown>
             </div>
           </st-table>
@@ -177,7 +179,6 @@ export default {
     }
   },
   methods: {
-    onDetail() {},
     // 查询
     onSearch() {
       let query = {
@@ -286,22 +287,53 @@ export default {
     },
     // 修改剩余课时
     onSurplus(record) {
-      let data = {
-        id: record.id,
-        courseName: record.course_name,
-        time: `${moment(record.course_buy_time * 1000).format('YYYY-MM-DD HH:mm')} 至 ${moment(record.course_end_time * 1000).format('YYYY-MM-DD HH:mm')}`
-      }
       this.$modalRouter.push({
-        name: 'sold-course-surplus',
+        name: 'sold-course-surplus-personal',
         props: {
-          courseType: 'coursePackage',
-          courseData: data
+          courseData: record
         },
         on: {
           success: () => {
             this.$router.push({ force: true, query: this.query })
           }
         }
+      })
+    },
+    // 转让
+    onTransfer(record) {
+      this.$modalRouter.push({
+        name: 'sold-course-transfer',
+        props: {
+          type: 'personal',
+          id: record.id
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
+    // 退款
+    onRefund(record) {
+      this.$modalRouter.push({
+        name: 'sold-course-refund',
+        props: {
+          type: 'personal',
+          id: record.id
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
+    // 详情
+    onDetail(record) {
+      this.$router.push({
+        path: `/shop/sold/course/info/personal/info/consumption-record`,
+        query: { id: record.id }
       })
     }
   }

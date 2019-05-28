@@ -1,8 +1,9 @@
 <template>
   <div class="date-container">
     <a-button
-        class="mg-r8"
+      class="mg-r8"
       style="width: 32px; display:inline-flex;align-items: center; justify-content: center;"
+      @click="onClickPre"
     >
       <a-icon type="left"/>
     </a-button>
@@ -11,18 +12,25 @@
 
     <a-button
     class="mg-r8  mg-l8"
-      style="width: 32px; display:inline-flex;align-items: center; justify-content: center;"
-    >
+    style="width: 32px; display:inline-flex;align-items: center; justify-content: center;"
+    @click="onClickNext">
       <a-icon type="right"/>
     </a-button>
-    <a-button
-
-      style="width: 32px; display:inline-flex;align-items: center; justify-content: center;"
-    >今</a-button>
+    <a-button style="width: 32px; display:inline-flex;align-items: center; justify-content: center;">今</a-button>
   </div>
 </template>
 <script>
 export default {
-  name: 'date'
+  name: 'date',
+  data() {
+
+  },
+  methods: {
+    onClickPre() {
+
+    },
+    onClickNext() {
+    }
+  }
 }
 </script>

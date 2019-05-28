@@ -32,14 +32,18 @@ export interface TransferCoursePackageInput {
   frozen_pay_type:number
   sold_type:number
 }
-export interface RefundCoursePackageInput {
+export interface RefundCourseInput {
   refund_reason:number
   refund_price:number
   frozen_pay_type:number
   description?:string
 }
-export interface EditCoursePersonalCoach {
+export interface EditCoursePersonalCoachInput {
   coach_id: string
+  description?: string
+}
+export interface EditCoursePersonalRemainInput {
+  remain_course: string
   description?: string
 }
 export class CourseApi extends Api {
@@ -74,39 +78,45 @@ export class CourseApi extends Api {
     return this.http.put(`/v1/sold/course/${type}/unfrozen/${id}`)
   }
   /**
-   * 售出课程包转让回显
+   * 售出 课程包/私教课 转让回显
    */
-  getCoursePackageTransferInfo(id:string) {
-    return this.http.get(`/v1/sold/course/package/transfer/${id}`)
+  getCourseTransferInfo(id:string, type:string) {
+    return this.http.get(`/v1/sold/course/${type}/transfer/${id}`)
   }
   /**
-   * 售出课程包转让
+   * 售出 课程包/私教课 转让
    */
-  editCoursePackageTransfer(params:TransferCoursePackageInput, id:string) {
-    return this.http.put(`/v1/sold/course/package/transfer/${id}`, { params })
+  editCourseTransfer(params:TransferCoursePackageInput, id:string, type:string) {
+    return this.http.put(`/v1/sold/course/${type}/transfer/${id}`, { params })
   }
   /**
-   * 售出课程包退款回显
+   * 售出 课程包/私教课 退款回显
    */
-  getCoursePackageRefundInfo(id:string) {
-    return this.http.get(`/v1/sold/course/package/refund/${id}`)
+  getCourseRefundInfo(id:string, type:string) {
+    return this.http.get(`/v1/sold/course/${type}/refund/${id}`)
   }
   /**
-   * 售出课程包退款回显
+   * 售出 课程包/私教课 退款
    */
-  editCoursePackageRefund(params:RefundCoursePackageInput, id:string) {
-    return this.http.put(`/v1/sold/course/package/refund/${id}`, { params })
+  editCourseRefund(params:RefundCourseInput, id:string, type:string) {
+    return this.http.put(`/v1/sold/course/${type}/refund/${id}`, { params })
   }
   /**
-   * 售出课程包详情
+   * 售出 课程包/私教课 详情
    */
-  getCoursePackageInfo(id:string) {
-    return this.http.get(`/v1/sold/course/package/detail/${id}`)
+  getCourseInfo(id:string, type:string) {
+    return this.http.get(`/v1/sold/course/${type}/detail/${id}`)
   }
   /**
    * 售出私教修改教练
    */
-  editCoursePersonalCoach(params:EditCoursePersonalCoach, id:string) {
+  editCoursePersonalCoach(params:EditCoursePersonalCoachInput, id:string) {
     return this.http.put(`/v1/sold/course/personal/coach/${id}`, { params })
+  }
+  /**
+   * 售出私教修改课时
+   */
+  editCoursePersonalRemain(params:EditCoursePersonalRemainInput, id:string) {
+    return this.http.put(`/v1/sold/course/personal/remain/${id}`, { params })
   }
 }

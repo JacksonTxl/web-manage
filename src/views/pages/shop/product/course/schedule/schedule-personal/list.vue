@@ -1,9 +1,9 @@
 <template>
-  <st-panel>
+  <st-panel app>
     <div slot="title">
       <a-row :gutter="8">
         <a-col :lg="9">
-          <st-button>私教预约表</st-button>
+          <st-button @click="onClickSkipSchedule">私教预约表</st-button>
         </a-col>
         <a-col :lg="7">
           <date/>
@@ -103,10 +103,13 @@ export default {
     }
   },
   mounted() {
-    this.currentTime = moment().format('YYYY-MM-DD')
+    this.currentTime = '2019-05-26'
     //   console.log(moment().format("YYYY-MM-DD"))
   },
   methods: {
+    onClickSkipSchedule() {
+      this.$router.push({ name: 'shop-product-course-schedule-personal' })
+    },
     onPageChange() {}
   }
 }

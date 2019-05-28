@@ -5,7 +5,7 @@ import { Store } from '@/services/store'
 import { ScheduleApi1v1, GetSchedulePersonalListInput } from '@/api/v1/course/personal/schedule1v1'
 
 interface ListStata {
-    listData: Object
+  listData: Object
 }
 @Injectable()
 export class ListService extends Store<ListStata> {
