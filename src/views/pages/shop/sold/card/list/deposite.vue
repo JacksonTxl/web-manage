@@ -35,8 +35,6 @@
     <div :class="basic('content')">
       <div :class="basic('content-batch')">
         <st-button type="primary" class="mgr-8">批量导出</st-button>
-        <st-button type="primary" class="mgr-8">赠送额度</st-button>
-        <st-button type="primary" class="mgr-8">变更入场vip区域</st-button>
       </div>
       <div :class="basic('table-select-info')">
         <st-icon type="weibo"/>
@@ -67,6 +65,7 @@
             <a @click="onRefund(record)">退款</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
+              <a-menu-item @click="onDetail(record)">详情</a-menu-item>
               <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
             </st-more-dropdown>
           </div>
@@ -193,22 +192,6 @@ export default {
   },
   methods: {
     // 转让
-    // onTransfer(record, type) {
-    //   let routerName = ['sold-card-transfer', 'sold-card-refund']
-    //   this.$modalRouter.push({
-    //     name: routerName[type],
-    //     props: {
-    //       record: record,
-    //       type: 'deposit'
-    //     },
-    //     on: {
-    //       ok: res => {
-    //         consoel.log(res)
-    //       }
-    //     }
-    //   })
-    // },
-    // 转让
     onTransfer(record) {
       this.$modalRouter.push({
         name: 'sold-card-transfer',
@@ -217,8 +200,8 @@ export default {
           type: 'deposit'
         },
         on: {
-          ok: res => {
-            consoel.log(res)
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
           }
         }
       })
@@ -238,8 +221,13 @@ export default {
         }
       })
     },
-
-    onDetail() {},
+    // 详情
+    onDetail(record) {
+      this.$router.push({
+        path: `/shop/sold/card/info/deposite/info/consumption-record`,
+        query: { id: record.id }
+      })
+    },
     // 查询
     onSearch() {
       let query = {

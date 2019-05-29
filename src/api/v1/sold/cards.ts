@@ -27,6 +27,11 @@ export interface RefundCardInput {
   refund_channel:number
   description?:string
 }
+export interface FreezeCardInput {
+  end_time:string
+  poundage?:number
+  pay_method?:number
+}
 export class CardApi extends Api {
   /**
    * 会员卡列表
@@ -58,12 +63,35 @@ export class CardApi extends Api {
   editCardRefund(params:RefundCardInput, id:string, type:string) {
     return this.http.put(`/v1/sold/cards/${type}/refund/${id}`, { params })
   }
-
-  /**
-  * 售出会员卡冻结回显  v1/sold/cards/member/freeze/info/商品ID
+  /*
+  * 售出 储值卡/会员卡 详情
   */
-  getMemberFreezeInfo(id: string, type: string) {
-    return this.http.get(`/v1/sold/cards/${type}/freeze/info/${id}`)
+  getCardInfo(id:string, type:string) {
+    return this.http.get(`/v1/sold/cards/${type}/detail/${id}`)
+  }
+  /**
+  * 售出 会员卡 冻结回显
+  */
+  getMemberFreezeInfo(id: string) {
+    return this.http.get(`/v1/sold/cards/member/freeze/info/${id}`)
+  }
+  /**
+  * 售出 会员卡 冻结
+  */
+  editMemberFreeze(params: FreezeCardInput, id: string) {
+    return this.http.put(`/v1/sold/cards/member/freeze/${id}`, { params })
+  }
+  /**
+   * 售出 课程包/私教课 详情消费记录
+   */
+  getCardConsumeInfo(id:string, type:string) {
+    return this.http.get(`/v1/sold/cards/${type}/consume/record/${id}`)
+  }
+  /**
+   * 售出 课程包/私教课 详情操作日志
+   */
+  getCardOperationInfo(id:string, type:string) {
+    return this.http.get(`/v1/sold/cards/${type}/operation/log/${id}`)
   }
 
   /* 合同编号自动生成 v1/setting/contract/codenumber/模板TYPE */

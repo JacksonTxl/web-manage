@@ -5,7 +5,7 @@
   v-model="show"
   wrapClassName="modal-sold-card-refund">
     <div :class="refund('content')">
-      <a-row :class="refund('info')">
+      <a-row :class="refund('info')" v-if="isDeposite">
         <a-col :span="13" class="mgb-36">
           <st-info>
             <st-info-item label="订单号">{{refundInfo.order_id}}</st-info-item>
@@ -14,21 +14,20 @@
         </a-col>
         <a-col :span="11" class="mgb-36">
            <st-info>
-            <st-info-item label="下单人">{{refundInfo.operator_id}}</st-info-item>
+            <st-info-item label="下单人">{{refundInfo.operator_name}}</st-info-item>
             <st-info-item class="mg-b0" label="销售">{{refundInfo.staff_name}}</st-info-item>
           </st-info>
         </a-col>
-
         <a-col :span="13" class="mgb-36">
           <st-info>
-            <st-info-item label="场馆">{{refundInfo.aaaa}}</st-info-item>
-            <st-info-item class="mg-b0" label="购买">{{refundInfo.card_name}}</st-info-item>
+            <st-info-item label="场馆">{{refundInfo.shop_name}}</st-info-item>
+            <st-info-item class="mg-b0" label="用户">{{refundInfo.member_name}} {{refundInfo.mobile}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11" class="mgb-36">
            <st-info>
-            <st-info-item label="用户">{{refundInfo.member_name}} {{refundInfo.mobile}}</st-info-item>
-            <st-info-item class="mg-b0" label="赠送">{{refundInfo.aaaa}}</st-info-item>
+            <st-info-item label="购买">{{refundInfo.card_name}}</st-info-item>
+            <st-info-item class="mg-b0" label="赠送">{{isDeposite?'无':'refundInfo.aaaa'}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="24" class="mgb-36">
@@ -39,7 +38,50 @@
         <a-col :span="13" class="mgb-24">
           <st-info>
             <st-info-item label="订单总额">{{refundInfo.total_price}}元</st-info-item>
-            <st-info-item class="mg-b0" label="订单类型">{{refundInfo.aaaa}}</st-info-item>
+            <st-info-item class="mg-b0" label="订单状态">{{refundInfo.order_status | enumFilter('sold.order_status')}}</st-info-item>
+          </st-info>
+        </a-col>
+        <a-col :span="11" class="mgb-24">
+           <st-info>
+            <st-info-item label="应收金额">{{refundInfo.should_price}}元</st-info-item>
+            <st-info-item class="mg-b0" label="实收金额">{{refundInfo.pay_price}}元</st-info-item>
+          </st-info>
+        </a-col>
+      </a-row>
+      <a-row :class="refund('info')" v-if="isMember">
+        <a-col :span="13" class="mgb-36">
+          <st-info>
+            <st-info-item label="订单号">{{refundInfo.order_id}}</st-info-item>
+            <st-info-item class="mg-b0" label="下单时间">{{refundInfo.created_time}}</st-info-item>
+          </st-info>
+        </a-col>
+        <a-col :span="11" class="mgb-36">
+           <st-info>
+            <st-info-item label="下单人">{{refundInfo.operator_name}}</st-info-item>
+            <st-info-item class="mg-b0" label="销售">{{refundInfo.staff_name}}</st-info-item>
+          </st-info>
+        </a-col>
+        <a-col :span="13" class="mgb-36">
+          <st-info>
+            <st-info-item label="场馆">{{refundInfo.shop_name || '后台说不给'}}</st-info-item>
+            <st-info-item class="mg-b0" label="用户">{{refundInfo.member_name}} {{refundInfo.mobile}}</st-info-item>
+          </st-info>
+        </a-col>
+        <a-col :span="11" class="mgb-36">
+           <st-info>
+            <st-info-item label="购买">{{refundInfo.card_name}}</st-info-item>
+            <st-info-item class="mg-b0" label="赠送">{{refundInfo.gift_amount}}</st-info-item>
+          </st-info>
+        </a-col>
+        <a-col :span="24" class="mgb-36">
+          <st-info>
+            <st-info-item class="mg-b0" label="备注">{{refundInfo.description || '无'}}</st-info-item>
+          </st-info>
+        </a-col>
+        <a-col :span="13" class="mgb-24">
+          <st-info>
+            <st-info-item label="订单总额">{{refundInfo.total_price}}元</st-info-item>
+            <st-info-item class="mg-b0" label="订单类型">{{refundInfo.order_status | enumFilter('sold.order_status')}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11" class="mgb-24">
@@ -119,6 +161,14 @@ export default {
       frozenPayType: 1,
       description: '',
       form: this.$form.createForm(this)
+    }
+  },
+  computed: {
+    isDeposite() {
+      return this.type === 'deposit'
+    },
+    isMember() {
+      return this.type === 'member'
     }
   },
   created() {
