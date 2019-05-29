@@ -1,12 +1,21 @@
 <template>
   <st-panel class="mg-t16">
     <div slot="title">
-      <st-input-search placeholder="请输入商品名查找" style="width: 290px;"/>
+      <st-input-search
+        placeholder="请输入商品名查找"
+        v-model="query.product_name"
+        @search="productName"
+        style="width: 290px;"
+      />
     </div>
     <div slot="prepend">
       <div style="background: #F7F9FC; padding: 24px;display: flex;align-items: center;">
         <span style="width:90px;">商品类型：</span>
-        <st-search-radio v-model="is_valid" :list="cardSaleStatusList"/>
+        <st-search-radio
+          v-model="query.product_type"
+          @change="productType"
+          :list="cardSaleStatusList"
+        />
       </div>
     </div>
     <st-table
@@ -14,9 +23,10 @@
       :columns="columns"
       rowKey="id"
       @change="onTableChange"
-      :dataSource="memberListInfo"
+      :dataSource="indexList.list"
       :pagination="pagination"
     >
+      <span slot="product_type" slot-scope="text" href="javascript:;">{{text| filterType}}</span>
       <div slot="action" slot-scope="record">
         <a href="javascript:;">详情</a>
         <a-divider type="vertical"></a-divider>
@@ -24,22 +34,26 @@
         <a href="javascript:;" @click="signing(record)">签单</a>
       </div>
     </st-table>
+    {{indexList}}
   </st-panel>
 </template>
 <script>
 import { UserService } from '@/services/user.service'
-
+import { IndexService } from './index.service'
 export default {
   serviceInject() {
     return {
-      userService: UserService
+      userService: UserService,
+      indexService: IndexService
     }
   },
   bem: {
     basic: 'page-shop-sold'
   },
   rxState() {
-    return {}
+    return {
+      indexList: this.indexService.indexList$
+    }
   },
   data() {
     return {
@@ -49,7 +63,13 @@ export default {
         pageSize: 10,
         total: 50
       },
-      is_valid: 1,
+      query: {
+        product_name: '',
+        product_type: '',
+        page: '',
+        size: ''
+      },
+      product_type: 1,
       search: '',
       // 售卡状态
       cardSaleStatusList: [
@@ -63,27 +83,47 @@ export default {
       memberListInfo: [
         {
           id: 1,
-          name: 'XXXXXXXXX',
-          member_name: '会员卡',
-          mobile: 1999,
-          member_level: 999
+          product_name: 'XXXXXXXXX',
+          product_type: '会员卡',
+          price: 1999,
+          number: 999
         }
       ],
       columns: [
-        { title: '商品名称', dataIndex: 'name' },
+        { title: '商品名称', dataIndex: 'product_name' },
         {
           title: '商品类型',
-          dataIndex: 'member_name'
+          dataIndex: 'product_type',
+          scopedSlots: { customRender: 'product_type' }
         },
-        { title: '价格', dataIndex: 'mobile' },
+        {
+          title: '价格',
+          dataIndex: 'price',
+          sorter: (a, b) => a.price - b.price
+        },
         {
           title: '销量',
-          dataIndex: 'member_level'
+          dataIndex: 'number',
+          sorter: (a, b) => a.number - b.number
         },
 
         { title: '操作', width: 140, scopedSlots: { customRender: 'action' } }
       ]
     }
+  },
+  filters: {
+    /* 1会员卡 2储值卡 3私教课 4课程包 5储物柜租赁 */
+    filterType(type) {
+      let arr = ['会员卡', '储值卡', '私教课', '课程包', '储物柜租赁']
+      return arr[type - 1]
+    }
+  },
+  created() {
+    this.pagination.total = this.indexList.page.total_counts
+    this.pagination.pageSize = this.indexList.page.size
+    this.pagination.current = this.indexList.page.current_page
+    this.query.page = this.indexList.page.current_page
+    this.query.size = this.indexList.page.size
   },
   methods: {
     signing(record) {
@@ -119,8 +159,15 @@ export default {
     },
     onTableChange(pagination, filters, sorter) {
       console.log(pagination, filters, sorter)
-
-      // this.$router.push({ query: this.form })
+      this.query.page = pagination.current
+      this.query.size = pagination.pageSize
+      this.$router.push({ query: this.query, force: true })
+    },
+    productType() {
+      this.$router.push({ query: this.query, force: true })
+    },
+    productName(data) {
+      this.$router.push({ query: this.query, force: true })
     }
   }
 }
