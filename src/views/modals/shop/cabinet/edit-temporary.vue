@@ -8,7 +8,7 @@
   >
     <st-form :form="form" labelWidth="70px">
       <st-form-item label="区域">
-        <a-input :value="id" disabled/>
+        <a-input :value="areaName" disabled/>
       </st-form-item>
       <st-form-item label="首字母">
         <a-input placeholder="请输入首字母" v-decorator="ruleConfig.firstLetter"/>
@@ -19,6 +19,7 @@
       <st-form-item label="可用状态" required>
         <a-radio-group
           v-decorator="ruleConfig.useStatus"
+          @change="onUseStatusChange"
         >
           <a-radio
             v-for="(item, index) in settingEnums.cabinet.use_status.value"
@@ -29,8 +30,8 @@
           </a-radio>
         </a-radio-group>
       </st-form-item>
-      <st-form-item labelFix>
-        <a-textarea v-decorator="ruleConfig.reason" placeholder="请输入不可用原因，如维修中"/>
+      <st-form-item v-if="isShowReason" labelFix>
+        <a-textarea v-model="info.reason" placeholder="请输入不可用原因，如维修中"/>
       </st-form-item>
     </st-form>
   </st-modal>
@@ -61,7 +62,8 @@ export default {
   data() {
     return {
       show: false,
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      isShowReason: false
     }
   },
   props: {
@@ -69,9 +71,14 @@ export default {
       type: [Number, String],
       default: 0
     },
-    type: {
+    areaName: {
       type: String,
-      default: 'temporary'
+      default: ''
+    }
+  },
+  computed: {
+    info() {
+      return this.resData.info
     }
   },
   created() {
@@ -79,18 +86,18 @@ export default {
   },
   methods: {
     setFieldsValue() {
-      const { info } = this.resData
+      const { info } = this
       this.form.setFieldsValue({
         first_letter: info.first_letter,
         start_num: info.start_num,
-        use_status: info.use_status,
-        reason: info.reason
+        use_status: info.use_status
       })
     },
     onSubmit(e) {
       e.preventDefault()
       this.form.validateFields().then((data) => {
         data.id = this.id
+        data.reason = this.info.reason || ''
         this.editService.update(data).subscribe(this.onSubmitSuccess)
       })
     },
@@ -103,6 +110,10 @@ export default {
       })
       this.show = false
       this.$emit('change')
+    },
+    onUseStatusChange(e) {
+      const status = e.target.value
+      this.isShowReason = e.target.value === 2
     }
   }
 }

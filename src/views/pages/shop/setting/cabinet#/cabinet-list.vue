@@ -1,17 +1,17 @@
 <template>
   <div>
-    <section v-if="value.length">
+    <section v-if="list.length">
       <div v-if="isOperationInBatch">
         <a-checkbox
           :indeterminate="indeterminate"
           :checked="checkAll"
           @change="onCheckAllChange"
         />
-        <span>已选 <span class="color-primary">{{checkedList.length}}</span> / {{value.length}}</span>
+        <span>已选 <span class="color-primary">{{checkedList.length}}</span> / {{list.length}}</span>
       </div>
       <a-checkbox-group :value="checkedList" @change="onChange" class="full-width mg-t16">
         <a-row :gutter="16" :class="b()">
-          <a-col v-for="(item, index) in value" :key="index" :md="6" :lg="4" :xl="3">
+          <a-col v-for="(item, index) in list" :key="index" :md="6" :lg="4" :xl="3">
             <div :class="b('item')"
               @mouseenter="mouseEventHander('enter', item.id)"
               @mouseleave="mouseEventHander('leave', item.id)"
@@ -27,7 +27,10 @@
                   v-else
                   v-modal-link="{
                     name: `shop-cabinet-edit-${type}`,
-                    props: { id: item.id }
+                    props: {
+                      id: item.id,
+                      areaName
+                    }
                   }"
                 >
                   <span v-if="editFlag === `enter-${item.id}`">编辑</span>
@@ -44,17 +47,23 @@
   </div>
 </template>
 <script>
+import { CabinetListService as CabinetService } from './cabinet-list.service'
 export default {
   bem: {
     b: 'st-setting-cabinet'
   },
+  serviceInject() {
+    return {
+      cabinetService: CabinetService
+    }
+  },
+  rxState() {
+    const cabinetService = this.cabinetService
+    return {
+      resData: cabinetService.resData$
+    }
+  },
   props: {
-    value: {
-      type: Array,
-      default() {
-        return []
-      }
-    },
     isOperationInBatch: {
       type: Boolean,
       default: false
@@ -62,13 +71,20 @@ export default {
     type: {
       type: String,
       default: 'temporary'
+    },
+    areaName: {
+      type: String,
+      default: ''
     }
   },
   computed: {
+    list() {
+      return this.resData.list
+    },
     plainOptions() {
-      const { value } = this
+      const { list } = this
       const ret = []
-      value.forEach(item => {
+      list.forEach(item => {
         ret.push(item.id)
       })
       return ret
