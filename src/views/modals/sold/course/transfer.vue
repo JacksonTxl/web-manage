@@ -106,7 +106,7 @@
             <a-input v-decorator="['memberMobile',{rules:[{validator:member_mobile_validator}]}]" placeholder="请输入手机号"></a-input>
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
-          <st-form-item class="mg-b0" label="有效时间" required labelGutter="12px">
+          <!-- <st-form-item class="mg-b0" label="有效时间" required labelGutter="12px">
             <div :class="transfer('time')">
               <a-form-item class="page-a-form">
                 <a-date-picker
@@ -132,7 +132,7 @@
                 />
               </a-form-item>
             </div>
-          </st-form-item>
+          </st-form-item> -->
           <st-form-item label="剩余价值" required labelGutter="12px">
             <st-input-number
             :max="99999.9"
@@ -251,7 +251,6 @@ export default {
             member_id: +values.memberId,
             member_name: values.memberName,
             mobile: values.memberMobile,
-            start_time: values.startTime.format('YYYY-MM-DD hh:mm'),
             remain_price: +values.remainPrice,
             contract_number: values.contractNumber,
             frozen_pay_type: +values.payType,

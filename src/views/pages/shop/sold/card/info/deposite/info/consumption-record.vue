@@ -5,7 +5,7 @@
     :columns="columns"
     @change="onPageChange"
     :dataSource="list">
-      <template slot="operation_time" slot-scope="text">
+      <template slot="consume_time" slot-scope="text">
         {{moment(text*1000).format('YYYY-MM-DD hh:mm')}}
       </template>
     </st-table>
@@ -13,40 +13,44 @@
 </template>
 <script>
 import moment from 'moment'
-import { OperationRecordService } from './operation-record.service'
+import { ConsumptionRecordService } from './consumption-record.service'
 import { RouteService } from '@/services/route.service'
 const columns = [{
-  title: '操作时间',
-  dataIndex: 'operation_time',
-  scopedSlots: { customRender: 'operation_time' }
+  title: '消费时间',
+  dataIndex: 'consume_time',
+  scopedSlots: { customRender: 'consume_time' }
 }, {
-  title: '操作内容',
-  dataIndex: 'operation_content',
-  scopedSlots: { customRender: 'operation_content' }
+  title: '消费内容',
+  dataIndex: 'consume_content',
+  scopedSlots: { customRender: 'consume_content' }
 }, {
-  title: '操作人',
-  dataIndex: 'operator',
-  scopedSlots: { customRender: 'operator' }
+  title: '消费课时',
+  dataIndex: 'consume_course',
+  scopedSlots: { customRender: 'consume_course' }
+}, {
+  title: '剩余课时',
+  dataIndex: 'course_remain',
+  scopedSlots: { customRender: 'course_remain' }
 }, {
   title: '备注',
   dataIndex: 'description',
   scopedSlots: { customRender: 'description' }
 }]
 export default {
-  name: 'PageShopSoldCoursePackageInfoOperation',
+  name: 'PageShopSoldCardDepositeInfoConsumption',
   bem: {
     basic: 'page-shop-sold'
   },
   serviceInject() {
     return {
       routeService: RouteService,
-      operationRecordService: OperationRecordService
+      consumptionRecordService: ConsumptionRecordService
     }
   },
   rxState() {
     return {
-      page: this.operationRecordService.page$,
-      list: this.operationRecordService.list$,
+      page: this.consumptionRecordService.page$,
+      list: this.consumptionRecordService.list$,
       query: this.routeService.query$
     }
   },

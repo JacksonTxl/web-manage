@@ -26,7 +26,6 @@ export interface TransferCoursePackageInput {
   member_id?:number
   member_name?:string
   mobile?:string
-  start_time:string
   remain_price:number
   contract_number:string
   frozen_pay_type:number
@@ -106,6 +105,18 @@ export class CourseApi extends Api {
    */
   getCourseInfo(id:string, type:string) {
     return this.http.get(`/v1/sold/course/${type}/detail/${id}`)
+  }
+  /**
+   * 售出 课程包/私教课 详情消费记录
+   */
+  getCourseConsumeInfo(id:string, type:string) {
+    return this.http.get(`/v1/sold/course/${type}/consume/record/${id}`)
+  }
+  /**
+   * 售出 课程包/私教课 详情操作日志
+   */
+  getCourseOperationInfo(id:string, type:string) {
+    return this.http.get(`/v1/sold/course/${type}/operation/log/${id}`)
   }
   /**
    * 售出私教修改教练

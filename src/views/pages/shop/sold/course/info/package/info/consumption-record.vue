@@ -1,89 +1,68 @@
 <template>
   <section class="pd-24">
-    <a-table :columns="columns" :dataSource="data">
-      <a slot="name" slot-scope="text" href="javascript:;">{{text}}</a>
-      <span slot="customTitle">
-        <a-icon type="smile-o"/>Name
-      </span>
-      <span slot="tags" slot-scope="tags">
-        <a-tag v-for="tag in tags" color="blue" :key="tag">{{tag}}</a-tag>
-      </span>
-      <span slot="action" slot-scope="text, record">
-        <a href="javascript:;">Invite 一 {{record.name}}</a>
-        <a-divider type="vertical"/>
-        <a href="javascript:;">Delete</a>
-        <a-divider type="vertical"/>
-        <a href="javascript:;" class="ant-dropdown-link">
-          More actions
-          <a-icon type="down"/>
-        </a>
-      </span>
-    </a-table>
+    <st-table
+    :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
+    :columns="columns"
+    @change="onPageChange"
+    :dataSource="list">
+      <template slot="consume_time" slot-scope="text">
+        {{moment(text*1000).format('YYYY-MM-DD hh:mm')}}
+      </template>
+    </st-table>
   </section>
 </template>
 <script>
+import moment from 'moment'
+import { ConsumptionRecordService } from './consumption-record.service'
+import { RouteService } from '@/services/route.service'
 const columns = [{
-  dataIndex: 'name',
-  key: 'name',
-  slots: { title: 'customTitle' },
-  scopedSlots: { customRender: 'name' }
+  title: '消费时间',
+  dataIndex: 'consume_time',
+  scopedSlots: { customRender: 'consume_time' }
 }, {
-  title: 'Age',
-  dataIndex: 'age',
-  key: 'age'
+  title: '消费内容',
+  dataIndex: 'consume_content',
+  scopedSlots: { customRender: 'consume_content' }
 }, {
-  title: 'Address',
-  dataIndex: 'address',
-  key: 'address'
+  title: '消费课时',
+  dataIndex: 'consume_course',
+  scopedSlots: { customRender: 'consume_course' }
 }, {
-  title: 'Tags',
-  key: 'tags',
-  dataIndex: 'tags',
-  scopedSlots: { customRender: 'tags' }
+  title: '剩余课时',
+  dataIndex: 'course_remain',
+  scopedSlots: { customRender: 'course_remain' }
 }, {
-  title: 'Action',
-  key: 'action',
-  scopedSlots: { customRender: 'action' }
+  title: '备注',
+  dataIndex: 'description',
+  scopedSlots: { customRender: 'description' }
 }]
-
-const data = [{
-  key: '1',
-  name: 'John Brown',
-  age: 32,
-  address: 'New York No. 1 Lake Park',
-  tags: ['nice', 'developer']
-}, {
-  key: '2',
-  name: 'Jim Green',
-  age: 42,
-  address: 'London No. 1 Lake Park',
-  tags: ['loser']
-}, {
-  key: '3',
-  name: 'Joe Black',
-  age: 32,
-  address: 'Sidney No. 1 Lake Park',
-  tags: ['cool', 'teacher']
-}]
-
 export default {
-  name: 'PageShopSoldCardMemberInfoConsumption',
+  name: 'PageShopSoldCoursePackageInfoConsumption',
   bem: {
     basic: 'page-shop-sold'
   },
+  serviceInject() {
+    return {
+      routeService: RouteService,
+      consumptionRecordService: ConsumptionRecordService
+    }
+  },
+  rxState() {
+    return {
+      page: this.consumptionRecordService.page$,
+      list: this.consumptionRecordService.list$,
+      query: this.routeService.query$
+    }
+  },
   data() {
     return {
-      // 售卡状态
-      cardSaleStatusList: [
-        { value: -1, label: '全部' },
-        { value: 1, label: '有效' },
-        { value: 2, label: '失效' },
-        { value: 3, label: '已冻结' },
-        { value: 4, label: '即将到期' }
-      ],
-      course_status: 1,
-      data,
       columns
+    }
+  },
+  methods: {
+    moment,
+    onPageChange(data) {
+      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
     }
   }
 }

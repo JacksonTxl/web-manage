@@ -33,7 +33,7 @@ const columns = [{
   scopedSlots: { customRender: 'description' }
 }]
 export default {
-  name: 'PageShopSoldCoursePackageInfoOperation',
+  name: 'PageShopSoldCardDepositeInfoOperation',
   bem: {
     basic: 'page-shop-sold'
   },

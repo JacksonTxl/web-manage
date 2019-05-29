@@ -92,7 +92,7 @@ export default {
   bem: {
     freeze: 'modal-sold-card-freeze'
   },
-  props: ['record'],
+  props: ['id'],
   data() {
     return {
       show: false,
@@ -104,7 +104,7 @@ export default {
     }
   },
   created() {
-    this.freezeService.getFreezeInfo(this.record.id).subscribe()
+    this.freezeService.getFreezeInfo(this.id).subscribe()
   },
   methods: {
     moment,
@@ -133,7 +133,7 @@ export default {
       this.endTime = cloneDeep(data)
     },
     disabledEndDate(endValue) {
-      return endValue.valueOf() < moment().valueOf() || endValue.valueOf() > this.cardEndTime.valueOf()
+      return endValue.valueOf() < moment().valueOf() || endValue.valueOf() > this.moment(this.freezeInfo.end_time).valueOf()
     },
     onFrozenChange(data) {
       this.form.resetFields(['payType'])
@@ -141,16 +141,14 @@ export default {
     onSubmit() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          console.log(values)
-          // this.freezeService.freeze({
-          //   start_time: this.startTime.format('YYYY-MM-DD hh:mm'),
-          //   end_time: values.endTime.format('YYYY-MM-DD hh:mm'),
-          //   frozen_fee: this.frozen_fee,
-          //   frozen_pay_type: values.payType
-          // }, this.id, this.type).subscribe(res => {
-          //   this.$emit('success')
-          //   this.show = false
-          // })
+          this.freezeService.freeze({
+            end_time: values.endTime.format('YYYY-MM-DD hh:mm'),
+            poundage: this.frozen_fee,
+            pay_method: values.payType
+          }, this.id, this.type).subscribe(res => {
+            this.$emit('success')
+            this.show = false
+          })
         }
       })
     }

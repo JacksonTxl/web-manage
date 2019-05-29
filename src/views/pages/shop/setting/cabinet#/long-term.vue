@@ -1,6 +1,11 @@
 <template>
   <div>
-    <cabinet :value="list" @change="onChange"/>
+    <cabinet
+      type="long-term"
+      :value="list"
+      @change="onChange"
+      :isOperationInBatch="isOperationInBatch"
+    />
   </div>
 </template>
 <script>
@@ -17,6 +22,12 @@ export default {
     const cabinetService = this.cabinetService
     return {
       resData: cabinetService.resData$
+    }
+  },
+  props: {
+    isOperationInBatch: {
+      type: Boolean,
+      default: false
     }
   },
   components: {

@@ -83,13 +83,14 @@
             slot-scope="text"
           >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
           <div slot="action" slot-scope="text,record">
-            <a @click="onFreeze(record)">冻结</a>
+            <a @click="onRefund(record)">退款</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
-              <a-menu-item @click="onTransfer(record,0)">升级</a-menu-item>
+              <a-menu-item @click="onFreeze(record)">冻结</a-menu-item>
+              <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
+
               <a-menu-item @click="onGathering(record)">订单收款</a-menu-item>
               <a-menu-item @click="onTransfer(record,1)">退款</a-menu-item>
-              <a-menu-item @click="onTransfer(record,2)">转让</a-menu-item>
               <a-menu-item @click="onTransfer(record,3)">冻结</a-menu-item>
               <a-menu-item @click="onTransfer(record,4)">修改剩余价值</a-menu-item>
               <a-menu-item @click="onTransfer(record,5)">续租</a-menu-item>
@@ -232,7 +233,6 @@ export default {
   },
   mounted() {
     this.setSearchData()
-    this.onGiving()
   },
   watch: {
     query(newVal) {
@@ -327,20 +327,43 @@ export default {
       this.$modalRouter.push({
         name: 'sold-card-freeze',
         props: {
-          record
+          id: record.id
         },
         on: {
           success: () => {
-
+            this.$router.push({ force: true, query: this.query })
           }
         }
       })
     },
-
-    // 转让
-    onTransfer() {
+    // 退款
+    onRefund(record) {
       this.$modalRouter.push({
-        name: 'sold-card-transfer'
+        name: 'sold-card-refund',
+        props: {
+          type: 'member',
+          id: record.id
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
+    // 转让
+    onTransfer(record) {
+      this.$modalRouter.push({
+        name: 'sold-card-transfer',
+        props: {
+          id: record.id,
+          type: 'member'
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
       })
     },
 

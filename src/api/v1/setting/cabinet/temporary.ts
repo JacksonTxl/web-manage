@@ -27,7 +27,7 @@ export class TemporaryCabinetApi extends Api {
    * @param id
    */
   getUpdateInfo(id: number) {
-    return this.http.get(`${url}/${id}`)
+    return this.http.get(`${url}-area/${id}`)
   }
   /**
    * 编辑临时储物柜

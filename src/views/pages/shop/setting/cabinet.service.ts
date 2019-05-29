@@ -29,7 +29,6 @@ export class CabinetService implements RouteGuard {
     return this.cabinetApi.del(params)
   }
   beforeRouteEnter(to: ServiceRoute, form: ServiceRoute, next: any) {
-    console.log('before enter')
     const id = to.meta.query.id
     this.areaService.getList().subscribe(() => {
       if (id) {
