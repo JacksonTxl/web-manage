@@ -1,7 +1,7 @@
 <template>
   <st-panel app>
     <a-row :class="bstep()" class="mg-b48" :gutter="8">
-      <a-col offset="1" :span="stepsSpan"><Steps :value="currentIndex" :stepArr="stepArr" @skip="skip"/></a-col>
+      <a-col offset="1" :span="stepsSpan"><Steps :value="currentIndex" :stepArr="stepArr" /></a-col>
     </a-row>
     <StaffDetailBasics :codeList="countryList" v-show="currentIndex == 0" @skiptoedit="skiptoedit" @basicInfoSave="onBasicInfoSave" @addStep="addCoachInfo" @deletStep="deletStep" :staffEnumslist="staffEnums"/>
   </st-panel>
@@ -59,8 +59,8 @@ export default {
     deletStep(e) {
       console.log('删除')
       this.stepsSpan = 12
-      let index = this.stepArr.findIndex(function(value, index, arr) {
-        return value.title === '教练信息'
+      let index = this.stepArr.findIndex((ele) => {
+        return ele.title === '教练信息'
       })
       if (index === -1) return
       this.stepArr.pop()

@@ -3,7 +3,7 @@ import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { ShopStaffApi } from '@/api/v1/staff/staff'
-import { StaffApi } from '@/api/v1/staff'
+import { StaffApi, EditStaffBasicInfoQuery } from '@/api/v1/staff'
 
 interface EditState {
     staffInfo: Object,
@@ -36,14 +36,19 @@ export class EditService extends Store<EditState> {
     }
 
     // 获取编辑回显
-    getStaffInfo(id: number) {
-      return this.staffApi.getStaffBrandReview(id).pipe(
+    getStaffInfo(id: string) {
+      return this.shopstaffApi.editStaffInfo(id).pipe(
         tap(res => {
           this.state$.commit(state => {
-            state.staffInfo = res
+            state.staffInfo = res.staff_info
           })
         })
       )
+    }
+
+    // 修改基础信息
+    updateBasicInfo(id: string, params: EditStaffBasicInfoQuery) {
+      return this.shopstaffApi.updateStaffBasicInfo(id, params)
     }
 
     beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {

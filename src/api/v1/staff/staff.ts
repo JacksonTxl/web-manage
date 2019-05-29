@@ -1,5 +1,5 @@
 import { Api } from '../../api'
-import { AddStaffBasicInfoParams } from '../staff'
+import { AddStaffBasicInfoParams, EditStaffBasicInfoQuery } from '../staff'
 // 门店维度下的员工
 export class ShopStaffApi extends Api {
   /**
@@ -24,8 +24,15 @@ export class ShopStaffApi extends Api {
   /**
    * 编辑员工回显
    */
-  editStaffInfo() {
+  editStaffInfo(id:string) {
+    return this.http.get(`/v1/staff/shop/review/${id}`)
+  }
 
+  /**
+   * 修改员工基础信息
+   */
+  updateStaffBasicInfo(id: string, params: EditStaffBasicInfoQuery) {
+    return this.http.put(`/v1/staff/shop/basic/${id}`, { params })
   }
 }
 interface CommonConfig {

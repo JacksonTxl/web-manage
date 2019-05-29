@@ -13,9 +13,9 @@
         </a-steps>
       </a-col>
     </a-row>
-    <edit-basic-info v-show="currentIndex == 0" :enums="staffEnums" :data="staffInfo.staff_info"/>
-    <edit-detailed-info  v-show="currentIndex == 1" :enums="staffEnums" :data="staffInfo.staff_info"/>
-    <edit-coach-info  v-show="currentIndex == 2" :enums="staffEnums" :data="staffInfo.staff_info"/>
+    <edit-basic-info v-show="currentIndex == 0" :enums="staffEnums" :data="staffInfo"/>
+    <edit-detailed-info  v-show="currentIndex == 1" :enums="staffEnums" :data="staffInfo"/>
+    <edit-coach-info  v-show="currentIndex == 2" :enums="staffEnums" :data="staffInfo"/>
   </st-panel>
 </template>
 
@@ -47,11 +47,12 @@ export default {
     EditBasicInfo
   },
   mounted() {
-    console.log('=======', this.staffInfo.staff_info)
     console.log(this.$route.meta.query)
     let { id, currentIndex, isshowcoach } = this.$route.meta.query
-    this.currentIndex = currentIndex - 0
-    if (isshowcoach === 'false') {
+    if (currentIndex) {
+      this.currentIndex = currentIndex - 0
+    }
+    if (isshowcoach && isshowcoach === 'false') {
       let idx = this.stepArr.findIndex((item) => {
         return item.key === 2
       })

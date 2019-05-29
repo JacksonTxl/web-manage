@@ -135,14 +135,8 @@
         <st-form-item label="入职时间">
           <a-date-picker style="width:100%" v-decorator="rules.entry_date"/>
         </st-form-item>
-        <st-form-item label="所属门店" required>
-          <a-select mode="multiple" placeholder="请选择" v-decorator="rules.shop_id">
-            <a-select-option :value="1">门店1</a-select-option>
-            <a-select-option :value="2">门店2</a-select-option>
-            <a-select-option :value="3">门店3</a-select-option>
-            <a-select-option :value="4">门店4</a-select-option>
-            <a-select-option :value="5">门店5</a-select-option>
-          </a-select>
+        <st-form-item label="所属门店">
+          <span>门店维度下没有选择门店的权力记着加当前门店名称 0.0 </span>
         </st-form-item>
       </a-col>
     </a-row>

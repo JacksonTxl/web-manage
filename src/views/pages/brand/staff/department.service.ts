@@ -22,10 +22,11 @@ export class DepartmentService extends Store<StaffState> implements RouteGuard {
   @Effect()
   getStaffList(data: Params) {
     return this.staffApi.getStaffBrandList(data).pipe(tap(state => {
-      this.SET_STAFF_LIST(state.staff_list)
+      this.SET_STAFF_LIST(state.list)
     }))
   }
   SET_STAFF_LIST(list: StaffState) {
+    console.log('-=9999999999', list)
     this.state$.commit(state => {
       state.staffList = list
     })

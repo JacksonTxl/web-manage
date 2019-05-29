@@ -272,7 +272,7 @@ export default {
       this.$router.push({
         name: 'shop-staff-edit',
         query: {
-          id: e.staff_id
+          id: e.id
         }
       })
     },

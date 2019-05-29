@@ -18,7 +18,7 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact>
-            <a-select :defaultValue="37" style="width: 15%;">
+            <a-select style="width: 15%;" v-model="choosed_Country_id">
               <template v-for="item in countryList">
                 <a-select-option :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
               </template>
@@ -54,7 +54,7 @@
         </st-form-item>
         <st-form-item label="证件" required>
           <a-input-group compact>
-            <a-select style="width: 20%;" :defaultValue="1" @change="onSelectIdtype">
+            <a-select style="width: 20%;" v-model="id_type" @change="onSelectIdtype">
               <template v-for="(item,key) in enums.id_type.value">
                 <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
               </template>
@@ -83,17 +83,15 @@
             treeDefaultExpandAll
             @change="onChange"
           >
-            <a-tree-select-node value="parent 1" title="parent 1" key="0-1">
-              <a-tree-select-node value="parent 1-0" title="parent 1-0" key="0-1-1">
-                <a-tree-select-node :selectable="false" value="leaf1" title="my leaf" key="random"/>
-                <a-tree-select-node value="leaf2" title="your leaf" key="random1"/>
+             <a-tree-select-node v-for="item in department" :value="item.id" :title="item.name" :key="item.id">
+            <a-tree-select-node v-for="item1 in item.children" :value="item1.id" :title="item1.name" :key="item1.id">
+              <a-tree-select-node v-for="item2 in item1.children" :value="item2.id" :title="item2.name" :key="item2.id">
+                <a-tree-select-node v-for="item3 in item2.children" :value="item3.id" :title="item3.name" :key="item3.id">
+                  <a-tree-select-node v-for="item4 in item3.children" :value="item4.id" :title="item4.name" :key="item4.id" />>
               </a-tree-select-node>
-              <a-tree-select-node value="parent 1-1" title="parent 1-1" key="random2">
-                <a-tree-select-node value="sss" key="random3">
-                  <b style="color: #08c" slot="title">sss</b>
-                </a-tree-select-node>
               </a-tree-select-node>
             </a-tree-select-node>
+          </a-tree-select-node>
           </a-tree-select>
         </st-form-item>
         <st-form-item label="工作性质" required>
@@ -113,19 +111,13 @@
       </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
         <st-form-item label="工号" >
-          <a-input placeholder="请输入员工工号" v-decorator="rules.staff_numRule"></a-input>
+          <a-input placeholder="请输入员工工号" v-decorator="rules.staff_num"></a-input>
         </st-form-item>
         <st-form-item label="入职时间">
           <a-date-picker style="width:100%" v-decorator="rules.entry_date"/>
         </st-form-item>
-        <st-form-item label="所属门店" required>
-          <a-select mode="multiple" placeholder="请选择" v-decorator="rules.shop_id">
-            <a-select-option :value="1">门店1</a-select-option>
-            <a-select-option :value="2">门店2</a-select-option>
-            <a-select-option :value="3">门店3</a-select-option>
-            <a-select-option :value="4">门店4</a-select-option>
-            <a-select-option :value="5">门店5</a-select-option>
-          </a-select>
+        <st-form-item label="所属门店" >
+          <span>门店维度下没有选择门店的权力记着加当前门店名称 0.0 </span>
         </st-form-item>
       </a-col>
     </a-row>
@@ -151,13 +143,16 @@ import { RuleConfig } from '@/constants/staff/rule'
 import { MessageService } from '@/services/message.service'
 import { AddService } from '../add.service'
 import { EditService } from '../edit.service'
+import { ListService } from '../list.service'
 export default {
   name: 'EditBasicInfo',
   serviceInject() {
     return {
       rules: RuleConfig,
       addservice: AddService,
-      editservice: EditService
+      editservice: EditService,
+      listservice: ListService,
+      message: MessageService
     }
   },
   props: {
@@ -173,7 +168,12 @@ export default {
       form: this.$form.createForm(this),
       fileList: [],
       faceList: [],
-      countryList: []
+      countryList: [],
+      id_type: 1,
+      choosed_Country_id: 37,
+      department: [],
+
+      value: '' // 部门选择
     }
   },
   methods: {
@@ -209,6 +209,23 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
+          this.submit(values)
+        }
+      })
+    },
+    /**
+     * saveOrgoNext 0 保存 1 下一个
+     */
+    submit(data, saveOrgoNext) {
+      data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
+      data.country_code_id = this.choosed_Country_id
+      data.id_type = this.id_type
+      this.editservice.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
+        if (saveOrgoNext === 0) {
+          this.message.success({ content: '编辑成功' })
+          this.$router.go(-1)
+        } else if (saveOrgoNext === 1) {
+
         }
       })
     },
@@ -221,15 +238,17 @@ export default {
         staff_num: obj.staff_num,
         sex: obj.sex,
         id_number: obj.id_number,
-        department_id: obj.department_id,
         nature_work: obj.nature_work,
         role_id: obj.role_id,
         shop_id: obj.shop_id,
         entry_date: obj.entry_date ? moment(obj.entry_date) : '',
-        mail: obj.mail,
-        country_code_id: obj.country_code_id,
-        id_type: obj.id_type
+        mail: obj.mail
       })
+
+      this.choosed_Country_id = obj.country_code_id
+      this.id_type = obj.id_type
+      this.value = obj.department_id + ''
+
       this.fileList = [
         {
           url: obj.image_avatar.image_url
@@ -240,8 +259,13 @@ export default {
   mounted() {
     this.setData(this.data)
     this.addservice.getCountryCodes().subscribe(res => {
-      console.log(res)
+      // console.log(res)
       this.countryList = res.code_list
+    })
+
+    this.listservice.getStaffDepartment().subscribe(res => {
+      console.log('basic', res)
+      this.department = res.department
     })
   }
 }
