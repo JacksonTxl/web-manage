@@ -5,18 +5,22 @@ import { Store } from '@/services/store'
 import { ShopStaffApi, GetListQuery } from '@/api/v1/staff/staff'
 
 interface FollowState {
-    stafflist: Object
+    stafflist: Object;
+    department: Object
 }
 @Injectable()
 export class ListService extends Store<FollowState> {
     state$: State<FollowState>
     stafflist$: Computed<Object>
+    department$: Computed<Object>
     constructor(private staffApi: ShopStaffApi) {
       super()
       this.state$ = new State({
-        stafflist: {}
+        stafflist: {},
+        department: {}
       })
       this.stafflist$ = new Computed(this.state$.pipe(pluck('stafflist')))
+      this.department$ = new Computed(this.state$.pipe(pluck('department')))
     }
     getStaffList(query: GetListQuery) {
       return this.staffApi.getList(query).pipe(
@@ -28,8 +32,19 @@ export class ListService extends Store<FollowState> {
       )
     }
 
+    getStaffDepartment() {
+      return this.staffApi.getStaffDepartmentList().pipe(
+        tap(res => {
+          this.state$.commit(state => {
+            state.department = res.department
+          })
+        })
+      )
+    }
+
     beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
       let { page = 1, size = 20, shop_id } = to.meta.query
+      this.getStaffDepartment().subscribe(() => {})
       this.getStaffList({ page, size, shop_id }).subscribe(() => {
         next()
       })

@@ -40,12 +40,17 @@
       </st-form>
       <st-form labelWidth="68px">
         <st-form-item label="支付金额" labelGutter="12px" required>
-          <st-input-number :max="99999.9" :float="true" placeholder="请输入支付金额">
+          <st-input-number
+            :max="99999.9"
+            :float="true"
+            placeholder="请输入支付金额"
+            v-decorator="basicInfoRuleList.name"
+          >
             <template slot="addonAfter">元</template>
           </st-input-number>
         </st-form-item>
         <st-form-item label="支付方式" required labelGutter="12px">
-          <a-select placeholder="请选择支付方式">
+          <a-select placeholder="请选择支付方式" v-decorator="basicInfoRuleList.test_time">
             <a-select-option value="jack">Jack</a-select-option>
             <a-select-option value="lucy">Lucy</a-select-option>
           </a-select>
@@ -73,7 +78,17 @@ export default {
   data() {
     return {
       show: false,
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      basicInfoRuleList: {
+        name: [
+          'name',
+          { rules: [{ required: true, message: '请填写会员名称' }] }
+        ],
+        test_time: [
+          'test_time',
+          { rules: [{ required: true, message: '请填写规格' }] }
+        ]
+      }
     }
   },
   created() {},

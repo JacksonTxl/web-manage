@@ -18,7 +18,7 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact>
-            <a-select :defaultValue="37" style="width: 15%;">
+            <a-select style="width: 15%;" v-model="choosed_code_id">
               <template v-for="item in countryList">
                 <a-select-option :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
               </template>
@@ -54,7 +54,7 @@
         </st-form-item>
         <st-form-item label="证件" required>
           <a-input-group compact>
-            <a-select style="width: 20%;" :defaultValue="1" @change="onSelectIdtype">
+            <a-select style="width: 20%;" @change="onSelectIdtype" v-model="choosed_id_type">
               <template v-for="(item,key) in enums.id_type.value">
                 <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
               </template>
@@ -74,7 +74,7 @@
     <a-row :gutter="8">
       <a-col :offset="1" :lg="23">
         <st-form-item label="员工职能" required>
-          <a-checkbox-group v-decorator="rules.identityRule"  @change="watchChooesed">
+          <a-checkbox-group v-decorator="rules.identity" @change="watchChooesed">
             <a-checkbox
               v-for="(item, key) in enums.identity.value"
               :key="key"
@@ -129,8 +129,8 @@
         </st-form-item>
       </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
-        <st-form-item label="工号" >
-          <a-input placeholder="请输入员工工号" v-decorator="rules.staff_numRule"></a-input>
+        <st-form-item label="工号">
+          <a-input placeholder="请输入员工工号" v-decorator="rules.staff_num"></a-input>
         </st-form-item>
         <st-form-item label="入职时间">
           <a-date-picker style="width:100%" v-decorator="rules.entry_date"/>
@@ -156,7 +156,7 @@
     <a-row :gutter="8">
       <a-col :offset="1" :lg="10">
         <st-form-item label="系统权限" required>
-          <a-checkbox @change="permissionChange" v-decorator="rules.is_permissionRule">开通系统使用权限</a-checkbox>
+          <a-checkbox @change="permissionChange" v-decorator="rules.is_permission">开通系统使用权限</a-checkbox>
         </st-form-item>
         <st-form-item label="登录账号">
           <a-input
@@ -218,7 +218,8 @@ export default {
     return {
       rules: RuleConfig,
       userservice: UserService,
-      addservice: AddService
+      addservice: AddService,
+      message: MessageService
     }
   },
   props: {
@@ -228,6 +229,8 @@ export default {
   },
   data() {
     return {
+      choosed_code_id: 37, // 手机号地域编号
+      choosed_id_type: 1, // 选中证件类型编号
       form: this.$form.createForm(this),
       fileList: [],
       faceList: [],
@@ -294,26 +297,54 @@ export default {
         }
       })
     },
+    // 继续填写跳转到编辑
     goNext() {
-      let data = {
-        isGoNext: true
-      }
-      this.$emit('goNext', data)
+      // this.$emit('skiptoedit', {
+      //   id: 1,
+      //   isShowLevel: this.isShowLevel
+      // })
+      // return
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+          this.submit(values, 1)
+        }
+      })
     },
+    // 保存
     save(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
+          this.submit(values, 0)
+        }
+      })
+    },
+    /**
+     * saveOrgoNext 0 保存 1 跳转到编辑
+     */
+    submit(data, saveOrgoNext) {
+      // this.isChoosePermission ? (data.is_permission = 1) : (data.is_permission = 0)
+      data.is_permission = +this.isChoosePermission
+      data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
+      data.country_code_id = this.choosed_code_id
+      data.id_type = this.choosed_id_type
+      this.addservice.addStaff(data).subscribe(res => {
+        if (saveOrgoNext === 1) {
+          console.log(res)
+          //  this.$emit('skiptoedit', {
+          //     id: 1,
+          //     isShowLevel: this.isShowLevel
+          //   })
+        } else {
+          this.message.success({ content: '添加员工成功' })
+          this.$router.go(-1)
         }
       })
     }
   },
   mounted() {
-    console.log(this.rules)
-    console.log(this.enums)
     this.addservice.getCountryCodes().subscribe(res => {
-      console.log(res)
       this.countryList = res.code_list
     })
   }

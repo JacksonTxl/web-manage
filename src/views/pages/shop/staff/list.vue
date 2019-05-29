@@ -1,19 +1,28 @@
 <template>
-  <st-panel>
+  <st-panel class="page-shop-staff-list">
     <a-row :gutter="8">
       <a-col :lg="17">
-        <a-select
-          style="width: 160px; "
+        <a-tree-select
+          showSearch
           class="mg-r8"
-          :defaultValue="-1"
+          style="width: 160px"
+          :value="value"
+          :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
           placeholder="请选择部门"
-          @change="onChooseDepartment"
+          allowClear
+          treeDefaultExpandAll
+          @change="selectDepartment"
         >
-          <a-select-option :value="1">部门1</a-select-option>
-          <a-select-option :value="3">部门2</a-select-option>
-          <a-select-option :value="2">部门3</a-select-option>
-          <a-select-option :value="-1">全部部门</a-select-option>
-        </a-select>
+          <a-tree-select-node v-for="item in department" :value="item.id" :title="item.name" :key="item.id">
+            <a-tree-select-node v-for="item1 in item.children" :value="item1.id" :title="item1.name" :key="item1.id">
+              <a-tree-select-node v-for="item2 in item1.children" :value="item2.id" :title="item2.name" :key="item2.id">
+                <a-tree-select-node v-for="item3 in item2.children" :value="item3.id" :title="item3.name" :key="item3.id">
+                  <a-tree-select-node v-for="item4 in item3.children" :value="item4.id" :title="item4.name" :key="item4.id" />>
+              </a-tree-select-node>
+              </a-tree-select-node>
+            </a-tree-select-node>
+          </a-tree-select-node>
+        </a-tree-select>
         <a-select
           style="width: 160px; "
           class="mg-r8"
@@ -37,11 +46,11 @@
           <a-select-option :value="2">离职</a-select-option>
           <a-select-option :value="-1">全部员工状态</a-select-option>
         </a-select>
-        <st-button class="mg-r8" :disabled="selectedRowKeys.length > 0 ? false : true" >
-           <modal-link
-                tag="a"
-                :to="{ name: 'shop-staff-join-department', props: {},on :{change: joinok} }"
-              >批量加入部门</modal-link>
+        <st-button class="mg-r8" :disabled="selectedRowKeys.length > 0 ? false : true">
+          <modal-link
+            tag="a"
+            :to="{ name: 'shop-staff-join-department', props: {},on :{change: joinok} }"
+          >批量加入部门</modal-link>
         </st-button>
         <st-button class="mg-r8" @click="onAddStaff">添加员工</st-button>
         <st-button @click="onExportStaff">导入员工</st-button>
@@ -54,7 +63,7 @@
       <st-table
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         :columns="columns"
-        :dataSource="stafflist.staff_list"
+        :dataSource="stafflist.list"
         :scroll="{ x: 1500 }"
         class="page-shop-staff-table"
         :rowKey="record => record.staff_id"
@@ -70,47 +79,59 @@
             <span :key="item.id" class="mg-r8">{{ item.name }}</span>
           </template>
         </template>
-        <div slot="status" slot-scope="status">
-          <a-badge :status="status == 1 ? 'success' : 'error'"/>
-          {{status == 1 ? '在职' : '不在职'}}
-        </div>
+        <template slot="identity" slot-scope="text,record">
+          <template v-for="item in record.identity">
+            <span :key="item.id" class="mg-r8">{{ item.name }}</span>
+          </template>
+        </template>
+        <template slot="sex" slot-scope="text">
+          <span>{{ text.name }}</span>
+        </template>
+        <template slot="work_status" slot-scope="text">
+          <div class="page-staff-list-work_status">
+            <a-badge :status="text.name === '在职' ? 'success' : 'error'"/>
+            {{ text.name }}
+          </div>
+        </template>
         <template slot="action" slot-scope="text,record">
           <a href="javascript:;" @click="onSearchDetail(record)">详情</a>
-          <a-divider type="vertical"></a-divider>
-          <a href="javascript:;" @click="onEdit(record)">编辑</a>
-          <a-divider type="vertical"></a-divider>
-          <st-more-dropdown>
-            <a-menu-item>
-              <modal-link
-                tag="a"
-                :to="{ name: 'shop-staff-bind-card', props: {} }"
-              >绑实体卡</modal-link>
-            </a-menu-item>
-            <a-menu-item>
-              <modal-link
-                tag="a"
-                :to="{ name: 'staff-reinstatement', props: {staff_id: record.staff_id || 1} }"
-              >管理登录账号</modal-link>
-            </a-menu-item>
-            <a-menu-item>
-              <modal-link
-                tag="a"
-                :to="{ name: 'staff-turnover', props: {staff_id: record.staff_id || 1} } "
-              >职位变更</modal-link>
-            </a-menu-item>
-            <a-menu-item>
-              <modal-link
-                tag="a"
-                :to="{ name: 'staff-update-staff-position', props: {staffId: record.staff_id || 1} }"
-              >设置薪资账</modal-link>
-            </a-menu-item>
-            <a-menu-item>
-              <modal-link
-                tag="a"
-                :to="{ name: 'staff-update-staff-position', props: {staffId: record.staff_id || 1} }"
-              >解除门店关系</modal-link>
-            </a-menu-item>
-          </st-more-dropdown>
+          <template v-if="record.work_status.name === '在职'">
+            <a-divider type="vertical"></a-divider>
+            <a href="javascript:;" @click="onEdit(record)">编辑</a>
+            <a-divider type="vertical"></a-divider>
+            <st-more-dropdown>
+              <a-menu-item v-if="record.has_card == 0">
+                <modal-link tag="a" :to="{ name: 'shop-staff-bind-card', props: {} }">绑实体卡</modal-link>
+              </a-menu-item>
+              <a-menu-item v-if="record.has_card == 1">
+                <modal-link tag="a" :to="{ name: 'shop-staff-bind-card', props: {} }">重绑实体卡</modal-link>
+              </a-menu-item>
+              <a-menu-item>
+                <modal-link
+                  tag="a"
+                  :to="{ name: 'staff-reinstatement', props: {staff_id: record.staff_id || 1} }"
+                >管理登录账号</modal-link>
+              </a-menu-item>
+              <a-menu-item>
+                <modal-link
+                  tag="a"
+                  :to="{ name: 'staff-turnover', props: {staff_id: record.staff_id || 1} } "
+                >职位变更</modal-link>
+              </a-menu-item>
+              <a-menu-item>
+                <modal-link
+                  tag="a"
+                  :to="{ name: 'staff-update-staff-position', props: {staffId: record.staff_id || 1} }"
+                >设置薪资账户</modal-link>
+              </a-menu-item>
+              <a-menu-item>
+                <modal-link
+                  tag="a"
+                  :to="{ name: 'staff-update-staff-position', props: {staffId: record.staff_id || 1} }"
+                >解除门店关系</modal-link>
+              </a-menu-item>
+            </st-more-dropdown>
+          </template>
         </template>
       </st-table>
     </a-row>
@@ -138,7 +159,12 @@ const columns = [
     width: 100
   },
   { title: '手机号', dataIndex: 'mobile', key: 'mobile' },
-  { title: '性别', dataIndex: 'sex', key: 'sex' },
+  {
+    title: '性别',
+    dataIndex: 'sex',
+    key: 'sex',
+    scopedSlots: { customRender: 'sex' }
+  },
   { title: '工号', dataIndex: 'staff_num', key: 'staff_num' },
   { title: '所属部门', dataIndex: 'department', key: 'department' },
   {
@@ -147,8 +173,18 @@ const columns = [
     key: 'shop',
     scopedSlots: { customRender: 'shop' }
   },
-  { title: '员工职能', dataIndex: 'identity', key: 'identity' },
-  { title: '在职状态', dataIndex: 'work_status', key: 'work_status' },
+  {
+    title: '员工职能',
+    dataIndex: 'identity',
+    key: 'identity',
+    scopedSlots: { customRender: 'identity' }
+  },
+  {
+    title: '在职状态',
+    dataIndex: 'work_status',
+    key: 'work_status',
+    scopedSlots: { customRender: 'work_status' }
+  },
   {
     title: '操作',
     key: 'action',
@@ -167,7 +203,8 @@ export default {
   },
   rxState() {
     return {
-      stafflist: this.service.stafflist$
+      stafflist: this.service.stafflist$,
+      department: this.service.department$
     }
   },
   data() {
@@ -179,15 +216,18 @@ export default {
         total: this.stafflist.page.total_counts
       },
       selectedRowKeys: [],
-      selectStaff: []
+      selectStaff: [],
+      value: ''
     }
   },
   created() {
-    // this.pagination.total = this.stafflist.page.total_counts
-    // this.pagination.pageSize = this.stafflist.page.size
-    // this.pagination.current = this.stafflist.page.current_page
+    console.log('部门列表', this.department)
   },
   methods: {
+    selectDepartment(e) {
+      console.log(e)
+      this.value = e + ''
+    },
     joinok() {
       this.selectedRowKeys = []
       this.selectStaff = []
@@ -215,12 +255,16 @@ export default {
     onExportStaff() {
       console.log('导入员工')
     },
+    // 详情
     onSearchDetail(e) {
+      let identity = e.identity.map(ele => {
+        return ele.id
+      })
       this.$router.push({
         name: 'shop-staff-info',
         query: {
-          id: e.staff_id,
-          identity: e.identity
+          id: e.id,
+          identity: identity
         }
       })
     },

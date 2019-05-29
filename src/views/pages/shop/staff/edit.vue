@@ -13,9 +13,9 @@
         </a-steps>
       </a-col>
     </a-row>
-    <edit-basic-info v-show="currentIndex == 0" :enums="staffEnums"/>
-    <edit-detailed-info  v-show="currentIndex == 1" :enums="staffEnums"/>
-    <edit-coach-info  v-show="currentIndex == 2" :enums="staffEnums"/>
+    <edit-basic-info v-show="currentIndex == 0" :enums="staffEnums" :data="staffInfo.staff_info"/>
+    <edit-detailed-info  v-show="currentIndex == 1" :enums="staffEnums" :data="staffInfo.staff_info"/>
+    <edit-coach-info  v-show="currentIndex == 2" :enums="staffEnums" :data="staffInfo.staff_info"/>
   </st-panel>
 </template>
 
@@ -25,23 +25,40 @@ import EditDetailedInfo from './edit#/edit-detailed-info'
 import EditBasicInfo from './edit#/edit-basic-info'
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
+import { EditService } from './edit.service.ts'
 export default {
   serviceInject() {
     return {
       userService: UserService,
       // regionService: RegionService,
-      messageService: MessageService
+      messageService: MessageService,
+      services: EditService
     }
   },
   rxState() {
     return {
-      staffEnums: this.userService.staffEnums$
+      staffEnums: this.userService.staffEnums$,
+      staffInfo: this.services.staffInfo$
     }
   },
   components: {
     EditCoachInfo,
     EditDetailedInfo,
     EditBasicInfo
+  },
+  mounted() {
+    console.log('=======', this.staffInfo.staff_info)
+    console.log(this.$route.meta.query)
+    let { id, currentIndex, isshowcoach } = this.$route.meta.query
+    this.currentIndex = currentIndex - 0
+    if (isshowcoach === 'false') {
+      let idx = this.stepArr.findIndex((item) => {
+        return item.key === 2
+      })
+      this.stepArr.splice(idx, 1)
+      this.stepsSpan = 12
+      console.log(idx)
+    }
   },
   methods: {
     changeStep(step) {
@@ -51,7 +68,7 @@ export default {
   data() {
     return {
       stepsSpan: 18,
-      currentIndex: 2,
+      currentIndex: 0,
       stepArr: [
         {
           title: '基础信息',

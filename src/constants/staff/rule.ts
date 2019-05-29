@@ -90,6 +90,12 @@ export class RuleConfig extends Exp {
   get image_face() {
     return ['image_face']
   }
+  // 员工职能
+  get identity() {
+    return ['identity', {
+      rules: [{ required: true, message: '请选择职能' }]
+    }]
+  }
 
   // 部门
   get department_id() {
@@ -103,12 +109,25 @@ export class RuleConfig extends Exp {
   }
   // 工作性质
   get nature_work() {
-    return ['nature_work']
+    return ['nature_work', {
+      rules: [{ required: true, message: '请选择工作性质' }]
+    }]
   }
 
   // 入职时间
   get entry_date() {
     return ['entry_date']
+  }
+
+  // 门店
+  get shop_id() {
+    return ['shop_id', {
+      rules: [{ required: true, message: '请选择门店' }]
+    }]
+  }
+  // 角色
+  get role_id() {
+    return ['role_id']
   }
   // 系统使用权限
   get is_permission() {

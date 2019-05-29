@@ -3,7 +3,7 @@ import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { ShopStaffApi } from '@/api/v1/staff/staff'
-import { StaffApi } from '@/api/v1/staff'
+import { StaffApi, AddStaffBasicInfoParams } from '@/api/v1/staff'
 
 interface AddState {
     // basicInfo: Object,
@@ -31,5 +31,8 @@ export class AddService extends Store<AddState> {
           })
         })
       )
+    }
+    addStaff(params: AddStaffBasicInfoParams) {
+      return this.shopstaffApi.addStaffBasicInfo(params)
     }
 }
