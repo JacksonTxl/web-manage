@@ -12,7 +12,7 @@
         </a-steps>
       </a-col>
     </a-row>
-    <staff-detail-basics v-if="currentIndex == 0" @goNext="goNext" :enums="staffEnums" @addStep="addCoachInfo" @deletStep="deletStep" />
+    <staff-detail-basics v-if="currentIndex == 0" :enums="staffEnums" @addStep="addCoachInfo" @deletStep="deletStep" @skiptoedit="skiptoedit"/>
   </st-panel>
 </template>
 
@@ -62,6 +62,9 @@ export default {
     }
   },
   methods: {
+    skiptoedit(e) {
+      this.$router.replace({ name: 'shop-staff-edit', query: { id: 1, currentIndex: 1, isshowcoach: e.isShowLevel } })
+    },
     // 删除步骤轴
     deletStep(e) {
       this.stepsSpan = 12

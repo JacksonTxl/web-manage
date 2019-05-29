@@ -69,6 +69,9 @@ export default {
     },
     enums: {
       type: Object
+    },
+    data: {
+      type: Object
     }
   },
   data() {

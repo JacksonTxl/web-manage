@@ -150,16 +150,21 @@
 import { RuleConfig } from '@/constants/staff/rule'
 import { MessageService } from '@/services/message.service'
 import { AddService } from '../add.service'
+import { EditService } from '../edit.service'
 export default {
   name: 'EditBasicInfo',
   serviceInject() {
     return {
       rules: RuleConfig,
-      addservice: AddService
+      addservice: AddService,
+      editservice: EditService
     }
   },
   props: {
     enums: {
+      type: Object
+    },
+    data: {
       type: Object
     }
   },
@@ -168,25 +173,10 @@ export default {
       form: this.$form.createForm(this),
       fileList: [],
       faceList: [],
-      countryList: [],
-      isChoosePermission: false,
-      isAdd: [],
-      addflag: true,
-      isShowLevel: false, // 是否展示教练等级
-
-      treeExpandedKeys: [],
-      value: undefined
+      countryList: []
     }
   },
   methods: {
-    permissionChange(e) {
-      this.isChoosePermission = e.target.checked
-      this.$nextTick(() => {
-        this.form.validateFields(['account'], { force: true })
-        this.form.validateFields(['password'], { force: true })
-        this.form.validateFields(['repeat_password'], { force: true })
-      })
-    },
     onChange(value) {
       console.log('选择部门', value)
       this.value = value
@@ -221,11 +211,34 @@ export default {
           console.log('Received values of form: ', values)
         }
       })
+    },
+    setData(obj) {
+      console.log('set', obj)
+      this.form.setFieldsValue({
+        staff_name: obj.staff_name,
+        nickname: obj.nickname,
+        mobile: obj.mobile,
+        staff_num: obj.staff_num,
+        sex: obj.sex,
+        id_number: obj.id_number,
+        department_id: obj.department_id,
+        nature_work: obj.nature_work,
+        role_id: obj.role_id,
+        shop_id: obj.shop_id,
+        entry_date: obj.entry_date ? moment(obj.entry_date) : '',
+        mail: obj.mail,
+        country_code_id: obj.country_code_id,
+        id_type: obj.id_type
+      })
+      this.fileList = [
+        {
+          url: obj.image_avatar.image_url
+        }
+      ]
     }
   },
   mounted() {
-    console.log(this.rules)
-    console.log(this.enums)
+    this.setData(this.data)
     this.addservice.getCountryCodes().subscribe(res => {
       console.log(res)
       this.countryList = res.code_list
