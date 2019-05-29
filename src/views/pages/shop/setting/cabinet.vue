@@ -7,27 +7,29 @@
         tabPosition="left"
         @change="onAreaChange"
       >
-        <a-tab-pane
-          v-for="item in list"
-          :key="item.id"
-          :class="b('nav-item')"
-        >
-          <div slot="tab">
-            <div :class="b('nav-item-content')">
-              <span>{{item.area_name}}({{item.cabinet_num}})</span>
-              <st-more-dropdown>
-                <a-menu-item @click="editArea(item.id)">编辑</a-menu-item>
-                <a-menu-item @click="delArea(item.id)">删除</a-menu-item>
-              </st-more-dropdown>
+        <!-- <draggable> -->
+          <a-tab-pane
+            v-for="item in list"
+            :key="item.id"
+            :class="b('nav-item')"
+          >
+            <div slot="tab">
+              <div :class="b('nav-item-content')">
+                <span>{{item.area_name}}({{item.cabinet_num}})</span>
+                <st-more-dropdown>
+                  <a-menu-item @click="editArea(item.id)">编辑</a-menu-item>
+                  <a-menu-item @click="delArea(item.id)">删除</a-menu-item>
+                </st-more-dropdown>
+              </div>
+              <edit-cabinet-area
+                v-if="item.id === editId"
+                :id="item.id"
+                :name="item.area_name"
+                @change="onAreaListChange"
+              />
             </div>
-            <edit-cabinet-area
-              v-if="item.id === editId"
-              :id="item.id"
-              :name="item.area_name"
-              @change="onAreaListChange"
-            />
-          </div>
-        </a-tab-pane>
+          </a-tab-pane>
+        <!-- </draggable> -->
       </a-tabs>
       <add-cabinet-area v-if="isShowAddAreaBtn" @change="onAreaListChange"/>
       <a :class="b('nav-add')" @click="addArea">添加区域</a>
@@ -41,8 +43,26 @@
           <a-tab-pane :tab="`长期储物柜`" key="long-term"></a-tab-pane>
         </a-tabs>
         <div class="page-setting-cabinet-tab__actions">
-          <span v-if="checked.length">
-            <st-button icon="edit">编辑</st-button>
+          <st-button @click="changeOperationMode">
+            {{isOperationInBatch ? '完成': '批量管理' }}
+          </st-button>
+          <span v-if="checked.length && isOperationInBatch">
+            <st-button
+              v-if="type === 'long-term'"
+              icon="edit"
+              class="mg-l8"
+              v-modal-link="{
+              name: 'shop-cabinet-edit-price',
+              props: {
+                ids: this.checked
+              },
+              on: {
+                change: onCabinetListChange
+              }
+            }"
+            >
+              改价
+            </st-button>
             <a-popconfirm
               placement="bottom"
               @confirm="onDelCabinet()"
@@ -69,9 +89,17 @@
         </div>
       </div>
       <!-- 临时储物柜 -->
-      <temporary-cabinet v-if="type === 'temporary'" @change="onCabinetSelectChange"/>
+      <temporary-cabinet
+        v-if="type === 'temporary'"
+        @change="onCabinetSelectChange"
+        :isOperationInBatch="isOperationInBatch"
+      />
       <!-- 长期储物柜 -->
-      <long-term-cabinet v-if="type === 'long-term'" @change="onCabinetSelectChange"/>
+      <long-term-cabinet
+        v-if="type === 'long-term'"
+        @change="onCabinetSelectChange"
+        :isOperationInBatch="isOperationInBatch"
+      />
     </st-panel>
   </div>
 </template>
@@ -84,6 +112,8 @@ import EditCabinetArea from './cabinet#/edit-area'
 import { CabinetAreaService as AreaService } from './cabinet#/area.service'
 import TemporaryCabinet from './cabinet#/temporary'
 import LongTermCabinet from './cabinet#/long-term'
+// import Draggable from 'vuedraggable'
+
 export default {
   bem: {
     b: 'page-setting-cabinet'
@@ -106,7 +136,8 @@ export default {
     return {
       editId: 0,
       isShowAddAreaBtn: false,
-      checked: []
+      checked: [],
+      isOperationInBatch: false
     }
   },
   components: {
@@ -114,13 +145,14 @@ export default {
     EditCabinetArea,
     TemporaryCabinet,
     LongTermCabinet
+    // Draggable
   },
   computed: {
     type() {
       return this.query.type || 'temporary'
     },
     defaultActiveKey() {
-      return this.query.id || 0
+      return +this.query.id || 0
     }
   },
   created() {
@@ -162,9 +194,9 @@ export default {
       this.queryHandler({ id })
     },
     onCabinetTabChange(key) {
-      console.log('changed', key)
       this.queryHandler({ type: key })
       this.checked = []
+      this.isOperationInBatch = false
     },
     queryHandler(query) {
       this.$router.push({
@@ -179,7 +211,6 @@ export default {
       this.onAreaListChange()
     },
     onCabinetSelectChange(checked) {
-      console.log('changed', checked)
       this.checked = checked
     },
     onDelCabinet() {
@@ -192,6 +223,9 @@ export default {
         content: '删除成功'
       })
       this.onCabinetListChange()
+    },
+    changeOperationMode() {
+      this.isOperationInBatch = !this.isOperationInBatch
     }
   }
 }

@@ -4,9 +4,15 @@ import { Injectable } from 'vue-service-app'
 @Injectable()
 export class RuleConfig {
   constructor(private i18n: I18NService) { }
+  /**
+   * 首字母
+   */
   get firstLetter() {
     return ['first_letter']
   }
+  /**
+   * 起始编号/单个柜子编号
+   */
   get startNum() {
     return [
       'start_num', {
@@ -17,6 +23,9 @@ export class RuleConfig {
       }
     ]
   }
+  /**
+   * 柜子数量
+   */
   get num() {
     return [
       'num', {
@@ -27,6 +36,9 @@ export class RuleConfig {
       }
     ]
   }
+  /**
+   * 递增方式
+   */
   get sortType() {
     return [
       'sort_type', {
@@ -37,6 +49,9 @@ export class RuleConfig {
       }
     ]
   }
+  /**
+   * 价格
+   */
   get priceNum() {
     return [
       'price_num', {
@@ -47,7 +62,28 @@ export class RuleConfig {
       }
     ]
   }
+  /**
+   * 转让手续费
+   */
   get transferNum() {
     return ['transfer_num']
+  }
+  /**
+   * 可用状态
+   */
+  get useStatus() {
+    return [
+      'use_status', {
+        rules: [{
+          required: true,
+          message: '请选择可用状态'
+        }]
+      }
+    ]
+  }
+  get reason() {
+    return ['reason', {
+      initialValue: ''
+    }]
   }
 }
