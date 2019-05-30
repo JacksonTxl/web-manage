@@ -5,61 +5,29 @@ export class TransactionApi extends Api {
   getOrderTransaction(query: any) {
     return this.http.get(`/v1/order/transaction`, { query })
   }
-  /**
-     * 标签列表
-     */
+  /* 获取私教课全局设置 */
+  getSetting() {
+    return this.http.get('/v1/course/personal/setting')
+  }
+  /* 交易签单—会员卡详情 /v1/order/transaction/member/card */
+  getOrderTransactionMemberCard(query: any) {
+    return this.http.get(`/v1/order/transaction/member/card`, { query })
+  }
+  /* 交易签单—会员卡签单  /v1/order/transaction/member */
 
-  getLabelList(query: ListParams) {
-    return this.http.get(`/v1/member/label`, { query })
+  getOrderTransactionMember(params: any) {
+    return this.http.post(`/v1/order/transaction/member`, { params })
   }
-  /**
-     * 添加标签
-     */
-  addLabel(params: AddLabel) {
-    return this.http.post(`/v1/member/label`, { params })
+  /* 交易签单—用户可使用优惠券列表 /v1/order/transaction/coupon */
+  getOrderTransactionCoupon(query: any) {
+    return this.http.get(`/v1/order/transaction/coupon`, { query })
   }
-  /**
-     * 删除标签
-     */
-  deleteLabel(id: number) {
-    return this.http.delete(`/v1/member/label/${id}`)
+  /* 交易签单—定金列表 /v1/order/transaction/advance */
+  getOrderTransactionAdvance(query: any) {
+    return this.http.get(`/v1/order/transaction/coupon`, { query })
   }
-  /**
-     * 修改标签
-     */
-  editLabel(id: number, params: EditParams) {
-    return this.http.put(`/v1/member/label/${id}`, { params })
+  /* 获取系统时间  */
+  getTime() {
+    return this.http.get(`/time`)
   }
-}
-export interface AddLabel {
-  /**
-   * 标签名
-   */
-  tag_name: string;
-}
-
-export interface EditParams {
-  /**
-   * id
-   */
-  id: number;
-  /**
-   * 标签名字
-   */
-  tag_name: string;
-}
-
-export interface ListParams {
-  /**
-   * size
-   */
-  size: number;
-  /**
-   * page
-   */
-  page: number;
-  /**
-   * 标签名
-   */
-  tag_name?: string;
 }

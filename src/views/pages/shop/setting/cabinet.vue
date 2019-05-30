@@ -88,17 +88,11 @@
           </st-button>
         </div>
       </div>
-      <!-- 临时储物柜 -->
-      <temporary-cabinet
-        v-if="type === 'temporary'"
-        @change="onCabinetSelectChange"
+      <cabinet-list
         :isOperationInBatch="isOperationInBatch"
-      />
-      <!-- 长期储物柜 -->
-      <long-term-cabinet
-        v-if="type === 'long-term'"
+        :areaName="areaName"
+        :type="type"
         @change="onCabinetSelectChange"
-        :isOperationInBatch="isOperationInBatch"
       />
     </st-panel>
   </div>
@@ -110,8 +104,7 @@ import { CabinetService } from './cabinet.service'
 import AddCabinetArea from './cabinet#/add-area'
 import EditCabinetArea from './cabinet#/edit-area'
 import { CabinetAreaService as AreaService } from './cabinet#/area.service'
-import TemporaryCabinet from './cabinet#/temporary'
-import LongTermCabinet from './cabinet#/long-term'
+import CabinetList from './cabinet#/cabinet-list'
 // import Draggable from 'vuedraggable'
 
 export default {
@@ -143,8 +136,7 @@ export default {
   components: {
     AddCabinetArea,
     EditCabinetArea,
-    TemporaryCabinet,
-    LongTermCabinet
+    CabinetList
     // Draggable
   },
   computed: {
@@ -153,6 +145,17 @@ export default {
     },
     defaultActiveKey() {
       return +this.query.id || 0
+    },
+    areaName() {
+      let areaName = ''
+      const { list } = this
+      const id = this.query.id
+      list.forEach(item => {
+        if (item.id === +id) {
+          areaName = item.area_name
+        }
+      })
+      return areaName
     }
   },
   created() {

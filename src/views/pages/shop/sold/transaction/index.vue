@@ -21,7 +21,7 @@
     <st-table
       class="mg-t24"
       :columns="columns"
-      rowKey="id"
+      rowKey="number"
       @change="onTableChange"
       :dataSource="indexList.list"
       :pagination="pagination"
@@ -34,7 +34,6 @@
         <a href="javascript:;" @click="signing(record)">签单</a>
       </div>
     </st-table>
-    {{indexList}}
   </st-panel>
 </template>
 <script>
@@ -65,7 +64,7 @@ export default {
       },
       query: {
         product_name: '',
-        product_type: '',
+        product_type: 1,
         page: '',
         size: ''
       },
@@ -112,7 +111,6 @@ export default {
     }
   },
   filters: {
-    /* 1会员卡 2储值卡 3私教课 4课程包 5储物柜租赁 */
     filterType(type) {
       let arr = ['会员卡', '储值卡', '私教课', '课程包', '储物柜租赁']
       return arr[type - 1]
@@ -133,25 +131,44 @@ export default {
       /* 课程包 sold-transaction-course-package */
       /* 储物柜 sold-transaction-lockers */
       /* 私教课 sold-transaction-private-teaching */
-
+      console.log(record)
+      let [type, name] = ['', '']
+      if (record.product_type !== 3) {
+        if (record.product_type === 1) {
+          name = 'sold-transaction-membership-card'
+        } else if (record.product_type === 2) {
+          name = 'sold-transaction-stored-value-card'
+        } else if (record.product_type === 4) {
+          name = 'sold-transaction-course-package'
+        } else {
+          name = 'sold-transaction-lockers'
+        }
+        this.routerPush(record, name, type)
+      } else {
+        this.indexService.getSetting().subscribe(res => {
+          name = 'sold-transaction-private-teaching'
+          if (res.sale_model === 1 && res.price_model === 1) {
+            type = [0]
+          } else if (res.sale_model === 1 && res.price_model === 2) {
+            type = [1]
+          } else if (res.sale_model === 2 && res.price_model === 1) {
+            type = [2]
+          } else {
+            type = [3]
+          }
+          this.routerPush(record, name, type)
+        })
+      }
+    },
+    routerPush(record, name, type) {
+      console.log(record)
       this.$modalRouter.push({
-        name: 'sold-transaction-membership-card',
-        /* type
-            0 （期限卡/次卡）[0]
-            1 （储值卡）
-            2 （私教课）[2, 2]
-            3 （课程包）
-            4 （储物柜）
-         */
+        name: name,
         props: {
           id: record.id,
-          type: [3]
+          type: type
         },
-        on: {
-          success() {
-            that.$router.push({ force: true, query: that.query })
-          }
-        }
+        on: {}
       })
     },
     onSearchCourseName(val) {
@@ -167,6 +184,7 @@ export default {
       this.$router.push({ query: this.query, force: true })
     },
     productName(data) {
+      this.query.page = 1
       this.$router.push({ query: this.query, force: true })
     }
   }

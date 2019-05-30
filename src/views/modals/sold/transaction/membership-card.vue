@@ -1,24 +1,28 @@
 <template>
-  <st-modal title="签单" size="small" v-model="show" wrapClassName="modal-sold-course-transfer">
+  <st-modal title="会员卡签单" size="small" v-model="show" wrapClassName="modal-sold-course-transfer">
     <div :class="transfer('content')">
       <a-row :class="transfer('info')">
         <a-col :span="13">
           <st-info>
-            <st-info-item label="商品名称"></st-info-item>
-            <st-info-item label="商品类型"></st-info-item>
-            <st-info-item label="有效时间"></st-info-item>
-            <st-info-item label="优惠赠送"></st-info-item>
-            <st-info-item label="开卡方式"></st-info-item>
-            <st-info-item label="约课权益"></st-info-item>
+            <st-info-item label="商品名称">{{cardInfo.card_name}}</st-info-item>
+            <st-info-item label="商品类型">{{cardInfo.card_type ===1 ? '次卡':'期限卡'}}</st-info-item>
+            <st-info-item
+              :label="cardInfo.card_type === 1 ? '有效次数':'有效时间'"
+            >{{emitData.price.num}}{{cardInfo.card_type === 1 ? '次':'天'}}</st-info-item>
+            <st-info-item
+              label="优惠赠送"
+            >{{emitData.price.gift_unit}}{{cardInfo.card_type ===1 ? '次':'天'}}</st-info-item>
+            <st-info-item label="开卡方式">{{cardInfo.open_type | openType}}</st-info-item>
+            <st-info-item label="约课权益">{{cardInfo.course_interests |courseInterests}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
           <st-info>
-            <st-info-item label="允许转让"></st-info-item>
-            <st-info-item label="转让手续费"></st-info-item>
-            <st-info-item label="线上购买"></st-info-item>
-            <st-info-item label="售卖群体"></st-info-item>
-            <st-info-item label="入场场馆"></st-info-item>
+            <st-info-item label="允许转让">{{cardInfo.is_transfer ? '支持':'不支持'}}</st-info-item>
+            <st-info-item label="转让手续费">{{cardInfo.num}}{{cardInfo.unit === 1 ? '%' :'元'}}</st-info-item>
+            <st-info-item label="线上购买">{{cardInfo.is_online ? '支持':'不支持' }}</st-info-item>
+            <st-info-item label="售卖群体">{{cardInfo.sale_range}}</st-info-item>
+            <st-info-item label="入场场馆">{{cardInfo.admission_range}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -68,6 +72,9 @@
             :key="index"
             v-model="basicInfoRuleList"
             :form="form"
+            @filterChange="filterChange"
+            :cardInfo="cardInfo"
+            :emitData="emitData"
           ></component>
 
           <!-- 分割线 -->
@@ -91,6 +98,7 @@
         </div>
       </div>
     </template>
+    <pre>{{emitData}}</pre>
   </st-modal>
 </template>
 
@@ -141,7 +149,14 @@ import renewalTime from './components#/renewal-time'
 /*
 组件
 */
+import { MembershipCardService } from './membership-card.service'
 export default {
+  serviceInject() {
+    return {
+      membershipCardService: MembershipCardService
+    }
+  },
+
   components: {
     specifications,
     membershipName,
@@ -184,7 +199,10 @@ export default {
         ],
         open_type: [
           'open_type',
-          { rules: [{ required: true, message: '请选择开卡方式' }] }
+          {
+            initialValue: 1,
+            rules: [{ required: true, message: '请选择开卡方式' }]
+          }
         ],
         contract_number: [
           'contract_number',
@@ -213,15 +231,101 @@ export default {
         'depositDeduction',
         'waiverAmount',
         'subtotal'
-      ]
+      ],
+      cardInfo: {},
+      emitData: {
+        price: {},
+        open_type: '',
+        effective_time: ''
+      }
     }
   },
-  created() {},
+  filters: {
+    courseInterests(type) {
+      let arr = ['无', '全部团体课', '全部私教课', '指定课程', '全部课程']
+      return arr[type - 1]
+    },
+    openType(value) {
+      if (Array.isArray(value)) {
+        let arr = ['即时开卡', '到店开卡', '指定日期开卡']
+        return value
+          .map(item => {
+            return arr[item.open_type - 1]
+          })
+          .join(',')
+      } else {
+        return ''
+      }
+    }
+  },
+  created() {
+    this.membershipCardService
+      .getOrderTransactionMemberCard({ id: this.id })
+      .subscribe(res => {
+        this.cardInfo = res.info
+        this.emitData.price = res.info.price[0]
+        this.emitData.open_type = res.info.open_type[0].open_type
+        this.basicInfoRuleList = {
+          name: [
+            'name',
+            { rules: [{ required: true, message: '请填写会员名称' }] }
+          ],
+          test_time: [
+            'test_time',
+            {
+              initialValue: 0,
+              rules: [{ required: true, message: '请选择规格' }]
+            }
+          ],
+          open_type: [
+            'open_type',
+            {
+              initialValue: res.info.open_type[0].open_type,
+              rules: [{ required: true, message: '请选择开卡方式' }]
+            }
+          ],
+          contract_number: [
+            'contract_number',
+            {
+              rules: [{ required: true, message: '请输入合同编号' }]
+            }
+          ],
+          reduce_amount: ['reduce_amount'],
+          sell_name: [
+            'sell_name',
+            { rules: [{ required: true, message: '请填写销售' }] }
+          ],
+          description: ['description'],
+          num: [
+            'num',
+            { rules: [{ required: true, message: '请填写购买数量' }] }
+          ]
+        }
+      })
+  },
   methods: {
+    filterChange(value) {
+      console.log(value)
+      if (value.open_type) {
+        this.emitData.open_type = value.open_type
+      }
+      if (value.price) {
+        this.emitData.price = value.price
+      }
+      if (value.effective_time) {
+        this.emitData.effective_time = value.effective_time
+      }
+    },
     save() {
+      let self = this
       this.form.validateFields((error, values) => {
         console.log(error, values)
         if (!error) {
+          this.membershipCardService
+            .getOrderTransactionMember()
+            .subscribe(res => {
+              console.log(res)
+            })
           this.$modalRouter.push({
             name: 'sold-transaction-order-collection',
             props: {},

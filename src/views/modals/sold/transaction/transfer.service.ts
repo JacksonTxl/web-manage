@@ -12,16 +12,16 @@ export class TransferService {
   courseInfo$ = new State({})
   transferInfo$ = new State({})
   timeScope$ = new State({})
-  constructor(private contractApi:ContractApi, private memberApi: ShopPersonalCourseApi, private courseApi:CourseApi) {}
+  constructor(private contractApi: ContractApi, private memberApi: ShopPersonalCourseApi, private courseApi: CourseApi) { }
   @Effect()
-  getMember(member:string) {
-    return this.memberApi.getMemberList(member).pipe(tap((res:any) => {
+  getMember(member: string) {
+    return this.memberApi.getMemberList(member).pipe(tap((res: any) => {
       this.memberList$.commit(() => res.list)
     }))
   }
   @Effect()
-  getCourseInfo(id:string) {
-    return this.courseApi.getCoursePackageTransferInfo(id).pipe(tap((res:any) => {
+  getCourseInfo(id: string) {
+    return this.courseApi.getCoursePackageTransferInfo(id).pipe(tap((res: any) => {
       this.courseInfo$.commit(() => res.info.course_info)
       this.transferInfo$.commit(() => res.info.transfer_info)
       this.timeScope$.commit(() => {
@@ -30,11 +30,11 @@ export class TransferService {
     }))
   }
   @Effect()
-  editCoursePackageTransfer(params:TransferCoursePackageInput, id:string) {
+  editCoursePackageTransfer(params: TransferCoursePackageInput, id: string) {
     return this.courseApi.editCoursePackageTransfer(params, id)
   }
   @Effect()
-  getCodeNumber(id:string) {
+  getCodeNumber(id: string) {
     return this.contractApi.getCodeNumber(id)
   }
 }
