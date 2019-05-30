@@ -25,6 +25,7 @@ export class ListService extends Store<FollowState> {
     getStaffList(query: GetListQuery) {
       return this.staffApi.getList(query).pipe(
         tap(res => {
+          res.list[0].identity = [1, 2, 3]
           this.state$.commit(state => {
             state.stafflist = res
           })
