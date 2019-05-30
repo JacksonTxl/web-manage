@@ -1,10 +1,11 @@
 <template>
   <st-modal title="绑定实体卡" size="small" v-model="show" @ok="onSubmit">
     <section>
-      <div class="">
+      <div >
         <st-tag class="mg-r4" type="coach-personal"/>
         <st-tag class="mg-r4" type="coach-team"/>
-        <st-tag class="mg-r8" type="role-staff"/>
+        <st-tag class="mg-r4" type="role-staff"/>
+        <span >{{ staff_name }}</span>
       </div>
     </section>
     <section>
@@ -26,6 +27,11 @@
 </template>
 <script>
 export default {
+  props: {
+    staff_name: {
+      type: String
+    }
+  },
   data() {
     return {
       show: false,

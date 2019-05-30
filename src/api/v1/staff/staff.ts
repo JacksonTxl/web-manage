@@ -14,6 +14,20 @@ export class ShopStaffApi extends Api {
   getList(query: GetListQuery) {
     return this.http.get(`/v1/staff/shop`, { query })
   }
+
+  /**
+   * 解除门店关系详情
+   */
+  getLeaveStoreInfo(id: string) {
+    return this.http.get(`/v1/staff/shop/relation/${id}`)
+  }
+
+  /**
+   * 确认解除关系
+   */
+  leaveStore(id: string) {
+    return this.http.put(`/v1/staff/shop/remove/${id}`)
+  }
   /**
    * 添加员工基础信息
    */

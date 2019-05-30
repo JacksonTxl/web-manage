@@ -101,10 +101,10 @@
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown>
               <a-menu-item v-if="record.has_card == 0">
-                <modal-link tag="a" :to="{ name: 'shop-staff-bind-card', props: {} }">绑实体卡</modal-link>
+                <modal-link tag="a" :to="{ name: 'shop-staff-bind-card', props: {staff_name: record.staff_name } }">绑实体卡</modal-link>
               </a-menu-item>
               <a-menu-item v-if="record.has_card == 1">
-                <modal-link tag="a" :to="{ name: 'shop-staff-bind-card', props: {} }">重绑实体卡</modal-link>
+                <modal-link tag="a" :to="{ name: 'shop-staff-re-bind-card', props: {staff_name: record.staff_name } }">重绑实体卡</modal-link>
               </a-menu-item>
               <a-menu-item>
                 <modal-link
@@ -127,7 +127,7 @@
               <a-menu-item>
                 <modal-link
                   tag="a"
-                  :to="{ name: 'staff-update-staff-position', props: {staffId: record.staff_id || 1} }"
+                  :to="{ name: 'shop-staff-leave-current-store', props: {data: record}}"
                 >解除门店关系</modal-link>
               </a-menu-item>
             </st-more-dropdown>

@@ -14,7 +14,7 @@
           </a-input>
           <div class="add-profess-card">
             <p v-for="(item,index) in coachInfoData.certification_name" :key="index">
-              <span>{{item}}</span>
+              <span>{{item.certification_name}}</span>
               <st-icon type="anticon:close" @click="onProfessRule(index)" style="cursor:pointer;"></st-icon>
             </p>
           </div>
