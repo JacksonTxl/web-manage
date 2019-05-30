@@ -1,0 +1,278 @@
+<template>
+     <st-form :form="form" @submit="save">
+    <a-row :gutter="8">
+      <a-col :lg="10" :xs="22" :offset="1">
+        <st-form-item label="员工头像">
+          <st-image-upload
+            @change="imageUploadChange"
+            width="164px"
+            height="164px"
+            :list="fileList"
+            :sizeLimit="2"
+            placeholder="上传头像"
+            v-decorator="rules.image_avatar"
+          ></st-image-upload>
+        </st-form-item>
+        <st-form-item label="姓名" required>
+          <a-input placeholder="支持中英文、数字、不超过15个字" max="15" v-decorator="rules.staff_name"/>
+        </st-form-item>
+        <st-form-item label="手机号" required>
+          <a-input-group compact>
+            <a-select style="width: 15%;" v-model="choosed_Country_id">
+              <template v-for="item in countryList">
+                <a-select-option :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
+              </template>
+            </a-select>
+            <a-input style="width: 85%" v-decorator="rules.phone" placeholder="请输入手机号"/>
+          </a-input-group>
+        </st-form-item>
+        <st-form-item label="性别" required>
+          <a-select placeholder="请选择" v-decorator="rules.sex">
+            <template v-for="(item,key) in enums.sex.value">
+              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+            </template>
+          </a-select>
+        </st-form-item>
+      </a-col>
+      <a-col :lg="10" :xs="22" :offset="1">
+        <st-form-item label="员工人脸">
+          <st-image-upload
+            @change="faceChange"
+            width="164px"
+            height="164px"
+            :list="faceList"
+            :sizeLimit="2"
+            placeholder="上传人脸"
+            v-decorator="rules.image_face"
+          ></st-image-upload>
+        </st-form-item>
+        <st-form-item label="昵称" required>
+          <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="rules.nickname"/>
+        </st-form-item>
+        <st-form-item label="邮箱" required>
+          <a-input placeholder="请输入邮箱" v-decorator="rules.mail"/>
+        </st-form-item>
+        <st-form-item label="证件" required>
+          <a-input-group compact>
+            <a-select style="width: 20%;" v-model="id_type" @change="onSelectIdtype">
+              <template v-for="(item,key) in enums.id_type.value">
+                <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+              </template>
+            </a-select>
+            <a-input style="width: 80%" placeholder="请输入身份证号码" v-decorator="rules.idnumber"/>
+          </a-input-group>
+        </st-form-item>
+      </a-col>
+    </a-row>
+
+    <a-row :gutter="8">
+      <a-col :offset="1" :lg="22">
+        <st-hr></st-hr>
+      </a-col>
+    </a-row>
+
+    <a-row :gutter="8">
+      <a-col :offset="1" :lg="10" :xs="22">
+        <st-form-item label="部门">
+          <a-tree-select
+            showSearch
+            :value="value"
+            :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
+            placeholder="请选择部门"
+            allowClear
+            treeDefaultExpandAll
+            @change="onChange"
+          >
+             <a-tree-select-node v-for="item in department" :value="item.id" :title="item.name" :key="item.id">
+            <a-tree-select-node v-for="item1 in item.children" :value="item1.id" :title="item1.name" :key="item1.id">
+              <a-tree-select-node v-for="item2 in item1.children" :value="item2.id" :title="item2.name" :key="item2.id">
+                <a-tree-select-node v-for="item3 in item2.children" :value="item3.id" :title="item3.name" :key="item3.id">
+                  <a-tree-select-node v-for="item4 in item3.children" :value="item4.id" :title="item4.name" :key="item4.id" />>
+              </a-tree-select-node>
+              </a-tree-select-node>
+            </a-tree-select-node>
+          </a-tree-select-node>
+          </a-tree-select>
+        </st-form-item>
+        <st-form-item label="工作性质" required>
+          <a-select placeholder="请选择" v-decorator="rules.nature_work">
+            <template v-for="(item,key) in enums.nature_work.value">
+              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+            </template>
+          </a-select>
+        </st-form-item>
+        <st-form-item label="系统角色">
+          <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id">
+            <template v-for="(item,key) in enums.nature_work.value">
+              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+            </template>
+          </a-select>
+        </st-form-item>
+      </a-col>
+      <a-col :offset="1" :lg="10" :xs="22">
+        <st-form-item label="工号" >
+          <a-input placeholder="请输入员工工号" v-decorator="rules.staff_num"></a-input>
+        </st-form-item>
+        <st-form-item label="入职时间">
+          <a-date-picker style="width:100%" v-decorator="rules.entry_date"/>
+        </st-form-item>
+        <st-form-item label="所属门店" >
+          <span>门店维度下没有选择门店的权力记着加当前门店名称 0.0 </span>
+        </st-form-item>
+      </a-col>
+    </a-row>
+
+    <a-row :gutter="8">
+      <a-col :offset="1" :lg="22">
+        <st-hr></st-hr>
+      </a-col>
+    </a-row>
+
+    <a-row :gutter="8">
+      <a-col :offset="2">
+        <st-form-item class="mg-l24" labelOffset>
+          <st-button type="primary" ghost html-type="submit">保存</st-button>
+          <st-button class="mg-l16" @click="goNext" type="primary">继续 填写</st-button>
+        </st-form-item>
+      </a-col>
+    </a-row>
+  </st-form>
+</template>
+<script>
+import { RuleConfig } from '@/constants/staff/rule'
+import { MessageService } from '@/services/message.service'
+import { AddService } from '../add.service'
+import { EditService } from '../edit.service'
+import { ListService } from '../list.service'
+export default {
+  name: 'EditBasicInfo',
+  serviceInject() {
+    return {
+      rules: RuleConfig,
+      addservice: AddService,
+      editservice: EditService,
+      listservice: ListService,
+      message: MessageService
+    }
+  },
+  props: {
+    enums: {
+      type: Object
+    },
+    data: {
+      type: Object
+    }
+  },
+  data() {
+    return {
+      form: this.$form.createForm(this),
+      fileList: [],
+      faceList: [],
+      countryList: [],
+      id_type: 1,
+      choosed_Country_id: 37,
+      department: [],
+
+      value: '' // 部门选择
+    }
+  },
+  methods: {
+    onChange(value) {
+      console.log('选择部门', value)
+      this.value = value
+    },
+    onSelectIdtype(e) {
+      console.log('证件选择', e)
+    },
+    imageUploadChange(data) {
+      this.form.setFieldsValue({
+        image_avatar: {
+          image_url: data.image_url ? data.image_url : ''
+        }
+      })
+    },
+    faceChange(data) {
+      this.form.setFieldsValue({
+        image_face: {
+          image_url: data.image_url ? data.image_url : ''
+        }
+      })
+    },
+    goNext(e) {
+      e.preventDefault()
+      console.log('gonext')
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+          this.submit(values, 1)
+          // this.$emit('gonext')
+        }
+      })
+    },
+    save(e) {
+      e.preventDefault()
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+          this.submit(values, 0)
+        }
+      })
+    },
+    /**
+     * saveOrgoNext 0 保存 1 下一个
+     */
+    submit(data, saveOrgoNext) {
+      data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
+      data.country_code_id = this.choosed_Country_id
+      data.id_type = this.id_type
+      data.album_id = this.data.album_id
+      data.department_id = this.value + 0
+      this.editservice.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
+        if (saveOrgoNext === 1) {
+          this.$emit('gonext')
+        } else {
+          this.message.success({ content: '编辑成功' })
+          this.$router.go(-1)
+        }
+      })
+    },
+    setData(obj) {
+      console.log('set', obj)
+      this.form.setFieldsValue({
+        staff_name: obj.staff_name,
+        nickname: obj.nickname,
+        mobile: obj.mobile,
+        staff_num: obj.staff_num,
+        sex: obj.sex,
+        id_number: obj.id_number,
+        nature_work: obj.nature_work,
+        role_id: obj.role_id,
+        shop_id: obj.shop_id,
+        entry_date: obj.entry_date ? moment(obj.entry_date) : '',
+        mail: obj.mail
+      })
+
+      this.choosed_Country_id = obj.country_code_id
+      this.id_type = obj.id_type
+      this.value = obj.department_id + ''
+
+      this.fileList = [
+        {
+          url: obj.image_avatar.image_url
+        }
+      ]
+    }
+  },
+  mounted() {
+    this.setData(this.data)
+    this.addservice.getCountryCodes().subscribe(res => {
+      this.countryList = res.code_list
+    })
+
+    this.listservice.getStaffDepartment().subscribe(res => {
+      // console.log('basic', res)
+      this.department = res.department
+    })
+  }
+}
+</script>

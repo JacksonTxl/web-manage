@@ -83,7 +83,7 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       card_type: { type: Number, default: -1 },
-      card_status: { type: Number, default: 1 },
+      card_status: { type: Number, default: -1 },
       is_open: { type: Number, default: -1 },
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' },
@@ -94,7 +94,7 @@ export const routeMapConfig = {
   'shop-sold-card-list-deposite'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
-      is_valid: { type: Number, default: 1 },
+      is_valid: { type: Number, default: -1 },
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' },
       page: { type: Number, default: 1 },
@@ -117,6 +117,54 @@ export const routeMapConfig = {
       course_status: { type: Number, default: -1 },
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-course-info-package-info-consumption-record'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-course-info-package-info-operation-record'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-course-info-personal-info-consumption-record'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-course-info-personal-info-operation-record'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-card-info-deposite-info-consumption-record'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-card-info-deposite-info-operation-record'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-card-info-member-info-consumption-record'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-sold-card-info-member-info-operation-record'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }

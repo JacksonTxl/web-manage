@@ -2,7 +2,7 @@
   <div :class="basic()">
     <st-search-panel>
       <div :class="basic('select')">
-        <span style="width:90px;">售卡状态：</span>
+        <span style="width:90px;">储值卡状态：</span>
         <st-search-radio v-model="is_valid" :list="cardSaleStatusList"/>
       </div>
       <div :class="basic('select')">
@@ -35,8 +35,6 @@
     <div :class="basic('content')">
       <div :class="basic('content-batch')">
         <st-button type="primary" class="mgr-8">批量导出</st-button>
-        <st-button type="primary" class="mgr-8">赠送额度</st-button>
-        <st-button type="primary" class="mgr-8">变更入场vip区域</st-button>
       </div>
       <div :class="basic('table-select-info')">
         <st-icon type="weibo"/>
@@ -64,13 +62,11 @@
             slot-scope="text"
           >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
           <div slot="action" slot-scope="text,record">
-            <a @click="onDetail(record)">详情</a>
-            <a-divider type="vertical"></a-divider>
-            <a>查看合同</a>
+            <a @click="onRefund(record)">退款</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
-              <a-menu-item @click="onTransfer(record,0)">转让</a-menu-item>
-              <a-menu-item @click="onTransfer(record,1)">退款</a-menu-item>
+              <a-menu-item @click="onDetail(record)">详情</a-menu-item>
+              <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
             </st-more-dropdown>
           </div>
         </st-table>
@@ -144,7 +140,7 @@ const columns = [
   }
 ]
 export default {
-  name: 'PageShopSoldCardMemberList',
+  name: 'PageShopSoldCardDepositeList',
   bem: {
     basic: 'page-shop-sold'
   },
@@ -160,18 +156,23 @@ export default {
       list: this.depositeService.list$,
       page: this.depositeService.page$,
       package_course: this.userService.packageCourseEnums$,
+      sold: this.userService.soldEnums$,
       query: this.routeService.query$
+    }
+  },
+  computed: {
+    // 售卡状态
+    cardSaleStatusList() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.sold.is_valid) return list
+      Object.entries(this.sold.is_valid.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
     }
   },
   data() {
     return {
-      // 售卡状态
-      cardSaleStatusList: [
-        { value: 1, label: '有效' },
-        { value: 2, label: '失效' },
-        { value: 3, label: '已冻结' },
-        { value: 4, label: '即将到期' }
-      ],
       is_valid: 1,
       start_time: null,
       end_time: null,
@@ -191,22 +192,42 @@ export default {
   },
   methods: {
     // 转让
-    onTransfer(record, type) {
-      let routerName = ['sold-card-transfer', 'sold-card-refund']
+    onTransfer(record) {
       this.$modalRouter.push({
-        name: routerName[type],
+        name: 'sold-card-transfer',
         props: {
-          record: record,
+          id: record.id,
           type: 'deposit'
         },
         on: {
-          ok: res => {
-            consoel.log(res)
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
           }
         }
       })
     },
-    onDetail() {},
+    // 退款
+    onRefund(record) {
+      this.$modalRouter.push({
+        name: 'sold-card-refund',
+        props: {
+          type: 'deposit',
+          id: record.id
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
+    // 详情
+    onDetail(record) {
+      this.$router.push({
+        path: `/shop/sold/card/info/deposite/info/consumption-record`,
+        query: { id: record.id }
+      })
+    },
     // 查询
     onSearch() {
       let query = {
@@ -223,7 +244,7 @@ export default {
     // 重置
     onReset() {
       let query = {
-        is_valid: 1,
+        is_valid: -1,
         start_time: '',
         end_time: ''
       }

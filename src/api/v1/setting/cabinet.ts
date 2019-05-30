@@ -9,7 +9,8 @@ export class CabinetApi extends Api {
    * @param params
    */
   del(params: DelInput) {
-    return this.http.delete(url, { params })
+    console.log('del', params)
+    return this.http.put(url, { params })
   }
   getUpdateInfo(id: number) {
     return this.http.get(`${url}/${id}`)

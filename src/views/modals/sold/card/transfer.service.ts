@@ -1,28 +1,44 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
-import { pluck } from 'rxjs/operators'
-import { Store } from '@/services/store'
-import { CardApi } from '@/api/v1/sold/cards'
+import { Injectable } from 'vue-service-app'
+import { State, Effect } from 'rx-state/src'
+import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
+import { tap } from 'rxjs/operators'
+import { ContractApi } from '@/api/v1/setting/contract'
+import { CardApi, TransferCardInput } from '@/api/v1/sold/cards'
+import moment from 'moment'
 
-interface CardsTableModelState {
-  lableInfo: any
-}
 @Injectable()
-export class TransferService extends Store<CardsTableModelState> {
-  state$: State<CardsTableModelState>
-  cardsListInfo$: Computed<string>
-  constructor(private cardApi: CardApi) {
-    super()
-    this.state$ = new State({
-      cardsListInfo: {}
-    })
-    this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))
+export class TransferService {
+  loading$ = new State({})
+  memberList$ = new State({})
+  depositTransferInfo$ = new State({})
+  memberTransferInfo$ = new State({})
+  timeScope$ = new State({})
+  constructor(private contractApi:ContractApi, private memberApi: ShopPersonalCourseApi, private cardApi:CardApi) {}
+  @Effect()
+  getMember(member:string) {
+    return this.memberApi.getMemberList(member).pipe(tap((res:any) => {
+      this.memberList$.commit(() => res.list)
+    }))
   }
-  getMemberTransferInfo(params: string, type: string) {
-    console.log(params, type)
-    return this.cardApi.getMemberTransferInfo(params, type)
+  @Effect()
+  getTransferInfo(id:string, type:string) {
+    return this.cardApi.getCardTransferInfo(id, type).pipe(tap((res:any) => {
+      if (type === 'member') {
+        this.memberTransferInfo$.commit(() => res.info)
+        this.timeScope$.commit(() => {
+          return moment(res.info.end_time).valueOf() - Date.now()
+        })
+      } else if (type === 'deposit') {
+        this.depositTransferInfo$.commit(() => res.info)
+      }
+    }))
   }
-  settingContractCodenumber(type: string) {
-    return this.cardApi.settingContractCodenumber(type)
+  @Effect()
+  editCardTransfer(params:TransferCardInput, id:string, type:string) {
+    return this.cardApi.editCardTransfer(params, id, type)
+  }
+  @Effect()
+  getCodeNumber(id:string) {
+    return this.contractApi.getCodeNumber(id)
   }
 }

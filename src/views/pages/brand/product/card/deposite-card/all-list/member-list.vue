@@ -253,7 +253,16 @@ export default {
   mounted() {
     this.getInfoData(this.cardsListInfo)
   },
-  created() {},
+  created() {
+    let self = this
+    let query = self.$route.query
+    this.sell_status = query.publish_channel
+      ? query.publish_channel
+      : '所有售卖状态'
+    this.publish_channel = query.publish_channel
+      ? query.publish_channel
+      : '所有渠道'
+  },
   methods: {
     onModalTest(data) {
       console.log('onModalTest')

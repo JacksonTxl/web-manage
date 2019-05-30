@@ -6,7 +6,7 @@
         <st-search-radio v-model="searchData.card_type" :list="cardTypeList"/>
       </div>
       <div :class="basic('select')">
-        <span style="width:90px;">售卡状态：</span>
+        <span style="width:90px;">会员卡状态：</span>
         <st-search-radio v-model="searchData.card_status" :list="cardSaleStatusList"/>
       </div>
       <div :class="basic('select')">
@@ -83,12 +83,14 @@
             slot-scope="text"
           >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
           <div slot="action" slot-scope="text,record">
-            <a @click="onGathering(record)">订单收款</a>
+            <a @click="onRefund(record)">退款</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
-              <a-menu-item @click="onTransfer(record,0)">升级</a-menu-item>
+              <a-menu-item @click="onFreeze(record)">冻结</a-menu-item>
+              <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
+
+              <a-menu-item @click="onGathering(record)">订单收款</a-menu-item>
               <a-menu-item @click="onTransfer(record,1)">退款</a-menu-item>
-              <a-menu-item @click="onTransfer(record,2)">转让</a-menu-item>
               <a-menu-item @click="onTransfer(record,3)">冻结</a-menu-item>
               <a-menu-item @click="onTransfer(record,4)">修改剩余价值</a-menu-item>
               <a-menu-item @click="onTransfer(record,5)">续租</a-menu-item>
@@ -181,30 +183,41 @@ export default {
       list: this.memberService.list$,
       page: this.memberService.page$,
       package_course: this.userService.packageCourseEnums$,
+      sold: this.userService.soldEnums$,
       query: this.routeService.query$
+    }
+  },
+  computed: {
+    // 会员卡类型
+    cardTypeList() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.sold.card_type) return list
+      Object.entries(this.sold.card_type.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    },
+    // 售卡状态
+    cardSaleStatusList() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.sold.card_status) return list
+      Object.entries(this.sold.card_status.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    },
+    // 开卡状态
+    cardOpenStatusList() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.sold.is_open) return list
+      Object.entries(this.sold.is_open.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
     }
   },
   data() {
     return {
-      // 会员卡类型
-      cardTypeList: [
-        { value: -1, label: '全部' },
-        { value: 1, label: '期限卡' },
-        { value: 2, label: '会员卡' }
-      ],
-      // 售卡状态
-      cardSaleStatusList: [
-        { value: 1, label: '有效' },
-        { value: 2, label: '失效' },
-        { value: 3, label: '已冻结' },
-        { value: 4, label: '即将到期' }
-      ],
-      // 开卡状态
-      cardOpenStatusList: [
-        { value: -1, label: '全部' },
-        { value: 1, label: '已开卡' },
-        { value: 2, label: '未开卡' }
-      ],
       searchData: {
         card_type: -1,
         card_status: 1,
@@ -309,19 +322,64 @@ export default {
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
     },
-
-    // 转让
-    onTransfer() {
-      this.$modalRouter.push({
-        name: 'sold-card-transfer'
-      })
-    },
     // 冻结
-    onFreeze() {
+    onFreeze(record) {
       this.$modalRouter.push({
-        name: 'sold-course-freeze'
+        name: 'sold-card-freeze',
+        props: {
+          id: record.id
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
       })
     },
+    // 退款
+    onRefund(record) {
+      this.$modalRouter.push({
+        name: 'sold-card-refund',
+        props: {
+          type: 'member',
+          id: record.id
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
+    // 转让
+    onTransfer(record) {
+      this.$modalRouter.push({
+        name: 'sold-card-transfer',
+        props: {
+          id: record.id,
+          type: 'member'
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
+
+    // 变更vip入场区域
+    onArea() {
+      this.$modalRouter.push({
+        name: 'sold-card-area'
+      })
+    },
+    // 额度赠送
+    onGiving() {
+      this.$modalRouter.push({
+        name: 'sold-card-giving'
+      })
+    },
+
     // 修改剩余价值
     onSurplus() {
       this.$modalRouter.push({

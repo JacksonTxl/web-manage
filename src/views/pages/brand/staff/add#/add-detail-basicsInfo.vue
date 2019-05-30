@@ -33,8 +33,9 @@
           <a-input-group compact>
             <a-select style="width: 15%;" v-decorator="basicInfoRuleList.country_codeRule">
               <a-select-option
-                :value="code.code_id"
+
                 v-for="code in codeList.code_list"
+                 :value="code.code_id"
                 :key="code.code_id"
               >+{{code.phone_code}}</a-select-option>
             </a-select>
@@ -95,17 +96,11 @@
       <a-col :offset="1" :lg="22">
         <st-form-item label="员工职能">
           <a-checkbox-group v-decorator="basicInfoRuleList.identityRule" @change="watchChooesed">
-            <!-- <a-checkbox :value="1">普通员工</a-checkbox>
-            <a-checkbox :value="2">会籍销售</a-checkbox>
-            <a-checkbox :value="3">团课教练</a-checkbox>
-            <a-checkbox :value="4">私人教练</a-checkbox>
-            <a-checkbox :value="5">游泳教练</a-checkbox> -->
              <a-checkbox
-                v-for="(item, index) in staffEnumslist.identify.value"
-                :key="index"
-                :value="+index"
+                v-for="(item, key) in staffEnumslist.identity.value"
+                :key="key"
+                :value="+key"
               >{{item}}</a-checkbox>
-
           </a-checkbox-group>
         </st-form-item>
       </a-col>
@@ -138,7 +133,7 @@
           </a-select>
         </st-form-item>
       </a-col>
-      <a-col :lg="10" :xs="22" :offset="2">
+      <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="职务">
           <a-input placeholder="填写点什么吧" v-decorator="basicInfoRuleList.working_postRule"></a-input>
         </st-form-item>

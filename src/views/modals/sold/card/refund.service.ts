@@ -1,34 +1,21 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
-import { pluck } from 'rxjs/operators'
-import { Store } from '@/services/store'
-import { MemberAPi } from '@/api/v1/member'
+import { Injectable } from 'vue-service-app'
+import { State, Effect } from 'rx-state/src'
+import { CardApi, RefundCardInput } from '@/api/v1/sold/cards'
+import { tap } from 'rxjs/operators'
 
-interface CardsTableModelState {
-  lableInfo: any
-}
 @Injectable()
-export class TransferShopService extends Store<CardsTableModelState> {
-  state$: State<CardsTableModelState>
-  cardsListInfo$: Computed<string>
-  constructor(private MemberAPi: MemberAPi) {
-    super()
-    this.state$ = new State({
-      cardsListInfo: {}
-    })
-    this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))
+export class RefundService {
+  refundInfo$ = new State({})
+  loading$ = new State({})
+  constructor(private cardApi: CardApi) {}
+  @Effect()
+  getRefundInfo(id:string, type:string) {
+    return this.cardApi.getCardRefundInfo(id, type).pipe(tap((res:any) => {
+      this.refundInfo$.commit(() => res.info)
+    }))
   }
-
-  getMemberBuy(data: any) {
-    return this.MemberAPi.getMemberBuy(data)
-  }
-  getMemberTransfer(data: any) {
-    return this.MemberAPi.getMemberTransfer(data)
-  }
-  getMemberShop() {
-    return this.MemberAPi.getMemberShop()
-  }
-  getMemberTransferShop(id: string) {
-    return this.MemberAPi.getMemberTransferShop(id)
+  @Effect()
+  refund(params: RefundCardInput, id: string, type: string) {
+    return this.cardApi.editCardRefund(params, id, type)
   }
 }

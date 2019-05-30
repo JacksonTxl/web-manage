@@ -26,7 +26,7 @@ export class CabinetAreaService extends Store<SetState> {
   add(params: AddInput) {
     return this.areaApi.add(params)
   }
-  del(id: string) {
+  del(id: number) {
     return this.areaApi.del(id)
   }
   update(params: UpdateInput) {

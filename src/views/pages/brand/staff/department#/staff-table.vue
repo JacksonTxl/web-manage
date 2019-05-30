@@ -8,7 +8,7 @@
   :columns="columns" :dataSource="staffList"
   :scroll="{ x: 1500}">
     <div class="page-staff-table-action" slot="action" slot-scope="text, record">
-        <a href="javascript:void()" @click="staffInfo(record.staff_id)" class="mg-r8">详情</a>
+        <a href="javascript:void()" @click="staffInfo(record)" class="mg-r8">详情</a>
         <a href="javascript:void()" @click="editStaff(record.staff_id)">编辑</a>
         <st-more-dropdown>
           <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staffId: record.staff_id || 1} }">设置薪资账户</modal-link></a-menu-item>
@@ -48,8 +48,13 @@ export default {
     }
   },
   methods: {
-    staffInfo(staffId) {
-      this.$router.push({ name: 'brand-staff-info-basic', query: { staffId } })
+    staffInfo(e) {
+      console.log(e)
+      this.$router.push({ name: 'brand-staff-info',
+        query: {
+          id: e.staff_id,
+          identity: e.identity
+        } })
     },
     editStaff(staffId) {
       this.$emit('edit-staff', staffId)

@@ -33,7 +33,7 @@ export class MemberListService extends Store<CardsListInfoState> {
   }
   @Effect()
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo(to.meta.query.cardName ? { card_name: to.meta.query.cardName } : to.meta.query).subscribe(res => {
+    this.getListInfo(to.meta.query).subscribe(res => {
       this.SET_CARDS_LIST_INFO(res)
       next()
     })

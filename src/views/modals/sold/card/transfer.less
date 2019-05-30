@@ -8,10 +8,37 @@
     }
   }
   &__info{
-    border-bottom: 1px solid @divider;
+    &:not('.personal'){
+      border-bottom: 1px solid @divider;
+    }
+  }
+  &__table{
+    width: 100%;
+    margin-bottom: 32px;
+    .table-header{
+      height: 64px;
+      .bg(@table-bg-color-thead-second);
+      
+    }
+    .table-item{
+      .lh(24px);
+      border-bottom: 1px solid @divider;
+      &:nth-child(even){
+        .bg(@table-bg-color-row-2);
+      }
+    }
   }
   &__transfer{
     padding: 24px 0 0;
+    .add-text{
+      margin: 4px 0 0;
+      .fz(12px);
+      .lh(22px);
+      >span{
+        .c(@link-color);
+        cursor: pointer;
+      }
+    }
   }
   &__time{
     display: flex;
@@ -19,7 +46,7 @@
     >span{
       flex: none;
       height: 32px;
-      margin: 0 8px 0;
+      margin: 0 4px 24px;
     }
     .page-a-form {
       flex: auto;

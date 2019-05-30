@@ -1,35 +1,54 @@
 <template>
-  <div class="page-staffDetail">
-    <section class="page-staffDetail-lf">
-      <Steps :value="currentIndex" :stepArr="stepArr" />
-    </section>
-    <!-- 基础信息 -->
-    <StaffDetailBasics v-if="currentIndex == 0" @goNext="goNext"/>
-    <StaffDetailDetailedInfo v-if="currentIndex == 1" @goNext="goNext"/>
-    <StaffDetailCoachInfo v-if="currentIndex == 2" @goNext="goNext"/>
-    <!-- <div class="page-staffDetail-divider"></div>
-    <section class="page-staffDetail-lf">这是详细信息...................</section>
-    <div class="page-staffDetail-divider"></div>
-    <section class="page-staffDetail-lf">这是权限信息...................</section> -->
-  </div>
+  <st-panel app>
+    <a-row :class="bstep()" class="mg-b48 mg-t48" :gutter="8">
+      <a-col offset="1" :span="stepsSpan">
+        <a-steps :current="currentIndex">
+          <a-step
+            v-for="item in stepArr"
+            :key="item.key"
+            :title="item.title"
+            class="cursor-pointer"
+          />
+        </a-steps>
+      </a-col>
+    </a-row>
+    <staff-detail-basics v-if="currentIndex == 0" :enums="staffEnums" @addStep="addCoachInfo" @deletStep="deletStep" @skiptoedit="skiptoedit"/>
+  </st-panel>
 </template>
 
 <script>
-import Steps from './add#/st-steps'
 import StaffDetailBasics from './add#/add-detail-basicsInfo'
-import StaffDetailDetailedInfo from './add#/add-detail-detailedInfo'
-import StaffDetailCoachInfo from './add#/add-detail-coachInfo'
+import { UserService } from '@/services/user.service'
+import { MessageService } from '@/services/message.service'
 export default {
+  serviceInject() {
+    return {
+      userService: UserService,
+      // regionService: RegionService,
+      messageService: MessageService
+    }
+  },
+  rxState() {
+    return {
+      staffEnums: this.userService.staffEnums$
+    }
+  },
   name: 'addDetail',
   components: {
-    Steps,
-    StaffDetailBasics,
-    StaffDetailDetailedInfo,
-    StaffDetailCoachInfo
+    StaffDetailBasics
+  },
+  mounted() {
+    // console.log(this.staffEnums)
+  },
+  bem: {
+    b: 'page-add-staff',
+    bstep: 'page-add-staff-steps',
+    bHeader: 'default-brand-header'
   },
   data() {
     return {
-      currentIndex: 1,
+      stepsSpan: 12,
+      currentIndex: 0,
       stepArr: [
         {
           title: '基础信息',
@@ -38,16 +57,33 @@ export default {
         {
           title: '详细信息',
           key: 2
-        },
-        {
-          title: '教练信息',
-          key: 3
         }
       ]
     }
   },
   methods: {
-    goNext(e) { // 切换提交信息
+    skiptoedit(e) {
+      this.$router.replace({ name: 'shop-staff-edit', query: { id: 1, currentIndex: 1, isshowcoach: e.isShowLevel } })
+    },
+    // 删除步骤轴
+    deletStep(e) {
+      this.stepsSpan = 12
+      let index = this.stepArr.findIndex(function(value, index, arr) {
+        return value.title === '教练信息'
+      })
+      if (index === -1) return
+      this.stepArr.pop()
+    },
+    // 添加步骤轴
+    addCoachInfo(e) {
+      this.stepsSpan = 18
+      this.stepArr.push({
+        title: '教练信息',
+        key: 3
+      })
+    },
+    goNext(e) {
+      // 切换提交信息
       let currentIndex = this.currentIndex
       console.log(currentIndex)
       this.currentIndex = currentIndex + 1
