@@ -117,7 +117,6 @@ export default {
         }
         i++
       }
-      console.log('======', map)
       return map
     },
     showTabs(map) {
@@ -130,6 +129,7 @@ export default {
   },
   created() {
     let { identity } = this.$route.meta.query
+    // identity = [1,2] // 调试用
     this.showTabs(this.flitertabs(identity))
     this.$router.replace({
       name: 'shop-staff-info-basic',
