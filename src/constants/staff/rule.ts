@@ -138,4 +138,68 @@ export class RuleConfig extends Exp {
   get coach_levelRule() {
     return ['coach_levelRule']
   }
+
+  // 毕业院校
+  get graduated_school() {
+    return ['graduated_school']
+  }
+
+  // 学历
+  get education() {
+    return ['education']
+  }
+
+  // 生日
+  get birthday() {
+    return ['birthday']
+  }
+
+  // 婚姻状况
+  get marry_status() {
+    return ['marry_status']
+  }
+
+  // 毕业时间
+  get graduation_time() {
+    return ['graduation_time']
+  }
+
+  // 专业
+  get profession() {
+    return ['profession']
+  }
+
+  // 籍贯
+  get native_place() {
+    return ['native_place']
+  }
+
+  // 子女状态
+  get children_status() {
+    return ['children_status']
+  }
+
+  // 家庭住址
+  get provinces() {
+    return ['provinces']
+  }
+
+  // 详细住址
+  get address() {
+    return ['address']
+  }
+
+  // 备注
+  get description() {
+    return ['description']
+  }
+
+  // 从业时间
+  get employment_time() {
+    return ['employment_time']
+  }
+  // 个人经历
+  get introduction() {
+    return ['introduction']
+  }
 }

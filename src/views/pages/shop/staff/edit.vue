@@ -13,9 +13,9 @@
         </a-steps>
       </a-col>
     </a-row>
-    <edit-basic-info v-show="currentIndex == 0" :enums="staffEnums" :data="staffInfo"/>
-    <edit-detailed-info  v-show="currentIndex == 1" :enums="staffEnums" :data="staffInfo"/>
-    <edit-coach-info  v-show="currentIndex == 2" :enums="staffEnums" :data="staffInfo"/>
+    <edit-basic-info v-show="currentIndex == 0" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
+    <edit-detailed-info  v-show="currentIndex == 1" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
+    <edit-coach-info  v-show="currentIndex == 2" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
   </st-panel>
 </template>
 
@@ -46,7 +46,7 @@ export default {
     EditDetailedInfo,
     EditBasicInfo
   },
-  mounted() {
+  created() {
     console.log(this.$route.meta.query)
     let { id, currentIndex, isshowcoach } = this.$route.meta.query
     if (currentIndex) {
@@ -62,6 +62,11 @@ export default {
     }
   },
   methods: {
+    gonext() {
+      if (this.currentIndex < 2) {
+        this.currentIndex = this.currentIndex + 1
+      }
+    },
     changeStep(step) {
       this.currentIndex = step
     }

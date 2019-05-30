@@ -198,18 +198,23 @@ export default {
         }
       })
     },
-    goNext() {
-      let data = {
-        isGoNext: true
-      }
-      this.$emit('goNext', data)
+    goNext(e) {
+      e.preventDefault()
+      console.log('gonext')
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+          this.submit(values, 1)
+          // this.$emit('gonext')
+        }
+      })
     },
     save(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
-          this.submit(values)
+          this.submit(values, 0)
         }
       })
     },
@@ -220,12 +225,14 @@ export default {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.country_code_id = this.choosed_Country_id
       data.id_type = this.id_type
+      data.album_id = this.data.album_id
+      data.department_id = this.value + 0
       this.editservice.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
-        if (saveOrgoNext === 0) {
+        if (saveOrgoNext === 1) {
+          this.$emit('gonext')
+        } else {
           this.message.success({ content: '编辑成功' })
           this.$router.go(-1)
-        } else if (saveOrgoNext === 1) {
-
         }
       })
     },
@@ -259,12 +266,11 @@ export default {
   mounted() {
     this.setData(this.data)
     this.addservice.getCountryCodes().subscribe(res => {
-      // console.log(res)
       this.countryList = res.code_list
     })
 
     this.listservice.getStaffDepartment().subscribe(res => {
-      console.log('basic', res)
+      // console.log('basic', res)
       this.department = res.department
     })
   }

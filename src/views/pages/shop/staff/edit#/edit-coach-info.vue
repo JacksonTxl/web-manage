@@ -56,20 +56,18 @@
 
 <script>
 import { RuleConfig } from '@/constants/staff/rule'
+import { EditService } from '../edit.service'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'EditCoachInfo',
   serviceInject() {
     return {
-      rules: RuleConfig
+      rules: RuleConfig,
+      service: EditService,
+      message: MessageService
     }
   },
   props: {
-    formData: {
-      type: Object
-    },
-    enums: {
-      type: Object
-    },
     data: {
       type: Object
     }
@@ -88,7 +86,7 @@ export default {
   },
   mounted() {
     console.log(this.enums)
-    // this.setData(this.formData)
+    this.setData(this.data)
   },
   methods: {
     imageUploadChange(e) {
@@ -110,13 +108,12 @@ export default {
       obj.is_show ? this.checked = true : this.checked = false
       this.coachInfoData.certification_name = obj.certification_name ? obj.certification_name : []
     },
-    goNext() {
+    goNext(e) {
+      e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
-          this.$emit('goNext', {
-            formData: this.form.getFieldsValue()
-          })
+          this.submit(this.form.getFieldsValue(), 1)
         }
       })
     },
@@ -124,14 +121,24 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          values.employment_time = values.employment_time.format('YYYY-MM-DD')
-          values.certification_name = this.coachInfoData.certification_name
-          values.is_show = this.checked ? 1 : 0
-          values.image_personal = this.image_personal
-          console.log('Received values of form: ', values)
-          this.$emit('coachInfoSave', {
-            data: values
-          })
+          this.submit(values, 0)
+        }
+      })
+    },
+    submit(data, saveOrgoNext) {
+      data.employment_time = data.employment_time.format('YYYY-MM-DD')
+      data.certification_name = this.coachInfoData.certification_name
+      data.is_show = this.checked ? 1 : 0
+      data.image_personal = this.image_personal
+
+      // 记着删 擅长的项目不知道什么鬼
+      data.specialty_id = [1, 2]
+      this.service.updateCoachInfo(this.data.staff_id, data).subscribe(res => {
+        if (saveOrgoNext === 1) {
+          this.$emit('gonext')
+        } else {
+          this.message.success({ content: '编辑成功' })
+          this.$router.go(-1)
         }
       })
     },
@@ -153,37 +160,6 @@ export default {
     // 移除证书
     onProfessRule(index) {
       this.coachInfoData.certification_name.splice(index, 1)
-    },
-    upload(data) {
-      this.OSS.put({
-        file: data.file
-      }).subscribe({
-        next: val => {
-          this.key = val.fileKey
-          this.MessageService.success({ content: `success: ${val}` })
-          this.fileList.push({
-            url: `http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/${
-              val.fileKey
-            }`
-          })
-          this.loading = false
-          console.log(this.fileList)
-        },
-        error: val => {
-          this.MessageService.error({ content: `Error ${val.message}` })
-          this.loading = false
-        }
-      })
-    },
-    handleCancel() {
-      this.previewVisible = false
-    },
-    handlePreview(file) {
-      this.previewImage = file.url || file.thumbUrl
-      this.previewVisible = true
-    },
-    handleChange({ fileList }) {
-      this.fileList = fileList
     }
   }
 }

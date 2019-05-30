@@ -3,7 +3,11 @@ import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { ShopStaffApi } from '@/api/v1/staff/staff'
-import { StaffApi, EditStaffBasicInfoQuery } from '@/api/v1/staff'
+import {
+  StaffApi,
+  EditStaffBasicInfoQuery,
+  EditStaffDetailInfoQuery,
+  EditStaffCoachInfoQuery } from '@/api/v1/staff'
 
 interface EditState {
     staffInfo: Object,
@@ -51,10 +55,18 @@ export class EditService extends Store<EditState> {
       return this.shopstaffApi.updateStaffBasicInfo(id, params)
     }
 
+    // 修改详细信息
+    updateDetailedInfo(id: string, params: EditStaffDetailInfoQuery) {
+      return this.shopstaffApi.updateStaffDetailedInfo(id, params)
+    }
+
+    // 修改教练信息
+    updateCoachInfo(id: string, params: EditStaffCoachInfoQuery) {
+      return this.shopstaffApi.updateCoachInfo(id, params)
+    }
+
     beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-      // console.log('====',to.meta.query)
       const { id } = to.meta.query
-      // next()
       this.getStaffInfo(id).subscribe(() => {
         next()
       })

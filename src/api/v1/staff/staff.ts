@@ -1,5 +1,5 @@
 import { Api } from '../../api'
-import { AddStaffBasicInfoParams, EditStaffBasicInfoQuery } from '../staff'
+import { AddStaffBasicInfoParams, EditStaffBasicInfoQuery, EditStaffDetailInfoQuery, EditStaffCoachInfoQuery } from '../staff'
 // 门店维度下的员工
 export class ShopStaffApi extends Api {
   /**
@@ -33,6 +33,20 @@ export class ShopStaffApi extends Api {
    */
   updateStaffBasicInfo(id: string, params: EditStaffBasicInfoQuery) {
     return this.http.put(`/v1/staff/shop/basic/${id}`, { params })
+  }
+
+  /**
+   * 修改员工详细信息
+   */
+  updateStaffDetailedInfo(id: string, params : EditStaffDetailInfoQuery) {
+    return this.http.put(`/v1/staff/shop/detail/${id}`, { params })
+  }
+
+  /**
+   * 修改教练信息
+   */
+  updateCoachInfo(id: string, params: EditStaffCoachInfoQuery) {
+    return this.http.put(`/v1/staff/shop/coach/${id}`, { params })
   }
 }
 interface CommonConfig {
