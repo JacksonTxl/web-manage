@@ -15,6 +15,9 @@ export class IndexService {
       this.indexList$.commit(() => res)
     }))
   }
+  getSetting() {
+    return this.transactionApi.getSetting()
+  }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     console.log(to.meta.query)
     this.getFreezeInfo(to.meta.query).subscribe((res) => {
