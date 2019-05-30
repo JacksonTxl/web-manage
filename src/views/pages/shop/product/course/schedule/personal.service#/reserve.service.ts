@@ -74,7 +74,6 @@ export class PersonalScheduleReserveService {
           return { // add new event data
             title: item.course_name,
             groupId: JSON.stringify(item),
-            id: item.id,
             start: `${item.start_date} ${item.start_time}`,
             end: `${item.start_date} ${item.end_time}`
           }

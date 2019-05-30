@@ -22,7 +22,7 @@ export class PersonalTeamScheduleScheduleApi extends Api {
    * @param params
    * 获取私教小团课排期表格
    */
-  getScheduleTable(query: GetScheduleTableQuery) {
+  getTable(query: GetScheduleTableQuery) {
     return this.http.get('/v1/schedule/personal_team/shop/table', { query })
   }
   /**

@@ -11,17 +11,20 @@ import {
 
 export interface SetState {
   courseList: any[],
+  scheduleTable: any[]
 }
 @Injectable()
 export class PersonalTeamScheduleScheduleService {
   state$: State<SetState>
   courseList$: Computed<any>
-
+  scheduleTable$: Computed<any>
   constructor(private scheduleApi: PersonalTeamScheduleScheduleApi) {
     this.state$ = new State({
-      courseList: []
+      courseList: [],
+      scheduleTable: []
     })
     this.courseList$ = new Computed(this.state$.pipe(pluck('courseList')))
+    this.scheduleTable$ = new Computed(this.state$.pipe(pluck('scheduleTable')))
   }
   /**
    *
@@ -49,8 +52,24 @@ export class PersonalTeamScheduleScheduleService {
    * @param params
    * 获取团体课排期表格
    */
-  getScheduleTable(query: GetScheduleListQuery) {
-    return this.scheduleApi.getScheduleTable(query)
+  getTable(query: GetScheduleListQuery) {
+    return this.scheduleApi.getTable(query).pipe(tap(res => {
+      this.state$.commit(state => {
+        state.scheduleTable = []
+        const dateList = Array.from(new Set(res.list.map((item: any) => item.start_date)))
+        dateList.forEach((ele: any) => {
+          let temp: any[] = []
+          let daySchedule: any = { date: ele, data: [] }
+          res.list.forEach((item: any) => {
+            if (item.start_date === ele) {
+              temp.push(item)
+            }
+          })
+          daySchedule.data = temp
+          state.scheduleTable.push(daySchedule)
+        })
+      })
+    }))
   }
   /**
    *

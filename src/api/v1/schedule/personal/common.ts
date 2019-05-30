@@ -17,7 +17,7 @@ export class PersonalCommonApi extends Api {
   /**
    * 获取门店排期私教列表
    */
-  getCoachList(query: CoachListQuery) {
+  getCoachList() {
     return this.http.get('/v1/schedule/personal/coach')
   }
   /**
