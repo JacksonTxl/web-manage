@@ -426,11 +426,11 @@ export default {
   },
   watch: {
     $route() {
-      //  if (this.$route.query.card_name) {
-      //   this.card_type = '所以类型'
-      //   this.sell_status = '所以渠道'
-      //   this.publish_channel = '所有售卖状态'
-      // }
+      if (this.$route.query.card_name) {
+        this.card_type = '所以类型'
+        this.sell_status = '所以渠道'
+        this.publish_channel = '所有售卖状态'
+      }
 
       this.getInfoData(this.cardsListInfo)
     }
