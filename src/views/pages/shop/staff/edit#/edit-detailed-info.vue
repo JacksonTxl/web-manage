@@ -2,7 +2,7 @@
   <st-form :form="form" @submit="save" class="page-edit-container">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="毕业院校" >
+        <st-form-item label="毕业院校">
           <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="rules.graduated_school"/>
         </st-form-item>
         <st-form-item label="学历">
@@ -20,7 +20,7 @@
         <st-form-item label="婚姻状况">
           <a-select placeholder="请选择" v-decorator="rules.marry_status">
             <a-select-option
-               v-for="(item, key) in enums.marry_status.value"
+              v-for="(item, key) in enums.marry_status.value"
               :value="+key"
               :key="key"
             >{{item}}</a-select-option>
@@ -40,7 +40,7 @@
         <st-form-item label="子女状态">
           <a-select placeholder="请选择" v-decorator="rules.children_status">
             <a-select-option
-               v-for="(item, key) in enums.children_status.value"
+              v-for="(item, key) in enums.children_status.value"
               :value="+key"
               :key="key"
             >{{item}}</a-select-option>
@@ -51,14 +51,25 @@
 
     <a-row :gutter="8" class="mg-t48">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="家庭住址" >
-          <a-cascader :options="options" @change="onChange" v-decorator="rules.provinces" changeOnSelect placeholder="请选择" />
+        <st-form-item label="家庭住址">
+          <a-cascader
+            :options="options"
+            :fieldNames="fieldNames"
+            v-decorator="rules.provinces"
+            changeOnSelect
+            placeholder="请选择"
+          />
         </st-form-item>
         <st-form-item label="详细住址">
           <a-input placeholder="填写点什么吧" v-decorator="rules.address"/>
         </st-form-item>
         <st-form-item label="备注">
-          <a-input type="textarea" v-decorator="rules.description" :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧"/>
+          <a-input
+            type="textarea"
+            v-decorator="rules.description"
+            :autosize="{ minRows: 10, maxRows: 16 }"
+            placeholder="填写点什么吧"
+          />
         </st-form-item>
       </a-col>
       <a-col :lg="10" :xs="22" :offset="2"></a-col>
@@ -76,19 +87,20 @@
 
 <script>
 import { RuleConfig } from '@/constants/staff/rule'
+import { RegionService } from '@/services/region.service'
+import { EditService } from '../edit.service'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'EditDetailedInfo',
   serviceInject() {
     return {
-      rules: RuleConfig
-    //   userservice: UserService,
-    //   addservice: AddService
+      rules: RuleConfig,
+      region: RegionService,
+      service: EditService,
+      message: MessageService
     }
   },
   props: {
-    formData: {
-      type: Object
-    },
     enums: {
       type: Object
     },
@@ -98,16 +110,20 @@ export default {
   },
   data() {
     return {
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      options: [],
+      fieldNames: { label: 'name', value: 'id', children: 'children' }
     }
   },
   mounted() {
-    console.log(this.enums)
-    // this.setData(this.formData)
+    this.setData(this.data)
+    this.region.regionApi.getRegions().subscribe(() => {
+      this.options = JSON.parse(window.localStorage.getItem('regionTree'))
+    })
   },
   methods: {
     setData(obj) {
-      console.log('detail', obj)
+      // console.log('detail', obj)
       this.form.setFieldsValue({
         graduated_school: obj.graduated_school,
         graduation_time: obj.graduation_time ? moment(obj.graduation_time) : '',
@@ -122,43 +138,64 @@ export default {
         provinces: [obj.province_id, obj.city_id, obj.district_id]
       })
     },
-    onChange(value) {
-      console.log(value)
-    },
-    goNext() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-          this.$emit('goNext', {
-            formData: this.form.getFieldsValue()
-          })
-        }
-      })
-    },
-    filterProvinces(arr) {
-      return {
-        province_id: arr[0],
-        province_name: 'lallala',
-        city_id: arr[1],
-        city_name: 'shgsahhsa',
-        district_id: arr[2],
-        district_name: 'sajkdsjds'
-      }
-    },
-    save(e) {
-      // form submit
+    goNext(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
-          let obj = this.filterProvinces(values.provinces)
-          let newData = Object.assign(values, obj)
-          newData.birthday = newData.birthday.format('YYYY-MM-DD')
-          newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD')
-          delete newData.provinces
-          this.$emit('detailInfoSave', {
-            data: newData
-          })
+          this.submit(values, 1)
+        }
+      })
+    },
+    // 坑爹的是后端还要城市名遍历了这么多次
+    filterProvinces(arr) {
+      let [ province_id, city_id, district_id ] = arr
+      let province_name = this.options.find(ele => {
+        return ele.id === province_id
+      })['name']
+      let city_namelist = this.options.find(ele => {
+        return ele.id === province_id
+      })['children']
+      let city_name = city_namelist.find(ele => {
+        return ele.id === city_id
+      })['name']
+      let district_namelist = city_namelist.find(ele => {
+        return ele.id === city_id
+      })['children']
+      let district_name = district_namelist.find(ele => {
+        return ele.id === district_id
+      })['name']
+      console.log(province_name, city_name, district_name)
+      return {
+        province_id,
+        province_name,
+        city_id,
+        city_name,
+        district_id,
+        district_name
+      }
+    },
+    save(e) {
+      e.preventDefault()
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log('Received values of form: ', values)
+          this.submit(values, 0)
+        }
+      })
+    },
+    submit(data, saveOrgoNext) {
+      let obj = this.filterProvinces(data.provinces)
+      let newData = Object.assign(data, obj)
+      newData.birthday = newData.birthday.format('YYYY-MM-DD')
+      newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD')
+      delete newData.provinces
+      this.service.updateDetailedInfo(this.data.staff_id, newData).subscribe(() => {
+        if (saveOrgoNext === 0) {
+          this.message.success({ content: '编辑成功' })
+          this.$router.go(-1)
+        } else if (saveOrgoNext === 1) {
+          this.$emit('gonext')
         }
       })
     }
