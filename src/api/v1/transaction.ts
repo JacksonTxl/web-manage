@@ -24,7 +24,7 @@ export class TransactionApi extends Api {
   }
   /* 交易签单—定金列表 /v1/order/transaction/advance */
   getOrderTransactionAdvance(query: any) {
-    return this.http.get(`/v1/order/transaction/coupon`, { query })
+    return this.http.get(`/v1/order/transaction/advance`, { query })
   }
   /* 获取系统时间  */
   getTime() {
