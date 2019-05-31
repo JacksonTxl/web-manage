@@ -28,7 +28,7 @@
           <td>{{item.operator_name}}</td>
           <td>{{item.updated_time}}</td>
           <td>
-            <modal-link tag="a" :to="{ name: 'coach-level-edit',
+            <modal-link tag="a" :to="{ name: 'skillful-edit',
               props: { id: item.id, setting_name: item.setting_name },
               on: { change: onListChange } }">编辑
             </modal-link>

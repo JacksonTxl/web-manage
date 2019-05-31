@@ -11,131 +11,7 @@
         </div>
       </div>
       <div class="layout-default-brand-sider__scrollbox" v-scrollBar>
-        <div class="layout-default-brand-sider__often">
-          <h2 class="layout-default-brand-sider__often-title">常用</h2>
-          <ul class="layout-default-brand-sider__often-list">
-            <li
-              class="layout-default-brand-sider__often-item layout-default-brand-sider__often-item--active"
-            >
-              <i></i>
-              <span>营销插件</span>
-            </li>
-            <li class="layout-default-brand-sider__often-item">
-              <i></i>
-              <span>活动列表</span>
-            </li>
-          </ul>
-        </div>
-        <!-- <a-menu
-          class="layout-default-brand-sider__menu"
-          :openKeys="openKeys"
-          @openChange="onOpenChange"
-          theme="dark"
-          mode="inline"
-        >-->
-        <a-menu
-          class="layout-default-brand-sider__menu"
-          :openKeys="openKeys"
-          @openChange="onOpenChange"
-          theme="light"
-          mode="inline"
-        >
-          <a-sub-menu
-            v-for="item in menu"
-            :key="item.id"
-          >
-            <span slot="title">
-              <a-icon type="file"/>
-              <span>{{item.name}}</span>
-            </span>
-            <a-menu-item
-              v-for="subItem in item.children"
-              :key="subItem.id"
-            >
-              {{subItem.name}}
-            </a-menu-item>
-          </a-sub-menu>
-          <a-menu-item key="item1">
-            <span>
-              <a-icon type="file"/>
-              <span>首页</span>
-            </span>
-          </a-menu-item>
-          <a-sub-menu key="sub000">
-            <span slot="title">
-              <a-icon type="file"/>
-              <span>营销中心11</span>
-            </span>
-            <a-menu-item key="item111">Option 1</a-menu-item>
-            <a-menu-item key="item112">Option 2</a-menu-item>
-            <a-menu-item key="item113">Option 3</a-menu-item>
-            <a-menu-item key="item114">Option 4</a-menu-item>
-            <a-menu-item key="item115">Option 1</a-menu-item>
-            <a-menu-item key="item116">Option 2</a-menu-item>
-            <a-menu-item key="item117">Option 3</a-menu-item>
-            <a-menu-item key="item118">Option 4</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub1">
-            <span slot="title">
-              <a-icon type="file"/>
-              <span>营销中心</span>
-            </span>
-            <a-menu-item key="item2">Option 1</a-menu-item>
-            <a-menu-item key="item3">Option 2</a-menu-item>
-            <a-menu-item key="item4">Option 3</a-menu-item>
-            <a-menu-item key="item5">Option 4</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub2">
-            <span slot="title">
-              <a-icon type="file"/>
-              <span>营销中心1</span>
-            </span>
-            <a-menu-item key="item6">Option 1</a-menu-item>
-            <a-menu-item key="item7">Option 2</a-menu-item>
-            <a-menu-item key="item8">Option 3</a-menu-item>
-            <a-menu-item key="item9">Option 4</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub3">
-            <span slot="title">
-              <a-icon type="file"/>
-              <span>营销中心1</span>
-            </span>
-            <a-menu-item key="item10">Option 1</a-menu-item>
-            <a-menu-item key="item11">Option 2</a-menu-item>
-            <a-menu-item key="item12">Option 3</a-menu-item>
-            <a-menu-item key="item13">Option 4</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub4">
-            <span slot="title">
-              <a-icon type="file"/>
-              <span>营销中心1</span>
-            </span>
-            <a-menu-item key="item15">Option 1</a-menu-item>
-            <a-menu-item key="item16">Option 2</a-menu-item>
-            <a-menu-item key="item17">Option 3</a-menu-item>
-            <a-menu-item key="item18">Option 4</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub5">
-            <span slot="title">
-              <a-icon type="file"/>
-              <span>营销中心1</span>
-            </span>
-            <a-menu-item key="item19">Option 1</a-menu-item>
-            <a-menu-item key="item20">Option 2</a-menu-item>
-            <a-menu-item key="item21">Option 3</a-menu-item>
-            <a-menu-item key="item22">Option 4</a-menu-item>
-          </a-sub-menu>
-          <a-sub-menu key="sub6">
-            <span slot="title">
-              <a-icon type="file"/>
-              <span>营销中心1</span>
-            </span>
-            <a-menu-item key="item23">Option 1</a-menu-item>
-            <a-menu-item key="item24">Option 2</a-menu-item>
-            <a-menu-item key="item25">Option 3</a-menu-item>
-            <a-menu-item key="item26">Option 4</a-menu-item>
-          </a-sub-menu>
-        </a-menu>
+        <default-brand-sider-menu/>
       </div>
     </a-layout-sider>
     <a-layout class="layout-default-brand-body">
@@ -207,37 +83,20 @@
 </template>
 <script>
 import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
-import { UserService } from '@/services/user.service'
+import DefaultBrandSiderMenu from './default-brand-sider-menu'
 export default {
-  data() {
-    return {
-      rootSubmenuKeys: ['sub000', 'sub1', 'sub2', 'sub3', 'sub4', 'sub5', 'sub6'],
-      openKeys: ['sub000']
-    }
-  },
   serviceInject() {
     return {
-      layoutBrandSerivce: LayoutBrandService,
-      userService: UserService
+      layoutBrandSerivce: LayoutBrandService
     }
   },
   rxState() {
     return {
-      breadcrumbs: this.layoutBrandSerivce.breadcrumbs$,
-      menu: this.userService.menu$
+      breadcrumbs: this.layoutBrandSerivce.breadcrumbs$
     }
   },
-  methods: {
-    onOpenChange(openKeys) {
-      const latestOpenKey = openKeys.find(
-        key => this.openKeys.indexOf(key) === -1
-      )
-      if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-        this.openKeys = openKeys
-      } else {
-        this.openKeys = latestOpenKey ? [latestOpenKey] : []
-      }
-    }
+  components: {
+    DefaultBrandSiderMenu
   }
 }
 </script>

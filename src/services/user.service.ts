@@ -4,12 +4,11 @@ import { tap, pluck, map } from 'rxjs/operators'
 import { Store } from './store'
 import { forkJoin, of } from 'rxjs'
 import { ConstApi } from '@/api/const'
-import { MenuApi } from '@/api/v1/common/menu'
-import { cloneDeep } from 'lodash-es'
+import { MenuApi, SetFavoriteInput } from '@/api/v1/common/menu'
 
 interface UserState {
   user: User
-  menu: any[]
+  menuData: {}
   enums: {}
 }
 interface User {
@@ -32,8 +31,7 @@ interface ModuleEnums {
 export class UserService extends Store<UserState> {
   state$: State<UserState>
   user$: Computed<User>
-  menu$: Computed<any[]>
-
+  menuData$: Computed<object>
   enums$: Computed<any>
   staffEnums$: Computed<ModuleEnums>
   accountEnums$: Computed<ModuleEnums>
@@ -57,12 +55,12 @@ export class UserService extends Store<UserState> {
     super()
     const initialState = {
       user: {},
-      menu: [],
+      menuData: {},
       enums: {}
     }
     this.state$ = new State(initialState)
     this.user$ = new Computed(this.state$.pipe(pluck('user')))
-    this.menu$ = new Computed(this.state$.pipe(pluck('menu')))
+    this.menuData$ = new Computed(this.state$.pipe(pluck('menuData')))
     this.enums$ = new Computed(this.state$.pipe(pluck('enums')))
     this.staffEnums$ = new Computed(this.enums$.pipe(pluck('staff')))
     this.accountEnums$ = new Computed(this.enums$.pipe(pluck('account')))
@@ -104,12 +102,12 @@ export class UserService extends Store<UserState> {
       return of({})
     }
   }
-  getMenus() {
-    if (!Object.keys(this.menu$.snapshot()).length) {
+  getMenus(params = { force: false }) {
+    if (params.force || !Object.keys(this.menuData$.snapshot()).length) {
       return this.menuApi.getList().pipe(
         tap(res => {
           this.state$.commit(state => {
-            state.menu = res.menus
+            state.menuData = res
           })
         })
       )
@@ -122,6 +120,20 @@ export class UserService extends Store<UserState> {
       this.getEnums(),
       this.getMenus()
     )
+  }
+  /**
+   * 添加到常用菜单
+   * @param id
+   */
+  addFavorite(id: SetFavoriteInput) {
+    return this.menuApi.addFavorite(id)
+  }
+  /**
+   * 删除常用菜单
+   * @param id
+   */
+  delFavorite(id: SetFavoriteInput) {
+    return this.menuApi.delFavorite(id)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
     this.init().subscribe(() => {
