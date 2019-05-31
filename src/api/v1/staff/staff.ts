@@ -62,12 +62,41 @@ export class ShopStaffApi extends Api {
   updateCoachInfo(id: string, params: EditStaffCoachInfoQuery) {
     return this.http.put(`/v1/staff/shop/coach/${id}`, { params })
   }
+
+  /**
+   * 绑定实体卡 / 重新绑定实体卡
+   */
+  bindcard(id: string) {
+    return this.http.put(`/v1/staff/bind/physical/${id}`)
+  }
+
+  /**
+   * 工资账户设置
+   */
+  bindbank(id: string, params: BindbankParams) {
+    return this.http.put(`/v1/staff/bind/bank/${id}`, { params })
+  }
 }
 interface CommonConfig {
     // 当前页
     page? : number;
     // 每页条数
     size? : number;
+}
+export interface BindbankParams{
+  /**
+   * 姓名
+   */
+  account_name : number;
+  /**
+   * 卡号
+   */
+  card_number: number;
+  /**
+   * 银行名称
+   */
+  bank_name: string;
+
 }
 export interface GetListQuery extends CommonConfig{
     /**

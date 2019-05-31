@@ -128,13 +128,13 @@
               <a-menu-item v-if="record.has_card == 0">
                 <modal-link
                   tag="a"
-                  :to="{ name: 'shop-staff-bind-card', props: {staff_name: record.staff_name } }"
+                  :to="{ name: 'shop-staff-bind-card', props: {data: record } }"
                 >绑实体卡</modal-link>
               </a-menu-item>
               <a-menu-item v-if="record.has_card == 1">
                 <modal-link
                   tag="a"
-                  :to="{ name: 'shop-staff-re-bind-card', props: {staff_name: record.staff_name } }"
+                  :to="{ name: 'shop-staff-re-bind-card', props: {data: record } }"
                 >重绑实体卡</modal-link>
               </a-menu-item>
               <a-menu-item>
@@ -144,7 +144,6 @@
                 >管理登录账号</modal-link>
               </a-menu-item>
               <a-menu-item>
-                <!-- <a-menu-item @click="changeStaffPosition(record.staff_id)"></a-menu-item> -->
                 <modal-link
                   tag="a"
                   :to="{ name: 'shop-staff-change-staff-position', props: {data: record}} "
