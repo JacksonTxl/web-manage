@@ -76,7 +76,18 @@
             :cardInfo="cardInfo"
             :emitData="emitData"
           ></component>
-
+          <st-form-item label="小计" class="global-form-item-text" labelGutter="12px">
+            <div>
+              <span
+                style="color:#f00"
+                v-if="!(emitData.price.rally_price - emitData.coupon.price - emitData.advance.price - emitData.waiverAmount - 0 > 0)"
+              >请正确填写内容！</span>
+              <span v-else>
+                {{emitData.price.rally_price - emitData.coupon.price - emitData.advance.price - emitData.waiverAmount}}
+                元
+              </span>
+            </div>
+          </st-form-item>
           <!-- 分割线 -->
           <st-hr marginTop="0" marginBottom="20"/>
           <!-- 销售人员 -->
@@ -229,8 +240,8 @@ export default {
         'contractNumber',
         'coupon',
         'depositDeduction',
-        'waiverAmount',
-        'subtotal'
+        'waiverAmount'
+        // 'subtotal'
       ],
       cardInfo: {},
       emitData: {
@@ -238,7 +249,8 @@ export default {
         open_type: '',
         effective_time: '',
         coupon: {},
-        advance: {}
+        advance: {},
+        waiverAmount: ''
       }
     }
   },
@@ -321,6 +333,9 @@ export default {
       }
       if (value.advance) {
         this.emitData.advance = value.advance
+      }
+      if (value.waiverAmount) {
+        this.emitData.waiverAmount = value.waiverAmount
       }
       console.log(this.emitData)
     },

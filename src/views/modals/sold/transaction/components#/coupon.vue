@@ -42,6 +42,9 @@ export default {
       .subscribe(res => {
         this.coupon = res.list
         this.indexCoupon = this.coupon[0]
+        this.$emit('filterChange', {
+          coupon: this.indexCoupon
+        })
       })
   },
   methods: {

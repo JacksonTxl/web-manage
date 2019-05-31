@@ -1,6 +1,6 @@
 <template>
   <st-form-item label="减免金额" labelGutter="12px">
-    <a-input v-decorator="value.reduce_amount"></a-input>
+    <a-input v-decorator="value.reduce_amount" @change="couponClick"></a-input>
   </st-form-item>
 </template>
 
@@ -10,6 +10,18 @@ export default {
     prop: 'value',
     event: 'valueChange'
   },
-  props: ['value']
+  props: ['value'],
+  data() {
+    return {
+      waiverAmount: ''
+    }
+  },
+  methods: {
+    couponClick(e) {
+      this.$emit('filterChange', {
+        waiverAmount: e.target.value
+      })
+    }
+  }
 }
 </script>
