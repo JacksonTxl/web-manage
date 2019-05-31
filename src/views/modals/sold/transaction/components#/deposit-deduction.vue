@@ -42,6 +42,9 @@ export default {
       .subscribe(res => {
         this.advance = res.list
         this.indexAdvance = this.advance[0]
+        this.$emit('filterChange', {
+          advance: this.indexAdvance
+        })
       })
   },
   methods: {
