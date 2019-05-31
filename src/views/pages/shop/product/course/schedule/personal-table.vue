@@ -1,14 +1,8 @@
 <template>
-  <st-panel app>
-    <div slot="title">
+  <div class="page-personal-table schedule-table">
+    <div class="page-personal-table__title pd-x24 pd-y16 schedule-table__title" slot="title">
       <a-row :gutter="8">
-        <a-col :lg="9">
-          <st-button @click="onClickSkipSchedule">私教预约表</st-button>
-        </a-col>
-        <a-col :lg="7">
-          <date/>
-        </a-col>
-        <a-col :lg="8" style="text-align: right;">
+        <a-col :lg="8">
           <st-button class="mg-r8" type="primary">
             <modal-link
               tag="a"
@@ -19,26 +13,34 @@
             <modal-link tag="a" :to="{ name: 'schedule-personal-add', props: { id: 1 } }">添加排期</modal-link>
           </st-button>
         </a-col>
+        <a-col :lg="7" :offset="2">
+          <date @today="getList" :start="scheduleTime[0]" @pre="getList" @next="getList"/>
+        </a-col>
+        <a-col :lg="7" class="schedule-button">
+          <st-button  @click="onClickSkipSchedule"><st-icon type="calendar"></st-icon></st-button>
+        </a-col>
       </a-row>
     </div>
-    <a-row :gutter="8" class="mg-t8">
+    <a-row class="mg-t8 mg-r24 mg-l24">
       <st-form-table :page="page" @change="onPageChange" hoverable>
         <thead>
           <tr>
             <th>教练名称</th>
-            <template v-for="(item,index) in listData.schedule_time">
-              <th :key="index" :class="item.date == currentTime ? 'thgl': ''">
-                <span style="display: block;">{{ item.date }}</span>
-                <span style="display: block;">{{ item.week }}</span>
+            <template v-for="(item,index) in scheduleTime">
+              <th :key="index" :class="item == currentTime ? 'thgl': ''">
+                <div class="schedule-table__header">
+                  <span class="mg-r8">{{ item | getDate }}</span>
+                  <span >{{ index | getWeek }}</span>
+                </div>
               </th>
             </template>
             <th>操作</th>
           </tr>
         </thead>
         <tbody>
-          <template v-for="item in listData.list">
+          <template v-for="item in scheduleList">
             <tr :key="item.staff_name">
-              <td>
+              <td width="120">
                 <a href="javascript:;">{{ item.staff_name }}</a>
               </td>
               <template v-for="items in item.schedule_info">
@@ -61,13 +63,13 @@
                   <td
                     :key="items.id"
                     :class="items.schedule_date == currentTime ? 'thgl': ''"
-                  >{{ items.timing[0].start_time }}~{{ items.timing[0].end_time }}</td>
+                  >--</td>
                 </template>
               </template>
               <td>
                 <modal-link
                   tag="a"
-                  :to="{ name: 'schedule-personal-edit', props: { id: item.id } }"
+                  :to="{ name: 'schedule-personal-edit', props: { id: item.id, start: scheduleTime[0] } }"
                 >编辑</modal-link>
               </td>
             </tr>
@@ -75,22 +77,32 @@
         </tbody>
       </st-form-table>
     </a-row>
-  </st-panel>
+  </div>
 </template>
 
 <script>
 import date from './date#/date-component'
-import { ListService } from './list.service'
+import { PersonalTableService } from './personal-table.service'
 
 export default {
   serviceInject() {
     return {
-      service: ListService
+      tableService: PersonalTableService
     }
   },
   rxState() {
     return {
-      listData: this.service.listData$
+      scheduleTime: this.tableService.scheduleTime$,
+      scheduleList: this.tableService.scheduleList$
+    }
+  },
+  filters: {
+    getWeek(index) {
+      const weekList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+      return weekList[index]
+    },
+    getDate(date) {
+      return moment(date).format('MM/DD').valueOf()
     }
   },
   components: {
@@ -104,11 +116,13 @@ export default {
   },
   mounted() {
     this.currentTime = '2019-05-26'
-    //   console.log(moment().format("YYYY-MM-DD"))
   },
   methods: {
     onClickSkipSchedule() {
-      this.$router.push({ name: 'shop-product-course-schedule-personal' })
+      this.$router.push({ name: 'shop-product-course-schedule-personal-calendar' })
+    },
+    getList(query = {}) {
+      this.tableService.getList(query).subscribe()
     },
     onPageChange() {}
   }

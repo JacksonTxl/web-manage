@@ -1,4 +1,5 @@
-import { AddInput, GetScheduleListInput } from './../../../../../../../api/v1/schedule/personal/schedule'
+import { UpdateInput } from './../../../../../../../api/v1/schedule/personal/reserve'
+import { PersonalScheduleListQuery, GetScheduleListInput, UpdateScheduleInput, AddScheduleInBatchInput, AddScheduleInput, CopyInput } from './../../../../../../../api/v1/schedule/personal/schedule'
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state/src'
 import { tap, pluck, switchMap } from 'rxjs/operators'
@@ -9,19 +10,23 @@ import { GetListQuery } from '@/api/v1/schedule/personal/reserve'
 
 export interface SetState {
   scheduleTeamCourseList: any[],
+  scheduleTable: any[]
 }
 @Injectable()
 export class PersonalScheduleScheduleService {
   state$: State<SetState>
   scheduleTeamCourseList$: Computed<any>
+  scheduleTable$: Computed<any>
   refresh$: Computed<any>
 
   constructor(private scheduleApi: PersonalScheduleApi) {
     this.state$ = new State({
       scheduleTeamCourseList: [],
+      scheduleTable: [],
       refresh: 0
     })
     this.scheduleTeamCourseList$ = new Computed(this.state$.pipe(pluck('scheduleTeamCourseList')))
+    this.scheduleTable$ = new Computed(this.state$.pipe(pluck('scheduleTable')))
     this.refresh$ = new Computed(this.state$.pipe(pluck('scheduleTeamCourseList')))
   }
   /**
@@ -30,7 +35,7 @@ export class PersonalScheduleScheduleService {
    * 获取团体课排期列表
    */
   @Effect()
-  getList(query: GetListQuery) {
+  getList(query: PersonalScheduleListQuery) {
     return this.scheduleApi.getList(query).pipe(tap(res => {
       this.state$.commit(state => {
         state.scheduleTeamCourseList = res.list.map((item: any) => {
@@ -50,29 +55,23 @@ export class PersonalScheduleScheduleService {
    * @param params
    * 获取团体课排期表格
    */
-  getScheduleTable(query: GetScheduleListInput) {
-    return this.scheduleApi.getScheduleTable(query)
+  getTable(query: PersonalScheduleListQuery) {
+    return this.scheduleApi.getTable(query).pipe(tap(res => {
+      this.state$.commit(state => {
+        state.scheduleTable = res.list
+      })
+    }))
   }
   /**
    *
    * @param params
    * 新增团体课排期
    */
-  add(params: AddInput) {
+  add(params: AddScheduleInput) {
     return this.scheduleApi.add(params)
   }
-  addScheduleInBatch(params: AddScheduleInput[]) {
+  addScheduleInBatch(params: AddScheduleInBatchInput) {
     return this.scheduleApi.addScheduleInBatch(params).pipe(switchMap(state => {
-      return this.getList({})
-    }))
-  }
-  /**
-   *
-   * @param params
-   * 复制团体课排期
-   */
-  copy(params: CopyScheduleInput) {
-    return this.scheduleApi.copy(params).pipe(switchMap(state => {
       return this.getList({})
     }))
   }
@@ -82,9 +81,10 @@ export class PersonalScheduleScheduleService {
    * 编辑课程排期
    */
   update(params: UpdateScheduleInput) {
-    return this.scheduleApi.update(params).pipe(switchMap(state => {
-      return this.getList({})
-    }))
+    return this.scheduleApi.update(params)
+  }
+  copy(params: CopyInput) {
+    return this.scheduleApi.copy(params)
   }
   /**
    *

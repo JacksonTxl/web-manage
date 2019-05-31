@@ -1,5 +1,6 @@
 <template>
   <div class='page-team-personal'>
+    <add-card></add-card>
     <FullCalendar
       class='page-team-personal__calendar'
       ref="fullCalendar"
@@ -25,18 +26,21 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
+import AddCard from './date#/add-card'
 import $ from 'jquery'
 import { PersonalTeamScheduleScheduleService } from './personal-team.service#/schedule.service'
 
 export default {
   name: 'Schedule',
   components: {
+    AddCard,
     FullCalendar // make the <FullCalendar> tag available
   },
   serviceInject() {
@@ -68,7 +72,7 @@ export default {
       header: {
         left: 'custom1, custom2',
         center: 'prev,next,title',
-        right: 'timeGridWeek,timeGridDay, custom3,custom4'
+        right: 'timeGridWeek,timeGridDay, custom4'
       },
       calendarPlugins: [ // plugins must be defined in the JS
         listPlugin,
@@ -89,22 +93,8 @@ export default {
             that.$modalRouter.push({ name: 'schedule-personal-team-copy' })
           }
         },
-        custom3: {
-          text: '日历',
-          click: () => {
-            that.defaultView = 'timeGridWeek'
-            that.views = {
-              timeGridWeek: { buttonText: '周' },
-              timeGridDay: { buttonText: '日' }
-            }
-            that.$set(that.header, 'right', 'timeGridWeek,timeGridDay, custom3,custom4')
-            that.$nextTick().then(() => {
-              $('.fc-timeGridWeek-button').click()
-            })
-          }
-        },
         custom4: {
-          text: '列表',
+          text: '三',
           click() {
             that.defaultView = 'listWeek'
             that.views = {
@@ -113,7 +103,7 @@ export default {
             }
             that.$set(that.header, 'right', 'listWeek,listDay, custom3,custom4')
             that.$nextTick().then(() => {
-              $('.fc-listWeek-button').click()
+              that.$router.push({ name: 'shop-product-course-schedule-personal-team-table' })
             })
           }
         }
@@ -142,32 +132,42 @@ export default {
   methods: {
     setAddButton() {
       this.$nextTick().then(() => {
-        var cellSize = {
+        const addCardEl = new Vue({
+          components: {
+            AddCard
+          },
+          render: h => (
+            <add-card>
+            </add-card>
+          )
+        }).$mount().$el
+        const htmlStr = addCardEl.outerHTML
+        let cellSize = {
           width: $('.fc-day').width() + 2, // count border pixels
           heigth: $('.fc-slats > table > tbody > tr').height() - 1
         }
-        var tmpCellCss = [
+        let tmpCellCss = [
           'border: 0px',
           'width:' + (cellSize.width) + 'px',
           'height:' + (cellSize.heigth) + 'px'
         ].join(';')
 
-        var hoverCss = [
+        let hoverCss = [
           'width:' + (cellSize.width - 6 * 2) + 'px', // 3px padding left, 3px padding right
           'height:' + (cellSize.heigth - 4) + 'px', // 2px padding top, 2px padding bottom
           'line-height:' + (cellSize.heigth - 4) + 'px' // center text vertically
         ].join(';')
-        var hoverHtml = '<div class="hover-button" style="' + hoverCss + '">+</div>'
+        let hoverHtml = '<div class="hover-button" style="' + hoverCss + '">+</div>'
 
         $('.fc-widget-content').hover(function() {
           if (!$(this).html()) {
-            for (var i = 0; i < 7; i++) {
+            for (let i = 0; i < 7; i++) {
               $(this).append('<td class="temp-cell" style="' + tmpCellCss + '"></td>')
             }
 
             $(this).children('td').each(function() {
               $(this).hover(function() {
-                $(this).html(hoverHtml)
+                $(this).html(htmlStr)
               }, function() {
                 $(this).html('')
               })

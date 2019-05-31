@@ -39,13 +39,13 @@ export class MemberListService extends Store<CardsListInfoState> {
     return this.cardsApi.setCardsDepositBrandOnLine(paramsObj)
   }
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo(to.query).subscribe(res => {
+    this.getListInfo(to.meta.query).subscribe(res => {
       this.SET_CARDS_LIST_INFO(res)
       next()
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo(to.query ? to.query : { size: 10, page: 1 }).subscribe(
+    this.getListInfo(to.meta.query + '' !== '{}' ? to.meta.query : { size: 10, page: 1 }).subscribe(
       res => {
         console.log(res, '获取数据')
         this.SET_CARDS_LIST_INFO(res)

@@ -236,7 +236,9 @@ export default {
       emitData: {
         price: {},
         open_type: '',
-        effective_time: ''
+        effective_time: '',
+        coupon: {},
+        advance: {}
       }
     }
   },
@@ -305,7 +307,6 @@ export default {
   },
   methods: {
     filterChange(value) {
-      console.log(value)
       if (value.open_type) {
         this.emitData.open_type = value.open_type
       }
@@ -315,6 +316,13 @@ export default {
       if (value.effective_time) {
         this.emitData.effective_time = value.effective_time
       }
+      if (value.coupon) {
+        this.emitData.coupon = value.coupon
+      }
+      if (value.advance) {
+        this.emitData.advance = value.advance
+      }
+      console.log(this.emitData)
     },
     save() {
       let self = this

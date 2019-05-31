@@ -4,6 +4,7 @@ import { tap, pluck, map } from 'rxjs/operators'
 import { Store } from './store'
 import { forkJoin, of } from 'rxjs'
 import { ConstApi } from '@/api/const'
+import { MenuApi } from '@/api/v1/common/menu'
 import { cloneDeep } from 'lodash-es'
 
 interface UserState {
@@ -49,7 +50,10 @@ export class UserService extends Store<UserState> {
   finance$: Computed<ModuleEnums>
   crowdEnums$: Computed<ModuleEnums>
   soldEnums$: Computed<ModuleEnums>
-  constructor(private constApi: ConstApi) {
+  constructor(
+    private constApi: ConstApi,
+    private menuApi: MenuApi
+  ) {
     super()
     const initialState = {
       user: {},
@@ -88,20 +92,36 @@ export class UserService extends Store<UserState> {
     })
   }
   getEnums() {
-    return this.constApi.getEnum().pipe(
-      tap(res => {
-        this.state$.commit(state => {
-          state.enums = res
-        })
-      })
-    )
-  }
-  init() {
     if (!Object.keys(this.enums$.snapshot()).length) {
-      return this.getEnums()
+      return this.constApi.getEnum().pipe(
+        tap(res => {
+          this.state$.commit(state => {
+            state.enums = res
+          })
+        })
+      )
     } else {
       return of({})
     }
+  }
+  getMenus() {
+    if (!Object.keys(this.menu$.snapshot()).length) {
+      return this.menuApi.getList().pipe(
+        tap(res => {
+          this.state$.commit(state => {
+            state.menu = res.menus
+          })
+        })
+      )
+    } else {
+      return of({})
+    }
+  }
+  init() {
+    return forkJoin(
+      this.getEnums(),
+      this.getMenus()
+    )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
     this.init().subscribe(() => {

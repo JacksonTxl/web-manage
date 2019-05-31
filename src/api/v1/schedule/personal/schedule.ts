@@ -2,19 +2,22 @@ import { Api } from '@/api/api'
 
 export class PersonalScheduleApi extends Api {
   getList(query: PersonalScheduleListQuery) {
-    return this.http.get(`/v1/schedule/personal/list`, { query })
+    return this.http.get(`/v1/schedule/personal`, { query })
+  }
+  getTable(query: PersonalScheduleListQuery) {
+    return this.http.get('/v1/schedule/team/shop/table', { query })
   }
   add(params: AddScheduleInput) {
     return this.http.post('/v1/schedule/personal/schedule', { params })
   }
-  getUpdateInfo(id: string) {
-    return this.http.get(`/v1/schedule/personal/coach/info/${id}`)
+  getUpdateInfo(query: any) {
+    return this.http.get(`/v1/schedule/personal/coach/info/${query.id}`, { query })
   }
-  update(params: UpdateScheduleParams) {
+  update(params: UpdateScheduleInput) {
     return this.http.put(`/v1/schedule/personal/schedule/${params.id}`, { params })
   }
   copy(params: CopyInput) {
-    return this.http.put(`/v1/schedule/personal/copy/${params.id}`, { params })
+    return this.http.put(`/v1/schedule/personal/copy/${params.id}`)
   }
   addScheduleInBatch(params: AddScheduleInBatchInput) {
     return this.http.post(`/v1/schedule/personal/batch`, { params })
@@ -34,12 +37,8 @@ interface Info{
 
 export interface CopyInput {
   id: number
-  copy_start_time: string
-  copy_end_time: string
-  apply_start_time: string
-  apply_end_time: string
 }
-export interface UpdateScheduleParams {
+export interface UpdateScheduleInput {
   id: number,
   schedule_info: ScheduleInfo
 }
@@ -93,8 +92,8 @@ export interface AddInput {
   course_fee: number
 }
 export interface PersonalScheduleListQuery{
-  start_time: string,
-  end_time: string
+  start_time?: string,
+  end_time?: string
 }
 export interface AddScheduleInput {
   coach_id: number

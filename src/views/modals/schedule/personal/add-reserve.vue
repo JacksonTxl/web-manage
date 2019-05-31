@@ -5,7 +5,7 @@
         <a-select
           labelInValue
           showSearch
-          placeholder="Select users"
+          placeholder="请输入会员名"
           v-decorator="['member_id']"
           style="width: 100%"
           :filterOption="false"
@@ -33,9 +33,9 @@
         </a-select>
       </st-form-item>
       <st-form-item label="上课教练"
-      v-decorator="['coach_id']"
+
       required>
-        <a-select placeholder="请选择上课教练" @change="onChangeCourseCoach">
+        <a-select v-decorator="['coach_id']" placeholder="请选择上课教练" @change="onChangeCourseCoach">
           <a-select-option v-for="courseCoach in courseCoachOptions" :key="courseCoach.id" :value="courseCoach.id">{{courseCoach.staff_name}}</a-select-option>
         </a-select>
       </st-form-item>
@@ -96,7 +96,6 @@ export default {
       let reserveDate = ''
       this.dateOptions.forEach(item => {
         val.format('YYYY-MM-DD') === item.schedule_date && (reserveDate = item.id)
-        reserveDate = item.id
       })
       this.commonService.getOptions('getTimeList', reserveDate, () => {})
     },
@@ -150,7 +149,11 @@ export default {
           form.consume_type = consume.consume_type
           form.consume_id = consume.id
           form.reserve_start_time = values.reserve_start_time.format('HH:mm').valueOf()
-          form.scheduling_id = values.scheduling_id.format('YYYY-MM-DD').valueOf()
+          this.dateOptions.forEach(item => {
+            if (item.schedule_date === values.scheduling_id.format('YYYY-MM-DD').valueOf()) {
+              form.scheduling_id = item.id
+            }
+          })
           this.reserveService.curd('add', form, () => {})
         }
       })

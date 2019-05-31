@@ -121,11 +121,11 @@ export interface GetSchedulePersonalListInput {
   /**
    * 开始时间
    */
-  start_time: string;
+  start_time?: string;
   /**
    * 结束时间
    */
-  end_time: string;
+  end_time?: string;
 }
 export interface GetSchedulePersonalMemberInput {
   /**
