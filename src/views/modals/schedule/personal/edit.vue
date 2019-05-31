@@ -1,35 +1,132 @@
 <template>
-  <st-modal title="编辑排期" @ok="save" v-model="show"></st-modal>
+  <st-modal class="modal-schedule-edit" title="编辑排期" @ok="onOkSave" v-model="show">
+    <div class="modal-schedule-edit__info">
+      <div class="coach">
+        <span>上课教练:</span><span>{{scheduleInfo.staff_name}}</span>
+      </div>
+      <div class="time">
+        {{rangeTime}}
+      </div>
+    </div>
+    <div class="modal-add-schedule__time">
+      <st-shop-hour-picker></st-shop-hour-picker>
+      <st-button class="copy" @click="onClickCopySchedule">复制上周</st-button>
+    </div>
+  </st-modal>
 </template>
 
 <script>
-import { editService } from './edit.service'
 import { MessageService } from '@/services/message.service'
+import { PersonalScheduleScheduleService } from '../../../pages/shop/product/course/schedule/personal.service#/schedule.service'
 export default {
   serviceInject() {
     return {
-      service: editService,
-      messageService: MessageService
+      messageService: MessageService,
+      scheduleService: PersonalScheduleScheduleService
     }
   },
   data() {
     return {
-      show: false
+      show: false,
+      scheduleInfo: {}
     }
   },
   props: {
     id: {
       type: Number,
       default: 108
+    },
+    start: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    end() {
+      return moment(moment(this.start).valueOf() + 24 * 6 * 3600 * 1000).format('YYYY-MM-DD').valueOf()
+    },
+    rangeTime() {
+      return `${this.start} ~ ${this.end}`
     }
   },
   methods: {
-    save() {
+    onOkSave() {
       let date = {
+        id: 33,
         schedule_info: [
           {
-            id: 1878109257794,
-            schedule_time: '2019-05-08 00:00:00',
+            timing: [
+              {
+                start_time: '10:00:00',
+                end_time: '12:00:00'
+              },
+              {
+                start_time: '13:00:00',
+                end_time: '14:00:00'
+              }
+            ]
+          },
+          {
+            timing: [
+              {
+                start_time: '10:00:00',
+                end_time: '12:00:00'
+              },
+              {
+                start_time: '13:00:00',
+                end_time: '14:00:00'
+              }
+            ]
+          },
+          {
+            timing: [
+              {
+                start_time: '10:00:00',
+                end_time: '12:00:00'
+              },
+              {
+                start_time: '13:00:00',
+                end_time: '14:00:00'
+              }
+            ]
+          },
+          {
+            timing: [
+              {
+                start_time: '10:00:00',
+                end_time: '12:00:00'
+              },
+              {
+                start_time: '13:00:00',
+                end_time: '14:00:00'
+              }
+            ]
+          },
+          {
+            timing: [
+              {
+                start_time: '10:00:00',
+                end_time: '12:00:00'
+              },
+              {
+                start_time: '13:00:00',
+                end_time: '14:00:00'
+              }
+            ]
+          },
+          {
+            timing: [
+              {
+                start_time: '10:00:00',
+                end_time: '12:00:00'
+              },
+              {
+                start_time: '13:00:00',
+                end_time: '14:00:00'
+              }
+            ]
+          },
+          {
             timing: [
               {
                 start_time: '10:00:00',
@@ -43,25 +140,28 @@ export default {
           }
         ]
       }
-      this.service.editSchedule(this.id, date).subscribe(res => {
+      this.scheduleService.update(date).subscribe(res => {
         console.log('ok', res)
         this.messageService.success({ content: '编辑成功' })
         this.show = false
       })
     },
+    onClickCopySchedule() {
+      this.scheduleService.curd('copy', { id: this.id || 108 }, () => {})
+    },
     getInfo() {
-      let date = {
-        start_time: '2019-05-01',
-        end_time: '2019-05-23'
+      let form = {
+        id: this.id,
+        start_time: this.start,
+        end_time: this.end
       }
-
-      this.service.editScheduleInfo(this.id, date).subscribe(res => {
+      this.scheduleService.getUpdateInfo(form).subscribe(res => {
         console.log('ok', res)
+        this.scheduleInfo = res.info
       })
     }
   },
   created() {
-    console.log('sha')
     this.getInfo()
   }
 }

@@ -85,8 +85,8 @@ export class PersonalScheduleCommonService {
    * @param query
    * 获取教练Options
    */
-  getCoachList(query: CoachListQuery) {
-    return this.commonApi.getCoachList(query).pipe(tap(res => {
+  getCoachList() {
+    return this.commonApi.getCoachList().pipe(tap(res => {
       this.state$.commit(state => {
         state.coachOptions = res.list
       })

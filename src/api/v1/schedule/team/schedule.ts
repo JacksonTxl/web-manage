@@ -22,7 +22,7 @@ export class TeamScheduleScheduleApi extends Api {
    * @param params
    * 获取团体课排期表格
    */
-  getScheduleTable(query: GetScheduleTableQuery) {
+  getTable(query: GetScheduleTableQuery) {
     return this.http.get('/v1/schedule/team/shop/table', { query })
   }
   /**

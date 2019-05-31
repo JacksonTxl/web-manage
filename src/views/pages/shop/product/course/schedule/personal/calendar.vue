@@ -1,5 +1,6 @@
 <template>
-  <FullCalendar
+  <st-panel app class='page-team-personal'>
+    <FullCalendar
       class='page-team-personal__calendar'
       ref="fullCalendar"
       :defaultView="defaultView"
@@ -20,6 +21,7 @@
       :events="reserveList"
       @dateClick="handleDateClick"
       />
+  </st-panel>
 </template>
 
 <script>
@@ -30,7 +32,7 @@ import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
-import { PersonalScheduleReserveService } from './personal.service#/reserve.service'
+import { PersonalScheduleReserveService as ReserveService } from '../personal.service#/reserve.service'
 
 export default {
   name: 'SchedulePersonalTeam',
@@ -39,7 +41,7 @@ export default {
   },
   serviceInject() {
     return {
-      reserveService: PersonalScheduleReserveService
+      reserveService: ReserveService
     }
   },
   rxState() {
@@ -75,7 +77,7 @@ export default {
       ],
       customButtons: {
         custom1: {
-          text: '设置私教排期',
+          text: '设置私教排期大洒店',
           click() {
             that.$router.push({ name: 'shop-product-course-schedule-personal-table' })
           }
@@ -87,7 +89,7 @@ export default {
           }
         },
         custom3: {
-          text: '三',
+          text: '日历',
           click: () => {
             that.defaultView = 'timeGridWeek'
             that.views = {
@@ -96,21 +98,21 @@ export default {
             }
             that.$set(that.header, 'right', 'timeGridWeek,timeGridDay, custom4')
             that.$nextTick().then(() => {
-              that.$router.push({ name: 'shop-product-course-schedule-personal-table' })
+              $('.fc-timeGridWeek-button').click()
             })
           }
         },
         custom4: {
-          text: '三',
+          text: '列表',
           click() {
             that.defaultView = 'listWeek'
             that.views = {
               listDay: { buttonText: '日' },
               listWeek: { buttonText: '周' }
             }
-            that.$set(that.header, 'right', 'listWeek,listDay, custom4')
+            that.$set(that.header, 'right', 'listWeek,listDay, custom3')
             that.$nextTick().then(() => {
-              that.$router.push({ name: 'shop-product-course-schedule-personal-table' })
+              $('.fc-listWeek-button').click()
             })
           }
         }
@@ -146,7 +148,7 @@ export default {
           'height:' + (cellSize.heigth - 4) + 'px', // 2px padding top, 2px padding bottom
           'line-height:' + (cellSize.heigth - 4) + 'px' // center text vertically
         ].join(';')
-        var hoverHtml = '<div class="hover-button" style="' + hoverCss + '">+添加课程排期</div>'
+        var hoverHtml = '<div class="hover-button" style="' + hoverCss + '">+</div>'
 
         $('.fc-widget-content').hover(function() {
           if (!$(this).html()) {
@@ -188,10 +190,12 @@ export default {
         const item = event.event
         const renderObj = JSON.parse(item.groupId)
         const current = moment().format('HH:mm:SS')
+        const courtHtml = renderObj.court_name ? `<div class="court-name"><span class="label">场地: </span><span>${renderObj.court_name}</span></div>` : ''
         let new_description = `<div class="st-schedule-content mg-l8">
                                 <div class="time"><a-icon type="clock-circle"></a-icon>${moment(item.start).format('HH:mm')} - ${moment(item.end).format('HH:mm')}</div>
                                 <div class="course-name">${item.title}</div>
                                 <div class="coach-name"><span class="label">教练: </span><span>${renderObj.coach_name}</span></div>
+                                ${courtHtml}
                               </div>`
         let color = ''
         if (moment(item.end) < moment()) {

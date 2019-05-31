@@ -4,8 +4,7 @@
           { label: '全部储值卡项', route: { name: 'brand-product-card-deposite-card-all-list-member-list' } },
           { label: '门店上架储值卡', route: { name: 'brand-product-card-deposite-card-all-list-stop-sale-list' } }
         ]"
-    @change="handleChange"
-  >
+    @change="handleChange">
     <div slot="actions">
       <a-input-search placeholder="请输入" v-model="card_name" @search="onSearch" maxlength="50"></a-input-search>
     </div>
