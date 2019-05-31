@@ -103,7 +103,7 @@ export default {
   watch: {
     'emitData.open_type': {
       handler() {
-        if (this.emitData.open_type === 1) {
+        if (this.emitData.open_type !== 3) {
           this.getTime()
           this.flag = false
         }
