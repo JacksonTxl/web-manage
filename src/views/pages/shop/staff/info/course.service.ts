@@ -12,7 +12,7 @@ interface CourseState{
 export class CourseService extends Store<CourseState> {
     state$: State<CourseState>
     courseInfo$: Computed<Object>
-    constructor(private staffapi: StaffApi) {
+    constructor(private staffApi: StaffApi) {
       super()
       this.state$ = new State({
         courseInfo: {}
@@ -20,14 +20,14 @@ export class CourseService extends Store<CourseState> {
       this.courseInfo$ = new Computed(this.state$.pipe(pluck('courseInfo')))
     }
     getCoursesList(id: string, query: GetStaffCourseListInput) {
-      return this.staffapi.getStaffCourseList(id, query).pipe(
+      return this.staffApi.getStaffCourseList(id, query).pipe(
         tap(res => {
           console.log('====', res)
-          let result = {
+          let result: any = {
             page: res.page,
             list: []
           }
-          res.list.forEach(ele => {
+          res.list.forEach((ele: any) => {
             ele.class_hours = `${ele.start_time} ${ele.stop_time}`
             result.list.push(ele)
           })
@@ -39,11 +39,8 @@ export class CourseService extends Store<CourseState> {
     }
 
     beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-      console.log('sold service', to.meta.query)
       const { id } = to.meta.query
-      console.log('sold service')
       this.getCoursesList(id, {
-
       }).subscribe(() => {
         next()
       })
