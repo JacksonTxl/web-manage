@@ -13,12 +13,37 @@
           treeDefaultExpandAll
           @change="selectDepartment"
         >
-          <a-tree-select-node v-for="item in department" :value="item.id" :title="item.name" :key="item.id">
-            <a-tree-select-node v-for="item1 in item.children" :value="item1.id" :title="item1.name" :key="item1.id">
-              <a-tree-select-node v-for="item2 in item1.children" :value="item2.id" :title="item2.name" :key="item2.id">
-                <a-tree-select-node v-for="item3 in item2.children" :value="item3.id" :title="item3.name" :key="item3.id">
-                  <a-tree-select-node v-for="item4 in item3.children" :value="item4.id" :title="item4.name" :key="item4.id" />>
-              </a-tree-select-node>
+          <a-tree-select-node
+            v-for="item in department"
+            :value="item.id"
+            :title="item.name"
+            :key="item.id"
+          >
+            <a-tree-select-node
+              v-for="item1 in item.children"
+              :value="item1.id"
+              :title="item1.name"
+              :key="item1.id"
+            >
+              <a-tree-select-node
+                v-for="item2 in item1.children"
+                :value="item2.id"
+                :title="item2.name"
+                :key="item2.id"
+              >
+                <a-tree-select-node
+                  v-for="item3 in item2.children"
+                  :value="item3.id"
+                  :title="item3.name"
+                  :key="item3.id"
+                >
+                  <a-tree-select-node
+                    v-for="item4 in item3.children"
+                    :value="item4.id"
+                    :title="item4.name"
+                    :key="item4.id"
+                  />>
+                </a-tree-select-node>
               </a-tree-select-node>
             </a-tree-select-node>
           </a-tree-select-node>
@@ -101,10 +126,16 @@
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown>
               <a-menu-item v-if="record.has_card == 0">
-                <modal-link tag="a" :to="{ name: 'shop-staff-bind-card', props: {staff_name: record.staff_name } }">绑实体卡</modal-link>
+                <modal-link
+                  tag="a"
+                  :to="{ name: 'shop-staff-bind-card', props: {staff_name: record.staff_name } }"
+                >绑实体卡</modal-link>
               </a-menu-item>
               <a-menu-item v-if="record.has_card == 1">
-                <modal-link tag="a" :to="{ name: 'shop-staff-re-bind-card', props: {staff_name: record.staff_name } }">重绑实体卡</modal-link>
+                <modal-link
+                  tag="a"
+                  :to="{ name: 'shop-staff-re-bind-card', props: {staff_name: record.staff_name } }"
+                >重绑实体卡</modal-link>
               </a-menu-item>
               <a-menu-item>
                 <modal-link
@@ -113,15 +144,16 @@
                 >管理登录账号</modal-link>
               </a-menu-item>
               <a-menu-item>
+                <!-- <a-menu-item @click="changeStaffPosition(record.staff_id)"></a-menu-item> -->
                 <modal-link
                   tag="a"
-                  :to="{ name: 'staff-turnover', props: {staff_id: record.staff_id || 1} } "
+                  :to="{ name: 'shop-staff-change-staff-position', props: {data: record}} "
                 >职位变更</modal-link>
               </a-menu-item>
               <a-menu-item>
                 <modal-link
                   tag="a"
-                  :to="{ name: 'staff-update-staff-position', props: {staffId: record.staff_id || 1} }"
+                  :to="{ name: 'shop-staff-wages-account-set', props: {data: record} }"
                 >设置薪资账户</modal-link>
               </a-menu-item>
               <a-menu-item>
@@ -135,14 +167,15 @@
         </template>
       </st-table>
     </a-row>
+    <change-staff-postion :show="visible" :enums="enums" :data="modaldata"/>
   </st-panel>
-  <!-- 绑实体卡、管理登录账号、职位变更、设置薪资账、解除门店关系 -->
 </template>
 
 <script>
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { ListService } from './list.service'
+import ChangeStaffPostion from './list#/change-staff-postion'
 const columns = [
   {
     title: '姓名',
@@ -194,6 +227,9 @@ const columns = [
   }
 ]
 export default {
+  components: {
+    ChangeStaffPostion
+  },
   serviceInject() {
     return {
       userService: UserService,
@@ -209,6 +245,7 @@ export default {
   },
   data() {
     return {
+      visible: false,
       columns,
       pagination: {
         pageSize: this.stafflist.page.size,
@@ -217,13 +254,25 @@ export default {
       },
       selectedRowKeys: [],
       selectStaff: [],
-      value: ''
+      value: '',
+      enums: {},
+      modaldata: {}
     }
   },
   created() {
     console.log('部门列表', this.department)
   },
   methods: {
+    changeStaffPosition(id) {
+      this.userService.getEnums().subscribe(res => {
+        this.enums = res.staff
+        this.visible = true
+        this.modaldata = {
+          nature_work: 1,
+          identity: [1, 2]
+        }
+      })
+    },
     selectDepartment(e) {
       console.log(e)
       this.value = e + ''

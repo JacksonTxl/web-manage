@@ -293,6 +293,7 @@ export default {
     },
     // 继续填写跳转到编辑
     goNext() {
+      e.preventDefault()
       // this.$emit('skiptoedit', {
       //   id: 1,
       //   isShowLevel: this.isShowLevel
