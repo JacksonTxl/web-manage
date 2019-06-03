@@ -1,6 +1,6 @@
 <template>
   <st-modal
-  title="修改剩余课时1"
+  title="修改剩余课时"
   size="small"
   v-model="show"
   wrapClassName="modal-sold-course-surplus">

@@ -83,18 +83,13 @@
             slot-scope="text"
           >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
           <div slot="action" slot-scope="text,record">
-            <a @click="onRefund(record)">退款</a>
+            <a @click="onSetTime(record)">修改有效时间</a>
+            <a @click="onArea(record)">修改入场vip区域</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
               <a-menu-item @click="onFreeze(record)">冻结</a-menu-item>
               <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
-
-              <a-menu-item @click="onGathering(record)">订单收款</a-menu-item>
-              <a-menu-item @click="onTransfer(record,1)">退款</a-menu-item>
-              <a-menu-item @click="onTransfer(record,3)">冻结</a-menu-item>
-              <a-menu-item @click="onTransfer(record,4)">修改剩余价值</a-menu-item>
-              <a-menu-item @click="onTransfer(record,5)">续租</a-menu-item>
-              <a-menu-item @click="onTransfer(record,6)">交易签单</a-menu-item>
+              <a-menu-item @click="onRefund(record)">退款</a-menu-item>
             </st-more-dropdown>
           </div>
         </st-table>
@@ -366,13 +361,35 @@ export default {
         }
       })
     },
-
-    // 变更vip入场区域
-    onArea() {
+    // 修改有效时间
+    onSetTime(record) {
       this.$modalRouter.push({
-        name: 'sold-card-area'
+        name: 'sold-card-set-time',
+        props: {
+          id: record.id
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
       })
     },
+    // 变更vip入场区域
+    onArea(record) {
+      this.$modalRouter.push({
+        name: 'sold-card-area',
+        props: {
+          id: record.id
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
+
     // 额度赠送
     onGiving() {
       this.$modalRouter.push({
