@@ -16,10 +16,12 @@
       <tbody>
         <tr>
           <td colspan="5" class="st-form-table__add">
-            <modal-link tag="a" :to="{ name: 'course-category-add', on: {
-              change: onListChange } }">
-              <st-button type="dashed" block :disabled="resData.total >= resData.max">添加课程类型</st-button>
-            </modal-link>
+              <st-button
+                type="dashed" block :disabled="resData.total >= resData.max"
+                v-modal-link="{ name: 'course-category-add', on: {change: onListChange } }"
+              >
+                添加课程类型
+              </st-button>
           </td>
         </tr>
         <tr v-for="(item, index) in resData.list" :key="index">
@@ -28,10 +30,10 @@
           <td>{{item.operator_name}}</td>
           <td>{{item.updated_time}}</td>
           <td>
-            <modal-link tag="a" :to="{ name: 'coach-level-edit',
+            <a v-modal-link="{ name: 'course-category-edit',
               props: { id: item.id, setting_name: item.setting_name },
               on: { change: onListChange } }">编辑
-            </modal-link>
+            </a>
             <a-popconfirm
               :title="`删除后不可进行恢复，${item.used_number ? '已标记的课程将删除此课程类型，' : ''}确定删除此课程类型？`"
               @confirm="onDelete(item.id)">
