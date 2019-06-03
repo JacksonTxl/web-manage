@@ -1,11 +1,12 @@
 import { ServiceRouteConfig } from 'vue-service-app'
-import { AuthService } from '@/services/auth.service'
+import { TokenService } from '@/services/token.service'
 import { NProgressService } from '@/services/nprogress.service'
 import { HotReleaseService } from '@/services/hot-release.service'
 import { UserService } from '@/services/user.service'
 import pageRoutes from './auto-generated-routes'
 import { TitleService } from '@/services/title.service'
 import { RouteService } from '@/services/route.service'
+import { AuthService } from '@/services/auth.service'
 import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
 import { LayoutShopService } from '@/services/layouts/layout-shop.service'
 import { routeMapConfig } from './route-map.config'
@@ -31,10 +32,10 @@ const routes: any[] = [
     path: '/brand/setting/app',
     redirect: '/brand/setting/app/course/category'
   },
-  {
-    path: '/brand/setting/general',
-    redirect: '/brand/setting/general/brand'
-  },
+  // {
+  //   path: '/brand/setting/general',
+  //   redirect: '/brand/setting/general/brand'
+  // },
   {
     path: '/shop/reception/cabinet',
     redirect: '/shop/reception/cabinet/temporary'
@@ -80,10 +81,11 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       const appGuards: any[] = [
         HotReleaseService,
         NProgressService,
-        AuthService,
+        TokenService,
         TitleService,
         UserService,
-        RouteService
+        RouteService,
+        AuthService
       ]
       if (route.name.startsWith('brand')) {
         appGuards.push(LayoutBrandService)

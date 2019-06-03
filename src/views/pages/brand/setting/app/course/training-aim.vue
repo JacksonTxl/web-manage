@@ -1,5 +1,6 @@
 <template>
   <div>
+    <pre>{{auth}}</pre>
     <div class="st-des">
       已添加{{resData.total}}个，支持添加{{resData.max}}个
     </div>
@@ -48,18 +49,21 @@
 import { TrainingAimService } from './training-aim.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
+import { AuthService } from '@/services/auth.service'
 export default {
   serviceInject() {
     return {
       listService: TrainingAimService,
       routeService: RouteService,
-      messageService: MessageService
+      messageService: MessageService,
+      authService: AuthService
     }
   },
   rxState() {
     return {
       resData: this.listService.resData$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.authService.auth$
     }
   },
   methods: {

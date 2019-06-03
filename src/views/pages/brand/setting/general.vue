@@ -1,5 +1,8 @@
 <template>
-  <page-route-nav title="通用设置" v-model="navs"></page-route-nav>
+  <div>
+    <page-route-nav title="通用设置" v-model="navs"></page-route-nav>
+    <router-view></router-view>
+  </div>
 </template>
 <script>
 import PageRouteNav from '@/views/components/page-route-nav#/nav'

@@ -4,7 +4,7 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { ManageApi, ManagePhoneInput } from '@/api/v1/account/manage'
 import { LoginApi, LoginAccountInput } from '@/api/login'
-import { AuthService } from '@/services/auth.service'
+import { TokenService } from '@/services/token.service'
 
 interface StaffState {
   name: string
@@ -14,7 +14,10 @@ interface StaffState {
 export class LoginService extends Store<StaffState> {
   state$: State<StaffState>
   name$: Computed<string>
-  constructor(private loginApi: LoginApi, private authService:AuthService) {
+  constructor(
+    private loginApi: LoginApi,
+    private tokenService: TokenService
+  ) {
     super()
     this.state$ = new State({
       name: 'lee',
@@ -26,7 +29,7 @@ export class LoginService extends Store<StaffState> {
   loginAccount(data: LoginAccountInput) {
     return this.loginApi.loginAccount(data).pipe(
       tap(res => {
-        this.authService.SET_TOKEN(res.token)
+        this.tokenService.SET_TOKEN(res.token)
       })
     )
   }

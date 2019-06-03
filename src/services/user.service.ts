@@ -4,7 +4,7 @@ import { tap, pluck, map } from 'rxjs/operators'
 import { Store } from './store'
 import { forkJoin, of } from 'rxjs'
 import { ConstApi } from '@/api/const'
-import { MenuApi, SetFavoriteInput } from '@/api/v1/common/menu'
+import { MenuApi } from '@/api/v1/common/menu'
 
 interface UserState {
   user: User
@@ -125,14 +125,14 @@ export class UserService extends Store<UserState> {
    * 添加到常用菜单
    * @param id
    */
-  addFavorite(id: SetFavoriteInput) {
+  addFavorite(id: number) {
     return this.menuApi.addFavorite(id)
   }
   /**
    * 删除常用菜单
    * @param id
    */
-  delFavorite(id: SetFavoriteInput) {
+  delFavorite(id: number) {
     return this.menuApi.delFavorite(id)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {

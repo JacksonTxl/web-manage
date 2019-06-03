@@ -5,7 +5,7 @@ import { StResponse } from '@/types/app'
 import qs from 'qs'
 import { Injectable, ServiceRouter } from 'vue-service-app'
 import { I18NService } from './i18n.service'
-import { AuthService } from './auth.service'
+import { TokenService } from './token.service'
 import { AppConfig } from '@/constants/config'
 import { NotificationService } from './notification.service'
 
@@ -41,7 +41,7 @@ interface RequestOptions {
 export class HttpService {
   constructor(
     private i18n: I18NService,
-    private auth: AuthService,
+    private tokenService: TokenService,
     private router: ServiceRouter,
     private notification: NotificationService,
     private appConfig: AppConfig
@@ -121,7 +121,7 @@ export class HttpService {
   }
   get appHeaders() {
     return {
-      token: this.auth.token$.snapshot(),
+      token: this.tokenService.token$.snapshot(),
       'app-id': '11111',
       'app-version': '11111'
     }

@@ -77,10 +77,10 @@ export default {
   },
   computed: {
     menus() {
-      return this.menuData.menus
+      return this.menuData.menus || []
     },
     favorite() {
-      return this.menuData.favorite
+      return this.menuData.favorite || []
     },
     menuMap() {
       return treeToMap(this.menus)
@@ -109,7 +109,7 @@ export default {
       this.$router.push({
         name: menu.url
       })
-      this.addFavorite(key)
+      // this.addFavorite(key)
     },
     addFavorite(id) {
       this.userService.addFavorite(id).subscribe(this.onMenuChange)

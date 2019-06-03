@@ -12,7 +12,7 @@ export class MenuApi extends Api {
    * 标记为常用菜单
    * @param id
   */
-  addFavorite(id: SetFavoriteInput) {
+  addFavorite(id: number) {
     return this.http.post(`${url}/favorite/${id}`)
   }
   /**
@@ -22,11 +22,4 @@ export class MenuApi extends Api {
   delFavorite(id: number) {
     return this.http.delete(`${url}/favorite/${id}`)
   }
-}
-
-export interface SetFavoriteInput {
-  /**
-   * 菜单id
-   */
-  id: number
 }
