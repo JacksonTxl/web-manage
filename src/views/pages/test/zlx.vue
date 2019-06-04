@@ -26,6 +26,7 @@
       <button @click="gotoPast">go to a date in the past</button>
       (also, click a date/time to add an event)
     </div>
+      <TimePicker></TimePicker>
     <FullCalendar
       class='demo-app-calendar'
       ref="fullCalendar"
@@ -49,10 +50,12 @@ import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import TimePicker from './zlx/timepicker#/index'
 
 export default {
   components: {
-    FullCalendar // make the <FullCalendar> tag available
+    FullCalendar, // make the <FullCalendar> tag available
+    TimePicker
   },
   data: function() {
     return {

@@ -18,8 +18,14 @@
           <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-delete', props: {staff_id: record.staff_id || 1} }">删除</modal-link></a-menu-item>
         </st-more-dropdown>
     </div>
-    <div slot="status" slot-scope="status">
-      <a-badge :status="status == 1 ? 'success' : 'error'" />{{status == 1 ? '在职' : '不在职'}}
+    <div slot="work_status" slot-scope="work_status">
+      <a-badge :status="work_status.id == 1 ? 'success' : 'error'" />{{work_status.name}}
+    </div>
+    <div slot="shop" slot-scope="shop">
+      {{shop.name}}
+    </div>
+    <div slot="identity" slot-scope="identity">
+      {{identity | identityNames}}
     </div>
     <div class="page-staff-table-name" slot="staff_name"  slot-scope="text, record">
       <img class="page-staff-table-name__img mg-r8" :src="record.avatar" ><span class="name">{{text}}</span>
@@ -45,6 +51,15 @@ export default {
     loading: {
       type: Boolean,
       defalut: false
+    }
+  },
+  filters: {
+    identityNames(val) {
+      console.log(val)
+      if (val.length === 0) return '无'
+      return val.map(item => {
+        return item.name
+      }).join(',')
     }
   },
   methods: {

@@ -13,29 +13,98 @@ export default {
       treeData: {
         name: '三体云动健身（600）',
         children: [
-          { name: '上海总部' },
-          { name: '上海一部' },
-          { name: '上海二部' },
           {
-            name: '上海三部',
-            children: [
+            'id': 1,
+            'name': '测试测试部门2e12',
+            'children': [
               {
-                name: 'child folder',
-                children: [
-                  { name: 'hello' },
-                  { name: 'wat' }
-                ]
+                'id': 1108,
+                'name': '测试测试部门1',
+                'children': [],
+                'count': 0
               },
-              { name: 'hello' },
-              { name: 'wat' },
               {
-                name: 'child folder',
-                children: [
-                  { name: 'hello' },
-                  { name: 'wat' }
-                ]
+                'id': 1109,
+                'name': '测试测试部门1',
+                'children': [],
+                'count': 0
+              },
+              {
+                'id': 1110,
+                'name': '测试测试部门2',
+                'children': [],
+                'count': 0
+              },
+              {
+                'id': 1111,
+                'name': '测试测试部门2e1',
+                'children': [],
+                'count': 0
+              },
+              {
+                'id': 1112,
+                'name': 'newhello',
+                'children': [],
+                'count': 0
+              },
+              {
+                'id': 3,
+                'name': '测试部门3',
+                'children': [
+                  {
+                    'id': 5,
+                    'name': '测试部门5',
+                    'children': [],
+                    'count': 0
+                  }
+                ],
+                'count': 0
+              },
+              {
+                'id': 6,
+                'name': '测试部门6',
+                'children': [],
+                'count': 0
               }
-            ]
+            ],
+            'count': 80
+          },
+          {
+            'id': 2,
+            'name': '测试部门2',
+            'children': [
+              {
+                'id': 4,
+                'name': '测试部门4',
+                'children': [],
+                'count': 0
+              }
+            ],
+            'count': 0
+          },
+          {
+            'id': 10,
+            'name': 'cupidatat non proident, sunt i',
+            'children': [],
+            'count': 0
+          },
+          {
+            'id': 7,
+            'name': 'cillum dolore eu fugiat nul',
+            'children': [],
+            'count': 0
+          },
+          {
+            'id': 8,
+            'name': 'tempo',
+            'children': [],
+            'count': 0
+          },
+          {
+            'id': 9,
+            'name': 'elit, sed do eiusmod tempor inc',
+            'children': [],
+            'count': 0
           }
         ]
       }

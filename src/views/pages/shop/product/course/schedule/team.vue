@@ -12,6 +12,7 @@
       locale="zh-cn"
       :views="views"
       maxTime="24:00:00"
+      @datesRender="datesRender"
       :weekends="calendarWeekends"
       :customButtons="customButtons"
       :slotLabelFormat="slotLabelFormat"
@@ -89,11 +90,6 @@ export default {
             that.$modalRouter.push({ name: 'schedule-team-copy-schedule' })
           }
         },
-        prev: {
-          click(e) {
-            alert('pre')
-          }
-        },
         custom3: {
           text: '日历',
           click: () => {
@@ -134,9 +130,15 @@ export default {
   },
   mounted() {
     this.setAddButton()
-    this.gotoPast()
   },
   methods: {
+    datesRender(info) {
+      console.log(info)
+      const start = moment(info.view.activeStart).format('YYYY-MM-DD').valueOf()
+      const end = moment(info.view.activeEnd).format('YYYY-MM-DD').valueOf()
+      console.log(start, end)
+      this.$router.push({ query: { start_date: start, end_date: end } })
+    },
     setAddButton() {
       this.$nextTick().then(() => {
         let cellSize = {
@@ -177,10 +179,6 @@ export default {
     },
     toggleWeekends() {
       this.calendarWeekends = !this.calendarWeekends // update a property
-    },
-    gotoPast() {
-      let calendarApi = this.$refs.fullCalendar.getApi() // from the ref="..."
-      calendarApi.prev()
     },
     onEventPositioned() {
 

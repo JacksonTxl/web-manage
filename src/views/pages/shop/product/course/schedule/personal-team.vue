@@ -13,6 +13,7 @@
       locale="zh-cn"
       :views="views"
       maxTime="24:00:00"
+      @datesRender="datesRender"
       :weekends="calendarWeekends"
       :customButtons="customButtons"
       :slotLabelFormat="slotLabelFormat"
@@ -130,6 +131,13 @@ export default {
     })
   },
   methods: {
+    datesRender(info) {
+      console.log(info)
+      const start = moment(info.view.activeStart).format('YYYY-MM-DD').valueOf()
+      const end = moment(info.view.activeEnd).format('YYYY-MM-DD').valueOf()
+      console.log(start, end)
+      this.$router.push({ query: { start_date: start, end_date: end } })
+    },
     setAddButton() {
       this.$nextTick().then(() => {
         const addCardEl = new Vue({

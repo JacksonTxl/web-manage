@@ -40,6 +40,21 @@
           theme="light"
           mode="inline"
         >
+          <a-sub-menu
+            v-for="item in menu"
+            :key="item.id"
+          >
+            <span slot="title">
+              <a-icon type="file"/>
+              <span>{{item.name}}</span>
+            </span>
+            <a-menu-item
+              v-for="subItem in item.children"
+              :key="subItem.id"
+            >
+              {{subItem.name}}
+            </a-menu-item>
+          </a-sub-menu>
           <a-menu-item key="item1">
             <span>
               <a-icon type="file"/>
@@ -192,6 +207,7 @@
 </template>
 <script>
 import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
+import { UserService } from '@/services/user.service'
 export default {
   data() {
     return {
@@ -201,12 +217,14 @@ export default {
   },
   serviceInject() {
     return {
-      layoutBrandSerivce: LayoutBrandService
+      layoutBrandSerivce: LayoutBrandService,
+      userService: UserService
     }
   },
   rxState() {
     return {
-      breadcrumbs: this.layoutBrandSerivce.breadcrumbs$
+      breadcrumbs: this.layoutBrandSerivce.breadcrumbs$,
+      menu: this.userService.menu$
     }
   },
   methods: {

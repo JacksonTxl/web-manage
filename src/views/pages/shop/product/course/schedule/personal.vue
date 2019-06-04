@@ -11,6 +11,7 @@
       locale="zh-cn"
       :views="views"
       maxTime="24:00:00"
+      @datesRender="datesRender"
       :weekends="calendarWeekends"
       :customButtons="customButtons"
       :slotLabelFormat="slotLabelFormat"
@@ -126,31 +127,37 @@ export default {
   },
   mounted() {
     this.setAddButton()
-    this.gotoPast()
   },
   methods: {
+    datesRender(info) {
+      console.log(info)
+      const start = moment(info.view.activeStart).format('YYYY-MM-DD').valueOf()
+      const end = moment(info.view.activeEnd).format('YYYY-MM-DD').valueOf()
+      console.log(start, end)
+      this.$router.push({ query: { start_date: start, end_date: end } })
+    },
     setAddButton() {
       this.$nextTick().then(() => {
-        var cellSize = {
+        let cellSize = {
           width: $('.fc-day').width() + 2, // count border pixels
           heigth: $('.fc-slats > table > tbody > tr').height() - 1
         }
-        var tmpCellCss = [
+        let tmpCellCss = [
           'border: 0px',
           'width:' + (cellSize.width) + 'px',
           'height:' + (cellSize.heigth) + 'px'
         ].join(';')
 
-        var hoverCss = [
+        let hoverCss = [
           'width:' + (cellSize.width - 6 * 2) + 'px', // 3px padding left, 3px padding right
           'height:' + (cellSize.heigth - 4) + 'px', // 2px padding top, 2px padding bottom
           'line-height:' + (cellSize.heigth - 4) + 'px' // center text vertically
         ].join(';')
-        var hoverHtml = '<div class="hover-button" style="' + hoverCss + '">+添加课程排期</div>'
+        let hoverHtml = '<div class="hover-button" style="' + hoverCss + '">+添加课程排期</div>'
 
         $('.fc-widget-content').hover(function() {
           if (!$(this).html()) {
-            for (var i = 0; i < 7; i++) {
+            for (let i = 0; i < 7; i++) {
               $(this).append('<td class="temp-cell" style="' + tmpCellCss + '"></td>')
             }
 
