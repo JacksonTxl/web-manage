@@ -24,12 +24,6 @@ export default {
         }
       }]
     }
-  },
-  created() {
-    console.log('created', 'app')
-    this.$router.push({
-      name: this.navs[0].route.name
-    })
   }
 }
 </script>
