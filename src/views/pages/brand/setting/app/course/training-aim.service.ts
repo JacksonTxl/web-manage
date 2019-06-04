@@ -2,7 +2,14 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { TrainingApi, GetTrainingAimListInput, DeleteTrainingAimInput } from '@/api/v1/setting/training'
+import {
+  TrainingApi,
+  GetTrainingAimListInput,
+  DeleteTrainingAimInput
+} from '@/api/v1/setting/training'
+import {
+  AuthService
+} from '@/services/auth.service'
 
 interface ListState {
   resData: object
@@ -11,7 +18,10 @@ interface ListState {
 export class TrainingAimService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
-  constructor(protected trainingApi: TrainingApi) {
+  constructor(
+    private trainingApi: TrainingApi,
+    private authService: AuthService
+  ) {
     super()
     this.state$ = new State({
       resData: {}
@@ -21,6 +31,7 @@ export class TrainingAimService extends Store<ListState> {
   getTrainingAimList(query: GetTrainingAimListInput) {
     return this.trainingApi.getTrainingAimList(query).pipe(
       tap(res => {
+        res = this.authService.filter(res)
         this.SET_STATE(res)
       })
     )

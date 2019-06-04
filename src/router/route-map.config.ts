@@ -170,10 +170,16 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'brand-setting-app-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.auth = {
+      list: [
+        'brand_shop:member:course_type|list'
+      ]
+    }
+  },
   'brand-setting-app-course-category'(routeConfig: RouteConfig) {
     routeConfig.meta.auth = {
       list: [
-        'brand_shop:member:course_type|list',
         'brand_shop:member:course_type|edit',
         'brand_shop:member:course_type|delete'
       ]
@@ -182,7 +188,6 @@ export const routeMapConfig = {
   'brand-setting-app-course-training-aim'(routeConfig: RouteConfig) {
     routeConfig.meta.auth = {
       list: [
-        'brand_shop:member:training_aim|list',
         'brand_shop:member:training_aim|edit',
         'brand_shop:member:training_aim|delete'
       ]
@@ -191,7 +196,6 @@ export const routeMapConfig = {
   'brand-setting-app-staff-skillful'(routeConfig: RouteConfig) {
     routeConfig.meta.auth = {
       list: [
-        'brand_shop:member:good_at|list',
         'brand_shop:member:good_at|edit',
         'brand_shop:member:good_at|delete'
       ]

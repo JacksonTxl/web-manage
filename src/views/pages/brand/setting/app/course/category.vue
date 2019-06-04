@@ -1,6 +1,6 @@
 <template>
   <div>
-    <pre>{{auth}}</pre>
+    <pre>{{resData.auth}}</pre>
     <div class="st-des">
       已添加{{resData.total}}个，支持添加{{resData.max}}个
     </div>
@@ -30,12 +30,14 @@
           <td>{{item.used_number}}</td>
           <td>{{item.operator_name}}</td>
           <td>{{item.updated_time}}</td>
-          <td>
-            <a v-modal-link="{ name: 'course-category-edit',
+          <td v-if="item.auth">
+            <a v-if="item.auth['brand_shop:member:course_type|edit']"
+              v-modal-link="{ name: 'course-category-edit',
               props: { id: item.id, setting_name: item.setting_name },
               on: { change: onListChange } }">编辑
             </a>
             <a-popconfirm
+              v-if="item.auth['brand_shop:member:course_type|delete']"
               :title="`删除后不可进行恢复，${item.used_number ? '已标记的课程将删除此课程类型，' : ''}确定删除此课程类型？`"
               @confirm="onDelete(item.id)">
               <a class="mg-l8">删除</a>
@@ -50,21 +52,18 @@
 import { CategoryService } from './category.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
-import { AuthService } from '@/services/auth.service'
 export default {
   serviceInject() {
     return {
       listService: CategoryService,
       routeService: RouteService,
-      messageService: MessageService,
-      authService: AuthService
+      messageService: MessageService
     }
   },
   rxState() {
     return {
       resData: this.listService.resData$,
-      query: this.routeService.query$,
-      auth: this.authService.auth$
+      query: this.routeService.query$
     }
   },
   methods: {

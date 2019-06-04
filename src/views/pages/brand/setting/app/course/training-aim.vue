@@ -1,6 +1,6 @@
 <template>
   <div>
-    <pre>{{auth}}</pre>
+    <pre>{{resData.auth}}</pre>
     <div class="st-des">
       已添加{{resData.total}}个，支持添加{{resData.max}}个
     </div>
@@ -30,11 +30,13 @@
           <td>{{item.operator_name}}</td>
           <td>{{item.updated_time}}</td>
           <td>
-            <a v-modal-link="{ name: 'training-edit',
+            <a v-if="item.auth['brand_shop:member:training_aim|edit']"
+              v-modal-link="{ name: 'training-edit',
               props: { id: item.id, setting_name: item.setting_name },
               on: { change: onListChange } }">编辑
             </a>
             <a-popconfirm
+               v-if="item.auth['brand_shop:member:training_aim|delete']"
               :title="`删除后不可进行恢复，${item.used_number ? '已标记的课程将删除此训练目的，' : ''}确定删除此训练目的？`"
               @confirm="onDelete(item.id)">
               <a class="mg-l8">删除</a>
@@ -49,21 +51,19 @@
 import { TrainingAimService } from './training-aim.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
-import { AuthService } from '@/services/auth.service'
 export default {
   serviceInject() {
     return {
       listService: TrainingAimService,
       routeService: RouteService,
-      messageService: MessageService,
-      authService: AuthService
+      messageService: MessageService
     }
   },
   rxState() {
+    const { listService } = this
     return {
-      resData: this.listService.resData$,
-      query: this.routeService.query$,
-      auth: this.authService.auth$
+      resData: listService.resData$,
+      query: this.routeService.query$
     }
   },
   methods: {

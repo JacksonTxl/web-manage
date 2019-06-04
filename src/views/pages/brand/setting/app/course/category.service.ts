@@ -7,6 +7,9 @@ import {
   DeleteCourseCategoryInput,
   GetCourseCategoryListInput
 } from '@/api/v1/setting/course'
+import {
+  AuthService
+} from '@/services/auth.service'
 
 interface ListState {
   resData: object
@@ -16,7 +19,8 @@ export class CategoryService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
   constructor(
-    protected courseApi: CourseApi
+    private authService: AuthService,
+    private courseApi: CourseApi
   ) {
     super()
     this.state$ = new State({
@@ -27,6 +31,7 @@ export class CategoryService extends Store<ListState> {
   getCourseCategoryList(query: GetCourseCategoryListInput) {
     return this.courseApi.getCourseCategoryList(query).pipe(
       tap(res => {
+        res = this.authService.filter(res)
         this.SET_STATE(res)
       })
     )
