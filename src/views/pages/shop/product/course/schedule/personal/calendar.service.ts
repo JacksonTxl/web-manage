@@ -4,7 +4,7 @@ import { PersonalScheduleCommonService as CommonService } from '../personal.serv
 import { PersonalScheduleReserveService as ReserveService } from '../personal.service#/reserve.service'
 
 @Injectable()
-export class PersonalService implements RouteGuard {
+export class CalendarService implements RouteGuard {
   constructor(private commonService: CommonService,
     private reserveService: ReserveService) { }
 

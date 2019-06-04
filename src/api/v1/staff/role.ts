@@ -35,19 +35,19 @@ export class RoleApi extends Api {
    * 添加角色
    */
   add(params: RoleInfo) {
-    return this.http.post(`v1/common/role`, { params })
+    return this.http.post(`/v1/common/role`, { params })
   }
   /**
    * 删除角色
    */
   del(params: GetInitInfoPut) {
-    return this.http.delete(`v1/common/role`, { params })
+    return this.http.delete(`/v1/common/role/${params.role_id}`)
   }
   /**
    * 编辑角色
    */
   update(params: RoleInfo) {
-    return this.http.put(`v1/common/role`, { params })
+    return this.http.put(`/v1/common/role/${params.id}`, { params })
   }
 }
 
@@ -55,6 +55,7 @@ export interface GetInitInfoPut {
   role_id: string
 }
 export interface RoleInfo{
+  id?: number
   name: string,
   dole_description: string,
   data_grant: number,

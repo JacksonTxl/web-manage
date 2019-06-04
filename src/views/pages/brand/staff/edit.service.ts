@@ -13,7 +13,7 @@ export class EditService extends SetService {
     this.getCountryCodes().subscribe(res => {
       console.log('mobel', res)
     })
-    this.getStaffBrandReview(Number(staffId)).subscribe(res => {
+    this.getStaffBrandReview(staffId).subscribe(res => {
       this.SET_STAFF_BRND(res)
       next()
     })

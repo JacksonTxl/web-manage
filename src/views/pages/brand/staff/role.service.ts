@@ -52,19 +52,19 @@ export class RoleService extends Store<SetState> {
    * 添加角色
    */
   add(params: RoleInfo) {
-    this.roleApi.add(params)
+    return this.roleApi.add(params)
   }
   /**
    * 删除角色
    */
   del(params: GetInitInfoPut) {
-    this.roleApi.del(params)
+    return this.roleApi.del(params)
   }
   /**
    * 编辑角色
    */
   update(params: RoleInfo) {
-    this.roleApi.update(params)
+    return this.roleApi.update(params)
   }
   getInit() {
     return forkJoin(this.getAllList(), this.getInfo({ role_id: '1' }), this.getInitInfo({ role_id: '1' }), this.getNormalList())
