@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="绑定实体卡" size="small" v-model="show" @ok="onSubmit">
+  <st-modal title="工资账户设置" size="small" v-model="show" @ok="onSubmit">
     <section>
       <div >
          <template v-for="item in data.identity">
@@ -18,17 +18,21 @@
         @submit="onSubmit"
         class="mg-t24"
       >
-        <st-form-item label="实体卡号" required>
-          <a-input placeholder="请输入实体卡号"/>
+      <st-form-item label="姓名" required>
+          <a-input placeholder="请输入姓名" v-decorator="['account_name',{ rules: [{ required: true, message: '请输入姓名' }]}]"/>
         </st-form-item>
-        <st-form-item label="物理ID" required>
-          <a-input placeholder="请将实体卡置于读卡器上"/>
+        <st-form-item label="银行卡号" required>
+          <a-input placeholder="请输入银行卡号" v-decorator="['card_number',{ rules: [{ required: true, message: '请输入银行卡号' }]}]"/>
+        </st-form-item>
+        <st-form-item label="开户银行" required>
+          <a-input placeholder="请输入开户银行" v-decorator="['bank_name',{ rules: [{ required: true, message: '请输入开户银行' }]}]"/>
         </st-form-item>
       </st-form>
     </section>
   </st-modal>
 </template>
 <script>
+
 import { BindService } from './bind.service'
 import { MessageService } from '@/services/message.service'
 
@@ -55,8 +59,8 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
-          this.service.bind(this.data.id).subscribe(res => {
+          console.log(values)
+          this.service.bindbank(this.data.id, values).subscribe(res => {
             this.message.success({ content: '绑卡成功' })
             this.show = false
           })

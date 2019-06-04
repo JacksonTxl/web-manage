@@ -2,7 +2,11 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { CourseApi, DeleteCourseCategoryInput, GetCourseCategoryListInput } from '@/api/v1/setting/course'
+import {
+  CourseApi,
+  DeleteCourseCategoryInput,
+  GetCourseCategoryListInput
+} from '@/api/v1/setting/course'
 
 interface ListState {
   resData: object
@@ -11,7 +15,9 @@ interface ListState {
 export class CategoryService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
-  constructor(protected courseApi: CourseApi) {
+  constructor(
+    protected courseApi: CourseApi
+  ) {
     super()
     this.state$ = new State({
       resData: {}

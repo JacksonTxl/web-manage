@@ -16,10 +16,11 @@
       <tbody>
         <tr>
           <td colspan="5" class="st-form-table__add">
-            <modal-link tag="a" :to="{ name: 'skillful-add', on: {
-              change: onListChange } }">
-              <st-button type="dashed" block :disabled="resData.total >= resData.max">添加擅长项目</st-button>
-            </modal-link>
+            <st-button type="dashed" block :disabled="resData.total >= resData.max"
+              v-modal-link="{ name: 'skillful-add', on: { change: onListChange } }"
+            >
+              添加擅长项目
+            </st-button>
           </td>
         </tr>
         <tr v-for="(item, index) in resData.list" :key="index">
@@ -28,10 +29,11 @@
           <td>{{item.operator_name}}</td>
           <td>{{item.updated_time}}</td>
           <td>
-            <modal-link tag="a" :to="{ name: 'coach-level-edit',
+            <a v-modal-link="{ name: 'skillful-edit',
               props: { id: item.id, setting_name: item.setting_name },
-              on: { change: onListChange } }">编辑
-            </modal-link>
+              on: { change: onListChange } }">
+              编辑
+            </a>
             <a-popconfirm
               :title="`删除后不可进行恢复，${item.used_number ? '已标记的员工将删除此擅长项目，' : ''}确定删除此擅长项目？`"
               @confirm="onDelete(item.id)">

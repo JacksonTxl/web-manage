@@ -8,7 +8,7 @@ import { AppConfig } from '@/constants/config'
  * token验证
  */
 @Injectable()
-export class AuthService {
+export class TokenService {
   constructor(private router: ServiceRouter, private appConfig: AppConfig) {}
   getAuthToken() {
     return Cookie.get(this.appConfig.TOKEN_NAME)

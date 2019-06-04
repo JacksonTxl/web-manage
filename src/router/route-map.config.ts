@@ -4,7 +4,8 @@ interface RouteConfig extends ServiceRouteConfig {
   meta: {
     layout: string
     title: string
-  }
+    auth: object
+  },
 }
 interface StaffEdit extends ServiceRouteConfig {
   staff_id?: number
@@ -167,6 +168,33 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
+    }
+  },
+  'brand-setting-app-course-category'(routeConfig: RouteConfig) {
+    routeConfig.meta.auth = {
+      list: [
+        'brand_shop:member:course_type|list',
+        'brand_shop:member:course_type|edit',
+        'brand_shop:member:course_type|delete'
+      ]
+    }
+  },
+  'brand-setting-app-course-training-aim'(routeConfig: RouteConfig) {
+    routeConfig.meta.auth = {
+      list: [
+        'brand_shop:member:training_aim|list',
+        'brand_shop:member:training_aim|edit',
+        'brand_shop:member:training_aim|delete'
+      ]
+    }
+  },
+  'brand-setting-app-staff-skillful'(routeConfig: RouteConfig) {
+    routeConfig.meta.auth = {
+      list: [
+        'brand_shop:member:good_at|list',
+        'brand_shop:member:good_at|edit',
+        'brand_shop:member:good_at|delete'
+      ]
     }
   }
 }

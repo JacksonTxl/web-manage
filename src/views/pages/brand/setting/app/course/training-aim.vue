@@ -1,5 +1,6 @@
 <template>
   <div>
+    <pre>{{auth}}</pre>
     <div class="st-des">
       已添加{{resData.total}}个，支持添加{{resData.max}}个
     </div>
@@ -16,10 +17,11 @@
       <tbody>
         <tr>
           <td colspan="5" class="st-form-table__add">
-            <modal-link tag="a" :to="{ name: 'training-add', on: {
-              change: onListChange } }">
-              <st-button type="dashed" block :disabled="resData.total >= resData.max">添加训练目的</st-button>
-            </modal-link>
+            <st-button type="dashed" block :disabled="resData.total >= resData.max"
+              v-modal-link="{ name: 'training-add', on: {
+              change: onListChange } }"
+            >添加训练目的
+            </st-button>
           </td>
         </tr>
         <tr v-for="(item, index) in resData.list" :key="index">
@@ -28,10 +30,10 @@
           <td>{{item.operator_name}}</td>
           <td>{{item.updated_time}}</td>
           <td>
-            <modal-link tag="a" :to="{ name: 'coach-level-edit',
+            <a v-modal-link="{ name: 'training-edit',
               props: { id: item.id, setting_name: item.setting_name },
               on: { change: onListChange } }">编辑
-            </modal-link>
+            </a>
             <a-popconfirm
               :title="`删除后不可进行恢复，${item.used_number ? '已标记的课程将删除此训练目的，' : ''}确定删除此训练目的？`"
               @confirm="onDelete(item.id)">
@@ -47,18 +49,21 @@
 import { TrainingAimService } from './training-aim.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
+import { AuthService } from '@/services/auth.service'
 export default {
   serviceInject() {
     return {
       listService: TrainingAimService,
       routeService: RouteService,
-      messageService: MessageService
+      messageService: MessageService,
+      authService: AuthService
     }
   },
   rxState() {
     return {
       resData: this.listService.resData$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.authService.auth$
     }
   },
   methods: {

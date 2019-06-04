@@ -67,17 +67,18 @@ export class CardApi extends Api {
   * 售出 储值卡/会员卡 详情
   */
   getCardInfo(id:string, type:string) {
-    return this.http.get(`/v1/sold/cards/${type}/detail/${id}`)
+    return this.http.get(`/v1/sold/cards/${type}/${type === 'member' ? 'info' : 'detail'}/${id}`)
+  //  return this.http.get(`/v1/sold/cards/${type}/detail/${id}`)
   }
   /**
-  * 售出 会员卡 冻结回显
-  */
+   * 售出 会员卡 冻结回显
+   */
   getMemberFreezeInfo(id: string) {
     return this.http.get(`/v1/sold/cards/member/freeze/info/${id}`)
   }
   /**
-  * 售出 会员卡 冻结
-  */
+   * 售出 会员卡 冻结
+   */
   editMemberFreeze(params: FreezeCardInput, id: string) {
     return this.http.put(`/v1/sold/cards/member/freeze/${id}`, { params })
   }
@@ -92,6 +93,12 @@ export class CardApi extends Api {
    */
   getCardOperationInfo(id:string, type:string) {
     return this.http.get(`/v1/sold/cards/${type}/operation/log/${id}`)
+  }
+  /**
+   * 售出 会员卡 设置有效日期回显
+   */
+  getCardSettimeInfo(id: string) {
+    return this.http.get(`/v1/sold/cards/member/setting/info/${id}`)
   }
 
   /* 合同编号自动生成 v1/setting/contract/codenumber/模板TYPE */

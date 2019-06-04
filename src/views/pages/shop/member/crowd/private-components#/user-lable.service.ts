@@ -4,7 +4,7 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { MemberAPi } from '@/api/v1/member'
 import { SwitchApi, SwitchShopInput } from '@/api/v1/account/switch'
-import { AuthService } from '@/services/auth.service'
+import { TokenService } from '@/services/token.service'
 
 interface ShopState {
   shopList: Array<Object>
@@ -16,7 +16,7 @@ export class UserLableService extends Store<ShopState> {
   constructor(
     private shopApi: MemberAPi,
     private switchApi: SwitchApi,
-    private authService: AuthService
+    private tokenService: TokenService
   ) {
     super()
     this.state$ = new State({
@@ -31,7 +31,7 @@ export class UserLableService extends Store<ShopState> {
     return this.switchApi.switchShop(params).pipe(
       tap(res => {
         console.log(res)
-        this.authService.SET_TOKEN(res.token)
+        this.tokenService.SET_TOKEN(res.token)
       })
     )
   }
