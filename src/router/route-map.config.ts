@@ -4,7 +4,7 @@ interface RouteConfig extends ServiceRouteConfig {
   meta: {
     layout: string
     title: string
-    authList: string[]
+    auth: object
   },
 }
 interface StaffEdit extends ServiceRouteConfig {
@@ -171,24 +171,30 @@ export const routeMapConfig = {
     }
   },
   'brand-setting-app-course-category'(routeConfig: RouteConfig) {
-    routeConfig.meta.authList = [
-      'brand_shop:member:course_type|list',
-      'brand_shop:member:course_type|edit',
-      'brand_shop:member:course_type|delete'
-    ]
+    routeConfig.meta.auth = {
+      list: [
+        'brand_shop:member:course_type|list',
+        'brand_shop:member:course_type|edit',
+        'brand_shop:member:course_type|delete'
+      ]
+    }
   },
   'brand-setting-app-course-training-aim'(routeConfig: RouteConfig) {
-    routeConfig.meta.authList = [
-      'brand_shop:member:training_aim|list',
-      'brand_shop:member:training_aim|edit',
-      'brand_shop:member:training_aim|delete'
-    ]
+    routeConfig.meta.auth = {
+      list: [
+        'brand_shop:member:training_aim|list',
+        'brand_shop:member:training_aim|edit',
+        'brand_shop:member:training_aim|delete'
+      ]
+    }
   },
   'brand-setting-app-staff-skillful'(routeConfig: RouteConfig) {
-    routeConfig.meta.authList = [
-      'brand_shop:member:good_at|list',
-      'brand_shop:member:good_at|edit',
-      'brand_shop:member:good_at|delete'
-    ]
+    routeConfig.meta.auth = {
+      list: [
+        'brand_shop:member:good_at|list',
+        'brand_shop:member:good_at|edit',
+        'brand_shop:member:good_at|delete'
+      ]
+    }
   }
 }

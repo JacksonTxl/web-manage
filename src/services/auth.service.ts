@@ -28,9 +28,9 @@ export class AuthService extends Store<AuthState> {
     })
   }
   getAuth(params: CheckInput) {
-    if (!params.auth_list.length || Object.keys(this.auth$.snapshot()).length) {
-      return of({})
-    }
+    // if (!params.auth_list.length || Object.keys(this.auth$.snapshot()).length) {
+    //   return of({})
+    // }
     return this.authApi.check(params).pipe(
       tap(res => {
         this.SET_AUTH_LIST(res)
@@ -38,7 +38,8 @@ export class AuthService extends Store<AuthState> {
     )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    const authList = to.meta.authList || []
+    const auth = to.meta.auth || {}
+    const authList = auth.list || []
     this.getAuth({
       auth_list: authList
     }).subscribe(() => {
