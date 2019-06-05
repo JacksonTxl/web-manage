@@ -17,14 +17,6 @@ export class RouteService extends Store<ServiceRoute> {
     this.query$ = new Computed(this.state$.pipe(pluck('meta', 'query')))
     this.layout$ = new Computed(this.state$.pipe(pluck('meta', 'layout')))
   }
-  navigateTo(route: any, to: any, next: any) {
-    const name = route.name
-    if (to.name !== name) {
-      next(route)
-    } else {
-      next()
-    }
-  }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     if (!to.meta.layout && to.name) {
       console.warn(`can not find meta.layout on route -> ${to.name}`)

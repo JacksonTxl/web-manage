@@ -14,8 +14,18 @@
 </template>
 
 <script>
+import { ListService } from './list.service'
 export default {
-  name: 'list',
+  serviceInject() {
+    return {
+      listService: ListService
+    }
+  },
+  rxState() {
+    return {
+      tabs: this.listService.tabs$
+    }
+  },
   data() {
     return {
       cardName: ''

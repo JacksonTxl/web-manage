@@ -67,13 +67,10 @@ export class AuthService extends Store<AuthState> {
     resData.auth = this.auth$.snapshot()
     return resData
   }
+  can(authKey: string) {
+    return 1
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    const auth = to.meta.auth || {}
-    const authList = auth.list || []
-    this.getAuth({
-      auth_list: authList
-    }).subscribe(() => {
-      next()
-    })
+    next()
   }
 }

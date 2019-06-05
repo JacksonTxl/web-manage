@@ -172,10 +172,8 @@ export const routeMapConfig = {
     }
   },
   'brand-setting-app'(routeConfig: RouteConfig) {
-    routeConfig.meta.name = 'brand-setting-app'
   },
   'brand-setting-app-course'(routeConfig: RouteConfig) {
-    routeConfig.meta.name = 'brand-setting-app-course'
     routeConfig.meta.auth = {
       list: [
         'brand_shop:member:course_type|list'

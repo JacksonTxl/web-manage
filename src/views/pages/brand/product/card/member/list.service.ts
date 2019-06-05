@@ -7,7 +7,7 @@ interface SetState {
   tabs: object[]
 }
 @Injectable()
-export class AppService extends Store<SetState> implements RouteGuard {
+export class ListService extends Store<SetState> implements RouteGuard {
   state$: State<SetState>
   tabs$: Computed<object[]>
   constructor(
@@ -22,19 +22,19 @@ export class AppService extends Store<SetState> implements RouteGuard {
   initTabs() {
     const can = this.authService.can
     const tabs: object[] = []
-    if (can('课程的auth key')) {
+    if (can('会员卡项的auth key')) {
       tabs.push({
-        label: '课程',
+        label: '会员卡项',
         route: {
-          name: 'brand-setting-app-course-category'
+          name: 'brand-product-card-member-list-member-list'
         }
       })
     }
-    if (can('员工的auth key')) {
+    if (can('门店上架卡项的auth key')) {
       tabs.push({
-        label: '员工',
+        label: '门店上架卡项',
         route: {
-          name: 'brand-setting-app-staff-skillful'
+          name: 'brand-product-card-member-list-stop-sale-list'
         }
       })
     }
@@ -43,10 +43,9 @@ export class AppService extends Store<SetState> implements RouteGuard {
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    console.log('before route enter, app', location.pathname, to, to.name, from)
     this.initTabs()
     const target = this.tabs$.snapshot()[0].route
-    if (to.name === 'brand-setting-app') {
+    if (to.name === 'brand-product-card-member-list') {
       next(target)
     } else {
       next()
