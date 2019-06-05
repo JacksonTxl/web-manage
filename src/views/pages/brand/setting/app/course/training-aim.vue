@@ -1,6 +1,6 @@
 <template>
   <div>
-    <pre>{{resData.auth}}</pre>
+    <pre>{{auth}}</pre>
     <div class="st-des">
       已添加{{resData.total}}个，支持添加{{resData.max}}个
     </div>
@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-if="auth.isAdd">
           <td colspan="5" class="st-form-table__add">
             <st-button type="dashed" block :disabled="resData.total >= resData.max"
               v-modal-link="{ name: 'training-add', on: {
@@ -63,7 +63,8 @@ export default {
     const { listService } = this
     return {
       resData: listService.resData$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: listService.auth$
     }
   },
   methods: {

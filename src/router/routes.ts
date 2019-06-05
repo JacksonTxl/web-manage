@@ -28,10 +28,6 @@ const routes: any[] = [
     path: '/brand/product/card/deposite-card/shop-sale-list',
     redirect: '/brand/product/card/deposite-card/shop-sale-list/brand'
   },
-  // {
-  //   path: '/brand/setting/general',
-  //   redirect: '/brand/setting/general/brand'
-  // },
   {
     path: '/shop/reception/cabinet',
     redirect: '/shop/reception/cabinet/temporary'

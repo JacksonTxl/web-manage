@@ -12,7 +12,7 @@
   </st-panel>
 </template>
 <script>
-import { RouteService } from '../../../../../../services/route.service'
+import { RouteService } from '@/services/route.service'
 export default {
   name: 'PersonalCourseList',
   serviceInject() {

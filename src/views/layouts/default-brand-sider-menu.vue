@@ -105,7 +105,11 @@ export default {
     onClickMenu({ key }) {
       this.selectedKeys = [key]
       const menu = this.menuMap[key]
-      console.log(key, menu)
+      console.log(key, menu, this.$route)
+      console.log('11111', menu.url, this.$route.name)
+      if (this.$route.name.indexOf(menu.url) > -1) {
+        return
+      }
       this.$router.push({
         name: menu.url
       })

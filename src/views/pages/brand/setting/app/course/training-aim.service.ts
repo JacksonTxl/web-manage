@@ -18,15 +18,20 @@ interface ListState {
 export class TrainingAimService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
+  auth$: Computed<object>
   constructor(
     private trainingApi: TrainingApi,
     private authService: AuthService
   ) {
     super()
     this.state$ = new State({
-      resData: {}
+      resData: {},
+      auth: {
+        isAdd: this.authService.can('brand_shop:member:training_aim|add')
+      }
     })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   getTrainingAimList(query: GetTrainingAimListInput) {
     return this.trainingApi.getTrainingAimList(query).pipe(
