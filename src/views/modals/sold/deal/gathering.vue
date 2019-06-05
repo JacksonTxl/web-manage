@@ -60,22 +60,26 @@
             </st-input-number>
           </st-form-item>
           <st-form-item label="支付方式" class="mgb-18" required>
-            <a-radio-group>
+            <a-radio-group @change="selectPay">
               <a-radio :value="1">线下支付宝</a-radio>
               <a-radio :value="2">线下微信</a-radio>
               <a-radio :value="3">现金</a-radio>
               <a-radio :value="4">银行转账</a-radio>
-              <a-radio :value="5">其它</a-radio>
+              <a-radio :value="5">储值卡</a-radio>
             </a-radio-group>
           </st-form-item>
-          <st-form-item label="备注" class="mg-b0">
-            <a-textarea :autosize="{ minRows: 4, maxRows: 6 }" />
+          <st-form-item label="储值卡" class="mgb-18" v-if="selectPayValues===5" required>
+            <a-select placeholder="请选择储值卡">
+                  <a-select-option value="1">储值卡1 余额998元</a-select-option>
+                  <a-select-option value="2">储值卡2 余额98元</a-select-option>
+                  <a-select-option value="3">储值卡3 余额8元</a-select-option>
+                </a-select>
           </st-form-item>
         </div>
       </st-form>
     </div>
     <template slot="footer">
-      <st-button type="primary">立即支付</st-button>
+      <st-button type="primary">确认收款</st-button>
     </template>
   </st-modal>
 </template>
@@ -89,13 +93,18 @@ export default {
 
   data() {
     return {
-      show: false
+      show: false,
+      selectPayValues: 0
     }
   },
   methods: {
     onOk() {
       this.$emit('ok')
       this.show = false
+    },
+    selectPay(checkedValues) {
+      console.log(checkedValues)
+      this.selectPayValues = checkedValues.target.value
     }
   }
 }
