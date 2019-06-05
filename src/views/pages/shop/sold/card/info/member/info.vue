@@ -10,7 +10,7 @@
         <a-col :span="9">
           <st-info>
             <st-info-item label="卡名">{{info.card_name}}</st-info-item>
-            <st-info-item label="类型">{{info.card_type}}</st-info-item>
+            <st-info-item label="类型">{{info.card_type | enumFilter('sold.card_type')}}</st-info-item>
             <st-info-item label="初始额度">{{info.init_amount}}</st-info-item>
             <st-info-item label="剩余额度">{{info.remain_amount}}</st-info-item>
             <st-info-item label="有效期" class="mg-b0">{{info.start_time}} 至  {{info.end_time}}</st-info-item>
@@ -21,16 +21,37 @@
             <st-info-item label="所属会员">{{info.member_name}}</st-info-item>
             <st-info-item label="手机号">{{info.mobile}}</st-info-item>
             <st-info-item label="订单号">{{info.order_id}}</st-info-item>
-            <st-info-item label="订单状态">{{info.order_status}}</st-info-item>
-            <st-info-item label="当前状态" class="mg-b0">{{info.card_status}}</st-info-item>
+            <st-info-item label="订单状态">{{info.order_status | enumFilter('sold.order_status')}}</st-info-item>
+            <st-info-item label="当前状态" class="mg-b0">{{info.card_status | enumFilter('sold.card_status')}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="6">
           <st-info>
             <st-info-item label="允许转让">{{info.is_transferable | enumFilter('sold.is_transferable')}}</st-info-item>
-            <st-info-item label="转让手续费" v-if="info.transfer_unit">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
-            <st-info-item label="入场场馆">{{info.admission_range}}</st-info-item>
-            <st-info-item label="约课范围">{{info.course_interests}}</st-info-item>
+            <st-info-item label="转让手续费" v-if="info.is_transferable&&info.transfer_unit">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
+            <st-info-item label="入场场馆">
+              <template v-if="+info.admission_range===1">
+                {{info.shop_name}}
+              </template>
+              <template v-if="+info.admission_range===2">
+                <a @click="onShowShops">
+                  {{info.admission_range | enumFilter('sold.admission_range')}}
+                </a>
+              </template>
+              <template v-if="+info.admission_range===3">
+                {{info.admission_range | enumFilter('sold.admission_range')}}
+              </template>
+            </st-info-item>
+            <st-info-item label="约课范围">
+              <template v-if="+info.course_interests===4">
+                <a @click="onShowCourses">
+                  {{info.course_interests | enumFilter('sold.course_interests')}}
+                </a>
+              </template>
+              <template v-else>
+                {{info.course_interests | enumFilter('sold.course_interests')}}
+              </template>
+            </st-info-item>
             <st-info-item label="备注" class="mg-b0">{{info.description}}</st-info-item>
           </st-info>
         </a-col>
@@ -69,7 +90,13 @@ export default {
     }
   },
   methods: {
-    moment
+    moment,
+    onShowShops() {
+      console.log('多门店')
+    },
+    onShowCourses() {
+      console.log('多课程')
+    }
   }
 }
 </script>

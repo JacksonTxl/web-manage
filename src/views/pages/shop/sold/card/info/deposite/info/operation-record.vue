@@ -3,7 +3,9 @@
     <st-table
     :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
     :columns="columns"
+    :loading="loading.getList"
     @change="onPageChange"
+    rowKey="id"
     :dataSource="list">
       <template slot="operation_time" slot-scope="text">
         {{moment(text*1000).format('YYYY-MM-DD hh:mm')}}
@@ -47,6 +49,7 @@ export default {
     return {
       page: this.operationRecordService.page$,
       list: this.operationRecordService.list$,
+      loading: this.operationRecordService.loading$,
       query: this.routeService.query$
     }
   },

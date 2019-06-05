@@ -11,8 +11,8 @@
             <st-info-item label="卡名">{{info.card_name}}</st-info-item>
             <st-info-item label="当前额度">{{info.remain_amount}}</st-info-item>
             <st-info-item label="初始额度">{{info.init_amount}}</st-info-item>
-            <st-info-item label="开卡日期">{{!info.is_open?'-':info.start_time}}</st-info-item>
-            <st-info-item label="到期日期">{{!info.is_open?'-':info.end_time}}</st-info-item>
+            <st-info-item label="开卡日期">{{!info.is_open?'-':moment(info.start_time).format('YYYY-MM-DD hh:mm')}}</st-info-item>
+            <st-info-item label="到期日期">{{!info.is_open?'-':moment(info.end_time).format('YYYY-MM-DD hh:mm')}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
@@ -20,19 +20,23 @@
             <st-info-item label="会员姓名">{{info.member_name}}</st-info-item>
             <st-info-item label="手机号">{{info.mobile}}</st-info-item>
             <st-info-item label="订单号">{{info.order_id}}</st-info-item>
-            <st-info-item label="订单状态">{{info.order_status | enumFilter('sold.order_status')}}</st-info-item>
+            <st-info-item label="订单状态" v-if="info.order_status">{{info.order_status | enumFilter('sold.order_status')}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
       <st-hr marginTop="0" marginBottom="0" />
-      <st-form labelWidth="68px">
+      <st-form :form="form" labelWidth="68px">
         <div :class="settime('settime')">
           <st-form-item v-if="!!info.is_open" label="到期日期" required labelGutter="12px">
             <a-date-picker
+              :disabledDate="disabledEndDate"
+              v-decorator="['start_time',{rules:[{validator:start_time_validator}]}]"
+              @change="onEndTimeChange"
               style="width: 100%;"
-              disabled
               format="YYYY-MM-DD hh:mm"
-              placeholder="开始时间"
+              :showTime="{format: 'HH:mm'}"
+              placeholder="到期日期"
+              :allowClear="false"
               :showToday="false"
             />
           </st-form-item>
@@ -40,10 +44,14 @@
             <div :class="settime('time')">
               <a-form-item class="page-a-form">
                 <a-date-picker
+                  :disabledDate="disabledEndDate"
+                  v-decorator="['start_time',{rules:[{validator:start_time_validator}]}]"
+                  @change="onEndTimeChange"
                   style="width: 100%;"
-                  disabled
                   format="YYYY-MM-DD hh:mm"
+                  :showTime="{format: 'HH:mm'}"
                   placeholder="开始时间"
+                  :allowClear="false"
                   :showToday="false"
                 />
               </a-form-item>
@@ -57,13 +65,14 @@
       </st-form>
     </div>
     <template slot="footer">
-      <st-button type="primary">确认提交</st-button>
+      <st-button type="primary" @click="onSubmit">确认提交</st-button>
     </template>
   </st-modal>
 </template>
 <script>
 import moment from 'moment'
 import { SetTimeService } from './set-time.service'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'ModalSoldCardSettime',
   bem: {
@@ -83,7 +92,46 @@ export default {
   props: ['id'],
   data() {
     return {
-      show: false
+      show: false,
+      form: this.$form.createForm(this),
+      endTime: null
+    }
+  },
+  methods: {
+    moment,
+    start_time_validator(rule, value, callback) {
+      if (!value) {
+        // eslint-disable-next-line
+        callback('请选择到期日期')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    disabledEndDate(endValue) {
+      return endValue.valueOf() > moment(this.info.end_time).add(1, 'd').valueOf() || endValue.valueOf() < moment().subtract(1, 'd').valueOf()
+    },
+    onEndTimeChange(data) {
+      this.endTime = cloneDeep(data)
+    },
+    onSubmit() {
+      this.form.validateFields((error, values) => {
+        if (!error) {
+          // let sold_type = this.isPackage ? this.packageTransferInfo.sold_type : this.isPersonal ? this.personalCourseInfo.sold_type : '1'
+          // this.transferService.editCourseTransfer({
+          //   member_id: +values.memberId,
+          //   member_name: values.memberName,
+          //   mobile: values.memberMobile,
+          //   remain_price: +values.remainPrice,
+          //   contract_number: values.contractNumber,
+          //   frozen_pay_type: +values.payType,
+          //   sold_type: +sold_type
+          // }, this.id, this.type).subscribe(res => {
+          //   this.$emit('success')
+          //   this.show = false
+          // })
+        }
+      })
     }
   },
   created() {

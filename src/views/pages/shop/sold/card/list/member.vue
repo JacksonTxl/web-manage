@@ -84,12 +84,14 @@
           >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
           <div slot="action" slot-scope="text,record">
             <a @click="onSetTime(record)">修改有效时间</a>
-            <a @click="onArea(record)">修改入场vip区域</a>
+            <a @click="onGiving(record)">赠送额度</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
               <a-menu-item @click="onFreeze(record)">冻结</a-menu-item>
+              <a-menu-item @click="onUnfreeze(record)">取消冻结</a-menu-item>
               <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
               <a-menu-item @click="onRefund(record)">退款</a-menu-item>
+              <a-menu-item @click="onArea(record)">修改入场vip区域</a-menu-item>
             </st-more-dropdown>
           </div>
         </st-table>
@@ -331,6 +333,19 @@ export default {
         }
       })
     },
+    // 取消冻结
+    onUnfreeze(record) {
+      this.$confirm({
+        title: '提示',
+        content: '是否取消冻结？',
+        maskClosable: true,
+        onOk: () => {
+          return this.memberService.unFreeze(record.id).toPromise().then(() => {
+            this.$router.push({ force: true, query: this.query })
+          })
+        }
+      })
+    },
     // 退款
     onRefund(record) {
       this.$modalRouter.push({
@@ -380,7 +395,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-card-area',
         props: {
-          id: record.id
+          id: [record.id]
         },
         on: {
           success: () => {
@@ -389,11 +404,14 @@ export default {
         }
       })
     },
-
     // 额度赠送
-    onGiving() {
+    onGiving(record) {
       this.$modalRouter.push({
-        name: 'sold-card-giving'
+        name: 'sold-card-giving',
+        props: {
+          id: [record.id],
+          type: record.a
+        }
       })
     },
 

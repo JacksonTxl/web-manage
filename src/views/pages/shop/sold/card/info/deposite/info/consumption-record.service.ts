@@ -1,5 +1,5 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
-import { State } from 'rx-state/src'
+import { State, Effect } from 'rx-state/src'
 import { tap } from 'rxjs/operators'
 import { CardApi } from '@/api/v1/sold/cards'
 
@@ -9,8 +9,9 @@ export class ConsumptionRecordService implements RouteGuard {
   page$ = new State({})
   loading$ = new State({})
   constructor(private cardApi: CardApi) {}
+  @Effect()
   getList(id:string, type:string) {
-    return this.cardApi.getCardConsumeInfo(id, type).pipe(tap((res:any) => {
+    return this.cardApi.getCardsConsumeInfo(id, type).pipe(tap((res:any) => {
       this.list$.commit(() => res.list)
       this.page$.commit(() => res.page)
     }))

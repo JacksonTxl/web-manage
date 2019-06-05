@@ -58,7 +58,7 @@
       <!-- 支持入场门店start -->
       <a slot="admission_range.name" slot-scope="text,record" href="javascript:;">
         <span v-if="text !=='单门店'">
-          <modal-link tag="a" :to="{ name: 'card-table-stop' , props:{a: record.id}}">{{text}}</modal-link>
+          <modal-link tag="a" :to="{ name: 'card-table-stop' , props:{id: record.id}}">{{text}}</modal-link>
         </span>
         <span v-else class="use_num">{{text}}</span>
       </a>

@@ -5,26 +5,25 @@
   v-model="show"
   wrapClassName="modal-sold-card-giving">
     <div :class="giving('content')">
-      <a-row :class="giving('info')">
-        <a-col :span="13">
-          <st-info>
-            <st-info-item label="选择个数">1</st-info-item>
-          </st-info>
-        </a-col>
-      </a-row>
       <st-form labelWidth="75px">
         <div :class="giving('giving')">
           <st-form-item label="赠送额度" required>
             <st-input-number
+            v-model="gift_quota"
             :max="99999.9"
             :float="true"
             placeholder="请输入赠送额度"
             v-decorator="['price',{rules:[{validator:price_validator}]}]">
-              <template slot="addonAfter">元</template>
+              <a-select v-model="unit" slot="addonAfter" style="width: 60px">
+                <a-select-option
+                v-for="(item,index) in unitList"
+                :value="item"
+                :key="index" >{{sold.unit.value[item]}}</a-select-option>
+              </a-select>
             </st-input-number>
           </st-form-item>
           <st-form-item label="备注" class="mg-b0">
-            <a-textarea placeholder="请输入备注" :autosize="{ minRows: 4, maxRows: 6 }" />
+            <a-textarea v-model="description" placeholder="请输入备注" :autosize="{ minRows: 4, maxRows: 6 }" />
           </st-form-item>
         </div>
       </st-form>
@@ -36,14 +35,33 @@
 </template>
 
 <script>
+import { UserService } from '@/services/user.service'
 export default {
   name: 'ModalSoldCardGiving',
   bem: {
     giving: 'modal-sold-card-giving'
   },
+  serviceInject() {
+    return {
+      userService: UserService
+    }
+  },
+  rxState() {
+    return {
+      sold: this.userService.soldEnums$
+    }
+  },
+  computed: {
+    unitList() {
+      return Object.keys(this.sold.unit.value)
+    }
+  },
   data() {
     return {
-      show: false
+      show: false,
+      gift_quota: null,
+      unit: 1,
+      description: ''
     }
   },
   methods: {

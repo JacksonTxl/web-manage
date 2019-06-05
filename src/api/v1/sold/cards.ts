@@ -32,6 +32,10 @@ export interface FreezeCardInput {
   poundage?:number
   pay_method?:number
 }
+export interface CardVipInput {
+  id: Array<number|string>
+  vip_id: Array<number|string>
+}
 export class CardApi extends Api {
   /**
    * 会员卡列表
@@ -83,15 +87,21 @@ export class CardApi extends Api {
     return this.http.put(`/v1/sold/cards/member/freeze/${id}`, { params })
   }
   /**
-   * 售出 课程包/私教课 详情消费记录
+   * 取消冻结售出 会员卡/储值卡
    */
-  getCardConsumeInfo(id:string, type:string) {
+  unFreezeCard(id:string, type:string) {
+    return this.http.put(`/v1/sold/cards/${type}/cancel/freeze/${id}`)
+  }
+  /**
+   * 售出 会员卡/储值卡 详情消费记录
+   */
+  getCardsConsumeInfo(id:string, type:string) {
     return this.http.get(`/v1/sold/cards/${type}/consume/record/${id}`)
   }
   /**
-   * 售出 课程包/私教课 详情操作日志
+   * 售出 会员卡/储值卡 详情操作日志
    */
-  getCardOperationInfo(id:string, type:string) {
+  getCardsOperationInfo(id:string, type:string) {
     return this.http.get(`/v1/sold/cards/${type}/operation/log/${id}`)
   }
   /**
@@ -99,6 +109,25 @@ export class CardApi extends Api {
    */
   getCardSettimeInfo(id: string) {
     return this.http.get(`/v1/sold/cards/member/setting/info/${id}`)
+  }
+  /**
+   * 售出 vip区域 列表
+   */
+  getCardVipAreaList() {
+    return this.http.get('/v1/sold/cards/member/vip')
+  }
+  /**
+   * 售出 会员卡 vip区域
+   */
+  getCardVipArea(id:string) {
+    return this.http.get(`/v1/sold/cards/member/vip/info/${id}`)
+  }
+
+  /**
+   * 售出 会员卡修改vip区域
+   */
+  setCardVipArea(params:CardVipInput) {
+    return this.http.put(`/v1/sold/cards/member/vip`, { params })
   }
 
   /* 合同编号自动生成 v1/setting/contract/codenumber/模板TYPE */

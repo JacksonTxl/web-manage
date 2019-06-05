@@ -1,6 +1,6 @@
 <template>
   <section :class="basic()">
-    <st-panel title="会员卡详情">
+    <st-panel title="储值卡详情">
       <div slot="actions">
         <st-button class="mgr-8" type="primary" @click="onRefund">退款</st-button>
         <st-button class="mgr-8" type="primary" @click="onTransfer">转让</st-button>
@@ -12,8 +12,7 @@
             <st-info-item label="类型">{{info.type}}</st-info-item>
             <st-info-item label="初始额度">{{info.init_amount}}</st-info-item>
             <st-info-item label="剩余额度">{{info.now_amount}}</st-info-item>
-            <st-info-item label="有效期">{{moment(info.buy_time*1000).format('YYYY-MM-DD hh:mm')}} 至  {{moment(info.end_time*1000).format('YYYY-MM-DD hh:mm')}}</st-info-item>
-            <st-info-item label="当前状态" class="mg-b0">{{info.is_valid | enumFilter('sold.course_status')}}</st-info-item>
+            <st-info-item label="有效期" class="mg-b0">{{moment(info.buy_time*1000).format('YYYY-MM-DD hh:mm')}} 至  {{moment(info.end_time*1000).format('YYYY-MM-DD hh:mm')}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="9">
@@ -22,17 +21,30 @@
             <st-info-item label="手机号">{{info.mobile}}</st-info-item>
             <st-info-item label="订单号">{{info.order_id}}</st-info-item>
             <st-info-item label="订单状态">{{info.order_status | enumFilter('sold.order_status')}}</st-info-item>
-            <st-info-item label="备注">{{info.description}}</st-info-item>
+            <st-info-item label="当前状态" class="mg-b0">{{info.is_valid | enumFilter('sold.course_status')}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="6">
           <st-info>
-            <st-info-item label="允许转让">{{info.is_transferable}}</st-info-item>
-            <st-info-item label="转让手续费">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
-            <st-info-item label="支持门店">{{info.shop_name}}</st-info-item>
+            <st-info-item label="允许转让">{{info.is_transferable | enumFilter('sold.is_transferable')}}</st-info-item>
+            <st-info-item label="转让手续费" v-if="info.is_transferable&&info.transfer_unit">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
+            <st-info-item label="消费场馆">
+              <template v-if="+info.shop_range===1">
+                {{info.shop_name}}
+              </template>
+              <template v-if="+info.shop_range===2">
+                <a @click="onShowShops">
+                  {{info.shop_range | enumFilter('sold.admission_range')}}
+                </a>
+              </template>
+              <template v-if="+info.shop_range===3">
+                {{info.shop_range | enumFilter('sold.admission_range')}}
+              </template>
+            </st-info-item>
             <st-info-item label="消费类目">
               <span v-for="(item,index) in info.consumer_type" :key="index">{{item | enumFilter('deposit_card.consumer_type')}} <i v-if="index!==info.consumer_type.length-1">、</i> </span>
             </st-info-item>
+            <st-info-item label="备注" class="mg-b0">{{info.description}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -71,6 +83,9 @@ export default {
   },
   methods: {
     moment,
+    onShowShops() {
+      console.log('多店')
+    },
     // 退款
     onRefund() {
       this.$modalRouter.push({
