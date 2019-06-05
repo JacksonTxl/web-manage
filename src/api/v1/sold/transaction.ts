@@ -7,7 +7,19 @@ export class TransactionApi extends Api {
   getTransactionCardInfo(id:string, type:string) {
     return this.http.get(`/v1/order/transaction/${type}/card?id=${id}`)
   }
-
+  /**
+   * 订单支付回显
+   */
+  getTransactionPaymentInfo(order_id:string) {
+    return this.http.get(`/v1/order/transaction/payment`, { mock: {} })
+  }
+  /**
+   * 订单支付
+   * @param params
+   */
+  payOrderTransaction(params: any) {
+    return this.http.post(`/v1/order/transaction/payment`, { params, mock: {} })
+  }
   /* /v1/order/transaction 交易签单—签单列表 */
   getOrderTransaction(query: any) {
     return this.http.get(`/v1/order/transaction`, { query })
