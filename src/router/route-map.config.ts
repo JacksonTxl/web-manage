@@ -4,7 +4,8 @@ interface RouteConfig extends ServiceRouteConfig {
   meta: {
     layout: string
     title: string
-    auth: object
+    auth: object,
+    name: string
   },
 }
 interface StaffEdit extends ServiceRouteConfig {
@@ -170,7 +171,11 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'brand-setting-app'(routeConfig: RouteConfig) {
+    routeConfig.meta.name = 'brand-setting-app'
+  },
   'brand-setting-app-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.name = 'brand-setting-app-course'
     routeConfig.meta.auth = {
       list: [
         'brand_shop:member:course_type|list'

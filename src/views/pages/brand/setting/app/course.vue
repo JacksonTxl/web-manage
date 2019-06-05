@@ -14,12 +14,6 @@ export default {
         { label: '训练目的', route: { name: 'brand-setting-app-course-training-aim' } }
       ]
     }
-  },
-  created() {
-    console.log('created', 'course')
-    this.$router.push({
-      name: this.tabs[0].route.ame
-    })
   }
 }
 </script>
