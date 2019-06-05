@@ -16,6 +16,15 @@
   &__sale{
     padding: 24px 0 18px;
     border-bottom: 1px solid @divider;
+    .add-text{
+      margin: 4px 0 0;
+      .fz(12px);
+      .lh(22px);
+      >span{
+        .c(@link-color);
+        cursor: pointer;
+      }
+    }
     .total{
       .fz(20px);
       .lh(32px);
@@ -87,6 +96,30 @@
       }
     }
   }
+  &__dropdown{
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    border: none;
+    .ant-menu{
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      border: none;
+      border-radius: 4px;
+      span{
+        .c(@text-color);
+      }
+    }
+  }
+  &__discounts-promotion{
+    cursor: pointer;
+  }
+  &__discounts{
+    .ant-form-item-control-wrapper{
+      overflow: inherit;
+    }
+  }
+  &-disabled{
+    outline: 1px solid red;
+  }
   .ant-modal-body{
     padding-bottom: 0;
   }
@@ -94,4 +127,5 @@
     padding: 16px 24px;
     .bg(@bg-gray);
   }
+  
 }

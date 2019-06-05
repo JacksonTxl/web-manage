@@ -24,7 +24,11 @@ export class SaleDepositeCardService {
     }))
   }
   @Effect()
-  getCodeNumber(id:string) {
-    return this.contractApi.getCodeNumber(id)
+  getCodeNumber() {
+    return this.contractApi.getCodeNumber('4')
+  }
+  @Effect()
+  getAdvanceList(id:string|number) {
+    return this.transactionApi.getTransactionAdvanceList(id)
   }
 }
