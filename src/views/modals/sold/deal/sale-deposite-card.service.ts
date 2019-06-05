@@ -4,14 +4,15 @@ import { TransactionApi } from '@/api/v1/sold/transaction'
 import { tap } from 'rxjs/operators'
 import { ContractApi } from '@/api/v1/setting/contract'
 import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
+import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class SaleDepositeCardService {
   loading$ = new State({})
   info$ = new State({})
   memberList$ = new State({})
+  saleList$ = new State({})
   constructor(private contractApi: ContractApi, private memberApi: ShopPersonalCourseApi, private transactionApi: TransactionApi) {}
-  @Effect()
   getInfo(id:string) {
     return this.transactionApi.getTransactionCardInfo(id, 'deposit').pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
@@ -30,5 +31,18 @@ export class SaleDepositeCardService {
   @Effect()
   getAdvanceList(id:string|number) {
     return this.transactionApi.getTransactionAdvanceList(id)
+  }
+  getSaleList() {
+    return this.transactionApi.getTransactionSaleList().pipe(tap((res:any) => {
+      this.saleList$.commit(() => res.list)
+    }))
+  }
+  @Effect()
+  serviceInit(id:string) {
+    return forkJoin(this.getInfo(id), this.getSaleList())
+  }
+  @Effect()
+  setTransaction(params:any) {
+    return this.transactionApi.setTransaction(params, 'deposit')
   }
 }

@@ -3,6 +3,7 @@
   title="交易签单"
   size="small"
   v-model="show"
+  @cancel="onCancel"
   wrapClassName="modal-sold-deal-sale">
     <div :class="sale('content')">
       <a-row :class="sale('info')">
@@ -39,6 +40,7 @@
               :filterOption="false"
               v-decorator="['memberId',{rules:[{validator:member_id_validator}]}]"
               @search="onMemberSearch"
+              @change="onMemberChange"
               notFoundContent="无搜索结果"
             >
               <a-select-option
@@ -74,6 +76,7 @@
               <div :class="sale('discounts-total')">
                 <span>{{advanceText}}</span>
                 <a-dropdown
+                v-model="advanceDropdownVisible"
                 :disabled="advanceList.length===0"
                 :class="sale({disabled:advanceList.length===0})"
                 placement="bottomRight"
@@ -83,37 +86,39 @@
                     <span>定金选择</span>
                     <a-icon type="right" />
                   </div>
-                  <a-radio-group :class="sale('dropdown')" slot="overlay">
+                  <a-radio-group v-model="selectAdvance" @change="onSelectAdvanceChange" :class="sale('dropdown')" slot="overlay">
                     <a-menu>
-                      <a-menu-item key="0">
-                        <a-radio :value="1">Option A</a-radio>
-                      </a-menu-item>
-                      <a-menu-item key="1">
-                        <a-radio :value="2">Option11A</a-radio>
+                      <a-menu-item @click="onSelectAdvance" :key="index" v-for="(item,index) in advanceList">
+                        <a-radio :value="item.id">定金 {{item.price}}</a-radio>
                       </a-menu-item>
                     </a-menu>
                   </a-radio-group>
                 </a-dropdown>
-
               </div>
             </div>
           </st-form-item>
           <st-form-item label="减免金额">
-            <st-input-number placeholder="请输入"></st-input-number>
+            <st-input-number v-model="reduceAmount" :float="true" placeholder="请输入">
+              <span slot="addonAfter">元</span>
+            </st-input-number>
           </st-form-item>
-          <st-form-item class="mg-b0" label="小计">
-            <span class="total">120元</span>
+          <st-form-item validateStatus="error" :help="orderAmountText" class="mg-b0" label="小计">
+            <span class="total">{{orderAmount}}元</span>
           </st-form-item>
         </div>
         <div :class="sale('remarks')">
           <st-form-item label="销售人员" required>
-            <a-select placeholder="选择签单的工作人员">
-              <a-select-option value="jack">Jack</a-select-option>
-              <a-select-option value="lucy">Lucy</a-select-option>
+            <a-select
+            v-decorator="['saleName',{rules:[{validator:sale_name}]}]"
+            placeholder="选择签单的工作人员">
+              <a-select-option
+              v-for="(item,index) in saleList"
+              :key="index"
+              :value="item.id">{{item.staff_name}}</a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item label="备注" class="mg-b0">
-            <a-textarea :autosize="{ minRows: 4, maxRows: 6 }" />
+            <a-textarea v-model="description" :autosize="{ minRows: 4, maxRows: 6 }" />
           </st-form-item>
         </div>
       </st-form>
@@ -121,12 +126,12 @@
     <template slot="footer">
       <div :class="sale('footer')">
         <div class="price">
-          <span>850元</span>
-          <span>订单总额：900元</span>
+          <span>{{orderAmount}}元</span>
+          <span>订单总额：{{info.sell_price}}元</span>
         </div>
         <div class="button">
-          <st-button>创建订单</st-button>
-          <st-button type="primary">立即支付</st-button>
+          <st-button @click="onCreateOrder" :loading="loading.setTransaction">创建订单</st-button>
+          <st-button @click="onPay" :loading="loading.setTransaction" type="primary">立即支付</st-button>
         </div>
       </div>
     </template>
@@ -136,6 +141,8 @@
 <script>
 import { SaleDepositeCardService } from './sale-deposite-card.service'
 import moment from 'moment'
+import { cloneDeep } from 'lodash-es'
+import { timer } from 'rxjs'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -150,7 +157,8 @@ export default {
     return {
       loading: this.saleDepositeCardService.loading$,
       memberList: this.saleDepositeCardService.memberList$,
-      info: this.saleDepositeCardService.info$
+      info: this.saleDepositeCardService.info$,
+      saleList: this.saleDepositeCardService.saleList$
     }
   },
   props: {
@@ -167,12 +175,25 @@ export default {
       memberSearchText: '',
       searchMemberIsShow: true,
       // 定金
+      advanceDropdownVisible: false,
       advanceList: [],
-      advanceText: '未选择定金'
+      advanceText: '未选择定金',
+      advanceAmount: '',
+      selectAdvance: '',
+      reduceAmount: null,
+      description: ''
     }
   },
   created() {
-    this.saleDepositeCardService.getInfo(this.id).subscribe()
+    this.saleDepositeCardService.serviceInit(this.id).subscribe()
+  },
+  computed: {
+    orderAmount() {
+      return this.info.sell_price - +this.reduceAmount - +this.advanceAmount
+    },
+    orderAmountText() {
+      return this.orderAmount < 0 ? '这里不能为负哦，找刚刚要文案' : ''
+    }
   },
   methods: {
     moment,
@@ -215,6 +236,15 @@ export default {
         callback()
       }
     },
+    sale_name(rule, value, callback) {
+      if (!value) {
+        // eslint-disable-next-line
+        callback('请选择销售人员')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
     // 搜索会员
     onMemberSearch(data) {
       this.memberSearchText = data
@@ -228,6 +258,25 @@ export default {
           }
         })
       }
+    },
+    onMemberChange(data) {
+      if (!data) {
+        this.resetAdvance()
+      } else {
+        this.saleDepositeCardService.getAdvanceList(data).subscribe(res => {
+          this.advanceList = cloneDeep(res.list)
+        })
+      }
+    },
+    onSelectAdvance() {
+      timer(200).subscribe(() => {
+        this.advanceDropdownVisible = false
+      })
+    },
+    // 重置定金选择
+    resetAdvance() {
+      this.advanceList = []
+      this.advanceText = '未选择定金'
     },
     // 切换添加会员
     onAddMember() {
@@ -243,6 +292,55 @@ export default {
         this.form.setFieldsValue({
           contractNumber: res.info.code
         })
+      })
+    },
+    onCancel() {
+      this.saleDepositeCardService.memberList$.commit(() => [])
+      this.resetAdvance()
+    },
+    onSelectAdvanceChange(data) {
+      let price = this.advanceList.filter(o => o.id === data.target.value)[0].price
+      this.advanceAmount = price
+      this.advanceText = `${price}元`
+    },
+    onCreateOrder() {
+      this.form.validateFields((error, values) => {
+        if (!error) {
+          this.saleDepositeCardService.setTransaction({
+            'member_id': values.memberId,
+            'member_name': values.memberName,
+            'mobile': values.memberMobile,
+            'deposit_card_id': this.id,
+            'contract_number': values.contractNumber,
+            'advance_id': this.selectAdvance,
+            'reduce_amount': +this.reduceAmount,
+            'sale_id': values.saleName,
+            'description': this.description,
+            'order_amount': this.orderAmount
+          }).subscribe(() => {
+            console.log('成功')
+          })
+        }
+      })
+    },
+    onPay() {
+      this.form.validateFields((error, values) => {
+        if (!error) {
+          this.saleDepositeCardService.setTransaction({
+            'member_id': values.memberId,
+            'member_name': values.memberName,
+            'mobile': values.memberMobile,
+            'deposit_card_id': this.id,
+            'contract_number': values.contractNumber,
+            'advance_id': this.selectAdvance,
+            'reduce_amount': +this.reduceAmount,
+            'sale_id': values.saleName,
+            'description': this.description,
+            'order_amount': this.orderAmount
+          }).subscribe(() => {
+            console.log('成功')
+          })
+        }
       })
     }
   }
