@@ -40,6 +40,7 @@
 import { UserService } from '@/services/user.service'
 import { IndexService } from './index.service'
 export default {
+  name: 'PageShopSoldTransaction',
   serviceInject() {
     return {
       userService: UserService,
@@ -131,7 +132,6 @@ export default {
       /* 课程包 sold-transaction-course-package */
       /* 储物柜 sold-transaction-lockers */
       /* 私教课 sold-transaction-private-teaching */
-      console.log(record)
       let [type, name] = ['', '']
       if (record.product_type !== 3) {
         if (record.product_type === 1) {

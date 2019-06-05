@@ -62,7 +62,7 @@
             slot-scope="text"
           >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
           <div slot="action" slot-scope="text,record">
-            <a @click="onRefund(record)">退款</a>
+            <a @click="onRefund(record)">退款{{loading.getList}}</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
               <a-menu-item @click="onDetail(record)">详情</a-menu-item>
@@ -154,6 +154,7 @@ export default {
   rxState() {
     return {
       list: this.depositeService.list$,
+      loading: this.depositeService.loading$,
       page: this.depositeService.page$,
       package_course: this.userService.packageCourseEnums$,
       sold: this.userService.soldEnums$,

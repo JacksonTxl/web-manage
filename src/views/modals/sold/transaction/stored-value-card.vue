@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="签单" size="small" v-model="show" wrapClassName="modal-sold-course-transfer">
+  <st-modal title="签单(储值卡)" size="small" v-model="show" wrapClassName="modal-sold-course-transfer">
     <div :class="transfer('content')">
       <a-row :class="transfer('info')">
         <a-col :span="13">
@@ -138,6 +138,7 @@ import renewalTime from './components#/renewal-time'
 /*
 组件
 */
+import { StoredValueCardService } from './stored-value-card.service'
 export default {
   components: {
     specifications,
@@ -161,7 +162,18 @@ export default {
     rentalDays,
     renewalTime
   },
-  name: 'ModalSoldCourseTransfer',
+  serviceInject() {
+    return {
+      storedValueCardService: StoredValueCardService
+    }
+  },
+  rxState() {
+    return {
+      storedCardInfo: this.storedValueCardService.storedCardInfo$,
+      loading: this.storedValueCardService.loading$
+    }
+  },
+  name: 'ModalStoredValueCard',
   bem: {
     transfer: 'modal-sold-course-transfer',
     relet: 'modal-sold-lease-relet'
@@ -204,7 +216,11 @@ export default {
       ]
     }
   },
-  created() {},
+  created() {
+    this.storedValueCardService.getStoredValueCardInfo('1558506832897').subscribe(() => {
+      console.log(this.storedCardInfo)
+    })
+  },
   methods: {
     save() {
       this.form.validateFields((error, values) => {

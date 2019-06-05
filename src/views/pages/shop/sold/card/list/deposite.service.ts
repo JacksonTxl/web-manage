@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State } from 'rx-state'
+import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { CardApi, GetMemberListInput } from '@/api/v1/sold/cards'
 
@@ -9,6 +9,7 @@ export class DepositeService implements RouteGuard {
   page$ = new State({})
   loading$ = new State({})
   constructor(private cardApi: CardApi) {}
+  @Effect()
   getList(params: GetMemberListInput) {
     return this.cardApi.getMemberList(params, 'deposit').pipe(tap((res:any) => {
       this.list$.commit(() => res.list)
