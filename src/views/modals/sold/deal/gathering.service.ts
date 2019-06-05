@@ -3,6 +3,13 @@ import { State, Effect } from 'rx-state/src'
 import { TransactionApi } from '@/api/v1/sold/transaction'
 import { tap } from 'rxjs/operators'
 
+export interface OrderPaymentParams {
+  order_id: number,
+  price: string,
+  deposit_id: number,
+  pay_channel: number,
+}
+
 @Injectable()
 export class GatheringService {
   info$ = new State({})
@@ -15,7 +22,7 @@ export class GatheringService {
     }))
   }
   @Effect()
-  payOrderTransaction(params: any) {
+  payOrderTransaction(params: OrderPaymentParams) {
     return this.transactionApi.payOrderTransaction(params).pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
