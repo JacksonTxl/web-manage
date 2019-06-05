@@ -1,6 +1,13 @@
-import { Api } from '../api'
+import { Api } from '../../api'
 
 export class TransactionApi extends Api {
+  /**
+   * 交易签单—储值卡详情
+   */
+  getTransactionCardInfo(id:string, type:string) {
+    return this.http.get(`/v1/order/transaction/${type}/card?id=${id}`)
+  }
+
   /* /v1/order/transaction 交易签单—签单列表 */
   getOrderTransaction(query: any) {
     return this.http.get(`/v1/order/transaction`, { query })

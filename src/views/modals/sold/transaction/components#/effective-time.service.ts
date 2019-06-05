@@ -1,7 +1,7 @@
 import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state/src'
-import { TransactionApi } from '@/api/v1/transaction'
 import { tap } from 'rxjs/operators'
+import { TransactionApi } from '@/api/v1/sold/transaction'
 
 @Injectable()
 export class EffectiveTimeService {
