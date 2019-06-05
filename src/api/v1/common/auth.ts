@@ -8,6 +8,9 @@ export class AuthApi extends Api {
   check(params: CheckInput) {
     return this.http.post('/v1/common/auth/check', { params })
   }
+  getList() {
+    return this.http.get('/v1/common/auth')
+  }
 }
 
 export interface CheckInput {

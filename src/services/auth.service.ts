@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, log } from 'rx-state'
 import { tap, pluck, map } from 'rxjs/operators'
 import { Store } from './store'
-import { AuthApi, CheckInput } from '@/api/v1/common/auth'
+import { AuthApi } from '@/api/v1/common/auth'
 import { of } from 'rxjs'
 
 interface AuthState {
@@ -31,13 +31,11 @@ export class AuthService extends Store<AuthState> {
       state.auth = auth
     })
   }
-  getAuth(params: CheckInput) {
-    if (!params.auth_list.length
-    // || Object.keys(this.auth$.snapshot()).length
-    ) {
+  getList() {
+    if (Object.keys(this.auth$.snapshot()).length) {
       return of({})
     }
-    return this.authApi.check(params).pipe(
+    return this.authApi.getList().pipe(
       tap(res => {
         this.SET_AUTH(res.auth)
       })
@@ -70,7 +68,11 @@ export class AuthService extends Store<AuthState> {
   can(authKey: string) {
     return 1
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    next()
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.getList().subscribe(() => {
+      next()
+    }, () => {
+      next(false)
+    })
   }
 }

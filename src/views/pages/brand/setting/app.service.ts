@@ -46,6 +46,7 @@ export class AppService extends Store<SetState> implements RouteGuard {
     console.log('before route enter, app', location.pathname, to, to.name, from)
     this.initTabs()
     const tabs: any = this.tabs$.snapshot()
+    console.log('tabs', tabs)
     const target = tabs[0].route
     if (to.name === 'brand-setting-app') {
       next(target)
