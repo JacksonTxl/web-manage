@@ -44,7 +44,8 @@ export class ListService extends Store<SetState> implements RouteGuard {
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.initTabs()
-    const target = this.tabs$.snapshot()[0].route
+    const tabs: any = this.tabs$.snapshot()
+    const target = tabs[0].route
     if (to.name === 'brand-product-card-member-list') {
       next(target)
     } else {
