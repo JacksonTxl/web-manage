@@ -105,6 +105,11 @@ export default {
       data,
       columns
     }
+  },
+  mounted() {
+    this.$modalRouter.push({
+      name: 'sold-deal-sale'
+    })
   }
 }
 </script>
