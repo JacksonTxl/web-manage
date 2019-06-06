@@ -22,8 +22,8 @@ export class GatheringService {
     }))
   }
   @Effect()
-  payOrderTransaction(params: OrderPaymentParams) {
-    return this.transactionApi.payOrderTransaction(params).pipe(tap((res:any) => {
+  payTransaction(params: OrderPaymentParams) {
+    return this.transactionApi.payTransaction(params).pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
   }

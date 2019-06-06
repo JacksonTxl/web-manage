@@ -136,9 +136,12 @@ export default {
       e.preventDefault()
       this.form.validateFields().then((values) => {
         values.order_id = this.order_id
-        this.gatheringService.payOrderTransaction(values).subscribe(result => {
+        this.gatheringService.payTransaction(values).subscribe(result => {
           this.$emit('ok')
           this.show = false
+          this.$modalRouter.push({
+            name: 'sold-deal-gathering-tip'
+          })
         })
       })
     }
