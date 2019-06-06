@@ -10,20 +10,18 @@
         <a-col :span="13">
           <st-info>
             <st-info-item label="商品名称">{{info.card_name}}</st-info-item>
-            <st-info-item label="商品类型">{{info.card_type}}</st-info-item>
-            <st-info-item label="消费门店">{{info.consumption_range}}</st-info-item>
-            <st-info-item label="消费类目">
-              <span v-for="(item,index) in info.consume" :key="index">{{item | enumFilter('deposit_card.consumer_type')}} <i v-if="index!==info.consume.length-1">、</i> </span>
-            </st-info-item>
-            <st-info-item class="mg-b24" label="有效时间">{{info.num}}天</st-info-item>
+            <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
+            <st-info-item label="消费门店">{{info.support_shop}}</st-info-item>
+            <st-info-item label="消费类目">{{info.consume_product}}</st-info-item>
+            <st-info-item class="mg-b24" label="有效时间">{{info.valid_time}}天</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
            <st-info>
-            <st-info-item label="允许转让" v-if="info.is_transfer!==undefined">{{info.is_transfer | enumFilter('sold.is_transferable')}}</st-info-item>
-            <st-info-item label="转让手续费" v-if="info.transfer_unit && info.is_transfer!==undefined">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
-            <st-info-item label="储值金额">{{info.card_price}}元</st-info-item>
-            <st-info-item label="线上购买" v-if="info.is_online">{{info.is_online | enumFilter('sold.is_online')}}</st-info-item>
+            <st-info-item label="允许转让">{{info.is_transfer}}</st-info-item>
+            <st-info-item label="转让手续费">{{info.transfer_fee}}</st-info-item>
+            <st-info-item label="储值金额">{{info.card_price}}</st-info-item>
+            <st-info-item label="线上购买">{{info.online_sale}}</st-info-item>
             <st-info-item class="mg-b24" label="售卖群体" v-if="info.sale_range">{{info.sale_range.name}}</st-info-item>
           </st-info>
         </a-col>
