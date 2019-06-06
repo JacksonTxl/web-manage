@@ -80,7 +80,9 @@
             </div>
           </st-form-item>
           <st-form-item label="购买赠送">
-            <a-input-number :min="0" placeholder="请输入赠送的天数/次数" style="width: 100%"></a-input-number>
+            <st-input-number :min="0" placeholder="请输入赠送的天数/次数" style="width: 100%" >
+              <span slot="addonAfter">天</span>
+            </st-input-number>
           </st-form-item>
           <st-form-item label="合同编号" required>
             <div :class="sale('contract')">
