@@ -133,7 +133,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-deal-sale-deposite-card',
         props: {
-          id: '1557818849812'
+          id: '1'
         },
         on: {
           success: () => {
