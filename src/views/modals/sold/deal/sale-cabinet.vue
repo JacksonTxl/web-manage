@@ -3,28 +3,21 @@
   title="交易签单"
   size="small"
   v-model="show"
-  @cancel="onCancel"
   wrapClassName="modal-sold-deal-sale">
     <div :class="sale('content')">
       <a-row :class="sale('info')">
         <a-col :span="13">
           <st-info>
-            <st-info-item label="商品名称">{{info.card_name}}</st-info-item>
-            <st-info-item label="商品类型">{{info.card_type}}</st-info-item>
-            <st-info-item label="消费门店">{{info.consumption_range}}</st-info-item>
-            <st-info-item label="消费类目">
-              <span v-for="(item,index) in info.consume" :key="index">{{item | enumFilter('deposit_card.consumer_type')}} <i v-if="index!==info.consume.length-1">、</i> </span>
-            </st-info-item>
-            <st-info-item class="mg-b24" label="有效时间">{{info.num}}天</st-info-item>
+            <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
+            <st-info-item label="商品类型">{{info.product_type | enumFilter('deposit_card.product_type')}}</st-info-item>
+            <st-info-item class="mg-b24" label="租赁计费">{{info.price}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
            <st-info>
+            <st-info-item label="售卖群体">{{info.crowd.name}}</st-info-item>
             <st-info-item label="允许转让" v-if="info.is_transfer!==undefined">{{info.is_transfer | enumFilter('sold.is_transferable')}}</st-info-item>
-            <st-info-item label="转让手续费" v-if="info.transfer_unit && info.is_transfer!==undefined">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
-            <st-info-item label="储值金额">{{info.card_price}}元</st-info-item>
-            <st-info-item label="线上购买" v-if="info.is_online">{{info.is_online | enumFilter('sold.is_online')}}</st-info-item>
-            <st-info-item class="mg-b24" label="售卖群体" v-if="info.sale_range">{{info.sale_range.name}}</st-info-item>
+            <st-info-item class="mg-b24" label="转让手续费" v-if="info.transfer_unit && info.is_transfer!==undefined">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -61,17 +54,17 @@
             <a-input v-decorator="['memberMobile',{rules:[{validator:member_mobile_validator}]}]" placeholder="请输入手机号"></a-input>
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
-          <st-form-item label="到期时间">{{moment().add(100,'d').format('YYYY-MM-DD hh:mm')}}</st-form-item>
-          <st-form-item label="合同编号" required>
+          <!-- <st-form-item label="到期时间">{{moment().add(100,'d').format('YYYY-MM-DD hh:mm')}}</st-form-item> -->
+          <!-- <st-form-item label="合同编号" required>
             <div :class="sale('contract')">
               <a-input
               v-decorator="['contractNumber',{rules:[{validator:contract_number}]}]"
               placeholder="请输入合同编号"></a-input>
               <st-button class="create-button" @click="onCodeNumber" :loading="loading.getCodeNumber">自动生成</st-button>
             </div>
-          </st-form-item>
-          <st-form-item class="mgb-12" label="商品价格">{{info.sell_price}}元</st-form-item>
-          <st-form-item :class="sale('discounts')" label="定金抵扣">
+          </st-form-item> -->
+          <!-- <st-form-item class="mgb-12" label="商品价格">{{info.sell_price}}元</st-form-item> -->
+          <!-- <st-form-item :class="sale('discounts')" label="定金抵扣">
             <div>
               <div :class="sale('discounts-total')">
                 <span>{{advanceText}}</span>
@@ -99,18 +92,18 @@
                 </a-dropdown>
               </div>
             </div>
-          </st-form-item>
-          <st-form-item label="减免金额">
+          </st-form-item> -->
+          <!-- <st-form-item label="减免金额">
             <st-input-number v-model="reduceAmount" :float="true" placeholder="请输入">
               <span slot="addonAfter">元</span>
             </st-input-number>
-          </st-form-item>
-          <st-form-item validateStatus="error" :help="orderAmountText" class="mg-b0" label="小计">
+          </st-form-item> -->
+          <!-- <st-form-item validateStatus="error" :help="orderAmountText" class="mg-b0" label="小计">
             <span class="total">{{orderAmount}}元</span>
-          </st-form-item>
+          </st-form-item> -->
         </div>
         <div :class="sale('remarks')">
-          <st-form-item label="销售人员" required>
+          <!-- <st-form-item label="销售人员" required>
             <a-select
             v-decorator="['saleName',{rules:[{validator:sale_name}]}]"
             placeholder="选择签单的工作人员">
@@ -119,22 +112,22 @@
               :key="index"
               :value="item.id">{{item.staff_name}}</a-select-option>
             </a-select>
-          </st-form-item>
-          <st-form-item label="备注" class="mg-b0">
+          </st-form-item> -->
+          <!-- <st-form-item label="备注" class="mg-b0">
             <a-textarea v-model="description" :autosize="{ minRows: 4, maxRows: 6 }" />
-          </st-form-item>
+          </st-form-item> -->
         </div>
       </st-form>
     </div>
     <template slot="footer">
       <div :class="sale('footer')">
         <div class="price">
-          <span>{{orderAmount}}元</span>
-          <span>订单总额：{{info.sell_price}}元</span>
+          <!-- <span>{{orderAmount}}元</span>
+          <span>订单总额：{{info.sell_price}}元</span> -->
         </div>
         <div class="button">
-          <st-button @click="onCreateOrder" :loading="loading.setTransaction">创建订单</st-button>
-          <st-button @click="onPay" :loading="loading.setTransactionPay" type="primary">立即支付</st-button>
+          <!-- <st-button @click="onCreateOrder" :loading="loading.setTransaction">创建订单</st-button> -->
+          <!-- <st-button @click="onPay" :loading="loading.setTransactionPay" type="primary">立即支付</st-button> -->
         </div>
       </div>
     </template>
@@ -142,26 +135,25 @@
 </template>
 
 <script>
-import { SaleDepositeCardService } from './sale-deposite-card.service'
+import { SaleCabinetService } from './sale-cabinet.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 export default {
-  name: 'ModalSoldDealSaleMemberCard',
+  name: 'ModalSoldDealSaleCabinet',
   bem: {
     sale: 'modal-sold-deal-sale'
   },
   serviceInject() {
     return {
-      saleDepositeCardService: SaleDepositeCardService
+      saleCabinetService: SaleCabinetService
     }
   },
   rxState() {
     return {
-      loading: this.saleDepositeCardService.loading$,
-      memberList: this.saleDepositeCardService.memberList$,
-      info: this.saleDepositeCardService.info$,
-      saleList: this.saleDepositeCardService.saleList$
+      loading: this.saleCabinetService.loading$,
+      memberList: this.saleCabinetService.memberList$,
+      info: this.saleCabinetService.info$
     }
   },
   props: {
@@ -177,6 +169,7 @@ export default {
       // 搜索会员
       memberSearchText: '',
       searchMemberIsShow: true,
+
       // 定金
       advanceDropdownVisible: false,
       advanceList: [],
@@ -188,7 +181,15 @@ export default {
     }
   },
   created() {
-    this.saleDepositeCardService.serviceInit(this.id).subscribe()
+    this.saleCabinetService.serviceInit(this.id).subscribe()
+    // this.saleCabinetService.setAdvance({
+    //   member_id:20554589995205,
+    //   sale_id:29338200768663,
+    //   pay_price:'2',
+    //   pay_channel:1,
+    //   contract_number:'C62',
+    //   description: '11'
+    // }).subscribe()
   },
   computed: {
     orderAmount() {
@@ -252,10 +253,10 @@ export default {
     onMemberSearch(data) {
       this.memberSearchText = data
       if (data === '') {
-        this.saleDepositeCardService.memberList$.commit(() => [])
+        this.saleCabinetService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
-        this.saleDepositeCardService.getMember(data).subscribe(res => {
+        this.saleCabinetService.getMember(data).subscribe(res => {
           if (!res.list.length) {
             this.form.resetFields(['memberId'])
           }
@@ -266,7 +267,7 @@ export default {
       if (!data) {
         this.resetAdvance()
       } else {
-        this.saleDepositeCardService.getAdvanceList(data).subscribe(res => {
+        this.saleCabinetService.getAdvanceList(data).subscribe(res => {
           this.advanceList = cloneDeep(res.list)
         })
       }
@@ -293,14 +294,14 @@ export default {
       this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
     },
     onCodeNumber() {
-      this.saleDepositeCardService.getCodeNumber().subscribe(res => {
+      this.saleCabinetService.getCodeNumber().subscribe(res => {
         this.form.setFieldsValue({
           contractNumber: res.info.code
         })
       })
     },
     onCancel() {
-      this.saleDepositeCardService.memberList$.commit(() => [])
+      this.saleCabinetService.memberList$.commit(() => [])
       this.resetAdvance()
     },
     onSelectAdvanceChange(data) {
@@ -315,17 +316,17 @@ export default {
     onCreateOrder() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.saleDepositeCardService.setTransaction({
+          this.saleCabinetService.setTransaction({
             'member_id': +values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,
             'deposit_card_id': +this.id,
             'contract_number': values.contractNumber,
-            'advance_id': this.selectAdvance === -1 ? undefined : this.selectAdvance,
-            'reduce_amount': this.reduceAmount,
+            'advance_id': this.selectAdvance === -1 ? undefined : +this.selectAdvance,
+            'reduce_amount': `${this.reduceAmount}`,
             'sale_id': +values.saleName,
             'description': this.description,
-            'order_amount': this.orderAmount,
+            'order_amount': `${this.orderAmount}`,
             'sale_range': +this.info.sale_range.type
           }).subscribe(() => {
             console.log('成功')
@@ -336,17 +337,17 @@ export default {
     onPay() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.saleDepositeCardService.setTransactionPay({
+          this.saleCabinetService.setTransactionPay({
             'member_id': +values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,
             'deposit_card_id': +this.id,
             'contract_number': values.contractNumber,
-            'advance_id': this.selectAdvance === -1 ? undefined : this.selectAdvance,
-            'reduce_amount': this.reduceAmount,
+            'advance_id': this.selectAdvance === -1 ? undefined : +this.selectAdvance,
+            'reduce_amount': `${this.reduceAmount}`,
             'sale_id': +values.saleName,
             'description': this.description,
-            'order_amount': this.orderAmount,
+            'order_amount': `${this.orderAmount}`,
             'sale_range': +this.info.sale_range.type
           }).subscribe(() => {
             console.log('成功')

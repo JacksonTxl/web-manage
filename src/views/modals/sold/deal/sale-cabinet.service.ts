@@ -2,19 +2,19 @@ import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state/src'
 import { TransactionApi } from '@/api/v1/sold/transaction'
 import { tap } from 'rxjs/operators'
-import { ContractApi } from '@/api/v1/setting/contract'
 import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
 import { forkJoin } from 'rxjs'
+import { ContractApi } from '@/api/v1/setting/contract'
 
 @Injectable()
-export class SaleDepositeCardService {
-  loading$ = new State({})
+export class SaleCabinetService {
   info$ = new State({})
+  loading$ = new State({})
   memberList$ = new State({})
   saleList$ = new State({})
-  constructor(private contractApi: ContractApi, private memberApi: ShopPersonalCourseApi, private transactionApi: TransactionApi) {}
+  constructor(private contractApi: ContractApi, private transactionApi: TransactionApi, private memberApi: ShopPersonalCourseApi) {}
   getInfo(id:string) {
-    return this.transactionApi.getTransactionInfo(id, 'deposit').pipe(tap((res:any) => {
+    return this.transactionApi.getTransactionCabinetInfo(id).pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
   }
@@ -24,6 +24,10 @@ export class SaleDepositeCardService {
     }))
   }
   @Effect()
+  serviceInit(id:string) {
+    return forkJoin(this.getInfo(id), this.getSaleList())
+  }
+  @Effect()
   getMember(member:string) {
     return this.memberApi.getMemberList(member).pipe(tap((res:any) => {
       this.memberList$.commit(() => res.list)
@@ -31,22 +35,14 @@ export class SaleDepositeCardService {
   }
   @Effect()
   getCodeNumber() {
-    return this.contractApi.getCodeNumber('4')
+    return this.contractApi.getCodeNumber('5')
   }
   @Effect()
   getAdvanceList(id:string|number) {
     return this.transactionApi.getTransactionAdvanceList(id)
   }
-  @Effect()
-  serviceInit(id:string) {
-    return forkJoin(this.getInfo(id), this.getSaleList())
-  }
-  @Effect()
-  setTransaction(params:any) {
-    return this.transactionApi.setTransaction(params, 'deposit')
-  }
-  @Effect()
-  setTransactionPay(params:any) {
-    return this.transactionApi.setTransaction(params, 'deposit')
+
+  setAdvance(params:any) {
+    return this.transactionApi.setAdvance(params)
   }
 }

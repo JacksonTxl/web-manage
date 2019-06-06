@@ -10,18 +10,18 @@ export class IndexService {
   constructor(private transactionApi: TransactionApi) { }
   @Effect()
   getFreezeInfo(id: any) {
-    return this.transactionApi.getOrderTransaction(id).pipe(tap((res: any) => {
-      console.log(res)
-      this.indexList$.commit(() => res)
-    }))
+    // return this.transactionApi.getOrderTransaction(id).pipe(tap((res: any) => {
+    //   console.log(res)
+    //   this.indexList$.commit(() => res)
+    // }))
   }
   getSetting() {
     return this.transactionApi.getSetting()
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     console.log(to.meta.query)
-    this.getFreezeInfo(to.meta.query).subscribe((res) => {
-      next()
-    })
+    // this.getFreezeInfo(to.meta.query).subscribe((res) => {
+    //   next()
+    // })
   }
 }
