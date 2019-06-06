@@ -31,7 +31,9 @@
         <div slot="action" slot-scope="text,record">
           <a @click="onPay(record)">收钱</a>
           <a-divider type="vertical"></a-divider>
-          <a @click="onDetail(record)">详情</a>
+          <a @click="onCabinet(record)">储物柜</a>
+          <a-divider type="vertical"></a-divider>
+          <a @click="onDetail(record)">储值签单</a>
           <a-divider type="vertical"></a-divider>
           <a @click="onSale(record)">签单</a>
         </div>
@@ -121,8 +123,31 @@ export default {
         }
       ]
     },
+    onCabinet(record) {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale-cabinet',
+        props: {
+          id: '0'
+        },
+        on: {
+          success: () => {
+            console.log('success')
+          }
+        }
+      })
+    },
     onDetail(record) {
-
+      this.$modalRouter.push({
+        name: 'sold-deal-sale-deposite-card',
+        props: {
+          id: '1'
+        },
+        on: {
+          success: () => {
+            console.log('success')
+          }
+        }
+      })
     },
     onPay(record) {
       this.$modalRouter.push({

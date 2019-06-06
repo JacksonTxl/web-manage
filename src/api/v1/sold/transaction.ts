@@ -5,7 +5,13 @@ export class TransactionApi extends Api {
    * 交易签单—储值卡详情
    */
   getTransactionCardInfo(id:string, type:string) {
-    return this.http.get(`/v1/order/transaction/${type}/card?id=${id}`)
+    return this.http.get(`/v1/order/transaction/${type}/card/${id}`)
+  }
+  /**
+   * 交易签单—储物柜详情
+   */
+  getTransactionCabinetInfo(id:string) {
+    return this.http.get(`/v1/order/transaction/cabinet/${id}`)
   }
   /**
    * 订单支付回显
@@ -63,5 +69,9 @@ export class TransactionApi extends Api {
   /* 获取系统时间  */
   getTime() {
     return this.http.get(`/time`)
+  }
+
+  setAdvance(params:any) {
+    return this.http.post(`/v1/finance/advance`, { params })
   }
 }
