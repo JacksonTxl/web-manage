@@ -11,7 +11,7 @@
         <a-select :defaultValue="-1" @change="onShopStatusChange" style="width: 140px" >
           <a-select-option :value="-1">全部运营状态</a-select-option>
           <a-select-option
-            v-for="(item, index) in shopStatus"
+            v-for="(item, index) in shopStatusList"
             :key="index"
             :value="index"
           >
@@ -21,7 +21,7 @@
         <a-select :defaultValue="-1" @change="onIsValidChange" style="width: 140px" class="mg-l8">
           <a-select-option :value="-1">全部系统状态</a-select-option>
           <a-select-option
-            v-for="(item, index) in isValid"
+            v-for="(item, index) in isValidList"
             :key="index"
             :value="index"
           >
@@ -47,14 +47,36 @@
           <td>{{shop.shop_name}}</td>
           <td>{{shop.shop_phones}}</td>
           <td>{{shop.address}}</td>
-          <td>{{shop.shop_status | enumFilter('shop.shop_status')}}</td>
+          <td>
+            {{shop.shop_status | enumFilter('shop.shop_status')}}
+            <st-help-popover v-if="shop.is_holiday" title="放假时间">
+              <div slot="content">
+                {{shop.holiday_start_time}}<br/>
+                {{shop.holiday_end_time}}
+              </div>
+            </st-help-popover>
+          </td>
           <td>{{shop.is_valid | enumFilter('shop.is_valid')}}</td>
           <td>{{shop.expire_time}}</td>
           <td>
             <router-link :to="`./info?id=${shop.shop_id}`">详情</router-link>
             <router-link :to="`./edit?id=${shop.shop_id}`" class="mg-l8">编辑</router-link>
             <st-more-dropdown class="mg-l64">
-              <a-menu-item>更改运营状态</a-menu-item>
+              <a-menu-item
+                v-modal-link="{
+                  name: 'brand-setting-shop-status',
+                  props: {
+                    shopId: shop.shop_id,
+                    shopName: shop.shop_name,
+                    shopStatus: shop.shop_status
+                  },
+                  on: {
+                    change: onListChange
+                  }
+                }"
+              >
+                更改运营状态
+              </a-menu-item>
               <a-menu-item>管理门店放假</a-menu-item>
             </st-more-dropdown>
           </td>
@@ -83,10 +105,10 @@ export default {
     }
   },
   computed: {
-    shopStatus() {
+    shopStatusList() {
       return this.shopEnums.shop_status.value || {}
     },
-    isValid() {
+    isValidList() {
       return this.shopEnums.is_valid.value || {}
     },
     shopList() {
@@ -115,10 +137,13 @@ export default {
         is_valid: isValid
       })
     },
-    onQueryChange(query = {}) {
+    onQueryChange(query = {}, force = false) {
       this.$router.push({
         query: Object.assign(this.query, query)
-      })
+      }, force)
+    },
+    onListChange() {
+      this.onQueryChange({}, true)
     }
   }
 }

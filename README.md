@@ -11,10 +11,10 @@ npm run init
 ### 开发
 
 ```shell
-# linux macos用户
+# linux macos windows 用户
 npm run dev
 
-# window用户 启动两个终端 分别执行
+# 如果有错误 分别执行
 npm run serve
 npm run gulp:dev
 

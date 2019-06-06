@@ -1,4 +1,6 @@
 switch 切换品牌
-setting-team-order 团体课预约设置（通用设置）
-setting-personal-order 私教课预约设置（通用设置）
+setting-team-reserve 团体课预约设置（通用设置）
+setting-personal-reserve 私教课预约设置（通用设置）
 setting-personal-price-model 私教课定价模式设置（通用设置）
+setting-wechat-payment 设置微信支付
+setting-shop-status 更改门店状态
