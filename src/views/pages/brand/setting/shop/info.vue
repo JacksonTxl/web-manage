@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import { InfoService } from '@/views/pages/brand/shop/info.service'
+import { InfoService } from './info.service'
 import { cloneDeep } from 'lodash-es'
 export default {
   serviceInject() {

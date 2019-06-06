@@ -1,13 +1,13 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
+import { State, Computed } from 'rx-state'
+import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { AuthService } from '@/services/auth.service'
 interface SetState {
   tabs: object[]
 }
 @Injectable()
-export class AppService extends Store<SetState> implements RouteGuard {
+export class TemplateService extends Store<SetState> implements RouteGuard {
   state$: State<SetState>
   tabs$: Computed<object[]>
   constructor(
@@ -22,19 +22,19 @@ export class AppService extends Store<SetState> implements RouteGuard {
   initTabs(fn: Function) {
     const can = this.authService.can
     const tabs: object[] = []
-    if (can('课程的auth key')) {
+    if (can('底薪模板的auth key')) {
       tabs.push({
-        label: '课程',
+        label: '底薪模板',
         route: {
-          name: 'brand-setting-app-course-category'
+          name: 'brand-finance-salary-template-basic'
         }
       })
     }
-    if (can('员工的auth key')) {
+    if (can('业绩模板的auth key')) {
       tabs.push({
-        label: '员工',
+        label: '业绩模板',
         route: {
-          name: 'brand-setting-app-staff-skillful'
+          name: 'brand-finance-salary-template-performance'
         }
       })
     }
@@ -46,7 +46,7 @@ export class AppService extends Store<SetState> implements RouteGuard {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.initTabs((tabs: any) => {
       const target = tabs[0].route
-      if (to.name === 'brand-setting-app' && target) {
+      if (to.name === 'brand-finance-salary-template' && target) {
         next(target)
       } else {
         next()

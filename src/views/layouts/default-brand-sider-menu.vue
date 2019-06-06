@@ -45,10 +45,10 @@
             </a-menu-item>
         </a-sub-menu>
         <a-menu-item v-else :key="menu.id">
-          <span>
+          <router-link :to="menu.url || '/'">
             <a-icon type="file"/>
             <span>{{menu.name}}</span>
-          </span>
+          </router-link>
         </a-menu-item>
       </template>
     </a-menu>
@@ -105,8 +105,6 @@ export default {
     onClickMenu({ key }) {
       this.selectedKeys = [key]
       const menu = this.menuMap[key]
-      console.log(key, menu, this.$route)
-      console.log('11111', menu.url, this.$route.name)
       if (this.$route.name.indexOf(menu.url) > -1) {
         return
       }

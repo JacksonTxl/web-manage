@@ -72,7 +72,7 @@ export class AuthService extends Store<AuthState> {
     this.getList().subscribe(() => {
       next()
     }, () => {
-      next(false)
+      next()
     })
   }
 }
