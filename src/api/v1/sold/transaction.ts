@@ -17,9 +17,28 @@ export class TransactionApi extends Api {
    * 订单支付
    * @param params
    */
-  payOrderTransaction(params: any) {
+  payTransaction(params: any) {
     return this.http.post(`/v1/order/transaction/payment`, { params, mock: {} })
   }
+  /**
+   * 定金列表
+   */
+  getTransactionAdvanceList(member_id:string|number) {
+    return this.http.get(`/v1/order/transaction/advance`, { query: { member_id }, mock: {} })
+  }
+  /**
+   * 交易签单—销售列表
+   */
+  getTransactionSaleList() {
+    return this.http.get(`/v1/order/transaction/sale`)
+  }
+  /**
+   * 交易签单
+   */
+  setTransaction(params:any, type:string) {
+    return this.http.post(`/v1/order/transaction/${type}`, { params })
+  }
+
   /* /v1/order/transaction 交易签单—签单列表 */
   getOrderTransaction(query: any) {
     return this.http.get(`/v1/order/transaction`, { query })
@@ -40,10 +59,6 @@ export class TransactionApi extends Api {
   /* 交易签单—用户可使用优惠券列表 /v1/order/transaction/coupon */
   getOrderTransactionCoupon(query: any) {
     return this.http.get(`/v1/order/transaction/coupon`, { query })
-  }
-  /* 交易签单—定金列表 /v1/order/transaction/advance */
-  getOrderTransactionAdvance(query: any) {
-    return this.http.get(`/v1/order/transaction/advance`, { query })
   }
   /* 获取系统时间  */
   getTime() {
