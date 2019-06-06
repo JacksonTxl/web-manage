@@ -103,16 +103,27 @@ export default {
   methods: {
     onSubmit(e) {
       e.preventDefault()
+      const that = this
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
-        console.log('data', data)
-        this.editService.update(data).subscribe(() => {
-          this.messageService.success({
-            content: '更改成功'
+        /**
+         * 修改门店运营状态为暂停营业（3），需二次确认
+         */
+        if (data.shop_status === 3) {
+          this.$confirm({
+            title: '',
+            content: '门店暂停营业后，门店会员无法正常约课、上课、入离场；同时此门店不支持交易开单，请谨慎操作',
+            onOk() {
+              that.editService.update(data).subscribe(() => {
+                that.messageService.success({
+                  content: '更改成功'
+                })
+                that.$emit('change')
+                that.show = false
+              })
+            }
           })
-          this.$emit('change')
-          this.show = false
-        })
+        }
       })
     },
     onCancel() {
