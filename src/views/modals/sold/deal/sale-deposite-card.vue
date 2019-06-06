@@ -20,8 +20,8 @@
         </a-col>
         <a-col :span="11">
            <st-info>
-            <st-info-item label="允许转让" v-if="info.is_transfer">{{info.is_transfer | enumFilter('sold.is_transferable')}}</st-info-item>
-            <st-info-item label="转让手续费" v-if="info.transfer_unit ">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
+            <st-info-item label="允许转让" v-if="info.is_transfer!==undefined">{{info.is_transfer | enumFilter('sold.is_transferable')}}</st-info-item>
+            <st-info-item label="转让手续费" v-if="info.transfer_unit && info.is_transfer!==undefined">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
             <st-info-item label="储值金额">{{info.card_price}}元</st-info-item>
             <st-info-item label="线上购买" v-if="info.is_online">{{info.is_online | enumFilter('sold.is_online')}}</st-info-item>
             <st-info-item label="售卖群体">{{info.sale_range}}</st-info-item>
@@ -83,11 +83,14 @@
                 :getPopupContainer="trigger => trigger.parentNode"
                 :trigger="['click']">
                   <div :class="sale('discounts-promotion')">
-                    <span>定金选择</span>
+                    <span>{{advanceList.length===0?'无定金':'定金选择'}}</span>
                     <a-icon type="right" />
                   </div>
                   <a-radio-group v-model="selectAdvance" @change="onSelectAdvanceChange" :class="sale('dropdown')" slot="overlay">
                     <a-menu>
+                      <a-menu-item @click="onSelectAdvance">
+                        <a-radio :value="-1">不使用</a-radio>
+                      </a-menu-item>
                       <a-menu-item @click="onSelectAdvance" :key="index" v-for="(item,index) in advanceList">
                         <a-radio :value="item.id">定金 {{item.price}}</a-radio>
                       </a-menu-item>
@@ -192,7 +195,7 @@ export default {
       return this.info.sell_price - +this.reduceAmount - +this.advanceAmount
     },
     orderAmountText() {
-      return this.orderAmount < 0 ? '这里不能为负哦，找刚刚要文案' : ''
+      return this.orderAmount < 0 ? '小计不能为负' : ''
     }
   },
   methods: {
@@ -277,6 +280,8 @@ export default {
     resetAdvance() {
       this.advanceList = []
       this.advanceText = '未选择定金'
+      this.advanceAmount = ''
+      this.selectAdvance = ''
     },
     // 切换添加会员
     onAddMember() {
@@ -299,6 +304,10 @@ export default {
       this.resetAdvance()
     },
     onSelectAdvanceChange(data) {
+      if (data === -1) {
+        this.advanceAmount = ''
+        this.advanceText = '未选择定金'
+      }
       let price = this.advanceList.filter(o => o.id === data.target.value)[0].price
       this.advanceAmount = price
       this.advanceText = `${price}元`
@@ -312,7 +321,7 @@ export default {
             'mobile': values.memberMobile,
             'deposit_card_id': this.id,
             'contract_number': values.contractNumber,
-            'advance_id': this.selectAdvance,
+            'advance_id': this.selectAdvance === -1 ? undefined : this.selectAdvance,
             'reduce_amount': +this.reduceAmount,
             'sale_id': values.saleName,
             'description': this.description,
@@ -332,7 +341,7 @@ export default {
             'mobile': values.memberMobile,
             'deposit_card_id': this.id,
             'contract_number': values.contractNumber,
-            'advance_id': this.selectAdvance,
+            'advance_id': this.selectAdvance === -1 ? undefined : this.selectAdvance,
             'reduce_amount': +this.reduceAmount,
             'sale_id': values.saleName,
             'description': this.description,
