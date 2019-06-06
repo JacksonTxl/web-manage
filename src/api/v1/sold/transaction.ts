@@ -4,8 +4,8 @@ export class TransactionApi extends Api {
   /**
    * 交易签单—储值卡详情
    */
-  getTransactionCardInfo(id:string, type:string) {
-    return this.http.get(`/v1/order/transaction/${type}/card?id=${id}`)
+  getTransactionInfo(id:string, type:string) {
+    return this.http.get(`/v1/order/transaction/${type}/card/${id}`)
   }
   /**
    * 订单支付回显
@@ -47,6 +47,11 @@ export class TransactionApi extends Api {
   getSetting() {
     return this.http.get('/v1/course/personal/setting')
   }
+  /* 交易签单—会员卡优惠券列表 */
+  getTransactionMemberCoupon(query: any) {
+    return this.http.get(`/v1/order/transaction/member/coupon`, { query })
+  }
+
   /* 交易签单—会员卡详情 /v1/order/transaction/member/card */
   getOrderTransactionMemberCard(query: any) {
     return this.http.get(`/v1/order/transaction/member/card`, { query })
