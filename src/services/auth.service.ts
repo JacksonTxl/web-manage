@@ -71,6 +71,8 @@ export class AuthService extends Store<AuthState> {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getList().subscribe(() => {
       next()
+    }, () => {
+      next()
     })
   }
 }
