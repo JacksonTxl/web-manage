@@ -16,7 +16,7 @@ export class IndexService {
     // }))
   }
   getSetting() {
-    return this.transactionApi.getSetting()
+    // return this.transactionApi.getSetting()
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     console.log(to.meta.query)
