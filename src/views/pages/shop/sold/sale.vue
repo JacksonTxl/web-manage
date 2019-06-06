@@ -131,7 +131,7 @@ export default {
     },
     onSale(record) {
       this.$modalRouter.push({
-        name: 'sold-deal-sale-deposite-card',
+        name: 'sold-deal-sale-member-card',
         props: {
           id: '1557818849812'
         },
