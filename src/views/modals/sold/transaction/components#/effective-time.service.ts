@@ -10,6 +10,6 @@ export class EffectiveTimeService {
   constructor(private transactionApi: TransactionApi) { }
   getTime() {
     console.log(11)
-    return this.transactionApi.getTime()
+    // return this.transactionApi.getTime()
   }
 }

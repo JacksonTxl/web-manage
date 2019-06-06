@@ -63,7 +63,25 @@
           <st-form-item label="规格" required>
             <a-radio-group :options="normsOptions" />
           </st-form-item>
-          <st-form-item label="到期时间">{{moment().add(100,'d').format('YYYY-MM-DD hh:mm')}}</st-form-item>
+          <st-form-item label="开卡方式" required>
+            <a-radio-group :options="paymentOptions" @change="onChangePayment"/>
+          </st-form-item>
+          <st-form-item label="有效时间">
+            <div v-if="selectedPayment == 1">{{moment().add(100,'d').format('YYYY-MM-DD hh:mm')}}&nbsp;至&nbsp;{{moment().add(100,'d').format('YYYY-MM-DD hh:mm')}}</div>
+            <div v-if="selectedPayment == 2">X天内未开卡，则X+1天0：00自动开卡</div>
+            <div v-if="selectedPayment == 3">
+              <a-date-picker
+                showTime
+                format="YYYY-MM-DD HH:mm"
+                placeholder="请选择开始时间"
+                @change="onChangeTime"
+              />
+              至 2019-08-09 14:20
+            </div>
+          </st-form-item>
+          <st-form-item label="购买赠送">
+            <a-input-number :min="0" placeholder="请输入赠送的天数/次数" style="width: 100%"></a-input-number>
+          </st-form-item>
           <st-form-item label="合同编号" required>
             <div :class="sale('contract')">
               <a-input
@@ -73,17 +91,43 @@
             </div>
           </st-form-item>
           <st-form-item class="mgb-12" label="商品价格">{{info.sell_price}}元</st-form-item>
+          <st-form-item :class="sale('discounts')" label="优惠券">
+            <div>
+              <div :class="sale('discounts-total')">
+                <span>{{advanceText}}</span>
+                <a-dropdown
+                  v-model="advanceDropdownVisible"
+                  :disabled="advanceList.length===0"
+                  :class="sale({disabled:advanceList.length===0})"
+                  placement="bottomRight"
+                  :getPopupContainer="trigger => trigger.parentNode"
+                  :trigger="['click']">
+                  <div :class="sale('discounts-promotion')">
+                    <span>2张可用优惠券</span>
+                    <a-icon type="right" />
+                  </div>
+                  <a-radio-group v-model="selectAdvance" @change="onSelectAdvanceChange" :class="sale('dropdown')" slot="overlay">
+                    <a-menu>
+                      <a-menu-item @click="onSelectAdvance" :key="index" v-for="(item,index) in advanceList">
+                        <a-radio :value="item.id">优惠券 {{item.price}}</a-radio>
+                      </a-menu-item>
+                    </a-menu>
+                  </a-radio-group>
+                </a-dropdown>
+              </div>
+            </div>
+          </st-form-item>
           <st-form-item :class="sale('discounts')" label="定金抵扣">
             <div>
               <div :class="sale('discounts-total')">
                 <span>{{advanceText}}</span>
                 <a-dropdown
-                v-model="advanceDropdownVisible"
-                :disabled="advanceList.length===0"
-                :class="sale({disabled:advanceList.length===0})"
-                placement="bottomRight"
-                :getPopupContainer="trigger => trigger.parentNode"
-                :trigger="['click']">
+                  v-model="advanceDropdownVisible"
+                  :disabled="advanceList.length===0"
+                  :class="sale({disabled:advanceList.length===0})"
+                  placement="bottomRight"
+                  :getPopupContainer="trigger => trigger.parentNode"
+                  :trigger="['click']">
                   <div :class="sale('discounts-promotion')">
                     <span>定金选择</span>
                     <a-icon type="right" />
@@ -141,7 +185,7 @@
 </template>
 
 <script>
-import { SaleDepositeCardService } from './sale-deposite-card.service'
+import { SaleMemberCardService } from './sale-member-card.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
@@ -152,15 +196,15 @@ export default {
   },
   serviceInject() {
     return {
-      saleDepositeCardService: SaleDepositeCardService
+      saleMemberCardService: SaleMemberCardService
     }
   },
   rxState() {
     return {
-      loading: this.saleDepositeCardService.loading$,
-      memberList: this.saleDepositeCardService.memberList$,
-      info: this.saleDepositeCardService.info$,
-      saleList: this.saleDepositeCardService.saleList$
+      loading: this.saleMemberCardService.loading$,
+      memberList: this.saleMemberCardService.memberList$,
+      info: this.saleMemberCardService.info$,
+      saleList: this.saleMemberCardService.saleList$
     }
   },
   props: {
@@ -173,6 +217,9 @@ export default {
     const options1 = [{ label: '10天/120元', value: '1' },
       { label: '20天/120元', value: '2' },
       { label: '40天/120元', value: '3' }]
+    const options2 = [{ label: '即时开卡', value: '1' },
+      { label: '到店开卡', value: '2' },
+      { label: '指定日期开卡', value: '3' }]
     return {
       show: false,
       form: this.$form.createForm(this),
@@ -187,11 +234,18 @@ export default {
       selectAdvance: '',
       reduceAmount: null,
       description: '',
-      normsOptions: options1
+      // 规格选项
+      normsOptions: options1,
+      selectedNorm: '',
+      // 开卡方式选择
+      paymentOptions: options2,
+      selectedPayment: '',
+      // 会员卡结束日期
+      endTime: ''
     }
   },
   created() {
-    this.saleDepositeCardService.serviceInit(this.id).subscribe()
+    this.saleMemberCardService.serviceInit(this.id).subscribe()
   },
   computed: {
     orderAmount() {
@@ -202,6 +256,14 @@ export default {
     }
   },
   methods: {
+    // 开卡方式发生改变
+    onChangePayment(event) {
+      this.selectedPayment = event.target.value
+    },
+    // 选择指定日期开卡
+    onChangeTime(event) {
+
+    },
     moment,
     member_id_validator(rule, value, callback) {
       if (!value && this.searchMemberIsShow) {

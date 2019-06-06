@@ -45,10 +45,10 @@
             </a-menu-item>
         </a-sub-menu>
         <a-menu-item v-else :key="menu.id">
-          <span>
+          <router-link :to="menu.url || '/'">
             <a-icon type="file"/>
             <span>{{menu.name}}</span>
-          </span>
+          </router-link>
         </a-menu-item>
       </template>
     </a-menu>

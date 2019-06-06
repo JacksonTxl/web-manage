@@ -12,7 +12,7 @@ export class ShopApi extends Api {
     return this.http.put(`/v1/brand/shops/${id}`, { params })
   }
   getInfo(id: string) {
-    return this.http.get(`/v1/shops/${id}`)
+    return this.http.get(`/v1/shop/${id}`)
   }
   getShopSettingStopInfo(id: string) {
     return this.http.get(`/v1/shops/${id}`)
@@ -21,7 +21,7 @@ export class ShopApi extends Api {
     return this.http.put(`/v1/shops/${id}/status`, { params })
   }
   getServiceList() {
-    return this.http.get(`/v1/shop/services`)
+    return this.http.get(`/v1/shop/service`)
   }
   getShopList(query: GetShopListInput = {}) {
     query = Object.assign(

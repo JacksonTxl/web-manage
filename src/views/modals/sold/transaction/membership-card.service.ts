@@ -11,18 +11,18 @@ export class MembershipCardService {
   @Effect()
   /* 会员卡详情 */
   getOrderTransactionMemberCard(id: any) {
-    return this.transactionApi.getOrderTransactionMemberCard(id)
+    // return this.transactionApi.getOrderTransactionMemberCard(id)
   }
   /* 会员卡签单 */
   getOrderTransactionMember(params: any) {
-    return this.transactionApi.getOrderTransactionMember(params)
+    // return this.transactionApi.getOrderTransactionMember(params)
   }
   /* 优惠券 */
   getOrderTransactionCoupon(query: any) {
-    return this.transactionApi.getOrderTransactionCoupon(query)
+    // return this.transactionApi.getOrderTransactionCoupon(query)
   }
   /* 定金列表 */
   getOrderTransactionAdvance(query: any) {
-    return this.transactionApi.getOrderTransactionAdvance(query)
+    // return this.transactionApi.getOrderTransactionAdvance(query)
   }
 }
