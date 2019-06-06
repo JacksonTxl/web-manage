@@ -52,13 +52,6 @@ module.exports = {
         pathRewrite: {
           '^/_api/': '/'
         }
-      },
-      '/_api_map_qq': {
-        target: 'https://apis.map.qq.com',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/_api_map_qq': '/'
-        }
       }
     },
     port: 8060
