@@ -1,6 +1,6 @@
 <template>
   <st-modal
-    title="更改运营状态"
+    title="门店放假设置"
     v-model="show"
     size="small"
     @ok="onSubmit"
@@ -8,23 +8,30 @@
     :confirmLoading="loading.update"
   >
     <div>
-      <st-form :form="form">
+      <st-form :form="form" labelWidth="100px">
         <a-row>
           <a-col :xs="22">
             <div>{{shopName}}</div>
             <st-form-item v-show="false">
               <input type="hidden" v-decorator="formRules.id">
             </st-form-item>
-            <st-form-item label="运营状态" required class="mg-t16">
-              <a-select v-decorator="formRules.shopStatus" style="width: 240px">
-                <a-select-option
-                  v-for="(item, index) in shopStatusList"
-                  :key="index"
-                  :value="+index"
-                >
-                  {{item}}
-                </a-select-option>
-              </a-select>
+            <st-form-item label="放假开始时间" required class="mg-t16">
+              <a-date-picker
+                v-decorator="formRules.startTime"
+                showTime
+                format="YYYY-MM-DD HH:mm:ss"
+                placeholder="请选择放假开始时间"
+                style="width: 240px"
+              />
+            </st-form-item>
+            <st-form-item label="放假结束时间" required class="mg-t16">
+               <a-date-picker
+                v-decorator="formRules.endTime"
+                showTime
+                format="YYYY-MM-DD HH:mm:ss"
+                placeholder="请选择放假结束时间"
+                style="width: 240px"
+              />
             </st-form-item>
           </a-col>
         </a-row>
@@ -36,13 +43,22 @@
 import { UserService } from '@/services/user.service'
 import { ShopStatusService as EditService } from './setting-shop-status.service'
 import { MessageService } from '@/services/message.service'
+import moment from 'moment'
 const formRules = {
   id: ['id'],
-  shopStatus: [
-    'shop_status', {
+  startTime: [
+    'holiday_start_time', {
       rules: [{
         required: true,
-        message: '请选择运营状态'
+        message: '请输入放假开始时间'
+      }]
+    }
+  ],
+  endTime: [
+    'holiday_end_time', {
+      rules: [{
+        required: true,
+        message: '请输入放假结束时间'
       }]
     }
   ]
@@ -66,13 +82,21 @@ export default {
       type: [Number, String],
       default: 0
     },
-    shopStatus: {
-      type: Number,
-      default: 0
-    },
     shopName: {
       type: String,
       default: ''
+    },
+    startTime: {
+      type: Object,
+      default: () => {
+        return moment()
+      }
+    },
+    endTime: {
+      type: Object,
+      default: () => {
+        return moment()
+      }
     }
   },
   computed: {
@@ -96,7 +120,8 @@ export default {
     this.$nextTick(() => {
       this.form.setFieldsValue({
         id: this.shopId,
-        shop_status: this.shopStatus
+        holiday_start_time: this.startTime,
+        holiday_end_time: this.endTime
       })
     })
   },

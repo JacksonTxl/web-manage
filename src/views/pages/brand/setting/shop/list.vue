@@ -77,7 +77,21 @@
               >
                 更改运营状态
               </a-menu-item>
-              <a-menu-item>管理门店放假</a-menu-item>
+              <a-menu-item
+                v-modal-link="{
+                  name: 'brand-setting-shop-holiday',
+                  props: {
+                    shopId: shop.shop_id,
+                    shopName: shop.shop_name,
+                    shopStatus: shop.shop_status
+                  },
+                  on: {
+                    change: onListChange
+                  }
+                }"
+              >
+                管理门店放假
+              </a-menu-item>
             </st-more-dropdown>
           </td>
         </tr>
