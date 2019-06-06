@@ -23,6 +23,6 @@ export class MembershipCardService {
   }
   /* 定金列表 */
   getOrderTransactionAdvance(query: any) {
-    return this.transactionApi.getOrderTransactionAdvance(query)
+    return this.transactionApi.getTransactionAdvanceList(query)
   }
 }

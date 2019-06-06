@@ -14,7 +14,7 @@ export class SaleDepositeCardService {
   saleList$ = new State({})
   constructor(private contractApi: ContractApi, private memberApi: ShopPersonalCourseApi, private transactionApi: TransactionApi) {}
   getInfo(id:string) {
-    return this.transactionApi.getTransactionCardInfo(id, 'deposit').pipe(tap((res:any) => {
+    return this.transactionApi.getTransactionInfo(id, 'deposit').pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
   }
