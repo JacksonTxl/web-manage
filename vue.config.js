@@ -167,7 +167,7 @@ module.exports = {
       })
       return definitions
     })
-    config.plugin('progress').use(webpack.ProgressPlugin).end()
+    // config.plugin('progress').use(webpack.ProgressPlugin).end()
     config.resolve.alias.set(
       'vue-service-app',
       path.join(__dirname, '/vue-service-app')
