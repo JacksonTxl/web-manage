@@ -62,4 +62,4 @@ clean2:
 	-v $(PWD):/app \
 	$(DOCKER_IMAGE) rm -r ./docs/.vuepress/dist/
 
-clean: clean1 clean2
+clean: clean1
