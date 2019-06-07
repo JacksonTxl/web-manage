@@ -13,6 +13,11 @@ pipeline {
         sh 'make build'
       }
     }
+    stage('Info-Builded') {
+      steps {
+        sh 'tree -du -L 3 -I node_modules'
+      }
+    }
     stage('Archive') {
       steps {
         archiveArtifacts artifacts: 'dist/**/*.*', fingerprint: true
