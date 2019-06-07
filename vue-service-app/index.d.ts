@@ -84,6 +84,7 @@ interface VueServiceAppConfig {
   routes?: ServiceRouteConfig[]
   onInit?: Function[]
   providers?: ServiceProvideConfig[]
+  onError?: (e: Error) => void
 }
 
 declare module 'vue-service-app' {

@@ -1,10 +1,11 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
+import { Injectable, ServiceRoute, Dictionary } from 'vue-service-app'
 import { State, Computed, log } from 'rx-state'
 import { tap, pluck, map } from 'rxjs/operators'
 import { Store } from './store'
 import { forkJoin, of } from 'rxjs'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
+import { get } from 'lodash-es'
 
 interface UserState {
   user: User
@@ -22,6 +23,28 @@ interface ModuleEnums {
       [key: string]: string
     }
   }
+}
+
+interface Option {
+  id: number
+  name: string
+}
+
+interface EnumOption {
+  /**
+   * 枚举标签
+   */
+  label: string
+  /**
+   * 枚举map对象
+   */
+  map: {
+    [key: string]: string
+  }
+  /**
+   * 枚举选项用
+   */
+  select: Option[]
 }
 /**
  * 用户的全局初始信息
@@ -48,10 +71,7 @@ export class UserService extends Store<UserState> {
   finance$: Computed<ModuleEnums>
   crowdEnums$: Computed<ModuleEnums>
   soldEnums$: Computed<ModuleEnums>
-  constructor(
-    private constApi: ConstApi,
-    private menuApi: MenuApi
-  ) {
+  constructor(private constApi: ConstApi, private menuApi: MenuApi) {
     super()
     const initialState = {
       user: {},
@@ -116,10 +136,7 @@ export class UserService extends Store<UserState> {
     }
   }
   init() {
-    return forkJoin(
-      this.getEnums(),
-      this.getMenus()
-    )
+    return forkJoin(this.getEnums(), this.getMenus())
   }
   /**
    * 添加到常用菜单
@@ -135,9 +152,29 @@ export class UserService extends Store<UserState> {
   delFavorite(id: number) {
     return this.menuApi.delFavorite(id)
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    this.init().subscribe(() => {
-      next()
-    })
+  getEnum$(key: string) {
+    const getEnumByKey = (enums: any, key: string) => {
+      const enumObj = get(enums, key)
+      const result: EnumOption = {
+        select: [],
+        map: {},
+        label: ''
+      }
+      result.label = enumObj.description
+      result.map = enumObj.value
+      result.select = Object.keys(result.map).map(id => {
+        return {
+          id: +id,
+          name: result.map[id]
+        }
+      })
+      return result
+    }
+    return new Computed(
+      this.enums$.pipe(map(enums => getEnumByKey(enums, key)))
+    )
+  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    return this.init()
   }
 }
