@@ -1,2 +1,2 @@
-// import './antd.less'
-// import './app.less'
+import './antd.less'
+import './app.less'

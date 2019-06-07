@@ -30,17 +30,17 @@ pipeline {
       steps {
         sh 'make rsync to=saas-dev'
         sh 'make release to=saas-dev'
-        echo "https://saas-dev.styd.cn"
+        echo "https://saas.dev.styd.cn"
       }
     }
     stage('to=saas-test') {
       when {
-        expression { BRANCH_NAME ==~ /(feat|dev).*/}
+        expression { BRANCH_NAME ==~ /(test).*/}
       }
       steps {
         sh 'make rsync to=saas-test'
         sh 'make release to=saas-test'
-        echo "https://saas-test.styd.cn"
+        echo "https://saas.test.styd.cn"
       }
     }
   }
