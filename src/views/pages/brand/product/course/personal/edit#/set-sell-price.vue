@@ -16,9 +16,9 @@
         </st-form-item>
         <!-- 课程有效期 -->
         <st-form-item label="课有效期">
-          <a-input-number :min="0" v-decorator="ruleConfig.effectiveUnit">
-            <div slot="addonAfter" class="st-form-item-unit">天/节</div>
-          </a-input-number>
+          <st-input-number v-decorator="ruleConfig.effectiveUnit">
+            <template slot="addonAfter">天</template>
+          </st-input-number>
         </st-form-item>
         <!-- 定价权限 -->
         <st-form-item label="定价权限" required>
