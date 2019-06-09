@@ -1,3 +1,4 @@
 *.d.ts
 public/**/*.js
 /src/assets/iconfont/font.js
+auto-generated-routes.ts

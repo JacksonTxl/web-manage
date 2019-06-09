@@ -2,7 +2,7 @@
 * this js file is auto generated, you should not modifyed this file
 **/
 <% importServiceArray.forEach(item => { %>
-const <%- item.asService %> = ()=>import(/* webpackChunkName: "<%- item.chunkName%>" */ '<%- item.servicePath %>').then(m=>m.<%-item.service %>)
+const <%- item.asService %> = () => import(/* webpackChunkName: "<%- item.chunkName%>" */ '<%- item.servicePath %>').then(m => m.<%-item.service %>)
 <% }); %>
 
 <% importArr.forEach(item => { %>
