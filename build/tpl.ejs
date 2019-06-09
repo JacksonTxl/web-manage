@@ -1,10 +1,13 @@
 /**
 * this js file is auto generated, you should not modifyed this file
 **/
-<% importServiceArray.forEach(item => {%>
-import { <%- item.service%><% if(item.asService !== item.service) {%> as <%- item.asService %><%};%> } from '<%- item.servicePath%>'<% }); %>
-<% importArr.forEach(item => {%>
-const <%- item.component%> = () => import('<%- item.pagePath%>')<% }); %>
+<% importServiceArray.forEach(item => { %>
+const <%- item.asService %> = ()=>import(/* webpackChunkName: "<%- item.chunkName%>" */ '<%- item.servicePath %>').then(m=>m.<%-item.service %>)
+<% }); %>
+
+<% importArr.forEach(item => { %>
+const <%- item.component%> = () => import(/* webpackChunkName: "<%- item.component%>" */ '<%- item.pagePath%>')
+<% }); %>
 
 // service
 const pageRoutes = [<% pageRoutes.forEach((item, index) => {%>{
