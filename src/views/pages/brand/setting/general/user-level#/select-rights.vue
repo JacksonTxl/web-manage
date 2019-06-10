@@ -7,7 +7,7 @@
       v-for="(item, index) in value"
       :key="index"
       :value="item.rights_id">
-      {{item.rights_text}}
+      {{item.right_name}}
     </a-checkbox>
   </a-checkbox-group>
 </template>

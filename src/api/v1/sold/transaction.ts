@@ -35,7 +35,7 @@ export class TransactionApi extends Api {
    * 定金列表
    */
   getTransactionAdvanceList(member_id:string|number) {
-    return this.http.get(`/v1/order/transaction/advance`, { query: { member_id }, mock: {} })
+    return this.http.get(`/v1/order/transaction/advance`, { query: { member_id } })
   }
   /**
    * 销售员列表

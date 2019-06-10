@@ -29,11 +29,12 @@
           {{text}}
         </template>
         <div slot="action" slot-scope="text,record">
-          <a @click="onPay(record)">收钱</a>
+          <!-- <a @click="onPay(record)">收钱</a> -->
+          <a @click="onAdvance(record)">加定金</a>
           <a-divider type="vertical"></a-divider>
           <a @click="onCabinet(record)">储物柜</a>
           <a-divider type="vertical"></a-divider>
-          <a @click="onDetail(record)">储值签单</a>
+          <a @click="onDetail(record)">储值卡签单</a>
           <a-divider type="vertical"></a-divider>
           <a @click="onSale(record)">签单</a>
         </div>
@@ -43,12 +44,17 @@
 </template>
 
 <script>
-
+import { SaleService } from './sale.service'
 export default {
   name: 'PageShopSoldLease',
   bem: {
     basic: 'page-shop-sold',
     sale: 'page-shop-sold-sale'
+  },
+  serviceInject() {
+    return {
+      saleService: SaleService
+    }
   },
   data() {
     return {
@@ -153,6 +159,16 @@ export default {
       this.$modalRouter.push({
         name: 'sold-deal-gathering'
       })
+    },
+    onAdvance() {
+      this.saleService.addAdvance({
+        member_id: 20554589995205,
+        sale_id: 29338200768663,
+        pay_price: `${Date.now() % 10}`,
+        pay_channel: 1,
+        contract_number: 'C62',
+        description: '11'
+      }).subscribe()
     },
     onSale(record) {
       this.$modalRouter.push({

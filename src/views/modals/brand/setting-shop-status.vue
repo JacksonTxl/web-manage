@@ -103,7 +103,6 @@ export default {
   methods: {
     onSubmit(e) {
       e.preventDefault()
-      const that = this
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
         /**
@@ -113,18 +112,24 @@ export default {
           this.$confirm({
             title: '',
             content: '门店暂停营业后，门店会员无法正常约课、上课、入离场；同时此门店不支持交易开单，请谨慎操作',
-            onOk() {
-              that.editService.update(data).subscribe(() => {
-                that.messageService.success({
-                  content: '更改成功'
-                })
-                that.$emit('change')
-                that.show = false
-              })
+            onOk: () => {
+              this.doSubmit(data)
             }
           })
+        } else {
+          this.doSubmit(data)
         }
       })
+    },
+    doSubmit(data) {
+      this.editService.update(data).subscribe(this.onSubmitSuccess)
+    },
+    onSubmitSuccess() {
+      this.messageService.success({
+        content: '更改成功'
+      })
+      this.$emit('change')
+      this.show = false
     },
     onCancel() {
       this.show = false
