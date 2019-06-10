@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-if="auth.isAdd">
           <td colspan="5" class="st-form-table__add">
               <st-button
                 type="dashed" block :disabled="resData.total >= resData.max"
@@ -62,7 +62,8 @@ export default {
   rxState() {
     return {
       resData: this.listService.resData$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.listService.auth$
     }
   },
   methods: {

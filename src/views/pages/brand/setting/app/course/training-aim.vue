@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{auth}}
     <div class="st-des">
       已添加{{resData.total}}个，支持添加{{resData.max}}个
     </div>

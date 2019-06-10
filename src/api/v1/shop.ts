@@ -36,7 +36,7 @@ export class ShopApi extends Api {
    * 门店列表 省市区门店树形
    */
   getShopListTree() {
-    return this.http.get('/v1/shop/list')
+    return this.http.get('/v1/shop/category')
   }
   getShopBasic(params: GetShopBasicInput) {
     return this.http.post('/v1/shop/basic', {
