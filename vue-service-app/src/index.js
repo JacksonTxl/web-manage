@@ -1,11 +1,14 @@
 import { Container, Inject, InjectionToken, Injectable } from './di'
 import multiguard from 'vue-router-multiguard'
-import { Hooks } from './hooks'
 import VueRouter from 'vue-router'
 
 const isObject = s => typeof s === 'object' && s !== null
 const isFn = s => typeof s === 'function'
 const isString = s => typeof s === 'string'
+/**
+ * maybe it's an Ctor
+ */
+const isCtor = s => s.toString().indexOf('this') > -1
 
 class ServiceRouter extends VueRouter {}
 
@@ -53,28 +56,28 @@ class VueServiceApp {
     base = '/',
     mode = 'history',
     routes = [],
-    onInit = [],
+    onError = e => {
+      throw e
+    },
     providers = []
   } = {}) {
     this.guardMap = {}
     this.queryMap = {}
-    this.onInit = onInit
     this.vueRouterOptions = {
       base,
       mode,
       routes
     }
+    this.onError = onError
     this.router = null
     this.providers = providers
     this.isFirstRouter = true
     // init
     this.initProviders()
-    this.initAppInitHooks()
+
     this.initRouter()
 
-    this.vueRouteInitNextFunction = null
     // router.beforeEach && router.afterEach
-    this.routerInitHandler()
     this.queryOptionsHandler()
     this.beforeRouteEnterHandler()
     this.beforeRouteUpdateHandler()
@@ -91,21 +94,6 @@ class VueServiceApp {
         }
       })
     }
-  }
-  initAppInitHooks() {
-    const initMiddlewares = this.onInit
-      .map(Init => rootContainer.get(Init))
-      .filter(s => s.onInit)
-      .map(s => {
-        return s.onInit.bind(s)
-      })
-
-    const onInitLifeCycle = new Hooks().addHooks(initMiddlewares)
-    onInitLifeCycle.run(() => {
-      // 触发vueRouterInit行为
-      this.vueRouteInitNextFunction && this.vueRouteInitNextFunction()
-      this.isFirstRouter = false
-    })
   }
   initRouter() {
     const walkRoutes = routes => {
@@ -154,15 +142,6 @@ class VueServiceApp {
       useValue: this.router
     })
   }
-  routerInitHandler() {
-    this.router.beforeEach((to, from, next) => {
-      if (this.isFirstRouter) {
-        this.vueRouteInitNextFunction = next
-      } else {
-        next()
-      }
-    })
-  }
   queryOptionsHandler() {
     this.router.beforeEach((to, from, next) => {
       if (to.query._f) {
@@ -188,29 +167,76 @@ class VueServiceApp {
   }
   beforeRouteEnterHandler() {
     this.router.beforeEach((to, from, next) => {
-      const guardCtors = []
-      to.matched.forEach(Comp => {
-        guardCtors.push(...(this.guardMap[Comp.name] || []))
-      })
       if (to.name !== from.name) {
-        const guards = guardCtors
-          .filter(G => !!G)
-          .map(G => rootContainer.get(G))
+        const guardCtors = []
+        to.matched.forEach(Comp => {
+          guardCtors.push(...(this.guardMap[Comp.name] || []))
+        })
 
-        const beforeRouteEnterMiddlewares = []
-        guards
-          .filter(g => g.beforeEach || g.beforeRouteEnter)
-          .forEach(g => {
-            g.beforeEach &&
-              beforeRouteEnterMiddlewares.push(g.beforeEach.bind(g))
-            g.beforeRouteEnter &&
-              beforeRouteEnterMiddlewares.push(g.beforeRouteEnter.bind(g))
+        const guardPromises = guardCtors
+          .filter(G => !!G)
+          .map(G => {
+            if (isCtor(G)) {
+              return Promise.resolve(G)
+            } else {
+              return G()
+            }
           })
 
-        if (!beforeRouteEnterMiddlewares.length) {
-          return next()
-        }
-        return multiguard(beforeRouteEnterMiddlewares)(to, from, next)
+        Promise.all(guardPromises)
+          .then(Guards => {
+            const guards = Guards.map(G => rootContainer.get(G))
+            return guards
+          })
+          .then(guards => {
+            const beforeFns = []
+            guards.forEach(g => {
+              if (g.beforeEach && typeof g.beforeEach === 'function') {
+                beforeFns.push(g.beforeEach.bind(g))
+              }
+              if (
+                g.beforeRouteEnter &&
+                typeof g.beforeRouteEnter === 'function'
+              ) {
+                beforeFns.push(g.beforeRouteEnter.bind(g))
+              }
+            })
+            const beforeMiddlewares = beforeFns.map(fn => {
+              // maybe promise or subscribe,here transform to callback style
+              if (fn.length < 3) {
+                return (to, from, next) => {
+                  const p = fn(to, from)
+                  if (p.then) {
+                    p.then(res => {
+                      next(res && res.next)
+                    }).catch(e => {
+                      next(false)
+                      this.onError(e)
+                    })
+                  }
+                  if (p.subscribe) {
+                    p.subscribe(
+                      res => {
+                        next(res && res.next)
+                      },
+                      e => {
+                        next(false)
+                        this.onError(e)
+                      }
+                    )
+                  }
+                }
+              }
+              return fn
+            })
+            return beforeMiddlewares
+          })
+          .then(beforeMiddlewares => {
+            if (!beforeMiddlewares.length) {
+              next()
+            }
+            multiguard(beforeMiddlewares)(to, from, next)
+          })
       } else {
         return next()
       }
@@ -224,23 +250,70 @@ class VueServiceApp {
           guardCtors.push(...(this.guardMap[Comp.name] || []))
         })
 
-        const guards = guardCtors
+        const guardPromises = guardCtors
           .filter(G => !!G)
-          .map(G => rootContainer.get(G))
-
-        const beforeRouteUpdateMiddlewares = []
-        guards
-          .filter(g => g.beforeEach || g.beforeRouteUpdate)
-          .forEach(g => {
-            g.beforeEach &&
-              beforeRouteUpdateMiddlewares.push(g.beforeEach.bind(g))
-            g.beforeRouteUpdate &&
-              beforeRouteUpdateMiddlewares.push(g.beforeRouteUpdate.bind(g))
+          .map(G => {
+            if (isCtor(G)) {
+              return Promise.resolve(G)
+            } else {
+              return G()
+            }
           })
-        if (!beforeRouteUpdateMiddlewares.length) {
-          return next()
-        }
-        return multiguard(beforeRouteUpdateMiddlewares)(to, from, next)
+
+        Promise.all(guardPromises)
+          .then(Guards => {
+            const guards = Guards.map(G => rootContainer.get(G))
+            return guards
+          })
+          .then(guards => {
+            const beforeFns = []
+            guards.forEach(g => {
+              if (g.beforeEach && typeof g.beforeEach === 'function') {
+                beforeFns.push(g.beforeEach.bind(g))
+              }
+              if (
+                g.beforeRouteUpdate &&
+                typeof g.beforeRouteUpdate === 'function'
+              ) {
+                beforeFns.push(g.beforeRouteUpdate.bind(g))
+              }
+            })
+            const beforeMiddlewares = beforeFns.map(fn => {
+              // maybe promise or subscribe,here transform to callback style
+              if (fn.length < 3) {
+                return (to, from, next) => {
+                  const p = fn(to, from)
+                  if (p.then) {
+                    p.then(res => {
+                      next(res && res.next)
+                    }).catch(e => {
+                      next(false)
+                      this.onError(e)
+                    })
+                  }
+                  if (p.subscribe) {
+                    p.subscribe(
+                      res => {
+                        next(res && res.next)
+                      },
+                      e => {
+                        next(false)
+                        this.onError(e)
+                      }
+                    )
+                  }
+                }
+              }
+              return fn
+            })
+            return beforeMiddlewares
+          })
+          .then(beforeMiddlewares => {
+            if (!beforeMiddlewares.length) {
+              next()
+            }
+            multiguard(beforeMiddlewares)(to, from, next)
+          })
       } else {
         return next()
       }

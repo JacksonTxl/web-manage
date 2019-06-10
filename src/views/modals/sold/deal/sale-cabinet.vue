@@ -9,15 +9,15 @@
         <a-col :span="13">
           <st-info>
             <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
-            <st-info-item label="商品类型">{{info.product_type | enumFilter('deposit_card.product_type')}}</st-info-item>
+            <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
             <st-info-item class="mg-b24" label="租赁计费">{{info.price}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
            <st-info>
-            <st-info-item label="售卖群体">{{info.crowd.name}}</st-info-item>
-            <st-info-item label="允许转让" v-if="info.is_transfer!==undefined">{{info.is_transfer | enumFilter('sold.is_transferable')}}</st-info-item>
-            <st-info-item class="mg-b24" label="转让手续费" v-if="info.transfer_unit && info.is_transfer!==undefined">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
+            <st-info-item label="售卖群体" v-if="info.sale_range">{{info.sale_range.name}}</st-info-item>
+            <st-info-item label="允许转让">{{info.is_transfer}}</st-info-item>
+            <st-info-item class="mg-b24" label="转让手续费">{{info.transfer}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -181,7 +181,7 @@ export default {
     }
   },
   created() {
-    this.saleCabinetService.serviceInit(this.id).subscribe()
+    this.saleCabinetService.init(this.id).subscribe()
     // this.saleCabinetService.setAdvance({
     //   member_id:20554589995205,
     //   sale_id:29338200768663,

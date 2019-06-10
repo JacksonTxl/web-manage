@@ -3,6 +3,7 @@ const RouteTask = require('./build/route-task')
 const globby = require('globby')
 const Path = require('path')
 const Fse = require('fs-extra')
+const spawn = require('cross-spawn')
 
 gulp.task('route', done => {
   RouteTask.run('init', 'init')
@@ -48,6 +49,15 @@ gulp.task('less:watch', () => {
     })
 })
 
-gulp.task('dev', gulp.parallel(['route', 'route:watch', 'less', 'less:watch']))
+gulp.task('serve', () => {
+  return spawn('vue-cli-service', ['serve'], {
+    stdio: 'inherit'
+  })
+})
+
+gulp.task(
+  'dev',
+  gulp.parallel(['route', 'route:watch', 'less', 'less:watch', 'serve'])
+)
 
 gulp.task('build', gulp.series(['route', 'less']))

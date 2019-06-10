@@ -41,7 +41,7 @@
         </div>
       </a-col>
     </a-row>
-    <h3 v-if="!list.length">无任何合同模版</h3>
+    <h3 v-if="!list.length">无任何合同模版123</h3>
   </st-panel>
 </template>
 <script>

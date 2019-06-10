@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs')
+const webpack = require('webpack')
 const IgnoreNotFoundExportPlugin = require('./build/ignore-not-found-plugin')
 const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin')
 
@@ -52,13 +53,6 @@ module.exports = {
         pathRewrite: {
           '^/_api/': '/'
         }
-      },
-      '/_api_map_qq': {
-        target: 'https://apis.map.qq.com',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/_api_map_qq': '/'
-        }
       }
     },
     port: 8060
@@ -109,6 +103,7 @@ module.exports = {
         .add(resolve(buildConfig.themeConfig[themeName]))
         .end()
     })
+
     config
       .externals({
         vue: 'window.Vue',
@@ -172,6 +167,7 @@ module.exports = {
       })
       return definitions
     })
+    // config.plugin('progress').use(webpack.ProgressPlugin).end()
     config.resolve.alias.set(
       'vue-service-app',
       path.join(__dirname, '/vue-service-app')
