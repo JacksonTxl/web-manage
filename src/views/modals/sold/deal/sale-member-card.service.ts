@@ -49,6 +49,6 @@ export class SaleMemberCardService {
   }
   @Effect()
   setTransaction(params:any) {
-    return this.transactionApi.setTransaction(params, 'deposit')
+    return this.transactionApi.setTransaction(params, 'member')
   }
 }

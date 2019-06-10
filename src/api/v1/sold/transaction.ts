@@ -47,7 +47,7 @@ export class TransactionApi extends Api {
    * 会员卡优惠券列表
    */
   getTransactionCouponList(params: MemberCouponParams) {
-    return this.http.get(`/v1/order/transaction/member/coupon`, { query: { params } })
+    return this.http.get(`/v1/order/transaction/member/coupon`, { query: { ...params } })
   }
   /**
    * 增加定金，调试用，后续移除
