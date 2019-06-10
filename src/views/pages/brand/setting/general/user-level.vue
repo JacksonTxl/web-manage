@@ -19,7 +19,7 @@
                 <i class="icon-member-checked icon-member-checked--potential"></i>
                 <span v-for="(item, index) in potential.condition"
                 :key="index">
-                  {{item.condition_text | textFilter(potential.condition, index)}}
+                  {{item.condition_name | textFilter(potential.condition, index)}}
                 </span>
               </li>
             </ul>
@@ -50,7 +50,7 @@
                 <i class="icon-member-checked icon-member-checked--potential"></i>
                 <span v-for="(item, index) in member.condition"
                 :key="index">
-                  {{item.condition_text | textFilter(member.condition, index)}}
+                  {{item.condition_name | textFilter(member.condition, index)}}
                 </span>
               </li>
             </ul>
@@ -65,7 +65,7 @@
                 <i class="icon-member-checked"></i>
                 <span v-for="(item, index) in member.rights"
                 :key="index">
-                  {{item.rights_text | textFilter(member.rights, index)}}
+                  {{item.right_name | textFilter(member.rights, index)}}
                 </span>
               </li>
               <li v-else class="st-des mg-t8">暂无特权类目～</li>
@@ -87,7 +87,7 @@
                 <i class="icon-member-checked icon-member-checked--potential"></i>
                 <span v-for="(item, index) in lost.condition"
                 :key="index">
-                  {{item.condition_text | textFilter(lost.condition, index)}}
+                  {{item.condition_name | textFilter(lost.condition, index)}}
                 </span>
               </li>
             </ul>

@@ -2,23 +2,23 @@ import { Api } from '../api'
 
 export class ShopApi extends Api {
   add(params: ShopInput) {
-    return this.http.post('/v1/shops', { params })
+    return this.http.post('/v1/shop', { params })
   }
   // 品牌维度下修改门店
   brandUpdate(id: string, params: ShopInput) {
-    return this.http.put(`/v1/brand/shops/${id}`, { params })
+    return this.http.put(`/v1/brand/shop/${id}`, { params })
   }
   update(id: string, params: ShopInput) {
-    return this.http.put(`/v1/brand/shops/${id}`, { params })
+    return this.http.put(`/v1/brand/shop/${id}`, { params })
   }
   getInfo(id: string) {
     return this.http.get(`/v1/shop/${id}`)
   }
   getShopSettingStopInfo(id: string) {
-    return this.http.get(`/v1/shops/${id}`)
+    return this.http.get(`/v1/shop/${id}`)
   }
   updateStatus(id: number, params: ShopStatusInput) {
-    return this.http.put(`/v1/shops/${id}/status`, { params })
+    return this.http.put(`/v1/shop/${id}/status`, { params })
   }
   getServiceList() {
     return this.http.get(`/v1/shop/service`)
@@ -36,10 +36,10 @@ export class ShopApi extends Api {
    * 门店列表 省市区门店树形
    */
   getShopListTree() {
-    return this.http.get('/v1/shops/list')
+    return this.http.get('/v1/shop/list')
   }
   getShopBasic(params: GetShopBasicInput) {
-    return this.http.post('/v1/shops/basic', {
+    return this.http.post('/v1/shop/basic', {
       params
     })
   }

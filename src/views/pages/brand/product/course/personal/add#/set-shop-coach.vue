@@ -1,10 +1,14 @@
 <template>
   <st-form :form="form" class="page-shop-container">
     <a-row :gutter="8">
-      <a-col :lg="22" :xs="22" :offset="1">
+      <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="私教课程">
           <a-input placeholder="课程名称" disabled v-decorator="ruleConfig.courseName"/>
         </st-form-item>
+      </a-col>
+    </a-row>
+    <a-row :gutter="8">
+      <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="上课门店" required>
           <a-radio-group @change="onChange" v-decorator="ruleConfig.shopSetting">
             <a-radio v-for="(item, index) in personalCourseEnums.shop_setting.value" :key="index"

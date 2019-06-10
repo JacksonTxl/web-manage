@@ -46,6 +46,15 @@ export class ListService implements RouteGuard {
     return forkJoin(this.getShopList(), this.getCategoryList())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.init().subscribe(() => next())
+    this.init().subscribe(() => {
+      const target = {
+        name: 'brand-product-course-team-list-brand'
+      }
+      if (to.name === 'brand-product-course-team-list' && target) {
+        next(target)
+      } else {
+        next()
+      }
+    })
   }
 }
