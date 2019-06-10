@@ -4,7 +4,7 @@
       <a-col :span="8">
         <router-link to="./add">
           <st-button type="primary" icon="add">新增门店</st-button>
-          <span class="st-des mg-l8">（已开店4家门店/可开店6家门店）</span>
+          <span class="st-des mg-l8">（已开店{{count.count_opened}}家门店/可开店{{count.count_can_opened}}家门店）</span>
         </router-link>
       </a-col>
       <a-col :span="16" class="ta-r">
@@ -62,7 +62,9 @@
             <router-link :to="`./info?id=${shop.shop_id}`">详情</router-link>
             <router-link :to="`./edit?id=${shop.shop_id}`" class="mg-l8">编辑</router-link>
             <st-more-dropdown class="mg-l64">
+              <!-- 关店状态下不可以在saas中更改运营状态 -->
               <a-menu-item
+                v-if="shop.shop_status !== 4"
                 v-modal-link="{
                   name: 'brand-setting-shop-status',
                   props: {
@@ -78,19 +80,21 @@
                 更改运营状态
               </a-menu-item>
               <a-menu-item
+                v-if="shop.shop_status <=2"
                 v-modal-link="{
                   name: 'brand-setting-shop-holiday',
                   props: {
                     shopId: shop.shop_id,
                     shopName: shop.shop_name,
-                    shopStatus: shop.shop_status
+                    shopStatus: shop.shop_status,
+                    isHoliday: !shop.is_holiday
                   },
                   on: {
                     change: onListChange
                   }
                 }"
               >
-                管理门店放假
+                {{shop.is_holiday ? '管理' : ''}}门店放假
               </a-menu-item>
             </st-more-dropdown>
           </td>
@@ -130,6 +134,9 @@ export default {
     },
     page() {
       return this.resData.page
+    },
+    count() {
+      return this.resData.brand_shop_count
     }
   },
   methods: {

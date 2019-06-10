@@ -1,25 +1,42 @@
 <template>
-  <st-modal
-    title="门店放假设置"
-    v-model="show"
-    :footer="null"
-    size="small"
-    @ok="onSubmit"
-    @cancel="onCancel"
-    :confirmLoading="loading.update"
-  >
-    <div>
-      <edit-holiday v-if="isHoliday"></edit-holiday>
-      <add-holiday v-else></add-holiday>
-    </div>
-  </st-modal>
+  <div>
+    <st-form :form="form" labelWidth="100px">
+      <a-row>
+        <a-col :xs="22">
+          <div>{{shopName}}</div>
+          <st-form-item v-show="false">
+            <input type="hidden" v-decorator="formRules.id">
+          </st-form-item>
+          <st-form-item label="放假开始时间" required class="mg-t16">
+            <a-date-picker
+              v-decorator="formRules.startTime"
+              showTime
+              format="YYYY-MM-DD HH:mm:ss"
+              placeholder="请选择放假开始时间"
+              style="width: 240px"
+            />
+          </st-form-item>
+          <st-form-item label="放假结束时间" required class="mg-t16">
+              <a-date-picker
+              v-decorator="formRules.endTime"
+              showTime
+              format="YYYY-MM-DD HH:mm:ss"
+              placeholder="请选择放假结束时间"
+              style="width: 240px"
+            />
+          </st-form-item>
+          <st-form-item labelFix class="mg-b0">
+            <st-button type="primary">确认设置放假时间</st-button>
+          </st-form-item>
+        </a-col>
+      </a-row>
+    </st-form>
+  </div>
 </template>
 <script>
 import { UserService } from '@/services/user.service'
-import { ShopStatusService as EditService } from './setting-shop-status.service'
 import { MessageService } from '@/services/message.service'
-import AddHoliday from './setting#/add-holiday'
-import EditHoliday from './setting#/edit-holiday'
+import { ShopStatusService as EditService } from '../setting-shop-status.service'
 import moment from 'moment'
 const formRules = {
   id: ['id'],
@@ -41,6 +58,7 @@ const formRules = {
   ]
 }
 export default {
+  name: 'AddHoliday',
   serviceInject() {
     return {
       userService: UserService,
@@ -62,22 +80,6 @@ export default {
     shopName: {
       type: String,
       default: ''
-    },
-    startTime: {
-      type: Object,
-      default: () => {
-        return moment()
-      }
-    },
-    endTime: {
-      type: Object,
-      default: () => {
-        return moment()
-      }
-    },
-    isHoliday: {
-      type: Number,
-      default: 0
     }
   },
   computed: {
@@ -94,20 +96,16 @@ export default {
       formRules
     }
   },
-  components: {
-    AddHoliday,
-    EditHoliday
-  },
   created() {
     this.form = this.$form.createForm(this)
   },
   mounted() {
     this.$nextTick(() => {
-      // this.form.setFieldsValue({
-      //   id: this.shopId,
-      //   holiday_start_time: this.startTime,
-      //   holiday_end_time: this.endTime
-      // })
+      this.form.setFieldsValue({
+        id: this.shopId,
+        holiday_start_time: this.startTime,
+        holiday_end_time: this.endTime
+      })
     })
   },
   methods: {
@@ -121,7 +119,7 @@ export default {
     },
     onSubmitSuccess() {
       this.messageService.success({
-        content: '更改成功'
+        content: '设置成功'
       })
       this.$emit('change')
       this.show = false

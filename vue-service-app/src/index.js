@@ -5,6 +5,10 @@ import VueRouter from 'vue-router'
 const isObject = s => typeof s === 'object' && s !== null
 const isFn = s => typeof s === 'function'
 const isString = s => typeof s === 'string'
+/**
+ * maybe it's an Ctor
+ */
+const isCtor = s => s.toString().indexOf('this') > -1
 
 class ServiceRouter extends VueRouter {}
 
@@ -168,54 +172,71 @@ class VueServiceApp {
         to.matched.forEach(Comp => {
           guardCtors.push(...(this.guardMap[Comp.name] || []))
         })
-        const guards = guardCtors
+
+        const guardPromises = guardCtors
           .filter(G => !!G)
-          .map(G => rootContainer.get(G))
-
-        const beforeFns = []
-
-        guards.forEach(g => {
-          if (g.beforeEach && typeof g.beforeEach === 'function') {
-            beforeFns.push(g.beforeEach.bind(g))
-          }
-          if (g.beforeRouteEnter && typeof g.beforeRouteEnter === 'function') {
-            beforeFns.push(g.beforeRouteEnter.bind(g))
-          }
-        })
-
-        const beforeMiddlewares = beforeFns.map(fn => {
-          // maybe promise or subscribe,here transform to callback style
-          if (fn.length < 3) {
-            return (to, from, next) => {
-              const p = fn(to, from)
-              if (p.then) {
-                p.then(res => {
-                  next(res && res.next)
-                }).catch(e => {
-                  next(false)
-                  this.onError(e)
-                })
-              }
-              if (p.subscribe) {
-                p.subscribe(
-                  res => {
-                    next(res && res.next)
-                  },
-                  e => {
-                    next(false)
-                    this.onError(e)
-                  }
-                )
-              }
+          .map(G => {
+            if (isCtor(G)) {
+              return Promise.resolve(G)
+            } else {
+              return G()
             }
-          }
-          return fn
-        })
+          })
 
-        if (!beforeMiddlewares.length) {
-          return next()
-        }
-        return multiguard(beforeMiddlewares)(to, from, next)
+        Promise.all(guardPromises)
+          .then(Guards => {
+            const guards = Guards.map(G => rootContainer.get(G))
+            return guards
+          })
+          .then(guards => {
+            const beforeFns = []
+            guards.forEach(g => {
+              if (g.beforeEach && typeof g.beforeEach === 'function') {
+                beforeFns.push(g.beforeEach.bind(g))
+              }
+              if (
+                g.beforeRouteEnter &&
+                typeof g.beforeRouteEnter === 'function'
+              ) {
+                beforeFns.push(g.beforeRouteEnter.bind(g))
+              }
+            })
+            const beforeMiddlewares = beforeFns.map(fn => {
+              // maybe promise or subscribe,here transform to callback style
+              if (fn.length < 3) {
+                return (to, from, next) => {
+                  const p = fn(to, from)
+                  if (p.then) {
+                    p.then(res => {
+                      next(res && res.next)
+                    }).catch(e => {
+                      next(false)
+                      this.onError(e)
+                    })
+                  }
+                  if (p.subscribe) {
+                    p.subscribe(
+                      res => {
+                        next(res && res.next)
+                      },
+                      e => {
+                        next(false)
+                        this.onError(e)
+                      }
+                    )
+                  }
+                }
+              }
+              return fn
+            })
+            return beforeMiddlewares
+          })
+          .then(beforeMiddlewares => {
+            if (!beforeMiddlewares.length) {
+              next()
+            }
+            multiguard(beforeMiddlewares)(to, from, next)
+          })
       } else {
         return next()
       }
@@ -228,57 +249,71 @@ class VueServiceApp {
         to.matched.forEach(Comp => {
           guardCtors.push(...(this.guardMap[Comp.name] || []))
         })
-        const guards = guardCtors
+
+        const guardPromises = guardCtors
           .filter(G => !!G)
-          .map(G => rootContainer.get(G))
-
-        const beforeFns = []
-
-        guards.forEach(g => {
-          if (g.beforeEach && typeof g.beforeEach === 'function') {
-            beforeFns.push(g.beforeEach.bind(g))
-          }
-          if (
-            g.beforeRouteUpdate &&
-            typeof g.beforeRouteUpdate === 'function'
-          ) {
-            beforeFns.push(g.beforeRouteUpdate.bind(g))
-          }
-        })
-
-        const beforeMiddlewares = beforeFns.map(fn => {
-          // maybe promise or subscribe,here transform to callback style
-          if (fn.length < 3) {
-            return (to, from, next) => {
-              const p = fn(to, from)
-              if (p.then) {
-                p.then(res => {
-                  next(res && res.next)
-                }).catch(e => {
-                  next(false)
-                  this.onError(e)
-                })
-              }
-              if (p.subscribe) {
-                p.subscribe(
-                  res => {
-                    next(res && res.next)
-                  },
-                  e => {
-                    next(false)
-                    this.onError(e)
-                  }
-                )
-              }
+          .map(G => {
+            if (isCtor(G)) {
+              return Promise.resolve(G)
+            } else {
+              return G()
             }
-          }
-          return fn
-        })
+          })
 
-        if (!beforeMiddlewares.length) {
-          return next()
-        }
-        return multiguard(beforeMiddlewares)(to, from, next)
+        Promise.all(guardPromises)
+          .then(Guards => {
+            const guards = Guards.map(G => rootContainer.get(G))
+            return guards
+          })
+          .then(guards => {
+            const beforeFns = []
+            guards.forEach(g => {
+              if (g.beforeEach && typeof g.beforeEach === 'function') {
+                beforeFns.push(g.beforeEach.bind(g))
+              }
+              if (
+                g.beforeRouteUpdate &&
+                typeof g.beforeRouteUpdate === 'function'
+              ) {
+                beforeFns.push(g.beforeRouteUpdate.bind(g))
+              }
+            })
+            const beforeMiddlewares = beforeFns.map(fn => {
+              // maybe promise or subscribe,here transform to callback style
+              if (fn.length < 3) {
+                return (to, from, next) => {
+                  const p = fn(to, from)
+                  if (p.then) {
+                    p.then(res => {
+                      next(res && res.next)
+                    }).catch(e => {
+                      next(false)
+                      this.onError(e)
+                    })
+                  }
+                  if (p.subscribe) {
+                    p.subscribe(
+                      res => {
+                        next(res && res.next)
+                      },
+                      e => {
+                        next(false)
+                        this.onError(e)
+                      }
+                    )
+                  }
+                }
+              }
+              return fn
+            })
+            return beforeMiddlewares
+          })
+          .then(beforeMiddlewares => {
+            if (!beforeMiddlewares.length) {
+              next()
+            }
+            multiguard(beforeMiddlewares)(to, from, next)
+          })
       } else {
         return next()
       }
