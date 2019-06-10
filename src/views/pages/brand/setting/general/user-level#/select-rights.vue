@@ -6,7 +6,7 @@
     <a-checkbox
       v-for="(item, index) in value"
       :key="index"
-      :value="item.rights_id">
+      :value="item.id">
       {{item.right_name}}
     </a-checkbox>
   </a-checkbox-group>
@@ -41,7 +41,7 @@ export default {
       const checked = []
       value.forEach(item => {
         if (item.checked) {
-          checked.push(item.rights_id)
+          checked.push(item.id)
         }
       })
       this.checked = checked

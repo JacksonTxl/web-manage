@@ -7,7 +7,7 @@
         @change="onChange"
       >
         <div v-for="(item, index) in value" :key="index">
-          <a-checkbox :value="item.condition_id">
+          <a-checkbox :value="item.id">
             {{item.condition_name}}
           </a-checkbox>
         </div>
@@ -49,7 +49,7 @@ export default {
       const checked = []
       value.forEach(item => {
         if (item.checked) {
-          checked.push(item.condition_id)
+          checked.push(item.id)
         }
       })
       this.checked = checked
