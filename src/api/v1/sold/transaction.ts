@@ -29,7 +29,7 @@ export class TransactionApi extends Api {
    * 订单支付
    */
   payTransaction(params: any) {
-    return this.http.post(`/v1/order/transaction/payment`, { params, mock: {} })
+    return this.http.post(`/v1/order/transaction/payment/${params.order_id}`, { params })
   }
   /**
    * 定金列表

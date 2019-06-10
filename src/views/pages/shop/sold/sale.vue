@@ -164,7 +164,8 @@ export default {
               this.$modalRouter.push({
                 name: 'sold-deal-gathering',
                 props: {
-                  order_id: res.orderId
+                  order_id: res.orderId,
+                  type: 'deposit'
                 }
 
               })

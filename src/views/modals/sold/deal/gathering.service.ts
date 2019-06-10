@@ -16,8 +16,8 @@ export class GatheringService {
   loading$ = new State({})
   constructor(private transactionApi: TransactionApi) {}
   @Effect()
-  getPaymentInfo(id:string) {
-    return this.transactionApi.getTransactionPaymentInfo(id).pipe(tap((res:any) => {
+  getPaymentInfo(id:string, type: string) {
+    return this.transactionApi.getTransactionInfo(id, type).pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
   }

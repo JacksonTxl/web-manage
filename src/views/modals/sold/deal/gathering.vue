@@ -16,26 +16,26 @@
         <a-col :span="11" class="mgb-36">
            <st-info>
             <st-info-item label="下单人">{{info.operate_name}}</st-info-item>
-            <st-info-item class="mg-b0" label="销售">{{info.sale_staff_name}}</st-info-item>
+            <st-info-item class="mg-b0" label="销售">{{info.sale_name}}</st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="13" class="mgb-36">
+        <!-- <a-col :span="13" class="mgb-36">
           <st-info>
             <st-info-item label="场馆">{{info.shop_name}}</st-info-item>
             <st-info-item class="mg-b0" label="购买">{{info.shop_name}}/{{info.rule_name}}</st-info-item>
           </st-info>
-        </a-col>
-        <a-col :span="11" class="mgb-36">
+        </a-col> -->
+        <!-- <a-col :span="11" class="mgb-36">
            <st-info>
             <st-info-item label="用户">{{info.member_name}}&nbsp;{{info.member_mobile}}</st-info-item>
             <st-info-item class="mg-b0" label="赠送">{{info.gift_amount}}</st-info-item>
           </st-info>
-        </a-col>
-        <a-col :span="24" class="mgb-36">
+        </a-col> -->
+        <!-- <a-col :span="24" class="mgb-36">
           <st-info>
             <st-info-item class="mg-b0" label="备注">{{info.description}}</st-info-item>
           </st-info>
-        </a-col>
+        </a-col> -->
         <a-col :span="13" class="mgb-24">
           <st-info>
             <st-info-item label="订单总额">{{info.order_amount}}</st-info-item>
@@ -44,15 +44,15 @@
         </a-col>
         <a-col :span="11" class="mgb-24">
            <st-info>
-            <st-info-item label="减免金额">{{info.reduce_amount}}</st-info-item>
-            <st-info-item class="mg-b0" label="应付金额">{{info.unreceived_amount}}</st-info-item>
+            <st-info-item label="减免金额">{{info.discount_amount}}</st-info-item>
+            <st-info-item class="mg-b0" label="应付金额">{{info.actual_amount}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
       <st-form :form="form" labelWidth="72px">
         <div :class="gathering('gathering')">
           <st-form-item labelWidth="120px" label="已收金额/未收金额" class="mgb-18">
-            <span class="total">{{info.received_amount}}/{{info.unreceived_amount}}</span>
+            <span class="total">{{info.payed_amount}}/{{info.remain_amount}}</span>
           </st-form-item>
           <st-form-item class="mgb-18" label="支付金额" required>
             <st-input-number :float="true" v-decorator="[
@@ -65,7 +65,7 @@
           <st-form-item label="支付方式" class="mgb-18" required>
             <a-radio-group @change="selectPay"
              v-decorator="[
-              'pay_channel',
+              'payment_type',
               {rules: [{ required: true, message: '请选择支付方式!' }]}
             ]">
               <a-radio :value="1">线下支付宝</a-radio>
@@ -120,9 +120,9 @@ export default {
 
     }
   },
-  props: ['order_id'],
+  props: ['order_id', 'type'],
   created() {
-    this.gatheringService.getPaymentInfo(this.order_id).subscribe()
+    this.gatheringService.getPaymentInfo(this.order_id, this.type).subscribe()
   },
   methods: {
     onOk() {
@@ -139,9 +139,9 @@ export default {
         this.gatheringService.payTransaction(values).subscribe(result => {
           this.$emit('ok')
           this.show = false
-          this.$modalRouter.push({
-            name: 'sold-deal-gathering-tip'
-          })
+          // this.$modalRouter.push({
+          //   name: 'sold-deal-gathering-tip'
+          // })
         })
       })
     }
