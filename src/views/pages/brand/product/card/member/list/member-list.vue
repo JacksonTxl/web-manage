@@ -1,8 +1,8 @@
 <template>
   <div class="pages-brand-product-card-list-member-list">
-    <st-button type="primary">
-      <a-icon type="plus"/>新增私教课程
-    </st-button>
+    <router-link to="../add-select">
+      <st-button type="primary" icon="add">新增会员卡</st-button>
+    </router-link>
     <div class="pages-brand-product-card-list-member-list__box">
       <a-select
         class="pages-brand-product-card-list-member-list__box-select"
