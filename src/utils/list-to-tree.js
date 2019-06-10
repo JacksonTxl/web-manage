@@ -10,7 +10,7 @@ import { listToMap } from '@/utils/list-to-map'
  * @return {Array}
  * @example
  *
- * const arr = [{id:1,name:"a",parent_id:'0'},{id:2,name:'b',parent_id:1},{id:3,name:'c,parent_id:2}]
+ * const arr = [{id:1,name:'a', parent_id:'0'},{id:2,name:'b',parent_id:1},{id:3,name:'c,parent_id:2}]
  * listToTree(arr) =>
  * [{
  *    id:1,
@@ -42,6 +42,9 @@ export const listToTree = (
     // parentId
     const parentId = item[parentField]
     item[isLeafField] = true
+    item.key = item.id
+    item.title = item.name
+    item.scopedSlots = { title: 'title' }
     // 自己是子节点时
     if (parentId && map[parentId]) {
       const parent = map[parentId]

@@ -1,23 +1,29 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
+import { pluck, tap, switchMap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { StaffApi } from '../../../../api/v1/staff'
 import { GetInitInfoPut, RoleInfo, RoleApi } from '@/api/v1/staff/role'
 import { forkJoin } from 'rxjs'
 interface SetState {
-  info: object
+  info: object,
+  roleList: any[],
+  initFunRoleList: any[]
 }
 @Injectable()
 export class RoleService extends Store<SetState> {
   state$: State<SetState>
   info$: Computed<Object>
+  roleList$: Computed<Object>
   constructor(private roleApi: RoleApi) {
     super()
     this.state$ = new State({
-      info: {}
+      info: {},
+      roleList: [],
+      initFunRoleList: []
     })
     this.info$ = new Computed(this.state$.pipe(pluck('info')))
+    this.roleList$ = new Computed(this.state$.pipe(pluck('roleList')))
   }
   protected SET_ROLE_INFO(info: GetInitInfoPut) {
     this.state$.commit(state => {
@@ -25,16 +31,14 @@ export class RoleService extends Store<SetState> {
     })
   }
   /**
-   * 获取普通员工所有角色列表
-   */
-  getNormalList() {
-    return this.roleApi.getNormalList()
-  }
-  /**
      * 获取所有角色列表（角色编辑页面）
      */
   getAllList() {
-    return this.roleApi.getAllList()
+    return this.roleApi.getAllList().pipe(tap(res => {
+      this.state$.commit(state => {
+        state.roleList = res.roles
+      })
+    }))
   }
   /**
      * 获取所有角色列表（角色编辑页面）
@@ -43,7 +47,7 @@ export class RoleService extends Store<SetState> {
     return this.roleApi.getInitInfo(query)
   }
   /**
-     * 获取所有角色列表（角色编辑页面）
+     * 获取角色初始化菜单权限树
      */
   getInfo(query: GetInitInfoPut) {
     return this.roleApi.getInfo(query)
@@ -52,27 +56,33 @@ export class RoleService extends Store<SetState> {
    * 添加角色
    */
   add(params: RoleInfo) {
-    return this.roleApi.add(params)
+    return this.roleApi.add(params).pipe(switchMap(state => {
+      return this.getAllList()
+    }))
   }
   /**
    * 删除角色
    */
   del(params: GetInitInfoPut) {
-    return this.roleApi.del(params)
+    return this.roleApi.del(params).pipe(switchMap(state => {
+      return this.getAllList()
+    }))
   }
   /**
    * 编辑角色
    */
   update(params: RoleInfo) {
-    return this.roleApi.update(params)
+    return this.roleApi.update(params).pipe(switchMap(state => {
+      return this.getAllList()
+    }))
   }
   getInit() {
-    return forkJoin(this.getAllList(), this.getInfo({ role_id: '1' }), this.getInitInfo({ role_id: '1' }), this.getNormalList())
+    return forkJoin(this.getAllList())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    let { role_id } = to.meta.query as GetInitInfoPut || 1
+    let { role_id } = to.meta.query as GetInitInfoPut
     this.getInit().subscribe(res => {
-      this.SET_ROLE_INFO(res[1])
+      this.SET_ROLE_INFO(res[0])
     })
     next()
   }

@@ -2,7 +2,7 @@
   <st-modal title="绑定实体卡" size="small" v-model="show" @ok="onSubmit">
     <section>
       <div >
-         <template v-for="item in data.identity">
+        <template v-for="item in data.identity">
           <st-tag :key="item" v-if="item === 4" class="mg-r4" type="coach-personal"/>
           <st-tag :key="item" v-if="item === 3" class="mg-r4" type="coach-team"/>
           <st-tag :key="item" v-if="item === 1" class="mg-r4" type="role-staff"/>
