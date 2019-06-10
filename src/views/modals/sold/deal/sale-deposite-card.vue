@@ -9,7 +9,7 @@
       <a-row :class="sale('info')">
         <a-col :span="13">
           <st-info>
-            <st-info-item label="商品名称">{{info.card_name}}</st-info-item>
+            <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
             <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
             <st-info-item label="消费门店">{{info.support_shop}}</st-info-item>
             <st-info-item label="消费类目">{{info.consume_product}}</st-info-item>
@@ -59,7 +59,7 @@
             <a-input v-decorator="['memberMobile',{rules:[{validator:member_mobile_validator}]}]" placeholder="请输入手机号"></a-input>
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
-          <st-form-item label="到期时间">{{moment().add(100,'d').format('YYYY-MM-DD hh:mm')}}</st-form-item>
+          <st-form-item label="到期时间">{{moment().add(info.valid_time,'d').format('YYYY-MM-DD hh:mm')}}</st-form-item>
           <st-form-item label="合同编号" required>
             <div :class="sale('contract')">
               <a-input
@@ -313,6 +313,7 @@ export default {
     onCreateOrder() {
       this.form.validateFields((error, values) => {
         if (!error) {
+          let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
           this.saleDepositeCardService.setTransaction({
             'member_id': +values.memberId,
             'member_name': values.memberName,
@@ -320,7 +321,7 @@ export default {
             'deposit_card_id': +this.id,
             'contract_number': values.contractNumber,
             'advance_id': this.selectAdvance === -1 ? undefined : this.selectAdvance,
-            'reduce_amount': this.reduceAmount,
+            reduce_amount,
             'sale_id': +values.saleName,
             'description': this.description,
             'order_amount': this.orderAmount,
@@ -334,14 +335,15 @@ export default {
     onPay() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.saleDepositeCardService.setTransactionPay({
+          let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
+          this.saleDepositeCardService.setTransaction({
             'member_id': +values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,
             'deposit_card_id': +this.id,
             'contract_number': values.contractNumber,
             'advance_id': this.selectAdvance === -1 ? undefined : this.selectAdvance,
-            'reduce_amount': this.reduceAmount,
+            reduce_amount,
             'sale_id': +values.saleName,
             'description': this.description,
             'order_amount': this.orderAmount,

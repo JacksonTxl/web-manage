@@ -54,6 +54,10 @@
             <a-input v-decorator="['memberMobile',{rules:[{validator:member_mobile_validator}]}]" placeholder="请输入手机号"></a-input>
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
+          <st-form-item label="租赁柜号" required>
+            <a-cascader :options="cabinetOption" placeholder="请选择租赁柜号" />
+          </st-form-item>
+
           <!-- <st-form-item label="到期时间">{{moment().add(100,'d').format('YYYY-MM-DD hh:mm')}}</st-form-item> -->
           <!-- <st-form-item label="合同编号" required>
             <div :class="sale('contract')">
@@ -169,6 +173,24 @@ export default {
       // 搜索会员
       memberSearchText: '',
       searchMemberIsShow: true,
+      // 租赁柜号
+      cabinetOption: [
+        {
+          value: 'aaa',
+          label: 'aaa',
+          children: [{
+            value: 'a1',
+            label: 'a1'
+          }]
+        }, {
+          value: 'bbb',
+          label: 'bbb',
+          children: [{
+            value: 'b1',
+            label: 'b1'
+          }]
+        }
+      ],
 
       // 定金
       advanceDropdownVisible: false,
@@ -182,14 +204,6 @@ export default {
   },
   created() {
     this.saleCabinetService.init(this.id).subscribe()
-    // this.saleCabinetService.setAdvance({
-    //   member_id:20554589995205,
-    //   sale_id:29338200768663,
-    //   pay_price:'2',
-    //   pay_channel:1,
-    //   contract_number:'C62',
-    //   description: '11'
-    // }).subscribe()
   },
   computed: {
     orderAmount() {
