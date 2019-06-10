@@ -1,5 +1,11 @@
 import { Api } from '../../api'
 
+export interface MemberCouponParams {
+  member_id: number,
+  card_id: number,
+  specs_id: number
+}
+
 export class TransactionApi extends Api {
   /**
    * 签单详情
@@ -37,7 +43,12 @@ export class TransactionApi extends Api {
   getTransactionSaleList() {
     return this.http.get(`/v1/order/transaction/sale`)
   }
-
+  /**
+   * 会员卡优惠券列表
+   */
+  getTransactionCouponList(params: MemberCouponParams) {
+    return this.http.get(`/v1/order/transaction/member/coupon`, { query: { params } })
+  }
   /**
    * 增加定金，调试用，后续移除
    */
