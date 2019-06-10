@@ -9,7 +9,7 @@
         <a-col :span="13">
           <st-info>
             <st-info-item label="课程名称">{{packageTransferInfo.course_name}}</st-info-item>
-            <st-info-item label="到期日期">{{moment(packageTransferInfo.course_end_time*1000).format('YYYY-MM-DD hh:mm')}}</st-info-item>
+            <st-info-item label="到期日期">{{moment(packageTransferInfo.course_end_time*1000).format('YYYY-MM-DD HH:mm')}}</st-info-item>
             <st-info-item label="实付金额">{{packageTransferInfo.pay_price}}</st-info-item>
             <st-info-item label="转让手续费" v-if="packageTransferInfo.transfer_unit ">{{packageTransferInfo.transfer_num}}{{packageTransferInfo.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
             <st-info-item label="订单状态" v-if="packageTransferInfo.order_status">{{packageTransferInfo.order_status | enumFilter('sold.order_status')}}</st-info-item>
@@ -30,7 +30,7 @@
             <st-info-item label="课程名称">{{personalCourseInfo.course_name}}</st-info-item>
             <st-info-item label="剩余课时">{{personalCourseInfo.remain_course_num}}</st-info-item>
             <st-info-item label="购买课时">{{personalCourseInfo.init_course_num}}</st-info-item>
-            <st-info-item label="到期日期">{{moment(personalCourseInfo.end_time*1000).format('YYYY-MM-DD hh:mm')}}</st-info-item>
+            <st-info-item label="到期日期">{{moment(personalCourseInfo.end_time*1000).format('YYYY-MM-DD HH:mm')}}</st-info-item>
             <st-info-item label="实付金额">{{personalCourseInfo.pay_price}}</st-info-item>
             <st-info-item label="销售人员">{{personalCourseInfo.staff_name}}</st-info-item>
           </st-info>
@@ -115,7 +115,7 @@
                   @change="onStartTimeChange"
                   :showTime="{format: 'HH:mm'}"
                   style="width: 100%;"
-                  format="YYYY-MM-DD hh:mm"
+                  format="YYYY-MM-DD HH:mm"
                   placeholder="开始时间"
                   :allowClear="false"
                   :showToday="false"
@@ -126,7 +126,7 @@
                 <a-date-picker
                   disabled
                   :value="endTime"
-                  format="YYYY-MM-DD hh:mm"
+                  format="YYYY-MM-DD HH:mm"
                   placeholder="结束时间"
                   :showToday="false"
                 />

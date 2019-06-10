@@ -90,7 +90,7 @@
                   @change="onStartTimeChange"
                   :showTime="{format: 'HH:mm'}"
                   style="width: 100%;"
-                  format="YYYY-MM-DD hh:mm"
+                  format="YYYY-MM-DD HH:mm"
                   placeholder="开始时间"
                   :allowClear="false"
                   :showToday="false"
@@ -101,7 +101,7 @@
                 <a-date-picker
                   disabled
                   :value="endTime"
-                  format="YYYY-MM-DD hh:mm"
+                  format="YYYY-MM-DD HH:mm"
                   placeholder="结束时间"
                   :showToday="false"
                 />
@@ -211,7 +211,7 @@ export default {
       this.form.validateFields((error, values) => {
         let sold_type = this.isDeposite ? this.depositTransferInfo.contract_type : this.isMember ? this.memberTransferInfo.contract_type : '1'
         if (!error) {
-          let start_time = this.isMember ? values.startTime.format('YYYY-MM-DD hh:mm') : null
+          let start_time = this.isMember ? values.startTime.format('YYYY-MM-DD HH:mm') : null
           this.transferService.editCardTransfer({
             start_time,
             transferee_member_id: +values.memberId,

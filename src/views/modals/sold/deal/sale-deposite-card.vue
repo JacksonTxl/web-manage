@@ -50,7 +50,7 @@
                 </span>
               </a-select-option>
             </a-select>
-            <p v-if="!memberList.length&&memberSearchText!==''" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
+            <p v-if="!memberList.length&&memberSearchText!==''&&+info.sale_range.type===1" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
           </st-form-item>
           <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required>
             <a-input v-decorator="['memberName',{rules:[{validator:member_name_validator}]}]" placeholder="请输入会员姓名"></a-input>
@@ -59,7 +59,7 @@
             <a-input v-decorator="['memberMobile',{rules:[{validator:member_mobile_validator}]}]" placeholder="请输入手机号"></a-input>
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
-          <st-form-item label="到期时间">{{moment().add(info.valid_time,'d').format('YYYY-MM-DD hh:mm')}}</st-form-item>
+          <st-form-item label="到期时间">{{moment().add(info.valid_time,'d').format('YYYY-MM-DD HH:mm')}}</st-form-item>
           <st-form-item label="合同编号" required>
             <div :class="sale('contract')">
               <a-input
@@ -255,6 +255,7 @@ export default {
       } else {
         this.saleDepositeCardService.getMember(data).subscribe(res => {
           if (!res.list.length) {
+            this.resetAdvance()
             this.form.resetFields(['memberId'])
           }
         })
@@ -285,6 +286,7 @@ export default {
     onAddMember() {
       this.searchMemberIsShow = false
       this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
+      this.resetAdvance()
     },
     onCancelMember() {
       this.searchMemberIsShow = true
@@ -326,8 +328,12 @@ export default {
             'description': this.description,
             'order_amount': this.orderAmount,
             'sale_range': +this.info.sale_range.type
-          }).subscribe(() => {
-            console.log('成功')
+          }).subscribe(res => {
+            this.show = false
+            this.$emit('success', {
+              type: 'create',
+              orderId: res.info.order_id
+            })
           })
         }
       })
@@ -336,7 +342,7 @@ export default {
       this.form.validateFields((error, values) => {
         if (!error) {
           let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
-          this.saleDepositeCardService.setTransaction({
+          this.saleDepositeCardService.setTransactionPay({
             'member_id': +values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,
@@ -348,8 +354,12 @@ export default {
             'description': this.description,
             'order_amount': this.orderAmount,
             'sale_range': +this.info.sale_range.type
-          }).subscribe(() => {
-            console.log('成功')
+          }).subscribe(res => {
+            this.show = false
+            this.$emit('success', {
+              type: 'createPay',
+              orderId: res.info.order_id
+            })
           })
         }
       })

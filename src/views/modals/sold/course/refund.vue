@@ -9,7 +9,7 @@
         <a-col :span="13" class="mgb-36">
           <st-info>
             <st-info-item label="订单号">{{packageInfo.order_id}}</st-info-item>
-            <st-info-item class="mg-b0" label="下单时间">{{moment(packageInfo.created_time*1000).format('YYYY-MM-DD hh:mm')}}</st-info-item>
+            <st-info-item class="mg-b0" label="下单时间">{{moment(packageInfo.created_time*1000).format('YYYY-MM-DD HH:mm')}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11" class="mgb-36">
