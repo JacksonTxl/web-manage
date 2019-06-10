@@ -34,7 +34,6 @@
   </div>
 </template>
 <script>
-import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { ShopStatusService as EditService } from '../setting-shop-status.service'
 import moment from 'moment'
@@ -80,14 +79,6 @@ export default {
     shopName: {
       type: String,
       default: ''
-    }
-  },
-  computed: {
-    shopStatusList() {
-      return this.shopEnums.shop_status.value || {}
-    },
-    isValidList() {
-      return this.shopEnums.is_valid.value || {}
     }
   },
   data() {
