@@ -9,19 +9,20 @@
   :scroll="{ x: 1500}">
     <div class="page-staff-table-action" slot="action" slot-scope="text, record">
         <a href="javascript:void()" @click="staffInfo(record)" class="mg-r8">详情</a>
-        <a href="javascript:void()" @click="editStaff(record.staff_id)">编辑</a>
+        <a href="javascript:void()" @click="editStaff(record.id)">编辑</a>
         <st-more-dropdown>
-          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staffId: record.staff_id || 1} }">设置薪资账户</modal-link></a-menu-item>
-          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-update-staff-position', props: {staffId: record.staff_id || 1} }">更改员工职位</modal-link></a-menu-item>
-          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-turnover', props: {staff_id: record.staff_id || 1} } ">离职</modal-link></a-menu-item>
-          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-reinstatement', props: {staff_id: record.staff_id || 1} }">复职</modal-link></a-menu-item>
-          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-delete', props: {staff_id: record.staff_id || 1} }">删除</modal-link></a-menu-item>
+          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: record} }"> 绑定实体卡</modal-link></a-menu-item>
+          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-update-staff-position', props: {staff: record} }">更改员工职位</modal-link></a-menu-item>
+          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-turnover', props: {staff: record} } ">离职</modal-link></a-menu-item>
+          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-reinstatement', props: {staff: record} }">复职</modal-link></a-menu-item>
+          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-delete', props: {staff: record} }">删除</modal-link></a-menu-item>
         </st-more-dropdown>
     </div>
     <div slot="work_status" slot-scope="work_status">
       <a-badge :status="work_status.id == 1 ? 'success' : 'error'" />{{work_status.name}}
     </div>
     <div slot="shop" slot-scope="shop">
+      <span v-if="shop"></span>
       {{shop.name}}
     </div>
     <div slot="identity" slot-scope="identity">
@@ -63,12 +64,11 @@ export default {
     }
   },
   methods: {
-    staffInfo(e) {
-      console.log(e)
+    staffInfo(staff) {
       this.$router.push({ name: 'brand-staff-info',
         query: {
-          id: e.staff_id,
-          identity: e.identity
+          id: staff.id,
+          idstaffntity: staff.identity
         } })
     },
     editStaff(staffId) {

@@ -144,9 +144,13 @@ class VueServiceApp {
   }
   queryOptionsHandler() {
     this.router.beforeEach((to, from, next) => {
+      next.query = next.query || {}
       if (to.query._f) {
         delete to.query['_f']
       }
+      // if (next.query._f) {
+      //   delete next.query['_f']
+      // }
       const queryOptions = this.queryMap[to.name]
       const formatedQuery = Object.assign({}, to.query)
       if (queryOptions) {

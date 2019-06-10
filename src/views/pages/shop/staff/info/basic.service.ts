@@ -11,15 +11,15 @@ interface BasicState {
 export class BasicService extends Store<BasicState> {
     state$: State<BasicState>
     basicInfo$: Computed<Object>
-    constructor(private cardsApi: StaffApi) {
+    constructor(private staffApi: StaffApi) {
       super()
       this.state$ = new State({
         basicInfo: {}
       })
       this.basicInfo$ = new Computed(this.state$.pipe(pluck('basicInfo')))
     }
-    getBasicInfo(id: string) {
-      return this.cardsApi.getStaffInfo(id).pipe(
+    getStaffInfo(id: string) {
+      return this.staffApi.getStaffInfo(id).pipe(
         tap(res => {
           this.state$.commit(state => {
             state.basicInfo = res.common_info
@@ -31,7 +31,7 @@ export class BasicService extends Store<BasicState> {
     beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
       const { id } = to.meta.query
       console.log('basic service')
-      this.getBasicInfo(id).subscribe(() => {
+      this.getStaffInfo(id).subscribe(() => {
         next()
       })
     }

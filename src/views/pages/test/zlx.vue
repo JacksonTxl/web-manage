@@ -1,116 +1,107 @@
 <template>
-  <st-panel class='demo-app'>
-    <st-t2>课程列表（品牌）</st-t2>
-    <p class="mg-t8">
-      <router-link to="/brand/product/course/personal/list/brand">私教课 品牌私教课库</router-link>
-      <router-link class="mg-l8" to="src/views/pages/brand/product/course/personal/list/brand">私教课 场馆私教课库</router-link>
-      <router-link class="mg-l8" to="/brand/product/course/personal/info">私教课详情</router-link>
-      <router-link to="/brand/product/course/team/list/brand">团课课 品牌团课课库</router-link>
-      <router-link class="mg-l8" to="/brand/product/course/team/list/brand">团课课 场馆团课课库</router-link>
-      <router-link class="mg-l8" to="/brand/product/course/team/info">团课课详情</router-link>
-    </p>
-    <st-t2>员工列表(品牌)</st-t2>
-    <p class="mg-t8">
-      <router-link to="/shop/product/course/schedule/team">团课排期</router-link>
-      <router-link class="mg-l8" to="/shop/product/course/schedule/personal">私教1v1</router-link>
-      <router-link class="mg-l8" to="/shop/product/course/schedule/personal-team">私教小团课</router-link>
-    </p>
-    <st-t2>课程排期</st-t2>
-    <p class="mg-t8">
-      <router-link to="/shop/product/course/schedule/team">团课排期</router-link>
-      <router-link class="mg-l8" to="/pages/shop/product/course/schedule/personal">私教1v1</router-link>
-      <router-link class="mg-l8" to="/pages/shop/product/course/schedule/personal-team">私教小团课</router-link>
-    </p>
-    <div class='demo-app-top'>
-      <button @click="toggleWeekends">toggle weekends</button>
-      <button @click="gotoPast">go to a date in the past</button>
-      (also, click a date/time to add an event)
-    </div>
-      <TimePicker></TimePicker>
-    <FullCalendar
-      class='demo-app-calendar'
-      ref="fullCalendar"
-      defaultView="dayGridMonth"
-      :header="{
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-      }"
-      :plugins="calendarPlugins"
-      :weekends="calendarWeekends"
-      :events="calendarEvents"
-      @dateClick="handleDateClick"
-      />
-      <st-shop-hour-picker></st-shop-hour-picker>
-  </st-panel>
+  <div>
+    <a-input-search style="margin-bottom: 8px" placeholder="Search" @change="onChange" />
+    <a-tree
+      @expand="onExpand"
+      :expandedKeys="expandedKeys"
+      :autoExpandParent="autoExpandParent"
+      :treeData="gData"
+    >
+      <template slot="title" slot-scope="{title}">
+        <span v-if="title.indexOf(searchValue) > -1">
+          {{title.substr(0, title.indexOf(searchValue))}}
+          <span style="color: #f50">{{searchValue}}</span>
+          {{title.substr(title.indexOf(searchValue) + searchValue.length)}}
+        </span>
+      </template>
+    </a-tree>
+  </div>
 </template>
 
 <script>
-import FullCalendar from '@fullcalendar/vue'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction'
-import TimePicker from './zlx/timepicker#/index'
+const x = 3
+const y = 2
+const z = 1
+const gData = []
 
+const generateData = (_level, _preKey, _tns) => {
+  const preKey = _preKey || '0'
+  const tns = _tns || gData
+
+  const children = []
+  for (let i = 0; i < x; i++) {
+    const key = `${preKey}-${i}`
+    tns.push({ title: key, key, scopedSlots: { title: 'title' } })
+    if (i < y) {
+      children.push(key)
+    }
+  }
+  if (_level < 0) {
+    return tns
+  }
+  const level = _level - 1
+  children.forEach((key, index) => {
+    tns[index].children = []
+    return generateData(level, key, tns[index].children)
+  })
+}
+generateData(z)
+
+const dataList = []
+const generateList = (data) => {
+  for (let i = 0; i < data.length; i++) {
+    const node = data[i]
+    const key = node.key
+    dataList.push({ key, title: key })
+    if (node.children) {
+      generateList(node.children, node.key)
+    }
+  }
+}
+generateList(gData)
+
+const getParentKey = (key, tree) => {
+  let parentKey
+  for (let i = 0; i < tree.length; i++) {
+    const node = tree[i]
+    if (node.children) {
+      if (node.children.some(item => item.key === key)) {
+        parentKey = node.key
+      } else if (getParentKey(key, node.children)) {
+        parentKey = getParentKey(key, node.children)
+      }
+    }
+  }
+  return parentKey
+}
 export default {
-  components: {
-    FullCalendar, // make the <FullCalendar> tag available
-    TimePicker
-  },
-  data: function() {
+  data() {
     return {
-      calendarPlugins: [ // plugins must be defined in the JS
-        dayGridPlugin,
-        timeGridPlugin,
-        interactionPlugin // needed for dateClick
-      ],
-      calendarWeekends: true,
-      calendarEvents: [ // initial event data
-        { title: 'Event Now', start: new Date() }
-      ]
+      expandedKeys: [],
+      searchValue: '',
+      autoExpandParent: true,
+      gData
     }
   },
   methods: {
-    toggleWeekends() {
-      this.calendarWeekends = !this.calendarWeekends // update a property
+    onExpand(expandedKeys) {
+      this.expandedKeys = expandedKeys
+      this.autoExpandParent = false
     },
-    gotoPast() {
-      let calendarApi = this.$refs.fullCalendar.getApi() // from the ref="..."
-      calendarApi.gotoDate('2000-01-01') // call a method on the Calendar object
-    },
-    handleDateClick(arg) {
-      if (confirm('Would you like to add an event to ' + arg.dateStr + ' ?')) {
-        this.calendarEvents.push({ // add new event data
-          title: 'New Event',
-          start: arg.date,
-          allDay: arg.allDay
-        })
-      }
+    onChange(e) {
+      const value = e.target.value
+      const expandedKeys = dataList.map((item) => {
+        if (item.key.indexOf(value) > -1) {
+          return getParentKey(item.key, gData)
+        }
+        return null
+      }).filter((item, i, self) => item && self.indexOf(item) === i)
+      Object.assign(this, {
+        expandedKeys,
+        searchValue: value,
+        autoExpandParent: true
+      })
     }
   }
 }
 </script>
-
-<style lang='less'>
-
-// you must include each plugins' css
-// paths prefixed with ~ signify node_modules
-@import '~@fullcalendar/core/main.css';
-@import '~@fullcalendar/daygrid/main.css';
-@import '~@fullcalendar/timegrid/main.css';
-
-.demo-app {
-  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-  font-size: 14px;
-}
-
-.demo-app-top {
-  margin: 0 0 3em;
-}
-
-.demo-app-calendar {
-  margin: 0 auto;
-  max-width: 900px;
-}
-
-</style>
