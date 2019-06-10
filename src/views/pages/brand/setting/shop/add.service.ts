@@ -21,8 +21,8 @@ export class AddService implements RouteGuard {
   }
   getUnusedShops() {
     return this.brandApi.getUnusedShops().pipe(
-      tap(res => {
-        this.unusedShops$.commit(() => res)
+      tap((res: any) => {
+        this.unusedShops$.commit(() => res.list)
       })
     )
   }
