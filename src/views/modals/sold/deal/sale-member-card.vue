@@ -67,7 +67,7 @@
             <a-radio-group :options="paymentOptions" @change="onChangePayment"/>
           </st-form-item>
           <st-form-item label="有效时间">
-            <div v-if="selectedPayment == 1">{{moment().add(100,'d').format('YYYY-MM-DD hh:mm')}}&nbsp;至&nbsp;{{moment().add(100,'d').format('YYYY-MM-DD hh:mm')}}</div>
+            <div v-if="selectedPayment == 1">{{moment().add(100,'d').format('YYYY-MM-DD HH:mm')}}&nbsp;至&nbsp;{{moment().add(100,'d').format('YYYY-MM-DD HH:mm')}}</div>
             <div v-if="selectedPayment == 2">X天内未开卡，则X+1天0：00自动开卡</div>
             <div v-if="selectedPayment == 3">
               <a-date-picker

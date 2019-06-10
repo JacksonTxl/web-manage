@@ -12,7 +12,7 @@
             <st-info-item label="类型">{{info.type}}</st-info-item>
             <st-info-item label="初始额度">{{info.init_amount}}</st-info-item>
             <st-info-item label="剩余额度">{{info.now_amount}}</st-info-item>
-            <st-info-item label="有效期" class="mg-b0">{{moment(info.buy_time*1000).format('YYYY-MM-DD hh:mm')}} 至  {{moment(info.end_time*1000).format('YYYY-MM-DD hh:mm')}}</st-info-item>
+            <st-info-item label="有效期" class="mg-b0">{{moment(info.buy_time*1000).format('YYYY-MM-DD HH:mm')}} 至  {{moment(info.end_time*1000).format('YYYY-MM-DD HH:mm')}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="9">

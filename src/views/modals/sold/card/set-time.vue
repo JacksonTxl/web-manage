@@ -11,8 +11,8 @@
             <st-info-item label="卡名">{{info.card_name}}</st-info-item>
             <st-info-item label="当前额度">{{info.remain_amount}}</st-info-item>
             <st-info-item label="初始额度">{{info.init_amount}}</st-info-item>
-            <st-info-item label="开卡日期">{{!info.is_open?'-':moment(info.start_time).format('YYYY-MM-DD hh:mm')}}</st-info-item>
-            <st-info-item label="到期日期">{{!info.is_open?'-':moment(info.end_time).format('YYYY-MM-DD hh:mm')}}</st-info-item>
+            <st-info-item label="开卡日期">{{!info.is_open?'-':moment(info.start_time).format('YYYY-MM-DD HH:mm')}}</st-info-item>
+            <st-info-item label="到期日期">{{!info.is_open?'-':moment(info.end_time).format('YYYY-MM-DD HH:mm')}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
@@ -33,7 +33,7 @@
               v-decorator="['start_time',{rules:[{validator:start_time_validator}]}]"
               @change="onEndTimeChange"
               style="width: 100%;"
-              format="YYYY-MM-DD hh:mm"
+              format="YYYY-MM-DD HH:mm"
               :showTime="{format: 'HH:mm'}"
               placeholder="到期日期"
               :allowClear="false"
@@ -48,7 +48,7 @@
                   v-decorator="['start_time',{rules:[{validator:start_time_validator}]}]"
                   @change="onEndTimeChange"
                   style="width: 100%;"
-                  format="YYYY-MM-DD hh:mm"
+                  format="YYYY-MM-DD HH:mm"
                   :showTime="{format: 'HH:mm'}"
                   placeholder="开始时间"
                   :allowClear="false"

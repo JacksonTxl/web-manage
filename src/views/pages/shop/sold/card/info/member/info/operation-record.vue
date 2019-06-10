@@ -7,7 +7,7 @@
     @change="onPageChange"
     :dataSource="list">
       <template slot="operation_time" slot-scope="text">
-        {{moment(text*1000).format('YYYY-MM-DD hh:mm')}}
+        {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
       </template>
     </st-table>
   </section>
