@@ -155,14 +155,13 @@ module.exports = {
       config.module.rules.delete('eslint')
     })
     config.plugin('define').tap(definitions => {
-      const { NODE_ENV } = process.env
       definitions[0] = Object.assign(definitions[0], {
         'process.env': {
-          BASE_URL: '"/"',
-          NODE_ENV: `"${NODE_ENV}"`,
-          GIT_COMMIT: `"${git.short()}"`,
-          GIT_MESSAGE: `"${git.message()}"`,
-          GIT_DATE: `"${git.date()}"`
+          BASE_URL: JSON.stringify(process.env.BASE_URL),
+          NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+          GIT_COMMIT: JSON.stringify(git.short()),
+          GIT_MESSAGE: JSON.stringify(git.message()),
+          GIT_DATE: JSON.stringify(git.date())
         }
       })
       return definitions

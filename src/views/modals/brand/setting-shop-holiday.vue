@@ -4,9 +4,6 @@
     v-model="show"
     :footer="null"
     size="small"
-    @ok="onSubmit"
-    @cancel="onCancel"
-    :confirmLoading="loading.update"
   >
     <div>
       <edit-holiday v-if="isHoliday"></edit-holiday>
@@ -15,45 +12,10 @@
   </st-modal>
 </template>
 <script>
-import { UserService } from '@/services/user.service'
-import { ShopStatusService as EditService } from './setting-shop-status.service'
 import { MessageService } from '@/services/message.service'
 import AddHoliday from './setting#/add-holiday'
 import EditHoliday from './setting#/edit-holiday'
-import moment from 'moment'
-const formRules = {
-  id: ['id'],
-  startTime: [
-    'holiday_start_time', {
-      rules: [{
-        required: true,
-        message: '请输入放假开始时间'
-      }]
-    }
-  ],
-  endTime: [
-    'holiday_end_time', {
-      rules: [{
-        required: true,
-        message: '请输入放假结束时间'
-      }]
-    }
-  ]
-}
 export default {
-  serviceInject() {
-    return {
-      userService: UserService,
-      editService: EditService,
-      messageService: MessageService
-    }
-  },
-  rxState() {
-    return {
-      shopEnums: this.userService.shopEnums$,
-      loading: this.editService.loading$
-    }
-  },
   props: {
     shopId: {
       type: [Number, String],
@@ -80,55 +42,14 @@ export default {
       default: 0
     }
   },
-  computed: {
-    shopStatusList() {
-      return this.shopEnums.shop_status.value || {}
-    },
-    isValidList() {
-      return this.shopEnums.is_valid.value || {}
-    }
-  },
   data() {
     return {
-      show: true,
-      formRules
+      show: true
     }
   },
   components: {
     AddHoliday,
     EditHoliday
-  },
-  created() {
-    this.form = this.$form.createForm(this)
-  },
-  mounted() {
-    this.$nextTick(() => {
-      // this.form.setFieldsValue({
-      //   id: this.shopId,
-      //   holiday_start_time: this.startTime,
-      //   holiday_end_time: this.endTime
-      // })
-    })
-  },
-  methods: {
-    onSubmit(e) {
-      e.preventDefault()
-      const that = this
-      this.form.validateFields().then(() => {
-        const data = this.form.getFieldsValue()
-        this.editService.update(data).subscribe(this.onSubmitSuccess)
-      })
-    },
-    onSubmitSuccess() {
-      this.messageService.success({
-        content: '更改成功'
-      })
-      this.$emit('change')
-      this.show = false
-    },
-    onCancel() {
-      this.show = false
-    }
   }
 }
 </script>

@@ -20,7 +20,7 @@ export class RoleApi extends Api {
     return this.http.get(`/v1/common/role/all`)
   }
   /**
-     * 获取所有角色列表（角色编辑页面）
+     * 获取角色初始化菜单权限树
      */
   getInitInfo(query: GetInitInfoPut) {
     return this.http.get(`/v1/common/role/init`, { query })

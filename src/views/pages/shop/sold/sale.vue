@@ -136,8 +136,14 @@ export default {
           id: '0'
         },
         on: {
-          success: () => {
-            console.log('success')
+          success: res => {
+            if (res.type === 'create') {
+              // 创建订单
+              console.log(res.orderId, 1)
+            } else if (res.type === 'createPay') {
+              // 创建订单并支付
+              console.log(res.orderId, 2)
+            }
           }
         }
       })
@@ -149,8 +155,20 @@ export default {
           id: '1'
         },
         on: {
-          success: () => {
-            console.log('success')
+          success: res => {
+            if (res.type === 'create') {
+              // 创建订单
+              console.log(res.orderId, 1)
+            } else if (res.type === 'createPay') {
+              // 创建订单并支付
+              this.$modalRouter.push({
+                name: 'sold-deal-gathering',
+                props: {
+                  order_id: res.orderId
+                }
+
+              })
+            }
           }
         }
       })

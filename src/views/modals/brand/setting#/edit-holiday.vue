@@ -49,7 +49,6 @@
   </st-form>
 </template>
 <script>
-import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { ShopStatusService as EditService } from '../setting-shop-status.service'
 import moment from 'moment'
@@ -75,14 +74,12 @@ const formRules = {
 export default {
   serviceInject() {
     return {
-      userService: UserService,
       editService: EditService,
       messageService: MessageService
     }
   },
   rxState() {
     return {
-      shopEnums: this.userService.shopEnums$,
       loading: this.editService.loading$
     }
   },
@@ -110,14 +107,6 @@ export default {
     isHoliday: {
       type: Number,
       default: 0
-    }
-  },
-  computed: {
-    shopStatusList() {
-      return this.shopEnums.shop_status.value || {}
-    },
-    isValidList() {
-      return this.shopEnums.is_valid.value || {}
     }
   },
   data() {

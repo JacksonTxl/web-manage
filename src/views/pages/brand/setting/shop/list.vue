@@ -87,7 +87,7 @@
                     shopId: shop.shop_id,
                     shopName: shop.shop_name,
                     shopStatus: shop.shop_status,
-                    isHoliday: !shop.is_holiday
+                    isHoliday: shop.is_holiday
                   },
                   on: {
                     change: onListChange

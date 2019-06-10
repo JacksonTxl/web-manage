@@ -6,7 +6,13 @@ export class CoachLevelApi extends Api {
    * 教练等级列表
    */
   getCoachLevelList(query: GetCoachLevelListInput) {
-    return this.http.get(url, { query })
+    return this.http.get(`${url}/all`, { query })
+  }
+  /**
+   * 教练等级列表
+   */
+  getCoachLevelListAll() {
+    return this.http.get(`${url}/all`)
   }
   /**
    * 新增教练等级

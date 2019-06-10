@@ -320,13 +320,14 @@ export class StaffApi extends Api {
     return this.http.delete(`${URL}${id}`)
   }
 
-  // 更改员工弹框回显
-  updateStaffPostion(id: string) {
-    return this.http.get(`/v1/staff/brand/position/${id}`)
+  /**
+   * 员工职位/工资账户信息（复显）
+   */
+  getStaffBrandPosition(query: any) {
+    return this.http.get(`/v1/staff/brand/position/${query.id}`)
   }
-
   // 提交更改员工职位
-  bindStaffPostion(id: string, params: any) {
+  bindStaffPosition(id: string, params: any) {
     return this.http.put(`/v1/staff/bind/position/${id}`, { params })
   }
 

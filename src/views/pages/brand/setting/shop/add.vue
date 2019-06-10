@@ -129,6 +129,24 @@
           </st-form-item>
         </a-col>
       </a-row>
+      <a-row :gutter="8">
+        <a-col :lg="10" :xs="22" :offset="1">
+          <st-form-item label="到期时间" required>
+            <a-select placeholder="请选择到期时间" v-decorator="[
+              'buy_shop_id',
+              { rules: [{ required: true, message: '请选择到期时间' }]}
+            ]">
+              <a-select-option
+                v-for="(item, index) in unusedShops"
+                :key="index"
+                :value="item.buy_shop_id"
+              >
+                {{item.expire_time}}
+              </a-select-option>
+            </a-select>
+          </st-form-item>
+        </a-col>
+      </a-row>
       <a-row :gutter="8" type="flex" justify="center" align="middle">
         <a-col>
           <st-button type="primary" @click="onHandleSubmit" :loading="addLoading.save">提交</st-button>
@@ -142,19 +160,22 @@ import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/rule'
 import { AddService } from './add.service'
 import { cloneDeep } from 'lodash-es'
+import { MessageService } from '@/services/message.service'
 export default {
   serviceInject() {
     return {
       rules: RuleConfig,
       addService: AddService,
-      userService: UserService
+      userService: UserService,
+      messageService: MessageService
     }
   },
   rxState() {
     return {
       serviceList: this.addService.serviceList$,
       addLoading: this.addService.loading$,
-      shop: this.userService.shopEnums$
+      shop: this.userService.shopEnums$,
+      unusedShops: this.addService.unusedShops$
     }
   },
   data() {
@@ -172,7 +193,8 @@ export default {
         service_ids: [],
         business_time: [],
         email: '',
-        shop_cover_image: ''
+        shop_cover_image: '',
+        buy_shop_id: -1
       },
       // 电话校验方式 1为点击添加校验，0为点击提交校验
       phoneValidtorType: 1,
@@ -258,12 +280,16 @@ export default {
           } else {
             this.shopData.shop_name = values.shop_name
             this.shopData.email = values.email
-            this.addService.save(this.shopData).subscribe(() => {
-              console.log(654987)
-            })
+            this.shopData.buy_shop_id = values.buy_shop_id
+            this.addService.save(this.shopData).subscribe(this.onSubmitSuccess)
           }
         } else {
         }
+      })
+    },
+    onSubmitSuccess() {
+      this.messageService.success({
+        content: '添加成功'
       })
     },
     // shop_name validatorFn

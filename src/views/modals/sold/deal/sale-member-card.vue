@@ -264,7 +264,7 @@ export default {
   },
   computed: {
     orderAmount() {
-      return this.selectedNorm.price - this.reduceAmount - this.advanceAmount - this.couponAmount
+      return (this.selectedNorm.price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(0)
     },
     orderAmountText() {
       return this.orderAmount < 0 ? '这里不能为负哦，找刚刚要文案' : ''

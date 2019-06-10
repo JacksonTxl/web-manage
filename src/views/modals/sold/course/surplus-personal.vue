@@ -9,7 +9,7 @@
         <st-info :class="surplus('info')" class="mg-b24">
           <st-info-item label="课程名称">{{courseData.course_name}}</st-info-item>
           <st-info-item label="剩余课时">{{courseData.remain_course_num}}</st-info-item>
-          <st-info-item label="有效期">{{moment(courseData.buy_time*1000).format('YYYY-MM-DD hh:mm')}} 至 {{moment(courseData.end_time*1000).format('YYYY-MM-DD hh:mm')}}</st-info-item>
+          <st-info-item label="有效期">{{moment(courseData.buy_time*1000).format('YYYY-MM-DD HH:mm')}} 至 {{moment(courseData.end_time*1000).format('YYYY-MM-DD HH:mm')}}</st-info-item>
         </st-info>
         <st-hr marginTop="0" marginBottom="0"></st-hr>
         <st-form-item label="修改课时" required class="mg-t24">
