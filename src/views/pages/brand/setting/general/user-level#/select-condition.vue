@@ -42,6 +42,7 @@ export default {
   },
   created() {
     this.setChecked()
+    this.onChange(this.checked)
   },
   methods: {
     setChecked() {
