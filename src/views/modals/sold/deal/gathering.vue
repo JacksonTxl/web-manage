@@ -115,10 +115,11 @@ export default {
 
     }
   },
-  props: ['order_id', 'type'],
+  // 订单id，签单类型，会员id
+  props: ['order_id', 'type', 'member_id'],
   created() {
     this.gatheringService.getPaymentInfo(this.order_id, this.type).subscribe(result => {
-      this.gatheringService.getPaymentMethodList(result.info.member_id).subscribe()
+      this.gatheringService.getPaymentMethodList(this.member_id).subscribe()
     })
   },
   methods: {
@@ -137,7 +138,7 @@ export default {
         delete values.payment_method
         // values.deposit_card_id = 1
         this.gatheringService.payTransaction(values).subscribe(result => {
-          this.$emit('ok')
+          this.$emit('success')
           this.show = false
           // this.$modalRouter.push({
           //   name: 'sold-deal-gathering-tip'

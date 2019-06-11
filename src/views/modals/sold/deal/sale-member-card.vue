@@ -84,7 +84,7 @@
             </div>
           </st-form-item>
           <st-form-item label="购买赠送">
-            <st-input-number :min="0" :max="selectedNorm.gift_max" placeholder="请输入赠送的天数/次数" style="width: 100%" >
+            <st-input-number :min="0" :max="selectedNorm.gift_max" placeholder="请输入赠送的天数/次数" style="width: 100%" v-model="gift_amount">
               <span slot="addonAfter">天</span>
             </st-input-number>
           </st-form-item>
@@ -246,7 +246,9 @@ export default {
       selectedPayment: '',
       // 会员卡结束日期
       validStartTime: '',
-      validEndTime: ''
+      validEndTime: '',
+      // 赠送天数
+      gift_amount: 0
     }
   },
   mounted() {
@@ -432,13 +434,30 @@ export default {
             'valid_start_time': this.validStartTime,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
-            'reduce_price': this.reduceAmount,
+            'gift_amount': this.gift_amount,
+            'reduce_amount': this.reduceAmount,
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,
             'order_amount': this.orderAmount
-          }).subscribe(() => {
-            console.log('成功')
+          }).subscribe((result) => {
+            this.$emit('success')
+            this.show = false
+            this.$modalRouter.push({
+              name: 'sold-deal-gathering-tip',
+              props: {
+                order_id: result.info.order_id,
+                type: 'member',
+                member_id: values.memberId,
+                message: '订单创建成功',
+                needPay: true
+              },
+              on: {
+                success: () => {
+                  console.log('success')
+                }
+              }
+            })
           })
         }
       })
@@ -457,20 +476,38 @@ export default {
             'valid_start_time': this.validStartTime,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
-            'reduce_price': this.reduceAmount,
+            'gift_amount': this.gift_amount,
+            'reduce_amount': this.reduceAmount,
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,
             'order_amount': this.orderAmount
           }).subscribe((result) => {
+            this.$emit('success')
+            this.show = false
             this.$modalRouter.push({
               name: 'sold-deal-gathering',
               props: {
-                order_id: result.data.id
+                order_id: result.info.order_id,
+                type: 'member',
+                member_id: this.member_id
               },
               on: {
                 success: () => {
-                  console.log('success')
+                  this.$modalRouter.push({
+                    name: 'sold-deal-gathering-tip',
+                    props: {
+                      order_id: result.info.id,
+                      type: 'member',
+                      member_id: this.member_id,
+                      message: '收款成功'
+                    },
+                    on: {
+                      success: () => {
+                        console.log('success')
+                      }
+                    }
+                  })
                 }
               }
             })
