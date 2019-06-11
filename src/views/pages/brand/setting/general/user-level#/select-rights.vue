@@ -7,7 +7,7 @@
       v-for="(item, index) in value"
       :key="index"
       :value="item.id">
-      {{item.right_name}}
+      {{item.rights_name}}
     </a-checkbox>
   </a-checkbox-group>
 </template>
@@ -34,6 +34,7 @@ export default {
   },
   created() {
     this.setChecked()
+    this.onChange(this.checked)
   },
   methods: {
     setChecked() {

@@ -65,7 +65,7 @@
                 <i class="icon-member-checked"></i>
                 <span v-for="(item, index) in member.rights"
                 :key="index">
-                  {{item.right_name | textFilter(member.rights, index)}}
+                  {{item.rights_name | textFilter(member.rights, index)}}
                 </span>
               </li>
               <li v-else class="st-des mg-t8">暂无特权类目～</li>
