@@ -37,7 +37,7 @@
         slot="card_name"
         slot-scope="text,record"
         href="javascript:;"
-        @click="memberFun(text,record)"
+        @click="infoFunc(record)"
       >{{text}}</a>
       <!-- 储值卡名称end -->
       <span
@@ -335,10 +335,6 @@ export default {
     onEdit(record) {
       const id = record.card_id
       this.routerHandler('brand-product-card-deposite-edit', id)
-    },
-    // 会员卡名称点击事件
-    memberFun(text, record) {
-      console.log(text, record, '会员卡名称点击事件')
     },
     routerHandler(name, id) {
       this.$router.push({

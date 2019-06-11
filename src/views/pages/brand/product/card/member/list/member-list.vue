@@ -46,7 +46,7 @@
         slot="card_name"
         slot-scope="text,record"
         href="javascript:;"
-        @click="memberFun(text,record)"
+        @click="infoFunc(record)"
       >{{text}}</a>
       <!-- 会员卡名称end -->
       <span slot="sell_time" slot-scope="text,record">{{record.start_time}}~{{record.end_time}}</span>
@@ -363,10 +363,6 @@ export default {
       const name = cardType.id === 1 ? 'brand-product-card-member-number-edit'
         : 'brand-product-card-member-period-edit'
       this.routerHandler(name, id)
-    },
-    // 会员卡名称点击事件
-    memberFun(text, record) {
-      console.log(text, record, '会员卡名称点击事件')
     },
     routerHandler(name, id) {
       this.$router.push({
