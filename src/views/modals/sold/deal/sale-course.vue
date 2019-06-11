@@ -59,34 +59,8 @@
             <a-input v-decorator="['memberMobile',{rules:[{validator:member_mobile_validator}]}]" placeholder="请输入手机号"></a-input>
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
-          <st-form-item label="规格" required>
-            <a-radio-group @change="onChangeSpecs" v-decorator="['specs',{rules:[]}]">
-              <a-radio v-for="(item, index) in info.specs" :value="item" :key="index">{{item.specs_name}}/{{item.price}}</a-radio>
-            </a-radio-group>
-          </st-form-item>
-          <st-form-item label="开卡方式" required>
-            <a-radio-group @change="onChangePayment" v-decorator="['open_type',{rules:[]}]">
-              <a-radio v-for="(item, index) in info.open_type" :value="item" :key="index">{{item.open_type}}</a-radio>
-            </a-radio-group>
-          </st-form-item>
-          <st-form-item label="有效时间">
-            <div v-if="selectedPayment.id == 1">{{validStartTime}}&nbsp;至&nbsp;{{validEndTime}}</div>
-            <div v-if="selectedPayment.id == 2">{{selectedPayment.automatic_num}}天内未开卡，则{{selectedPayment.automatic_num + 1}}天0：00自动开卡</div>
-            <div v-if="selectedPayment.id == 3">
-              <a-date-picker
-                showTime
-                :defaultValue="moment()"
-                format="YYYY-MM-DD HH:mm"
-                placeholder="请选择开始时间"
-                @change="onChangeTime"
-              />
-              至 {{validEndTime}}
-            </div>
-          </st-form-item>
-          <st-form-item label="购买赠送">
-            <st-input-number :min="0" :max="selectedNorm.gift_max" placeholder="请输入赠送的天数/次数" style="width: 100%" >
-              <span slot="addonAfter">天</span>
-            </st-input-number>
+          <st-form-item label="到期时间">
+            <div>{{validEndTime}}</div>
           </st-form-item>
           <st-form-item label="合同编号" required>
             <div :class="sale('contract')">
@@ -191,7 +165,7 @@
 </template>
 
 <script>
-import { SaleMemberCardService } from './sale-member-card.service'
+import { SaleCourseService } from './sale-course.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
@@ -202,16 +176,16 @@ export default {
   },
   serviceInject() {
     return {
-      saleMemberCardService: SaleMemberCardService
+      saleCourseService: SaleCourseService
     }
   },
   rxState() {
     return {
-      loading: this.saleMemberCardService.loading$,
-      memberList: this.saleMemberCardService.memberList$,
-      info: this.saleMemberCardService.info$,
-      saleList: this.saleMemberCardService.saleList$,
-      couponList: this.saleMemberCardService.couponList$
+      loading: this.saleCourseService.loading$,
+      memberList: this.saleCourseService.memberList$,
+      info: this.saleCourseService.info$,
+      saleList: this.saleCourseService.saleList$,
+      couponList: this.saleCourseService.couponList$
     }
   },
   props: {
@@ -239,67 +213,28 @@ export default {
       selectCoupon: '',
       couponText: '未选择优惠券',
       couponAmount: '',
-      couponDropdownVisible: false,
-      // 规格选项
-      selectedNorm: '',
-      // 开卡方式选择
-      selectedPayment: '',
-      // 会员卡结束日期
-      validStartTime: '',
-      validEndTime: ''
+      couponDropdownVisible: false
     }
   },
-  mounted() {
-    this.saleMemberCardService.serviceInit(this.id).subscribe(result => {
-      this.selectedNorm = this.info.specs[0]
-      this.selectedPayment = this.info.open_type[0]
-      this.form.setFieldsValue({
-        specs: this.selectedNorm,
-        open_type: this.selectedPayment
-      })
-      this.validStartTime = moment().format('YYYY-MM-DD hh:mm')
-      this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
-      this.fetchCouponList()
-    })
+  created() {
+    this.saleCourseService.serviceInit(this.id).subscribe()
   },
   computed: {
     orderAmount() {
-      return (this.selectedNorm.price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(0)
+      return (this.selectedNorm.price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(1)
     },
     orderAmountText() {
       return this.orderAmount < 0 ? '这里不能为负哦，找刚刚要文案' : ''
     }
   },
   methods: {
-    // 规格发生改变
-    onChangeSpecs(event) {
-      this.selectedNorm = event.target.value
-      this.fetchCouponList()
-    },
-    // 开卡方式发生改变
-    onChangePayment(event) {
-      this.selectedPayment = event.target.value
-      if (this.selectedPayment.id !== 2) {
-        this.validStartTime = moment().format('YYYY-MM-DD hh:mm')
-        this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
-      }
-      this.fetchCouponList()
-    },
     fetchCouponList() {
-      if (this.selectedNorm && this.selectedPayment) {
-        const params = {
-          member_id: this.form.getFieldValue('memberId'),
-          card_id: this.info.id,
-          specs_id: this.selectedNorm.id
-        }
-        this.saleMemberCardService.getCouponList(params).subscribe()
+      const params = {
+        member_id: this.form.getFieldValue('memberId'),
+        package_id: this.id,
+        specs_id: this.selectedNorm.id
       }
-    },
-    // 选择指定日期开卡
-    onChangeTime(event) {
-      if (event) {
-        this.validEndTime = moment(event._d).add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
-      }
+      this.saleCourseService.getCouponList(params).subscribe()
     },
     moment,
     member_id_validator(rule, value, callback) {
@@ -354,10 +289,10 @@ export default {
     onMemberSearch(data) {
       this.memberSearchText = data
       if (data === '') {
-        this.saleMemberCardService.memberList$.commit(() => [])
+        this.saleCourseService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
-        this.saleMemberCardService.getMember(data).subscribe(res => {
+        this.saleCourseService.getMember(data).subscribe(res => {
           if (!res.list.length) {
             this.form.resetFields(['memberId'])
           }
@@ -368,9 +303,10 @@ export default {
       if (!data) {
         this.resetAdvance()
       } else {
-        this.saleMemberCardService.getAdvanceList(data).subscribe(res => {
+        this.saleCourseService.getAdvanceList(data).subscribe(res => {
           this.advanceList = cloneDeep(res.list)
         })
+        this.getCouponList()
       }
     },
     onSelectAdvance() {
@@ -398,14 +334,14 @@ export default {
       this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
     },
     onCodeNumber() {
-      this.saleMemberCardService.getCodeNumber().subscribe(res => {
+      this.saleCourseService.getCodeNumber().subscribe(res => {
         this.form.setFieldsValue({
           contractNumber: res.info.code
         })
       })
     },
     onCancel() {
-      this.saleMemberCardService.memberList$.commit(() => [])
+      this.saleCourseService.memberList$.commit(() => [])
       this.resetAdvance()
     },
     onSelectAdvanceChange(data) {
@@ -421,16 +357,16 @@ export default {
     onCreateOrder() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.saleMemberCardService.setTransaction({
+          this.saleCourseService.setTransaction({
             'member_id': values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,
-            'product_id': this.id,
+            'package_course_id': this.id,
             'contract_number': values.contractNumber,
-            'specs_id': values.specs.id,
+            'coupon_id': this.selectCoupon.id,
             'open_card_type': values.open_type.id,
             'valid_start_time': this.validStartTime,
-            'coupon_id': this.selectCoupon.id,
+
             'advance_id': this.selectAdvance,
             'reduce_price': this.reduceAmount,
             'sale_id': values.saleName,
@@ -446,7 +382,7 @@ export default {
     onPay() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.saleMemberCardService.setTransaction({
+          this.saleCourseService.setTransaction({
             'member_id': values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,
