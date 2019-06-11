@@ -99,7 +99,7 @@
       <!-- 售卖状态end -->
       <!-- 操作end -->
       <div slot="action" slot-scope="text, record">
-        <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
+        <a href="javascript:;" @click="infoFunc(record)">详情</a>
         <a-divider type="vertical"></a-divider>
         <a href="javascript:;" v-if="record.sell_status.name === '可售卖'">
           <modal-link
@@ -116,7 +116,7 @@
         <template v-if="record.sell_status.name === '可售卖'">
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
-            <a-menu-item>编辑</a-menu-item>
+            <a-menu-item @click="onEdit(record)">编辑</a-menu-item>
             <a-menu-item>
               <modal-link
                 tag="a"
@@ -222,7 +222,6 @@ export default {
           sorter: (a, b) => {
             let A = a.card_type.name
             let B = b.card_type.name
-            console.log(1111)
             if (A < B) {
               return -1
             }
@@ -387,12 +386,31 @@ export default {
       console.log(current, pageSize)
     },
     // 点击详情获取数据
-    infoFunc(text, record) {
-      console.log(text, record)
+    infoFunc(record) {
+      const { id } = record
+      const cardType = record.card_type.id
+      const name = cardType.id === 1 ? 'brand-product-card-member-number-info'
+        : 'brand-product-card-member-period-info'
+      this.routerHandler(name, id)
+    },
+    onEdit(record) {
+      const { id } = record
+      const cardType = record.card_type.id
+      const name = cardType.id === 1 ? 'brand-product-card-member-number-edit'
+        : 'brand-product-card-member-period-edit'
+      this.routerHandler(name, id)
     },
     // 会员卡名称点击事件
     memberFun(text, record) {
       console.log(text, record, '会员卡名称点击事件')
+    },
+    routerHandler(name, id) {
+      this.$router.push({
+        name,
+        query: {
+          id
+        }
+      })
     },
     // 售卖状态
     sellStatus(text, record) {

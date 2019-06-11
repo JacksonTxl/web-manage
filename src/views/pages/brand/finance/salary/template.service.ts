@@ -20,9 +20,8 @@ export class TemplateService extends Store<SetState> implements RouteGuard {
     this.tabs$ = new Computed(this.state$.pipe(pluck('tabs')))
   }
   initTabs(fn: Function) {
-    const can = this.authService.can
     const tabs: object[] = []
-    if (can('底薪模板的auth key')) {
+    if (this.authService.can('todo')) {
       tabs.push({
         label: '底薪模板',
         route: {
@@ -30,7 +29,7 @@ export class TemplateService extends Store<SetState> implements RouteGuard {
         }
       })
     }
-    if (can('业绩模板的auth key')) {
+    if (this.authService.can('todo')) {
       tabs.push({
         label: '业绩模板',
         route: {
