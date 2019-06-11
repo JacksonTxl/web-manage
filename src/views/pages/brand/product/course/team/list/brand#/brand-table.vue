@@ -15,7 +15,7 @@
     <a-rate slot="strength_level" slot-scope="strength_level" :defaultValue="strength_level" disabled />
     <div slot="action" slot-scope="text,record">
       <a href="javascript:;" class="mg-r8" @click="onClickCourseInfo(record.id)">详情</a>
-      <a href="javascript:;" @click="onClickEditCourseInfo(record)">编辑</a>
+      <a href="javascript:;" @click="onClickEditCourseInfo(record.id)">编辑</a>
       <st-more-dropdown style="margin-left: 12px;">
           <!-- <a-menu-item>
             <a-popconfirm  :title="record.is_available.id === 0?'确认将'+record.course_name+'进行恢复':'当前课程不再支持购买、排课，确认将'+record.course_name+'置为无效'" @confirm="onConfirmSetAvailable(record)" @cancel="cancel" okText="确定" cancelText="取消">
@@ -62,8 +62,13 @@ export default {
     onClickCourseInfo(val) {
       this.$router.push({ name: 'brand-product-course-team-info', query: { courseId: val } })
     },
-    onClickEditCourseInfo(val) {
-      console.log(val)
+    onClickEditCourseInfo(id) {
+      this.$router.push({
+        name: 'brand-product-course-team-edit',
+        query: {
+          id
+        }
+      })
     },
     onChange() {
 

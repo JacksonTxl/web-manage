@@ -18,7 +18,7 @@
 
 <script>
 import BrandTable from './brand#/brand-table'
-import { RouteService } from '../../../../../../../services/route.service'
+import { RouteService } from '@/services/route.service'
 import { ListService } from '../list.service'
 import { BrandService } from './brand.service'
 export default {

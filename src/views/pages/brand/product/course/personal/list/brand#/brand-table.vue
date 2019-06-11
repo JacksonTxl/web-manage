@@ -43,7 +43,7 @@
       </div>
       <div slot="action" slot-scope="text, record">
         <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}">详情</router-link>
-        <router-link :to="{name: 'brand-product-course-personal-edit', query: {courseId: record.course_id}}">编辑</router-link>
+        <router-link :to="{name: 'brand-product-course-personal-edit', query: { id: record.course_id }}">编辑</router-link>
         <st-more-dropdown style="margin-left: 12px;">
           <a-menu-item>
             <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" okText="确定" cancelText="取消">
