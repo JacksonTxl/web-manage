@@ -5,12 +5,12 @@ import { Store } from '@/services/store'
 
 import { ShopApi, ShopInput } from '@/api/v1/shop'
 
-interface ShopINfoState {
+interface ShopInfoState {
   shopInfo: any
 }
 @Injectable()
-export class ShopService extends Store<ShopINfoState> {
-  state$: State<ShopINfoState>
+export class ShopService extends Store<ShopInfoState> {
+  state$: State<ShopInfoState>
   shopInfo$: Computed<string>
   constructor(private shopApi: ShopApi) {
     super()
@@ -19,14 +19,14 @@ export class ShopService extends Store<ShopINfoState> {
     })
     this.shopInfo$ = new Computed(this.state$.pipe(pluck('shopInfo')))
   }
-  SET_SHOP_INFO(shopInfo: ShopINfoState) {
+  SET_SHOP_INFO(shopInfo: ShopInfoState) {
     this.state$.commit(state => {
       state.shopInfo = shopInfo
     })
   }
   @Effect()
-  getShopSettingStopInfo(id: any) {
-    return this.shopApi.getShopSettingStopInfo(id)
+  getShopSettingInfo() {
+    return this.shopApi.getShopSettingInfo()
   }
   save(data: ShopInput) {
     return this.shopApi.add(data)
@@ -35,8 +35,7 @@ export class ShopService extends Store<ShopINfoState> {
     return this.shopApi.update(id, data)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    console.log(to.query)
-    this.getShopSettingStopInfo(to.query.id).subscribe(res => {
+    this.getShopSettingInfo().subscribe(res => {
       console.log('门店设置详情', res)
       this.SET_SHOP_INFO(res)
       next()
