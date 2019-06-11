@@ -7,7 +7,7 @@
       <modal-link v-if="auth.isBatchDown"
         tag="a"
         :to=" { name: 'card-all-lower-shelf',props:{a:selectedRows,flag:true}, on:{done: onModalTest } }"
-        v-show="selectedRows.length >= 1"
+        v-show="selectedRows.length > 1"
       >
         <st-button style="margin-left:24px" type="danger">批量下架</st-button>
       </modal-link>
