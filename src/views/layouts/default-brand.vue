@@ -5,7 +5,7 @@
         <div class="layout-default-brand-sider__logo">
           <i class="layout-default-brand-sider__certification st-icon-certified"></i>
         </div>
-        <div class="layout-default-brand-sider__name">
+        <div class="layout-default-brand-sider__name cursor-pointer" @click="switchShop">
           <span>STYD健身学院</span>
           <st-icon type="arrow-right"></st-icon>
         </div>
@@ -79,11 +79,13 @@
       </a-layout-content>
       <a-layout-footer class="layout-default-brand-body__footer">Copyright &#169; 2019 三体云智能科技有限公司</a-layout-footer>
     </a-layout>
+    <switch-shop v-model="isShowSwitchShop"></switch-shop>
   </a-layout>
 </template>
 <script>
 import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
 import DefaultBrandSiderMenu from './default-brand-sider-menu'
+import SwitchShop from '@/views/fragments/shop/switch'
 export default {
   serviceInject() {
     return {
@@ -95,8 +97,19 @@ export default {
       breadcrumbs: this.layoutBrandSerivce.breadcrumbs$
     }
   },
+  data() {
+    return {
+      isShowSwitchShop: false
+    }
+  },
   components: {
-    DefaultBrandSiderMenu
+    DefaultBrandSiderMenu,
+    SwitchShop
+  },
+  methods: {
+    switchShop() {
+      this.isShowSwitchShop = true
+    }
   }
 }
 </script>

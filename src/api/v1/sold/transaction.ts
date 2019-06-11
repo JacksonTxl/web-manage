@@ -21,10 +21,10 @@ export class TransactionApi extends Api {
   }
   /**
    * 获取签单的支付列表
-   * @param member_id 会员id
+   * @param order_id 订单id
    */
-  getPaymentMethodList(member_id: number) {
-    return this.http.get(`/v1/order/transaction/payment/method`, { query: { member_id } })
+  getPaymentMethodList(order_id: number) {
+    return this.http.get(`/v1/order/transaction/payment/method`, { query: { order_id } })
   }
   /**
    * 订单详情

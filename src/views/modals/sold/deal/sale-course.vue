@@ -11,17 +11,17 @@
           <st-info>
             <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
             <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
-            <st-info-item label="总课时">{{selectedNorm.valid_time}}天</st-info-item>
-            <st-info-item label="有效期">{{selectedNorm.gift_max}}天</st-info-item>
-            <st-info-item label="上课门店">{{info.course_interests}}</st-info-item>
-            <st-info-item label="上课范围">{{info.course_interests}}</st-info-item>
+            <st-info-item label="总课时">{{info.total_times}}</st-info-item>
+            <st-info-item label="有效期">{{moment().add(info.valid_time, 'days').format('YYYY-MM-DD hh:mm')}}</st-info-item>
+            <st-info-item label="上课门店">{{info.shop_name}}</st-info-item>
+            <st-info-item label="上课范围">{{info.course_range}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
            <st-info>
             <st-info-item label="允许转让">{{info.is_transfer}}</st-info-item>
             <st-info-item label="转让手续费">{{info.transfer_fee}}</st-info-item>
-            <st-info-item label="线上购买">{{info.is_online}}</st-info-item>
+            <st-info-item label="线上购买">{{info.online_sale}}</st-info-item>
             <st-info-item label="售卖群体" v-if="info.sale_range">{{info.sale_range.name}}</st-info-item>
           </st-info>
         </a-col>
@@ -60,7 +60,7 @@
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
           <st-form-item label="到期时间">
-            <div>{{validEndTime}}</div>
+            <div>{{moment().format('YYYY-MM-DD hh:mm')}}</div>
           </st-form-item>
           <st-form-item label="合同编号" required>
             <div :class="sale('contract')">
@@ -70,7 +70,7 @@
               <st-button class="create-button" @click="onCodeNumber" :loading="loading.getCodeNumber">自动生成</st-button>
             </div>
           </st-form-item>
-          <st-form-item class="mgb-12" label="商品价格">{{selectedNorm.price}}元</st-form-item>
+          <st-form-item class="mgb-12" label="商品价格">{{info.sell_price}}元</st-form-item>
           <st-form-item :class="sale('discounts')" label="优惠券">
             <div>
               <div :class="sale('discounts-total')">
@@ -153,7 +153,7 @@
       <div :class="sale('footer')">
         <div class="price">
           <span>{{orderAmount}}元</span>
-          <span>订单总额：{{selectedNorm.price}}元</span>
+          <span>订单总额：{{info.sell_price}}元</span>
         </div>
         <div class="button">
           <st-button @click="onCreateOrder" :loading="loading.setTransaction">创建订单</st-button>
@@ -221,7 +221,7 @@ export default {
   },
   computed: {
     orderAmount() {
-      return (this.selectedNorm.price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(1)
+      return (this.info.sell_price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(1)
     },
     orderAmountText() {
       return this.orderAmount < 0 ? '这里不能为负哦，找刚刚要文案' : ''
@@ -366,7 +366,6 @@ export default {
             'coupon_id': this.selectCoupon.id,
             'open_card_type': values.open_type.id,
             'valid_start_time': this.validStartTime,
-
             'advance_id': this.selectAdvance,
             'reduce_price': this.reduceAmount,
             'sale_id': values.saleName,

@@ -29,8 +29,8 @@ export class GatheringService {
     }))
   }
   @Effect()
-  getPaymentMethodList(member_id: number) {
-    return this.transactionApi.getPaymentMethodList(member_id).pipe(tap((res:any) => {
+  getPaymentMethodList(order_id: number) {
+    return this.transactionApi.getPaymentMethodList(order_id).pipe(tap((res:any) => {
       this.paymentMethodList$.commit(() => res.list)
     }))
   }
