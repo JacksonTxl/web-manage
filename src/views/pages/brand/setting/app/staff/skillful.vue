@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-if="auth.isAdd">
           <td colspan="5" class="st-form-table__add">
             <st-button type="dashed" block :disabled="resData.total >= resData.max"
               v-modal-link="{ name: 'skillful-add', on: { change: onListChange } }"
@@ -29,12 +29,14 @@
           <td>{{item.operator_name}}</td>
           <td>{{item.updated_time}}</td>
           <td>
-            <a v-modal-link="{ name: 'skillful-edit',
+            <a v-if="item.auth['brand_shop:coach:good_at|edit']"
+              v-modal-link="{ name: 'skillful-edit',
               props: { id: item.id, setting_name: item.setting_name },
               on: { change: onListChange } }">
               编辑
             </a>
             <a-popconfirm
+              v-if="item.auth['brand_shop:coach:good_at|del']"
               :title="`删除后不可进行恢复，${item.used_number ? '已标记的员工将删除此擅长项目，' : ''}确定删除此擅长项目？`"
               @confirm="onDelete(item.id)">
               <a class="mg-l8">删除</a>
@@ -60,7 +62,8 @@ export default {
   rxState() {
     return {
       resData: this.listService.resData$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.listService.auth$
     }
   },
   methods: {

@@ -57,6 +57,7 @@ export class AuthService extends Store<AuthState> {
       newList = list.map((item, index) => {
         keys.forEach(key => {
           item.auth[key] = auth.indexOf(key) > -1 && item.auth[key]
+          console.log(item.auth, item.auth[key], key)
         })
         return item
       })
@@ -70,6 +71,7 @@ export class AuthService extends Store<AuthState> {
     return 1
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    console.log('get list')
     return this.getList()
   }
 }
