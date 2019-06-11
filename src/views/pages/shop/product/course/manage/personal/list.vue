@@ -60,7 +60,7 @@ export default {
       })
     },
     addPersonalCourse() {
-      this.$router.push({ name: 'brand-product-course-team-add' })
+      this.$router.push({ name: 'shop-product-course-manage-personal-add' })
     }
   }
 }
