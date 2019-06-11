@@ -30,13 +30,13 @@
           <td>{{item.operator_name}}</td>
           <td>{{item.updated_time}}</td>
           <td v-if="item.auth">
-            <a v-if="item.auth['brand_shop:member:course_type|edit']"
+            <a v-if="item.auth['brand_shop:course:course_type|edit']"
               v-modal-link="{ name: 'course-category-edit',
               props: { id: item.id, setting_name: item.setting_name },
               on: { change: onListChange } }">编辑
             </a>
             <a-popconfirm
-              v-if="item.auth['brand_shop:member:course_type|delete']"
+              v-if="item.auth['brand_shop:course:course_type|del']"
               :title="`删除后不可进行恢复，${item.used_number ? '已标记的课程将删除此课程类型，' : ''}确定删除此课程类型？`"
               @confirm="onDelete(item.id)">
               <a class="mg-l8">删除</a>
