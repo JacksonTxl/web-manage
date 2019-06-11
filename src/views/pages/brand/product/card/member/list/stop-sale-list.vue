@@ -4,10 +4,10 @@
       <a-icon type="plus"/>新增私教课程
     </st-button>-->
     <div style="overflow: hidden;">
-      <modal-link
+      <modal-link v-if="auth.isBatchDown"
         tag="a"
-        :to=" { name: 'card-all-lower-shelf',props:{a:selectedRows}, on:{done: onModalTest } }"
-        v-show="selectedRows.length >1"
+        :to=" { name: 'card-all-lower-shelf',props:{a:selectedRows,flag:true}, on:{done: onModalTest } }"
+        v-show="selectedRows.length >= 1"
       >
         <st-button style="margin-left:24px" type="danger">批量下架</st-button>
       </modal-link>
@@ -87,9 +87,10 @@
       <!-- 售卖状态end -->
       <!-- 操作end -->
       <div slot="action" slot-scope="text, record">
-        <a href="javascript:;" @click="infoFunc(record)">详情</a>
+        <a href="javascript:;" v-if="record.auth['brand_shop:product:member_card|get']" @click="infoFunc(record)">详情</a>
         <a-divider type="vertical"></a-divider>
         <modal-link
+          v-if="record.auth['brand_shop:product:member_card|down']"
           tag="a"
           :to=" { name: 'card-lower-shelf',props:{a:record}, on:{done: onModalTest } }"
         >下架</modal-link>
@@ -108,7 +109,8 @@ export default {
   },
   rxState() {
     return {
-      cardsListInfo: this.bService.cardsListInfo$
+      cardsListInfo: this.bService.cardsListInfo$,
+      auth: this.bService.auth$
     }
   },
   computed: {},
@@ -133,45 +135,7 @@ export default {
         pageSize: 10,
         total: 50
       },
-
-      data: [
-        {
-          id: 1,
-          brand_id: 1,
-          shop_id: 1,
-          card_name: '次卡',
-          price_gradient: [20000, 40000],
-          time_gradient: '100次~200次',
-          card_type: {
-            id: 1,
-            name: '次卡'
-          },
-          publish_channel: {
-            id: 1,
-            name: '品牌'
-          },
-          admission_range: {
-            id: 2,
-            name: '多门店 (共3家)'
-          },
-          price_setting: {
-            id: 1,
-            name: '统一定价'
-          },
-          support_sales: {
-            id: 2,
-            name: '3个门店'
-          },
-          sell_status: {
-            id: 1,
-            name: '可售卖'
-          },
-          start_time: '1970-01-01',
-          end_time: '1970-01-01',
-          shelf_upper: 0,
-          shelf_lower: 2
-        }
-      ],
+      data: [],
       columns: [
         {
           title: '售卖门店',

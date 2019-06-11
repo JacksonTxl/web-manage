@@ -1,6 +1,6 @@
 <template>
   <div class="pages-brand-product-card-list-member-list">
-    <router-link to="../add">
+    <router-link to="../add" v-if="auth.isAdd">
       <st-button type="primary" icon="add">新增储值卡</st-button>
     </router-link>
     <div class="pages-brand-product-card-list-member-list__box">
@@ -40,9 +40,6 @@
         @click="memberFun(text,record)"
       >{{text}}</a>
       <!-- 储值卡名称end -->
-      <!-- shelf_statu上架状态 -->
-      <span slot="shelf_statu" slot-scope="text" href="javascript:;">{{text}}</span>
-      <!-- shelf_statu上架状态 -->
       <span
         slot="num"
         slot-scope="text,record"
@@ -54,28 +51,25 @@
         slot-scope="text"
       >{{text.length > 1? `${text[0]}-${text[1]}`:`${text[0]}`}}</span>
 
-      <!-- 支持入场门店start -->
-      <a slot="support_sales" slot-scope="text,record" href="javascript:;">
-        <span v-if="text !=='全部场馆'">
-          <modal-link
-            tag="a"
-            :to="{ name: 'card-table-stop' , props:{a: record.card_id,title:'支持售卖门店'}}"
-          >{{text}}</modal-link>
-        </span>
+      <!-- 支持售卖门店 -->
+      <div slot="support_sales" slot-scope="text,record">
+        <modal-link
+          v-if="text !=='全部场馆'"
+          tag="a"
+          :to="{ name: 'card-table-stop', props:{a: record.card_id, title: '支持售卖门店'}}"
+        >{{text}}</modal-link>
         <span v-else class="use_num">{{text}}</span>
-      </a>
+      </div>
 
-      <!-- 支持入场门店end -->
-
-      <a slot="consumption_range" slot-scope="text,record" href="javascript:;">
-        <span v-if="text !=='单场馆'">
-          <modal-link
-            tag="a"
-            :to="{ name: 'card-sale-stop' , props:{a: record.card_id,title:'支持消费门店'}}"
-          >{{text}}</modal-link>
-        </span>
+      <!-- 支持消费门店 -->
+      <div slot="consumption_range" slot-scope="text,record">
+        <modal-link
+          v-if="text !=='单场馆'"
+          tag="a"
+          :to="{ name: 'card-sale-stop' , props:{a: record.card_id, title:'支持消费门店'}}"
+        >{{text}}</modal-link>
         <span v-else class="use_num">{{text}}</span>
-      </a>
+      </div>
 
       <!-- start 发布渠道-->
       <span slot="publish_channel" slot-scope="text" href="javascript:;">{{text=== 1?'品牌':'门店'}}</span>
@@ -106,10 +100,9 @@
           <a-icon type="exclamation-circle" v-if="record.shelf_status !=='可售'"/>
         </a-popover>
       </a>
-      <!-- 售卖状态end -->
-      <!-- 操作end -->
+      <!-- 操作 -->
       <div slot="action" slot-scope="text, record">
-        <a href="javascript:;" @click="infoFunc(record)">详情</a>
+        <a href="javascript:;" v-if="record.auth['brand_shop:product:deposit_card|get']" @click="infoFunc(record)">详情</a>
 
         <a href="javascript:;" @click="infoFunc(text, record)" v-if="record.shelf_status !=='可售'">
           <modal-link
@@ -160,7 +153,8 @@ export default {
   },
   rxState() {
     return {
-      cardsListInfo: this.aService.cardsListInfo$
+      cardsListInfo: this.aService.cardsListInfo$,
+      auth: this.aService.auth$
     }
   },
 
