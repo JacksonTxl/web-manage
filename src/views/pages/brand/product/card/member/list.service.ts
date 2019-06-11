@@ -20,9 +20,8 @@ export class ListService extends Store<SetState> implements RouteGuard {
     this.tabs$ = new Computed(this.state$.pipe(pluck('tabs')))
   }
   initTabs() {
-    const can = this.authService.can
     const tabs: object[] = []
-    if (can('会员卡项的auth key')) {
+    if (this.authService.can('todo')) {
       tabs.push({
         label: '会员卡项',
         route: {
@@ -30,7 +29,7 @@ export class ListService extends Store<SetState> implements RouteGuard {
         }
       })
     }
-    if (can('门店上架卡项的auth key')) {
+    if (this.authService.can('todo')) {
       tabs.push({
         label: '门店上架卡项',
         route: {

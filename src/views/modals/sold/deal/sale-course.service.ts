@@ -7,7 +7,7 @@ import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
 import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class SaleMemberCardService {
+export class SaleCourseService {
   loading$ = new State({})
   info$ = new State({})
   memberList$ = new State({})
@@ -15,7 +15,7 @@ export class SaleMemberCardService {
   couponList$ = new State({})
   constructor(private contractApi: ContractApi, private memberApi: ShopPersonalCourseApi, private transactionApi: TransactionApi) {}
   getInfo(id:string) {
-    return this.transactionApi.getTransactionInfo(id, 'member/card').pipe(tap((res:any) => {
+    return this.transactionApi.getTransactionInfo(id, 'package/course').pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
   }

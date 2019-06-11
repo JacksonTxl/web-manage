@@ -14,10 +14,11 @@ export interface OrderPaymentParams {
 export class GatheringService {
   info$ = new State({})
   loading$ = new State({})
+  paymentMethodList$ = new State({});
   constructor(private transactionApi: TransactionApi) {}
   @Effect()
-  getPaymentInfo(id:string) {
-    return this.transactionApi.getTransactionPaymentInfo(id).pipe(tap((res:any) => {
+  getPaymentInfo(id:string, type: string) {
+    return this.transactionApi.getTransactionInfo(id, type).pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
   }
@@ -25,6 +26,12 @@ export class GatheringService {
   payTransaction(params: OrderPaymentParams) {
     return this.transactionApi.payTransaction(params).pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
+    }))
+  }
+  @Effect()
+  getPaymentMethodList(member_id: number) {
+    return this.transactionApi.getPaymentMethodList(member_id).pipe(tap((res:any) => {
+      this.paymentMethodList$.commit(() => res.list)
     }))
   }
 }

@@ -42,6 +42,7 @@ export class AuthService extends Store<AuthState> {
     )
   }
   filter(resData: ResDataState) {
+    console.log('filter', this)
     const list = resData.list || []
     if (!list.length) {
       return resData

@@ -37,6 +37,8 @@
           <a @click="onDetail(record)">储值卡签单</a>
           <a-divider type="vertical"></a-divider>
           <a @click="onSale(record)">签单</a>
+          <a-divider type="vertical"></a-divider>
+          <a @click="onCourse(record)">课程包</a>
         </div>
       </st-table>
     </div>
@@ -164,7 +166,8 @@ export default {
               this.$modalRouter.push({
                 name: 'sold-deal-gathering',
                 props: {
-                  order_id: res.orderId
+                  order_id: res.orderId,
+                  type: 'deposit'
                 }
 
               })
@@ -191,6 +194,19 @@ export default {
     onSale(record) {
       this.$modalRouter.push({
         name: 'sold-deal-sale-member-card',
+        props: {
+          id: '1'
+        },
+        on: {
+          success: () => {
+            console.log('success')
+          }
+        }
+      })
+    },
+    onCourse(record) {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale-course',
         props: {
           id: '1'
         },
