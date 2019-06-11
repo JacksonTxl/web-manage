@@ -110,7 +110,7 @@
           </st-form-item>
           <st-form-item label="剩余价值" required labelGutter="12px">
             <st-input-number
-            :max="99999.9"
+            :max="+depositTransferInfo.pay_price"
             :float="true"
             placeholder="请输入剩余价值"
             v-decorator="['remainPrice',{rules:[{validator:remain_price_validator}]}]">

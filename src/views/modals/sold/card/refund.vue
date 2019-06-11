@@ -38,7 +38,7 @@
         <a-col :span="13" class="mgb-24">
           <st-info>
             <st-info-item label="订单总额">{{refundInfo.total_price}}元</st-info-item>
-            <st-info-item class="mg-b0" label="订单状态">{{refundInfo.order_status | enumFilter('sold.order_status')}}</st-info-item>
+            <st-info-item class="mg-b0" label="订单状态" v-if="refundInfo.order_status">{{refundInfo.order_status | enumFilter('sold.order_status')}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11" class="mgb-24">
@@ -63,7 +63,7 @@
         </a-col>
         <a-col :span="13" class="mgb-36">
           <st-info>
-            <st-info-item label="场馆">{{refundInfo.shop_name || '后台说不给'}}</st-info-item>
+            <st-info-item label="场馆">{{refundInfo.shop_name}}</st-info-item>
             <st-info-item class="mg-b0" label="用户">{{refundInfo.member_name}} {{refundInfo.mobile}}</st-info-item>
           </st-info>
         </a-col>
@@ -103,7 +103,7 @@
           </st-form-item>
           <st-form-item label="退款金额" required>
             <st-input-number
-            :max="99999.9"
+            :max="+refundInfo.pay_price"
             :float="true"
             placeholder="请输入本次退款的实际金额"
             v-decorator="['refundPrice',{rules:[{validator:refund_price_validator}]}]">

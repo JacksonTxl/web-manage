@@ -36,6 +36,10 @@ export interface CardVipInput {
   id: Array<number|string>
   vip_id: Array<number|string>
 }
+export interface CardSettingTimeInput {
+  time:string
+  description?:string
+}
 export class CardApi extends Api {
   /**
    * 会员卡列表
@@ -122,12 +126,17 @@ export class CardApi extends Api {
   getCardVipArea(id:string) {
     return this.http.get(`/v1/sold/cards/member/vip/info/${id}`)
   }
-
   /**
    * 售出 会员卡修改vip区域
    */
   setCardVipArea(params:CardVipInput) {
     return this.http.put(`/v1/sold/cards/member/vip`, { params })
+  }
+  /**
+   * 售出 会员卡 设置有效日期
+   */
+  setCardSettingTime(params:CardSettingTimeInput, id:string) {
+    return this.http.put(`/v1/sold/cards/member/setting/${id}`, { params })
   }
 
   /* 合同编号自动生成 v1/setting/contract/codenumber/模板TYPE */

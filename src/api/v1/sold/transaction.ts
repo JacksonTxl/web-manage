@@ -24,7 +24,7 @@ export class TransactionApi extends Api {
    * @param member_id 会员id
    */
   getPaymentMethodList(member_id: number) {
-    return this.http.get(`/v1/order/transaction/payment/method?member_id=${member_id}`, { mock: {} })
+    return this.http.get(`/v1/order/transaction/payment/method`, { query: { member_id } })
   }
   /**
    * 订单详情

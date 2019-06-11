@@ -1,29 +1,73 @@
 <template>
-  <a-radio-group @change="onChange" v-model="value">
-    <a-radio :style="radioStyle" :value="1">Option A</a-radio>
-    <a-radio :style="radioStyle" :value="2">Option B</a-radio>
-    <a-radio :style="radioStyle" :value="3">Option C</a-radio>
-    <a-radio :style="radioStyle" :value="4">
-      More...
-      <a-input v-if="value === 4" :style="{ width: 100, marginLeft: 10 }" />
-    </a-radio>
-  </a-radio-group>
+  <a-table :columns="columns" :dataSource="data">
+    <a slot="name" slot-scope="text" href="javascript:;">{{text}}</a>
+    <span slot="customTitle">
+      kael
+    </span>
+    <span slot="tags" slot-scope="tags">
+      <a-tag v-for="tag in tags" color="blue" :key="tag">{{tag}}</a-tag>
+    </span>
+    <span slot="action" slot-scope="text, record">
+      <a href="javascript:;">Invite 一 {{record.name}}</a>
+      <a-divider type="vertical" />
+      <a href="javascript:;">Delete</a>
+      <a-divider type="vertical" />
+      <a href="javascript:;" class="ant-dropdown-link">
+        More actions <a-icon type="down" />
+      </a>
+    </span>
+  </a-table>
 </template>
 <script>
+const columns = [{
+  dataIndex: 'name',
+  key: 'name',
+  slots: { title: 'customTitle' },
+  scopedSlots: { customRender: 'name' }
+}, {
+  title: 'Age',
+  dataIndex: 'age',
+  key: 'age'
+}, {
+  title: 'Address',
+  dataIndex: 'address',
+  key: 'address'
+}, {
+  title: 'Tags',
+  key: 'tags',
+  dataIndex: 'tags',
+  scopedSlots: { customRender: 'tags' }
+}, {
+  title: 'Action',
+  key: 'action',
+  scopedSlots: { customRender: 'action' }
+}]
+
+const data = [{
+  key: '1',
+  name: 'John Brown',
+  age: 32,
+  address: 'New York No. 1 Lake Park',
+  tags: ['nice', 'developer']
+}, {
+  key: '2',
+  name: 'Jim Green',
+  age: 42,
+  address: 'London No. 1 Lake Park',
+  tags: ['loser']
+}, {
+  key: '3',
+  name: 'Joe Black',
+  age: 32,
+  address: 'Sidney No. 1 Lake Park',
+  tags: ['cool', 'teacher']
+}]
+
 export default {
   data() {
     return {
-      value: 1,
-      radioStyle: {
-        display: 'block',
-        height: '30px',
-        lineHeight: '30px'
-      }
-    }
-  },
-  methods: {
-    onChange(e) {
-      console.log('radio checked', e.target.value)
+      data,
+      columns
     }
   }
 }

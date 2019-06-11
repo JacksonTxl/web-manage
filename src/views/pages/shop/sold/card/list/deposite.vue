@@ -15,7 +15,8 @@
           :showToday="false"
           @openChange="handleStartOpenChange"
           @change="start_time_change"
-        />~
+        />
+        &nbsp;~&nbsp;
         <a-date-picker
           :disabledDate="disabledEndDate"
           format="YYYY-MM-DD"
@@ -40,7 +41,7 @@
         <st-icon type="weibo"/>
         <span class="mgl-8 mgr-16">
           已选
-          <i :class="basic('table-select-number')">{{selectedRowKeys.length}}</i> / 10 条数据
+          <i :class="basic('table-select-number')">{{selectedRowKeys.length}}</i> / {{list.length}} 条数据
         </span>
         <a href="javascript:void(0)">删除</a>
       </div>
@@ -62,10 +63,11 @@
             slot-scope="text"
           >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
           <div slot="action" slot-scope="text,record">
-            <a @click="onRefund(record)">退款{{loading.getList}}</a>
+            <a @click="onRefund(record)">退款</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
               <a-menu-item @click="onDetail(record)">详情</a-menu-item>
+              <a-menu-item>查看合同</a-menu-item>
               <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
             </st-more-dropdown>
           </div>
@@ -305,7 +307,7 @@ export default {
     // moment
     moment,
     onSelectChange(selectedRowKeys) {
-      this.selectedRowKeys = selectedRowKeys
+      this.selectedRowKeys = cloneDeep(selectedRowKeys)
     }
   }
 }

@@ -44,7 +44,7 @@
         </a-col>
         <a-col :span="11" class="mgb-24">
            <st-info>
-            <st-info-item label="减免金额">{{info.discount_amount}}</st-info-item>
+            <st-info-item label="减免金额">{{info.reduce_amount}}</st-info-item>
             <st-info-item class="mg-b0" label="应付金额">{{info.actual_amount}}</st-info-item>
           </st-info>
         </a-col>
@@ -71,12 +71,12 @@
               <a-radio :value="item" :key="index" v-for="(item, index) in paymentMethodList">{{item.payment_type_name}}</a-radio>
             </a-radio-group>
           </st-form-item>
-          <st-form-item label="储值卡" class="mgb-18" v-if="selectPayValues.payment_type === 8" required>
+          <st-form-item label="储值卡" class="mgb-18" v-if="selectPayValues.payment_type === 0" required>
             <a-select placeholder="请选择储值卡"  v-decorator="[
-              'deposit_id',
+              'deposit_card_id',
               {rules: [{ required: true, message: '请选择储值卡!' }]}
             ]">
-              <a-select-option :value="item.id" :key="index" v-for="(item, index) in selectPayValues.deposit">{{item.card_name}}</a-select-option>
+              <a-select-option :value="item.id" :key="index" v-for="(item, index) in selectPayValues.deposit">{{item.card_name}}--{{item.now_amount}}元</a-select-option>
             </a-select>
           </st-form-item>
         </div>
@@ -118,7 +118,6 @@ export default {
   props: ['order_id', 'type'],
   created() {
     this.gatheringService.getPaymentInfo(this.order_id, this.type).subscribe(result => {
-      console.log(111)
       this.gatheringService.getPaymentMethodList(result.info.member_id).subscribe()
     })
   },
@@ -135,6 +134,7 @@ export default {
       this.form.validateFields().then((values) => {
         values.order_id = this.order_id
         values.payment_type = values.payment_method.payment_type
+        delete values.payment_method
         // values.deposit_card_id = 1
         this.gatheringService.payTransaction(values).subscribe(result => {
           this.$emit('ok')
