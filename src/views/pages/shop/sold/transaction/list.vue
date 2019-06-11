@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { SaleService } from './sale.service'
+import { ListService } from './list.service'
 export default {
   name: 'PageShopSoldLease',
   bem: {
@@ -55,7 +55,7 @@ export default {
   },
   serviceInject() {
     return {
-      saleService: SaleService
+      listService: ListService
     }
   },
   data() {
@@ -186,7 +186,7 @@ export default {
       })
     },
     onAdvance() {
-      this.saleService.addAdvance({
+      this.listService.addAdvance({
         member_id: 20554589995205,
         sale_id: 29338200768663,
         pay_price: `${Date.now() % 10}`,

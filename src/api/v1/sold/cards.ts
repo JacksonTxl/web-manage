@@ -41,7 +41,7 @@ export interface CardSettingTimeInput {
   description?:string
 }
 export interface CardGiveInput {
-  member_ids:Array<number|string>
+  sold_card_ids:Array<number|string>
   gift_quota:number
   description?:string
 }
@@ -117,7 +117,7 @@ export class CardApi extends Api {
    * 售出 会员卡 设置有效日期回显
    */
   getCardSettimeInfo(id: string) {
-    return this.http.get(`/v1/sold/cards/member/setting/info/${id}`, { mock: {} })
+    return this.http.get(`/v1/sold/cards/member/setting/info/${id}`)
   }
   /**
    * 售出 vip区域 列表

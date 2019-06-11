@@ -2,22 +2,22 @@
   <st-panel app initial :class="basic()">
     <div slot="title">
       <st-input-search
-      placeholder="课程包名称"
+      placeholder="请输入租赁柜名、会员姓名或手机号查找"
       style="width: 290px;"/>
     </div>
     <st-search-panel>
       <div :class="basic('select')">
-        <span style="width:90px;">课程状态：</span>
-        <st-search-radio v-model="course_status" :list="cardSaleStatusList"/>
+        <span style="width:90px;">租赁状态：</span>
+        <st-search-radio v-model="leaseStatus" :list="leaseList"/>
       </div>
       <div :class="basic('select')">
-        <span style="width:90px;">购买时间：</span>
+        <span style="width:90px;">起租时间：</span>
         <a-date-picker
           format="YYYY-MM-DD"
           placeholder="开始日期"
           :showToday="false"
         />
-        ~
+        &nbsp;~&nbsp;
         <a-date-picker
           format="YYYY-MM-DD"
           placeholder="结束日期"
@@ -59,68 +59,96 @@
 </template>
 
 <script>
-const columns = [{
-  dataIndex: 'name',
-  key: 'name',
-  slots: { title: 'customTitle' },
-  scopedSlots: { customRender: 'name' }
-}, {
-  title: 'Age',
-  dataIndex: 'age',
-  key: 'age'
-}, {
-  title: 'Address',
-  dataIndex: 'address',
-  key: 'address'
-}, {
-  title: 'Tags',
-  key: 'tags',
-  dataIndex: 'tags',
-  scopedSlots: { customRender: 'tags' }
-}, {
-  title: 'Action',
-  key: 'action',
-  scopedSlots: { customRender: 'action' }
-}]
-
-const data = [{
-  key: '1',
-  name: 'John Brown',
-  age: 32,
-  address: 'New York No. 1 Lake Park',
-  tags: ['nice', 'developer']
-}, {
-  key: '2',
-  name: 'Jim Green',
-  age: 42,
-  address: 'London No. 1 Lake Park',
-  tags: ['loser']
-}, {
-  key: '3',
-  name: 'Joe Black',
-  age: 32,
-  address: 'Sidney No. 1 Lake Park',
-  tags: ['cool', 'teacher']
-}]
-
+import { UserService } from '@/services/user.service'
 export default {
   name: 'PageShopSoldLease',
   bem: {
     basic: 'page-shop-sold'
   },
+  serviceInject() {
+    return {
+      userService: UserService
+    }
+  },
+  rxState() {
+    return {
+      sold: this.userService.soldEnums$
+    }
+  },
+  computed: {
+    leaseList() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.sold.sold_cabinet.cabinet_status) return list
+      Object.entries(this.sold.sold_cabinet.cabinet_status.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    }
+  },
   data() {
     return {
-      // 售卡状态
-      cardSaleStatusList: [
-        { value: -1, label: '全部' },
-        { value: 1, label: '有效' },
-        { value: 2, label: '失效' },
-        { value: 3, label: '已冻结' },
-        { value: 4, label: '即将到期' }
-      ],
-      course_status: 1,
-      data,
-      columns
+      columns: [
+        {
+          title: '商品名称',
+          dataIndex: 'product_name',
+          scopedSlots: { customRender: 'product_name' }
+        }, {
+          title: '商品类型',
+          dataIndex: 'product_type',
+          scopedSlots: { customRender: 'product_type' }
+        }, {
+          title: '价格',
+          dataIndex: 'price',
+          scopedSlots: { customRender: 'price' }
+        }, {
+          title: '销量',
+          dataIndex: 'number',
+          scopedSlots: { customRender: 'number' }
+        }, {
+          title: '操作',
+          dataIndex: 'action',
+          width: 140,
+          scopedSlots: { customRender: 'action' }
+        }],
+      list: [],
+      leaseStatus: -1
+    }
+  },
+  created() {
+    this.init()
+  },
+  methods: {
+    init() {
+      this.list = [
+        {
+          'id': 1,
+          'product_name': '会员卡',
+          'product_type': 1,
+          'price': '200.1',
+          'number': 100
+        },
+        {
+          'id': 12,
+          'product_name': '储值卡',
+          'product_type': 2,
+          'price': '1000',
+          'number': 666
+        },
+        {
+          'id': 13,
+          'product_name': '私教课',
+          'product_type': 3,
+          'price': '500',
+          'number': 888
+        },
+        {
+          'id': 14,
+          'product_name': '课程包',
+          'product_type': 4,
+          'price': '300',
+          'number': 999
+        }
+      ]
     }
   }
 }

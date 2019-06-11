@@ -66,7 +66,7 @@ export default {
       this.form.validateFields((error, values) => {
         if (!error) {
           this.givingService.setGive({
-            member_ids: this.id,
+            sold_card_ids: this.id,
             gift_quota: +values.price,
             description: this.description
           }).subscribe(res => {

@@ -443,6 +443,7 @@ export default {
     },
     onClear() {
       this.selectedRowKeys = []
+      this.selectedRows = []
     }
   }
 }
