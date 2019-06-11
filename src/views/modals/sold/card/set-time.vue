@@ -30,8 +30,7 @@
           <st-form-item v-if="!!info.is_open" label="到期日期" required labelGutter="12px">
             <a-date-picker
               :disabledDate="disabledEndDate"
-              v-decorator="['start_time',{rules:[{validator:time_validator}]}]"
-              @change="onEndTimeChange"
+              v-decorator="['end_time',{rules:[{required:true,message:'请选择到期日期'}]}]"
               style="width: 100%;"
               format="YYYY-MM-DD HH:mm"
               :showTime="{format: 'HH:mm'}"
@@ -44,9 +43,8 @@
             <div :class="settime('time')">
               <a-form-item class="page-a-form">
                 <a-date-picker
-                  :disabledDate="disabledEndDate"
-                  v-decorator="['start_time',{rules:[{validator:time_validator}]}]"
-                  @change="onEndTimeChange"
+                  :disabledDate="disabledStartDate"
+                  v-decorator="['start_time',{rules:[{required:true,message:'请选择开卡日期'}]}]"
                   style="width: 100%;"
                   format="YYYY-MM-DD HH:mm"
                   :showTime="{format: 'HH:mm'}"
@@ -59,13 +57,13 @@
             </div>
           </st-form-item>
           <st-form-item label="备注" class="mg-b0" labelGutter="12px">
-            <a-textarea v-decorator="['description']" :autosize="{ minRows: 4, maxRows: 6 }" />
+            <a-textarea v-model="description" :autosize="{ minRows: 4, maxRows: 6 }" />
           </st-form-item>
         </div>
       </st-form>
     </div>
     <template slot="footer">
-      <st-button type="primary" @click="onSubmit">确认提交</st-button>
+      <st-button type="primary" @click="onSubmit" :loading="loading.setTime">确认提交</st-button>
     </template>
   </st-modal>
 </template>
@@ -94,27 +92,17 @@ export default {
     return {
       show: false,
       form: this.$form.createForm(this),
-      endTime: null,
-      startTime: null
+      description: ''
     }
   },
   methods: {
     moment,
-    time_validator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请选择到期日期')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
     disabledEndDate(endValue) {
       // return endValue.valueOf() > moment(this.info.end_time).add(1, 'd').valueOf() || endValue.valueOf() < moment().subtract(1, 'd').valueOf()
       return endValue.valueOf() < moment().valueOf() || endValue.valueOf() > moment(this.info.end_time).valueOf()
     },
-    onEndTimeChange(data) {
-      this.endTime = cloneDeep(data)
+    disabledStartDate(startValue) {
+      return startValue.valueOf() < moment().valueOf() || startValue.valueOf() > moment(this.info.end_time).valueOf()
     },
     onSubmit() {
       this.form.validateFields((error, values) => {

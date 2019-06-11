@@ -44,22 +44,22 @@
       </div>
     </st-search-panel>
     <div :class="basic('content')">
-      <div :class="basic('content-batch')">
+      <div :class="basic('content-batch')" class="mg-b16">
         <st-button type="primary" class="mgr-8">批量导出</st-button>
-        <st-button type="primary" class="mgr-8">赠送额度</st-button>
-        <st-button type="primary" class="mgr-8">变更入场vip区域</st-button>
+        <st-button type="primary" class="mgr-8" :disabled="!isUnifyCard" @click="onGiving">赠送额度</st-button>
+        <st-button type="primary" class="mgr-8" :disabled="selectedRowKeys.length<1" @click="onAreas">变更入场vip区域</st-button>
       </div>
-      <div :class="basic('table-select-info')">
+      <!-- <div :class="basic('table-select-info')">
         <st-icon type="weibo"/>
         <span class="mgl-8 mgr-16">
           已选
           <i :class="basic('table-select-number')">{{selectedRowKeys.length}}</i> / {{list.length}} 条数据
         </span>
-        <a href="javascript:void(0)">删除</a>
-      </div>
+      </div> -->
       <div :class="basic('table')">
         <st-table
           :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
+          :alertSelection="{onReset: onClear}"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
           rowKey="id"
           :columns="columns"
@@ -85,7 +85,6 @@
           >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
           <div slot="action" slot-scope="text,record">
             <a @click="onSetTime(record)">修改有效时间</a>
-            <a @click="onGiving(record)">赠送额度</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
               <a-menu-item @click="onFreeze(record)">冻结</a-menu-item>
@@ -212,6 +211,10 @@ export default {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
+    },
+    // 列表选择的卡是否一致
+    isUnifyCard() {
+      return this.selectedRows.length > 0 && this.selectedRows.every(o => o.card_type === this.selectedRows[0].card_type)
     }
   },
   data() {
@@ -226,6 +229,7 @@ export default {
       // 结束时间面板是否显示
       endOpen: false,
       selectedRowKeys: [],
+      selectedRows: [],
       columns
     }
   },
@@ -317,8 +321,9 @@ export default {
     // moment
     moment,
     // 列表选择
-    onSelectChange(selectedRowKeys) {
+    onSelectChange(selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
+      this.selectedRows = selectedRows
     },
     // 冻结
     onFreeze(record) {
@@ -405,49 +410,39 @@ export default {
         }
       })
     },
-    // 额度赠送
-    onGiving(record) {
+    // 批量变更vip入场区域
+    onAreas() {
       this.$modalRouter.push({
-        name: 'sold-card-giving',
+        name: 'sold-card-area',
         props: {
-          id: [record.id],
-          type: record.a
-        }
-      })
-    },
-
-    // 修改剩余价值
-    onSurplus() {
-      this.$modalRouter.push({
-        name: 'sold-course-surplus'
-      })
-    },
-    // 续租
-    onRelet() {
-      this.$modalRouter.push({
-        name: 'sold-lease-relet'
-      })
-    },
-    // 交易签单
-    onSale() {
-      this.$modalRouter.push({
-        name: 'sold-deal-sale'
-      })
-    },
-    // 交易签单
-    onGathering() {
-      this.$modalRouter.push({
-        name: routerName[type],
-        props: {
-          record: record,
-          type: 'menber'
+          id: this.selectedRowKeys
         },
         on: {
-          ok: res => {
-            consoel.log(res)
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+            this.onClear()
           }
         }
       })
+    },
+    // 额度赠送
+    onGiving() {
+      this.$modalRouter.push({
+        name: 'sold-card-giving',
+        props: {
+          id: this.selectedRowKeys,
+          type: this.selectedRows[0].card_type
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+            this.onClear()
+          }
+        }
+      })
+    },
+    onClear() {
+      this.selectedRowKeys = []
     }
   }
 }
