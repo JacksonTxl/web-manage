@@ -448,7 +448,6 @@ export default {
               props: {
                 order_id: result.info.order_id,
                 type: 'member',
-                member_id: values.memberId,
                 message: '订单创建成功',
                 needPay: true
               },
@@ -489,8 +488,7 @@ export default {
               name: 'sold-deal-gathering',
               props: {
                 order_id: result.info.order_id,
-                type: 'member',
-                member_id: this.member_id
+                type: 'member'
               },
               on: {
                 success: () => {
@@ -499,7 +497,6 @@ export default {
                     props: {
                       order_id: result.info.id,
                       type: 'member',
-                      member_id: this.member_id,
                       message: '收款成功'
                     },
                     on: {

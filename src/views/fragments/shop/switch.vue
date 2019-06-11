@@ -28,7 +28,7 @@
         </ul>
       </section>
       <section>
-        <a class="drawer-switch-shop__to-brand st-link-secondary">返回品牌</a>
+        <a class="drawer-switch-shop__to-brand st-link-secondary" @click="switchBackToBrand">返回品牌</a>
       </section>
     </div>
   </a-drawer>
@@ -36,14 +36,14 @@
 
 <script>
 import { MessageService } from '@/services/message.service'
-import { SwitchShopService } from './switch.service'
+import { SwitchService } from './switch.service'
 
 export default {
   name: 'SwtichShopDrawer',
   serviceInject() {
     return {
       messageService: MessageService,
-      switchShopService: SwitchShopService
+      switchService: SwitchService
     }
   },
   data() {
@@ -64,7 +64,7 @@ export default {
     }
   },
   created() {
-    this.switchShopService.getShopList().subscribe(res => {
+    this.switchService.getShopList().subscribe(res => {
       this.shopList = res.shop_info
     })
   },
@@ -79,7 +79,7 @@ export default {
       const params = {
         shop_id: shop.shop_id
       }
-      this.switchShopService.switchShop(params).subscribe(() => {
+      this.switchService.switchShop(params).subscribe(() => {
         this.onSwitchShopSuccess(shop)
       })
     },
@@ -88,6 +88,14 @@ export default {
       this.messageService.success({
         content: `切换到门店-${shop.shop_name}(id: ${shop.shop_id})`
       })
+      location.href = '/'
+    },
+    switchBackToBrand() {
+      this.switchService.switchBackToBrand().subscribe(this.onSwitchBackToBrandSuccess)
+    },
+    onSwitchBackToBrandSuccess() {
+      this.onClose()
+      location.href = '/'
     }
   }
 }

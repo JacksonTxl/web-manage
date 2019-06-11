@@ -1,4 +1,4 @@
-import { Api } from '../../api'
+import { Api } from '@/api/api'
 
 export class SwitchApi extends Api {
   /**
@@ -12,6 +12,12 @@ export class SwitchApi extends Api {
    */
   switchShop(params: SwitchShopInput) {
     return this.http.put('/v1/account/switch/shop', { params })
+  }
+  /**
+   * 从门店返回品牌
+   */
+  switchBackToBrand() {
+    return this.http.get('/v1/account/switch/brand')
   }
 }
 

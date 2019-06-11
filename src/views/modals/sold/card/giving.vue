@@ -5,21 +5,14 @@
   v-model="show"
   wrapClassName="modal-sold-card-giving">
     <div :class="giving('content')">
-      <st-form labelWidth="75px">
+      <st-form :form="form" labelWidth="75px">
         <div :class="giving('giving')">
           <st-form-item label="赠送额度" required>
             <st-input-number
-            v-model="gift_quota"
             :max="99999.9"
-            :float="true"
             placeholder="请输入赠送额度"
-            v-decorator="['price',{rules:[{validator:price_validator}]}]">
-              <a-select v-model="unit" slot="addonAfter" style="width: 60px">
-                <a-select-option
-                v-for="(item,index) in unitList"
-                :value="item"
-                :key="index" >{{sold.unit.value[item]}}</a-select-option>
-              </a-select>
+            v-decorator="['price',{rules:[{required:true,message:'请输入赠送额度'}]}]">
+              <span slot="addonAfter">{{type | enumFilter('sold.unit')}}</span>
             </st-input-number>
           </st-form-item>
           <st-form-item label="备注" class="mg-b0">
@@ -29,13 +22,13 @@
       </st-form>
     </div>
     <template slot="footer">
-      <st-button type="primary">确认提交</st-button>
+      <st-button type="primary" @click="onSubmit" :loading="loading.setGive">确认提交</st-button>
     </template>
   </st-modal>
 </template>
 
 <script>
-import { UserService } from '@/services/user.service'
+import { GivingService } from './giving.service'
 export default {
   name: 'ModalSoldCardGiving',
   bem: {
@@ -43,36 +36,45 @@ export default {
   },
   serviceInject() {
     return {
-      userService: UserService
+      givingService: GivingService
     }
   },
   rxState() {
     return {
-      sold: this.userService.soldEnums$
+      loading: this.givingService.loading$
     }
   },
-  computed: {
-    unitList() {
-      return Object.keys(this.sold.unit.value)
+  props: {
+    id: {
+      type: Array,
+      required: true
+    },
+    type: {
+      type: String || Number,
+      required: true
     }
   },
   data() {
     return {
       show: false,
-      gift_quota: null,
-      unit: 1,
+      form: this.$form.createForm(this),
       description: ''
     }
   },
   methods: {
-    price_validator(rule, value, callback) {
-      if (!value || +value === 0) {
-        // eslint-disable-next-line
-        callback('请输入剩余价值')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
+    onSubmit() {
+      this.form.validateFields((error, values) => {
+        if (!error) {
+          this.givingService.setGive({
+            member_ids: this.id,
+            gift_quota: +values.price,
+            description: this.description
+          }).subscribe(res => {
+            this.$emit('success')
+            this.show = false
+          })
+        }
+      })
     }
   }
 }
