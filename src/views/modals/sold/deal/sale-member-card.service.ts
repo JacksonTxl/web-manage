@@ -1,6 +1,6 @@
 import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state/src'
-import { TransactionApi } from '@/api/v1/sold/transaction'
+import { TransactionApi, MemberCouponParams } from '@/api/v1/sold/transaction'
 import { tap } from 'rxjs/operators'
 import { ContractApi } from '@/api/v1/setting/contract'
 import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
@@ -12,9 +12,10 @@ export class SaleMemberCardService {
   info$ = new State({})
   memberList$ = new State({})
   saleList$ = new State({})
+  couponList$ = new State({})
   constructor(private contractApi: ContractApi, private memberApi: ShopPersonalCourseApi, private transactionApi: TransactionApi) {}
   getInfo(id:string) {
-    return this.transactionApi.getTransactionInfo(id, 'member').pipe(tap((res:any) => {
+    return this.transactionApi.getTransactionInfo(id, 'member/card').pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
   }
@@ -37,12 +38,17 @@ export class SaleMemberCardService {
       this.saleList$.commit(() => res.list)
     }))
   }
+  getCouponList(params: MemberCouponParams) {
+    return this.transactionApi.getTransactionCouponList(params).pipe(tap((res:any) => {
+      this.couponList$.commit(() => res.list)
+    }))
+  }
   @Effect()
   serviceInit(id:string) {
     return forkJoin(this.getInfo(id), this.getSaleList())
   }
   @Effect()
   setTransaction(params:any) {
-    return this.transactionApi.setTransaction(params, 'deposit')
+    return this.transactionApi.setTransaction(params, 'member')
   }
 }

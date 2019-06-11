@@ -1,5 +1,11 @@
 import { Api } from '../../api'
 
+export interface MemberCouponParams {
+  member_id: number,
+  card_id: number,
+  specs_id: number
+}
+
 export class TransactionApi extends Api {
   /**
    * 签单详情
@@ -14,6 +20,13 @@ export class TransactionApi extends Api {
     return this.http.post(`/v1/order/transaction/${type}`, { params })
   }
   /**
+   * 获取签单的支付列表
+   * @param member_id 会员id
+   */
+  getPaymentMethodList(member_id: number) {
+    return this.http.get(`/v1/order/transaction/payment/method?member_id=${member_id}`, { mock: {} })
+  }
+  /**
    * 订单详情
    */
   getTransactionPaymentInfo(id:string) {
@@ -23,7 +36,7 @@ export class TransactionApi extends Api {
    * 订单支付
    */
   payTransaction(params: any) {
-    return this.http.post(`/v1/order/transaction/payment`, { params, mock: {} })
+    return this.http.post(`/v1/order/transaction/payment/${params.order_id}`, { params })
   }
   /**
    * 定金列表
@@ -37,7 +50,12 @@ export class TransactionApi extends Api {
   getTransactionSaleList() {
     return this.http.get(`/v1/order/transaction/sale`)
   }
-
+  /**
+   * 会员卡优惠券列表
+   */
+  getTransactionCouponList(params: MemberCouponParams) {
+    return this.http.get(`/v1/order/transaction/member/coupon`, { query: { ...params } })
+  }
   /**
    * 增加定金，调试用，后续移除
    */

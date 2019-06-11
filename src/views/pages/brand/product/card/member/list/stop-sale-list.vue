@@ -87,7 +87,7 @@
       <!-- 售卖状态end -->
       <!-- 操作end -->
       <div slot="action" slot-scope="text, record">
-        <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
+        <a href="javascript:;" @click="infoFunc(record)">详情</a>
         <a-divider type="vertical"></a-divider>
         <modal-link
           tag="a"
@@ -272,12 +272,24 @@ export default {
       console.log(current, pageSize, '点击分页获取数据')
     },
     // 点击详情获取数据
-    infoFunc(text, record) {
-      console.log(text, record, '点击详情获取数据')
+    infoFunc(record) {
+      const { id } = record
+      const cardType = record.card_type.id
+      const name = cardType.id === 1 ? 'brand-product-card-member-number-info'
+        : 'brand-product-card-member-period-info'
+      this.routerHandler(name, id)
     },
     // 会员卡名称点击事件
     memberFun(text, record) {
       console.log(text, record, '会员卡名称点击事件')
+    },
+    routerHandler(name, id) {
+      this.$router.push({
+        name,
+        query: {
+          id
+        }
+      })
     },
     // 售卖状态
     sellStatus(text, record) {

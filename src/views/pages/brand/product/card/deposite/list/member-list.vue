@@ -109,7 +109,7 @@
       <!-- 售卖状态end -->
       <!-- 操作end -->
       <div slot="action" slot-scope="text, record">
-        <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
+        <a href="javascript:;" @click="infoFunc(record)">详情</a>
 
         <a href="javascript:;" @click="infoFunc(text, record)" v-if="record.shelf_status !=='可售'">
           <modal-link
@@ -129,7 +129,7 @@
         <template v-if="record.shelf_status==='可售'">
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
-            <a-menu-item>编辑</a-menu-item>
+            <a-menu-item @click="onEdit(record)">编辑</a-menu-item>
             <a-menu-item>
               <modal-link
                 tag="a"
@@ -334,12 +334,25 @@ export default {
       console.log(current, pageSize)
     },
     // 点击详情获取数据
-    infoFunc(text, record) {
-      console.log(text, record)
+    infoFunc(record) {
+      const id = record.card_id
+      this.routerHandler('brand-product-card-deposite-info', id)
+    },
+    onEdit(record) {
+      const id = record.card_id
+      this.routerHandler('brand-product-card-deposite-edit', id)
     },
     // 会员卡名称点击事件
     memberFun(text, record) {
       console.log(text, record, '会员卡名称点击事件')
+    },
+    routerHandler(name, id) {
+      this.$router.push({
+        name,
+        query: {
+          id
+        }
+      })
     },
     // 售卖状态
     sellStatus(text, record) {

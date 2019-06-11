@@ -11,9 +11,10 @@
           <st-info>
             <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
             <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
-            <st-info-item label="有效时间">{{selectedNorm.valid_time}}天</st-info-item>
-            <st-info-item label="赠送上限">{{selectedNorm.gift_max}}天</st-info-item>
-            <st-info-item label="约课权益">{{info.course_interests}}</st-info-item>
+            <st-info-item label="总课时">{{selectedNorm.valid_time}}天</st-info-item>
+            <st-info-item label="有效期">{{selectedNorm.gift_max}}天</st-info-item>
+            <st-info-item label="上课门店">{{info.course_interests}}</st-info-item>
+            <st-info-item label="上课范围">{{info.course_interests}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
@@ -22,7 +23,6 @@
             <st-info-item label="转让手续费">{{info.transfer_fee}}</st-info-item>
             <st-info-item label="线上购买">{{info.is_online}}</st-info-item>
             <st-info-item label="售卖群体" v-if="info.sale_range">{{info.sale_range.name}}</st-info-item>
-            <st-info-item label="入场场馆">{{info.admission_range}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
