@@ -136,6 +136,7 @@ export default {
       e.preventDefault()
       this.form.validateFields().then((values) => {
         values.order_id = this.order_id
+        values.deposit_card_id = 1
         this.gatheringService.payTransaction(values).subscribe(result => {
           this.$emit('ok')
           this.show = false
