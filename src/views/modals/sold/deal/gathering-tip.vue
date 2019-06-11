@@ -10,8 +10,8 @@
       <st-icon type="heating" class="img"/>
       <p >{{message}}</p>
       <st-button type="primary" @click="onSubmit" >打印合同</st-button>
-      <st-button @click="onSubmit" >查看订单</st-button>
-      <st-button @click="onSubmit" v-if="orderTipType === 2">去支付</st-button>
+      <st-button @click="viewOrder" >查看订单</st-button>
+      <st-button @click="goPay" v-if="order_id">去支付</st-button>
     </div>
   </st-modal>
 </template>
@@ -37,7 +37,8 @@ export default {
     }
   },
   props: {
-    orderTipType: Number, // 1 是订单收款成功 2 是订单创建成功
+    order_id: Number, // 订单id
+    type: String,
     message: String
   },
   created() {
@@ -47,8 +48,18 @@ export default {
       this.$emit('ok')
       this.show = false
     },
-    onSubmit(e) {
+    viewOrder() {
 
+    },
+    goPay(e) {
+      // 去订单收款页面
+      this.$modalRouter.push({
+        name: 'sold-deal-gathering',
+        props: {
+          order_id: this.order_id,
+          type: this.type
+        }
+      })
     }
   }
 }

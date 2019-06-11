@@ -65,24 +65,18 @@
           <st-form-item label="支付方式" class="mgb-18" required>
             <a-radio-group @change="selectPay"
              v-decorator="[
-              'payment_type',
+              'payment_method',
               {rules: [{ required: true, message: '请选择支付方式!' }]}
             ]">
-              <a-radio :value="1">线下支付宝</a-radio>
-              <a-radio :value="2">线下微信</a-radio>
-              <a-radio :value="3">现金</a-radio>
-              <a-radio :value="4">银行转账</a-radio>
-              <a-radio :value="5">储值卡</a-radio>
+              <a-radio :value="item" :key="index" v-for="(item, index) in paymentMethodList">{{item.payment_type_name}}</a-radio>
             </a-radio-group>
           </st-form-item>
-          <st-form-item label="储值卡" class="mgb-18" v-if="selectPayValues===5" required>
+          <st-form-item label="储值卡" class="mgb-18" v-if="selectPayValues.payment_type === 8" required>
             <a-select placeholder="请选择储值卡"  v-decorator="[
               'deposit_id',
               {rules: [{ required: true, message: '请选择储值卡!' }]}
             ]">
-              <a-select-option value="1">储值卡1 余额998元</a-select-option>
-              <a-select-option value="2">储值卡2 余额98元</a-select-option>
-              <a-select-option value="3">储值卡3 余额8元</a-select-option>
+              <a-select-option :value="item.id" :key="index" v-for="(item, index) in selectPayValues.deposit">{{item.card_name}}</a-select-option>
             </a-select>
           </st-form-item>
         </div>
@@ -109,7 +103,8 @@ export default {
   rxState() {
     return {
       info: this.gatheringService.info$,
-      loading: this.gatheringService.loading$
+      loading: this.gatheringService.loading$,
+      paymentMethodList: this.gatheringService.paymentMethodList$
     }
   },
   data() {
@@ -122,7 +117,10 @@ export default {
   },
   props: ['order_id', 'type'],
   created() {
-    this.gatheringService.getPaymentInfo(this.order_id, this.type).subscribe()
+    this.gatheringService.getPaymentInfo(this.order_id, this.type).subscribe(result => {
+      console.log(111)
+      this.gatheringService.getPaymentMethodList(result.info.member_id).subscribe()
+    })
   },
   methods: {
     onOk() {
@@ -136,7 +134,8 @@ export default {
       e.preventDefault()
       this.form.validateFields().then((values) => {
         values.order_id = this.order_id
-        values.deposit_card_id = 1
+        values.payment_type = values.payment_method.payment_type
+        // values.deposit_card_id = 1
         this.gatheringService.payTransaction(values).subscribe(result => {
           this.$emit('ok')
           this.show = false

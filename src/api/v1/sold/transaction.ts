@@ -20,6 +20,13 @@ export class TransactionApi extends Api {
     return this.http.post(`/v1/order/transaction/${type}`, { params })
   }
   /**
+   * 获取签单的支付列表
+   * @param member_id 会员id
+   */
+  getPaymentMethodList(member_id: number) {
+    return this.http.get(`/v1/order/transaction/payment/method?member_id=${member_id}`, { mock: {} })
+  }
+  /**
    * 订单详情
    */
   getTransactionPaymentInfo(id:string) {
