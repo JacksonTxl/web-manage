@@ -115,11 +115,11 @@ export default {
 
     }
   },
-  // 订单id，签单类型，会员id
-  props: ['order_id', 'type', 'member_id'],
+  // 订单id，签单类型
+  props: ['order_id', 'type'],
   created() {
     this.gatheringService.getPaymentInfo(this.order_id, this.type).subscribe(result => {
-      this.gatheringService.getPaymentMethodList(this.member_id).subscribe()
+      this.gatheringService.getPaymentMethodList(this.order_id).subscribe()
     })
   },
   methods: {

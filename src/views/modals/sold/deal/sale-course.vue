@@ -11,10 +11,10 @@
           <st-info>
             <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
             <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
-            <st-info-item label="总课时">{{info.total_times}}节</st-info-item>
-            <st-info-item label="有效期">{{moment(info.valid_time).format('YYYY-MM-DD hh:mm')}}天</st-info-item>
-            <st-info-item label="上课门店">{{info.course_interests}}</st-info-item>
-            <st-info-item label="上课范围">{{info.course_interests}}</st-info-item>
+            <st-info-item label="总课时">{{info.total_times}}</st-info-item>
+            <st-info-item label="有效期">{{moment().add(info.valid_time, 'days').format('YYYY-MM-DD hh:mm')}}</st-info-item>
+            <st-info-item label="上课门店">{{info.shop_name}}</st-info-item>
+            <st-info-item label="上课范围">{{info.course_range}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
@@ -153,7 +153,7 @@
       <div :class="sale('footer')">
         <div class="price">
           <span>{{orderAmount}}元</span>
-          <span>订单总额：{{selectedNorm.price}}元</span>
+          <span>订单总额：{{info.sell_price}}元</span>
         </div>
         <div class="button">
           <st-button @click="onCreateOrder" :loading="loading.setTransaction">创建订单</st-button>
@@ -221,7 +221,7 @@ export default {
   },
   computed: {
     orderAmount() {
-      return (this.selectedNorm.price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(1)
+      return (this.info.sell_price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(1)
     },
     orderAmountText() {
       return this.orderAmount < 0 ? '这里不能为负哦，找刚刚要文案' : ''
@@ -366,7 +366,6 @@ export default {
             'coupon_id': this.selectCoupon.id,
             'open_card_type': values.open_type.id,
             'valid_start_time': this.validStartTime,
-
             'advance_id': this.selectAdvance,
             'reduce_price': this.reduceAmount,
             'sale_id': values.saleName,
