@@ -30,7 +30,7 @@
           <st-form-item v-if="!!info.is_open" label="到期日期" required labelGutter="12px">
             <a-date-picker
               :disabledDate="disabledEndDate"
-              v-decorator="['start_time',{rules:[{validator:start_time_validator}]}]"
+              v-decorator="['start_time',{rules:[{validator:time_validator}]}]"
               @change="onEndTimeChange"
               style="width: 100%;"
               format="YYYY-MM-DD HH:mm"
@@ -45,7 +45,7 @@
               <a-form-item class="page-a-form">
                 <a-date-picker
                   :disabledDate="disabledEndDate"
-                  v-decorator="['start_time',{rules:[{validator:start_time_validator}]}]"
+                  v-decorator="['start_time',{rules:[{validator:time_validator}]}]"
                   @change="onEndTimeChange"
                   style="width: 100%;"
                   format="YYYY-MM-DD HH:mm"
@@ -94,12 +94,13 @@ export default {
     return {
       show: false,
       form: this.$form.createForm(this),
-      endTime: null
+      endTime: null,
+      startTime: null
     }
   },
   methods: {
     moment,
-    start_time_validator(rule, value, callback) {
+    time_validator(rule, value, callback) {
       if (!value) {
         // eslint-disable-next-line
         callback('请选择到期日期')
@@ -109,7 +110,8 @@ export default {
       }
     },
     disabledEndDate(endValue) {
-      return endValue.valueOf() > moment(this.info.end_time).add(1, 'd').valueOf() || endValue.valueOf() < moment().subtract(1, 'd').valueOf()
+      // return endValue.valueOf() > moment(this.info.end_time).add(1, 'd').valueOf() || endValue.valueOf() < moment().subtract(1, 'd').valueOf()
+      return endValue.valueOf() < moment().valueOf() || endValue.valueOf() > moment(this.info.end_time).valueOf()
     },
     onEndTimeChange(data) {
       this.endTime = cloneDeep(data)
@@ -117,6 +119,7 @@ export default {
     onSubmit() {
       this.form.validateFields((error, values) => {
         if (!error) {
+
           // let sold_type = this.isPackage ? this.packageTransferInfo.sold_type : this.isPersonal ? this.personalCourseInfo.sold_type : '1'
           // this.transferService.editCourseTransfer({
           //   member_id: +values.memberId,
