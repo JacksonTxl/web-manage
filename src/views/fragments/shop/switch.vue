@@ -4,20 +4,20 @@
     placement="left"
     width="340"
     wrapClassName="drawer-switch-shop-wrap"
-    :visible="true"
+    :visible="visible"
     @close="onClose"
   >
     <div class="drawer-switch-shop">
-      <section class="mg-l24 mg-r24">
+      <!-- <section class="mg-l24 mg-r24">
         <a-input-search
           placeholder="搜索门店"
           @search="onSearchShop"
         />
-      </section>
+      </section> -->
       <section class="mg-t24">
         <ul class="drawer-shops">
           <li class="drawer-shops__item cursor-pointer" v-for="(shop, index) in shopList" :key="index"
-            @click="onSwitchShop(shop.shop_id)">
+            @click="onSwitchShop(shop)">
             <img class="drawer-shops__img" :src="shop.image_url" alt="店招">
             <div>
               <div class="drawer-shops__name">{{shop.shop_name}}</div>
@@ -42,12 +42,25 @@ export default {
   name: 'SwtichShopDrawer',
   serviceInject() {
     return {
+      messageService: MessageService,
       switchShopService: SwitchShopService
     }
   },
   data() {
     return {
-      shopList: []
+      shopList: [],
+      visible: false
+    }
+  },
+  props: {
+    value: {
+      type: Boolean,
+      default: false
+    }
+  },
+  watch: {
+    value(val) {
+      this.visible = val
     }
   },
   created() {
@@ -57,17 +70,24 @@ export default {
   },
   methods: {
     onClose() {
-      this.$emit('onClose')
+      this.visible = false
+      this.$emit('input', false)
     },
-    onSearchShop() {
-
-    },
-    onSwitchShop(shop_id) {
-      console.log('switch shop', shop_id)
+    onSearchShop() {},
+    onSwitchShop(shop) {
+      console.log('switch shop', shop.shop_id)
       const params = {
-        shop_id
+        shop_id: shop.shop_id
       }
-      this.switchShopService.switchShop(params).subscribe()
+      this.switchShopService.switchShop(params).subscribe(() => {
+        this.onSwitchShopSuccess(shop)
+      })
+    },
+    onSwitchShopSuccess(shop) {
+      this.onClose()
+      this.messageService.success({
+        content: `切换到门店-${shop.shop_name}(id: ${shop.shop_id})`
+      })
     }
   }
 }
