@@ -49,19 +49,13 @@
         <st-button type="primary" class="mgr-8" :disabled="!isUnifyCard" @click="onGiving">赠送额度</st-button>
         <st-button type="primary" class="mgr-8" :disabled="selectedRowKeys.length<1" @click="onAreas">变更入场vip区域</st-button>
       </div>
-      <!-- <div :class="basic('table-select-info')">
-        <st-icon type="weibo"/>
-        <span class="mgl-8 mgr-16">
-          已选
-          <i :class="basic('table-select-number')">{{selectedRowKeys.length}}</i> / {{list.length}} 条数据
-        </span>
-      </div> -->
       <div :class="basic('table')">
         <st-table
           :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
           :alertSelection="{onReset: onClear}"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
           rowKey="id"
+          @change="onPageChange"
           :columns="columns"
           :dataSource="list"
         >
@@ -84,9 +78,10 @@
             slot-scope="text"
           >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
           <div slot="action" slot-scope="text,record">
-            <a @click="onSetTime(record)">修改有效时间</a>
+            <a @click="onRenewal(record)">续卡</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
+              <a-menu-item @click="onSetTime(record)">修改有效时间</a-menu-item>
               <a-menu-item @click="onFreeze(record)">冻结</a-menu-item>
               <a-menu-item @click="onUnfreeze(record)">取消冻结</a-menu-item>
               <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
@@ -242,6 +237,9 @@ export default {
     }
   },
   methods: {
+    onPageChange(data) {
+      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
+    },
     // 查询
     onSearch() {
       let query = {
@@ -437,6 +435,20 @@ export default {
           success: () => {
             this.$router.push({ force: true, query: this.query })
             this.onClear()
+          }
+        }
+      })
+    },
+    // 续卡
+    onRenewal(record) {
+      this.$modalRouter.push({
+        name: 'sold-card-renewal-member',
+        props: {
+          id: record.id
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
           }
         }
       })

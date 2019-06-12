@@ -113,9 +113,9 @@
           <st-form-item label="退款方式" class="mgb-18" required>
             <a-radio-group v-model="frozenPayType">
               <a-radio
-              v-for="(item,index) in Object.keys(sold.frozen_pay_type.value)"
+              v-for="(item,index) in Object.keys(sold.refund_channel_saas.value)"
               :key="index"
-              :value="+item">{{sold.frozen_pay_type.value[item]}}</a-radio>
+              :value="+item">{{sold.refund_channel_saas.value[item]}}</a-radio>
             </a-radio-group>
           </st-form-item>
           <st-form-item label="备注" class="mg-b0">
@@ -158,7 +158,7 @@ export default {
     return {
       show: false,
       refundReason: 1,
-      frozenPayType: 1,
+      frozenPayType: 2,
       description: '',
       form: this.$form.createForm(this)
     }

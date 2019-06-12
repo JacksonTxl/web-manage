@@ -149,9 +149,10 @@ export class CardApi extends Api {
   setCardGive(params:CardGiveInput) {
     return this.http.put(`/v1/sold/cards/member/give`, { params })
   }
-
-  /* 合同编号自动生成 v1/setting/contract/codenumber/模板TYPE */
-  settingContractCodenumber(type: string) {
-    return this.http.get(`/v1/setting/contract/codenumber/${type}`)
+  /**
+   * 售出 会员卡 续卡回显
+   */
+  getCardRenewalInfo(id:string) {
+    return this.http.get(`/v1/sold/cards/member/renewal/info/${id}`)
   }
 }

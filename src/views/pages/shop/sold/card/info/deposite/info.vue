@@ -102,7 +102,7 @@ export default {
       })
     },
     // 转让
-    onTransfer(record) {
+    onTransfer() {
       this.$modalRouter.push({
         name: 'sold-card-transfer',
         props: {

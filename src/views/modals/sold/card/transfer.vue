@@ -65,14 +65,14 @@
             >
               <a-select-option
               v-for="(item,index) in memberList"
-              :value="item.member_id"
+              :value="item.id"
               :key="index">
                 <span v-html="`${item.member_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
                   {{item.member_name}}&nbsp;&nbsp;&nbsp;{{item.mobile}}
                 </span>
               </a-select-option>
             </a-select>
-            <p v-if="!memberList.length&&memberSearchText!==''&&+memberTransferInfo.sale_range.type===1" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
+            <p v-if="!memberList.length&&memberSearchText!==''&&+saleRange.type===1" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
           </st-form-item>
           <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required labelGutter="12px">
             <a-input v-decorator="['memberName',{rules:[{validator:member_name_validator}]}]" placeholder="请输入会员姓名"></a-input>
@@ -134,7 +134,7 @@
               <a-select-option
               v-for="(item,index) in payList"
               :key="index"
-              :value="+item">{{sold.frozen_pay_type.value[item]}}</a-select-option>
+              :value="+item.payment_type">{{item.payment_type_name}}</a-select-option>
             </a-select>
           </st-form-item>
         </div>
@@ -181,6 +181,9 @@ export default {
     },
     isMember() {
       return this.type === 'member'
+    },
+    saleRange() {
+      return this.depositTransferInfo.sale_range || this.memberTransferInfo.sale_range
     }
   },
   props: ['id', 'type'],
@@ -191,6 +194,7 @@ export default {
       // 搜索会员
       memberSearchText: '',
       searchMemberIsShow: true,
+      member_id: '',
       // 转让信息
       transferData: {
         member_id: null,
@@ -205,8 +209,10 @@ export default {
     }
   },
   created() {
-    this.transferService.getTransferInfo(this.id, this.type).subscribe()
-    this.transferService.getPayList(this.id).subscribe()
+    this.transferService.getTransferInfo(this.id, this.type).subscribe(res => {
+      this.transferService.getPayList(res.info.order_id).subscribe()
+      this.member_id = res.info.member_id
+    })
   },
   methods: {
     onSubmit() {
@@ -314,7 +320,7 @@ export default {
       } else {
         this.transferService.getMember({
           member: data,
-          escape_member_id: ['1111111kael kael']
+          escape_member_id: +this.member_id
         }).subscribe(res => {
           if (!res.list.length) {
             this.form.resetFields(['memberId'])
