@@ -50,6 +50,7 @@ export class SalePersonalCourseService {
       this.coachList$.commit(() => res.list)
     }))
   }
+  @Effect()
   getPersonalPriceInfo(params: {id: number, buy_num: number, coach_level_id: number}) {
     return this.transactionApi.getPersonalCoursePrice(params).pipe(tap((res:any) => {
       this.personalPrice$.commit(() => res.list)
@@ -60,7 +61,11 @@ export class SalePersonalCourseService {
     return forkJoin(this.getInfo(id), this.getSaleList(), this.getCoachList(0))
   }
   @Effect()
-  setTransaction(params:any) {
-    return this.transactionApi.setTransaction(params, 'package')
+  setTransactionOrder(params:any) {
+    return this.transactionApi.setTransaction(params, 'personal')
+  }
+  @Effect()
+  setTransactionPay(params:any) {
+    return this.transactionApi.setTransaction(params, 'personal')
   }
 }

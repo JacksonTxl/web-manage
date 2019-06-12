@@ -182,8 +182,8 @@
           <span>订单总额：{{selectedNorm.price}}元</span>
         </div>
         <div class="button">
-          <st-button @click="onCreateOrder" :loading="loading.setTransaction">创建订单</st-button>
-          <st-button @click="onPay" :loading="loading.setTransaction" type="primary">立即支付</st-button>
+          <st-button @click="onCreateOrder" :loading="loading.setTransactionOrder">创建订单</st-button>
+          <st-button @click="onPay" :loading="loading.setTransactionPay" type="primary">立即支付</st-button>
         </div>
       </div>
     </template>
@@ -423,7 +423,7 @@ export default {
     onCreateOrder() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.saleMemberCardService.setTransaction({
+          this.saleMemberCardService.setTransactionOrder({
             'member_id': values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,
@@ -453,7 +453,7 @@ export default {
     onPay() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.saleMemberCardService.setTransaction({
+          this.saleMemberCardService.setTransactionPay({
             'member_id': values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,

@@ -48,7 +48,11 @@ export class SaleCourseService {
     return forkJoin(this.getInfo(id), this.getSaleList())
   }
   @Effect()
-  setTransaction(params:any) {
+  setTransactionOrder(params:any) {
+    return this.transactionApi.setTransaction(params, 'package')
+  }
+  @Effect()
+  setTransactionPay(params:any) {
     return this.transactionApi.setTransaction(params, 'package')
   }
 }
