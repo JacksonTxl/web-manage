@@ -22,9 +22,13 @@
            @change="onImgChange"
         >
         </st-image-upload>
-        <img v-else :class="b('logo')"
-          :src="brandInfo.image.image_key | brandLogoFilter({ w: 180, h: 180 })" alt="brand logo"
-        >
+        <span v-else v-viewer="{ url: 'data-src' }">
+          <img :class="b('logo')"
+            :data-src="brandInfo.image.image_key | brandLogoFilter({ w: 1000 })"
+            :src="brandInfo.image.image_key | brandLogoFilter({ w: 180, h: 180 })"
+            alt="brand logo"
+          >
+        </span>
       </div>
       <div>
         <div>

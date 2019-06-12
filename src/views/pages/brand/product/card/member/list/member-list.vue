@@ -1,36 +1,38 @@
 <template>
-  <div class="pages-brand-product-card-list-member-list">
-    <router-link to="../add-select" v-if="auth.isAdd">
-      <st-button type="primary" icon="add">新增会员卡</st-button>
-    </router-link>
-    <div class="pages-brand-product-card-list-member-list__box">
-      <a-select
-        class="pages-brand-product-card-list-member-list__box-select"
-        v-model="card_type"
-        @change="handleChange_card_type"
-      >
-        <a-select-option value>所有类型</a-select-option>
-        <a-select-option value="1">次卡</a-select-option>
-        <a-select-option value="2">期限卡</a-select-option>
-      </a-select>
-      <a-select
-        class="pages-brand-product-card-list-member-list__box-select"
-        v-model="publish_channel"
-        @change="handleChange_publish_channel"
-      >
-        <a-select-option value>所有渠道</a-select-option>
-        <a-select-option value="1">品牌</a-select-option>
-        <a-select-option value="2">门店</a-select-option>
-      </a-select>
-      <a-select
-        class="pages-brand-product-card-list-member-list__box-select"
-        @change="handleChange_sell_status"
-        v-model="sell_status"
-      >
-        <a-select-option value>所有售卖状态</a-select-option>
-        <a-select-option value="1">可售卖</a-select-option>
-        <a-select-option value="2">不可售卖</a-select-option>
-      </a-select>
+  <div class="pages-brand-product-card-list">
+    <div class="pages-brand-product-card-list__operation">
+      <router-link to="../add-select" v-if="auth.isAdd">
+        <st-button type="primary" icon="add">新增会员卡</st-button>
+      </router-link>
+      <div>
+        <a-select
+          class="mg-r8" style="width: 160px"
+          v-model="card_type"
+          @change="handleChange_card_type"
+        >
+          <a-select-option value>所有类型</a-select-option>
+          <a-select-option value="1">次卡</a-select-option>
+          <a-select-option value="2">期限卡</a-select-option>
+        </a-select>
+        <a-select
+          class="mg-r8" style="width: 160px"
+          v-model="publish_channel"
+          @change="handleChange_publish_channel"
+        >
+          <a-select-option value>所有渠道</a-select-option>
+          <a-select-option value="1">品牌</a-select-option>
+          <a-select-option value="2">门店</a-select-option>
+        </a-select>
+        <a-select
+          class="mg-r8" style="width: 160px"
+          @change="handleChange_sell_status"
+          v-model="sell_status"
+        >
+          <a-select-option value>所有售卖状态</a-select-option>
+          <a-select-option value="1">可售卖</a-select-option>
+          <a-select-option value="2">不可售卖</a-select-option>
+        </a-select>
+      </div>
     </div>
     <st-table
       rowKey="id"
@@ -41,14 +43,15 @@
       :pagination="pagination"
       @showSizeChange="onShowSizeChange"
     >
-      <!-- 会员卡名称start -->
-      <a
-        slot="card_name"
-        slot-scope="text,record"
-        href="javascript:;"
-        @click="infoFunc(record)"
-      >{{text}}</a>
-      <!-- 会员卡名称end -->
+      <!-- 会员卡名称 -->
+      <div slot="card_name" slot-scope="text,record">
+        <a
+          v-if="record.auth['brand_shop:product:member_card|get']"
+          href="javascript:;"
+          @click="infoFunc(record)"
+        >{{text}}</a>
+        <span v-else>{{text}}</span>
+      </div>
       <span slot="sell_time" slot-scope="text,record">{{record.start_time}}~{{record.end_time}}</span>
       <span
         slot="price_gradient"
@@ -65,25 +68,23 @@
         <span v-else class="use_num">{{text}}</span>
       </div>
 
-      <!-- 支持入场门店 -->
+      <!-- 支持售卖门店 -->
       <div slot="support_sales.name" slot-scope="text,record">
         <modal-link
           v-if="record.support_sales.id === 2"
           tag="a"
           :to="{ name: 'card-sale-stop' , props:{a: record.id}}"
         >{{text}}</modal-link>
-        <span v-else class="use_num">{{text}}</span>
+        <span v-else>{{text}}</span>
       </div>
-      <!-- 售卖状态start -->
-      <a
+      <!-- 售卖状态 -->
+      <div
         slot="sell_status"
         slot-scope="text,record"
         href="javascript:;"
         @click="sellStatus(text,record)"
       >
-        <span v-if="text.id === 1" class="pages-brand-product-card-list-member-list__marketable"></span>
-        <span v-if="text.id === 2" class="pages-brand-product-card-list-member-list__stopSell"></span>
-        {{text.name}}
+        <a-badge :status="text.id === 1?'success':'error'" />{{text.name}}
         <a-popover
           :title="popoverTitle"
           trigger="click"
@@ -96,35 +97,38 @@
           </template>
           <a-icon type="exclamation-circle" v-if="text.id === 2"/>
         </a-popover>
-      </a>
-      <!-- 售卖状态end -->
+      </div>
       <!-- 操作 -->
       <div slot="action" slot-scope="text, record">
-        <a href="javascript:;" v-if="record.auth['brand_shop:product:member_card|get']" @click="infoFunc(record)">详情</a>
-        <a-divider type="vertical"></a-divider>
-        <a href="javascript:;" v-if="record.sell_status.id === 1 && record.auth['brand_shop:product:member_card|up']">
+        <template v-if="record.auth['brand_shop:product:member_card|get']">
+          <a href="javascript:;"  @click="infoFunc(record)">详情</a>
+          <a-divider type="vertical"></a-divider>
+        </template>
+        <template v-if="record.auth['brand_shop:product:member_card|up']">
+          <a href="javascript:;" >
           <modal-link
             tag="a"
             :to="{ name: 'card-batch-shelves' ,props:{a:record}, on:{done: onModalTest }  }"
           >上架</modal-link>
-        </a>
-        <a href="javascript:;" v-if="record.sell_status.id === 2 && record.auth['brand_shop:product:member_card|restore']">
-          <modal-link
-            tag="a"
-            :to=" { name: 'card-recovery-sell', props:{a:record,time:cardsListInfo.time}, on:{done: onModalTest } }"
-          >恢复售卖</modal-link>
-        </a>
-        <template v-if="record.sell_status.id === 1">
+          </a>
           <a-divider type="vertical"></a-divider>
+        </template>
+        <template>
           <st-more-dropdown>
             <a-menu-item v-if="record.auth['brand_shop:product:member_card|edit']" @click="onEdit(record)">编辑</a-menu-item>
+            <a-menu-item v-if="record.auth['brand_shop:product:member_card|restore']">
+              <modal-link
+                tag="a"
+                :to=" { name: 'card-recovery-sell', props:{a:record,time:cardsListInfo.time}, on:{done: onModalTest } }"
+              >恢复售卖</modal-link>
+            </a-menu-item>
             <a-menu-item v-if="record.auth['brand_shop:product:member_card|pause']">
               <modal-link
                 tag="a"
                 :to=" { name: 'card-halt-the-sales', props:{a:record.id}, on:{done: onModalTest }}"
               >停售</modal-link>
             </a-menu-item>
-            <a-menu-item v-if=" !(record.shelf_upper || record.shelf_lower) && record.auth['brand_shop:product:member_card|del']">
+            <a-menu-item v-if="record.auth['brand_shop:product:member_card|del']">
               <modal-link
                 tag="a"
                 :to=" { name: 'card-confirm-del', props:{title: {title:record.card_name,id:record.id}}, on:{del: onModalTest }}"
@@ -139,6 +143,7 @@
 </template>
 <script>
 import { MemberListService } from './member-list.service'
+import { columns } from './member-list.config'
 export default {
   serviceInject() {
     return {
@@ -154,6 +159,7 @@ export default {
 
   data() {
     return {
+      columns,
       popoverTitle: '',
       popoverContent: '',
       card_type: '所以类型',
@@ -173,120 +179,7 @@ export default {
         pageSize: 10,
         total: 50
       },
-      data: [],
-      columns: [
-        {
-          title: '会员卡名称',
-          dataIndex: 'card_name',
-          scopedSlots: { customRender: 'card_name' }
-        },
-        {
-          title: '类型',
-          dataIndex: 'card_type.name',
-          sorter: (a, b) => {
-            let A = a.card_type.name
-            let B = b.card_type.name
-            if (A < B) {
-              return -1
-            }
-            if (A > B) {
-              return 1
-            }
-            return 0
-          }
-        },
-        {
-          title: '有效期/有效次数',
-          dataIndex: 'time_gradient'
-        },
-        {
-          title: '支持入场门店',
-          dataIndex: 'admission_range.name',
-          scopedSlots: { customRender: 'admission_range.name' }
-        },
-        {
-          title: '支持售卖门店',
-          dataIndex: 'support_sales.name',
-          scopedSlots: { customRender: 'support_sales.name' }
-        },
-        {
-          title: '支持售卖时间',
-          dataIndex: 'sell_time',
-          scopedSlots: { customRender: 'sell_time' }
-        },
-        {
-          title: '定价方式',
-          dataIndex: 'price_setting.name'
-        },
-        {
-          title: '售卖价格',
-          dataIndex: 'price_gradient',
-          scopedSlots: { customRender: 'price_gradient' },
-          sorter: (a, b) => {
-            let A = parseInt(a.price_gradient)
-            let B = parseInt(b.price_gradient)
-            if (A < B) {
-              return -1
-            }
-            if (A > B) {
-              return 1
-            }
-            return 0
-          }
-        },
-        {
-          title: '上架门店数',
-          dataIndex: 'shelf_upper',
-          sorter: (a, b) => {
-            let A = a.shelf_upper
-            let B = b.shelf_upper
-            if (A < B) {
-              return -1
-            }
-            if (A > B) {
-              return 1
-            }
-            return 0
-          }
-        },
-        {
-          title: '下架门店数',
-          dataIndex: 'shelf_lower',
-          sorter: (a, b) => {
-            let A = a.shelf_lower
-            let B = b.shelf_lower
-            if (A < B) {
-              return -1
-            }
-            if (A > B) {
-              return 1
-            }
-            return 0
-          }
-        },
-
-        {
-          title: '发布渠道',
-          dataIndex: 'publish_channel.name'
-        },
-        {
-          title: '售卖状态',
-          dataIndex: 'sell_status',
-          scopedSlots: { customRender: 'sell_status' }
-        },
-        // {
-        //   title: 'Age',
-        //   dataIndex: 'age',
-        //   sorter: (a, b) => a.age - b.age
-        // },
-        {
-          title: '操作',
-          dataIndex: 'action',
-          fixed: 'right',
-          width: 140,
-          scopedSlots: { customRender: 'action' }
-        }
-      ]
+      data: []
     }
   },
   mounted() {
