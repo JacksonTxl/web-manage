@@ -13,6 +13,8 @@ export class SalePersonalCourseService {
   memberList$ = new State({})
   saleList$ = new State({})
   couponList$ = new State({})
+  coachList$ = new State({})
+  personalPrice$ = new State({})
   constructor(private contractApi: ContractApi, private memberApi: ShopPersonalCourseApi, private transactionApi: TransactionApi) {}
   getInfo(id:string) {
     return this.transactionApi.getTransactionInfo(id, 'package/course').pipe(tap((res:any) => {
@@ -26,8 +28,8 @@ export class SalePersonalCourseService {
     }))
   }
   @Effect()
-  getCodeNumber() {
-    return this.contractApi.getCodeNumber('4')
+  getCodeNumber(type: string) {
+    return this.contractApi.getCodeNumber(type)
   }
   @Effect()
   getAdvanceList(id:string|number) {
@@ -39,13 +41,23 @@ export class SalePersonalCourseService {
     }))
   }
   getCouponList(params: MemberCouponParams) {
-    return this.transactionApi.getTransactionCouponList(params, 'package').pipe(tap((res:any) => {
+    return this.transactionApi.getTransactionCouponList(params, 'personal').pipe(tap((res:any) => {
       this.couponList$.commit(() => res.list)
+    }))
+  }
+  getCoachList(level: number) {
+    return this.transactionApi.getTransactionCoachList(level).pipe(tap((res:any) => {
+      this.coachList$.commit(() => res.list)
+    }))
+  }
+  getPersonalPriceInfo(params: {id: number, buy_num: number, coach_level_id: number}) {
+    return this.transactionApi.getPersonalCoursePrice(params).pipe(tap((res:any) => {
+      this.personalPrice$.commit(() => res.list)
     }))
   }
   @Effect()
   serviceInit(id:string) {
-    return forkJoin(this.getInfo(id), this.getSaleList())
+    return forkJoin(this.getInfo(id), this.getSaleList(), this.getCoachList(0))
   }
   @Effect()
   setTransaction(params:any) {

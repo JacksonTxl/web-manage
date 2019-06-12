@@ -26,8 +26,8 @@ export class SaleCourseService {
     }))
   }
   @Effect()
-  getCodeNumber() {
-    return this.contractApi.getCodeNumber('4')
+  getCodeNumber(type: string) {
+    return this.contractApi.getCodeNumber(type)
   }
   @Effect()
   getAdvanceList(id:string|number) {

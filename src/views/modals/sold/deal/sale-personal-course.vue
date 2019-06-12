@@ -11,13 +11,12 @@
           <st-info>
             <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
             <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
-            <st-info-item label="总课时">{{info.total_times}}</st-info-item>
-            <st-info-item label="时长">{{moment().add(info.valid_time, 'days').format('YYYY-MM-DD hh:mm')}}</st-info-item>
+            <st-info-item label="时长">{{info.duration}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
            <st-info>
-            <st-info-item label="上课门店">{{info.is_transfer}}</st-info-item>
+            <st-info-item label="上课门店">{{info.shop_range}}</st-info-item>
             <st-info-item label="售卖群体" v-if="info.sale_range">{{info.sale_range.name}}</st-info-item>
           </st-info>
         </a-col>
@@ -46,7 +45,7 @@
                 </span>
               </a-select-option>
             </a-select>
-            <p v-if="!memberList.length&&memberSearchText!==''" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
+            <p v-if="!memberList.length && memberSearchText !== '' && +info.sale_range.type === 1 " class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
           </st-form-item>
           <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required>
             <a-input v-decorator="['memberName',{rules:[{validator:member_name_validator}]}]" placeholder="请输入会员姓名"></a-input>
@@ -55,17 +54,21 @@
             <a-input v-decorator="['memberMobile',{rules:[{validator:member_mobile_validator}]}]" placeholder="请输入手机号"></a-input>
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
-          <st-form-item label="购买数量">
-            <st-input-number v-model="reduceAmount" :float="true" placeholder="请输入购买的数量">
-              <span slot="addonAfter">节</span>
-            </st-input-number>
-            <st-button class="create-button" @click="onCodeNumber" :loading="loading.getCodeNumber">确定</st-button>
+          <st-form-item label="购买数量" required>
+            <div :class="sale('contract')">
+              <a-input-number class="input-number"
+              v-decorator="['buyNum',{rules:[{validator:buy_num}]}]"
+              placeholder="请输入购买数量"></a-input-number>
+              <st-button class="create-button" @click="onClickCourseAmount" :loading="loading.getCodeNumber">确定</st-button>
+            </div>
           </st-form-item>
-          <st-form-item label="单节价格">
-            <st-input-number v-model="reduceAmount" :float="true" placeholder="请输入课程的价格">
-              <span slot="addonAfter">节</span>
+          <st-form-item label="单节价格" required>
+            <st-input-number v-decorator="['coursePrice',{rules:[{validator:course_price}]}]" :float="true" placeholder="请输入课程的价格" @blur="fetchCouponList">
+              <span slot="addonAfter">元</span>
             </st-input-number>
-            <div>售卖价格区间：19元/节 ~ 25元/节</div>
+          </st-form-item>
+          <st-form-item label="价格区间">
+            <div>19元/节 ~ 25元/节</div>
           </st-form-item>
           <st-form-item label="到期时间">
             <div>{{moment().format('YYYY-MM-DD hh:mm')}}</div>
@@ -80,10 +83,10 @@
           </st-form-item>
           <st-form-item label="上课教练" required>
             <a-select
-            v-decorator="['saleName',{rules:[{validator:sale_name}]}]"
+            v-decorator="['coachId',{rules:[{validator:coach_id}]}]"
             placeholder="选择上课的教练">
               <a-select-option
-              v-for="(item,index) in saleList"
+              v-for="(item,index) in coachList"
               :key="index"
               :value="item.id">{{item.staff_name}}</a-select-option>
             </a-select>
@@ -206,7 +209,9 @@ export default {
       memberList: this.salePersonalCourseService.memberList$,
       info: this.salePersonalCourseService.info$,
       saleList: this.salePersonalCourseService.saleList$,
-      couponList: this.salePersonalCourseService.couponList$
+      couponList: this.salePersonalCourseService.couponList$,
+      coachList: this.salePersonalCourseService.coachList$,
+      personalPrice: this.salePersonalCourseService.personalPrice$
     }
   },
   props: {
@@ -249,13 +254,19 @@ export default {
     }
   },
   methods: {
-    fetchCouponList(member_id) {
-      const params = {
-        member_id: member_id,
-        package_id: this.id
+    fetchCouponList() {
+      const member_id = this.form.getFieldValue('memberId')
+      const course_price = this.form.getFieldValue('coursePrice')
+      const buy_num = this.form.getFieldValue('buyNum')
+      if (member_id && price && buy_num) {
+        const params = {
+          member_id: member_id,
+          course_id: this.id,
+          price: course_price,
+          buy_num: buy_num
+        }
+        this.salePersonalCourseService.getCouponList(params).subscribe()
       }
-      console.log(params)
-      this.salePersonalCourseService.getCouponList(params).subscribe()
     },
     moment,
     member_id_validator(rule, value, callback) {
@@ -297,6 +308,33 @@ export default {
         callback()
       }
     },
+    buy_num(rule, value, callback) {
+      if (!value) {
+        // eslint-disable-next-line
+        callback('请输入购买数量')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    course_price(rule, value, callback) {
+      if (!value) {
+        // eslint-disable-next-line
+        callback('请输入课程的单价')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    coach_id(rule, value, callback) {
+      if (!value) {
+        // eslint-disable-next-line
+        callback('请选择上课教练')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
     sale_name(rule, value, callback) {
       if (!value) {
         // eslint-disable-next-line
@@ -327,7 +365,7 @@ export default {
         this.salePersonalCourseService.getAdvanceList(data).subscribe(res => {
           this.advanceList = cloneDeep(res.list)
         })
-        this.fetchCouponList(data)
+        this.fetchCouponList()
       }
     },
     onSelectAdvance() {
@@ -374,6 +412,14 @@ export default {
       let price = this.couponList.filter(o => o.id === event.target.value.id)[0].price
       this.couponAmount = price
       this.couponText = `${price}元`
+    },
+    onClickCourseAmount() {
+      const params = {
+        id: this.id,
+        buy_num: this.form.getFieldValue('buyNum'),
+        coach_level_id: 0
+      }
+      this.salePersonalCourseService.getPersonalPriceInfo(params).subscribe()
     },
     onCreateOrder() {
       this.form.validateFields((error, values) => {

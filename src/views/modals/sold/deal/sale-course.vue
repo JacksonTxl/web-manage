@@ -334,7 +334,7 @@ export default {
       this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
     },
     onCodeNumber() {
-      this.saleCourseService.getCodeNumber().subscribe(res => {
+      this.saleCourseService.getCodeNumber(this.info.contract_type).subscribe(res => {
         this.form.setFieldsValue({
           contractNumber: res.info.code
         })
@@ -366,7 +366,7 @@ export default {
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
             'advance_amount': this.validStartTime,
-            'reduce_prreduce_amountice': this.reduceAmount,
+            'reduce_amount': this.reduceAmount,
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,
@@ -393,12 +393,12 @@ export default {
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
             'advance_amount': this.advanceAmount,
-            'reduce_prreduce_amountice': this.reduceAmount,
+            'reduce_amount': this.reduceAmount,
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,
             'order_amount': this.orderAmount
-          }).subscribe(() => {
+          }).subscribe((result) => {
             this.$emit('success', {
               type: 'createPay',
               order_id: result.info.order_id

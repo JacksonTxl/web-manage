@@ -55,7 +55,7 @@
             <span class="total">{{info.payed_amount}}/{{info.remain_amount}}</span>
           </st-form-item>
           <st-form-item class="mgb-18" label="支付金额" required>
-            <st-input-number :float="true" v-decorator="[
+            <st-input-number :float="true" :max="info.remain_amount | dealMaxNumber" v-decorator="[
               'price',
               {rules: [{ required: true, message: '请输入支付金额!' }]}
             ]">
@@ -121,6 +121,12 @@ export default {
     this.gatheringService.getPaymentInfo(this.order_id, this.type).subscribe(result => {
       this.gatheringService.getPaymentMethodList(this.order_id).subscribe()
     })
+  },
+  filters: {
+    dealMaxNumber: (value) => {
+      if (!value) return
+      return parseInt(value.substr(0, value.length - 1))
+    }
   },
   methods: {
     onOk() {
