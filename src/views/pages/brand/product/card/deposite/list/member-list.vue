@@ -1,28 +1,31 @@
 <template>
-  <div class="pages-brand-product-card-list-member-list">
-    <router-link to="../add" v-if="auth.isAdd">
-      <st-button type="primary" icon="add">新增储值卡</st-button>
-    </router-link>
-    <div class="pages-brand-product-card-list-member-list__box">
-      <a-select
-        class="pages-brand-product-card-list-member-list__box-select"
-        v-model="publish_channel"
-        @change="handleChange_publish_channel"
-      >
-        <a-select-option value>所有渠道</a-select-option>
-        <a-select-option value="1">品牌</a-select-option>
-        <a-select-option value="2">门店</a-select-option>
-      </a-select>
-      <a-select
-        class="pages-brand-product-card-list-member-list__box-select"
-        @change="handleChange_sell_status"
-        v-model="sell_status"
-      >
-        <a-select-option value>所有售卖状态</a-select-option>
-        <a-select-option value="1">可售卖</a-select-option>
-        <a-select-option value="2">不可售卖</a-select-option>
-      </a-select>
+  <div class="pages-brand-product-card-list">
+    <div class="pages-brand-product-card-list__operation">
+      <router-link to="../add" v-if="auth.isAdd">
+        <st-button type="primary" icon="add">新增储值卡</st-button>
+      </router-link>
+      <div>
+        <a-select
+          class="mg-r8" style="width: 160px"
+          v-model="publish_channel"
+          @change="handleChange_publish_channel"
+        >
+          <a-select-option value>所有渠道</a-select-option>
+          <a-select-option value="1">品牌</a-select-option>
+          <a-select-option value="2">门店</a-select-option>
+        </a-select>
+        <a-select
+          class="mg-r8" style="width: 160px"
+          @change="handleChange_sell_status"
+          v-model="sell_status"
+        >
+          <a-select-option value>所有售卖状态</a-select-option>
+          <a-select-option value="1">可售卖</a-select-option>
+          <a-select-option value="2">不可售卖</a-select-option>
+        </a-select>
+      </div>
     </div>
+
     <st-table
       rowKey="card_id"
       :columns="columns"
@@ -33,12 +36,15 @@
       @showSizeChange="onShowSizeChange"
     >
       <!-- 储值卡名称start -->
-      <a
-        slot="card_name"
-        slot-scope="text,record"
-        href="javascript:;"
-        @click="infoFunc(record)"
-      >{{text}}</a>
+      <div slot="card_name" slot-scope="text,record">
+        <a
+          v-if="record.auth['brand_shop:product:deposit_card|get']"
+          href="javascript:;"
+          @click="infoFunc(record)"
+        >{{text}}</a>
+        <span v-else>{{text}}</span>
+      </div>
+
       <!-- 储值卡名称end -->
       <span
         slot="num"
@@ -58,7 +64,7 @@
           tag="a"
           :to="{ name: 'card-table-stop', props:{a: record.card_id, title: '支持售卖门店'}}"
         >{{text}}</modal-link>
-        <span v-else class="use_num">{{text}}</span>
+        <span v-else>{{text}}</span>
       </div>
 
       <!-- 支持消费门店 -->
@@ -68,7 +74,7 @@
           tag="a"
           :to="{ name: 'card-sale-stop' , props:{a: record.card_id, title:'支持消费门店'}}"
         >{{text}}</modal-link>
-        <span v-else class="use_num">{{text}}</span>
+        <span v-else>{{text}}</span>
       </div>
       <!-- 售卖状态start -->
       <a
@@ -77,12 +83,7 @@
         href="javascript:;"
         @click="sellStatus(text,record)"
       >
-        <span
-          v-if="record.shelf_status ==='可售'"
-          class="pages-brand-product-card-list-member-list__marketable"
-        ></span>
-        <span v-else class="pages-brand-product-card-list-member-list__stopSell"></span>
-        {{record.shelf_status}}
+        <a-badge :status="record.sell_status === 1?'success':'error'" />{{record.shelf_status}}
         <a-popover
           :title="popoverTitle"
           trigger="click"
@@ -93,47 +94,44 @@
           <template slot="content">
             <p>{{popoverContent}}</p>
           </template>
-          <a-icon type="exclamation-circle" v-if="record.shelf_status !=='可售'"/>
+          <a-icon type="exclamation-circle" v-if="record.sell_status === 2"/>
         </a-popover>
       </a>
       <!-- 操作 -->
       <div slot="action" slot-scope="text, record">
-        <a href="javascript:;" v-if="record.auth['brand_shop:product:deposit_card|get']" @click="infoFunc(record)">详情</a>
-
-        <a href="javascript:;" @click="infoFunc(text, record)" v-if="record.shelf_status !=='可售' &&  record.auth['brand_shop:product:deposit_card|restore']">
-          <modal-link
-            tag="a"
-            :to=" { name: 'card-recovery-sell', props:{a:record,time:{current_time:record.time},flag:true}, on:{done: onModalTest } }"
-          >
-            <a-divider type="vertical"></a-divider>恢复售卖
-          </modal-link>
-        </a>
-        <a
-          href="javascript:;"
-          @click="upperShelf(text, record)"
-          v-if="record.shelf_status==='可售' && record.upper_status && record.auth['brand_shop:product:deposit_card|up']"
-        >
-          <a-divider type="vertical"></a-divider>上架
-        </a>
-        <template v-if="record.shelf_status==='可售'">
+        <template v-if="record.auth['brand_shop:product:deposit_card|get']">
+          <a href="javascript:;" @click="infoFunc(record)">详情</a>
           <a-divider type="vertical"></a-divider>
-          <st-more-dropdown>
-            <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|edit']" @click="onEdit(record)">编辑</a-menu-item>
-            <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|pause']">
-              <modal-link
-                tag="a"
-                :to=" { name: 'card-halt-the-sales', props:{a:record.card_id,flag:true,time:[record.upper_shelf_num,record.lower_shelf_num]}, on:{done: onModalTest }}"
-              >停售</modal-link>
-            </a-menu-item>
-            <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|del']">
-              <modal-link
-                v-if="record.upper_status && !record.publish_channel"
-                tag="a"
-                :to=" { name: 'card-confirm-del', props:{title: {title:record.card_name,id:record.card_id,flag:true}}, on:{del: onModalTest }}"
-              >删除</modal-link>
-            </a-menu-item>
-          </st-more-dropdown>
         </template>
+        <template v-if="record.auth['brand_shop:product:deposit_card|up']">
+          <a
+            href="javascript:;"
+            @click="upperShelf(text, record)"
+          >上架</a>
+          <a-divider type="vertical"></a-divider>
+        </template>
+        <st-more-dropdown>
+          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|edit']" @click="onEdit(record)">编辑</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|restore']">
+            <modal-link
+              tag="a"
+              :to=" { name: 'card-recovery-sell', props:{a:record,time:{current_time:record.time},flag:true}, on:{done: onModalTest } }"
+            >恢复售卖</modal-link>
+          </a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|pause']">
+            <modal-link
+              tag="a"
+              :to=" { name: 'card-halt-the-sales', props:{a:record.card_id,flag:true,time:[record.upper_shelf_num,record.lower_shelf_num]}, on:{done: onModalTest }}"
+            >停售</modal-link>
+          </a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|del']">
+            <modal-link
+              v-if="record.upper_status && !record.publish_channel"
+              tag="a"
+              :to=" { name: 'card-confirm-del', props:{title: {title:record.card_name,id:record.card_id,flag:true}}, on:{del: onModalTest }}"
+            >删除</modal-link>
+          </a-menu-item>
+        </st-more-dropdown>
       </div>
       <!-- 操作end -->
     </st-table>
@@ -141,6 +139,7 @@
 </template>
 <script>
 import { MemberListService } from './member-list.service'
+import { columns } from './member-list.config'
 export default {
   serviceInject() {
     return {
@@ -156,6 +155,7 @@ export default {
 
   data() {
     return {
+      columns,
       popoverTitle: '',
       popoverContent: '',
       publish_channel: '所有渠道',
@@ -173,71 +173,7 @@ export default {
         pageSize: 10,
         total: 50
       },
-      data: [],
-      columns: [
-        {
-          title: '储值卡名称',
-          dataIndex: 'card_name',
-          scopedSlots: { customRender: 'card_name' }
-        },
-        {
-          title: '有效期',
-          dataIndex: 'num',
-          scopedSlots: { customRender: 'num' }
-        },
-        {
-          title: '储值金额',
-          dataIndex: 'card_price',
-          sorter: (a, b) => a.card_price - b.card_price
-        },
-        {
-          title: '售卖价格',
-          dataIndex: 'sell_price',
-          sorter: (a, b) => a.sell_price - b.sell_price
-        },
-        {
-          title: '支持售卖门店',
-          dataIndex: 'support_sales.name',
-          scopedSlots: { customRender: 'support_sales.name' }
-        },
-        {
-          title: '支持消费门店',
-          dataIndex: 'consumption_range.name',
-          scopedSlots: { customRender: 'consumption_range.name' }
-        },
-        {
-          title: '支持售卖时间',
-          dataIndex: 'sell_time'
-        },
-        {
-          title: '上架门店数',
-          dataIndex: 'upper_shelf_num',
-          sorter: (a, b) => a.upper_shelf_num - b.upper_shelf_num
-        },
-        {
-          title: '下架门店数',
-          dataIndex: 'lower_shelf_num',
-          sorter: (a, b) => a.lower_shelf_num - b.lower_shelf_num
-        },
-        {
-          title: '发布渠道',
-          dataIndex: 'publish_channel.name',
-          scopedSlots: { customRender: 'publish_channel.name' }
-        },
-
-        {
-          title: '售卖状态',
-          dataIndex: 'sell_status',
-          scopedSlots: { customRender: 'sell_status' }
-        },
-        {
-          title: '操作',
-          dataIndex: 'action',
-          fixed: 'right',
-          width: 140,
-          scopedSlots: { customRender: 'action' }
-        }
-      ]
+      data: []
     }
   },
   mounted() {

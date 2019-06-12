@@ -25,7 +25,7 @@
 
 <script>
 import ListTable from './list#/list-table'
-import { RouteService } from '../../../../../../../services/route.service'
+import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
 export default {
   name: 'PersonalCourseListInShop',

@@ -7,7 +7,17 @@ export interface MemberCouponParams {
 }
 export interface MemberListInput {
   member:string
-  escape_member_id?:Array<string|number>
+  escape_member_id?:number
+}
+export interface TransactionPriceInput {
+  product_id:number
+  product_type:number
+  product_num?:number
+  specs_id?:number
+  advance_id?:string
+  reduce_amount?:number
+  coupon_id?:string
+  member_id?:number
 }
 export class TransactionApi extends Api {
   /**
@@ -80,6 +90,12 @@ export class TransactionApi extends Api {
    */
   getTransactionMemeberList(query: MemberListInput) {
     return this.http.get(`/v1/order/transaction/sale/range/member`, { query })
+  }
+  /**
+   * 获取商品应付金额
+   */
+  getTransactionPrice(params: TransactionPriceInput) {
+    return this.http.post(`/v1/order/transaction/price`, { params })
   }
 
   /**

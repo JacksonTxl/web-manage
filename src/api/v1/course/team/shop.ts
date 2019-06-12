@@ -24,7 +24,7 @@ export class ShopTeamCourseApi extends Api {
    * 获取品牌门店私教课列表
    */
   getTeamCourseListInShop(query: GetTeamBrandCourseListInput) {
-    return this.http.get('/v1/course/team/shop', { query })
+    return this.http.get('/v1/course/team/brand/shop', { query })
   }
   /**
    * 设置上课门店

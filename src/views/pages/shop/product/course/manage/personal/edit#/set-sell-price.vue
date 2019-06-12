@@ -120,7 +120,7 @@ export default {
         content: '提交成功'
       })
       this.$router.push({
-        name: 'brand-product-course-personal-list-brand'
+        name: 'shop-product-course-manage-personal-list'
       })
     },
     getPriceGradient() {
