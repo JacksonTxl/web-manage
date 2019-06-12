@@ -2,8 +2,11 @@
   <st-form :form="form" class="page-create-container" labelWidth="130px">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
+        <st-form-item v-show="false">
+          <input type="hidden" v-decorator="ruleConfig.courseId"/>
+        </st-form-item>
         <st-form-item label="课程名称" required>
-          <a-input placeholder="支持输入4~30个字的课程名称，中文占2个字符" maxlength="30"
+          <a-input placeholder="支持输入4~30个字的课程名称" maxlength="30" disabled
           v-decorator="ruleConfig.courseName" @change="onCourseNameChange"/>
         </st-form-item>
       </a-col>
@@ -12,7 +15,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
           <input type="hidden" v-decorator="ruleConfig.categoryId">
-          <st-select-course-category @change="onCourseTypeChange"/>
+          <st-select-course-category :value="info.category_id" @change="onCourseTypeChange"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -20,23 +23,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
           <input type="hidden" v-decorator="ruleConfig.trainAim">
-          <st-select-training-aim @change="onTrainingAimChange"/>
-        </st-form-item>
-      </a-col>
-    </a-row>
-    <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="强度" required>
-          <a-rate v-decorator="ruleConfig.strengthLevel"/>
-        </st-form-item>
-      </a-col>
-    </a-row>
-    <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="消耗卡路里" required>
-          <st-input-number v-decorator="ruleConfig.calories">
-            <template slot="addonAfter">Kcal/节</template>
-          </st-input-number>
+          <st-select-training-aim :value="info.train_aim|formatFilter" @change="onTrainingAimChange"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -81,7 +68,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.addCourse">保存，继续设置上课门店</st-button>
+          <st-button type="primary" @click="save" :loading="loading.updateCourse">保存，继续设置上课门店</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -89,33 +76,49 @@
 </template>
 
 <script>
-import { AddService } from '../add.service'
+import { EditService } from '../edit.service'
 import { MessageService } from '@/services/message.service'
+import { RouteService } from '@/services/route.service'
 import StSelectCourseCategory from '@/views/fragments/course/select-course-category'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
 
 export default {
-  name: 'SetCourse',
+  name: 'create-personal-course',
   serviceInject() {
     return {
-      addService: AddService,
+      editService: EditService,
       messageService: MessageService,
       userService: UserService,
+      routeService: RouteService,
       ruleConfig: RuleConfig
     }
   },
   rxState() {
     const user = this.userService
     return {
-      loading: this.addService.loading$,
-      personalCourseEnums: user.personalCourseEnums$
+      loading: this.editService.loading$,
+      personalCourseEnums: user.personalCourseEnums$,
+      query: this.routeService.query$
     }
   },
   components: {
     StSelectCourseCategory,
     StSelectTrainingAim
+  },
+  filters: {
+    formatFilter(arr = []) {
+      return arr.map(v => `${v}`)
+    }
+  },
+  props: {
+    info: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
   },
   data() {
     return {
@@ -123,17 +126,22 @@ export default {
       fileList: []
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.setFieldsValue()
+    })
+  },
   methods: {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(() => {
-        const data = this.form.getFieldsValue()
+        const data = this.getData()
         console.log('step 1 data', data)
-        this.addService.addCourse(data).subscribe((res) => {
+        this.editService.updateCourse(data).subscribe((res) => {
           this.messageService.success({
             content: '提交成功'
           })
-          this.$emit('goNext', res.course_id)
+          this.$emit('goNext')
         })
       })
     },
@@ -156,6 +164,23 @@ export default {
     },
     onCourseNameChange(e) {
       this.$emit('onCourseNameChange', e.target.value)
+    },
+    setFieldsValue() {
+      const info = this.info
+      this.form.setFieldsValue({
+        course_name: info.course_name,
+        category_id: info.category_id,
+        train_aim: info.train_aim,
+        duration: info.duration,
+        image: info.image,
+        description: info.description
+      })
+      this.fileList = [this.info.image]
+    },
+    getData() {
+      const data = this.form.getFieldsValue()
+      data.course_id = +this.query.id
+      return data
     }
   }
 }

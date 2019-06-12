@@ -1,4 +1,4 @@
-import { CourseApi } from './../../../../../../api/v1/setting/course'
+import { CourseApi } from '@/api/v1/setting/course'
 import { ShopApi } from '@/api/v1/shop'
 import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state/src'
