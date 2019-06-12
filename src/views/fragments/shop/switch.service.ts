@@ -6,12 +6,12 @@ import { ShopApi } from '@/api/v1/shop'
 import { SwitchApi, SwitchShopInput } from '@/api/v1/account/switch'
 import { TokenService } from '@/services/token.service'
 
-interface ShopState {
+interface SetState {
   shopList: Array<Object>
 }
 @Injectable()
-export class SwitchShopService extends Store<ShopState> {
-  state$: State<ShopState>
+export class SwitchService extends Store<SetState> {
+  state$: State<SetState>
   shopList$: Computed<Object>
   constructor(
     private shopApi: ShopApi,
@@ -29,6 +29,14 @@ export class SwitchShopService extends Store<ShopState> {
   }
   switchShop(params: SwitchShopInput) {
     return this.switchApi.switchShop(params).pipe(
+      tap(res => {
+        console.log(res)
+        this.tokenService.SET_TOKEN(res.token)
+      })
+    )
+  }
+  switchBackToBrand() {
+    return this.switchApi.switchBackToBrand().pipe(
       tap(res => {
         console.log(res)
         this.tokenService.SET_TOKEN(res.token)

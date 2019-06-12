@@ -3,7 +3,9 @@ import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { SkillfulApi, GetSkillfulListInput, DeleteSkillfulInput } from '@/api/v1/setting/skillful'
-
+import {
+  AuthService
+} from '@/services/auth.service'
 interface ListState {
   resData: object
 }
@@ -11,16 +13,25 @@ interface ListState {
 export class SkillfulService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
-  constructor(protected skillfulApi: SkillfulApi) {
+  auth$: Computed<object>
+  constructor(
+    private skillfulApi: SkillfulApi,
+    private authService: AuthService
+  ) {
     super()
     this.state$ = new State({
-      resData: {}
+      resData: {},
+      auth: {
+        isAdd: this.authService.can('brand_shop:coach:good_at|add')
+      }
     })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   getSkillfulList(query: GetSkillfulListInput) {
     return this.skillfulApi.getSkillfulList(query).pipe(
       tap(res => {
+        res = this.authService.filter(res)
         this.SET_STATE(res)
       })
     )

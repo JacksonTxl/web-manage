@@ -25,7 +25,7 @@
 
 <script>
 import ListTable from './list#/list-table'
-import { RouteService } from '../../../../../../../services/route.service'
+import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
 export default {
   name: 'PersonalCourseListInShop',
@@ -60,7 +60,7 @@ export default {
       })
     },
     addPersonalCourse() {
-      this.$router.push({ name: 'brand-product-course-team-add' })
+      this.$router.push({ name: 'shop-product-course-manage-personal-add' })
     }
   }
 }

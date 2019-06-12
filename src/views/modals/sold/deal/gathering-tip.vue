@@ -1,17 +1,17 @@
 <template>
   <st-modal
-  title=""
-  size="small"
-  v-model="show"
-  :footer="null"
-  wrapClassName="modal-sold-deal-gathering-tip"
-  @ok="onOk">
+    title=""
+    size="small"
+    v-model="show"
+    :footer="null"
+    wrapClassName="modal-sold-deal-gathering-tip"
+    >
     <div :class="gatheringTip('content')">
       <st-icon type="heating" class="img"/>
       <p >{{message}}</p>
-      <st-button type="primary" @click="onSubmit" >打印合同</st-button>
-      <st-button @click="onSubmit" >查看订单</st-button>
-      <st-button @click="onSubmit" v-if="orderTipType === 2">去支付</st-button>
+      <st-button type="primary" @click="print" >打印合同</st-button>
+      <st-button @click="viewOrder" >查看订单</st-button>
+      <st-button @click="goPay" v-if="needPay">去支付</st-button>
     </div>
   </st-modal>
 </template>
@@ -33,22 +33,35 @@ export default {
   data() {
     return {
       show: false
-
     }
   },
   props: {
-    orderTipType: Number, // 1 是订单收款成功 2 是订单创建成功
-    message: String
+    order_id: Number, // 订单id
+    type: String,
+    member_id: Number, // 会员id
+    message: String,
+    needPay: Boolean // true 需要支付按钮 false 不需要
   },
   created() {
   },
   methods: {
-    onOk() {
-      this.$emit('ok')
-      this.show = false
-    },
-    onSubmit(e) {
+    print() {
 
+    },
+    viewOrder() {
+
+    },
+    goPay(e) {
+      // 去订单收款页面
+      this.show = false
+      this.$modalRouter.push({
+        name: 'sold-deal-gathering',
+        props: {
+          order_id: this.order_id,
+          type: this.type,
+          member_id: this.member_id
+        }
+      })
     }
   }
 }

@@ -1,22 +1,23 @@
 import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state/src'
-import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
 import { tap } from 'rxjs/operators'
 import { ContractApi } from '@/api/v1/setting/contract'
 import { CardApi, TransferCardInput } from '@/api/v1/sold/cards'
 import moment from 'moment'
+import { TransactionApi, MemberListInput } from '@/api/v1/sold/transaction'
 
 @Injectable()
 export class TransferService {
   loading$ = new State({})
-  memberList$ = new State({})
+  memberList$ = new State([])
   depositTransferInfo$ = new State({})
   memberTransferInfo$ = new State({})
   timeScope$ = new State({})
-  constructor(private contractApi:ContractApi, private memberApi: ShopPersonalCourseApi, private cardApi:CardApi) {}
+  payList$ = new State([])
+  constructor(private contractApi:ContractApi, private transactionApi: TransactionApi, private cardApi:CardApi) {}
   @Effect()
-  getMember(member:string) {
-    return this.memberApi.getMemberList(member).pipe(tap((res:any) => {
+  getMember(query:MemberListInput) {
+    return this.transactionApi.getTransactionMemeberList(query).pipe(tap((res:any) => {
       this.memberList$.commit(() => res.list)
     }))
   }
@@ -40,5 +41,11 @@ export class TransferService {
   @Effect()
   getCodeNumber(id:string) {
     return this.contractApi.getCodeNumber(id)
+  }
+  @Effect()
+  getPayList(id:string) {
+    return this.transactionApi.getPaymentMethodList(id).pipe(tap((res:any) => {
+      this.payList$.commit(() => res.list)
+    }))
   }
 }

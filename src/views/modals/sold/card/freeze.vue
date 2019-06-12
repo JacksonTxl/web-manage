@@ -24,7 +24,7 @@
                   style="width: 100%;"
                   :defaultValue="startTime"
                   disabled
-                  format="YYYY-MM-DD hh:mm"
+                  format="YYYY-MM-DD HH:mm"
                   placeholder="开始时间"
                   :showToday="false"
                 />
@@ -37,7 +37,7 @@
                   @change="end_time_change"
                   style="width:170px"
                   :showTime="{defaultValue:startTime,format: 'HH:mm'}"
-                  format="YYYY-MM-DD hh:mm"
+                  format="YYYY-MM-DD HH:mm"
                   placeholder="结束时间"
                   :showToday="false"
                 />
@@ -142,7 +142,7 @@ export default {
       this.form.validateFields((error, values) => {
         if (!error) {
           this.freezeService.freeze({
-            end_time: values.endTime.format('YYYY-MM-DD hh:mm'),
+            end_time: values.endTime.format('YYYY-MM-DD HH:mm'),
             poundage: this.frozen_fee,
             pay_method: values.payType
           }, this.id, this.type).subscribe(res => {

@@ -18,15 +18,20 @@ interface ListState {
 export class CategoryService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
+  auth$: Computed<object>
   constructor(
     private authService: AuthService,
     private courseApi: CourseApi
   ) {
     super()
     this.state$ = new State({
-      resData: {}
+      resData: {},
+      auth: {
+        isAdd: this.authService.can('brand_shop:course:course_type|add')
+      }
     })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   getCourseCategoryList(query: GetCourseCategoryListInput) {
     return this.courseApi.getCourseCategoryList(query).pipe(

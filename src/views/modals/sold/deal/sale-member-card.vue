@@ -9,21 +9,20 @@
       <a-row :class="sale('info')">
         <a-col :span="13">
           <st-info>
-            <st-info-item label="商品名称">{{info.card_name}}</st-info-item>
-            <st-info-item label="商品类型">{{info.card_type}}</st-info-item>
-            <st-info-item label="有效时间">{{info.consumption_range}}</st-info-item>
-            <st-info-item label="优惠赠送">{{info.consumption_range}}</st-info-item>
-            <st-info-item label="开卡时间">{{info.consumption_range}}</st-info-item>
-            <st-info-item label="约课权益">{{info.consumption_range}}</st-info-item>
+            <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
+            <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
+            <st-info-item label="有效时间">{{selectedNorm.valid_time}}天</st-info-item>
+            <st-info-item label="赠送上限">{{selectedNorm.gift_max}}天</st-info-item>
+            <st-info-item label="约课权益">{{info.course_interests}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
            <st-info>
-            <st-info-item label="允许转让" v-if="info.is_transfer">{{info.is_transfer | enumFilter('sold.is_transferable')}}</st-info-item>
-            <st-info-item label="转让手续费" v-if="info.transfer_unit ">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
-            <st-info-item label="线上购买" v-if="info.is_online">{{info.is_online | enumFilter('sold.is_online')}}</st-info-item>
-            <st-info-item label="售卖群体">{{info.sale_range}}</st-info-item>
-            <st-info-item label="入场场馆">{{info.sale_range}}</st-info-item>
+            <st-info-item label="允许转让">{{info.is_transfer}}</st-info-item>
+            <st-info-item label="转让手续费">{{info.transfer_fee}}</st-info-item>
+            <st-info-item label="线上购买">{{info.is_online}}</st-info-item>
+            <st-info-item label="售卖群体" v-if="info.sale_range">{{info.sale_range.name}}</st-info-item>
+            <st-info-item label="入场场馆">{{info.admission_range}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -61,26 +60,33 @@
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
           <st-form-item label="规格" required>
-            <a-radio-group :options="normsOptions" />
+            <a-radio-group @change="onChangeSpecs" v-decorator="['specs',{rules:[]}]">
+              <a-radio v-for="(item, index) in info.specs" :value="item" :key="index">{{item.specs_name}}/{{item.price}}</a-radio>
+            </a-radio-group>
           </st-form-item>
           <st-form-item label="开卡方式" required>
-            <a-radio-group :options="paymentOptions" @change="onChangePayment"/>
+            <a-radio-group @change="onChangePayment" v-decorator="['open_type',{rules:[]}]">
+              <a-radio v-for="(item, index) in info.open_type" :value="item" :key="index">{{item.open_type}}</a-radio>
+            </a-radio-group>
           </st-form-item>
           <st-form-item label="有效时间">
-            <div v-if="selectedPayment == 1">{{moment().add(100,'d').format('YYYY-MM-DD hh:mm')}}&nbsp;至&nbsp;{{moment().add(100,'d').format('YYYY-MM-DD hh:mm')}}</div>
-            <div v-if="selectedPayment == 2">X天内未开卡，则X+1天0：00自动开卡</div>
-            <div v-if="selectedPayment == 3">
+            <div v-if="selectedPayment.id == 1">{{validStartTime}}&nbsp;至&nbsp;{{validEndTime}}</div>
+            <div v-if="selectedPayment.id == 2">{{selectedPayment.automatic_num}}天内未开卡，则{{selectedPayment.automatic_num + 1}}天0：00自动开卡</div>
+            <div v-if="selectedPayment.id == 3">
               <a-date-picker
                 showTime
+                :defaultValue="moment()"
                 format="YYYY-MM-DD HH:mm"
                 placeholder="请选择开始时间"
                 @change="onChangeTime"
               />
-              至 2019-08-09 14:20
+              至 {{validEndTime}}
             </div>
           </st-form-item>
           <st-form-item label="购买赠送">
-            <a-input-number :min="0" placeholder="请输入赠送的天数/次数" style="width: 100%"></a-input-number>
+            <st-input-number :min="0" :max="selectedNorm.gift_max" placeholder="请输入赠送的天数/次数" style="width: 100%" v-model="gift_amount">
+              <span slot="addonAfter">天</span>
+            </st-input-number>
           </st-form-item>
           <st-form-item label="合同编号" required>
             <div :class="sale('contract')">
@@ -90,26 +96,26 @@
               <st-button class="create-button" @click="onCodeNumber" :loading="loading.getCodeNumber">自动生成</st-button>
             </div>
           </st-form-item>
-          <st-form-item class="mgb-12" label="商品价格">{{info.sell_price}}元</st-form-item>
+          <st-form-item class="mgb-12" label="商品价格">{{selectedNorm.price}}元</st-form-item>
           <st-form-item :class="sale('discounts')" label="优惠券">
             <div>
               <div :class="sale('discounts-total')">
-                <span>{{advanceText}}</span>
+                <span>{{couponText}}</span>
                 <a-dropdown
-                  v-model="advanceDropdownVisible"
-                  :disabled="advanceList.length===0"
-                  :class="sale({disabled:advanceList.length===0})"
+                  v-model="couponDropdownVisible"
+                  :disabled="couponList.length===0"
+                  :class="sale({disabled:couponList.length===0})"
                   placement="bottomRight"
                   :getPopupContainer="trigger => trigger.parentNode"
                   :trigger="['click']">
                   <div :class="sale('discounts-promotion')">
-                    <span>2张可用优惠券</span>
+                    <span>{{couponList.length}}张可用优惠券</span>
                     <a-icon type="right" />
                   </div>
-                  <a-radio-group v-model="selectAdvance" @change="onSelectAdvanceChange" :class="sale('dropdown')" slot="overlay">
+                  <a-radio-group v-model="selectCoupon" @change="onSelectCouponChange" :class="sale('dropdown')" slot="overlay">
                     <a-menu>
-                      <a-menu-item @click="onSelectAdvance" :key="index" v-for="(item,index) in advanceList">
-                        <a-radio :value="item.id">优惠券 {{item.price}}</a-radio>
+                      <a-menu-item @click="onSelectCoupon" :key="index" v-for="(item,index) in couponList">
+                        <a-radio :value="item">{{item.name}}{{item.price}}</a-radio>
                       </a-menu-item>
                     </a-menu>
                   </a-radio-group>
@@ -173,7 +179,7 @@
       <div :class="sale('footer')">
         <div class="price">
           <span>{{orderAmount}}元</span>
-          <span>订单总额：{{info.sell_price}}元</span>
+          <span>订单总额：{{selectedNorm.price}}元</span>
         </div>
         <div class="button">
           <st-button @click="onCreateOrder" :loading="loading.setTransaction">创建订单</st-button>
@@ -204,7 +210,8 @@ export default {
       loading: this.saleMemberCardService.loading$,
       memberList: this.saleMemberCardService.memberList$,
       info: this.saleMemberCardService.info$,
-      saleList: this.saleMemberCardService.saleList$
+      saleList: this.saleMemberCardService.saleList$,
+      couponList: this.saleMemberCardService.couponList$
     }
   },
   props: {
@@ -214,12 +221,6 @@ export default {
     }
   },
   data() {
-    const options1 = [{ label: '10天/120元', value: '1' },
-      { label: '20天/120元', value: '2' },
-      { label: '40天/120元', value: '3' }]
-    const options2 = [{ label: '即时开卡', value: '1' },
-      { label: '到店开卡', value: '2' },
-      { label: '指定日期开卡', value: '3' }]
     return {
       show: false,
       form: this.$form.createForm(this),
@@ -234,35 +235,73 @@ export default {
       selectAdvance: '',
       reduceAmount: null,
       description: '',
+      // 优惠券
+      selectCoupon: '',
+      couponText: '未选择优惠券',
+      couponAmount: '',
+      couponDropdownVisible: false,
       // 规格选项
-      normsOptions: options1,
       selectedNorm: '',
       // 开卡方式选择
-      paymentOptions: options2,
       selectedPayment: '',
       // 会员卡结束日期
-      endTime: ''
+      validStartTime: '',
+      validEndTime: '',
+      // 赠送天数
+      gift_amount: 0
     }
   },
-  created() {
-    this.saleMemberCardService.serviceInit(this.id).subscribe()
+  mounted() {
+    this.saleMemberCardService.serviceInit(this.id).subscribe(result => {
+      this.selectedNorm = this.info.specs[0]
+      this.selectedPayment = this.info.open_type[0]
+      this.form.setFieldsValue({
+        specs: this.selectedNorm,
+        open_type: this.selectedPayment
+      })
+      this.validStartTime = moment().format('YYYY-MM-DD hh:mm')
+      this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
+      this.fetchCouponList()
+    })
   },
   computed: {
     orderAmount() {
-      return this.info.sell_price - +this.reduceAmount - +this.advanceAmount
+      return (this.selectedNorm.price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(1)
     },
     orderAmountText() {
       return this.orderAmount < 0 ? '这里不能为负哦，找刚刚要文案' : ''
     }
   },
   methods: {
+    // 规格发生改变
+    onChangeSpecs(event) {
+      this.selectedNorm = event.target.value
+      this.fetchCouponList()
+    },
     // 开卡方式发生改变
     onChangePayment(event) {
       this.selectedPayment = event.target.value
+      if (this.selectedPayment.id !== 2) {
+        this.validStartTime = moment().format('YYYY-MM-DD hh:mm')
+        this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
+      }
+      this.fetchCouponList()
+    },
+    fetchCouponList() {
+      if (this.selectedNorm && this.selectedPayment) {
+        const params = {
+          member_id: this.form.getFieldValue('memberId'),
+          card_id: this.info.id,
+          specs_id: this.selectedNorm.id
+        }
+        this.saleMemberCardService.getCouponList(params).subscribe()
+      }
     },
     // 选择指定日期开卡
     onChangeTime(event) {
-
+      if (event) {
+        this.validEndTime = moment(event._d).add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
+      }
     },
     moment,
     member_id_validator(rule, value, callback) {
@@ -317,10 +356,10 @@ export default {
     onMemberSearch(data) {
       this.memberSearchText = data
       if (data === '') {
-        this.saleDepositeCardService.memberList$.commit(() => [])
+        this.saleMemberCardService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
-        this.saleDepositeCardService.getMember(data).subscribe(res => {
+        this.saleMemberCardService.getMember(data).subscribe(res => {
           if (!res.list.length) {
             this.form.resetFields(['memberId'])
           }
@@ -331,7 +370,7 @@ export default {
       if (!data) {
         this.resetAdvance()
       } else {
-        this.saleDepositeCardService.getAdvanceList(data).subscribe(res => {
+        this.saleMemberCardService.getAdvanceList(data).subscribe(res => {
           this.advanceList = cloneDeep(res.list)
         })
       }
@@ -339,6 +378,11 @@ export default {
     onSelectAdvance() {
       timer(200).subscribe(() => {
         this.advanceDropdownVisible = false
+      })
+    },
+    onSelectCoupon() {
+      timer(200).subscribe(() => {
+        this.couponDropdownVisible = false
       })
     },
     // 重置定金选择
@@ -356,14 +400,14 @@ export default {
       this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
     },
     onCodeNumber() {
-      this.saleDepositeCardService.getCodeNumber().subscribe(res => {
+      this.saleMemberCardService.getCodeNumber(this.info.contract_type).subscribe(res => {
         this.form.setFieldsValue({
           contractNumber: res.info.code
         })
       })
     },
     onCancel() {
-      this.saleDepositeCardService.memberList$.commit(() => [])
+      this.saleMemberCardService.memberList$.commit(() => [])
       this.resetAdvance()
     },
     onSelectAdvanceChange(data) {
@@ -371,22 +415,37 @@ export default {
       this.advanceAmount = price
       this.advanceText = `${price}元`
     },
+    onSelectCouponChange(event) {
+      let price = this.couponList.filter(o => o.id === event.target.value.id)[0].price
+      this.couponAmount = price
+      this.couponText = `${price}元`
+    },
     onCreateOrder() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.saleDepositeCardService.setTransaction({
+          this.saleMemberCardService.setTransaction({
             'member_id': values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,
-            'deposit_card_id': this.id,
+            'product_id': this.id,
             'contract_number': values.contractNumber,
+            'specs_id': values.specs.id,
+            'open_card_type': values.open_type.id,
+            'valid_start_time': this.validStartTime,
+            'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
-            'reduce_amount': +this.reduceAmount,
+            'gift_amount': this.gift_amount,
+            'reduce_amount': this.reduceAmount,
             'sale_id': values.saleName,
             'description': this.description,
+            'sale_range': this.info.sale_range.type,
             'order_amount': this.orderAmount
-          }).subscribe(() => {
-            console.log('成功')
+          }).subscribe((result) => {
+            this.$emit('success', {
+              type: 'create',
+              order_id: result.info.order_id
+            })
+            this.show = false
           })
         }
       })
@@ -394,19 +453,29 @@ export default {
     onPay() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.saleDepositeCardService.setTransaction({
+          this.saleMemberCardService.setTransaction({
             'member_id': values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,
-            'deposit_card_id': this.id,
+            'product_id': this.id,
             'contract_number': values.contractNumber,
+            'specs_id': values.specs.id,
+            'open_card_type': values.open_type.id,
+            'valid_start_time': this.validStartTime,
+            'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
-            'reduce_amount': +this.reduceAmount,
+            'gift_amount': this.gift_amount,
+            'reduce_amount': this.reduceAmount,
             'sale_id': values.saleName,
             'description': this.description,
+            'sale_range': this.info.sale_range.type,
             'order_amount': this.orderAmount
-          }).subscribe(() => {
-            console.log('成功')
+          }).subscribe((result) => {
+            this.$emit('success', {
+              type: 'createPay',
+              order_id: result.info.order_id
+            })
+            this.show = false
           })
         }
       })

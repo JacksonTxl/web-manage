@@ -65,14 +65,14 @@
             >
               <a-select-option
               v-for="(item,index) in memberList"
-              :value="item.member_id"
+              :value="item.id"
               :key="index">
                 <span v-html="`${item.member_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
                   {{item.member_name}}&nbsp;&nbsp;&nbsp;{{item.mobile}}
                 </span>
               </a-select-option>
             </a-select>
-            <p v-if="!memberList.length&&memberSearchText!==''" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
+            <p v-if="!memberList.length&&memberSearchText!==''&&+saleRange.type===1" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
           </st-form-item>
           <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required labelGutter="12px">
             <a-input v-decorator="['memberName',{rules:[{validator:member_name_validator}]}]" placeholder="请输入会员姓名"></a-input>
@@ -90,7 +90,7 @@
                   @change="onStartTimeChange"
                   :showTime="{format: 'HH:mm'}"
                   style="width: 100%;"
-                  format="YYYY-MM-DD hh:mm"
+                  format="YYYY-MM-DD HH:mm"
                   placeholder="开始时间"
                   :allowClear="false"
                   :showToday="false"
@@ -101,7 +101,7 @@
                 <a-date-picker
                   disabled
                   :value="endTime"
-                  format="YYYY-MM-DD hh:mm"
+                  format="YYYY-MM-DD HH:mm"
                   placeholder="结束时间"
                   :showToday="false"
                 />
@@ -110,7 +110,7 @@
           </st-form-item>
           <st-form-item label="剩余价值" required labelGutter="12px">
             <st-input-number
-            :max="99999.9"
+            :max="+depositTransferInfo.pay_price"
             :float="true"
             placeholder="请输入剩余价值"
             v-decorator="['remainPrice',{rules:[{validator:remain_price_validator}]}]">
@@ -132,9 +132,9 @@
             v-decorator="['payType',{rules:[{validator:pay_type_validator}]}]"
             placeholder="选择支付方式">
               <a-select-option
-              v-for="(item,index) in Object.keys(sold.frozen_pay_type.value)"
+              v-for="(item,index) in payList"
               :key="index"
-              :value="+item">{{sold.frozen_pay_type.value[item]}}</a-select-option>
+              :value="+item.payment_type">{{item.payment_type_name}}</a-select-option>
             </a-select>
           </st-form-item>
         </div>
@@ -171,6 +171,7 @@ export default {
       depositTransferInfo: this.transferService.depositTransferInfo$,
       memberTransferInfo: this.transferService.memberTransferInfo$,
       timeScope: this.transferService.timeScope$,
+      payList: this.transferService.payList$,
       sold: this.userService.soldEnums$
     }
   },
@@ -180,6 +181,9 @@ export default {
     },
     isMember() {
       return this.type === 'member'
+    },
+    saleRange() {
+      return this.depositTransferInfo.sale_range || this.memberTransferInfo.sale_range
     }
   },
   props: ['id', 'type'],
@@ -190,6 +194,7 @@ export default {
       // 搜索会员
       memberSearchText: '',
       searchMemberIsShow: true,
+      member_id: '',
       // 转让信息
       transferData: {
         member_id: null,
@@ -204,14 +209,17 @@ export default {
     }
   },
   created() {
-    this.transferService.getTransferInfo(this.id, this.type).subscribe()
+    this.transferService.getTransferInfo(this.id, this.type).subscribe(res => {
+      this.transferService.getPayList(res.info.order_id).subscribe()
+      this.member_id = res.info.member_id
+    })
   },
   methods: {
     onSubmit() {
       this.form.validateFields((error, values) => {
         let sold_type = this.isDeposite ? this.depositTransferInfo.contract_type : this.isMember ? this.memberTransferInfo.contract_type : '1'
         if (!error) {
-          let start_time = this.isMember ? values.startTime.format('YYYY-MM-DD hh:mm') : null
+          let start_time = this.isMember ? values.startTime.format('YYYY-MM-DD HH:mm') : null
           this.transferService.editCardTransfer({
             start_time,
             transferee_member_id: +values.memberId,
@@ -310,7 +318,10 @@ export default {
         this.transferService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
-        this.transferService.getMember(data).subscribe(res => {
+        this.transferService.getMember({
+          member: data,
+          escape_member_id: +this.member_id
+        }).subscribe(res => {
           if (!res.list.length) {
             this.form.resetFields(['memberId'])
           }

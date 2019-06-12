@@ -1,30 +1,27 @@
 <template>
-  <div class="pages-brand-product-card-liet-stop-sale-list">
-    <!-- <st-button type="primary">
-      <a-icon type="plus"/>新增私教课程
-    </st-button>-->
-    <div style="overflow: hidden;">
-      <modal-link
-        tag="a"
-        :to=" { name: 'card-all-lower-shelf',props:{a:selectedRows,flag:true}, on:{done: onModalTest } }"
-        v-show="selectedRows.length >1"
-      >
-        <st-button style="margin-left:24px" type="danger">批量下架</st-button>
-      </modal-link>
-
-      <div class="pages-brand-product-card-liet-stop-sale-list__box">
+  <div class="pages-brand-product-card-list">
+    <div class="pages-brand-product-card-list__operation">
+      <div>
+        <modal-link v-if="auth.isBatchDown"
+          tag="a"
+          :to=" { name: 'card-all-lower-shelf',props:{a:selectedRows,flag:true}, on:{done: onModalTest } }"
+          v-show="selectedRows.length >1"
+        >
+          <st-button style="margin-left:24px" type="danger">批量下架</st-button>
+        </modal-link>
+      </div>
+      <div>
         <a-select
-          class="pages-brand-product-card-liet-stop-sale-list__box-select"
+          class="mg-r8" style="width: 160px"
           v-model="card_type"
           @change="handleChange_card_type"
         >
           <a-select-option value>所有类型</a-select-option>
-
           <a-select-option value="1">次卡</a-select-option>
           <a-select-option value="2">期限卡</a-select-option>
         </a-select>
         <a-select
-          class="pages-brand-product-card-liet-stop-sale-list__box-select"
+          class="mg-r8" style="width: 160px"
           v-model="publish_channel"
           @change="handleChange_publish_channel"
         >
@@ -61,8 +58,8 @@
       >{{text}}{{record.unit === 1 ? '天':'月'}}</span>
       <span slot="sell_time" slot-scope="text,record">{{record.start_time}}~{{record.end_time}}</span>
       <!-- 支持入场门店start -->
-      <a slot="consumption_range" slot-scope="text,record" href="javascript:;">
-        <span v-if="text !=='0个场馆'">
+      <a slot="consumption_range.name" slot-scope="text,record" href="javascript:;">
+        <span v-if="record.consumption_range.id === 2">
           <modal-link
             tag="a"
             :to="{ name: 'card-sale-stop' , props:{a: record.id,title:'支持消费门店'}}"
@@ -71,15 +68,13 @@
         <span v-else class="use_num">{{text}}</span>
       </a>
       <!-- 支持入场门店end -->
-      <!-- start 发布渠道-->
-      <span slot="publish_channel" slot-scope="text" href="javascript:;">{{text?'品牌':'门店'}}</span>
-      <!-- end 发布渠道-->
 
       <!-- 操作end -->
       <div slot="action" slot-scope="text, record">
-        <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
+        <a href="javascript:;" v-if="record.auth['brand_shop:product:deposit_card|get']" @click="infoFunc(text, record)">详情</a>
         <a-divider type="vertical"></a-divider>
         <modal-link
+          v-if="record.auth['brand_shop:product:deposit_card|down']"
           tag="a"
           :to=" { name: 'card-lower-shelf',props:{a:record,flag:true}, on:{done: onModalTest } }"
         >下架</modal-link>
@@ -90,6 +85,7 @@
 </template>
 <script>
 import { StopSaleListService } from './stop-sale-list.service'
+import { columns } from './shop-sale-list.config'
 export default {
   serviceInject() {
     return {
@@ -98,12 +94,14 @@ export default {
   },
   rxState() {
     return {
-      cardsListInfo: this.bService.cardsListInfo$
+      cardsListInfo: this.bService.cardsListInfo$,
+      auth: this.bService.auth$
     }
   },
   computed: {},
   data() {
     return {
+      columns,
       selectedRowKeys: [],
       selectedRows: [],
       card_type: '所以类型',
@@ -124,84 +122,7 @@ export default {
         total: 50
       },
 
-      data: [
-        {
-          id: 1,
-          brand_id: 1,
-          shop_id: 1,
-          card_name: '次卡',
-          price_gradient: [20000, 40000],
-          time_gradient: '100次~200次',
-          card_type: {
-            id: 1,
-            name: '次卡'
-          },
-          publish_channel: {
-            id: 1,
-            name: '品牌'
-          },
-          admission_range: {
-            id: 2,
-            name: '多门店 (共3家)'
-          },
-          price_setting: {
-            id: 1,
-            name: '统一定价'
-          },
-          support_sales: {
-            id: 2,
-            name: '3个门店'
-          },
-          sell_status: {
-            id: 1,
-            name: '可售卖'
-          },
-          start_time: '1970-01-01',
-          end_time: '1970-01-01',
-          shelf_upper: 0,
-          shelf_lower: 2
-        }
-      ],
-      columns: [
-        {
-          title: '储值卡名称',
-          dataIndex: 'card_name',
-          scopedSlots: { customRender: 'shop_name' }
-        },
-        {
-          title: '有效期',
-          dataIndex: 'num',
-          scopedSlots: { customRender: 'num' }
-        },
-        {
-          title: '储值金额',
-          dataIndex: 'card_price',
-          sorter: (a, b) => a.card_price - b.card_price
-        },
-        {
-          title: '售卖价格',
-          dataIndex: 'sell_price',
-          sorter: (a, b) => a.sell_price - b.sell_price
-        },
-        {
-          title: '支持消费门店',
-          dataIndex: 'consumption_range',
-          scopedSlots: { customRender: 'consumption_range' }
-        },
-        {
-          title: '发布渠道',
-          dataIndex: 'publish_channel',
-          scopedSlots: { customRender: 'publish_channel' }
-        },
-
-        {
-          title: '操作',
-          dataIndex: 'action',
-          fixed: 'right',
-          width: 110,
-          scopedSlots: { customRender: 'action' }
-        }
-      ]
+      data: []
     }
   },
   created() {

@@ -4,7 +4,7 @@ import { CourseApi } from '@/api/v1/setting/course'
 
 @Injectable()
 export class LeaseService implements RouteGuard {
-  list$ = new State({})
+  list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
   constructor(private leaseApi: CourseApi) {}

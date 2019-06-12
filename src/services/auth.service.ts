@@ -42,6 +42,7 @@ export class AuthService extends Store<AuthState> {
     )
   }
   filter(resData: ResDataState) {
+    console.log('filter', this)
     const list = resData.list || []
     if (!list.length) {
       return resData
@@ -56,23 +57,20 @@ export class AuthService extends Store<AuthState> {
     this.auth$.subscribe((auth: any) => {
       newList = list.map((item, index) => {
         keys.forEach(key => {
-          item.auth[key] = auth[key] && item.auth[key]
+          item.auth[key] = auth.indexOf(key) > -1 && item.auth[key]
         })
         return item
       })
     })
     resData.list = newList
     resData.auth = this.auth$.snapshot()
+    console.log('resData', resData)
     return resData
   }
   can(authKey: string) {
     return 1
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getList().subscribe(() => {
-      next()
-    }, () => {
-      next()
-    })
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    return this.getList()
   }
 }

@@ -36,6 +36,15 @@ export interface CardVipInput {
   id: Array<number|string>
   vip_id: Array<number|string>
 }
+export interface CardSettingTimeInput {
+  time:string
+  description?:string
+}
+export interface CardGiveInput {
+  sold_card_ids:Array<number|string>
+  gift_quota:number
+  description?:string
+}
 export class CardApi extends Api {
   /**
    * 会员卡列表
@@ -122,16 +131,28 @@ export class CardApi extends Api {
   getCardVipArea(id:string) {
     return this.http.get(`/v1/sold/cards/member/vip/info/${id}`)
   }
-
   /**
    * 售出 会员卡修改vip区域
    */
   setCardVipArea(params:CardVipInput) {
     return this.http.put(`/v1/sold/cards/member/vip`, { params })
   }
-
-  /* 合同编号自动生成 v1/setting/contract/codenumber/模板TYPE */
-  settingContractCodenumber(type: string) {
-    return this.http.get(`/v1/setting/contract/codenumber/${type}`)
+  /**
+   * 售出 会员卡 设置有效日期
+   */
+  setCardSettingTime(params:CardSettingTimeInput, id:string) {
+    return this.http.put(`/v1/sold/cards/member/setting/${id}`, { params })
+  }
+  /**
+   * 售出 会员卡 批量赠送
+   */
+  setCardGive(params:CardGiveInput) {
+    return this.http.put(`/v1/sold/cards/member/give`, { params })
+  }
+  /**
+   * 售出 会员卡 续卡回显
+   */
+  getCardRenewalInfo(id:string) {
+    return this.http.get(`/v1/sold/cards/member/renewal/info/${id}`)
   }
 }

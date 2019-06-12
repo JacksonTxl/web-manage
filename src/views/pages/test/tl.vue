@@ -82,7 +82,7 @@
       </p>
       <st-pagination :page="page" @change="onPageChange"></st-pagination>
     </st-panel>
-    <switch-shop v-if="isShowSwitchShop" @onClose="onCloseSwitchShop"></switch-shop>
+    <switch-shop v-model="isShowSwitchShop"></switch-shop>
   </div>
 </template>
 
@@ -130,12 +130,6 @@ export default {
   methods: {
     switchShop() {
       this.isShowSwitchShop = true
-    },
-    onCloseSwitchShop() {
-      this.isShowSwitchShop = false
-    },
-    onSearchShop() {
-
     },
     onSelectShop(shopIds) {
       console.log('your selected', shopIds)

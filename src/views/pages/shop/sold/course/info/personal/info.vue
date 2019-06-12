@@ -16,7 +16,7 @@
             <st-info-item label="类型">{{personalInfo.type}}</st-info-item>
             <st-info-item label="剩余课时">{{personalInfo.remain_course_num}}节</st-info-item>
             <st-info-item label="购买课时">{{personalInfo.init_course_num}}节</st-info-item>
-            <st-info-item label="有效期">{{moment(personalInfo.buy_time*1000).format('YYYY:MM:DD hh:mm')}} 至 {{moment(personalInfo.end_time*1000).format('YYYY:MM:DD hh:mm')}}</st-info-item>
+            <st-info-item label="有效期">{{moment(personalInfo.buy_time*1000).format('YYYY-MM-DD HH:mm')}} 至 {{moment(personalInfo.end_time*1000).format('YYYY-MM-DD HH:mm')}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="9">

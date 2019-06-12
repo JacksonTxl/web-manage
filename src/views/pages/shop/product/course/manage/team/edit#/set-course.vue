@@ -1,6 +1,5 @@
 <template>
   <st-form :form="form" class="page-create-container" labelWidth="130px">
-    {{info}}
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程名称" required>
@@ -35,18 +34,18 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="消耗卡路里" required>
-          <a-input-number :min="0" v-decorator="ruleConfig.calories">
-            <div slot="addonAfter" class="st-form-item-unit">Kcal/节</div>
-          </a-input-number>
+          <st-input-number v-decorator="ruleConfig.calories">
+            <template slot="addonAfter">Kcal/节</template>
+          </st-input-number>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程时长" required>
-          <a-input-number :min="0" v-decorator="ruleConfig.duration">
-            <div slot="addonAfter" class="st-form-item-unit">分钟</div>
-          </a-input-number>
+          <st-input-number v-decorator="ruleConfig.duration">
+            <template slot="addonAfter">分钟</template>
+          </st-input-number>
         </st-form-item>
       </a-col>
     </a-row>

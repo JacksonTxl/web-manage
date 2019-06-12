@@ -15,7 +15,8 @@
           :showToday="false"
           @openChange="handleStartOpenChange"
           @change="start_time_change"
-        />~
+        />
+        &nbsp;~&nbsp;
         <a-date-picker
           :disabledDate="disabledEndDate"
           format="YYYY-MM-DD"
@@ -33,22 +34,16 @@
       </div>
     </st-search-panel>
     <div :class="basic('content')">
-      <div :class="basic('content-batch')">
+      <div :class="basic('content-batch')" class="mg-b16">
         <st-button type="primary" class="mgr-8">批量导出</st-button>
-      </div>
-      <div :class="basic('table-select-info')">
-        <st-icon type="weibo"/>
-        <span class="mgl-8 mgr-16">
-          已选
-          <i :class="basic('table-select-number')">{{selectedRowKeys.length}}</i> / 10 条数据
-        </span>
-        <a href="javascript:void(0)">删除</a>
       </div>
       <div :class="basic('table')">
         <st-table
           :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
+          :alertSelection="{onReset: onClear}"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
           rowKey="id"
+          @change="onPageChange"
           :columns="columns"
           :dataSource="list"
         >
@@ -62,10 +57,11 @@
             slot-scope="text"
           >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
           <div slot="action" slot-scope="text,record">
-            <a @click="onRefund(record)">退款{{loading.getList}}</a>
+            <a @click="onRefund(record)">退款</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
               <a-menu-item @click="onDetail(record)">详情</a-menu-item>
+              <a-menu-item>查看合同</a-menu-item>
               <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
             </st-more-dropdown>
           </div>
@@ -180,6 +176,7 @@ export default {
       // 结束时间面板是否显示
       endOpen: false,
       selectedRowKeys: [],
+      selectedRows: [],
       columns
     }
   },
@@ -192,6 +189,9 @@ export default {
     }
   },
   methods: {
+    onPageChange(data) {
+      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
+    },
     // 转让
     onTransfer(record) {
       this.$modalRouter.push({
@@ -305,7 +305,11 @@ export default {
     // moment
     moment,
     onSelectChange(selectedRowKeys) {
-      this.selectedRowKeys = selectedRowKeys
+      this.selectedRowKeys = cloneDeep(selectedRowKeys)
+    },
+    onClear() {
+      this.selectedRowKeys = []
+      this.selectedRows = []
     }
   }
 }
