@@ -7,6 +7,7 @@
 import SetCourse from './add#/set-course'
 export default {
   components: {
+
     SetCourse
   }
 }

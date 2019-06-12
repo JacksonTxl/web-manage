@@ -20,7 +20,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.setShop">保存，继续设置售卖价格</st-button>
+          <st-button type="primary" @click="save" :loading="loading.setShop">完成</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -86,20 +86,21 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.getData()
-        console.log('step 2 data', data)
-        this.editService.setShop(data).subscribe(() => {
-          this.messageService.success({
-            content: '提交成功'
-          })
-          this.$emit('goNext')
-        })
+        this.editService.setShop(data).subscribe(this.onSaveSuccess)
+      })
+    },
+    onSaveSuccess() {
+      this.messageService.success({
+        content: '提交成功'
+      })
+      this.$router.push({
+        name: 'brand-product-course-team-list'
       })
     },
     onChange(e) {
       this.shopSetting = e.target.value
     },
     onSelectShopChange(shopIds) {
-      console.log('your selected', shopIds)
       this.form.setFieldsValue({
         shop_ids: shopIds
       })
