@@ -39,6 +39,8 @@
           <a @click="onSale(record)">签单</a>
           <a-divider type="vertical"></a-divider>
           <a @click="onCourse(record)">课程包</a>
+          <a-divider type="vertical"></a-divider>
+          <a @click="onPersonalCourse(record)">私教课</a>
         </div>
       </st-table>
     </div>
@@ -211,6 +213,19 @@ export default {
     onCourse(record) {
       this.$modalRouter.push({
         name: 'sold-deal-sale-course',
+        props: {
+          id: '1'
+        },
+        on: {
+          success: () => {
+            console.log('success')
+          }
+        }
+      })
+    },
+    onPersonalCourse(record) {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale-personal-course',
         props: {
           id: '1'
         },
