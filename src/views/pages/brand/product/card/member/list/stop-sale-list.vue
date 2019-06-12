@@ -1,30 +1,27 @@
 <template>
-  <div class="pages-brand-product-card-liet-stop-sale-list">
-    <!-- <st-button type="primary">
-      <a-icon type="plus"/>新增私教课程
-    </st-button>-->
-    <div style="overflow: hidden;">
-      <modal-link v-if="auth.isBatchDown"
-        tag="a"
-        :to=" { name: 'card-all-lower-shelf',props:{a:selectedRows,flag:true}, on:{done: onModalTest } }"
-        v-show="selectedRows.length > 1"
-      >
-        <st-button style="margin-left:24px" type="danger">批量下架</st-button>
-      </modal-link>
-
-      <div class="pages-brand-product-card-liet-stop-sale-list__box">
+  <div class="pages-brand-product-card-list">
+    <div class="pages-brand-product-card-list__operation">
+      <div>
+        <modal-link v-if="auth.isBatchDown"
+          tag="a"
+          :to=" { name: 'card-all-lower-shelf',props:{a:selectedRows,flag:true}, on:{done: onModalTest } }"
+          v-show="selectedRows.length > 1"
+        >
+          <st-button style="margin-left:24px" type="danger">批量下架</st-button>
+        </modal-link>
+      </div>
+      <div>
         <a-select
-          class="pages-brand-product-card-liet-stop-sale-list__box-select"
+          class="mg-r8" style="width: 160px"
           v-model="card_type"
           @change="handleChange_card_type"
         >
           <a-select-option value>所有类型</a-select-option>
-
           <a-select-option value="1">次卡</a-select-option>
           <a-select-option value="2">期限卡</a-select-option>
         </a-select>
         <a-select
-          class="pages-brand-product-card-liet-stop-sale-list__box-select"
+          class="mg-r8" style="width: 160px"
           v-model="publish_channel"
           @change="handleChange_publish_channel"
         >
@@ -33,7 +30,7 @@
           <a-select-option value="2">门店</a-select-option>
         </a-select>
         <a-select
-          class="pages-brand-product-card-liet-stop-sale-list__box-select"
+          class="mg-r8" style="width: 160px"
           @change="handleChange_sell_status"
           v-model="sell_status"
         >
@@ -54,38 +51,27 @@
       @showSizeChange="onShowSizeChange"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
     >
-      <!-- 会员卡名称start -->
+      <!-- 会员卡名称 -->
       <a
         slot="card_name"
         slot-scope="text,record"
         href="javascript:;"
         @click="memberFun(text,record)"
       >{{text}}</a>
-      <!-- 会员卡名称end -->
-      <!-- 支持入场门店start -->
+      <!-- 支持入场门店 -->
       <div slot="admission_range.name" slot-scope="text,record">
         <span v-if="record.admission_range.id === 2">
           <modal-link tag="a" :to="{ name: 'card-table-stop' , props:{a: record.id}}">{{text}}</modal-link>
         </span>
-        <span v-else class="use_num">{{text}}</span>
+        <span v-else>{{text}}</span>
       </div>
-      <!-- 支持入场门店end -->
-      <!-- <a slot="shop_name" slot-scope="text,record" href="javascript:;">
-        <span v-if="text !=='0个门店'">
-          <modal-link tag="a" :to="{ name: 'card-sale-stop' , props:{a: record.id}}">{{text}}</modal-link>
-        </span>
-        <span v-else class="use_num">{{text}}</span>
-      </a>-->
-      <!-- 售卖门店 -->
-      <!-- 售卖状态start -->
+      <!-- 售卖时间 -->
       <span slot="sell_time" slot-scope="text,record">{{record.start_time}}~{{record.end_time}}</span>
       <span
         slot="price_gradient"
         slot-scope="text"
       >{{text.length > 1? `${text[0]}-${text[1]}`:`${text[0]}`}}</span>
-
-      <!-- 售卖状态end -->
-      <!-- 操作end -->
+      <!-- 操作 -->
       <div slot="action" slot-scope="text, record">
         <a href="javascript:;" v-if="record.auth['brand_shop:product:member_card|get']" @click="infoFunc(record)">详情</a>
         <a-divider type="vertical"></a-divider>
@@ -95,12 +81,12 @@
           :to=" { name: 'card-lower-shelf',props:{a:record}, on:{done: onModalTest } }"
         >下架</modal-link>
       </div>
-      <!-- 操作end -->
     </st-table>
   </div>
 </template>
 <script>
 import { StopSaleListService } from './stop-sale-list.service'
+import { columns } from './shop-sale-list.config'
 export default {
   serviceInject() {
     return {
@@ -116,6 +102,7 @@ export default {
   computed: {},
   data() {
     return {
+      columns,
       selectedRowKeys: [],
       selectedRows: [],
       card_type: '所以类型',
@@ -135,65 +122,7 @@ export default {
         pageSize: 10,
         total: 50
       },
-      data: [],
-      columns: [
-        {
-          title: '售卖门店',
-          dataIndex: 'shop_name',
-          scopedSlots: { customRender: 'shop_name' }
-        },
-        {
-          title: '会员卡名称',
-          dataIndex: 'card_name'
-          // scopedSlots: { customRender: 'card_name' }
-        },
-        {
-          title: '类型',
-          dataIndex: 'card_type.name',
-          sorter: (a, b) => {
-            let A = a.card_type.name
-            let B = b.card_type.name
-            if (A < B) {
-              return -1
-            }
-            if (A > B) {
-              return 1
-            }
-            return 0
-          }
-        },
-        {
-          title: '有效期/有效次数',
-          dataIndex: 'time_gradient'
-        },
-        {
-          title: '支持入场范围',
-          dataIndex: 'admission_range.name',
-          scopedSlots: { customRender: 'admission_range.name' }
-        },
-        {
-          title: '售卖时间',
-          dataIndex: 'sell_time',
-          scopedSlots: { customRender: 'sell_time' }
-        },
-        {
-          title: '售卖价格',
-          dataIndex: 'price_gradient',
-          scopedSlots: { customRender: 'price_gradient' }
-        },
-        {
-          title: '发布渠道',
-          dataIndex: 'publish_channel.name'
-        },
-
-        {
-          title: '操作',
-          dataIndex: 'action',
-          fixed: 'right',
-          width: 110,
-          scopedSlots: { customRender: 'action' }
-        }
-      ]
+      data: []
     }
   },
   created() {
