@@ -9,11 +9,11 @@
   :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
   @change="onChange"
 >
-<a href="javascript:;" slot="course_name" slot-scope="text,record"  @click="onClickCourseInfo(record)">{{text}}</a>
+<a href="javascript:;" slot="course_name" slot-scope="text,record"  @click="onClickCourseInfo(record.id)">{{text}}</a>
 <a-rate slot="strength_level" slot-scope="strength_level" :defaultValue="strength_level" disabled />
 <div slot="action" slot-scope="text,record">
-  <a href="javascript:;" class="mg-r8" @click="onClickCourseInfo(record)">详情</a>
-  <a href="javascript:;" @click="onClickEditCourseInfo(record)">编辑</a>
+  <a href="javascript:;" class="mg-r8" @click="onClickCourseInfo(record.id)">详情</a>
+  <a href="javascript:;" @click="onClickEditCourseInfo(record.id)">编辑</a>
   <st-more-dropdown style="margin-left: 12px;">
     <!-- <a-menu-item>置为无效</a-menu-item>
     <a-menu-item>恢复有效</a-menu-item> -->
@@ -52,11 +52,21 @@ export default {
     onChange() {
 
     },
-    onClickCourseInfo(val) {
-      console.log(val)
+    onClickCourseInfo(id) {
+      this.$router.push({
+        name: 'brand-product-course-team-info',
+        query: {
+          courseId: id
+        }
+      })
     },
-    onClickEditCourseInfo(val) {
-      console.log(val)
+    onClickEditCourseInfo(id) {
+      this.$router.push({
+        name: 'brand-product-course-team-edit',
+        query: {
+          id
+        }
+      })
     },
     onConfirmDeleteCourse(record) {
       this.$emit('delete-course', record)
