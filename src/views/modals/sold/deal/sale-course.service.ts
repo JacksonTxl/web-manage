@@ -26,8 +26,8 @@ export class SaleCourseService {
     }))
   }
   @Effect()
-  getCodeNumber() {
-    return this.contractApi.getCodeNumber('4')
+  getCodeNumber(type: string) {
+    return this.contractApi.getCodeNumber(type)
   }
   @Effect()
   getAdvanceList(id:string|number) {
@@ -48,7 +48,11 @@ export class SaleCourseService {
     return forkJoin(this.getInfo(id), this.getSaleList())
   }
   @Effect()
-  setTransaction(params:any) {
+  setTransactionOrder(params:any) {
+    return this.transactionApi.setTransaction(params, 'package')
+  }
+  @Effect()
+  setTransactionPay(params:any) {
     return this.transactionApi.setTransaction(params, 'package')
   }
 }

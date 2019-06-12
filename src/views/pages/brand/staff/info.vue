@@ -28,12 +28,14 @@
         </a-col>
         <a-col :lg="6" :offset="1" style="text-align: right;">
           <st-button class="mg-r8" type="primary" @click="editStaffInfo">编辑资料</st-button>
-          <st-button class="mg-r8">绑实体卡</st-button>
+          <st-button class="mg-r8"><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: info} }"> 绑定实体卡</modal-link></st-button>
           <a-dropdown>
             <a-menu slot="overlay" @click="handleMenuClick">
-              <a-menu-item key="1">1st item</a-menu-item>
-              <a-menu-item key="2">2nd item</a-menu-item>
-              <a-menu-item key="3">3rd item</a-menu-item>
+              <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: info} }"> 绑定实体卡</modal-link></a-menu-item>
+              <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-update-staff-position', props: {staff: info} }">职位变更</modal-link></a-menu-item>
+              <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-turnover', props: {staff: info} } ">离职</modal-link></a-menu-item>
+              <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-re-password', props: {staff: info} }">管理登录账户</modal-link></a-menu-item>
+              <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-salary-account-setting', props: {staff: info} }">设置薪资账户</modal-link></a-menu-item>
             </a-menu>
             <a-button>
               更多操作

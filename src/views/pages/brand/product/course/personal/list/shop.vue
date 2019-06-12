@@ -2,7 +2,15 @@
   <div class="page-shop-sale-list-shop">
     <header>
       <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
-        <div></div>
+        <div>
+          <!-- TODO: 批量转入品牌库的按钮 -->
+          <modal-link
+            v-if="this.selectedRowKeys.length >= 1 && auth.isTransfer"
+            type="primary"
+            tag="st-button"
+            :to="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}"
+          >转入品牌私教课程库</modal-link>
+        </div>
         <div>
           <a-select class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onChange">
             <a-select-option v-for="shop in shopsOptions" :key="shop.shop_id" :value="shop.shop_id">{{shop.shop_name}}</a-select-option>
@@ -14,7 +22,7 @@
       </div>
     </header>
     <main class="page-shop-sale-list-shop__table mg-t8">
-      <shop-sale-list-table :personalCourseList="personalCourseList"></shop-sale-list-table>
+      <shop-sale-list-table @change="onChangeSelectedRowKeys" :personalCourseList="personalCourseList"></shop-sale-list-table>
     </main>
   </div>
 </template>
@@ -38,11 +46,13 @@ export default {
       personalCourseList: this.shopService.personalCourseList$,
       shopsOptions: this.listService.shopSelectOptions$,
       categoryList: this.listService.categoryList$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.shopService.auth$
     }
   },
   data() {
     return {
+      selectedRowKeys: [],
       courseStatus: [{ label: '所有状态', value: -1 }, { label: '有效', value: 1 }, { label: '无效', value: 0 }]
     }
   },
@@ -50,6 +60,10 @@ export default {
     ShopSaleListTable
   },
   methods: {
+    onChangeSelectedRowKeys(selectedRowKeys) {
+      console.log(selectedRowKeys)
+      this.selectedRowKeys = selectedRowKeys
+    },
     onChange() {
       this.$router.push({ query: { ...this.query, course_name: '' } })
     },

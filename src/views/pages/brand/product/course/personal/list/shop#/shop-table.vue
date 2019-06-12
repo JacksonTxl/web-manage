@@ -6,13 +6,11 @@
       :columns="columns"
       :dataSource="personalCourseList"
       :scroll="{ x: 1300}"
+      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       @change="onChange"
     >
       <div slot="action" slot-scope="action, record">
-        <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}">详情</router-link>
-        <modal-link tag="a"
-        :to="{name: 'course-transfrom-brand-course', props: {course: record}}"
-        >转入品牌课程库</modal-link>
+        <router-link class="mg-r8" v-if="record.auth['brand_shop:product:personal_course|get']" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}">详情</router-link>
       </div>
       <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}"
       slot="course_name" slot-scope="course_name, record">
@@ -54,6 +52,7 @@ export default {
     },
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
+      this.$emit('change', selectedRowKeys)
     }
   }
 }

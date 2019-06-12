@@ -11,11 +11,11 @@
     <section class="page-staff-rg">
       <header class="staff-rg__operation">
         <opreation-button @add-staff="onAddStaff" @batch-import="onbatchImport" @import-staff="onImportStaff"></opreation-button>
-        <filter-staff @search="onSearch"></filter-staff>
+        <filter-staff></filter-staff>
       </header>
       <main class="staff-rg__table">
         <div  style="width:100%">
-          <staff-table @edit-staff="onEditStaff" :staffList="staffList"></staff-table>
+          <staff-table :loading="loading.getStaffList" @edit-staff="onEditStaff" :staffList="staffList"></staff-table>
         </div>
       </main>
     </section>
@@ -32,13 +32,13 @@ export default {
   name: 'Staff',
   serviceInject() {
     return {
-      department: DepartmentService
+      departmentService: DepartmentService
     }
   },
   rxState() {
     return {
-      staffList: this.department.staffList$,
-      loading: this.department.loading$
+      staffList: this.departmentService.staffList$,
+      loading: this.departmentService.loading$
     }
   },
   components: {
@@ -46,6 +46,11 @@ export default {
     FilterStaff,
     OpreationButton,
     StaffTable
+  },
+  computed: {
+    shopList() {
+      return [{ id: -1, name: '  全部' }, ...this.shopOptions]
+    }
   },
   methods: {
     // 查询
@@ -68,9 +73,6 @@ export default {
     onImportStaff() {
       console.log('导入员工')
     }
-  },
-  mounted() {
-    console.log(this.loading.getStaffList)
   }
 }
 </script>

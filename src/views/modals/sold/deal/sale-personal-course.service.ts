@@ -7,15 +7,17 @@ import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
 import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class SaleMemberCardService {
+export class SalePersonalCourseService {
   loading$ = new State({})
   info$ = new State({})
   memberList$ = new State({})
   saleList$ = new State({})
   couponList$ = new State({})
+  coachList$ = new State({})
+  personalPrice$ = new State({})
   constructor(private contractApi: ContractApi, private memberApi: ShopPersonalCourseApi, private transactionApi: TransactionApi) {}
   getInfo(id:string) {
-    return this.transactionApi.getTransactionInfo(id, 'member/card').pipe(tap((res:any) => {
+    return this.transactionApi.getTransactionInfo(id, 'package/course').pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
   }
@@ -39,20 +41,31 @@ export class SaleMemberCardService {
     }))
   }
   getCouponList(params: MemberCouponParams) {
-    return this.transactionApi.getTransactionCouponList(params, 'member').pipe(tap((res:any) => {
+    return this.transactionApi.getTransactionCouponList(params, 'personal').pipe(tap((res:any) => {
       this.couponList$.commit(() => res.list)
+    }))
+  }
+  getCoachList(level: number) {
+    return this.transactionApi.getTransactionCoachList(level).pipe(tap((res:any) => {
+      this.coachList$.commit(() => res.list)
+    }))
+  }
+  @Effect()
+  getPersonalPriceInfo(params: {id: number, buy_num: number, coach_level_id: number}) {
+    return this.transactionApi.getPersonalCoursePrice(params).pipe(tap((res:any) => {
+      this.personalPrice$.commit(() => res.list)
     }))
   }
   @Effect()
   serviceInit(id:string) {
-    return forkJoin(this.getInfo(id), this.getSaleList())
-  }
-  @Effect()
-  setTransactionPay(params:any) {
-    return this.transactionApi.setTransaction(params, 'member')
+    return forkJoin(this.getInfo(id), this.getSaleList(), this.getCoachList(0))
   }
   @Effect()
   setTransactionOrder(params:any) {
-    return this.transactionApi.setTransaction(params, 'member')
+    return this.transactionApi.setTransaction(params, 'personal')
+  }
+  @Effect()
+  setTransactionPay(params:any) {
+    return this.transactionApi.setTransaction(params, 'personal')
   }
 }

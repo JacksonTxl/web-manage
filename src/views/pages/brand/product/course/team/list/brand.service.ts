@@ -2,15 +2,25 @@ import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
 import { State, Computed } from 'rx-state/src'
 import { BrandTeamCourseApi, GetTeamBrandCourseListInput } from '@/api/v1/course/team/brand'
+import { AuthService } from '@/services/auth.service'
+
 @Injectable()
 export class BrandService implements RouteGuard {
   state$: State<any>
   teamCourseList$: Computed<any>
-  constructor(private brandTeamCourseApi: BrandTeamCourseApi) {
+  auth$: Computed<object>
+  constructor(
+    private brandTeamCourseApi: BrandTeamCourseApi,
+    private authService: AuthService
+  ) {
     this.state$ = new State({
-      teamCourseList: []
+      teamCourseList: [],
+      auth: {
+        isAdd: this.authService.can('brand_shop:product:team_course|add')
+      }
     })
     this.teamCourseList$ = new Computed(this.state$.pipe(pluck('teamCourseList')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SET_TEAM_COURSE_LIST(data: any) {
     this.state$.commit(state => {
@@ -23,6 +33,7 @@ export class BrandService implements RouteGuard {
   getCourseTeamBrandList(query: any) {
     return this.brandTeamCourseApi.getTeamCourseList(query).pipe(
       tap(res => {
+        res = this.authService.filter(res)
         this.SET_TEAM_COURSE_LIST(res)
       })
     )

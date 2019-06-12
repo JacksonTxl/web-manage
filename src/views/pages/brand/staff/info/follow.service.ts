@@ -22,7 +22,7 @@ export class FollowService extends Store<FollowState> {
       return this.staffApi.getStaffFollow(id, query).pipe(
         tap(res => {
           this.state$.commit(state => {
-            state.followList = res
+            state.followList = res.list
           })
         })
       )

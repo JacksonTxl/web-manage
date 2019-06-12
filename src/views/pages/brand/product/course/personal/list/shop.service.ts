@@ -2,15 +2,25 @@ import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { ShopPersonalCourseApi, GetPersonalBrandCourseListInput } from '@/api/v1/course/personal/shop'
 import { tap, pluck } from 'rxjs/operators'
 import { State, Computed } from 'rx-state/src'
+import { AuthService } from '@/services/auth.service'
+
 @Injectable()
 export class ShopService implements RouteGuard {
   state$: State<any>
   personalCourseList$: Computed<any>
-  constructor(private shopPersonalCourseApi: ShopPersonalCourseApi) {
+  auth$: Computed<object>
+  constructor(
+    private shopPersonalCourseApi: ShopPersonalCourseApi,
+    private authService: AuthService
+  ) {
     this.state$ = new State({
-      personalCourseList: []
+      personalCourseList: [],
+      auth: {
+        isTransfer: this.authService.can('brand_shop:product:personal_course|transfer')
+      }
     })
     this.personalCourseList$ = new Computed(this.state$.pipe(pluck('personalCourseList')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SET_PERSONAL_COURSE_LIST(data: any) {
     this.state$.commit(state => {
@@ -23,6 +33,7 @@ export class ShopService implements RouteGuard {
   getCourseListInShop(params: any) {
     return this.shopPersonalCourseApi.getCourseListInBrand(params).pipe(
       tap(state => {
+        state = this.authService.filter(state)
         this.SET_PERSONAL_COURSE_LIST(state)
       })
     )

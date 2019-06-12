@@ -6,6 +6,8 @@ import { State, Computed, Effect } from 'rx-state/src'
 import { Store } from '@/services/store'
 import { CourseApi } from '@/api/v1/setting/course'
 import { ShopApi } from '@/api/v1/shop'
+import { AuthService } from '@/services/auth.service'
+
 export interface SetState {
   personalCourseList: any[],
   supportShopList: any[],
@@ -17,16 +19,26 @@ export class BrandService extends Store<SetState> {
   personalCourseList$: Computed<any>
   supportShopList$: Computed<any>
   supportCoachList$: Computed<any>
-  constructor(private personalApi: BrandPersonalCourseApi, private courseApi: CourseApi, private shopApi: ShopApi) {
+  auth$: Computed<object>
+  constructor(
+    private personalApi: BrandPersonalCourseApi,
+    private courseApi: CourseApi,
+    private shopApi: ShopApi,
+    private authService: AuthService
+  ) {
     super()
     this.state$ = new State({
       personalCourseList: [],
       supportShopList: [],
-      supportCoachList: []
+      supportCoachList: [],
+      auth: {
+        isAdd: this.authService.can('brand_shop:product:personal_course|add')
+      }
     })
     this.personalCourseList$ = new Computed(this.state$.pipe(pluck('personalCourseList')))
     this.supportShopList$ = new Computed(this.state$.pipe(pluck('supportCourseList')))
     this.supportCoachList$ = new Computed(this.state$.pipe(pluck('supportCoachList')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SET_PERSONAL_COURSE_LIST(data: any) {
     this.state$.commit(state => {
@@ -67,6 +79,7 @@ export class BrandService extends Store<SetState> {
   getCoursePersonalBrandList(params: GetPersonalBrandCourseListInput) {
     return this.personalApi.getCourseList(params).pipe(
       tap(state => {
+        state = this.authService.filter(state)
         this.SET_PERSONAL_COURSE_LIST(state)
       })
     )
