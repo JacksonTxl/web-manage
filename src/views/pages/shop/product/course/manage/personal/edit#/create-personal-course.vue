@@ -172,16 +172,12 @@ export default {
         category_id: info.category_id,
         train_aim: info.train_aim,
         duration: info.duration,
-        is_online_sale: info.is_online_sale,
-        price: info.price,
-        effective_unit: info.effective_unit,
         image: info.image,
         description: info.description
       })
       this.fileList = [this.info.image]
     },
     getData() {
-      console.log('getData', this.query.id)
       const data = this.form.getFieldsValue()
       data.course_id = +this.query.id
       return data
