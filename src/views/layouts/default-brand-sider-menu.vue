@@ -45,7 +45,7 @@
             </a-menu-item>
         </a-sub-menu>
         <a-menu-item v-else :key="menu.id">
-          <router-link :to="menu.url || '/'">
+          <router-link :to="{ name: menu.url }">
             <a-icon type="file"/>
             <span>{{menu.name}}</span>
           </router-link>
