@@ -1,43 +1,56 @@
 <template>
   <st-modal title='更改员工职位'
-    confirmLoading
     @ok='onSubmit'
     size="small"
     v-model='show'>
-    <section>
-      <div class="staff-tag mg-b24">
-        {{staff}}positionInfo: {{positionInfo}}staffEnums: {{staffEnums}}
-        <st-tag v-for="item in identity" :key="item.id" class="mg-r4" :type="item.id | identityFilter"/>
-        <st-t3>{{staff.staff_name}}</st-t3>
-      </div>
-    </section>
+  <staff-info :staff="staff"></staff-info>
     <st-form labelWidth='60px'>
       <st-form-item   label="工作性质">
-        <a-select placeholder="支持中英文、数字,不超过10个字">
-          <a-select-option :value="item.id" v-for="item in positionInfo" :key="item.id">
+        <a-select v-model="form.nature_work" placeholder="请选择工作性质">
+          <a-select-option :value="item.id" v-for="item in natureWork" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item   label="工作性质">
-        <a-select placeholder="支持中英文、数字,不超过10个字" />
-      </st-form-item>
-      <st-form-item label="教练等级">
-        <a-select placeholder="">
-          <a-select-option :value="item.id" v-for="item in coachLevelList" :key="item.id">
+      <st-form-item   label="员工职能" required>
+        <a-select v-model="form.identity" mode="multiple" placeholder=""  @change="onChangeIdentity">
+          <a-select-option   :value="item.id" v-for="item in identityList" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item  label="薪资模板">
-        <a-input placeholder="支持中英文、数字,不超过10个字" class="mg-b8"/>
-        <a-input placeholder="支持中英文、数字,不超过10个字" />
+      <st-form-item  label="教练等级">
+        <a-select v-model="form.coach_level_id" placeholder="">
+          <a-select-option  :value="item.id" v-for="item in coachLevelList$" :key="item.id">
+            {{item.name}}
+          </a-select-option>
+        </a-select>
+      </st-form-item>
+      <st-form-item   label="薪资模板">
+        <a-select placeholder="" v-model="form.basic_salary" class="mg-b16">
+          <a-select-option :value="item.id" v-for="item in salaryBasic$" :key="item.id">
+            {{item.name}}
+          </a-select-option>
+        </a-select>
+        <a-select v-model="form.sale_percentage"  class="mg-b16" placeholder="">
+          <a-select-option :value="item.id" v-for="item in salarySale$" :key="item.id">
+            {{item.name}}
+          </a-select-option>
+        </a-select>
+        <a-select v-model="form.class_percentage"   placeholder="" v-if="isSalaryCourse">
+          <a-select-option :value="item.id" v-for="item in salaryCourse$" :key="item.id">
+            {{item.name}}
+          </a-select-option>
+        </a-select>
       </st-form-item>
     </st-form>
   </st-modal>
 </template>
 <script>
 import { UpdateStaffPositionService } from './update-staff-position.service'
+import { UserService } from '../../../services/user.service'
+import StaffInfo from './staff-info'
+
 export default {
   serviceInject() {
     return {
@@ -45,17 +58,29 @@ export default {
     }
   },
   rxState() {
+    const {
+      staffEnums$,
+      positionInfo$,
+      coachLevelList$,
+      salaryBasic$,
+      salarySale$,
+      salaryCourse$
+    } = this.updateStaffPositionService
     return {
-      staffEnums: this.updateStaffPositionService.staffEnums$,
-      positionInfo: this.updateStaffPositionService.positionInfo$,
-      coachLevelList: this.updateStaffPositionService.coachLevelList$
+      staffEnums$,
+      positionInfo$,
+      coachLevelList$,
+      salaryBasic$,
+      salarySale$,
+      salaryCourse$
     }
   },
   name: 'UpdateStaffPosition',
   data() {
     return {
       show: false,
-      formdata: null
+      form: {},
+      isSalaryCourse: false
     }
   },
   props: {
@@ -67,21 +92,51 @@ export default {
   filters: {
     identityFilter(key) {
       const identityTag = ['role-staff', 'role-saler', 'coach-personal', 'coach-team', 'swimming-coach']
-      return identityTag[key]
+      return identityTag[key - 1]
     }
   },
+  components: {
+    StaffInfo
+  },
   computed: {
+    identityList() {
+      return this.computedList('identity')
+    },
+    natureWork() {
+      return this.computedList('nature_work')
+    },
     identity() {
       return this.staff.identity
     }
   },
   methods: {
+    onChangeIdentity(value) {
+      this.isSalaryCourse = value.includes('3') || value.includes('4')
+    },
+    computedList(key) {
+      let arr = []
+      let value = this.staffEnums$[key].value
+      for (let key in value) {
+        arr.push({
+          id: +key,
+          name: value[key]
+        })
+      }
+      return arr
+    },
     onSubmit() {
-      console.log('ok')
+      this.updateStaffPositionService.putStaffBindPosition({ id: this.staff.id, ...this.form }).subscribe(() => {
+        this.msg.success({
+          content: '绑定实体卡成功'
+        })
+        this.show = false
+      })
     }
   },
   mounted() {
-    this.updateStaffPositionService.init(1).subscribe()
+    this.updateStaffPositionService.init(this.staff.id).subscribe(res => {
+      this.form = this.positionInfo$
+    })
   }
 }
 </script>

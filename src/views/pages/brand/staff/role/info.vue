@@ -8,7 +8,7 @@
         <a-col class="page-role-detail__funrole pd-y24" :lg="18">
             <span class='label mg-r8'>功能权限: </span>
             <st-container  class="brand-list mg-r16 pd-x24">
-              <p>品牌权限</p>
+              <p>品fdasf牌权限</p>
               <st-input-search placeholder="请输入" style="width:380px" round="round"></st-input-search>
             </st-container>
             <st-container class="shop-list pd-x24">
