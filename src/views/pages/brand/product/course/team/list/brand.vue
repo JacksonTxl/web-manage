@@ -22,7 +22,7 @@
 
 <script>
 import TeamTable from './brand#/brand-table'
-import { RouteService } from '../../../../../../../services/route.service'
+import { RouteService } from '@/services/route.service'
 import { BrandService } from './brand.service'
 import { ListService } from '../list.service'
 export default {
