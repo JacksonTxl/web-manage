@@ -45,6 +45,18 @@ export interface CardGiveInput {
   gift_quota:number
   description?:string
 }
+export interface RenewalCardInput {
+  contract_number:string
+  rule_id:number
+  gift_amount?:number
+  user_coupon_id?:number|string
+  advance_id?:string
+  reduce_price?:number
+  description?:string
+  staff_sale_id:number
+  contract_type:number
+  discounts_price?:number
+}
 export class CardApi extends Api {
   /**
    * 会员卡列表
@@ -154,5 +166,11 @@ export class CardApi extends Api {
    */
   getCardRenewalInfo(id:string) {
     return this.http.get(`/v1/sold/cards/member/renewal/info/${id}`)
+  }
+  /**
+   * 售出 会员卡 续卡
+   */
+  setCardRenewal(params:RenewalCardInput, id:string) {
+    return this.http.put(`/v1/sold/cards/member/renewal/${id}`, { params })
   }
 }
