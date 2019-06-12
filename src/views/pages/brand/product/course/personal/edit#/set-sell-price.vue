@@ -112,11 +112,15 @@ export default {
         // if (!this.inputCheck(priceGradient)) {
         //   return
         // }
-        this.addService.setPrice(data).subscribe(() => {
-          this.messageService.success({
-            content: '提交成功'
-          })
-        })
+        this.addService.setPrice(data).subscribe(this.onSaveSuccess)
+      })
+    },
+    onSaveSuccess() {
+      this.messageService.success({
+        content: '提交成功'
+      })
+      this.$router.push({
+        name: 'brand-product-course-personal-list-brand'
       })
     },
     getPriceGradient() {

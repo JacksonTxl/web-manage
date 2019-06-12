@@ -35,7 +35,7 @@
 import TeamTableShop from './shop#/shop-table'
 import { ShopService } from './shop.service'
 import { ListService } from '../list.service'
-import { RouteService } from '../../../../../../../services/route.service'
+import { RouteService } from '@/services/route.service'
 
 export default {
   name: 'DDDTeamCourseList',
