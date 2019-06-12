@@ -29,11 +29,15 @@ export default {
               )
             }
             this._rxObs[obName] = ob.subscribe(v => {
-              if (obName in this) {
-                this.$set(this, obName, cloneDeep(v))
-                return
+              try {
+                if (obName in this) {
+                  this.$set(this, obName, cloneDeep(v))
+                  return
+                }
+                Vue.util.defineReactive(this, obName, cloneDeep(v))
+              } catch (e) {
+                throw new Error(`[vue-rx-state] uncaught error on ${obName} ${e.message}`)
               }
-              Vue.util.defineReactive(this, obName, cloneDeep(v))
             })
           }
         }

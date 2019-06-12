@@ -11,7 +11,7 @@ interface SetState{
 export class InfoService extends Store<SetState> {
     state$: State<SetState>
     info$: Computed<Object>
-    constructor(private staffapi : StaffApi) {
+    constructor(private staffApi : StaffApi) {
       super()
       this.state$ = new State({
         info: {}
@@ -20,20 +20,18 @@ export class InfoService extends Store<SetState> {
     }
     @Effect()
     getInfo(id: string) {
-      return this.staffapi.getStaffInfoCommonHeader(id)
+      return this.staffApi.getStaffInfoCommonHeader(id).pipe(tap(res => {
+        this.SET_STAFF_BRAND(res.common_info)
+      }))
     }
-    protected SET_STAFF_BRND(data: SetState) {
+    protected SET_STAFF_BRAND(data: SetState) {
       this.state$.commit(state => {
         state.info = data
       })
     }
     beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-      let { id } = to.meta.query
-      console.log('commonInfo service', to.meta.query)
-      next()
-
+      let { id } = to.query as any
       this.getInfo(id).subscribe(res => {
-        this.SET_STAFF_BRND(res.common_info)
         next()
       })
     }

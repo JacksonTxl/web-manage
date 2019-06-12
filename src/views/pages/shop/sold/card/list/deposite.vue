@@ -34,20 +34,13 @@
       </div>
     </st-search-panel>
     <div :class="basic('content')">
-      <div :class="basic('content-batch')">
+      <div :class="basic('content-batch')" class="mg-b16">
         <st-button type="primary" class="mgr-8">批量导出</st-button>
-      </div>
-      <div :class="basic('table-select-info')">
-        <st-icon type="weibo"/>
-        <span class="mgl-8 mgr-16">
-          已选
-          <i :class="basic('table-select-number')">{{selectedRowKeys.length}}</i> / {{list.length}} 条数据
-        </span>
-        <a href="javascript:void(0)">删除</a>
       </div>
       <div :class="basic('table')">
         <st-table
           :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
+          :alertSelection="{onReset: onClear}"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
           rowKey="id"
           @change="onPageChange"
@@ -183,6 +176,7 @@ export default {
       // 结束时间面板是否显示
       endOpen: false,
       selectedRowKeys: [],
+      selectedRows: [],
       columns
     }
   },
@@ -312,6 +306,10 @@ export default {
     moment,
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = cloneDeep(selectedRowKeys)
+    },
+    onClear() {
+      this.selectedRowKeys = []
+      this.selectedRows = []
     }
   }
 }

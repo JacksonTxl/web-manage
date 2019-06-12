@@ -1,18 +1,30 @@
 import { Injectable } from 'vue-service-app'
-import { State, Effect } from 'rx-state/src'
-import { TransactionApi } from '@/api/v1/sold/transaction'
-import { tap } from 'rxjs/operators'
+import { State, Effect, Action } from 'rx-state/src'
+import { TransactionApi, TransactionPriceInput } from '@/api/v1/sold/transaction'
+import { tap, switchMap, catchError, debounceTime } from 'rxjs/operators'
 import { ContractApi } from '@/api/v1/setting/contract'
 import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
-import { forkJoin } from 'rxjs'
+import { forkJoin, EMPTY } from 'rxjs'
 
 @Injectable()
 export class SaleDepositeCardService {
+  priceAction$: Action<any>
+  priceInfo$ = new State('0')
   loading$ = new State({})
   info$ = new State({})
-  memberList$ = new State({})
+  memberList$ = new State([])
   saleList$ = new State({})
-  constructor(private contractApi: ContractApi, private memberApi: ShopPersonalCourseApi, private transactionApi: TransactionApi) {}
+  constructor(private contractApi: ContractApi, private memberApi: ShopPersonalCourseApi, private transactionApi: TransactionApi) {
+    this.priceAction$ = new Action(data$ => {
+      return data$.pipe(
+        debounceTime(200),
+        switchMap((params:TransactionPriceInput) => this.getPrice(params).pipe(catchError(() => EMPTY))),
+        tap(res => {
+          this.priceInfo$.commit(() => res.info.price)
+        })
+      )
+    })
+  }
   getInfo(id:string) {
     return this.transactionApi.getTransactionInfo(id, 'deposit/card').pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
@@ -29,9 +41,12 @@ export class SaleDepositeCardService {
       this.memberList$.commit(() => res.list)
     }))
   }
+  resetMember() {
+    this.memberList$.commit(() => [])
+  }
   @Effect()
-  getCodeNumber() {
-    return this.contractApi.getCodeNumber('4')
+  getCodeNumber(type:string) {
+    return this.contractApi.getCodeNumber(type)
   }
   @Effect()
   getAdvanceList(id:string|number) {
@@ -48,5 +63,9 @@ export class SaleDepositeCardService {
   @Effect()
   setTransactionPay(params:any) {
     return this.transactionApi.setTransaction(params, 'deposit')
+  }
+  @Effect()
+  getPrice(params:TransactionPriceInput) {
+    return this.transactionApi.getTransactionPrice(params)
   }
 }

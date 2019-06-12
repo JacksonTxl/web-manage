@@ -59,8 +59,13 @@ export default {
     onConfirmDeleteCourse(record) {
       this.$emit('delete-course', record)
     },
-    onClickCourseInfo(val) {
-      this.$router.push({ name: 'brand-product-course-team-info', query: { courseId: val } })
+    onClickCourseInfo(id) {
+      this.$router.push({
+        name: 'brand-product-course-team-info',
+        query: {
+          courseId: id
+        }
+      })
     },
     onClickEditCourseInfo(id) {
       this.$router.push({

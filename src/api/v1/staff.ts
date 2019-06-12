@@ -274,9 +274,58 @@ export interface EditStaffCoachInfoQuery{
    */
   image_personal: any[];
 }
+export interface RePasswordInput {
+  id?: string,
+  name: string,
+  password: string,
+  password_repeat: string
+}
+export interface PutStaffBindPositionInput {
+  id?: string
+  nature_work: number
+  identity: any[]
+  coach_level_id: number
+  basic_salary: number
+  sale_percentage: number
+  class_percentage: number
+}
 const URL = '/v1/staff/brand'
 const mock = {}
 export class StaffApi extends Api {
+  /**
+   * 获取门店
+    */
+  getShopList() {
+    return this.http.get('/v1/shop/all')
+  }
+  /**  */
+  getRePassword(id: string) {
+    return this.http.get(`/v1/staff/brand/account/${id}`)
+  }
+  rePassword(params: RePasswordInput) {
+    return this.http.put(`/v1/staff/brand/password/${params.id}`, { params })
+  }
+  setAccount(params: RePasswordInput) {
+    return this.http.put(`/v1/staff/brand/account/${params.id}`, { params })
+  }
+  getBankInfo(params: string) {
+    return this.http.get(`/v1/staff/brand/bank/${params}`)
+  }
+  putStaffBindBank(params: PutStaffBindBankInput) {
+    return this.http.put(`/v1/staff/bind/bank/${params.id}`, { params })
+  }
+  putStaffBindPosition(params: PutStaffBindPositionInput) {
+    return this.http.put(`/v1/staff/bind/position/${params.id}`, { params })
+  }
+  getStaffSalaryBasic() {
+    return this.http.get(`/v1/staff/salary/basic`)
+  }
+  getStaffSalarySale() {
+    return this.http.get(`/v1/staff/salary/sale`)
+  }
+  getStaffSalaryCourse() {
+    return this.http.get(`/v1/staff/salary/course`)
+  }
   // 获取某部门员工列表
   getStaffBrandList(query: Params) {
     return this.http.get(URL, { query })
@@ -317,7 +366,7 @@ export class StaffApi extends Api {
   }
   // 删除员工
   deleteStaffBrandInfo(id: string) {
-    return this.http.delete(`${URL}${id}`)
+    return this.http.delete(`${URL}/${id}`)
   }
 
   /**
@@ -335,6 +384,21 @@ export class StaffApi extends Api {
   staffDetailInfo(id: string) {
     return this.http.get(`/v1/staff/brand/${id}`)
   }
+  putStaffBindPhysical(params: PutStaffBindPhysicalInput) {
+    return this.http.put(`/v1/staff/bind/physical/${params.id}`, { params })
+  }
+  getStaffCheckJob(params: string) {
+    return this.http.get(`/v1/staff/check/job/${params}`)
+  }
+  putStaffBrandQuit(params: PutStaffBrandQuitInput) {
+    return this.http.put(`/v1/staff/brand/quit/${params.id}`, { params })
+  }
+  putStaffBrandRestart(params: PutStaffBrandRestartInput) {
+    return this.http.put(`/v1/staff/brand/restart/${params.id}`, { params })
+  }
+  // /v1/staff/salary/sale
+  // /v1/staff/salary/sale
+  // /v1/staff/salary/class
 
   // 员工详情公共头
   getStaffInfoCommonHeader(id: string) {
@@ -362,6 +426,25 @@ export class StaffApi extends Api {
   }
 
   // 门店 shop
+}
+export interface PutStaffBindBankInput {
+  id?: string | number
+  account_name: string
+  card_number: string
+  bank_name: string
+}
+export interface PutStaffBrandRestartInput {
+  id: string | number
+  restart_time: string
+}
+export interface PutStaffBrandQuitInput {
+  id: string | number
+  quit_time: string
+}
+export interface PutStaffBindPhysicalInput {
+  id?: string
+  card_number?: string
+  physical_number?: string
 }
 // 品牌
 export interface GetStaffCourseListInput{

@@ -2,43 +2,54 @@
   <st-modal
     class="modal-turnover"
     title='员工复职'
-    confirmLoading
     @ok='onSubmit'
     okText="保存"
     size="small"
     v-model='show'>
+    <staff-info :staff="staff"></staff-info>
     <section>
-      <div class="modal-turnover-tag mg-b24">
-        <st-tag class="mg-r4" type="coach-personal"/>
-        <st-tag class="mg-r4" type="coach-team"/>
-        <st-tag class="mg-r8" type="role-staff"/>
-      </div>
-      <div class="modal-turnover-tip">
-        <p>该员工有以下几个事项待处理，无法进行离职</p>
-        <ul>
-          <li v-for="(tip, index) in tips" :key="index" class="modal-turnover-tip__item"><span class="modal-turnover-tip__count">{{index + 1}}</span> {{tip}}</li>
-        </ul>
-      </div>
       <st-form labelWidth='60px'>
         <st-form-item  labelWidth='60px' label="复职日期">
-          <a-input placeholder="支持中英文、数字,不超过10个字" />
+          <a-date-picker @change="onChange" />
         </st-form-item>
       </st-form>
     </section>
   </st-modal>
 </template>
 <script>
+import StaffInfo from './staff-info'
+import { ReinstatementService } from './reinstatement.service.ts'
 export default {
   name: 'Reinstatement',
+  serviceInject() {
+    return {
+      reinstatementService: ReinstatementService
+    }
+  },
   data() {
     return {
       show: false,
-      tips: ['5节未上的团体课程', '5个服务中的私教课程', '5个服务中的私教课程']
+      restartTime: ''
     }
   },
+  props: {
+    staff: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  components: {
+    StaffInfo
+  },
   methods: {
+    onChange(id, dateString) {
+      this.restartTime = dateString
+    },
     onSubmit() {
-      console.log('ok')
+      this.reinstatementService.putStaffBrandRestart({ id: this.staff.id, restart_time: this.restartTime }).subscribe(res => {
+        this.$router.push({ force: true })
+      })
+      this.show = false
     }
   }
 }

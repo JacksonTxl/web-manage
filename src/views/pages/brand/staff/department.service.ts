@@ -3,13 +3,15 @@ import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { StaffApi, Params } from '@/api/v1/staff'
+import { CommonService } from './department.service#/common.service'
+import { UserService } from '@/services/user.service'
 
-interface StaffState {
+interface SetState {
   staffList: any
 }
 @Injectable()
-export class DepartmentService extends Store<StaffState> implements RouteGuard {
-  state$: State<StaffState>
+export class DepartmentService extends Store<SetState> implements RouteGuard {
+  state$: State<SetState>
   staffList$: Computed<any>
   // staffList$: Computed<StaffState>
   constructor(private staffApi: StaffApi) {
@@ -21,18 +23,14 @@ export class DepartmentService extends Store<StaffState> implements RouteGuard {
   }
   @Effect()
   getStaffList(data: Params) {
-    return this.staffApi.getStaffBrandList(data).pipe(tap(state => {
-      this.SET_STAFF_LIST(state.list)
+    return this.staffApi.getStaffBrandList(data).pipe(tap(res => {
+      this.state$.commit(state => {
+        state.staffList = res.list
+      })
     }))
   }
-  SET_STAFF_LIST(list: StaffState) {
-    console.log('-=9999999999', list)
-    this.state$.commit(state => {
-      state.staffList = list
-    })
-  }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getStaffList({}).subscribe((res: any) => {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.getStaffList(to.query).subscribe((res: any) => {
       next()
     })
   }

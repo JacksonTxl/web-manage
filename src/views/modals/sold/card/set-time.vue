@@ -11,8 +11,8 @@
             <st-info-item label="卡名">{{info.card_name}}</st-info-item>
             <st-info-item label="当前额度">{{info.remain_amount}}</st-info-item>
             <st-info-item label="初始额度">{{info.init_amount}}</st-info-item>
-            <st-info-item label="开卡日期">{{!info.is_open?'-':moment(info.start_time).format('YYYY-MM-DD HH:mm')}}</st-info-item>
-            <st-info-item label="到期日期">{{!info.is_open?'-':moment(info.end_time).format('YYYY-MM-DD HH:mm')}}</st-info-item>
+            <st-info-item label="开卡日期">{{info.start_time | timeFormatFilter}}</st-info-item>
+            <st-info-item label="到期日期">{{info.end_time | timeFormatFilter}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
@@ -44,8 +44,9 @@
               <a-form-item class="page-a-form">
                 <a-date-picker
                   :disabledDate="disabledStartDate"
+                  @change="onStartTimeChange"
                   v-decorator="['start_time',{rules:[{required:true,message:'请选择开卡日期'}]}]"
-                  style="width: 100%;"
+                  style="width: 188px;"
                   format="YYYY-MM-DD HH:mm"
                   :showTime="{format: 'HH:mm'}"
                   placeholder="开始时间"
@@ -53,7 +54,7 @@
                   :showToday="false"
                 />
               </a-form-item>
-              <span>&nbsp;&nbsp;至&nbsp;&nbsp;2020-02-21 14:20</span>
+              <span style="width:158px;">&nbsp;&nbsp;至&nbsp;&nbsp;{{endTime}}</span>
             </div>
           </st-form-item>
           <st-form-item label="备注" class="mg-b0" labelGutter="12px">
@@ -92,35 +93,38 @@ export default {
     return {
       show: false,
       form: this.$form.createForm(this),
+      endTime: '-',
       description: ''
+    }
+  },
+  filters: {
+    timeFormatFilter(data) {
+      return data ? (moment(data).format('YYYY-MM-DD HH:mm')) : '-'
     }
   },
   methods: {
     moment,
     disabledEndDate(endValue) {
-      // return endValue.valueOf() > moment(this.info.end_time).add(1, 'd').valueOf() || endValue.valueOf() < moment().subtract(1, 'd').valueOf()
-      return endValue.valueOf() < moment().valueOf() || endValue.valueOf() > moment(this.info.end_time).valueOf()
+      return endValue.valueOf() < this.info.server_time * 1000 || endValue.valueOf() > moment(this.info.end_time).valueOf()
     },
     disabledStartDate(startValue) {
-      return startValue.valueOf() < moment().valueOf() || startValue.valueOf() > moment(this.info.end_time).valueOf()
+      return startValue.valueOf() < this.info.server_time * 1000
+    },
+    onStartTimeChange(data) {
+      let start = cloneDeep(data)
+      this.endTime = start.add(this.info.time_limit_init, 's').format('YYYY-MM-DD HH:mm')
     },
     onSubmit() {
       this.form.validateFields((error, values) => {
         if (!error) {
-
-          // let sold_type = this.isPackage ? this.packageTransferInfo.sold_type : this.isPersonal ? this.personalCourseInfo.sold_type : '1'
-          // this.transferService.editCourseTransfer({
-          //   member_id: +values.memberId,
-          //   member_name: values.memberName,
-          //   mobile: values.memberMobile,
-          //   remain_price: +values.remainPrice,
-          //   contract_number: values.contractNumber,
-          //   frozen_pay_type: +values.payType,
-          //   sold_type: +sold_type
-          // }, this.id, this.type).subscribe(res => {
-          //   this.$emit('success')
-          //   this.show = false
-          // })
+          let data = values.end_time || values.start_time
+          this.setTimeService.setTime({
+            time: data.format('YYYY-MM-DD HH:mm'),
+            description: this.description
+          }, this.id).subscribe(res => {
+            this.show = false
+            this.$emit('success')
+          })
         }
       })
     }

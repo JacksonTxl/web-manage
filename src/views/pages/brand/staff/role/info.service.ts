@@ -32,7 +32,6 @@ export class InfoService extends Store<SetState> {
       this.SET_ROLE_INFO(res.role)
     }))
   }
-
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     let { roleId } = to.query as any
     this.getInfo({ role_id: roleId }).subscribe(() => next())

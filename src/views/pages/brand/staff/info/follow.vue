@@ -3,17 +3,9 @@
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="16">
-          <a-select
-            style="width: 160px;margin-left:12px"
-            class="mg-r8"
-            :defaultValue="-1"
-            placeholder="请选择门店"
-          >
-            <a-select-option :value="1">门店1</a-select-option>
-            <a-select-option :value="3">门店2</a-select-option>
-            <a-select-option :value="2">门店3</a-select-option>
-            <a-select-option :value="-1">全部</a-select-option>
-          </a-select>
+
+          <shop-select style="width: 160px" v-model="query.shop_id" @change="onChange"/>
+
           <a-range-picker @change="onChooseDate" format="YYYY-MM-DD"/>
         </a-col>
         <a-col :lg="2"></a-col>
@@ -24,12 +16,12 @@
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="followColumns"
-          :dataSource="followList.list"
+          :dataSource="followList"
           :scroll="{ x: 1750}"
           @change="pageChange"
           :pagination="pagination"
         >
-         <template slot="member_name" slot-scope="text, record">
+        <template slot="member_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goMemberDetai(record)">{{ text }}</a>
           </template>
         </st-table>
@@ -41,16 +33,23 @@
 <script>
 import { FollowService } from './follow.service'
 import { followColumns } from './columns'
+import ShopSelect from '@/views/biz-components/shop-select'
+import { RouteService } from '../../../../../services/route.service'
 export default {
   serviceInject() {
     return {
-      followservice: FollowService
+      followService: FollowService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      followList: this.followservice.followList$
+      followList: this.followService.followList$,
+      query: this.routeService.query$
     }
+  },
+  components: {
+    ShopSelect
   },
   data() {
     return {
@@ -65,14 +64,16 @@ export default {
   },
   mounted() {
     this.id = this.$route.meta.query.id
-    this.pagination.total = this.followList.page.total_counts
+    // this.pagination.total = this.followList.page.total_counts
   },
   methods: {
-    goMemberDetai(e) {
+    onChange() {
+      this.$router.push({ query: this.query })
+    },
+    goMemberDetail(e) {
       console.log('跳转到用户详情', e)
     },
     onChooseDate(e) {
-      console.log('选择到的日期', e)
       this.$router.push({
         query: {
           id: this.id,
@@ -83,7 +84,6 @@ export default {
       })
     },
     searchCourse(e) {
-      console.log('跟进查询', e)
       this.$router.push({
         query: {
           id: this.id,
@@ -93,7 +93,6 @@ export default {
       })
     },
     pageChange(pagination) {
-      console.log('pagechange', pagination)
       this.pagination.pageSize = pagination.pageSize
       this.pagination.current = pagination.current
       this.$router.push({

@@ -1,74 +1,77 @@
 <template>
   <st-modal
-  title="交易签单"
+  title="续卡"
   size="small"
   v-model="show"
   @cancel="onCancel"
   wrapClassName="modal-sold-deal-sale">
     <div :class="sale('content')">
-      <a-row :class="sale('info')">
-        <a-col :span="13">
-          <st-info>
-            <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
-            <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
-            <st-info-item label="消费门店">{{info.support_shop}}</st-info-item>
-            <st-info-item label="消费类目">{{info.consume_product}}</st-info-item>
-            <st-info-item class="mg-b24" label="有效时间">{{info.valid_time}}天</st-info-item>
-          </st-info>
-        </a-col>
-        <a-col :span="11">
-           <st-info>
-            <st-info-item label="允许转让">{{info.is_transfer}}</st-info-item>
-            <st-info-item label="转让手续费">{{info.transfer_fee}}</st-info-item>
-            <st-info-item label="储值金额">{{info.card_price}}</st-info-item>
-            <st-info-item label="线上购买">{{info.online_sale}}</st-info-item>
-            <st-info-item class="mg-b24" label="售卖群体" v-if="info.sale_range">{{info.sale_range.name}}</st-info-item>
-          </st-info>
-        </a-col>
-      </a-row>
       <st-form :form="form" labelWidth="72px">
         <div :class="sale('sale')">
-          <st-form-item v-show="searchMemberIsShow" label="购买会员" required>
-            <a-select
-              showSearch
-              allowClear
-              placeholder="输入手机号或会员名搜索"
-              :defaultActiveFirstOption="false"
-              :showArrow="false"
-              :filterOption="false"
-              v-decorator="['memberId',{rules:[{validator:member_id_validator}]}]"
-              @search="onMemberSearch"
-              @change="onMemberChange"
-              notFoundContent="无搜索结果"
-            >
-              <a-select-option
-              v-for="(item,index) in memberList"
-              :value="item.member_id"
-              :key="index">
-                <span v-html="`${item.member_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
-                  {{item.member_name}}&nbsp;&nbsp;&nbsp;{{item.mobile}}
-                </span>
-              </a-select-option>
-            </a-select>
-            <p v-if="!memberList.length&&memberSearchText!==''&&+info.sale_range.type===1" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
+          <st-form-item label="续卡会员">黎明</st-form-item>
+          <st-form-item label="卡名">万晋健身房年卡</st-form-item>
+          <st-form-item label="规格" required>
+            <a-radio-group>
+              <a-radio v-for="(item, index) in 5" :value="item" :key="index">item</a-radio>
+            </a-radio-group>
           </st-form-item>
-          <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required>
-            <a-input v-decorator="['memberName',{rules:[{validator:member_name_validator}]}]" placeholder="请输入会员姓名"></a-input>
+          <st-form-item class="mg-b0" label="有效时间" required>
+            <div :class="sale('time')">
+              <a-form-item class="page-a-form">
+                <a-date-picker
+                  style="width: 188px;"
+                  format="YYYY-MM-DD HH:mm"
+                  :showTime="{format: 'HH:mm'}"
+                  placeholder="开始时间"
+                  :allowClear="false"
+                  :showToday="false"
+                />
+              </a-form-item>
+              <span style="width:158px;">&nbsp;&nbsp;至&nbsp;&nbsp;2020-03-07  14:20</span>
+            </div>
           </st-form-item>
-          <st-form-item  v-show="!searchMemberIsShow" label="手机号" required>
-            <a-input v-decorator="['memberMobile',{rules:[{validator:member_mobile_validator}]}]" placeholder="请输入手机号"></a-input>
-            <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
+          <st-form-item label="购买赠送">
+            <st-input-number  :float="true" placeholder="请输入赠送的天数/次数">
+              <span slot="addonAfter">天数/次数</span>
+            </st-input-number>
           </st-form-item>
-          <st-form-item label="到期时间">{{moment().add(info.valid_time,'d').format('YYYY-MM-DD HH:mm')}}</st-form-item>
           <st-form-item label="合同编号" required>
             <div :class="sale('contract')">
               <a-input
-              v-decorator="['contractNumber',{rules:[{validator:contract_number}]}]"
               placeholder="请输入合同编号"></a-input>
-              <st-button class="create-button" @click="onCodeNumber" :loading="loading.getCodeNumber">自动生成</st-button>
+              <st-button class="create-button">自动生成</st-button>
             </div>
           </st-form-item>
-          <st-form-item class="mgb-12" label="商品价格">{{info.sell_price}}元</st-form-item>
+          <st-form-item class="mgb-12" label="商品价格">111元</st-form-item>
+          <st-form-item :class="sale('discounts')" label="优惠金额">
+            <div>
+              <div :class="sale('discounts-total')">
+                <span>{{advanceText}}</span>
+                <a-dropdown
+                v-model="advanceDropdownVisible"
+                :disabled="advanceList.length===0"
+                :class="sale({disabled:advanceList.length===0})"
+                placement="bottomRight"
+                :getPopupContainer="trigger => trigger.parentNode"
+                :trigger="['click']">
+                  <div :class="sale('discounts-promotion')">
+                    <span>{{advanceList.length===0?'无定金':'定金选择'}}</span>
+                    <a-icon type="right" />
+                  </div>
+                  <a-radio-group v-model="selectAdvance" @change="onSelectAdvanceChange" :class="sale('dropdown')" slot="overlay">
+                    <a-menu>
+                      <a-menu-item @click="onSelectAdvance">
+                        <a-radio :value="-1">不使用</a-radio>
+                      </a-menu-item>
+                      <a-menu-item @click="onSelectAdvance" :key="index" v-for="(item,index) in advanceList">
+                        <a-radio :value="item.id">定金 {{item.price}}</a-radio>
+                      </a-menu-item>
+                    </a-menu>
+                  </a-radio-group>
+                </a-dropdown>
+              </div>
+            </div>
+          </st-form-item>
           <st-form-item :class="sale('discounts')" label="定金抵扣">
             <div>
               <div :class="sale('discounts-total')">
@@ -140,27 +143,24 @@
 </template>
 
 <script>
-import { SaleDepositeCardService } from './sale-deposite-card.service'
+import { RenewalMember } from './renewal-member.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 export default {
-  name: 'ModalSoldDealSaleMemberCard',
+  name: 'ModalSoldRenewalMemberCard',
   bem: {
     sale: 'modal-sold-deal-sale'
   },
   serviceInject() {
     return {
-      saleDepositeCardService: SaleDepositeCardService
+      renewalMember: RenewalMember
     }
   },
   rxState() {
     return {
-      loading: this.saleDepositeCardService.loading$,
-      memberList: this.saleDepositeCardService.memberList$,
-      priceInfo: this.saleDepositeCardService.priceInfo$,
-      info: this.saleDepositeCardService.info$,
-      saleList: this.saleDepositeCardService.saleList$
+      loading: this.renewalMember.loading$,
+      info: this.renewalMember.info$
     }
   },
   props: {
@@ -173,6 +173,7 @@ export default {
     return {
       show: false,
       form: this.$form.createForm(this),
+
       // 搜索会员
       memberSearchText: '',
       searchMemberIsShow: true,
@@ -186,6 +187,9 @@ export default {
       description: ''
     }
   },
+  created() {
+    this.renewalMember.serviceInit(this.id).subscribe()
+  },
   watch: {
     selectAdvance: {
       deep: true,
@@ -196,11 +200,6 @@ export default {
     reduceAmount(newVal, oldVal) {
       this.getPrice(this.selectAdvance, +newVal)
     }
-  },
-  created() {
-    this.saleDepositeCardService.serviceInit(this.id).subscribe(res => {
-      this.getPrice(this.selectAdvance, +this.reduceAmount)
-    })
   },
   computed: {
     orderAmountText() {
@@ -261,10 +260,10 @@ export default {
     onMemberSearch(data) {
       this.memberSearchText = data
       if (data === '') {
-        this.saleDepositeCardService.memberList$.commit(() => [])
+        this.renewalMember.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
-        this.saleDepositeCardService.getMember(data).subscribe(res => {
+        this.renewalMember.getMember(data).subscribe(res => {
           if (!res.list.length) {
             this.resetAdvance()
             this.form.resetFields(['memberId'])
@@ -276,7 +275,7 @@ export default {
       if (!data) {
         this.resetAdvance()
       } else {
-        this.saleDepositeCardService.getAdvanceList(data).subscribe(res => {
+        this.renewalMember.getAdvanceList(data).subscribe(res => {
           this.advanceList = cloneDeep(res.list)
         })
       }
@@ -304,14 +303,14 @@ export default {
       this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
     },
     onCodeNumber() {
-      this.saleDepositeCardService.getCodeNumber(this.info.contract_type).subscribe(res => {
+      this.renewalMember.getCodeNumber(this.info.contract_type).subscribe(res => {
         this.form.setFieldsValue({
           contractNumber: res.info.code
         })
       })
     },
     onCancel() {
-      this.saleDepositeCardService.resetMember()
+      this.renewalMember.resetMember()
       this.resetAdvance()
     },
     onSelectAdvanceChange(data) {
@@ -326,7 +325,7 @@ export default {
     },
     // 计算实付金额
     getPrice(advance, reduce) {
-      this.saleDepositeCardService.priceAction$.dispatch({
+      this.renewalMember.priceAction$.dispatch({
         product_id: this.id,
         product_type: this.info.contract_type,
         advance_id: advance,
@@ -337,7 +336,7 @@ export default {
       this.form.validateFields((error, values) => {
         if (!error) {
           let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
-          this.saleDepositeCardService.setTransaction({
+          this.renewalMember.setTransaction({
             'member_id': +values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,
@@ -363,7 +362,7 @@ export default {
       this.form.validateFields((error, values) => {
         if (!error) {
           let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
-          this.saleDepositeCardService.setTransactionPay({
+          this.renewalMember.setTransactionPay({
             'member_id': +values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,
