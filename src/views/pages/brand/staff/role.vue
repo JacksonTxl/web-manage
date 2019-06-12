@@ -68,8 +68,8 @@ export default {
           dom.setAttribute('class', 'item pd-y8  pd-x16')
         })
         e.currentTarget.setAttribute('class', 'item active pd-y8  pd-x16')
-        this.$router.push({ name: 'brand-staff-role-info', query: { roleId: role.id } })
       })
+      this.$router.push({ name: 'brand-staff-role-info', query: { roleId: role.id } })
     }
   }
 }

@@ -3,12 +3,9 @@
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="16">
-          <a-select style="width: 160px;margin-left:12px" :defaultValue="-1" placeholder="请选择门店" @change="onChooseShop">
-            <a-select-option :value="1">门店1</a-select-option>
-            <a-select-option :value="3">门店2</a-select-option>
-            <a-select-option :value="2">门店3</a-select-option>
-            <a-select-option :value="-1">全部</a-select-option>
-          </a-select>
+
+          <shop-select style="width: 160px" v-model="query.shop_id" @change="onChange"></shop-select>
+
           <a-select style="width: 160px;margin-left:12px" :defaultValue="-1" placeholder="请选择预约状态" @change="onChooseStatus">
             <a-select-option :value="-1">全部订单状态</a-select-option>
             <a-select-option :value="1">预约失败</a-select-option>
@@ -16,7 +13,7 @@
             <a-select-option :value="2">预约成功</a-select-option>
             <a-select-option :value="4">取消预约</a-select-option>
           </a-select>
-           <a-range-picker class="mg-l8" @change="onChooseDate" format="YYYY-MM-DD"/>
+          <a-range-picker class="mg-l8" @change="onChooseDate" format="YYYY-MM-DD"/>
         </a-col>
         <a-col :lg="2"></a-col>
         <a-col :lg="6">
@@ -46,15 +43,19 @@
 <script>
 import { soldColums } from './columns'
 import { SoldService } from './sold.service'
+import ShopSelect from '@/views/biz-components/shop-select'
+import { RouteService } from '../../../../../services/route.service'
 export default {
   serviceInject() {
     return {
-      soldservice: SoldService
+      soldservice: SoldService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      soldInfo: this.soldservice.soldInfo$
+      soldInfo: this.soldservice.soldInfo$,
+      query: this.routeService.query$
     }
   },
   data() {
@@ -66,6 +67,9 @@ export default {
       },
       id: ''
     }
+  },
+  components: {
+    ShopSelect
   },
   mounted() {
     this.id = this.$route.meta.query.id
@@ -88,6 +92,9 @@ export default {
         },
         force: true
       })
+    },
+    onChange() {
+      this.$router.push({ query: this.query })
     },
     // 选择门店
     onChooseShop(e) {

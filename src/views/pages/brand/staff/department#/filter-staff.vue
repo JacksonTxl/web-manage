@@ -1,46 +1,70 @@
 <template>
   <div>
+    <shop-select style="width: 160px" v-model="query.shop_id" @change="onChange"></shop-select>
     <a-select
       class="filter-staff__item mg-r8"
-      style="width: 160px"
       allowClear
-      @change="onChooseShop"
-      placeholder="全部门店"
-    >
-      <a-select-option :value="1">门店1</a-select-option>
-      <a-select-option :value="2">门店2</a-select-option>
-    </a-select>
-    <a-select
-      class="filter-staff__item mg-r8"
       style="width: 160px"
-      allowClear
       placeholder="全部员工状态"
-      @change="onChooseStaffStatus"
+      v-model="query.work_status"
+      @change="onChange"
     >
       <a-select-option
         v-for="status in workStatus"
-        :value="status.value"
-        :key="status.value"
-      >{{status.label}}</a-select-option>
+        :value="status.id"
+        :key="status.id"
+      >{{status.name}}</a-select-option>
     </a-select>
-    <a-button type="primary" class="mg-r8" @click="handleSubmit">查询</a-button>
   </div>
 </template>
 <script>
-const workStatus = [{ label: '在职', value: 1 }, { label: '离职', value: 0 }]
+import { RouteService } from '../../../../../services/route.service'
+import { UserService } from '../../../../../services/user.service'
+import ShopSelect from '@/views/biz-components/shop-select'
 export default {
   name: 'FilterStaff',
+  serviceInject() {
+    return {
+      routeService: RouteService,
+      userService: UserService
+    }
+  },
+  rxState() {
+    return {
+      staffEnums: this.userService.staffEnums$,
+      query: this.routeService.query$
+    }
+  },
+  components: {
+    ShopSelect
+  },
+  computed: {
+    workStatus() {
+      return [{ id: -1, name: '全部' }, ...this.computedList('work_status')]
+    }
+  },
   data() {
     return {
-      form: this.$form.createForm(this),
-      searchData: {
-        shop_id: null,
-        staff_status: ''
-      },
-      workStatus
+    }
+  },
+  props: {
+    shopOptions: {
+      type: Array,
+      default: () => []
     }
   },
   methods: {
+    computedList(key) {
+      let arr = []
+      let value = this.staffEnums[key].value
+      for (let key in value) {
+        arr.push({
+          id: key,
+          name: value[key]
+        })
+      }
+      return arr
+    },
     // 员工状态
     onChooseStaffStatus(e) {
       this.searchData.staff_status = e
@@ -48,8 +72,8 @@ export default {
     onChooseShop(e) {
       this.searchData.shop_id = e
     },
-    handleSubmit() {
-      this.$emit('search', this.searchData)
+    onChange() {
+      this.$router.push({ query: this.query })
     },
     reset(value) {
       console.log(`selected ${value}`)

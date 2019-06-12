@@ -235,6 +235,8 @@ class VueServiceApp {
             if (!beforeMiddlewares.length) {
               next()
             }
+            console.log(beforeMiddlewares)
+
             multiguard(beforeMiddlewares)(to, from, next)
           })
       } else {
@@ -312,6 +314,7 @@ class VueServiceApp {
             if (!beforeMiddlewares.length) {
               next()
             }
+            console.log(beforeMiddlewares)
             multiguard(beforeMiddlewares)(to, from, next)
           })
       } else {

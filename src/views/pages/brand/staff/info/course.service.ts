@@ -21,20 +21,14 @@ export class CourseService extends Store<CourseState> {
     }
     getCoursesList(id: string, query: GetStaffCourseListInput) {
       return this.staffApi.getStaffCourseList(id, query).pipe(
-        // tap(res => {
-        //   console.log('====', res)
-        //   let result = {
-        //     page: res.page,
-        //     list: []
-        //   }
-        //   res.list.forEach(ele => {
-        //     ele.class_hours = `${ele.start_time} ${ele.stop_time}`
-        //     result.list.push(ele)
-        //   })
-        //   this.state$.commit(state => {
-        //     state.courseInfo = result
-        //   })
-        // })
+        tap(res => {
+          this.state$.commit(state => {
+            state.courseInfo = res.list.map((item: any) => {
+              item.class_hours = `${item.start_time} ~ ${item.stop_time}`
+              return item
+            })
+          })
+        })
       )
     }
 
