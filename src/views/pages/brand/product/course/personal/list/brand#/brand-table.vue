@@ -42,10 +42,10 @@
           <span><a-badge :status="is_available === 1?'success':'error'" />{{is_available | enumFilter('personal_course.is_available')}}</span>
       </div>
       <div slot="action" slot-scope="text, record">
-        <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}">详情</router-link>
-        <router-link :to="{name: 'brand-product-course-personal-edit', query: { id: record.course_id }}">编辑</router-link>
+        <router-link class="mg-r8" v-if="record.auth['brand_shop:product:personal_course|get']" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}">详情</router-link>
+        <router-link v-if="record.auth['brand_shop:product:personal_course|edit']" :to="{name: 'brand-product-course-personal-edit', query: { id: record.course_id }}">编辑</router-link>
         <st-more-dropdown style="margin-left: 12px;">
-          <a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:personal_course|del']">
             <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" okText="确定" cancelText="取消">
               删除
             </a-popconfirm>
@@ -58,14 +58,13 @@
 </template>
 
 <script>
-import { columns, mockTable } from './brand.config'
+import { columns } from './brand.config'
 export default {
   name: 'ShopSaleListTable',
   data() {
     return {
       columns,
-      selectedRowKeys: [],
-      data: mockTable
+      selectedRowKeys: []
     }
   },
   props: {
@@ -96,7 +95,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
