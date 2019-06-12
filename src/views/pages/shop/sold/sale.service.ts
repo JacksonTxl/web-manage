@@ -5,7 +5,7 @@ import { TransactionApi } from '@/api/v1/sold/transaction'
 
 @Injectable()
 export class SaleService implements RouteGuard {
-  list$ = new State({})
+  list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
   constructor(private leaseApi: CourseApi, private transactionApi: TransactionApi) {}

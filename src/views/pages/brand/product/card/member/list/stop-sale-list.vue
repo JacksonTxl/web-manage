@@ -63,12 +63,12 @@
       >{{text}}</a>
       <!-- 会员卡名称end -->
       <!-- 支持入场门店start -->
-      <a slot="admission_range.name" slot-scope="text" href="javascript:;">
-        <span v-if="text !=='多门店 (共0家)'">
-          <modal-link tag="a" :to="{ name: 'card-table-stop' , props:{a: 3}}">{{text}}</modal-link>
+      <div slot="admission_range.name" slot-scope="text,record">
+        <span v-if="record.admission_range.id === 2">
+          <modal-link tag="a" :to="{ name: 'card-table-stop' , props:{a: record.id}}">{{text}}</modal-link>
         </span>
         <span v-else class="use_num">{{text}}</span>
-      </a>
+      </div>
       <!-- 支持入场门店end -->
       <!-- <a slot="shop_name" slot-scope="text,record" href="javascript:;">
         <span v-if="text !=='0个门店'">

@@ -5,7 +5,10 @@ export interface MemberCouponParams {
   card_id: number,
   specs_id: number
 }
-
+export interface MemberListInput {
+  member:string
+  escape_member_id?:Array<string|number>
+}
 export class TransactionApi extends Api {
   /**
    * 签单详情
@@ -23,7 +26,7 @@ export class TransactionApi extends Api {
    * 获取签单的支付列表
    * @param order_id 订单id
    */
-  getPaymentMethodList(order_id: number) {
+  getPaymentMethodList(order_id: number|string) {
     return this.http.get(`/v1/order/transaction/payment/method`, { query: { order_id } })
   }
   /**
@@ -51,15 +54,24 @@ export class TransactionApi extends Api {
     return this.http.get(`/v1/order/transaction/sale`)
   }
   /**
-   * 会员卡优惠券列表
+   * 签单系列优惠券列表
+   * @params params 请求参数，对象传递
+   * @params type 具体的签单类型
    */
-  getTransactionCouponList(params: MemberCouponParams) {
-    return this.http.get(`/v1/order/transaction/member/coupon`, { query: { ...params } })
+  getTransactionCouponList(params: MemberCouponParams, type: string) {
+    return this.http.get(`/v1/order/transaction/${type}/coupon`, { query: { ...params } })
   }
+  /**
+   * 根据会员手机号或名称搜索会员信息
+   */
+  getTransactionMemeberList(query: MemberListInput) {
+    return this.http.get(`/v1/order/transaction/sale/range/member`, { query })
+  }
+
   /**
    * 增加定金，调试用，后续移除
    */
   setAdvance(params:any) {
-    return this.http.post(`/v1/finance/advance`, { params })
+    return this.http.post(`/v1/order/transaction/advance`, { params })
   }
 }

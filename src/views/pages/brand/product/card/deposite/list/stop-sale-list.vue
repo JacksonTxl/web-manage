@@ -4,7 +4,7 @@
       <a-icon type="plus"/>新增私教课程
     </st-button>-->
     <div style="overflow: hidden;">
-      <modal-link
+      <modal-link v-if="auth.isBatchDown"
         tag="a"
         :to=" { name: 'card-all-lower-shelf',props:{a:selectedRows,flag:true}, on:{done: onModalTest } }"
         v-show="selectedRows.length >1"
@@ -61,8 +61,8 @@
       >{{text}}{{record.unit === 1 ? '天':'月'}}</span>
       <span slot="sell_time" slot-scope="text,record">{{record.start_time}}~{{record.end_time}}</span>
       <!-- 支持入场门店start -->
-      <a slot="consumption_range" slot-scope="text,record" href="javascript:;">
-        <span v-if="text !=='0个场馆'">
+      <a slot="consumption_range.name" slot-scope="text,record" href="javascript:;">
+        <span v-if="record.consumption_range.id === 2">
           <modal-link
             tag="a"
             :to="{ name: 'card-sale-stop' , props:{a: record.id,title:'支持消费门店'}}"
@@ -71,15 +71,13 @@
         <span v-else class="use_num">{{text}}</span>
       </a>
       <!-- 支持入场门店end -->
-      <!-- start 发布渠道-->
-      <span slot="publish_channel" slot-scope="text" href="javascript:;">{{text?'品牌':'门店'}}</span>
-      <!-- end 发布渠道-->
 
       <!-- 操作end -->
       <div slot="action" slot-scope="text, record">
-        <a href="javascript:;" @click="infoFunc(text, record)">详情</a>
+        <a href="javascript:;" v-if="record.auth['brand_shop:product:deposit_card|get']" @click="infoFunc(text, record)">详情</a>
         <a-divider type="vertical"></a-divider>
         <modal-link
+          v-if="record.auth['brand_shop:product:deposit_card|down']"
           tag="a"
           :to=" { name: 'card-lower-shelf',props:{a:record,flag:true}, on:{done: onModalTest } }"
         >下架</modal-link>
@@ -98,7 +96,8 @@ export default {
   },
   rxState() {
     return {
-      cardsListInfo: this.bService.cardsListInfo$
+      cardsListInfo: this.bService.cardsListInfo$,
+      auth: this.bService.auth$
     }
   },
   computed: {},
@@ -124,44 +123,7 @@ export default {
         total: 50
       },
 
-      data: [
-        {
-          id: 1,
-          brand_id: 1,
-          shop_id: 1,
-          card_name: '次卡',
-          price_gradient: [20000, 40000],
-          time_gradient: '100次~200次',
-          card_type: {
-            id: 1,
-            name: '次卡'
-          },
-          publish_channel: {
-            id: 1,
-            name: '品牌'
-          },
-          admission_range: {
-            id: 2,
-            name: '多门店 (共3家)'
-          },
-          price_setting: {
-            id: 1,
-            name: '统一定价'
-          },
-          support_sales: {
-            id: 2,
-            name: '3个门店'
-          },
-          sell_status: {
-            id: 1,
-            name: '可售卖'
-          },
-          start_time: '1970-01-01',
-          end_time: '1970-01-01',
-          shelf_upper: 0,
-          shelf_lower: 2
-        }
-      ],
+      data: [],
       columns: [
         {
           title: '储值卡名称',
@@ -185,13 +147,13 @@ export default {
         },
         {
           title: '支持消费门店',
-          dataIndex: 'consumption_range',
-          scopedSlots: { customRender: 'consumption_range' }
+          dataIndex: 'consumption_range.name',
+          scopedSlots: { customRender: 'consumption_range.name' }
         },
         {
           title: '发布渠道',
-          dataIndex: 'publish_channel',
-          scopedSlots: { customRender: 'publish_channel' }
+          dataIndex: 'publish_channel.name',
+          scopedSlots: { customRender: 'publish_channel.name' }
         },
 
         {

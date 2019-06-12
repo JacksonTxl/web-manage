@@ -400,7 +400,7 @@ export default {
       this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
     },
     onCodeNumber() {
-      this.saleMemberCardService.getCodeNumber().subscribe(res => {
+      this.saleMemberCardService.getCodeNumber(this.info.contract_type).subscribe(res => {
         this.form.setFieldsValue({
           contractNumber: res.info.code
         })
@@ -441,22 +441,11 @@ export default {
             'sale_range': this.info.sale_range.type,
             'order_amount': this.orderAmount
           }).subscribe((result) => {
-            this.$emit('success')
-            this.show = false
-            this.$modalRouter.push({
-              name: 'sold-deal-gathering-tip',
-              props: {
-                order_id: result.info.order_id,
-                type: 'member',
-                message: '订单创建成功',
-                needPay: true
-              },
-              on: {
-                success: () => {
-                  console.log('success')
-                }
-              }
+            this.$emit('success', {
+              type: 'create',
+              order_id: result.info.order_id
             })
+            this.show = false
           })
         }
       })
@@ -482,32 +471,11 @@ export default {
             'sale_range': this.info.sale_range.type,
             'order_amount': this.orderAmount
           }).subscribe((result) => {
-            this.$emit('success')
-            this.show = false
-            this.$modalRouter.push({
-              name: 'sold-deal-gathering',
-              props: {
-                order_id: result.info.order_id,
-                type: 'member'
-              },
-              on: {
-                success: () => {
-                  this.$modalRouter.push({
-                    name: 'sold-deal-gathering-tip',
-                    props: {
-                      order_id: result.info.id,
-                      type: 'member',
-                      message: '收款成功'
-                    },
-                    on: {
-                      success: () => {
-                        console.log('success')
-                      }
-                    }
-                  })
-                }
-              }
+            this.$emit('success', {
+              type: 'createPay',
+              order_id: result.info.order_id
             })
+            this.show = false
           })
         }
       })

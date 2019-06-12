@@ -58,7 +58,7 @@
       <!-- 支持入场门店 -->
       <div slot="admission_range.name" slot-scope="text,record">
         <modal-link
-          v-if="record.admission_range.count >= 1"
+          v-if="record.admission_range.id === 2"
           tag="a"
           :to="{ name: 'card-table-stop' , props:{id: record.id}}"
         >{{text}}</modal-link>
@@ -68,7 +68,7 @@
       <!-- 支持入场门店 -->
       <div slot="support_sales.name" slot-scope="text,record">
         <modal-link
-          v-if="record.support_sales.count >= 1"
+          v-if="record.support_sales.id === 2"
           tag="a"
           :to="{ name: 'card-sale-stop' , props:{a: record.id}}"
         >{{text}}</modal-link>

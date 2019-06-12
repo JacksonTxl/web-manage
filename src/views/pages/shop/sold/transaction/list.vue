@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { SaleService } from './sale.service'
+import { ListService } from './list.service'
 export default {
   name: 'PageShopSoldLease',
   bem: {
@@ -55,7 +55,7 @@ export default {
   },
   serviceInject() {
     return {
-      saleService: SaleService
+      listService: ListService
     }
   },
   data() {
@@ -186,7 +186,7 @@ export default {
       })
     },
     onAdvance() {
-      this.saleService.addAdvance({
+      this.listService.addAdvance({
         member_id: 20554589995205,
         sale_id: 29338200768663,
         pay_price: `${Date.now() % 10}`,
@@ -202,50 +202,8 @@ export default {
           id: '1'
         },
         on: {
-          success: (result) => {
-            if (result.type === 'create') {
-              // 创建订单成功
-              this.$modalRouter.push({
-                name: 'sold-deal-gathering-tip',
-                props: {
-                  order_id: result.order_id,
-                  type: 'member',
-                  message: '订单创建成功',
-                  needPay: true
-                },
-                on: {
-                  success: () => {
-                    console.log('success')
-                  }
-                }
-              })
-            } else if (result.type === 'createPay') {
-              // 创建订单成功 并且到支付页面
-              this.$modalRouter.push({
-                name: 'sold-deal-gathering',
-                props: {
-                  order_id: result.order_id,
-                  type: 'member'
-                },
-                on: {
-                  success: () => {
-                    this.$modalRouter.push({
-                      name: 'sold-deal-gathering-tip',
-                      props: {
-                        order_id: result.info.id,
-                        type: 'member',
-                        message: '收款成功'
-                      },
-                      on: {
-                        success: () => {
-                          console.log('success')
-                        }
-                      }
-                    })
-                  }
-                }
-              })
-            }
+          success: () => {
+            console.log('success')
           }
         }
       })

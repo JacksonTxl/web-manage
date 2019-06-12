@@ -52,9 +52,9 @@
       >{{text.length > 1? `${text[0]}-${text[1]}`:`${text[0]}`}}</span>
 
       <!-- 支持售卖门店 -->
-      <div slot="support_sales" slot-scope="text,record">
+      <div slot="support_sales.name" slot-scope="text,record">
         <modal-link
-          v-if="text !=='全部场馆'"
+          v-if="record.support_sales.id === 2"
           tag="a"
           :to="{ name: 'card-table-stop', props:{a: record.card_id, title: '支持售卖门店'}}"
         >{{text}}</modal-link>
@@ -62,18 +62,14 @@
       </div>
 
       <!-- 支持消费门店 -->
-      <div slot="consumption_range" slot-scope="text,record">
+      <div slot="consumption_range.name" slot-scope="text,record">
         <modal-link
-          v-if="text !=='单场馆'"
+          v-if="record.consumption_range.id === 2"
           tag="a"
           :to="{ name: 'card-sale-stop' , props:{a: record.card_id, title:'支持消费门店'}}"
         >{{text}}</modal-link>
         <span v-else class="use_num">{{text}}</span>
       </div>
-
-      <!-- start 发布渠道-->
-      <span slot="publish_channel" slot-scope="text" href="javascript:;">{{text=== 1?'品牌':'门店'}}</span>
-      <!-- end 发布渠道-->
       <!-- 售卖状态start -->
       <a
         slot="sell_status"
@@ -104,7 +100,7 @@
       <div slot="action" slot-scope="text, record">
         <a href="javascript:;" v-if="record.auth['brand_shop:product:deposit_card|get']" @click="infoFunc(record)">详情</a>
 
-        <a href="javascript:;" @click="infoFunc(text, record)" v-if="record.shelf_status !=='可售'">
+        <a href="javascript:;" @click="infoFunc(text, record)" v-if="record.shelf_status !=='可售' &&  record.auth['brand_shop:product:deposit_card|restore']">
           <modal-link
             tag="a"
             :to=" { name: 'card-recovery-sell', props:{a:record,time:{current_time:record.time},flag:true}, on:{done: onModalTest } }"
@@ -115,21 +111,21 @@
         <a
           href="javascript:;"
           @click="upperShelf(text, record)"
-          v-if="record.shelf_status==='可售' && record.upper_status"
+          v-if="record.shelf_status==='可售' && record.upper_status && record.auth['brand_shop:product:deposit_card|up']"
         >
           <a-divider type="vertical"></a-divider>上架
         </a>
         <template v-if="record.shelf_status==='可售'">
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
-            <a-menu-item @click="onEdit(record)">编辑</a-menu-item>
-            <a-menu-item>
+            <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|edit']" @click="onEdit(record)">编辑</a-menu-item>
+            <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|pause']">
               <modal-link
                 tag="a"
                 :to=" { name: 'card-halt-the-sales', props:{a:record.card_id,flag:true,time:[record.upper_shelf_num,record.lower_shelf_num]}, on:{done: onModalTest }}"
               >停售</modal-link>
             </a-menu-item>
-            <a-menu-item>
+            <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|del']">
               <modal-link
                 v-if="record.upper_status && !record.publish_channel"
                 tag="a"
@@ -201,13 +197,13 @@ export default {
         },
         {
           title: '支持售卖门店',
-          dataIndex: 'support_sales',
-          scopedSlots: { customRender: 'support_sales' }
+          dataIndex: 'support_sales.name',
+          scopedSlots: { customRender: 'support_sales.name' }
         },
         {
           title: '支持消费门店',
-          dataIndex: 'consumption_range',
-          scopedSlots: { customRender: 'consumption_range' }
+          dataIndex: 'consumption_range.name',
+          scopedSlots: { customRender: 'consumption_range.name' }
         },
         {
           title: '支持售卖时间',
@@ -225,8 +221,8 @@ export default {
         },
         {
           title: '发布渠道',
-          dataIndex: 'publish_channel',
-          scopedSlots: { customRender: 'publish_channel' }
+          dataIndex: 'publish_channel.name',
+          scopedSlots: { customRender: 'publish_channel.name' }
         },
 
         {
@@ -270,7 +266,7 @@ export default {
         onOk() {
           let obj = {}
           // publish_channel 1 品牌 2 门店
-          if (record.publish_channel === 1) {
+          if (record.publish_channel.id === 1) {
             obj.card_id = record.card_id
           } else {
             obj.card_id = record.card_id

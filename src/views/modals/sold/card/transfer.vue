@@ -72,7 +72,7 @@
                 </span>
               </a-select-option>
             </a-select>
-            <p v-if="!memberList.length&&memberSearchText!==''" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
+            <p v-if="!memberList.length&&memberSearchText!==''&&+memberTransferInfo.sale_range.type===1" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
           </st-form-item>
           <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required labelGutter="12px">
             <a-input v-decorator="['memberName',{rules:[{validator:member_name_validator}]}]" placeholder="请输入会员姓名"></a-input>
@@ -132,7 +132,7 @@
             v-decorator="['payType',{rules:[{validator:pay_type_validator}]}]"
             placeholder="选择支付方式">
               <a-select-option
-              v-for="(item,index) in Object.keys(sold.frozen_pay_type.value)"
+              v-for="(item,index) in payList"
               :key="index"
               :value="+item">{{sold.frozen_pay_type.value[item]}}</a-select-option>
             </a-select>
@@ -171,6 +171,7 @@ export default {
       depositTransferInfo: this.transferService.depositTransferInfo$,
       memberTransferInfo: this.transferService.memberTransferInfo$,
       timeScope: this.transferService.timeScope$,
+      payList: this.transferService.payList$,
       sold: this.userService.soldEnums$
     }
   },
@@ -205,6 +206,7 @@ export default {
   },
   created() {
     this.transferService.getTransferInfo(this.id, this.type).subscribe()
+    this.transferService.getPayList(this.id).subscribe()
   },
   methods: {
     onSubmit() {
@@ -310,7 +312,10 @@ export default {
         this.transferService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
-        this.transferService.getMember(data).subscribe(res => {
+        this.transferService.getMember({
+          member: data,
+          escape_member_id: ['1111111kael kael']
+        }).subscribe(res => {
           if (!res.list.length) {
             this.form.resetFields(['memberId'])
           }

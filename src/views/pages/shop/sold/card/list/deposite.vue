@@ -50,6 +50,7 @@
           :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
           rowKey="id"
+          @change="onPageChange"
           :columns="columns"
           :dataSource="list"
         >
@@ -194,6 +195,9 @@ export default {
     }
   },
   methods: {
+    onPageChange(data) {
+      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
+    },
     // 转让
     onTransfer(record) {
       this.$modalRouter.push({

@@ -26,8 +26,8 @@ export class SaleMemberCardService {
     }))
   }
   @Effect()
-  getCodeNumber() {
-    return this.contractApi.getCodeNumber('4')
+  getCodeNumber(type: string) {
+    return this.contractApi.getCodeNumber(type)
   }
   @Effect()
   getAdvanceList(id:string|number) {
@@ -39,7 +39,7 @@ export class SaleMemberCardService {
     }))
   }
   getCouponList(params: MemberCouponParams) {
-    return this.transactionApi.getTransactionCouponList(params).pipe(tap((res:any) => {
+    return this.transactionApi.getTransactionCouponList(params, 'member').pipe(tap((res:any) => {
       this.couponList$.commit(() => res.list)
     }))
   }

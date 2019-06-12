@@ -1,8 +1,9 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
-import { pluck } from 'rxjs/operators'
+import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { CardsApi } from '@/api/v1/cards'
+import { AuthService } from '@/services/auth.service'
 
 interface CardsListInfoState {
   cardsListInfo: any
@@ -11,12 +12,20 @@ interface CardsListInfoState {
 export class StopSaleListService extends Store<CardsListInfoState> {
   state$: State<CardsListInfoState>
   cardsListInfo$: Computed<string>
-  constructor(private cardsApi: CardsApi) {
+  auth$: Computed<object>
+  constructor(
+    private cardsApi: CardsApi,
+    private authService: AuthService
+  ) {
     super()
     this.state$ = new State({
-      cardsListInfo: {}
+      cardsListInfo: {},
+      auth: {
+        isBatchDown: this.authService.can('brand_shop:product:deposit_card|batch_down')
+      }
     })
     this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SET_CARDS_LIST_INFO(cardsListInfo: CardsListInfoState) {
     this.state$.commit(state => {
@@ -24,7 +33,11 @@ export class StopSaleListService extends Store<CardsListInfoState> {
     })
   }
   getListInfo(paramsObj: any) {
-    return this.cardsApi.getCardsShopDeposit(paramsObj)
+    return this.cardsApi.getCardsShopDeposit(paramsObj).pipe(
+      tap(res => {
+        res = this.authService.filter(res)
+      })
+    )
   }
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getListInfo(

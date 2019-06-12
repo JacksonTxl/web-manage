@@ -8,7 +8,9 @@
       style="width: 290px;"/>
     </div>
     <div :class="listClass('operation')">
-      <st-button type="primary" @click="onAddPackage">新增门店课程包</st-button>
+      <router-link to="./add-select">
+        <st-button type="primary" @click="onAddPackage">新增门店课程包</st-button>
+      </router-link>
       <div :class="listClass('select-group')">
         <a-select v-model="query.package_type" @change="onTypeChange" :class="listClass('select')" style="width: 160px">
           <a-select-option :value="-1">全部分类</a-select-option>
