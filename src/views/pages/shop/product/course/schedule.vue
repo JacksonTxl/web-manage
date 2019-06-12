@@ -33,7 +33,7 @@
       <a-select-option v-for="coach in courseCoachOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
     </a-select>
   </div>
-  <router-view style=""></router-view>
+  <router-view></router-view>
 </st-panel>
 </template>
 
@@ -64,9 +64,9 @@ export default {
   data() {
     return {
       tabs: [
-        { label: '团操课', route: { name: 'shop-product-course-schedule-team-calendar' } },
+        { label: '团操课', route: { name: 'shop-product-course-schedule-team' } },
         { label: '私教课1v1', route: { name: 'shop-product-course-schedule-personal-calendar' } },
-        { label: '私教小团课', route: { name: 'shop-product-course-schedule-personal-team-calendar' } }
+        { label: '私教小团课', route: { name: 'shop-product-course-schedule-personal-team' } }
       ]
     }
   },
