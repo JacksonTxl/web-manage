@@ -22,7 +22,7 @@
         :to="{ name: 'course-support-course-coaches', props: { course: record } }"
         >{{coaches}}</modal-link>
       </div>
-      <router-link class="mg-r8" :to="{ name: 'shop-product-course-manage-personal-info', query: { id: record.id } }"
+      <router-link class="mg-r8" :to="{ name: 'shop-product-course-manage-personal-info', query: { id: record.course_id } }"
       slot="course_name" slot-scope="course_name, record">
         {{course_name}}
       </router-link>
@@ -40,8 +40,8 @@
           <span><a-badge :status="is_available === 1?'success':'error'" />{{is_available | enumFilter('personal_course.is_available')}}</span>
       </div>
       <div slot="action" slot-scope="text, record">
-        <router-link class="mg-r8" :to="{name: 'shop-product-course-manage-personal-info', query: { id: record.id }}">详情</router-link>
-        <router-link :to="{name: 'shop-product-course-manage-personal-edit', query: { id: record.id }}">编辑</router-link>
+        <router-link class="mg-r8" :to="{ name: 'shop-product-course-manage-personal-info', query: { id: record.course_id } }">详情</router-link>
+        <router-link :to="{ name: 'shop-product-course-manage-personal-edit', query: { id: record.course_id } }">编辑</router-link>
         <st-more-dropdown style="margin-left: 12px;">
 
           <!-- <a-menu-item>

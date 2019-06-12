@@ -47,8 +47,8 @@ export class ShopPersonalCourseApi extends Api {
   /**
    * 编辑品牌私教课回显详情
    */
-  getCourseEdit(query: GetCourseEditInput) {
-    return this.http.get(`/v1/course/personal/shop/edit/${query.course_id}`)
+  getCourseEdit(id: number) {
+    return this.http.get(`/v1/course/personal/shop/edit/${id}`)
   }
   /**
    * 会员名称检索
@@ -138,8 +138,4 @@ export interface SetPriceInput {
    * 价格梯度price_setting等于1时必填
    */
   price_gradient?: any[]
-}
-
-export interface GetCourseEditInput {
-  course_id: number
 }
