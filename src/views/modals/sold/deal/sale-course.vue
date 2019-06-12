@@ -361,7 +361,7 @@ export default {
             'member_id': values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,
-            'package_course_id': this.id,
+            'package_id': this.id,
             'contract_number': values.contractNumber,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
@@ -371,8 +371,12 @@ export default {
             'description': this.description,
             'sale_range': this.info.sale_range.type,
             'order_amount': this.orderAmount
-          }).subscribe(() => {
-            console.log('成功')
+          }).subscribe((result) => {
+            this.$emit('success', {
+              type: 'create',
+              order_id: result.info.order_id
+            })
+            this.show = false
           })
         }
       })
@@ -384,7 +388,7 @@ export default {
             'member_id': values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,
-            'package_course_id': this.id,
+            'package_id': this.id,
             'contract_number': values.contractNumber,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
@@ -395,7 +399,11 @@ export default {
             'sale_range': this.info.sale_range.type,
             'order_amount': this.orderAmount
           }).subscribe(() => {
-            console.log('成功')
+            this.$emit('success', {
+              type: 'createPay',
+              order_id: result.info.order_id
+            })
+            this.show = false
           })
         }
       })

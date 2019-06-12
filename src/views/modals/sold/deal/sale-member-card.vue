@@ -400,7 +400,7 @@ export default {
       this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
     },
     onCodeNumber() {
-      this.saleMemberCardService.getCodeNumber().subscribe(res => {
+      this.saleMemberCardService.getCodeNumber(this.info.contract_type).subscribe(res => {
         this.form.setFieldsValue({
           contractNumber: res.info.code
         })

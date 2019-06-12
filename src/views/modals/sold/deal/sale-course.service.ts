@@ -39,7 +39,7 @@ export class SaleCourseService {
     }))
   }
   getCouponList(params: MemberCouponParams) {
-    return this.transactionApi.getTransactionCouponList(params).pipe(tap((res:any) => {
+    return this.transactionApi.getTransactionCouponList(params, 'package').pipe(tap((res:any) => {
       this.couponList$.commit(() => res.list)
     }))
   }
@@ -49,6 +49,6 @@ export class SaleCourseService {
   }
   @Effect()
   setTransaction(params:any) {
-    return this.transactionApi.setTransaction(params, 'member')
+    return this.transactionApi.setTransaction(params, 'package')
   }
 }

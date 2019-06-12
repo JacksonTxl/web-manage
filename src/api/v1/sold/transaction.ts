@@ -54,10 +54,12 @@ export class TransactionApi extends Api {
     return this.http.get(`/v1/order/transaction/sale`)
   }
   /**
-   * 会员卡优惠券列表
+   * 签单系列优惠券列表
+   * @params params 请求参数，对象传递
+   * @params type 具体的签单类型
    */
-  getTransactionCouponList(params: MemberCouponParams) {
-    return this.http.get(`/v1/order/transaction/member/coupon`, { query: { ...params } })
+  getTransactionCouponList(params: MemberCouponParams, type: string) {
+    return this.http.get(`/v1/order/transaction/${type}/coupon`, { query: { ...params } })
   }
   /**
    * 根据会员手机号或名称搜索会员信息
