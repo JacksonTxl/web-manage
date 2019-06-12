@@ -83,7 +83,7 @@
       </st-form>
     </div>
     <template slot="footer">
-      <st-button type="primary" @click="onSubmit" :loading="loading.payOrderTransaction">确认收款</st-button>
+      <st-button type="primary" @click="onSubmit" :loading="loading.payTransaction">确认收款</st-button>
     </template>
   </st-modal>
 </template>

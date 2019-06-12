@@ -228,12 +228,12 @@ export default {
     }
   },
   methods: {
-    fetchCouponList() {
+    fetchCouponList(member_id) {
       const params = {
-        member_id: this.form.getFieldValue('memberId'),
-        package_id: this.id,
-        specs_id: this.selectedNorm.id
+        member_id: member_id,
+        package_id: this.id
       }
+      console.log(params)
       this.saleCourseService.getCouponList(params).subscribe()
     },
     moment,
@@ -306,7 +306,7 @@ export default {
         this.saleCourseService.getAdvanceList(data).subscribe(res => {
           this.advanceList = cloneDeep(res.list)
         })
-        this.getCouponList()
+        this.fetchCouponList(data)
       }
     },
     onSelectAdvance() {
@@ -364,10 +364,9 @@ export default {
             'package_course_id': this.id,
             'contract_number': values.contractNumber,
             'coupon_id': this.selectCoupon.id,
-            'open_card_type': values.open_type.id,
-            'valid_start_time': this.validStartTime,
             'advance_id': this.selectAdvance,
-            'reduce_price': this.reduceAmount,
+            'advance_amount': this.validStartTime,
+            'reduce_prreduce_amountice': this.reduceAmount,
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,
@@ -385,30 +384,18 @@ export default {
             'member_id': values.memberId,
             'member_name': values.memberName,
             'mobile': values.memberMobile,
-            'product_id': this.id,
+            'package_course_id': this.id,
             'contract_number': values.contractNumber,
-            'specs_id': values.specs.id,
-            'open_card_type': values.open_type.id,
-            'valid_start_time': this.validStartTime,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
-            'reduce_price': this.reduceAmount,
+            'advance_amount': this.advanceAmount,
+            'reduce_prreduce_amountice': this.reduceAmount,
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,
             'order_amount': this.orderAmount
-          }).subscribe((result) => {
-            this.$modalRouter.push({
-              name: 'sold-deal-gathering',
-              props: {
-                order_id: result.data.id
-              },
-              on: {
-                success: () => {
-                  console.log('success')
-                }
-              }
-            })
+          }).subscribe(() => {
+            console.log('成功')
           })
         }
       })
