@@ -197,7 +197,7 @@ export default {
       let self = this
       this.$confirm({
         title: '确认要上架?',
-        content: `确认上架${record.card_name}至${record.support_sales}?`,
+        content: `确认上架${record.card_name}至${record.support_sales.name}?`,
         onOk() {
           let obj = {}
           // publish_channel 1 品牌 2 门店

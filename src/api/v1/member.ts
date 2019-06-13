@@ -1,5 +1,4 @@
 import { Api } from '../api'
-import { GetMemberInput } from './course/team/schedule'
 
 export interface UpdateMemberEdit {
   /**
