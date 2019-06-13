@@ -11,7 +11,7 @@
     </div>
     <a-row>
       <a-col :span="8">
-        <st-button type="primary" icon="add" @click="onClickAddCourse">新增门店团体课程</st-button>
+        <st-button v-if="auth.add" type="primary" icon="add" @click="onClickAddCourse">新增门店团体课程</st-button>
       </a-col>
       <a-col :span="16" class="ta-r">
         <a-select class="mg-r8" v-model="query.category_id" style="width: 160px" @change="onChange">
@@ -42,7 +42,8 @@ export default {
       query: this.routeService.query$,
       shopsOptions: this.listService.shopSelectOptions$,
       categoryList: this.listService.categoryList$,
-      teamCourseList: this.listService.teamCourseList$
+      teamCourseList: this.listService.teamCourseList$,
+      auth: this.listService.auth$
     }
   },
   methods: {

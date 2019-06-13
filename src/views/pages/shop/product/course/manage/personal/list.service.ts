@@ -5,13 +5,22 @@ import { State, Computed, Effect } from 'rx-state/src'
 import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import { ShopPersonalCourseApi, GetPersonalCourseListInShopInput } from '@/api/v1/course/personal/shop'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class ListService implements RouteGuard {
   personalCourseList$ = new State<any[]>([])
   categoryList$ = new State<any[]>([])
   shopSelectOptions$ = new State<any[]>([])
-  constructor(private shopPersonalCourseApi: ShopPersonalCourseApi, private shopApi: ShopApi, private courseApi: CourseApi) {
+  auth$ = new State({
+    add: this.authService.can('brand_shop:product:personal_course|add')
+  })
+  constructor(
+    private shopPersonalCourseApi: ShopPersonalCourseApi,
+    private shopApi: ShopApi,
+    private courseApi: CourseApi,
+    private authService: AuthService
+  ) {
   }
   SET_PERSONAL_COURSE_LIST(data: any) {
     this.personalCourseList$.commit(() => data.list)
@@ -54,6 +63,7 @@ export class ListService implements RouteGuard {
   getCoursePersonalBrandList(params: any) {
     return this.shopPersonalCourseApi.getCourseList(params).pipe(
       tap(state => {
+        state = this.authService.filter(state)
         this.SET_PERSONAL_COURSE_LIST(state)
       })
     )
