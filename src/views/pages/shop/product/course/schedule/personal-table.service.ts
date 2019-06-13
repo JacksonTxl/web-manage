@@ -4,7 +4,6 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { ScheduleApi1v1, GetSchedulePersonalListInput } from '@/api/v1/course/personal/schedule1v1'
 import { forkJoin } from 'rxjs'
 
 interface SetState {
@@ -25,7 +24,7 @@ export class PersonalTableService extends Store<SetState> {
     this.scheduleList$ = new Computed(this.state$.pipe(pluck('scheduleList')))
     this.scheduleTime$ = new Computed(this.state$.pipe(pluck('scheduleTime')))
   }
-  getList(query: GetSchedulePersonalListInput) {
+  getList(query: any) {
     return this.scheduleService.getList(query).pipe(
       tap(res => {
         this.state$.commit(state => {

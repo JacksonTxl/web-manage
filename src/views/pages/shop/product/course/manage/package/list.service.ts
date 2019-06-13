@@ -2,15 +2,24 @@ import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { PackageApi, GetPackageListInput, OnsalePackageInput } from '@/api/v1/course/package'
 import { tap } from 'rxjs/operators'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class ListService implements RouteGuard {
   list$ = new State({})
   page$ = new State({})
   loading$ = new State({})
-  constructor(private packageApi: PackageApi) {}
+  auth$ = new State({
+    isAdd: this.authService.can('shop:product:package_course|add'),
+    isList: this.authService.can('shop:product:package_course|list')
+  })
+  constructor(
+    private packageApi: PackageApi,
+    private authService: AuthService
+  ) {}
   getList(params: GetPackageListInput) {
     return this.packageApi.getList(params).pipe(tap((res:any) => {
+      this.auth$.commit(() => res.auth)
       this.list$.commit(() => res.list)
       this.page$.commit(() => res.page)
     }))
