@@ -3,7 +3,7 @@
   <st-panel class=" mg-b16">
     <div class="page-personal-header">
         <div class="page-personal-header__left mg-r24">
-          <st-t3 class="mg-b16">{{personalCourseInfo.course_name}}（{{personalCourseInfo.course_category.name || '暂无'}}）</st-t3>
+          <st-t3 class="mg-b16">{{personalCourseInfo.course_name}}（{{personalCourseInfo.category_id.name || '暂无'}}）</st-t3>
           <div class="course-detail-item mg-b16">
             <div class="course-detail-item__left"><span class="label">
               <st-icon type="time" color="rgb(0,199,219)" class="mg-r8" size="16px"></st-icon>时长:</span><span class="value">{{personalCourseInfo.duration}}分钟</span>

@@ -72,6 +72,20 @@ export class TransactionApi extends Api {
     return this.http.get(`/v1/order/transaction/${type}/coupon`, { query: { ...params } })
   }
   /**
+   * 私课教练列表
+   * @param level 教练级别
+   */
+  getTransactionCoachList(level: number) {
+    return this.http.get(`/v1/order/transaction/personal/course/coach`, { query: { coach_level_id: level } })
+  }
+  /**
+   * 私教课价格梯度
+   * @param params
+   */
+  getPersonalCoursePrice(params: {id: number, buy_num: number, coach_level_id: number}) {
+    return this.http.get(`/v1/order/transaction/personal/course/price`, { query: { ...params } })
+  }
+  /**
    * 根据会员手机号或名称搜索会员信息
    */
   getTransactionMemeberList(query: MemberListInput) {

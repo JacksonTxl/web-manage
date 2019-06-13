@@ -326,10 +326,11 @@ export default {
     },
     // 计算实付金额
     getPrice(advance, reduce) {
+      let advanceId = advance === -1 ? '' : advance
       this.saleDepositeCardService.priceAction$.dispatch({
         product_id: this.id,
         product_type: this.info.contract_type,
-        advance_id: advance,
+        advance_id: advanceId,
         reduce_amount: reduce
       })
     },

@@ -3,7 +3,7 @@
     <st-form :form="form" labelWidth="100px">
       <a-row>
         <a-col :xs="22">
-          <div>{{shopName}}</div>
+          <div>{{shopName}}{{shopId}}</div>
           <st-form-item v-show="false">
             <input type="hidden" v-decorator="formRules.id">
           </st-form-item>
@@ -11,7 +11,7 @@
             <a-date-picker
               v-decorator="formRules.startTime"
               showTime
-              format="YYYY-MM-DD HH:mm:ss"
+              format="YYYY-MM-DD HH:mm"
               placeholder="请选择放假开始时间"
               style="width: 240px"
             />
@@ -20,13 +20,13 @@
               <a-date-picker
               v-decorator="formRules.endTime"
               showTime
-              format="YYYY-MM-DD HH:mm:ss"
+              format="YYYY-MM-DD HH:mm"
               placeholder="请选择放假结束时间"
               style="width: 240px"
             />
           </st-form-item>
           <st-form-item labelFix class="mg-b0">
-            <st-button type="primary">确认设置放假时间</st-button>
+            <st-button type="primary" @click="onSubmit">确认设置放假时间</st-button>
           </st-form-item>
         </a-col>
       </a-row>
@@ -35,12 +35,12 @@
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
-import { ShopStatusService as EditService } from '../setting-shop-status.service'
+import { HolidayService } from '../setting-shop-holiday.service'
 import moment from 'moment'
 const formRules = {
-  id: ['id'],
+  id: ['shop_id'],
   startTime: [
-    'holiday_start_time', {
+    'start_time', {
       rules: [{
         required: true,
         message: '请输入放假开始时间'
@@ -48,7 +48,7 @@ const formRules = {
     }
   ],
   endTime: [
-    'holiday_end_time', {
+    'end_time', {
       rules: [{
         required: true,
         message: '请输入放假结束时间'
@@ -60,15 +60,8 @@ export default {
   name: 'AddHoliday',
   serviceInject() {
     return {
-      userService: UserService,
-      editService: EditService,
-      messageService: MessageService
-    }
-  },
-  rxState() {
-    return {
-      shopEnums: this.userService.shopEnums$,
-      loading: this.editService.loading$
+      messageService: MessageService,
+      holidayService: HolidayService
     }
   },
   props: {
@@ -93,7 +86,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.form.setFieldsValue({
-        id: this.shopId,
+        shop_id: this.shopId,
         holiday_start_time: this.startTime,
         holiday_end_time: this.endTime
       })
@@ -102,15 +95,14 @@ export default {
   methods: {
     onSubmit(e) {
       e.preventDefault()
-      const that = this
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
-        this.editService.update(data).subscribe(this.onSubmitSuccess)
+        this.holidayService.add(data).subscribe(this.onSubmitSuccess)
       })
     },
     onSubmitSuccess() {
       this.messageService.success({
-        content: '设置成功'
+        content: '添加成功'
       })
       this.$emit('change')
       this.show = false

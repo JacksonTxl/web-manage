@@ -449,6 +449,30 @@ export default {
         on: {
           success: () => {
             this.$router.push({ force: true, query: this.query })
+            // 创建订单成功 并且到支付页面
+            this.$modalRouter.push({
+              name: 'sold-deal-gathering',
+              props: {
+                order_id: result.order_id,
+                type: 'member'
+              },
+              on: {
+                success: res => {
+                  this.$modalRouter.push({
+                    name: 'sold-deal-gathering-tip',
+                    props: {
+                      order_id: res.orderId,
+                      type: 'member'
+                    },
+                    on: {
+                      success: () => {
+                        console.log('success')
+                      }
+                    }
+                  })
+                }
+              }
+            })
           }
         }
       })

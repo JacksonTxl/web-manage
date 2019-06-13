@@ -2,16 +2,15 @@
   <div class="page-shop-sale-list-shop">
     <header>
       <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
-        <st-button v-if="!this.selectedRowKeys.length" disabled>
-          转入品牌团体课程库
-        </st-button>
-        <modal-link
-        type="primary"
-        tag="st-button"
-        v-else
-        :to="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}">转入品牌团体课程库</modal-link>
         <div>
-          <div>
+          <modal-link
+            v-if="this.selectedRowKeys.length >= 1 && auth.isTransfer"
+            type="primary"
+            tag="st-button"
+            :to="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}"
+          >转入品牌团体课程库</modal-link>
+        </div>
+        <div>
           <a-select class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onChange">
             <a-select-option v-for="shop in shopsOptions" :key="shop.shop_id" :value="shop.shop_id">{{shop.shop_name}}</a-select-option>
           </a-select>
@@ -21,7 +20,6 @@
           <a-select style="width: 160px" v-model="query.is_available" @change="onChange">
             <a-select-option v-for="status in courseStatus" :key="status.value" :value="status.value">{{status.label}}</a-select-option>
           </a-select>
-        </div>
         </div>
       </div>
     </header>
@@ -51,7 +49,8 @@ export default {
       teamCourseList: this.shopService.teamCourseList$,
       shopsOptions: this.listService.shopSelectOptions$,
       categoryList: this.listService.categoryList$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.shopService.auth$
     }
   },
   data() {
