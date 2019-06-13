@@ -32,11 +32,8 @@
       <div slot="price_setting" slot-scope="price_setting">
         {{price_setting | enumFilter('personal_course.price_setting')}}
       </div>
-      <div slot="sell_price" slot-scope="sell_price, record">
-        <modal-link
-        tag="a"
-        :to="{name: 'course-price-setting', props: {course: record}}"
-        >{{sell_price}}</modal-link>
+      <div slot="sell_price" slot-scope="sell_price">
+        <span>{{sell_price}}</span>
       </div>
       <div slot="is_available" slot-scope="is_available">
           <span><a-badge :status="is_available === 1?'success':'error'" />{{is_available | enumFilter('personal_course.is_available')}}</span>
