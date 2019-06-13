@@ -62,6 +62,9 @@ export class ListService implements RouteGuard {
   init() {
     return forkJoin(this.getShopList(), this.getCategoryList())
   }
+  deleteCourse(courseId: string) {
+    return this.shopTeamCourseApi.deleteTeamCourse(courseId)
+  }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getTeamCourseListInShop(to.query).subscribe(() => {
       next()

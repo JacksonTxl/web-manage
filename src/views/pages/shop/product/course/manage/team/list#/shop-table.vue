@@ -46,11 +46,21 @@ export default {
     onChange() {
 
     },
-    onClickCourseInfo(val) {
-      console.log(val)
+    onClickCourseInfo(course) {
+      this.$router.push({
+        name: 'shop-product-course-manage-team-info',
+        query: {
+          courseId: course.id
+        }
+      })
     },
-    onClickEditCourseInfo(val) {
-      console.log(val)
+    onClickEditCourseInfo(course) {
+      this.$router.push({
+        name: 'shop-product-course-manage-team-edit',
+        query: {
+          id: course.id
+        }
+      })
     },
     onConfirmDeleteCourse(record) {
       this.$emit('delete-course', record)

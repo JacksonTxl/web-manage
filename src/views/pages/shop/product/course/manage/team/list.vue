@@ -14,7 +14,7 @@
         </a-select>
       </a-col>
     </a-row>
-    <shop-table :teamCourseList="teamCourseList"></shop-table>
+    <shop-table @delete-course="deleteCourse" :teamCourseList="teamCourseList"></shop-table>
   </st-panel>
 </template>
 <script>
@@ -46,6 +46,9 @@ export default {
     },
     onSearchCourseName(val) {
       this.$router.push({ query: this.query })
+    },
+    deleteCourse(course) {
+      this.listService.deleteCourse(course.id).subscribe()
     },
     onChange() {
       this.$router.push({ query: this.query })

@@ -20,7 +20,9 @@
         <modal-link
         tag="a"
         :to="{name: 'course-price-setting', props: {course: record}}"
+        v-if="sell_price.is_click"
         >{{sell_price.course_price}}</modal-link>
+        <span v-else>{{sell_price.course_price}}</span>
       </div>
       <div slot="coaches" slot-scope="coaches, record">
         <modal-link tag="a"
