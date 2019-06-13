@@ -2,7 +2,7 @@
   <div class="pages-brand-product-card-list">
     <div class="pages-brand-product-card-list__operation">
       <div>
-        <modal-link v-if="auth.isBatchDown"
+        <modal-link v-if="auth.batchDown"
           tag="a"
           :to=" { name: 'card-all-lower-shelf',props:{a:selectedRows,flag:true}, on:{done: onModalTest } }"
           v-show="selectedRows.length > 1"

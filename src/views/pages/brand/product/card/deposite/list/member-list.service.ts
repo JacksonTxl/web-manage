@@ -21,7 +21,7 @@ export class MemberListService extends Store<CardsListInfoState> {
     this.state$ = new State({
       cardsListInfo: {},
       auth: {
-        isAdd: this.authService.can('brand_shop:product:deposit_card|add')
+        add: this.authService.can('brand_shop:product:deposit_card|add')
       }
     })
     this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))

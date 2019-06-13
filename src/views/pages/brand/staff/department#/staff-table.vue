@@ -11,12 +11,12 @@
         <a href="javascript:void()" @click="staffInfo(record)" class="mg-r8">详情</a>
         <a href="javascript:void()" @click="editStaff(record.id)">编辑</a>
         <st-more-dropdown>
-          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: record} }"> {{record.has_card ? '重绑定实体卡':'绑定实体卡'}}</modal-link></a-menu-item>
-          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-update-staff-position', props: {staff: record} }">更改员工职位</modal-link></a-menu-item>
+          <a-menu-item v-if="record.work_status.id === 1"><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: record} }"> {{record.has_card ? '重绑定实体卡':'绑定实体卡'}}</modal-link></a-menu-item>
+          <a-menu-item v-if="record.work_status.id === 1"><modal-link tag="a" :to="{ name: 'staff-update-staff-position', props: {staff: record} }">更改员工职位</modal-link></a-menu-item>
           <a-menu-item v-if="record.work_status.id === 1"><modal-link tag="a" :to="{ name: 'staff-turnover', props: {staff: record} } ">离职</modal-link></a-menu-item>
           <a-menu-item v-else><modal-link tag="a" :to="{ name: 'staff-reinstatement', props: {staff: record} }">复职</modal-link></a-menu-item>
-          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-re-password', props: {staff: record} }">修改密码</modal-link></a-menu-item>
-          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-salary-account-setting', props: {staff: record} }">公司帐号设置</modal-link></a-menu-item>
+          <a-menu-item v-if="record.work_status.id === 1"><modal-link tag="a" :to="{ name: 'staff-re-password', props: {staff: record} }">修改密码</modal-link></a-menu-item>
+          <a-menu-item v-if="record.work_status.id === 1"><modal-link tag="a" :to="{ name: 'staff-salary-account-setting', props: {staff: record} }">公司帐号设置</modal-link></a-menu-item>
           <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-delete', props: {staff: record} }">删除</modal-link></a-menu-item>
         </st-more-dropdown>
     </div>

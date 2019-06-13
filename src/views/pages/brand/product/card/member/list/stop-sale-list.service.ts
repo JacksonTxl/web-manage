@@ -21,7 +21,7 @@ export class StopSaleListService extends Store<CardsListInfoState> {
     this.state$ = new State({
       cardsListInfo: {},
       auth: {
-        isBatchDown: this.authService.can('brand_shop:product:member_card|batch_down')
+        batchDown: this.authService.can('brand_shop:product:member_card|batch_down')
       }
     })
     this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))

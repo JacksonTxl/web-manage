@@ -2,8 +2,8 @@ import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { StaffApi } from '../../../../api/v1/staff'
 import { forkJoin } from 'rxjs'
+import { ShopStaffApi } from '@/api/v1/staff/staff'
 interface SetState{
   info: object
 }
@@ -11,7 +11,7 @@ interface SetState{
 export class InfoService extends Store<SetState> {
     state$: State<SetState>
     info$: Computed<Object>
-    constructor(private staffapi : StaffApi) {
+    constructor(private staffapi : ShopStaffApi) {
       super()
       this.state$ = new State({
         info: {}
@@ -22,7 +22,7 @@ export class InfoService extends Store<SetState> {
     getInfo(id: string) {
       return this.staffapi.getStaffInfoCommonHeader(id)
     }
-    protected SET_STAFF_BRND(data: SetState) {
+    protected SET_STAFF_SHOP(data: SetState) {
       this.state$.commit(state => {
         state.info = data
       })
@@ -34,7 +34,7 @@ export class InfoService extends Store<SetState> {
       this.getInfo(id).subscribe(res => {
         // 记着删 后端接口还没有呢
         res.common_info.has_card = 1
-        this.SET_STAFF_BRND(res.common_info)
+        this.SET_STAFF_SHOP(res.common_info)
         next()
       })
     }

@@ -1,5 +1,5 @@
 <template>
-  <st-panel v-if="info">
+  <st-panel v-if="auth.get && info">
     <st-t2>配置支付方式</st-t2>
     <div class="mg-t24" v-for="(item, index) in payTypeDes" :key="index">
       <a-row class="align-items-center">
@@ -7,7 +7,7 @@
           <st-t4 class="mg-t4">{{item.name}}</st-t4>
           <div class="st-des mg-t4">{{item.content}}</div>
         </a-col>
-        <a-col :span="4" class="ta-r" v-if="index!==0">
+        <a-col :span="4" class="ta-r" v-if="auth.edit && index!==0">
           <a-switch :checked="!!info[item.key].is_enable" @change="onSwitchChange(item.key)"/>
         </a-col>
       </a-row>
@@ -26,11 +26,13 @@
               </a-col>
             </a-row>
           </a-col>
-          <a-col :span="4" class="ta-r">
-            <modal-link tag="a" :to="{ name:'brand-setting-wechat-payment' }">
+          <a-col :span="4" class="ta-r" v-if="auth.edit">
+            <a href="javascript: void(0)"
+              v-modal-link="{ name:'brand-setting-wechat-payment' }"
+            >
               <st-icon type="edit"></st-icon>
               <span class="mg-l4 color-text-light">编辑</span>
-            </modal-link>
+            </a>
           </a-col>
         </a-row>
       </st-container>
@@ -82,7 +84,8 @@ export default {
     const payTypeService = this.payTypeService
     return {
       loading: payTypeService.loading$,
-      info: payTypeService.resData$
+      info: payTypeService.resData$,
+      auth: payTypeService.auth$
     }
   },
   data() {

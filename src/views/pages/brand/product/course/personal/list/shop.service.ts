@@ -16,7 +16,7 @@ export class ShopService implements RouteGuard {
     this.state$ = new State({
       personalCourseList: [],
       auth: {
-        isTransfer: this.authService.can('brand_shop:product:personal_course|transfer')
+        transfer: this.authService.can('brand_shop:product:personal_course|transfer')
       }
     })
     this.personalCourseList$ = new Computed(this.state$.pipe(pluck('personalCourseList')))

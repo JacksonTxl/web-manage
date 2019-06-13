@@ -1,47 +1,49 @@
 <template>
-  <st-modal title="绑定实体卡" size="small" v-model="show" @ok="onSubmit">
-    <section>
-      <div >
-        <template v-for="item in data.identity">
-          <st-tag :key="item" v-if="item === 4" class="mg-r4" type="coach-personal"/>
-          <st-tag :key="item" v-if="item === 3" class="mg-r4" type="coach-team"/>
-          <st-tag :key="item" v-if="item === 1" class="mg-r4" type="role-staff"/>
-          <st-tag :key="item" v-if="item === 2" class="mg-r4" type="role-saler"/>
-        </template>
-        <span>{{ data.staff_name }}</span>
-      </div>
-    </section>
-    <section>
-      <st-form
-        labelWidth="66px"
-        :form="form"
-        @submit="onSubmit"
-        class="mg-t24"
-      >
-        <st-form-item label="实体卡号" required>
-          <a-input placeholder="请输入实体卡号"/>
-        </st-form-item>
-        <st-form-item label="物理ID" required>
-          <a-input placeholder="请将实体卡置于读卡器上"/>
-        </st-form-item>
-      </st-form>
-    </section>
+  <st-modal
+    title='绑定实体卡'
+    @ok='save'
+    size="small"
+    v-model='show'>
+    <div class="modal-bind-entity-card">
+      <staff-info :staff="staff"></staff-info>
+      <a-row v-if="staff.has_card" class="staff-card  mg-b24">
+        <a-col :span="24" class="pd-x8 pd-y16">
+          <div class="card">
+            <span class="label">当前绑定实体卡号：</span><span class="vlaue">{{staff.card_number}}</span>
+          </div>
+          <div class="card mg-t8">
+            <span class="label">物理ID：</span><span class="vlaue">{{staff.physical_number}}</span>
+          </div>
+        </a-col>
+      </a-row>
+      <a-row>
+        <st-form labelWidth='88px' :form="form" @submit="save" class="modal-bind-entity-card__form">
+          <st-form-item label="实体卡号" >
+            <a-input placeholder="请输入实体卡号" v-decorator="[
+            'card_number',
+            {rules: [{ required: true, message: '请输入实体卡号' }]}
+          ]"/>
+          </st-form-item>
+          <st-form-item label="物理ID" >
+            <a-input v-decorator="[
+            'physical_number',
+            {rules: [{ required: true, message: '请输入物理ID' }]}
+          ]" placeholder="请将实体卡置于读卡器上"/>
+          </st-form-item>
+        </st-form>
+      </a-row>
+    </div>
+
   </st-modal>
 </template>
 <script>
-import { BindService } from './bind.service'
-import { MessageService } from '@/services/message.service'
-
+import StaffInfo from './staff-info'
+import { BindCardService } from './bind-card.service'
 export default {
+  name: 'BindCard',
   serviceInject() {
     return {
-      service: BindService,
-      message: MessageService
-    }
-  },
-  props: {
-    data: {
-      type: Object
+      bindCardService: BindCardService
     }
   },
   data() {
@@ -50,15 +52,24 @@ export default {
       form: this.$form.createForm(this)
     }
   },
+  props: {
+    staff: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  components: {
+    StaffInfo
+  },
   methods: {
-    onSubmit(e) {
+    save(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
-          this.service.bind(this.data.id).subscribe(res => {
-            this.message.success({ content: '绑卡成功' })
+          const form = { id: this.staff.id, ...values }
+          this.bindCardService.putStaffBindPhysical(form).subscribe(() => {
             this.show = false
+            this.$router.push({ force: true })
           })
         }
       })

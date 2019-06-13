@@ -1,7 +1,7 @@
 <template>
   <div class="pages-brand-product-card-list">
     <div class="pages-brand-product-card-list__operation">
-      <router-link to="../add" v-if="auth.isAdd">
+      <router-link to="../add" v-if="auth.add">
         <st-button type="primary" icon="add">新增储值卡</st-button>
       </router-link>
       <div>

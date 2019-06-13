@@ -26,6 +26,9 @@ export class ShopTeamCourseApi extends Api {
   getTeamCourseList(query: GetTeamBrandCourseListInput) {
     return this.http.get('/v1/course/team/shop', { query })
   }
+  getTeamCourseInfo(course_id: string) {
+    return this.http.get(`/v1/course/team/shop/${course_id}`)
+  }
   /**
    * 设置上课门店
    */

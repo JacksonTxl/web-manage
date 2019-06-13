@@ -14,12 +14,12 @@
           </div>
         </div>
         <div class="page-personal-header__right">
-          <img src="" alt="">
+          <img :src="teamCourseInfo.image.image_key" alt="">
         </div>
     </div>
     <div class="page-personal-content">
       <div class="page-personal-content__item mg-b24">
-        <div class="title mg-b8"><span class="label">上课门店:</span><span class="value">共3家门店</span></div>
+        <div class="title mg-b8"><span class="label">上课门店:</span><span class="value">共{{teamCourseInfo.support_shop_list.length}}家门店</span></div>
         <st-container><st-table :columns="shopColumns"></st-table></st-container>
       </div>
     </div>

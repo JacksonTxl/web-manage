@@ -4,30 +4,29 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { ShopStaffApi, GetListQuery } from '@/api/v1/staff/staff'
 
-interface FollowState {
-    stafflist: Object;
+interface SetState {
+    staffList: Object;
     department: Object
 }
 @Injectable()
-export class ListService extends Store<FollowState> {
-    state$: State<FollowState>
-    stafflist$: Computed<Object>
+export class ListService extends Store<SetState> {
+    state$: State<SetState>
+    staffList$: Computed<Object>
     department$: Computed<Object>
     constructor(private staffApi: ShopStaffApi) {
       super()
       this.state$ = new State({
-        stafflist: {},
+        staffList: {},
         department: {}
       })
-      this.stafflist$ = new Computed(this.state$.pipe(pluck('stafflist')))
+      this.staffList$ = new Computed(this.state$.pipe(pluck('staffList')))
       this.department$ = new Computed(this.state$.pipe(pluck('department')))
     }
     getStaffList(query: GetListQuery) {
       return this.staffApi.getList(query).pipe(
         tap(res => {
-          res.list[0].identity = [1, 2, 3]
           this.state$.commit(state => {
-            state.stafflist = res
+            state.staffList = res
           })
         })
       )
@@ -46,7 +45,7 @@ export class ListService extends Store<FollowState> {
     beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
       let { page = 1, size = 20, shop_id } = to.meta.query
       this.getStaffDepartment().subscribe(() => {})
-      this.getStaffList({ page, size, shop_id }).subscribe(() => {
+      this.getStaffList({ page, size, ...to.query }).subscribe(() => {
         next()
       })
     }

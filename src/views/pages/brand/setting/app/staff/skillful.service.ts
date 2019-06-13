@@ -22,7 +22,7 @@ export class SkillfulService extends Store<ListState> {
     this.state$ = new State({
       resData: {},
       auth: {
-        isAdd: this.authService.can('brand_shop:coach:good_at|add')
+        add: this.authService.can('brand_shop:coach:good_at|add')
       }
     })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))

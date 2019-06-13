@@ -47,12 +47,6 @@ export default {
     return {
     }
   },
-  props: {
-    shopOptions: {
-      type: Array,
-      default: () => []
-    }
-  },
   methods: {
     computedList(key) {
       let arr = []

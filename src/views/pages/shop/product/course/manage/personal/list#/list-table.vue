@@ -22,10 +22,14 @@
         :to="{ name: 'course-support-course-coaches', props: { course: record } }"
         >{{coaches}}</modal-link>
       </div>
-      <router-link class="mg-r8" :to="{ name: 'shop-product-course-manage-personal-info', query: { id: record.course_id } }"
-      slot="course_name" slot-scope="course_name, record">
-        {{course_name}}
-      </router-link>
+      <template slot="course_name" slot-scope="course_name, record">
+        <router-link
+          v-if="record.auth['brand_shop:product:personal_course|get']"
+          class="mg-r8"
+          :to="{ name: 'shop-product-course-manage-personal-info', query: { id: record.course_id } }"
+        >{{course_name}}</router-link>
+        <span v-else></span>
+      </template >
 
       <div slot="price_setting" slot-scope="price_setting">
         {{price_setting | enumFilter('personal_course.price_setting')}}
@@ -33,28 +37,21 @@
       <div slot="sell_price" slot-scope="sell_price">
         <a
           href="javascript:;"
-        >{{sell_price}}</a>
+          v-if="sell_price.is_click === 1"
+        >{{sell_price.course_price}}</a>
+        <span v-else>{{sell_price.course_price}}</span>
       </div>
       <div slot="is_available" slot-scope="is_available">
           <span><a-badge :status="is_available === 1?'success':'error'" />{{is_available | enumFilter('personal_course.is_available')}}</span>
       </div>
       <div slot="action" slot-scope="text, record">
-        <router-link class="mg-r8" :to="{ name: 'shop-product-course-manage-personal-info', query: { id: record.course_id } }">详情</router-link>
-        <router-link :to="{ name: 'shop-product-course-manage-personal-edit', query: { id: record.course_id } }">编辑</router-link>
-        <st-more-dropdown style="margin-left: 12px;">
-
-          <!-- <a-menu-item>
-            <a-popconfirm  :title="record.is_available.id === 0?'确认将'+record.course_name+'进行恢复':'当前课程不再支持购买、排课，确认将'+record.course_name+'置为无效'" @confirm="onConfirmSetAvailable(record)" @cancel="cancel" okText="确定" cancelText="取消">
-            {{record.is_available.id === 1 ? "置为无效":"恢复有效"}}
-            </a-popconfirm>
-          </a-menu-item> -->
-
-          <a-menu-item>
-            <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" okText="确定" cancelText="取消">
+        <router-link class="mg-r8" v-if="record.auth['brand_shop:product:personal_course|get']" :to="{ name: 'shop-product-course-manage-personal-info', query: { id: record.course_id } }">详情</router-link>
+        <router-link v-if="record.auth['brand_shop:product:personal_course|edit']" :to="{ name: 'shop-product-course-manage-personal-edit', query: { id: record.course_id } }">编辑</router-link>
+        <a href="javascript:;" v-if="record.auth['brand_shop:product:personal_course|del']">
+          <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" okText="确定" cancelText="取消">
               删除
-            </a-popconfirm>
-          </a-menu-item>
-        </st-more-dropdown>
+          </a-popconfirm>
+        </a>
       </div>
     </st-table>
 </div>
@@ -62,14 +59,13 @@
 </template>
 
 <script>
-import { columns, mockTable } from './list.config'
+import { columns } from './list.config'
 export default {
   name: 'ShopSaleListTable',
   data() {
     return {
       columns,
-      selectedRowKeys: [],
-      data: mockTable
+      selectedRowKeys: []
     }
   },
   props: {
