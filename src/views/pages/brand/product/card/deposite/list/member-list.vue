@@ -126,7 +126,6 @@
           </a-menu-item>
           <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|del']">
             <modal-link
-              v-if="record.upper_status && !record.publish_channel"
               tag="a"
               :to=" { name: 'card-confirm-del', props:{title: {title:record.card_name,id:record.card_id,flag:true}}, on:{del: onModalTest }}"
             >删除</modal-link>

@@ -3,7 +3,6 @@
   title="续卡"
   size="small"
   v-model="show"
-  @cancel="onCancel"
   wrapClassName="modal-sold-deal-sale">
     <div :class="sale('content')">
       <st-form :form="form" labelWidth="72px">
@@ -34,7 +33,7 @@
             </div>
           </st-form-item>
           <st-form-item labelGutter="12px" label="购买赠送">
-            <st-input-number v-model="giftAmount" :float="true" :placeholder="`请输入赠送的${info.card_type!==1?'天数':'次数'}`">
+            <st-input-number v-model="giftAmount" :placeholder="`请输入赠送的${info.card_type!==1?'天数':'次数'}`">
               <span slot="addonAfter">{{info.card_type!==1?'天':'次'}}</span>
             </st-input-number>
           </st-form-item>
@@ -335,11 +334,9 @@ export default {
         specs_id,
         advance_id: advanceId,
         reduce_amount: reduce,
-        coupon_id: couponId
+        coupon_id: couponId,
+        member_id: this.info.member_id
       })
-    },
-    onCancel() {
-      this.resetAdvance()
     },
     onCreateOrder() {
       this.form.validateFields((error, values) => {
