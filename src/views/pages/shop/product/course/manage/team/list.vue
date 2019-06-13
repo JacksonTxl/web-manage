@@ -1,14 +1,19 @@
 <template>
   <st-panel
     app>
-    <div slot="actions">
-      <st-input-search placeholder="团课名称" v-model="query.courseName" @search="onSearchCourseName"></st-input-search>
+    <div slot="title">
+      <st-input-search
+        placeholder="团课名称"
+        v-model="query.courseName"
+        @search="onSearchCourseName"
+        style="width: 280px"
+      />
     </div>
     <a-row>
-      <a-col :span="20">
-        <st-button type="primary" @click="onClickAddCourse">新增门店团体课程</st-button>
+      <a-col :span="8">
+        <st-button type="primary" icon="add" @click="onClickAddCourse">新增门店团体课程</st-button>
       </a-col>
-      <a-col :span="4">
+      <a-col :span="16" class="ta-r">
         <a-select class="mg-r8" v-model="query.category_id" style="width: 160px" @change="onChange">
           <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
         </a-select>
@@ -20,7 +25,7 @@
 <script>
 import ShopTable from './list#/shop-table'
 import { ListService } from './list.service'
-import { RouteService } from '../../../../../../../services/route.service'
+import { RouteService } from '@/services/route.service'
 export default {
   name: 'TeamCourseList',
   serviceInject() {

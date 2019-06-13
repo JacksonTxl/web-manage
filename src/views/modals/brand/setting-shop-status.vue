@@ -77,7 +77,7 @@ export default {
   },
   computed: {
     shopStatusList() {
-      return this.shopEnums.shop_status.value || {}
+      return this.shopEnums.shop_status_switch.value || {}
     },
     isValidList() {
       return this.shopEnums.is_valid.value || {}

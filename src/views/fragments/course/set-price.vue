@@ -5,13 +5,24 @@
         <st-form>
           <!-- 选择教练等级 如果定价方式为教练分级定价时，显示选择教练-->
           <st-form-item label="教练等级" required v-if="priceModel === 2">
-            <select-coach-level @change="(val) => onLevelChange(val, key)"></select-coach-level>
+            <select-coach-level
+              :value="priceGradientRecord.level_id"
+              @change="(val) => onLevelChange(val, key)"
+            >
+            </select-coach-level>
           </st-form-item>
           <!-- 单节售卖 -->
           <st-form-item label="单节售卖">
-            <a-checkbox :value="1" @change="(val) => onSingleSellChange(val, key)">支持单节课购买</a-checkbox>
-            <a-input-number v-model="priceGradientRecord.single_price"></a-input-number>
-            <span class="mg-l8">元/节</span>
+            <a-checkbox
+              :checked="!!priceGradientRecord.single_sell"
+              @change="(val) => onSingleSellChange(val, key)"
+            >
+              支持单节课购买
+            </a-checkbox>
+            <template v-if="priceGradientRecord.single_sell">
+              <a-input-number v-model="priceGradientRecord.single_price"></a-input-number>
+               <span class="mg-l8">元/节</span>
+            </template>
           </st-form-item>
           <!-- 私教课程定价模式：教练平级定价；私教课程售卖模式：统一标价 -->
           <st-form-item label="售卖定价" required>
@@ -202,7 +213,7 @@ export default {
       this.priceGradient[key].level_id = val
     },
     onSingleSellChange(e, key) {
-      this.priceGradient[key].single_sell = e.target.value
+      this.priceGradient[key].single_sell = +!this.priceGradient[key].single_sell
     },
     inputCheck(priceGradient) {
       let ret = true
