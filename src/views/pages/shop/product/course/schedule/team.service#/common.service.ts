@@ -2,7 +2,6 @@ import { TeamScheduleCommonApi, UnUsedSeatQuery, ConsumeQuery } from '@/api/v1/s
 import { Injectable } from 'vue-service-app'
 import { State, Computed } from 'rx-state/src'
 import { tap, pluck } from 'rxjs/operators'
-import { GetMemberInput } from '@/api/v1/course/team/schedule'
 
 export interface SetState {
   courseOptions: any[],
@@ -43,7 +42,7 @@ export class TeamScheduleCommonService {
    * @param query
    * 获取会员Options
    */
-  getMemberList(query: GetMemberInput) {
+  getMemberList(query: any) {
     return this.commonApi.getMemberList(query).pipe(tap(res => {
       this.state$.commit(state => {
         state.memberOptions = res.list

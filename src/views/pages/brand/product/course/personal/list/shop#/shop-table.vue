@@ -2,7 +2,7 @@
 <div>
   <st-table
       class="mg-t16"
-      rowKey="id"
+      rowKey="record.course_id"
       :columns="columns"
       :dataSource="personalCourseList"
       :scroll="{ x: 1300}"
@@ -16,6 +16,12 @@
       slot="course_name" slot-scope="course_name, record">
         {{course_name}}
       </router-link>
+      <div slot="sell_price" slot-scope="sell_price, record">
+        <modal-link
+        tag="a"
+        :to="{name: 'course-price-setting', props: {course: record}}"
+        >{{sell_price.course_price}}</modal-link>
+      </div>
       <div slot="coaches" slot-scope="coaches, record">
         <modal-link tag="a"
         :to="{name: 'course-support-course-cocahes-brand', props: {course: record}}"

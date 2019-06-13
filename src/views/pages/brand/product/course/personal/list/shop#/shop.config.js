@@ -19,7 +19,8 @@ export const columns = [
   },
   {
     title: '课程定价',
-    dataIndex: 'sell_price'
+    dataIndex: 'sell_price',
+    scopedSlots: { customRender: 'sell_price' }
   },
   {
     title: '授课教练数',
