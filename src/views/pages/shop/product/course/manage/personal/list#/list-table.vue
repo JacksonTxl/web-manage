@@ -32,7 +32,6 @@
       </div>
       <div slot="sell_price" slot-scope="sell_price">
         <a
-
           href="javascript:;"
         >{{sell_price}}</a>
       </div>

@@ -1,7 +1,6 @@
 <template>
   <st-panel
     app>
-    <!-- {{teamCourseList}} -->
     <div slot="actions">
       <st-input-search placeholder="团课名称" v-model="query.courseName" @search="onSearchCourseName"></st-input-search>
     </div>

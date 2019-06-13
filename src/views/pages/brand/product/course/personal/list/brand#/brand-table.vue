@@ -36,7 +36,7 @@
         <modal-link
         tag="a"
         :to="{name: 'course-price-setting', props: {course: record}}"
-        >{{sell_price}}</modal-link>
+        >{{sell_price.course_price}}</modal-link>
       </div>
       <div slot="is_available" slot-scope="is_available">
           <span><a-badge :status="is_available === 1?'success':'error'" />{{is_available | enumFilter('personal_course.is_available')}}</span>
