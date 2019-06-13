@@ -1,8 +1,8 @@
 import { Api } from '../../api'
 
 export interface MemberCouponParams {
-  member_id: number,
-  card_id: number,
+  member_id: number
+  card_id: number
   specs_id: number
 }
 export interface MemberListInput {
@@ -18,6 +18,7 @@ export interface TransactionPriceInput {
   reduce_amount?:number
   coupon_id?:string
   member_id?:number
+  surplus_amount?:string
 }
 export class TransactionApi extends Api {
   /**

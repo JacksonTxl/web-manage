@@ -180,6 +180,12 @@ export class CardApi extends Api {
     return this.http.get(`/v1/sold/cards/member/upgrade/info/${id}`)
   }
   /**
+   * 售出 会员卡 升级
+   */
+  setCardUpgrade(params:any, id:string) {
+    return this.http.put(`/v1/sold/cards/member/upgrade/${id}`, { params })
+  }
+  /**
    * 门店可售卖的会员卡列表
    */
   getCardUpgradeList(card_name_search?:string) {
