@@ -9,7 +9,7 @@
     </div>
     <div :class="listClass('operation')">
       <router-link to="./add-select">
-        <st-button type="primary" @click="onAddPackage">新增门店课程包</st-button>
+        <st-button type="primary" v-if="auth.isAdd" @click="onAddPackage" icon="add">新增门店课程包</st-button>
       </router-link>
       <div :class="listClass('select-group')">
         <a-select v-model="query.package_type" @change="onTypeChange" :class="listClass('select')" style="width: 160px">
@@ -27,6 +27,7 @@
       </div>
     </div>
     <st-table
+    v-if="auth.isList"
     :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
     :columns="columns"
     @change="onPageChange"
@@ -54,13 +55,13 @@
         </a-tooltip>
       </template>
       <div slot="action" slot-scope="text,record">
-        <a @click="onEdit(record.package_course_id,record.package_type)">编辑</a>
+        <a v-if="record.auth['shop:product:package_course|edit']" @click="onEdit(record.package_course_id,record.package_type)">编辑</a>
         <a-divider type="vertical"></a-divider>
-        <a @click="onDetail(record.package_course_id,record.package_type)">详情</a>
+        <a v-if="record.auth['shop:product:package_course|get']" @click="onDetail(record.package_course_id,record.package_type)">详情</a>
         <st-more-dropdown class="mgl-16">
-          <a-menu-item @click="onsalePackage(record.package_course_id,record.course_name,record.start_time,record.end_time)" v-if="record.shelf_status!==1">上架</a-menu-item>
-          <a-menu-item @click="offsalePackage(record.package_course_id,record.course_name)" v-else>下架</a-menu-item>
-          <a-menu-item @click="deletePackage(record.package_course_id,record.course_name)">删除</a-menu-item>
+          <a-menu-item v-if="record.auth['shop:product:package_course|up']" @click="onsalePackage(record.package_course_id,record.course_name,record.start_time,record.end_time)">上架</a-menu-item>
+          <a-menu-item v-if="record.auth['shop:product:package_course|down']" @click="offsalePackage(record.package_course_id,record.course_name)">下架</a-menu-item>
+          <a-menu-item v-if="record.auth['shop:product:package_course|del']" @click="deletePackage(record.package_course_id,record.course_name)">删除</a-menu-item>
         </st-more-dropdown>
       </div>
     </st-table>
@@ -177,7 +178,8 @@ export default {
       page: this.listService.page$,
       loading: this.listService.loading$,
       package_course: this.userService.packageCourseEnums$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.listService.auth$
     }
   },
   bem: {
