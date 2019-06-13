@@ -56,6 +56,12 @@ export class ShopPersonalCourseApi extends Api {
   getMemberList(member: string) {
     return this.http.get(`/v1/schedule/personal/member`, { query: { member } })
   }
+  /**
+   * 品牌私教课详情
+   */
+  getInfo(query: GetInfoInput) {
+    return this.http.get(`/v1/course/personal/shop/${query.id}`)
+  }
 }
 export interface GetPersonalBrandCourseListInput {
   category_id?: number,
@@ -138,4 +144,10 @@ export interface SetPriceInput {
    * 价格梯度price_setting等于1时必填
    */
   price_gradient?: any[]
+}
+export interface GetInfoInput {
+  /**
+   * 私教课id
+   */
+  id: number
 }
