@@ -5,7 +5,7 @@
         <div>
           <!-- TODO: 批量转入品牌库的按钮 -->
           <modal-link
-            v-if="this.selectedRowKeys.length >= 1 && auth.isTransfer"
+            v-if="this.selectedRowKeys.length >= 1 && auth.transfer"
             type="primary"
             tag="st-button"
             :to="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}"

@@ -32,7 +32,7 @@ export class BrandService extends Store<SetState> {
       supportShopList: [],
       supportCoachList: [],
       auth: {
-        isAdd: this.authService.can('brand_shop:product:personal_course|add')
+        add: this.authService.can('brand_shop:product:personal_course|add')
       }
     })
     this.personalCourseList$ = new Computed(this.state$.pipe(pluck('personalCourseList')))

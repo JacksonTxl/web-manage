@@ -27,7 +27,7 @@ export class CategoryService extends Store<ListState> {
     this.state$ = new State({
       resData: {},
       auth: {
-        isAdd: this.authService.can('brand_shop:course:course_type|add')
+        add: this.authService.can('brand_shop:course:course_type|add')
       }
     })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
