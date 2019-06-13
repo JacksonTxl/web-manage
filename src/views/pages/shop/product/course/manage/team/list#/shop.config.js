@@ -1,16 +1,12 @@
 export const columns = [
   {
-    title: '售卖场馆',
-    dataIndex: 'shop_name'
-  },
-  {
-    title: '课程类型',
-    dataIndex: 'category_name'
-  },
-  {
-    title: '课程名称',
+    title: '团课名称',
     dataIndex: 'course_name',
     scopedSlots: { customRender: 'course_name' }
+  },
+  {
+    title: '课程类别',
+    dataIndex: 'category_name'
   },
   {
     title: '课程强度',
@@ -22,8 +18,12 @@ export const columns = [
     dataIndex: 'duration'
   },
   {
-    title: '参考课时费',
+    title: '参考课时费（元/节）',
     dataIndex: 'price'
+  },
+  {
+    title: '发布渠道',
+    dataIndex: 'publish_name'
   },
   {
     title: '操作',

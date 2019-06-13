@@ -8,6 +8,12 @@ export class BrandTeamCourseApi extends Api {
     return this.http.get('/v1/course/team/brand', { query })
   }
   /**
+  * 获取品牌门店私教课列表
+  */
+  getTeamCourseListInShop(query: GetTeamBrandCourseListInput) {
+    return this.http.get('/v1/course/team/brand/shop', { query })
+  }
+  /**
    * 添加品牌私教课
    */
   addCourse(params: SetCourseInput) {
@@ -44,6 +50,12 @@ export class BrandTeamCourseApi extends Api {
   getTeamCourseInfo(course_id: string) {
     return this.http.get(`/v1/course/team/brand/${course_id}`)
   }
+  /**
+   * 批量转入品牌团课
+   */
+  putCourseTeamIntoBrand(params: PutCourseTeamIntoBrandInput) {
+    return this.http.put(`/v1/course/team/into/brand`, { params })
+  }
 }
 export interface GetTeamBrandCourseListInput {
   category_id?: number,
@@ -51,6 +63,12 @@ export interface GetTeamBrandCourseListInput {
   page?: number,
   size?: number,
   is_available?: number
+}
+export interface PutCourseTeamIntoBrandInput {
+  course_id: number,
+  shop_setting: number,
+  shop_ids: any[],
+  coach_ids?: any[]
 }
 export interface SetCourseInput {
   /**

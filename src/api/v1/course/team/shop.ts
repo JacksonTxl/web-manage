@@ -21,10 +21,10 @@ export class ShopTeamCourseApi extends Api {
     return this.http.delete(`/v1/course/team/shop/${course_id}`)
   }
   /**
-   * 获取品牌门店私教课列表
+   * 获取门店团体课列表
    */
-  getTeamCourseListInShop(query: GetTeamBrandCourseListInput) {
-    return this.http.get('/v1/course/team/brand/shop', { query })
+  getTeamCourseList(query: GetTeamBrandCourseListInput) {
+    return this.http.get('/v1/course/team/shop', { query })
   }
   /**
    * 设置上课门店
@@ -37,12 +37,6 @@ export class ShopTeamCourseApi extends Api {
    */
   getCourseEdit(query: GetCourseEditInput) {
     return this.http.get(`/v1/course/team/shop/edit/${query.course_id}`)
-  }
-  /**
-   * 批量转入品牌团课
-   */
-  putCourseTeamIntoBrand(params: PutCourseTeamIntoBrandInput) {
-    return this.http.put(`/v1/course/team/into/brand`, { params })
   }
 }
 export interface PutCourseTeamIntoBrandInput {

@@ -4,6 +4,7 @@ import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state/src'
 import { tap, map, pluck } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
+import { ShopTeamCourseApi, GetTeamBrandCourseListInput } from '@/api/v1/course/team/shop'
 
 @Injectable()
 export class ListService implements RouteGuard {
@@ -11,23 +12,21 @@ export class ListService implements RouteGuard {
   shopSelectOptions$ = new State<any[]>([])
   state$: State<any>
   teamCourseList$: Computed<any>
-  SET_TEAM_COURSE_LIST(data: any) {
-    this.state$.commit(state => {
-      state.teamCourseList = data.list
-    })
-  }
-  getTeamCourseListInShop(params: GetTeamBrandCourseListInput) {
-    return this.shopTeamCourseApi.getTeamCourseListInShop(params).pipe(
-      tap(state => {
-        this.SET_TEAM_COURSE_LIST(state)
-      })
-    )
-  }
-  constructor(private shopApi: ShopApi, private courseApi: CourseApi) {
+  constructor(private shopApi: ShopApi, private courseApi: CourseApi, private shopTeamCourseApi: ShopTeamCourseApi) {
     this.state$ = new State({
       teamCourseList: []
     })
     this.teamCourseList$ = new Computed(this.state$.pipe(pluck('teamCourseList')))
+  }
+
+  getTeamCourseListInShop(params: GetTeamBrandCourseListInput) {
+    return this.shopTeamCourseApi.getTeamCourseList(params).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.teamCourseList = res.list
+        })
+      })
+    )
   }
   getCategoryList() {
     return this.courseApi.getCourseCategoryList({}).pipe(
@@ -62,6 +61,11 @@ export class ListService implements RouteGuard {
   }
   init() {
     return forkJoin(this.getShopList(), this.getCategoryList())
+  }
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.getTeamCourseListInShop(to.query).subscribe(() => {
+      next()
+    })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.init().subscribe(() => {

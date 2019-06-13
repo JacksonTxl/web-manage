@@ -1,29 +1,33 @@
 <template>
   <st-panel
     app>
+    <!-- {{teamCourseList}} -->
     <div slot="actions">
-      <a-input-search placeholder="团课名称" v-model="query.courseName" @search="onSearchCourseName"></a-input-search>
+      <st-input-search placeholder="团课名称" v-model="query.courseName" @search="onSearchCourseName"></st-input-search>
     </div>
     <a-row>
-      <a-col :span="6">
-        <st-button>新增门店团体课程</st-button>
+      <a-col :span="20">
+        <st-button type="primary" @click="onClickAddCourse">新增门店团体课程</st-button>
       </a-col>
-      <a-col :span="18">
-        <a-select></a-select>
-        <a-select></a-select>
+      <a-col :span="4">
+        <a-select class="mg-r8" v-model="query.category_id" style="width: 160px" @change="onChange">
+          <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
+        </a-select>
       </a-col>
     </a-row>
-    <shop-table></shop-table>
+    <shop-table :teamCourseList="teamCourseList"></shop-table>
   </st-panel>
 </template>
 <script>
-import { RouteService } from '../../../../../../../services/route.service'
 import ShopTable from './list#/shop-table'
+import { ListService } from './list.service'
+import { RouteService } from '../../../../../../../services/route.service'
 export default {
   name: 'TeamCourseList',
   serviceInject() {
     return {
-      routeService: RouteService
+      routeService: RouteService,
+      listService: ListService
     }
   },
   components: {
@@ -31,11 +35,20 @@ export default {
   },
   rxState() {
     return {
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      shopsOptions: this.listService.shopSelectOptions$,
+      categoryList: this.listService.categoryList$,
+      teamCourseList: this.listService.teamCourseList$
     }
   },
   methods: {
+    onClickAddCourse() {
+      this.$router.push({ name: 'shop-product-course-manage-team-add' })
+    },
     onSearchCourseName(val) {
+      this.$router.push({ query: this.query })
+    },
+    onChange() {
       this.$router.push({ query: this.query })
     }
   }

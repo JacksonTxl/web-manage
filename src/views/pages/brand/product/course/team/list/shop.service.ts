@@ -1,7 +1,7 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
 import { State, Computed } from 'rx-state/src'
-import { ShopTeamCourseApi, GetTeamBrandCourseListInput, PutCourseTeamIntoBrandInput } from '@/api/v1/course/team/shop'
+import { BrandTeamCourseApi, GetTeamBrandCourseListInput, PutCourseTeamIntoBrandInput } from '@/api/v1/course/team/brand'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
@@ -10,7 +10,7 @@ export class ShopService {
   teamCourseList$: Computed<any>
   auth$: Computed<object>
   constructor(
-    private shopTeamCourseApi: ShopTeamCourseApi,
+    private shopTeamCourseApi: BrandTeamCourseApi,
     private authService: AuthService
   ) {
     this.state$ = new State({
@@ -36,7 +36,7 @@ export class ShopService {
     )
   }
   deleteCourse(courseId: string) {
-    return this.shopTeamCourseApi.deleteTeamCourse(courseId)
+    return this.shopTeamCourseApi.deleteCourse(courseId)
   }
   putCourseTeamIntoBrand(query: PutCourseTeamIntoBrandInput) {
     return this.shopTeamCourseApi.putCourseTeamIntoBrand(query)
