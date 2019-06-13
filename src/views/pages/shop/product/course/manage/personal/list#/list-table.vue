@@ -6,7 +6,6 @@
       :loading="loading"
       :columns="columns"
       :dataSource="personalCourseList"
-      :scroll="{ x: 1300}"
       @change="onChange">
       <div slot="shops" slot-scope="shops, record">
         <modal-link tag="a"

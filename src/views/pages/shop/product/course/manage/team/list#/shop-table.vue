@@ -4,7 +4,6 @@
   rowKey="id"
   :columns="columns"
   :dataSource="teamCourseList"
-  :scroll="{ x: 1300}"
   @change="onChange"
 >
 <template slot="course_name" slot-scope="text,record">

@@ -23,7 +23,8 @@ export class ListService implements RouteGuard {
     this.state$ = new State({
       teamCourseList: [],
       auth: {
-        add: this.authService.can('brand_shop:product:team_course|add')
+        add: this.authService.can('brand_shop:product:team_course|add'),
+        shopList: this.authService.can('brand_shop:product:team_course|shop_list')
       }
     })
     this.teamCourseList$ = new Computed(this.state$.pipe(pluck('teamCourseList')))
