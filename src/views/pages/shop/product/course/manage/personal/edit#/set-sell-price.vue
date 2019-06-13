@@ -20,18 +20,9 @@
             <template slot="addonAfter">天</template>
           </st-input-number>
         </st-form-item>
-        <!-- 定价权限 -->
-        <st-form-item label="定价权限" required>
-          <a-radio-group @change="onChange" v-decorator="ruleConfig.priceSetting">
-            <a-radio :value="1">品牌统一定价</a-radio>
-            <a-radio :value="2">售卖场馆自主定价</a-radio>
-          </a-radio-group>
-        </st-form-item>
       </a-col>
     </a-row>
-     <section v-if="isShowUnitSet">
-      <set-price :value="priceGradient" @change="onPriceGradientChange"/>
-    </section>
+    <set-price :value="priceGradient" @change="onPriceGradientChange"/>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
@@ -82,7 +73,6 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      priceSetting: 1,
       sellTypeOptions: [{
         label: '线下售卖',
         value: 1
@@ -91,11 +81,6 @@ export default {
         value: 2
       }],
       priceGradient: []
-    }
-  },
-  computed: {
-    isShowUnitSet() {
-      return this.priceSetting === 1
     }
   },
   mounted() {
@@ -108,7 +93,6 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.getData()
-        console.log('step 3 data', data)
         // if (!this.inputCheck(priceGradient)) {
         //   return
         // }
@@ -138,9 +122,6 @@ export default {
       })
       return ret
     },
-    onChange(e) {
-      this.priceSetting = e.target.value
-    },
     inputCheck(priceGradient) {
       let ret = true
       for (let i = 0; i < priceGradient.length; i++) {
@@ -168,8 +149,6 @@ export default {
         sell_type: info.sell_type,
         effective_unit: info.effective_unit
       })
-      console.log('set', info.price_gradient)
-      this.priceSetting = info.price_setting
       this.priceGradient = info.price_gradient
     },
     getData() {
