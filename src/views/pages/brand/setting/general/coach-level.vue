@@ -1,5 +1,5 @@
 <template>
-  <st-panel app>
+  <st-panel app v-if="auth.get">
     <st-t2>教练等级</st-t2>
     <div class="mg-t24 st-des">
       已添加{{resData.total}}个，支持添加{{resData.max}}个
@@ -15,7 +15,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-if="auth.add">
           <td colspan="5" class="st-form-table__add">
             <modal-link tag="a" :to="{ name: 'coach-level-add', on: {
               change: onListChange } }">
@@ -59,7 +59,8 @@ export default {
   rxState() {
     return {
       resData: this.listService.resData$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.listService.auth$
     }
   },
   methods: {

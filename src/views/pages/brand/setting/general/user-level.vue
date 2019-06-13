@@ -1,5 +1,5 @@
 <template>
-  <st-panel>
+  <st-panel v-if="auth.get">
     <div :class="b()">
       <st-t2>用户等级设置</st-t2>
       <a-row :gutter="12" class="mg-t24 ta-c">
@@ -29,7 +29,7 @@
         <a-col :span="10">
           <div :class="b('item')">
             <st-t2>{{member.level_name}}</st-t2>
-            <a v-if="!isEdit" href="javascript: void(0);" :class="b('item-edit')" @click="onEdit">
+            <a v-if="auth.edit && !isEdit" href="javascript: void(0);" :class="b('item-edit')" @click="onEdit">
               <st-icon type="edit"></st-icon>
               <span class="mg-l4 color-text-light">编辑</span>
             </a>
@@ -118,11 +118,13 @@ export default {
     }
   },
   rxState() {
+    const { userLevelService } = this
     return {
-      list: this.userLevelService.list$,
-      info: this.userLevelService.info$,
+      list: userLevelService.list$,
+      info: userLevelService.info$,
       query: this.routeService.query$,
-      loading: this.userLevelService.loading$
+      loading: userLevelService.loading$,
+      auth: userLevelService.auth$
     }
   },
   data() {
