@@ -173,4 +173,16 @@ export class CardApi extends Api {
   setCardRenewal(params:RenewalCardInput, id:string) {
     return this.http.put(`/v1/sold/cards/member/renewal/${id}`, { params })
   }
+  /**
+   * 售出 会员卡 升级回显
+   */
+  getCardUpgradeInfo(id:string) {
+    return this.http.get(`/v1/sold/cards/member/upgrade/info/${id}`)
+  }
+  /**
+   * 门店可售卖的会员卡列表
+   */
+  getCardUpgradeList(card_name_search?:string) {
+    return this.http.get(`/v1/sold/cards/shop/saled_card`, { query: { card_name_search } })
+  }
 }

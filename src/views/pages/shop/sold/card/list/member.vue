@@ -78,9 +78,10 @@
             slot-scope="text"
           >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
           <div slot="action" slot-scope="text,record">
-            <a @click="onRenewal(record)">续卡</a>
+            <a @click="onUpgrade(record)">升级</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
+              <a-menu-item @click="onRenewal(record)">续卡</a-menu-item>
               <a-menu-item @click="onSetTime(record)">修改有效时间</a-menu-item>
               <a-menu-item @click="onFreeze(record)">冻结</a-menu-item>
               <a-menu-item @click="onUnfreeze(record)">取消冻结</a-menu-item>
@@ -474,6 +475,15 @@ export default {
               }
             })
           }
+        }
+      })
+    },
+    // 升级
+    onUpgrade(record) {
+      this.$modalRouter.push({
+        name: 'sold-card-upgrade-member',
+        props: {
+          id: record.id
         }
       })
     },
