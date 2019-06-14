@@ -36,6 +36,12 @@ export class ShopApi extends Api {
     return this.http.get('/v1/shop', { query })
   }
   /**
+   * 【品牌】品牌所有门店基本信息（主要用于下拉框）
+   */
+  getShopListForSelect() {
+    return this.http.get('/v1/shop/all')
+  }
+  /**
    * 门店列表 省市区门店树形
    */
   getShopListTree() {
