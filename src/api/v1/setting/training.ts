@@ -6,7 +6,11 @@ export class TrainingApi extends Api {
    * 训练目的列表
    */
   getTrainingAimList(query: GetTrainingAimListInput) {
-    return this.http.get(url, { query })
+    return this.http.get(url, {
+      query: Object.assign({
+        size: 100
+      }, query)
+    })
   }
   /**
    * 新增训练目的
