@@ -147,7 +147,7 @@ export class CardsApi extends Api {
     return this.http.delete(`/v1/cards/brand/deposit/${id}`)
   }
   /**
-   * 品牌储值卡上架
+   * 品牌储值卡上架 /v1/cards/member/brand/shelf
    */
   setCardsDepositBrandOnLine(params: any) {
     return this.http.put(`/v1/cards/brand/deposit/online`, { params })
