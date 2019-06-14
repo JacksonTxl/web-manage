@@ -357,7 +357,6 @@ export default {
           this.shopData.province_id = values.shop_PCD[1]
           this.shopData.city_id = values.shop_PCD[0]
           this.shopData.district_id = values.shop_PCD[2]
-          console.log(this.shopData, values)
           this.infoService.save(this.shopData).subscribe(this.onSubmitSuccess)
         }
       })
