@@ -3,8 +3,7 @@ import { Effect } from 'rx-state'
 import { Store } from '@/services/store'
 import { ShopStatusApi, UpdateInput } from '@/api/v1/shop/status'
 
-interface SetState {
-}
+interface SetState {}
 @Injectable()
 export class ShopStatusService extends Store<SetState> {
   constructor(protected shopStatusApi: ShopStatusApi) {

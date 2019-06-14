@@ -28,15 +28,9 @@ export class ListService implements RouteGuard {
     )
   }
   getShopList() {
-    return this.shopApi.getShopList().pipe(map(res => {
-      const shopInfo = res.shop_info
-      return [{ shop_id: -1, shop_name: '所有门店' }, ...shopInfo.map((item: any) => {
-        const { shop_id, shop_name } = item
-        return {
-          shop_id,
-          shop_name
-        }
-      })]
+    return this.shopApi.getShopListForSelect().pipe(map(res => {
+      const list = res.shops
+      return [{ id: -1, shop_name: '所有门店' }, ...list]
     }),
     tap(state => {
       this.shopSelectOptions$.commit(() => state)

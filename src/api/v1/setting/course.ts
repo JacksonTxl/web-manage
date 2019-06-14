@@ -5,7 +5,11 @@ export class CourseApi extends Api {
    * 课程类型列表
    */
   getCourseCategoryList(query: GetCourseCategoryListInput) {
-    return this.http.get(url, { query })
+    return this.http.get(url, {
+      query: Object.assign({
+        size: 100
+      }, query)
+    })
   }
   /**
    * 添加课程类型
