@@ -48,14 +48,19 @@ export class ShopStaffApi extends Api {
   updateStaffBasicInfo(id: string, params: EditStaffBasicInfoQuery) {
     return this.http.put(`/v1/staff/shop/basic/${id}`, { params })
   }
-
+  putStaffBindPhysical(params: PutStaffBindPhysicalInput) {
+    return this.http.put(`/v1/staff/bind/physical/${params.id}`, { params })
+  }
   /**
    * 修改员工详细信息
    */
   updateStaffDetailedInfo(id: string, params : EditStaffDetailInfoQuery) {
     return this.http.put(`/v1/staff/shop/detail/${id}`, { params })
   }
-
+  // 员工详情公共头
+  getStaffInfoCommonHeader(id: string) {
+    return this.http.get(`/v1/staff/shop/common/${id}`)
+  }
   /**
    * 修改教练信息
    */
@@ -66,14 +71,14 @@ export class ShopStaffApi extends Api {
   /**
    * 绑定实体卡 / 重新绑定实体卡
    */
-  bindcard(id: string) {
+  bindCard(id: string) {
     return this.http.put(`/v1/staff/bind/physical/${id}`)
   }
 
   /**
    * 工资账户设置
    */
-  bindbank(id: string, params: BindbankParams) {
+  bindBank(id: string, params: BindBankParams) {
     return this.http.put(`/v1/staff/bind/bank/${id}`, { params })
   }
 }
@@ -83,7 +88,7 @@ interface CommonConfig {
     // 每页条数
     size? : number;
 }
-export interface BindbankParams{
+export interface BindBankParams{
   /**
    * 姓名
    */
@@ -97,6 +102,11 @@ export interface BindbankParams{
    */
   bank_name: string;
 
+}
+export interface PutStaffBindPhysicalInput {
+  id?: string
+  card_number?: string
+  physical_number?: string
 }
 export interface GetListQuery extends CommonConfig{
     /**

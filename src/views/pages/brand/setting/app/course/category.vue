@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-if="auth.isAdd">
+        <tr v-if="auth.add">
           <td colspan="5" class="st-form-table__add">
               <st-button
                 type="dashed" block :disabled="resData.total >= resData.max"

@@ -33,7 +33,7 @@
 </template>
 <script>
 
-import { BindService } from './bind.service'
+import { BindService } from './bind-card.service'
 import { MessageService } from '@/services/message.service'
 
 export default {

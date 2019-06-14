@@ -6,8 +6,20 @@
     size="small"
   >
     <div>
-      <edit-holiday v-if="isHoliday"></edit-holiday>
-      <add-holiday v-else></add-holiday>
+      <edit-holiday
+        v-if="isHoliday"
+        :shopId="shopId"
+        :shopName="shopName"
+      />
+      <add-holiday
+        v-else
+        :shopId="shopId"
+        :shopName="shopName"
+        :startTime="startTime"
+        :endTime="endTime"
+        :isHoliday="isHoliday"
+        @success="onSuccess"
+      />
     </div>
   </st-modal>
 </template>
@@ -50,6 +62,12 @@ export default {
   components: {
     AddHoliday,
     EditHoliday
+  },
+  methods: {
+    onSuccess() {
+      this.$emit('change')
+      this.show = false
+    }
   }
 }
 </script>

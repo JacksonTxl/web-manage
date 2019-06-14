@@ -5,6 +5,7 @@ import { State, Computed, Effect } from 'rx-state/src'
 import { tap, map, pluck } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import { ShopTeamCourseApi, GetTeamBrandCourseListInput } from '@/api/v1/course/team/shop'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class ListService implements RouteGuard {
@@ -12,17 +13,29 @@ export class ListService implements RouteGuard {
   shopSelectOptions$ = new State<any[]>([])
   state$: State<any>
   teamCourseList$: Computed<any>
-  constructor(private shopApi: ShopApi, private courseApi: CourseApi, private shopTeamCourseApi: ShopTeamCourseApi) {
+  auth$: Computed<object>
+  constructor(
+    private shopApi: ShopApi,
+    private courseApi: CourseApi,
+    private shopTeamCourseApi: ShopTeamCourseApi,
+    private authService: AuthService
+  ) {
     this.state$ = new State({
-      teamCourseList: []
+      teamCourseList: [],
+      auth: {
+        add: this.authService.can('brand_shop:product:team_course|add'),
+        shopList: this.authService.can('brand_shop:product:team_course|shop_list')
+      }
     })
     this.teamCourseList$ = new Computed(this.state$.pipe(pluck('teamCourseList')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
 
   getTeamCourseListInShop(params: GetTeamBrandCourseListInput) {
     return this.shopTeamCourseApi.getTeamCourseList(params).pipe(
       tap(res => {
         this.state$.commit(state => {
+          state = this.authService.filter(state)
           state.teamCourseList = res.list
         })
       })
@@ -61,6 +74,9 @@ export class ListService implements RouteGuard {
   }
   init() {
     return forkJoin(this.getShopList(), this.getCategoryList())
+  }
+  deleteCourse(courseId: string) {
+    return this.shopTeamCourseApi.deleteTeamCourse(courseId)
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getTeamCourseListInShop(to.query).subscribe(() => {

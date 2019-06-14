@@ -1,5 +1,5 @@
 <template>
-  <st-panel class="page-shop-staff-list">
+  <st-panel class="page-shop-staff-list" app>
     <a-row :gutter="8">
       <a-col :lg="17">
         <a-tree-select
@@ -53,8 +53,8 @@
           class="mg-r8"
           :defaultValue="-1"
           placeholder="请选择员工职能"
-          @change="onChooseStaffFn"
-        >
+          v-model="query.identity"
+          @change="onChange">
           <a-select-option :value="1">一般员工</a-select-option>
           <a-select-option :value="3">私人教练</a-select-option>
           <a-select-option :value="2">会籍销售</a-select-option>
@@ -65,11 +65,12 @@
           class="mg-r8"
           :defaultValue="-1"
           placeholder="请选择员工状态"
-          @change="onChooseStaffStatus"
-        >
+          v-model="query.work_status"
+          @change="onChange">
+          <a-select-option :value="-1">全部员工状态</a-select-option>
           <a-select-option :value="1">在职</a-select-option>
           <a-select-option :value="2">离职</a-select-option>
-          <a-select-option :value="-1">全部员工状态</a-select-option>
+
         </a-select>
         <st-button class="mg-r8" :disabled="selectedRowKeys.length > 0 ? false : true">
           <modal-link
@@ -88,7 +89,7 @@
       <st-table
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         :columns="columns"
-        :dataSource="stafflist.list"
+        :dataSource="staffList.list"
         :scroll="{ x: 1500 }"
         class="page-shop-staff-table"
         :rowKey="record => record.staff_id"
@@ -125,17 +126,11 @@
             <a href="javascript:;" @click="onEdit(record)">编辑</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown>
-              <a-menu-item v-if="record.has_card == 0">
+              <a-menu-item>
                 <modal-link
                   tag="a"
-                  :to="{ name: 'shop-staff-bind-card', props: {data: record } }"
+                  :to="{ name: 'shop-staff-bind-card', props: {staff: record } }"
                 >绑实体卡</modal-link>
-              </a-menu-item>
-              <a-menu-item v-if="record.has_card == 1">
-                <modal-link
-                  tag="a"
-                  :to="{ name: 'shop-staff-re-bind-card', props: {data: record } }"
-                >重绑实体卡</modal-link>
               </a-menu-item>
               <a-menu-item>
                 <modal-link
@@ -172,9 +167,9 @@
 
 <script>
 import { UserService } from '@/services/user.service'
-import { MessageService } from '@/services/message.service'
 import { ListService } from './list.service'
 import ChangeStaffPostion from './list#/change-staff-postion'
+import { RouteService } from '../../../../services/route.service'
 const columns = [
   {
     title: '姓名',
@@ -232,13 +227,14 @@ export default {
   serviceInject() {
     return {
       userService: UserService,
-      messageService: MessageService,
+      routeService: RouteService,
       service: ListService
     }
   },
   rxState() {
     return {
-      stafflist: this.service.stafflist$,
+      query: this.routeService.query$,
+      staffList: this.service.staffList$,
       department: this.service.department$
     }
   },
@@ -247,9 +243,9 @@ export default {
       visible: false,
       columns,
       pagination: {
-        pageSize: this.stafflist.page.size,
-        current: this.stafflist.page.current_page,
-        total: this.stafflist.page.total_counts
+        pageSize: this.staffList.page.size,
+        current: this.staffList.page.current_page,
+        total: this.staffList.page.total_counts
       },
       selectedRowKeys: [],
       selectStaff: [],
@@ -258,10 +254,10 @@ export default {
       modaldata: {}
     }
   },
-  created() {
-    console.log('部门列表', this.department)
-  },
   methods: {
+    onChange() {
+      this.$router.push({ query: this.query })
+    },
     changeStaffPosition(id) {
       this.userService.getEnums().subscribe(res => {
         this.enums = res.staff

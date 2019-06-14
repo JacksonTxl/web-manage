@@ -1,13 +1,16 @@
 <template>
-  <div>
+  <div v-if="auth.reserve.get">
   <!-- 团课定价设置 -->
     <a-row>
       <a-col :span="16"><st-t2>团体课程预约设置</st-t2></a-col>
       <a-col :span="8" class="ta-r">
-        <modal-link tag="a" :to="{ name:'brand-setting-team-reserve' }">
+        <a href="javascript: void(0)"
+          v-if="auth.reserve.edit"
+          v-modal-link="{ name:'brand-setting-team-reserve' }"
+        >
           <st-icon type="edit"></st-icon>
           <span class="mg-l4 color-text-light">编辑</span>
-        </modal-link>
+        </a>
       </a-col>
     </a-row>
     <!-- 预约范围 -->
@@ -82,7 +85,8 @@ export default {
     return {
       loading: teamService.loading$,
       settingEnums: user.settingEnums$,
-      resData: teamService.resData$
+      resData: teamService.resData$,
+      auth: teamService.auth$
     }
   },
   computed: {

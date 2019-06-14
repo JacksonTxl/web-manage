@@ -4,7 +4,7 @@
       <a-col :xs="22">
         <div>{{shopName}}</div>
         <st-form-item v-show="false">
-          <input type="hidden" v-decorator="formRules.id">
+          <input type="hidden" v-decorator="formRules.shopId">
         </st-form-item>
         <div v-show="!isEdit">
           <st-form-item label="放假开始时间" required class="mg-t16">
@@ -20,7 +20,7 @@
         </div>
         <div v-show="isEdit">
           <st-form-item v-show="false">
-            <input type="hidden" v-decorator="formRules.id">
+            <input type="hidden" v-decorator="formRules.shopId">
           </st-form-item>
           <st-form-item label="放假开始时间" required class="mg-t16">
             <a-date-picker
@@ -53,7 +53,7 @@ import { MessageService } from '@/services/message.service'
 import { ShopStatusService as EditService } from '../setting-shop-status.service'
 import moment from 'moment'
 const formRules = {
-  id: ['id'],
+  shopId: ['shop_id'],
   startTime: [
     'holiday_start_time', {
       rules: [{
@@ -122,7 +122,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.form.setFieldsValue({
-        id: this.shopId,
+        shop_id: this.shopId,
         holiday_start_time: this.startTime,
         holiday_end_time: this.endTime
       })
@@ -134,7 +134,6 @@ export default {
     },
     onSubmit(e) {
       e.preventDefault()
-      const that = this
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
         this.editService.update(data).subscribe(this.onSubmitSuccess)

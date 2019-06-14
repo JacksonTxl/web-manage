@@ -27,7 +27,7 @@ export class TrainingAimService extends Store<ListState> {
     this.state$ = new State({
       resData: {},
       auth: {
-        isAdd: this.authService.can('brand_shop:member:training_aim|add')
+        add: this.authService.can('brand_shop:member:training_aim|add')
       }
     })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))

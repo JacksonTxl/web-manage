@@ -171,24 +171,6 @@
         </a-col>
       </a-row>
     </st-form>
-    <pre>
-        设施
-      {{service_ids}}
-      营业状态
-      {{shopData.shop_status}}
-      营业时间
-      {{shopData.business_time}}
-      门店图片：
-      {{shopInfo.shop_info.shop_images}}
-      电话
-      {{shopData.shop_phones}}
-      城市选择
-      {{shopData.address}}
-      详细地址
-      {{shopData.province_id}} {{shopData.city_id}} {{shopData.district_id}}
-      邮箱
-      {{shopData.email}}
-    </pre>
   </st-panel>
 </template>
 <script>
@@ -202,7 +184,7 @@ export default {
     return {
       rules: RuleConfig,
       OSS: OssService,
-      MessageService: MessageService,
+      messageService: MessageService,
       infoService: ShopService
     }
   },
@@ -376,11 +358,17 @@ export default {
           this.shopData.city_id = values.shop_PCD[0]
           this.shopData.district_id = values.shop_PCD[2]
           console.log(this.shopData, values)
-          this.infoService.save(this.shopData).subscribe(res => {
-            console.log(res)
-          })
-        } else {
+          this.infoService.save(this.shopData).subscribe(this.onSubmitSuccess)
         }
+      })
+    },
+    onSubmitSuccess() {
+      this.messageService.success({
+        content: '保存成功'
+      })
+      this.$router.push({
+        query: {},
+        force: true
       })
     },
     // shop_name validatorFn

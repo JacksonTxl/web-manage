@@ -6,7 +6,9 @@
     <header>
       <div class="page-shop-sale-list-brand__opreation page-shop-sale-list__opreation">
         <st-button type="primary"
-          @click="addPersonalCourse">+ 新增私教课</st-button>
+          v-if="auth.add"
+          icon="add"
+          @click="addPersonalCourse">新增私教课</st-button>
         <div>
           <a-select  defaultValue="" v-model="query.category_id" class="mg-r16" style="width: 160px" @change="onChange">
             <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
@@ -18,7 +20,8 @@
       </div>
     </header>
     <main class="page-shop-sale-list-brand__table mg-t8">
-      <list-table @delete-course="onDeleteCourse" :personalCourseList="personalCourseList"></list-table>
+      <list-table v-if="auth.shopList" @delete-course="onDeleteCourse" :personalCourseList="personalCourseList"></list-table>
+      <span v-else>暂无权限</span>
     </main>
   </st-panel>
 </template>
@@ -39,7 +42,8 @@ export default {
     return {
       categoryList: this.listService.categoryList$,
       personalCourseList: this.listService.personalCourseList$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.listService.auth$
     }
   },
   data() {

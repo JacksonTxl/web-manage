@@ -3,6 +3,7 @@ import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { CoachLevelApi, GetCoachLevelListInput, DeleteCoachLevelInput } from '@/api/v1/setting/coach/level'
+import { AuthService } from '@/services/auth.service'
 
 interface ListState {
   resData: object
@@ -11,16 +12,26 @@ interface ListState {
 export class CoachLevelService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
-  constructor(protected coachLevelApi: CoachLevelApi) {
+  auth$: Computed<object>
+  constructor(
+    private coachLevelApi: CoachLevelApi,
+    private authService: AuthService
+  ) {
     super()
     this.state$ = new State({
-      resData: {}
+      resData: {},
+      auth: {
+        add: this.authService.can('brand:setting:coach_level|add'),
+        get: this.authService.can('brand:setting:coach_level|get')
+      }
     })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   getCoachLevelList(query: GetCoachLevelListInput) {
     return this.coachLevelApi.getCoachLevelList(query).pipe(
       tap(res => {
+        res = this.authService.filter(res)
         this.SET_STATE(res)
       })
     )
