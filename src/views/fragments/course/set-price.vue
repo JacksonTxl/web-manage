@@ -58,7 +58,6 @@
                 </template>
                 <!-- 转让手续费 -->
                 <template slot="serviceFee" slot-scope="text, record, index">
-                  test{{priceGradientRecord.prices[index].transfer_unit}}
                   <st-input-number
                     style="width: 110px"
                     v-model="priceGradientRecord.prices[index].transfer_num"
