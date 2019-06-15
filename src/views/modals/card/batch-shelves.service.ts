@@ -1,31 +1,16 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
-import { pluck } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable } from 'vue-service-app'
+import { State } from 'rx-state/src'
 import { CardsApi } from '@/api/v1/cards'
+import { tap } from 'rxjs/operators'
 
-interface CardsTableModelState {
-  cardsTableModel: any
-}
 @Injectable()
-export class BatchShelvesService extends Store<CardsTableModelState> {
-  state$: State<CardsTableModelState>
-  cardsTableModel$: Computed<string>
-  constructor(private cardsApi: CardsApi) {
-    super()
-    this.state$ = new State({
-      cardsTableModel: {}
-    })
-    this.cardsTableModel$ = new Computed(
-      this.state$.pipe(pluck('cardsTableModel'))
-    )
-  }
-  SET_CARDS_Table_INFO(cardsTableModel: CardsTableModelState) {
-    this.state$.commit(state => {
-      state.cardsTableModel = cardsTableModel
-    })
-  }
-  getListInfo(paramsObj: string) {
-    return this.cardsApi.getCardsShopShelf(paramsObj)
+export class BatchShelvesService {
+  info$ = new State({})
+  loading$ = new State({})
+  constructor(private cardApi: CardsApi) {}
+  getInfo(id:string) {
+    return this.cardApi.getCardShelfInfo(id).pipe(tap((res:any) => {
+      this.info$.commit(() => res.info)
+    }))
   }
 }
