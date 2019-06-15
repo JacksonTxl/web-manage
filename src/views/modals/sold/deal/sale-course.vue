@@ -129,7 +129,7 @@
             </st-input-number>
           </st-form-item>
           <st-form-item validateStatus="error" :help="orderAmountText" class="mg-b0" label="小计">
-            <span class="total">{{orderAmount}}元</span>
+            <span class="total">{{currentPrice}}元</span>
           </st-form-item>
         </div>
         <div :class="sale('remarks')">
@@ -152,7 +152,7 @@
     <template slot="footer">
       <div :class="sale('footer')">
         <div class="price">
-          <span>{{orderAmount}}元</span>
+          <span>{{currentPrice}}元</span>
           <span>订单总额：{{info.sell_price}}元</span>
         </div>
         <div class="button">
@@ -185,7 +185,8 @@ export default {
       memberList: this.saleCourseService.memberList$,
       info: this.saleCourseService.info$,
       saleList: this.saleCourseService.saleList$,
-      couponList: this.saleCourseService.couponList$
+      couponList: this.saleCourseService.couponList$,
+      currentPrice: this.saleCourseService.currentPrice$
     }
   },
   props: {
@@ -217,14 +218,30 @@ export default {
     }
   },
   created() {
-    this.saleCourseService.serviceInit(this.id).subscribe()
+    this.saleCourseService.serviceInit(this.id).subscribe(result => {
+      this.getPrice()
+    })
   },
   computed: {
-    orderAmount() {
-      return (this.info.sell_price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(1)
-    },
     orderAmountText() {
-      return this.orderAmount < 0 ? '小计不能为负' : ''
+      return this.currentPrice < 0 ? '小计不能为负' : ''
+    }
+  },
+  watch: {
+    selectCoupon: {
+      deep: true,
+      handler(newVal, oldVal) {
+        this.getPrice(newVal, this.selectAdvance, +this.reduceAmount)
+      }
+    },
+    selectAdvance: {
+      deep: true,
+      handler(newVal, oldVal) {
+        this.getPrice(this.selectCoupon, newVal, +this.reduceAmount)
+      }
+    },
+    reduceAmount(newVal, oldVal) {
+      this.getPrice(this.selectCoupon, this.selectAdvance, +newVal)
     }
   },
   methods: {
@@ -233,7 +250,6 @@ export default {
         member_id: member_id,
         package_id: this.id
       }
-      console.log(params)
       this.saleCourseService.getCouponList(params).subscribe()
     },
     moment,
@@ -354,6 +370,16 @@ export default {
       this.couponAmount = price
       this.couponText = `${price}元`
     },
+    // 计算实付金额
+    getPrice(coupon, advance, reduce) {
+      this.saleCourseService.currentPriceAction$.dispatch({
+        product_id: this.id,
+        product_type: this.info.contract_type,
+        coupon_id: coupon || undefined,
+        advance_id: advance || undefined,
+        reduce_amount: reduce || undefined
+      })
+    },
     onCreateOrder() {
       this.form.validateFields((error, values) => {
         if (!error) {
@@ -370,7 +396,7 @@ export default {
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,
-            'order_amount': this.orderAmount
+            'order_amount': this.currentPrice
           }).subscribe((result) => {
             this.$emit('success', {
               type: 'create',
@@ -397,7 +423,7 @@ export default {
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,
-            'order_amount': this.orderAmount
+            'order_amount': this.currentPrice
           }).subscribe((result) => {
             this.$emit('success', {
               type: 'createPay',
