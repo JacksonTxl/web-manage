@@ -2,34 +2,34 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { MemberAPi } from '@/api/v1/member'
+import { MemberApi } from '@/api/v1/member'
 import { forkJoin } from 'rxjs'
 
-interface CardsListInfoState {
-  cardsListInfo: any
+interface FollowHistoryInfoState {
+  followHistoryInfo: any
   followInfo: any
 }
 @Injectable()
-export class FollowHistoryService extends Store<CardsListInfoState> {
-  state$: State<CardsListInfoState>
-  cardsListInfo$: Computed<string>
+export class FollowHistoryService extends Store<FollowHistoryInfoState> {
+  state$: State<FollowHistoryInfoState>
+  followHistoryInfo$: Computed<string>
   followInfo$: Computed<string>
-  constructor(private cardsApi: MemberAPi) {
+  constructor(private cardsApi: MemberApi) {
     super()
     this.state$ = new State({
-      cardsListInfo: {},
+      followHistoryInfo: {},
       followInfo: {}
     })
-    this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))
+    this.followHistoryInfo$ = new Computed(this.state$.pipe(pluck('followHistoryInfo')))
     this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
   }
-  SET_CARDS_LIST_INFO(cardsListInfo: CardsListInfoState) {
-    console.log(cardsListInfo)
+  SET_FOLLOW_HISTORY_INFO(followHistoryInfo: FollowHistoryInfoState) {
+    console.log(followHistoryInfo)
     this.state$.commit(state => {
-      state.cardsListInfo = cardsListInfo
+      state.followHistoryInfo = followHistoryInfo
     })
   }
-  SET_FOLLOW_INFO(followInfo: CardsListInfoState) {
+  SET_FOLLOW_INFO(followInfo: FollowHistoryInfoState) {
     this.state$.commit(state => {
       state.followInfo = followInfo
     })
@@ -39,7 +39,7 @@ export class FollowHistoryService extends Store<CardsListInfoState> {
       tap(res => {
         console.log(res, '获取数据')
 
-        this.SET_CARDS_LIST_INFO(res)
+        this.SET_FOLLOW_HISTORY_INFO(res)
       })
     )
   }

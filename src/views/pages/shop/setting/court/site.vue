@@ -79,7 +79,7 @@
               <a-input v-model="editInfo.seat_name" placeholder="请输入模版名称"></a-input>
             </td>
             <td>
-              <a-input-number style="width:300px" v-model="editInfo.seat_num" placeholder="请输入数位数量"></a-input-number>
+              <st-input-number style="width:300px" v-model="editInfo.seat_num" placeholder="请输入数位数量"></st-input-number>
             </td>
             <td>
               <a @click="onEditSubmit">保存</a>
@@ -206,7 +206,7 @@ export default {
     inputCheck(data = {}) {
       const seatImg = data.seat_img
       const seatName = data.seat_name
-      const seatNum = data.seat_num
+      const seatNum = data.seat_num.toString()
       if (!seatImg.image_key) {
         this.onErrorTip('请上传座位图片')
         return false

@@ -20,8 +20,7 @@
       </a-col>
     </a-row>
     <div>
-      <shop-table v-if="auth.shopList" @delete-course="deleteCourse" :teamCourseList="teamCourseList"></shop-table>
-      <span v-else>暂无权限</span>
+      <shop-table @delete-course="deleteCourse" :teamCourseList="teamCourseList"></shop-table>
     </div>
   </st-panel>
 </template>

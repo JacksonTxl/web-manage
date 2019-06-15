@@ -9,13 +9,13 @@
         <div style="background: #F7F9FC; padding: 24px">
           <a-form class="ant-advanced-search-form">
             <a-row :gutter="24">
-              <st-seleter v-model="form" ref="stSeleter">
+              <st-select v-model="form" ref="stSeleter">
                 <div slot="custom" v-if="expand">
                   <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="入会时间：">
                     <a-range-picker
                       v-model="consumption"
-                      v-if="form.low_consumption && form.high_consumption"
-                      :defaultValue="[moment(form.low_consumption, dateFormat), moment(form.high_consumption, dateFormat)]"
+                      v-if="form.be_member_start_time && form.be_member_stop_time"
+                      :defaultValue="[moment(form.be_member_start_time, dateFormat), moment(form.be_member_stop_time, dateFormat)]"
                       @change="MembershipTime"
                     />
                     <a-range-picker v-else @change="MembershipTime" v-model="consumption"/>
@@ -25,7 +25,7 @@
                     :wrapper-col="{ span: 12 }"
                     :label="memberEnums.is_follow.description"
                   >
-                    <a-radio-group buttonStyle="solid" v-model="form.follow_salesman">
+                    <a-radio-group buttonStyle="solid" v-model="form.is_follow">
                       <a-radio-button value="-1">全部</a-radio-button>
                       <a-radio-button
                         v-for="(item,key,index) in memberEnums.is_follow.value"
@@ -35,7 +35,7 @@
                     </a-radio-group>
                   </a-form-item>
                 </div>
-              </st-seleter>
+              </st-select>
             </a-row>
             <a-row>
               <a-col :span="24" class="shop-member-list-handel">
@@ -95,10 +95,9 @@
         :columns="columns"
         :alertSelection="{onReset:onSelectionReset}"
         :rowSelection="{selectedRowKeys:selectedRowKeys,onChange:onSelectionChange}"
-        rowKey="id"
+        rowKey="member_id"
         @change="onTableChange"
-        :dataSource="memberListInfo.members_list"
-        :pagination="pagination"
+        :dataSource="memberListInfo.list"
       >
         <div slot="member_name" slot-scope="text,record">
           <a href="javascript:;" @click="infoFunc(record)">{{text}}</a>
@@ -138,13 +137,12 @@
         </div>
       </st-table>
     </st-panel>
-    {{memberEnums.is_follow}}
   </div>
 </template>
 <script>
 import { UserService } from '@/services/user.service'
 import { ListService } from './list.service'
-import StSeleter from './list#/seleter.vue'
+import StSelect from './list#/select.vue'
 import moment from 'moment'
 export default {
   serviceInject() {
@@ -165,7 +163,7 @@ export default {
     }
   },
   components: {
-    StSeleter
+    StSelect
   },
   data() {
     return {
@@ -174,27 +172,21 @@ export default {
       consumption: [],
       form: {
         member_level: '',
-        register_type: '',
-        start_time: '',
-        stop_time: '',
-        low_consumption: '',
-        high_consumption: '',
-        follow_salesman: '',
+        register_way: '',
+        register_start_time: '',
+        register_stop_time: '',
+        be_member_start_time: '',
+        be_member_stop_time: '',
+        is_follow: '',
         keyword: '',
-        current_page: '',
+        page: '',
         size: 20
-      },
-      pagination: {
-        pageSizeOptions: ['10', '20', '30', '40', '50'],
-        current: 1,
-        pageSize: 10,
-        total: 50
       },
       selectDataList: [],
       selectedRowKeys: [],
       selectedRowData: [],
       columns: [
-        { title: '人脸', dataIndex: 'id' },
+        { title: '人脸', dataIndex: '' },
         {
           title: '姓名',
           dataIndex: 'member_name',
@@ -217,7 +209,6 @@ export default {
   },
   computed: {},
   created() {
-    this.pageFilter(this.memberListInfo)
     this.form = { ...this.$route.query }
   },
   methods: {
@@ -248,13 +239,6 @@ export default {
       })
     },
     moment,
-    pageFilter(data) {
-      this.pagination.current = data.page.current_page
-      this.pagination.pageSize = data.page.size
-      this.pagination.total = data.page.total_counts
-      this.form.size = this.pagination.pageSize
-      this.form.current_page = this.pagination.current
-    },
     handleReset() {
       let self = this
       for (let prop in self.form) {
@@ -265,8 +249,8 @@ export default {
       this.$router.push({ query: {} })
     },
     MembershipTime(date, dateString) {
-      this.form.low_consumption = dateString[0]
-      this.form.high_consumption = dateString[1]
+      this.form.be_member_start_time = dateString[0]
+      this.form.be_member_stop_time = dateString[1]
     },
     toggle() {
       this.expand = !this.expand

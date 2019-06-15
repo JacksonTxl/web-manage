@@ -139,7 +139,7 @@ export interface SetMemberLabelCreate {
   tag_id: Number
 }
 
-export class MemberAPi extends Api {
+export class MemberApi extends Api {
   /**
    * 用户编辑回显
    */
@@ -190,7 +190,7 @@ export class MemberAPi extends Api {
    * 国籍
    */
   getCountries() {
-    return this.http.get(`/countries`)
+    return this.http.get(`/country`)
   }
   /**
    * 民族

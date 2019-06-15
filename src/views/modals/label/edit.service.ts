@@ -7,10 +7,10 @@ interface CardsTableModelState {
 }
 @Injectable()
 export class EditLabelService extends Store<CardsTableModelState> {
-  constructor(private MemberAPi: LabelApi) {
+  constructor(private MemberApi: LabelApi) {
     super()
   }
   editLabel(id: number, params: EditParams) {
-    return this.MemberAPi.editLabel(id, params)
+    return this.MemberApi.editLabel(id, params)
   }
 }

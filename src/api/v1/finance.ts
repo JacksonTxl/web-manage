@@ -1,6 +1,6 @@
 import { Api } from '../api'
 
-export class FinanceAPi extends Api {
+export class FinanceApi extends Api {
   /**
      * 【品牌】底薪模板列表
      */

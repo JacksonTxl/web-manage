@@ -5,11 +5,11 @@ import { Effect } from 'rx-state/src'
 
 @Injectable()
 export class AddTemporaryService extends Store<any> {
-  constructor(private cabinetAPi: TemporaryCabinetApi) {
+  constructor(private cabinetApi: TemporaryCabinetApi) {
     super()
   }
   @Effect()
   add(params: AddInput) {
-    return this.cabinetAPi.add(params)
+    return this.cabinetApi.add(params)
   }
 }

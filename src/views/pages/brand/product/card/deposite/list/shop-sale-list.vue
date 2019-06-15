@@ -84,17 +84,17 @@
   </div>
 </template>
 <script>
-import { StopSaleListService } from './stop-sale-list.service'
+import { ShopSaleListService } from './shop-sale-list.service'
 import { columns } from './shop-sale-list.config'
 export default {
   serviceInject() {
     return {
-      bService: StopSaleListService
+      bService: ShopSaleListService
     }
   },
   rxState() {
     return {
-      cardsListInfo: this.bService.cardsListInfo$,
+      shopSaleCardsList: this.bService.shopSaleCardsList$,
       auth: this.bService.auth$
     }
   },
@@ -126,7 +126,7 @@ export default {
     }
   },
   created() {
-    this.getInfoData(this.cardsListInfo)
+    this.getInfoData(this.shopSaleCardsList)
   },
   methods: {
     onSelectChange(selectedRowKeys, selectedRows) {
@@ -213,7 +213,7 @@ export default {
         this.card_type = '所以类型'
         this.publish_channel = '所有售卖状态'
       }
-      this.getInfoData(this.cardsListInfo)
+      this.getInfoData(this.shopSaleCardsList)
     }
   }
 }

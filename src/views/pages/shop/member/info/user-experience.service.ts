@@ -2,34 +2,34 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { MemberAPi } from '@/api/v1/member'
+import { MemberApi } from '@/api/v1/member'
 import { forkJoin } from 'rxjs'
 
-interface CardsListInfoState {
-  cardsListInfo: any
+interface UserExprienceInfoState {
+  physicalListInfo: any
   followInfo: any
 }
 @Injectable()
-export class UserExperienceService extends Store<CardsListInfoState> {
-  state$: State<CardsListInfoState>
-  cardsListInfo$: Computed<string>
+export class UserExperienceService extends Store<UserExprienceInfoState> {
+  state$: State<UserExprienceInfoState>
+  physicalListInfo$: Computed<string>
   followInfo$: Computed<string>
-  constructor(private cardsApi: MemberAPi) {
+  constructor(private cardsApi: MemberApi) {
     super()
     this.state$ = new State({
-      cardsListInfo: {},
+      physicalListInfo: {},
       followInfo: {}
     })
-    this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))
+    this.physicalListInfo$ = new Computed(this.state$.pipe(pluck('physicalListInfo')))
     this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
   }
-  SET_CARDS_LIST_INFO(cardsListInfo: CardsListInfoState) {
-    console.log(cardsListInfo)
+  SET_CARDS_LIST_INFO(physicalListInfo: UserExprienceInfoState) {
+    console.log(physicalListInfo)
     this.state$.commit(state => {
-      state.cardsListInfo = cardsListInfo
+      state.physicalListInfo = physicalListInfo
     })
   }
-  SET_FOLLOW_INFO(followInfo: CardsListInfoState) {
+  SET_FOLLOW_INFO(followInfo: UserExprienceInfoState) {
     this.state$.commit(state => {
       state.followInfo = followInfo
     })

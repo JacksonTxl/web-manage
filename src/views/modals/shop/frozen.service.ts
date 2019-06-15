@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { MemberAPi } from '@/api/v1/member'
+import { MemberApi } from '@/api/v1/member'
 
 interface CardsTableModelState {
   lableInfo: any
@@ -11,7 +11,7 @@ interface CardsTableModelState {
 export class FrozenService extends Store<CardsTableModelState> {
   state$: State<CardsTableModelState>
   cardsListInfo$: Computed<string>
-  constructor(private MemberAPi: MemberAPi) {
+  constructor(private MemberApi: MemberApi) {
     super()
     this.state$ = new State({
       cardsListInfo: {}
@@ -20,9 +20,9 @@ export class FrozenService extends Store<CardsTableModelState> {
   }
 
   getMemberBuy(data: any) {
-    return this.MemberAPi.getMemberFreeze(data)
+    return this.MemberApi.getMemberFreeze(data)
   }
   getMemberTransfer(data: any) {
-    return this.MemberAPi.getAddMemberFreeze(data)
+    return this.MemberApi.getAddMemberFreeze(data)
   }
 }

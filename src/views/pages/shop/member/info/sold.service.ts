@@ -2,31 +2,31 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { MemberAPi } from '@/api/v1/member'
+import { MemberApi } from '@/api/v1/member'
 import { forkJoin } from 'rxjs'
 
-interface CardsListInfoState {
-  cardsListInfo: any
+interface SoldListInfoState {
+  soldListInfo: any
   followInfo: any
 }
 @Injectable()
-export class SoldService extends Store<CardsListInfoState> {
-  state$: State<CardsListInfoState>
-  cardsListInfo$: Computed<string>
+export class SoldService extends Store<SoldListInfoState> {
+  state$: State<SoldListInfoState>
+  soldListInfo$: Computed<string>
   followInfo$: Computed<string>
-  constructor(private cardsApi: MemberAPi) {
+  constructor(private cardsApi: MemberApi) {
     super()
     this.state$ = new State({
-      cardsListInfo: {},
+      soldListInfo: {},
       followInfo: {}
     })
-    this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))
+    this.soldListInfo$ = new Computed(this.state$.pipe(pluck('soldListInfo')))
     this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
   }
-  SET_CARDS_LIST_INFO(cardsListInfo: CardsListInfoState) {
-    console.log(cardsListInfo)
+  SOLD_LIST_INFO(soldListInfo: SoldListInfoState) {
+    console.log(soldListInfo)
     this.state$.commit(state => {
-      state.cardsListInfo = cardsListInfo
+      state.soldListInfo = soldListInfo
     })
   }
   getMemberReserve(id: string, params: any) {
@@ -34,7 +34,7 @@ export class SoldService extends Store<CardsListInfoState> {
       tap(res => {
         console.log(res, '获取数据')
 
-        this.SET_CARDS_LIST_INFO(res)
+        this.SOLD_LIST_INFO(res)
       })
     )
   }
