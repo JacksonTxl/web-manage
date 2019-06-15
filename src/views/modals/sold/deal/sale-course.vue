@@ -12,7 +12,7 @@
             <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
             <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
             <st-info-item label="总课时">{{info.total_times}}</st-info-item>
-            <st-info-item label="有效期">{{moment().add(info.valid_time, 'days').format('YYYY-MM-DD hh:mm')}}</st-info-item>
+            <st-info-item label="有效期">{{moment().add(info.valid_time, 'days').format('YYYY-MM-DD HH:mm')}}</st-info-item>
             <st-info-item label="上课门店">{{info.shop_name}}</st-info-item>
             <st-info-item label="上课范围">{{info.course_range}}</st-info-item>
           </st-info>
@@ -43,14 +43,14 @@
             >
               <a-select-option
               v-for="(item,index) in memberList"
-              :value="item.member_id"
+              :value="item.id"
               :key="index">
                 <span v-html="`${item.member_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
                   {{item.member_name}}&nbsp;&nbsp;&nbsp;{{item.mobile}}
                 </span>
               </a-select-option>
             </a-select>
-            <p v-if="!memberList.length&&memberSearchText!==''" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
+            <p v-if="!memberList.length&&memberSearchText!==''&& +info.sale_range.type === 1" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
           </st-form-item>
           <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required>
             <a-input v-decorator="['memberName',{rules:[{validator:member_name_validator}]}]" placeholder="请输入会员姓名"></a-input>
@@ -60,7 +60,7 @@
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
           <st-form-item label="到期时间">
-            <div>{{moment().format('YYYY-MM-DD hh:mm')}}</div>
+            <div>{{moment().format('YYYY-MM-DD HH:mm')}}</div>
           </st-form-item>
           <st-form-item label="合同编号" required>
             <div :class="sale('contract')">
@@ -224,7 +224,7 @@ export default {
       return (this.info.sell_price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(1)
     },
     orderAmountText() {
-      return this.orderAmount < 0 ? '这里不能为负哦，找刚刚要文案' : ''
+      return this.orderAmount < 0 ? '小计不能为负' : ''
     }
   },
   methods: {
@@ -292,7 +292,7 @@ export default {
         this.saleCourseService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
-        this.saleCourseService.getMember(data).subscribe(res => {
+        this.saleCourseService.getMember(data, this.info.sale_range.type).subscribe(res => {
           if (!res.list.length) {
             this.form.resetFields(['memberId'])
           }

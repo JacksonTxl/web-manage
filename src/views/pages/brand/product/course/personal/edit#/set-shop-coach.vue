@@ -15,9 +15,14 @@
               :value="+index">{{item}}</a-radio>
           </a-radio-group>
           <div class="page-shop-coach-container-shop mg-t8" v-if="isShow">
-            <select-shop @change="onSelectShopChange"></select-shop>
-            <input type="hidden" v-decorator="ruleConfig.shopIds">
+            <select-shop
+              :shopIds="info.shop_ids"
+              @change="onSelectShopChange"
+            />
           </div>
+        </st-form-item>
+        <st-form-item v-show="false">
+          <input type="hidden" v-decorator="ruleConfig.shopIds">
         </st-form-item>
       </a-col>
     </a-row>
@@ -26,7 +31,11 @@
         <st-form-item label="上课教练">
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="ruleConfig.coachIds">
-            <select-coach @change="onSelectCoachChange"></select-coach>
+            <select-coach
+              :shopIds="info.shop_ids"
+              :coachIds="info.coach_ids"
+              @change="onSelectCoachChange"
+            />
           </div>
         </st-form-item>
       </a-col>
@@ -102,7 +111,6 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.getData()
-        console.log('step 2 data', data)
         this.editService.setShop(data).subscribe(() => {
           this.messageService.success({
             content: '提交成功'
@@ -115,13 +123,11 @@ export default {
       this.shopSetting = e.target.value
     },
     onSelectShopChange(shopIds) {
-      console.log('your selected', shopIds)
       this.form.setFieldsValue({
         shop_ids: shopIds
       })
     },
     onSelectCoachChange(coachIds) {
-      console.log('your selected', coachIds)
       this.form.setFieldsValue({
         coach_ids: coachIds
       })
@@ -139,6 +145,7 @@ export default {
     getData() {
       const data = this.form.getFieldsValue()
       data.course_id = +this.query.id
+      console.log('data', data)
       return data
     }
   }

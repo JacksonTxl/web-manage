@@ -41,31 +41,43 @@
                   <div key="price">
                     <!-- 教练谈单模式 价格为区间 -->
                     <div v-if="saleModel === 1">
-                      <a-input-number :min="0" class="page-set-sell-price__input" v-model="priceGradientRecord.prices[index].min_sell_price"/>
+                      <a-input-number :min="0" class="page-set-sell-price__input"
+                        v-model="priceGradientRecord.prices[index].min_sell_price"/>
                       <span class="page-set-sell-price__label">元/节</span>~
-                      <a-input-number :min="0" class="page-set-sell-price__input" v-model="priceGradientRecord.prices[index].max_sell_price"/>
+                      <a-input-number :min="0" class="page-set-sell-price__input"
+                        v-model="priceGradientRecord.prices[index].max_sell_price"/>
                       <span class="page-set-sell-price__label">元/节</span>
                     </div>
                     <!-- 统一标价模式 价格为固定值 -->
                     <div v-if="saleModel === 2">
-                      <a-input-number :min="0"  class="page-set-sell-price__input" v-model="priceGradientRecord.prices[index].sell_price"/>
+                      <a-input-number :min="0"  class="page-set-sell-price__input"
+                        v-model="priceGradientRecord.prices[index].sell_price"/>
                       <span class="page-set-sell-price__label">元/节</span>
                     </div>
                   </div>
                 </template>
                 <!-- 转让手续费 -->
                 <template slot="serviceFee" slot-scope="text, record, index">
-                  <a-select placeholder="请选择"
-                    class="page-set-sell-price__select" v-model="priceGradientRecord.prices[index].transfer_unit">
-                    <a-select-option v-for="(item, index) in personalCourseEnums.transfer_unit.value"
-                      :key="index" :value="+index">{{item}}
-                    </a-select-option>
-                  </a-select>
-                  <a-input-number :min="0"  class="page-set-sell-price__input mg-l8"
-                    v-model="priceGradientRecord.prices[index].transfer_num" />
-                  <span class="page-set-sell-price__label">
-                    {{priceGradientRecord.prices[index].transfer_unit === 1 ? '%' : '元'}}
-                  </span>
+                  <st-input-number
+                    style="width: 110px"
+                    v-model="priceGradientRecord.prices[index].transfer_num"
+                    :float="true"
+                  >
+                    <template slot="addonAfter">
+                      <a-select :defaultValue="1"
+                        class="st-form-item-unit"
+                        v-model="priceGradientRecord.prices[index].transfer_unit"
+                      >
+                        <a-select-option
+                          v-for="(item, index) in personalCourseEnums.transfer_unit.value"
+                          :key="index"
+                          :value="+index"
+                        >
+                          {{item}}
+                        </a-select-option>
+                      </a-select>
+                    </template>
+                  </st-input-number>
                 </template>
                 <!-- 操作 -->
                 <template slot="action" slot-scope="text, record, rowIndex">

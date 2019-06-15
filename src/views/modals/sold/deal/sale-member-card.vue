@@ -43,7 +43,7 @@
             >
               <a-select-option
               v-for="(item,index) in memberList"
-              :value="item.member_id"
+              :value="item.id"
               :key="index">
                 <span v-html="`${item.member_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
                   {{item.member_name}}&nbsp;&nbsp;&nbsp;{{item.mobile}}
@@ -259,8 +259,8 @@ export default {
         specs: this.selectedNorm,
         open_type: this.selectedPayment
       })
-      this.validStartTime = moment().format('YYYY-MM-DD hh:mm')
-      this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
+      this.validStartTime = moment().format('YYYY-MM-DD HH:mm')
+      this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD HH:mm')
       this.fetchCouponList()
     })
   },
@@ -269,7 +269,7 @@ export default {
       return (this.selectedNorm.price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(1)
     },
     orderAmountText() {
-      return this.orderAmount < 0 ? '这里不能为负哦，找刚刚要文案' : ''
+      return this.orderAmount < 0 ? '小计不能为负' : ''
     }
   },
   methods: {
@@ -282,8 +282,8 @@ export default {
     onChangePayment(event) {
       this.selectedPayment = event.target.value
       if (this.selectedPayment.id !== 2) {
-        this.validStartTime = moment().format('YYYY-MM-DD hh:mm')
-        this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
+        this.validStartTime = moment().format('YYYY-MM-DD HH:mm')
+        this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD HH:mm')
       }
       this.fetchCouponList()
     },
@@ -300,7 +300,7 @@ export default {
     // 选择指定日期开卡
     onChangeTime(event) {
       if (event) {
-        this.validEndTime = moment(event._d).add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
+        this.validEndTime = moment(event._d).add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD HH:mm')
       }
     },
     moment,
@@ -359,7 +359,7 @@ export default {
         this.saleMemberCardService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
-        this.saleMemberCardService.getMember(data).subscribe(res => {
+        this.saleMemberCardService.getMember(data, this.info.sale_range.type).subscribe(res => {
           if (!res.list.length) {
             this.form.resetFields(['memberId'])
           }

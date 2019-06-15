@@ -19,7 +19,11 @@
         <st-form-item label="上课教练">
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="ruleConfig.coachIds">
-            <select-coach @change="onSelectCoachChange"></select-coach>
+            <select-coach
+              :shopIds="info.shop_ids"
+              :coachIds="info.coach_ids"
+              @change="onSelectCoachChange"
+            />
           </div>
         </st-form-item>
       </a-col>
