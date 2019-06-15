@@ -1,10 +1,9 @@
 import { Injectable } from 'vue-service-app'
-import { State, Effect } from 'rx-state/src'
-import { TransactionApi, MemberCouponParams } from '@/api/v1/sold/transaction'
-import { tap } from 'rxjs/operators'
+import { State, Effect, Action } from 'rx-state/src'
+import { TransactionApi, MemberCouponParams, TransactionPriceInput } from '@/api/v1/sold/transaction'
+import { tap, switchMap, catchError, debounceTime } from 'rxjs/operators'
 import { ContractApi } from '@/api/v1/setting/contract'
-import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
-import { forkJoin } from 'rxjs'
+import { forkJoin, EMPTY, Observable } from 'rxjs'
 
 @Injectable()
 export class SaleCourseService {
@@ -13,7 +12,22 @@ export class SaleCourseService {
   memberList$ = new State({})
   saleList$ = new State({})
   couponList$ = new State({})
-  constructor(private contractApi: ContractApi, private transactionApi: TransactionApi) {}
+  currentPriceAction$: Action<any>
+  currentPrice$ = new State('0')
+  constructor(private contractApi: ContractApi, private transactionApi: TransactionApi) {
+    this.currentPriceAction$ = new Action(data$ => {
+      return data$.pipe(
+        this.debounceMap(),
+        tap(res => {
+          this.currentPrice$.commit(() => res.info.price)
+        })
+      )
+    })
+  }
+  debounceMap() {
+    return (stream$:Observable<any>) => stream$.pipe(debounceTime(200),
+      switchMap((params: TransactionPriceInput) => this.getPrice(params).pipe(catchError(() => EMPTY))))
+  }
   getInfo(id:string) {
     return this.transactionApi.getTransactionInfo(id, 'package/course').pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
@@ -54,5 +68,9 @@ export class SaleCourseService {
   @Effect()
   setTransactionPay(params:any) {
     return this.transactionApi.setTransaction(params, 'package')
+  }
+  @Effect()
+  getPrice(params: TransactionPriceInput) {
+    return this.transactionApi.getTransactionPrice(params)
   }
 }

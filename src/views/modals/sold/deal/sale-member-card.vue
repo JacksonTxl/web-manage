@@ -155,7 +155,7 @@
             </st-input-number>
           </st-form-item>
           <st-form-item validateStatus="error" :help="orderAmountText" class="mg-b0" label="小计">
-            <span class="total">{{orderAmount}}元</span>
+            <span class="total">{{currentPrice}}元</span>
           </st-form-item>
         </div>
         <div :class="sale('remarks')">
@@ -178,7 +178,7 @@
     <template slot="footer">
       <div :class="sale('footer')">
         <div class="price">
-          <span>{{orderAmount}}元</span>
+          <span>{{currentPrice}}元</span>
           <span>订单总额：{{selectedNorm.price}}元</span>
         </div>
         <div class="button">
@@ -211,7 +211,8 @@ export default {
       memberList: this.saleMemberCardService.memberList$,
       info: this.saleMemberCardService.info$,
       saleList: this.saleMemberCardService.saleList$,
-      couponList: this.saleMemberCardService.couponList$
+      couponList: this.saleMemberCardService.couponList$,
+      currentPrice: this.saleMemberCardService.currentPrice$
     }
   },
   props: {
@@ -262,14 +263,12 @@ export default {
       this.validStartTime = moment().format('YYYY-MM-DD HH:mm')
       this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD HH:mm')
       this.fetchCouponList()
+      this.getPrice()
     })
   },
   computed: {
-    orderAmount() {
-      return (this.selectedNorm.price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(1)
-    },
     orderAmountText() {
-      return this.orderAmount < 0 ? '小计不能为负' : ''
+      return this.currentPrice < 0 ? '小计不能为负' : ''
     }
   },
   methods: {
@@ -420,6 +419,17 @@ export default {
       this.couponAmount = price
       this.couponText = `${price}元`
     },
+    // 计算实付金额
+    getPrice(coupon, advance, reduce) {
+      this.saleMemberCardService.currentPriceAction$.dispatch({
+        product_id: this.id,
+        product_type: this.info.contract_type,
+        coupon_id: coupon || undefined,
+        advance_id: advance || undefined,
+        reduce_amount: reduce || undefined,
+        specs_id: this.selectedNorm.id
+      })
+    },
     onCreateOrder() {
       this.form.validateFields((error, values) => {
         if (!error) {
@@ -439,7 +449,7 @@ export default {
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,
-            'order_amount': this.orderAmount
+            'order_amount': this.currentPrice
           }).subscribe((result) => {
             this.$emit('success', {
               type: 'create',
@@ -469,7 +479,7 @@ export default {
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,
-            'order_amount': this.orderAmount
+            'order_amount': this.currentPrice
           }).subscribe((result) => {
             this.$emit('success', {
               type: 'createPay',
