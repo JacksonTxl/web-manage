@@ -59,14 +59,14 @@
               <a-radio v-for="(item, index) in info.coach_level" :value="item.id" :key="index">{{item.name}}</a-radio>
             </a-radio-group>
           </st-form-item>
-          <st-form-item label="购买数量" required>
+          <st-form-item label="购买数量" required :extra="isAmountStateTip">
             <div :class="sale('contract')">
               <a-input-number class="input-number"
               :max="9999"
               v-decorator="['buyNum',{rules:[{validator:buy_num}]}]"
-              placeholder="请输入购买数量" :disabled="isAmountDisabled" :loading="loading.getPersonalPriceInfo"></a-input-number>
+              placeholder="请输入购买数量" :disabled="isAmountDisabled" :loading="loading.getPersonalPriceInfo" ></a-input-number>
               <st-button class="create-button" @click="onClickCourseAmount" :loading="loading.getPersonalPriceInfo" v-if="!isAmountDisabled">确定</st-button>
-              <st-button class="create-button" @click="isAmountDisabled=false;isEditBtn=true" v-else>编辑</st-button>
+              <st-button class="create-button" @click="isAmountDisabled=false;" v-else>编辑</st-button>
             </div>
           </st-form-item>
           <st-form-item label="单节价格" required v-if="info.sale_model === 1">
@@ -241,7 +241,6 @@ export default {
       searchMemberIsShow: true,
       // 购买数量可编辑
       isAmountDisabled: false,
-      isEditBtn: true,
       // 到期有效时间
       validEndTime: 0,
       // 定金
@@ -256,7 +255,9 @@ export default {
       selectCoupon: '',
       couponText: '未选择优惠券',
       couponAmount: '',
-      couponDropdownVisible: false
+      couponDropdownVisible: false,
+      // 购买数量处于编辑状态 提示语
+      isAmountStateTip: ''
     }
   },
   watch: {
@@ -362,9 +363,6 @@ export default {
       } else if (value < this.info.min_sell) {
         // eslint-disable-next-line
         callback(`不能少于课程定价的最低购买节数${this.info.min_sell}`)
-      } else if (!this.isEditBtn && this.isAmountDisabled) {
-        // eslint-disable-next-line
-        callback('请点击购买数量确定按钮')
       } else {
         callback()
       }
@@ -475,7 +473,6 @@ export default {
       this.couponText = `${price}元`
     },
     onClickCourseAmount() {
-      this.isEditBtn = true
       this.form.validateFields(['buyNum'], (error, values) => {
         if (!error) {
           const params = {
@@ -520,7 +517,10 @@ export default {
       })
     },
     onCreateOrder() {
-      this.isEditBtn = false
+      if (!this.isAmountDisabled) {
+        this.isAmountStateTip = '请点击购买数量确定按钮'
+        return
+      }
       this.form.validateFields((error, values) => {
         if (!error) {
           this.salePersonalCourseService.setTransactionOrder({
@@ -552,7 +552,10 @@ export default {
       })
     },
     onPay() {
-      this.isEditBtn = false
+      if (!this.isAmountDisabled) {
+        this.isAmountStateTip = '请点击购买数量确定按钮'
+        return
+      }
       this.form.validateFields((error, values) => {
         if (!error) {
           this.salePersonalCourseService.setTransactionPay({
