@@ -5,31 +5,31 @@ import { Store } from '@/services/store'
 import { CrowdAPI } from '@/api/v1/crowd'
 import { forkJoin } from 'rxjs'
 
-interface CardsListInfoState {
-  cardsListInfo: any
+interface CrowdInfoState {
+  crowdInfo: any
   followInfo: any
 }
 @Injectable()
-export class AddService extends Store<CardsListInfoState> {
-  state$: State<CardsListInfoState>
-  cardsListInfo$: Computed<string>
+export class AddService extends Store<CrowdInfoState> {
+  state$: State<CrowdInfoState>
+  crowdInfo$: Computed<string>
   followInfo$: Computed<string>
   constructor(private crowdAPI: CrowdAPI) {
     super()
     this.state$ = new State({
-      cardsListInfo: {},
+      crowdInfo: {},
       followInfo: {}
     })
-    this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))
+    this.crowdInfo$ = new Computed(this.state$.pipe(pluck('crowdInfo')))
     this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
   }
-  SET_CARDS_LIST_INFO(cardsListInfo: CardsListInfoState) {
-    console.log(cardsListInfo)
+  SET_CROWD_INFO(crowdInfo: CrowdInfoState) {
+    console.log(crowdInfo)
     this.state$.commit(state => {
-      state.cardsListInfo = cardsListInfo
+      state.crowdInfo = crowdInfo
     })
   }
-  SET_FOLLOW_INFO(followInfo: CardsListInfoState) {
+  SET_FOLLOW_INFO(followInfo: CrowdInfoState) {
     this.state$.commit(state => {
       state.followInfo = followInfo
     })
@@ -40,7 +40,7 @@ export class AddService extends Store<CardsListInfoState> {
       tap(res => {
         console.log(res, '获取数据')
 
-        this.SET_CARDS_LIST_INFO(res)
+        this.SET_CROWD_INFO(res)
       })
     )
   }

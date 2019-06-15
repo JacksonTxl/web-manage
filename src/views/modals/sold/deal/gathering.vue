@@ -142,13 +142,9 @@ export default {
         values.order_id = this.order_id
         values.payment_type = values.payment_method.payment_type
         delete values.payment_method
-        // values.deposit_card_id = 1
         this.gatheringService.payTransaction(values).subscribe(result => {
           this.$emit('success')
           this.show = false
-          // this.$modalRouter.push({
-          //   name: 'sold-deal-gathering-tip'
-          // })
         })
       })
     }

@@ -11,8 +11,8 @@
           <div class="shop-member-crowd-analysis-title__left-info">
             <st-t3
               class="shop-member-crowd-analysis-title__info-title"
-            >{{cardsListInfo.info.crowd_name}}</st-t3>
-            <st-t4 class="shop-member-crowd-analysis-title__info">{{cardsListInfo.info.description}}</st-t4>
+            >{{analysisInfo.info.crowd_name}}</st-t3>
+            <st-t4 class="shop-member-crowd-analysis-title__info">{{analysisInfo.info.description}}</st-t4>
           </div>
         </div>
         <div class="shop-member-crowd-analysis-title__right">
@@ -20,7 +20,7 @@
             人群
             <st-help-tooltip :id="1"/>
           </st-t4>
-          <div class="shop-member-crowd-analysis-title__right-num">{{cardsListInfo.info.num}}</div>
+          <div class="shop-member-crowd-analysis-title__right-num">{{analysisInfo.info.num}}</div>
         </div>
       </div>
       <div class="shop-member-crowd-analysis-content">
@@ -43,13 +43,13 @@
             </div>
             <div
               class="shop-member-crowd-analysis-title__right-num"
-            >{{index === 0? cardsListInfo.info.entrance_num:index ===1 ?cardsListInfo.info.coupon_num :index ===2? cardsListInfo.info.trade_num: cardsListInfo.info.course_num}}</div>
+            >{{index === 0? analysisInfo.info.entrance_num:index ===1 ?analysisInfo.info.coupon_num :index ===2? analysisInfo.info.trade_num: analysisInfo.info.course_num}}</div>
           </li>
         </ul>
       </div>
       <st-area-chart id="analysis" :data="chartData"/>
     </st-panel>
-    {{cardsListInfo}}
+    {{analysisInfo}}
   </div>
 </template>
 <script>
@@ -65,7 +65,7 @@ export default {
   },
   rxState() {
     return {
-      cardsListInfo: this.aService.cardsListInfo$
+      analysisInfo: this.aService.analysisInfo$
     }
   },
   data() {

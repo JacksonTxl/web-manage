@@ -5,11 +5,11 @@ import { Effect } from 'rx-state/src'
 
 @Injectable()
 export class AddLongTermService extends Store<any> {
-  constructor(private cabinetAPi: LongTermCabinetApi) {
+  constructor(private cabinetApi: LongTermCabinetApi) {
     super()
   }
   @Effect()
   add(params: AddInput) {
-    return this.cabinetAPi.add(params)
+    return this.cabinetApi.add(params)
   }
 }

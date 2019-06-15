@@ -7,7 +7,7 @@
         <st-table
           rowKey="id"
           :columns="classrecord"
-          :dataSource="cardsListInfo.reserve_list"
+          :dataSource="soldListInfo.reserve_list"
           @change="onTableChange"
           :pagination="pagination"
         >
@@ -53,7 +53,7 @@ export default {
   },
   rxState() {
     return {
-      cardsListInfo: this.Service.cardsListInfo$,
+      soldListInfo: this.Service.soldListInfo$,
       followInfo: this.Service.followInfo$
     }
   },
@@ -203,9 +203,9 @@ export default {
   created() {
     let self = this
     // this.Service.init(self.$route.query.id, self.form).subscribe()
-    this.pagination.pageSize = this.cardsListInfo.page.current_page
-    this.pagination.total = this.cardsListInfo.page.total_counts
-    this.pagination.pageSize = this.cardsListInfo.page.size
+    this.pagination.pageSize = this.soldListInfo.page.current_page
+    this.pagination.total = this.soldListInfo.page.total_counts
+    this.pagination.pageSize = this.soldListInfo.page.size
   },
   methods: {
     /* 预约状态 */
@@ -278,12 +278,12 @@ export default {
       },
       deep: true
     },
-    cardsListInfo: {
+    soldListInfo: {
       handler() {
         let self = this
-        self.pagination.pageSize = self.cardsListInfo.page.current_page
-        self.pagination.total = self.cardsListInfo.page.total_counts
-        self.pagination.pageSize = self.cardsListInfo.page.size
+        self.pagination.pageSize = self.soldListInfo.page.current_page
+        self.pagination.total = self.soldListInfo.page.total_counts
+        self.pagination.pageSize = self.soldListInfo.page.size
       },
       deep: true
     }

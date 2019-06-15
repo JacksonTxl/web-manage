@@ -36,7 +36,7 @@
           <a-divider type="vertical"></a-divider>
           <a @click="onDeposite(record)">储值卡签单</a>
           <a-divider type="vertical"></a-divider>
-          <a @click="onSale(record)">签单</a>
+          <a @click="onSale(record)">会员卡签单</a>
           <a-divider type="vertical"></a-divider>
           <a @click="onCourse(record)">课程包</a>
           <a-divider type="vertical"></a-divider>
@@ -234,7 +234,7 @@ export default {
                     this.$modalRouter.push({
                       name: 'sold-deal-gathering-tip',
                       props: {
-                        order_id: result.info.id,
+                        order_id: result.order_id,
                         type: 'member',
                         message: '收款成功'
                       },
@@ -289,7 +289,7 @@ export default {
                     this.$modalRouter.push({
                       name: 'sold-deal-gathering-tip',
                       props: {
-                        order_id: result.info.id,
+                        order_id: result.order_id,
                         type: 'package',
                         message: '收款成功'
                       },
@@ -344,7 +344,7 @@ export default {
                     this.$modalRouter.push({
                       name: 'sold-deal-gathering-tip',
                       props: {
-                        order_id: result.info.id,
+                        order_id: result.order_id,
                         type: 'personal',
                         message: '收款成功'
                       },

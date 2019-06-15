@@ -16,7 +16,7 @@
       </a-radio-group>
     </a-form-item>
     <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 20 }" label="来源方式">
-      <a-radio-group buttonStyle="solid" v-model="value.register_type">
+      <a-radio-group buttonStyle="solid" v-model="value.register_way">
         <a-radio-button value="-1">全部</a-radio-button>
         <a-radio-button
           v-for="(item,key,index) in SourceRegisters"
@@ -28,8 +28,8 @@
     <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="注册时间">
       <a-range-picker
         v-model="time"
-        v-if="value.start_time && value.stop_time"
-        :defaultValue="[moment(value.start_time, dateFormat), moment(value.stop_time, dateFormat)]"
+        v-if="value.register_start_time && value.register_stop_time"
+        :defaultValue="[moment(value.register_start_time, dateFormat), moment(value.register_stop_time, dateFormat)]"
         @change="onChange"
       />
       <a-range-picker v-else @change="onChange" v-model="time"/>
@@ -39,12 +39,12 @@
 </template>
 <script>
 import moment from 'moment'
-import { SeleterService } from './seleter.service'
+import { SelectService } from './select.service'
 import { UserService } from '@/services/user.service'
 export default {
   serviceInject() {
     return {
-      aService: SeleterService,
+      aService: SelectService,
       userService: UserService
     }
   },
@@ -81,8 +81,8 @@ export default {
   methods: {
     moment,
     onChange(date, dateString) {
-      this.value.start_time = dateString[0]
-      this.value.stop_time = dateString[1]
+      this.value.register_start_time = dateString[0]
+      this.value.register_stop_time = dateString[1]
     },
     sourceRegisters() {
       let self = this

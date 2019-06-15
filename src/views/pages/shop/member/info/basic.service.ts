@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { MemberAPi } from '@/api/v1/member'
+import { MemberApi } from '@/api/v1/member'
 
 interface BasicState {
     basicInfo: Object
@@ -11,7 +11,7 @@ interface BasicState {
 export class BasicService extends Store<BasicState> {
     state$: State<BasicState>
     basicInfo$: Computed<Object>
-    constructor(private cardsApi: MemberAPi) {
+    constructor(private cardsApi: MemberApi) {
       super()
       this.state$ = new State({
         basicInfo: {}

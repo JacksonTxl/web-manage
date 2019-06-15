@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { MemberAPi } from '@/api/v1/member'
+import { MemberApi } from '@/api/v1/member'
 import { StaffApi } from '../../../../api/v1/staff'
 import { AddUserParams } from '../../../../api/v1/member'
 
@@ -17,7 +17,7 @@ export class AddService extends Store<AddState> {
     countryInfo$: Computed<Object>
     nations$: Computed<Object>
     countryList$: Computed<Object>
-    constructor(protected memberApi: MemberAPi, protected staffApi: StaffApi) {
+    constructor(protected memberApi: MemberApi, protected staffApi: StaffApi) {
       super()
       this.state$ = new State({
         info: {},

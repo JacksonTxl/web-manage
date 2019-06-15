@@ -4,12 +4,12 @@ import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { LabelApi, AddLabel, EditParams, ListParams } from '@/api/v1/label'
 
-interface CardsListInfoState {
+interface LabelListInfoState {
   listInfo: Object
 }
 @Injectable()
-export class ListService extends Store<CardsListInfoState> {
-  state$: State<CardsListInfoState>
+export class ListService extends Store<LabelListInfoState> {
+  state$: State<LabelListInfoState>
   listInfo$: Computed<Object>
   constructor(private cardsApi: LabelApi) {
     super()
@@ -20,7 +20,7 @@ export class ListService extends Store<CardsListInfoState> {
       this.state$.pipe(pluck('listInfo'))
     )
   }
-  SET_CARDS_LIST_INFO(memberListInfo: CardsListInfoState) {
+  SET_CARDS_LIST_INFO(memberListInfo: LabelListInfoState) {
     this.state$.commit(state => {
       state.listInfo = memberListInfo
     })

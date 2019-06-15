@@ -5,13 +5,13 @@ import { Store } from '@/services/store'
 import { CardsApi } from '@/api/v1/cards'
 import { AuthService } from '@/services/auth.service'
 
-interface CardsListInfoState {
-  cardsListInfo: any
+interface MemberCardsListState {
+  memberCardsList: any
 }
 @Injectable()
-export class MemberListService extends Store<CardsListInfoState> {
-  state$: State<CardsListInfoState>
-  cardsListInfo$: Computed<string>
+export class MemberListService extends Store<MemberCardsListState> {
+  state$: State<MemberCardsListState>
+  memberCardsList$: Computed<string>
   auth$: Computed<object>
   constructor(
     private cardsApi: CardsApi,
@@ -19,17 +19,17 @@ export class MemberListService extends Store<CardsListInfoState> {
   ) {
     super()
     this.state$ = new State({
-      cardsListInfo: {},
+      memberCardsList: {},
       auth: {
         add: this.authService.can('brand_shop:product:member_card|add')
       }
     })
-    this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))
+    this.memberCardsList$ = new Computed(this.state$.pipe(pluck('memberCardsList')))
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
-  SET_CARDS_LIST_INFO(cardsListInfo: CardsListInfoState) {
+  SET_CARDS_LIST_INFO(memberCardsList: MemberCardsListState) {
     this.state$.commit(state => {
-      state.cardsListInfo = cardsListInfo
+      state.memberCardsList = memberCardsList
     })
   }
   @Effect()

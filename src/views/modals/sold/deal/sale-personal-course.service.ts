@@ -98,8 +98,4 @@ export class SalePersonalCourseService {
   getPrice(params: TransactionPriceInput) {
     return this.transactionApi.getTransactionPrice(params)
   }
-  @Effect()
-  getOrderAmountPrice(params: TransactionPriceInput) {
-    return this.transactionApi.getTransactionPrice(params)
-  }
 }

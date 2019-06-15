@@ -5,24 +5,24 @@ import { Store } from '@/services/store'
 import { CrowdAPI } from '@/api/v1/crowd'
 import { forkJoin } from 'rxjs'
 
-interface CardsListInfoState {
-  cardsListInfo: any
+interface CrowdIndexState {
+  crowdIndexInfo: any
 }
 @Injectable()
-export class IndexService extends Store<CardsListInfoState> {
-  state$: State<CardsListInfoState>
-  cardsListInfo$: Computed<string>
+export class IndexService extends Store<CrowdIndexState> {
+  state$: State<CrowdIndexState>
+  crowdIndexInfo$: Computed<string>
   constructor(private crowdAPI: CrowdAPI) {
     super()
     this.state$ = new State({
-      cardsListInfo: {}
+      crowdIndexInfo: {}
     })
-    this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))
+    this.crowdIndexInfo$ = new Computed(this.state$.pipe(pluck('crowdIndexInfo')))
   }
-  SET_CARDS_LIST_INFO(cardsListInfo: CardsListInfoState) {
-    console.log(cardsListInfo)
+  SET_CARDS_LIST_INFO(crowdIndexInfo: CrowdIndexState) {
+    console.log(crowdIndexInfo)
     this.state$.commit(state => {
-      state.cardsListInfo = cardsListInfo
+      state.crowdIndexInfo = crowdIndexInfo
     })
   }
   // 获取列表
