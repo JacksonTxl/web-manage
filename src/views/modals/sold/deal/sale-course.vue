@@ -12,7 +12,7 @@
             <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
             <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
             <st-info-item label="总课时">{{info.total_times}}</st-info-item>
-            <st-info-item label="有效期">{{moment().add(info.valid_time, 'days').format('YYYY-MM-DD hh:mm')}}</st-info-item>
+            <st-info-item label="有效期">{{moment().add(info.valid_time, 'days').format('YYYY-MM-DD HH:mm')}}</st-info-item>
             <st-info-item label="上课门店">{{info.shop_name}}</st-info-item>
             <st-info-item label="上课范围">{{info.course_range}}</st-info-item>
           </st-info>
@@ -60,7 +60,7 @@
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
           <st-form-item label="到期时间">
-            <div>{{moment().format('YYYY-MM-DD hh:mm')}}</div>
+            <div>{{moment().format('YYYY-MM-DD HH:mm')}}</div>
           </st-form-item>
           <st-form-item label="合同编号" required>
             <div :class="sale('contract')">

@@ -311,11 +311,53 @@ export default {
       this.$modalRouter.push({
         name: 'sold-deal-sale-personal-course',
         props: {
-          id: '1'
+          id: '52194842312815'
         },
         on: {
-          success: () => {
-            console.log('success')
+          success: (result) => {
+            if (result.type === 'create') {
+              // 创建订单成功
+              this.$modalRouter.push({
+                name: 'sold-deal-gathering-tip',
+                props: {
+                  order_id: result.order_id,
+                  type: 'personal',
+                  message: '订单创建成功',
+                  needPay: true
+                },
+                on: {
+                  success: () => {
+                    console.log('success')
+                  }
+                }
+              })
+            } else if (result.type === 'createPay') {
+              // 创建订单成功 并且到支付页面
+              this.$modalRouter.push({
+                name: 'sold-deal-gathering',
+                props: {
+                  order_id: result.order_id,
+                  type: 'personal'
+                },
+                on: {
+                  success: (result) => {
+                    this.$modalRouter.push({
+                      name: 'sold-deal-gathering-tip',
+                      props: {
+                        order_id: result.info.id,
+                        type: 'personal',
+                        message: '收款成功'
+                      },
+                      on: {
+                        success: () => {
+                          console.log('success')
+                        }
+                      }
+                    })
+                  }
+                }
+              })
+            }
           }
         }
       })

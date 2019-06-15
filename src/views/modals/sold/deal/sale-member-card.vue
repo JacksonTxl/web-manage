@@ -259,8 +259,8 @@ export default {
         specs: this.selectedNorm,
         open_type: this.selectedPayment
       })
-      this.validStartTime = moment().format('YYYY-MM-DD hh:mm')
-      this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
+      this.validStartTime = moment().format('YYYY-MM-DD HH:mm')
+      this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD HH:mm')
       this.fetchCouponList()
     })
   },
@@ -282,8 +282,8 @@ export default {
     onChangePayment(event) {
       this.selectedPayment = event.target.value
       if (this.selectedPayment.id !== 2) {
-        this.validStartTime = moment().format('YYYY-MM-DD hh:mm')
-        this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
+        this.validStartTime = moment().format('YYYY-MM-DD HH:mm')
+        this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD HH:mm')
       }
       this.fetchCouponList()
     },
@@ -300,7 +300,7 @@ export default {
     // 选择指定日期开卡
     onChangeTime(event) {
       if (event) {
-        this.validEndTime = moment(event._d).add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
+        this.validEndTime = moment(event._d).add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD HH:mm')
       }
     },
     moment,
