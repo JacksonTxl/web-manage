@@ -3,9 +3,9 @@
     <st-form :form="form" labelWidth="100px">
       <a-row>
         <a-col :xs="22">
-          <div>{{shopName}}{{shopId}}</div>
+          <div>{{shopName}}</div>
           <st-form-item v-show="false">
-            <input type="hidden" v-decorator="formRules.id">
+            <input type="hidden" v-decorator="formRules.shopId">
           </st-form-item>
           <st-form-item label="放假开始时间" required class="mg-t16">
             <a-date-picker
@@ -26,7 +26,7 @@
             />
           </st-form-item>
           <st-form-item labelFix class="mg-b0">
-            <st-button type="primary" @click="onSubmit">确认设置放假时间</st-button>
+            <st-button type="primary" :loading="loading.add" @click="onSubmit">确认设置放假时间</st-button>
           </st-form-item>
         </a-col>
       </a-row>
@@ -38,7 +38,7 @@ import { MessageService } from '@/services/message.service'
 import { HolidayService } from '../setting-shop-holiday.service'
 import moment from 'moment'
 const formRules = {
-  id: ['shop_id'],
+  shopId: ['shop_id'],
   startTime: [
     'start_time', {
       rules: [{
@@ -62,6 +62,11 @@ export default {
     return {
       messageService: MessageService,
       holidayService: HolidayService
+    }
+  },
+  rxState() {
+    return {
+      loading: this.holidayService.loading$
     }
   },
   props: {
@@ -104,11 +109,10 @@ export default {
       this.messageService.success({
         content: '添加成功'
       })
-      this.$emit('change')
-      this.show = false
+      this.$emit('success')
     },
     onCancel() {
-      this.show = false
+      this.$emit('cancel')
     }
   }
 }

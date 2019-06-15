@@ -3,8 +3,10 @@ import { Effect } from 'rx-state'
 import { Store } from '@/services/store'
 import { ShopHolidayApi, AddInput } from '@/api/v1/brand/shop-holiday'
 
+interface SetState {}
+
 @Injectable()
-export class HolidayService extends Store<any> {
+export class HolidayService extends Store<SetState> {
   constructor(protected shopHolidayApi: ShopHolidayApi) {
     super()
   }

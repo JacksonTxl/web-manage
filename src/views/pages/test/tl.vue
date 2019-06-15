@@ -81,6 +81,17 @@
        文字
       </p>
       <st-pagination :page="page" @change="onPageChange"></st-pagination>
+      <a-select mode="multiple"
+        placeholder="please select"
+        style="width: 200px;"
+        class="mg-t24"
+        @change="onMultiChange"
+      >
+        <a-select-option key="这个">这个</a-select-option>
+        <a-select-option key="abc">abc</a-select-option>
+        <a-select-option :key="2">2</a-select-option>
+        <a-select-option :key="12">12</a-select-option>
+      </a-select>
     </st-panel>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
   </div>
@@ -145,6 +156,9 @@ export default {
     },
     onPageChange(page, pageSize) {
       console.log(page, pageSize)
+    },
+    onMultiChange(val) {
+      console.log('mul select changed', val)
     }
   }
 }

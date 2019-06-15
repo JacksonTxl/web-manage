@@ -29,7 +29,7 @@ export class ShopService extends Store<ShopInfoState> {
     return this.shopApi.getShopSettingInfo()
   }
   save(data: ShopInput) {
-    return this.shopApi.add(data)
+    return this.shopApi.updateShop(data)
   }
   delImg(id: string, data: ShopInput) {
     return this.shopApi.update(id, data)
