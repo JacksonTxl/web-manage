@@ -24,7 +24,7 @@
     <st-t4>体测记录</st-t4>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
-        <st-form-table hoverable :page="cardsListInfo.page" @change="onPageChange">
+        <st-form-table hoverable :page="physicalListInfo.page" @change="onPageChange">
           <thead>
             <tr>
               <th
@@ -47,7 +47,7 @@
                 </modal-link>
               </td>
             </tr>
-            <tr v-for="(item,index) in cardsListInfo.physical_list" :key="index">
+            <tr v-for="(item,index) in physicalListInfo.physical_list" :key="index">
               <td>{{item.test_time}}</td>
               <td>{{item.height}}</td>
               <td>{{item.weight}}</td>
@@ -97,7 +97,7 @@ export default {
   },
   rxState() {
     return {
-      cardsListInfo: this.aService.cardsListInfo$,
+      physicalListInfo: this.aService.physicalListInfo$,
       followInfo: this.aService.followInfo$
     }
   },
@@ -129,9 +129,9 @@ export default {
   },
   created() {
     this.g2 = this.followInfo.weight
-    this.pageData.current = this.cardsListInfo.page.current_page
-    this.pageData.pageSize = this.cardsListInfo.page.size
-    this.pageData.total = this.cardsListInfo.page.total_counts
+    this.pageData.current = this.physicalListInfo.page.current_page
+    this.pageData.pageSize = this.physicalListInfo.page.size
+    this.pageData.total = this.physicalListInfo.page.total_counts
   },
   mounted() {},
   methods: {

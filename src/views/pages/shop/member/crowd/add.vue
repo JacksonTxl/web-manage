@@ -89,7 +89,7 @@ export default {
   },
   rxState() {
     return {
-      cardsListInfo: this.aService.cardsListInfo$
+      crowdInfo: this.aService.crowdInfo$
     }
   },
   components: {
@@ -346,10 +346,10 @@ export default {
     },
     getFilterData() {
       let self = this
-      Object.keys(self.cardsListInfo.info).map(item => {
-        Object.assign(self.seleteData.info, self.cardsListInfo.info[item].value)
+      Object.keys(self.crowdInfo.info).map(item => {
+        Object.assign(self.seleteData.info, self.crowdInfo.info[item].value)
         self.seleteData[item].value = Object.keys(
-          self.cardsListInfo.info[item].value
+          self.crowdInfo.info[item].value
         )
       })
     },

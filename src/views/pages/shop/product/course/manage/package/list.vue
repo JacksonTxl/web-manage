@@ -27,7 +27,6 @@
       </div>
     </div>
     <st-table
-    v-if="auth.list"
     :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
     :columns="columns"
     @change="onPageChange"

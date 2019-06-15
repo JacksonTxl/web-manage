@@ -20,8 +20,7 @@
       </div>
     </header>
     <main class="page-shop-sale-list-brand__table mg-t8">
-      <list-table v-if="auth.shopList" @delete-course="onDeleteCourse" :personalCourseList="personalCourseList"></list-table>
-      <span v-else>暂无权限</span>
+      <list-table @delete-course="onDeleteCourse" :personalCourseList="personalCourseList"></list-table>
     </main>
   </st-panel>
 </template>

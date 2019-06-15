@@ -45,19 +45,19 @@ export default {
     onChange() {
 
     },
-    onClickCourseInfo(course) {
+    onClickCourseInfo(id) {
       this.$router.push({
         name: 'shop-product-course-manage-team-info',
         query: {
-          courseId: course.id
+          courseId: id
         }
       })
     },
-    onClickEditCourseInfo(course) {
+    onClickEditCourseInfo(id) {
       this.$router.push({
         name: 'shop-product-course-manage-team-edit',
         query: {
-          id: course.id
+          id
         }
       })
     },

@@ -37,7 +37,7 @@
 
         </st-time-line>-->
         <a-timeline pending="1" :reverse="reverse">
-          <a-timeline-item v-for="(item,index) in cardsListInfo.record_list" :key="index">
+          <a-timeline-item v-for="(item,index) in followHistoryInfo.record_list" :key="index">
             <div class="member-follow-history-timeline__item">
               <div class="member-follow-history-timeline__item__title">{{item.follow_content}}</div>
               <div class="member-follow-history-timeline__item__info">
@@ -67,7 +67,7 @@ export default {
   },
   rxState() {
     return {
-      cardsListInfo: this.aService.cardsListInfo$,
+      followHistoryInfo: this.aService.followHistoryInfo$,
       followInfo: this.aService.followInfo$
     }
   },

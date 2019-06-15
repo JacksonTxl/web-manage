@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { MemberAPi } from '@/api/v1/member'
+import { MemberApi } from '@/api/v1/member'
 import { UpdateMemberEdit } from '../../../../api/v1/member'
 
 interface EditState {
@@ -18,7 +18,7 @@ export class EditService extends Store<EditState> {
     countryInfo$: Computed<Object>
     nations$: Computed<Object>
     countryList$: Computed<Object>
-    constructor(protected memberApi: MemberAPi) {
+    constructor(protected memberApi: MemberApi) {
       super()
       this.state$ = new State({
         info: {},
