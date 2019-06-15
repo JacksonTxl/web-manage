@@ -73,14 +73,20 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      sellTypeOptions: [{
-        label: '线下售卖',
-        value: 1
-      }, {
-        label: '用户端售卖',
-        value: 2
-      }],
       priceGradient: []
+    }
+  },
+  computed: {
+    sellTypeOptions() {
+      const sellType = this.personalCourseEnums.sell_type.value
+      const options = []
+      for (let i in sellType) {
+        options.push({
+          label: sellType[i],
+          value: +i
+        })
+      }
+      return options
     }
   },
   mounted() {
