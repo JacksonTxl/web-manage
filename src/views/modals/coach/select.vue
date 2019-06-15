@@ -14,7 +14,7 @@
         @change="onChange"
         @search="onSearch"
       >
-        <a-select-option v-for="item in list" :key="`${item.id}`">{{item.nickname}}</a-select-option>
+        <a-select-option v-for="item in list" :key="`${item.id}`" :value="item.id">{{item.nickname}}</a-select-option>
       </a-select>
       <p class="color-text-light mg-t8">已选择{{coachIds.length}}个教练</p>
       <p class="ta-r">
