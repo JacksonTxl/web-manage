@@ -58,6 +58,7 @@
                 </template>
                 <!-- 转让手续费 -->
                 <template slot="serviceFee" slot-scope="text, record, index">
+                  test{{priceGradientRecord.prices[index].transfer_unit}}
                   <st-input-number
                     style="width: 110px"
                     v-model="priceGradientRecord.prices[index].transfer_num"
@@ -91,8 +92,11 @@
       </a-col>
     </a-row>
     <div class="ta-c">
-        <st-button @click="addRecord">添加教练等级定价</st-button>
-      </div>
+      <st-button @click="addRecord">添加教练等级定价</st-button>
+    </div>
+    <!-- <div>
+      <button @click="check">check</button>
+    </div> -->
   </div>
 </template>
 <script>
@@ -174,13 +178,6 @@ export default {
   },
   data() {
     return {
-      sellTypeOptions: [{
-        label: '线下售卖',
-        value: 1
-      }, {
-        label: '用户端售卖',
-        value: 2
-      }],
       tableColumns,
       tableData: [],
       priceGradient: []
@@ -214,10 +211,11 @@ export default {
     },
     addPriceRecord(key) {
       const newRecord = {
+        id: 0,
         priceGradient: '',
         price: '',
         serviceFee: '',
-        id: 0
+        transfer_unit: 1
       }
       this.priceGradient[key].prices.push(newRecord)
     },
@@ -227,13 +225,19 @@ export default {
     onSingleSellChange(e, key) {
       this.priceGradient[key].single_sell = +!this.priceGradient[key].single_sell
     },
-    inputCheck(priceGradient) {
+    inputCheck() {
+      const { priceGradient } = this
       let ret = true
       for (let i = 0; i < priceGradient.length; i++) {
         let retIn = false
-        for (let j in priceGradient[i]) {
-          if (priceGradient[i][j] === undefined || priceGradient[i][j] === '') {
-            retIn = true
+        const prices = priceGradient[i].prices
+        for (let j = 0; j < prices.length; j++) {
+          const price = prices[j]
+          for (let k in price) {
+            console.log(k)
+            // if (price[k] === undefined || price[k] === '') {
+            //   retIn = true
+            // }
           }
         }
         if (retIn) {
@@ -277,6 +281,10 @@ export default {
         return item
       })
       return priceGradient
+    },
+    check() {
+      const ret = this.inputCheck()
+      console.log(ret, this.priceGradient)
     }
   }
 }

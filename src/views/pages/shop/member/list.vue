@@ -227,7 +227,7 @@ export default {
       })
     },
     edit(record) {
-      this.$router.push({ name: 'shop-member-edit', query: { id: record.id } })
+      this.$router.push({ name: 'shop-member-edit', query: { id: record.member_id } })
     },
     addUser(record) {
       this.$router.push({ name: 'shop-member-add' })
@@ -235,7 +235,7 @@ export default {
     infoFunc(record) {
       this.$router.push({
         name: 'shop-member-info-basic',
-        query: { id: record.id }
+        query: { id: record.member_id }
       })
     },
     moment,
