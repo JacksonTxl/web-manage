@@ -172,11 +172,23 @@
   </st-modal>
 </template>
 <script>
+import { BatchShelvesService } from './batch-shelves.service'
 export default {
   name: 'ModalCardBatchShelves',
   bem: {
     shelves: 'modal-card-batch-shelves'
   },
+  serviceInject() {
+    return {
+      batchShelvesService: BatchShelvesService
+    }
+  },
+  rxState() {
+    return {
+      info: this.batchShelvesService.info$
+    }
+  },
+  props: ['id'],
   data() {
     return {
       show: false,
@@ -188,6 +200,10 @@ export default {
       },
       image_url: 'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/20190612/DVu9Xd-G4pxwn4bK.png'
     }
+  },
+  created() {
+    console.log(1)
+    this.batchShelvesService.getInfo(this.id).subscribe()
   }
 }
 </script>
