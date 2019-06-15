@@ -13,15 +13,15 @@ export class SaleMemberCardService {
   memberList$ = new State({})
   saleList$ = new State({})
   couponList$ = new State({})
-  constructor(private contractApi: ContractApi, private memberApi: ShopPersonalCourseApi, private transactionApi: TransactionApi) {}
+  constructor(private contractApi: ContractApi, private transactionApi: TransactionApi) {}
   getInfo(id:string) {
     return this.transactionApi.getTransactionInfo(id, 'member/card').pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
   }
   @Effect()
-  getMember(member:string) {
-    return this.memberApi.getMemberList(member).pipe(tap((res:any) => {
+  getMember(member:string, type: number) {
+    return this.transactionApi.getMemberList(member, type).pipe(tap((res:any) => {
       this.memberList$.commit(() => res.list)
     }))
   }

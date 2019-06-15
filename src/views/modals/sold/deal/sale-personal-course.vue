@@ -297,7 +297,7 @@ export default {
       return personalCourseType
     },
     orderAmountText() {
-      return this.orderAmount < 0 ? '这里不能为负哦，找刚刚要文案' : ''
+      return this.priceInfo < 0 ? '小计不能为负' : ''
     }
   },
   methods: {

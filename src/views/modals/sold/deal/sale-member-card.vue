@@ -43,7 +43,7 @@
             >
               <a-select-option
               v-for="(item,index) in memberList"
-              :value="item.member_id"
+              :value="item.id"
               :key="index">
                 <span v-html="`${item.member_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
                   {{item.member_name}}&nbsp;&nbsp;&nbsp;{{item.mobile}}
@@ -269,7 +269,7 @@ export default {
       return (this.selectedNorm.price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(1)
     },
     orderAmountText() {
-      return this.orderAmount < 0 ? '这里不能为负哦，找刚刚要文案' : ''
+      return this.orderAmount < 0 ? '小计不能为负' : ''
     }
   },
   methods: {
@@ -359,7 +359,7 @@ export default {
         this.saleMemberCardService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
-        this.saleMemberCardService.getMember(data).subscribe(res => {
+        this.saleMemberCardService.getMember(data, this.info.sale_range.type).subscribe(res => {
           if (!res.list.length) {
             this.form.resetFields(['memberId'])
           }
