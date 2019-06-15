@@ -5,6 +5,9 @@ export class ShopHolidayApi extends Api {
   add(params: AddInput) {
     return this.http.post(url, { params })
   }
+  update(params: AddInput) {
+    return this.http.put(url, { params })
+  }
 }
 export interface AddInput {
   /**
