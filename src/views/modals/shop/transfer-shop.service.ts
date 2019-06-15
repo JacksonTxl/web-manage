@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { MemberAPi } from '@/api/v1/member'
+import { MemberApi } from '@/api/v1/member'
 
 interface CardsTableModelState {
   lableInfo: any
@@ -11,7 +11,7 @@ interface CardsTableModelState {
 export class TransferShopService extends Store<CardsTableModelState> {
   state$: State<CardsTableModelState>
   cardsListInfo$: Computed<string>
-  constructor(private MemberAPi: MemberAPi) {
+  constructor(private MemberApi: MemberApi) {
     super()
     this.state$ = new State({
       cardsListInfo: {}
@@ -20,15 +20,15 @@ export class TransferShopService extends Store<CardsTableModelState> {
   }
 
   getMemberBuy(data: any) {
-    return this.MemberAPi.getMemberBuy(data)
+    return this.MemberApi.getMemberBuy(data)
   }
   getMemberTransfer(data: any) {
-    return this.MemberAPi.getMemberTransfer(data)
+    return this.MemberApi.getMemberTransfer(data)
   }
   getMemberShop() {
-    return this.MemberAPi.getMemberShop()
+    return this.MemberApi.getMemberShop()
   }
   getMemberTransferShop(id: string) {
-    return this.MemberAPi.getMemberTransferShop(id)
+    return this.MemberApi.getMemberTransferShop(id)
   }
 }

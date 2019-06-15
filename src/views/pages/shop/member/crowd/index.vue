@@ -1,12 +1,12 @@
 <template>
   <div class="shop-member-crowd-index">
-    <index v-model="cardsListInfo.info.important_crowd"></index>
+    <index v-model="crowdIndexInfo.info.important_crowd"></index>
     <st-panel>
       <div slot="title">
         <router-link
           tag="a"
           :to=" { name: 'shop-member-crowd-add'}"
-          v-if="cardsListInfo.info.list.length <= 10"
+          v-if="crowdIndexInfo.info.list.length <= 10"
         >
           <st-button type="primary">
             <a-icon type="plus"/>新建人群
@@ -17,7 +17,7 @@
       </div>
       <st-table
         rowKey="id"
-        :dataSource="cardsListInfo.info.list"
+        :dataSource="crowdIndexInfo.info.list"
         :columns="table.columns1"
         @change="onChange"
         :pagination="false"
@@ -60,7 +60,7 @@ export default {
   },
   rxState() {
     return {
-      cardsListInfo: this.aService.cardsListInfo$
+      crowdIndexInfo: this.aService.crowdIndexInfo$
     }
   },
   data() {

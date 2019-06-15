@@ -2,14 +2,14 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { MemberAPi } from '@/api/v1/member'
+import { MemberApi } from '@/api/v1/member'
 
-interface CardsListInfoState {}
+interface SelectInfoState {}
 @Injectable()
-export class SeleterService extends Store<CardsListInfoState> {
-  state$: State<CardsListInfoState>
+export class SelectService extends Store<SelectInfoState> {
+  state$: State<SelectInfoState>
 
-  constructor(private cardsApi: MemberAPi) {
+  constructor(private cardsApi: MemberApi) {
     super()
     this.state$ = new State({})
   }

@@ -1,13 +1,13 @@
 import { Injectable } from 'vue-service-app'
 import { Store } from '@/services/store'
-import { MemberAPi, CoachParams, CoachQuery } from '@/api/v1/member'
+import { MemberApi, CoachParams, CoachQuery } from '@/api/v1/member'
 
 interface CardsTableModelState {
   coachList: Object
 }
 @Injectable()
 export class DistributionCoachService extends Store<CardsTableModelState> {
-  constructor(private cardsApi: MemberAPi) {
+  constructor(private cardsApi: MemberApi) {
     super()
   }
   getSaleList(query: CoachQuery) {

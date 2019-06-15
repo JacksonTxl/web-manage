@@ -5,31 +5,31 @@ import { Store } from '@/services/store'
 import { CrowdAPI } from '@/api/v1/crowd'
 import { forkJoin } from 'rxjs'
 
-interface CardsListInfoState {
-  cardsListInfo: any
+interface AnalysisInfoState {
+  analysisInfo: any
 }
 @Injectable()
-export class AnalysisService extends Store<CardsListInfoState> {
-  state$: State<CardsListInfoState>
-  cardsListInfo$: Computed<string>
+export class AnalysisService extends Store<AnalysisInfoState> {
+  state$: State<AnalysisInfoState>
+  analysisInfo$: Computed<string>
   constructor(private crowdAPI: CrowdAPI) {
     super()
     this.state$ = new State({
-      cardsListInfo: {}
+      analysisInfo: {}
     })
-    this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))
+    this.analysisInfo$ = new Computed(this.state$.pipe(pluck('analysisInfo')))
   }
-  SET_CARDS_LIST_INFO(cardsListInfo: CardsListInfoState) {
-    console.log(cardsListInfo)
+  SET_ANALYSIS_INFO(analysisInfo: AnalysisInfoState) {
+    console.log(analysisInfo)
     this.state$.commit(state => {
-      state.cardsListInfo = cardsListInfo
+      state.analysisInfo = analysisInfo
     })
   }
   // 获取列表
   getListInfo(id: string) {
     return this.crowdAPI.getCrowdBrandAnalysis(id).pipe(
       tap(res => {
-        this.SET_CARDS_LIST_INFO(res)
+        this.SET_ANALYSIS_INFO(res)
       })
     )
   }

@@ -14,7 +14,7 @@ interface EditState {
 export class EditTemporaryService extends Store<EditState> {
   state$: State<EditState>
   resData$: Computed<Object>
-  constructor(private cabinetAPi: TemporaryCabinetApi) {
+  constructor(private cabinetApi: TemporaryCabinetApi) {
     super()
     this.state$ = new State({
       resData: {}
@@ -22,7 +22,7 @@ export class EditTemporaryService extends Store<EditState> {
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
   }
   getUpdateInfo(id: number) {
-    return this.cabinetAPi.getUpdateInfo(id).pipe(
+    return this.cabinetApi.getUpdateInfo(id).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.resData = res
@@ -32,6 +32,6 @@ export class EditTemporaryService extends Store<EditState> {
   }
   @Effect()
   update(params: UpdateInput) {
-    return this.cabinetAPi.update(params)
+    return this.cabinetApi.update(params)
   }
 }

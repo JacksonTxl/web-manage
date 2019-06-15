@@ -1,11 +1,11 @@
 import { Injectable } from 'vue-service-app'
-import { FinanceAPi, AddTemplateParams } from '@/api/v1/finance'
+import { FinanceApi, AddTemplateParams } from '@/api/v1/finance'
 
 @Injectable()
 export class EditTemplateService {
-  constructor(private MemberAPi: FinanceAPi) {
+  constructor(private MemberApi: FinanceApi) {
   }
   editTemplate(id: any, params: AddTemplateParams) {
-    return this.MemberAPi.editTemplate(id, params)
+    return this.MemberApi.editTemplate(id, params)
   }
 }

@@ -5,13 +5,13 @@ import { Store } from '@/services/store'
 import { CardsApi } from '@/api/v1/cards'
 import { AuthService } from '@/services/auth.service'
 
-interface CardsListInfoState {
-  cardsListInfo: any
+interface ShopSaleListState {
+  shopSaleCardsList: any
 }
 @Injectable()
-export class StopSaleListService extends Store<CardsListInfoState> {
-  state$: State<CardsListInfoState>
-  cardsListInfo$: Computed<string>
+export class ShopSaleListService extends Store<ShopSaleListState> {
+  state$: State<ShopSaleListState>
+  shopSaleCardsList$: Computed<string>
   auth$: Computed<object>
   constructor(
     private cardsApi: CardsApi,
@@ -19,17 +19,17 @@ export class StopSaleListService extends Store<CardsListInfoState> {
   ) {
     super()
     this.state$ = new State({
-      cardsListInfo: {},
+      shopSaleCardsList: {},
       auth: {
         batchDown: this.authService.can('brand_shop:product:member_card|batch_down')
       }
     })
-    this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))
+    this.shopSaleCardsList$ = new Computed(this.state$.pipe(pluck('shopSaleCardsList')))
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
-  SET_CARDS_LIST_INFO(cardsListInfo: CardsListInfoState) {
+  SET_CARDS_LIST_INFO(shopSaleCardsList: ShopSaleListState) {
     this.state$.commit(state => {
-      state.cardsListInfo = cardsListInfo
+      state.shopSaleCardsList = shopSaleCardsList
     })
   }
   getListInfo(paramsObj: any) {

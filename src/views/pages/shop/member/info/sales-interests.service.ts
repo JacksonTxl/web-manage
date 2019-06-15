@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { MemberAPi, CouponQuery } from '@/api/v1/member'
+import { MemberApi, CouponQuery } from '@/api/v1/member'
 
 interface CouponListInfoState {
   couponList: Object
@@ -12,7 +12,7 @@ interface CouponListInfoState {
 export class SalesInterestsService extends Store<CouponListInfoState> {
   state$: State<CouponListInfoState>
   couponList$: Computed<Object>
-  constructor(private cardsApi: MemberAPi) {
+  constructor(private cardsApi: MemberApi) {
     super()
     this.state$ = new State({
       couponList: {}
