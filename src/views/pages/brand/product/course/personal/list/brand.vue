@@ -5,7 +5,7 @@
         <st-button
           icon="add"
           type="primary"
-          v-if="auth.isAdd"
+          v-if="auth.add"
           @click="addPersonalCourse"
         >新增私教课程</st-button>
         <div>

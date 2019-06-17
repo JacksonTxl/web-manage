@@ -1,6 +1,41 @@
 import { Api } from '../api'
-
+export interface CardShelfListInput {
+  current_page?:number
+  size?:number
+  card_type?:number
+  publish_channel?:number
+  card_name?:string
+}
+export interface CardListInput {
+  current_page?:number
+  size?:number
+  card_type?:number
+  publish_channel?:number
+  card_name?:string
+  sell_status?:number
+  shelf_status?:number
+}
 export class CardsApi extends Api {
+  /**
+   * 门店会员卡已上架列表
+   */
+  getShopCardShelfList(query:CardShelfListInput) {
+    return this.http.get(`/v1/cards/member/shop/shelf`, { query })
+  }
+  /**
+   * 门店会员卡列表
+   */
+  getShopCardList(query:CardListInput) {
+    return this.http.get(`/v1/cards/member/shop`, { query })
+  }
+
+  /**
+   * 品牌会员卡上架详情
+   */
+  getCardShelfInfo(id:string) {
+    return this.http.get(`/v1/cards/member/brand/shelf/${id}`)
+  }
+
   /**
    * 会员卡新增,品牌
    */
@@ -147,7 +182,7 @@ export class CardsApi extends Api {
     return this.http.delete(`/v1/cards/brand/deposit/${id}`)
   }
   /**
-   * 品牌储值卡上架
+   * 品牌储值卡上架 /v1/cards/member/brand/shelf
    */
   setCardsDepositBrandOnLine(params: any) {
     return this.http.put(`/v1/cards/brand/deposit/online`, { params })

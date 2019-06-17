@@ -33,7 +33,7 @@ export class ListService extends Store<SetState> implements RouteGuard {
       tabs.push({
         label: '门店上架储值卡',
         route: {
-          name: 'brand-product-card-deposite-list-stop-sale-list'
+          name: 'brand-product-card-deposite-list-shop-sale-list'
         }
       })
     }

@@ -38,7 +38,7 @@
             >
               <a-select-option
               v-for="(item,index) in memberList"
-              :value="item.member_id"
+              :value="item.id"
               :key="index">
                 <span v-html="`${item.member_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
                   {{item.member_name}}&nbsp;&nbsp;&nbsp;{{item.mobile}}
@@ -59,28 +59,29 @@
               <a-radio v-for="(item, index) in info.coach_level" :value="item.id" :key="index">{{item.name}}</a-radio>
             </a-radio-group>
           </st-form-item>
-          <st-form-item label="购买数量" required>
+          <st-form-item label="购买数量" required :extra="isAmountStateTip">
             <div :class="sale('contract')">
               <a-input-number class="input-number"
+              :max="9999"
               v-decorator="['buyNum',{rules:[{validator:buy_num}]}]"
-              placeholder="请输入购买数量" :disabled="isAmountDisabled"></a-input-number>
+              placeholder="请输入购买数量" :disabled="isAmountDisabled" :loading="loading.getPersonalPriceInfo" ></a-input-number>
               <st-button class="create-button" @click="onClickCourseAmount" :loading="loading.getPersonalPriceInfo" v-if="!isAmountDisabled">确定</st-button>
-              <st-button class="create-button" @click="isAmountDisabled=false" v-else>编辑</st-button>
+              <st-button class="create-button" @click="isAmountDisabled=false;" v-else>编辑</st-button>
             </div>
           </st-form-item>
           <st-form-item label="单节价格" required v-if="info.sale_model === 1">
-            <st-input-number v-decorator="['coursePrice',{rules:[{validator:course_price}]}]" :float="true" placeholder="请输入课程的价格" @blur="fetchCouponList">
+            <st-input-number :min="personalPrice.min_sell_price || 0" :max="personalPrice.max_sell_price || 0" v-decorator="['coursePrice',{rules:[{validator:course_price}]}]" :float="true" placeholder="请输入课程的价格" @blur="fetchCouponList">
               <span slot="addonAfter">元</span>
             </st-input-number>
           </st-form-item>
-          <st-form-item label="单节价格" required v-if="info.sale_model === 2">
-            <div>19元/节 ~ 25元/节</div>
+          <st-form-item label="单节价格" v-if="info.sale_model === 2">
+            <div>{{personalPrice.sell_price || 0}}元/节</div>
           </st-form-item>
           <st-form-item label="价格区间" v-if="info.sale_model === 1">
-            <div>19元/节 ~ 25元/节</div>
+            <div>{{personalPrice.min_sell_price || 0}}元/节 ~ {{personalPrice.max_sell_price}}元/节</div>
           </st-form-item>
           <st-form-item label="到期时间">
-            <div>{{moment().format('YYYY-MM-DD hh:mm')}}</div>
+            <div>{{moment().add(validEndTime, 'days').format('YYYY-MM-DD HH:mm')}}</div>
           </st-form-item>
           <st-form-item label="合同编号" required>
             <div :class="sale('contract')">
@@ -100,10 +101,10 @@
               :value="item.id">{{item.staff_name}}</a-select-option>
             </a-select>
           </st-form-item>
-          <st-form-item label="购买赠送" required>
+          <st-form-item label="购买赠送">
             <st-input-number v-decorator="['gift_course_num',{rules:[]}]" placeholder="请输入赠送的上课节数"></st-input-number>
           </st-form-item>
-          <st-form-item class="mgb-12" label="商品价格">{{info.sell_price}}元</st-form-item>
+          <st-form-item class="mgb-12" label="商品价格">{{orderAmountPrice}}元</st-form-item>
           <st-form-item :class="sale('discounts')" label="优惠券">
             <div>
               <div :class="sale('discounts-total')">
@@ -162,7 +163,7 @@
             </st-input-number>
           </st-form-item>
           <st-form-item validateStatus="error" :help="orderAmountText" class="mg-b0" label="小计">
-            <span class="total">{{orderAmount}}元</span>
+            <span class="total">{{priceInfo}}元</span>
           </st-form-item>
         </div>
         <div :class="sale('remarks')">
@@ -185,12 +186,12 @@
     <template slot="footer">
       <div :class="sale('footer')">
         <div class="price">
-          <span>{{orderAmount}}元</span>
-          <span>订单总额：{{info.sell_price}}元</span>
+          <span>{{priceInfo}}元</span>
+          <span>订单总额：{{orderAmountPrice}}元</span>
         </div>
         <div class="button">
-          <st-button @click="onCreateOrder" :loading="loading.setTransaction">创建订单</st-button>
-          <st-button @click="onPay" :loading="loading.setTransaction" type="primary">立即支付</st-button>
+          <st-button @click="onCreateOrder" :loading="loading.setTransactionOrder">创建订单</st-button>
+          <st-button @click="onPay" :loading="loading.setTransactionPay" type="primary">立即支付</st-button>
         </div>
       </div>
     </template>
@@ -220,7 +221,9 @@ export default {
       saleList: this.salePersonalCourseService.saleList$,
       couponList: this.salePersonalCourseService.couponList$,
       coachList: this.salePersonalCourseService.coachList$,
-      personalPrice: this.salePersonalCourseService.personalPrice$
+      personalPrice: this.salePersonalCourseService.personalPrice$,
+      priceInfo: this.salePersonalCourseService.priceInfo$,
+      orderAmountPrice: this.salePersonalCourseService.orderAmountPrice$
     }
   },
   props: {
@@ -238,6 +241,8 @@ export default {
       searchMemberIsShow: true,
       // 购买数量可编辑
       isAmountDisabled: false,
+      // 到期有效时间
+      validEndTime: 0,
       // 定金
       advanceDropdownVisible: false,
       advanceList: [],
@@ -250,11 +255,32 @@ export default {
       selectCoupon: '',
       couponText: '未选择优惠券',
       couponAmount: '',
-      couponDropdownVisible: false
+      couponDropdownVisible: false,
+      // 购买数量处于编辑状态 提示语
+      isAmountStateTip: ''
     }
   },
-  created() {
-    this.salePersonalCourseService.serviceInit(this.id).subscribe()
+  watch: {
+    selectCoupon: {
+      deep: true,
+      handler(newVal, oldVal) {
+        this.getPrice(newVal, this.selectAdvance, +this.reduceAmount)
+      }
+    },
+    selectAdvance: {
+      deep: true,
+      handler(newVal, oldVal) {
+        this.getPrice(this.selectCoupon, newVal, +this.reduceAmount)
+      }
+    },
+    reduceAmount(newVal, oldVal) {
+      this.getPrice(this.selectCoupon, this.selectAdvance, +newVal)
+    }
+  },
+  mounted() {
+    this.salePersonalCourseService.serviceInit(this.id).subscribe(result => {
+      this.form.setFieldsValue({ 'coach_level': this.info.coach_level[0].id })
+    })
   },
   computed: {
     orderPersonalType() {
@@ -271,19 +297,16 @@ export default {
       }
       return personalCourseType
     },
-    orderAmount() {
-      return (this.info.sell_price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(1)
-    },
     orderAmountText() {
-      return this.orderAmount < 0 ? '这里不能为负哦，找刚刚要文案' : ''
+      return this.priceInfo < 0 ? '小计不能为负' : ''
     }
   },
   methods: {
     fetchCouponList() {
       const member_id = this.form.getFieldValue('memberId')
-      const course_price = this.form.getFieldValue('coursePrice')
+      const course_price = this.personalPrice.sell_price
       const buy_num = this.form.getFieldValue('buyNum')
-      if (member_id && price && buy_num) {
+      if (member_id && course_price && buy_num) {
         const params = {
           member_id: member_id,
           course_id: this.id,
@@ -337,8 +360,10 @@ export default {
       if (!value) {
         // eslint-disable-next-line
         callback('请输入购买数量')
-      } else {
+      } else if (value < this.info.min_sell) {
         // eslint-disable-next-line
+        callback(`不能少于课程定价的最低购买节数${this.info.min_sell}`)
+      } else {
         callback()
       }
     },
@@ -385,7 +410,7 @@ export default {
         this.salePersonalCourseService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
-        this.salePersonalCourseService.getMember(data).subscribe(res => {
+        this.salePersonalCourseService.getMember(data, this.info.sale_range.type).subscribe(res => {
           if (!res.list.length) {
             this.form.resetFields(['memberId'])
           }
@@ -448,17 +473,54 @@ export default {
       this.couponText = `${price}元`
     },
     onClickCourseAmount() {
-      const params = {
-        // id: this.id,
-        id: 48587472437748,
-        buy_num: this.form.getFieldValue('buyNum'),
-        coach_level_id: this.form.getFieldValue('coach_level') || 0 // 默认0 为没有等级，否则分级
-      }
-      this.salePersonalCourseService.getPersonalPriceInfo(params).subscribe(result => {
-        this.isAmountDisabled = true
+      this.form.validateFields(['buyNum'], (error, values) => {
+        if (!error) {
+          const params = {
+            id: this.id,
+            buy_num: this.form.getFieldValue('buyNum'),
+            coach_level_id: this.form.getFieldValue('coach_level') || 0 // 默认0 为没有等级，否则分级
+          }
+          this.salePersonalCourseService.getPersonalPriceInfo(params).subscribe(result => {
+            this.isAmountDisabled = true
+            this.validEndTime = this.info.effective_unit
+            // 调用优惠券列表
+            this.fetchCouponList()
+            // 调用获取商品原价
+            this.getOrderPrice()
+            this.getPrice(null, null, null)
+          })
+        }
+      })
+    },
+    // 计算实付金额
+    getPrice(coupon, advance, reduce) {
+      let advanceId = advance === -1 ? '' : advance
+      this.salePersonalCourseService.priceAction$.dispatch({
+        product_id: this.id,
+        product_type: this.info.contract_type,
+        product_num: this.form.getFieldValue('buyNum'),
+        specs_id: this.form.getFieldValue('coach_level'),
+        coupon_id: coupon,
+        advance_id: advanceId,
+        reduce_amount: reduce,
+        special_amount: this.personalPrice.sell_price || 0
+      })
+    },
+    // 获取订单总额
+    getOrderPrice() {
+      this.salePersonalCourseService.orderAmountPriceAction$.dispatch({
+        product_id: this.id,
+        product_type: this.info.contract_type,
+        product_num: this.form.getFieldValue('buyNum'),
+        specs_id: this.form.getFieldValue('coach_level'),
+        special_amount: this.personalPrice.sell_price || 0
       })
     },
     onCreateOrder() {
+      if (!this.isAmountDisabled) {
+        this.isAmountStateTip = '请点击购买数量确定按钮'
+        return
+      }
       this.form.validateFields((error, values) => {
         if (!error) {
           this.salePersonalCourseService.setTransactionOrder({
@@ -468,17 +530,17 @@ export default {
             'course_id': this.id,
             'contract_number': values.contractNumber,
             'buy_num': values.buyNum,
-            'course_price': values.buyNum,
+            'course_price': this.personalPrice.sell_price,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
             'reduce_amount': this.reduceAmount,
             'sale_id': values.saleName,
             'description': this.description,
             'gift_course_num': values.gift_course_num,
-            'coach_id': this.coachId,
+            'coach_id': values.coachId,
             'coach_level_id': values.coach_level,
             'sale_range': this.info.sale_range.type,
-            'order_amount': this.orderAmount
+            'order_amount': this.priceInfo
           }).subscribe((result) => {
             this.$emit('success', {
               type: 'create',
@@ -490,6 +552,10 @@ export default {
       })
     },
     onPay() {
+      if (!this.isAmountDisabled) {
+        this.isAmountStateTip = '请点击购买数量确定按钮'
+        return
+      }
       this.form.validateFields((error, values) => {
         if (!error) {
           this.salePersonalCourseService.setTransactionPay({
@@ -499,18 +565,18 @@ export default {
             'course_id': this.id,
             'contract_number': values.contractNumber,
             'buy_num': values.buyNum,
-            'course_price': values.buyNum,
+            'course_price': this.personalPrice.sell_price,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
             'reduce_amount': this.reduceAmount,
             'sale_id': values.saleName,
             'description': this.description,
             'gift_course_num': values.gift_course_num,
-            'coach_id': this.coachId,
+            'coach_id': values.coachId,
             'coach_level_id': values.coach_level,
             'sale_range': this.info.sale_range.type,
-            'order_amount': this.orderAmount
-          }).subscribe(() => {
+            'order_amount': this.priceInfo
+          }).subscribe((result) => {
             this.$emit('success', {
               type: 'createPay',
               order_id: result.info.order_id

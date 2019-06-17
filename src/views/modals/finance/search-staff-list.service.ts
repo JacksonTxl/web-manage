@@ -1,15 +1,15 @@
 import { Injectable } from 'vue-service-app'
-import { FinanceAPi, SalaryBasicQuery } from '@/api/v1/finance'
+import { FinanceApi, SalaryBasicQuery } from '@/api/v1/finance'
 
 @Injectable()
 export class SearchStaffListService {
-  constructor(private MemberAPi: FinanceAPi) {
+  constructor(private MemberApi: FinanceApi) {
   }
   getSalaryUsedList(id: any, query: SalaryBasicQuery) {
-    return this.MemberAPi.getSearchStaffListSalary(id, query)
+    return this.MemberApi.getSearchStaffListSalary(id, query)
   }
 
   getPerformanceUsedList(id: any, query: SalaryBasicQuery) {
-    return this.MemberAPi.getSearchStaffListPerformance(id, query)
+    return this.MemberApi.getSearchStaffListPerformance(id, query)
   }
 }

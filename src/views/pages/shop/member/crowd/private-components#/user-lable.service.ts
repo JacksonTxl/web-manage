@@ -2,7 +2,7 @@ import { Injectable } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { MemberAPi } from '@/api/v1/member'
+import { MemberApi } from '@/api/v1/member'
 import { SwitchApi, SwitchShopInput } from '@/api/v1/account/switch'
 import { TokenService } from '@/services/token.service'
 
@@ -14,7 +14,7 @@ export class UserLableService extends Store<ShopState> {
   state$: State<ShopState>
   shopList$: Computed<Object>
   constructor(
-    private shopApi: MemberAPi,
+    private shopApi: MemberApi,
     private switchApi: SwitchApi,
     private tokenService: TokenService
   ) {

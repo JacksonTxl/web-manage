@@ -16,7 +16,7 @@ export class ShopService {
     this.state$ = new State({
       teamCourseList: [],
       auth: {
-        isTransfer: this.authService.can('brand_shop:product:team_course|transfer')
+        transfer: this.authService.can('brand_shop:product:team_course|transfer')
       }
     })
     this.teamCourseList$ = new Computed(this.state$.pipe(pluck('teamCourseList')))

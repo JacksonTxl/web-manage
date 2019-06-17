@@ -2,10 +2,10 @@
   <div class="pages-brand-product-card-list">
     <div class="pages-brand-product-card-list__operation">
       <div>
-        <modal-link v-if="auth.isBatchDown"
+        <modal-link v-if="auth.batchDown"
           tag="a"
           :to=" { name: 'card-all-lower-shelf',props:{a:selectedRows,flag:true}, on:{done: onModalTest } }"
-          v-show="selectedRows.length >1"
+          v-show="selectedRows.length > 1"
         >
           <st-button style="margin-left:24px" type="danger">批量下架</st-button>
         </modal-link>
@@ -29,6 +29,15 @@
           <a-select-option value="1">品牌</a-select-option>
           <a-select-option value="2">门店</a-select-option>
         </a-select>
+        <a-select
+          class="mg-r8" style="width: 160px"
+          @change="handleChange_sell_status"
+          v-model="sell_status"
+        >
+          <a-select-option value>所有门店</a-select-option>
+          <a-select-option value="lucy">Lucy</a-select-option>
+          <a-select-option value="tom">Tom</a-select-option>
+        </a-select>
       </div>
     </div>
 
@@ -42,59 +51,51 @@
       @showSizeChange="onShowSizeChange"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
     >
-      <!--  :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}" 添加批量下架 -->
-      <!-- 会员卡名称start -->
+      <!-- 会员卡名称 -->
       <a
         slot="card_name"
         slot-scope="text,record"
         href="javascript:;"
         @click="memberFun(text,record)"
       >{{text}}</a>
-      <!-- 会员卡名称end -->
-      <span
-        slot="num"
-        slot-scope="text,record"
-        href="javascript:;"
-      >{{text}}{{record.unit === 1 ? '天':'月'}}</span>
-      <span slot="sell_time" slot-scope="text,record">{{record.start_time}}~{{record.end_time}}</span>
-      <!-- 支持入场门店start -->
-      <a slot="consumption_range.name" slot-scope="text,record" href="javascript:;">
-        <span v-if="record.consumption_range.id === 2">
-          <modal-link
-            tag="a"
-            :to="{ name: 'card-sale-stop' , props:{a: record.id,title:'支持消费门店'}}"
-          >{{text}}</modal-link>
+      <!-- 支持入场门店 -->
+      <div slot="admission_range.name" slot-scope="text,record">
+        <span v-if="record.admission_range.id === 2">
+          <modal-link tag="a" :to="{ name: 'card-table-stop' , props:{a: record.id}}">{{text}}</modal-link>
         </span>
-        <span v-else class="use_num">{{text}}</span>
-      </a>
-      <!-- 支持入场门店end -->
-
-      <!-- 操作end -->
+        <span v-else>{{text}}</span>
+      </div>
+      <!-- 售卖时间 -->
+      <span slot="sell_time" slot-scope="text,record">{{record.start_time}}~{{record.end_time}}</span>
+      <span
+        slot="price_gradient"
+        slot-scope="text"
+      >{{text.length > 1? `${text[0]}-${text[1]}`:`${text[0]}`}}</span>
+      <!-- 操作 -->
       <div slot="action" slot-scope="text, record">
-        <a href="javascript:;" v-if="record.auth['brand_shop:product:deposit_card|get']" @click="infoFunc(text, record)">详情</a>
+        <a href="javascript:;" v-if="record.auth['brand_shop:product:member_card|get']" @click="infoFunc(record)">详情</a>
         <a-divider type="vertical"></a-divider>
         <modal-link
-          v-if="record.auth['brand_shop:product:deposit_card|down']"
+          v-if="record.auth['brand_shop:product:member_card|down']"
           tag="a"
-          :to=" { name: 'card-lower-shelf',props:{a:record,flag:true}, on:{done: onModalTest } }"
+          :to=" { name: 'card-lower-shelf',props:{a:record}, on:{done: onModalTest } }"
         >下架</modal-link>
       </div>
-      <!-- 操作end -->
     </st-table>
   </div>
 </template>
 <script>
-import { StopSaleListService } from './stop-sale-list.service'
+import { ShopSaleListService } from './shop-sale-list.service'
 import { columns } from './shop-sale-list.config'
 export default {
   serviceInject() {
     return {
-      bService: StopSaleListService
+      bService: ShopSaleListService
     }
   },
   rxState() {
     return {
-      cardsListInfo: this.bService.cardsListInfo$,
+      shopSaleCardsList: this.bService.shopSaleCardsList$,
       auth: this.bService.auth$
     }
   },
@@ -108,7 +109,7 @@ export default {
       publish_channel: '所以渠道',
       sell_status: '所有门店',
       getHeaders: {
-        page: '',
+        current_page: '',
         size: '',
         card_type: '',
         publish_channel: '',
@@ -121,12 +122,11 @@ export default {
         pageSize: 10,
         total: 50
       },
-
       data: []
     }
   },
   created() {
-    this.getInfoData(this.cardsListInfo)
+    this.getInfoData(this.shopSaleCardsList)
   },
   methods: {
     onSelectChange(selectedRowKeys, selectedRows) {
@@ -147,13 +147,13 @@ export default {
         pageSize: data.page.size,
         total: data.page.total_counts
       }
-      this.getHeaders.page = this.pagination.current
+      this.getHeaders.current_page = this.pagination.current
       this.getHeaders.size = this.pagination.pageSize
 
       this.data = data.list
     },
     onChange(pagination, filters, sorter) {
-      this.getHeaders.page = pagination.current
+      this.getHeaders.current_page = pagination.current
       this.getHeaders.size = pagination.pageSize
       this.pagination.current = pagination.current
       this.pagination.pageSize = pagination.pageSize
@@ -165,12 +165,24 @@ export default {
       console.log(current, pageSize, '点击分页获取数据')
     },
     // 点击详情获取数据
-    infoFunc(text, record) {
-      console.log(text, record, '点击详情获取数据')
+    infoFunc(record) {
+      const { id } = record
+      const cardType = record.card_type.id
+      const name = cardType.id === 1 ? 'brand-product-card-member-number-info'
+        : 'brand-product-card-member-period-info'
+      this.routerHandler(name, id)
     },
     // 会员卡名称点击事件
     memberFun(text, record) {
       console.log(text, record, '会员卡名称点击事件')
+    },
+    routerHandler(name, id) {
+      this.$router.push({
+        name,
+        query: {
+          id
+        }
+      })
     },
     // 售卖状态
     sellStatus(text, record) {
@@ -200,20 +212,16 @@ export default {
           obj[item] = self.getHeaders[item]
         }
       })
-      this.$router.push({ query: obj })
-
       this.bService.getListInfo(obj).subscribe(state => {
         self.getInfoData(state)
       })
     }
   },
   watch: {
-    $route(data) {
-      if (data.query.card_name) {
-        this.card_type = '所以类型'
-        this.publish_channel = '所有售卖状态'
-      }
-      this.getInfoData(this.cardsListInfo)
+    $route() {
+      this.card_type = '所以类型'
+      this.publish_channel = '所以渠道'
+      this.sell_status = '所有门店'
     }
   }
 }

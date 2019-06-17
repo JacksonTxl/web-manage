@@ -43,7 +43,7 @@
             >
               <a-select-option
               v-for="(item,index) in memberList"
-              :value="item.member_id"
+              :value="item.id"
               :key="index">
                 <span v-html="`${item.member_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
                   {{item.member_name}}&nbsp;&nbsp;&nbsp;{{item.mobile}}
@@ -155,7 +155,7 @@
             </st-input-number>
           </st-form-item>
           <st-form-item validateStatus="error" :help="orderAmountText" class="mg-b0" label="小计">
-            <span class="total">{{orderAmount}}元</span>
+            <span class="total">{{currentPrice}}元</span>
           </st-form-item>
         </div>
         <div :class="sale('remarks')">
@@ -178,7 +178,7 @@
     <template slot="footer">
       <div :class="sale('footer')">
         <div class="price">
-          <span>{{orderAmount}}元</span>
+          <span>{{currentPrice}}元</span>
           <span>订单总额：{{selectedNorm.price}}元</span>
         </div>
         <div class="button">
@@ -211,7 +211,8 @@ export default {
       memberList: this.saleMemberCardService.memberList$,
       info: this.saleMemberCardService.info$,
       saleList: this.saleMemberCardService.saleList$,
-      couponList: this.saleMemberCardService.couponList$
+      couponList: this.saleMemberCardService.couponList$,
+      currentPrice: this.saleMemberCardService.currentPrice$
     }
   },
   props: {
@@ -259,17 +260,32 @@ export default {
         specs: this.selectedNorm,
         open_type: this.selectedPayment
       })
-      this.validStartTime = moment().format('YYYY-MM-DD hh:mm')
-      this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
+      this.validStartTime = moment().format('YYYY-MM-DD HH:mm')
+      this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD HH:mm')
       this.fetchCouponList()
+      this.getPrice()
     })
   },
   computed: {
-    orderAmount() {
-      return (this.selectedNorm.price - this.reduceAmount - this.advanceAmount - this.couponAmount).toFixed(1)
-    },
     orderAmountText() {
-      return this.orderAmount < 0 ? '这里不能为负哦，找刚刚要文案' : ''
+      return this.currentPrice < 0 ? '小计不能为负' : ''
+    }
+  },
+  watch: {
+    selectCoupon: {
+      deep: true,
+      handler(newVal, oldVal) {
+        this.getPrice(newVal, this.selectAdvance, +this.reduceAmount)
+      }
+    },
+    selectAdvance: {
+      deep: true,
+      handler(newVal, oldVal) {
+        this.getPrice(this.selectCoupon, newVal, +this.reduceAmount)
+      }
+    },
+    reduceAmount(newVal, oldVal) {
+      this.getPrice(this.selectCoupon, this.selectAdvance, +newVal)
     }
   },
   methods: {
@@ -277,13 +293,14 @@ export default {
     onChangeSpecs(event) {
       this.selectedNorm = event.target.value
       this.fetchCouponList()
+      this.getPrice()
     },
     // 开卡方式发生改变
     onChangePayment(event) {
       this.selectedPayment = event.target.value
       if (this.selectedPayment.id !== 2) {
-        this.validStartTime = moment().format('YYYY-MM-DD hh:mm')
-        this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
+        this.validStartTime = moment().format('YYYY-MM-DD HH:mm')
+        this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD HH:mm')
       }
       this.fetchCouponList()
     },
@@ -300,7 +317,7 @@ export default {
     // 选择指定日期开卡
     onChangeTime(event) {
       if (event) {
-        this.validEndTime = moment(event._d).add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD hh:mm')
+        this.validEndTime = moment(event._d).add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD HH:mm')
       }
     },
     moment,
@@ -359,7 +376,7 @@ export default {
         this.saleMemberCardService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
-        this.saleMemberCardService.getMember(data).subscribe(res => {
+        this.saleMemberCardService.getMember(data, this.info.sale_range.type).subscribe(res => {
           if (!res.list.length) {
             this.form.resetFields(['memberId'])
           }
@@ -420,6 +437,17 @@ export default {
       this.couponAmount = price
       this.couponText = `${price}元`
     },
+    // 计算实付金额
+    getPrice(coupon, advance, reduce) {
+      this.saleMemberCardService.currentPriceAction$.dispatch({
+        product_id: this.id,
+        product_type: this.info.contract_type,
+        coupon_id: coupon || undefined,
+        advance_id: advance || undefined,
+        reduce_amount: reduce || undefined,
+        specs_id: this.selectedNorm.id
+      })
+    },
     onCreateOrder() {
       this.form.validateFields((error, values) => {
         if (!error) {
@@ -439,7 +467,7 @@ export default {
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,
-            'order_amount': this.orderAmount
+            'order_amount': this.currentPrice
           }).subscribe((result) => {
             this.$emit('success', {
               type: 'create',
@@ -469,7 +497,7 @@ export default {
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,
-            'order_amount': this.orderAmount
+            'order_amount': this.currentPrice
           }).subscribe((result) => {
             this.$emit('success', {
               type: 'createPay',

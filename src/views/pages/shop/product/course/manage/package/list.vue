@@ -9,7 +9,7 @@
     </div>
     <div :class="listClass('operation')">
       <router-link to="./add-select">
-        <st-button type="primary" v-if="auth.isAdd" @click="onAddPackage" icon="add">新增门店课程包</st-button>
+        <st-button type="primary" v-if="auth.add" @click="onAddPackage" icon="add">新增门店课程包</st-button>
       </router-link>
       <div :class="listClass('select-group')">
         <a-select v-model="query.package_type" @change="onTypeChange" :class="listClass('select')" style="width: 160px">
@@ -27,7 +27,6 @@
       </div>
     </div>
     <st-table
-    v-if="auth.isList"
     :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
     :columns="columns"
     @change="onPageChange"

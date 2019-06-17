@@ -10,8 +10,7 @@ export class ListService implements RouteGuard {
   page$ = new State({})
   loading$ = new State({})
   auth$ = new State({
-    isAdd: this.authService.can('shop:product:package_course|add'),
-    isList: this.authService.can('shop:product:package_course|list')
+    add: this.authService.can('shop:product:package_course|add')
   })
   constructor(
     private packageApi: PackageApi,

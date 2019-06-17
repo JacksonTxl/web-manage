@@ -1,7 +1,7 @@
 <template>
   <st-panel class="page-shop-label-container">
     <div slot="title">
-      <st-button type="primary">
+      <st-button type="primary" v-if="auth.add">
         <modal-link tag="a" :to=" { name: 'label-add',on:{ change: refesh }}">
           <a-icon type="plus" class="mg-r8"/>添加标签
         </modal-link>
@@ -18,9 +18,9 @@
         @change="pageChange"
       >
         <template slot="action" slot-scope="record">
-          <modal-link tag="a" :to=" { name: 'label-edit',props: {item : record} , on:{ change: refesh }}" >编辑</modal-link>
+          <modal-link tag="a" v-if="record.auth['shop:member:tag|edit']" :to=" { name: 'label-edit',props: {item : record} , on:{ change: refesh }}" >编辑</modal-link>
           <a-divider type="vertical"></a-divider>
-          <a href="javascript:;" @click="onDelete(record)">删除</a>
+          <a href="javascript:;" v-if="record.auth['shop:member:tag|del']" @click="onDelete(record)">删除</a>
         </template>
       </st-table>
     </a-row>
@@ -61,7 +61,8 @@ export default {
   },
   rxState() {
     return {
-      listInfo: this.listService.listInfo$
+      listInfo: this.listService.listInfo$,
+      auth: this.listService.auth$
     }
   },
   data() {

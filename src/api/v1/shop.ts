@@ -11,6 +11,9 @@ export class ShopApi extends Api {
   update(id: string, params: ShopInput) {
     return this.http.put(`/v1/brand/shop/${id}`, { params })
   }
+  updateShop(params: ShopInput) {
+    return this.http.put(`/v1/shop`, { params })
+  }
   getInfo(id: string) {
     return this.http.get(`/v1/shop/${id}`)
   }
@@ -31,6 +34,12 @@ export class ShopApi extends Api {
       query
     )
     return this.http.get('/v1/shop', { query })
+  }
+  /**
+   * 【品牌】品牌所有门店基本信息（主要用于下拉框）
+   */
+  getShopListForSelect() {
+    return this.http.get('/v1/shop/all')
   }
   /**
    * 门店列表 省市区门店树形

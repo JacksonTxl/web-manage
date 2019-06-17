@@ -9,13 +9,13 @@
         <div style="background: #F7F9FC; padding: 24px">
           <a-form class="ant-advanced-search-form">
             <a-row :gutter="24">
-              <st-seleter v-model="form" ref="stSeleter">
+              <st-select v-model="form" ref="stSeleter">
                 <div slot="custom" v-if="expand">
                   <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="入会时间：">
                     <a-range-picker
                       v-model="consumption"
-                      v-if="form.low_consumption && form.high_consumption"
-                      :defaultValue="[moment(form.low_consumption, dateFormat), moment(form.high_consumption, dateFormat)]"
+                      v-if="form.be_member_start_time && form.be_member_stop_time"
+                      :defaultValue="[moment(form.be_member_start_time, dateFormat), moment(form.be_member_stop_time, dateFormat)]"
                       @change="MembershipTime"
                     />
                     <a-range-picker v-else @change="MembershipTime" v-model="consumption"/>
@@ -25,7 +25,7 @@
                     :wrapper-col="{ span: 12 }"
                     :label="memberEnums.is_follow.description"
                   >
-                    <a-radio-group buttonStyle="solid" v-model="form.follow_salesman">
+                    <a-radio-group buttonStyle="solid" v-model="form.is_follow">
                       <a-radio-button value="-1">全部</a-radio-button>
                       <a-radio-button
                         v-for="(item,key,index) in memberEnums.is_follow.value"
@@ -35,7 +35,7 @@
                     </a-radio-group>
                   </a-form-item>
                 </div>
-              </st-seleter>
+              </st-select>
             </a-row>
             <a-row>
               <a-col :span="24" class="shop-member-list-handel">
@@ -54,11 +54,12 @@
           </a-form>
         </div>
       </div>
-      <st-button type="primary" class="shop-member-list-button">
-        <a href="javascript:;" @click="addUser(record)">添加用户</a>
+      <st-button type="primary" class="shop-member-list-button" v-if="auth.add">
+        <a href="javascript:;" @click="addUser()">添加用户</a>
       </st-button>
-      <st-button class="shop-member-list-button">导入用户</st-button>
+      <st-button class="shop-member-list-button" v-if="auth.import">导入用户</st-button>
       <st-button
+        v-if="auth.tag"
         class="shop-member-list-button"
         :disabled="selectedRowData.length > 0 ? false :true"
       >
@@ -71,13 +72,13 @@
       </st-button>
       <a-popover placement="bottom">
         <template slot="content">
-          <p>
+          <p v-if="auth.bindCoach">
             <modal-link
               tag="a"
               :to=" { name: 'shop-distribution-coach', props:{selectedRowData:selectDataList}}"
             >分配教练</modal-link>
           </p>
-          <p>
+          <p v-if="auth.bindSalesman">
             <modal-link
               tag="a"
               :to=" { name: 'shop-distribution-ales', props:{selectedRowData:selectDataList}}"
@@ -85,66 +86,66 @@
           </p>
         </template>
         <st-button
+          v-if="auth.bindCoach && auth.bindSalesman"
           class="shop-member-list-button"
           :disabled="selectedRowData.length > 0 ? false :true"
         >分配员工</st-button>
       </a-popover>
-      <st-button class="shop-member-list-button">批量导出</st-button>
+      <st-button v-if="auth.export" class="shop-member-list-button">批量导出</st-button>
       <st-table
         class="mg-t24"
         :columns="columns"
         :alertSelection="{onReset:onSelectionReset}"
         :rowSelection="{selectedRowKeys:selectedRowKeys,onChange:onSelectionChange}"
-        rowKey="id"
+        rowKey="member_id"
         @change="onTableChange"
-        :dataSource="memberListInfo.members_list"
-        :pagination="pagination"
+        :dataSource="memberListInfo.list"
       >
         <div slot="member_name" slot-scope="text,record">
-          <a href="javascript:;" @click="infoFunc(record)">{{text}}</a>
+          <a href="javascript:;" v-if="record.auth['shop:member:member|get']" @click="infoFunc(record)">{{text}}</a>
+          <span v-else>{{text}}</span>
         </div>
         <div slot="action" slot-scope="record">
-          <a href="javascript:;" @click="infoFunc(record)">详情</a>
+          <a href="javascript:;" v-if="record.auth['shop:member:member|get']" @click="infoFunc(record)">详情</a>
           <a-divider type="vertical"></a-divider>
-          <a href="javascript:;" @click="edit(record)">编辑</a>
+          <a href="javascript:;" v-if="record.auth['shop:member:member|edit']" @click="edit(record)">编辑</a>
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
-            <a-menu-item>
+            <a-menu-item v-if="record.auth['shop:member:member|bind_coach']">
               <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">分配教练</modal-link>
             </a-menu-item>
-            <a-menu-item>
+            <a-menu-item v-if="record.auth['shop:member:member|bind_salesman']">
               <modal-link
                 tag="a"
                 :to=" { name: 'shop-distribution-ales',props: {selectedRowData: record.id}}"
               >分配销售</modal-link>
             </a-menu-item>
-            <a-menu-item>
+            <a-menu-item v-if="record.auth['shop:member:member|bind_card']">
               <modal-link
                 tag="a"
                 :to=" { name: 'shop-binding-entity-card', props:{record:record}}"
               >绑实体卡</modal-link>
             </a-menu-item>
-            <a-menu-item>
+            <a-menu-item v-if="record.auth['shop:member:member|rebind_card']">
               <modal-link tag="a" :to=" { name: 'shop-missing-card', props:{record:record}}">遗失补卡</modal-link>
             </a-menu-item>
-            <a-menu-item>
+            <a-menu-item v-if="record.auth['shop:member:member|transfer']">
               <modal-link tag="a" :to=" { name: 'shop-transfer-shop', props:{record:record}}">转店</modal-link>
             </a-menu-item>
-            <a-menu-item>
+            <a-menu-item v-if="record.auth['shop:member:member|frozen']">
               <modal-link tag="a" :to=" { name: 'shop-frozen', props:{record:record}}">冻结用户</modal-link>
             </a-menu-item>
-            <a-menu-item @click="onRemoveBind(record)">解除微信绑定</a-menu-item>
+            <a-menu-item v-if="record.auth['shop:member:member|unbind_wechat']" @click="onRemoveBind(record)">解除微信绑定</a-menu-item>
           </st-more-dropdown>
         </div>
       </st-table>
     </st-panel>
-    {{memberEnums.is_follow}}
   </div>
 </template>
 <script>
 import { UserService } from '@/services/user.service'
 import { ListService } from './list.service'
-import StSeleter from './list#/seleter.vue'
+import StSelect from './list#/select.vue'
 import moment from 'moment'
 export default {
   serviceInject() {
@@ -161,11 +162,12 @@ export default {
     return {
       memberListInfo: this.aService.memberListInfo$,
       reserveEnums: user.reserveEnums$,
-      memberEnums: user.memberEnums$
+      memberEnums: user.memberEnums$,
+      auth: this.aService.auth$
     }
   },
   components: {
-    StSeleter
+    StSelect
   },
   data() {
     return {
@@ -174,27 +176,21 @@ export default {
       consumption: [],
       form: {
         member_level: '',
-        register_type: '',
-        start_time: '',
-        stop_time: '',
-        low_consumption: '',
-        high_consumption: '',
-        follow_salesman: '',
+        register_way: '',
+        register_start_time: '',
+        register_stop_time: '',
+        be_member_start_time: '',
+        be_member_stop_time: '',
+        is_follow: '',
         keyword: '',
-        current_page: '',
+        page: '',
         size: 20
-      },
-      pagination: {
-        pageSizeOptions: ['10', '20', '30', '40', '50'],
-        current: 1,
-        pageSize: 10,
-        total: 50
       },
       selectDataList: [],
       selectedRowKeys: [],
       selectedRowData: [],
       columns: [
-        { title: '人脸', dataIndex: 'id' },
+        { title: '人脸', dataIndex: '' },
         {
           title: '姓名',
           dataIndex: 'member_name',
@@ -217,7 +213,6 @@ export default {
   },
   computed: {},
   created() {
-    this.pageFilter(this.memberListInfo)
     this.form = { ...this.$route.query }
   },
   methods: {
@@ -236,25 +231,18 @@ export default {
       })
     },
     edit(record) {
-      this.$router.push({ name: 'shop-member-edit', query: { id: record.id } })
+      this.$router.push({ name: 'shop-member-edit', query: { id: record.member_id } })
     },
-    addUser(record) {
+    addUser() {
       this.$router.push({ name: 'shop-member-add' })
     },
     infoFunc(record) {
       this.$router.push({
         name: 'shop-member-info-basic',
-        query: { id: record.id }
+        query: { id: record.member_id }
       })
     },
     moment,
-    pageFilter(data) {
-      this.pagination.current = data.page.current_page
-      this.pagination.pageSize = data.page.size
-      this.pagination.total = data.page.total_counts
-      this.form.size = this.pagination.pageSize
-      this.form.current_page = this.pagination.current
-    },
     handleReset() {
       let self = this
       for (let prop in self.form) {
@@ -265,8 +253,8 @@ export default {
       this.$router.push({ query: {} })
     },
     MembershipTime(date, dateString) {
-      this.form.low_consumption = dateString[0]
-      this.form.high_consumption = dateString[1]
+      this.form.be_member_start_time = dateString[0]
+      this.form.be_member_stop_time = dateString[1]
     },
     toggle() {
       this.expand = !this.expand

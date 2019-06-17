@@ -1,7 +1,7 @@
 <template>
   <div class="pages-brand-product-card-list">
     <div class="pages-brand-product-card-list__operation">
-      <router-link to="../add-select" v-if="auth.isAdd">
+      <router-link to="../add-select" v-if="auth.add">
         <st-button type="primary" icon="add">新增会员卡</st-button>
       </router-link>
       <div>
@@ -108,7 +108,7 @@
           <a href="javascript:;" >
           <modal-link
             tag="a"
-            :to="{ name: 'card-batch-shelves' ,props:{a:record}, on:{done: onModalTest }  }"
+            :to="{ name: 'card-batch-shelves' ,props:{id:record.id}, on:{success: onOnline }  }"
           >上架</modal-link>
           </a>
           <a-divider type="vertical"></a-divider>
@@ -119,7 +119,7 @@
             <a-menu-item v-if="record.auth['brand_shop:product:member_card|restore']">
               <modal-link
                 tag="a"
-                :to=" { name: 'card-recovery-sell', props:{a:record,time:cardsListInfo.time}, on:{done: onModalTest } }"
+                :to=" { name: 'card-recovery-sell', props:{a:record,time:memberCardsList.time}, on:{done: onModalTest } }"
               >恢复售卖</modal-link>
             </a-menu-item>
             <a-menu-item v-if="record.auth['brand_shop:product:member_card|pause']">
@@ -152,7 +152,7 @@ export default {
   },
   rxState() {
     return {
-      cardsListInfo: this.aService.cardsListInfo$,
+      memberCardsList: this.aService.memberCardsList$,
       auth: this.aService.auth$
     }
   },
@@ -183,7 +183,7 @@ export default {
     }
   },
   mounted() {
-    this.getInfoData(this.cardsListInfo)
+    this.getInfoData(this.memberCardsList)
   },
   created() {
     let self = this
@@ -197,8 +197,12 @@ export default {
     self.pagination.pageSize = parseInt(query.size)
   },
   methods: {
+    // 上架
+    onOnline(data) {
+
+    },
+
     onModalTest(data) {
-      console.log('onModalTest')
       this.getListInfoFunc()
     },
     // 停售原因
@@ -303,7 +307,7 @@ export default {
         this.publish_channel = '所有售卖状态'
       }
 
-      this.getInfoData(this.cardsListInfo)
+      this.getInfoData(this.memberCardsList)
     }
   }
 }

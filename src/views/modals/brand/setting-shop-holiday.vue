@@ -6,8 +6,19 @@
     size="small"
   >
     <div>
-      <edit-holiday v-if="isHoliday"></edit-holiday>
-      <add-holiday v-else></add-holiday>
+      <edit-holiday
+        v-if="isHoliday"
+        :shopId="shopId"
+        :shopName="shopName"
+        :holidayTime="holidayTime"
+        @success="onSuccess"
+      />
+      <add-holiday
+        v-else
+        :shopId="shopId"
+        :shopName="shopName"
+        @success="onSuccess"
+      />
     </div>
   </st-modal>
 </template>
@@ -25,16 +36,10 @@ export default {
       type: String,
       default: ''
     },
-    startTime: {
+    holidayTime: {
       type: Object,
-      default: () => {
-        return moment()
-      }
-    },
-    endTime: {
-      type: Object,
-      default: () => {
-        return moment()
+      default() {
+        return {}
       }
     },
     isHoliday: {
@@ -50,6 +55,12 @@ export default {
   components: {
     AddHoliday,
     EditHoliday
+  },
+  methods: {
+    onSuccess() {
+      this.$emit('change')
+      this.show = false
+    }
   }
 }
 </script>

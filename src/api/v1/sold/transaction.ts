@@ -1,8 +1,8 @@
 import { Api } from '../../api'
 
 export interface MemberCouponParams {
-  member_id: number,
-  card_id: number,
+  member_id: number
+  card_id: number
   specs_id: number
 }
 export interface MemberListInput {
@@ -18,6 +18,8 @@ export interface TransactionPriceInput {
   reduce_amount?:number
   coupon_id?:string
   member_id?:number
+  surplus_amount?:string,
+  special_amount?: number
 }
 export class TransactionApi extends Api {
   /**
@@ -65,8 +67,8 @@ export class TransactionApi extends Api {
   }
   /**
    * 签单系列优惠券列表
-   * @params params 请求参数，对象传递
-   * @params type 具体的签单类型
+   * @param params 请求参数，对象传递
+   * @param type 具体的签单类型
    */
   getTransactionCouponList(params: MemberCouponParams, type: string) {
     return this.http.get(`/v1/order/transaction/${type}/coupon`, { query: { ...params } })
@@ -103,5 +105,11 @@ export class TransactionApi extends Api {
    */
   setAdvance(params:any) {
     return this.http.post(`/v1/order/transaction/advance`, { params })
+  }
+  /**
+   * 签单的会员名称检索
+   */
+  getMemberList(member: string, type: number) {
+    return this.http.get(`/v1/order/transaction/sale/range/member`, { query: { member, type } })
   }
 }

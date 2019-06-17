@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { FinanceAPi, SalaryBasicQuery } from '@/api/v1/finance'
+import { FinanceApi, SalaryBasicQuery } from '@/api/v1/finance'
 
 interface PerFormanceState {
     list: Object
@@ -11,7 +11,7 @@ interface PerFormanceState {
 export class PerformanceService extends Store<PerFormanceState> {
     state$: State<PerFormanceState>
     list$: Computed<Object>
-    constructor(private cardsApi: FinanceAPi) {
+    constructor(private cardsApi: FinanceApi) {
       super()
       this.state$ = new State({
         list: {}
