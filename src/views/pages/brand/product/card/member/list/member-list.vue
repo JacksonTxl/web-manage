@@ -108,7 +108,7 @@
           <a href="javascript:;" >
           <modal-link
             tag="a"
-            :to="{ name: 'card-batch-shelves' ,props:{a:record}, on:{done: onModalTest }  }"
+            :to="{ name: 'card-batch-shelves' ,props:{id:record.id}, on:{success: onOnline }  }"
           >上架</modal-link>
           </a>
           <a-divider type="vertical"></a-divider>
@@ -197,8 +197,12 @@ export default {
     self.pagination.pageSize = parseInt(query.size)
   },
   methods: {
+    // 上架
+    onOnline(data) {
+
+    },
+
     onModalTest(data) {
-      console.log('onModalTest')
       this.getListInfoFunc()
     },
     // 停售原因

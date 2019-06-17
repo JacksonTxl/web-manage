@@ -271,11 +271,29 @@ export default {
       return this.currentPrice < 0 ? '小计不能为负' : ''
     }
   },
+  watch: {
+    selectCoupon: {
+      deep: true,
+      handler(newVal, oldVal) {
+        this.getPrice(newVal, this.selectAdvance, +this.reduceAmount)
+      }
+    },
+    selectAdvance: {
+      deep: true,
+      handler(newVal, oldVal) {
+        this.getPrice(this.selectCoupon, newVal, +this.reduceAmount)
+      }
+    },
+    reduceAmount(newVal, oldVal) {
+      this.getPrice(this.selectCoupon, this.selectAdvance, +newVal)
+    }
+  },
   methods: {
     // 规格发生改变
     onChangeSpecs(event) {
       this.selectedNorm = event.target.value
       this.fetchCouponList()
+      this.getPrice()
     },
     // 开卡方式发生改变
     onChangePayment(event) {

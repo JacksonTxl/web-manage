@@ -270,7 +270,7 @@ export class MemberApi extends Api {
    */
   getMemberReserve(id: string, query: any) {
     console.log(query)
-    return this.http.get(`/v1/member/reserve/${id}`, { query })
+    return this.http.get(`/v1/member/reserves/${id}`, { query })
   }
   /**
    * 卡消费
