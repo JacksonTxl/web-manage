@@ -11,6 +11,9 @@
           @change="onTableChange"
           :pagination="pagination"
         >
+          <div slot="reserve_type" slot-scope="text,record">
+            {{record.name}}
+          </div>
           <div slot="is_checkin" slot-scope="text">
             <div>
               <span :class="text|isCheckin" v-if="text === '未签到'"></span>
@@ -18,11 +21,22 @@
             </div>
           </div>
           <div slot="action" slot-scope="text,record" href="javascript:;">
-            <div v-if="record.reserve_status === '预约成功' && record.is_checkin === '未签到'">
-              <a href="javascript:;" @click="reserveStatus(record)">取消预约</a>
+            <div v-if="record.reserve_type.id === 1">
+              <a href="javascript:;" v-if="record.auth['shop:reserve:personal_course_reserve|del']" @click="reserveStatus(record)">取消预约</a>
               <a-divider type="vertical"></a-divider>
-              <a href="javascript:;" @click="isCheckin(record)">{{record.is_checkin}}</a>
+              <a href="javascript:;" v-if="record.auth['shop:reserve:personal_course_reserve|checkin']" @click="isCheckin(record)">{{record.is_checkin}}</a>
             </div>
+            <div v-else-if="record.reserve_type.id === 2">
+              <a href="javascript:;" v-if="record.auth['shop:reserve:personal_team_course_reserve|checkin']" @click="reserveStatus(record)">取消预约</a>
+              <a-divider type="vertical"></a-divider>
+              <a href="javascript:;" v-if="record.auth['shop:reserve:personal_team_course_reserve|checkin']" @click="isCheckin(record)">{{record.is_checkin}}</a>
+            </div>
+            <div v-else-if="record.reserve_type.id === 3">
+              <a href="javascript:;" v-if="record.auth['shop:reserve:team_course_reserve|del']" @click="reserveStatus(record)">取消预约</a>
+              <a-divider type="vertical"></a-divider>
+              <a href="javascript:;" v-if="record.auth['shop:reserve:team_course_reserve|checkin']" @click="isCheckin(record)">{{record.is_checkin}}</a>
+            </div>
+
             <!-- <div v-else>—</div> -->
           </div>
         </st-table>
@@ -33,6 +47,7 @@
         <st-hr></st-hr>
       </a-col>
     </a-row>
+    <!-- TODO: 暂无接口 -->
     <st-t4>入场记录</st-t4>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
@@ -54,7 +69,8 @@ export default {
   rxState() {
     return {
       soldListInfo: this.Service.soldListInfo$,
-      followInfo: this.Service.followInfo$
+      followInfo: this.Service.followInfo$,
+      auth: this.Service.auth$
     }
   },
   components: {
@@ -152,20 +168,6 @@ export default {
           scopedSlots: { customRender: 'action' }
         }
       ],
-      tableData: [
-        {
-          reserve_type: '1',
-          id: 1,
-          course_name: '哈哈',
-          start_time: '2019-04-29 00:00:00',
-          end_time: '2019-05-05 07:41:52',
-          coach_name: '测试',
-          reserve_num: 1,
-          reserve_status: 1,
-          is_checkin: 0,
-          created_time: '2019-04-29'
-        }
-      ],
       admission: [
         {
           title: '入场门店',
@@ -208,7 +210,7 @@ export default {
     this.pagination.pageSize = this.soldListInfo.page.size
   },
   methods: {
-    /* 预约状态 */
+    /* 取消预约 */
     reserveStatus(record) {
       let self = this
       this.$confirm({
@@ -219,12 +221,7 @@ export default {
         onOk() {
           let getdata = {
             id: self.$route.query.id,
-            course_type:
-              record.reserve_type === '团课'
-                ? 1
-                : record.reserve_type === '私教课'
-                  ? 2
-                  : 3,
+            reserve_type: record.reserve_type.id,
             reserve_id: record.id
           }
           console.log(record, getdata)
@@ -235,7 +232,7 @@ export default {
         onCancel() {}
       })
     },
-    /* 签到状态 */
+    /* 课程签到 */
     isCheckin(record) {
       let self = this
       this.$confirm({
@@ -244,12 +241,7 @@ export default {
         onOk() {
           let getdata = {
             id: self.$route.query.id,
-            course_type:
-              record.reserve_type === '团课'
-                ? 1
-                : record.reserve_type === '私教课'
-                  ? 2
-                  : 3,
+            reserve_type: record.reserve_type.id,
             reserve_id: record.id
           }
           console.log(record, getdata)

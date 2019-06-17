@@ -4,6 +4,7 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { MemberApi } from '@/api/v1/member'
 import { forkJoin } from 'rxjs'
+import { AuthService } from '@/services/auth.service'
 
 interface UserExprienceInfoState {
   physicalListInfo: any
@@ -14,14 +15,19 @@ export class UserExperienceService extends Store<UserExprienceInfoState> {
   state$: State<UserExprienceInfoState>
   physicalListInfo$: Computed<string>
   followInfo$: Computed<string>
-  constructor(private cardsApi: MemberApi) {
+  auth$: Computed<Object>
+  constructor(private memberApi: MemberApi, private authService: AuthService) {
     super()
     this.state$ = new State({
       physicalListInfo: {},
-      followInfo: {}
+      followInfo: {},
+      auth: {
+        add: this.authService.can('shop:member:member_physical_record|add')
+      }
     })
     this.physicalListInfo$ = new Computed(this.state$.pipe(pluck('physicalListInfo')))
     this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SET_CARDS_LIST_INFO(physicalListInfo: UserExprienceInfoState) {
     console.log(physicalListInfo)
@@ -35,15 +41,16 @@ export class UserExperienceService extends Store<UserExprienceInfoState> {
     })
   }
   getMemberSideRecord(id: any, query: any) {
-    return this.cardsApi.getMemberSideRecord(id, query).pipe(
+    return this.memberApi.getMemberSideRecord(id, query).pipe(
       tap(res => {
         console.log(res, '获取数据')
+        res = this.authService.filter(res)
         this.SET_CARDS_LIST_INFO(res)
       })
     )
   }
   getMemberSideChart(id: any) {
-    return this.cardsApi.getMemberSideChart(id).pipe(
+    return this.memberApi.getMemberSideChart(id).pipe(
       tap(res => {
         console.log(res, '获取数据')
 
