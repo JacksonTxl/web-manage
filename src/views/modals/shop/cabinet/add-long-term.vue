@@ -8,7 +8,7 @@
   >
     <st-form :form="form" labelWidth="80px">
       <st-form-item label="区域">
-        <a-input :value="id" disabled/>
+        <a-input :value="areaName" disabled/>
       </st-form-item>
       <st-form-item label="首字母">
         <a-input placeholder="请输入首字母" v-decorator="ruleConfig.firstLetter"/>
@@ -86,9 +86,9 @@ export default {
       type: [Number, String],
       default: 0
     },
-    type: {
+    areaName: {
       type: String,
-      default: 'temporary'
+      default: ''
     }
   },
   methods: {
