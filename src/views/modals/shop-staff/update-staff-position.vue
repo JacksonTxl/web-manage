@@ -13,31 +13,31 @@
         </a-select>
       </st-form-item>
       <st-form-item   label="员工职能" required>
-        <a-select v-model="form.identity" mode="multiple" placeholder="请输入员工职能"  @change="onChangeIdentity">
+        <a-select v-model="form.identity" mode="multiple" placeholder=""  @change="onChangeIdentity">
           <a-select-option   :value="item.id" v-for="item in identityList" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
       </st-form-item>
       <st-form-item  label="教练等级">
-        <a-select v-model="form.coach_level_id" placeholder="请输入教练等级">
+        <a-select v-model="form.coach_level_id" placeholder="">
           <a-select-option  :value="item.id" v-for="item in coachLevelList$" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
       </st-form-item>
       <st-form-item   label="薪资模板">
-        <a-select placeholder="请输入底薪模版" v-model="form.basic_salary" class="mg-b16">
+        <a-select placeholder="" v-model="form.basic_salary" class="mg-b16">
           <a-select-option :value="item.id" v-for="item in salaryBasic$" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
-        <a-select v-model="form.sale_percentage"  class="mg-b16" placeholder="请输入薪资模板">
+        <a-select v-model="form.sale_percentage"  class="mg-b16" placeholder="">
           <a-select-option :value="item.id" v-for="item in salarySale$" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
-        <a-select v-model="form.class_percentage"   placeholder="请输入课程模板" v-if="isSalaryCourse">
+        <a-select v-model="form.class_percentage"   placeholder="" v-if="isSalaryCourse">
           <a-select-option :value="item.id" v-for="item in salaryCourse$" :key="item.id">
             {{item.name}}
           </a-select-option>
@@ -111,7 +111,7 @@ export default {
   },
   methods: {
     onChangeIdentity(value) {
-      this.isSalaryCourse = value.includes(3) || value.includes(4)
+      this.isSalaryCourse = value.includes('3') || value.includes('4')
     },
     computedList(key) {
       let arr = []
@@ -125,18 +125,17 @@ export default {
       return arr
     },
     onSubmit() {
-      this.show = false
       this.updateStaffPositionService.putStaffBindPosition({ id: this.staff.id, ...this.form }).subscribe(() => {
         this.msg.success({
           content: '绑定实体卡成功'
         })
+        this.show = false
       })
     }
   },
   mounted() {
     this.updateStaffPositionService.init(this.staff.id).subscribe(res => {
       this.form = this.positionInfo$
-      this.isSalaryCourse = this.form.identity.includes(3) || this.form.identity.includes(4)
     })
   }
 }

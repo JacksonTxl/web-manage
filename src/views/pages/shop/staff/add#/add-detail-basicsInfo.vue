@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" @submit="save">
+  <st-form :form="form">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工头像">
@@ -19,7 +19,7 @@
         <st-form-item label="手机号" required>
           <a-input-group compact>
             <a-select style="width: 15%;" v-model="choosed_code_id">
-              <template v-for="item in countryList">
+              <template v-for="item in codeList">
                 <a-select-option :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
               </template>
             </a-select>
@@ -86,26 +86,50 @@
       <a-col :offset="1" :lg="10" :xs="22">
         <st-form-item label="部门">
           <a-tree-select
-            showSearch
-            :value="value"
-            :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
-            placeholder="请选择部门"
-            allowClear
-            treeDefaultExpandAll
-            @change="onChange"
+          showSearch
+          class="mg-r8"
+          style="width: 160px"
+          :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
+          placeholder="请选择部门"
+          allowClear
+          treeDefaultExpandAll
+          @change="onChange"
+        >
+          <a-tree-select-node
+            v-for="item in department"
+            :value="item.id"
+            :title="item.name"
+            :key="item.id"
           >
-            <a-tree-select-node value="parent 1" title="parent 1" key="0-1">
-              <a-tree-select-node value="parent 1-0" title="parent 1-0" key="0-1-1">
-                <a-tree-select-node :selectable="false" value="leaf1" title="my leaf" key="random"/>
-                <a-tree-select-node value="leaf2" title="your leaf" key="random1"/>
-              </a-tree-select-node>
-              <a-tree-select-node value="parent 1-1" title="parent 1-1" key="random2">
-                <a-tree-select-node value="sss" key="random3">
-                  <b style="color: #08c" slot="title">sss</b>
+            <a-tree-select-node
+              v-for="item1 in item.children"
+              :value="item1.id"
+              :title="item1.name"
+              :key="item1.id"
+            >
+              <a-tree-select-node
+                v-for="item2 in item1.children"
+                :value="item2.id"
+                :title="item2.name"
+                :key="item2.id"
+              >
+                <a-tree-select-node
+                  v-for="item3 in item2.children"
+                  :value="item3.id"
+                  :title="item3.name"
+                  :key="item3.id"
+                >
+                  <a-tree-select-node
+                    v-for="item4 in item3.children"
+                    :value="item4.id"
+                    :title="item4.name"
+                    :key="item4.id"
+                  />>
                 </a-tree-select-node>
               </a-tree-select-node>
             </a-tree-select-node>
-          </a-tree-select>
+          </a-tree-select-node>
+        </a-tree-select>
         </st-form-item>
         <st-form-item label="工作性质" required>
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
@@ -116,8 +140,8 @@
         </st-form-item>
         <st-form-item label="系统角色">
           <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id">
-            <template v-for="(item,key) in enums.nature_work.value">
-              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+            <template v-for="item in roleList">
+              <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
@@ -194,8 +218,7 @@
     <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
-          <st-button type="primary" ghost html-type="submit">保存</st-button>
-          <st-button class="mg-l16" @click="goNext" type="primary">继续 填写</st-button>
+          <st-button class="mg-l16" @click="goNext" type="primary">保存，继续填写细信息</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -211,9 +234,16 @@ export default {
   serviceInject() {
     return {
       rules: RuleConfig,
-      userservice: UserService,
-      addservice: AddService,
+      userService: UserService,
+      addService: AddService,
       message: MessageService
+    }
+  },
+  rxState() {
+    return {
+      codeList: this.addService.codeList$,
+      roleList: this.addService.roleList$,
+      department: this.addService.department$
     }
   },
   props: {
@@ -228,7 +258,6 @@ export default {
       form: this.$form.createForm(this),
       fileList: [],
       faceList: [],
-      countryList: [],
       isChoosePermission: false,
       isAdd: [],
       addflag: true,
@@ -292,26 +321,12 @@ export default {
       })
     },
     // 继续填写跳转到编辑
-    goNext() {
+    goNext(e) {
       e.preventDefault()
-      // this.$emit('skiptoedit', {
-      //   id: 1,
-      //   isShowLevel: this.isShowLevel
-      // })
-      // return
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
           this.submit(values, 1)
-        }
-      })
-    },
-    // 保存
-    save(e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          this.submit(values, 0)
         }
       })
     },
@@ -324,24 +339,20 @@ export default {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.country_code_id = this.choosed_code_id
       data.id_type = this.choosed_id_type
-      this.addservice.addStaff(data).subscribe(res => {
+      data.image_avatar && (data.image_avatar = data.image_avatar[0])
+      data.image_face && (data.image_face = data.image_face[0])
+      this.addService.addStaff(data).subscribe(res => {
         if (saveOrgoNext === 1) {
-          console.log(res)
-          //  this.$emit('skiptoedit', {
-          //     id: 1,
-          //     isShowLevel: this.isShowLevel
-          //   })
+          this.$emit('skiptoedit', {
+            id: 1,
+            isShowLevel: this.isShowLevel
+          })
         } else {
           this.message.success({ content: '添加员工成功' })
           this.$router.go(-1)
         }
       })
     }
-  },
-  mounted() {
-    this.addservice.getCountryCodes().subscribe(res => {
-      this.countryList = res.code_list
-    })
   }
 }
 </script>
