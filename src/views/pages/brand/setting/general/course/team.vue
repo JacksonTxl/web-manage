@@ -93,9 +93,6 @@ export default {
     info() {
       return this.resData.info
     }
-  },
-  created() {
-    this.teamService.getInfo().subscribe()
   }
 }
 </script>
