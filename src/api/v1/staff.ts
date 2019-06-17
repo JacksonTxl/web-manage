@@ -1,3 +1,4 @@
+import { DelDepartmentInput } from './staff'
 import { Api } from '../api'
 /**
  * @export
@@ -289,9 +290,35 @@ export interface PutStaffBindPositionInput {
   sale_percentage: number
   class_percentage: number
 }
+export interface UpdateDepartmentInput {
+  id: string | number
+  department_name: string
+}
+export interface AddDepartmentInput {
+  parent_id: number
+  department_name: string
+}
+export interface DelDepartmentInput{
+  id: string | number
+  check_result: number
+}
 const URL = '/v1/staff/brand'
+const DEPARTMENT_URL = '/v1/department'
 const mock = {}
 export class StaffApi extends Api {
+  getDepartmentList() {
+    return this.http.get(DEPARTMENT_URL)
+  }
+  addDepartment(params: AddDepartmentInput) {
+    return this.http.post(DEPARTMENT_URL, { params })
+  }
+  updateDepartment(params: UpdateDepartmentInput) {
+    return this.http.put(`${DEPARTMENT_URL}/${params.id}`, { params })
+  }
+  delDepartment(params: DelDepartmentInput) {
+    return this.http.delete(`${DEPARTMENT_URL}/${params.id}`)
+  }
+
   /**
    * 获取门店
     */
@@ -491,7 +518,7 @@ export interface GetStaffSoldInput{
    * 订单状态
    */
   order_status? : number;
-   /**
+  /**
    * 开始下单时间
    */
   order_time_first? : string;

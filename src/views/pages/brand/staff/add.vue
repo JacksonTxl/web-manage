@@ -3,7 +3,7 @@
     <a-row :class="bstep()" class="mg-b48" :gutter="8">
       <a-col offset="1" :span="stepsSpan"><Steps :value="currentIndex" :stepArr="stepArr" /></a-col>
     </a-row>
-    <StaffDetailBasics :codeList="countryList" v-show="currentIndex == 0" @skiptoedit="skiptoedit" @basicInfoSave="onBasicInfoSave" @addStep="addCoachInfo" @deletStep="deletStep" :staffEnumslist="staffEnums"/>
+    <StaffDetailBasics v-show="currentIndex == 0" @skiptoedit="skiptoedit" @basicInfoSave="onBasicInfoSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
   </st-panel>
 </template>
 
@@ -21,15 +21,13 @@ export default {
   },
   serviceInject() {
     return {
-      userService: UserService,
       addService: AddService,
       messageService: MessageService
     }
   },
   rxState() {
     return {
-      countryList: this.addService.countryList$,
-      staffEnums: this.userService.staffEnums$
+      codeList: this.addService.codeList$
     }
   },
   bem: {
@@ -104,9 +102,6 @@ export default {
       console.log(form)
       this.submit(form, 'save')
     }
-  },
-  mounted() {
-    console.log('===', this.staffEnums)
   }
 }
 </script>

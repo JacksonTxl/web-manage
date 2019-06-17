@@ -4,7 +4,7 @@
       <a-col :lg="24">
         <a-col :lg="16">
 
-          <shop-select style="width: 160px" v-model="query.shop_id" @change="onChange"/>
+          <shop-select style="width: 160px" class="mg-r8" v-model="query.shop_id" @change="onChange"/>
 
           <a-range-picker @change="onChooseDate" format="YYYY-MM-DD"/>
         </a-col>

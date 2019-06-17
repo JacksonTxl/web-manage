@@ -3,6 +3,7 @@ import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { ShopStaffApi, GetListQuery } from '@/api/v1/staff/staff'
+import { UserService } from '@/services/user.service'
 
 interface SetState {
     staffList: Object;
@@ -13,7 +14,8 @@ export class ListService extends Store<SetState> {
     state$: State<SetState>
     staffList$: Computed<Object>
     department$: Computed<Object>
-    constructor(private staffApi: ShopStaffApi) {
+    staffEnums$: Computed<Object>
+    constructor(private staffApi: ShopStaffApi, private userService: UserService) {
       super()
       this.state$ = new State({
         staffList: {},
@@ -21,6 +23,7 @@ export class ListService extends Store<SetState> {
       })
       this.staffList$ = new Computed(this.state$.pipe(pluck('staffList')))
       this.department$ = new Computed(this.state$.pipe(pluck('department')))
+      this.staffEnums$ = this.userService.staffEnums$
     }
     getStaffList(query: GetListQuery) {
       return this.staffApi.getList(query).pipe(

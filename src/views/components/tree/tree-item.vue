@@ -7,16 +7,16 @@
       <div class="tree-node__content" :style="{'padding-left': paddingLeft}" @click="getTreeNodeOnclick">
         <span class="tree-switch"  @click.stop="toggle" v-if="isFolder&&level!==0">{{ isOpen ? '-' : '+' }}</span>
         <span class="tree-switch__empty" v-else-if="level!==0"></span>
-        <div class="tree-name" v-if="item.isEdit" stay><a-input :value="item.name"></a-input><a href="">保存</a><span @click="cancelEdit">x</span></div>
-        <span class="tree-name" v-else>{{ item.name }}</span>
+        <div class="tree-name edit-box" v-if="item.isEdit" ><a-input placeholder="请输入部门名称" class="tree-input mg-r8" v-model="editValue"></a-input><a href="javascript:;" class="button edit mg-r8" @click="editDepartment">保存</a><span class="button edit mg-r8" @click="cancelEdit">x</span></div>
+        <span class="tree-name" v-else>{{ item.name }}( {{item.count}} )</span>
 
-        <st-more-dropdown class="tree-opreation">
+        <st-more-dropdown class="tree-opreation" v-show="!item.isEdit">
           <a-menu-item  @click="addTreeNode">添加</a-menu-item>
           <a-menu-item  @click="editTreeNode">编辑</a-menu-item>
           <a-menu-item  @click="deleteTreeNode">删除</a-menu-item>
         </st-more-dropdown>
       </div>
-      <div v-if="item.isAdd" stay><a-input></a-input><a href="">保存</a><span @click="cancelEdit">x</span></div>
+      <div v-if="item.isAdd" class="edit-box"><a-input  placeholder="请输入部门名称" class="tree-input  mg-r8" v-model="addValue"></a-input><a href="javascript:;" class="mg-r8" @click="addDepartment">保存</a><span class="mg-r8" @click="cancelEdit">x</span></div>
     </div>
     <ul class="st-tree-item" v-show="isOpen" v-if="isFolder">
       <tree-item
@@ -25,8 +25,11 @@
         v-for="(child, index) in item.children"
         :key="index"
         :item="child"
+        @edit="$emit('edit', $event)"
+        @add="$emit('add', $event)"
         @make-folder="$emit('make-folder', $event)"
         @add-item="$emit('add-item', $event)"
+        @edit-item="$emit('edit-item', $event)"
         @delete-item="$emit('delete-item', $event)"
         @node-item-detail="$emit('node-item-detail', $event)"
       ></tree-item>
@@ -42,14 +45,12 @@ export default {
     level: {
       type: Number,
       default: () => 0
-    },
-    isEdit: {
-      type: Boolean,
-      default: false
     }
   },
   data: function() {
     return {
+      editValue: '',
+      addValue: '',
       opreations: [{ clickName: this.addTreeNade, name: '编辑' }, { clickName: this.editTreeNade, name: '新增' }, { clickName: this.deleteTreeNade, name: '删除' }],
       placements: ['bottomLeft'],
       visible: false,
@@ -66,7 +67,14 @@ export default {
     }
   },
   methods: {
+    editDepartment() {
+      this.$emit('edit', { id: this.item.id, department_name: this.editValue })
+    },
+    addDepartment() {
+      this.$emit('add', { parent_id: this.item.id, department_name: this.addValue })
+    },
     editTreeNode() {
+      this.editValue = this.item.name
       this.$emit('edit-item', this.item)
     },
     addTreeNode() {

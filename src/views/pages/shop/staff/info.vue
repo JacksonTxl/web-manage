@@ -110,7 +110,7 @@ export default {
       }
       let i = 0
       while (i < identity.length) {
-        for (var j in obj) {
+        for (let j in obj) {
           if (obj[j].indexOf(identity[i]) !== -1) {
             map[j] = true
           }
