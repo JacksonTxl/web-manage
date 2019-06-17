@@ -93,13 +93,7 @@ export default {
       payTypeDes
     }
   },
-  created() {
-    this.getInfo()
-  },
   methods: {
-    getInfo() {
-      this.payTypeService.getInfo().subscribe()
-    },
     onSwitchChange(key) {
       const info = this.info
       const { id, is_enable, payment_type } = this.info[key]

@@ -92,9 +92,6 @@ export default {
     info() {
       return this.resData.info
     }
-  },
-  created() {
-    this.personalService.getInfo().subscribe()
   }
 }
 </script>
