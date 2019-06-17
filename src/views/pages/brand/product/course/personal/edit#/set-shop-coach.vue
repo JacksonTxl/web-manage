@@ -21,7 +21,7 @@
             />
           </div>
         </st-form-item>
-        <st-form-item v-show="false">
+        <st-form-item>
           <input type="hidden" v-decorator="ruleConfig.shopIds">
         </st-form-item>
       </a-col>

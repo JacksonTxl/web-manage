@@ -40,7 +40,7 @@ export default {
       courseId: 0,
       courseName: '',
       stepArr: [{
-        title: '创建团体课',
+        title: '编辑团体课',
         key: 0
       }, {
         title: '设置上课门店',
