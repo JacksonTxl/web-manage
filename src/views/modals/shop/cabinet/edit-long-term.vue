@@ -120,6 +120,7 @@ export default {
       this.form.validateFields().then((data) => {
         data.id = this.id
         data.reason = this.info.reason || ''
+        data.transfer_unit = this.transferUnit
         this.editService.update(data).subscribe(this.onSubmitSuccess)
       })
     },
