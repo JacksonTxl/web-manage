@@ -78,7 +78,7 @@
           </td>
           <td></td>
           <td>
-            <a href="javascrip:;" @click="addReserve">添加预约</a>
+            <a href="javascript:;" @click="addReserve">添加预约</a>
           </td>
         </tr>
         <tr v-for="(item, index) in info.reserve" :key="index">
@@ -87,8 +87,8 @@
           <td>{{item.is_checkin_name}}</td>
           <td>
             <div>
-              <a   class="mg-r8" href="javascrip:;" @click="cancelReserve(item.id)">取消预约</a>
-              <a  href="javascrip:;" @click="check(item.id)">签到消费</a>
+              <a   class="mg-r8" href="javascript:;" @click="cancelReserve(item.id)">取消预约</a>
+              <a  href="javascript:;" @click="check(item.id)">签到消费</a>
             </div>
           </td>
         </tr>
