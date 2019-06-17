@@ -98,7 +98,8 @@ export default {
   rxState() {
     return {
       physicalListInfo: this.aService.physicalListInfo$,
-      followInfo: this.aService.followInfo$
+      followInfo: this.aService.followInfo$,
+      auth: this.aService.auth$
     }
   },
 

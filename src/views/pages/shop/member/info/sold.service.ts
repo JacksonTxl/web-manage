@@ -4,6 +4,7 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { MemberApi } from '@/api/v1/member'
 import { forkJoin } from 'rxjs'
+import { AuthService } from '@/services/auth.service'
 
 interface SoldListInfoState {
   soldListInfo: any
@@ -14,7 +15,8 @@ export class SoldService extends Store<SoldListInfoState> {
   state$: State<SoldListInfoState>
   soldListInfo$: Computed<string>
   followInfo$: Computed<string>
-  constructor(private cardsApi: MemberApi) {
+  auth$: Computed<Object>
+  constructor(private memberApi: MemberApi, private authService: AuthService) {
     super()
     this.state$ = new State({
       soldListInfo: {},
@@ -22,6 +24,7 @@ export class SoldService extends Store<SoldListInfoState> {
     })
     this.soldListInfo$ = new Computed(this.state$.pipe(pluck('soldListInfo')))
     this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SOLD_LIST_INFO(soldListInfo: SoldListInfoState) {
     console.log(soldListInfo)
@@ -30,19 +33,19 @@ export class SoldService extends Store<SoldListInfoState> {
     })
   }
   getMemberReserve(id: string, params: any) {
-    return this.cardsApi.getMemberReserve(id, params).pipe(
+    return this.memberApi.getMemberReserve(id, params).pipe(
       tap(res => {
         console.log(res, '获取数据')
-
+        res = this.authService.filter(res)
         this.SOLD_LIST_INFO(res)
       })
     )
   }
   getMemberCancel(params: any) {
-    return this.cardsApi.getMemberCancel(params)
+    return this.memberApi.getMemberCancel(params)
   }
   getMemberSign(params: any) {
-    return this.cardsApi.getMemberSign(params)
+    return this.memberApi.getMemberSign(params)
   }
   init(id: string, params: any) {
     return forkJoin(this.getMemberReserve(id, params))
