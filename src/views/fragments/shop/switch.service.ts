@@ -5,6 +5,7 @@ import { Store } from '@/services/store'
 import { ShopApi } from '@/api/v1/shop'
 import { SwitchApi, SwitchShopInput } from '@/api/v1/account/switch'
 import { TokenService } from '@/services/token.service'
+import { UserService } from '@/services/user.service'
 
 interface SetState {
   shopList: Array<Object>
@@ -16,7 +17,8 @@ export class SwitchService extends Store<SetState> {
   constructor(
     private shopApi: ShopApi,
     private switchApi: SwitchApi,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private userService: UserService
   ) {
     super()
     this.state$ = new State({
@@ -32,6 +34,9 @@ export class SwitchService extends Store<SetState> {
       tap(res => {
         console.log(res)
         this.tokenService.SET_TOKEN(res.token)
+        // this.userService.SET_SHOP({
+        //   name: 'test shop'
+        // })
       })
     )
   }

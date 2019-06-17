@@ -92,7 +92,8 @@
         :isOperationInBatch="isOperationInBatch"
         :areaName="areaName"
         :type="type"
-        @change="onCabinetSelectChange"
+        @selectChange="onCabinetSelectChange"
+        @change="onCabinetListChange"
       />
     </st-panel>
   </div>

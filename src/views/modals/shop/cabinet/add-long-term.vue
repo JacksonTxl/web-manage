@@ -33,10 +33,10 @@
         </a-radio-group>
       </st-form-item>
       <st-form-item label="租赁价格" required>
-        <st-input-number placeholder="请输入售卖价格" v-decorator="ruleConfig.priceNum"/>
+        <st-input-number :float="true" placeholder="请输入售卖价格" v-decorator="ruleConfig.priceNum"/>
       </st-form-item>
       <st-form-item label="转让手续费">
-        <st-input-number placeholder="" v-decorator="ruleConfig.transferNum">
+        <st-input-number :float="true" placeholder="请输入转让手续费" v-decorator="ruleConfig.transferNum">
           <template slot="addonAfter">
             <a-select v-model="transferUnit">
               <a-select-option

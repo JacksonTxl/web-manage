@@ -92,6 +92,7 @@ export default {
         start_num: info.start_num,
         use_status: info.use_status
       })
+      this.reasonHandler(info.use_status)
     },
     onSubmit(e) {
       e.preventDefault()
@@ -113,7 +114,10 @@ export default {
     },
     onUseStatusChange(e) {
       const status = e.target.value
-      this.isShowReason = e.target.value === 2
+      this.reasonHandler(status)
+    },
+    reasonHandler(status) {
+      this.isShowReason = status === 2
     }
   }
 }
