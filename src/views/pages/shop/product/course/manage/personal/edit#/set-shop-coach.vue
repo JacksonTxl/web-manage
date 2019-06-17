@@ -10,7 +10,7 @@
     <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="上课门店" required>
-          xxx门店
+          <span>{{shop.name}}</span>
         </st-form-item>
       </a-col>
     </a-row>
@@ -61,7 +61,8 @@ export default {
     return {
       loading: this.editService.loading$,
       personalCourseEnums: user.personalCourseEnums$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      shop: user.shop$
     }
   },
   components: {
