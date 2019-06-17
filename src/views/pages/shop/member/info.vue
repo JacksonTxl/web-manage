@@ -131,7 +131,7 @@
           { label: '预约上课', route: { name: 'shop-member-info-sold',query:{id:$route.query.id} } },
           { label: '卡课消费', route: { name: 'shop-member-info-reserve',query:{id:$route.query.id} } },
           { label: '销售权益', route: { name: 'shop-member-info-sales-interests' ,query:{id:$route.query.id}} },
-          { label: '用户体验', route: { name: 'shop-member-info-user-experience',query:{id:$route.query.id} } },
+          { label: '用户体测', route: { name: 'shop-member-info-user-experience',query:{id:$route.query.id} } },
         ]"
     >
       <div slot="actions"></div>

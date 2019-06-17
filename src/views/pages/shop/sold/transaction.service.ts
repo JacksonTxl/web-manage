@@ -6,7 +6,7 @@ export class TransactionService implements RouteGuard {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     if (to.name === 'shop-sold-transaction') {
       next({
-        name: 'shop-sold-transaction-index'
+        name: 'shop-sold-transaction-list'
       })
     } else {
       next()

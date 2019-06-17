@@ -4,6 +4,7 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { MemberApi } from '@/api/v1/member'
 import { forkJoin } from 'rxjs'
+import { AuthService } from '@/services/auth.service'
 
 interface FollowHistoryInfoState {
   followHistoryInfo: any
@@ -14,14 +15,19 @@ export class FollowHistoryService extends Store<FollowHistoryInfoState> {
   state$: State<FollowHistoryInfoState>
   followHistoryInfo$: Computed<string>
   followInfo$: Computed<string>
-  constructor(private cardsApi: MemberApi) {
+  auth$: Computed<Object>
+  constructor(private memberApi: MemberApi, private authService: AuthService) {
     super()
     this.state$ = new State({
       followHistoryInfo: {},
-      followInfo: {}
+      followInfo: {},
+      auth: {
+        add: this.authService.can('shop:member:member_record|add')
+      }
     })
     this.followHistoryInfo$ = new Computed(this.state$.pipe(pluck('followHistoryInfo')))
     this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SET_FOLLOW_HISTORY_INFO(followHistoryInfo: FollowHistoryInfoState) {
     console.log(followHistoryInfo)
@@ -35,16 +41,16 @@ export class FollowHistoryService extends Store<FollowHistoryInfoState> {
     })
   }
   getListInfo(id: any) {
-    return this.cardsApi.getMemberFollowRecord(id).pipe(
+    return this.memberApi.getMemberFollowRecord(id).pipe(
       tap(res => {
         console.log(res, '获取数据')
-
+        res = this.authService.filter(res)
         this.SET_FOLLOW_HISTORY_INFO(res)
       })
     )
   }
   getFollowInfo(id: any) {
-    return this.cardsApi.getMemberFollow(id).pipe(
+    return this.memberApi.getMemberFollow(id).pipe(
       tap(res => {
         console.log(res, '获取数据')
 
