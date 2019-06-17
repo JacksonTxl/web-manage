@@ -17,8 +17,14 @@ export class PersonalCommonApi extends Api {
   /**
    * 获取门店排期私教列表
    */
-  getCoachList() {
-    return this.http.get('/v1/schedule/personal/coach')
+  getCoachList(query: GetCoachListInput) {
+    return this.http.get('/v1/schedule/personal/coach', { query })
+  }
+  /**
+   * 获取门店排期私教列表
+   */
+  getCoachListInBatch(query: GetCoachListInput) {
+    return this.http.get('/v1/schedule/personal/coach', { query })
   }
   /**
   * 获取门店排期上课私教列表
@@ -95,4 +101,7 @@ export interface AddInput {
    * 课时费
    */
   course_fee: number
+}
+export interface GetCoachListInput {
+  is_batch: number
 }
