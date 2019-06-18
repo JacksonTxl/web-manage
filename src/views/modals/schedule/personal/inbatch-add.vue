@@ -31,7 +31,7 @@ export default {
   },
   rxState() {
     return {
-      coachOptions: this.commonService.coachOptions$
+      coachOptions: this.commonService.coachInBatchOptions$
     }
   },
   data() {

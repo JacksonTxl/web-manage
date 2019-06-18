@@ -6,18 +6,8 @@
     class="model-leave-store-container"
     :footer="false"
   >
-  <staff-info :staff="staff"></staff-info>
-    <a-row :gutter="8">
-      <a-col :lg="24">
-        <template v-for="item in staff.identity">
-          <st-tag :key="item" v-if="item === 4" class="mg-r4" type="coach-personal"/>
-          <st-tag :key="item" v-if="item === 3" class="mg-r4" type="coach-team"/>
-          <st-tag :key="item" v-if="item === 1" class="mg-r4" type="role-staff"/>
-          <st-tag :key="item" v-if="item === 2" class="mg-r4" type="role-saler"/>
-        </template>
-      </a-col>
-    </a-row>
-    <template v-if="list.length === 0">
+    <staff-info :staff="staff"></staff-info>
+    <template v-if="operate === 1">
       <a-row :gutter="8" class="mg-t16">
         <a-col :lg="24">
           <p class="model-leave-store-container_tip">确认此员工不在{{'门店名称'}}进行相关工作</p>
@@ -30,7 +20,7 @@
         </a-row>
       </a-row>
     </template>
-    <template v-if="list.length > 0">
+    <template v-else>
       <a-row :gutter="8" class="mg-t16" v-if="list.length !== 0">
         <a-col :lg="24">
           <div class="model-leave-store-container_info">
@@ -56,14 +46,18 @@
 <script>
 import StaffInfo from './staff-info'
 import { LeaveStoreService } from './leave-current-shop.service'
-import { MessageService } from '@/services/message.service'
 
 export default {
   name: 'LeaveCurrentStore',
   serviceInject() {
     return {
-      service: LeaveStoreService,
-      message: MessageService
+      service: LeaveStoreService
+    }
+  },
+  rxState() {
+    return {
+      list: this.service.list$,
+      operate: this.service.operate$
     }
   },
   props: {
@@ -74,14 +68,11 @@ export default {
   },
   data() {
     return {
-      show: false,
-      list: []
+      show: false
     }
   },
   mounted() {
-    this.service.getInfo(this.staff.id).subscribe(res => {
-      this.list = res.list
-    })
+    this.service.getInfo(this.staff.id).subscribe()
   },
   components: {
     StaffInfo
@@ -92,7 +83,6 @@ export default {
     },
     onSubmit() {
       this.service.leaveStore(this.staff.id).subscribe(res => {
-        this.message.success({ content: '解除门店关系成功' })
         this.show = false
       })
     }

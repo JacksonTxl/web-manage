@@ -22,7 +22,7 @@ import { TreeToMap } from '@/utils/tree-to-map.js'
 import TreeItem from './tree-item.vue'
 import { cloneDeep } from 'lodash-es'
 export default {
-  name: 'StTree',
+  name: 'StOrganTree',
   data() {
     return {
       treeDataSelf: {}
