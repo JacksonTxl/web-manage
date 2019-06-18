@@ -103,6 +103,16 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'shop-sold-cabinet-list'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      search: { type: String, default: '' },
+      lease_status: { type: Number, default: -1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
   'shop-sold-course-list-personal'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
