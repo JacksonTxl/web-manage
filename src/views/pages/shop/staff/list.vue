@@ -121,12 +121,10 @@
             <a href="javascript:;" @click="onEdit(record)">编辑</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown>
-              <a-menu-item>
-                <modal-link
-                  tag="a"
-                  :to="{ name: 'shop-staff-bind-card', props: {staff: record } }"
-                >绑实体卡</modal-link>
+              <a-menu-item v-if="record.work_status.id === 1">
+                <modal-link tag="a" :to="{ name: 'shop-staff-bind-card', props: {staff: record} }"> {{record.has_card ? '重绑定实体卡':'绑定实体卡'}}</modal-link>
               </a-menu-item>
+
               <a-menu-item>
                 <modal-link
                   tag="a"
@@ -136,19 +134,19 @@
               <a-menu-item>
                 <modal-link
                   tag="a"
-                  :to="{ name: 'shop-staff-update-staff-position', props: {data: record}} "
+                  :to="{ name: 'shop-staff-update-staff-position', props: {staff: record}} "
                 >职位变更</modal-link>
               </a-menu-item>
               <a-menu-item>
                 <modal-link
                   tag="a"
-                  :to="{ name: 'shop-staff-wages-account-set', props: {data: record} }"
+                  :to="{ name: 'shop-staff-salary-account-setting', props: {staff: record} }"
                 >设置薪资账户</modal-link>
               </a-menu-item>
               <a-menu-item>
                 <modal-link
                   tag="a"
-                  :to="{ name: 'shop-staff-leave-current-store', props: {data: record}}"
+                  :to="{ name: 'shop-staff-leave-current-shop', props: {staff: record}}"
                 >解除门店关系</modal-link>
               </a-menu-item>
             </st-more-dropdown>

@@ -1,41 +1,72 @@
 <template>
   <st-modal title="选择所属部门" size="small" v-model="show" @ok="onSubmit">
+    <staff-info :staff="staff"></staff-info>
     <section>
       <st-form labelWidth="60px" :form="form" @submit="onSubmit" class="mg-t24">
         <st-form-item label="部门">
           <a-tree-select
-            showSearch
-            :value="value"
-            :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
-            placeholder="Please select"
-            allowClear
-            treeDefaultExpandAll
-            v-decorator="['department_id']"
-            @change="onChange"
+          showSearch
+          class="mg-r8"
+          style="width: 160px"
+          v-model="query.department_id"
+          :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
+          placeholder="请选择部门"
+          allowClear
+          treeDefaultExpandAll
+          @change="onChange"
+        >
+          <a-tree-select-node
+            v-for="item in departmentList"
+            :value="item.id"
+            :title="item.name"
+            :key="item.id"
           >
-            <a-tree-select-node value="parent 1" title="parent 1" key="0-1">
-              <a-tree-select-node value="parent 1-0" title="parent 1-0" key="0-1-1">
-                <a-tree-select-node :selectable="false" value="leaf1" title="my leaf" key="random"/>
-                <a-tree-select-node value="leaf2" title="your leaf" key="random1"/>
-              </a-tree-select-node>
-              <a-tree-select-node value="parent 1-1" title="parent 1-1" key="random2">
-                <a-tree-select-node value="sss" key="random3">
-                  <b style="color: #08c" slot="title">sss</b>
+            <a-tree-select-node
+              v-for="item1 in item.children"
+              :value="item1.id"
+              :title="item1.name"
+              :key="item1.id"
+            >
+              <a-tree-select-node
+                v-for="item2 in item1.children"
+                :value="item2.id"
+                :title="item2.name"
+                :key="item2.id"
+              >
+                <a-tree-select-node
+                  v-for="item3 in item2.children"
+                  :value="item3.id"
+                  :title="item3.name"
+                  :key="item3.id"
+                >
+                  <a-tree-select-node
+                    v-for="item4 in item3.children"
+                    :value="item4.id"
+                    :title="item4.name"
+                    :key="item4.id"
+                  />>
                 </a-tree-select-node>
               </a-tree-select-node>
             </a-tree-select-node>
-          </a-tree-select>
+          </a-tree-select-node>
+        </a-tree-select>
         </st-form-item>
       </st-form>
     </section>
   </st-modal>
 </template>
 <script>
-import { MessageService } from '@/services/message.service'
+import StaffInfo from './staff-info'
+import { JoinDepartmentService } from './join-department.service'
 export default {
   serviceInject() {
     return {
-      messageService: MessageService
+      service: JoinDepartmentService
+    }
+  },
+  rxState() {
+    return {
+      departmentList: this.service.departmentList$
     }
   },
   data() {
@@ -45,6 +76,9 @@ export default {
       treeExpandedKeys: [],
       value: undefined
     }
+  },
+  components: {
+    StaffInfo
   },
   methods: {
     onChange(value) {
@@ -62,6 +96,9 @@ export default {
         }
       })
     }
+  },
+  mounted() {
+    this.service.getStaffDepartmentList().subscribe()
   }
 }
 </script>

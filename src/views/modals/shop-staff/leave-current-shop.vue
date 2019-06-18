@@ -6,15 +6,15 @@
     class="model-leave-store-container"
     :footer="false"
   >
+  <staff-info :staff="staff"></staff-info>
     <a-row :gutter="8">
       <a-col :lg="24">
-        <template v-for="item in data.identity">
+        <template v-for="item in staff.identity">
           <st-tag :key="item" v-if="item === 4" class="mg-r4" type="coach-personal"/>
           <st-tag :key="item" v-if="item === 3" class="mg-r4" type="coach-team"/>
           <st-tag :key="item" v-if="item === 1" class="mg-r4" type="role-staff"/>
           <st-tag :key="item" v-if="item === 2" class="mg-r4" type="role-saler"/>
         </template>
-        <span>{{ data.staff_name }}</span>
       </a-col>
     </a-row>
     <template v-if="list.length === 0">
@@ -54,10 +54,12 @@
   </st-modal>
 </template>
 <script>
-import { LeaveStoreService } from './leave-current-store.service'
+import StaffInfo from './staff-info'
+import { LeaveStoreService } from './leave-current-shop.service'
 import { MessageService } from '@/services/message.service'
 
 export default {
+  name: 'LeaveCurrentStore',
   serviceInject() {
     return {
       service: LeaveStoreService,
@@ -65,8 +67,9 @@ export default {
     }
   },
   props: {
-    data: {
-      type: Object
+    staff: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
@@ -76,18 +79,19 @@ export default {
     }
   },
   mounted() {
-    this.service.getInfo(1).subscribe(res => {
-      console.log(res)
+    this.service.getInfo(this.staff.id).subscribe(res => {
       this.list = res.list
     })
+  },
+  components: {
+    StaffInfo
   },
   methods: {
     onCancel() {
       this.show = false
     },
     onSubmit() {
-      this.service.leaveStore(1).subscribe(res => {
-        console.log(res)
+      this.service.leaveStore(this.staff.id).subscribe(res => {
         this.message.success({ content: '解除门店关系成功' })
         this.show = false
       })

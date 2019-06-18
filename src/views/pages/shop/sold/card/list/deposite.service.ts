@@ -5,7 +5,7 @@ import { CardApi, GetMemberListInput } from '@/api/v1/sold/cards'
 
 @Injectable()
 export class DepositeService implements RouteGuard {
-  list$ = new State({})
+  list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
   constructor(private cardApi: CardApi) {}

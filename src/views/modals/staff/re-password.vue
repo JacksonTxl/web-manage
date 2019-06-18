@@ -5,7 +5,6 @@
     size="small"
     v-model='show'>
     <staff-info :staff="staff"></staff-info>
-    {{rePasswordInfo.QQ}}
     <div>
       <st-form>
         <st-form-item label="系统权限">

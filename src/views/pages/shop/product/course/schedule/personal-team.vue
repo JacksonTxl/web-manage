@@ -1,6 +1,5 @@
 <template>
   <div class='page-team-personal'>
-    <add-card></add-card>
     <FullCalendar
       class='page-team-personal__calendar'
       ref="fullCalendar"
@@ -34,14 +33,12 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
-import AddCard from './date#/add-card'
 import $ from 'jquery'
 import { PersonalTeamScheduleScheduleService } from './personal-team.service#/schedule.service'
 
 export default {
   name: 'Schedule',
   components: {
-    AddCard,
     FullCalendar // make the <FullCalendar> tag available
   },
   serviceInject() {
