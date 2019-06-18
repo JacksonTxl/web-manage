@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { StaffApi, GetStaffSoldInput } from '@/api/v1/staff'
+import { ShopStaffApi, GetStaffSoldInput } from '@/api/v1/staff/staff'
 
 interface SoldState {
     soldInfo: Object
@@ -11,7 +11,7 @@ interface SoldState {
 export class SoldService extends Store<SoldState> {
     state$: State<SoldState>
     soldInfo$: Computed<Object>
-    constructor(private staffapi: StaffApi) {
+    constructor(private staffApi: ShopStaffApi) {
       super()
       this.state$ = new State({
         soldInfo: {}
@@ -19,7 +19,7 @@ export class SoldService extends Store<SoldState> {
       this.soldInfo$ = new Computed(this.state$.pipe(pluck('soldInfo')))
     }
     getStaffSoldInfo(id: string, query: GetStaffSoldInput) {
-      return this.staffapi.getStaffSold(id, query).pipe(
+      return this.staffApi.getStaffSold(id, query).pipe(
         tap(res => {
           this.state$.commit(state => {
             state.soldInfo = res

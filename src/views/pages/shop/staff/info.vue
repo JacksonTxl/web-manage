@@ -129,7 +129,7 @@ export default {
   },
   created() {
     let { identity } = this.$route.meta.query
-    // identity = [1,2] // 调试用
+    identity = [1, 2, 3, 4] // 调试用
     this.showTabs(this.flitertabs(identity))
     this.$router.replace({
       name: 'shop-staff-info-basic',

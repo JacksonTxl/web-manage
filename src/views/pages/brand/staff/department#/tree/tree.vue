@@ -2,16 +2,11 @@
   <ul class="st-tree">
     <tree-item
       class="item"
-      @edit="editPartment"
-      @add="addPartment"
       :item="treeDataSelf"
-      :funcList="funcList"
-      @click-item="onClickItem"
       @make-folder="makeFolder"
       @add-item="addItem"
       @edit-item="editItem"
       @node-item-detail="getNodeItemDetail"
-      @delete-item="deleteItem"
     ></tree-item>
   </ul>
 
@@ -42,12 +37,6 @@ export default {
   methods: {
     onClickItem(item) {
       console.log(item)
-    },
-    editPartment(value) {
-      this.$emit('edit', value)
-    },
-    addPartment(value) {
-      this.$emit('add', value)
     },
     makeFolder(item) {
       Vue.set(item, 'children', [])
