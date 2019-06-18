@@ -52,7 +52,7 @@ export default {
     if (currentIndex) {
       this.currentIndex = currentIndex - 0
     }
-    if (isshowcoach && isshowcoach === 'false') {
+    if (this.staffInfo.identity.includes(3) || this.staffInfo.identity.includes(4)) {
       let idx = this.stepArr.findIndex((item) => {
         return item.key === 2
       })

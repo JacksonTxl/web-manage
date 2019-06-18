@@ -17,16 +17,16 @@ export interface CardListInput {
 }
 export class CardsApi extends Api {
   /**
-   * 门店会员卡已上架列表
+   * 会员卡已上架列表
    */
-  getShopCardShelfList(query:CardShelfListInput) {
-    return this.http.get(`/v1/cards/member/shop/shelf`, { query })
+  getCardShelfList(query:CardShelfListInput, type:string) {
+    return this.http.get(`/v1/cards/member/${type}/shelf`, { query })
   }
   /**
-   * 门店会员卡列表
+   * 会员卡列表
    */
-  getShopCardList(query:CardListInput) {
-    return this.http.get(`/v1/cards/member/shop`, { query })
+  getCardList(query:CardListInput, type:string) {
+    return this.http.get(`/v1/cards/member/${type}`, { query })
   }
 
   /**
@@ -37,10 +37,10 @@ export class CardsApi extends Api {
   }
 
   /**
-   * 会员卡新增,品牌
+   * 会员卡新增
    */
-  addCardBrand(params: CardsInput) {
-    return this.http.post('/v1/cards/member/brand', { params })
+  addCard(params: CardsInput, type:string) {
+    return this.http.post(`/v1/cards/member/${type}`, { params })
   }
   /**
    * 会员卡详情
@@ -51,14 +51,14 @@ export class CardsApi extends Api {
   /**
    * 会员卡编辑详情
    */
-  getCardInfoBack(id: string) {
-    return this.http.get(`/v1/cards/member/brand/back/${id}`)
+  getCardInfoBack(id: string, type:string) {
+    return this.http.get(`/v1/cards/member/${type}/back/${id}`)
   }
   /**
    * 会员卡编辑
    */
-  editCard(params: CardsInput) {
-    return this.http.put('/v1/cards/member/brand', { params })
+  editCard(params: CardsInput, type:string) {
+    return this.http.put(`/v1/cards/member/${type}`, { params })
   }
   /**
    * 储值卡新增,品牌
@@ -83,18 +83,6 @@ export class CardsApi extends Api {
    */
   editCardDepositBrand(params: CardsInput) {
     return this.http.put('/v1/cards/brand/deposit', { params })
-  }
-  /**
-   *获取卡列表
-   */
-  getCardsList(query: any) {
-    return this.http.get('/v1/cards/member/brand', { query })
-  }
-  /**
-   *获取卡列表
-   */
-  getCardsListA(query: any) {
-    return this.http.get('/v1/cards/member/brand/shelf', { query })
   }
   /**
    *品牌会员卡停售原因

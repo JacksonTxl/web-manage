@@ -1,0 +1,63 @@
+.item {
+  cursor: pointer;
+}
+.tree-node{
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  &:hover{
+    background: rgba(24,144,255,0.1);
+  }
+  .tree-input{
+    .s(144px, 28px);
+  }
+  .edit-box{
+    text-align: right;
+    font-size: 12px
+  }
+  
+  &__content{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    padding: 7px 0;
+  }
+  .active{
+    background:rgba(24,144,255,1);
+    .tree-name,
+    .tree-switch{
+      color: #fff
+    }
+    .edit{
+      color: #fff
+    }
+  }
+  .tree-name{
+    .fz(12px);
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(0,0,0,0.85);
+    line-height:17px;
+  }
+  .tree-opreation{
+    position: absolute;
+    top:8px;
+    right: 12px;
+    z-index: 1;
+  }
+  .tree-switch{
+    .s(16px,16px);
+    .mg-r(8px);
+    .lh(16px);
+    font-size: 18px;
+    .ta-c;
+    display: block;
+    background:rgba(0,0,0,0.05);
+    color: rgba(0,0,0,0.25);
+    &__empty{
+      .s(16px,16px);
+      display: block;
+      .mg-r(8px);
+    }
+  }
+}

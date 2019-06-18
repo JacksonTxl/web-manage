@@ -11,9 +11,7 @@
         <span class="tree-name" v-else>{{ item.name }}( {{item.count}} )</span>
 
         <st-more-dropdown class="tree-opreation" v-show="!item.isEdit">
-          <a-menu-item  @click="addTreeNode">添加</a-menu-item>
-          <a-menu-item  @click="editTreeNode">编辑</a-menu-item>
-          <a-menu-item  @click="deleteTreeNode">删除</a-menu-item>
+          <a-menu-item  v-for="(item, index) in funcList" :key="index" @click="onClickFunc(item.func)">{{item.funcName}}</a-menu-item>
         </st-more-dropdown>
       </div>
       <div v-if="item.isAdd" class="edit-box"><a-input  placeholder="请输入部门名称" class="tree-input  mg-r8" v-model="addValue"></a-input><a href="javascript:;" class="mg-r8" @click="addDepartment">保存</a><span class="mg-r8" @click="cancelEdit">x</span></div>
@@ -25,12 +23,11 @@
         v-for="(child, index) in item.children"
         :key="index"
         :item="child"
-        @edit="$emit('edit', $event)"
-        @add="$emit('add', $event)"
+        :funcList="funcList"
+        @click-item="$emit('click-item', $event)"
         @make-folder="$emit('make-folder', $event)"
         @add-item="$emit('add-item', $event)"
         @edit-item="$emit('edit-item', $event)"
-        @delete-item="$emit('delete-item', $event)"
         @node-item-detail="$emit('node-item-detail', $event)"
       ></tree-item>
     </ul>
@@ -67,11 +64,8 @@ export default {
     }
   },
   methods: {
-    editDepartment() {
-      this.$emit('edit', { id: this.item.id, department_name: this.editValue })
-    },
-    addDepartment() {
-      this.$emit('add', { parent_id: this.item.id, department_name: this.addValue })
+    onClickFunc(func) {
+      this.$emit('click-item', { emitFunc: func, id: this.item.id, department_name: this.editValue })
     },
     editTreeNode() {
       this.editValue = this.item.name
@@ -82,13 +76,34 @@ export default {
     },
     cancelEdit() {
     },
-    deleteTreeNode() {
-      this.$emit('delete-item', this.item)
-    },
     toggle(e) {
       if (this.isFolder) {
         this.isOpen = !this.isOpen
       }
+    },
+    addDepartment(item) {
+      this.departmentService.addDepartment(item).subscribe(() => {
+        console.log(this.departmentList)
+      })
+    },
+    editDepartment(item) {
+      this.departmentService.updateDepartment(item).subscribe(() => {
+        console.log(this.departmentList)
+      })
+    },
+    deleteDepartment(item) {
+      this.$confirm({
+        title: '确认要删除',
+        content: '删除部门后，该部门下的员工会自动归属父级部门，且无法恢复，确认删除？',
+        onOk: () => {
+          return new Promise((resolve, reject) => {
+            return this.departmentService.delDepartment({ id: item.id }).subscribe(() => {
+              setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
+            })
+          }).catch(() => console.log('Oops errors!'))
+        },
+        onCancel() {}
+      })
     },
     getTreeNodeOnclick(e) {
       this.$emit('node-item-detail', this.item)

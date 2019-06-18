@@ -10,7 +10,7 @@ export class ShelvesService implements RouteGuard {
     loading$ = new State({})
     constructor(private cardApi: CardsApi) {}
     getList(query:CardShelfListInput) {
-      return this.cardApi.getShopCardShelfList(query).pipe(tap((res:any) => {
+      return this.cardApi.getCardShelfList(query, 'shop').pipe(tap((res:any) => {
         this.page$.commit(() => res.page)
         this.list$.commit(() => res.list)
       }))

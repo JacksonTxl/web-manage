@@ -8,6 +8,6 @@ export class AddService {
   constructor(private cardsApi: CardsApi) {}
   @Effect()
   addCard(data: CardsInput) {
-    return this.cardsApi.addCardBrand(data)
+    return this.cardsApi.addCard(data, 'shop')
   }
 }

@@ -95,6 +95,11 @@ export default {
       return identityTag[key - 1]
     }
   },
+  wtach: {
+    identity(newval) {
+      this.isSalaryCourse = newval.includes(3) || newval.includes(4)
+    }
+  },
   components: {
     StaffInfo
   },
@@ -111,7 +116,7 @@ export default {
   },
   methods: {
     onChangeIdentity(value) {
-      this.isSalaryCourse = value.includes('3') || value.includes('4')
+      this.isSalaryCourse = value.includes(3) || value.includes(4)
     },
     computedList(key) {
       let arr = []
@@ -126,9 +131,6 @@ export default {
     },
     onSubmit() {
       this.updateStaffPositionService.putStaffBindPosition({ id: this.staff.id, ...this.form }).subscribe(() => {
-        this.msg.success({
-          content: '绑定实体卡成功'
-        })
         this.show = false
       })
     }

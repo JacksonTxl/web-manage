@@ -8,25 +8,26 @@
     <div :class="shelves('info')" class="mg-b24">
       <img
       :class="shelves('card_bg')"
-      :src="image_url | imgFilter({w:142,h:80})"
+      v-if="info.bg_image"
+      :src="info.bg_image | imgFilter({w:142,h:80})"
       width="142"
       height="80"
       alt="卡背景">
       <div :class="shelves('detail')">
         <p :class="shelves('detail-title')">
-          <st-tag type="period-card" style="margin-right:8px;"/>
-          超级贵宾VIP
+          <st-tag :type="cardTypeTag[info.card_type]" style="margin-right:8px;"/>
+          {{info.card_name}}
         </p>
         <p :class="shelves('detail-cards')">
-            本次共上架10家门店，<span>查看明细</span>
+            本次共上架{{info.sell_shops?info.sell_shops.length:0}}家门店，<span @click="onCardInfo">查看明细</span>
         </p>
-        <p :class="shelves('detail-saletype')">
-            用户端售卖 线下售卖
+        <p :class="shelves('detail-saletype')" v-if="info.sell_type">
+          <span v-for="(item,index) in info.sell_type" :key="index">{{item}}</span>
         </p>
       </div>
     </div>
-    <st-form :form="form" labelWidth="67px" :class="shelves('form')">
-      <div :class="shelves('price')" class="mg-b18">
+    <!-- <st-form :form="form" labelWidth="67px" :class="shelves('form')">
+      <div :class="shelves('price')" class="mg-b18" v-if="info.price_setting.id===1">
         <st-form-table>
           <colgroup>
             <col style="width:4%;">
@@ -45,47 +46,23 @@
             <th>赠送上限</th>
           </tr>
           <tbody>
-            <tr>
+            <tr v-for="(item,index) in info.price_gradient" :key="index">
               <td></td>
-              <td>30次</td>
-              <td>1000</td>
-              <td>30</td>
-              <td>30</td>
-              <td>30</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>30次</td>
-              <td>1000</td>
-              <td>30</td>
-              <td>30</td>
-              <td>30</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>30次</td>
-              <td>1000</td>
-              <td>30</td>
-              <td>30</td>
-              <td>30</td>
-            </tr>
-            <tr>
-              <td></td>
-              <td>30次</td>
-              <td>1000</td>
-              <td>30</td>
-              <td>30</td>
-              <td>30</td>
+              <td>{{item.num}}{{item.unit | enumFilter('deposit_card.unit')}}</td>
+              <td>{{item.rally_price}}</td>
+              <td>没给数据</td>
+              <td>{{item.frozen_day}}</td>
+              <td>{{item.gift_unit}}</td>
             </tr>
           </tbody>
         </st-form-table>
       </div>
       <st-form-item labelGutter="12px" label="开卡方式" required>
-        <a-checkbox-group :class="shelves('open-type')">
-          <a-checkbox value="A">指定日期开卡</a-checkbox>
-          <a-checkbox value="B">购买即开卡</a-checkbox>
+        <a-checkbox-group v-model="info.open_type_list" :class="shelves('open-type')">
+          <a-checkbox :value="3">指定日期开卡</a-checkbox>
+          <a-checkbox :value="2">购买即开卡</a-checkbox>
           <span :class="shelves('day-input')">
-            <a-checkbox>
+            <a-checkbox :value="1">
               到店开卡
               <a-tooltip placement="right">
                 <template slot="title">
@@ -94,8 +71,8 @@
                 <a-icon type="info-circle"/>
               </a-tooltip>
             </a-checkbox>
-            <div class="autoplay-card-day">
-              <st-input-number class="autoplay-card-day-input">
+            <div class="autoplay-card-day" v-if="info.open_type_list.includes(1)">
+              <st-input-number v-model="openDay" class="autoplay-card-day-input">
                 <span slot="addonAfter">天</span>
               </st-input-number>
               <span>内未开卡，则自动开卡</span>
@@ -161,7 +138,7 @@
       <div :class="shelves('hide-more')">
         <span>收起</span>
       </div>
-    </st-form>
+    </st-form> -->
   </section>
   <template slot="footer">
     <div :class="shelves('footer')">
@@ -198,7 +175,20 @@ export default {
         height: '30px',
         lineHeight: '30px'
       },
+      // 卡tag类型
+      cardTypeTag: {
+        1: 'number-card',
+        2: 'period-card'
+      },
+      // 到店开卡天数
+      openDay: null,
+
       image_url: 'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/20190612/DVu9Xd-G4pxwn4bK.png'
+    }
+  },
+  methods: {
+    onCardInfo() {
+      console.log(111)
     }
   },
   created() {

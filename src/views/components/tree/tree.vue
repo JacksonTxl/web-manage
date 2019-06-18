@@ -5,6 +5,8 @@
       @edit="editPartment"
       @add="addPartment"
       :item="treeDataSelf"
+      :funcList="funcList"
+      @click-item="onClickItem"
       @make-folder="makeFolder"
       @add-item="addItem"
       @edit-item="editItem"
@@ -38,6 +40,9 @@ export default {
     TreeItem
   },
   methods: {
+    onClickItem(item) {
+      console.log(item)
+    },
     editPartment(value) {
       this.$emit('edit', value)
     },

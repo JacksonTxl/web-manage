@@ -103,6 +103,16 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'shop-sold-cabinet-list'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      search: { type: String, default: '' },
+      lease_status: { type: Number, default: -1 },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
   'shop-sold-course-list-personal'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
@@ -242,6 +252,25 @@ export const routeMapConfig = {
       card_name: { type: String, default: '' },
       sell_status: { type: Number, default: -1 },
       shelf_status: { type: Number, default: -1 }
+    }
+  },
+  'brand-product-card-member-list-shelves'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      card_type: { type: Number, default: -1 },
+      publish_channel: { type: Number, default: -1 },
+      card_name: { type: String, default: '' }
+    }
+  },
+  'brand-product-card-member-list-all'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      card_type: { type: Number, default: -1 },
+      publish_channel: { type: Number, default: -1 },
+      card_name: { type: String, default: '' },
+      sell_status: { type: Number, default: -1 }
     }
   }
 }

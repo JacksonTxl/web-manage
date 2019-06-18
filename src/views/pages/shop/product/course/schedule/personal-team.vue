@@ -1,6 +1,5 @@
 <template>
   <div class='page-team-personal'>
-    <add-card></add-card>
     <FullCalendar
       class='page-team-personal__calendar'
       ref="fullCalendar"
@@ -34,24 +33,25 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
-import AddCard from './date#/add-card'
 import $ from 'jquery'
 import { PersonalTeamScheduleScheduleService } from './personal-team.service#/schedule.service'
+import { RouteService } from '@/services/route.service'
 
 export default {
   name: 'Schedule',
   components: {
-    AddCard,
     FullCalendar // make the <FullCalendar> tag available
   },
   serviceInject() {
     return {
-      scheduleService: PersonalTeamScheduleScheduleService
+      scheduleService: PersonalTeamScheduleScheduleService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      courseList: this.scheduleService.courseList$
+      courseList: this.scheduleService.courseList$,
+      query: this.routeService.query$
     }
   },
   data() {
@@ -250,8 +250,15 @@ export default {
               start: arg.date,
               allDay: arg.allDay
             })
+            this.onScheduleChange()
           }
         }
+      })
+    },
+    onScheduleChange() {
+      this.$router.push({
+        query: this.query,
+        force: true
       })
     }
   }
