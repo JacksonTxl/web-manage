@@ -30,7 +30,8 @@
       <div :class="reception('member')">
         <div :class="reception('member-search')">
           <a-select
-            class="search-select"
+            v-if="courseInterests===3"
+            :class="reception('search-select')"
             showSearch
             allowClear
             placeholder="检索姓名或手机号查找用户"
