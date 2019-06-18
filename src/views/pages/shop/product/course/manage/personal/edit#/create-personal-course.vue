@@ -136,7 +136,6 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.getData()
-        console.log('step 1 data', data)
         this.editService.updateCourse(data).subscribe((res) => {
           this.messageService.success({
             content: '提交成功'

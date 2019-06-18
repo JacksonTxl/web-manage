@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     getBankInfo() {
-      this.salaryAccountSettingService.getBankInfo(this.staff.id).subscribe()
+      this.salaryAccountSettingService.getBankInfo(1).subscribe()
     },
     onSubmit() {
       this.form.validateFields((err, values) => {

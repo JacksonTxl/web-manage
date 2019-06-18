@@ -42,7 +42,7 @@
                     :value="item4.id"
                     :title="item4.name"
                     :key="item4.id"
-                  />>
+                  />
                 </a-tree-select-node>
               </a-tree-select-node>
             </a-tree-select-node>

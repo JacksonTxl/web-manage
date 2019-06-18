@@ -24,7 +24,6 @@
         :key="index"
         :item="child"
         :funcList="funcList"
-        @click-item="$emit('click-item', $event)"
         @make-folder="$emit('make-folder', $event)"
         @add-item="$emit('add-item', $event)"
         @edit-item="$emit('edit-item', $event)"
@@ -35,7 +34,13 @@
 </template>
 
 <script>
+import { DepartmentService } from '@/views/pages/brand/staff/department.service#/department.service'
 export default {
+  serviceInject() {
+    return {
+      departmentService: DepartmentService
+    }
+  },
   name: 'TreeItem',
   props: {
     item: Object,
