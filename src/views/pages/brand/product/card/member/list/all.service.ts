@@ -10,7 +10,7 @@ export class AllService implements RouteGuard {
   loading$ = new State({})
   constructor(private cardApi: CardsApi) {}
   getList(query:CardListInput) {
-    return this.cardApi.getCardList(query, 'shop').pipe(tap((res:any) => {
+    return this.cardApi.getCardList(query, 'brand').pipe(tap((res:any) => {
       this.list$.commit(() => res.list)
       this.page$.commit(() => res.page)
     }))

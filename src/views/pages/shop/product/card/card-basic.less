@@ -73,6 +73,9 @@
           margin-top: 8px;
           border: 1px solid #d9d9d9;
           border-radius: 4px;
+          &-error {
+            border-color: @error-color;
+          }
           &__add {
             .mg-tb(8px);
           }
@@ -97,6 +100,9 @@
               left: 180px;
             }
           }
+        }
+        .ant-form-explain{
+          color:  @error-color;
         }
       }
       &-card-support-sales {
@@ -250,9 +256,6 @@
           >span:nth-of-type(2){
             .c(@text);
           }
-        }
-        &__support_sales {
-          
         }
       }
     }

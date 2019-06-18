@@ -34,7 +34,7 @@ export class MemberListService extends Store<MemberCardsListState> {
   }
   @Effect()
   getListInfo(paramsObj: any) {
-    return this.cardsApi.getCardsList(paramsObj).pipe(
+    return this.cardsApi.getCardList(paramsObj, 'brand').pipe(
       tap(res => {
         res = this.authService.filter(res)
       })
