@@ -148,7 +148,6 @@ export class RuleConfig extends Exp {
   get education() {
     return ['education']
   }
-
   // 生日
   get birthday() {
     return ['birthday']

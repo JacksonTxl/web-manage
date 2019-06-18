@@ -17,10 +17,10 @@
         <a-input placeholder="请输入起始编号" v-decorator="ruleConfig.startNum"/>
       </st-form-item>
       <st-form-item label="租赁价格" required>
-        <st-input-number placeholder="请输入售卖价格" v-decorator="ruleConfig.priceNum"/>
+        <st-input-number :float="true" placeholder="请输入售卖价格" v-decorator="ruleConfig.priceNum"/>
       </st-form-item>
       <st-form-item label="转让手续费">
-        <st-input-number placeholder="" v-decorator="ruleConfig.transferNum">
+        <st-input-number :float="true" placeholder="请输入转让手续费" v-decorator="ruleConfig.transferNum">
           <template slot="addonAfter">
             <a-select v-model="transferUnit">
               <a-select-option
@@ -114,12 +114,14 @@ export default {
         use_status: info.use_status
       })
       this.transferUnit = info.transfer_unit
+      this.reasonHandler(info.use_status)
     },
     onSubmit(e) {
       e.preventDefault()
       this.form.validateFields().then((data) => {
         data.id = this.id
         data.reason = this.info.reason || ''
+        data.transfer_unit = this.transferUnit
         this.editService.update(data).subscribe(this.onSubmitSuccess)
       })
     },
@@ -135,7 +137,10 @@ export default {
     },
     onUseStatusChange(e) {
       const status = e.target.value
-      this.isShowReason = e.target.value === 2
+      this.reasonHandler(status)
+    },
+    reasonHandler(status) {
+      this.isShowReason = status === 2
     }
   }
 }

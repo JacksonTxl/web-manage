@@ -6,6 +6,7 @@ import {
   StaffApi, PutStaffBrandQuitInput, RePasswordInput
 } from '@/api/v1/staff'
 import { tap } from 'rxjs/operators'
+import { MessageService } from '@/services/message.service'
 
 interface SetState {
   rePasswordInfo: object,
@@ -13,7 +14,7 @@ interface SetState {
 @Injectable()
 export class RePasswordService extends Store<SetState> {
   state$: State<SetState>
-  constructor(protected staffApi: StaffApi) {
+  constructor(protected staffApi: StaffApi, private msg: MessageService) {
     super()
     this.state$ = new State({
       rePasswordInfo: {}
@@ -35,7 +36,11 @@ export class RePasswordService extends Store<SetState> {
    * 新建账号
    */
   setAccount(params: RePasswordInput) {
-    return this.staffApi.setAccount(params)
+    return this.staffApi.setAccount(params).pipe(tap(res => {
+      this.msg.success({
+        content: '创建账号成功'
+      })
+    }))
   }
   /**
    *
@@ -43,6 +48,10 @@ export class RePasswordService extends Store<SetState> {
    * 充值密码
    */
   rePassword(params: RePasswordInput) {
-    return this.staffApi.rePassword(params)
+    return this.staffApi.rePassword(params).pipe(tap(res => {
+      this.msg.success({
+        content: '修改密码成功'
+      })
+    }))
   }
 }

@@ -78,7 +78,8 @@
               name: `shop-cabinet-add-${type}`,
               props: {
                 id: query.id,
-                type
+                type,
+                areaName
               },
               on: {
                 change: onCabinetListChange
@@ -92,7 +93,8 @@
         :isOperationInBatch="isOperationInBatch"
         :areaName="areaName"
         :type="type"
-        @change="onCabinetSelectChange"
+        @selectChange="onCabinetSelectChange"
+        @change="onCabinetListChange"
       />
     </st-panel>
   </div>

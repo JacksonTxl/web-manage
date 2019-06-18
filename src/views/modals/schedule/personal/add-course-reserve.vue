@@ -78,7 +78,7 @@ export default {
   rxState() {
     const tss = this.teamScheduleCommomService
     return {
-      coachOptions: tss.coachOptions$,
+      coachOptions: tss.coachInBatchOptions$,
       courseOptions: tss.courseOptions$,
       courtOptions: tss.courtOptions$
     }

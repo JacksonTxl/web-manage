@@ -6,7 +6,7 @@
           <a-input placeholder="课程名称" disabled v-decorator="ruleConfig.courseName"/>
         </st-form-item>
         <st-form-item label="上课门店">
-          <span>某某上课门店</span>
+          <span>{{shop.name}}</span>
         </st-form-item>
       </a-col>
     </a-row>
@@ -50,7 +50,8 @@ export default {
     const user = this.userService
     return {
       loading: this.addService.loading$,
-      personalCourseEnums: user.personalCourseEnums$
+      personalCourseEnums: user.personalCourseEnums$,
+      shop: user.shop$
     }
   },
   components: {

@@ -8,12 +8,18 @@ import { MenuApi } from '@/api/v1/common/menu'
 
 interface UserState {
   user: User
+  brand: {}
+  shop: {}
   menuData: {}
   enums: {}
 }
 interface User {
   id: string
   name: string
+}
+interface Shop {
+  id?: string
+  name?: string
 }
 interface ModuleEnums {
   [enumName: string]: {
@@ -31,6 +37,8 @@ interface ModuleEnums {
 export class UserService extends Store<UserState> {
   state$: State<UserState>
   user$: Computed<User>
+  brand$: Computed<object>
+  shop$: Computed<object>
   menuData$: Computed<object>
   enums$: Computed<any>
   staffEnums$: Computed<ModuleEnums>
@@ -56,12 +64,19 @@ export class UserService extends Store<UserState> {
     const initialState = {
       user: {},
       menuData: {},
-      enums: {}
+      enums: {},
+      brand: {},
+      shop: {
+        name: '这里是全局数据提供的当前门店的名称'
+      }
     }
     this.state$ = new State(initialState)
     this.user$ = new Computed(this.state$.pipe(pluck('user')))
     this.menuData$ = new Computed(this.state$.pipe(pluck('menuData')))
     this.enums$ = new Computed(this.state$.pipe(pluck('enums')))
+    this.brand$ = new Computed(this.state$.pipe(pluck('brand')))
+    this.shop$ = new Computed(this.state$.pipe(pluck('shop')))
+
     this.staffEnums$ = new Computed(this.enums$.pipe(pluck('staff')))
     this.accountEnums$ = new Computed(this.enums$.pipe(pluck('account')))
     this.depositeCardEnums$ = new Computed(
@@ -87,6 +102,11 @@ export class UserService extends Store<UserState> {
   SET_USER(user: User) {
     this.state$.commit(state => {
       state.user = user
+    })
+  }
+  SET_SHOP(shop: Shop = {}) {
+    this.state$.commit(state => {
+      state.shop = Object.assign(state.shop, shop)
     })
   }
   getEnums() {
@@ -135,9 +155,7 @@ export class UserService extends Store<UserState> {
   delFavorite(id: number) {
     return this.menuApi.delFavorite(id)
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    this.init().subscribe(() => {
-      next()
-    })
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    return this.init()
   }
 }

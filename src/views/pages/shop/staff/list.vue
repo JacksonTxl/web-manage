@@ -6,12 +6,12 @@
           showSearch
           class="mg-r8"
           style="width: 160px"
-          :value="value"
+          v-model="query.department_id"
           :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
           placeholder="请选择部门"
           allowClear
           treeDefaultExpandAll
-          @change="selectDepartment"
+          @change="onChange"
         >
           <a-tree-select-node
             v-for="item in department"
@@ -55,10 +55,7 @@
           placeholder="请选择员工职能"
           v-model="query.identity"
           @change="onChange">
-          <a-select-option :value="1">一般员工</a-select-option>
-          <a-select-option :value="3">私人教练</a-select-option>
-          <a-select-option :value="2">会籍销售</a-select-option>
-          <a-select-option :value="-1">全部员工职能</a-select-option>
+          <a-select-option v-for="(item, index) in staffEnums.identity.value" :key="index" :value="+index">{{item}}</a-select-option>
         </a-select>
         <a-select
           style="width: 160px; "
@@ -67,9 +64,7 @@
           placeholder="请选择员工状态"
           v-model="query.work_status"
           @change="onChange">
-          <a-select-option :value="-1">全部员工状态</a-select-option>
-          <a-select-option :value="1">在职</a-select-option>
-          <a-select-option :value="2">离职</a-select-option>
+          <a-select-option v-for="(item, index) in staffEnums.work_status.value" :key="index" :value="+index">{{item}}</a-select-option>
 
         </a-select>
         <st-button class="mg-r8" :disabled="selectedRowKeys.length > 0 ? false : true">
@@ -82,7 +77,7 @@
         <st-button @click="onExportStaff">导入员工</st-button>
       </a-col>
       <a-col :lg="7" style="text-align: right;">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 300px;" @search="onSearch"/>
+        <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 300px;" v-model="query.keywords" @search="onChange"/>
       </a-col>
     </a-row>
     <a-row :gutter="8" class="mg-t8">
@@ -135,13 +130,13 @@
               <a-menu-item>
                 <modal-link
                   tag="a"
-                  :to="{ name: 'staff-reinstatement', props: {staff_id: record.staff_id || 1} }"
+                  :to="{ name: 'shop-staff-re-password', props: {staff: record} }"
                 >管理登录账号</modal-link>
               </a-menu-item>
               <a-menu-item>
                 <modal-link
                   tag="a"
-                  :to="{ name: 'shop-staff-change-staff-position', props: {data: record}} "
+                  :to="{ name: 'shop-staff-update-staff-position', props: {data: record}} "
                 >职位变更</modal-link>
               </a-menu-item>
               <a-menu-item>
@@ -235,7 +230,8 @@ export default {
     return {
       query: this.routeService.query$,
       staffList: this.service.staffList$,
-      department: this.service.department$
+      department: this.service.department$,
+      staffEnums: this.service.staffEnums$
     }
   },
   data() {

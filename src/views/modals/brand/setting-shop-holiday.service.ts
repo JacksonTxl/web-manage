@@ -14,4 +14,7 @@ export class HolidayService extends Store<SetState> {
   add(params: AddInput) {
     return this.shopHolidayApi.add(params)
   }
+  update(params: AddInput) {
+    return this.shopHolidayApi.update(params)
+  }
 }

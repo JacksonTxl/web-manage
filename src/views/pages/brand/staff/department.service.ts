@@ -1,3 +1,4 @@
+import { DepartmentService as DepService } from './department.service#/department.service'
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
@@ -14,7 +15,7 @@ export class DepartmentService extends Store<SetState> implements RouteGuard {
   state$: State<SetState>
   staffList$: Computed<any>
   // staffList$: Computed<StaffState>
-  constructor(private staffApi: StaffApi) {
+  constructor(private staffApi: StaffApi, private depService: DepService) {
     super()
     this.state$ = new State({
       staffList: []
@@ -28,6 +29,12 @@ export class DepartmentService extends Store<SetState> implements RouteGuard {
         state.staffList = res.list
       })
     }))
+  }
+  getDepartmentList() {
+    return this.depService.getDepartmentList()
+  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.getDepartmentList().subscribe(() => next())
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getStaffList(to.query).subscribe((res: any) => {

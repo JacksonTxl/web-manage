@@ -39,11 +39,7 @@ export class ListService extends Store<ListState> {
       state.resData = data
     })
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getList(to.meta.query).subscribe(() => {
-      next()
-    }, () => {
-      next(false)
-    })
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.getList(to.meta.query)
   }
 }

@@ -10,14 +10,13 @@
         v-if="isHoliday"
         :shopId="shopId"
         :shopName="shopName"
+        :holidayTime="holidayTime"
+        @success="onSuccess"
       />
       <add-holiday
         v-else
         :shopId="shopId"
         :shopName="shopName"
-        :startTime="startTime"
-        :endTime="endTime"
-        :isHoliday="isHoliday"
         @success="onSuccess"
       />
     </div>
@@ -37,16 +36,10 @@ export default {
       type: String,
       default: ''
     },
-    startTime: {
+    holidayTime: {
       type: Object,
-      default: () => {
-        return moment()
-      }
-    },
-    endTime: {
-      type: Object,
-      default: () => {
-        return moment()
+      default() {
+        return {}
       }
     },
     isHoliday: {

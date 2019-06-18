@@ -49,7 +49,7 @@
           <td>{{shop.address}}</td>
           <td>
             {{shop.shop_status | enumFilter('shop.shop_status')}}
-            <st-help-popover v-if="shop.is_holiday" title="放假时间">
+            <st-help-popover v-if="shop.has_holiday_setting" title="放假时间">
               <div slot="content">
                 {{shop.holiday_start_time}}<br/>
                 {{shop.holiday_end_time}}
@@ -87,14 +87,18 @@
                     shopId: shop.shop_id,
                     shopName: shop.shop_name,
                     shopStatus: shop.shop_status,
-                    isHoliday: shop.is_holiday
+                    isHoliday: shop.has_holiday_setting,
+                    holidayTime: {
+                      start: shop.holiday_start_time,
+                      end: shop.holiday_end_time
+                    }
                   },
                   on: {
                     change: onListChange
                   }
                 }"
               >
-                {{shop.is_holiday ? '管理' : ''}}门店放假
+                {{shop.has_holiday_setting ? '管理' : ''}}门店放假
               </a-menu-item>
             </st-more-dropdown>
           </td>
@@ -160,10 +164,12 @@ export default {
     },
     onQueryChange(query = {}, force = false) {
       this.$router.push({
-        query: Object.assign(this.query, query)
-      }, force)
+        query: Object.assign(this.query, query),
+        force
+      })
     },
     onListChange() {
+      console.log('changed')
       this.onQueryChange({}, true)
     }
   }

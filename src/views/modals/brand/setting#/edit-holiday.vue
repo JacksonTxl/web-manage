@@ -7,11 +7,11 @@
           <input type="hidden" v-decorator="formRules.shopId">
         </st-form-item>
         <div v-show="!isEdit">
-          <st-form-item label="放假开始时间" required class="mg-t16">
-            <span>2019-06-08 22:00</span>
+          <st-form-item label="放假开始时间" required class="mg-t16 mg-b0">
+            <span>{{startTime}}</span>
           </st-form-item>
-          <st-form-item label="放假结束时间" required class="mg-t16">
-            <span>2019-06-08 22:00</span>
+          <st-form-item label="放假结束时间" required>
+            <span>{{endTime}}</span>
           </st-form-item>
           <st-form-item labelFix class="mg-b0">
             <st-button type="primary" @click="onEdit">修改放假时间</st-button>
@@ -26,7 +26,7 @@
             <a-date-picker
               v-decorator="formRules.startTime"
               showTime
-              format="YYYY-MM-DD HH:mm:ss"
+              format="YYYY-MM-DD HH:mm"
               placeholder="请选择放假开始时间"
               style="width: 240px"
             />
@@ -35,13 +35,13 @@
               <a-date-picker
               v-decorator="formRules.endTime"
               showTime
-              format="YYYY-MM-DD HH:mm:ss"
+              format="YYYY-MM-DD HH:mm"
               placeholder="请选择放假结束时间"
               style="width: 240px"
             />
           </st-form-item>
           <st-form-item labelFix class="mg-b0">
-            <st-button type="primary">确认修改放假时间</st-button>
+            <st-button type="primary" :loading="loading.add" @click="onSubmit">确认修改放假时间</st-button>
           </st-form-item>
         </div>
       </a-col>
@@ -49,13 +49,13 @@
   </st-form>
 </template>
 <script>
-import { MessageService } from '@/services/message.service'
-import { ShopStatusService as EditService } from '../setting-shop-status.service'
 import moment from 'moment'
+import { MessageService } from '@/services/message.service'
+import { HolidayService } from '../setting-shop-holiday.service'
 const formRules = {
   shopId: ['shop_id'],
   startTime: [
-    'holiday_start_time', {
+    'start_time', {
       rules: [{
         required: true,
         message: '请输入放假开始时间'
@@ -63,7 +63,7 @@ const formRules = {
     }
   ],
   endTime: [
-    'holiday_end_time', {
+    'end_time', {
       rules: [{
         required: true,
         message: '请输入放假结束时间'
@@ -74,13 +74,13 @@ const formRules = {
 export default {
   serviceInject() {
     return {
-      editService: EditService,
+      holidayService: HolidayService,
       messageService: MessageService
     }
   },
   rxState() {
     return {
-      loading: this.editService.loading$
+      loading: this.holidayService.loading$
     }
   },
   props: {
@@ -92,16 +92,10 @@ export default {
       type: String,
       default: ''
     },
-    startTime: {
+    holidayTime: {
       type: Object,
-      default: () => {
-        return moment()
-      }
-    },
-    endTime: {
-      type: Object,
-      default: () => {
-        return moment()
+      default() {
+        return {}
       }
     },
     isHoliday: {
@@ -113,7 +107,16 @@ export default {
     return {
       show: true,
       formRules,
-      isEdit: false
+      isEdit: false,
+      dateFormat: 'YYYY-MM-DD HH:mm'
+    }
+  },
+  computed: {
+    startTime() {
+      return moment(this.holidayTime.start).format(this.dateFormat)
+    },
+    endTime() {
+      return moment(this.holidayTime.end).format(this.dateFormat)
     }
   },
   created() {
@@ -123,8 +126,8 @@ export default {
     this.$nextTick(() => {
       this.form.setFieldsValue({
         shop_id: this.shopId,
-        holiday_start_time: this.startTime,
-        holiday_end_time: this.endTime
+        start_time: moment(this.startTime),
+        end_time: moment(this.endTime)
       })
     })
   },
@@ -136,7 +139,7 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
-        this.editService.update(data).subscribe(this.onSubmitSuccess)
+        this.holidayService.update(data).subscribe(this.onSubmitSuccess)
       })
     },
     onSubmitSuccess() {

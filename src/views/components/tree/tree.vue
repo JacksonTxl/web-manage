@@ -2,9 +2,12 @@
   <ul class="st-tree">
     <tree-item
       class="item"
+      @edit="editPartment"
+      @add="addPartment"
       :item="treeDataSelf"
       @make-folder="makeFolder"
       @add-item="addItem"
+      @edit-item="editItem"
       @node-item-detail="getNodeItemDetail"
       @delete-item="deleteItem"
     ></tree-item>
@@ -20,7 +23,6 @@ export default {
   name: 'StTree',
   data() {
     return {
-      isEdit: false,
       treeDataSelf: {}
     }
   },
@@ -36,28 +38,41 @@ export default {
     TreeItem
   },
   methods: {
+    editPartment(value) {
+      this.$emit('edit', value)
+    },
+    addPartment(value) {
+      this.$emit('add', value)
+    },
     makeFolder(item) {
       Vue.set(item, 'children', [])
       this.addItem(item)
     },
     getNodeItemDetail(item) {
-      this.$emit('node-click', item)
+      this.$emit('node-click', item.id)
     },
     traverseTree(node, tree, opString) {
       return tree.map(item => {
         item[opString] = item.name === node.name
-        return item.children ? { name: item.name, children: this.traverseTree(node, item.children, opString) } : item
+        const obj = { [opString]: item.name === node.name }
+        return item.children ? { ...obj, name: item.name, children: this.traverseTree(node, item.children, opString), id: item.id, count: item.count } : item
       })
     },
     addItem(item) {
       this.treeDataSelf = this.traverseTree(item, [cloneDeep(this.treeData)], 'isAdd')[0]
+      this.$emit('add-item', item)
     },
     editItem(item) {
-      const tree = cloneDeep(this.treeData)
-      this.treeDataSelf = this.traverseTree(item, [tree], 'isEdit')[0]
+      this.treeDataSelf = this.traverseTree(item, [cloneDeep(this.treeData)], 'isEdit')[0]
+      this.$emit('edit-item', item)
     },
     deleteItem(item) {
-      this.$emit('delete-item', item)
+      this.$emit('delete', item)
+    }
+  },
+  watch: {
+    treeData(o) {
+      this.treeDataSelf = cloneDeep(this.treeData)
     }
   },
   mounted() {

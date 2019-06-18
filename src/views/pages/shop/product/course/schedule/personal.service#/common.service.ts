@@ -12,7 +12,8 @@ export interface SetState {
   consumeOptions: any[],
   courseCoachOptions: Staff[],
   timeOptions: any[],
-  dateOptions: any[]
+  dateOptions: any[],
+  coachInBatchOptions: any[]
 }
 export interface Staff{
   id: number,
@@ -28,6 +29,7 @@ export class PersonalScheduleCommonService {
   dateOptions$: Computed<any[]>
   timeOptions$: Computed<any[]>
   courseCoachOptions$: Computed<Staff[]>
+  coachInBatchOptions$: Computed<Staff[]>
 
   constructor(private commonApi: PersonalCommonApi) {
     this.state$ = new State({
@@ -46,6 +48,7 @@ export class PersonalScheduleCommonService {
     this.courseCoachOptions$ = new Computed(this.state$.pipe(pluck('courseCoachOptions')))
     this.dateOptions$ = new Computed(this.state$.pipe(pluck('dateOptions')))
     this.timeOptions$ = new Computed(this.state$.pipe(pluck('timeOptions')))
+    this.coachInBatchOptions$ = new Computed(this.state$.pipe(pluck('coachInBatchOptions')))
   }
   /**
    *
@@ -86,9 +89,17 @@ export class PersonalScheduleCommonService {
    * 获取教练Options
    */
   getCoachList() {
-    return this.commonApi.getCoachList().pipe(tap(res => {
+    return this.commonApi.getCoachList({ is_batch: 0 }).pipe(tap(res => {
       this.state$.commit(state => {
         state.coachOptions = res.list
+      })
+    }))
+  }
+  getCoachListInBatch() {
+    console.log('getCoachListInBatch')
+    return this.commonApi.getCoachListInBatch({ is_batch: 1 }).pipe(tap(res => {
+      this.state$.commit(state => {
+        state.coachInBatchOptions = res.list
       })
     }))
   }

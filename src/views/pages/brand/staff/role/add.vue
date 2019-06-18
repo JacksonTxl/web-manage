@@ -50,9 +50,7 @@
     </a-row>
     <st-form-item>
       <st-button type="primary" @click="onClickSubmit">保存</st-button>
-      <st-button>取消</st-button>
-      <st-button @click="onClickDeleteRole">删除角色</st-button>
-      <st-button @click="onClickEdit">编辑角色</st-button>
+      <st-button class="mg-l8">取消</st-button>
     </st-form-item>
   </st-form>
 </div>

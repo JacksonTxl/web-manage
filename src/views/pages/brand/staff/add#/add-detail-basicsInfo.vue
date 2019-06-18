@@ -1,86 +1,65 @@
 <template>
-  <st-form :form="form" @submit="save" class="page-add-container">
+  <st-form :form="form">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工头像">
           <st-image-upload
+            @change="imageUploadChange"
             width="164px"
             height="164px"
+            :list="fileList"
             :sizeLimit="2"
             placeholder="上传头像"
-            v-decorator="basicInfoRuleList.image_avatar"
+            v-decorator="rules.image_avatar"
           ></st-image-upload>
+        </st-form-item>
+        <st-form-item label="姓名" required>
+          <a-input placeholder="支持中英文、数字、不超过15个字" max="15" v-decorator="rules.staff_name"/>
+        </st-form-item>
+        <st-form-item label="手机号" required>
+          <a-input-group compact>
+            <a-select style="width: 15%;" v-model="choosed_code_id">
+              <template v-for="item in codeList">
+                <a-select-option :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
+              </template>
+            </a-select>
+            <a-input style="width: 85%" v-decorator="rules.phone" placeholder="请输入手机号"/>
+          </a-input-group>
+        </st-form-item>
+        <st-form-item label="性别" required>
+          <a-select placeholder="请选择" v-decorator="rules.sex">
+            <template v-for="(item,key) in enums.sex.value">
+              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+            </template>
+          </a-select>
         </st-form-item>
       </a-col>
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工人脸">
           <st-image-upload
+            @change="faceChange"
             width="164px"
             height="164px"
+            :list="faceList"
             :sizeLimit="2"
             placeholder="上传人脸"
-            v-decorator="basicInfoRuleList.image_face"
+            v-decorator="rules.image_face"
           ></st-image-upload>
         </st-form-item>
-      </a-col>
-    </a-row>
-    <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="姓名" required>
-          <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="basicInfoRuleList.usernameRule"/>
-        </st-form-item>
-        <st-form-item label="手机号" required>
-          <a-input-group compact>
-            <a-select style="width: 15%;" v-decorator="basicInfoRuleList.country_codeRule">
-              <a-select-option
-
-                v-for="code in codeList.code_list"
-                 :value="code.code_id"
-                :key="code.code_id"
-              >+{{code.phone_code}}</a-select-option>
-            </a-select>
-            <a-input
-              style="width: 85%"
-              placeholder="请输入手机号"
-              v-decorator="basicInfoRuleList.phoneRule"
-            />
-          </a-input-group>
-        </st-form-item>
-        <st-form-item label="性别" required>
-          <a-select v-decorator="basicInfoRuleList.genderRule" placeholder="请选择">
-            <a-select-option
-                v-for="(item, index) in staffEnumslist.sex.value"
-                :key="index"
-                :value="+index"
-              >{{item}}</a-select-option>
-          </a-select>
-        </st-form-item>
-      </a-col>
-      <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="昵称" required>
-          <a-input placeholder="请输入昵称" v-decorator="basicInfoRuleList.nicknameRule"/>
+          <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="rules.nickname"/>
         </st-form-item>
-        <st-form-item label="工号">
-          <a-input placeholder="请输入员工工号" v-decorator="basicInfoRuleList.staff_numRule"></a-input>
+        <st-form-item label="邮箱" required>
+          <a-input placeholder="请输入邮箱" v-decorator="rules.mail"/>
         </st-form-item>
         <st-form-item label="证件" required>
           <a-input-group compact>
-            <a-select
-              style="width:20%"
-              v-decorator="basicInfoRuleList.id_typeRule"
-              @change="chooseType"
-            >
-            <a-select-option
-                v-for="(item, index) in staffEnumslist.id_type.value"
-                :key="index"
-                :value="+index"
-              >{{item}}</a-select-option>
+            <a-select style="width: 20%;" @change="onSelectIdtype" v-model="choosed_id_type">
+              <template v-for="(item,key) in enums.id_type.value">
+                <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+              </template>
             </a-select>
-            <a-input
-              style="width: 80%"
-              :placeholder="dateinit"
-              v-decorator="basicInfoRuleList.idcardRule"
-            />
+            <a-input style="width: 80%" placeholder="请输入身份证号码" v-decorator="rules.idnumber"/>
           </a-input-group>
         </st-form-item>
       </a-col>
@@ -93,69 +72,98 @@
     </a-row>
 
     <a-row :gutter="8">
-      <a-col :offset="1" :lg="22">
-        <st-form-item label="员工职能">
-          <a-checkbox-group v-decorator="basicInfoRuleList.identityRule" @change="watchChooesed">
-             <a-checkbox
-                v-for="(item, key) in staffEnumslist.identity.value"
-                :key="key"
-                :value="+key"
-              >{{item}}</a-checkbox>
+      <a-col :offset="1" :lg="23">
+        <st-form-item label="员工职能" required>
+          <a-checkbox-group v-decorator="rules.identity" @change="watchChooesed">
+            <a-checkbox
+              v-for="(item, key) in enums.identity.value"
+              :key="key"
+              :value="+key"
+            >{{item}}</a-checkbox>
           </a-checkbox-group>
         </st-form-item>
       </a-col>
-    </a-row>
-    <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :offset="1" :lg="10" :xs="22">
         <st-form-item label="部门">
-          <a-select v-decorator="basicInfoRuleList.departmentRule" placeholder="请选择">
-            <a-select-option :value="1">部门1</a-select-option>
-            <a-select-option :value="2">部门2</a-select-option>
+          <a-tree-select
+          showSearch
+          class="mg-r8"
+          style="width: 160px"
+          :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
+          placeholder="请选择部门"
+          allowClear
+          treeDefaultExpandAll
+          @change="onChange"
+        >
+          <a-tree-select-node
+            v-for="item in department"
+            :value="item.id"
+            :title="item.name"
+            :key="item.id"
+          >
+            <a-tree-select-node
+              v-for="item1 in item.children"
+              :value="item1.id"
+              :title="item1.name"
+              :key="item1.id"
+            >
+              <a-tree-select-node
+                v-for="item2 in item1.children"
+                :value="item2.id"
+                :title="item2.name"
+                :key="item2.id"
+              >
+                <a-tree-select-node
+                  v-for="item3 in item2.children"
+                  :value="item3.id"
+                  :title="item3.name"
+                  :key="item3.id"
+                >
+                  <a-tree-select-node
+                    v-for="item4 in item3.children"
+                    :value="item4.id"
+                    :title="item4.name"
+                    :key="item4.id"
+                  />>
+                </a-tree-select-node>
+              </a-tree-select-node>
+            </a-tree-select-node>
+          </a-tree-select-node>
+        </a-tree-select>
+        </st-form-item>
+        <st-form-item label="工作性质" required>
+          <a-select placeholder="请选择" v-decorator="rules.nature_work">
+            <template v-for="(item,key) in enums.nature_work.value">
+              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+            </template>
+          </a-select>
+        </st-form-item>
+        <st-form-item label="系统角色">
+          <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id">
+            <template v-for="item in roleList">
+              <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+            </template>
           </a-select>
         </st-form-item>
         <st-form-item label="教练等级" v-if="isShowLevel">
-          <a-select v-decorator="basicInfoRuleList.coach_levelRule" placeholder="请选择">
+          <a-select v-decorator="rules.coach_levelRule" placeholder="请选择">
             <a-select-option :value="1">等级1</a-select-option>
             <a-select-option :value="2">等级2</a-select-option>
           </a-select>
         </st-form-item>
+      </a-col>
+      <a-col :offset="1" :lg="10" :xs="22">
+        <st-form-item label="工号">
+          <a-input placeholder="请输入员工工号" v-decorator="rules.staff_num"></a-input>
+        </st-form-item>
         <st-form-item label="入职时间">
-          <a-date-picker v-decorator="basicInfoRuleList.entry_dateRule" style="width:100%"/>
+          <a-date-picker style="width:100%" v-decorator="rules.entry_date"/>
         </st-form-item>
         <st-form-item label="所属门店">
-          <a-select
+          <shop-select
             mode="multiple"
             placeholder="选择"
-            v-decorator="basicInfoRuleList.shopRule"
-          >
-            <a-select-option :value="1">门店1</a-select-option>
-            <a-select-option :value="2">门店2</a-select-option>
-          </a-select>
-        </st-form-item>
-      </a-col>
-      <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="职务">
-          <a-input placeholder="填写点什么吧" v-decorator="basicInfoRuleList.working_postRule"></a-input>
-        </st-form-item>
-        <st-form-item label="工作性质">
-          <a-select v-decorator="basicInfoRuleList.nature_workRule" placeholder="请选择">
-               <a-select-option
-                v-for="(item, index) in staffEnumslist.nature_work.value"
-                :key="index"
-                :value="+index"
-              >{{item}}</a-select-option>
-
-          </a-select>
-        </st-form-item>
-        <st-form-item label="系统角色">
-           <a-select
-            mode="multiple"
-            placeholder="请选择"
-            v-decorator="basicInfoRuleList.roleRule"
-          >
-             <a-select-option :value="1">角色1</a-select-option>
-            <a-select-option :value="2">角色2</a-select-option>
-          </a-select>
+            v-decorator="['shop_id']"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -167,12 +175,9 @@
     </a-row>
 
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="系统权限">
-          <a-checkbox
-            v-decorator="basicInfoRuleList.is_permissionRule"
-            @change="permissionChange"
-          >开通系统使用权限</a-checkbox>
+      <a-col :offset="1" :lg="10">
+        <st-form-item label="系统权限" required>
+          <a-checkbox @change="permissionChange" v-decorator="rules.is_permission">开通系统使用权限</a-checkbox>
         </st-form-item>
         <st-form-item label="登录账号">
           <a-input
@@ -211,116 +216,60 @@
           ></a-input>
         </st-form-item>
       </a-col>
-      <a-col :lg="10" :xs="22" :offset="2"></a-col>
     </a-row>
 
     <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
-          <st-button type="primary" ghost html-type="submit">保存</st-button>
-          <st-button class="mg-l16" @click="skiptoedit" type="primary">继续 填写</st-button>
+          <st-button class="mg-l16" @click="goNext" type="primary">保存，继续填写细信息</st-button>
         </st-form-item>
       </a-col>
     </a-row>
   </st-form>
 </template>
 <script>
+import { RuleConfig } from '@/constants/staff/rule'
+import { UserService } from '@/services/user.service'
+import { MessageService } from '@/services/message.service'
+import { AddService } from '../add.service'
+import ShopSelect from '@/views/biz-components/shop-select'
 export default {
   name: 'StaffDetailBasics',
+  serviceInject() {
+    return {
+      rules: RuleConfig,
+      userService: UserService,
+      addService: AddService,
+      message: MessageService
+    }
+  },
+  rxState() {
+    return {
+      codeList: this.addService.codeList$,
+      roleList: this.addService.roleList$,
+      department: this.addService.department$,
+      enums: this.userService.staffEnums$
+    }
+  },
   data() {
     return {
+      choosed_code_id: 37, // 手机号地域编号
+      choosed_id_type: 1, // 选中证件类型编号
       form: this.$form.createForm(this),
-      basicInfoRuleList: {
-        image_avatar: ['image_avatar', { initialValue: '' }],
-        image_face: ['image_face', { initialValue: '' }],
-        // 姓名
-        usernameRule: [
-          'staff_name',
-          { rules: [{ required: true, message: '请填写姓名', max: 10 }] }
-        ],
-        // 昵称
-        nicknameRule: [
-          'nickname',
-          { rules: [{ required: true, message: '请填写昵称' }] }
-        ],
-        // 国家编码
-        country_codeRule: ['country_code_id', { initialValue: 37 }],
-        // 手机号
-        phoneRule: [
-          'mobile',
-          {
-            rules: [
-              {
-                required: true,
-                message: '手机号格式错误',
-                pattern: /^1[34578]\d{9}$/
-              }
-            ]
-          }
-        ],
-        // 工号
-        staff_numRule: ['staff_num', {
-          initialValue: '',
-          rules: [{ required: true, message: '请填写工号' }]
-        }],
-        // 性别
-        genderRule: [
-          'sex',
-          {
-            rules: [{ required: true, message: '请选择你的性别' }]
-          }
-        ],
-        // 证件类型
-        id_typeRule: ['id_type', { initialValue: 1 }],
-        // 证件号码
-        idcardRule: [
-          'id_number',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请填写正确的身份证号',
-                pattern: /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/
-              }
-            ]
-          }
-        ],
-        // 身份
-        identityRule: ['identity'],
-        // 部门
-        departmentRule: ['department_id'],
-        // 教练等级ID
-        coach_levelRule: ['coach_level_id'],
-        // 入职时间
-        entry_dateRule: ['entry_date'],
-        // 所属门店 // 多选select
-        shopRule: ['shop_id', { initialValue: [],
-          rules: [
-            {
-              required: true,
-              message: '请选择门店'
-            }
-          ] }],
-        // 职务
-        working_postRule: ['working_post'],
-        // 工作性质
-        nature_workRule: ['nature_workRule'],
-        // 角色 // 多选select
-        roleRule: ['role_id', { initialValue: [] }],
-        // 系统权限
-        is_permissionRule: ['is_permission', { initialValue: 0 }]
-      },
-      // ?staffId=108&currentIndex=1&isShowCoach=1
+      fileList: [],
+      faceList: [],
+      isChoosePermission: false,
       isAdd: [],
       addflag: true,
       isShowLevel: false, // 是否展示教练等级
-      dateinit: '请输入身份证号码',
-      isChoosePermission: false
+      treeExpandedKeys: [],
+      value: undefined
     }
   },
   watch: {
     isAdd(a) {
       // 监听是否选中了教练
+      console.log('watch new', a)
       let flag = a.some(val => {
         return val === 4 || val === 5
       })
@@ -336,23 +285,13 @@ export default {
       }
     }
   },
-  props: {
-    codeList: Object,
-    staffEnumslist: Object
+  components: {
+    ShopSelect
   },
   methods: {
-    // 身份证 护照 选择事件
-    chooseType(e) {
-      let { tip1, tip2 } = {
-        tip1: '请输入身份证号码',
-        tip2: '请输入护照号码'
-      }
-      e === 1 ? (this.dateinit = tip1) : (this.dateinit = tip2)
-    },
-    // 员工职能 选择事件
     watchChooesed(e) {
       this.isAdd = e
-      console.log(this.isAdd)
+      // console.log(this.isAdd)
     },
     permissionChange(e) {
       this.isChoosePermission = e.target.checked
@@ -362,54 +301,60 @@ export default {
         this.form.validateFields(['repeat_password'], { force: true })
       })
     },
-    skiptoedit() {
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values)
-          this.$emit('skiptoedit', this.form.getFieldsValue())
+    onChange(value) {
+      console.log('选择部门', value)
+      this.value = value
+    },
+    onSelectIdtype(e) {
+      console.log('证件选择', e)
+    },
+    imageUploadChange(data) {
+      this.form.setFieldsValue({
+        image_avatar: {
+          image_url: data.image_url ? data.image_url : ''
         }
       })
     },
-    save(e) {
-      // form submit
+    faceChange(data) {
+      this.form.setFieldsValue({
+        image_face: {
+          image_url: data.image_url ? data.image_url : ''
+        }
+      })
+    },
+    // 继续填写跳转到编辑
+    goNext(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          //  console.log('Received values of form: ', values)
-          values.entry_date = values.entry_date
-            ? values.entry_date.format('YYYY-MM-DD')
-            : ''
-          // console.log('Received values of form: ', values)
-          let testData = {
-            staff_name: '张三',
-            nickname: '里斯',
-            country_code_id: 37,
-            mobile: '13012345678',
-            mail: 'styn@sin.com',
-            sex: 1,
-            staff_num: '007',
-            id_type: 1,
-            id_number: 152716192809001122,
-            department_id: 1,
-            image_avatar: 'image_avatar',
-            image_face: 'image_avatar',
-            working_post: '董事长',
-            identity: [1, 2, 3],
-            coach_level_id: 1,
-            nature_work: 1,
-            entry_date: '1901-01-01',
-            role_id: [1, 2, 3],
-            shop_id: [1, 2, 3],
-            is_permission: 1,
-            account: '123',
-            password: '123',
-            repeat_password: '123'
-          }
-          this.$emit('basicInfoSave', values)
+          console.log('Received values of form: ', values)
+          this.submit(values, 1)
+        }
+      })
+    },
+    /**
+     * saveOrgoNext 0 保存 1 跳转到编辑
+     */
+    submit(data, saveOrgoNext) {
+      // this.isChoosePermission ? (data.is_permission = 1) : (data.is_permission = 0)
+      data.is_permission = +this.isChoosePermission
+      data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
+      data.country_code_id = this.choosed_code_id
+      data.id_type = this.choosed_id_type
+      data.image_avatar && (data.image_avatar = data.image_avatar[0])
+      data.image_face && (data.image_face = data.image_face[0])
+      this.addService.addStaff(data).subscribe(res => {
+        if (saveOrgoNext === 1) {
+          this.$emit('skiptoedit', {
+            id: 1,
+            isShowLevel: this.isShowLevel
+          })
+        } else {
+          this.message.success({ content: '添加员工成功' })
+          this.$router.go(-1)
         }
       })
     }
-  },
-  mounted() {}
+  }
 }
 </script>

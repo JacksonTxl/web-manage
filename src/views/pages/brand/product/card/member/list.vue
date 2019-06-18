@@ -1,43 +1,34 @@
 <template>
   <st-panel
-    :tabs="[
-          { label: '会员卡项', route: { name: 'brand-product-card-member-list-member-list' } },
-          { label: '门店上架卡项', route: { name: 'brand-product-card-member-list-shop-sale-list' } }
-        ]"
-    @change="handleChange"
-  >
+  app
+  :tabs="[
+    { label: '全部会员卡项', route: { name: 'brand-product-card-member-list-all' } },
+    { label: '门店上架卡项', route: { name: 'brand-product-card-member-list-shelves' } }
+  ]">
     <div slot="actions">
-      <a-input-search placeholder="会员卡名称" v-model="cardName" @search="onSearch" maxlength="50"></a-input-search>
+      <a-input-search v-model="query.card_name" @search="onSearchCardName" placeholder="请输入会员卡名称查找" maxlength="50" />
     </div>
     <router-view></router-view>
   </st-panel>
 </template>
 
 <script>
-import { ListService } from './list.service'
+import { RouteService } from '@/services/route.service'
 export default {
+  name: 'PageShopProductMember',
   serviceInject() {
     return {
-      listService: ListService
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      tabs: this.listService.tabs$
-    }
-  },
-  data() {
-    return {
-      cardName: ''
+      query: this.routeService.query$
     }
   },
   methods: {
-    onSearch(value) {
-      this.cardName = value
-      this.$router.push({ query: { cardName: value } })
-    },
-    handleChange(data) {
-      this.cardName = ''
+    onSearchCardName() {
+      this.$router.push({ query: { ...this.query, card_name: this.query.card_name } })
     }
   }
 }

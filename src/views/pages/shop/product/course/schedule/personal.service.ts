@@ -9,7 +9,7 @@ export class PersonalService implements RouteGuard {
     private reserveService: PersonalScheduleReserveService) { }
 
   initOptions() {
-    return forkJoin(this.commonService.getCourseList(), this.commonService.getCourseCoachList())
+    return forkJoin(this.commonService.getCourseList(), this.commonService.getCourseCoachList(), this.commonService.getCoachListInBatch())
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute, next: any) {
     this.reserveService.getList(to.query).subscribe(() => {
