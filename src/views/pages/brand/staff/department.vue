@@ -38,7 +38,8 @@ export default {
   rxState() {
     return {
       staffList: this.departmentService.staffList$,
-      loading: this.departmentService.loading$
+      loading: this.departmentService.loading$,
+      auth: this.departmentService.auth$
     }
   },
   components: {
