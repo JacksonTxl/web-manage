@@ -35,6 +35,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
 import { PersonalTeamScheduleScheduleService } from './personal-team.service#/schedule.service'
+import { RouteService } from '@/services/route.service'
 
 export default {
   name: 'Schedule',
@@ -43,12 +44,14 @@ export default {
   },
   serviceInject() {
     return {
-      scheduleService: PersonalTeamScheduleScheduleService
+      scheduleService: PersonalTeamScheduleScheduleService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      courseList: this.scheduleService.courseList$
+      courseList: this.scheduleService.courseList$,
+      query: this.routeService.query$
     }
   },
   data() {
@@ -247,8 +250,15 @@ export default {
               start: arg.date,
               allDay: arg.allDay
             })
+            this.onScheduleChange()
           }
         }
+      })
+    },
+    onScheduleChange() {
+      this.$router.push({
+        query: this.query,
+        force: true
       })
     }
   }
