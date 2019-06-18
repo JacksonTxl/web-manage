@@ -29,6 +29,7 @@
               format="YYYY-MM-DD HH:mm"
               placeholder="请选择放假开始时间"
               style="width: 240px"
+              :disabled="new Date() >= new Date(startTime)"
             />
           </st-form-item>
           <st-form-item label="放假结束时间" required class="mg-t16">
