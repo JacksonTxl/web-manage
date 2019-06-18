@@ -15,42 +15,38 @@
         <a-col :span="11" class="mgb-36">
            <st-info>
             <st-info-item label="下单人">{{info.operator_name}}</st-info-item>
-            <st-info-item class="mg-b0" label="销售">{{info.sale_name}}</st-info-item>
+            <st-info-item class="mg-b0" label="销售">{{info.staff_name}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="13" class="mgb-36">
           <st-info>
-            <st-info-item label="订单类型">{{info.order_type}}</st-info-item>
-            <st-info-item class="mg-b0" label="订单来源">{{info.member_name}} {{info.mobile}}</st-info-item>
+            <st-info-item label="订单类型" v-if="info.order_type">{{info.order_type | enumFilter('sold.order_type')}}</st-info-item>
+            <st-info-item class="mg-b0" label="订单来源">{{info.order_source}} {{info.mobile}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11" class="mgb-36">
            <st-info>
-            <st-info-item label="场馆">{{info.card_name}}</st-info-item>
-            <st-info-item class="mg-b0" label="用户">{{info.gift_amount}}</st-info-item>
+            <st-info-item label="场馆">{{info.shop_name}}</st-info-item>
+            <st-info-item class="mg-b0" label="用户">{{info.member_name}}</st-info-item>
           </st-info>
         </a-col>
-           <a-col :span="11" class="mgb-36">
+        <a-col :span="13" class="mgb-36">
            <st-info>
-            <st-info-item label="购买">{{info.card_name}}</st-info-item>
-            <st-info-item class="mg-b0" label="赠送">{{info.gift_amount}}</st-info-item>
+            <st-info-item label="购买">{{info.product_name}}</st-info-item>
+            <st-info-item label="订单总额">{{info.total_price}}元</st-info-item>
+            <st-info-item  label="实收金额">{{info.pay_price}}元</st-info-item>
+          </st-info>
+        </a-col>
+
+        <a-col :span="11" class="mgb-36">
+          <st-info>
+            <st-info-item  label="赠送">{{info.gift_amount}}</st-info-item>
+            <st-info-item label="应收金额">{{info.should_price}}元</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="24" class="mgb-36">
           <st-info>
-            <st-info-item class="mg-b0" label="备注">{{info.description || '无'}}</st-info-item>
-          </st-info>
-        </a-col>
-        <a-col :span="13" class="mgb-24">
-          <st-info>
-            <st-info-item label="订单总额">{{info.total_price}}元</st-info-item>
-            <!-- <st-info-item class="mg-b0" label="订单类型">{{info.order_status | enumFilter('sold.order_status')}}</st-info-item> -->
-          </st-info>
-        </a-col>
-        <a-col :span="11" class="mgb-24">
-           <st-info>
-            <st-info-item label="应收金额">{{info.should_price}}元</st-info-item>
-            <st-info-item class="mg-b0" label="实收金额">{{info.pay_price}}元</st-info-item>
+            <st-info-item  label="备注">{{info.description || ''}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -116,23 +112,18 @@ export default {
       loading: this.refundService.loading$
     }
   },
-  props: ['id', 'type'],
+  props: ['id'],
   data() {
     return {
       show: false,
-      refundReason: 1,
-      frozenPayType: 2,
       description: '',
+      frozenPayType: 2,
+      refundReason: 1,
       form: this.$form.createForm(this)
     }
   },
   computed: {
-    isDeposite() {
-      return this.type === 'deposit'
-    },
-    isMember() {
-      return this.type === 'member'
-    }
+
   },
   created() {
     this.refundService.getDetail(this.id).subscribe()
@@ -143,6 +134,9 @@ export default {
       this.form.validateFields((error, values) => {
         if (!error) {
           this.refundService.refund({
+            sold_id: this.id,
+            sub_order_id: this.info.sub_order_id,
+            product_type: 10,
             refund_price: +values.refundPrice,
             refund_reason: +this.refundReason,
             refund_channel: +this.frozenPayType,

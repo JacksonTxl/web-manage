@@ -9,6 +9,15 @@ export interface LeaseParams {
   page: number;
 }
 
+export interface RefundParams {
+  sold_id: number;
+  product_type: number;
+  refund_price: number;
+  refund_reason: string;
+  refund_channel: number;
+  description: string;
+}
+
 export class CabinetApi extends Api {
   /**
    * 储物柜联动列表
@@ -37,5 +46,12 @@ export class CabinetApi extends Api {
       return this.http.put(`/v1/sold/cabinet/${id}`, { params })
     }
     return this.http.put(`/v1/sold/cabinet/${type}/${id}`, { params })
+  }
+  /**
+   * 租赁退款接口
+   * @param params
+   */
+  refund(params: RefundParams) {
+    return this.http.put(`/v1/order/transaction/refund`, { params })
   }
 }
