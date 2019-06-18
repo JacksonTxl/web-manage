@@ -1,0 +1,100 @@
+.page-shop-reception {
+  &__form-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &-item {
+      display: flex;
+      flex-direction: column;
+      width: 229px;
+      height: 136px;
+      box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
+      .bg(@white);
+    }
+    &-detail {
+      display: flex;
+      flex: 1;
+
+      padding: 12px 20px;
+    }
+    &-number {
+      flex: 1;
+      >p:nth-of-type(1){
+        margin: 0 0 11px;
+        .lh(20px);
+        .fz(14px);
+        .c(@text-light);
+      }
+      >p:nth-of-type(2){
+        margin: 0;
+        .lh(37px);
+        .c(@title);
+        .fz(32px);
+        font-weight: bold;
+      }
+    }
+    &-chart {
+      width: 80px;
+      height: 60px;
+    }
+    &-button {
+      padding: 10px 20px;
+      .bg(@bg-gray);
+      .c(@link-color);
+      cursor: pointer;
+    }
+  }
+  &__operation-list {
+    display: flex;
+    padding: 32px 0;
+    align-items: center;
+    justify-content: space-evenly;
+    .bg(@white);
+  }
+  &__operation-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    >p:nth-of-type(1){
+      display: flex;
+      width: 64px;
+      height: 64px;
+      margin-bottom: 12px;
+      align-items: center;
+      justify-content: center;
+      background:linear-gradient(90deg,rgba(63,102,246,1) 0%,rgba(63,170,255,1) 100%);
+      border-radius: 50%;
+      .c(@white);
+      font-size: 26px;
+    }
+    >p:nth-of-type(2){
+      margin-bottom: 0;
+      .fz(14px);
+      .c(@title);
+    }
+  }
+  &__opertaion-line {
+    width: 1px;
+    height: 48px;
+    .bg(@divider);
+  }
+  &__member-todoist{
+    display: flex;
+    justify-content: space-between;
+  }
+  &__member {
+    width: 496px;
+    height: 517px;
+    box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
+    .bg(@white);
+    &-search {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      .search-select {
+        width: 376px;
+      }
+    }
+  }
+}

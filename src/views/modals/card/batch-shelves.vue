@@ -8,23 +8,25 @@
     <div :class="shelves('info')" class="mg-b24">
       <img
       :class="shelves('card_bg')"
-      v-if="info.card_bg"
-      :src="info.card_bg.img_url | imgFilter({w:142,h:80})"
+      v-if="info.bg_image"
+      :src="info.bg_image | imgFilter({w:142,h:80})"
       width="142"
       height="80"
       alt="卡背景">
       <div :class="shelves('detail')">
         <p :class="shelves('detail-title')">
-          <st-tag :type="cardTypeTag[info.card_type.id]" style="margin-right:8px;"/>
+          <st-tag :type="cardTypeTag[info.card_type]" style="margin-right:8px;"/>
           {{info.card_name}}
         </p>
         <p :class="shelves('detail-cards')">
-            本次共上架{{info.shelf_shop_num}}家门店，<span @click="onCardInfo">查看明细</span>
+            本次共上架{{info.sell_shops?info.sell_shops.length:0}}家门店，<span @click="onCardInfo">查看明细</span>
         </p>
-        <p :class="shelves('detail-saletype')" v-if="info.sell_type">{{info.sell_type.name}}</p>
+        <p :class="shelves('detail-saletype')" v-if="info.sell_type">
+          <span v-for="(item,index) in info.sell_type" :key="index">{{item}}</span>
+        </p>
       </div>
     </div>
-    <st-form :form="form" labelWidth="67px" :class="shelves('form')">
+    <!-- <st-form :form="form" labelWidth="67px" :class="shelves('form')">
       <div :class="shelves('price')" class="mg-b18" v-if="info.price_setting.id===1">
         <st-form-table>
           <colgroup>
@@ -136,7 +138,7 @@
       <div :class="shelves('hide-more')">
         <span>收起</span>
       </div>
-    </st-form>
+    </st-form> -->
   </section>
   <template slot="footer">
     <div :class="shelves('footer')">

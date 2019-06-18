@@ -9,13 +9,13 @@ export class EditService implements RouteGuard {
   loading$ = new State({})
   constructor(private cardsApi: CardsApi) {}
   getCardInfo(id:string) {
-    return this.cardsApi.getCardInfoBack(id).pipe(tap((res:any) => {
+    return this.cardsApi.getCardInfoBack(id, 'shop').pipe(tap((res:any) => {
       this.cardInfo$.commit(() => res.info)
     }))
   }
   @Effect()
   editCard(data: CardsInput) {
-    return this.cardsApi.editCard(data)
+    return this.cardsApi.editCard(data, 'shop')
   }
   beforeRouteEnter(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
     this.getCardInfo(to.meta.query.id).subscribe(() => {

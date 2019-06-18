@@ -33,20 +33,20 @@ export class ShopSaleListService extends Store<ShopSaleListState> {
     })
   }
   getListInfo(paramsObj: any) {
-    return this.cardsApi.getCardsListA(paramsObj).pipe(
+    return this.cardsApi.getCardList(paramsObj, 'brand').pipe(
       tap(res => {
         res = this.authService.filter(res)
       })
     )
   }
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo({ card_name: to.query.cardName }).subscribe(res => {
+    this.getListInfo({ card_name: to.query.cardName }).subscribe((res:any) => {
       this.SET_CARDS_LIST_INFO(res)
       next()
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo({}).subscribe(res => {
+    this.getListInfo({}).subscribe((res:any) => {
       this.SET_CARDS_LIST_INFO(res)
       next()
     })
