@@ -72,4 +72,14 @@ export class AppConfig {
    * map location key
    */
   QQ_LOCATION_KEY = 'OMWBZ-VTT3X-ZS34Z-7GDQ6-S6QTJ-ZVBWS'
+  /**
+   * 日期时间格式
+   */
+  get DATE_FORMAT() {
+    return {
+      date: 'YYYY-MM-DD',
+      datetime: 'YYYY-MM-DD HH:mm',
+      time: 'HH:mm'
+    }
+  }
 }

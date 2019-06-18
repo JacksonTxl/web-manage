@@ -39,7 +39,8 @@ export default {
     return {
       staffList: this.departmentService.staffList$,
       loading: this.departmentService.loading$,
-      page: this.departmentService.page$
+      page: this.departmentService.page$,
+      auth: this.departmentService.auth$
     }
   },
   components: {

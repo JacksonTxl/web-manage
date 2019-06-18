@@ -1,8 +1,8 @@
 <template>
   <div>
-    <st-button class="mg-r8" @click="onBatchImport">批量加入部门</st-button>
-    <st-button class="mg-r8" @click="onClickAddStaff">添加员工</st-button>
-    <st-button @click="onImportStaff">导入员工</st-button>
+    <st-button class="mg-r8" v-if="auth.join" @click="onBatchImport">批量加入部门</st-button>
+    <st-button class="mg-r8" v-if="auth.add" @click="onClickAddStaff">添加员工</st-button>
+    <st-button v-if="auth.import" @click="onImportStaff">导入员工</st-button>
   </div>
 </template>
 

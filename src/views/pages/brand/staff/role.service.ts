@@ -5,6 +5,8 @@ import { Store } from '@/services/store'
 import { StaffApi } from '../../../../api/v1/staff'
 import { GetInitInfoPut, RoleInfo, RoleApi } from '@/api/v1/staff/role'
 import { forkJoin } from 'rxjs'
+import { AuthService } from '@/services/auth.service'
+
 interface SetState {
   info: object,
   roleList: any[],
@@ -15,15 +17,22 @@ export class RoleService extends Store<SetState> {
   state$: State<SetState>
   info$: Computed<Object>
   roleList$: Computed<Object>
-  constructor(private roleApi: RoleApi) {
+  auth$: Computed<object>
+  constructor(private roleApi: RoleApi, private authService: AuthService) {
     super()
     this.state$ = new State({
       info: {},
       roleList: [],
-      initFunRoleList: []
+      initFunRoleList: [],
+      auth: {
+        add: this.authService.can('brand:auth:role|add'),
+        del: this.authService.can('brand:auth:role|del'),
+        edit: this.authService.can('brand:auth:role|edit')
+      }
     })
     this.info$ = new Computed(this.state$.pipe(pluck('info')))
     this.roleList$ = new Computed(this.state$.pipe(pluck('roleList')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   protected SET_ROLE_INFO(info: GetInitInfoPut) {
     this.state$.commit(state => {
