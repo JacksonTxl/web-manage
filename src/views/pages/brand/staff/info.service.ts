@@ -8,6 +8,7 @@ import { AuthService } from '@/services/auth.service'
 
 interface SetState{
   info: object
+  auth: object
 }
 @Injectable()
 export class InfoService extends Store<SetState> {
@@ -17,17 +18,7 @@ export class InfoService extends Store<SetState> {
   constructor(private staffApi: StaffApi, private authService: AuthService) {
     super()
     this.state$ = new State({
-      info: {},
-      auth: {
-        edit: this.authService.can('brand_shop:staff:staff|edit'),
-        bindCard: this.authService.can('brand_shop:staff:staff|bind_card'),
-        rebindCard: this.authService.can('brand_shop:staff:staff|rebind_card'),
-        save: this.authService.can('brand_shop:staff:account|save'),
-        position: this.authService.can('brand_shop:staff:staff|position'),
-        salary: this.authService.can('brand_shop:staff:staff|salary'),
-        leave: this.authService.can('brand_shop:staff:staff|leave'),
-        reinstate: this.authService.can('brand_shop:staff:staff|reinstate')
-      }
+      info: {}
     })
     this.info$ = new Computed(this.state$.pipe(pluck('info')))
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
@@ -37,11 +28,17 @@ export class InfoService extends Store<SetState> {
     return this.staffApi.getStaffInfoCommonHeader(id).pipe(tap(res => {
       res = this.authService.filter(res, 'auth')
       this.SET_STAFF_BRAND(res.common_info)
+      this.SET_STAFF_AUTH(res.auth)
     }))
   }
   protected SET_STAFF_BRAND(data: SetState) {
     this.state$.commit(state => {
       state.info = data
+    })
+  }
+  protected SET_STAFF_AUTH(data: SetState) {
+    this.state$.commit(state => {
+      state.auth = data
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {

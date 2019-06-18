@@ -3,6 +3,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap, switchMap } from 'rxjs/operators'
 import { Store } from '@/services/store'
+import { AuthService } from '@/services/auth.service'
 
 import {
   StaffApi,
@@ -21,16 +22,24 @@ interface GetOptionsInput {
 @Injectable()
 export class DepartmentService extends Store<SetState> {
   state$: State<SetState>
+  auth$: Computed<any>
   departmentList$: Computed<object[]>
-  constructor(protected staffApi: StaffApi, private msg: MessageService) {
+  constructor(protected staffApi: StaffApi, private msg: MessageService, private authService: AuthService) {
     super()
     this.state$ = new State({
-      departmentList: []
+      departmentList: [],
+      auth: {
+        departmentAdd: this.authService.can('brand:auth:department|add'),
+        departmentDel: this.authService.can('brand:auth:department|del'),
+        departmentEdit: this.authService.can('brand:auth:department|edit')
+      }
     })
     this.departmentList$ = new Computed(this.state$.pipe(pluck('departmentList')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   getDepartmentList() {
     return this.staffApi.getDepartmentList().pipe(tap(res => {
+      res = this.authService.filter(res)
       this.state$.commit(state => {
         state.departmentList = res.department
       })
