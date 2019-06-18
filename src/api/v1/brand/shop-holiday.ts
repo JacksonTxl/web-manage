@@ -6,7 +6,10 @@ export class ShopHolidayApi extends Api {
     return this.http.post(url, { params })
   }
   update(params: AddInput) {
-    return this.http.put(url, { params })
+    return this.http.put(`${url}/${params.shop_id}`, { params })
+  }
+  del(id: number) {
+    return this.http.delete(`${url}/${id}`)
   }
 }
 export interface AddInput {

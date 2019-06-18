@@ -15,7 +15,7 @@
           </st-form-item>
           <st-form-item labelFix class="mg-b0">
             <st-button type="primary" @click="onEdit">修改放假时间</st-button>
-            <st-button class="mg-l8">取消放假设置</st-button>
+            <st-button class="mg-l8" @click="onDel">取消放假设置</st-button>
           </st-form-item>
         </div>
         <div v-show="isEdit">
@@ -135,6 +135,9 @@ export default {
     onEdit() {
       this.isEdit = true
     },
+    onDel() {
+      this.holidayService.del(this.shopId).subscribe(this.onDelSuccess)
+    },
     onSubmit(e) {
       e.preventDefault()
       this.form.validateFields().then(() => {
@@ -142,15 +145,18 @@ export default {
         this.holidayService.update(data).subscribe(this.onSubmitSuccess)
       })
     },
-    onSubmitSuccess() {
+    onSuccess(msg = '') {
       this.messageService.success({
-        content: '更改成功'
+        content: msg
       })
       this.$emit('change')
       this.show = false
     },
-    onCancel() {
-      this.show = false
+    onSubmitSuccess() {
+      this.onSuccess('修改成功')
+    },
+    onDelSuccess() {
+      this.onSuccess('删除成功')
     }
   }
 }
