@@ -33,7 +33,7 @@ export class ShopSaleListService extends Store<ShopSaleListState> {
     })
   }
   getListInfo(paramsObj: any) {
-    return this.cardsApi.getCardsListA(paramsObj).pipe(
+    return this.cardsApi.getCardList(paramsObj, 'brand').pipe(
       tap(res => {
         res = this.authService.filter(res)
       })
