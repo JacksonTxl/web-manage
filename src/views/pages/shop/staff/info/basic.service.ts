@@ -3,6 +3,7 @@ import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { StaffApi } from '@/api/v1/staff'
+import { ShopStaffApi } from '@/api/v1/staff/staff'
 
 interface BasicState {
     basicInfo: Object
@@ -11,7 +12,7 @@ interface BasicState {
 export class BasicService extends Store<BasicState> {
     state$: State<BasicState>
     basicInfo$: Computed<Object>
-    constructor(private staffApi: StaffApi) {
+    constructor(private staffApi: ShopStaffApi) {
       super()
       this.state$ = new State({
         basicInfo: {}

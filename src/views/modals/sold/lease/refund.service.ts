@@ -1,6 +1,6 @@
 import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state/src'
-import { CabinetApi } from '@/api/v1/sold/cabinet'
+import { CabinetApi, RefundParams } from '@/api/v1/sold/cabinet'
 import { tap } from 'rxjs/operators'
 
 @Injectable()
@@ -12,5 +12,9 @@ export class RefundService {
     return this.cabinetApi.getDetail(id, 'refund').pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
+  }
+  @Effect()
+  refund(params: RefundParams) {
+    return this.cabinetApi.refund(params)
   }
 }

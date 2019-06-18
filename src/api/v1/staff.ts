@@ -433,15 +433,15 @@ export class StaffApi extends Api {
   }
   // 员工详情上课记录
   getStaffCourseList(id: string, query: GetStaffCourseListInput) {
-    return this.http.get(`/v1/staff/brand/reserve/${id}`, { query, mock: {} })
+    return this.http.get(`/v1/staff/brand/courses-record/${id}`, { query })
   }
   // 员工详情跟进记录
-  getStaffFollow(id: string, query: GetStaffFollowInput) {
-    return this.http.get(`/v1/staff/brand/follow/${id}`, { query })
+  getStaffFollow(query: GetStaffFollowInput) {
+    return this.http.get(`/v1/staff/brand/follow/${query.id}`, { query })
   }
   // 员工详情售卖订单
   getStaffSold(id: string, query: GetStaffSoldInput) {
-    return this.http.get(`/v1/staff/brand/order/${id}`, { query, mock: {} })
+    return this.http.get(`/v1/staff/brand/order/${id}`, { query })
   }
   // 员工详情服务课程
   getStaffServiceCourses(id: string, query: GetStaffServiceCoursesInput) {
@@ -535,6 +535,7 @@ export interface GetStaffSoldInput{
   size? : number;
 }
 export interface GetStaffFollowInput{
+  id?: string | number;
   /**
    * 搜索开始时间
    */

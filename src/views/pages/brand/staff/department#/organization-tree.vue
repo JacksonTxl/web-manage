@@ -1,6 +1,6 @@
 <template>
 <div  class="organization-tree">
-  <st-organ-tree :treeData="treeData" @click-item="onCLickItem" @delete="deleteDepartment" @add="addDepartment" @edit="editDepartment" @node-click="getDepartment"></st-organ-tree>
+  <st-organ-tree :treeData="treeData" @click-item="onCLickItem" @node-click="getDepartment"></st-organ-tree>
 </div>
 
 </template>
@@ -16,6 +16,9 @@ export default {
       departmentService: DepartmentService,
       routeService: RouteService
     }
+  },
+  components: {
+    StOrganTree
   },
   rxState() {
     return {
