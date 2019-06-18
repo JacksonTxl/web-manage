@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section v-if="list.length">
+    <section v-if="list && list.length">
       <div v-if="isOperationInBatch">
         <a-checkbox
           :indeterminate="indeterminate"
@@ -30,6 +30,9 @@
                     props: {
                       id: item.id,
                       areaName
+                    },
+                    on: {
+                      change
                     }
                   }"
                 >
@@ -77,6 +80,13 @@ export default {
       default: ''
     }
   },
+  watch: {
+    isOperationInBatch() {
+      this.checkedList = []
+      this.indeterminate = false
+      this.checkAll = false
+    }
+  },
   computed: {
     list() {
       return this.resData.list
@@ -104,7 +114,7 @@ export default {
       this.checkedList = checkedList
       this.indeterminate = !!checkedList.length && (checkedList.length < plainOptions.length)
       this.checkAll = checkedList.length === plainOptions.length
-      this.$emit('change', checkedList)
+      this.$emit('selectChange', checkedList)
     },
     onCheckAllChange(e) {
       Object.assign(this, {
@@ -112,10 +122,13 @@ export default {
         indeterminate: false,
         checkAll: e.target.checked
       })
-      this.$emit('change', this.checkedList)
+      this.$emit('selectChange', this.checkedList)
     },
     mouseEventHander(type, id) {
       this.editFlag = `${type}-${id}`
+    },
+    change() {
+      this.$emit('change')
     }
   }
 }

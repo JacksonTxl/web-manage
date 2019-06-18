@@ -3,7 +3,7 @@
     <div class="page-brand-basic-card-body">
       <div class="page-preview">实时预览{{member_card}}</div>
       <div class="page-content">
-        <st-form :form="form" labelWidth="116px">
+        <st-form :form="form" labelWidth="117px">
           <a-row :gutter="8" class="page-content-card-line__row">
             <a-col :lg="16">
               <st-form-item class="page-content-card-line" label="期限卡名称" required>
@@ -480,7 +480,7 @@ export default {
           this.cardData.price_gradient = cloneDeep(p)
           // 时间
           this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
-          this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')} 00:00:00`
+          this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
           this.addService.addCard(this.cardData).subscribe(res => {
             console.log(res)
           })
