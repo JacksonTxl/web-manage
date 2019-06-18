@@ -30,6 +30,7 @@ export default {
     treeData() {
       return {
         name: '三体云动健身（600）',
+        id: 0,
         children: this.departmentList
       }
     }

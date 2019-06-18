@@ -83,6 +83,12 @@ export class ShopStaffApi extends Api {
   bindCard(id: string) {
     return this.http.put(`/v1/staff/bind/physical/${id}`)
   }
+  getBankInfo(params: string) {
+    return this.http.get(`/v1/staff/brand/bank/${params}`)
+  }
+  putStaffBindBank(params: PutStaffBindBankInput) {
+    return this.http.put(`/v1/staff/bind/bank/${params.id}`, { params })
+  }
 
   /**
    * 工资账户设置
@@ -167,6 +173,20 @@ export interface GetStaffServiceCoursesInput {
 
   page?: number;
   size?: number;
+}
+export interface PutStaffBrandQuitInput {
+  id: string | number
+  quit_time: string
+}
+export interface PutStaffBindBankInput {
+  id?: string | number
+  account_name: string
+  card_number: string
+  bank_name: string
+}
+export interface PutStaffBrandRestartInput {
+  id: string | number
+  restart_time: string
 }
 export interface GetStaffCourseListInput {
   id?: string
