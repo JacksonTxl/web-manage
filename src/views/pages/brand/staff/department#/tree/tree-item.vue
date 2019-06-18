@@ -74,6 +74,9 @@ export default {
       this.editValue = this.item.name
       this.$emit('edit-item', this.item)
     },
+    cancelEdit() {
+
+    },
     addTreeNode() {
       this.$emit('add-item', this.item)
     },
@@ -83,12 +86,12 @@ export default {
       }
     },
     addDepartment(item) {
-      this.departmentService.addDepartment(item).subscribe(() => {
+      this.departmentService.addDepartment({ parent_id: this.item.id, department_name: this.addValue }).subscribe(() => {
         console.log(this.departmentList)
       })
     },
     editDepartment(item) {
-      this.departmentService.updateDepartment(item).subscribe(() => {
+      this.departmentService.updateDepartment({ id: this.item.id, department_name: this.editValue }).subscribe(() => {
         console.log(this.departmentList)
       })
     },
@@ -98,7 +101,7 @@ export default {
         content: '删除部门后，该部门下的员工会自动归属父级部门，且无法恢复，确认删除？',
         onOk: () => {
           return new Promise((resolve, reject) => {
-            return this.departmentService.delDepartment({ id: item.id }).subscribe(() => {
+            return this.departmentService.delDepartment({ id: this.item.id }).subscribe(() => {
               setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
             })
           }).catch(() => console.log('Oops errors!'))
