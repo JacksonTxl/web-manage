@@ -32,10 +32,34 @@
           <st-button v-if="info.has_card === 1" class="mg-r8">重绑实体卡</st-button>
           <a-dropdown>
             <a-menu slot="overlay" @click="handleMenuClick">
-              <a-menu-item key="1">管理登录账号</a-menu-item>
-              <a-menu-item key="2">职位变更</a-menu-item>
-              <a-menu-item key="3">设置薪资账户</a-menu-item>
-              <a-menu-item key="4">离职</a-menu-item>
+              <a-menu-item v-if="info.work_status.id === 1">
+                <modal-link tag="a" :to="{ name: 'shop-staff-bind-card', props: {staff: info} }"> {{info.has_card ? '重绑定实体卡':'绑定实体卡'}}</modal-link>
+              </a-menu-item>
+
+              <a-menu-item>
+                <modal-link
+                  tag="a"
+                  :to="{ name: 'shop-staff-re-password', props: {staff: info} }"
+                >管理登录账号</modal-link>
+              </a-menu-item>
+              <a-menu-item>
+                <modal-link
+                  tag="a"
+                  :to="{ name: 'shop-staff-update-staff-position', props: {staff: info}} "
+                >职位变更</modal-link>
+              </a-menu-item>
+              <a-menu-item>
+                <modal-link
+                  tag="a"
+                  :to="{ name: 'shop-staff-salary-account-setting', props: {staff: info} }"
+                >设置薪资账户</modal-link>
+              </a-menu-item>
+              <a-menu-item>
+                <modal-link
+                  tag="a"
+                  :to="{ name: 'shop-staff-leave-current-shop', props: {staff: info}}"
+                >解除门店关系</modal-link>
+              </a-menu-item>
             </a-menu>
             <a-button>
               更多操作

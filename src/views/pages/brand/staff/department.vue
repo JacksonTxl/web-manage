@@ -15,7 +15,7 @@
       </header>
       <main class="staff-rg__table">
         <div  style="width:100%">
-          <staff-table :loading="loading.getStaffList" @edit-staff="onEditStaff" :staffList="staffList"></staff-table>
+          <staff-table :page="page" :loading="loading.getStaffList" @edit-staff="onEditStaff" :staffList="staffList"></staff-table>
         </div>
       </main>
     </section>
@@ -38,7 +38,8 @@ export default {
   rxState() {
     return {
       staffList: this.departmentService.staffList$,
-      loading: this.departmentService.loading$
+      loading: this.departmentService.loading$,
+      page: this.departmentService.page$
     }
   },
   components: {

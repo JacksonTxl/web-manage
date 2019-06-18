@@ -8,25 +8,29 @@ import { CommonService } from './department.service#/common.service'
 import { UserService } from '@/services/user.service'
 
 interface SetState {
-  staffList: any
+  staffList: any,
+  page: object
 }
 @Injectable()
 export class DepartmentService extends Store<SetState> implements RouteGuard {
   state$: State<SetState>
   staffList$: Computed<any>
-  // staffList$: Computed<StaffState>
+  page$: Computed<object>
   constructor(private staffApi: StaffApi, private depService: DepService) {
     super()
     this.state$ = new State({
-      staffList: []
+      staffList: [],
+      page: {}
     })
     this.staffList$ = new Computed(this.state$.pipe(pluck('staffList')))
+    this.page$ = new Computed(this.state$.pipe(pluck('page')))
   }
   @Effect()
   getStaffList(data: Params) {
     return this.staffApi.getStaffBrandList(data).pipe(tap(res => {
       this.state$.commit(state => {
         state.staffList = res.list
+        state.page = res.page
       })
     }))
   }
