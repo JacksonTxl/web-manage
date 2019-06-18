@@ -82,6 +82,7 @@
 </template>
 <script>
 import { cloneDeep } from 'lodash-es'
+import { MessageService } from '@/services/message.service'
 import {
   PersonalTeamScheduleCommonService as CommonService
 } from '@/views/pages/shop/product/course/schedule/personal-team.service#/common.service'
@@ -118,7 +119,8 @@ export default {
   serviceInject() {
     return {
       commonService: CommonService,
-      scheduleService: ScheduleService
+      scheduleService: ScheduleService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -173,7 +175,6 @@ export default {
           item.course_fee = parseInt(item.course_fee)
           return item
         })
-      console.log(data)
       this.scheduleService.addScheduleInBatch(data).subscribe(this.onSubmitSuccess)
       this.show = false
     },

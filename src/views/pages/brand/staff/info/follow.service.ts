@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { ShopStaffApi, GetStaffFollowInput } from '@/api/v1/staff/staff'
+import { StaffApi, GetStaffFollowInput } from '@/api/v1/staff'
 
 interface FollowState {
     followList: Object
@@ -11,14 +11,14 @@ interface FollowState {
 export class FollowService extends Store<FollowState> {
     state$: State<FollowState>
     followList$: Computed<Object>
-    constructor(private staffApi: ShopStaffApi) {
+    constructor(private staffApi: StaffApi) {
       super()
       this.state$ = new State({
         followList: {}
       })
       this.followList$ = new Computed(this.state$.pipe(pluck('followList')))
     }
-    getStaffFollow(query: GetStaffFollowInput) {
+    getStaffFollow(query: any) {
       return this.staffApi.getStaffFollow(query).pipe(
         tap(res => {
           this.state$.commit(state => {
@@ -29,8 +29,7 @@ export class FollowService extends Store<FollowState> {
     }
 
     beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-      console.log('-===========', to.meta.query)
-      let { id, member_name, follow_date_first, follow_date_last, page, size } = to.query
+      const { shop_id } = to.query
       this.getStaffFollow(to.query).subscribe(() => {
         next()
       })

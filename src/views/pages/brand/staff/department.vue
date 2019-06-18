@@ -10,12 +10,12 @@
     </section>
     <section class="page-staff-rg">
       <header class="staff-rg__operation">
-        <opreation-button @add-staff="onAddStaff" @batch-import="onbatchImport" @import-staff="onImportStaff"></opreation-button>
+        <opreation-button :auth="auth" @add-staff="onAddStaff" @batch-import="onbatchImport" @import-staff="onImportStaff"></opreation-button>
         <filter-staff></filter-staff>
       </header>
       <main class="staff-rg__table">
         <div  style="width:100%">
-          <staff-table :loading="loading.getStaffList" @edit-staff="onEditStaff" :staffList="staffList"></staff-table>
+          <staff-table :page="page" :loading="loading.getStaffList" @edit-staff="onEditStaff" :staffList="staffList"></staff-table>
         </div>
       </main>
     </section>
@@ -38,7 +38,9 @@ export default {
   rxState() {
     return {
       staffList: this.departmentService.staffList$,
-      loading: this.departmentService.loading$
+      loading: this.departmentService.loading$,
+      page: this.departmentService.page$,
+      auth: this.departmentService.auth$
     }
   },
   components: {

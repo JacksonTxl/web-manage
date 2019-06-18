@@ -51,8 +51,8 @@
             {{shop.shop_status | enumFilter('shop.shop_status')}}
             <st-help-popover v-if="shop.has_holiday_setting" title="放假时间">
               <div slot="content">
-                {{shop.holiday_start_time}}<br/>
-                {{shop.holiday_end_time}}
+                {{shop.holiday_start_time | dateFilter(appConfig.DATE_FORMAT.datetime)}}<br/>
+                {{shop.holiday_end_time | dateFilter(appConfig.DATE_FORMAT.datetime)}}
               </div>
             </st-help-popover>
           </td>
@@ -111,12 +111,15 @@
 import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
+import { dateFilter } from '@/filters/date.filters'
+import { AppConfig } from '@/constants/config'
 export default {
   serviceInject() {
     return {
       userService: UserService,
       routeService: RouteService,
-      listService: ListService
+      listService: ListService,
+      appConfig: AppConfig
     }
   },
   rxState() {
@@ -142,6 +145,9 @@ export default {
     count() {
       return this.resData.brand_shop_count
     }
+  },
+  filters: {
+    dateFilter
   },
   methods: {
     onPageChange(pagination) {

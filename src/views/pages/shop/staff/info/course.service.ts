@@ -2,7 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { StaffApi, GetStaffCourseListInput } from '@/api/v1/staff'
+import { ShopStaffApi, GetStaffCourseListInput } from '@/api/v1/staff/staff'
 import { forEach } from 'lodash-es'
 
 interface CourseState{
@@ -12,15 +12,15 @@ interface CourseState{
 export class CourseService extends Store<CourseState> {
     state$: State<CourseState>
     courseInfo$: Computed<Object>
-    constructor(private staffApi: StaffApi) {
+    constructor(private staffApi: ShopStaffApi) {
       super()
       this.state$ = new State({
         courseInfo: {}
       })
       this.courseInfo$ = new Computed(this.state$.pipe(pluck('courseInfo')))
     }
-    getCoursesList(id: string, query: GetStaffCourseListInput) {
-      return this.staffApi.getStaffCourseList(id, query).pipe(
+    getCoursesList(query: GetStaffCourseListInput) {
+      return this.staffApi.getStaffCourseList(query).pipe(
         tap(res => {
           console.log('====', res)
           let result: any = {
@@ -39,9 +39,7 @@ export class CourseService extends Store<CourseState> {
     }
 
     beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-      const { id } = to.meta.query
-      this.getCoursesList(id, {
-      }).subscribe(() => {
+      this.getCoursesList(to.query).subscribe(() => {
         next()
       })
     }

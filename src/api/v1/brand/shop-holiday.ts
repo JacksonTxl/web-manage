@@ -2,14 +2,14 @@ import { Api } from '@/api/api'
 const url = '/v1/brand/shop_holiday'
 
 export class ShopHolidayApi extends Api {
-  add(params: AddInput) {
-    return this.http.post(url, { params })
+  set(params: SetInput) {
+    return this.http.post(`${url}/${params.shop_id}`, { params })
   }
-  update(params: AddInput) {
-    return this.http.put(url, { params })
+  del(id: number) {
+    return this.http.delete(`${url}/${id}`)
   }
 }
-export interface AddInput {
+export interface SetInput {
   /**
    * 门店id
    */

@@ -94,7 +94,7 @@ export class AuthService extends Store<AuthState> {
     const auth: any = this.auth$.snapshot()
     const authObj = get(data, key)
     for (let i in authObj) {
-      authObj[i] = auth.indexOf[i] > -1 && authObj[i]
+      authObj[i] = auth.indexOf(i) > -1 && authObj[i]
     }
     set(data, key, authObj)
     return data

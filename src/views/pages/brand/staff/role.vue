@@ -11,14 +11,14 @@
             <div><span>{{role.name}}</span><span>（{{role.cnt}}）</span></div>
             <div>
               <st-more-dropdown style="margin-left: 12px;">
-                <a-menu-item @click="onClickEditRole(role.id)">编辑</a-menu-item>
-                <a-menu-item @click="onClickDelRole(role.id)">删除</a-menu-item>
+                <a-menu-item v-if="auth.edit" @click="onClickEditRole(role.id)">编辑</a-menu-item>
+                <a-menu-item v-if="auth.del" @click="onClickDelRole(role.id)">删除</a-menu-item>
               </st-more-dropdown>
             </div>
           </li>
         </ul>
       </main>
-      <footer :class="roleList('add')" @click="onCLickAddRole">
+      <footer v-if="auth.add" :class="roleList('add')" @click="onCLickAddRole">
         <a>添加角色</a>
       </footer>
     </a-col>
@@ -43,7 +43,8 @@ export default {
   rxState() {
     return {
       state: this.roleService.state$,
-      roles: this.roleService.roleList$
+      roles: this.roleService.roleList$,
+      auth: this.roleService.auth$
     }
   },
   data() {

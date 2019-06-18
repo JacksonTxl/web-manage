@@ -36,6 +36,7 @@ import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
 import { PersonalTeamScheduleScheduleService } from './personal-team.service#/schedule.service'
 import { RouteService } from '@/services/route.service'
+import AddCard from './date#/add-card'
 
 export default {
   name: 'Schedule',
@@ -85,13 +86,27 @@ export default {
         custom1: {
           text: '批量排期',
           click() {
-            that.$modalRouter.push({ name: 'schedule-team-add-course-schedule-batch' })
+            that.$modalRouter.push({
+              name: 'schedule-personal-team-add-in-batch',
+              on: {
+                ok: res => {
+                  that.onScheduleChange()
+                }
+              }
+            })
           }
         },
         custom2: {
           text: '复制排期',
           click() {
-            that.$modalRouter.push({ name: 'schedule-personal-team-copy' })
+            that.$modalRouter.push({
+              name: 'schedule-personal-team-copy',
+              on: {
+                ok: res => {
+                  that.onScheduleChange()
+                }
+              }
+            })
           }
         },
         custom4: {

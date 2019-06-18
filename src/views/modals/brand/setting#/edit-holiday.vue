@@ -15,7 +15,7 @@
           </st-form-item>
           <st-form-item labelFix class="mg-b0">
             <st-button type="primary" @click="onEdit">修改放假时间</st-button>
-            <st-button class="mg-l8">取消放假设置</st-button>
+            <st-button class="mg-l8" :loading="loading.del" @click="onDel">取消放假设置</st-button>
           </st-form-item>
         </div>
         <div v-show="isEdit">
@@ -25,23 +25,24 @@
           <st-form-item label="放假开始时间" required class="mg-t16">
             <a-date-picker
               v-decorator="formRules.startTime"
-              showTime
-              format="YYYY-MM-DD HH:mm"
+              :showTime="{ format: appConfig.DATE_FORMAT.time }"
+              :format="appConfig.DATE_FORMAT.datetime"
               placeholder="请选择放假开始时间"
               style="width: 240px"
+              :disabled="new Date() >= new Date(startTime)"
             />
           </st-form-item>
           <st-form-item label="放假结束时间" required class="mg-t16">
               <a-date-picker
               v-decorator="formRules.endTime"
-              showTime
-              format="YYYY-MM-DD HH:mm"
+              :showTime="{ format: appConfig.DATE_FORMAT.time }"
+              :format="appConfig.DATE_FORMAT.datetime"
               placeholder="请选择放假结束时间"
               style="width: 240px"
             />
           </st-form-item>
           <st-form-item labelFix class="mg-b0">
-            <st-button type="primary" :loading="loading.add" @click="onSubmit">确认修改放假时间</st-button>
+            <st-button type="primary" :loading="loading.set" @click="onSubmit">确认修改放假时间</st-button>
           </st-form-item>
         </div>
       </a-col>
@@ -52,6 +53,7 @@
 import moment from 'moment'
 import { MessageService } from '@/services/message.service'
 import { HolidayService } from '../setting-shop-holiday.service'
+import { AppConfig } from '@/constants/config'
 const formRules = {
   shopId: ['shop_id'],
   startTime: [
@@ -75,7 +77,8 @@ export default {
   serviceInject() {
     return {
       holidayService: HolidayService,
-      messageService: MessageService
+      messageService: MessageService,
+      appConfig: AppConfig
     }
   },
   rxState() {
@@ -135,22 +138,28 @@ export default {
     onEdit() {
       this.isEdit = true
     },
+    onDel() {
+      this.holidayService.del(this.shopId).subscribe(this.onDelSuccess)
+    },
     onSubmit(e) {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
-        this.holidayService.update(data).subscribe(this.onSubmitSuccess)
+        this.holidayService.set(data).subscribe(this.onSubmitSuccess)
       })
+    },
+    onSuccess(msg = '') {
+      this.messageService.success({
+        content: msg
+      })
+      this.$emit('success')
+      this.show = false
     },
     onSubmitSuccess() {
-      this.messageService.success({
-        content: '更改成功'
-      })
-      this.$emit('change')
-      this.show = false
+      this.onSuccess('修改成功')
     },
-    onCancel() {
-      this.show = false
+    onDelSuccess() {
+      this.onSuccess('删除成功')
     }
   }
 }

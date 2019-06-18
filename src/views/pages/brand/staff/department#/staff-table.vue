@@ -5,19 +5,22 @@
   :alertSelection="{onReset: start}"
   :rowSelection="{selectedRowKeys:
   selectedRowKeys, onChange: onSelectChange}"
+  :pagination="pagination"
+  @change="onChange"
   :columns="columns" :dataSource="staffList"
   :scroll="{ x: 1500}">
     <div class="page-staff-table-action" slot="action" slot-scope="text, record">
-        <a href="javascript:void()" @click="staffInfo(record)" class="mg-r8">详情</a>
-        <a href="javascript:void()" @click="editStaff(record.id)">编辑</a>
+        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|get']" @click="staffInfo(record)" class="mg-r8">详情</a>
+        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|edit']" @click="editStaff(record.id)">编辑</a>
         <st-more-dropdown>
-          <a-menu-item v-if="record.work_status.id === 1"><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: record} }"> {{record.has_card ? '重绑定实体卡':'绑定实体卡'}}</modal-link></a-menu-item>
-          <a-menu-item v-if="record.work_status.id === 1"><modal-link tag="a" :to="{ name: 'staff-update-staff-position', props: {staff: record} }">职位变更</modal-link></a-menu-item>
-          <a-menu-item v-if="record.work_status.id === 1"><modal-link tag="a" :to="{ name: 'staff-turnover', props: {staff: record} } ">离职</modal-link></a-menu-item>
-          <a-menu-item v-else><modal-link tag="a" :to="{ name: 'staff-reinstatement', props: {staff: record} }">复职</modal-link></a-menu-item>
-          <a-menu-item v-if="record.work_status.id === 1"><modal-link tag="a" :to="{ name: 'staff-re-password', props: {staff: record} }">管理登录账号</modal-link></a-menu-item>
-          <a-menu-item v-if="record.work_status.id === 1"><modal-link tag="a" :to="{ name: 'staff-salary-account-setting', props: {staff: record} }">设置薪资账户</modal-link></a-menu-item>
-          <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-delete', props: {staff: record} }">删除</modal-link></a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:staff:staff|bind_card']"><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: record} }">绑定实体卡</modal-link></a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:staff:staff|rebind_card']"><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: record} }">重绑定实体卡</modal-link></a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:staff:staff|position']"><modal-link tag="a" :to="{ name: 'staff-update-staff-position', props: {staff: record} }">职位变更</modal-link></a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:staff:staff|leave']"><modal-link tag="a" :to="{ name: 'staff-turnover', props: {staff: record} } ">离职</modal-link></a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:staff:staff|reinstate']"><modal-link tag="a" :to="{ name: 'staff-reinstatement', props: {staff: record} }">复职</modal-link></a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:staff:account|save']"><modal-link tag="a" :to="{ name: 'staff-re-password', props: {staff: record} }">管理登录账号</modal-link></a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:staff:staff|salary']"><modal-link tag="a" :to="{ name: 'staff-salary-account-setting', props: {staff: record} }">设置薪资账户</modal-link></a-menu-item>
+          <a-menu-item ><modal-link tag="a" v-if="record.auth['brand_shop:staff:staff|del']" :to="{ name: 'staff-delete', props: {staff: record} }">删除</modal-link></a-menu-item>
         </st-more-dropdown>
     </div>
     <div slot="work_status" slot-scope="work_status">
@@ -51,9 +54,21 @@ export default {
         return []
       }
     },
+    page: {
+      type: Object,
+      default: () => {}
+    },
     loading: {
       type: Boolean,
-      defalut: false
+      default: false
+    }
+  },
+  computed: {
+    pagination() {
+      return {
+        pageSize: this.page.size + '',
+        total: this.page.total_counts
+      }
     }
   },
   filters: {
@@ -89,8 +104,8 @@ export default {
     start() {
       this.selectedRowKeys = []
     },
-    onChange() {
-
+    onChange(val) {
+      this.$router.push({ query: { page: val.current, size: val.pageSize || 20, ...this.$router.query } })
     },
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys

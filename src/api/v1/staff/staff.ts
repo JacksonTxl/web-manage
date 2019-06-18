@@ -102,7 +102,7 @@ export class ShopStaffApi extends Api {
   }
   // 员工详情上课记录
   getStaffCourseList(query: GetStaffCourseListInput) {
-    return this.http.get(`/v1/staff/shop/reserve/${query.id}`, { query, mock: {} })
+    return this.http.get(`/v1/staff/shop/courses-record/${query.id}`, { query })
   }
   // 员工详情跟进记录
   getStaffFollow(query: GetStaffFollowInput) {
@@ -110,7 +110,7 @@ export class ShopStaffApi extends Api {
   }
   // 员工详情售卖订单
   getStaffSold(id: string, query: GetStaffSoldInput) {
-    return this.http.get(`/v1/staff/shop/order/${id}`, { query, mock: {} })
+    return this.http.get(`/v1/staff/shop/order/${id}`, { query })
   }
   // 员工详情服务课程
   getStaffServiceCourses(query: GetStaffServiceCoursesInput) {

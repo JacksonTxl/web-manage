@@ -69,12 +69,13 @@
         </a-select>
         <st-button class="mg-r8" :disabled="selectedRowKeys.length > 0 ? false : true">
           <modal-link
+            v-if="auth.join"
             tag="a"
             :to="{ name: 'shop-staff-join-department', props: {},on :{change: joinok} }"
           >批量加入部门</modal-link>
         </st-button>
-        <st-button class="mg-r8" @click="onAddStaff">添加员工</st-button>
-        <st-button @click="onExportStaff">导入员工</st-button>
+        <st-button v-if="auth.add" class="mg-r8" @click="onAddStaff">添加员工</st-button>
+        <st-button v-if="auth.import" @click="onExportStaff">导入员工</st-button>
       </a-col>
       <a-col :lg="7" style="text-align: right;">
         <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 300px;" v-model="query.keywords" @search="onChange"/>
@@ -115,36 +116,51 @@
           </div>
         </template>
         <template slot="action" slot-scope="text,record">
-          <a href="javascript:;" @click="onSearchDetail(record)">详情</a>
+          <a href="javascript:;" v-if="record.auth['brand_shop:staff:staff|get']" @click="onSearchDetail(record)">详情</a>
           <template v-if="record.work_status.name === '在职'">
             <a-divider type="vertical"></a-divider>
-            <a href="javascript:;" @click="onEdit(record)">编辑</a>
+            <a href="javascript:;" v-if="record.auth['brand_shop:staff:staff|edit']" @click="onEdit(record)">编辑</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown>
-              <a-menu-item v-if="record.work_status.id === 1">
-                <modal-link tag="a" :to="{ name: 'shop-staff-bind-card', props: {staff: record} }"> {{record.has_card ? '重绑定实体卡':'绑定实体卡'}}</modal-link>
+              <a-menu-item>
+                <modal-link
+                  v-if="record.auth['brand_shop:staff:staff|bind_card']"
+                  tag="a"
+                  :to="{ name: 'shop-staff-bind-card', props: {staff: record } }"
+                >绑实体卡</modal-link>
               </a-menu-item>
 
               <a-menu-item>
                 <modal-link
+                  v-if="record.auth['brand_shop:staff:staff|rebind_card']"
+                  tag="a"
+                  :to="{ name: 'shop-staff-bind-card', props: {staff: record } }"
+                >重绑实体卡</modal-link>
+              </a-menu-item>
+              <a-menu-item>
+                <modal-link
+                  v-if="record.auth['brand_shop:staff:account|save']"
                   tag="a"
                   :to="{ name: 'shop-staff-re-password', props: {staff: record} }"
                 >管理登录账号</modal-link>
               </a-menu-item>
               <a-menu-item>
                 <modal-link
+                  v-if="record.auth['brand_shop:staff:staff|position']"
                   tag="a"
                   :to="{ name: 'shop-staff-update-staff-position', props: {staff: record}} "
                 >职位变更</modal-link>
               </a-menu-item>
               <a-menu-item>
                 <modal-link
+                  v-if="record.auth['brand_shop:staff:staff|salary']"
                   tag="a"
                   :to="{ name: 'shop-staff-salary-account-setting', props: {staff: record} }"
                 >设置薪资账户</modal-link>
               </a-menu-item>
               <a-menu-item>
                 <modal-link
+                  v-if="record.auth['brand_shop:staff:staff|shop_leave']"
                   tag="a"
                   :to="{ name: 'shop-staff-leave-current-shop', props: {staff: record}}"
                 >解除门店关系</modal-link>
@@ -229,7 +245,8 @@ export default {
       query: this.routeService.query$,
       staffList: this.service.staffList$,
       department: this.service.department$,
-      staffEnums: this.service.staffEnums$
+      staffEnums: this.service.staffEnums$,
+      auth: this.service.auth$
     }
   },
   data() {

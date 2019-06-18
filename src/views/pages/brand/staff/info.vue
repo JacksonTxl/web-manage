@@ -2,7 +2,7 @@
   <div class="pages-staffdata-container">
     <st-panel class="pages-staffdata-header">
       <a-row :gutter="8">
-        <a-col :lg="17" class="pages-staffdata-header-detail">
+        <a-col :lg="16" class="pages-staffdata-header-detail">
           <div class="staff-avatar-container st-preview-item">
             <img
               src="//styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/20190411/nmdNRC_cVqWSjCNg.png?x-oss-process=image/resize,interlace_1,m_fill,w_208,h_208"
@@ -26,16 +26,17 @@
             </div>
           </div>
         </a-col>
-        <a-col :lg="6" :offset="1" style="text-align: right;">
-          <st-button class="mg-r8" type="primary" @click="editStaffInfo">编辑资料</st-button>
-          <st-button class="mg-r8"><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: info} }"> 绑定实体卡</modal-link></st-button>
+        <a-col :lg="7" :offset="1" style="text-align: right;">
+          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|edit']" type="primary" @click="editStaffInfo">编辑资料</st-button>
+          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|bind_card']"><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: info} }">绑定实体卡</modal-link></st-button>
+          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|rebind_card']"><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: info} }">重绑实体卡</modal-link></st-button>
           <a-dropdown>
             <a-menu slot="overlay" @click="handleMenuClick">
-              <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: info} }"> 绑定实体卡</modal-link></a-menu-item>
-              <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-update-staff-position', props: {staff: info} }">职位变更</modal-link></a-menu-item>
-              <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-turnover', props: {staff: info} } ">离职</modal-link></a-menu-item>
-              <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-re-password', props: {staff: info} }">管理登录账户</modal-link></a-menu-item>
-              <a-menu-item ><modal-link tag="a" :to="{ name: 'staff-salary-account-setting', props: {staff: info} }">设置薪资账户</modal-link></a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|position']"><modal-link tag="a" :to="{ name: 'staff-update-staff-position', props: {staff: info} }">职位变更</modal-link></a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|leave']"><modal-link tag="a" :to="{ name: 'staff-turnover', props: {staff: info} } ">离职</modal-link></a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|reinstate']"><modal-link tag="a" :to="{ name: 'staff-reinstatement', props: {staff: info} } ">复职</modal-link></a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:account|save']"><modal-link tag="a" :to="{ name: 'staff-re-password', props: {staff: info} }">管理登录账户</modal-link></a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|salary']"><modal-link tag="a" :to="{ name: 'staff-salary-account-setting', props: {staff: info} }">设置薪资账户</modal-link></a-menu-item>
             </a-menu>
             <a-button>
               更多操作
@@ -62,7 +63,9 @@ export default {
   },
   rxState() {
     return {
-      info: this.infoService.info$
+      info: this.infoService.info$,
+      auth: this.infoService.auth$
+
     }
   },
   data() {

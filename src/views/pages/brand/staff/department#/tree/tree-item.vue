@@ -11,7 +11,9 @@
         <span class="tree-name" v-else>{{ item.name }}( {{item.count}} )</span>
 
         <st-more-dropdown class="tree-opreation" v-show="!item.isEdit">
-          <a-menu-item  v-for="(item, index) in funcList" :key="index" @click="onClickFunc(item.func)">{{item.funcName}}</a-menu-item>
+          <a-menu-item v-if="auth.departmentAdd"  @click="addTreeNode">新增</a-menu-item>
+          <a-menu-item  @click="editTreeNode">编辑</a-menu-item>
+          <a-menu-item  @click="deleteDepartment">删除</a-menu-item>
         </st-more-dropdown>
       </div>
       <div v-if="item.isAdd" class="edit-box"><a-input  placeholder="请输入部门名称" class="tree-input  mg-r8" v-model="addValue"></a-input><a href="javascript:;" class="mg-r8" @click="addDepartment">保存</a><span class="mg-r8" @click="cancelEdit">x</span></div>
@@ -23,7 +25,6 @@
         v-for="(child, index) in item.children"
         :key="index"
         :item="child"
-        :funcList="funcList"
         @make-folder="$emit('make-folder', $event)"
         @add-item="$emit('add-item', $event)"
         @edit-item="$emit('edit-item', $event)"
@@ -41,6 +42,11 @@ export default {
       departmentService: DepartmentService
     }
   },
+  rxState() {
+    return {
+      auth: this.departmentService.auth$
+    }
+  },
   name: 'TreeItem',
   props: {
     item: Object,
@@ -53,7 +59,7 @@ export default {
     return {
       editValue: '',
       addValue: '',
-      opreations: [{ clickName: this.addTreeNade, name: '编辑' }, { clickName: this.editTreeNade, name: '新增' }, { clickName: this.deleteTreeNade, name: '删除' }],
+      opreations: [{ clickName: this.addTreeNade, name: '新增' }, { clickName: this.editTreeNade, name: '编辑' }, { clickName: this.deleteTreeNade, name: '删除' }],
       placements: ['bottomLeft'],
       visible: false,
       isOpen: false
@@ -69,17 +75,15 @@ export default {
     }
   },
   methods: {
-    onClickFunc(func) {
-      this.$emit('click-item', { emitFunc: func, id: this.item.id, department_name: this.editValue })
-    },
     editTreeNode() {
       this.editValue = this.item.name
       this.$emit('edit-item', this.item)
     },
+    cancelEdit() {
+
+    },
     addTreeNode() {
       this.$emit('add-item', this.item)
-    },
-    cancelEdit() {
     },
     toggle(e) {
       if (this.isFolder) {
@@ -87,12 +91,12 @@ export default {
       }
     },
     addDepartment(item) {
-      this.departmentService.addDepartment(item).subscribe(() => {
+      this.departmentService.addDepartment({ parent_id: this.item.id, department_name: this.addValue }).subscribe(() => {
         console.log(this.departmentList)
       })
     },
     editDepartment(item) {
-      this.departmentService.updateDepartment(item).subscribe(() => {
+      this.departmentService.updateDepartment({ id: this.item.id, department_name: this.editValue }).subscribe(() => {
         console.log(this.departmentList)
       })
     },
@@ -102,7 +106,7 @@ export default {
         content: '删除部门后，该部门下的员工会自动归属父级部门，且无法恢复，确认删除？',
         onOk: () => {
           return new Promise((resolve, reject) => {
-            return this.departmentService.delDepartment({ id: item.id }).subscribe(() => {
+            return this.departmentService.delDepartment({ id: this.item.id }).subscribe(() => {
               setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
             })
           }).catch(() => console.log('Oops errors!'))
