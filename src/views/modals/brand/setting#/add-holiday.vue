@@ -26,7 +26,7 @@
             />
           </st-form-item>
           <st-form-item labelFix class="mg-b0">
-            <st-button type="primary" :loading="loading.add" @click="onSubmit">确认设置放假时间</st-button>
+            <st-button type="primary" :loading="loading.set" @click="onSubmit">确认设置放假时间</st-button>
           </st-form-item>
         </a-col>
       </a-row>
@@ -102,7 +102,7 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.form.getFieldsValue()
-        this.holidayService.add(data).subscribe(this.onSubmitSuccess)
+        this.holidayService.set(data).subscribe(this.onSubmitSuccess)
       })
     },
     onSubmitSuccess() {

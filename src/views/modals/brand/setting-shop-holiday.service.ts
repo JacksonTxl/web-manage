@@ -1,7 +1,7 @@
 import { Injectable } from 'vue-service-app'
 import { Effect } from 'rx-state'
 import { Store } from '@/services/store'
-import { ShopHolidayApi, AddInput } from '@/api/v1/brand/shop-holiday'
+import { ShopHolidayApi, SetInput } from '@/api/v1/brand/shop-holiday'
 
 interface SetState {}
 
@@ -11,11 +11,8 @@ export class HolidayService extends Store<SetState> {
     super()
   }
   @Effect()
-  add(params: AddInput) {
-    return this.shopHolidayApi.add(params)
-  }
-  update(params: AddInput) {
-    return this.shopHolidayApi.update(params)
+  set(params: SetInput) {
+    return this.shopHolidayApi.set(params)
   }
   del(id: number) {
     return this.shopHolidayApi.del(id)
