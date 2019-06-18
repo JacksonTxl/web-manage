@@ -62,7 +62,8 @@ export default {
   },
   rxState() {
     return {
-      info: this.infoService.info$
+      info: this.infoService.info$,
+      auth: this.infoService.auth$
     }
   },
   data() {
