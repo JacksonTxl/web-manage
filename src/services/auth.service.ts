@@ -4,11 +4,12 @@ import { tap, pluck, map } from 'rxjs/operators'
 import { Store } from './store'
 import { AuthApi } from '@/api/v1/common/auth'
 import { of } from 'rxjs'
+import { get, set } from 'lodash-es'
 
 interface AuthState {
   auth: object
 }
-interface ResDataState {
+interface DataState {
   list?: any[]
   [propName: string]: any
 }
@@ -36,16 +37,38 @@ export class AuthService extends Store<AuthState> {
       return of({})
     }
     return this.authApi.getList().pipe(
-      tap(res => {
+      tap((res: any) => {
         this.SET_AUTH(res.auth)
       })
     )
   }
-  filter(resData: ResDataState) {
-    console.log('filter', this)
-    const list = resData.list || []
+  /**
+   *
+   * @param data
+   * @param key
+   * 示例:
+   * authService.filter(data)
+   * authService.filter(data, 'list2')
+   * authService.filter(data, 'auth')
+   * authService.filter(data, 'info.auth')
+   */
+  filter(data: DataState, key: string = 'list') {
+    if (/auth$/.test(key)) {
+      data = this.objectAuthFilter(data, key)
+    } else {
+      data = this.listAuthFilter(data, key)
+    }
+    console.log('filtered data by authService: ', data)
+    return data
+  }
+  /**
+   * 处理 list
+   */
+  private listAuthFilter(data: any, key = 'list') {
+    const auth: any = this.auth$.snapshot()
+    const list = data[key] || []
     if (!list.length) {
-      return resData
+      return data
     }
     const keys: string[] = []
     let newList: object[] = []
@@ -54,18 +77,27 @@ export class AuthService extends Store<AuthState> {
         keys.push(i)
       }
     }
-    this.auth$.subscribe((auth: any) => {
-      newList = list.map((item, index) => {
-        keys.forEach(key => {
-          item.auth[key] = auth.indexOf(key) > -1 && item.auth[key]
-        })
-        return item
+    newList = list.map((item: any, index: any) => {
+      keys.forEach(key => {
+        item.auth[key] = auth.indexOf(key) > -1 && item.auth[key]
       })
+      return item
     })
-    resData.list = newList
-    resData.auth = this.auth$.snapshot()
-    console.log('resData', resData)
-    return resData
+    data.list = newList
+    data.auth = this.auth$.snapshot()
+    return data
+  }
+  /**
+   * 处理特殊的 auth 对象
+   */
+  private objectAuthFilter(data: any, key = 'auth') {
+    const auth: any = this.auth$.snapshot()
+    const authObj = get(data, key)
+    for (let i in authObj) {
+      authObj[i] = auth.indexOf[i] > -1 && authObj[i]
+    }
+    set(data, key, authObj)
+    return data
   }
   can(authKey: string) {
     return 1
