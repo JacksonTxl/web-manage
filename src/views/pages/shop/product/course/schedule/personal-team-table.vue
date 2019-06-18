@@ -36,7 +36,7 @@
             <div><span class="label">可约：</span><span class="value">{{info.reserve_max}}人</span></div>
           </div>
         </a-col>
-        <a-col :lg="2" :offset="7" class="action" v-modal-link="{name: 'schedule-team-reserve-info', props: {id: info.id}}"><a href="#">查看详情</a></a-col>
+        <a-col :lg="2" :offset="7" class="action" v-modal-link="{name: 'schedule-personal-team-reserve-info', props: {id: info.id}}"><a href="#">查看详情</a></a-col>
       </a-row>
     </a-card>
   </div>
