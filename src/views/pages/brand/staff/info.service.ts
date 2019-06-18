@@ -35,7 +35,7 @@ export class InfoService extends Store<SetState> {
   @Effect()
   getInfo(id: string) {
     return this.staffApi.getStaffInfoCommonHeader(id).pipe(tap(res => {
-      res = this.authService.filter(res)
+      res = this.authService.filter(res, 'auth')
       this.SET_STAFF_BRAND(res.common_info)
     }))
   }

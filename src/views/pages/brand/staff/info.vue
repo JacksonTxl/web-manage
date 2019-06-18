@@ -25,7 +25,7 @@
               <span>所在{{ info.shop_num }}家门店</span>
             </div>
           </div>
-        </a-col>
+        </a-col>{{auth}}
         <a-col :lg="6" :offset="1" style="text-align: right;">
           <st-button class="mg-r8" v-if="auth.edit" type="primary" @click="editStaffInfo">编辑资料</st-button>
           <st-button class="mg-r8" v-if="auth.bindCard"><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: info} }">绑定实体卡</modal-link></st-button>
