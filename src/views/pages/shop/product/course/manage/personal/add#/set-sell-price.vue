@@ -3,7 +3,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :offset="1">
         <!-- 课程名称 -->
-        <st-form-item label="私教课程">
+        <st-form-item label="课程名称">
           <a-input placeholder="课程名称" disabled v-decorator="ruleConfig.courseName"/>
         </st-form-item>
         <!-- 售卖渠道 -->

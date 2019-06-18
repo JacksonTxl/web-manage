@@ -40,13 +40,13 @@ export class ShopSaleListService extends Store<ShopSaleListState> {
     )
   }
   beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo({ card_name: to.query.cardName }).subscribe(res => {
+    this.getListInfo({ card_name: to.query.cardName }).subscribe((res:any) => {
       this.SET_CARDS_LIST_INFO(res)
       next()
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo({}).subscribe(res => {
+    this.getListInfo({}).subscribe((res:any) => {
       this.SET_CARDS_LIST_INFO(res)
       next()
     })
