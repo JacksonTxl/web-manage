@@ -3,7 +3,7 @@
     <a-row :class="bstep()" class="mg-b48" :gutter="8">
       <a-col offset="1" :span="stepsSpan"><Steps :value="currentIndex" :stepArr="stepArr" /></a-col>
     </a-row>
-    <StaffDetailBasics v-show="currentIndex == 0" @skiptoedit="skiptoedit" @basicInfoSave="onBasicInfoSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
+    <StaffDetailBasics v-show="currentIndex == 0" @skiptoedit="skipToEdit" @basicInfoSave="onBasicInfoSave" @addStep="addCoachInfo" @deletStep="deletStep"/>
   </st-panel>
 </template>
 
@@ -55,7 +55,6 @@ export default {
   methods: {
     // 删除步骤轴
     deletStep(e) {
-      console.log('删除')
       this.stepsSpan = 12
       let index = this.stepArr.findIndex((ele) => {
         return ele.title === '教练信息'
@@ -65,7 +64,6 @@ export default {
     },
     // 添加步骤轴
     addCoachInfo(e) {
-      console.log('增加')
       this.stepsSpan = 18
       this.stepArr.push({
         title: '教练信息',
@@ -73,33 +71,11 @@ export default {
       })
     },
     // 继续填写跳转到编辑
-    skiptoedit(e) {
-      console.log('跳到编辑', e)
-      this.submit(e, 'skip')
+    skipToEdit(data) {
+      this.submit(data)
     },
-    // 提交
-    submit(data, saveOrskip) {
-      this.addService.addBasicInfo(data).subscribe(res => {
-        console.log('保存', res)
-        console.log('ssdsd', typeof this.stepArr.length)
-        if (saveOrskip === 'skip') {
-          this.$router.push({
-            name: 'brand-staff-edit',
-            query: {
-              staffId: res.staff_id,
-              currentIndex: 1,
-              isShowCoach: this.stepArr.length === 3 ? 1 : 0
-            }
-          })
-        } else if (saveOrskip === 'save') {
-          console.log('返回列表')
-          this.messageService.success({ content: '保存成功' })
-          this.$router.go(-1)
-        }
-      })
-    },
+
     onBasicInfoSave(form) { // 保存
-      console.log(form)
       this.submit(form, 'save')
     }
   }

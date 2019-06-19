@@ -37,8 +37,11 @@ export class PersonalTableService extends Store<SetState> {
   initOptions() {
     return forkJoin(this.commonService.getCoachList(), this.commonService.getCoachListInBatch())
   }
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.getList(to.query).subscribe(() => next())
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    forkJoin(this.initOptions(), this.getList({})).subscribe(() => {
+    forkJoin(this.initOptions()).subscribe(() => {
       next()
     })
   }

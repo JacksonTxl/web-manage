@@ -33,8 +33,7 @@ export default {
   },
   props: {
     id: {
-      type: Number,
-      default: 108
+      type: Number
     },
     start: {
       type: String,
