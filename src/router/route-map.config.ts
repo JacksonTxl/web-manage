@@ -189,6 +189,18 @@ export const routeMapConfig = {
       product_type: { type: Number, default: 1 }
     }
   },
+  // 订单列表
+  'shop-finance-order-list'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      keyword: { type: String, default: '' },
+      status: { type: Number, default: -1 },
+      type: { type: Number, default: -1 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
   'brand-setting-app'(routeConfig: RouteConfig) {
   },
   'brand-setting-app-course'(routeConfig: RouteConfig) {

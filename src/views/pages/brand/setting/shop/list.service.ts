@@ -17,19 +17,25 @@ interface ListState {
 export class ListService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
+  auth$: Computed<object>
   constructor(
     private authService: AuthService,
     private shopApi: ShopApi
   ) {
     super()
     this.state$ = new State({
-      resData: {}
+      resData: {},
+      auth: {
+        add: this.authService.can('brand_shop:shop:shop|add')
+      }
     })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   getList(query: GetListInput) {
     return this.shopApi.getList(query).pipe(
       tap(res => {
+        res = this.authService.filter(res)
         this.SET_STATE(res)
       })
     )

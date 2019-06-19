@@ -2,9 +2,8 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import {
-  CourtApi
-} from '@/api/v1/shop/area'
+import { CourtApi } from '@/api/v1/shop/area'
+import { AuthService } from '@/services/auth.service'
 
 interface ListState {
   list: object[]
@@ -13,12 +12,20 @@ interface ListState {
 export class ListService extends Store<ListState> {
   state$: State<ListState>
   list$: Computed<object[]>
-  constructor(protected courtApi: CourtApi) {
+  auth$: Computed<object[]>
+  constructor(protected courtApi: CourtApi, private authService: AuthService) {
     super()
     this.state$ = new State({
-      list: []
+      list: [],
+      auth: {
+        areaAdd: this.authService.can('shop:shop:shop_area|add'),
+        areaEdit: this.authService.can('shop:shop:shop_area|edit'),
+        areaDel: this.authService.can('shop:shop:shop_area|del'),
+        seatAdd: this.authService.can('shop:shop:area_seat|add')
+      }
     })
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   protected SET_STATE(list: object[]) {
     this.state$.commit(state => {

@@ -167,7 +167,7 @@
       </a-row>
       <a-row :gutter="8" type="flex" justify="center" align="middle">
         <a-col>
-          <st-button type="primary" html-type="submit">提交</st-button>
+          <st-button v-if="auth.edit" type="primary" html-type="submit">提交</st-button>
         </a-col>
       </a-row>
     </st-form>
@@ -190,7 +190,8 @@ export default {
   },
   rxState() {
     return {
-      shopInfo: this.infoService.shopInfo$
+      shopInfo: this.infoService.shopInfo$,
+      auth: this.infoService.auth$
     }
   },
   created() {},

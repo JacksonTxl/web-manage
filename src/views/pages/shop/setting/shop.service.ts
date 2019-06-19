@@ -2,8 +2,8 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
-
 import { ShopApi, ShopInput } from '@/api/v1/shop'
+import { AuthService } from '@/services/auth.service'
 
 interface ShopInfoState {
   shopInfo: any
@@ -12,12 +12,17 @@ interface ShopInfoState {
 export class ShopService extends Store<ShopInfoState> {
   state$: State<ShopInfoState>
   shopInfo$: Computed<string>
-  constructor(private shopApi: ShopApi) {
+  auth$: Computed<any>
+  constructor(private shopApi: ShopApi, private authService: AuthService) {
     super()
     this.state$ = new State({
-      shopInfo: {}
+      shopInfo: {},
+      auth: {
+        edit: this.authService.can('brand_shop:shop:shop|edit')
+      }
     })
     this.shopInfo$ = new Computed(this.state$.pipe(pluck('shopInfo')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SET_SHOP_INFO(shopInfo: ShopInfoState) {
     this.state$.commit(state => {
