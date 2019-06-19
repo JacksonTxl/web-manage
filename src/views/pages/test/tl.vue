@@ -92,6 +92,10 @@
         <a-select-option :key="2">2</a-select-option>
         <a-select-option :key="12">12</a-select-option>
       </a-select>
+
+      <div>
+        <st-icon type="department"></st-icon>
+      </div>
     </st-panel>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
   </div>

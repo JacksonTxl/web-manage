@@ -176,7 +176,6 @@ export default {
       })
     },
     onListChange() {
-      console.log('changed')
       this.onQueryChange({}, true)
     }
   }

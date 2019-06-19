@@ -21,9 +21,8 @@
           <span class="layout-default-body__line"></span>
           <a-breadcrumb separator="-">
             <a-breadcrumb-item>
-              <!-- <st-icon type="home"/> -->
               <router-link to="/brand/">
-                <st-icon type="home" color="#fff"/>
+                <st-icon type="home" class="layout-default-body__icon"/>
               </router-link>
             </a-breadcrumb-item>
             <a-breadcrumb-item v-for='b in breadcrumbs' :key="b.label">
@@ -34,11 +33,11 @@
           </a-breadcrumb>
         </div>
         <div class="layout-default-body__personal">
-          <!-- <a-badge dot>
-            <st-icon type="bell" size="20px"/>
-          </a-badge>-->
           <a-badge dot>
-            <st-icon type="bell" size="20px" color="red"/>
+            <st-icon type="home" class="layout-default-body__icon"/>
+          </a-badge>
+          <a-badge>
+            <st-icon type="home" class="layout-default-body__icon"/>
           </a-badge>
           <a-dropdown :trigger="['click']" placement="bottomRight">
             <div class="layout-default-body__avatar">
@@ -51,22 +50,18 @@
               </div>
               <a-menu>
                 <a-menu-item class="layout-default-body__options">
-                  <st-icon type="inbox"></st-icon>
+                  <st-icon type="safety"></st-icon>
                   <span>账号安全</span>
                 </a-menu-item>
                 <a-menu-item class="layout-default-body__options">
                   <modal-link tag="a" :to="{ name: 'brand-switch' }">
-                    <st-icon type="inbox"></st-icon>
+                    <st-icon type="switch"></st-icon>
                     <span>切换品牌</span>
                   </modal-link>
                 </a-menu-item>
-                <a-menu-item class="layout-default-body__options">
-                  <st-icon type="inbox"></st-icon>
-                  <span>中文 / English</span>
-                </a-menu-item>
                 <a-menu-divider/>
                 <a-menu-item class="layout-default-body__options">
-                  <st-icon type="inbox"></st-icon>
+                  <st-icon type="logout"></st-icon>
                   <span>退出</span>
                 </a-menu-item>
               </a-menu>
