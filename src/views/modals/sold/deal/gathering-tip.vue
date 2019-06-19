@@ -4,6 +4,7 @@
     size="small"
     v-model="show"
     :footer="null"
+    @cancel="onCancel"
     wrapClassName="modal-sold-deal-gathering-tip"
     >
     <div :class="gatheringTip('content')">
@@ -46,21 +47,32 @@ export default {
   },
   methods: {
     print() {
-
+      this.show = false
+      this.$emit('success', {
+        orderId: this.order_id,
+        type: 'Print'
+      })
     },
     viewOrder() {
-
+      this.show = false
+      this.$emit('success', {
+        orderId: this.order_id,
+        type: 'ViewOrder'
+      })
     },
     goPay(e) {
-      // 去订单收款页面
       this.show = false
-      this.$modalRouter.push({
-        name: 'sold-deal-gathering',
-        props: {
-          order_id: this.order_id,
-          type: this.type,
-          member_id: this.member_id
-        }
+      this.$emit('success', {
+        orderId: this.order_id,
+        type: 'Pay'
+      })
+    },
+    // 取消
+    onCancel() {
+      this.show = false
+      this.$emit('success', {
+        orderId: this.order_id,
+        type: 'cancel'
       })
     }
   }

@@ -21,7 +21,19 @@ export interface TransactionPriceInput {
   surplus_amount?:string,
   special_amount?: number
 }
+export interface TransactionListInput {
+  page?:number
+  size?:number
+  product_name?:string
+  product_type:number
+}
 export class TransactionApi extends Api {
+  /**
+   * 签单列表
+   */
+  getTransactionList(query:TransactionListInput) {
+    return this.http.get(`/v1/order/transaction`, { query })
+  }
   /**
    * 签单详情
    */
