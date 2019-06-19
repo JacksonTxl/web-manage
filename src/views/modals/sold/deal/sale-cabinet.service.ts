@@ -25,8 +25,8 @@ export class SaleCabinetService {
     }))
   }
   // 获取销售员列表
-  getSaleList() {
-    return this.transactionApi.getTransactionSaleList().pipe(tap((res:any) => {
+  getSaleList(areaId:number) {
+    return this.transactionApi.getTransactionSaleList(areaId).pipe(tap((res:any) => {
       this.saleList$.commit(() => res.list)
     }))
   }
@@ -38,8 +38,8 @@ export class SaleCabinetService {
   }
   // 获取初始数据
   @Effect()
-  init(id:string) {
-    return forkJoin(this.getInfo(id), this.getSaleList(), this.getCabinetList())
+  init(id:string, areaId:number) {
+    return forkJoin(this.getInfo(id), this.getSaleList(areaId), this.getCabinetList())
   }
   // 获取会员列表
   @Effect()

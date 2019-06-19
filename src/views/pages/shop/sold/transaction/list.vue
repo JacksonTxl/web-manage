@@ -2,45 +2,41 @@
   <st-panel app initial :class="basic()">
     <div slot="title" :class="sale('search')">
       <st-input-search
+      v-model="query.product_name"
+      @search="getList"
       placeholder="请输入商品名查找"
       style="width: 290px;"/>
-      <a-select :class="sale('select')" v-model="saleType" style="width: 160px">
+      <a-select :class="sale('select')" v-model="query.product_type" @change="getList" style="width: 160px">
         <a-select-option
-        v-for="(item,index) in saleTypeList"
+        v-for="(item,index) in productType"
         :key="index"
         :value="item.value">{{item.label}}</a-select-option>
       </a-select>
     </div>
     <div :class="basic('content')">
       <st-table
+      :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
       rowKey="id"
       :columns="columns"
+      @change="onPageChange"
       :dataSource="list">
-        <template slot="product_name" slot-scope="text">
-          {{text}}
-        </template>
-        <template slot="product_type" slot-scope="text">
-          {{text}}
-        </template>
-        <template slot="price" slot-scope="text">
-          {{text}}
-        </template>
-        <template slot="number" slot-scope="text">
-          {{text}}
-        </template>
         <div slot="action" slot-scope="text,record">
-          <!-- <a @click="onPay(record)">收钱</a> -->
-          <a @click="onAdvance(record)">加定金</a>
+          <template v-if="query.product_type!==6">
+            <a @click="onDetail(record)">详情</a>
+            <a-divider type="vertical"></a-divider>
+          </template>
+          <a @click="onTransaction(record)">签单</a>
+          <!-- <a @click="onAdvance(record)">加定金</a>
           <a-divider type="vertical"></a-divider>
           <a @click="onCabinet(record)">储物柜</a>
           <a-divider type="vertical"></a-divider>
           <a @click="onDeposite(record)">储值卡签单</a>
           <a-divider type="vertical"></a-divider>
-          <a @click="onSale(record)">会员卡签单</a>
+          <a @click="onMember(record)">会员卡签单</a>
           <a-divider type="vertical"></a-divider>
-          <a @click="onCourse(record)">课程包</a>
+          <a @click="onPackage(record)">课程包</a>
           <a-divider type="vertical"></a-divider>
-          <a @click="onPersonalCourse(record)">私教课</a>
+          <a @click="onPersonalCourse(record)">私教课</a> -->
         </div>
       </st-table>
     </div>
@@ -49,6 +45,8 @@
 
 <script>
 import { ListService } from './list.service'
+import { UserService } from '@/services/user.service'
+import { RouteService } from '@/services/route.service'
 export default {
   name: 'PageShopSoldLease',
   bem: {
@@ -57,7 +55,28 @@ export default {
   },
   serviceInject() {
     return {
-      listService: ListService
+      listService: ListService,
+      userService: UserService,
+      routeService: RouteService
+    }
+  },
+  rxState() {
+    return {
+      list: this.listService.list$,
+      page: this.listService.page$,
+      loading: this.listService.loading$,
+      query: this.routeService.query$,
+      transaction: this.userService.transactionEnums$
+    }
+  },
+  computed: {
+    productType() {
+      let list = []
+      if (!this.transaction.product_type) return list
+      Object.entries(this.transaction.product_type.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
     }
   },
   data() {
@@ -77,111 +96,206 @@ export default {
           scopedSlots: { customRender: 'price' }
         }, {
           title: '销量',
-          dataIndex: 'number',
-          scopedSlots: { customRender: 'number' }
+          dataIndex: 'sold_num',
+          scopedSlots: { customRender: 'sold_num' }
         }, {
           title: '操作',
           dataIndex: 'action',
           width: 140,
           scopedSlots: { customRender: 'action' }
-        }],
-      list: [],
-      saleTypeList: [
-        { value: -1, label: '全部' },
-        { value: 1, label: '会员卡' },
-        { value: 2, label: '私教课' },
-        { value: 3, label: '课程包' },
-        { value: 4, label: '储值卡' },
-        { value: 5, label: '租赁' }
-      ],
-      saleType: -1
+        }]
     }
   },
-  created() {
-    this.init()
-  },
   methods: {
-    init() {
-      this.list = [
-        {
-          'id': 1,
-          'product_name': '会员卡',
-          'product_type': 1,
-          'price': '200.1',
-          'number': 100
-        },
-        {
-          'id': 12,
-          'product_name': '储值卡',
-          'product_type': 2,
-          'price': '1000',
-          'number': 666
-        },
-        {
-          'id': 13,
-          'product_name': '私教课',
-          'product_type': 3,
-          'price': '500',
-          'number': 888
-        },
-        {
-          'id': 14,
-          'product_name': '课程包',
-          'product_type': 4,
-          'price': '300',
-          'number': 999
-        }
-      ]
+    getList() {
+      this.$router.push({ query: this.query, force: true })
     },
-    onCabinet(record) {
+    onPageChange(data) {
+      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize }, force: true })
+    },
+    // 详情
+    onDetail(record) {
+      console.log(record)
+    },
+    // 签单
+    onTransaction(record) {
+      switch (this.query.product_type) {
+        case 1:
+          this.onMember(record)
+          break
+        case 2:
+          this.onDeposite(record)
+          break
+        case 3:
+          this.onPersonalCourse(record)
+          break
+        case 5:
+          this.onPackage(record)
+          break
+        case 6:
+          this.onCabinet(record)
+          break
+      }
+    },
+    // 打印合同
+    createdOrderPrint() {
+      console.log('打印合同')
+    },
+    // 查看订单
+    createdOrderViewOrder() {
+      console.log('查看订单')
+    },
+    // 订单收款modal
+    createdOrderPay(props) {
+      return new Promise((resolve, reject) => {
+        this.$modalRouter.push({
+          name: 'sold-deal-gathering',
+          props,
+          on: {
+            success: resolve
+          }
+        })
+      })
+    },
+    // 创建成功，提示框modal
+    createdGatheringTip(props) {
+      return new Promise((resolve, reject) => {
+        this.$modalRouter.push({
+          name: 'sold-deal-gathering-tip',
+          props,
+          on: {
+            success: resolve
+          }
+        })
+      })
+    },
+    // 提示框回调，gathering-tip
+    async tipCallBack(orderId, modalType, callBackType) {
+      switch (callBackType) {
+        case 'cancel':
+          this.getList()
+          break
+        case 'Print':
+          this.createdOrderPrint()
+          break
+        case 'ViewOrder':
+          this.createdOrderViewOrder()
+          break
+        case 'Pay':
+          this.createdOrderPay({ order_id: orderId, type: modalType }).then(res => {
+            this.payCallBack(orderId, modalType, res.type)
+          })
+          break
+      }
+    },
+    // 订单收款回调
+    async payCallBack(orderId, modalType, callBackType) {
+      switch (callBackType) {
+        case 'cancel':
+          this.getList()
+          break
+        case 'pay':
+          this.createdGatheringTip({ message: '收款成功', order_id: orderId }).then(res => {
+            this.tipCallBack(orderId, modalType, res.type)
+          })
+          break
+      }
+    },
+    // 签单成功回调
+    async saleCallBack(result, type) {
+      if (result.type === 'create') {
+        // 创建订单成功
+        let props = {
+          order_id: result.order_id,
+          type,
+          message: '订单创建成功',
+          needPay: true
+        }
+        let orderSuccessRes = await this.createdGatheringTip(props)
+        this.tipCallBack(result.order_id, type, orderSuccessRes.type)
+      } else if (result.type === 'createPay') {
+        // 创建订单成功 并且到支付页面
+        let props = {
+          order_id: result.order_id,
+          type
+        }
+        let payOrderRes = await this.createdOrderPay(props)
+        this.payCallBack(result.order_id, type, payOrderRes.type)
+      }
+    },
+    // 会员卡签单
+    onMember(record) {
       this.$modalRouter.push({
-        name: 'sold-deal-sale-cabinet',
+        name: 'sold-deal-sale-member-card',
         props: {
-          id: '0'
+          id: `${record.id}`
         },
         on: {
-          success: res => {
-            if (res.type === 'create') {
-              // 创建订单
-              console.log(res.orderId, 1)
-            } else if (res.type === 'createPay') {
-              // 创建订单并支付
-              console.log(res.orderId, 2)
-            }
+          success: (result) => {
+            this.saleCallBack(result, 'member')
           }
         }
       })
     },
+    // 储值卡签单
     onDeposite(record) {
       this.$modalRouter.push({
         name: 'sold-deal-sale-deposite-card',
         props: {
-          id: '1'
+          id: `${record.id}`
         },
         on: {
-          success: res => {
-            if (res.type === 'create') {
-              // 创建订单
-              console.log(res.orderId, 1)
-            } else if (res.type === 'createPay') {
-              // 创建订单并支付
-              this.$modalRouter.push({
-                name: 'sold-deal-gathering',
-                props: {
-                  order_id: res.orderId,
-                  type: 'deposit'
-                },
-                on: {
-                  ok: res => {
-                    console.log(res)
-                  }
-                }
-              })
-            }
+          success: (result) => {
+            this.saleCallBack(result, 'deposit')
           }
         }
       })
     },
+    // 储物柜签单
+    onCabinet(record) {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale-cabinet',
+        props: {
+          // 默认传0，因为没有选择具体的柜子
+          id: '0',
+          areaId: `${record.id}`
+        },
+        on: {
+          success: (result) => {
+            this.saleCallBack(result, 'cabinet')
+          }
+        }
+      })
+    },
+    // 课程包签单
+    onPackage(record) {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale-course',
+        props: {
+          id: `${record.id}`
+        },
+        on: {
+          success: (result) => {
+            this.saleCallBack(result, 'package')
+          }
+        }
+      })
+    },
+    // 私教课签单
+    onPersonalCourse(record) {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale-personal-course',
+        props: {
+          id: `${record.id}`
+        },
+        on: {
+          success: (result) => {
+            this.saleCallBack(result, 'personal')
+          }
+        }
+      })
+    },
+
     onPay(record) {
       this.$modalRouter.push({
         name: 'sold-deal-gathering'
@@ -196,171 +310,6 @@ export default {
         contract_number: 'C62',
         description: '11'
       }).subscribe()
-    },
-    onSale(record) {
-      this.$modalRouter.push({
-        name: 'sold-deal-sale-member-card',
-        props: {
-          id: '1'
-        },
-        on: {
-          success: (result) => {
-            if (result.type === 'create') {
-              // 创建订单成功
-              this.$modalRouter.push({
-                name: 'sold-deal-gathering-tip',
-                props: {
-                  order_id: result.order_id,
-                  type: 'member',
-                  message: '订单创建成功',
-                  needPay: true
-                },
-                on: {
-                  success: () => {
-                    console.log('success')
-                  }
-                }
-              })
-            } else if (result.type === 'createPay') {
-              // 创建订单成功 并且到支付页面
-              this.$modalRouter.push({
-                name: 'sold-deal-gathering',
-                props: {
-                  order_id: result.order_id,
-                  type: 'member'
-                },
-                on: {
-                  success: () => {
-                    this.$modalRouter.push({
-                      name: 'sold-deal-gathering-tip',
-                      props: {
-                        order_id: result.order_id,
-                        type: 'member',
-                        message: '收款成功'
-                      },
-                      on: {
-                        success: () => {
-                          console.log('success')
-                        }
-                      }
-                    })
-                  }
-                }
-              })
-            }
-          }
-        }
-      })
-    },
-    onCourse(record) {
-      this.$modalRouter.push({
-        name: 'sold-deal-sale-course',
-        props: {
-          id: '1'
-        },
-        on: {
-          success: (result) => {
-            if (result.type === 'create') {
-              // 创建订单成功
-              this.$modalRouter.push({
-                name: 'sold-deal-gathering-tip',
-                props: {
-                  order_id: result.order_id,
-                  type: 'package',
-                  message: '订单创建成功',
-                  needPay: true
-                },
-                on: {
-                  success: () => {
-                    console.log('success')
-                  }
-                }
-              })
-            } else if (result.type === 'createPay') {
-              // 创建订单成功 并且到支付页面
-              this.$modalRouter.push({
-                name: 'sold-deal-gathering',
-                props: {
-                  order_id: result.order_id,
-                  type: 'package'
-                },
-                on: {
-                  success: () => {
-                    this.$modalRouter.push({
-                      name: 'sold-deal-gathering-tip',
-                      props: {
-                        order_id: result.order_id,
-                        type: 'package',
-                        message: '收款成功'
-                      },
-                      on: {
-                        success: () => {
-                          console.log('success')
-                        }
-                      }
-                    })
-                  }
-                }
-              })
-            }
-          }
-        }
-      })
-    },
-    onPersonalCourse(record) {
-      this.$modalRouter.push({
-        name: 'sold-deal-sale-personal-course',
-        props: {
-          id: '52194842312815'
-        },
-        on: {
-          success: (result) => {
-            if (result.type === 'create') {
-              // 创建订单成功
-              this.$modalRouter.push({
-                name: 'sold-deal-gathering-tip',
-                props: {
-                  order_id: result.order_id,
-                  type: 'personal',
-                  message: '订单创建成功',
-                  needPay: true
-                },
-                on: {
-                  success: () => {
-                    console.log('success')
-                  }
-                }
-              })
-            } else if (result.type === 'createPay') {
-              // 创建订单成功 并且到支付页面
-              this.$modalRouter.push({
-                name: 'sold-deal-gathering',
-                props: {
-                  order_id: result.order_id,
-                  type: 'personal'
-                },
-                on: {
-                  success: (result) => {
-                    this.$modalRouter.push({
-                      name: 'sold-deal-gathering-tip',
-                      props: {
-                        order_id: result.order_id,
-                        type: 'personal',
-                        message: '收款成功'
-                      },
-                      on: {
-                        success: () => {
-                          console.log('success')
-                        }
-                      }
-                    })
-                  }
-                }
-              })
-            }
-          }
-        }
-      })
     }
   }
 }

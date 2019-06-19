@@ -181,6 +181,14 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'shop-sold-transaction-list'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      product_name: { type: String, default: '' },
+      product_type: { type: Number, default: 1 }
+    }
+  },
   // 订单列表
   'shop-finance-order-list'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {

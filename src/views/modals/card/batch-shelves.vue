@@ -180,9 +180,9 @@
       <st-form-item labelGutter="12px" class="mg-b0" label="开卡方式" required>
         <a-checkbox-group v-model="openTypeList" @change="onOpenTypeChange" :class="shelves('open-type')">
           <a-checkbox :value="3">指定日期开卡</a-checkbox>
-          <a-checkbox :value="2">购买即开卡</a-checkbox>
+          <a-checkbox :value="1">购买即开卡</a-checkbox>
           <span :class="shelves('day-input')">
-            <a-checkbox :value="1">
+            <a-checkbox :value="2">
               到店开卡
               <a-tooltip placement="right">
                 <template slot="title">
@@ -191,7 +191,7 @@
                 <a-icon type="info-circle"/>
               </a-tooltip>
             </a-checkbox>
-            <div class="autoplay-card-day" v-if="openTypeList.includes(1)">
+            <div class="autoplay-card-day" v-if="openTypeList.includes(2)">
               <a-form-item class="page-a-form">
                 <st-input-number
                 v-decorator="['openDay',{rules:[{required:true,message:'请输入天数'}]}]"
