@@ -28,12 +28,17 @@ export class CardsApi extends Api {
   getCardList(query:CardListInput, type:string) {
     return this.http.get(`/v1/cards/member/${type}`, { query })
   }
-
   /**
    * 品牌会员卡上架详情
    */
   getCardShelfInfo(id:string) {
     return this.http.get(`/v1/cards/member/brand/shelf/${id}`)
+  }
+  /**
+   * 品牌会员卡上架
+   */
+  setCardShelf(params:any, id:string) {
+    return this.http.put(`/v1/cards/member/brand/shelf/${id}`, { params })
   }
 
   /**

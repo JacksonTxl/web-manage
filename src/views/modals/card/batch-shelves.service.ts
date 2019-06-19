@@ -34,4 +34,8 @@ export class BatchShelvesService {
   resetCourseList() {
     this.courseList$.commit(() => [])
   }
+  @Effect()
+  shelfCard(params:any) {
+
+  }
 }
