@@ -66,7 +66,7 @@ export default {
   computed: {
     pagination() {
       return {
-        pageSize: this.page.size + '',
+        pageSize: this.page.size,
         total: this.page.total_counts
       }
     }
