@@ -70,7 +70,6 @@ export default {
   },
   data() {
     return {
-      rootSubmenuKeys: [],
       openKeys: []
     }
   },
@@ -83,6 +82,9 @@ export default {
     },
     menuMap() {
       return treeToMap(this.menus)
+    },
+    rootSubmenuKeys() {
+      return this.getRootSubmenuKeys()
     }
   },
   methods: {
@@ -120,6 +122,14 @@ export default {
       this.userService.getMenus({
         force: true
       }).subscribe()
+    },
+    getRootSubmenuKeys() {
+      const { menus } = this
+      const rootSubmenuKeys = []
+      menus.forEach(item => {
+        rootSubmenuKeys.push(item.id)
+      })
+      return rootSubmenuKeys
     }
   }
 }
