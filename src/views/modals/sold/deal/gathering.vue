@@ -4,6 +4,7 @@
   size="small"
   v-model="show"
   wrapClassName="modal-sold-deal-gathering"
+  @cancel="onCancel"
   @ok="onOk">
     <div :class="gathering('content')">
       <a-row :class="gathering('info')">
@@ -133,6 +134,13 @@ export default {
       this.$emit('ok')
       this.show = false
     },
+    // 关闭modal
+    onCancel() {
+      this.show = false
+      this.$emit('success', {
+        type: 'cancel'
+      })
+    },
     selectPay(checkedValues) {
       this.selectPayValues = checkedValues.target.value
     },
@@ -143,7 +151,9 @@ export default {
         values.payment_type = values.payment_method.payment_type
         delete values.payment_method
         this.gatheringService.payTransaction(values).subscribe(result => {
-          this.$emit('success')
+          this.$emit('success', {
+            type: 'pay'
+          })
           this.show = false
         })
       })

@@ -56,6 +56,7 @@ export class UserService extends Store<UserState> {
   finance$: Computed<ModuleEnums>
   crowdEnums$: Computed<ModuleEnums>
   soldEnums$: Computed<ModuleEnums>
+  transactionEnums$: Computed<ModuleEnums>
   constructor(
     private constApi: ConstApi,
     private menuApi: MenuApi
@@ -84,6 +85,7 @@ export class UserService extends Store<UserState> {
     )
     this.memberEnums$ = new Computed(this.enums$.pipe(pluck('member')))
     this.memberCardEnums$ = new Computed(this.enums$.pipe(pluck('member_card')))
+    this.transactionEnums$ = new Computed(this.enums$.pipe(pluck('transaction')))
     this.personalCourseEnums$ = new Computed(
       this.enums$.pipe(pluck('personal_course'))
     )

@@ -471,7 +471,7 @@ export default {
           }).subscribe((result) => {
             this.$emit('success', {
               type: 'create',
-              order_id: result.info.order_id
+              orderId: result.info.order_id
             })
             this.show = false
           })
@@ -501,7 +501,7 @@ export default {
           }).subscribe((result) => {
             this.$emit('success', {
               type: 'createPay',
-              order_id: result.info.order_id
+              orderId: result.info.order_id
             })
             this.show = false
           })

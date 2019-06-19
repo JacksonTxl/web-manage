@@ -207,6 +207,10 @@ export default {
     id: {
       type: String,
       required: true
+    },
+    areaId: {
+      type: Number,
+      required: true
     }
   },
   data() {
@@ -237,7 +241,7 @@ export default {
     }
   },
   created() {
-    this.saleCabinetService.init(this.id).subscribe(res => {
+    this.saleCabinetService.init(this.id, this.areaId).subscribe(res => {
       this.startTime = cloneDeep(moment(res[0].info.start_time * 1000))
     })
   },

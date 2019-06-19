@@ -268,7 +268,7 @@ export default {
         name: 'sold-lease-refund',
         props: {
           // id: record.sold_cabinet_id,
-          id: 48587472437681
+          id: 58240612761731
         },
         on: {
           success: (result) => {
