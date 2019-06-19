@@ -53,13 +53,13 @@
         </template>
         <div slot="action" slot-scope="text, record">
           <a v-if="actionShow(record).gathering" @click="onGathering(record)">收款</a>
-          <a-divider v-if="actionShow(record).gathering" type="vertical"></a-divider>
-          <a v-if="actionShow(record).cancel">取消</a>
           <a-divider v-if="actionShow(record).cancel" type="vertical"></a-divider>
-          <a v-if="actionShow(record).detail" @click="onTransfer(record)">详情</a>
+          <a v-if="actionShow(record).cancel">取消</a>
           <a-divider v-if="actionShow(record).detail" type="vertical"></a-divider>
-          <a v-if="actionShow(record).refund" @click="onRefund(record)">退款</a>
+          <a v-if="actionShow(record).detail" @click="onTransfer(record)">详情</a>
           <a-divider v-if="actionShow(record).refund" type="vertical"></a-divider>
+          <a v-if="actionShow(record).refund" @click="onRefund(record)">退款</a>
+          <a-divider v-if="actionShow(record).split" type="vertical"></a-divider>
           <a v-if="actionShow(record).split" @click="onRefund(record)">业务拆分</a>
         </div>
       </st-table>
@@ -284,6 +284,9 @@ export default {
           }
         }
       })
+    },
+    onCancel(record) {
+
     },
     // 转让
     onTransfer(record) {
