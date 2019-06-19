@@ -209,7 +209,7 @@ export default {
       required: true
     },
     areaId: {
-      type: Number,
+      type: String,
       required: true
     }
   },
@@ -242,7 +242,7 @@ export default {
   },
   created() {
     this.saleCabinetService.init(this.id, this.areaId).subscribe(res => {
-      this.startTime = cloneDeep(moment(res[0].info.start_time * 1000))
+      this.startTime = cloneDeep(moment(res[0].info.start_time))
     })
   },
   computed: {

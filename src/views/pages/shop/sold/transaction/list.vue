@@ -26,17 +26,7 @@
             <a-divider type="vertical"></a-divider>
           </template>
           <a @click="onTransaction(record)">签单</a>
-          <!-- <a @click="onAdvance(record)">加定金</a>
-          <a-divider type="vertical"></a-divider>
-          <a @click="onCabinet(record)">储物柜</a>
-          <a-divider type="vertical"></a-divider>
-          <a @click="onDeposite(record)">储值卡签单</a>
-          <a-divider type="vertical"></a-divider>
-          <a @click="onMember(record)">会员卡签单</a>
-          <a-divider type="vertical"></a-divider>
-          <a @click="onPackage(record)">课程包</a>
-          <a-divider type="vertical"></a-divider>
-          <a @click="onPersonalCourse(record)">私教课</a> -->
+          <!-- <a @click="onAdvance(record)">加定金</a> -->
         </div>
       </st-table>
     </div>
@@ -296,11 +286,6 @@ export default {
       })
     },
 
-    onPay(record) {
-      this.$modalRouter.push({
-        name: 'sold-deal-gathering'
-      })
-    },
     onAdvance() {
       this.listService.addAdvance({
         member_id: 20554589995205,
