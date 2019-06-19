@@ -1,6 +1,6 @@
 <template>
 <div  class="organization-tree">
-  <st-organ-tree :treeData="treeData" @click-item="onCLickItem" @node-click="getDepartment"></st-organ-tree>
+  <st-organ-tree ref="tree" :treeData="treeData" @click-item="onCLickItem" @node-click="getDepartment"></st-organ-tree>
 </div>
 
 </template>
@@ -36,14 +36,9 @@ export default {
     }
   },
   methods: {
-    onCLickItem(IOtem) {
-      console.log('onCLickItem', IOtem)
-    },
-    getDepartment(item) {
-      this.$router.push({ query: { department_id: item, ...this.query } })
-    },
-    onSelect(selectedKeys, info) {
-      console.log('selected', selectedKeys, info)
+    getDepartment(item = 0) {
+      this.query.department_id = item
+      this.$router.push({ query: this.query, force: true })
     }
   }
 }

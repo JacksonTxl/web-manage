@@ -69,7 +69,7 @@
               <td>
                 <modal-link
                   tag="a"
-                  :to="{ name: 'schedule-personal-edit', props: { id: item.id, start: scheduleTime[0] } }"
+                  :to="{ name: 'schedule-personal-edit', props: { id: item.staff_id, start: scheduleTime[0] } }"
                 >编辑</modal-link>
               </td>
             </tr>
@@ -83,15 +83,18 @@
 <script>
 import date from './date#/date-component'
 import { PersonalTableService } from './personal-table.service'
+import { RouteService } from '../../../../../../services/route.service'
 
 export default {
   serviceInject() {
     return {
-      tableService: PersonalTableService
+      tableService: PersonalTableService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
+      query: this.routeService.query$,
       scheduleTime: this.tableService.scheduleTime$,
       scheduleList: this.tableService.scheduleList$
     }
@@ -122,7 +125,7 @@ export default {
       this.$router.push({ name: 'shop-product-course-schedule-personal-calendar' })
     },
     getList(query = {}) {
-      this.tableService.getList(query).subscribe()
+      this.$router.push({ query: { ...this.query, ...query } })
     },
     onPageChange() {}
   }
