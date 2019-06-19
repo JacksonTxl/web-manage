@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div v-if="favorite.length" class="layout-default-brand-sider__often">
-      <h2 class="layout-default-brand-sider__often-title">常用</h2>
-      <ul class="layout-default-brand-sider__often-list">
+    <div v-if="favorite.length" class="layout-default-sider__often">
+      <h2 class="layout-default-sider__often-title">常用</h2>
+      <ul class="layout-default-sider__often-list">
         <!-- <li
-          class="layout-default-brand-sider__often-item layout-default-brand-sider__often-item--active"
+          class="layout-default-sider__often-item layout-default-sider__often-item--active"
         >
           <i></i>
           <span>营销插件</span>
@@ -12,7 +12,7 @@
         <li
           v-for="(item, index) in favorite"
           :key="index"
-          class="layout-default-brand-sider__often-item"
+          class="layout-default-sider__often-item"
           @click="delFavorite(item.id)"
         >
           <i></i>
@@ -21,10 +21,9 @@
       </ul>
     </div>
     <a-menu
-        class="layout-default-brand-sider__menu"
+        class="layout-default-sider__menu"
         :openKeys="openKeys"
         @openChange="onOpenChange"
-        theme="light"
         mode="inline"
         @click='onClickMenu'
       >

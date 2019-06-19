@@ -11,8 +11,10 @@
               :value="+index">{{item}}</a-radio>
           </a-radio-group>
           <div class="page-shop-coach-container-shop mg-t8" v-if="isShow">
-            <select-shop :shopIds="info.shop_ids" @change="onSelectShopChange"></select-shop>
-            <input type="hidden" v-decorator="ruleConfig.shopIds">
+            <select-shop
+              :shopIds="shopIds"
+              @change="onSelectShopChange"
+            />
           </div>
         </st-form-item>
       </a-col>
@@ -84,6 +86,12 @@ export default {
   methods: {
     save(e) {
       e.preventDefault()
+      if (!this.shopInputCheck()) {
+        this.messageService.error({
+          content: '请选择门店'
+        })
+        return
+      }
       this.form.validateFields().then(() => {
         const data = this.getData()
         this.editService.setShop(data).subscribe(this.onSaveSuccess)
@@ -99,26 +107,34 @@ export default {
     },
     onChange(e) {
       this.shopSetting = e.target.value
+      this.shopIds = []
     },
     onSelectShopChange(shopIds) {
-      this.form.setFieldsValue({
-        shop_ids: shopIds
-      })
+      this.shopIds = shopIds
     },
     setFieldsValue() {
       const info = this.info
       this.form.setFieldsValue({
         course_name: info.course_name,
         shop_setting: info.shop_setting,
-        shop_ids: info.shop_ids,
         coach_ids: info.coach_ids
       })
       this.shopSetting = info.shop_setting
+      this.shopIds = info.shop_ids
     },
     getData() {
       const data = this.form.getFieldsValue()
       data.course_id = +this.query.id
+      data.shop_ids = this.shopIds
       return data
+    },
+    shopInputCheck() {
+      const { shopSetting } = this
+      if (shopSetting === 1) {
+        return true
+      } else {
+        return this.shopIds.length
+      }
     }
   }
 }

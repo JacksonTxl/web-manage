@@ -9,8 +9,8 @@
         :key="item.id"
       >
         <div :class="bItem()">
-          <div :class="bItem('del')" @click="onDel(item.id)">
-            <a-popconfirm title="Are you sure？">
+          <div v-if="auth.areaDel" :class="bItem('del')" @click="onDel(item.id)">
+            <a-popconfirm title="确认删除吗？">
               <st-icon type="delete" :class="bItem('del-icon')"/>
             </a-popconfirm>
           </div>
@@ -42,14 +42,14 @@
             </div>
           </div>
           <div :class="bItem('footer')">
-            <router-link :class="bItem('action')" :to="`./site?id=${item.id}`" class="st-link-secondary">设置座位</router-link>
+            <router-link v-if="auth.seatAdd" :class="bItem('action')" :to="`./site?id=${item.id}`" class="st-link-secondary">设置座位</router-link>
             <div :class="bItem('divider')"></div>
-            <a :class="bItem('action')" class="st-link-secondary" @click="onUpdateCourt(item.id)">编辑</a>
+            <a v-if="auth.areaEdit" :class="bItem('action')" class="st-link-secondary" @click="onUpdateCourt(item.id)">编辑</a>
           </div>
         </div>
       </a-col>
       <a-col :xl="8" :xxl="6" :xs="12">
-        <div @click="onAddCourt" class="court-add">
+        <div v-if="auth.areaAdd" @click="onAddCourt" class="court-add">
           <a-icon type="plus"></a-icon>
           <span class="mg-l8">添加场地</span>
         </div>
@@ -71,7 +71,8 @@ export default {
   },
   rxState() {
     return {
-      list: this.listService.list$
+      list: this.listService.list$,
+      auth: this.listService.auth$
     }
   },
   components: {
