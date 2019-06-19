@@ -20,7 +20,8 @@ export default {
   name: 'StOrganTree',
   data() {
     return {
-      treeDataSelf: {}
+      treeDataSelf: {},
+      count: 0
     }
   },
   props: {
@@ -43,11 +44,13 @@ export default {
       this.addItem(item)
     },
     getNodeItemDetail(item) {
+      console.log('getNodeItemDetail', item)
       this.$emit('node-click', item.id)
     },
     traverseTree(node, tree, opString) {
       return tree.map(item => {
         item[opString] = item.name === node.name
+        // item.count && (this.count = this.count + item.count)
         const obj = { [opString]: item.name === node.name }
         return item.children ? { ...obj, name: item.name, children: this.traverseTree(node, item.children, opString), id: item.id, count: item.count } : item
       })

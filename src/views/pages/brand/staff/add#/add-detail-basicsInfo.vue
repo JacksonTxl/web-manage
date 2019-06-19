@@ -176,7 +176,7 @@
 
     <a-row :gutter="8">
       <a-col :offset="1" :lg="10">
-        <st-form-item label="系统权限" required>
+        <st-form-item label="系统权限">
           <a-checkbox @change="permissionChange" v-decorator="rules.is_permission">开通系统使用权限</a-checkbox>
         </st-form-item>
         <st-form-item label="登录账号">
@@ -230,7 +230,6 @@
 <script>
 import { RuleConfig } from '@/constants/staff/rule'
 import { UserService } from '@/services/user.service'
-import { MessageService } from '@/services/message.service'
 import { AddService } from '../add.service'
 import ShopSelect from '@/views/biz-components/shop-select'
 export default {
@@ -239,8 +238,7 @@ export default {
     return {
       rules: RuleConfig,
       userService: UserService,
-      addService: AddService,
-      message: MessageService
+      addService: AddService
     }
   },
   rxState() {
@@ -269,7 +267,6 @@ export default {
   watch: {
     isAdd(a) {
       // 监听是否选中了教练
-      console.log('watch new', a)
       let flag = a.some(val => {
         return val === 4 || val === 5
       })
@@ -291,7 +288,6 @@ export default {
   methods: {
     watchChooesed(e) {
       this.isAdd = e
-      // console.log(this.isAdd)
     },
     permissionChange(e) {
       this.isChoosePermission = e.target.checked
@@ -304,9 +300,6 @@ export default {
     onChange(value) {
       console.log('选择部门', value)
       this.value = value
-    },
-    onSelectIdtype(e) {
-      console.log('证件选择', e)
     },
     imageUploadChange(data) {
       this.form.setFieldsValue({
@@ -327,33 +320,30 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
-          this.submit(values, 1)
+          this.submit(values)
         }
       })
     },
     /**
      * saveOrgoNext 0 保存 1 跳转到编辑
      */
-    submit(data, saveOrgoNext) {
-      // this.isChoosePermission ? (data.is_permission = 1) : (data.is_permission = 0)
+    submit(data) {
       data.is_permission = +this.isChoosePermission
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.country_code_id = this.choosed_code_id
       data.id_type = this.choosed_id_type
       data.image_avatar && (data.image_avatar = data.image_avatar[0])
       data.image_face && (data.image_face = data.image_face[0])
-      this.addService.addStaff(data).subscribe(res => {
-        if (saveOrgoNext === 1) {
-          this.$emit('skiptoedit', {
-            id: 1,
-            isShowLevel: this.isShowLevel
-          })
-        } else {
-          this.message.success({ content: '添加员工成功' })
-          this.$router.go(-1)
+      this.$router.push({
+        name: 'brand-staff-edit',
+        query: {
+          staffId: res.staff_id,
+          currentIndex: 1,
+          isShowCoach: this.stepArr.length === 3 ? 1 : 0
         }
       })
+      // this.addService.addStaff(data).subscribe(res => {
+      // })
     }
   }
 }

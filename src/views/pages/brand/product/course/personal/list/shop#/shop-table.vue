@@ -10,9 +10,9 @@
       @change="onChange"
     >
       <div slot="action" slot-scope="action, record">
-        <router-link class="mg-r8" v-if="record.auth['brand_shop:product:personal_course|get']" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}">详情</router-link>
+        <router-link class="mg-r8" v-if="record.auth['brand_shop:product:personal_course|get']" :to="{name: 'brand-product-course-personal-info', query: { id: record.course_id } }">详情</router-link>
       </div>
-      <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {courseId: record.course_id}}"
+      <router-link class="mg-r8" :to="{ name: 'brand-product-course-personal-info', query: { id: record.course_id } }"
       slot="course_name" slot-scope="course_name, record">
         {{course_name}}
       </router-link>

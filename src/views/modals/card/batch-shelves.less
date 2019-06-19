@@ -36,6 +36,14 @@
     border: 1px solid @normal-color;
     border-radius: 4px;
     padding: 12px;
+    &-error {
+      border-color: @error-color;
+    }
+    &-valid-text {
+      height: 24px;
+      margin-bottom: 0;
+      .c(@error-color);
+    }
     th {
       padding: 16px 0;
       &:nth-of-type(1){
