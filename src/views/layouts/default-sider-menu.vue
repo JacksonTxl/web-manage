@@ -92,9 +92,7 @@ export default {
       )
     },
     onOpenChange(openKeys) {
-      const latestOpenKey = openKeys.find(
-        key => this.openKeys.indexOf(key) === -1
-      )
+      const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
       if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
         this.openKeys = openKeys
       } else {
