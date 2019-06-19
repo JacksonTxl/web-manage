@@ -46,16 +46,21 @@
       :columns="columns"
       :dataSource="list">
         <template slot="order_status" slot-scope="text">
-          {{text | enumFilter('sold.order_status')}}
+          {{text | enumFilter('finance.order_status')}}
+        </template>
+        <template slot="pay_status" slot-scope="text">
+          {{text | enumFilter('finance.pay_status')}}
         </template>
         <div slot="action" slot-scope="text, record">
-          <a @click="onRelet(record)">收款</a>
-          <a-divider type="vertical"></a-divider>
-          <a>取消</a>
-          <a-divider type="vertical"></a-divider>
-          <a @click="onTransfer(record)">详情</a>
-          <a-divider type="vertical"></a-divider>
-          <a @click="onRefund(record)">退款</a>
+          <a v-if="actionShow(record).gathering" @click="onGathering(record)">收款</a>
+          <a-divider v-if="actionShow(record).gathering" type="vertical"></a-divider>
+          <a v-if="actionShow(record).cancel">取消</a>
+          <a-divider v-if="actionShow(record).cancel" type="vertical"></a-divider>
+          <a v-if="actionShow(record).detail" @click="onTransfer(record)">详情</a>
+          <a-divider v-if="actionShow(record).detail" type="vertical"></a-divider>
+          <a v-if="actionShow(record).refund" @click="onRefund(record)">退款</a>
+          <a-divider v-if="actionShow(record).refund" type="vertical"></a-divider>
+          <a v-if="actionShow(record).split" @click="onRefund(record)">业务拆分</a>
         </div>
       </st-table>
     </div>
@@ -106,6 +111,7 @@ export default {
       })
       return list
     }
+
   },
   data() {
     return {
@@ -120,8 +126,8 @@ export default {
           scopedSlots: { customRender: 'product_name' }
         }, {
           title: '商品类型',
-          dataIndex: 'product_type',
-          scopedSlots: { customRender: 'product_type' }
+          dataIndex: 'product_type_name',
+          scopedSlots: { customRender: 'product_type_name' }
         }, {
           title: '订单状态',
           dataIndex: 'order_status',
@@ -212,6 +218,33 @@ export default {
       }
       this.$router.push({ query: { ...this.query, ...query } })
     },
+    actionShow(record) {
+      const order_status = record.order_status
+      const pay_status = record.pay_status
+      const actions = {
+        gathering: false,
+        cancel: false,
+        detail: false,
+        split: false,
+        refund: false
+      }
+      if ((order_status === 1 || order_status === 5) && (pay_status === 1 || pay_status === 2)) {
+        actions.gathering = true
+      }
+      if (order_status === 1 && pay_status === 1) {
+        actions.cancel = true
+      }
+      if ((order_status === 2 || order_status === 5) && (pay_status === 2 || pay_status === 3)) {
+        actions.refund = true
+      }
+      if (order_status === 2 && pay_status === 3) {
+        actions.split = true
+      }
+      if (order_status !== 3 && pay_status !== 1) {
+        actions.detail = true
+      }
+      return actions
+    },
     // 设置searchData
     setSearchData() {
       this.keyword = this.query.keyword
@@ -225,28 +258,29 @@ export default {
         : null
     },
     // 收款
-    onRelet(record) {
+    onGathering(record) {
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
         props: {
-          order_id: result.order_id,
-          type: 'cabinet_order'
+          order_id: record.id,
+          type: this.productType(record.product_type)
         },
         on: {
           success: () => {
-            this.$modalRouter.push({
-              name: 'sold-deal-gathering-tip',
-              props: {
-                order_id: result.order_id,
-                type: 'cabinet_order',
-                message: '收款成功'
-              },
-              on: {
-                success: () => {
-                  console.log('success')
-                }
-              }
-            })
+            this.onSearch()
+            // this.$modalRouter.push({
+            //   name: 'sold-deal-gathering-tip',
+            //   props: {
+            //     order_id: record.id,
+            //     type: this.productType(record.product_type),
+            //     message: '收款成功'
+            //   },
+            //   on: {
+            //     success: () => {
+            //       console.log('success')
+            //     }
+            //   }
+            // })
           }
         }
       })
@@ -280,6 +314,40 @@ export default {
           }
         }
       })
+    },
+    productType(type) {
+      let name = ''
+      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金
+      switch (type) {
+        case 1:
+          name = 'member'
+          break
+        case 2:
+          name = 'personal'
+          break
+        case 3:
+          name = 'member'
+          break
+        case 4:
+          name = 'package'
+          break
+        case 5:
+          name = 'deposit'
+          break
+        case 6:
+          name = 'member'
+          break
+        case 7:
+          name = 'advance'
+          break
+        case 8:
+          name = 'advance'
+          break
+        case 9:
+          name = 'member'
+          break
+      }
+      return name
     }
   }
 }
