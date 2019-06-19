@@ -16,7 +16,7 @@
           </a-radio-group>
           <div class="page-shop-coach-container-shop mg-t8" v-if="isShow">
             <select-shop
-              :shopIds="info.shop_ids"
+              :shopIds="shopIds"
               @change="onSelectShopChange"
             />
           </div>
@@ -29,7 +29,7 @@
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="ruleConfig.coachIds">
             <select-coach
-              :shopIds="info.shop_ids"
+              :shopIds="shopIds"
               :coachIds="info.coach_ids"
               @change="onSelectCoachChange"
             />

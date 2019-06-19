@@ -17,8 +17,8 @@
               <div :class="b('nav-item-content')">
                 <span>{{item.area_name}}({{item.cabinet_num}})</span>
                 <st-more-dropdown>
-                  <a-menu-item @click="editArea(item.id)">编辑</a-menu-item>
-                  <a-menu-item @click="delArea(item.id)">删除</a-menu-item>
+                  <a-menu-item v-if="auth.areaEdit" @click="editArea(item.id)">编辑</a-menu-item>
+                  <a-menu-item v-if="auth.areaDel" @click="delArea(item.id)">删除</a-menu-item>
                 </st-more-dropdown>
               </div>
               <edit-cabinet-area
@@ -32,7 +32,7 @@
         <!-- </draggable> -->
       </a-tabs>
       <add-cabinet-area v-if="isShowAddAreaBtn" @change="onAreaListChange"/>
-      <a :class="b('nav-add')" @click="addArea">添加区域</a>
+      <a v-if="auth.areaAdd" :class="b('nav-add')" @click="addArea">添加区域</a>
     </div>
     <st-panel :class="b('content')">
       <div slot="prepend" class="page-setting-cabinet-tab">
@@ -48,7 +48,7 @@
           </st-button>
           <span v-if="checked.length && isOperationInBatch">
             <st-button
-              v-if="type === 'long-term'"
+              v-if="type === 'long-term' && auth.batchPrice"
               icon="edit"
               class="mg-l8"
               v-modal-link="{
@@ -64,6 +64,7 @@
               改价
             </st-button>
             <a-popconfirm
+              v-if="auth.batchDel"
               placement="bottom"
               @confirm="onDelCabinet()"
             >
@@ -74,6 +75,7 @@
             </a-popconfirm>
           </span>
           <st-button
+            v-if="auth.batchAdd"
             v-modal-link="{
               name: `shop-cabinet-add-${type}`,
               props: {
@@ -124,7 +126,8 @@ export default {
   rxState() {
     return {
       list: this.areaService.list$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.cabinetService.auth$
     }
   },
   data() {
