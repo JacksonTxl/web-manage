@@ -5,6 +5,8 @@
   :alertSelection="{onReset: start}"
   :rowSelection="{selectedRowKeys:
   selectedRowKeys, onChange: onSelectChange}"
+  :pagination="pagination"
+  @change="onChange"
   :columns="columns" :dataSource="staffList"
   :scroll="{ x: 1500}">
     <div class="page-staff-table-action" slot="action" slot-scope="text, record">
@@ -52,9 +54,21 @@ export default {
         return []
       }
     },
+    page: {
+      type: Object,
+      default: () => {}
+    },
     loading: {
       type: Boolean,
-      defalut: false
+      default: false
+    }
+  },
+  computed: {
+    pagination() {
+      return {
+        pageSize: this.page.size + '',
+        total: this.page.total_counts
+      }
     }
   },
   filters: {
@@ -90,8 +104,8 @@ export default {
     start() {
       this.selectedRowKeys = []
     },
-    onChange() {
-
+    onChange(val) {
+      this.$router.push({ query: { page: val.current, size: val.pageSize || 20, ...this.$router.query } })
     },
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys

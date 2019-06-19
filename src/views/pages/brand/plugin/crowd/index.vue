@@ -19,7 +19,7 @@
       <st-table
         rowKey="id"
         :dataSource="crowdIndexInfo.info.list"
-        :columns="table.columns1"
+        :columns="table.columns"
         @change="onChange"
         :pagination="false"
       >
@@ -81,7 +81,7 @@ export default {
   data() {
     return {
       table: {
-        columns1: [
+        columns: [
           {
             title: '人群名称',
             dataIndex: 'crowd_name',

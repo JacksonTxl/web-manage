@@ -11,7 +11,7 @@
         <span class="tree-name" v-else>{{ item.name }}( {{item.count}} )</span>
 
         <st-more-dropdown class="tree-opreation" v-show="!item.isEdit">
-          <a-menu-item  @click="addTreeNode">新增</a-menu-item>
+          <a-menu-item v-if="auth.departmentAdd"  @click="addTreeNode">新增</a-menu-item>
           <a-menu-item  @click="editTreeNode">编辑</a-menu-item>
           <a-menu-item  @click="deleteDepartment">删除</a-menu-item>
         </st-more-dropdown>
@@ -40,6 +40,11 @@ export default {
   serviceInject() {
     return {
       departmentService: DepartmentService
+    }
+  },
+  rxState() {
+    return {
+      auth: this.departmentService.auth$
     }
   },
   name: 'TreeItem',

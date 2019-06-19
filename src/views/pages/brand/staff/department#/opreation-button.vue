@@ -8,6 +8,10 @@
 
 <script>
 export default {
+  props: {
+    auth: Object,
+    default: () => {}
+  },
   name: 'OpreationButton',
   methods: {
     onClickAddStaff() {

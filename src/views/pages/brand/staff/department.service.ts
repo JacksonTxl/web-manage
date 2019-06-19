@@ -9,12 +9,14 @@ import { UserService } from '@/services/user.service'
 import { AuthService } from '@/services/auth.service'
 
 interface SetState {
-  staffList: any
+  staffList: any,
+  page: object
 }
 @Injectable()
 export class DepartmentService extends Store<SetState> implements RouteGuard {
   state$: State<SetState>
   staffList$: Computed<any>
+  page$: Computed<object>
   auth$: Computed<any>
   // staffList$: Computed<StaffState>
   constructor(private staffApi: StaffApi, private depService: DepService, private authService: AuthService) {
@@ -29,6 +31,7 @@ export class DepartmentService extends Store<SetState> implements RouteGuard {
     })
     this.staffList$ = new Computed(this.state$.pipe(pluck('staffList')))
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
+    this.page$ = new Computed(this.state$.pipe(pluck('page')))
   }
   @Effect()
   getStaffList(data: Params) {
@@ -36,6 +39,7 @@ export class DepartmentService extends Store<SetState> implements RouteGuard {
       this.state$.commit(state => {
         res = this.authService.filter(res)
         state.staffList = res.list
+        state.page = res.page
       })
     }))
   }

@@ -2,7 +2,7 @@
   <div class="pages-staffdata-container">
     <st-panel class="pages-staffdata-header">
       <a-row :gutter="8">
-        <a-col :lg="17" class="pages-staffdata-header-detail">
+        <a-col :lg="16" class="pages-staffdata-header-detail">
           <div class="staff-avatar-container st-preview-item">
             <img
               src="//styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/20190411/nmdNRC_cVqWSjCNg.png?x-oss-process=image/resize,interlace_1,m_fill,w_208,h_208"
@@ -26,16 +26,40 @@
             </div>
           </div>
         </a-col>
-        <a-col :lg="6" :offset="1" style="text-align: right;" v-if="info.work_status.name === '在职'">
-          <st-button class="mg-r8" type="primary" @click="editStaffInfo">编辑资料</st-button>
-          <st-button v-if="info.has_card === 0" class="mg-r8">绑实体卡</st-button>
-          <st-button v-if="info.has_card === 1" class="mg-r8">重绑实体卡</st-button>
+        <a-col :lg="7" :offset="1" style="text-align: right;" v-if="info.work_status.name === '在职'">
+          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|edit']" type="primary" @click="editStaffInfo">编辑资料</st-button>
+          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|bind_card']" :to="{ name: 'shop-staff-bind-card', props: {staff: info} }">绑实体卡</st-button>
+          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|rebind_card']" :to="{ name: 'shop-staff-bind-card', props: {staff: info} }">重绑实体卡</st-button>
           <a-dropdown>
             <a-menu slot="overlay" @click="handleMenuClick">
-              <a-menu-item key="1">管理登录账号</a-menu-item>
-              <a-menu-item key="2">职位变更</a-menu-item>
-              <a-menu-item key="3">设置薪资账户</a-menu-item>
-              <a-menu-item key="4">离职</a-menu-item>
+              <a-menu-item>
+                <modal-link
+                  tag="a"
+                  v-if="auth['brand_shop:staff:account|save']"
+                  :to="{ name: 'shop-staff-re-password', props: {staff: info} }"
+                >管理登录账号</modal-link>
+              </a-menu-item>
+              <a-menu-item>
+                <modal-link
+                  tag="a"
+                  v-if="auth['brand_shop:staff:staff|position']"
+                  :to="{ name: 'shop-staff-update-staff-position', props: {staff: info}} "
+                >职位变更</modal-link>
+              </a-menu-item>
+              <a-menu-item>
+                <modal-link
+                  tag="a"
+                  v-if="auth['brand_shop:staff:staff|salary']"
+                  :to="{ name: 'shop-staff-salary-account-setting', props: {staff: info} }"
+                >设置薪资账户</modal-link>
+              </a-menu-item>
+              <a-menu-item>
+                <modal-link
+                  tag="a"
+                  v-if="auth['brand_shop:staff:staff|shop_leave']"
+                  :to="{ name: 'shop-staff-leave-current-shop', props: {staff: info}}"
+                >解除门店关系</modal-link>
+              </a-menu-item>
             </a-menu>
             <a-button>
               更多操作
