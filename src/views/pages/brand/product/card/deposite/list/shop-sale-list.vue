@@ -104,8 +104,8 @@ export default {
       columns,
       selectedRowKeys: [],
       selectedRows: [],
-      card_type: '所以类型',
-      publish_channel: '所以渠道',
+      card_type: '所有类型',
+      publish_channel: '所有渠道',
       sell_status: '所有门店',
       getHeaders: {
         page: '',
@@ -210,7 +210,7 @@ export default {
   watch: {
     $route(data) {
       if (data.query.card_name) {
-        this.card_type = '所以类型'
+        this.card_type = '所有类型'
         this.publish_channel = '所有售卖状态'
       }
       this.getInfoData(this.shopSaleCardsList)
