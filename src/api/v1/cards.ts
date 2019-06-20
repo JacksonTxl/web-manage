@@ -65,10 +65,10 @@ export class CardsApi extends Api {
     return this.http.put(`/v1/cards/member/${type}`, { params })
   }
   /**
-   * 储值卡新增,品牌
+   * 储值卡新增
    */
-  addCardsDepositBrand(params: CardsInput) {
-    return this.http.post('/v1/cards/brand/deposit', { params })
+  addCardsDeposit(params: CardsInput, type:string) {
+    return this.http.post(`/v1/cards/${type}/deposit`, { params })
   }
   /**
    * 储值卡详情,品牌
