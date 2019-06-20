@@ -91,11 +91,11 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     if (route.name) {
       route.meta.title = `${route.name}.title`
     }
-    route.meta.layout = 'default-brand'
+    route.meta.layout = 'default'
 
-    if (route.name.startsWith('shop')) {
-      route.meta.layout = 'default-shop'
-    }
+    // if (route.name.startsWith('shop')) {
+    //   route.meta.layout = 'default-shop'
+    // }
 
     if (route.name in routeMapConfig) {
       // @ts-ignore

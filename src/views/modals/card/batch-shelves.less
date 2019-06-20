@@ -36,6 +36,14 @@
     border: 1px solid @normal-color;
     border-radius: 4px;
     padding: 12px;
+    &-error {
+      border-color: @error-color;
+    }
+    &-valid-text {
+      height: 24px;
+      margin-bottom: 0;
+      .c(@error-color);
+    }
     th {
       padding: 16px 0;
       &:nth-of-type(1){
@@ -122,6 +130,20 @@
   }
   &__admission-time-validata {
     .c(@error-color);
+  }
+  &__tree {
+    padding: 12px 24px 24px;
+    border: 1px solid @divider;
+    border-radius: 4px;
+    .bg(@white);
+    &-search .ant-input{
+      .bg(#CDD4DF);
+      border-radius: 20px;
+      .c(@text-light);
+    }
+    &-title-span {
+      color: @primary-color;
+    }
   }
   &__footer {
     padding-bottom: 14px;

@@ -1,10 +1,11 @@
 import { Api } from '../../api'
 
-export interface LeaseParams {
-  search: string;
-  lease_status: number;
-  start_time: string;
-  end_time: string;
+export interface OrderParams {
+  keyword: string;
+  status: number;
+  type: number;
+  start_date: string;
+  end_date: string;
   size: number;
   page: number;
 }
@@ -18,18 +19,12 @@ export interface RefundParams {
   description: string;
 }
 
-export class CabinetApi extends Api {
+export class OrderApi extends Api {
   /**
-   * 储物柜联动列表
+   * 获取订单列表
    */
-  getCabinetList(id:string|number) {
-    return this.http.get(`/v1/sold/cabinet/${id}`)
-  }
-  /**
-   * 租赁列表
-   */
-  getLeaseList(params: LeaseParams) {
-    return this.http.get(`/v1/sold/cabinet/lease`, { query: { ...params } })
+  getOrderList(params: OrderParams) {
+    return this.http.get(`/v1/finance/order`, { query: { ...params } })
   }
   /**
    * 续租、转让、退款详情

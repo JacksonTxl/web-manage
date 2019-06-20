@@ -44,8 +44,8 @@
       </div>
     </div>
     <st-form :form="form" labelWidth="67px" :class="shelves('form')">
-      <!-- 次卡，无价格范围 -->
-      <div :class="shelves('price')" v-if="false" class="mg-b18">
+      <!-- 次卡，无价格范围，品牌统一定价 -->
+      <div :class="shelves('price')" v-if="info.price_setting===1&&info.card_type===1" class="mg-b0">
         <st-form-table>
           <colgroup>
             <col style="width:4%;">
@@ -75,8 +75,36 @@
           </tbody>
         </st-form-table>
       </div>
-      <!-- 次卡，有价格范围 -->
-      <div :class="shelves('price')" class="mg-b18">
+      <!-- 期卡，无价格范围，品牌统一定价 -->
+      <div :class="shelves('price')" v-if="info.price_setting===1&&info.card_type===2" class="mg-b0">
+        <st-form-table>
+          <colgroup>
+            <col style="width:4%;">
+            <col style="width:26%;">
+            <col style="width:26%;">
+            <col style="width:22%;">
+            <col style="width:22%;">
+          </colgroup>
+          <tr>
+            <th></th>
+            <th>有效期限</th>
+            <th>售卖价格</th>
+            <th>允许冻结</th>
+            <th>赠送上限</th>
+          </tr>
+          <tbody>
+            <tr v-for="(item,index) in info.specs" :key="index">
+              <td></td>
+              <td>{{item.duration_num}}{{item.duration_unit | enumFilter('member_card.duration_unit')}}</td>
+              <td>{{item.rally_price}}元</td>
+              <td>{{item.frozen_day}}天</td>
+              <td>{{item.gift_unit}}次</td>
+            </tr>
+          </tbody>
+        </st-form-table>
+      </div>
+      <!-- 次卡，有价格范围，门店自主定价 -->
+      <div :class="{'modal-card-batch-shelves__price-error':priceHelpText!==''}" v-if="info.price_setting===2&&info.card_type===1"  class="modal-card-batch-shelves__price mg-b0">
         <st-form-table>
           <colgroup>
             <col style="width:2%;">
@@ -101,7 +129,7 @@
               <td></td>
               <td>{{item.validity_times}}次</td>
               <td :class="shelves('price-input')">
-                <st-input-number  @change="e => brandPriceSettingHandleChange({value:e, key:index})" style="width:140px;">
+                <st-input-number :float="true" @change="e => brandPriceSettingHandleChange({value:e, key:index})" style="width:140px;">
                   <span slot="addonAfter">元</span>
                 </st-input-number>
               </td>
@@ -113,12 +141,48 @@
           </tbody>
         </st-form-table>
       </div>
+      <!-- 期卡，有价格范围，门店自主定价 -->
+      <div :class="{'modal-card-batch-shelves__price-error':priceHelpText!==''}" v-if="info.price_setting===2&&info.card_type===2"  class="modal-card-batch-shelves__price mg-b0">
+        <st-form-table>
+          <colgroup>
+            <col style="width:2%;">
+            <col style="width:19%;">
+            <col style="width:22%;">
+            <col style="width:19%;">
+            <col style="width:19%;">
+            <col style="width:19%;">
+          </colgroup>
+          <tr>
+            <th></th>
+            <th>有效期限</th>
+            <th>售卖价格</th>
+            <th></th>
+            <th>允许冻结</th>
+            <th>赠送上限</th>
+          </tr>
+          <tbody>
+            <tr v-for="(item,index) in priceList" :key="index">
+              <td></td>
+              <td>{{item.duration_num}}{{item.duration_unit | enumFilter('member_card.duration_unit')}}</td>
+              <td :class="shelves('price-input')">
+                <st-input-number :float="true" @change="e => brandPriceSettingHandleChange({value:e, key:index})" style="width:140px;">
+                  <span slot="addonAfter">元</span>
+                </st-input-number>
+              </td>
+              <td>100~200</td>
+              <td>{{item.frozen_day}}天</td>
+              <td>{{item.gift_unit}}次</td>
+            </tr>
+          </tbody>
+        </st-form-table>
+      </div>
+      <p :class="shelves('price-valid-text')">{{priceHelpText}}</p>
       <st-form-item labelGutter="12px" class="mg-b0" label="开卡方式" required>
-        <a-checkbox-group v-model="openTypeList" :class="shelves('open-type')">
+        <a-checkbox-group v-model="openTypeList" @change="onOpenTypeChange" :class="shelves('open-type')">
           <a-checkbox :value="3">指定日期开卡</a-checkbox>
-          <a-checkbox :value="2">购买即开卡</a-checkbox>
+          <a-checkbox :value="1">购买即开卡</a-checkbox>
           <span :class="shelves('day-input')">
-            <a-checkbox :value="1">
+            <a-checkbox :value="2">
               到店开卡
               <a-tooltip placement="right">
                 <template slot="title">
@@ -127,7 +191,7 @@
                 <a-icon type="info-circle"/>
               </a-tooltip>
             </a-checkbox>
-            <div class="autoplay-card-day" v-if="openTypeList.includes(1)">
+            <div class="autoplay-card-day" v-if="openTypeList.includes(2)">
               <a-form-item class="page-a-form">
                 <st-input-number
                 v-decorator="['openDay',{rules:[{required:true,message:'请输入天数'}]}]"
@@ -141,7 +205,7 @@
         </a-checkbox-group>
       </st-form-item>
       <st-form-item labelGutter="12px" label="约课权益" required :validateStatus="courseInterestsStatus" :help="courseInterestsHelpText">
-        <a-radio-group v-model="courseInterests" @change="checkedCourseInterests" :class="shelves('course')">
+        <a-radio-group v-model="courseInterests" @change="onCourseInterestsChange" :class="shelves('course')">
           <a-radio :style="radioStyle" v-for="(item, index) in Object.keys(memberCard.course_interests.value)" :value="+item" :key="index">
             {{memberCard.course_interests.value[item]}}
           </a-radio>
@@ -172,12 +236,29 @@
       </st-form-item>
       <st-shop-hour-picker v-model="timeList" v-if="admissionTime===2&&moreIsShow"></st-shop-hour-picker>
       <p :class="shelves('admission-time-validata')" v-if="admissionTime===2&&moreIsShow">{{admissionTimeText}}</p>
-      <st-form-item v-if="moreIsShow" labelGutter="12px" class="mg-t18 mg-b8" labelWidth="78px" label="VIP场地通行">仅支持门店设置</st-form-item>
+      <st-form-item v-if="moreIsShow" labelGutter="12px" class="mg-t18 mg-b8" labelWidth="78px" label="VIP场地通行">
+        <div :class="shelves('tree')">
+          <a-input-search class="mg-b16" :class="shelves('tree-search')" @search="onTreeSearch" placeholder="Search"/>
+          <a-tree
+            checkable
+            @expand="onExpand"
+            :autoExpandParent="autoExpandParent"
+            :expandedKeys="expandedKeys"
+            :treeData="vipTreeData"
+          >
+          <template slot="title" slot-scope="{title}">
+            <span v-if="title.indexOf(searchValue) > -1">
+              {{title.substr(0, title.indexOf(searchValue))}}<span :class="shelves('tree-title-span')">{{searchValue}}</span>{{title.substr(title.indexOf(searchValue) + searchValue.length)}}
+            </span>
+            <span v-else>{{title}}</span>
+          </template>
+          </a-tree>
+        </div>
+      </st-form-item>
       <div :class="shelves('hide-more')" v-if="moreIsShow">
         <span @click="moreIsShow=false">收起</span>
       </div>
     </st-form>
-    {{priceList}}
   </section>
   <template slot="footer">
     <div :class="shelves('footer')">
@@ -191,6 +272,7 @@
 import { BatchShelvesService } from './batch-shelves.service'
 import { UserService } from '@/services/user.service'
 import { cloneDeep } from 'lodash-es'
+import { RuleConfig } from '@/constants/rule'
 export default {
   name: 'ModalCardBatchShelves',
   bem: {
@@ -198,6 +280,7 @@ export default {
   },
   serviceInject() {
     return {
+      rules: RuleConfig,
       userService: UserService,
       batchShelvesService: BatchShelvesService
     }
@@ -227,13 +310,24 @@ export default {
     },
     courseInterestsIsOk() {
       return this.courseInterestsStatus === 'success'
+    },
+    priceIsOk() {
+      return this.priceHelpText === ''
+    },
+    priceValidataArray() {
+      let array = []
+      this.priceList.forEach(i => {
+        array.push(i.priceInputValue)
+      })
+      return array
     }
   },
   watch: {
-    timeList: {
+    priceList: {
       deep: true,
       handler() {
-        this.checkedAdmission()
+        let b = this.priceValidataArray.every(i => this.rules.number.test(i))
+        b && this.checkedPrice()
       }
     },
     info: {
@@ -288,8 +382,11 @@ export default {
       ],
       // 范围价格列表
       priceList: [],
+      priceHelpText: '',
       // 开卡方式
-      openTypeList: [],
+      openTypeList: [3],
+      // 缓存开卡方式的最后值，阻止用户不选择
+      openTypeListHistory: [3],
       // 约课权益
       courseInterests: 1,
       // 输入是否正确
@@ -312,7 +409,56 @@ export default {
       ],
       admissionTime: 1,
       timeList: [],
-      admissionTimeText: ''
+      admissionTimeText: '',
+      // vip区域tree数据
+      vipTreeData: [
+        { 'title': '0-0',
+          'key': '0-0',
+          'scopedSlots': { 'title': 'title' },
+          'children': [
+            {
+              'title': '0-0-0',
+              'key': '0-0-0',
+              'scopedSlots': { 'title': 'title' }
+            },
+            {
+              'title': '0-0-1',
+              'key': '0-0-1',
+              'scopedSlots': { 'title': 'title' }
+            },
+            {
+              'title': '0-0-2',
+              'key': '0-0-2',
+              'scopedSlots': { 'title': 'title' }
+            }
+          ] },
+        { 'title': '0-1',
+          'key': '0-1',
+          'scopedSlots': { 'title': 'title' },
+          'children': [
+            {
+              'title': '0-1-0',
+              'key': '0-1-0',
+              'scopedSlots': { 'title': 'title' }
+            },
+            {
+              'title': '0-1-1',
+              'key': '0-1-1',
+              'scopedSlots': { 'title': 'title' }
+            },
+            {
+              'title': '0-1-2',
+              'key': '0-1-2',
+              'scopedSlots': { 'title': 'title' }
+            }
+          ] },
+        { 'title': '0-2',
+          'key': '0-2',
+          'scopedSlots': { 'title': 'title' } }
+      ],
+      expandedKeys: [],
+      autoExpandParent: true,
+      searchValue: ''
     }
   },
   methods: {
@@ -330,30 +476,74 @@ export default {
     },
     // 检验约课权益是否输入正确
     checkedCourseInterests() {
-      if (this.courseInterests === 3 && !this.courseList.length) {
-        this.courseInterestsStatus = 'error'
-        this.courseInterestsHelpText = '请输入课程'
-      } else {
-        this.courseInterestsStatus = 'success'
-        this.courseInterestsHelpText = ''
-      }
+      this.courseInterestsStatus = (this.courseInterests === 3 && !this.courseList.length) ? 'error' : 'success'
+      this.courseInterestsHelpText = (this.courseInterests === 3 && !this.courseList.length) ? '请输入课程' : ''
     },
     // 检验入场时间是否输入正确
     checkedAdmission() {
-      if (this.admissionTime === 2 && this.moreIsShow && !this.timeList.length) {
-        this.admissionTimeText = '请选择入场时间'
-      } else {
-        this.admissionTimeText = ''
-      }
+      this.admissionTimeText = (this.admissionTime === 2 && this.moreIsShow && !this.timeList.length) ? '请选择入场时间' : ''
     },
     brandPriceSettingHandleChange({ value, key }) {
       this.priceList[key].priceInputValue = value
+    },
+    // 检验门店自主定价价格输入是否正确
+    checkedPrice() {
+      if (this.info.price_setting === 1) {
+        this.priceHelpText = ''
+        return false
+      }
+      let b = this.priceValidataArray.every(i => this.rules.number.test(i))
+      this.priceHelpText = b ? '' : '请输入价格'
+    },
+    onCourseInterestsChange(data) {
+      if (data.target.value !== 3) {
+        this.checkedCourseInterests()
+      }
+    },
+    // 开卡方式change
+    onOpenTypeChange(data) {
+      if (!data.length) {
+        this.openTypeList = cloneDeep(this.openTypeListHistory)
+      } else {
+        this.openTypeListHistory = cloneDeep(data)
+      }
+    },
+    onTreeSearch(data) {
+      if (data === '') {
+        Object.assign(this, {
+          expandedKeys: [],
+          searchValue: data,
+          autoExpandParent: true
+        })
+        return
+      }
+      let expandedKeys = []
+      this.vipTreeData.forEach(i => {
+        if (i.children) {
+          i.children.forEach(o => {
+            if (o.title.includes(data)) {
+              expandedKeys.push(i.key)
+            }
+          })
+        }
+      })
+      this.expandedKeys = []
+      Object.assign(this, {
+        expandedKeys,
+        searchValue: data,
+        autoExpandParent: true
+      })
+    },
+    onExpand(expandedKeys) {
+      this.expandedKeys = expandedKeys
+      this.autoExpandParent = false
     },
     onSubmit() {
       this.form.validateFields((error, values) => {
         this.checkedCourseInterests()
         this.checkedAdmission()
-        if (!error && this.admissionTimeIsOk && this.courseInterestsIsOk) {
+        this.checkedPrice()
+        if (!error && this.admissionTimeIsOk && this.courseInterestsIsOk && this.priceIsOk) {
           console.log(values)
         }
       })

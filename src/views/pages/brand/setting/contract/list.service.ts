@@ -5,6 +5,7 @@ import { tap, pluck, map } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { State, Computed, log } from 'rx-state'
 import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
+import { AuthService } from '@/services/auth.service'
 
 interface ListState {
   list: any[]
@@ -14,15 +15,21 @@ interface ListState {
 export class ListService extends Store<ListState> implements RouteGuard {
   state$: State<ListState>
   list$: Computed<any[]>
+  auth$: Computed<any[]>
   constructor(
     private contractApi: ContractApi,
-    private layoutBrand: LayoutBrandService
+    private layoutBrand: LayoutBrandService,
+    private authService: AuthService
   ) {
     super()
     this.state$ = new State({
-      list: []
+      list: [],
+      auth: {
+        edit: this.authService.can('brand:contract:contract_tpl|edit')
+      }
     })
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SET_LIST(list: any[]) {
     this.state$.commit(state => {

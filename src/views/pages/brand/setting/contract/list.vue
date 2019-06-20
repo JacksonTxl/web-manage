@@ -25,6 +25,7 @@
               <!-- <router-link :class="bItem('action')" to="/" class="st-link-secondary">查看</router-link>
               <div :class="bItem('divider')"></div> -->
               <router-link
+                v-if="auth.edit"
                 :class="bItem('action')"
                 :to="{path:'./edit',query:{id:item.id}}"
                 class="st-link-secondary"
@@ -32,6 +33,7 @@
             </template>
             <template v-else>
             <router-link
+              v-if="auth.edit"
               :class="bItem('action')"
               :to="{path:'./edit',query:{id:item.id}}"
               class="st-link-secondary"
@@ -64,7 +66,8 @@ export default {
      */
     const user = this.userService
     return {
-      list: this.listService.list$
+      list: this.listService.list$,
+      auth: this.listService.auth$
     }
   },
   methods: {

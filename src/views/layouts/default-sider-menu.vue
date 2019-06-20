@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div v-if="favorite.length" class="layout-default-brand-sider__often">
-      <h2 class="layout-default-brand-sider__often-title">常用</h2>
-      <ul class="layout-default-brand-sider__often-list">
+    <div v-if="favorite.length" class="layout-default-sider__often">
+      <h2 class="layout-default-sider__often-title">常用</h2>
+      <ul class="layout-default-sider__often-list">
         <!-- <li
-          class="layout-default-brand-sider__often-item layout-default-brand-sider__often-item--active"
+          class="layout-default-sider__often-item layout-default-sider__often-item--active"
         >
           <i></i>
           <span>营销插件</span>
@@ -12,7 +12,7 @@
         <li
           v-for="(item, index) in favorite"
           :key="index"
-          class="layout-default-brand-sider__often-item"
+          class="layout-default-sider__often-item"
           @click="delFavorite(item.id)"
         >
           <i></i>
@@ -21,10 +21,9 @@
       </ul>
     </div>
     <a-menu
-        class="layout-default-brand-sider__menu"
+        class="layout-default-sider__menu"
         :openKeys="openKeys"
         @openChange="onOpenChange"
-        theme="light"
         mode="inline"
         @click='onClickMenu'
       >
@@ -34,7 +33,7 @@
             :key="menu.id"
           >
             <span slot="title">
-              <a-icon type="file"/>
+              <st-icon :type="menu.icon"/>
               <span>{{menu.name}}</span>
             </span>
             <a-menu-item
@@ -46,7 +45,7 @@
         </a-sub-menu>
         <a-menu-item v-else :key="menu.id">
           <router-link :to="{ name: menu.url }">
-            <a-icon type="file"/>
+            <st-icon :type="menu.icon"/>
             <span>{{menu.name}}</span>
           </router-link>
         </a-menu-item>
@@ -71,7 +70,6 @@ export default {
   },
   data() {
     return {
-      rootSubmenuKeys: [],
       openKeys: []
     }
   },
@@ -84,6 +82,9 @@ export default {
     },
     menuMap() {
       return treeToMap(this.menus)
+    },
+    rootSubmenuKeys() {
+      return this.getRootSubmenuKeys()
     }
   },
   methods: {
@@ -93,9 +94,7 @@ export default {
       )
     },
     onOpenChange(openKeys) {
-      const latestOpenKey = openKeys.find(
-        key => this.openKeys.indexOf(key) === -1
-      )
+      const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
       if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
         this.openKeys = openKeys
       } else {
@@ -123,6 +122,14 @@ export default {
       this.userService.getMenus({
         force: true
       }).subscribe()
+    },
+    getRootSubmenuKeys() {
+      const { menus } = this
+      const rootSubmenuKeys = []
+      menus.forEach(item => {
+        rootSubmenuKeys.push(item.id)
+      })
+      return rootSubmenuKeys
     }
   }
 }

@@ -36,7 +36,7 @@
                     }
                   }"
                 >
-                  <span v-if="editFlag === `enter-${item.id}`">编辑</span>
+                  <span v-if="editFlag === `enter-${item.id}` && auth.edit">编辑</span>
                 </a>
               </div>
             </div>
@@ -63,7 +63,8 @@ export default {
   rxState() {
     const cabinetService = this.cabinetService
     return {
-      resData: cabinetService.resData$
+      resData: cabinetService.resData$,
+      auth: cabinetService.auth$
     }
   },
   props: {

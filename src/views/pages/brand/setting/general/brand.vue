@@ -152,6 +152,7 @@ export default {
       })
     },
     onImgChange(list) {
+      console.log('changed', list)
       this.image = list[0]
     }
   }

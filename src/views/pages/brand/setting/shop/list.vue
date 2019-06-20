@@ -3,7 +3,7 @@
     <a-row>
       <a-col :span="8">
         <router-link to="./add">
-          <st-button type="primary" icon="add">新增门店</st-button>
+          <st-button v-if="auth.add" type="primary" icon="add">新增门店</st-button>
           <span class="st-des mg-l8">（已开店{{count.count_opened}}家门店/可开店{{count.count_can_opened}}家门店）</span>
         </router-link>
       </a-col>
@@ -39,7 +39,7 @@
           <th>运营状态</th>
           <th>系统状态</th>
           <th>系统使用到期时间</th>
-          <th style="width: 180px">操作</th>
+          <th style="width: 120px">操作</th>
         </tr>
       </thead>
       <tbody>
@@ -49,7 +49,7 @@
           <td>{{shop.address}}</td>
           <td>
             {{shop.shop_status | enumFilter('shop.shop_status')}}
-            <st-help-popover v-if="shop.has_holiday_setting" title="放假时间">
+            <st-help-popover v-if="shop.auth['brand_shop:shop:shop_holiday|get']" title="放假时间">
               <div slot="content">
                 {{shop.holiday_start_time | dateFilter(appConfig.DATE_FORMAT.datetime)}}<br/>
                 {{shop.holiday_end_time | dateFilter(appConfig.DATE_FORMAT.datetime)}}
@@ -59,12 +59,12 @@
           <td>{{shop.is_valid | enumFilter('shop.is_valid')}}</td>
           <td>{{shop.expire_time}}</td>
           <td>
-            <router-link :to="`./info?id=${shop.shop_id}`">详情</router-link>
-            <router-link :to="`./edit?id=${shop.shop_id}`" class="mg-l8">编辑</router-link>
-            <st-more-dropdown class="mg-l64">
+            <router-link v-if="shop.auth['brand_shop:shop:shop|get']" :to="`./info?id=${shop.shop_id}`">详情</router-link>
+            <router-link v-if="shop.auth['brand_shop:shop:shop|edit']" :to="`./edit?id=${shop.shop_id}`" class="mg-l8">编辑</router-link>
+            <st-more-dropdown>
               <!-- 关店状态下不可以在saas中更改运营状态 -->
               <a-menu-item
-                v-if="shop.shop_status !== 4"
+                v-if="shop.auth['brand:shop:shop_type|edit']"
                 v-modal-link="{
                   name: 'brand-setting-shop-status',
                   props: {
@@ -80,7 +80,7 @@
                 更改运营状态
               </a-menu-item>
               <a-menu-item
-                v-if="shop.shop_status <=2"
+                v-if="shop.auth['brand_shop:shop:shop_holiday|edit']"
                 v-modal-link="{
                   name: 'brand-setting-shop-holiday',
                   props: {
@@ -126,7 +126,8 @@ export default {
     return {
       shopEnums: this.userService.shopEnums$,
       query: this.routeService.query$,
-      resData: this.listService.resData$
+      resData: this.listService.resData$,
+      auth: this.listService.auth$
     }
   },
   computed: {
@@ -175,7 +176,6 @@ export default {
       })
     },
     onListChange() {
-      console.log('changed')
       this.onQueryChange({}, true)
     }
   }
