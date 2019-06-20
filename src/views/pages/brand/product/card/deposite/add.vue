@@ -1,7 +1,7 @@
 <template>
   <st-panel app class="page-brand-basic-card page-brand-add-deposite-card" initial>
     <div class="page-brand-basic-card-body">
-      <div class="page-preview">实时预览{{deposit_card}}</div>
+      <!-- <div class="page-preview">实时预览{{deposit_card}}</div> -->
       <div class="page-content">
         <st-form :form="form" labelWidth="116px">
           <a-row :gutter="8">
@@ -239,13 +239,17 @@ import { RuleConfig } from '@/constants/rule'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
+import { AppConfig } from '@/constants/config'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'BrandDepositeCardAdd',
   serviceInject() {
     return {
       rules: RuleConfig,
       addService: AddService,
-      userService: UserService
+      userService: UserService,
+      appConfig: AppConfig,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -352,12 +356,19 @@ export default {
             this.cardData.sell_shop_list = cloneDeep(this.cardData.consumer_shop_list)
           }
           // 时间
-          this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
-          this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')} 00:00:00`
-          this.addService.addCard(this.cardData).subscribe(res => {
-            console.log(res)
-          })
+          const dateFormat = this.appConfig.DATE_FORMAT.date
+          this.cardData.start_time = moment(this.start_time).format(dateFormat)
+          this.cardData.end_time = moment(this.end_time).format(dateFormat)
+          this.addService.addCard(this.cardData).subscribe(this.onSubmitSuccess)
         }
+      })
+    },
+    onSubmitSuccess() {
+      this.messageService.success({
+        content: '添加成功'
+      })
+      this.$router.push({
+        name: 'brand-product-card-deposite-list-member-list'
       })
     },
     // card_name validatorFn
