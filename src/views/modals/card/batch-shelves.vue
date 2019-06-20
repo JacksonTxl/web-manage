@@ -236,7 +236,25 @@
       </st-form-item>
       <st-shop-hour-picker v-model="timeList" v-if="admissionTime===2&&moreIsShow"></st-shop-hour-picker>
       <p :class="shelves('admission-time-validata')" v-if="admissionTime===2&&moreIsShow">{{admissionTimeText}}</p>
-      <st-form-item v-if="moreIsShow" labelGutter="12px" class="mg-t18 mg-b8" labelWidth="78px" label="VIP场地通行">仅支持门店设置</st-form-item>
+      <st-form-item v-if="moreIsShow" labelGutter="12px" class="mg-t18 mg-b8" labelWidth="78px" label="VIP场地通行">
+        <div :class="shelves('tree')">
+          <a-input-search class="mg-b16" :class="shelves('tree-search')" @search="onTreeSearch" placeholder="Search"/>
+          <a-tree
+            checkable
+            @expand="onExpand"
+            :autoExpandParent="autoExpandParent"
+            :expandedKeys="expandedKeys"
+            :treeData="vipTreeData"
+          >
+          <template slot="title" slot-scope="{title}">
+            <span v-if="title.indexOf(searchValue) > -1">
+              {{title.substr(0, title.indexOf(searchValue))}}<span :class="shelves('tree-title-span')">{{searchValue}}</span>{{title.substr(title.indexOf(searchValue) + searchValue.length)}}
+            </span>
+            <span v-else>{{title}}</span>
+          </template>
+          </a-tree>
+        </div>
+      </st-form-item>
       <div :class="shelves('hide-more')" v-if="moreIsShow">
         <span @click="moreIsShow=false">收起</span>
       </div>
@@ -305,12 +323,6 @@ export default {
     }
   },
   watch: {
-    // timeList: {
-    //   deep: true,
-    //   handler() {
-    //     this.checkedAdmission()
-    //   }
-    // },
     priceList: {
       deep: true,
       handler() {
@@ -397,7 +409,56 @@ export default {
       ],
       admissionTime: 1,
       timeList: [],
-      admissionTimeText: ''
+      admissionTimeText: '',
+      // vip区域tree数据
+      vipTreeData: [
+        { 'title': '0-0',
+          'key': '0-0',
+          'scopedSlots': { 'title': 'title' },
+          'children': [
+            {
+              'title': '0-0-0',
+              'key': '0-0-0',
+              'scopedSlots': { 'title': 'title' }
+            },
+            {
+              'title': '0-0-1',
+              'key': '0-0-1',
+              'scopedSlots': { 'title': 'title' }
+            },
+            {
+              'title': '0-0-2',
+              'key': '0-0-2',
+              'scopedSlots': { 'title': 'title' }
+            }
+          ] },
+        { 'title': '0-1',
+          'key': '0-1',
+          'scopedSlots': { 'title': 'title' },
+          'children': [
+            {
+              'title': '0-1-0',
+              'key': '0-1-0',
+              'scopedSlots': { 'title': 'title' }
+            },
+            {
+              'title': '0-1-1',
+              'key': '0-1-1',
+              'scopedSlots': { 'title': 'title' }
+            },
+            {
+              'title': '0-1-2',
+              'key': '0-1-2',
+              'scopedSlots': { 'title': 'title' }
+            }
+          ] },
+        { 'title': '0-2',
+          'key': '0-2',
+          'scopedSlots': { 'title': 'title' } }
+      ],
+      expandedKeys: [],
+      autoExpandParent: true,
+      searchValue: ''
     }
   },
   methods: {
@@ -446,6 +507,36 @@ export default {
       } else {
         this.openTypeListHistory = cloneDeep(data)
       }
+    },
+    onTreeSearch(data) {
+      if (data === '') {
+        Object.assign(this, {
+          expandedKeys: [],
+          searchValue: data,
+          autoExpandParent: true
+        })
+        return
+      }
+      let expandedKeys = []
+      this.vipTreeData.forEach(i => {
+        if (i.children) {
+          i.children.forEach(o => {
+            if (o.title.includes(data)) {
+              expandedKeys.push(i.key)
+            }
+          })
+        }
+      })
+      this.expandedKeys = []
+      Object.assign(this, {
+        expandedKeys,
+        searchValue: data,
+        autoExpandParent: true
+      })
+    },
+    onExpand(expandedKeys) {
+      this.expandedKeys = expandedKeys
+      this.autoExpandParent = false
     },
     onSubmit() {
       this.form.validateFields((error, values) => {

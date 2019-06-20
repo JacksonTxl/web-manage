@@ -33,7 +33,7 @@
             :key="menu.id"
           >
             <span slot="title">
-              <a-icon type="file"/>
+              <st-icon :type="menu.icon"/>
               <span>{{menu.name}}</span>
             </span>
             <a-menu-item
@@ -45,7 +45,7 @@
         </a-sub-menu>
         <a-menu-item v-else :key="menu.id">
           <router-link :to="{ name: menu.url }">
-            <a-icon type="file"/>
+            <st-icon :type="menu.icon"/>
             <span>{{menu.name}}</span>
           </router-link>
         </a-menu-item>
