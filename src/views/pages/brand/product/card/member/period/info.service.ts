@@ -8,7 +8,7 @@ export class InfoService implements RouteGuard {
   cardInfo$ = new State({})
   constructor(private cardsApi: CardsApi) {}
   getCardInfo(id:string) {
-    return this.cardsApi.getCardInfo(id).pipe(tap((res:any) => {
+    return this.cardsApi.getCardInfo(id, 'brand').pipe(tap((res:any) => {
       this.cardInfo$.commit(() => res.info)
     }))
   }
