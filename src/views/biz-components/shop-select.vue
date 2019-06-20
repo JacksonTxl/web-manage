@@ -1,7 +1,9 @@
 <template>
   <a-select
+    :mode="mode"
     allowClear
-    placeholder="全部门店"
+    :placeholder="placeholder||'全部门店'"
+    :value="value"
     @change="onChange">
     <a-select-option :value="shop.id" v-for="shop in shopOptions" :key="shop.id">{{shop.shop_name}}</a-select-option>
   </a-select>
@@ -26,8 +28,17 @@ export default {
     }
   },
   props: {
+    mode: {
+      type: String
+    },
+    placeholder: {
+      type: String
+    },
+    useType: {
+      type: String
+    },
     value: {
-      type: [Number, String]
+      type: [Number, String, Array]
     }
   },
   methods: {
@@ -36,7 +47,8 @@ export default {
     },
     getShopList() {
       this.staffApi.getShopList().subscribe(res => {
-        this.shopOptions = [{ id: -1, shop_name: ' 全部' }, ...res.shops]
+        const defaultOption = this.useType === 'form' ? {} : { id: -1, shop_name: ' 全部' }
+        this.shopOptions = [defaultOption, ...res.shops]
       })
     }
   },

@@ -62,8 +62,8 @@
     <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
-          <st-button type="primary" ghost html-type="submit">保存</st-button>
-          <st-button class="mg-l16" @click="goNext" type="primary">继续 填写</st-button>
+          <st-button type="primary" ghost html-type="submit">上一步</st-button>
+          <st-button class="mg-l16" @click="goNext" type="primary">{{!isShowCoach?'保存':'保存，继续填写'}}</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -114,6 +114,10 @@ export default {
   props: {
     formData: {
       type: Object
+    },
+    isShowCoach: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -228,7 +232,6 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
           let obj = this.filterProvinces(values.provinces)
           let newData = Object.assign(values, obj)
           newData.birthday = newData.birthday.format('YYYY-MM-DD')

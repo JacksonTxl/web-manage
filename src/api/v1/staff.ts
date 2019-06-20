@@ -370,15 +370,15 @@ export class StaffApi extends Api {
     return this.http.get(`/v1/staff/brand/review/${id}`)
   }
   // 修改员工基础信息
-  editStaffBasicInfo(staff_id: number, params: EditStaffBasicInfoQuery) {
-    return this.http.put(`/v1/staff/brand/basic/${staff_id}`, { params })
+  updateStaffBasicInfo(id: number, params: EditStaffBasicInfoQuery) {
+    return this.http.put(`/v1/staff/brand/basic/${id}`, { params })
   }
   // 修改员工详细信息
-  editStaffDetailInfo(id: number, params: EditStaffDetailInfoQuery) {
+  updateStaffDetailInfo(id: number, params: EditStaffDetailInfoQuery) {
     return this.http.put(`/v1/staff/brand/detail/${id}`, { params })
   }
   // 修改教练信息
-  editStaffCoachInfo(id: number, params: EditStaffCoachInfoQuery) {
+  updateStaffCoachInfo(id: number, params: EditStaffCoachInfoQuery) {
     return this.http.put(`/v1/staff/brand/coach/${id}`, { params })
   }
 
@@ -426,6 +426,12 @@ export class StaffApi extends Api {
   // /v1/staff/salary/sale
   // /v1/staff/salary/sale
   // /v1/staff/salary/class
+  /**
+ * 编辑员工回显
+ */
+  editStaffInfo(id: string) {
+    return this.http.get(`/v1/staff/brand/review/${id}`)
+  }
 
   // 员工详情公共头
   getStaffInfoCommonHeader(id: string) {
