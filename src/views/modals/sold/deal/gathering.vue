@@ -6,6 +6,7 @@
   wrapClassName="modal-sold-deal-gathering"
   @cancel="onCancel"
   @ok="onOk">
+  order_id{{order_id}}{{type}}
     <div :class="gathering('content')">
       <a-row :class="gathering('info')">
         <a-col :span="13" class="mgb-36">

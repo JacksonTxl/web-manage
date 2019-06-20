@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="favorite.length" class="layout-default-sider__often">
+    <div v-if="favor.length" class="layout-default-sider__often">
       <h2 class="layout-default-sider__often-title">常用</h2>
       <ul class="layout-default-sider__often-list">
         <!-- <li
@@ -10,22 +10,25 @@
           <span>营销插件</span>
         </li> -->
         <li
-          v-for="(item, index) in favorite"
+          v-for="(item, index) in favor"
           :key="index"
           class="layout-default-sider__often-item"
-          @click="delFavorite(item.id)"
         >
-          <i></i>
-          <span>{{item.name}}</span>
+          <st-icon
+            type="star"
+            @click.native="delfavor(item.id)"
+          />
+          <router-link :to="{ name: item.url }">
+            <span class="layout-default-sider__favor-title">{{item.name}}</span>
+          </router-link>
         </li>
       </ul>
     </div>
     <a-menu
         class="layout-default-sider__menu"
-        :openKeys="openKeys"
+        :openKeys.sync="openKeys"
         @openChange="onOpenChange"
         mode="inline"
-        @click='onClickMenu'
       >
         <template v-for="menu in menus">
           <a-sub-menu
@@ -40,7 +43,17 @@
               v-for="subMenu in menu.children"
               :key="subMenu.id"
             >
-              {{subMenu.name}}
+              <st-icon
+                v-if="isfavor(subMenu.id)"
+                type="star"
+                @click.native="delfavor(subMenu.id)"
+              />
+              <st-icon
+                v-else
+                type="star"
+                @click.native="addfavor(subMenu.id)"
+              />
+              <span @click="onClickMenuItem(subMenu)">{{subMenu.name}}</span>
             </a-menu-item>
         </a-sub-menu>
         <a-menu-item v-else :key="menu.id">
@@ -56,6 +69,8 @@
 <script>
 import { UserService } from '@/services/user.service'
 import { treeToMap } from '@/utils/tree-to-map'
+import { find as lodashFind } from 'lodash-es'
+import { findPathWithTree } from '@/utils/find-path-with-tree'
 export default {
   name: 'DefaultBrandSiderMenu',
   serviceInject() {
@@ -77,8 +92,8 @@ export default {
     menus() {
       return this.menuData.menus || []
     },
-    favorite() {
-      return this.menuData.favorite || []
+    favor() {
+      return this.menuData.favor || []
     },
     menuMap() {
       return treeToMap(this.menus)
@@ -86,6 +101,30 @@ export default {
     rootSubmenuKeys() {
       return this.getRootSubmenuKeys()
     }
+    // activeSiderMenuRouteName() {
+    //   const findedSiderMenuRouteConfig = lodashFind(
+    //     this.$route.matched,
+    //     routeConfig => routeConfig.meta.siderMenuRouteName
+    //   )
+    //   if (!findedSiderMenuRouteConfig) {
+    //     console.warn(
+    //       `[layout-default] 路由[${
+    //         this.$route.name
+    //       }]或父级路由 未配置 siderMenuRouteName`
+    //     )
+    //     return ''
+    //   }
+    //   const siderMenuRouteName =
+    //     findedSiderMenuRouteConfig.meta.siderMenuRouteName
+    //   return siderMenuRouteName
+    // }
+  },
+  created() {
+    // console.log('created', this.menus)
+    lodashFind(this.menus, menu => {
+      return location.pathname.replace(/\//g, '-').indexOf(menu.url) !== -1
+    })
+    this.calcOpenKeys()
   },
   methods: {
     isHasSubmenu(menu) {
@@ -101,22 +140,43 @@ export default {
         this.openKeys = latestOpenKey ? [latestOpenKey] : []
       }
     },
-    onClickMenu({ key }) {
-      this.selectedKeys = [key]
-      const menu = this.menuMap[key]
+    calcOpenKeys() {
+      this.openKeys = [28]
+    },
+    selectedKeysPath() {
+      // const siderMenu = lodashFind(this.menus, {
+      //   route_name: this.activeSiderMenuRouteName
+      // })
+      // if (!siderMenu) {
+      //   console.warn(
+      //     `[layout-default] can not find ${
+      //       this.activeSiderMenuRouteName
+      //     } in siderMenuTree,侧边栏菜单配置中找不到名称为 ${
+      //       this.activeSiderMenuRouteName
+      //     } 的菜单！`
+      //   )
+      //   return []
+      // }
+      // const menuId = siderMenu.id
+      // const _selectedKeys = findPathWithTree(menuId, this.siderMenuTree)
+      // return _selectedKeys
+    },
+    onClickMenuItem(menu) {
+      // this.selectedKeys = [key]
+      // const menu = this.menuMap[key]
       // if (this.$route.name.indexOf(menu.url) > -1) {
       //   return
       // }
       this.$router.push({
         name: menu.url
       })
-      // this.addFavorite(key)
+      // this.addfavor(key)
     },
-    addFavorite(id) {
-      this.userService.addFavorite(id).subscribe(this.onMenuChange)
+    addfavor(id) {
+      this.userService.addfavor(id).subscribe(this.onMenuChange)
     },
-    delFavorite(id) {
-      this.userService.delFavorite(id).subscribe(this.onMenuChange)
+    delfavor(id) {
+      this.userService.delfavor(id).subscribe(this.onMenuChange)
     },
     onMenuChange() {
       this.userService.getMenus({
@@ -130,6 +190,9 @@ export default {
         rootSubmenuKeys.push(item.id)
       })
       return rootSubmenuKeys
+    },
+    isfavor(id) {
+      return lodashFind(this.favor, { id })
     }
   }
 }
