@@ -69,7 +69,7 @@ export class ListService implements RouteGuard {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCoursePersonalBrandList(to.query).subscribe(() => next())
+    this.getCoursePersonalBrandList({ size: 99, ...to.query }).subscribe(() => next())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.init().subscribe(() => next())

@@ -79,7 +79,6 @@ export default {
   watch: {
     isShowCoach(newVal) {
       if (newVal) {
-        console.log('不展示')
         this.stepsSpan = 12
         this.stepArr.pop()
       }
@@ -159,15 +158,15 @@ export default {
         is_show: 1,
         album_id: 0
       }
-      this.editService.editBasicInfo(36, data.data).subscribe()
+      this.editService.updateBasicInfo(this.id, data.data).subscribe()
     },
     onDetailInfoSave(data) {
       console.log('员工详细信息保存', data)
-      this.editService.editDetailInfo(36, data.data).subscribe()
+      this.editService.updateDetailInfo(this.id, data.data).subscribe()
     },
     onCoachInfoSave(data) {
       console.log('教练信息保存', data.data)
-      this.editService.editCoachInfo(36, data.data).subscribe()
+      this.editService.updateCoachInfo(this.id, data.data).subscribe()
     },
     goNext() {
       if (this.currentIndex < 2) {
