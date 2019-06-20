@@ -152,13 +152,13 @@ export class CardsApi extends Api {
    *  储值卡消费门店列表
    */
   getCardsDepositConsumeShop(query: any) {
-    return this.http.get(`/v1/cards/deposit/consume/shop`, { query })
+    return this.http.get(`/v1/cards/deposit/consume/shop/${query.card_id}`, { query })
   }
   /***
    *  储值卡卡售卖门店列表
    */
   getCardsDepositSaleShop(query: any) {
-    return this.http.get(`/v1/cards/deposit/sale/shop`, { query })
+    return this.http.get(`/v1/cards/deposit/sale/shop/${query.card_id}`, { query })
   }
   /***
    *   储值卡停售
