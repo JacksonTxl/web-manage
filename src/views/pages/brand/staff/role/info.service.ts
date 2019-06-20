@@ -1,19 +1,19 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
+import { pluck, tap, switchMap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { GetInitInfoPut, RoleInfo, RoleApi } from '@/api/v1/staff/role'
 import { RoleService } from '../role.service'
 import { forkJoin } from 'rxjs'
 interface SetState {
-  info: object,
+  info: any,
   brandList: any[],
   shopList: any[]
 }
 @Injectable()
 export class InfoService extends Store<SetState> {
   state$: State<SetState>
-  info$: Computed<object>
+  info$: Computed<any>
   shopList$: Computed<object>
   brandList$: Computed<object>
   constructor(private roleService: RoleService) {
@@ -32,11 +32,23 @@ export class InfoService extends Store<SetState> {
       state.info = info
     })
   }
-  gitInitInfo(query: GetInitInfoPut) {
+  gitInitInfo(query: GetInitInfoPut, select_ids: any) {
     return this.roleService.getInitInfo(query).pipe(tap(res => {
       this.state$.commit(state => {
-        state.brandList = res.brand_list
-        state.shopList = res.shop_list
+        state.brandList = res.brand_list.filter((item: any) => {
+          return select_ids.includes(item.id)
+        }).map((item: any) => {
+          item.title = item.name
+          item.key = item.id
+          return item
+        })
+        state.shopList = res.shop_list.filter((item: any) => {
+          return select_ids.includes(item.id)
+        }).map((item: any) => {
+          item.title = item.name
+          item.key = item.id
+          return item
+        })
       })
     }))
   }
@@ -47,14 +59,14 @@ export class InfoService extends Store<SetState> {
   getInfo(query: GetInitInfoPut) {
     return this.roleService.getInfo(query).pipe(tap(res => {
       this.SET_ROLE_INFO(res.role)
+    }),
+    switchMap(res => {
+      return this.gitInitInfo(query, res.role.select_ids)
     }))
   }
-  getInit(query: GetInitInfoPut) {
-    return forkJoin(this.getInfo(query), this.gitInitInfo(query))
-  }
 
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    let { roleId } = to.query as any
-    this.getInit({ role_id: roleId }).subscribe((res: any) => next())
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+    let { id } = to.query as any
+    this.getInfo({ role_id: id }).subscribe((res: any) => next())
   }
 }

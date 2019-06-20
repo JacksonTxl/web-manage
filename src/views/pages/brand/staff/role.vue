@@ -7,7 +7,7 @@
       <main :class="roleList('tree')">
         <st-t4 class="mg-t24">角色 (6/60)</st-t4>
         <ul>
-          <li class="item pd-y8 pd-x16" @click="getTreeNodeOnclick(role, $event)" v-for="role in roles" :key="role.id">
+          <li class="item pd-y8 pd-x16" @click="getTreeNodeOnclick(role, $event)" v-for="(role, index) in roles" :id="role.id" :class="{'active' : index === 0}" :key="role.id">
             <div><span>{{role.name}}</span><span>（{{role.cnt}}）</span></div>
             <div>
               <st-more-dropdown style="margin-left: 12px;">
@@ -17,6 +17,14 @@
             </div>
           </li>
         </ul>
+        <!-- <a-tabs tabPosition="left" defaultActiveKey="1">
+          <a-tab-pane class="item pd-y8 pd-x16" @click="getTreeNodeOnclick(role, $event)" v-for="role in roles" :id="role.id" :key="role.id" :tab="role.name" style="height: 200px"></a-tab-pane>
+          <a-tab-pane tab="Tab 2" key="2" forceRender>Content of Tab Pane 2</a-tab-pane>
+          <a-tab-pane tab="Tab 3" key="3">Content of Tab Pane 3</a-tab-pane>
+          <template slot="renderTabBar" slot-scope="props, DefaultTabBar">
+            <component :is="DefaultTabBar" {...props} />
+          </template>
+        </a-tabs> -->
       </main>
       <footer v-if="auth.add" :class="roleList('add')" @click="onCLickAddRole">
         <a>添加角色</a>
@@ -64,14 +72,18 @@ export default {
     },
     getTreeNodeOnclick(role, e) {
       this.$nextTick().then(() => {
-        const doms = document.querySelectorAll('.item')
+        const doms = document.querySelectorAll('.page-role-list__tree .item')
         doms.forEach(dom => {
           dom.setAttribute('class', 'item pd-y8  pd-x16')
         })
         e.currentTarget.setAttribute('class', 'item active pd-y8  pd-x16')
       })
-      this.$router.push({ name: 'brand-staff-role-info', query: { roleId: role.id } })
+      this.$router.push({ name: 'brand-staff-role-info', query: { id: role.id } })
     }
+  },
+  mounted() {
+    console.log('this.roles', this.roles)
+    this.$router.push({ name: 'brand-staff-role-info', query: { id: this.roles[0].id } })
   }
 }
 </script>
