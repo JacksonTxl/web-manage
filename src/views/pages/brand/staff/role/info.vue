@@ -2,7 +2,7 @@
   <a-spin :spinning="loading.getInfo">
     <div class="page-role-info">
       <a-row class="page-role-detail">
-        <a-col :lg="17" class="item first"><span class='label'>角色名称: </span><span class='value'>{{info.name}}</span></a-col>
+        <a-col :lg="17" class="item first"><span class='label'>角色fff名称: </span><span class='value'>{{info.name}}</span></a-col>
         <a-col :lg="17"  class="item pd-y24"><span class='label'>角色描述: </span><span class='value'>{{info.role_description}}</span></a-col>
         <a-col :lg="17"  class="item pd-y24"><span class='label'>数据权限: </span><span class='value'>{{dataGrant}}</span></a-col>
         <a-col class="page-role-detail__funrole pd-y24" :lg="18">
