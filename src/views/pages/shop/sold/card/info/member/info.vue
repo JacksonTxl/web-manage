@@ -2,14 +2,22 @@
   <section :class="basic()">
     <st-panel title="会员卡详情">
       <div slot="actions">
-        <st-button class="mgr-8" @click="onFreeze" type="primary">冻结</st-button>
-        <st-button class="mgr-8" @click="onRenewal" type="primary">续卡</st-button>
-        <st-button class="mgr-8" @click="onUpgrade" type="primary">升级</st-button>
-        <st-button class="mgr-8" @click="onTransfer" type="primary">转让</st-button>
-        <st-button class="mgr-8" @click="onRefund" type="primary">退款</st-button>
-        <st-button class="mgr-8" @click="onSetTime" type="primary">修改有效时间</st-button>
-        <st-button class="mgr-8" @click="onArea" type="primary">修改入场vip区域</st-button>
-        <st-button class="mgr-8" type="primary">查看合同</st-button>
+        <st-button v-if="auth['shop:sold:sold_member_card|export_contract']" type="primary" class="mgr-8">查看合同</st-button>
+        <st-button v-if="auth['shop:sold:sold_member_card|frozen']" class="mgr-8" @click="onFreeze">冻结</st-button>
+        <st-button v-if="auth['shop:sold:sold_member_card|renew']" class="mgr-8" @click="onRenewal">续卡</st-button>
+        <a-dropdown>
+            <a-menu slot="overlay">
+              <a-menu-item v-if="auth['shop:sold:sold_member_card|upgrade']" @click="onUpgrade">升级</a-menu-item>
+              <a-menu-item v-if="auth['shop:sold:sold_member_card|transfer']" @click="onTransfer">转让</a-menu-item>
+              <a-menu-item v-if="auth['shop:sold:sold_member_card|refund']" @click="onRefund">退款</a-menu-item>
+              <a-menu-item v-if="auth['shop:sold:sold_member_card|vaild_time']" @click="onSetTime">修改有效时间</a-menu-item>
+              <a-menu-item v-if="auth['shop:sold:sold_member_card|vip_region']" @click="onArea">修改入场vip区域</a-menu-item>
+            </a-menu>
+            <a-button>
+              更多操作
+              <a-icon type="down"/>
+            </a-button>
+          </a-dropdown>
       </div>
       <a-row :gutter="24">
         <a-col :span="9">
@@ -91,7 +99,8 @@ export default {
     return {
       info: this.infoService.info$,
       query: this.routeService.query$,
-      loading: this.infoService.loading$
+      loading: this.infoService.loading$,
+      auth: this.infoService.auth$
     }
   },
   methods: {

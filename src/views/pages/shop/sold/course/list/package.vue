@@ -35,7 +35,7 @@
     </st-search-panel>
     <div :class="basic('content')">
         <div :class="basic('content-batch')">
-            <st-button type="primary">批量导出</st-button>
+            <st-button v-if="auth.export" type="primary">批量导出</st-button>
         </div>
         <div :class="basic('table-select-info')">
             <st-icon type="weibo" />
@@ -59,14 +59,15 @@
               {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
             </template>
             <div slot="action" slot-scope="text,record">
-              <a @click="onDetail(record)">详情</a>
+              <a v-if="record.auth['shop:sold:sold_package_course|get']" @click="onDetail(record)">详情</a>
               <a-divider type="vertical"></a-divider>
               <st-more-dropdown class="mgl-16">
-                <a-menu-item @click="onSurplus(record)">修改剩余课时</a-menu-item>
-                <a-menu-item @click="onFreeze(record)">冻结</a-menu-item>
-                <a-menu-item @click="onUnfreeze(record)">取消冻结</a-menu-item>
-                <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
-                <a-menu-item @click="onRefund(record)">退款</a-menu-item>
+                <a-menu-item v-if="record.auth['shop:sold:sold_package_course|course_num']" @click="onSurplus(record)">修改剩余课时</a-menu-item>
+                <a-menu-item v-if="record.auth['shop:sold:sold_package_course|frozen']" @click="onFreeze(record)">冻结</a-menu-item>
+                <a-menu-item v-if="record.auth['shop:sold:sold_package_course|unfrozen']" @click="onUnfreeze(record)">取消冻结</a-menu-item>
+                <a-menu-item v-if="record.auth['shop:sold:sold_package_course|transfer']" @click="onTransfer(record)">转让</a-menu-item>
+                <a-menu-item v-if="record.auth['shop:sold:sold_package_course|refund']" @click="onRefund(record)">退款</a-menu-item>
+                <a-menu-item v-if="record.auth['shop:sold:sold_package_course|export_contract']">查看合同</a-menu-item>
               </st-more-dropdown>
             </div>
           </st-table>
@@ -139,7 +140,8 @@ export default {
       list: this.packageService.list$,
       page: this.packageService.page$,
       package_course: this.userService.packageCourseEnums$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.packageService.auth$
     }
   },
   data() {
