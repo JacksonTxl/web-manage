@@ -23,8 +23,15 @@
 </template>
 
 <script>
+
+import { StaffApi } from '../../api/v1/staff'
 export default {
   name: 'DepartmentSelect',
+  serviceInject() {
+    return {
+      staffApi: StaffApi
+    }
+  },
   model: {
     prop: 'value',
     event: 'change'
@@ -48,11 +55,6 @@ export default {
       departmentOptions: []
     }
   },
-  serviceInject() {
-    return {
-      staffApi: StaffApi
-    }
-  },
   methods: {
     onChange(value) {
       this.$emit('change', value)
@@ -66,7 +68,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

@@ -116,8 +116,8 @@ export default {
       type: Object
     },
     isShowCoach: {
-      type: Number,
-      default: 0
+      type: Boolean,
+      default: true
     }
   },
   data() {
