@@ -52,7 +52,10 @@ export class RoleApi extends Api {
 }
 
 export interface GetInitInfoPut {
-  role_id: string
+  /**
+   * role_id : string
+   */
+  role_id?: Number | String
 }
 export interface RoleInfo{
   id?: number

@@ -16,36 +16,45 @@
     <edit-detail-basics-info
       v-show="currentIndex === 0"
       @goNext="goNext"
-      :formData="formData.staff_info"
+      :enums="staffEnums"
+      :data="staffInfo"
       @bacicInfoSave="onBasicsSave"
     />
     <edit-detail-detailed-info
       v-show="currentIndex === 1"
       @goNext="goNext"
-      :formData="formData.staff_info"
+      :isShowCoach="isShowCoach"
+      :enums="staffEnums"
+      :data="staffInfo"
       @detailInfoSave="onDetailInfoSave"/>
     <edit-detail-coach-info
+      v-if="isShowCoach"
       v-show="currentIndex === 2"
       @goNext="goNext"
-      :formData="formData.staff_info"
+      :enums="staffEnums"
+      :data="staffInfo"
       @coachInfoSave="onCoachInfoSave"/>
   </st-panel>
 </template>
 <script>
+import { UserService } from '@/services/user.service'
 import EditDetailBasicsInfo from './edit#/edit-detail-basicsInfo'
 import EditDetailDetailedInfo from './edit#/edit-detail-detailedInfo'
 import EditDetailCoachInfo from './edit#/edit-detail-coachInfo'
 import { EditService } from './edit.service'
 export default {
+  name: 'EditStaff',
   serviceInject() {
     return {
+      userService: UserService,
       editService: EditService
     }
   },
   rxState() {
     return {
-      formData: this.editService.formData$,
-      countryList: this.editService.countryList$
+      staffEnums: this.userService.staffEnums$,
+      staffInfo: this.editService.staffInfo$,
+      codeList: this.editService.codeList$
     }
   },
   bem: {
@@ -57,6 +66,23 @@ export default {
     EditDetailBasicsInfo, // 编辑基础信息
     EditDetailDetailedInfo, // 编辑详细信息
     EditDetailCoachInfo // 编辑教练信息
+  },
+  computed: {
+    isShowCoach() {
+      if (this.staffInfo.identity.length === 0) return false
+      return this.staffInfo.identity.includes(3) || this.staffInfo.identity.includes(4)
+    },
+    id() {
+      return this.staffInfo.staff_id
+    }
+  },
+  watch: {
+    isShowCoach(newVal) {
+      if (newVal) {
+        this.stepsSpan = 12
+        this.stepArr.pop()
+      }
+    }
   },
   data() {
     return {
@@ -80,7 +106,6 @@ export default {
   },
   methods: {
     onBasicsSave(data) {
-      console.log('员工基础信息保存', data)
       let obk = {
         image_avatar: { image_id: 1, image_url: '1.xxx.com/xxxx' },
         image_face: { image_id: 1, image_url: '1.xxx.com/xxxx' },
@@ -133,15 +158,15 @@ export default {
         is_show: 1,
         album_id: 0
       }
-      this.editService.editBasicInfo(36, data.data).subscribe()
+      this.editService.updateBasicInfo(this.id, data.data).subscribe()
     },
     onDetailInfoSave(data) {
       console.log('员工详细信息保存', data)
-      this.editService.editDetailInfo(36, data.data).subscribe()
+      this.editService.updateDetailInfo(this.id, data.data).subscribe()
     },
     onCoachInfoSave(data) {
       console.log('教练信息保存', data.data)
-      this.editService.editCoachInfo(36, data.data).subscribe()
+      this.editService.updateCoachInfo(this.id, data.data).subscribe()
     },
     goNext() {
       if (this.currentIndex < 2) {
@@ -153,8 +178,14 @@ export default {
     }
   },
   mounted() {
-    let { currentIndex, isShowCoach } = this.$route.query
-    console.log(isShowCoach)
+    let { currentIndex } = this.$route.query
+    if (this.isShowCoach) {
+      console.log('展示')
+    } else {
+      console.log('不展示')
+      this.stepsSpan = 12
+      this.stepArr.pop()
+    }
     if (currentIndex) {
       this.currentIndex = currentIndex - 0
       // if(!isShowCoach){
@@ -163,13 +194,6 @@ export default {
       // }else{
       //   console.log('展示')
       // }
-      if (isShowCoach === '1') {
-        console.log('展示')
-      } else {
-        console.log('不展示')
-        this.stepsSpan = 12
-        this.stepArr.pop()
-      }
     }
   }
 }

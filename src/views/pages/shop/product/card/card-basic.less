@@ -224,20 +224,23 @@
       // min-width: 690px;
       padding: 36px 24px 24px;
       .bg(#fff);
-      .brand-card {
+      .shop-card {
         &__card_name {
           display: flex;
           align-items: center;
+        }
+        &__card_bg {
+          border-radius: 4px;
         }
         &__name_time {
           margin-left: 16px;
           .fz(14px);
           .lh(22px);
           .c(@title);
-          .brand-card__sellstop{
+          .shop-card__sellstop{
             .c(@error-color);
           }
-          .brand-card__selling{
+          .shop-card__selling{
             .c(@success-color);
           }
         }
@@ -248,9 +251,9 @@
             .fz(16px);
             .lh(24px);
           }
-          >span::nth-of-type(2){
-            .c(#1CAF3A);
-          }
+        }
+        &__shelf-status {
+          margin-left: 8px;
         }
         &__time {
           >span:nth-of-type(2){

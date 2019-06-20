@@ -41,16 +41,56 @@
     <st-table
     :columns="columns"
     :dataSource="list"
+    @change="onPageChange"
     :pagination="{current:query.current_page,total:page.total_counts,pageSize:query.size}"
     rowKey="id"
     >
-
+      <template slot="card_type" slot-scope="text">
+        {{text.name}}
+      </template>
+      <template slot="admission_range" slot-scope="text">
+        <a>{{text.name}}</a>
+      </template>
+      <template slot="support_sales" slot-scope="text">
+        <a>{{text.name}}</a>
+      </template>
+      <template slot="start_time" slot-scope="text, record">
+        {{record.start_time}}&nbsp;~&nbsp;{{record.end_time}}
+      </template>
+      <template slot="price_setting" slot-scope="text">
+        {{text.name}}
+      </template>
+      <template slot="price_gradient" slot-scope="text">
+        {{`${text[0]}${text[1]?'-'+text[1]:''}`}}
+      </template>
+      <template slot="publish_channel" slot-scope="text">
+        {{text.name}}
+      </template>
+      <template slot="shop_shelf_card" slot-scope="text">
+        {{text.name}}
+      </template>
+      <template slot="sell_status" slot-scope="text">
+        {{text.name}}
+      </template>
+      <div slot="action" slot-scope="text,record">
+        <a @click="onDetail(record)">详情</a>
+        <a-divider type="vertical"></a-divider>
+        <st-more-dropdown class="mgl-16">
+          <a-menu-item @click="onEdit(record)">编辑</a-menu-item>
+          <a-menu-item @click="onShelf(record)">上架</a-menu-item>
+          <a-menu-item @click="onStopSale(record)">停售</a-menu-item>
+          <a-menu-item @click="onShelfDown(record)">下架</a-menu-item>
+          <a-menu-item @click="onRecoverSale(record)">恢复售卖</a-menu-item>
+          <a-menu-item @click="onDelete(record)">删除</a-menu-item>
+        </st-more-dropdown>
+      </div>
     </st-table>
   </div>
 </template>
 <script>
 import { AllService } from './all.service'
 import { RouteService } from '@/services/route.service'
+import { UserService } from '@/services/user.service'
 export default {
   name: 'PageShopProductMemberAll',
   bem: {
@@ -58,6 +98,7 @@ export default {
   },
   serviceInject() {
     return {
+      userService: UserService,
       routeService: RouteService,
       allService: AllService
     }
@@ -66,54 +107,54 @@ export default {
     return {
       list: this.allService.list$,
       page: this.allService.page$,
+      memberCard: this.userService.memberCardEnums$,
       query: this.routeService.query$
+    }
+  },
+  computed: {
+    cardType() {
+      let arr = [{ value: -1, label: '所有类型' }]
+      Object.keys(this.memberCard.card_type.value).forEach(i => {
+        arr.push({
+          value: +i,
+          label: this.memberCard.card_type.value[i]
+        })
+      })
+      return arr
+    },
+    publishChannel() {
+      let arr = [{ value: -1, label: '所有渠道' }]
+      Object.keys(this.memberCard.publish_channel.value).forEach(i => {
+        arr.push({
+          value: +i,
+          label: this.memberCard.publish_channel.value[i]
+        })
+      })
+      return arr
+    },
+    shelfStatus() {
+      let arr = [{ value: -1, label: '所有上架状态' }]
+      Object.keys(this.memberCard.shelf_status.value).forEach(i => {
+        arr.push({
+          value: +i,
+          label: this.memberCard.shelf_status.value[i]
+        })
+      })
+      return arr
+    },
+    sellStatus() {
+      let arr = [{ value: -1, label: '所有售卖状态' }]
+      Object.keys(this.memberCard.sell_status.value).forEach(i => {
+        arr.push({
+          value: +i,
+          label: this.memberCard.sell_status.value[i]
+        })
+      })
+      return arr
     }
   },
   data() {
     return {
-      cardType: [{
-        value: -1,
-        label: '所有类型'
-      }, {
-        value: 2,
-        label: '期限卡'
-      }, {
-        value: 1,
-        label: '次卡'
-      }],
-      publishChannel: [{
-        value: -1,
-        label: '所有渠道'
-      }, {
-        value: 1,
-        label: '品牌'
-      }, {
-        value: 2,
-        label: '门店'
-      }],
-      shelfStatus: [{
-        value: -1,
-        label: '所有上架状态'
-      }, {
-        value: 2,
-        label: '已上架'
-      }, {
-        value: 1,
-        label: '已下架'
-      }, {
-        value: 3,
-        label: '未上架'
-      }],
-      sellStatus: [{
-        value: -1,
-        label: '所有售卖状态'
-      }, {
-        value: 1,
-        label: '可售卖'
-      }, {
-        value: 2,
-        label: '不可售卖'
-      }],
       columns: [
         {
           title: '会员卡名称',
@@ -147,40 +188,81 @@ export default {
         },
         {
           title: '定价方式',
+          dataIndex: 'price_setting',
+          scopedSlots: { customRender: 'price_setting' }
+        },
+        {
+          title: '售卖价格',
           dataIndex: 'price_gradient',
           scopedSlots: { customRender: 'price_gradient' }
         },
         {
-          title: '售卖价格',
-          dataIndex: 'bbb',
-          scopedSlots: { customRender: 'bbb' }
-        },
-        {
           title: '发布渠道',
-          dataIndex: 'aaa',
-          scopedSlots: { customRender: 'aaa' }
-        },
-        {
-          title: '上架状态',
           dataIndex: 'publish_channel',
           scopedSlots: { customRender: 'publish_channel' }
         },
         {
+          title: '上架状态',
+          dataIndex: 'shop_shelf_card',
+          scopedSlots: { customRender: 'shop_shelf_card' }
+        },
+        {
           title: '售卖状态',
-          dataIndex: 'ccc',
-          scopedSlots: { customRender: 'ccc' }
+          dataIndex: 'sell_status',
+          scopedSlots: { customRender: 'sell_status' }
         },
         {
           title: '操作',
           dataIndex: 'action',
           scopedSlots: { customRender: 'action' }
         }
-      ]
+      ],
+      cardTypeRouteList: {
+        1: 'number',
+        2: 'period'
+      }
     }
   },
   methods: {
     onSelect(key, data) {
       this.$router.push({ query: { ...this.query, ...{ [key]: data } } })
+    },
+    onPageChange(data) {
+      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize }, force: true })
+    },
+    // 查看详情
+    onDetail(record) {
+      this.$router.push({
+        path: `/shop/product/card/member/${this.cardTypeRouteList[record.card_type.id]}/info`,
+        query: { id: record.id }
+      })
+    },
+    // 上架
+    onShelf(record) {
+      console.log(record)
+    },
+    // 编辑
+    onEdit(record) {
+      this.$router.push({
+        path: `/shop/product/card/member/${this.cardTypeRouteList[record.card_type.id]}/edit`,
+        query: { id: record.id }
+      })
+    },
+    // 停售
+    onStopSale(record) {
+      console.log(record)
+    },
+    // 下架
+    onShelfDown(record) {
+      console.log(record)
+    },
+    // 恢复售卖
+    onRecoverSale(record) {
+      console.log(record)
+    },
+    // 删除
+    onDelete(record) {
+      console.log(record)
     }
   }
 }

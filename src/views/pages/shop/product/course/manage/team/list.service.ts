@@ -78,7 +78,7 @@ export class ListService implements RouteGuard {
     return this.shopTeamCourseApi.deleteTeamCourse(courseId)
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getTeamCourseListInShop(to.query).subscribe(() => {
+    this.getTeamCourseListInShop({ size: 99, ...to.query }).subscribe(() => {
       next()
     })
   }

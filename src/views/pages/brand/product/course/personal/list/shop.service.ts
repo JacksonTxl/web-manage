@@ -39,6 +39,6 @@ export class ShopService implements RouteGuard {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCourseListInShop(to.query).subscribe(() => next())
+    this.getCourseListInShop({ size: 99, ...to.query }).subscribe(() => next())
   }
 }

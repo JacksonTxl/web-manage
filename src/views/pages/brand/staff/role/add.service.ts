@@ -11,7 +11,7 @@ interface SetState {
   shopList: any[]
 }
 @Injectable()
-export class InfoService extends Store<SetState> {
+export class AddService extends Store<SetState> {
   state$: State<SetState>
   info$: Computed<object>
   shopList$: Computed<object>
@@ -32,8 +32,9 @@ export class InfoService extends Store<SetState> {
       state.info = info
     })
   }
-  gitInitInfo(query: GetInitInfoPut) {
-    return this.roleService.getInitInfo(query).pipe(tap(res => {
+  gitInitInfo() {
+    // 如果是添加角色 初始化角色Id 是 0
+    return this.roleService.getInitInfo({ role_id: 0 }).pipe(tap(res => {
       this.state$.commit(state => {
         state.brandList = res.brand_list
         state.shopList = res.shop_list
@@ -49,12 +50,8 @@ export class InfoService extends Store<SetState> {
       this.SET_ROLE_INFO(res.role)
     }))
   }
-  getInit(query: GetInitInfoPut) {
-    return forkJoin(this.getInfo(query), this.gitInitInfo(query))
-  }
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    let { roleId } = to.query as any
-    this.getInit({ role_id: roleId }).subscribe((res: any) => next())
+    this.gitInitInfo().subscribe((res: any) => next())
   }
 }

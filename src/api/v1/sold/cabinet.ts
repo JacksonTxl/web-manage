@@ -22,8 +22,8 @@ export class CabinetApi extends Api {
   /**
    * 储物柜联动列表
    */
-  getCabinetList() {
-    return this.http.get(`/v1/sold/cabinet`)
+  getCabinetList(id:string|number) {
+    return this.http.get(`/v1/sold/cabinet/${id}`)
   }
   /**
    * 租赁列表

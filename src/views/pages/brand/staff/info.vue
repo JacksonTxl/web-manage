@@ -13,7 +13,7 @@
             <div class="staff-info-name">
               {{ info.staff_name }}（{{ info.nickname }}）
               <st-icon v-if="info.sex === 1" type="female" style="color:#FF5E41;"></st-icon>
-              <st-icon type="man" v-if="info.sex === 2"></st-icon>
+              <st-icon type="male" v-if="info.sex === 2"></st-icon>
             </div>
             <div class="staff-info-cont">
               <span class="mg-r8">手机号：{{ info.mobile }}</span>

@@ -105,8 +105,8 @@ export default {
       columns,
       selectedRowKeys: [],
       selectedRows: [],
-      card_type: '所以类型',
-      publish_channel: '所以渠道',
+      card_type: '所有类型',
+      publish_channel: '所有渠道',
       sell_status: '所有门店',
       getHeaders: {
         current_page: '',
@@ -219,8 +219,8 @@ export default {
   },
   watch: {
     $route() {
-      this.card_type = '所以类型'
-      this.publish_channel = '所以渠道'
+      this.card_type = '所有类型'
+      this.publish_channel = '所有渠道'
       this.sell_status = '所有门店'
     }
   }

@@ -2,9 +2,14 @@
   <section :class="basic()">
     <st-panel title="会员卡详情">
       <div slot="actions">
+        <st-button class="mgr-8" @click="onFreeze" type="primary">冻结</st-button>
+        <st-button class="mgr-8" @click="onRenewal" type="primary">续卡</st-button>
+        <st-button class="mgr-8" @click="onUpgrade" type="primary">升级</st-button>
+        <st-button class="mgr-8" @click="onTransfer" type="primary">转让</st-button>
+        <st-button class="mgr-8" @click="onRefund" type="primary">退款</st-button>
+        <st-button class="mgr-8" @click="onSetTime" type="primary">修改有效时间</st-button>
+        <st-button class="mgr-8" @click="onArea" type="primary">修改入场vip区域</st-button>
         <st-button class="mgr-8" type="primary">查看合同</st-button>
-        <st-button class="mgr-8" type="primary">冻结</st-button>
-        <st-button class="mgr-8" type="primary">更多</st-button>
       </div>
       <a-row :gutter="24">
         <a-col :span="9">
@@ -91,6 +96,189 @@ export default {
   },
   methods: {
     moment,
+    // 订单收款modal
+    createdOrderPay(props) {
+      return new Promise((resolve, reject) => {
+        this.$modalRouter.push({
+          name: 'sold-deal-gathering',
+          props,
+          on: {
+            success: resolve
+          }
+        })
+      })
+    },
+    // 订单收款回调
+    async payCallBack(orderId, modalType, callBackType) {
+      switch (callBackType) {
+        case 'cancel':
+          this.onSearch()
+          break
+        case 'pay':
+          this.createdGatheringTip({ message: '收款成功', order_id: orderId }).then(res => {
+            this.tipCallBack(orderId, modalType, res.type)
+          })
+          break
+      }
+    },
+    // 创建成功，提示框modal
+    createdGatheringTip(props) {
+      return new Promise((resolve, reject) => {
+        this.$modalRouter.push({
+          name: 'sold-deal-gathering-tip',
+          props,
+          on: {
+            success: resolve
+          }
+        })
+      })
+    },
+    // 提示框回调，gathering-tip
+    async tipCallBack(orderId, modalType, callBackType) {
+      switch (callBackType) {
+        case 'cancel':
+          this.onSearch()
+          break
+        case 'Print':
+          this.createdOrderPrint()
+          break
+        case 'ViewOrder':
+          this.createdOrderViewOrder()
+          break
+        case 'Pay':
+          this.createdOrderPay({ order_id: orderId, type: modalType }).then(res => {
+            this.payCallBack(orderId, modalType, res.type)
+          })
+          break
+      }
+    },
+    // 打印合同
+    createdOrderPrint() {
+      console.log('打印合同')
+    },
+    // 查看订单
+    createdOrderViewOrder() {
+      console.log('查看订单')
+    },
+    // 冻结
+    onFreeze() {
+      this.$modalRouter.push({
+        name: 'sold-card-freeze',
+        props: {
+          id: this.infoService.id
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
+    // 续卡
+    onRenewal() {
+      this.$modalRouter.push({
+        name: 'sold-card-renewal-member',
+        props: {
+          id: this.infoService.id
+        },
+        on: {
+          success: async res => {
+            this.$router.push({ force: true, query: this.query })
+            if (res.type === 'create') {
+              // 创建订单成功
+              let props = {
+                order_id: res.orderId,
+                type: 'member',
+                message: '订单创建成功',
+                needPay: true
+              }
+              let orderSuccessRes = await this.createdGatheringTip(props)
+              this.tipCallBack(res.orderId, 'member', orderSuccessRes.type)
+            } else if (res.type === 'createPay') {
+              // 创建订单成功 并且到支付页面
+              let props = {
+                order_id: res.orderId,
+                type: 'member'
+              }
+              let payOrderRes = await this.createdOrderPay(props)
+              this.payCallBack(res.orderId, 'member', payOrderRes.type)
+            }
+          }
+        }
+      })
+    },
+    // 升级
+    onUpgrade() {
+      this.$modalRouter.push({
+        name: 'sold-card-upgrade-member',
+        props: {
+          id: this.infoService.id
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
+    // 转让
+    onTransfer() {
+      this.$modalRouter.push({
+        name: 'sold-card-transfer',
+        props: {
+          id: this.infoService.id,
+          type: 'member'
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
+    // 退款
+    onRefund() {
+      this.$modalRouter.push({
+        name: 'sold-card-refund',
+        props: {
+          type: 'member',
+          id: this.infoService.id
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
+    // 修改有效时间
+    onSetTime() {
+      this.$modalRouter.push({
+        name: 'sold-card-set-time',
+        props: {
+          id: this.infoService.id
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
+    // 变更vip入场区域
+    onArea() {
+      this.$modalRouter.push({
+        name: 'sold-card-area',
+        props: {
+          id: [this.infoService.id]
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
+        }
+      })
+    },
     onShowShops() {
       console.log('多门店')
     },

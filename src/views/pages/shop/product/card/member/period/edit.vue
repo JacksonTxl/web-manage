@@ -268,6 +268,7 @@ export default {
       transferUnit: 2,
       // 转让手续费
       transferNum: 0,
+      transfer_unit_is_first: true,
       // 售卖渠道
       sellType: [2],
       // 卡背景
@@ -357,8 +358,8 @@ export default {
             card_bg: this.cardBg,
             price_gradient
           }).subscribe(res => {
-            // 新增成功
-
+            // 编辑成功
+            this.$router.push({ path: '/shop/product/card/member/list/all' })
           })
         }
       })
@@ -478,7 +479,10 @@ export default {
     'transferUnit': {
       deep: true,
       handler() {
-        this.form.resetFields(['transferNum'])
+        if (!this.transfer_unit_is_first) {
+          this.form.resetFields(['transferNum'])
+        }
+        this.transfer_unit_is_first = false
       }
     }
   },

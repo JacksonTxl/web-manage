@@ -1,7 +1,7 @@
 <template>
   <st-panel app class="page-brand-basic-card page-brand-edit-deposite-card" initial>
     <div class="page-brand-basic-card-body">
-      <div class="page-preview">实时预览{{deposit_card}}</div>
+      <!-- <div class="page-preview">实时预览{{deposit_card}}</div> -->
       <div class="page-content">
         <st-form :form="form" labelWidth="116px">
           <a-row :gutter="8" class="page-content-card-line__row">
@@ -232,13 +232,17 @@ import { RuleConfig } from '@/constants/rule'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { cloneDeep, remove } from 'lodash-es'
 import { EditService } from './edit.service'
+import { AppConfig } from '@/constants/config'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'BrandDepositeCardEdit',
   serviceInject() {
     return {
       rules: RuleConfig,
       editService: EditService,
-      userService: UserService
+      userService: UserService,
+      appConfig: AppConfig,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -330,8 +334,8 @@ export default {
         'cardData.card_consumer_id': this.cardInfo.card_consumer_id,
         'cardData.consumption_range': this.cardInfo.consumption_range,
         'cardData.support_sales': this.cardInfo.support_sales,
-        'start_time': moment(this.cardInfo.start_time * 1000),
-        'end_time': moment(this.cardInfo.end_time * 1000),
+        'start_time': moment(this.cardInfo.start_time),
+        'end_time': moment(this.cardInfo.end_time),
         'cardData.transfer_num': this.cardInfo.transfer_num
       })
       // 储值金额
@@ -350,8 +354,8 @@ export default {
       this.cardData.support_sales = this.cardInfo.support_sales
       this.cardData.sell_shop_list = this.cardData.support_sales === 2 ? cloneDeep(this.cardInfo.sell_shop_list) : []
       // 支持售卖时间
-      this.start_time = moment(this.cardInfo.start_time * 1000)
-      this.end_time = moment(this.cardInfo.end_time * 1000)
+      this.start_time = moment(this.cardInfo.start_time)
+      this.end_time = moment(this.cardInfo.end_time)
       // 转让设置
       this.cardData._is_transfer = !!this.cardInfo.is_transfer
       this.cardData.transfer_unit = this.cardInfo.transfer_unit
@@ -396,14 +400,21 @@ export default {
             this.cardData.sell_shop_list = cloneDeep(this.cardData.consumer_shop_list)
           }
           // 时间
-          this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
-          this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')} 00:00:00`
+          const dateFormat = this.appConfig.DATE_FORMAT.date
+          this.cardData.start_time = moment(this.start_time).format(dateFormat)
+          this.cardData.end_time = moment(this.end_time).format(dateFormat)
           // 卡id
           this.cardData.card_id = +this.$route.query.id
-          this.editService.editCard(this.cardData).subscribe(res => {
-            console.log(res)
-          })
+          this.editService.editCard(this.cardData).subscribe(this.onSubmitSuccess)
         }
+      })
+    },
+    onSubmitSuccess() {
+      this.messageService.success({
+        content: '修改成功'
+      })
+      this.$router.push({
+        name: 'brand-product-card-deposite-list-member-list'
       })
     },
     // card_name validatorFn
@@ -636,6 +647,7 @@ export default {
     },
     // 售卖渠道
     sell_type_list() {
+      console.log('list', this.deposit_card.sell_type.value)
       let sell_type = cloneDeep(Object.entries(this.deposit_card.sell_type.value))
       let arr = []
       sell_type.forEach(i => {

@@ -33,7 +33,7 @@
             :key="menu.id"
           >
             <span slot="title">
-              <a-icon type="file"/>
+              <st-icon :type="menu.icon"/>
               <span>{{menu.name}}</span>
             </span>
             <a-menu-item
@@ -45,7 +45,7 @@
         </a-sub-menu>
         <a-menu-item v-else :key="menu.id">
           <router-link :to="{ name: menu.url }">
-            <a-icon type="file"/>
+            <st-icon :type="menu.icon"/>
             <span>{{menu.name}}</span>
           </router-link>
         </a-menu-item>
@@ -70,7 +70,6 @@ export default {
   },
   data() {
     return {
-      rootSubmenuKeys: [],
       openKeys: []
     }
   },
@@ -83,6 +82,9 @@ export default {
     },
     menuMap() {
       return treeToMap(this.menus)
+    },
+    rootSubmenuKeys() {
+      return this.getRootSubmenuKeys()
     }
   },
   methods: {
@@ -120,6 +122,14 @@ export default {
       this.userService.getMenus({
         force: true
       }).subscribe()
+    },
+    getRootSubmenuKeys() {
+      const { menus } = this
+      const rootSubmenuKeys = []
+      menus.forEach(item => {
+        rootSubmenuKeys.push(item.id)
+      })
+      return rootSubmenuKeys
     }
   }
 }

@@ -41,8 +41,9 @@
               <st-input-search placeholder="请输入" style="width:340px" @change="fileterBrandList" round="round"></st-input-search>
               <a-tree
                 checkable
-                :defaultCheckedKeys="info.select_ids"
+                :defaultSelectedKeys="['menu:1', 'menu:2', 'menu:3']"
                 @expand="onExpand"
+                v-model="brandIds"
                 :expandedKeys.sync="expandedKeys"
                 :autoExpandParent="autoExpandParent"
                 :treeData="brands">
@@ -60,8 +61,22 @@
             <st-container class="shop-list pd-x24">
               <p>门店权限</p>
               <st-input-search placeholder="请输入" style="width:340px" round="round"></st-input-search>
-              <a-tree checkable :treeData="shops">
-
+              <a-tree
+                checkable
+                :defaultSelectedKeys="['menu:1', 'menu:2', 'menu:3']"
+                @expand="onExpand"
+                v-model="shopIds"
+                :expandedKeys.sync="expandedKeys"
+                :autoExpandParent="autoExpandParent"
+                :treeData="shops">
+                <template slot="title" slot-scope="{title}">
+                  <span v-if="title.indexOf(searchValue) > -1">
+                    {{title.substr(0, title.indexOf(searchValue))}}
+                    <span style="color: #f50">{{searchValue}}</span>
+                    {{title.substr(title.indexOf(searchValue) + searchValue.length)}}
+                  </span>
+                  <span v-else>{{title}}</span>
+                </template>
               </a-tree>
 
             </st-container>
@@ -81,7 +96,6 @@
 <script>
 import { EditService } from './edit.service'
 import { listToTree } from '@/utils/list-to-tree.js'
-import { json2AntDesignTreeData } from '@/utils/json-2-tree-data'
 import { cloneDeep } from 'lodash-es'
 const getParentKey = (key, tree) => {
   let parentKey
@@ -109,7 +123,7 @@ export default {
       loading: this.editService.loading$,
       info: this.editService.info$,
       brandList: this.editService.brandList$,
-      shopList: this.editService.brandList$
+      shopList: this.editService.shopList$
     }
   },
   data() {
@@ -154,14 +168,24 @@ export default {
             select_ids: ['menu:1', 'menu:2', 'menu:3'],
             department_ids: [22, 34]
           }
-          this.roleService.update(form).subscribe()
+          this.editService.update(form).subscribe()
         }
       })
     }
   },
   mounted() {
-    this.brands = listToTree(this.brandList)
-    this.shops = listToTree(this.shopList)
+    this.brands = listToTree(cloneDeep(this.brandList))
+    this.brandIds = this.brandList.filter(item => {
+      return this.info.select_ids.includes(item.id)
+    }).map(item => {
+      return item.id
+    })
+    this.shops = listToTree(cloneDeep(this.shopList))
+    this.shopIds = this.shopList.filter(item => {
+      return this.info.select_ids.includes(item.id)
+    }).map(item => {
+      return item.id
+    })
   }
 }
 </script>

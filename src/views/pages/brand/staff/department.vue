@@ -61,7 +61,7 @@ export default {
     },
     // 编辑
     onEditStaff(staffId) {
-      this.$router.push({ name: 'brand-staff-edit', query: { staffId } })
+      this.$router.push({ name: 'brand-staff-edit', query: { id: staffId } })
     },
     // 添加员工
     onAddStaff() {

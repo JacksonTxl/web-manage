@@ -39,7 +39,7 @@ export default {
   // },
   name: 'tableStop',
   props: {
-    a: {
+    id: {
       type: Number
     },
     title: {
@@ -81,7 +81,7 @@ export default {
   },
   created() {
     let self = this
-    this.getListInfo({ card_id: self.a })
+    this.getListInfo({ card_id: self.id })
   },
   methods: {
     getListInfo(data) {
@@ -115,7 +115,7 @@ export default {
       let self = this
       self.pagination = pagination
       let data = {
-        card_id: self.a,
+        card_id: self.id,
         size: self.pagination.pageSize,
         current_page: self.pagination.current
       }

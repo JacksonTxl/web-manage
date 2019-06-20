@@ -1,11 +1,12 @@
 <template>
-  <st-panel app class="page-brand-card-info page-brand-period-card-info" initial>
-    <div class="page-brand-card-info-body">
-      <div class="page-preview">实时预览</div>
+  <st-panel app class="page-shop-card-info page-shop-period-card-info" initial>
+    <div class="page-shop-card-info-body">
+      <div class="page-preview">实时预览{{cardInfo}}</div>
       <div class="page-content">
         <div :class="item('card_name')" class="mb-24">
           <!-- 卡名称 -->
           <img
+          v-if="cardInfo.card_bg"
           :class="item('card_bg')"
           :src="cardInfo.card_bg.image_url | imgFilter({w:192,h:108})"
           width="192"
@@ -15,7 +16,7 @@
             <p :class="item('name')">
               <st-tag type="period-card"/>
               <span>{{cardInfo.card_name}}</span>
-              <span :class="{'brand-card__selling':cardInfo.sell_status.id===1,'brand-card__sellstop':cardInfo.sell_status.id===2}">{{cardInfo.sell_status.name}}
+              <span :class="{'shop-card__selling':cardInfo.sell_status.id===1,'shop-card__sellstop':cardInfo.sell_status.id===2}">{{cardInfo.sell_status.name}}
                 <a-popover
                   v-if="cardInfo.sell_status.id===2"
                   trigger="hover"
@@ -28,6 +29,7 @@
                   <a-icon type="info-circle"></a-icon>
                 </a-popover>
               </span>
+              <span :class="item('shelf-status')">{{cardInfo.shelf_status | enumFilter('member_card.shelf_status')}}</span>
             </p>
             <p :class="item('time')">
               <span class="label">售卖时间：</span>
@@ -71,14 +73,14 @@
         </div>
         <div :class="item('price_setting')" class="mb-24">
           <!-- 定价方式 -->
-          <p class="mb-8">
+          <!-- <p class="mb-8">
             <span class="label">定价方式：</span>
             <span class="value">{{cardInfo.price_setting.name}}</span>
-          </p>
+          </p> -->
         </div>
         <div :class="item('price_gradient')" class="mb-24">
           <!-- 售卖定价 -->
-          <p class="mb-8">
+          <!-- <p class="mb-8">
             <span class="label">售卖定价：</span>
           </p>
           <st-container>
@@ -102,28 +104,28 @@
               :scroll="{ y: 230 }"
             >
             </a-table>
-          </st-container>
+          </st-container> -->
         </div>
         <div :class="item('transfer')" class="mb-24">
           <!-- 转让设置 -->
-          <p class="mb-8">
+          <!-- <p class="mb-8">
             <span class="label">转让设置：</span>
             <span class="value">{{cardInfo.is_transfer.name}}</span>
-          </p>
+          </p> -->
         </div>
         <div :class="item('card_introduction')" class="mb-24">
           <!-- 会员卡说明 -->
-          <p class="mb-8">
+          <!-- <p class="mb-8">
             <span class="label">会员卡说明：</span>
           </p>
-          <st-container>{{cardInfo.card_introduction}}</st-container>
+          <st-container>{{cardInfo.card_introduction}}</st-container> -->
         </div>
         <div :class="item('card_contents')" class="mb-24">
           <!-- 备注 -->
-          <p class="mb-8">
+          <!-- <p class="mb-8">
             <span class="label">备注：</span>
           </p>
-          <st-container>{{cardInfo.card_contents}}</st-container>
+          <st-container>{{cardInfo.card_contents}}</st-container> -->
         </div>
       </div>
     </div>
@@ -132,9 +134,9 @@
 <script>
 import { InfoService } from './info.service'
 export default {
-  name: 'BrandPeriodCardInfo',
+  name: 'PageShopPeriodCardInfo',
   bem: {
-    item: 'brand-card'
+    item: 'shop-card'
   },
   serviceInject() {
     return {
@@ -173,58 +175,58 @@ export default {
       ],
       // 售卖定价表头
       price_gradient_columns: {
-        brand: [
-          {
-            title: '期限',
-            scopedSlots: { customRender: 'validity_period' },
-            dataIndex: 'validity_period',
-            width: '25%'
-          },
-          {
-            title: '售价',
-            scopedSlots: { customRender: 'sale_price' },
-            dataIndex: 'sale_price',
-            width: '25%'
-          },
-          {
-            title: '允许冻结天数',
-            scopedSlots: { customRender: 'frozen_day' },
-            dataIndex: 'frozen_day',
-            width: '25%'
-          },
-          {
-            title: '赠送上限',
-            scopedSlots: { customRender: 'gift_unit' },
-            dataIndex: 'gift_unit',
-            width: '25%'
-          }
-        ],
-        shop: [
-          {
-            title: '期限',
-            scopedSlots: { customRender: 'validity_period' },
-            dataIndex: 'validity_period',
-            width: '25%'
-          },
-          {
-            title: '售价',
-            scopedSlots: { customRender: 'sale_price' },
-            dataIndex: 'sale_price',
-            width: '25%'
-          },
-          {
-            title: '允许冻结天数',
-            scopedSlots: { customRender: 'frozen_day' },
-            dataIndex: 'frozen_day',
-            width: '25%'
-          },
-          {
-            title: '赠送上限',
-            scopedSlots: { customRender: 'gift_unit' },
-            dataIndex: 'gift_unit',
-            width: '25%'
-          }
-        ]
+        // brand: [
+        //   {
+        //     title: '期限',
+        //     scopedSlots: { customRender: 'validity_period' },
+        //     dataIndex: 'validity_period',
+        //     width: '25%'
+        //   },
+        //   {
+        //     title: '售价',
+        //     scopedSlots: { customRender: 'sale_price' },
+        //     dataIndex: 'sale_price',
+        //     width: '25%'
+        //   },
+        //   {
+        //     title: '允许冻结天数',
+        //     scopedSlots: { customRender: 'frozen_day' },
+        //     dataIndex: 'frozen_day',
+        //     width: '25%'
+        //   },
+        //   {
+        //     title: '赠送上限',
+        //     scopedSlots: { customRender: 'gift_unit' },
+        //     dataIndex: 'gift_unit',
+        //     width: '25%'
+        //   }
+        // ],
+        // shop: [
+        //   {
+        //     title: '期限',
+        //     scopedSlots: { customRender: 'validity_period' },
+        //     dataIndex: 'validity_period',
+        //     width: '25%'
+        //   },
+        //   {
+        //     title: '售价',
+        //     scopedSlots: { customRender: 'sale_price' },
+        //     dataIndex: 'sale_price',
+        //     width: '25%'
+        //   },
+        //   {
+        //     title: '允许冻结天数',
+        //     scopedSlots: { customRender: 'frozen_day' },
+        //     dataIndex: 'frozen_day',
+        //     width: '25%'
+        //   },
+        //   {
+        //     title: '赠送上限',
+        //     scopedSlots: { customRender: 'gift_unit' },
+        //     dataIndex: 'gift_unit',
+        //     width: '25%'
+        //   }
+        // ]
       }
     }
   }

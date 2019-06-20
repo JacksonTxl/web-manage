@@ -101,7 +101,12 @@ export default {
         id,
         is_enable: +!is_enable,
         payment_type
-      }).subscribe(this.getInfo)
+      }).subscribe(this.onListChange)
+    },
+    onListChange() {
+      this.$router.push({
+        force: true
+      })
     }
   }
 }

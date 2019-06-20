@@ -32,6 +32,9 @@ export class EditService extends Store<SetState> {
       state.info = info
     })
   }
+  update(params: RoleInfo) {
+    return this.roleService.update(params)
+  }
   gitInitInfo(query: GetInitInfoPut) {
     return this.roleService.getInitInfo(query).pipe(tap(res => {
       this.state$.commit(state => {

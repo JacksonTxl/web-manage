@@ -302,11 +302,11 @@ export default {
           let price_gradient = []
           this.rallyPriceList.forEach(i => {
             price_gradient.push({
-              unit: i.time.unit,
-              num: i.time.num,
-              rally_price: i.rally_price,
-              frozen_day: i.frozen_day,
-              gift_unit: i.gift_unit
+              unit: +i.time.unit,
+              num: +i.time.num,
+              rally_price: +i.rally_price,
+              frozen_day: +i.frozen_day,
+              gift_unit: +i.gift_unit
             })
           })
           this.addService.addCard({
@@ -324,7 +324,7 @@ export default {
             price_gradient
           }).subscribe(res => {
             // 新增成功
-
+            this.$router.push({ path: '/shop/product/card/member/list/all' })
           })
         }
       })
