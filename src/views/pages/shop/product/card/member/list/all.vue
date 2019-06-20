@@ -45,6 +45,9 @@
     :pagination="{current:query.current_page,total:page.total_counts,pageSize:query.size}"
     rowKey="id"
     >
+      <template slot="card_type" slot-scope="text">
+        {{text.name}}
+      </template>
       <template slot="admission_range" slot-scope="text">
         <a>{{text.name}}</a>
       </template>
@@ -63,6 +66,9 @@
       <template slot="publish_channel" slot-scope="text">
         {{text.name}}
       </template>
+      <template slot="shop_shelf_card" slot-scope="text">
+        {{text.name}}
+      </template>
       <template slot="sell_status" slot-scope="text">
         {{text.name}}
       </template>
@@ -70,8 +76,8 @@
         <a @click="onDetail(record)">详情</a>
         <a-divider type="vertical"></a-divider>
         <st-more-dropdown class="mgl-16">
-          <a-menu-item @click="onShelf(record)">上架</a-menu-item>
           <a-menu-item @click="onEdit(record)">编辑</a-menu-item>
+          <a-menu-item @click="onShelf(record)">上架</a-menu-item>
           <a-menu-item @click="onStopSale(record)">停售</a-menu-item>
           <a-menu-item @click="onShelfDown(record)">下架</a-menu-item>
           <a-menu-item @click="onRecoverSale(record)">恢复售卖</a-menu-item>
@@ -197,8 +203,8 @@ export default {
         },
         {
           title: '上架状态',
-          dataIndex: 'publish_channel1',
-          scopedSlots: { customRender: 'publish_channel1' }
+          dataIndex: 'shop_shelf_card',
+          scopedSlots: { customRender: 'shop_shelf_card' }
         },
         {
           title: '售卖状态',
@@ -210,7 +216,11 @@ export default {
           dataIndex: 'action',
           scopedSlots: { customRender: 'action' }
         }
-      ]
+      ],
+      cardTypeRouteList: {
+        1: 'number',
+        2: 'period'
+      }
     }
   },
   methods: {
@@ -222,7 +232,10 @@ export default {
     },
     // 查看详情
     onDetail(record) {
-      console.log(record)
+      this.$router.push({
+        path: `/shop/product/card/member/${this.cardTypeRouteList[record.card_type.id]}/info`,
+        query: { id: record.id }
+      })
     },
     // 上架
     onShelf(record) {
@@ -230,7 +243,10 @@ export default {
     },
     // 编辑
     onEdit(record) {
-      console.log(record)
+      this.$router.push({
+        path: `/shop/product/card/member/${this.cardTypeRouteList[record.card_type.id]}/edit`,
+        query: { id: record.id }
+      })
     },
     // 停售
     onStopSale(record) {

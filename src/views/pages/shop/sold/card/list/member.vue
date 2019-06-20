@@ -254,7 +254,7 @@ export default {
           ? `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
           : ''
       }
-      this.$router.push({ query: { ...this.query, ...query } })
+      this.$router.push({ query: { ...this.query, ...query }, force: true })
     },
     // 重置
     onReset() {
@@ -440,6 +440,70 @@ export default {
         }
       })
     },
+    // 订单收款modal
+    createdOrderPay(props) {
+      return new Promise((resolve, reject) => {
+        this.$modalRouter.push({
+          name: 'sold-deal-gathering',
+          props,
+          on: {
+            success: resolve
+          }
+        })
+      })
+    },
+    // 订单收款回调
+    async payCallBack(orderId, modalType, callBackType) {
+      switch (callBackType) {
+        case 'cancel':
+          this.onSearch()
+          break
+        case 'pay':
+          this.createdGatheringTip({ message: '收款成功', order_id: orderId }).then(res => {
+            this.tipCallBack(orderId, modalType, res.type)
+          })
+          break
+      }
+    },
+    // 创建成功，提示框modal
+    createdGatheringTip(props) {
+      return new Promise((resolve, reject) => {
+        this.$modalRouter.push({
+          name: 'sold-deal-gathering-tip',
+          props,
+          on: {
+            success: resolve
+          }
+        })
+      })
+    },
+    // 提示框回调，gathering-tip
+    async tipCallBack(orderId, modalType, callBackType) {
+      switch (callBackType) {
+        case 'cancel':
+          this.onSearch()
+          break
+        case 'Print':
+          this.createdOrderPrint()
+          break
+        case 'ViewOrder':
+          this.createdOrderViewOrder()
+          break
+        case 'Pay':
+          this.createdOrderPay({ order_id: orderId, type: modalType }).then(res => {
+            this.payCallBack(orderId, modalType, res.type)
+          })
+          break
+      }
+    },
+    // 打印合同
+    createdOrderPrint() {
+      console.log('打印合同')
+    },
+    // 查看订单
+    createdOrderViewOrder() {
+      console.log('查看订单')
+    },
     // 续卡
     onRenewal(record) {
       this.$modalRouter.push({
@@ -448,32 +512,27 @@ export default {
           id: record.id
         },
         on: {
-          success: () => {
+          success: async res => {
             this.$router.push({ force: true, query: this.query })
-            // 创建订单成功 并且到支付页面
-            this.$modalRouter.push({
-              name: 'sold-deal-gathering',
-              props: {
-                order_id: result.order_id,
-                type: 'member'
-              },
-              on: {
-                success: res => {
-                  this.$modalRouter.push({
-                    name: 'sold-deal-gathering-tip',
-                    props: {
-                      order_id: res.orderId,
-                      type: 'member'
-                    },
-                    on: {
-                      success: () => {
-                        console.log('success')
-                      }
-                    }
-                  })
-                }
+            if (res.type === 'create') {
+              // 创建订单成功
+              let props = {
+                order_id: res.orderId,
+                type: 'member',
+                message: '订单创建成功',
+                needPay: true
               }
-            })
+              let orderSuccessRes = await this.createdGatheringTip(props)
+              this.tipCallBack(res.orderId, 'member', orderSuccessRes.type)
+            } else if (res.type === 'createPay') {
+              // 创建订单成功 并且到支付页面
+              let props = {
+                order_id: res.orderId,
+                type: 'member'
+              }
+              let payOrderRes = await this.createdOrderPay(props)
+              this.payCallBack(res.orderId, 'member', payOrderRes.type)
+            }
           }
         }
       })
@@ -484,6 +543,11 @@ export default {
         name: 'sold-card-upgrade-member',
         props: {
           id: record.id
+        },
+        on: {
+          success: () => {
+            this.$router.push({ force: true, query: this.query })
+          }
         }
       })
     },
