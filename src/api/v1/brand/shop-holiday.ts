@@ -1,12 +1,11 @@
 import { Api } from '@/api/api'
-const url = '/v1/brand/shop_holiday'
 
 export class ShopHolidayApi extends Api {
   set(params: SetInput) {
-    return this.http.post(`${url}/${params.shop_id}`, { params })
+    return this.http.post(`/v1/brand/${params.shop_id}/shop_holiday`, { params })
   }
   del(id: number) {
-    return this.http.delete(`${url}/${id}`)
+    return this.http.delete(`/v1/brand/${id}/shop_holiday`)
   }
 }
 export interface SetInput {

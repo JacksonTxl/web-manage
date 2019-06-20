@@ -152,13 +152,13 @@ export class CardsApi extends Api {
    *  储值卡消费门店列表
    */
   getCardsDepositConsumeShop(query: any) {
-    return this.http.get(`/v1/cards/deposit/consume/shop`, { query })
+    return this.http.get(`/v1/cards/deposit/consume/shop/${query.card_id}`, { query })
   }
   /***
    *  储值卡卡售卖门店列表
    */
   getCardsDepositSaleShop(query: any) {
-    return this.http.get(`/v1/cards/deposit/sale/shop`, { query })
+    return this.http.get(`/v1/cards/deposit/sale/shop/${query.card_id}`, { query })
   }
   /***
    *   储值卡停售
@@ -177,7 +177,7 @@ export class CardsApi extends Api {
    * 品牌储值卡上架 /v1/cards/member/brand/shelf
    */
   setCardsDepositBrandOnLine(params: any) {
-    return this.http.put(`/v1/cards/brand/deposit/online`, { params })
+    return this.http.put(`/v1/cards/brand/deposit/online/${params.id}`, { params })
   }
   /**
    *  品牌门店上架储值卡列表
@@ -189,7 +189,7 @@ export class CardsApi extends Api {
    *  品牌储值卡下架
    */
   setCardsDepositBrandOffLine(params: any) {
-    return this.http.put(`/v1/cards/shop/deposit/offline`, { params })
+    return this.http.put(`/v1/cards/brand/deposit/offline/${params.id}`, { params })
   }
   /**
    * 品牌储值卡停售原因

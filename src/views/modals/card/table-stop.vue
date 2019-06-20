@@ -76,6 +76,7 @@ export default {
   },
   methods: {
     getListInfo(data) {
+      console.log('data', data)
       let self = this
       if (self.title) {
         this.aService.getCardsDepositSaleShop(data).subscribe(state => {

@@ -51,8 +51,7 @@ export class PayTypeService extends Store<ListState> {
   update(params: UpdateInput) {
     return this.paymentSettingApi.update(params)
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    console.log('before route enter')
-    this.getInfo().subscribe(next, () => { next(false) })
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.getInfo()
   }
 }

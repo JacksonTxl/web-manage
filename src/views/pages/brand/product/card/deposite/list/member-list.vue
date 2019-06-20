@@ -62,7 +62,7 @@
         <modal-link
           v-if="record.support_sales.id === 2"
           tag="a"
-          :to="{ name: 'card-table-stop', props:{a: record.id, title: '支持售卖门店'}}"
+          :to="{ name: 'card-table-stop', props: { id: record.id, title: '支持售卖门店'} }"
         >{{text}}</modal-link>
         <span v-else>{{text}}</span>
       </div>
@@ -72,7 +72,7 @@
         <modal-link
           v-if="record.consumption_range.id === 2"
           tag="a"
-          :to="{ name: 'card-sale-stop' , props:{a: record.id, title:'支持消费门店'}}"
+          :to="{ name: 'card-sale-stop' , props:{ id: record.id, title:'支持消费门店'} }"
         >{{text}}</modal-link>
         <span v-else>{{text}}</span>
       </div>
@@ -309,7 +309,7 @@ export default {
   watch: {
     $route(data) {
       if (data.query.card_name) {
-        this.sell_status = '所以渠道'
+        this.sell_status = '所有渠道'
         this.publish_channel = '所有售卖状态'
       }
       this.getInfoData(this.memberCardsList)
