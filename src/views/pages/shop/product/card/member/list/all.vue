@@ -48,11 +48,21 @@
       <template slot="card_type" slot-scope="text">
         {{text.name}}
       </template>
-      <template slot="admission_range" slot-scope="text">
-        <a>{{text.name}}</a>
+      <template slot="admission_range" slot-scope="text,record">
+        <modal-link
+          v-if="text.id === 2"
+          tag="a"
+          :to="{ name: 'card-table-stop' , props:{id: record.id}}"
+        >{{text.name}}</modal-link>
+        <span v-else class="use_num">{{text.name}}</span>
       </template>
-      <template slot="support_sales" slot-scope="text">
-        <a>{{text.name}}</a>
+      <template slot="support_sales" slot-scope="text,record">
+        <modal-link
+          v-if="text.id === 2"
+          tag="a"
+          :to="{ name: 'card-sale-stop' , props:{id: record.id,title:'aa'}}"
+        >{{text.name}}</modal-link>
+        <span v-else>{{text.name}}</span>
       </template>
       <template slot="start_time" slot-scope="text, record">
         {{record.start_time}}&nbsp;~&nbsp;{{record.end_time}}
