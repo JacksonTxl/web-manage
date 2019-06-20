@@ -24,7 +24,7 @@
       </div>
     </header>
     <main class="page-shop-sale-list-shop__table mg-t8">
-      <team-table-shop @delete-course="onDeleteCourse" @change="onChangeSelectedRowKeys" :teamCourseList="teamCourseList"></team-table-shop>
+      <team-table-shop :page="page" @delete-course="onDeleteCourse" @change="onChangeSelectedRowKeys" :teamCourseList="teamCourseList"></team-table-shop>
     </main>
   </div>
 </template>
@@ -50,6 +50,7 @@ export default {
       shopsOptions: this.listService.shopSelectOptions$,
       categoryList: this.listService.categoryList$,
       query: this.routeService.query$,
+      page: this.shopService.page$,
       auth: this.shopService.auth$
     }
   },

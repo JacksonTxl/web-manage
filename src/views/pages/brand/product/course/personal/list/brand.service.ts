@@ -85,6 +85,6 @@ export class BrandService extends Store<SetState> {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCoursePersonalBrandList(to.query).subscribe(state$ => next())
+    this.getCoursePersonalBrandList({ size: 99, ...to.query }).subscribe(state$ => next())
   }
 }

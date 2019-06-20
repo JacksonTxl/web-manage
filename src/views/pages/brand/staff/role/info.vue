@@ -8,12 +8,11 @@
         <a-col class="page-role-detail__funrole pd-y24" :lg="18">
             <span class='label mg-r8'>功能权限: </span>
             <st-container  class="brand-list mg-r16 pd-x24">
-              <p>品fdasf牌权限</p>
-              <st-input-search placeholder="请输入" style="width:380px" round="round"></st-input-search>
+              <p>品牌权限</p>
+              <a-tree :treeData="brandTree"></a-tree>
             </st-container>
             <st-container class="shop-list pd-x24">
               <p>门店权限</p>
-              <st-input-search placeholder="请输入" style="width:380px" round="round"></st-input-search>
             </st-container>
         </a-col>
       </a-row>
@@ -23,6 +22,7 @@
 
 <script>
 import { InfoService } from './info.service'
+import { json2AntDesignTreeData } from '@/utils/json-2-tree-data'
 export default {
   name: 'RoleInfo',
   serviceInject() {
@@ -33,7 +33,9 @@ export default {
   rxState() {
     return {
       loading: this.infoService.loading$,
-      info: this.infoService.info$
+      info: this.infoService.info$,
+      brandList: this.infoService.brandList$,
+      shopList: this.infoService.shopList$
     }
   },
   data() {
@@ -44,6 +46,12 @@ export default {
   computed: {
     dataGrant() {
       return this.dataGrantList[this.info.data_grant - 1]
+    },
+    brandTree() {
+      return json2AntDesignTreeData(this.brandList)
+    },
+    shopTree() {
+      return json2AntDesignTreeData(this.shopList)
     }
   }
 }

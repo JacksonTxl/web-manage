@@ -4,7 +4,6 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工头像">
           <st-image-upload
-            @change="imageUploadChange"
             width="164px"
             height="164px"
             :list="fileList"
@@ -17,9 +16,10 @@
           <a-input placeholder="支持中英文、数字、不超过15个字" max="15" v-decorator="rules.staff_name"/>
         </st-form-item>
         <st-form-item label="手机号" required>
+          {{codeList}}
           <a-input-group compact>
             <a-select style="width: 15%;" v-model="choosed_Country_id">
-              <template v-for="item in countryList">
+              <template v-for="item in codeList">
                 <a-select-option :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
               </template>
             </a-select>
@@ -37,7 +37,6 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工人脸">
           <st-image-upload
-            @change="faceChange"
             width="164px"
             height="164px"
             :list="faceList"
@@ -123,8 +122,7 @@
     <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
-          <st-button type="primary" ghost html-type="submit">保存</st-button>
-          <st-button class="mg-l16" @click="goNext" type="primary">继续 填写</st-button>
+          <st-button class="mg-l16" @click="goNext" type="primary">保存，继续填写</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -147,7 +145,8 @@ export default {
   },
   rxState() {
     return {
-      roleList: this.editservice.roleList$
+      roleList: this.editservice.roleList$,
+      codeList: this.editservice.codeList$
     }
   },
   props: {
@@ -182,20 +181,6 @@ export default {
     },
     onSelectIdtype(e) {
       console.log('证件选择', e)
-    },
-    imageUploadChange(data) {
-      this.form.setFieldsValue({
-        image_avatar: {
-          image_url: data.image_url ? data.image_url : ''
-        }
-      })
-    },
-    faceChange(data) {
-      this.form.setFieldsValue({
-        image_face: {
-          image_url: data.image_url ? data.image_url : ''
-        }
-      })
     },
     goNext(e) {
       e.preventDefault()
@@ -236,9 +221,19 @@ export default {
       })
     },
     setData(obj) {
+      let image_face = []
+      let image_avatar = []
+      obj.image_face.length && (image_face = obj.image_face.map(item => {
+        item.image_key = item.image_url
+        return item
+      }))
+      obj.image_avatar.length && (image_avatar = obj.image_face.map(item => {
+        item.image_key = item.image_url
+        return item
+      }))
       this.form.setFieldsValue({
-        image_avatar: obj.image_avatar,
-        image_face: obj.image_face,
+        image_avatar,
+        image_face,
         staff_name: obj.staff_name,
         nickname: obj.nickname,
         mobile: obj.mobile,

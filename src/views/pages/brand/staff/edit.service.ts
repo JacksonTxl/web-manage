@@ -79,7 +79,7 @@ export class EditService extends Store<EditState> {
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     const { id } = to.query as any
-    forkJoin(this.getNormalList(), this.editStaffInfo(id)).subscribe(() => {
+    forkJoin(this.getNormalList(), this.getCountryCodes(), this.editStaffInfo(id)).subscribe(() => {
       next()
     })
   }

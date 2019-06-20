@@ -7,6 +7,7 @@
   :scroll="{ x: 1300}"
   :alertSelection="{onReset: start}"
   :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+  :pagination="pagination"
   @change="onChange"
 >
 <a href="javascript:;" slot="course_name" slot-scope="text,record"  @click="onClickCourseInfo(record.id)">{{text}}</a>
@@ -32,6 +33,22 @@ export default {
     teamCourseList: {
       type: Array,
       default: () => []
+    },
+    page: {
+      type: Object,
+      default: () => {}
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    pagination() {
+      return {
+        pageSize: this.page.size,
+        total: this.page.total_counts
+      }
     }
   },
   methods: {
@@ -39,7 +56,7 @@ export default {
       this.selectedRowKeys = []
     },
     onChange() {
-
+      this.$router.push({ query: { page: val.current, size: val.pageSize || 20, ...this.$router.query } })
     },
     onClickCourseInfo(id) {
       this.$router.push({

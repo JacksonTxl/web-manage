@@ -264,20 +264,6 @@ export default {
       console.log('选择部门', value)
       this.value = value
     },
-    imageUploadChange(data) {
-      this.form.setFieldsValue({
-        image_avatar: {
-          image_url: data.image_url ? data.image_url : ''
-        }
-      })
-    },
-    faceChange(data) {
-      this.form.setFieldsValue({
-        image_face: {
-          image_url: data.image_url ? data.image_url : ''
-        }
-      })
-    },
     // 继续填写跳转到编辑
     goNext(e) {
       e.preventDefault()

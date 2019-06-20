@@ -55,7 +55,7 @@ export class ListService extends Store<SetState> {
   }
 
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    let { page = 1, size = 20, shop_id } = to.meta.query
+    let { page = 1, size = 99, shop_id } = to.meta.query
     this.getStaffDepartment().subscribe(() => {})
     this.getStaffList({ page, size, ...to.query }).subscribe(() => {
       next()

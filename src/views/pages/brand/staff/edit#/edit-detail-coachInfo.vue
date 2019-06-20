@@ -3,7 +3,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="从业时间">
-           <a-date-picker style="width:100%" v-decorator="coachRules.employment_time"/>
+          <a-date-picker style="width:100%" v-decorator="coachRules.employment_time"/>
         </st-form-item>
         <st-form-item label="擅长的项目">
           <span slot="label">
@@ -51,15 +51,14 @@
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="对外展示">
-          <a-checkbox v-decorator="coachRules.is_show" :checked="checked" @change="check">展示在会员端</a-checkbox>
+          <a-checkbox v-decorator="coachRules.is_show" :checked="checked">展示在会员端</a-checkbox>
         </st-form-item>
-       </a-col>
+      </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
-          <st-button type="primary" ghost html-type="submit">保存</st-button>
-          <st-button class="mg-l16" @click="goNext" type="primary">继续 填写</st-button>
+          <st-button type="primary" ghost  @click="save">保存</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -70,7 +69,7 @@
 export default {
   name: 'EditDetailCoachInfo',
   props: {
-    formData: {
+    data: {
       type: Object
     }
   },
@@ -94,7 +93,7 @@ export default {
     }
   },
   mounted() {
-    this.setData(this.formData)
+    this.setData(this.data)
   },
   methods: {
     imageUploadChange(e) {
@@ -102,9 +101,6 @@ export default {
     },
     check(e) {
       this.checked = e.target.checked
-    },
-    onChooseSpecialty(e) {
-      console.log(e)
     },
     setData(obj) {
       this.form.setFieldsValue({
@@ -121,7 +117,7 @@ export default {
         if (!err) {
           console.log('Received values of form: ', values)
           this.$emit('goNext', {
-            formData: this.form.getFieldsValue()
+            data: values
           })
         }
       })
@@ -173,7 +169,6 @@ export default {
             }`
           })
           this.loading = false
-          console.log(this.fileList)
         },
         error: val => {
           this.MessageService.error({ content: `Error ${val.message}` })

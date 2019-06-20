@@ -40,6 +40,6 @@ export class BrandService implements RouteGuard {
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     console.log(to.query)
-    this.getCourseTeamBrandList(to.query).subscribe(state$ => { next() })
+    this.getCourseTeamBrandList({ size: 99, ...to.query }).subscribe(state$ => { next() })
   }
 }

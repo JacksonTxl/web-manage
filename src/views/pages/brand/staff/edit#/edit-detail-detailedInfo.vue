@@ -112,7 +112,7 @@ const xl = [
 export default {
   name: 'EditDetailDetailedInfo',
   props: {
-    formData: {
+    data: {
       type: Object
     },
     isShowCoach: {
@@ -185,7 +185,7 @@ export default {
     }
   },
   mounted() {
-    this.setData(this.formData)
+    this.setData(this.data)
   },
   methods: {
     setData(obj) {
@@ -212,7 +212,7 @@ export default {
         if (!err) {
           console.log('Received values of form: ', values)
           this.$emit('goNext', {
-            formData: this.form.getFieldsValue()
+            data: this.form.getFieldsValue()
           })
         }
       })
