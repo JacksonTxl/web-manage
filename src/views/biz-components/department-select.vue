@@ -2,7 +2,7 @@
   <div>
     <a-tree-select
       showSearch
-      v-model="value"
+      :value="modelValue"
       :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
       :placeholder="placeholder"
       allowClear
@@ -55,13 +55,25 @@ export default {
       departmentOptions: []
     }
   },
+  computed: {
+    modelValue() {
+      return this.value + ''
+    }
+  },
   methods: {
+    // 传出去转化为Number类型接口需要
     onChange(value) {
-      this.$emit('change', value)
+      this.$emit('change', +value)
+    },
+    traverseTree(tree) {
+      // 将ID转化为String UI组件需要
+      return tree.map(item => {
+        return item.children ? { name: item.name, children: this.traverseTree(item.children), id: item.id + '', count: item.count } : item
+      })
     },
     getDepartmentList() {
       this.staffApi.getDepartmentList().subscribe(res => {
-        this.departmentOptions = [...res.department]
+        this.departmentOptions = this.traverseTree(res.department)
       })
     },
     init() {

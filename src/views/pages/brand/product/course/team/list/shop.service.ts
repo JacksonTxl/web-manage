@@ -9,6 +9,7 @@ export class ShopService {
   state$: State<any>
   teamCourseList$: Computed<any>
   auth$: Computed<object>
+  page$: Computed<object>
   constructor(
     private shopTeamCourseApi: BrandTeamCourseApi,
     private authService: AuthService
@@ -17,10 +18,12 @@ export class ShopService {
       teamCourseList: [],
       auth: {
         transfer: this.authService.can('brand_shop:product:team_course|transfer')
-      }
+      },
+      page: {}
     })
     this.teamCourseList$ = new Computed(this.state$.pipe(pluck('teamCourseList')))
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
+    this.page$ = new Computed(this.state$.pipe(pluck('page')))
   }
   SET_TEAM_COURSE_LIST(data: any) {
     this.state$.commit(state => {
@@ -29,9 +32,12 @@ export class ShopService {
   }
   getTeamCourseListInShop(params: GetTeamBrandCourseListInput) {
     return this.shopTeamCourseApi.getTeamCourseListInShop(params).pipe(
-      tap(state => {
-        state = this.authService.filter(state)
-        this.SET_TEAM_COURSE_LIST(state)
+      tap(res => {
+        res = this.authService.filter(res)
+        this.state$.commit(state => {
+          state.page = res.page
+        })
+        this.SET_TEAM_COURSE_LIST(res)
       })
     )
   }
@@ -42,6 +48,6 @@ export class ShopService {
     return this.shopTeamCourseApi.putCourseTeamIntoBrand(query)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getTeamCourseListInShop({}).subscribe(() => next())
+    this.getTeamCourseListInShop({ size: 99 }).subscribe(() => next())
   }
 }

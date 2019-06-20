@@ -16,6 +16,8 @@ export function json2AntDesignTreeData(list, opts = {}, n = 0) {
     for (let i in item) {
       if (keyRegExp.test(item[i])) {
         item.key = item[i]
+      } else {
+        item.key = item.id
       }
       if (typeof item[i] === 'string') {
         item.title = item[i]
