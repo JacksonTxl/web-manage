@@ -59,12 +59,17 @@ export default {
     onChange(value) {
       this.$emit('change', value)
     },
-    getShopList() {
-      this.staffApi.getStaffDepartmentList().subscribe(res => {
-        const defaultOption = this.useType === 'form' ? {} : { id: -1, name: ' 全部' }
-        this.departmentOptions = [defaultOption, ...res.department]
+    getDepartmentList() {
+      this.staffApi.getDepartmentList().subscribe(res => {
+        this.departmentOptions = [...res.department]
       })
+    },
+    init() {
+      this.getDepartmentList()
     }
+  },
+  mounted() {
+    this.init()
   }
 }
 </script>
