@@ -162,7 +162,7 @@ export default {
       columns,
       popoverTitle: '',
       popoverContent: '',
-      card_type: '所以类型',
+      card_type: '所有类型',
       publish_channel: '所有渠道',
       sell_status: '所有售卖状态',
       getHeaders: {
@@ -188,7 +188,7 @@ export default {
   created() {
     let self = this
     let query = self.$route.query
-    self.card_type = query.card_type ? query.card_type : '所以类型'
+    self.card_type = query.card_type ? query.card_type : '所有类型'
     self.publish_channel = query.publish_channel
       ? query.publish_channel
       : '所有渠道'
@@ -302,8 +302,8 @@ export default {
   watch: {
     $route() {
       if (this.$route.query.card_name) {
-        this.card_type = '所以类型'
-        this.sell_status = '所以渠道'
+        this.card_type = '所有类型'
+        this.sell_status = '所有渠道'
         this.publish_channel = '所有售卖状态'
       }
 
