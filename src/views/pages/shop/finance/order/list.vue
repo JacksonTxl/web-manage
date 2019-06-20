@@ -42,7 +42,7 @@
           <st-button type="primary">批量导出</st-button>
       </div>
       <st-table
-      rowKey="sold_cabinet_id"
+      rowKey="id"
       :columns="columns"
       :dataSource="list">
         <template slot="order_status" slot-scope="text">
@@ -54,13 +54,13 @@
         <div slot="action" slot-scope="text, record">
           <a v-if="actionShow(record).gathering" @click="onGathering(record)">收款</a>
           <a-divider v-if="actionShow(record).cancel" type="vertical"></a-divider>
-          <a v-if="actionShow(record).cancel">取消</a>
+          <a v-if="actionShow(record).cancel" @click="onCancel(record)">取消</a>
           <a-divider v-if="actionShow(record).detail" type="vertical"></a-divider>
           <a v-if="actionShow(record).detail" @click="onTransfer(record)">详情</a>
           <a-divider v-if="actionShow(record).refund" type="vertical"></a-divider>
           <a v-if="actionShow(record).refund" @click="onRefund(record)">退款</a>
           <a-divider v-if="actionShow(record).split" type="vertical"></a-divider>
-          <a v-if="actionShow(record).split" @click="onRefund(record)">业务拆分</a>
+          <a v-if="actionShow(record).split" @click="onSplit(record)">业务拆分</a>
         </div>
       </st-table>
     </div>
@@ -285,8 +285,20 @@ export default {
         }
       })
     },
+    // 取消
     onCancel(record) {
-
+      this.$modalRouter.push({
+        name: 'shop-finance-cancel',
+        props: {
+          // id: record.sold_cabinet_id,
+          id: record.id
+        },
+        on: {
+          success: (result) => {
+            console.log('取消订单!')
+          }
+        }
+      })
     },
     // 转让
     onTransfer(record) {
@@ -306,14 +318,29 @@ export default {
     // 退款
     onRefund(record) {
       this.$modalRouter.push({
-        name: 'sold-lease-refund',
+        name: 'shop-finance-refund',
         props: {
           // id: record.sold_cabinet_id,
-          id: 48587472437681
+          id: record.id
         },
         on: {
           success: (result) => {
             console.log('退款成功!')
+          }
+        }
+      })
+    },
+    // 业务拆分
+    onSplit(record) {
+      this.$modalRouter.push({
+        name: 'shop-finance-split',
+        props: {
+          // id: record.id
+          id: 1558436650239
+        },
+        on: {
+          success: (result) => {
+            console.log('业绩拆分成功!')
           }
         }
       })

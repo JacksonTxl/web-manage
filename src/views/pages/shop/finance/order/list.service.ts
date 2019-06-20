@@ -24,4 +24,9 @@ export class ListService implements RouteGuard {
       this.page$.commit(() => res.page)
     }))
   }
+
+  @Effect()
+  orderCancel(orderId: string) {
+    return this.orderApi.orderCancel(orderId)
+  }
 }

@@ -11,12 +11,17 @@ export interface OrderParams {
 }
 
 export interface RefundParams {
-  sold_id: number;
-  product_type: number;
-  refund_price: number;
-  refund_reason: string;
-  refund_channel: number;
+  order_sub_id: number;
+  refund_money: number;
+  reason: number;
+  pay_channel: string;
   description: string;
+}
+
+export interface SplitParams {
+  order_id: number;
+  description: string;
+  split_data: [];
 }
 
 export class OrderApi extends Api {
@@ -27,26 +32,40 @@ export class OrderApi extends Api {
     return this.http.get(`/v1/finance/order`, { query: { ...params } })
   }
   /**
-   * 续租、转让、退款详情
+   * 订单取消
+   * @param orderId 订单id
    */
-  getDetail(id: number, type: string) {
-    return this.http.get(`/v1/sold/cabinet/${type}/${id}`)
-  }
-
-  /**
-   * 续租、转让、退款 创建订单
-   */
-  setTransaction(params:any, type:string, id: number) {
-    if (!type) {
-      return this.http.put(`/v1/sold/cabinet/${id}`, { params })
-    }
-    return this.http.put(`/v1/sold/cabinet/${type}/${id}`, { params })
+  orderCancel(orderId: string) {
+    return this.http.delete(`/v1/finance/order/cancel/${orderId}`)
   }
   /**
-   * 租赁退款接口
-   * @param params
+   * 退款订单详情
    */
-  refund(params: RefundParams) {
-    return this.http.put(`/v1/order/transaction/refund`, { params })
+  getDetail(orderId: string) {
+    return this.http.get(`/v1/finance/order/refund_info/${orderId}`)
+  }
+  /**
+   * 退款
+   */
+  orderRefund(params:RefundParams) {
+    return this.http.post(`/v1/finance/order/refund`, { params: { ...params } })
+  }
+  /**
+   * 销售员列表
+   */
+  getSaleList() {
+    return this.http.get(`/v1/order/transaction/sale`)
+  }
+  /**
+   * 业绩拆分详情
+   */
+  getSplitDetail(orderId: string) {
+    return this.http.get(`/v1/finance/order/split_info/${orderId}`)
+  }
+  /**
+   * 业绩拆分
+   */
+  split(params: SplitParams) {
+    return this.http.post(`/v1/finance/order/split`, { params: { ...params } })
   }
 }

@@ -29,7 +29,7 @@
                   <a-icon type="info-circle"></a-icon>
                 </a-popover>
               </span>
-              <span :class="item('shelf-status')">已上架已下架未上架</span>
+              <span :class="item('shelf-status')">{{cardInfo.shelf_status | enumFilter('member_card.shelf_status')}}</span>
             </p>
             <p :class="item('time')">
               <span class="label">售卖时间：</span>
@@ -56,7 +56,7 @@
         </div>
         <div :class="item('support_sales')" class="mb-24">
           <!-- 售卖门店 -->
-          <!-- <p class="mb-8">
+          <p class="mb-8">
             <span class="label">售卖门店：</span>
             <span class="value">{{cardInfo.support_sales.name}}</span>
           </p>
@@ -69,7 +69,7 @@
               :pagination="false"
               :scroll="{ y: 230 }"
             />
-          </st-container> -->
+          </st-container>
         </div>
         <div :class="item('price_setting')" class="mb-24">
           <!-- 定价方式 -->
