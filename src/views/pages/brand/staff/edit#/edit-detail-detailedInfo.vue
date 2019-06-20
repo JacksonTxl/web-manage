@@ -63,7 +63,7 @@
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
           <st-button type="primary" ghost html-type="submit">上一步</st-button>
-          <st-button class="mg-l16" @click="goNext" type="primary">{{!isShowCoach?'保存':'保存，继续填写'}}</st-button>
+          <st-button class="mg-l16" @click="save" type="primary">{{!isShowCoach?'保存':'保存，继续填写'}}</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -220,22 +220,18 @@ export default {
     filterProvinces(arr) {
       return {
         province_id: arr[0],
-        province_name: 'lallala',
         city_id: arr[1],
-        city_name: 'shgsahhsa',
-        district_id: arr[2],
-        district_name: 'sajkdsjds'
+        district_id: arr[2]
       }
     },
     save(e) {
-      // form submit
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
           let obj = this.filterProvinces(values.provinces)
           let newData = Object.assign(values, obj)
-          newData.birthday = newData.birthday.format('YYYY-MM-DD')
-          newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD')
+          newData.birthday && (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
+          newData.graduation_time && (newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD'))
           delete newData.provinces
           this.$emit('detailInfoSave', {
             data: newData

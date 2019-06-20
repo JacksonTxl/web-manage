@@ -2,7 +2,6 @@
   <st-form :form="form">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        department{{department}}
         <st-form-item label="员工头像">
           <st-image-upload
             @change="imageUploadChange"
@@ -345,7 +344,7 @@ export default {
       data.image_face && (data.image_face = data.image_face[0])
       this.addService.addStaff(data).subscribe(res => {
         this.$emit('skiptoedit', {
-          id: res.id.staff_id,
+          id: res.staff_id,
           isShowLevel: this.isShowLevel
         })
       })
