@@ -65,8 +65,8 @@ export class InfoService extends Store<SetState> {
     }))
   }
 
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    let { roleId } = to.query as any
-    this.getInfo({ role_id: roleId }).subscribe((res: any) => next())
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+    let { id } = to.query as any
+    this.getInfo({ role_id: id }).subscribe((res: any) => next())
   }
 }

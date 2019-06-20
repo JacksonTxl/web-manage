@@ -78,12 +78,12 @@ export default {
         })
         e.currentTarget.setAttribute('class', 'item active pd-y8  pd-x16')
       })
-      this.$router.push({ name: 'brand-staff-role-info', query: { roleId: role.id } })
+      this.$router.push({ name: 'brand-staff-role-info', query: { id: role.id } })
     }
   },
   mounted() {
     console.log('this.roles', this.roles)
-    this.$router.push({ name: 'brand-staff-role-info', query: { roleId: this.roles[0].id } })
+    this.$router.push({ name: 'brand-staff-role-info', query: { id: this.roles[0].id } })
   }
 }
 </script>
