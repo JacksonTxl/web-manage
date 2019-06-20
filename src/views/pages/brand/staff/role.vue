@@ -7,7 +7,7 @@
       <main :class="roleList('tree')">
         <st-t4 class="mg-t24">角色 (6/60)</st-t4>
         <ul>
-          <li class="item pd-y8 pd-x16" @click="getTreeNodeOnclick(role, $event)" v-for="role in roles" :key="role.id">
+          <li class="item pd-y8 pd-x16" @click="getTreeNodeOnclick(role, $event)" v-for="role in roles" :id="role.id" :key="role.id">
             <div><span>{{role.name}}</span><span>（{{role.cnt}}）</span></div>
             <div>
               <st-more-dropdown style="margin-left: 12px;">
@@ -72,6 +72,17 @@ export default {
       })
       this.$router.push({ name: 'brand-staff-role-info', query: { roleId: role.id } })
     }
+  },
+  mounted() {
+    this.$nextTick().then(() => {
+    // const dom = document.querySelector('#1')
+      // console.log(this.$el.querySelector('.item').click())
+      this.$el.querySelector('.item').setAttribute('class', 'item active pd-y8  pd-x16')
+      console.log(document.querySelectorAll('.item'))
+      // dom.click()
+    })
+    // debugger
+    // this.$router.push({ name: 'brand-staff-role-info', query: { roleId: this.roles[0].id } })
   }
 }
 </script>
