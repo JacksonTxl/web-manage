@@ -23,8 +23,15 @@
 </template>
 
 <script>
+
+import { StaffApi } from '../../api/v1/staff'
 export default {
   name: 'DepartmentSelect',
+  serviceInject() {
+    return {
+      staffApi: StaffApi
+    }
+  },
   model: {
     prop: 'value',
     event: 'change'
@@ -48,25 +55,21 @@ export default {
       departmentOptions: []
     }
   },
-  serviceInject() {
-    return {
-      staffApi: StaffApi
-    }
-  },
   methods: {
     onChange(value) {
       this.$emit('change', value)
     },
-    getShopList() {
-      this.staffApi.getStaffDepartmentList().subscribe(res => {
-        const defaultOption = this.useType === 'form' ? {} : { id: -1, name: ' 全部' }
-        this.departmentOptions = [defaultOption, ...res.department]
+    getDepartmentList() {
+      this.staffApi.getDepartmentList().subscribe(res => {
+        this.departmentOptions = [...res.department]
       })
+    },
+    init() {
+      this.getDepartmentList()
     }
+  },
+  mounted() {
+    this.init()
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

@@ -207,7 +207,6 @@ export default {
     return {
       codeList: this.addService.codeList$,
       roleList: this.addService.roleList$,
-      department: this.addService.department$,
       enums: this.userService.staffEnums$
     }
   },

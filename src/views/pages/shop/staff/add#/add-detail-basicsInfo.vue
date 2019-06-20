@@ -2,6 +2,7 @@
   <st-form :form="form">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
+        department{{department}}
         <st-form-item label="员工头像">
           <st-image-upload
             @change="imageUploadChange"
