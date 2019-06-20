@@ -40,7 +40,6 @@ export class CardsApi extends Api {
   setCardShelf(params:any, id:string) {
     return this.http.put(`/v1/cards/member/brand/shelf/${id}`, { params })
   }
-
   /**
    * 会员卡新增
    */
@@ -50,8 +49,8 @@ export class CardsApi extends Api {
   /**
    * 会员卡详情
    */
-  getCardInfo(id: string) {
-    return this.http.get(`/v1/cards/member/brand/${id}`)
+  getCardInfo(id: string, type:string) {
+    return this.http.get(`/v1/cards/member/${type}/${id}`)
   }
   /**
    * 会员卡编辑详情
@@ -153,13 +152,13 @@ export class CardsApi extends Api {
    *  储值卡消费门店列表
    */
   getCardsDepositConsumeShop(query: any) {
-    return this.http.get(`/v1/cards/deposit/consume/shop`, { query })
+    return this.http.get(`/v1/cards/deposit/consume/shop/${query.card_id}`, { query })
   }
   /***
    *  储值卡卡售卖门店列表
    */
   getCardsDepositSaleShop(query: any) {
-    return this.http.get(`/v1/cards/deposit/sale/shop`, { query })
+    return this.http.get(`/v1/cards/deposit/sale/shop/${query.card_id}`, { query })
   }
   /***
    *   储值卡停售

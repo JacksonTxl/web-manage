@@ -5,14 +5,14 @@
       style="width: 160px"
       class="mg-r8"
       v-model="query.card_type"
-      @change="onCardTypeChange"
+      @change="onSelect('card_type',$event)"
       >
         <a-select-option v-for="(item,index) in cardType" :key="index" :value="item.value">{{item.label}}</a-select-option>
       </a-select>
       <a-select
       style="width: 160px"
       v-model="query.publish_channel"
-      @change="onPublishChannelChange"
+      @change="onSelect('publish_channel',$event)"
       >
         <a-select-option v-for="(item,index) in publishChannel" :key="index" :value="item.value">{{item.label}}</a-select-option>
       </a-select>
@@ -20,6 +20,7 @@
     <st-table
     :columns="columns"
     :dataSource="list"
+    @change="onPageChange"
     :pagination="{current:query.current_page,total:page.total_counts,pageSize:query.size}"
     rowKey="id"
     >
@@ -30,6 +31,7 @@
 <script>
 import { ShelvesService } from './shelves.service'
 import { RouteService } from '@/services/route.service'
+import { UserService } from '@/services/user.service'
 export default {
   name: 'PageShopProductMemberShelves',
   bem: {
@@ -37,6 +39,7 @@ export default {
   },
   serviceInject() {
     return {
+      userService: UserService,
       routeService: RouteService,
       shelvesService: ShelvesService
     }
@@ -45,31 +48,34 @@ export default {
     return {
       list: this.shelvesService.list$,
       page: this.shelvesService.page$,
+      memberCard: this.userService.memberCardEnums$,
       query: this.routeService.query$
+    }
+  },
+  computed: {
+    cardType() {
+      let arr = [{ value: -1, label: '所有类型' }]
+      Object.keys(this.memberCard.card_type.value).forEach(i => {
+        arr.push({
+          value: +i,
+          label: this.memberCard.card_type.value[i]
+        })
+      })
+      return arr
+    },
+    publishChannel() {
+      let arr = [{ value: -1, label: '所有渠道' }]
+      Object.keys(this.memberCard.publish_channel.value).forEach(i => {
+        arr.push({
+          value: +i,
+          label: this.memberCard.publish_channel.value[i]
+        })
+      })
+      return arr
     }
   },
   data() {
     return {
-      cardType: [{
-        value: -1,
-        label: '所有类型'
-      }, {
-        value: 2,
-        label: '期限卡'
-      }, {
-        value: 1,
-        label: '次卡'
-      }],
-      publishChannel: [{
-        value: -1,
-        label: '所有渠道'
-      }, {
-        value: 1,
-        label: '品牌'
-      }, {
-        value: 2,
-        label: '门店'
-      }],
       columns: [
         {
           title: '会员卡名称',
@@ -115,11 +121,11 @@ export default {
     }
   },
   methods: {
-    onCardTypeChange(data) {
-      this.$router.push({ query: { ...this.query, ...{ card_type: data } } })
+    onSelect(key, data) {
+      this.$router.push({ query: { ...this.query, ...{ [key]: data } } })
     },
-    onPublishChannelChange(data) {
-      this.$router.push({ query: { ...this.query, ...{ publish_channel: data } } })
+    onPageChange(data) {
+      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize }, force: true })
     }
   }
 }
