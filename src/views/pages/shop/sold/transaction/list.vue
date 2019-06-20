@@ -21,11 +21,9 @@
       @change="onPageChange"
       :dataSource="list">
         <div slot="action" slot-scope="text,record">
-          <template v-if="query.product_type!==6">
-            <a @click="onDetail(record)">详情</a>
-            <a-divider type="vertical"></a-divider>
-          </template>
-          <a @click="onTransaction(record)">签单</a>
+          <a v-if="record.auth['shop:product:product|get']" @click="onDetail(record)">详情</a>
+          <a-divider type="vertical"></a-divider>
+          <a v-if="record.auth['shop:product:product|order']" @click="onTransaction(record)">签单</a>
           <!-- <a @click="onAdvance(record)">加定金</a> -->
         </div>
       </st-table>
@@ -56,7 +54,8 @@ export default {
       page: this.listService.page$,
       loading: this.listService.loading$,
       query: this.routeService.query$,
-      transaction: this.userService.transactionEnums$
+      transaction: this.userService.transactionEnums$,
+      auth: this.memberService.auth$
     }
   },
   computed: {

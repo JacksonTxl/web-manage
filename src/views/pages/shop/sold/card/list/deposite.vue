@@ -35,7 +35,7 @@
     </st-search-panel>
     <div :class="basic('content')">
       <div :class="basic('content-batch')" class="mg-b16">
-        <st-button type="primary" class="mgr-8">批量导出</st-button>
+        <st-button type="primary" class="mgr-8" v-if="auth.export">批量导出</st-button>
       </div>
       <div :class="basic('table')">
         <st-table
@@ -57,12 +57,12 @@
             slot-scope="text"
           >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
           <div slot="action" slot-scope="text,record">
-            <a @click="onRefund(record)">退款</a>
+            <a v-if="record.auth['shop:sold:sold_deposit_card|get']" @click="onDetail(record)">详情</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
-              <a-menu-item @click="onDetail(record)">详情</a-menu-item>
-              <a-menu-item>查看合同</a-menu-item>
-              <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
+              <a-menu-item v-if="record.auth['shop:sold:sold_deposit_card|export_contract']">查看合同</a-menu-item>
+              <a-menu-item v-if="record.auth['shop:sold:sold_deposit_card|transfer']" @click="onTransfer(record)">转让</a-menu-item>
+              <a-menu-item v-if="record.auth['shop:sold:sold_deposit_card|refund']" @click="onRefund(record)">退款</a-menu-item>
             </st-more-dropdown>
           </div>
         </st-table>
@@ -154,7 +154,8 @@ export default {
       page: this.depositeService.page$,
       package_course: this.userService.packageCourseEnums$,
       sold: this.userService.soldEnums$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.depositeService.auth$
     }
   },
   computed: {

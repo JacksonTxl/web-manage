@@ -3,7 +3,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="从业时间">
-           <a-date-picker style="width:100%" v-decorator="rules.employment_time"/>
+          <a-date-picker style="width:100%" v-decorator="rules.employment_time"/>
         </st-form-item>
         <st-form-item label="擅长的项目">
 
@@ -41,7 +41,7 @@
         <st-form-item label="对外展示">
           <a-checkbox v-decorator="rules.is_show" :checked="checked" @change="check">展示在会员端</a-checkbox>
         </st-form-item>
-       </a-col>
+      </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :offset="2">
@@ -134,12 +134,7 @@ export default {
       // 记着删 擅长的项目不知道什么鬼
       data.specialty_id = [1, 2]
       this.service.updateCoachInfo(this.data.staff_id, data).subscribe(res => {
-        if (saveOrgoNext === 1) {
-          this.$emit('gonext')
-        } else {
-          this.message.success({ content: '编辑成功' })
-          this.$router.go(-1)
-        }
+        this.$router.push({ name: 'shop-staff-list' })
       })
     },
     // 添加证书

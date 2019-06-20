@@ -161,12 +161,18 @@ export default {
       this.editService.updateBasicInfo(this.id, data.data).subscribe()
     },
     onDetailInfoSave(data) {
-      console.log('员工详细信息保存', data)
-      this.editService.updateDetailInfo(this.id, data.data).subscribe()
+      this.editService.updateDetailedInfo(this.id, data.data).subscribe(() => {
+        if (!this.isShowCoach) {
+          this.$router.push({ name: 'brand-staff-department' })
+        } else {
+          this.goNext()
+        }
+      })
     },
     onCoachInfoSave(data) {
-      console.log('教练信息保存', data.data)
-      this.editService.updateCoachInfo(this.id, data.data).subscribe()
+      this.editService.updateCoachInfo(this.id, data.data).subscribe(() => {
+        this.$router.push({ name: 'brand-staff-department' })
+      })
     },
     goNext() {
       if (this.currentIndex < 2) {

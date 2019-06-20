@@ -1,15 +1,18 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { CabinetApi, LeaseParams } from '@/api/v1/sold/cabinet'
 import { tap } from 'rxjs/operators'
+import { CabinetApi, LeaseParams } from '@/api/v1/sold/cabinet'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class ListService implements RouteGuard {
   list$ = new State([]);
   page$ = new State({})
   loading$ = new State({})
-
-  constructor(private cabinetApi: CabinetApi) {}
+  auth$ = new State({
+    export: this.authService.can('shop:sold:sold_cabinet|export')
+  })
+  constructor(private cabinetApi: CabinetApi, private authService: AuthService) {}
 
   beforeEach(to:ServiceRoute, form:ServiceRoute, next:()=>{}) {
     this.getList(to.meta.query).subscribe(() => {
@@ -20,6 +23,7 @@ export class ListService implements RouteGuard {
   @Effect()
   getList(params: LeaseParams) {
     return this.cabinetApi.getLeaseList(params).pipe(tap((res:any) => {
+      res = this.authService.filter(res)
       this.list$.commit(() => res.list)
       this.page$.commit(() => res.page)
     }))
