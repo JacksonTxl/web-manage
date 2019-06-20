@@ -28,12 +28,7 @@ export default {
     showDeleteConfirm() {
       let self = this
       let data = {
-        card_shop: [
-          {
-            card_id: self.a.card_id,
-            shop_id: self.a.shop_id
-          }
-        ]
+        id: self.a.card_id
       }
       this.$confirm({
         title: '单个下架',

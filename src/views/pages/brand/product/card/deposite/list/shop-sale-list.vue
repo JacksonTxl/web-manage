@@ -48,7 +48,7 @@
         slot="card_name"
         slot-scope="text,record"
         href="javascript:;"
-        @click="memberFun(text,record)"
+        @click="infoFunc(record)"
       >{{text}}</a>
       <!-- 会员卡名称end -->
       <span
@@ -71,7 +71,7 @@
 
       <!-- 操作end -->
       <div slot="action" slot-scope="text, record">
-        <a href="javascript:;" v-if="record.auth['brand_shop:product:deposit_card|get']" @click="infoFunc(text, record)">详情</a>
+        <a href="javascript:;" v-if="record.auth['brand_shop:product:deposit_card|get']" @click="infoFunc(record)">详情</a>
         <a-divider type="vertical"></a-divider>
         <modal-link
           v-if="record.auth['brand_shop:product:deposit_card|down']"
@@ -165,12 +165,17 @@ export default {
       console.log(current, pageSize, '点击分页获取数据')
     },
     // 点击详情获取数据
-    infoFunc(text, record) {
-      console.log(text, record, '点击详情获取数据')
+    infoFunc(record) {
+      const id = record.id
+      this.routerHandler('brand-product-card-deposite-info', id)
     },
-    // 会员卡名称点击事件
-    memberFun(text, record) {
-      console.log(text, record, '会员卡名称点击事件')
+    routerHandler(name, id) {
+      this.$router.push({
+        name,
+        query: {
+          id
+        }
+      })
     },
     // 售卖状态
     sellStatus(text, record) {
