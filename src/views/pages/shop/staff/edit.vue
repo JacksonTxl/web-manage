@@ -26,6 +26,7 @@ import EditBasicInfo from './edit#/edit-basic-info'
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { EditService } from './edit.service.ts'
+
 export default {
   serviceInject() {
     return {

@@ -2,6 +2,7 @@
   <st-form :form="form">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
+        department{{department}}
         <st-form-item label="员工头像">
           <st-image-upload
             @change="imageUploadChange"
@@ -92,6 +93,7 @@
           :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
           placeholder="请选择部门"
           allowClear
+          v-decorator="rules.department_id"
           treeDefaultExpandAll
           @change="onChange"
         >
@@ -333,7 +335,7 @@ export default {
     /**
      * saveOrgoNext 0 保存 1 跳转到编辑
      */
-    submit(data, saveOrgoNext) {
+    submit(data) {
       // this.isChoosePermission ? (data.is_permission = 1) : (data.is_permission = 0)
       data.is_permission = +this.isChoosePermission
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
@@ -342,15 +344,10 @@ export default {
       data.image_avatar && (data.image_avatar = data.image_avatar[0])
       data.image_face && (data.image_face = data.image_face[0])
       this.addService.addStaff(data).subscribe(res => {
-        if (saveOrgoNext === 1) {
-          this.$emit('skiptoedit', {
-            id: 1,
-            isShowLevel: this.isShowLevel
-          })
-        } else {
-          this.message.success({ content: '添加员工成功' })
-          this.$router.go(-1)
-        }
+        this.$emit('skiptoedit', {
+          id: res.id.staff_id,
+          isShowLevel: this.isShowLevel
+        })
       })
     }
   }

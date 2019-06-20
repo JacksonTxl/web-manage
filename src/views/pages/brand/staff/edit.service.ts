@@ -1,33 +1,86 @@
-import { SetService } from './set.service'
-import { ServiceRoute } from 'vue-service-app'
-import { EditStaffBasicInfoQuery, EditStaffDetailInfoQuery, EditStaffCoachInfoQuery } from '../../../../api/v1/staff'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { State, Computed, Effect } from 'rx-state'
+import { RoleApi } from '@/api/v1/staff/role'
+import { pluck, tap } from 'rxjs/operators'
+import { Store } from '@/services/store'
+import {
+  StaffApi,
+  EditStaffBasicInfoQuery,
+  EditStaffDetailInfoQuery,
+  EditStaffCoachInfoQuery
+} from '@/api/v1/staff'
+import { forkJoin } from 'rxjs'
 
-export class EditService extends SetService {
-  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
-    // 格式化后的query快照对象 可使用此对象进行请求
-    console.log(to)
-    next()
-  }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    let { staffId } = to.query
-    this.getCountryCodes().subscribe(res => {
-      console.log('mobel', res)
+interface EditState {
+  staffInfo: Object,
+  codeList: Object,
+  roleList: object[]
+}
+@Injectable()
+export class EditService extends Store<EditState> {
+  state$: State<EditState>
+  staffInfo$: Computed<Object>
+  codeList$: Computed<Object>
+  roleList$: Computed<object[]>
+  constructor(protected staffApi: StaffApi, private roleApi: RoleApi) {
+    super()
+    this.state$ = new State({
+      codeList: {},
+      staffInfo: {}
     })
-    this.getStaffBrandReview(+staffId).subscribe(res => {
-      this.SET_STAFF_BRND(res)
+    this.codeList$ = new Computed(this.state$.pipe(pluck('codeList')))
+    this.staffInfo$ = new Computed(this.state$.pipe(pluck('staffInfo')))
+    this.roleList$ = new Computed(this.state$.pipe(pluck('roleList')))
+  }
+  @Effect()
+  // 获取手机号区域
+  getCountryCodes() {
+    return this.staffApi.getCountryCodes().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.codeList = res
+        })
+      })
+    )
+  }
+  getNormalList() {
+    return this.roleApi.getNormalList().pipe(tap(res => {
+      this.state$.commit(state => {
+        state.roleList = res.roles
+      })
+    }))
+  }
+
+  // 获取编辑回显
+  editStaffInfo(id: string) {
+    return this.staffApi.editStaffInfo(id).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.staffInfo = res.staff_info
+        })
+      })
+    )
+  }
+
+  // 修改基础信息
+  updateBasicInfo(id: number, params: EditStaffBasicInfoQuery) {
+    return this.staffApi.updateStaffBasicInfo(id, params)
+  }
+
+  // 修改详细信息
+  updateDetailedInfo(id: number, params: EditStaffDetailInfoQuery) {
+    return this.staffApi.updateStaffDetailInfo(id, params)
+  }
+
+  // 修改教练信息
+  updateCoachInfo(id: number, params: EditStaffCoachInfoQuery) {
+    return this.staffApi.updateStaffCoachInfo(id, params)
+  }
+
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    const { id } = to.query as any
+    forkJoin(this.getNormalList(), this.editStaffInfo(id)).subscribe(() => {
       next()
     })
-  }
-  // 提交基础信息
-  editBasicInfo(id: number, params : EditStaffBasicInfoQuery) {
-    return this.editStaffBasicInfo(36, params)
-  }
-  // 提交详细信息
-  editDetailInfo(id: number, params : EditStaffDetailInfoQuery) {
-    return this.editStaffDetailInfo(36, params)
-  }
-  // 提交教练信息
-  editCoachInfo(id: number, params: EditStaffCoachInfoQuery) {
-    return this.editStaffCoachInfo(36, params)
   }
 }

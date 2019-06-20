@@ -12,7 +12,7 @@
         </a-steps>
       </a-col>
     </a-row>
-    <staff-detail-basics v-if="currentIndex == 0" :enums="staffEnums" @addStep="addCoachInfo" @deletStep="deletStep" @skiptoedit="skiptoedit"/>
+    <staff-detail-basics v-if="currentIndex == 0" :enums="staffEnums" @addStep="addCoachInfo" @deletStep="deletStep" @skiptoedit="skipToEdit"/>
   </st-panel>
 </template>
 
@@ -62,8 +62,8 @@ export default {
     }
   },
   methods: {
-    skiptoedit(e) {
-      this.$router.replace({ name: 'shop-staff-edit', query: { id: 1, currentIndex: 1, isshowcoach: e.isShowLevel } })
+    skipToEdit(data) {
+      this.$router.replace({ name: 'shop-staff-edit', query: { id: data.id, currentIndex: 1, isshowcoach: data.isShowLevel } })
     },
     // 删除步骤轴
     deletStep(e) {
@@ -87,7 +87,6 @@ export default {
       let currentIndex = this.currentIndex
       console.log(currentIndex)
       this.currentIndex = currentIndex + 1
-      console.log(currentIndex)
       if (this.currentIndex === 3) {
         this.currentIndex = 0
       }

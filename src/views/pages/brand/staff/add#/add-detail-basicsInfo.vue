@@ -27,11 +27,10 @@
           </a-input-group>
         </st-form-item>
         <st-form-item label="性别" required>
-          <a-select placeholder="请选择" v-decorator="rules.sex">
-            <template v-for="(item,key) in enums.sex.value">
-              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
-            </template>
-          </a-select>
+          <a-radio-group name="radioGroup" v-decorator="rules.sex">
+            <a-radio :value="1">男 <st-icon class="sex__male" style="color: #636aec" type="male"></st-icon></a-radio>
+            <a-radio :value="2">女 <st-icon calss="sex__female" style="color: #fa756c" type="female"></st-icon></a-radio>
+          </a-radio-group>
         </st-form-item>
       </a-col>
       <a-col :lg="10" :xs="22" :offset="1">
@@ -85,51 +84,13 @@
       </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
         <st-form-item label="部门">
-          <a-tree-select
-          showSearch
-          class="mg-r8"
-          style="width: 160px"
-          :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
+          <department-select
           placeholder="请选择部门"
-          allowClear
-          treeDefaultExpandAll
-          @change="onChange"
-        >
-          <a-tree-select-node
-            v-for="item in department"
-            :value="item.id"
-            :title="item.name"
-            :key="item.id"
-          >
-            <a-tree-select-node
-              v-for="item1 in item.children"
-              :value="item1.id"
-              :title="item1.name"
-              :key="item1.id"
-            >
-              <a-tree-select-node
-                v-for="item2 in item1.children"
-                :value="item2.id"
-                :title="item2.name"
-                :key="item2.id"
-              >
-                <a-tree-select-node
-                  v-for="item3 in item2.children"
-                  :value="item3.id"
-                  :title="item3.name"
-                  :key="item3.id"
-                >
-                  <a-tree-select-node
-                    v-for="item4 in item3.children"
-                    :value="item4.id"
-                    :title="item4.name"
-                    :key="item4.id"
-                  />>
-                </a-tree-select-node>
-              </a-tree-select-node>
-            </a-tree-select-node>
-          </a-tree-select-node>
-        </a-tree-select>
+          style="width: 100%"
+          useType="form"
+          v-decorator="rules.department_id"
+          @change="onChange">
+          </department-select>
         </st-form-item>
         <st-form-item label="工作性质" required>
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
@@ -232,6 +193,7 @@ import { RuleConfig } from '@/constants/staff/rule'
 import { UserService } from '@/services/user.service'
 import { AddService } from '../add.service'
 import ShopSelect from '@/views/biz-components/shop-select'
+import DepartmentSelect from '@/views/biz-components/department-select'
 export default {
   name: 'StaffDetailBasics',
   serviceInject() {
@@ -245,7 +207,6 @@ export default {
     return {
       codeList: this.addService.codeList$,
       roleList: this.addService.roleList$,
-      department: this.addService.department$,
       enums: this.userService.staffEnums$
     }
   },
@@ -283,9 +244,11 @@ export default {
     }
   },
   components: {
-    ShopSelect
+    ShopSelect,
+    DepartmentSelect
   },
   methods: {
+    onSelectIdtype() {},
     watchChooesed(e) {
       this.isAdd = e
     },
@@ -334,16 +297,16 @@ export default {
       data.id_type = this.choosed_id_type
       data.image_avatar && (data.image_avatar = data.image_avatar[0])
       data.image_face && (data.image_face = data.image_face[0])
-      this.$router.push({
-        name: 'brand-staff-edit',
-        query: {
-          staffId: res.staff_id,
-          currentIndex: 1,
-          isShowCoach: this.stepArr.length === 3 ? 1 : 0
-        }
+      this.addService.addStaff(data).subscribe(res => {
+        this.$router.push({
+          name: 'brand-staff-edit',
+          query: {
+            id: res.staff_id,
+            currentIndex: 1,
+            isShowCoach: data.identity.includes(3) || data.identity.includes(4) ? 1 : 0
+          }
+        })
       })
-      // this.addService.addStaff(data).subscribe(res => {
-      // })
     }
   }
 }

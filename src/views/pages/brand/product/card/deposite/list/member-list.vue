@@ -27,7 +27,7 @@
     </div>
 
     <st-table
-      rowKey="card_id"
+      rowKey="id"
       :columns="columns"
       :dataSource="data"
       :scroll="{ x: 1550}"
@@ -62,7 +62,7 @@
         <modal-link
           v-if="record.support_sales.id === 2"
           tag="a"
-          :to="{ name: 'card-table-stop', props:{a: record.card_id, title: '支持售卖门店'}}"
+          :to="{ name: 'card-table-stop', props:{a: record.id, title: '支持售卖门店'}}"
         >{{text}}</modal-link>
         <span v-else>{{text}}</span>
       </div>
@@ -72,7 +72,7 @@
         <modal-link
           v-if="record.consumption_range.id === 2"
           tag="a"
-          :to="{ name: 'card-sale-stop' , props:{a: record.card_id, title:'支持消费门店'}}"
+          :to="{ name: 'card-sale-stop' , props:{a: record.id, title:'支持消费门店'}}"
         >{{text}}</modal-link>
         <span v-else>{{text}}</span>
       </div>
@@ -83,7 +83,7 @@
         href="javascript:;"
         @click="sellStatus(text,record)"
       >
-        <a-badge :status="record.sell_status === 1?'success':'error'" />{{record.shelf_status}}
+        <a-badge :status="record.sell_status.id === 1?'success':'error'" />{{record.sell_status.name}}
         <a-popover
           :title="popoverTitle"
           trigger="click"
@@ -121,13 +121,13 @@
           <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|pause']">
             <modal-link
               tag="a"
-              :to=" { name: 'card-halt-the-sales', props:{a:record.card_id,flag:true,time:[record.upper_shelf_num,record.lower_shelf_num]}, on:{done: onModalTest }}"
+              :to=" { name: 'card-halt-the-sales', props:{a:record.id,flag:true,time:[record.upper_shelf_num,record.lower_shelf_num]}, on:{done: onModalTest }}"
             >停售</modal-link>
           </a-menu-item>
           <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|del']">
             <modal-link
               tag="a"
-              :to=" { name: 'card-confirm-del', props:{title: {title:record.card_name,id:record.card_id,flag:true}}, on:{del: onModalTest }}"
+              :to=" { name: 'card-confirm-del', props:{title: {title:record.card_name,id:record.id,flag:true}}, on:{del: onModalTest }}"
             >删除</modal-link>
           </a-menu-item>
         </st-more-dropdown>
@@ -202,9 +202,9 @@ export default {
           let obj = {}
           // publish_channel 1 品牌 2 门店
           if (record.publish_channel.id === 1) {
-            obj.card_id = record.card_id
+            obj.id = record.id
           } else {
-            obj.card_id = record.card_id
+            obj.id = record.id
             obj.shop_id = record.shop_id
           }
           console.log(obj, record)
@@ -223,7 +223,7 @@ export default {
       self.popoverTitle = ''
       self.popoverContent = ''
       this.aService
-        .getCardsBrandDepositStop({ card_id: record.card_id })
+        .getCardsBrandDepositStop({ id: record.id })
         .subscribe(state => {
           if (state.info.operate_time || state.info.staff_name) {
             self.popoverTitle = `操作人:${state.info.staff_name}   操作时间:${
@@ -260,11 +260,11 @@ export default {
     },
     // 点击详情获取数据
     infoFunc(record) {
-      const id = record.card_id
+      const id = record.id
       this.routerHandler('brand-product-card-deposite-info', id)
     },
     onEdit(record) {
-      const id = record.card_id
+      const id = record.id
       this.routerHandler('brand-product-card-deposite-edit', id)
     },
     routerHandler(name, id) {
