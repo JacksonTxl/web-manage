@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="favor.length" class="layout-default-sider__often">
+    <div v-if="favorite.length" class="layout-default-sider__often">
       <h2 class="layout-default-sider__often-title">常用</h2>
       <ul class="layout-default-sider__often-list">
         <!-- <li
@@ -10,16 +10,16 @@
           <span>营销插件</span>
         </li> -->
         <li
-          v-for="(item, index) in favor"
+          v-for="(item, index) in favorite"
           :key="index"
           class="layout-default-sider__often-item"
         >
           <st-icon
             type="star"
-            @click.native="delfavor(item.id)"
+            @click.native="delFavorite(item.id)"
           />
           <router-link :to="{ name: item.url }">
-            <span class="layout-default-sider__favor-title">{{item.name}}</span>
+            <span class="layout-default-sider__favorite-title">{{item.name}}</span>
           </router-link>
         </li>
       </ul>
@@ -27,6 +27,7 @@
     <a-menu
         class="layout-default-sider__menu"
         :openKeys="openKeys"
+        :selectedKeys="selectedKeys"
         @openChange="onOpenChange"
         mode="inline"
       >
@@ -44,14 +45,14 @@
               :key="subMenu.id"
             >
               <st-icon
-                v-if="isfavor(subMenu.id)"
+                v-if="isfavorite(subMenu.id)"
                 type="star"
-                @click.native="delfavor(subMenu.id)"
+                @click.native="delFavorite(subMenu.id)"
               />
               <st-icon
                 v-else
                 type="star"
-                @click.native="addfavor(subMenu.id)"
+                @click.native="addFavorite(subMenu.id)"
               />
               <span @click="onClickMenuItem(subMenu)">{{subMenu.name}}</span>
             </a-menu-item>
@@ -85,15 +86,16 @@ export default {
   },
   data() {
     return {
-      openKeys: []
+      openKeys: [],
+      selectedKeys: [30]
     }
   },
   computed: {
     menus() {
       return this.menuData.menus || []
     },
-    favor() {
-      return this.menuData.favor || []
+    favorite() {
+      return this.menuData.favorite || []
     },
     menuMap() {
       return treeToMap(this.menus)
@@ -138,13 +140,13 @@ export default {
       this.$router.push({
         name: menu.url
       })
-      // this.addfavor(key)
+      // this.addFavorite(key)
     },
-    addfavor(id) {
-      this.userService.addfavor(id).subscribe(this.onMenuChange)
+    addFavorite(id) {
+      this.userService.addFavorite(id).subscribe(this.onMenuChange)
     },
-    delfavor(id) {
-      this.userService.delfavor(id).subscribe(this.onMenuChange)
+    delFavorite(id) {
+      this.userService.delFavorite(id).subscribe(this.onMenuChange)
     },
     onMenuChange() {
       this.userService.getMenus({
@@ -159,8 +161,8 @@ export default {
       })
       return rootSubmenuKeys
     },
-    isfavor(id) {
-      return lodashFind(this.favor, { id })
+    isfavorite(id) {
+      return lodashFind(this.favorite, { id })
     }
   }
 }
