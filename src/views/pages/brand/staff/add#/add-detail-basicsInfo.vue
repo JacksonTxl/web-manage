@@ -245,7 +245,9 @@ export default {
         this.addflag = true
       } else {
         if (!this.addflag) return
-        this.isShowLevel = true
+        this.isShowLevel = data.some(val => {
+          return val === 4
+        })
         this.$emit('addStep')
         this.addflag = false
       }
