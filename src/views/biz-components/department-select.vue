@@ -2,7 +2,7 @@
   <div>
     <a-tree-select
       showSearch
-      :value="modelValue"
+      :value="value"
       :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
       :placeholder="placeholder"
       allowClear
@@ -57,13 +57,14 @@ export default {
   },
   computed: {
     modelValue() {
+      if (!this.value) return
       return this.value + ''
     }
   },
   methods: {
     // 传出去转化为Number类型接口需要
     onChange(value) {
-      this.$emit('change', +value)
+      this.$emit('change', value)
     },
     traverseTree(tree) {
       // 将ID转化为String UI组件需要

@@ -1,6 +1,6 @@
 <template>
 <div  class="organization-tree">
-  <st-organ-tree ref="tree" :treeData="treeData" @click-item="onCLickItem" @node-click="getDepartment"></st-organ-tree>
+  <st-organ-tree ref="tree" :treeData="treeData" @node-click="getDepartment"></st-organ-tree>
 </div>
 
 </template>

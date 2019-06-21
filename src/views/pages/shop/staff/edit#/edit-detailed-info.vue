@@ -77,8 +77,8 @@
     <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
-          <st-button type="primary" ghost html-type="submit">保存</st-button>
-          <st-button class="mg-l16" @click="goNext" type="primary">继续 填写</st-button>
+          <st-button type="primary" class="mg-r16" ghost @click="onClickBack">上一步</st-button>
+          <st-button class="mg-l16" @click="goNext" type="primary">{{!isShowCoach?'保存':'保存，继续填写'}}</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -104,6 +104,10 @@ export default {
     enums: {
       type: Object
     },
+    isShowCoach: {
+      type: Boolean,
+      default: false
+    },
     data: {
       type: Object
     }
@@ -122,6 +126,9 @@ export default {
     })
   },
   methods: {
+    onClickBack() {
+      this.$emit('back', 1)
+    },
     setData(obj) {
       // console.log('detail', obj)
       this.form.setFieldsValue({
@@ -149,30 +156,12 @@ export default {
     },
     // 坑爹的是后端还要城市名遍历了这么多次
     filterProvinces(arr) {
-      let [ province_id, city_id, district_id ] = arr
-      let province_name = this.options.find(ele => {
-        return ele.id === province_id
-      })['name']
-      let city_namelist = this.options.find(ele => {
-        return ele.id === province_id
-      })['children']
-      let city_name = city_namelist.find(ele => {
-        return ele.id === city_id
-      })['name']
-      let district_namelist = city_namelist.find(ele => {
-        return ele.id === city_id
-      })['children']
-      let district_name = district_namelist.find(ele => {
-        return ele.id === district_id
-      })['name']
-      console.log(province_name, city_name, district_name)
-      return {
-        province_id,
-        province_name,
-        city_id,
-        city_name,
-        district_id,
-        district_name
+      if (arr.length) {
+        return {
+          province_id: arr[0],
+          city_id: arr[1],
+          district_id: arr[2]
+        }
       }
     },
     save(e) {
@@ -187,14 +176,13 @@ export default {
     submit(data, saveOrgoNext) {
       let obj = this.filterProvinces(data.provinces)
       let newData = Object.assign(data, obj)
-      newData.birthday = newData.birthday.format('YYYY-MM-DD')
-      newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD')
+      newData.birthday && (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
+      newData.birthday && (newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD'))
       delete newData.provinces
       this.service.updateDetailedInfo(this.data.staff_id, newData).subscribe(() => {
-        if (saveOrgoNext === 0) {
-          this.message.success({ content: '编辑成功' })
-          this.$router.go(-1)
-        } else if (saveOrgoNext === 1) {
+        if (!this.isShowCoach) {
+          this.$router.push({ name: 'shop-staff-list' })
+        } else {
           this.$emit('gonext')
         }
       })

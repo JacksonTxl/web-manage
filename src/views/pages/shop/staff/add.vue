@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     skipToEdit(data) {
-      this.$router.replace({ name: 'shop-staff-edit', query: { id: data.id, currentIndex: 1, isshowcoach: data.isShowLevel } })
+      this.$router.replace({ name: 'shop-staff-edit', query: { id: data.id, currentIndex: 1 } })
     },
     // 删除步骤轴
     deletStep(e) {

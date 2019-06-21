@@ -85,14 +85,11 @@ export class RoleService extends Store<SetState> {
       return this.getAllList()
     }))
   }
-  getInit() {
-    return forkJoin(this.getAllList())
-  }
+
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    let { role_id } = to.meta.query as GetInitInfoPut
-    this.getInit().subscribe(res => {
-      this.SET_ROLE_INFO(res[0])
+    this.getAllList().subscribe(res => {
+      this.SET_ROLE_INFO(res)
+      next()
     })
-    next()
   }
 }

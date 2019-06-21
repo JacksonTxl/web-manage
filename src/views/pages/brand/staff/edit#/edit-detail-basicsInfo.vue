@@ -16,12 +16,9 @@
           <a-input placeholder="支持中英文、数字、不超过15个字" max="15" v-decorator="rules.staff_name"/>
         </st-form-item>
         <st-form-item label="手机号" required>
-          {{codeList}}
           <a-input-group compact>
-            <a-select style="width: 15%;" v-model="choosed_Country_id">
-              <template v-for="item in codeList">
-                <a-select-option :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
-              </template>
+            <a-select style="width: 15%;" v-model="choosed_country_id">
+                <a-select-option v-for="item in codeList" :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
             </a-select>
             <a-input style="width: 85%" v-decorator="rules.phone" placeholder="请输入手机号"/>
           </a-input-group>
@@ -77,7 +74,7 @@
           placeholder="请选择部门"
           style="width: 100%"
           useType="form"
-          v-decorator="rules.department_id"
+          v-model="value"
           @change="onChange">
           </department-select>
         </st-form-item>
@@ -131,7 +128,6 @@
 <script>
 import DepartmentSelect from '@/views/biz-components/department-select'
 import { RuleConfig } from '@/constants/staff/rule'
-import { AddService } from '../add.service'
 import { EditService } from '../edit.service'
 import ShopSelect from '@/views/biz-components/shop-select'
 export default {
@@ -139,14 +135,13 @@ export default {
   serviceInject() {
     return {
       rules: RuleConfig,
-      addservice: AddService,
-      editservice: EditService
+      editService: EditService
     }
   },
   rxState() {
     return {
-      roleList: this.editservice.roleList$,
-      codeList: this.editservice.codeList$
+      roleList: this.editService.roleList$,
+      codeList: this.editService.codeList$
     }
   },
   props: {
@@ -164,7 +159,7 @@ export default {
       faceList: [],
       countryList: [],
       id_type: 1,
-      choosed_Country_id: 37,
+      choosed_country_id: 37,
       department: [],
 
       value: '' // 部门选择
@@ -198,7 +193,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
-          this.submit(values, 0)
+          this.submit(values)
         }
       })
     },
@@ -207,17 +202,12 @@ export default {
      */
     submit(data, saveOrgoNext) {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
-      data.country_code_id = this.choosed_Country_id
+      data.country_code_id = this.choosed_country_id
       data.id_type = this.id_type
       data.album_id = this.data.album_id
-      data.department_id = this.value + 0
-      this.editservice.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
-        if (saveOrgoNext === 1) {
-          this.$emit('gonext')
-        } else {
-          this.message.success({ content: '编辑成功' })
-          this.$router.go(-1)
-        }
+      data.department_id = +this.value
+      this.editService.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
+        this.$emit('go-next')
       })
     },
     setData(obj) {
@@ -247,7 +237,7 @@ export default {
         mail: obj.mail
       })
 
-      this.choosed_Country_id = obj.country_code_id
+      this.choosed_country_id = obj.country_code_id
       this.id_type = obj.id_type
       this.value = obj.department_id + ''
 
@@ -262,14 +252,6 @@ export default {
     this.$nextTick().then(() => {
       this.setData(this.data)
     })
-    // this.addservice.getCountryCodes().subscribe(res => {
-    //   this.countryList = res.code_list
-    // })
-
-    // this.listservice.getStaffDepartment().subscribe(res => {
-    //   // console.log('basic', res)
-    //   this.department = res.department
-    // })
   }
 }
 </script>

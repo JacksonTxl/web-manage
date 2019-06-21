@@ -2,12 +2,21 @@
   <section :class="basic()">
     <st-panel title="课程包详情">
       <div slot="actions">
-        <st-button class="mgr-8" type="primary" @click="onSurplus">修改剩余课时</st-button>
-        <st-button class="mgr-8" type="primary" @click="onFreeze">冻结</st-button>
-        <st-button class="mgr-8" type="primary" @click="onUnfreeze">取消冻结</st-button>
-        <st-button class="mgr-8" type="primary" @click="onTransfer">转让</st-button>
-        <st-button class="mgr-8" type="primary" @click="onRefund">退款</st-button>
-        <st-button class="mgr-8" type="primary" @click="onEditCoach">修改教练</st-button>
+        <st-button v-if="auth['shop:sold:sold_personal_course|export_contract']" class="mgr-8" type="primary">查看合同</st-button>
+        <st-button v-if="auth['shop:sold:sold_personal_course|frozen']" class="mgr-8" @click="onFreeze">冻结</st-button>
+        <st-button v-if="auth['shop:sold:sold_personal_course|unfrozen']" class="mgr-8" @click="onUnfreeze">取消冻结</st-button>
+        <st-button v-if="auth['shop:sold:sold_personal_course|change_coach']" class="mgr-8" @click="onEditCoach">修改教练</st-button>
+        <a-dropdown>
+            <a-menu slot="overlay">
+              <a-menu-item v-if="auth['shop:sold:sold_personal_course|course_num']" @click="onSurplus">修改剩余课时</a-menu-item>
+              <a-menu-item v-if="auth['shop:sold:sold_personal_course|transfer']" @click="onTransfer">转让</a-menu-item>
+              <a-menu-item v-if="auth['shop:sold:sold_personal_course|refund']" @click="onRefund">退款</a-menu-item>
+            </a-menu>
+            <a-button>
+              更多操作
+              <a-icon type="down"/>
+            </a-button>
+          </a-dropdown>
       </div>
       <a-row :gutter="24">
         <a-col :span="9">
@@ -72,7 +81,8 @@ export default {
   rxState() {
     return {
       personalInfo: this.infoService.personalInfo$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.infoService.auth$
     }
   },
   methods: {
