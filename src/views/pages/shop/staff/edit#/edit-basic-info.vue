@@ -178,7 +178,6 @@ export default {
   },
   methods: {
     onChange(value) {
-      console.log('选择部门', value)
       this.value = value
     },
     onSelectIdtype(e) {

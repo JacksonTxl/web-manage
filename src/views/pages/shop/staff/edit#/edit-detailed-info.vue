@@ -77,7 +77,7 @@
     <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
-          <st-button type="primary" ghost  @click="$router.go(-1)">上一步</st-button>
+          <st-button type="primary" class="mg-r16" ghost @click="onClickBack">上一步</st-button>
           <st-button class="mg-l16" @click="goNext" type="primary">{{!isShowCoach?'保存':'保存，继续填写'}}</st-button>
         </st-form-item>
       </a-col>
@@ -126,6 +126,9 @@ export default {
     })
   },
   methods: {
+    onClickBack() {
+      this.$emit('back', 1)
+    },
     setData(obj) {
       // console.log('detail', obj)
       this.form.setFieldsValue({

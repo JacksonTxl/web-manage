@@ -14,8 +14,8 @@
       </a-col>
     </a-row>
     <edit-basic-info v-show="currentIndex == 0" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
-    <edit-detailed-info  :isShowCoach="isShowCoach" v-show="currentIndex == 1" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
-    <edit-coach-info  v-if="isShowCoach" v-show="currentIndex == 2" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
+    <edit-detailed-info  @back="onBack" :isShowCoach="isShowCoach" v-show="currentIndex == 1" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
+    <edit-coach-info  @back="onBack" v-if="isShowCoach" v-show="currentIndex == 2" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
   </st-panel>
 </template>
 
@@ -31,7 +31,6 @@ export default {
   serviceInject() {
     return {
       userService: UserService,
-      // regionService: RegionService,
       messageService: MessageService,
       services: EditService
     }
@@ -84,6 +83,9 @@ export default {
     }
   },
   methods: {
+    onBack(step) {
+      this.currentIndex = this.currentIndex - step
+    },
     gonext() {
       if (this.currentIndex < 2) {
         this.currentIndex = this.currentIndex + 1

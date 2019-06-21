@@ -46,7 +46,7 @@
     <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
-          <st-button type="primary" ghost html-type="submit">保存</st-button>
+          <st-button type="primary" ghost @click="onClickBack">保存</st-button>
           <st-button class="mg-l16" @click="goNext" type="primary">继续 填写</st-button>
         </st-form-item>
       </a-col>
@@ -89,6 +89,9 @@ export default {
     this.setData(this.data)
   },
   methods: {
+    onClickBack() {
+      this.$emit('back', 2)
+    },
     imageUploadChange(e) {
       this.image_personal = e
     },

@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" @submit="save" class="page-edit-container">
+  <st-form :form="form" class="page-edit-container">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="毕业院校" >
@@ -62,7 +62,7 @@
     <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
-          <st-button type="primary" ghost html-type="submit">上一步</st-button>
+          <st-button type="primary" ghost @click="onClickBack">上一步</st-button>
           <st-button class="mg-l16" @click="save" type="primary">{{!isShowCoach?'保存':'保存，继续填写'}}</st-button>
         </st-form-item>
       </a-col>
@@ -188,6 +188,9 @@ export default {
     this.setData(this.data)
   },
   methods: {
+    onClickBack() {
+      this.$emit('back', 1)
+    },
     setData(obj) {
       console.log('detail', obj)
       this.form.setFieldsValue({
@@ -242,6 +245,3 @@ export default {
   }
 }
 </script>
-
-<style>
-</style>

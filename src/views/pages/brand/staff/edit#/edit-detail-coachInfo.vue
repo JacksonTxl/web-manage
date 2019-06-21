@@ -58,7 +58,8 @@
     <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
-          <st-button type="primary" ghost  @click="save">保存</st-button>
+          <st-button type="primary" class="mg-r16" ghost @click="onClickBack">上一步</st-button>
+          <st-button type="primary" @click="save">保存</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -111,6 +112,9 @@ export default {
       this.fileList = obj.image_personal
       obj.is_show ? this.checked = true : this.checked = false
       this.coachInfoData.certification_name = obj.certification_name ? obj.certification_name : []
+    },
+    onClickBack() {
+      this.$emit('back', 2)
     },
     goNext() {
       this.form.validateFields((err, values) => {

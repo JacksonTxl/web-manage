@@ -205,7 +205,7 @@ export default {
       data.country_code_id = this.choosed_country_id
       data.id_type = this.id_type
       data.album_id = this.data.album_id
-      data.department_id = this.value + 0
+      data.department_id = +this.value
       this.editService.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
         this.$emit('go-next')
       })
