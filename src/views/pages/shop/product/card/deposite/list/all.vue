@@ -2,7 +2,7 @@
   <div :class="all()">
     <div :class="all('search')">
       <router-link to="../add-select">
-        <st-button type="primary" icon="add">新增会员卡</st-button>
+        <st-button type="primary" @click="onAddCard" icon="add">新增储值卡</st-button>
       </router-link>
       <div>
         <a-select
@@ -181,6 +181,12 @@ export default {
   methods: {
     onSelect(key, data) {
       this.$router.push({ query: { ...this.query, ...{ [key]: data } } })
+    },
+    // 新增储值卡
+    onAddCard() {
+      this.$router.push({
+        path: '/shop/product/card/deposite/add'
+      })
     }
   }
 }
