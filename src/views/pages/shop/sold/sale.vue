@@ -132,10 +132,12 @@ export default {
       ]
     },
     onCabinet(record) {
+      console.log(record)
       this.$modalRouter.push({
         name: 'sold-deal-sale-cabinet',
         props: {
-          id: '0'
+          id: '0',
+          areaId: record.id
         },
         on: {
           success: res => {

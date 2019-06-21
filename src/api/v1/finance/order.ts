@@ -32,6 +32,12 @@ export class OrderApi extends Api {
     return this.http.get(`/v1/finance/order`, { query: { ...params } })
   }
   /**
+   * 获取订单详情
+   */
+  getOrderInfo(orderId: string) {
+    return this.http.get(`/v1/finance/order/info/${orderId}`)
+  }
+  /**
    * 订单取消
    * @param orderId 订单id
    */

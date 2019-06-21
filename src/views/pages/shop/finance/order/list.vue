@@ -56,7 +56,7 @@
           <a-divider v-if="actionShow(record).cancel" type="vertical"></a-divider>
           <a v-if="actionShow(record).cancel" @click="onCancel(record)">取消</a>
           <a-divider v-if="actionShow(record).detail" type="vertical"></a-divider>
-          <a v-if="actionShow(record).detail" @click="onTransfer(record)">详情</a>
+          <a v-if="actionShow(record).detail" @click="onOrderInfo(record)">详情</a>
           <a-divider v-if="actionShow(record).refund" type="vertical"></a-divider>
           <a v-if="actionShow(record).refund" @click="onRefund(record)">退款</a>
           <a-divider v-if="actionShow(record).split" type="vertical"></a-divider>
@@ -343,6 +343,13 @@ export default {
             console.log('业绩拆分成功!')
           }
         }
+      })
+    },
+    // 订单详情
+    onOrderInfo(record) {
+      this.$router.push({
+        path: '/shop/finance/order/info',
+        query: { id: record.id }
       })
     },
     productType(type) {

@@ -21,9 +21,9 @@
       @change="onPageChange"
       :dataSource="list">
         <div slot="action" slot-scope="text,record">
-          <a v-if="record.auth['shop:product:product|get']" @click="onDetail(record)">详情</a>
+          <a  @click="onDetail(record)">详情</a>
           <a-divider type="vertical"></a-divider>
-          <a v-if="record.auth['shop:product:product|order']" @click="onTransaction(record)">签单</a>
+          <a  @click="onTransaction(record)">签单</a>
           <!-- <a @click="onAdvance(record)">加定金</a> -->
         </div>
       </st-table>
@@ -55,7 +55,7 @@ export default {
       loading: this.listService.loading$,
       query: this.routeService.query$,
       transaction: this.userService.transactionEnums$,
-      auth: this.memberService.auth$
+      auth: this.listService.auth$
     }
   },
   computed: {
@@ -195,21 +195,21 @@ export default {
       if (result.type === 'create') {
         // 创建订单成功
         let props = {
-          order_id: result.order_id,
+          order_id: result.orderId,
           type,
           message: '订单创建成功',
           needPay: true
         }
         let orderSuccessRes = await this.createdGatheringTip(props)
-        this.tipCallBack(result.order_id, type, orderSuccessRes.type)
+        this.tipCallBack(result.orderId, type, orderSuccessRes.type)
       } else if (result.type === 'createPay') {
         // 创建订单成功 并且到支付页面
         let props = {
-          order_id: result.order_id,
+          order_id: result.orderId,
           type
         }
         let payOrderRes = await this.createdOrderPay(props)
-        this.payCallBack(result.order_id, type, payOrderRes.type)
+        this.payCallBack(result.orderId, type, payOrderRes.type)
       }
     },
     // 会员卡签单
