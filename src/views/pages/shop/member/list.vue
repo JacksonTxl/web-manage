@@ -223,7 +223,7 @@ export default {
         title: '提示信息',
         content: '确认解绑选中的会员关系？',
         onOk() {
-          that.aService.removeWechatBind(record.id).subscribe(() => {
+          that.aService.removeWechatBind(record.member_id).subscribe(() => {
             console.log('ok')
           })
         },
