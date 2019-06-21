@@ -146,7 +146,7 @@
         </st-form-item>
         <st-form-item label="教练等级" v-if="isShowLevel" required>
           <coach-level-select
-            placeholder="请选择部门"
+            placeholder="请选择教练等级"
             style="width: 100%"
             useType="form"
             v-decorator="rules.coach_levelRule"

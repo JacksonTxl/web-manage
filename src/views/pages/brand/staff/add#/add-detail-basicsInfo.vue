@@ -106,7 +106,7 @@
         </st-form-item>
         <st-form-item label="教练等级" v-if="isShowLevel">
           <coach-level-select
-            placeholder="请选择部门"
+            placeholder="请选择教练等级"
             style="width: 100%"
             useType="form"
             v-decorator="rules.coach_levelRule"
@@ -121,11 +121,11 @@
         <st-form-item label="入职时间">
           <a-date-picker style="width:100%" v-decorator="rules.entry_date"/>
         </st-form-item>
-        <st-form-item label="所属门店">
+        <st-form-item label="所属门店" required>
           <shop-select
             mode="multiple"
             placeholder="选择"
-            v-decorator="['shop_id']"/>
+            v-decorator="rules.shop_id"/>
         </st-form-item>
       </a-col>
     </a-row>
