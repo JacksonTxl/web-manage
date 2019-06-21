@@ -1,7 +1,7 @@
 <template>
   <st-panel app class="page-brand-card-info page-brand-period-card-info" initial>
     <div class="page-brand-card-info-body">
-      <div class="page-preview">实时预览</div>
+      <!-- <div class="page-preview">实时预览</div> -->
       <div class="page-content">
         <div :class="item('card_name')" class="mb-24">
           <!-- 卡名称 -->
