@@ -171,7 +171,7 @@ export default {
           values.course_id = self.selectedRows.map(item => {
             return item.id
           })
-          values.id = self.record.id
+          values.id = self.record.member_id
           self.getMemberTransfer(values)
         }
       })
