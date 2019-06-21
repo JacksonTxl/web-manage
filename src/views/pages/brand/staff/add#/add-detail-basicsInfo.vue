@@ -105,10 +105,13 @@
           </a-select>
         </st-form-item>
         <st-form-item label="教练等级" v-if="isShowLevel">
-          <a-select v-decorator="rules.coach_levelRule" placeholder="请选择">
-            <a-select-option :value="1">等级1</a-select-option>
-            <a-select-option :value="2">等级2</a-select-option>
-          </a-select>
+          <coach-level-select
+            placeholder="请选择教练等级"
+            style="width: 100%"
+            useType="form"
+            v-decorator="rules.coach_levelRule"
+            @change="onChange">
+          </coach-level-select>
         </st-form-item>
       </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
@@ -118,11 +121,11 @@
         <st-form-item label="入职时间">
           <a-date-picker style="width:100%" v-decorator="rules.entry_date"/>
         </st-form-item>
-        <st-form-item label="所属门店">
+        <st-form-item label="所属门店" required>
           <shop-select
             mode="multiple"
             placeholder="选择"
-            v-decorator="['shop_id']"/>
+            v-decorator="rules.shop_id"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -187,6 +190,7 @@
   </st-form>
 </template>
 <script>
+import CoachLevelSelect from '@/views/biz-components/coach-level-select'
 import { RuleConfig } from '@/constants/staff/rule'
 import { UserService } from '@/services/user.service'
 import { AddService } from '../add.service'
@@ -225,7 +229,8 @@ export default {
   },
   components: {
     ShopSelect,
-    DepartmentSelect
+    DepartmentSelect,
+    CoachLevelSelect
   },
   methods: {
     onSelectIdtype() {},
