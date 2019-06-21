@@ -38,7 +38,7 @@ export class EditService extends Store<EditState> {
     return this.staffApi.getCountryCodes().pipe(
       tap(res => {
         this.state$.commit(state => {
-          state.codeList = res
+          state.codeList = res.code_list
         })
       })
     )

@@ -15,7 +15,7 @@
     </a-row>
     <edit-detail-basics-info
       v-show="currentIndex === 0"
-      @goNext="goNext"
+      @go-next="goNext"
       :enums="staffEnums"
       :data="staffInfo"
       @bacicInfoSave="onBasicsSave"
