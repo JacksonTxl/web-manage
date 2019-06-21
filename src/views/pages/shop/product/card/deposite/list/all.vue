@@ -1,9 +1,7 @@
 <template>
   <div :class="all()">
     <div :class="all('search')">
-      <router-link to="../add-select">
-        <st-button type="primary" @click="onAddCard" icon="add">新增储值卡</st-button>
-      </router-link>
+      <st-button type="primary" @click="onAddCard" icon="add">新增储值卡</st-button>
       <div>
         <a-select
         style="width: 160px"
