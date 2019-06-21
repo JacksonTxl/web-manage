@@ -132,15 +132,12 @@ export default {
       this.openKeys = openKey ? [openKey] : []
     },
     onClickMenuItem(menu) {
-      // this.selectedKeys = [key]
-      // const menu = this.menuMap[key]
       // if (this.$route.name.indexOf(menu.url) > -1) {
       //   return
       // }
       this.$router.push({
         name: menu.url
       })
-      // this.addFavorite(key)
     },
     addFavorite(id) {
       this.userService.addFavorite(id).subscribe(this.onMenuChange)
