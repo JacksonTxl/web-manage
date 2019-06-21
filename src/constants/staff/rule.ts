@@ -136,7 +136,9 @@ export class RuleConfig extends Exp {
 
   // 教练等级
   get coach_levelRule() {
-    return ['coach_levelRule']
+    return ['coach_level_id', {
+      rules: [{ required: true, message: '请选择教练等级' }]
+    }]
   }
 
   // 毕业院校
