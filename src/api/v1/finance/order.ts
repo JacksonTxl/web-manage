@@ -24,6 +24,14 @@ export interface SplitParams {
   split_data: [];
 }
 
+export interface FlowParams {
+  flow_id: number;
+  reason: string;
+  price: string;
+  pay_channel: number;
+  flow_time: string;
+}
+
 export class OrderApi extends Api {
   /**
    * 获取订单列表
@@ -73,5 +81,23 @@ export class OrderApi extends Api {
    */
   split(params: SplitParams) {
     return this.http.post(`/v1/finance/order/split`, { params: { ...params } })
+  }
+  /**
+   * 订单收款明细（流水列表）
+   */
+  getOrderFlowList(orderId: string) {
+    return this.http.get(`/v1/finance/flow/${orderId}`)
+  }
+  /**
+   * 流水详情
+   */
+  getFlowDetail(flowId: string) {
+    return this.http.get(`/v1/finance/flow/info/${flowId}`)
+  }
+  /**
+   * 流水冲销
+   */
+  orderFlow(params: FlowParams) {
+    return this.http.post(`/v1/finance/flow/reversal`, { params: { ...params } })
   }
 }

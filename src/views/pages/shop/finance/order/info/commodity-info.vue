@@ -4,8 +4,8 @@
       <a-row :gutter="24">
         <a-col :span="9">
           <st-info>
-            <st-info-item label="商品名称">{{info.id}}</st-info-item>
-            <st-info-item label="商品类型">{{info.product_name}}</st-info-item>
+            <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
+            <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
             <st-info-item label="有效时间">{{info.product_name}}</st-info-item>
             <st-info-item label="优惠赠送">{{info.product_name}}</st-info-item>
             <st-info-item label="开卡方式">{{info.product_name}}</st-info-item>

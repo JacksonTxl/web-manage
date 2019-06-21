@@ -6,14 +6,12 @@ import { OrderApi } from '@/api/v1/finance/order'
 @Injectable()
 export class CollectionDetailsService implements RouteGuard {
   list$ = new State({})
-  page$ = new State({})
   loading$ = new State({})
   constructor(private orderApi: OrderApi) {}
   @Effect()
   getList(id:string) {
-    return this.orderApi.getOrderInfo(id).pipe(tap((res:any) => {
+    return this.orderApi.getOrderFlowList(id).pipe(tap((res:any) => {
       this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
     }))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next:()=>{}) {
