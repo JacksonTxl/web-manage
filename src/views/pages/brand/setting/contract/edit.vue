@@ -8,7 +8,7 @@
         <st-t4>全局设置</st-t4>
         <st-form class="mg-t24" labelWidth="56px" labelGutter="16px">
           <st-form-item label="合同标题">
-            <a-textarea v-model="info.contract_title" placeholder="请输入衡量标准"></a-textarea>
+            <a-textarea v-model="info.contract_title" placeholder="请输入衡量标准" maxlength="30"></a-textarea>
           </st-form-item>
           <st-form-item label="合同编号">
             <span v-if="codeRules.length">{{codeRules.length}}位编号</span>

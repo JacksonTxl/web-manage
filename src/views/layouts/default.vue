@@ -33,12 +33,12 @@
           </a-breadcrumb>
         </div>
         <div class="layout-default-body__personal">
-          <a-badge dot>
+          <!-- <a-badge dot>
             <st-icon type="home" class="layout-default-body__icon"/>
           </a-badge>
           <a-badge>
             <st-icon type="home" class="layout-default-body__icon"/>
-          </a-badge>
+          </a-badge> -->
           <a-dropdown :trigger="['click']" placement="bottomRight">
             <div class="layout-default-body__avatar">
               <img src="~@/assets/img/avatar_default.png" width="32" height="32" alt="avatar">

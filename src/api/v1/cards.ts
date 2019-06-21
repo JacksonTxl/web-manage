@@ -71,10 +71,10 @@ export class CardsApi extends Api {
     return this.http.post(`/v1/cards/${type}/deposit`, { params })
   }
   /**
-   * 储值卡详情,品牌
+   * 储值卡详情
    */
-  getCardDepositInfoBrand(id: string) {
-    return this.http.get(`/v1/cards/brand/deposit/${id}`)
+  getCardDepositInfo(id: string, type:string) {
+    return this.http.get(`/v1/cards/${type}/deposit/${id}`)
   }
   /**
    * 储值卡编辑详情

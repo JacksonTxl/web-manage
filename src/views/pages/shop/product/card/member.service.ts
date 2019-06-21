@@ -3,9 +3,9 @@ import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 export class MemberService implements RouteGuard {
   constructor() {}
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    if (to.name === 'brand-product-card-member') {
+    if (to.name === 'shop-product-card-member') {
       next({
-        name: 'brand-product-card-member-list'
+        name: 'shop-product-card-member-list-shelves'
       })
     } else {
       next()
