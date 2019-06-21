@@ -4,7 +4,6 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工头像">
           <st-image-upload
-            @change="imageUploadChange"
             width="164px"
             height="164px"
             :list="fileList"
@@ -285,7 +284,9 @@ export default {
         this.addflag = true
       } else {
         if (!this.addflag) return
-        this.isShowLevel = true
+        this.isShowLevel = data.some(val => {
+          return val === 4
+        })
         this.$emit('addStep')
         this.addflag = false
       }

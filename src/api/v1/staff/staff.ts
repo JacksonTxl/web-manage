@@ -19,7 +19,7 @@ export class ShopStaffApi extends Api {
    * 员工所在部门列表
    */
   getStaffDepartmentList() {
-    return this.http.get(`/v1/department/part`)
+    return this.http.get(`/v1/department`)
   }
   /**
      * 获取员工列表

@@ -26,7 +26,7 @@
     </div>
     <a-menu
         class="layout-default-sider__menu"
-        :openKeys.sync="openKeys"
+        :openKeys="openKeys"
         @openChange="onOpenChange"
         mode="inline"
       >
@@ -101,29 +101,8 @@ export default {
     rootSubmenuKeys() {
       return this.getRootSubmenuKeys()
     }
-    // activeSiderMenuRouteName() {
-    //   const findedSiderMenuRouteConfig = lodashFind(
-    //     this.$route.matched,
-    //     routeConfig => routeConfig.meta.siderMenuRouteName
-    //   )
-    //   if (!findedSiderMenuRouteConfig) {
-    //     console.warn(
-    //       `[layout-default] 路由[${
-    //         this.$route.name
-    //       }]或父级路由 未配置 siderMenuRouteName`
-    //     )
-    //     return ''
-    //   }
-    //   const siderMenuRouteName =
-    //     findedSiderMenuRouteConfig.meta.siderMenuRouteName
-    //   return siderMenuRouteName
-    // }
   },
   created() {
-    // console.log('created', this.menus)
-    lodashFind(this.menus, menu => {
-      return location.pathname.replace(/\//g, '-').indexOf(menu.url) !== -1
-    })
     this.calcOpenKeys()
   },
   methods: {
@@ -141,25 +120,14 @@ export default {
       }
     },
     calcOpenKeys() {
-      this.openKeys = [28]
-    },
-    selectedKeysPath() {
-      // const siderMenu = lodashFind(this.menus, {
-      //   route_name: this.activeSiderMenuRouteName
-      // })
-      // if (!siderMenu) {
-      //   console.warn(
-      //     `[layout-default] can not find ${
-      //       this.activeSiderMenuRouteName
-      //     } in siderMenuTree,侧边栏菜单配置中找不到名称为 ${
-      //       this.activeSiderMenuRouteName
-      //     } 的菜单！`
-      //   )
-      //   return []
-      // }
-      // const menuId = siderMenu.id
-      // const _selectedKeys = findPathWithTree(menuId, this.siderMenuTree)
-      // return _selectedKeys
+      const { menus } = this
+      let openKey
+      menus.forEach(menu => {
+        if (location.pathname.replace(/\//g, '-').indexOf(menu.icon) !== -1) {
+          openKey = menu.id
+        }
+      })
+      this.openKeys = openKey ? [openKey] : []
     },
     onClickMenuItem(menu) {
       // this.selectedKeys = [key]
