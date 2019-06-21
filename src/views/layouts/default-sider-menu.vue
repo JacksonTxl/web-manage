@@ -13,19 +13,23 @@
           v-for="(item, index) in favorite"
           :key="index"
           class="layout-default-sider__often-item"
-          @click="delFavorite(item.id)"
         >
-          <i></i>
-          <span>{{item.name}}</span>
+          <st-icon
+            type="star"
+            @click.native="delFavorite(item.id)"
+          />
+          <router-link :to="{ name: item.url }">
+            <span class="layout-default-sider__favorite-title">{{item.name}}</span>
+          </router-link>
         </li>
       </ul>
     </div>
     <a-menu
         class="layout-default-sider__menu"
         :openKeys="openKeys"
+        :selectedKeys="selectedKeys"
         @openChange="onOpenChange"
         mode="inline"
-        @click='onClickMenu'
       >
         <template v-for="menu in menus">
           <a-sub-menu
@@ -40,7 +44,17 @@
               v-for="subMenu in menu.children"
               :key="subMenu.id"
             >
-              {{subMenu.name}}
+              <st-icon
+                v-if="isfavorite(subMenu.id)"
+                type="star"
+                @click.native="delFavorite(subMenu.id)"
+              />
+              <st-icon
+                v-else
+                type="star"
+                @click.native="addFavorite(subMenu.id)"
+              />
+              <span @click="onClickMenuItem(subMenu)">{{subMenu.name}}</span>
             </a-menu-item>
         </a-sub-menu>
         <a-menu-item v-else :key="menu.id">
@@ -56,6 +70,8 @@
 <script>
 import { UserService } from '@/services/user.service'
 import { treeToMap } from '@/utils/tree-to-map'
+import { find as lodashFind } from 'lodash-es'
+import { findPathWithTree } from '@/utils/find-path-with-tree'
 export default {
   name: 'DefaultBrandSiderMenu',
   serviceInject() {
@@ -70,7 +86,8 @@ export default {
   },
   data() {
     return {
-      openKeys: []
+      openKeys: [],
+      selectedKeys: [30]
     }
   },
   computed: {
@@ -87,6 +104,9 @@ export default {
       return this.getRootSubmenuKeys()
     }
   },
+  created() {
+    this.calcOpenKeys()
+  },
   methods: {
     isHasSubmenu(menu) {
       return (
@@ -101,9 +121,19 @@ export default {
         this.openKeys = latestOpenKey ? [latestOpenKey] : []
       }
     },
-    onClickMenu({ key }) {
-      this.selectedKeys = [key]
-      const menu = this.menuMap[key]
+    calcOpenKeys() {
+      const { menus } = this
+      let openKey
+      menus.forEach(menu => {
+        if (location.pathname.replace(/\//g, '-').indexOf(menu.icon) !== -1) {
+          openKey = menu.id
+        }
+      })
+      this.openKeys = openKey ? [openKey] : []
+    },
+    onClickMenuItem(menu) {
+      // this.selectedKeys = [key]
+      // const menu = this.menuMap[key]
       // if (this.$route.name.indexOf(menu.url) > -1) {
       //   return
       // }
@@ -130,6 +160,9 @@ export default {
         rootSubmenuKeys.push(item.id)
       })
       return rootSubmenuKeys
+    },
+    isfavorite(id) {
+      return lodashFind(this.favorite, { id })
     }
   }
 }

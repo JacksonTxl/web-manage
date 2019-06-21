@@ -37,6 +37,7 @@
         </div>
         <div class="shop-member-crowd-index-box__btn">
           <router-link
+            v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
             :to="{name:'brand-plugin-crowd-analysis', query:{urlid:0,id:value.new_register_member.id}}"
@@ -48,7 +49,7 @@
                 <a-icon type="down"/>
               </span>
               <a-menu slot="overlay">
-                <a-menu-item style="width:130px">
+                <a-menu-item style="width:130px" v-if="auth.export">
                   <a href="javascript:;">导出</a>
                 </a-menu-item>
                 <a-menu-item style="width:130px">
@@ -97,6 +98,7 @@
         </div>
         <div class="shop-member-crowd-index-box__btn">
           <router-link
+            v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
             :to="{name:'brand-plugin-crowd-analysis', query:{urlid:1,id:value.person_course_expiring_crowd.id}}"
@@ -108,7 +110,7 @@
                 <a-icon type="down"/>
               </span>
               <a-menu slot="overlay">
-                <a-menu-item style="width:130px">
+                <a-menu-item style="width:130px" v-if="auth.export">
                   <a href="javascript:;">导出</a>
                 </a-menu-item>
                 <a-menu-item style="width:130px">
@@ -157,6 +159,7 @@
         </div>
         <div class="shop-member-crowd-index-box__btn">
           <router-link
+            v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
             :to="{name:'brand-plugin-crowd-analysis', query:{urlid:2,id:value.expiring_crowd.id}}"
@@ -168,7 +171,7 @@
                 <a-icon type="down"/>
               </span>
               <a-menu slot="overlay">
-                <a-menu-item style="width:130px">
+                <a-menu-item style="width:130px" v-if="auth.export">
                   <a href="javascript:;">导出</a>
                 </a-menu-item>
                 <a-menu-item style="width:130px">
@@ -187,11 +190,17 @@
 </template>
 <script>
 import { MessageService } from '@/services/message.service'
-
+import { IndexService } from './index.service'
 export default {
   serviceInject() {
     return {
+      aService: IndexService,
       messageService: MessageService
+    }
+  },
+  rxState() {
+    return {
+      auth: this.aService.auth$
     }
   },
   model: {

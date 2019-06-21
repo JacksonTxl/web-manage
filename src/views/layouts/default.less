@@ -1,4 +1,9 @@
-// club
+// 默认版本配色
+@defaultMenuBgColor: #2C3153;
+@defaultMenuColor: @white;
+// version-a 配色
+@versionAMenuBgColor: @white;
+@versionAMenuColor: rgba(0, 0, 0, 0.65);
 .layout-default {
   &.ant-layout.ant-layout-has-sider > .ant-layout, 
   &.ant-layout.ant-layout-has-sider > .ant-layout-content {
@@ -10,8 +15,22 @@
     .pd-t(26px);
     top: 0;
     left: 0;
-    .bg(@brand-color);
+    .bg(@defaultMenuBgColor);
+    .c(@defaultMenuColor);
     z-index: 99;
+    .ant-menu {
+      .c(inherit)
+    }
+    .ant-menu-inline {
+      .bd-n;
+      .bg(inherit);
+    }
+    &__favorite-title {
+      .mg-l(6px);
+    }
+    a {
+      .c(inherit);
+    }
     &__brand {
       display: flex;
       flex-direction: column;
@@ -64,13 +83,6 @@
       &-item {
         .ov-h();
         .pd-tb(8px,8px);
-        &::before{
-          display: inline-block;
-          content: '';
-          .s(8px,8px);
-          .bg(#60647E);
-          .mg-r(6px);
-        }
         &&--active {
           .c(#fff);
           &::before{
@@ -202,83 +214,77 @@
   }
 }
 
-// team 
-.layout-default {
-  &-sider {
-    &::after {
-      content: '';
-      position: absolute;
-      width: 1px;
-      height: 100%;
-      right: 0;
-      top: 0;
-      .bg(#e8e8e8);
-    }
-    .bg(@white);
-    &__logo {
-      .bg(#fdfdfd);
-      border: 2px solid #8B8DA0;
-    }
-    &__name {
-      .c(#000);
-    }
-    &__often {
-      &-title {
-        .c(rgba(0,0,0,.45));
+// 版本A 工作室（目前为工作室，只是一个代号，不与系统版本强绑定）
+.version-a {
+  .layout-default {
+    &-sider {
+      .bg(@versionAMenuBgColor);
+      .c(@versionAMenuColor);
+      &__logo {
+        .bg(#fdfdfd);
+        border: 2px solid #8B8DA0;
       }
-      &-list {
-        .c(rgba(0,0,0,.25));
+      &__name {
+        .c(#000);
       }
-      &-item {
-        &::before{
-          .bg(rgba(0,0,0,.25));
+      &__often {
+        &-title {
+          .c(rgba(0,0,0,.45));
         }
-        &&--active {
-          .c(@primary-color);
+        &-list {
+          .c(rgba(0,0,0,.25));
+        }
+        &-item {
           &::before{
-            .bg(@primary-color);
+            .bg(rgba(0,0,0,.25));
+          }
+          &&--active {
+            .c(@primary-color);
+            &::before{
+              .bg(@primary-color);
+            }
           }
         }
       }
-    }
-    &__menu {
-      &.ant-menu-dark{
-        .bg(@white);
+      &__menu {
+        &.ant-menu-dark{
+          .bg(@white);
+        }
+        &.ant-menu-dark .ant-menu-sub{
+          .bg(@white);
+        }
       }
-      &.ant-menu-dark .ant-menu-sub{
-        .bg(@white);
-      }
     }
-  }
-  &-body {
-    &__header {
-      .bg(@brand-color);
-    }
-    &__content {
-      &::after {
+    &-body {
+      &__header {
         .bg(@brand-color);
       }
-    }
-    &__location {
-      > h2 {
-        color: @white;
+      &__content {
+        &::after {
+          .bg(@brand-color);
+        }
       }
-    }
-    &__line {
-      .bg(rgba(255,255,255,.25));
-    }
-    &__avatar {
-      > img {
-        .bg(#ccc);
+      &__location {
+        > h2 {
+          color: @white;
+        }
       }
-    }
-    &__location {
-      .ant-breadcrumb-separator {
+      &__line {
+        .bg(rgba(255,255,255,.25));
+      }
+      &__avatar {
+        > img {
+          .bg(#ccc);
+        }
+      }
+      &__location {
+        .ant-breadcrumb-separator {
+          .c(@white);
+        }
+      }
+      &__breadtext {
         .c(@white);
       }
-    }
-    &__breadtext {
-      .c(@white);
     }
   }
 }

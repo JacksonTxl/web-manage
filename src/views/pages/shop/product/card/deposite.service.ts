@@ -3,9 +3,9 @@ import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 export class DepositeService implements RouteGuard {
   constructor() {}
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    if (to.name === 'brand-product-card-deposite') {
+    if (to.name === 'shop-product-card-deposite') {
       next({
-        name: 'brand-product-card-deposite-list'
+        name: 'shop-product-card-deposite-list-shelves'
       })
     } else {
       next()

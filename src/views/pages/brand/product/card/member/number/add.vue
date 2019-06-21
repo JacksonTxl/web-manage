@@ -1,7 +1,7 @@
 <template>
   <st-panel app class="page-brand-basic-card page-brand-add-number-card" initial>
     <div class="page-brand-basic-card-body">
-      <div class="page-preview">实时预览{{member_card}}</div>
+      <!-- <div class="page-preview">实时预览{{member_card}}</div> -->
       <div class="page-content">
         <st-form :form="form" labelWidth="116px">
           <a-row :gutter="8" class="page-content-card-line__row">

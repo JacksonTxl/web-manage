@@ -1,7 +1,7 @@
 <template>
   <st-panel app class="page-shop-basic-card page-shop-add-deposite-card" initial>
     <div class="page-shop-basic-card-body">
-      <div class="page-preview">实时预览{{deposit_card}}</div>
+      <!-- <div class="page-preview">实时预览{{deposit_card}}</div> -->
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8">
@@ -213,7 +213,6 @@ import { RuleConfig } from '@/constants/rule'
 import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
 export default {
-  name: 'PageShopDepositeCardAdd',
   serviceInject() {
     return {
       rules: RuleConfig,
@@ -301,8 +300,8 @@ export default {
             bg_image: this.cardData.bg_image,
             card_sell_type: this.cardData.card_sell_type,
             is_transfer: +this.cardData.is_transfer,
-            transfer_unit: this._is_transfer ? +this.cardData.transfer_unit : undefined,
-            transfer_num: this._is_transfer ? +values.cardData.transfer_num : undefined
+            transfer_unit: this.cardData._is_transfer ? +this.cardData.transfer_unit : undefined,
+            transfer_num: this.cardData._is_transfer ? +values.cardData.transfer_num : undefined
           }).subscribe(res => {
             // 新增成功
             this.$router.push({

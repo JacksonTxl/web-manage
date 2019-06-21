@@ -47,7 +47,8 @@ export default {
   },
   rxState() {
     return {
-      scheduleTeamCourseList: this.teamScheduleScheduleService.scheduleTeamCourseList$
+      scheduleTeamCourseList: this.teamScheduleScheduleService.scheduleTeamCourseList$,
+      auth: this.teamScheduleScheduleService.auth$
     }
   },
   data() {
@@ -67,7 +68,7 @@ export default {
         timeGridDay: { buttonText: '日' }
       },
       header: {
-        left: 'custom1, custom2',
+        left: 'bacthAdd, add',
         center: 'prev,next,title',
         right: 'timeGridWeek,timeGridDay, custom4'
       },
@@ -78,13 +79,13 @@ export default {
         interactionPlugin // needed for dateClick
       ],
       customButtons: {
-        custom1: {
+        bacthAdd: {
           text: '批量排期',
           click() {
             that.$modalRouter.push({ name: 'schedule-team-add-course-schedule-batch' })
           }
         },
-        custom2: {
+        add: {
           text: '复制排期',
           click() {
             that.$modalRouter.push({ name: 'schedule-team-copy-schedule' })
@@ -130,6 +131,18 @@ export default {
   },
   mounted() {
     this.setAddButton()
+    const add = this.auth.add
+    const addBatch = this.auth.addBatch
+    const copy = this.auth.copy
+    if (add) {
+      this.header.left = 'add'
+    }
+    if (addBatch) {
+      this.header.left = 'bacthAdd'
+    }
+    if (add && addBatch) {
+      this.header.left = 'bacthAdd, add'
+    }
   },
   methods: {
     datesRender(info) {
