@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" @submit="save" class="page-edit-container">
+  <st-form :form="form" class="page-edit-container">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="毕业院校" >
@@ -62,8 +62,8 @@
     <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
-          <st-button type="primary" ghost html-type="submit">上一步</st-button>
-          <st-button class="mg-l16" @click="goNext" type="primary">{{!isShowCoach?'保存':'保存，继续填写'}}</st-button>
+          <st-button type="primary" ghost @click="onClickBack">上一步</st-button>
+          <st-button class="mg-l16" @click="save" type="primary">{{!isShowCoach?'保存':'保存，继续填写'}}</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -188,6 +188,9 @@ export default {
     this.setData(this.data)
   },
   methods: {
+    onClickBack() {
+      this.$emit('back', 1)
+    },
     setData(obj) {
       console.log('detail', obj)
       this.form.setFieldsValue({
@@ -220,22 +223,18 @@ export default {
     filterProvinces(arr) {
       return {
         province_id: arr[0],
-        province_name: 'lallala',
         city_id: arr[1],
-        city_name: 'shgsahhsa',
-        district_id: arr[2],
-        district_name: 'sajkdsjds'
+        district_id: arr[2]
       }
     },
     save(e) {
-      // form submit
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
           let obj = this.filterProvinces(values.provinces)
           let newData = Object.assign(values, obj)
-          newData.birthday = newData.birthday.format('YYYY-MM-DD')
-          newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD')
+          newData.birthday && (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
+          newData.graduation_time && (newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD'))
           delete newData.provinces
           this.$emit('detailInfoSave', {
             data: newData
@@ -246,6 +245,3 @@ export default {
   }
 }
 </script>
-
-<style>
-</style>

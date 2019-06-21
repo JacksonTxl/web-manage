@@ -357,6 +357,7 @@ export default {
             })
           })
           this.editService.editCard({
+            id: this.cardInfo.card_id,
             card_type: 1,
             card_name: values.card_name,
             start_time: `${this.start_time.format('YYYY-MM-DD')} 00:00:00`,
@@ -370,8 +371,8 @@ export default {
             card_bg: this.cardBg,
             price_gradient
           }).subscribe(res => {
-            // 新增成功
-
+            // 编辑成功
+            this.$router.push({ path: '/shop/product/card/member/list/all' })
           })
         }
       })

@@ -14,8 +14,8 @@
       </a-col>
     </a-row>
     <edit-basic-info v-show="currentIndex == 0" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
-    <edit-detailed-info  v-show="currentIndex == 1" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
-    <edit-coach-info  v-show="currentIndex == 2" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
+    <edit-detailed-info  @back="onBack" :isShowCoach="isShowCoach" v-show="currentIndex == 1" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
+    <edit-coach-info  @back="onBack" v-if="isShowCoach" v-show="currentIndex == 2" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
   </st-panel>
 </template>
 
@@ -31,7 +31,6 @@ export default {
   serviceInject() {
     return {
       userService: UserService,
-      // regionService: RegionService,
       messageService: MessageService,
       services: EditService
     }
@@ -47,22 +46,46 @@ export default {
     EditDetailedInfo,
     EditBasicInfo
   },
+  computed: {
+    isShowCoach() {
+      if (this.staffInfo.identity.length === 0) return false
+      return this.staffInfo.identity.includes(3) || this.staffInfo.identity.includes(4)
+    },
+    id() {
+      return this.staffInfo.staff_id
+    }
+  },
+  watch: {
+    isShowCoach(newVal) {
+      if (newVal) {
+        this.stepsSpan = 12
+        this.stepArr.pop()
+      }
+    }
+  },
   created() {
-    console.log(this.$route.meta.query)
-    let { id, currentIndex, isshowcoach } = this.$route.meta.query
+    let { currentIndex } = this.$route.query
+    if (this.isShowCoach) {
+      console.log('展示')
+    } else {
+      console.log('不展示')
+      this.stepsSpan = 12
+      this.stepArr.pop()
+    }
     if (currentIndex) {
       this.currentIndex = currentIndex - 0
-    }
-    if (this.staffInfo.identity.includes(3) || this.staffInfo.identity.includes(4)) {
-      let idx = this.stepArr.findIndex((item) => {
-        return item.key === 2
-      })
-      this.stepArr.splice(idx, 1)
-      this.stepsSpan = 12
-      console.log(idx)
+      // if(!isShowCoach){
+      //   console.log('不展示')
+      //   this.stepArr.pop()
+      // }else{
+      //   console.log('展示')
+      // }
     }
   },
   methods: {
+    onBack(step) {
+      this.currentIndex = this.currentIndex - step
+    },
     gonext() {
       if (this.currentIndex < 2) {
         this.currentIndex = this.currentIndex + 1

@@ -85,8 +85,8 @@ export class CardsApi extends Api {
   /**
    * 储值卡编辑
    */
-  editCardDepositBrand(params: CardsInput) {
-    return this.http.put('/v1/cards/brand/deposit', { params })
+  editCardDeposit(params: CardsInput, type:string) {
+    return this.http.put(`/v1/cards/${type}/deposit`, { params })
   }
   /**
    *品牌会员卡停售原因

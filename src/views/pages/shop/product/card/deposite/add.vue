@@ -3,7 +3,7 @@
     <div class="page-shop-basic-card-body">
       <div class="page-preview">实时预览{{deposit_card}}</div>
       <div class="page-content">
-        <st-form :form="form" labelWidth="116px">
+        <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8">
             <a-col :lg="16">
               <st-form-item class="page-content-card-line" label="储值卡名称" required>
@@ -81,12 +81,12 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="23">
-              <st-form-item class="page-content-card-admission-range" label="支持消费门店" required>{{shopName.name}}</st-form-item>
+              <st-form-item class="page-content-card-admission-range" label="支持消费门店">{{shopName.name}}</st-form-item>
             </a-col>
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="23">
-              <st-form-item class="page-content-card-support-sales" label="支持售卖门店" required>{{shopName.name}}</st-form-item>
+              <st-form-item class="page-content-card-support-sales" label="支持售卖门店">{{shopName.name}}</st-form-item>
             </a-col>
           </a-row>
           <a-row :gutter="8">
@@ -100,7 +100,7 @@
                     arrowPointAtCenter
                   >
                     <div slot="content">
-                      设置此会员卡可售卖的时间范围
+                      设置此储值卡可售卖的时间范围
                     </div>
                     <a-icon class="page-content-card-time__icon" type="info-circle"></a-icon>
                   </a-popover>
@@ -172,7 +172,7 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="22">
-              <st-form-item class="page-content-card-introduction mt-4" label="会员卡介绍">
+              <st-form-item class="page-content-card-introduction mt-4" label="储值卡介绍">
                 <a-textarea
                 v-model="cardData.card_contents"
                 maxlength="500"
@@ -235,7 +235,7 @@ export default {
     return {
       // cardData
       cardData: {
-        // 会员卡名称
+        // 储值卡名称
         card_name: '',
         // 储值金额
         card_price: null,
@@ -287,17 +287,6 @@ export default {
       e.preventDefault()
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          // 储值金额
-          this.cardData.card_price = values.cardData.card_price
-          // 售卖价格
-          this.cardData.sell_price = values.cardData.sell_price
-          // 期限
-          this.cardData.num = values.cardData.num
-          // 消费类目
-          this.cardData.card_consumer_id = cloneDeep(values.cardData.card_consumer_id)
-          // 时间
-          this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')}`
-          this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
           this.addService.addCard({
             card_name: values.cardData.card_name,
             sell_price: +values.cardData.sell_price,
@@ -309,10 +298,16 @@ export default {
             end_time: `${this.end_time.format('YYYY-MM-DD')}`,
             card_contents: this.cardData.card_contents,
             description: this.cardData.description,
-            bg_image: this.cardData.bg_image
-
+            bg_image: this.cardData.bg_image,
+            card_sell_type: this.cardData.card_sell_type,
+            is_transfer: +this.cardData.is_transfer,
+            transfer_unit: this._is_transfer ? +this.cardData.transfer_unit : undefined,
+            transfer_num: this._is_transfer ? +values.cardData.transfer_num : undefined
           }).subscribe(res => {
-            console.log(res)
+            // 新增成功
+            this.$router.push({
+              path: '/shop/product/card/deposite/list/all'
+            })
           })
         }
       })
