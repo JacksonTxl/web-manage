@@ -36,7 +36,6 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工人脸">
           <st-image-upload
-            @change="faceChange"
             width="164px"
             height="164px"
             :list="faceList"
@@ -298,20 +297,6 @@ export default {
     },
     onSelectIdtype(e) {
       console.log('证件选择', e)
-    },
-    imageUploadChange(data) {
-      this.form.setFieldsValue({
-        image_avatar: {
-          image_url: data.image_url ? data.image_url : ''
-        }
-      })
-    },
-    faceChange(data) {
-      this.form.setFieldsValue({
-        image_face: {
-          image_url: data.image_url ? data.image_url : ''
-        }
-      })
     },
     // 继续填写跳转到编辑
     goNext(e) {

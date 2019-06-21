@@ -4,7 +4,6 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工头像">
           <st-image-upload
-            @change="imageUploadChange"
             width="164px"
             height="164px"
             :list="fileList"
@@ -36,7 +35,6 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工人脸">
           <st-image-upload
-            @change="faceChange"
             width="164px"
             height="164px"
             :list="faceList"
