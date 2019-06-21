@@ -136,7 +136,7 @@ export class RuleConfig extends Exp {
 
   // 教练等级
   get coach_levelRule() {
-    return ['coach_levelRule']
+    return ['coach_level_id']
   }
 
   // 毕业院校
