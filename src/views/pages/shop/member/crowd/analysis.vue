@@ -49,7 +49,6 @@
       </div>
       <st-area-chart id="analysis" :data="chartData"/>
     </st-panel>
-    {{analysisInfo}}
   </div>
 </template>
 <script>
