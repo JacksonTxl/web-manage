@@ -31,11 +31,6 @@ export class CoachLevelService extends Store<ListState> {
   getCoachLevelList(query: GetCoachLevelListInput) {
     return this.coachLevelApi.getCoachLevelList(query).pipe(
       tap((res: any) => {
-        res.info = {
-          auth: {
-            'brand_shop:course:course_type|edit': 1
-          }
-        }
         res = this.authService.filter(res)
         this.SET_STATE(res)
       })

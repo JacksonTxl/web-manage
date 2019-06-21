@@ -1,7 +1,7 @@
 <template>
   <st-panel app class="page-shop-card-info page-shop-number-card-info" initial>
     <div class="page-shop-card-info-body">
-      <div class="page-preview">实时预览{{cardInfo}}</div>
+      <!-- <div class="page-preview">实时预览{{cardInfo}}</div> -->
       <div class="page-content">
         <div :class="item('card_name')" class="mb-24">
           <!-- 卡名称 -->

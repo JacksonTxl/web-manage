@@ -77,10 +77,32 @@
         {{text.name}}
       </template>
       <template slot="shop_shelf_card" slot-scope="text">
-        {{text.name}}
+        <span :class="{'color-danger':text.id===1}">{{text.name}}</span>
+        <a-popover
+          title="停售原因title"
+          trigger="click"
+          placement="bottomRight"
+          :overlayStyle="{width:'336px'}"
+        >
+          <template slot="content">
+            <p>停售原因content</p>
+          </template>
+          <a-icon type="exclamation-circle" v-if="text.id === 2"/>
+        </a-popover>
       </template>
       <template slot="sell_status" slot-scope="text">
-        {{text.name}}
+        <a-badge :status="text.id === 1?'success':'error'" />{{text.name}}
+        <a-popover
+          title="停售原因title"
+          trigger="click"
+          placement="bottomRight"
+          :overlayStyle="{width:'336px'}"
+        >
+          <template slot="content">
+            <p>停售原因content</p>
+          </template>
+          <a-icon type="exclamation-circle" v-if="text.id === 2"/>
+        </a-popover>
       </template>
       <div slot="action" slot-scope="text,record">
         <a @click="onDetail(record)">详情</a>
@@ -249,7 +271,15 @@ export default {
     },
     // 上架
     onShelf(record) {
-      console.log(record)
+      this.$modalRouter.push({
+        name: 'card-batch-shelves',
+        props: { id: record.id },
+        on: {
+          success: () => {
+
+          }
+        }
+      })
     },
     // 编辑
     onEdit(record) {
