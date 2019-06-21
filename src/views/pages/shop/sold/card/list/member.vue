@@ -45,9 +45,9 @@
     </st-search-panel>
     <div :class="basic('content')">
       <div :class="basic('content-batch')" class="mg-b16">
-        <st-button type="primary" class="mgr-8">批量导出</st-button>
-        <st-button type="primary" class="mgr-8" :disabled="!isUnifyCard" @click="onGiving">赠送额度</st-button>
-        <st-button type="primary" class="mgr-8" :disabled="selectedRowKeys.length<1" @click="onAreas">变更入场vip区域</st-button>
+        <st-button type="primary" class="mgr-8" v-if="auth.export">批量导出</st-button>
+        <st-button type="primary" class="mgr-8" v-if="auth.gift" :disabled="!isUnifyCard" @click="onGiving">赠送额度</st-button>
+        <st-button type="primary" class="mgr-8" v-if="auth.vipRegion" :disabled="selectedRowKeys.length<1" @click="onAreas">变更入场vip区域</st-button>
       </div>
       <div :class="basic('table')">
         <st-table
@@ -78,16 +78,19 @@
             slot-scope="text"
           >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
           <div slot="action" slot-scope="text,record">
-            <a @click="onUpgrade(record)">升级</a>
+            <a v-if="record.auth['shop:sold:sold_member_card|get']" @click="onDetail(record)">详情</a>
+            <a-divider type="vertical"></a-divider>
+            <a v-if="record.auth['shop:sold:sold_member_card|upgrade']" @click="onUpgrade(record)">升级</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
-              <a-menu-item @click="onRenewal(record)">续卡</a-menu-item>
-              <a-menu-item @click="onSetTime(record)">修改有效时间</a-menu-item>
-              <a-menu-item @click="onFreeze(record)">冻结</a-menu-item>
-              <a-menu-item @click="onUnfreeze(record)">取消冻结</a-menu-item>
-              <a-menu-item @click="onTransfer(record)">转让</a-menu-item>
-              <a-menu-item @click="onRefund(record)">退款</a-menu-item>
-              <a-menu-item @click="onArea(record)">修改入场vip区域</a-menu-item>
+              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|renew']" @click="onRenewal(record)">续卡</a-menu-item>
+              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|vaild_time']" @click="onSetTime(record)">修改有效时间</a-menu-item>
+              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|frozen']" @click="onFreeze(record)">冻结</a-menu-item>
+              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|unfrozen']" @click="onUnfreeze(record)">取消冻结</a-menu-item>
+              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|transfer']" @click="onTransfer(record)">转让</a-menu-item>
+              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|refund']" @click="onRefund(record)">退款</a-menu-item>
+              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|export_contract']">查看合同</a-menu-item>
+              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|vip_region']" @click="onArea(record)">修改入场vip区域</a-menu-item>
             </st-more-dropdown>
           </div>
         </st-table>
@@ -177,7 +180,8 @@ export default {
       page: this.memberService.page$,
       package_course: this.userService.packageCourseEnums$,
       sold: this.userService.soldEnums$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.memberService.auth$
     }
   },
   computed: {
@@ -323,6 +327,13 @@ export default {
     onSelectChange(selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
+    },
+    // 详情
+    onDetail(record) {
+      this.$router.push({
+        path: `/shop/sold/card/info/member/info/consumption-record`,
+        query: { id: record.id }
+      })
     },
     // 冻结
     onFreeze(record) {

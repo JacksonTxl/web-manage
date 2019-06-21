@@ -2,8 +2,9 @@
   <section :class="basic()">
     <st-panel title="储值卡详情">
       <div slot="actions">
-        <st-button class="mgr-8" type="primary" @click="onRefund">退款</st-button>
-        <st-button class="mgr-8" type="primary" @click="onTransfer">转让</st-button>
+        <st-button v-if="auth['shop:sold:sold_deposit_card|export_contract']" class="mgr-8" type="primary" @click="onRefund">查看合同</st-button>
+        <st-button v-if="auth['shop:sold:sold_deposit_card|refund']" class="mgr-8" @click="onRefund">退款</st-button>
+        <st-button v-if="auth['shop:sold:sold_deposit_card|transfer']" class="mgr-8" @click="onTransfer">转让</st-button>
       </div>
       <a-row :gutter="24">
         <a-col :span="9">
@@ -78,7 +79,8 @@ export default {
     return {
       info: this.infoService.info$,
       query: this.routeService.query$,
-      loading: this.infoService.loading$
+      loading: this.infoService.loading$,
+      auth: this.infoService.auth$
     }
   },
   methods: {

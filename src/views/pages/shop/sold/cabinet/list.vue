@@ -35,20 +35,20 @@
 
     <div :class="basic('content')">
       <div :class="basic('content-batch')">
-          <st-button type="primary">批量导出</st-button>
+          <st-button v-if="auth.export"  type="primary">批量导出</st-button>
       </div>
       <st-table
       rowKey="sold_cabinet_id"
       :columns="columns"
       :dataSource="list">
         <div slot="action" slot-scope="text, record">
-          <a @click="onRelet(record)">续租</a>
+          <a v-if="record.auth['shop:sold:sold_cabinet|renew']" @click="onRelet(record)">续租</a>
           <a-divider type="vertical"></a-divider>
-          <a>查看合同</a>
+          <a v-if="record.auth['shop:sold:sold_cabinet|export_contract']">查看合同</a>
           <a-divider type="vertical"></a-divider>
-          <a @click="onTransfer(record)">转让</a>
+          <a v-if="record.auth['shop:sold:sold_cabinet|transfer']" @click="onTransfer(record)">转让</a>
           <a-divider type="vertical"></a-divider>
-          <a @click="onRefund(record)">退款</a>
+          <a v-if="record.auth['shop:sold:sold_cabinet|refund']" @click="onRefund(record)">退款</a>
         </div>
       </st-table>
     </div>
@@ -79,7 +79,8 @@ export default {
       loading: this.listService.loading$,
       page: this.listService.page$,
       query: this.routeService.query$,
-      list: this.listService.list$
+      list: this.listService.list$,
+      auth: this.listService.auth$
     }
   },
   computed: {

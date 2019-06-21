@@ -15,7 +15,7 @@ export class EditService implements RouteGuard {
   }
   @Effect()
   editCard(data: CardsInput) {
-    return this.cardsApi.editCardDepositBrand(data)
+    return this.cardsApi.editCardDeposit(data, 'shop')
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
     this.getCardInfo(to.meta.query.id).subscribe(() => {
