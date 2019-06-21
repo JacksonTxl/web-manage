@@ -4,7 +4,6 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工头像">
           <st-image-upload
-            @change="imageUploadChange"
             width="164px"
             height="164px"
             :list="fileList"
@@ -36,7 +35,6 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工人脸">
           <st-image-upload
-            @change="faceChange"
             width="164px"
             height="164px"
             :list="faceList"
@@ -73,7 +71,7 @@
     <a-row :gutter="8">
       <a-col :offset="1" :lg="23">
         <st-form-item label="员工职能" required>
-          <a-checkbox-group v-decorator="rules.identity" @change="watchChooesed">
+          <a-checkbox-group v-decorator="rules.identity" @change="getIsCoach">
             <a-checkbox
               v-for="(item, key) in enums.identity.value"
               :key="key"
@@ -107,10 +105,13 @@
           </a-select>
         </st-form-item>
         <st-form-item label="教练等级" v-if="isShowLevel">
-          <a-select v-decorator="rules.coach_levelRule" placeholder="请选择">
-            <a-select-option :value="1">等级1</a-select-option>
-            <a-select-option :value="2">等级2</a-select-option>
-          </a-select>
+          <coach-level-select
+            placeholder="请选择教练等级"
+            style="width: 100%"
+            useType="form"
+            v-decorator="rules.coach_levelRule"
+            @change="onChange">
+          </coach-level-select>
         </st-form-item>
       </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
@@ -120,11 +121,11 @@
         <st-form-item label="入职时间">
           <a-date-picker style="width:100%" v-decorator="rules.entry_date"/>
         </st-form-item>
-        <st-form-item label="所属门店">
+        <st-form-item label="所属门店" required>
           <shop-select
             mode="multiple"
             placeholder="选择"
-            v-decorator="['shop_id']"/>
+            v-decorator="rules.shop_id"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -189,6 +190,7 @@
   </st-form>
 </template>
 <script>
+import CoachLevelSelect from '@/views/biz-components/coach-level-select'
 import { RuleConfig } from '@/constants/staff/rule'
 import { UserService } from '@/services/user.service'
 import { AddService } from '../add.service'
@@ -225,11 +227,17 @@ export default {
       value: undefined
     }
   },
-  watch: {
-    isAdd(a) {
-      // 监听是否选中了教练
-      let flag = a.some(val => {
-        return val === 4 || val === 5
+  components: {
+    ShopSelect,
+    DepartmentSelect,
+    CoachLevelSelect
+  },
+  methods: {
+    onSelectIdtype() {},
+    getIsCoach(data) {
+      console.log('watch new', data)
+      let flag = data.some(val => {
+        return val === 3 || val === 4
       })
       if (!flag) {
         this.$emit('deletStep')
@@ -241,16 +249,6 @@ export default {
         this.$emit('addStep')
         this.addflag = false
       }
-    }
-  },
-  components: {
-    ShopSelect,
-    DepartmentSelect
-  },
-  methods: {
-    onSelectIdtype() {},
-    watchChooesed(e) {
-      this.isAdd = e
     },
     permissionChange(e) {
       this.isChoosePermission = e.target.checked

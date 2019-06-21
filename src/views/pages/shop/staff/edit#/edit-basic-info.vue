@@ -178,7 +178,6 @@ export default {
   },
   methods: {
     onChange(value) {
-      console.log('选择部门', value)
       this.value = value
     },
     onSelectIdtype(e) {
@@ -200,7 +199,6 @@ export default {
     },
     goNext(e) {
       e.preventDefault()
-      console.log('gonext')
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)

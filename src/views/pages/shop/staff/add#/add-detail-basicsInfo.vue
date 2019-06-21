@@ -27,17 +27,15 @@
           </a-input-group>
         </st-form-item>
         <st-form-item label="性别" required>
-          <a-select placeholder="请选择" v-decorator="rules.sex">
-            <template v-for="(item,key) in enums.sex.value">
-              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
-            </template>
-          </a-select>
+          <a-radio-group name="radioGroup" v-decorator="rules.sex">
+            <a-radio :value="1">男 <st-icon class="sex__male" style="color: #636aec" type="male"></st-icon></a-radio>
+            <a-radio :value="2">女 <st-icon calss="sex__female" style="color: #fa756c" type="female"></st-icon></a-radio>
+          </a-radio-group>
         </st-form-item>
       </a-col>
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工人脸">
           <st-image-upload
-            @change="faceChange"
             width="164px"
             height="164px"
             :list="faceList"
@@ -74,7 +72,7 @@
     <a-row :gutter="8">
       <a-col :offset="1" :lg="23">
         <st-form-item label="员工职能" required>
-          <a-checkbox-group v-decorator="rules.identity" @change="watchChooesed">
+          <a-checkbox-group v-decorator="rules.identity" @change="getIsCoach">
             <a-checkbox
               v-for="(item, key) in enums.identity.value"
               :key="key"
@@ -146,11 +144,14 @@
             </template>
           </a-select>
         </st-form-item>
-        <st-form-item label="教练等级" v-if="isShowLevel">
-          <a-select v-decorator="rules.coach_levelRule" placeholder="请选择">
-            <a-select-option :value="1">等级1</a-select-option>
-            <a-select-option :value="2">等级2</a-select-option>
-          </a-select>
+        <st-form-item label="教练等级" v-if="isShowLevel" required>
+          <coach-level-select
+            placeholder="请选择教练等级"
+            style="width: 100%"
+            useType="form"
+            v-decorator="rules.coach_levelRule"
+            @change="onChange">
+          </coach-level-select>
         </st-form-item>
       </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
@@ -230,6 +231,7 @@ import { RuleConfig } from '@/constants/staff/rule'
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { AddService } from '../add.service'
+import CoachLevelSelect from '@/views/biz-components/coach-level-select'
 export default {
   name: 'StaffDetailBasics',
   serviceInject() {
@@ -246,6 +248,9 @@ export default {
       roleList: this.addService.roleList$,
       department: this.addService.department$
     }
+  },
+  components: {
+    CoachLevelSelect
   },
   props: {
     enums: {
@@ -268,12 +273,11 @@ export default {
       value: undefined
     }
   },
-  watch: {
-    isAdd(a) {
-      // 监听是否选中了教练
-      console.log('watch new', a)
-      let flag = a.some(val => {
-        return val === 4 || val === 5
+  methods: {
+    getIsCoach(data) {
+      console.log('watch new', data)
+      let flag = data.some(val => {
+        return val === 3 || val === 4
       })
       if (!flag) {
         this.$emit('deletStep')
@@ -285,12 +289,6 @@ export default {
         this.$emit('addStep')
         this.addflag = false
       }
-    }
-  },
-  methods: {
-    watchChooesed(e) {
-      this.isAdd = e
-      // console.log(this.isAdd)
     },
     permissionChange(e) {
       this.isChoosePermission = e.target.checked
@@ -306,20 +304,6 @@ export default {
     },
     onSelectIdtype(e) {
       console.log('证件选择', e)
-    },
-    imageUploadChange(data) {
-      this.form.setFieldsValue({
-        image_avatar: {
-          image_url: data.image_url ? data.image_url : ''
-        }
-      })
-    },
-    faceChange(data) {
-      this.form.setFieldsValue({
-        image_face: {
-          image_url: data.image_url ? data.image_url : ''
-        }
-      })
     },
     // 继续填写跳转到编辑
     goNext(e) {
