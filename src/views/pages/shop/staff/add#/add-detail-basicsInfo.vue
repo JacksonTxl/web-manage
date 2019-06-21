@@ -27,11 +27,10 @@
           </a-input-group>
         </st-form-item>
         <st-form-item label="性别" required>
-          <a-select placeholder="请选择" v-decorator="rules.sex">
-            <template v-for="(item,key) in enums.sex.value">
-              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
-            </template>
-          </a-select>
+          <a-radio-group name="radioGroup" v-decorator="rules.sex">
+            <a-radio :value="1">男 <st-icon class="sex__male" style="color: #636aec" type="male"></st-icon></a-radio>
+            <a-radio :value="2">女 <st-icon calss="sex__female" style="color: #fa756c" type="female"></st-icon></a-radio>
+          </a-radio-group>
         </st-form-item>
       </a-col>
       <a-col :lg="10" :xs="22" :offset="1">
@@ -74,7 +73,7 @@
     <a-row :gutter="8">
       <a-col :offset="1" :lg="23">
         <st-form-item label="员工职能" required>
-          <a-checkbox-group v-decorator="rules.identity" @change="watchChooesed">
+          <a-checkbox-group v-decorator="rules.identity" @change="getIsCoach">
             <a-checkbox
               v-for="(item, key) in enums.identity.value"
               :key="key"
@@ -268,12 +267,11 @@ export default {
       value: undefined
     }
   },
-  watch: {
-    isAdd(a) {
-      // 监听是否选中了教练
-      console.log('watch new', a)
-      let flag = a.some(val => {
-        return val === 4 || val === 5
+  methods: {
+    getIsCoach(data) {
+      console.log('watch new', data)
+      let flag = data.some(val => {
+        return val === 3 || val === 4
       })
       if (!flag) {
         this.$emit('deletStep')
@@ -285,12 +283,6 @@ export default {
         this.$emit('addStep')
         this.addflag = false
       }
-    }
-  },
-  methods: {
-    watchChooesed(e) {
-      this.isAdd = e
-      // console.log(this.isAdd)
     },
     permissionChange(e) {
       this.isChoosePermission = e.target.checked

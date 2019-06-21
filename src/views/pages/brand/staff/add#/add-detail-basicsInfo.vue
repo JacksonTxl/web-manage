@@ -73,7 +73,7 @@
     <a-row :gutter="8">
       <a-col :offset="1" :lg="23">
         <st-form-item label="员工职能" required>
-          <a-checkbox-group v-decorator="rules.identity" @change="watchChooesed">
+          <a-checkbox-group v-decorator="rules.identity" @change="getIsCoach">
             <a-checkbox
               v-for="(item, key) in enums.identity.value"
               :key="key"
@@ -225,11 +225,16 @@ export default {
       value: undefined
     }
   },
-  watch: {
-    isAdd(a) {
-      // 监听是否选中了教练
-      let flag = a.some(val => {
-        return val === 4 || val === 5
+  components: {
+    ShopSelect,
+    DepartmentSelect
+  },
+  methods: {
+    onSelectIdtype() {},
+    getIsCoach(data) {
+      console.log('watch new', data)
+      let flag = data.some(val => {
+        return val === 3 || val === 4
       })
       if (!flag) {
         this.$emit('deletStep')
@@ -241,16 +246,6 @@ export default {
         this.$emit('addStep')
         this.addflag = false
       }
-    }
-  },
-  components: {
-    ShopSelect,
-    DepartmentSelect
-  },
-  methods: {
-    onSelectIdtype() {},
-    watchChooesed(e) {
-      this.isAdd = e
     },
     permissionChange(e) {
       this.isChoosePermission = e.target.checked
