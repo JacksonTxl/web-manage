@@ -1,6 +1,9 @@
 <template>
   <st-modal title="选择所属部门" size="small" v-model="show" @ok="onSubmit">
     <department-select
+    size="346px"
+    v-model="value"
+    @changeLabel="onChange"
     :treeCheckable="true">
 
     </department-select>
@@ -9,6 +12,7 @@
 <script>
 import DepartmentSelect from '@/views/biz-components/department-select'
 export default {
+  name: 'AddDepartment',
   data() {
     return {
       show: false,
@@ -21,17 +25,12 @@ export default {
     DepartmentSelect
   },
   methods: {
-    onChange(value) {
-      this.value = value
+    onSubmit() {
+      this.show = false
     },
-    onSubmit(e) {
-      e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          this.show = false
-          this.$emit('change')
-        }
-      })
+    onChange(data) {
+      data.value = data.value.map(item => +item)
+      this.$emit('success', data)
     }
   }
 }
