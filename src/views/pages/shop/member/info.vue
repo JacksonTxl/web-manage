@@ -71,7 +71,7 @@
                 v-if="auth.bindCard"
                 tag="a"
                 class="pannel-right__operation__margin"
-                :to="{name: 'shop-binding-entity-card', props: {record: {id, member_name: info.member_name, mobile: info.mobile}}}"
+                :to="{name: 'shop-binding-entity-card', props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}"
               >
                 <a-button class="pannel-right__operation__margin">绑定实体卡</a-button>
               </modal-link>
@@ -85,13 +85,13 @@
                   </a-menu-item>
                   <a-menu-item key="3"  v-if="auth.unbindWechat" @click="onRemoveBind">解除微信绑定</a-menu-item>
                   <a-menu-item key="4">
-                    <modal-link tag="a"  v-if="auth.transfer" :to=" { name: 'shop-transfer-shop',props: {record: {id, member_name: info.member_name, mobile: info.mobile}}}">转店</modal-link>
+                    <modal-link tag="a"  v-if="auth.transfer" :to=" { name: 'shop-transfer-shop',props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">转店</modal-link>
                   </a-menu-item>
                   <a-menu-item key="5">
                     <modal-link tag="a"  v-if="auth.frozen" :to=" { name: 'shop-frozen'}">冻结用户</modal-link>
                   </a-menu-item>
                   <a-menu-item key="6">
-                    <modal-link tag="a"  v-if="auth.rebindCard" :to=" { name: 'shop-missing-card',props: {record: {id, member_name: info.member_name, mobile: info.mobile}}}">遗失补卡</modal-link>
+                    <modal-link tag="a"  v-if="auth.rebindCard" :to=" { name: 'shop-missing-card',props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">遗失补卡</modal-link>
                   </a-menu-item>
                 </a-menu>
                 <a-button style="margin-left: 8px">
