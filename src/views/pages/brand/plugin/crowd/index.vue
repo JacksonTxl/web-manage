@@ -8,7 +8,7 @@
           :to=" { name: 'brand-plugin-crowd-add'}"
           v-if="crowdIndexInfo.info.list.length <= 10"
         >
-          <st-button type="primary">
+          <st-button type="primary" v-if="auth.add">
             <a-icon type="plus"/>新建人群
           </st-button>
         </router-link>
@@ -39,11 +39,11 @@
             </a-menu>
           </a-dropdown>
           <st-more-dropdown class="tree-opreation">
-            <a-menu-item @click="addTreeNode(record)">导出</a-menu-item>
+            <a-menu-item v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a-menu-item>
             <a-menu-item>
-              <router-link tag="a" :to=" { name: 'brand-plugin-crowd-add',query:{id:record.id}}">编辑</router-link>
+              <router-link v-if="record.auth['shop:member:crowd|edit']" tag="a" :to=" { name: 'brand-plugin-crowd-add',query:{id:record.id}}">编辑</router-link>
             </a-menu-item>
-            <a-menu-item @click="deleteTreeNode(record)">删除</a-menu-item>
+            <a-menu-item v-if="record.auth['shop:member:crowd|del']" @click="deleteTreeNode(record)">删除</a-menu-item>
           </st-more-dropdown>
         </div>
         <div
@@ -75,7 +75,8 @@ export default {
   },
   rxState() {
     return {
-      crowdIndexInfo: this.aService.crowdIndexInfo$
+      crowdIndexInfo: this.aService.crowdIndexInfo$,
+      auth: this.aService.auth$
     }
   },
   data() {

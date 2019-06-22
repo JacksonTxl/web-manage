@@ -37,12 +37,14 @@
         </div>
         <div class="shop-member-crowd-index-box__btn">
           <router-link
+            v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
             :to="{name:'shop-member-crowd-analysis', query:{urlid:0,id:value.new_register_member.id}}"
           >人群分析</router-link>
 
           <span
+            v-if="auth.export"
             class="shop-member-crowd-index-box__btn-rq"
             @click="exportFunc(value.new_register_member.id)"
           >导出</span>
@@ -83,12 +85,14 @@
         </div>
         <div class="shop-member-crowd-index-box__btn">
           <router-link
+            v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
             :to="{name:'shop-member-crowd-analysis', query:{urlid:1,id:value.person_course_expiring_crowd.id}}"
           >人群分析</router-link>
 
           <span
+            v-if="auth.export"
             class="shop-member-crowd-index-box__btn-rq"
             @click="exportFunc(value.person_course_expiring_crowd.id)"
           >导出</span>
@@ -129,11 +133,13 @@
         </div>
         <div class="shop-member-crowd-index-box__btn">
           <router-link
+            v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
             :to="{name:'shop-member-crowd-analysis', query:{urlid:2,id:value.expiring_crowd.id}}"
           >人群分析</router-link>
           <span
+            v-if="auth.export"
             class="shop-member-crowd-index-box__btn-rq"
             @click="exportFunc(value.expiring_crowd.id)"
           >导出</span>
@@ -152,6 +158,11 @@ export default {
       messageService: MessageService,
       crowdAPI: CrowdAPI,
       aService: IndexService
+    }
+  },
+  rxState() {
+    return {
+      auth: this.aService.auth$
     }
   },
   model: {

@@ -1,6 +1,6 @@
 <template>
   <section :class="basic()">
-    <st-panel title="会员卡详情">
+    <st-panel title="订单详情">
       <div slot="actions">
         <st-button class="mgr-8" v-if="isRefund" @click="onRefund" type="primary">退款</st-button>
         <st-button class="mgr-8" v-if="isGathering" @click="createdOrderPay" type="primary">收款</st-button>

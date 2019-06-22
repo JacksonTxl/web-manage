@@ -153,7 +153,7 @@ export default {
   methods: {
     getMemberBuy() {
       let self = this
-      self.Service.getMemberBuy(self.record.id).subscribe(state => {
+      self.Service.getMemberBuy(self.record.member_id).subscribe(state => {
         self.getData = state
       })
     },
@@ -172,7 +172,7 @@ export default {
             values.course_id = self.selectedRows.map(item => {
               return item.id
             })
-            values.id = self.record.id
+            values.id = self.record.member_id
             values.frozen_start_time = self.dateString[0]
             values.frozen_end_time = self.dateString[1]
             delete values.to_shop

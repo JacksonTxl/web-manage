@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="favor.length" class="layout-default-sider__often">
+    <div v-if="favorite.length" class="layout-default-sider__often">
       <h2 class="layout-default-sider__often-title">常用</h2>
       <ul class="layout-default-sider__often-list">
         <!-- <li
@@ -10,23 +10,24 @@
           <span>营销插件</span>
         </li> -->
         <li
-          v-for="(item, index) in favor"
+          v-for="(item, index) in favorite"
           :key="index"
           class="layout-default-sider__often-item"
         >
           <st-icon
             type="star"
-            @click.native="delfavor(item.id)"
+            @click.native="delFavorite(item.id)"
           />
           <router-link :to="{ name: item.url }">
-            <span class="layout-default-sider__favor-title">{{item.name}}</span>
+            <span class="layout-default-sider__favorite-title">{{item.name}}</span>
           </router-link>
         </li>
       </ul>
     </div>
     <a-menu
         class="layout-default-sider__menu"
-        :openKeys.sync="openKeys"
+        :openKeys="openKeys"
+        :selectedKeys="selectedKeys"
         @openChange="onOpenChange"
         mode="inline"
       >
@@ -44,14 +45,14 @@
               :key="subMenu.id"
             >
               <st-icon
-                v-if="isfavor(subMenu.id)"
+                v-if="isfavorite(subMenu.id)"
                 type="star"
-                @click.native="delfavor(subMenu.id)"
+                @click.native="delFavorite(subMenu.id)"
               />
               <st-icon
                 v-else
                 type="star"
-                @click.native="addfavor(subMenu.id)"
+                @click.native="addFavorite(subMenu.id)"
               />
               <span @click="onClickMenuItem(subMenu)">{{subMenu.name}}</span>
             </a-menu-item>
@@ -85,15 +86,16 @@ export default {
   },
   data() {
     return {
-      openKeys: []
+      openKeys: [],
+      selectedKeys: [30]
     }
   },
   computed: {
     menus() {
       return this.menuData.menus || []
     },
-    favor() {
-      return this.menuData.favor || []
+    favorite() {
+      return this.menuData.favorite || []
     },
     menuMap() {
       return treeToMap(this.menus)
@@ -101,29 +103,8 @@ export default {
     rootSubmenuKeys() {
       return this.getRootSubmenuKeys()
     }
-    // activeSiderMenuRouteName() {
-    //   const findedSiderMenuRouteConfig = lodashFind(
-    //     this.$route.matched,
-    //     routeConfig => routeConfig.meta.siderMenuRouteName
-    //   )
-    //   if (!findedSiderMenuRouteConfig) {
-    //     console.warn(
-    //       `[layout-default] 路由[${
-    //         this.$route.name
-    //       }]或父级路由 未配置 siderMenuRouteName`
-    //     )
-    //     return ''
-    //   }
-    //   const siderMenuRouteName =
-    //     findedSiderMenuRouteConfig.meta.siderMenuRouteName
-    //   return siderMenuRouteName
-    // }
   },
   created() {
-    // console.log('created', this.menus)
-    lodashFind(this.menus, menu => {
-      return location.pathname.replace(/\//g, '-').indexOf(menu.url) !== -1
-    })
     this.calcOpenKeys()
   },
   methods: {
@@ -141,42 +122,28 @@ export default {
       }
     },
     calcOpenKeys() {
-      this.openKeys = [28]
-    },
-    selectedKeysPath() {
-      // const siderMenu = lodashFind(this.menus, {
-      //   route_name: this.activeSiderMenuRouteName
-      // })
-      // if (!siderMenu) {
-      //   console.warn(
-      //     `[layout-default] can not find ${
-      //       this.activeSiderMenuRouteName
-      //     } in siderMenuTree,侧边栏菜单配置中找不到名称为 ${
-      //       this.activeSiderMenuRouteName
-      //     } 的菜单！`
-      //   )
-      //   return []
-      // }
-      // const menuId = siderMenu.id
-      // const _selectedKeys = findPathWithTree(menuId, this.siderMenuTree)
-      // return _selectedKeys
+      const { menus } = this
+      let openKey
+      menus.forEach(menu => {
+        if (location.pathname.replace(/\//g, '-').indexOf(menu.icon) !== -1) {
+          openKey = menu.id
+        }
+      })
+      this.openKeys = openKey ? [openKey] : []
     },
     onClickMenuItem(menu) {
-      // this.selectedKeys = [key]
-      // const menu = this.menuMap[key]
       // if (this.$route.name.indexOf(menu.url) > -1) {
       //   return
       // }
       this.$router.push({
         name: menu.url
       })
-      // this.addfavor(key)
     },
-    addfavor(id) {
-      this.userService.addfavor(id).subscribe(this.onMenuChange)
+    addFavorite(id) {
+      this.userService.addFavorite(id).subscribe(this.onMenuChange)
     },
-    delfavor(id) {
-      this.userService.delfavor(id).subscribe(this.onMenuChange)
+    delFavorite(id) {
+      this.userService.delFavorite(id).subscribe(this.onMenuChange)
     },
     onMenuChange() {
       this.userService.getMenus({
@@ -191,8 +158,8 @@ export default {
       })
       return rootSubmenuKeys
     },
-    isfavor(id) {
-      return lodashFind(this.favor, { id })
+    isfavorite(id) {
+      return lodashFind(this.favorite, { id })
     }
   }
 }

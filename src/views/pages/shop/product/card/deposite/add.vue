@@ -213,7 +213,6 @@ import { RuleConfig } from '@/constants/rule'
 import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
 export default {
-  name: 'PageShopDepositeCardAdd',
   serviceInject() {
     return {
       rules: RuleConfig,

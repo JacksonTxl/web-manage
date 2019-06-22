@@ -4,6 +4,7 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { CrowdAPI } from '@/api/v1/crowd'
 import { forkJoin } from 'rxjs'
+import { AuthService } from '@/services/auth.service'
 
 interface CrowdIndexState {
   crowdIndexInfo: any
@@ -12,12 +13,17 @@ interface CrowdIndexState {
 export class IndexService extends Store<CrowdIndexState> {
   state$: State<CrowdIndexState>
   crowdIndexInfo$: Computed<string>
-  constructor(private crowdAPI: CrowdAPI) {
+  auth$: Computed<any>
+  constructor(private crowdAPI: CrowdAPI, private authService: AuthService) {
     super()
     this.state$ = new State({
-      crowdIndexInfo: {}
+      crowdIndexInfo: {},
+      auth: {
+        add: this.authService.can('shop:member:crowd|add')
+      }
     })
     this.crowdIndexInfo$ = new Computed(this.state$.pipe(pluck('crowdIndexInfo')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SET_CROWD_INDEX_INFO(crowdIndexInfo: CrowdIndexState) {
     console.log(crowdIndexInfo)
@@ -30,7 +36,7 @@ export class IndexService extends Store<CrowdIndexState> {
     return this.crowdAPI.getCrowdShopIndex().pipe(
       tap(res => {
         console.log(res, '获取数据')
-
+        res = this.authService.filter(res, 'info.list')
         this.SET_CROWD_INDEX_INFO(res)
       })
     )

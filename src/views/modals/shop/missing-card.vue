@@ -155,14 +155,14 @@ export default {
   methods: {
     getMemberPhysical() {
       let self = this
-      self.Service.getMemberPhysical(self.record.id).subscribe(state => {
+      self.Service.getMemberPhysical(self.record.member_id).subscribe(state => {
         console.log(state.info)
         self.getData = state.info
       })
     },
     getMemberPhysicalBind(data) {
       let self = this
-      self.Service.getMemberPhysicalBind(self.record.id, data).subscribe(
+      self.Service.getMemberPhysicalBind(self.record.member_id, data).subscribe(
         state => {
           self.show = false
         }
@@ -182,7 +182,7 @@ export default {
       self.form.validateFields((err, values) => {
         console.log(err, values)
         values.moneyFlag = undefined
-        values.id = self.record.id
+        values.id = self.record.member_id
         values.card_id = self.getData.id
         if (!err) {
           self.getMemberPhysicalBind(values)

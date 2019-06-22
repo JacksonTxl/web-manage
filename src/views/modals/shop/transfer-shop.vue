@@ -151,7 +151,7 @@ export default {
     },
     getMemberBuy() {
       let self = this
-      self.Service.getMemberBuy(self.record.id).subscribe(state => {
+      self.Service.getMemberBuy(self.record.member_id).subscribe(state => {
         self.getData = state
       })
       self.Service.getMemberShop().subscribe(state => {
@@ -171,7 +171,7 @@ export default {
           values.course_id = self.selectedRows.map(item => {
             return item.id
           })
-          values.id = self.record.id
+          values.id = self.record.member_id
           self.getMemberTransfer(values)
         }
       })

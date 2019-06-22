@@ -8,7 +8,7 @@
           :to=" { name: 'shop-member-crowd-add'}"
           v-if="crowdIndexInfo.info.list.length <= 10"
         >
-          <st-button type="primary">
+          <st-button type="primary" v-if="auth.add">
             <a-icon type="plus"/>新建人群
           </st-button>
         </router-link>
@@ -23,13 +23,13 @@
         :pagination="false"
       >
         <div slot="shop_name1" slot-scope="text, record">
-          <a href="#" @click="addTreeNode(record)">导出</a>
+          <a href="#" v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a>
           <a-divider type="vertical"></a-divider>
           <a href="#">
-            <router-link tag="a" :to=" { name: 'shop-member-crowd-add',query:{id:record.id}}">编辑</router-link>
+            <router-link v-if="record.auth['shop:member:crowd|edit']" tag="a" :to=" { name: 'shop-member-crowd-add',query:{id:record.id}}">编辑</router-link>
           </a>
           <a-divider type="vertical"></a-divider>
-          <a href="#" @click="deleteTreeNode(record)">删除</a>
+          <a href="#" v-if="record.auth['shop:member:crowd|del']" @click="deleteTreeNode(record)">删除</a>
         </div>
         <div
           slot="description"
@@ -60,7 +60,8 @@ export default {
   },
   rxState() {
     return {
-      crowdIndexInfo: this.aService.crowdIndexInfo$
+      crowdIndexInfo: this.aService.crowdIndexInfo$,
+      auth: this.aService.auth$
     }
   },
   data() {

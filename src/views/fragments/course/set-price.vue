@@ -200,7 +200,7 @@ export default {
     },
     addRecord() {
       const newRecord = {
-        level_id: 0,
+        level_id: -1,
         single_sell: 0,
         single_price: '',
         prices: []
