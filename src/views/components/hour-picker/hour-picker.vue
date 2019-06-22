@@ -11,8 +11,8 @@
       <div :class="b('line', { milestone: i%6===0 })"></div>
       <div v-if="i===hours.length-1" :class="b('line', { 'milestone-last': true })"></div>
       <div :class="b('duration')"></div>
-      <div :class="b('start')"></div>
-      <div :class="b('end')"></div>
+      <div :class="b('start')" v-show="v[i] && !v[i-1]">{{i}}:00</div>
+      <div :class="b('end')" v-show="v[i] && !v[i+1]">{{i+1}}:00</div>
     </div>
   </div>
 </template>
@@ -75,12 +75,12 @@ export default {
       let ret = []
       v.forEach((item, index) => {
         if (item) {
-          ret.push(`${index}-${++index}`)
+          ret.push(`${index}:00-${++index}:00`)
         }
       })
       ret = ret.join('*')
       for (let i = 1; i <= 23; i++) {
-        ret = ret.replace(new RegExp(`-${i}\\*${i}-`, 'g'), '-')
+        ret = ret.replace(new RegExp(`-${i}:00\\*${i}:00-`, 'g'), '-')
       }
       ret = ret.split('*')
       return ret
@@ -91,7 +91,7 @@ export default {
       value.forEach(item => {
         if (/-/.test(item)) {
           const temp = item.split('-')
-          for (let i = temp[0]; i < temp[1]; i++) {
+          for (let i = parseInt(temp[0]); i < parseInt(temp[1]); i++) {
             v[i] = true
           }
         }

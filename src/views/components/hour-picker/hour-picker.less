@@ -39,6 +39,40 @@
   }
   &__start,
   &__end {
-    .d-n;
+    .pos-a;
+    .fz(12px);
+    .c(@white);
+    .bg(@primary-color);
+    border-radius: 2px;
+    .w(36px);
+    .h(16px);
+    .lh(16px);
+    .ta-c;
+    &::before {
+      content: '';
+      .pos-a;
+      width: 0;
+      height: 0;
+      border-left: 3px solid transparent;
+      border-right: 3px solid transparent;
+      left: 50%;
+      margin-left: -3px;
+    }
+  }
+  &__start {
+    left: -18px;
+    bottom: 0;
+    &:before {
+      border-bottom: 3px solid @primary-color;
+      top: -3px;
+    }
+  }
+  &__end {
+    right: -18px;
+    top: 0;
+    &:before {
+      border-top: 3px solid @primary-color;
+      bottom: -3px;
+    }
   }
 }
