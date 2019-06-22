@@ -52,11 +52,11 @@ export default {
   rxState() {
     return {
       courseList: this.scheduleService.courseList$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.scheduleServica.auth$
     }
   },
   data() {
-    console.log('this', this)
     const that = this
     return {
       columnHeaderFormat: { weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true },
@@ -139,7 +139,21 @@ export default {
     }
   },
   mounted() {
-    this.setAddButton()
+    const add = this.auth.add
+    const addBatch = this.auth.addBatch
+    const copy = this.auth.copy
+    if (copy) {
+      this.header.left = 'add'
+    }
+    if (addBatch) {
+      this.header.left = 'bacthAdd'
+    }
+    if (copy && addBatch) {
+      this.header.left = 'bacthAdd, add'
+    }
+    if (add) {
+      this.setAddButton()
+    }
     this.gotoPast()
     this.$nextTick().then(() => {
       this.calendarEvents = this.courseList

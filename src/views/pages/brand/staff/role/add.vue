@@ -3,7 +3,7 @@
   <st-form :form="form" class="page-role-info__add">
     <a-row class="content">
         <a-col class="brand-list" :span="17">
-          <st-form-item label="角色名称">
+          <st-form-item label="角色d名称">
             <a-input placeholder="请输入角色名称" v-decorator="['name']"></a-input>
           </st-form-item>
         </a-col>
@@ -20,7 +20,7 @@
     <a-row class="content" :gutter="12">
         <a-col class="brand-list" :span="17">
           <st-form-item label="数据权限">
-            <a-radio-group name="radioGroup" v-decorator="[
+            <a-radio-group @change="onChangeDataRegion" name="radioGroup" v-decorator="[
               'data_grant'
               ]">
               <a-radio :value="1">仅本人</a-radio>
@@ -72,6 +72,11 @@ export default {
     }
   },
   methods: {
+    onChangeDataRegion(val) {
+      if (val) {
+        console.log(val)
+      }
+    },
     onClickSubmit(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {

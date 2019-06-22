@@ -131,7 +131,7 @@ export default {
     editStaffInfo() {
       this.$router.push({
         name: 'brand-staff-edit',
-        query: { staffId: this.info.id }
+        query: { id: this.info.id }
       })
     }
   },

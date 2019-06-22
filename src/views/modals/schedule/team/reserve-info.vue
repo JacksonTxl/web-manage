@@ -86,8 +86,8 @@
           <td>{{item.is_checkin_name}}</td>
           <td>
             <div>
-              <a   class="mg-r8" href="javascript:;" @click="onClickReserve">取消预约</a>
-              <a  href="javascript:;" @click="onClickReserve">签到消费</a>
+              <a   class="mg-r8" href="javascript:;" @click="onClickReserve" v-if="auth.cancel">取消预约</a>
+              <a  href="javascript:;" v-if="auth.checkIn" @click="onClickReserve">签到消费</a>
             </div>
           </td>
         </tr>
@@ -113,8 +113,8 @@ export default {
   },
   rxState() {
     const common = this.teamScheduleCommonService
-    console.log(common)
     return {
+      auth: this.teamScheduleReserveService.auth$,
       memberOptions: common.memberOptions$,
       consumeOptions: common.consumeOptions$,
       unUsedSeatOptions: common.unUsedSeatOptions$

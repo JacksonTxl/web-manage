@@ -18,10 +18,8 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact>
-            <a-select style="width: 15%;" v-model="choosed_Country_id">
-              <template v-for="item in countryList">
-                <a-select-option :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
-              </template>
+            <a-select style="width: 15%;" v-model="choosed_country_id">
+                <a-select-option v-for="item in codeList" :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
             </a-select>
             <a-input style="width: 85%" v-decorator="rules.phone" placeholder="请输入手机号"/>
           </a-input-group>
@@ -103,8 +101,8 @@
         </st-form-item>
         <st-form-item label="系统角色">
           <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id">
-            <template v-for="(item,key) in enums.nature_work.value">
-              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+            <template v-for="item in roleList">
+              <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
@@ -153,6 +151,12 @@ export default {
       editservice: EditService,
       listservice: ListService,
       message: MessageService
+    }
+  },
+  rxState() {
+    return {
+      roleList: this.editService.roleList$,
+      codeList: this.editService.codeList$
     }
   },
   props: {

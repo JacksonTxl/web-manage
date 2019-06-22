@@ -6,6 +6,7 @@
       :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
       :placeholder="placeholder"
       allowClear
+      :treeCheckable="treeCheckable"
       treeDefaultExpandAll
       @change="onChange"
     >
@@ -48,6 +49,9 @@ export default {
     },
     value: {
       type: [Number, String, Array]
+    },
+    treeCheckable: {
+      type: Boolean
     }
   },
   data() {

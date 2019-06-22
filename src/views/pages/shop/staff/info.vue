@@ -120,8 +120,8 @@ export default {
     handleMenuClick() {},
     editStaffInfo() {
       this.$router.push({
-        name: 'brand-staff-edit',
-        query: { staffId: this.info.id }
+        name: 'shop-staff-edit',
+        query: { id: this.info.id }
       })
     },
     flitertabs(identity) {

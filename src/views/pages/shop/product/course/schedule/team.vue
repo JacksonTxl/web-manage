@@ -68,7 +68,7 @@ export default {
         timeGridDay: { buttonText: '日' }
       },
       header: {
-        left: 'bacthAdd, add',
+        left: 'bacthAdd, copy',
         center: 'prev,next,title',
         right: 'timeGridWeek,timeGridDay, custom4'
       },
@@ -126,22 +126,26 @@ export default {
   },
   updated() {
     this.$nextTick().then(() => {
-      this.setAddButton()
+      if (this.auth.add) {
+        this.setAddButton()
+      }
     })
   },
   mounted() {
-    this.setAddButton()
     const add = this.auth.add
     const addBatch = this.auth.addBatch
     const copy = this.auth.copy
-    if (add) {
+    if (copy) {
       this.header.left = 'add'
     }
     if (addBatch) {
       this.header.left = 'bacthAdd'
     }
-    if (add && addBatch) {
+    if (copy && addBatch) {
       this.header.left = 'bacthAdd, add'
+    }
+    if (add) {
+      this.setAddButton()
     }
   },
   methods: {

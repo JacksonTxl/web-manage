@@ -3,7 +3,7 @@ import { Injectable } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state/src'
 import { tap, pluck, switchMap } from 'rxjs/operators'
 import { PersonalReserveApi, AddInput, GetListQuery } from '@/api/v1/schedule/personal/reserve'
-
+import { AuthService } from '@/services/auth.service'
 export interface SetState {
   reserveInfo: any
   reserveList: any[]
@@ -15,12 +15,21 @@ export class PersonalScheduleReserveService {
   reserveInfo$: Computed<any>
   reserveTable$: Computed<any>
   reserveList$: Computed<any>
-  constructor(private reserveApi: PersonalReserveApi) {
+  auth$: Computed<any>
+  constructor(private reserveApi: PersonalReserveApi,
+    private authService: AuthService) {
     this.state$ = new State({
+      auth: {
+        edit: this.authService.can('shop:reserve:personal_course_reserve|edit'),
+        add: this.authService.can('shop:reserve:personal_course_reserve|add'),
+        cancel: this.authService.can('shop:reserve:personal_course_reserve|del'),
+        checkIn: this.authService.can('shop:reserve:personal_course_reserve|checkin')
+      },
       reserveInfo: [],
       reserveList: [],
       reserveTable: []
     })
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
     this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
     this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
     this.reserveTable$ = new Computed(this.state$.pipe(pluck('reserveTable')))
