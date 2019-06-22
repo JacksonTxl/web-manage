@@ -146,9 +146,7 @@ export default {
       this.userService.delFavorite(id).subscribe(this.onMenuChange)
     },
     onMenuChange() {
-      this.userService.getMenus({
-        force: true
-      }).subscribe()
+      this.userService.reloadMenus()
     },
     getRootSubmenuKeys() {
       const { menus } = this
