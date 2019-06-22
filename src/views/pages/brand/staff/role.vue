@@ -67,8 +67,8 @@ export default {
     onCLickAddRole() {
       this.$router.push({ name: 'brand-staff-role-add' })
     },
-    onClickDelRole() {
-
+    onClickDelRole(role_id) {
+      this.roleService.del({ role_id }).subscribe()
     },
     getTreeNodeOnclick(role, e) {
       this.$nextTick().then(() => {
