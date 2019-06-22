@@ -37,13 +37,15 @@
 <script>
 import { MessageService } from '@/services/message.service'
 import { SwitchService } from './switch.service'
+import { UserService } from '@/services/user.service'
 
 export default {
   name: 'SwtichShopDrawer',
   serviceInject() {
     return {
       messageService: MessageService,
-      switchService: SwitchService
+      switchService: SwitchService,
+      userService: UserService
     }
   },
   data() {
@@ -84,18 +86,23 @@ export default {
       })
     },
     onSwitchShopSuccess(shop) {
-      this.onClose()
-      this.messageService.success({
-        content: `切换到门店-${shop.shop_name}(id: ${shop.shop_id})`
-      })
-      location.href = '/'
+      this.onSwitchSuccess(`切换到门店-${shop.shop_name}`)
     },
     switchBackToBrand() {
       this.switchService.switchBackToBrand().subscribe(this.onSwitchBackToBrandSuccess)
     },
     onSwitchBackToBrandSuccess() {
+      this.onSwitchSuccess('已切换到品牌')
+    },
+    onSwitchSuccess(msg = '') {
       this.onClose()
-      location.href = '/'
+      this.$router.push({
+        path: '/'
+      })
+      this.userService.reload()
+      this.messageService.success({
+        content: msg
+      })
     }
   }
 }

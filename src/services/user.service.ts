@@ -124,8 +124,8 @@ export class UserService extends Store<UserState> {
       return of({})
     }
   }
-  getMenus(params = { force: false }) {
-    if (params.force || !Object.keys(this.menuData$.snapshot()).length) {
+  getMenus(force: boolean = false) {
+    if (force || !Object.keys(this.menuData$.snapshot()).length) {
       return this.menuApi.getList().pipe(
         tap(res => {
           this.state$.commit(state => {
@@ -137,11 +137,20 @@ export class UserService extends Store<UserState> {
       return of({})
     }
   }
-  init() {
+  init(force: boolean = false) {
     return forkJoin(
       this.getEnums(),
       this.getMenus()
     )
+  }
+  /**
+   * 刷新菜单
+   */
+  reloadMenus() {
+    this.getMenus(true).subscribe()
+  }
+  reload() {
+    this.reloadMenus()
   }
   /**
    * 添加到常用菜单
