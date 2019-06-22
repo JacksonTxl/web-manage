@@ -1,3 +1,4 @@
+import { AuthService } from './../../../../../../../services/auth.service'
 import { AddScheduleInput, UpdateScheduleInput, CopyScheduleInput, GetScheduleListQuery, GetScheduleTableQuery } from '../../../../../../../api/v1/schedule/team/schedule'
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state/src'
@@ -16,7 +17,7 @@ export class TeamScheduleScheduleService {
   scheduleTable$: Computed<any>
   refresh$: Computed<any>
 
-  constructor(private scheduleApi: TeamScheduleScheduleApi) {
+  constructor(private scheduleApi: TeamScheduleScheduleApi, private authService: AuthService) {
     this.state$ = new State({
       scheduleTeamCourseList: [],
       scheduleTable: [],
@@ -34,12 +35,14 @@ export class TeamScheduleScheduleService {
   @Effect()
   getList(query: GetScheduleListQuery) {
     return this.scheduleApi.getList(query).pipe(tap(res => {
+      res = this.authService.filter(res)
       this.state$.commit(state => {
         state.scheduleTeamCourseList = res.list.map((item: any) => {
           return { // add new event data
             title: item.course_name,
             groupId: JSON.stringify(item),
             id: item.id,
+            auth: item.auth,
             start: `${item.start_date} ${item.start_time}`,
             end: `${item.start_date} ${item.end_time}`
           }

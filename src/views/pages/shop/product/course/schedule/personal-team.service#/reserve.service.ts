@@ -6,19 +6,28 @@ import {
   AddReserveInput,
   CheckInput
 } from '@/api/v1/schedule/personal-team/reserve'
+import { AuthService } from '@/services/auth.service'
 
 export interface SetState {
   reserveInfo: any
-  reserveList: any[]
+  reserveList: any[],
+  auth: {}
 }
 @Injectable()
 export class PersonalTeamScheduleReserveService {
   state$: State<SetState>
   reserveInfo$: Computed<any>
-  constructor(private reserveApi: PersonalTeamScheduleReserveApi) {
+  auth$: Computed<any>
+  constructor(private reserveApi: PersonalTeamScheduleReserveApi, private authService: AuthService) {
     this.state$ = new State({
-      reserveInfo: []
+      reserveInfo: [],
+      auth: {
+        add: this.authService.can('shop:reserve:personal_team_course_reserve|add'),
+        cancel: this.authService.can('shop:reserve:personal_team_course_reserve|del'),
+        checkIn: this.authService.can('shop:reserve:personal_team_course_reserve|checkin')
+      }
     })
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
     this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
   }
   /**

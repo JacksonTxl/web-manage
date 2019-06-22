@@ -1,4 +1,5 @@
 <template>
+<div>
   <FullCalendar
       class='page-team-personal__calendar'
       ref="fullCalendar"
@@ -19,8 +20,10 @@
       @eventClick="onEventClick"
       @eventRender="onEventRender($event)"
       :events="reserveList"
-      @dateClick="handleDateClick"
-      />
+      @dateClick="handleDateClick"/>
+      <personal-reseve-table></personal-reseve-table>
+</div>
+
 </template>
 
 <script>
@@ -32,10 +35,12 @@ import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
 import { PersonalScheduleReserveService } from './personal.service#/reserve.service'
+import PersonalReseveTable from '@/views/pages/shop/product/course/schedule/personal#/personal-reseve-table'
 
 export default {
   name: 'SchedulePersonalTeam',
   components: {
+    PersonalReseveTable,
     FullCalendar // make the <FullCalendar> tag available
   },
   serviceInject() {
@@ -45,12 +50,14 @@ export default {
   },
   rxState() {
     return {
-      reserveList: this.reserveService.reserveTable$
+      reserveList: this.reserveService.reserveTable$,
+      auth: this.reserveService.auth$
     }
   },
   data() {
     const that = this
     return {
+      isTable: false,
       columnHeaderFormat: { weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true },
       slotLabelFormat: {
         hour: '2-digit',
@@ -122,18 +129,33 @@ export default {
   },
   updated() {
     this.$nextTick().then(() => {
-      this.setAddButton()
+      if (this.auth.add) {
+        this.setAddButton()
+      }
     })
   },
   mounted() {
-    this.setAddButton()
+    const add = this.auth.add
+    const addBatch = this.auth.addBatch
+    const copy = this.auth.copy
+    if (copy) {
+      this.header.left = 'add'
+    }
+    if (addBatch) {
+      this.header.left = 'bacthAdd'
+    }
+    if (copy && addBatch) {
+      this.header.left = 'bacthAdd, add'
+    }
+    if (add) {
+      this.setAddButton()
+    }
   },
   methods: {
     datesRender(info) {
       console.log(info)
       const start = moment(info.view.activeStart).format('YYYY-MM-DD').valueOf()
       const end = moment(info.view.activeEnd).format('YYYY-MM-DD').valueOf()
-      console.log(start, end)
       this.$router.push({ query: { start_date: start, end_date: end } })
     },
     setAddButton() {
@@ -213,7 +235,6 @@ export default {
       })
     },
     onEventClick(event) {
-      console.log(event)
       this.$modalRouter.push({
         name: 'schedule-team-reserve-info',
         props: {
@@ -231,6 +252,7 @@ export default {
       })
     },
     handleDateClick(arg) {
+      if (!this.auth.add) return
       this.$modalRouter.push({
         name: 'schedule-personal-add-reserve',
         props: {

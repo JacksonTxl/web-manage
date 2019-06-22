@@ -2,7 +2,7 @@ import { Injectable } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state/src'
 import { tap, pluck } from 'rxjs/operators'
 import { TeamScheduleReserveApi, AddReserveInput, CheckInput } from '@/api/v1/schedule/team/reserve'
-
+import { AuthService } from '@/services/auth.service'
 export interface SetState {
   reserveInfo: any
   reserveList: any[]
@@ -10,11 +10,19 @@ export interface SetState {
 @Injectable()
 export class TeamScheduleReserveService {
   state$: State<SetState>
+  auth$: Computed<any>
   reserveInfo$: Computed<any>
-  constructor(private reserveApi: TeamScheduleReserveApi) {
+  constructor(private reserveApi: TeamScheduleReserveApi,
+    private authService: AuthService) {
     this.state$ = new State({
+      auth: {
+        add: this.authService.can('shop:reserve:team_course_reserve|add'),
+        cancel: this.authService.can('shop:reserve:team_course_reserve|del'),
+        checkIn: this.authService.can('shop:reserve:team_course_reserve|checkin')
+      },
       reserveInfo: []
     })
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
     this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
   }
   /**
