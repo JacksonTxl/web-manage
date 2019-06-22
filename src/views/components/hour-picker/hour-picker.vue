@@ -10,7 +10,10 @@
     >
       <div :class="b('line', { milestone: i%6===0 })"></div>
       <div v-if="i===hours.length-1" :class="b('line', { 'milestone-last': true })"></div>
-      <div :class="b('duration')"></div>
+      <div :class="b('duration')">
+        <i :class="b('duration-start')" v-show="v[i] && !v[i-1]"></i>
+        <i :class="b('duration-end')" v-show="v[i] && !v[i+1]"></i>
+      </div>
       <div :class="b('start')" v-show="v[i] && !v[i-1]">{{i}}:00</div>
       <div :class="b('end')" v-show="v[i] && !v[i+1]">{{i+1}}:00</div>
     </div>
