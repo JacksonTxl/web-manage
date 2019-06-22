@@ -1,0 +1,44 @@
+.hour-picker {
+  .h(60px);
+  &--drag {
+    cursor: move;
+  }
+}
+.hour-picker-item {
+  box-sizing: border-box;
+  .fz(0);
+  display: inline-block;
+  width: 4%;
+  .h(100%);
+  .pos-r;
+  &--active {
+    .hour-picker-item__duration {
+      .bg(rgba(@primary-color, .2));
+    }
+  }
+  &__line,
+  &__duration {
+    .pos-a;
+    left: 0;
+    top: 30%;
+  }
+  &__line {
+    .s(1px, 20%);
+    border-left: 1px solid #E6E6E6;
+  }
+  &__line--milestone,
+  &__line--milestone-last {
+    .h(40%);
+  }
+  &__line--milestone-last {
+    left: auto;
+    right: 0;
+  }
+  &__duration {
+    .s(100%, 40%);
+  }
+  &__start,
+  &__end {
+    .d-n;
+  }
+}

@@ -41,6 +41,7 @@
               <a-anchor-link href="#pagination" title="pagination 分页"/>
               <a-anchor-link href="#page-route-nav" title="page route nav页面导航"/>
               <a-anchor-link href="#textarea" title="textarea"/>
+              <a-anchor-link href="#hour-picker" title="hourpicker 多时间段选择"/>
             </a-anchor>
           </li>
           <li>
