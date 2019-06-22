@@ -1,5 +1,50 @@
 <template>
   <div>
+    <a-menu
+        class="layout-default-sider__menu"
+        :openKeys="openKeys"
+        :selectedKeys="selectedKeys"
+        @openChange="onOpenChange"
+        mode="inline"
+      >
+        <template v-for="menu in menus">
+          <a-sub-menu
+            v-if="isHasSubmenu(menu)"
+            :key="menu.id"
+          >
+            <span slot="title">
+              <st-icon :type="menu.icon"/>
+              <span>{{menu.name}}</span>
+            </span>
+            <a-menu-item
+              v-for="subMenu in menu.children"
+              :key="subMenu.id"
+            >
+              <st-icon
+                v-if="isfavorite(subMenu.id)"
+                type="star"
+                size="8px"
+                class="layout-default-sider__menu-star active"
+                @click.native="delFavorite(subMenu.id)"
+              />
+              <st-icon
+                v-else
+                type="star"
+                size="8px"
+                class="layout-default-sider__menu-star"
+                @click.native="addFavorite(subMenu.id)"
+              />
+              <span @click="onClickMenuItem(subMenu)">{{subMenu.name}}</span>
+            </a-menu-item>
+        </a-sub-menu>
+        <a-menu-item v-else :key="menu.id">
+          <router-link :to="{ name: menu.url }">
+            <st-icon :type="menu.icon"/>
+            <span>{{menu.name}}</span>
+          </router-link>
+        </a-menu-item>
+      </template>
+    </a-menu>
     <div v-if="favorite.length" class="layout-default-sider__often">
       <h2 class="layout-default-sider__often-title">常用</h2>
       <ul class="layout-default-sider__often-list">
@@ -24,47 +69,6 @@
         </li>
       </ul>
     </div>
-    <a-menu
-        class="layout-default-sider__menu"
-        :openKeys="openKeys"
-        :selectedKeys="selectedKeys"
-        @openChange="onOpenChange"
-        mode="inline"
-      >
-        <template v-for="menu in menus">
-          <a-sub-menu
-            v-if="isHasSubmenu(menu)"
-            :key="menu.id"
-          >
-            <span slot="title">
-              <st-icon :type="menu.icon"/>
-              <span>{{menu.name}}</span>
-            </span>
-            <a-menu-item
-              v-for="subMenu in menu.children"
-              :key="subMenu.id"
-            >
-              <st-icon
-                v-if="isfavorite(subMenu.id)"
-                type="star"
-                @click.native="delFavorite(subMenu.id)"
-              />
-              <st-icon
-                v-else
-                type="star"
-                @click.native="addFavorite(subMenu.id)"
-              />
-              <span @click="onClickMenuItem(subMenu)">{{subMenu.name}}</span>
-            </a-menu-item>
-        </a-sub-menu>
-        <a-menu-item v-else :key="menu.id">
-          <router-link :to="{ name: menu.url }">
-            <st-icon :type="menu.icon"/>
-            <span>{{menu.name}}</span>
-          </router-link>
-        </a-menu-item>
-      </template>
-    </a-menu>
   </div>
 </template>
 <script>
@@ -87,7 +91,7 @@ export default {
   data() {
     return {
       openKeys: [],
-      selectedKeys: [30]
+      selectedKeys: []
     }
   },
   computed: {
