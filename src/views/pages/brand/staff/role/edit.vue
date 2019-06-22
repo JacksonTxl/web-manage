@@ -20,13 +20,13 @@
     <a-row class="content" :gutter="12">
         <a-col class="brand-list" :span="17">
           <st-form-item label="数据权限">
-            <a-radio-group name="radioGroup" v-decorator="[
+            <a-radio-group name="radioGroup" @change="onChangeDataRegion" v-decorator="[
               'data_grant', {initialValue: info.data_grant}
               ]">
               <a-radio :value="1">仅本人</a-radio>
               <a-radio :value="2">所在部门及子部门</a-radio>
-              <a-radio :value="3">跨部门</a-radio>{{departmentName}}
               <a-radio :value="4">全部门</a-radio>
+              <a-radio :value="3">跨部门</a-radio>{{departmentName}}
             </a-radio-group>
           </st-form-item>
         </a-col>
@@ -143,6 +143,11 @@ export default {
       shops: []
     }
   },
+  computed: {
+    id() {
+      return this.info.id
+    }
+  },
   methods: {
     onExpand(expandedKeys) {
       this.expandedKeys = expandedKeys
@@ -214,11 +219,14 @@ export default {
         if (!err) {
           const select_ids = this.getSelectIds(cloneDeep([...this.brandIds, ...this.shopIds])).filter(item => item !== 'menu:0')
           const form = {
+            id: this.id,
             ...values,
             select_ids,
             department_ids: this.department_ids
           }
-          this.editService.update(form).subscribe()
+          this.editService.update(form).subscribe(res => {
+            this.$router.push({ name: 'brand-staff-info', query: { id: 1 } })
+          })
         }
       })
     }
@@ -239,7 +247,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

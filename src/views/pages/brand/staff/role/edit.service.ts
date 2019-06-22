@@ -5,6 +5,7 @@ import { Store } from '@/services/store'
 import { GetInitInfoPut, RoleInfo, RoleApi } from '@/api/v1/staff/role'
 import { RoleService } from '../role.service'
 import { forkJoin } from 'rxjs'
+import { MessageService } from '@/services/message.service'
 interface SetState {
   info: object,
   brandList: any[],
@@ -16,7 +17,7 @@ export class EditService extends Store<SetState> {
   info$: Computed<object>
   shopList$: Computed<object>
   brandList$: Computed<object>
-  constructor(private roleService: RoleService) {
+  constructor(private roleService: RoleService, private msg: MessageService) {
     super()
     this.state$ = new State({
       info: {},
@@ -33,7 +34,9 @@ export class EditService extends Store<SetState> {
     })
   }
   update(params: RoleInfo) {
-    return this.roleService.update(params)
+    return this.roleService.update(params).pipe(tap(res => {
+      this.msg.success({ content: '更新成功' })
+    }))
   }
   gitInitInfo(query: GetInitInfoPut) {
     return this.roleService.getInitInfo(query).pipe(tap(res => {
