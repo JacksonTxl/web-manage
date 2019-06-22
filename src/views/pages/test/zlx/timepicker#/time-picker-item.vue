@@ -1,7 +1,7 @@
 <template>
   <div class="time-picker-item" @mousedown="onMounseDown" @mouseenter="mouseMove" @mouseUp="onMouseUp" :class="{'active': isActive}">
-    <span v-if="start" class="start">{{time}}</span>
-    <span v-if="end"  class="end">{{time}}</span>
+    <span v-if="start" class="start">{{time | filterTime}}</span>
+    <span v-if="end"  class="end">{{time | filterTime}}</span>
   </div>
 </template>
 
@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       isActive: false,
-      a: false
+      tempValue: false
     }
   },
   props: {
@@ -30,6 +30,11 @@ export default {
     views: {
       type: Array,
       default: () => []
+    }
+  },
+  filters: {
+    filterTime(val) {
+      return val < 10 ? `0${val}:00` : `${val}:00`
     }
   },
   watch: {
@@ -55,17 +60,14 @@ export default {
   },
   methods: {
     onMounseDown() {
-      console.log('onMousedown')
       this.isActive = !this.isActive
       this.$emit('down', this.isActive)
     },
     mouseMove() {
-      console.log('onMouseMove')
-      this.isActive = !this.isActive
+      if (!this.isDrag) return
+      this.isActive = this.isEnter
     },
     onMouseUp() {
-      console.log('onMouseUp')
-      if (!this.isDrag) return
       this.isActive = this.isEnter
     }
   }
@@ -75,33 +77,31 @@ export default {
 <style lang="less" scoped>
   .time-picker-item{
     width: 100px;
-    height: 6px;
+    height: 24px;
     background-color: #f5f5f5;
     transition: background-color 0.3s;
     position: relative;
+    &:first-child{
+      background-color: #fff;
+    }
   }
   .start,
   .end{
     position: absolute;
     top: 0;
-    right: 0;
-    &:before{
-      content: '';
-      position: absolute;
-      margin-left: 14px;
-      margin-top: -5px;
-      width: 14px;
-      height: 14px;
-      cursor: pointer;
-      border-radius: 50%;
-      border: solid 2px #6b90ff;
-      background-color: #fff;
-      box-shadow: 0;
-      transition: border-color 0.3s, box-shadow 0.6s, transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28)
-    }
+    color: #f5f5f5;
+    background: #666;
+    border-radius: 4px;
+    font-size: 12px;
+    padding: 2px;
   }
-  .a{
-    color: #fff
+  .start{
+    top: 26px;
+    right: -20px;
+  }
+  .end{
+    top: -26px;
+    right: -20px
   }
   .active{
     background: #6b90ff;
