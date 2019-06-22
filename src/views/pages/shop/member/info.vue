@@ -50,7 +50,7 @@
                   tag="a"
                   :to=" { name: 'shop-add-lable',props:{selectedRowData:[{id:$route.query.id}]}, on:{done: onModalTest }}"
                 >
-                  <a-tag v-if="auth.tag" style="background: #fff; borderStyle: dashed;">
+                  <a-tag v-if="auth['shop:member:tag|add']" style="background: #fff; borderStyle: dashed;">
                     <a-icon type="plus" style="margin-right: 8px;"/>标签
                   </a-tag>
                 </modal-link>
@@ -62,13 +62,13 @@
           <div class="shop-member-info-title-pannel-right">
             <div class="pannel-right__operation">
               <a-button
-                v-if="auth.edit"
+                v-if="auth['shop:member:member|edit']"
                 type="primary"
                 class="pannel-right__operation__margin"
                 @click="editMember"
               >编辑资料</a-button>
               <modal-link
-                v-if="auth.bindCard"
+                v-if="auth['shop:member:member|bind_card']"
                 tag="a"
                 class="pannel-right__operation__margin"
                 :to="{name: 'shop-binding-entity-card', props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}"
@@ -77,21 +77,21 @@
               </modal-link>
               <a-dropdown>
                 <a-menu slot="overlay">
-                  <a-menu-item key="1" v-if="auth.changeCoach">
+                  <a-menu-item key="1" v-if="auth['shop:member:member|change_coach']">
                     <modal-link tag="a" :to=" { name: 'shop-distribution-coach',props: {selectedRowData: [id]}}">更改跟进教练</modal-link>
                   </a-menu-item>
-                  <a-menu-item key="2" v-if="auth.changeSalesman">
+                  <a-menu-item key="2" v-if="auth['shop:member:member|change_salesman']">
                     <modal-link tag="a" :to=" { name: 'shop-distribution-ales',props: {selectedRowData: [id]}}">更改跟进销售</modal-link>
                   </a-menu-item>
-                  <a-menu-item key="3"  v-if="auth.unbindWechat" @click="onRemoveBind">解除微信绑定</a-menu-item>
+                  <a-menu-item key="3"  v-if="auth['shop:member:member|unbind_wechat']" @click="onRemoveBind">解除微信绑定</a-menu-item>
                   <a-menu-item key="4">
-                    <modal-link tag="a"  v-if="auth.transfer" :to=" { name: 'shop-transfer-shop',props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">转店</modal-link>
+                    <modal-link tag="a"  v-if="auth['shop:member:member|transfer']" :to=" { name: 'shop-transfer-shop',props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">转店</modal-link>
                   </a-menu-item>
                   <a-menu-item key="5">
-                    <modal-link tag="a"  v-if="auth.frozen" :to=" { name: 'shop-frozen'}">冻结用户</modal-link>
+                    <modal-link tag="a"  v-if="auth['shop:member:member|frozen']" :to=" { name: 'shop-frozen'}">冻结用户</modal-link>
                   </a-menu-item>
                   <a-menu-item key="6">
-                    <modal-link tag="a"  v-if="auth.rebindCard" :to=" { name: 'shop-missing-card',props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">遗失补卡</modal-link>
+                    <modal-link tag="a"  v-if="auth['shop:member:member|rebind_card']" :to=" { name: 'shop-missing-card',props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">重绑实体卡</modal-link>
                   </a-menu-item>
                 </a-menu>
                 <a-button style="margin-left: 8px">
