@@ -1,7 +1,7 @@
 <template>
-  <div class="time-picker-item" @mousedown="onMounseDown" @mouseenter="onMouseEnter" :class="{'active': isActive}">
-    <span v-if="start" class="start">{{time}}st</span>
-    <span v-if="end"  class="end">{{time}}end</span>
+  <div class="time-picker-item" @mousedown="onMounseDown" @mouseenter="mouseMove" @mouseUp="onMouseUp" :class="{'active': isActive}">
+    <span v-if="start" class="start">{{time}}</span>
+    <span v-if="end"  class="end">{{time}}</span>
   </div>
 </template>
 
@@ -55,10 +55,16 @@ export default {
   },
   methods: {
     onMounseDown() {
+      console.log('onMousedown')
       this.isActive = !this.isActive
       this.$emit('down', this.isActive)
     },
-    onMouseEnter() {
+    mouseMove() {
+      console.log('onMouseMove')
+      this.isActive = !this.isActive
+    },
+    onMouseUp() {
+      console.log('onMouseUp')
       if (!this.isDrag) return
       this.isActive = this.isEnter
     }

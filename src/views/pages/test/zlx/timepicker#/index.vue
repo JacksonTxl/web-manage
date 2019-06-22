@@ -53,6 +53,7 @@ export default {
       return { values: rangeArr, views }
     },
     onMousedown() {
+      console.log('onMousedown')
       this.isDrag = true
     },
     onDown(isEnter) {
@@ -62,8 +63,15 @@ export default {
       this.$set(this.checkArr, val.time, val.isActive)
     },
     onMouseup() {
+      console.log('onMouseup')
       this.isDrag = false
     }
+  },
+  mounted() {
+    this.$nextTick().then(() => {
+      /* jslint evil: true */
+      // document.onselectstart = new Function('event.returnValue=false')
+    })
   }
 }
 </script>
@@ -72,4 +80,5 @@ export default {
 .time-picker{
   display: flex
 }
+
 </style>
