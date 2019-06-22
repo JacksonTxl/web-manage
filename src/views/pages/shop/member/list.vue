@@ -54,44 +54,46 @@
           </a-form>
         </div>
       </div>
-      <st-button type="primary" class="shop-member-list-button" v-if="auth.add">
-        <a href="javascript:;" @click="addUser()">添加用户</a>
-      </st-button>
-      <st-button class="shop-member-list-button" v-if="auth.import">导入用户</st-button>
-      <st-button
-        v-if="auth.tag"
-        class="shop-member-list-button"
-        :disabled="selectedRowData.length > 0 ? false :true"
-      >
-        <modal-link
-          v-if="selectedRowData.length > 0"
-          tag="a"
-          :to=" { name: 'shop-add-lable',props:{selectedRowData:selectedRowData}}"
-        >加标签</modal-link>
-        <span v-else>加标签</span>
-      </st-button>
-      <a-popover placement="bottom">
-        <template slot="content">
-          <p v-if="auth.bindCoach">
-            <modal-link
-              tag="a"
-              :to=" { name: 'shop-distribution-coach', props:{selectedRowData:selectDataList}}"
-            >分配教练</modal-link>
-          </p>
-          <p v-if="auth.bindSalesman">
-            <modal-link
-              tag="a"
-              :to=" { name: 'shop-distribution-ales', props:{selectedRowData:selectDataList}}"
-            >分配销售</modal-link>
-          </p>
-        </template>
+      <div class="mg-t16">
+        <st-button type="primary" class="shop-member-list-button" v-if="auth.add">
+          <a href="javascript:;" @click="addUser()">添加用户</a>
+        </st-button>
+        <st-button class="shop-member-list-button" v-if="auth.import">导入用户</st-button>
         <st-button
-          v-if="auth.bindCoach && auth.bindSalesman"
+          v-if="auth.tag"
           class="shop-member-list-button"
-          :disabled="selectedRowData.length > 0 ? false :true"
-        >分配员工</st-button>
-      </a-popover>
-      <st-button v-if="auth.export" class="shop-member-list-button">批量导出</st-button>
+          :disabled="!selectedRowData.length"
+        >
+          <modal-link
+            v-if="selectedRowData.length > 0"
+            tag="a"
+            :to=" { name: 'shop-add-lable',props:{selectedRowData:selectedRowData}}"
+          >加标签</modal-link>
+          <span v-else>加标签</span>
+        </st-button>
+        <a-popover placement="bottom">
+          <template slot="content">
+            <p v-if="auth.bindCoach">
+              <modal-link
+                tag="a"
+                :to=" { name: 'shop-distribution-coach', props:{selectedRowData:selectDataList}}"
+              >分配教练</modal-link>
+            </p>
+            <p v-if="auth.bindSalesman">
+              <modal-link
+                tag="a"
+                :to=" { name: 'shop-distribution-ales', props:{selectedRowData:selectDataList}}"
+              >分配销售</modal-link>
+            </p>
+          </template>
+          <st-button
+            v-if="auth.bindCoach && auth.bindSalesman"
+            class="shop-member-list-button"
+            :disabled="selectedRowData.length > 0 ? false :true"
+          >分配员工</st-button>
+        </a-popover>
+        <st-button v-if="auth.export" class="shop-member-list-button">批量导出</st-button>
+      </div>
       <st-table
         class="mg-t24"
         :columns="columns"
