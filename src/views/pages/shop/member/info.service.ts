@@ -8,6 +8,7 @@ import { AuthService } from '@/services/auth.service'
 interface InfoState {
   info: Object
   basicInfo: Object
+  auth: Object
 }
 @Injectable()
 export class InfoService extends Store<InfoState> {
@@ -19,18 +20,7 @@ export class InfoService extends Store<InfoState> {
     super()
     this.state$ = new State({
       info: {},
-      basicInfo: {},
-      auth: {
-        edit: this.authService.can('shop:member:member|edit'),
-        bindCard: this.authService.can('shop:member:member|bind_card'),
-        changeCoach: this.authService.can('shop:member:member|change_coach'),
-        changeSalesman: this.authService.can('shop:member:member|change_salesman'),
-        unbindWechat: this.authService.can('shop:member:member||unbind_wechat'),
-        transfer: this.authService.can('shop:member:member|transfer'),
-        frozen: this.authService.can('shop:member:member|frozen'),
-        rebindCard: this.authService.can('shop:member:member|rebind_card'),
-        tag: this.authService.can('shop:member:member|tag')
-      }
+      basicInfo: {}
     })
     this.info$ = new Computed(this.state$.pipe(pluck('info')))
     this.basicInfo$ = new Computed(this.state$.pipe(pluck('basicInfo')))
@@ -39,9 +29,10 @@ export class InfoService extends Store<InfoState> {
   getHeaderInfo(id: string) {
     return this.cardsApi.getHeaderInfo(id).pipe(
       tap(res => {
-        res = this.authService.filter(res)
+        res = this.authService.filter(res, 'auth')
         this.state$.commit(state => {
           state.info = res.common_info
+          state.auth = res.auth
         })
       })
     )
