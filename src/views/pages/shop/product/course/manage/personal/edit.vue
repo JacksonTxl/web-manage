@@ -41,7 +41,7 @@ export default {
         title: '编辑私教课',
         key: 0
       }, {
-        title: '设置上课门店',
+        title: '设置上课教练',
         key: 1
       }, {
         title: '设置售卖价格',

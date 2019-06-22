@@ -34,7 +34,7 @@ export default {
         key: 0
       },
       {
-        title: '设置上课门店及教练',
+        title: '设置上课教练',
         key: 1
       },
       {
@@ -58,7 +58,6 @@ export default {
     },
     onCourseNameChange(courseName) {
       this.courseName = courseName
-      console.log('courseName', courseName)
     }
   }
 }

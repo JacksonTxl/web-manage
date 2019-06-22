@@ -116,7 +116,6 @@ export default {
       e.preventDefault()
       const data = this.getData()
       this.form.validateFields().then(() => {
-        console.log('step 3 data', data)
         // if (!this.inputCheck(this.priceGradient)) {
         //   return
         // }
