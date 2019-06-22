@@ -86,19 +86,22 @@ export default {
       })
     },
     onSwitchShopSuccess(shop) {
+      this.$router.push({
+        path: '/shop/dashboard'
+      })
       this.onSwitchSuccess(`切换到门店-${shop.shop_name}`)
     },
     switchBackToBrand() {
       this.switchService.switchBackToBrand().subscribe(this.onSwitchBackToBrandSuccess)
     },
     onSwitchBackToBrandSuccess() {
+      this.$router.push({
+        path: '/'
+      })
       this.onSwitchSuccess('已切换到品牌')
     },
     onSwitchSuccess(msg = '') {
       this.onClose()
-      this.$router.push({
-        path: '/'
-      })
       this.userService.reload()
       this.messageService.success({
         content: msg
