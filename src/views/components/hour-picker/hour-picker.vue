@@ -69,7 +69,7 @@ export default {
       }
       this.v = v
       this.result = this.dataFilter(v)
-      this.$emit('change', this.result)
+      this.$emit('input', this.result)
     },
     dataFilter(v) {
       let ret = []
