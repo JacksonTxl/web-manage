@@ -9,13 +9,6 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
-        <st-form-item label="上课门店" required>
-          <span>{{shop.name}}</span>
-        </st-form-item>
-      </a-col>
-    </a-row>
-    <a-row :gutter="8">
-      <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="上课教练">
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="ruleConfig.coachIds">
@@ -57,12 +50,10 @@ export default {
     }
   },
   rxState() {
-    const user = this.userService
     return {
       loading: this.editService.loading$,
-      personalCourseEnums: user.personalCourseEnums$,
-      query: this.routeService.query$,
-      shop: user.shop$
+      personalCourseEnums: this.userService.personalCourseEnums$,
+      query: this.routeService.query$
     }
   },
   components: {
