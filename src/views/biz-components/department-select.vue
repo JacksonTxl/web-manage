@@ -5,6 +5,7 @@
       :value="value"
       :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
       :placeholder="placeholder"
+      :style="{width: size}"
       allowClear
       :treeCheckable="treeCheckable"
       treeDefaultExpandAll
@@ -50,6 +51,9 @@ export default {
     value: {
       type: [Number, String, Array]
     },
+    size: {
+      type: String
+    },
     treeCheckable: {
       type: Boolean
     }
@@ -67,7 +71,8 @@ export default {
   },
   methods: {
     // 传出去转化为Number类型接口需要
-    onChange(value) {
+    onChange(value, lable, extra) {
+      this.$emit('changeLabel', { value, lable })
       this.$emit('change', value)
     },
     traverseTree(tree) {

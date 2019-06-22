@@ -25,7 +25,7 @@
               ]">
               <a-radio :value="1">仅本人</a-radio>
               <a-radio :value="2">所在部门及子部门</a-radio>
-              <a-radio :value="3">跨部门</a-radio>
+              <a-radio :value="3">跨部门</a-radio>{{departmentName}}
               <a-radio :value="4">全部门</a-radio>
             </a-radio-group>
           </st-form-item>
@@ -131,8 +131,13 @@ export default {
       expandedKeys: [],
       searchValue: '',
       autoExpandParent: true,
+      expandedKeysShop: [],
+      departmentName: '',
+      searchShopValue: '',
+      autoExpandParentShop: true,
       form: this.$form.createForm(this),
       brandIds: [],
+      department_ids: [],
       shopIds: [],
       brands: [],
       shops: []
@@ -142,6 +147,10 @@ export default {
     onExpand(expandedKeys) {
       this.expandedKeys = expandedKeys
       this.autoExpandParent = false
+    },
+    onExpandShop(expandedKeys) {
+      this.expandedKeysShop = expandedKeys
+      this.autoExpandParentShop = false
     },
     fileterBrandList(e) {
       const value = e.target.value
@@ -157,16 +166,57 @@ export default {
         autoExpandParent: true
       })
     },
+    fileterShopList(e) {
+      const value = e.target.value
+      const expandedKeysShop = this.shopList.map((item) => {
+        if (item.name.indexOf(value) > -1) {
+          return getParentKey(item.name, cloneDeep(this.shops))
+        }
+        return null
+      }).filter((item, i, self) => item && self.indexOf(item) === i)
+      Object.assign(this, {
+        expandedKeysShop,
+        searchShopValue: value,
+        autoExpandParentShop: true
+      })
+    },
+    onChangeDataRegion(val) {
+      const that = this
+      if (val.target.value === 3) {
+        this.$modalRouter.push({
+          name: 'role-department',
+          on: {
+            success(result) {
+              that.departmentName = result.lable.join(',')
+              that.department_ids = result.value
+            }
+          }
+        })
+      }
+    },
+    getSelectIds(selectIds, count) {
+      const roleList = cloneDeep([...this.brandList, ...this.shopList])
+      const tempList = []
+      selectIds.map(id => {
+        roleList.forEach(ele => {
+          if (id === ele.id) {
+            tempList.push(ele.parent_id)
+          }
+        })
+      })
+      const reslutArr = Array.from(new Set([...selectIds, ...tempList]))
+      const length = reslutArr.length
+      return length === count ? reslutArr : this.getSelectIds(reslutArr, length)
+    },
     onClickSubmit(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
+          const select_ids = this.getSelectIds(cloneDeep([...this.brandIds, ...this.shopIds])).filter(item => item !== 'menu:0')
           const form = {
-            name: 'CMMMMMMMMO',
-            role_description: '市场运用首席执行官',
-            data_grant: 1,
-            select_ids: ['menu:1', 'menu:2', 'menu:3'],
-            department_ids: [22, 34]
+            ...values,
+            select_ids,
+            department_ids: this.department_ids
           }
           this.editService.update(form).subscribe()
         }

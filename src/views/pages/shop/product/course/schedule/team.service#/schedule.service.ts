@@ -57,6 +57,7 @@ export class TeamScheduleScheduleService {
    */
   getTable(query: GetScheduleTableQuery) {
     return this.scheduleApi.getTable(query).pipe(tap(res => {
+      res = this.authService.filter(res)
       this.state$.commit(state => {
         state.scheduleTable = []
         const dateList = Array.from(new Set(res.list.map((item: any) => item.start_date)))
