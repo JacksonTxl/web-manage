@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <st-panel>
     Shop Dashboard
-  </div>
+  </st-panel>
 </template>

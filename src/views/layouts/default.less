@@ -25,6 +25,17 @@
       .bd-n;
       .bg(inherit);
     }
+    .ant-menu-item {
+      display: flex;
+      align-items: center;
+      padding-left: 26px!important;
+      &:hover {
+        .layout-default-sider__menu-star {
+          opacity: 1;
+          transition: all .5s;
+        }
+      }
+    }
     &__favorite-title {
       .mg-l(6px);
     }
@@ -35,7 +46,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      .mg-b(32px);
+      .mg-b(16px);
     }
     &__logo {
       .pos-r();
@@ -68,6 +79,7 @@
     }
     &__often {
       .pd-l(8px);
+      .mg-t(8px);
       &-title {
         .pd-l(16px);
         .fz(12px);
@@ -98,6 +110,13 @@
       }
       &.ant-menu-dark .ant-menu-sub{
         .bg(@brand-color);
+      }
+    }
+    &__menu-star {
+      opacity: 0;
+      .cur-p;
+      &.active {
+        color: @primary-color!important;
       }
     }
   }
