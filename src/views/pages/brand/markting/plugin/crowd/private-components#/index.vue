@@ -6,7 +6,7 @@
         <div style=" padding: 32px 28px 0 32px;">
           <div class="shop-member-crowd-index-box__item">
             <img
-              src="../../../../../../assets/img/shop_crowd_new.png"
+              src="~@/assets/img/shop_crowd_new.png"
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
@@ -40,7 +40,7 @@
             v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
-            :to="{name:'brand-plugin-crowd-analysis', query:{urlid:0,id:value.new_register_member.id}}"
+            :to="{name:'brand-markting-plugin-crowd-analysis', query:{urlid:0,id:value.new_register_member.id}}"
           >人群分析</router-link>
           <span class="shop-member-crowd-index-box__btn-dx">
             <a-dropdown>
@@ -67,7 +67,7 @@
         <div style=" padding: 32px 28px 0 32px;">
           <div class="shop-member-crowd-index-box__item">
             <img
-              src="../../../../../../assets/img/shop_crowd_expire.png"
+              src="~@/assets/img/shop_crowd_expire.png"
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
@@ -101,7 +101,7 @@
             v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
-            :to="{name:'brand-plugin-crowd-analysis', query:{urlid:1,id:value.person_course_expiring_crowd.id}}"
+            :to="{name:'brand-markting-plugin-crowd-analysis', query:{urlid:1,id:value.person_course_expiring_crowd.id}}"
           >人群分析</router-link>
           <span class="shop-member-crowd-index-box__btn-dx">
             <a-dropdown>
@@ -128,7 +128,7 @@
         <div style=" padding: 32px 28px 0 32px;">
           <div class="shop-member-crowd-index-box__item">
             <img
-              src="../../../../../../assets/img/shop_crowd_private_teaching.png"
+              src="~@/assets/img/shop_crowd_private_teaching.png"
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
@@ -162,7 +162,7 @@
             v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
-            :to="{name:'brand-plugin-crowd-analysis', query:{urlid:2,id:value.expiring_crowd.id}}"
+            :to="{name:'brand-markting-plugin-crowd-analysis', query:{urlid:2,id:value.expiring_crowd.id}}"
           >人群分析</router-link>
           <span class="shop-member-crowd-index-box__btn-dx">
             <a-dropdown>

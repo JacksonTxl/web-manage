@@ -29,7 +29,7 @@
               />
               <st-icon
                 v-else
-                type="star"
+                type="star-line"
                 size="8px"
                 class="layout-default-sider__menu-star"
                 @click.native="addFavorite(subMenu.id)"
@@ -143,7 +143,14 @@ export default {
       const { menus } = this
       let currentSiderMenu
       menus.forEach(menu => {
-        if (this.getPageName().indexOf(menu.icon) !== -1) {
+        let { icon } = menu
+        /**
+         * 对一些特殊的icon做处理，比如dashboard用的是home
+         */
+        if (icon === 'home') {
+          icon = 'dashboard'
+        }
+        if (this.getPageName().indexOf(icon) !== -1) {
           currentSiderMenu = menu
         }
       })
