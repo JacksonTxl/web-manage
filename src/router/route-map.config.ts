@@ -265,13 +265,11 @@ export const routeMapConfig = {
   },
   'shop-product-card-deposite-list-all'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
-      current_page: { type: Number, default: 1 },
-      size: { type: Number, default: 20 },
-      card_type: { type: Number, default: -1 },
+      sell_status: { type: Number, default: -1 },
       publish_channel: { type: Number, default: -1 },
       card_name: { type: String, default: '' },
-      sell_status: { type: Number, default: -1 },
-      shelf_status: { type: Number, default: -1 }
+      size: { type: Number, default: 20 },
+      page: { type: Number, default: 1 }
     }
   },
   'brand-product-card-member-list-shelves'(routeConfig: RouteConfig) {

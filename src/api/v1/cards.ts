@@ -22,9 +22,12 @@ export interface CardSaleRecoverInput {
   start_time:string
   end_time:string
 }
+export interface BrandShelfDownCardShopInput {
+  card_id: number
+  shop_id: number
+}
 export interface BrandCardShelfDownInput {
-  card_id:number
-  shop_id:number
+  card_shop: Array<BrandShelfDownCardShopInput>
 }
 export class CardsApi extends Api {
   /**
@@ -100,7 +103,7 @@ export class CardsApi extends Api {
     return this.http.put(`/v1/cards/${type}/deposit`, { params })
   }
   /**
-   *品牌会员卡停售原因
+   * 品牌会员卡停售原因
    */
   getCardsSaleStopReason(query: any) {
     return this.http.get(`/v1/cards/member/brand/sale/stop/${query.card_id}`)
@@ -112,7 +115,7 @@ export class CardsApi extends Api {
     return this.http.get(`/v1/cards/member/sale/shop`, { query })
   }
   /**
-   *支持入场门店
+   * 支持入场门店
    */
   getCardsUseShop(query: any) {
     return this.http.get(`/v1/cards/member/use/shop`, { query })
@@ -163,14 +166,14 @@ export class CardsApi extends Api {
   /***
    *  品牌会员卡下架
    */
-  setBrandCardsShelfDown(params: Array<BrandCardShelfDownInput>) {
+  setBrandCardsShelfDown(params: BrandCardShelfDownInput) {
     return this.http.put(`/v1/cards/member/brand/shelf/down`, { params })
   }
   /***
    *  品牌储值卡列表
    */
   getCardsBrandDeposit(query: any) {
-    return this.http.get(`/v1/cards/brand/deposit`, { query })
+    return this.http.get(`/v1/cards/deposit/brand`, { query })
   }
   /***
    *  储值卡消费门店列表
@@ -207,7 +210,7 @@ export class CardsApi extends Api {
    *  品牌门店上架储值卡列表
    */
   getCardsShopDeposit(query: any) {
-    return this.http.get(`/v1/cards/brand/deposit/shop`, { query })
+    return this.http.get(`/v1/cards/deposit/brand/shelf`, { query })
   }
   /**
    *  品牌储值卡下架
@@ -226,6 +229,12 @@ export class CardsApi extends Api {
    */
   setCardsDepositRestartSell(params: any) {
     return this.http.put('/v1/cards/brand/deposit/recover', { params })
+  }
+  /**
+   * 门店储值卡上架
+   */
+  setShopCardsDepositShelf(id:string) {
+    return this.http.put(`/v1/cards/deposit/shop/shelf/${id}`)
   }
 }
 export interface CardsInput {
