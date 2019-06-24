@@ -5,7 +5,7 @@
       <div slot="title">
         <router-link
           tag="a"
-          :to=" { name: 'brand-plugin-crowd-add'}"
+          :to=" { name: 'brand-markting-plugin-crowd-add'}"
           v-if="crowdIndexInfo.info.list.length <= 10"
         >
           <st-button type="primary" v-if="auth.add">
@@ -41,7 +41,7 @@
           <st-more-dropdown class="tree-opreation">
             <a-menu-item v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a-menu-item>
             <a-menu-item>
-              <router-link v-if="record.auth['shop:member:crowd|edit']" tag="a" :to=" { name: 'brand-plugin-crowd-add',query:{id:record.id}}">编辑</router-link>
+              <router-link v-if="record.auth['shop:member:crowd|edit']" tag="a" :to=" { name: 'brand-markting-plugin-crowd-add',query:{id:record.id}}">编辑</router-link>
             </a-menu-item>
             <a-menu-item v-if="record.auth['shop:member:crowd|del']" @click="deleteTreeNode(record)">删除</a-menu-item>
           </st-more-dropdown>

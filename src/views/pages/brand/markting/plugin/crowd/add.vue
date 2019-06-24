@@ -320,11 +320,11 @@ export default {
                 self.aService
                   .getCrowdBrandCrowd(self.$route.query.id, obj)
                   .subscribe(status => {
-                    self.$router.push({ name: 'brand-plugin-crowd-index' })
+                    self.$router.push({ name: 'brand-markting-plugin-crowd-index' })
                   })
               } else {
                 self.aService.setCrowdBrandField(obj).subscribe(status => {
-                  self.$router.push({ name: 'brand-plugin-crowd-index' })
+                  self.$router.push({ name: 'brand-markting-plugin-crowd-index' })
                 })
               }
             } else {
