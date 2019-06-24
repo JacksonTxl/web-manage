@@ -1,8 +1,34 @@
 <template>
   <st-panel>
-    营销插件
-    <div class="mg-t24">
-      <router-link :to="{ name: 'brand-markting-plugin-crowd-index' }">人群</router-link>
-    </div>
+    <header>
+      <label>营销效果</label>
+      <i>!</i>
+    </header>
   </st-panel>
 </template>
+<script>
+import { PluginService } from './plugin.service'
+export default {
+  name: 'BrandMarktingPlugin',
+  serviceInject() {
+    return {
+      pluginService: PluginService
+    }
+  },
+  rxState() {
+    return {
+      info: this.pluginService.info$,
+      auth: this.pluginService.auth$
+    }
+  },
+  data() {
+    return {
+    }
+  },
+  components: {
+  },
+  methods: {
+
+  }
+}
+</script>
