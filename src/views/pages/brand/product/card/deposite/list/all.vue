@@ -1,7 +1,9 @@
 <template>
   <div :class="all()">
     <div :class="all('search')">
-      <st-button type="primary" @click="onAddCard" icon="add">新增储值卡</st-button>
+      <router-link to="../add">
+        <st-button type="primary" icon="add">新增储值卡</st-button>
+      </router-link>
       <div>
         <a-select
         style="width: 160px"
@@ -65,12 +67,16 @@
       <template slot="sell_time" slot-scope="text,record">
         {{record.start_time}}&nbsp;~&nbsp;{{record.end_time}}
       </template>
+      <!-- 上架门店数 -->
+      <template slot="upper_shelf_num" slot-scope="text">
+        {{text}}
+      </template>
+      <!-- 下架门店数 -->
+      <template slot="lower_shelf_num" slot-scope="text">
+        {{text}}
+      </template>
       <!-- 发布渠道 -->
       <template slot="publish_channel" slot-scope="text">
-        {{text.name}}
-      </template>
-      <!-- 上架状态 -->
-      <template slot="shelf_status" slot-scope="text">
         {{text.name}}
       </template>
       <!-- 售卖状态 -->
@@ -88,15 +94,11 @@
           <a-icon type="exclamation-circle" v-if="text.id === 2"/>
         </a-popover>
       </template>
+      <!-- 操作 -->
       <div slot="action" slot-scope="text,record">
         <a @click="onDetail(record)">详情</a>
         <a-divider type="vertical"></a-divider>
         <st-more-dropdown class="mgl-16">
-          <!-- <a-menu-item @click="onEdit(record)" v-if="record.publish_channel.id===2">编辑</a-menu-item>
-          <a-menu-item @click="onShelf(record)" v-if="record.shelf_status.id!==2">上架</a-menu-item>
-          <a-menu-item @click="onStopSale(record)" v-if="record.publish_channel.id===2&&record.sell_status.id===1">停售</a-menu-item>
-          <a-menu-item @click="onRecoverSale(record)" v-if="record.publish_channel.id===2&&record.sell_status.id===2">恢复售卖</a-menu-item>
-          <a-menu-item @click="onDelete(record)" v-if="record.publish_channel.id===2&&record.shelf_status.id!==2">删除</a-menu-item> -->
           <a-menu-item @click="onEdit(record)">编辑</a-menu-item>
           <a-menu-item @click="onShelf(record)">上架</a-menu-item>
           <a-menu-item @click="onStopSale(record)">停售</a-menu-item>
@@ -109,13 +111,13 @@
 </template>
 <script>
 import { AllService } from './all.service'
-import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
+import { UserService } from '@/services/user.service'
 import { columns } from './all.config'
 export default {
-  name: 'PageShopProductDepositeAll',
+  name: 'PageBrandProductDepositeAll',
   bem: {
-    all: 'page-shop-product-deposite-list-all'
+    all: 'page-brand-product-deposite-list-all'
   },
   serviceInject() {
     return {
@@ -126,9 +128,9 @@ export default {
   },
   rxState() {
     return {
-      depositeCard: this.userService.depositeCardEnums$,
-      cardList: this.allService.list$,
+      list: this.allService.list$,
       page: this.allService.page$,
+      depositeCard: this.userService.depositeCardEnums$,
       query: this.routeService.query$
     }
   },
@@ -152,14 +154,6 @@ export default {
         })
       })
       return arr
-    },
-    list() {
-      let array = []
-      this.cardList.forEach(i => {
-        let key = parseInt(Math.random() * 999999).toString()
-        array.push({ ...i, id: key })
-      })
-      return array
     }
   },
   data() {
@@ -174,23 +168,17 @@ export default {
     onPageChange(data) {
       this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize }, force: true })
     },
-    // 新增储值卡
-    onAddCard() {
-      this.$router.push({
-        path: '/shop/product/card/deposite/add'
-      })
-    },
     // 查看详情
     onDetail(record) {
       this.$router.push({
-        path: `/shop/product/card/deposite/info`,
+        path: `/brand/product/card/deposite/info`,
         query: { id: record.id }
       })
     },
     // 编辑
     onEdit(record) {
       this.$router.push({
-        path: `/shop/product/card/deposite/edit`,
+        path: `/brand/product/card/deposite/edit`,
         query: { id: record.id }
       })
     },
@@ -209,7 +197,7 @@ export default {
     // 停售
     onStopSale(record) {
       this.$modalRouter.push({
-        name: 'card-shop-deposite-stop-sale',
+        name: 'card-brand-deposite-stop-sale',
         props: {
           id: +record.id,
           cardName: record.card_name
@@ -224,7 +212,7 @@ export default {
     // 恢复售卖
     onRecoverSale(record) {
       this.$modalRouter.push({
-        name: 'card-shop-deposite-recover-sale',
+        name: 'card-brand-deposite-recover-sale',
         props: {
           id: record.id,
           time: { startTime: record.start_time, endTime: record.end_time },
@@ -241,7 +229,7 @@ export default {
     onDelete(record) {
       this.$confirm({
         title: '确认要删除',
-        content: `确认删除${record.card_name}储值卡？`,
+        content: `确认删除${record.card_name}会员卡？`,
         onOk: () => {
           return this.allService.deleteCard(record.id).toPromise().then(() => {
             this.$router.push({ force: true, query: this.query })

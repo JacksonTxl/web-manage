@@ -1,39 +1,34 @@
 <template>
   <st-panel
-    :tabs="tabs"
-    @change="handleChange">
+  app
+  :tabs="[
+    { label: '全部储值卡项', route: { name: 'brand-product-card-deposite-list-all' } },
+    { label: '门店上架储值卡', route: { name: 'brand-product-card-deposite-list-shelves' } },
+  ]">
     <div slot="actions">
-      <a-input-search placeholder="请输入" v-model="card_name" @search="onSearch" maxlength="50"></a-input-search>
+      <a-input-search v-model="query.card_name" @search="onSearchCardName" placeholder="请输入储值卡名称搜索" maxlength="50" />
     </div>
     <router-view></router-view>
   </st-panel>
 </template>
 
 <script>
-import { ListService } from './list.service'
+import { RouteService } from '@/services/route.service'
 export default {
+  name: 'PageBrandProductDeposite',
   serviceInject() {
     return {
-      listService: ListService
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      tabs: this.listService.tabs$
-    }
-  },
-  data() {
-    return {
-      card_name: ''
+      query: this.routeService.query$
     }
   },
   methods: {
-    onSearch(value) {
-      this.card_name = value
-      this.$router.push({ query: { card_name: value } })
-    },
-    handleChange(data) {
-      this.cardName = ''
+    onSearchCardName() {
+      this.$router.push({ query: { ...this.query, card_name: this.query.card_name } })
     }
   }
 }

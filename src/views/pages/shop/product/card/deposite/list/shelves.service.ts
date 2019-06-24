@@ -15,6 +15,9 @@ export class ShelvesService implements RouteGuard {
         this.list$.commit(() => res.list)
       }))
     }
+    setCardShelfDown(id:string) {
+      return this.cardApi.setCardsShelfDown(id, 'shop', 'deposit')
+    }
     beforeEach(to:ServiceRoute, from: ServiceRoute, next:()=>{}) {
       this.getList(to.meta.query).subscribe(() => {
         next()

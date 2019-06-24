@@ -414,7 +414,7 @@ export default {
         content: '修改成功'
       })
       this.$router.push({
-        name: 'brand-product-card-deposite-list-member-list'
+        name: 'brand-product-card-deposite-list-all'
       })
     },
     // card_name validatorFn

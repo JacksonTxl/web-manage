@@ -12,43 +12,43 @@ export const columns = [
   {
     title: '储值金额',
     dataIndex: 'card_price',
-    sorter: (a, b) => a.card_price - b.card_price
+    scopedSlots: { customRender: 'card_price' }
   },
   {
     title: '售卖价格',
     dataIndex: 'sell_price',
-    sorter: (a, b) => a.sell_price - b.sell_price
+    scopedSlots: { customRender: 'sell_price' }
   },
   {
     title: '支持售卖门店',
-    dataIndex: 'support_sales.name',
-    scopedSlots: { customRender: 'support_sales.name' }
+    dataIndex: 'support_sales',
+    scopedSlots: { customRender: 'support_sales' }
   },
   {
     title: '支持消费门店',
-    dataIndex: 'consumption_range.name',
-    scopedSlots: { customRender: 'consumption_range.name' }
+    dataIndex: 'consumption_range',
+    scopedSlots: { customRender: 'consumption_range' }
   },
   {
     title: '支持售卖时间',
-    dataIndex: 'sell_time'
+    dataIndex: 'sell_time',
+    scopedSlots: { customRender: 'sell_time' }
   },
   {
     title: '上架门店数',
     dataIndex: 'upper_shelf_num',
-    sorter: (a, b) => a.upper_shelf_num - b.upper_shelf_num
+    scopedSlots: { customRender: 'upper_shelf_num' }
   },
   {
     title: '下架门店数',
     dataIndex: 'lower_shelf_num',
-    sorter: (a, b) => a.lower_shelf_num - b.lower_shelf_num
+    scopedSlots: { customRender: 'lower_shelf_num' }
   },
   {
     title: '发布渠道',
-    dataIndex: 'publish_channel.name',
-    scopedSlots: { customRender: 'publish_channel.name' }
+    dataIndex: 'publish_channel',
+    scopedSlots: { customRender: 'publish_channel' }
   },
-
   {
     title: '售卖状态',
     dataIndex: 'sell_status',
@@ -57,8 +57,6 @@ export const columns = [
   {
     title: '操作',
     dataIndex: 'action',
-    fixed: 'right',
-    width: 140,
     scopedSlots: { customRender: 'action' }
   }
 ]

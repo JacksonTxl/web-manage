@@ -201,12 +201,6 @@ export class CardsApi extends Api {
     return this.http.delete(`/v1/cards/brand/deposit/${id}`)
   }
   /**
-   * 品牌储值卡上架 /v1/cards/member/brand/shelf
-   */
-  setCardsDepositBrandOnLine(params: any) {
-    return this.http.put(`/v1/cards/brand/deposit/online/${params.id}`, { params })
-  }
-  /**
    *  品牌门店上架储值卡列表
    */
   getCardsShopDeposit(query: any) {
@@ -231,10 +225,10 @@ export class CardsApi extends Api {
     return this.http.put('/v1/cards/brand/deposit/recover', { params })
   }
   /**
-   * 门店储值卡上架
+   * 储值卡上架
    */
-  setShopCardsDepositShelf(id:string) {
-    return this.http.put(`/v1/cards/deposit/shop/shelf/${id}`)
+  setCardsDepositShelf(id:string, type:string) {
+    return this.http.put(`/v1/cards/deposit/${type}/shelf/${id}`)
   }
 }
 export interface CardsInput {
