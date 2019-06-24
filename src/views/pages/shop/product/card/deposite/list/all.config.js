@@ -6,18 +6,18 @@ export const columns = [
   },
   {
     title: '有效期',
-    dataIndex: 'time_gradient',
-    scopedSlots: { customRender: 'time_gradient' }
+    dataIndex: 'num',
+    scopedSlots: { customRender: 'num' }
   },
   {
     title: '储值金额',
-    dataIndex: 'time_gradient',
-    scopedSlots: { customRender: 'time_gradient' }
+    dataIndex: 'card_price',
+    scopedSlots: { customRender: 'card_price' }
   },
   {
     title: '售卖价格',
-    dataIndex: 'price_gradient',
-    scopedSlots: { customRender: 'price_gradient' }
+    dataIndex: 'sell_price',
+    scopedSlots: { customRender: 'sell_price' }
   },
   {
     title: '支持售卖门店',
@@ -26,8 +26,8 @@ export const columns = [
   },
   {
     title: '支持消费门店',
-    dataIndex: 'admission_range',
-    scopedSlots: { customRender: 'admission_range' }
+    dataIndex: 'consumption_range',
+    scopedSlots: { customRender: 'consumption_range' }
   },
   {
     title: '支持售卖时间',

@@ -27,7 +27,7 @@ export class ShelvesService implements RouteGuard {
       return forkJoin(this.getList(query), this.getShopList())
     }
     @Effect()
-    setCardShelfDown(params:Array<BrandCardShelfDownInput>) {
+    setCardShelfDown(params:BrandCardShelfDownInput) {
       return this.cardApi.setBrandCardsShelfDown(params)
     }
     beforeEach(to:ServiceRoute, from: ServiceRoute, next:()=>{}) {

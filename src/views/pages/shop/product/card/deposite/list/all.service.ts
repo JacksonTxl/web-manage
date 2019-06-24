@@ -15,6 +15,9 @@ export class AllService implements RouteGuard {
       this.page$.commit(() => res.page)
     }))
   }
+  setShelf(id:string) {
+    return this.cardApi.setShopCardsDepositShelf(id)
+  }
   beforeEach(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
     this.getList(to.meta.query).subscribe(() => {
       next()
