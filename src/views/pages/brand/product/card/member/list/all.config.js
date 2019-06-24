@@ -6,21 +6,23 @@ export const columns = [
   },
   {
     title: '类型',
-    dataIndex: 'card_type.name'
+    dataIndex: 'card_type',
+    scopedSlots: { customRender: 'card_type' }
   },
   {
     title: '有效期/有效次数',
-    dataIndex: 'time_gradient'
+    dataIndex: 'time_gradient',
+    scopedSlots: { customRender: 'time_gradient' }
   },
   {
     title: '支持入场门店',
-    dataIndex: 'admission_range.name',
-    scopedSlots: { customRender: 'admission_range.name' }
+    dataIndex: 'admission_range',
+    scopedSlots: { customRender: 'admission_range' }
   },
   {
     title: '支持售卖门店',
-    dataIndex: 'support_sales.name',
-    scopedSlots: { customRender: 'support_sales.name' }
+    dataIndex: 'support_sales',
+    scopedSlots: { customRender: 'support_sales' }
   },
   {
     title: '支持售卖时间',
@@ -29,7 +31,8 @@ export const columns = [
   },
   {
     title: '定价方式',
-    dataIndex: 'price_setting.name'
+    dataIndex: 'price_setting',
+    scopedSlots: { customRender: 'price_setting' }
   },
   {
     title: '售卖价格',
@@ -39,17 +42,18 @@ export const columns = [
   {
     title: '上架门店数',
     dataIndex: 'shelf_upper',
-    sorter: (a, b) => a.shelf_upper - b.shelf_upper
+    scopedSlots: { customRender: 'shelf_upper' }
   },
   {
     title: '下架门店数',
     dataIndex: 'shelf_lower',
-    sorter: (a, b) => a.shelf_lower - b.shelf_lower
+    scopedSlots: { customRender: 'shelf_lower' }
   },
 
   {
     title: '发布渠道',
-    dataIndex: 'publish_channel.name'
+    dataIndex: 'publish_channel',
+    scopedSlots: { customRender: 'publish_channel' }
   },
   {
     title: '售卖状态',

@@ -1,7 +1,7 @@
 <template>
   <a-modal
     class="modal-card-halt-the-sales"
-    :title="flag? '储值卡停售':'会员卡停售'"
+    :title="`${cardTypeText}停售`"
     @ok="save"
     v-model="show"
     :footer="null"
@@ -9,11 +9,11 @@
     <section>
       <div class="modal-card-halt-the-sales-tips">
         <a-icon class="icon" type="exclamation-circle"/>
-        注：停止售卖，将自动下架在门店售卖的本{{flag? '储值卡':'会员卡'}}；已购买{{flag? '储值卡':'会员卡'}}的会员仍然享有该{{flag? '储值卡':'会员卡'}}权益。
+        注：停止售卖，将自动下架在门店售卖的本{{cardTypeText}}；已购买{{cardTypeText}}的会员仍然享有该{{cardTypeText}}权益。
       </div>
       <div class="modal-card-halt-the-sales-type-box">
         <span class="modal-card-halt-the-sales-type">期限卡</span>
-        {{flag? '储值卡':'会员卡'}}名称
+        {{cardTypeText}}名称
       </div>
       <div class="modal-card-halt-the-sales-info-box">
         <span class>当前上架门店（家）：{{info.shelf_shop_num}}</span>
@@ -26,7 +26,6 @@
       <div class="modal-card-halt-the-sales-stop-reason">
         <div class="ant-form-item-required stop-info">停售原因</div>
         <a-textarea
-          v-focus
           placeholder="请输入停售原因"
           maxlength="300"
           :rows="4"
@@ -40,7 +39,7 @@
       <footer class="footer">
         <a-button class="cancel" @click="show=false">取消</a-button>
         <a-popconfirm
-          :title="flag?'确认停售该储值卡?':'确认停售该会员卡?'"
+          :title="`确认停售该${cardTypeText}`"
           @confirm="onDelete(a)"
           v-if="textareaInfo.length > 0"
         >
@@ -56,21 +55,11 @@ import { HaltTheSalesService } from './halt-the-sales.service'
 export default {
   serviceInject() {
     return {
-      aService: HaltTheSalesService
+      haltTheSalesService: HaltTheSalesService
     }
   },
-  name: 'haltTheSales',
-  props: {
-    a: {
-      type: Number
-    },
-    flag: {
-      type: Boolean
-    },
-    time: {
-      type: Array
-    }
-  },
+  name: 'ModalHaltTheSales',
+  props: ['id', 'cardType', 'shopNum', 'cardNum'],
   data() {
     return {
       show: false,
@@ -84,23 +73,11 @@ export default {
     }
   },
   created() {
-    let self = this
-    this.getListInfo({ card_id: self.a })
-  },
-  directives: {
-    focus: {
-      inserted: function(el) {
-        el.focus()
-      }
-    }
+    this.getListInfo({ card_id: this.id })
   },
   methods: {
     blurTextarea() {
-      if (this.textareaInfo.length === 0) {
-        this.showHide = true
-      } else {
-        this.showHide = false
-      }
+      this.showHide = this.textareaInfo.length === 0
     },
     getListInfo(data) {
       let self = this
@@ -108,7 +85,7 @@ export default {
         self.info.shelf_shop_num = self.time[0]
         self.info.valid_card_num = self.time[1]
       } else {
-        this.aService.getListInfo(data).subscribe(state => {
+        this.haltTheSalesService.getListInfo(data).subscribe(state => {
           console.log(state)
           self.info = state.info
         })
@@ -120,17 +97,16 @@ export default {
     onDelete(a) {
       let self = this
       let data = {
-        card_id: self.a,
+        card_id: self.id,
         reason: self.textareaInfo
       }
-      console.log('flag', self.flag)
       if (self.flag) {
-        self.aService.setCardsDepositStopSell(data).subscribe(state => {
+        self.haltTheSalesService.setCardsDepositStopSell(data).subscribe(state => {
           self.show = false
           self.$emit('done', true)
         })
       } else {
-        self.aService.setListInfo(data).subscribe(state => {
+        self.haltTheSalesService.setListInfo(data).subscribe(state => {
           self.show = false
           self.$emit('done', true)
         })

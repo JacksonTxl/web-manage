@@ -15,30 +15,41 @@ export interface CardListInput {
   sell_status?:number
   shelf_status?:number
 }
+export interface CardSaleStopInput {
+  reason: string
+}
+export interface CardSaleRecoverInput {
+  start_time:string
+  end_time:string
+}
+export interface BrandCardShelfDownInput {
+  card_id:number
+  shop_id:number
+}
 export class CardsApi extends Api {
   /**
-   * 会员卡已上架列表
+   * 卡已上架列表
    */
-  getCardShelfList(query:CardShelfListInput, type:string) {
-    return this.http.get(`/v1/cards/member/${type}/shelf`, { query })
+  getCardShelfList(query:CardShelfListInput, type:string, cardType:string) {
+    return this.http.get(`/v1/cards/${cardType}/${type}/shelf`, { query })
   }
   /**
-   * 会员卡列表
+   * 卡列表
    */
-  getCardList(query:CardListInput, type:string) {
-    return this.http.get(`/v1/cards/member/${type}`, { query })
+  getCardList(query:CardListInput, type:string, cardType:string) {
+    return this.http.get(`/v1/cards/${cardType}/${type}`, { query })
   }
   /**
-   * 品牌会员卡上架详情
+   * 卡上架详情
    */
-  getCardShelfInfo(id:string) {
-    return this.http.get(`/v1/cards/member/brand/shelf/${id}`)
+  getCardShelfInfo(id:string, type:string, cardType:string) {
+    return this.http.get(`/v1/cards/${cardType}/${type}/shelf/${id}`)
   }
   /**
-   * 品牌会员卡上架
+   * 卡上架
    */
-  setCardShelf(params:any, id:string) {
-    return this.http.put(`/v1/cards/member/brand/shelf/${id}`, { params })
+  setCardShelf(params:any, id:string, type:string, cardType:string) {
+    return this.http.put(`/v1/cards/${cardType}/${type}/shelf/${id}`, { params })
   }
   /**
    * 会员卡新增
@@ -107,28 +118,35 @@ export class CardsApi extends Api {
     return this.http.get(`/v1/cards/member/use/shop`, { query })
   }
   /**
-   *品牌会员卡停售信息回传
+   * 卡停售信息回传
    */
-  getCardsSaleInfo(query: any) {
-    return this.http.get(`/v1/cards/member/brand/sale/info/${query.card_id}`)
+  getCardSaleStopInfo(id:string, type:string, cardType:string) {
+    return this.http.get(`/v1/cards/${cardType}/${type}/sale/info/${id}`)
   }
   /**
-   *品牌会员卡删除
+   * 卡停售
    */
-  getCardsDel(id: string) {
-    return this.http.delete(`/v1/cards/member/brand/${id}`)
+  setCardsSaleStop(params: CardSaleStopInput, id:string, type:string, cardType:string) {
+    return this.http.put(`/v1/cards/${cardType}/${type}/stop/${id}`, { params })
   }
   /**
-   *品牌会员卡停售
+   * 获取服务器系统时间
    */
-  setCardsSaleStop(params: any) {
-    return this.http.put('/v1/cards/member/brand/sale/stop', { params })
+  getServiceTime() {
+    return this.http.get(`/time`)
   }
   /**
-   *品牌会员卡恢复售卖
+   * 卡恢复售卖
    */
-  setCardsSaleRecover(params: any) {
-    return this.http.put('/v1/cards/member/brand/sale/recover', { params })
+  setCardsSaleRecover(params: CardSaleRecoverInput, id:string, type:string, cardType:string) {
+    return this.http.put(`/v1/cards/${cardType}/${type}/recover/${id}`, { params })
+  }
+
+  /**
+   *  卡删除
+   */
+  setCardsDelete(id: string, type:string, cardType:string) {
+    return this.http.delete(`/v1/cards/${cardType}/${type}/${id}`)
   }
   /**
    *品牌会员卡详情
@@ -137,10 +155,16 @@ export class CardsApi extends Api {
     return this.http.get(`/v1/cards/member/brand/${id}`)
   }
   /**
-   *门店会员卡下架/v1/cards/member/shop/shelf/down
+   * 卡下架
    */
-  getCardsMemberShopShelfDown(params: any) {
-    return this.http.put('/v1/cards/member/shop/shelf/down', { params })
+  setCardsShelfDown(id: string, type:string, cardType:string) {
+    return this.http.put(`/v1/cards/${cardType}/${type}/shelf/down/${id}`)
+  }
+  /***
+   *  品牌会员卡下架
+   */
+  setBrandCardsShelfDown(params: Array<BrandCardShelfDownInput>) {
+    return this.http.put(`/v1/cards/member/brand/shelf/down`, { params })
   }
   /***
    *  品牌储值卡列表

@@ -24,7 +24,7 @@
   </st-modal>
 </template>
 <script>
-import { DistributionAlesService } from './distribution-ales.service'
+import { DistributionSaleService } from './distribution-sale.service'
 import { MessageService } from '@/services/message.service'
 const columns = [
   {
@@ -42,13 +42,16 @@ export default {
   name: 'distributionAles',
   serviceInject() {
     return {
-      service: DistributionAlesService,
+      service: DistributionSaleService,
       messageService: MessageService
     }
   },
   props: {
-    selectedRowData: {
-      type: Array
+    memberIds: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   data() {
@@ -92,9 +95,11 @@ export default {
       })
     },
     save() {
-      console.log('this.selectedRowData', this.selectedRowData)
       console.log('sale', this.chooseId)
-      this.service.addSale({ id: this.selectedRowData, sale_id: this.chooseId }).subscribe(res => {
+      this.service.addSale({
+        member_ids: this.memberIds,
+        sales_id: this.chooseId
+      }).subscribe(res => {
         this.show = false
         this.messageService.success({ content: '分配成功' })
       })

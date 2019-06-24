@@ -280,6 +280,7 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 },
       card_type: { type: Number, default: -1 },
       publish_channel: { type: Number, default: -1 },
+      shop_id: { type: Number, default: -1 },
       card_name: { type: String, default: '' }
     }
   },

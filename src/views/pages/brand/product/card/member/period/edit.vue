@@ -13,7 +13,6 @@
             </a-col>
           </a-row>
           <a-row :gutter="8">
-            {{cardData.admission_shop_list}}
             <a-col :lg="23">
               <st-form-item class="page-content-card-admission-range mt-4" label="支持入场门店" required>
                 <a-radio-group
@@ -127,7 +126,6 @@
             </a-col>
           </a-row>
           <a-row :gutter="8">
-            {{cardData.sell_shop_list}}
             <a-col :lg="23">
               <st-form-item class="page-content-card-support-sales mt-4" label="支持售卖门店" required>
                 <a-radio-group
@@ -551,12 +549,12 @@ export default {
           }
           this.cardData.price_gradient = cloneDeep(p)
           // 时间
-          this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
-          this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')} 00:00:00`
+          this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')}`
+          this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
           // 卡id
           this.cardData.id = +this.$route.query.id
           this.editService.editCard(this.cardData).subscribe(res => {
-            console.log(res)
+            this.$router.push({ path: '/brand/product/card/member/list/all' })
           })
         }
       })

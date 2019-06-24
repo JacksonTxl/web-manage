@@ -6,7 +6,7 @@ interface CardsTableModelState {
   saleList: Object
 }
 @Injectable()
-export class DistributionAlesService extends Store<CardsTableModelState> {
+export class DistributionSaleService extends Store<CardsTableModelState> {
   constructor(private cardsApi: MemberApi) {
     super()
   }

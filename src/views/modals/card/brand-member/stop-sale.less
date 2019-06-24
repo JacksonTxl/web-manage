@@ -1,0 +1,49 @@
+.modal-card-brand-stop-sale {
+    &__warn-text {
+        display: flex;
+        align-items: flex-start;
+        padding: 8px 16px;
+        border-radius: 4px;
+        .bg(@table-bg-color-row-2);
+        >p{
+            margin: 0 0 0 8px;
+            .fz(14px);
+            .lh(22px);
+            .c(@text);
+        }
+    }
+    &__card-name {
+        display: flex;
+        align-items: center;
+    }
+    &__num {
+        > p {
+            display: flex;
+            align-items: center;
+            .lh(22px);
+            .label {
+                .fz(14px);
+                .c(rgba(0,0,0,.65));
+            }
+            .value {
+                .fz(14px);
+                .c(rgba(0,0,0,.85));
+            }
+            .description {
+                .fz(12px);
+                .c(rgba(0,0,0,.25));
+            }
+        }
+    }
+    &__form {
+        .ant-form-item-control-wrapper {
+            padding:0;
+        }
+    }
+    .ant-modal-footer {
+        padding: 0 24px 24px;
+    }
+    .ant-modal-body {
+        padding-bottom: 0;
+    }
+}

@@ -6,7 +6,7 @@ import { PackageApi, GetCourseInput } from '@/api/v1/course/package'
 import { EMPTY } from 'rxjs'
 
 @Injectable()
-export class BatchShelvesService {
+export class ShelfService {
   info$ = new State({})
   loading$ = new State({})
   courseListAction$: Action<any>
@@ -23,7 +23,7 @@ export class BatchShelvesService {
     })
   }
   getInfo(id:string) {
-    return this.cardApi.getCardShelfInfo(id, 'brand', 'member').pipe(tap((res:any) => {
+    return this.cardApi.getCardShelfInfo(id, 'shop', 'member').pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
   }
@@ -35,7 +35,7 @@ export class BatchShelvesService {
     this.courseList$.commit(() => [])
   }
   @Effect()
-  shelfCard(params:any) {
-
+  shelfCard(params:any, id:string) {
+    return this.cardApi.setCardShelf(params, id, 'shop', 'member')
   }
 }
