@@ -170,7 +170,7 @@ export class CardsApi extends Api {
    *  品牌储值卡列表
    */
   getCardsBrandDeposit(query: any) {
-    return this.http.get(`/v1/cards/brand/deposit`, { query })
+    return this.http.get(`/v1/cards/deposit/brand`, { query })
   }
   /***
    *  储值卡消费门店列表
