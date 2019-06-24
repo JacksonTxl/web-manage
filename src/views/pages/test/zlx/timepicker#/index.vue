@@ -1,6 +1,9 @@
 <template>
-  <div class="time-picker" @mouseup="onMouseup" @mousedown="onMousedown">
-    <item v-for="i in 48" @change="onChange"  @down="onDown"  :views="views" :isDrag="isDrag" :isEnter="isEnter" :key="i" :time="i"></item>
+  <div class="time-picker" @mouseup="onMouseup" @mounseover="onMouseOver" @mousedown="onMouseDown">
+    <template  v-for="i in 25">
+      <item @change="onChange"  @down="onDown"  :views="views" :isDrag="isDrag" :isEnter="isEnter" :key="i" :time="i - 1"></item>
+    </template>
+
   </div>
 </template>
 
@@ -52,9 +55,12 @@ export default {
       }
       return { values: rangeArr, views }
     },
-    onMousedown() {
-      console.log('onMousedown')
+    onMouseDown() {
+      console.log('fa onMousedown')
       this.isDrag = true
+    },
+    onMouseOver() {
+      this.isDrag = false
     },
     onDown(isEnter) {
       this.isEnter = isEnter
@@ -63,14 +69,14 @@ export default {
       this.$set(this.checkArr, val.time, val.isActive)
     },
     onMouseup() {
-      console.log('onMouseup')
+      console.log('fa onMouseup')
       this.isDrag = false
     }
   },
   mounted() {
     this.$nextTick().then(() => {
       /* jslint evil: true */
-      // document.onselectstart = new Function('event.returnValue=false')
+      document.onselectstart = () => 'event.returnValue=false'
     })
   }
 }

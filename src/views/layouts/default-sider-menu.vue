@@ -74,8 +74,7 @@
 <script>
 import { UserService } from '@/services/user.service'
 import { treeToMap } from '@/utils/tree-to-map'
-import { find as lodashFind } from 'lodash-es'
-import { findPathWithTree } from '@/utils/find-path-with-tree'
+import { find } from 'lodash-es'
 export default {
   name: 'DefaultBrandSiderMenu',
   serviceInject() {
@@ -90,8 +89,8 @@ export default {
   },
   data() {
     return {
-      openKeys: [],
-      selectedKeys: []
+      openKeys: []
+      // selectedKeys: []
     }
   },
   computed: {
@@ -106,12 +105,27 @@ export default {
     },
     rootSubmenuKeys() {
       return this.getRootSubmenuKeys()
+    },
+    currentSiderMenu() {
+      return this.findCurrentSiderMenu()
+    },
+    selectedKeys() {
+      const selectedKey = this.findSelectedKey(this.currentSiderMenu)
+      return selectedKey ? [selectedKey] : []
+    }
+  },
+  watch: {
+    selectedKeys() {
+      this.setOpenKeys()
     }
   },
   created() {
-    this.calcOpenKeys()
+    this.init()
   },
   methods: {
+    init() {
+      this.setOpenKeys()
+    },
     isHasSubmenu(menu) {
       return (
         menu.children && menu.children.length
@@ -125,15 +139,32 @@ export default {
         this.openKeys = latestOpenKey ? [latestOpenKey] : []
       }
     },
-    calcOpenKeys() {
+    findCurrentSiderMenu() {
       const { menus } = this
-      let openKey
+      let currentSiderMenu
       menus.forEach(menu => {
-        if (location.pathname.replace(/\//g, '-').indexOf(menu.icon) !== -1) {
-          openKey = menu.id
+        if (this.getPageName().indexOf(menu.icon) !== -1) {
+          currentSiderMenu = menu
         }
       })
+      return currentSiderMenu || {}
+    },
+    findSelectedKey() {
+      let selectedKey
+      (this.currentSiderMenu.children || []).forEach(item => {
+        if (item.url && this.getPageName().indexOf(item.url) !== -1) {
+          selectedKey = item.id
+        }
+      })
+      return selectedKey
+    },
+    setOpenKeys() {
+      const openKey = this.currentSiderMenu.id
       this.openKeys = openKey ? [openKey] : []
+    },
+    setSelectedKeys() {
+      const selectedKey = this.findSelectedKey(this.currentSiderMenu)
+      this.selectedKeys = selectedKey ? [selectedKey] : []
     },
     onClickMenuItem(menu) {
       // if (this.$route.name.indexOf(menu.url) > -1) {
@@ -161,7 +192,10 @@ export default {
       return rootSubmenuKeys
     },
     isfavorite(id) {
-      return lodashFind(this.favorite, { id })
+      return find(this.favorite, { id })
+    },
+    getPageName() {
+      return this.$route.path.replace(/\//g, '-')
     }
   }
 }
