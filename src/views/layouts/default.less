@@ -13,6 +13,7 @@
     position: fixed;
     .h(100vh);
     .pd-t(26px);
+    .pd-l(8px);
     top: 0;
     left: 0;
     .bg(@defaultMenuBgColor);
@@ -24,11 +25,70 @@
     .ant-menu-inline {
       .bd-n;
       .bg(inherit);
+      .ant-menu-submenu {
+        .ant-menu-submenu-title {
+          border-radius: 100px 0 0 100px;
+        }
+        .layout-default-sider__menu-arrow {
+          transform: rotate(180deg);
+          &.open {
+            .d-b;
+          }
+          &.fold-up {
+            .d-n;
+          }
+        }
+      }
+      .ant-menu-submenu-open {
+        .ant-menu-submenu-title {
+          .bg(rgba(24, 144, 255, .1));
+        }
+
+        .layout-default-sider__menu-arrow {
+          transform: rotate(180deg);
+          &.open {
+            .d-n;
+          }
+          &.fold-up {
+            .d-b;
+          }
+        }
+      }
+      .ant-menu-submenu-selected {
+        .ant-menu-submenu-title {
+          .c(@title);
+          &:before {
+            .h(22px);
+          }
+        }
+      }
+      .ant-menu-item-selected {
+        .bg(none);
+        &:after {
+          content: none;
+        }
+      }
+      .ant-menu-submenu-title {
+        .c(@text);
+        padding-left: 24px!important;
+        &:before {
+          .d-n;
+        }
+        &:hover {
+          .bg(rgba(24, 144, 255, .1));
+        }
+      }
+      .ant-menu-submenu-arrow {
+        display: none;
+      }
     }
+
     .ant-menu-item {
       display: flex;
       align-items: center;
       padding-left: 26px!important;
+      .fz(12px);
+      cursor: default;
       &:hover {
         .layout-default-sider__menu-star {
           opacity: 1;
@@ -112,12 +172,30 @@
         .bg(@brand-color);
       }
     }
+    &__menu-item {
+      display: flex;
+    }
+    &__menu-title {
+      flex: 1;
+      .cur-p;
+    }
     &__menu-star {
       opacity: 0;
       .cur-p;
+      color: #A5B5C0!important;
       &.active {
         color: @primary-color!important;
       }
+    }
+    &__menu-arrow {
+      .d-n;
+      .pos-a;
+      right: 24px;
+      color: #A4B3BF!important;
+      top: 50%;
+      margin-top: -5px;
+      font-size: 10px;
+      transition: all 0.2s;
     }
   }
   &-body {
