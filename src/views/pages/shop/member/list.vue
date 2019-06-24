@@ -63,27 +63,40 @@
           v-if="auth.tag"
           class="shop-member-list-button"
           :disabled="!selectedRowData.length"
+          v-modal-link="{
+            name: 'shop-add-lable',
+            props: {
+              memberIds: selectedRowKeys
+            }
+          }"
         >
-          <modal-link
-            v-if="selectedRowData.length > 0"
-            tag="a"
-            :to=" { name: 'shop-add-lable',props:{selectedRowData:selectedRowData}}"
-          >加标签</modal-link>
-          <span v-else>加标签</span>
+          加标签
         </st-button>
         <a-popover placement="bottom">
           <template slot="content">
             <p v-if="auth.bindCoach">
-              <modal-link
-                tag="a"
-                :to=" { name: 'shop-distribution-coach', props:{selectedRowData:selectDataList}}"
-              >分配教练</modal-link>
+              <a href="javascript: void(0);"
+                v-modal-link="{
+                  name: 'shop-distribution-coach',
+                  props: {
+                    memberIds: selectedRowKeys
+                  }
+                }"
+              >
+                分配教练
+              </a>
             </p>
             <p v-if="auth.bindSalesman">
-              <modal-link
-                tag="a"
-                :to=" { name: 'shop-distribution-ales', props:{selectedRowData:selectDataList}}"
-              >分配销售</modal-link>
+              <a href="javascript: void(0);"
+                v-modal-link="{
+                  name: 'shop-distribution-sale',
+                  props: {
+                    memberIds: selectedRowKeys
+                  }
+                }"
+              >
+                分配销售
+              </a>
             </p>
           </template>
           <st-button
@@ -114,13 +127,29 @@
           <a-divider type="vertical"></a-divider>
           <st-more-dropdown>
             <a-menu-item v-if="record.auth['shop:member:member|bind_coach']">
-              <modal-link tag="a" :to=" { name: 'shop-distribution-coach'}">分配教练</modal-link>
-            </a-menu-item>
-            <a-menu-item v-if="record.auth['shop:member:member|bind_salesman']">
               <modal-link
                 tag="a"
-                :to=" { name: 'shop-distribution-ales',props: {selectedRowData: record.id}}"
-              >分配销售</modal-link>
+                :to=" {
+                  name: 'shop-distribution-coach',
+                  props: {
+                    memberIds: [record.member_id]
+                  }
+                }"
+              >
+                分配教练
+              </modal-link>
+            </a-menu-item>
+            <a-menu-item v-if="record.auth['shop:member:member|bind_salesman']">
+              <a href="javascript: void(0);"
+                v-modal-link="{
+                  name: 'shop-distribution-sale',
+                  props: {
+                    memberIds: [record.member_id]
+                  }
+                }"
+              >
+                分配销售
+              </a>
             </a-menu-item>
             <a-menu-item v-if="record.auth['shop:member:member|bind_card']">
               <modal-link

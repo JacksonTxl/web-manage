@@ -1,5 +1,5 @@
 <template>
-  <st-modal :title="`给选中的${selectedRowData.length}个人添加标签`" @ok="save" v-model="show" width="328px">
+  <st-modal :title="`给选中的${memberIds.length}个人添加标签`" @ok="save" v-model="show" width="328px">
     <section>
       <a-select
         v-model="selectLable"
@@ -49,8 +49,11 @@ export default {
   },
   name: 'newLable',
   props: {
-    selectedRowData: {
-      type: Array
+    memberIds: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   data() {
@@ -89,12 +92,9 @@ export default {
       e.preventDefault()
 
       let data = {
-        id: [],
+        id: this.memberIds,
         tag_id: self.selectLable
       }
-      self.selectedRowData.map(item => {
-        data.id.push(item.id)
-      })
       self.Service.setMemberLabelCreate(data).subscribe(state => {
         self.show = false
         self.$emit('done', true)
