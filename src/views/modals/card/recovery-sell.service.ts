@@ -26,7 +26,7 @@ export class RecoverySellService extends Store<CardsTableModelState> {
     })
   }
   setListInfo(paramsObj: any) {
-    return this.cardsApi.setCardsSaleRecover(paramsObj)
+    // return this.cardsApi.setCardsSaleRecover(paramsObj)
   }
   setCardsDepositRestartSell(paramsObj: any) {
     return this.cardsApi.setCardsDepositRestartSell(paramsObj)

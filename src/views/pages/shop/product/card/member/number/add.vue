@@ -336,7 +336,9 @@ export default {
             price_gradient
           }).subscribe(res => {
             // 新增成功
-
+            this.$router.push({
+              path: '/shop/product/card/member/list/all'
+            })
           })
         }
       })

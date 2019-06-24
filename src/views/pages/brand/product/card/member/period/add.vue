@@ -482,7 +482,7 @@ export default {
           this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
           this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
           this.addService.addCard(this.cardData).subscribe(res => {
-            console.log(res)
+            this.$router.push({ path: '/brand/product/card/member/list/all' })
           })
         }
       })

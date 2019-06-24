@@ -26,7 +26,7 @@ export class LowerShelfService extends Store<CardsTableModelState> {
     })
   }
   getListInfo(paramsObj: any) {
-    return this.cardsApi.getCardsMemberShopShelfDown(paramsObj)
+    // return this.cardsApi.getCardsMemberShopShelfDown(paramsObj)
   }
   setCardsDepositBrandOffLine(paramsObj: any) {
     return this.cardsApi.setCardsDepositBrandOffLine(paramsObj)
