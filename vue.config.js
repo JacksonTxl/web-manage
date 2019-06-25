@@ -46,8 +46,8 @@ module.exports = {
     watchContentBase: true,
     proxy: {
       '/_api': {
-        target: 'https://api-saas-dev.styd.cn',
-        // target: 'https://api-saas-test.styd.cn',
+        // target: 'https://api-saas-dev.styd.cn',
+        target: 'https://api-saas-test.styd.cn',
         changeOrigin: true,
         pathRewrite: {
           '^/_api/': '/'
