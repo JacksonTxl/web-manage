@@ -34,7 +34,7 @@ export interface TransferCoursePackageInput {
 export interface RefundCourseInput {
   refund_reason:number
   refund_price:number
-  frozen_pay_type:number
+  refund_channel:number
   description?:string
 }
 export interface EditCoursePersonalCoachInput {

@@ -201,6 +201,7 @@ export default {
           needPay: true
         }
         let orderSuccessRes = await this.createdGatheringTip(props)
+        console.log(orderSuccessRes)
         this.tipCallBack(result.orderId, type, orderSuccessRes.type)
       } else if (result.type === 'createPay') {
         // 创建订单成功 并且到支付页面

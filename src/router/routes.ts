@@ -88,9 +88,9 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       prependGuards(route, appGuards)
     }
     // 规范title i18n 名称
-    if (route.name) {
-      route.meta.title = `${route.name}.title`
-    }
+    // if (route.name) {
+    //   route.meta.title = `${route.name}.title`
+    // }
     route.meta.layout = 'default'
 
     // if (route.name.startsWith('shop')) {
