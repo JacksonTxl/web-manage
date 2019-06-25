@@ -173,7 +173,7 @@ export default {
       let params = []
       this.selectedRows.forEach(i => {
         params.push({
-          card_id: i.product_id,
+          card_id: i.id,
           shop_id: i.shop_id
         })
       })
@@ -194,7 +194,7 @@ export default {
         title: '单个下架',
         content: `确定下架${record.card_name}会员卡吗？`,
         onOk: () => {
-          return this.shelvesService.setCardShelfDown({ card_shop: [{ card_id: record.product_id, shop_id: record.shop_id }] }).toPromise().then(() => {
+          return this.shelvesService.setCardShelfDown({ card_shop: [{ card_id: record.id, shop_id: record.shop_id }] }).toPromise().then(() => {
             this.$router.push({ force: true, query: this.query })
           })
         }
