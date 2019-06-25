@@ -6,22 +6,22 @@
           营销效果<img src="~@/assets/img/brand/markting/tip.svg" />
         </header>
         <section>
-          <ul>
+          <ul v-if="info.num">
             <li>
               <p>注册人数<img src="~@/assets/img/brand/markting/register.svg" /></p>
-              <ICountUp :endVal="10231"/>
+              <ICountUp :endVal="+info.num.register_num"/>
             </li>
             <li>
               <p>交易人数<img src="~@/assets/img/brand/markting/deals.svg" /></p>
-              <ICountUp :endVal="231"/>
+              <ICountUp :endVal="+info.num.people_num"/>
             </li>
             <li>
               <p>订单总金额<img src="~@/assets/img/brand/markting/money.svg" /></p>
-              <ICountUp :endVal="128864" :options="{prefix: '￥'}"/>
+              <ICountUp :endVal="+info.num.order_amount" :options="{prefix: '￥'}"/>
             </li>
             <li>
               <p>营销支出金额<img src="~@/assets/img/brand/markting/expend.svg" /></p>
-              <ICountUp :endVal="846" :options="{prefix: '￥'}"/>
+              <ICountUp :endVal="+info.num.spend_amount" :options="{prefix: '￥'}"/>
             </li>
           </ul>
         </section>
@@ -33,32 +33,14 @@
         </header>
         <section>
           <ul>
-            <li>
-              <img src="~@/assets/img/brand/markting/people.svg">
+            <li v-for="(item, index) in info.marketing" :key="index">
+              <img v-if="item.plugin_type === '0'" src="~@/assets/img/brand/markting/people.svg">
+              <img v-if="item.plugin_type === '1'" src="~@/assets/img/brand/markting/coupon.svg">
+              <img v-if="item.plugin_type === '2'" src="~@/assets/img/brand/markting/invite.svg">
+              <img v-if="item.plugin_type === '3'" src="~@/assets/img/brand/markting/slyder.svg">
               <div>
-                <p>精细化人群</p>
-                <p>多维度用户分层，精准营销</p>
-              </div>
-            </li>
-            <li>
-              <img src="~@/assets/img/brand/markting/coupon.svg">
-              <div>
-                <p>优惠券</p>
-                <p>优惠抵扣购课费用</p>
-              </div>
-            </li>
-            <li>
-              <img src="~@/assets/img/brand/markting/invite.svg">
-              <div>
-                <p>邀请有礼</p>
-                <p>有偿激励员工推广</p>
-              </div>
-            </li>
-            <li>
-              <img src="~@/assets/img/brand/markting/slyder.svg">
-              <div>
-                <p>幸运大转盘</p>
-                <p>可发布会员福利，会员参与抽奖</p>
+                <p>{{item.plugin_name}}</p>
+                <p>{{item.plugin_text}}</p>
               </div>
             </li>
           </ul>
@@ -72,21 +54,9 @@
       </header>
       <section>
         <ul>
-          <li>
-            <img />
-            <p>凭什么它在淡季做活动能卖出30万++</p>
-          </li>
-          <li>
-            <img />
-            <p>凭什么它在淡季做活动能卖出30万++</p>
-          </li>
-          <li>
-            <img />
-            <p>凭什么它在淡季做活动能卖出30万++</p>
-          </li>
-          <li>
-            <img />
-            <p>凭什么它在淡季做活动能卖出30万++</p>
+          <li v-for="(item, index) in info.operation" :key="index" @click="goLink(item.link)">
+            <img :src="item.thumb" />
+            <p>{{item.title}}</p>
           </li>
         </ul>
       </section>
@@ -107,9 +77,11 @@ export default {
   },
   rxState() {
     return {
-      info: this.pluginService.info$,
-      auth: this.pluginService.auth$
+      info: this.pluginService.info$
     }
+  },
+  created() {
+    this.getInfo()
   },
   data() {
     return {
@@ -117,8 +89,32 @@ export default {
   },
   components: {
   },
-  methods: {
 
+  methods: {
+    goLink(url) {
+      window.open(url)
+    },
+    getInfo() {
+      this.pluginService.getInfo().subscribe()
+    }
+    // filterTypeImg(value) {
+    //   let typeName='people';
+    //   switch(value) {
+    //     case 0:
+    //       typeName = 'people';
+    //       break;
+    //     case 1:
+    //       typeName = 'coupon';
+    //       break;
+    //     case 2:
+    //       typeName = 'invite';
+    //       break;
+    //     case 3:
+    //       typeName = 'slyder';
+    //       break;
+    //   }
+    //   return expand;
+    // }
   }
 }
 </script>

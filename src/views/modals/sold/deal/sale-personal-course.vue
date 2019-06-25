@@ -70,7 +70,10 @@
             </div>
           </st-form-item>
           <st-form-item label="单节价格" required v-if="info.sale_model === 1">
-            <st-input-number :min="personalPrice.min_sell_price || 0" :max="personalPrice.max_sell_price || 0" v-decorator="['coursePrice',{rules:[{validator:course_price}]}]" :float="true" placeholder="请输入课程的价格" @blur="fetchCouponList">
+            <st-input-number :min="+personalPrice.min_sell_price || 0" :max="+personalPrice.max_sell_price || 0"
+              v-decorator="['coursePrice',{rules:[{validator:course_price}]}]"
+              :float="true" placeholder="请输入课程的价格"
+              @blur="fetchCouponList();getOrderPrice();getPrice(null, null, null)">
               <span slot="addonAfter">元</span>
             </st-input-number>
           </st-form-item>
@@ -486,6 +489,9 @@ export default {
             // 调用优惠券列表
             this.fetchCouponList()
             // 调用获取商品原价
+            if (this.info.sale_model === 1 && !this.form.getFieldValue('coursePrice')) {
+              return
+            }
             this.getOrderPrice()
             this.getPrice(null, null, null)
           })
@@ -495,6 +501,10 @@ export default {
     // 计算实付金额
     getPrice(coupon, advance, reduce) {
       let advanceId = advance === -1 ? '' : advance
+      let special_amount = this.personalPrice.sell_price
+      if (this.info.sale_model === 1) {
+        special_amount = this.form.getFieldValue('coursePrice')
+      }
       this.salePersonalCourseService.priceAction$.dispatch({
         product_id: this.id,
         product_type: this.info.contract_type,
@@ -503,17 +513,22 @@ export default {
         coupon_id: coupon,
         advance_id: advanceId,
         reduce_amount: reduce,
-        special_amount: this.personalPrice.sell_price || 0
+        special_amount: +special_amount || 0
       })
     },
     // 获取订单总额
     getOrderPrice() {
+      console.log(111)
+      let special_amount = this.personalPrice.sell_price
+      if (this.info.sale_model === 1) {
+        special_amount = this.form.getFieldValue('coursePrice')
+      }
       this.salePersonalCourseService.orderAmountPriceAction$.dispatch({
         product_id: this.id,
         product_type: this.info.contract_type,
         product_num: this.form.getFieldValue('buyNum'),
         specs_id: this.form.getFieldValue('coach_level'),
-        special_amount: this.personalPrice.sell_price || 0
+        special_amount: +special_amount || 0
       })
     },
     onCreateOrder() {
