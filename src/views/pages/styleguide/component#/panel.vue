@@ -83,12 +83,12 @@
             </a-select>
           </div>
           <div style="display: flex;align-items: center;margin:16px 0;">
-            <span style="width:70px;">条件4：</span>
             <a-radio-group defaultValue="a" buttonStyle="solid">
-              <a-radio-button value="a">Hangzhou</a-radio-button>
-              <a-radio-button value="b">Shanghai</a-radio-button>
-              <a-radio-button value="c">Beijing</a-radio-button>
-              <a-radio-button value="d">Chengdu</a-radio-button>
+              <a-radio-button value="a">今天</a-radio-button>
+              <a-radio-button value="b">昨天</a-radio-button>
+              <a-radio-button value="c">近30天</a-radio-button>
+              <a-radio-button value="d">近90天</a-radio-button>
+              <a-radio-button value="d">自定义</a-radio-button>
             </a-radio-group>
           </div>
         </div>
