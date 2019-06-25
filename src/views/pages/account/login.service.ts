@@ -1,9 +1,10 @@
+import { MessageService } from '@/services/message.service'
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { ManageApi, ManagePhoneInput } from '@/api/v1/account/manage'
-import { LoginApi, LoginAccountInput } from '@/api/login'
+import { LoginApi, LoginAccountInput, LoginPhoneInput } from '@/api/login'
 import { TokenService } from '@/services/token.service'
 
 interface StaffState {
@@ -16,7 +17,8 @@ export class LoginService extends Store<StaffState> {
   name$: Computed<string>
   constructor(
     private loginApi: LoginApi,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private msg: MessageService
   ) {
     super()
     this.state$ = new State({
@@ -32,6 +34,16 @@ export class LoginService extends Store<StaffState> {
         this.tokenService.SET_TOKEN(res.token)
       })
     )
+  }
+  loginPhone(params: LoginPhoneInput) {
+    return this.loginApi.loginPhone(params).pipe(tap(res => {
+      this.msg.success({
+        content: '登录成功'
+      })
+    }))
+  }
+  getCaptcha(params: any) {
+    return this.loginApi.getCaptcha(params)
   }
   beforeRouteEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     next()
