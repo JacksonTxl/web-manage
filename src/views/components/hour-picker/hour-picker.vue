@@ -58,6 +58,9 @@ export default {
     picker.addEventListener('mousedown', () => {
       this.isDrag = true
     })
+    picker.addEventListener('mouseover', () => {
+      this.isDrag = false
+    })
     picker.addEventListener('mouseup', () => {
       this.isDrag = false
     })
