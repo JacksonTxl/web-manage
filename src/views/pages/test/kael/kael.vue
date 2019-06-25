@@ -1,33 +1,18 @@
 <template>
-  <a-select
-    showSearch
-    placeholder="Select a person"
-    optionFilterProp="children"
-    style="width: 200px"
-    @focus="handleFocus"
-    @blur="handleBlur"
-    @change="handleChange"
-    :filterOption="filterOption"
-  >
-    <a-select-option value="jack">Jack</a-select-option>
-    <a-select-option value="lucy">Lucy</a-select-option>
-    <a-select-option value="tom">Tom</a-select-option>
-  </a-select>
+  <st-panel app>
+    <st-input-number :min="20" @change="kelc" :max="50"></st-input-number>
+  </st-panel>
 </template>
 <script>
 export default {
+  data() {
+    return {
+      kael: 10
+    }
+  },
   methods: {
-    handleChange(value) {
-      console.log(`selected ${value}`)
-    },
-    handleBlur() {
-      console.log('blur')
-    },
-    handleFocus() {
-      console.log('focus')
-    },
-    filterOption(input, option) {
-      return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+    kelc(e) {
+      console.log(e)
     }
   }
 }

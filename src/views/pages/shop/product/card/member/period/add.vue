@@ -32,6 +32,7 @@
                     size="middle"
                     :columns="priceColumns"
                     :dataSource="rallyPriceList"
+                    rowKey="key"
                     :pagination="false"
                   >
                     <template slot="time" slot-scope="text, record, index">

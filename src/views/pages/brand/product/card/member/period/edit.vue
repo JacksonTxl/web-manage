@@ -47,6 +47,7 @@
                     size="middle"
                     :columns="brand_price_columns"
                     :dataSource="rally_price_list"
+                    rowKey="key"
                     :pagination="false"
                   >
                     <template slot="time" slot-scope="text, record, index">
@@ -85,6 +86,7 @@
                     size="middle"
                     :columns="shop_price_columns"
                     :dataSource="shop_price_list"
+                    rowKey="key"
                     :pagination="false"
                   >
                     <template slot="time" slot-scope="text, record, index">
