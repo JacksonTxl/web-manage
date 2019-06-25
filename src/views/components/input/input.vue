@@ -1,5 +1,5 @@
 <template>
-  <a-input :placeholder="placeholder" type="text" :value="number" @change="numberChange" :disabled="disabled" maxlength="12">
+  <a-input :placeholder="placeholder" type="text" :value="number" @blur="numberBlur" @change="numberChange" :disabled="disabled" maxlength="12">
     <template slot="addonAfter">
       <slot name="addonAfter"></slot>
     </template>
@@ -142,6 +142,9 @@ export default {
     triggerChange() {
       this.$emit('change', `${this.number}`)
       this.$emit('input', `${this.number}`)
+    },
+    numberBlur(event) {
+      this.$emit('blur', event)
     }
   }
 }
