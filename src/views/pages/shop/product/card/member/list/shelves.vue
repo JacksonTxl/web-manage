@@ -18,13 +18,51 @@
       </a-select>
     </div>
     <st-table
+    @change="onPageChange"
     :columns="columns"
     :dataSource="list"
-    @change="onPageChange"
     :pagination="{current:query.current_page,total:page.total_counts,pageSize:query.size}"
     rowKey="id"
     >
-
+      <!-- 会员卡名称 -->
+      <template slot="card_name" slot-scope="text">
+        {{text}}
+      </template>
+      <!-- 类型 -->
+      <template slot="card_type" slot-scope="text">
+        {{text.name}}
+      </template>
+      <!-- 有效期/有效次数 -->
+      <template slot="time_gradient" slot-scope="text">
+        {{text}}
+      </template>
+      <!-- 支持入场范围 -->
+      <template slot="admission_range" slot-scope="text,record">
+        <modal-link
+          v-if="text.id === 2"
+          tag="a"
+          :to="{ name: 'card-table-stop' , props:{id: record.id}}"
+        >{{text.name}}</modal-link>
+        <span v-else class="use_num">{{text.name}}</span>
+      </template>
+      <!-- 售卖时间 -->
+      <template slot="sell_time" slot-scope="text, record">
+        {{record.start_time}}&nbsp;~&nbsp;{{record.end_time}}
+      </template>
+      <!-- 售卖价格 -->
+      <template slot="price_gradient" slot-scope="text">
+        {{`${text[0]}${text[1]?'&nbsp;~&nbsp;'+text[1]:''}`}}
+      </template>
+      <!-- 发布渠道 -->
+      <template slot="publish_channel" slot-scope="text">
+        {{text.name}}
+      </template>
+      <!-- 操作 -->
+      <div slot="action" slot-scope="text,record">
+        <a @click="onDetail(record)">详情</a>
+        <a-divider type="vertical"></a-divider>
+        <a @click="onShelfDown(record)">下架</a>
+      </div>
     </st-table>
   </div>
 </template>
@@ -32,10 +70,11 @@
 import { ShelvesService } from './shelves.service'
 import { RouteService } from '@/services/route.service'
 import { UserService } from '@/services/user.service'
+import { columns } from './shelves.config'
 export default {
-  name: 'PageShopProductMemberShelves',
+  name: 'PageBrandProductMemberShelves',
   bem: {
-    shelves: 'page-shop-product-member-list-shelves'
+    shelves: 'page-brand-product-member-list-shelves'
   },
   serviceInject() {
     return {
@@ -76,48 +115,7 @@ export default {
   },
   data() {
     return {
-      columns: [
-        {
-          title: '会员卡名称',
-          dataIndex: 'card_name',
-          scopedSlots: { customRender: 'card_name' }
-        },
-        {
-          title: '类型',
-          dataIndex: 'card_type',
-          scopedSlots: { customRender: 'card_type' }
-        },
-        {
-          title: '有效期/有效次数',
-          dataIndex: 'time_gradient',
-          scopedSlots: { customRender: 'time_gradient' }
-        },
-        {
-          title: '支持入场范围',
-          dataIndex: 'admission_range',
-          scopedSlots: { customRender: 'admission_range' }
-        },
-        {
-          title: '售卖时间',
-          dataIndex: 'start_time',
-          scopedSlots: { customRender: 'start_time' }
-        },
-        {
-          title: '售卖价格',
-          dataIndex: 'price_gradient',
-          scopedSlots: { customRender: 'price_gradient' }
-        },
-        {
-          title: '发布渠道',
-          dataIndex: 'publish_channel',
-          scopedSlots: { customRender: 'publish_channel' }
-        },
-        {
-          title: '操作',
-          dataIndex: 'action',
-          scopedSlots: { customRender: 'action' }
-        }
-      ]
+      columns
     }
   },
   methods: {
@@ -125,7 +123,26 @@ export default {
       this.$router.push({ query: { ...this.query, ...{ [key]: data } } })
     },
     onPageChange(data) {
-      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize }, force: true })
+      this.$router.push({ query: { ...this.query, current_page: data.current, size: data.pageSize } })
+    },
+    // 下架
+    onShelfDown(record) {
+      this.$confirm({
+        title: '下架会员卡',
+        content: `确定下架${record.card_name}会员卡吗？`,
+        onOk: () => {
+          return this.shelvesService.setCardShelfDown(record.id).toPromise().then(() => {
+            this.$router.push({ force: true, query: this.query })
+          })
+        }
+      })
+    },
+    // 查看详情
+    onDetail(record) {
+      this.$router.push({
+        path: `/shop/product/card/member/${this.cardTypeRouteList[record.card_type.id]}/info`,
+        query: { id: record.id }
+      })
     }
   }
 }

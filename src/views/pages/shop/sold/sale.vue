@@ -34,7 +34,7 @@
           <a-divider type="vertical"></a-divider>
           <a @click="onCabinet(record)">储物柜</a>
           <a-divider type="vertical"></a-divider>
-          <a @click="onDeposite(record)">储值卡签单</a>
+          <a @click="onDeposit(record)">储值卡签单</a>
           <a-divider type="vertical"></a-divider>
           <a @click="onSale(record)">签单</a>
           <a-divider type="vertical"></a-divider>
@@ -152,9 +152,9 @@ export default {
         }
       })
     },
-    onDeposite(record) {
+    onDeposit(record) {
       this.$modalRouter.push({
-        name: 'sold-deal-sale-deposite-card',
+        name: 'sold-deal-sale-deposit-card',
         props: {
           id: '1'
         },

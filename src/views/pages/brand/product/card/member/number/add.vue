@@ -3,7 +3,7 @@
     <div class="page-brand-basic-card-body">
       <!-- <div class="page-preview">实时预览{{member_card}}</div> -->
       <div class="page-content">
-        <st-form :form="form" labelWidth="116px">
+        <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
             <a-col :lg="16">
               <st-form-item class="page-content-card-line" label="次卡名称" required>
@@ -20,7 +20,6 @@
             </a-col>
           </a-row>
           <a-row :gutter="8">
-            {{cardData.admission_shop_list}}
             <a-col :lg="23">
               <st-form-item class="page-content-card-admission-range mt-4" label="支持入场门店" required>
                 <a-radio-group
@@ -144,7 +143,6 @@
             </a-col>
           </a-row>
           <a-row :gutter="8">
-            {{cardData.sell_shop_list}}
             <a-col :lg="23">
               <st-form-item class="page-content-card-support-sales mt-4" label="支持售卖门店" required>
                 <a-radio-group
@@ -509,7 +507,9 @@ export default {
           this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
           this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')} 00:00:00`
           this.addService.addCard(this.cardData).subscribe(res => {
-            console.log(res)
+            this.$router.push({
+              path: '/brand/product/card/member/list/all'
+            })
           })
         }
       })

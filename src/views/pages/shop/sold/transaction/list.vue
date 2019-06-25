@@ -113,7 +113,7 @@ export default {
           this.onMember(record)
           break
         case 2:
-          this.onDeposite(record)
+          this.onDeposit(record)
           break
         case 3:
           this.onPersonalCourse(record)
@@ -227,9 +227,9 @@ export default {
       })
     },
     // 储值卡签单
-    onDeposite(record) {
+    onDeposit(record) {
       this.$modalRouter.push({
-        name: 'sold-deal-sale-deposite-card',
+        name: 'sold-deal-sale-deposit-card',
         props: {
           id: `${record.id}`
         },

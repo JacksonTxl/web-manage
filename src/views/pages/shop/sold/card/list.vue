@@ -4,7 +4,7 @@
     initial
     :tabs="[
       { label: '会员卡', route: { name: 'shop-sold-card-list-member' } },
-      { label: '储值卡', route: { name: 'shop-sold-card-list-deposite' } }
+      { label: '储值卡', route: { name: 'shop-sold-card-list-deposit' } }
     ]"
   >
     <div slot="actions">

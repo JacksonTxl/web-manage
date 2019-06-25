@@ -67,7 +67,7 @@
                 v-model="shopIds"
                 :expandedKeys.sync="expandedKeysShop"
                 :autoExpandParent="autoExpandParentShop"
-                :treeData="brands">
+                :treeData="shops">
                 <template slot="title" slot-scope="{title}">
                   <span v-if="title.indexOf(searchShopValue) > -1">
                     {{title.substr(0, title.indexOf(searchShopValue))}}

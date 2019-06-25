@@ -25,8 +25,8 @@ const routes: any[] = [
     redirect: '/shop/dashboard'
   },
   {
-    path: '/brand/product/card/deposite-card/shop-sale-list',
-    redirect: '/brand/product/card/deposite-card/shop-sale-list/brand'
+    path: '/brand/product/card/deposit-card/shop-sale-list',
+    redirect: '/brand/product/card/deposit-card/shop-sale-list/brand'
   },
   {
     path: '/shop/reception/cabinet',
