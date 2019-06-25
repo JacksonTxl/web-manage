@@ -25,7 +25,7 @@
     :dataSource="list"
     @change="onPageChange"
     :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
-    rowKey="id"
+    rowKey="key"
     >
       <!-- 卡名称 -->
       <template slot="card_name" slot-scope="text">
@@ -157,7 +157,7 @@ export default {
       let array = []
       this.cardList.forEach(i => {
         let key = parseInt(Math.random() * 999999).toString()
-        array.push({ ...i, id: key })
+        array.push({ ...i, key: key })
       })
       return array
     }

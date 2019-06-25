@@ -23,34 +23,53 @@
           </p>
           <p>销售开单</p>
         </div>
-        <div :class="reception('opertaion-line')" :key="i" v-if="i%7!==0"></div>
+        <div :class="reception('opertaion-line')" :key="~i" v-if="i%7!==0"></div>
       </template>
     </div>
     <div :class="reception('member-todoist')">
       <div :class="reception('member')">
         <div :class="reception('member-search')">
           <a-select
-            v-if="courseInterests===3"
-            :class="reception('search-select')"
+            :class="reception('member-search-select')"
             showSearch
             allowClear
+            :showArrow="false"
             placeholder="检索姓名或手机号查找用户"
             :defaultActiveFirstOption="false"
-            :showArrow="false"
             :filterOption="false"
             @search="onMemberSearch"
           >
-            <a-button slot="notFoundContent">1111</a-button>
+            <span slot="notFoundContent">查无此用户，<a>添加新用户？</a></span>
             <a-select-option
             v-for="(item,index) in memberList"
-            :value="item.id"
             :key="index">
               <span v-html="`${item.member_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
                 {{item.member_name}}&nbsp;&nbsp;&nbsp;{{item.mobile}}
               </span>
             </a-select-option>
           </a-select>
-          <st-button>入场</st-button>
+          <st-button type="primary">入场</st-button>
+        </div>
+        <div :class="reception('info')">
+          <div :class="reception('personal-info')">
+            <div>
+              <st-info>
+                <st-info-item label="名称">万晋健身房年卡</st-info-item>
+                <st-info-item label="手机号">13345667788</st-info-item>
+                <st-info-item label="实体卡号">会员名称</st-info-item>
+                <st-info-item label="会员类型">允许</st-info-item>
+                <st-info-item class="mg-b0" label="入场状态">会员期限卡</st-info-item>
+              </st-info>
+            </div>
+            <st-image-upload
+            :class="reception('upload')"
+            width="180px"
+            height="180px"
+            :list="photoList"></st-image-upload>
+          </div>
+          <div :class="reception('set-info')">
+
+          </div>
         </div>
       </div>
       <div :class="reception('todoist')">
@@ -68,7 +87,8 @@ export default {
   data() {
     return {
       memberSearchText: '',
-      memberList: []
+      memberList: [],
+      photoList: []
     }
   },
   methods: {

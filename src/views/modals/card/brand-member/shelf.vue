@@ -29,7 +29,7 @@
               <span slot="title" :class="shelves('card-list-title')">上架门店</span>
               <st-table
               slot="content"
-              rowKey="id"
+              rowKey="key"
               :dataSource="shopList"
               :columns="shopColumns"
               :pagination="false"
@@ -296,7 +296,7 @@ export default {
       if (this.info.sell_shops) {
         this.info.sell_shops.forEach(i => {
           let id = parseInt(Math.random() * 999999).toString()
-          shopList.push({ ...i, id })
+          shopList.push({ ...i, key: id })
         })
       }
       return shopList

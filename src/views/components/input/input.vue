@@ -1,5 +1,5 @@
 <template>
-  <a-input :placeholder="placeholder" type="text" :value="number" @change="numberChange" :disabled="disabled" maxlength="12">
+  <a-input :placeholder="placeholder" type="text" :value="number" @change="numberChange" @blur="numberBlur" :disabled="disabled" maxlength="12">
     <template slot="addonAfter">
       <slot name="addonAfter"></slot>
     </template>
@@ -64,79 +64,61 @@ export default {
       number: ''
     }
   },
-  watch: {
-    value(newVal) {
-      this.init(newVal)
-    }
-  },
   methods: {
     init(data) {
-      if (data === null) {
-        this.number = data
-        return
+      switch (data) {
+        case null:
+        case undefined:
+        case '':
+        case '.':
+          this.number = ''
+          break
+        default:
+          this.number = +data
+          if (!this.float) {
+            this.number = parseInt(data, 10)
+            this.number = this.min > this.number ? this.min : this.number
+            this.number = this.max < this.number ? this.max : this.number
+          } else {
+            this.number = parseInt(data * 10, 10) / 10
+            this.number = this.min > this.number ? this.min : this.number
+            this.number = this.max < this.number ? this.max : this.number
+          }
+          this.number += ''
       }
-      if (!this.float) {
-        // 整数
-        if (data === '') {
-          this.number = data
-          return
-        }
-        if (!/^\d\d*$/.test(data)) {
-          return
-        }
-        this.number = parseInt(data, 10)
-        this.number = this.min > this.number ? this.min : this.number
-        this.number = this.max < this.number ? this.max : this.number
-      } else {
-        // 允许小数
-        if (data === '.' || data === '') {
-          this.number = data
-          return
-        }
-        if (!this.rules.number.test(data)) {
-          return
-        }
-        this.number = parseInt(data * 10, 10) / 10
-        this.number = this.min > this.number ? this.min : this.number
-        this.number = this.max < this.number ? this.max : this.number
-        if (/\.$/.test(data)) {
-          this.number += '.'
-        }
+    },
+    numberBlur(e) {
+      switch (e.target.value) {
+        case null:
+        case undefined:
+        case '':
+        case '.':
+          this.number = ''
+          this.triggerChange()
+          this.$emit('blur', `${this.number}`)
+          break
+        default:
+          this.number = +e.target.value
+          if (!this.float) {
+            this.number = parseInt(e.target.value, 10)
+            this.number = this.min > this.number ? this.min : this.number
+            this.number = this.max < this.number ? this.max : this.number
+          } else {
+            this.number = parseInt(e.target.value * 10, 10) / 10
+            this.number = this.min > this.number ? this.min : this.number
+            this.number = this.max < this.number ? this.max : this.number
+          }
+          this.number += ''
+          this.triggerChange()
+          this.$emit('blur', `${this.number}`)
       }
-      this.number += ''
     },
     numberChange(e) {
-      if (!this.float) {
-        // 整数
-        if (e.target.value === '') {
-          this.number = e.target.value
-          this.triggerChange()
-          return
-        }
-        if (!/^\d\d*$/.test(e.target.value)) {
-          return
-        }
-        this.number = parseInt(e.target.value, 10)
-        this.number = this.min > this.number ? this.min : this.number
-        this.number = this.max < this.number ? this.max : this.number
-      } else {
-        // 允许小数
-        if (e.target.value === '.' || e.target.value === '') {
-          this.number = e.target.value
-          this.triggerChange()
-          return
-        }
-        if (!this.rules.number.test(e.target.value)) {
-          return
-        }
-        this.number = parseInt(e.target.value * 10, 10) / 10
-        this.number = this.min > this.number ? this.min : this.number
-        this.number = this.max < this.number ? this.max : this.number
-        if (/\.$/.test(e.target.value)) {
-          this.number += '.'
-        }
+      // 控制不能输入非数字
+      if (!this.rules.number.test(e.target.value) && e.target.value !== '' && e.target.value !== '.') {
+        return
       }
-      this.number += ''
+      this.number = `${e.target.value}`
       this.triggerChange()
     },
     triggerChange() {
