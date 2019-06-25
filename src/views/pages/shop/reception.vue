@@ -68,12 +68,64 @@
             :list="photoList"></st-image-upload>
           </div>
           <div :class="reception('set-info')">
-
+            <p>
+              <span class="set-info-label">入场凭证</span>
+              <a-select class="set-info-select">
+                <a-select-option value="jack">Jack</a-select-option>
+                <a-select-option value="lucy">Lucy</a-select-option>
+              </a-select>
+            </p>
+            <p>
+              <span class="set-info-label">跟进销售</span>
+              <a-select class="set-info-select">
+                <a-select-option value="jack">Jack</a-select-option>
+                <a-select-option value="lucy">Lucy</a-select-option>
+              </a-select>
+            </p>
+            <p>
+              <span class="set-info-label">跟进教练</span>
+              <a-select class="set-info-select">
+                <a-select-option value="jack">Jack</a-select-option>
+                <a-select-option value="lucy">Lucy</a-select-option>
+              </a-select>
+            </p>
+            <p>
+              <span class="set-info-label">储物柜</span>
+              <a-select class="set-info-select">
+                <a-select-option value="jack">Jack</a-select-option>
+                <a-select-option value="lucy">Lucy</a-select-option>
+              </a-select>
+            </p>
           </div>
         </div>
       </div>
       <div :class="reception('todoist')">
-        todoist
+        <a-tabs defaultActiveKey="1" class="todoist-tabs">
+          <a-tab-pane tab="待办" key="1" forceRender>
+            <div :class="reception('todoist-to-do')">
+              <st-button icon="anticon:plus" type="dashed" class="to-do-add">添加待办</st-button>
+              <ul :class="reception('todoist-to-do-list')" v-scrollBar>
+                <li>
+                  <div>
+
+                  </div>
+                  <img
+                  src="https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/VZ0RGBwTX7FA1yKb.png?x-oss-process=image/resize,interlace_1,m_fill,w_48,h_48"
+                  width="48"
+                  height="48"
+                  alt="头像"
+                  class="operation-photo">
+                  <div></div>
+                </li>
+              </ul>
+            </div>
+          </a-tab-pane>
+          <a-tab-pane tab="已完成" key="2" forceRender>
+            <div :class="reception('todoist-finish')" v-scrollBar>
+              <p v-for="i in 34" :key="i">{{i}}完成</p>
+            </div>
+          </a-tab-pane>
+        </a-tabs>
       </div>
     </div>
   </section>
