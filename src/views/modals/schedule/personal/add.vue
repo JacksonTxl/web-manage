@@ -16,20 +16,20 @@
 </template>
 
 <script>
-import { AddService } from './add.service'
 import { MessageService } from '@/services/message.service'
-import { PersonalScheduleCommonService as CommonService } from '../../../pages/shop/product/course/schedule/personal.service#/common.service'
+
 import { PersonalScheduleScheduleService as ScheduleService } from '../../../pages/shop/product/course/schedule/personal.service#/schedule.service'
+import { PersonalScheduleCommonService } from '../../../pages/shop/product/course/schedule/personal.service#/common.service'
 export default {
   serviceInject() {
     return {
-      service: AddService,
       messageService: MessageService,
-      commonService: CommonService,
+      commonService: PersonalScheduleCommonService,
       scheduleService: ScheduleService
     }
   },
   rxState() {
+    console.log(this.commonService)
     return {
       coachOptions: this.commonService.coachOptions$ || []
     }
@@ -136,8 +136,7 @@ export default {
           }
         ]
       }
-      this.service.addSchedule(reqdata).subscribe(() => {
-        console.log('ok')
+      this.scheduleService.add(reqdata).subscribe(() => {
         this.messageService.success({ content: '添加成功' })
         this.show = false
       })
@@ -145,6 +144,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-</style>

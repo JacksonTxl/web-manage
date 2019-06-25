@@ -60,22 +60,22 @@
           <plug-in></plug-in>
           <plug-in></plug-in>
         </st-container>
-        <st-container class="bg-white mg-t16" type="2">
-          <div class="adv-book">
+        <st-container class="book bg-white mg-t16" type="2">
+          <div class="book-img">
             <img src="" alt="">
           </div>
 
-          <div class="content">
+          <div class="book-content  mg-l24">
             <span>2018中国健身行业数据报告</span>
             <a href="javascript:;">¥499</a>
-            <st-button ghost pill type="primary">免费下载电子版</st-button>
+            <st-button ghost pill type="primary" class="mg-t8">免费下载电子版</st-button>
           </div>
         </st-container>
         <st-container class="aiot bg-white mg-t16" type="2">
           <div class="aiot__img">
             <img src="" alt="">
           </div>
-          <div class="aiot__content">
+          <div class="aiot__content mg-l24">
             <st-t3>多功能人脸识别一体机</st-t3>
             <p>AI技术加持，玩转大数据</p>
           </div>

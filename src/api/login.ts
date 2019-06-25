@@ -13,6 +13,12 @@ export class LoginApi extends Api {
   loginPhone(params: LoginPhoneInput) {
     return this.http.post('/login/phone', { params })
   }
+  /**
+   * 手机登录API
+   */
+  getCaptcha(params: LoginPhoneInput) {
+    return this.http.post('/login/captcha/phone', { params })
+  }
 }
 
 export interface LoginAccountInput {
@@ -35,4 +41,8 @@ export interface LoginPhoneInput {
    * 登录的手机号码
    */
   phone: string
+  /**
+   * 动态验证码
+   */
+  captcha: string
 }
