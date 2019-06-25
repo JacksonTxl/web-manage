@@ -115,7 +115,11 @@ export default {
   },
   data() {
     return {
-      columns
+      columns,
+      cardTypeRouteList: {
+        1: 'number',
+        2: 'period'
+      }
     }
   },
   methods: {
