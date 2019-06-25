@@ -131,7 +131,7 @@ export default {
           this.refundService.refund({
             refund_reason: +this.refundReason,
             refund_price: +values.refundPrice,
-            frozen_pay_type: +this.frozenPayType,
+            refund_channel: +this.frozenPayType,
             description: this.description
           }, this.id, this.type).subscribe(res => {
             this.$emit('success')

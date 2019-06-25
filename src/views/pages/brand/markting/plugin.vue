@@ -54,7 +54,7 @@
       </header>
       <section>
         <ul>
-          <li v-for="(item, index) in info.operation" :key="index">
+          <li v-for="(item, index) in info.operation" :key="index" @click="goLink(item.link)">
             <img :src="item.thumb" />
             <p>{{item.title}}</p>
           </li>
@@ -91,6 +91,9 @@ export default {
   },
 
   methods: {
+    goLink(url) {
+      window.open(url)
+    },
     getInfo() {
       this.pluginService.getInfo().subscribe()
     }
