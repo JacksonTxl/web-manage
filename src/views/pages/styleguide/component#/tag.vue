@@ -11,7 +11,7 @@
     <st-tag type="shop-close"/>
     <st-tag type="period-card"/>
     <st-tag type="number-card"/>
-    <st-tag type="deposite-card"/>
+    <st-tag type="deposit-card"/>
     <st-tag type="cabinet-available"/>
     <st-tag type="cabinet-inuse"/>
   </section>

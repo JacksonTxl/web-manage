@@ -26,7 +26,7 @@ export default {
     return {
       enums: user.enums$,
       staffEnums: user.staffEnums$,
-      depositeCardEnums: user.depositeCardEnums$,
+      depositCardEnums: user.depositCardEnums$,
       memberEnums: user.memberEnums$
     }
   },
