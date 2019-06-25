@@ -129,7 +129,7 @@
               <td></td>
               <td>{{item.validity_times}}次</td>
               <td :class="shelves('price-input')">
-                <st-input-number :float="true" @change="e => brandPriceSettingHandleChange({value:e, key:index})" style="width:140px;">
+                <st-input-number :float="true" :max="+item.max_price||undefined" :min="+item.min_price||undefined" @change="e => brandPriceSettingHandleChange({value:e, key:index})" style="width:140px;">
                   <span slot="addonAfter">元</span>
                 </st-input-number>
               </td>
@@ -165,7 +165,7 @@
               <td></td>
               <td>{{item.duration_num}}{{item.duration_unit | enumFilter('member_card.duration_unit')}}</td>
               <td :class="shelves('price-input')">
-                <st-input-number :float="true" @change="e => brandPriceSettingHandleChange({value:e, key:index})" style="width:140px;">
+                <st-input-number :float="true" :max="+item.max_price||undefined" :min="+item.min_price||undefined" @change="e => brandPriceSettingHandleChange({value:e, key:index})" style="width:140px;">
                   <span slot="addonAfter">元</span>
                 </st-input-number>
               </td>
