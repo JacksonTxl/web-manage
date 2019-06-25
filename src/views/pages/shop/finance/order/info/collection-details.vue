@@ -10,7 +10,7 @@
           {{record.flow_type === 3 ? `-${text}` : text}}
       </template>
       <div slot="action" slot-scope="text, record">
-          <a v-if="record.is_reversaled !== 1 && record.flow_type === 1" @click="onFlowReversal(record)">流水冲销</a>
+          <a v-if="record.auth['brand_shop:order:order|flow_reverse']" @click="onFlowReversal(record)">流水冲销</a>
       </div>
     </st-table>
   </section>
@@ -84,7 +84,6 @@ export default {
       this.$modalRouter.push({
         name: 'shop-finance-flow',
         props: {
-          // id: record.sold_cabinet_id,
           id: record.flow_id
         },
         on: {
