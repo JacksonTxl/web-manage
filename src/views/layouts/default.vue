@@ -60,7 +60,7 @@
                   </modal-link>
                 </a-menu-item>
                 <a-menu-divider/>
-                <a-menu-item class="layout-default-body__options">
+                <a-menu-item  @click="onClickLogout" class="layout-default-body__options">
                   <st-icon type="logout"></st-icon>
                   <span>退出</span>
                 </a-menu-item>
@@ -81,6 +81,7 @@
 import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
 import DefaultSiderMenu from './default-sider-menu'
 import SwitchShop from '@/views/fragments/shop/switch'
+import Cookie from 'js-cookie'
 export default {
   serviceInject() {
     return {
@@ -104,6 +105,10 @@ export default {
   methods: {
     switchShop() {
       this.isShowSwitchShop = true
+    },
+    onClickLogout() {
+      Cookie.set('saas-token', '')
+      location.reload()
     }
   }
 }
