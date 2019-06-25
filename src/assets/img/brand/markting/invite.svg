@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>邀请有礼</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FFDD7C" offset="0%"></stop>
+            <stop stop-color="#FFB946" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#FFEDAA" offset="0%"></stop>
+            <stop stop-color="#FFD671" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="优惠券" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="营销中心-copy-5" transform="translate(-860.000000, -585.000000)">
+            <g id="分组-4" transform="translate(224.000000, 496.000000)">
+                <g id="分组-copy" transform="translate(621.000000, 74.000000)">
+                    <g id="编组-5" transform="translate(16.000000, 16.000000)">
+                        <g id="邀请有礼-copy">
+                            <g id="编组-2">
+                                <circle id="椭圆形复制-6" stroke="url(#linearGradient-1)" stroke-width="2" cx="23" cy="23" r="20.7"></circle>
+                                <circle id="椭圆形复制-6" stroke="url(#linearGradient-1)" stroke-width="2" fill="url(#linearGradient-2)" opacity="0.100000001" cx="23" cy="23" r="23"></circle>
+                                <rect id="矩形复制-3" fill="url(#linearGradient-1)" x="13.8" y="16.1" width="18.4" height="14.5666667" rx="2"></rect>
+                                <rect id="矩形" fill="#FFFFFF" x="20.7" y="13.8" width="4.6" height="4.6"></rect>
+                                <rect id="矩形复制-4" fill="#FFFFFF" x="11.5" y="22.2333333" width="23" height="1"></rect>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

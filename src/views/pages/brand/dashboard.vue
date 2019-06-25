@@ -1,178 +1,126 @@
 <template>
-  <div>
-    <a-row :gutter="24" class="page-dashboard">
-      <!-- left -->
-      <a-col :span="19">
-        <!-- 统计图表 -->
-        <section>
-          <a-row :gutter="24">
-            <a-col :span="8">
-              <div class="page-dashboard__chart bg-white">
-                <h3 class="page-dashboard__chart-title">2月用户数（人）</h3>
-                <div class="page-dashboard__chart-figure-primary">
-                  <ICountUp :endVal="9999"/>
-                </div>
-                <div class="page-dashboard__chart-figure-secondary">
-                  <span class="color-text-light">本周</span><span class="color-text mg-l8"><ICountUp :endVal="9999"/></span>
-                </div>
-              </div>
-            </a-col>
-            <a-col :span="8">
-              <div initial class="page-dashboard__chart bg-white">
-                <h3 class="page-dashboard__chart-title">本月营收（元）</h3>
-                <div class="page-dashboard__chart-figure-primary"><ICountUp :endVal="9999"/></div>
-                <div class="page-dashboard__chart-figure-secondary">
-                  <span class="color-text-light">本周</span><span class="color-text mg-l8"><ICountUp :endVal="9999"/></span>
-                </div>
-              </div>
-            </a-col>
-            <a-col :span="8">
-              <div initial class="page-dashboard__chart bg-white">
-                <h3 class="page-dashboard__chart-title">本月消课数（节）</h3>
-                <div class="page-dashboard__chart-figure-primary"><ICountUp :endVal="9999"/></div>
-                <div class="page-dashboard__chart-figure-secondary">
-                  <span class="color-text-light">本周</span><span class="color-text mg-l8"><ICountUp :endVal="9999"/></span>
-                </div>
-              </div>
-            </a-col>
-          </a-row>
-        </section>
-        <!-- 统计图表 end -->
-        <section class="mg-t16">
-          <a-row :gutter="24">
-            <a-col :span="8" v-for="(shop, index) in shopList" :key="index">
-              <div class="bg-white">
-                <div class="page-dashboard__shop">
-                  <div class="page-dashboard__shop-img" :style="`background-image: url('${shop.image_url}')`">
-                    <h4 class="page-dashboard__shop-name">{{shop.shop_name}}</h4>
-                    <div class="page-dashboard__shop-status">
-                      <st-tag type="shop-trial" />
-                    </div>
-                  </div>
-                  <div class="page-dashboard__shop-info">
-                    <div class="page-dashboard__shop-address">
-                      {{shop.address}}
-                    </div>
-                    <div class="page-dashboard__shop-tel">{{shop.shop_tel}}</div>
-                    <div class="mg-t24">
-                      <label class="page-dashboard__shop-label">会员</label>
-                      <span>{{shop.members}}人</span>
-                      <label class="page-dashboard__shop-label mg-l40">员工</label>
-                      <span>{{shop.staffs}}人</span>
-                    </div>
-                  </div>
-                  <div class="page-dashboard__action">
-                    <a-row>
-                      <a-col :span="16">
-                        <a href="#" class="st-link-secondary">查看</a>
-                        <a href="#" class="mg-l24 st-link-secondary">编辑</a>
-                        <a href="#" class="mg-l24 st-link-secondary">更改状态</a>
-                      </a-col>
-                      <a-col :span="8" class="text-right">
-                        <st-button pill type="primary" size="small">进入门店</st-button>
-                      </a-col>
-                    </a-row>
-                  </div>
-                </div>
-              </div>
-            </a-col>
-            <a-col :span="8">
-              <div class="bg-white">
-                <div class="page-dashboard__add-shop cursor-pointer">
-                  <div class="page-dashboard__placeholder"></div>
-                  <div class="page-dashboard__add-shop-content ta-c">
-                    <div class="page-dashboard__add-shop-icon"><st-icon type="add"></st-icon></div>
-                    <div class="page-dashboard__add-shop-text">添加门店</div>
-                  </div>
-                </div>
-              </div>
-            </a-col>
-          </a-row>
-          <p class="ta-c mg-t24" v-if="shopList.length">
-            <a-pagination showSizeChanger :defaultCurrent="page.current_page"
-              :total="page.total_counts" @change="onPageChange"/>
-          </p>
-        </section>
+  <div :class="b()" >
+    <a-row :gutter="24">
+      <a-col :class="b('content')" :span="18">
+        <a-row :gutter="16" :class="bCount()">
+          <a-col :span="6" :class="bCount('item')">
+            <div :class="bCount('box')">
+              <count-card></count-card>
+            </div>
+          </a-col>
+          <a-col :span="6" :class="bCount('item')">
+            <div :class="bCount('box')">
+              <count-card></count-card>
+            </div>
+          </a-col>
+          <a-col :span="6" :class="bCount('item')">
+            <div :class="bCount('box')">
+              <count-card></count-card>
+            </div>
+          </a-col>
+          <a-col :span="6" :class="bCount('item')">
+            <div :class="bCount('box')">
+              <count-card></count-card>
+            </div>
+          </a-col>
+        </a-row>
+        <a-row class="mg-t16 bg-white" >
+          <a-col :span="24">
+            <dashboard-tabs>
+              <template v-slot:user>
+                <h1>Here might be a page title</h1>
+              </template>
+              <template v-slot:marketing>
+                <h1>Here might be a page title</h1>
+              </template>
+            </dashboard-tabs>
+          </a-col>
+        </a-row>
+        <a-row :gutter="16" class="mg-t16">
+          <a-col :span="12">
+            <st-container class="bg-white" type="2">
+              <st-t3>客单价</st-t3>
+            </st-container>
+          </a-col>
+          <a-col :span="12">
+            <st-container class="bg-white" type="2">
+              <st-t3>用户活跃分析</st-t3>
+
+            </st-container>
+          </a-col>
+        </a-row>
       </a-col>
-      <!-- left end -->
-      <!-- right -->
-      <a-col :span="5">
-        <section class="bg-white">
-           <a href="#">
-            <img class="full-width" src="https://pic3-s.styd.cn/o_1d78oa7b95lp1l291etkv7h1fk7m.jpg?imageView2/1/w/300/h/170/interlace/1" alt="广告位">
-          </a>
-        </section>
-        <section class="bg-white mg-t16">
-          <a href="#">
-            <img class="full-width" src="https://pic3-s.styd.cn/o_1d78oa7b95lp1l291etkv7h1fk7m.jpg?imageView2/1/w/300/h/170/interlace/1" alt="广告位">
-          </a>
-        </section>
-        <section class="mg-t16">
-          <a href="#" class="page-dashboard__link-item">
-            在线咨询
-            <span class="page-dashboard__link-icon page-dashboard__link-icon--wechat">
-              <st-icon type="wechat"></st-icon>
-            </span>
-          </a>
-          <a href="#" class="page-dashboard__link-item">
-            最新功能
-            <span class="page-dashboard__link-icon">
-              <st-icon type="arrow-right-double"></st-icon>
-            </span>
-          </a>
-          <a href="#" class="page-dashboard__link-item">
-            帮助中心
-            <span class="page-dashboard__link-icon">
-              <st-icon type="arrow-right-double"></st-icon>
-            </span>
-          </a>
-          <st-button block pill type="primary" icon="add" size="large">添加门店</st-button>
-        </section>
+      <a-col :class="b('adv')" :span="6">
+        <st-panel app :class="bCount('box')">
+          <img width="280px" height="186px" src="https://file.digitaling.com/eImg/uimages/20170814/1502707757253062.jpg" alt="">
+        </st-panel>
+        <st-container class="bg-white mg-t16" type="2">
+          <st-t3>热门营销插件</st-t3>
+          <plug-in></plug-in>
+          <plug-in></plug-in>
+          <plug-in></plug-in>
+        </st-container>
+        <st-container class="bg-white mg-t16" type="2">
+          <div class="adv-book">
+            <img src="" alt="">
+          </div>
+
+          <div class="content">
+            <span>2018中国健身行业数据报告</span>
+            <a href="javascript:;">¥499</a>
+            <st-button ghost pill type="primary">免费下载电子版</st-button>
+          </div>
+        </st-container>
+        <st-container class="aiot bg-white mg-t16" type="2">
+          <div class="aiot__img">
+            <img src="" alt="">
+          </div>
+          <div class="aiot__content">
+            <st-t3>多功能人脸识别一体机</st-t3>
+            <p>AI技术加持，玩转大数据</p>
+          </div>
+        </st-container>
+        <st-container class="link bg-white mg-t16" type="2">
+          <st-t3 class="link__phone">400-962-8988</st-t3>
+          <div class="link__time">服务时间：09:00 - 18:00</div>
+          <div class="link__qr-code mg-t8">
+            <div class="image-box">
+              <img class="image" src="#" alt="">
+            </div>
+
+            <span>扫码关注三体官方微信公众号</span>
+          </div>
+        </st-container>
       </a-col>
-      <!-- right end -->
     </a-row>
 
   </div>
 </template>
+
 <script>
-import { DashboardService } from './dashboard.service'
+import DashboardTabs from '@/views/pages/brand/dashboard#/tabs'
+import CountCard from '@/views/pages/brand/dashboard#/count-card'
+import PlugIn from '@/views/pages/brand/dashboard#/plug-in'
 export default {
-  serviceInject() {
-    return {
-      dashboardService: DashboardService
-    }
+  name: 'Dashboard',
+  bem: {
+    b: 'page-dashboard',
+    bCount: 'page-dashboard-count',
+    bAdv: 'page-dashboard-adv'
   },
   data() {
     return {
-      shopList: [],
-      page: {}
+      gutter: 24
     }
   },
-  rxState() {
-    const shopList = this.dashboardService.shopInfo$
-    const page = this.dashboardService.page$
-    return {
-      shopList,
-      page
-    }
-  },
-  created() {
-    this.shopList = this.shopListHandler(this.shopList)
-  },
-  methods: {
-    shopListHandler(list) {
-      return list.map(item => {
-        item.image_url = imgFilter(item.image_url, {
-          w: 640,
-          h: 360
-        })
-        return item
-      })
-    },
-    onPageChange(pageNumber) {
-      console.log(pageNumber)
-    }
+  components: {
+    DashboardTabs,
+    CountCard,
+    PlugIn
   }
 }
-
 </script>
+
+<style lang="scss" scoped>
+
+</style>

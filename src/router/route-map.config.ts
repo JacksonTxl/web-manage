@@ -93,7 +93,7 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-card-list-deposite'(routeConfig: RouteConfig) {
+  'shop-sold-card-list-deposit'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       is_valid: { type: Number, default: -1 },
@@ -157,13 +157,13 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-card-info-deposite-info-consumption-record'(routeConfig: RouteConfig) {
+  'shop-sold-card-info-deposit-info-consumption-record'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-card-info-deposite-info-operation-record'(routeConfig: RouteConfig) {
+  'shop-sold-card-info-deposit-info-operation-record'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
@@ -254,16 +254,33 @@ export const routeMapConfig = {
       shelf_status: { type: Number, default: -1 }
     }
   },
-  'shop-product-card-deposite-list-shelves'(routeConfig: RouteConfig) {
+  'shop-product-card-deposit-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
-      current_page: { type: Number, default: 1 },
+      page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
-      card_type: { type: Number, default: -1 },
       publish_channel: { type: Number, default: -1 },
       card_name: { type: String, default: '' }
     }
   },
-  'shop-product-card-deposite-list-all'(routeConfig: RouteConfig) {
+  'shop-product-card-deposit-list-all'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      sell_status: { type: Number, default: -1 },
+      publish_channel: { type: Number, default: -1 },
+      card_name: { type: String, default: '' },
+      size: { type: Number, default: 20 },
+      page: { type: Number, default: 1 }
+    }
+  },
+  'brand-product-card-deposit-list-shelves'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      publish_channel: { type: Number, default: -1 },
+      shop_id: { type: Number, default: -1 },
+      card_name: { type: String, default: '' }
+    }
+  },
+  'brand-product-card-deposit-list-all'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {
       sell_status: { type: Number, default: -1 },
       publish_channel: { type: Number, default: -1 },

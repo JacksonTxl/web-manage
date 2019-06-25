@@ -1,50 +1,5 @@
 <template>
   <div>
-    <a-menu
-        class="layout-default-sider__menu"
-        :openKeys="openKeys"
-        :selectedKeys="selectedKeys"
-        @openChange="onOpenChange"
-        mode="inline"
-      >
-        <template v-for="menu in menus">
-          <a-sub-menu
-            v-if="isHasSubmenu(menu)"
-            :key="menu.id"
-          >
-            <span slot="title">
-              <st-icon :type="menu.icon"/>
-              <span>{{menu.name}}</span>
-            </span>
-            <a-menu-item
-              v-for="subMenu in menu.children"
-              :key="subMenu.id"
-            >
-              <st-icon
-                v-if="isfavorite(subMenu.id)"
-                type="star"
-                size="8px"
-                class="layout-default-sider__menu-star active"
-                @click.native="delFavorite(subMenu.id)"
-              />
-              <st-icon
-                v-else
-                type="star-line"
-                size="8px"
-                class="layout-default-sider__menu-star"
-                @click.native="addFavorite(subMenu.id)"
-              />
-              <span @click="onClickMenuItem(subMenu)">{{subMenu.name}}</span>
-            </a-menu-item>
-        </a-sub-menu>
-        <a-menu-item v-else :key="menu.id">
-          <router-link :to="{ name: menu.url }">
-            <st-icon :type="menu.icon"/>
-            <span>{{menu.name}}</span>
-          </router-link>
-        </a-menu-item>
-      </template>
-    </a-menu>
     <div v-if="favorite.length" class="layout-default-sider__often">
       <h2 class="layout-default-sider__often-title">常用</h2>
       <ul class="layout-default-sider__often-list">
@@ -69,12 +24,65 @@
         </li>
       </ul>
     </div>
+    <a-menu
+        class="layout-default-sider__menu"
+        :openKeys="openKeys"
+        :selectedKeys="selectedKeys"
+        @openChange="onOpenChange"
+        mode="inline"
+      >
+        <template v-for="menu in menus">
+          <a-sub-menu
+            v-if="isHasSubmenu(menu)"
+            :key="menu.id"
+          >
+            <span slot="title">
+              <st-icon :type="menu.icon"/>
+              <span>{{menu.name}}</span>
+              <st-icon class="layout-default-sider__menu-arrow open" type="add" size="8px"/>
+              <st-icon class="layout-default-sider__menu-arrow fold-up" type="minus" size="8px"/>
+            </span>
+            <a-menu-item
+              v-for="subMenu in menu.children"
+              :key="subMenu.id"
+              class="layout-default-sider__menu-item"
+            >
+              <st-icon
+                v-if="isfavorite(subMenu.id)"
+                type="star"
+                size="8px"
+                class="layout-default-sider__menu-star active"
+                @click.native="delFavorite(subMenu.id, subMenu)"
+              />
+              <st-icon
+                v-else
+                type="star-line"
+                size="8px"
+                class="layout-default-sider__menu-star"
+                @click.native="addFavorite(subMenu.id, subMenu)"
+              />
+              <span
+                @click="onClickMenuItem(subMenu)"
+                class="layout-default-sider__menu-title"
+              >
+                {{subMenu.name}}
+              </span>
+            </a-menu-item>
+        </a-sub-menu>
+        <a-menu-item v-else :key="menu.id">
+          <router-link :to="{ name: menu.url }">
+            <st-icon :type="menu.icon"/>
+            <span>{{menu.name}}</span>
+          </router-link>
+        </a-menu-item>
+      </template>
+    </a-menu>
   </div>
 </template>
 <script>
 import { UserService } from '@/services/user.service'
 import { treeToMap } from '@/utils/tree-to-map'
-import { find } from 'lodash-es'
+import { find, remove } from 'lodash-es'
 export default {
   name: 'DefaultBrandSiderMenu',
   serviceInject() {
@@ -181,14 +189,24 @@ export default {
         name: menu.url
       })
     },
-    addFavorite(id) {
-      this.userService.addFavorite(id).subscribe(this.onMenuChange)
+    addFavorite(id, subMenu) {
+      console.log('add', this.menuData.favorite)
+      this.userService.addFavorite(id).subscribe(() => {
+        const findMenu = find(this.menuData.favorite, item => {
+          return item.id === id
+        })
+        if (!findMenu) {
+          this.menuData.favorite.push(subMenu)
+        }
+      })
     },
-    delFavorite(id) {
-      this.userService.delFavorite(id).subscribe(this.onMenuChange)
-    },
-    onMenuChange() {
-      this.userService.reloadMenus()
+    delFavorite(id, subMenu) {
+      console.log('del', this.menuData.favorite)
+      this.userService.delFavorite(id).subscribe(() => {
+        remove(this.menuData.favorite, item => {
+          return item.id === subMenu.id
+        })
+      })
     },
     getRootSubmenuKeys() {
       const { menus } = this

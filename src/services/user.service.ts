@@ -43,7 +43,7 @@ export class UserService extends Store<UserState> {
   enums$: Computed<any>
   staffEnums$: Computed<ModuleEnums>
   accountEnums$: Computed<ModuleEnums>
-  depositeCardEnums$: Computed<ModuleEnums>
+  depositCardEnums$: Computed<ModuleEnums>
   memberEnums$: Computed<ModuleEnums>
   memberCardEnums$: Computed<ModuleEnums>
   personalCourseEnums$: Computed<ModuleEnums>
@@ -80,7 +80,7 @@ export class UserService extends Store<UserState> {
 
     this.staffEnums$ = new Computed(this.enums$.pipe(pluck('staff')))
     this.accountEnums$ = new Computed(this.enums$.pipe(pluck('account')))
-    this.depositeCardEnums$ = new Computed(
+    this.depositCardEnums$ = new Computed(
       this.enums$.pipe(pluck('deposit_card'))
     )
     this.memberEnums$ = new Computed(this.enums$.pipe(pluck('member')))

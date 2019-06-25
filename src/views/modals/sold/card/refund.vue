@@ -5,7 +5,7 @@
   v-model="show"
   wrapClassName="modal-sold-card-refund">
     <div :class="refund('content')">
-      <a-row :class="refund('info')" v-if="isDeposite">
+      <a-row :class="refund('info')" v-if="isDeposit">
         <a-col :span="13" class="mgb-36">
           <st-info>
             <st-info-item label="订单号">{{refundInfo.order_id}}</st-info-item>
@@ -27,7 +27,7 @@
         <a-col :span="11" class="mgb-36">
            <st-info>
             <st-info-item label="购买">{{refundInfo.card_name}}</st-info-item>
-            <st-info-item class="mg-b0" label="赠送">{{isDeposite?'无':'refundInfo.aaaa'}}</st-info-item>
+            <st-info-item class="mg-b0" label="赠送">{{isDeposit?'无':'refundInfo.aaaa'}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="24" class="mgb-36">
@@ -164,7 +164,7 @@ export default {
     }
   },
   computed: {
-    isDeposite() {
+    isDeposit() {
       return this.type === 'deposit'
     },
     isMember() {
