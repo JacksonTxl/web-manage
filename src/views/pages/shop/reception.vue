@@ -105,25 +105,48 @@
             <div :class="reception('todoist-to-do')">
               <st-button icon="anticon:plus" type="dashed" class="to-do-add">添加待办</st-button>
               <ul :class="reception('todoist-to-do-list')" v-scrollBar>
-                <li>
-                  <div>
-
+                <li v-for=" i in 36" :key="i" :class="{'mg-t12':i>2}">
+                  <div class="to-do-main">
+                    <img
+                    src="https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/VZ0RGBwTX7FA1yKb.png?x-oss-process=image/resize,interlace_1,m_fill,w_48,h_48"
+                    width="48"
+                    height="48"
+                    alt="头像"
+                    class="operation-photo">
+                    <p>
+                      <span>仔仔要起飞</span>
+                      <span>仔细说明仔仔是如何起飞的</span>
+                    </p>
                   </div>
+                  <div class="operation-time">
+                    <span>2019/06/21 19:32:12</span>
+                    <st-button class="to-do-button">完成</st-button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </a-tab-pane>
+          <a-tab-pane tab="已完成" key="2" forceRender>
+            <ul :class="reception('todoist-finish-list')" v-scrollBar>
+              <li v-for=" i in 36" :key="i" :class="{'mg-t12':i>2}">
+                <div class="finish-main">
                   <img
                   src="https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/VZ0RGBwTX7FA1yKb.png?x-oss-process=image/resize,interlace_1,m_fill,w_48,h_48"
                   width="48"
                   height="48"
                   alt="头像"
                   class="operation-photo">
-                  <div></div>
-                </li>
-              </ul>
-            </div>
-          </a-tab-pane>
-          <a-tab-pane tab="已完成" key="2" forceRender>
-            <div :class="reception('todoist-finish')" v-scrollBar>
-              <p v-for="i in 34" :key="i">{{i}}完成</p>
-            </div>
+                  <p>
+                    <span>仔仔要起飞</span>
+                    <span>仔细说明仔仔是如何起飞的</span>
+                  </p>
+                </div>
+                <div class="operation-time">
+                  <span>2019/06/21 19:32:12</span>
+                  <st-button class="finish-button">完成</st-button>
+                </div>
+              </li>
+            </ul>
           </a-tab-pane>
         </a-tabs>
       </div>
