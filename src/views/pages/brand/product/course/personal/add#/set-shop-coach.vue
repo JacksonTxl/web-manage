@@ -115,6 +115,7 @@ export default {
     },
     onChange(e) {
       this.isShow = (e.target.value === '2')
+      this.shopIds = []
     },
     onSelectShopChange(shopIds) {
       console.log('your selected', shopIds)
