@@ -3,17 +3,20 @@
     <MarkteingPluginTitle />
     <st-panel app initial :class="basic()">
       <div slot="title" :class="basic('search')">
-        <st-input-search
-        v-model="queryParams.couponName"
-        @search="onSearch"
-        placeholder="请输入优惠券名称"
-        style="width: 290px;"/>
+        <div :class="basic('add')">
+          <st-button icon="add" type="primary" @click="onAddCoupon">新增优惠券</st-button>
+        </div>
         <a-select :class="basic('select')" v-model="queryParams.couponStatus" @change="onSearch" style="width: 160px">
           <a-select-option
           v-for="(item,index) in productType"
           :key="index"
           :value="item.value">{{item.label}}</a-select-option>
         </a-select>
+        <st-input-search
+        v-model="queryParams.couponName"
+        @search="onSearch"
+        placeholder="请输入优惠券名称"
+        style="width: 290px;"/>
       </div>
       <div :class="basic('content')">
         <st-table
@@ -113,8 +116,8 @@ export default {
           scopedSlots: { customRender: 'sold_num' }
         }, {
           title: '状态',
-          dataIndex: 'put_status',
-          scopedSlots: { customRender: 'put_status' }
+          dataIndex: 'coupon_status',
+          scopedSlots: { customRender: 'coupon_status' }
         }, {
           title: '操作',
           dataIndex: 'action',
@@ -179,6 +182,10 @@ export default {
           }
         }
       })
+    },
+    // 新增优惠券活动
+    onAddCoupon() {
+      this.$router.push({ path: '/brand/marketing/plugin/coupon/add' })
     }
   },
   components: {
