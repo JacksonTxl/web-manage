@@ -206,7 +206,12 @@ export default {
         consume_type: this.consumeType,
         consume_id: this.consumeId
       }
-      this.teamScheduleReserveService.add(form).subscribe()
+      this.teamScheduleCommonService.add(form).pipe(
+        switchMap(state => {
+          this.info = state.info
+          return this.teamScheduleCommonService.getUnusedSeatList({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
+        }))
+        .subscribe()
     },
     edit(key) {
       const newData = [...this.data]
@@ -233,7 +238,7 @@ export default {
     ss.getInfo(this.id).pipe(
       switchMap(state => {
         this.info = state.info
-        return this.teamScheduleCommonService.getUnusedSeat({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
+        return this.teamScheduleCommonService.getUnusedSeatList({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
       }))
       .subscribe()
   }
