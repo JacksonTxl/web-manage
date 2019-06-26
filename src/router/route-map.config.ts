@@ -4,7 +4,6 @@ interface RouteConfig extends ServiceRouteConfig {
   meta: {
     layout: string
     title: string
-    auth: object
     name: string
     parentId: string
   },
@@ -211,35 +210,14 @@ export const routeMapConfig = {
     routeConfig.meta.title = '系统设置'
   },
   'brand-setting-app-course'(routeConfig: RouteConfig) {
-    routeConfig.meta.auth = {
-      list: [
-        'brand_shop:member:course_type|list'
-      ]
-    }
+
   },
   'brand-setting-app-course-category'(routeConfig: RouteConfig) {
-    routeConfig.meta.auth = {
-      list: [
-        'brand_shop:member:course_type|edit',
-        'brand_shop:member:course_type|delete'
-      ]
-    }
   },
   'brand-setting-app-course-training-aim'(routeConfig: RouteConfig) {
-    routeConfig.meta.auth = {
-      list: [
-        'brand_shop:member:training_aim|edit',
-        'brand_shop:member:training_aim|delete'
-      ]
-    }
+
   },
   'brand-setting-app-staff-skillful'(routeConfig: RouteConfig) {
-    routeConfig.meta.auth = {
-      list: [
-        'brand_shop:member:good_at|edit',
-        'brand_shop:member:good_at|delete'
-      ]
-    }
   },
   'shop-product-card-member-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.queryOptions = {

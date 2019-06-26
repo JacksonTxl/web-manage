@@ -30,13 +30,10 @@ export default {
       list: []
     }
   },
-  rxState() {
-    return {
-      list: this.selectTrainingAimService.list$
-    }
-  },
   created() {
-    this.selectTrainingAimService.getTrainingAimList().subscribe()
+    this.selectTrainingAimService.getTrainingAimList().subscribe(res => {
+      this.list = res.list
+    })
   },
   methods: {
     change(val) {
