@@ -31,7 +31,33 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="23">
-              <st-form-item class="mg-b16" label="支持入场门店">{{shopName.name}}</st-form-item>
+              <st-form-item class="page-content-card-line" label="优惠范围" required>
+                <select-shop @change="onSelectShop"></select-shop>
+              </st-form-item>
+              <st-form-item class="page-content-card-line" label="可用门店" required>
+                <select-shop @change="onSelectShop"></select-shop>
+              </st-form-item>
+              <st-form-item class="page-content-card-line" label="使用条件" required>
+                <a-radio-group @change="onChange" v-model="value">
+                  <a-radio :value="1">无门槛使用</a-radio>
+                  <a-radio :value="2">满<a-input />元使用</a-radio>
+                </a-radio-group>
+              </st-form-item>
+              <st-form-item class="page-content-card-line" label="发放数量" required>
+                <st-input-number placeholder="请输入数量">
+                  <span slot="suffix">张</span>
+                </st-input-number>
+                <label>保存后只可增加不可减少</label>
+              </st-form-item>
+              <st-form-item class="page-content-card-line" label="使用有效期" required>
+                领券当日起
+                <st-input-number placeholder=""></st-input-number>
+                天内有效
+              </st-form-item>
+              <st-form-item class="page-content-card-line" label="优惠共享" >
+                <a-checkbox @change="onChange">不可与其它优惠同享</a-checkbox>
+              </st-form-item>
+              <!-- <st-form-item class="mg-b16" label="支持入场门店">{{shopName.name}}</st-form-item> -->
             </a-col>
           </a-row>
           <a-row :gutter="8">
@@ -207,6 +233,7 @@ import moment from 'moment'
 import { RuleConfig } from '@/constants/rule'
 import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
+import SelectShop from '@/views/fragments/shop/select-shop'
 export default {
   name: 'BrandMarketingPluginCouponAdd',
   serviceInject() {
@@ -510,6 +537,9 @@ export default {
       }
       return arr
     }
+  },
+  components: {
+    SelectShop
   }
 }
 </script>
