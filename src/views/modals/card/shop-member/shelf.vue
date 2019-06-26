@@ -27,8 +27,8 @@
       </div>
     </div>
     <st-form :form="form" labelWidth="67px" :class="shelves('form')">
-      <!-- 次卡 -->
-      <div :class="shelves('price')" v-if="info.card_type===1" class="mg-b0">
+      <!-- 次卡，无价格范围，品牌统一定价 -->
+      <div :class="shelves('price')" v-if="info.price_setting===1&&info.card_type===1" class="mg-b0">
         <st-form-table>
           <colgroup>
             <col style="width:4%;">
@@ -58,8 +58,8 @@
           </tbody>
         </st-form-table>
       </div>
-      <!-- 期卡 -->
-      <div :class="shelves('price')" v-if="info.card_type===2" class="mg-b0">
+      <!-- 期卡，无价格范围，品牌统一定价 -->
+      <div :class="shelves('price')" v-if="info.price_setting===1&&info.card_type===2" class="mg-b0">
         <st-form-table>
           <colgroup>
             <col style="width:4%;">
@@ -86,6 +86,80 @@
           </tbody>
         </st-form-table>
       </div>
+      <!-- 次卡，有价格范围，门店自主定价 -->
+      <div :class="{'modal-card-batch-shelves__price-error':priceHelpText!==''}" v-if="info.price_setting===2&&info.card_type===1"  class="modal-card-batch-shelves__price mg-b0">
+        <st-form-table>
+          <colgroup>
+            <col style="width:2%;">
+            <col style="width:10%;">
+            <col style="width:20%;">
+            <col style="width:17%;">
+            <col style="width:17%;">
+            <col style="width:17%;">
+            <col style="width:17%;">
+          </colgroup>
+          <tr>
+            <th></th>
+            <th>次数</th>
+            <th>售卖价格</th>
+            <th></th>
+            <th>有效期限</th>
+            <th>允许冻结</th>
+            <th>赠送上限</th>
+          </tr>
+          <tbody>
+            <tr v-for="(item,index) in priceList" :key="index">
+              <td></td>
+              <td>{{item.validity_times}}次</td>
+              <td :class="shelves('price-input')">
+                <st-input-number :float="true" :max="+item.max_price||undefined" :min="+item.min_price||undefined" @change="e => brandPriceSettingHandleChange({value:e, key:index})" style="width:140px;">
+                  <span slot="addonAfter">元</span>
+                </st-input-number>
+              </td>
+              <td>{{item.min_price}}&nbsp;~&nbsp;{{item.max_price}}</td>
+              <td>{{item.duration_num}}{{item.duration_unit | enumFilter('member_card.duration_unit')}}</td>
+              <td>{{item.frozen_day}}天</td>
+              <td>{{item.gift_unit}}次</td>
+            </tr>
+          </tbody>
+        </st-form-table>
+      </div>
+      <!-- 期卡，有价格范围，门店自主定价 -->
+      <div :class="{'modal-card-batch-shelves__price-error':priceHelpText!==''}" v-if="info.price_setting===2&&info.card_type===2"  class="modal-card-batch-shelves__price mg-b0">
+        <st-form-table>
+          <colgroup>
+            <col style="width:2%;">
+            <col style="width:19%;">
+            <col style="width:22%;">
+            <col style="width:19%;">
+            <col style="width:19%;">
+            <col style="width:19%;">
+          </colgroup>
+          <tr>
+            <th></th>
+            <th>有效期限</th>
+            <th>售卖价格</th>
+            <th></th>
+            <th>允许冻结</th>
+            <th>赠送上限</th>
+          </tr>
+          <tbody>
+            <tr v-for="(item,index) in priceList" :key="index">
+              <td></td>
+              <td>{{item.duration_num}}{{item.duration_unit | enumFilter('member_card.duration_unit')}}</td>
+              <td :class="shelves('price-input')">
+                <st-input-number :float="true" :max="+item.max_price||undefined" :min="+item.min_price||undefined" @change="e => brandPriceSettingHandleChange({value:e, key:index})" style="width:140px;">
+                  <span slot="addonAfter">元</span>
+                </st-input-number>
+              </td>
+              <td>{{item.min_price}}&nbsp;~&nbsp;{{item.max_price}}</td>
+              <td>{{item.frozen_day}}天</td>
+              <td>{{item.gift_unit}}次</td>
+            </tr>
+          </tbody>
+        </st-form-table>
+      </div>
+      <p :class="shelves('price-valid-text')">{{priceHelpText}}</p>
       <st-form-item labelGutter="12px" class="mg-b0" label="开卡方式" required>
         <a-checkbox-group v-model="openTypeList" @change="onOpenTypeChange" :class="shelves('open-type')">
           <a-checkbox :value="3">指定日期开卡</a-checkbox>
@@ -202,6 +276,36 @@ export default {
     },
     courseInterestsIsOk() {
       return this.courseInterestsStatus === 'success'
+    },
+    priceIsOk() {
+      return this.priceHelpText === ''
+    },
+    priceValidataArray() {
+      let array = []
+      this.priceList.forEach(i => {
+        array.push(i.priceInputValue)
+      })
+      return array
+    }
+  },
+  watch: {
+    priceList: {
+      deep: true,
+      handler() {
+        let b = this.priceValidataArray.every(i => this.rules.number.test(i))
+        b && this.checkedPrice()
+      }
+    },
+    info: {
+      deep: true,
+      handler(newVal) {
+        newVal.specs.forEach(i => {
+          this.priceList.push({
+            ...i,
+            priceInputValue: ''
+          })
+        })
+      }
     }
   },
   data() {
@@ -218,6 +322,33 @@ export default {
         1: 'number-card',
         2: 'period-card'
       },
+      // 门店明细
+      visible: false,
+      shopColumns: [
+        {
+          title: '省',
+          dataIndex: 'province_name',
+          scopedSlots: { customRender: 'province_name' }
+        },
+        {
+          title: '市',
+          dataIndex: 'city_name',
+          scopedSlots: { customRender: 'city_name' }
+        },
+        {
+          title: '区',
+          dataIndex: 'district_name',
+          scopedSlots: { customRender: 'district_name' }
+        },
+        {
+          title: '门店名称',
+          dataIndex: 'shop_name',
+          scopedSlots: { customRender: 'shop_name' }
+        }
+      ],
+      // 范围价格列表
+      priceList: [],
+      priceHelpText: '',
       // 回传给后台的价格
       specs: [],
       // 开卡方式
@@ -249,6 +380,7 @@ export default {
       // 回传给后台的时间段
       inoutTime: [],
       admissionTimeText: '',
+      // 选择的vip区域
       vipAreaList: []
     }
   },
@@ -271,6 +403,18 @@ export default {
     checkedAdmission() {
       this.admissionTimeText = (this.admissionTime === 2 && this.moreIsShow && !this.timeList.length) ? '请选择入场时间' : ''
     },
+    brandPriceSettingHandleChange({ value, key }) {
+      this.priceList[key].priceInputValue = value
+    },
+    // 检验门店自主定价价格输入是否正确
+    checkedPrice() {
+      if (this.info.price_setting === 1) {
+        this.priceHelpText = ''
+        return false
+      }
+      let b = this.priceValidataArray.every(i => this.rules.number.test(i))
+      this.priceHelpText = b ? '' : '请输入价格'
+    },
     onCourseInterestsChange(data) {
       if (data.target.value !== 3) {
         this.checkedCourseInterests()
@@ -286,12 +430,23 @@ export default {
     },
     // 格式化价格
     formatSpecs() {
-      this.info.specs.forEach(i => {
-        this.specs.push({
-          specs_id: i.spec_id,
-          price: i.rally_price
+      if (this.info.price_setting === 1) {
+        // 无价格范围
+        this.priceList.forEach(i => {
+          this.specs.push({
+            specs_id: i.spec_id,
+            price: i.rally_price
+          })
         })
-      })
+      } else {
+        // 有价格范围
+        this.priceList.forEach(i => {
+          this.specs.push({
+            specs_id: i.spec_id,
+            price: i.priceInputValue
+          })
+        })
+      }
     },
     // 格式化入场时段
     formatWeek() {
@@ -306,6 +461,7 @@ export default {
       this.form.validateFields((error, values) => {
         this.checkedCourseInterests()
         this.checkedAdmission()
+        this.checkedPrice()
         if (!error && this.admissionTimeIsOk && this.courseInterestsIsOk) {
           this.formatSpecs()
           this.formatWeek()

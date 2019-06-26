@@ -72,9 +72,9 @@ import { RouteService } from '@/services/route.service'
 import { UserService } from '@/services/user.service'
 import { columns } from './shelves.config'
 export default {
-  name: 'PageBrandProductMemberShelves',
+  name: 'PageShopProductMemberShelves',
   bem: {
-    shelves: 'page-brand-product-member-list-shelves'
+    shelves: 'page-shop-product-member-list-shelves'
   },
   serviceInject() {
     return {

@@ -21,8 +21,8 @@
       @change="onPageChange"
       :dataSource="list">
         <div slot="action" slot-scope="text,record">
-          <a  @click="onDetail(record)">详情</a>
-          <a-divider type="vertical"></a-divider>
+          <!-- <a  @click="onDetail(record)">详情</a> -->
+          <!-- <a-divider type="vertical"></a-divider> -->
           <a  @click="onTransaction(record)">签单</a>
           <!-- <a @click="onAdvance(record)">加定金</a> -->
         </div>
@@ -201,6 +201,7 @@ export default {
           needPay: true
         }
         let orderSuccessRes = await this.createdGatheringTip(props)
+        console.log(orderSuccessRes)
         this.tipCallBack(result.orderId, type, orderSuccessRes.type)
       } else if (result.type === 'createPay') {
         // 创建订单成功 并且到支付页面
