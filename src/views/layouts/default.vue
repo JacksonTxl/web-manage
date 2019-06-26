@@ -11,24 +11,27 @@
         </div>
       </div>
       <div class="layout-default-sider__scrollbox" v-scrollBar>
-        <default-sider-menu/>
+        <default-sider-menu @change="onSiderMenuChange"/>
       </div>
     </a-layout-sider>
     <a-layout class="layout-default-body">
       <a-layout-header class="layout-default-body__header">
         <div class="layout-default-body__location">
-          <h2>创建门店</h2>
-          <span class="layout-default-body__line"></span>
+          <template v-if="pageTitle">
+            <h2>{{pageTitle}}</h2>
+            <span class="layout-default-body__line"></span>
+          </template>
           <a-breadcrumb separator="-">
             <a-breadcrumb-item>
-              <router-link to="/brand/">
+              <router-link :to="homePageRoute">
                 <st-icon type="home" class="layout-default-body__icon"/>
               </router-link>
             </a-breadcrumb-item>
-            <a-breadcrumb-item v-for='b in breadcrumbs' :key="b.label">
-              <router-link :to='b.route'>
+            <a-breadcrumb-item v-for='b in breadCrumbs' :key="b.label">
+              <router-link :to='b.route' v-if="b.label && b.route.name">
                 <span class="layout-default-body__breadtext">{{b.label}}</span>
               </router-link>
+              <span v-if="!b.route.name" class="layout-default-body__breadtext">{{b.label}}</span>
             </a-breadcrumb-item>
           </a-breadcrumb>
         </div>
@@ -82,6 +85,8 @@ import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
 import DefaultSiderMenu from './default-sider-menu'
 import SwitchShop from '@/views/fragments/shop/switch'
 import Cookie from 'js-cookie'
+import routes from '@/router/routes'
+import { find } from 'lodash-es'
 export default {
   serviceInject() {
     return {
@@ -90,12 +95,26 @@ export default {
   },
   rxState() {
     return {
-      breadcrumbs: this.layoutBrandSerivce.breadcrumbs$
+      // breadcrumbs: this.layoutBrandSerivce.breadcrumbs$
     }
   },
   data() {
     return {
-      isShowSwitchShop: false
+      isShowSwitchShop: false,
+      menuObj: {}
+    }
+  },
+  computed: {
+    breadCrumbs() {
+      const menuBreadCrumb = this.getSiderMenuBreadCrumb()
+      const parentBreadCrumb = this.getParentBreadCrumb()
+      return [...menuBreadCrumb, ...parentBreadCrumb]
+    },
+    pageTitle() {
+      return this.$route.meta.title
+    },
+    homePageRoute() {
+      return /^\/brand/.test(this.$route.path) ? '/' : '/shop/dashboard'
     }
   },
   components: {
@@ -109,6 +128,55 @@ export default {
     onClickLogout() {
       Cookie.set('saas-token', '')
       location.reload()
+    },
+    getParentBreadCrumb() {
+      const parentId = this.$route.meta.parentId
+      const parentRoute = this.$router.resolve({
+        name: parentId
+      }).resolved
+      if (parentRoute) {
+        const name = parentRoute.name
+        const title = parentRoute.meta.title
+        return [{
+          label: title,
+          route: {
+            name
+          }
+        }]
+      } else {
+        return []
+      }
+    },
+    getSiderMenuBreadCrumb() {
+      const { selectedKey, currentSiderMenu } = this.menuObj
+      if (currentSiderMenu) {
+        const menuBreadCrumb = []
+        menuBreadCrumb.push({
+          label: currentSiderMenu.name,
+          route: {
+            name: currentSiderMenu.url
+          }
+        })
+        if (selectedKey) {
+          const currentSubMenu = find(currentSiderMenu.children, subMenu => {
+            return subMenu.id === selectedKey
+          })
+          if (currentSubMenu) {
+            menuBreadCrumb.push({
+              label: currentSubMenu.name,
+              route: {
+                name: currentSubMenu.url
+              }
+            })
+          }
+        }
+        return menuBreadCrumb
+      } else {
+        return []
+      }
+    },
+    onSiderMenuChange(menuObj) {
+      this.menuObj = menuObj
     }
   }
 }

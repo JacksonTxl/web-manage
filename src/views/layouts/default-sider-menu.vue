@@ -18,8 +18,8 @@
             type="star"
             @click.native="delFavorite(item.id)"
           />
-          <router-link :to="{ name: item.url }">
-            <span class="layout-default-sider__favorite-title">{{item.name}}</span>
+          <router-link :to="{ name: item.url }" class="layout-default-sider__favorite-title">
+            {{item.name}}
           </router-link>
         </li>
       </ul>
@@ -45,14 +45,14 @@
             <a-menu-item
               v-for="subMenu in menu.children"
               :key="subMenu.id"
-              class="layout-default-sider__menu-item"
+              class="layout-default-sider__menu-item sub"
             >
               <st-icon
                 v-if="isfavorite(subMenu.id)"
                 type="star"
                 size="8px"
                 class="layout-default-sider__menu-star active"
-                @click.native="delFavorite(subMenu.id, subMenu)"
+                @click.native="delFavorite(subMenu.id)"
               />
               <st-icon
                 v-else
@@ -82,7 +82,7 @@
 <script>
 import { UserService } from '@/services/user.service'
 import { treeToMap } from '@/utils/tree-to-map'
-import { find, remove } from 'lodash-es'
+import { find, remove, constant } from 'lodash-es'
 export default {
   name: 'DefaultBrandSiderMenu',
   serviceInject() {
@@ -119,6 +119,13 @@ export default {
     },
     selectedKeys() {
       const selectedKey = this.findSelectedKey(this.currentSiderMenu)
+      if (selectedKey) {
+        this.$emit('change', {
+          selectedKey,
+          currentSiderMenu: this.currentSiderMenu,
+          menus: this.menus
+        })
+      }
       return selectedKey ? [selectedKey] : []
     }
   },
@@ -182,15 +189,11 @@ export default {
       this.selectedKeys = selectedKey ? [selectedKey] : []
     },
     onClickMenuItem(menu) {
-      // if (this.$route.name.indexOf(menu.url) > -1) {
-      //   return
-      // }
       this.$router.push({
         name: menu.url
       })
     },
     addFavorite(id, subMenu) {
-      console.log('add', this.menuData.favorite)
       this.userService.addFavorite(id).subscribe(() => {
         const findMenu = find(this.menuData.favorite, item => {
           return item.id === id
@@ -200,12 +203,13 @@ export default {
         }
       })
     },
-    delFavorite(id, subMenu) {
-      console.log('del', this.menuData.favorite)
+    delFavorite(id) {
+      const { favorite } = this.menuData
+      remove(favorite, item => {
+        return item.id === id
+      })
       this.userService.delFavorite(id).subscribe(() => {
-        remove(this.menuData.favorite, item => {
-          return item.id === subMenu.id
-        })
+        this.menuData.favorite = [...favorite]
       })
     },
     getRootSubmenuKeys() {
