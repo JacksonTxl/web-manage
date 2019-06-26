@@ -315,5 +315,13 @@ export const routeMapConfig = {
       card_name: { type: String, default: '' },
       sell_status: { type: Number, default: -1 }
     }
+  },
+  'shop-reception-entrance'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      entry_type: { type: Number, default: -1 },
+      keyword: { type: String, default: '' }
+    }
   }
 }
