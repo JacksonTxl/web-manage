@@ -21,7 +21,7 @@
         </st-info>
       </a-col>
     </a-row>
-    <st-form-table :page="page" @change="onPageChange" hoverable>
+    <st-form-table hoverable>
       <thead>
         <tr>
           <th v-for="col in columns" :key="col.dataIndex">{{col.title}}</th>
