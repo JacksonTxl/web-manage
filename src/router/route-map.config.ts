@@ -4,8 +4,9 @@ interface RouteConfig extends ServiceRouteConfig {
   meta: {
     layout: string
     title: string
-    auth: object,
+    auth: object
     name: string
+    parentId: string
   },
 }
 interface StaffEdit extends ServiceRouteConfig {
@@ -31,6 +32,7 @@ export const routeMapConfig = {
     }
   },
   'brand-product-course-personal-list-brand'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '私教课列表'
     routeConfig.queryOptions = {
       category_id: { type: Number, default: -1 },
       course_name: { type: String, default: '' }
@@ -201,7 +203,12 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'brand-setting-app'(routeConfig: RouteConfig) {
+  'brand-product-course-personal-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '添加私教课'
+    routeConfig.meta.parentId = 'brand-product-course-personal-list-brand'
+  },
+  'brand-setting-general'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '系统设置'
   },
   'brand-setting-app-course'(routeConfig: RouteConfig) {
     routeConfig.meta.auth = {

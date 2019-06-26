@@ -52,7 +52,7 @@
                 type="star"
                 size="8px"
                 class="layout-default-sider__menu-star active"
-                @click.native="delFavorite(subMenu.id, subMenu)"
+                @click.native="delFavorite(subMenu.id)"
               />
               <st-icon
                 v-else
@@ -119,6 +119,13 @@ export default {
     },
     selectedKeys() {
       const selectedKey = this.findSelectedKey(this.currentSiderMenu)
+      if (selectedKey) {
+        this.$emit('change', {
+          selectedKey,
+          currentSiderMenu: this.currentSiderMenu,
+          menus: this.menus
+        })
+      }
       return selectedKey ? [selectedKey] : []
     }
   },
@@ -182,15 +189,11 @@ export default {
       this.selectedKeys = selectedKey ? [selectedKey] : []
     },
     onClickMenuItem(menu) {
-      // if (this.$route.name.indexOf(menu.url) > -1) {
-      //   return
-      // }
       this.$router.push({
         name: menu.url
       })
     },
     addFavorite(id, subMenu) {
-      console.log('add', this.menuData.favorite)
       this.userService.addFavorite(id).subscribe(() => {
         const findMenu = find(this.menuData.favorite, item => {
           return item.id === id
@@ -200,12 +203,8 @@ export default {
         }
       })
     },
-    delFavorite(id, subMenu) {
-      console.log('del', this.menuData.favorite)
+    delFavorite(id) {
       this.userService.delFavorite(id).subscribe(() => {
-        remove(this.menuData.favorite, item => {
-          return item.id === subMenu.id
-        })
       })
     },
     getRootSubmenuKeys() {
