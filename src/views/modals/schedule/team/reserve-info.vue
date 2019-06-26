@@ -206,7 +206,7 @@ export default {
         consume_type: this.consumeType,
         consume_id: this.consumeId
       }
-      this.teamScheduleCommonService.add(form).pipe(
+      this.teamScheduleReserveService.add(form).pipe(
         switchMap(state => {
           this.info = state.info
           return this.teamScheduleCommonService.getUnusedSeatList({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
