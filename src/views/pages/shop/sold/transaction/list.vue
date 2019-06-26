@@ -252,7 +252,7 @@ export default {
         },
         on: {
           success: (result) => {
-            this.saleCallBack(result, 'cabinet')
+            this.saleCallBack(result, 'cabinet_order')
           }
         }
       })
