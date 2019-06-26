@@ -34,6 +34,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
 import { TeamScheduleScheduleService } from './team.service#/schedule.service'
+import { TeamService } from './team.service'
 
 export default {
   name: 'Schedule',
@@ -42,13 +43,14 @@ export default {
   },
   serviceInject() {
     return {
-      teamScheduleScheduleService: TeamScheduleScheduleService
+      teamScheduleScheduleService: TeamScheduleScheduleService,
+      service: TeamService
     }
   },
   rxState() {
     return {
       scheduleTeamCourseList: this.teamScheduleScheduleService.scheduleTeamCourseList$,
-      auth: this.teamScheduleScheduleService.auth$
+      auth: this.service.auth$
     }
   },
   data() {
@@ -85,7 +87,7 @@ export default {
             that.$modalRouter.push({ name: 'schedule-team-add-course-schedule-batch' })
           }
         },
-        add: {
+        copy: {
           text: '复制排期',
           click() {
             that.$modalRouter.push({ name: 'schedule-team-copy-schedule' })
@@ -136,13 +138,13 @@ export default {
     const addBatch = this.auth.addBatch
     const copy = this.auth.copy
     if (copy) {
-      this.header.left = 'add'
+      this.header.left = 'copy'
     }
     if (addBatch) {
       this.header.left = 'bacthAdd'
     }
     if (copy && addBatch) {
-      this.header.left = 'bacthAdd, add'
+      this.header.left = 'bacthAdd, copy'
     }
     if (add) {
       this.setAddButton()

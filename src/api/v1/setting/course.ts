@@ -4,7 +4,7 @@ export class CourseApi extends Api {
   /**
    * 课程类型列表
    */
-  getCourseCategoryList(query: GetCourseCategoryListInput) {
+  getCourseCategoryList(query: GetCourseCategoryListInput = {}) {
     return this.http.get(url, {
       query: Object.assign({
         size: 100

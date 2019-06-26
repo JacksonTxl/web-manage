@@ -7,7 +7,6 @@
         </div>
         <a-row :class="bCount('title')">
           <a-col :lg="3">
-
           </a-col>
           <a-col :lg="5">
             新增用户数(人)

@@ -87,8 +87,10 @@
       display: flex;
       align-items: center;
       padding-left: 26px!important;
-      .fz(12px);
       cursor: default;
+      &.sub {
+        .fz(12px);
+      }
       &:hover {
         .layout-default-sider__menu-star {
           opacity: 1;
@@ -98,6 +100,8 @@
     }
     &__favorite-title {
       .mg-l(6px);
+      flex: 1;
+      .mg-r(16px);
     }
     a {
       .c(inherit);
@@ -155,7 +159,9 @@
       &-item {
         .ov-h();
         .pd-tb(8px,8px);
-        &&--active {
+        display: flex;
+        align-items: center;
+        &--active {
           .c(#fff);
           &::before{
             .bg(#fff);
@@ -336,7 +342,7 @@
           &::before{
             .bg(rgba(0,0,0,.25));
           }
-          &&--active {
+          &--active {
             .c(@primary-color);
             &::before{
               .bg(@primary-color);

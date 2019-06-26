@@ -53,7 +53,7 @@ export default {
     return {
       courseList: this.scheduleService.courseList$,
       query: this.routeService.query$,
-      auth: this.scheduleServica.auth$
+      auth: this.scheduleService.auth$
     }
   },
   data() {

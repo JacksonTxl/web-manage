@@ -33,13 +33,10 @@ export default {
       list: []
     }
   },
-  rxState() {
-    return {
-      list: this.selectCourseCategoryService.list$
-    }
-  },
   created() {
-    this.selectCourseCategoryService.getCourseCategoryList().subscribe()
+    this.selectCourseCategoryService.getCourseCategoryList().subscribe(res => {
+      this.list = res.list
+    })
   },
   methods: {
     change(val) {
