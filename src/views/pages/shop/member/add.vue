@@ -11,7 +11,7 @@
           </st-form-item>
           <st-form-item label="手机号" required>
             <a-input-group compact>
-              <a-select style="width: 15%;" v-decorator="rules.country_prefix">
+              <a-select style="width: 80px;" v-decorator="rules.country_prefix">
                 <!-- <a-select-option :value="37">+86</a-select-option> -->
                 <a-select-option
                   :value="code.code_id"
@@ -19,7 +19,7 @@
                   :key="code.code_id"
                 >+{{code.phone_code}}</a-select-option>
               </a-select>
-              <a-input style="width: 85%" placeholder="请输入手机号" v-decorator="rules.mobile"/>
+              <a-input style="width: calc(100% - 80px)" placeholder="请输入手机号" v-decorator="rules.mobile"/>
             </a-input-group>
           </st-form-item>
           <st-form-item label="来源渠道">
@@ -34,7 +34,7 @@
           </st-form-item>
         </a-col>
         <a-col :lg="10" :xs="22" :offset="3">
-          <st-form-item>
+          <!-- <st-form-item>
             <st-image-upload
               width="264px"
               height="264px"
@@ -42,7 +42,7 @@
               placeholder="会员人脸信息"
               v-decorator="rules.faceInfo"
             ></st-image-upload>
-          </st-form-item>
+          </st-form-item> -->
         </a-col>
       </a-row>
 

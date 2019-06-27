@@ -13,11 +13,11 @@
                 >
                 <span class="img-describe">正式会员</span>
               </div>
-              <div class="input-face">
+              <!-- <div class="input-face">
                 <a href="javascript:;">
                   <a-icon type="plus"/>录入人脸
                 </a>
-              </div>
+              </div> -->
             </div>
 
             <div class="shop-member-info-title-pannel__info">

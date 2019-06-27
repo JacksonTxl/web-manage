@@ -33,7 +33,7 @@
         </st-form-item>
       </a-col>
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="员工人脸">
+        <!-- <st-form-item label="员工人脸">
           <st-image-upload
             width="164px"
             height="164px"
@@ -42,21 +42,21 @@
             placeholder="上传人脸"
             v-decorator="rules.image_face"
           ></st-image-upload>
-        </st-form-item>
+        </st-form-item> -->
         <st-form-item label="昵称" required>
-          <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="rules.nickname"/>
+          <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.nickname"/>
         </st-form-item>
         <st-form-item label="邮箱" required>
           <a-input placeholder="请输入邮箱" v-decorator="rules.mail"/>
         </st-form-item>
         <st-form-item label="证件" required>
           <a-input-group compact>
-            <a-select style="width: 20%;" @change="onSelectIdtype" v-model="choosed_id_type">
+            <a-select style="width: 25%;" @change="onSelectIdtype" v-model="choosed_id_type">
               <template v-for="(item,key) in enums.id_type.value">
                 <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
               </template>
             </a-select>
-            <a-input style="width: 80%" placeholder="请输入身份证号码" v-decorator="rules.idnumber"/>
+            <a-input style="width: 75%" placeholder="请输入身份证号码" v-decorator="rules.idnumber"/>
           </a-input-group>
         </st-form-item>
       </a-col>
