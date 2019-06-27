@@ -33,8 +33,9 @@
     <div slot="identity" slot-scope="identity">
       {{identity | identityNames}}
     </div>
-    <div class="page-staff-table-name" slot="staff_name"  slot-scope="text, record">
-      <img class="page-staff-table-name__img mg-r8" :src="record.avatar" ><span class="name">{{text}}</span>
+    <div class="page-staff-table-name" slot="staff_name"  slot-scope="text">
+      <!-- <img class="page-staff-table-name__img mg-r8" :src="record.avatar" > -->
+      <span class="name">{{text}}</span>
     </div>
   </st-table>
 </template>
