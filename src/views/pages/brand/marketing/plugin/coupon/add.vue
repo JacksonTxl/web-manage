@@ -1,20 +1,63 @@
 <template>
-  <st-panel app class="page-shop-basic-card page-shop-edit-period-card" initial>
+  <st-panel app class="page-brand-" initial>
     <div class="page-shop-basic-card-body">
-      <!-- <div class="page-preview">实时预览{{member_card}}</div> -->
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
             <a-col :lg="16">
-              <p class="page-content-card__card__name">
-                <st-tag type="period-card"/>
-                <span>{{cardInfo.card_name}}</span>
-              </p>
+              <st-form-item class="page-content-card-line" label="优惠券类型" required>
+                <a-radio-group defaultValue="a">
+                  <a-radio-button value="a">普通券</a-radio-button>
+                  <a-radio-button value="b">活动券</a-radio-button>
+                </a-radio-group>
+              </st-form-item>
+              <st-form-item class="page-content-card-line" label="优惠券名称" required>
+                <a-input
+                  v-decorator="[
+                  'card_name',
+                  {rules: [{ validator: card_name_validator}]}
+                ]"
+                  maxlength="30"
+                  style="width: 360px"
+                  placeholder="请输入优惠券名称"
+                ></a-input>
+              </st-form-item>
+              <st-form-item class="page-content-card-line" label="面额" required>
+                <st-input-number placeholder="请输入面额">
+                  <span slot="suffix">元</span>
+                </st-input-number>
+              </st-form-item>
             </a-col>
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="23">
-              <st-form-item class="mg-b16" label="支持入场门店">{{shopName.name}}</st-form-item>
+              <st-form-item class="page-content-card-line" label="优惠范围" required>
+                <select-shop @change="onSelectShop"></select-shop>
+              </st-form-item>
+              <st-form-item class="page-content-card-line" label="可用门店" required>
+                <select-shop @change="onSelectShop"></select-shop>
+              </st-form-item>
+              <st-form-item class="page-content-card-line" label="使用条件" required>
+                <a-radio-group @change="onChange" v-model="value">
+                  <a-radio :value="1">无门槛使用</a-radio>
+                  <a-radio :value="2">满<a-input />元使用</a-radio>
+                </a-radio-group>
+              </st-form-item>
+              <st-form-item class="page-content-card-line" label="发放数量" required>
+                <st-input-number placeholder="请输入数量">
+                  <span slot="suffix">张</span>
+                </st-input-number>
+                <label>保存后只可增加不可减少</label>
+              </st-form-item>
+              <st-form-item class="page-content-card-line" label="使用有效期" required>
+                领券当日起
+                <st-input-number placeholder=""></st-input-number>
+                天内有效
+              </st-form-item>
+              <st-form-item class="page-content-card-line" label="优惠共享" >
+                <a-checkbox @change="onChange">不可与其它优惠同享</a-checkbox>
+              </st-form-item>
+              <!-- <st-form-item class="mg-b16" label="支持入场门店">{{shopName.name}}</st-form-item> -->
             </a-col>
           </a-row>
           <a-row :gutter="8">
@@ -28,6 +71,16 @@
                     rowKey="key"
                     :pagination="false"
                   >
+                    <template slot="validity_times" slot-scope="text, record, index">
+                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'validity_times'})">
+                          <span slot="suffix">次</span>
+                        </a-input>
+                    </template>
+                    <template slot="rally_price" slot-scope="text, record, index">
+                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price'})">
+                          <span slot="suffix">元</span>
+                        </a-input>
+                    </template>
                     <template slot="time" slot-scope="text, record, index">
                       <a-input :value="text.num" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
                        <a-select slot="addonAfter" :value="text.unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
@@ -38,26 +91,21 @@
                         </a-select>
                       </a-input>
                     </template>
-                    <template slot="rally_price" slot-scope="text, record, index">
-                        <a-input :value="text" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price'})">
-                          <span slot="suffix">元</span>
-                        </a-input>
-                    </template>
                     <template slot="frozen_day" slot-scope="text, record, index">
-                        <a-input :value="text" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
+                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
                           <span slot="suffix">天</span>
                         </a-input>
                     </template>
                     <template slot="gift_unit" slot-scope="text, record, index">
-                        <a-input :value="text" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
+                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
                           <span slot="suffix">天</span>
                         </a-input>
                     </template>
-                    <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="brand_price_delete(index)">
+                    <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="price_delete(index)">
                       删除
                     </a>
                   </a-table>
-                  <st-button :disabled="rallyPriceList.length>3" type="dashed" class="page-price-setting-set__add" block @click="brand_price_add">+ 添加定价规格（{{rallyPriceList.length}}/4）</st-button>
+                  <st-button :disabled="rallyPriceList.length>3" type="dashed" class="page-price-setting-set__add" block @click="price_add">+ 添加定价规格（{{rallyPriceList.length}}/4）</st-button>
                 </div>
               </st-form-item>
             </a-col>
@@ -80,6 +128,7 @@
                 </span>
                 <a-form-item class="page-a-form">
                   <a-date-picker
+                    :disabledDate="disabledStartDate"
                     v-decorator="['start_time',{rules:[{required: true,message: '请选择开始售卖时间'}]}]"
                     format="YYYY-MM-DD"
                     placeholder="开始时间"
@@ -108,7 +157,7 @@
             <a-col :lg="20">
               <st-form-item class="page-content-card-transfer" label="转让设置">
                 <div class="page-content-card-transfer-body">
-                  <a-checkbox class="page-checkbox" :checked="is_transfer" @change="transfer">支持转让</a-checkbox>
+                  <a-checkbox class="page-checkbox" @change="transfer">支持转让</a-checkbox>
                   <a-input-group compact class="page-input-group">
                     <a-input-number
                     v-decorator="['transferNum',{rules:[{validator:transfer_validator}]}]"
@@ -169,7 +218,7 @@
           <a-row :gutter="8">
             <a-col :lg="20">
               <st-form-item class="page-content-card-submit" label=" ">
-                <st-button :loading="loading.editCard" type="primary" @click="onHandleSubmit">保 存</st-button>
+                <st-button :loading="addLoading.addCard" type="primary" @click="onHandleSubmit">保 存</st-button>
               </st-form-item>
             </a-col>
           </a-row>
@@ -183,26 +232,26 @@ import { UserService } from '@/services/user.service'
 import moment from 'moment'
 import { RuleConfig } from '@/constants/rule'
 import { cloneDeep, remove } from 'lodash-es'
-import { EditService } from './edit.service'
+import { AddService } from './add.service'
+import SelectShop from '@/views/fragments/shop/select-shop'
 export default {
-  name: 'PageShopPeriodCardAdd',
+  name: 'BrandMarketingPluginCouponAdd',
   serviceInject() {
     return {
       rules: RuleConfig,
-      editService: EditService,
+      addService: AddService,
       userService: UserService
     }
   },
   rxState() {
     return {
-      cardInfo: this.editService.cardInfo$,
-      loading: this.editService.loading$,
+      addLoading: this.addService.loading$,
       shopName: this.userService.shop$,
       member_card: this.userService.memberCardEnums$
     }
   },
   bem: {
-    b: 'st-help-popover'
+    basic: 'page-brand'
   },
   data() {
     return {
@@ -211,14 +260,20 @@ export default {
       endOpen: false,
       priceColumns: [
         {
-          title: '期限',
-          scopedSlots: { customRender: 'time' },
-          dataIndex: 'time'
+          title: '入场次数',
+          scopedSlots: { customRender: 'validity_times' },
+          dataIndex: 'validity_times'
         },
         {
           title: '售价',
           scopedSlots: { customRender: 'rally_price' },
           dataIndex: 'rally_price'
+        },
+        {
+          title: '有效期',
+          scopedSlots: { customRender: 'time' },
+          dataIndex: 'time',
+          width: 120
         },
         {
           title: '允许冻结天数',
@@ -260,15 +315,14 @@ export default {
         }
       ],
       // 售卖时间
-      startTime: null,
-      endTime: null,
+      start_time: null,
+      end_time: null,
       // 是否支持转让
       is_transfer: false,
       // 转让单位
       transferUnit: 2,
       // 转让手续费
       transferNum: 0,
-      transfer_unit_is_first: true,
       // 售卖渠道
       sellType: [2],
       // 卡背景
@@ -286,46 +340,7 @@ export default {
       appConfig: false
     }
   },
-  mounted() {
-    this.init()
-  },
   methods: {
-    // init
-    init() {
-      // 价格设置
-      this.cardInfo.price_gradient.forEach(i => {
-        this.rallyPriceList.push({
-          key: i.id,
-          time: {
-            unit: +i.unit,
-            num: +i.num
-          },
-          rally_price: +i.rally_price,
-          frozen_day: +i.frozen_day,
-          gift_unit: +i.gift_unit
-        })
-      })
-      // 支持售卖时间
-      this.form.setFieldsValue({
-        'start_time': moment(this.cardInfo.start_time * 1000),
-        'end_time': moment(this.cardInfo.end_time * 1000),
-        'transferNum': this.cardInfo.transfer_num
-      })
-      this.startTime = moment(this.cardInfo.start_time * 1000)
-      this.endTime = moment(this.cardInfo.end_time * 1000)
-      // 转让设置
-      this.is_transfer = !!this.cardInfo.is_transfer
-      this.transferUnit = this.cardInfo.transfer_unit
-      this.transferNum = this.cardInfo.transfer_num
-      // 售卖渠道
-      this.sellType = this.cardInfo.sell_type
-      // 卡背景
-      this.cardBg = cloneDeep(this.cardInfo.card_bg)
-      // 卡介绍
-      this.cardIntroduction = this.cardInfo.card_introduction
-      // 卡备注
-      this.cardContents = this.cardInfo.card_contents
-    },
     // 保存
     onHandleSubmit(e) {
       this.form.validateFieldsAndScroll((err, values) => {
@@ -336,19 +351,19 @@ export default {
           let price_gradient = []
           this.rallyPriceList.forEach(i => {
             price_gradient.push({
-              unit: i.time.unit,
-              num: i.time.num,
-              rally_price: i.rally_price,
-              frozen_day: i.frozen_day,
-              gift_unit: i.gift_unit
+              unit: +i.time.unit,
+              num: +i.time.num,
+              rally_price: +i.rally_price,
+              frozen_day: +i.frozen_day,
+              gift_unit: +i.gift_unit,
+              validity_times: +i.validity_times
             })
           })
-          this.editService.editCard({
-            id: this.cardInfo.card_id,
-            card_type: 2,
+          this.addService.addCard({
+            card_type: 1,
             card_name: values.card_name,
-            start_time: `${this.startTime.format('YYYY-MM-DD')} 00:00:00`,
-            end_time: `${this.endTime.format('YYYY-MM-DD')} 23:59:59`,
+            start_time: `${this.start_time.format('YYYY-MM-DD')} 00:00:00`,
+            end_time: `${this.end_time.format('YYYY-MM-DD')} 23:59:59`,
             is_transfer: +this.is_transfer,
             unit,
             num,
@@ -358,8 +373,10 @@ export default {
             card_bg: this.cardBg,
             price_gradient
           }).subscribe(res => {
-            // 编辑成功
-            this.$router.push({ path: '/shop/product/card/member/list/all' })
+            // 新增成功
+            this.$router.push({
+              path: '/shop/product/card/member/list/all'
+            })
           })
         }
       })
@@ -368,10 +385,10 @@ export default {
     card_name_validator(rule, value, callback) {
       if (value === undefined || value === '') {
         // eslint-disable-next-line
-        callback('请填写期限卡名称')
+        callback('请填写次卡名称')
       } else if (value && !this.rules.card_name.test(value)) {
         // eslint-disable-next-line
-        callback('输入的期限卡名称格式错误，请重新输入')
+        callback('输入的次卡名称格式错误，请重新输入')
       } else {
         // eslint-disable-next-line
         callback()
@@ -387,22 +404,33 @@ export default {
       }
     },
     // 删除价格
-    brand_price_delete(index) {
+    price_delete(index) {
       this.rallyPriceList.splice(index, 1)
     },
     // 增加价格
-    brand_price_add() {
+    price_add() {
       let key = parseInt(Math.random() * 999999).toString()
       this.rallyPriceList.push({
         key,
+        validity_times: null,
+        rally_price: null,
         time: {
           unit: 2,
           num: null
         },
-        rally_price: null,
         frozen_day: null,
         gift_unit: null
       })
+    },
+    // 开始时间
+    disabledStartDate(startValue) {
+      const endValue = this.end_time
+      if (!endValue) {
+        // 结束时间未选择
+        return startValue.valueOf() < moment().subtract(1, 'd').valueOf()
+      }
+      let start = endValue.valueOf() > moment().add(30, 'y').valueOf() ? moment(endValue).subtract(30, 'y').valueOf() : moment().subtract(1, 'd').add(1, 'ms').valueOf()
+      return startValue.valueOf() < start || startValue.valueOf() > moment(endValue).subtract(1, 'd').valueOf()
     },
     handleStartOpenChange(open) {
       if (!open) {
@@ -410,11 +438,11 @@ export default {
       }
     },
     start_time_change(data) {
-      this.startTime = cloneDeep(data)
+      this.start_time = cloneDeep(data)
     },
     // 结束时间
     disabledEndDate(endValue) {
-      const startValue = this.startTime
+      const startValue = this.start_time
       if (!startValue) {
         // 开始时间未选择
         return endValue.valueOf() >= moment().add(30, 'y').valueOf() || endValue.valueOf() <= moment().valueOf()
@@ -425,7 +453,7 @@ export default {
       this.endOpen = open
     },
     end_time_change(data) {
-      this.endTime = cloneDeep(data)
+      this.end_time = cloneDeep(data)
     },
     // 转让
     transfer(e) {
@@ -469,10 +497,7 @@ export default {
     'transferUnit': {
       deep: true,
       handler() {
-        if (!this.transfer_unit_is_first) {
-          this.form.resetFields(['transferNum'])
-        }
-        this.transfer_unit_is_first = false
+        this.form.resetFields(['transferNum'])
       }
     }
   },
@@ -512,6 +537,9 @@ export default {
       }
       return arr
     }
+  },
+  components: {
+    SelectShop
   }
 }
 </script>

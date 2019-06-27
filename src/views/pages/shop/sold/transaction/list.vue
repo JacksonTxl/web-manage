@@ -21,8 +21,8 @@
       @change="onPageChange"
       :dataSource="list">
         <div slot="action" slot-scope="text,record">
-          <a  @click="onDetail(record)">详情</a>
-          <a-divider type="vertical"></a-divider>
+          <!-- <a  @click="onDetail(record)">详情</a> -->
+          <!-- <a-divider type="vertical"></a-divider> -->
           <a  @click="onTransaction(record)">签单</a>
           <!-- <a @click="onAdvance(record)">加定金</a> -->
         </div>
@@ -252,7 +252,7 @@ export default {
         },
         on: {
           success: (result) => {
-            this.saleCallBack(result, 'cabinet')
+            this.saleCallBack(result, 'cabinet_order')
           }
         }
       })

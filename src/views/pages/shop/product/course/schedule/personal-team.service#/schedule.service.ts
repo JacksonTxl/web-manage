@@ -8,23 +8,35 @@ import {
   CopyScheduleInput,
   GetScheduleListQuery
 } from '@/api/v1/schedule/personal-team/schedule'
+import { AuthService } from '@/services/auth.service'
 
 export interface SetState {
   courseList: any[],
-  scheduleTable: any[]
+  scheduleTable: any[],
+  auth$: object
 }
 @Injectable()
 export class PersonalTeamScheduleScheduleService {
   state$: State<SetState>
   courseList$: Computed<any>
   scheduleTable$: Computed<any>
-  constructor(private scheduleApi: PersonalTeamScheduleScheduleApi) {
+  auth$: Computed<object>
+  constructor(
+    private scheduleApi: PersonalTeamScheduleScheduleApi,
+    private authService: AuthService
+  ) {
     this.state$ = new State({
       courseList: [],
-      scheduleTable: []
+      scheduleTable: [],
+      auth: {
+        add: this.authService.can('shop:schedule:personal_team_course_schedule|add'),
+        addBatch: this.authService.can('shop:schedule:personal_team_course_schedule|batch_add'),
+        copy: this.authService.can('shop:schedule:personal_team_course_schedule|copy')
+      }
     })
     this.courseList$ = new Computed(this.state$.pipe(pluck('courseList')))
     this.scheduleTable$ = new Computed(this.state$.pipe(pluck('scheduleTable')))
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   /**
    *

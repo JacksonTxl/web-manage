@@ -18,19 +18,21 @@ export default {
       selectCoachLevelService: SelectCoachLevelService
     }
   },
-  rxState() {
-    return {
-      list: this.selectCoachLevelService.list$
-    }
-  },
   props: {
     value: {
       type: Number,
       default: -1
     }
   },
+  data() {
+    return {
+      list: []
+    }
+  },
   created() {
-    this.selectCoachLevelService.getCoachLevelList().subscribe()
+    this.selectCoachLevelService.getCoachLevelList().subscribe(res => {
+      this.list = res.list
+    })
   },
   methods: {
     onChange(val) {

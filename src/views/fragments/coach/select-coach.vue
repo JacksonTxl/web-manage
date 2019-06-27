@@ -37,11 +37,6 @@ export default {
       selectCoachService: SelectCoachService
     }
   },
-  rxState() {
-    return {
-      list: this.selectCoachService.list$
-    }
-  },
   props: {
     coachIds: {
       type: Array,
@@ -59,7 +54,8 @@ export default {
   data() {
     return {
       tableColumns,
-      selected: []
+      selected: [],
+      list: []
     }
   },
   created() {
@@ -77,7 +73,9 @@ export default {
       if (coachIds.length) {
         this.selectCoachService.getCoachBasic({
           coach_ids: coachIds
-        }).subscribe()
+        }).subscribe(res => {
+          this.list = res.coaches
+        })
       }
     },
     delTableRecord(id) {

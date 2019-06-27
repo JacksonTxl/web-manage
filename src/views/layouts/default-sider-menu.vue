@@ -18,8 +18,8 @@
             type="star"
             @click.native="delFavorite(item.id)"
           />
-          <router-link :to="{ name: item.url }">
-            <span class="layout-default-sider__favorite-title">{{item.name}}</span>
+          <router-link :to="{ name: item.url }" class="layout-default-sider__favorite-title">
+            {{item.name}}
           </router-link>
         </li>
       </ul>
@@ -45,7 +45,7 @@
             <a-menu-item
               v-for="subMenu in menu.children"
               :key="subMenu.id"
-              class="layout-default-sider__menu-item"
+              class="layout-default-sider__menu-item sub"
             >
               <st-icon
                 v-if="isfavorite(subMenu.id)"
@@ -82,7 +82,7 @@
 <script>
 import { UserService } from '@/services/user.service'
 import { treeToMap } from '@/utils/tree-to-map'
-import { find, remove } from 'lodash-es'
+import { find, remove, constant } from 'lodash-es'
 export default {
   name: 'DefaultBrandSiderMenu',
   serviceInject() {
@@ -204,7 +204,12 @@ export default {
       })
     },
     delFavorite(id) {
+      const { favorite } = this.menuData
+      remove(favorite, item => {
+        return item.id === id
+      })
       this.userService.delFavorite(id).subscribe(() => {
+        this.menuData.favorite = [...favorite]
       })
     },
     getRootSubmenuKeys() {
