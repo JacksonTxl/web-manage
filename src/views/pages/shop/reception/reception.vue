@@ -5,7 +5,8 @@
         <div :class="reception('form-block-detail')">
           <div :class="reception('form-block-number')">
             <p>{{item.label}}（{{item.unit}}）</p>
-            <p>{{summaryInfo[item.type].number}}</p>
+            <ICountUp class="number-up" :endVal="summaryInfo[item.type].num"/>
+            <!-- <p>{{summaryInfo[item.type].num}}</p> -->
           </div>
           <div :class="reception('form-block-chart')" :style="`background:hsl(${Date.now()*index%360},50%,50%)`"></div>
         </div>
@@ -30,6 +31,7 @@
       <div :class="reception('member')">
         <div :class="reception('member-search')">
           <a-select
+            v-model="selectMember"
             :class="reception('member-search-select')"
             showSearch
             allowClear
@@ -50,18 +52,18 @@
               </span>
             </a-select-option>
           </a-select>
-          <st-button type="primary" @click="onEntry" v-if="!isEntry">入场</st-button>
-          <st-button type="danger" v-else>离场</st-button>
+          <st-button type="primary" :loading="loading.setEntrance" @click="onEntry" :disabled="!isSelectMember" v-if="!isEntry">入场</st-button>
+          <st-button type="danger" :loading="loading.setEntranceLeave" @click="onLeave" v-else :disabled="!isSelectMember">离场</st-button>
         </div>
         <div :class="reception('info')">
           <div :class="reception('personal-info')">
             <div>
               <st-info>
-                <st-info-item label="名称">{{selectMember?selectMemberInfo.member_name:'无'}}</st-info-item>
-                <st-info-item label="手机号">{{selectMember?selectMemberInfo.mobile:'无'}}</st-info-item>
-                <st-info-item label="实体卡号">{{selectMember?selectMemberInfo.card_no:'无'}}</st-info-item>
-                <st-info-item label="会员类型">{{selectMember?selectMemberInfo.member_type_text:'无'}}</st-info-item>
-                <st-info-item class="mg-b0" label="入场状态">{{selectMember?selectMemberInfo.entry_status_text:'无'}}</st-info-item>
+                <st-info-item label="名称">{{memberName}}</st-info-item>
+                <st-info-item label="手机号">{{memberMobile}}</st-info-item>
+                <st-info-item label="实体卡号">{{memberPhysicalCard}}</st-info-item>
+                <st-info-item label="会员类型">{{memberType}}</st-info-item>
+                <st-info-item class="mg-b0" label="入场状态">{{memberEntryStatus}}</st-info-item>
               </st-info>
             </div>
             <st-image-upload
@@ -75,51 +77,53 @@
               <span class="set-info-label">入场凭证</span>
               <a-select v-model="proof" class="set-info-select">
                 <a-select-option :value="-1" v-if="!entranceOptionList.length">无</a-select-option>
-                <a-select-option v-for="(item) in entranceOptionList" :value="item.id" :key="item.id">{{item.title}}</a-select-option>
+                <a-select-option v-for="(item) in entranceOptionList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
             </p>
             <p>
               <span class="set-info-label">跟进销售</span>
               <a-select v-model="seller" class="set-info-select">
+                <a-select-option :value="-1">无</a-select-option>
                 <a-select-option v-for="(item) in sellerList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
             </p>
             <p>
               <span class="set-info-label">跟进教练</span>
               <a-select v-model="coach" class="set-info-select">
+                <a-select-option :value="-1">无</a-select-option>
                 <a-select-option v-for="(item) in coachList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
             </p>
             <p>
               <span class="set-info-label">储物柜</span>
               <a-select v-model="cabinet" class="set-info-select">
-                <a-select-option :value="-1" v-if="!cabinetList.length">无</a-select-option>
-                <a-select-option v-for="(item) in cabinetList" :value="item.id" :key="item.id">{{item.title}}</a-select-option>
+                <a-select-option :value="-1">无</a-select-option>
+                <a-select-option v-for="(item) in cabinetList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
             </p>
           </div>
           <div :class="reception('set-info')" v-else>
             <st-info>
-              <st-info-item label="入场凭证">万晋健身房年卡</st-info-item>
-              <st-info-item label="跟进销售">13345667788</st-info-item>
-              <st-info-item label="跟进教练">会员名称</st-info-item>
-              <st-info-item label="储物柜">
-                <span>临时储物柜009311</span>
+              <st-info-item label="入场凭证" v-if="selectMemberInfo.proof">{{selectMemberInfo.proof.name}}</st-info-item>
+              <st-info-item label="跟进销售" v-if="selectMemberInfo.seller">{{selectMemberInfo.seller.name || '无'}}</st-info-item>
+              <st-info-item label="跟进教练" v-if="selectMemberInfo.coach">{{selectMemberInfo.coach.name || '无'}}</st-info-item>
+              <st-info-item label="储物柜" v-if="!isEditCabinet">
+                <span v-if="selectMemberInfo.cabinet">{{selectMemberInfo.cabinet.name || '无'}}</span>
                 &nbsp;&nbsp;
-                <a>
+                <a @click="isEditCabinet=true">
                   <st-icon type="anticon:edit"></st-icon>&nbsp;
                   <span>编辑</span>
                 </a>
               </st-info-item>
             </st-info>
-            <p :class="reception('cabinet-edit')">
+            <p :class="reception('cabinet-edit')" v-if="isEditCabinet">
               <span class="set-info-edit-label">储物柜</span>
-              <a-select class="set-info-edit-select">
-                <a-select-option value="jack">Jack</a-select-option>
-                <a-select-option value="lucy">Lucy</a-select-option>
+              <a-select v-model="cabinet" class="set-info-edit-select">
+                <a-select-option :value="-1">无</a-select-option>
+                <a-select-option v-for="(item) in cabinetList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
-              <st-button type="primary">确定</st-button>
-              <a class="set-info-edit-button">取消</a>
+              <st-button type="primary" :loading="loading.editEntranceCabinet" @click="onEditCabinet">确定</st-button>
+              <a class="set-info-edit-button" @click="isEditCabinet=false">取消</a>
             </p>
           </div>
         </div>
@@ -168,7 +172,6 @@
             </ul>
           </a-tab-pane>
         </a-tabs>
-          {{selectMemberInfo}}
       </div>
     </div>
   </section>
@@ -268,18 +271,20 @@ export default {
       // 搜索会员的最后一次关键字
       lastMemberSearchText: '',
       // 选择的会员
-      selectMember: null,
+      selectMember: undefined,
       // 会员信息
       selectMemberInfo: {},
       // 入场凭证
       proof: -1,
       // 入场选择销售
-      seller: null,
+      seller: -1,
       // 入场选择教练
-      coach: null,
+      coach: -1,
       // 储物柜
       cabinet: -1,
-
+      // 是否编辑储物柜
+      isEditCabinet: false,
+      // 头像
       photoList: []
     }
   },
@@ -290,7 +295,31 @@ export default {
     },
     // 是否已入场
     isEntry() {
-      return !!this.selectMember && +this.selectMemberInfo.entry_status === 1
+      return !!this.isSelectMember && this.selectMemberInfo.entry_status && +this.selectMemberInfo.entry_status.value === 1
+    },
+    // 是否确定了会员
+    isSelectMember() {
+      return this.selectMemberInfo.entry_status
+    },
+    // 会员名称
+    memberName() {
+      return this.isSelectMember ? this.selectMemberInfo.member_name : '无'
+    },
+    // 会员手机号
+    memberMobile() {
+      return this.isSelectMember ? this.selectMemberInfo.mobile : '无'
+    },
+    // 会员实体卡号
+    memberPhysicalCard() {
+      return this.isSelectMember ? this.selectMemberInfo.physical_card : '无'
+    },
+    // 会员类型
+    memberType() {
+      return this.isSelectMember && this.selectMemberInfo.member_type ? this.selectMemberInfo.member_type.name : '无'
+    },
+    // 会员入场状态
+    memberEntryStatus() {
+      return this.isSelectMember && this.selectMemberInfo.entry_status ? this.selectMemberInfo.entry_status.name : '无'
     }
   },
   watch: {
@@ -299,23 +328,9 @@ export default {
       handler(newVal) {
         this.proof = newVal.length ? newVal[0].id : -1
       }
-    },
-    cabinetList: {
-      deep: true,
-      handler(newVal) {
-        this.cabinet = newVal.length ? newVal[0].id : -1
-      }
     }
   },
-  mounted() {
-    this.init()
-  },
   methods: {
-    // init
-    init() {
-      this.seller = this.sellerList.length ? this.sellerList[0].id : null
-      this.coach = this.coachList.length ? this.coachList[0].id : null
-    },
     // 搜索会员
     onMemberSearch(data) {
       this.memberSearchText = data.trim()
@@ -344,8 +359,9 @@ export default {
       this.$modalRouter.push({
         name: 'front-add-member',
         on: {
-          success: () => {
-            console.log('会员添加成功')
+          success: res => {
+            this.getMemberInfo(res.id)
+            // this.onMemberSelect(res.id)
           }
         }
       })
@@ -363,7 +379,55 @@ export default {
     },
     // 入场
     onEntry() {
-      console.log('入场')
+      let cabinet_id = this.cabinet === -1 ? undefined : +this.cabinet
+      let proof_type = this.entranceOptionList.filter(i => i.id === this.proof)[0].proof_type
+      let proof_value = +this.proof
+      let seller_id = this.seller === -1 ? undefined : +this.seller
+      let coach_id = this.coach === -1 ? undefined : +this.coach
+      this.receptionService.setEntrance({
+        member_id: +this.selectMember,
+        cabinet_id,
+        proof_type,
+        proof_value,
+        seller_id,
+        coach_id
+      }).subscribe(res => {
+        this.selectMemberInfo = cloneDeep(res.info)
+        this.cabinet = res.info.cabinet.id || -1
+      })
+    },
+    // 离场
+    onLeave() {
+      this.receptionService.setEntranceLeave(this.selectMemberInfo.id).subscribe(res => {
+        this.selectMember = undefined
+        this.selectMemberInfo = {}
+        this.proof = -1
+        this.seller = -1
+        this.coach = -1
+        this.cabinet = -1
+        this.isEditCabinet = false
+        this.receptionService.resetEntranceOptionList()
+        this.receptionService.resetCabinetList()
+      })
+    },
+    // 入场会员修改储物柜
+    onEditCabinet() {
+      let cabinet_id = this.cabinet === -1 ? undefined : +this.cabinet
+      this.receptionService.editEntranceCabinet({
+        id: this.selectMemberInfo.id,
+        cabinet_id
+      }).subscribe(res => {
+        if (this.cabinet === -1) {
+          this.selectMemberInfo.cabinet = {}
+        } else {
+          let cabinetName = this.cabinetList.filter(i => i.id === this.cabinet)[0].name
+          this.selectMemberInfo.cabinet = {
+            id: this.cabinet,
+            name: cabinetName
+          }
+        }
+        this.isEditCabinet = false
+      })
     },
     // 完成待办
     onSetWorkNote(item) {

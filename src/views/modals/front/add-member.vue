@@ -66,9 +66,9 @@ export default {
           this.addMemberService.addMember({
             member_name: values.name,
             mobile: values.mobile
-          }).subscribe(() => {
+          }).subscribe(res => {
             this.show = false
-            this.$emit('success')
+            this.$emit('success', { id: res.info.member_id })
           })
         }
       })

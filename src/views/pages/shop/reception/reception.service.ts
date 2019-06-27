@@ -1,6 +1,6 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Action } from 'rx-state/src'
-import { FrontApi, GetMemberListInput } from '@/api/v1/front'
+import { FrontApi, GetMemberListInput, SetEntranceInput, EditEntranceCabinetInput } from '@/api/v1/front'
 import { tap, debounceTime, switchMap, catchError } from 'rxjs/operators'
 import { forkJoin, EMPTY } from 'rxjs'
 
@@ -78,6 +78,11 @@ export class ReceptionService implements RouteGuard {
   getMemberInfo(id:string) {
     return this.frontApi.getMemberInfo(id)
   }
+  // 会员入场
+  @Effect()
+  setEntrance(params: SetEntranceInput) {
+    return this.frontApi.setEntrance(params)
+  }
   // 获取入场凭证列表
   @Effect()
   getEntranceOptionList(id:string) {
@@ -85,12 +90,26 @@ export class ReceptionService implements RouteGuard {
       this.entranceOptionList$.commit(() => res.list)
     }))
   }
+  resetEntranceOptionList() {
+    this.entranceOptionList$.commit(() => [])
+  }
   // 获取储物柜列表
   @Effect()
   getCabinetList(id:string) {
     return this.frontApi.getCabinetList(id).pipe(tap((res:any) => {
       this.cabinetList$.commit(() => res.list)
     }))
+  }
+  resetCabinetList() {
+    this.cabinetList$.commit(() => [])
+  }
+  // 修改入场会员储物柜
+  editEntranceCabinet(params:EditEntranceCabinetInput) {
+    return this.frontApi.editEntranceCabinet(params)
+  }
+  // 离场
+  setEntranceLeave(id:string) {
+    return this.frontApi.setEntranceLeave(id)
   }
   init() {
     return forkJoin(
