@@ -1,6 +1,7 @@
 <template>
   <st-panel app>
-    <st-input-number :min="20" @change="kelc" :max="50"></st-input-number>
+    <div style="outline:1px solid #ccc">111</div>
+    <st-coupon name="卡尔的券" @close="onClose"/>
   </st-panel>
 </template>
 <script>
@@ -11,8 +12,8 @@ export default {
     }
   },
   methods: {
-    kelc(e) {
-      console.log(e)
+    onClose(e) {
+      console.log(11111)
     }
   }
 }

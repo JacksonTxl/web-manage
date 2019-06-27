@@ -542,6 +542,7 @@ export default {
     },
     // 格式化价格
     formatSpecs() {
+      this.specs = []
       if (this.info.price_setting === 1) {
         // 无价格范围
         this.priceList.forEach(i => {

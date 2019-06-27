@@ -1,0 +1,32 @@
+.st-coupon {
+    display: inline-block;
+    position: relative;
+    padding: 5px 12px;
+    .c(@white);
+    .fz(14px);
+    .lh(22px);
+    border-radius: 2px;
+    background:linear-gradient(135deg,rgba(255,144,146,1) 0%,rgba(255,42,127,1) 100%);
+    &::before {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        top: 50%;
+        left: 0;
+        transform: translate(-50%,-50%);
+        border-radius: 50%;
+        .bg(@white);
+    }
+    &::after {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        top: 50%;
+        right: 0;
+        transform: translate(50%,-50%);
+        border-radius: 50%;
+        .bg(@white);
+    }
+}
