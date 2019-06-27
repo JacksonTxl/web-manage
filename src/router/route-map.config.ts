@@ -323,6 +323,14 @@ export const routeMapConfig = {
       sell_status: { type: Number, default: -1 }
     }
   },
+  'shop-reception-entrance'(routeConfig: RouteConfig) {
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      entry_type: { type: Number, default: -1 },
+      keyword: { type: String, default: '' }
+    }
+  },
   'brand-product-card-member-number-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '会籍卡详情'
   },
