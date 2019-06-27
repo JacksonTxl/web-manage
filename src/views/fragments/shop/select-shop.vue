@@ -57,7 +57,6 @@ export default {
   },
   data() {
     return {
-
       shopTableColumns,
       checkedShopIds: [],
       list: []
