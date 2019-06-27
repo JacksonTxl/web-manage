@@ -82,4 +82,13 @@ export class AppConfig {
       time: 'HH:mm'
     }
   }
+  /**
+   * 占位图
+   */
+  PLACEHOLDER_IMG = {
+    VERSION: '1.0.0',
+    AVATAR: 'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-avatar.png',
+    PICTURE: 'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-img.png',
+    NODATA: 'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-nodata.png'
+  }
 }

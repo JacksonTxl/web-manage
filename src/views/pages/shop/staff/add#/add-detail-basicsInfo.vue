@@ -17,12 +17,12 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact>
-            <a-select style="width: 15%;" v-model="choosed_code_id">
+            <a-select style="width: 80px;" v-model="choosed_code_id">
               <template v-for="item in codeList">
                 <a-select-option :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
               </template>
             </a-select>
-            <a-input style="width: 85%" v-decorator="rules.phone" placeholder="请输入手机号"/>
+            <a-input style="width: calc(100% - 80px)" v-decorator="rules.phone" placeholder="请输入手机号"/>
           </a-input-group>
         </st-form-item>
         <st-form-item label="性别" required>
@@ -33,7 +33,7 @@
         </st-form-item>
       </a-col>
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="员工人脸">
+        <!-- <st-form-item label="员工人脸">
           <st-image-upload
             width="164px"
             height="164px"
@@ -42,7 +42,7 @@
             placeholder="上传人脸"
             v-decorator="rules.image_face"
           ></st-image-upload>
-        </st-form-item>
+        </st-form-item> -->
         <st-form-item label="昵称" required>
           <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="rules.nickname"/>
         </st-form-item>

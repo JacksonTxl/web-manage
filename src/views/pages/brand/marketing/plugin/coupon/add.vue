@@ -1,217 +1,93 @@
 <template>
-  <st-panel app class="page-brand-" initial>
-    <div class="page-shop-basic-card-body">
-      <div class="page-content">
+  <st-panel app :class="basic()" initial>
+    <div :class="basic('body')">
+      <div>
         <st-form :form="form" labelWidth="118px">
-          <a-row :gutter="8" class="page-content-card-line__row">
-            <a-col :lg="16">
-              <st-form-item class="page-content-card-line" label="优惠券类型" required>
-                <a-radio-group defaultValue="a">
-                  <a-radio-button value="a">普通券</a-radio-button>
-                  <a-radio-button value="b">活动券</a-radio-button>
+          <a-row :gutter="8" >
+            <a-col :lg="24">
+              <st-form-item label="优惠券类型" required>
+                <a-radio-group defaultValue="1" v-if="couponEnums">
+                  <a-radio-button
+                    v-for="(item, index) in couponEnums.coupon_type.value"
+                    :value="index"
+                    :key="index"
+                  >{{item}}</a-radio-button>
                 </a-radio-group>
               </st-form-item>
-              <st-form-item class="page-content-card-line" label="优惠券名称" required>
+              <st-form-item label="优惠券名称" required>
                 <a-input
                   v-decorator="[
                   'card_name',
                   {rules: [{ validator: card_name_validator}]}
-                ]"
-                  maxlength="30"
-                  style="width: 360px"
+                  ]"
+                  maxlength="10"
                   placeholder="请输入优惠券名称"
+                  :class="basic('input')"
                 ></a-input>
               </st-form-item>
-              <st-form-item class="page-content-card-line" label="面额" required>
-                <st-input-number placeholder="请输入面额">
-                  <span slot="suffix">元</span>
+              <st-form-item label="面额" required>
+                <st-input-number  placeholder="请输入面额" :class="basic('input')">
+                  <template slot="addonAfter">元</template>
                 </st-input-number>
               </st-form-item>
             </a-col>
           </a-row>
+          <a-divider :class="basic('line')"></a-divider>
           <a-row :gutter="8">
             <a-col :lg="23">
-              <st-form-item class="page-content-card-line" label="优惠范围" required>
-                <select-shop @change="onSelectShop"></select-shop>
+              <st-form-item label="优惠范围" required>
+                <a-radio-group defaultValue="1" @change="changeProductType">
+                  <a-radio value="1">全部类目</a-radio>
+                  <a-radio value="2">指定类目</a-radio>
+                </a-radio-group>
+                <a-select v-if="showProductType === '2' && transaction" mode="multiple" defaultValue="1" placeholder="请选择类目">
+                  <a-select-option v-for="(item, index) in transaction.product_type.value" :key="`${index}`" :value="index">
+                    {{item}}
+                  </a-select-option>
+                </a-select>
               </st-form-item>
-              <st-form-item class="page-content-card-line" label="可用门店" required>
-                <select-shop @change="onSelectShop"></select-shop>
+              <st-form-item label="可用门店" required>
+                <a-radio-group defaultValue="1">
+                  <a-radio value="1">全部门店</a-radio>
+                  <a-radio value="2">指定门店</a-radio>
+                </a-radio-group>
+                <select-shop v-if="showShop === '2'" @change="onSelectShop"></select-shop>
               </st-form-item>
-              <st-form-item class="page-content-card-line" label="使用条件" required>
+              <st-form-item label="使用条件" required>
                 <a-radio-group @change="onChange" v-model="value">
                   <a-radio :value="1">无门槛使用</a-radio>
-                  <a-radio :value="2">满<a-input />元使用</a-radio>
+                  <a-radio :value="2">满<a-input :class="basic('radio-input')"/>元使用</a-radio>
                 </a-radio-group>
               </st-form-item>
-              <st-form-item class="page-content-card-line" label="发放数量" required>
-                <st-input-number placeholder="请输入数量">
-                  <span slot="suffix">张</span>
+              <st-form-item  label="发放数量" required>
+                <st-input-number :class="basic('input')" placeholder="请输入数量">
+                  <template slot="addonAfter">张</template>
                 </st-input-number>
-                <label>保存后只可增加不可减少</label>
+                <label :class="basic('tip')">保存后只可增加不可减少</label>
               </st-form-item>
-              <st-form-item class="page-content-card-line" label="使用有效期" required>
+              <st-form-item  label="使用有效期" required>
                 领券当日起
-                <st-input-number placeholder=""></st-input-number>
+                <st-input-number placeholder="" :class="basic('radio-input')"></st-input-number>
                 天内有效
               </st-form-item>
-              <st-form-item class="page-content-card-line" label="优惠共享" >
+              <st-form-item  label="优惠共享" >
                 <a-checkbox @change="onChange">不可与其它优惠同享</a-checkbox>
-              </st-form-item>
-              <!-- <st-form-item class="mg-b16" label="支持入场门店">{{shopName.name}}</st-form-item> -->
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="23">
-              <st-form-item class="page-content-card-price-setting" label="价格设置" required :help="rallyPriceValidText">
-                <div class="page-price-setting-set" :class="{'page-price-setting-set-error':priceValidateStatus==='error'}">
-                  <a-table
-                    size="middle"
-                    :columns="priceColumns"
-                    :dataSource="rallyPriceList"
-                    rowKey="key"
-                    :pagination="false"
-                  >
-                    <template slot="validity_times" slot-scope="text, record, index">
-                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'validity_times'})">
-                          <span slot="suffix">次</span>
-                        </a-input>
-                    </template>
-                    <template slot="rally_price" slot-scope="text, record, index">
-                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price'})">
-                          <span slot="suffix">元</span>
-                        </a-input>
-                    </template>
-                    <template slot="time" slot-scope="text, record, index">
-                      <a-input :value="text.num" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
-                       <a-select slot="addonAfter" :value="text.unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
-                          <a-select-option
-                          v-for="(item,index) in nuit_list"
-                          :value="item.value"
-                          :key="index" >{{item.label}}</a-select-option>
-                        </a-select>
-                      </a-input>
-                    </template>
-                    <template slot="frozen_day" slot-scope="text, record, index">
-                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
-                          <span slot="suffix">天</span>
-                        </a-input>
-                    </template>
-                    <template slot="gift_unit" slot-scope="text, record, index">
-                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
-                          <span slot="suffix">天</span>
-                        </a-input>
-                    </template>
-                    <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="price_delete(index)">
-                      删除
-                    </a>
-                  </a-table>
-                  <st-button :disabled="rallyPriceList.length>3" type="dashed" class="page-price-setting-set__add" block @click="price_add">+ 添加定价规格（{{rallyPriceList.length}}/4）</st-button>
-                </div>
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="20">
-              <st-form-item class="page-content-card-time" required>
-                <span slot="label">
-                  支持售卖时间
-                  <a-popover
+                <a-popover
                     trigger="hover"
-                    placement="bottomRight"
+                    placement="rightBottom"
                     arrowPointAtCenter
                   >
                     <div slot="content">
-                      设置此会员卡可售卖的时间范围
+                      勾选时，如果商品参与了其他营销活动，<br/>如拼图、体验价等，则优惠券不可用。
                     </div>
                     <a-icon class="page-content-card-time__icon" type="info-circle"></a-icon>
                   </a-popover>
-                </span>
-                <a-form-item class="page-a-form">
-                  <a-date-picker
-                    :disabledDate="disabledStartDate"
-                    v-decorator="['start_time',{rules:[{required: true,message: '请选择开始售卖时间'}]}]"
-                    format="YYYY-MM-DD"
-                    placeholder="开始时间"
-                    :showToday="false"
-                    @openChange="handleStartOpenChange"
-                    @change="start_time_change"
-                  />
-                </a-form-item>
-                &nbsp;~&nbsp;
-                <a-form-item class="page-a-form">
-                  <a-date-picker
-                    :disabledDate="disabledEndDate"
-                    v-decorator="['end_time',{rules:[{required: true,message: '请选择结束售卖时间'}]}]"
-                    format="YYYY-MM-DD"
-                    placeholder="结束时间"
-                    :showToday="false"
-                    :open="endOpen"
-                    @openChange="handleEndOpenChange"
-                    @change="end_time_change"
-                  />
-                </a-form-item>
               </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="20">
-              <st-form-item class="page-content-card-transfer" label="转让设置">
-                <div class="page-content-card-transfer-body">
-                  <a-checkbox class="page-checkbox" @change="transfer">支持转让</a-checkbox>
-                  <a-input-group compact class="page-input-group">
-                    <a-input-number
-                    v-decorator="['transferNum',{rules:[{validator:transfer_validator}]}]"
-                    @change="transfter_change"
-                    :disabled="!is_transfer"/>
-                    <a-select v-model="transferUnit" defaultValue="2" :disabled="!is_transfer">
-                      <a-select-option v-for="item in Object.entries(member_card.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
-                    </a-select>
-                  </a-input-group>
-                </div>
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="20">
-              <st-form-item class="page-content-card-sell-type" label="售卖渠道" required>
-                <a-checkbox-group v-model="sellType">
-                  <a-checkbox
-                  v-for="item in sellTypeList"
-                  :key="item.value"
-                  :disabled="item.value===2"
-                  :value="item.value">{{item.label}}</a-checkbox>
-                </a-checkbox-group>
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="20">
-              <st-form-item class="page-content-card-bg" label="卡背景" required>
-                <st-card-bg-radio v-model="cardBg" />
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="22">
-              <st-form-item class="page-content-card-introduction " label="会员卡介绍">
-                <a-textarea
-                v-model="cardIntroduction"
-                maxlength="500"
-                class="page-content-card-textarea"
-                placeholder="请输入"
-                :rows="4"/>
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="22">
-              <st-form-item class="page-content-card-contents " label="备注">
-                <a-textarea
-                v-model="cardContents"
-                maxlength="500"
-                class="page-content-card-textarea"
-                placeholder="请输入"
-                :rows="4"/>
+              <st-form-item label="每人限领" required>
+                <a-radio-group @change="onChange" v-model="value">
+                  <a-radio :value="1">不限</a-radio>
+                  <a-radio :value="2">每人限领<a-input :class="basic('radio-input')"/>次</a-radio>
+                </a-radio-group>
               </st-form-item>
             </a-col>
           </a-row>
@@ -247,15 +123,19 @@ export default {
     return {
       addLoading: this.addService.loading$,
       shopName: this.userService.shop$,
-      member_card: this.userService.memberCardEnums$
+      couponEnums: this.userService.couponEnums$,
+      transaction: this.userService.transaction$
     }
   },
   bem: {
-    basic: 'page-brand'
+    basic: 'brand-marketing-coupon-add'
   },
   data() {
     return {
       form: this.$form.createForm(this),
+      showProductType: '1',
+      showShop: '1',
+
       // 结束时间面板是否显示
       endOpen: false,
       priceColumns: [
@@ -341,6 +221,9 @@ export default {
     }
   },
   methods: {
+    changeProductType(event) {
+      this.showProductType = event.target.value
+    },
     // 保存
     onHandleSubmit(e) {
       this.form.validateFieldsAndScroll((err, values) => {
