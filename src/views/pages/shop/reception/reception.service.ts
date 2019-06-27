@@ -11,6 +11,11 @@ export class ReceptionService implements RouteGuard {
   workNoteDoneList$ = new State([])
   memberListAction$: Action<any>
   memberList$ = new State([])
+  summaryInfo$ = new State({})
+  sellerList$ = new State([])
+  coachList$ = new State([])
+  entranceOptionList$ = new State([])
+  cabinetList$ = new State([])
   constructor(private frontApi:FrontApi) {
     this.memberListAction$ = new Action(data$ => {
       return data$.pipe(
@@ -47,8 +52,53 @@ export class ReceptionService implements RouteGuard {
       this.workNoteDoneList$.commit(() => res.list)
     }))
   }
+  // 获取头部统计信息
+  @Effect()
+  getEntranceSummary() {
+    return this.frontApi.getEntranceSummary().pipe(tap((res:any) => {
+      this.summaryInfo$.commit(() => res.info)
+    }))
+  }
+  // 获取销售列表
+  @Effect()
+  getSellerList() {
+    return this.frontApi.getSellerList().pipe(tap((res:any) => {
+      this.sellerList$.commit(() => res.list)
+    }))
+  }
+  // 获取销售列表
+  @Effect()
+  getCoachList() {
+    return this.frontApi.getCoachList().pipe(tap((res:any) => {
+      this.coachList$.commit(() => res.list)
+    }))
+  }
+  // 获取会员详情
+  @Effect()
+  getMemberInfo(id:string) {
+    return this.frontApi.getMemberInfo(id)
+  }
+  // 获取入场凭证列表
+  @Effect()
+  getEntranceOptionList(id:string) {
+    return this.frontApi.getEntranceOptionList(id).pipe(tap((res:any) => {
+      this.entranceOptionList$.commit(() => res.list)
+    }))
+  }
+  // 获取储物柜列表
+  @Effect()
+  getCabinetList(id:string) {
+    return this.frontApi.getCabinetList(id).pipe(tap((res:any) => {
+      this.cabinetList$.commit(() => res.list)
+    }))
+  }
   init() {
-    return forkJoin(this.getWorkNoteList(), this.getWorkNoteDoneList())
+    return forkJoin(
+      this.getWorkNoteList(),
+      this.getSellerList(),
+      this.getCoachList(),
+      this.getWorkNoteDoneList(),
+      this.getEntranceSummary())
   }
   beforeEach(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
     this.init().subscribe(() => {

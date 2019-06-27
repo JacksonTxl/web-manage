@@ -65,4 +65,40 @@ export class FrontApi extends Api {
   setEntranceLeaveBatch(params:SetEntranceLeaveBatchInput) {
     return this.http.delete(`/v1/front/entrance/batch`, { params })
   }
+  /**
+   * 前台头部统计
+   */
+  getEntranceSummary() {
+    return this.http.get(`/v1/front/entrance/summary`, { mock: {} })
+  }
+  /**
+   * 销售员列表
+   */
+  getSellerList() {
+    return this.http.get(`/v1/front/entrance/seller`, { mock: {} })
+  }
+  /**
+   * 教练列表
+   */
+  getCoachList() {
+    return this.http.get(`/v1/front/entrance/coach`, { mock: {} })
+  }
+  /**
+   * 前台会员详情
+   */
+  getMemberInfo(id:string) {
+    return this.http.get(`/v1/front/entrance/member/${id}`, { mock: {} })
+  }
+  /**
+   *  入场凭证列表
+   */
+  getEntranceOptionList(id:string) {
+    return this.http.get(`/v1/front/entrance/options/${id}`, { mock: {} })
+  }
+  /**
+   *  储物柜列表
+   */
+  getCabinetList(id:string) {
+    return this.http.get(`/v1/front/cabinet/options/${id}`, { mock: {} })
+  }
 }
