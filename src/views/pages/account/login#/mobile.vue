@@ -6,7 +6,7 @@
       </st-form-item>
       <st-form-item   class="mg-b0">
         <a-input-search placeholder="请输入验证码" v-model="captcha" @search="onClickCaptcha">
-          <span :class="mobile('button')" slot="enterButton" >{{buttonText}}</span>
+          <a-button  :class="mobile('button')" :disabled="isClick" slot="enterButton" >{{buttonText}}</a-button>
         </a-input-search>
       </st-form-item>
       <st-form-item  class="mg-t24">
@@ -57,6 +57,7 @@ export default {
       this.timer = setInterval(() => {
         if (!that.time) {
           this.isClick = false
+          this.time = 60
           clearInterval(that.timer)
         }
         that.time = that.time - 1

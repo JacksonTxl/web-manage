@@ -13,6 +13,9 @@ export class LoginApi extends Api {
   loginPhone(params: LoginPhoneInput) {
     return this.http.post('/login/phone', { params })
   }
+  logout() {
+    return this.http.delete('/login')
+  }
   /**
    * 手机登录API
    */

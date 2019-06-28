@@ -174,7 +174,7 @@ export default {
           'height:' + (cellSize.heigth - 4) + 'px', // 2px padding top, 2px padding bottom
           'line-height:' + (cellSize.heigth - 4) + 'px' // center text vertically
         ].join(';')
-        let hoverHtml = '<div class="hover-button" style="' + hoverCss + '">+添加课程排期</div>'
+        let hoverHtml = '<div class="hover-button" style="' + hoverCss + '">+添加课程预约</div>'
 
         $('.fc-widget-content').hover(function() {
           if (!$(this).html()) {
