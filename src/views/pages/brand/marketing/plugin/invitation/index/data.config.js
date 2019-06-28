@@ -1,38 +1,38 @@
 export const columnsActivity = [
   {
     title: '时间',
-    dataIndex: 'aaaaa',
-    scopedSlots: { customRender: 'aaaaa' }
+    dataIndex: 'date',
+    scopedSlots: { customRender: 'date' }
   },
   {
     title: '参与活动邀请人',
-    dataIndex: 'bbbbb',
-    scopedSlots: { customRender: 'bbbbb' }
+    dataIndex: 'inviter_num',
+    scopedSlots: { customRender: 'inviter_num' }
   },
   {
     title: '邀请人带来的交易额',
-    dataIndex: 'ccccc',
-    scopedSlots: { customRender: 'ccccc' }
+    dataIndex: 'inviter_revenue',
+    scopedSlots: { customRender: 'inviter_revenue' }
   },
   {
     title: '拉新注册人数',
-    dataIndex: 'ddddd',
-    scopedSlots: { customRender: 'ddddd' }
+    dataIndex: 'newbie_register_num',
+    scopedSlots: { customRender: 'newbie_register_num' }
   },
   {
     title: '拉新领券人数',
-    dataIndex: 'eeeee',
-    scopedSlots: { customRender: 'eeeee' }
+    dataIndex: 'coupon_num',
+    scopedSlots: { customRender: 'coupon_num' }
   },
   {
     title: '拉新交易人数',
-    dataIndex: 'fffff',
-    scopedSlots: { customRender: 'fffff' }
+    dataIndex: 'order_num',
+    scopedSlots: { customRender: 'order_num' }
   },
   {
     title: '拉新带来的交易额',
-    dataIndex: 'ggggg',
-    scopedSlots: { customRender: 'ggggg' }
+    dataIndex: 'newbie_revenue',
+    scopedSlots: { customRender: 'newbie_revenue' }
   }
 ]
 export const columnsUser = [

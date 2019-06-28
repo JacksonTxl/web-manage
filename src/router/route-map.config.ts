@@ -243,7 +243,7 @@ export const routeMapConfig = {
   'shop-product-card-member-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店上架卡项'
     routeConfig.queryOptions = {
-      current_page: { type: Number, default: 1 },
+      page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       card_type: { type: Number, default: -1 },
       publish_channel: { type: Number, default: -1 },
@@ -253,7 +253,7 @@ export const routeMapConfig = {
   'shop-product-card-member-list-all'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '全部会员卡项'
     routeConfig.queryOptions = {
-      current_page: { type: Number, default: 1 },
+      page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       card_type: { type: Number, default: -1 },
       publish_channel: { type: Number, default: -1 },
