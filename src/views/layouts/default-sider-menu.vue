@@ -158,18 +158,29 @@ export default {
       const { menus } = this
       let currentSiderMenu
       menus.forEach(menu => {
-        let { icon } = menu
-        /**
-         * 对一些特殊的icon做处理，比如dashboard用的是home
-         */
-        if (icon === 'home') {
-          icon = 'dashboard'
-        }
-        if (this.getPageName().indexOf(icon) !== -1) {
+        const matchKeyword = this.getMatchKeyword(menu)
+        if (this.getPageName().indexOf(matchKeyword) !== -1) {
           currentSiderMenu = menu
         }
       })
       return currentSiderMenu || {}
+    },
+    getMatchKeyword(menu) {
+      const { icon } = menu
+      let Keyword
+      /**
+       * 对一些特殊的icon做处理，比如dashboard用的是home
+       */
+      const keywordsMap = {
+        'home': 'dashboard',
+        'sold': 'shop-sold'
+      }
+      if (!keywordsMap.hasOwnProperty(icon)) {
+        Keyword = icon
+      } else {
+        Keyword = keywordsMap[icon]
+      }
+      return Keyword
     },
     findSelectedKey() {
       let selectedKey
