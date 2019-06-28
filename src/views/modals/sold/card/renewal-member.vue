@@ -329,6 +329,7 @@ export default {
       let advanceId = advance === -1 ? '' : advance
       let couponId = coupon === -1 ? '' : coupon
       this.renewalMemberService.priceAction$.dispatch({
+        id: this.id,
         product_id: this.info.card_id,
         product_type: this.info.contract_type,
         specs_id,
