@@ -95,7 +95,16 @@
       </tbody>
     </st-form-table>
     <div class="mg-t24 ta-r">
-      <st-button @click="cancelSchedule">取消课程</st-button>
+      <a-popconfirm
+        @confirm="cancelSchedule"
+        okText="确认"
+        cancelText="取消">
+        <div slot="title">
+          是否取消课程？
+          <div class="color-danger">将发送消息通知已报名用户并发起自动退款</div>
+        </div>
+        <st-button>取消课程</st-button>
+      </a-popconfirm>
       <st-button
         class="mg-l8"
         type="primary"
