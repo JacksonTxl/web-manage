@@ -1,6 +1,6 @@
 import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state/src'
-import { CouponApi, CouponListParams } from '@/api/v1/markting/coupon'
+import { CouponApi, CouponListParams } from '@/api/v1/marketing/coupon'
 import { tap } from 'rxjs/operators'
 
 @Injectable()

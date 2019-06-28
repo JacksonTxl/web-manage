@@ -1,6 +1,7 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state/src'
-import { CouponApi, CouponListParams } from '@/api/v1/markting/coupon'
+import { CouponApi, CouponListParams } from '@/api/v1/marketing/coupon'
+import { MarketingApi } from '@/api/v1/marketing/marketing'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
 
@@ -10,7 +11,7 @@ export class ListService implements RouteGuard {
   page$ = new State({})
   loading$ = new State({})
   auth$ = new State({})
-  constructor(private couponApi: CouponApi, private authService: AuthService) {}
+  constructor(private marketingApi: MarketingApi, private couponApi: CouponApi, private authService: AuthService) {}
   @Effect()
   getList(params: CouponListParams) {
     return this.couponApi.getList(params).pipe(tap((res:any) => {
@@ -23,5 +24,8 @@ export class ListService implements RouteGuard {
     this.getList(to.meta.query).subscribe(() => {
       next()
     })
+  }
+  stopMarketingCoupon(id: number) {
+    return this.marketingApi.stopMarketingCoupon(id).pipe(tap((res:any) => {}))
   }
 }

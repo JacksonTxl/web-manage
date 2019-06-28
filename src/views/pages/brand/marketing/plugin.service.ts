@@ -1,14 +1,14 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { MarktingApi } from '@/api/v1/markting/markting'
+import { MarketingApi } from '@/api/v1/marketing/marketing'
 import { tap } from 'rxjs/operators'
 import { State } from 'rx-state/src'
 
 @Injectable()
 export class PluginService {
   info$ = new State({});
-  constructor(private marktingApi: MarktingApi) { }
+  constructor(private marketingApi: MarketingApi) { }
   getInfo() {
-    return this.marktingApi.getMarktingInfo().pipe(
+    return this.marketingApi.getMarktingInfo().pipe(
       tap(res => {
         this.info$.commit(() => res.info)
       })
