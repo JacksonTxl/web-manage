@@ -15,6 +15,11 @@ export interface AddMarketingCouponParams {
   is_limit: number
   person_limit: number
 }
+export interface GetInviteTableInput {
+  page:number
+  size:number
+}
+
 export interface EditMarketingCouponParams {
   id: number;
   before_number: number;
@@ -50,5 +55,35 @@ export class MarketingApi extends Api {
    */
   stopMarketingCoupon(id: number) {
     return this.http.put(`/v1/plugin/coupon/stop/${id}`)
+  }
+  /**
+   * 邀请有礼是否已开启
+   */
+  getInviteOpenStatus() {
+    return this.http.get(`/v1/plugin/invite/opened`, { mock: {} })
+  }
+  /**
+   * 邀请有礼活动统计
+   */
+  getInviteReport() {
+    return this.http.get(`/v1/plugin/invite/report`, { mock: {} })
+  }
+  /**
+   * 邀请有礼活动效果数据
+   */
+  getInviteDay(query:GetInviteTableInput) {
+    return this.http.get(`/v1/plugin/invite/day`, { query, mock: {} })
+  }
+  /**
+   * 邀请有礼邀请数据
+   */
+  getInviteInvitee(query:GetInviteTableInput) {
+    return this.http.get(`/v1/plugin/invite/invitee`, { query, mock: {} })
+  }
+  /**
+   * 邀请有礼编辑回显
+   */
+  getInviteEditInfo() {
+    return this.http.get(`/v1/plugin/invite/view`, { mock: {} })
   }
 }
