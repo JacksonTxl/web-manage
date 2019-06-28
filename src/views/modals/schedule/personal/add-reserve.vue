@@ -28,6 +28,7 @@
       </st-form-item>
       <st-form-item label="课程" required>
         <a-select placeholder="请选择课程"
+        @change="onChangeCourse"
         v-decorator="['course_id']">
           <a-select-option v-for="course in courseOptions" :key="course.id" :value="course.id">{{course.course_name}}</a-select-option>
         </a-select>
@@ -36,7 +37,7 @@
 
       required>
         <a-select v-decorator="['coach_id']" placeholder="请选择上课教练" @change="onChangeCourseCoach">
-          <a-select-option v-for="courseCoach in courseCoachOptions" :key="courseCoach.id" :value="courseCoach.id">{{courseCoach.staff_name}}</a-select-option>
+          <a-select-option v-for="courseCoach in courseCoachOptions" :key="courseCoach.id" :value="courseCoach.id">{{courseCoach.name}}</a-select-option>
         </a-select>
       </st-form-item>
       <st-form-item label="预约日期" required>
@@ -91,6 +92,10 @@ export default {
       this.commonService.getOptions('getMemberList', { member: val }, () => {
         this.fetching = true
       })
+    },
+    onChangeCourse(val) {
+      console.log(val)
+      this.commonService.getCourseCoachList(val).subscribe()
     },
     onChangeDatePick(val) {
       let reserveDate = ''
@@ -154,7 +159,9 @@ export default {
               form.scheduling_id = item.id
             }
           })
-          this.reserveService.curd('add', form, () => {})
+          this.reserveService.curd('add', form, () => {
+            this.show = false
+          })
         }
       })
     },

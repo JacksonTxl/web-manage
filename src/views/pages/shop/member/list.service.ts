@@ -47,16 +47,11 @@ export class ListService extends Store<MemberListInfoState> {
   removeWechatBind(id: number) {
     return this.memberApi.removeWechatBind(id)
   }
-  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo(to.meta.query).subscribe(res => {
-      console.log(res, '获取数据to.query', to.meta.query)
-      this.SET_MEMBER_LIST_INFO(res)
-      next()
-    })
+  getMemberSourceRegisters() {
+    return this.memberApi.getMemberSourceRegisters()
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo(to.query ? to.query : {}).subscribe(res => {
-      console.log(res, '获取数据')
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.getListInfo(to.query).subscribe(res => {
       this.SET_MEMBER_LIST_INFO(res)
       next()
     })

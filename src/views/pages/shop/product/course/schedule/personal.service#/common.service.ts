@@ -64,8 +64,8 @@ export class PersonalScheduleCommonService {
         })
       }))
   }
-  getCourseCoachList() {
-    return this.commonApi.getCourseCoachList().pipe(tap(res => {
+  getCourseCoachList(id: any) {
+    return this.commonApi.getCourseCoachList(id).pipe(tap(res => {
       this.state$.commit(state => {
         state.courseCoachOptions = res.list
       })

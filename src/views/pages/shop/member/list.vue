@@ -3,56 +3,35 @@
   <div class="shop-member-list">
     <st-panel class="mg-t16">
       <div slot="title">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="form.keyword" style="width: 290px;"/>
+        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onSearchSearchQuery" style="width: 290px;"/>
       </div>
+
       <div slot="prepend">
-        <div style="background: #F7F9FC; padding: 24px">
-          <a-form class="ant-advanced-search-form">
-            <a-row :gutter="24">
-              <st-select v-model="form" ref="stSeleter">
-                <div slot="custom" v-if="expand">
-                  <a-form-item :label-col="{span:2}" :wrapper-col="{ span: 12 }" label="入会时间：">
-                    <a-range-picker
-                      v-model="consumption"
-                      v-if="form.be_member_start_time && form.be_member_stop_time"
-                      :defaultValue="[moment(form.be_member_start_time, dateFormat), moment(form.be_member_stop_time, dateFormat)]"
-                      @change="MembershipTime"
-                    />
-                    <a-range-picker v-else @change="MembershipTime" v-model="consumption"/>
-                  </a-form-item>
-                  <a-form-item
-                    :label-col="{span:2}"
-                    :wrapper-col="{ span: 12 }"
-                    :label="memberEnums.is_follow.description"
-                  >
-                    <a-radio-group buttonStyle="solid" v-model="form.is_follow">
-                      <a-radio-button value="-1">全部</a-radio-button>
-                      <a-radio-button
-                        v-for="(item,key,index) in memberEnums.is_follow.value"
-                        :value="key"
-                        :key="index"
-                      >{{item}}</a-radio-button>
-                    </a-radio-group>
-                  </a-form-item>
-                </div>
-              </st-select>
-            </a-row>
-            <a-row>
-              <a-col :span="24" class="shop-member-list-handel">
-                <div>
-                  <a @click="toggle">
-                    <span>{{!expand?'展开':'收起'}}</span>
-                    <a-icon :type="expand ? 'up' : 'down'"/>
-                  </a>
-                </div>
-                <div>
-                  <a-button type="primary" @click="queryFunc">查询</a-button>
-                  <a-button :style="{ marginLeft: '8px' }" @click="handleReset">重置</a-button>
-                </div>
-              </a-col>
-            </a-row>
-          </a-form>
-        </div>
+        <st-search-panel>
+          <div :class="basic('select')">
+            <span style="width:90px;">用户级别：</span>
+            <st-search-radio label="" @change="onChangeSearchQuery" v-model="query.member_level" :list="memberLevel"/>
+          </div>
+          <div :class="basic('select')">
+            <span style="width:90px;">来源方式：</span>
+            <st-search-radio label="" @change="onChangeSearchQuery" v-model="query.register_way" :list="sourceList"/>
+          </div>
+          <div :class="basic('select')">
+            <span style="width:90px;">注册时间：</span>
+            <a-range-picker :defaultValue="defaultRegValue" @change="onChangeReg">
+            </a-range-picker>
+          </div>
+          <div :class="basic('select')">
+            <span style="width:90px;">入会时间：</span>
+            <a-range-picker :defaultValue="defaultBeMemberValue" @change="onChangeBeMember">
+            </a-range-picker>
+          </div>
+          <div :class="basic('select')">
+            <span style="width:90px;">员工跟进：</span>
+            <a-range-picker :defaultValue="defaultBeMemberValue" @change="onChangeBeMember">
+            </a-range-picker>
+          </div>
+        </st-search-panel>
       </div>
       <div class="mg-t16">
         <st-button type="primary" class="shop-member-list-button" v-if="auth.add">
@@ -174,15 +153,20 @@
   </div>
 </template>
 <script>
+
 import { UserService } from '@/services/user.service'
 import { ListService } from './list.service'
-import StSelect from './list#/select.vue'
-import moment from 'moment'
+import { RouteService } from '@/services/route.service'
 export default {
+  name: 'memberList',
+  bem: {
+    basic: 'page-shop-finance'
+  },
   serviceInject() {
     return {
-      aService: ListService,
-      userService: UserService
+      listService: ListService,
+      userService: UserService,
+      routeService: RouteService
     }
   },
   rxState() {
@@ -191,19 +175,19 @@ export default {
      */
     const user = this.userService
     return {
-      memberListInfo: this.aService.memberListInfo$,
+      memberListInfo: this.listService.memberListInfo$,
+      shopMemberEnums: user.shopMemberEnums$,
       reserveEnums: user.reserveEnums$,
       memberEnums: user.memberEnums$,
-      auth: this.aService.auth$
+      auth: this.listService.auth$,
+      query: this.routeService.query$
     }
-  },
-  components: {
-    StSelect
   },
   data() {
     return {
       dateFormat: 'YYYY/MM/DD',
       expand: false,
+      sourceRegisterList: [],
       consumption: [],
       form: {
         member_level: '',
@@ -242,19 +226,63 @@ export default {
       ]
     }
   },
-  computed: {},
-  created() {
-    this.form = { ...this.$route.query }
+  computed: {
+    memberLevel() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.shopMemberEnums.member_level) return list
+      Object.entries(this.shopMemberEnums.member_level.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    },
+    defaultRegValue() {
+      if (!this.query.register_start_time) return null
+      return [moment(this.query.register_start_time, this.dateFormat), moment(this.query.register_stop_time, this.dateFormat)]
+    },
+    defaultBeMemberValue() {
+      if (!this.query.be_member_start_time) return null
+      return [moment(this.query.be_member_start_time, this.dateFormat), moment(this.query.be_member_stop_time, this.dateFormat)]
+    },
+    sourceList() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.sourceRegisterList) return list
+      Object.entries(this.sourceRegisterList).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    }
+  },
+  mounted() {
+    this.sourceRegisters()
   },
   methods: {
+    onSearchSearchQuery() {
+      this.$router.push({ query: { keyword: this.query.keyword } })
+    },
+    onChangeSearchQuery() {
+      delete this.query.keyword
+      this.$router.push({ query: this.query })
+    },
+    onChangeReg(date, dateString) {
+      delete this.query.keyword
+      this.$router.push({ query: { ...this.query, register_start_time: dateString[0], register_stop_time: dateString[1] } })
+    },
+    onChangeBeMember(date, dateString) {
+      delete this.query.keyword
+      this.$router.push({ query: { ...this.query, be_member_start_time: dateString[0], be_member_stop_time: dateString[1] } })
+    },
+    sourceRegisters() {
+      this.listService.getMemberSourceRegisters().subscribe(status => {
+        this.sourceRegisterList = status
+      })
+    },
     onRemoveBind(record) {
-      console.log(record)
       let that = this
       this.$confirm({
         title: '提示信息',
         content: '确认解绑选中的会员关系？',
         onOk() {
-          that.aService.removeWechatBind(record.member_id).subscribe(() => {
+          that.listService.removeWechatBind(record.member_id).subscribe(() => {
             console.log('ok')
           })
         },
@@ -302,14 +330,12 @@ export default {
       })
     },
     onTableChange(pagination, filters, sorter) {
-      console.log(pagination, filters, sorter)
       this.pagination = pagination
       this.form.size = pagination.pageSize
       this.form.page = pagination.current
       this.$router.push({ query: this.form })
     },
     queryFunc() {
-      console.log(this.form)
       this.$router.push({ query: this.form })
     }
   }
