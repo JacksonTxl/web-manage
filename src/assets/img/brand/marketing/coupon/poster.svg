@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>分组 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="96.5250181%" id="linearGradient-1">
+            <stop stop-color="#6774FF" offset="0%"></stop>
+            <stop stop-color="#8595FF" offset="97.5817377%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="优惠券" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="成功" transform="translate(-628.000000, -432.000000)" fill-rule="nonzero">
+            <g id="分组-5" transform="translate(628.000000, 430.000000)">
+                <g id="分组-2" transform="translate(0.000000, 2.000000)">
+                    <circle id="椭圆形" fill="url(#linearGradient-1)" cx="9" cy="9" r="9"></circle>
+                    <rect id="矩形" fill="#FFFFFF" x="4" y="4" width="10" height="10" rx="1"></rect>
+                    <path d="M9,12 C9.65250815,8.66666667 10.9858415,7 13,7 L13,13 L5,13 C5,11.6666667 5.66666667,11 7,11 C9,11 9,12 9,12 Z" id="路径-2" fill="#7988FF"></path>
+                    <circle id="椭圆形" fill="#6E7CFF" cx="6" cy="7" r="1"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

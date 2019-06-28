@@ -20,11 +20,22 @@
       </div>
       <div :class="basic('content')">
         <st-table
-        :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
+        :pagination="{current:query.page || 1,total:page.total_counts || 0,pageSize:query.size || 20}"
         rowKey="id"
         :columns="columns"
         @change="onPageChange"
         :dataSource="list">
+          <template slot="is_shop_range" slot-scope="text, record">
+            <a-popover placement="right">
+              <template slot="content">
+                <p v-for="(item, index) in record.shop_list" :key="index" :value="index">{{item}}</p>
+              </template>
+              <template slot="title">
+                <span>可用门店</span>
+              </template>
+              <a>{{text}}</a>
+            </a-popover>
+          </template>
           <div slot="action" slot-scope="text,record">
             <a  @click="onEdit(record)">编辑</a>
             <a-divider type="vertical"></a-divider>

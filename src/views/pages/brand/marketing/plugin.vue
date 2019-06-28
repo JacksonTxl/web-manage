@@ -3,24 +3,24 @@
     <div :class="basic('left')">
       <div :class="basic('effect')">
         <header>
-          营销效果<img src="~@/assets/img/brand/markting/tip.svg" />
+          营销效果<img src="~@/assets/img/brand/marketing/tip.svg" />
         </header>
         <section>
           <ul v-if="info.num">
             <li>
-              <p>注册人数<img src="~@/assets/img/brand/markting/register.svg" /></p>
+              <p>注册人数<img src="~@/assets/img/brand/marketing/register.svg" /></p>
               <ICountUp :endVal="+info.num.register_num"/>
             </li>
             <li>
-              <p>交易人数<img src="~@/assets/img/brand/markting/deals.svg" /></p>
+              <p>交易人数<img src="~@/assets/img/brand/marketing/deals.svg" /></p>
               <ICountUp :endVal="+info.num.people_num"/>
             </li>
             <li>
-              <p>订单总金额<img src="~@/assets/img/brand/markting/money.svg" /></p>
+              <p>订单总金额<img src="~@/assets/img/brand/marketing/money.svg" /></p>
               <ICountUp :endVal="+info.num.order_amount" :options="{prefix: '￥'}"/>
             </li>
             <li>
-              <p>营销支出金额<img src="~@/assets/img/brand/markting/expend.svg" /></p>
+              <p>营销支出金额<img src="~@/assets/img/brand/marketing/expend.svg" /></p>
               <ICountUp :endVal="+info.num.spend_amount" :options="{prefix: '￥'}"/>
             </li>
           </ul>
@@ -34,10 +34,10 @@
         <section>
           <ul>
             <li v-for="(item, index) in info.marketing" :key="index">
-              <img v-if="item.plugin_type === '0'" src="~@/assets/img/brand/markting/people.svg">
-              <img v-if="item.plugin_type === '1'" src="~@/assets/img/brand/markting/coupon.svg">
-              <img v-if="item.plugin_type === '2'" src="~@/assets/img/brand/markting/invite.svg">
-              <img v-if="item.plugin_type === '3'" src="~@/assets/img/brand/markting/slyder.svg">
+              <img v-if="item.plugin_type === '0'" src="~@/assets/img/brand/marketing/people.svg">
+              <img v-if="item.plugin_type === '1'" src="~@/assets/img/brand/marketing/coupon.svg">
+              <img v-if="item.plugin_type === '2'" src="~@/assets/img/brand/marketing/invite.svg">
+              <img v-if="item.plugin_type === '3'" src="~@/assets/img/brand/marketing/slyder.svg">
               <div>
                 <p>{{item.plugin_name}}</p>
                 <p>{{item.plugin_text}}</p>
@@ -66,9 +66,9 @@
 <script>
 import { PluginService } from './plugin.service'
 export default {
-  name: 'BrandMarktingPlugin',
+  name: 'BrandMarketingPlugin',
   bem: {
-    basic: 'brand-markting-plugin'
+    basic: 'brand-marketing-plugin'
   },
   serviceInject() {
     return {

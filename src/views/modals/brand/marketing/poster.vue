@@ -1,13 +1,13 @@
 <template>
   <st-modal
-    title="规则说明"
+    title="分享海报"
     v-model="show"
     @ok="handleOk"
     :footer="null"
   >
-    <ul>
-      <li v-for="(item, index) in contents" :key="index">{{item}}</li>
-    </ul>
+    <div>
+
+    </div>
   </st-modal>
 </template>
 <script>

@@ -20,6 +20,11 @@ export interface GetInviteTableInput {
   size:number
 }
 
+export interface EditMarketingCouponParams {
+  id: number;
+  before_number: number;
+  after_number: number;
+}
 export class MarketingApi extends Api {
   /**
    * 获取营销插件详情
@@ -32,6 +37,12 @@ export class MarketingApi extends Api {
    */
   addMarketingCoupon(params: AddMarketingCouponParams) {
     return this.http.post(`/v1/plugin/coupon`, { params })
+  }
+  /**
+   * 编辑优惠券模板
+   */
+  editMarketingCoupon(params: EditMarketingCouponParams) {
+    return this.http.put(`/v1/plugin/coupon/${params.id}`, { params })
   }
   /**
    * 获取模板信息详情
