@@ -56,6 +56,14 @@ export default {
       }
     }
   },
+  watch: {
+    value: {
+      deep: true,
+      handler(newVal, oldVal) {
+        this.init(newVal)
+      }
+    }
+  },
   created() {
     this.init(this.value)
   },
