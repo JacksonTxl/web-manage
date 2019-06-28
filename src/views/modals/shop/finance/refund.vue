@@ -134,7 +134,6 @@ export default {
       this.form.validateFields((error, values) => {
         if (!error) {
           this.refundService.orderRefund({
-            // sold_id: this.id,
             order_sub_id: this.info.order_sub_id,
             refund_money: +values.refundPrice,
             reason: +this.refundReason,

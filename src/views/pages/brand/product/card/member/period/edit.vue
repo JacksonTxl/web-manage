@@ -163,7 +163,6 @@
                 </span>
                 <a-form-item class="page-a-form">
                   <a-date-picker
-                    :disabledDate="disabledStartDate"
                     v-decorator="['start_time',{rules:[{validator:start_time_validator}]}]"
                     format="YYYY-MM-DD"
                     placeholder="开始时间"
@@ -733,15 +732,6 @@ export default {
       if (!open) {
         this.cardData.endOpen = true
       }
-    },
-    disabledStartDate(startValue) {
-      const endValue = this.end_time
-      if (!endValue) {
-        // 结束时间未选择
-        return startValue.valueOf() < moment().subtract(1, 'd').valueOf()
-      }
-      let start = endValue.valueOf() > moment().add(30, 'y').valueOf() ? moment(endValue).subtract(30, 'y').valueOf() : moment().subtract(1, 'd').add(1, 'ms').valueOf()
-      return startValue.valueOf() < start || startValue.valueOf() > moment(endValue).subtract(1, 'd').valueOf()
     },
     // 售卖时间-end
     end_time_change(data) {

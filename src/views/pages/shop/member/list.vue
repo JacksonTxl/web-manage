@@ -205,7 +205,7 @@ export default {
       selectedRowKeys: [],
       selectedRowData: [],
       columns: [
-        { title: '人脸', dataIndex: '' },
+        // { title: '人脸', dataIndex: '' },
         {
           title: '姓名',
           dataIndex: 'member_name',

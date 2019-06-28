@@ -183,7 +183,7 @@ export default {
       return this.type === 'member'
     },
     saleRange() {
-      return this.depositTransferInfo.sale_range || this.memberTransferInfo.sale_range
+      return this.depositTransferInfo.sale_range || this.memberTransferInfo.sale_range || {}
     }
   },
   props: ['id', 'type'],

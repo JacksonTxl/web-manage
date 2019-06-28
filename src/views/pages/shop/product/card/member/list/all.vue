@@ -204,7 +204,6 @@ export default {
     onSelect(key, data) {
       this.$router.push({ query: { ...this.query, ...{ [key]: data } } })
     },
-
     onPageChange(data) {
       this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize }, force: true })
     },

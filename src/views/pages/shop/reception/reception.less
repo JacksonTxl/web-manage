@@ -5,11 +5,15 @@
     justify-content: space-between;
     &-item {
       display: flex;
+      flex: 1;
       flex-direction: column;
-      width: 229px;
+      min-width: 222.4px;
       height: 136px;
       box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
       .bg(@white);
+      &+&{
+        margin-left: 20px;
+      }
     }
     &-detail {
       display: flex;
@@ -25,7 +29,7 @@
         .fz(14px);
         .c(@text-light);
       }
-      >p:nth-of-type(2){
+      .number-up{
         margin: 0;
         .lh(37px);
         .c(@title);
@@ -82,10 +86,11 @@
   &__member-todoist{
     display: flex;
     justify-content: space-between;
-
   }
   &__member {
-    width: 496px;
+    flex: 495;
+    min-width: 495px;
+    margin-right: 24px;
     height: 517px;
     box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
     .bg(@white);
@@ -99,14 +104,16 @@
       &::after {
         content: '';
         position: absolute;
-        width: 496px;
+        width: 100%;
         height: 16px;
         background:linear-gradient(360deg,rgba(244,246,248,0) 0%,rgba(230,233,239,0.4) 100%);
         bottom: -16px;
         left: 0;
       }
       &-select {
-        width: 376px;
+        min-width: 376px;
+        flex: 1;
+        margin-right: 12px;
         .ant-select-selection {
           border-radius: 20px;
           .bg(rgba(234, 238, 244, 1));
@@ -141,17 +148,19 @@
       margin-bottom: 16px;
       .set-info-label {
         width: 56px;
+        margin-right: 16px;
         text-align: right;
         .fz(14px);
         .lh(22px);
       }
       .set-info-select {
-        width: 376px;
+        flex: 1;
       }
     }
   }
   &__todoist {
-    width: 674px;
+    flex: 674;
+    min-width: 674px;
     height: 517px;
     box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
     .todoist-tabs {
@@ -165,7 +174,7 @@
       height: 452px;
       padding: 12px 24px 24px;
       .to-do-add {
-        width: 626px;
+        width: 100%;
         margin-bottom: 12px;
       }
       &-list {
@@ -173,9 +182,11 @@
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
+        align-content: flex-start;
         height: 372px;
         >li {
-          width: 307px;
+          flex: 1;
+          min-width: 307px;
           height: 116px;
           padding: 16px;
           .bg(@white);
@@ -183,10 +194,21 @@
           .to-do-main {
             display: flex;
             align-items: center;
-            img {
+            .operation-photo {
               border-radius: 50%;
             }
+            .operation-name{
+              .s(48px,48px);
+              border-radius: 50%;
+              .fz(14px);
+              font-weight: 500;
+              .lh(48px);
+              text-align: center;
+              .bg(@primary-color);
+              .c(@white);
+            }
             >p{
+              width: calc(100% - 60px);
               margin-left: 12px;
               margin-bottom: 0;
               span {
@@ -240,8 +262,10 @@
       margin-top: 12px;
       justify-content: space-between;
       flex-wrap: wrap;
+      align-content: flex-start;
       >li {
-        width: 307px;
+        flex: 1;
+        min-width: 307px;
         height: 116px;
         padding: 16px;
         .bg(@white);
@@ -249,10 +273,21 @@
         .finish-main {
           display: flex;
           align-items: center;
-          img {
+          .operation-photo {
             border-radius: 50%;
           }
+          .operation-name{
+            .s(48px,48px);
+            border-radius: 50%;
+            .fz(14px);
+            font-weight: 500;
+            .lh(48px);
+            text-align: center;
+            .bg(@primary-color);
+            .c(@white);
+          }
           >p{
+            width: calc(100% - 60px);
             margin-left: 12px;
             margin-bottom: 0;
             span {
@@ -285,17 +320,31 @@
           .lh(20px);
           .c(@text-light);
           font-weight: bold;
-          .finish-button {
+          .finish-status {
             width: 60px;
             height: 20px;
             .lh(20px);
             .fz(12px);
-            .c(@primary-color);
-            border-color: @primary-5;
-            border-radius: 20px;
+            .c(@success-color);
           }
         }
       }
+    }
+  }
+  .none-item {
+    .bg(rgba(0,0,0,0));
+    box-shadow: none;
+  }
+  &__cabinet-edit {
+    .set-info-edit-label {
+      margin-right: 16px;
+    }
+    .set-info-edit-select {
+      flex: 1;
+      margin-right: 12px;
+    }
+    .set-info-edit-button {
+      margin-left: 8px;
     }
   }
 }

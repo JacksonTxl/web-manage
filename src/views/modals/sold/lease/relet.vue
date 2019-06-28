@@ -212,6 +212,7 @@ export default {
     // 计算实付金额
     getPrice(advance, reduce) {
       this.reletService.currentPriceAction$.dispatch({
+        id: this.id,
         product_id: this.info.cabinet_id,
         product_type: this.info.contract_type,
         product_num: this.form.getFieldValue('lease_num') || 0,
@@ -223,6 +224,7 @@ export default {
     // 获取订单总额
     getOrderPrice() {
       this.reletService.orderAmountPriceAction$.dispatch({
+        id: this.id,
         product_id: this.info.cabinet_id,
         product_type: this.info.contract_type,
         product_num: this.form.getFieldValue('lease_num') || 0
