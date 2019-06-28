@@ -30,7 +30,7 @@
             <a-divider type="vertical"></a-divider>
             <a  @click="onEdit(record)">推广</a>
             <a-divider type="vertical"></a-divider>
-            <a  @click="onEdit(record)">结束</a>
+            <a  @click="onStop(record)">结束</a>
           </div>
         </st-table>
       </div>
@@ -108,12 +108,12 @@ export default {
           scopedSlots: { customRender: 'margin' }
         }, {
           title: '已领取',
-          dataIndex: 'sold_num',
-          scopedSlots: { customRender: 'sold_num' }
+          dataIndex: 'draw_num',
+          scopedSlots: { customRender: 'draw_num' }
         }, {
           title: '已使用',
-          dataIndex: 'sold_num',
-          scopedSlots: { customRender: 'sold_num' }
+          dataIndex: 'use_num',
+          scopedSlots: { customRender: 'use_num' }
         }, {
           title: '状态',
           dataIndex: 'coupon_status',
@@ -170,17 +170,13 @@ export default {
         : null
     },
     // 编辑
-    onEdit() {
-      this.$modalRouter.push({
-        name: 'sold-deal-gathering',
-        props: {
-
-        },
-        on: {
-          success: () => {
-
-          }
-        }
+    onEdit(record) {
+      this.$router.push({ path: '/brand/marketing/plugin/coupon/add', query: { id: record.id } })
+    },
+    // 停止优惠券模板
+    onStop(record) {
+      this.listService.stopMarketingCoupon(record.id).subscribe(res => {
+        this.$router.push({ force: true })
       })
     },
     // 新增优惠券活动

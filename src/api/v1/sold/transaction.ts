@@ -111,7 +111,12 @@ export class TransactionApi extends Api {
   getTransactionPrice(params: TransactionPriceInput) {
     return this.http.post(`/v1/order/transaction/price`, { params })
   }
-
+  /**
+   * 获取售出应付金额
+   */
+  getTransactionSoldPrice(params: TransactionPriceInput) {
+    return this.http.post(`/v1/order/transaction/sold/price`, { params })
+  }
   /**
    * 增加定金，调试用，后续移除
    */

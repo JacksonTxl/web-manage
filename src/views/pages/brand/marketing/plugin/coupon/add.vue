@@ -5,8 +5,8 @@
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" >
             <a-col :lg="24">
-              <st-form-item label="优惠券类型" required>
-                <a-radio-group defaultValue="1" v-if="couponEnums">
+              <st-form-item label="优惠券类型" required v-if="couponEnums.coupon_type">
+                <a-radio-group  v-model="couponType" :disabled="isEditMode">
                   <a-radio-button
                     v-for="(item, index) in couponEnums.coupon_type.value"
                     :value="index"
@@ -16,9 +16,10 @@
               </st-form-item>
               <st-form-item label="优惠券名称" required>
                 <a-input
+                  :disabled="isEditMode"
                   v-decorator="[
-                  'card_name',
-                  {rules: [{ validator: card_name_validator}]}
+                  'coupon_name',
+                  {rules: [{ validator: coupon_name_validator }]}
                   ]"
                   maxlength="10"
                   placeholder="请输入优惠券名称"
@@ -26,9 +27,11 @@
                 ></a-input>
               </st-form-item>
               <st-form-item label="面额" required>
-                <st-input-number  placeholder="请输入面额" :class="basic('input')">
+                <a-input :disabled="isEditMode" placeholder="请输入面额" :class="basic('input')" v-decorator="[
+                  'price',
+                  {rules: [{ validator: price_validator}]}]">
                   <template slot="addonAfter">元</template>
-                </st-input-number>
+                </a-input>
               </st-form-item>
             </a-col>
           </a-row>
@@ -36,42 +39,58 @@
           <a-row :gutter="8">
             <a-col :lg="23">
               <st-form-item label="优惠范围" required>
-                <a-radio-group defaultValue="1" @change="changeProductType">
+                <a-radio-group v-model="showProductRange" :disabled="isEditMode">
                   <a-radio value="1">全部类目</a-radio>
-                  <a-radio value="2">指定类目</a-radio>
+                  <a-radio value="0">指定类目</a-radio>
                 </a-radio-group>
-                <a-select v-if="showProductType === '2' && transaction" mode="multiple" defaultValue="1" placeholder="请选择类目">
-                  <a-select-option v-for="(item, index) in transaction.product_type.value" :key="`${index}`" :value="index">
+                <a-select
+                  :disabled="isEditMode"
+                  v-if="showProductRange == '0' && transaction.product_type"
+                  @change="changeProductRange"
+                  mode="multiple" placeholder="请选择类目" :class="basic('select')">
+                  <a-select-option v-for="(item, index) in transaction.product_type['value']" :key="`${index}`" :value="index">
                     {{item}}
                   </a-select-option>
                 </a-select>
               </st-form-item>
               <st-form-item label="可用门店" required>
-                <a-radio-group defaultValue="1">
+                <a-radio-group v-model="showShopRange" :disabled="isEditMode">
                   <a-radio value="1">全部门店</a-radio>
-                  <a-radio value="2">指定门店</a-radio>
+                  <a-radio value="0">指定门店</a-radio>
                 </a-radio-group>
-                <select-shop v-if="showShop === '2'" @change="onSelectShop"></select-shop>
+                <select-shop v-if="showShopRange == '0'" @change="onSelectShop" :shopIds="shopIds"></select-shop>
               </st-form-item>
               <st-form-item label="使用条件" required>
-                <a-radio-group @change="onChange" v-model="value">
+                <a-radio-group
+                  :disabled="isEditMode"
+                  v-decorator="[
+                  'use_type',
+                  {rules: [{ validator: use_type_validator}]}]">
                   <a-radio :value="1">无门槛使用</a-radio>
-                  <a-radio :value="2">满<a-input :class="basic('radio-input')"/>元使用</a-radio>
+                  <a-form-item :class="basic('wrap-input')">
+                    <a-radio :value="2" >满<a-input :class="basic('radio-input')" :disabled="isEditMode" v-decorator="[
+                    'full_price',
+                    {rules: [{ validator: full_price_validator}]}]"/>元使用</a-radio>
+                  </a-form-item>
                 </a-radio-group>
               </st-form-item>
               <st-form-item  label="发放数量" required>
-                <st-input-number :class="basic('input')" placeholder="请输入数量">
+                <st-input-number :class="basic('input')" placeholder="请输入数量" v-decorator="[
+                  'number',
+                  {rules: [{ validator: number_validator}]}]">
                   <template slot="addonAfter">张</template>
                 </st-input-number>
                 <label :class="basic('tip')">保存后只可增加不可减少</label>
               </st-form-item>
-              <st-form-item  label="使用有效期" required>
+              <st-form-item  label="使用有效期" required >
                 领券当日起
-                <st-input-number placeholder="" :class="basic('radio-input')"></st-input-number>
+                <st-input-number :disabled="isEditMode" :class="basic('radio-input')" v-decorator="[
+                  'valid_days',
+                  {rules: [{ validator: valid_days_validator}]}]"></st-input-number>
                 天内有效
               </st-form-item>
               <st-form-item  label="优惠共享" >
-                <a-checkbox @change="onChange">不可与其它优惠同享</a-checkbox>
+                <a-checkbox v-model="isShare" :value="1" :disabled="isEditMode">不可与其它优惠同享</a-checkbox>
                 <a-popover
                     trigger="hover"
                     placement="rightBottom"
@@ -81,12 +100,22 @@
                       勾选时，如果商品参与了其他营销活动，<br/>如拼图、体验价等，则优惠券不可用。
                     </div>
                     <a-icon class="page-content-card-time__icon" type="info-circle"></a-icon>
-                  </a-popover>
+                </a-popover>
               </st-form-item>
               <st-form-item label="每人限领" required>
-                <a-radio-group @change="onChange" v-model="value">
+                <a-radio-group
+                 :disabled="isEditMode"
+                 v-decorator="[
+                  'is_limit',
+                  {rules: [{ validator: is_limit_validator}]}]">
                   <a-radio :value="1">不限</a-radio>
-                  <a-radio :value="2">每人限领<a-input :class="basic('radio-input')"/>次</a-radio>
+                  <a-form-item :class="basic('wrap-input')">
+                    <a-radio :value="2" >每人限领
+                        <a-input :disabled="isEditMode" :class="basic('radio-input')" v-decorator="[
+                        'person_limit',
+                        {rules: [{ validator: person_limit_validator}]}]"/>
+                    次</a-radio>
+                  </a-form-item>
                 </a-radio-group>
               </st-form-item>
             </a-col>
@@ -94,7 +123,7 @@
           <a-row :gutter="8">
             <a-col :lg="20">
               <st-form-item class="page-content-card-submit" label=" ">
-                <st-button :loading="addLoading.addCard" type="primary" @click="onHandleSubmit">保 存</st-button>
+                <st-button :loading="addService.loading" type="primary" @click="onSubmit">保 存</st-button>
               </st-form-item>
             </a-col>
           </a-row>
@@ -106,7 +135,6 @@
 <script>
 import { UserService } from '@/services/user.service'
 import moment from 'moment'
-import { RuleConfig } from '@/constants/rule'
 import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
@@ -114,17 +142,16 @@ export default {
   name: 'BrandMarketingPluginCouponAdd',
   serviceInject() {
     return {
-      rules: RuleConfig,
       addService: AddService,
       userService: UserService
     }
   },
   rxState() {
     return {
-      addLoading: this.addService.loading$,
-      shopName: this.userService.shop$,
+      loading: this.addService.loading$,
+      info: this.addService.info$,
       couponEnums: this.userService.couponEnums$,
-      transaction: this.userService.transaction$
+      transaction: this.userService.transactionEnums$
     }
   },
   bem: {
@@ -132,294 +159,182 @@ export default {
   },
   data() {
     return {
+      isEditMode: false,
       form: this.$form.createForm(this),
-      showProductType: '1',
-      showShop: '1',
+      // 优惠类型
+      couponType: '1',
+      // 优惠范围
+      showProductRange: '1',
+      // 门店范围
+      showShopRange: '1',
+      // 满足金额
+      fullPrice: '',
+      // 是否共享
+      isShare: false,
+      // 限领数量
+      personLimit: '',
+      // 已经选择的类目ids
+      rangeIds: [],
+      // 已经选择的门店ids
+      shopIds: []
 
-      // 结束时间面板是否显示
-      endOpen: false,
-      priceColumns: [
-        {
-          title: '入场次数',
-          scopedSlots: { customRender: 'validity_times' },
-          dataIndex: 'validity_times'
-        },
-        {
-          title: '售价',
-          scopedSlots: { customRender: 'rally_price' },
-          dataIndex: 'rally_price'
-        },
-        {
-          title: '有效期',
-          scopedSlots: { customRender: 'time' },
-          dataIndex: 'time',
-          width: 120
-        },
-        {
-          title: '允许冻结天数',
-          scopedSlots: { customRender: 'frozen_day' },
-          dataIndex: 'frozen_day'
-        },
-        {
-          title: '赠送上限',
-          scopedSlots: { customRender: 'gift_unit' },
-          dataIndex: 'gift_unit'
-        },
-        {
-          title: '操作',
-          dataIndex: 'operation',
-          width: '10%',
-          scopedSlots: { customRender: 'operation' }
-        }
-      ],
-      // 价格梯度
-      rallyPriceList: [],
-      // 价格检验是否通过
-      rallyPriceIsOk: true,
-      // 价格是否未输入过
-      rallyPriceIsNoInput: true,
-      // 价格校验文案
-      rallyPriceValidText: '',
-      nuit_list: [
-        {
-          value: 2,
-          label: '天'
-        },
-        {
-          value: 3,
-          label: '月'
-        },
-        {
-          value: 4,
-          label: '年'
-        }
-      ],
-      // 售卖时间
-      start_time: null,
-      end_time: null,
-      // 是否支持转让
-      is_transfer: false,
-      // 转让单位
-      transferUnit: 2,
-      // 转让手续费
-      transferNum: 0,
-      // 售卖渠道
-      sellType: [2],
-      // 卡背景
-      cardBg: {
-        image_id: 0,
-        image_key: 'image/VZ0RGBwTX7FA1yKb.png',
-        image_url: '',
-        index: 1
-      },
-      // 卡介绍
-      cardIntroduction: '',
-      // 备注
-      cardContents: '',
-      // 是否配置了用户端
-      appConfig: false
+    }
+  },
+  created() {
+    if (this.$route.query.id) {
+      // 进入编辑模式
+      this.addService.getInfo(this.$route.query.id).subscribe(res => {
+        this.setFieldsValue()
+        this.isEditMode = true
+      })
+    } else {
+      this.isEditMode = false
     }
   },
   methods: {
-    changeProductType(event) {
-      this.showProductType = event.target.value
+    changeProductRange(event) {
+      this.rangeIds = event
+    },
+    onSelectShop(event) {
+      this.shopIds = event
+    },
+
+    // 优惠券名称
+    coupon_name_validator(rule, value, callback) {
+      if (!value) {
+        // eslint-disable-next-line
+        callback('请填写优惠券名称')
+      } else if (value.length > 10) {
+        // eslint-disable-next-line
+        callback('优惠券名称长度不能超过10，请重新输入')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    // 面额
+    price_validator(rule, value, callback) {
+      if (!value) {
+        // eslint-disable-next-line
+        callback('请填写优惠券面额')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    // 使用门槛
+    use_type_validator(rule, value, callback) {
+      if (!value) {
+        // eslint-disable-next-line
+        callback('请选择使用条件')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    // 满多少使用
+    full_price_validator(rule, value, callback) {
+      if (!value && this.form.getFieldValue('use_type') === '2') {
+        // eslint-disable-next-line
+        callback('请填写使用条件')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    // 发放数量
+    number_validator(rule, value, callback) {
+      if (!value) {
+        // eslint-disable-next-line
+        callback('请填写发放数量')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    // 使用有效期
+    valid_days_validator(rule, value, callback) {
+      if (!value) {
+        // eslint-disable-next-line
+        callback('请填写使用期限')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    // 每人是否限领
+    is_limit_validator(rule, value, callback) {
+      if (!value) {
+        // eslint-disable-next-line
+        callback('请选择是否限制领用')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    // 每人限领数量 setFieldsValue
+    person_limit_validator(rule, value, callback) {
+      if (!value && this.form.getFieldValue('is_limit') === '2') {
+        // eslint-disable-next-line
+        callback('请输入每人限领数量')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    setFieldsValue() {
+      this.couponType = this.info.coupon_type.id + ''
+      this.showProductRange = this.info.is_product_range + ''
+      this.showShopRange = this.info.is_shop_range + ''
+      this.shopIds = this.info.shop_list
+      this.isShare = this.info.is_share
+      this.form.setFieldsValue({
+        'coupon_name': this.info.coupon_name,
+        'price': +this.info.price,
+        'use_type': this.info.use_type,
+        'full_price': this.info.full_price,
+        'number': this.info.number,
+        'valid_days': this.info.valid_days,
+        'is_limit': this.info.is_limit,
+        'person_limit': this.info.person_limit
+      })
     },
     // 保存
-    onHandleSubmit(e) {
-      this.form.validateFieldsAndScroll((err, values) => {
-        this.validatePrice()
-        if (!err && this.priceValidateStatus === 'success') {
-          let unit = this.is_transfer ? this.transferUnit : undefined
-          let num = this.is_transfer ? this.transferNum : undefined
-          let price_gradient = []
-          this.rallyPriceList.forEach(i => {
-            price_gradient.push({
-              unit: +i.time.unit,
-              num: +i.time.num,
-              rally_price: +i.rally_price,
-              frozen_day: +i.frozen_day,
-              gift_unit: +i.gift_unit,
-              validity_times: +i.validity_times
-            })
-          })
-          this.addService.addCard({
-            card_type: 1,
-            card_name: values.card_name,
-            start_time: `${this.start_time.format('YYYY-MM-DD')} 00:00:00`,
-            end_time: `${this.end_time.format('YYYY-MM-DD')} 23:59:59`,
-            is_transfer: +this.is_transfer,
-            unit,
-            num,
-            sell_type: this.sellType,
-            card_introduction: this.cardIntroduction,
-            card_contents: this.cardContents,
-            card_bg: this.cardBg,
-            price_gradient
+    onSubmit(e) {
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          this.addService.addMarketingCoupon({
+            coupon_type: this.couponType,
+            coupon_name: values.coupon_name,
+            price: values.price,
+            is_product_range: this.showProductRange,
+            range_ids: this.rangeIds,
+            is_shop_range: this.showShopRange,
+            shop_ids: this.shopIds,
+            use_type: values.use_type,
+            full_price: values.full_price,
+            number: values.number,
+            valid_days: values.valid_days,
+            is_share: !this.isShare ? 0 : 1,
+            is_limit: values.is_limit,
+            person_limit: values.person_limit
           }).subscribe(res => {
             // 新增成功
             this.$router.push({
-              path: '/shop/product/card/member/list/all'
+              path: '/brand/marketing/plugin/coupon/list',
+              force: true
             })
           })
         }
       })
-    },
-    // card_name validatorFn
-    card_name_validator(rule, value, callback) {
-      if (value === undefined || value === '') {
-        // eslint-disable-next-line
-        callback('请填写次卡名称')
-      } else if (value && !this.rules.card_name.test(value)) {
-        // eslint-disable-next-line
-        callback('输入的次卡名称格式错误，请重新输入')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    // 价格梯度
-    brandPriceSettingHandleChange({ value, key, col, prop }) {
-      this.rallyPriceIsNoInput = false
-      if (prop !== undefined) {
-        this.rallyPriceList[key][col][prop] = value
-      } else {
-        this.rallyPriceList[key][col] = value
-      }
-    },
-    // 删除价格
-    price_delete(index) {
-      this.rallyPriceList.splice(index, 1)
-    },
-    // 增加价格
-    price_add() {
-      let key = parseInt(Math.random() * 999999).toString()
-      this.rallyPriceList.push({
-        key,
-        validity_times: null,
-        rally_price: null,
-        time: {
-          unit: 2,
-          num: null
-        },
-        frozen_day: null,
-        gift_unit: null
-      })
-    },
-    // 开始时间
-    disabledStartDate(startValue) {
-      const endValue = this.end_time
-      if (!endValue) {
-        // 结束时间未选择
-        return startValue.valueOf() < moment().subtract(1, 'd').valueOf()
-      }
-      let start = endValue.valueOf() > moment().add(30, 'y').valueOf() ? moment(endValue).subtract(30, 'y').valueOf() : moment().subtract(1, 'd').add(1, 'ms').valueOf()
-      return startValue.valueOf() < start || startValue.valueOf() > moment(endValue).subtract(1, 'd').valueOf()
-    },
-    handleStartOpenChange(open) {
-      if (!open) {
-        this.endOpen = true
-      }
-    },
-    start_time_change(data) {
-      this.start_time = cloneDeep(data)
-    },
-    // 结束时间
-    disabledEndDate(endValue) {
-      const startValue = this.start_time
-      if (!startValue) {
-        // 开始时间未选择
-        return endValue.valueOf() >= moment().add(30, 'y').valueOf() || endValue.valueOf() <= moment().valueOf()
-      }
-      return endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).add(1, 'd').valueOf()
-    },
-    handleEndOpenChange(open) {
-      this.endOpen = open
-    },
-    end_time_change(data) {
-      this.end_time = cloneDeep(data)
-    },
-    // 转让
-    transfer(e) {
-      this.is_transfer = e.target.checked
-      // 重置转让费用的校验
-      this.form.resetFields(['transferNum'])
-    },
-    // transfer validatorFn
-    transfer_validator(rule, value, callback) {
-      if (!this.is_transfer) {
-        // eslint-disable-next-line
-        callback()
-      }
-      if (!value) {
-        // eslint-disable-next-line
-        callback('请输入转让费用')
-      } else {
-        // eslint-disable-next-line
-        callback()
-      }
-    },
-    transfter_change(data) {
-      this.transferNum = data
-    },
-    // moment
-    moment,
-    // 检验price
-    validatePrice() {
-      this.rallyPriceIsNoInput = false
-      if (!this.priceValidateRuleText.length) {
-        this.rallyPriceIsOk = false
-      } else {
-        this.rallyPriceIsOk = this.priceValidateRuleText.every(i => this.rules.number.test(i))
-      }
     }
+
   },
   watch: {
-    priceValidateStatus(newVal) {
-      this.rallyPriceValidText = newVal === 'success' ? '' : '请输入正确的数值'
-    },
-    'transferUnit': {
-      deep: true,
-      handler() {
-        this.form.resetFields(['transferNum'])
-      }
-    }
+
   },
   computed: {
-    priceValidateStatus() {
-      if (this.rallyPriceIsNoInput) {
-        return 'success'
-      } else {
-        return this.rallyPriceIsOk ? 'success' : 'error'
-      }
-    },
-    priceValidateRuleText() {
-      let text = []
-      this.rallyPriceList.forEach(i => {
-        Object.keys(i).forEach(o => {
-          if (o !== 'key' && o !== 'time') {
-            text.push(i[o])
-          } else if (o === 'time') {
-            text.push(i[o].num)
-          }
-        })
-      })
-      return text
-    },
-    // 售卖渠道
-    sellTypeList() {
-      let sell_type = cloneDeep(Object.entries(this.member_card.sell_type.value))
-      let arr = []
-      sell_type.forEach(i => {
-        arr.push({
-          value: +i[0],
-          label: i[1]
-        })
-      })
-      if (!this.appConfig) {
-        remove(arr, i => i.value === 1)
-      }
-      return arr
-    }
+
   },
   components: {
     SelectShop

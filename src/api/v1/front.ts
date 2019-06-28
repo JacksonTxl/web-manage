@@ -16,6 +16,18 @@ export interface GetEntranceListInput {
 export interface SetEntranceLeaveBatchInput {
   ids: Array<number>
 }
+export interface SetEntranceInput {
+  member_id:number
+  cabinet_id?:number
+  proof_type:number
+  proof_value:number
+  seller_id?:number
+  coach_id?:number
+}
+export interface EditEntranceCabinetInput{
+  id:number
+  cabinet_id:number
+}
 export class FrontApi extends Api {
   /**
    * 新增待办
@@ -69,36 +81,48 @@ export class FrontApi extends Api {
    * 前台头部统计
    */
   getEntranceSummary() {
-    return this.http.get(`/v1/front/entrance/summary`, { mock: {} })
+    return this.http.get(`/v1/front/entrance/summary`)
   }
   /**
    * 销售员列表
    */
   getSellerList() {
-    return this.http.get(`/v1/front/entrance/seller`, { mock: {} })
+    return this.http.get(`/v1/front/entrance/seller`)
   }
   /**
    * 教练列表
    */
   getCoachList() {
-    return this.http.get(`/v1/front/entrance/coach`, { mock: {} })
+    return this.http.get(`/v1/front/entrance/coach`)
   }
   /**
    * 前台会员详情
    */
   getMemberInfo(id:string) {
-    return this.http.get(`/v1/front/entrance/member/${id}`, { mock: {} })
+    return this.http.get(`/v1/front/entrance/member/${id}`)
   }
   /**
    *  入场凭证列表
    */
   getEntranceOptionList(id:string) {
-    return this.http.get(`/v1/front/entrance/options/${id}`, { mock: {} })
+    return this.http.get(`/v1/front/entrance/options/${id}`)
   }
   /**
    *  储物柜列表
    */
   getCabinetList(id:string) {
-    return this.http.get(`/v1/front/cabinet/options/${id}`, { mock: {} })
+    return this.http.get(`/v1/front/cabinet/options/${id}`)
+  }
+  /**
+   *  会员入场
+   */
+  setEntrance(params:SetEntranceInput) {
+    return this.http.post(`/v1/front/entrance`, { params })
+  }
+  /**
+   *  修改入场会员的储物柜
+   */
+  editEntranceCabinet(params:EditEntranceCabinetInput) {
+    return this.http.put(`/v1/front/entrance/cabinet`, { params })
   }
 }

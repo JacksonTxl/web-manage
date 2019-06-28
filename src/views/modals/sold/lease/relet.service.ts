@@ -79,6 +79,6 @@ export class ReletService {
   }
   @Effect()
   getPrice(params: TransactionPriceInput) {
-    return this.transactionApi.getTransactionPrice(params)
+    return this.transactionApi.getTransactionSoldPrice(params)
   }
 }
