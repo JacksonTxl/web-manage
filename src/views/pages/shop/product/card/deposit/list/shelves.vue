@@ -12,6 +12,7 @@
     <st-table
     :columns="columns"
     :dataSource="list"
+    @change="onPageChange"
     :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
     rowKey="id"
     >
@@ -101,6 +102,9 @@ export default {
   methods: {
     onSelect(key, data) {
       this.$router.push({ query: { ...this.query, ...{ [key]: data } } })
+    },
+    onPageChange(data) {
+      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize }, force: true })
     },
     // 查看详情
     onDetail(record) {

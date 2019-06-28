@@ -127,7 +127,7 @@ export default {
       this.$router.push({ query: { ...this.query, ...{ [key]: data } } })
     },
     onPageChange(data) {
-      this.$router.push({ query: { ...this.query, current_page: data.current, size: data.pageSize } })
+      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
     },
     // 下架
     onShelfDown(record) {
