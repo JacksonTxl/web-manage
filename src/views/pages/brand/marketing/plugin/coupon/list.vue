@@ -72,15 +72,15 @@ export default {
       page: this.listService.page$,
       loading: this.listService.loading$,
       query: this.routeService.query$,
-      transaction: this.userService.transactionEnums$,
+      couponEnums: this.userService.couponEnums$,
       auth: this.listService.auth$
     }
   },
   computed: {
     productType() {
       let list = []
-      if (!this.transaction.product_type) return list
-      Object.entries(this.transaction.product_type.value).forEach(o => {
+      if (!this.couponEnums.product_range) return list
+      Object.entries(this.couponEnums.product_range.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
       return list

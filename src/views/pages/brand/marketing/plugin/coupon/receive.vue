@@ -12,15 +12,15 @@
         </div> -->
         <a-select :class="basic('select')" v-model="queryParams.couponStatus" @change="onSearch" style="width: 160px">
           <a-select-option
-          v-for="(item,index) in productType"
-          :key="index"
-          :value="item.value">{{item.label}}</a-select-option>
+            v-for="(item,index) in productType"
+            :key="index"
+            :value="item.value">{{item.label}}</a-select-option>
         </a-select>
         <st-input-search
-        v-model="queryParams.couponName"
-        @search="onSearch"
-        placeholder="请输入优惠券名称"
-        style="width: 290px;"/>
+          v-model="queryParams.couponName"
+          @search="onSearch"
+          placeholder="请输入优惠券名称"
+          style="width: 290px;"/>
       </div>
       <div :class="basic('content')">
         <st-table

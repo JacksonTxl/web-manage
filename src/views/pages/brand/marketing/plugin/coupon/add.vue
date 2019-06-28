@@ -157,8 +157,7 @@ export default {
     return {
       loading: this.addService.loading$,
       info: this.addService.info$,
-      couponEnums: this.userService.couponEnums$,
-      transaction: this.userService.transactionEnums$
+      couponEnums: this.userService.couponEnums$
     }
   },
   bem: {
