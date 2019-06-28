@@ -52,7 +52,7 @@
                   :defaultValue="rangeIds"
                   @change="changeProductRange"
                   mode="multiple" placeholder="请选择类目" :class="basic('select')">
-                  <a-select-option v-for="(item, index) in couponEnums.product_range['value']" :key="`${index}`" :value="`${index}`">
+                  <a-select-option v-for="(item, index) in couponEnums.product_range['value']" :key="index" :value="index">
                     {{item}}
                   </a-select-option>
                 </a-select>
@@ -295,7 +295,9 @@ export default {
       this.showShopRange = this.info.is_shop_range + ''
       this.shopIds = this.info.shop_ids
       this.isShare = this.info.is_share !== 0
-      this.rangeIds = this.info.range_ids
+      this.rangeIds = this.info.range_ids.map((item) => {
+        return this.couponEnums.product_range.value[item]
+      })
       this.form.setFieldsValue({
         'coupon_name': this.info.coupon_name,
         'price': +this.info.price,
