@@ -10,26 +10,31 @@
         <st-search-panel>
           <div :class="basic('select')">
             <span style="width:90px;">用户级别：</span>
-            <st-search-radio label="" @change="onChangeSearchQuery" v-model="query.member_level" :list="memberLevel"/>
+            <st-search-radio label="" @change="onChangeSearchQuery" v-model="querySelect.member_level" :list="memberLevel"/>
           </div>
           <div :class="basic('select')">
             <span style="width:90px;">来源方式：</span>
-            <st-search-radio label="" @change="onChangeSearchQuery" v-model="query.register_way" :list="sourceList"/>
+            <st-search-radio label="" @change="onChangeSearchQuery" v-model="querySelect.register_way" :list="sourceList"/>
           </div>
           <div :class="basic('select')">
             <span style="width:90px;">注册时间：</span>
             <a-range-picker :defaultValue="defaultRegValue" @change="onChangeReg">
             </a-range-picker>
           </div>
-          <div :class="basic('select')">
-            <span style="width:90px;">入会时间：</span>
-            <a-range-picker :defaultValue="defaultBeMemberValue" @change="onChangeBeMember">
-            </a-range-picker>
+          <div slot="more">
+            <div :class="basic('select')">
+              <span style="width:90px;">入会时间：</span>
+              <a-range-picker :defaultValue="defaultBeMemberValue" @change="onChangeBeMember">
+              </a-range-picker>
+            </div>
+            <div :class="basic('select')">
+              <span style="width:90px;">员工跟进：</span>
+              <st-search-radio label="" @change="onChangeSearchQuery" v-model="querySelect.is_follow" :list="isFollow"/>
+            </div>
           </div>
-          <div :class="basic('select')">
-            <span style="width:90px;">员工跟进：</span>
-            <a-range-picker :defaultValue="defaultBeMemberValue" @change="onChangeBeMember">
-            </a-range-picker>
+          <div slot="button">
+            <st-button type="primary" @click="onSearch">查询</st-button>
+            <st-button class="mgl-8" @click="onReset">重置</st-button>
           </div>
         </st-search-panel>
       </div>
@@ -201,6 +206,7 @@ export default {
         page: '',
         size: 20
       },
+      querySelect: {},
       selectDataList: [],
       selectedRowKeys: [],
       selectedRowData: [],
@@ -235,6 +241,14 @@ export default {
       })
       return list
     },
+    isFollow() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.memberEnums.is_follow) return list
+      Object.entries(this.memberEnums.is_follow.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    },
     defaultRegValue() {
       if (!this.query.register_start_time) return null
       return [moment(this.query.register_start_time, this.dateFormat), moment(this.query.register_stop_time, this.dateFormat)]
@@ -259,22 +273,25 @@ export default {
     onSearchSearchQuery() {
       this.$router.push({ query: { keyword: this.query.keyword } })
     },
-    onChangeSearchQuery() {
-      delete this.query.keyword
-      this.$router.push({ query: this.query })
-    },
     onChangeReg(date, dateString) {
-      delete this.query.keyword
-      this.$router.push({ query: { ...this.query, register_start_time: dateString[0], register_stop_time: dateString[1] } })
+      this.querySelect = { ...this.querySelect, register_start_time: dateString[0], register_stop_time: dateString[1] }
     },
     onChangeBeMember(date, dateString) {
-      delete this.query.keyword
-      this.$router.push({ query: { ...this.query, be_member_start_time: dateString[0], be_member_stop_time: dateString[1] } })
+      this.querySelect = { ...this.querySelect, be_member_start_time: dateString[0], be_member_stop_time: dateString[1] }
     },
     sourceRegisters() {
       this.listService.getMemberSourceRegisters().subscribe(status => {
         this.sourceRegisterList = status
       })
+    },
+    // 查询
+    onSearch() {
+      this.$router.push({ query: { ...this.querySelect } })
+    },
+    // 重置
+    onReset() {
+      this.querySelect = {}
+      this.$router.push({ query: {} })
     },
     onRemoveBind(record) {
       let that = this
