@@ -42,6 +42,11 @@ export class LoginService extends Store<StaffState> {
       })
     }))
   }
+  logout() {
+    return this.loginApi.logout().pipe(tap(res => {
+      this.msg.success({ content: '注销成功' })
+    }))
+  }
   getCaptcha(params: any) {
     return this.loginApi.getCaptcha(params)
   }

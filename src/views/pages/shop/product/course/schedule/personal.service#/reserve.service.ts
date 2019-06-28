@@ -4,6 +4,7 @@ import { State, Effect, Computed } from 'rx-state/src'
 import { tap, pluck, switchMap } from 'rxjs/operators'
 import { PersonalReserveApi, AddInput, GetListQuery } from '@/api/v1/schedule/personal/reserve'
 import { AuthService } from '@/services/auth.service'
+import { MessageService } from '@/services/message.service'
 export interface SetState {
   reserveInfo: any
   reserveList: any[]
@@ -17,7 +18,8 @@ export class PersonalScheduleReserveService {
   reserveList$: Computed<any>
   auth$: Computed<any>
   constructor(private reserveApi: PersonalReserveApi,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private msg: MessageService) {
     this.state$ = new State({
       auth: {
         edit: this.authService.can('shop:reserve:personal_course_reserve|edit'),
@@ -40,7 +42,11 @@ export class PersonalScheduleReserveService {
  * 添加预约
  */
   add(params: AddInput) {
-    return this.reserveApi.add(params)
+    return this.reserveApi.add(params).pipe(tap(res => {
+      this.msg.success({
+        content: '添加预约成功！！！'
+      })
+    }))
   }
   /**
    *

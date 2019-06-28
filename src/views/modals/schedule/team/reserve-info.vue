@@ -73,16 +73,16 @@
               {{currentReservationNum}}人
             </span>
           </td>
-          <td>2</td>
+          <td>未签到</td>
           <td>
             <a href="javascript:;" @click="onClickReserve">添加预约</a>
           </td>
         </tr>
-        <tr v-for="(item, index) in info.reserve" :key="index">
+        <tr v-for="(item, index) in list" :key="index">
           <td>{{item.member}}</td>
           <td>{{item.consume_name}}</td>
           <td>{{item.site_num_list}}</td>
-          <td>{{item.current_reservation_num}}</td>
+          <td>{{item.current_reservation_num}}人</td>
           <td>{{item.is_checkin_name}}</td>
           <td>
             <div>
@@ -161,7 +161,8 @@ export default {
       }],
       dataSource: [],
       show: false,
-      info: {}
+      info: {},
+      list: []
     }
   },
   computed: {
@@ -238,6 +239,7 @@ export default {
     ss.getInfo(this.id).pipe(
       switchMap(state => {
         this.info = state.info
+        this.list = state.list
         return this.teamScheduleCommonService.getUnusedSeatList({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
       }))
       .subscribe()

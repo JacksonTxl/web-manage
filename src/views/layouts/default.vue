@@ -87,10 +87,12 @@ import SwitchShop from '@/views/fragments/shop/switch'
 import Cookie from 'js-cookie'
 import routes from '@/router/routes'
 import { find } from 'lodash-es'
+import { LoginService } from '../pages/account/login.service'
 export default {
   serviceInject() {
     return {
-      layoutBrandSerivce: LayoutBrandService
+      layoutBrandSerivce: LayoutBrandService,
+      loginService: LoginService
     }
   },
   rxState() {
@@ -126,8 +128,10 @@ export default {
       this.isShowSwitchShop = true
     },
     onClickLogout() {
-      Cookie.set('saas-token', '')
-      location.reload()
+      this.loginService.logout().subscribe(res => {
+        Cookie.set('saas-token', '')
+        location.reload()
+      })
     },
     getParentBreadCrumb() {
       const parentId = this.$route.meta.parentId
