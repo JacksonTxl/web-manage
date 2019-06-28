@@ -38,28 +38,34 @@
           <a-divider :class="basic('line')"></a-divider>
           <a-row :gutter="8">
             <a-col :lg="23">
-              <st-form-item label="优惠范围" required>
+              <st-form-item label="优惠范围" required v-if="couponEnums.is_product_range">
                 <a-radio-group v-model="showProductRange" :disabled="isEditMode">
-                  <a-radio value="1">全部类目</a-radio>
-                  <a-radio value="0">指定类目</a-radio>
+                  <a-radio
+                    v-for="(item, index) in couponEnums.is_product_range.value"
+                    :value="index"
+                    :key="index"
+                  >{{item}}</a-radio>
                 </a-radio-group>
                 <a-select
                   :disabled="isEditMode"
-                  v-if="showProductRange == '0' && transaction.product_type"
+                  v-if="showProductRange == '2' && couponEnums.product_range"
                   :defaultValue="rangeIds"
                   @change="changeProductRange"
                   mode="multiple" placeholder="请选择类目" :class="basic('select')">
-                  <a-select-option v-for="(item, index) in transaction.product_type['value']" :key="`${index}`" :value="index">
+                  <a-select-option v-for="(item, index) in couponEnums.product_range['value']" :key="`${index}`" :value="`${index}`">
                     {{item}}
                   </a-select-option>
                 </a-select>
               </st-form-item>
               <st-form-item label="可用门店" required>
                 <a-radio-group v-model="showShopRange" :disabled="isEditMode">
-                  <a-radio :value="1">全部门店</a-radio>
-                  <a-radio :value="0">指定门店</a-radio>
+                  <a-radio
+                    v-for="(item, index) in couponEnums.is_shop_range.value"
+                    :value="index"
+                    :key="index"
+                  >{{item}}</a-radio>
                 </a-radio-group>
-                <select-shop v-if="showShopRange == '0'" @change="onSelectShop" :shopIds="shopIds"></select-shop>
+                <select-shop v-if="showShopRange == '2'" @change="onSelectShop" :shopIds="shopIds"></select-shop>
               </st-form-item>
               <st-form-item label="使用条件" required>
                 <a-radio-group
@@ -91,7 +97,7 @@
                 天内有效
               </st-form-item>
               <st-form-item  label="优惠共享" >
-                <a-checkbox v-model="isShare" value="1" :disabled="isEditMode">不可与其它优惠同享</a-checkbox>
+                <a-checkbox v-model="isShare" :disabled="isEditMode">不可与其它优惠同享</a-checkbox>
                 <a-popover
                     trigger="hover"
                     placement="rightBottom"
@@ -103,7 +109,7 @@
                     <a-icon class="page-content-card-time__icon" type="info-circle"></a-icon>
                 </a-popover>
               </st-form-item>
-              <st-form-item label="每人限领" required>
+              <st-form-item label="每人限领" required v-if="couponType === '1'">
                 <a-radio-group
                  :disabled="isEditMode"
                  v-decorator="[
@@ -286,9 +292,9 @@ export default {
     setFieldsValue() {
       this.couponType = this.info.coupon_type.id + ''
       this.showProductRange = this.info.is_product_range + ''
-      this.showShopRange = +this.info.is_shop_range || 1
+      this.showShopRange = this.info.is_shop_range + ''
       this.shopIds = this.info.shop_ids
-      this.isShare = this.info.is_share
+      this.isShare = this.info.is_share !== 0
       this.rangeIds = this.info.range_ids
       this.form.setFieldsValue({
         'coupon_name': this.info.coupon_name,
@@ -323,20 +329,24 @@ export default {
               full_price: values.full_price,
               number: values.number,
               valid_days: values.valid_days,
-              is_share: !this.isShare ? 0 : 1,
+              is_share: this.isShare ? 1 : 0,
               is_limit: values.is_limit,
               person_limit: values.person_limit
             }
           }
           if (this.isEditMode) {
             this.addService.editMarketingCoupon(params).subscribe(res => {
-              console.log('编辑成功!')
+              // 编辑成功
+              this.$router.push({
+                path: '/brand/marketing/plugin/coupon/list',
+                force: true
+              })
             })
           } else {
             this.addService.addMarketingCoupon(params).subscribe(res => {
               // 新增成功
               this.$router.push({
-                path: '/brand/marketing/plugin/coupon/list',
+                path: '/brand/marketing/plugin/coupon/tip',
                 force: true
               })
             })

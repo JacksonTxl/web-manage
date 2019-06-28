@@ -76,11 +76,12 @@ export default {
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
         props: {
-          id: this.infoService.id
+          order_id: this.infoService.id,
+          type: this.productType(this.info.product_type)
         },
         on: {
           success: () => {
-            console.log('收款成功')
+            this.$router.push({ force: true })
           }
         }
       })
@@ -126,6 +127,40 @@ export default {
           }
         }
       })
+    },
+    productType(type) {
+      let name = ''
+      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金
+      switch (type) {
+        case 1:
+          name = 'member'
+          break
+        case 2:
+          name = 'personal'
+          break
+        case 3:
+          name = 'member'
+          break
+        case 4:
+          name = 'package'
+          break
+        case 5:
+          name = 'deposit'
+          break
+        case 6:
+          name = 'member'
+          break
+        case 7:
+          name = 'advance'
+          break
+        case 8:
+          name = 'advance'
+          break
+        case 9:
+          name = 'member'
+          break
+      }
+      return name
     }
 
   }
