@@ -1,7 +1,7 @@
 <template>
   <div :class="all()">
     <div :class="all('search')">
-      <st-button type="primary" @click="onAddCard" icon="add">新增储值卡</st-button>
+      <st-button v-if="auth.add" type="primary" @click="onAddCard" icon="add">新增储值卡</st-button>
       <div>
         <a-select
         style="width: 160px"
@@ -89,19 +89,14 @@
         </a-popover>
       </template>
       <div slot="action" slot-scope="text,record">
-        <a @click="onDetail(record)">详情</a>
+        <a v-if="record.auth['brand_shop:product:deposit_card|get']" @click="onDetail(record)">详情</a>
         <a-divider type="vertical"></a-divider>
         <st-more-dropdown class="mgl-16">
-          <!-- <a-menu-item @click="onEdit(record)" v-if="record.publish_channel.id===2">编辑</a-menu-item>
-          <a-menu-item @click="onShelf(record)" v-if="record.shelf_status.id!==2">上架</a-menu-item>
-          <a-menu-item @click="onStopSale(record)" v-if="record.publish_channel.id===2&&record.sell_status.id===1">停售</a-menu-item>
-          <a-menu-item @click="onRecoverSale(record)" v-if="record.publish_channel.id===2&&record.sell_status.id===2">恢复售卖</a-menu-item>
-          <a-menu-item @click="onDelete(record)" v-if="record.publish_channel.id===2&&record.shelf_status.id!==2">删除</a-menu-item> -->
-          <a-menu-item @click="onEdit(record)">编辑</a-menu-item>
-          <a-menu-item @click="onShelf(record)">上架</a-menu-item>
-          <a-menu-item @click="onStopSale(record)">停售</a-menu-item>
-          <a-menu-item @click="onRecoverSale(record)">恢复售卖</a-menu-item>
-          <a-menu-item @click="onDelete(record)">删除</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|edit']" @click="onEdit(record)">编辑</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|up']" @click="onShelf(record)">上架</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|pause']" @click="onStopSale(record)">停售</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|restore']" @click="onRecoverSale(record)">恢复售卖</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|del']" @click="onDelete(record)">删除</a-menu-item>
         </st-more-dropdown>
       </div>
     </st-table>
@@ -129,7 +124,8 @@ export default {
       depositCard: this.userService.depositCardEnums$,
       cardList: this.allService.list$,
       page: this.allService.page$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.allService.auth$
     }
   },
   computed: {

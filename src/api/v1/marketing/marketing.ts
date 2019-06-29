@@ -114,4 +114,10 @@ export class MarketingApi extends Api {
   getInviteCouponList(query:InviteCouponListInput) {
     return this.http.get(`/v1/plugin/coupon/activity`, { query })
   }
+  /**
+   * 获取插件介绍信息
+   */
+  getPluginInfo(plugin_type: number) {
+    return this.http.get(`/v1/plugin/introduction`, { query: { plugin_type } })
+  }
 }

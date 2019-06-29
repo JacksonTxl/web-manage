@@ -21,7 +21,7 @@
           v-model="queryParams.keyword"
           @search="onSearch"
           placeholder="请输入手机号、姓名"
-          style="width: 290px;"/>
+          style="width: 290px;margin-left: 16px"/>
       </div>
       <div :class="basic('content')">
         <st-table
@@ -83,7 +83,6 @@ export default {
       Object.entries(this.couponEnums.coupon_status.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
-      console.log(list)
       return list
     }
   },
@@ -152,8 +151,8 @@ export default {
         id: this.query.id,
         coupon_status: this.queryParams.couponStatus || '',
         keyword: this.queryParams.keyword,
-        start_time: moment(this.queryParams.date ? this.queryParams.date[0] : null).format('YYYY-MM-DD HH:mm'),
-        end_time: moment(this.queryParams.date ? this.queryParams.date[1] : null).format('YYYY-MM-DD HH:mm')
+        start_time: this.queryParams.date[0] ? moment(this.queryParams.date[0]).format('YYYY-MM-DD HH:mm') : '',
+        end_time: this.queryParams.date[1] ? moment(this.queryParams.date[1]).format('YYYY-MM-DD HH:mm') : ''
       }
       this.$router.push({ query: { ...this.query, ...params } })
     },
@@ -172,11 +171,13 @@ export default {
     // 设置searchData
     setSearchData() {
       this.queryParams.keyword = this.query.keyword
-      this.queryParams.couponStatus = this.query.coupon_status
-      this.queryParams.date = [
-        this.query.start_time ? cloneDeep(moment(this.query.start_time)) : moment(),
-        this.query.end_time ? cloneDeep(moment(this.query.end_time)) : moment()]
-      console.log(this.query)
+      this.queryParams.couponStatus = this.query.coupon_status ? +this.query.coupon_status : ''
+      if (this.query.start_time) {
+        this.queryParams.date[0] = cloneDeep(moment(this.query.start_time))
+      }
+      if (this.query.end_time) {
+        this.queryParams.date[1] = cloneDeep(moment(this.query.end_time))
+      }
     },
     // 编辑
     onEdit(record) {

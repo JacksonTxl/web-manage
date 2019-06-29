@@ -1,16 +1,16 @@
 <template>
   <div :class="basic()">
     <div :class="basic('left')">
-      <p :class="basic('title')">优惠券</p>
-      <p :class="basic('content')">拉新、促进单位成新拉新、促进单位成新拉新、促进单位成新拉新、促进单位成新</p>
+      <p :class="basic('title')">{{info.plugin_name}}</p>
+      <p :class="basic('content')">{{info.introduction}}</p>
       <p :class="basic('footer')">
         <label @click="ruleDetail">规则说明</label>
-        <label>使用教程</label>
-        <label>活动案例</label>
+        <label @click="openTeach">使用教程</label>
+        <label @click="openCase">活动案例</label>
       </p>
     </div>
     <div :class="basic('right')" v-viewer="{ url: 'data-src' }">
-      <img v-for="(item, index) in imgKeys" :key="index" :src="item|imgFilter({ w: 80, h: 142 })" :data-src="item|imgFilter({ w: 1000 })">
+      <img v-for="(item, index) in info.plugin_image" :key="index" :src="item|imgFilter({ w: 80, h: 142 })" :data-src="item|imgFilter({ w: 1000 })">
     </div>
   </div>
 </template>
@@ -32,6 +32,16 @@ export default {
       loading: this.marketingTitleService.loading$,
       info: this.marketingTitleService.info$
     }
+  },
+  props: {
+    // 1 优惠券 2 邀请有礼
+    type: {
+      type: Number,
+      default: 1
+    }
+  },
+  created() {
+    this.marketingTitleService.getPluginInfo(this.type).subscribe()
   },
   data() {
     return {
@@ -55,6 +65,16 @@ export default {
           }
         }
       })
+    },
+    openTeach() {
+      if (this.info.usage_link) {
+        window.open(this.info.usage_link)
+      }
+    },
+    openCase() {
+      if (this.info.usage_link) {
+        window.open(this.info.case_link)
+      }
     }
   }
 }
