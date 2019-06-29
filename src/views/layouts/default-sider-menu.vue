@@ -158,29 +158,33 @@ export default {
       const { menus } = this
       let currentSiderMenu
       menus.forEach(menu => {
-        const matchKeyword = this.getMatchKeyword(menu)
-        if (this.getPageName().indexOf(matchKeyword) !== -1) {
+        const matchRule = this.getmatchRule(menu)
+        const pageName = this.getPageName()
+        if (matchRule.test(pageName)) {
           currentSiderMenu = menu
         }
       })
       return currentSiderMenu || {}
     },
-    getMatchKeyword(menu) {
+    getmatchRule(menu) {
       const { icon } = menu
-      let Keyword
+      let rule
       /**
        * 对一些特殊的icon做处理，比如dashboard用的是home
        */
-      const keywordsMap = {
-        'home': 'dashboard',
-        'sold': 'shop-sold'
+      const rulesMap = {
+        home: /dashboard/,
+        sold: /shop-sold/,
+        course: /shop-product-course/,
+        card: /shop-product-card/,
+        department: /brand-staff/
       }
-      if (!keywordsMap.hasOwnProperty(icon)) {
-        Keyword = icon
+      if (!rulesMap.hasOwnProperty(icon)) {
+        rule = new RegExp(icon)
       } else {
-        Keyword = keywordsMap[icon]
+        rule = rulesMap[icon]
       }
-      return Keyword
+      return rule
     },
     findSelectedKey() {
       let selectedKey
