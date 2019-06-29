@@ -11,7 +11,7 @@
         style="width: 291px"
         @search="onSearch"
         placeholder="输入优惠券名称" />
-        <st-button type="primary">优惠券列表</st-button>
+        <st-button type="primary" @click="onGoCouponList">优惠券列表</st-button>
       </div>
       <div :class="add('table')" v-scrollBar='{stopPropagation:true}'>
         <st-table
@@ -102,6 +102,10 @@ export default {
   },
   mounted() { this.getList({ coupon_name: '' }) },
   methods: {
+    onGoCouponList() {
+      this.show = false
+      this.$router.push({ path: '/brand/marketing/plugin/coupon/list' })
+    },
     getList(query) {
       this.addCouponService.getList(query).subscribe(res => {
         if (this.list.some(i => i.id === this.id)) {

@@ -111,9 +111,19 @@ export default {
       return this.inviterHelpText === ''
     }
   },
+  watch: {
+    settingInfo: {
+      deep: true,
+      handler() {
+        this.init()
+      }
+    }
+  },
   methods: {
     init() {
       this.settingInfoHistory = cloneDeep(this.settingInfo)
+      this.inviteeHelpText = ''
+      this.inviterHelpText = ''
       this.openStatus = this.settingInfo.activity_status === 1
       if (this.settingInfo.invitee_coupon_id) {
         // 开启过，需要回显
@@ -131,7 +141,7 @@ export default {
     },
     // 开关
     onOpenStatusChange(data) {
-      if (!data) {
+      if (!data && this.settingInfoHistory.activity_status === 1) {
         this.$confirm({
           title: '提示',
           content: `一旦关闭，全部推广功能将失效，请谨慎操作。`,
@@ -142,7 +152,7 @@ export default {
             let params = { ...this.settingInfoHistory, activity_status: 2 }
             return this.settingService.edit(params).toPromise().then(() => {
               // 关闭成功
-
+              this.$router.push({ force: true, query: this.query })
             })
           }
         })
@@ -194,12 +204,12 @@ export default {
         this.settingService.edit({
           activity_status: this.openStatus ? 1 : 2,
           invitee_coupon_id: this.inviteeCoupon.id,
-          invitee_coupon_num: this.inviteeCouponNum,
+          invitee_coupon_num: +this.inviteeCouponNum,
           inviter_coupon_id: this.inviterCoupon.id,
-          inviter_coupon_num: this.inviterCouponNum
+          inviter_coupon_num: +this.inviterCouponNum
         }).subscribe(() => {
           // 编辑成功
-
+          this.$router.push({ force: true, query: this.query })
         })
       }
     }

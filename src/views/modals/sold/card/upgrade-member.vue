@@ -313,8 +313,7 @@ export default {
     // 计算小计
     priceOB() {
       this.getPrice({
-        id: this.selectCardItem.id,
-        // product_id: this.selectCardItem.id,
+        product_id: this.selectCardItem.id,
         product_type: this.info.contract_type,
         specs_id: +this.selectSpecs,
         advance_id: this.selectAdvance === -1 ? '' : this.selectAdvance,
