@@ -8,7 +8,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <tr v-if="auth.add">
         <td colspan="5" class="st-form-table__add">
           <st-button type="dashed" block>
             <modal-link tag="a" :to=" { name: 'finance-add-template',on: {change: refresh}}">新增底薪模板</modal-link>
@@ -33,13 +33,12 @@
           <td>{{ item.created_time }}</td>
           <td>
             <modal-link
+              v-if="record.auth['brand_shop:salary:basic_template|edit']"
               tag="a"
               :to=" { name: 'finance-basic-template-edit', props: {item: item},on: {change: refresh}}"
             >编辑</modal-link>
             <span style="width:1px;height: 14px;background-color:#e6e9ef;" class="mg-l8 mg-r8"></span>
-            <template v-if="item.used == 0">
-              <a href="javascript:;" @click="onDelete(item.id)">删除</a>
-            </template>
+            <a href="javascript:;" v-if="record.auth['brand_shop:salary:basic_template|del']" @click="onDelete(item.id)">删除</a>
           </td>
         </tr>
       </template>
@@ -58,7 +57,8 @@ export default {
   },
   rxState() {
     return {
-      basicInfo: this.basicService.basicInfo$
+      basicInfo: this.basicService.basicInfo$,
+      auth: this.basicService.auth$
     }
   },
   data() {

@@ -1,7 +1,7 @@
 <template>
   <div :class="shelves()">
     <div :class="shelves('search')">
-      <st-button type="primary" :disabled="!selectedRowKeys.length" class="mg-b16" @click="onBatchShelfDown">批量下架</st-button>
+      <st-button v-if="auth.batchDown" type="primary" :disabled="!selectedRowKeys.length" class="mg-b16" @click="onBatchShelfDown">批量下架</st-button>
       <div>
         <a-select
         style="width: 160px"
@@ -72,9 +72,9 @@
         {{text.name}}
       </template>
       <div slot="action" slot-scope="text,record">
-        <a @click="onDetail(record)">详情</a>
+        <a v-if="record.auth['brand_shop:product:deposit_card|get']" @click="onDetail(record)">详情</a>
         <a-divider type="vertical"></a-divider>
-        <a @click="onShelfDown(record)">下架</a>
+        <a v-if="record.auth['brand_shop:product:deposit_card|down']" @click="onShelfDown(record)">下架</a>
       </div>
     </st-table>
   </div>
@@ -102,7 +102,8 @@ export default {
       cardList: this.shelvesService.list$,
       page: this.shelvesService.page$,
       depositCard: this.userService.depositCardEnums$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.shelvesService.auth$
     }
   },
   computed: {

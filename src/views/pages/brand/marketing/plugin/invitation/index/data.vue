@@ -6,28 +6,28 @@
                     参与活动邀请人
                     <st-icon type="help"></st-icon>
                 </p>
-                <ICountUp class="number-up" :endVal="reportInfo.total_inviter_num"/>
+                <ICountUp class="number-up" :endVal="statInfo.total_inviter_num"/>
             </a-col>
             <a-col :span="6">
                 <p :class="inviation('acount-title')">
                     拉新注册人数
                     <st-icon type="help"></st-icon>
                 </p>
-                <ICountUp class="number-up" :endVal="reportInfo.total_newbie_register_num"/>
+                <ICountUp class="number-up" :endVal="statInfo.total_newbie_register_num"/>
             </a-col>
             <a-col :span="6">
                 <p :class="inviation('acount-title')">
                     拉新领券人数
                     <st-icon type="help"></st-icon>
                 </p>
-                <ICountUp class="number-up" :endVal="reportInfo.total_coupon_num"/>
+                <ICountUp class="number-up" :endVal="statInfo.total_coupon_num"/>
             </a-col>
             <a-col :span="6">
                 <p :class="inviation('acount-title')">
                     拉新交易人数
                     <st-icon type="help"></st-icon>
                 </p>
-                <ICountUp class="number-up" :endVal="reportInfo.total_order_num"/>
+                <ICountUp class="number-up" :endVal="statInfo.total_order_num"/>
             </a-col>
         </a-row>
         <div v-if="!isOpen" :class="inviation('data-none')">
@@ -41,7 +41,7 @@
         </div>
         <div v-else :class="inviation('table')">
             <div :class="inviation('table-operation')" class="mg-b16">
-                <st-button :disabled="!selectedRowKeys.length" type="primary">批量导出</st-button>
+                <st-button :disabled="!selectedRowKeys.length" @click="onExport" type="primary">批量导出</st-button>
                 <a-radio-group v-model="tableType" @change="onTabChange" buttonStyle="solid">
                     <a-radio-button :value="0">活动效果</a-radio-button>
                     <a-radio-button :value="1">邀请用户</a-radio-button>
@@ -51,10 +51,10 @@
             v-if="!tableType"
             :alertSelection="{onReset: onClear}"
             :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
-            @change="onDayPageChange"
+            @change="onReportPageChange"
             :columns="columnsActivity"
-            :dataSource="stDayList"
-            :pagination="{current:dayPage.page,total:dayPage.total_counts,pageSize:dayPage.size}"
+            :dataSource="stReportList"
+            :pagination="{current:reportPage.page,total:reportPage.total_counts,pageSize:reportPage.size}"
             rowKey="key"
             />
             <st-table
@@ -91,17 +91,17 @@ export default {
     return {
       isOpen: this.indexService.isOpen$,
       dataLoading: this.dataService.loading$,
-      reportInfo: this.dataService.reportInfo$,
-      dayList: this.dataService.dayList$,
-      dayPage: this.dataService.dayPage$,
+      statInfo: this.dataService.statInfo$,
+      reportList: this.dataService.reportList$,
+      reportPage: this.dataService.reportPage$,
       inviteeList: this.dataService.inviteeList$,
       inviteePage: this.dataService.inviteePage$
     }
   },
   computed: {
-    stDayList() {
+    stReportList() {
       let array = []
-      this.dayList.forEach(i => {
+      this.reportList.forEach(i => {
         let key = parseInt(Math.random() * 999999).toString()
         array.push({ ...i, key: key })
       })
@@ -123,14 +123,7 @@ export default {
       selectedRowKeys: [],
       selectedRows: [],
       // 表格类别 0活动效果 1邀请用户
-      tableType: 0,
-
-      list: [
-        { id: 1, aaaaa: 'aaaaa', bbbbb: 'bbbbb', ccccc: 'ccccc', ddddd: 'ddddd', eeeee: 'eeeee', fffff: 'fffff', ggggg: 'ggggg' },
-        { id: 2, aaaaa: 'aaaaa', bbbbb: 'bbbbb', ccccc: 'ccccc', ddddd: 'ddddd', eeeee: 'eeeee', fffff: 'fffff', ggggg: 'ggggg' },
-        { id: 3, aaaaa: 'aaaaa', bbbbb: 'bbbbb', ccccc: 'ccccc', ddddd: 'ddddd', eeeee: 'eeeee', fffff: 'fffff', ggggg: 'ggggg' },
-        { id: 4, aaaaa: 'aaaaa', bbbbb: 'bbbbb', ccccc: 'ccccc', ddddd: 'ddddd', eeeee: 'eeeee', fffff: 'fffff', ggggg: 'ggggg' }
-      ]
+      tableType: 0
     }
   },
   methods: {
@@ -154,9 +147,9 @@ export default {
       this.selectedRows = selectedRows
     },
     // 分页
-    onDayPageChange(data) {
+    onReportPageChange(data) {
       this.onClear()
-      this.dataService.getInviteDay({
+      this.dataService.getInviteReport({
         page: data.current,
         size: data.pageSize
       }).subscribe()
@@ -168,7 +161,11 @@ export default {
         size: data.pageSize
       }).subscribe()
     },
-
+    // 批量导出
+    onExport() {
+      console.log('导出')
+      this.onClear()
+    },
     onTabChange() {
       this.onClear()
     }

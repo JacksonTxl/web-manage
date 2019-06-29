@@ -84,7 +84,7 @@ export class UpgradeMemberService {
   // 小计
   @Effect()
   getPrice(params:TransactionPriceInput) {
-    return this.transactionApi.getTransactionSoldPrice(params)
+    return this.transactionApi.getTransactionPrice(params)
   }
   // 下单
   @Effect()
