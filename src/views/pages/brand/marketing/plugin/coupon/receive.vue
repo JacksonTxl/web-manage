@@ -1,35 +1,36 @@
 <template>
   <div>
-    <div>
-      <p>倾国倾城优惠券</p>
-      <p>无门槛，见面5元优惠券</p>
-      <label>使用时间：领券当日起5天内可用</label>
+    <div :class="basic('receive-info')">
+      <p :class="basic('receive-title')">{{info.coupon_name}}</p>
+      <p :class="basic('receive-tip')">{{info.use_regulation}}</p>
+      <label>{{info.use_time}}</label>
     </div>
     <st-panel app initial :class="basic()">
       <div slot="title" :class="basic('search')">
-        <!-- <div :class="basic('add')">
+        <div :class="basic('add')">
           <st-button type="primary" @click="onAddCoupon">导出</st-button>
-        </div> -->
+        </div>
         <a-select :class="basic('select')" v-model="queryParams.couponStatus" @change="onSearch" style="width: 160px">
           <a-select-option
-            v-for="(item,index) in productType"
+            v-for="(item,index) in couponStatus"
             :key="index"
             :value="item.value">{{item.label}}</a-select-option>
         </a-select>
+        <a-range-picker @change="onChangeDatePicker" v-model="queryParams.date"/>
         <st-input-search
-          v-model="queryParams.couponName"
+          v-model="queryParams.keyword"
           @search="onSearch"
-          placeholder="请输入优惠券名称"
+          placeholder="请输入手机号、姓名"
           style="width: 290px;"/>
       </div>
       <div :class="basic('content')">
         <st-table
-        :pagination="{current:query.page || 1,total:page.total_counts || 0,pageSize:query.size || 20}"
+        :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
         rowKey="id"
         :columns="columns"
         @change="onPageChange"
         :dataSource="list">
-          <template slot="is_shop_range" slot-scope="text, record">
+          <!-- <template slot="is_shop_range" slot-scope="text, record">
             <a-popover placement="right">
               <template slot="content">
                 <p v-for="(item, index) in record.shop_list" :key="index" :value="index">{{item}}</p>
@@ -39,14 +40,7 @@
               </template>
               <a>{{text}}</a>
             </a-popover>
-          </template>
-          <div slot="action" slot-scope="text,record">
-            <a  @click="onEdit(record)">编辑</a>
-            <a-divider type="vertical"></a-divider>
-            <a  @click="onEdit(record)">推广</a>
-            <a-divider type="vertical"></a-divider>
-            <a  @click="onStop(record)">结束</a>
-          </div>
+          </template> -->
         </st-table>
       </div>
     </st-panel>
@@ -54,89 +48,85 @@
 </template>
 
 <script>
-import { ListService } from './list.service'
+import { ReceiveService } from './receive.service'
 import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
+import { cloneDeep } from 'lodash-es'
+import moment from 'moment'
 export default {
-  name: 'PageBrandMarktingPluginCoupon',
+  name: 'PageBrandMarketingPluginCouponReceive',
   bem: {
     basic: 'page-brand-plugin-coupon'
   },
   serviceInject() {
     return {
-      listService: ListService,
+      receiveService: ReceiveService,
       userService: UserService,
       routeService: RouteService
     }
   },
   rxState() {
     return {
-      list: this.listService.list$,
-      page: this.listService.page$,
-      loading: this.listService.loading$,
+      list: this.receiveService.list$,
+      page: this.receiveService.page$,
+      loading: this.receiveService.loading$,
+      info: this.receiveService.info$,
       query: this.routeService.query$,
-      transaction: this.userService.transactionEnums$,
-      auth: this.listService.auth$
+      couponEnums: this.userService.couponEnums$,
+      auth: this.receiveService.auth$
     }
   },
   computed: {
-    productType() {
+    couponStatus() {
       let list = []
-      if (!this.transaction.product_type) return list
-      Object.entries(this.transaction.product_type.value).forEach(o => {
+      if (!this.couponEnums.coupon_status) return list
+      Object.entries(this.couponEnums.coupon_status.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
+      console.log(list)
       return list
     }
   },
   data() {
     return {
       queryParams: {
-        couponName: '',
-        couponStatus: ''
+        keyword: '',
+        couponStatus: '',
+        date: []
       },
       columns: [
         {
-          title: '优惠券名称',
-          dataIndex: 'coupon_name',
-          scopedSlots: { customRender: 'coupon_name' }
+          title: '用户名称',
+          dataIndex: 'member_name',
+          scopedSlots: { customRender: 'member_name' }
         }, {
-          title: '类型',
-          dataIndex: 'coupon_type',
-          scopedSlots: { customRender: 'coupon_type' }
+          title: '手机号',
+          dataIndex: 'mobile',
+          scopedSlots: { customRender: 'mobile' }
         }, {
-          title: '可用门店',
-          dataIndex: 'is_shop_range',
-          scopedSlots: { customRender: 'is_shop_range' }
+          title: '领券时间',
+          dataIndex: 'created_time',
+          scopedSlots: { customRender: 'created_time' }
         }, {
-          title: '面额(元)',
-          dataIndex: 'price',
-          scopedSlots: { customRender: 'price' }
+          title: '用券时间',
+          dataIndex: 'use_time',
+          scopedSlots: { customRender: 'use_time' }
         }, {
-          title: '使用有效期',
-          dataIndex: 'valid_days',
-          scopedSlots: { customRender: 'valid_days' }
-        }, {
-          title: '剩余数量',
-          dataIndex: 'margin',
-          scopedSlots: { customRender: 'margin' }
-        }, {
-          title: '已领取',
-          dataIndex: 'draw_num',
-          scopedSlots: { customRender: 'draw_num' }
-        }, {
-          title: '已使用',
-          dataIndex: 'use_num',
-          scopedSlots: { customRender: 'use_num' }
-        }, {
-          title: '状态',
+          title: '优惠券状态',
           dataIndex: 'coupon_status',
           scopedSlots: { customRender: 'coupon_status' }
         }, {
-          title: '操作',
-          dataIndex: 'action',
-          width: 140,
-          scopedSlots: { customRender: 'action' }
+          title: '剩余有效天数',
+          dataIndex: 'valid_days',
+          scopedSlots: { customRender: 'valid_days' }
+        }, {
+          title: '使用门店',
+          dataIndex: 'shop_name',
+          scopedSlots: { customRender: 'shop_name' }
+        }, {
+          title: '订单金额',
+          dataIndex: 'order_price',
+          scopedSlots: { customRender: 'order_price' }
         }]
     }
   },
@@ -149,39 +139,44 @@ export default {
     }
   },
   methods: {
+    onChangeDatePicker(event) {
+      this.queryParams.date = event
+      this.onSearch()
+    },
     onPageChange(data) {
       this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize }, force: true })
     },
     // 查询
     onSearch() {
       let params = {
-        coupon_status: this.queryParams.couponStatus,
-        coupon_name: this.queryParams.couponName
+        id: this.query.id,
+        coupon_status: this.queryParams.couponStatus || '',
+        keyword: this.queryParams.keyword,
+        start_time: moment(this.queryParams.date ? this.queryParams.date[0] : null).format('YYYY-MM-DD HH:mm'),
+        end_time: moment(this.queryParams.date ? this.queryParams.date[1] : null).format('YYYY-MM-DD HH:mm')
       }
       this.$router.push({ query: { ...this.query, ...params } })
     },
     // 重置
     onReset() {
       let query = {
+        id: this.query.id,
         keyword: '',
-        status: -1,
-        type: -1,
-        start_date: '',
-        end_date: ''
+        coupon_status: '',
+        start_time: '',
+        end_time: ''
       }
+      this.queryParams.date = []
       this.$router.push({ query: { ...this.query, ...query } })
     },
     // 设置searchData
     setSearchData() {
-      this.keyword = this.query.keyword
-      this.status = this.query.status
-      this.type = this.query.type
-      this.start_date = this.query.start_date
-        ? cloneDeep(moment(this.query.start_date))
-        : null
-      this.end_date = this.query.end_date
-        ? cloneDeep(moment(this.query.end_date))
-        : null
+      this.queryParams.keyword = this.query.keyword
+      this.queryParams.couponStatus = this.query.coupon_status
+      this.queryParams.date = [
+        this.query.start_time ? cloneDeep(moment(this.query.start_time)) : moment(),
+        this.query.end_time ? cloneDeep(moment(this.query.end_time)) : moment()]
+      console.log(this.query)
     },
     // 编辑
     onEdit(record) {

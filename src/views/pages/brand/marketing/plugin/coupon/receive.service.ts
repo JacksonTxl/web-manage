@@ -4,28 +4,37 @@ import { CouponApi, CouponListParams } from '@/api/v1/marketing/coupon'
 import { MarketingApi } from '@/api/v1/marketing/marketing'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
+import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class ListService implements RouteGuard {
+export class ReceiveService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
+  info$ = new State({})
   loading$ = new State({})
   auth$ = new State({})
-  constructor(private marketingApi: MarketingApi, private couponApi: CouponApi, private authService: AuthService) {}
+  constructor(private marketingApi: MarketingApi, private authService: AuthService) {}
   @Effect()
-  getList(params: CouponListParams) {
-    return this.couponApi.getList(params).pipe(tap((res:any) => {
-      res = this.authService.filter(res)
+  getReceiveList(params: any) {
+    return this.marketingApi.getReceiveList(params).pipe(tap((res:any) => {
+      // res = this.authService.filter(res)
       this.list$.commit(() => res.list)
       this.page$.commit(() => res.page)
+      this.info$.commit(() => res.info)
     }))
   }
+  // 获取优惠券详情
+  // getInfo(id: number) {
+  //   return this.marketingApi.getInfo(id).pipe(tap((res:any) => {
+  //     this.info$.commit(() => res.info)
+  //   }))
+  // }
+  // serviceInit(id: number) {
+  //   return forkJoin(this.getInfo(id), this.getReceiveList(id))
+  // }
   beforeEach(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
-    this.getList(to.meta.query).subscribe(() => {
+    this.getReceiveList(to.meta.query).subscribe(() => {
       next()
     })
-  }
-  stopMarketingCoupon(id: number) {
-    return this.marketingApi.stopMarketingCoupon(id).pipe(tap((res:any) => {}))
   }
 }

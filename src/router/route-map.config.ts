@@ -603,5 +603,26 @@ export const routeMapConfig = {
   },
   'shop-member-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增用户'
+  },
+  'brand-marketing-plugin-coupon-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '优惠券'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      coupon_name: { type: String, default: '' },
+      coupon_status: { type: Number, default: '' }
+    }
+  },
+  'brand-marketing-plugin-coupon-receive'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '优惠券领取列表'
+    routeConfig.queryOptions = {
+      id: { type: Number, default: 0 },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      keyword: { type: String, default: '' },
+      coupon_status: { type: String, default: '' },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' }
+    }
   }
 }
