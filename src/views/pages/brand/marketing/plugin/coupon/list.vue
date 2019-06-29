@@ -1,6 +1,6 @@
 <template>
   <div>
-    <MarkteingPluginTitle />
+    <MarkteingPluginTitle :type="1"/>
     <st-panel app initial :class="basic()">
       <div slot="title" :class="basic('search')">
         <div :class="basic('add')">

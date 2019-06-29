@@ -92,4 +92,10 @@ export class MarketingApi extends Api {
   getInviteEditInfo() {
     return this.http.get(`/v1/plugin/invite/view`, { mock: {} })
   }
+  /**
+   * 获取插件介绍信息
+   */
+  getPluginInfo(plugin_type: number) {
+    return this.http.get(`/v1/plugin/introduction`, { query: { plugin_type } })
+  }
 }
