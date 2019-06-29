@@ -88,13 +88,13 @@ export class MarketingApi extends Api {
    * 邀请有礼活动效果数据
    */
   getInviteReport(query:GetInviteTableInput) {
-    return this.http.get(`/v1/plugin/invite/stat/report`, { query, mock: {} })
+    return this.http.get(`/v1/plugin/invite/stat/report`, { query })
   }
   /**
    * 邀请有礼邀请数据
    */
   getInviteInvitee(query:GetInviteTableInput) {
-    return this.http.get(`/v1/plugin/invite/invitee`, { query, mock: {} })
+    return this.http.get(`/v1/plugin/invite/invitee`, { query })
   }
   /**
    * 邀请有礼编辑回显
