@@ -1,7 +1,7 @@
 <template>
   <div :class="all()">
     <div :class="all('search')">
-      <router-link to="../add">
+      <router-link v-if="auth.add" to="../add">
         <st-button type="primary" icon="add">新增储值卡</st-button>
       </router-link>
       <div>
@@ -96,14 +96,14 @@
       </template>
       <!-- 操作 -->
       <div slot="action" slot-scope="text,record">
-        <a @click="onDetail(record)">详情</a>
+        <a v-if="record.auth['brand_shop:product:deposit_card|get']" @click="onDetail(record)">详情</a>
         <a-divider type="vertical"></a-divider>
         <st-more-dropdown class="mgl-16">
-          <a-menu-item @click="onEdit(record)">编辑</a-menu-item>
-          <a-menu-item @click="onShelf(record)">上架</a-menu-item>
-          <a-menu-item @click="onStopSale(record)">停售</a-menu-item>
-          <a-menu-item @click="onRecoverSale(record)">恢复售卖</a-menu-item>
-          <a-menu-item @click="onDelete(record)">删除</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|edit']" @click="onEdit(record)">编辑</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|up']" @click="onShelf(record)">上架</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|pause']" @click="onStopSale(record)">停售</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|restore']" @click="onRecoverSale(record)">恢复售卖</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|del']" @click="onDelete(record)">删除</a-menu-item>
         </st-more-dropdown>
       </div>
     </st-table>
@@ -131,7 +131,8 @@ export default {
       list: this.allService.list$,
       page: this.allService.page$,
       depositCard: this.userService.depositCardEnums$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.allService.auth$
     }
   },
   computed: {

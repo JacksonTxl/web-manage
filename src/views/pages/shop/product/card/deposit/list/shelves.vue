@@ -50,9 +50,9 @@
         {{text.name}}
       </template>
       <div slot="action" slot-scope="text,record">
-        <a @click="onDetail(record)">详情</a>
+        <a v-if="record.auth['brand_shop:product:deposit_card|get']" @click="onDetail(record)">详情</a>
         <a-divider type="vertical"></a-divider>
-        <a @click="onShelfDown(record)">下架</a>
+        <a v-if="record.auth['brand_shop:product:deposit_card|down']" @click="onShelfDown(record)">下架</a>
       </div>
     </st-table>
   </div>
@@ -79,7 +79,8 @@ export default {
       depositCard: this.userService.depositCardEnums$,
       list: this.shelvesService.list$,
       page: this.shelvesService.page$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.shelvesService.auth$
     }
   },
   computed: {
