@@ -1,8 +1,8 @@
 <template>
   <st-modal
   title="添加用户"
-  size="small"
   v-model="show"
+  width="668"
   wrapClassName="modal-front-add-member">
     <st-form :form="form" labelWidth="66px">
         <st-form-item label="用户姓名" required>
