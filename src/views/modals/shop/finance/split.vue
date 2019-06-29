@@ -27,15 +27,16 @@
       :pagination="false"
       :columns="columns"
       :dataSource="info.split_items">
-        <template slot="staff_name" slot-scope="text, record">
+        <template slot="staff_name" slot-scope="text, record, index">
           <a-select
             v-if="record.edit && record.staff_type !== 1"
-            @change="changeSaleMan($event, record)"
+            v-model="record.staff_id"
+            @change="changeSaleMan($event, record, index)"
             style="width: 150px"
             placeholder="选择销售人员">
               <a-select-option
-              v-for="item in saleList"
-              :key="item.id"
+              v-for="(item, index) in saleList"
+              :key="index"
               :value="item.id">{{item.staff_name}}</a-select-option>
             </a-select>
           <template v-else>{{text}}</template>
@@ -91,11 +92,11 @@ export default {
   props: ['id'],
   data() {
     return {
+      form: this.$form.createForm(this),
       show: false,
       description: '',
       rate: 0,
       saleMan: '',
-      form: this.$form.createForm(this),
       columns: [
         {
           title: '销售姓名',
@@ -127,7 +128,7 @@ export default {
     this.splitService.serviceInit(this.id).subscribe(result => {
       const item = {
         edit: 3, // 1 主销售编辑 2 协助销售编辑 3协助销售新增
-        staff_id: -1,
+        staff_id: '',
         staff_name: '',
         staff_type: 2,
         staff_type_name: '协助销售',
@@ -138,16 +139,35 @@ export default {
     })
   },
   methods: {
-    changeSaleMan(event, record) {
-      this.saleList.forEach(item => {
-        if (item.id === event) {
-          record.staff_id = item.id
-          record.staff_name = item.staff_name
+    getSaleManById(id) {
+      return this.saleList.filter((element) => { return element.id === id })[0]
+    },
+    changeSaleMan(event, record, index) {
+      const arr = this.info.split_items.filter((element) => { return element.staff_id === event })
+      if (arr.length > 0) {
+        return
+      }
+      this.info.split_items[index].staff_id = event
+      this.info.split_items[index].staff_name = this.getSaleManById(event).staff_name
+    },
+    validSaleMan(record) {
+      if (!this.info.split_items) {
+        return false
+      }
+      let percent = 0
+      this.info.split_items.forEach(element => {
+        percent = percent + parseInt(record.split_ratio, 10)
+        if (element.staff_id === record.staff_id) {
+          return false
         }
       })
+      if (percent > 100) {
+        return false
+      }
+      return true
     },
     addSaleMan(record) {
-      if (!record.staff_id || !record.split_ratio) {
+      if (!record.staff_id || !record.split_ratio || !this.validSaleMan(record)) {
         return
       }
       delete record.edit
@@ -155,14 +175,13 @@ export default {
       this.info.split_items.splice(0, 1, record)
       this.info.split_items.unshift({
         edit: 3,
-        staff_id: -1,
+        staff_id: '',
         staff_name: '',
         staff_type: 2,
         staff_type_name: '协助销售',
         split_ratio: '',
         split_money: ''
       })
-      delete record.saleMan
     },
     onSave(record, index) {
       delete record.edit

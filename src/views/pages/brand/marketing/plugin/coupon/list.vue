@@ -20,7 +20,7 @@
       </div>
       <div :class="basic('content')">
         <st-table
-        :pagination="{current:query.page || 1,total:page.total_counts || 0,pageSize:query.size || 20}"
+        :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
         rowKey="id"
         :columns="columns"
         @change="onPageChange"
@@ -35,6 +35,9 @@
               </template>
               <a>{{text}}</a>
             </a-popover>
+          </template>
+          <template slot="draw_num" slot-scope="text, record">
+           <a @click="goReceive(record)">{{text}}</a>
           </template>
           <div slot="action" slot-scope="text,record">
             <a  @click="onEdit(record)">编辑</a>
@@ -55,7 +58,7 @@ import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import MarkteingPluginTitle from '../../components#/marketing-title'
 export default {
-  name: 'PageBrandMarktingPluginCoupon',
+  name: 'PageBrandMarketingPluginCouponList',
   bem: {
     basic: 'page-brand-plugin-coupon'
   },
@@ -72,15 +75,15 @@ export default {
       page: this.listService.page$,
       loading: this.listService.loading$,
       query: this.routeService.query$,
-      transaction: this.userService.transactionEnums$,
+      couponEnums: this.userService.couponEnums$,
       auth: this.listService.auth$
     }
   },
   computed: {
     productType() {
       let list = []
-      if (!this.transaction.product_type) return list
-      Object.entries(this.transaction.product_type.value).forEach(o => {
+      if (!this.couponEnums.product_range) return list
+      Object.entries(this.couponEnums.product_range.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
@@ -160,25 +163,15 @@ export default {
     // 重置
     onReset() {
       let query = {
-        keyword: '',
-        status: -1,
-        type: -1,
-        start_date: '',
-        end_date: ''
+        coupon_name: '',
+        coupon_status: ''
       }
       this.$router.push({ query: { ...this.query, ...query } })
     },
     // 设置searchData
     setSearchData() {
-      this.keyword = this.query.keyword
-      this.status = this.query.status
-      this.type = this.query.type
-      this.start_date = this.query.start_date
-        ? cloneDeep(moment(this.query.start_date))
-        : null
-      this.end_date = this.query.end_date
-        ? cloneDeep(moment(this.query.end_date))
-        : null
+      this.queryParams.couponName = this.query.coupon_name
+      this.queryParams.couponStatus = this.query.coupon_status
     },
     // 编辑
     onEdit(record) {
@@ -193,6 +186,9 @@ export default {
     // 新增优惠券活动
     onAddCoupon() {
       this.$router.push({ path: '/brand/marketing/plugin/coupon/add' })
+    },
+    goReceive(record) {
+      this.$router.push({ path: '/brand/marketing/plugin/coupon/receive', query: { id: record.id } })
     }
   },
   components: {

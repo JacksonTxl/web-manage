@@ -125,7 +125,7 @@ export default {
   },
   methods: {
     switchShop() {
-      this.isShowSwitchShop = true
+      this.isShowSwitchShop = !this.isShowSwitchShop
     },
     onClickLogout() {
       this.loginService.logout().subscribe(res => {

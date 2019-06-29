@@ -57,6 +57,12 @@ export class MarketingApi extends Api {
     return this.http.put(`/v1/plugin/coupon/stop/${id}`)
   }
   /**
+   * 获取已领取列表
+   */
+  getReceiveList(query: any) {
+    return this.http.get(`/v1/plugin/coupon/receive/${query.id}`, { query })
+  }
+  /**
    * 邀请有礼是否已开启
    */
   getInviteOpenStatus() {
