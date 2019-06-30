@@ -3,12 +3,6 @@
     <div v-if="favorite.length" class="layout-default-sider__often">
       <h2 class="layout-default-sider__often-title">常用</h2>
       <ul class="layout-default-sider__often-list">
-        <!-- <li
-          class="layout-default-sider__often-item layout-default-sider__often-item--active"
-        >
-          <i></i>
-          <span>营销插件</span>
-        </li> -->
         <li
           v-for="(item, index) in favorite"
           :key="index"
@@ -70,7 +64,10 @@
             </a-menu-item>
         </a-sub-menu>
         <a-menu-item v-else :key="menu.id">
-          <router-link :to="{ name: menu.url }">
+          <router-link
+            :to="{ name: menu.url }"
+            :class="{ 'ant-menu-item-selected':  menu.id === currentSiderMenu.id }"
+          >
             <st-icon :type="menu.icon"/>
             <span>{{menu.name}}</span>
           </router-link>
@@ -98,7 +95,6 @@ export default {
   data() {
     return {
       openKeys: []
-      // selectedKeys: []
     }
   },
   computed: {
@@ -158,7 +154,7 @@ export default {
       const { menus } = this
       let currentSiderMenu
       menus.forEach(menu => {
-        const matchRule = this.getmatchRule(menu)
+        const matchRule = this.getMatchRule(menu)
         const pageName = this.getPageName()
         if (matchRule.test(pageName)) {
           currentSiderMenu = menu
@@ -166,7 +162,7 @@ export default {
       })
       return currentSiderMenu || {}
     },
-    getmatchRule(menu) {
+    getMatchRule(menu) {
       const { icon } = menu
       let rule
       /**
