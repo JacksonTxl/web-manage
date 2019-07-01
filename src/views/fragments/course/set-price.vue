@@ -216,6 +216,10 @@ export default {
         serviceFee: '',
         transfer_unit: 1
       }
+      if (!this.priceGradient[key].prices) {
+        this.priceGradient[key].prices = []
+      }
+      this.priceGradient = [...this.priceGradient]
       this.priceGradient[key].prices.push(newRecord)
     },
     onLevelChange(val, key) {
