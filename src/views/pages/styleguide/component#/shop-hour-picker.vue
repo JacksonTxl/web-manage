@@ -1,7 +1,7 @@
 <template>
   <section class="sg-section">
     <h3>st-shop-hour-picker</h3>
-
+    {{model}}
     <st-shop-hour-picker v-model="model" @change="onChange"></st-shop-hour-picker>
   </section>
 </template>
@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     onChange(data) {
-      console.log(data)
+      console.log('changed', data)
     }
   }
 }

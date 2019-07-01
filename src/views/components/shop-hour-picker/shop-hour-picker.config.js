@@ -1,8 +1,4 @@
 export const SLIDER = [{
-  week_day: 0,
-  value: [],
-  week: []
-}, {
   week_day: 1,
   value: [],
   week: []
@@ -24,6 +20,10 @@ export const SLIDER = [{
   week: []
 }, {
   week_day: 6,
+  value: [],
+  week: []
+}, {
+  week_day: 7,
   value: [],
   week: []
 }]
