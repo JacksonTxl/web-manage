@@ -107,18 +107,6 @@ export class CardsApi extends Api {
     return this.http.put(`/v1/cards/${type}/deposit`, { params })
   }
   /**
-   *会员卡售卖门店列表
-   */
-  getCardsSaleShop(query: any) {
-    return this.http.get(`/v1/cards/member/sale/shop`, { query })
-  }
-  /**
-   * 支持入场门店
-   */
-  getCardsUseShop(query: any) {
-    return this.http.get(`/v1/cards/member/use/shop`, { query })
-  }
-  /**
    * 卡停售信息回传
    */
   getCardSaleStopInfo(id:string, type:string, cardType:string) {
