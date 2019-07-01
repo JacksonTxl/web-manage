@@ -196,7 +196,7 @@ export default {
     },
     del(key, rowIndex) {
       this.priceGradient[key].prices.splice(rowIndex, 1)
-      console.log('del', this.priceGradient, rowIndex)
+      this.priceGradient = [...this.priceGradient]
     },
     addRecord() {
       const newRecord = {
@@ -206,7 +206,6 @@ export default {
         prices: []
       }
       this.priceGradient.push(newRecord)
-      console.log(this.priceGradient)
     },
     addPriceRecord(key) {
       const newRecord = {
