@@ -2,7 +2,7 @@
 import { Injectable } from 'vue-service-app'
 import { State, Computed } from 'rx-state/src'
 import { tap, pluck, switchMap, debounceTime } from 'rxjs/operators'
-import { PersonalCommonApi, CoachListQuery, MemberListQuery } from '@/api/v1/schedule/personal/common'
+import { PersonalCommonApi, CoachListQuery, MemberListQuery, Consume } from '@/api/v1/schedule/personal/common'
 
 export interface SetState {
   courseOptions: any[],
@@ -76,8 +76,8 @@ export class PersonalScheduleCommonService {
    * @param query
    * 获取课程Options
    */
-  getCourseList() {
-    return this.commonApi.getCourseList().pipe(tap(res => {
+  getCourseList(params: Consume) {
+    return this.commonApi.getCourseList(params).pipe(tap(res => {
       this.state$.commit(state => {
         state.courseOptions = res.list
       })

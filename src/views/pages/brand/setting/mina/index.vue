@@ -3,6 +3,7 @@
     <info-component :data="info"></info-component>
     <div :class="basic('content')">
       <un-auth-component v-if="info.is_auth===0" :url="info.auth_url"></un-auth-component>
+      <h5-wrapper-component v-else></h5-wrapper-component>
     </div>
   </div>
 </template>
@@ -10,11 +11,13 @@
 import { IndexService } from './index.service'
 import UnAuthComponent from './components#/unauth.component'
 import InfoComponent from './components#/info.component'
+import H5WrapperComponent from './components#/h5/h5-wrapper.component'
 export default {
   name: 'BrandSettingMinaIndex',
   components: {
     UnAuthComponent,
-    InfoComponent
+    InfoComponent,
+    H5WrapperComponent
   },
   bem: {
     basic: 'brand-setting-mina-index'

@@ -27,8 +27,8 @@
       </div>
     </div>
     <st-form :form="form" labelWidth="67px" :class="shelves('form')">
-      <!-- 次卡，无价格范围，品牌统一定价 -->
-      <div :class="shelves('price')" v-if="info.price_setting===1&&info.card_type===1" class="mg-b0">
+      <!-- 次卡，无价格范围 -->
+      <div :class="shelves('price')" v-if="(info.publish_channel===2&&info.card_type===1)||(info.price_setting===1&&info.card_type===1)" class="mg-b0">
         <st-form-table>
           <colgroup>
             <col style="width:4%;">
@@ -58,8 +58,8 @@
           </tbody>
         </st-form-table>
       </div>
-      <!-- 期卡，无价格范围，品牌统一定价 -->
-      <div :class="shelves('price')" v-if="info.price_setting===1&&info.card_type===2" class="mg-b0">
+      <!-- 期卡，无价格范围 -->
+      <div :class="shelves('price')" v-if="(info.publish_channel===2&&info.card_type===2)||(info.price_setting===1&&info.card_type===2)" class="mg-b0">
         <st-form-table>
           <colgroup>
             <col style="width:4%;">
@@ -86,8 +86,8 @@
           </tbody>
         </st-form-table>
       </div>
-      <!-- 次卡，有价格范围，门店自主定价 -->
-      <div :class="{'modal-card-batch-shelves__price-error':priceHelpText!==''}" v-if="info.price_setting===2&&info.card_type===1"  class="modal-card-batch-shelves__price mg-b0">
+      <!-- 次卡，有价格范围 -->
+      <div :class="{'modal-card-batch-shelves__price-error':priceHelpText!==''}" v-if="info.publish_channel===1&&info.price_setting===2&&info.card_type===1"  class="modal-card-batch-shelves__price mg-b0">
         <st-form-table>
           <colgroup>
             <col style="width:2%;">
@@ -124,8 +124,8 @@
           </tbody>
         </st-form-table>
       </div>
-      <!-- 期卡，有价格范围，门店自主定价 -->
-      <div :class="{'modal-card-batch-shelves__price-error':priceHelpText!==''}" v-if="info.price_setting===2&&info.card_type===2"  class="modal-card-batch-shelves__price mg-b0">
+      <!-- 期卡，有价格范围 -->
+      <div :class="{'modal-card-batch-shelves__price-error':priceHelpText!==''}" v-if="info.publish_channel===1&&info.price_setting===2&&info.card_type===2"  class="modal-card-batch-shelves__price mg-b0">
         <st-form-table>
           <colgroup>
             <col style="width:2%;">

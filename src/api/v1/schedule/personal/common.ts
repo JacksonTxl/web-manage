@@ -1,12 +1,15 @@
 import { Api } from '@/api/api'
 import { stringify } from 'qs'
-
+export interface Consume {
+  id: number,
+  consume_type: number
+}
 export class PersonalCommonApi extends Api {
   /**
    * 获取门店私教课列表
    */
-  getCourseList() {
-    return this.http.get('/v1/schedule/personal/course')
+  getCourseList(query: Consume) {
+    return this.http.get('/v1/schedule/personal/course', { query })
   }
   /**
    * 获取门店会员课列表
