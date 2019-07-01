@@ -305,7 +305,7 @@ export default {
           }).subscribe(res => {
             // 新增成功
             this.$router.push({
-              path: '/shop/product/card/deposit/list/all'
+              name: 'shop-product-card-deposit-list-all'
             })
           })
         }

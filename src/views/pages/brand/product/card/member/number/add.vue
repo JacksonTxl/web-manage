@@ -510,7 +510,7 @@ export default {
           this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')} 00:00:00`
           this.addService.addCard(this.cardData).subscribe(res => {
             this.$router.push({
-              path: '/brand/product/card/member/list/all'
+              name: 'brand-product-card-member-list-all'
             })
           })
         }
