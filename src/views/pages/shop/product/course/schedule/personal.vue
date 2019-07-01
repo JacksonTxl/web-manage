@@ -235,7 +235,7 @@ export default {
     },
     onEventClick(event) {
       this.$modalRouter.push({
-        name: 'schedule-team-reserve-info',
+        name: 'schedule-personal-reserve-info',
         props: {
           id: event.event.id
         },

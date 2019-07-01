@@ -92,6 +92,10 @@
               :pagination="false"
               :scroll="{ y: 230 }"
             >
+            <!-- 售价 -->
+            <template slot="sale_price" slot-scope="text,record">
+              {{record}}
+            </template>
             </a-table>
           </st-container>
         </div>

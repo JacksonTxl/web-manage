@@ -35,7 +35,7 @@ export default {
     },
     height: {
       type: Number,
-      default: 120
+      default: 68
     }
   },
   methods: {
@@ -62,7 +62,7 @@ export default {
       this.chart.source(this.dv, {
         value: {
           min: 0,
-          max: maxValue * 2
+          max: maxValue * 1.1
         }
       })
       this.chart.axis('value', false)

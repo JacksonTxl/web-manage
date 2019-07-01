@@ -3,38 +3,68 @@
     <div class="left">
       <st-t2>
         微信小程序（基础版）
-        <span class="bg-gray color-text-light">发布时间：2019-02-02</span>
+        <span v-if="data.is_auth===1" class="bg-gray color-text-light">发布时间：{{data.mina_info.send_date}}</span>
       </st-t2>
-      <a-row :gutter="24" class="mg-t16">
+      <a-row v-if="data.is_auth===1" :gutter="24" class="mg-t16">
         <a-col :lg="8">
           <st-info>
-            <st-info-item label="小程序名称">{{data.name}}</st-info-item>
-            <st-info-item label="系统版本">{{data.version}}</st-info-item>
+            <st-info-item label="小程序名称">{{data.mina_info.name}}</st-info-item>
+            <st-info-item label="系统版本">{{data.mina_info.version}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :lg="8">
           <st-info>
-            <st-info-item label="微信认证">已认证</st-info-item>
-            <st-info-item label="发布状态">审核中<a :class="info('a')">重新提交</a></st-info-item>
+            <st-info-item label="微信认证" v-if="data.mina_info.verify_type_info > 1">已认证</st-info-item>
+            <st-info-item label="微信认证" v-else>未认证</st-info-item>
+            <st-info-item label="发布状态">{{data.mina_info.send_status | sendstatusFilter}}<a :class="info('a')">{{data.mina_info.send_status | authBtnFilter}}</a></st-info-item>
           </st-info>
         </a-col>
         <a-col :lg="8">
           <st-info>
             <st-info-item label="微信支付">已配置<a :class="info('a')">重新配置</a></st-info-item>
-            <st-info-item label="微信授权">{{data.is_auth | statusFilter}}<a :class="info('a')"
+            <st-info-item label="微信授权">{{data.is_auth | authFilter}}<a :class="info('a')"
                 :href="data.auth_url">重新授权</a>
             </st-info-item>
           </st-info>
         </a-col>
       </a-row>
+
+      <p v-if="data.is_auth===0">
+        三体微信小程序为您提供了运营场馆用户的一套完整解决方案，精心打造场馆展示、卡课购买、会员体系、课程预约、营销推广、训练数据等功能模块，助力开拓微信渠道，实现新老客户运营。
+      </p>
+      <section v-if="data.is_auth===0">
+        <ul>
+          <li>
+            <img src="src/assets/img/brand/markting/register.svg" />
+            <p>
+              <st-t4>品牌曝光</st-t4>
+              基于微信生态，打造品牌形象
+            </p>
+          </li>
+          <li>
+            <img src="src/assets/img/brand/markting/register.svg" />
+            <p>
+              <st-t4>用户体验</st-t4>
+              流畅使用过程，降低转化损耗
+            </p>
+          </li>
+          <li>
+            <img src="src/assets/img/brand/markting/register.svg" />
+            <p>
+              <st-t4>流量裂变</st-t4>
+              一体化营销加速，高效实现流量变现
+            </p>
+          </li>
+        </ul>
+      </section>
+
     </div>
     <div class="right">
-      <img :src="data.qrcode_url" />
+      <img :src="data.mina_info.qrcode_url" />
       <p>三体微信小程序示例 扫码查看</p>
     </div>
   </div>
 </template>
-
 <script>
 export default {
   bem: {
@@ -44,12 +74,34 @@ export default {
     data: Object
   },
   filters: {
-    statusFilter(v) {
+    authFilter(v) {
       let authMap = {
         0: '未授权',
         1: '已授权'
       }
       return authMap[v]
+    },
+    sendstatusFilter(v) {
+      let statusMap = {
+        0: '未发布',
+        1: '审核中',
+        2: '审核失败',
+        3: '审核成功',
+        4: '发布失败',
+        5: '发布成功'
+      }
+      return statusMap[v]
+    },
+    authBtnFilter(v) {
+      let btnMap = {
+        0: '提交',
+        1: '',
+        2: '重新提交',
+        3: '重新提交',
+        4: '重新提交',
+        5: '重新提交'
+      }
+      return btnMap[v]
     }
   }
 }

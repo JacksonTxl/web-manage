@@ -61,7 +61,7 @@ export default {
         }
       })
       this.$emit('change', key, query)
-      this.$router.push({ name: key, query })
+      this.$router.replace({ name: key, query })
     }
   }
 }

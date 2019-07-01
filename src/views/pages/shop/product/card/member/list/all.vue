@@ -42,7 +42,7 @@
     :columns="columns"
     :dataSource="list"
     @change="onPageChange"
-    :pagination="{current:query.current_page,total:page.total_counts,pageSize:query.size}"
+    :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
     rowKey="id"
     >
       <!-- 卡名称 -->

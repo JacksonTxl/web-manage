@@ -94,6 +94,7 @@
       <st-table
         class="mg-t24"
         :columns="columns"
+        :scroll="{x:1280}"
         :alertSelection="{onReset:onSelectionReset}"
         :rowSelection="{selectedRowKeys:selectedRowKeys,onChange:onSelectionChange}"
         rowKey="member_id"
@@ -105,53 +106,27 @@
           <span v-else>{{text}}</span>
         </div>
         <div slot="action" slot-scope="record">
-          <a href="javascript:;" v-if="record.auth['shop:member:member|get']" @click="infoFunc(record)">详情</a>
-          <a-divider type="vertical"></a-divider>
-          <a href="javascript:;" v-if="record.auth['shop:member:member|edit']" @click="edit(record)">编辑</a>
-          <a-divider type="vertical"></a-divider>
-          <st-more-dropdown>
-            <a-menu-item v-if="record.auth['shop:member:member|bind_coach']">
-              <modal-link
-                tag="a"
-                :to=" {
-                  name: 'shop-distribution-coach',
-                  props: {
-                    memberIds: [record.member_id]
-                  }
-                }"
-              >
-                分配教练
-              </modal-link>
-            </a-menu-item>
-            <a-menu-item v-if="record.auth['shop:member:member|bind_salesman']">
-              <a href="javascript: void(0);"
-                v-modal-link="{
-                  name: 'shop-distribution-sale',
-                  props: {
-                    memberIds: [record.member_id]
-                  }
-                }"
-              >
-                分配销售
-              </a>
-            </a-menu-item>
-            <a-menu-item v-if="record.auth['shop:member:member|bind_card']">
-              <modal-link
-                tag="a"
-                :to=" { name: 'shop-binding-entity-card', props:{record:record}}"
-              >绑实体卡</modal-link>
-            </a-menu-item>
-            <a-menu-item v-if="record.auth['shop:member:member|rebind_card']">
-              <modal-link tag="a" :to=" { name: 'shop-missing-card', props:{record:record}}">遗失补卡</modal-link>
-            </a-menu-item>
-            <a-menu-item v-if="record.auth['shop:member:member|transfer']">
-              <modal-link tag="a" :to=" { name: 'shop-transfer-shop', props:{record:record}}">转店</modal-link>
-            </a-menu-item>
-            <a-menu-item v-if="record.auth['shop:member:member|frozen']">
-              <modal-link tag="a" :to=" { name: 'shop-frozen', props:{record:record}}">冻结用户</modal-link>
-            </a-menu-item>
-            <a-menu-item v-if="record.auth['shop:member:member|unbind_wechat']" @click="onRemoveBind(record)">解除微信绑定</a-menu-item>
-          </st-more-dropdown>
+          <st-table-actions>
+            <a v-if="record.auth['shop:member:member|get']" @click="infoFunc(record)">详情</a>
+            <a v-if="record.auth['shop:member:member|edit']" @click="edit(record)">编辑</a>
+            <a v-if="record.auth['shop:member:member|bind_coach']" v-modal-link="{
+              name: 'shop-distribution-coach',
+              props: {
+                memberIds: [record.member_id]
+              }
+            }">分配教练</a>
+            <a v-if="record.auth['shop:member:member|bind_salesman']" v-modal-link="{
+              name: 'shop-distribution-sale',
+              props: {
+                memberIds: [record.member_id]
+              }
+            }">分配销售</a>
+            <a v-if="record.auth['shop:member:member|bind_card']" v-modal-link="{ name: 'shop-binding-entity-card', props:{record:record}}">绑实体卡</a>
+            <a v-if="record.auth['shop:member:member|rebind_card']" v-modal-link="{ name: 'shop-missing-card', props:{record:record}}">遗失补卡</a>
+            <a v-if="record.auth['shop:member:member|transfer']" v-modal-link="{ name: 'shop-transfer-shop', props:{record:record}}">转店</a>
+            <a v-if="record.auth['shop:member:member|frozen']" v-modal-link="{ name: 'shop-frozen', props:{record:record}}">冻结用户</a>
+            <a v-if="record.auth['shop:member:member|unbind_wechat']" @click="onRemoveBind(record)">解除微信绑定</a>
+          </st-table-actions>
         </div>
       </st-table>
     </st-panel>
@@ -228,7 +203,7 @@ export default {
         { title: '注册时间', dataIndex: 'register_time' },
         { title: '成为会员时间', dataIndex: 'be_member_time' },
         { title: '累计消费(元)', dataIndex: 'sum_consumption' },
-        { title: '操作', width: 140, scopedSlots: { customRender: 'action' } }
+        { title: '操作', fixed: 'right', width: 170, scopedSlots: { customRender: 'action' } }
       ]
     }
   },
