@@ -3,7 +3,7 @@
   <div class="shop-member-list">
     <st-panel class="mg-t16">
       <div slot="title">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onSearchSearchQuery" style="width: 290px;"/>
+        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onChangeSearchQuery" style="width: 290px;"/>
       </div>
 
       <div slot="prepend">
@@ -279,7 +279,7 @@ export default {
     }
   },
   methods: {
-    onSearchSearchQuery() {
+    onChangeSearchQuery() {
       this.$router.push({ query: { keyword: this.query.keyword } })
     },
     onChangeReg(date, dateString) {
