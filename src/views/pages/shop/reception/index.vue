@@ -177,7 +177,7 @@
   </section>
 </template>
 <script>
-import { ReceptionService } from './reception.service'
+import { IndexService } from './index.service'
 import { cloneDeep } from 'lodash-es'
 export default {
   name: 'PageShopReception',
@@ -186,20 +186,20 @@ export default {
   },
   serviceInject() {
     return {
-      receptionService: ReceptionService
+      indexService: IndexService
     }
   },
   rxState() {
     return {
-      entranceOptionList: this.receptionService.entranceOptionList$,
-      cabinetList: this.receptionService.cabinetList$,
-      summaryInfo: this.receptionService.summaryInfo$,
-      coachList: this.receptionService.coachList$,
-      sellerList: this.receptionService.sellerList$,
-      memberList: this.receptionService.memberList$,
-      workNoteList: this.receptionService.workNoteList$,
-      workNoteDoneList: this.receptionService.workNoteDoneList$,
-      loading: this.receptionService.loading$
+      entranceOptionList: this.indexService.entranceOptionList$,
+      cabinetList: this.indexService.cabinetList$,
+      summaryInfo: this.indexService.summaryInfo$,
+      coachList: this.indexService.coachList$,
+      sellerList: this.indexService.sellerList$,
+      memberList: this.indexService.memberList$,
+      workNoteList: this.indexService.workNoteList$,
+      workNoteDoneList: this.indexService.workNoteDoneList$,
+      loading: this.indexService.loading$
     }
   },
   data() {
@@ -336,7 +336,7 @@ export default {
       this.memberSearchText = data.trim()
       if (data.trim() !== '') {
         this.lastMemberSearchText = data.trim()
-        this.receptionService.memberListAction$.dispatch({
+        this.indexService.memberListAction$.dispatch({
           keyword: data
         })
       }
@@ -348,10 +348,10 @@ export default {
     },
     // 获取会员详情
     getMemberInfo(id) {
-      this.receptionService.getMemberInfo(id).subscribe(res => {
+      this.indexService.getMemberInfo(id).subscribe(res => {
         this.selectMemberInfo = cloneDeep(res.info)
-        this.receptionService.getEntranceOptionList(id).subscribe()
-        this.receptionService.getCabinetList(id).subscribe()
+        this.indexService.getEntranceOptionList(id).subscribe()
+        this.indexService.getCabinetList(id).subscribe()
       })
     },
     // 添加会员
@@ -372,7 +372,7 @@ export default {
         name: 'front-add-work-note',
         on: {
           success: () => {
-            this.receptionService.getWorkNoteList().subscribe()
+            this.indexService.getWorkNoteList().subscribe()
           }
         }
       })
@@ -384,7 +384,7 @@ export default {
       let proof_value = +this.proof
       let seller_id = this.seller === -1 ? undefined : +this.seller
       let coach_id = this.coach === -1 ? undefined : +this.coach
-      this.receptionService.setEntrance({
+      this.indexService.setEntrance({
         member_id: +this.selectMember,
         cabinet_id,
         proof_type,
@@ -398,7 +398,7 @@ export default {
     },
     // 离场
     onLeave() {
-      this.receptionService.setEntranceLeave(this.selectMemberInfo.id).subscribe(res => {
+      this.indexService.setEntranceLeave(this.selectMemberInfo.id).subscribe(res => {
         this.selectMember = undefined
         this.selectMemberInfo = {}
         this.proof = -1
@@ -406,14 +406,14 @@ export default {
         this.coach = -1
         this.cabinet = -1
         this.isEditCabinet = false
-        this.receptionService.resetEntranceOptionList()
-        this.receptionService.resetCabinetList()
+        this.indexService.resetEntranceOptionList()
+        this.indexService.resetCabinetList()
       })
     },
     // 入场会员修改储物柜
     onEditCabinet() {
       let cabinet_id = this.cabinet === -1 ? undefined : +this.cabinet
-      this.receptionService.editEntranceCabinet({
+      this.indexService.editEntranceCabinet({
         id: this.selectMemberInfo.id,
         cabinet_id
       }).subscribe(res => {
@@ -435,9 +435,9 @@ export default {
         title: '完成待办',
         content: `确定完成${item.subject}吗？`,
         onOk: () => {
-          return this.receptionService.setWorkNote(item.id).toPromise().then(() => {
-            this.receptionService.getWorkNoteList().subscribe()
-            this.receptionService.getWorkNoteDoneList().subscribe()
+          return this.indexService.setWorkNote(item.id).toPromise().then(() => {
+            this.indexService.getWorkNoteList().subscribe()
+            this.indexService.getWorkNoteDoneList().subscribe()
           })
         }
       })
