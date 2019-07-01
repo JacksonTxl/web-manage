@@ -40,15 +40,17 @@
            <a @click="goReceive(record)">{{text}}</a>
           </template>
           <div slot="action" slot-scope="text,record">
-            <div v-if="record.auth['brand_shop:order:order|refund']">
+            <div v-if="record.auth['brand:activity:coupon|edit']" :class="basic('button')">
               <a @click="onEdit(record)">编辑</a>
               <a-divider type="vertical"></a-divider>
             </div>
-            <div>
+            <div v-if="record.auth['brand:activity:coupon|promotion']" :class="basic('button')">
               <a  @click="onEdit(record)">推广</a>
               <a-divider type="vertical"></a-divider>
             </div>
-            <a  @click="onStop(record)">结束</a>
+            <div v-if="record.auth['brand:activity:coupon|end']" :class="basic('button')">
+              <a @click="onStop(record)">结束</a>
+            </div>
           </div>
         </st-table>
       </div>
