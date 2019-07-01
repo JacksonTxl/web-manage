@@ -78,7 +78,6 @@ import ShopCourseLine from '@/views/biz-components/stat/shop-course-line'
 import ShopCourseBar from '@/views/biz-components/stat/shop-course-bar'
 import ShopEntryBar from '@/views/biz-components/stat/shop-entry-bar'
 import ShopEntryLine from '@/views/biz-components/stat/shop-entry-line'
-
 import CrowdLine from '@/views/biz-components/stat/crowd-line'
 
 import FrontSimpleArea from '@/views/biz-components/stat/front-simple-area'
