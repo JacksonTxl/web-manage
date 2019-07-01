@@ -17,7 +17,7 @@ export class OperationRecordService implements RouteGuard {
     }))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next:()=>{}) {
-    this.getList(to.meta.query.id, 'deposit').subscribe(() => {
+    this.getList(to.meta.query.id, 'member').subscribe(() => {
       next()
     })
   }

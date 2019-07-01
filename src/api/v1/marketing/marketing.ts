@@ -120,4 +120,22 @@ export class MarketingApi extends Api {
   getPluginInfo(plugin_type: number) {
     return this.http.get(`/v1/plugin/introduction`, { query: { plugin_type } })
   }
+  /**
+   * 获取优惠券图片生成的token
+   */
+  getToken() {
+    return this.http.originalPost(`/_shs_api/user/token`)
+  }
+  /**
+   * 获取优惠券海报信息
+   */
+  getPosterInfo(id: number) {
+    return this.http.get(`/v1/plugin/coupon/poster/${id}`)
+  }
+  /**
+   * 获取优惠券小程序码
+   */
+  getQrcode() {
+    return this.http.get(`/v1/plugin/coupon/qrcode`)
+  }
 }
