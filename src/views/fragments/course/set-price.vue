@@ -229,7 +229,7 @@ export default {
       let ret = true
       for (let i = 0; i < priceGradient.length; i++) {
         let retIn = false
-        const prices = priceGradient[i].prices
+        const prices = priceGradient[i].prices || []
         for (let j = 0; j < prices.length; j++) {
           const price = prices[j]
           for (let k in price) {
