@@ -29,6 +29,10 @@ export interface BrandShelfDownCardShopInput {
 export interface BrandCardShelfDownInput {
   card_shop: Array<BrandShelfDownCardShopInput>
 }
+export interface ListPageInput {
+  current_page:number
+  size:number
+}
 export class CardsApi extends Api {
   /**
    * 卡已上架列表
@@ -156,17 +160,29 @@ export class CardsApi extends Api {
   setBrandCardsShelfDown(params: BrandCardShelfDownInput) {
     return this.http.put(`/v1/cards/member/brand/shelf/down`, { params })
   }
-  /***
+  /**
    *  储值卡消费门店列表
    */
-  getCardsDepositConsumeShop(query: any) {
-    return this.http.get(`/v1/cards/deposit/consume/shop/${query.card_id}`, { query })
+  getCardsDepositConsumeShop(query: ListPageInput, id:string) {
+    return this.http.get(`/v1/cards/deposit/consume/shop/${id}`, { query })
   }
-  /***
-   *  储值卡卡售卖门店列表
+  /**
+   *  储值卡支持售卖门店列表
    */
-  getCardsDepositSaleShop(query: any) {
-    return this.http.get(`/v1/cards/deposit/sale/shop/${query.card_id}`, { query })
+  getCardsDepositSaleShop(query:ListPageInput, id:string) {
+    return this.http.get(`/v1/cards/deposit/sale/shop/${id}`, { query })
+  }
+  /**
+   *  会员支持入场门店列表
+   */
+  getCardsMemberConsumeShop(query: ListPageInput, id:string) {
+    return this.http.get(`/v1/cards/member/use/shop/${id}`, { query })
+  }
+  /**
+   *  会员卡支持售卖门店列表
+   */
+  getCardsMemberSaleShop(query:ListPageInput, id:string) {
+    return this.http.get(`/v1/cards/member/sale/shop/${id}`, { query })
   }
   /**
    * 储值卡上架

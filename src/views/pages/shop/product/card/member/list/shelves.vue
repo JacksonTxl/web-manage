@@ -36,12 +36,12 @@
       <template slot="time_gradient" slot-scope="text">
         {{text}}
       </template>
-      <!-- 支持入场范围 -->
+      <!-- 支持入场门店 -->
       <template slot="admission_range" slot-scope="text,record">
         <modal-link
           v-if="text.id === 2"
           tag="a"
-          :to="{ name: 'card-table-stop' , props:{id: record.id}}"
+          :to="{ name: 'card-brand-member-shop-table' , props:{id: record.id,type:'Sale',title:'支持入场门店'}}"
         >{{text.name}}</modal-link>
         <span v-else class="use_num">{{text.name}}</span>
       </template>

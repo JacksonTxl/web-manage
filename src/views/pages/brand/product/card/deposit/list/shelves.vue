@@ -59,7 +59,7 @@
         <modal-link
           v-if="text.id === 2"
           tag="a"
-          :to="{ name: 'card-table-stop' , props:{id: record.id}}"
+          :to="{ name: 'card-brand-deposit-shop-table' , props:{id: record.id,type:'Consume',title: '支持消费门店'}}"
         >{{text.name}}</modal-link>
         <span v-else class="use_num">{{text.name}}</span>
       </template>
