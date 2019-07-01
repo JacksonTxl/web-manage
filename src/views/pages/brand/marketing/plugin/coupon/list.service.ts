@@ -9,6 +9,7 @@ import { Store } from '@/services/store'
 export interface SetState {
   list: any[],
 }
+
 @Injectable()
 export class ListService extends Store<SetState> implements RouteGuard {
   list$: Computed<any>;

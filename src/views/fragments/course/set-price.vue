@@ -20,8 +20,8 @@
               支持单节课购买
             </a-checkbox>
             <template v-if="priceGradientRecord.single_sell">
-              <a-input-number v-model="priceGradientRecord.single_price"></a-input-number>
-               <span class="mg-l8">元/节</span>
+              <st-input-number v-model="priceGradientRecord.single_price" style="width: 100px;"/>
+              <span class="mg-l8">元/节</span>
             </template>
           </st-form-item>
           <!-- 私教课程定价模式：教练平级定价；私教课程售卖模式：统一标价 -->
