@@ -17,12 +17,12 @@
       :pagination="{current:+query.p || 1}"
       :dataSource="tableData"
     >
-      <div slot="action" slot-scope="record">
-        <modal-link tag="a" :to="{name:'test-sg'}">打开 {{record.name}}</modal-link>
-        <a-divider type="vertical"></a-divider>
-        <a-popconfirm title="确认删除该权限么?" @confirm="onDelete(record.id)">
+      <div slot="action">
+        <st-table-actions>
+          <a v-modal-link="{name:'test-sg'}">详情</a>
+          <a>上架</a>
           <a>删除</a>
-        </a-popconfirm>
+        </st-table-actions>
       </div>
     </st-table>
   </section>

@@ -89,8 +89,8 @@ gulp.task('serve', () => {
 gulp.task(
   'dev',
   gulp.series(
-    ['route', 'less-views', 'serve'],
-    gulp.parallel(['route:watch', 'less-views:watch'])
+    ['route', 'less-views'],
+    gulp.parallel(['serve', 'route:watch', 'less-views:watch'])
   )
 )
 gulp.task('build', gulp.series(['route', 'less-views']))
