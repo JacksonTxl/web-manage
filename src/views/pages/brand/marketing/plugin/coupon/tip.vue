@@ -7,7 +7,7 @@
       <ul>
         <li>
           <img src="~@/assets/img/brand/marketing/coupon/poster.svg" />
-          <label>分享海报</label>
+          <label @click="sharePoster">分享海报</label>
         </li>
         <li>
           <img src="~@/assets/img/brand/marketing/coupon/activity.png" />
@@ -49,7 +49,19 @@ export default {
 
   },
   methods: {
+    sharePoster() {
+      this.$modalRouter.push({
+        name: 'brand-marketing-poster',
+        props: {
 
+        },
+        on: {
+          success: () => {
+            console.log('success')
+          }
+        }
+      })
+    }
   },
   components: {
   }

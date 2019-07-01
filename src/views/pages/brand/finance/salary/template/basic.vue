@@ -33,12 +33,12 @@
           <td>{{ item.created_time }}</td>
           <td>
             <modal-link
-              v-if="record.auth['brand_shop:salary:basic_template|edit']"
+
               tag="a"
               :to=" { name: 'finance-basic-template-edit', props: {item: item},on: {change: refresh}}"
             >编辑</modal-link>
             <span style="width:1px;height: 14px;background-color:#e6e9ef;" class="mg-l8 mg-r8"></span>
-            <a href="javascript:;" v-if="record.auth['brand_shop:salary:basic_template|del']" @click="onDelete(item.id)">删除</a>
+            <a href="javascript:;"  @click="onDelete(item.id)">删除</a>
           </td>
         </tr>
       </template>
