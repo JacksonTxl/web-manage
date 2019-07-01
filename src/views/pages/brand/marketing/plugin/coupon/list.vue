@@ -4,7 +4,7 @@
     <st-panel app initial :class="basic()">
       <div slot="title" :class="basic('search')">
         <div :class="basic('add')">
-          <st-button icon="add" type="primary" @click="onAddCoupon">新增优惠券</st-button>
+          <st-button icon="add" type="primary" @click="onAddCoupon" v-if="auth.add">新增优惠券</st-button>
         </div>
         <a-select :class="basic('select')" v-model="queryParams.couponStatus" @change="onSearch" style="width: 160px">
           <a-select-option
@@ -40,10 +40,14 @@
            <a @click="goReceive(record)">{{text}}</a>
           </template>
           <div slot="action" slot-scope="text,record">
-            <a  @click="onEdit(record)">编辑</a>
-            <a-divider type="vertical"></a-divider>
-            <a  @click="onEdit(record)">推广</a>
-            <a-divider type="vertical"></a-divider>
+            <div v-if="record.auth['brand_shop:order:order|refund']">
+              <a @click="onEdit(record)">编辑</a>
+              <a-divider type="vertical"></a-divider>
+            </div>
+            <div>
+              <a  @click="onEdit(record)">推广</a>
+              <a-divider type="vertical"></a-divider>
+            </div>
             <a  @click="onStop(record)">结束</a>
           </div>
         </st-table>

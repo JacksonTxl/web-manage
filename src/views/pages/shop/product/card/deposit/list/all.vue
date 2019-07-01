@@ -74,16 +74,16 @@
         {{text.name}}
       </template>
       <!-- 售卖状态 -->
-      <template slot="sell_status" slot-scope="text">
+      <template slot="sell_status" slot-scope="text,record">
         <a-badge :status="text.id === 1?'success':'error'" />{{text.name}}
         <a-popover
-          title="停售原因title"
+          :title="`操作人:${record.stop_sale.operator_name}  操作时间:${record.stop_sale.stop_time}`"
           trigger="click"
           placement="bottomRight"
           :overlayStyle="{width:'336px'}"
         >
           <template slot="content">
-            <p>停售原因content</p>
+            <p>{{record.stop_sale.stop_reason}}</p>
           </template>
           <a-icon type="exclamation-circle" v-if="text.id === 2"/>
         </a-popover>
