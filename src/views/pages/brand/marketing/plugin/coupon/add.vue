@@ -345,9 +345,10 @@ export default {
             })
           } else {
             this.addService.addMarketingCoupon(params).subscribe(res => {
+              console.log(res)
               // 新增成功
               this.$router.push({
-                path: '/brand/marketing/plugin/coupon/tip',
+                path: `/brand/marketing/plugin/coupon/tip?id=${res.id}`,
                 force: true
               })
             })
