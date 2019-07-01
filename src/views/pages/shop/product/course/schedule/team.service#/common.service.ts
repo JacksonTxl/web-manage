@@ -9,6 +9,7 @@ export interface SetState {
   memberOptions: any[],
   courtOptions: any[],
   unUsedSeatOptions: any[],
+  unUsedSeatCourtOptions: any[],
   consumeOptions: any[]
 }
 @Injectable()
@@ -19,6 +20,7 @@ export class TeamScheduleCommonService {
   memberOptions$: Computed<any[]>
   courtOptions$: Computed<any[]>
   unUsedSeatOptions$: Computed<any[]>
+  unUsedSeatCourtOptions$: Computed<any[]>
   consumeOptions$: Computed<any[]>
 
   constructor(private commonApi: TeamScheduleCommonApi) {
@@ -26,12 +28,14 @@ export class TeamScheduleCommonService {
       courseOptions: [],
       coachOptions: [],
       unUsedSeatOptions: [],
+      unUsedSeatCourtOptions: [],
       memberOptions: [],
       consumeOptions: [],
       courtOptions: []
     })
     this.consumeOptions$ = new Computed(this.state$.pipe(pluck('consumeOptions')))
     this.unUsedSeatOptions$ = new Computed(this.state$.pipe(pluck('unUsedSeatOptions')))
+    this.unUsedSeatCourtOptions$ = new Computed(this.state$.pipe(pluck('unUsedSeatCourtOptions')))
     this.courseOptions$ = new Computed(this.state$.pipe(pluck('courseOptions')))
     this.coachOptions$ = new Computed(this.state$.pipe(pluck('coachOptions')))
     this.memberOptions$ = new Computed(this.state$.pipe(pluck('memberOptions')))
@@ -57,7 +61,7 @@ export class TeamScheduleCommonService {
   getUnusedSeat(query: UnUsedSeatQuery) {
     return this.commonApi.getUnusedSeat(query).pipe(tap(res => {
       this.state$.commit(state => {
-        state.unUsedSeatOptions = res.list
+        state.unUsedSeatCourtOptions = res.list
       })
     }))
   }

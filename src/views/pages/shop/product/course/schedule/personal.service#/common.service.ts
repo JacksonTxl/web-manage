@@ -64,8 +64,8 @@ export class PersonalScheduleCommonService {
         })
       }))
   }
-  getCourseCoachList() {
-    return this.commonApi.getCourseCoachList().pipe(tap(res => {
+  getCourseCoachList(id: any) {
+    return this.commonApi.getCourseCoachList(id).pipe(tap(res => {
       this.state$.commit(state => {
         state.courseCoachOptions = res.list
       })
@@ -96,7 +96,6 @@ export class PersonalScheduleCommonService {
     }))
   }
   getCoachListInBatch() {
-    console.log('getCoachListInBatch')
     return this.commonApi.getCoachListInBatch({ is_batch: 1 }).pipe(tap(res => {
       this.state$.commit(state => {
         state.coachInBatchOptions = res.list

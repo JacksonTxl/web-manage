@@ -2,8 +2,10 @@
   <section :class="basic()">
     <st-panel title="订单详情">
       <div slot="actions">
-        <st-button class="mgr-8" v-if="isRefund" @click="onRefund" type="primary">退款</st-button>
-        <st-button class="mgr-8" v-if="isGathering" @click="createdOrderPay" type="primary">收款</st-button>
+        <st-button class="mgr-8" v-if="auth['brand_shop:order:order|refund']" @click="onRefund" type="primary">退款</st-button>
+        <st-button class="mgr-8" v-if="auth['brand_shop:order:order|pay']" @click="createdOrderPay" type="primary">收款</st-button>
+        <st-button class="mgr-8" v-if="auth['brand_shop:order:order|cancel']" @click="onCancel" type="primary">取消</st-button>
+        <st-button class="mgr-8" v-if="auth['brand_shop:order:order|split']" @click="onSplit" type="primary">业务拆分</st-button>
       </div>
       <a-row :gutter="24">
         <a-col :span="9">
@@ -61,22 +63,12 @@ export default {
       info: this.infoService.info$,
       tabs: this.infoService.tabs$,
       query: this.routeService.query$,
-      loading: this.infoService.loading$
+      loading: this.infoService.loading$,
+      auth: this.infoService.auth$
     }
   },
   computed: {
-    isRefund() {
-      if ((this.info.pay_status === 2 || this.info.pay_status === 3) && (this.info.order_status === 1 || this.info.order_status === 2)) {
-        return true
-      }
-      return false
-    },
-    isGathering() {
-      if ((this.info.pay_status === 1 || this.info.pay_status === 2) && (this.info.order_status === 1 || this.info.order_status === 5)) {
-        return true
-      }
-      return false
-    }
+
   },
   methods: {
     // 订单收款modal
@@ -84,11 +76,12 @@ export default {
       this.$modalRouter.push({
         name: 'sold-deal-gathering',
         props: {
-          id: this.infoService.id
+          order_id: this.infoService.id,
+          type: this.productType(this.info.product_type)
         },
         on: {
           success: () => {
-            console.log('收款成功')
+            // this.$router.push({ force: true })
           }
         }
       })
@@ -106,6 +99,68 @@ export default {
           }
         }
       })
+    },
+    // 业务拆分
+    onSplit() {
+      this.$modalRouter.push({
+        name: 'shop-finance-split',
+        props: {
+          id: this.info.id
+        },
+        on: {
+          success: (result) => {
+            console.log('业绩拆分成功!')
+          }
+        }
+      })
+    },
+    // 取消
+    onCancel() {
+      this.$modalRouter.push({
+        name: 'shop-finance-cancel',
+        props: {
+          id: this.info.id
+        },
+        on: {
+          success: (result) => {
+            console.log('取消订单!')
+          }
+        }
+      })
+    },
+    productType(type) {
+      let name = ''
+      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金
+      switch (type) {
+        case 1:
+          name = 'member'
+          break
+        case 2:
+          name = 'personal'
+          break
+        case 3:
+          name = 'member'
+          break
+        case 4:
+          name = 'package'
+          break
+        case 5:
+          name = 'deposit'
+          break
+        case 6:
+          name = 'member'
+          break
+        case 7:
+          name = 'advance'
+          break
+        case 8:
+          name = 'advance'
+          break
+        case 9:
+          name = 'member'
+          break
+      }
+      return name
     }
 
   }

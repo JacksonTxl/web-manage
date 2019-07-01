@@ -3,6 +3,7 @@ import { State, Effect, Computed } from 'rx-state/src'
 import { tap, pluck } from 'rxjs/operators'
 import { TeamScheduleReserveApi, AddReserveInput, CheckInput } from '@/api/v1/schedule/team/reserve'
 import { AuthService } from '@/services/auth.service'
+import { MessageService } from '@/services/message.service'
 export interface SetState {
   reserveInfo: any
   reserveList: any[]
@@ -12,18 +13,22 @@ export class TeamScheduleReserveService {
   state$: State<SetState>
   auth$: Computed<any>
   reserveInfo$: Computed<any>
+  reserveList$: Computed<any[]>
   constructor(private reserveApi: TeamScheduleReserveApi,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private msg: MessageService) {
     this.state$ = new State({
       auth: {
         add: this.authService.can('shop:reserve:team_course_reserve|add'),
         cancel: this.authService.can('shop:reserve:team_course_reserve|del'),
         checkIn: this.authService.can('shop:reserve:team_course_reserve|checkin')
       },
-      reserveInfo: []
+      reserveInfo: [],
+      reserveList: []
     })
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
     this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
+    this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
   }
   /**
  *
@@ -31,7 +36,11 @@ export class TeamScheduleReserveService {
  * 添加预约
  */
   add(params: AddReserveInput) {
-    return this.reserveApi.add(params)
+    return this.reserveApi.add(params).pipe(tap(res => {
+      this.msg.success({
+        content: '添加预约成功！！！'
+      })
+    }))
   }
   /**
    *
@@ -51,7 +60,7 @@ export class TeamScheduleReserveService {
     return this.reserveApi.getInfo(id).pipe(tap(res => {
       this.state$.commit(state => {
         state.reserveInfo = res.info
-        state.reserveList = res.info.reserve
+        state.reserveList = res.list
       })
     }))
   }

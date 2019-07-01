@@ -38,12 +38,14 @@
     </st-search-panel>
 
     <div :class="basic('content')">
-      <div :class="basic('content-batch')">
+      <div :class="basic('content-batch')" v-if="auth.export">
           <st-button type="primary">批量导出</st-button>
       </div>
       <st-table
       rowKey="id"
       :columns="columns"
+      :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
+      @change="onPageChange"
       :dataSource="list">
         <template slot="order_status" slot-scope="text">
           {{text | enumFilter('finance.order_status')}}
@@ -52,15 +54,25 @@
           {{text | enumFilter('finance.pay_status')}}
         </template>
         <div slot="action" slot-scope="text, record">
-          <a v-if="actionShow(record).gathering" @click="onGathering(record)">收款</a>
-          <a-divider v-if="actionShow(record).cancel" type="vertical"></a-divider>
-          <a v-if="actionShow(record).cancel" @click="onCancel(record)">取消</a>
-          <a-divider v-if="actionShow(record).detail" type="vertical"></a-divider>
-          <a v-if="actionShow(record).detail" @click="onOrderInfo(record)">详情</a>
-          <a-divider v-if="actionShow(record).refund" type="vertical"></a-divider>
-          <a v-if="actionShow(record).refund" @click="onRefund(record)">退款</a>
-          <a-divider v-if="actionShow(record).split" type="vertical"></a-divider>
-          <a v-if="actionShow(record).split" @click="onSplit(record)">业务拆分</a>
+          <div v-if="record.auth['brand_shop:order:order|pay']">
+            <a  @click="onGathering(record)">收款</a>
+            <a-divider type="vertical"></a-divider>
+          </div>
+          <div v-if="record.auth['brand_shop:order:order|cancel']">
+            <a @click="onCancel(record)">取消</a>
+            <a-divider type="vertical"></a-divider>
+          </div>
+          <div v-if="record.auth['brand_shop:order:order|get']">
+            <a @click="onOrderInfo(record)">详情</a>
+            <a-divider type="vertical"></a-divider>
+          </div>
+          <div v-if="record.auth['brand_shop:order:order|refund']" >
+            <a @click="onRefund(record)">退款</a>
+            <a-divider type="vertical"></a-divider>
+          </div>
+          <div v-if="record.auth['brand_shop:order:order|split']" >
+            <a @click="onSplit(record)">业务拆分</a>
+          </div>
         </div>
       </st-table>
     </div>
@@ -91,7 +103,8 @@ export default {
       loading: this.listService.loading$,
       page: this.listService.page$,
       query: this.routeService.query$,
-      list: this.listService.list$
+      list: this.listService.list$,
+      auth: this.listService.auth$
     }
   },
   computed: {
@@ -111,7 +124,6 @@ export default {
       })
       return list
     }
-
   },
   data() {
     return {
@@ -193,6 +205,9 @@ export default {
     }
   },
   methods: {
+    onPageChange(data) {
+      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize }, force: true })
+    },
     // 查询
     onSearch() {
       let params = {
@@ -217,33 +232,6 @@ export default {
         end_date: ''
       }
       this.$router.push({ query: { ...this.query, ...query } })
-    },
-    actionShow(record) {
-      const order_status = record.order_status
-      const pay_status = record.pay_status
-      const actions = {
-        gathering: false,
-        cancel: false,
-        detail: false,
-        split: false,
-        refund: false
-      }
-      if ((order_status === 1 || order_status === 5) && (pay_status === 1 || pay_status === 2)) {
-        actions.gathering = true
-      }
-      if (order_status === 1 && pay_status === 1) {
-        actions.cancel = true
-      }
-      if ((order_status === 2 || order_status === 5) && (pay_status === 2 || pay_status === 3)) {
-        actions.refund = true
-      }
-      if (order_status === 2 && pay_status === 3) {
-        actions.split = true
-      }
-      if (order_status !== 3 && pay_status !== 1) {
-        actions.detail = true
-      }
-      return actions
     },
     // 设置searchData
     setSearchData() {
@@ -290,7 +278,6 @@ export default {
       this.$modalRouter.push({
         name: 'shop-finance-cancel',
         props: {
-          // id: record.sold_cabinet_id,
           id: record.id
         },
         on: {
@@ -305,8 +292,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-lease-transfer',
         props: {
-          // id: record.sold_cabinet_id,
-          id: 48587472437681
+          id: record.id
         },
         on: {
           success: (result) => {
@@ -335,8 +321,7 @@ export default {
       this.$modalRouter.push({
         name: 'shop-finance-split',
         props: {
-          // id: record.id
-          id: 1558436650239
+          id: record.id
         },
         on: {
           success: (result) => {
@@ -348,7 +333,7 @@ export default {
     // 订单详情
     onOrderInfo(record) {
       this.$router.push({
-        path: '/shop/finance/order/info',
+        path: '/shop/finance/order/info/collection-details',
         query: { id: record.id }
       })
     },

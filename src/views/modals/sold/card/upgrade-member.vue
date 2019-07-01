@@ -306,7 +306,7 @@ export default {
       this.resetCoupon()
       this.upgradeMemberService.couponAction$.dispatch({
         member_id: this.info.member_id,
-        card_id: this.selectCardItem.id,
+        card_id: this.upgradeCardInfo.id,
         specs_id: this.selectSpecsItem.id
       })
     },

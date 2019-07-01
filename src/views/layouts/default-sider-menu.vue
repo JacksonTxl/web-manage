@@ -1,5 +1,23 @@
 <template>
   <div>
+    <div v-if="favorite.length" class="layout-default-sider__often">
+      <h2 class="layout-default-sider__often-title">常用</h2>
+      <ul class="layout-default-sider__often-list">
+        <li
+          v-for="(item, index) in favorite"
+          :key="index"
+          class="layout-default-sider__often-item"
+        >
+          <st-icon
+            type="star"
+            @click.native="delFavorite(item.id)"
+          />
+          <router-link :to="{ name: item.url }" class="layout-default-sider__favorite-title">
+            {{item.name}}
+          </router-link>
+        </li>
+      </ul>
+    </div>
     <a-menu
         class="layout-default-sider__menu"
         :openKeys="openKeys"
@@ -15,10 +33,13 @@
             <span slot="title">
               <st-icon :type="menu.icon"/>
               <span>{{menu.name}}</span>
+              <st-icon class="layout-default-sider__menu-arrow open" type="add" size="8px"/>
+              <st-icon class="layout-default-sider__menu-arrow fold-up" type="minus" size="8px"/>
             </span>
             <a-menu-item
               v-for="subMenu in menu.children"
               :key="subMenu.id"
+              class="layout-default-sider__menu-item sub"
             >
               <st-icon
                 v-if="isfavorite(subMenu.id)"
@@ -29,53 +50,36 @@
               />
               <st-icon
                 v-else
-                type="star"
+                type="star-line"
                 size="8px"
                 class="layout-default-sider__menu-star"
-                @click.native="addFavorite(subMenu.id)"
+                @click.native="addFavorite(subMenu.id, subMenu)"
               />
-              <span @click="onClickMenuItem(subMenu)">{{subMenu.name}}</span>
+              <span
+                @click="onClickMenuItem(subMenu)"
+                class="layout-default-sider__menu-title"
+              >
+                {{subMenu.name}}
+              </span>
             </a-menu-item>
         </a-sub-menu>
         <a-menu-item v-else :key="menu.id">
-          <router-link :to="{ name: menu.url }">
+          <router-link
+            :to="{ name: menu.url }"
+            :class="{ 'ant-menu-item-selected':  menu.id === currentSiderMenu.id }"
+          >
             <st-icon :type="menu.icon"/>
             <span>{{menu.name}}</span>
           </router-link>
         </a-menu-item>
       </template>
     </a-menu>
-    <div v-if="favorite.length" class="layout-default-sider__often">
-      <h2 class="layout-default-sider__often-title">常用</h2>
-      <ul class="layout-default-sider__often-list">
-        <!-- <li
-          class="layout-default-sider__often-item layout-default-sider__often-item--active"
-        >
-          <i></i>
-          <span>营销插件</span>
-        </li> -->
-        <li
-          v-for="(item, index) in favorite"
-          :key="index"
-          class="layout-default-sider__often-item"
-        >
-          <st-icon
-            type="star"
-            @click.native="delFavorite(item.id)"
-          />
-          <router-link :to="{ name: item.url }">
-            <span class="layout-default-sider__favorite-title">{{item.name}}</span>
-          </router-link>
-        </li>
-      </ul>
-    </div>
   </div>
 </template>
 <script>
 import { UserService } from '@/services/user.service'
 import { treeToMap } from '@/utils/tree-to-map'
-import { find as lodashFind } from 'lodash-es'
-import { findPathWithTree } from '@/utils/find-path-with-tree'
+import { find, remove, constant } from 'lodash-es'
 export default {
   name: 'DefaultBrandSiderMenu',
   serviceInject() {
@@ -90,8 +94,7 @@ export default {
   },
   data() {
     return {
-      openKeys: [],
-      selectedKeys: []
+      openKeys: []
     }
   },
   computed: {
@@ -106,12 +109,34 @@ export default {
     },
     rootSubmenuKeys() {
       return this.getRootSubmenuKeys()
+    },
+    currentSiderMenu() {
+      return this.findCurrentSiderMenu()
+    },
+    selectedKeys() {
+      const selectedKey = this.findSelectedKey(this.currentSiderMenu)
+      if (selectedKey) {
+        this.$emit('change', {
+          selectedKey,
+          currentSiderMenu: this.currentSiderMenu,
+          menus: this.menus
+        })
+      }
+      return selectedKey ? [selectedKey] : []
+    }
+  },
+  watch: {
+    selectedKeys() {
+      this.setOpenKeys()
     }
   },
   created() {
-    this.calcOpenKeys()
+    this.init()
   },
   methods: {
+    init() {
+      this.setOpenKeys()
+    },
     isHasSubmenu(menu) {
       return (
         menu.children && menu.children.length
@@ -125,32 +150,78 @@ export default {
         this.openKeys = latestOpenKey ? [latestOpenKey] : []
       }
     },
-    calcOpenKeys() {
+    findCurrentSiderMenu() {
       const { menus } = this
-      let openKey
+      let currentSiderMenu
       menus.forEach(menu => {
-        if (location.pathname.replace(/\//g, '-').indexOf(menu.icon) !== -1) {
-          openKey = menu.id
+        const matchRule = this.getMatchRule(menu)
+        const pageName = this.getPageName()
+        if (matchRule.test(pageName)) {
+          currentSiderMenu = menu
         }
       })
+      return currentSiderMenu || {}
+    },
+    getMatchRule(menu) {
+      const { icon } = menu
+      let rule
+      /**
+       * 对一些特殊的icon做处理，比如dashboard用的是home
+       */
+      const rulesMap = {
+        home: /dashboard/,
+        sold: /shop-sold/,
+        course: /shop-product-course/,
+        card: /shop-product-card/,
+        department: /brand-staff/
+      }
+      if (!rulesMap.hasOwnProperty(icon)) {
+        rule = new RegExp(icon)
+      } else {
+        rule = rulesMap[icon]
+      }
+      return rule
+    },
+    findSelectedKey() {
+      let selectedKey
+      (this.currentSiderMenu.children || []).forEach(item => {
+        if (item.url && this.getPageName().indexOf(item.url) !== -1) {
+          selectedKey = item.id
+        }
+      })
+      return selectedKey
+    },
+    setOpenKeys() {
+      const openKey = this.currentSiderMenu.id
       this.openKeys = openKey ? [openKey] : []
     },
+    setSelectedKeys() {
+      const selectedKey = this.findSelectedKey(this.currentSiderMenu)
+      this.selectedKeys = selectedKey ? [selectedKey] : []
+    },
     onClickMenuItem(menu) {
-      // if (this.$route.name.indexOf(menu.url) > -1) {
-      //   return
-      // }
       this.$router.push({
         name: menu.url
       })
     },
-    addFavorite(id) {
-      this.userService.addFavorite(id).subscribe(this.onMenuChange)
+    addFavorite(id, subMenu) {
+      this.userService.addFavorite(id).subscribe(() => {
+        const findMenu = find(this.menuData.favorite, item => {
+          return item.id === id
+        })
+        if (!findMenu) {
+          this.menuData.favorite.push(subMenu)
+        }
+      })
     },
     delFavorite(id) {
-      this.userService.delFavorite(id).subscribe(this.onMenuChange)
-    },
-    onMenuChange() {
-      this.userService.reloadMenus()
+      const { favorite } = this.menuData
+      remove(favorite, item => {
+        return item.id === id
+      })
+      this.userService.delFavorite(id).subscribe(() => {
+        this.menuData.favorite = [...favorite]
+      })
     },
     getRootSubmenuKeys() {
       const { menus } = this
@@ -161,7 +232,10 @@ export default {
       return rootSubmenuKeys
     },
     isfavorite(id) {
-      return lodashFind(this.favorite, { id })
+      return find(this.favorite, { id })
+    },
+    getPageName() {
+      return this.$route.path.replace(/\//g, '-')
     }
   }
 }

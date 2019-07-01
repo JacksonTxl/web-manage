@@ -13,11 +13,11 @@
                 >
                 <span class="img-describe">正式会员</span>
               </div>
-              <div class="input-face">
+              <!-- <div class="input-face">
                 <a href="javascript:;">
                   <a-icon type="plus"/>录入人脸
                 </a>
-              </div>
+              </div> -->
             </div>
 
             <div class="shop-member-info-title-pannel__info">
@@ -78,10 +78,10 @@
               <a-dropdown>
                 <a-menu slot="overlay">
                   <a-menu-item key="1" v-if="auth['shop:member:member|change_coach']">
-                    <modal-link tag="a" :to=" { name: 'shop-distribution-coach',props: {selectedRowData: [id]}}">更改跟进教练</modal-link>
+                    <modal-link tag="a" :to=" { name: 'shop-distribution-coach',props: { memberIds: [id] } }">更改跟进教练</modal-link>
                   </a-menu-item>
                   <a-menu-item key="2" v-if="auth['shop:member:member|change_salesman']">
-                    <modal-link tag="a" :to=" { name: 'shop-distribution-ales',props: {selectedRowData: [id]}}">更改跟进销售</modal-link>
+                    <modal-link tag="a" :to=" { name: 'shop-distribution-ales',props: { memberIds: [id] } }">更改跟进销售</modal-link>
                   </a-menu-item>
                   <a-menu-item key="3"  v-if="auth['shop:member:member|unbind_wechat']" @click="onRemoveBind">解除微信绑定</a-menu-item>
                   <a-menu-item key="4">

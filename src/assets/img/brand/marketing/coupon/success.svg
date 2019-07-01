@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="86px" height="86px" viewBox="0 0 86 86" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>Fill 1</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="linearGradient-1">
+            <stop stop-color="#01CA92" offset="0%"></stop>
+            <stop stop-color="#67E9A6" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="优惠券" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="成功" transform="translate(-777.000000, -234.000000)" fill="url(#linearGradient-1)">
+            <path d="M814.116054,294.358289 C813.661482,294.812246 813.099411,295.091746 812.512154,295.200475 C811.552025,295.391518 810.517568,295.113861 809.773668,294.365046 L796.889639,281.399318 C795.703454,280.205761 795.703454,278.270761 796.889639,277.077204 C798.075211,275.884261 799.998539,275.884261 801.184111,277.077204 L811.870225,287.830889 L838.698696,259.896089 C839.893482,258.701304 841.829711,258.701304 843.023882,259.896089 C844.218054,261.090875 844.218054,263.027104 843.023882,264.221889 L814.116054,294.358289 Z M777,277 C777,300.748286 796.251714,320 820,320 C843.748286,320 863,300.748286 863,277 C863,253.251714 843.748286,234 820,234 C796.251714,234 777,253.251714 777,277 Z" id="Fill-1"></path>
+        </g>
+    </g>
+</svg>

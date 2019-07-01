@@ -66,7 +66,7 @@ export class RenewalMemberService {
   }
   @Effect()
   getPrice(params:TransactionPriceInput) {
-    return this.transactionApi.getTransactionPrice(params)
+    return this.transactionApi.getTransactionSoldPrice(params)
   }
   @Effect()
   renewal(params:RenewalCardInput, id:string) {

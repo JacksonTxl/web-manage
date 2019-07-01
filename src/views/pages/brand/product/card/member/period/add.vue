@@ -54,6 +54,7 @@
                     size="middle"
                     :columns="brand_price_columns"
                     :dataSource="rally_price_list"
+                    rowKey="key"
                     :pagination="false"
                   >
                     <template slot="time" slot-scope="text, record, index">
@@ -92,6 +93,7 @@
                     size="middle"
                     :columns="shop_price_columns"
                     :dataSource="shop_price_list"
+                    rowKey="key"
                     :pagination="false"
                   >
                     <template slot="time" slot-scope="text, record, index">
@@ -482,7 +484,7 @@ export default {
           this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
           this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
           this.addService.addCard(this.cardData).subscribe(res => {
-            console.log(res)
+            this.$router.push({ path: '/brand/product/card/member/list/all' })
           })
         }
       })

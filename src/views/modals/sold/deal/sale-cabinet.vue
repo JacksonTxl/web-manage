@@ -442,7 +442,6 @@ export default {
     onCreateOrder() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          console.log(values.contractNumber)
           let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
           this.saleCabinetService.setTransaction({
             cabinet_id: +this.cabinetId,
@@ -463,7 +462,7 @@ export default {
             this.show = false
             this.$emit('success', {
               type: 'create',
-              orderId: res.data.info.order_id
+              orderId: res.info.order_id
             })
           })
         }
@@ -492,7 +491,7 @@ export default {
             this.show = false
             this.$emit('success', {
               type: 'createPay',
-              orderId: res.data.info.order_id
+              orderId: res.info.order_id
             })
           })
         }

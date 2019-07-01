@@ -47,8 +47,11 @@ export default {
     }
   },
   props: {
-    selectedRowData: {
-      type: Array
+    memberIds: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   data() {
@@ -69,7 +72,6 @@ export default {
       console.log(res)
       this.list = res.list
     })
-    console.log(this.selectedRowData)
   },
   methods: {
     handleTableChange(pagination, filters, sorter) {
@@ -91,7 +93,10 @@ export default {
     },
     save(e) {
       this.service
-        .addSale({ id: this.selectedRowData, coach_id: this.coach_id })
+        .addSale({
+          member_ids: this.memberIds,
+          coach_id: this.coach_id
+        })
         .subscribe(res => {
           this.show = false
           this.messageService.success({ content: '分配成功' })

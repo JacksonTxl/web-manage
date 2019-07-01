@@ -29,6 +29,11 @@ interface ModuleEnums {
     }
   }
 }
+interface CouponEnums {
+  coupon_status: ModuleEnums;
+  coupon_type: ModuleEnums;
+  put_status: ModuleEnums;
+}
 /**
  * 用户的全局初始信息
  */
@@ -43,7 +48,7 @@ export class UserService extends Store<UserState> {
   enums$: Computed<any>
   staffEnums$: Computed<ModuleEnums>
   accountEnums$: Computed<ModuleEnums>
-  depositeCardEnums$: Computed<ModuleEnums>
+  depositCardEnums$: Computed<ModuleEnums>
   memberEnums$: Computed<ModuleEnums>
   memberCardEnums$: Computed<ModuleEnums>
   personalCourseEnums$: Computed<ModuleEnums>
@@ -57,6 +62,7 @@ export class UserService extends Store<UserState> {
   crowdEnums$: Computed<ModuleEnums>
   soldEnums$: Computed<ModuleEnums>
   transactionEnums$: Computed<ModuleEnums>
+  couponEnums$: Computed<CouponEnums>
   constructor(
     private constApi: ConstApi,
     private menuApi: MenuApi
@@ -80,7 +86,7 @@ export class UserService extends Store<UserState> {
 
     this.staffEnums$ = new Computed(this.enums$.pipe(pluck('staff')))
     this.accountEnums$ = new Computed(this.enums$.pipe(pluck('account')))
-    this.depositeCardEnums$ = new Computed(
+    this.depositCardEnums$ = new Computed(
       this.enums$.pipe(pluck('deposit_card'))
     )
     this.memberEnums$ = new Computed(this.enums$.pipe(pluck('member')))
@@ -100,6 +106,7 @@ export class UserService extends Store<UserState> {
     this.finance$ = new Computed(this.enums$.pipe(pluck('finance')))
     this.crowdEnums$ = new Computed(this.enums$.pipe(pluck('crowd')))
     this.soldEnums$ = new Computed(this.enums$.pipe(pluck('sold')))
+    this.couponEnums$ = new Computed(this.enums$.pipe(pluck('coupon')))
   }
   SET_USER(user: User) {
     this.state$.commit(state => {

@@ -5,7 +5,7 @@
   v-model="show"
   wrapClassName="modal-sold-card-transfer">
     <div :class="transfer('content')">
-      <a-row :class="transfer('info')" v-if="isDeposite">
+      <a-row :class="transfer('info')" v-if="isDeposit">
         <a-col :span="13">
           <st-info>
             <st-info-item label="商品名称">{{depositTransferInfo.card_name}}</st-info-item>
@@ -125,7 +125,7 @@
               <st-button class="create-button" @click="onCodeNumber" :loading="loading.getCodeNumber">自动生成</st-button>
             </div>
           </st-form-item>
-          <st-form-item label="手续费" class="global-form-item-text" labelGutter="12px" v-if="isDeposite">{{depositTransferInfo.poundage}}元</st-form-item>
+          <st-form-item label="手续费" class="global-form-item-text" labelGutter="12px" v-if="isDeposit">{{depositTransferInfo.poundage}}元</st-form-item>
           <st-form-item label="手续费" class="global-form-item-text" labelGutter="12px" v-if="isMember">{{memberTransferInfo.poundage}}元</st-form-item>
           <st-form-item label="支付方式" required labelGutter="12px">
             <a-select
@@ -176,14 +176,14 @@ export default {
     }
   },
   computed: {
-    isDeposite() {
+    isDeposit() {
       return this.type === 'deposit'
     },
     isMember() {
       return this.type === 'member'
     },
     saleRange() {
-      return this.depositTransferInfo.sale_range || this.memberTransferInfo.sale_range
+      return this.depositTransferInfo.sale_range || this.memberTransferInfo.sale_range || {}
     }
   },
   props: ['id', 'type'],
@@ -217,7 +217,7 @@ export default {
   methods: {
     onSubmit() {
       this.form.validateFields((error, values) => {
-        let sold_type = this.isDeposite ? this.depositTransferInfo.contract_type : this.isMember ? this.memberTransferInfo.contract_type : '1'
+        let sold_type = this.isDeposit ? this.depositTransferInfo.contract_type : this.isMember ? this.memberTransferInfo.contract_type : '1'
         if (!error) {
           let start_time = this.isMember ? values.startTime.format('YYYY-MM-DD HH:mm') : null
           this.transferService.editCardTransfer({
@@ -337,7 +337,7 @@ export default {
       this.endTime = cloneDeep(moment(data.valueOf() + this.timeScope))
     },
     onCodeNumber() {
-      let sold_type = this.isDeposite ? this.depositTransferInfo.contract_type : this.isMember ? this.memberTransferInfo.contract_type : '1'
+      let sold_type = this.isDeposit ? this.depositTransferInfo.contract_type : this.isMember ? this.memberTransferInfo.contract_type : '1'
       this.transferService.getCodeNumber(`${sold_type}`).subscribe(res => {
         this.form.setFieldsValue({
           contractNumber: res.info.code

@@ -32,6 +32,7 @@
                     size="middle"
                     :columns="priceColumns"
                     :dataSource="rallyPriceList"
+                    rowKey="key"
                     :pagination="false"
                   >
                     <template slot="validity_times" slot-scope="text, record, index">
@@ -336,7 +337,9 @@ export default {
             price_gradient
           }).subscribe(res => {
             // 新增成功
-
+            this.$router.push({
+              path: '/shop/product/card/member/list/all'
+            })
           })
         }
       })

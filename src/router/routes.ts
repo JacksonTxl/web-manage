@@ -25,8 +25,8 @@ const routes: any[] = [
     redirect: '/shop/dashboard'
   },
   {
-    path: '/brand/product/card/deposite-card/shop-sale-list',
-    redirect: '/brand/product/card/deposite-card/shop-sale-list/brand'
+    path: '/brand/product/card/deposit-card/shop-sale-list',
+    redirect: '/brand/product/card/deposit-card/shop-sale-list/brand'
   },
   {
     path: '/shop/reception/cabinet',
@@ -88,9 +88,9 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       prependGuards(route, appGuards)
     }
     // 规范title i18n 名称
-    if (route.name) {
-      route.meta.title = `${route.name}.title`
-    }
+    // if (route.name) {
+    //   route.meta.title = `${route.name}.title`
+    // }
     route.meta.layout = 'default'
 
     // if (route.name.startsWith('shop')) {

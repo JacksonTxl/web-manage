@@ -15,30 +15,44 @@ export interface CardListInput {
   sell_status?:number
   shelf_status?:number
 }
+export interface CardSaleStopInput {
+  reason: string
+}
+export interface CardSaleRecoverInput {
+  start_time:string
+  end_time:string
+}
+export interface BrandShelfDownCardShopInput {
+  card_id: number
+  shop_id: number
+}
+export interface BrandCardShelfDownInput {
+  card_shop: Array<BrandShelfDownCardShopInput>
+}
 export class CardsApi extends Api {
   /**
-   * 会员卡已上架列表
+   * 卡已上架列表
    */
-  getCardShelfList(query:CardShelfListInput, type:string) {
-    return this.http.get(`/v1/cards/member/${type}/shelf`, { query })
+  getCardShelfList(query:CardShelfListInput, type:string, cardType:string) {
+    return this.http.get(`/v1/cards/${cardType}/${type}/shelf`, { query })
   }
   /**
-   * 会员卡列表
+   * 卡列表
    */
-  getCardList(query:CardListInput, type:string) {
-    return this.http.get(`/v1/cards/member/${type}`, { query })
+  getCardList(query:CardListInput, type:string, cardType:string) {
+    return this.http.get(`/v1/cards/${cardType}/${type}`, { query })
   }
   /**
-   * 品牌会员卡上架详情
+   * 卡上架详情
    */
-  getCardShelfInfo(id:string) {
-    return this.http.get(`/v1/cards/member/brand/shelf/${id}`)
+  getCardShelfInfo(id:string, type:string, cardType:string) {
+    return this.http.get(`/v1/cards/${cardType}/${type}/shelf/${id}`)
   }
   /**
-   * 品牌会员卡上架
+   * 卡上架
    */
-  setCardShelf(params:any, id:string) {
-    return this.http.put(`/v1/cards/member/brand/shelf/${id}`, { params })
+  setCardShelf(params:any, id:string, type:string, cardType:string) {
+    return this.http.put(`/v1/cards/${cardType}/${type}/shelf/${id}`, { params })
   }
   /**
    * 会员卡新增
@@ -89,64 +103,58 @@ export class CardsApi extends Api {
     return this.http.put(`/v1/cards/${type}/deposit`, { params })
   }
   /**
-   *品牌会员卡停售原因
-   */
-  getCardsSaleStopReason(query: any) {
-    return this.http.get(`/v1/cards/member/brand/sale/stop/${query.card_id}`)
-  }
-  /**
    *会员卡售卖门店列表
    */
   getCardsSaleShop(query: any) {
     return this.http.get(`/v1/cards/member/sale/shop`, { query })
   }
   /**
-   *支持入场门店
+   * 支持入场门店
    */
   getCardsUseShop(query: any) {
     return this.http.get(`/v1/cards/member/use/shop`, { query })
   }
   /**
-   *品牌会员卡停售信息回传
+   * 卡停售信息回传
    */
-  getCardsSaleInfo(query: any) {
-    return this.http.get(`/v1/cards/member/brand/sale/info/${query.card_id}`)
+  getCardSaleStopInfo(id:string, type:string, cardType:string) {
+    return this.http.get(`/v1/cards/${cardType}/${type}/sale/info/${id}`)
   }
   /**
-   *品牌会员卡删除
+   * 卡停售
    */
-  getCardsDel(id: string) {
-    return this.http.delete(`/v1/cards/member/brand/${id}`)
+  setCardsSaleStop(params: CardSaleStopInput, id:string, type:string, cardType:string) {
+    return this.http.put(`/v1/cards/${cardType}/${type}/stop/${id}`, { params })
   }
   /**
-   *品牌会员卡停售
+   * 获取服务器系统时间
    */
-  setCardsSaleStop(params: any) {
-    return this.http.put('/v1/cards/member/brand/sale/stop', { params })
+  getServiceTime() {
+    return this.http.get(`/time`)
   }
   /**
-   *品牌会员卡恢复售卖
+   * 卡恢复售卖
    */
-  setCardsSaleRecover(params: any) {
-    return this.http.put('/v1/cards/member/brand/sale/recover', { params })
+  setCardsSaleRecover(params: CardSaleRecoverInput, id:string, type:string, cardType:string) {
+    return this.http.put(`/v1/cards/${cardType}/${type}/recover/${id}`, { params })
   }
   /**
-   *品牌会员卡详情
+   *  卡删除
    */
-  getCardsShopShelf(id: string) {
-    return this.http.get(`/v1/cards/member/brand/${id}`)
+  setCardsDelete(id: string, type:string, cardType:string) {
+    return this.http.delete(`/v1/cards/${cardType}/${type}/${id}`)
   }
   /**
-   *门店会员卡下架/v1/cards/member/shop/shelf/down
+   * 卡下架
    */
-  getCardsMemberShopShelfDown(params: any) {
-    return this.http.put('/v1/cards/member/shop/shelf/down', { params })
+  setCardsShelfDown(id: string, type:string, cardType:string) {
+    return this.http.put(`/v1/cards/${cardType}/${type}/shelf/down/${id}`)
   }
   /***
-   *  品牌储值卡列表
+   *  品牌会员卡下架
    */
-  getCardsBrandDeposit(query: any) {
-    return this.http.get(`/v1/cards/brand/deposit`, { query })
+  setBrandCardsShelfDown(params: BrandCardShelfDownInput) {
+    return this.http.put(`/v1/cards/member/brand/shelf/down`, { params })
   }
   /***
    *  储值卡消费门店列表
@@ -160,48 +168,11 @@ export class CardsApi extends Api {
   getCardsDepositSaleShop(query: any) {
     return this.http.get(`/v1/cards/deposit/sale/shop/${query.card_id}`, { query })
   }
-  /***
-   *   储值卡停售
-   */
-  setCardsDepositStopSell(params: any) {
-    return this.http.put(`/v1/cards/stop/deposit/sell`, { params })
-  }
-
-  /***
-   *   删除储值卡
-   */
-  getCardsDeposit(id: string) {
-    return this.http.delete(`/v1/cards/brand/deposit/${id}`)
-  }
   /**
-   * 品牌储值卡上架 /v1/cards/member/brand/shelf
+   * 储值卡上架
    */
-  setCardsDepositBrandOnLine(params: any) {
-    return this.http.put(`/v1/cards/brand/deposit/online/${params.id}`, { params })
-  }
-  /**
-   *  品牌门店上架储值卡列表
-   */
-  getCardsShopDeposit(query: any) {
-    return this.http.get(`/v1/cards/brand/deposit/shop`, { query })
-  }
-  /**
-   *  品牌储值卡下架
-   */
-  setCardsDepositBrandOffLine(params: any) {
-    return this.http.put(`/v1/cards/brand/deposit/offline/${params.id}`, { params })
-  }
-  /**
-   * 品牌储值卡停售原因
-   */
-  getCardsBrandDepositStop(query: any) {
-    return this.http.get(`/v1/cards/brand/deposit/stop/${query.card_id}`)
-  }
-  /**
-   * 储值卡恢复售卖
-   */
-  setCardsDepositRestartSell(params: any) {
-    return this.http.put('/v1/cards/brand/deposit/recover', { params })
+  setCardsDepositShelf(id:string, type:string) {
+    return this.http.put(`/v1/cards/deposit/${type}/shelf/${id}`)
   }
 }
 export interface CardsInput {

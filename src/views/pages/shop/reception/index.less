@@ -1,0 +1,350 @@
+.page-shop-reception {
+  &__form-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &-item {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      min-width: 222.4px;
+      height: 136px;
+      box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
+      .bg(@white);
+      &+&{
+        margin-left: 20px;
+      }
+    }
+    &-detail {
+      display: flex;
+      flex: 1;
+
+      padding: 12px 20px;
+    }
+    &-number {
+      flex: 1;
+      >p:nth-of-type(1){
+        margin: 0 0 11px;
+        .lh(20px);
+        .fz(14px);
+        .c(@text-light);
+      }
+      .number-up{
+        margin: 0;
+        .lh(37px);
+        .c(@title);
+        .fz(32px);
+        font-weight: bold;
+      }
+    }
+    &-chart {
+      width: 80px;
+      height: 60px;
+    }
+    &-button {
+      padding: 10px 20px;
+      .bg(@bg-gray);
+      .c(@link-color);
+      cursor: pointer;
+    }
+  }
+  &__operation-list {
+    display: flex;
+    padding: 32px 0;
+    align-items: center;
+    justify-content: space-evenly;
+    .bg(@white);
+    box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
+  }
+  &__operation-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    >p:nth-of-type(1){
+      display: flex;
+      width: 64px;
+      height: 64px;
+      margin-bottom: 12px;
+      align-items: center;
+      justify-content: center;
+      background:linear-gradient(90deg,rgba(63,102,246,1) 0%,rgba(63,170,255,1) 100%);
+      border-radius: 50%;
+      .c(@white);
+      font-size: 26px;
+    }
+    >p:nth-of-type(2){
+      margin-bottom: 0;
+      .fz(14px);
+      .c(@title);
+    }
+  }
+  &__opertaion-line {
+    width: 1px;
+    height: 48px;
+    .bg(@divider);
+  }
+  &__member-todoist{
+    display: flex;
+    justify-content: space-between;
+  }
+  &__member {
+    flex: 495;
+    min-width: 495px;
+    margin-right: 24px;
+    height: 517px;
+    box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
+    .bg(@white);
+    &-search {
+      position: relative;
+      display: flex;
+      height: 64px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      &::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 16px;
+        background:linear-gradient(360deg,rgba(244,246,248,0) 0%,rgba(230,233,239,0.4) 100%);
+        bottom: -16px;
+        left: 0;
+      }
+      &-select {
+        min-width: 376px;
+        flex: 1;
+        margin-right: 12px;
+        .ant-select-selection {
+          border-radius: 20px;
+          .bg(rgba(234, 238, 244, 1));
+        }
+        .ant-select-selection__clear {
+          .bg(rgba(234, 238, 244, 1));
+        }
+      }
+    }
+  }
+  &__info {
+    padding: 24px;
+  }
+  &__personal-info {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid @divider;
+    padding-bottom:18px;
+    >div:nth-of-type(1){
+      flex: auto;
+    }
+  }
+  &__upload {
+    flex: none;
+  }
+  &__set-info {
+    padding-top: 24px;
+    >p {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      .set-info-label {
+        width: 56px;
+        margin-right: 16px;
+        text-align: right;
+        .fz(14px);
+        .lh(22px);
+      }
+      .set-info-select {
+        flex: 1;
+      }
+    }
+  }
+  &__todoist {
+    flex: 674;
+    min-width: 674px;
+    height: 517px;
+    box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
+    .todoist-tabs {
+      .ant-tabs-bar.ant-tabs-top-bar {
+        .bg(@white);
+        padding-top: 21px;
+        margin-bottom: 0;
+      }
+    }
+    &-to-do {
+      height: 452px;
+      padding: 12px 24px 24px;
+      .to-do-add {
+        width: 100%;
+        margin-bottom: 12px;
+      }
+      &-list {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        height: 372px;
+        >li {
+          flex: 1;
+          min-width: 307px;
+          height: 116px;
+          padding: 16px;
+          .bg(@white);
+          box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
+          .to-do-main {
+            display: flex;
+            align-items: center;
+            .operation-photo {
+              border-radius: 50%;
+            }
+            .operation-name{
+              .s(48px,48px);
+              border-radius: 50%;
+              .fz(14px);
+              font-weight: 500;
+              .lh(48px);
+              text-align: center;
+              .bg(@primary-color);
+              .c(@white);
+            }
+            >p{
+              width: calc(100% - 60px);
+              margin-left: 12px;
+              margin-bottom: 0;
+              span {
+                display: block;
+                .fz(14px);
+                .lh(22px);
+                .c(@title);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                &+span {
+                  margin-top: 4px;
+                  .fz(12px);
+                  .lh(20px);
+                  .c(@text);
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                }
+              }
+            }
+          }
+          .operation-time {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: 60px;
+            margin-top: 18px;
+            .fz(12px);
+            .lh(20px);
+            .c(@text-light);
+            font-weight: bold;
+            .to-do-button {
+              width: 60px;
+              height: 20px;
+              .lh(20px);
+              .fz(12px);
+              .c(@primary-color);
+              border-color: @primary-5;
+              border-radius: 20px;
+            }
+          }
+        }
+      }
+    }
+    &-finish-list {
+      position: relative;
+      display: flex;
+      height: 416px;
+      padding: 0 24px;
+      margin-top: 12px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      >li {
+        flex: 1;
+        min-width: 307px;
+        height: 116px;
+        padding: 16px;
+        .bg(@white);
+        box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
+        .finish-main {
+          display: flex;
+          align-items: center;
+          .operation-photo {
+            border-radius: 50%;
+          }
+          .operation-name{
+            .s(48px,48px);
+            border-radius: 50%;
+            .fz(14px);
+            font-weight: 500;
+            .lh(48px);
+            text-align: center;
+            .bg(@primary-color);
+            .c(@white);
+          }
+          >p{
+            width: calc(100% - 60px);
+            margin-left: 12px;
+            margin-bottom: 0;
+            span {
+              display: block;
+              .fz(14px);
+              .lh(22px);
+              .c(@title);
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              &+span {
+                margin-top: 4px;
+                .fz(12px);
+                .lh(20px);
+                .c(@text);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+            }
+          }
+        }
+        .operation-time {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding-left: 60px;
+          margin-top: 18px;
+          .fz(12px);
+          .lh(20px);
+          .c(@text-light);
+          font-weight: bold;
+          .finish-status {
+            width: 60px;
+            height: 20px;
+            .lh(20px);
+            .fz(12px);
+            .c(@success-color);
+          }
+        }
+      }
+    }
+  }
+  .none-item {
+    .bg(rgba(0,0,0,0));
+    box-shadow: none;
+  }
+  &__cabinet-edit {
+    .set-info-edit-label {
+      margin-right: 16px;
+    }
+    .set-info-edit-select {
+      flex: 1;
+      margin-right: 12px;
+    }
+    .set-info-edit-button {
+      margin-left: 8px;
+    }
+  }
+}

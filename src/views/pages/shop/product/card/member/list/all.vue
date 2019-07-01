@@ -1,7 +1,7 @@
 <template>
   <div :class="all()">
     <div :class="all('search')">
-      <router-link to="../add-select">
+      <router-link v-if="auth.add" to="../add-select">
         <st-button type="primary" icon="add">新增会员卡</st-button>
       </router-link>
       <div>
@@ -45,9 +45,19 @@
     :pagination="{current:query.current_page,total:page.total_counts,pageSize:query.size}"
     rowKey="id"
     >
+      <!-- 卡名称 -->
+      <template slot="card_name" slot-scope="text">
+        {{text}}
+      </template>
+      <!-- 卡类型 -->
       <template slot="card_type" slot-scope="text">
         {{text.name}}
       </template>
+      <!-- 有效期/有效次数 -->
+      <template slot="time_gradient" slot-scope="text">
+        {{text}}
+      </template>
+      <!-- 支持入场范围 -->
       <template slot="admission_range" slot-scope="text,record">
         <modal-link
           v-if="text.id === 2"
@@ -56,40 +66,36 @@
         >{{text.name}}</modal-link>
         <span v-else class="use_num">{{text.name}}</span>
       </template>
+      <!-- 支持售卖门店 -->
       <template slot="support_sales" slot-scope="text,record">
         <modal-link
           v-if="text.id === 2"
           tag="a"
-          :to="{ name: 'card-sale-stop' , props:{id: record.id,title:'aa'}}"
+          :to="{ name: 'card-sale-stop' , props:{id: record.id}}"
         >{{text.name}}</modal-link>
         <span v-else>{{text.name}}</span>
       </template>
-      <template slot="start_time" slot-scope="text, record">
+      <!-- 支持售卖时间 -->
+      <template slot="sell_time" slot-scope="text, record">
         {{record.start_time}}&nbsp;~&nbsp;{{record.end_time}}
       </template>
+      <!-- 定价方式 -->
       <template slot="price_setting" slot-scope="text">
         {{text.name}}
       </template>
+      <!-- 售卖价格 -->
       <template slot="price_gradient" slot-scope="text">
-        {{`${text[0]}${text[1]?'-'+text[1]:''}`}}
+        {{`${text[0]}${text[1]?'&nbsp;~&nbsp;'+text[1]:''}`}}
       </template>
+      <!-- 发布渠道 -->
       <template slot="publish_channel" slot-scope="text">
         {{text.name}}
       </template>
-      <template slot="shop_shelf_card" slot-scope="text">
-        <span :class="{'color-danger':text.id===1}">{{text.name}}</span>
-        <a-popover
-          title="停售原因title"
-          trigger="click"
-          placement="bottomRight"
-          :overlayStyle="{width:'336px'}"
-        >
-          <template slot="content">
-            <p>停售原因content</p>
-          </template>
-          <a-icon type="exclamation-circle" v-if="text.id === 2"/>
-        </a-popover>
+      <!-- 上架状态 -->
+      <template slot="shelf_status" slot-scope="text">
+        {{text.name}}
       </template>
+      <!-- 售卖状态 -->
       <template slot="sell_status" slot-scope="text">
         <a-badge :status="text.id === 1?'success':'error'" />{{text.name}}
         <a-popover
@@ -105,21 +111,21 @@
         </a-popover>
       </template>
       <div slot="action" slot-scope="text,record">
-        <a @click="onDetail(record)">详情</a>
+        <a v-if="record.auth['brand_shop:product:member_card|get']" @click="onDetail(record)">详情</a>
         <a-divider type="vertical"></a-divider>
         <st-more-dropdown class="mgl-16">
-          <a-menu-item @click="onEdit(record)">编辑</a-menu-item>
-          <a-menu-item @click="onShelf(record)">上架</a-menu-item>
-          <a-menu-item @click="onStopSale(record)">停售</a-menu-item>
-          <a-menu-item @click="onShelfDown(record)">下架</a-menu-item>
-          <a-menu-item @click="onRecoverSale(record)">恢复售卖</a-menu-item>
-          <a-menu-item @click="onDelete(record)">删除</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:member_card|edit']" @click="onEdit(record)">编辑</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:member_card|up']" @click="onShelf(record)">上架</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:member_card|pause']" @click="onStopSale(record)">停售</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:member_card|restore']" @click="onRecoverSale(record)">恢复售卖</a-menu-item>
+          <a-menu-item v-if="record.auth['brand_shop:product:member_card|del']" @click="onDelete(record)">删除</a-menu-item>
         </st-more-dropdown>
       </div>
     </st-table>
   </div>
 </template>
 <script>
+import { columns } from './all.config'
 import { AllService } from './all.service'
 import { RouteService } from '@/services/route.service'
 import { UserService } from '@/services/user.service'
@@ -140,7 +146,8 @@ export default {
       list: this.allService.list$,
       page: this.allService.page$,
       memberCard: this.userService.memberCardEnums$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      auth: this.allService.auth$
     }
   },
   computed: {
@@ -187,68 +194,7 @@ export default {
   },
   data() {
     return {
-      columns: [
-        {
-          title: '会员卡名称',
-          dataIndex: 'card_name',
-          scopedSlots: { customRender: 'card_name' }
-        },
-        {
-          title: '类型',
-          dataIndex: 'card_type',
-          scopedSlots: { customRender: 'card_type' }
-        },
-        {
-          title: '有效期/有效次数',
-          dataIndex: 'time_gradient',
-          scopedSlots: { customRender: 'time_gradient' }
-        },
-        {
-          title: '支持入场门店',
-          dataIndex: 'admission_range',
-          scopedSlots: { customRender: 'admission_range' }
-        },
-        {
-          title: '支持售卖门店',
-          dataIndex: 'support_sales',
-          scopedSlots: { customRender: 'support_sales' }
-        },
-        {
-          title: '支持售卖时间',
-          dataIndex: 'start_time',
-          scopedSlots: { customRender: 'start_time' }
-        },
-        {
-          title: '定价方式',
-          dataIndex: 'price_setting',
-          scopedSlots: { customRender: 'price_setting' }
-        },
-        {
-          title: '售卖价格',
-          dataIndex: 'price_gradient',
-          scopedSlots: { customRender: 'price_gradient' }
-        },
-        {
-          title: '发布渠道',
-          dataIndex: 'publish_channel',
-          scopedSlots: { customRender: 'publish_channel' }
-        },
-        {
-          title: '上架状态',
-          dataIndex: 'shop_shelf_card',
-          scopedSlots: { customRender: 'shop_shelf_card' }
-        },
-        {
-          title: '售卖状态',
-          dataIndex: 'sell_status',
-          scopedSlots: { customRender: 'sell_status' }
-        },
-        {
-          title: '操作',
-          dataIndex: 'action',
-          scopedSlots: { customRender: 'action' }
-        }
-      ],
+      columns,
       cardTypeRouteList: {
         1: 'number',
         2: 'period'
@@ -272,11 +218,13 @@ export default {
     // 上架
     onShelf(record) {
       this.$modalRouter.push({
-        name: 'card-batch-shelves',
-        props: { id: record.id },
+        name: 'card-shop-member-shelf',
+        props: {
+          id: record.id
+        },
         on: {
           success: () => {
-
+            this.$router.push({ query: this.query, force: true })
           }
         }
       })
@@ -290,19 +238,48 @@ export default {
     },
     // 停售
     onStopSale(record) {
-      console.log(record)
-    },
-    // 下架
-    onShelfDown(record) {
-      console.log(record)
+      this.$modalRouter.push({
+        name: 'card-shop-member-stop-sale',
+        props: {
+          id: +record.id,
+          cardType: record.card_type.id,
+          cardName: record.card_name
+        },
+        on: {
+          success: () => {
+            this.$router.push({ query: this.query, force: true })
+          }
+        }
+      })
     },
     // 恢复售卖
     onRecoverSale(record) {
-      console.log(record)
+      this.$modalRouter.push({
+        name: 'card-shop-member-recover-sale',
+        props: {
+          id: record.id,
+          cardType: record.card_type.id,
+          time: { startTime: record.start_time, endTime: record.end_time },
+          cardName: record.card_name
+        },
+        on: {
+          success: () => {
+            this.$router.push({ query: this.query, force: true })
+          }
+        }
+      })
     },
     // 删除
     onDelete(record) {
-      console.log(record)
+      this.$confirm({
+        title: '确认要删除',
+        content: `确认删除${record.card_name}会员卡？`,
+        onOk: () => {
+          return this.allService.deleteCard(record.id).toPromise().then(() => {
+            this.$router.push({ force: true, query: this.query })
+          })
+        }
+      })
     }
   }
 }

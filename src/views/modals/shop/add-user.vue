@@ -31,9 +31,9 @@
           </st-form-item>
         </a-col>
         <a-col :lg="12">
-          <st-form-item>
+          <!-- <st-form-item>
             <st-image-upload width="168px" height="168px" :sizeLimit="2" placeholder="会员人脸信息"></st-image-upload>
-          </st-form-item>
+          </st-form-item> -->
         </a-col>
       </a-row>
       <a-row v-if="isShow">
@@ -44,7 +44,7 @@
       <a-row :gutter="36" v-if="isShow">
         <a-col :lg="12">
           <st-form-item label="性别">
-            <a-select placeholder="选择心别"  v-decorator="rules.sex" >
+            <a-select placeholder="选择性别"  v-decorator="rules.sex" >
               <a-select-option :value="1">男</a-select-option>
               <a-select-option :value="2">女</a-select-option>
             </a-select>

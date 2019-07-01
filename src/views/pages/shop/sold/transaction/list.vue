@@ -21,8 +21,8 @@
       @change="onPageChange"
       :dataSource="list">
         <div slot="action" slot-scope="text,record">
-          <a  @click="onDetail(record)">详情</a>
-          <a-divider type="vertical"></a-divider>
+          <!-- <a  @click="onDetail(record)">详情</a> -->
+          <!-- <a-divider type="vertical"></a-divider> -->
           <a  @click="onTransaction(record)">签单</a>
           <!-- <a @click="onAdvance(record)">加定金</a> -->
         </div>
@@ -113,7 +113,7 @@ export default {
           this.onMember(record)
           break
         case 2:
-          this.onDeposite(record)
+          this.onDeposit(record)
           break
         case 3:
           this.onPersonalCourse(record)
@@ -201,6 +201,7 @@ export default {
           needPay: true
         }
         let orderSuccessRes = await this.createdGatheringTip(props)
+        console.log(orderSuccessRes)
         this.tipCallBack(result.orderId, type, orderSuccessRes.type)
       } else if (result.type === 'createPay') {
         // 创建订单成功 并且到支付页面
@@ -227,9 +228,9 @@ export default {
       })
     },
     // 储值卡签单
-    onDeposite(record) {
+    onDeposit(record) {
       this.$modalRouter.push({
-        name: 'sold-deal-sale-deposite-card',
+        name: 'sold-deal-sale-deposit-card',
         props: {
           id: `${record.id}`
         },
@@ -251,7 +252,7 @@ export default {
         },
         on: {
           success: (result) => {
-            this.saleCallBack(result, 'cabinet')
+            this.saleCallBack(result, 'cabinet_order')
           }
         }
       })

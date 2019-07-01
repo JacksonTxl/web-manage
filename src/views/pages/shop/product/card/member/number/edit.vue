@@ -25,6 +25,7 @@
                     size="middle"
                     :columns="priceColumns"
                     :dataSource="rallyPriceList"
+                    rowKey="key"
                     :pagination="false"
                   >
                     <template slot="validity_times" slot-scope="text, record, index">
@@ -84,7 +85,6 @@
                 </span>
                 <a-form-item class="page-a-form">
                   <a-date-picker
-                    :disabledDate="disabledStartDate"
                     v-decorator="['start_time',{rules:[{required: true,message: '请选择开始售卖时间'}]}]"
                     format="YYYY-MM-DD"
                     placeholder="开始时间"
@@ -360,8 +360,8 @@ export default {
             id: this.cardInfo.card_id,
             card_type: 1,
             card_name: values.card_name,
-            start_time: `${this.start_time.format('YYYY-MM-DD')} 00:00:00`,
-            end_time: `${this.end_time.format('YYYY-MM-DD')} 23:59:59`,
+            start_time: `${this.start_time.format('YYYY-MM-DD')}`,
+            end_time: `${this.end_time.format('YYYY-MM-DD')}`,
             is_transfer: +this.is_transfer,
             unit,
             num,
@@ -417,16 +417,6 @@ export default {
         frozen_day: null,
         gift_unit: null
       })
-    },
-    // 开始时间
-    disabledStartDate(startValue) {
-      const endValue = this.end_time
-      if (!endValue) {
-        // 结束时间未选择
-        return startValue.valueOf() < moment().subtract(1, 'd').valueOf()
-      }
-      let start = endValue.valueOf() > moment().add(30, 'y').valueOf() ? moment(endValue).subtract(30, 'y').valueOf() : moment().subtract(1, 'd').add(1, 'ms').valueOf()
-      return startValue.valueOf() < start || startValue.valueOf() > moment(endValue).subtract(1, 'd').valueOf()
     },
     handleStartOpenChange(open) {
       if (!open) {

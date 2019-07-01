@@ -5,8 +5,7 @@
   v-model="show"
   wrapClassName="modal-sold-deal-gathering"
   @cancel="onCancel"
-  @ok="onOk">
-  order_id{{order_id}}{{type}}
+  >
     <div :class="gathering('content')">
       <a-row :class="gathering('info')">
         <a-col :span="13" class="mgb-36">
@@ -131,16 +130,10 @@ export default {
     }
   },
   methods: {
-    onOk() {
-      this.$emit('ok')
-      this.show = false
-    },
     // 关闭modal
     onCancel() {
       this.show = false
-      this.$emit('success', {
-        type: 'cancel'
-      })
+      this.$emit('cancel')
     },
     selectPay(checkedValues) {
       this.selectPayValues = checkedValues.target.value

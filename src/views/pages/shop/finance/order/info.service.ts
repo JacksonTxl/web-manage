@@ -1,19 +1,41 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
-import { State, Effect } from 'rx-state/src'
+import { State, Effect, Computed } from 'rx-state/src'
 import { OrderApi } from '@/api/v1/finance/order'
-import { tap } from 'rxjs/operators'
+import { tap, pluck } from 'rxjs/operators'
+import { Store } from '@/services/store'
+import { AuthService } from '@/services/auth.service'
+
+export interface SetState {
+  info: any,
+  auth: object
+}
 
 @Injectable()
-export class InfoService implements RouteGuard {
-    info$ = new State({})
-    loading$ = new State({})
+export class InfoService extends Store<SetState> implements RouteGuard {
+    info$: Computed<any>;
     id = '';
     tabs$ = new State([]);
-    constructor(private orderApi: OrderApi) {}
+    auth$: Computed<object>
+    constructor(
+      private orderApi: OrderApi,
+      private authService: AuthService
+    ) {
+      super()
+      this.state$ = new State({
+        auth: {
+        }
+      })
+      this.info$ = new Computed(this.state$.pipe(pluck('info')))
+      this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
+    }
     @Effect()
     getInfo(id:string) {
       return this.orderApi.getOrderInfo(id).pipe(tap((res:any) => {
-        this.info$.commit(() => res.info)
+        res = this.authService.filter(res, 'auth')
+        this.state$.commit(state => {
+          state.info = res.info
+          state.auth = res.auth
+        })
         this.tabs$.commit(() => {
           const tabs = [{ label: '收款明细', route: { name: 'shop-finance-order-info-collection-details', query: { id } } },
             { label: '商品信息', route: { name: 'shop-finance-order-info-commodity-info', query: { id: res.info.product_id, type: this.getOrderType(res.info.product_type) } } }]
@@ -60,7 +82,6 @@ export class InfoService implements RouteGuard {
     }
     beforeEach(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
       this.id = to.meta.query.id
-      console.log(to.path)
       this.getInfo(to.meta.query.id).subscribe(res => {
         next()
       })

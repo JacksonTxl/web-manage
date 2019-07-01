@@ -1,6 +1,6 @@
 <template>
   <a-tabs
-    v-model="currentValue"
+    :activeKey='currentValue'
     :tabPosition="tabPosition"
     @change="OnChange"
     class="st-route-tabs"
@@ -13,11 +13,6 @@
 <script>
 export default {
   name: 'StRouteTabs',
-  data() {
-    return {
-      currentValue: ''
-    }
-  },
   props: {
     options: {
       type: Array,
@@ -38,6 +33,24 @@ export default {
       default: 'top'
     }
   },
+  computed: {
+    currentValue() {
+      return this.$route.name
+    }
+  },
+  created() {
+    this.options.forEach(op => {
+      if (!op.label) {
+        throw new Error(['请设置 label 值'])
+      }
+      if (!op.route) {
+        throw new Error([`请给label为${op.label}设置 route对象`])
+      }
+      if (!op.route.name) {
+        throw new Error([`请给label为${op.label}设置 route对象`])
+      }
+    })
+  },
   methods: {
     OnChange(key) {
       const { options } = this
@@ -49,33 +62,6 @@ export default {
       })
       this.$emit('change', key, query)
       this.$router.push({ name: key, query })
-    },
-    initCurrentValue() {
-      let error = ''
-      this.options.forEach(op => {
-        if (!op.label) {
-          throw new Error(['请设置 label 值'])
-        }
-        if (!op.route) {
-          throw new Error([`请给label为${op.label}设置 route对象`])
-        }
-        if (!op.route.name) {
-          throw new Error([`请给label为${op.label}设置 route对象`])
-        }
-      })
-      this.currentValue = this.options[0].route.name
-      this.options.forEach(option => {
-        if (this.$route.name === option.route.name) {
-          this.currentValue = option.route.name
-        }
-      })
-    }
-  },
-  mounted() {
-    try {
-      this.initCurrentValue()
-    } catch (error) {
-      console.error(error)
     }
   }
 }
