@@ -30,7 +30,7 @@ export class PersonalCommonApi extends Api {
   * 获取门店排期上课私教列表
   */
   getCourseCoachList(id: any) {
-    return this.http.get(`/v1/schedule/personal/shop/personal/${id}`)
+    return this.http.get(`/v1/schedule/personal/coach/${id}`)
   }
   /**
   * 获取消费方式

@@ -191,6 +191,7 @@ export default {
   },
   rxState() {
     return {
+      auth: this.indexService.auth$,
       entranceOptionList: this.indexService.entranceOptionList$,
       cabinetList: this.indexService.cabinetList$,
       summaryInfo: this.indexService.summaryInfo$,
@@ -231,37 +232,37 @@ export default {
       // 快捷操作
       shortcutList: [
         {
-          id: 1,
+          id: 'orderPage',
           icon: 'reception-create',
           label: '销售开单'
         },
         {
-          id: 2,
+          id: 'reservePage',
           icon: 'reception-order',
           label: '预约管理'
         },
         {
-          id: 3,
+          id: 'checkInPage',
           icon: 'reception-customer',
           label: '入场管理'
         },
         {
-          id: 4,
+          id: 'temporaryPage',
           icon: 'reception-advance',
           label: '定金押金'
         },
         {
-          id: 5,
+          id: 'schedulePage',
           icon: 'reception-course',
           label: '课程预约'
         },
         {
-          id: 6,
+          id: 'cabinetPage',
           icon: 'reception-cabinet',
           label: '储物柜'
         },
         {
-          id: 7,
+          id: 'addVisit',
           icon: 'reception-record',
           label: '预约到访'
         }

@@ -163,10 +163,10 @@ export default {
   mounted() {
     this.recoverSaleService.getServiceTime().subscribe(() => {
       this.startTime = cloneDeep(moment(this.time.startTime))
-      this.endTime = cloneDeep(moment(this.time.endTime))
+      // // this.endTime = cloneDeep(moment(this.time.endTime))
       this.form.setFieldsValue({
-        'startTime': cloneDeep(moment(this.time.startTime)),
-        'endTime': cloneDeep(moment(this.time.endTime))
+        'startTime': cloneDeep(moment(this.time.startTime))
+        // 'endTime': cloneDeep(moment(this.time.endTime))
       })
     })
   }

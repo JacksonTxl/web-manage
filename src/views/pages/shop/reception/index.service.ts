@@ -3,6 +3,7 @@ import { State, Effect, Action } from 'rx-state/src'
 import { FrontApi, GetMemberListInput, SetEntranceInput, EditEntranceCabinetInput } from '@/api/v1/front'
 import { tap, debounceTime, switchMap, catchError } from 'rxjs/operators'
 import { forkJoin, EMPTY } from 'rxjs'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class IndexService implements RouteGuard {
@@ -16,7 +17,37 @@ export class IndexService implements RouteGuard {
   coachList$ = new State([])
   entranceOptionList$ = new State([])
   cabinetList$ = new State([])
-  constructor(private frontApi:FrontApi) {
+  auth$ = new State({
+    today_order: this.authService.can('shop:front_end:module|today_order'),
+    today_reserve: this.authService.can('shop:front_end:module|today_reserve'),
+    today_team_course: this.authService.can('shop:front_end:module|today_team_course'),
+    today_revenue: this.authService.can('shop:front_end:module|today_income'),
+    today_entry: this.authService.can('shop:front_end:module|today_check_in'),
+    orderPage: this.authService.can('shop:front_end:module|order'),
+    reservePage: this.authService.can('shop:front_end:module|reserve_page'),
+    checkInPage: this.authService.can('shop:front_end:module|check_in_page'),
+    temporaryPage: this.authService.can('shop:front_end:module|temporary_page'),
+    schedulePage: this.authService.can('shop:front_end:module|schedule_page'),
+    cabinetPage: this.authService.can('shop:front_end:module|cabinet_page'),
+    addVisit: this.authService.can('shop:reserve:visit_reserve|add'),
+    checkin: this.authService.can('shop:front_end:check_in_out|checkin'),
+    checkout: this.authService.can('shop:front_end:check_in_out|checkout'),
+    batchCheckout: this.authService.can('shop:front_end:check_in_out|batch_checkout'),
+    bindCoach: this.authService.can('shop:member:member|bind_coach'),
+    bindSalesman: this.authService.can('shop:member:member|bind_salesman'),
+    editFace: this.authService.can('brand_shop:iot:face|edit'),
+    addTodo: this.authService.can('shop:front_end:todo|add'),
+    delTeamCourse: this.authService.can('shop:reserve:team_course_reserve|del'),
+    delPersonalCourse: this.authService.can('shop:reserve:personal_course_reserve|del'),
+    delPersonalTeamCourse: this.authService.can('shop:reserve:personal_team_course_reserve|del'),
+    checkinTeamCourse: this.authService.can('shop:reserve:team_course_reserve|checkin'),
+    checkinPersonalCourse: this.authService.can('shop:reserve:personal_course_reserve|checkin'),
+    checkinPersonalTeamCourse: this.authService.can('shop:reserve:personal_team_course_reserve|checkin'),
+    delVisit: this.authService.can('shop:reserve:visit_reserve|del'),
+    checkinVisit: this.authService.can('shop:reserve:visit_reserve|checkin'),
+    export: this.authService.can('shop:front_end:check_in_out|export')
+  })
+  constructor(private authService: AuthService, private frontApi:FrontApi) {
     this.memberListAction$ = new Action(data$ => {
       return data$.pipe(
         debounceTime(200),

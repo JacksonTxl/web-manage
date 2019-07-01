@@ -1,0 +1,184 @@
+<template>
+  <div class="stat-shop-course-line"></div>
+</template>
+
+<script>
+import { toKFilter } from './filters'
+import { View } from '@antv/data-set'
+import { Chart } from '@antv/g2'
+import chartMixin from './mixin'
+
+export default {
+  mixins: [chartMixin],
+  props: {
+    /**
+     * 数据
+     * @example
+     * [{date:'05-28',私教预约人数:250,私教签到人数:250,团体课排课人数:20}]
+     */
+    data: {
+      type: Array,
+      default: () => []
+    },
+    height: {
+      type: Number,
+      default: 280
+    },
+    // 使用的字段key值数组
+    fields: {
+      type: Array,
+      default: () => ['私教预约人数', '私教签到人数', '团体课排课人数']
+    },
+    // 颜色数组
+    colors: {
+      type: Array,
+      default: () => ['#5095FC', '#6831D7', '#06DB8C']
+    }
+  },
+  computed: {
+    colorMap() {
+      return this.fields.reduce((res, field, idx) => {
+        res[field] = this.colors[idx % this.colors.length]
+        return res
+      }, {})
+    }
+  },
+  methods: {
+    initDv() {
+      this.dv = new View()
+      this.dv.source(this.data)
+      this.dv.transform({
+        type: 'fold',
+        fields: this.fields,
+        key: 'name',
+        value: 'value'
+      })
+    },
+    initChart() {
+      this.chart = new Chart({
+        container: this.$el,
+        forceFit: true,
+        height: this.height,
+        padding: [80, 16, 32, 48],
+        renderer: 'svg'
+      })
+
+      this.chart.source(this.dv, {
+        date: {
+          range: [0, 1]
+        },
+        value: {
+          tickCount: 5,
+          formatter: toKFilter
+        }
+      })
+      this.chart.axis('date', {
+        label: {
+          textStyle: {
+            fill: '#9BACB9'
+          }
+        }
+      })
+      this.chart.axis('value', {
+        label: {
+          textStyle: {
+            fill: '#9BACB9'
+          }
+        },
+        grid: {
+          lineStyle: {
+            lineWidth: 0.5,
+            lineDash: [0, 0]
+          }
+        }
+      })
+      this.chart.legend('name', {
+        position: 'top-left',
+        useHtml: true,
+        offsetY: -16,
+        textStyle: {
+          fill: '#3E4D5C'
+        },
+        itemTpl: () => {
+          return (
+            '<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">' +
+            `<span class="g2-legend-marker" style="background-color:{color};"></span>` +
+            ` <span class="g2-legend-text">{value}</span>` +
+            '</li>'
+          )
+        }
+      })
+      this.chart
+        .line()
+        .style('name', {
+          shadowColor: name => this.colorMap[name],
+          shadowBlur: 8,
+          shadowOffsetY: 2
+        })
+        .tooltip('name*value', (name, value) => {
+          return {
+            name,
+            value: value + '人'
+          }
+        })
+        .shape('smooth')
+        .size(2)
+        .position('date*value')
+        .color('name', this.colors)
+
+      this.chart.render()
+    }
+  }
+}
+</script>
+
+<style lang="less">
+.stat-shop-course-line {
+  .g2-legend-list {
+    text-align: left !important;
+    padding: 0 48px !important;
+  }
+  .g2-legend-list {
+    user-select: none;
+  }
+  .g2-legend-list-item {
+    width: 104px;
+    margin-right: 0 !important;
+    margin-bottom: 16px !important;
+  }
+  .g2-legend-list-item.unChecked {
+    .g2-legend-marker {
+      background-color: transparent !important;
+      border: 1px solid #e6e9ef;
+      &:after {
+        opacity: 0;
+      }
+    }
+  }
+  .g2-legend-marker {
+    box-sizing: border-box;
+    border-radius: 2px !important;
+    width: 12px !important;
+    height: 12px !important;
+    // display: none !important;
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      width: 7px;
+      height: 2px;
+      border: 1px solid white;
+      border-right-color: transparent;
+      border-top-color: transparent;
+      left: 50%;
+      top: 50%;
+      margin-top: -1px;
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+  .legend-checkbox {
+    margin-right: 8px;
+    cursor: pointer;
+  }
+}
+</style>

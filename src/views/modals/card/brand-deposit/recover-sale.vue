@@ -119,7 +119,7 @@ export default {
         // 开始时间未选择
         return (endValue.valueOf() >= moment().add(30, 'y').valueOf() || endValue.valueOf() <= moment().valueOf())
       }
-      return (endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).add(1, 'd').valueOf() || endValue.valueOf() <= moment().add(1, 'd').valueOf())
+      return (endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).valueOf() || endValue.valueOf() <= moment().valueOf())
     },
     handleEndOpenChange(open) {
       this.endOpen = open
@@ -158,10 +158,10 @@ export default {
   mounted() {
     this.recoverSaleService.getServiceTime().subscribe(() => {
       this.startTime = cloneDeep(moment(this.time.startTime))
-      this.endTime = cloneDeep(moment(this.time.endTime))
+      // this.endTime = cloneDeep(moment(this.time.endTime))
       this.form.setFieldsValue({
-        'startTime': cloneDeep(moment(this.time.startTime)),
-        'endTime': cloneDeep(moment(this.time.endTime))
+        'startTime': cloneDeep(moment(this.time.startTime))
+        // 'endTime': cloneDeep(moment(this.time.endTime))
       })
     })
   }
