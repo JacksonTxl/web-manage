@@ -4,7 +4,8 @@
     :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
     :columns="columns"
     @change="onPageChange"
-    :dataSource="list">
+    rowKey="key"
+    :dataSource="stList">
       <template slot="operation_time" slot-scope="text">
         {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
       </template>
@@ -48,6 +49,16 @@ export default {
       page: this.operationRecordService.page$,
       list: this.operationRecordService.list$,
       query: this.routeService.query$
+    }
+  },
+  computed: {
+    stList() {
+      let array = []
+      this.list.forEach(i => {
+        let key = parseInt(Math.random() * 999999).toString()
+        array.push({ ...i, key: key })
+      })
+      return array
     }
   },
   data() {
