@@ -15,9 +15,13 @@
         </li>
         <li>
           <img src="~@/assets/img/brand/marketing/coupon/mini-program.svg" />
-          <label>小程序码</label>
+          <label @click="shareQrcode">小程序码</label>
         </li>
       </ul>
+      <div>
+        <st-button @click="addCoupon">新建优惠券</st-button>
+        <st-button type="primary" @click="backCoupon">返回优惠券列表</st-button>
+      </div>
     </div>
   </st-panel>
 </template>
@@ -53,7 +57,8 @@ export default {
       this.$modalRouter.push({
         name: 'brand-marketing-poster',
         props: {
-
+          id: this.$route.query.id,
+          type: 1
         },
         on: {
           success: () => {
@@ -61,7 +66,28 @@ export default {
           }
         }
       })
+    },
+    shareQrcode() {
+      this.$modalRouter.push({
+        name: 'brand-marketing-poster',
+        props: {
+          id: this.$route.query.id,
+          type: 2
+        },
+        on: {
+          success: () => {
+            console.log('success')
+          }
+        }
+      })
+    },
+    addCoupon() {
+      this.$router.push({ path: '/brand/marketing/plugin/coupon/add' })
+    },
+    backCoupon() {
+      this.$router.push({ path: '/brand/marketing/plugin/coupon/list' })
     }
+
   },
   components: {
   }

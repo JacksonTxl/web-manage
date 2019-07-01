@@ -52,6 +52,14 @@ module.exports = {
         pathRewrite: {
           '^/_api/': '/'
         }
+      },
+      '/_shs_api': {
+        target: 'http://localhost:3080',
+        // target: 'https://api-saas-test.styd.cn',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/_shs_api/': '/'
+        }
       }
     },
     port: 8060
