@@ -81,7 +81,7 @@ export class FrontApi extends Api {
    * 前台头部统计
    */
   getEntranceSummary() {
-    return this.http.get(`/v1/front/entrance/summary`)
+    return this.http.get(`/v1/front/stat`)
   }
   /**
    * 销售员列表
