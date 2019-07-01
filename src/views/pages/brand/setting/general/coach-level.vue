@@ -29,14 +29,14 @@
           <td>{{item.operator_name}}</td>
           <td>{{item.updated_time}}</td>
           <td>
-            <modal-link tag="a" :to="{ name: 'coach-level-edit',
+            <modal-link tag="a" v-if="item.auth['brand:setting:coach_level|edit']" :to="{ name: 'coach-level-edit',
               props: { id: item.id, setting_name: item.setting_name },
               on: { change: onListChange } }">编辑
             </modal-link>
             <a-popconfirm
               :title="`删除后不可进行恢复，${item.used_number ? '已标记的员工将删除此教练等级，' : ''}确定删除此教练等级？`"
               @confirm="onDelete(item.id)">
-              <a class="mg-l8">删除</a>
+              <a v-if="item.auth['brand:setting:coach_level|del']" class="mg-l8">删除</a>
             </a-popconfirm>
           </td>
         </tr>

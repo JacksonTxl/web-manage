@@ -12,6 +12,7 @@
     "inspect:prod": "vue-cli-service inspect --mode production > inspect.js",
     "lint": "vue-cli-service lint",
     "dev": "gulp dev",
+    "dev:test": "cross-env LOCAL_API_ENV=test gulp dev",
     "serve": "vue-cli-service serve",
     "build": "gulp build && vue-cli-service build",
     "ci": "npm run init && npm run build",
@@ -20,6 +21,7 @@
   },
   "dependencies": {
     "@abraham/reflection": "^0.5.1",
+    "@antv/data-set": "^0.10.2",
     "@antv/g2": "^3.5.3",
     "@fullcalendar/core": "^4.1.0",
     "@fullcalendar/daygrid": "^4.1.0",
@@ -68,6 +70,7 @@
     "@vue/cli-service": "^3.1.0",
     "@vue/eslint-config-standard": "^4.0.0",
     "@vue/eslint-config-typescript": "^4.0.0",
+    "cross-env": "^5.2.0",
     "cross-spawn": "^6.0.5",
     "eslint": "^5.15.1",
     "eslint-plugin-vue": "^5.2.2",

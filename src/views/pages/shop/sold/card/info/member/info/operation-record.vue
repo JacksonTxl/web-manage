@@ -5,7 +5,8 @@
     :columns="columns"
     :loading="loading.getList"
     @change="onPageChange"
-    :dataSource="list">
+    rowKey="key"
+    :dataSource="stList">
       <template slot="operation_time" slot-scope="text">
         {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
       </template>
@@ -50,6 +51,16 @@ export default {
       list: this.operationRecordService.list$,
       loading: this.operationRecordService.loading$,
       query: this.routeService.query$
+    }
+  },
+  computed: {
+    stList() {
+      let array = []
+      this.list.forEach(i => {
+        let key = parseInt(Math.random() * 999999).toString()
+        array.push({ ...i, key: key })
+      })
+      return array
     }
   },
   data() {

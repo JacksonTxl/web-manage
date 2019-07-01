@@ -13,7 +13,6 @@
             </a-col>
           </a-row>
           <a-row :gutter="8">
-            {{cardData.admission_shop_list}}
             <a-col :lg="23">
               <st-form-item class="page-content-card-admission-range mt-4" label="支持入场门店" required>
                 <a-radio-group
@@ -101,11 +100,11 @@
                         </a-input>
                     </template>
                     <template slot="rally_price" slot-scope="text, record, index">
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'min_price'})" style="width:70px">
+                        <a-input :value="text.min_price" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'min_price'})" style="width:70px">
                           <span slot="suffix">元</span>
                         </a-input>
                         ~
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'max_price'})" style="width:70px">
+                        <a-input :value="text.max_price" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'max_price'})" style="width:70px">
                           <span slot="suffix">元</span>
                         </a-input>
                     </template>
@@ -120,12 +119,12 @@
                       </a-input>
                     </template>
                     <template slot="frozen_day" slot-scope="text, record, index">
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
+                        <a-input :value="text" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
                           <span slot="suffix">天</span>
                         </a-input>
                     </template>
                     <template slot="gift_unit" slot-scope="text, record, index">
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
+                        <a-input :value="text" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
                           <span slot="suffix">天</span>
                         </a-input>
                     </template>

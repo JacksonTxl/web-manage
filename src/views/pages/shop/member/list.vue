@@ -268,6 +268,15 @@ export default {
   },
   mounted() {
     this.sourceRegisters()
+    this.querySelect = {
+      member_level: +this.query.member_level,
+      register_way: +this.query.register_way,
+      is_follow: +this.query.is_follow,
+      register_start_time: this.query.register_start_time,
+      register_stop_time: this.query.register_stop_time,
+      be_member_start_time: this.query.be_member_start_time,
+      be_member_stop_time: this.query.be_member_stop_time
+    }
   },
   methods: {
     onSearchSearchQuery() {
