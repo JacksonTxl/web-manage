@@ -252,7 +252,7 @@ export default {
     priceGradientFilter(priceGradient) {
       const DEFAULT_MAX_NUM = 10000
       priceGradient.map((item, index) => {
-        const prices = item.prices
+        const prices = item.prices || []
         const pricesLen = prices.length
         prices.map((price, i) => {
           delete price.serviceFee
