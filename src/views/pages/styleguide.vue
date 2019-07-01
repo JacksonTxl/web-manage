@@ -35,6 +35,7 @@
               <a-anchor-link href="#image-upload" title="image-upload 图片上传"></a-anchor-link>
               <a-anchor-link href="#info" title="info 信息展示"></a-anchor-link>
               <a-anchor-link href="#form" title="form 表单"></a-anchor-link>
+              <a-anchor-link href="#table-actions" title="table-actions 操作"></a-anchor-link>
               <a-anchor-link href="#table" title="table 数据表格"></a-anchor-link>
               <a-anchor-link href="#form-table" title="form-table 纯样式表格"></a-anchor-link>
               <a-anchor-link href="#shop-hour-picker" title="shop-hour-picker 门店时间"></a-anchor-link>

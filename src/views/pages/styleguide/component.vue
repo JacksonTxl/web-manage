@@ -24,6 +24,7 @@
     <image-upload-demo id="image-upload"></image-upload-demo>
     <info-demo id="info"></info-demo>
     <form-demo id="form"></form-demo>
+    <table-actions-demo id='table-actions'></table-actions-demo>
     <table-demo id="table"></table-demo>
     <form-table-demo id="form-table"></form-table-demo>
     <shop-hour-picker-demo id="shop-hour-picker"></shop-hour-picker-demo>
