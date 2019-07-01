@@ -38,8 +38,7 @@ export default {
     return {
       count: 0,
       tips: [
-        `commitNumber: ${this.appConfig.GIT_COMMIT} \n
-          msg: ${this.appConfig.GIT_MESSAGE}`,
+        `${this.appConfig.GIT_COMMIT} ${this.appConfig.GIT_MESSAGE}`,
         `Date: ${this.appConfig.GIT_DATE}`
       ]
     }

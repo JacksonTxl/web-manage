@@ -229,7 +229,7 @@ export default {
       let ret = true
       for (let i = 0; i < priceGradient.length; i++) {
         let retIn = false
-        const prices = priceGradient[i].prices
+        const prices = priceGradient[i].prices || []
         for (let j = 0; j < prices.length; j++) {
           const price = prices[j]
           for (let k in price) {
@@ -252,7 +252,7 @@ export default {
     priceGradientFilter(priceGradient) {
       const DEFAULT_MAX_NUM = 10000
       priceGradient.map((item, index) => {
-        const prices = item.prices
+        const prices = item.prices || []
         const pricesLen = prices.length
         prices.map((price, i) => {
           delete price.serviceFee
