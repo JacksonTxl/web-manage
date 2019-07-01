@@ -82,7 +82,7 @@
                   :allowClear="false"
                   :disabledDate="disabledEndDate"
                   v-decorator="['endTimePicker',{rules:[{validator:endtime_picker_validator}]}]"
-                  @change="end_time_change"
+                  @change="endTimeChange"
                   style="width:170px"
                   :showTime="{defaultValue:startTime,format: 'HH:mm'}"
                   format="YYYY-MM-DD HH:mm"
@@ -108,7 +108,7 @@
               <st-button class="create-button" @click="onCodeNumber" :loading="loading.getCodeNumber">自动生成</st-button>
             </div>
           </st-form-item>
-          <st-form-item labelGutter="12px" class="mgb-12" label="租赁费用">{{leaseFee}}</st-form-item>
+          <st-form-item labelGutter="12px" class="mgb-12" label="租赁费用">{{orderAmountPrice}}</st-form-item>
           <st-form-item labelGutter="12px" :class="sale('discounts')" label="定金抵扣">
             <div>
               <div :class="sale('discounts-total')">
@@ -144,7 +144,7 @@
             </st-input-number>
           </st-form-item>
           <st-form-item validateStatus="error" :help="orderAmountText" class="mg-b0" label="小计">
-            <span class="total">{{orderAmount}}</span>
+            <span class="total">{{currentPrice}}</span>
           </st-form-item>
         </div>
         <div :class="sale('remarks')">
@@ -167,8 +167,8 @@
     <template slot="footer">
       <div :class="sale('footer')">
         <div class="price">
-          <span>{{orderAmount}}</span>
-          <span>订单总额：{{this.leaseFee}}</span>
+          <span>{{currentPrice}}</span>
+          <span>订单总额：{{orderAmountPrice}}</span>
         </div>
         <div class="button">
           <st-button @click="onCreateOrder" :loading="loading.setTransaction">创建订单</st-button>
@@ -200,7 +200,9 @@ export default {
       memberList: this.saleCabinetService.memberList$,
       saleList: this.saleCabinetService.saleList$,
       cabinetList: this.saleCabinetService.cabinetList$,
-      info: this.saleCabinetService.info$
+      info: this.saleCabinetService.info$,
+      currentPrice: this.saleCabinetService.currentPrice$,
+      orderAmountPrice: this.saleCabinetService.orderAmountPrice$
     }
   },
   props: {
@@ -264,6 +266,21 @@ export default {
     },
     orderAmountText() {
       return this.orderAmount.split('元')[0] < 0 ? '小计不能为负' : ''
+    }
+  },
+  watch: {
+    days(newVal, oldVal) {
+      this.getOrderPrice()
+      this.getPrice(this.selectAdvance, +this.reduceAmount)
+    },
+    selectAdvance: {
+      deep: true,
+      handler(newVal, oldVal) {
+        this.getPrice(newVal, +this.reduceAmount)
+      }
+    },
+    reduceAmount(newVal, oldVal) {
+      this.getPrice(this.selectAdvance, +newVal)
     }
   },
   methods: {
@@ -376,10 +393,11 @@ export default {
       }
     },
     // 租赁时间-end
-    end_time_change(data) {
+    endTimeChange(data) {
       this.form.setFieldsValue({
-        endTimeInput: data.diff(this.startTime, 'days') + 1
+        endTimeInput: Math.ceil(data.diff(this.startTime, 'minutes') / (24 * 60))
       })
+      this.days = Math.ceil(data.diff(this.startTime, 'minutes') / (24 * 60))
     },
     onEndTimeInputChange(data) {
       this.days = data
@@ -438,6 +456,24 @@ export default {
       let price = this.advanceList.filter(o => o.id === data.target.value)[0].price
       this.advanceAmount = price
       this.advanceText = `${price}元`
+    },
+    // 获取当前价钱
+    getPrice(advance, reduce) {
+      this.saleCabinetService.currentPriceAction$.dispatch({
+        product_id: this.cabinetId,
+        product_type: this.info.contract_type,
+        product_num: this.days,
+        advance_id: advance || undefined,
+        reduce_amount: reduce || undefined
+      })
+    },
+    // 获取订单总额
+    getOrderPrice() {
+      this.saleCabinetService.orderAmountPriceAction$.dispatch({
+        product_id: this.cabinetId,
+        product_type: this.info.contract_type,
+        product_num: this.days
+      })
     },
     onCreateOrder() {
       this.form.validateFields((error, values) => {
