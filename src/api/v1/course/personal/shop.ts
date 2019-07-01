@@ -31,6 +31,9 @@ export class ShopPersonalCourseApi extends Api {
   updateCourse(params: SetCourseInput) {
     return this.http.put(`/v1/course/personal/shop/${params.course_id}`, { params })
   }
+  deleteCourse(id: any) {
+    return this.http.delete(`/v1/course/personal/shop/${id}`)
+  }
   /**
    * 设置上课门店
    */

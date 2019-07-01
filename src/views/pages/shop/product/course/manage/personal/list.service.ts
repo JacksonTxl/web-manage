@@ -6,6 +6,7 @@ import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
 import { ShopPersonalCourseApi, GetPersonalCourseListInShopInput } from '@/api/v1/course/personal/shop'
 import { AuthService } from '@/services/auth.service'
+import { MessageService } from '@/services/message.service'
 
 @Injectable()
 export class ListService implements RouteGuard {
@@ -19,6 +20,7 @@ export class ListService implements RouteGuard {
     private shopPersonalCourseApi: ShopPersonalCourseApi,
     private shopApi: ShopApi,
     private courseApi: CourseApi,
+    private msg: MessageService,
     private authService: AuthService
   ) {
   }
@@ -40,6 +42,11 @@ export class ListService implements RouteGuard {
         this.categoryList$.commit(() => state)
       })
     )
+  }
+  deleteCourse(id: any) {
+    return this.shopPersonalCourseApi.deleteCourse(id).pipe(tap(res => {
+      this.msg.success({ content: '删除成功' })
+    }))
   }
   getShopList() {
     return this.shopApi.getShopList().pipe(map(res => {

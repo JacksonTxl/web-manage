@@ -14,11 +14,16 @@
 
 <script>
 export default {
+  name: 'FunnelVertical',
   props: {
     height: {
       type: Number,
       default: 400
     },
+    /**
+     * @example
+     * [{name: 'dd', value: 66}]
+     */
     data: {
       type: Array,
       default: () => []

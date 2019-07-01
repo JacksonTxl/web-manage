@@ -12,7 +12,7 @@
         <st-info>
           <st-info-item label="会员名称">{{info.start_time}}</st-info-item>
           <st-info-item label="上课教练">{{info.coach_name}}</st-info-item>
-          <st-info-item label="预约状态">{{info.coach_name}}</st-info-item>
+          <st-info-item label="预约状态">{{info.reserve_status | enumFilter('schedule.reserve_status')}}</st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
@@ -29,22 +29,22 @@
       </a-col>
     </a-row>
     <div class="mg-t24 ta-r">
-      <st-button @click="cancelSchedule">取消课程</st-button>
       <st-button
-        class="mg-l8"
+        class="mg-r8"
         type="primary"
-        @click="updateSchedule"
-      >
-        修改课程
+        @click="updateReserve">
+        修改预约
       </st-button>
+      <st-button class="mg-r8" @click="cancelSchedule">取消预约</st-button>
+      <st-button @click="checkInConsume">签到消费</st-button>
     </div>
   </st-modal>
 </template>
 
 <script>
 import {
-  PersonalTeamScheduleReserveService as ReserveService
-} from '@/views/pages/shop/product/course/schedule/personal-team.service#/reserve.service'
+  PersonalScheduleReserveService as ReserveService
+} from '@/views/pages/shop/product/course/schedule/personal.service#/reserve.service'
 export default {
   name: 'OrderInfo',
   serviceInject() {
@@ -61,6 +61,8 @@ export default {
   },
   data() {
     return {
+      show: false,
+      info: {}
     }
   },
   computed: {
@@ -75,6 +77,18 @@ export default {
     this.getReserveInfo()
   },
   methods: {
+    updateReserve() {
+      this.$modalRouter.push({ name: 'schedule-personal-edit-reserve',
+        props: {
+          info: this.info
+        } })
+    },
+    cancelSchedule() {
+      this.reserveService.del(this.id).subscribe()
+    },
+    checkInConsume() {
+      this.reserveService.check(this.id).subscribe()
+    },
     getReserveInfo() {
       this.reserveService.getInfo(this.id).subscribe(res => {
         this.info = res.info

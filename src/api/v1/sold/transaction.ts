@@ -106,13 +106,13 @@ export class TransactionApi extends Api {
     return this.http.get(`/v1/order/transaction/sale/range/member`, { query })
   }
   /**
-   * 获取商品应付金额
+   * 获取商品应付金额--交易签单
    */
   getTransactionPrice(params: TransactionPriceInput) {
     return this.http.post(`/v1/order/transaction/price`, { params })
   }
   /**
-   * 获取售出应付金额
+   * 获取售出应付金额--非交易签单
    */
   getTransactionSoldPrice(params: TransactionPriceInput) {
     return this.http.post(`/v1/order/transaction/sold/price`, { params })

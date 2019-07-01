@@ -1,0 +1,32 @@
+.st-table-actions {
+
+  &__trigger {
+    padding: 10px;
+    .c(rgba(0, 0, 0, 0.15));
+    &:hover {
+      .c(rgba(0, 0, 0, 0.45));
+    }
+  }
+  &__popover {
+    z-index: 998;
+    .ant-popover-arrow {
+      display: none;
+    }
+    .ant-popover-inner-content {
+      margin-top: -10px;
+      padding: 4px 0;
+      min-width: 136px;
+      a {
+        text-decoration: none;
+        display: block;
+        padding: 4px 24px;
+        color: @text;
+        font-size: 14px;
+        line-height: 22px;
+        &:hover {
+          .bg(#e6f7ff);
+        }
+      }
+    }
+  }
+}

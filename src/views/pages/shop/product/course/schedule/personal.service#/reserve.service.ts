@@ -54,7 +54,11 @@ export class PersonalScheduleReserveService {
    * 团体课签到消费
    */
   check(id: string) {
-    return this.reserveApi.check(id)
+    return this.reserveApi.check(id).pipe(tap(res => {
+      this.msg.success({
+        content: '签到成功'
+      })
+    }))
   }
   /**
    *
@@ -89,6 +93,7 @@ export class PersonalScheduleReserveService {
           return { // add new event data
             title: item.course_name,
             groupId: JSON.stringify(item),
+            id: item.id,
             start: `${item.start_date} ${item.start_time}`,
             end: `${item.start_date} ${item.end_time}`
           }

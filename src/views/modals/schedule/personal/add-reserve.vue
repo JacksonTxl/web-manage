@@ -19,6 +19,7 @@
       <st-form-item label="消费方式" required>
         <a-select
           v-decorator="['consume_type']"
+          @change="onChangeConsume"
           placeholder="选择消费方式">
           <a-select-opt-group v-for="consumeType in consumeOptions" :key="consumeType.id">
             <span slot="label"><a-icon type="snippets"/>{{consumeType.name}}</span>
@@ -83,28 +84,40 @@ export default {
       value: '',
       fetching: false,
       form: this.$form.createForm(this),
+      formKeyFlag: ['consume_type', 'course_id', 'coach_id', 'scheduling_id', 'reserve_start_time'],
       reserveDate: ''
     }
   },
   methods: {
+    // 获取消费方式 权重2
+    onChangeConsume(val) {
+      const v = JSON.parse(val)
+      this.form.setFieldsValue({ course_id: '', coach_id: '', scheduling_id: '', reserve_start_time: '' })
+      this.commonService.getCourseList({ id: +v.id, consume_type: +v.consume_type }).subscribe()
+    },
+    // 获取会员 权重1
     onSearchMember(val) {
       this.fetching = false
       this.commonService.getOptions('getMemberList', { member: val }, () => {
         this.fetching = true
       })
     },
+    // 获取上课课程 权重4
     onChangeCourse(val) {
-      console.log(val)
+      this.form.setFieldsValue({ coach_id: '', scheduling_id: '', reserve_start_time: '' })
       this.commonService.getCourseCoachList(val).subscribe()
     },
+    // 获取时期
     onChangeDatePick(val) {
       let reserveDate = ''
+      this.form.setFieldsValue({ reserve_start_time: '' })
       this.dateOptions.forEach(item => {
         val.format('YYYY-MM-DD') === item.schedule_date && (reserveDate = item.id)
       })
       this.commonService.getOptions('getTimeList', reserveDate, () => {})
     },
     onChangeCourseCoach(val) {
+      this.form.setFieldsValue({ scheduling_id: '', reserve_start_time: '' })
       this.commonService.getOptions('getDateList', val, () => {})
     },
     range(start, end) {
@@ -167,6 +180,7 @@ export default {
     },
     onChangeMember(val) {
       this.value = val
+      this.form.resetFields()
       this.commonService.getOptions('getConsumeList', val.key, () => {})
     }
   }

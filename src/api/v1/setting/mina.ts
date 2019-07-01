@@ -7,12 +7,6 @@ export class SettingMinaApi extends Api {
     return this.http.get('/v1/setting/mina/index')
   }
   /**
-   * 获取授权地址
-   */
-  getAuthUrl() {
-    return this.http.get('/v1/setting/mina/auth_url')
-  }
-  /**
    * 授权回调
    */
   callback(params: CallbackParams) {
@@ -23,6 +17,18 @@ export class SettingMinaApi extends Api {
    */
   saveMch(params: PayConfigForm) {
     return this.http.post('/v1/setting/mina/save_mch', { params })
+  }
+  /**
+   * 查询微信支付配置
+   */
+  payMch() {
+    return this.http.get('/v1/setting/mina/pay_mch')
+  }
+  /**
+   * 小程序提交审核
+   */
+  subAudit() {
+    return this.http.post('/v1/setting/mina/sub_audit')
   }
 }
 

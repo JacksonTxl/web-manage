@@ -57,8 +57,8 @@ export default {
     onChange() {
       this.$router.push({ query: this.query })
     },
-    onDeleteCourse(record) {
-      this.brandService.deleteCourse(record.id).subscribe(() => {
+    onDeleteCourse(id) {
+      this.listService.deleteCourse(id).subscribe(() => {
         this.$router.push({ force: true })
       })
     },
