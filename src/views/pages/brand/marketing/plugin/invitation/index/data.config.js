@@ -38,27 +38,27 @@ export const columnsActivity = [
 export const columnsUser = [
   {
     title: '邀请人姓名',
-    dataIndex: 'aaaaa',
-    scopedSlots: { customRender: 'aaaaa' }
+    dataIndex: 'inviter_name',
+    scopedSlots: { customRender: 'inviter_name' }
   },
   {
     title: '邀请人手机号',
-    dataIndex: 'bbbbb',
-    scopedSlots: { customRender: 'bbbbb' }
+    dataIndex: 'inviter_mobile',
+    scopedSlots: { customRender: 'inviter_mobile' }
   },
   {
     title: '拉新用户姓名',
-    dataIndex: 'ccccc',
-    scopedSlots: { customRender: 'ccccc' }
+    dataIndex: 'invitee_name',
+    scopedSlots: { customRender: 'invitee_name' }
   },
   {
     title: '拉新用户手机号',
-    dataIndex: 'ddddd',
-    scopedSlots: { customRender: 'ddddd' }
+    dataIndex: 'invitee_mobile',
+    scopedSlots: { customRender: 'invitee_mobile' }
   },
   {
     title: '拉新带来的交易额',
-    dataIndex: 'eeeee',
-    scopedSlots: { customRender: 'eeeee' }
+    dataIndex: 'newbie_revenue',
+    scopedSlots: { customRender: 'newbie_revenue' }
   }
 ]

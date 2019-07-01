@@ -4,6 +4,7 @@ import { CardsApi, CardShelfListInput, BrandCardShelfDownInput } from '@/api/v1/
 import { tap } from 'rxjs/operators'
 import { ShopApi } from '@/api/v1/shop'
 import { forkJoin } from 'rxjs'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class ShelvesService implements RouteGuard {
@@ -11,9 +12,13 @@ export class ShelvesService implements RouteGuard {
     list$ = new State([])
     page$ = new State({})
     loading$ = new State({})
-    constructor(private cardApi: CardsApi, private shopApi:ShopApi) {}
+    auth$ = new State({
+      batchDown: this.authService.can('brand_shop:product:deposit_card|batch_down')
+    })
+    constructor(private cardApi: CardsApi, private shopApi: ShopApi, private authService: AuthService) {}
     getList(query:CardShelfListInput) {
       return this.cardApi.getCardShelfList(query, 'brand', 'deposit').pipe(tap((res:any) => {
+        res = this.authService.filter(res)
         this.page$.commit(() => res.page)
         this.list$.commit(() => res.list)
       }))

@@ -64,6 +64,7 @@
       }
       .ant-menu-item-selected {
         .bg(none);
+        color: @primary-color!important;
         &:after {
           content: none;
         }
@@ -339,15 +340,7 @@
           .c(rgba(0,0,0,.25));
         }
         &-item {
-          &::before{
-            .bg(rgba(0,0,0,.25));
-          }
-          &--active {
-            .c(@primary-color);
-            &::before{
-              .bg(@primary-color);
-            }
-          }
+          .c(@primary-color);
         }
       }
       &__menu {

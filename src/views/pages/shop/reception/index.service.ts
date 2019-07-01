@@ -5,7 +5,7 @@ import { tap, debounceTime, switchMap, catchError } from 'rxjs/operators'
 import { forkJoin, EMPTY } from 'rxjs'
 
 @Injectable()
-export class ReceptionService implements RouteGuard {
+export class IndexService implements RouteGuard {
   loading$ = new State({})
   workNoteList$ = new State([])
   workNoteDoneList$ = new State([])

@@ -9,11 +9,14 @@ export class AllService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  auth$ = new State({})
+  auth$ = new State({
+    add: this.authService.can('brand_shop:product:member_card|add')
+  })
   constructor(private cardsApi: CardsApi, private authService: AuthService) {}
   @Effect()
   getList(query:CardListInput) {
     return this.cardsApi.getCardList(query, 'brand', 'member').pipe(tap((res:any) => {
+      res = this.authService.filter(res)
       this.list$.commit(() => res.list)
       this.page$.commit(() => res.page)
     }))
