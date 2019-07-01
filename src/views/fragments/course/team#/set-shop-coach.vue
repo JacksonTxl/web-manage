@@ -7,12 +7,14 @@
         </st-form-item>
         <st-form-item label="上课门店" required>
           <a-radio-group @change="onChange" v-decorator="ruleConfig.shopSetting">
-            <a-radio v-for="(item, index) in personalCourseEnums.shop_setting.value" :key="index"
-              :value="index">{{item}}</a-radio>
+            <a-radio v-for="(item, index) in teamCourseEnums.shop_setting.value" :key="+index"
+              :value="+index">{{item}}</a-radio>
           </a-radio-group>
           <div class="page-shop-coach-container-shop mg-t8" v-if="isShow">
-            <select-shop @change="onSelectShopChange"></select-shop>
-            <input type="hidden" v-decorator="ruleConfig.shopIds">
+            <select-shop
+              :shopIds="shopIds"
+              @change="onSelectShopChange"
+            />
           </div>
         </st-form-item>
       </a-col>
@@ -27,68 +29,80 @@
   </st-form>
 </template>
 <script>
-import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
+import { RouteService } from '@/services/route.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
+import { SetBrandTeamCourseService } from './set-brand-team-course.service'
+import { SetShopTeamCourseService } from './set-shop-team-course.service'
 
 export default {
   name: 'SetShopCoach',
   serviceInject() {
+    let CourseService
+    const pageName = this.$route.name
+    if (/^brand/.test(pageName)) {
+      CourseService = SetBrandTeamCourseService
+    } else {
+      CourseService = SetShopTeamCourseService
+    }
     return {
-      addService: AddService,
       messageService: MessageService,
       userService: UserService,
-      ruleConfig: RuleConfig
+      routeService: RouteService,
+      ruleConfig: RuleConfig,
+      courseService: CourseService
     }
   },
   rxState() {
     const user = this.userService
     return {
-      loading: this.addService.loading$,
-      personalCourseEnums: user.personalCourseEnums$
+      loading: this.courseService.loading$,
+      teamCourseEnums: user.teamCourseEnums$,
+      query: this.routeService.query$
     }
   },
   components: {
     SelectShop
   },
   props: {
-    courseName: {
-      type: String,
-      default: ''
-    },
-    courseId: {
-      type: Number,
-      default: 0
-    }
-  },
-  watch: {
-    courseName(val) {
-      this.form.setFieldsValue({
-        course_name: val
-      })
-    },
-    courseId(val) {
-      this.form.setFieldsValue({
-        course_id: val
-      })
+    info: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   data() {
     return {
       form: this.$form.createForm(this),
-      isShow: false,
-      shopIds: []
+      shopIds: [],
+      shopSetting: 1
     }
+  },
+  computed: {
+    isShow() {
+      return this.shopSetting === 2
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.setFieldsValue()
+    })
   },
   methods: {
     save(e) {
       e.preventDefault()
+      if (!this.shopInputCheck()) {
+        this.messageService.error({
+          content: '请选择门店'
+        })
+        return
+      }
       this.form.validateFields().then(() => {
-        const data = this.form.getFieldsValue()
-        data.course_id = this.courseId
-        this.addService.setShop(data).subscribe(this.onSaveSuccess)
+        const data = this.getData()
+        this.courseService.setShop(data).subscribe(this.onSaveSuccess)
       })
     },
     onSaveSuccess() {
@@ -100,32 +114,35 @@ export default {
       })
     },
     onChange(e) {
-      e.target.value === '2' ? this.isShow = true : this.isShow = false
+      this.shopSetting = e.target.value
+      this.shopIds = []
     },
     onSelectShopChange(shopIds) {
-      this.form.setFieldsValue({
-        shop_ids: shopIds
-      })
+      this.shopIds = shopIds
     },
     setFieldsValue() {
       const info = this.info
       this.form.setFieldsValue({
         course_name: info.course_name,
-        course_category: info.course_category,
-        train_aim: info.train_aim,
-        duration: info.duration,
-        is_online_sale: info.is_online_sale,
-        price: info.price,
-        effective_unit: info.effective_unit,
-        image: info.image,
-        description: info.description
+        shop_setting: info.shop_setting,
+        coach_ids: info.coach_ids
       })
-      this.fileList = [this.info.image]
+      this.shopSetting = info.shop_setting
+      this.shopIds = info.shop_ids
     },
     getData() {
       const data = this.form.getFieldsValue()
       data.course_id = +this.query.id
+      data.shop_ids = this.shopIds
       return data
+    },
+    shopInputCheck() {
+      const { shopSetting } = this
+      if (shopSetting === 1) {
+        return true
+      } else {
+        return this.shopIds.length
+      }
     }
   }
 }

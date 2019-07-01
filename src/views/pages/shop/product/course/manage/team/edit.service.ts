@@ -1,30 +1,28 @@
+
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import {
   ShopTeamCourseApi,
-  GetCourseEditInput,
-  SetCourseInput,
-  SetShopInput
+  GetUpdateInfoInput
 } from '@/api/v1/course/team/shop'
-
-interface EditState {
+interface SetState {
   info: Object
 }
 @Injectable()
-export class EditService extends Store<EditState> {
-  state$: State<EditState>
+export class EditService extends Store<SetState> {
+  state$: State<SetState>
   info$: Computed<Object>
-  constructor(protected courseApi: ShopTeamCourseApi) {
+  constructor(private courseApi: ShopTeamCourseApi) {
     super()
     this.state$ = new State({
       info: {}
     })
     this.info$ = new Computed(this.state$.pipe(pluck('info')))
   }
-  getCourseEdit(query: GetCourseEditInput) {
-    return this.courseApi.getCourseEdit(query).pipe(
+  getUpdateInfo(query: GetUpdateInfoInput) {
+    return this.courseApi.getUpdateInfo(query).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.info = res.info
@@ -32,20 +30,10 @@ export class EditService extends Store<EditState> {
       })
     )
   }
-  @Effect()
-  updateCourse(params: SetCourseInput) {
-    return this.courseApi.updateCourse(params)
-  }
-  @Effect()
-  setShop(params: SetShopInput) {
-    return this.courseApi.setShop(params)
-  }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    const id = to.meta.query.id
-    this.getCourseEdit({ course_id: id }).subscribe(() => {
-      next()
-    }, () => {
-      next(false)
-    })
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    const query = {
+      course_id: to.meta.query.id
+    }
+    return this.getUpdateInfo(query)
   }
 }

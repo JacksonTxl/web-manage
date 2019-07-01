@@ -8,20 +8,24 @@
         </a-steps>
       </a-col>
     </a-row>
-    <set-course  v-show="currentIndex === 0" @goNext="goNext"
-      @onCourseNameChange="onCourseNameChange"/>
+    <set-team-course
+      v-show="currentIndex === 0"
+      from="brand"
+      @goNext="goNext"
+      @onCourseNameChange="onCourseNameChange"
+    />
     <set-shop-coach v-show="currentIndex === 1" :courseName="courseName" :courseId="courseId"
       @goNext="goNext"
     />
   </st-panel>
 </template>
 <script>
-import SetCourse from './add#/set-course'
-import SetShopCoach from './add#/set-shop-coach'
+import SetTeamCourse from '@/views/fragments/course/team#/set-team-course'
+import SetShopCoach from '@/views/fragments/course/team#/set-shop-coach'
 export default {
   components: {
-    SetCourse, // 创建团体课程
-    SetShopCoach // 设置上课门店及教练
+    SetTeamCourse,
+    SetShopCoach
   },
   data() {
     return {

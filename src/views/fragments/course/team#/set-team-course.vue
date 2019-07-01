@@ -12,7 +12,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程类型" required>
           <input type="hidden" v-decorator="ruleConfig.categoryId">
-          <st-select-course-category @change="onCourseTypeChange"/>
+          <st-select-course-category :value="info.category_id" @change="onCourseTypeChange"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -20,7 +20,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="训练目的" required>
           <input type="hidden" v-decorator="ruleConfig.trainAim">
-          <st-select-training-aim @change="onTrainingAimChange"/>
+          <st-select-training-aim :value="info.train_aim|formatFilter" @change="onTrainingAimChange"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -33,7 +33,7 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="消耗卡路里" required>
+        <st-form-item label="消耗卡路里">
           <st-input-number v-decorator="ruleConfig.calories">
             <template slot="addonAfter">Kcal/节</template>
           </st-input-number>
@@ -42,9 +42,18 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="课程时长" required>
+        <st-form-item label="时长" required>
           <st-input-number v-decorator="ruleConfig.duration">
             <template slot="addonAfter">分钟</template>
+          </st-input-number>
+        </st-form-item>
+      </a-col>
+    </a-row>
+    <a-row :gutter="8">
+      <a-col :lg="10" :xs="22" :offset="1">
+        <st-form-item label="参考定价">
+          <st-input-number v-decorator="ruleConfig.price">
+            <template slot="addonAfter">元/节</template>
           </st-input-number>
         </st-form-item>
       </a-col>
@@ -80,8 +89,15 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.addCourse">保存，继续设置上课门店</st-button>
+        <st-form-item labelFix v-if="from === 'brand'">
+          <st-button @click="save" :loading="activeBtn === 'save' && loading.setCourse" data-name="save">保存</st-button>
+          <st-button type="primary" @click="saveAndGoNext" :loading="activeBtn === 'go' && loading.setCourse" class="mg-l12"
+            data-name="go">保存，继续设置上课门店
+          </st-button>
+        </st-form-item>
+        <st-form-item labelFix v-if="from === 'shop'">
+          <st-button type="primary" @click="save" :loading="loading.setCourse">保存
+          </st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -89,53 +105,112 @@
 </template>
 
 <script>
-import { AddService } from '../add.service'
 import { MessageService } from '@/services/message.service'
+import { RouteService } from '@/services/route.service'
 import StSelectCourseCategory from '@/views/fragments/course/select-course-category'
 import StSelectTrainingAim from '@/views/fragments/course/select-training-aim'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
+import { SetBrandTeamCourseService } from './set-brand-team-course.service'
+import { SetShopTeamCourseService } from './set-shop-team-course.service'
 
 export default {
-  name: 'SetCourse',
+  name: 'SetTeamCourse',
   serviceInject() {
+    let CourseService
+    const pageName = this.$route.name
+    if (/^brand/.test(pageName)) {
+      CourseService = SetBrandTeamCourseService
+    } else {
+      CourseService = SetShopTeamCourseService
+    }
     return {
-      addService: AddService,
       messageService: MessageService,
       userService: UserService,
-      ruleConfig: RuleConfig
+      routeService: RouteService,
+      ruleConfig: RuleConfig,
+      courseService: CourseService
     }
   },
   rxState() {
     const user = this.userService
     return {
-      loading: this.addService.loading$,
-      personalCourseEnums: user.personalCourseEnums$
+      loading: this.courseService.loading$,
+      personalCourseEnums: user.personalCourseEnums$,
+      query: this.routeService.query$
     }
   },
   components: {
     StSelectCourseCategory,
     StSelectTrainingAim
   },
+  filters: {
+    formatFilter(arr = []) {
+      return arr.map(v => `${v}`)
+    }
+  },
+  props: {
+    from: {
+      type: String,
+      default: 'shop'
+    },
+    info: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  },
   data() {
     return {
       form: this.$form.createForm(this),
-      fileList: []
+      fileList: [],
+      activeBtn: 'save'
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.setFieldsValue()
+    })
   },
   methods: {
     save(e) {
+      this.activeBtn = e.target.dataset.name
       e.preventDefault()
+      this.doSave(this.onSubmitSuccess)
+    },
+    doSave(callback) {
       this.form.validateFields().then(() => {
-        const data = this.form.getFieldsValue()
-        console.log('step 1 data', data)
-        this.addService.addCourse(data).subscribe((res) => {
-          this.messageService.success({
-            content: '提交成功'
-          })
-          this.$emit('goNext', res.course_id)
-        })
+        const data = this.getData()
+        this.courseService.setCourse(data).subscribe(callback)
       })
+    },
+    saveAndGoNext(e) {
+      this.activeBtn = e.target.dataset.name
+      this.doSave(() => {
+        this.messageService.success({
+          content: '保存成功'
+        })
+        this.$emit('goNext')
+      })
+    },
+    onSubmitSuccess() {
+      this.messageService.success({
+        content: '保存成功'
+      })
+      const name = this.getParentListName()
+      this.$router.push({
+        name
+      })
+    },
+    getParentListName() {
+      /**
+       * 品牌团课与门店团课保存后跳到对应的列表
+       */
+      return ({
+        shop: 'shop-product-course-manage-team-list',
+        brand: 'brand-product-course-team-list-brand'
+      })[this.from]
     },
     onImgChange(fileList) {
       this.form.setFieldsValue({
@@ -143,19 +218,43 @@ export default {
       })
     },
     onCourseTypeChange(category_id) {
-      console.log('change', category_id)
       this.form.setFieldsValue({
         category_id
       })
     },
     onTrainingAimChange(train_aim) {
-      console.log('change', train_aim)
       this.form.setFieldsValue({
         train_aim
       })
     },
     onCourseNameChange(e) {
       this.$emit('onCourseNameChange', e.target.value)
+    },
+    setFieldsValue() {
+      const info = this.info
+      this.form.setFieldsValue({
+        course_name: info.course_name,
+        category_id: info.category_id,
+        train_aim: info.train_aim,
+        strength_level: info.strength_level,
+        calories: info.calories,
+        duration: info.duration,
+        price: info.price,
+        image: info.image,
+        description: info.description
+      })
+      if (this.info.image) {
+        this.fileList = [this.info.image]
+      }
+    },
+    getData() {
+      const data = this.form.getFieldsValue()
+      const { id } = this.query
+      if (id) {
+        data.course_id = +id
+      }
+      data.price = +data.price
+      return data
     }
   }
 }
