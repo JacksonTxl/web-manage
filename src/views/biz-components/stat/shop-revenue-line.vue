@@ -1,0 +1,196 @@
+<template>
+  <div class="st-shop-revenue-line"></div>
+</template>
+
+<script>
+import { toKFilter, thousandsFilter } from './filters'
+import { View } from '@antv/data-set'
+import { Chart } from '@antv/g2'
+import chartMixin from './mixin'
+
+export default {
+  mixins: [chartMixin],
+  props: {
+    data: {
+      type: Array,
+      default: () => []
+    },
+    height: {
+      type: Number,
+      default: 280
+    },
+    // 使用的字段key值数组
+    fields: {
+      type: Array,
+      default: () => [
+        '私教课',
+        '团体课',
+        '储值卡',
+        '课程包',
+        '会员卡',
+        '云店',
+        '定金',
+        '押金',
+        '其它'
+      ]
+    },
+    // 颜色数组
+    colors: {
+      type: Array,
+      default: () => [
+        '#4677F9',
+        '#06DB8C',
+        '#009DFF',
+        '#B8F10F',
+        '#3F66F6',
+        '#FF6466'
+      ]
+    }
+  },
+  computed: {
+    colorMap() {
+      return this.fields.reduce((res, field, idx) => {
+        res[field] = this.colors[idx % this.colors.length]
+        return res
+      }, {})
+    }
+  },
+  methods: {
+    initDv() {
+      this.dv = new View()
+      this.dv.source(this.data)
+      this.dv.transform({
+        type: 'fold',
+        fields: this.fields,
+        key: 'name',
+        value: 'value'
+      })
+    },
+    initChart() {
+      this.chart = new Chart({
+        container: this.$el,
+        forceFit: true,
+        height: this.height,
+        padding: [8, 16, 100, 48],
+        renderer: 'svg'
+      })
+
+      this.chart.source(this.dv, {
+        date: {
+          range: [0, 1]
+        },
+        value: {
+          tickCount: 5,
+          formatter: toKFilter
+        }
+      })
+      this.chart.axis('date', {
+        label: {
+          textStyle: {
+            fill: '#9BACB9'
+          }
+        }
+      })
+      this.chart.axis('value', {
+        label: {
+          textStyle: {
+            fill: '#9BACB9'
+          }
+        },
+        grid: {
+          lineStyle: {
+            lineWidth: 0.5,
+            lineDash: [0, 0]
+          }
+        }
+      })
+      this.chart.legend('name', {
+        position: 'bottom-left',
+        itemWidth: 80,
+        useHtml: true,
+        textStyle: {
+          fill: '#3E4D5C'
+        },
+        itemTpl: () => {
+          return (
+            '<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">' +
+            `<span class="g2-legend-marker" style="background-color:{color};"></span>` +
+            ` <span class="g2-legend-text">{value}</span>` +
+            '</li>'
+          )
+        }
+      })
+      this.chart
+        .line()
+        .style('name', {
+          shadowColor: name => this.colorMap[name],
+          shadowBlur: 8,
+          shadowOffsetY: 2
+        })
+        .tooltip('name*value', (name, value) => {
+          return {
+            name,
+            value: '¥' + thousandsFilter(value)
+          }
+        })
+        .shape('smooth')
+        .size(2)
+        .position('date*value')
+        .color('name', this.colors)
+
+      this.chart.render()
+    }
+  }
+}
+</script>
+
+<style lang="less">
+.st-shop-revenue-line {
+  .g2-legend-list {
+    text-align: left !important;
+    padding: 0 48px !important;
+  }
+  .g2-legend-list {
+    user-select: none;
+  }
+  .g2-legend-list-item {
+    width: 80px;
+    margin-right: 0 !important;
+    margin-bottom: 16px !important;
+  }
+  .g2-legend-list-item.unChecked {
+    .g2-legend-marker {
+      background-color: transparent !important;
+      border: 1px solid #e6e9ef;
+      &:after {
+        opacity: 0;
+      }
+    }
+  }
+  .g2-legend-marker {
+    box-sizing: border-box;
+    border-radius: 2px !important;
+    width: 12px !important;
+    height: 12px !important;
+    // display: none !important;
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      width: 7px;
+      height: 2px;
+      border: 1px solid white;
+      border-right-color: transparent;
+      border-top-color: transparent;
+      left: 50%;
+      top: 50%;
+      margin-top: -1px;
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+  .legend-checkbox {
+    margin-right: 8px;
+    cursor: pointer;
+  }
+}
+</style>

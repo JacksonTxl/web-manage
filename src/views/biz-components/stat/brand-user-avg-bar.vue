@@ -1,0 +1,99 @@
+<template>
+  <div class="stat-brand-user-avg-bar"></div>
+</template>
+
+<script>
+import { View } from '@antv/data-set'
+import { Chart } from '@antv/g2'
+import { toKFilter, thousandsFilter } from './filters'
+import chartMixin from './mixin'
+
+export default {
+  mixins: [chartMixin],
+  props: {
+    data: {
+      type: Array,
+      default: () => []
+    },
+    colors: {
+      type: Array,
+      default: () => ['l(90) 0:#57ACFF 1:#4169F7']
+    },
+    height: {
+      type: Number,
+      default: 200
+    }
+  },
+  methods: {
+    initDv() {
+      this.dv = new View()
+      this.dv.source(this.data)
+      this.dv.transform({
+        type: 'map',
+        callback(row) {
+          row.value = +row.value
+          return row
+        }
+      })
+    },
+    initChart() {
+      this.chart = new Chart({
+        container: this.$el,
+        forceFit: true,
+        height: this.height,
+        renderer: 'svg',
+        padding: [8, 0, 30, 48]
+      })
+
+      this.chart.source(this.dv, {
+        value: {
+          formatter: toKFilter,
+          tickCount: 4
+        }
+      })
+
+      this.chart.axis('name', {
+        label: {
+          textStyle: {
+            fontSize: 12,
+            fill: '#9BACB9'
+          }
+        }
+      })
+
+      this.chart.axis('value', {
+        grid: {
+          lineStyle: {
+            stroke: '#264E86',
+            lineWidth: 0.5,
+            lineDash: [0, 0]
+          }
+        },
+        label: {
+          textStyle: {
+            fontSize: 12,
+            fill: '#9BACB9'
+          }
+        },
+        range: [0, 1]
+      })
+      this.chart.tooltip({
+        showTitle: false
+      })
+
+      this.chart
+        .interval()
+        .opacity(0.9)
+        .position('name*value')
+        .tooltip('name*value', (name, value) => {
+          return {
+            name,
+            value: '¥' + thousandsFilter(value)
+          }
+        })
+        .color('name', this.colors)
+      this.chart.render()
+    }
+  }
+}
+</script>

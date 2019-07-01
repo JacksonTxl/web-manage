@@ -11,6 +11,11 @@ const git = require('git-rev-sync')
 const WebpackExternalVendorPlugin = require('webpack-external-vendor-plugin')
 const IS_DEV = env !== 'production'
 
+const localApiEnvHostTarget = {
+  dev: 'https://api-saas-dev.styd.cn',
+  test: 'https://api-saas-test.styd.cn'
+}[process.env.LOCAL_API_ENV || 'dev']
+
 const relaseInfo = {
   mode: env,
   git_commit: git.short(),
@@ -47,7 +52,7 @@ module.exports = {
     proxy: {
       '/_api': {
         // target: 'http://10.10.31.181:10000',
-        target: 'https://api-saas-dev.styd.cn',
+        target: localApiEnvHostTarget,
         // target: 'http://10.10.31.166:80',
         changeOrigin: true,
         pathRewrite: {
