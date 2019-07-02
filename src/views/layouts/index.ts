@@ -9,6 +9,5 @@ export const layoutMap = {
   blank: LayoutBlank,
   'default': LayoutDefault,
   'default-shop': LayoutDefaultShop,
-  login: LayoutLogin,
-  loading: LayoutLoading
+  login: LayoutLogin
 }

@@ -73,10 +73,10 @@ gulp.task('less-views:watch', () => {
   gulp
     .watch('./src/views/**/*.less')
     .on('add', () => {
-      gulp.series(['less'])()
+      gulp.series(['less-views'])()
     })
     .on('unlink', () => {
-      gulp.series(['less'])()
+      gulp.series(['less-views'])()
     })
 })
 
