@@ -12,7 +12,7 @@
           </a-col>
           <a-col :span="6" :class="bCount('item')">
             <div :class="bCount('box')">
-              <count-card title="今日订单数" :count="this.order.num" :footer="{label: '近7天日均营收额:', value: this.order.avg }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
+              <count-card title="今日订单数" :count="this.order.num" :footer="{label: '近7天日均订单数:', value: this.order.avg }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
                 <brand-simple-line color="#00B4BC" unit="单" :data="this.order.chart | lineFilter"></brand-simple-line>
               </count-card>
             </div>
@@ -34,24 +34,24 @@
         </a-row>
         <a-row class="mg-t16 bg-white" >
           <a-col :span="24">
-            <dashboard-tabs>
+            <dashboard-tabs @change="onChangeTabs">
               <template v-slot:user>
                 <div class="mg-t8 mg-l32 user-chart-box">
                   <div class="funnel-vertical">
-                    <funnel-vertical  :data="dataFV"></funnel-vertical>
+                    <funnel-vertical  :data="userFunnel"></funnel-vertical>
                   </div>
                   <div class="revenue-area">
-                    <brand-revenue-area  class="user-chart-box__item" :data="dataRA"></brand-revenue-area>
+                    <brand-revenue-area  class="user-chart-box__item" :data="userChartData"></brand-revenue-area>
                   </div>
                 </div>
               </template>
               <template v-slot:marketing>
                 <div class="mg-t8 mg-l32 user-chart-box">
                   <div class="funnel-vertical">
-                    <funnel-vertical  :data="dataFV"></funnel-vertical>
+                    <funnel-vertical  :data="marketingFunnel"></funnel-vertical>
                   </div>
                   <div class="revenue-area">
-                    <brand-revenue-area  class="user-chart-box__item" :data="dataRA"></brand-revenue-area>
+                    <brand-revenue-area  :fields="['浏览用户','注册用户','消费用户','办理入会']" class="user-chart-box__item" :data="marketing"></brand-revenue-area>
                   </div>
                 </div>
               </template>
@@ -62,14 +62,14 @@
           <a-col :span="12">
             <st-container class="bg-white" type="2">
               <st-t3>客单价</st-t3>
-              <brand-user-avg-bar :data="data2"></brand-user-avg-bar>
+              <brand-user-avg-bar :data="avg"></brand-user-avg-bar>
 
             </st-container>
           </a-col>
           <a-col :span="12">
             <st-container class="bg-white" type="2">
               <st-t3>用户活跃分析</st-t3>
-              <brand-user-ring :data="data1"></brand-user-ring>
+              <brand-user-ring :data="entry"></brand-user-ring>
             </st-container>
           </a-col>
         </a-row>
@@ -140,8 +140,15 @@ export default {
     }
   },
   rxState() {
+    console.log(this.dashBoardService)
     return {
-      top: this.dashBoardService.top$
+      top: this.dashBoardService.top$,
+      userFunnel: this.dashBoardService.userFunnel$,
+      userChartData: this.dashBoardService.user$,
+      avg: this.dashBoardService.avg$,
+      entry: this.dashBoardService.entry$,
+      marketing: this.dashBoardService.marketing$,
+      marketingFunnel: this.dashBoardService.marketingFunnel$
     }
   },
   bem: {
@@ -202,10 +209,14 @@ export default {
       return this.top.visit
     }
   },
-  mounted() {
-    this.reload()
-  },
   methods: {
+    onChangeTabs(key) {
+      if (key === 'user') {
+        this.dashBoardService.getUserAll().subscribe()
+      } else {
+        this.dashBoardService.getMarketingAll().subscribe()
+      }
+    },
     reload() {
       this.dataSimpleBar = {
         name: '会员占比',

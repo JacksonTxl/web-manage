@@ -1,7 +1,7 @@
 
 <template>
 <div class="page-dashboard-analysis">
-  <a-tabs defaultActiveKey="user" @change="callback">
+  <a-tabs :defaultActiveKey="key" @change="onChangeTabKey">
     <a-tab-pane tab="用户分析" key="user"> <slot name="user"></slot>  </a-tab-pane>
     <a-tab-pane tab="营销分析" key="marketing" forceRender><slot name="marketing"></slot></a-tab-pane>
   </a-tabs>
@@ -22,15 +22,16 @@ export default {
   name: 'DashboardTabs',
   data() {
     return {
-      value: 'a'
+      key: 'user'
     }
   },
   methods: {
     onChangeData(value) {
       console.log(value)
     },
-    callback(key) {
-      console.log(key)
+    onChangeTabKey(key) {
+      this.key = key
+      this.$emit('change', key)
     }
   }
 }

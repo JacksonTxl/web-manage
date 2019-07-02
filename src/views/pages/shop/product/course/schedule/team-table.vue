@@ -18,7 +18,7 @@
         </a-col>
       </a-row>
     </div>
-    <a-card :title="card.date | filterStartTime" v-for="card in scheduleTable" :key="card.date" class="mg-l24 mg-r24 mg-t8">
+    <a-card :title="card.week_name" v-for="card in scheduleTable" :key="card.date" class="mg-l24 mg-r24 mg-t8">
       <span href="javascript:;" slot="extra" class="add-schedule" v-modal-link="{name: 'schedule-team-add-course-schedule'}">+ 添加课程排期</span>
       <a-row class="page-team-table__item"  v-for="info in card.data" :key="info.id">
         <a-col :lg="3" class="time">{{info.start_time}} - {{info.end_time}}</a-col>
