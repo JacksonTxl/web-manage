@@ -391,8 +391,8 @@ export default {
       }
     },
     getCourseList(search) {
-      let params = { type: 'team', search }
-      this.shelfService.courseListAction$.dispatch(params)
+      let query = { course_name: search }
+      this.shelfService.courseListAction$.dispatch(query)
     },
     // 检验约课权益是否输入正确
     checkedCourseInterests() {
