@@ -431,20 +431,20 @@ export default {
     // 格式化价格
     formatSpecs() {
       this.specs = []
-      if (this.info.price_setting === 1) {
-        // 无价格范围
-        this.priceList.forEach(i => {
-          this.specs.push({
-            specs_id: i.spec_id,
-            price: i.rally_price
-          })
-        })
-      } else {
+      if (this.info.publish_channel === 1 && this.info.price_setting === 2) {
         // 有价格范围
         this.priceList.forEach(i => {
           this.specs.push({
             specs_id: i.spec_id,
             price: i.priceInputValue
+          })
+        })
+      } else {
+        // 无价格范围,发布渠道为2是门店，一定是无范围的
+        this.priceList.forEach(i => {
+          this.specs.push({
+            specs_id: i.spec_id,
+            price: i.rally_price
           })
         })
       }

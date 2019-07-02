@@ -81,9 +81,14 @@ export class InfoService extends Store<SetState> implements RouteGuard {
       return orderType
     }
     beforeEach(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
+      const routeName = to.name
       this.id = to.meta.query.id
-      this.getInfo(to.meta.query.id).subscribe(res => {
+      if (routeName === 'shop-finance-order-info-collection-details') {
+        this.getInfo(to.meta.query.id).subscribe(res => {
+          next()
+        })
+      } else {
         next()
-      })
+      }
     }
 }

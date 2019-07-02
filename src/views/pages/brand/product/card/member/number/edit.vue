@@ -576,8 +576,8 @@ export default {
           }
           this.cardData.price_gradient = cloneDeep(p)
           // 时间
-          this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
-          this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')} 00:00:00`
+          this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')}`
+          this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
           // 卡id
           this.cardData.id = +this.$route.query.id
           this.editService.editCard(this.cardData).subscribe(res => {
