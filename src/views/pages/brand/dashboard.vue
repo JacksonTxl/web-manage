@@ -5,29 +5,29 @@
         <a-row :gutter="16" :class="bCount()">
           <a-col :span="6" :class="bCount('item')">
             <div :class="bCount('box')">
-              <count-card>
-                <brand-simple-line :data="dataSimpleLine"></brand-simple-line>
+              <count-card title="今日营收额" :count="this.revenue.num" :footer="{label: '近7天日均营收额:', value: this.revenue.avg }" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
+                <brand-simple-line :data="this.revenue.chart | lineFilter"></brand-simple-line>
               </count-card>
             </div>
           </a-col>
           <a-col :span="6" :class="bCount('item')">
             <div :class="bCount('box')">
-              <count-card>
-                <brand-simple-line color="#00B4BC" unit="单" :data="dataSimpleLine2"></brand-simple-line>
+              <count-card title="今日订单数" :count="this.order.num" :footer="{label: '近7天日均营收额:', value: this.order.avg }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
+                <brand-simple-line color="#00B4BC" unit="单" :data="this.order.chart | lineFilter"></brand-simple-line>
               </count-card>
             </div>
           </a-col>
           <a-col :span="6" :class="bCount('item')">
             <div :class="bCount('box')">
-              <count-card>
-                <brand-simple-line color="#55BFA3" unit="人" :data="dataSimpleLine3"></brand-simple-line>
+              <count-card  title="用户数">
+                <brand-simple-line color="#55BFA3" unit="人"  :data="this.visit.chart | lineFilter"></brand-simple-line>
               </count-card>
             </div>
           </a-col>
           <a-col :span="6" :class="bCount('item')">
             <div :class="bCount('box')">
-              <count-card>
-                <brand-simple-bar color="#58CC99" class="mg-t40" :data="dataSimpleBar"></brand-simple-bar>
+              <count-card title="今日客流量" :count="this.user.num" :footer="{label: '近7天日均营收额:', value: this.user.avg }" :trend="{isUp: this.user.ratio > 0, rate: this.user.ratio }">
+                <brand-simple-bar color="#58CC99" class="mg-t40" :data="this.user | barFilter"></brand-simple-bar>
               </count-card>
             </div>
           </a-col>
@@ -131,12 +131,39 @@ import DashboardTabs from '@/views/pages/brand/dashboard#/tabs'
 import CountCard from '@/views/pages/brand/dashboard#/count-card'
 import PlugIn from '@/views/pages/brand/dashboard#/plug-in'
 import FunnelVertical from '@/views/components/chart#/funnel-vertical'
+import { DashboardService } from './dashboard.service'
 export default {
   name: 'Dashboard',
+  serviceInject() {
+    return {
+      dashBoardService: DashboardService
+    }
+  },
+  rxState() {
+    return {
+      top: this.dashBoardService.top$
+    }
+  },
   bem: {
     b: 'page-dashboard',
     bCount: 'page-dashboard-count',
     bAdv: 'page-dashboard-adv'
+  },
+  filters: {
+    lineFilter(val) {
+      return val.map((item, index) => {
+        return {
+          name: index,
+          value: item.num || 3
+        }
+      })
+    },
+    barFilter(val) {
+      return {
+        name: '会员占比',
+        percent: val.percent
+      }
+    }
   },
   data() {
     return {
@@ -148,7 +175,6 @@ export default {
       dataSimpleLine3: [],
       dataSimpleArea: [],
       dataSimpleBar: {},
-
       data1: [],
       data2: [],
       data3: [],
@@ -160,6 +186,20 @@ export default {
       data9: {},
       data10: [],
       data11: []
+    }
+  },
+  computed: {
+    order() {
+      return this.top.order
+    },
+    revenue() {
+      return this.top.revenue
+    },
+    user() {
+      return this.top.user
+    },
+    visit() {
+      return this.top.visit
     }
   },
   mounted() {
