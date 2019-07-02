@@ -282,7 +282,9 @@ export default {
   },
   mounted() {
     this.salePersonalCourseService.serviceInit(this.id).subscribe(result => {
-      this.form.setFieldsValue({ 'coach_level': this.info.coach_level[0].id })
+      setTimeout(() => {
+        this.form.setFieldsValue({ 'coach_level': this.info.coach_level[0].id })
+      })
     })
   },
   computed: {
@@ -495,7 +497,7 @@ export default {
           }
           this.salePersonalCourseService.getPersonalPriceInfo(params).subscribe(result => {
             this.isAmountDisabled = true
-            this.validEndTime = this.info.effective_unit
+            this.validEndTime = this.info.effective_unit * params.buy_num || 0
             // 调用优惠券列表
             this.fetchCouponList()
             // 调用获取商品原价
