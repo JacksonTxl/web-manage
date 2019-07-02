@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { State, Effect, Computed } from 'rx-state/src'
+import { State, Effect, Computed } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
 import { TeamScheduleReserveApi, AddReserveInput, CheckInput } from '@/api/v1/schedule/team/reserve'
 import { AuthService } from '@/services/auth.service'

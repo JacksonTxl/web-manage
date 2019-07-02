@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state/src'
+import { State, Computed, Effect } from 'rx-state'
 import { Store } from '@/services/store'
 import { tap, pluck } from 'rxjs/operators'
 import {

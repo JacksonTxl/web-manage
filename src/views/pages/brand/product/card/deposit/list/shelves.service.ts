@@ -1,5 +1,5 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
-import { State, Effect } from 'rx-state/src'
+import { State, Effect } from 'rx-state'
 import { CardsApi, CardShelfListInput, BrandCardShelfDownInput } from '@/api/v1/cards'
 import { tap } from 'rxjs/operators'
 import { ShopApi } from '@/api/v1/shop'

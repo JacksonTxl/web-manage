@@ -94,7 +94,7 @@
             >
             <!-- 售价 -->
             <template slot="sale_price" slot-scope="text,record">
-              {{record}}
+              {{record.sale_price}}
             </template>
             </a-table>
           </st-container>

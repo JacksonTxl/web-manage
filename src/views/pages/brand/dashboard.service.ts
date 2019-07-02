@@ -1,47 +1,32 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
+import { State, Computed } from 'rx-state/src'
 import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
-import { BrandApi, GetBrandIndexInput } from '@/api/v1/brand'
+import { StatApi } from '@/api/v1/stat/brand'
 
-interface DashboardState {
-  shopInfo: Array<Object>
-  page: Object
-  [propName: string]: any
+interface SetState{
+  top: object
 }
+
 @Injectable()
-export class DashboardService extends Store<DashboardState> {
-  state$: State<DashboardState>
-  shopInfo$: Computed<Array<Object>>
-  page$: Computed<Object>
-  constructor(private brandApi: BrandApi) {
-    super()
+export class DashboardService {
+  state$: State<SetState>
+  top$: Computed<object>
+  constructor(private statApi: StatApi) {
     this.state$ = new State({
-      shopInfo: [],
-      page: {}
+      top: {}
     })
-    this.shopInfo$ = new Computed(this.state$.pipe(pluck('shopInfo')))
-    this.page$ = new Computed(this.state$.pipe(pluck('page')))
+    this.top$ = new Computed(this.state$.pipe(pluck('top')))
   }
-  @Effect()
-  getBrands(data: GetBrandIndexInput = {}) {
-    return this.brandApi.getBrandIndex(data).pipe(
-      tap(res => {
-        this.SET_DASHBOARD_STATE(res)
+  getTop() {
+    return this.statApi.getTop().pipe(tap(res => {
+      this.state$.commit(state => {
+        state.top = res.info
       })
-    )
-  }
-  protected SET_DASHBOARD_STATE(data: DashboardState) {
-    this.state$.commit(state => {
-      state.shopInfo = data.shop_info
-      state.page = data.page
-    })
+    }))
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getBrands().subscribe(() => {
+    this.getTop().subscribe(res => {
       next()
-    }, () => {
-      next(false)
     })
   }
 }

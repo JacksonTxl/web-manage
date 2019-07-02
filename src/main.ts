@@ -10,6 +10,9 @@ import FullCalendar from 'vue-full-calendar'
 import VueBemHelper from '@/vendor/vue-bem-helper'
 // @ts-ignore
 import VueRxState from '@/vendor/vue-rx-state'
+// @ts-ignore
+import VueStyleguide from '@/vendor/vue-styleguide'
+
 import ICountUp from 'vue-countup-v2'
 // @ts-ignore
 import Viewer from 'v-viewer'
@@ -27,6 +30,9 @@ Vue.use(Antd)
 Vue.use(FullCalendar)
 Vue.use(Viewer)
 Vue.use(VueBemHelper)
+Vue.use(VueStyleguide, {
+  namespaces: ['st']
+})
 
 Vue.component(ICountUp.name, ICountUp)
 

@@ -1,6 +1,6 @@
 import { Injectable } from 'vue-service-app'
 import { CourseApi, EditCoursePackageInput } from '@/api/v1/sold/course'
-import { State, Effect } from 'rx-state/src'
+import { State, Effect } from 'rx-state'
 
 @Injectable()
 export class SurplusService {
