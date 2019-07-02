@@ -40,7 +40,7 @@
     :columns="columns"
     :dataSource="list"
     :pagination="{current:query.current_page,total:page.total_counts,pageSize:query.size}"
-    rowKey="id"
+    rowKey="shelf_id"
     >
       <!-- 售卖门店 -->
       <template slot="shop_name" slot-scope="text">
