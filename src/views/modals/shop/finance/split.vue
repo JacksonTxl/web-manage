@@ -151,16 +151,17 @@ export default {
       this.info.split_items[index].staff_name = this.getSaleManById(event).staff_name
     },
     validSaleMan(record) {
-      if (!this.info.split_items) {
+      if (!this.info.split_items || this.info.split_items.length >= 7) {
         return false
       }
       let percent = 0
       this.info.split_items.forEach(element => {
-        percent = percent + parseInt(record.split_ratio, 10)
+        percent = percent + parseInt(element.split_ratio || 0, 10)
         if (element.staff_id === record.staff_id) {
           return false
         }
       })
+      percent += parseInt(record.split_ratio, 10)
       if (percent > 100) {
         return false
       }
