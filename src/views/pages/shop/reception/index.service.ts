@@ -1,5 +1,5 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
-import { State, Effect, Action } from 'rx-state/src'
+import { State, Effect, Action } from 'rx-state'
 import { FrontApi, GetMemberListInput, SetEntranceInput, EditEntranceCabinetInput } from '@/api/v1/front'
 import { tap, debounceTime, switchMap, catchError } from 'rxjs/operators'
 import { forkJoin, EMPTY } from 'rxjs'

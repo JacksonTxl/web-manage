@@ -8,22 +8,26 @@
         </a-steps>
       </a-col>
     </a-row>
-    <set-course  v-show="currentIndex === 0" :info="info" @goNext="goNext"
-      @onCourseNameChange="onCourseNameChange" />
-    <set-shop-coach v-show="currentIndex === 1" :info="info" :courseName="courseName"
+    <set-team-course
+      v-show="currentIndex === 0"
+      from="brand"
+      :info="info"
+      @goNext="goNext"
+      @onCourseNameChange="onCourseNameChange"
+    />
+    <set-shop-coach
+      v-show="currentIndex === 1"
+      :info="info"
+      :courseName="courseName"
       :courseId="courseId" @goNext="goNext"
     />
   </st-panel>
 </template>
 <script>
-import SetCourse from './edit#/set-course'
-import SetShopCoach from './edit#/set-shop-coach'
+import SetTeamCourse from '@/views/fragments/course/team#/set-team-course'
+import SetShopCoach from '@/views/fragments/course/team#/set-shop-coach'
 import { EditService } from './edit.service'
 export default {
-  components: {
-    SetCourse, // 创建团体课程
-    SetShopCoach // 设置上课门店及教练
-  },
   serviceInject() {
     return {
       editService: EditService
@@ -64,6 +68,10 @@ export default {
       this.courseName = courseName
       console.log('courseName', courseName)
     }
+  },
+  components: {
+    SetTeamCourse,
+    SetShopCoach
   }
 }
 </script>

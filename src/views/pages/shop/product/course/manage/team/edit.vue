@@ -1,15 +1,12 @@
 <template>
   <st-panel app>
-    <set-course :info="info"/>
+    <set-team-course :info="info"/>
   </st-panel>
 </template>
 <script>
-import SetCourse from './edit#/set-course'
+import SetTeamCourse from '@/views/fragments/course/team#/set-team-course'
 import { EditService } from './edit.service'
 export default {
-  components: {
-    SetCourse
-  },
   serviceInject() {
     return {
       editService: EditService
@@ -19,6 +16,9 @@ export default {
     return {
       info: this.editService.info$
     }
+  },
+  components: {
+    SetTeamCourse
   }
 }
 </script>

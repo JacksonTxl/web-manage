@@ -4,13 +4,19 @@ export class ShopTeamCourseApi extends Api {
   /**
    * 添加品牌私教课
    */
-  addCourse(params: SetCourseInput) {
+  add(params: AddInput) {
     return this.http.post('/v1/course/team/shop', { params })
+  }
+  /**
+   * 编辑品牌私教课回显详情
+   */
+  getUpdateInfo(query: GetUpdateInfoInput) {
+    return this.http.get(`/v1/course/team/shop/edit/${query.course_id}`)
   }
   /**
    * 编辑品牌私教课
    */
-  updateCourse(params: SetCourseInput) {
+  update(params: UpdateInput) {
     return this.http.put(`/v1/course/team/shop/${params.course_id}`, { params })
   }
   /**
@@ -29,37 +35,12 @@ export class ShopTeamCourseApi extends Api {
   getTeamCourseInfo(course_id: string) {
     return this.http.get(`/v1/course/team/shop/${course_id}`)
   }
-  /**
-   * 设置上课门店
-   */
-  setShop(params: SetShopInput) {
-    return this.http.put(`/v1/course/team/shop/set/shop/${params.course_id}`, { params })
-  }
-  /**
-   * 编辑品牌私教课回显详情
-   */
-  getCourseEdit(query: GetCourseEditInput) {
-    return this.http.get(`/v1/course/team/shop/edit/${query.course_id}`)
-  }
 }
-export interface PutCourseTeamIntoBrandInput {
-  course_id: number,
-  shop_setting: number,
-  shop_ids: any[],
-  coach_ids?: any[]
-}
-export interface GetTeamBrandCourseListInput {
-  category_id?: number,
-  course_name?: string,
-  page?: number,
-  size?: number,
-  is_available?: number
-}
-export interface SetCourseInput {
-  /**
-   * 课程id
-   */
-  course_id: number
+
+/**
+ * 添加课程
+ */
+export interface AddInput {
   /**
    * 课程名称
    */
@@ -89,26 +70,32 @@ export interface SetCourseInput {
    */
   description: string
 }
-
-export interface SetShopInput {
+/**
+ * 编辑课程
+ */
+export interface UpdateInput extends AddInput {
   /**
    * 课程id
    */
-  course_id: number,
-  /**
-   * 上课门店 1为全店 2为指定门店
-   */
-  shop_setting: number,
-  /**
-   * 门店ID shop_setting为1时空
-   */
-  shop_id: any[],
-  /**
-   * 教练ID
-   */
-  coach_id?: any[]
+  course_id: number
+}
+/**
+ * 编辑课程回显信息
+ */
+export interface GetUpdateInfoInput {
+  course_id: number
 }
 
-export interface GetCourseEditInput {
-  course_id: number
+export interface PutCourseTeamIntoBrandInput {
+  course_id: number,
+  shop_setting: number,
+  shop_ids: any[],
+  coach_ids?: any[]
+}
+export interface GetTeamBrandCourseListInput {
+  category_id?: number,
+  course_name?: string,
+  page?: number,
+  size?: number,
+  is_available?: number
 }

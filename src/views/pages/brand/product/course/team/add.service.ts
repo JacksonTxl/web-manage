@@ -1,23 +1,12 @@
-import { Injectable } from 'vue-service-app'
-import { Effect } from 'rx-state/src'
-import { Store } from '@/services/store'
-import {
-  BrandTeamCourseApi,
-  SetCourseInput,
-  SetShopInput
-} from '@/api/v1/course/team/brand'
-interface AddState {}
+
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { SetBrandTeamCourseService } from '@/views/fragments/course/team#/set-brand-team-course.service'
 @Injectable()
-export class AddService extends Store<AddState> {
-  constructor(private courseApi: BrandTeamCourseApi) {
-    super()
+export class AddService implements RouteGuard {
+  constructor(private setCourseService: SetBrandTeamCourseService) {
   }
-  @Effect()
-  addCourse(params: SetCourseInput) {
-    return this.courseApi.addCourse(params)
-  }
-  @Effect()
-  setShop(params: SetShopInput) {
-    return this.courseApi.setShop(params)
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    console.log(1111111111)
+    return this.setCourseService.getUpdateInfo()
   }
 }

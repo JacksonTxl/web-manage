@@ -1,8 +1,8 @@
 import { Injectable } from 'vue-service-app'
 import { ContractApi } from '@/api/v1/setting/contract'
 import { Store } from '@/services/store'
-import { Effect } from 'rx-state/src'
-import { SN_RULE, SN_GENERATE_RULE } from '@/constants/enums/contract'
+import { Effect } from 'rx-state'
+import { SN_RULE, SN_GENERATE_RULE } from '@/constants/contract/enums'
 import { RouteService } from '@/services/route.service'
 
 interface ViewRule {

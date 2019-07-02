@@ -3,7 +3,7 @@ import { forkJoin, timer } from 'rxjs'
 import { PersonalScheduleCommonService as CommonService } from './personal.service#/common.service'
 import { PersonalScheduleReserveService } from './personal.service#/reserve.service'
 import { AuthService } from '@/services/auth.service'
-import { State, Computed } from 'rx-state/src'
+import { State, Computed } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 @Injectable()
 export class PersonalService implements RouteGuard {

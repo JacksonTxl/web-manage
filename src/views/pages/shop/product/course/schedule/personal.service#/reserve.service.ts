@@ -1,6 +1,6 @@
 
 import { Injectable } from 'vue-service-app'
-import { State, Effect, Computed } from 'rx-state/src'
+import { State, Effect, Computed } from 'rx-state'
 import { tap, pluck, switchMap } from 'rxjs/operators'
 import { PersonalReserveApi, AddInput, GetListQuery } from '@/api/v1/schedule/personal/reserve'
 import { AuthService } from '@/services/auth.service'

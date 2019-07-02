@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { State, Effect } from 'rx-state/src'
+import { State, Effect } from 'rx-state'
 import { FrontApi, AddWorkNotesInput } from '@/api/v1/front'
 
 @Injectable()
