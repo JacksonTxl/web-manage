@@ -140,6 +140,7 @@ export default {
       this.$modalRouter.push({
         name: 'sold-course-transfer',
         props: {
+          type: 'package',
           id: this.infoService.id
         },
         on: {
