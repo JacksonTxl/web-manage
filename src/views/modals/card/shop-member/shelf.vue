@@ -199,7 +199,7 @@
           :notFoundContent="loading.getCourseList ? undefined : null"
         >
           <a-spin v-if="loading.getCourseList" slot="notFoundContent" size="small"/>
-          <a-select-option v-for="d in courseData" :key="d.course_id">{{d.course_name}}</a-select-option>
+          <a-select-option v-for="d in courseData" :key="d.id">{{d.name}}</a-select-option>
         </a-select>
       </st-form-item>
       <div v-if="!moreIsShow" :class="shelves('show-more')" class="mg-b18" >
