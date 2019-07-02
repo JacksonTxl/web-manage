@@ -294,6 +294,7 @@ export default {
       this.selectedNorm = event.target.value
       this.fetchCouponList()
       this.getPrice()
+      this.validEndTime = moment(this.validStartTime).add(event.target.value.valid_time, 'days').format('YYYY-MM-DD HH:mm')
     },
     // 开卡方式发生改变
     onChangePayment(event) {
