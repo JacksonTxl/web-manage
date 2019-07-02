@@ -338,7 +338,7 @@ export default {
           }).subscribe(res => {
             // 新增成功
             this.$router.push({
-              path: '/shop/product/card/member/list/all'
+              name: 'shop-product-card-member-list-all'
             })
           })
         }

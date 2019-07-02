@@ -99,6 +99,7 @@
       <template slot="sell_status" slot-scope="text,record">
         <a-badge :status="text.id === 1?'success':'error'" />{{text.name}}
         <a-popover
+          v-if="record.stop_sale"
           :title="`操作人:${record.stop_sale.operator_name}  操作时间:${record.stop_sale.stop_time}`"
           trigger="click"
           placement="bottomRight"

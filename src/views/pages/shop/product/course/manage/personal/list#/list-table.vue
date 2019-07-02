@@ -82,7 +82,7 @@ export default {
 
     },
     onConfirmDeleteCourse(record) {
-      this.$emit('delete-course', record)
+      this.$emit('delete-course', record.course_id)
     },
     onConfirmSetAvailable(record) {
       this.$emit('set-available', record)

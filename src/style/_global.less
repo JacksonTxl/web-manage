@@ -1,0 +1,61 @@
+::-webkit-scrollbar {
+  .w(6px);
+}
+::-webkit-scrollbar:horizontal {
+  .h(6px);
+}
+
+::-webkit-scrollbar-track {
+  .bg(@white);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+
+#nprogress .bar {
+  background-color: lighten(@primary-color, 0.3);
+  box-shadow: 0 0 10px rgba(lighten(@primary-color, 0.3), 0.7);
+  height: 3px;
+}
+
+
+.page-shop-add-basic-package__personal-dropdown,
+.page-shop-info-basic-package__personal-dropdown {
+  position: relative;
+  padding: 8px 0 43px;
+  background: @white;
+  box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  &:not(.all) {
+    padding-bottom: 8px;
+  }
+}
+// 课程包dropdown组件样式
+.personal-course-coach-grade-dropdown {
+  display: inline-block;
+  position: relative;
+  min-width: 111px;
+  max-height: 161px;
+  li {
+    padding: 8px 12px;
+    &:hover {
+      .bg(@dropdown-hover-bg-color);
+      .c(@primary-color);
+    }
+  }
+  &-button {
+    position: absolute;
+    height: 48px;
+    .lh(48px);
+    border-top: 1px solid @divider;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 12px;
+    text-align: right;
+    .bg(@white);
+  }
+}

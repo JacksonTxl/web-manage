@@ -370,7 +370,7 @@ export default {
           this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
           this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
           this.addPackageService.add(this.packageData).subscribe(res => {
-            console.log(res)
+            this.$router.push({ path: '/shop/product/course/manage/package/list' })
           })
         }
       })
@@ -389,7 +389,7 @@ export default {
           this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
           this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
           this.addPackageService.addAndOnsale(this.packageData).subscribe(res => {
-            console.log(res)
+            this.$router.push({ path: '/shop/product/course/manage/package/list' })
           })
         }
       })

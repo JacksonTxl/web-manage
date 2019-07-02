@@ -518,7 +518,6 @@ export default {
     },
     // 获取订单总额
     getOrderPrice() {
-      console.log(111)
       let special_amount = this.personalPrice.sell_price
       if (this.info.sale_model === 1) {
         special_amount = this.form.getFieldValue('coursePrice')

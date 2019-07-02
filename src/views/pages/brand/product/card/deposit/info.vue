@@ -39,9 +39,9 @@
           <!-- 支持入场范围 -->
           <p class="mb-8">
             <span class="label">支持消费门店：</span>
-            <span class="value">{{cardInfo.consumption_range | enumFilter('deposit_card.consumption_range')}}</span>
+            <span class="value">共{{cardInfo.can_use_shop_num}}家门店</span>
           </p>
-          <st-container v-if="cardInfo.consumption_range===2">
+          <st-container v-if="cardInfo.can_use_shop_num!==1">
             <a-table
               size="middle"
               rowKey="shop_id"

@@ -8,7 +8,9 @@
       <thead>
         <tr>
           <th>教练等级</th>
-          <th>标记员工数</th>
+          <th>关联教练数</th>
+          <th>关联薪资模板数</th>
+          <th>关联课程定价数</th>
           <th>创建人</th>
           <th>最后修改时间</th>
           <th>操作</th>
@@ -16,7 +18,7 @@
       </thead>
       <tbody>
         <tr v-if="auth.add">
-          <td colspan="5" class="st-form-table__add">
+          <td colspan="7" class="st-form-table__add">
             <modal-link tag="a" :to="{ name: 'coach-level-add', on: {
               change: onListChange } }">
               <st-button type="dashed" block :disabled="resData.total >= resData.max">添加教练等级</st-button>
@@ -26,6 +28,8 @@
         <tr v-for="(item, index) in resData.list" :key="index">
           <td>{{item.setting_name}}</td>
           <td>{{item.used_number}}</td>
+          <td>{{item.salary_template}}</td>
+          <td>{{item.class_price}}</td>
           <td>{{item.operator_name}}</td>
           <td>{{item.updated_time}}</td>
           <td>

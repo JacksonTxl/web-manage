@@ -4,11 +4,16 @@ const globby = require('globby')
 const Path = require('path')
 const Fse = require('fs-extra')
 const spawn = require('cross-spawn')
+const gulpLess = require('gulp-less')
+const gulpHash = require('gulp-hash-filename')
+const LessNpmImport = require('less-plugin-npm-import')
+const LessCleanCss = require('less-plugin-clean-css')
 
 gulp.task('route', done => {
   RouteTask.run('init', 'init')
   done()
 })
+
 gulp.task('route:watch', () => {
   gulp
     .watch(['./src/views/pages/**/*.vue', './src/views/pages/**/*.service.ts'])
@@ -23,7 +28,33 @@ gulp.task('route:watch', () => {
     })
 })
 
-gulp.task('less', () => {
+// 构建基础主题样式css
+gulp.task('less-base', () => {
+  return gulp
+    .src('./src/style/antd.less')
+    .pipe(
+      gulpLess({
+        javascriptEnabled: true,
+        plugins: [
+          new LessNpmImport({
+            prefix: '~'
+          }),
+          new LessCleanCss({
+            format: 'keep-breaks',
+            compatibility: 'ie8'
+          })
+        ]
+      })
+    )
+    .pipe(
+      gulpHash({
+        format: '{name}.{hash:5}{ext}'
+      })
+    )
+    .pipe(gulp.dest('./public/style'))
+})
+
+gulp.task('less-views', () => {
   const lessFiles = globby.sync('./src/views/**/*.less')
   const basePath = Path.resolve('./src')
 
@@ -38,7 +69,7 @@ gulp.task('less', () => {
   return Fse.outputFile('./src/style/_views.less', distLessContent)
 })
 
-gulp.task('less:watch', () => {
+gulp.task('less-views:watch', () => {
   gulp
     .watch('./src/views/**/*.less')
     .on('add', () => {
@@ -57,7 +88,9 @@ gulp.task('serve', () => {
 
 gulp.task(
   'dev',
-  gulp.parallel(['route', 'route:watch', 'less', 'less:watch', 'serve'])
+  gulp.series(
+    ['route', 'less-views'],
+    gulp.parallel(['serve', 'route:watch', 'less-views:watch'])
+  )
 )
-
-gulp.task('build', gulp.series(['route', 'less']))
+gulp.task('build', gulp.series(['route', 'less-views']))

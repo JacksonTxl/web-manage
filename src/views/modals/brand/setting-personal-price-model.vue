@@ -19,7 +19,7 @@
         </div>
         <!-- 教练分级定价 -->
         <div class="mg-t4" v-if="info.price_model === 2">
-          教练分级定价<span class="st-des">（教练分级定价每一个私教课程，按教练等级进行差异化定价）</span>
+          教练分级定价<span class="st-des">（每一个私教课程，按教练等级进行差异化定价）</span>
         </div>
         <!-- 私教课程售卖模式 -->
         <st-t4 class="mg-t24">私教课程售卖模式</st-t4>
