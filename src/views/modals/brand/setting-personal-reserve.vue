@@ -80,7 +80,7 @@
               >{{item}}
               </a-select-option>
             </a-select>
-            <span class="mg-l8" >允许签到</span>
+            <span class="mg-l8">允许签到，员工代签到不受此限制</span>
           </div>
         </st-form-item>
         <!-- 自动签到 -->

@@ -581,7 +581,9 @@ export default {
           // 卡id
           this.cardData.id = +this.$route.query.id
           this.editService.editCard(this.cardData).subscribe(res => {
-            console.log(res)
+            this.$router.push({
+              name: 'brand-product-card-member-list-all'
+            })
           })
         }
       })

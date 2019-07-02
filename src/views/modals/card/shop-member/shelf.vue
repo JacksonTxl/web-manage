@@ -199,7 +199,7 @@
           :notFoundContent="loading.getCourseList ? undefined : null"
         >
           <a-spin v-if="loading.getCourseList" slot="notFoundContent" size="small"/>
-          <a-select-option v-for="d in courseData" :key="d.course_id">{{d.course_name}}</a-select-option>
+          <a-select-option v-for="d in courseData" :key="d.id">{{d.name}}</a-select-option>
         </a-select>
       </st-form-item>
       <div v-if="!moreIsShow" :class="shelves('show-more')" class="mg-b18" >
@@ -391,8 +391,8 @@ export default {
       }
     },
     getCourseList(search) {
-      let params = { type: 'team', search }
-      this.shelfService.courseListAction$.dispatch(params)
+      let query = { course_name: search }
+      this.shelfService.courseListAction$.dispatch(query)
     },
     // 检验约课权益是否输入正确
     checkedCourseInterests() {

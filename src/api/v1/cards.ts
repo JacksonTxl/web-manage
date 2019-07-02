@@ -33,6 +33,9 @@ export interface ListPageInput {
   current_page:number
   size:number
 }
+export interface CourseTeamShelfListInput {
+  course_name?: string
+}
 export class CardsApi extends Api {
   /**
    * 卡已上架列表
@@ -177,6 +180,12 @@ export class CardsApi extends Api {
    */
   setCardsDepositShelf(id:string, type:string) {
     return this.http.put(`/v1/cards/deposit/${type}/shelf/${id}`)
+  }
+  /**
+   * 上架会员卡团体课列表
+   */
+  getCourseTeamShelfList(query:CourseTeamShelfListInput, type:string) {
+    return this.http.get(`/v1/course/team/${type}/shelf`, { query })
   }
 }
 export interface CardsInput {

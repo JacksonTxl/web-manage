@@ -8227,11 +8227,7 @@ less-plugin-glob@^3.0.0:
 
 less-plugin-npm-import@^2.1.0:
   version "2.1.0"
-<<<<<<< HEAD
-  resolved "http://registry.npm.taobao.org/less-plugin-npm-import/download/less-plugin-npm-import-2.1.0.tgz#823e6986c93318a98171ca858848b6bead55bf3e"
-=======
   resolved "https://registry.npm.taobao.org/less-plugin-npm-import/download/less-plugin-npm-import-2.1.0.tgz#823e6986c93318a98171ca858848b6bead55bf3e"
->>>>>>> m1
   integrity sha1-gj5phskzGKmBccqFiEi2vq1Vvz4=
   dependencies:
     promise "~7.0.1"

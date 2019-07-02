@@ -283,7 +283,9 @@ export default {
           this.editService
             .edit(this.$route.meta.query.id, this.shopData)
             .subscribe(() => {
-              // 修改门店
+              this.$router.push({
+                name: 'brand-setting-shop-list'
+              })
             })
         } else {
         }

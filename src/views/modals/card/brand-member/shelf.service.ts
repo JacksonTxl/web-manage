@@ -1,8 +1,7 @@
 import { Injectable } from 'vue-service-app'
 import { State, Effect, Action } from 'rx-state/src'
-import { CardsApi } from '@/api/v1/cards'
+import { CardsApi, CourseTeamShelfListInput } from '@/api/v1/cards'
 import { tap, debounceTime, switchMap, catchError } from 'rxjs/operators'
-import { PackageApi, GetCourseInput } from '@/api/v1/course/package'
 import { EMPTY } from 'rxjs'
 
 @Injectable()
@@ -11,11 +10,11 @@ export class ShelfService {
   loading$ = new State({})
   courseListAction$: Action<any>
   courseList$ = new State([])
-  constructor(private cardApi: CardsApi, private packageApi: PackageApi) {
+  constructor(private cardApi: CardsApi) {
     this.courseListAction$ = new Action(data$ => {
       return data$.pipe(
         debounceTime(200),
-        switchMap((params:GetCourseInput) => this.getCourseList(params).pipe(catchError(() => EMPTY))),
+        switchMap((query:CourseTeamShelfListInput) => this.getCourseList(query).pipe(catchError(() => EMPTY))),
         tap(res => {
           this.courseList$.commit(() => res.list)
         })
@@ -28,8 +27,8 @@ export class ShelfService {
     }))
   }
   @Effect()
-  getCourseList(params:GetCourseInput) {
-    return this.packageApi.getCourseList(params)
+  getCourseList(query:CourseTeamShelfListInput) {
+    return this.cardApi.getCourseTeamShelfList(query, 'brand')
   }
   resetCourseList() {
     this.courseList$.commit(() => [])

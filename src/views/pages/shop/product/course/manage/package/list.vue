@@ -69,10 +69,11 @@
       okText="确认上架"
       @ok="onOnsale"
       :confirmLoading="loading.onsalePackage"
+      wrapClassName="modal-shop-product-course-package"
       v-model='onsaleIsShow'>
         <st-form :form="form" labelWidth="96px">
           <st-form-item label="课程包名称">{{`aaaa`}}</st-form-item>
-          <st-form-item label="支持售卖时间" required>
+          <st-form-item label="支持售卖时间" class="mg-b0" required>
             <div :class="listClass('saletime')">
               <a-form-item class="page-a-form">
                 <a-date-picker
@@ -108,6 +109,7 @@
       size="small"
       okText="确认下架"
       @ok="onOffsale"
+      wrapClassName="modal-shop-product-course-package"
       :confirmLoading="loading.offsalePackage"
       v-model='offsaleIsShow'>
       确认下架{{packageName}}？
@@ -116,6 +118,7 @@
       title="删除课程包"
       size="small"
       okText="确认删除"
+      wrapClassName="modal-shop-product-course-package"
       @ok="onDelete"
       :confirmLoading="loading.deletePackage"
       v-model='deleteIsShow'>
@@ -356,6 +359,7 @@ export default {
           this.onsaleIsShow = false
           this.packageId = ''
           this.packageName = ''
+          this.$router.push({ query: this.query, force: true })
         })
       }).catch(error => {
         console.log(error)

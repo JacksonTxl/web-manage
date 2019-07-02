@@ -16,10 +16,12 @@
       <st-form-item label="起始编号" required>
         <a-input placeholder="请输入起始编号" v-decorator="ruleConfig.startNum"/>
       </st-form-item>
-      <st-form-item label="数量" required>
-        <st-input-number placeholder="请输入数量" v-decorator="ruleConfig.num"/>
+      <st-form-item label="柜子数量" required>
+        <st-input-number placeholder="请输入数量" v-decorator="ruleConfig.num">
+          <template slot="addonAfter">个</template>
+        </st-input-number>
       </st-form-item>
-      <st-form-item label="排列方式" required>
+      <st-form-item label="递增方式" required>
         <a-radio-group
           v-decorator="ruleConfig.sortType"
         >

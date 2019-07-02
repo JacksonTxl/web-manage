@@ -339,7 +339,7 @@ export default {
           this.cardData.card_id = +this.$route.query.id
           this.editService.editCard(this.cardData).subscribe(res => {
             this.$router.push({
-              path: '/shop/product/card/deposit/list/all'
+              name: 'shop-product-card-deposit-list-all'
             })
           })
         }
