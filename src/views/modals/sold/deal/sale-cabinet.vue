@@ -184,6 +184,7 @@ import { SaleCabinetService } from './sale-cabinet.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
+import { RuleConfig } from '@/constants/rule'
 export default {
   name: 'ModalSoldDealSaleCabinet',
   bem: {
@@ -191,7 +192,8 @@ export default {
   },
   serviceInject() {
     return {
-      saleCabinetService: SaleCabinetService
+      saleCabinetService: SaleCabinetService,
+      rules: RuleConfig
     }
   },
   rxState() {

@@ -144,6 +144,7 @@ import { SaleDepositCardService } from './sale-deposit-card.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
+import { RuleConfig } from '@/constants/rule'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -151,6 +152,7 @@ export default {
   },
   serviceInject() {
     return {
+      rules: RuleConfig,
       saleDepositCardService: SaleDepositCardService
     }
   },
