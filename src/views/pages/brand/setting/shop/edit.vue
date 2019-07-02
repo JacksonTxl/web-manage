@@ -139,6 +139,7 @@ import { RuleConfig } from '@/constants/rule'
 import { EditService } from './edit.service'
 import { cloneDeep } from 'lodash-es'
 export default {
+  name: 'EditShopSetting',
   serviceInject() {
     return {
       rules: RuleConfig,
