@@ -16,6 +16,7 @@ export class CommodityInfoService implements RouteGuard {
     }))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next:()=>{}) {
+    console.log(to)
     this.getInfo(to.meta.query.id, to.meta.query.type).subscribe(() => {
       next()
     })

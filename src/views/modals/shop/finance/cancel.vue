@@ -34,7 +34,7 @@
            <st-info>
             <st-info-item label="购买">{{info.product_name}}</st-info-item>
             <st-info-item label="订单总额">{{info.total_price}}元</st-info-item>
-            <st-info-item  label="实收金额">{{info.actual_price}}元</st-info-item>
+            <st-info-item label="实收金额">{{info.actual_price}}元</st-info-item>
           </st-info>
         </a-col>
 
