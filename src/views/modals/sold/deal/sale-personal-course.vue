@@ -55,7 +55,7 @@
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
           <st-form-item label="规格" required v-if="info.price_model === 2">
-            <a-radio-group v-decorator="['coach_level',{rules:[{validator: coach_level}]}]">
+            <a-radio-group v-decorator="['coach_level',{rules:[{validator: coach_level}]}]" @change="changeSpeics">
               <a-radio v-for="(item, index) in info.coach_level" :value="item.id" :key="index">{{item.name}}</a-radio>
             </a-radio-group>
           </st-form-item>
@@ -64,7 +64,7 @@
               <a-input-number class="input-number"
               :max="9999"
               v-decorator="['buyNum',{rules:[{validator:buy_num}]}]"
-              placeholder="请输入购买数量" :disabled="isAmountDisabled" :loading="loading.getPersonalPriceInfo" ></a-input-number>
+              placeholder="请输入购买数量" :disabled="isAmountDisabled" ></a-input-number>
               <st-button class="create-button" @click="onClickCourseAmount" :loading="loading.getPersonalPriceInfo" v-if="!isAmountDisabled">确定</st-button>
               <st-button class="create-button" @click="isAmountDisabled=false;" v-else>编辑</st-button>
             </div>
@@ -305,6 +305,16 @@ export default {
     }
   },
   methods: {
+    changeSpeics(event) {
+      this.isAmountDisabled = false
+      this.form.resetFields(['buyNum', 'coachId'])
+      this.personalPrice.sell_price = 0
+      this.personalPrice.min_sell_price = 0
+      this.personalPrice.max_sell_price = 0
+      this.validEndTime = 0
+      this.priceInfo = 0
+      this.orderAmountPrice = 0
+    },
     fetchCouponList() {
       const member_id = this.form.getFieldValue('memberId')
       const course_price = this.personalPrice.sell_price
