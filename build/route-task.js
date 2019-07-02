@@ -4,8 +4,18 @@ const _ = require('lodash')
 const chalk = require('chalk')
 const log = console.log
 
-const PAGES_PATH = ['./src/views/pages/**/*.vue']
-const SERVICES_PATH = ['./src/views/pages/**/*.service.ts']
+const PAGES_PATH = [
+  './src/views/pages/**/*.vue',
+  './src/views/pages/*.vue',
+  './src/views/pages/account/**/*.vue',
+  './src/views/pages/test/**/*.vue'
+]
+const SERVICES_PATH = [
+  // './src/views/pages/**/*.service.ts'
+  './src/views/pages/*.service.ts',
+  './src/views/pages/account/**/*.service.ts',
+  './src/views/pages/test/**/*.service.ts'
+]
 const MODEL_PATH = './build/tpl.ejs'
 const ROUTES_PATH = './src/router/auto-generated-routes.ts'
 
@@ -51,10 +61,17 @@ const getPageService = services => {
   services.forEach(keyPath => {
     const parsed = parse(keyPath)
     let exportedService = _.camelCase(`--${parsed.name.replace('.', '-')}--`)
-    let asExportedService = _.camelCase(`--${parsed.entry_dash.replace('.', '-')}--`)
-    const chunkName = _.camelCase(`--Page${`-${parsed.component}--`}`).replace('Service', '')
-    exportedService = exportedService[0].toUpperCase() + exportedService.slice(1)
-    asExportedService = asExportedService[0].toUpperCase() + asExportedService.slice(1)
+    let asExportedService = _.camelCase(
+      `--${parsed.entry_dash.replace('.', '-')}--`
+    )
+    const chunkName = _.camelCase(`--Page${`-${parsed.component}--`}`).replace(
+      'Service',
+      ''
+    )
+    exportedService =
+      exportedService[0].toUpperCase() + exportedService.slice(1)
+    asExportedService =
+      asExportedService[0].toUpperCase() + asExportedService.slice(1)
     serviceMap[parsed.entry_dash.replace('.service', '')] = asExportedService
     importServiceArray.push({
       chunkName,
@@ -66,8 +83,12 @@ const getPageService = services => {
   return { importServiceArray, serviceMap }
 }
 const createRoute = () => {
-  const pages = globby.sync(PAGES_PATH).filter(item => !item.includes('#') && !item.includes('/components'))
-  const services = globby.sync(SERVICES_PATH).filter(item => !item.includes('#'))
+  const pages = globby
+    .sync(PAGES_PATH)
+    .filter(item => !item.includes('#') && !item.includes('/components'))
+  const services = globby
+    .sync(SERVICES_PATH)
+    .filter(item => !item.includes('#'))
   const importArr = []
   const pageMap = {}
   const pageRoutes = []
