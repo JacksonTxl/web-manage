@@ -53,10 +53,10 @@
               {{text | enumFilter('sold.course_status')}}
             </template>
             <template slot="course_end_time" slot-scope="text">
-              {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
+              {{moment(text).format('YYYY-MM-DD HH:mm')}}
             </template>
             <template slot="course_buy_time" slot-scope="text">
-              {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
+              {{moment(text).format('YYYY-MM-DD HH:mm')}}
             </template>
             <div slot="action" slot-scope="text,record">
               <a v-if="record.auth['shop:sold:sold_package_course|get']" @click="onDetail(record)">详情</a>
@@ -178,7 +178,7 @@ export default {
       let data = {
         id: record.id,
         courseName: record.course_name,
-        time: `${moment(record.course_buy_time * 1000).format('YYYY-MM-DD HH:mm')} 至 ${moment(record.course_end_time * 1000).format('YYYY-MM-DD HH:mm')}`
+        time: `${moment(record.course_buy_time).format('YYYY-MM-DD HH:mm')} 至 ${moment(record.course_end_time).format('YYYY-MM-DD HH:mm')}`
       }
       this.$modalRouter.push({
         name: 'sold-course-surplus',
@@ -203,26 +203,25 @@ export default {
           id: record.id,
           courseName: record.course_name,
           courseNum: record.remain_course_num,
-          courseEndTime: moment(record.course_end_time * 1000),
-          time: `${moment(record.course_buy_time * 1000).format('YYYY-MM-DD HH:mm')} 至 ${moment(record.course_end_time * 1000).format('YYYY-MM-DD HH:mm')}`
+          courseEndTime: moment(record.course_end_time),
+          time: `${moment(record.course_buy_time).format('YYYY-MM-DD HH:mm')} 至 ${moment(record.course_end_time).format('YYYY-MM-DD HH:mm')}`
         },
         on: {
-          success() {
-            that.$router.push({ force: true, query: that.query })
+          success: () => {
+            this.$router.push({ force: true, query: { ...this.query } })
           }
         }
       })
     },
     // 取消冻结
     onUnfreeze(record) {
-      let that = this
       this.$confirm({
         title: '提示',
         content: '是否取消冻结？',
         maskClosable: true,
-        onOk() {
-          return that.packageService.unFreeze(record.id).toPromise().then(() => {
-            that.$router.push({ force: true, query: that.query })
+        onOk: () => {
+          this.packageService.unFreeze(record.id).toPromise().then(() => {
+            this.$router.push({ force: true, query: this.query })
           })
         }
       })
