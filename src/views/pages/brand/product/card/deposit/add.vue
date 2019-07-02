@@ -3,7 +3,7 @@
     <div class="page-brand-basic-card-body">
       <!-- <div class="page-preview">实时预览{{deposit_card}}</div> -->
       <div class="page-content">
-        <st-form :form="form" labelWidth="116px">
+        <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8">
             <a-col :lg="16">
               <st-form-item class="page-content-card-line" label="储值卡名称" required>
