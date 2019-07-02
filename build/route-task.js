@@ -5,16 +5,16 @@ const chalk = require('chalk')
 const log = console.log
 
 const PAGES_PATH = [
-  './src/views/pages/**/*.vue',
-  './src/views/pages/*.vue',
-  './src/views/pages/account/**/*.vue',
-  './src/views/pages/test/**/*.vue'
+  './src/views/pages/**/*.vue'
+  // './src/views/pages/*.vue',
+  // './src/views/pages/account/**/*.vue',
+  // './src/views/pages/test/**/*.vue'
 ]
 const SERVICES_PATH = [
-  // './src/views/pages/**/*.service.ts'
-  './src/views/pages/*.service.ts',
-  './src/views/pages/account/**/*.service.ts',
-  './src/views/pages/test/**/*.service.ts'
+  './src/views/pages/**/*.service.ts'
+  // './src/views/pages/*.service.ts',
+  // './src/views/pages/account/**/*.service.ts',
+  // './src/views/pages/test/**/*.service.ts'
 ]
 const MODEL_PATH = './build/tpl.ejs'
 const ROUTES_PATH = './src/router/auto-generated-routes.ts'
