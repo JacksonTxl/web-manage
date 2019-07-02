@@ -1,5 +1,5 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
-import { State, Effect } from 'rx-state/src'
+import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { OrderApi } from '@/api/v1/finance/order'
 import { TransactionApi } from '@/api/v1/sold/transaction'
@@ -16,6 +16,7 @@ export class CommodityInfoService implements RouteGuard {
     }))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next:()=>{}) {
+    console.log(to)
     this.getInfo(to.meta.query.id, to.meta.query.type).subscribe(() => {
       next()
     })

@@ -1,6 +1,6 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
-import { State, Computed, Effect } from 'rx-state/src'
+import { State, Computed, Effect } from 'rx-state'
 import { Store } from '@/services/store'
 import { TemporaryCabinetApi } from '@/api/v1/setting/cabinet/temporary'
 import { LongTermCabinetApi } from '@/api/v1/setting/cabinet/long-term'

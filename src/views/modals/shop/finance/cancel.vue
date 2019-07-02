@@ -34,14 +34,14 @@
            <st-info>
             <st-info-item label="购买">{{info.product_name}}</st-info-item>
             <st-info-item label="订单总额">{{info.total_price}}元</st-info-item>
-            <st-info-item  label="实收金额">{{info.pay_price}}元</st-info-item>
+            <st-info-item label="实收金额">{{info.actual_price}}元</st-info-item>
           </st-info>
         </a-col>
 
         <a-col :span="11" class="mgb-36">
           <st-info>
             <st-info-item  label="赠送">{{info.gift_amount}}</st-info-item>
-            <st-info-item label="应收金额">{{info.should_price}}元</st-info-item>
+            <st-info-item label="应收金额">{{info.pay_price}}元</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="24" class="mgb-36">

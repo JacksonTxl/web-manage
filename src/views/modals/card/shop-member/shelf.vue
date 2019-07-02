@@ -199,7 +199,7 @@
           :notFoundContent="loading.getCourseList ? undefined : null"
         >
           <a-spin v-if="loading.getCourseList" slot="notFoundContent" size="small"/>
-          <a-select-option v-for="d in courseData" :key="d.course_id">{{d.course_name}}</a-select-option>
+          <a-select-option v-for="d in courseData" :key="d.id">{{d.name}}</a-select-option>
         </a-select>
       </st-form-item>
       <div v-if="!moreIsShow" :class="shelves('show-more')" class="mg-b18" >
@@ -391,8 +391,8 @@ export default {
       }
     },
     getCourseList(search) {
-      let params = { type: 'team', search }
-      this.shelfService.courseListAction$.dispatch(params)
+      let query = { course_name: search }
+      this.shelfService.courseListAction$.dispatch(query)
     },
     // 检验约课权益是否输入正确
     checkedCourseInterests() {
@@ -431,20 +431,20 @@ export default {
     // 格式化价格
     formatSpecs() {
       this.specs = []
-      if (this.info.price_setting === 1) {
-        // 无价格范围
-        this.priceList.forEach(i => {
-          this.specs.push({
-            specs_id: i.spec_id,
-            price: i.rally_price
-          })
-        })
-      } else {
+      if (this.info.publish_channel === 1 && this.info.price_setting === 2) {
         // 有价格范围
         this.priceList.forEach(i => {
           this.specs.push({
             specs_id: i.spec_id,
             price: i.priceInputValue
+          })
+        })
+      } else {
+        // 无价格范围,发布渠道为2是门店，一定是无范围的
+        this.priceList.forEach(i => {
+          this.specs.push({
+            specs_id: i.spec_id,
+            price: i.rally_price
           })
         })
       }

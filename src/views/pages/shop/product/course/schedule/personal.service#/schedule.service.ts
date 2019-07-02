@@ -1,7 +1,7 @@
 import { UpdateInput } from './../../../../../../../api/v1/schedule/personal/reserve'
 import { PersonalScheduleListQuery, GetScheduleListInput, UpdateScheduleInput, AddScheduleInBatchInput, AddScheduleInput, CopyInput } from './../../../../../../../api/v1/schedule/personal/schedule'
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Effect, Computed } from 'rx-state/src'
+import { State, Effect, Computed } from 'rx-state'
 import { tap, pluck, switchMap } from 'rxjs/operators'
 import { TeamScheduleScheduleApi } from '@/api/v1/schedule/team/schedule'
 import { bindCallback } from 'rxjs'

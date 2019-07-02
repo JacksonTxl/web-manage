@@ -58,7 +58,7 @@ import { CodeEditService } from './code-edit.service'
 import { MessageService } from '@/services/message.service'
 import { cloneDeep } from 'lodash-es'
 import { UserService } from '@/services/user.service'
-import { SN_RULE } from '@/constants/enums/contract'
+import { SN_RULE } from '@/constants/contract/enums'
 
 export default {
   props: {

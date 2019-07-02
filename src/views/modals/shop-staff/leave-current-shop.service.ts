@@ -2,7 +2,7 @@ import { Injectable } from 'vue-service-app'
 import { ShopStaffApi } from '@/api/v1/staff/staff'
 import { tap, pluck } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
-import { State, Computed } from 'rx-state/src'
+import { State, Computed } from 'rx-state'
 
 export interface SetState {
   list: object[],

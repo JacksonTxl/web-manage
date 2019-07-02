@@ -1,5 +1,5 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
-import { State, Effect } from 'rx-state/src'
+import { State, Effect } from 'rx-state'
 import { CardApi } from '@/api/v1/sold/cards'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'

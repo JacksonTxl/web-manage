@@ -7,7 +7,7 @@ import {
   PersonalTeamScheduleCommonService
 } from './personal-team.service#/common.service'
 import { AuthService } from '@/services/auth.service'
-import { State, Computed } from 'rx-state/src'
+import { State, Computed } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 
 @Injectable()

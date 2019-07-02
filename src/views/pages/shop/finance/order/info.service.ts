@@ -1,5 +1,5 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
-import { State, Effect, Computed } from 'rx-state/src'
+import { State, Effect, Computed } from 'rx-state'
 import { OrderApi } from '@/api/v1/finance/order'
 import { tap, pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
@@ -81,9 +81,14 @@ export class InfoService extends Store<SetState> implements RouteGuard {
       return orderType
     }
     beforeEach(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
+      const routeName = to.name
       this.id = to.meta.query.id
-      this.getInfo(to.meta.query.id).subscribe(res => {
+      if (routeName === 'shop-finance-order-info-collection-details') {
+        this.getInfo(to.meta.query.id).subscribe(res => {
+          next()
+        })
+      } else {
         next()
-      })
+      }
     }
 }

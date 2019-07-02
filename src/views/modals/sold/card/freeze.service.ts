@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { State, Effect } from 'rx-state/src'
+import { State, Effect } from 'rx-state'
 import { CardApi, FreezeCardInput } from '@/api/v1/sold/cards'
 import { tap } from 'rxjs/operators'
 

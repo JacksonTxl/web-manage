@@ -220,6 +220,9 @@ export default {
     })
   },
   watch: {
+    selectSpecs(newVal, oldVal) {
+      this.getPrice(this.selectAdvance, +this.reduceAmount, this.selectCoupon, newVal)
+    },
     selectAdvance: {
       deep: true,
       handler(newVal, oldVal) {

@@ -1,0 +1,20 @@
+@sg-color: #faad14;
+[data-sg] {
+  outline: 1px dotted @sg-color;
+  &:before {
+    content: attr(data-sg);
+    .pos-a;
+    transform: translateY(-100%);
+    white-space: nowrap;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    .bg(@sg-color);
+    .pd-lr(2px);
+    .fz(10px);
+    .lh(1.2);
+    .c(#fff);
+  }
+  &:hover::before {
+    opacity: 1;
+  }
+}

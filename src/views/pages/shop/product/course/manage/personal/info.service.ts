@@ -1,4 +1,4 @@
-import { State, Computed } from 'rx-state/src'
+import { State, Computed } from 'rx-state'
 import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
 import { ShopPersonalCourseApi, GetInfoInput } from '@/api/v1/course/personal/shop'

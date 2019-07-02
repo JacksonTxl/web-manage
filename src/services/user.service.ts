@@ -5,6 +5,7 @@ import { Store } from './store'
 import { forkJoin, of } from 'rxjs'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
+import { get } from 'lodash-es'
 
 interface UserState {
   user: User
@@ -30,9 +31,9 @@ interface ModuleEnums {
   }
 }
 interface CouponEnums {
-  coupon_status: ModuleEnums;
-  coupon_type: ModuleEnums;
-  put_status: ModuleEnums;
+  coupon_status: ModuleEnums
+  coupon_type: ModuleEnums
+  put_status: ModuleEnums
 }
 /**
  * 用户的全局初始信息
@@ -45,6 +46,7 @@ export class UserService extends Store<UserState> {
   brand$: Computed<object>
   shop$: Computed<object>
   menuData$: Computed<object>
+  // 枚举对象
   enums$: Computed<any>
   staffEnums$: Computed<ModuleEnums>
   accountEnums$: Computed<ModuleEnums>
@@ -63,10 +65,8 @@ export class UserService extends Store<UserState> {
   soldEnums$: Computed<ModuleEnums>
   transactionEnums$: Computed<ModuleEnums>
   couponEnums$: Computed<CouponEnums>
-  constructor(
-    private constApi: ConstApi,
-    private menuApi: MenuApi
-  ) {
+
+  constructor(private constApi: ConstApi, private menuApi: MenuApi) {
     super()
     const initialState = {
       user: {},
@@ -80,6 +80,7 @@ export class UserService extends Store<UserState> {
     this.state$ = new State(initialState)
     this.user$ = new Computed(this.state$.pipe(pluck('user')))
     this.menuData$ = new Computed(this.state$.pipe(pluck('menuData')))
+
     this.enums$ = new Computed(this.state$.pipe(pluck('enums')))
     this.brand$ = new Computed(this.state$.pipe(pluck('brand')))
     this.shop$ = new Computed(this.state$.pipe(pluck('shop')))
@@ -91,7 +92,9 @@ export class UserService extends Store<UserState> {
     )
     this.memberEnums$ = new Computed(this.enums$.pipe(pluck('member')))
     this.memberCardEnums$ = new Computed(this.enums$.pipe(pluck('member_card')))
-    this.transactionEnums$ = new Computed(this.enums$.pipe(pluck('transaction')))
+    this.transactionEnums$ = new Computed(
+      this.enums$.pipe(pluck('transaction'))
+    )
     this.personalCourseEnums$ = new Computed(
       this.enums$.pipe(pluck('personal_course'))
     )
@@ -144,10 +147,23 @@ export class UserService extends Store<UserState> {
       return of({})
     }
   }
-  init(force: boolean = false) {
-    return forkJoin(
-      this.getEnums(),
-      this.getMenus()
+  getOptions(key: string) {
+    return new Computed(
+      this.enums$
+        .pipe(
+          map(enums => {
+            const enumObj = get(enums, key)
+            const initArr: { label: string; value: number }[] = []
+            if (!enumObj) {
+              return []
+            } else {
+              return Object.keys(enumObj.value).reduce(
+                (arr, k) => arr.concat({ label: enumObj.value[k], value: +k }),
+                initArr
+              )
+            }
+          })
+        )
     )
   }
   /**
@@ -172,6 +188,10 @@ export class UserService extends Store<UserState> {
    */
   delFavorite(id: number) {
     return this.menuApi.delFavorite(id)
+  }
+  init(force: boolean = false) {
+    this.getOptions('member.education_level').subscribe()
+    return forkJoin(this.getEnums(), this.getMenus())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init()
