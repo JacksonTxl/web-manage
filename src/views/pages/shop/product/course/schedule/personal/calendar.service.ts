@@ -8,16 +8,8 @@ export class CalendarService implements RouteGuard {
   constructor(private commonService: CommonService,
     private reserveService: ReserveService) { }
 
-  initOptions() {
-    return forkJoin(this.commonService.getCourseList())
-  }
   beforeEach(to: ServiceRoute, form: ServiceRoute, next: any) {
     this.reserveService.getList(to.query).subscribe(() => {
-      next()
-    })
-  }
-  beforeRouteEnter(to: ServiceRoute, form: ServiceRoute, next: any) {
-    this.initOptions().subscribe(() => {
       next()
     })
   }
