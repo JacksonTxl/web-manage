@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { State, Effect } from 'rx-state/src'
+import { State, Effect } from 'rx-state'
 import { CourseApi, RefundCourseInput } from '@/api/v1/sold/course'
 import { tap } from 'rxjs/operators'
 

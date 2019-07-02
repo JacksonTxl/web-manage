@@ -3,7 +3,7 @@ import { TeamScheduleScheduleService as ScheduleService } from './team.service#/
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { forkJoin, timer } from 'rxjs'
 import { TeamScheduleCommonService as CommonService } from './team.service#/common.service'
-import { State, Computed } from 'rx-state/src'
+import { State, Computed } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 
 @Injectable()

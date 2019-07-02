@@ -1,5 +1,5 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
-import { State, Effect } from 'rx-state/src'
+import { State, Effect } from 'rx-state'
 import { FrontApi, GetEntranceListInput, SetEntranceLeaveBatchInput } from '@/api/v1/front'
 import { tap } from 'rxjs/operators'
 

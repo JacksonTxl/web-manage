@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { State, Effect, Action } from 'rx-state/src'
+import { State, Effect, Action } from 'rx-state'
 import { CardsApi, CourseTeamShelfListInput } from '@/api/v1/cards'
 import { tap, debounceTime, switchMap, catchError } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'

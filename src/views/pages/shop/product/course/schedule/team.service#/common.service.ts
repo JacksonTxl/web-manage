@@ -1,6 +1,6 @@
 import { TeamScheduleCommonApi, UnUsedSeatQuery, ConsumeQuery } from '@/api/v1/schedule/team/common'
 import { Injectable } from 'vue-service-app'
-import { State, Computed } from 'rx-state/src'
+import { State, Computed } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
 
 export interface SetState {

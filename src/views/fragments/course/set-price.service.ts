@@ -1,8 +1,8 @@
 import { Injectable } from 'vue-service-app'
-import { State, Computed } from 'rx-state'
+import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { Effect } from 'rx-state/src'
+
 import {
   PersonalCourseApi
 } from '@/api/v1/course/personal'

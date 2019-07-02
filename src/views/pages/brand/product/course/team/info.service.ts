@@ -1,4 +1,4 @@
-import { State, Computed } from 'rx-state/src'
+import { State, Computed } from 'rx-state'
 import { BrandTeamCourseApi } from './../../../../../../api/v1/course/team/brand'
 import { GetTeamBrandCourseListInput } from '@/api/v1/course/team'
 import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'

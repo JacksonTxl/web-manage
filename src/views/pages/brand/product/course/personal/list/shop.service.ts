@@ -1,7 +1,7 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { ShopPersonalCourseApi, GetPersonalBrandCourseListInput } from '@/api/v1/course/personal/shop'
 import { tap, pluck } from 'rxjs/operators'
-import { State, Computed } from 'rx-state/src'
+import { State, Computed } from 'rx-state'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()

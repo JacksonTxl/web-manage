@@ -2,10 +2,10 @@ import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { ContractApi, ContractInput } from '@/api/v1/setting/contract'
 import { forkJoin } from 'rxjs'
 import { tap, pluck, map } from 'rxjs/operators'
-import { State, log, Computed, Effect } from 'rx-state/src'
+import { State, log, Computed, Effect } from 'rx-state'
 import { Store } from '@/services/store'
 import { RouteService } from '@/services/route.service'
-import { SN_GENERATE_RULE } from '@/constants/enums/contract'
+import { SN_GENERATE_RULE } from '@/constants/contract/enums'
 import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
 
 interface EditState {

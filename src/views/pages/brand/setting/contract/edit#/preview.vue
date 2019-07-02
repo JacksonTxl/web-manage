@@ -189,7 +189,7 @@
 </template>
 <script>
 import { dateFilter } from '@/filters/date.filters'
-import { CONTRACT_TYPE } from '@/constants/enums/contract'
+import { CONTRACT_TYPE } from '@/constants/contract/enums'
 import moment from 'moment'
 
 export default {

@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { State, Effect } from 'rx-state/src'
+import { State, Effect } from 'rx-state'
 import { MarketingApi, InviteCouponListInput } from '@/api/v1/marketing/marketing'
 import { tap } from 'rxjs/operators'
 

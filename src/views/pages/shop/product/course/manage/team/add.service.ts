@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { Effect } from 'rx-state/src'
+import { Effect } from 'rx-state'
 import { Store } from '@/services/store'
 import {
   ShopTeamCourseApi,

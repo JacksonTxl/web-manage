@@ -35,6 +35,7 @@
     </div>
     <st-table
     :alertSelection="{onReset: onClear}"
+    :scroll="{x:1440}"
     :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
     @change="onPageChange"
     :columns="columns"
@@ -81,9 +82,10 @@
       </template>
       <!-- 操作 -->
       <div slot="action" slot-scope="text,record">
-        <a v-if="record.auth['brand_shop:product:member_card|get']" @click="onDetail(record)">详情</a>
-        <a-divider type="vertical"></a-divider>
-        <a v-if="record.auth['brand_shop:product:member_card|down']" @click="onShelfDown(record)">下架</a>
+        <st-table-actions>
+          <a v-if="record.auth['brand_shop:product:member_card|get']" @click="onDetail(record)">详情</a>
+          <a v-if="record.auth['brand_shop:product:member_card|down']" @click="onShelfDown(record)">下架</a>
+        </st-table-actions>
       </div>
     </st-table>
   </div>
@@ -112,29 +114,9 @@ export default {
       page: this.shelvesService.page$,
       memberCard: this.userService.memberCardEnums$,
       query: this.routeService.query$,
-      auth: this.shelvesService.auth$
-    }
-  },
-  computed: {
-    cardType() {
-      let arr = [{ value: -1, label: '所有类型' }]
-      Object.keys(this.memberCard.card_type.value).forEach(i => {
-        arr.push({
-          value: +i,
-          label: this.memberCard.card_type.value[i]
-        })
-      })
-      return arr
-    },
-    publishChannel() {
-      let arr = [{ value: -1, label: '所有渠道' }]
-      Object.keys(this.memberCard.publish_channel.value).forEach(i => {
-        arr.push({
-          value: +i,
-          label: this.memberCard.publish_channel.value[i]
-        })
-      })
-      return arr
+      auth: this.shelvesService.auth$,
+      publishChannel: this.shelvesService.publishChannel$,
+      cardType: this.shelvesService.cardType$
     }
   },
   data() {

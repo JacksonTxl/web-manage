@@ -1,7 +1,7 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { SettingMinaApi } from '@/api/v1/setting/mina'
 import { tap } from 'rxjs/operators'
-import { State } from 'rx-state/src'
+import { State } from 'rx-state'
 
 @Injectable()
 export class IndexService {
