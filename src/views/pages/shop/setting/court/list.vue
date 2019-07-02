@@ -9,9 +9,12 @@
         :key="item.id"
       >
         <div :class="bItem()">
-          <div v-if="auth.areaDel" :class="bItem('del')" @click="onDel(item.id)">
-            <a-popconfirm title="确认删除吗？">
-              <st-icon type="delete" :class="bItem('del-icon')"/>
+          <div v-if="auth.areaDel" :class="bItem('del')">
+            <a-popconfirm @confirm="onDel(item.id)">
+              <template slot="title">
+                删除该场地后，该门店进行排课等功能无法选择该场地，<br/> 是否继续？
+              </template>
+              <a><st-icon type="delete" :class="bItem('del-icon')"/></a>
             </a-popconfirm>
           </div>
           <div :class="bItem('body')">
