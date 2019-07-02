@@ -36,6 +36,7 @@
     <st-table
     :alertSelection="{onReset: onClear}"
     :scroll="{x:1440}"
+    :loading='loading.getShopList'
     :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
     @change="onPageChange"
     :columns="columns"
@@ -109,6 +110,7 @@ export default {
   },
   rxState() {
     return {
+      loading: this.shelvesService.loading$,
       shopList: this.shelvesService.shopList$,
       list: this.shelvesService.list$,
       page: this.shelvesService.page$,

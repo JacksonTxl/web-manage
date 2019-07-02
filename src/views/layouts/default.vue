@@ -1,6 +1,6 @@
 <template>
-  <a-layout class="layout-default">
-    <a-layout-sider class="layout-default-sider">
+  <div class="layout-default">
+    <aside class="layout-default-sider">
       <div class="layout-default-sider__brand">
         <div class="layout-default-sider__logo">
           <i class="layout-default-sider__certification st-icon-certified"></i>
@@ -13,9 +13,8 @@
       <div class="layout-default-sider__scrollbox" v-scrollBar>
         <default-sider-menu @change="onSiderMenuChange"/>
       </div>
-    </a-layout-sider>
-    <a-layout class="layout-default-body">
-      <a-layout-header class="layout-default-body__header">
+    </aside>
+    <header class="layout-default-body__header">
         <div class="layout-default-body__location">
           <template v-if="pageTitle">
             <h2>{{pageTitle}}</h2>
@@ -71,14 +70,15 @@
             </div>
           </a-dropdown>
         </div>
-      </a-layout-header>
-      <a-layout-content class="layout-default-body__content">
+      </header>
+    <main class="layout-default-body">
+      <article class="layout-default-body__content">
         <router-view></router-view>
-      </a-layout-content>
-      <a-layout-footer class="layout-default-body__footer">Copyright &#169; 2019 三体云智能科技有限公司</a-layout-footer>
-    </a-layout>
+      </article>
+      <footer class="layout-default-body__footer">Copyright &#169; 2019 三体云智能科技有限公司</footer>
+    </main>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
-  </a-layout>
+  </div>
 </template>
 <script>
 import { LayoutBrandService } from '@/services/layouts/layout-brand.service'

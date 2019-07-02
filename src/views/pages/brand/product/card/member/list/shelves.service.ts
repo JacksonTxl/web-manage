@@ -10,6 +10,7 @@ import { ShopApi } from '@/api/v1/shop'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
+import { RouteService } from '@/services/route.service'
 
 @Injectable()
 export class ShelvesService implements RouteGuard {
@@ -35,7 +36,8 @@ export class ShelvesService implements RouteGuard {
     private cardApi: CardsApi,
     private shopApi: ShopApi,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private routeService: RouteService
   ) {}
   getList(query: CardShelfListInput) {
     return this.cardApi.getCardShelfList(query, 'brand', 'member').pipe(
@@ -46,6 +48,7 @@ export class ShelvesService implements RouteGuard {
       })
     )
   }
+  @Effect()
   getShopList() {
     return this.shopApi.getShopListForSelect().pipe(
       tap((res: any) => {
@@ -60,9 +63,7 @@ export class ShelvesService implements RouteGuard {
   setCardShelfDown(params: BrandCardShelfDownInput) {
     return this.cardApi.setBrandCardsShelfDown(params)
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
-    this.init(to.meta.query).subscribe(() => {
-      next()
-    })
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.init(to.meta.query)
   }
 }
