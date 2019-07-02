@@ -96,6 +96,9 @@
       <div>
         <st-icon type="department"></st-icon>
       </div>
+      <p>
+        <img :src="pic1" alt="">
+      </p>
     </st-panel>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
   </div>
@@ -111,6 +114,7 @@ import { switchMap, catchError, filter } from 'rxjs/operators'
 import { EMPTY } from 'rxjs'
 import SwitchShop from '@/views/fragments/shop/switch'
 import SelectShop from '@/views/fragments/shop/select-shop'
+import pic1 from '@/assets/img/avatar_default.png'
 
 export default {
   serviceInject() {
@@ -139,7 +143,8 @@ export default {
         size: 20,
         total_counts: 6,
         total_pages: 1
-      }
+      },
+      pic1
     }
   },
   methods: {
