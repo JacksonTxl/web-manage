@@ -54,7 +54,7 @@
         <modal-link
           v-if="text.id === 2"
           tag="a"
-          :to="{ name: 'card-brand-member-shop-table' , props:{id: record.id,type:'Sale',title:'支持入场门店'}}"
+          :to="{ name: 'card-brand-member-shop-table' , props:{id: record.id,type:'Consume',title:'支持入场门店'}}"
         >{{text.name}}</modal-link>
         <span v-else class="use_num">{{text.name}}</span>
       </template>
@@ -63,7 +63,7 @@
         <modal-link
           v-if="text.id === 2"
           tag="a"
-          :to="{ name: 'card-brand-member-shop-table' , props:{id: record.id,type:'Consume',title: '支持售卖门店'}}"
+          :to="{ name: 'card-brand-member-shop-table' , props:{id: record.id,type:'Sale',title: '支持售卖门店'}}"
         >{{text.name}}</modal-link>
         <span v-else class="use_num">{{text.name}}</span>
       </template>

@@ -2,12 +2,19 @@ import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state/src'
 import { FrontApi, GetEntranceListInput, SetEntranceLeaveBatchInput } from '@/api/v1/front'
 import { tap } from 'rxjs/operators'
+import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class EntranceService implements RouteGuard {
   loading$ = new State({})
   list$ = new State([])
   page$ = new State({})
+  auth$ = new State({
+    checkout: false,
+    // checkout: this.authService.can('shop:front_end:check_in_out|checkout'),
+    batchCheckout: false
+    // batchCheckout: this.authService.can('shop:front_end:check_in_out|batch_checkout'),
+  })
   constructor(private frontApi: FrontApi) {}
   @Effect()
   getList(query:GetEntranceListInput) {

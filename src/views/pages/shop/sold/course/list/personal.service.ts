@@ -6,7 +6,7 @@ import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class PersonalService implements RouteGuard {
-  list$ = new State({})
+  list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
   auth$ = new State({

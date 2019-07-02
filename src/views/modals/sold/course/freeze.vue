@@ -144,6 +144,7 @@ export default {
             frozen_fee: this.frozen_fee,
             frozen_pay_type: values.payType
           }, this.id, this.type).subscribe(res => {
+            console.log(2)
             this.show = false
             this.$emit('success')
           })

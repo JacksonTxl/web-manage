@@ -87,6 +87,15 @@ export class IndexService implements RouteGuard {
   @Effect()
   getEntranceSummary() {
     return this.frontApi.getEntranceSummary().pipe(tap((res:any) => {
+      Object.keys(res.info).forEach(i => {
+        res.info[i].stChart = []
+        res.info[i].chart.forEach((o:any) => {
+          res.info[i].stChart.push({
+            name: o.date,
+            value: o.num
+          })
+        })
+      })
       this.summaryInfo$.commit(() => res.info)
     }))
   }
