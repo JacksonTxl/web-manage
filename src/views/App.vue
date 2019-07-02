@@ -1,7 +1,6 @@
 <template>
   <a-locale-provider :locale="antdLocaleMessages">
     <div id="app">
-      <!-- <h1 style="color:black;position:absolute;z-index:300;">{{layout}}</h1> -->
       <component :is="layoutComponent"></component>
       <modal-router-view></modal-router-view>
       <div class="git is-git" @click="getCommitHead">

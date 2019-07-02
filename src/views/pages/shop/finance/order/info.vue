@@ -81,7 +81,7 @@ export default {
         },
         on: {
           success: () => {
-            // this.$router.push({ force: true })
+            this.$router.push({ force: true, query: this.query })
           }
         }
       })
