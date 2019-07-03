@@ -133,7 +133,7 @@
                   <span slot="addonAfter">元</span>
                 </st-input-number>
               </td>
-              <td>{{item.min_price}}&nbsp;~&nbsp;{{item.max_price}}</td>
+              <td>&nbsp;{{item.min_price}}&nbsp;~&nbsp;{{item.max_price}}&nbsp;</td>
               <td>{{item.duration_num}}{{item.duration_unit | enumFilter('member_card.duration_unit')}}</td>
               <td>{{item.frozen_day}}天</td>
               <td>{{item.gift_unit}}次</td>
@@ -169,7 +169,7 @@
                   <span slot="addonAfter">元</span>
                 </st-input-number>
               </td>
-              <td>{{item.min_price}}&nbsp;~&nbsp;{{item.max_price}}</td>
+              <td>&nbsp;{{item.min_price}}&nbsp;~&nbsp;{{item.max_price}}&nbsp;</td>
               <td>{{item.frozen_day}}天</td>
               <td>{{item.gift_unit}}天</td>
             </tr>
@@ -473,7 +473,7 @@ export default {
     },
     // 检验门店自主定价价格输入是否正确
     checkedPrice() {
-      if (this.info.price_setting === 1) {
+      if (!(this.info.publish_channel === 1 && this.info.price_setting === 2)) {
         this.priceHelpText = ''
         return false
       }
