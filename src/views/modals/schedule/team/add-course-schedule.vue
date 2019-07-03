@@ -27,6 +27,7 @@
       </st-form-item>
       <st-form-item label="场地">
         <a-cascader
+        placeholder="请选择场地"
         :options="courtOptions"
         :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
         v-decorator="[
@@ -67,17 +68,20 @@
 import { cloneDeep } from 'lodash-es'
 import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
 import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
+import { RouteService } from '../../../../services/route.service'
 export default {
   name: 'AddCourseSchedule',
   serviceInject() {
     return {
       teamScheduleCommomService: TeamScheduleCommonService,
-      teamScheduleScheduleService: TeamScheduleScheduleService
+      teamScheduleScheduleService: TeamScheduleScheduleService,
+      routeService: RouteService
     }
   },
   rxState() {
     const tss = this.teamScheduleCommomService
     return {
+      query: this.routeService.query$,
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
       courtOptions: tss.courtOptions$
@@ -109,8 +113,9 @@ export default {
           }
           form.course_fee = parseInt(form.course_fee)
           form.limit_num = parseInt(form.limit_num)
-          this.teamScheduleScheduleService.curd('add', { ...form }, () => {
+          this.teamScheduleScheduleService.add(form).subscribe(() => {
             this.show = false
+            this.$router.push({ query: this.query, force: true })
           })
         }
       })
