@@ -43,7 +43,7 @@
       <st-form-item label="课时费" required >
         <a-input-search v-decorator="[
           'course_fee',
-          {rules: [{ required: true, message: 'Please input your note!' }]}]"
+          {rules: [{ required: true, message: '请输入课时费' }]}]"
         > <a-button slot="enterButton">元/节</a-button> </a-input-search>
       </st-form-item>
       <a-row>
