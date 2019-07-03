@@ -320,13 +320,16 @@ export default {
       this.minPrice = selectCoach[0].min_sell
     },
     resetOrderInfo() {
-      this.form.resetFields(['buyNum', 'coachId'])
+      this.form.resetFields(['buyNum', 'coachId', 'coursePrice', 'gift_course_num'])
       this.personalPrice.sell_price = 0
       this.personalPrice.min_sell_price = 0
       this.personalPrice.max_sell_price = 0
       this.validEndTime = 0
       this.priceInfo = 0
       this.orderAmountPrice = 0
+      this.reduceAmount = 0
+      this.selectAdvance = ''
+      this.selectCoupon = ''
     },
     fetchCouponList() {
       const member_id = this.form.getFieldValue('memberId')
