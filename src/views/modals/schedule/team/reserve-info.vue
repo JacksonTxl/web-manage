@@ -86,8 +86,8 @@
           <td>{{item.is_checkin_name}}</td>
           <td>
             <div>
-              <a   class="mg-r8" href="javascript:;" @click="onClickReserve" v-if="auth.cancel">取消预约</a>
-              <a  href="javascript:;" v-if="auth.checkIn" @click="onClickReserve">签到消费</a>
+              <a   class="mg-r8" href="javascript:;" @click="onClickCancel(item.id)" v-if="auth.cancel">取消预约</a>
+              <a  href="javascript:;" v-if="auth.checkIn" @click="onClickCheckIn(item.id)">签到消费</a>
             </div>
           </td>
         </tr>
@@ -180,6 +180,12 @@ export default {
     onSearch(value) {
       this.teamScheduleCommonService.getMemberList({ member_name: value }).subscribe()
     },
+    onClickCancel(id) {
+      this.teamScheduleReserveService.del(id).subscribe()
+    },
+    onClickCheckIn(id) {
+      this.teamScheduleReserveService.check({ id, checkin_method: 2 }).subscribe()
+    },
     onChange(value) {
       this.teamScheduleCommonService.getConsumeList({ course_id: this.courseId, member_id: value }).subscribe()
     },
@@ -235,7 +241,7 @@ export default {
         switchMap(state => {
           this.info = state.info
           this.list = state.list
-          return ss.getUnusedSeatList({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
+          return this.teamScheduleCommonService.getUnusedSeatList({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
         }))
         .subscribe()
     }
