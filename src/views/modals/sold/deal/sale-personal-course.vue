@@ -569,9 +569,6 @@ export default {
       }
       this.form.validateFields((error, values) => {
         if (!error) {
-          if (info.sale_model === 2) {
-
-          }
           this.salePersonalCourseService.setTransactionOrder({
             'member_id': values.memberId,
             'member_name': values.memberName,
@@ -582,10 +579,10 @@ export default {
             'course_price': this.info.sale_model === 2 ? this.personalPrice.sell_price : values.coursePrice,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
-            'reduce_amount': this.reduceAmount,
+            'reduce_amount': this.reduceAmount || 0,
             'sale_id': values.saleName,
             'description': this.description,
-            'gift_course_num': values.gift_course_num,
+            'gift_course_num': values.gift_course_num || 0,
             'coach_id': values.coachId,
             'coach_level_id': values.coach_level,
             'sale_range': this.info.sale_range.type,
@@ -617,10 +614,10 @@ export default {
             'course_price': this.info.sale_model === 2 ? this.personalPrice.sell_price : values.coursePrice,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
-            'reduce_amount': this.reduceAmount,
+            'reduce_amount': this.reduceAmount || 0,
             'sale_id': values.saleName,
             'description': this.description,
-            'gift_course_num': values.gift_course_num,
+            'gift_course_num': values.gift_course_num || 0,
             'coach_id': values.coachId,
             'coach_level_id': values.coach_level,
             'sale_range': this.info.sale_range.type,

@@ -137,7 +137,7 @@ export default {
             sold_id: this.id,
             sub_order_id: this.info.sub_order_id,
             product_type: 10,
-            refund_price: +values.refundPrice,
+            refund_price: +values.refundPrice || 0,
             refund_reason: +this.refundReason,
             refund_channel: +this.frozenPayType,
             description: this.description
