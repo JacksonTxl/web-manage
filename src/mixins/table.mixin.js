@@ -13,6 +13,11 @@ export default {
         '[tableMixin] 需要订阅routeService.query 到this.query以生效'
       )
     }
+    if (!this.page) {
+      console.error(
+        '[tableMixin] 需要订阅page对象 到this.page以生效'
+      )
+    }
   },
   computed: {
     isSelectedEnabled() {
@@ -25,7 +30,7 @@ export default {
   methods: {
     // 筛选搜索
     onSearch() {
-      this.onResetSelection()
+      this.onSelectionReset()
       this.$router.push({
         query: {
           ...this.query,
@@ -38,8 +43,7 @@ export default {
     // 所有的查询都将页码到第一页
     // keyword 为true时只单独查询该字段
     onSingleSearch(key, data, { keyword = false } = {}) {
-      console.log(key, data, keyword)
-      this.onResetSelection()
+      this.onSelectionReset()
       let query
       if (!keyword) {
         query = {
@@ -58,7 +62,7 @@ export default {
       })
     },
     // 重置 多选
-    onResetSelection() {
+    onSelectionReset() {
       this.selectedRowKeys = []
       this.selectedRows = []
     },
@@ -69,7 +73,7 @@ export default {
     },
     // 表格更新
     onTableChange(pagination, filter, sorter) {
-      this.onResetSelection()
+      this.onSelectionReset()
       let sort_by, sort_order
       if (sorter.field) {
         sort_by = sorter.field

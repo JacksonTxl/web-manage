@@ -52,14 +52,14 @@
       </div>
     </div>
     <st-table
-      :alertSelection="{onReset: onResetSelection}"
       :scroll="{x:1440}"
+      :page='page'
+      :alertSelection='{onReset:onSelectionReset}'
+      @change='onTableChange'
+      :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
       :loading="loading.getShopList"
-      :rowSelection="{selectedRowKeys,fixed:true, onChange: onSelectionChange}"
-      @change="onTableChange"
       :columns="columns"
       :dataSource="list"
-      :pagination="{current:query.current_page,total:page.total_counts ,pageSize:query.size }"
       rowKey="shelf_id"
     >
       <!-- 售卖门店 -->
