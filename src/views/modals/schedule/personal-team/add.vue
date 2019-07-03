@@ -27,7 +27,7 @@
       <st-form-item label="教练" required>
         <a-select v-decorator="formRules.coachId">
           <a-select-option
-            v-for="coach in coachOptions"
+            v-for="coach in courseCoachOptions"
             :key="coach.id"
             :value="coach.id"
           >
@@ -126,7 +126,7 @@ export default {
     const commonService = this.commonService
     return {
       courseOptions: commonService.courseOptions$,
-      coachOptions: commonService.coachOptions$
+      courseCoachOptions: commonService.courseCoachOptions$
     }
   },
   data() {
