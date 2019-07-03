@@ -18,8 +18,7 @@
     <set-shop-coach
       v-show="currentIndex === 1"
       :info="info"
-      :courseName="courseName"
-      :courseId="courseId" @goNext="goNext"
+      @goNext="goNext"
     />
   </st-panel>
 </template>
@@ -41,8 +40,6 @@ export default {
   data() {
     return {
       currentIndex: 0,
-      courseId: 0,
-      courseName: '',
       stepArr: [{
         title: '编辑团体课',
         key: 0
@@ -54,9 +51,9 @@ export default {
   },
   methods: {
     goNext(courseId) {
-      if (courseId) {
-        this.courseId = courseId
-      }
+      this.setInfo({
+        course_id: courseId
+      })
       if (this.currentIndex < 1) {
         this.currentIndex = this.currentIndex + 1
       }
@@ -65,8 +62,15 @@ export default {
       this.currentIndex = step
     },
     onCourseNameChange(courseName) {
-      this.courseName = courseName
-      console.log('courseName', courseName)
+      this.setInfo({
+        course_name: courseName
+      })
+    },
+    setInfo(obj) {
+      this.info = {
+        ...this.info,
+        ...obj
+      }
     }
   },
   components: {
