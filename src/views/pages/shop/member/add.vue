@@ -34,15 +34,17 @@
           </st-form-item>
         </a-col>
         <a-col :lg="10" :xs="22" :offset="3">
-          <!-- <st-form-item>
+          <st-form-item>
             <st-image-upload
               width="264px"
               height="264px"
               :sizeLimit="2"
+              :list="faceList"
+              :isFaceRecognition="true"
               placeholder="会员人脸信息"
               v-decorator="rules.faceInfo"
             ></st-image-upload>
-          </st-form-item> -->
+          </st-form-item>
         </a-col>
       </a-row>
 
@@ -246,7 +248,8 @@ export default {
         living_address: ['living_address']
       },
       options: [],
-      fieldNames: { label: 'name', value: 'id', children: 'children' }
+      fieldNames: { label: 'name', value: 'id', children: 'children' },
+      faceList: []
     }
   },
   methods: {
@@ -261,6 +264,7 @@ export default {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(res => {
+        console.log('validateFields', res)
         delete res.md
         this.addService.addUser(res).subscribe(() => {
           console.log('ok')
