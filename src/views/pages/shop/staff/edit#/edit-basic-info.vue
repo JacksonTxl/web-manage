@@ -45,7 +45,7 @@
           ></st-image-upload>
         </st-form-item> -->
         <st-form-item label="昵称" required>
-          <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="rules.nickname"/>
+          <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.nickname"/>
         </st-form-item>
         <st-form-item label="邮箱" required>
           <a-input placeholder="请输入邮箱" v-decorator="rules.mail"/>

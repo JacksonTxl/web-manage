@@ -169,6 +169,7 @@ import { SaleCourseService } from './sale-course.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
+import { RuleConfig } from '@/constants/rule'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -176,7 +177,8 @@ export default {
   },
   serviceInject() {
     return {
-      saleCourseService: SaleCourseService
+      saleCourseService: SaleCourseService,
+      rules: RuleConfig
     }
   },
   rxState() {
