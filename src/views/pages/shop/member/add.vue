@@ -261,11 +261,14 @@ export default {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(res => {
+        res.province_id = res.cascader[0] || 110000
+        res.city_id = res.cascader[1] || 110100
+        res.district_id = res.cascader[2] || 110101
+        delete res.cascader
         delete res.md
         this.addService.addUser(res).subscribe(() => {
-          console.log('ok')
           this.messageService.success({ content: '添加成功' })
-          this.$router.go(-1)
+          this.$router.push({ name: 'shop-member-list', force: true })
         })
       })
     }

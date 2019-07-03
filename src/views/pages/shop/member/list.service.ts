@@ -47,7 +47,6 @@ export class ListService extends Store<MemberListInfoState> {
       })
     )
   }
-
   removeWechatBind(id: number) {
     return this.memberApi.removeWechatBind(id)
   }
@@ -55,8 +54,8 @@ export class ListService extends Store<MemberListInfoState> {
     return this.memberApi.getMemberSourceRegisters()
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo(to.query).subscribe(res => {
-      this.SET_MEMBER_LIST_INFO(res)
+    this.getListInfo(to.meta.query).subscribe(res => {
+      // this.SET_MEMBER_LIST_INFO(res)
       next()
     })
   }

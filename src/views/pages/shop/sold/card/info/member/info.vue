@@ -41,7 +41,7 @@
         <a-col :span="6">
           <st-info>
             <st-info-item label="允许转让">{{info.is_transferable | enumFilter('sold.is_transferable')}}</st-info-item>
-            <st-info-item label="转让手续费" v-if="info.is_transferable&&info.transfer_unit">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
+            <st-info-item label="转让手续费" v-if="info.is_transferable !== 0">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
             <st-info-item label="入场场馆">
               <template v-if="+info.admission_range===1">
                 {{info.shop_name}}

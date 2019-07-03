@@ -176,6 +176,7 @@ export default {
     save(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
+        console.log(values)
         if (!err) {
           values.birthday = values.birthday
             ? values.birthday.format('YYYY-MM-DD')
@@ -186,7 +187,6 @@ export default {
           delete values.cascader
         }
         this.editService.updateMemberEdit(this.id, values).subscribe(res => {
-          console.log('12333333333333')
           this.messageService.success({ content: '修改成功' })
           this.$router.go(-1)
         })
@@ -198,7 +198,7 @@ export default {
         member_name: obj.member_name,
         sex: obj.sex - 0,
         country_id: obj.country.id,
-        nation: obj.nation,
+        nation: obj.nation.id,
         birthday: obj.birthday ? moment(obj.birthday) : '',
         education_level: obj.education_level,
         id_card_type: obj.id_card_type,
