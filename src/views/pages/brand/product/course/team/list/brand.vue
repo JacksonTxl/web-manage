@@ -12,9 +12,7 @@
           <a-select  defaultValue="" v-model="query.category_id" class="mg-r16" style="width: 160px" @change="onChange">
             <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
           </a-select>
-          <a-select  defaultValue="" v-model="query.is_available" style="width: 160px" @change="onChange">
-            <a-select-option v-for="status in courseStatus" :key="status.value" :value="status.value">{{status.label}}</a-select-option>
-          </a-select>
+
         </div>
       </div>
     </header>
@@ -48,7 +46,6 @@ export default {
   },
   data() {
     return {
-      courseStatus: [{ label: '所有状态', value: -1 }, { label: '有效', value: 1 }, { label: '无效', value: 0 }]
     }
   },
   components: {

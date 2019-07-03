@@ -184,13 +184,11 @@ export default {
       this.teamScheduleCommonService.getConsumeList({ course_id: this.courseId, member_id: value }).subscribe()
     },
     onChangeConsumeType(val) {
-      console.log('onChangeConsumeType', val)
       const obj = JSON.parse(val)
       this.consumeType = obj.consume_type
       this.consumeId = obj.id
     },
     onChangeSiteNumList(val) {
-      console.log(val)
       if (val.length > 3) {
         this.siteNumIds.pop()
         this.messageService.error({
@@ -207,12 +205,10 @@ export default {
         consume_type: this.consumeType,
         consume_id: this.consumeId
       }
-      this.teamScheduleReserveService.add(form).pipe(
-        switchMap(state => {
-          this.info = state.info
-          return this.teamScheduleCommonService.getUnusedSeatList({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
-        }))
-        .subscribe()
+      this.teamScheduleReserveService.add(form)
+        .subscribe(() => {
+          this.getReserve()
+        })
     },
     edit(key) {
       const newData = [...this.data]
@@ -232,17 +228,20 @@ export default {
         this.data = newData
         this.cacheData = newData.map(item => ({ ...item }))
       }
+    },
+    getReserve() {
+      const ss = this.teamScheduleReserveService
+      ss.getInfo(this.id).pipe(
+        switchMap(state => {
+          this.info = state.info
+          this.list = state.list
+          return ss.getUnusedSeatList({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
+        }))
+        .subscribe()
     }
   },
   mounted() {
-    const ss = this.teamScheduleReserveService
-    ss.getInfo(this.id).pipe(
-      switchMap(state => {
-        this.info = state.info
-        this.list = state.list
-        return this.teamScheduleCommonService.getUnusedSeatList({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
-      }))
-      .subscribe()
+    this.getReserve()
   }
 }
 </script>
