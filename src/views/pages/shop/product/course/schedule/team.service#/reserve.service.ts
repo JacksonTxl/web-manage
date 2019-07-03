@@ -48,7 +48,9 @@ export class TeamScheduleReserveService {
    * 团体课签到消费
    */
   check(params: CheckInput) {
-    return this.reserveApi.check(params)
+    return this.reserveApi.check(params).pipe(tap(res => {
+      this.msg.success({ content: '签到消费成功' })
+    }))
   }
   /**
    *
@@ -68,6 +70,8 @@ export class TeamScheduleReserveService {
    * 取消预约
    */
   del(id: string) {
-    return this.reserveApi.del(id)
+    return this.reserveApi.del(id).pipe(tap(res => {
+      this.msg.success({ content: '取消预约成功' })
+    }))
   }
 }
