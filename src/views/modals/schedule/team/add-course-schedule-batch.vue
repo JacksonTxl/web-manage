@@ -186,12 +186,6 @@ export default {
       console.log(data)
       this.teamScheduleScheduleService.curd('addScheduleInBatch', data, () => { this.show = false })
     },
-    onChangeCourseList() {
-
-    },
-    onChangeStartTime() {
-
-    },
     handleChange(value, key, column) {
       const newData = [...this.data]
       const target = newData.filter(item => key === item.key)[0]
@@ -225,6 +219,7 @@ export default {
       data.show.course_id_show = this.getOptionName(data.course_id, this.courseOptions, 'course_name')
       data.show.coach_id_show = this.getOptionName(data.coach_id, this.coachOptions, 'staff_name')
       data.show.court_site_id_show = this.getCourtSiteName(data.court_site_id, this.courtOptions)
+      console.log(data)
       return data
     },
     getOptionName(id, options, name) {
