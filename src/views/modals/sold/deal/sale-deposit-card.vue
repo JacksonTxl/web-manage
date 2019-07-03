@@ -339,7 +339,7 @@ export default {
     onCreateOrder() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
+          let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
           this.saleDepositCardService.setTransaction({
             'member_id': +values.memberId,
             'member_name': values.memberName,
@@ -365,7 +365,7 @@ export default {
     onPay() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
+          let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
           this.saleDepositCardService.setTransactionPay({
             'member_id': +values.memberId,
             'member_name': values.memberName,

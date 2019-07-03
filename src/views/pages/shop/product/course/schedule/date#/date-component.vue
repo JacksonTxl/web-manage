@@ -20,7 +20,7 @@
   </div>
 </template>
 <script>
-const ADD_WEEK_DAY = 24 * 3600 * 8 * 1000
+const ADD_WEEK_DAY = 24 * 3600 * 7 * 1000
 const MINUS_WEEK_DAY = 24 * 3600 * 7 * 1000
 const WEEK_DAY_INIT = 24 * 3600 * 6 * 1000
 export default {
@@ -59,7 +59,7 @@ export default {
       this.$emit('pre', { start_time: this.startTime, end_time: this.endTime })
     },
     onClickNext() {
-      this.startTime = moment(moment(this.endTime).valueOf() + ADD_WEEK_DAY).format('YYYY-MM-DD').valueOf()
+      this.startTime = moment(moment(this.startTime).valueOf() + ADD_WEEK_DAY).format('YYYY-MM-DD').valueOf()
       this.$emit('next', { start_time: this.startTime, end_time: this.endTime })
     },
     onClickToday() {

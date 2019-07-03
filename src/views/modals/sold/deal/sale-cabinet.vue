@@ -480,7 +480,7 @@ export default {
     onCreateOrder() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
+          let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
           this.saleCabinetService.setTransaction({
             cabinet_id: +this.cabinetId,
             start_time: `${this.startTime.format('YYYY-MM-DD HH:mm')}`,
@@ -509,7 +509,7 @@ export default {
     onPay() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
+          let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
           this.saleCabinetService.setTransactionPay({
             cabinet_id: +this.cabinetId,
             start_time: `${this.startTime.format('YYYY-MM-DD HH:mm')}`,

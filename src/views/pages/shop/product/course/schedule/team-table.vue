@@ -18,27 +18,31 @@
         </a-col>
       </a-row>
     </div>
-    <a-card :title="card.week_name" v-for="card in scheduleTable" :key="card.date" class="mg-l24 mg-r24 mg-t8">
-      <span href="javascript:;" slot="extra" class="add-schedule" v-modal-link="{name: 'schedule-team-add-course-schedule'}">+ 添加课程排期</span>
-      <a-row class="page-team-table__item"  v-for="info in card.data" :key="info.id">
-        <a-col :lg="3" class="time">{{info.start_time}} - {{info.end_time}}</a-col>
-        <a-col :lg="12" class="content" >
-          <div class="course-info">
-            <div class="course-name">{{info.course_name}}</div>
-            <div class="address">
-              <div class="mg-r24"><span class="label">场地：</span><span  class="value">{{info.court_name}}</span></div>
-              <div><span class="label">教练：</span><span class="value">{{info.coach_name}}</span></div>
+    <template v-for="card in scheduleTable">
+
+      <a-card :title="card.date | filterStartTime"  :key="card.date" class="mg-l24 mg-r24 mg-t8">
+        <span href="javascript:;" slot="extra" class="add-schedule" v-modal-link="{name: 'schedule-team-add-course-schedule'}">+ 添加课程排期</span>
+        <a-row class="page-team-table__item"  v-for="info in card.data" :key="info.id">
+          <a-col :lg="3" class="time">{{info.start_time}} - {{info.end_time}}</a-col>
+          <a-col :lg="12" class="content" >
+            <div class="course-info">
+              <div class="course-name">{{info.course_name}}</div>
+              <div class="address">
+                <div class="mg-r24"><span class="label">场地：</span><span  class="value">{{info.court_name}}</span></div>
+                <div><span class="label">教练：</span><span class="value">{{info.coach_name}}</span></div>
+              </div>
             </div>
-          </div>
-          <div :lg="5" :offset="3" class="reserve">
-            <div class="mg-r24"><span class="label">签到：</span><span class="value">{{info.checkin_num}}人</span></div>
-            <div class="mg-r24"><span class="label">预约：</span><span class="value">{{info.reserved_num}}人</span></div>
-            <div><span class="label">可约：</span><span class="value">{{info.reserve_max}}人</span></div>
-          </div>
-        </a-col>
-        <a-col :lg="2" :offset="7" class="action" v-modal-link="{name: 'schedule-team-reserve-info', props: {id: info.id}}"><a href="#">查看详情</a></a-col>
-      </a-row>
-    </a-card>
+            <div :lg="5" :offset="3" class="reserve">
+              <div class="mg-r24"><span class="label">签到：</span><span class="value">{{info.checkin_num}}人</span></div>
+              <div class="mg-r24"><span class="label">预约：</span><span class="value">{{info.reserved_num}}人</span></div>
+              <div><span class="label">可约：</span><span class="value">{{info.reserve_max}}人</span></div>
+            </div>
+          </a-col>
+          <a-col :lg="2" :offset="7" class="action" v-modal-link="{name: 'schedule-team-reserve-info', props: {id: info.id}}"><a href="#">查看详情</a></a-col>
+        </a-row>
+      </a-card>
+    </template>
+
   </div>
 </template>
 
@@ -70,7 +74,7 @@ export default {
       const weekList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
       const weekday = moment(val).day()
       const MMDD = moment(val).format('MM-DD').valueOf()
-      return `${MMDD} ${weekList[weekday]}`
+      return `${MMDD} ${weekList[weekday - 1]}`
     }
   },
   methods: {

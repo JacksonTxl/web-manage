@@ -2,6 +2,7 @@ import { TeamScheduleCommonApi, UnUsedSeatQuery, ConsumeQuery } from '@/api/v1/s
 import { Injectable } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
+import { MessageService } from '@/services/message.service'
 
 export interface SetState {
   courseOptions: any[],
@@ -23,7 +24,7 @@ export class TeamScheduleCommonService {
   unUsedSeatCourtOptions$: Computed<any[]>
   consumeOptions$: Computed<any[]>
 
-  constructor(private commonApi: TeamScheduleCommonApi) {
+  constructor(private commonApi: TeamScheduleCommonApi, private msg: MessageService) {
     this.state$ = new State({
       courseOptions: [],
       coachOptions: [],
@@ -110,6 +111,7 @@ export class TeamScheduleCommonService {
     return this.commonApi.getUnusedSeatList(query).pipe(tap(res => {
       this.state$.commit(state => {
         state.unUsedSeatOptions = res.list.map((item: any) => { return { id: item, name: item } })
+        this.msg.success({ content: '添加预约成功' })
       })
     }))
   }
