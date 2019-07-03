@@ -165,7 +165,8 @@ export default {
     return {
       form: this.$form.createForm(this),
       fileList: [],
-      activeBtn: 'save'
+      activeBtn: 'save',
+      courseId: 0
     }
   },
   mounted() {
@@ -182,7 +183,10 @@ export default {
     doSave(callback) {
       this.form.validateFields().then(() => {
         const data = this.getData()
-        this.courseService.setCourse(data).subscribe(callback)
+        this.courseService.setCourse(data).subscribe(res => {
+          this.courseId = res.course_id
+          callback()
+        })
       })
     },
     saveAndGoNext(e) {
@@ -191,7 +195,7 @@ export default {
         this.messageService.success({
           content: '保存成功'
         })
-        this.$emit('goNext')
+        this.$emit('goNext', this.courseId)
       })
     },
     onSubmitSuccess() {
