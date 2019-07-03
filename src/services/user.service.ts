@@ -127,7 +127,6 @@ export class UserService extends Store<UserState> {
     })
   }
   getUser(force: boolean = false) {
-    console.log('get user')
     if (force || !Object.keys(this.user$.snapshot()).length) {
       return this.staffApi.getGlobalStaffInfo().pipe(
         tap((res: any) => {

@@ -6,7 +6,12 @@
       <a-col :span="8" class="ta-r">
         <a href="javascript: void(0)"
           v-if="auth.reserve.edit"
-          v-modal-link="{ name:'brand-setting-team-reserve' }"
+          v-modal-link="{
+            name:'brand-setting-team-reserve',
+            on: {
+              change: onChange
+            }
+          }"
         >
           <st-icon type="edit"></st-icon>
           <span class="mg-l4 color-text-light">编辑</span>
@@ -92,6 +97,13 @@ export default {
   computed: {
     info() {
       return this.resData.info
+    }
+  },
+  methods: {
+    onChange() {
+      this.$router.push({
+        force: true
+      })
     }
   }
 }
