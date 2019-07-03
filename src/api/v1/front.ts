@@ -87,13 +87,13 @@ export class FrontApi extends Api {
    * 销售员列表
    */
   getSellerList() {
-    return this.http.get(`/v1/front/entrance/seller`)
+    return this.http.get(`/v1/front/entrance/seller`, { mock: {} })
   }
   /**
    * 教练列表
    */
   getCoachList() {
-    return this.http.get(`/v1/front/entrance/coach`)
+    return this.http.get(`/v1/front/entrance/coach`, { mock: {} })
   }
   /**
    * 前台会员详情

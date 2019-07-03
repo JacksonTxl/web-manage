@@ -1,6 +1,6 @@
 <template>
   <st-modal
-  title="批量上架会员卡"
+  title="上架会员卡"
   v-model="show"
   wrapClassName="modal-card-batch-shelves"
   width="668px">
@@ -81,7 +81,7 @@
               <td>{{item.duration_num}}{{item.duration_unit | enumFilter('member_card.duration_unit')}}</td>
               <td>{{item.rally_price}}元</td>
               <td>{{item.frozen_day}}天</td>
-              <td>{{item.gift_unit}}次</td>
+              <td>{{item.gift_unit}}天</td>
             </tr>
           </tbody>
         </st-form-table>
@@ -154,7 +154,7 @@
               </td>
               <td>{{item.min_price}}&nbsp;~&nbsp;{{item.max_price}}</td>
               <td>{{item.frozen_day}}天</td>
-              <td>{{item.gift_unit}}次</td>
+              <td>{{item.gift_unit}}天</td>
             </tr>
           </tbody>
         </st-form-table>

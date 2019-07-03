@@ -56,9 +56,9 @@
           </a-col>
         </a-row>
       </div>
-      <!-- <div v-if="info.is_member_pic" :class="b('avatar')">
+      <div v-if="info.is_member_pic" :class="b('avatar')">
         <img src="a.png" alt>
-      </div> -->
+      </div>
     </section>
     <section :class="b('product')">
       <st-form-table>
@@ -189,7 +189,7 @@
 </template>
 <script>
 import { dateFilter } from '@/filters/date.filters'
-import { CONTRACT_TYPE } from '@/constants/enums/contract'
+import { CONTRACT_TYPE } from '@/constants/contract/enums'
 import moment from 'moment'
 
 export default {

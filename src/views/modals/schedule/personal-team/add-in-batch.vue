@@ -22,7 +22,7 @@
       <a-select
         v-if="record.editable"
         placeholder="请选择课程"
-        style="width: 120px"
+        style="width: 180px"
         :value="text"
         @change="e => handleChange(e, record.key, 'course_id')">
         <a-select-option v-for="course in courseOptions" :key="course.id">{{course.name}}</a-select-option>
@@ -35,7 +35,7 @@
         v-if="record.editable"
         placeholder="请选择教练"
         :value="text"
-        style="width: 120px"
+        style="width: 180px"
         @change="e => handleChange(e, record.key, 'coach_id')">
         <a-select-option v-for="coach in coachOptions" :key="coach.id">{{coach.name}}</a-select-option>
       </a-select>
@@ -46,7 +46,7 @@
       <div>
         <a-input
           v-if="record.editable"
-          style="margin: -5px 0"
+          style="margin: -5px 0;width:100px;"
           :value="text"
           @change="e => handleChange(e.target.value, record.key, 'limit_num')">
             <span  slot="suffix">人</span>
@@ -58,7 +58,7 @@
       <div >
         <a-input
           v-if="record.editable"
-          style="margin: -5px 0"
+          style="margin: -5px 0;width:100px;"
           :value="text"
           @change="e => handleChange(e.target.value, record.key, 'course_fee')">
             <span  slot="suffix" >元/节</span>

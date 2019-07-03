@@ -3,7 +3,7 @@
     <div class="page-brand-basic-card-body">
       <!-- <div class="page-preview">实时预览{{deposit_card}}</div> -->
       <div class="page-content">
-        <st-form :form="form" labelWidth="116px">
+        <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
             <a-col :lg="16">
               <p class="page-content-card__card__name">

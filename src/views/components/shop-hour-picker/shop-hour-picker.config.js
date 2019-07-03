@@ -28,4 +28,4 @@ export const SLIDER = [{
   week: []
 }]
 export const IS_COPE_WEEK = [false, false, false, false, false, false, false]
-export const WEEK = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+export const WEEK = ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日']

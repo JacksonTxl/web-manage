@@ -1,6 +1,6 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
-import { State, Computed } from 'rx-state/src'
+import { State, Computed } from 'rx-state'
 import { BrandTeamCourseApi, GetTeamBrandCourseListInput, PutCourseTeamIntoBrandInput } from '@/api/v1/course/team/brand'
 import { AuthService } from '@/services/auth.service'
 

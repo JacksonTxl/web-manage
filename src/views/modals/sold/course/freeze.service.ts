@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { State, Effect } from 'rx-state/src'
+import { State, Effect } from 'rx-state'
 import { CourseApi, FreezeCoursePackageInput } from '@/api/v1/sold/course'
 
 @Injectable()
@@ -8,6 +8,7 @@ export class FreezeService {
   constructor(private courseApi: CourseApi) {}
   @Effect()
   freeze(params: FreezeCoursePackageInput, id:string, type:string) {
+    console.log(1)
     return this.courseApi.freezeCourse(params, id, type)
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from 'vue-service-app'
 import { CourseApi, EditCoursePersonalCoachInput } from '@/api/v1/sold/course'
-import { State, Effect } from 'rx-state/src'
+import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { CoachApi } from '@/api/v1/staff/coach'
 

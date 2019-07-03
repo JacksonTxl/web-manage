@@ -1,11 +1,14 @@
 <template>
   <div>
     <st-checkbox-button-group v-model="weekArr">
-      <st-checkbox-button-item
-        v-for="(item, index) in defaultWeekList"
-        :key="index"
-        :value="index"
-      >{{item}}</st-checkbox-button-item>
+      <template v-for="(item, index) in defaultWeekList">
+        <st-checkbox-button-item
+          :key="index"
+          :value="index"
+          v-if="index"
+        >{{item}}</st-checkbox-button-item>
+      </template>
+
     </st-checkbox-button-group>
     <div class="shop-hour-picker shop-hour-picker-box">
       <a-row class="shop-hour-picker__title-box">
@@ -104,7 +107,7 @@ export default {
       deep: true
     },
     weekArr(n, o) {
-      if (n.length === o.length) return
+      if (n.length === o.length || !o.length) return
       n.length > o.length ? this.addSlide(n, o) : this.deleteSlide(n, o)
     }
   },
@@ -131,11 +134,12 @@ export default {
     },
     addSlide(n, o) {
       const index = difference(n, o)
-      console.log(n, o)
+      console.log('addSlide', n)
       this.slider[n[n.length - 1]].title = n[n.length - 1]
       this.slider[n[n.length - 1]].value = [10, 24]
     },
     deleteSlide(n, o) {
+      onsole.log('deleteSlide', n)
       const index = difference(o, n)
       this.slider[index].value = []
       delete this.slider[index].title

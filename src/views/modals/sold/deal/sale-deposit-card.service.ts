@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { State, Effect, Action } from 'rx-state/src'
+import { State, Effect, Action } from 'rx-state'
 import { TransactionApi, TransactionPriceInput } from '@/api/v1/sold/transaction'
 import { tap, switchMap, catchError, debounceTime } from 'rxjs/operators'
 import { ContractApi } from '@/api/v1/setting/contract'

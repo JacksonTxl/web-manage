@@ -56,7 +56,7 @@
           <div class="st-des">建议取消预约时间 >= 提前预约时间，否则会造成取消课程预约后，其它用户无法再进行预约）</div>
         </st-form-item>
         <!-- 预约提醒 -->
-        <st-form-item label="预约提醒">
+        <!-- <st-form-item label="预约提醒">
           <div>
             <span>在课程开始前</span>
             <a-select class="mg-l8" style="width: 100px"
@@ -71,7 +71,7 @@
             </a-select>
             <span class="mg-l8" >提醒用户上课</span>
           </div>
-        </st-form-item>
+        </st-form-item> -->
         <!-- 预约上限 -->
         <st-form-item label="预约上限" v-if="info.reserve_upper_limit">
           <div>

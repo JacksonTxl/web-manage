@@ -50,7 +50,7 @@
           <div class="st-des">建议取消预约时间 >= 提前预约时间，否则会造成取消课程预约后，其它用户无法再进行预约）</div>
         </st-form-item>
         <!-- 预约提醒 -->
-        <st-form-item label="预约提醒">
+        <!-- <st-form-item label="预约提醒">
           <div>
             <span>在课程开始前</span>
             <a-select class="mg-l8" style="width: 100px" v-model="info.reserve_remind">
@@ -63,7 +63,7 @@
             </a-select>
             <span class="mg-l8" >提醒用户上课</span>
           </div>
-        </st-form-item>
+        </st-form-item> -->
         <!-- 签到方式 -->
         <st-form-item label="签到方式">
           <a-checkbox :checked="!!info.is_sign" @change="onCheckboxChange('is_sign')">支持用户自主签到</a-checkbox>

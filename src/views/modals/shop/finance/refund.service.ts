@@ -1,5 +1,5 @@
 import { Injectable } from 'vue-service-app'
-import { State, Effect } from 'rx-state/src'
+import { State, Effect } from 'rx-state'
 import { OrderApi, RefundParams } from '@/api/v1/finance/order'
 import { tap } from 'rxjs/operators'
 

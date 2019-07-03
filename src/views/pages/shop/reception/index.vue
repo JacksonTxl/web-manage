@@ -5,20 +5,27 @@
         <div :class="reception('form-block-detail')">
           <div :class="reception('form-block-number')">
             <p>{{item.label}}（{{item.unit}}）</p>
-            <ICountUp class="number-up" :endVal="summaryInfo[item.type].num"/>
+            <ICountUp v-if="auth[item.type]" class="number-up" :endVal="summaryInfo[item.type].num"/>
+            <span v-else>- -</span>
             <!-- <p>{{summaryInfo[item.type].num}}</p> -->
           </div>
-          <div :class="reception('form-block-chart')" :style="`background:hsl(${Date.now()*index%360},50%,50%)`"></div>
+          <div v-if="auth[item.type]" :class="reception('form-block-chart')">
+            <front-simple-area :color="item.color" :data="summaryInfo[item.type].stChart"></front-simple-area>
+          </div>
+          <div v-else :class="reception('form-block-nonedata')"></div>
         </div>
         <div :class="reception('form-block-button')">
-          <span>查看详情</span>
-          <st-icon type="right-small"/>
+          <template v-if="auth[item.type]">
+            <span>查看详情</span>
+            <st-icon type="right-small"/>
+          </template>
+          <span v-else disabled>暂无权限</span>
         </div>
       </div>
     </div>
     <div :class="reception('operation-list')" class="mg-b24">
-      <template v-for="(item,index) in shortcutList">
-        <div :class="reception('operation-item')" :key="index">
+      <template v-for="(item,index) in filterShortcutList">
+        <div :class="reception('operation-item')" @click="onShortcut(item.id)" :disabled="!item.auth||item.version>1" :key="index">
           <p>
             <st-icon :type="item.icon"/>
           </p>
@@ -52,8 +59,8 @@
               </span>
             </a-select-option>
           </a-select>
-          <st-button type="primary" :loading="loading.setEntrance" @click="onEntry" :disabled="!isSelectMember" v-if="!isEntry">入场</st-button>
-          <st-button type="danger" :loading="loading.setEntranceLeave" @click="onLeave" v-else :disabled="!isSelectMember">离场</st-button>
+          <st-button type="primary" :loading="loading.setEntrance" @click="onEntry" :disabled="!isSelectMember || !auth.checkin" v-if="!isEntry">入场</st-button>
+          <st-button type="danger" :loading="loading.setEntranceLeave" @click="onLeave" v-else :disabled="!isSelectMember || !auth.checkout">离场</st-button>
         </div>
         <div :class="reception('info')">
           <div :class="reception('personal-info')">
@@ -80,19 +87,39 @@
                 <a-select-option v-for="(item) in entranceOptionList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
             </p>
-            <p>
+            <p v-if="isSelectMember">
               <span class="set-info-label">跟进销售</span>
-              <a-select v-model="seller" class="set-info-select">
+              <template v-if="!isEditSeller">
+                <span class="set-info-value">
+                  {{selectMemberInfo.seller.name || '无'}}
+                  <a @click="isEditSeller=true" v-if="auth.bindSalesman">编辑</a>
+                </span>
+              </template>
+              <a-select v-else v-model="seller" class="set-info-select">
                 <a-select-option :value="-1">无</a-select-option>
                 <a-select-option v-for="(item) in sellerList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
             </p>
-            <p>
+            <p v-else>
+              <span class="set-info-label">跟进销售</span>
+              <span class="set-info-value">无</span>
+            </p>
+            <p v-if="isSelectMember">
               <span class="set-info-label">跟进教练</span>
-              <a-select v-model="coach" class="set-info-select">
+              <template v-if="!isEditCoach">
+                <span class="set-info-value">
+                  {{selectMemberInfo.coach.name || '无'}}
+                  <a @click="isEditCoach=true" v-if="auth.bindCoach">编辑</a>
+                </span>
+              </template>
+              <a-select v-else v-model="coach" class="set-info-select">
                 <a-select-option :value="-1">无</a-select-option>
                 <a-select-option v-for="(item) in coachList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
+            </p>
+            <p v-else>
+              <span class="set-info-label">跟进教练</span>
+              <span class="set-info-value">无</span>
             </p>
             <p>
               <span class="set-info-label">储物柜</span>
@@ -132,7 +159,7 @@
         <a-tabs defaultActiveKey="1" class="todoist-tabs">
           <a-tab-pane tab="待办" key="1" forceRender>
             <div :class="reception('todoist-to-do')">
-              <st-button icon="anticon:plus" type="dashed" @click="onAddWorkNotes" class="to-do-add">添加待办</st-button>
+              <st-button icon="anticon:plus" type="dashed" @click="onAddWorkNotes" :disabled="!auth.addTodo" class="to-do-add">添加待办</st-button>
               <ul :class="reception('todoist-to-do-list')" v-scrollBar>
                 <li v-for=" (item,i) in workNoteList" :key="i" :class="{'mg-t12':(i+1)>2,'mg-r12':(i+1)%2!==0}">
                   <div class="to-do-main">
@@ -179,6 +206,7 @@
 <script>
 import { IndexService } from './index.service'
 import { cloneDeep } from 'lodash-es'
+import FrontSimpleArea from '@/views/biz-components/stat/front-simple-area'
 export default {
   name: 'PageShopReception',
   bem: {
@@ -203,6 +231,9 @@ export default {
       loading: this.indexService.loading$
     }
   },
+  components: {
+    FrontSimpleArea
+  },
   data() {
     return {
       // 头部统计信息
@@ -210,23 +241,28 @@ export default {
         {
           label: '今日订单',
           type: 'today_order',
-          unit: '单'
+          unit: '单',
+          color: '#3A6FED'
         }, {
           label: '今日预约',
           type: 'today_reserve',
-          unit: '条'
+          unit: '条',
+          color: '#2C8DD2'
         }, {
           label: '今日团课',
           type: 'today_team_course',
-          unit: '节'
+          unit: '节',
+          color: '#1EA9B9'
         }, {
           label: '今日收银',
           type: 'today_revenue',
-          unit: '元'
+          unit: '元',
+          color: '#11C5A1'
         }, {
           label: '今日入场',
           type: 'today_entry',
-          unit: '人'
+          unit: '人',
+          color: '#01E882'
         }
       ],
       // 快捷操作
@@ -234,39 +270,55 @@ export default {
         {
           id: 'orderPage',
           icon: 'reception-create',
-          label: '销售开单'
+          label: '销售开单',
+          auth: true,
+          version: 1
         },
         {
           id: 'reservePage',
           icon: 'reception-order',
-          label: '预约管理'
+          label: '预约管理',
+          auth: true,
+          version: 2
         },
         {
           id: 'checkInPage',
           icon: 'reception-customer',
-          label: '入场管理'
+          label: '入场管理',
+          auth: true,
+          version: 1
         },
         {
           id: 'temporaryPage',
           icon: 'reception-advance',
-          label: '定金押金'
+          label: '定金押金',
+          auth: true,
+          version: 2
         },
         {
           id: 'schedulePage',
           icon: 'reception-course',
-          label: '课程预约'
+          label: '课程预约',
+          auth: true,
+          version: 1
         },
         {
           id: 'cabinetPage',
           icon: 'reception-cabinet',
-          label: '储物柜'
+          label: '储物柜',
+          auth: true,
+          version: 2
         },
         {
           id: 'addVisit',
           icon: 'reception-record',
-          label: '预约到访'
+          label: '预约到访',
+          auth: true,
+          version: 2
         }
       ],
+      // 根据权限处理后的快捷操作列表
+      filterShortcutList: [],
       // 搜索会员的关键字
       memberSearchText: '',
       // 搜索会员的最后一次关键字
@@ -277,8 +329,12 @@ export default {
       selectMemberInfo: {},
       // 入场凭证
       proof: -1,
+      // 是否编辑销售
+      isEditSeller: false,
       // 入场选择销售
       seller: -1,
+      // 是否编辑教练
+      isEditCoach: false,
       // 入场选择教练
       coach: -1,
       // 储物柜
@@ -331,7 +387,33 @@ export default {
       }
     }
   },
+  mounted() {
+    this.init()
+  },
   methods: {
+    init() {
+      this.formatShortcutList()
+      this.seller = this.selectMemberInfo.seller ? this.selectMemberInfo.seller.id || -1 : -1
+      this.coach = this.selectMemberInfo.coach ? this.selectMemberInfo.coach.id || -1 : -1
+    },
+    formatShortcutList() {
+      this.shortcutList.forEach(i => {
+        i.auth = this.auth[i.id]
+      })
+      let trueArray = []
+      let falseArray = []
+      trueArray = this.shortcutList.filter(i => this.auth[i.id] && i.version === 1)
+      falseArray = this.shortcutList.filter(i => !this.auth[i.id] || i.version > 1)
+      this.filterShortcutList = cloneDeep([...trueArray, ...falseArray])
+    },
+    // 快捷操作
+    onShortcut(data) {
+      switch (data) {
+        case 'checkInPage':
+          this.$router.push({ path: '/shop/reception/entrance' })
+          break
+      }
+    },
     // 搜索会员
     onMemberSearch(data) {
       this.memberSearchText = data.trim()

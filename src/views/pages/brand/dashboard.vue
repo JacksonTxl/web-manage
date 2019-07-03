@@ -5,53 +5,53 @@
         <a-row :gutter="16" :class="bCount()">
           <a-col :span="6" :class="bCount('item')">
             <div :class="bCount('box')">
-              <count-card>
-                <brand-simple-line :data="dataSimpleLine"></brand-simple-line>
+              <count-card title="今日营收额" :count="this.revenue.num" :footer="{label: '近7天日均营收额:', value: this.revenue.avg }" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
+                <brand-simple-line :data="this.revenue.chart | lineFilter"></brand-simple-line>
               </count-card>
             </div>
           </a-col>
           <a-col :span="6" :class="bCount('item')">
             <div :class="bCount('box')">
-              <count-card>
-                <brand-simple-line color="#00B4BC" unit="单" :data="dataSimpleLine2"></brand-simple-line>
+              <count-card title="今日订单数" :count="this.order.num" :footer="{label: '近7天日均订单数:', value: this.order.avg }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
+                <brand-simple-line color="#00B4BC" unit="单" :data="this.order.chart | lineFilter"></brand-simple-line>
               </count-card>
             </div>
           </a-col>
           <a-col :span="6" :class="bCount('item')">
             <div :class="bCount('box')">
-              <count-card>
-                <brand-simple-line color="#55BFA3" unit="人" :data="dataSimpleLine3"></brand-simple-line>
+              <count-card  title="用户数">
+                <brand-simple-line color="#55BFA3" unit="人"  :data="this.visit.chart | lineFilter"></brand-simple-line>
               </count-card>
             </div>
           </a-col>
           <a-col :span="6" :class="bCount('item')">
             <div :class="bCount('box')">
-              <count-card>
-                <brand-simple-bar color="#58CC99" class="mg-t40" :data="dataSimpleBar"></brand-simple-bar>
+              <count-card title="今日客流量" :count="this.user.num" :footer="{label: '近7天日均营收额:', value: this.user.avg }" :trend="{isUp: this.user.ratio > 0, rate: this.user.ratio }">
+                <brand-simple-bar color="#58CC99" class="mg-t40" :data="this.user | barFilter"></brand-simple-bar>
               </count-card>
             </div>
           </a-col>
         </a-row>
         <a-row class="mg-t16 bg-white" >
           <a-col :span="24">
-            <dashboard-tabs>
+            <dashboard-tabs @change="onChangeTabs">
               <template v-slot:user>
                 <div class="mg-t8 mg-l32 user-chart-box">
                   <div class="funnel-vertical">
-                    <funnel-vertical  :data="dataFV"></funnel-vertical>
+                    <funnel-vertical  :data="userFunnel"></funnel-vertical>
                   </div>
                   <div class="revenue-area">
-                    <brand-revenue-area  class="user-chart-box__item" :data="dataRA"></brand-revenue-area>
+                    <brand-revenue-area  class="user-chart-box__item" :data="userChartData"></brand-revenue-area>
                   </div>
                 </div>
               </template>
               <template v-slot:marketing>
                 <div class="mg-t8 mg-l32 user-chart-box">
                   <div class="funnel-vertical">
-                    <funnel-vertical  :data="dataFV"></funnel-vertical>
+                    <funnel-vertical  :data="marketingFunnel"></funnel-vertical>
                   </div>
                   <div class="revenue-area">
-                    <brand-revenue-area  class="user-chart-box__item" :data="dataRA"></brand-revenue-area>
+                    <brand-revenue-area  :fields="['浏览用户','注册用户','消费用户','办理入会']" class="user-chart-box__item" :data="marketing"></brand-revenue-area>
                   </div>
                 </div>
               </template>
@@ -62,14 +62,14 @@
           <a-col :span="12">
             <st-container class="bg-white" type="2">
               <st-t3>客单价</st-t3>
-              <brand-user-avg-bar :data="data2"></brand-user-avg-bar>
+              <brand-user-avg-bar :data="avg"></brand-user-avg-bar>
 
             </st-container>
           </a-col>
           <a-col :span="12">
             <st-container class="bg-white" type="2">
               <st-t3>用户活跃分析</st-t3>
-              <brand-user-ring :data="data1"></brand-user-ring>
+              <brand-user-ring :data="entry"></brand-user-ring>
             </st-container>
           </a-col>
         </a-row>
@@ -131,12 +131,46 @@ import DashboardTabs from '@/views/pages/brand/dashboard#/tabs'
 import CountCard from '@/views/pages/brand/dashboard#/count-card'
 import PlugIn from '@/views/pages/brand/dashboard#/plug-in'
 import FunnelVertical from '@/views/components/chart#/funnel-vertical'
+import { DashboardService } from './dashboard.service'
 export default {
   name: 'Dashboard',
+  serviceInject() {
+    return {
+      dashBoardService: DashboardService
+    }
+  },
+  rxState() {
+    console.log(this.dashBoardService)
+    return {
+      top: this.dashBoardService.top$,
+      userFunnel: this.dashBoardService.userFunnel$,
+      userChartData: this.dashBoardService.user$,
+      avg: this.dashBoardService.avg$,
+      entry: this.dashBoardService.entry$,
+      marketing: this.dashBoardService.marketing$,
+      marketingFunnel: this.dashBoardService.marketingFunnel$
+    }
+  },
   bem: {
     b: 'page-dashboard',
     bCount: 'page-dashboard-count',
     bAdv: 'page-dashboard-adv'
+  },
+  filters: {
+    lineFilter(val) {
+      return val.map((item, index) => {
+        return {
+          name: index,
+          value: item.num || 3
+        }
+      })
+    },
+    barFilter(val) {
+      return {
+        name: '会员占比',
+        percent: val.percent
+      }
+    }
   },
   data() {
     return {
@@ -148,7 +182,6 @@ export default {
       dataSimpleLine3: [],
       dataSimpleArea: [],
       dataSimpleBar: {},
-
       data1: [],
       data2: [],
       data3: [],
@@ -162,10 +195,28 @@ export default {
       data11: []
     }
   },
-  mounted() {
-    this.reload()
+  computed: {
+    order() {
+      return this.top.order
+    },
+    revenue() {
+      return this.top.revenue
+    },
+    user() {
+      return this.top.user
+    },
+    visit() {
+      return this.top.visit
+    }
   },
   methods: {
+    onChangeTabs(key) {
+      if (key === 'user') {
+        this.dashBoardService.getUserAll().subscribe()
+      } else {
+        this.dashBoardService.getMarketingAll().subscribe()
+      }
+    },
     reload() {
       this.dataSimpleBar = {
         name: '会员占比',
