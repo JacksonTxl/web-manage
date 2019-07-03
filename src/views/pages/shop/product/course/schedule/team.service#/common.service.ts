@@ -2,6 +2,7 @@ import { TeamScheduleCommonApi, UnUsedSeatQuery, ConsumeQuery } from '@/api/v1/s
 import { Injectable } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
+import { MessageService } from '@/services/message.service'
 
 export interface SetState {
   courseOptions: any[],
@@ -23,7 +24,7 @@ export class TeamScheduleCommonService {
   unUsedSeatCourtOptions$: Computed<any[]>
   consumeOptions$: Computed<any[]>
 
-  constructor(private commonApi: TeamScheduleCommonApi) {
+  constructor(private commonApi: TeamScheduleCommonApi, private msg: MessageService) {
     this.state$ = new State({
       courseOptions: [],
       coachOptions: [],
@@ -109,7 +110,10 @@ export class TeamScheduleCommonService {
   getUnusedSeatList(query: UnUsedSeatQuery) {
     return this.commonApi.getUnusedSeatList(query).pipe(tap(res => {
       this.state$.commit(state => {
-        state.unUsedSeatOptions = res.list.map((item: any) => { return { id: item, name: item } })
+        state.unUsedSeatOptions = res.list.map((item: any, index: any) => {
+          if (item === -1) item = '无座位'
+          return { id: index, name: item }
+        })
       })
     }))
   }

@@ -169,6 +169,7 @@ import { SaleCourseService } from './sale-course.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
+import { RuleConfig } from '@/constants/rule'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -176,7 +177,8 @@ export default {
   },
   serviceInject() {
     return {
-      saleCourseService: SaleCourseService
+      saleCourseService: SaleCourseService,
+      rules: RuleConfig
     }
   },
   rxState() {
@@ -208,7 +210,7 @@ export default {
       advanceText: '未选择定金',
       advanceAmount: '',
       selectAdvance: '',
-      reduceAmount: null,
+      reduceAmount: '',
       description: '',
       // 优惠券
       selectCoupon: '',
@@ -392,7 +394,7 @@ export default {
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
             'advance_amount': this.validStartTime,
-            'reduce_amount': this.reduceAmount,
+            'reduce_amount': this.reduceAmount || 0,
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,
@@ -419,7 +421,7 @@ export default {
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
             'advance_amount': this.advanceAmount,
-            'reduce_amount': this.reduceAmount,
+            'reduce_amount': this.reduceAmount || 0,
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,

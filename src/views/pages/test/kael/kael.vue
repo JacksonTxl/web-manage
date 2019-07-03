@@ -1,7 +1,6 @@
 <template>
   <st-panel app>
-    <div style="outline:1px solid #ccc">111</div>
-    <st-coupon name="卡尔的券" @close="onClose"/>
+    <st-input-number v-model="kael" :min="160" :max="500" @change="onClose"></st-input-number>
   </st-panel>
 </template>
 <script>
@@ -13,7 +12,7 @@ export default {
   },
   methods: {
     onClose(e) {
-      console.log(11111)
+      // console.log(e)
     }
   }
 }

@@ -471,6 +471,18 @@ export const routeMapConfig = {
   },
   'shop-member-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户列表'
+    routeConfig.queryOptions = {
+      keyword: { type: String, default: '' },
+      member_level: { type: Number, default: -1 },
+      register_way: { type: Number, default: -1 },
+      register_start_time: { type: String, default: '' },
+      register_stop_time: { type: String, default: '' },
+      be_member_start_time: { type: String, default: '' },
+      be_member_stop_time: { type: String, default: '' },
+      is_follow: { type: Number, default: -1 },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
   },
   'shop-member-info-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户详情'

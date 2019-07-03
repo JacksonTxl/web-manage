@@ -1,6 +1,6 @@
 <template>
   <section :class="basic()">
-    <st-panel title="课程包详情">
+    <st-panel title="课程包详情" >
       <div slot="actions">
         <st-button v-if="auth['shop:sold:sold_package_course|export_contract']" class="mgr-8" type="primary">查看合同</st-button>
         <st-button v-if="auth['shop:sold:sold_package_course|frozen']" class="mgr-8" @click="onFreeze">冻结</st-button>
@@ -49,7 +49,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel initial class="mgt-12"
+    <st-panel initial class="mgt-12" v-if="false"
       :tabs="[
         { label: '消费记录', route: { name: 'shop-sold-course-info-package-info-consumption-record', query: {id:infoService.id} } },
         { label: '操作日志', route: { name: 'shop-sold-course-info-package-info-operation-record', query: {id:infoService.id} } },

@@ -43,8 +43,18 @@
           <!-- 支持入场范围 -->
           <p class="mb-8">
             <span class="label">支持消费门店：</span>
-            <span class="value">{{shopName.name}}</span>
+            <span class="value">共{{cardInfo.can_use_shop_num}}家门店</span>
           </p>
+          <st-container v-if="cardInfo.can_use_shop_num!==1">
+            <a-table
+              size="middle"
+              rowKey="shop_id"
+              :columns="shop_columns"
+              :dataSource="cardInfo.can_use_shop"
+              :pagination="false"
+              :scroll="{ y: 230 }"
+            />
+          </st-container>
         </div>
         <div class="mb-24">
           <!-- 支持消费类目 -->
@@ -60,8 +70,18 @@
           <!-- 售卖门店 -->
           <p class="mb-8">
             <span class="label">售卖门店：</span>
-            <span class="value">{{shopName.name}}</span>
+            <span class="value">{{cardInfo.support_sales | enumFilter('deposit_card.support_sales')}}</span>
           </p>
+          <st-container v-if="cardInfo.support_sales!==1">
+            <a-table
+              size="middle"
+              rowKey="shop_id"
+              :columns="shop_columns"
+              :dataSource="cardInfo.support_shop"
+              :pagination="false"
+              :scroll="{ y: 230 }"
+            />
+          </st-container>
         </div>
         <div class="mb-24">
           <!-- 售卖渠道 -->

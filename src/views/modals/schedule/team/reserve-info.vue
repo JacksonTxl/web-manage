@@ -60,7 +60,6 @@
           <td>
             <a-select
               slot="site_num_list"
-              v-model="siteNumIds"
               mode="multiple"
               placeholder="选择座位"
               style="width: 120px"
@@ -86,8 +85,8 @@
           <td>{{item.is_checkin_name}}</td>
           <td>
             <div>
-              <a   class="mg-r8" href="javascript:;" @click="onClickReserve" v-if="auth.cancel">取消预约</a>
-              <a  href="javascript:;" v-if="auth.checkIn" @click="onClickReserve">签到消费</a>
+              <a  class="mg-r8" href="javascript:;" @click="onClickCancel(item.reserve_id)" v-if="auth.cancel">取消预约</a>
+              <a  href="javascript:;" v-if="auth.checkIn" @click="onClickCheckIn(item.reserve_id)">签到消费</a>
             </div>
           </td>
         </tr>
@@ -180,17 +179,28 @@ export default {
     onSearch(value) {
       this.teamScheduleCommonService.getMemberList({ member_name: value }).subscribe()
     },
+    onClickCancel(id) {
+      this.teamScheduleReserveService.del(id).subscribe()
+    },
+    onClickCheckIn(id) {
+      this.teamScheduleReserveService.check({ id, checkin_method: 2 }).subscribe()
+    },
     onChange(value) {
       this.teamScheduleCommonService.getConsumeList({ course_id: this.courseId, member_id: value }).subscribe()
     },
     onChangeConsumeType(val) {
-      console.log('onChangeConsumeType', val)
       const obj = JSON.parse(val)
       this.consumeType = obj.consume_type
       this.consumeId = obj.id
     },
     onChangeSiteNumList(val) {
-      console.log(val)
+      this.unUsedSeatOptions.forEach(item => {
+        if (val.includes(item.id)) {
+          let value = item.name
+          if (item.name === '无座位') value = -1
+          this.siteNumIds.push(value)
+        }
+      })
       if (val.length > 3) {
         this.siteNumIds.pop()
         this.messageService.error({
@@ -207,12 +217,10 @@ export default {
         consume_type: this.consumeType,
         consume_id: this.consumeId
       }
-      this.teamScheduleReserveService.add(form).pipe(
-        switchMap(state => {
-          this.info = state.info
-          return this.teamScheduleCommonService.getUnusedSeatList({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
-        }))
-        .subscribe()
+      this.teamScheduleReserveService.add(form)
+        .subscribe(() => {
+          this.getReserve()
+        })
     },
     edit(key) {
       const newData = [...this.data]
@@ -232,17 +240,20 @@ export default {
         this.data = newData
         this.cacheData = newData.map(item => ({ ...item }))
       }
+    },
+    getReserve() {
+      const ss = this.teamScheduleReserveService
+      ss.getInfo(this.id).pipe(
+        switchMap(state => {
+          this.info = state.info
+          this.list = state.list
+          return this.teamScheduleCommonService.getUnusedSeatList({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
+        }))
+        .subscribe()
     }
   },
   mounted() {
-    const ss = this.teamScheduleReserveService
-    ss.getInfo(this.id).pipe(
-      switchMap(state => {
-        this.info = state.info
-        this.list = state.list
-        return this.teamScheduleCommonService.getUnusedSeatList({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
-      }))
-      .subscribe()
+    this.getReserve()
   }
 }
 </script>

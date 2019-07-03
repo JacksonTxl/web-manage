@@ -55,7 +55,7 @@
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
           <st-form-item label="规格" required v-if="info.price_model === 2">
-            <a-radio-group v-decorator="['coach_level',{rules:[{validator: coach_level}]}]">
+            <a-radio-group v-decorator="['coach_level',{rules:[{validator: coach_level}]}]" @change="changeSpeics">
               <a-radio v-for="(item, index) in info.coach_level" :value="item.id" :key="index">{{item.name}}</a-radio>
             </a-radio-group>
           </st-form-item>
@@ -64,7 +64,7 @@
               <a-input-number class="input-number"
               :max="9999"
               v-decorator="['buyNum',{rules:[{validator:buy_num}]}]"
-              placeholder="请输入购买数量" :disabled="isAmountDisabled" :loading="loading.getPersonalPriceInfo" ></a-input-number>
+              placeholder="请输入购买数量" :disabled="isAmountDisabled" ></a-input-number>
               <st-button class="create-button" @click="onClickCourseAmount" :loading="loading.getPersonalPriceInfo" v-if="!isAmountDisabled">确定</st-button>
               <st-button class="create-button" @click="isAmountDisabled=false;" v-else>编辑</st-button>
             </div>
@@ -206,6 +206,7 @@ import { SalePersonalCourseService } from './sale-personal-course.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
+import { RuleConfig } from '@/constants/rule'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -213,7 +214,8 @@ export default {
   },
   serviceInject() {
     return {
-      salePersonalCourseService: SalePersonalCourseService
+      salePersonalCourseService: SalePersonalCourseService,
+      rules: RuleConfig
     }
   },
   rxState() {
@@ -244,6 +246,8 @@ export default {
       searchMemberIsShow: true,
       // 购买数量可编辑
       isAmountDisabled: false,
+      // 最小输入购买数量
+      minPrice: 0,
       // 到期有效时间
       validEndTime: 0,
       // 定金
@@ -282,7 +286,11 @@ export default {
   },
   mounted() {
     this.salePersonalCourseService.serviceInit(this.id).subscribe(result => {
-      this.form.setFieldsValue({ 'coach_level': this.info.coach_level[0].id })
+      setTimeout(() => {
+        this.resetOrderInfo()
+        this.form.setFieldsValue({ 'coach_level': this.info.coach_level[0].id })
+        this.minPrice = this.info.coach_level[0].min_sell
+      })
     })
   },
   computed: {
@@ -305,6 +313,24 @@ export default {
     }
   },
   methods: {
+    changeSpeics(event) {
+      this.isAmountDisabled = false
+      this.resetOrderInfo()
+      const selectCoach = this.info.coach_level.filter((item) => { return item.id === event.target.value })
+      this.minPrice = selectCoach[0].min_sell
+    },
+    resetOrderInfo() {
+      this.form.resetFields(['buyNum', 'coachId', 'coursePrice', 'gift_course_num'])
+      this.personalPrice.sell_price = 0
+      this.personalPrice.min_sell_price = 0
+      this.personalPrice.max_sell_price = 0
+      this.validEndTime = 0
+      this.priceInfo = 0
+      this.orderAmountPrice = 0
+      this.reduceAmount = 0
+      this.selectAdvance = ''
+      this.selectCoupon = ''
+    },
     fetchCouponList() {
       const member_id = this.form.getFieldValue('memberId')
       const course_price = this.personalPrice.sell_price
@@ -360,12 +386,18 @@ export default {
       }
     },
     buy_num(rule, value, callback) {
+      let price = 0
+      if (this.info.price_model === 1) { // 教练平级
+        price = this.personalPrice.sell_price
+      } else {
+        price = this.minPrice
+      }
       if (!value) {
         // eslint-disable-next-line
         callback('请输入购买数量')
-      } else if (value < this.info.min_sell) {
+      } else if (value < price) {
         // eslint-disable-next-line
-        callback(`不能少于课程定价的最低购买节数${this.info.min_sell}`)
+        callback(`不能少于课程定价的最低购买节数${price}`)
       } else {
         callback()
       }
@@ -485,11 +517,11 @@ export default {
           }
           this.salePersonalCourseService.getPersonalPriceInfo(params).subscribe(result => {
             this.isAmountDisabled = true
-            this.validEndTime = this.info.effective_unit
+            this.validEndTime = this.info.effective_unit * params.buy_num || 0
             // 调用优惠券列表
             this.fetchCouponList()
             // 调用获取商品原价
-            if (this.info.sale_model === 1 && !this.form.getFieldValue('coursePrice')) {
+            if (this.info.sale_model === 1 && this.info.price_model === 2 && !this.form.getFieldValue('coursePrice') && this.form.getFieldValue('coursePrice') !== 0) {
               return
             }
             this.getOrderPrice()
@@ -504,6 +536,9 @@ export default {
       let special_amount = this.personalPrice.sell_price
       if (this.info.sale_model === 1) {
         special_amount = this.form.getFieldValue('coursePrice')
+      }
+      if (!special_amount) {
+        return
       }
       this.salePersonalCourseService.priceAction$.dispatch({
         product_id: this.id,
@@ -544,13 +579,13 @@ export default {
             'course_id': this.id,
             'contract_number': values.contractNumber,
             'buy_num': values.buyNum,
-            'course_price': this.personalPrice.sell_price,
+            'course_price': this.info.sale_model === 2 ? this.personalPrice.sell_price : values.coursePrice,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
-            'reduce_amount': this.reduceAmount,
+            'reduce_amount': this.reduceAmount || 0,
             'sale_id': values.saleName,
             'description': this.description,
-            'gift_course_num': values.gift_course_num,
+            'gift_course_num': values.gift_course_num || 0,
             'coach_id': values.coachId,
             'coach_level_id': values.coach_level,
             'sale_range': this.info.sale_range.type,
@@ -579,13 +614,13 @@ export default {
             'course_id': this.id,
             'contract_number': values.contractNumber,
             'buy_num': values.buyNum,
-            'course_price': this.personalPrice.sell_price,
+            'course_price': this.info.sale_model === 2 ? this.personalPrice.sell_price : values.coursePrice,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
-            'reduce_amount': this.reduceAmount,
+            'reduce_amount': this.reduceAmount || 0,
             'sale_id': values.saleName,
             'description': this.description,
-            'gift_course_num': values.gift_course_num,
+            'gift_course_num': values.gift_course_num || 0,
             'coach_id': values.coachId,
             'coach_level_id': values.coach_level,
             'sale_range': this.info.sale_range.type,

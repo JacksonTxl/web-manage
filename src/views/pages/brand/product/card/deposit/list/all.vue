@@ -188,7 +188,7 @@ export default {
     onShelf(record) {
       this.$confirm({
         title: '上架',
-        content: `确认上架${record.card_name}储值卡？`,
+        content: `确认上架${record.card_name}储值卡至${record.wait_shelf_num}家门店？`,
         onOk: () => {
           return this.allService.setShelf(record.id).toPromise().then(() => {
             this.$router.push({ force: true, query: this.query })

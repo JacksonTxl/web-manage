@@ -74,26 +74,7 @@ export default {
   },
   methods: {
     init(data) {
-      switch (data) {
-        case null:
-        case undefined:
-        case '':
-        case '.':
-          this.number = ''
-          break
-        default:
-          this.number = +data
-          if (!this.float) {
-            this.number = parseInt(data, 10)
-            this.number = this.min > this.number ? this.min : this.number
-            this.number = this.max < this.number ? this.max : this.number
-          } else {
-            this.number = parseInt(data * 10, 10) / 10
-            this.number = this.min > this.number ? this.min : this.number
-            this.number = this.max < this.number ? this.max : this.number
-          }
-          this.number += ''
-      }
+      this.number = data
     },
     numberBlur(e) {
       switch (e.target.value) {

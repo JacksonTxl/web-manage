@@ -159,7 +159,7 @@
         <a-tabs defaultActiveKey="1" class="todoist-tabs">
           <a-tab-pane tab="待办" key="1" forceRender>
             <div :class="reception('todoist-to-do')">
-              <st-button icon="anticon:plus" type="dashed" @click="onAddWorkNotes" :disabled="auth.addTodo" class="to-do-add">添加待办</st-button>
+              <st-button icon="anticon:plus" type="dashed" @click="onAddWorkNotes" :disabled="!auth.addTodo" class="to-do-add">添加待办</st-button>
               <ul :class="reception('todoist-to-do-list')" v-scrollBar>
                 <li v-for=" (item,i) in workNoteList" :key="i" :class="{'mg-t12':(i+1)>2,'mg-r12':(i+1)%2!==0}">
                   <div class="to-do-main">
@@ -272,7 +272,7 @@ export default {
           icon: 'reception-create',
           label: '销售开单',
           auth: true,
-          version: 2
+          version: 1
         },
         {
           id: 'reservePage',
@@ -300,7 +300,7 @@ export default {
           icon: 'reception-course',
           label: '课程预约',
           auth: true,
-          version: 2
+          version: 1
         },
         {
           id: 'cabinetPage',

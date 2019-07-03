@@ -13,6 +13,8 @@ export class ListService extends Store<MemberListInfoState> {
   state$: State<MemberListInfoState>
   memberListInfo$: Computed<string>
   auth$: Computed<object>
+  list$ = new State({})
+  page$ = new State({})
   constructor(private memberApi: MemberApi, private authService: AuthService) {
     super()
     this.state$ = new State({
@@ -40,6 +42,8 @@ export class ListService extends Store<MemberListInfoState> {
     return this.memberApi.getMember(paramsObj).pipe(
       tap(res => {
         res = this.authService.filter(res)
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
       })
     )
   }

@@ -10,7 +10,7 @@ export interface SetState {
   memberOptions: any[],
   courtOptions: any[],
   consumeOptions: any[],
-  courseCoachOptions: Staff[],
+  courseCoachOptions: any[],
   timeOptions: any[],
   dateOptions: any[],
   coachInBatchOptions: any[]
@@ -28,7 +28,7 @@ export class PersonalScheduleCommonService {
   consumeOptions$: Computed<any[]>
   dateOptions$: Computed<any[]>
   timeOptions$: Computed<any[]>
-  courseCoachOptions$: Computed<Staff[]>
+  courseCoachOptions$: Computed<any[]>
   coachInBatchOptions$: Computed<Staff[]>
 
   constructor(private commonApi: PersonalCommonApi) {

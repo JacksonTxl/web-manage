@@ -6,7 +6,7 @@
       { label: '门店团体课程库', route: { name: 'brand-product-course-team-list-shop' } }
     ]">
     <div slot="actions">
-      <a-input-search placeholder="私教课名称" v-model="query.courseName" @search="onSearchCourseName"></a-input-search>
+      <a-input-search placeholder="团体课名称" v-model="query.course_name" @search="onSearchCourseName"></a-input-search>
     </div>
     <router-view></router-view>
   </st-panel>

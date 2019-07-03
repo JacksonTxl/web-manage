@@ -193,7 +193,7 @@ export default {
     // 重置
     onReset() {
       let query = {
-        course_status: 1,
+        course_status: -1,
         start_time: '',
         end_time: ''
       }

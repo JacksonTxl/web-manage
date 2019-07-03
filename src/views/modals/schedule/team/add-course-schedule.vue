@@ -4,7 +4,7 @@
       <st-form-item label="时间" required>
         <a-date-picker showTime format="YYYY-MM-DD HH:mm" v-decorator="[
           'start_time',
-          {rules: [{ required: true, message: 'Please input your note!'}], initialValue: time}
+          {rules: [{ required: true, message: '时间不能为空'}], initialValue: time}
         ]">
           <a-icon slot="suffixIcon" type="clock-circle" />
         </a-date-picker>
@@ -12,7 +12,7 @@
       <st-form-item label="课程" required>
         <a-select v-decorator="[
           'course_id',
-          {rules: [{ required: true, message: 'Please input your note!' }]}
+          {rules: [{ required: true, message: '请选择课程' }]}
         ]">
           <a-select-option v-for="course in courseOptions" :key="course.id" :value="course.id">{{course.course_name}}</a-select-option>
         </a-select>
@@ -20,13 +20,14 @@
       <st-form-item label="教练" required>
         <a-select v-decorator="[
           'coach_id',
-          // {rules: [{ required: true, message: 'Please input your note!' }]}
+          {rules: [{ required: true, message: '请选择教练' }]}
         ]">
           <a-select-option v-for="coach in coachOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
         </a-select>
       </st-form-item>
       <st-form-item label="场地">
         <a-cascader
+        placeholder="请选择场地"
         :options="courtOptions"
         :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
         v-decorator="[
@@ -37,13 +38,13 @@
       <st-form-item label="人数" required>
         <a-input-search v-decorator="[
           'limit_num',
-          {rules: [{ required: true, message: 'Please input your note!' }]}
+          {rules: [{ required: true, message: '请填写人数' }]}
         ]"> <a-button slot="enterButton">人</a-button> </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required >
         <a-input-search v-decorator="[
           'course_fee',
-          {rules: [{ required: true, message: 'Please input your note!' }]}]"
+          {rules: [{ required: true, message: '请输入课时费' }]}]"
         > <a-button slot="enterButton">元/节</a-button> </a-input-search>
       </st-form-item>
       <a-row>
@@ -67,17 +68,20 @@
 import { cloneDeep } from 'lodash-es'
 import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
 import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
+import { RouteService } from '../../../../services/route.service'
 export default {
   name: 'AddCourseSchedule',
   serviceInject() {
     return {
       teamScheduleCommomService: TeamScheduleCommonService,
-      teamScheduleScheduleService: TeamScheduleScheduleService
+      teamScheduleScheduleService: TeamScheduleScheduleService,
+      routeService: RouteService
     }
   },
   rxState() {
     const tss = this.teamScheduleCommomService
     return {
+      query: this.routeService.query$,
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
       courtOptions: tss.courtOptions$
@@ -109,8 +113,9 @@ export default {
           }
           form.course_fee = parseInt(form.course_fee)
           form.limit_num = parseInt(form.limit_num)
-          this.teamScheduleScheduleService.curd('add', { ...form }, () => {
+          this.teamScheduleScheduleService.add(form).subscribe(() => {
             this.show = false
+            this.$router.push({ query: this.query, force: true })
           })
         }
       })

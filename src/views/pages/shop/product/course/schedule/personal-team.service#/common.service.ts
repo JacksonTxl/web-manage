@@ -11,7 +11,8 @@ export interface SetState {
   courseOptions: any[],
   coachOptions: any[],
   memberOptions: any[],
-  consumeOptions: any[]
+  consumeOptions: any[],
+  courseCoachOptions: any[]
 }
 @Injectable()
 export class PersonalTeamScheduleCommonService {
@@ -20,7 +21,7 @@ export class PersonalTeamScheduleCommonService {
   coachOptions$: Computed<any[]>
   memberOptions$: Computed<any[]>
   consumeOptions$: Computed<any[]>
-
+  courseCoachOptions$: Computed<any[]>
   constructor(private commonApi: PersonalTeamScheduleCommonApi) {
     this.state$ = new State({
       courseOptions: [],
@@ -32,6 +33,7 @@ export class PersonalTeamScheduleCommonService {
     this.courseOptions$ = new Computed(this.state$.pipe(pluck('courseOptions')))
     this.coachOptions$ = new Computed(this.state$.pipe(pluck('coachOptions')))
     this.memberOptions$ = new Computed(this.state$.pipe(pluck('memberOptions')))
+    this.courseCoachOptions$ = new Computed(this.state$.pipe(pluck('courseCoachOptions')))
   }
   /**
    *
@@ -60,6 +62,13 @@ export class PersonalTeamScheduleCommonService {
         })
       })
     )
+  }
+  getCourseCoachList(id: any) {
+    return this.commonApi.getCourseCoachList(id).pipe(tap(res => {
+      this.state$.commit(state => {
+        state.courseCoachOptions = res.list
+      })
+    }))
   }
   /**
    *

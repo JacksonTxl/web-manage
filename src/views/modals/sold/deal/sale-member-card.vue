@@ -195,6 +195,7 @@ import { SaleMemberCardService } from './sale-member-card.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
+import { RuleConfig } from '@/constants/rule'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -202,7 +203,8 @@ export default {
   },
   serviceInject() {
     return {
-      saleMemberCardService: SaleMemberCardService
+      saleMemberCardService: SaleMemberCardService,
+      rules: RuleConfig
     }
   },
   rxState() {
@@ -294,6 +296,7 @@ export default {
       this.selectedNorm = event.target.value
       this.fetchCouponList()
       this.getPrice()
+      this.validEndTime = moment(this.validStartTime).add(event.target.value.valid_time, 'days').format('YYYY-MM-DD HH:mm')
     },
     // 开卡方式发生改变
     onChangePayment(event) {
@@ -462,8 +465,8 @@ export default {
             'valid_start_time': this.validStartTime,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
-            'gift_amount': this.gift_amount,
-            'reduce_amount': this.reduceAmount,
+            'gift_amount': this.gift_amount || 0,
+            'reduce_amount': this.reduceAmount || 0,
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,
@@ -492,8 +495,8 @@ export default {
             'valid_start_time': this.validStartTime,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
-            'gift_amount': this.gift_amount,
-            'reduce_amount': this.reduceAmount,
+            'gift_amount': this.gift_amount || 0,
+            'reduce_amount': this.reduceAmount || 0,
             'sale_id': values.saleName,
             'description': this.description,
             'sale_range': this.info.sale_range.type,

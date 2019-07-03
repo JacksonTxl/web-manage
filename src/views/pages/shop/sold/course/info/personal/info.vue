@@ -53,7 +53,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel initial class="mgt-12"
+    <st-panel initial class="mgt-12" v-if="false"
       :tabs="[
         { label: '消费记录', route: { name: 'shop-sold-course-info-personal-info-consumption-record', query: {id:infoService.id} } },
         { label: '操作日志', route: { name: 'shop-sold-course-info-personal-info-operation-record', query: {id:infoService.id} } },

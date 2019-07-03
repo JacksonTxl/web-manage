@@ -2,7 +2,7 @@
   <st-modal title="新增课程排期" :footer="null" v-model="show" size="484px">
     <st-form :form="form">
       <st-form-item label="时间" required>
-        <a-date-picker showTime format="YYYY-MM-DD HH:mm" v-decorator="[
+        <a-date-picker style="width: 100%" showTime format="YYYY-MM-DD HH:mm" v-decorator="[
           'start_time',
           {rules: [{ required: true, message: 'Please input your note!'}], initialValue: time}
         ]">
@@ -27,6 +27,7 @@
       </st-form-item>
       <st-form-item label="场地">
         <a-cascader
+        placeholder="请选择场地"
         :options="courtOptions"
         :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
         v-decorator="[

@@ -3,33 +3,33 @@
   <div class="shop-member-list">
     <st-panel class="mg-t16">
       <div slot="title">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onChangeSearchQuery" style="width: 290px;"/>
+        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onSearch" style="width: 290px;"/>
       </div>
 
       <div slot="prepend">
         <st-search-panel>
           <div :class="basic('select')">
             <span style="width:90px;">用户级别：</span>
-            <st-search-radio label="" @change="onChangeSearchQuery" v-model="querySelect.member_level" :list="memberLevel"/>
+            <st-search-radio label="" @change="onSearch" v-model="querySelect.member_level" :list="memberLevel"/>
           </div>
           <div :class="basic('select')">
             <span style="width:90px;">来源方式：</span>
-            <st-search-radio label="" @change="onChangeSearchQuery" v-model="querySelect.register_way" :list="sourceList"/>
+            <st-search-radio label="" @change="onSearch" v-model="querySelect.register_way" :list="sourceList"/>
           </div>
           <div :class="basic('select')">
             <span style="width:90px;">注册时间：</span>
-            <a-range-picker :defaultValue="defaultRegValue" @change="onChangeReg">
+            <a-range-picker :defaultValue="defaultRegValue" v-model="register_time" @change="onChangeReg">
             </a-range-picker>
           </div>
           <div slot="more">
             <div :class="basic('select')">
               <span style="width:90px;">入会时间：</span>
-              <a-range-picker :defaultValue="defaultBeMemberValue" @change="onChangeBeMember">
+              <a-range-picker :defaultValue="defaultBeMemberValue" v-model="enter_time" @change="onChangeBeMember">
               </a-range-picker>
             </div>
             <div :class="basic('select')">
               <span style="width:90px;">员工跟进：</span>
-              <st-search-radio label="" @change="onChangeSearchQuery" v-model="querySelect.is_follow" :list="isFollow"/>
+              <st-search-radio label="" @change="onSearch" v-model="querySelect.is_follow" :list="isFollow"/>
             </div>
           </div>
           <div slot="button">
@@ -98,8 +98,9 @@
         :alertSelection="{onReset:onSelectionReset}"
         :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
         rowKey="member_id"
+        :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
         @change="onTableChange"
-        :dataSource="memberListInfo.list"
+        :dataSource="list"
       >
         <div slot="member_name" slot-scope="text,record">
           <a href="javascript:;" v-if="record.auth['shop:member:member|get']" @click="infoFunc(record)">{{text}}</a>
@@ -133,7 +134,8 @@
   </div>
 </template>
 <script>
-
+import moment from 'moment'
+import { cloneDeep, filter } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { ListService } from './list.service'
 import { RouteService } from '@/services/route.service'
@@ -154,17 +156,15 @@ export default {
     }
   },
   rxState() {
-    /**
-     * @type {UserService}
-     */
     const user = this.userService
     return {
-      memberListInfo: this.listService.memberListInfo$,
       shopMemberEnums: user.shopMemberEnums$,
       reserveEnums: user.reserveEnums$,
       memberEnums: user.memberEnums$,
       auth: this.listService.auth$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      list: this.listService.list$,
+      page: this.listService.page$
     }
   },
   data() {
@@ -173,19 +173,9 @@ export default {
       expand: false,
       sourceRegisterList: [],
       consumption: [],
-      form: {
-        member_level: '',
-        register_way: '',
-        register_start_time: '',
-        register_stop_time: '',
-        be_member_start_time: '',
-        be_member_stop_time: '',
-        is_follow: '',
-        keyword: '',
-        page: '',
-        size: 20
-      },
       querySelect: {},
+      register_time: [],
+      enter_time: [],
       selectDataList: [],
       selectedRowKeys: [],
       selectedRows: []
@@ -228,20 +218,9 @@ export default {
   },
   mounted() {
     this.sourceRegisters()
-    this.querySelect = {
-      member_level: +this.query.member_level,
-      register_way: +this.query.register_way,
-      is_follow: +this.query.is_follow,
-      register_start_time: this.query.register_start_time,
-      register_stop_time: this.query.register_stop_time,
-      be_member_start_time: this.query.be_member_start_time,
-      be_member_stop_time: this.query.be_member_stop_time
-    }
+    this.setSearchData()
   },
   methods: {
-    onChangeSearchQuery() {
-      this.$router.push({ query: { keyword: this.query.keyword } })
-    },
     onChangeReg(date, dateString) {
       this.querySelect = { ...this.querySelect, register_start_time: dateString[0], register_stop_time: dateString[1] }
     },
@@ -255,12 +234,39 @@ export default {
     },
     // 查询
     onSearch() {
-      this.$router.push({ query: { ...this.querySelect } })
+      this.$router.push({ force: true, query: { ...this.querySelect } })
     },
     // 重置
     onReset() {
-      this.querySelect = {}
-      this.$router.push({ query: {} })
+      let query = {
+        keyword: '',
+        member_level: -1,
+        register_way: -1,
+        register_start_time: '',
+        register_stop_time: '',
+        be_member_start_time: '',
+        be_member_stop_time: '',
+        is_follow: -1,
+        page: 1,
+        size: 20
+      }
+      this.register_time = []
+      this.enter_time = []
+      this.$router.push({ query: { ...this.query, ...query } })
+    },
+    // 设置searchData
+    setSearchData() {
+      this.querySelect = cloneDeep(this.query)
+      if (!this.querySelect.register_start_time || !this.querySelect.register_stop_time) {
+        this.register_time = []
+      } else {
+        this.register_time = [moment(this.querySelect.register_start_time), cloneDeep(moment(this.querySelect.register_stop_time))]
+      }
+      if (!this.querySelect.register_start_time || !this.querySelect.register_stop_time) {
+        this.enter_time = []
+      } else {
+        this.enter_time = [moment(this.querySelect.be_member_start_time), cloneDeep(moment(this.querySelect.be_member_start_time))]
+      }
     },
     onRemoveBind(record) {
       let that = this
@@ -315,11 +321,8 @@ export default {
         return item.id
       })
     },
-    onTableChange(pagination, filters, sorter) {
-      this.pagination = pagination
-      this.form.size = pagination.pageSize
-      this.form.page = pagination.current
-      this.$router.push({ query: this.form })
+    onTableChange(data) {
+      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
     },
     queryFunc() {
       this.$router.push({ query: this.form })

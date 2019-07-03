@@ -144,6 +144,7 @@ import { SaleDepositCardService } from './sale-deposit-card.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
+import { RuleConfig } from '@/constants/rule'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -151,6 +152,7 @@ export default {
   },
   serviceInject() {
     return {
+      rules: RuleConfig,
       saleDepositCardService: SaleDepositCardService
     }
   },
@@ -337,7 +339,7 @@ export default {
     onCreateOrder() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
+          let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
           this.saleDepositCardService.setTransaction({
             'member_id': +values.memberId,
             'member_name': values.memberName,
@@ -363,7 +365,7 @@ export default {
     onPay() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
+          let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
           this.saleDepositCardService.setTransactionPay({
             'member_id': +values.memberId,
             'member_name': values.memberName,
