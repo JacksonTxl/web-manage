@@ -43,7 +43,6 @@ export default {
       coachId: '',
       start: '',
       end: '',
-      rangePicker: '',
       schedule_info: [{
         time_type: 0,
         timing: []
@@ -76,12 +75,9 @@ export default {
   },
   methods: {
     disabledDate(currentDate) {
-      console.log('currentDate.valueOf()', currentDate.valueOf())
+      // 往前推30天时间不可选 往后推60天不可选
       const current = moment().valueOf()
-      console.log(current)
-      console.log('current', current)
-      console.log(currentDate.valueOf() > current)
-      return currentDate.valueOf() > (current - 24 * 3600 * 30 * 1000) && (current + 24 * 3600 * 60 * 1000) > currentDate.valueOf()
+      return currentDate.valueOf() < (current - 24 * 3600 * 30 * 1000) || (current + 24 * 3600 * 60 * 1000) < currentDate.valueOf()
     },
     onChangeRangePicker(val) {
       this.start = val[0].format('YYYY-MM-DD').valueOf()
