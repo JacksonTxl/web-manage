@@ -6,7 +6,7 @@ export class AddService implements RouteGuard {
   constructor(private setCourseService: SetBrandTeamCourseService) {
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    console.log(1111111111)
-    return this.setCourseService.getUpdateInfo()
+    // console.log(1111111111)
+    // return this.setCourseService.getUpdateInfo()
   }
 }
