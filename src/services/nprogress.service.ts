@@ -11,4 +11,3 @@ export class NProgressService {
     nProgress.done()
   }
 }
-export const nProgressService = new NProgressService()

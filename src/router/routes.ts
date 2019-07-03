@@ -76,8 +76,8 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
         TokenService,
         TitleService,
         UserService,
-        RouteService,
-        AuthService
+        AuthService,
+        RouteService
       ]
       if (route.name.startsWith('brand')) {
         appGuards.push(LayoutBrandService)

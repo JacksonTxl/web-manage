@@ -1611,11 +1611,6 @@
     error-stack-parser "^2.0.0"
     string-width "^2.0.0"
 
-"@tweenjs/tween.js@^17.3.0":
-  version "17.3.0"
-  resolved "http://registry.npm.taobao.org/@tweenjs/tween.js/download/@tweenjs/tween.js-17.3.0.tgz#1cbea14b4b5baa292274c96766fd1b2a56b7ca9f"
-  integrity sha1-HL6hS0tbqikidMlnZv0bKla3yp8=
-
 "@types/events@*":
   version "3.0.0"
   resolved "http://registry.npm.taobao.org/@types/events/download/@types/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
@@ -3041,13 +3036,6 @@ babel-plugin-transform-object-rest-spread@^6.26.0:
     babel-plugin-syntax-object-rest-spread "^6.8.0"
     babel-runtime "^6.26.0"
 
-babel-plugin-transform-runtime@^6.23.0:
-  version "6.23.0"
-  resolved "http://registry.npm.taobao.org/babel-plugin-transform-runtime/download/babel-plugin-transform-runtime-6.23.0.tgz#88490d446502ea9b8e7efb0fe09ec4d99479b1ee"
-  integrity sha1-iEkNRGUC6puOfvsP4J7E2ZR5se4=
-  dependencies:
-    babel-runtime "^6.22.0"
-
 babel-plugin-transform-vue-jsx@^4.0.1:
   version "4.0.1"
   resolved "http://registry.npm.taobao.org/babel-plugin-transform-vue-jsx/download/babel-plugin-transform-vue-jsx-4.0.1.tgz#2c8bddce87a6ef09eaa59869ff1bfbeeafc5f88d"
@@ -3055,7 +3043,7 @@ babel-plugin-transform-vue-jsx@^4.0.1:
   dependencies:
     esutils "^2.0.2"
 
-babel-runtime@6.x, babel-runtime@^6.22.0, babel-runtime@^6.23.0, babel-runtime@^6.26.0:
+babel-runtime@6.x, babel-runtime@^6.23.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "http://registry.npm.taobao.org/babel-runtime/download/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
@@ -6357,7 +6345,7 @@ fullcalendar-scheduler@^1.9.4:
     jquery "2 - 3"
     moment "^2.20.1"
 
-fullcalendar@^3.4.0, fullcalendar@~3.9.0:
+fullcalendar@~3.9.0:
   version "3.9.0"
   resolved "http://registry.npm.taobao.org/fullcalendar/download/fullcalendar-3.9.0.tgz#b608a9989f3416f0b1d526c6bdfeeaf2ac79eda5"
   integrity sha1-tgipmJ80FvCx1SbGvf7q8qx57aU=
@@ -6374,11 +6362,6 @@ functional-red-black-tree@^1.0.1:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/functional-red-black-tree/download/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
-
-funnel-graph-js@^1.3.6:
-  version "1.3.7"
-  resolved "http://registry.npm.taobao.org/funnel-graph-js/download/funnel-graph-js-1.3.7.tgz#8aba408eb7246cd6f0a7fdd02481440e1f1a9fad"
-  integrity sha1-irpAjrckbNbwp/3QJIFEDh8an60=
 
 g-status@^2.0.2:
   version "2.0.2"
@@ -10016,11 +9999,6 @@ point-at-length@~1.0.2:
     isarray "~0.0.1"
     parse-svg-path "~0.1.1"
 
-polymorph-js@^0.2.4:
-  version "0.2.4"
-  resolved "http://registry.npm.taobao.org/polymorph-js/download/polymorph-js-0.2.4.tgz#4af07bf0ea6ce026f65cb47151e37a0d41d42ead"
-  integrity sha1-SvB78Ops4Cb2XLRxUeN6DUHULq0=
-
 portfinder@^1.0.13, portfinder@^1.0.20:
   version "1.0.20"
   resolved "http://registry.npm.taobao.org/portfinder/download/portfinder-1.0.20.tgz#bea68632e54b2e13ab7b0c4775e9b41bf270e44a"
@@ -13260,24 +13238,6 @@ vue-eslint-parser@^5.0.0:
     espree "^4.1.0"
     esquery "^1.0.1"
     lodash "^4.17.11"
-
-vue-full-calendar@^2.7.0:
-  version "2.7.0"
-  resolved "http://registry.npm.taobao.org/vue-full-calendar/download/vue-full-calendar-2.7.0.tgz#1963d6612b5459633e30763e7bdf1d6acc304883"
-  integrity sha1-GWPWYStUWWM+MHY+e98daswwSIM=
-  dependencies:
-    babel-plugin-transform-runtime "^6.23.0"
-    fullcalendar "^3.4.0"
-    lodash.defaultsdeep "^4.6.0"
-
-vue-funnel-graph-js@^0.1.3:
-  version "0.1.3"
-  resolved "http://registry.npm.taobao.org/vue-funnel-graph-js/download/vue-funnel-graph-js-0.1.3.tgz#41ba4e4dd877ef376aaf3c915f477ba21d6f41e2"
-  integrity sha1-QbpOTdh37zdqrzyRX0d7oh1vQeI=
-  dependencies:
-    "@tweenjs/tween.js" "^17.3.0"
-    funnel-graph-js "^1.3.6"
-    polymorph-js "^0.2.4"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.3"

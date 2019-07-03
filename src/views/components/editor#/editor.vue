@@ -4,6 +4,7 @@
 
 <script>
 import { AppConfig } from '@/constants/config'
+import { ImportService } from '@/services/import.service.ts'
 
 const editorEvents = [
   'activate',
@@ -80,7 +81,8 @@ export default {
   },
   serviceInject() {
     return {
-      appConfig: AppConfig
+      appConfig: AppConfig,
+      importService: ImportService
     }
   },
   computed: {
@@ -88,40 +90,9 @@ export default {
       return 'st-editor-' + this._uid
     }
   },
-  methods: {
-    isJs(src) {
-      return src.indexOf('.js') > -1
-    },
-    loadJs(src) {
-      const s = document.createElement('script')
-      const url = this.appConfig.BASE_URL + src
-      if (document.querySelector(`script[src='${url}']`)) {
-        return Promise.resolve()
-      }
-      return new Promise((resolve, reject) => {
-        s.src = url
-        document.head.appendChild(s)
-        s.onload = () => {
-          resolve()
-        }
-        s.onerror = err => {
-          reject(err)
-        }
-      })
-    },
-    dyamicLoad(srcs) {
-      const tasks = []
-      srcs.forEach(src => {
-        if (this.isJs(src)) {
-          tasks.push(this.loadJs(src))
-        }
-      })
-      return Promise.all(tasks)
-    }
-  },
   mounted() {
-    this.dyamicLoad(['tinymce/5.0.3/tinymce.min.js'])
-      .then(() => this.dyamicLoad(['tinymce/5.0.3/themes/silver/theme.min.js']))
+    this.importService.load(['tinymce/5.0.3/tinymce.min.js'])
+      .then(() => this.importService.load(['tinymce/5.0.3/themes/silver/theme.min.js']))
       .then(() => {
         const ctx = this
         window.tinyMCE.init({
