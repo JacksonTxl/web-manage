@@ -59,7 +59,6 @@
 <script>
 import formDate from './sold#/form-date.vue'
 import { SoldService } from './sold.service'
-import { clone } from '../../../../../operators/clone'
 export default {
   serviceInject() {
     return {
