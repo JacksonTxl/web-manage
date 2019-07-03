@@ -2,8 +2,8 @@
 export const courseColums = [
   {
     title: '上课时间',
-    dataIndex: 'class_hours',
-    key: 'class_hours'
+    dataIndex: 'course_time',
+    key: 'course_time'
   }, {
     title: '上课门店',
     dataIndex: 'shop_name',
