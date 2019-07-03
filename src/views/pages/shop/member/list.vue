@@ -150,9 +150,6 @@ export default {
     }
   },
   rxState() {
-    /**
-     * @type {UserService}
-     */
     const user = this.userService
     return {
       memberListInfo: this.listService.memberListInfo$,

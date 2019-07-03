@@ -184,6 +184,7 @@ import { SaleCabinetService } from './sale-cabinet.service'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
+import { RuleConfig } from '@/constants/rule'
 export default {
   name: 'ModalSoldDealSaleCabinet',
   bem: {
@@ -191,7 +192,8 @@ export default {
   },
   serviceInject() {
     return {
-      saleCabinetService: SaleCabinetService
+      saleCabinetService: SaleCabinetService,
+      rules: RuleConfig
     }
   },
   rxState() {
@@ -508,7 +510,7 @@ export default {
       this.form.validateFields((error, values) => {
         if (!error) {
           let reduce_amount = this.reduceAmount ? +this.reduceAmount : undefined
-          this.saleCabinetService.setTransaction({
+          this.saleCabinetService.setTransactionPay({
             cabinet_id: +this.cabinetId,
             start_time: `${this.startTime.format('YYYY-MM-DD HH:mm')}`,
             end_time: `${values.endTimePicker.format('YYYY-MM-DD HH:mm')}`,

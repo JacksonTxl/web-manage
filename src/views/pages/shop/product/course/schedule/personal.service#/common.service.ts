@@ -10,7 +10,7 @@ export interface SetState {
   memberOptions: any[],
   courtOptions: any[],
   consumeOptions: any[],
-  courseCoachOptions: Staff[],
+  courseCoachOptions: any[],
   timeOptions: any[],
   dateOptions: any[],
   coachInBatchOptions: any[]
