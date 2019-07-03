@@ -47,6 +47,7 @@
           :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
           rowKey="id"
+          @change="onPageChange"
           :columns="columns"
           :dataSource="list" >
             <template slot="course_status" slot-scope="text">
@@ -172,6 +173,9 @@ export default {
     }
   },
   methods: {
+    onPageChange(data) {
+      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
+    },
     // 修改剩余课时
     onSurplus(record) {
       let that = this
@@ -208,7 +212,10 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: { ...this.query } })
+            console.log(3)
+            setTimeout(() => {
+              this.$router.push({ force: true, query: { ...this.query } })
+            }, 100)
           }
         }
       })

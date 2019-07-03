@@ -53,10 +53,10 @@
               {{text | enumFilter('sold.course_status')}}
             </template>
             <template slot="end_time" slot-scope="text">
-              {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
+              {{moment(text).format('YYYY-MM-DD HH:mm')}}
             </template>
             <template slot="buy_time" slot-scope="text">
-              {{moment(text*1000).format('YYYY-MM-DD HH:mm')}}
+              {{moment(text).format('YYYY-MM-DD HH:mm')}}
             </template>
             <div slot="action" slot-scope="text,record">
               <a v-if="record.auth['shop:sold:sold_personal_course|get']" @click="onDetail(record)">详情</a>

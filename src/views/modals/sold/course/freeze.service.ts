@@ -8,6 +8,7 @@ export class FreezeService {
   constructor(private courseApi: CourseApi) {}
   @Effect()
   freeze(params: FreezeCoursePackageInput, id:string, type:string) {
+    console.log(1)
     return this.courseApi.freezeCourse(params, id, type)
   }
 }

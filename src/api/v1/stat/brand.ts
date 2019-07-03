@@ -24,13 +24,13 @@ export class StatApi {
    * 入场次数
    */
   getEntry() {
-    this.http.get(`/v1/stat/${this.version}/entry`)
+    return this.http.get(`/v1/stat/${this.version}/entry`)
   }
   /**
    * 用户分析
    */
   getUser() {
-    this.http.get(`/v1/stat/${this.version}/user`)
+    return this.http.get(`/v1/stat/${this.version}/user`)
   }
   /**
    * 客单价
@@ -50,6 +50,11 @@ export class StatApi {
   getMarketing() {
     return this.http.get(`/v1/stat/${this.version}/marketing`)
   }
-  /** */
+  /**
+   * 营销分析漏斗
+   */
+  getMarketingFunnel() {
+    return this.http.get(`/v1/stat/${this.version}/marketing/funnel`)
+  }
 }
 export interface GetBrandIndexInput { }

@@ -1,7 +1,7 @@
 <template>
   <st-panel app :class="entrance()">
     <div :class="entrance('search')" class="mg-b16">
-      <st-button type="primary" :disabled="!selectedRowKeys.length" @click="onLeaveBatch">批量离场</st-button>
+      <st-button type="primary" :disabled="!selectedRowKeys.length || auth.batchCheckout" @click="onLeaveBatch">批量离场</st-button>
       <div>
         <a-input-search
         style="width: 200px"
@@ -45,7 +45,7 @@
         </template>
         <!-- 操作 -->
         <div slot="action" slot-scope="text,record">
-          <a @click="onLeave(record)">离场</a>
+          <a @click="onLeave(record)" v-if="auth.checkout">离场</a>
         </div>
     </st-table>
   </st-panel>
@@ -67,6 +67,7 @@ export default {
   },
   rxState() {
     return {
+      auth: this.entranceService.auth$,
       list: this.entranceService.list$,
       page: this.entranceService.page$,
       loading: this.entranceService.loading$,
