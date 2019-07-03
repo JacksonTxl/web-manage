@@ -20,9 +20,11 @@ export default {
     }
   },
   computed: {
+    // 多选是否至少勾选一项
     isSelectedEnabled() {
       return this.selectedRowKeys.length > 0
     },
+    // 没有一项选中
     isSelectedDisabled() {
       return this.selectedRowKeys.length === 0
     }
@@ -61,7 +63,7 @@ export default {
         force: true
       })
     },
-    // 重置 多选
+    // 重置 多选框
     onSelectionReset() {
       this.selectedRowKeys = []
       this.selectedRows = []
