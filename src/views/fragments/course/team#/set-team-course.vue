@@ -51,7 +51,10 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="参考定价">
+        <st-form-item>
+          <template slot="label">
+              参考定价<st-help-tooltip id="TBCGC001" />
+          </template>
           <st-input-number v-decorator="ruleConfig.price">
             <template slot="addonAfter">元/节</template>
           </st-input-number>

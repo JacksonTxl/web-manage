@@ -50,9 +50,12 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form :form="form" labelWidth="72px">
+      <st-form :form="form" labelWidth="85px">
         <div :class="refund('refund')">
-          <st-form-item label="退款原因" class="mgb-18" required>
+          <st-form-item class="mgb-18" required>
+            <template slot="label">
+                退款原因<st-help-tooltip id="TSMC005" />
+            </template>
             <a-radio-group v-model="refundReason">
               <a-radio
               v-for="(item,index) in Object.keys(sold.refund_reason.value)"

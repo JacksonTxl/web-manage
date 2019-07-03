@@ -112,7 +112,10 @@
       </a-row>
       <a-row :gutter="8">
         <a-col offset="1" :lg="23">
-          <st-form-item label="营业状态">
+          <st-form-item>
+            <template slot="label">
+              营业状态<st-help-tooltip id="TBCS001" />
+            </template>
             <a-radio-group v-model="shopData.shop_status">
               <a-radio
                 v-for="item in Object.entries(shop.shop_status.value)"

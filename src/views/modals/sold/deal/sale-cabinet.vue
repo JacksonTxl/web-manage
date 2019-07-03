@@ -22,7 +22,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form :form="form" labelWidth="68px">
+      <st-form :form="form" labelWidth="85px">
         <div :class="sale('sale')">
           <st-form-item labelGutter="12px" v-show="searchMemberIsShow" label="购买会员" required>
             <a-select
@@ -101,7 +101,10 @@
               <template slot="addonAfter">天</template>
             </st-input-number>
           </st-form-item>
-          <st-form-item labelGutter="12px" label="合同编号" required>
+          <st-form-item labelGutter="12px" required>
+            <template slot="label">
+                合同编号<st-help-tooltip id="TSSD001" />
+            </template>
             <div :class="sale('contract')">
               <a-input
               v-decorator="['contractNumber',{rules:[{validator:contract_number}]}]"

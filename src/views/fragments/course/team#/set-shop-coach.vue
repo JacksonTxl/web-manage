@@ -5,7 +5,10 @@
         <st-form-item label="课程名称">
           <a-input placeholder="课程名称" disabled v-decorator="ruleConfig.courseName"/>
         </st-form-item>
-        <st-form-item label="上课门店" required>
+        <st-form-item required>
+          <template slot="label">
+              上课门店<st-help-tooltip id="TBCGC002" />
+          </template>
           <a-radio-group @change="onChange" v-decorator="ruleConfig.shopSetting">
             <a-radio v-for="(item, index) in teamCourseEnums.shop_setting.value" :key="+index"
               :value="+index">{{item}}</a-radio>

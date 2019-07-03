@@ -42,8 +42,11 @@
             placeholder="上传人脸"
             v-decorator="rules.image_face"
           ></st-image-upload>
-        </st-form-item>
-        <st-form-item label="昵称" required>
+        </st-form-item> -->
+        <st-form-item required>
+          <template slot="label">
+              昵称<st-help-tooltip id="TBEE001" />
+          </template>
           <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="rules.nickname"/>
         </st-form-item>
         <st-form-item label="邮箱" required>

@@ -82,6 +82,9 @@
           <a-row :gutter="8">
             <a-col :lg="23">
               <st-form-item class="page-content-card-admission-range" label="支持消费门店" required>
+                <template slot="label">
+                  支持消费门店<st-help-tooltip id="TBMCSC001" />
+                </template>
                 <a-radio-group
                   @change="consumption_range"
                   v-decorator="['cardData.consumption_range',{initialValue:1,rules:[{validator:admission_shop_list_validator}]}]">
