@@ -1,11 +1,13 @@
 <template>
   <st-modal
-  title="续卡"
   size="small"
   v-model="show"
   wrapClassName="modal-sold-deal-sale">
+  <template slot="title">
+      续卡<st-help-tooltip id="TSMC001" />
+  </template>
     <div :class="sale('content')">
-      <st-form :form="form" labelWidth="72px">
+      <st-form :form="form" labelWidth="85px">
         <div :class="sale('sale')" class="modal-sold-renewal-member-card">
           <st-form-item labelGutter="12px" label="续卡会员" class="mg-b16">{{info.member_name}}</st-form-item>
           <st-form-item labelGutter="12px" label="卡名" class="mg-b16">{{info.card_name}}</st-form-item>
@@ -37,7 +39,10 @@
               <span slot="addonAfter">{{info.card_type!==1?'天':'次'}}</span>
             </st-input-number>
           </st-form-item>
-          <st-form-item labelGutter="12px" label="合同编号" required>
+          <st-form-item labelGutter="12px" required>
+            <template slot="label">
+                合同编号<st-help-tooltip id="TSSD001" />
+            </template>
             <div :class="sale('contract')">
               <a-input
               v-decorator="['contractNumber',{rules:[{required:true,message:'请输入合同编号'}]}]"

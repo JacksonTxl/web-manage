@@ -49,7 +49,7 @@
         </a-col>
       </a-row>
       <st-hr marginTop="0" marginBottom="0" />
-      <st-form :form="form" labelWidth="68px">
+      <st-form :form="form" labelWidth="85px">
         <div :class="transfer('transfer')">
           <st-form-item v-show="searchMemberIsShow" label="转让会员" required labelGutter="12px">
             <a-select
@@ -108,7 +108,10 @@
               </a-form-item>
             </div>
           </st-form-item>
-          <st-form-item label="剩余价值" required labelGutter="12px">
+          <st-form-item required labelGutter="12px">
+            <template slot="label">
+                剩余价值<st-help-tooltip id="TSMC004" />
+            </template>
             <st-input-number
             :max="+depositTransferInfo.pay_price"
             :float="true"
@@ -117,7 +120,10 @@
               <template slot="addonAfter">元</template>
             </st-input-number>
           </st-form-item>
-          <st-form-item label="合同编号" required labelGutter="12px">
+          <st-form-item required labelGutter="12px">
+            <template slot="label">
+                合同编号<st-help-tooltip id="TSSD001" />
+            </template>
             <div :class="transfer('contract')">
               <a-input
               v-decorator="['contractNumber',{rules:[{validator:contract_number}]}]"

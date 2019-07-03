@@ -26,7 +26,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form :form="form" labelWidth="72px">
+      <st-form :form="form" labelWidth="85px">
         <div :class="sale('sale')">
           <st-form-item v-show="searchMemberIsShow" label="购买会员" required>
             <a-select
@@ -75,6 +75,7 @@
             <div v-if="selectedPayment.id == 3">
               <a-date-picker
                 showTime
+                v-model="validStartTime"
                 :defaultValue="moment()"
                 format="YYYY-MM-DD HH:mm"
                 placeholder="请选择开始时间"
@@ -88,7 +89,10 @@
               <span slot="addonAfter">天</span>
             </st-input-number>
           </st-form-item>
-          <st-form-item label="合同编号" required>
+          <st-form-item required>
+            <template slot="label">
+                合同编号<st-help-tooltip id="TSSD001" />
+            </template>
             <div :class="sale('contract')">
               <a-input
               v-decorator="['contractNumber',{rules:[{validator:contract_number}]}]"
@@ -462,7 +466,7 @@ export default {
             'contract_number': values.contractNumber,
             'specs_id': values.specs.id,
             'open_card_type': values.open_type.id,
-            'valid_start_time': this.validStartTime,
+            'valid_start_time': moment(this.validStartTime).format('YYYY-MM-DD HH:mm'),
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
             'gift_amount': this.gift_amount || 0,
@@ -492,7 +496,7 @@ export default {
             'contract_number': values.contractNumber,
             'specs_id': values.specs.id,
             'open_card_type': values.open_type.id,
-            'valid_start_time': this.validStartTime,
+            'valid_start_time': moment(this.validStartTime).format('YYYY-MM-DD HH:mm'),
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
             'gift_amount': this.gift_amount || 0,

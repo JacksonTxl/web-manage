@@ -12,6 +12,10 @@ import item from './time-picker-item'
 import { cloneDeep } from 'lodash-es'
 export default {
   name: 'StTimePicker',
+  model: {
+    prop: 'values',
+    event: 'change'
+  },
   data() {
     return {
       isDrag: false,
@@ -28,9 +32,13 @@ export default {
     checkArr(n) {
       this.values = this.rangeTime(n).values
       this.views = this.rangeTime(n).views
+      this.$emit('change', this.values)
     }
   },
   methods: {
+    formatTime(val) {
+      return val < 10 ? `0${val}:00` : `${val}:00`
+    },
     rangeTime(checkArr) {
       let values = []
       let start = -1
@@ -47,7 +55,7 @@ export default {
           end = i
         }
         if (!ca[i] && start !== -1 && end) {
-          rangeArr.push(`${start} - ${end}`)
+          rangeArr.push({ start_time: `${this.formatTime(start)}`, end_time: `${this.formatTime(end)}` })
           const view = `#${start}#start---#${end}#end`
           views.push(view)
           start = -1

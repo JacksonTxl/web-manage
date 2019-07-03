@@ -21,7 +21,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form :form="form" labelWidth="72px">
+      <st-form :form="form" labelWidth="85px">
         <div :class="sale('sale')">
           <st-form-item v-show="searchMemberIsShow" label="购买会员" required>
             <a-select
@@ -59,7 +59,10 @@
               <a-radio v-for="(item, index) in info.coach_level" :value="item.id" :key="index">{{item.name}}</a-radio>
             </a-radio-group>
           </st-form-item>
-          <st-form-item label="购买数量" required :extra="isAmountStateTip">
+          <st-form-item required :extra="isAmountStateTip">
+            <template slot="label">
+                购买数量<st-help-tooltip id="TSSD002" />
+            </template>
             <div :class="sale('contract')">
               <a-input-number class="input-number"
               :max="9999"
@@ -86,7 +89,10 @@
           <st-form-item label="到期时间">
             <div>{{moment().add(validEndTime, 'days').format('YYYY-MM-DD HH:mm')}}</div>
           </st-form-item>
-          <st-form-item label="合同编号" required>
+          <st-form-item required>
+            <template slot="label">
+                合同编号<st-help-tooltip id="TSSD001" />
+            </template>
             <div :class="sale('contract')">
               <a-input
               v-decorator="['contractNumber',{rules:[{validator:contract_number}]}]"
@@ -290,6 +296,11 @@ export default {
         this.resetOrderInfo()
         this.form.setFieldsValue({ 'coach_level': this.info.coach_level[0].id })
         this.minPrice = this.info.coach_level[0].min_sell
+        let level = 0
+        if (this.info.price_model === 2) {
+          level = this.info.coach_level[0].id
+        }
+        this.salePersonalCourseService.getCoachList(level).subscribe()
       })
     })
   },
@@ -318,6 +329,7 @@ export default {
       this.resetOrderInfo()
       const selectCoach = this.info.coach_level.filter((item) => { return item.id === event.target.value })
       this.minPrice = selectCoach[0].min_sell
+      this.salePersonalCourseService.getCoachList(selectCoach[0].id).subscribe()
     },
     resetOrderInfo() {
       this.form.resetFields(['buyNum', 'coachId', 'coursePrice', 'gift_course_num'])

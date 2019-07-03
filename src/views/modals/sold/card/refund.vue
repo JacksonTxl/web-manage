@@ -81,7 +81,7 @@
         <a-col :span="13" class="mgb-24">
           <st-info>
             <st-info-item label="订单总额">{{refundInfo.total_price}}元</st-info-item>
-            <st-info-item class="mg-b0" label="订单类型">{{refundInfo.order_status | enumFilter('sold.order_status')}}</st-info-item>
+            <st-info-item class="mg-b0" label="订单类型">{{refundInfo.order_type}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11" class="mgb-24">
@@ -91,9 +91,12 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form :form="form" labelWidth="72px">
+      <st-form :form="form" labelWidth="85px">
         <div :class="refund('refund')">
-          <st-form-item label="退款原因" class="mgb-18" required>
+          <st-form-item class="mgb-18" required>
+            <template slot="label">
+                退款原因<st-help-tooltip id="TSMC005" />
+            </template>
             <a-radio-group v-model="refundReason">
               <a-radio
               v-for="(item,index) in Object.keys(sold.refund_reason.value)"

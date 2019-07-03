@@ -18,7 +18,7 @@
         <div class="shop-member-crowd-analysis-title__right">
           <st-t4 class="shop-member-crowd-analysis-title__info">
             人群
-            <st-help-tooltip :id="1"/>
+            <st-help-tooltip id="TSRQ001" />
           </st-t4>
           <div class="shop-member-crowd-analysis-title__right-num">{{analysisInfo.info.num}}</div>
         </div>
@@ -39,7 +39,10 @@
           >
             <div class="card-items-box">
               <st-t4 class="shop-member-crowd-analysis-title__info">{{item.title}}</st-t4>
-              <st-help-tooltip :id="1"/>
+              <st-help-tooltip v-if="index === 0" id="TSRQ002"/>
+              <st-help-tooltip v-if="index === 1" id="TSRQ003"/>
+              <st-help-tooltip v-if="index === 2" id="TSRQ004"/>
+              <st-help-tooltip v-if="index === 3" id="TSRQ005"/>
             </div>
             <div
               class="shop-member-crowd-analysis-title__right-num"

@@ -3,7 +3,7 @@
   <div class="shop-member-list">
     <st-panel class="mg-t16">
       <div slot="title">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onSearch" style="width: 290px;"/>
+        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="querySelect.keyword" @search="onSearch" style="width: 290px;"/>
       </div>
 
       <div slot="prepend">
@@ -238,7 +238,7 @@ export default {
     },
     // 重置
     onReset() {
-      let query = {
+      this.querySelect = {
         keyword: '',
         member_level: -1,
         register_way: -1,
@@ -252,11 +252,11 @@ export default {
       }
       this.register_time = []
       this.enter_time = []
-      this.$router.push({ query: { ...this.query, ...query } })
+      this.$router.push({ force: true, query: { ...this.querySelect } })
     },
     // 设置searchData
     setSearchData() {
-      this.querySelect = cloneDeep(this.query)
+      this.querySelect = this.query
       if (!this.querySelect.register_start_time || !this.querySelect.register_stop_time) {
         this.register_time = []
       } else {

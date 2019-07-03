@@ -20,7 +20,10 @@
         :disabled="disabled"
         @change="onChangeCopyTime" />
       </st-form-item>
-      <st-form-item label="应用排期" required>
+      <st-form-item required>
+        <template slot="label">
+            应用排期<st-help-tooltip id="TSGC001" />
+        </template>
         <a-date-picker v-model="applyStartDate" @change="onChangeApplyStartDate"/> ~ <a-date-picker v-model="applyEndDate"  disabled />
       </st-form-item>
       <a-row>
