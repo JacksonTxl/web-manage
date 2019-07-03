@@ -58,34 +58,34 @@
                     :pagination="false"
                   >
                     <template slot="validity_times" slot-scope="text, record, index">
-                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'validity_times'})">
-                          <span slot="suffix">次</span>
-                        </a-input>
+                        <st-input-number :min="1" :max="99999" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'validity_times'})">
+                          <span slot="addonAfter">次</span>
+                        </st-input-number>
                     </template>
                     <template slot="rally_price" slot-scope="text, record, index">
-                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price'})">
-                          <span slot="suffix">元</span>
-                        </a-input>
+                        <st-input-number :float="true" :min="0" :max="999999.9" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price'})">
+                          <span slot="addonAfter">元</span>
+                        </st-input-number>
                     </template>
                     <template slot="time" slot-scope="text, record, index">
-                      <a-input :value="text.num" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
+                      <st-input-number :min="1" :max="99999" :value="text.num" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
                         <a-select slot="addonAfter" :value="text.unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
                           <a-select-option
                           v-for="(item,index) in unit_list"
                           :value="item.value"
                           :key="index" >{{item.label}}</a-select-option>
                         </a-select>
-                      </a-input>
+                      </st-input-number>
                     </template>
                     <template slot="frozen_day" slot-scope="text, record, index">
-                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
-                          <span slot="suffix">天</span>
-                        </a-input>
+                        <st-input-number :min="1" :max="99999" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
+                          <span slot="addonAfter">天</span>
+                        </st-input-number>
                     </template>
                     <template slot="gift_unit" slot-scope="text, record, index">
-                        <a-input @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
-                          <span slot="suffix">天</span>
-                        </a-input>
+                        <st-input-number :min="1" :max="99999" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
+                          <span slot="addonAfter">天</span>
+                        </st-input-number>
                     </template>
                     <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="brand_price_delete(index)">
                       删除
@@ -102,38 +102,38 @@
                     :pagination="false"
                   >
                      <template slot="validity_times" slot-scope="text, record, index">
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'validity_times'})">
-                          <span slot="suffix">次</span>
-                        </a-input>
+                        <st-input-number :min="1" :max="99999" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'validity_times'})">
+                          <span slot="addonAfter">次</span>
+                        </st-input-number>
                     </template>
                     <template slot="rally_price" slot-scope="text, record, index">
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'min_price'})" style="width:70px">
-                          <span slot="suffix">元</span>
-                        </a-input>
+                        <st-input-number :float="true" :min="0" :max="999999.9" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'min_price'})" style="width:70px">
+                          <span slot="addonAfter">元</span>
+                        </st-input-number>
                         ~
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'max_price'})" style="width:70px">
-                          <span slot="suffix">元</span>
-                        </a-input>
+                        <st-input-number :float="true" :min="0" :max="999999.9" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'max_price'})" style="width:70px">
+                          <span slot="addonAfter">元</span>
+                        </st-input-number>
                     </template>
                     <template slot="time" slot-scope="text, record, index">
-                      <a-input :value="text.num" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
+                      <st-input-number :min="1" :max="99999" :value="text.num" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
                         <a-select slot="addonAfter" :value="text.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
                           <a-select-option
                           v-for="(item,index) in unit_list"
                           :value="item.value"
                           :key="index" >{{item.label}}</a-select-option>
                         </a-select>
-                      </a-input>
+                      </st-input-number>
                     </template>
                     <template slot="frozen_day" slot-scope="text, record, index">
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
-                          <span slot="suffix">天</span>
-                        </a-input>
+                        <st-input-number :min="1" :max="99999" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
+                          <span slot="addonAfter">天</span>
+                        </st-input-number>
                     </template>
                     <template slot="gift_unit" slot-scope="text, record, index">
-                        <a-input @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
-                          <span slot="suffix">天</span>
-                        </a-input>
+                        <st-input-number :min="1" :max="99999" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
+                          <span slot="addonAfter">天</span>
+                        </st-input-number>
                     </template>
                     <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="shop_price_delete(index)">
                       删除
@@ -605,11 +605,15 @@ export default {
     // 入场门店支持方式change
     admission_range(data) {
       this.cardData.admission_range = data.target.value
-      // 入场门店变化时，售卖门店同时变化
+      // 入场门店变化时，售卖门店和价格同时变化
       this.form.setFieldsValue({
-        'cardData.support_sales': 1
+        'cardData.support_sales': 1,
+        'cardData.price_setting': 1
       })
       this.cardData.support_sales = 1
+      this.cardData.price_setting = 1
+      this.rally_price_list = []
+      this.shop_price_list = []
     },
     // 价格设置方式change
     price_range(data) {

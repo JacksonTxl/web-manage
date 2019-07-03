@@ -4,7 +4,7 @@
     <div slot="title">
       <st-input-search
         placeholder="团课名称"
-        v-model="query.courseName"
+        v-model="query.course_name"
         @search="onSearchCourseName"
         style="width: 280px"
       />
