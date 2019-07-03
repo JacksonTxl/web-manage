@@ -28,7 +28,7 @@ export class PersonalScheduleCommonService {
   consumeOptions$: Computed<any[]>
   dateOptions$: Computed<any[]>
   timeOptions$: Computed<any[]>
-  courseCoachOptions$: Computed<Staff[]>
+  courseCoachOptions$: Computed<any[]>
   coachInBatchOptions$: Computed<Staff[]>
 
   constructor(private commonApi: PersonalCommonApi) {
