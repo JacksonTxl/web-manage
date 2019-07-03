@@ -246,6 +246,8 @@ export default {
       searchMemberIsShow: true,
       // 购买数量可编辑
       isAmountDisabled: false,
+      // 最小输入购买数量
+      minPrice: 0,
       // 到期有效时间
       validEndTime: 0,
       // 定金
@@ -285,7 +287,9 @@ export default {
   mounted() {
     this.salePersonalCourseService.serviceInit(this.id).subscribe(result => {
       setTimeout(() => {
+        this.resetOrderInfo()
         this.form.setFieldsValue({ 'coach_level': this.info.coach_level[0].id })
+        this.minPrice = this.info.coach_level[0].min_sell
       })
     })
   },
@@ -311,6 +315,11 @@ export default {
   methods: {
     changeSpeics(event) {
       this.isAmountDisabled = false
+      this.resetOrderInfo()
+      const selectCoach = this.info.coach_level.filter((item) => { return item.id === event.target.value })
+      this.minPrice = selectCoach[0].min_sell
+    },
+    resetOrderInfo() {
       this.form.resetFields(['buyNum', 'coachId'])
       this.personalPrice.sell_price = 0
       this.personalPrice.min_sell_price = 0
@@ -374,12 +383,18 @@ export default {
       }
     },
     buy_num(rule, value, callback) {
+      let price = 0
+      if (this.info.price_model === 1) { // 教练平级
+        price = this.personalPrice.sell_price
+      } else {
+        price = this.minPrice
+      }
       if (!value) {
         // eslint-disable-next-line
         callback('请输入购买数量')
-      } else if (value < this.info.min_sell) {
+      } else if (value < price) {
         // eslint-disable-next-line
-        callback(`不能少于课程定价的最低购买节数${this.info.min_sell}`)
+        callback(`不能少于课程定价的最低购买节数${price}`)
       } else {
         callback()
       }
@@ -503,7 +518,7 @@ export default {
             // 调用优惠券列表
             this.fetchCouponList()
             // 调用获取商品原价
-            if (this.info.sale_model === 1 && !this.form.getFieldValue('coursePrice')) {
+            if (this.info.price_model === 2 && !this.form.getFieldValue('coursePrice') && this.form.getFieldValue('coursePrice') !== 0) {
               return
             }
             this.getOrderPrice()
@@ -518,6 +533,9 @@ export default {
       let special_amount = this.personalPrice.sell_price
       if (this.info.sale_model === 1) {
         special_amount = this.form.getFieldValue('coursePrice')
+      }
+      if (!special_amount) {
+        return
       }
       this.salePersonalCourseService.priceAction$.dispatch({
         product_id: this.id,
@@ -551,6 +569,9 @@ export default {
       }
       this.form.validateFields((error, values) => {
         if (!error) {
+          if (info.sale_model === 2) {
+
+          }
           this.salePersonalCourseService.setTransactionOrder({
             'member_id': values.memberId,
             'member_name': values.memberName,
@@ -558,7 +579,7 @@ export default {
             'course_id': this.id,
             'contract_number': values.contractNumber,
             'buy_num': values.buyNum,
-            'course_price': this.personalPrice.sell_price,
+            'course_price': this.info.sale_model === 2 ? this.personalPrice.sell_price : values.coursePrice,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
             'reduce_amount': this.reduceAmount,
@@ -593,7 +614,7 @@ export default {
             'course_id': this.id,
             'contract_number': values.contractNumber,
             'buy_num': values.buyNum,
-            'course_price': this.personalPrice.sell_price,
+            'course_price': this.info.sale_model === 2 ? this.personalPrice.sell_price : values.coursePrice,
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
             'reduce_amount': this.reduceAmount,
