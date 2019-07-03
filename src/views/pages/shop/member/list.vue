@@ -238,7 +238,7 @@ export default {
     },
     // 重置
     onReset() {
-      let query = {
+      this.querySelect = {
         keyword: '',
         member_level: -1,
         register_way: -1,
@@ -252,11 +252,11 @@ export default {
       }
       this.register_time = []
       this.enter_time = []
-      this.$router.push({ query: { ...this.query, ...query } })
+      this.$router.push({ force: true, query: { ...this.querySelect } })
     },
     // 设置searchData
     setSearchData() {
-      this.querySelect = cloneDeep(this.query)
+      this.querySelect = this.query
       if (!this.querySelect.register_start_time || !this.querySelect.register_stop_time) {
         this.register_time = []
       } else {

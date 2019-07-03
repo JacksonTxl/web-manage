@@ -51,11 +51,11 @@
           <template
             slot="end_time"
             slot-scope="text"
-          >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
+          >{{text}}</template>
           <template
             slot="buy_time"
             slot-scope="text"
-          >{{moment(text*1000).format('YYYY-MM-DD HH:mm')}}</template>
+          >{{text}}</template>
           <div slot="action" slot-scope="text,record">
             <a v-if="record.auth['shop:sold:sold_deposit_card|get']" @click="onDetail(record)">详情</a>
             <a-divider type="vertical"></a-divider>

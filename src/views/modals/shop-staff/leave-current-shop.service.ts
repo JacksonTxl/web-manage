@@ -25,7 +25,10 @@ export class LeaveStoreService {
   }
   getInfo(id: string) {
     return this.api.getLeaveStoreInfo(id).pipe(tap(res => {
-
+      this.state$.commit(state => {
+        state.list = res.list
+        state.operate = res.operate
+      })
     }))
   }
   leaveStore(id: string) {

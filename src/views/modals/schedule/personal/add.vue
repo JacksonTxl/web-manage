@@ -8,7 +8,9 @@
       </st-form-item>
     </st-form>
     <div class="modal-add-schedule__time">
-      <st-shop-hour-picker></st-shop-hour-picker>
+      <div class="time-item" v-for="info in schedule_info" :key="info.time_type">
+        <span>{{info.time_type | filterDate}}</span> <st-time-picker class="mg-b32" v-model="info.timing" :key="info.time_type"></st-time-picker>
+      </div>
       <st-button class="copy" @click="onClickCopySchedule">复制上周</st-button>
     </div>
 
@@ -37,7 +39,35 @@ export default {
   data() {
     return {
       show: false,
-      coachId: ''
+      coachId: '',
+      schedule_info: [{
+        time_type: 0,
+        timing: []
+      }, {
+        time_type: 1,
+        timing: []
+      }, {
+        time_type: 2,
+        timing: []
+      }, {
+        time_type: 3,
+        timing: []
+      }, {
+        time_type: 4,
+        timing: []
+      }, {
+        time_type: 5,
+        timing: []
+      }, {
+        time_type: 6,
+        timing: []
+      }]
+    }
+  },
+  filters: {
+    filterDate(val) {
+      const weekList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+      return `${weekList[val]}`
     }
   },
   methods: {
@@ -49,92 +79,7 @@ export default {
     save() {
       let reqdata = {
         coach_id: this.coachId,
-        schedule_info: [
-          {
-            timing: [
-              {
-                start_time: '20:00:00',
-                end_time: '22:00:00'
-              },
-              {
-                start_time: '13:00:00',
-                end_time: '14:00:00'
-              }
-            ]
-          },
-          {
-            timing: [
-              {
-                start_time: '14:00:00',
-                end_time: '16:00:00'
-              },
-              {
-                start_time: '13:00:00',
-                end_time: '14:00:00'
-              }
-            ]
-          },
-          {
-            timing: [
-              // {
-              //   start_time: '10:00:00',
-              //   end_time: '12:00:00'
-              // },
-              // {
-              //   start_time: '13:00:00',
-              //   end_time: '14:00:00'
-              // }
-            ]
-          },
-          {
-            timing: [
-              // {
-              //   start_time: '10:00:00',
-              //   end_time: '12:00:00'
-              // },
-              // {
-              //   start_time: '13:00:00',
-              //   end_time: '14:00:00'
-              // }
-            ]
-          },
-          {
-            timing: [
-              // {
-              //   start_time: '10:00:00',
-              //   end_time: '12:00:00'
-              // },
-              // {
-              //   start_time: '13:00:00',
-              //   end_time: '14:00:00'
-              // }
-            ]
-          },
-          {
-            timing: [
-              {
-                start_time: '10:00:00',
-                end_time: '12:00:00'
-              },
-              {
-                start_time: '13:00:00',
-                end_time: '14:00:00'
-              }
-            ]
-          },
-          {
-            timing: [
-              {
-                start_time: '10:00:00',
-                end_time: '12:00:00'
-              },
-              {
-                start_time: '13:00:00',
-                end_time: '14:00:00'
-              }
-            ]
-          }
-        ]
+        schedule_info: this.schedule_info
       }
       this.scheduleService.add(reqdata).subscribe(() => {
         this.messageService.success({ content: '添加成功' })

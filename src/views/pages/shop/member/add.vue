@@ -34,15 +34,17 @@
           </st-form-item>
         </a-col>
         <a-col :lg="10" :xs="22" :offset="3">
-          <!-- <st-form-item>
+          <st-form-item>
             <st-image-upload
               width="264px"
               height="264px"
               :sizeLimit="2"
+              :list="faceList"
+              :isFaceRecognition="true"
               placeholder="会员人脸信息"
               v-decorator="rules.faceInfo"
             ></st-image-upload>
-          </st-form-item> -->
+          </st-form-item>
         </a-col>
       </a-row>
 
@@ -246,7 +248,8 @@ export default {
         living_address: ['living_address']
       },
       options: [],
-      fieldNames: { label: 'name', value: 'id', children: 'children' }
+      fieldNames: { label: 'name', value: 'id', children: 'children' },
+      faceList: []
     }
   },
   methods: {
@@ -261,11 +264,14 @@ export default {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(res => {
+        res.province_id = res.cascader[0] || 110000
+        res.city_id = res.cascader[1] || 110100
+        res.district_id = res.cascader[2] || 110101
+        delete res.cascader
         delete res.md
         this.addService.addUser(res).subscribe(() => {
-          console.log('ok')
           this.messageService.success({ content: '添加成功' })
-          this.$router.go(-1)
+          this.$router.push({ name: 'shop-member-list', force: true })
         })
       })
     }
