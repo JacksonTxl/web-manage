@@ -33,8 +33,8 @@
         </header>
         <section>
           <ul>
-            <li v-for="(item, index) in info.marketing" :key="index">
-              <img v-if="item.plugin_type === '0'" src="~@/assets/img/brand/marketing/people.svg">
+            <li v-for="(item, index) in info.marketing" :key="index" @click="goToPlugin(item.plugin_type)">
+              <!-- <img v-if="item.plugin_type === '0'" src="~@/assets/img/brand/marketing/people.svg"> -->
               <img v-if="item.plugin_type === '1'" src="~@/assets/img/brand/marketing/coupon.svg">
               <img v-if="item.plugin_type === '2'" src="~@/assets/img/brand/marketing/invite.svg">
               <img v-if="item.plugin_type === '3'" src="~@/assets/img/brand/marketing/slyder.svg">
@@ -96,7 +96,7 @@ export default {
     },
     getInfo() {
       this.pluginService.getInfo().subscribe()
-    }
+    },
     // filterTypeImg(value) {
     //   let typeName='people';
     //   switch(value) {
@@ -115,6 +115,17 @@ export default {
     //   }
     //   return expand;
     // }
+    goToPlugin(type) {
+      const map = {
+        1: 'brand-marketing-plugin-coupon-list',
+        2: 'brand-marketing-plugin-invitation-index'
+      }
+      if (map.hasOwnProperty(type)) {
+        this.$router.push({
+          name: map[type]
+        })
+      }
+    }
   }
 }
 </script>
