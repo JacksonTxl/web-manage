@@ -55,7 +55,7 @@
                     </template>
                     <template slot="gift_unit" slot-scope="text, record, index">
                         <a-input :value="text" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
-                          <span slot="suffix">天</span>
+                          <span slot="suffix">次</span>
                         </a-input>
                     </template>
                     <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="price_delete(index)">
