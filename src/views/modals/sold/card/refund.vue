@@ -81,7 +81,7 @@
         <a-col :span="13" class="mgb-24">
           <st-info>
             <st-info-item label="订单总额">{{refundInfo.total_price}}元</st-info-item>
-            <st-info-item class="mg-b0" label="订单类型">{{refundInfo.order_status | enumFilter('sold.order_status')}}</st-info-item>
+            <st-info-item class="mg-b0" label="订单类型">{{refundInfo.order_type}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11" class="mgb-24">

@@ -290,6 +290,11 @@ export default {
         this.resetOrderInfo()
         this.form.setFieldsValue({ 'coach_level': this.info.coach_level[0].id })
         this.minPrice = this.info.coach_level[0].min_sell
+        let level = 0
+        if (this.info.price_model === 2) {
+          level = this.info.coach_level[0].id
+        }
+        this.salePersonalCourseService.getCoachList(level).subscribe()
       })
     })
   },
@@ -318,6 +323,7 @@ export default {
       this.resetOrderInfo()
       const selectCoach = this.info.coach_level.filter((item) => { return item.id === event.target.value })
       this.minPrice = selectCoach[0].min_sell
+      this.salePersonalCourseService.getCoachList(selectCoach[0].id).subscribe()
     },
     resetOrderInfo() {
       this.form.resetFields(['buyNum', 'coachId', 'coursePrice', 'gift_course_num'])

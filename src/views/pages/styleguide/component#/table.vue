@@ -5,16 +5,17 @@
       使用与
       <a href="https://vue.ant.design/components/table-cn/">a-table</a> 相同的api，只是增加了默认无数据的占位图，以及默认应用的分页条数,分页器样式已包含
       添加了alertSelection属性 以支持 ·已选中几项· 清空的功能
+      新增[page]属性 参数为后端的page对象 直接使用即可
     </p>
     <st-table :dataSource="[]" :columns="columns"></st-table>
     <st-table
       class="mg-t24"
       :columns="columns"
       :alertSelection="{onReset:onSelectionReset}"
-      :rowSelection="{selectedRowKeys:selectedRowKeys,onChange:onSelectionChange}"
+      :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
       rowKey="id"
       @change="onTableChange"
-      :pagination="{current:+query.p || 1}"
+      :page='page'
       :dataSource="tableData"
     >
       <div slot="action">
@@ -28,9 +29,11 @@
   </section>
 </template>
 <script>
+import tableMixin from '@/mixins/table.mixin'
 import { RouteService } from '@/services/route.service'
 const tableData = new Array(60).fill(1).map((item, i) => ({ id: i, name: i }))
 export default {
+  mixins: [tableMixin],
   serviceInject() {
     return {
       route: RouteService
@@ -44,31 +47,20 @@ export default {
   data() {
     return {
       tableData,
-      selectedRowKeys: [],
+      page: {
+        current_page: 1,
+        total_counts: 10
+      },
       columns: [
         { title: 'id', dataIndex: 'id' },
         { title: '名称', dataIndex: 'name' },
-        { title: '操作', width: 180, scopedSlots: { customRender: 'action' } }
+        { title: '操作', width: 180, fixed: 'right', scopedSlots: { customRender: 'action' } }
       ]
     }
   },
   methods: {
-    onSelectionReset() {
-      this.selectedRowKeys = []
-    },
-    onSelectionChange(keys) {
-      this.selectedRowKeys = keys
-    },
     onDelete(record) {
       console.log('delete ', record)
-    },
-    onTableChange(pagination) {
-      this.$router.push({
-        query: {
-          p: pagination.current
-        }
-      })
-      console.log('pagination', pagination)
     }
   }
 }

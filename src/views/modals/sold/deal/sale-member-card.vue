@@ -75,6 +75,7 @@
             <div v-if="selectedPayment.id == 3">
               <a-date-picker
                 showTime
+                v-model="validStartTime"
                 :defaultValue="moment()"
                 format="YYYY-MM-DD HH:mm"
                 placeholder="请选择开始时间"
@@ -462,7 +463,7 @@ export default {
             'contract_number': values.contractNumber,
             'specs_id': values.specs.id,
             'open_card_type': values.open_type.id,
-            'valid_start_time': this.validStartTime,
+            'valid_start_time': moment(this.validStartTime).format('YYYY-MM-DD HH:mm'),
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
             'gift_amount': this.gift_amount || 0,
@@ -492,7 +493,7 @@ export default {
             'contract_number': values.contractNumber,
             'specs_id': values.specs.id,
             'open_card_type': values.open_type.id,
-            'valid_start_time': this.validStartTime,
+            'valid_start_time': moment(this.validStartTime).format('YYYY-MM-DD HH:mm'),
             'coupon_id': this.selectCoupon.id,
             'advance_id': this.selectAdvance,
             'gift_amount': this.gift_amount || 0,

@@ -11,6 +11,8 @@ import VueBemHelper from '@/vendor/vue-bem-helper'
 // @ts-ignore
 import VueRxState from '@/vendor/vue-rx-state'
 // @ts-ignore
+import VueEvents from '@/vendor/vue-events'
+// @ts-ignore
 import VueStyleguide from '@/vendor/vue-styleguide'
 
 import ICountUp from 'vue-countup-v2'
@@ -30,6 +32,7 @@ Vue.use(Antd)
 Vue.use(FullCalendar)
 Vue.use(Viewer)
 Vue.use(VueBemHelper)
+Vue.use(VueEvents)
 Vue.use(VueStyleguide, {
   namespaces: ['st']
 })
