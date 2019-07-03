@@ -2,15 +2,19 @@
 import { merge } from 'lodash-es'
 export default {
   name: 'StTable',
-  methods: {
-    onCLick() {
-      this.alertSelection.onReset()
-    }
-  },
   props: {
+    page: {
+      type: [Object, Boolean],
+      default: () => ({})
+    },
     alertSelection: {
       type: Object,
       default: () => { return {} }
+    }
+  },
+  methods: {
+    onCLick() {
+      this.alertSelection.onReset()
     }
   },
   render(h) {
@@ -29,6 +33,19 @@ export default {
       },
       this.$attrs
     )
+    const page = this.page
+    if (!page) {
+      props.pagination = false
+    }
+    if (page.size) {
+      props.pagination.pageSize = +page.size
+    }
+    if (page.current_page) {
+      props.pagination.current = +page.current_page
+    }
+    if (page.total_counts) {
+      props.pagination.total = +page.total_counts
+    }
     const ce = this.alertSelection.onReset ? h('div', { class: 'st-table-wapper' }, [
       h('a-alert', {
         class: 'st-table-alert mg-b8',

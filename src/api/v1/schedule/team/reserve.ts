@@ -24,7 +24,7 @@ export class TeamScheduleReserveApi extends Api {
    * 团体课签到消费
    */
   check(params: CheckInput) {
-    return this.http.put('v1/schedule/team/shop/check', { params })
+    return this.http.put('/v1/schedule/team/shop/check', { params })
   }
   /**
    *
@@ -38,7 +38,7 @@ export class TeamScheduleReserveApi extends Api {
    * 取消预约
    */
   del(id: string) {
-    return this.http.delete(`v1/schedule/team/shop/cancel/${id}`)
+    return this.http.delete(`/v1/schedule/team/shop/cancel/${id}`)
   }
 }
 export interface AddReserveInput {

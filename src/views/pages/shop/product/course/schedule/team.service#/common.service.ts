@@ -110,7 +110,10 @@ export class TeamScheduleCommonService {
   getUnusedSeatList(query: UnUsedSeatQuery) {
     return this.commonApi.getUnusedSeatList(query).pipe(tap(res => {
       this.state$.commit(state => {
-        state.unUsedSeatOptions = res.list.map((item: any) => { return { id: item, name: item } })
+        state.unUsedSeatOptions = res.list.map((item: any, index: any) => {
+          if (item === -1) item = '无座位'
+          return { id: index, name: item }
+        })
       })
     }))
   }

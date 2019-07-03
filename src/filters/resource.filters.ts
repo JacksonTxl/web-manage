@@ -16,8 +16,8 @@ interface ImgFilterOptions {
   [propName: string]: any
 }
 
-// @ts-ignore
-const appConfig = appContainer.get(AppConfig)
+const container = window.getContainer()
+const appConfig = container.get(AppConfig)
 
 /**
  * 图片资源过滤器
