@@ -84,7 +84,7 @@ export class SalePersonalCourseService {
   }
   @Effect()
   serviceInit(id: string) {
-    return forkJoin(this.getInfo(id), this.getSaleList(), this.getCoachList(0))
+    return forkJoin(this.getInfo(id), this.getSaleList())
   }
   @Effect()
   setTransactionOrder(params: any) {
