@@ -2,7 +2,7 @@
   <st-modal title="批量排期" @ok="save" v-model="show">
     <st-form>
       <st-form-item  label="应用日期" required>
-        <a-range-picker @change="onChangeRangePicker" ></a-range-picker>
+        <a-range-picker @change="onChangeRangePicker" :disabledDate="disabledDate"></a-range-picker>
       </st-form-item>
       <st-form-item labelWidth="42px" label="教练：" required>
         <a-select placeholder="请选择教练" v-model="coachId">
@@ -11,10 +11,13 @@
       </st-form-item>
     </st-form>
     <div class="modal-add-schedule__time">
-      <st-time-picker></st-time-picker>
+      <div class="time-item" v-for="info in schedule_info" :key="info.time_type">
+        <span>{{info.time_type | filterDate}}</span> <st-time-picker class="mg-b32" v-model="info.timing" :key="info.time_type"></st-time-picker>
+      </div>
+
     </div>
   </st-modal>
-</template>
+</template>n
 
 <script>
 import { MessageService } from '@/services/message.service'
@@ -39,12 +42,48 @@ export default {
       show: false,
       coachId: '',
       start: '',
-      end: ''
+      end: '',
+      rangePicker: '',
+      schedule_info: [{
+        time_type: 0,
+        timing: []
+      }, {
+        time_type: 1,
+        timing: []
+      }, {
+        time_type: 2,
+        timing: []
+      }, {
+        time_type: 3,
+        timing: []
+      }, {
+        time_type: 4,
+        timing: []
+      }, {
+        time_type: 5,
+        timing: []
+      }, {
+        time_type: 6,
+        timing: []
+      }]
+    }
+  },
+  filters: {
+    filterDate(val) {
+      const weekList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+      return `${weekList[val]}`
     }
   },
   methods: {
+    disabledDate(currentDate) {
+      console.log('currentDate.valueOf()', currentDate.valueOf())
+      const current = moment().valueOf()
+      console.log(current)
+      console.log('current', current)
+      console.log(currentDate.valueOf() > current)
+      return currentDate.valueOf() > (current - 24 * 3600 * 30 * 1000) && (current + 24 * 3600 * 60 * 1000) > currentDate.valueOf()
+    },
     onChangeRangePicker(val) {
-      console.log(val)
       this.start = val[0].format('YYYY-MM-DD').valueOf()
       this.end = val[1].format('YYYY-MM-DD').valueOf()
     },
@@ -53,91 +92,7 @@ export default {
         id: this.coachId,
         schedule_start_time: this.start,
         schedule_end_time: this.end,
-        schedule_info: [
-          {
-            time_type: 0,
-            timing: [
-              {
-                start_time: '09:00:00',
-                end_time: '10:00:00'
-              },
-              {
-                start_time: '20:00:00',
-                end_time: '22:00:00'
-              }
-            ]
-          },
-          {
-            time_type: 1,
-            timing: [
-              {
-                start_time: '11:00:00',
-                end_time: '12:00:00'
-              },
-              {
-                start_time: '14:00:00',
-                end_time: '15:00:00'
-              }
-            ]
-          },
-          {
-            time_type: 2,
-            timing: [
-            ]
-          },
-          {
-            time_type: 3,
-            timing: [
-              {
-                start_time: '08:00:00',
-                end_time: '09:00:00'
-              },
-              {
-                start_time: '11:00:00',
-                end_time: '13:00:00'
-              }
-            ]
-          },
-          {
-            time_type: 4,
-            timing: [
-              {
-                start_time: '09:00:00',
-                end_time: '10:00:00'
-              },
-              {
-                start_time: '19:00:00',
-                end_time: '20:00:00'
-              }
-            ]
-          },
-          {
-            time_type: 5,
-            timing: [
-              {
-                start_time: '09:00:00',
-                end_time: '10:00:00'
-              },
-              {
-                start_time: '15:00:00',
-                end_time: '16:00:00'
-              }
-            ]
-          },
-          {
-            time_type: 6,
-            timing: [
-              {
-                start_time: '09:00:00',
-                end_time: '12:00:00'
-              },
-              {
-                start_time: '20:00:00',
-                end_time: '21:00:00'
-              }
-            ]
-          }
-        ]
+        schedule_info: this.schedule_info
       }
       this.scheduleService.addScheduleInBatch(reqdata).subscribe(() => {
         console.log('ok')
