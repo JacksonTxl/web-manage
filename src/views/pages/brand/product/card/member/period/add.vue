@@ -593,6 +593,7 @@ export default {
         'cardData.price_setting': 1
       })
       this.cardData.support_sales = 1
+      this.cardData.price_setting = 1
       this.rally_price_list = []
       this.shop_price_list = []
     },
