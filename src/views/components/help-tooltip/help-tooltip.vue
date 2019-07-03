@@ -3,7 +3,9 @@
     <a-tooltip
       :placement="placement"
       v-bind="$attrs"
-      v-on="$listeners">
+      v-on="$listeners"
+      @mouseenter="onMouseEnter"
+    >
       <template slot="title">
         <span>{{tips}}</span>
       </template>
@@ -32,20 +34,21 @@ export default {
   },
   data() {
     return {
-      tips: '加载中...'
+      tips: '加载中...',
+      loaded: false
     }
   },
-  created() {
-    this.getHelp()
-  },
   methods: {
+    onMouseEnter() {
+      if (!this.loaded) {
+        this.getHelp()
+      }
+    },
     getHelp() {
       const { id } = this
-      if (!id) {
-        return
-      }
       this.helpTooltipService.getToolTip(this.id).subscribe(res => {
         this.tips = res.tips
+        this.loaded = true
       })
     }
   }
