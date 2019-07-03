@@ -6,14 +6,13 @@
         <div :class="item('card_name')" class="mb-24">
           <!-- 卡名称 -->
           <div class='st-preview-item' v-viewer="{url:'data-src'}">
-          <img
-          :class="item('card_bg')"
-          :data-src="cardInfo.card_bg.image_url"
-          :src="cardInfo.card_bg.image_url | imgFilter({w:192,h:108})"
-          width="192"
-          height="108"
-          alt="">
-
+            <img
+            :class="item('card_bg')"
+            :data-src="cardInfo.card_bg.image_url"
+            :src="cardInfo.card_bg.image_url | imgFilter({w:192,h:108})"
+            width="192"
+            height="108"
+            alt="">
           </div>
           <div :class="item('name_time')">
             <p :class="item('name')">

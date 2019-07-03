@@ -6,7 +6,7 @@
     { label: '门店上架卡项', route: { name: 'brand-product-card-member-list-shelves' } }
   ]">
     <div slot="actions">
-      <a-input-search v-model="query.card_name" @search="onSearchCardName" placeholder="请输入会员卡名称查找" maxlength="50" />
+      <st-input-search v-model="query.card_name" @search="onSearchCardName" placeholder="请输入会员卡名称查找" maxlength="50" />
     </div>
     <router-view></router-view>
   </st-panel>
@@ -28,8 +28,8 @@ export default {
   },
   methods: {
     onSearchCardName() {
-      this.$router.push({ query: { ...this.query, card_name: this.query.card_name } })
+      this.$events.emit('card-member-list-shelves:onSingleSearch', ['card_name', this.query.card_name, { keyword: true }])
     }
   }
 }
-</script>
+</script>˝
