@@ -457,8 +457,12 @@ export class StaffApi extends Api {
   getStaffInfo(id: string) {
     return this.http.get(`/v1/staff/brand/basic/${id}`)
   }
-
-  // 门店 shop
+  /**
+   * 获取当前登录员工的全局信息
+   */
+  getGlobalStaffInfo() {
+    return this.http.get('/v1/staff/info')
+  }
 }
 export interface PutStaffBindBankInput {
   id?: string | number

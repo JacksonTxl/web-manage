@@ -60,7 +60,6 @@
           <td>
             <a-select
               slot="site_num_list"
-              v-model="siteNumIds"
               mode="multiple"
               placeholder="选择座位"
               style="width: 120px"
@@ -86,8 +85,8 @@
           <td>{{item.is_checkin_name}}</td>
           <td>
             <div>
-              <a   class="mg-r8" href="javascript:;" @click="onClickCancel(item.id)" v-if="auth.cancel">取消预约</a>
-              <a  href="javascript:;" v-if="auth.checkIn" @click="onClickCheckIn(item.id)">签到消费</a>
+              <a  class="mg-r8" href="javascript:;" @click="onClickCancel(item.reserve_id)" v-if="auth.cancel">取消预约</a>
+              <a  href="javascript:;" v-if="auth.checkIn" @click="onClickCheckIn(item.reserve_id)">签到消费</a>
             </div>
           </td>
         </tr>
@@ -195,6 +194,13 @@ export default {
       this.consumeId = obj.id
     },
     onChangeSiteNumList(val) {
+      this.unUsedSeatOptions.forEach(item => {
+        if (val.includes(item.id)) {
+          let value = item.name
+          if (item.name === '无座位') value = -1
+          this.siteNumIds.push(value)
+        }
+      })
       if (val.length > 3) {
         this.siteNumIds.pop()
         this.messageService.error({

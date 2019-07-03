@@ -80,7 +80,7 @@
               <a-form-item class="page-a-form">
                 <a-date-picker
                   :allowClear="false"
-                  :disabledDate="disabledEndDate"
+                  :disabledDate="disabledCalendar"
                   v-decorator="['endTimePicker',{rules:[{validator:endtime_picker_validator}]}]"
                   @change="endTimeChange"
                   style="width:170px"
@@ -94,6 +94,7 @@
           </st-form-item>
           <st-form-item required labelGutter="12px" label="租赁天数">
             <st-input-number
+              :disabled="disabledCalendar"
               @change="onEndTimeInputChange"
               v-decorator="['endTimeInput',{rules:[{validator:endtime_input_validator}]}]"
               :max="999999">
@@ -232,6 +233,7 @@ export default {
       },
       cabinetId: '',
       // 租赁天数
+      disabledCalendar: true,
       startTime: moment(),
       days: '',
       // 定金
@@ -362,9 +364,11 @@ export default {
       if (!value) {
         // eslint-disable-next-line
         callback('请选择租赁柜号')
+        this.disabledCalendar = false
       } else {
         // eslint-disable-next-line
         callback()
+        this.disabledCalendar = true
       }
     },
     onCabinetChange(data) {
