@@ -14,7 +14,7 @@
         </a-date-picker>
       </st-form-item>
       <st-form-item label="课程" required>
-        <a-select v-decorator="formRules.courseId">
+        <a-select v-decorator="formRules.courseId" @change="onChangeGetCourseId">
           <a-select-option
             v-for="course in courseOptions"
             :key="course.id"
@@ -150,6 +150,9 @@ export default {
     })
   },
   methods: {
+    onChangeGetCourseId(id) {
+      this.commonService.getCourseCoachList(id).subscribe()
+    },
     initStartTime() {
       this.form.setFieldsValue({
         start_time: this.time

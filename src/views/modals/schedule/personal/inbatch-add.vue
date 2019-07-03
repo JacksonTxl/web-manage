@@ -11,7 +11,7 @@
       </st-form-item>
     </st-form>
     <div class="modal-add-schedule__time">
-      <st-shop-hour-picker></st-shop-hour-picker>
+      <st-time-picker></st-time-picker>
     </div>
   </st-modal>
 </template>
