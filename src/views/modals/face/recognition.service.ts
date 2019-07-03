@@ -2,7 +2,7 @@ import { Injectable } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { MemberApi, faceCheckQuery } from '@/api/v1/member'
+import { MemberApi, FaceCheckQuery } from '@/api/v1/member'
 
 interface ScanState {
   is_scan: number
@@ -18,7 +18,7 @@ export class RecognitionService extends Store<any> {
     })
     this.isScan$ = new Computed(this.state$.pipe(pluck('isScan')))
   }
-  getMemberCheckResult(query: faceCheckQuery) {
+  getMemberCheckResult(query: FaceCheckQuery) {
     return this.MemberApi.getMemberCheckResult(query).pipe(
       tap(res => {
         this.state$.commit(state => {
