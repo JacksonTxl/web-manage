@@ -408,7 +408,7 @@ export default {
     },
     // 检验门店自主定价价格输入是否正确
     checkedPrice() {
-      if (this.info.price_setting === 1) {
+      if (!(this.info.publish_channel === 1 && this.info.price_setting === 2)) {
         this.priceHelpText = ''
         return false
       }
