@@ -111,7 +111,6 @@ export class TeamScheduleCommonService {
     return this.commonApi.getUnusedSeatList(query).pipe(tap(res => {
       this.state$.commit(state => {
         state.unUsedSeatOptions = res.list.map((item: any) => { return { id: item, name: item } })
-        this.msg.success({ content: '添加预约成功' })
       })
     }))
   }
