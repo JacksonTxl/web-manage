@@ -605,11 +605,15 @@ export default {
     // 入场门店支持方式change
     admission_range(data) {
       this.cardData.admission_range = data.target.value
-      // 入场门店变化时，售卖门店同时变化
+      // 入场门店变化时，售卖门店和价格同时变化
       this.form.setFieldsValue({
-        'cardData.support_sales': 1
+        'cardData.support_sales': 1,
+        'cardData.price_setting': 1
       })
       this.cardData.support_sales = 1
+      this.cardData.price_setting = 1
+      this.rally_price_list = []
+      this.shop_price_list = []
     },
     // 价格设置方式change
     price_range(data) {
