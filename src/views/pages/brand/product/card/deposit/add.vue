@@ -22,35 +22,35 @@
           <a-row :gutter="8" class="page-content-card-line__row">
             <a-col :lg="16">
               <st-form-item label="储值金额" required>
-                <a-input v-decorator="[
+                <st-input-number :float="true" :min="1" :max="9999999.9" v-decorator="[
                   'cardData.card_price',
                   {rules: [{ validator: card_price_validator}]}
                 ]"
                   style="width: 360px"
                   placeholder="请输入储值金额">
-                  <span slot="suffix">元</span>
-                </a-input>
+                  <span slot="addonAfter">元</span>
+                </st-input-number>
               </st-form-item>
             </a-col>
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="22">
               <st-form-item label="售卖价格" required>
-                <a-input v-decorator="[
+                <st-input-number :float="true" :min="0" :max="9999999.9" v-decorator="[
                   'cardData.sell_price',
                   {rules: [{ validator: sell_price_validator}]}
                 ]"
                   style="width: 360px"
                   placeholder="请输入售卖价格">
-                  <span slot="suffix">元</span>
-                </a-input>
+                  <span slot="addonAfter">元</span>
+                </st-input-number>
               </st-form-item>
             </a-col>
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="22">
               <st-form-item label="期限" required>
-                <a-input v-decorator="[
+                <st-input-number :min="1" :max="99999" v-decorator="[
                   'cardData.num',
                   {rules: [{ validator: num_validator}]}
                 ]"
@@ -62,7 +62,7 @@
                     :value="+item[0]"
                     :key="index" >{{item[1]}}</a-select-option>
                   </a-select>
-                </a-input>
+                </st-input-number>
               </st-form-item>
             </a-col>
           </a-row>
