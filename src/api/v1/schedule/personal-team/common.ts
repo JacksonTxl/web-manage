@@ -23,6 +23,9 @@ export class PersonalTeamScheduleCommonApi extends Api {
   getCourseList() {
     return this.http.get('/v1/schedule/personal_team/shop/course_list')
   }
+  getCourseCoachList(id: any) {
+    return this.http.get(`/v1/schedule/personal/shop/personal/${id}`)
+  }
   /**
    * 获取教练列表
    */
