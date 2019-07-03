@@ -3,7 +3,6 @@ import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { ShopStaffApi, GetStaffCourseListInput } from '@/api/v1/staff/staff'
-import { forEach } from 'lodash-es'
 
 interface CourseState{
     courseInfo: Object
@@ -22,13 +21,11 @@ export class CourseService extends Store<CourseState> {
     getCoursesList(query: GetStaffCourseListInput) {
       return this.staffApi.getStaffCourseList(query).pipe(
         tap(res => {
-          console.log('====', res)
           let result: any = {
             page: res.page,
             list: []
           }
           res.list.forEach((ele: any) => {
-            ele.class_hours = `${ele.start_time} ${ele.stop_time}`
             result.list.push(ele)
           })
           this.state$.commit(state => {
