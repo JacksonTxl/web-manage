@@ -1,13 +1,19 @@
 <template>
   <div class="add-schedule-button">
     <div class="icon mg-b8"><st-icon type="add"></st-icon></div>
-    <div class="text">添加课程排期</div>
+    <div class="text">{{title}}</div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'AddCard'
+  name: 'AddCard',
+  props: {
+    title: {
+      type: String,
+      defalut: '添加课程排期'
+    }
+  }
 }
 </script>
 

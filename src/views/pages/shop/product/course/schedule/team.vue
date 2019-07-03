@@ -35,7 +35,7 @@ import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
 import { TeamScheduleScheduleService } from './team.service#/schedule.service'
 import { TeamService } from './team.service'
-
+import AddCard from './date#/add-card'
 export default {
   name: 'Schedule',
   components: {
@@ -54,7 +54,6 @@ export default {
     }
   },
   data() {
-    console.log('this', this)
     const that = this
     return {
       columnHeaderFormat: { weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true },
@@ -160,6 +159,16 @@ export default {
     },
     setAddButton() {
       this.$nextTick().then(() => {
+        const addCardEl = new Vue({
+          components: {
+            AddCard
+          },
+          render: h => (
+            <add-card title="添加课程排期">
+            </add-card>
+          )
+        }).$mount().$el
+        const htmlStr = addCardEl.outerHTML
         let cellSize = {
           width: $('.fc-day').width() + 2, // count border pixels
           heigth: $('.fc-slats > table > tbody > tr').height() - 1
@@ -185,7 +194,7 @@ export default {
 
             $(this).children('td').each(function() {
               $(this).hover(function() {
-                $(this).html(hoverHtml)
+                $(this).html(htmlStr)
               }, function() {
                 $(this).html('')
               })

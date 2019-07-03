@@ -36,7 +36,7 @@ import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
 import { PersonalScheduleReserveService } from './personal.service#/reserve.service'
 import PersonalReseveTable from '@/views/pages/shop/product/course/schedule/personal#/personal-reseve-table'
-
+import AddCard from './date#/add-card'
 export default {
   name: 'SchedulePersonalTeam',
   components: {
@@ -159,6 +159,16 @@ export default {
     },
     setAddButton() {
       this.$nextTick().then(() => {
+        const addCardEl = new Vue({
+          components: {
+            AddCard
+          },
+          render: h => (
+            <add-card title="添加预约">
+            </add-card>
+          )
+        }).$mount().$el
+        const htmlStr = addCardEl.outerHTML
         let cellSize = {
           width: $('.fc-day').width() + 2, // count border pixels
           heigth: $('.fc-slats > table > tbody > tr').height() - 1
@@ -174,7 +184,7 @@ export default {
           'height:' + (cellSize.heigth - 4) + 'px', // 2px padding top, 2px padding bottom
           'line-height:' + (cellSize.heigth - 4) + 'px' // center text vertically
         ].join(';')
-        let hoverHtml = '<div class="hover-button" style="' + hoverCss + '">+添加课程预约</div>'
+        let hoverHtml = '<div class="hover-button" style="' + hoverCss + '">+</div>'
 
         $('.fc-widget-content').hover(function() {
           if (!$(this).html()) {
@@ -184,7 +194,7 @@ export default {
 
             $(this).children('td').each(function() {
               $(this).hover(function() {
-                $(this).html(hoverHtml)
+                $(this).html(htmlStr)
               }, function() {
                 $(this).html('')
               })
