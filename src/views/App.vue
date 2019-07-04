@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     layoutComponent() {
-      return layoutMap[this.layout || 'skeleton-brand']
+      return layoutMap[this.layout || 'skeleton']
     }
   }
 }

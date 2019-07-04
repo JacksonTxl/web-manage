@@ -1,6 +1,6 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
-import { tap, pluck, map } from 'rxjs/operators'
+import { tap, pluck, map, delay } from 'rxjs/operators'
 import { Store } from './store'
 import { forkJoin, of } from 'rxjs'
 import { ConstApi } from '@/api/const'
