@@ -42,7 +42,7 @@ export class SiteService extends Store<ResState> {
   del(id: number) {
     return this.areaSeatApi.del(id)
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.getInfo(to.meta.query.id)
   }
 }
