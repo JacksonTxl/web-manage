@@ -115,6 +115,7 @@ import { EMPTY } from 'rxjs'
 import SwitchShop from '@/views/fragments/shop/switch'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import pic1 from '@/assets/img/avatar_default.png'
+import { RuleConfig } from '@/constants/rule'
 
 export default {
   serviceInject() {
@@ -122,7 +123,8 @@ export default {
       themeService: ThemeService,
       messageService: MessageService,
       tlService: TlService,
-      routeService: RouteService
+      routeService: RouteService,
+      ruleConfig: RuleConfig
     }
   },
   rxState() {
@@ -146,6 +148,9 @@ export default {
       },
       pic1
     }
+  },
+  created() {
+    // this.ruleConfig.generateRule('1-20'))
   },
   methods: {
     switchShop() {

@@ -2,7 +2,7 @@
   <section :class="basic()">
     <st-panel title="会员卡详情">
       <div slot="actions">
-        <st-button v-if="auth['shop:sold:sold_member_card|export_contract']" type="primary" class="mgr-8">查看合同</st-button>
+        <st-button v-if="auth['shop:sold:sold_member_card|export_contract']" type="primary" class="mgr-8"  @click="toContract">查看合同</st-button>
         <st-button v-if="auth['shop:sold:sold_member_card|frozen']" class="mgr-8" @click="onFreeze">冻结</st-button>
         <st-button v-if="auth['shop:sold:sold_member_card|renew']" class="mgr-8" @click="onRenewal">续卡</st-button>
         <a-dropdown>
@@ -169,6 +169,12 @@ export default {
     // 查看订单
     createdOrderViewOrder() {
       console.log('查看订单')
+    },
+    // 跳转合同
+    toContract() {
+      let record = this.info
+      let url = `${window.location.origin}/extra/contract-preview?id=${record.order_id}`
+      window.open(url)
     },
     // 冻结
     onFreeze() {

@@ -2,7 +2,7 @@
   <section :class="basic()">
     <st-panel title="储值卡详情">
       <div slot="actions">
-        <st-button v-if="auth['shop:sold:sold_deposit_card|export_contract']" class="mgr-8" type="primary" @click="onRefund">查看合同</st-button>
+        <st-button v-if="auth['shop:sold:sold_deposit_card|export_contract']" class="mgr-8" type="primary" @click="toContract">查看合同</st-button>
         <st-button v-if="auth['shop:sold:sold_deposit_card|refund']" class="mgr-8" @click="onRefund">退款</st-button>
         <st-button v-if="auth['shop:sold:sold_deposit_card|transfer']" class="mgr-8" @click="onTransfer">转让</st-button>
       </div>
@@ -87,6 +87,12 @@ export default {
     moment,
     onShowShops() {
       console.log('多店')
+    },
+    // 跳转合同
+    toContract() {
+      let record = this.info
+      let url = `${window.location.origin}/extra/contract-preview?id=${record.order_id}`
+      window.open(url)
     },
     // 退款
     onRefund() {

@@ -1,3 +1,6 @@
+// 使用page作为当前页查询参数的路由放这里
+const ROUTE_NAMES_USE_PAGE = []
+
 export default {
   data() {
     return {
@@ -14,10 +17,14 @@ export default {
       )
     }
     if (!this.page) {
-      console.error(
-        '[tableMixin] 需要订阅page对象 到this.page以生效'
-      )
+      console.error('[tableMixin] 需要订阅page对象 到this.page以生效')
     }
+
+    console.log(
+      `use [tableMixin] $route.name -> ${
+        this.$route.name
+      } currentPageField -> ${this.currentPageField}`
+    )
   },
   computed: {
     // 多选是否至少勾选一项
@@ -27,6 +34,12 @@ export default {
     // 没有一项选中
     isSelectedDisabled() {
       return this.selectedRowKeys.length === 0
+    },
+    currentPageField() {
+      const _field = ROUTE_NAMES_USE_PAGE.includes(this.$route.name)
+        ? 'page'
+        : 'current_page'
+      return _field
     }
   },
   methods: {
@@ -36,7 +49,7 @@ export default {
       this.$router.push({
         query: {
           ...this.query,
-          current_page: 1,
+          [this.currentPageField]: 1,
           force: true
         }
       })
@@ -50,7 +63,7 @@ export default {
       if (!keyword) {
         query = {
           ...this.query,
-          current_page: 1,
+          [this.currentPageField]: 1,
           ...{ [key]: data }
         }
       } else {
@@ -84,7 +97,7 @@ export default {
       this.$router.push({
         query: {
           ...this.query,
-          current_page: pagination.current,
+          [this.currentPageField]: pagination.current,
           size: pagination.pageSize,
           sort_by,
           sort_order

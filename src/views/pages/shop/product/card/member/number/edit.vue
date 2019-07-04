@@ -29,34 +29,34 @@
                     :pagination="false"
                   >
                     <template slot="validity_times" slot-scope="text, record, index">
-                        <a-input :value="text" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'validity_times'})">
-                          <span slot="suffix">次</span>
-                        </a-input>
+                        <st-input-number :min="1" :max="99999" :value="text" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'validity_times'})">
+                          <span slot="addonAfter">次</span>
+                        </st-input-number>
                     </template>
                     <template slot="rally_price" slot-scope="text, record, index">
-                        <a-input :value="text" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price'})">
-                          <span slot="suffix">元</span>
-                        </a-input>
+                        <st-input-number :float="true" :min="0" :max="999999.9" :value="text" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'rally_price'})">
+                          <span slot="addonAfter">元</span>
+                        </st-input-number>
                     </template>
                     <template slot="time" slot-scope="text, record, index">
-                      <a-input :value="text.num" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
+                      <st-input-number :min="1" :max="99999" :value="text.num" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'num'})">
                        <a-select slot="addonAfter" :value="text.unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
                           <a-select-option
                           v-for="(item,index) in nuit_list"
                           :value="item.value"
                           :key="index" >{{item.label}}</a-select-option>
                         </a-select>
-                      </a-input>
+                      </st-input-number>
                     </template>
                     <template slot="frozen_day" slot-scope="text, record, index">
-                        <a-input :value="text" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
-                          <span slot="suffix">天</span>
-                        </a-input>
+                        <st-input-number :min="1" :max="99999" :value="text" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'frozen_day'})">
+                          <span slot="addonAfter">天</span>
+                        </st-input-number>
                     </template>
                     <template slot="gift_unit" slot-scope="text, record, index">
-                        <a-input :value="text" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
-                          <span slot="suffix">次</span>
-                        </a-input>
+                        <st-input-number :min="1" :max="99999" :value="text" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
+                          <span slot="addonAfter">次</span>
+                        </st-input-number>
                     </template>
                     <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="price_delete(index)">
                       删除
@@ -142,8 +142,8 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="20">
-              <st-form-item class="page-content-card-bg" label="卡背景" required>
-                <st-card-bg-radio v-model="cardBg" />
+              <st-form-item class="page-content-card-bg" label="卡背景" required :help="cardBgValidatorText">
+                <st-card-bg-radio @change="onCardBgChange" v-model="cardBg" />
               </st-form-item>
             </a-col>
           </a-row>
@@ -228,8 +228,7 @@ export default {
         {
           title: '有效期',
           scopedSlots: { customRender: 'time' },
-          dataIndex: 'time',
-          width: 120
+          dataIndex: 'time'
         },
         {
           title: '允许冻结天数',
@@ -289,6 +288,8 @@ export default {
         image_url: '',
         index: 1
       },
+      // 卡背景的help文本
+      cardBgValidatorText: '',
       // 卡介绍
       cardIntroduction: '',
       // 备注
@@ -342,7 +343,8 @@ export default {
     onHandleSubmit(e) {
       this.form.validateFieldsAndScroll((err, values) => {
         this.validatePrice()
-        if (!err && this.priceValidateStatus === 'success') {
+        this.cardBgValidator()
+        if (!err && this.priceValidateStatus === 'success' && this.cardBgIsOk) {
           let unit = this.is_transfer ? this.transferUnit : undefined
           let num = this.is_transfer ? this.transferNum : undefined
           let price_gradient = []
@@ -476,6 +478,14 @@ export default {
       } else {
         this.rallyPriceIsOk = this.priceValidateRuleText.every(i => this.rules.number.test(i))
       }
+    },
+    onCardBgChange(e) {
+      this.cardBgValidatorText = ''
+    },
+    // 卡背景校验
+    cardBgValidator() {
+      let validata = this.cardBg.image_key !== ''
+      this.cardBgValidatorText = validata ? '' : '请上传卡背景'
     }
   },
   watch: {
@@ -527,6 +537,10 @@ export default {
         remove(arr, i => i.value === 1)
       }
       return arr
+    },
+    // 卡背景是否校验通过
+    cardBgIsOk() {
+      return this.cardBgValidatorText === ''
     }
   }
 }
