@@ -1,7 +1,7 @@
 <template>
   <st-panel app :class="entrance()">
     <div :class="entrance('search')" class="mg-b16">
-      <st-button type="primary" :disabled="!selectedRowKeys.length || auth.batchCheckout" @click="onLeaveBatch">批量离场</st-button>
+      <st-button type="primary" :disabled="!selectedRowKeys.length || !auth.batchCheckout" @click="onLeaveBatch">批量离场</st-button>
       <div>
         <a-input-search
         style="width: 200px"
