@@ -42,7 +42,7 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="23">
-              <st-form-item class="page-content-card-price-setting mt-4" required>
+              <st-form-item class="page-content-card-price-setting mt-4" required :help="priceValidatorText">
                 <template slot="label">
                     价格设置<st-help-tooltip id="TBMCTC002" />
                 </template>
@@ -55,26 +55,26 @@
                     :key="+item[0]"
                     :value="+item[0]">{{item[1]}}</a-radio>
                 </a-radio-group>
-                <div class="page-price-setting-set" :class="{'brand-set': cardData.price_setting===1&&cardData.admission_range===1}" v-if="cardData.price_setting===1">
+                <div class="page-price-setting-set" :class="{'error':!priceIsOk,'brand-set': cardData.price_setting===1&&cardData.admission_range===1}" v-if="cardData.price_setting===1">
                   <a-table
                     size="middle"
                     :columns="brand_price_columns"
-                    :dataSource="rally_price_list"
+                    :dataSource="rallyPriceList"
                     rowKey="key"
                     :pagination="false"
                   >
                     <template slot="validity_times" slot-scope="text, record, index">
-                        <st-input-number :min="1" :max="99999" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'validity_times'})">
+                        <st-input-number :min="1" :max="99999" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'validity_times'})">
                           <span slot="addonAfter">次</span>
                         </st-input-number>
                     </template>
                     <template slot="rally_price" slot-scope="text, record, index">
-                        <st-input-number :float="true" :min="0" :max="999999.9" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price'})">
+                        <st-input-number :float="true" :min="0" :max="999999.9" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'rally_price'})">
                           <span slot="addonAfter">元</span>
                         </st-input-number>
                     </template>
                     <template slot="time" slot-scope="text, record, index">
-                      <st-input-number :min="1" :max="99999" :value="text.num" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
+                      <st-input-number :min="1" :max="99999" :value="text.num" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'num'})">
                         <a-select slot="addonAfter" :value="text.unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
                           <a-select-option
                           v-for="(item,index) in unit_list"
@@ -84,45 +84,45 @@
                       </st-input-number>
                     </template>
                     <template slot="frozen_day" slot-scope="text, record, index">
-                        <st-input-number :min="1" :max="99999" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
+                        <st-input-number :min="1" :max="99999" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'frozen_day'})">
                           <span slot="addonAfter">天</span>
                         </st-input-number>
                     </template>
                     <template slot="gift_unit" slot-scope="text, record, index">
-                        <st-input-number :min="1" :max="99999" @change="e => brandPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
-                          <span slot="addonAfter">天</span>
+                        <st-input-number :min="1" :max="99999" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
+                          <span slot="addonAfter">次</span>
                         </st-input-number>
                     </template>
                     <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="brand_price_delete(index)">
                       删除
                     </a>
                   </a-table>
-                  <st-button :disabled="rally_price_list.length>3" type="dashed" class="page-price-setting-set__add" block @click="brand_price_add">+ 添加定价规格（{{rally_price_list.length}}/4）</st-button>
+                  <st-button :disabled="rallyPriceList.length>3" type="dashed" class="page-price-setting-set__add" block @click="brand_price_add">+ 添加定价规格（{{rallyPriceList.length}}/4）</st-button>
                 </div>
-                <div class="page-price-setting-set" :class="{'shop-set': cardData.price_setting===2&&cardData.admission_range===1}" v-if="cardData.price_setting===2">
+                <div class="page-price-setting-set" :class="{'error':!priceIsOk,'shop-set': cardData.price_setting===2&&cardData.admission_range===1}" v-if="cardData.price_setting===2">
                   <a-table
                     size="middle"
                     :columns="shop_price_columns"
-                    :dataSource="shop_price_list"
+                    :dataSource="shopPriceList"
                     rowKey="key"
                     :pagination="false"
                   >
                      <template slot="validity_times" slot-scope="text, record, index">
-                        <st-input-number :min="1" :max="99999" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'validity_times'})">
+                        <st-input-number :min="1" :max="99999" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'validity_times'})">
                           <span slot="addonAfter">次</span>
                         </st-input-number>
                     </template>
                     <template slot="rally_price" slot-scope="text, record, index">
-                        <st-input-number :float="true" :min="0" :max="999999.9" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'min_price'})" style="width:70px">
+                        <st-input-number :float="true" :min="0" :max="999999.9" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'rally_price', prop:'min_price'})" style="width:100px">
                           <span slot="addonAfter">元</span>
                         </st-input-number>
                         ~
-                        <st-input-number :float="true" :min="0" :max="999999.9" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'rally_price', prop:'max_price'})" style="width:70px">
+                        <st-input-number :float="true" :min="0" :max="999999.9" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'rally_price', prop:'max_price'})" style="width:100px">
                           <span slot="addonAfter">元</span>
                         </st-input-number>
                     </template>
                     <template slot="time" slot-scope="text, record, index">
-                      <st-input-number :min="1" :max="99999" :value="text.num" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'time', prop:'num'})">
+                      <st-input-number :min="1" :max="99999" :value="text.num" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'num'})">
                         <a-select slot="addonAfter" :value="text.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
                           <a-select-option
                           v-for="(item,index) in unit_list"
@@ -132,20 +132,20 @@
                       </st-input-number>
                     </template>
                     <template slot="frozen_day" slot-scope="text, record, index">
-                        <st-input-number :min="1" :max="99999" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'frozen_day'})">
+                        <st-input-number :min="1" :max="99999" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'frozen_day'})">
                           <span slot="addonAfter">天</span>
                         </st-input-number>
                     </template>
                     <template slot="gift_unit" slot-scope="text, record, index">
-                        <st-input-number :min="1" :max="99999" @change="e => shopPriceSettingHandleChange({value:e.target.value, key:index,col:'gift_unit'})">
-                          <span slot="addonAfter">天</span>
+                        <st-input-number :min="1" :max="99999" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
+                          <span slot="addonAfter">次</span>
                         </st-input-number>
                     </template>
                     <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="shop_price_delete(index)">
                       删除
                     </a>
                   </a-table>
-                  <st-button :disabled="shop_price_list.length>3" type="dashed" class="page-price-setting-set__add" block @click="shop_price_add">+ 添加定价规格（{{shop_price_list.length}}/4）</st-button>
+                  <st-button :disabled="shopPriceList.length>3" type="dashed" class="page-price-setting-set__add" block @click="shop_price_add">+ 添加定价规格（{{shopPriceList.length}}/4）</st-button>
                 </div>
               </st-form-item>
             </a-col>
@@ -231,8 +231,8 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="20">
-              <st-form-item class="page-content-card-bg" label="卡背景" required>
-                <st-card-bg-radio v-model="cardData.card_bg" />
+              <st-form-item class="page-content-card-bg" label="卡背景" required :help="cardBgValidatorText">
+                <st-card-bg-radio @change="onCardBgChange" v-model="cardData.card_bg" />
               </st-form-item>
             </a-col>
           </a-row>
@@ -349,9 +349,9 @@ export default {
         card_contents: ''
       },
       // 品牌统一定价-价格梯度
-      rally_price_list: [],
+      rallyPriceList: [],
       // 门店自主定价-价格梯度
-      shop_price_list: [],
+      shopPriceList: [],
       // 售卖时间
       start_time: null,
       end_time: null,
@@ -369,6 +369,10 @@ export default {
           label: '年'
         }
       ],
+      // 校验价格的help文本
+      priceValidatorText: '',
+      // 卡背景的help文本
+      cardBgValidatorText: '',
       // 品牌统一定价表格表头
       brand_price_columns: [
         {
@@ -410,35 +414,37 @@ export default {
           title: '入场次数',
           scopedSlots: { customRender: 'validity_times' },
           dataIndex: 'validity_times',
-          width: 80
+          width: 120
         },
         {
           title: '售价范围',
           scopedSlots: { customRender: 'rally_price' },
           dataIndex: 'rally_price',
-          width: 180
+          width: 230
         },
         {
           title: '有效期',
           scopedSlots: { customRender: 'time' },
           dataIndex: 'time',
-          width: 120
+          width: 150
         },
         {
           title: '允许冻结天数',
           scopedSlots: { customRender: 'frozen_day' },
-          dataIndex: 'frozen_day'
+          dataIndex: 'frozen_day',
+          width: 150
         },
         {
           title: '赠送上限',
           scopedSlots: { customRender: 'gift_unit' },
-          dataIndex: 'gift_unit'
+          dataIndex: 'gift_unit',
+          width: 150
         },
         {
           title: '操作',
           dataIndex: 'operation',
-          width: '10%',
-          scopedSlots: { customRender: 'operation' }
+          scopedSlots: { customRender: 'operation' },
+          width: 80
         }
       ]
     }
@@ -450,8 +456,12 @@ export default {
     // 保存
     onHandleSubmit(e) {
       e.preventDefault()
+      // 校验价格
+      this.priceValidator(this.cardData.price_setting)
+      // 校验卡背景
+      this.cardBgValidator()
       this.form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
+        if (!err && this.priceIsOk && this.cardBgIsOk) {
           // 入场门店
           if (this.cardData.admission_range !== 2) {
             // 不是多门店
@@ -470,7 +480,7 @@ export default {
           switch (this.cardData.price_setting) {
             case 1:
               // 品牌统一定价
-              this.rally_price_list.forEach(i => {
+              this.rallyPriceList.forEach(i => {
                 p.push({
                   unit: +i.time.unit,
                   num: +i.time.num,
@@ -483,7 +493,7 @@ export default {
               break
             case 2:
               // 门店自主定价
-              this.shop_price_list.forEach(i => {
+              this.shopPriceList.forEach(i => {
                 p.push({
                   unit: +i.time.unit,
                   num: +i.time.num,
@@ -499,8 +509,8 @@ export default {
           this.cardData.card_name = values.cardData.card_name
           this.cardData.price_gradient = cloneDeep(p)
           // 时间
-          this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
-          this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')} 00:00:00`
+          this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')}`
+          this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
           this.addService.addCard(this.cardData).subscribe(res => {
             this.$router.push({
               name: 'brand-product-card-member-list-all'
@@ -536,10 +546,10 @@ export default {
     price_gradient_list_validator(rule, value, callback) {
       // eslint-disable-next-line
       callback()
-      // if (value === 1 && !this.rally_price_list.length) {
+      // if (value === 1 && !this.rallyPriceList.length) {
       //   // eslint-disable-next-line
       //   callback('请添加价格设置')
-      // } else if (value === 2 && !this.shop_price_list.length) {
+      // } else if (value === 2 && !this.shopPriceList.length) {
       //   // eslint-disable-next-line
       //   callback('请添加价格设置')
       // } else {
@@ -605,8 +615,9 @@ export default {
       })
       this.cardData.support_sales = 1
       this.cardData.price_setting = 1
-      this.rally_price_list = []
-      this.shop_price_list = []
+      this.rallyPriceList = []
+      this.shopPriceList = []
+      this.priceValidatorText = ''
     },
     // 价格设置方式change
     price_range(data) {
@@ -615,7 +626,7 @@ export default {
     // 增加品牌价格
     brand_price_add() {
       let key = parseInt(Math.random() * 999999).toString()
-      this.rally_price_list.push({
+      this.rallyPriceList.push({
         key,
         validity_times: null,
         time: {
@@ -629,20 +640,20 @@ export default {
     },
     // 删除品牌价格
     brand_price_delete(index) {
-      this.rally_price_list.splice(index, 1)
+      this.rallyPriceList.splice(index, 1)
     },
     // 品牌价格梯度-期限
     brandPriceSettingHandleChange({ value, key, col, prop }) {
       if (prop !== undefined) {
-        this.rally_price_list[key][col][prop] = value
+        this.rallyPriceList[key][col][prop] = value
       } else {
-        this.rally_price_list[key][col] = value
+        this.rallyPriceList[key][col] = value
       }
     },
     // 增加门店价格
     shop_price_add() {
       let key = parseInt(Math.random() * 999999).toString()
-      this.shop_price_list.push({
+      this.shopPriceList.push({
         key,
         validity_times: null,
         time: {
@@ -659,14 +670,14 @@ export default {
     },
     // 删除门店价格
     shop_price_delete(index) {
-      this.shop_price_list.splice(index, 1)
+      this.shopPriceList.splice(index, 1)
     },
     // 门店价格梯度-期限
     shopPriceSettingHandleChange({ value, key, col, prop }) {
       if (prop !== undefined) {
-        this.shop_price_list[key][col][prop] = value
+        this.shopPriceList[key][col][prop] = value
       } else {
-        this.shop_price_list[key][col] = value
+        this.shopPriceList[key][col] = value
       }
     },
     // 支持售卖门店change
@@ -720,6 +731,20 @@ export default {
     },
     transfter_change(data) {
       this.cardData.num = data
+    },
+    // 价格梯度校验
+    priceValidator(type) {
+      let fnName = type === 1 ? 'brandPriceValidataArray' : 'shopPriceValidataArray'
+      let validata = this[fnName].length ? this[fnName].every(i => this.rules.number.test(i.split('-')[1])) : false
+      this.priceValidatorText = validata ? '' : '请输入正确的价格'
+    },
+    onCardBgChange(e) {
+      this.cardBgValidatorText = ''
+    },
+    // 卡背景校验
+    cardBgValidator() {
+      let validata = this.cardData.card_bg.image_key !== ''
+      this.cardBgValidatorText = validata ? '' : '请上传卡背景'
     }
   },
   watch: {
@@ -778,6 +803,42 @@ export default {
         remove(arr, i => i.value === 1)
       }
       return arr
+    },
+    // 品牌统一定价-价格梯度校验数组
+    brandPriceValidataArray() {
+      let array = []
+      this.rallyPriceList.forEach(i => {
+        Object.keys(i).forEach(o => {
+          array.push(o === 'time' ? `time-${i.time.num}` : `${o}-${i[o]}`)
+        })
+      })
+      return array
+    },
+    // 门店自主定价-价格梯度校验数组
+    shopPriceValidataArray() {
+      let array = []
+      this.shopPriceList.forEach(i => {
+        Object.keys(i).forEach(o => {
+          let value = []
+          if (o === 'time') {
+            value = [`time-${i.time.num}`]
+          } else if (o === 'rally_price') {
+            value = [`min_price-${i.rally_price.min_price}`, `max_price-${i.rally_price.max_price}`]
+          } else {
+            value = [`${o}-${i[o]}`]
+          }
+          array.push(...value)
+        })
+      })
+      return array
+    },
+    // 价格是否校验通过
+    priceIsOk() {
+      return this.priceValidatorText === ''
+    },
+    // 卡背景是否校验通过
+    cardBgIsOk() {
+      return this.cardBgValidatorText === ''
     }
   }
 }

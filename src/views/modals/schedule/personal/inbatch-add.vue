@@ -23,18 +23,21 @@
 import { MessageService } from '@/services/message.service'
 import { PersonalScheduleScheduleService } from '../../../pages/shop/product/course/schedule/personal.service#/schedule.service'
 import { PersonalScheduleCommonService } from '../../../pages/shop/product/course/schedule/personal.service#/common.service'
+import { RouteService } from '../../../../services/route.service'
 export default {
   name: 'AddScheduleInBatch',
   serviceInject() {
     return {
       commonService: PersonalScheduleCommonService,
       scheduleService: PersonalScheduleScheduleService,
-      messageService: MessageService
+      messageService: MessageService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      coachOptions: this.commonService.coachInBatchOptions$
+      coachOptions: this.commonService.coachInBatchOptions$,
+      query: this.routeService.query
     }
   },
   data() {
@@ -94,11 +97,12 @@ export default {
         console.log('ok')
         this.messageService.success({ content: '添加成功' })
         this.show = false
-        // this.$router.push({ query: {
-        //   size: 51,
-        //   page: 1
-        // },
-        // force: true })
+        this.$router.push({ query: {
+          size: 51,
+          page: 1,
+          ...this.query
+        },
+        force: true })
       })
     }
   }

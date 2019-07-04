@@ -2,7 +2,7 @@
   <st-modal
   title="添加用户"
   v-model="show"
-  width="668"
+  width="484px"
   wrapClassName="modal-front-add-member">
     <st-form :form="form" labelWidth="66px">
         <st-form-item label="用户姓名" required>
@@ -68,7 +68,7 @@ export default {
             mobile: values.mobile
           }).subscribe(res => {
             this.show = false
-            this.$emit('success', { id: res.info.member_id })
+            this.$emit('success', { id: res.info.member_id, name: values.name })
           })
         }
       })

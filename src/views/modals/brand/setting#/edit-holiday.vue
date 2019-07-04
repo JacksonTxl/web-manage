@@ -167,7 +167,7 @@ export default {
       this.onSuccess('修改成功')
     },
     onDelSuccess() {
-      this.onSuccess('删除成功')
+      this.onSuccess('取消放假成功')
     },
     disabledStartDate(current) {
       return current && current < moment().endOf('day')

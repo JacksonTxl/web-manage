@@ -5,10 +5,24 @@
     .page-support-sales-shop.page-lot-shop::after {
         left: 128px;
     }
-    .page-price-setting-set.brand-set::after {
-        left: 20px;
+    .page-price-setting-set.brand-set{
+        &::after {
+            left: 20px;
+        }
     }
-    .page-price-setting-set.shop-set::after {
-        left: 130px;
+    .page-price-setting-set.shop-set{
+        &::after {
+            left: 130px;
+        }
+    }
+    .page-price-setting-set {
+        &.error,&.error::after {
+            border-color: @error-color;
+        }
+    }
+    .page-content-card-price-setting,.page-content-card-bg{
+        .ant-form-explain {
+            .c(@error-color);
+        }
     }
 }

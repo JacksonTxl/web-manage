@@ -38,7 +38,7 @@
     </st-search-panel>
 
     <div :class="basic('content')">
-      <div :class="basic('content-batch')" v-if="auth.export">
+      <div :class="basic('content-batch')" v-if="auth.export" class="mg-b16">
           <st-button type="primary">批量导出</st-button>
       </div>
       <st-table

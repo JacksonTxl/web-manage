@@ -125,7 +125,8 @@ export default {
         title: '离场',
         content: `确定离场吗？`,
         onOk: () => {
-          return this.entranceService.setEntranceLeave(record.id).toPromise().then(() => {
+          return this.entranceService.setEntranceLeave(record.member_id).toPromise().then(() => {
+            this.onClear()
             this.entranceService.getList().subscribe()
           })
         }
@@ -133,13 +134,18 @@ export default {
     },
     // 批量离场
     onLeaveBatch() {
+      let ids = []
+      this.selectedRows.forEach(i => {
+        ids.push(i.member_id)
+      })
       this.$confirm({
         title: '批量离场',
         content: `确定离场吗？`,
         onOk: () => {
           return this.entranceService.setEntranceLeaveBatch({
-            ids: this.selectedRowKeys
+            ids
           }).toPromise().then(() => {
+            this.onClear()
             this.entranceService.getList().subscribe()
           })
         }
