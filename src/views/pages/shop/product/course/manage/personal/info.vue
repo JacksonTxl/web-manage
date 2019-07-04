@@ -48,10 +48,10 @@
         </st-container>
       </div>
       <div class="page-personal-content__item">
-        <div class="title mg-b8"><span class="label">售价渠道:</span><span class="value">门店定价</span></div>
-        <div class="title mg-b8"><span class="label">单节有效期:</span><span class="value">门店定价</span></div>
-        <div class="title mg-b8"><span class="label">定价权限:</span><span class="value">门店定价</span></div>
-        <div class="title mg-b8"><span class="label">单节售卖:</span><span class="value">门店定价</span></div>
+        <div class="title mg-b8"><span class="label">售价渠道:</span><span class="value">{{price_gradient}}</span></div>
+        <div class="title mg-b8"><span class="label">单节有效期:</span><span class="value">{{price_gradient}}</span></div>
+        <div class="title mg-b8"><span class="label">定价权限:</span><span class="value">{{price_gradient}}</span></div>
+        <div class="title mg-b8"><span class="label">单节售卖:</span><span class="value">{{price_gradient.single_price}}</span></div>
         <div class="title mg-b8"><span class="label">售卖定价:</span><span class="value"></span></div>
 
         <st-container>

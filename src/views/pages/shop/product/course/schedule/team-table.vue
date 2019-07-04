@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     onClickSkipSchedule() {
-      this.$router.push({ name: 'shop-product-course-schedule-team-calendar' })
+      this.$router.push({ name: 'shop-product-course-schedule-team' })
     },
     getTable(query = {}) {
       const req = { start_date: query.start_time, end_date: query.end_time }

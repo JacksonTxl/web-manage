@@ -39,8 +39,8 @@
 
 <script>
 import { TeamScheduleCommonService } from './schedule/team.service#/common.service'
-import { RouteService } from '../../../../../services/route.service'
 import { PersonalScheduleCommonService } from './schedule/personal.service#/common.service'
+import { RouteService } from '../../../../../services/route.service'
 export default {
   name: 'CourseSchedule',
   serviceInject() {
