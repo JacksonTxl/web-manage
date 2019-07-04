@@ -19,6 +19,10 @@ export class InfoService implements RouteGuard {
         this.auth$.commit(() => res.auth)
       }))
     }
+    @Effect()
+    unFreeze(id:string) {
+      return this.cardApi.unFreezeCard(id, 'member')
+    }
     beforeEach(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
       this.id = to.meta.query.id
       this.getInfo(to.meta.query.id).subscribe(res => {

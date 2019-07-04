@@ -50,7 +50,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form :form="form" labelWidth="85px">
+      <st-form :form="form" labelWidth="85px" >
         <div :class="refund('refund')">
           <st-form-item class="mgb-18" required>
             <template slot="label">
