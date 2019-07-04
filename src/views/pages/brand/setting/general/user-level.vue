@@ -36,7 +36,7 @@
             <div>
               <img :class="b('item-icon')" src="~@/assets/img/member.png" alt="正式会员">
             </div>
-            <div :class="b('sub-title')">条件</div>
+            <div :class="b('sub-title')">条件<st-help-tooltip id="TBYHDJ001" /></div>
             <select-condition
               v-if="isEdit && info.condition"
               v-model="info.condition.list"
@@ -54,7 +54,7 @@
                 </span>
               </li>
             </ul>
-            <div class="mg-t24" :class="b('sub-title')">特权类目</div>
+            <div class="mg-t24" :class="b('sub-title')">特权类目<st-help-tooltip id="TBYHDJ002" /></div>
             <select-rights
               v-if="isEdit && info.rights"
               v-model="info.rights.list"

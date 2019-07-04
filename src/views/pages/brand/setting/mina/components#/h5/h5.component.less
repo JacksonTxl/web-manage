@@ -1,28 +1,35 @@
-.brand-setting-mina-index {
     .h5-component__scroll-wrapper{
-        position: relative;
-        border: 10px solid #000;
-        border-radius: 20px;
+        .pos-r();
+        .bd-r(20px);
         overflow: hidden;
-        .bg(#fff);
-        width: 330px;
+        .w(389px);
         margin: 0 auto;
+        padding: 65px 40px;
+        background-image: url('~@/assets/img/brand/setting/mina/phone.png');
+        background-size: 100%;
     }
     .h5-component{
         padding: 0 12px 48px;
-        height: 570px;
+        .h(624px);
+        border: 1px solid #eee;
         overflow-y: auto;
         &::-webkit-scrollbar {
-            width:0px;
-            height:0px;
+            .s(0,0);
         }
+        
         > .st-title--t3{
-            padding-top: 10px;
+            .pd-t(10px);
+            .h(34px);
         }
         &__slider{
-            .bg(#F4F5F6);
             .h(180px);
             margin: 0 -12px;
+            .swiper-container{
+                height:100%;
+                img{
+                    .s(100%,100%);
+                }
+            }
         }
         &__header{
             display: flex;
@@ -33,107 +40,117 @@
             .imgBox{
                 width:50px;
                 .bg(#F4F5F6);
-                border-radius: 50%;
+                .bd-r(50%);
             }
             .title{
                 flex:1;
-                padding-top: 8px;
-                padding-left: 16px;
+                .pd-t(8px);
+                .pd-l(16px);
             }
         }
         &__action{
             display: flex;
-            padding: 12px 0;
+            .pd-tb(12px);
+            .pd-lr(0);
             .action-li{
                 flex:1;
-                text-align: center;
+                .ta-c();
+                >img{
+                    .s(34px,34px);
+                }
             }
         }
         &__hr{
             .h(10px);
-            background-color: #fafafa;
-            margin: 0 -12px;
+            .bg(#fafafa);
+            .mg-tb(0);
+            .mg-lr(-12px);
         }
         &__event{
-            display: flex;
             padding: 12px 0;
-            justify-content: center;
-            flex-wrap: wrap;
             .event-li{
-                width: 46%;
-                height: 58px;
-                flex: none;
-                .bg(#F4F5F6);
-                margin: 5px;
-                border-radius: 8px;
+                .h(64px);
+                padding:5px;
+                img{
+                    .s(100%, 100%);
+                    .bd-r(4px);
+                }
             }
         }
+        &__coach-title{
+            .mg-tb(8px);
+            font-weight: 700;
+        }
         &__coach{
-            margin-right: -12px;
-            display: flex;
-            overflow: hidden;
+            .mg-r(-12px);
+
             .coach-li{
-                width: 120px;
-                height: 200px;
-                flex: none;
-                margin: 5px;
-                text-align: center;
-                img{
-                    width: 120px;
-                    height:120px;
-                    border-radius: 8px;
+                .w(100%);
+                .pos-r();
+                .ta-c();
+                .via{
+                    .s(120px,120px);
+                    .bd-r(8px);
                     .bg(#F4F5F6);
                 }
+                .call{
+                    .s(32px,32px);
+                    .pos-a();
+                    top:100px;
+                    left: 50%;
+                    .mg-l(-16px);
+                }
+                .st-title{
+                    .mg-t(16px);
+                    font-weight: 700;
+                }
                 p{
-                    margin-bottom: 3px;
+                    .mg-b(3px);
+                    .fz(12px);
+                    .c(#999);
                 }
             }
         }
         &__course{
-            margin-right: -12px;
-            display: flex;
-            overflow: hidden;
-            padding-bottom: 12px;
-            .course-li{
-                height: 150px;
-                width: 274px;
-                flex: none;
-                margin: 5px;
-                text-align: center;
-                position: relative;
+            > .st-title--t3{
+                .mg-tb(8px);
+                font-weight: 700;
+            }
+            > div > p{
+                .fz(12px);
+                .c(#999);
+
+            }
+            .swiper-container{
+                height:100%;
+                .mg-r(-12px);
                 img{
-                    width: 100%;
-                    height:100%;
-                    border-radius: 8px;
-                    .bg(#F4F5F6);
+                    .s(100%,100%);
                 }
-                .abox{
-                    position: absolute;
-                    bottom: 5px;
-                    left: 5px;
-                    .c(@white);
-                }
-                .st-title--t3{
-                    .c(@white);
-                }
-                p{
-                    margin-bottom: 3px;
-                }
+            }
+        }
+        &__imgbox{
+            .mg-b(20px);
+            img{
+                .s(100%,100%);
             }
         }
         &__nav{
             display: flex;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 48px;
+            .pos-a();
+            bottom: 66px;
+            left: 41px;
+            right: 41px;
             .bg(#fff);
+            .pd-t(12px);
+            z-index:1;
             .nav-li{
                 flex:1;
-                text-align: center;
-                font-size: 10px;
+                .ta-c();
+                .fz(10px);
+            }
+            img{
+                .s(24px,24px);
             }
         }
     }
-}

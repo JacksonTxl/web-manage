@@ -5,7 +5,10 @@
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" >
             <a-col :lg="24">
-              <st-form-item label="优惠券类型" required v-if="couponEnums.coupon_type">
+              <st-form-item required v-if="couponEnums.coupon_type">
+                <template slot="label">
+                    优惠券类型<st-help-tooltip id="TBYHQ001" />
+                </template>
                 <a-radio-group  v-model="couponType" :disabled="isEditMode">
                   <a-radio-button
                     v-for="(item, index) in couponEnums.coupon_type.value"
@@ -96,7 +99,10 @@
                   {rules: [{ validator: valid_days_validator}]}]"></st-input-number>
                 天内有效
               </st-form-item>
-              <st-form-item  label="优惠共享" >
+              <st-form-item>
+                <template slot="label">
+                    优惠共享<st-help-tooltip id="TBYHQ002" />
+                </template>
                 <a-checkbox v-model="isShare" :disabled="isEditMode">不可与其它优惠同享</a-checkbox>
                 <a-popover
                     trigger="hover"

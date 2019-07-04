@@ -15,13 +15,19 @@
           </a-checkbox-group>
         </st-form-item>
         <!-- 课程有效期 -->
-        <st-form-item label="课有效期">
+        <st-form-item>
+          <template slot="label">
+              课有效期<st-help-tooltip id="TBCPC003" />
+          </template>
           <st-input-number v-decorator="ruleConfig.effectiveUnit">
             <template slot="addonAfter">天</template>
           </st-input-number>
         </st-form-item>
         <!-- 定价权限 -->
-        <st-form-item label="定价权限" required>
+        <st-form-item required>
+          <template slot="label">
+              定价权限<st-help-tooltip id="TBCPC004" />
+          </template>
           <a-radio-group @change="onChange" v-decorator="ruleConfig.priceSetting">
             <a-radio :value="1">品牌统一定价</a-radio>
             <a-radio :value="2">售卖场馆自主定价</a-radio>

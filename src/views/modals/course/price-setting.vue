@@ -24,7 +24,7 @@
     </div>
     </st-table>
     </st-container>
-    <div slot="footer">dasds</div>
+    <div slot="footer"></div>
   </st-modal>
 </template>
 <script>

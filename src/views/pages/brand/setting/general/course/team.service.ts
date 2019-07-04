@@ -43,7 +43,7 @@ export class TeamService extends Store<ListState> {
       })
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getInfo().subscribe(next, () => { next(false) })
   }
 }

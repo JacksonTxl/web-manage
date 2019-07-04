@@ -9,7 +9,10 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
-        <st-form-item label="上课门店" required>
+        <st-form-item required>
+          <template slot="label">
+              上课门店<st-help-tooltip id="TBCPC001" />
+          </template>
           <a-radio-group @change="onChange" v-decorator="ruleConfig.shopSetting">
             <a-radio v-for="(item, index) in personalCourseEnums.shop_setting.value" :key="index"
               :value="index">{{item}}</a-radio>
@@ -23,7 +26,10 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
-        <st-form-item label="上课教练">
+        <st-form-item>
+          <template slot="label">
+              上课教练<st-help-tooltip id="TBCPC002" />
+          </template>
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="ruleConfig.coachIds">
             <select-coach :shopIds="shopIds" @change="onSelectCoachChange"></select-coach>

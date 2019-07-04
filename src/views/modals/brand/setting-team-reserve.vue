@@ -230,6 +230,7 @@ export default {
             content: '提交成功'
           })
           this.show = false
+          this.$emit('change')
         }
       )
     }

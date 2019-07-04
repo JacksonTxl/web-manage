@@ -36,7 +36,7 @@
         修改预约
       </st-button>
       <st-button class="mg-r8" @click="cancelSchedule">取消预约</st-button>
-      <st-button @click="checkInConsume">签到消费</st-button>
+      <st-button @click="checkInConsume" >签到消费</st-button>
     </div>
   </st-modal>
 </template>
@@ -84,10 +84,14 @@ export default {
         } })
     },
     cancelSchedule() {
-      this.reserveService.del(this.id).subscribe()
+      this.reserveService.del(this.id).subscribe(() => {
+        this.getReserveInfo()
+      })
     },
     checkInConsume() {
-      this.reserveService.check(this.id).subscribe()
+      this.reserveService.check(this.id).subscribe(() => {
+        this.getReserveInfo()
+      })
     },
     getReserveInfo() {
       this.reserveService.getInfo(this.id).subscribe(res => {

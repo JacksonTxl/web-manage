@@ -12,12 +12,15 @@
             </select-coach-level>
           </st-form-item>
           <!-- 单节售卖 -->
-          <st-form-item label="单节售卖">
+          <st-form-item>
+            <template slot="label">
+              单节预约<st-help-tooltip id="TBCPC005" />
+            </template>
             <a-checkbox
               :checked="!!priceGradientRecord.single_sell"
               @change="(val) => onSingleSellChange(val, key)"
             >
-              支持单节课购买
+              支持单节课预约
             </a-checkbox>
             <template v-if="priceGradientRecord.single_sell">
               <st-input-number v-model="priceGradientRecord.single_price" style="width: 100px;"/>

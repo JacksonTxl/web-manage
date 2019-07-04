@@ -22,7 +22,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form labelWidth="72px" :form="form">
+      <st-form labelWidth="85px" :form="form">
         <div :class="relet('relet')">
           <st-form-item label="租赁会员" class="mgb-18">{{info.member_name}}</st-form-item>
           <st-form-item label="租赁柜号" required>
@@ -53,7 +53,10 @@
               <template slot="addonAfter">天</template>
             </st-input-number>
           </st-form-item>
-          <st-form-item label="合同编号" class="mgb-18" required>
+          <st-form-item class="mgb-18" required>
+            <template slot="label">
+                合同编号<st-help-tooltip id="TSSD001" />
+            </template>
             <div :class="relet('contract')">
               <a-input
               v-decorator="['contract_number',{rules:[{validator:contract_number}]}]"

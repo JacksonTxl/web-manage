@@ -26,7 +26,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form :form="form" labelWidth="72px">
+      <st-form :form="form" labelWidth="85px">
         <div :class="sale('sale')">
           <st-form-item v-show="searchMemberIsShow" label="购买会员" required>
             <a-select
@@ -62,7 +62,10 @@
           <st-form-item label="到期时间">
             <div>{{moment().format('YYYY-MM-DD HH:mm')}}</div>
           </st-form-item>
-          <st-form-item label="合同编号" required>
+          <st-form-item required>
+            <template slot="label">
+                合同编号<st-help-tooltip id="TSSD001" />
+            </template>
             <div :class="sale('contract')">
               <a-input
               v-decorator="['contractNumber',{rules:[{validator:contract_number}]}]"

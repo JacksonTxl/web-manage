@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, log } from 'rx-state'
+import { State, Computed } from 'rx-state'
 import { tap, pluck, map } from 'rxjs/operators'
 import { Store } from './store'
 import { forkJoin, of } from 'rxjs'
@@ -127,7 +127,6 @@ export class UserService extends Store<UserState> {
     })
   }
   getUser(force: boolean = false) {
-    console.log('get user')
     if (force || !Object.keys(this.user$.snapshot()).length) {
       return this.staffApi.getGlobalStaffInfo().pipe(
         tap((res: any) => {
@@ -166,23 +165,22 @@ export class UserService extends Store<UserState> {
       return of({})
     }
   }
-  getOptions(key: string) {
+  getOptions(key: string): Computed<{ label: string; value: number }[]> {
     return new Computed(
-      this.enums$
-        .pipe(
-          map(enums => {
-            const enumObj = get(enums, key)
-            const initArr: { label: string; value: number }[] = []
-            if (!enumObj) {
-              return []
-            } else {
-              return Object.keys(enumObj.value).reduce(
-                (arr, k) => arr.concat({ label: enumObj.value[k], value: +k }),
-                initArr
-              )
-            }
-          })
-        )
+      this.enums$.pipe(
+        map(enums => {
+          const enumObj = get(enums, key)
+          const initArr: { label: string; value: number }[] = []
+          if (!enumObj) {
+            return []
+          } else {
+            return Object.keys(enumObj.value).reduce(
+              (arr, k) => arr.concat({ label: enumObj.value[k], value: +k }),
+              initArr
+            )
+          }
+        })
+      )
     )
   }
   /**
@@ -220,11 +218,7 @@ export class UserService extends Store<UserState> {
   }
   init(force: boolean = false) {
     this.getOptions('member.education_level').subscribe()
-    return forkJoin(
-      this.getUser(),
-      this.getMenus(),
-      this.getEnums()
-    )
+    return forkJoin(this.getUser(), this.getMenus(), this.getEnums())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init()
