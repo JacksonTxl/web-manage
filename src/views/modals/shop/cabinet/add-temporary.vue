@@ -21,7 +21,10 @@
           <template slot="addonAfter">个</template>
         </st-input-number>
       </st-form-item>
-      <st-form-item label="递增方式" required>
+      <st-form-item required>
+        <template slot="label">
+          递增方式<st-help-tooltip id="TSCL001" />
+        </template>
         <a-radio-group
           v-decorator="ruleConfig.sortType"
         >

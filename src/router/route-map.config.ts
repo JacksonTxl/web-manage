@@ -645,5 +645,9 @@ export const routeMapConfig = {
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' }
     }
+  },
+  'extra-contract-preview'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '合同预览'
+    routeConfig.meta.layout = 'blank'
   }
 }

@@ -49,6 +49,9 @@ export class PersonalService extends Store<ListState> {
   getReserveSettingInfo() {
     return this.reserveSettingApi.getInfo()
   }
+  del() {
+    return this.coursePricingApi.del()
+  }
   init() {
     return forkJoin(
       this.getPriceSettingInfo(),

@@ -10,6 +10,12 @@ export class CoursePricingApi extends Api {
   update(params: UpdateInput) {
     return this.http.put(url, { params })
   }
+  /**
+   * 取消课程定价设置
+   */
+  del() {
+    return this.http.delete('/v1/setting/course/pricing')
+  }
 }
 
 export interface UpdateInput {

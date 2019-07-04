@@ -15,7 +15,10 @@
           </a-checkbox-group>
         </st-form-item>
         <!-- 课程有效期 -->
-        <st-form-item label="课有效期">
+        <st-form-item>
+          <template slot="label">
+            课有效期<st-help-tooltip id="TSCPC002" />
+          </template>
           <a-input-number :min="0" v-decorator="ruleConfig.effectiveUnit">
             <div slot="addonAfter" class="st-form-item-unit">天/节</div>
           </a-input-number>
