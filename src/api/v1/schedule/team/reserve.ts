@@ -38,7 +38,7 @@ export class TeamScheduleReserveApi extends Api {
    * 取消预约
    */
   del(id: string) {
-    return this.http.delete(`/v1/schedule/team/shop/cancel/${id}`)
+    return this.http.put(`/v1/schedule/team/shop/cancel/${id}`)
   }
 }
 export interface AddReserveInput {

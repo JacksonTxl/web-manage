@@ -21,7 +21,7 @@
       @eventRender="onEventRender($event)"
       :events="reserveList"
       @dateClick="handleDateClick"/>
-      <personal-reseve-table></personal-reseve-table>
+      <personal-reseve-table v-if="isTable"></personal-reseve-table>
 </div>
 
 </template>
@@ -104,7 +104,7 @@ export default {
             }
             that.$set(that.header, 'right', 'timeGridWeek,timeGridDay, custom4')
             that.$nextTick().then(() => {
-              that.$router.push({ name: 'shop-product-course-schedule-personal-table' })
+              this.isTable = true
             })
           }
         },
