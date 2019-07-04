@@ -5,21 +5,22 @@
         <div :class="reception('form-block-detail')">
           <div :class="reception('form-block-number')">
             <p>{{item.label}}（{{item.unit}}）</p>
-            <ICountUp v-if="auth[item.type]" class="number-up" :endVal="summaryInfo[item.type].num"/>
+            <ICountUp v-if="auth[item.type]&&item.version===1" class="number-up" :endVal="summaryInfo[item.type].num"/>
             <span v-else>- -</span>
             <!-- <p>{{summaryInfo[item.type].num}}</p> -->
           </div>
-          <div v-if="auth[item.type]" :class="reception('form-block-chart')">
+          <div v-if="auth[item.type]&&item.version===1" :class="reception('form-block-chart')">
             <front-simple-area :color="item.color" :data="summaryInfo[item.type].stChart"></front-simple-area>
           </div>
           <div v-else :class="reception('form-block-nonedata')"></div>
         </div>
         <div :class="reception('form-block-button')">
-          <template v-if="auth[item.type]">
-            <span>查看详情</span>
-            <st-icon type="right-small"/>
+          <template v-if="auth[item.type]&&item.version===1">
+            <span @click="onDetail(item.type)">查看详情</span>
+            <st-icon @click="onDetail(item.type)" type="right-small"/>
           </template>
-          <span v-else disabled>暂无权限</span>
+          <span v-if="!auth[item.type]" disabled>暂无权限</span>
+          <span v-if="item.version===2" style="color:rgba(0,0,0,0)">暂无权限</span>
         </div>
       </div>
     </div>
@@ -92,13 +93,17 @@
               <template v-if="!isEditSeller">
                 <span class="set-info-value">
                   {{selectMemberInfo.seller.name || '无'}}
-                  <a @click="isEditSeller=true" v-if="auth.bindSalesman">编辑</a>
+                  <a @click="isEditSeller=true" v-if="auth.bindSalesman"><st-icon type="anticon:edit"></st-icon>&nbsp;编辑</a>
                 </span>
               </template>
-              <a-select v-else v-model="seller" class="set-info-select">
-                <a-select-option :value="-1">无</a-select-option>
-                <a-select-option v-for="(item) in sellerList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
-              </a-select>
+              <template v-else>
+                <a-select v-model="seller" @change="onSellerChange" class="set-info-select mg-r8">
+                  <a-select-option :value="-1">无</a-select-option>
+                  <a-select-option v-for="(item) in sellerList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
+                </a-select>
+                <st-button type="primary" :loading="loading.editSeller" @click="onEditSeller">确定</st-button>
+                <a class="set-info-edit-button mg-l8" @click="onEditSellerCancel">取消</a>
+              </template>
             </p>
             <p v-else>
               <span class="set-info-label">跟进销售</span>
@@ -109,13 +114,17 @@
               <template v-if="!isEditCoach">
                 <span class="set-info-value">
                   {{selectMemberInfo.coach.name || '无'}}
-                  <a @click="isEditCoach=true" v-if="auth.bindCoach">编辑</a>
+                  <a @click="isEditCoach=true" v-if="auth.bindCoach"><st-icon type="anticon:edit"></st-icon>&nbsp;编辑</a>
                 </span>
               </template>
-              <a-select v-else v-model="coach" class="set-info-select">
-                <a-select-option :value="-1">无</a-select-option>
-                <a-select-option v-for="(item) in coachList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
-              </a-select>
+              <template v-else>
+                <a-select v-model="coach" @change="onCoachChange" class="set-info-select mg-r8">
+                  <a-select-option :value="-1">无</a-select-option>
+                  <a-select-option v-for="(item) in coachList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
+                </a-select>
+                <st-button type="primary" :loading="loading.editCoach" @click="onEditCoach">确定</st-button>
+                <a class="set-info-edit-button mg-l8" @click="onEditCoachCancel">取消</a>
+              </template>
             </p>
             <p v-else>
               <span class="set-info-label">跟进教练</span>
@@ -130,10 +139,12 @@
             </p>
           </div>
           <div :class="reception('set-info')" v-else>
-            <st-info>
+            <!-- <st-info>
               <st-info-item label="入场凭证" v-if="selectMemberInfo.proof">{{selectMemberInfo.proof.name}}</st-info-item>
               <st-info-item label="跟进销售" v-if="selectMemberInfo.seller">{{selectMemberInfo.seller.name || '无'}}</st-info-item>
-              <st-info-item label="跟进教练" v-if="selectMemberInfo.coach">{{selectMemberInfo.coach.name || '无'}}</st-info-item>
+              <st-info-item label="跟进教练" v-if="selectMemberInfo.coach">
+                {{selectMemberInfo.coach.name || '无'}}
+              </st-info-item>
               <st-info-item label="储物柜" v-if="!isEditCabinet">
                 <span v-if="selectMemberInfo.cabinet">{{selectMemberInfo.cabinet.name || '无'}}</span>
                 &nbsp;&nbsp;
@@ -142,16 +153,71 @@
                   <span>编辑</span>
                 </a>
               </st-info-item>
-            </st-info>
-            <p :class="reception('cabinet-edit')" v-if="isEditCabinet">
+            </st-info> -->
+            <p>
+              <span class="set-info-label">入场凭证</span>
+              <span class="set-info-value" v-if="selectMemberInfo.proof">{{selectMemberInfo.proof.name}}</span>
+            </p>
+            <p>
+              <span class="set-info-label">跟进销售</span>
+              <template v-if="!isEditSeller">
+                <span class="set-info-value">
+                  {{selectMemberInfo.seller.name || '无'}}
+                  <a @click="isEditSeller=true" v-if="auth.bindSalesman"><st-icon type="anticon:edit"></st-icon>&nbsp;编辑</a>
+                </span>
+              </template>
+              <template v-else>
+                <a-select v-model="seller" @change="onSellerChange" class="set-info-select mg-r8">
+                  <a-select-option :value="-1">无</a-select-option>
+                  <a-select-option v-for="(item) in sellerList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
+                </a-select>
+                <st-button type="primary" :loading="loading.editSeller" @click="onEditSeller">确定</st-button>
+                <a class="set-info-edit-button mg-l8" @click="onEditSellerCancel">取消</a>
+              </template>
+            </p>
+            <p>
+              <span class="set-info-label">跟进教练</span>
+              <template v-if="!isEditCoach">
+                <span class="set-info-value">
+                  {{selectMemberInfo.coach.name || '无'}}
+                  <a @click="isEditCoach=true" v-if="auth.bindCoach"><st-icon type="anticon:edit"></st-icon>&nbsp;编辑</a>
+                </span>
+              </template>
+              <template v-else>
+                <a-select v-model="coach" @change="onCoachChange" class="set-info-select mg-r8">
+                  <a-select-option :value="-1">无</a-select-option>
+                  <a-select-option v-for="(item) in coachList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
+                </a-select>
+                <st-button type="primary" :loading="loading.editCoach" @click="onEditCoach">确定</st-button>
+                <a class="set-info-edit-button mg-l8" @click="onEditCoachCancel">取消</a>
+              </template>
+            </p>
+            <p>
+              <span class="set-info-label">储物柜</span>
+              <template v-if="!isEditCabinet">
+                <span class="set-info-value">
+                  {{selectMemberInfo.cabinet.name || '无'}}
+                  <a @click="isEditCabinet=true"><st-icon type="anticon:edit"></st-icon>&nbsp;编辑</a>
+                </span>
+              </template>
+              <template v-else>
+                <a-select v-model="cabinet" class="set-info-select mg-r8">
+                  <a-select-option :value="-1">无</a-select-option>
+                  <a-select-option v-for="(item) in cabinetList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
+                </a-select>
+              <st-button type="primary" :loading="loading.editEntranceCabinet" @click="onEditCabinet">确定</st-button>
+              <a class="set-info-edit-button mg-l8" @click="onEditCabinetCancel">取消</a>
+              </template>
+            </p>
+            <!-- <p :class="reception('cabinet-edit')" v-if="isEditCabinet">
               <span class="set-info-edit-label">储物柜</span>
               <a-select v-model="cabinet" class="set-info-edit-select">
                 <a-select-option :value="-1">无</a-select-option>
                 <a-select-option v-for="(item) in cabinetList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
               <st-button type="primary" :loading="loading.editEntranceCabinet" @click="onEditCabinet">确定</st-button>
-              <a class="set-info-edit-button" @click="isEditCabinet=false">取消</a>
-            </p>
+              <a class="set-info-edit-button mg-l8" @click="onEditSellerCancel">取消</a>
+            </p> -->
           </div>
         </div>
       </div>
@@ -206,6 +272,7 @@
 <script>
 import { IndexService } from './index.service'
 import { cloneDeep } from 'lodash-es'
+import moment from 'moment'
 import FrontSimpleArea from '@/views/biz-components/stat/front-simple-area'
 export default {
   name: 'PageShopReception',
@@ -242,27 +309,32 @@ export default {
           label: '今日订单',
           type: 'today_order',
           unit: '单',
-          color: '#3A6FED'
+          color: '#3A6FED',
+          version: 1
         }, {
           label: '今日预约',
           type: 'today_reserve',
           unit: '条',
-          color: '#2C8DD2'
+          color: '#2C8DD2',
+          version: 2
         }, {
           label: '今日团课',
           type: 'today_team_course',
           unit: '节',
-          color: '#1EA9B9'
+          color: '#1EA9B9',
+          version: 1
         }, {
           label: '今日收银',
           type: 'today_revenue',
           unit: '元',
-          color: '#11C5A1'
+          color: '#11C5A1',
+          version: 2
         }, {
           label: '今日入场',
           type: 'today_entry',
           unit: '人',
-          color: '#01E882'
+          color: '#01E882',
+          version: 1
         }
       ],
       // 快捷操作
@@ -406,11 +478,48 @@ export default {
       falseArray = this.shortcutList.filter(i => !this.auth[i.id] || i.version > 1)
       this.filterShortcutList = cloneDeep([...trueArray, ...falseArray])
     },
+    // 查看详情
+    onDetail(type) {
+      switch (type) {
+        case 'today_order':
+          this.$router.push({
+            path: '/shop/finance/order/list',
+            query: {
+              start_date: `${moment().format('YYYY-MM-DD')}`,
+              end_date: `${moment().format('YYYY-MM-DD')}`
+            }
+          })
+          break
+        case 'today_team_course':
+          this.$router.push({
+            name: 'shop-product-course-schedule-team',
+            query: {
+              start_date: `${moment().format('YYYY-MM-DD')}`,
+              end_date: `${moment().add(1, 'd').format('YYYY-MM-DD')}`
+            },
+            params: {
+              today: true
+            }
+          })
+          break
+        case 'today_entry':
+          this.$router.push({
+            path: '/shop/reception/entrance'
+          })
+          break
+      }
+    },
     // 快捷操作
     onShortcut(data) {
       switch (data) {
         case 'checkInPage':
           this.$router.push({ path: '/shop/reception/entrance' })
+          break
+        case 'orderPage':
+          this.$router.push({ path: '/shop/sold/transaction/list' })
+          break
+        case 'schedulePage':
+          this.$router.push({ path: '/shop/product/course/schedule/team' })
           break
       }
     },
@@ -435,6 +544,9 @@ export default {
         this.selectMemberInfo = cloneDeep(res.info)
         this.indexService.getEntranceOptionList(id).subscribe()
         this.indexService.getCabinetList(id).subscribe()
+        this.seller = res.info.seller.id || -1
+        this.coach = res.info.coach.id || -1
+        this.cabinet = res.info.cabinet.id || -1
       })
     },
     // 添加会员
@@ -443,11 +555,61 @@ export default {
         name: 'front-add-member',
         on: {
           success: res => {
-            this.getMemberInfo(res.id)
-            // this.onMemberSelect(res.id)
+            this.onMemberSelect(res.id)
+            this.onMemberSearch(res.name)
           }
         }
       })
+    },
+    onSellerChange(data) {
+      // this.selectMemberInfo.seller.id = data
+      // this.selectMemberInfo.seller.name = this.sellerList.filter(i=>i.id===data)[0].name
+    },
+    // 修改销售
+    onEditSeller() {
+      this.indexService.editSeller({
+        member_id: this.selectMember,
+        seller_id: this.seller === -1 ? 0 : this.seller
+      }).subscribe(res => {
+        this.isEditSeller = false
+        if (this.seller === -1) {
+          this.selectMemberInfo.seller = {}
+        } else {
+          this.selectMemberInfo.seller.id = this.seller
+          this.selectMemberInfo.seller.name = this.sellerList.filter(i => i.id === this.seller)[0].name
+        }
+      })
+    },
+    onEditSellerCancel() {
+      this.isEditSeller = false
+      this.seller = this.selectMemberInfo.seller.id || -1
+    },
+    onCoachChange(data) {
+      // this.selectMemberInfo.cocah.id = data
+      // this.selectMemberInfo.cocah.name = this.coachList.filter(i=>i.id===data)[0].name
+    },
+    // 修改教练
+    onEditCoach() {
+      this.indexService.editCoach({
+        member_id: +this.selectMember,
+        coach_id: this.coach === -1 ? 0 : this.coach
+      }).subscribe(res => {
+        this.isEditCoach = false
+        if (this.coach === -1) {
+          this.selectMemberInfo.coach = {}
+        } else {
+          this.selectMemberInfo.coach.id = this.coach
+          this.selectMemberInfo.coach.name = this.coachList.filter(i => i.id === this.coach)[0].name
+        }
+      })
+    },
+    onEditCoachCancel() {
+      this.isEditCoach = false
+      this.coach = this.selectMemberInfo.coach.id || -1
+    },
+    onEditCabinetCancel() {
+      this.isEditCabinet = false
+      this.cabinet = this.selectMemberInfo.cabinet.id || -1
     },
     // 添加待办
     onAddWorkNotes() {
@@ -481,7 +643,7 @@ export default {
     },
     // 离场
     onLeave() {
-      this.indexService.setEntranceLeave(this.selectMemberInfo.id).subscribe(res => {
+      this.indexService.setEntranceLeave(this.selectMember).subscribe(res => {
         this.selectMember = undefined
         this.selectMemberInfo = {}
         this.proof = -1
@@ -495,9 +657,9 @@ export default {
     },
     // 入场会员修改储物柜
     onEditCabinet() {
-      let cabinet_id = this.cabinet === -1 ? undefined : +this.cabinet
+      let cabinet_id = this.cabinet === -1 ? 0 : +this.cabinet
       this.indexService.editEntranceCabinet({
-        id: this.selectMemberInfo.id,
+        member_id: +this.selectMember,
         cabinet_id
       }).subscribe(res => {
         if (this.cabinet === -1) {
