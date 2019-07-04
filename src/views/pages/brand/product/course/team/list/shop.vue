@@ -11,14 +11,11 @@
           >转入品牌团体课程库</modal-link>
         </div>
         <div>
-          <a-select class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onChange">
+          <a-select placeholder="请选择门店" class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onChange">
             <a-select-option v-for="shop in shopsOptions" :key="shop.id" :value="shop.id">{{shop.shop_name}}</a-select-option>
           </a-select>
-          <a-select class="mg-r8" v-model="query.category_id" style="width: 160px" @change="onChange">
+          <a-select class="mg-r8"  placeholder="课程类型" v-model="query.category_id" style="width: 160px" @change="onChange">
             <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
-          </a-select>
-          <a-select style="width: 160px" v-model="query.is_available" @change="onChange">
-            <a-select-option v-for="status in courseStatus" :key="status.value" :value="status.value">{{status.label}}</a-select-option>
           </a-select>
         </div>
       </div>
