@@ -62,7 +62,7 @@ export default {
         time_type: 5,
         timing: []
       }, {
-        time_type: 2,
+        time_type: 6,
         timing: []
       }, {
         time_type: 0,
@@ -72,7 +72,7 @@ export default {
   },
   filters: {
     filterDate(val) {
-      const weekList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+      const weekList = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
       return `${weekList[val]}`
     }
   },
