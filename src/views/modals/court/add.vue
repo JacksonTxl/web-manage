@@ -20,23 +20,13 @@
 <script>
 import { AddService } from './add.service'
 import { MessageService } from '@/services/message.service'
-const formRules = {
-  areaName: [
-    'area_name', {
-      rules: [{
-        required: true,
-        message: '请输入场地名称'
-      }]
-    }
-  ],
-  containNumber: ['contain_number'],
-  isVip: ['is_vip']
-}
+import { RuleConfig } from '@/constants/rule'
 export default {
   serviceInject() {
     return {
       addService: AddService,
-      messageService: MessageService
+      messageService: MessageService,
+      ruleConfig: RuleConfig
     }
   },
   rxState() {
@@ -47,7 +37,21 @@ export default {
   data() {
     return {
       show: false,
-      formRules
+      formRules: {
+        areaName: [
+          'area_name', {
+            rules: [{
+              required: true,
+              message: '请输入场地名称'
+            }, {
+              validator: this.courtNameValidator,
+              message: '支持输入中英文、数字,不超过10个字'
+            }]
+          }
+        ],
+        containNumber: ['contain_number'],
+        isVip: ['is_vip']
+      }
     }
   },
   created() {
@@ -75,6 +79,13 @@ export default {
       })
       this.$emit('change')
       this.show = false
+    },
+    courtNameValidator(rule, value, callback) {
+      if (!this.ruleConfig.generateRule('1-10').test(value)) {
+        callback(rule.message)
+      } else {
+        callback()
+      }
     }
   }
 }

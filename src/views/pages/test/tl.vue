@@ -150,7 +150,7 @@ export default {
     }
   },
   created() {
-    console.log('c', this.ruleConfig.getRule('1-20'))
+    // this.ruleConfig.generateRule('1-20'))
   },
   methods: {
     switchShop() {

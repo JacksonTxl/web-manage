@@ -6,7 +6,8 @@ export class RuleConfig {
   img_type = /^(image\/png|image\/jpg|image\/jpeg)$/ // 图片类型
   number = /^(\d+(\.\d?)?|\.\d?)$/ // 包含小数的数字  匹配 1.1 / 1. / .1 三种形式
   email = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/
-  getRule(len = '1-20', opts: any = {}) {
+
+  generateRule(len = '1-20', opts: any = {}) {
     const DEFAULT_OPTS = {
       /**
        * 中文、英文、数字
