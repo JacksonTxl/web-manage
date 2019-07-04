@@ -44,7 +44,7 @@
         <div slot="action" slot-scope="text, record">
           <a v-if="record.auth['shop:sold:sold_cabinet|renew']" @click="onRelet(record)">续租</a>
           <a-divider type="vertical"></a-divider>
-          <a v-if="record.auth['shop:sold:sold_cabinet|export_contract']">查看合同</a>
+          <a v-if="record.auth['shop:sold:sold_cabinet|export_contract']" @click="toContract(record)">查看合同</a>
           <a-divider type="vertical"></a-divider>
           <a v-if="record.auth['shop:sold:sold_cabinet|transfer']" @click="onTransfer(record)">转让</a>
           <a-divider type="vertical"></a-divider>
@@ -190,6 +190,11 @@ export default {
       this.end_time = this.query.end_time
         ? cloneDeep(moment(this.query.end_time))
         : null
+    },
+    // 跳转合同
+    toContract(record) {
+      let url = `${window.location.origin}/extra/contract-preview?id=${record.order_id}`
+      window.open(url)
     },
     // 续租
     onRelet(record) {

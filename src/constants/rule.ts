@@ -6,4 +6,23 @@ export class RuleConfig {
   img_type = /^(image\/png|image\/jpg|image\/jpeg)$/ // 图片类型
   number = /^(\d+(\.\d?)?|\.\d?)$/ // 包含小数的数字  匹配 1.1 / 1. / .1 三种形式
   email = /^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/
+
+  generateRule(len = '1-20', opts: any = {}) {
+    const DEFAULT_OPTS = {
+      /**
+       * 中文、英文、数字
+       */
+      type: 1
+    }
+    opts = {
+      ...DEFAULT_OPTS,
+      ...opts
+    }
+    const REGEXP_MAP: any = {
+      1: '^[A-z0-9\\u4e00-\\u9fa5]{**}$'
+    }
+    const type = opts.type
+    const lens = len.split('-')
+    return new RegExp(REGEXP_MAP[type].replace('**', `${lens[0]},${lens[1]}`))
+  }
 }

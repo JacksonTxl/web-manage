@@ -64,7 +64,7 @@
                 <a-menu-item v-if="record.auth['shop:sold:sold_package_course|unfrozen']" @click="onUnfreeze(record)">取消冻结</a-menu-item>
                 <a-menu-item v-if="record.auth['shop:sold:sold_package_course|transfer']" @click="onTransfer(record)">转让</a-menu-item>
                 <a-menu-item v-if="record.auth['shop:sold:sold_package_course|refund']" @click="onRefund(record)">退款</a-menu-item>
-                <a-menu-item v-if="record.auth['shop:sold:sold_package_course|export_contract']">查看合同</a-menu-item>
+                <a-menu-item v-if="record.auth['shop:sold:sold_package_course|export_contract']"  @click="toContract(record)">查看合同</a-menu-item>
               </st-more-dropdown>
             </div>
           </st-table>
@@ -250,6 +250,11 @@ export default {
           }
         }
       })
+    },
+    // 跳转合同
+    toContract(record) {
+      let url = `${window.location.origin}/extra/contract-preview?id=${record.order_id}`
+      window.open(url)
     },
     // 退款
     onRefund(record) {
