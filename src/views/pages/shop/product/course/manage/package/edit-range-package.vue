@@ -665,6 +665,7 @@ export default {
           })
           this.editPackageService.editPackage(this.packageData).subscribe(res => {
             console.log(res)
+            this.$router.push({ path: '/shop/product/course/manage/package/list' })
           })
         }
       })

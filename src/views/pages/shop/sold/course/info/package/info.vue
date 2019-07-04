@@ -37,7 +37,7 @@
         <a-col :span="6">
           <st-info>
             <st-info-item label="允许转让">{{packageInfo.is_transferable | enumFilter('sold.is_transferable')}}</st-info-item>
-            <st-info-item label="转让手续费">{{packageInfo.transfer_num}}{{packageInfo.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
+            <st-info-item label="转让手续费" v-if="packageInfo.is_transferable !== 0">{{packageInfo.transfer_num}}{{packageInfo.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
             <st-info-item label="当前状态">{{packageInfo.course_status | enumFilter('sold.course_status')}}</st-info-item>
             <st-info-item label="上课范围">{{packageInfo.team_course_init}}节私教课,{{packageInfo.personal_course_init}}节团体课</st-info-item>
           </st-info>

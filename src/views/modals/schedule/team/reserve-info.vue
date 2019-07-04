@@ -1,6 +1,5 @@
 <template>
   <st-modal class="modal-reserved" title="预约详情" @ok="save" :footer="null" width="848px" v-model="show">
-    <div><span>已约</span><span>0人</span></div>
     <a-row :gutter="24" class="modal-reserved-info">
       <a-col :lg="8">
         <st-info>
@@ -86,7 +85,7 @@
           <td>
             <div>
               <a  class="mg-r8" href="javascript:;" @click="onClickCancel(item.reserve_id)" v-if="auth.cancel">取消预约</a>
-              <a  href="javascript:;" v-if="auth.checkIn" @click="onClickCheckIn(item.reserve_id)">签到消费</a>
+              <a  href="javascript:;" v-if="auth.checkIn && !item.is_checkin" @click="onClickCheckIn(item.reserve_id)">签到消费</a>
             </div>
           </td>
         </tr>
@@ -180,10 +179,14 @@ export default {
       this.teamScheduleCommonService.getMemberList({ member_name: value }).subscribe()
     },
     onClickCancel(id) {
-      this.teamScheduleReserveService.del(id).subscribe()
+      this.teamScheduleReserveService.del(id).subscribe(() => {
+        this.getReserve()
+      })
     },
     onClickCheckIn(id) {
-      this.teamScheduleReserveService.check({ id, checkin_method: 2 }).subscribe()
+      this.teamScheduleReserveService.check({ id, checkin_method: 2 }).subscribe(() => {
+        this.getReserve()
+      })
     },
     onChange(value) {
       this.teamScheduleCommonService.getConsumeList({ course_id: this.courseId, member_id: value }).subscribe()
@@ -200,6 +203,7 @@ export default {
           if (item.name === '无座位') value = -1
           this.siteNumIds.push(value)
         }
+        this.siteNumIds = Array.from(new Set(this.siteNumIds))
       })
       if (val.length > 3) {
         this.siteNumIds.pop()

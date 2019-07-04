@@ -656,6 +656,7 @@ export default {
             })
           })
           this.addPackageService.add(this.packageData).subscribe(res => {
+            this.$router.push({ path: '/shop/product/course/manage/package/list' })
             console.log(res)
           })
         }
@@ -690,6 +691,7 @@ export default {
             })
           })
           this.addPackageService.addAndOnsale(this.packageData).subscribe(res => {
+            this.$router.push({ path: '/shop/product/course/manage/package/list' })
             console.log(res)
           })
         }
