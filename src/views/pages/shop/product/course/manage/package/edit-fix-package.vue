@@ -730,6 +730,7 @@ export default {
             })
           })
           this.editPackageService.editPackage(this.packageData).subscribe(res => {
+            this.$router.push({ path: '/shop/product/course/manage/package/list' })
             console.log(res)
           })
         }

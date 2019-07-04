@@ -416,6 +416,7 @@ export default {
           this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
           this.packageData.album_id = this.packageInfo.album_id
           this.editPackageService.editPackage(this.packageData).subscribe(res => {
+            this.$router.push({ path: '/shop/product/course/manage/package/list' })
             console.log(res)
           })
         }
