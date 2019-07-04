@@ -30,6 +30,7 @@
               placeholder="请选择放假开始时间"
               style="width: 240px"
               :disabled="new Date() >= new Date(startTime)"
+              :disabledDate="disabledStartDate"
             />
           </st-form-item>
           <st-form-item label="放假结束时间" required class="mg-t16">
@@ -39,6 +40,7 @@
               :format="appConfig.DATE_FORMAT.datetime"
               placeholder="请选择放假结束时间"
               style="width: 240px"
+              :disabledDate="disabledEndDate"
             />
           </st-form-item>
           <st-form-item labelFix class="mg-b0">
@@ -144,9 +146,15 @@ export default {
     onSubmit(e) {
       e.preventDefault()
       this.form.validateFields().then(() => {
-        const data = this.form.getFieldsValue()
+        const data = this.getData()
         this.holidayService.set(data).subscribe(this.onSubmitSuccess)
       })
+    },
+    getData() {
+      const data = this.form.getFieldsValue()
+      data.start_time = moment(data.start_time).format(this.appConfig.DATE_FORMAT.datetime)
+      data.end_time = moment(data.end_time).format(this.appConfig.DATE_FORMAT.datetime)
+      return data
     },
     onSuccess(msg = '') {
       this.messageService.success({
@@ -160,6 +168,12 @@ export default {
     },
     onDelSuccess() {
       this.onSuccess('删除成功')
+    },
+    disabledStartDate(current) {
+      return current && current < moment().endOf('day')
+    },
+    disabledEndDate(current) {
+      return current && current < this.form.getFieldValue('start_time')
     }
   }
 }
