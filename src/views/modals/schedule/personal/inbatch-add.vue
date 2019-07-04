@@ -1,7 +1,10 @@
 <template>
   <st-modal title="批量排期" @ok="save" v-model="show">
     <st-form>
-      <st-form-item  label="应用日期" required>
+      <st-form-item required>
+        <template slot="label">
+          应用日期<st-help-tooltip id="TSPT001" />
+        </template>
         <a-range-picker @change="onChangeRangePicker" :disabledDate="disabledDate"></a-range-picker>
       </st-form-item>
       <st-form-item labelWidth="42px" label="教练：" required>
