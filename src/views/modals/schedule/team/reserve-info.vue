@@ -123,10 +123,12 @@ export default {
   },
   filters: {
     siteNumListFilter(val) {
+      console.log(val)
       return val.split(',').map(item => {
-        if (item === 0) {
+        if (item === '0') {
           return '无座位'
         }
+        return item
       }).join(',')
     }
   },
@@ -206,13 +208,16 @@ export default {
       this.consumeId = obj.id
     },
     onChangeSiteNumList(val) {
+      let tempArr = []
       this.unUsedSeatOptions.forEach(item => {
         if (val.includes(item.id)) {
           let value = item.name
           if (item.name === '无座位') value = -1
           this.siteNumIds.push(value)
+          tempArr = this.siteNumIds.filter(item => item === -1)
         }
-        this.siteNumIds = Array.from(new Set(this.siteNumIds))
+        const arr = Array.from(new Set(this.siteNumIds)).filter(item => item !== -1)
+        this.siteNumIds = [...arr, ...tempArr]
       })
       if (val.length > 3) {
         this.siteNumIds.pop()
