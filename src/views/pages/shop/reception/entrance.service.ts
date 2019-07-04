@@ -10,12 +10,10 @@ export class EntranceService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   auth$ = new State({
-    checkout: false,
-    // checkout: this.authService.can('shop:front_end:check_in_out|checkout'),
-    batchCheckout: false
-    // batchCheckout: this.authService.can('shop:front_end:check_in_out|batch_checkout'),
+    checkout: this.authService.can('shop:front_end:check_in_out|checkout'),
+    batchCheckout: this.authService.can('shop:front_end:check_in_out|batch_checkout')
   })
-  constructor(private frontApi: FrontApi) {}
+  constructor(private authService: AuthService, private frontApi: FrontApi) {}
   @Effect()
   getList(query:GetEntranceListInput) {
     return this.frontApi.getEntranceList(query).pipe(tap((res:any) => {

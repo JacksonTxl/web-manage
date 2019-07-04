@@ -50,9 +50,9 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form :form="form" labelWidth="85px">
+      <st-form :form="form">
         <div :class="refund('refund')">
-          <st-form-item class="mgb-18" required>
+          <st-form-item class="mgb-18" required >
             <template slot="label">
               退款原因<st-help-tooltip id="TSMC005" />
             </template>
@@ -65,7 +65,7 @@
           </st-form-item>
           <st-form-item label="退款金额" required>
             <st-input-number
-            :max="+info.pay_price"
+            :max="parseInt(info.actual_price)"
             :float="true"
             placeholder="请输入本次退款的实际金额"
             v-decorator="['refundPrice',{rules:[{validator:refund_price_validator}]}]">
@@ -150,9 +150,12 @@ export default {
       })
     },
     refund_price_validator(rule, value, callback) {
-      if (!value || +value === 0) {
+      if (!value) {
         // eslint-disable-next-line
         callback('请输入退款金额')
+      } else if (value && parseInt(value, 10) > parseInt(this.info.actual_price, 10)) {
+        // eslint-disable-next-line
+        callback('退款金额不能大于实收金额')
       } else {
         // eslint-disable-next-line
         callback()

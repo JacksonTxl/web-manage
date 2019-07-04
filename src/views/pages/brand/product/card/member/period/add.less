@@ -11,4 +11,14 @@
     .page-price-setting-set.shop-set::after {
         left: 130px;
     }
+    .page-price-setting-set {
+        &.error,&.error::after {
+            border-color: @error-color;
+        }
+    }
+    .page-content-card-price-setting,.page-content-card-bg{
+        .ant-form-explain {
+            .c(@error-color);
+        }
+    }
 }

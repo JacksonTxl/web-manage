@@ -28,6 +28,14 @@ export interface EditEntranceCabinetInput{
   id:number
   cabinet_id:number
 }
+export interface EditSellerInput{
+  member_id:number
+  seller_id:number
+}
+export interface EditCoachInput{
+  member_id:number
+  coach_id:number
+}
 export class FrontApi extends Api {
   /**
    * 新增待办
@@ -75,7 +83,7 @@ export class FrontApi extends Api {
    * 批量离场
    */
   setEntranceLeaveBatch(params:SetEntranceLeaveBatchInput) {
-    return this.http.delete(`/v1/front/entrance/batch`, { params })
+    return this.http.post(`/v1/front/entrance/batch`, { params })
   }
   /**
    * 前台头部统计
@@ -87,13 +95,13 @@ export class FrontApi extends Api {
    * 销售员列表
    */
   getSellerList() {
-    return this.http.get(`/v1/front/entrance/seller`, { mock: {} })
+    return this.http.get(`/v1/front/entrance/seller`)
   }
   /**
    * 教练列表
    */
   getCoachList() {
-    return this.http.get(`/v1/front/entrance/coach`, { mock: {} })
+    return this.http.get(`/v1/front/entrance/coach`)
   }
   /**
    * 前台会员详情
@@ -124,5 +132,17 @@ export class FrontApi extends Api {
    */
   editEntranceCabinet(params:EditEntranceCabinetInput) {
     return this.http.put(`/v1/front/entrance/cabinet`, { params })
+  }
+  /**
+   *  关联跟进销售
+   */
+  editSeller(params:EditSellerInput) {
+    return this.http.put(`/v1/front/entrance/seller`, { params })
+  }
+  /**
+   *  关联跟进销售
+   */
+  editCoach(params:EditCoachInput) {
+    return this.http.put(`/v1/front/entrance/coach`, { params })
   }
 }
