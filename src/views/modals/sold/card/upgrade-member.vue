@@ -5,6 +5,9 @@
   v-model="show"
   @cancel="onCancel"
   wrapClassName="modal-sold-deal-sale">
+  <template slot="title">
+      升级<st-help-tooltip id="TSMC002" />
+  </template>
     <div :class="sale('content')">
       <a-row :class="sale('info')">
         <a-col :span="13">
@@ -27,7 +30,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form :form="form" labelWidth="72px">
+      <st-form :form="form" labelWidth="85px">
         <div :class="sale('sale')">
           <st-form-item label="会员卡" required labelGutter="12px">
             <a-select
@@ -92,7 +95,10 @@
               <span slot="addonAfter">{{selectCardItem.card_type!==1?'天':'次'}}</span>
             </st-input-number>
           </st-form-item>
-          <st-form-item labelGutter="12px" label="合同编号" required>
+          <st-form-item labelGutter="12px" required>
+            <template slot="label">
+                合同编号<st-help-tooltip id="TSSD001" />
+            </template>
             <div :class="sale('contract')">
               <a-input
               v-decorator="['contractNumber',{rules:[{required:true,message:'请输入合同编号'}]}]"
@@ -101,7 +107,10 @@
             </div>
           </st-form-item>
           <st-form-item labelGutter="12px" class="mgb-12" label="商品价格">{{cardPrice}}元</st-form-item>
-          <st-form-item labelGutter="12px" required label="原卡抵扣">
+          <st-form-item labelGutter="12px" required>
+            <template slot="label">
+                原卡抵扣<st-help-tooltip id="TSMC003" />
+            </template>
             <st-input-number
             @change="onSurplusPriceChange"
             v-decorator="['surplusPrice',{rules:[{required:true,message:'请输入原卡抵扣'}]}]"

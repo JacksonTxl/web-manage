@@ -82,7 +82,7 @@
 </template>
 <script>
 import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
-import DefaultSiderMenu from './default-sider-menu'
+import DefaultSiderMenu from './default#sider-menu'
 import SwitchShop from '@/views/fragments/shop/switch'
 import Cookie from 'js-cookie'
 import routes from '@/router/routes'

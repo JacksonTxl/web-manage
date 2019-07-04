@@ -44,7 +44,10 @@
             v-decorator="rules.image_face"
           ></st-image-upload>
         </st-form-item>
-        <st-form-item label="昵称" required>
+        <st-form-item required>
+          <template slot="label">
+              昵称<st-help-tooltip id="TBCE001" />
+          </template>
           <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.nickname"/>
         </st-form-item>
         <st-form-item label="邮箱" required>
@@ -71,7 +74,10 @@
 
     <a-row :gutter="8">
       <a-col :offset="1" :lg="23">
-        <st-form-item label="员工职能" required>
+        <st-form-item required>
+          <template slot="label">
+              员工职能<st-help-tooltip id="TBCE002" />
+          </template>
           <a-checkbox-group v-decorator="rules.identity" @change="getIsCoach">
             <a-checkbox
               v-for="(item, key) in enums.identity.value"
@@ -105,7 +111,10 @@
             </template>
           </a-select>
         </st-form-item>
-        <st-form-item label="教练等级" v-if="isShowLevel">
+        <st-form-item v-if="isShowLevel">
+          <template slot="label">
+              教练等级<st-help-tooltip id="TBCE003" />
+          </template>
           <coach-level-select
             placeholder="请选择教练等级"
             style="width: 100%"

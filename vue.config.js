@@ -72,6 +72,11 @@ module.exports = {
   },
   // webpack-chain docs see https://www.npmjs.com/package/webpack-chain
   chainWebpack: config => {
+    // 去除preload
+    config.plugins.delete('preload')
+    // 去除prefetch
+    config.plugins.delete('prefetch')
+
     // inline style ignore
     config.module.rule('less').include.add(/themes/)
     // add theme entry to extract css
@@ -170,7 +175,7 @@ module.exports = {
     config.plugin('define').tap(definitions => {
       definitions[0] = Object.assign(definitions[0], {
         'process.env': {
-          BASE_URL: JSON.stringify(process.env.BASE_URL),
+          BASE_URL: JSON.stringify('/'),
           NODE_ENV: JSON.stringify(process.env.NODE_ENV),
           GIT_COMMIT: JSON.stringify(git.short()),
           GIT_MESSAGE: JSON.stringify(git.message()),

@@ -21,7 +21,7 @@
         );
       }
 
-      .loader {
+      .layout-loading .loader {
         position: absolute;
         top: calc(50% - 32px);
         left: calc(50% - 32px);
@@ -31,7 +31,7 @@
         perspective: 800px;
       }
 
-      .inner {
+      .layout-loading .inner {
         position: absolute;
         box-sizing: border-box;
         width: 100%;
@@ -39,25 +39,37 @@
         border-radius: 50%;
       }
 
-      .inner.one {
+      .layout-loading .inner.one {
         left: 0%;
         top: 0%;
         animation: rotate-one 1s linear infinite;
         border-bottom: 3px solid #efeffa;
       }
 
-      .inner.two {
+      .layout-loading .inner.two {
         right: 0%;
         top: 0%;
         animation: rotate-two 1s linear infinite;
         border-right: 3px solid #efeffa;
       }
 
-      .inner.three {
+      .layout-loading .inner.three {
         right: 0%;
         bottom: 0%;
         animation: rotate-three 1s linear infinite;
         border-top: 3px solid #efeffa;
+      }
+      .layout-loading .slogan{
+        position: absolute;
+        color: white;
+        font-size: 20x;
+        left: 50%;
+        top: 50%;
+        text-align: center;
+        width: 200px;
+        margin-left: -100px;
+        font-style: italic;
+        margin-top: 64px;
       }
 
       @keyframes rotate-one {
@@ -103,6 +115,7 @@
           <div class="inner two"></div>
           <div class="inner three"></div>
         </div>
+        <p class="slogan">“世界属于三体”</p>
       </div>
     </div>
 

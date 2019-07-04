@@ -1,10 +1,12 @@
 <template>
   <st-modal
-  title="升级"
   size="small"
   v-model="show"
   wrapClassName="modal-sold-card-upgrade"
   @ok="onOk">
+  <template slot="title">
+      升级<st-help-tooltip id="TSMC002" />
+  </template>
     <div :class="upgrade('content')">
       <a-row :class="upgrade('old-card')">
         <a-col :span="13">
@@ -29,7 +31,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form labelWidth="72px">
+      <st-form labelWidth="85px">
         <div :class="upgrade('upgrade-card')">
           <st-form-item label="会员卡" class="mgb-18" required>
             <a-select placeholder="选择升级的会员卡">
@@ -56,7 +58,10 @@
           <st-form-item label="购买赠送">
             <st-input-number placeholder="请输入赠送的天数/次数"></st-input-number>
           </st-form-item>
-          <st-form-item label="合同编号" class="mgb-18" required>
+          <st-form-item class="mgb-18" required>
+            <template slot="label">
+                合同编号<st-help-tooltip id="TSSD001" />
+            </template>
             <div :class="upgrade('contract')">
               <a-input placeholder="请输入合同编号"></a-input>
               <st-button class="create-button">自动生成</st-button>

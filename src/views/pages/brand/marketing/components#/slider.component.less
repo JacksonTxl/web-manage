@@ -1,0 +1,41 @@
+.brand-marketing-activity{
+    .activity-slider-component {
+      @h: 162px;
+      .ant-col-4{
+          .pd-tb(6px);
+      }
+      &__box {
+        .ta-c();
+        margin-bottom: 20px;
+        border: 1px solid #E6E9EF;
+        &:hover {
+          box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.09);
+          transition: all 0.3s;
+        }
+        >img{
+            .h(@h);
+            .w(100%);
+        }
+        .st-form-item{
+            .mg-tb(12px);
+            .pd-r(16px);
+        }
+      }
+      &__default{
+        .mg-tb(12px);
+        .pd-lr(20px,16px);
+        .ta-l();
+        .lh(32px);
+      }
+    //   &__addbox {
+    //     .lh(@h);
+    //     border: 1px dashed #CDD4DF;
+    //     cursor: pointer;
+    //   }
+        
+      .st-image-upload{
+            .w(100%);
+        }
+    }
+  }
+  

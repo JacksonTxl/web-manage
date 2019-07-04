@@ -76,8 +76,8 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
         TokenService,
         TitleService,
         UserService,
-        RouteService,
-        AuthService
+        AuthService,
+        RouteService
       ]
       if (route.name.startsWith('brand')) {
         appGuards.push(LayoutBrandService)
@@ -109,6 +109,6 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
 }
 
 walkRoutes(routes)
-console.log('routes is ->', routes)
+// console.log('routes is ->', routes)
 
 export default routes

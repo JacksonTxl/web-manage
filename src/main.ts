@@ -5,7 +5,6 @@ import Antd from 'ant-design-vue'
 
 import { modalRouter } from './modal-router/index'
 import App from './views/App.vue'
-import FullCalendar from 'vue-full-calendar'
 // @ts-ignore
 import VueBemHelper from '@/vendor/vue-bem-helper'
 // @ts-ignore
@@ -29,7 +28,6 @@ import Scrollbar from '@/vendor/vue-scrollbar'
 Vue.use(Scrollbar)
 Vue.use(VueRxState)
 Vue.use(Antd)
-Vue.use(FullCalendar)
 Vue.use(Viewer)
 Vue.use(VueBemHelper)
 Vue.use(VueEvents)

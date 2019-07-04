@@ -27,7 +27,7 @@
         </a-col>
       </a-row>
       <st-hr marginTop="0" marginBottom="0" />
-      <st-form :form="form" labelWidth="68px">
+      <st-form :form="form" labelWidth="85px">
         <div :class="transfer('transfer')">
           <st-form-item v-show="searchMemberIsShow" label="转让会员" required labelGutter="12px">
             <a-select
@@ -60,6 +60,9 @@
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
           <st-form-item label="剩余价值" required labelGutter="12px">
+            <template slot="label">
+                剩余价值<st-help-tooltip id="TSMC004" />
+            </template>
             <st-input-number
             :max="+info.pay_price"
             :float="true"
