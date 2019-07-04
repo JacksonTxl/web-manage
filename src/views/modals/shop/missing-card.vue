@@ -40,14 +40,34 @@
             </st-input-number>
           </st-form-item>
           <st-form-item label="支付方式" v-if="moneyFlag">
-            <a-select placeholder="请输入收款的支付方式" v-decorator="basicInfoRuleList.pay_method">
-              <a-select-option value="china">China</a-select-option>
-              <a-select-option value="usa">U.S.A</a-select-option>
-            </a-select>
+            <a-radio-group @change="selectPay"
+             v-decorator="basicInfoRuleList.payment">
+              <a-radio :value="item" :key="index" v-for="(item, index) in paymentMethodList">{{item.payment_type_name}}</a-radio>
+            </a-radio-group>
           </st-form-item>
           <st-form-item label="收款人员" v-if="moneyFlag">
-            <a-input placeholder="请输入收款的工作人员" v-decorator="basicInfoRuleList.payment"/>
+             <a-select
+              showSearch
+              allowClear
+              placeholder="输入手机号或员工名称搜索"
+              :defaultActiveFirstOption="false"
+              :showArrow="false"
+              :filterOption="false"
+              v-decorator="basicInfoRuleList.staff"
+              @search="onSearch"
+              notFoundContent="无搜索结果"
+            >
+              <a-select-option
+              v-for="(item,index) in staffList"
+              :value="item.id"
+              :key="index">
+                <span v-html="`${item.member_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
+                  {{item.member_name}}   {{item.mobile}}
+                </span>
+              </a-select-option>
+            </a-select>
           </st-form-item>
+
         </st-form>
       </section>
     </section>
@@ -56,12 +76,18 @@
 <script>
 import { MissingCaedService } from './missing-card.service'
 export default {
+  name: 'missingCard',
   serviceInject() {
     return {
-      Service: MissingCaedService
+      missingService: MissingCaedService
     }
   },
-  name: 'missingCard',
+  rxState() {
+    return {
+      paymentMethodList: this.missingService.paymentMethodList$,
+      staffList: this.missingService.staffList$
+    }
+  },
   props: {
     record: {
       type: Object
@@ -72,6 +98,7 @@ export default {
       show: false,
       form: this.$form.createForm(this),
       moneyFlag: false,
+      selectPayValues: 0,
       getData: {},
       getCard_id: '',
       basicInfoRuleList: {
@@ -145,6 +172,17 @@ export default {
               }
             ]
           }
+        ],
+        staff: [
+          'staff',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请填写收款人员'
+              }
+            ]
+          }
         ]
       }
     }
@@ -153,17 +191,32 @@ export default {
     this.getMemberPhysical()
   },
   methods: {
+    selectPay(checkedValues) {
+      this.selectPayValues = checkedValues.target.value
+    },
+    // 搜索员工
+    onSearch(data) {
+      this.memberSearchText = data
+      if (data === '') {
+        this.saleCourseService.memberList$.commit(() => [])
+        this.form.resetFields(['memberId'])
+      } else {
+        this.saleCourseService.getMember(data, this.info.sale_range.type).subscribe(res => {
+          if (!res.list.length) {
+            this.form.resetFields(['memberId'])
+          }
+        })
+      }
+    },
     getMemberPhysical() {
-      let self = this
-      self.Service.getMemberPhysical(self.record.member_id).subscribe(state => {
-        self.getData = state.info
+      this.missingService.getMemberPhysical(this.record.member_id).subscribe(state => {
+        this.getData = state.info
       })
     },
     getMemberPhysicalBind(data) {
-      let self = this
-      self.Service.getMemberPhysicalBind(self.record.member_id, data).subscribe(
+      this.missingService.getMemberPhysicalBind(this.record.member_id, data).subscribe(
         state => {
-          self.show = false
+          this.show = false
         }
       )
     },
@@ -175,14 +228,13 @@ export default {
       }
     },
     save(e) {
-      let self = this
       e.preventDefault()
-      self.form.validateFields((err, values) => {
+      this.form.validateFields((err, values) => {
         values.moneyFlag = undefined
-        values.id = self.record.member_id
-        values.card_id = self.getData.id
+        values.id = this.record.member_id
+        values.card_id = this.getData.id
         if (!err) {
-          self.getMemberPhysicalBind(values)
+          this.getMemberPhysicalBind(values)
         }
       })
     }
