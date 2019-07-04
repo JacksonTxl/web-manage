@@ -5,7 +5,10 @@
         <st-form-item label="课程名称">
           <a-input placeholder="课程名称" disabled v-decorator="ruleConfig.courseName"/>
         </st-form-item>
-        <st-form-item label="上课门店" required>
+        <st-form-item required>
+          <template slot="label">
+              上课门店<st-help-tooltip id="TBCGC002" />
+          </template>
           <a-radio-group @change="onChange" v-decorator="ruleConfig.shopSetting">
             <a-radio v-for="(item, index) in teamCourseEnums.shop_setting.value" :key="+index"
               :value="+index">{{item}}</a-radio>
@@ -74,6 +77,14 @@ export default {
       }
     }
   },
+  watch: {
+    info: {
+      deep: true,
+      handler() {
+        this.setFieldsValue()
+      }
+    }
+  },
   data() {
     return {
       form: this.$form.createForm(this),
@@ -129,10 +140,12 @@ export default {
       })
       this.shopSetting = info.shop_setting
       this.shopIds = info.shop_ids
+      this.courseId = info.course_id
     },
     getData() {
       const data = this.form.getFieldsValue()
-      data.course_id = +this.query.id
+      const id = this.query.id
+      data.course_id = this.info.course_id || +id
       data.shop_ids = this.shopIds
       return data
     },

@@ -1,4 +1,5 @@
 import { getAppEnv } from '@/utils/env.ts'
+
 export class AppConfig {
   /**
    * token名称

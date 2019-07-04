@@ -1,22 +1,24 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, log } from 'rx-state'
-import { tap, pluck, map } from 'rxjs/operators'
+import { State, Computed } from 'rx-state'
+import { tap, pluck, map, delay } from 'rxjs/operators'
 import { Store } from './store'
 import { forkJoin, of } from 'rxjs'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
+import { StaffApi } from '@/api/v1/staff'
 import { get } from 'lodash-es'
+import { NProgressService } from './nprogress.service'
 
 interface UserState {
-  user: User
+  user: {}
   brand: {}
   shop: {}
   menuData: {}
   enums: {}
 }
 interface User {
-  id: string
-  name: string
+  id?: string
+  name?: string
 }
 interface Shop {
   id?: string
@@ -66,7 +68,12 @@ export class UserService extends Store<UserState> {
   transactionEnums$: Computed<ModuleEnums>
   couponEnums$: Computed<CouponEnums>
 
-  constructor(private constApi: ConstApi, private menuApi: MenuApi) {
+  constructor(
+    private constApi: ConstApi,
+    private menuApi: MenuApi,
+    private staffApi: StaffApi,
+    private nprogress: NProgressService
+  ) {
     super()
     const initialState = {
       user: {},
@@ -121,6 +128,19 @@ export class UserService extends Store<UserState> {
       state.shop = Object.assign(state.shop, shop)
     })
   }
+  getUser(force: boolean = false) {
+    if (force || !Object.keys(this.user$.snapshot()).length) {
+      return this.staffApi.getGlobalStaffInfo().pipe(
+        tap((res: any) => {
+          this.state$.commit(state => {
+            state.user = res.info
+          })
+        })
+      )
+    } else {
+      return of({})
+    }
+  }
   getEnums() {
     if (!Object.keys(this.enums$.snapshot()).length) {
       return this.constApi.getEnum().pipe(
@@ -147,23 +167,22 @@ export class UserService extends Store<UserState> {
       return of({})
     }
   }
-  getOptions(key: string) {
+  getOptions(key: string): Computed<{ label: string; value: number }[]> {
     return new Computed(
-      this.enums$
-        .pipe(
-          map(enums => {
-            const enumObj = get(enums, key)
-            const initArr: { label: string; value: number }[] = []
-            if (!enumObj) {
-              return []
-            } else {
-              return Object.keys(enumObj.value).reduce(
-                (arr, k) => arr.concat({ label: enumObj.value[k], value: +k }),
-                initArr
-              )
-            }
-          })
-        )
+      this.enums$.pipe(
+        map(enums => {
+          const enumObj = get(enums, key)
+          const initArr: { label: string; value: number }[] = []
+          if (!enumObj) {
+            return []
+          } else {
+            return Object.keys(enumObj.value).reduce(
+              (arr, k) => arr.concat({ label: enumObj.value[k], value: +k }),
+              initArr
+            )
+          }
+        })
+      )
     )
   }
   /**
@@ -172,8 +191,18 @@ export class UserService extends Store<UserState> {
   reloadMenus() {
     this.getMenus(true).subscribe()
   }
+  /**
+   * 刷新全局用户信息
+   */
+  reloadUser() {
+    this.getUser(true).subscribe()
+  }
+  /**
+   * 刷新菜单、用户信息等
+   */
   reload() {
     this.reloadMenus()
+    this.reloadUser()
   }
   /**
    * 添加到常用菜单
@@ -190,10 +219,13 @@ export class UserService extends Store<UserState> {
     return this.menuApi.delFavorite(id)
   }
   init(force: boolean = false) {
-    this.getOptions('member.education_level').subscribe()
-    return forkJoin(this.getEnums(), this.getMenus())
+    return forkJoin(this.getUser(), this.getMenus(), this.getEnums())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.init()
+    return this.init().pipe(
+      tap(() => {
+        this.nprogress.inc()
+      })
+    )
   }
 }

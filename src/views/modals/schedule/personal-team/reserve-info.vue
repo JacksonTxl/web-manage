@@ -87,8 +87,8 @@
           <td>{{item.is_checkin_name}}</td>
           <td>
             <div>
-              <a   class="mg-r8" href="javascript:;" @click="cancelReserve(item.id)" v-if="auth.cancel">取消预约</a>
-              <a  href="javascript:;" @click="check(item.id)"  v-if="auth.chcekIn">签到消费</a>
+              <a   class="mg-r8" href="javascript:;" @click="cancelReserve(item.id)" v-if="item.auth['shop:reserve:personal_team_course_reserve|checkin']">取消预约</a>
+              <a  href="javascript:;" @click="check(item.id)"  v-if="item.auth['shop:reserve:personal_team_course_reserve|del']">签到消费</a>
             </div>
           </td>
         </tr>

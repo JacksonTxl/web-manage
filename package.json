@@ -15,7 +15,7 @@
     "dev": "gulp dev",
     "dev:test": "cross-env LOCAL_API_ENV=test gulp dev",
     "serve": "vue-cli-service serve",
-    "build": "gulp build && vue-cli-service build",
+    "build": "gulp build && vue-cli-service build --report",
     "ci": "npm run init && npm run build",
     "push:rx": "git subtree push git@gitlab.styd.cn:fe/packages/rx-state.git --prefix=rx-state master",
     "push:vsa": "git subtree push git@gitlab.styd.cn:fe/packages/vue-service-app.git --prefix=vue-service-app master"
@@ -51,9 +51,8 @@
     "styd-less-base": "1.0.6",
     "v-viewer": "^1.4.0",
     "vue": "^2.6.6",
+    "vue-awesome-swiper": "^3.1.3",
     "vue-countup-v2": "^3.0.1",
-    "vue-full-calendar": "^2.7.0",
-    "vue-funnel-graph-js": "^0.1.3",
     "vue-modal-router": "^0.3.2",
     "vue-router": "^3.0.2",
     "vue-router-multiguard": "^1.0.3",
@@ -94,7 +93,7 @@
     "rxjs": "^6.4.0",
     "typescript": "^3.2.1",
     "vue-template-compiler": "^2.5.21",
-    "webpack-external-vendor-plugin": "^1.0.0"
+    "webpack-external-vendor-plugin": "1.1.1"
   },
   "postcss": {
     "plugins": {

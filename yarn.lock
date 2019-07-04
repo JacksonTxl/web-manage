@@ -1611,11 +1611,6 @@
     error-stack-parser "^2.0.0"
     string-width "^2.0.0"
 
-"@tweenjs/tween.js@^17.3.0":
-  version "17.3.0"
-  resolved "http://registry.npm.taobao.org/@tweenjs/tween.js/download/@tweenjs/tween.js-17.3.0.tgz#1cbea14b4b5baa292274c96766fd1b2a56b7ca9f"
-  integrity sha1-HL6hS0tbqikidMlnZv0bKla3yp8=
-
 "@types/events@*":
   version "3.0.0"
   resolved "http://registry.npm.taobao.org/@types/events/download/@types/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
@@ -3041,13 +3036,6 @@ babel-plugin-transform-object-rest-spread@^6.26.0:
     babel-plugin-syntax-object-rest-spread "^6.8.0"
     babel-runtime "^6.26.0"
 
-babel-plugin-transform-runtime@^6.23.0:
-  version "6.23.0"
-  resolved "http://registry.npm.taobao.org/babel-plugin-transform-runtime/download/babel-plugin-transform-runtime-6.23.0.tgz#88490d446502ea9b8e7efb0fe09ec4d99479b1ee"
-  integrity sha1-iEkNRGUC6puOfvsP4J7E2ZR5se4=
-  dependencies:
-    babel-runtime "^6.22.0"
-
 babel-plugin-transform-vue-jsx@^4.0.1:
   version "4.0.1"
   resolved "http://registry.npm.taobao.org/babel-plugin-transform-vue-jsx/download/babel-plugin-transform-vue-jsx-4.0.1.tgz#2c8bddce87a6ef09eaa59869ff1bfbeeafc5f88d"
@@ -3055,7 +3043,7 @@ babel-plugin-transform-vue-jsx@^4.0.1:
   dependencies:
     esutils "^2.0.2"
 
-babel-runtime@6.x, babel-runtime@^6.22.0, babel-runtime@^6.23.0, babel-runtime@^6.26.0:
+babel-runtime@6.x, babel-runtime@^6.23.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "http://registry.npm.taobao.org/babel-runtime/download/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
   integrity sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
@@ -5124,6 +5112,13 @@ dom-walk@^0.1.0:
   resolved "http://registry.npm.taobao.org/dom-walk/download/dom-walk-0.1.1.tgz#672226dc74c8f799ad35307df936aba11acd6018"
   integrity sha1-ZyIm3HTI95mtNTB9+TaroRrNYBg=
 
+dom7@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.npm.taobao.org/dom7/download/dom7-2.1.3.tgz#a736f9c3bfbc4ca039a81cd095f97d1d7f3de19c"
+  integrity sha1-pzb5w7+8TKA5qBzQlfl9HX894Zw=
+  dependencies:
+    ssr-window "^1.0.1"
+
 domain-browser@^1.1.1:
   version "1.2.0"
   resolved "http://registry.npm.taobao.org/domain-browser/download/domain-browser-1.2.0.tgz#3d31f50191a6749dd1375a7f522e823d42e54eda"
@@ -6357,7 +6352,7 @@ fullcalendar-scheduler@^1.9.4:
     jquery "2 - 3"
     moment "^2.20.1"
 
-fullcalendar@^3.4.0, fullcalendar@~3.9.0:
+fullcalendar@~3.9.0:
   version "3.9.0"
   resolved "http://registry.npm.taobao.org/fullcalendar/download/fullcalendar-3.9.0.tgz#b608a9989f3416f0b1d526c6bdfeeaf2ac79eda5"
   integrity sha1-tgipmJ80FvCx1SbGvf7q8qx57aU=
@@ -6374,11 +6369,6 @@ functional-red-black-tree@^1.0.1:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/functional-red-black-tree/download/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
-
-funnel-graph-js@^1.3.6:
-  version "1.3.7"
-  resolved "http://registry.npm.taobao.org/funnel-graph-js/download/funnel-graph-js-1.3.7.tgz#8aba408eb7246cd6f0a7fdd02481440e1f1a9fad"
-  integrity sha1-irpAjrckbNbwp/3QJIFEDh8an60=
 
 g-status@^2.0.2:
   version "2.0.2"
@@ -10016,11 +10006,6 @@ point-at-length@~1.0.2:
     isarray "~0.0.1"
     parse-svg-path "~0.1.1"
 
-polymorph-js@^0.2.4:
-  version "0.2.4"
-  resolved "http://registry.npm.taobao.org/polymorph-js/download/polymorph-js-0.2.4.tgz#4af07bf0ea6ce026f65cb47151e37a0d41d42ead"
-  integrity sha1-SvB78Ops4Cb2XLRxUeN6DUHULq0=
-
 portfinder@^1.0.13, portfinder@^1.0.20:
   version "1.0.20"
   resolved "http://registry.npm.taobao.org/portfinder/download/portfinder-1.0.20.tgz#bea68632e54b2e13ab7b0c4775e9b41bf270e44a"
@@ -12016,6 +12001,11 @@ sshpk@^1.7.0:
     safer-buffer "^2.0.2"
     tweetnacl "~0.14.0"
 
+ssr-window@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npm.taobao.org/ssr-window/download/ssr-window-1.0.1.tgz#30752a6a4666e7767f0b7e6aa6fc2fdbd0d9b369"
+  integrity sha1-MHUqakZm53Z/C35qpvwv29DZs2k=
+
 ssri@^5.2.4:
   version "5.3.0"
   resolved "http://registry.npm.taobao.org/ssri/download/ssri-5.3.0.tgz#ba3872c9c6d33a0704a7d71ff045e5ec48999d06"
@@ -12397,6 +12387,14 @@ svgo@^1.0.0:
     stable "^0.1.8"
     unquote "~1.1.1"
     util.promisify "~1.0.0"
+
+swiper@^4.0.7:
+  version "4.5.0"
+  resolved "https://registry.npm.taobao.org/swiper/download/swiper-4.5.0.tgz#4d870bec4f5abe2fb259325849dd2641c9243c0d"
+  integrity sha1-TYcL7E9avi+yWTJYSd0mQckkPA0=
+  dependencies:
+    dom7 "^2.1.3"
+    ssr-window "^1.0.1"
 
 symbol-observable@^1.1.0:
   version "1.2.0"
@@ -13230,6 +13228,14 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+vue-awesome-swiper@^3.1.3:
+  version "3.1.3"
+  resolved "https://registry.npm.taobao.org/vue-awesome-swiper/download/vue-awesome-swiper-3.1.3.tgz#05500b501ffb3fec9bf7eb9985bcf4ae8360ed9e"
+  integrity sha1-BVALUB/7P+yb9+uZhbz0roNg7Z4=
+  dependencies:
+    object-assign "^4.1.1"
+    swiper "^4.0.7"
+
 vue-countup-v2@^3.0.1:
   version "3.0.1"
   resolved "http://registry.npm.taobao.org/vue-countup-v2/download/vue-countup-v2-3.0.1.tgz#f5ab8fbcf45231f88a08ff5bc212066c26f5f139"
@@ -13260,24 +13266,6 @@ vue-eslint-parser@^5.0.0:
     espree "^4.1.0"
     esquery "^1.0.1"
     lodash "^4.17.11"
-
-vue-full-calendar@^2.7.0:
-  version "2.7.0"
-  resolved "http://registry.npm.taobao.org/vue-full-calendar/download/vue-full-calendar-2.7.0.tgz#1963d6612b5459633e30763e7bdf1d6acc304883"
-  integrity sha1-GWPWYStUWWM+MHY+e98daswwSIM=
-  dependencies:
-    babel-plugin-transform-runtime "^6.23.0"
-    fullcalendar "^3.4.0"
-    lodash.defaultsdeep "^4.6.0"
-
-vue-funnel-graph-js@^0.1.3:
-  version "0.1.3"
-  resolved "http://registry.npm.taobao.org/vue-funnel-graph-js/download/vue-funnel-graph-js-0.1.3.tgz#41ba4e4dd877ef376aaf3c915f477ba21d6f41e2"
-  integrity sha1-QbpOTdh37zdqrzyRX0d7oh1vQeI=
-  dependencies:
-    "@tweenjs/tween.js" "^17.3.0"
-    funnel-graph-js "^1.3.6"
-    polymorph-js "^0.2.4"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.3"
@@ -13550,10 +13538,10 @@ webpack-dev-server@^3.3.1:
     webpack-log "^2.0.0"
     yargs "12.0.5"
 
-webpack-external-vendor-plugin@^1.0.0:
-  version "1.0.0"
-  resolved "http://registry.npm.taobao.org/webpack-external-vendor-plugin/download/webpack-external-vendor-plugin-1.0.0.tgz#5c706afbe55b2118df9a597894c32f64bf700a28"
-  integrity sha1-XHBq++VbIRjfmll4lMMvZL9wCig=
+webpack-external-vendor-plugin@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npm.taobao.org/webpack-external-vendor-plugin/download/webpack-external-vendor-plugin-1.1.1.tgz?cache=0&sync_timestamp=1562223071723&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwebpack-external-vendor-plugin%2Fdownload%2Fwebpack-external-vendor-plugin-1.1.1.tgz#fb84370e65297ea3a37d782c3d12ce65df03bc7a"
+  integrity sha1-+4Q3DmUpfqOjfXgsPRLOZd8DvHo=
   dependencies:
     fs-extra "^5.0.0"
     globby "^7.1.1"

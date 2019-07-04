@@ -13,8 +13,10 @@
           <st-form-item
           :class="{'st-has-error': !courseIsFirstInput&&courseIsNone}"
           :help="courseErrorText"
-          label="上课范围"
           required>
+            <template slot="label">
+              上课范围<st-help-tooltip id="TSCPC001" />
+            </template>
             <div :class="add('course')">
               <table>
                 <colgroup>
@@ -416,6 +418,7 @@ export default {
           this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
           this.packageData.album_id = this.packageInfo.album_id
           this.editPackageService.editPackage(this.packageData).subscribe(res => {
+            this.$router.push({ path: '/shop/product/course/manage/package/list' })
             console.log(res)
           })
         }

@@ -2,9 +2,18 @@ import { ServiceRouteConfig } from 'vue-service-app'
 
 interface RouteConfig extends ServiceRouteConfig {
   meta: {
+    /**
+     * 布局视图名称 @/views/layouts/index.ts
+     */
     layout: string
+    /**
+     * 面包屑的标题
+     */
     title: string
     name: string
+    /**
+     * 生命平级路由的父级路由name
+     */
     parentId: string
   },
 }
@@ -636,5 +645,9 @@ export const routeMapConfig = {
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' }
     }
+  },
+  'extra-contract-preview'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '合同预览'
+    routeConfig.meta.layout = 'blank'
   }
 }

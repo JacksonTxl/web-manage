@@ -3,7 +3,7 @@
   <div class="shop-member-list">
     <st-panel class="mg-t16">
       <div slot="title">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onSearch" style="width: 290px;"/>
+        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="querySelect.keyword" @search="onSearch" style="width: 290px;"/>
       </div>
 
       <div slot="prepend">
@@ -39,14 +39,14 @@
         </st-search-panel>
       </div>
       <div class="mg-t16">
-        <st-button type="primary" class="shop-member-list-button" v-if="auth.add">
-          <a href="javascript:;" @click="addUser()">添加用户</a>
+        <st-button type="primary" @click="addUser()" class="shop-member-list-button" v-if="auth.add" icon='add'>
+          添加用户
         </st-button>
         <st-button class="shop-member-list-button" v-if="auth.import">导入用户</st-button>
         <st-button
           v-if="auth.tag"
           class="shop-member-list-button"
-          :disabled="!selectedRowData.length"
+          :disabled="!selectedRows.length"
           v-modal-link="{
             name: 'shop-add-lable',
             props: {
@@ -86,17 +86,17 @@
           <st-button
             v-if="auth.bindCoach && auth.bindSalesman"
             class="shop-member-list-button"
-            :disabled="selectedRowData.length > 0 ? false :true"
+            :disabled="selectedRows.length > 0 ? false :true"
           >分配员工</st-button>
         </a-popover>
-        <st-button v-if="auth.export" class="shop-member-list-button">批量导出</st-button>
+        <st-button v-if="auth.export" :disabled='isSelectedDisabled' class="shop-member-list-button">批量导出</st-button>
       </div>
       <st-table
         class="mg-t24"
         :columns="columns"
         :scroll="{x:1280}"
         :alertSelection="{onReset:onSelectionReset}"
-        :rowSelection="{selectedRowKeys:selectedRowKeys,onChange:onSelectionChange}"
+        :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
         rowKey="member_id"
         :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
         @change="onTableChange"
@@ -139,8 +139,12 @@ import { cloneDeep, filter } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 import { ListService } from './list.service'
 import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
+import { columns } from './list.config.ts'
+
 export default {
   name: 'memberList',
+  mixins: [tableMixin],
   bem: {
     basic: 'page-shop-finance'
   },
@@ -174,30 +178,11 @@ export default {
       enter_time: [],
       selectDataList: [],
       selectedRowKeys: [],
-      selectedRowData: [],
-      columns: [
-        // { title: '人脸', dataIndex: '' },
-        {
-          title: '姓名',
-          dataIndex: 'member_name',
-          scopedSlots: { customRender: 'member_name' }
-        },
-        { title: '手机号', dataIndex: 'mobile' },
-        {
-          title: '用户等级',
-          dataIndex: 'member_level',
-          scopedSlots: { customRender: 'member_level' }
-        },
-        { title: '跟进销售', dataIndex: 'follow_salesman' },
-        { title: '跟进教练', dataIndex: 'follow_coach' },
-        { title: '注册时间', dataIndex: 'register_time' },
-        { title: '成为会员时间', dataIndex: 'be_member_time' },
-        { title: '累计消费(元)', dataIndex: 'sum_consumption' },
-        { title: '操作', fixed: 'right', width: 170, scopedSlots: { customRender: 'action' } }
-      ]
+      selectedRows: []
     }
   },
   computed: {
+    columns,
     memberLevel() {
       let list = [{ value: -1, label: '全部' }]
       if (!this.shopMemberEnums.member_level) return list
@@ -253,7 +238,7 @@ export default {
     },
     // 重置
     onReset() {
-      let query = {
+      this.querySelect = {
         keyword: '',
         member_level: -1,
         register_way: -1,
@@ -267,11 +252,11 @@ export default {
       }
       this.register_time = []
       this.enter_time = []
-      this.$router.push({ query: { ...this.query, ...query } })
+      this.$router.push({ force: true, query: { ...this.querySelect } })
     },
     // 设置searchData
     setSearchData() {
-      this.querySelect = cloneDeep(this.query)
+      this.querySelect = this.query
       if (!this.querySelect.register_start_time || !this.querySelect.register_stop_time) {
         this.register_time = []
       } else {
@@ -327,12 +312,12 @@ export default {
     },
     onSelectionReset() {
       this.selectedRowKeys = []
-      this.selectedRowData = []
+      this.selectedRows = []
     },
-    onSelectionChange(keys, selectedRowData) {
+    onSelectionChange(keys, selectedRows) {
       this.selectedRowKeys = keys
-      this.selectedRowData = selectedRowData
-      this.selectDataList = selectedRowData.map(item => {
+      this.selectedRows = selectedRows
+      this.selectDataList = selectedRows.map(item => {
         return item.id
       })
     },

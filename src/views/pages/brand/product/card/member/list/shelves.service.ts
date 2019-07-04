@@ -10,7 +10,6 @@ import { ShopApi } from '@/api/v1/shop'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
-import { RouteService } from '@/services/route.service'
 
 @Injectable()
 export class ShelvesService implements RouteGuard {
@@ -23,21 +22,16 @@ export class ShelvesService implements RouteGuard {
   })
   publishChannel$ = this.userService
     .getOptions('member_card.publish_channel')
-    .pipe(
-      map(options => [{ value: -1, label: '所有渠道' }].concat(options)),
-      log('publishChannel')
-    )
-  cardType$ = this.userService.getOptions('member_card.card_type').pipe(
-    map(options => [{ value: -1, label: '所有类型' }].concat(options)),
-    log('cardType')
-  )
+    .pipe(map(options => [{ value: -1, label: '所有渠道' }].concat(options)))
+  cardType$ = this.userService
+    .getOptions('member_card.card_type')
+    .pipe(map(options => [{ value: -1, label: '所有类型' }].concat(options)))
 
   constructor(
     private cardApi: CardsApi,
     private shopApi: ShopApi,
     private authService: AuthService,
-    private userService: UserService,
-    private routeService: RouteService
+    private userService: UserService
   ) {}
   getList(query: CardShelfListInput) {
     return this.cardApi.getCardShelfList(query, 'brand', 'member').pipe(

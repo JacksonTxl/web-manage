@@ -14,6 +14,9 @@ export class CoursePriceModelSettingService extends Store<any> {
   getInfo() {
     return this.coursePricingApi.getInfo()
   }
+  del() {
+    return this.coursePricingApi.del()
+  }
   @Effect()
   update(params: UpdateInput) {
     return this.coursePricingApi.update(params)

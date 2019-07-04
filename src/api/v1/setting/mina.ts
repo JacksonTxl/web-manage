@@ -30,6 +30,36 @@ export class SettingMinaApi extends Api {
   subAudit() {
     return this.http.post('/v1/setting/mina/sub_audit')
   }
+  /**
+   * 查询小程序H5信息
+   */
+  getH5Info(query: H5Query) {
+    return this.http.get('/v1/setting/mina/setting', { query })
+  }
+  /**
+   * 查询教练详情
+   */
+  getCoachInfo(query: StaffID) {
+    return this.http.get('/v1/setting/mina/coach', { query })
+  }
+  /**
+   * 查询底部导航
+   */
+  getMenu() {
+    return this.http.get('/v1/setting/mina/tabbar')
+  }
+  /**
+   * 保存底部导航
+   */
+  saveMenu(params: Menus) {
+    return this.http.post('/v1/setting/mina/tabbar', { params })
+  }
+  /**
+   * 保存设置
+   */
+  save(params: SaveForm) {
+    return this.http.post('/v1/setting/mina/main_set', { params })
+  }
 }
 
 export interface CallbackParams {
@@ -40,4 +70,17 @@ export interface PayConfigForm {
   mch_name: string,
   mch_id: string,
   key: string
+}
+export interface H5Query {
+  category: number
+}
+export interface SaveForm {
+  is_save: number, // 1保存，2发布
+  content: []
+}
+export interface StaffID {
+  staff_id: number[],
+}
+export interface Menus {
+  tabbar: []
 }

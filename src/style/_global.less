@@ -1,15 +1,13 @@
-
 body {
   min-width: 1200px;
   .bg(#f0f2f5);
 }
 
-
 ::-webkit-scrollbar {
-  .w(6px);
+  .w(8px);
 }
 ::-webkit-scrollbar:horizontal {
-  .h(6px);
+  .h(8px);
 }
 
 ::-webkit-scrollbar-track {
@@ -19,15 +17,16 @@ body {
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background: rgba(0, 0, 0, 0.15);
+  &:hover {
+    background-color: #aaa;
+  }
 }
-
 
 #nprogress .bar {
   background-color: lighten(@primary-color, 0.3);
   box-shadow: 0 0 10px rgba(lighten(@primary-color, 0.3), 0.7);
   height: 3px;
 }
-
 
 .page-shop-add-basic-package__personal-dropdown,
 .page-shop-info-basic-package__personal-dropdown {

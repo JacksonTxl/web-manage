@@ -61,7 +61,7 @@
           <td>
             <router-link v-if="shop.auth['brand_shop:shop:shop|get']" :to="`./info?id=${shop.shop_id}`">详情</router-link>
             <router-link v-if="shop.auth['brand_shop:shop:shop|edit']" :to="`./edit?id=${shop.shop_id}`" class="mg-l8">编辑</router-link>
-            <st-more-dropdown>
+            <st-more-dropdown class="mg-l8">
               <!-- 关店状态下不可以在saas中更改运营状态 -->
               <a-menu-item
                 v-if="shop.auth['brand:shop:shop_type|edit']"

@@ -1,6 +1,6 @@
 <template>
   <div class="page-dashboard-count-card">
-    <div class="title">{{title}}</div>
+    <div class="title">{{title}} <slot name="title"></slot></div>
     <div class="i-count-up-box mg-t8">
       <i-count-up class="mg-r16 i-count-up" :endVal="count"/>
       <div class="trend">

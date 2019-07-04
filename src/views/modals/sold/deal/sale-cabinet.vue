@@ -22,7 +22,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form :form="form" labelWidth="68px">
+      <st-form :form="form" labelWidth="85px">
         <div :class="sale('sale')">
           <st-form-item labelGutter="12px" v-show="searchMemberIsShow" label="购买会员" required>
             <a-select
@@ -80,7 +80,7 @@
               <a-form-item class="page-a-form">
                 <a-date-picker
                   :allowClear="false"
-                  :disabledDate="disabledEndDate"
+                  :disabled="disabledCalendar"
                   v-decorator="['endTimePicker',{rules:[{validator:endtime_picker_validator}]}]"
                   @change="endTimeChange"
                   style="width:170px"
@@ -94,13 +94,17 @@
           </st-form-item>
           <st-form-item required labelGutter="12px" label="租赁天数">
             <st-input-number
+              :disabledDate="disabledCalendar"
               @change="onEndTimeInputChange"
               v-decorator="['endTimeInput',{rules:[{validator:endtime_input_validator}]}]"
               :max="999999">
               <template slot="addonAfter">天</template>
             </st-input-number>
           </st-form-item>
-          <st-form-item labelGutter="12px" label="合同编号" required>
+          <st-form-item labelGutter="12px" required>
+            <template slot="label">
+                合同编号<st-help-tooltip id="TSSD001" />
+            </template>
             <div :class="sale('contract')">
               <a-input
               v-decorator="['contractNumber',{rules:[{validator:contract_number}]}]"
@@ -232,6 +236,7 @@ export default {
       },
       cabinetId: '',
       // 租赁天数
+      disabledCalendar: true,
       startTime: moment(),
       days: '',
       // 定金
@@ -362,9 +367,11 @@ export default {
       if (!value) {
         // eslint-disable-next-line
         callback('请选择租赁柜号')
+        this.disabledCalendar = true
       } else {
         // eslint-disable-next-line
         callback()
+        this.disabledCalendar = false
       }
     },
     onCabinetChange(data) {

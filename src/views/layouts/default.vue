@@ -6,7 +6,7 @@
           <i class="layout-default-sider__certification st-icon-certified"></i>
         </div>
         <div class="layout-default-sider__name cursor-pointer" @click="switchShop">
-          <span>STYD健身学院</span>
+          <span>{{user.shop_name || user.brand_name}}</span>
           <st-icon type="arrow-right"></st-icon>
         </div>
       </div>
@@ -47,8 +47,8 @@
             </div>
             <div slot="overlay" class="layout-default-body__dropdown">
               <div class="layout-default-body__username">
-                <p class="layout-default-body__name">Elaine</p>
-                <p class="layout-default-body__mobile">18101881916</p>
+                <p class="layout-default-body__name">{{user.staff_name}}</p>
+                <p class="layout-default-body__mobile">{{user.mobile}}</p>
               </div>
               <a-menu>
                 <a-menu-item class="layout-default-body__options">
@@ -81,23 +81,23 @@
   </div>
 </template>
 <script>
-import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
-import DefaultSiderMenu from './default-sider-menu'
+import DefaultSiderMenu from './default#sider-menu'
 import SwitchShop from '@/views/fragments/shop/switch'
 import Cookie from 'js-cookie'
 import routes from '@/router/routes'
 import { find } from 'lodash-es'
 import { LoginService } from '../pages/account/login.service'
+import { UserService } from '@/services/user.service'
 export default {
   serviceInject() {
     return {
-      layoutBrandSerivce: LayoutBrandService,
-      loginService: LoginService
+      loginService: LoginService,
+      userService: UserService
     }
   },
   rxState() {
     return {
-      // breadcrumbs: this.layoutBrandSerivce.breadcrumbs$
+      user: this.userService.user$
     }
   },
   data() {

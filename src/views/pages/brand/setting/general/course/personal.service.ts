@@ -3,7 +3,9 @@ import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { PersonReserveSettingApi } from '@/api/v1/setting/course/personal/reserve'
+import { CoursePricingApi } from '@/api/v1/setting/course/pricing'
 import { AuthService } from '@/services/auth.service'
+import { forkJoin } from 'rxjs'
 
 interface ListState {
   resData: object
@@ -15,6 +17,7 @@ export class PersonalService extends Store<ListState> {
   auth$: Computed<object>
   constructor(
     private reserveSettingApi: PersonReserveSettingApi,
+    private coursePricingApi: CoursePricingApi,
     private authService: AuthService
   ) {
     super()
@@ -40,9 +43,20 @@ export class PersonalService extends Store<ListState> {
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
-  @Effect()
-  getInfo() {
-    return this.reserveSettingApi.getInfo().pipe(
+  getPriceSettingInfo() {
+    return this.coursePricingApi.getInfo()
+  }
+  getReserveSettingInfo() {
+    return this.reserveSettingApi.getInfo()
+  }
+  del() {
+    return this.coursePricingApi.del()
+  }
+  init() {
+    return forkJoin(
+      this.getPriceSettingInfo(),
+      this.getReserveSettingInfo()
+    ).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.resData = res
@@ -50,7 +64,7 @@ export class PersonalService extends Store<ListState> {
       })
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getInfo().subscribe(next, () => { next(false) })
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.init()
   }
 }

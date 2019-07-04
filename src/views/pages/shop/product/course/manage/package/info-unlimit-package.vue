@@ -6,10 +6,10 @@
           <h2 class="title">{{packageInfo.course_name}}</h2>
           <p :class="basic('price-date')">
             <span :class="basic('price')">
-              <span class="label"><st-icon class="mgr-8" type="wechat" />售价：</span>{{packageInfo.price}}元
+              <span class="label">售价：</span>{{packageInfo.price}}元
             </span>
             <span :class="basic('date')">
-              <span class="label"><st-icon class="mgr-8" type="wechat" />售卖时间：</span>{{packageInfo.start_time}}~{{packageInfo.end_time}}
+              <span class="label">售卖时间：</span>{{packageInfo.start_time}}~{{packageInfo.end_time}}
             </span>
           </p>
           <p>{{packageInfo.intro || '无'}}</p>

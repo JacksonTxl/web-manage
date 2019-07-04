@@ -21,7 +21,10 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="23">
-              <st-form-item class="page-content-card-admission-range mt-4" label="支持入场门店" required>
+              <st-form-item class="page-content-card-admission-range mt-4" required>
+                <template slot="label">
+                    支持入场范围<st-help-tooltip id="TBMCTC001" />
+                </template>
                 <a-radio-group
                   @change="admission_range"
                   v-decorator="['cardData.admission_range',{initialValue:1,rules:[{validator:admission_shop_list_validator}]}]">
@@ -39,7 +42,10 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="23">
-              <st-form-item class="page-content-card-price-setting mt-4" label="价格设置" required :help="priceValidatorText">
+              <st-form-item class="page-content-card-price-setting mt-4" required :help="priceValidatorText">
+                <template slot="label">
+                    价格设置<st-help-tooltip id="TBMCTC002" />
+                </template>
                 <a-radio-group
                   @change="price_range"
                   v-show="cardData.admission_range===1"
@@ -164,20 +170,7 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="20">
-              <st-form-item class="page-content-card-time" required>
-                <span slot="label">
-                  支持售卖时间
-                  <a-popover
-                    trigger="hover"
-                    placement="bottomRight"
-                    arrowPointAtCenter
-                  >
-                    <div slot="content">
-                      设置此会员卡可售卖的时间范围
-                    </div>
-                    <a-icon class="page-content-card-time__icon" type="info-circle"></a-icon>
-                  </a-popover>
-                </span>
+              <st-form-item class="page-content-card-time" label="支持售卖时间" required>
                 <a-form-item class="page-a-form">
                   <a-date-picker
                     :disabledDate="disabledStartDate"

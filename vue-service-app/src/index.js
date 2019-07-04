@@ -19,7 +19,9 @@ const syncRouteGuards = guards => (to, from) => {
 }
 
 const rootContainer = new Container()
-window.appContainer = rootContainer
+window.getContainer = function() {
+  return rootContainer
+}
 
 let forceCount = 1
 class VueServiceApp {
@@ -236,8 +238,6 @@ class VueServiceApp {
             if (!beforeMiddlewares.length) {
               next()
             }
-            console.log(beforeMiddlewares)
-
             multiguard(beforeMiddlewares)(to, from, next)
           })
       } else {

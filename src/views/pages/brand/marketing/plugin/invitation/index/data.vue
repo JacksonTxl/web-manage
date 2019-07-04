@@ -3,29 +3,25 @@
         <a-row :class="inviation('acount')">
             <a-col :span="6">
                 <p :class="inviation('acount-title')">
-                    参与活动邀请人
-                    <st-icon type="help"></st-icon>
+                    参与活动邀请人<st-help-tooltip id="TBMGM001" />
                 </p>
                 <ICountUp class="number-up" :endVal="statInfo.total_inviter_num"/>
             </a-col>
             <a-col :span="6">
                 <p :class="inviation('acount-title')">
-                    拉新注册人数
-                    <st-icon type="help"></st-icon>
+                    拉新注册人数<st-help-tooltip id="TBMGM002" />
                 </p>
                 <ICountUp class="number-up" :endVal="statInfo.total_newbie_register_num"/>
             </a-col>
             <a-col :span="6">
                 <p :class="inviation('acount-title')">
-                    拉新领券人数
-                    <st-icon type="help"></st-icon>
+                    拉新领券人数<st-help-tooltip id="TBMGM003" />
                 </p>
                 <ICountUp class="number-up" :endVal="statInfo.total_coupon_num"/>
             </a-col>
             <a-col :span="6">
                 <p :class="inviation('acount-title')">
-                    拉新交易人数
-                    <st-icon type="help"></st-icon>
+                    拉新交易人数<st-help-tooltip id="TBMGM004" />
                 </p>
                 <ICountUp class="number-up" :endVal="statInfo.total_order_num"/>
             </a-col>

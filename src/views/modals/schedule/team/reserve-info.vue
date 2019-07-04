@@ -1,6 +1,5 @@
 <template>
   <st-modal class="modal-reserved" title="预约详情" @ok="save" :footer="null" width="848px" v-model="show">
-    <div><span>已约</span><span>0人</span></div>
     <a-row :gutter="24" class="modal-reserved-info">
       <a-col :lg="8">
         <st-info>
@@ -60,7 +59,6 @@
           <td>
             <a-select
               slot="site_num_list"
-              v-model="siteNumIds"
               mode="multiple"
               placeholder="选择座位"
               style="width: 120px"
@@ -81,13 +79,13 @@
         <tr v-for="(item, index) in list" :key="index">
           <td>{{item.member}}</td>
           <td>{{item.consume_name}}</td>
-          <td>{{item.site_num_list}}</td>
+          <td>{{item.site_num_list | siteNumListFilter}}</td>
           <td>{{item.current_reservation_num}}人</td>
           <td>{{item.is_checkin_name}}</td>
           <td>
             <div>
-              <a   class="mg-r8" href="javascript:;" @click="onClickCancel(item.id)" v-if="auth.cancel">取消预约</a>
-              <a  href="javascript:;" v-if="auth.checkIn" @click="onClickCheckIn(item.id)">签到消费</a>
+              <a  class="mg-r8" href="javascript:;" @click="onClickCancel(item.reserve_id)" v-if="auth.cancel">取消预约</a>
+              <a  href="javascript:;" v-if="auth.checkIn && !item.is_checkin" @click="onClickCheckIn(item.reserve_id)">签到消费</a>
             </div>
           </td>
         </tr>
@@ -122,6 +120,15 @@ export default {
   },
   props: {
     id: String
+  },
+  filters: {
+    siteNumListFilter(val) {
+      return val.split(',').map(item => {
+        if (item === 0) {
+          return '无座位'
+        }
+      }).join(',')
+    }
   },
   data() {
     return {
@@ -181,10 +188,14 @@ export default {
       this.teamScheduleCommonService.getMemberList({ member_name: value }).subscribe()
     },
     onClickCancel(id) {
-      this.teamScheduleReserveService.del(id).subscribe()
+      this.teamScheduleReserveService.del(id).subscribe(() => {
+        this.getReserve()
+      })
     },
     onClickCheckIn(id) {
-      this.teamScheduleReserveService.check({ id, checkin_method: 2 }).subscribe()
+      this.teamScheduleReserveService.check({ id, checkin_method: 2 }).subscribe(() => {
+        this.getReserve()
+      })
     },
     onChange(value) {
       this.teamScheduleCommonService.getConsumeList({ course_id: this.courseId, member_id: value }).subscribe()
@@ -195,6 +206,14 @@ export default {
       this.consumeId = obj.id
     },
     onChangeSiteNumList(val) {
+      this.unUsedSeatOptions.forEach(item => {
+        if (val.includes(item.id)) {
+          let value = item.name
+          if (item.name === '无座位') value = -1
+          this.siteNumIds.push(value)
+        }
+        this.siteNumIds = Array.from(new Set(this.siteNumIds))
+      })
       if (val.length > 3) {
         this.siteNumIds.pop()
         this.messageService.error({

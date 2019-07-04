@@ -1,28 +1,27 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { Computed, State } from 'rx-state'
 import { pluck } from 'rxjs/operators'
-import { Store } from './store'
 
 /**
  * 根据路由参数生成query$
  */
 @Injectable()
-export class RouteService extends Store<ServiceRoute> {
-  state$: State<ServiceRoute>
-  query$: Computed<any>
-  layout$: Computed<string>
+export class RouteService implements RouteGuard {
+  query$: State<any>
+  layout$: State<string>
   constructor() {
-    super()
-    this.state$ = new State({})
-    this.query$ = new Computed(this.state$.pipe(pluck('meta', 'query')))
-    this.layout$ = new Computed(this.state$.pipe(pluck('meta', 'layout')))
+    this.query$ = new State({})
+    this.layout$ = new State('')
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
+    this.query$.commit(() => to.meta.query)
+    next()
+  }
+  afterEach(to: ServiceRoute, from: ServiceRoute) {
     if (!to.meta.layout && to.name) {
       console.warn(`can not find meta.layout on route -> ${to.name}`)
     } else {
-      this.state$.commit(() => to)
-      next()
+      this.layout$.commit(() => to.meta.layout)
     }
   }
 }

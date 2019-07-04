@@ -386,6 +386,16 @@ export class MemberApi extends Api {
   getMemberSourceRegisters() {
     return this.http.get(`/v1/member/source/registers`)
   }
+  /*
+   *验证人脸 /v1/member/check/face
+   */
+  getMemberCheckResult(query: FaceCheckQuery) {
+    return this.http.get(`/v1/member/check/face`, { query })
+  }
+}
+
+export interface FaceCheckQuery {
+  image_key: string
 }
 
 export interface CoachParams {

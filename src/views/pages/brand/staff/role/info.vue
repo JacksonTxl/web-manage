@@ -9,7 +9,7 @@
           <span class='label'>角色描述: </span><span class='value'>{{info.role_description}}</span>
         </a-col>
         <a-col :lg="17"  class="item pd-y24">
-          <span class='label'>数据权限: </span><span class='value'>{{dataGrant}}</span>
+          <span class='label'>数据权限<st-help-tooltip id="TBCH001" />: </span><span class='value'>{{dataGrant}}</span>
         </a-col>
         <a-col class="page-role-detail__funrole pd-y24" :lg="18">
           <a-row style="width: 100%">

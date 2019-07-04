@@ -13,8 +13,10 @@
           <st-form-item
           :class="{'st-has-error': !courseIsFirstInput&&courseIsNone}"
           :help="courseErrorText"
-          label="上课范围"
           required>
+            <template slot="label">
+              上课范围<st-help-tooltip id="TSCPC002" />
+            </template>
             <div :class="add('course')">
               <table>
                 <colgroup>
@@ -665,6 +667,7 @@ export default {
           })
           this.editPackageService.editPackage(this.packageData).subscribe(res => {
             console.log(res)
+            this.$router.push({ path: '/shop/product/course/manage/package/list' })
           })
         }
       })

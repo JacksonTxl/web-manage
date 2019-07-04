@@ -33,18 +33,21 @@
         </st-form-item>
       </a-col>
       <a-col :lg="10" :xs="22" :offset="1">
-        <!-- <st-form-item label="员工人脸">
+        <st-form-item label="员工人脸">
           <st-image-upload
-            @change="faceChange"
             width="164px"
             height="164px"
             :list="faceList"
             :sizeLimit="2"
+            :isFaceRecognition="true"
             placeholder="上传人脸"
             v-decorator="rules.image_face"
           ></st-image-upload>
-        </st-form-item> -->
-        <st-form-item label="昵称" required>
+        </st-form-item>
+        <st-form-item required>
+          <template slot="label">
+            昵称<st-help-tooltip id="TSCE001" />
+          </template>
           <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.nickname"/>
         </st-form-item>
         <st-form-item label="邮箱" required>
@@ -194,13 +197,13 @@ export default {
         }
       })
     },
-    faceChange(data) {
-      this.form.setFieldsValue({
-        image_face: {
-          image_url: data.image_url ? data.image_url : ''
-        }
-      })
-    },
+    // faceChange(data) {
+    //   this.form.setFieldsValue({
+    //     image_face: {
+    //       image_url: data.image_url ? data.image_url : ''
+    //     }
+    //   })
+    // },
     goNext(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
@@ -229,6 +232,8 @@ export default {
       data.id_type = this.id_type
       data.album_id = this.data.album_id
       data.department_id = this.value + 0
+      data.image_avatar && (data.image_avatar = data.image_avatar[0])
+      data.image_face && (data.image_face = data.image_face[0])
       this.editservice.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
         if (saveOrgoNext === 1) {
           this.$emit('gonext')
@@ -262,6 +267,9 @@ export default {
         {
           url: obj.image_avatar.image_url
         }
+      ]
+      this.faceList = [
+        obj.image_face
       ]
     }
   },

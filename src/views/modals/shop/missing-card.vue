@@ -14,12 +14,12 @@
             <st-form :form="form" @submit="save" labelWidth="125px">
               <st-info>
                 <st-info-item label="当前绑定的实体卡号">{{getData.card_num}}</st-info-item>
-                <st-info-item label="当前物理ID">{{getData.physical_id}}</st-info-item>
+                <st-info-item label="当前物理ID">{{getData.rfid}}</st-info-item>
               </st-info>
             </st-form>
           </div>
           <st-form-item label="实体卡号" required>
-            <a-input placeholder="输入实体卡号" v-decorator="basicInfoRuleList.physical_id"/>
+            <a-input placeholder="输入实体卡号" v-decorator="basicInfoRuleList.rfid"/>
           </st-form-item>
           <st-form-item label="物理ID" required>
             <a-input placeholder="请将实体卡置于读卡器上" v-decorator="basicInfoRuleList.card_num"/>
@@ -76,8 +76,8 @@ export default {
       getCard_id: '',
       basicInfoRuleList: {
         // 实体卡
-        physical_id: [
-          'physical_id',
+        rfid: [
+          'rfid',
           {
             rules: [
               {
@@ -156,7 +156,6 @@ export default {
     getMemberPhysical() {
       let self = this
       self.Service.getMemberPhysical(self.record.member_id).subscribe(state => {
-        console.log(state.info)
         self.getData = state.info
       })
     },
@@ -178,9 +177,7 @@ export default {
     save(e) {
       let self = this
       e.preventDefault()
-      console.log(e)
       self.form.validateFields((err, values) => {
-        console.log(err, values)
         values.moneyFlag = undefined
         values.id = self.record.member_id
         values.card_id = self.getData.id

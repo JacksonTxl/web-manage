@@ -72,6 +72,11 @@ module.exports = {
   },
   // webpack-chain docs see https://www.npmjs.com/package/webpack-chain
   chainWebpack: config => {
+    // 去除preload
+    config.plugins.delete('preload')
+    // 去除prefetch
+    config.plugins.delete('prefetch')
+
     // inline style ignore
     config.module.rule('less').include.add(/themes/)
     // add theme entry to extract css
@@ -122,12 +127,13 @@ module.exports = {
         vue: 'window.Vue',
         'vue-router': 'window.VueRouter',
         moment: 'window.moment',
-        'ant-design-vue': 'window.antd'
+        'ant-design-vue': 'window.antd',
+        immer: 'window.immer'
       })
       .plugin('external-vendor')
       .use(WebpackExternalVendorPlugin, [
         {
-          filename: 'js/[name].[hash:8].js',
+          filename: 'js/[name].[hash:8][ext]',
           entry: {
             'base-vendors': [
               IS_DEV ? 'vue/dist/vue.js' : 'vue/dist/vue.min.js',
@@ -138,8 +144,10 @@ module.exports = {
               'moment/locale/zh-cn.js',
               IS_DEV
                 ? 'ant-design-vue/dist/antd.js'
-                : 'ant-design-vue/dist/antd.min.js'
-            ]
+                : 'ant-design-vue/dist/antd.min.js',
+              'immer/dist/immer.umd.js'
+            ],
+            'base': ['./antd.css']
           }
         }
       ])
@@ -170,7 +178,7 @@ module.exports = {
     config.plugin('define').tap(definitions => {
       definitions[0] = Object.assign(definitions[0], {
         'process.env': {
-          BASE_URL: JSON.stringify(process.env.BASE_URL),
+          BASE_URL: JSON.stringify('/'),
           NODE_ENV: JSON.stringify(process.env.NODE_ENV),
           GIT_COMMIT: JSON.stringify(git.short()),
           GIT_MESSAGE: JSON.stringify(git.message()),
@@ -179,7 +187,7 @@ module.exports = {
       })
       return definitions
     })
-    // config.plugin('progress').use(webpack.ProgressPlugin).end()
+    // config.plugins.delete('progress')
     config.resolve.alias.set(
       'vue-service-app',
       path.join(__dirname, '/vue-service-app')

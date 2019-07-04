@@ -2,7 +2,7 @@
   <st-modal title="新增业绩模板" v-model="show" @ok="handleSubmit">
     <st-form
       :form="form"
-      labelWidth="66px"
+      labelWidth="100px"
       @submit="handleSubmit"
       class="modal-add-perfromance-contaner"
     >
@@ -41,7 +41,13 @@
           </st-form-item>
         </a-col>
         <a-col :lg="24">
-          <st-form-item label="默认提成" required>
+          <st-form-item required>
+            <template slot="label" v-if="performance_type == 1 || performance_type == 2">
+                默认提成<st-help-tooltip id="TBPT001" />
+            </template>
+            <template slot="label" v-if="performance_type == 3">
+                默认课时费<st-help-tooltip id="TBPT001" />
+            </template>
             <st-input-number
               :float="true"
               placeholder="请输入默认提成"
