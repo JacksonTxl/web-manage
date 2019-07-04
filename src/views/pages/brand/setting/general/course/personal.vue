@@ -133,7 +133,7 @@ export default {
            * 放弃切换
            */
           onCancel() {
-
+            that.personalService.del().subscribe(this.onChange)
           }
         })
       } else {
