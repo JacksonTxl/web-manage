@@ -127,9 +127,7 @@ export default {
           /**
            * 保持切换
            */
-          onOk() {
-            that.showPricingSettingModal()
-          },
+          onOk() {},
           /**
            * 放弃切换
            */
