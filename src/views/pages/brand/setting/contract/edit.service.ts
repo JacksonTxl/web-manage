@@ -90,7 +90,7 @@ export class EditService extends Store<EditState> implements RouteGuard {
       this.getCodeInfo()
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.init()
   }
 }
