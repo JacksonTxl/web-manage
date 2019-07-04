@@ -202,7 +202,19 @@
               <st-form-item class="page-content-card-transfer" label="转让设置">
                 <div class="page-content-card-transfer-body">
                   <a-checkbox class="page-checkbox" :checked="cardData._is_transfer" @change="transfer">支持转让</a-checkbox>
-                  <a-input-group compact class="page-input-group">
+                  <st-input-number
+                  style="width:200px"
+                  v-decorator="['cardData.num',{rules:[{validator:transfer_validator}]}]"
+                  class="page-input-group"
+                  :float="cardData.unit===2"
+                  @change="transfter_change"
+                  :disabled="!cardData._is_transfer"
+                  :min="transferMin" :max="transferMax">
+                    <a-select slot="addonAfter" v-model="cardData.unit" :disabled="!cardData._is_transfer">
+                      <a-select-option v-for="item in Object.entries(member_card.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
+                    </a-select>
+                  </st-input-number>
+                  <!-- <a-input-group compact class="page-input-group">
                     <a-input-number
                     v-decorator="['cardData.num',{rules:[{validator:transfer_validator}]}]"
                     @change="transfter_change"
@@ -210,7 +222,7 @@
                     <a-select v-model="cardData.unit" defaultValue="2" :disabled="!cardData._is_transfer">
                       <a-select-option v-for="item in Object.entries(member_card.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
                     </a-select>
-                  </a-input-group>
+                  </a-input-group> -->
                 </div>
               </st-form-item>
             </a-col>
@@ -919,6 +931,14 @@ export default {
     // 卡背景是否校验通过
     cardBgIsOk() {
       return this.cardBgValidatorText === ''
+    },
+    // 转让设置的min
+    transferMin() {
+      return this.cardData.unit === 1 ? 1 : 0.1
+    },
+    // 转让设置的max
+    transferMax() {
+      return this.cardData.unit === 1 ? 100 : 999999.9
     }
   }
 }
