@@ -79,7 +79,7 @@
         <tr v-for="(item, index) in list" :key="index">
           <td>{{item.member}}</td>
           <td>{{item.consume_name}}</td>
-          <td>{{item.site_num_list}}</td>
+          <td>{{item.site_num_list | siteNumListFilter}}</td>
           <td>{{item.current_reservation_num}}人</td>
           <td>{{item.is_checkin_name}}</td>
           <td>
@@ -120,6 +120,15 @@ export default {
   },
   props: {
     id: String
+  },
+  filters: {
+    siteNumListFilter(val) {
+      return val.split(',').map(item => {
+        if (item === 0) {
+          return '无座位'
+        }
+      }).join(',')
+    }
   },
   data() {
     return {

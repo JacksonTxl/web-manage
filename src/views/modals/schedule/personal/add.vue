@@ -1,6 +1,6 @@
 <template>
   <st-modal class="modal-add-schedule" okText="确定保存" title="添加排期" @ok="save" v-model="show">
-    <st-form>
+    <st-form :form="form">
       <st-form-item labelWidth="42px" label="教练：" required>
         <a-select placeholder="请选择教练" v-model="coachId">
           <a-select-option v-for="coach in coachOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
@@ -38,6 +38,7 @@ export default {
   },
   data() {
     return {
+      form: this.$form.createForm(this),
       show: false,
       coachId: '',
       schedule_info: [{
@@ -72,9 +73,11 @@ export default {
   },
   methods: {
     onClickCopySchedule() {
-      this.scheduleService.curd('copy', { id: this.coachId }, () => {
-        this.messageService.success({ content: '复制成功' })
-      })
+      if (this.coachId) {
+        this.scheduleService.copy({ id: this.coachId }).subscribe()
+      } else {
+        this.messageService.error({ content: '请选择教练' })
+      }
     },
     save() {
       let reqdata = {

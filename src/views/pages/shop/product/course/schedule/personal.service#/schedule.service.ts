@@ -7,6 +7,7 @@ import { TeamScheduleScheduleApi } from '@/api/v1/schedule/team/schedule'
 import { bindCallback } from 'rxjs'
 import { PersonalScheduleApi } from '@/api/v1/schedule/personal/schedule'
 import { GetListQuery } from '@/api/v1/schedule/personal/reserve'
+import { MessageService } from '@/services/message.service'
 
 export interface SetState {
   scheduleTeamCourseList: any[],
@@ -19,7 +20,7 @@ export class PersonalScheduleScheduleService {
   scheduleTable$: Computed<any>
   refresh$: Computed<any>
 
-  constructor(private scheduleApi: PersonalScheduleApi) {
+  constructor(private scheduleApi: PersonalScheduleApi, private msg: MessageService) {
     this.state$ = new State({
       scheduleTeamCourseList: [],
       scheduleTable: [],
@@ -84,7 +85,9 @@ export class PersonalScheduleScheduleService {
     return this.scheduleApi.update(params)
   }
   copy(params: CopyInput) {
-    return this.scheduleApi.copy(params)
+    return this.scheduleApi.copy(params).pipe(tap(res => {
+      this.msg.success({ content: '复制成功' })
+    }))
   }
   /**
    *
