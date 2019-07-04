@@ -35,11 +35,11 @@ export default {
   computed: {
     computedWidth() {
       let width = 0
-      if (this.width) width = this.width
-      if (this.size === 'default') {
+      if (this.width) {
+        width = this.width
+      } else if (this.size === 'default') {
         width = 676
-      }
-      if (this.size === 'small') {
+      } else if (this.size === 'small') {
         width = 484
       }
       return width
