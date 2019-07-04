@@ -88,8 +88,8 @@ export default {
   computed: {
     productType() {
       let list = []
-      if (!this.couponEnums.product_range) return list
-      Object.entries(this.couponEnums.product_range.value).forEach(o => {
+      if (!this.couponEnums.coupon_status) return list
+      Object.entries(this.couponEnums.coupon_status.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
