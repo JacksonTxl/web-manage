@@ -4,10 +4,10 @@ body {
 }
 
 ::-webkit-scrollbar {
-  .w(6px);
+  .w(8px);
 }
 ::-webkit-scrollbar:horizontal {
-  .h(6px);
+  .h(8px);
 }
 
 ::-webkit-scrollbar-track {
@@ -17,6 +17,9 @@ body {
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background: rgba(0, 0, 0, 0.15);
+  &:hover {
+    background-color: #aaa;
+  }
 }
 
 #nprogress .bar {

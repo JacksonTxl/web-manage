@@ -1,0 +1,19 @@
+<template>
+  <div :class="b()">
+    <div :class="b('hd')">
+      <div :class="b('h-1')"></div>
+    </div>
+    <div :class="b('bd')">
+      <div :class="b('h-2')"></div>
+      <div :class="b('h-3')"></div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  bem: {
+    b: 'skeleton-brand-tile-sider-3'
+  }
+}
+</script>

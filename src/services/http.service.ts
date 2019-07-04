@@ -134,7 +134,7 @@ export class HttpService {
   private ajaxResponseHandler(source$: Observable<any>) {
     return source$.pipe(
       tap(userResponse => {
-        ['code', 'data'].forEach(filed => {
+        ;['code', 'data'].forEach(filed => {
           if (
             userResponse.status === 200 &&
             userResponse.response[filed] === undefined
@@ -153,16 +153,19 @@ export class HttpService {
     return source$.pipe(
       catchError((err: AjaxError) => {
         const serverResponse: StResponse = err.response
+        this.notification.close('ajaxError')
         switch (err.status) {
           case 400:
             this.notification.warn({
               title: this.i18n.translate('app.http.400'),
+              key: 'ajaxError',
               content: serverResponse.msg
             })
             break
           case 401:
             this.notification.warn({
               title: this.i18n.translate('app.http.401'),
+              key: 'ajaxError',
               content: serverResponse.msg
             })
             this.router.push({ name: 'account-login' })
@@ -170,24 +173,28 @@ export class HttpService {
           case 403:
             this.notification.warn({
               title: this.i18n.translate('app.http.403'),
+              key: 'ajaxError',
               content: serverResponse.msg
             })
             break
           case 404:
             this.notification.error({
               title: this.i18n.translate('app.http.404'),
+              key: 'ajaxError',
               content: err.message
             })
             break
           case 500:
             this.notification.error({
               title: this.i18n.translate('app.http.500'),
+              key: 'ajaxError',
               content: err.message
             })
             break
           default:
             this.notification.error({
               title: this.i18n.translate('app.http.other'),
+              key: 'ajaxError',
               content: err.message
             })
             break

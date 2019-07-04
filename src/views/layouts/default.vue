@@ -81,7 +81,6 @@
   </div>
 </template>
 <script>
-import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
 import DefaultSiderMenu from './default#sider-menu'
 import SwitchShop from '@/views/fragments/shop/switch'
 import Cookie from 'js-cookie'
@@ -92,7 +91,6 @@ import { UserService } from '@/services/user.service'
 export default {
   serviceInject() {
     return {
-      layoutBrandSerivce: LayoutBrandService,
       loginService: LoginService,
       userService: UserService
     }
@@ -100,7 +98,6 @@ export default {
   rxState() {
     return {
       user: this.userService.user$
-      // breadcrumbs: this.layoutBrandSerivce.breadcrumbs$
     }
   },
   data() {
