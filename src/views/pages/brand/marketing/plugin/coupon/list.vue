@@ -88,8 +88,8 @@ export default {
   computed: {
     productType() {
       let list = []
-      if (!this.couponEnums.product_range) return list
-      Object.entries(this.couponEnums.product_range.value).forEach(o => {
+      if (!this.couponEnums.coupon_status) return list
+      Object.entries(this.couponEnums.coupon_status.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
@@ -138,6 +138,10 @@ export default {
           title: '状态',
           dataIndex: 'coupon_status',
           scopedSlots: { customRender: 'coupon_status' }
+        }, {
+          title: '投放状态',
+          dataIndex: 'put_status',
+          scopedSlots: { customRender: 'put_status' }
         }, {
           title: '操作',
           dataIndex: 'action',

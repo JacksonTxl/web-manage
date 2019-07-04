@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="新增课程排期" :footer="null" v-model="show" size="484px">
+  <st-modal title="新增课程排期" :footer="null" v-model="show" width="484px">
     <st-form :form="form">
       <st-form-item label="时间" required>
         <a-date-picker showTime format="YYYY-MM-DD HH:mm" v-decorator="[
@@ -122,9 +122,7 @@ export default {
     },
     onClick() {
       this.show = false
-      this.$modalRouter.push({
-        name: 'schedule-add-course-schedule-batch'
-      })
+      this.$modalRouter.push({ name: 'schedule-team-add-course-schedule-batch' })
     }
   }
 }

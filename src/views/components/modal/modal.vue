@@ -1,3 +1,17 @@
+<template>
+  <a-modal
+    v-bind="$attrs"
+    :width="computedWidth"
+    v-on="$listeners"
+    :wrapClassName="['st-modal',wrapClassName].join(' ')"
+  >
+    <div class="st-modal__body">
+      <slot></slot>
+    </div>
+    <slot name="footer" slot="footer"></slot>
+  </a-modal>
+</template>
+
 <script>
 export default {
   name: 'StModal',
@@ -13,37 +27,36 @@ export default {
     width: {
       type: String,
       default: ''
+    },
+    wrapClassName: {
+      type: String
     }
   },
-  // round
-  render(h) {
-    let props = {}
-    if (this.size === 'small') {
-      props = { ...this.$attrs, width: 484 }
-    } else if (this.size === 'default') {
-      props = {
-        ...this.$attrs,
-        width: 676
+  computed: {
+    computedWidth() {
+      let width = 0
+      if (this.width) width = this.width
+      if (this.size === 'default') {
+        width = 676
       }
-    } else {
-      props = this.$attrs
-    }
-    if (this.width) {
-      props = {
-        ...this.$attrs,
-        width: this.width
+      if (this.size === 'small') {
+        width = 484
       }
+      return width
     }
-    return h(
-      'a-modal',
-      {
-        props,
-        scopedSlots: this.$scopedSlots,
-        on: this.$listeners
-      },
-      this.$slots.default
-
-    )
+  },
+  mounted() {
+    /**
+     * 需要modal是v-modal-link唤起的 <modal-link> 会有异步问题不要用
+     */
+    this.antModalEl = document.querySelector('.ant-modal')
+    this.antModalContentEl = document.querySelector('.ant-modal-content')
+    if (this.antModalEl && this.antModalContentEl) {
+      document.body.style = 'overflow:hidden;padding-right:6px;'
+    }
+  },
+  destroyed() {
+    document.body.style = ''
   }
 }
 </script>

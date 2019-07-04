@@ -18,6 +18,9 @@
       :page='page'
       :dataSource="tableData"
     >
+      <template slot="tooltips">
+        ID <a-icon type="smile-o" />
+      </template>
       <div slot="action">
         <st-table-actions>
           <a v-modal-link="{name:'test-sg'}">详情</a>
@@ -52,7 +55,7 @@ export default {
         total_counts: 10
       },
       columns: [
-        { title: 'id', dataIndex: 'id' },
+        { dataIndex: 'id', slots: { title: 'tooltips' }, scopedSlots: { customRender: 'id' } },
         { title: '名称', dataIndex: 'name' },
         { title: '操作', width: 180, fixed: 'right', scopedSlots: { customRender: 'action' } }
       ]

@@ -105,22 +105,6 @@
             v-if="record.auth['brand_shop:product:member_card|down']"
             @click="onShelfDown(record)"
           >下架</a>
-          <a
-            v-if="record.auth['brand_shop:product:member_card|down']"
-            @click="onShelfDown(record)"
-          >下架</a>
-          <a
-            v-if="record.auth['brand_shop:product:member_card|down']"
-            @click="onShelfDown(record)"
-          >下架</a>
-          <a
-            v-if="record.auth['brand_shop:product:member_card|down']"
-            @click="onShelfDown(record)"
-          >下架</a>
-          <a
-            v-if="record.auth['brand_shop:product:member_card|down']"
-            @click="onShelfDown(record)"
-          >下架</a>
         </st-table-actions>
       </div>
     </st-table>

@@ -7,7 +7,7 @@
           <st-info-item label="手机号">{{record.mobile}}</st-info-item>
         </st-info>
         <st-form-item label="实体卡号" required>
-          <a-input placeholder="输入实体卡号" v-decorator="basicInfoRuleList.physical_id"/>
+          <a-input placeholder="输入实体卡号" v-decorator="basicInfoRuleList.rfid"/>
         </st-form-item>
         <st-form-item label="物理ID" required>
           <a-input placeholder="请将实体卡置于读卡器上" v-decorator="basicInfoRuleList.card_num"/>
@@ -38,8 +38,8 @@ export default {
       form: this.$form.createForm(this),
       basicInfoRuleList: {
         // 实体卡
-        physical_id: [
-          'physical_id',
+        rfid: [
+          'rfid',
           {
             rules: [
               {

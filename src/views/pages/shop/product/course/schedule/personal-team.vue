@@ -174,7 +174,7 @@ export default {
             AddCard
           },
           render: h => (
-            <add-card>
+            <add-card title="添加排期">
             </add-card>
           )
         }).$mount().$el
