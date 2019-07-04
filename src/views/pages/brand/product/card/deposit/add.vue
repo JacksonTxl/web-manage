@@ -191,8 +191,8 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="20">
-              <st-form-item class="page-content-card-bg" label="卡背景" required>
-                <st-card-bg-radio v-model="cardData.bg_image" />
+              <st-form-item class="page-content-card-bg" label="卡背景" required :help="cardBgValidatorText">
+                <st-card-bg-radio @change="onCardBgChange" v-model="cardData.bg_image" />
               </st-form-item>
             </a-col>
           </a-row>
@@ -316,6 +316,8 @@ export default {
         // 售卖渠道
         card_sell_type: [2]
       },
+      // 卡背景的help文本
+      cardBgValidatorText: '',
       // 售卖时间
       start_time: null,
       end_time: null
@@ -328,8 +330,10 @@ export default {
     // 保存
     onHandleSubmit(e) {
       e.preventDefault()
+      // 校验卡背景
+      this.cardBgValidator()
       this.form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
+        if (!err && this.cardBgIsOk) {
           // 卡名称
           this.cardData.card_name = values.cardData.card_name
           // 储值金额
@@ -552,6 +556,14 @@ export default {
     },
     transfter_change(data) {
       this.cardData.transfer_num = data
+    },
+    onCardBgChange(e) {
+      this.cardBgValidatorText = ''
+    },
+    // 卡背景校验
+    cardBgValidator() {
+      let validata = this.cardData.bg_image.image_key !== ''
+      this.cardBgValidatorText = validata ? '' : '请上传卡背景'
     }
   },
   watch: {
@@ -610,6 +622,10 @@ export default {
         remove(arr, i => i.value === 1)
       }
       return arr
+    },
+    // 卡背景是否校验通过
+    cardBgIsOk() {
+      return this.cardBgValidatorText === ''
     }
   }
 }
