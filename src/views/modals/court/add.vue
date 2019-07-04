@@ -2,7 +2,7 @@
   <a-modal title="创建场地" v-model="show" wrapClassName="modal-court-add" :footer="null">
     <st-form :form="form" labelWidth="68px" labelGutter="16px">
       <st-form-item label="场地名称" required>
-        <a-input placeholder="请输入场地名称，不超过20个字" v-decorator="formRules.areaName"/>
+        <a-input placeholder="请输入场地名称，不超过10个字" maxlength="10" v-decorator="formRules.areaName"/>
       </st-form-item>
       <st-form-item labelFix>
         <a-checkbox v-decorator="formRules.isVip">是否VIP区域</a-checkbox>
