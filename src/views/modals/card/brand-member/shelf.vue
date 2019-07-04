@@ -372,7 +372,7 @@ export default {
   },
   data() {
     return {
-      show: false,
+      show: true,
       form: this.$form.createForm(this),
       radioStyle: {
         display: 'block',

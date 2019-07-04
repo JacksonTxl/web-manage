@@ -36,6 +36,6 @@ export class MissingCaedService extends Store<CardsTableModelState> {
   }
   @Effect()
   serviceInit(data: any) {
-    return forkJoin(this.getMemberPhysical(data), this.getMemberList())
+    return forkJoin(this.getMemberPhysical(data))
   }
 }
