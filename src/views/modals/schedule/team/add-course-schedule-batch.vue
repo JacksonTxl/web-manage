@@ -56,7 +56,7 @@
           @change="e => handleChange(e.target.value, record.key, 'limit_num')">
             <span  slot="suffix">人</span>
         </a-input>
-        <template v-else>{{text}}</template>
+        <template v-else>{{text}}人</template>
       </div>
     </template>
     <template  slot="course_fee" slot-scope="text, record">
@@ -68,7 +68,7 @@
           @change="e => handleChange(e.target.value, record.key, 'course_fee')">
             <span  slot="suffix" >元/节</span>
         </a-input>
-        <template v-else>{{text}}</template>
+        <template v-else>{{text}}元/节</template>
       </div>
     </template>
     <template slot="operation" slot-scope="text, record">
@@ -273,6 +273,11 @@ export default {
       }
       if (target) {
         delete target.editable
+        newData.forEach(item => {
+          if (item.key === key && key !== 0) {
+            item = this.getShowTableData(item)
+          }
+        })
         this.data = newData
         this.cacheData = newData.map(item => ({ ...item }))
       }
