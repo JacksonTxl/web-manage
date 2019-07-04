@@ -1,9 +1,9 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { ContractApi } from '@/api/v1/setting/contract'
 import { forkJoin } from 'rxjs'
-import { tap, pluck, map } from 'rxjs/operators'
+import { tap, pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { State, Computed, log } from 'rx-state'
+import { State, Computed } from 'rx-state'
 import { AuthService } from '@/services/auth.service'
 
 interface ListState {
@@ -42,9 +42,7 @@ export class ListService extends Store<ListState> implements RouteGuard {
     )
   }
   init() {
-    return forkJoin(this.getList()).pipe(tap(() => {
-      this.initBreadcrumbs()
-    }))
+    return forkJoin(this.getList())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init()
