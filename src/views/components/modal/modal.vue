@@ -34,13 +34,15 @@ export default {
   },
   computed: {
     computedWidth() {
+      let width = 0
+      if (this.width) width = this.width
       if (this.size === 'default') {
-        return 676
+        width = 676
       }
       if (this.size === 'small') {
-        return 484
+        width = 484
       }
-      return this.width
+      return width
     }
   },
   mounted() {

@@ -21,7 +21,6 @@
       @eventRender="onEventRender($event)"
       :events="reserveList"
       @dateClick="handleDateClick"/>
-      <personal-reseve-table v-if="isTable"></personal-reseve-table>
 </div>
 
 </template>
@@ -35,12 +34,10 @@ import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
 import { PersonalScheduleReserveService } from './personal.service#/reserve.service'
-import PersonalReseveTable from '@/views/pages/shop/product/course/schedule/personal#/personal-reseve-table'
 import AddCard from './date#/add-card'
 export default {
   name: 'SchedulePersonalTeam',
   components: {
-    PersonalReseveTable,
     FullCalendar // make the <FullCalendar> tag available
   },
   serviceInject() {
@@ -104,7 +101,7 @@ export default {
             }
             that.$set(that.header, 'right', 'timeGridWeek,timeGridDay, custom4')
             that.$nextTick().then(() => {
-              this.isTable = true
+              that.$router.push({ name: 'shop-product-course-schedule-personal-reseve-table' })
             })
           }
         },
@@ -118,7 +115,7 @@ export default {
             }
             that.$set(that.header, 'right', 'listWeek,listDay, custom4')
             that.$nextTick().then(() => {
-              that.$router.push({ name: 'shop-product-course-schedule-personal-table' })
+              that.$router.push({ name: 'shop-product-course-schedule-personal-reseve-table' })
             })
           }
         }

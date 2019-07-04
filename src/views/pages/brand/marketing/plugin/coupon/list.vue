@@ -139,6 +139,10 @@ export default {
           dataIndex: 'coupon_status',
           scopedSlots: { customRender: 'coupon_status' }
         }, {
+          title: '投放状态',
+          dataIndex: 'put_status',
+          scopedSlots: { customRender: 'put_status' }
+        }, {
           title: '操作',
           dataIndex: 'action',
           width: 140,

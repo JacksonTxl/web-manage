@@ -219,6 +219,10 @@ export default {
         this.onErrorTip('请输入座位数量')
         return false
       }
+      if (seatNum > this.resData.contain_number) {
+        this.onErrorTip('座位数量不能超过场地的最大容纳人数')
+        return false
+      }
       return true
     },
     onErrorTip(msg) {
