@@ -16,6 +16,7 @@
             :rowSelection="{ fixed: true, columnTitle:'分配',type: 'radio',selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
             :columns="columns"
             :dataSource="list"
+            rowKey="id"
             @change="handleTableChange"
             :pagination="false"
             />
