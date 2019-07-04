@@ -1,12 +1,13 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
-import { tap, pluck, map } from 'rxjs/operators'
+import { tap, pluck, map, delay } from 'rxjs/operators'
 import { Store } from './store'
 import { forkJoin, of } from 'rxjs'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
 import { StaffApi } from '@/api/v1/staff'
 import { get } from 'lodash-es'
+import { NProgressService } from './nprogress.service'
 
 interface UserState {
   user: {}
@@ -70,7 +71,8 @@ export class UserService extends Store<UserState> {
   constructor(
     private constApi: ConstApi,
     private menuApi: MenuApi,
-    private staffApi: StaffApi
+    private staffApi: StaffApi,
+    private nprogress: NProgressService
   ) {
     super()
     const initialState = {
@@ -217,10 +219,13 @@ export class UserService extends Store<UserState> {
     return this.menuApi.delFavorite(id)
   }
   init(force: boolean = false) {
-    this.getOptions('member.education_level').subscribe()
     return forkJoin(this.getUser(), this.getMenus(), this.getEnums())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.init()
+    return this.init().pipe(
+      tap(() => {
+        this.nprogress.inc()
+      })
+    )
   }
 }

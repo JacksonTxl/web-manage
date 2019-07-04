@@ -57,7 +57,7 @@
         </a-row>
       </div>
       <div v-if="info.is_member_pic" :class="b('avatar')">
-        <img src="a.png" alt>
+        <img src="~@/assets/img/avatar_default_contract.png" alt="avatar">
       </div>
     </section>
     <section :class="b('product')">

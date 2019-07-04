@@ -127,12 +127,13 @@ module.exports = {
         vue: 'window.Vue',
         'vue-router': 'window.VueRouter',
         moment: 'window.moment',
-        'ant-design-vue': 'window.antd'
+        'ant-design-vue': 'window.antd',
+        immer: 'window.immer'
       })
       .plugin('external-vendor')
       .use(WebpackExternalVendorPlugin, [
         {
-          filename: 'js/[name].[hash:8].js',
+          filename: 'js/[name].[hash:8][ext]',
           entry: {
             'base-vendors': [
               IS_DEV ? 'vue/dist/vue.js' : 'vue/dist/vue.min.js',
@@ -143,8 +144,10 @@ module.exports = {
               'moment/locale/zh-cn.js',
               IS_DEV
                 ? 'ant-design-vue/dist/antd.js'
-                : 'ant-design-vue/dist/antd.min.js'
-            ]
+                : 'ant-design-vue/dist/antd.min.js',
+              'immer/dist/immer.umd.js'
+            ],
+            'base': ['./antd.css']
           }
         }
       ])
@@ -184,7 +187,7 @@ module.exports = {
       })
       return definitions
     })
-    // config.plugin('progress').use(webpack.ProgressPlugin).end()
+    // config.plugins.delete('progress')
     config.resolve.alias.set(
       'vue-service-app',
       path.join(__dirname, '/vue-service-app')

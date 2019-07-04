@@ -3,8 +3,9 @@ import { State, Computed, log } from 'rx-state'
 import { tap, pluck, map } from 'rxjs/operators'
 import { Store } from './store'
 import { AuthApi } from '@/api/v1/common/auth'
-import { of } from 'rxjs'
+import { of, forkJoin } from 'rxjs'
 import { get, set } from 'lodash-es'
+import { NProgressService } from './nprogress.service'
 
 interface AuthState {
   auth: object
@@ -17,9 +18,7 @@ interface DataState {
 export class AuthService extends Store<AuthState> {
   state$: State<AuthState>
   auth$: Computed<object>
-  constructor(
-    private authApi: AuthApi
-  ) {
+  constructor(private authApi: AuthApi, private nprogress: NProgressService) {
     super()
     const initialState = {
       auth: {}
@@ -102,7 +101,14 @@ export class AuthService extends Store<AuthState> {
   can(authKey: string) {
     return 1
   }
+  init() {
+    return forkJoin([this.getList()])
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.getList()
+    return this.init().pipe(
+      tap(() => {
+        this.nprogress.inc()
+      })
+    )
   }
 }

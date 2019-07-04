@@ -56,7 +56,7 @@
           @change="e => handleChange(e.target.value, record.key, 'limit_num')">
             <span  slot="suffix">人</span>
         </a-input>
-        <template v-else>{{text}}</template>
+        <template v-else>{{text}}人</template>
       </div>
     </template>
     <template  slot="course_fee" slot-scope="text, record">
@@ -68,7 +68,7 @@
           @change="e => handleChange(e.target.value, record.key, 'course_fee')">
             <span  slot="suffix" >元/节</span>
         </a-input>
-        <template v-else>{{text}}</template>
+        <template v-else>{{text}}元/节</template>
       </div>
     </template>
     <template slot="operation" slot-scope="text, record">
@@ -178,6 +178,7 @@ export default {
           delete item.key
           delete item.editable
           item.start_time = moment(item.start_time).format('YYYY-MM-DD HH:mm:ss').valueOf()
+          item.court_id = item.court_site_id[0]
           item.court_site_id = item.court_site_id[1]
           item.limit_num = parseInt(item.limit_num)
           item.course_fee = parseInt(item.course_fee)
@@ -272,6 +273,11 @@ export default {
       }
       if (target) {
         delete target.editable
+        newData.forEach(item => {
+          if (item.key === key && key !== 0) {
+            item = this.getShowTableData(item)
+          }
+        })
         this.data = newData
         this.cacheData = newData.map(item => ({ ...item }))
       }

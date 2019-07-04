@@ -14,6 +14,12 @@ gulp.task('route', done => {
   done()
 })
 
+gulp.task('install-deps', () => {
+  return spawn('yarn', ['install'], {
+    stdio: 'inherit'
+  })
+})
+
 gulp.task('route:watch', () => {
   gulp
     .watch(['./src/views/pages/**/*.vue', './src/views/pages/**/*.service.ts'])
@@ -46,12 +52,7 @@ gulp.task('less-base', () => {
         ]
       })
     )
-    .pipe(
-      gulpHash({
-        format: '{name}.{hash:5}{ext}'
-      })
-    )
-    .pipe(gulp.dest('./public/style'))
+    .pipe(gulp.dest('./'))
 })
 
 gulp.task('less-views', () => {
@@ -89,7 +90,7 @@ gulp.task('serve', () => {
 gulp.task(
   'dev',
   gulp.series(
-    ['route', 'less-views'],
+    ['install-deps', 'route', 'less-views'],
     gulp.parallel(['serve', 'route:watch', 'less-views:watch'])
   )
 )

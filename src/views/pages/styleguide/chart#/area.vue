@@ -11,7 +11,7 @@
   </section>
 </template>
 <script>
-import StAreaChart from '@/views/components/chart#/area'
+import StAreaChart from '@/views/biz-components/chart/area'
 export default {
   components: {
     StAreaChart

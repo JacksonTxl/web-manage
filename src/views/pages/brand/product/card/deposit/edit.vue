@@ -15,35 +15,35 @@
           <a-row :gutter="8">
             <a-col :lg="16">
               <st-form-item label="储值金额" required>
-                <a-input v-decorator="[
+                <st-input-number :float="true" :min="1" :max="9999999.9" v-decorator="[
                   'cardData.card_price',
                   {rules: [{ validator: card_price_validator}]}
                 ]"
                   style="width: 360px"
                   placeholder="请输入储值金额">
-                  <span slot="suffix">元</span>
-                </a-input>
+                  <span slot="addonAfter">元</span>
+                </st-input-number>
               </st-form-item>
             </a-col>
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="22">
               <st-form-item label="售卖价格" required>
-                <a-input v-decorator="[
+                <st-input-number :float="true" :min="0" :max="9999999.9" v-decorator="[
                   'cardData.sell_price',
                   {rules: [{ validator: sell_price_validator}]}
                 ]"
                   style="width: 360px"
                   placeholder="请输入售卖价格">
-                  <span slot="suffix">元</span>
-                </a-input>
+                  <span slot="addonAfter">元</span>
+                </st-input-number>
               </st-form-item>
             </a-col>
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="22">
               <st-form-item label="期限" required>
-                <a-input v-decorator="[
+                <st-input-number :min="1" :max="99999" v-decorator="[
                   'cardData.num',
                   {rules: [{ validator: num_validator}]}
                 ]"
@@ -55,7 +55,7 @@
                     :value="+item[0]"
                     :key="index" >{{item[1]}}</a-select-option>
                   </a-select>
-                </a-input>
+                </st-input-number>
               </st-form-item>
             </a-col>
           </a-row>
@@ -183,8 +183,8 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="20">
-              <st-form-item class="page-content-card-bg" label="卡背景" required>
-                <st-card-bg-radio v-model="cardData.bg_image" />
+              <st-form-item class="page-content-card-bg" label="卡背景" required :help="cardBgValidatorText">
+                <st-card-bg-radio @change="onCardBgChange" v-model="cardData.bg_image" />
               </st-form-item>
             </a-col>
           </a-row>
@@ -312,6 +312,8 @@ export default {
         // 售卖渠道
         card_sell_type: [2]
       },
+      // 卡背景的help文本
+      cardBgValidatorText: '',
       transfer_unit_is_first: true,
       // 售卖时间
       start_time: null,
@@ -371,8 +373,10 @@ export default {
     // 保存
     onHandleSubmit(e) {
       e.preventDefault()
+      // 校验卡背景
+      this.cardBgValidator()
       this.form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
+        if (!err && this.cardBgIsOk) {
           // 卡名称
           this.cardData.card_name = values.cardData.card_name
           // 储值金额
@@ -588,6 +592,14 @@ export default {
     },
     transfter_change(data) {
       this.cardData.transfer_num = data
+    },
+    onCardBgChange(e) {
+      this.cardBgValidatorText = ''
+    },
+    // 卡背景校验
+    cardBgValidator() {
+      let validata = this.cardData.bg_image.image_key !== ''
+      this.cardBgValidatorText = validata ? '' : '请上传卡背景'
     }
   },
   watch: {
@@ -650,6 +662,10 @@ export default {
         remove(arr, i => i.value === 1)
       }
       return arr
+    },
+    // 卡背景是否校验通过
+    cardBgIsOk() {
+      return this.cardBgValidatorText === ''
     }
   }
 }

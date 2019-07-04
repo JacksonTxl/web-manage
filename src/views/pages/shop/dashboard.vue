@@ -231,7 +231,7 @@
 </template>
 <script>
 import PlugIn from '@/views/pages/brand/dashboard#/plug-in'
-import FunnelVertical from '@/views/components/chart#/funnel-vertical'
+import FunnelVertical from '@/views/biz-components/chart/funnel-vertical'
 import ShopRevenueRing from '@/views/biz-components/stat/shop-revenue-ring'
 import ShopRevenueLine from '@/views/biz-components/stat/shop-revenue-line'
 import ShopCourseLine from '@/views/biz-components/stat/shop-course-line'

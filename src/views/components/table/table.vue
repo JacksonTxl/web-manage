@@ -46,6 +46,10 @@ export default {
     if (page.total_counts) {
       props.pagination.total = +page.total_counts
     }
+    const renderChildren = []
+    for (let k in this.$slots) {
+      renderChildren.push(h('template', { slot: k }, this.$slots[k]))
+    }
     const ce = this.alertSelection.onReset ? h('div', { class: 'st-table-wapper' }, [
       h('a-alert', {
         class: 'st-table-alert mg-b8',
@@ -66,7 +70,7 @@ export default {
           scopedSlots: this.$scopedSlots,
           slot: this.$slots
         },
-        this.$slots
+        renderChildren
       )]
     ) : h(
       'a-table',
@@ -77,7 +81,7 @@ export default {
         scopedSlots: this.$scopedSlots,
         slot: this.$slots
       },
-      this.$slots
+      renderChildren
     )
     return ce
   }

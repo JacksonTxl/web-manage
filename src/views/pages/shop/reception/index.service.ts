@@ -1,6 +1,6 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Action } from 'rx-state'
-import { FrontApi, GetMemberListInput, SetEntranceInput, EditEntranceCabinetInput } from '@/api/v1/front'
+import { FrontApi, GetMemberListInput, SetEntranceInput, EditEntranceCabinetInput, EditSellerInput, EditCoachInput } from '@/api/v1/front'
 import { tap, debounceTime, switchMap, catchError } from 'rxjs/operators'
 import { forkJoin, EMPTY } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
@@ -148,8 +148,19 @@ export class IndexService implements RouteGuard {
     return this.frontApi.editEntranceCabinet(params)
   }
   // 离场
+  @Effect()
   setEntranceLeave(id:string) {
     return this.frontApi.setEntranceLeave(id)
+  }
+  // 修改跟进销售
+  @Effect()
+  editSeller(params: EditSellerInput) {
+    return this.frontApi.editSeller(params)
+  }
+  // 修改跟进教练
+  @Effect()
+  editCoach(params: EditCoachInput) {
+    return this.frontApi.editCoach(params)
   }
   init() {
     return forkJoin(

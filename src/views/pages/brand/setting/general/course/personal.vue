@@ -117,10 +117,11 @@ export default {
     onEditPricingSetting() {
       const isChanged = this.pricingInfo.is_changed
       const that = this
+      const msg = this.pricingInfo.changed_desc
       if (isChanged) {
         this.$confirm({
           title: '',
-          content: '私教售出模式从{统一定价}切换至{教练谈单}将于次日01:00开始执行',
+          content: msg,
           okText: '保持切换',
           cancelText: '放弃切换',
           /**
@@ -133,7 +134,7 @@ export default {
            * 放弃切换
            */
           onCancel() {
-
+            that.personalService.del().subscribe(that.onChange)
           }
         })
       } else {

@@ -7,19 +7,21 @@ import { pluck } from 'rxjs/operators'
  */
 @Injectable()
 export class RouteService implements RouteGuard {
-  to$: State<ServiceRoute>
-  query$: Computed<any>
-  layout$: Computed<string>
+  query$: State<any>
+  layout$: State<string>
   constructor() {
-    this.to$ = new State({})
-    this.query$ = new Computed(this.to$.pipe(pluck('meta', 'query')))
-    this.layout$ = new Computed(this.to$.pipe(pluck('meta', 'layout')))
+    this.query$ = new State({})
+    this.layout$ = new State('')
+  }
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
+    this.query$.commit(() => to.meta.query)
+    next()
   }
   afterEach(to: ServiceRoute, from: ServiceRoute) {
     if (!to.meta.layout && to.name) {
       console.warn(`can not find meta.layout on route -> ${to.name}`)
     } else {
-      this.to$.commit(() => to)
+      this.layout$.commit(() => to.meta.layout)
     }
   }
 }
