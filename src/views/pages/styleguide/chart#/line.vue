@@ -9,7 +9,7 @@
   </section>
 </template>
 <script>
-import StLineChart from '@/views/components/chart#/line'
+import StLineChart from '@/views/biz-components/chart/line'
 export default {
   components: {
     StLineChart

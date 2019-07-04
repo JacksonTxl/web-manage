@@ -13538,10 +13538,10 @@ webpack-dev-server@^3.3.1:
     webpack-log "^2.0.0"
     yargs "12.0.5"
 
-webpack-external-vendor-plugin@^1.0.0:
-  version "1.0.0"
-  resolved "http://registry.npm.taobao.org/webpack-external-vendor-plugin/download/webpack-external-vendor-plugin-1.0.0.tgz#5c706afbe55b2118df9a597894c32f64bf700a28"
-  integrity sha1-XHBq++VbIRjfmll4lMMvZL9wCig=
+webpack-external-vendor-plugin@1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npm.taobao.org/webpack-external-vendor-plugin/download/webpack-external-vendor-plugin-1.1.1.tgz?cache=0&sync_timestamp=1562223071723&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwebpack-external-vendor-plugin%2Fdownload%2Fwebpack-external-vendor-plugin-1.1.1.tgz#fb84370e65297ea3a37d782c3d12ce65df03bc7a"
+  integrity sha1-+4Q3DmUpfqOjfXgsPRLOZd8DvHo=
   dependencies:
     fs-extra "^5.0.0"
     globby "^7.1.1"

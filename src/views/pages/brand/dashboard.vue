@@ -130,7 +130,7 @@ import BrandUserAvgBar from '@/views/biz-components/stat/brand-user-avg-bar'
 import DashboardTabs from '@/views/pages/brand/dashboard#/tabs'
 import CountCard from '@/views/pages/brand/dashboard#/count-card'
 import PlugIn from '@/views/pages/brand/dashboard#/plug-in'
-import FunnelVertical from '@/views/components/chart#/funnel-vertical'
+import FunnelVertical from '@/views/biz-components/chart/funnel-vertical'
 import { DashboardService } from './dashboard.service'
 export default {
   name: 'Dashboard',
