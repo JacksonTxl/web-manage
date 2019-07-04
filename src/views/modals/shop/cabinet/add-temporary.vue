@@ -6,7 +6,7 @@
     @ok="onSubmit"
     @cancel="onCancel"
   >
-    <st-form :form="form" labelWidth="70px">
+    <st-form :form="form" labelWidth="85px">
       <st-form-item label="区域">
         <a-input :value="areaName" disabled/>
       </st-form-item>
