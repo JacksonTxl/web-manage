@@ -13,12 +13,13 @@ interface CardsTableModelState {
 export class MissingCaedService extends Store<CardsTableModelState> {
   paymentMethodList$ = new State({});
   staffList$ = new State([])
+  // loading$ = new State({});
   constructor(private memberApi: MemberApi, private transactionApi: TransactionApi) {
     super()
   }
   @Effect()
-  getMemberList(member:string, type: number) {
-    return this.transactionApi.getMemberList(member, type).pipe(tap((res:any) => {
+  getMemberList(key_word:string) {
+    return this.memberApi.getSearchMemberList({ key_word }).pipe(tap((res:any) => {
       this.staffList$.commit(() => res.list)
     }))
   }
