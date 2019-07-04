@@ -3,6 +3,9 @@ import { ServiceRoute } from 'vue-service-app'
 import nProgress from 'nprogress'
 
 export class NProgressService {
+  inc() {
+    nProgress.inc()
+  }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
     nProgress.start()
     next()

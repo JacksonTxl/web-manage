@@ -46,12 +46,7 @@ gulp.task('less-base', () => {
         ]
       })
     )
-    .pipe(
-      gulpHash({
-        format: '{name}.{hash:5}{ext}'
-      })
-    )
-    .pipe(gulp.dest('./public/style'))
+    .pipe(gulp.dest('./'))
 })
 
 gulp.task('less-views', () => {

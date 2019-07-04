@@ -44,9 +44,6 @@ export default {
       start: '',
       end: '',
       schedule_info: [{
-        time_type: 0,
-        timing: []
-      }, {
         time_type: 1,
         timing: []
       }, {
@@ -62,7 +59,10 @@ export default {
         time_type: 5,
         timing: []
       }, {
-        time_type: 6,
+        time_type: 2,
+        timing: []
+      }, {
+        time_type: 0,
         timing: []
       }]
     }

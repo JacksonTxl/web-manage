@@ -12,7 +12,7 @@
 
 <script>
 // 按需引入
-import StEditor from '@/views/components/editor#/editor.vue'
+import StEditor from '@/views/biz-components/editor/editor.vue'
 export default {
   components: {
     StEditor

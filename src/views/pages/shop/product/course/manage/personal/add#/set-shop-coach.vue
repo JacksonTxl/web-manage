@@ -9,7 +9,10 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
-        <st-form-item label="上课教练">
+        <st-form-item>
+          <template slot="label">
+            上课教练<st-help-tooltip id="TSCPC001" />
+          </template>
           <div class="page-shop-coach-container-coach">
             <input type="hidden" v-decorator="ruleConfig.coachIds">
             <select-coach :shopIds="shopIds" @change="onSelectCoachChange"></select-coach>
