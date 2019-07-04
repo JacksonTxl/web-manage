@@ -48,7 +48,12 @@
         </st-container>
       </div>
       <div class="page-personal-content__item">
-        <div class="title mg-b8"><span class="label">售价设置:</span><span class="value">门店定价</span></div>
+        <div class="title mg-b8"><span class="label">售价渠道:</span><span class="value">门店定价</span></div>
+        <div class="title mg-b8"><span class="label">单节有效期:</span><span class="value">门店定价</span></div>
+        <div class="title mg-b8"><span class="label">定价权限:</span><span class="value">门店定价</span></div>
+        <div class="title mg-b8"><span class="label">单节售卖:</span><span class="value">门店定价</span></div>
+        <div class="title mg-b8"><span class="label">售卖定价:</span><span class="value"></span></div>
+
         <st-container>
           <st-table :columns="priceConfigColumns" :dataSource="info.price_gradient">
             <div slot="sale" slot-scope="sale, record">{{record.min_sale}} ~ {{record.max_sale}}</div>
@@ -74,6 +79,11 @@ export default {
   rxState() {
     return {
       info: this.infoService.info$
+    }
+  },
+  computed: {
+    price_gradient() {
+      return this.info.price_gradient[0]
     }
   },
   data() {
