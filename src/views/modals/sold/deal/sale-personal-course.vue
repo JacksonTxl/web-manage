@@ -579,7 +579,7 @@ export default {
     },
     onCreateOrder() {
       if (!this.isAmountDisabled) {
-        this.isAmountStateTip = '请点击购买数量确定按钮'
+        this.isAmountStateTip = '购买数量未确认，请点击确定！'
         return
       }
       this.form.validateFields((error, values) => {
@@ -614,7 +614,7 @@ export default {
     },
     onPay() {
       if (!this.isAmountDisabled) {
-        this.isAmountStateTip = '请点击购买数量确定按钮'
+        this.isAmountStateTip = '购买数量未确认，请点击确定！'
         return
       }
       this.form.validateFields((error, values) => {
