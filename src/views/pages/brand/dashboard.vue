@@ -6,6 +6,9 @@
           <a-col :span="6" :class="bCount('item')">
             <div :class="bCount('box')">
               <count-card title="今日营收额" :count="this.revenue.num" :footer="{label: '近7天日均营收额:', value: this.revenue.avg }" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
+                <template slot="title">
+                  aaa
+                </template>
                 <brand-simple-line :data="this.revenue.chart | lineFilter"></brand-simple-line>
               </count-card>
             </div>
