@@ -4,7 +4,6 @@ import { forkJoin } from 'rxjs'
 import { tap, pluck, map } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { State, Computed, log } from 'rx-state'
-import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
 import { AuthService } from '@/services/auth.service'
 
 interface ListState {
@@ -18,7 +17,6 @@ export class ListService extends Store<ListState> implements RouteGuard {
   auth$: Computed<any[]>
   constructor(
     private contractApi: ContractApi,
-    private layoutBrand: LayoutBrandService,
     private authService: AuthService
   ) {
     super()
@@ -47,14 +45,6 @@ export class ListService extends Store<ListState> implements RouteGuard {
     return forkJoin(this.getList()).pipe(tap(() => {
       this.initBreadcrumbs()
     }))
-  }
-  initBreadcrumbs() {
-    this.layoutBrand.SET_BREADCRUMBS([
-      {
-        label: '合同模版列表',
-        route: { name: '' }
-      }
-    ])
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init()

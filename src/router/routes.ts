@@ -7,8 +7,6 @@ import pageRoutes from './auto-generated-routes'
 import { TitleService } from '@/services/title.service'
 import { RouteService } from '@/services/route.service'
 import { AuthService } from '@/services/auth.service'
-import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
-import { LayoutShopService } from '@/services/layouts/layout-shop.service'
 import { routeMapConfig } from './route-map.config'
 
 const routes: any[] = [
@@ -79,12 +77,6 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
         AuthService,
         RouteService
       ]
-      if (route.name.startsWith('brand')) {
-        appGuards.push(LayoutBrandService)
-      }
-      if (route.name.startsWith('shop')) {
-        appGuards.push(LayoutShopService)
-      }
       prependGuards(route, appGuards)
     }
     // 规范title i18n 名称

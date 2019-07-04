@@ -2,12 +2,7 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { LayoutBrandService } from '@/services/layouts/layout-brand.service'
-import {
-  AreaSeatApi,
-  AddInput,
-  UpdateInput
-} from '@/api/v1/shop/area_seat'
+import { AreaSeatApi, AddInput, UpdateInput } from '@/api/v1/shop/area_seat'
 
 interface ResState {
   resData: object
@@ -16,10 +11,7 @@ interface ResState {
 export class SiteService extends Store<ResState> {
   state$: State<ResState>
   resData$: Computed<object>
-  constructor(
-    private areaSeatApi: AreaSeatApi,
-    private layoutBrand: LayoutBrandService
-  ) {
+  constructor(private areaSeatApi: AreaSeatApi) {
     super()
     this.state$ = new State({
       resData: {}
@@ -30,14 +22,6 @@ export class SiteService extends Store<ResState> {
     this.state$.commit(state => {
       state.resData = data
     })
-  }
-  initPageBreadcrumbs() {
-    this.layoutBrand.SET_BREADCRUMBS([
-      {
-        label: '场地列表',
-        route: { name: 'shop-setting-court-list' }
-      }
-    ])
   }
   @Effect()
   add(params: AddInput) {
@@ -59,10 +43,6 @@ export class SiteService extends Store<ResState> {
     return this.areaSeatApi.del(id)
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getInfo(to.meta.query.id).subscribe(() => {
-      this.initPageBreadcrumbs()
-      next()
-    }, () => { next(false) })
-    next()
+    return this.getInfo(to.meta.query.id)
   }
 }
