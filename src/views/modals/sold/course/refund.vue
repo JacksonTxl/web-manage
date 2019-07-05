@@ -30,11 +30,7 @@
             <st-info-item class="mg-b0" label="赠送">无</st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="24" class="mgb-36">
-          <st-info>
-            <st-info-item class="mg-b0" label="备注">{{packageInfo.description || '无'}}</st-info-item>
-          </st-info>
-        </a-col>
+
         <a-col :span="13" class="mgb-24">
           <st-info>
             <st-info-item label="订单总额">{{packageInfo.total_price}}元</st-info-item>
@@ -45,6 +41,11 @@
            <st-info>
             <st-info-item label="应收金额">{{packageInfo.receivable_price}}元</st-info-item>
             <st-info-item class="mg-b0" label="实收金额">{{packageInfo.pay_price}}元</st-info-item>
+          </st-info>
+        </a-col>
+        <a-col :span="24" class="mgb-36">
+          <st-info>
+            <st-info-item class="mg-b0" label="备注">{{packageInfo.description || '无'}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
