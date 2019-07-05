@@ -649,5 +649,20 @@ export const routeMapConfig = {
   'extra-contract-preview'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '合同预览'
     routeConfig.meta.layout = 'blank'
+  },
+  'brand-marketing-activity'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '活动广告'
+  },
+  'brand-setting-mina-index'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '用户端设置'
+  },
+  '-brand-marketing-plugin'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '营销插件'
+  },
+  'brand-marketing-plugin-coupon-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新增优惠券'
+  },
+  'brand-marketing-plugin-invitation-index'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '邀请有礼'
   }
 }

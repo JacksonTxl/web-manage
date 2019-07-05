@@ -15,20 +15,25 @@
         <a-row>
           <a-col :span="20">
             <a-row :gutter="24">
-              <a-col :span="8">
-                微信商户名称：xxx
+              <a-col :span="7">
+                微信商户名称：{{wechatInfo.wechat_account_name}}
               </a-col>
-              <a-col :span="8">
-                微信商户号：xxx
+              <a-col :span="7">
+                微信商户号：{{wechatInfo.wechat_account_num}}
               </a-col>
-              <a-col :span="8">
-                API密钥：xxxx
+              <a-col :span="10">
+                API密钥：{{wechatInfo.wechat_api_key}}
               </a-col>
             </a-row>
           </a-col>
           <a-col :span="4" class="ta-r" v-if="auth.edit">
             <a href="javascript: void(0)"
-              v-modal-link="{ name:'brand-setting-wechat-payment' }"
+              v-modal-link="{
+                name:'brand-setting-wechat-payment',
+                on: {
+                  change: onListChange
+                }
+              }"
             >
               <st-icon type="edit"></st-icon>
               <span class="mg-l4 color-text-light">编辑</span>
@@ -84,7 +89,8 @@ export default {
     const payTypeService = this.payTypeService
     return {
       loading: payTypeService.loading$,
-      info: payTypeService.resData$,
+      info: payTypeService.info$,
+      wechatInfo: payTypeService.wechatPaymentInfo$,
       auth: payTypeService.auth$
     }
   },
