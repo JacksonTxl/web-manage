@@ -99,6 +99,9 @@
       <p>
         <img :src="pic1" alt="">
       </p>
+      <p>
+        <st-textarea :autosize="{ minRow: 2, maxRow: 5}"></st-textarea>
+      </p>
     </st-panel>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
   </div>

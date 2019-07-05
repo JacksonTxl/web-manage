@@ -52,9 +52,6 @@ export class PatternService {
   }
 }
 
-export interface Opts {
-  [key: string]: any
-}
 export interface RegExpMap {
   [key: string]: string
 }

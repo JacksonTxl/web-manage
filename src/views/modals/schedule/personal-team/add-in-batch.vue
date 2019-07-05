@@ -37,7 +37,7 @@
         :value="text"
         style="width: 180px"
         @change="e => handleChange(e, record.key, 'coach_id')">
-        <a-select-option v-for="coach in coachOptions" :key="coach.id">{{coach.name}}</a-select-option>
+        <a-select-option v-for="coach in courseCoachOptions" :key="coach.id">{{coach.name}}</a-select-option>
       </a-select>
       <template v-else>{{record.show.coach_id_show}}</template>
     </template>
@@ -126,8 +126,8 @@ export default {
   rxState() {
     const commonService = this.commonService
     return {
-      coachOptions: commonService.coachOptions$,
-      courseOptions: commonService.courseOptions$
+      courseOptions: commonService.courseOptions$,
+      courseCoachOptions: commonService.courseCoachOptions$
     }
   },
   data() {
@@ -183,6 +183,10 @@ export default {
     handleChange(value, key, column) {
       const newData = [...this.data]
       const target = newData.filter(item => key === item.key)[0]
+      if (column === 'course_id') {
+        this.commonService.getCourseCoachList(value).subscribe()
+        target.coach_id = ''
+      }
       if (target) {
         target[column] = value
         this.data = newData
@@ -211,11 +215,11 @@ export default {
       data.show = {}
       data.show.start_time_show = moment(data.start_time).format('YYYY-MM-DD HH:mm')
       data.show.course_id_show = this.getOptionName(data.course_id, this.courseOptions, 'name')
-      data.show.coach_id_show = this.getOptionName(data.coach_id, this.coachOptions, 'name')
+      data.show.coach_id_show = this.getOptionName(data.coach_id, this.courseCoachOptions, 'name')
       return data
     },
     getOptionName(id, options, name) {
-      let option = ''
+      let option = []
       options.forEach(ele => {
         if (ele.id === id) {
           option = ele[name]
@@ -245,11 +249,13 @@ export default {
       }
       if (target) {
         delete target.editable
-        newData.forEach(item => {
-          if (item.key === key && key !== 0) {
-            item = this.getShowTableData(item)
-          }
-        })
+        if (newData.length) {
+          newData.forEach(item => {
+            if (item.key === key && key !== 0) {
+              item = this.getShowTableData(item)
+            }
+          })
+        }
         this.data = newData
         this.cacheData = newData.map(item => ({ ...item }))
       }

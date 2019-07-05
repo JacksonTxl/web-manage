@@ -23,7 +23,7 @@
           </a-select>
         </st-form-item>
         <st-form-item label="备注">
-          <a-textarea v-decorator="['description']" :autosize="{ minRows: 4, maxRows: 6 }" />
+          <st-textarea :maxlength="30" v-decorator="['description']" :autosize="{ minRows: 4, maxRows: 6 }" />
         </st-form-item>
       </div>
     </st-form>

@@ -89,6 +89,12 @@ export class OrderApi extends Api {
     return this.http.get(`/v1/finance/flow/${orderId}`)
   }
   /**
+   * 获取商品详情
+   */
+  getCommodityInfo(orderId: string) {
+    return this.http.get(`/v1/finance/order/product/${orderId}`)
+  }
+  /**
    * 流水详情
    */
   getFlowDetail(flowId: string) {

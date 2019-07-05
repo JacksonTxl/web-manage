@@ -2,22 +2,22 @@ import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { OrderApi } from '@/api/v1/finance/order'
-import { TransactionApi } from '@/api/v1/sold/transaction'
 
 @Injectable()
 export class CommodityInfoService implements RouteGuard {
   info$ = new State({})
+  product_type$ = new State({})
   loading$ = new State({})
-  constructor(private orderApi: OrderApi, private tansactionApi: TransactionApi) {}
+  constructor(private orderApi: OrderApi) {}
   @Effect()
-  getInfo(id:string, type: string) {
-    return this.tansactionApi.getTransactionInfo(id, type).pipe(tap((res:any) => {
+  getCommodityInfo(id:string) {
+    return this.orderApi.getCommodityInfo(id).pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next:()=>{}) {
-    console.log(to)
-    this.getInfo(to.meta.query.id, to.meta.query.type).subscribe(() => {
+    this.product_type$.commit(() => to.meta.query.type)
+    this.getCommodityInfo(to.meta.query.id).subscribe(() => {
       next()
     })
   }

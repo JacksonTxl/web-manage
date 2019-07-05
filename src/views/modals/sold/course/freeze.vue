@@ -44,7 +44,7 @@
             </div>
           </st-form-item>
           <st-form-item label="手续费" labelGutter="12px">
-            <st-input-number :max="99999.9" v-model="frozen_fee" @change="onFrozenChange" :float="true">
+            <st-input-number :min="0.1" :max="99999.9" v-model="frozen_fee" @change="onFrozenChange" :float="true">
               <template slot="addonAfter">元</template>
             </st-input-number>
           </st-form-item>

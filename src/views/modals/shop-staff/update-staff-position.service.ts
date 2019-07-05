@@ -12,12 +12,12 @@ import {
 import { forkJoin } from 'rxjs'
 
 interface SetState {
-    positionInfo: object,
-    staffEnums: object,
-    coachLevelList: object[],
-    salaryBasic: any[],
-    salarySale: any[]
-    salaryCourse: any[]
+  positionInfo: object,
+  staffEnums: object,
+  coachLevelList: object[],
+  salaryBasic: any[],
+  salarySale: any[]
+  salaryCourse: any[]
 }
 @Injectable()
 export class UpdateStaffPositionService extends Store<SetState> {
@@ -78,6 +78,7 @@ export class UpdateStaffPositionService extends Store<SetState> {
   getStaffBrandPosition(id: string) {
     return this.staffApi.getStaffBrandPosition({ id }).pipe(tap(res => {
       this.state$.commit(state => {
+        console.log('getStaffBrandPosition')
         state.positionInfo = res.position
       })
     }))
@@ -93,5 +94,9 @@ export class UpdateStaffPositionService extends Store<SetState> {
         content: '提交成功'
       })
     }))
+  }
+  @Effect()
+  validatStaffPosition(id: number) {
+    return this.staffApi.validatStaffPosition(id)
   }
 }

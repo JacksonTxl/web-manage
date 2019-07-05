@@ -53,7 +53,12 @@
         <st-table
           :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
           :alertSelection="{onReset: onClear}"
-          :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
+          :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange,
+           getCheckboxProps: record => ({
+              props: {
+                disabled: disabledSelect(record), // Column configuration not to be checked
+              }
+           })}"
           rowKey="id"
           @change="onPageChange"
           :columns="columns"
@@ -242,6 +247,15 @@ export default {
     }
   },
   methods: {
+    disabledSelect(record) {
+      if (record.card_status !== 1) {
+        return true
+      }
+      if (!this.selectedRows || this.selectedRows.length <= 0) {
+        return false
+      }
+      return record.card_type !== this.selectedRows[0]['card_type']
+    },
     onPageChange(data) {
       this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
     },

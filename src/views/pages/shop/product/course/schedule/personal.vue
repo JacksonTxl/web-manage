@@ -103,7 +103,7 @@ export default {
             }
             that.$set(that.header, 'right', 'timeGridWeek,timeGridDay, custom4')
             that.$nextTick().then(() => {
-              that.$router.push({ name: 'shop-product-course-schedule-personal-reseve-table' })
+              that.$router.push({ name: 'shop-product-course-schedule-personal-reserve-table' })
             })
           }
         },
@@ -117,7 +117,7 @@ export default {
             }
             that.$set(that.header, 'right', 'listWeek,listDay, custom4')
             that.$nextTick().then(() => {
-              that.$router.push({ name: 'shop-product-course-schedule-personal-reseve-table' })
+              that.$router.push({ name: 'shop-product-course-schedule-personal-reserve-table' })
             })
           }
         }
@@ -153,7 +153,7 @@ export default {
   methods: {
     datesRender(info) {
       const start = moment(info.view.activeStart).format('YYYY-MM-DD').valueOf()
-      const end = moment(info.view.activeEnd).format('YYYY-MM-DD').valueOf()
+      const end = moment((moment(info.view.activeEnd).valueOf() - 24 * 3600 * 1000)).format('YYYY-MM-DD').valueOf()
       this.$router.push({ query: { start_date: start, end_date: end } })
     },
     setAddButton() {
