@@ -561,8 +561,14 @@ export default {
           id: record.id
         },
         on: {
-          success: () => {
-            this.$router.push({ force: true, query: this.query })
+          success: async res => {
+            // 创建订单成功 并且到支付页面
+            let props = {
+              order_id: res.orderId,
+              type: 'member'
+            }
+            let payOrderRes = await this.createdOrderPay(props)
+            this.payCallBack(res.orderId, 'member', payOrderRes.type)
           }
         }
       })

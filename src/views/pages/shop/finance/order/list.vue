@@ -4,6 +4,7 @@
       <st-input-search
       placeholder="请输入会员姓名或手机号查找"
       v-model="keyword"
+      @search="onSearch"
       style="width: 290px;"/>
     </div>
     <st-search-panel>
@@ -29,6 +30,7 @@
           placeholder="结束日期"
           :showToday="false"
           v-model="end_date"
+
         />
       </div>
       <div slot="button">
