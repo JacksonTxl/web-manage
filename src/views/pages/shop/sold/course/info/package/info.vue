@@ -40,13 +40,51 @@
             <st-info-item label="转让手续费" v-if="packageInfo.is_transferable !== 0">{{packageInfo.transfer_num}}{{packageInfo.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
             <st-info-item label="当前状态">{{packageInfo.course_status | enumFilter('sold.course_status')}}</st-info-item>
             <st-info-item label="上课范围">
-              <!-- {{packageInfo.team_course_init}}节私教课,{{packageInfo.personal_course_init}}节团体课 -->
-              <a-popover title="上课范围(指定范围)">
+              <a-popover :title="packageInfo.course_range.range_name">
                 <template slot="content">
-                  <p>Content</p>
-                  <p>Content</p>
+                  <a-table v-if="rangeType === 1" :columns="courseColumns" :dataSource="courseTabData" :pagination="false">
+                  </a-table>
+                  <a-table v-if="rangeType === 2" :columns="courseColumns" :dataSource="courseTabData" :pagination="false">
+                    <!-- <a-table
+                      slot="expandedRowRender"
+                      slot-scope="text, index"
+                      :columns="innerColumnsTeam"
+                      :dataSource="innerDataTeam"
+                      :pagination="false"
+                      v-show="index === 0"
+                    >
+                    </a-table> -->
+                    <a-table
+                      slot="expandedRowRender"
+                      slot-scope="text, index"
+                      :columns="index === 1 ? innerColumnsPersonal : innerColumnsTeam"
+                      :dataSource="index === 1 ? innerDataPersonal : innerDataTeam"
+                      :pagination="false"
+                    >
+                    </a-table>
+
+                  </a-table>
+                  <a-table v-if="rangeType === 3" :columns="courseColumns" :dataSource="courseTabData" :pagination="false">
+                    <!-- <a-table
+                      slot="expandedRowRender"
+                      slot-scope="text, index"
+                      :columns="innerColumnsFix"
+                      :dataSource="innerDataFixTeam"
+                      :pagination="false"
+                      v-if="index === 0"
+                    >
+                    </a-table> -->
+                    <a-table
+                      slot="expandedRowRender"
+                      slot-scope="text, index"
+                      :columns="innerColumnsFix"
+                      :dataSource="index === 1 ? innerDataFixPersonal : innerDataFixTeam"
+                      :pagination="false"
+                    >
+                    </a-table>
+                  </a-table>
                 </template>
-                <a type="primary">指定范围内课程</a>
+                <a type="primary">{{packageInfo.course_range.range_name}}</a>
               </a-popover>
             </st-info-item>
           </st-info>
@@ -90,7 +128,118 @@ export default {
       auth: this.infoService.auth$
     }
   },
+  computed: {
+    rangeType() {
+      return this.packageInfo.course_range ? this.packageInfo.course_range.range_type : 1
+    },
+    courseColumns() {
+      const list = [
+        { title: '课程类型', dataIndex: 'course_name', key: 'course_name' },
+        { title: '节数', dataIndex: 'course_num', key: 'course_num' },
+        { title: '课时费', dataIndex: 'course_price', key: 'course_price' },
+        { title: '小计', dataIndex: 'pay_amount', key: 'pay_amount' }
+      ]
+      if (this.rangeType === 3) {
+        list.splice(2, 1)
+      }
+      return list
+    },
+    courseTabData() {
+      const data = []
+      const team = this.packageInfo.course_range ? this.packageInfo.course_range.team : {}
+      const personal = this.packageInfo.course_range ? this.packageInfo.course_range.personal : {}
+      data.push({
+        key: 0,
+        course_name: team.course_name,
+        course_num: team.course_num,
+        course_price: team.course_price,
+        pay_amount: team.pay_amount
+      })
+      data.push({
+        key: 1,
+        course_name: personal.course_name,
+        course_num: personal.course_num,
+        course_price: personal.course_price,
+        pay_amount: personal.pay_amount
+      })
+      return data
+    },
+    // 范围内课程团体课
+    innerColumnsTeam() {
+      const list = [
+        { title: '课程名称', dataIndex: 'course_name', key: 'course_name' }
+      ]
+      return list
+    },
+    innerDataTeam() {
+      const innerData = []
+      for (let i = 0; i < this.packageInfo.course_range.team.courses.length; i++) {
+        innerData.push({
+          key: i,
+          course_name: this.packageInfo.course_range.team.courses[i]
+        })
+      }
+      return innerData
+    },
+    // 范围内课程私教课
+    innerColumnsPersonal() {
+      const list = [
+        { title: '课程名称', dataIndex: 'course_name', key: 'course_name' },
+        { title: '教练等级', dataIndex: 'levels', key: 'levels' }
+      ]
+      return list
+    },
+    innerDataPersonal() {
+      const innerData = []
+      for (let i = 0; i < this.packageInfo.course_range.personal.courses.length; i++) {
+        innerData.push({
+          key: i,
+          course_name: this.packageInfo.course_range.personal.courses[i].course_name,
+          levels: this.packageInfo.course_range.personal.courses[i].levels.join(',')
+        })
+      }
+      return innerData
+    },
+    // 固定课程
+    innerColumnsFix() {
+      const list = [
+        { title: '课程名称', dataIndex: 'course_name', key: 'course_name' },
+        { title: '节数', dataIndex: 'course_num_init', key: 'course_num_init' },
+        { title: '课时费', dataIndex: 'course_price', key: 'course_price' },
+        { title: '总价', dataIndex: 'course_amount', key: 'course_amount' }
+      ]
+      return list
+    },
+    innerDataFixPersonal() {
+      const innerData = []
+      for (let i = 0; i < this.packageInfo.course_range.personal.courses.length; i++) {
+        innerData.push({
+          key: i,
+          course_name: this.packageInfo.course_range.personal.courses[i].course_name,
+          course_num_init: this.packageInfo.course_range.personal.courses[i].course_num_init,
+          course_price: this.packageInfo.course_range.personal.courses[i].course_price,
+          course_amount: this.packageInfo.course_range.personal.courses[i].course_amount,
+          levels: this.packageInfo.course_range.personal.courses[i].levels.join(',')
+        })
+      }
+      return innerData
+    },
+    innerDataFixTeam() {
+      const innerData = []
+      for (let i = 0; i < this.packageInfo.course_range.team.courses.length; i++) {
+        innerData.push({
+          key: i,
+          course_name: this.packageInfo.course_range.team.courses[i].course_name,
+          course_num_init: this.packageInfo.course_range.team.courses[i].course_num_init,
+          course_price: this.packageInfo.course_range.team.courses[i].course_price,
+          course_amount: this.packageInfo.course_range.team.courses[i].course_amount
+        })
+      }
+      return innerData
+    }
+  },
   methods: {
+
     moment,
     // 修改剩余课时
     onSurplus() {
