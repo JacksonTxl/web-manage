@@ -33,13 +33,12 @@
           <th v-for="col in columns" :key="col.dataIndex">{{col.title}}</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="isAdd">
         <tr>
           <td class="st-form-table__add">
             <a-select
               slot="member"
               showSearch
-              v-model="memberId"
               placeholder="搜索会员名"
               style="width: 120px"
               :defaultActiveFirstOption="false"
@@ -151,6 +150,7 @@ export default {
   },
   data() {
     return {
+      isAdd: true,
       memberId: '',
       consumeType: '',
       consumeId: '',
@@ -197,6 +197,7 @@ export default {
       }).subscribe()
     },
     onChange(value) {
+      this.memberId = value
       this.commonService.getConsumeList({
         course_id: this.courseId,
         member_id: value
@@ -215,6 +216,7 @@ export default {
         consume_type: this.consumeType,
         consume_id: this.consumeId
       }
+      this.isAdd = false
       this.reserveService.add(form).subscribe(this.onAddReserveSuccess)
     },
     cancelReserve(id) {
@@ -265,6 +267,7 @@ export default {
     },
     onAddReserveSuccess() {
       this.getReserveInfo()
+      this.isAdd = true
       this.messageService.success({
         content: '添加成功'
       })
