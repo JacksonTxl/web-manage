@@ -206,8 +206,8 @@ export default {
       this.$modalRouter.push({
         name: 'sold-lease-relet',
         props: {
-          // id: record.sold_cabinet_id,
-          id: 48587472437681
+          id: record.id
+          // id: 48587472437681
         },
         on: {
           success: (result) => {
@@ -223,7 +223,7 @@ export default {
                 },
                 on: {
                   success: () => {
-                    console.log('success')
+                    this.$router.push({ force: true, query: this.$router.query })
                   }
                 }
               })
@@ -240,13 +240,13 @@ export default {
                     this.$modalRouter.push({
                       name: 'sold-deal-gathering-tip',
                       props: {
-                        order_id: result.order_id,
+                        orderId: result.order_id,
                         type: 'cabinet_order',
                         message: '收款成功'
                       },
                       on: {
                         success: () => {
-                          console.log('success')
+                          this.$router.push({ force: true, query: this.$router.query })
                         }
                       }
                     })
@@ -263,12 +263,13 @@ export default {
       this.$modalRouter.push({
         name: 'sold-lease-transfer',
         props: {
-          // id: record.sold_cabinet_id,
-          id: 48587472437681
+          id: record.id
+          // id: 48587472437681
         },
         on: {
           success: (result) => {
             console.log('转让成功!')
+            this.$router.push({ force: true, query: this.$router.query })
           }
         }
       })
@@ -278,12 +279,13 @@ export default {
       this.$modalRouter.push({
         name: 'sold-lease-refund',
         props: {
-          // id: record.sold_cabinet_id,
-          id: 58240612761731
+          id: record.id
+          // id: 58240612761731
         },
         on: {
           success: (result) => {
             console.log('退款成功!')
+            this.$router.push({ force: true, query: this.$router.query })
           }
         }
       })

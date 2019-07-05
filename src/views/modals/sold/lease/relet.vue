@@ -41,6 +41,7 @@
                   placeholder="结束时间"
                   :showToday="false"
                   showTime
+                  :disabledDate="disabledStartDate"
                   v-decorator="['end_time',{rules:[{validator:end_time}]}]"
                   @change="end_time_change"
                 />
@@ -49,7 +50,8 @@
           </st-form-item>
           <st-form-item label="租赁天数" required>
             <st-input-number placeholder="请输入天数"  :min="1" :max="999"
-            v-decorator="['lease_num',{rules:[{validator:lease_num}]}]">
+              @change="changeLeaseNum"
+              v-decorator="['lease_num',{rules:[{validator:lease_num}]}]">
               <template slot="addonAfter">天</template>
             </st-input-number>
           </st-form-item>
@@ -82,6 +84,9 @@
                   </div>
                   <a-radio-group v-model="selectAdvance" @change="onSelectAdvanceChange" :class="sale('dropdown')" slot="overlay">
                     <a-menu>
+                      <a-menu-item @click="onSelectAdvance">
+                        <a-radio :value="-1">不使用</a-radio>
+                      </a-menu-item>
                       <a-menu-item @click="onSelectAdvance" :key="index" v-for="(item,index) in advanceList">
                         <a-radio :value="item.id">定金 {{item.price}}</a-radio>
                       </a-menu-item>
@@ -96,7 +101,7 @@
               <template slot="addonAfter">元</template>
             </st-input-number>
           </st-form-item>
-          <st-form-item class="mg-b0" label="小计">
+          <st-form-item class="mg-b0" label="小计" :help="orderAmountText">
             <span class="total">{{currentPrice}}元</span>
           </st-form-item>
         </div>
@@ -164,10 +169,10 @@ export default {
     return {
       show: false,
       form: this.$form.createForm(this),
+      endTimeValue: null,
       // 定金
       advanceDropdownVisible: false,
       advanceText: '未选择定金',
-      advanceAmount: '',
       selectAdvance: '',
       reduceAmount: '',
       description: ''
@@ -177,6 +182,11 @@ export default {
     this.reletService.serviceInit(this.id).subscribe(res => {
       this.reletService.getAdvanceList(this.info.member_id).subscribe()
     })
+  },
+  computed: {
+    orderAmountText() {
+      return this.currentPrice < 0 ? '小计不能为负' : ''
+    }
   },
   watch: {
     selectAdvance: {
@@ -190,6 +200,20 @@ export default {
     }
   },
   methods: {
+    disabledStartDate(endTime) {
+      const startTime = moment(this.info.start_time)
+      if (!endTime || !startTime) {
+        return false
+      }
+      return endTime.valueOf() < startTime.valueOf()
+    },
+    changeLeaseNum(event) {
+      this.form.setFieldsValue({
+        'end_time': moment(this.info.start_time).add(event, 'days')
+      })
+      this.getOrderPrice()
+      this.getPrice()
+    },
     onSelectAdvance() {
       timer(200).subscribe(() => {
         this.advanceDropdownVisible = false
@@ -201,9 +225,11 @@ export default {
       this.advanceText = '未选择定金'
     },
     onSelectAdvanceChange(data) {
-      let price = this.advanceList.filter(o => o.id === data.target.value)[0].price
-      this.advanceAmount = price
-      this.advanceText = `${price}元`
+      this.advanceText = `未选择定金`
+      if (data.target.value !== -1) {
+        let price = this.advanceList.filter(o => o.id === data.target.value)[0].price
+        this.advanceText = `${price}元`
+      }
     },
     onCodeNumber() {
       this.reletService.getCodeNumber(this.info.contract_type).subscribe(res => {
@@ -220,7 +246,7 @@ export default {
         product_type: this.info.contract_type,
         product_num: this.form.getFieldValue('lease_num') || 0,
         member_id: this.info.member_id,
-        advance_id: advance || undefined,
+        advance_id: advance === -1 ? '' : advance,
         reduce_amount: reduce || undefined
       })
     },
@@ -289,7 +315,7 @@ export default {
             'start_time': this.info.start_time,
             'end_time': moment(values.end_time).format('YYYY-MM-DD HH:mm'),
             'contract_number': values.contract_number,
-            'advance_id': this.selectAdvance,
+            'advance_id': this.selectAdvance === -1 ? '' : this.selectAdvance,
             'reduce_amount': this.reduceAmount || 0,
             'description': this.description,
             'order_amount': this.currentPrice,
@@ -299,7 +325,7 @@ export default {
           }, this.id).subscribe((result) => {
             this.$emit('success', {
               type: 'create',
-              orderId: result.info.order_id
+              order_id: result.info.order_id
             })
             this.show = false
           })
@@ -314,7 +340,7 @@ export default {
             'start_time': this.info.start_time,
             'end_time': moment(values.end_time).format('YYYY-MM-DD HH:mm'),
             'contract_number': values.contract_number,
-            'advance_id': this.selectAdvance,
+            'advance_id': this.selectAdvance === -1 ? '' : this.selectAdvance,
             'reduce_amount': this.reduceAmount || 0,
             'description': this.description,
             'order_amount': this.currentPrice,
@@ -324,7 +350,7 @@ export default {
           }, this.id).subscribe((result) => {
             this.$emit('success', {
               type: 'createPay',
-              orderId: result.info.order_id
+              order_id: result.info.order_id
             })
             this.show = false
           })
