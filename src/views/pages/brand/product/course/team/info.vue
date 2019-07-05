@@ -19,11 +19,11 @@
           </div>
         </div>
 
-        <div v-if="teamCourseInfo.description" class="course-detail-item__content mg-b16">
+        <div v-if="teamCourseInfo.description" :class="b('description')" class="mg-t16">
           {{teamCourseInfo.description}}
         </div>
 
-        <div :class="b('train_aim')">
+        <div :class="b('train-aim')" class="mg-t16">
           #
           {{teamCourseInfo.train_aim | filterTrainAim}}
         </div>
@@ -31,7 +31,7 @@
       </div>
 
       <div :class="b('right')">
-        <img class="image" :src="teamCourseInfo.image.image_key" alt="课程图片">
+        <img class="image" :src="teamCourseInfo.image.image_key | imgFilter({ w: 280, h: 158 })" alt="课程图片">
       </div>
     </div>
     <div :class="bb()" v-if="teamCourseInfo.support_shop_list.length">
