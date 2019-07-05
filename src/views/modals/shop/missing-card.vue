@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="遗失补卡" @ok="save" v-model="show" size="small">
+  <st-modal title="重绑实体卡" v-model="show" size="small">
     <section>
       <section>
         <st-form :form="form" @submit="save" labelWidth="85px">
@@ -40,10 +40,12 @@
             </st-input-number>
           </st-form-item>
           <st-form-item label="支付方式" v-if="moneyFlag">
-            <a-radio-group @change="selectPay"
-             v-decorator="basicInfoRuleList.payment">
-              <a-radio :value="item" :key="index" v-for="(item, index) in paymentMethodList">{{item.payment_type_name}}</a-radio>
-            </a-radio-group>
+            <a-select :class="basic('select')" v-decorator="basicInfoRuleList.pay_method"  placeholder="请选择支付方式">
+              <a-select-option
+              v-for="(item,index) in payMethodList"
+              :key="index"
+              :value="item.value">{{item.label}}</a-select-option>
+            </a-select>
           </st-form-item>
           <st-form-item label="收款人员" v-if="moneyFlag">
              <a-select
@@ -53,7 +55,7 @@
               :defaultActiveFirstOption="false"
               :showArrow="false"
               :filterOption="false"
-              v-decorator="basicInfoRuleList.staff"
+              v-decorator="basicInfoRuleList.payee"
               @search="onSearch"
               notFoundContent="无搜索结果"
             >
@@ -61,36 +63,55 @@
               v-for="(item,index) in staffList"
               :value="item.id"
               :key="index">
-                <span v-html="`${item.member_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
-                  {{item.member_name}}   {{item.mobile}}
+                <span v-html="`${item.staff_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
+                  {{item.staff_name}}   {{item.mobile}}
                 </span>
               </a-select-option>
             </a-select>
           </st-form-item>
-
         </st-form>
       </section>
     </section>
+    <template slot="footer">
+      <st-button type="primary" @click="save" :loading="loading.getMemberPhysicalBind">确认</st-button>
+    </template>
   </st-modal>
 </template>
 <script>
 import { MissingCaedService } from './missing-card.service'
+import { UserService } from '@/services/user.service'
 export default {
   name: 'missingCard',
+  bem: {
+    basic: 'shop-missing-card'
+  },
   serviceInject() {
     return {
-      missingService: MissingCaedService
+      missingService: MissingCaedService,
+      userService: UserService
     }
   },
   rxState() {
     return {
       paymentMethodList: this.missingService.paymentMethodList$,
-      staffList: this.missingService.staffList$
+      staffList: this.missingService.staffList$,
+      memberEnums: this.userService.memberEnums$,
+      loading: this.missingService.loading$
     }
   },
   props: {
     record: {
       type: Object
+    }
+  },
+  computed: {
+    payMethodList() {
+      let list = []
+      if (!this.memberEnums.pay_method) return list
+      Object.entries(this.memberEnums.pay_method.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
     }
   },
   data() {
@@ -157,7 +178,7 @@ export default {
             rules: [
               {
                 required: true,
-                message: '请填写支付方式'
+                message: '请选择支付方式'
               }
             ]
           }
@@ -168,18 +189,18 @@ export default {
             rules: [
               {
                 required: true,
-                message: '请填写收款方式'
+                message: '请选择收款方式'
               }
             ]
           }
         ],
-        staff: [
-          'staff',
+        payee: [
+          'payee',
           {
             rules: [
               {
                 required: true,
-                message: '请填写收款人员'
+                message: '请选择收款人员'
               }
             ]
           }
@@ -198,12 +219,12 @@ export default {
     onSearch(data) {
       this.memberSearchText = data
       if (data === '') {
-        this.saleCourseService.memberList$.commit(() => [])
-        this.form.resetFields(['memberId'])
+        this.missingService.memberList$.commit(() => [])
+        this.form.resetFields(['payee'])
       } else {
-        this.saleCourseService.getMember(data, this.info.sale_range.type).subscribe(res => {
+        this.missingService.getMemberList(data).subscribe(res => {
           if (!res.list.length) {
-            this.form.resetFields(['memberId'])
+            this.form.resetFields(['payee'])
           }
         })
       }
@@ -217,6 +238,7 @@ export default {
       this.missingService.getMemberPhysicalBind(this.record.member_id, data).subscribe(
         state => {
           this.show = false
+          this.$router.push({ force: true, query: this.$router.query })
         }
       )
     },

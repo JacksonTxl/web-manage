@@ -2,7 +2,7 @@
   <section :class="basic()">
     <st-panel title="课程包详情" >
       <div slot="actions">
-        <st-button v-if="auth['shop:sold:sold_package_course|export_contract']" class="mgr-8" type="primary">查看合同</st-button>
+        <st-button v-if="auth['shop:sold:sold_package_course|export_contract']" class="mgr-8" type="primary"  @click="toContract">查看合同</st-button>
         <st-button v-if="auth['shop:sold:sold_package_course|frozen']" class="mgr-8" @click="onFreeze">冻结</st-button>
         <st-button v-if="auth['shop:sold:sold_package_course|unfrozen']" class="mgr-8" @click="onUnfreeze">取消冻结</st-button>
         <a-dropdown>
@@ -102,6 +102,12 @@ export default {
           }
         }
       })
+    },
+    // 跳转合同
+    toContract() {
+      let record = this.packageInfo
+      let url = `${window.location.origin}/extra/contract-preview?id=${record.order_id}`
+      window.open(url)
     },
     // 冻结
     onFreeze() {

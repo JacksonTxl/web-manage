@@ -16,9 +16,14 @@
             :rowSelection="{ fixed: true, columnTitle:'分配',type: 'radio',selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
             :columns="columns"
             :dataSource="list"
+            rowKey="id"
             @change="handleTableChange"
             :pagination="false"
-            />
+            >
+            <template slot="custom_title">
+              签单率（近30天）<st-help-tooltip id="TSYHFP001" />
+            </template>
+          </st-table>
       </a-col>
     </a-row>
   </st-modal>
@@ -33,9 +38,10 @@ const columns = [
     key: 'sale_name'
   },
   {
-    title: '签单率（近30天）',
     dataIndex: 'sign_bill',
-    key: 'sign_bill'
+    key: 'sign_bill',
+    slots: { title: 'custom_title' },
+    scopedSlots: { customRender: 'sign_bill' }
   }
 ]
 export default {

@@ -110,20 +110,10 @@
           <st-table-actions>
             <a v-if="record.auth['shop:member:member|get']" @click="infoFunc(record)">详情</a>
             <a v-if="record.auth['shop:member:member|edit']" @click="edit(record)">编辑</a>
-            <a v-if="record.auth['shop:member:member|bind_coach']" v-modal-link="{
-              name: 'shop-distribution-coach',
-              props: {
-                memberIds: [record.member_id]
-              }
-            }">分配教练</a>
-            <a v-if="record.auth['shop:member:member|bind_salesman']" v-modal-link="{
-              name: 'shop-distribution-sale',
-              props: {
-                memberIds: [record.member_id]
-              }
-            }">分配销售</a>
+            <a v-if="record.auth['shop:member:member|bind_coach']" @click="onDistributionCoach(record)">分配教练</a>
+            <a v-if="record.auth['shop:member:member|bind_salesman']" @click="onDistributionSale(record)">分配销售</a>
             <a v-if="record.auth['shop:member:member|bind_card']" v-modal-link="{ name: 'shop-binding-entity-card', props:{record:record}}">绑实体卡</a>
-            <a v-if="record.auth['shop:member:member|rebind_card']" v-modal-link="{ name: 'shop-missing-card', props:{record:record}}">遗失补卡</a>
+            <a v-if="record.auth['shop:member:member|rebind_card']" v-modal-link="{ name: 'shop-missing-card', props:{record:record}}">重绑实体卡</a>
             <a v-if="record.auth['shop:member:member|transfer']" v-modal-link="{ name: 'shop-transfer-shop', props:{record:record}}">转店</a>
             <a v-if="record.auth['shop:member:member|frozen']" v-modal-link="{ name: 'shop-frozen', props:{record:record}}">冻结用户</a>
             <a v-if="record.auth['shop:member:member|unbind_wechat']" @click="onRemoveBind(record)">解除微信绑定</a>
@@ -268,14 +258,55 @@ export default {
         this.enter_time = [moment(this.querySelect.be_member_start_time), cloneDeep(moment(this.querySelect.be_member_start_time))]
       }
     },
+    // 分配教练
+    onDistributionCoach(record) {
+      this.$confirm({
+        title: '提示信息',
+        content: '该教练已经存在跟进教练，是否确认替换？',
+        onOk: () => {
+          this.$modalRouter.push({
+            name: 'shop-distribution-coach',
+            props: {
+              memberIds: [record.member_id]
+            },
+            on: {
+              success: () => {
+                this.$router.push({ force: true })
+              }
+            }
+          })
+        },
+        onCancel() {}
+      })
+    },
+    // 分配销售
+    onDistributionSale(record) {
+      this.$confirm({
+        title: '提示信息',
+        content: '该教练已经存在跟进销售，是否确认替换？',
+        onOk: () => {
+          this.$modalRouter.push({
+            name: 'shop-distribution-sale',
+            props: {
+              memberIds: [record.member_id]
+            },
+            on: {
+              success: () => {
+                this.$router.push({ force: true })
+              }
+            }
+          })
+        },
+        onCancel() {}
+      })
+    },
     onRemoveBind(record) {
-      let that = this
       this.$confirm({
         title: '提示信息',
         content: '确认解绑选中的会员关系？',
         onOk() {
-          that.listService.removeWechatBind(record.member_id).subscribe(() => {
-            console.log('ok')
+          this.listService.removeWechatBind(record.member_id).subscribe(() => {
+            this.$router.push({ force: true })
           })
         },
         onCancel() {}

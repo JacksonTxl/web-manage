@@ -2,7 +2,7 @@
   <a-modal title="编辑场地" v-model="show" wrapClassName="modal-court-add" :footer="null">
     <st-form :form="form" labelWidth="68px" labelGutter="16px">
       <st-form-item label="场地名称" required>
-        <a-input placeholder="请输入场地名称，不超过20个字" v-decorator="formRules.areaName"/>
+        <a-input placeholder="请输入场地名称，不超过10个字" maxlength="10" v-decorator="formRules.areaName"/>
       </st-form-item>
       <st-form-item labelFix>
         <a-checkbox :checked="!!info.is_vip" @change="onIsVipChange">是否VIP区域
@@ -21,22 +21,13 @@
 <script>
 import { EditService } from './edit.service'
 import { MessageService } from '@/services/message.service'
-const formRules = {
-  areaName: [
-    'area_name', {
-      rules: [{
-        required: true,
-        message: '请输入场地名称'
-      }]
-    }
-  ],
-  containNumber: ['contain_number']
-}
+import { RuleConfig } from '@/constants/rule'
 export default {
   serviceInject() {
     return {
       editService: EditService,
-      messageService: MessageService
+      messageService: MessageService,
+      ruleConfig: RuleConfig
     }
   },
   rxState() {
@@ -54,7 +45,21 @@ export default {
   data() {
     return {
       show: false,
-      formRules
+      formRules: {
+        areaName: [
+          'area_name', {
+            rules: [{
+              required: true,
+              message: '请输入场地名称'
+            }, {
+              validator: this.courtNameValidator,
+              message: '支持输入中英文、数字,不超过10个字'
+            }]
+          }
+        ],
+        containNumber: ['contain_number'],
+        isVip: ['is_vip']
+      }
     }
   },
   created() {
@@ -94,6 +99,13 @@ export default {
       })
       this.$emit('change')
       this.show = false
+    },
+    courtNameValidator(rule, value, callback) {
+      if (!this.ruleConfig.generateRule('1-10').test(value)) {
+        callback(rule.message)
+      } else {
+        callback()
+      }
     }
   }
 }

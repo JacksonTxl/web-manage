@@ -60,7 +60,7 @@
             <a v-if="record.auth['shop:sold:sold_deposit_card|get']" @click="onDetail(record)">详情</a>
             <a-divider type="vertical"></a-divider>
             <st-more-dropdown class="mgl-16">
-              <a-menu-item v-if="record.auth['shop:sold:sold_deposit_card|export_contract']">查看合同</a-menu-item>
+              <a-menu-item v-if="record.auth['shop:sold:sold_deposit_card|export_contract']"  @click="toContract(record)">查看合同</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_deposit_card|transfer']" @click="onTransfer(record)">转让</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_deposit_card|refund']" @click="onRefund(record)">退款</a-menu-item>
             </st-more-dropdown>
@@ -102,11 +102,6 @@ const columns = [
     title: '手机号',
     dataIndex: 'mobile',
     scopedSlots: { customRender: 'mobile' }
-  },
-  {
-    title: '实体卡号',
-    dataIndex: 'card_code',
-    scopedSlots: { customRender: 'card_code' }
   },
   {
     title: '状态',
@@ -192,6 +187,11 @@ export default {
   methods: {
     onPageChange(data) {
       this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
+    },
+    // 跳转合同
+    toContract(record) {
+      let url = `${window.location.origin}/extra/contract-preview?id=${record.order_id}`
+      window.open(url)
     },
     // 转让
     onTransfer(record) {

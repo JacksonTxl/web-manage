@@ -1,11 +1,11 @@
 <template>
   <st-modal
     class="modal-support-course-shops"
-    :title="course.course_name + ' 查看授课教练'"
+    :title="course.course_name + ' 查看课程定价'"
     @ok="onOk"
     okText="去编辑"
     v-model='show'>
-    <div class="modal-support-course-shops__search" v-if="prices.length">
+    <div class="modal-support-course-shops__search mg-b24" v-if="prices.length">
       <a-select v-if="priceSetting === 2" showSearch :defaultValue="defaultValue"  :filterOption="filterOption" optionFilterProp="children" class="mg-r8" style="width: 160px" @change="onChangeShopName">
         <a-select-option v-for="shop in shops" :key="shop.id" :value="shop.id">{{shop.name}}</a-select-option>
       </a-select>
@@ -17,7 +17,7 @@
     <st-table
     :columns="filterColums"
     :rowKey="record => record.id"
-    :pagination="{simple: true}"
+    :pagination="null"
     :dataSource="dataSource">
     <div slot="transfer_num" slot-scope="transfer_num, record">
       {{transfer_num}}{{record.transfer_unit | enumFilter('personal_course.transfer_unit')}}
