@@ -62,7 +62,7 @@
             <st-more-dropdown class="mgl-16">
               <a-menu-item v-if="record.auth['shop:sold:sold_deposit_card|export_contract']"  @click="toContract(record)">查看合同</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_deposit_card|transfer']" @click="onTransfer(record)">转让</a-menu-item>
-              <a-menu-item v-if="record.auth['shop:sold:sold_deposit_card|refund']" @click="onRefund(record)">退款</a-menu-item>
+              <a-menu-item v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a-menu-item>
             </st-more-dropdown>
           </div>
         </st-table>
