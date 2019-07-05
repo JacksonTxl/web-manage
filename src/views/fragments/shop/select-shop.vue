@@ -1,6 +1,12 @@
 <template>
   <div>
-    <a-table :columns="shopTableColumns" :dataSource="list" :pagination="false" rowKey="shop_id">
+    <a-table
+      :columns="shopTableColumns"
+      :dataSource="list"
+      :pagination="false"
+      rowKey="shop_id"
+      :scroll="{ y: 270 }"
+    >
       <template slot="operation" slot-scope="text, record">
       <div>
         <a @click="delShopTableRecord(record.shop_id)">删除</a>
