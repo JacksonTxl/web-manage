@@ -250,8 +250,8 @@ export default {
           id: record.id,
           courseName: record.course_name,
           courseNum: record.remain_course_num,
-          courseEndTime: moment(record.end_time * 1000),
-          time: `${moment(record.buy_time * 1000).format('YYYY-MM-DD HH:mm')} 至 ${moment(record.end_time * 1000).format('YYYY-MM-DD HH:mm')}`
+          courseEndTime: moment(record.end_time),
+          time: `${moment(record.buy_time).format('YYYY-MM-DD HH:mm')} 至 ${moment(record.end_time).format('YYYY-MM-DD HH:mm')}`
         },
         on: {
           success: () => {
