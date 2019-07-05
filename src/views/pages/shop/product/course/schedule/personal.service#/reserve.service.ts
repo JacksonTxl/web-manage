@@ -10,7 +10,8 @@ export interface SetState {
   reserveInfo: any
   reserveList: any[]
   reserveTable: any[]
-  reserveUpdateInfo: any[]
+  reserveUpdateInfo: any[],
+  reserveListTable: any[]
 }
 @Injectable()
 export class PersonalScheduleReserveService {
@@ -19,6 +20,7 @@ export class PersonalScheduleReserveService {
   reserveTable$: Computed<any>
   reserveList$: Computed<any>
   reserveUpdateInfo$: Computed<any>
+  reserveListTable$: Computed<any>
   auth$: Computed<any>
   constructor(private reserveApi: PersonalReserveApi,
     private authService: AuthService,
@@ -32,6 +34,7 @@ export class PersonalScheduleReserveService {
       },
       reserveUpdateInfo: {},
       reserveInfo: [],
+      reserveListTable: [],
       reserveList: [],
       reserveTable: []
     })
@@ -39,6 +42,7 @@ export class PersonalScheduleReserveService {
     this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
     this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
     this.reserveTable$ = new Computed(this.state$.pipe(pluck('reserveTable')))
+    this.reserveListTable$ = new Computed(this.state$.pipe(pluck('reserveListTable')))
     this.reserveUpdateInfo$ = new Computed(this.state$.pipe(pluck('reserveUpdateInfo')))
   }
   /**
@@ -117,6 +121,19 @@ export class PersonalScheduleReserveService {
             end: `${item.start_date} ${item.end_time}`
           }
         })
+      })
+    }))
+  }
+  /**
+   *
+   * @param params
+   * 获取团体课排期列表
+   */
+  @Effect()
+  getListTable(query: GetListQuery) {
+    return this.reserveApi.getList(query).pipe(tap(res => {
+      this.state$.commit(state => {
+        state.reserveListTable = res.list
       })
     }))
   }
