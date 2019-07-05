@@ -12,7 +12,7 @@
             <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
             <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
             <st-info-item label="总课时">{{info.total_times}}</st-info-item>
-            <st-info-item label="有效期">{{moment().add(info.valid_time, 'days').format('YYYY-MM-DD HH:mm')}}</st-info-item>
+            <st-info-item label="有效期">{{info.valid_time}}天</st-info-item>
             <st-info-item label="上课门店">{{info.shop_name}}</st-info-item>
             <st-info-item label="上课范围">{{info.course_range}}</st-info-item>
           </st-info>
