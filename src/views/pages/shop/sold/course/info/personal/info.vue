@@ -10,7 +10,7 @@
             <a-menu slot="overlay">
               <a-menu-item v-if="auth['shop:sold:sold_personal_course|course_num']" @click="onSurplus">修改剩余课时</a-menu-item>
               <a-menu-item v-if="auth['shop:sold:sold_personal_course|transfer']" @click="onTransfer">转让</a-menu-item>
-              <a-menu-item v-if="auth['shop:sold:sold_personal_course|refund']" @click="onRefund">退款</a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:order:order|refund']" @click="onRefund">退款</a-menu-item>
             </a-menu>
             <a-button>
               更多操作

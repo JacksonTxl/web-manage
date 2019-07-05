@@ -88,7 +88,7 @@
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|frozen']" @click="onFreeze(record)">冻结</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|unfrozen']" @click="onUnfreeze(record)">取消冻结</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|transfer']" @click="onTransfer(record)">转让</a-menu-item>
-              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|refund']" @click="onRefund(record)">退款</a-menu-item>
+              <a-menu-item v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|export_contract']" @click="toContract(record)">查看合同</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|vip_region']" @click="onArea(record)">修改入场vip区域</a-menu-item>
             </st-more-dropdown>
