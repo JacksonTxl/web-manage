@@ -104,11 +104,6 @@ const columns = [
     scopedSlots: { customRender: 'mobile' }
   },
   {
-    title: '实体卡号',
-    dataIndex: 'card_code',
-    scopedSlots: { customRender: 'card_code' }
-  },
-  {
     title: '状态',
     dataIndex: 'is_valid',
     scopedSlots: { customRender: 'is_valid' }

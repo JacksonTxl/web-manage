@@ -60,7 +60,7 @@
             <p class="add-text"><span @click="onCancelMember">取消添加</span></p>
           </st-form-item>
           <st-form-item label="到期时间">
-            <div>{{moment().format('YYYY-MM-DD HH:mm')}}</div>
+            <div>{{moment().add(info.valid_time, 'days').format('YYYY-MM-DD HH:mm')}}</div>
           </st-form-item>
           <st-form-item required>
             <template slot="label">

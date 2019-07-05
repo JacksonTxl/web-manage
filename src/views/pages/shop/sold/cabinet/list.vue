@@ -41,6 +41,11 @@
       rowKey="sold_cabinet_id"
       :columns="columns"
       :dataSource="list">
+        <template
+            slot="lease_status"
+            slot-scope="record">
+          <a-badge :status="record.id === 1?'success':record.id === 2?'error':'warning'" :text="record.name" />
+        </template>
         <div slot="action" slot-scope="text, record">
           <a v-if="record.auth['shop:sold:sold_cabinet|renew']" @click="onRelet(record)">续租</a>
           <a-divider type="vertical"></a-divider>
@@ -114,8 +119,8 @@ export default {
           scopedSlots: { customRender: 'member_name' }
         }, {
           title: '手机号',
-          dataIndex: 'mobile',
-          scopedSlots: { customRender: 'mobile' }
+          dataIndex: 'member_mobile',
+          scopedSlots: { customRender: 'member_mobile' }
         }, {
           title: '状态',
           dataIndex: 'lease_status',
@@ -201,8 +206,8 @@ export default {
       this.$modalRouter.push({
         name: 'sold-lease-relet',
         props: {
-          // id: record.sold_cabinet_id,
-          id: 48587472437681
+          id: record.id
+          // id: 48587472437681
         },
         on: {
           success: (result) => {
@@ -218,7 +223,7 @@ export default {
                 },
                 on: {
                   success: () => {
-                    console.log('success')
+                    this.$router.push({ force: true, query: this.$router.query })
                   }
                 }
               })
@@ -235,13 +240,13 @@ export default {
                     this.$modalRouter.push({
                       name: 'sold-deal-gathering-tip',
                       props: {
-                        order_id: result.order_id,
+                        orderId: result.order_id,
                         type: 'cabinet_order',
                         message: '收款成功'
                       },
                       on: {
                         success: () => {
-                          console.log('success')
+                          this.$router.push({ force: true, query: this.$router.query })
                         }
                       }
                     })
@@ -258,12 +263,13 @@ export default {
       this.$modalRouter.push({
         name: 'sold-lease-transfer',
         props: {
-          // id: record.sold_cabinet_id,
-          id: 48587472437681
+          id: record.id
+          // id: 48587472437681
         },
         on: {
           success: (result) => {
             console.log('转让成功!')
+            this.$router.push({ force: true, query: this.$router.query })
           }
         }
       })
@@ -273,12 +279,13 @@ export default {
       this.$modalRouter.push({
         name: 'sold-lease-refund',
         props: {
-          // id: record.sold_cabinet_id,
-          id: 58240612761731
+          id: record.id
+          // id: 58240612761731
         },
         on: {
           success: (result) => {
             console.log('退款成功!')
+            this.$router.push({ force: true, query: this.$router.query })
           }
         }
       })

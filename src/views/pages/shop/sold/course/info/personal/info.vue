@@ -1,6 +1,6 @@
 <template>
   <section :class="basic()">
-    <st-panel title="课程包详情">
+    <st-panel title="私教课详情">
       <div slot="actions">
         <st-button v-if="auth['shop:sold:sold_personal_course|export_contract']" class="mgr-8" type="primary"  @click="toContract">查看合同</st-button>
         <st-button v-if="auth['shop:sold:sold_personal_course|frozen']" class="mgr-8" @click="onFreeze">冻结</st-button>

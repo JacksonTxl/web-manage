@@ -163,6 +163,13 @@ export class MemberApi extends Api {
   }
 
   /**
+   * 根据员工名称查询员工列表
+   */
+  getSearchMemberList(query: any) {
+    return this.http.get(`/v1/member/cash`, { query })
+  }
+
+  /**
    * 标签列表(用户添加标签时选择的列表)
    */
   getMemberLableList() {
