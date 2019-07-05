@@ -5,11 +5,11 @@
         <div :class="reception('form-block-detail')">
           <div :class="reception('form-block-number')">
             <p>{{item.label}}（{{item.unit}}）</p>
-            <ICountUp v-if="auth[item.type]&&item.version===1" class="number-up" :endVal="summaryInfo[item.type].num"/>
+            <ICountUp v-if="auth[item.type]" class="number-up" :endVal="summaryInfo[item.type].num"/>
             <span v-else>- -</span>
             <!-- <p>{{summaryInfo[item.type].num}}</p> -->
           </div>
-          <div v-if="auth[item.type]&&item.version===1" :class="reception('form-block-chart')">
+          <div v-if="auth[item.type]" :class="reception('form-block-chart')">
             <front-simple-area :color="item.color" :data="summaryInfo[item.type].stChart"></front-simple-area>
           </div>
           <div v-else :class="reception('form-block-nonedata')"></div>
