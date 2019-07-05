@@ -153,6 +153,9 @@ export default {
           this.transferService.setTransaction({
             id: this.id,
             transferee_member_id: +values.memberId,
+            member_name: +values.memberName,
+            mobile: +values.memberMobile,
+            sale_range: this.info.sale_range.type,
             remain_price: values.remainPrice,
             contract_number: values.contractNumber,
             pay_channel: +values.payType
