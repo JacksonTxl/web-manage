@@ -13,7 +13,7 @@
         </a-select>
       </st-form-item>
       <st-form-item   label="员工职能" required>
-        <a-select v-model="form.identity" mode="multiple" placeholder="请输入员工职能"  @change="onChangeIdentity">
+        <a-select v-decorator="form.identity" mode="multiple" placeholder="请输入员工职能"  @change="onChangeIdentity">
           <a-select-option   :value="item.id" v-for="item in identityList" :key="item.id">
             {{item.name}}
           </a-select-option>
@@ -111,6 +111,9 @@ export default {
   },
   methods: {
     onChangeIdentity(value) {
+      // console.log('修改员工职能', value, identity)
+      // if (!value.length)
+      // this.updateStaffPositionService.validatStaffPosition()
       this.isSalaryCourse = value.includes(3) || value.includes(4)
     },
     computedList(key) {

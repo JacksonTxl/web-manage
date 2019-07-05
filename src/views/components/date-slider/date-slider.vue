@@ -33,6 +33,10 @@ export default {
     step: {
       type: Number,
       default: 60
+    },
+    disable: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -150,7 +154,7 @@ export default {
     },
     onSliderClick(event) {
       console.log(this.dragging)
-      if (this.sliderDisabled || this.dragging) return
+      if (this.disable || this.dragging) return
       this.resetSize()
       console.log(this.$refs.slider)
       const sliderOffsetLeft = this.$refs.slider.getBoundingClientRect().left

@@ -14,7 +14,6 @@
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="姓名" required>
-          <!-- ['startTime',{rules:[{validator:startTimeValidator}]}] -->
           <a-input placeholder="支持中英文、数字、不超过15个字" max="15" v-decorator="rules.staff_name"/>
         </st-form-item>
         <st-form-item label="手机号" required>

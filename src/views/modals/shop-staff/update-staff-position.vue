@@ -4,22 +4,22 @@
     size="small"
     v-model='show'>
   <staff-info :staff="staff"></staff-info>
-    <st-form labelWidth='60px'>
-      <st-form-item   label="工作性质">
+    <st-form labelWidth='60px' :form="form">
+      <st-form-item label="工作性质">
         <a-select v-model="form.nature_work" placeholder="请选择工作性质">
           <a-select-option :value="item.id" v-for="item in natureWork" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item   label="员工职能" required>
-        <a-select v-model="form.identity" mode="multiple" placeholder=""  @change="onChangeIdentity">
-          <a-select-option   :value="item.id" v-for="item in identityList" :key="item.id">
+      <st-form-item label="员工职能" required>
+        <a-select v-decorator="form.identity" mode="multiple" placeholder=""  @change="onChangeIdentity" @deselect="onDeselectIndentity">
+          <a-select-option :value="item.id" v-for="item in identityList" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
       </st-form-item>
-      <st-form-item  label="教练等级">
+      <st-form-item label="教练等级">
         <a-select v-model="form.coach_level_id" placeholder="">
           <a-select-option  :value="item.id" v-for="item in coachLevelList$" :key="item.id">
             {{item.name}}
@@ -117,6 +117,16 @@ export default {
   methods: {
     onChangeIdentity(value) {
       this.isSalaryCourse = value.includes(3) || value.includes(4)
+    },
+    onDeselectIndentity(value) {
+      console.log('onChangeIdentity', value, this.staff)
+      this.updateStaffPositionService.validatStaffPosition(value).subscribe((res) => {
+        let operate = res.operate
+        if (!operate) {
+          console.log(this.identity.filter(item => item.id === value))
+          let obj = this.identity.filter(item => item.id === value)[0]
+        }
+      })
     },
     computedList(key) {
       let arr = []

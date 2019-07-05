@@ -5,7 +5,7 @@
     ref="button"
     @mousedown="onMouseDown">
     <div :class="sliderButton('toolTip')">
-      <div>{{formatValue}}</div>
+      {{formatValue}}
     </div>
   </div>
 </template>
@@ -49,6 +49,9 @@ export default {
     precision() {
       return this.$parent.precision
     },
+    disable() {
+      return this.$parent.disable
+    },
     currentPosition() {
       return `${(this.value - this.min) / (this.max - this.min) * 100}%`
     },
@@ -69,14 +72,14 @@ export default {
   mounted() {},
   methods: {
     onMouseDown(event) {
-      event.preventDefault()
+      if (this.disable) { event.preventDefault() }
       this.onDragStart(event)
       window.addEventListener('mousemove', this.onDragging)
       window.addEventListener('mouseup', this.onDragEnd)
       window.addEventListener('contextmenu', this.onDragEnd) // 右键点击时 进行
     },
     onDragging() {
-      if (this.dragging) {
+      if (!this.disable && this.dragging) {
         this.isClick = false
         this.$parent.resetSize()
         let diff = 0
@@ -87,6 +90,7 @@ export default {
       }
     },
     onDragStart(event) {
+      if (this.disable) return
       this.dragging = true
       this.isClick = true
       this.startX = event.clientX
@@ -94,7 +98,7 @@ export default {
       this.newPosition = this.startPosition
     },
     onDragEnd() {
-      if (this.dragging) {
+      if (!this.disable && this.dragging) {
         setTimeout(() => {
           this.dragging = false
           if (!this.isClick) {

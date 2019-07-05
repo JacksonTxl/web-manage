@@ -1,75 +1,94 @@
 <template>
-  <div>
-    <st-checkbox-button-group v-model="weekArr">
+  <div class="st-shop-hour-picker" :class="{isInfo: isInfo}">
+    <st-checkbox-button-group v-model="weekArr" v-if="!isInfo" :class="ShopHourPicker('check')">
       <template v-for="(item, index) in defaultWeekList">
         <st-checkbox-button-item
           :key="index"
           :value="item.value"
         >{{item.label}}</st-checkbox-button-item>
       </template>
-
     </st-checkbox-button-group>
-    <div class="shop-hour-picker shop-hour-picker-box">
-      <a-row class="shop-hour-picker__title-box">
-        <a-col :span="2">时间段</a-col>
-        <a-col :span="18">
-          <ul class="shop-hour-picker__title-box-time">
-            <li class="shop-hour-picker__title-box-time-comment">00:00</li>
-            <li
-              class="shop-hour-picker__title-box-time-06 shop-hour-picker__title-box-time-comment"
-            >06:00</li>
-            <li
-              class="shop-hour-picker__title-box-time-12 shop-hour-picker__title-box-time-comment"
-            >12:00</li>
-            <li
-              class="shop-hour-picker__title-box-time-18 shop-hour-picker__title-box-time-comment"
-            >18:00</li>
-            <li
-              class="shop-hour-picker__title-box-time-24 shop-hour-picker__title-box-time-comment"
-            >24:00</li>
-          </ul>
-        </a-col>
-        <a-col :span="4" class="shop-hour-picker__title-box-operate">操作</a-col>
-      </a-row>
-        <div v-for="(item,index) in slider" :key="index">
-          <a-row :gutter="8" v-if="sliderCanShow(index)" class="slider">
-            <a-col :span="2">
-              <span class="slider__title">{{item.title | filterWeekDay}}</span>
-            </a-col>
-            <a-col :span="18">
-              <st-date-slider
-                :min="0"
-                :max="24"
-                :step="0.5"
-                :tipFormatter="formatter"
-                v-model="item.value"
-              ></st-date-slider>
-            </a-col>
-            <a-col :span="4">
-              <a-popover placement="bottomRight" trigger="click" class="slider-copy-bottom">
-                <template slot="content">
-                  <a-checkbox-group
-                    @change="onChange"
-                    class="slider-copy"
-                    v-for="(disabled,index) in item.week"
-                    :key="index"
-                  >
-                    <a-checkbox :value="index" :disabled="!disabled">{{index | filterWeekDay}}</a-checkbox>
-                  </a-checkbox-group>
-                </template>
-                <span @click="copyTo(item, index)">复制到</span>
-              </a-popover>
-            </a-col>
-          </a-row>
+    <div class="st-shop-hour-picker__content">
+      <div class="st-shop-hour-picker__title">
+        <div class="label">时间段</div>
+        <div class="timeBox">
+          <div class="time" v-for="(time, index) in currentTime" :key="index">{{time}}</div>
         </div>
+        <div class="operate" v-if="!isInfo">操作</div>
+      </div>
+      <div :class="ShopHourPicker('box')" v-for="(item,index) in slider" :key="index">
+        <div :class="ShopHourPicker('slider')" v-if="sliderCanShow(index)">
+          <div class="label">
+            <span>{{item.title | filterWeekDay}}</span>
+          </div>
+          <div class="sliderBox">
+            <st-date-slider
+              :min="0"
+              :max="24"
+              :step="0.5"
+              :disable="isInfo"
+              :tipFormatter="formatter"
+              v-model="item.value"
+            ></st-date-slider>
+          </div>
+          <div class="operation" v-if="!isInfo">
+            <a-popover placement="bottomRight" trigger="click" class="slider-copy-bottom">
+              <template slot="content">
+                <a-checkbox-group
+                  @change="onChange"
+                  class="slider-copy"
+                  v-for="(disabled,index) in item.week"
+                  :key="index"
+                >
+                  <a-checkbox :value="index" :disabled="!disabled">{{index | filterWeekDay}}</a-checkbox>
+                </a-checkbox-group>
+              </template>
+              <span @click="copyTo(item, index)">复制到</span>
+            </a-popover>
+          </div>
+        </div>
+        <!-- <a-row type="flex" align="middle" v-if="sliderCanShow(index)" :class="ShopHourPicker('slider')">
+          <a-col :span="2" class="label">
+            <span>{{item.title | filterWeekDay}}</span>
+          </a-col>
+          <a-col :span="18">
+            <st-date-slider
+              :min="0"
+              :max="24"
+              :step="0.5"
+              :disable="isInfo"
+              :tipFormatter="formatter"
+              v-model="item.value"
+            ></st-date-slider>
+          </a-col>
+          <a-col :span="4" class="operation">
+            <a-popover placement="bottomRight" trigger="click" class="slider-copy-bottom">
+              <template slot="content">
+                <a-checkbox-group
+                  @change="onChange"
+                  class="slider-copy"
+                  v-for="(disabled,index) in item.week"
+                  :key="index"
+                >
+                  <a-checkbox :value="index" :disabled="!disabled">{{index | filterWeekDay}}</a-checkbox>
+                </a-checkbox-group>
+              </template>
+              <span @click="copyTo(item, index)">复制到</span>
+            </a-popover>
+          </a-col>
+        </a-row> -->
+      </div>
     </div>
   </div>
 </template>
 <script>
-import { SLIDER, WEEK_NO_SELF, WEEK } from './shop-hour-picker.config'
+import { SLIDER, WEEK_NO_SELF, WEEK, TIMER } from './shop-hour-picker.config'
 import { constant, cloneDeep, difference } from 'lodash-es'
 export default {
   name: 'StShopHourPicker',
+  bem: {
+    ShopHourPicker: 'st-shop-hour-picker'
+  },
   model: {
     prop: 'value',
     event: 'ShopHourPickerChange'
@@ -78,6 +97,10 @@ export default {
     value: {
       type: Array,
       default: () => []
+    },
+    isInfo: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -86,7 +109,16 @@ export default {
       slider: SLIDER,
       copeSlider: {}, // 复制到功能需要,为中间值
       oldSlider: {},
-      weekArr: []
+      weekArr: [],
+      timeArr: TIMER
+    }
+  },
+  computed: {
+    currentTime() {
+      return this.timeArr[this.isInfo ? 'info' : 'edit']
+    },
+    colFloor() {
+      return this.isInfo ? 2 : 3
     }
   },
   watch: {
