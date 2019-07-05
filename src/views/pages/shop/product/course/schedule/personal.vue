@@ -5,6 +5,7 @@
       ref="fullCalendar"
       :defaultView="defaultView"
       :header="header"
+      :firstDay="1"
       @eventPositioned='onEventPositioned'
       :plugins="calendarPlugins"
       minTime="09:00:00"

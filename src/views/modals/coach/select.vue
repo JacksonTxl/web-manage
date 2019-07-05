@@ -65,6 +65,7 @@ export default {
     }
   },
   created() {
+    this.coachIds = this.selected
     this.search()
   },
   methods: {
