@@ -3,10 +3,10 @@
 及简单的基于 rx 的 state 管理方案
 
 ```js
-import { State, getSnapshot } from 'rx-state'
+import { State } from 'rx-state'
 
-// 初始化一个流 第一参为值 第二个参为标签名称
-const count$ = new State(0, 'a')
+// 初始化一个流 第一参为initial值
+const count$ = new State(0)
 
 const ADD = state => state + 1
 const MINUS = state => state - 1
@@ -21,7 +21,7 @@ a$.subscribe(v => {
 })
 
 // 获取流状态的当前值
-getSnapshot(a$) // 1
+a.snapshot() // 1
 ```
 
 ## rxjs 与 ts 结合 复杂一点的状态
@@ -33,6 +33,7 @@ interface User {
   name: string
   age: number
 }
+
 interface UserState {
   user: User
   menu: string[]
@@ -42,7 +43,7 @@ const initialState = {
   menu: []
 }
 
-const userState$ = new State(initialState)
+const userState$ = new State<UserState>(initialState)
 
 // 可以直接进行pipe操作来定义user流
 const user$ = userState$.pipe(
@@ -93,9 +94,7 @@ reload$.dispatch()
 
 ```ts
 class TestService {
-  constructor(){
-    this.loading = new State({})
-  }
+  loading$ = new State({})
   @Effect()
   hello() {
     return of('hello').pipe(delay(1000))
