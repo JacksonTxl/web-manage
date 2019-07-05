@@ -67,7 +67,7 @@ export default {
   },
   created() {
     this.switchService.getShopList().subscribe(res => {
-      this.shopList = res.shop_info
+      this.shopList = res.list
     })
   },
   methods: {
