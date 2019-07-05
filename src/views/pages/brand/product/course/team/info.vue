@@ -1,5 +1,5 @@
 <template>
-  <st-panel app class="page-team-info">
+  <div app class="page-team-info">
     <div class="header mg-b24">
       <div :class="b('left')" class="mg-r24">
         <st-t3 class="mg-b16">
@@ -43,7 +43,7 @@
       </div>
     </div>
 
-  </st-panel>
+  </div>
 </template>
 <script>
 import { shopColumns, coachColumns, priceConfigColumns } from './info#table.config'

@@ -1,10 +1,12 @@
 <template>
   <div class='page-team-personal'>
+    <a href="ddd.xslx" download>下载</a>
     <FullCalendar
       class='page-team-personal__calendar'
       ref="fullCalendar"
       :defaultView="defaultView"
       :header="header"
+      :firstDay="1"
       @eventPositioned='onEventPositioned'
       :plugins="calendarPlugins"
       minTime="09:00:00"
