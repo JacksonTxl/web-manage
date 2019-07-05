@@ -10,7 +10,7 @@
         <a-col :span="13">
           <st-info>
             <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
-            <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
+            <st-info-item label="商品类型" v-if="info.product_type">{{info.product_type.name}}</st-info-item>
             <st-info-item label="有效时间">{{selectedNorm.valid_time}}天</st-info-item>
             <st-info-item label="赠送上限">{{selectedNorm.gift_max}}天</st-info-item>
             <st-info-item label="约课权益">{{info.course_interests}}</st-info-item>
@@ -70,13 +70,12 @@
             </a-radio-group>
           </st-form-item>
           <st-form-item label="有效时间">
-            <div v-if="selectedPayment.id == 1">{{validStartTime}}&nbsp;至&nbsp;{{validEndTime}}</div>
+            <div v-if="selectedPayment.id == 1">{{moment(validStartTime).format('YYYY-MM-DD HH:mm')}}&nbsp;至&nbsp;{{validEndTime}}</div>
             <div v-if="selectedPayment.id == 2">{{selectedPayment.automatic_num}}天内未开卡，则{{selectedPayment.automatic_num + 1}}天0：00自动开卡</div>
             <div v-if="selectedPayment.id == 3">
               <a-date-picker
                 showTime
                 v-model="validStartTime"
-                :defaultValue="moment()"
                 format="YYYY-MM-DD HH:mm"
                 placeholder="请选择开始时间"
                 @change="onChangeTime"
@@ -86,7 +85,7 @@
           </st-form-item>
           <st-form-item label="购买赠送">
             <st-input-number :min="0" :max="selectedNorm.gift_max" placeholder="请输入赠送的天数/次数" style="width: 100%" v-model="gift_amount">
-              <span slot="addonAfter">天</span>
+              <span slot="addonAfter">{{giftUnit}}</span>
             </st-input-number>
           </st-form-item>
           <st-form-item required>
@@ -252,7 +251,7 @@ export default {
       // 开卡方式选择
       selectedPayment: '',
       // 会员卡结束日期
-      validStartTime: '',
+      validStartTime: moment(),
       validEndTime: '',
       // 赠送天数
       gift_amount: 0
@@ -266,7 +265,7 @@ export default {
         specs: this.selectedNorm,
         open_type: this.selectedPayment
       })
-      this.validStartTime = moment().format('YYYY-MM-DD HH:mm')
+      this.validStartTime = moment()
       this.validEndTime = moment().add(this.selectedNorm.valid_time, 'days').format('YYYY-MM-DD HH:mm')
       this.fetchCouponList()
       this.getPrice()
@@ -275,6 +274,13 @@ export default {
   computed: {
     orderAmountText() {
       return this.currentPrice < 0 ? '小计不能为负' : ''
+    },
+    giftUnit() {
+      let unit = '天'
+      if (this.info.product_type && this.info.product_type.id === 1) {
+        unit = '次'
+      }
+      return unit
     }
   },
   watch: {

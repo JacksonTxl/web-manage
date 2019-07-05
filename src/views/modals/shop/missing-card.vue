@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="遗失补卡" v-model="show" size="small">
+  <st-modal title="重绑实体卡" v-model="show" size="small">
     <section>
       <section>
         <st-form :form="form" @submit="save" labelWidth="85px">
