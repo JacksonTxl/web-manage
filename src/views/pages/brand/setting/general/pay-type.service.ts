@@ -1,57 +1,55 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 import { PaymentSettingApi, UpdateInput } from '@/api/v1/setting/payments'
+import { WechatPaymentSettingApi } from '@/api/v1/setting/payments/wechat'
 
-interface ListState {
-  resData: object
-}
 @Injectable()
-export class PayTypeService extends Store<ListState> {
-  state$: State<ListState>
-  resData$: Computed<object>
-  auth$: Computed<object>
+export class PayTypeService implements RouteGuard {
+  loading$ = new State({})
+  info$ = new State({})
+  wechatPaymentInfo$ = new State({})
+  auth$ = new State({
+    /**
+     * 查看支付配置
+     */
+    get: this.authService.can('brand:setting:payment_method|get'),
+    /**
+     * 编辑支付配置
+     */
+    edit: this.authService.can('brand:setting:payment_method|edit')
+  })
   constructor(
     private paymentSettingApi: PaymentSettingApi,
-    private authService: AuthService
-  ) {
-    super()
-    this.state$ = new State({
-      resData: {},
-      auth: {
-        /**
-         * 查看支付配置
-         */
-        get: this.authService.can('brand:setting:payment_method|get'),
-        /**
-         * 编辑支付配置
-         */
-        edit: this.authService.can('brand:setting:payment_method|edit')
-      }
-    })
-    this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
-  }
+    private authService: AuthService,
+    private wechatPaymentSettingApi: WechatPaymentSettingApi
+  ) {}
   @Effect()
   init() {
-    return forkJoin(this.getInfo)
+    return forkJoin(
+      this.getWechatPaymentInfo(),
+      this.getInfo()
+    ).pipe(
+      tap(res => {
+        this.wechatPaymentInfo$.commit(() => res[0])
+        this.info$.commit(() => res[1])
+      }
+      )
+    )
   }
   getInfo() {
-    return this.paymentSettingApi.getInfo().pipe(
-      tap(res => {
-        this.state$.commit(state => {
-          state.resData = res
-        })
-      })
-    )
+    return this.paymentSettingApi.getInfo()
+  }
+  getWechatPaymentInfo() {
+    return this.wechatPaymentSettingApi.getInfo()
   }
   update(params: UpdateInput) {
     return this.paymentSettingApi.update(params)
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
-    return this.getInfo()
+    return this.init()
   }
 }
