@@ -249,7 +249,6 @@ export default {
       })
     },
     onEventClick(event) {
-      console.log(event)
       this.$modalRouter.push({
         name: 'schedule-personal-team-reserve-info',
         props: {
