@@ -4,6 +4,7 @@
       <st-input-search
       placeholder="请输入租赁柜名、会员姓名或手机号查找"
       v-model="search"
+      @search="onSearch"
       style="width: 290px;"/>
     </div>
     <st-search-panel>

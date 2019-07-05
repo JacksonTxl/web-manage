@@ -49,7 +49,7 @@
           <td>{{shop.address}}</td>
           <td>
             {{shop.shop_status | enumFilter('shop.shop_status')}}
-            <st-help-popover v-if="shop.auth['brand_shop:shop:shop_holiday|get']" title="放假时间">
+            <st-help-popover v-if="shop.has_holiday_setting" title="放假时间">
               <div slot="content">
                 {{shop.holiday_start_time | dateFilter(appConfig.DATE_FORMAT.datetime)}}<br/>
                 {{shop.holiday_end_time | dateFilter(appConfig.DATE_FORMAT.datetime)}}

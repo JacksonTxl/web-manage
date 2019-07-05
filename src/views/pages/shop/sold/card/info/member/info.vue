@@ -9,7 +9,7 @@
             <a-menu slot="overlay">
               <a-menu-item v-if="auth['shop:sold:sold_member_card|upgrade']" @click="onUpgrade">升级</a-menu-item>
               <a-menu-item v-if="auth['shop:sold:sold_member_card|transfer']" @click="onTransfer">转让</a-menu-item>
-              <a-menu-item v-if="auth['shop:sold:sold_member_card|refund']" @click="onRefund">退款</a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:order:order|refund']" @click="onRefund">退款</a-menu-item>
               <a-menu-item v-if="auth['shop:sold:sold_member_card|unfrozen']" @click="onUnfreeze">取消冻结</a-menu-item>
               <a-menu-item v-if="auth['shop:sold:sold_member_card|vaild_time']" @click="onSetTime">修改有效时间</a-menu-item>
               <a-menu-item v-if="auth['shop:sold:sold_member_card|vip_region']" @click="onArea">修改入场vip区域</a-menu-item>

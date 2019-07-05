@@ -14,7 +14,6 @@ export class PackageService implements RouteGuard {
   })
   constructor(private courseApi: CourseApi, private authService: AuthService) {}
   getList(params: GetCourseListInput) {
-    console.log(4)
     return this.courseApi.getCourseList(params, 'package').pipe(tap((res:any) => {
       res = this.authService.filter(res)
       this.list$.commit(() => res.list)
@@ -26,7 +25,6 @@ export class PackageService implements RouteGuard {
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.getList(to.meta.query).subscribe(() => {
-      console.log(5)
       next()
     })
   }

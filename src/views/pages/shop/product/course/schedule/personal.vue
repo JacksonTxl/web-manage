@@ -5,6 +5,7 @@
       ref="fullCalendar"
       :defaultView="defaultView"
       :header="header"
+      :firstDay="1"
       @eventPositioned='onEventPositioned'
       :plugins="calendarPlugins"
       minTime="09:00:00"
@@ -26,6 +27,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'

@@ -5,11 +5,11 @@
         <div :class="reception('form-block-detail')">
           <div :class="reception('form-block-number')">
             <p>{{item.label}}（{{item.unit}}）</p>
-            <ICountUp v-if="auth[item.type]&&item.version===1" class="number-up" :endVal="summaryInfo[item.type].num"/>
+            <ICountUp v-if="auth[item.type]" class="number-up" :endVal="summaryInfo[item.type].num"/>
             <span v-else>- -</span>
             <!-- <p>{{summaryInfo[item.type].num}}</p> -->
           </div>
-          <div v-if="auth[item.type]&&item.version===1" :class="reception('form-block-chart')">
+          <div v-if="auth[item.type]" :class="reception('form-block-chart')">
             <front-simple-area :color="item.color" :data="summaryInfo[item.type].stChart"></front-simple-area>
           </div>
           <div v-else :class="reception('form-block-nonedata')"></div>
@@ -227,7 +227,7 @@
             <div :class="reception('todoist-to-do')">
               <st-button icon="anticon:plus" type="dashed" @click="onAddWorkNotes" :disabled="!auth.addTodo" class="to-do-add">添加待办</st-button>
               <ul :class="reception('todoist-to-do-list')" v-scrollBar>
-                <li v-for=" (item,i) in workNoteList" :key="i" :class="{'mg-t12':(i+1)>2,'mg-r12':(i+1)%2!==0}">
+                <li v-for=" (item,i) in workNoteList" :key="i" class="animated delay-f2s" :class="{'bounceOut':i===animateIndex,'mg-t12':(i+1)>2,'mg-r12':(i+1)%2!==0}">
                   <div class="to-do-main">
                     <span class="operation-name" v-if="item.nickname">{{item.nickname.substr(0,2)}}</span>
                     <span class="operation-name" v-else>无</span>
@@ -238,7 +238,7 @@
                   </div>
                   <div class="operation-time">
                     <span>{{item.created_time}}</span>
-                    <st-button class="to-do-button" @click="onSetWorkNote(item)">完成</st-button>
+                    <st-button class="to-do-button" @click="onSetWorkNote(item,i)">完成</st-button>
                   </div>
                 </li>
                 <li v-if="workNoteList.length%2!==0" class="mg-t12 none-item"></li>
@@ -273,6 +273,7 @@
 import { IndexService } from './index.service'
 import { cloneDeep } from 'lodash-es'
 import moment from 'moment'
+import { timer } from 'rxjs'
 import FrontSimpleArea from '@/views/biz-components/stat/front-simple-area'
 export default {
   name: 'PageShopReception',
@@ -414,7 +415,9 @@ export default {
       // 是否编辑储物柜
       isEditCabinet: false,
       // 头像
-      photoList: []
+      photoList: [],
+      // 待办animate动画index
+      animateIndex: 9999999999
     }
   },
   computed: {
@@ -675,14 +678,18 @@ export default {
       })
     },
     // 完成待办
-    onSetWorkNote(item) {
+    onSetWorkNote(item, index) {
       this.$confirm({
         title: '完成待办',
         content: `确定完成${item.subject}吗？`,
         onOk: () => {
           return this.indexService.setWorkNote(item.id).toPromise().then(() => {
-            this.indexService.getWorkNoteList().subscribe()
-            this.indexService.getWorkNoteDoneList().subscribe()
+            this.animateIndex = index
+            timer(1000).subscribe(() => {
+              this.animateIndex = 999999999
+              this.indexService.getWorkNoteList().subscribe()
+              this.indexService.getWorkNoteDoneList().subscribe()
+            })
           })
         }
       })

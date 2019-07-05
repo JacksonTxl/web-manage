@@ -1,10 +1,12 @@
 <template>
   <div class='page-team-personal'>
+    <a href="ddd.xslx" download>下载</a>
     <FullCalendar
       class='page-team-personal__calendar'
       ref="fullCalendar"
       :defaultView="defaultView"
       :header="header"
+      :firstDay="1"
       @eventPositioned='onEventPositioned'
       :plugins="calendarPlugins"
       minTime="09:00:00"
@@ -32,6 +34,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
+import Vue from 'vue'
 import $ from 'jquery'
 import { TeamScheduleScheduleService } from './team.service#/schedule.service'
 import { TeamService } from './team.service'

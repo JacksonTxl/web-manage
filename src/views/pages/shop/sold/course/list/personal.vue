@@ -67,7 +67,7 @@
                 <a-menu-item v-if="record.auth['shop:sold:sold_personal_course|unfrozen']" @click="onUnfreeze(record)">取消冻结</a-menu-item>
                 <a-menu-item v-if="record.auth['shop:sold:sold_personal_course|change_coach']" @click="onEditCoach(record)">修改教练</a-menu-item>
                 <a-menu-item v-if="record.auth['shop:sold:sold_personal_course|transfer']" @click="onTransfer(record)">转让</a-menu-item>
-                <a-menu-item v-if="record.auth['shop:sold:sold_personal_course|refund']" @click="onRefund(record)">退款</a-menu-item>
+                <a-menu-item v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a-menu-item>
                 <a-menu-item v-if="record.auth['shop:sold:sold_personal_course|export_contract']"  @click="toContract(record)">查看合同</a-menu-item>
               </st-more-dropdown>
             </div>
@@ -250,8 +250,8 @@ export default {
           id: record.id,
           courseName: record.course_name,
           courseNum: record.remain_course_num,
-          courseEndTime: moment(record.end_time * 1000),
-          time: `${moment(record.buy_time * 1000).format('YYYY-MM-DD HH:mm')} 至 ${moment(record.end_time * 1000).format('YYYY-MM-DD HH:mm')}`
+          courseEndTime: moment(record.end_time),
+          time: `${moment(record.buy_time).format('YYYY-MM-DD HH:mm')} 至 ${moment(record.end_time).format('YYYY-MM-DD HH:mm')}`
         },
         on: {
           success: () => {

@@ -88,7 +88,7 @@
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|frozen']" @click="onFreeze(record)">冻结</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|unfrozen']" @click="onUnfreeze(record)">取消冻结</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|transfer']" @click="onTransfer(record)">转让</a-menu-item>
-              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|refund']" @click="onRefund(record)">退款</a-menu-item>
+              <a-menu-item v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|export_contract']" @click="toContract(record)">查看合同</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|vip_region']" @click="onArea(record)">修改入场vip区域</a-menu-item>
             </st-more-dropdown>
@@ -561,8 +561,14 @@ export default {
           id: record.id
         },
         on: {
-          success: () => {
-            this.$router.push({ force: true, query: this.query })
+          success: async res => {
+            // 创建订单成功 并且到支付页面
+            let props = {
+              order_id: res.orderId,
+              type: 'member'
+            }
+            let payOrderRes = await this.createdOrderPay(props)
+            this.payCallBack(res.orderId, 'member', payOrderRes.type)
           }
         }
       })

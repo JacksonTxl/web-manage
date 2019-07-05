@@ -8,6 +8,7 @@
       @eventPositioned='onEventPositioned'
       :plugins="calendarPlugins"
       minTime="09:00:00"
+      :firstDay="1"
       :columnHeaderFormat="columnHeaderFormat"
       locale="zh-cn"
       :views="views"
@@ -249,7 +250,6 @@ export default {
       })
     },
     onEventClick(event) {
-      console.log(event)
       this.$modalRouter.push({
         name: 'schedule-personal-team-reserve-info',
         props: {
