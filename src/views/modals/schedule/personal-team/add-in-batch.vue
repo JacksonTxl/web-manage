@@ -170,6 +170,8 @@ export default {
           delete item.show
           delete item.key
           delete item.editable
+          item.court_id = item.court_site_id[0]
+          item.court_site_id = item.court_site_id[1]
           item.start_time = moment(item.start_time).format('YYYY-MM-DD HH:mm:ss').valueOf()
           item.limit_num = parseInt(item.limit_num)
           item.course_fee = parseInt(item.course_fee)
@@ -177,12 +179,6 @@ export default {
         })
       this.scheduleService.addScheduleInBatch(data).subscribe(this.onSubmitSuccess)
       this.show = false
-    },
-    onChangeCourseList() {
-
-    },
-    onChangeStartTime() {
-
     },
     handleChange(value, key, column) {
       const newData = [...this.data]
@@ -249,6 +245,11 @@ export default {
       }
       if (target) {
         delete target.editable
+        newData.forEach(item => {
+          if (item.key === key && key !== 0) {
+            item = this.getShowTableData(item)
+          }
+        })
         this.data = newData
         this.cacheData = newData.map(item => ({ ...item }))
       }
