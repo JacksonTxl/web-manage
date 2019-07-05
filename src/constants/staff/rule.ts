@@ -31,6 +31,10 @@ export class RuleConfig {
         {
           required: true,
           message: '请填写昵称'
+        },
+        {
+          pattern: this.pattern.CN_EN_NUM('4-10'),
+          message: '请输入4-10个字，中英文及数字'
         }
       ]
     }]
