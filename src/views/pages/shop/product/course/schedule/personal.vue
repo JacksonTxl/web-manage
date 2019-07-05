@@ -5,6 +5,7 @@
       ref="fullCalendar"
       :defaultView="defaultView"
       :header="header"
+      :firstDay="1"
       @eventPositioned='onEventPositioned'
       :plugins="calendarPlugins"
       minTime="09:00:00"
@@ -152,7 +153,7 @@ export default {
   methods: {
     datesRender(info) {
       const start = moment(info.view.activeStart).format('YYYY-MM-DD').valueOf()
-      const end = moment(info.view.activeEnd).format('YYYY-MM-DD').valueOf()
+      const end = moment((moment(info.view.activeEnd).valueOf() - 24 * 3600 * 1000)).format('YYYY-MM-DD').valueOf()
       this.$router.push({ query: { start_date: start, end_date: end } })
     },
     setAddButton() {

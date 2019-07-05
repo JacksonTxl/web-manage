@@ -8,6 +8,7 @@
       @eventPositioned='onEventPositioned'
       :plugins="calendarPlugins"
       minTime="09:00:00"
+      :firstDay="1"
       :columnHeaderFormat="columnHeaderFormat"
       locale="zh-cn"
       :views="views"
@@ -163,7 +164,7 @@ export default {
     datesRender(info) {
       console.log(info)
       const start = moment(info.view.activeStart).format('YYYY-MM-DD').valueOf()
-      const end = moment(info.view.activeEnd).format('YYYY-MM-DD').valueOf()
+      const end = moment((moment(info.view.activeEnd).valueOf() - 24 * 3600 * 1000)).format('YYYY-MM-DD').valueOf()
       console.log(start, end)
       this.$router.push({ query: { start_date: start, end_date: end } })
     },
