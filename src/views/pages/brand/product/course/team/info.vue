@@ -9,9 +9,11 @@
 
         <div :class="b('tip')">
           <div class="item">
+            <st-icon type="time" color="rgb(0,199,219)" class="mg-r8" size="16px"></st-icon>
             <span class="label mg-r8">时长: </span><span class="value">{{teamCourseInfo.duration}}分钟</span>
           </div>
           <div class="item">
+            <st-icon type="price" size="16px" class="mg-r8" color="rgb(255,169,45)"></st-icon>
             <span class="label  mg-r8">参考定价: </span><span class="value">{{teamCourseInfo.price}}元/节</span>
           </div>
           <div class="item">

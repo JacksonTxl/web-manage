@@ -1,3 +1,4 @@
+import { UpdateInput } from './../../../../../../../api/v1/schedule/personal/reserve'
 
 import { Injectable } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
@@ -9,6 +10,7 @@ export interface SetState {
   reserveInfo: any
   reserveList: any[]
   reserveTable: any[]
+  reserveUpdateInfo: any[]
 }
 @Injectable()
 export class PersonalScheduleReserveService {
@@ -16,6 +18,7 @@ export class PersonalScheduleReserveService {
   reserveInfo$: Computed<any>
   reserveTable$: Computed<any>
   reserveList$: Computed<any>
+  reserveUpdateInfo$: Computed<any>
   auth$: Computed<any>
   constructor(private reserveApi: PersonalReserveApi,
     private authService: AuthService,
@@ -27,6 +30,7 @@ export class PersonalScheduleReserveService {
         cancel: this.authService.can('shop:reserve:personal_course_reserve|del'),
         checkIn: this.authService.can('shop:reserve:personal_course_reserve|checkin')
       },
+      reserveUpdateInfo: {},
       reserveInfo: [],
       reserveList: [],
       reserveTable: []
@@ -35,6 +39,7 @@ export class PersonalScheduleReserveService {
     this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
     this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
     this.reserveTable$ = new Computed(this.state$.pipe(pluck('reserveTable')))
+    this.reserveUpdateInfo$ = new Computed(this.state$.pipe(pluck('reserveUpdateInfo')))
   }
   /**
  *
@@ -60,6 +65,13 @@ export class PersonalScheduleReserveService {
       })
     }))
   }
+  update(update: UpdateInput) {
+    return this.reserveApi.update(update).pipe(tap(res => {
+      this.msg.success({
+        content: '更新预约成功'
+      })
+    }))
+  }
   /**
    *
    * @param id
@@ -71,6 +83,13 @@ export class PersonalScheduleReserveService {
       this.state$.commit(state => {
         state.reserveInfo = res.info
         state.reserveList = res.info.reserve
+      })
+    }))
+  }
+  getUpdateInfo(id: any) {
+    return this.reserveApi.getUpdateInfo(id).pipe(tap(res => {
+      this.state$.commit(state => {
+        state.reserveUpdateInfo = res.info
       })
     }))
   }

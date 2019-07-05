@@ -4,7 +4,8 @@
         <div class="page-personal-header__left mg-r24">
           <st-t3 class="mg-b16">{{teamCourseInfo.course_name}}（{{teamCourseInfo.course_category_name}}）</st-t3>
           <div class="course-detail-item mg-b16">
-            <div class="course-detail-item__left"><span class="label">时长:</span><span class="value">{{teamCourseInfo.duration}}分钟</span></div><div class="course-detail-item__right"><span class="label">参考定价:</span><span class="value">{{teamCourseInfo.price}}元/节</span></div>
+            <div class="course-detail-item__left"><st-icon type="time" color="rgb(0,199,219)" class="mg-r8" size="16px"></st-icon><span class="label">时长:</span><span class="value">{{teamCourseInfo.duration}}分钟</span></div>
+            <div class="course-detail-item__right"><st-icon type="price" size="16px" class="mg-r8" color="rgb(255,169,45)"></st-icon><span class="label">参考定价:</span><span class="value">{{teamCourseInfo.price}}元/节</span></div>
           </div>
           <div class="course-detail-item__content mg-b16">
             {{teamCourseInfo.description}}
