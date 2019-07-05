@@ -19,7 +19,11 @@
           rowKey="id"
           @change="handleTableChange"
           :pagination="false"
-        />
+        >
+          <template slot="custom_title">
+            私教消课数（近30天）<st-help-tooltip id="TSYHFP002" />
+          </template>
+        </st-table>
       </a-col>
     </a-row>
   </st-modal>
@@ -34,9 +38,10 @@ const columns = [
     key: 'coach_name'
   },
   {
-    title: '私教消课数（近30天）',
     dataIndex: 'personal_sales',
-    key: 'personal_sales'
+    key: 'personal_sales',
+    slots: { title: 'custom_title' },
+    scopedSlots: { customRender: 'personal_sales' }
   }
 ]
 export default {

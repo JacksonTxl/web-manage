@@ -41,6 +41,11 @@
       rowKey="sold_cabinet_id"
       :columns="columns"
       :dataSource="list">
+        <template
+            slot="lease_status"
+            slot-scope="record">
+          <a-badge :status="record.id === 1?'success':record.id === 2?'error':'warning'" :text="record.name" />
+        </template>
         <div slot="action" slot-scope="text, record">
           <a v-if="record.auth['shop:sold:sold_cabinet|renew']" @click="onRelet(record)">续租</a>
           <a-divider type="vertical"></a-divider>
@@ -114,8 +119,8 @@ export default {
           scopedSlots: { customRender: 'member_name' }
         }, {
           title: '手机号',
-          dataIndex: 'mobile',
-          scopedSlots: { customRender: 'mobile' }
+          dataIndex: 'member_mobile',
+          scopedSlots: { customRender: 'member_mobile' }
         }, {
           title: '状态',
           dataIndex: 'lease_status',

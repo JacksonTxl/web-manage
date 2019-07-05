@@ -87,13 +87,12 @@ export default {
           this.$emit('blur', `${this.number}`)
           break
         default:
-          this.number = +e.target.value
           if (!this.float) {
-            this.number = parseInt(e.target.value, 10)
+            this.number = parseInt(+e.target.value, 10)
             this.number = this.min > this.number ? this.min : this.number
             this.number = this.max < this.number ? this.max : this.number
           } else {
-            this.number = parseInt(e.target.value * 10, 10) / 10
+            this.number = parseInt(+e.target.value * 10, 10) / 10
             this.number = this.min > this.number ? this.min : this.number
             this.number = this.max < this.number ? this.max : this.number
           }

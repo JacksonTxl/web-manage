@@ -23,7 +23,7 @@
     <st-form-table hoverable>
       <thead>
         <tr>
-          <th v-for="col in columns" :key="col.dataIndex">{{col.title}}</th>
+          <th v-for="col in columns" :key="col.dataIndex">{{col.title}}<st-help-tooltip v-if="col.dataIndex == 'site_num_list'" id="TSGC002" /></th>
         </tr>
       </thead>
       <tbody>

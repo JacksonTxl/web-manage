@@ -129,13 +129,12 @@ export default {
   },
   methods: {
     onSaleModelChange(e) {
-      this.info.sale_model = e.target.value
-      this.isShowPriceSet = true
+      const saleModel = e.target.value
+      this.info.sale_model = saleModel
+      this.isShowPriceSet = saleModel !== this.info.origin_sale_model
     },
     onStandardPriceChange(e) {
-      console.log('change', e.target.value)
       this.info.standard_price = e.target.value
-      console.log(this.info)
     },
     cancel() {
       this.show = false

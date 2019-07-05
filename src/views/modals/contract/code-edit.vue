@@ -107,6 +107,9 @@ export default {
       })
     },
     onOk() {
+      if (!this.inputCheck()) {
+        return
+      }
       this.codeEditService.updateCode(this.rules).subscribe(() => {
         this.message.success({
           content: '更新合同编码成功！'
@@ -117,6 +120,15 @@ export default {
     },
     onDelete(index) {
       this.rules.splice(index, 1)
+    },
+    inputCheck() {
+      if (this.rules.length < 6) {
+        this.message.error({
+          content: '请至少设置6合同编码'
+        })
+        return false
+      }
+      return true
     }
   }
 }
