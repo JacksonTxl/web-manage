@@ -11,7 +11,7 @@
         <a-input :value="areaName" disabled/>
       </st-form-item>
       <st-form-item label="首字母">
-        <a-input placeholder="请输入首字母" v-decorator="ruleConfig.firstLetter"/>
+        <a-input placeholder="请输入首字母" maxlength="1" v-decorator="ruleConfig.firstLetter"/>
       </st-form-item>
       <st-form-item label="起始编号" required>
         <a-input placeholder="请输入起始编号" v-decorator="ruleConfig.startNum"/>
