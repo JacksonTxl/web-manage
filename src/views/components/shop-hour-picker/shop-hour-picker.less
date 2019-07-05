@@ -7,6 +7,9 @@
       border-radius: 0;
     }
     .st-shop-hour-picker__title {
+      .label {
+        margin-right: 24px;
+      }
       .time {
         color: #9BACB9;
       }
@@ -16,6 +19,9 @@
     }
     .st-shop-hour-picker__slider {
       border: none;
+      .sliderBox {
+        margin-right: 20px;
+      }
     }
   }
   &__content {
@@ -63,26 +69,10 @@
     .label {
       text-align: center;
       width: 82px;
-      margin-right: 38px;
-    }
-    .timeBox {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      .time:nth-of-type(1) {
-        text-align: left;
-      }
-      .time:nth-last-of-type(1) {
-        text-align: right;
-        padding-right: 4%;
-      }
-      .time {
-        width: 25%;
-        text-align: center;
-        box-sizing: border-box;
-      }
+      margin-right: 30px;
     }
     .operate {
+      margin-left: 38px;
       width: 104px;
       text-align: center;
     }
@@ -117,6 +107,72 @@
       margin-left: 38px;
       width: 104px;
       text-align: center;
+    }
+  }
+}
+.timeBox {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  &.isInfo {
+    .time:nth-of-type(1) {
+      text-align: left;
+    }
+    .time:nth-of-type(2) {
+      text-align: left;
+      padding-left: 2%;
+    }
+    .time:nth-of-type(3) {
+      text-align: left;
+      padding-left: 3%;
+    }
+    .time:nth-of-type(4) {
+      text-align: left;
+      padding-left: 2%;
+    }
+    .time:nth-of-type(5) {
+      text-align: left;
+      padding-left: 1%;
+    }
+    .time:nth-of-type(6) {
+      text-align: left;
+      padding-left: 2.5%;
+    }
+    .time:nth-of-type(7) {
+      text-align: center;
+    }
+    .time:nth-last-of-type(1) {
+      text-align: center;
+    }
+    .time {
+      flex: 1;
+      text-align: center;
+      box-sizing: border-box;
+    }
+  }
+  &.isNotInfo {
+    .time:nth-of-type(1) {
+      text-align: left;
+    }
+    .time:nth-of-type(2) {
+      text-align: left;
+      padding-left: 4%;
+    }
+    .time:nth-of-type(3) {
+      text-align: right;
+      padding-right: 7%;
+    }
+    .time:nth-of-type(4) {
+      text-align: right;
+      padding-right: 3%;
+    }
+    .time:nth-last-of-type(1) {
+      text-align: right;
+    }
+    .time {
+      width: 20%;
+      text-align: center;
+      box-sizing: border-box;
     }
   }
 }

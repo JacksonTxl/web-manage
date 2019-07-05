@@ -11,7 +11,7 @@
     <div class="st-shop-hour-picker__content">
       <div class="st-shop-hour-picker__title">
         <div class="label">时间段</div>
-        <div class="timeBox">
+        <div class="timeBox" :class="{isInfo: isInfo, isNotInfo: !isInfo}">
           <div class="time" v-for="(time, index) in currentTime" :key="index">{{time}}</div>
         </div>
         <div class="operate" v-if="!isInfo">操作</div>

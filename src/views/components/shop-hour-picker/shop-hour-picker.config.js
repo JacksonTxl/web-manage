@@ -29,7 +29,7 @@ export const SLIDER = [{
 }]
 export const WEEK_NO_SELF = [false, false, false, false, false, false, false]
 export const TIMER = {
-  info: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '24:00'],
+  info: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00', '24:00'],
   edit: ['00:00', '06:00', '12:00', '18:00', '24:00']
 }
 export const WEEK = [{
