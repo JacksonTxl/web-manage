@@ -94,4 +94,8 @@ export class UpdateStaffPositionService extends Store<SetState> {
       })
     }))
   }
+  @Effect()
+  validatStaffPosition(id: number) {
+    return this.staffApi.validatStaffPosition(id)
+  }
 }

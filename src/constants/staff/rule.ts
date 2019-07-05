@@ -17,6 +17,10 @@ export class RuleConfig {
           required: true,
           message: '请填写姓名',
           max: 10
+        },
+        {
+          message: '支持输入4~10个字的姓名',
+          max: 10
         }
       ]
     }]
