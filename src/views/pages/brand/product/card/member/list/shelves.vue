@@ -72,11 +72,18 @@
       <template slot="time_gradient" slot-scope="text">{{text}}</template>
       <!-- 支持入场门店 -->
       <template slot="admission_range" slot-scope="text,record">
-        <a
-          v-if="text.id === 2"
-          v-modal-link="{ name: 'card-brand-member-shop-table' , props:{id: record.id,type:'Sale',title:'支持入场门店'}}"
-        >{{text.name}}</a>
-        <span v-else class="use_num">{{text.name}}</span>
+        <!-- 发布渠道为门店 -->
+        <template v-if="record.publish_channel.id===2">
+          <span class="use_num">{{record.shop_name}}</span>
+        </template>
+        <!-- 发布渠道为品牌 -->
+        <template v-else>
+          <a
+            v-if="text.id === 2"
+            v-modal-link="{ name: 'card-brand-member-shop-table' , props:{id: record.id,type:'Sale',title:'支持入场门店'}}"
+          >{{text.name}}</a>
+          <span v-else class="use_num">{{text.name}}</span>
+        </template>
       </template>
       <!-- 售卖时间 -->
       <template

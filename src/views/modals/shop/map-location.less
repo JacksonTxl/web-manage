@@ -1,0 +1,20 @@
+.modal-map-location {
+  &__map {
+    .s(436px,220px);
+  }
+  &__lat-lng {
+    text-align: right;
+    .fz(12px);
+    .lh(20px);
+    .c(@text);
+  }
+  .ant-modal-body {
+    padding-bottom: 16px;
+  }
+  div[n=targetElement]~div[draggable=false]{
+    display: none;
+  }
+  div[n=targetElement]~div[onpositionupdate^=return]{
+    display: none;
+  }
+}

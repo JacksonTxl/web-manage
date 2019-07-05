@@ -126,9 +126,10 @@ export default {
       st_district: {},
       // 定位data
       locationData: {},
-      mapObject: null,
-      markerObject: null,
-      searchServiceObject: null,
+      // 注释以下三个对象，提升vue性能
+      // mapObject: null,
+      // markerObject: null,
+      // searchServiceObject: null,
       locationObject: null,
       // 检索列表
       poisList: [],
