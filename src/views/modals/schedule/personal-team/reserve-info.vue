@@ -76,7 +76,7 @@
               </a-select-opt-group>
             </a-select>
           </td>
-          <td></td>
+          <td>未签到</td>
           <td>
             <a href="javascript:;" @click="addReserve">添加预约</a>
           </td>

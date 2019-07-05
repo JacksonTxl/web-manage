@@ -17,6 +17,9 @@ export class RouteService implements RouteGuard {
     this.query$.commit(() => to.meta.query)
     next()
   }
+  /**
+   * 等待前置的所有守卫执行完再执行layout赋值
+   */
   afterEach(to: ServiceRoute, from: ServiceRoute) {
     if (!to.meta.layout && to.name) {
       console.warn(`can not find meta.layout on route -> ${to.name}`)
