@@ -1,0 +1,40 @@
+.st-slider-button {
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 2px solid #798AFF;
+  border-radius: 100%;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  z-index: 2;
+  &__toolTip {
+    position: absolute;
+    top: -30px;
+    left: -20px;
+    color: #fff;
+    background: #798AFF;
+    border-radius: 2px;
+    width: 40px;
+    height: 20px;
+    padding: 2px;
+    text-align: center;
+    div {
+      height: 20px;
+      line-height: 20px;
+      font-size: 12px;
+    }
+    &:before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      left: 50%;
+      // margin-left: -3px;
+      border-top: 4px solid #798AFF;
+      top: 19px;
+    }
+  }
+}

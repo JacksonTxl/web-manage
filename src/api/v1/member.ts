@@ -399,6 +399,16 @@ export class MemberApi extends Api {
   getMemberCheckResult(query: FaceCheckQuery) {
     return this.http.get(`/v1/member/check/face`, { query })
   }
+  /**
+   * 修改人脸
+   */
+  updateUserFace(id: number, params: EditFaceParams) {
+    return this.http.put(`/v1/member/face/${id}`, { params })
+  }
+}
+export interface EditFaceParams{
+  image_id:number
+  image_key:string
 }
 
 export interface FaceCheckQuery {
