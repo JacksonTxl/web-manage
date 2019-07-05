@@ -21,13 +21,13 @@
 <script>
 import { EditService } from './edit.service'
 import { MessageService } from '@/services/message.service'
-import { RuleConfig } from '@/constants/rule'
+import { PatternService } from '@/services/pattern.service'
 export default {
   serviceInject() {
     return {
       editService: EditService,
       messageService: MessageService,
-      ruleConfig: RuleConfig
+      pattern: PatternService
     }
   },
   rxState() {
@@ -50,9 +50,7 @@ export default {
           'area_name', {
             rules: [{
               required: true,
-              message: '请输入场地名称'
-            }, {
-              validator: this.courtNameValidator,
+              pattern: this.pattern.CN_EN_NUM('1-10'),
               message: '支持输入中英文、数字,不超过10个字'
             }]
           }
@@ -99,13 +97,6 @@ export default {
       })
       this.$emit('change')
       this.show = false
-    },
-    courtNameValidator(rule, value, callback) {
-      if (!this.ruleConfig.generateRule('1-10').test(value)) {
-        callback(rule.message)
-      } else {
-        callback()
-      }
     }
   }
 }
