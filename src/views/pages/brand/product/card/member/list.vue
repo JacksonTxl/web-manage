@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     onSearchCardName() {
-      this.$events.emit('card-member-list-shelves:onSingleSearch', ['card_name', this.query.card_name, { keyword: true }])
+      this.$events.emit(`${this.$route.name}:onSingleSearch`, 'card_name', this.query.card_name, { keyword: true })
     }
   }
 }
