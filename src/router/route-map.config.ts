@@ -447,6 +447,12 @@ export const routeMapConfig = {
   },
   'brand-setting-shop-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店设置'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      shop_status: { type: Number, default: -1 },
+      is_valid: { type: Number, default: -1 }
+    }
   },
   'brand-setting-shop-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增门店'

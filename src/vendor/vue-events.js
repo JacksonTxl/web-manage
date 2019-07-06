@@ -16,6 +16,8 @@ class EventBus {
   emit(name, ...args) {
     if (this.ls[name]) {
       this.ls[name].forEach(l => l(...args))
+    } else {
+      console.warn(`[VueEvents] can not find event ${name}`)
     }
   }
 }
