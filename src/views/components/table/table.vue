@@ -22,6 +22,8 @@ export default {
       {
         pagination: {
           pageSize: 20,
+          current: 1,
+          total: 0,
           showTotal: function(total, range) {
             return `共${total}条`
           },
