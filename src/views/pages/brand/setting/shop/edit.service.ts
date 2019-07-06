@@ -6,7 +6,7 @@ import { forkJoin } from 'rxjs'
 @Injectable()
 export class EditService implements RouteGuard {
   shopInfo$ = new State({})
-  serviceList$ = new State({})
+  serviceList$ = new State([])
   loading$ = new State({})
   constructor(private shopApi: ShopApi) {}
   @Effect()
@@ -20,15 +20,13 @@ export class EditService implements RouteGuard {
   }
   getShopInfo(id:string) {
     return this.shopApi.getInfo(id).pipe(tap((res:any) => {
-      this.shopInfo$.commit(() => res.shop_info)
+      this.shopInfo$.commit(() => res.info)
     }))
   }
-  getDataInit(id:string) {
+  init(id:string) {
     return forkJoin(this.getShopInfo(id), this.getServiceList())
   }
-  beforeRouteEnter(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
-    this.getDataInit(to.meta.query.id).subscribe(() => {
-      next()
-    })
+  beforeEach(to:ServiceRoute) {
+    return this.init(to.meta.query.id)
   }
 }

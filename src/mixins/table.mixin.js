@@ -17,7 +17,8 @@ const ROUTE_NAMES_USE_PAGE = [
   'shop-member-label-list',
   'shop-product-course-manage-package-list',
   'shop-finance-order-list',
-  'brand-finance-salary-template-basic'
+  'brand-finance-salary-template-basic',
+  'brand-finance-salary-template-performance'
 ]
 
 export default {

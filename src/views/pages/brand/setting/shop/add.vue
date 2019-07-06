@@ -44,7 +44,7 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item
-          :validateStatus="shopMapValidate"
+          validateStatus="error"
           :help="shopMapValidateText"
           label="门店地址"
           required>
@@ -95,7 +95,7 @@
       </a-row>
       <a-row :gutter="8">
         <a-col offset="1" :lg="23">
-          <st-form-item label="店招">
+          <st-form-item label="店招" required validateStatus="error" :help="shopCoverImageValidateText">
             <st-image-upload
             :cropperModal="cropperModal"
             :sizeLimit="5"
@@ -118,7 +118,7 @@
             </template>
             <a-radio-group v-model="shopData.shop_status">
               <a-radio
-                v-for="item in Object.entries(shop.shop_status.value)"
+                v-for="item in Object.entries(shop.shop_status_add.value)"
                 :key="+item[0]"
                 :value="+item[0]">{{item[1]}}</a-radio>
             </a-radio-group>
@@ -209,7 +209,6 @@ export default {
         city: {},
         district: {}
       },
-      shopMapValidate: 'success',
       shopMapValidateText: '',
       // 服务
       serviceIcon_icon_list: {
@@ -223,6 +222,7 @@ export default {
         8: 'energy'
       },
       fileList: [],
+      shopCoverImageValidateText: '',
       cropperModal: {}
     }
   },
@@ -232,6 +232,12 @@ export default {
   computed: {
     phoneAddDisabled() {
       return this.shopData.shop_phones.length > 2
+    },
+    shopCoverImageIsOk() {
+      return this.shopCoverImageValidateText === ''
+    },
+    shopMapIsOk() {
+      return this.shopMapValidateText === ''
     }
   },
   methods: {
@@ -241,10 +247,9 @@ export default {
       } else {
         this.shopData.shop_cover_image = ''
       }
+      this.shopCoverImageValidator()
     },
     addMapChange(data) {
-      this.shopMapValidate = 'success'
-      this.shopMapValidateText = ''
       this.addMap = cloneDeep(data)
       this.shopData.province_id = data.province.id
       this.shopData.city_id = data.city.id
@@ -252,6 +257,7 @@ export default {
       this.shopData.address = data.address
       this.shopData.lat = data.lat
       this.shopData.lng = data.lng
+      this.shopMapValidator()
     },
     // 添加电话
     onValidtorPhone() {
@@ -274,19 +280,15 @@ export default {
       this.phoneValidtorType = 0
       this.form.resetFields(['shop_phone'])
       e.preventDefault()
+      this.shopCoverImageValidator()
+      this.shopMapValidator()
       this.form.validateFieldsAndScroll((err, values) => {
         this.phoneValidtorType = 1
-        if (!err) {
-          if (this.shopData.lat === '') {
-            this.shopMapValidate = 'error'
-            this.shopMapValidateText = '请选择门店地址'
-          } else {
-            this.shopData.shop_name = values.shop_name
-            this.shopData.email = values.email
-            this.shopData.buy_shop_id = values.buy_shop_id
-            this.addService.save(this.shopData).subscribe(this.onSubmitSuccess)
-          }
-        } else {
+        if (!err && this.shopCoverImageIsOk && this.shopMapIsOk) {
+          this.shopData.shop_name = values.shop_name
+          this.shopData.email = values.email
+          this.shopData.buy_shop_id = values.buy_shop_id
+          this.addService.save(this.shopData).subscribe(this.onSubmitSuccess)
         }
       })
     },
@@ -334,6 +336,14 @@ export default {
           callback()
         }
       }
+    },
+    // 校验店招是否已上传
+    shopCoverImageValidator() {
+      this.shopCoverImageValidateText = this.shopData.shop_cover_image ? '' : '请上传店招'
+    },
+    // 校验地址
+    shopMapValidator() {
+      this.shopMapValidateText = this.shopData.lat ? '' : '请选择门店地址'
     }
   }
 }

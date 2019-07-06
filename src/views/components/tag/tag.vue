@@ -8,10 +8,13 @@ const tagMap = {
   'role-saler': '会籍销售',
   'coach-personal': '私人教练',
   'coach-team': '团课教练',
-  'shop-opening': '营业中',
-  'shop-presale': '预售',
+
   'shop-trial': '试运营',
+  'shop-opening': '正式运营',
+  'shop-stop': '暂停营业',
   'shop-close': '已关店',
+  'shop-holiday': '放假中',
+
   'shop-sign': '店招',
   'period-card': '期限卡',
   'number-card': '次卡',

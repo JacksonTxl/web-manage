@@ -91,7 +91,7 @@
       </a-row>
       <a-row :gutter="8">
         <a-col offset="1" :lg="23">
-          <st-form-item label="店招" v-viewer="{ url: 'data-src' }">
+          <st-form-item label="店招" v-viewer="{ url: 'data-src' }" required validateStatus="error" :help="shopCoverImageValidateText">
             <st-image-upload
             :cropperModal="cropperModal"
             :sizeLimit="5"
@@ -103,18 +103,6 @@
               <div class="page-upload-text">上传店招</div>
               <div class="page-upload-text">大小不超过5M，建议尺寸16:9</div>
             </st-image-upload>
-          </st-form-item>
-        </a-col>
-      </a-row>
-      <a-row :gutter="8">
-        <a-col offset="1" :lg="23">
-          <st-form-item label="营业状态">
-            <a-radio-group v-model="shopData.shop_status">
-              <a-radio
-                v-for="item in Object.entries(shop.shop_status.value)"
-                :key="+item[0]"
-                :value="+item[0]">{{item[1]}}</a-radio>
-            </a-radio-group>
           </st-form-item>
         </a-col>
       </a-row>
@@ -187,6 +175,7 @@ export default {
         email: '',
         shop_images: []
       },
+      shopCoverImageValidateText: '',
       serviceIcon_icon_list: {
         1: 'WIFI',
         2: 'park',
@@ -205,6 +194,9 @@ export default {
   computed: {
     phoneAddDisabled() {
       return this.shopData.shop_phones.length > 2
+    },
+    shopCoverImageIsOk() {
+      return this.shopCoverImageValidateText === ''
     }
   },
   methods: {
@@ -232,10 +224,15 @@ export default {
       })
       // 店招
       this.fileList = cloneDeep(data.shop_images)
+      this.shopData.shop_images = cloneDeep(data.shop_images)
       // 营业状态
       this.shopData.shop_status = data.shop_status
       // 营业时间
       this.shopData.business_time = data.business_time
+    },
+    // 校验店招是否已上传
+    shopCoverImageValidator() {
+      this.shopCoverImageValidateText = this.shopData.shop_images.length ? '' : '请上传店招'
     },
     fileChange(data) {
       if (data.length) {
@@ -244,9 +241,9 @@ export default {
       } else {
         this.shopData.shop_images = []
       }
+      this.shopCoverImageValidator()
     },
     editMapChange(data) {
-      console.log(data)
       this.editMap = cloneDeep(data)
     },
     // 添加电话
@@ -270,9 +267,10 @@ export default {
       this.phoneValidtorType = 0
       this.form.resetFields(['shop_phone'])
       e.preventDefault()
+      this.shopCoverImageValidator()
       this.form.validateFieldsAndScroll((err, values) => {
         this.phoneValidtorType = 1
-        if (!err) {
+        if (!err && this.shopCoverImageIsOk) {
           this.shopData.shop_name = values.shop_name
           this.shopData.province_id = this.editMap.province.id
           this.shopData.city_id = this.editMap.city.id

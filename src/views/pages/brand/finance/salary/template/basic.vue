@@ -1,5 +1,5 @@
 <template>
-  <st-form-table :page="page" @change="onTableChange" :loading="loading.getBasicInfo" hoverable >
+  <st-form-table :page="page" @change="onTableChange" :loading="loading.getBasicInfo" hoverable>
     <thead>
       <tr>
         <template v-for="(item,index) in columsTitlelist">
@@ -20,24 +20,20 @@
           <td>{{ item.template_name }}</td>
           <td>{{ item.salary }}</td>
           <td>
-          <template v-if="item.used == 0 ">
+            <template v-if="item.used == 0 ">
               <span>{{ item.used }}</span>
             </template>
             <template v-if="item.used != 0 ">
-              <modal-link
-                tag="a"
-                :to=" { name: 'search-staff-list-salary', props: {id: item.id}}"
-              >{{ item.used }}</modal-link>
+              <modal-link tag="a" :to=" { name: 'search-staff-list-salary', props: {id: item.id}}">{{ item.used }}
+              </modal-link>
             </template>
-            </td>
+          </td>
           <td>{{ item.created_time }}</td>
           <td>
-            <a
-              v-if="item.auth['brand_shop:salary:basic_template|edit']"
-              v-modal-link=" { name: 'finance-basic-template-edit', props: {item: item},on: {change: refresh}}"
-            >编辑</a>
-            <span style="width:1px;height: 14px;background-color:#e6e9ef;" class="mg-l8 mg-r8"></span>
-            <a href="javascript:;" v-if="item.auth['brand_shop:salary:basic_template|del']" @click="onDelete(item.id)">删除</a>
+            <st-table-actions>
+              <a v-if="item.auth['brand_shop:salary:basic_template|edit']" v-modal-link=" { name: 'finance-basic-template-edit', props: {item: item},on: {change: refresh}}">编辑</a>
+              <a href="javascript:;" v-if="item.auth['brand_shop:salary:basic_template|del']" @click="onDelete(item.id)">删除</a>
+            </st-table-actions>
           </td>
         </tr>
       </template>
@@ -50,7 +46,7 @@ import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 export default {
-  mixins: [ tableMixin ],
+  mixins: [tableMixin],
   serviceInject() {
     return {
       basicService: BasicService,
@@ -81,11 +77,13 @@ export default {
   },
   methods: {
     refresh() {
-      this.$router.push({ query: {
-        size: this.page.pageSize,
-        page: this.page.current
-      },
-      force: true })
+      this.$router.push({
+        query: {
+          size: this.page.pageSize,
+          page: this.page.current
+        },
+        force: true
+      })
     },
     onDelete(e) {
       console.log(e)
@@ -97,8 +95,13 @@ export default {
           console.log('OK')
           that.basicService.deleteTemplate(e).subscribe(() => {
             console.log('ok')
-            that.messageService.success({ content: '删除成功' })
-            that.$router.push({ query: {}, force: true })
+            that.messageService.success({
+              content: '删除成功'
+            })
+            that.$router.push({
+              query: {},
+              force: true
+            })
           })
         },
         onCancel() {
@@ -106,15 +109,8 @@ export default {
         },
         class: 'test'
       })
-    },
-    onPageChange(e) {
-      console.log(e)
-      this.$router.push({ query: {
-        size: e.pageSize,
-        page: e.current
-      },
-      force: true })
     }
   }
 }
+
 </script>
