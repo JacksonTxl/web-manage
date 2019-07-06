@@ -23,9 +23,7 @@ export class PackageService implements RouteGuard {
   unFreeze(id:string) {
     return this.courseApi.unFreezeCourse(id, 'package')
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getList(to.meta.query).subscribe(() => {
-      next()
-    })
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.getList(to.meta.query)
   }
 }

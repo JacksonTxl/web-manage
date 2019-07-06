@@ -12,13 +12,8 @@ export class ListService implements RouteGuard {
   auth$ = new State({
     export: this.authService.can('shop:sold:sold_cabinet|export')
   })
-  constructor(private cabinetApi: CabinetApi, private authService: AuthService) {}
 
-  beforeEach(to:ServiceRoute, form:ServiceRoute, next:()=>{}) {
-    this.getList(to.meta.query).subscribe(() => {
-      next()
-    })
-  }
+  constructor(private cabinetApi: CabinetApi, private authService: AuthService) {}
 
   @Effect()
   getList(params: LeaseParams) {
@@ -27,5 +22,9 @@ export class ListService implements RouteGuard {
       this.list$.commit(() => res.list)
       this.page$.commit(() => res.page)
     }))
+  }
+
+  beforeEach(to:ServiceRoute, form:ServiceRoute) {
+    return this.getList(to.meta.query)
   }
 }

@@ -3,7 +3,7 @@
     <st-search-panel>
       <div :class="basic('select')">
         <span style="width:90px;">储值卡状态：</span>
-        <st-search-radio v-model="is_valid" :list="cardSaleStatusList"/>
+        <st-search-radio v-model="query.is_valid" :list="cardSaleStatusList"/>
       </div>
       <div :class="basic('select')">
         <span style="width:90px;">购买时间：</span>
@@ -29,8 +29,8 @@
         />
       </div>
       <div slot="button">
-        <st-button type="primary" @click="onSearch">查询</st-button>
-        <st-button class="mgl-8" @click="onReset">重置</st-button>
+        <st-button type="primary" @click="onSearchNative" :loading="loading.getList">查询</st-button>
+        <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
       </div>
     </st-search-panel>
     <div :class="basic('content')">
@@ -39,13 +39,14 @@
       </div>
       <div :class="basic('table')">
         <st-table
-          :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
+          :page="page"
           :alertSelection="{onReset: onClear}"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
           rowKey="id"
-          @change="onPageChange"
+          @change="onTableChange"
           :columns="columns"
           :dataSource="list"
+          :scroll="{x:1800}"
         >
           <template slot="is_valid" slot-scope="text">{{text | enumFilter('sold.is_valid')}}</template>
           <template
@@ -57,13 +58,12 @@
             slot-scope="text"
           >{{text}}</template>
           <div slot="action" slot-scope="text,record">
-            <a v-if="record.auth['shop:sold:sold_deposit_card|get']" @click="onDetail(record)">详情</a>
-            <a-divider type="vertical"></a-divider>
-            <st-more-dropdown class="mgl-16">
-              <a-menu-item v-if="record.auth['shop:sold:sold_deposit_card|export_contract']"  @click="toContract(record)">查看合同</a-menu-item>
-              <a-menu-item v-if="record.auth['shop:sold:sold_deposit_card|transfer']" @click="onTransfer(record)">转让</a-menu-item>
-              <a-menu-item v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a-menu-item>
-            </st-more-dropdown>
+            <st-table-actions>
+              <a v-if="record.auth['shop:sold:sold_deposit_card|get']" @click="onDetail(record)">详情</a>
+              <a v-if="record.auth['shop:sold:sold_deposit_card|export_contract']"  @click="toContract(record)">查看合同</a>
+              <a v-if="record.auth['shop:sold:sold_deposit_card|transfer']" @click="onTransfer(record)">转让</a>
+              <a v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a>
+            </st-table-actions>
           </div>
         </st-table>
       </div>
@@ -76,62 +76,12 @@ import { cloneDeep, filter } from 'lodash-es'
 import { DepositService } from './deposit.service'
 import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
+import { columns } from './deposit.config'
 
-const columns = [
-  {
-    title: '卡名',
-    dataIndex: 'card_name',
-    scopedSlots: { customRender: 'card_name' }
-  },
-  {
-    title: '剩余金额（元）',
-    dataIndex: 'now_amount',
-    scopedSlots: { customRender: 'now_amount' }
-  },
-  {
-    title: '储值金额（元）',
-    dataIndex: 'init_amount',
-    scopedSlots: { customRender: 'init_amount' }
-  },
-  {
-    title: '姓名',
-    dataIndex: 'member_name',
-    scopedSlots: { customRender: 'member_name' }
-  },
-  {
-    title: '手机号',
-    dataIndex: 'mobile',
-    scopedSlots: { customRender: 'mobile' }
-  },
-  {
-    title: '状态',
-    dataIndex: 'is_valid',
-    scopedSlots: { customRender: 'is_valid' }
-  },
-  {
-    title: '到期日期',
-    dataIndex: 'end_time',
-    scopedSlots: { customRender: 'end_time' }
-  },
-  {
-    title: '购买日期',
-    dataIndex: 'buy_time',
-    scopedSlots: { customRender: 'buy_time' }
-  },
-  {
-    title: '销售人员',
-    dataIndex: 'staff_name',
-    scopedSlots: { customRender: 'staff_name' }
-  },
-  {
-    title: '操作',
-    dataIndex: 'action',
-    width: 170,
-    scopedSlots: { customRender: 'action' }
-  }
-]
 export default {
   name: 'PageShopSoldCardDepositList',
+  mixins: [tableMixin],
   bem: {
     basic: 'page-shop-sold'
   },
@@ -154,6 +104,7 @@ export default {
     }
   },
   computed: {
+    columns,
     // 售卡状态
     cardSaleStatusList() {
       let list = [{ value: -1, label: '全部' }]
@@ -172,8 +123,7 @@ export default {
       // 结束时间面板是否显示
       endOpen: false,
       selectedRowKeys: [],
-      selectedRows: [],
-      columns
+      selectedRows: []
     }
   },
   mounted() {
@@ -185,9 +135,6 @@ export default {
     }
   },
   methods: {
-    onPageChange(data) {
-      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
-    },
     // 跳转合同
     toContract(record) {
       let url = `${window.location.origin}/extra/contract-preview?id=${record.order_id}`
@@ -231,26 +178,10 @@ export default {
       })
     },
     // 查询
-    onSearch() {
-      let query = {
-        is_valid: this.is_valid,
-        start_time: this.start_time
-          ? `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
-          : '',
-        end_time: this.end_time
-          ? `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
-          : ''
-      }
-      this.$router.push({ query: { ...this.query, ...query } })
-    },
-    // 重置
-    onReset() {
-      let query = {
-        is_valid: -1,
-        start_time: '',
-        end_time: ''
-      }
-      this.$router.push({ query: { ...this.query, ...query } })
+    onSearchNative() {
+      this.query.start_time = this.start_time ? `${this.start_time.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.query.end_time = this.end_time ? `${this.end_time.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.onSearch()
     },
     // 设置searchData
     setSearchData() {

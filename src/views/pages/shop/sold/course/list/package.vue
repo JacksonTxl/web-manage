@@ -3,7 +3,7 @@
     <st-search-panel>
         <div :class="basic('select')">
           <span style="width:90px;">课程状态：</span>
-          <st-search-radio v-model="course_status" :list="cardSaleStatusList"/>
+          <st-search-radio v-model="query.course_status" :list="cardSaleStatusList"/>
         </div>
         <div :class="basic('select')">
           <span style="width:90px;">购买时间：</span>
@@ -16,7 +16,9 @@
             @openChange="handleStartOpenChange"
             @change="start_time_change"
           />
+          &nbsp;
           ~
+          &nbsp;
           <a-date-picker
             :disabledDate="disabledEndDate"
             format="YYYY-MM-DD"
@@ -29,8 +31,8 @@
           />
         </div>
         <div slot="button">
-            <st-button type="primary" @click="onSearch">查询</st-button>
-            <st-button class="mgl-8" @click="onReset">重置</st-button>
+            <st-button type="primary" @click="onSearchNative">查询</st-button>
+            <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
         </div>
     </st-search-panel>
     <div :class="basic('content')">
@@ -40,10 +42,11 @@
         <div :class="basic('table')">
           <st-table
           :alertSelection="{onReset: onClear}"
-          :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
+          :page="page"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
           rowKey="id"
           @change="onPageChange"
+          :scroll="{x:1800}"
           :columns="columns"
           :dataSource="list" >
             <template slot="course_status" slot-scope="text">
@@ -78,50 +81,12 @@ import { cloneDeep, filter } from 'lodash-es'
 import { PackageService } from './package.service'
 import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
+import { columns } from './package.config'
 
-const columns = [{
-  title: '课程包名',
-  dataIndex: 'course_name',
-  scopedSlots: { customRender: 'course_name' }
-}, {
-  title: '购买总课时',
-  dataIndex: 'buy_course_num',
-  scopedSlots: { customRender: 'buy_course_num' }
-}, {
-  title: '剩余总课时',
-  dataIndex: 'remain_course_num',
-  scopedSlots: { customRender: 'remain_course_num' }
-}, {
-  title: '姓名',
-  dataIndex: 'member_name',
-  scopedSlots: { customRender: 'member_name' }
-}, {
-  title: '手机号',
-  dataIndex: 'mobile',
-  scopedSlots: { customRender: 'mobile' }
-}, {
-  title: '状态',
-  dataIndex: 'course_status',
-  scopedSlots: { customRender: 'course_status' }
-}, {
-  title: '到期日期',
-  dataIndex: 'course_end_time',
-  scopedSlots: { customRender: 'course_end_time' }
-}, {
-  title: '购买日期',
-  dataIndex: 'course_buy_time',
-  scopedSlots: { customRender: 'course_buy_time' }
-}, {
-  title: '销售人员',
-  dataIndex: 'staff_name',
-  scopedSlots: { customRender: 'staff_name' }
-}, {
-  title: '操作',
-  dataIndex: 'action',
-  scopedSlots: { customRender: 'action' }
-}]
 export default {
   name: 'PageShopSoldCoursePackageList',
+  mixins: [tableMixin],
   bem: {
     basic: 'page-shop-sold'
   },
@@ -138,27 +103,19 @@ export default {
       page: this.packageService.page$,
       package_course: this.userService.packageCourseEnums$,
       query: this.routeService.query$,
-      auth: this.packageService.auth$
+      auth: this.packageService.auth$,
+      soldEnums: this.userService.soldEnums$
     }
   },
   data() {
     return {
-      // 售卡状态
-      cardSaleStatusList: [
-        { value: -1, label: '全部' },
-        { value: 1, label: '有效' },
-        { value: 2, label: '失效' },
-        { value: 3, label: '已冻结' },
-        { value: 4, label: '即将到期' }
-      ],
       course_status: -1,
       start_time: null,
       end_time: null,
       // 结束时间面板是否显示
       endOpen: false,
       selectedRowKeys: [],
-      selectedRows: [],
-      columns
+      selectedRows: []
     }
   },
   mounted() {
@@ -167,6 +124,17 @@ export default {
   watch: {
     query(newVal) {
       this.setSearchData()
+    }
+  },
+  computed: {
+    columns,
+    cardSaleStatusList() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.soldEnums.card_status) return list
+      Object.entries(this.soldEnums.card_status.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
     }
   },
   methods: {
@@ -280,22 +248,10 @@ export default {
       })
     },
     // 查询
-    onSearch() {
-      let query = {
-        course_status: this.course_status,
-        start_time: this.start_time ? `${this.start_time.format('YYYY-MM-DD')} 00:00:00` : '',
-        end_time: this.end_time ? `${this.end_time.format('YYYY-MM-DD')} 23:59:59` : ''
-      }
-      this.$router.push({ query: { ...this.query, ...query } })
-    },
-    // 重置
-    onReset() {
-      let query = {
-        course_status: -1,
-        start_time: '',
-        end_time: ''
-      }
-      this.$router.push({ query: { ...this.query, ...query } })
+    onSearchNative() {
+      this.query.start_time = this.start_time ? `${this.start_time.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.query.end_time = this.end_time ? `${this.end_time.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.onSearch()
     },
     // 设置searchData
     setSearchData() {
