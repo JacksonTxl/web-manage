@@ -45,6 +45,18 @@ export default {
       return width
     }
   },
+  methods: {
+    close() {
+      console.log('close')
+      this.$emit('change', false)
+    },
+    clickModal() {
+      this.close()
+    },
+    clickModalContent(e) {
+      e.stopPropagation()
+    }
+  },
   mounted() {
     /**
      * 需要modal是v-modal-link唤起的 <modal-link> 会有异步问题不要用
@@ -52,7 +64,25 @@ export default {
     this.antModalEl = document.querySelector('.ant-modal')
     this.antModalContentEl = document.querySelector('.ant-modal-content')
     if (this.antModalEl && this.antModalContentEl) {
+      // 模态窗上下点击不关闭
+      console.log(this.antModalEl, this.antModalContentEl)
+      this.antModalEl.addEventListener('click', this.clickModal, false)
+      this.antModalContentEl.addEventListener(
+        'click',
+        this.clickModalContent,
+        false
+      )
       document.body.style = 'overflow:hidden;padding-right:6px;'
+    }
+  },
+  beforeDestroy() {
+    if (this.antModalEl && this.antModalContentEl) {
+      this.antModalEl.removeEventListener('click', this.clickModal, false)
+      this.antModalContentEl.removeEventListener(
+        'click',
+        this.clickModalContent,
+        false
+      )
     }
   },
   destroyed() {

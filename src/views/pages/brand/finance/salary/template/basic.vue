@@ -1,5 +1,5 @@
 <template>
-  <st-form-table :page="basicInfo.page" @change="onPageChange" hoverable >
+  <st-form-table :page="page" @change="onPageChange" :loading="loading.getBasicInfo" hoverable >
     <thead>
       <tr>
         <template v-for="(item,index) in columsTitlelist">
@@ -15,7 +15,7 @@
           </st-button>
         </td>
       </tr>
-      <template v-for="item in basicInfo.list">
+      <template v-for="item in list">
         <tr :key="item.id">
           <td>{{ item.template_name }}</td>
           <td>{{ item.salary }}</td>
@@ -48,35 +48,36 @@
 <script>
 import { BasicService } from './basic.service'
 import { MessageService } from '@/services/message.service'
+import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
 export default {
+  mixins: [ tableMixin ],
   serviceInject() {
     return {
       basicService: BasicService,
-      messageService: MessageService
+      messageService: MessageService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      basicInfo: this.basicService.basicInfo$,
+      // 路由query订阅
+      query: this.routeService.query$,
+      list: this.basicService.list$,
+      loading: this.basicService.loading$,
+      page: this.basicService.page$,
       auth: this.basicService.auth$
     }
   },
   data() {
     return {
-      list: [],
       columsTitlelist: [
         '模板名称',
         '月底薪(元)',
         '应用员工',
         '创建时间',
         '操作'
-      ],
-      page: {
-        current_page: 1,
-        size: 20,
-        total_counts: this.basicInfo.page.total_counts,
-        total_pages: this.basicInfo.page.total_pages
-      }
+      ]
     }
   },
   methods: {
@@ -115,10 +116,6 @@ export default {
       },
       force: true })
     }
-  },
-  mounted() {
-    console.log('list', this.basicInfo.list)
-    console.log('page', this.basicInfo.page)
   }
 }
 </script>
