@@ -6,7 +6,8 @@ import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class ListService implements RouteGuard {
-  listInfo$ = new State([])
+  list$ = new State([])
+  page$ = new State({})
   auth$ = new State({
     add: this.authService.can('shop:member:tag|add')
   })
@@ -16,7 +17,8 @@ export class ListService implements RouteGuard {
     return this.labelApi.getLabelList(params).pipe(
       tap(res => {
         res = this.authService.filter(res)
-        this.listInfo$.commit(() => res.list)
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
       })
     )
   }

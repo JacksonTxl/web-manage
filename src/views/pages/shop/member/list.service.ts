@@ -6,15 +6,15 @@ import { MemberApi } from '@/api/v1/member'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
-export class ListService extends Store<MemberListInfoState> implements RouteGuard {
+export class ListService implements RouteGuard {
   // 业务状态
-  state$: State<MemberListInfoState>
+  state$ = new State({})
+  loading$ = new State({})
   memberListInfo$: Computed<string>
   auth$: Computed<object>
   list$ = new State({})
   page$ = new State({})
   constructor(private memberApi: MemberApi, private authService: AuthService) {
-    super()
     this.state$ = new State({
       memberListInfo: {},
       auth: {
@@ -30,11 +30,6 @@ export class ListService extends Store<MemberListInfoState> implements RouteGuar
       this.state$.pipe(pluck('memberListInfo'))
     )
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
-  }
-  SET_MEMBER_LIST_INFO(memberListInfo: MemberListInfoState) {
-    this.state$.commit(state => {
-      state.memberListInfo = memberListInfo
-    })
   }
   @Effect()
   getListInfo(paramsObj: any) {

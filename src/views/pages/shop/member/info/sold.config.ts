@@ -10,18 +10,7 @@ export const classrecord = () => {
     },
     {
       title: '上课时间',
-      dataIndex: 'start_time',
-      sorter: (a, b) => {
-        let A = new Date(a.start_time).getTime()
-        let B = new Date(b.start_time).getTime()
-        if (A < B) {
-          return -1
-        }
-        if (A > B) {
-          return 1
-        }
-        return 0
-      }
+      dataIndex: 'start_time'
     },
     {
       title: '上课教练',
