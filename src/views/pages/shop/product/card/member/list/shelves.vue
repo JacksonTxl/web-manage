@@ -5,25 +5,27 @@
       style="width: 160px"
       class="mg-r8"
       v-model="query.card_type"
-      @change="onSelect('card_type',$event)"
+      @change="onSingleSearch('card_type',$event)"
       >
         <a-select-option v-for="(item,index) in cardType" :key="index" :value="item.value">{{item.label}}</a-select-option>
       </a-select>
       <a-select
       style="width: 160px"
       v-model="query.publish_channel"
-      @change="onSelect('publish_channel',$event)"
+      @change="onSingleSearch('publish_channel',$event)"
       >
         <a-select-option v-for="(item,index) in publishChannel" :key="index" :value="item.value">{{item.label}}</a-select-option>
       </a-select>
     </div>
     <st-table
-    @change="onPageChange"
-    :columns="columns"
-    :dataSource="list"
-    :pagination="{current:query.current_page,total:page.total_counts,pageSize:query.size}"
-    rowKey="id"
-    >
+      :scroll="{x:1440}"
+      :page='page'
+      @change='onTableChange'
+      :loading="loading.getList"
+      :columns="columns"
+      :dataSource="list"
+      rowKey="id"
+      >
       <!-- 会员卡名称 -->
       <template slot="card_name" slot-scope="text">
         {{text}}
@@ -59,9 +61,16 @@
       </template>
       <!-- 操作 -->
       <div slot="action" slot-scope="text,record">
-        <a v-if="record.auth['brand_shop:product:member_card|get']" @click="onDetail(record)">详情</a>
-        <a-divider type="vertical"></a-divider>
-        <a v-if="record.auth['brand_shop:product:member_card|down']" @click="onShelfDown(record)">下架</a>
+        <st-table-actions>
+          <router-link
+            v-if="record.auth['brand_shop:product:member_card|get']"
+            :to="{
+              path: `/shop/product/card/member/${CARD_TYPE[record.card_type.id]}/info`,
+              query: { id: record.id }
+            }"
+          >详情</router-link>
+          <a v-if="record.auth['brand_shop:product:member_card|down']" @click="onShelfDown(record)">下架</a>
+        </st-table-actions>
       </div>
     </st-table>
   </div>
@@ -69,67 +78,44 @@
 <script>
 import { ShelvesService } from './shelves.service'
 import { RouteService } from '@/services/route.service'
-import { UserService } from '@/services/user.service'
-import { columns } from './shelves.config'
+import { columns, CARD_TYPE } from './shelves.config.ts'
+import tableMixin from '@/mixins/table.mixin'
 export default {
+  mixins: [ tableMixin ],
   name: 'PageShopProductMemberShelves',
   bem: {
     shelves: 'page-shop-product-member-list-shelves'
   },
+  events: {
+    'shop-product-card-member-list-shelves:onSingleSearch'(key, data, options) {
+      this.onSingleSearch(key, data, options)
+    }
+  },
   serviceInject() {
     return {
-      userService: UserService,
       routeService: RouteService,
       shelvesService: ShelvesService
     }
   },
   rxState() {
     return {
+      loading: this.shelvesService.loading$,
+      publishChannel: this.shelvesService.publishChannel$,
+      cardType: this.shelvesService.cardType$,
       list: this.shelvesService.list$,
       page: this.shelvesService.page$,
-      memberCard: this.userService.memberCardEnums$,
-      query: this.routeService.query$,
-      auth: this.shelvesService.auth$
+      query: this.routeService.query$
     }
   },
   computed: {
-    cardType() {
-      let arr = [{ value: -1, label: '所有类型' }]
-      Object.keys(this.memberCard.card_type.value).forEach(i => {
-        arr.push({
-          value: +i,
-          label: this.memberCard.card_type.value[i]
-        })
-      })
-      return arr
-    },
-    publishChannel() {
-      let arr = [{ value: -1, label: '所有渠道' }]
-      Object.keys(this.memberCard.publish_channel.value).forEach(i => {
-        arr.push({
-          value: +i,
-          label: this.memberCard.publish_channel.value[i]
-        })
-      })
-      return arr
-    }
+    columns
   },
   data() {
     return {
-      columns,
-      cardTypeRouteList: {
-        1: 'number',
-        2: 'period'
-      }
+      CARD_TYPE
     }
   },
   methods: {
-    onSelect(key, data) {
-      this.$router.push({ query: { ...this.query, ...{ [key]: data } } })
-    },
-    onPageChange(data) {
-      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
-    },
     // 下架
     onShelfDown(record) {
       this.$confirm({
@@ -140,13 +126,6 @@ export default {
             this.$router.push({ force: true, query: this.query })
           })
         }
-      })
-    },
-    // 查看详情
-    onDetail(record) {
-      this.$router.push({
-        path: `/shop/product/card/member/${this.cardTypeRouteList[record.card_type.id]}/info`,
-        query: { id: record.id }
       })
     }
   }

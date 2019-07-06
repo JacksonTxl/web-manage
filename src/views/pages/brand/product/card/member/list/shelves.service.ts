@@ -1,5 +1,5 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
-import { State, Effect, log } from 'rx-state'
+import { State, Effect } from 'rx-state'
 import {
   CardsApi,
   CardShelfListInput,

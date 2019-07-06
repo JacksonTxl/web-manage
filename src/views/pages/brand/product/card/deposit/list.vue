@@ -6,7 +6,7 @@
     { label: '门店上架储值卡', route: { name: 'brand-product-card-deposit-list-shelves' } },
   ]">
     <div slot="actions">
-      <a-input-search v-model="query.card_name" @search="onSearchCardName" placeholder="请输入储值卡名称搜索" maxlength="50" />
+      <st-input-search v-model="query.card_name" @search="onSearchCardName" placeholder="请输入储值卡名称搜索" maxlength="50" />
     </div>
     <router-view></router-view>
   </st-panel>
