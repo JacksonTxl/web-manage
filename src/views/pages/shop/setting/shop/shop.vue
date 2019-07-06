@@ -177,7 +177,7 @@
 import { RuleConfig } from '@/constants/rule'
 import { OssService } from '@/services/oss.service'
 import { MessageService } from '@/services/message.service'
-import { ShopService } from '@/views/pages/shop/setting/shop.service'
+import { ShopService } from './shop.service'
 export default {
   name: 'ShopSetting',
   serviceInject() {

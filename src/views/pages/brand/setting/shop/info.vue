@@ -10,7 +10,7 @@
             alt
           >
           <div class="pages-brand-shop-info__Identification">
-            <st-tag :type="shopStatusFun(shopInfo.shop_info.shop_status)"/>
+            <st-tag type="shop-trial"/>
           </div>
           <span class="pages-brand-shop-info__sign-icon">
             <span>

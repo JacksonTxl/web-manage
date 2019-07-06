@@ -11,7 +11,10 @@
         v-model="query.card_type"
         @change="onSingleSearch('card_type',$event)"
         >
-          <a-select-option v-for="(item,index) in cardType" :key="index" :value="item.value">{{item.label}}</a-select-option>
+          <a-select-option
+          v-for="(item,index) in cardType"
+          :key="index"
+          :value="item.value">{{item.label}}</a-select-option>
         </a-select>
         <a-select
         style="width: 160px"

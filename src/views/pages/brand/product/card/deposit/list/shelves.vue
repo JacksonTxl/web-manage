@@ -7,7 +7,7 @@
         style="width: 160px"
         class="mg-r8"
         v-model="query.publish_channel"
-        @change="onSelect('publish_channel',$event)"
+        @change="onSingleSearch('publish_channel',$event)"
         >
           <a-select-option v-for="(item,index) in publishChannel" :key="index" :value="item.value">{{item.label}}</a-select-option>
         </a-select>
@@ -17,7 +17,7 @@
           placeholder="输入门店名称搜索"
           optionFilterProp="children"
           v-model="query.shop_id"
-          @change="onSelect('shop_id',$event)"
+          @change="onSingleSearch('shop_id',$event)"
           :filterOption="filterOption"
         >
           <a-select-option :value="-1">所有门店</a-select-option>
@@ -26,13 +26,15 @@
       </div>
     </div>
     <st-table
-    :alertSelection="{onReset: onClear}"
-    :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
-    @change="onPageChange"
-    :columns="columns"
-    :dataSource="list"
-    :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
-    rowKey="key"
+      :scroll="{x:1440}"
+      :page='page'
+      :alertSelection='{onReset:onSelectionReset}'
+      @change='onTableChange'
+      :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
+      :loading="loading.getList"
+      :columns="columns"
+      :dataSource="list"
+      rowKey="key"
     >
       <!-- 售卖门店 -->
       <template slot="shop_name" slot-scope="text">
@@ -72,9 +74,19 @@
         {{text.name}}
       </template>
       <div slot="action" slot-scope="text,record">
-        <a v-if="record.auth['brand_shop:product:deposit_card|get']" @click="onDetail(record)">详情</a>
-        <a-divider type="vertical"></a-divider>
-        <a v-if="record.auth['brand_shop:product:deposit_card|down']" @click="onShelfDown(record)">下架</a>
+        <st-table-actions>
+          <router-link
+            v-if="record.auth['brand_shop:product:deposit_card|get']"
+            :to="{
+              path: `/brand/product/card/deposit/info`,
+              query: { id: record.id }
+            }"
+          >详情</router-link>
+          <a
+            v-if="record.auth['brand_shop:product:deposit_card|down']"
+            @click="onShelfDown(record)"
+          >下架</a>
+        </st-table-actions>
       </div>
     </st-table>
   </div>
@@ -82,16 +94,21 @@
 <script>
 import { ShelvesService } from './shelves.service'
 import { RouteService } from '@/services/route.service'
-import { UserService } from '@/services/user.service'
-import { columns } from './shelves.config'
+import { columns } from './shelves.config.ts'
+import tableMixin from '@/mixins/table.mixin'
 export default {
+  mixins: [ tableMixin ],
   name: 'PageBrandProductDepositShelves',
   bem: {
     shelves: 'page-brand-product-deposit-list-shelves'
   },
+  events: {
+    'brand-product-card-deposit-list-shelves:onSingleSearch'(key, data, options) {
+      this.onSingleSearch(key, data, options)
+    }
+  },
   serviceInject() {
     return {
-      userService: UserService,
       routeService: RouteService,
       shelvesService: ShelvesService
     }
@@ -99,24 +116,15 @@ export default {
   rxState() {
     return {
       shopList: this.shelvesService.shopList$,
+      publishChannel: this.shelvesService.publishChannel$,
       cardList: this.shelvesService.list$,
       page: this.shelvesService.page$,
-      depositCard: this.userService.depositCardEnums$,
+      loading: this.shelvesService.loading$,
       query: this.routeService.query$,
       auth: this.shelvesService.auth$
     }
   },
   computed: {
-    publishChannel() {
-      let arr = [{ value: -1, label: '所有渠道' }]
-      Object.keys(this.depositCard.publish_channel.value).forEach(i => {
-        arr.push({
-          value: +i,
-          label: this.depositCard.publish_channel.value[i]
-        })
-      })
-      return arr
-    },
     list() {
       let array = []
       this.cardList.forEach(i => {
@@ -124,35 +132,13 @@ export default {
         array.push({ ...i, key: key })
       })
       return array
-    }
-  },
-  data() {
-    return {
-      columns,
-      selectedRowKeys: [],
-      selectedRows: []
-    }
+    },
+    columns
   },
   methods: {
-    onSelect(key, data) {
-      this.$router.push({ query: { ...this.query, ...{ [key]: data } } })
-    },
     // 门店下拉名称搜索
     filterOption(input, option) {
       return option.componentOptions.children[0].text.toLowerCase().includes(input)
-    },
-    onPageChange(data) {
-      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
-    },
-    // 清空列表选择
-    onClear() {
-      this.selectedRowKeys = []
-      this.selectedRows = []
-    },
-    // 列表选择
-    onSelectChange(selectedRowKeys, selectedRows) {
-      this.selectedRowKeys = selectedRowKeys
-      this.selectedRows = selectedRows
     },
     // 批量下架
     onBatchShelfDown() {
@@ -168,7 +154,7 @@ export default {
         content: `确定下架所选的${this.selectedRowKeys.length}张会员卡吗？`,
         onOk: () => {
           return this.shelvesService.setCardShelfDown({ card_shop: params }).toPromise().then(() => {
-            this.onClear()
+            this.onSelectionReset()
             this.$router.push({ force: true, query: this.query })
           })
         }
@@ -184,13 +170,6 @@ export default {
             this.$router.push({ force: true, query: this.query })
           })
         }
-      })
-    },
-    // 查看详情
-    onDetail(record) {
-      this.$router.push({
-        path: `/brand/product/card/deposit/info`,
-        query: { id: record.id }
       })
     }
   }

@@ -1,5 +1,7 @@
 // 使用page作为当前页查询参数的路由放这里
-const ROUTE_NAMES_USE_PAGE = []
+const ROUTE_NAMES_USE_PAGE = [
+  'brand-setting-shop-list'
+]
 
 export default {
   data() {

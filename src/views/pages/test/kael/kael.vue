@@ -1,18 +1,24 @@
 <template>
   <st-panel app>
-    <st-input-number v-model="kael" :min="160" :max="500" @change="onClose"></st-input-number>
+    <st-button @click="kael">1111</st-button>
   </st-panel>
 </template>
 <script>
 export default {
   data() {
     return {
-      kael: 10
+
     }
   },
   methods: {
-    onClose(e) {
-      // console.log(e)
+    kael(e) {
+      this.$modalRouter.push({
+        name: 'shop-map-location',
+        props: {
+          lat: '31.230350',
+          lng: '121.473720'
+        }
+      })
     }
   }
 }
