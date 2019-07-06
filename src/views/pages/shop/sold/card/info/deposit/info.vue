@@ -50,14 +50,14 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel initial class="mgt-12"
+    <!-- <st-panel initial class="mgt-12"
       :tabs="[
         { label: '消费记录', route: { name: 'shop-sold-card-info-deposit-info-consumption-record', query: {id:infoService.cardId} } },
         { label: '操作日志', route: { name: 'shop-sold-card-info-deposit-info-operation-record', query: {id:infoService.cardId} } },
       ]"
     >
     <router-view></router-view>
-  </st-panel>
+  </st-panel> -->
   </section>
 </template>
 <script>

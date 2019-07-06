@@ -6,7 +6,7 @@
         <st-search-radio v-model="is_valid" :list="cardSaleStatusList"/>
       </div>
       <div :class="basic('select')">
-        <span style="width:90px;">开卡时间：</span>
+        <span style="width:90px;">购买时间：</span>
         <a-date-picker
           :disabledDate="disabledStartDate"
           format="YYYY-MM-DD"
