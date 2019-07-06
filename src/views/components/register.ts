@@ -8,6 +8,7 @@ ComponentsKeys.forEach(keyPath => {
   const file = ComponentsContext(keyPath)
   const component = file.default || file
   const parsed = parse(keyPath)
+  console.log(component)
   if (/(#)/.test(parsed.name)) {
     return
   }

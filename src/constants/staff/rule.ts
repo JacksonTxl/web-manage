@@ -1,21 +1,25 @@
 import { I18NService } from '@/services/i18n.service'
 import { Injectable } from 'vue-service-app'
-import { RuleConfig as Exp } from '@/constants/rule'
+import { PatternService } from '@/services/pattern.service'
 
 @Injectable()
 
-export class RuleConfig extends Exp {
-  constructor(private i18n: I18NService) {
-    super()
-  }
+export class RuleConfig {
+  constructor(
+    private i18n: I18NService,
+    private pattern: PatternService
+  ) {}
   // 员工姓名
   get staff_name() {
     return ['staff_name', {
       rules: [
         {
           required: true,
-          message: '请填写姓名',
-          max: 10
+          message: '请填写姓名'
+        },
+        {
+          pattern: this.pattern.CN_EN_NUM('4-15'),
+          message: '请输入4-15个字，中英文及数字'
         }
       ]
     }]
@@ -27,6 +31,10 @@ export class RuleConfig extends Exp {
         {
           required: true,
           message: '请填写昵称'
+        },
+        {
+          pattern: this.pattern.CN_EN_NUM('4-10'),
+          message: '请输入4-10个字，中英文及数字'
         }
       ]
     }]
@@ -43,7 +51,7 @@ export class RuleConfig extends Exp {
         {
           required: true,
           message: '手机号格式错误',
-          pattern: this.mobile
+          pattern: this.pattern.MOBILE
         }
       ]
     }]
@@ -55,7 +63,7 @@ export class RuleConfig extends Exp {
         {
           required: true,
           message: '请填写邮箱',
-          pattern: this.email
+          pattern: this.pattern.EMAIL
         }
       ]
     }]
@@ -77,7 +85,7 @@ export class RuleConfig extends Exp {
         {
           required: true,
           message: '请填写正确的身份证号',
-          pattern: this.id_card
+          pattern: this.pattern.ID
         }
       ]
     }]

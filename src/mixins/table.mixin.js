@@ -16,9 +16,6 @@ export default {
         '[tableMixin] 需要订阅routeService.query 到this.query以生效'
       )
     }
-    if (!this.page) {
-      console.error('[tableMixin] 需要订阅page对象 到this.page以生效')
-    }
 
     console.log(
       `use [tableMixin] $route.name -> ${

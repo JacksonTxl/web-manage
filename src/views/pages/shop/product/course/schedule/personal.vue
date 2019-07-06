@@ -103,7 +103,7 @@ export default {
             }
             that.$set(that.header, 'right', 'timeGridWeek,timeGridDay, custom4')
             that.$nextTick().then(() => {
-              that.$router.push({ name: 'shop-product-course-schedule-personal-reseve-table' })
+              that.$router.push({ name: 'shop-product-course-schedule-personal-reserve-table' })
             })
           }
         },
@@ -117,7 +117,7 @@ export default {
             }
             that.$set(that.header, 'right', 'listWeek,listDay, custom4')
             that.$nextTick().then(() => {
-              that.$router.push({ name: 'shop-product-course-schedule-personal-reseve-table' })
+              that.$router.push({ name: 'shop-product-course-schedule-personal-reserve-table' })
             })
           }
         }

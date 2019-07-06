@@ -2,9 +2,8 @@
   <div :class="b()">
     <a-textarea
       :class="b('content')"
-      v-bind="$attrs"
+      v-bind="attrs"
       v-on="$listeners"
-      :autosize="{ minRows: 10, maxRow: 20 }"
       v-model="content"
       @change="onChange"
     >
@@ -26,7 +25,14 @@ export default {
   },
   data() {
     return {
-      content: ''
+      content: '',
+      attrs: {
+        autosize: {
+          minRows: 10,
+          maxRow: 20
+        },
+        ...this.$attrs
+      }
     }
   },
   watch: {
@@ -36,6 +42,7 @@ export default {
   },
   created() {
     this.content = this.$attrs.value || ''
+    console.log('c', this.$attrs, this.attrs)
   },
   computed: {
     currentLength() {

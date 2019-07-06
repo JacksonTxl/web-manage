@@ -80,7 +80,7 @@ export default {
       this.$emit('edit-item', this.item)
     },
     cancelEdit() {
-
+      this.item.isAdd = false
     },
     addTreeNode() {
       this.$emit('add-item', this.item)
