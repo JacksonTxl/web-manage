@@ -12,9 +12,13 @@
 >
 <a href="javascript:;" slot="course_name" slot-scope="text,record"  @click="onClickCourseInfo(record.id)">{{text}}</a>
 <a-rate slot="strength_level" slot-scope="strength_level" :defaultValue="strength_level" disabled />
+<!-- 操作 -->
 <div slot="action" slot-scope="text,record">
-  <a href="javascript:;" v-if="record.auth['brand_shop:product:team_course|get']" class="mg-r8" @click="onClickCourseInfo(record.id)">详情</a>
+  <st-table-actions>
+    <a href="javascript:;" v-if="record.auth['brand_shop:product:team_course|get']" class="mg-r8" @click="onClickCourseInfo(record.id)">详情</a>
+  </st-table-actions>
 </div>
+
 </st-table>
 
 </template>
