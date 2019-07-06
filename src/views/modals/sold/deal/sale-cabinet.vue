@@ -250,6 +250,8 @@ export default {
     }
   },
   created() {
+    this.saleCabinetService.orderAmountPrice$.commit(() => 0)
+    this.saleCabinetService.currentPrice$.commit(() => 0)
     this.saleCabinetService.init(this.id, this.areaId).subscribe(res => {
       this.startTime = cloneDeep(moment(res[0].info.start_time))
     })
