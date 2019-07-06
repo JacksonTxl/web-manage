@@ -63,7 +63,9 @@ export default {
       this.$emit('next', { start_time: this.startTime, end_time: this.endTime })
     },
     onClickToday() {
-      this.$emit('today')
+      let weekOfday = moment().format('E')// 计算今天是这周第几天
+      this.startTime = moment().subtract(weekOfday - 1, 'days').format('YYYY-MM-DD')// 周一日期
+      this.$emit('today', { start_time: this.startTime, end_time: this.endTime })
     }
   }
 }

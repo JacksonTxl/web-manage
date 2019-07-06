@@ -64,7 +64,8 @@ export class PersonalTeamScheduleScheduleService {
    * @param params
    * 获取团体课排期表格
    */
-  getTable(query: GetScheduleListQuery) {
+  @Effect()
+  getTable(query: any) {
     return this.scheduleApi.getTable(query).pipe(tap(res => {
       this.state$.commit(state => {
         state.scheduleTable = []

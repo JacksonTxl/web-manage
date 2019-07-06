@@ -1,4 +1,6 @@
+
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { PersonalScheduleCommonService } from './schedule/personal.service#/common.service'
 
 @Injectable()
 export class ScheduleService implements RouteGuard {

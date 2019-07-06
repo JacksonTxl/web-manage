@@ -14,7 +14,8 @@
           </st-button>
         </a-col>
         <a-col :lg="7" :offset="2">
-          <date @today="getList" :start="scheduleTime[0]" @pre="getList" @next="getList"/>
+          {{query}}
+          <date @today="getList" :start="query.start_date" @pre="getList" @next="getList"/>
         </a-col>
         <a-col :lg="7" class="schedule-button">
           <st-button  @click="onClickSkipSchedule"><st-icon type="calendar"></st-icon></st-button>

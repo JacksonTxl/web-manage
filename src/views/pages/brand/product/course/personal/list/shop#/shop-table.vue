@@ -10,8 +10,7 @@
       :dataSource="list"
       :scroll="{ x: 1440 }"
       :loading="loading.getList"
-      @change="onTableChange"
-    >
+      @change="onTableChange">
       <router-link class="mg-r8" :to="{ name: 'brand-product-course-personal-info', query: { id: record.course_id } }"
       slot="course_name" slot-scope="course_name, record">
         {{course_name}}
