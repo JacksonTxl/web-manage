@@ -76,6 +76,7 @@ export class Container {
     }
   }
   get(token) {
+    // console.log('di token', token)
     // 从实例化的供应商map中取
     const provider = this._providers.get(token)
     if (!provider) {
