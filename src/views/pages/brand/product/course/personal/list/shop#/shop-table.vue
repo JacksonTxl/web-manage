@@ -42,6 +42,7 @@
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './shop.config'
 import { ShopService } from '../shop.service'
+import { RouteService } from '@/services/route.service'
 export default {
   name: 'ShopSaleListTable',
   mixins: [tableMixin],
@@ -52,14 +53,16 @@ export default {
   },
   serviceInject() {
     return {
-      service: ShopService
+      service: ShopService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
       list: this.service.list$,
       page: this.service.page$,
-      loading: this.service.loading$
+      loading: this.service.loading$,
+      query: this.routeService.query$
     }
   },
   methods: {

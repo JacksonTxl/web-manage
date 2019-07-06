@@ -35,7 +35,7 @@ export default {
   created() {
     if (!this.query) {
       console.error(
-        '[tableMixin] 需要订阅routeService.query 到this.query以生效'
+        '[tableMixin] 需要订阅routeService.query$ 到this.query以生效'
       )
     }
 

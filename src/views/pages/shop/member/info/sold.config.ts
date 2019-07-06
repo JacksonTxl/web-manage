@@ -32,7 +32,7 @@ export const classrecord = () => {
     {
       title: '预约时间',
       dataIndex: 'created_time',
-      sorter: (a, b) => {
+      sorter: (a: any, b: any) => {
         let A = new Date(a.created_time).getTime()
         let B = new Date(b.created_time).getTime()
         if (A < B) {
