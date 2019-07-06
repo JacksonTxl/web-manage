@@ -40,12 +40,12 @@
           <div v-show="loginType==='emailfind'">邮件找回表单</div>
           <a-button @click="onClickBack">返回</a-button>
         </div>
-        <div v-else-if="loginType==='weibo' || loginType==='qq' || loginType==='alipay' || loginType==='wechat'" class="page-login-wechat">
+        <!-- <div v-else-if="loginType==='weibo' || loginType==='qq' || loginType==='alipay' || loginType==='wechat'" class="page-login-wechat">
           <ul class="page-login-tabs mg-b24">
             <li  class="page-login-tab-item page-login-tab-item-wechat pd-y8"><span>{{typeNames[loginType]}}</span></li>
           </ul>
           <login-third @back="loginType = 'user'"></login-third>
-        </div>
+        </div> -->
       </section>
     </div>
   </div>
@@ -56,7 +56,6 @@ import { UserService } from '../../../services/user.service'
 import { LoginService } from './login.service'
 import mobile from './login#/mobile'
 import user from './login#/user'
-import third from './login#/third'
 export default {
   name: 'Login',
   serviceInject() {
@@ -74,8 +73,7 @@ export default {
   },
   components: {
     LoginMobile: mobile,
-    LoginUser: user,
-    LoginThird: third
+    LoginUser: user
   },
   rxState() {
     return {

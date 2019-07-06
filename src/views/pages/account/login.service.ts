@@ -50,7 +50,4 @@ export class LoginService extends Store<StaffState> {
   getCaptcha(params: any) {
     return this.loginApi.getCaptcha(params)
   }
-  beforeRouteEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    next()
-  }
 }
