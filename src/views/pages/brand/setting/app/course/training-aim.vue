@@ -3,7 +3,7 @@
     <div class="st-des">
       已添加{{resData.total}}个，支持添加{{resData.max}}个
     </div>
-    <st-form-table class="mg-t8">
+    <st-form-table class="mg-t8" :loading="loading.getTrainingAimList">
       <thead>
         <tr>
           <th>训练目的</th>
@@ -64,6 +64,7 @@ export default {
     const { listService } = this
     return {
       resData: listService.resData$,
+      loading: listService.loading$,
       query: this.routeService.query$,
       auth: listService.auth$
     }

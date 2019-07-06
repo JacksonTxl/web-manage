@@ -3,7 +3,7 @@
     <div class="st-des">
       已添加{{resData.total}}个，支持添加{{resData.max}}个
     </div>
-    <st-form-table class="mg-t8">
+    <st-form-table class="mg-t8" :loading="loading.getCourseCategoryList">
       <thead>
         <tr>
           <th>课程类别</th>
@@ -64,6 +64,7 @@ export default {
   rxState() {
     return {
       resData: this.listService.resData$,
+      loading: this.listService.loading$,
       query: this.routeService.query$,
       auth: this.listService.auth$
     }
