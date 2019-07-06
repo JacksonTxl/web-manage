@@ -3,32 +3,29 @@
   <st-table
       class="mg-t16"
       rowKey="id"
+      :page="page"
       :columns="columns"
-      :dataSource="teamCourseList"
-      :scroll="{ x: 1300}"
-      @change="onChange"
+      :dataSource="list"
+      :scroll="{ x: 1440}"
+      :loading="loading.getList"
+      @change="onTableChange"
     >
     <a href="javascript:;" slot="course_name" slot-scope="text,record"  @click="onClickCourseInfo(record.id)">{{text}}</a>
     <div slot="is_available" slot-scope="is_available">
         <span><a-badge :status="is_available === 1 ?'success':'error'" />{{is_available | enumFilter('personal_course.is_available')}}</span>
     </div>
     <a-rate slot="strength_level" slot-scope="strength_level" :defaultValue="strength_level" disabled />
+    <!-- 操作 -->
     <div slot="action" slot-scope="text,record">
-      <a href="javascript:;" v-if="record.auth['brand_shop:product:team_course|get']" class="mg-r8" @click="onClickCourseInfo(record.id)">详情</a>
-      <a href="javascript:;" v-if="record.auth['brand_shop:product:team_course|edit']" @click="onClickEditCourseInfo(record.id)">编辑</a>
-      <st-more-dropdown style="margin-left: 12px;">
-          <!-- <a-menu-item>
-            <a-popconfirm  :title="record.is_available.id === 0?'确认将'+record.course_name+'进行恢复':'当前课程不再支持购买、排课，确认将'+record.course_name+'置为无效'" @confirm="onConfirmSetAvailable(record)" @cancel="cancel" okText="确定" cancelText="取消">
-            {{record.is_available.id === 1 ? "置为无效":"恢复有效"}}
-            </a-popconfirm>
-          </a-menu-item> -->
-
-          <a-menu-item v-if="record.auth['brand_shop:product:team_course|del']">
-            <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" okText="确定" cancelText="取消">
-              删除
-            </a-popconfirm>
-          </a-menu-item>
-        </st-more-dropdown>
+      <st-table-actions>
+        <a href="javascript:;" v-if="record.auth['brand_shop:product:team_course|get']" class="mg-r8" @click="onClickCourseInfo(record.id)">详情</a>
+        <a href="javascript:;" v-if="record.auth['brand_shop:product:team_course|edit']" @click="onClickEditCourseInfo(record.id)">编辑</a>
+        <a href="javascript:;">
+          <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" okText="确定" cancelText="取消">
+            删除
+          </a-popconfirm>
+        </a>
+      </st-table-actions>
     </div>
     </st-table>
 
@@ -37,25 +34,34 @@
 </template>
 
 <script>
+import tableMixin from '@/mixins/table.mixin'
 import { columns } from './brand.config'
+import { BrandService } from '../brand.service'
+import { RouteService } from '../../../../../../../../services/route.service'
 export default {
   name: 'TeamTableBrand',
+  mixins: [tableMixin],
+  serviceInject() {
+    return {
+      service: BrandService,
+      routeService: RouteService
+    }
+  },
+  rxState() {
+    return {
+      list: this.service.list$,
+      page: this.service.page$,
+      loading: this.service.loading$,
+      query: this.routeService.query$
+    }
+  },
   data() {
     return {
       columns,
       selectedRowKeys: []
     }
   },
-  props: {
-    teamCourseList: {
-      type: Array,
-      default: () => []
-    }
-  },
   methods: {
-    onConfirmSetAvailable(record) {
-
-    },
     onConfirmDeleteCourse(record) {
       this.$emit('delete-course', record)
     },
@@ -74,9 +80,6 @@ export default {
           id
         }
       })
-    },
-    onChange() {
-
     }
   }
 }

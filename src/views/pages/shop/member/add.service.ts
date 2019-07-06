@@ -61,7 +61,6 @@ export class AddService extends Store<AddState> {
       return this.memberApi.addUser(params)
     }
     beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-      console.log('to.meta', to.meta)
       this.getCountries().subscribe(() => { })
       this.getNations().subscribe(() => { })
       this.getCountryCodes().subscribe(() => {})

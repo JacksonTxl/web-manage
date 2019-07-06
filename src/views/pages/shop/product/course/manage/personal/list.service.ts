@@ -10,7 +10,11 @@ import { MessageService } from '@/services/message.service'
 
 @Injectable()
 export class ListService implements RouteGuard {
-  personalCourseList$ = new State<any[]>([])
+  // loading
+  loading$ = new State({})
+  // 业务状态
+  list$ = new State([])
+  page$ = new State({})
   categoryList$ = new State<any[]>([])
   shopSelectOptions$ = new State<any[]>([])
   auth$ = new State({
@@ -22,11 +26,7 @@ export class ListService implements RouteGuard {
     private courseApi: CourseApi,
     private msg: MessageService,
     private authService: AuthService
-  ) {
-  }
-  SET_PERSONAL_COURSE_LIST(data: any) {
-    this.personalCourseList$.commit(() => data.list)
-  }
+  ) {}
   getCategoryList() {
     return this.courseApi.getCourseCategoryList({}).pipe(
       map(res => {
@@ -50,7 +50,7 @@ export class ListService implements RouteGuard {
   }
   getShopList() {
     return this.shopApi.getShopList().pipe(map(res => {
-      const shopInfo = res.shop_info
+      const shopInfo = res.list
       return [{ shop_id: -1, shop_name: '所有门店' }, ...shopInfo.map((item: any) => {
         const { shop_id, shop_name } = item
         return {
@@ -63,22 +63,26 @@ export class ListService implements RouteGuard {
       this.shopSelectOptions$.commit(() => state)
     }))
   }
-  init() {
+  initOptions() {
     return forkJoin(this.getShopList(), this.getCategoryList())
   }
   @Effect()
-  getCoursePersonalBrandList(params: any) {
+  getList(params: any) {
     return this.shopPersonalCourseApi.getCourseList(params).pipe(
-      tap(state => {
-        state = this.authService.filter(state)
-        this.SET_PERSONAL_COURSE_LIST(state)
+      tap(res => {
+        res = this.authService.filter(res)
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
       })
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCoursePersonalBrandList({ size: 99, ...to.query }).subscribe(() => next())
+  init(query: any) {
+    return forkJoin(this.getList(query))
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.init().subscribe(() => next())
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.init({ ...to.query })
+  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    return this.initOptions()
   }
 }

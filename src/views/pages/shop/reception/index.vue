@@ -78,6 +78,9 @@
             :class="reception('upload')"
             width="180px"
             height="180px"
+            placeholder="上传人脸"
+            :isFaceRecognition="true"
+            @change="photoChange"
             :list="photoList"></st-image-upload>
           </div>
           <div :class="reception('set-info')" v-if="!isEntry">
@@ -466,6 +469,11 @@ export default {
     this.init()
   },
   methods: {
+    photoChange(list) {
+      console.log('photoChange', list)
+      if (!this.selectMember) return
+      this.indexService.editFace(this.selectMember, list[0])
+    },
     init() {
       this.formatShortcutList()
       this.seller = this.selectMemberInfo.seller ? this.selectMemberInfo.seller.id || -1 : -1

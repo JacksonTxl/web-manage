@@ -1,6 +1,13 @@
 // 使用page作为当前页查询参数的路由放这里
 const ROUTE_NAMES_USE_PAGE = [
-  'brand-setting-shop-list'
+  'brand-setting-shop-list',
+  'brand-product-course-team-list-shop',
+  'brand-product-course-team-list-brand',
+  'brand-product-course-personal-list-brand',
+  'brand-product-course-personal-list-shop',
+  'shop-product-course-manage-personal-list',
+  'shop-product-course-manage-team-list'
+
 ]
 
 export default {
@@ -17,9 +24,6 @@ export default {
       console.error(
         '[tableMixin] 需要订阅routeService.query 到this.query以生效'
       )
-    }
-    if (!this.page) {
-      console.error('[tableMixin] 需要订阅page对象 到this.page以生效')
     }
 
     console.log(
@@ -51,6 +55,18 @@ export default {
       this.$router.push({
         query: {
           ...this.query,
+          [this.currentPageField]: 1,
+          force: true
+        }
+      })
+    },
+    /**
+     * 筛选重置
+     */
+    onSearhReset() {
+      this.onSelectionReset()
+      this.$router.push({
+        query: {
           [this.currentPageField]: 1,
           force: true
         }

@@ -53,7 +53,12 @@
         <st-table
           :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
           :alertSelection="{onReset: onClear}"
-          :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
+          :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange,
+           getCheckboxProps: record => ({
+              props: {
+                disabled: disabledSelect(record), // Column configuration not to be checked
+              }
+           })}"
           rowKey="id"
           @change="onPageChange"
           :columns="columns"
@@ -88,7 +93,7 @@
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|frozen']" @click="onFreeze(record)">冻结</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|unfrozen']" @click="onUnfreeze(record)">取消冻结</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|transfer']" @click="onTransfer(record)">转让</a-menu-item>
-              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|refund']" @click="onRefund(record)">退款</a-menu-item>
+              <a-menu-item v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|export_contract']" @click="toContract(record)">查看合同</a-menu-item>
               <a-menu-item v-if="record.auth['shop:sold:sold_member_card|vip_region']" @click="onArea(record)">修改入场vip区域</a-menu-item>
             </st-more-dropdown>
@@ -242,6 +247,15 @@ export default {
     }
   },
   methods: {
+    disabledSelect(record) {
+      if (record.card_status !== 1) {
+        return true
+      }
+      if (!this.selectedRows || this.selectedRows.length <= 0) {
+        return false
+      }
+      return record.card_type !== this.selectedRows[0]['card_type']
+    },
     onPageChange(data) {
       this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
     },

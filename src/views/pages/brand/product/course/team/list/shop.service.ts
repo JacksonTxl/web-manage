@@ -1,43 +1,37 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
-import { State, Computed } from 'rx-state'
+import { State, Computed, Effect } from 'rx-state'
 import { BrandTeamCourseApi, GetTeamBrandCourseListInput, PutCourseTeamIntoBrandInput } from '@/api/v1/course/team/brand'
 import { AuthService } from '@/services/auth.service'
+import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class ShopService {
-  state$: State<any>
-  teamCourseList$: Computed<any>
+  // loading
+  loading$ = new State({})
+  // 业务状态
+  list$ = new State([])
+  page$ = new State({})
   auth$: Computed<object>
-  page$: Computed<object>
+  state$: State<any>
   constructor(
     private shopTeamCourseApi: BrandTeamCourseApi,
     private authService: AuthService
   ) {
     this.state$ = new State({
-      teamCourseList: [],
       auth: {
         transfer: this.authService.can('brand_shop:product:team_course|transfer')
-      },
-      page: {}
+      }
     })
-    this.teamCourseList$ = new Computed(this.state$.pipe(pluck('teamCourseList')))
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
-    this.page$ = new Computed(this.state$.pipe(pluck('page')))
   }
-  SET_TEAM_COURSE_LIST(data: any) {
-    this.state$.commit(state => {
-      state.teamCourseList = data.list
-    })
-  }
-  getTeamCourseListInShop(params: GetTeamBrandCourseListInput) {
+  @Effect()
+  getList(params: GetTeamBrandCourseListInput) {
     return this.shopTeamCourseApi.getTeamCourseListInShop(params).pipe(
       tap(res => {
         res = this.authService.filter(res)
-        this.state$.commit(state => {
-          state.page = res.page
-        })
-        this.SET_TEAM_COURSE_LIST(res)
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
       })
     )
   }
@@ -47,7 +41,10 @@ export class ShopService {
   putCourseTeamIntoBrand(query: PutCourseTeamIntoBrandInput) {
     return this.shopTeamCourseApi.putCourseTeamIntoBrand(query)
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getTeamCourseListInShop({ size: 99 }).subscribe(() => next())
+  init(query: any) {
+    return forkJoin(this.getList(query))
+  }
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.init({ ...to.query })
   }
 }

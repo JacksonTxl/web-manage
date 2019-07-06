@@ -13,11 +13,20 @@
           <st-form-item label="合同编号">
             <span v-if="codeRules.length">{{codeRules.length}}位编号</span>
             <span v-else>暂无编号位数</span>
-            <modal-link
-              class="mg-l16"
-              tag="a"
-              :to="{name:'contract-code-edit',props:{id:info.id,codeRules},on:{done:onCodeDone}}"
-            >设置规则</modal-link>
+
+            <a class="mg-l16"
+              v-modal-link="{
+                name:'contract-code-edit',
+                props: {
+                  id:info.id,codeRules
+                },
+                on:{
+                  done: onCodeDone
+                }
+              }"
+            >
+              设置规则
+            </a>
           </st-form-item>
           <st-form-item label="页面缩放" :class="bSider('form-item',{radio:true})">
             <a-radio-group @change="onPageTypeChange" v-model="info.contract_page_type">
@@ -81,10 +90,20 @@
             <st-switch v-model="info.is_comment"></st-switch>
           </st-form-item>
           <st-form-item label="合同章程" :class="bSider('form-item',{switch:true})">
-            <modal-link
-              tag="a"
-              :to="{name:'contract-constitution',props:{id:info.id,lawContent},on:{done:onLawContentDone}}"
-            >编辑内容</modal-link>
+            <a
+              v-modal-link="{
+                name: 'contract-constitution',
+                props: {
+                  id: info.id,
+                  lawContent
+                },
+                on: {
+                  done: onLawContentDone
+                }
+              }"
+            >
+              编辑内容
+            </a>
             <st-switch v-model="info.is_law_content"></st-switch>
           </st-form-item>
         </st-form>

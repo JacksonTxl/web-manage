@@ -2,7 +2,6 @@
   <div>
     <h2>Component 组件类</h2>
     <p>组件具体的使用方式还是需要查看@/views/components/*.vue 对应文件查看最新的api，这里只是列举常用选项</p>
-
     <title-demo id="title"></title-demo>
     <button-demo id="button"></button-demo>
     <input-number-demo id="input-number"></input-number-demo>

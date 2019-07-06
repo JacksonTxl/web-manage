@@ -28,8 +28,8 @@
         </a-col>
         <a-col :lg="7" :offset="1" style="text-align: right;" v-if="info.work_status.name === '在职'">
           <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|edit']" type="primary" @click="editStaffInfo">编辑资料</st-button>
-          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|bind_card']" :to="{ name: 'shop-staff-bind-card', props: {staff: info} }">绑实体卡</st-button>
-          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|rebind_card']" :to="{ name: 'shop-staff-bind-card', props: {staff: info} }">重绑实体卡</st-button>
+          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|bind_card']" v-modal-link="{ name: 'shop-staff-bind-card', props: {staff: info} }">绑实体卡</st-button>
+          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|rebind_card']" v-modal-link="{ name: 'shop-staff-bind-card', props: {staff: info} }">重绑实体卡</st-button>
           <a-dropdown>
             <a-menu slot="overlay" @click="handleMenuClick">
               <a-menu-item>

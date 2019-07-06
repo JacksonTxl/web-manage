@@ -463,6 +463,10 @@ export class StaffApi extends Api {
   getGlobalStaffInfo() {
     return this.http.get('/v1/staff/info')
   }
+  // 验证删除职能
+  validatStaffPosition(id: Number) {
+    return this.http.get(`/v1/staff/check/position/${id}`)
+  }
 }
 export interface PutStaffBindBankInput {
   id?: string | number

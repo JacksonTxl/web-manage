@@ -14,19 +14,17 @@ npm run init
 # linux macos windows 用户
 npm run dev
 
-# 如果有错误 分别执行
-npm run serve
-npm run gulp:dev
+```
 
+本地使用test的api
+```shell
+npm run dev:test
 ```
 
 ## 开发mock账号
 abc123
 abc123
 
-## Todo List
-
-- import {State} from 'rx-state' 的语法提示默认会是 rx-state/src 要修正.d.ts 文件
 
 #### 更新日志
 

@@ -11,10 +11,10 @@
     <st-form-table>
       <thead>
         <tr>
-          <th width="10%">座位图</th>
+          <th width="20%">座位图</th>
           <th width="30%">座位模版名称</th>
           <th width="30%">座位数量</th>
-          <th width="80px">操作</th>
+          <th>操作</th>
         </tr>
       </thead>
       <tbody>
@@ -39,9 +39,10 @@
             <st-input-number style="width:300px" v-model="addInfo.seat_num" placeholder="请输入座位数量"/>
           </td>
           <td>
-            <a @click="onAddSubmit">保存</a>
-            <a-divider type="vertical"></a-divider>
-            <a @click="onAddCancel">取消</a>
+            <st-table-actions>
+              <a @click="onAddSubmit">保存</a>
+              <a @click="onAddCancel">取消</a>
+            </st-table-actions>
           </td>
         </tr>
 
@@ -61,9 +62,10 @@
             <td>{{item.seat_name}}</td>
             <td>{{item.seat_num}}</td>
             <td>
-              <a @click="onEdit(item)">编辑</a>
-              <a-divider type="vertical"></a-divider>
-              <a @click="onDelete(item.id)">删除</a>
+              <st-table-actions>
+                <a @click="onEdit(item)">编辑</a>
+                <a @click="onDelete(item.id)">删除</a>
+              </st-table-actions>
             </td>
           </template>
           <!-- 编辑状态 -->
@@ -82,9 +84,10 @@
               <st-input-number style="width:300px" v-model="editInfo.seat_num" placeholder="请输入数位数量"></st-input-number>
             </td>
             <td>
-              <a @click="onEditSubmit">保存</a>
-              <a-divider type="vertical"></a-divider>
-              <a @click="onEditCancel">取消</a>
+              <st-table-actions>
+                <a @click="onEditSubmit">保存</a>
+                <a @click="onEditCancel">取消</a>
+              </st-table-actions>
             </td>
           </template>
         </tr>

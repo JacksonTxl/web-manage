@@ -5,21 +5,37 @@
     </st-form-item>
     <st-form-item label="展示教练">
 
-      <draggable tag="a-row" :component-data="{props:{gutter:12}}" v-model="list"  :animation="200">
+      <draggable tag="a-row" :component-data="{props:{gutter:12}}" v-model="list" :animation="200">
 
-        <a-col :span="4" v-for="li in list" :key="li.id">
+        <a-col :span="4" v-for="(li, index) in list" :key="li.id">
           <div :class="action('box')">
+            <div :class="action('del')" @click="delCoach(index)">
+              <a><st-icon type="delete" :class="action('del-icon')"/></a>
+              <!-- <a-popconfirm @confirm="onDel(item.id)">
+                <template slot="title">
+                  删除该场地后，该门店进行排课等功能无法选择该场地，<br/> 是否继续？
+                </template>
+                <a><st-icon type="delete" :class="action('del-icon')"/></a>
+              </a-popconfirm> -->
+            </div>
             <img :src="(li.head_img.image_url || config.PLACEHOLDER_IMG.AVATAR) | imgFilter">
             <div>{{li.nickname}}</div>
           </div>
         </a-col>
         <a-col :span="4">
-          <modal-link tag="a" :to="{ name: 'coach-select', props: { selected }, on: {
-              change: onSelectComplete } }">
+          <a v-modal-link="{
+              name: 'coach-select',
+              props: {
+                selected
+              },
+              on: {
+                change: onSelectComplete
+              }
+            }">
             <div :class="action('addbox')" class="color-text">
               + 添加教练
             </div>
-          </modal-link>
+          </a>
         </a-col>
       </draggable>
     </st-form-item>
@@ -66,6 +82,7 @@ export default {
       deep: true,
       handler(newVal) {
         this.h5WrapperService.SET_H5INFO(newVal, 7)
+        this.sortSelected()
       }
     },
     info: {
@@ -84,6 +101,16 @@ export default {
         that.list = cloneDeep(that.coachInfo)
       })
       console.log('on select complete', coachIds)
+    },
+    sortSelected() {
+      let arr = []
+      this.list.forEach(item => {
+        arr.push(item.id)
+      })
+      this.selected = arr
+    },
+    delCoach(index) {
+      this.list.splice(index, 1)
     }
   }
 }

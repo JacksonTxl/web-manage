@@ -236,6 +236,7 @@ export default {
         consume_type: this.consumeType,
         consume_id: this.consumeId
       }
+      this.currentReservationNum = 0
       this.isAdd = false
       this.teamScheduleReserveService.add(form)
         .subscribe(() => {

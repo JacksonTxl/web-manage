@@ -1,5 +1,5 @@
 <template>
-  <st-panel app class="page-team-info">
+  <div app class="page-team-info">
     <div class="header mg-b24">
       <div :class="b('left')" class="mg-r24">
         <st-t3 class="mg-b16">
@@ -9,9 +9,11 @@
 
         <div :class="b('tip')">
           <div class="item">
+            <st-icon type="time" color="rgb(0,199,219)" class="mg-r8" size="16px"></st-icon>
             <span class="label mg-r8">时长: </span><span class="value">{{teamCourseInfo.duration}}分钟</span>
           </div>
           <div class="item">
+            <st-icon type="price" size="16px" class="mg-r8" color="rgb(255,169,45)"></st-icon>
             <span class="label  mg-r8">参考定价: </span><span class="value">{{teamCourseInfo.price}}元/节</span>
           </div>
           <div class="item">
@@ -43,7 +45,7 @@
       </div>
     </div>
 
-  </st-panel>
+  </div>
 </template>
 <script>
 import { shopColumns, coachColumns, priceConfigColumns } from './info#table.config'

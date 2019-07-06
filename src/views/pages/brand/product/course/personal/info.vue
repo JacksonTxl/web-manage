@@ -5,8 +5,12 @@
         <div class="page-personal-header__left mg-r24">
           <st-t3 class="mg-b16">{{personalCourseInfo.course_name}}（{{personalCourseInfo.category_id.name || '暂无'}}）</st-t3>
           <div class="course-detail-item mg-b16">
-            <div class="course-detail-item__left"><span class="label">
-              <st-icon type="time" color="rgb(0,199,219)" class="mg-r8" size="16px"></st-icon>时长:</span><span class="value">{{personalCourseInfo.duration}}分钟</span>
+            <div class="course-detail-item__left">
+              <span class="label">
+                <st-icon type="time" color="rgb(0,199,219)" class="mg-r8" size="16px"></st-icon>
+                时长:
+              </span>
+              <span class="value">{{personalCourseInfo.duration}}分钟</span>
             </div>
             <div class="course-detail-item__right">
               <span class="label">
@@ -37,13 +41,18 @@
         <st-container> <st-table :columns="coachColumns" :dataSource="personalCourseInfo.coaches"></st-table> </st-container>
       </div>
       <div class="page-personal-content__item">
-        <div class="title mg-b8"><span class="label">售价设置:</span><span class="value">门店定价</span></div>
-        <st-container>
+        <div class="title mg-b8"><span class="label">售价设置:</span><span class="value">{{personalCourseInfo.price_setting | enumFilter('personal_course.price_setting')}}</span></div>
+        <st-container v-if="personalCourseInfo.price_gradient.prices">
           <st-table :columns="priceConfigColumns" :dataSource="personalCourseInfo.price_gradient">
             <div slot="sale" slot-scope="sale, record">{{record.min_sale}} ~ {{record.max_sale}}</div>
             <div slot="transfer" slot-scope="sale, record">{{record.transfer_num}} {{record.transfer_unit === 1 ? "%":"元"}}</div>
           </st-table>
+
         </st-container>
+        <div class="title mg-b8"><span class="label">售卖渠道:</span><span class="value">{{personalCourseInfo.sell_type | enumFilter('personal_course.sell_type')}}</span></div>
+        <div class="title mg-b8"><span class="label">单节有效期:</span><span class="value">{{personalCourseInfo.effective_unit}}</span></div>
+        <div class="title mg-b8"><span class="label">定价权限:</span><span class="value">{{personalCourseInfo.price_setting | enumFilter('personal_course.price_setting')}}</span></div>
+        <div class="title mg-b8"><span class="label">单节售卖:</span><span class="value">{{personalCourseInfo.price_gradient[0].single_price}}</span></div>
       </div>
     </div>
   </st-panel>

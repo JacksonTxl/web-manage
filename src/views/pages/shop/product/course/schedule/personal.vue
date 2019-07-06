@@ -5,6 +5,7 @@
       ref="fullCalendar"
       :defaultView="defaultView"
       :header="header"
+      :firstDay="1"
       @eventPositioned='onEventPositioned'
       :plugins="calendarPlugins"
       minTime="09:00:00"
@@ -56,6 +57,7 @@ export default {
     const that = this
     return {
       isTable: false,
+      timeRange: {},
       columnHeaderFormat: { weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true },
       slotLabelFormat: {
         hour: '2-digit',
@@ -102,7 +104,7 @@ export default {
             }
             that.$set(that.header, 'right', 'timeGridWeek,timeGridDay, custom4')
             that.$nextTick().then(() => {
-              that.$router.push({ name: 'shop-product-course-schedule-personal-reseve-table' })
+              that.$router.push({ name: 'shop-product-course-schedule-personal-reserve-table', query: this.timeRange })
             })
           }
         },
@@ -116,7 +118,7 @@ export default {
             }
             that.$set(that.header, 'right', 'listWeek,listDay, custom4')
             that.$nextTick().then(() => {
-              that.$router.push({ name: 'shop-product-course-schedule-personal-reseve-table' })
+              that.$router.push({ name: 'shop-product-course-schedule-personal-reserve-table', query: that.timeRange })
             })
           }
         }
@@ -152,8 +154,9 @@ export default {
   methods: {
     datesRender(info) {
       const start = moment(info.view.activeStart).format('YYYY-MM-DD').valueOf()
-      const end = moment(info.view.activeEnd).format('YYYY-MM-DD').valueOf()
-      this.$router.push({ query: { start_date: start, end_date: end } })
+      const end = moment((moment(info.view.activeEnd).valueOf() - 24 * 3600 * 1000)).format('YYYY-MM-DD').valueOf()
+      this.timeRange = { start_date: start, end_date: end }
+      this.$router.push({ query: this.timeRange })
     },
     setAddButton() {
       this.$nextTick().then(() => {

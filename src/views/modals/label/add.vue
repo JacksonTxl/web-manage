@@ -6,6 +6,7 @@
           <st-form-item label="标签名称" required>
             <a-input
               placeholder="请输标签名称"
+              :max="10"
               v-decorator="['tag_name',{rules: [{ required: true, message: '请输入标签名称' }]}]"
             />
           </st-form-item>
