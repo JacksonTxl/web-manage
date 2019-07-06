@@ -13,10 +13,18 @@
       </div>
     </template>
     </a-table>
-    <modal-link tag="a" :to="{ name: 'coach-select', props: { selected, shopIds }, on: {
-      change: onSelectComplete } }">
+    <a v-modal-link="{
+      name: 'coach-select',
+      props: {
+        selected,
+        shopIds
+      },
+      on: {
+        change: onSelectComplete
+      }
+    }">
       <st-button type="dashed" block class="mg-t8">添加</st-button>
-    </modal-link>
+    </a>
   </div>
 </template>
 <script>

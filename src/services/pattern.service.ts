@@ -1,5 +1,5 @@
 export class PatternService {
-  private REGEXP_MAP: RegExpMap = {
+  private PATTERN_MAP: PatternMap = {
     /**
      * 中文、英文、数字，不含标点符号
      */
@@ -25,7 +25,8 @@ export class PatternService {
      */
   }
   /**
-   * 手机号
+   * 中文、英文、数字，不含标点符号
+   * @param len
    */
   CN_EN_NUM(len: string = '1-20') {
     if (!/^\d+-\d+$/.test(len)) {
@@ -33,25 +34,25 @@ export class PatternService {
       return
     }
     const lens = len.split('-')
-    return new RegExp(this.REGEXP_MAP['CN_EN_NUM'].replace('**', `${lens[0]},${lens[1]}`))
+    return new RegExp(this.PATTERN_MAP['CN_EN_NUM'].replace('**', `${lens[0]},${lens[1]}`))
   }
   /**
    * 手机号
    */
   get MOBILE() {
-    return new RegExp(this.REGEXP_MAP['MOBILE'])
+    return new RegExp(this.PATTERN_MAP['MOBILE'])
   }
   get EMAIL() {
-    return new RegExp(this.REGEXP_MAP['EMAIL'])
+    return new RegExp(this.PATTERN_MAP['EMAIL'])
   }
   get ID() {
-    return new RegExp(this.REGEXP_MAP['ID'])
+    return new RegExp(this.PATTERN_MAP['ID'])
   }
   get IMG() {
-    return new RegExp(this.REGEXP_MAP['IMG'])
+    return new RegExp(this.PATTERN_MAP['IMG'])
   }
 }
 
-export interface RegExpMap {
+export interface PatternMap {
   [key: string]: string
 }

@@ -23,12 +23,19 @@
           </div>
         </a-col>
         <a-col :span="4">
-          <modal-link tag="a" :to="{ name: 'coach-select', props: { selected }, on: {
-              change: onSelectComplete } }">
+          <a v-modal-link="{
+              name: 'coach-select',
+              props: {
+                selected
+              },
+              on: {
+                change: onSelectComplete
+              }
+            }">
             <div :class="action('addbox')" class="color-text">
               + 添加教练
             </div>
-          </modal-link>
+          </a>
         </a-col>
       </draggable>
     </st-form-item>
