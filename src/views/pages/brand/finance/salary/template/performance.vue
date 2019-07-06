@@ -1,5 +1,5 @@
 <template>
-  <st-form-table :page="page" @change="onPageChange" hoverable>
+  <st-form-table :page="page" @change="onPageChange" :loading="loading.getList" hoverable>
     <thead>
       <tr>
         <template v-for="(item,index) in columsTitlelist">
@@ -18,7 +18,7 @@
           </st-button>
         </td>
       </tr>
-      <template v-for="item in list.list">
+      <template v-for="item in list">
         <tr :key="item.id">
           <td>{{ item.template_name }}</td>
           <td>{{ item.performance_type }}</td>
@@ -57,32 +57,30 @@
 <script>
 import { PerformanceService } from './performance.service'
 import { MessageService } from '@/services/message.service'
+import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
 export default {
+  mixins: [ tableMixin ],
   serviceInject() {
     return {
       basicService: PerformanceService,
-      messageService: MessageService
+      messageService: MessageService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
+      query: this.routeService.query$,
       list: this.basicService.list$,
-      auth: this.basicService.auth$
+      auth: this.basicService.auth$,
+      page: this.basicService.page$,
+      loading: this.basicService.loading$
     }
   },
   data() {
     return {
-      columsTitlelist: ['模板名称', '业绩类型', '应用员工', '创建时间', '操作'],
-      page: {
-        current_page: 1,
-        size: 20,
-        total_counts: this.list.page.total_counts,
-        total_pages: this.list.page.total_pages
-      }
+      columsTitlelist: ['模板名称', '业绩类型', '应用员工', '创建时间', '操作']
     }
-  },
-  mounted() {
-    console.log(this.list)
   },
   methods: {
     refresh() {
