@@ -20,7 +20,8 @@ const ROUTE_NAMES_USE_PAGE = [
   'brand-finance-salary-template-basic',
   'brand-finance-salary-template-performance',
   'shop-product-card-member-list-all',
-  'shop-product-card-deposit-list-all'
+  'shop-product-card-deposit-list-all',
+  'shop-reception-entrance'
 ]
 
 export default {

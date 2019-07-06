@@ -1,8 +1,9 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { FrontApi, GetEntranceListInput, SetEntranceLeaveBatchInput } from '@/api/v1/front'
-import { tap } from 'rxjs/operators'
+import { tap, map } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
+import { UserService } from '@/services/user.service'
 
 @Injectable()
 export class EntranceService implements RouteGuard {
@@ -13,7 +14,14 @@ export class EntranceService implements RouteGuard {
     checkout: this.authService.can('shop:front_end:check_in_out|checkout'),
     batchCheckout: this.authService.can('shop:front_end:check_in_out|batch_checkout')
   })
-  constructor(private authService: AuthService, private frontApi: FrontApi) {}
+  entryTypeList$ = this.userService
+    .getOptions('front.visit_type')
+    .pipe(map(options => [{ value: -1, label: '全部类型' }].concat(options)))
+
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+    private frontApi: FrontApi) {}
   @Effect()
   getList(query:GetEntranceListInput) {
     return this.frontApi.getEntranceList(query).pipe(tap((res:any) => {
@@ -29,9 +37,7 @@ export class EntranceService implements RouteGuard {
   setEntranceLeaveBatch(params:SetEntranceLeaveBatchInput) {
     return this.frontApi.setEntranceLeaveBatch(params)
   }
-  beforeEach(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
-    this.getList(to.meta.query).subscribe(() => {
-      next()
-    })
+  beforeEach(to:ServiceRoute) {
+    return this.getList(to.meta.query)
   }
 }
