@@ -2,12 +2,15 @@
 <div>
   <st-table
       class="mg-t16"
-      rowKey="record.course_id"
+      rowKey="course_id"
       :columns="columns"
-      :dataSource="personalCourseList"
-      :scroll="{ x: 1300}"
-      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-      @change="onChange"
+      :alertSelection="{onReset: onSelectionReset}"
+      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectionChange}"
+      :page="page"
+      :dataSource="list"
+      :scroll="{ x: 1440 }"
+      :loading="loading.getList"
+      @change="onTableChange"
     >
       <div slot="action" slot-scope="action, record">
         <router-link class="mg-r8" v-if="record.auth['brand_shop:product:personal_course|get']" :to="{name: 'brand-product-course-personal-info', query: { id: record.course_id } }">详情</router-link>
@@ -36,31 +39,34 @@
 </template>
 
 <script>
+import tableMixin from '@/mixins/table.mixin'
 import { columns } from './shop.config'
+import { ShopService } from '../shop.service'
 export default {
   name: 'ShopSaleListTable',
+  mixins: [tableMixin],
   data() {
     return {
-      columns,
-      selectedRowKeys: []
+      columns
     }
   },
-  props: {
-    personalCourseList: {
-      type: Array,
-      default: () => []
+  serviceInject() {
+    return {
+      service: ShopService
+    }
+  },
+  rxState() {
+    return {
+      list: this.service.list$,
+      page: this.service.page$,
+      loading: this.service.loading$
     }
   },
   methods: {
-    start() {
-      this.selectedRowKeys = []
-    },
-    onChange() {
-
-    },
-    onSelectChange(selectedRowKeys) {
+    onSelectionChange(selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
-      this.$emit('change', selectedRowKeys)
+      this.selectedRows = selectedRows
+      this.$emit('check', this.selectedRowKeys)
     }
   }
 }

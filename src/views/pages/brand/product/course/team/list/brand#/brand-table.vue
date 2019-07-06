@@ -6,8 +6,9 @@
       :page="page"
       :columns="columns"
       :dataSource="list"
-      :scroll="{ x: 1300}"
-      @change="onChange"
+      :scroll="{ x: 1440}"
+      :loading="loading.getList"
+      @change="onTableChange"
     >
     <a href="javascript:;" slot="course_name" slot-scope="text,record"  @click="onClickCourseInfo(record.id)">{{text}}</a>
     <div slot="is_available" slot-scope="is_available">
@@ -31,20 +32,25 @@
 </template>
 
 <script>
+import tableMixin from '@/mixins/table.mixin'
 import { columns } from './brand.config'
 import { BrandService } from '../brand.service'
+import { RouteService } from '../../../../../../../../services/route.service'
 export default {
   name: 'TeamTableBrand',
+  mixins: [tableMixin],
   serviceInject() {
     return {
-      service: BrandService
+      service: BrandService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
       list: this.service.list$,
-      page: this.service.page,
-      lodaing: this.service.loading
+      page: this.service.page$,
+      loading: this.service.loading$,
+      query: this.routeService.query$
     }
   },
   data() {
@@ -53,16 +59,7 @@ export default {
       selectedRowKeys: []
     }
   },
-  props: {
-    teamCourseList: {
-      type: Array,
-      default: () => []
-    }
-  },
   methods: {
-    onConfirmSetAvailable(record) {
-
-    },
     onConfirmDeleteCourse(record) {
       this.$emit('delete-course', record)
     },
@@ -81,9 +78,6 @@ export default {
           id
         }
       })
-    },
-    onChange() {
-
     }
   }
 }

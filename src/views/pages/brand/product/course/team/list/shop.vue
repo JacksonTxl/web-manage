@@ -4,7 +4,7 @@
       <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
         <div>
           <modal-link
-            v-if="this.selectedRowKeys.length >= 1 && auth.transfer"
+            v-if="auth.transfer"
             type="primary"
             tag="st-button"
             :to="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}"
@@ -21,7 +21,7 @@
       </div>
     </header>
     <main class="page-shop-sale-list-shop__table mg-t8">
-      <team-table-shop :page="page" @delete-course="onDeleteCourse" @change="onChangeSelectedRowKeys" :teamCourseList="teamCourseList"></team-table-shop>
+      <team-table-shop @delete-course="onDeleteCourse" ></team-table-shop>
     </main>
   </div>
 </template>
@@ -43,34 +43,24 @@ export default {
   },
   rxState() {
     return {
-      teamCourseList: this.shopService.teamCourseList$,
       shopsOptions: this.listService.shopSelectOptions$,
       categoryList: this.listService.categoryList$,
       query: this.routeService.query$,
-      page: this.shopService.page$,
       auth: this.shopService.auth$
     }
   },
   data() {
     return {
       disable: true,
-      selectedRowKeys: [],
       defaultShops: -1,
       toRoute: {},
       courseStatus: [{ label: '所有状态', value: -1 }, { label: '有效', value: '1' }, { label: '无效', value: '0' }]
     }
   },
-  created() {
-    console.log(this.listService)
-  },
   components: {
     TeamTableShop
   },
   methods: {
-    onChangeSelectedRowKeys(selectedRowKeys) {
-      console.log(selectedRowKeys)
-      this.selectedRowKeys = selectedRowKeys
-    },
     onDeleteCourse(record) {
       this.shopService.deleteCourse(record.id).subscribe(() => {
         this.$router.push({ force: true })

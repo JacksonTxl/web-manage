@@ -3,12 +3,13 @@
   class="mg-t16"
   rowKey="id"
   :columns="columns"
-  :dataSource="teamCourseList"
-  :scroll="{ x: 1300}"
-  :alertSelection="{onReset: start}"
-  :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-  :pagination="pagination"
-  @change="onChange"
+  :dataSource="list"
+  :scroll="{ x: 1440}"
+  :loading="loading.getList"
+  :alertSelection="{onReset: onSelectionReset}"
+  :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectionChange}"
+  :page="page"
+  @change="onTableChange"
 >
 <a href="javascript:;" slot="course_name" slot-scope="text,record"  @click="onClickCourseInfo(record.id)">{{text}}</a>
 <a-rate slot="strength_level" slot-scope="strength_level" :defaultValue="strength_level" disabled />
@@ -25,43 +26,29 @@
 
 <script>
 import { columns } from './shop.config'
+import { ShopService } from '../shop.service'
+import tableMixin from '@/mixins/table.mixin'
 export default {
   name: 'TeamTableShop',
+  mixins: [tableMixin],
+  serviceInject() {
+    return {
+      service: ShopService
+    }
+  },
+  rxState() {
+    return {
+      list: this.service.list$,
+      page: this.service.page$,
+      loading: this.service.loading$
+    }
+  },
   data() {
     return {
-      columns,
-      selectedRowKeys: []
-    }
-  },
-  props: {
-    teamCourseList: {
-      type: Array,
-      default: () => []
-    },
-    page: {
-      type: Object,
-      default: () => {}
-    },
-    loading: {
-      type: Boolean,
-      default: false
-    }
-  },
-  computed: {
-    pagination() {
-      return {
-        pageSize: this.page.size,
-        total: this.page.total_counts
-      }
+      columns
     }
   },
   methods: {
-    start() {
-      this.selectedRowKeys = []
-    },
-    onChange() {
-      this.$router.push({ query: { page: val.current, size: val.pageSize || 20, ...this.$router.query } })
-    },
     onClickCourseInfo(id) {
       this.$router.push({
         name: 'brand-product-course-team-info',
@@ -80,10 +67,6 @@ export default {
     },
     onConfirmDeleteCourse(record) {
       this.$emit('delete-course', record)
-    },
-    onSelectChange(selectedRowKeys) {
-      this.selectedRowKeys = selectedRowKeys
-      this.$emit('change', selectedRowKeys)
     }
   }
 }

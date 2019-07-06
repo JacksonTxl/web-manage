@@ -5,7 +5,7 @@
         <div>
           <!-- TODO: 批量转入品牌库的按钮 -->
           <modal-link
-            v-if="this.selectedRowKeys.length >= 1 && auth.transfer"
+            v-if="auth.transfer"
             type="primary"
             tag="st-button"
             :to="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}"
@@ -22,7 +22,7 @@
       </div>
     </header>
     <main class="page-shop-sale-list-shop__table mg-t8">
-      <shop-sale-list-table @change="onChangeSelectedRowKeys" :personalCourseList="personalCourseList"></shop-sale-list-table>
+      <shop-sale-list-table @check="onCheckGetCourse"></shop-sale-list-table>
     </main>
   </div>
 </template>
@@ -43,7 +43,6 @@ export default {
   },
   rxState() {
     return {
-      personalCourseList: this.shopService.personalCourseList$,
       shopsOptions: this.listService.shopSelectOptions$,
       categoryList: this.listService.categoryList$,
       query: this.routeService.query$,
@@ -60,7 +59,7 @@ export default {
     ShopSaleListTable
   },
   methods: {
-    onChangeSelectedRowKeys(selectedRowKeys) {
+    onCheckGetCourse(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
     },
     onChange() {

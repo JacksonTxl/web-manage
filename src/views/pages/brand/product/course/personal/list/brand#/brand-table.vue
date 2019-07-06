@@ -3,11 +3,12 @@
   <st-table
       class="mg-t16"
       rowKey="course_id"
-      :loading="loading"
       :columns="columns"
-      :dataSource="personalCourseList"
-      :scroll="{ x: 1300}"
-      @change="onChange">
+      :page="page"
+      :dataSource="list"
+      :scroll="{ x: 1440 }"
+      :loading="loading.getList"
+      @change="onTableChange" >
       <div slot="shops" slot-scope="shops, record">
         <modal-link tag="a"
           v-if="record.shop_setting === 2"
@@ -55,23 +56,27 @@
 </template>
 
 <script>
+import tableMixin from '@/mixins/table.mixin'
 import { columns } from './brand.config'
+import { BrandService } from '../brand.service'
 export default {
   name: 'ShopSaleListTable',
+  mixins: [tableMixin],
   data() {
     return {
-      columns,
-      selectedRowKeys: []
+      columns
     }
   },
-  props: {
-    loading: {
-      type: Boolean,
-      default: false
-    },
-    personalCourseList: {
-      type: Array,
-      default: () => []
+  serviceInject() {
+    return {
+      service: BrandService
+    }
+  },
+  rxState() {
+    return {
+      list: this.service.list$,
+      page: this.service.page$,
+      loading: this.service.loading$
     }
   },
   methods: {

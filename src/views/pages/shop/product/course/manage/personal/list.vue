@@ -20,7 +20,7 @@
       </div>
     </header>
     <main class="page-shop-sale-list-brand__table mg-t8">
-      <list-table @delete-course="onDeleteCourse" :personalCourseList="personalCourseList"></list-table>
+      <list-table @delete-course="onDeleteCourse"></list-table>
     </main>
   </st-panel>
 </template>
@@ -40,7 +40,6 @@ export default {
   rxState() {
     return {
       categoryList: this.listService.categoryList$,
-      personalCourseList: this.listService.personalCourseList$,
       query: this.routeService.query$,
       auth: this.listService.auth$
     }
