@@ -1,205 +1,45 @@
-.pages-brand-shop-box {
-  .pages-brand-shop-info {
-    padding: 0 36px;
-    padding-top: 36px;
-    box-sizing: border-box;
-    background: #ffffff;
-    height: 100%;
+.page-brand-setting-shop-info {
+  &__detail {
+    display: flex;
+    align-items: flex-start;
+    padding: 24px;
+    background:rgba(255,255,255,1);
+    box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
+    border-radius:2px;
+  }
+  &__picture {
     position: relative;
-
-    &__Identification {
+    border-radius: 4px;
+    overflow: hidden;
+    .status-tag{
       position: absolute;
-      top: -1px
-    }
-
-    &__container {
-      display: flex;
-    }
-
-    &__img-box {
-      width: 320px;
-      height: 200px;
-      display: inline-block;
-      position: relative;
-    }
-
-    &__sign-img {
-      position: absolute;
-      left: 0;
       top: 0;
+      left: 0;
     }
-
-    &__img {
-      width: 320px;
-      height: 200px;
-      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
-      border-radius: 4px;
-    }
-
-    // &__bg-img {
-    //   margin: 12px 0 0 12px;
-    // }
-
-    &__sign-icon {
+    >p{
       position: absolute;
-      width: 76px;
-      height: 24px;
-      background: rgba(0, 0, 0, 0.65);
-      border-radius: 8px 0px 4px 0px;
       bottom: 0;
       right: 0;
-      text-align: center;
-      line-height: 24px;
-      font-size: 12px;
-
-      font-weight: 400;
-      color: rgba(255, 255, 255, 1);
-
-      span {
-        margin-right: 4px;
-      }
-
-    }
-
-    &__slider {
-      margin: 25px 0
-    }
-
-    &__info {
-      margin-left: 36px;
-
-      &-title {
-        margin-bottom: 16px;
-
-        span {
-          width: 64px;
-          height: 24px;
-          display: inline-block;
-          background: rgba(24, 144, 255, 1);
-          border-radius: 0px 100px 100px 0px;
-          text-align: center;
-          line-height: 24px;
-          font-size: 12px;
-          color: #fff;
-        }
+      margin:0;
+      padding: 2px 16px;
+      background:rgba(0,0,0,0.65);
+      border-radius:8px 0px 4px 0px;
+      >span{
+        .c(@white);
+        .fz(12px);
+        .lh(20px);
+        margin-left: 7px;
       }
     }
-
-    &__info-list {
-      margin-bottom: 16px;
-      font-size: 14px;
-      display: flex;
-      flex-direction: row;
-
-      span:nth-child(2) {
-        padding-left: 16px
-      }
-
-      a {
-        padding-left: 14px;
-      }
-    }
-
-    &__info-facilities {
-      margin-top: 10px;
-
-      &-list {
-        display: flex;
-
-        div {
-          margin-right: 21px;
-          text-align: center;
-          width: 72px;
-          height: 72px;
-          padding-top: 13px;
-          border-radius: 6px;
-          border: 1px solid rgba(205, 212, 223, 1);
-
-          p {
-            font-size: 14px;
-            padding-top: 4px;
-          }
-        }
-      }
-    }
-
-    &__time {
-      margin-bottom: 16px
-    }
-
-
-
-    &-slider {
-      padding: 15px 0;
-      padding-right: 24px;
-    }
-
-    &-slider-title {
-      height: 36px;
-      line-height: 36px;
-      padding-left: 24px;
-    }
-
+  }
+  &__info {
+    flex: 1;
+  }
+  &__time {
+    padding: 24px;
+    background:rgba(255,255,255,1);
+    box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
+    border-radius:2px;
 
   }
-
-  .facilities {
-    .st-icon {
-      font-size: 24px !important;
-    }
-  }
-
-  .ant-tooltip-open {
-    border-color: #1890ff !important;
-  }
-
-  .ant-slider-track {
-    background-color: #1890ff !important;
-  }
-
-  .pages-brand-shop-info-slider__time {
-    padding-left: 24px;
-  }
-
-  .business-hours {
-    padding: 32px 24px;
-    background: #fff;
-    margin-top: 12px
-  }
-
-  .business-hours-paragraph {
-    height: 54px;
-    line-height: 54px;
-    margin-bottom: 30px;
-    background: rgba(247, 249, 252, 1);
-    border-radius: 3px 3px 0px 0px;
-
-  }
-
-  .business-hours-paragraph-ul {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .business-hours-paragraph-li-padding {
-    padding-right: 24px
-  }
-}
-
-// slider滑块的tooltip样式覆盖
-.c_ant-tooltip-inner {
-  background: @primary-color;
-}
-
-// .ant-alert {
-//   border: none;
-// }
-
-// checkbox 样式修正
-.c_ant-checkbox-inner:after {
-  left: 4px;
-}
-
-.ant-tooltip-placement-top .c_ant-tooltip-arrow {
-  border-top-color: @primary-color;
 }
