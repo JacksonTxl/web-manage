@@ -3,9 +3,9 @@
     <st-form :form="form" @submit="save" class="page-add-container">
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="门店">
+          <!-- <st-form-item label="门店">
             <a-input :disabled="true" v-decorator="rules.md"/>
-          </st-form-item>
+          </st-form-item> -->
           <st-form-item label="姓名" required>
             <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.member_name"/>
           </st-form-item>
@@ -278,9 +278,9 @@ export default {
     }
   },
   mounted() {
-    this.form.setFieldsValue({
-      md: '1号门店'
-    })
+    // this.form.setFieldsValue({
+    //   md: '1号门店'
+    // })
     this.regionService.regionApi.getRegions().subscribe(() => {
       this.options = JSON.parse(window.localStorage.getItem('regionTree'))
     })

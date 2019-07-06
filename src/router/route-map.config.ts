@@ -507,6 +507,11 @@ export const routeMapConfig = {
   },
   'shop-member-label-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '标签管理'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      tag_name: { type: String, default: '' }
+    }
   },
   'shop-member-crowd-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户人群'
