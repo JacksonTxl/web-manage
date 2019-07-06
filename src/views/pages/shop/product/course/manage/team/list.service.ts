@@ -58,7 +58,7 @@ export class ListService implements RouteGuard {
   }
   getShopList() {
     return this.shopApi.getShopList().pipe(map(res => {
-      const shopInfo = res.shop_info
+      const shopInfo = res.list
       return [{ shop_id: -1, shop_name: '所有门店' }, ...shopInfo.map((item: any) => {
         const { shop_id, shop_name } = item
         return {

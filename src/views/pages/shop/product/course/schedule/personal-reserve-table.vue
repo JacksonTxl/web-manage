@@ -8,11 +8,11 @@
           </st-button>
         </a-col>
         <a-col :lg="7" :offset="2">
-          <date @today="getList" start="2019-07-04" @pre="getList" @next="getList"/>
+          <date @today="getList" :start="currentTime" @pre="getList" @next="getList"/>
         </a-col>
-        <!-- <a-col :lg="7" class="schedule-button">
+        <a-col :lg="7" class="schedule-button">
           <st-button  @click="onClickSkipSchedule"><st-icon type="calendar"></st-icon></st-button>
-        </a-col> -->
+        </a-col>
       </a-row>
     </div>
     <a-row class="mg-t8 mg-r24 mg-l24">
@@ -34,22 +34,18 @@
 
 <script>
 import date from './date#/date-component'
-import { RouteService } from '../../../../../../services/route.service'
 import { PersonalScheduleReserveService } from './personal.service#/reserve.service'
 import { columns } from './personal-reserve-table.config'
 
 export default {
   serviceInject() {
     return {
-      reserveService: PersonalScheduleReserveService,
-      routeService: RouteService
+      reserveService: PersonalScheduleReserveService
     }
   },
   rxState() {
-    console.log(this.reserveService)
     return {
-      reserveListTable: this.reserveService.reserveListTable$,
-      query: this.routeService.query$
+      reserveListTable: this.reserveService.reserveListTable$
     }
   },
   filters: {
@@ -72,7 +68,7 @@ export default {
     }
   },
   mounted() {
-    this.currentTime = '2019-05-26'
+    this.currentTime = this.$route.query.start_date
   },
   methods: {
     onClickReserve(id) {
@@ -89,7 +85,7 @@ export default {
       this.$router.push({ name: 'shop-product-course-schedule-personal-calendar' })
     },
     getList(query = {}) {
-      this.$router.push({ query: { ...this.query, ...query } })
+      this.$router.push({ query: { ...query } })
     }
   }
 }
