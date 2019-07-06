@@ -3,7 +3,6 @@
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="16">
-
           <shop-select style="width: 160px" class="mg-r8" v-model="query.shop_id" @change="onChange"/>
 
           <a-range-picker @change="onChooseDate" format="YYYY-MM-DD"/>
@@ -19,9 +18,9 @@
           :dataSource="followList"
           :scroll="{ x: 1750}"
           @change="pageChange"
-          :pagination="pagination"
+          :page="page"
         >
-        <template slot="member_name" slot-scope="text, record">
+          <template slot="member_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goMemberDetai(record)">{{ text }}</a>
           </template>
         </st-table>
@@ -32,9 +31,10 @@
 
 <script>
 import { FollowService } from './follow.service'
-import { followColumns } from './columns'
+import { followColumns } from './columns.config'
 import ShopSelect from '@/views/biz-components/shop-select'
-import { RouteService } from '../../../../../services/route.service'
+import { RouteService } from '@/services/route.service'
+
 export default {
   serviceInject() {
     return {
@@ -45,6 +45,7 @@ export default {
   rxState() {
     return {
       followList: this.followService.followList$,
+      page: this.followService.page$,
       query: this.routeService.query$
     }
   },
@@ -53,14 +54,12 @@ export default {
   },
   data() {
     return {
-      followColumns,
-      pagination: {
-        pageSize: 20,
-        current: 1
-      },
       list: [],
       id: ''
     }
+  },
+  computed: {
+    followColumns
   },
   mounted() {
     this.id = this.$route.meta.query.id
@@ -92,14 +91,12 @@ export default {
         force: true
       })
     },
-    pageChange(pagination) {
-      this.pagination.pageSize = pagination.pageSize
-      this.pagination.current = pagination.current
+    pageChange(page) {
       this.$router.push({
         query: {
           id: this.id,
-          page: pagination.current,
-          size: pagination.pageSize
+          page: page.current_page,
+          size: page.size
         },
         force: true
       })

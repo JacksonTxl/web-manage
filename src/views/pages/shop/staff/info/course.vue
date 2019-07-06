@@ -29,7 +29,7 @@
           :dataSource="courseInfo.list"
           :scroll="{ x: 1750}"
           @change="pageChange"
-          :pagination="pagination"
+          :page="page"
         >
           <template slot="action" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="onSearchDetail(record)">详情</a>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { courseColums } from './columns'
+import { courseColums } from './columns.config'
 import { CourseService } from './course.service'
 export default {
   serviceInject() {
@@ -54,22 +54,18 @@ export default {
   },
   rxState() {
     return {
-      courseInfo: this.service.courseInfo$
+      courseInfo: this.service.courseInfo$,
+      page: this.service.page$
     }
   },
   data() {
     return {
-      pagination: {
-        current: 1,
-        pagesize: 10
-      },
-      courseColums,
       id: ''
     }
   },
+  computed: { courseColums },
   mounted() {
     this.id = this.$route.meta.query.id
-    this.pagination.total = this.courseInfo.page.total_counts
   },
   methods: {
     goCourseDetai(e) {
@@ -101,15 +97,13 @@ export default {
       console.log(e)
     },
     // 分页
-    pageChange(pagination) {
+    pageChange(page) {
       consoel.log(e)
-      this.pagination.pageSize = pagination.pageSize
-      this.pagination.current = pagination.current
       this.$router.push({
         query: {
           id: this.id,
-          page: pagination.current,
-          size: pagination.pageSize
+          page: page.current_page,
+          size: page.size
         },
         force: true
       })

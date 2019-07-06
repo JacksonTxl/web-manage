@@ -1,42 +1,30 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { StaffApi, GetStaffCourseListInput } from '@/api/v1/staff'
-import { forEach } from 'lodash-es'
 
-interface CourseState{
-    courseInfo: Object
-}
 @Injectable()
-export class CourseService extends Store<CourseState> {
-    state$: State<CourseState>
-    courseInfo$: Computed<Object>
-    constructor(private staffApi: StaffApi) {
-      super()
-      this.state$ = new State({
-        courseInfo: {}
-      })
-      this.courseInfo$ = new Computed(this.state$.pipe(pluck('courseInfo')))
-    }
+export class CourseService implements RouteGuard {
+    courseInfo$ = new State({})
+    page$ = new State({})
+    constructor(private staffApi: StaffApi) {}
     getCoursesList(id: string, query: GetStaffCourseListInput) {
       return this.staffApi.getStaffCourseList(id, query).pipe(
         tap(res => {
-          this.state$.commit(state => {
-            state.courseInfo = res.list.map((item: any) => {
+          this.courseInfo$.commit(() => {
+            return res.list.map((item: any) => {
               item.class_hours = `${item.start_time} ~ ${item.stop_time}`
               return item
             })
           })
+          this.page$.commit(() => res.page)
         })
       )
     }
 
-    beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+    beforeEach(to: ServiceRoute, from: ServiceRoute) {
       const { id } = to.meta.query
-      this.getCoursesList(id, {
-      }).subscribe(() => {
-        next()
+      return this.getCoursesList(id, {
       })
     }
 }

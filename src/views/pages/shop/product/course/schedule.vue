@@ -27,10 +27,11 @@
       <a-select-option v-for="coach in coachPersonalOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
     </a-select>
   </div>
-  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-team'">
+  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-team'
+  || routeName === 'shop-product-course-schedule-personal-team-table'">
     <a-select class="page-schedule__select" placeholder="请选择教练" @change="onChange" v-model="query.coach_id">
       <a-select-option :value="-1">全部</a-select-option>
-      <a-select-option v-for="coach in courseCoachOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
+      <a-select-option v-for="coach in coachPersonalTeamOptions" :key="coach.id" :value="coach.id">{{coach.name}}</a-select-option>
     </a-select>
   </div>
   <router-view></router-view>
@@ -41,25 +42,29 @@
 import { TeamScheduleCommonService } from './schedule/team.service#/common.service'
 import { PersonalScheduleCommonService } from './schedule/personal.service#/common.service'
 import { RouteService } from '../../../../../services/route.service'
+import { PersonalTeamScheduleCommonService } from './schedule/personal-team.service#/common.service'
 export default {
   name: 'CourseSchedule',
   serviceInject() {
     return {
       teamScheduleCommonService: TeamScheduleCommonService,
       personalScheduleCommonService: PersonalScheduleCommonService,
+      personalTeamScheduleCommonService: PersonalTeamScheduleCommonService,
       routeService: RouteService
     }
   },
   rxState() {
     const tss = this.teamScheduleCommonService
     const pscs = this.personalScheduleCommonService
+    const ptscs = this.personalTeamScheduleCommonService
     return {
       query: this.routeService.query$,
       coachOptions: tss.coachOptions$,
+      courseOptions: tss.courseOptions$,
+      courtOptions: tss.courtOptions$,
       coachPersonalOptions: pscs.coachOptions$,
       courseCoachOptions: pscs.courseCoachOptions$,
-      courseOptions: tss.courseOptions$,
-      courtOptions: tss.courtOptions$
+      coachPersonalTeamOptions: ptscs.coachOptions$
     }
   },
   data() {

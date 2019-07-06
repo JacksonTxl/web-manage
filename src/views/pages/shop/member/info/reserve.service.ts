@@ -1,36 +1,23 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { MemberApi, CardConsumptionQuery, CourseConsuptionQuery } from '@/api/v1/member'
 import { forkJoin } from 'rxjs'
 
-interface CardsListInfoState {
-    cardsListInfo: Object,
-    courseListInfo: Object
-}
 @Injectable()
-export class ReserveService extends Store<CardsListInfoState> {
-  state$: State<CardsListInfoState>
-  cardsListInfo$: Computed<Object>
-  courseListInfo$: Computed<Object>
-  constructor(private cardsApi: MemberApi) {
-    super()
-    this.state$ = new State({
-      cardsListInfo: {},
-      courseListInfo: {}
-    })
-    this.cardsListInfo$ = new Computed(this.state$.pipe(pluck('cardsListInfo')))
-    this.courseListInfo$ = new Computed(this.state$.pipe(pluck('courseListInfo')))
-  }
+export class ReserveService implements RouteGuard {
+  cardsListInfo$ = new State([])
+  cardPage$ = new State({})
+  courseListInfo$ = new State([])
+  coursePage$ = new State({})
+  constructor(private cardsApi: MemberApi) {}
 
   getCardInfo(id: string, query: CardConsumptionQuery) {
     return this.cardsApi.getCardConsumption(id, query).pipe(
       tap(res => {
         console.log(res, '卡获取数据')
-        this.state$.commit(state => {
-          state.cardsListInfo = res
-        })
+        this.cardsListInfo$.commit(() => res.list)
+        this.cardPage$.commit(() => res.page)
       })
     )
   }
@@ -38,9 +25,8 @@ export class ReserveService extends Store<CardsListInfoState> {
     return this.cardsApi.getCourseConsumption(id, query).pipe(
       tap(res => {
         console.log(res, '课获取数据')
-        this.state$.commit(state => {
-          state.courseListInfo = res
-        })
+        this.courseListInfo$.commit(() => res.list)
+        this.coursePage$.commit(() => res.page)
       })
     )
   }
@@ -49,9 +35,9 @@ export class ReserveService extends Store<CardsListInfoState> {
     return forkJoin(this.getCardInfo(id, cardQuery), this.getCourseInfo(id, courseQuery))
   }
 
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     console.log('route enter')
     const { id } = to.meta.query
-    this.init(id, { card_type: 1 }, { course_type: 1 }).subscribe(() => next())
+    return this.init(id, { card_type: 1 }, { course_type: 1 })
   }
 }
