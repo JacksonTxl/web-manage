@@ -11,12 +11,14 @@ export const columns = () => {
   }, {
     title: '节数',
     dataIndex: 'total_times',
+    align: 'right',
     scopedSlots: {
       customRender: 'total_times'
     }
   }, {
     title: '有效期',
     dataIndex: 'valid_time',
+    align: 'right',
     scopedSlots: {
       customRender: 'valid_time'
     }
@@ -29,6 +31,7 @@ export const columns = () => {
   }, {
     title: '售卖价格（元）',
     dataIndex: 'price',
+    align: 'right',
     scopedSlots: {
       customRender: 'price'
     }
@@ -41,6 +44,8 @@ export const columns = () => {
   }, {
     title: '操作',
     dataIndex: 'action',
+    fixed: 'right',
+    width: 140,
     scopedSlots: {
       customRender: 'action'
     }
