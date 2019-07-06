@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-table
+    <st-table
       :columns="tableColumns"
       :dataSource="list"
       :pagination="false"
@@ -12,7 +12,7 @@
         <a @click="delTableRecord(record.id)">删除</a>
       </div>
     </template>
-    </a-table>
+    </st-table>
     <a v-modal-link="{
       name: 'coach-select',
       props: {

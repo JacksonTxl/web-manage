@@ -29,17 +29,19 @@
           <td>{{item.operator_name}}</td>
           <td>{{item.updated_time}}</td>
           <td>
-            <a v-if="item.auth['brand_shop:course:training_aim|edit']"
-              v-modal-link="{ name: 'training-edit',
-              props: { id: item.id, setting_name: item.setting_name },
-              on: { change: onListChange } }">编辑
-            </a>
-            <a-popconfirm
-               v-if="item.auth['brand_shop:course:training_aim|del']"
-              :title="`删除后不可进行恢复，${item.used_number ? '已标记的课程将删除此训练目的，' : ''}确定删除此训练目的？`"
-              @confirm="onDelete(item.id)">
-              <a class="mg-l8">删除</a>
-            </a-popconfirm>
+            <st-table-actions>
+              <a v-if="item.auth['brand_shop:course:training_aim|edit']"
+                v-modal-link="{ name: 'training-edit',
+                props: { id: item.id, setting_name: item.setting_name },
+                on: { change: onListChange } }">编辑
+              </a>
+              <a-popconfirm
+                v-if="item.auth['brand_shop:course:training_aim|del']"
+                :title="`删除后不可进行恢复，${item.used_number ? '已标记的课程将删除此训练目的，' : ''}确定删除此训练目的？`"
+                @confirm="onDelete(item.id)">
+                <a class="mg-l8">删除</a>
+              </a-popconfirm>
+            </st-table-actions>
           </td>
         </tr>
       </tbody>

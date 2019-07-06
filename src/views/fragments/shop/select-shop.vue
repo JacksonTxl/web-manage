@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-table
+    <st-table
       :columns="shopTableColumns"
       :dataSource="list"
       :pagination="false"
@@ -12,7 +12,7 @@
         <a @click="delShopTableRecord(record.shop_id)">删除</a>
       </div>
     </template>
-    </a-table>
+    </st-table>
     <a v-modal-link="{
       name: 'shop-select',
       props: {
