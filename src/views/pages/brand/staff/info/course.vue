@@ -26,10 +26,12 @@
           :dataSource="courseInfo.list"
           :scroll="{ x: 1750}"
           @change="pageChange"
-          :pagination="pagination"
+          :page="page"
         >
           <template slot="action" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="onSearchDetail(record)">详情</a>
+            <st-table-actions>
+              <a href="javascript:;" class="mg-r8" @click="onSearchDetail(record)">详情</a>
+            </st-table-actions>
           </template>
           <template slot="course_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">{{ text }}</a>
@@ -41,7 +43,7 @@
 </template>
 
 <script>
-import { courseColums } from './columns'
+import { courseColums } from './columns.config'
 import { CourseService } from './course.service'
 import { RouteService } from '../../../../../services/route.service'
 import ShopSelect from '@/views/biz-components/shop-select'
@@ -55,21 +57,23 @@ export default {
   rxState() {
     return {
       query: this.routeService.query$,
-      courseInfo: this.service.courseInfo$
+      courseInfo: this.service.courseInfo$,
+      page: this.service.page$
     }
   },
   data() {
     return {
-      pagination: {
-        current: 1,
-        pagesize: 10
-      },
-      courseColums,
       id: ''
     }
   },
+  computed: {
+    courseColums
+  },
   components: {
     ShopSelect
+  },
+  created() {
+    console.log(this.page)
   },
   methods: {
     goCourseDetai(e) {
@@ -93,15 +97,12 @@ export default {
       console.log(e)
     },
     // 分页
-    pageChange(pagination) {
-      consoel.log(e)
-      this.pagination.pageSize = pagination.pageSize
-      this.pagination.current = pagination.current
+    pageChange(page) {
       this.$router.push({
         query: {
           id: this.id,
-          page: pagination.current,
-          size: pagination.pageSize
+          page: page.current_page,
+          size: page.size
         },
         force: true
       })

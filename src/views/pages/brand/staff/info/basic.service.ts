@@ -1,38 +1,23 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { StaffApi } from '@/api/v1/staff'
 
-interface BasicState {
-    basicInfo: Object
-}
 @Injectable()
-export class BasicService extends Store<BasicState> {
-    state$: State<BasicState>
-    basicInfo$: Computed<Object>
-    constructor(private staffApi: StaffApi) {
-      super()
-      this.state$ = new State({
-        basicInfo: {}
-      })
-      this.basicInfo$ = new Computed(this.state$.pipe(pluck('basicInfo')))
-    }
+export class BasicService implements RouteGuard {
+    basicInfo$ = new State({})
+    constructor(private staffApi: StaffApi) {}
     getBasicInfo(id: string) {
       return this.staffApi.getStaffInfo(id).pipe(
         tap(res => {
-          this.state$.commit(state => {
-            state.basicInfo = res.common_info
-          })
+          this.basicInfo$.commit(() => res.common_info)
         })
       )
     }
 
-    beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
       const { id } = to.meta.query
       console.log('basic service')
-      this.getBasicInfo(id).subscribe(() => {
-        next()
-      })
+      return this.getBasicInfo(id)
     }
 }

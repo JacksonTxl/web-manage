@@ -1,45 +1,35 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { ShopStaffApi, GetListQuery } from '@/api/v1/staff/staff'
 import { UserService } from '@/services/user.service'
 import { AuthService } from '@/services/auth.service'
+import { forkJoin } from 'rxjs'
 
-interface SetState {
-    staffList: Object;
-    department: Object
-}
 @Injectable()
-export class ListService extends Store<SetState> {
-  state$: State<SetState>
-  staffList$: Computed<Object>
-  department$: Computed<Object>
-  staffEnums$: Computed<Object>
-  auth$: Computed<Object>
-  constructor(private staffApi: ShopStaffApi, private userService: UserService, private authService: AuthService) {
-    super()
-    this.state$ = new State({
-      staffList: {},
-      department: {},
-      auth: {
-        join: this.authService.can('brand_shop:staff:staff|join'),
-        add: this.authService.can('brand_shop:staff:staff|add'),
-        import: this.authService.can('brand_shop:staff:staff|import')
-      }
-    })
-    this.staffList$ = new Computed(this.state$.pipe(pluck('staffList')))
-    this.department$ = new Computed(this.state$.pipe(pluck('department')))
-    this.staffEnums$ = this.userService.staffEnums$
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
-  }
+export class ListService implements RouteGuard {
+  staffList$ = new State([])
+  page$ = new State({})
+  department$ = new State({})
+  staffEnums$ = this.userService.staffEnums$
+  auth$ = new State({
+    join: this.authService.can('brand_shop:staff:staff|join'),
+    add: this.authService.can('brand_shop:staff:staff|add'),
+    import: this.authService.can('brand_shop:staff:staff|import')
+  })
+
+  constructor(
+    private staffApi: ShopStaffApi,
+    private userService: UserService,
+    private authService: AuthService
+  ) {}
+
   getStaffList(query: GetListQuery) {
     return this.staffApi.getList(query).pipe(
-      tap(res => {
+      tap((res: any) => {
         res = this.authService.filter(res)
-        this.state$.commit(state => {
-          state.staffList = res
-        })
+        this.staffList$.commit(() => res.list)
+        this.page$.commit(() => res.page)
       })
     )
   }
@@ -47,18 +37,13 @@ export class ListService extends Store<SetState> {
   getStaffDepartment() {
     return this.staffApi.getStaffDepartmentList().pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.department = res.department
-        })
+        this.department$.commit(() => res.department)
       })
     )
   }
 
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    let { page = 1, size = 20, shop_id } = to.meta.query
-    this.getStaffDepartment().subscribe(() => {})
-    this.getStaffList({ page, size, ...to.query }).subscribe(() => {
-      next()
-    })
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    let { page = 1, size = 20 } = to.meta.query
+    return forkJoin(this.getStaffDepartment(), this.getStaffList({ page, size, ...to.query }))
   }
 }

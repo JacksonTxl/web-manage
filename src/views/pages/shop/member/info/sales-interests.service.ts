@@ -1,46 +1,35 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { MemberApi, CouponQuery } from '@/api/v1/member'
 
-interface CouponListInfoState {
-  couponList: Object
-}
 @Injectable()
-
-export class SalesInterestsService extends Store<CouponListInfoState> {
-  state$: State<CouponListInfoState>
-  couponList$: Computed<Object>
-  constructor(private cardsApi: MemberApi) {
-    super()
-    this.state$ = new State({
-      couponList: {}
-    })
-    this.couponList$ = new Computed(this.state$.pipe(pluck('couponList')))
-  }
+export class SalesInterestsService implements RouteGuard {
+  couponList$ = new State([])
+  couponCount$ = new State({})
+  page$ = new State({})
+  constructor(private cardsApi: MemberApi) {}
 
   getCouponInfo(id: string, query: CouponQuery) {
     return this.cardsApi.getCouponList(id, query).pipe(
       tap(res => {
         console.log(res, '卡获取数据')
-        this.state$.commit(state => {
-          state.couponList = res
-        })
+        this.couponList$.commit(() => res.coupon_list)
+        this.couponCount$.commit(() => res.coupon_count)
+        this.page$.commit(() => res.page)
       })
     )
   }
-  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeRouteUpdate(to: ServiceRoute, from: ServiceRoute) {
     console.log('==', to)
     console.log('==', from)
     let { id, page, size } = to.meta.query
-    this.getCouponInfo(id, { page, size }).subscribe(() => next())
-    // next()
+    return this.getCouponInfo(id, { page, size })
   }
 
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     console.log('route enter', to.meta)
     const { id } = to.meta.query
-    this.getCouponInfo(id, {}).subscribe(() => next())
+    return this.getCouponInfo(id, {})
   }
 }

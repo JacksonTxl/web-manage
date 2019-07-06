@@ -23,13 +23,13 @@
         :page="false"
       >
         <div slot="shop_name1" slot-scope="text, record">
-          <a href="#" v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a>
-          <a-divider type="vertical"></a-divider>
-          <a href="#">
-            <router-link v-if="record.auth['shop:member:crowd|edit']" tag="a" :to=" { name: 'shop-member-crowd-add',query:{id:record.id}}">编辑</router-link>
-          </a>
-          <a-divider type="vertical"></a-divider>
-          <a href="#" v-if="record.auth['shop:member:crowd|del']" @click="deleteTreeNode(record)">删除</a>
+          <st-table-actions>
+            <a href="#" v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a>
+            <a href="#">
+              <router-link v-if="record.auth['shop:member:crowd|edit']" tag="a" :to=" { name: 'shop-member-crowd-add',query:{id:record.id}}">编辑</router-link>
+            </a>
+            <a href="#" v-if="record.auth['shop:member:crowd|del']" @click="deleteTreeNode(record)">删除</a>
+          </st-table-actions>
         </div>
         <div
           slot="description"

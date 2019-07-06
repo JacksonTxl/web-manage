@@ -24,12 +24,12 @@
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="followColumns"
-          :dataSource="followList.list"
+          :dataSource="followList"
           :scroll="{ x: 1750}"
           @change="pageChange"
-          :pagination="pagination"
+          :page="page"
         >
-         <template slot="member_name" slot-scope="text, record">
+          <template slot="member_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goMemberDetai(record)">{{ text }}</a>
           </template>
         </st-table>
@@ -40,7 +40,7 @@
 
 <script>
 import { FollowService } from './follow.service'
-import { followColumns } from './columns'
+import { followColumns } from './columns.config'
 export default {
   serviceInject() {
     return {
@@ -49,23 +49,18 @@ export default {
   },
   rxState() {
     return {
-      followList: this.followservice.followList$
+      followList: this.followservice.followList$,
+      page: this.followservice.page$
     }
   },
   data() {
     return {
-      followColumns,
-      pagination: {
-        pageSize: 20,
-        current: 1
-      },
-      list: [],
       id: ''
     }
   },
+  computed: { followColumns },
   mounted() {
     this.id = this.$route.meta.query.id
-    this.pagination.total = this.followList.page.total_counts
   },
   methods: {
     goMemberDetai(e) {
@@ -93,14 +88,11 @@ export default {
       })
     },
     pageChange(pagination) {
-      console.log('pagechange', pagination)
-      this.pagination.pageSize = pagination.pageSize
-      this.pagination.current = pagination.current
       this.$router.push({
         query: {
           id: this.id,
-          page: pagination.current,
-          size: pagination.pageSize
+          page: page.current_page,
+          size: page.size
         },
         force: true
       })

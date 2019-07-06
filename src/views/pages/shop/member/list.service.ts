@@ -5,9 +5,6 @@ import { Store } from '@/services/store'
 import { MemberApi } from '@/api/v1/member'
 import { AuthService } from '@/services/auth.service'
 
-interface MemberListInfoState {
-  memberListInfo: any
-}
 @Injectable()
 export class ListService extends Store<MemberListInfoState> implements RouteGuard {
   // 业务状态

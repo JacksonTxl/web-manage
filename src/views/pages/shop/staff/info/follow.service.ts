@@ -1,36 +1,24 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { ShopStaffApi, GetStaffFollowInput } from '@/api/v1/staff/staff'
 
-interface FollowState {
-    followList: Object
-}
 @Injectable()
-export class FollowService extends Store<FollowState> {
-    state$: State<FollowState>
-    followList$: Computed<Object>
-    constructor(private staffApi: ShopStaffApi) {
-      super()
-      this.state$ = new State({
-        followList: {}
-      })
-      this.followList$ = new Computed(this.state$.pipe(pluck('followList')))
-    }
+export class FollowService implements RouteGuard {
+    page$ = new State({})
+    followList$ = new State([])
+    constructor(private staffApi: ShopStaffApi) {}
+
     getStaffFollow(query: GetStaffFollowInput) {
       return this.staffApi.getStaffFollow(query).pipe(
         tap(res => {
-          this.state$.commit(state => {
-            state.followList = res
-          })
+          this.page$.commit(() => res.page)
+          this.followList$.commit(() => res.followList)
         })
       )
     }
 
-    beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-      this.getStaffFollow(to.query).subscribe(() => {
-        next()
-      })
+    beforeEach(to: ServiceRoute, from: ServiceRoute) {
+      return this.getStaffFollow(to.query)
     }
 }

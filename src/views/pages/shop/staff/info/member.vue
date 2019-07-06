@@ -25,15 +25,14 @@
           :dataSource="memberInfo.list"
           :scroll="{ x: 1750}"
           @change="pageChange"
-          :pagination="pagination"
-        >
-         <template slot="course_name" slot-scope="text, record">
+          :page="page">
+          <template slot="course_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">{{ text }}</a>
           </template>
           <template slot="member_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goMemberDetai(record)">{{ text }}</a>
           </template>
-           <template slot="course_status" slot-scope="text,record">
+          <template slot="course_status" slot-scope="text,record">
             <span v-if="record.course_status ==='有效'" class="effective"></span>
             <span v-if="record.course_status ==='失效'" class="invalid"></span>
             <span v-if="record.course_status === '已冻结'" class="frozen"></span>
@@ -46,7 +45,7 @@
 </template>
 
 <script>
-import { memberColums } from './columns'
+import { memberColums } from './columns.config'
 import { MemberService } from './member.service'
 export default {
   serviceInject() {
@@ -56,23 +55,18 @@ export default {
   },
   rxState() {
     return {
-      memberInfo: this.service.memberInfo$
+      memberInfo: this.service.memberInfo$,
+      page: this.service.page$
     }
   },
   data() {
     return {
-      memberColums,
-      pagination: {
-        pageSize: 20,
-        current: 1
-      },
       id: ''
     }
   },
+  computed: { memberColums },
   mounted() {
-    console.log(this.memberInfo)
     this.id = this.$route.meta.query.id
-    this.pagination.total = this.memberInfo.page.total_counts
   },
   methods: {
     goCourseDetai(e) {
@@ -90,14 +84,12 @@ export default {
         force: true
       })
     },
-    pageChange(pagination) {
-      this.pagination.pageSize = pagination.pageSize
-      this.pagination.current = pagination.current
+    pageChange(page) {
       this.$router.push({
         query: {
           id: this.id,
-          page: pagination.current,
-          size: pagination.pageSize
+          page: page.current_page,
+          size: page.size
         },
         force: true
       })
