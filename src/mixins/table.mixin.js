@@ -51,6 +51,18 @@ export default {
         }
       })
     },
+    /**
+     * 筛选重置
+     */
+    onSearhReset() {
+      this.onSelectionReset()
+      this.$router.push({
+        query: {
+          [this.currentPageField]: 1,
+          force: true
+        }
+      })
+    },
     // 单个筛选项的即时搜索
     // 所有的查询都将页码到第一页
     // keyword 为true时只单独查询该字段
