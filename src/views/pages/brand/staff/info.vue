@@ -46,7 +46,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel :tabs="list">
+    <st-panel :tabs="identity">
       <div slot="actions"></div>
       <router-view></router-view>
     </st-panel>
@@ -55,17 +55,20 @@
 <script>
 import { InfoService } from './info.service'
 import { forEach } from 'lodash-es'
+import { RouteService } from '@/services/route.service'
+
 export default {
   serviceInject() {
     return {
-      infoService: InfoService
+      infoService: InfoService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
       info: this.infoService.info$,
-      auth: this.infoService.auth$
-
+      auth: this.infoService.auth$,
+      query: this.routeService.query$
     }
   },
   data() {
@@ -73,91 +76,59 @@ export default {
       identity: [
         {
           label: '员工资料',
-          route: { name: 'brand-staff-info-basic', query: { id: this.info.id } }
+          route: { name: 'brand-staff-info-basic', query: this.query }
         }
       ],
       course: {
         label: '上课记录',
-        route: { name: 'brand-staff-info-course', query: { id: this.info.id } }
+        route: { name: 'brand-staff-info-course', query: this.query }
       },
       basic: {
         label: '跟进记录',
-        route: { name: 'brand-staff-info-follow', query: { id: this.info.id } }
+        route: { name: 'brand-staff-info-follow', query: this.query }
       },
       sold: {
         label: '售卖订单',
-        route: { name: 'brand-staff-info-sold', query: { id: this.info.id } }
+        route: { name: 'brand-staff-info-sold', query: this.query }
       },
       member: {
         label: '服务课程',
-        route: { name: 'brand-staff-info-member', query: { id: this.info.id } }
-      },
-
-      list: [
-        {
-          label: '员工资料',
-          route: { name: 'brand-staff-info-basic', query: { id: this.info.id } }
-        },
-        {
-          label: '上课记录',
-          route: {
-            name: 'brand-staff-info-course',
-            query: { id: this.info.id }
-          }
-        },
-        {
-          label: '跟进记录',
-          route: {
-            name: 'brand-staff-info-follow',
-            query: { id: this.info.id }
-          }
-        },
-        {
-          label: '售卖订单',
-          route: { name: 'brand-staff-info-sold', query: { id: this.info.id } }
-        },
-        {
-          label: '服务课程',
-          route: {
-            name: 'brand-staff-info-member',
-            query: { id: this.info.id }
-          }
-        }
-      ]
+        route: { name: 'brand-staff-info-member', query: this.query }
+      }
     }
+  },
+  created() {
+    // 团课教练：上课记录
+    // 私教教练：上课记录、跟进记录、服务课程 、销售订单
+    // 会籍销售：跟进记录、服务课程 、销售订单
+
+    // 1,普通员工 2-会籍销售；3-团课教练；4-私人教练
+    let { identity } = this.info
+    identity = identity.map(item => item.id)
+    if (Array.isArray(identity) && identity.length) {
+      identity.forEach(ele => {
+        if (identity.includes(2)) {
+          this.identity.push(this.basic, this.member, this.sold)
+        } else if (identity.includes(3)) {
+          this.identity.push(this.course)
+        } else if (identity.includes(4)) {
+          this.identity.push(this.course, this.basic, this.member, this.sold)
+        }
+      })
+    }
+    this.$router.replace({
+      name: 'brand-staff-info-basic',
+      query: this.query
+    })
   },
   methods: {
     handleMenuClick() {},
     editStaffInfo() {
       this.$router.push({
         name: 'brand-staff-edit',
-        query: { id: this.info.id }
+        query: this.query
       })
     }
-  },
-  mounted() {
-    // 团课教练：上课记录
-    // 私教教练：上课记录、跟进记录、服务课程 、销售订单
-    // 会籍销售：跟进记录、服务课程 、销售订单
-
-    // 1,普通员工 2-会籍销售；3-团课教练；4-私人教练
-    // let { identity } = this.$route.meta.query
-    let identity = [1, 2, 3, 4]
-    console.log(identity)
-    // identity.forEach(ele=>{
-    //   if(identity.indexOf(2)){
-    //     this.identity.push(this.basic,this.member,this.sold)
-    //   }else if(identity.indexOf(3)){
-    //     this.identity.push(this.course)
-    //   }else if(identity.indexOf(4)){
-    //     this.identity.push(this.course,this.basic,this.member,this.sold)
-    //   }
-    // })
-
-    this.$router.replace({
-      name: 'brand-staff-info-basic',
-      query: { id: this.info.id }
-    })
   }
 }
 </script>

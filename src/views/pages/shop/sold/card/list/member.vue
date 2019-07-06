@@ -3,15 +3,15 @@
     <st-search-panel>
       <div :class="basic('select')" class="mgt-24">
         <span style="width:90px;">会员卡类型：</span>
-        <st-search-radio v-model="searchData.card_type" :list="cardTypeList"/>
+        <st-search-radio v-model="query.card_type" :list="cardTypeList"/>
       </div>
       <div :class="basic('select')">
         <span style="width:90px;">会员卡状态：</span>
-        <st-search-radio v-model="searchData.card_status" :list="cardSaleStatusList"/>
+        <st-search-radio v-model="query.card_status" :list="cardSaleStatusList"/>
       </div>
       <div :class="basic('select')">
         <span style="width:90px;">开卡状态：</span>
-        <st-search-radio v-model="searchData.is_open" :list="cardOpenStatusList"/>
+        <st-search-radio v-model="query.is_open" :list="cardOpenStatusList"/>
       </div>
       <div slot="more">
         <div :class="basic('select')">
@@ -39,8 +39,8 @@
         </div>
       </div>
       <div slot="button">
-        <st-button type="primary" @click="onSearch">查询</st-button>
-        <st-button class="mgl-8" @click="onReset">重置</st-button>
+        <st-button type="primary" @click="onSearchNative" :loading="loading.getList">查询</st-button>
+        <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
       </div>
     </st-search-panel>
     <div :class="basic('content')">
@@ -51,7 +51,7 @@
       </div>
       <div :class="basic('table')">
         <st-table
-          :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
+          :page="page"
           :alertSelection="{onReset: onClear}"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange,
            getCheckboxProps: record => ({
@@ -60,9 +60,10 @@
               }
            })}"
           rowKey="id"
-          @change="onPageChange"
+          @change="onTableChange"
           :columns="columns"
           :dataSource="list"
+          :scroll="{x:1800}"
         >
           <template
             slot="remain_amount"
@@ -82,21 +83,19 @@
             slot="start_time"
             slot-scope="text"
           >{{text}}</template>
-          <div slot="action" slot-scope="text,record">
-            <a v-if="record.auth['shop:sold:sold_member_card|get']" @click="onDetail(record)">详情</a>
-            <a-divider type="vertical"></a-divider>
-            <a v-if="record.auth['shop:sold:sold_member_card|upgrade']" @click="onUpgrade(record)">升级</a>
-            <a-divider type="vertical"></a-divider>
-            <st-more-dropdown class="mgl-16">
-              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|renew']" @click="onRenewal(record)">续卡</a-menu-item>
-              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|vaild_time']" @click="onSetTime(record)">修改有效时间</a-menu-item>
-              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|frozen']" @click="onFreeze(record)">冻结</a-menu-item>
-              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|unfrozen']" @click="onUnfreeze(record)">取消冻结</a-menu-item>
-              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|transfer']" @click="onTransfer(record)">转让</a-menu-item>
-              <a-menu-item v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a-menu-item>
-              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|export_contract']" @click="toContract(record)">查看合同</a-menu-item>
-              <a-menu-item v-if="record.auth['shop:sold:sold_member_card|vip_region']" @click="onArea(record)">修改入场vip区域</a-menu-item>
-            </st-more-dropdown>
+          <div slot="action" slot-scope="text, record">
+            <st-table-actions>
+              <a v-if="record.auth['shop:sold:sold_member_card|get']" @click="onDetail(record)">详情</a>
+              <a v-if="record.auth['shop:sold:sold_member_card|upgrade']" @click="onUpgrade(record)">升级</a>
+              <a v-if="record.auth['shop:sold:sold_member_card|renew']" @click="onRenewal(record)">续卡</a>
+              <a v-if="record.auth['shop:sold:sold_member_card|vaild_time']" @click="onSetTime(record)">修改有效时间</a>
+              <a v-if="record.auth['shop:sold:sold_member_card|frozen']" @click="onFreeze(record)">冻结</a>
+              <a v-if="record.auth['shop:sold:sold_member_card|unfrozen']" @click="onUnfreeze(record)">取消冻结</a>
+              <a v-if="record.auth['shop:sold:sold_member_card|transfer']" @click="onTransfer(record)">转让</a>
+              <a v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a>
+              <a v-if="record.auth['shop:sold:sold_member_card|export_contract']" @click="toContract(record)">查看合同</a>
+              <a v-if="record.auth['shop:sold:sold_member_card|vip_region']" @click="onArea(record)">修改入场vip区域</a>
+            </st-table-actions>
           </div>
         </st-table>
       </div>
@@ -109,66 +108,12 @@ import { cloneDeep, filter } from 'lodash-es'
 import { MemberService } from './member.service'
 import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
+import { columns } from './member.config'
 
-const columns = [
-  {
-    title: '卡名',
-    dataIndex: 'card_name',
-    scopedSlots: { customRender: 'card_name' }
-  },
-  {
-    title: '剩余额度',
-    dataIndex: 'remain_amount',
-    scopedSlots: { customRender: 'remain_amount' }
-  },
-  {
-    title: '初始额度',
-    dataIndex: 'init_amount',
-    scopedSlots: { customRender: 'init_amount' }
-  },
-  {
-    title: '姓名',
-    dataIndex: 'member_name',
-    scopedSlots: { customRender: 'member_name' }
-  },
-  {
-    title: '手机号',
-    dataIndex: 'mobile',
-    scopedSlots: { customRender: 'mobile' }
-  },
-  {
-    title: '状态',
-    dataIndex: 'card_status',
-    scopedSlots: { customRender: 'card_status' }
-  },
-  {
-    title: '到期日期',
-    dataIndex: 'end_time',
-    scopedSlots: { customRender: 'end_time' }
-  },
-  {
-    title: '是否开卡',
-    dataIndex: 'is_open',
-    scopedSlots: { customRender: 'is_open' }
-  },
-  {
-    title: '开卡日期',
-    dataIndex: 'start_time',
-    scopedSlots: { customRender: 'start_time' }
-  },
-  {
-    title: '销售人员',
-    dataIndex: 'staff_name',
-    scopedSlots: { customRender: 'staff_name' }
-  },
-  {
-    title: '操作',
-    dataIndex: 'action',
-    scopedSlots: { customRender: 'action' }
-  }
-]
 export default {
   name: 'PageShopSoldCardMemberList',
+  mixins: [tableMixin],
   bem: {
     basic: 'page-shop-sold'
   },
@@ -181,6 +126,7 @@ export default {
   },
   rxState() {
     return {
+      loading: this.memberService.loading$,
       list: this.memberService.list$,
       page: this.memberService.page$,
       package_course: this.userService.packageCourseEnums$,
@@ -190,6 +136,7 @@ export default {
     }
   },
   computed: {
+    columns,
     // 会员卡类型
     cardTypeList() {
       let list = [{ value: -1, label: '全部' }]
@@ -234,8 +181,7 @@ export default {
       // 结束时间面板是否显示
       endOpen: false,
       selectedRowKeys: [],
-      selectedRows: [],
-      columns
+      selectedRows: []
     }
   },
   mounted() {
@@ -256,38 +202,14 @@ export default {
       }
       return record.card_type !== this.selectedRows[0]['card_type']
     },
-    onPageChange(data) {
-      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
-    },
     // 查询
-    onSearch() {
-      let query = {
-        card_type: this.searchData.card_type,
-        card_status: this.searchData.card_status,
-        is_open: this.searchData.is_open,
-        start_time: this.start_time
-          ? `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
-          : '',
-        end_time: this.end_time
-          ? `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
-          : ''
-      }
-      this.$router.push({ query: { ...this.query, ...query }, force: true })
-    },
-    // 重置
-    onReset() {
-      let query = {
-        card_type: -1,
-        card_status: 1,
-        is_open: -1,
-        start_time: '',
-        end_time: ''
-      }
-      this.$router.push({ query: { ...this.query, ...query } })
+    onSearchNative() {
+      this.query.start_time = this.start_time ? `${this.start_time.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.query.end_time = this.end_time ? `${this.end_time.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      this.searchData = cloneDeep(this.query)
       this.start_time = this.query.start_time
         ? cloneDeep(moment(this.query.start_time))
         : null

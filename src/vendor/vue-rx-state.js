@@ -36,7 +36,7 @@ export default {
                 }
                 Vue.util.defineReactive(this, obName, cloneDeep(v))
               } catch (e) {
-                throw new Error(`[vue-rx-state] uncaught error on ${obName} ${e.message}`)
+                throw new Error(`[vue-rx-state] uncaught error on [${obName}] ${e.message}`)
               }
             })
           }

@@ -1,30 +1,18 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
-import { LabelApi, AddLabel, EditParams, ListParams } from '@/api/v1/label'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
+import { LabelApi, ListParams } from '@/api/v1/label'
 import { AuthService } from '@/services/auth.service'
 
-interface LabelListInfoState {
-  list: any
-}
 @Injectable()
-export class ListService extends Store<LabelListInfoState> implements RouteGuard {
-  state$: State<LabelListInfoState>
+export class ListService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
-  auth$: Computed<Object>
-  constructor(private labelApi: LabelApi, private authService: AuthService) {
-    super()
-    this.state$ = new State({
-      list: [],
-      auth: {
-        add: this.authService.can('shop:member:tag|add')
-      }
-    })
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
-  }
-  @Effect()
+  auth$ = new State({
+    add: this.authService.can('shop:member:tag|add')
+  })
+  constructor(private labelApi: LabelApi, private authService: AuthService) {}
+
   getListInfo(params: ListParams) {
     return this.labelApi.getLabelList(params).pipe(
       tap(res => {

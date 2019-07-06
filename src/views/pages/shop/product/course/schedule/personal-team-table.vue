@@ -11,7 +11,7 @@
           </st-button>
         </a-col>
         <a-col :lg="7" :offset="2">
-          <date @today="getTable" :start="scheduleTime[0]" @pre="getTable" @next="getTable"/>
+          <date @today="getTable" :start="query.start_date" @pre="getTable" @next="getTable"/>
         </a-col>
         <a-col :lg="7" class="schedule-button">
           <st-button @click="onClickSkipSchedule"><st-icon type="calendar"></st-icon></st-button>
@@ -45,21 +45,20 @@
 <script>
 import date from './date#/date-component'
 import { PersonalTeamScheduleScheduleService } from './personal-team.service#/schedule.service'
+import { RouteService } from '../../../../../../services/route.service'
 export default {
   name: 'SchedulePersonalTeamTable',
   serviceInject() {
     return {
-      scheduleService: PersonalTeamScheduleScheduleService
+      scheduleService: PersonalTeamScheduleScheduleService,
+      routeService: RouteService
     }
   },
   rxState() {
+    console.log(this.scheduleService)
     return {
-      scheduleTable: this.scheduleService.scheduleTable$
-    }
-  },
-  data() {
-    return {
-      scheduleTime: ['2019-05-30']
+      scheduleTable: this.scheduleService.scheduleTable$,
+      query: this.routeService.query$
     }
   },
   components: {
@@ -77,9 +76,9 @@ export default {
     onClickSkipSchedule() {
       this.$router.push({ name: 'shop-product-course-schedule-personal-team' })
     },
-    getTable(query = {}) {
-      const req = { start_date: query.start_time, end_date: query.end_time }
-      this.scheduleService.getTable(req).subscribe()
+    getTable(val = {}) {
+      const query = { ...this.query, start_date: val.start_time, end_date: val.end_time }
+      this.$router.push({ query })
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <st-form-table :page="basicInfo.page" @change="onPageChange" hoverable >
+  <st-form-table :page="page" @change="onTableChange" :loading="loading.getBasicInfo" hoverable>
     <thead>
       <tr>
         <template v-for="(item,index) in columsTitlelist">
@@ -15,30 +15,25 @@
           </st-button>
         </td>
       </tr>
-      <template v-for="item in basicInfo.list">
+      <template v-for="item in list">
         <tr :key="item.id">
           <td>{{ item.template_name }}</td>
           <td>{{ item.salary }}</td>
           <td>
-          <template v-if="item.used == 0 ">
+            <template v-if="item.used == 0 ">
               <span>{{ item.used }}</span>
             </template>
             <template v-if="item.used != 0 ">
-              <modal-link
-                tag="a"
-                :to=" { name: 'search-staff-list-salary', props: {id: item.id}}"
-              >{{ item.used }}</modal-link>
+              <modal-link tag="a" :to=" { name: 'search-staff-list-salary', props: {id: item.id}}">{{ item.used }}
+              </modal-link>
             </template>
-            </td>
+          </td>
           <td>{{ item.created_time }}</td>
           <td>
-            <modal-link
-              v-if="item.auth['brand_shop:salary:basic_template|edit']"
-              tag="a"
-              :to=" { name: 'finance-basic-template-edit', props: {item: item},on: {change: refresh}}"
-            >编辑</modal-link>
-            <span style="width:1px;height: 14px;background-color:#e6e9ef;" class="mg-l8 mg-r8"></span>
-            <a href="javascript:;" v-if="item.auth['brand_shop:salary:basic_template|del']" @click="onDelete(item.id)">删除</a>
+            <st-table-actions>
+              <a v-if="item.auth['brand_shop:salary:basic_template|edit']" v-modal-link=" { name: 'finance-basic-template-edit', props: {item: item},on: {change: refresh}}">编辑</a>
+              <a href="javascript:;" v-if="item.auth['brand_shop:salary:basic_template|del']" @click="onDelete(item.id)">删除</a>
+            </st-table-actions>
           </td>
         </tr>
       </template>
@@ -48,44 +43,47 @@
 <script>
 import { BasicService } from './basic.service'
 import { MessageService } from '@/services/message.service'
+import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
 export default {
+  mixins: [tableMixin],
   serviceInject() {
     return {
       basicService: BasicService,
-      messageService: MessageService
+      messageService: MessageService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      basicInfo: this.basicService.basicInfo$,
+      // 路由query订阅
+      query: this.routeService.query$,
+      list: this.basicService.list$,
+      loading: this.basicService.loading$,
+      page: this.basicService.page$,
       auth: this.basicService.auth$
     }
   },
   data() {
     return {
-      list: [],
       columsTitlelist: [
         '模板名称',
         '月底薪(元)',
         '应用员工',
         '创建时间',
         '操作'
-      ],
-      page: {
-        current_page: 1,
-        size: 20,
-        total_counts: this.basicInfo.page.total_counts,
-        total_pages: this.basicInfo.page.total_pages
-      }
+      ]
     }
   },
   methods: {
     refresh() {
-      this.$router.push({ query: {
-        size: this.page.pageSize,
-        page: this.page.current
-      },
-      force: true })
+      this.$router.push({
+        query: {
+          size: this.page.pageSize,
+          page: this.page.current
+        },
+        force: true
+      })
     },
     onDelete(e) {
       console.log(e)
@@ -97,8 +95,13 @@ export default {
           console.log('OK')
           that.basicService.deleteTemplate(e).subscribe(() => {
             console.log('ok')
-            that.messageService.success({ content: '删除成功' })
-            that.$router.push({ query: {}, force: true })
+            that.messageService.success({
+              content: '删除成功'
+            })
+            that.$router.push({
+              query: {},
+              force: true
+            })
           })
         },
         onCancel() {
@@ -106,19 +109,8 @@ export default {
         },
         class: 'test'
       })
-    },
-    onPageChange(e) {
-      console.log(e)
-      this.$router.push({ query: {
-        size: e.pageSize,
-        page: e.current
-      },
-      force: true })
     }
-  },
-  mounted() {
-    console.log('list', this.basicInfo.list)
-    console.log('page', this.basicInfo.page)
   }
 }
+
 </script>

@@ -15,16 +15,16 @@
     </div>
     <div :class="basic('content')">
       <st-table
-      :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
+      :page="page"
       rowKey="id"
       :columns="columns"
-      @change="onPageChange"
+      @change="onTableChange"
       :dataSource="list">
-        <div slot="action" slot-scope="text,record">
-          <!-- <a  @click="onDetail(record)">详情</a> -->
-          <!-- <a-divider type="vertical"></a-divider> -->
-          <a  @click="onTransaction(record)">签单</a>
-          <!-- <a @click="onAdvance(record)">加定金</a> -->
+
+        <div slot="action" slot-scope="text, record">
+          <st-table-actions>
+            <a  @click="onTransaction(record)">签单</a>
+          </st-table-actions>
         </div>
       </st-table>
     </div>
@@ -35,8 +35,11 @@
 import { ListService } from './list.service'
 import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
+import { columns } from './list.config'
 export default {
   name: 'PageShopSoldLease',
+  mixins: [tableMixin],
   bem: {
     basic: 'page-shop-sold',
     sale: 'page-shop-sold-sale'
@@ -59,6 +62,7 @@ export default {
     }
   },
   computed: {
+    columns,
     productType() {
       let list = []
       if (!this.transaction.product_type) return list
@@ -70,29 +74,6 @@ export default {
   },
   data() {
     return {
-      columns: [
-        {
-          title: '商品名称',
-          dataIndex: 'product_name',
-          scopedSlots: { customRender: 'product_name' }
-        }, {
-          title: '商品类型',
-          dataIndex: 'product_type',
-          scopedSlots: { customRender: 'product_type' }
-        }, {
-          title: '价格',
-          dataIndex: 'price',
-          scopedSlots: { customRender: 'price' }
-        }, {
-          title: '销量',
-          dataIndex: 'sold_num',
-          scopedSlots: { customRender: 'sold_num' }
-        }, {
-          title: '操作',
-          dataIndex: 'action',
-          width: 140,
-          scopedSlots: { customRender: 'action' }
-        }]
     }
   },
   methods: {

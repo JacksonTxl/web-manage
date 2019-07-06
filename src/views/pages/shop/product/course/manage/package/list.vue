@@ -27,10 +27,9 @@
       </div>
     </div>
     <st-table
+      :scroll="{x:1240}"
       :page="page"
       :columns="columns"
-      :alertSelection='{onReset:onSelectionReset}'
-      :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
       @change="onTableChange"
       rowKey="package_course_id"
       :dataSource="list"

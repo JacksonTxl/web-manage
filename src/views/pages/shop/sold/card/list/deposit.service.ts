@@ -21,9 +21,7 @@ export class DepositService implements RouteGuard {
       this.page$.commit(() => res.page)
     }))
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getList(to.meta.query).subscribe(() => {
-      next()
-    })
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.getList(to.meta.query)
   }
 }

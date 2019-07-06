@@ -4,18 +4,18 @@
       <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
         <div>
           <!-- TODO: 批量转入品牌库的按钮 -->
-          <modal-link
+          <a
             v-if="auth.transfer"
             type="primary"
             tag="st-button"
-            :to="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}"
-          >转入品牌私教课程库</modal-link>
+            v-modal-link="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}"
+          >转入品牌私教课程库</a>
         </div>
         <div>
-          <a-select class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onChange">
+          <a-select class="mg-r8"  :defaultValue="-1" style="width: 160px" v-model="query.shop_id" @change="onChange">
             <a-select-option v-for="shop in shopsOptions" :key="shop.id" :value="shop.id">{{shop.shop_name}}</a-select-option>
           </a-select>
-          <a-select class="mg-r8" v-model="query.category_id" style="width: 160px" @change="onChange">
+          <a-select class="mg-r8"  :defaultValue="-1" v-model="query.category_id" style="width: 160px" @change="onChange">
             <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
           </a-select>
         </div>
@@ -33,7 +33,7 @@ import { RouteService } from '../../../../../../../services/route.service'
 import { ShopService } from './shop.service'
 import { ListService } from '../list.service'
 export default {
-  name: 'ShopSaleListShop',
+  name: 'PersonalCourseShop',
   serviceInject() {
     return {
       listService: ListService,

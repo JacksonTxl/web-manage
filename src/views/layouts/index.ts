@@ -12,3 +12,5 @@ export const layoutMap = {
   skeleton: LayoutSkeleton,
   loading: LayoutLoading
 }
+
+console.log('layoutMap ->', layoutMap)

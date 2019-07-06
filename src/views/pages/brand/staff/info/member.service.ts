@@ -1,43 +1,30 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { State } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { StaffApi, GetStaffServiceCoursesInput } from '@/api/v1/staff'
 
-interface MemberState{
-    memberInfo: Object
-}
 @Injectable()
-export class MemberService extends Store<MemberState> {
-    state$: State<MemberState>
-    memberInfo$: Computed<Object>
-    constructor(private staffapi: StaffApi) {
-      super()
-      this.state$ = new State({
-        memberInfo: {}
-      })
-      this.memberInfo$ = new Computed(this.state$.pipe(pluck('memberInfo')))
-    }
+export class MemberService implements RouteGuard {
+    memberInfo$ = new State({})
+    page$ = new State({})
+    constructor(private staffapi: StaffApi) {}
     getStaffServiceCourses(id: string, query: GetStaffServiceCoursesInput) {
       return this.staffapi.getStaffServiceCourses(id, query).pipe(
         tap(res => {
-          this.state$.commit(state => {
-            state.memberInfo = res
-          })
+          this.memberInfo$.commit(() => res.list)
+          this.page$.commit(() => res.page)
         })
       )
     }
 
-    beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+    beforeEach(to: ServiceRoute, from: ServiceRoute) {
       console.log('member service', to.meta.query)
       const { id, page, size, keyword, shop_id } = to.meta.query
-      this.getStaffServiceCourses(id, {
+      return this.getStaffServiceCourses(id, {
         page,
         size,
         keyword,
         shop_id
-      }).subscribe(() => {
-        next()
       })
     }
 }

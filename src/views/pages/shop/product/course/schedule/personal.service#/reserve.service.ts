@@ -15,6 +15,11 @@ export interface SetState {
 }
 @Injectable()
 export class PersonalScheduleReserveService {
+  // loading
+  loading$ = new State({})
+  // 业务状态
+  list$ = new State([])
+  page$ = new State({})
   state$: State<SetState>
   reserveInfo$: Computed<any>
   reserveTable$: Computed<any>
@@ -124,9 +129,9 @@ export class PersonalScheduleReserveService {
       })
     }),
     tap(res => {
-      this.state$.commit(state => {
-        state.reserveListTable = res.list
-      })
+      res = this.authService.filter(res)
+      this.list$.commit(() => res.list)
+      this.page$.commit(() => res.page)
     }))
   }
   /**

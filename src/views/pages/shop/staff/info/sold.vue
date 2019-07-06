@@ -16,7 +16,7 @@
             <a-select-option :value="2">预约成功</a-select-option>
             <a-select-option :value="4">取消预约</a-select-option>
           </a-select>
-           <a-range-picker class="mg-l8" @change="onChooseDate" format="YYYY-MM-DD"/>
+          <a-range-picker class="mg-l8" @change="onChooseDate" format="YYYY-MM-DD"/>
         </a-col>
         <a-col :lg="2"></a-col>
         <a-col :lg="6">
@@ -26,10 +26,10 @@
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="soldColums"
-          :dataSource="soldInfo.list"
+          :dataSource="soldInfo"
           :scroll="{ x: 1750}"
           @change="pageChange"
-          :pagination="pagination"
+          :page="page"
         >
           <template slot="id" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goOrderDetai(record)">{{ text }}</a>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { soldColums } from './columns'
+import { soldColums } from './columns.config'
 import { SoldService } from './sold.service'
 export default {
   serviceInject() {
@@ -54,22 +54,18 @@ export default {
   },
   rxState() {
     return {
-      soldInfo: this.soldservice.soldInfo$
+      soldInfo: this.soldservice.soldInfo$,
+      page: this.soldservice.page$
     }
   },
   data() {
     return {
-      soldColums,
-      pagination: {
-        pageSize: 20,
-        current: 1
-      },
       id: ''
     }
   },
+  computed: { soldColums },
   mounted() {
     this.id = this.$route.meta.query.id
-    this.pagination.total = this.soldInfo.page.total_counts
   },
   methods: {
     // 订单编号：点击跳转至订单详情页
@@ -121,14 +117,12 @@ export default {
       })
     },
     // 页码
-    pageChange(pagination) {
-      this.pagination.pageSize = pagination.pageSize
-      this.pagination.current = pagination.current
+    pageChange(page) {
       this.$router.push({
         query: {
           id: this.id,
-          page: pagination.current,
-          size: pagination.pageSize
+          page: page.current_page,
+          size: page.size
         },
         force: true
       })

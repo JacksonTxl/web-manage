@@ -1,27 +1,28 @@
 <template>
   <st-table
-  class="page-staff-table"
-  :loading="loading"
-  :alertSelection="{onReset: start}"
-  :rowSelection="{selectedRowKeys:
-  selectedRowKeys, onChange: onSelectChange}"
-  :pagination="pagination"
-  @change="onChange"
-  :columns="columns" :dataSource="staffList"
-  :scroll="{ x: 1500}">
-    <div class="page-staff-table-action" slot="action" slot-scope="text, record">
-        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|get']" @click="staffInfo(record)" class="mg-r8">详情</a>
+    class="page-staff-table"
+    :loading="loading"
+    :alertSelection="{onReset: onSelectionReset}"
+    :rowSelection="{selectedRowKeys, onChange: onSelectChange}"
+    :page="page"
+    :columns="columns"
+    :dataSource="staffList"
+    :scroll="{ x: 1500}"
+    @change="onChange"
+    >
+    <div slot="action" slot-scope="text, record">
+      <st-table-actions>
+        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|get']" @click="staffInfo(record)">详情</a>
         <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|edit']" @click="editStaff(record.id)">编辑</a>
-        <st-more-dropdown>
-          <a-menu-item v-if="record.auth['brand_shop:staff:staff|bind_card']"><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: record} }">绑定实体卡</modal-link></a-menu-item>
-          <a-menu-item v-if="record.auth['brand_shop:staff:staff|rebind_card']"><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: record} }">重绑定实体卡</modal-link></a-menu-item>
-          <a-menu-item v-if="record.auth['brand_shop:staff:staff|position']"><modal-link tag="a" :to="{ name: 'staff-update-staff-position', props: {staff: record} }">职位变更</modal-link></a-menu-item>
-          <a-menu-item v-if="record.auth['brand_shop:staff:staff|leave']"><modal-link tag="a" :to="{ name: 'staff-turnover', props: {staff: record} } ">离职</modal-link></a-menu-item>
-          <a-menu-item v-if="record.auth['brand_shop:staff:staff|reinstate']"><modal-link tag="a" :to="{ name: 'staff-reinstatement', props: {staff: record} }">复职</modal-link></a-menu-item>
-          <a-menu-item v-if="record.auth['brand_shop:staff:account|save']"><modal-link tag="a" :to="{ name: 'staff-re-password', props: {staff: record} }">管理登录账号</modal-link></a-menu-item>
-          <a-menu-item v-if="record.auth['brand_shop:staff:staff|salary']"><modal-link tag="a" :to="{ name: 'staff-salary-account-setting', props: {staff: record} }">设置薪资账户</modal-link></a-menu-item>
-          <a-menu-item ><modal-link tag="a" v-if="record.auth['brand_shop:staff:staff|del']" :to="{ name: 'staff-delete', props: {staff: record} }">删除</modal-link></a-menu-item>
-        </st-more-dropdown>
+        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|bind_card']" v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: record} }">绑定实体卡</a>
+        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|rebind_card']" v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: record} }">重绑定实体卡</a>
+        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|position']" v-modal-link="{ name: 'staff-update-staff-position', props: {staff: record} }">职位变更</a>
+        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|leave']" v-modal-link="{ name: 'staff-turnover', props: {staff: record} }">离职</a>
+        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|reinstate']" v-modal-link="{ name: 'staff-reinstatement', props: {staff: record} }">复职</a>
+        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:account|save']" v-modal-link="{ name: 'staff-re-password', props: {staff: record} }">管理登录账号</a>
+        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|salary']" v-modal-link="{ name: 'staff-salary-account-setting', props: {staff: record} }">设置薪资账户</a>
+        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|del']" v-modal-link="{ name: 'staff-delete', props: {staff: record} }">删除</a>
+      </st-table-actions>
     </div>
     <div slot="work_status" slot-scope="work_status">
       <a-badge :status="work_status.id == 1 ? 'success' : 'error'" />{{work_status.name}}
@@ -41,10 +42,12 @@
 </template>
 <script>
 import { columns } from './staff-table.config'
+import tableMixin from '@/mixins/table.mixin'
+
 export default {
+  mixins: [ tableMixin ],
   data() {
     return {
-      columns,
       selectedRowKeys: []
     }
   },
@@ -65,12 +68,7 @@ export default {
     }
   },
   computed: {
-    pagination() {
-      return {
-        pageSize: this.page.size,
-        total: this.page.total_counts
-      }
-    }
+    columns
   },
   filters: {
     shopFilter(val) {
@@ -86,9 +84,12 @@ export default {
   },
   methods: {
     staffInfo(staff) {
-      this.$router.push({ name: 'brand-staff-info',
+      this.$router.push({
+        name: 'brand-staff-info',
         query: {
-          id: staff.id } })
+          id: staff.id
+        }
+      })
     },
     editStaff(staffId) {
       this.$emit('edit-staff', staffId)
@@ -101,9 +102,6 @@ export default {
     },
     onClickTurnover() {
       console.log('onClickTurnover')
-    },
-    start() {
-      this.selectedRowKeys = []
     },
     onChange(val) {
       this.$router.push({ query: { page: val.current, size: val.pageSize || 20, ...this.$router.query } })
