@@ -39,7 +39,7 @@
           <th>运营状态</th>
           <th>系统状态</th>
           <th>系统使用到期时间</th>
-          <th style="width: 120px">操作</th>
+          <th style="width: 150px">操作</th>
         </tr>
       </thead>
       <tbody>
@@ -59,11 +59,10 @@
           <td>{{shop.is_valid | enumFilter('shop.is_valid')}}</td>
           <td>{{shop.expire_time}}</td>
           <td>
-            <router-link v-if="shop.auth['brand_shop:shop:shop|get']" :to="`./info?id=${shop.shop_id}`">详情</router-link>
-            <router-link v-if="shop.auth['brand_shop:shop:shop|edit']" :to="`./edit?id=${shop.shop_id}`" class="mg-l8">编辑</router-link>
-            <st-more-dropdown class="mg-l8">
-              <!-- 关店状态下不可以在saas中更改运营状态 -->
-              <a-menu-item
+            <st-table-actions>
+              <router-link v-if="shop.auth['brand_shop:shop:shop|get']" :to="`./info?id=${shop.shop_id}`">详情</router-link>
+              <router-link v-if="shop.auth['brand_shop:shop:shop|edit']" :to="`./edit?id=${shop.shop_id}`" class="mg-l8">编辑</router-link>
+              <a
                 v-if="shop.auth['brand:shop:shop_type|edit']"
                 v-modal-link="{
                   name: 'brand-setting-shop-status',
@@ -78,8 +77,9 @@
                 }"
               >
                 更改运营状态
-              </a-menu-item>
-              <a-menu-item
+              </a>
+              <!-- 关店状态下不可以在saas中更改运营状态 -->
+              <a
                 v-if="shop.auth['brand_shop:shop:shop_holiday|edit']"
                 v-modal-link="{
                   name: 'brand-setting-shop-holiday',
@@ -99,8 +99,8 @@
                 }"
               >
                 {{shop.has_holiday_setting ? '管理' : ''}}门店放假
-              </a-menu-item>
-            </st-more-dropdown>
+              </a>
+            </st-table-actions>
           </td>
         </tr>
       </tbody>

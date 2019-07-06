@@ -16,7 +16,7 @@
       </div>
     </header>
     <main class="page-shop-sale-list-brand__table mg-t8">
-      <brand-table  :loading="loading.getCoursePersonalBrandList" @set-available="onSetAvailable" @delete-course="onDeleteCourse" :personalCourseList="personalCourseList"></brand-table>
+      <brand-table @delete-course="onDeleteCourse"></brand-table>
     </main>
   </div>
 </template>
@@ -44,7 +44,6 @@ export default {
   rxState() {
     return {
       categoryList: this.listService.categoryList$,
-      personalCourseList: this.brandService.personalCourseList$,
       loading: this.brandService.loading$,
       query: this.routeService.query$,
       auth: this.brandService.auth$

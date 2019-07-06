@@ -20,7 +20,7 @@
       </a-col>
     </a-row>
     <div>
-      <shop-table @delete-course="deleteCourse" :teamCourseList="teamCourseList"></shop-table>
+      <shop-table @delete-course="deleteCourse"></shop-table>
     </div>
   </st-panel>
 </template>
@@ -44,7 +44,6 @@ export default {
       query: this.routeService.query$,
       shopsOptions: this.listService.shopSelectOptions$,
       categoryList: this.listService.categoryList$,
-      teamCourseList: this.listService.teamCourseList$,
       auth: this.listService.auth$
     }
   },

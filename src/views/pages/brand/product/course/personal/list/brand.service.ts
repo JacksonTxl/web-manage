@@ -14,7 +14,12 @@ export interface SetState {
   supportCoachList: any[]
 }
 @Injectable()
-export class BrandService extends Store<SetState> {
+export class BrandService implements RouteGuard {
+  // loading
+  loading$ = new State({})
+  // 业务状态
+  list$ = new State([])
+  page$ = new State({})
   state$: State<SetState>
   personalCourseList$: Computed<any>
   supportShopList$: Computed<any>
@@ -26,9 +31,7 @@ export class BrandService extends Store<SetState> {
     private shopApi: ShopApi,
     private authService: AuthService
   ) {
-    super()
     this.state$ = new State({
-      personalCourseList: [],
       supportShopList: [],
       supportCoachList: [],
       auth: {
@@ -76,15 +79,19 @@ export class BrandService extends Store<SetState> {
     }))
   }
   @Effect()
-  getCoursePersonalBrandList(params: GetPersonalBrandCourseListInput) {
+  getList(params: GetPersonalBrandCourseListInput) {
     return this.personalApi.getCourseList(params).pipe(
-      tap(state => {
-        state = this.authService.filter(state)
-        this.SET_PERSONAL_COURSE_LIST(state)
+      tap(res => {
+        res = this.authService.filter(res)
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
       })
     )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCoursePersonalBrandList({ size: 99, ...to.query }).subscribe(state$ => next())
+  init(query: any) {
+    return forkJoin(this.getList(query))
+  }
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.init({ ...to.query })
   }
 }

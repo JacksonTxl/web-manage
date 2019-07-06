@@ -23,7 +23,7 @@ export class PersonalReserveTableService implements RouteGuard {
   }
 
   beforeEach(to: ServiceRoute, form: ServiceRoute, next: any) {
-    this.reserveService.getListTable(to.query).subscribe(() => {
+    this.reserveService.getList(to.query).subscribe(() => {
       next()
     })
   }

@@ -1,5 +1,13 @@
 // 使用page作为当前页查询参数的路由放这里
-const ROUTE_NAMES_USE_PAGE = []
+const ROUTE_NAMES_USE_PAGE = [
+  'brand-product-course-team-list-shop',
+  'brand-product-course-team-list-brand',
+  'brand-product-course-personal-list-brand',
+  'brand-product-course-personal-list-shop',
+  'shop-product-course-manage-personal-list',
+  'shop-product-course-manage-team-list'
+
+]
 
 export default {
   data() {

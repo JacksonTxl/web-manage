@@ -33,8 +33,8 @@
             </div>
           </div>
           <div slot="button">
-            <st-button type="primary" @click="onSearch">查询</st-button>
-            <st-button class="mgl-8" @click="onReset">重置</st-button>
+            <st-button type="primary" @click="onSearch" :loading="loading.getListInfo">查询</st-button>
+            <st-button class="mgl-8" @click="onReset" :loading="loading.getListInfo">重置</st-button>
           </div>
         </st-search-panel>
       </div>
@@ -98,7 +98,7 @@
         :alertSelection="{onReset:onSelectionReset}"
         :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
         rowKey="member_id"
-        :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
+        :page="page"
         @change="onTableChange"
         :dataSource="list"
       >
@@ -148,6 +148,7 @@ export default {
   rxState() {
     const user = this.userService
     return {
+      loading: this.listService.loading$,
       shopMemberEnums: user.shopMemberEnums$,
       reserveEnums: user.reserveEnums$,
       memberEnums: user.memberEnums$,

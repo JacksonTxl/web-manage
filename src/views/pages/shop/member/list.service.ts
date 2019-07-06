@@ -1,4 +1,4 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
@@ -9,7 +9,8 @@ interface MemberListInfoState {
   memberListInfo: any
 }
 @Injectable()
-export class ListService extends Store<MemberListInfoState> {
+export class ListService extends Store<MemberListInfoState> implements RouteGuard {
+  // 业务状态
   state$: State<MemberListInfoState>
   memberListInfo$: Computed<string>
   auth$: Computed<object>
@@ -38,6 +39,7 @@ export class ListService extends Store<MemberListInfoState> {
       state.memberListInfo = memberListInfo
     })
   }
+  @Effect()
   getListInfo(paramsObj: any) {
     return this.memberApi.getMember(paramsObj).pipe(
       tap(res => {
@@ -53,10 +55,7 @@ export class ListService extends Store<MemberListInfoState> {
   getMemberSourceRegisters() {
     return this.memberApi.getMemberSourceRegisters()
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo(to.meta.query).subscribe(res => {
-      // this.SET_MEMBER_LIST_INFO(res)
-      next()
-    })
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.getListInfo(to.meta.query)
   }
 }

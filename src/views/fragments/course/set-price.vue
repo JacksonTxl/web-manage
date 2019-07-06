@@ -30,7 +30,7 @@
           <!-- 私教课程定价模式：教练平级定价；私教课程售卖模式：统一标价 -->
           <st-form-item label="售卖定价" required>
             <st-container>
-              <a-table :columns="tableColumns" :dataSource="priceGradientRecord.prices"
+              <st-table :columns="tableColumns" :dataSource="priceGradientRecord.prices"
                 :pagination="false" :rowKey="(record, index) => index">
                 <!-- 售卖梯度 -->
                 <template slot="priceGradient" slot-scope="text, record, index">
@@ -86,7 +86,7 @@
                 <template slot="action" slot-scope="text, record, rowIndex">
                   <a @click="del(key, rowIndex)" class="mg-l8">删除</a>
                 </template>
-              </a-table>
+              </st-table>
               <st-button type="dashed" block class="mg-t8" @click="addPriceRecord(key)">添加梯度</st-button>
             </st-container>
           </st-form-item>

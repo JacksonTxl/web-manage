@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-table
+    <st-table
       :columns="tableColumns"
       :dataSource="list"
       :pagination="false"
@@ -12,11 +12,19 @@
         <a @click="delTableRecord(record.id)">删除</a>
       </div>
     </template>
-    </a-table>
-    <modal-link tag="a" :to="{ name: 'coach-select', props: { selected, shopIds }, on: {
-      change: onSelectComplete } }">
+    </st-table>
+    <a v-modal-link="{
+      name: 'coach-select',
+      props: {
+        selected,
+        shopIds
+      },
+      on: {
+        change: onSelectComplete
+      }
+    }">
       <st-button type="dashed" block class="mg-t8">添加</st-button>
-    </modal-link>
+    </a>
   </div>
 </template>
 <script>

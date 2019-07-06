@@ -122,16 +122,8 @@ export class PersonalScheduleReserveService {
           }
         })
       })
-    }))
-  }
-  /**
-   *
-   * @param params
-   * 获取团体课排期列表
-   */
-  @Effect()
-  getListTable(query: GetListQuery) {
-    return this.reserveApi.getList(query).pipe(tap(res => {
+    }),
+    tap(res => {
       this.state$.commit(state => {
         state.reserveListTable = res.list
       })
