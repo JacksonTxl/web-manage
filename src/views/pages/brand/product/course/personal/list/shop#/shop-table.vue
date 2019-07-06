@@ -16,17 +16,16 @@
         {{course_name}}
       </router-link>
       <div slot="sell_price" slot-scope="sell_price, record">
-        <modal-link
-        tag="a"
-        :to="{name: 'course-price-setting', props: {course: record}}"
+        <a
+        v-modal-link="{name: 'course-price-setting', props: {course: record}}"
         v-if="sell_price.is_click > 0"
-        >{{sell_price.course_price}}</modal-link>
+        >{{sell_price.course_price}}</a>
         <span v-else>{{sell_price.course_price}}</span>
       </div>
       <div slot="coaches" slot-scope="coaches, record">
-        <modal-link tag="a"
-        :to="{name: 'course-support-course-cocahes-brand', props: {course: record}}"
-        >{{coaches}}</modal-link>
+        <a
+        v-modal-link="{name: 'course-support-course-cocahes-brand', props: {course: record}}"
+        >{{coaches}}</a>
       </div>
       <div slot="action" slot-scope="action, record">
         <st-table-actions>
