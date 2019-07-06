@@ -34,6 +34,7 @@
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './shop.config'
 import { ListService } from '../list.service'
+import { RouteService } from '../../../../../../../../services/route.service'
 export default {
   name: 'TeamTableShop',
   mixins: [tableMixin],
@@ -44,14 +45,16 @@ export default {
   },
   serviceInject() {
     return {
-      service: ListService
+      service: ListService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
       list: this.service.list$,
       page: this.service.page$,
-      loading: this.service.loading$
+      loading: this.service.loading$,
+      query: this.routeService.query$
     }
   },
   methods: {
