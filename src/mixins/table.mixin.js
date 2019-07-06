@@ -1,5 +1,6 @@
 // 使用page作为当前页查询参数的路由放这里
 const ROUTE_NAMES_USE_PAGE = [
+  'brand-setting-shop-list',
   'brand-product-course-team-list-shop',
   'brand-product-course-team-list-brand',
   'brand-product-course-personal-list-brand',
@@ -13,8 +14,9 @@ const ROUTE_NAMES_USE_PAGE = [
   'shop-sold-cabinet-list',
   'shop-sold-transaction-list',
   'shop-member-list',
-  'shop-member-label-list'
-
+  'shop-member-label-list',
+  'shop-product-course-manage-package-list',
+  'shop-finance-order-list'
 ]
 
 export default {

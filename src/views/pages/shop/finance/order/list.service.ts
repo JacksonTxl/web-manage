@@ -3,47 +3,33 @@ import { State, Effect, Computed } from 'rx-state'
 import { OrderApi, OrderParams } from '@/api/v1/finance/order'
 import { tap, pluck } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
-import { Store } from '@/services/store'
-
-export interface SetState {
-  list: any[],
-}
 
 @Injectable()
-export class ListService extends Store<SetState> implements RouteGuard {
-  list$: Computed<any>;
+export class ListService implements RouteGuard {
+  list$ = new State([])
   page$ = new State({});
-  auth$: Computed<object>
+  auth$ = new State({
+    export: this.authService.can('brand_shop:order:order|export')
+  })
+  loading$ = new State({})
 
   constructor(
     private orderApi: OrderApi,
     private authService: AuthService
-  ) {
-    super()
-    this.state$ = new State({
-      list: [],
-      auth: {
-        export: this.authService.can('brand_shop:order:order|export')
-      }
-    })
-    this.list$ = new Computed(this.state$.pipe(pluck('list')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
-  }
+  ) {}
 
-  beforeEach(to:ServiceRoute, form:ServiceRoute, next:()=>{}) {
-    this.getList(to.meta.query).subscribe(() => {
-      next()
-    })
+  init(params: OrderParams) {
+    return this.getList(params)
+  }
+  beforeEach(to:ServiceRoute, form:ServiceRoute) {
+    return this.init(to.meta.query)
   }
 
   @Effect()
   getList(params: OrderParams) {
     return this.orderApi.getOrderList(params).pipe(tap((result:any) => {
       result = this.authService.filter(result)
-      this.state$.commit(state => {
-        state.list = result.list
-      })
-      // this.list$.commit(() => res.list)
+      this.list$.commit(() => result.list)
       this.page$.commit(() => result.page)
     }))
   }

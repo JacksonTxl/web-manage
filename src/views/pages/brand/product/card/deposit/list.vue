@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     onSearchCardName() {
-      this.$router.push({ query: { ...this.query, card_name: this.query.card_name } })
+      this.$events.emit(`${this.$route.name}:onSingleSearch`, 'card_name', this.query.card_name, { keyword: true })
     }
   }
 }
