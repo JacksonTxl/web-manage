@@ -18,6 +18,13 @@
       <st-form-item label="IMG" required>
         <a-input placeholder="图片类型，例如image/jpg" v-decorator="formRules.img"/>
       </st-form-item>
+      <st-form-item label="备注" required>
+        <st-textarea
+        :autosize="{ minRow: 2, maxRow: 5 }"
+        v-decorator="formRules.note"
+        maxlength="100"
+        />
+      </st-form-item>
     </st-form>
     <div class="ta-c">
       <st-button type="primary" @click="onSubmit">保存</st-button>
@@ -82,6 +89,15 @@ export default {
               required: true,
               pattern: this.pattern.IMG,
               message: '图片类型不正确'
+            }]
+          }
+        ],
+        note: [
+          'note', {
+            rules: [{
+              required: true,
+              pattern: this.pattern.CN_EN_NUM('1-100'),
+              message: '1-100个字，中英文及数字'
             }]
           }
         ]

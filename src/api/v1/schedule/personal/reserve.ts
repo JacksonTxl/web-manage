@@ -16,6 +16,9 @@ export class PersonalReserveApi extends Api {
   check(id: string) {
     return this.http.put(`/v1/schedule/personal/sign/${id}`)
   }
+  getUpdateInfo(id: any) {
+    return this.http.get(`/v1/schedule/personal/back/${id}`)
+  }
   getList(query: GetListQuery) {
     return this.http.get(`/v1/schedule/personal/reserve`, { query })
   }

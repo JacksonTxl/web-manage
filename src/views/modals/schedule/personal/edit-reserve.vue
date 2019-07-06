@@ -1,6 +1,5 @@
 <template>
-  <st-modal title="添加预约" @ok="save" v-model="show">
-    {{info}}
+  <st-modal title="修改预约" @ok="save" v-model="show">
     <st-form :form="form">
       <st-form-item label="会员名称" required>
         <a-input v-model="info.member_name" disabled></a-input>
@@ -69,6 +68,11 @@ export default {
       reserveDate: ''
     }
   },
+  mounted() {
+    this.reserveService.getUpdateInfo(this.info.id).subscribe(res => {
+      this.commonService.getCourseCoachList(res.info.course.id).subscribe()
+    })
+  },
   methods: {
     onChangeConsume(val) {
       const v = JSON.parse(val)
@@ -134,21 +138,7 @@ export default {
     save() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
-          const consume = JSON.parse(values.consume_type)
-          let form = cloneDeep(values)
-          form.member_id = values.member_id.key
-          form.consume_type = consume.consume_type
-          form.consume_id = consume.id
-          form.reserve_start_time = values.reserve_start_time.format('HH:mm').valueOf()
-          this.dateOptions.forEach(item => {
-            if (item.schedule_date === values.scheduling_id.format('YYYY-MM-DD').valueOf()) {
-              form.scheduling_id = item.id
-            }
-          })
-          this.reserveService.curd('add', form, () => {
-            this.show = false
-          })
+          this.reserveService.update({ id: this.info.id, coach_id: values.coach_id }).subscribe()
         }
       })
     },

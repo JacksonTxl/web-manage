@@ -4,6 +4,7 @@
     :ok-text="okText"
     :okButtonProps="{ props: {disabled: !userImgSrc} }"
     :bodyStyle="{ padding: 0 }"
+    :confirmLoading="confirmLoading"
     v-model="show"
     width="484px"
     @ok="uploadUserImageToRecognition"
@@ -86,6 +87,7 @@ export default {
       list: this.fileList,
       canvasElm: null,
       userImgSrc: '',
+      confirmLoading: false,
       openCameraError: false // 开启摄像头失败
     }
   },
@@ -125,19 +127,24 @@ export default {
     uploadUserImageToRecognition() {
       let canvas = this.canvasElm
       canvas.toBlob((blob) => {
+        this.confirmLoading = true
         this.oss
           .put({
             file: blob,
+            isPrivate: true,
             uploadProgress: e => {
               this.progress = parseInt((e.loaded / e.total) * 100)
             }
           })
           .subscribe({
             next: val => {
+              this.confirmLoading = false
               // 图片上传后,对返回参数进行操作
+              console.log(val)
               this.imageQualityTest(val.fileKey)
             },
             error: val => {
+              this.confirmLoading = false
               this.messageService.error({ content: `Error ${val.message}` })
             },
             complete: () => {
@@ -161,8 +168,9 @@ export default {
         console.log('imageQualityTest', res)
         console.log('imageQualityTest', this.isScan)
         if (this.isScan) {
+          let imageId = this.list.length && this.list[0][this.imageId]
           this.list.splice(0, 1, {
-            [this.imageId]: 0,
+            [this.imageId]: imageId || 0,
             [this.imageKey]: image_key
           })
           this.$emit('change', this.list)

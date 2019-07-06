@@ -1,6 +1,7 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Action } from 'rx-state'
 import { FrontApi, GetMemberListInput, SetEntranceInput, EditEntranceCabinetInput, EditSellerInput, EditCoachInput } from '@/api/v1/front'
+import { MemberApi, EditFaceParams } from '@/api/v1/member'
 import { tap, debounceTime, switchMap, catchError } from 'rxjs/operators'
 import { forkJoin, EMPTY } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
@@ -47,7 +48,7 @@ export class IndexService implements RouteGuard {
     checkinVisit: this.authService.can('shop:reserve:visit_reserve|checkin'),
     export: this.authService.can('shop:front_end:check_in_out|export')
   })
-  constructor(private authService: AuthService, private frontApi:FrontApi) {
+  constructor(private authService: AuthService, private frontApi:FrontApi, private memberApi:MemberApi) {
     this.memberListAction$ = new Action(data$ => {
       return data$.pipe(
         debounceTime(200),
@@ -161,6 +162,11 @@ export class IndexService implements RouteGuard {
   @Effect()
   editCoach(params: EditCoachInput) {
     return this.frontApi.editCoach(params)
+  }
+  // 修改人脸图片
+  @Effect()
+  editFace(id: number, params: EditFaceParams) {
+    return this.memberApi.updateUserFace(id, params)
   }
   init() {
     return forkJoin(
