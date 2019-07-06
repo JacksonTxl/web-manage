@@ -45,13 +45,15 @@
         <span><a-badge :status="is_available === 1?'success':'error'" />{{is_available | enumFilter('personal_course.is_available')}}</span>
     </div>
     <div slot="action" slot-scope="text, record">
-      <router-link class="mg-r8" v-if="record.auth['brand_shop:product:personal_course|get']" :to="{ name: 'shop-product-course-manage-personal-info', query: { id: record.course_id } }">详情</router-link>
-      <router-link v-if="record.auth['brand_shop:product:personal_course|edit']" :to="{ name: 'shop-product-course-manage-personal-edit', query: { id: record.course_id } }">编辑</router-link>
-      <a href="javascript:;" v-if="record.auth['brand_shop:product:personal_course|del']">
-        <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" okText="确定" cancelText="取消">
-            删除
-        </a-popconfirm>
-      </a>
+      <st-table-actions>
+        <router-link class="mg-r8" v-if="record.auth['brand_shop:product:personal_course|get']" :to="{ name: 'shop-product-course-manage-personal-info', query: { id: record.course_id } }">详情</router-link>
+        <router-link v-if="record.auth['brand_shop:product:personal_course|edit']" :to="{ name: 'shop-product-course-manage-personal-edit', query: { id: record.course_id } }">编辑</router-link>
+        <a href="javascript:;" v-if="record.auth['brand_shop:product:personal_course|del']">
+          <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" okText="确定" cancelText="取消">
+              删除
+          </a-popconfirm>
+        </a>
+      </st-table-actions>
     </div>
   </st-table>
 

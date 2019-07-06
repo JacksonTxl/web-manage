@@ -4,7 +4,9 @@ const ROUTE_NAMES_USE_PAGE = [
   'brand-product-course-team-list-brand',
   'brand-product-course-personal-list-brand',
   'brand-product-course-personal-list-shop',
-  'shop-product-course-manage-personal-list'
+  'shop-product-course-manage-personal-list',
+  'shop-product-course-manage-team-list'
+
 ]
 
 export default {

@@ -12,9 +12,6 @@
       :loading="loading.getList"
       @change="onTableChange"
     >
-      <div slot="action" slot-scope="action, record">
-        <router-link class="mg-r8" v-if="record.auth['brand_shop:product:personal_course|get']" :to="{name: 'brand-product-course-personal-info', query: { id: record.course_id } }">详情</router-link>
-      </div>
       <router-link class="mg-r8" :to="{ name: 'brand-product-course-personal-info', query: { id: record.course_id } }"
       slot="course_name" slot-scope="course_name, record">
         {{course_name}}
@@ -31,6 +28,11 @@
         <modal-link tag="a"
         :to="{name: 'course-support-course-cocahes-brand', props: {course: record}}"
         >{{coaches}}</modal-link>
+      </div>
+      <div slot="action" slot-scope="action, record">
+        <st-table-actions>
+          <router-link class="mg-r8" v-if="record.auth['brand_shop:product:personal_course|get']" :to="{name: 'brand-product-course-personal-info', query: { id: record.course_id } }">详情</router-link>
+        </st-table-actions>
       </div>
     </st-table>
 

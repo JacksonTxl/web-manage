@@ -9,10 +9,14 @@ import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class ListService implements RouteGuard {
+  // loading
+  loading$ = new State({})
+  // 业务状态
+  list$ = new State([])
+  page$ = new State({})
   categoryList$ = new State<any[]>([])
   shopSelectOptions$ = new State<any[]>([])
   state$: State<any>
-  teamCourseList$: Computed<any>
   auth$: Computed<object>
   constructor(
     private shopApi: ShopApi,
@@ -26,17 +30,15 @@ export class ListService implements RouteGuard {
         add: this.authService.can('brand_shop:product:team_course|add')
       }
     })
-    this.teamCourseList$ = new Computed(this.state$.pipe(pluck('teamCourseList')))
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
 
-  getTeamCourseListInShop(params: GetTeamBrandCourseListInput) {
+  getList(params: GetTeamBrandCourseListInput) {
     return this.shopTeamCourseApi.getTeamCourseList(params).pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state = this.authService.filter(state)
-          state.teamCourseList = res.list
-        })
+        res = this.authService.filter(res)
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
       })
     )
   }
@@ -71,27 +73,32 @@ export class ListService implements RouteGuard {
       this.shopSelectOptions$.commit(() => state)
     }))
   }
-  init() {
+  initOptions() {
     return forkJoin(this.getShopList(), this.getCategoryList())
   }
   deleteCourse(courseId: string) {
     return this.shopTeamCourseApi.deleteTeamCourse(courseId)
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getTeamCourseListInShop({ size: 99, ...to.query }).subscribe(() => {
-      next()
-    })
+  init(query: any) {
+    return forkJoin(this.getList(query))
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.init().subscribe(() => {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.init({ ...to.query })
+  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    return this.initOptions().pipe(map(res => {
       const target = {
         name: 'brand-product-course-team-list-brand'
       }
       if (to.name === 'brand-product-course-team-list' && target) {
-        next(target)
+        return {
+          next: target
+        }
       } else {
-        next()
+        return {
+          next: true
+        }
       }
-    })
+    }))
   }
 }
