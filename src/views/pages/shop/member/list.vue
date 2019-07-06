@@ -3,18 +3,18 @@
   <div class="shop-member-list">
     <st-panel class="mg-t16">
       <div slot="title">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="querySelect.keyword" @search="onSearch" style="width: 290px;"/>
+        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onSearch" style="width: 290px;"/>
       </div>
 
       <div slot="prepend">
         <st-search-panel>
           <div :class="basic('select')">
             <span style="width:90px;">用户级别：</span>
-            <st-search-radio label="" @change="onSearch" v-model="querySelect.member_level" :list="memberLevel"/>
+            <st-search-radio label="" @change="onSearch" v-model="query.member_level" :list="memberLevel"/>
           </div>
           <div :class="basic('select')">
             <span style="width:90px;">来源方式：</span>
-            <st-search-radio label="" @change="onSearch" v-model="querySelect.register_way" :list="sourceList"/>
+            <st-search-radio label="" @change="onSearch" v-model="query.register_way" :list="sourceList"/>
           </div>
           <div :class="basic('select')">
             <span style="width:90px;">注册时间：</span>
@@ -29,12 +29,12 @@
             </div>
             <div :class="basic('select')">
               <span style="width:90px;">员工跟进：</span>
-              <st-search-radio label="" @change="onSearch" v-model="querySelect.is_follow" :list="isFollow"/>
+              <st-search-radio label="" @change="onSearch" v-model="query.is_follow" :list="isFollow"/>
             </div>
           </div>
           <div slot="button">
-            <st-button type="primary" @click="onSearch" :loading="loading.getListInfo">查询</st-button>
-            <st-button class="mgl-8" @click="onReset" :loading="loading.getListInfo">重置</st-button>
+            <st-button type="primary" @click="onSearchNative" :loading="loading.getListInfo">查询</st-button>
+            <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
           </div>
         </st-search-panel>
       </div>
@@ -130,7 +130,7 @@ import { UserService } from '@/services/user.service'
 import { ListService } from './list.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './list.config.ts'
+import { columns } from './list.config'
 
 export default {
   name: 'memberList',
@@ -224,39 +224,20 @@ export default {
       })
     },
     // 查询
-    onSearch() {
-      this.$router.push({ force: true, query: { ...this.querySelect } })
-    },
-    // 重置
-    onReset() {
-      this.querySelect = {
-        keyword: '',
-        member_level: -1,
-        register_way: -1,
-        register_start_time: '',
-        register_stop_time: '',
-        be_member_start_time: '',
-        be_member_stop_time: '',
-        is_follow: -1,
-        page: 1,
-        size: 20
-      }
-      this.register_time = []
-      this.enter_time = []
+    onSearchNative() {
       this.$router.push({ force: true, query: { ...this.querySelect } })
     },
     // 设置searchData
     setSearchData() {
-      this.querySelect = this.query
-      if (!this.querySelect.register_start_time || !this.querySelect.register_stop_time) {
+      if (!this.query.register_start_time || !this.query.register_stop_time) {
         this.register_time = []
       } else {
-        this.register_time = [moment(this.querySelect.register_start_time), cloneDeep(moment(this.querySelect.register_stop_time))]
+        this.register_time = [moment(this.query.register_start_time), cloneDeep(moment(this.query.register_stop_time))]
       }
-      if (!this.querySelect.register_start_time || !this.querySelect.register_stop_time) {
+      if (!this.query.register_start_time || !this.query.register_stop_time) {
         this.enter_time = []
       } else {
-        this.enter_time = [moment(this.querySelect.be_member_start_time), cloneDeep(moment(this.querySelect.be_member_start_time))]
+        this.enter_time = [moment(this.query.be_member_start_time), cloneDeep(moment(this.query.be_member_start_time))]
       }
     },
     // 分配教练
@@ -352,9 +333,6 @@ export default {
       this.selectDataList = selectedRows.map(item => {
         return item.id
       })
-    },
-    onTableChange(data) {
-      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
     },
     queryFunc() {
       this.$router.push({ query: this.form })
