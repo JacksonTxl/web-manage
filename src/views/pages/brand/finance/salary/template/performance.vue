@@ -1,5 +1,5 @@
 <template>
-  <st-form-table :page="page" @change="onPageChange" :loading="loading.getList" hoverable>
+  <st-form-table :page="page" @change="onTableChange" :loading="loading.getList" hoverable>
     <thead>
       <tr>
         <template v-for="(item,index) in columsTitlelist">
@@ -11,10 +11,8 @@
       <tr v-if="auth.add">
         <td colspan="5" class="st-form-table__add">
           <st-button type="dashed" block>
-            <modal-link
-              tag="a"
-              :to=" { name: 'finance-add-performance-template',on: {change: refresh}}"
-            >新增业绩模板</modal-link>
+            <modal-link tag="a" :to=" { name: 'finance-add-performance-template',on: {change: refresh}}">新增业绩模板
+            </modal-link>
           </st-button>
         </td>
       </tr>
@@ -27,27 +25,17 @@
               <span>{{ item.used }}</span>
             </template>
             <template v-if="item.used != 0 ">
-              <modal-link
-                tag="a"
-                :to=" { name: 'finance-search-staff-list-performance', props: {id: item.id}}"
-              >{{ item.used }}</modal-link>
+              <modal-link tag="a" :to=" { name: 'finance-search-staff-list-performance', props: {id: item.id}}">
+                {{ item.used }}</modal-link>
             </template>
           </td>
           <td>{{ item.created_time }}</td>
           <td>
-            <modal-link
-              v-if="item.auth['brand_shop:salary:commission_template|get']"
-              tag="a"
-              :to=" { name: 'finance-performance-info', props: {id: item.id},on: {change: refresh}}"
-            >详情</modal-link>
-            <a-divider type="vertical"></a-divider>
-            <modal-link
-              v-if="item.auth['brand_shop:salary:commission_template|edit']"
-              tag="a"
-              :to=" { name: 'finance-edit-performance-template', props: {id: item.id},on: {change: refresh}}"
-            >编辑</modal-link>
-            <a-divider type="vertical"></a-divider>
-            <a href="javascript:;" v-if="item.auth['brand_shop:salary:commission_template|del']" @click="onDelete(item.id)">删除</a>
+            <st-table-actions>
+              <a v-if="item.auth['brand_shop:salary:commission_template|get']" v-modal-link=" { name: 'finance-performance-info', props: {id: item.id},on: {change: refresh}}">详情</a>
+              <a v-if="item.auth['brand_shop:salary:commission_template|edit']" v-modal-link=" { name: 'finance-edit-performance-template', props: {id: item.id},on: {change: refresh}}">编辑</a>
+              <a href="javascript:;" v-if="item.auth['brand_shop:salary:commission_template|del']" @click="onDelete(item.id)">删除</a>
+            </st-table-actions>
           </td>
         </tr>
       </template>
@@ -60,7 +48,7 @@ import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 export default {
-  mixins: [ tableMixin ],
+  mixins: [tableMixin],
   serviceInject() {
     return {
       basicService: PerformanceService,
@@ -84,7 +72,10 @@ export default {
   },
   methods: {
     refresh() {
-      this.$router.push({ query: {}, force: true })
+      this.$router.push({
+        query: {},
+        force: true
+      })
     },
     onPageChange(e) {
       console.log(e)
@@ -106,8 +97,13 @@ export default {
           console.log('OK')
           that.basicService.deleteTemplate(e).subscribe(() => {
             console.log('ok')
-            that.messageService.success({ content: '删除成功' })
-            that.$router.push({ query: {}, force: true })
+            that.messageService.success({
+              content: '删除成功'
+            })
+            that.$router.push({
+              query: {},
+              force: true
+            })
           })
         },
         onCancel() {
@@ -118,4 +114,5 @@ export default {
     }
   }
 }
+
 </script>
