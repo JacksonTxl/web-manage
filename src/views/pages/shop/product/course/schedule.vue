@@ -7,7 +7,7 @@
     <st-button  @click="onClickEdit" >修改排期</st-button>
     <modal-link :to="{name: 'schedule-team-reserve-info'}"><st-button>预约详情</st-button></modal-link>
   </section> -->
-  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-team-calendar'">
+  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-team' || routeName === 'shop-product-course-schedule-team-table'">
     <a-select v-model="query.course_id" placeholder="请选择课程" @change="onChange" class="page-schedule__select mg-r8">
       <a-select-option :value="-1">全部</a-select-option>
       <a-select-option v-for="course in courseOptions" :key="course.id" :value="course.id">{{course.course_name}}</a-select-option>
@@ -21,13 +21,13 @@
       <a-select-option v-for="coach in coachOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
     </a-select>
   </div>
-  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-calendar' ">
+  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-calendar' || routeName === 'shop-product-course-schedule-personal-reserve-table'">
     <a-select class="page-schedule__select" placeholder="请选择教练" @change="onChange" v-model="query.coach_id">
       <a-select-option :value="-1">全部</a-select-option>
-      <a-select-option v-for="coach in courseCoachOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
+      <a-select-option v-for="coach in coachPersonalOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
     </a-select>
   </div>
-  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-team-calendar' ">
+  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-team'">
     <a-select class="page-schedule__select" placeholder="请选择教练" @change="onChange" v-model="query.coach_id">
       <a-select-option :value="-1">全部</a-select-option>
       <a-select-option v-for="coach in courseCoachOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
@@ -56,6 +56,7 @@ export default {
     return {
       query: this.routeService.query$,
       coachOptions: tss.coachOptions$,
+      coachPersonalOptions: pscs.coachOptions$,
       courseCoachOptions: pscs.courseCoachOptions$,
       courseOptions: tss.courseOptions$,
       courtOptions: tss.courtOptions$
