@@ -4,7 +4,7 @@
       <a-row :gutter="8">
         <a-col :lg="8">
           <st-button>
-            <modal-link tag="a" :to="{ name: 'schedule-personal-add-reserve', props: { id: 1 } }">添加预约</modal-link>
+            <a v-modal-link="{ name: 'schedule-personal-add-reserve', props: { id: 1 } }">添加预约</a>
           </st-button>
         </a-col>
         <a-col :lg="7" :offset="2">

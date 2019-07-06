@@ -4,12 +4,12 @@
       <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
         <div>
           <!-- TODO: 批量转入品牌库的按钮 -->
-          <modal-link
+          <a
             v-if="auth.transfer"
             type="primary"
             tag="st-button"
-            :to="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}"
-          >转入品牌私教课程库</modal-link>
+            v-modal-link="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}"
+          >转入品牌私教课程库</a>
         </div>
         <div>
           <a-select class="mg-r8"  :defaultValue="-1" style="width: 160px" v-model="query.shop_id" @change="onChange">

@@ -10,20 +10,20 @@
       :loading="loading.getList"
       @change="onTableChange" >
       <div slot="shops" slot-scope="shops, record">
-        <modal-link tag="a"
+        <a
           v-if="record.shop_setting === 2"
-        :to="{name: 'course-support-course-shops', props: {courseId: record.course_id}}"
-        >共{{shops}}家门店</modal-link>
+          v-modal-link="{name: 'course-support-course-shops', props: {courseId: record.course_id}}"
+        >共{{shops}}家门店</a>
         <span
           v-else
         >{{record.shop_setting | enumFilter('personal_course.shop_setting')}}</span>
       </div>
       <div slot="coaches" slot-scope="coaches, record">
         <span v-if="!coaches">{{coaches}}</span>
-        <modal-link tag="a"
+        <a
         v-else
-        :to="{name: 'course-support-course-cocahes-brand', props: {course: record}}"
-        >{{coaches}}</modal-link>
+        v-modal-link="{name: 'course-support-course-cocahes-brand', props: {course: record}}"
+        >{{coaches}}</a>
       </div>
       <router-link class="mg-r8" :to="{name: 'brand-product-course-personal-info', query: {id: record.course_id}}"
       slot="course_name" slot-scope="course_name, record">
