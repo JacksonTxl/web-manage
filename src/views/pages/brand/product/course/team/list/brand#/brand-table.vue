@@ -3,8 +3,9 @@
   <st-table
       class="mg-t16"
       rowKey="id"
+      :page="page"
       :columns="columns"
-      :dataSource="teamCourseList"
+      :dataSource="list"
       :scroll="{ x: 1300}"
       @change="onChange"
     >
@@ -31,8 +32,21 @@
 
 <script>
 import { columns } from './brand.config'
+import { BrandService } from '../brand.service'
 export default {
   name: 'TeamTableBrand',
+  serviceInject() {
+    return {
+      service: BrandService
+    }
+  },
+  rxState() {
+    return {
+      list: this.service.list$,
+      page: this.service.page,
+      lodaing: this.service.loading
+    }
+  },
   data() {
     return {
       columns,

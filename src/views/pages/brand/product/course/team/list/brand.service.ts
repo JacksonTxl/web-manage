@@ -1,15 +1,16 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
-import { State, Computed } from 'rx-state'
+import { State, Computed, Effect } from 'rx-state'
 import { BrandTeamCourseApi, GetTeamBrandCourseListInput } from '@/api/v1/course/team/brand'
 import { AuthService } from '@/services/auth.service'
+import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class BrandService implements RouteGuard {
   // loading
   loading$ = new State({})
   // 业务状态
-  teamCourseList$ = new State([])
+  list$ = new State([])
   page$ = new State({})
 
   state$: State<any>
@@ -28,16 +29,20 @@ export class BrandService implements RouteGuard {
   deleteCourse(courseId: string) {
     return this.brandTeamCourseApi.deleteCourse(courseId)
   }
-  getCourseTeamBrandList(query: any) {
+  @Effect()
+  getList(query: any) {
     return this.brandTeamCourseApi.getTeamCourseList(query).pipe(
       tap(res => {
         res = this.authService.filter(res)
-        this.teamCourseList$.commit(() => res.list)
+        this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })
     )
   }
+  init(query: any) {
+    return forkJoin(this.getList(query))
+  }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCourseTeamBrandList({ size: 99, ...to.query }).subscribe(state$ => { next() })
+    return this.init({ ...to.query })
   }
 }
