@@ -20,10 +20,10 @@
         <st-table
           rowKey=""
           :columns="cardItem"
-          :dataSource="cardsListInfo.card_list"
+          :dataSource="cardsListInfo"
           :scroll="{ x: 1750}"
           @change="cardPageChange"
-          :pagination="cardPage"
+          :page="cardPage"
         >
           <span slot="card_status" slot-scope="text,record">
             <span v-if="record.card_status ==='有效'" class="effective"></span>
@@ -60,8 +60,8 @@
       <a-col :lg="24">
         <st-table
           :columns="course"
-          :dataSource="courseListInfo.course_list"
-          :pagination="coursePage"
+          :dataSource="courseListInfo"
+          :page="coursePage"
           @change="coursePageChange">
           <span slot="course_status" slot-scope="text,record">
             <span v-if="record.course_status ==='有效'" class="effective"></span>
@@ -89,140 +89,8 @@
 
 <script>
 import { ReserveService } from './reserve.service'
+import { cardItem, course, leaseArk } from './reserve.config'
 
-const cardItem = [
-  {
-    title: '合同编号',
-    dataIndex: 'contract_number',
-    key: 'contract_number'
-  },
-  {
-    title: '卡类型',
-    dataIndex: 'card_type',
-    key: 'card_type'
-  },
-  {
-    title: '卡名称',
-    dataIndex: 'card_name',
-    key: 'card_name'
-  },
-  {
-    title: '购卡场馆',
-    dataIndex: 'buy_shop_name',
-    key: 'buy_shop_name'
-  },
-  {
-    title: '支持入场场馆',
-    dataIndex: 'use_shop_name',
-    key: 'use_shop_name'
-  },
-  {
-    title: '购买额度',
-    dataIndex: 'init_amount',
-    key: 'init_amount'
-  },
-  {
-    title: '剩余额度',
-    dataIndex: 'remain_amount',
-    key: 'remain_amount'
-  },
-  {
-    title: '卡状态',
-    dataIndex: 'card_status',
-    key: 'card_status',
-    scopedSlots: { customRender: 'card_status' }
-  },
-  {
-    title: '开卡日期',
-    dataIndex: 'start_time',
-    key: 'start_time'
-  },
-  {
-    title: '到期日期',
-    dataIndex: 'end_time',
-    key: 'end_time'
-  }
-]
-const course = [
-  {
-    title: '合同编号',
-    dataIndex: 'contract_number',
-    key: 'contract_number'
-  },
-  {
-    title: '课程类型',
-    dataIndex: 'course_type',
-    key: 'course_type'
-  },
-  {
-    title: '课程名',
-    dataIndex: 'course_name',
-    key: 'course_name'
-  },
-  {
-    title: '上课教练',
-    dataIndex: 'coach_name',
-    key: 'coach_name'
-  },
-  {
-    title: '购买额度',
-    dataIndex: 'init_course_num',
-    key: 'init_course_num'
-  },
-  {
-    title: '剩余额度',
-    dataIndex: 'remain_course_num',
-    key: 'remain_course_num'
-  },
-  {
-    title: '状态',
-    dataIndex: 'course_status',
-    key: 'course_status',
-    scopedSlots: { customRender: 'course_status' }
-  }
-]
-const leaseArk = [
-  {
-    title: '合同编号',
-    dataIndex: 'age',
-    key: 'age'
-  },
-  {
-    title: '类型',
-    dataIndex: 'age',
-    key: 'age'
-  },
-  {
-    title: '租赁柜号',
-    dataIndex: 'age',
-    key: 'age'
-  },
-  {
-    title: '租赁天数',
-    dataIndex: 'age',
-    key: 'age'
-  },
-  {
-    title: '剩余天数',
-    dataIndex: 'age',
-    key: 'age'
-  },
-  {
-    title: '状态',
-    dataIndex: 'age',
-    key: 'age'
-  },
-  {
-    title: '起租日期',
-    dataIndex: 'age',
-    key: 'age'
-  },
-  {
-    title: '到期日期',
-    dataIndex: 'age',
-    key: 'age'
-  }
-]
 export default {
   serviceInject() {
     return {
@@ -232,34 +100,30 @@ export default {
   rxState() {
     return {
       cardsListInfo: this.reserveService.cardsListInfo$,
-      courseListInfo: this.reserveService.courseListInfo$
+      cardPage: this.reserveService.cardPage$,
+      courseListInfo: this.reserveService.courseListInfo$,
+      coursePage: this.reserveService.coursePage$
     }
   },
   data() {
     return {
-      cardItem,
-      course,
-      leaseArk,
       cardquery: {
         start_time: '',
         card_type: 1,
         keyword: ''
-      },
-      cardPage: {
-        current: 1,
-        pageSize: 10
       },
       coursequery: {
         buy_time: '',
         course_type: 1,
         keyword: ''
       },
-      coursePage: {
-        current: 1,
-        pageSize: 10
-      },
       id: ''
     }
+  },
+  computed: {
+    cardItem,
+    course,
+    leaseArk
   },
   methods: {
     /**
@@ -268,13 +132,13 @@ export default {
      * current 当前页
      * pageSize 每页条数
      */
-    initPage(cardOrCourse, current, pageSize) {
+    initPage(cardOrCourse, current_page, size) {
       if (cardOrCourse === 1) {
-        this.cardPage.current = current
-        this.cardPage.pageSize = pageSize
+        this.cardPage.size = size
+        this.cardPage.current_page = current_page
       } else if (cardOrCourse === 2) {
-        this.coursePage.current = current
-        this.coursePage.pageSize = pageSize
+        this.coursePage.current_page = current_page
+        this.coursePage.size = size
       }
     },
     // 拼接入参

@@ -129,8 +129,8 @@ export default {
     shelves: 'page-brand-product-member-list-shelves'
   },
   events: {
-    'card-member-list-shelves:onSingleSearch'(args) {
-      this.onSingleSearch(...args)
+    'brand-product-card-member-list-shelves:onSingleSearch'(key, data, options) {
+      this.onSingleSearch(key, data, options)
     }
   },
   serviceInject() {

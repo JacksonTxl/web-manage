@@ -101,6 +101,6 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
 }
 
 walkRoutes(routes)
-// console.log('routes is ->', routes)
+console.log('全局注册 routes ->', routes)
 
 export default routes

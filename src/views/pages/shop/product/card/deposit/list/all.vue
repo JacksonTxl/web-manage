@@ -7,26 +7,28 @@
         style="width: 160px"
         class="mg-r8"
         v-model="query.publish_channel"
-        @change="onSelect('publish_channel',$event)"
+        @change="onSingleSearch('publish_channel',$event)"
         >
           <a-select-option v-for="(item,index) in publishChannel" :key="index" :value="item.value">{{item.label}}</a-select-option>
         </a-select>
         <a-select
         style="width: 160px"
         v-model="query.sell_status"
-        @change="onSelect('sell_status',$event)"
+        @change="onSingleSearch('sell_status',$event)"
         >
           <a-select-option v-for="(item,index) in sellStatus" :key="index" :value="item.value">{{item.label}}</a-select-option>
         </a-select>
       </div>
     </div>
     <st-table
-    :columns="columns"
-    :dataSource="list"
-    @change="onPageChange"
-    :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
-    rowKey="key"
-    >
+      :scroll="{x:1440}"
+      :page='page'
+      @change="onTableChange"
+      :loading="loading.getList"
+      :columns="columns"
+      :dataSource="list"
+      rowKey="key"
+      >
       <!-- 卡名称 -->
       <template slot="card_name" slot-scope="text">
         {{text}}
@@ -89,67 +91,60 @@
           <a-icon type="exclamation-circle" v-if="text.id === 2"/>
         </a-popover>
       </template>
+      <!-- 操作 -->
       <div slot="action" slot-scope="text,record">
-        <a v-if="record.auth['brand_shop:product:deposit_card|get']" @click="onDetail(record)">详情</a>
-        <a-divider type="vertical"></a-divider>
-        <st-more-dropdown class="mgl-16">
-          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|edit']" @click="onEdit(record)">编辑</a-menu-item>
-          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|up']" @click="onShelf(record)">上架</a-menu-item>
-          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|pause']" @click="onStopSale(record)">停售</a-menu-item>
-          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|restore']" @click="onRecoverSale(record)">恢复售卖</a-menu-item>
-          <a-menu-item v-if="record.auth['brand_shop:product:deposit_card|del']" @click="onDelete(record)">删除</a-menu-item>
-        </st-more-dropdown>
+        <st-table-actions>
+          <router-link
+            v-if="record.auth['brand_shop:product:deposit_card|get']"
+            :to="{
+              path: `/shop/product/card/deposit/info`,
+              query: { id: record.id }
+            }"
+          >详情</router-link>
+          <a v-if="record.auth['brand_shop:product:deposit_card|edit']" @click="onEdit(record)">编辑</a>
+          <a v-if="record.auth['brand_shop:product:deposit_card|up']" @click="onShelf(record)">上架</a>
+          <a v-if="record.auth['brand_shop:product:deposit_card|pause']" @click="onStopSale(record)">停售</a>
+          <a v-if="record.auth['brand_shop:product:deposit_card|restore']" @click="onRecoverSale(record)">恢复售卖</a>
+          <a v-if="record.auth['brand_shop:product:deposit_card|del']" @click="onDelete(record)">删除</a>
+        </st-table-actions>
       </div>
     </st-table>
   </div>
 </template>
 <script>
 import { AllService } from './all.service'
-import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
-import { columns } from './all.config'
+import { columns } from './all.config.ts'
+import tableMixin from '@/mixins/table.mixin'
 export default {
+  mixins: [ tableMixin ],
   name: 'PageShopProductDepositAll',
   bem: {
     all: 'page-shop-product-deposit-list-all'
   },
+  events: {
+    'shop-product-card-deposit-list-all:onSingleSearch'(key, data, options) {
+      this.onSingleSearch(key, data, options)
+    }
+  },
   serviceInject() {
     return {
-      userService: UserService,
       routeService: RouteService,
       allService: AllService
     }
   },
   rxState() {
     return {
-      depositCard: this.userService.depositCardEnums$,
       cardList: this.allService.list$,
       page: this.allService.page$,
+      loading: this.allService.loading$,
+      publishChannel: this.allService.publishChannel$,
+      sellStatus: this.allService.sellStatus$,
       query: this.routeService.query$,
       auth: this.allService.auth$
     }
   },
   computed: {
-    publishChannel() {
-      let arr = [{ value: -1, label: '所有渠道' }]
-      Object.keys(this.depositCard.publish_channel.value).forEach(i => {
-        arr.push({
-          value: +i,
-          label: this.depositCard.publish_channel.value[i]
-        })
-      })
-      return arr
-    },
-    sellStatus() {
-      let arr = [{ value: -1, label: '所有售卖状态' }]
-      Object.keys(this.depositCard.sell_status.value).forEach(i => {
-        arr.push({
-          value: +i,
-          label: this.depositCard.sell_status.value[i]
-        })
-      })
-      return arr
-    },
     list() {
       let array = []
       this.cardList.forEach(i => {
@@ -157,31 +152,14 @@ export default {
         array.push({ ...i, key: key })
       })
       return array
-    }
-  },
-  data() {
-    return {
-      columns
-    }
+    },
+    columns
   },
   methods: {
-    onSelect(key, data) {
-      this.$router.push({ query: { ...this.query, ...{ [key]: data } } })
-    },
-    onPageChange(data) {
-      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize }, force: true })
-    },
     // 新增储值卡
     onAddCard() {
       this.$router.push({
         path: '/shop/product/card/deposit/add'
-      })
-    },
-    // 查看详情
-    onDetail(record) {
-      this.$router.push({
-        path: `/shop/product/card/deposit/info`,
-        query: { id: record.id }
       })
     },
     // 编辑

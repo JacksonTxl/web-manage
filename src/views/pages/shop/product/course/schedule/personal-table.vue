@@ -4,17 +4,16 @@
       <a-row :gutter="8">
         <a-col :lg="8">
           <st-button class="mg-r8" type="primary">
-            <modal-link
-              tag="a"
-              :to="{ name: 'schedule-personal-inbatch-add', props: { id: 1 } }"
-            >批量排期</modal-link>
+            <a v-modal-link="{ name: 'schedule-personal-inbatch-add', props: { id: 1 } }"
+            >批量排期</a>
           </st-button>
           <st-button>
-            <modal-link tag="a" :to="{ name: 'schedule-personal-add', props: { id: 1 } }">添加排期</modal-link>
+            <a v-modal-link="{ name: 'schedule-personal-add', props: { id: 1 } }">添加排期</a>
           </st-button>
         </a-col>
         <a-col :lg="7" :offset="2">
-          <date @today="getList" :start="scheduleTime[0]" @pre="getList" @next="getList"/>
+          {{query}}
+          <date @today="getList" :start="query.start_date" @pre="getList" @next="getList"/>
         </a-col>
         <a-col :lg="7" class="schedule-button">
           <st-button  @click="onClickSkipSchedule"><st-icon type="calendar"></st-icon></st-button>
@@ -67,10 +66,9 @@
                 </template>
               </template>
               <td>
-                <modal-link
-                  tag="a"
-                  :to="{ name: 'schedule-personal-edit', props: { id: item.staff_id, start: scheduleTime[0] } }"
-                >编辑</modal-link>
+                <a
+                  v-modal-link="{ name: 'schedule-personal-edit', props: { id: item.staff_id, start: scheduleTime[0] } }"
+                >编辑</a>
               </td>
             </tr>
           </template>

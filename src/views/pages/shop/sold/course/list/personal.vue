@@ -3,7 +3,7 @@
     <st-search-panel>
         <div :class="basic('select')">
           <span style="width:90px;">课程状态：</span>
-          <st-search-radio v-model="course_status" :list="cardSaleStatusList"/>
+          <st-search-radio v-model="query.course_status" :list="cardSaleStatusList" />
         </div>
         <div :class="basic('select')">
           <span style="width:90px;">购买时间：</span>
@@ -16,7 +16,9 @@
             @openChange="handleStartOpenChange"
             @change="start_time_change"
           />
+          &nbsp;
           ~
+          &nbsp;
           <a-date-picker
             :disabledDate="disabledEndDate"
             format="YYYY-MM-DD"
@@ -29,8 +31,8 @@
           />
         </div>
         <div slot="button">
-            <st-button type="primary" @click="onSearch">查询</st-button>
-            <st-button class="mgl-8" @click="onReset">重置</st-button>
+          <st-button type="primary" @click="onSearchNative" :loading="loading.getList">查询</st-button>
+          <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
         </div>
     </st-search-panel>
     <div :class="basic('content')">
@@ -44,9 +46,10 @@
         </div>
         <div :class="basic('table')">
           <st-table
-          :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
+          :page="page"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
           rowKey="id"
+          :scroll="{x:1800}"
           :columns="columns"
           :dataSource="list" >
             <template slot="course_status" slot-scope="text">
@@ -58,18 +61,17 @@
             <template slot="buy_time" slot-scope="text">
               {{moment(text).format('YYYY-MM-DD HH:mm')}}
             </template>
-            <div slot="action" slot-scope="text,record">
-              <a v-if="record.auth['shop:sold:sold_personal_course|get']" @click="onDetail(record)">详情</a>
-              <a-divider type="vertical"></a-divider>
-              <st-more-dropdown class="mgl-16">
-                <a-menu-item v-if="record.auth['shop:sold:sold_personal_course|course_num']" @click="onSurplus(record)">修改剩余课时</a-menu-item>
-                <a-menu-item v-if="record.auth['shop:sold:sold_personal_course|frozen']" @click="onFreeze(record)">冻结</a-menu-item>
-                <a-menu-item v-if="record.auth['shop:sold:sold_personal_course|unfrozen']" @click="onUnfreeze(record)">取消冻结</a-menu-item>
-                <a-menu-item v-if="record.auth['shop:sold:sold_personal_course|change_coach']" @click="onEditCoach(record)">修改教练</a-menu-item>
-                <a-menu-item v-if="record.auth['shop:sold:sold_personal_course|transfer']" @click="onTransfer(record)">转让</a-menu-item>
-                <a-menu-item v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a-menu-item>
-                <a-menu-item v-if="record.auth['shop:sold:sold_personal_course|export_contract']"  @click="toContract(record)">查看合同</a-menu-item>
-              </st-more-dropdown>
+            <div slot="action" slot-scope="text, record">
+              <st-table-actions>
+                <a v-if="record.auth['shop:sold:sold_personal_course|get']" @click="onDetail(record)">详情</a>
+                <a v-if="record.auth['shop:sold:sold_personal_course|course_num']" @click="onSurplus(record)">修改剩余课时</a>
+                <a v-if="record.auth['shop:sold:sold_personal_course|frozen']" @click="onFreeze(record)">冻结</a>
+                <a v-if="record.auth['shop:sold:sold_personal_course|unfrozen']" @click="onUnfreeze(record)">取消冻结</a>
+                <a v-if="record.auth['shop:sold:sold_personal_course|change_coach']" @click="onEditCoach(record)">修改教练</a>
+                <a v-if="record.auth['shop:sold:sold_personal_course|transfer']" @click="onTransfer(record)">转让</a>
+                <a v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a>
+                <a v-if="record.auth['shop:sold:sold_personal_course|export_contract']"  @click="toContract(record)">查看合同</a>
+              </st-table-actions>
             </div>
           </st-table>
         </div>
@@ -82,58 +84,12 @@ import { cloneDeep, filter } from 'lodash-es'
 import { PersonalService } from './personal.service'
 import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
+import { columns } from './personal.config'
 
-const columns = [{
-  title: '课程名',
-  dataIndex: 'course_name',
-  scopedSlots: { customRender: 'course_name' }
-}, {
-  title: '剩余课时',
-  dataIndex: 'remain_course_num',
-  scopedSlots: { customRender: 'remain_course_num' }
-}, {
-  title: '购买课时',
-  dataIndex: 'init_course_num',
-  scopedSlots: { customRender: 'init_course_num' }
-}, {
-  title: '教练级别',
-  dataIndex: 'coach_level',
-  scopedSlots: { customRender: 'coach_level' }
-}, {
-  title: '姓名',
-  dataIndex: 'member_name',
-  scopedSlots: { customRender: 'member_name' }
-}, {
-  title: '手机号',
-  dataIndex: 'mobile',
-  scopedSlots: { customRender: 'mobile' }
-}, {
-  title: '状态',
-  dataIndex: 'course_status',
-  scopedSlots: { customRender: 'course_status' }
-}, {
-  title: '到期日期',
-  dataIndex: 'end_time',
-  scopedSlots: { customRender: 'end_time' }
-}, {
-  title: '购买日期',
-  dataIndex: 'buy_time',
-  scopedSlots: { customRender: 'buy_time' }
-}, {
-  title: '上课教练',
-  dataIndex: 'coach_name',
-  scopedSlots: { customRender: 'coach_name' }
-}, {
-  title: '销售人员',
-  dataIndex: 'staff_name',
-  scopedSlots: { customRender: 'staff_name' }
-}, {
-  title: '操作',
-  dataIndex: 'action',
-  scopedSlots: { customRender: 'action' }
-}]
 export default {
   name: 'PageShopSoldCoursePersonalList',
+  mixins: [tableMixin],
   bem: {
     basic: 'page-shop-sold'
   },
@@ -146,30 +102,34 @@ export default {
   },
   rxState() {
     return {
+      loading: this.personalService.loading$,
       list: this.personalService.list$,
       page: this.personalService.page$,
       package_course: this.userService.packageCourseEnums$,
       query: this.routeService.query$,
-      auth: this.personalService.auth$
+      auth: this.personalService.auth$,
+      soldEnums: this.userService.soldEnums$
     }
   },
   data() {
     return {
-      // 售卡状态
-      cardSaleStatusList: [
-        { value: -1, label: '全部' },
-        { value: 1, label: '有效' },
-        { value: 2, label: '失效' },
-        { value: 3, label: '已冻结' },
-        { value: 4, label: '即将到期' }
-      ],
       course_status: -1,
       start_time: null,
       end_time: null,
       // 结束时间面板是否显示
       endOpen: false,
-      selectedRowKeys: [],
-      columns
+      selectedRowKeys: []
+    }
+  },
+  computed: {
+    columns,
+    cardSaleStatusList() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.soldEnums.card_status) return list
+      Object.entries(this.soldEnums.card_status.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
     }
   },
   mounted() {
@@ -182,22 +142,10 @@ export default {
   },
   methods: {
     // 查询
-    onSearch() {
-      let query = {
-        course_status: this.course_status,
-        start_time: this.start_time ? `${this.start_time.format('YYYY-MM-DD')} 00:00:00` : '',
-        end_time: this.end_time ? `${this.end_time.format('YYYY-MM-DD')} 23:59:59` : ''
-      }
-      this.$router.push({ query: { ...this.query, ...query } })
-    },
-    // 重置
-    onReset() {
-      let query = {
-        course_status: -1,
-        start_time: '',
-        end_time: ''
-      }
-      this.$router.push({ query: { ...this.query, ...query } })
+    onSearchNative() {
+      this.query.start_time = this.start_time ? `${this.start_time.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.query.end_time = this.end_time ? `${this.end_time.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.onSearch()
     },
     // 设置searchData
     setSearchData() {

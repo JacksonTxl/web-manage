@@ -16,6 +16,7 @@ export class ListService implements RouteGuard {
     private packageApi: PackageApi,
     private authService: AuthService
   ) {}
+  @Effect()
   getList(params: GetPackageListInput) {
     return this.packageApi.getList(params).pipe(tap((res:any) => {
       this.auth$.commit(() => res.auth)
@@ -35,9 +36,10 @@ export class ListService implements RouteGuard {
   onsalePackage(params:OnsalePackageInput) {
     return this.packageApi.onsaleCoursePackage(params)
   }
-  beforeEach(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
-    this.getList(to.meta.query).subscribe(() => {
-      next()
-    })
+  init(params: GetPackageListInput) {
+    return this.getList(params)
+  }
+  beforeEach(to:ServiceRoute, from:ServiceRoute) {
+    return this.init(to.meta.query)
   }
 }

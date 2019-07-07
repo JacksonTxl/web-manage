@@ -42,47 +42,29 @@
             <st-info-item label="上课范围">
               <a-popover :title="packageInfo.course_range.range_name">
                 <template slot="content">
-                  <a-table v-if="rangeType === 1" :columns="courseColumns" :dataSource="courseTabData" :pagination="false">
-                  </a-table>
-                  <a-table v-if="rangeType === 2" :columns="courseColumns" :dataSource="courseTabData" :pagination="false">
-                    <!-- <a-table
-                      slot="expandedRowRender"
-                      slot-scope="text, index"
-                      :columns="innerColumnsTeam"
-                      :dataSource="innerDataTeam"
-                      :pagination="false"
-                      v-show="index === 0"
-                    >
-                    </a-table> -->
-                    <a-table
+                  <st-table v-if="rangeType === 1" :columns="courseColumns" :dataSource="courseTabData" :pagination="false">
+                  </st-table>
+                  <st-table v-if="rangeType === 2" :columns="courseColumns" :dataSource="courseTabData" :pagination="false">
+                    <st-table
                       slot="expandedRowRender"
                       slot-scope="text, index"
                       :columns="index === 1 ? innerColumnsPersonal : innerColumnsTeam"
                       :dataSource="index === 1 ? innerDataPersonal : innerDataTeam"
                       :pagination="false"
                     >
-                    </a-table>
+                    </st-table>
 
-                  </a-table>
-                  <a-table v-if="rangeType === 3" :columns="courseColumns" :dataSource="courseTabData" :pagination="false">
-                    <!-- <a-table
-                      slot="expandedRowRender"
-                      slot-scope="text, index"
-                      :columns="innerColumnsFix"
-                      :dataSource="innerDataFixTeam"
-                      :pagination="false"
-                      v-if="index === 0"
-                    >
-                    </a-table> -->
-                    <a-table
+                  </st-table>
+                  <st-table v-if="rangeType === 3" :columns="courseColumns" :dataSource="courseTabData" :pagination="false">
+                    <st-table
                       slot="expandedRowRender"
                       slot-scope="text, index"
                       :columns="innerColumnsFix"
                       :dataSource="index === 1 ? innerDataFixPersonal : innerDataFixTeam"
                       :pagination="false"
                     >
-                    </a-table>
-                  </a-table>
+                    </st-table>
+                  </st-table>
                 </template>
                 <a type="primary">{{packageInfo.course_range.range_name}}</a>
               </a-popover>

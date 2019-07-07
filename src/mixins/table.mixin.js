@@ -1,5 +1,28 @@
 // 使用page作为当前页查询参数的路由放这里
-const ROUTE_NAMES_USE_PAGE = []
+const ROUTE_NAMES_USE_PAGE = [
+  'brand-setting-shop-list',
+  'brand-product-course-team-list-shop',
+  'brand-product-course-team-list-brand',
+  'brand-product-course-personal-list-brand',
+  'brand-product-course-personal-list-shop',
+  'shop-product-course-manage-personal-list',
+  'shop-product-course-manage-team-list',
+  'shop-sold-card-list-member',
+  'shop-sold-card-list-deposit',
+  'shop-sold-course-list-personal',
+  'shop-sold-course-list-package',
+  'shop-sold-cabinet-list',
+  'shop-sold-transaction-list',
+  'shop-member-list',
+  'shop-member-label-list',
+  'shop-product-course-manage-package-list',
+  'shop-finance-order-list',
+  'brand-finance-salary-template-basic',
+  'brand-finance-salary-template-performance',
+  'shop-product-card-member-list-all',
+  'shop-product-card-deposit-list-all',
+  'shop-reception-entrance'
+]
 
 export default {
   data() {
@@ -13,7 +36,7 @@ export default {
   created() {
     if (!this.query) {
       console.error(
-        '[tableMixin] 需要订阅routeService.query 到this.query以生效'
+        '[tableMixin] 需要订阅routeService.query$ 到this.query以生效'
       )
     }
 
@@ -46,6 +69,18 @@ export default {
       this.$router.push({
         query: {
           ...this.query,
+          [this.currentPageField]: 1,
+          force: true
+        }
+      })
+    },
+    /**
+     * 筛选重置
+     */
+    onSearhReset() {
+      this.onSelectionReset()
+      this.$router.push({
+        query: {
           [this.currentPageField]: 1,
           force: true
         }
@@ -87,19 +122,28 @@ export default {
     onTableChange(pagination, filter, sorter) {
       this.onSelectionReset()
       let sort_by, sort_order
-      if (sorter.field) {
-        sort_by = sorter.field
-        sort_order = { ascend: 'asc', descend: 'desc' }[sorter.order]
-      }
-      this.$router.push({
-        query: {
-          ...this.query,
-          [this.currentPageField]: pagination.current,
-          size: pagination.pageSize,
-          sort_by,
-          sort_order
+      if (sorter) {
+        if (sorter.field) {
+          sort_by = sorter.field
+          sort_order = { ascend: 'asc', descend: 'desc' }[sorter.order]
         }
-      })
+      }
+      if (!pagination) {
+        throw new Error(
+          `[tableMixin] pagination is not provide ${typeof pagination}`
+        )
+      }
+      if (pagination) {
+        this.$router.push({
+          query: {
+            ...this.query,
+            [this.currentPageField]: pagination.current,
+            size: pagination.pageSize,
+            sort_by,
+            sort_order
+          }
+        })
+      }
     }
   }
 }

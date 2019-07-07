@@ -10,17 +10,14 @@
           icon="add"
           @click="addPersonalCourse">新增私教课</st-button>
         <div>
-          <a-select  defaultValue="" v-model="query.category_id" class="mg-r16" style="width: 160px" @change="onChange">
+          <a-select  :defaultValue="-1" v-model="query.category_id" class="mg-r16" style="width: 160px" @change="onChange">
             <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
-          </a-select>
-          <a-select  defaultValue="" v-model="query.is_available" style="width: 160px" @change="onChange">
-            <a-select-option v-for="status in courseStatus" :key="status.value" :value="status.value">{{status.label}}</a-select-option>
           </a-select>
         </div>
       </div>
     </header>
     <main class="page-shop-sale-list-brand__table mg-t8">
-      <list-table @delete-course="onDeleteCourse" :personalCourseList="personalCourseList"></list-table>
+      <list-table @delete-course="onDeleteCourse"></list-table>
     </main>
   </st-panel>
 </template>
@@ -40,7 +37,6 @@ export default {
   rxState() {
     return {
       categoryList: this.listService.categoryList$,
-      personalCourseList: this.listService.personalCourseList$,
       query: this.routeService.query$,
       auth: this.listService.auth$
     }

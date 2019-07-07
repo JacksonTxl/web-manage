@@ -1,12 +1,30 @@
 <template>
-  <a-modal title="modal-sg" v-model="show" @ok="onOk">this is test modal</a-modal>
+  <st-modal title="modal-sg" v-model="show" @ok="onOk">
+    this is test modal
+    {{a}}
+  </st-modal>
 </template>
 
 <script>
+import { UserService } from '@/services/user.service'
+import { SgService } from './sg.service'
 export default {
   data() {
     return {
       show: false
+    }
+  },
+  serviceProviders() {
+    return [SgService]
+  },
+  serviceInject() {
+    return {
+      sgService: SgService
+    }
+  },
+  rxState() {
+    return {
+      a: this.sgService.a$
     }
   },
   methods: {

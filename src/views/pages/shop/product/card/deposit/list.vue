@@ -6,7 +6,7 @@
     { label: '全部储值卡项', route: { name: 'shop-product-card-deposit-list-all' } }
   ]">
     <div slot="actions">
-      <a-input-search v-model="query.card_name" @search="onSearchCardName" placeholder="请输入储值卡名称搜索" maxlength="50" />
+      <st-input-search v-model="query.card_name" @search="onSearchCardName" placeholder="请输入储值卡名称搜索" maxlength="50" />
     </div>
     <router-view></router-view>
   </st-panel>
@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     onSearchCardName() {
-      this.$router.push({ query: { ...this.query, card_name: this.query.card_name } })
+      this.$events.emit(`${this.$route.name}:onSingleSearch`, 'card_name', this.query.card_name, { keyword: true })
     }
   }
 }

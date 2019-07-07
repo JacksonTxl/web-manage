@@ -4,25 +4,25 @@
       <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
         <div>
           <!-- TODO: 批量转入品牌库的按钮 -->
-          <modal-link
-            v-if="this.selectedRowKeys.length >= 1 && auth.transfer"
+          <a
+            v-if="auth.transfer"
             type="primary"
             tag="st-button"
-            :to="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}"
-          >转入品牌私教课程库</modal-link>
+            v-modal-link="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}"
+          >转入品牌私教课程库</a>
         </div>
         <div>
-          <a-select class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onChange">
+          <a-select class="mg-r8"  :defaultValue="-1" style="width: 160px" v-model="query.shop_id" @change="onChange">
             <a-select-option v-for="shop in shopsOptions" :key="shop.id" :value="shop.id">{{shop.shop_name}}</a-select-option>
           </a-select>
-          <a-select class="mg-r8" v-model="query.category_id" style="width: 160px" @change="onChange">
+          <a-select class="mg-r8"  :defaultValue="-1" v-model="query.category_id" style="width: 160px" @change="onChange">
             <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
           </a-select>
         </div>
       </div>
     </header>
     <main class="page-shop-sale-list-shop__table mg-t8">
-      <shop-sale-list-table @change="onChangeSelectedRowKeys" :personalCourseList="personalCourseList"></shop-sale-list-table>
+      <shop-sale-list-table @check="onCheckGetCourse"></shop-sale-list-table>
     </main>
   </div>
 </template>
@@ -33,7 +33,7 @@ import { RouteService } from '../../../../../../../services/route.service'
 import { ShopService } from './shop.service'
 import { ListService } from '../list.service'
 export default {
-  name: 'ShopSaleListShop',
+  name: 'PersonalCourseShop',
   serviceInject() {
     return {
       listService: ListService,
@@ -43,7 +43,6 @@ export default {
   },
   rxState() {
     return {
-      personalCourseList: this.shopService.personalCourseList$,
       shopsOptions: this.listService.shopSelectOptions$,
       categoryList: this.listService.categoryList$,
       query: this.routeService.query$,
@@ -60,7 +59,7 @@ export default {
     ShopSaleListTable
   },
   methods: {
-    onChangeSelectedRowKeys(selectedRowKeys) {
+    onCheckGetCourse(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
     },
     onChange() {

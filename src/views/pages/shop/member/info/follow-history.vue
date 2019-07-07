@@ -28,9 +28,9 @@
     <st-t4>跟进记录</st-t4>
     <a-row :gutter="8">
       <a-col :lg="24" v-if="auth.add">
-        <modal-link tag="a" :to=" { name: 'shop-add-follow-records', on:{done: onModalTest }}">
+        <a v-modal-link="{ name: 'shop-add-follow-records', on:{done: onModalTest }}">
           <st-button block type="dashed" class="mg-t16 mg-b24">添加跟进记录</st-button>
-        </modal-link>
+        </a>
       </a-col>
       <a-col :lg="24">
         <!-- <st-time-line v-model="timeLine">

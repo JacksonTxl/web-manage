@@ -2,7 +2,7 @@
   <st-panel app :class="listClass()">
     <div slot="title">
       <st-input-search
-      @search="onSearch"
+      @search="onSingleSearch('course_name',$event,true)"
       v-model="query.course_name"
       placeholder="课程包名称"
       style="width: 290px;"/>
@@ -12,13 +12,13 @@
         <st-button type="primary" v-if="auth.add" @click="onAddPackage" icon="add">新增门店课程包</st-button>
       </router-link>
       <div :class="listClass('select-group')">
-        <a-select v-model="query.package_type" @change="onTypeChange" :class="listClass('select')" style="width: 160px">
+        <a-select v-model="query.package_type" @change="onSingleSearch('package_type',$event)" :class="listClass('select')" style="width: 160px">
           <a-select-option :value="-1">全部分类</a-select-option>
           <a-select-option
           v-for="(item,index) in Object.entries(package_course.package_type.value)"
           :key="index"  :value="+item[0]">{{item[1]}}</a-select-option>
         </a-select>
-        <a-select v-model="query.shelf_status" @change="onStatusChange" :class="listClass('select')" style="width: 160px">
+        <a-select v-model="query.shelf_status" @change="onSingleSearch('shelf_status',$event)" :class="listClass('select')" style="width: 160px">
           <a-select-option :value="-1">全部状态</a-select-option>
           <a-select-option
           v-for="(item,index) in Object.entries(package_course.shelf_status.value)"
@@ -27,11 +27,14 @@
       </div>
     </div>
     <st-table
-    :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
-    :columns="columns"
-    @change="onPageChange"
-    rowKey="package_course_id"
-    :dataSource="list">
+      :scroll="{x:1240}"
+      :page="page"
+      :columns="columns"
+      @change="onTableChange"
+      rowKey="package_course_id"
+      :dataSource="list"
+      :loading="loading.getList"
+    >
       <template slot="package_type" slot-scope="text">
         {{text | enumFilter('package_course.package_type')}}
       </template>
@@ -54,14 +57,13 @@
         </a-tooltip>
       </template>
       <div slot="action" slot-scope="text,record">
+        <st-table-actions>
         <a v-if="record.auth['shop:product:package_course|edit']" @click="onEdit(record.package_course_id,record.package_type)">编辑</a>
-        <a-divider type="vertical"></a-divider>
         <a v-if="record.auth['shop:product:package_course|get']" @click="onDetail(record.package_course_id,record.package_type)">详情</a>
-        <st-more-dropdown class="mgl-16">
-          <a-menu-item v-if="record.auth['shop:product:package_course|up']" @click="onsalePackage(record.package_course_id,record.course_name,record.start_time,record.end_time)">上架</a-menu-item>
-          <a-menu-item v-if="record.auth['shop:product:package_course|down']" @click="offsalePackage(record.package_course_id,record.course_name)">下架</a-menu-item>
-          <a-menu-item v-if="record.auth['shop:product:package_course|del']" @click="deletePackage(record.package_course_id,record.course_name)">删除</a-menu-item>
-        </st-more-dropdown>
+        <a v-if="record.auth['shop:product:package_course|up']" @click="onsalePackage(record.package_course_id,record.course_name,record.start_time,record.end_time)">上架</a>
+        <a v-if="record.auth['shop:product:package_course|down']" @click="offsalePackage(record.package_course_id,record.course_name)">下架</a>
+        <a v-if="record.auth['shop:product:package_course|del']" @click="deletePackage(record.package_course_id,record.course_name)">删除</a>
+        </st-table-actions>
       </div>
     </st-table>
     <st-modal
@@ -132,41 +134,12 @@ import { cloneDeep } from 'lodash-es'
 import { ListService } from './list.service'
 import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
-const columns = [{
-  title: '课程包名称',
-  dataIndex: 'course_name'
-}, {
-  title: '课程包分类',
-  dataIndex: 'package_type',
-  scopedSlots: { customRender: 'package_type' }
-}, {
-  title: '节数',
-  dataIndex: 'total_times',
-  scopedSlots: { customRender: 'total_times' }
-}, {
-  title: '有效期',
-  dataIndex: 'valid_time',
-  scopedSlots: { customRender: 'valid_time' }
-}, {
-  title: '支持售卖时间',
-  dataIndex: 'sale_time',
-  scopedSlots: { customRender: 'sale_time' }
-}, {
-  title: '售卖价格（元）',
-  dataIndex: 'price',
-  scopedSlots: { customRender: 'price' }
-}, {
-  title: '状态',
-  dataIndex: 'shelf_status',
-  scopedSlots: { customRender: 'shelf_status' }
-}, {
-  title: '操作',
-  dataIndex: 'action',
-  scopedSlots: { customRender: 'action' }
-}]
+import tableMixin from '@/mixins/table.mixin'
+import { columns } from './list.config'
 
 export default {
   name: 'ShopPackageList',
+  mixins: [ tableMixin ],
   serviceInject() {
     return {
       userService: UserService,
@@ -189,7 +162,6 @@ export default {
   },
   data() {
     return {
-      columns,
       offsaleIsShow: false,
       deleteIsShow: false,
       onsaleIsShow: false,
@@ -201,6 +173,9 @@ export default {
       endOpen: false,
       type: ['', 'unlimit', 'range', 'fix']
     }
+  },
+  computed: {
+    columns
   },
   methods: {
     // start_time validatorFn
@@ -302,18 +277,6 @@ export default {
     moment,
     onAddPackage() {
       console.log('add')
-    },
-    onTypeChange(data) {
-      this.$router.push({ query: { ...this.query, package_type: data } })
-    },
-    onStatusChange(data) {
-      this.$router.push({ query: { ...this.query, shelf_status: data } })
-    },
-    onPageChange(data) {
-      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
-    },
-    onSearch(data) {
-      this.$router.push({ query: { ...this.query, course_name: data } })
     },
     onEdit(id, type) {
       this.$router.push({

@@ -26,6 +26,7 @@
     v-model='show1'>
     小号模态窗 width: 484px
   </st-modal>
+  <a class='mg-l8' v-modal-link="{name:'test-sg'}">数据独立modal</a>
 </section>
 
 </template>

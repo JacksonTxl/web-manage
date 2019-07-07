@@ -59,7 +59,6 @@ export const routeMapConfig = {
     routeConfig.meta.title = '私教课'
     routeConfig.queryOptions = {
       category_id: { type: Number, default: -1 },
-      is_available: { type: Number, default: 1 },
       course_name: { type: String, default: '' }
     }
   },
@@ -447,6 +446,12 @@ export const routeMapConfig = {
   },
   'brand-setting-shop-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店设置'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      shop_status: { type: Number, default: -1 },
+      is_valid: { type: Number, default: -1 }
+    }
   },
   'brand-setting-shop-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增门店'
@@ -507,6 +512,11 @@ export const routeMapConfig = {
   },
   'shop-member-label-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '标签管理'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      tag_name: { type: String, default: '' }
+    }
   },
   'shop-member-crowd-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户人群'
@@ -537,6 +547,10 @@ export const routeMapConfig = {
   },
   'shop-product-course-manage-team-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团体课'
+    routeConfig.queryOptions = {
+      category_id: { type: Number, default: -1 },
+      course_name: { type: String, default: '' }
+    }
   },
   'shop-product-course-manage-team-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增团体课'

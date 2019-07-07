@@ -17,7 +17,7 @@ export default {
   render(h) {
     const usefulSlotNodes = this.$slots.default
       ? this.$slots.default.filter(item => item.tag)
-      : 0
+      : []
     const outerSlotNodes = usefulSlotNodes.splice(0, 2)
 
     const outerActions = intercept(

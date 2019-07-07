@@ -189,8 +189,8 @@ export default {
   data() {
     return {}
   },
-  mounted() {
-    // console.log('=======', this.basicInfo)
+  created() {
+    console.log('=======', this.basicInfo)
   }
 }
 </script>

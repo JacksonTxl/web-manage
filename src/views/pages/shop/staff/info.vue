@@ -33,32 +33,20 @@
           <a-dropdown>
             <a-menu slot="overlay" @click="handleMenuClick">
               <a-menu-item>
-                <modal-link
-                  tag="a"
-                  v-if="auth['brand_shop:staff:account|save']"
-                  :to="{ name: 'shop-staff-re-password', props: {staff: info} }"
-                >管理登录账号</modal-link>
+                <a v-if="auth['brand_shop:staff:account|save']"
+                  v-modal-link="{ name: 'shop-staff-re-password', props: {staff: info} }">管理登录账号</a>
               </a-menu-item>
               <a-menu-item>
-                <modal-link
-                  tag="a"
-                  v-if="auth['brand_shop:staff:staff|position']"
-                  :to="{ name: 'shop-staff-update-staff-position', props: {staff: info}} "
-                >职位变更</modal-link>
+                <a v-if="auth['brand_shop:staff:staff|position']"
+                  v-modal-link="{ name: 'shop-staff-update-staff-position', props: {staff: info} }">职位变更</a>
               </a-menu-item>
               <a-menu-item>
-                <modal-link
-                  tag="a"
-                  v-if="auth['brand_shop:staff:staff|salary']"
-                  :to="{ name: 'shop-staff-salary-account-setting', props: {staff: info} }"
-                >设置薪资账户</modal-link>
+                <a v-if="auth['brand_shop:staff:staff|salary']"
+                  v-modal-link="{ name: 'shop-staff-salary-account-setting', props: {staff: info} }">设置薪资账户</a>
               </a-menu-item>
               <a-menu-item>
-                <modal-link
-                  tag="a"
-                  v-if="auth['brand_shop:staff:staff|shop_leave']"
-                  :to="{ name: 'shop-staff-leave-current-shop', props: {staff: info}}"
-                >解除门店关系</modal-link>
+                <a v-if="auth['brand_shop:staff:staff|shop_leave']"
+                  v-modal-link="{ name: 'shop-staff-leave-current-shop', props: {staff: info} }">解除门店关系</a>
               </a-menu-item>
             </a-menu>
             <a-button>
@@ -69,7 +57,7 @@
         </a-col>
       </a-row>
     </st-panel>
-    <st-panel :tabs="list">
+    <st-panel :tabs="tabList">
       <div slot="actions"></div>
       <router-view></router-view>
     </st-panel>
@@ -77,41 +65,45 @@
 </template>
 <script>
 import { InfoService } from './info.service'
+import { RouteService } from '@/services/route.service'
+
 import { forEach } from 'lodash-es'
 export default {
   serviceInject() {
     return {
-      infoService: InfoService
+      infoService: InfoService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
       info: this.infoService.info$,
-      auth: this.infoService.auth$
+      auth: this.infoService.auth$,
+      query: this.routeService.query$
     }
   },
   data() {
     return {
       course: {
         label: '上课记录',
-        route: { name: 'shop-staff-info-course', query: { id: this.info.id } }
+        route: { name: 'shop-staff-info-course', query: this.query }
       },
       follow: {
         label: '跟进记录',
-        route: { name: 'shop-staff-info-follow', query: { id: this.info.id } }
+        route: { name: 'shop-staff-info-follow', query: this.query }
       },
       sold: {
         label: '售卖订单',
-        route: { name: 'shop-staff-info-sold', query: { id: this.info.id } }
+        route: { name: 'shop-staff-info-sold', query: this.query }
       },
       member: {
         label: '服务课程',
-        route: { name: 'shop-staff-info-member', query: { id: this.info.id } }
+        route: { name: 'shop-staff-info-member', query: this.query }
       },
-      list: [
+      tabList: [
         {
           label: '员工资料',
-          route: { name: 'shop-staff-info-basic', query: { id: this.info.id } }
+          route: { name: 'shop-staff-info-basic', query: this.query }
         }
       ]
     }
@@ -123,44 +115,32 @@ export default {
         name: 'shop-staff-edit',
         query: { id: this.info.id }
       })
-    },
-    flitertabs(identity) {
-      let map = {}
-      let obj = {
-        // basic: [1, 2, 3, 4],
-        course: [3, 4], // 上课记录
-        follow: [2, 4], // 跟进记录
-        member: [4], // 服务课程
-        sold: [2, 4] // 售卖订单
-      }
-      let i = 0
-      while (i < identity.length) {
-        for (let j in obj) {
-          if (obj[j].indexOf(identity[i]) !== -1) {
-            map[j] = true
-          }
-        }
-        i++
-      }
-      return map
-    },
-    showTabs(map) {
-      for (let i in map) {
-        if (map[i]) {
-          this.list.push(this[i])
-        }
-      }
     }
   },
   created() {
-    let { identity } = this.$route.meta.query
-    identity = [1, 2, 3, 4] // 调试用
-    this.showTabs(this.flitertabs(identity))
+    // 团课教练：上课记录
+    // 私教教练：上课记录、跟进记录、服务课程 、销售订单
+    // 会籍销售：跟进记录、服务课程 、销售订单
+    // 1,普通员工 2-会籍销售；3-团课教练；4-私人教练
+
+    let { identity } = this.info
+    identity = identity.map(item => item.id)
+    if (Array.isArray(identity) && identity.length) {
+      identity.forEach(ele => {
+        if (identity.includes(2)) {
+          this.tabList.push(this.member, this.sold)
+        } else if (identity.includes(3)) {
+          this.tabList.push(this.course)
+        } else if (identity.includes(4)) {
+          this.tabList.push(this.course, this.member, this.sold)
+        }
+      })
+    }
+    console.log('identity', identity)
+    console.log('this.tabList', this.tabList)
     this.$router.replace({
       name: 'shop-staff-info-basic',
-      query: {
-        id: this.info.id
-      }
+      query: this.query
     })
   }
 }

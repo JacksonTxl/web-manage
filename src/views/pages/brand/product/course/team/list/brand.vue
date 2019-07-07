@@ -9,7 +9,7 @@
           @click="addPersonalCourse"
         >新增团体课</st-button>
         <div>
-          <a-select  defaultValue="" v-model="query.category_id" class="mg-r16" style="width: 160px" @change="onChange">
+          <a-select :defaultValue="-1" v-model="query.category_id" class="mg-r16" style="width: 160px" @change="onChange">
             <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
           </a-select>
 
@@ -17,7 +17,7 @@
       </div>
     </header>
     <main class="page-shop-sale-list-brand__table mg-t8">
-      <team-table @delete-course="onDeleteCourse" :teamCourseList="teamCourseList"></team-table>
+      <team-table @delete-course="onDeleteCourse"></team-table>
     </main>
   </div>
 </template>
@@ -39,7 +39,6 @@ export default {
   rxState() {
     return {
       categoryList: this.listService.categoryList$,
-      teamCourseList: this.brandService.teamCourseList$,
       query: this.routeService.query$,
       auth: this.brandService.auth$
     }

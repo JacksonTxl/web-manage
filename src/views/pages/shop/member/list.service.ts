@@ -1,22 +1,20 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { MemberApi } from '@/api/v1/member'
 import { AuthService } from '@/services/auth.service'
 
-interface MemberListInfoState {
-  memberListInfo: any
-}
 @Injectable()
-export class ListService extends Store<MemberListInfoState> {
-  state$: State<MemberListInfoState>
+export class ListService implements RouteGuard {
+  // 业务状态
+  state$ = new State({})
+  loading$ = new State({})
   memberListInfo$: Computed<string>
   auth$: Computed<object>
   list$ = new State({})
   page$ = new State({})
   constructor(private memberApi: MemberApi, private authService: AuthService) {
-    super()
     this.state$ = new State({
       memberListInfo: {},
       auth: {
@@ -33,11 +31,7 @@ export class ListService extends Store<MemberListInfoState> {
     )
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
-  SET_MEMBER_LIST_INFO(memberListInfo: MemberListInfoState) {
-    this.state$.commit(state => {
-      state.memberListInfo = memberListInfo
-    })
-  }
+  @Effect()
   getListInfo(paramsObj: any) {
     return this.memberApi.getMember(paramsObj).pipe(
       tap(res => {
@@ -53,10 +47,7 @@ export class ListService extends Store<MemberListInfoState> {
   getMemberSourceRegisters() {
     return this.memberApi.getMemberSourceRegisters()
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getListInfo(to.meta.query).subscribe(res => {
-      // this.SET_MEMBER_LIST_INFO(res)
-      next()
-    })
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.getListInfo(to.meta.query)
   }
 }

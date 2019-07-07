@@ -22,9 +22,7 @@ export class PersonalReserveTableService implements RouteGuard {
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
 
-  beforeEach(to: ServiceRoute, form: ServiceRoute, next: any) {
-    this.reserveService.getList(to.query).subscribe(() => {
-      next()
-    })
+  beforeEach(to: ServiceRoute, form: ServiceRoute) {
+    return this.reserveService.getList(to.query)
   }
 }

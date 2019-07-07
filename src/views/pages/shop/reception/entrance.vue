@@ -7,24 +7,26 @@
         style="width: 200px"
         class="mg-r8"
         v-model="query.keyword"
-        @search="onSelect('keyword',$event)"
+        @search="onSingleSearch('keyword',$event)"
         placeholder="请输入姓名或手机号查找" />
         <a-select
         style="width: 160px"
         v-model="query.entry_type"
-        @change="onSelect('entry_type',$event)"
+        @change="onSingleSearch('entry_type',$event)"
         >
           <a-select-option v-for="item in entryTypeList" :key="item.value">{{item.label}}</a-select-option>
         </a-select>
       </div>
     </div>
     <st-table
-      :alertSelection="{onReset: onClear}"
-      :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
-      @change="onPageChange"
+      :scroll="{x:1440}"
+      :page='page'
+      :alertSelection='{onReset:onSelectionReset}'
+      @change='onTableChange'
+      :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
+      :loading="loading.getList"
       :columns="columns"
       :dataSource="list"
-      :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
       rowKey="id"
       >
         <!-- 姓名 -->
@@ -41,20 +43,25 @@
         </template>
         <!-- 入场时间 -->
         <template slot="entry_time" slot-scope="text,record">
-          {{record.entry_time}}&nbsp;~&nbsp;{{record.leave_time}}
+          {{record.entry_time}}{{record.leave_time?`&nbsp;~&nbsp;${record.leave_time}`:''}}
         </template>
         <!-- 操作 -->
         <div slot="action" slot-scope="text,record">
-          <a @click="onLeave(record)" v-if="auth.checkout">离场</a>
+          <st-table-actions>
+            <a @click="onLeave(record)" v-if="auth.checkout">离场</a>
+          </st-table-actions>
         </div>
     </st-table>
   </st-panel>
 </template>
 <script>
 import { EntranceService } from './entrance.service'
-import { columns } from './entrance.config'
+import { columns } from './entrance.config.ts'
 import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
+
 export default {
+  mixins: [ tableMixin ],
   name: 'PageShopReceptionEntrance',
   bem: {
     entrance: 'page-shop-reception-entrance'
@@ -68,6 +75,7 @@ export default {
   rxState() {
     return {
       auth: this.entranceService.auth$,
+      entryTypeList: this.entranceService.entryTypeList$,
       list: this.entranceService.list$,
       page: this.entranceService.page$,
       loading: this.entranceService.loading$,
@@ -75,50 +83,9 @@ export default {
     }
   },
   computed: {
-    entryTypeList() {
-      let array = []
-      array = [
-        {
-          label: '全部',
-          value: -1
-        },
-        {
-          label: '会员入场',
-          value: 1
-        },
-        {
-          label: '到访入场',
-          value: 2
-        }
-      ]
-      return array
-    }
-  },
-  data() {
-    return {
-      columns,
-      selectedRowKeys: [],
-      selectedRows: []
-    }
+    columns
   },
   methods: {
-    onSelect(key, data) {
-      this.$router.push({ query: { ...this.query, ...{ [key]: data } } })
-    },
-    // 清空列表选择
-    onClear() {
-      this.selectedRowKeys = []
-      this.selectedRows = []
-    },
-    // 列表选择
-    onSelectChange(selectedRowKeys, selectedRows) {
-      this.selectedRowKeys = selectedRowKeys
-      this.selectedRows = selectedRows
-    },
-    // 分页
-    onPageChange(data) {
-      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize } })
-    },
     // 离场
     onLeave(record) {
       this.$confirm({
@@ -126,8 +93,8 @@ export default {
         content: `确定离场吗？`,
         onOk: () => {
           return this.entranceService.setEntranceLeave(record.member_id).toPromise().then(() => {
-            this.onClear()
-            this.entranceService.getList().subscribe()
+            this.onSelectionReset()
+            this.$router.push({ force: true, query: this.query })
           })
         }
       })
@@ -145,8 +112,8 @@ export default {
           return this.entranceService.setEntranceLeaveBatch({
             ids
           }).toPromise().then(() => {
-            this.onClear()
-            this.entranceService.getList().subscribe()
+            this.onSelectionReset()
+            this.$router.push({ force: true, query: this.query })
           })
         }
       })

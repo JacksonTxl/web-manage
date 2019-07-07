@@ -4,7 +4,7 @@
     <div slot="title">
       <st-input-search
         placeholder="团课名称"
-        v-model="query.course_name"
+        v-model="course_name"
         @search="onSearchCourseName"
         style="width: 280px"
       />
@@ -20,7 +20,7 @@
       </a-col>
     </a-row>
     <div>
-      <shop-table @delete-course="deleteCourse" :teamCourseList="teamCourseList"></shop-table>
+      <shop-table @delete-course="deleteCourse"></shop-table>
     </div>
   </st-panel>
 </template>
@@ -44,8 +44,12 @@ export default {
       query: this.routeService.query$,
       shopsOptions: this.listService.shopSelectOptions$,
       categoryList: this.listService.categoryList$,
-      teamCourseList: this.listService.teamCourseList$,
       auth: this.listService.auth$
+    }
+  },
+  data() {
+    return {
+      course_name: ''
     }
   },
   methods: {
@@ -53,14 +57,17 @@ export default {
       this.$router.push({ name: 'shop-product-course-manage-team-add' })
     },
     onSearchCourseName(val) {
+      this.$router.push({ query: { course_name: this.course_name } })
+    },
+    onChange() {
       this.$router.push({ query: this.query })
     },
     deleteCourse(course) {
       this.listService.deleteCourse(course.id).subscribe()
-    },
-    onChange() {
-      this.$router.push({ query: this.query })
     }
+  },
+  mounted() {
+    this.query.category_id = -1
   }
 }
 </script>

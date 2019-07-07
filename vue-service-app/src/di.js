@@ -1,3 +1,4 @@
+import { isFn } from './utils'
 const INJECTED = '__injectedTypes'
 
 class Provider {
@@ -48,11 +49,22 @@ export class InjectionToken {
 }
 export class Container {
   _providers = new Map()
+  /**
+   * @type {Container} 父容器
+   */
+  parent = null
   bind(provide) {
     const provider = new Provider(provide, this)
     this._providers.set(provide, provider)
     return provider
   }
+  /**
+   *
+   * @param {object} provider 供应商对象
+   * @param {provider.provide} 供应
+   * @param {provider.useClass} 使用类注入
+   * @param {provider.useValue} 使用值注入
+   */
   useProvider({ provide, useClass, useValue } = {}) {
     if (useClass) {
       this.bind(provide).toClass(useClass)
@@ -63,19 +75,38 @@ export class Container {
       return this
     }
   }
-  get(provide) {
-    const provider = this._providers.get(provide)
+  get(token) {
+    // console.log('di token', token)
+    // 从实例化的供应商map中取
+    const provider = this._providers.get(token)
     if (!provider) {
-      if (typeof provide === 'function') {
+      // 是构造函数并且没有父容器的时候 使用lazy模式实例化该类
+      if (isFn(token)) {
         // 默认注入
-        this.useProvider({ provide: provide, useClass: provide })
-        return this._providers.get(provide).getValue()
+        this.useProvider({ provide: token, useClass: token })
+        return this._providers.get(token).getValue()
       } else {
-        console && console.error('[vue-service-app] Invalid provide->', provide)
+        console && console.error('[vue-service-app] Invalid provide->', token)
       }
     } else {
       return provider.getValue()
     }
+  }
+  new(token) {
+    if (isFn(token)) {
+      const provider = new Provider(token, this)
+      provider.toClass(token)
+      return provider.getValue()
+    } else {
+      console && console.error('[vue-service-app] Invalid provide->', token)
+    }
+  }
+  /**
+   * 删除已实例化的供应商
+   */
+  destroy(provide) {
+    this._providers.delete(provide)
+    return this
   }
 }
 

@@ -4,7 +4,7 @@ export default {
   name: 'StTable',
   props: {
     page: {
-      type: [Object, Boolean],
+      type: null,
       default: () => ({})
     },
     alertSelection: {
@@ -22,6 +22,8 @@ export default {
       {
         pagination: {
           pageSize: 20,
+          current: 1,
+          total: 0,
           showTotal: function(total, range) {
             return `共${total}条`
           },
@@ -38,13 +40,13 @@ export default {
       props.pagination = false
     }
     if (page.size) {
-      props.pagination.pageSize = +page.size
+      props.pagination.pageSize = +page.size || 20
     }
     if (page.current_page) {
-      props.pagination.current = +page.current_page
+      props.pagination.current = +page.current_page || 1
     }
     if (page.total_counts) {
-      props.pagination.total = +page.total_counts
+      props.pagination.total = +page.total_counts || 0
     }
     const renderChildren = []
     for (let k in this.$slots) {

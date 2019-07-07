@@ -28,6 +28,8 @@ export const columns = [
   {
     title: '操作',
     dataIndex: 'action',
+    fixed: 'right',
+    width: 160,
     scopedSlots: { customRender: 'action' }
   }
 ]

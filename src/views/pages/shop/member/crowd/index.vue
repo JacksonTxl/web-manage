@@ -18,18 +18,18 @@
       <st-table
         rowKey="id"
         :dataSource="crowdIndexInfo.info.list"
-        :columns="table.columns1"
+        :columns="columns"
         @change="onChange"
-        :pagination="false"
+        :page="false"
       >
         <div slot="shop_name1" slot-scope="text, record">
-          <a href="#" v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a>
-          <a-divider type="vertical"></a-divider>
-          <a href="#">
-            <router-link v-if="record.auth['shop:member:crowd|edit']" tag="a" :to=" { name: 'shop-member-crowd-add',query:{id:record.id}}">编辑</router-link>
-          </a>
-          <a-divider type="vertical"></a-divider>
-          <a href="#" v-if="record.auth['shop:member:crowd|del']" @click="deleteTreeNode(record)">删除</a>
+          <st-table-actions>
+            <a href="#" v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a>
+            <a href="#">
+              <router-link v-if="record.auth['shop:member:crowd|edit']" tag="a" :to=" { name: 'shop-member-crowd-add',query:{id:record.id}}">编辑</router-link>
+            </a>
+            <a href="#" v-if="record.auth['shop:member:crowd|del']" @click="deleteTreeNode(record)">删除</a>
+          </st-table-actions>
         </div>
         <div
           slot="description"
@@ -51,65 +51,35 @@
 import index from './private-components#/index'
 import { IndexService } from './index.service'
 import { MessageService } from '@/services/message.service'
+import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
+import { columns } from './index.config'
 export default {
+  mixins: [tableMixin],
   serviceInject() {
     return {
       aService: IndexService,
-      messageService: MessageService
+      messageService: MessageService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
       crowdIndexInfo: this.aService.crowdIndexInfo$,
+      query: this.routeService.query$,
       auth: this.aService.auth$
     }
   },
   data() {
     return {
-      table: {
-        columns1: [
-          {
-            title: '人群名称',
-            dataIndex: 'crowd_name',
-            scopedSlots: { customRender: 'crowd_name' }
-          },
-          {
-            title: '人群定义',
-            width: '30%',
-            dataIndex: 'description',
-            scopedSlots: { customRender: 'description' }
-          },
-          {
-            title: '人群总数',
-            dataIndex: 'num'
-          },
-          {
-            title: '更新时间',
-            dataIndex: 'updated_time'
-          },
-          {
-            title: '操作',
-            width: '160px',
-            dataIndex: 'shop_name1',
-            scopedSlots: { customRender: 'shop_name1' }
-          }
-        ],
-        list: [
-          {
-            id: 1,
-            province_name: 1,
-            city_name:
-              '啊实打实大苏打实打实大苏打实打实大苏打士大夫十分三国杀是否啊大大啊实打实大苏打实打实大苏打实打实大苏打士大夫十分三国杀是否啊大大',
-            district_name: 1,
-            shop_name: 1,
-            shop_name1: 1
-          }
-        ]
-      }
+
     }
   },
   components: {
     index
+  },
+  computed: {
+    columns
   },
   methods: {
     newCrowd(data) {
@@ -128,10 +98,8 @@ export default {
       this.$router.push({ query: {}, force: true })
     },
     deleteTreeNode(value) {
-      console.log(value)
-      let self = this
       this.aService.delCrowdBrandCrowd(value.id).subscribe(res => {
-        self.refresh()
+        this.refresh()
       })
     }
   },

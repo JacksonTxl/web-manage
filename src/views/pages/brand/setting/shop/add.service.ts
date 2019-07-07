@@ -7,7 +7,7 @@ import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class AddService implements RouteGuard {
-  serviceList$ = new State({})
+  serviceList$ = new State([])
   loading$ = new State({})
   unusedShops$ = new State([])
   constructor(

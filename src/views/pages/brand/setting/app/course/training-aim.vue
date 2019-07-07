@@ -3,7 +3,7 @@
     <div class="st-des">
       已添加{{resData.total}}个，支持添加{{resData.max}}个
     </div>
-    <st-form-table class="mg-t8">
+    <st-form-table class="mg-t8" :loading="loading.getTrainingAimList">
       <thead>
         <tr>
           <th>训练目的</th>
@@ -29,17 +29,19 @@
           <td>{{item.operator_name}}</td>
           <td>{{item.updated_time}}</td>
           <td>
-            <a v-if="item.auth['brand_shop:course:training_aim|edit']"
-              v-modal-link="{ name: 'training-edit',
-              props: { id: item.id, setting_name: item.setting_name },
-              on: { change: onListChange } }">编辑
-            </a>
-            <a-popconfirm
-               v-if="item.auth['brand_shop:course:training_aim|del']"
-              :title="`删除后不可进行恢复，${item.used_number ? '已标记的课程将删除此训练目的，' : ''}确定删除此训练目的？`"
-              @confirm="onDelete(item.id)">
-              <a class="mg-l8">删除</a>
-            </a-popconfirm>
+            <st-table-actions>
+              <a v-if="item.auth['brand_shop:course:training_aim|edit']"
+                v-modal-link="{ name: 'training-edit',
+                props: { id: item.id, setting_name: item.setting_name },
+                on: { change: onListChange } }">编辑
+              </a>
+              <a-popconfirm
+                v-if="item.auth['brand_shop:course:training_aim|del']"
+                :title="`删除后不可进行恢复，${item.used_number ? '已标记的课程将删除此训练目的，' : ''}确定删除此训练目的？`"
+                @confirm="onDelete(item.id)">
+                <a class="mg-l8">删除</a>
+              </a-popconfirm>
+            </st-table-actions>
           </td>
         </tr>
       </tbody>
@@ -62,6 +64,7 @@ export default {
     const { listService } = this
     return {
       resData: listService.resData$,
+      loading: listService.loading$,
       query: this.routeService.query$,
       auth: listService.auth$
     }

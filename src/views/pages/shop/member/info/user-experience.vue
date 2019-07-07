@@ -37,14 +37,11 @@
           <tbody>
             <tr>
               <td :colspan="tableTitle.length">
-                <modal-link
-                  tag="a"
-                  :to=" { name: 'shop-add-lateral-recording', on:{done: onModalTest }}"
-                >
+                <a v-modal-link="{ name: 'shop-add-lateral-recording', on:{done: onModalTest }}">
                   <a-button class="editable-add-btn" type="dashed">
                     <a-icon type="plus"/>添加体侧记录
                   </a-button>
-                </modal-link>
+                </a>
               </td>
             </tr>
             <tr v-for="(item,index) in physicalListInfo.physical_list" :key="index">

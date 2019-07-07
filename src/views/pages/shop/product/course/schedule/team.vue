@@ -118,7 +118,7 @@ export default {
             }
             that.$set(that.header, 'right', 'listWeek,listDay, custom4')
             that.$nextTick().then(() => {
-              that.$router.push({ name: 'shop-product-course-schedule-team-table' })
+              that.$router.push({ name: 'shop-product-course-schedule-team-table', query: { ...that.$route.query } })
             })
           }
         }

@@ -68,7 +68,7 @@
     <div v-if="isEdit">
       <st-textarea v-model="brandInfo.description" maxlength="300" placeholder="这个人很懒，什么都没留下" />
       <div class="mg-t24 ta-c">
-        <st-button type="primary" @click="onSave">确定</st-button>
+        <st-button type="primary" @click="onSave" :loading="loading.update">确定</st-button>
         <st-button class="mg-l8" @click="onCancel">取消</st-button>
       </div>
     </div>
@@ -100,7 +100,8 @@ export default {
     return {
       resData: this.brandService.resData$,
       query: this.routeService.query$,
-      settingEnums: user.settingEnums$
+      settingEnums: user.settingEnums$,
+      loading: this.brandService.loading$
     }
   },
   data() {
