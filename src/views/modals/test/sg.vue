@@ -14,9 +14,6 @@ export default {
       show: false
     }
   },
-  serviceProviders() {
-    return [SgService]
-  },
   serviceInject() {
     return {
       sgService: SgService

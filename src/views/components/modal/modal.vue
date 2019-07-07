@@ -65,7 +65,7 @@ export default {
     this.antModalContentEl = document.querySelector('.ant-modal-content')
     if (this.antModalEl && this.antModalContentEl) {
       // 模态窗上下点击不关闭
-      console.log(this.antModalEl, this.antModalContentEl)
+      // console.log(this.antModalEl, this.antModalContentEl)
       this.antModalEl.addEventListener('click', this.clickModal, false)
       this.antModalContentEl.addEventListener(
         'click',
