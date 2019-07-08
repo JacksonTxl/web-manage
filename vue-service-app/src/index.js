@@ -80,6 +80,9 @@ class VueServiceApp {
         const { serviceProviders } = this.$options
         if (serviceProviders) {
           // todo 销毁 services
+          this._componentSerivceProviders.forEach(p => {
+            rootContainer.destroy(p)
+          })
         }
       }
     })
