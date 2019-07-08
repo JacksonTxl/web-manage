@@ -13,13 +13,12 @@
           <v-nodes :vnodes="menu"/>
           <a-divider style="margin: 4px 0;"/>
           <div style="padding: 8px; cursor: pointer;" @click="addLable">
-            <modal-link
-              tag="a"
-              :to=" { name: 'shop-new-lable',on:{done: onModalTest }}"
+            <a
+              v-modal-link=" { name: 'shop-new-lable',on:{done: onModalTest }}"
               @click="addLable"
             >
               <a-icon type="plus"/>标签
-            </modal-link>
+            </a>
           </div>
         </div>
         <a-select-option v-for="item in lableList" :value="item.id" :key="item.id">{{item.tag_name}}</a-select-option>
