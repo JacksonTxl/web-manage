@@ -6,9 +6,7 @@
         <a-col :lg="9">
           <a-date-picker style="width: 224px;" format="YYYY-MM-DD" placeholder="开卡日期" @change="onChooseDate" />
           <a-select style="width: 160px;margin-left:12px" placeholder="请选择" v-model="cardquery.card_type" @change="onChooseCardType">
-            <a-select-option :value="1">期限卡</a-select-option>
-            <a-select-option :value="3">次卡</a-select-option>
-            <a-select-option :value="2">储值卡</a-select-option>
+            <a-select-option v-for="(item, index) in cardConsumeList" :value="item.value" :key="index">{{item.label}}</a-select-option>
           </a-select>
         </a-col>
         <a-col :lg="6"></a-col>
@@ -46,10 +44,7 @@
         <a-col :lg="9">
           <a-date-picker style="width: 224px;" placeholder="购买日期" format="YYYY-MM-DD" @change="onChooseDateCourse"/>
           <a-select style="width: 160px;margin-left:12px" v-model="coursequery.course_type" placeholder="请选择" @change="onChooseCourseType">
-            <a-select-option :value="3">团体课</a-select-option>
-            <a-select-option :value="1">私教课</a-select-option>
-            <a-select-option :value="2">私教小班课</a-select-option>
-            <a-select-option :value="4">课程包</a-select-option>
+            <a-select-option v-for="(item, index) in courseConsumeList" :value="item.value" :key="index">{{item.label}}</a-select-option>
           </a-select>
         </a-col>
         <a-col :lg="6"></a-col>
@@ -90,11 +85,13 @@
 <script>
 import { ReserveService } from './reserve.service'
 import { cardItem, course, leaseArk } from './reserve.config'
+import { UserService } from '@/services/user.service'
 
 export default {
   serviceInject() {
     return {
-      reserveService: ReserveService
+      reserveService: ReserveService,
+      userService: UserService
     }
   },
   rxState() {
@@ -102,7 +99,8 @@ export default {
       cardsListInfo: this.reserveService.cardsListInfo$,
       cardPage: this.reserveService.cardPage$,
       courseListInfo: this.reserveService.courseListInfo$,
-      coursePage: this.reserveService.coursePage$
+      coursePage: this.reserveService.coursePage$,
+      memberEnums: this.userService.memberEnums$
     }
   },
   data() {
@@ -123,7 +121,23 @@ export default {
   computed: {
     cardItem,
     course,
-    leaseArk
+    leaseArk,
+    cardConsumeList() {
+      let list = []
+      if (!this.memberEnums.card_consume_type) return list
+      Object.entries(this.memberEnums.card_consume_type.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    },
+    courseConsumeList() {
+      let list = []
+      if (!this.memberEnums.course_consume_type) return list
+      Object.entries(this.memberEnums.course_consume_type.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    }
   },
   methods: {
     /**
