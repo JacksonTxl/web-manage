@@ -4,6 +4,7 @@ import { State, Computed, Effect } from 'rx-state'
 import { BrandTeamCourseApi, GetTeamBrandCourseListInput, PutCourseTeamIntoBrandInput } from '@/api/v1/course/team/brand'
 import { AuthService } from '@/services/auth.service'
 import { forkJoin } from 'rxjs'
+import { MessageService } from '@/services/message.service'
 
 @Injectable()
 export class ShopService {
@@ -16,7 +17,8 @@ export class ShopService {
   state$: State<any>
   constructor(
     private shopTeamCourseApi: BrandTeamCourseApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private msg: MessageService
   ) {
     this.state$ = new State({
       auth: {
@@ -39,7 +41,9 @@ export class ShopService {
     return this.shopTeamCourseApi.deleteCourse(courseId)
   }
   putCourseTeamIntoBrand(query: PutCourseTeamIntoBrandInput) {
-    return this.shopTeamCourseApi.putCourseTeamIntoBrand(query)
+    return this.shopTeamCourseApi.putCourseTeamIntoBrand(query).pipe(tap(res => {
+      this.msg.success({ content: '' })
+    }))
   }
   init(query: any) {
     return forkJoin(this.getList(query))

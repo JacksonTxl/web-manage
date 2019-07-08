@@ -9,8 +9,12 @@
       </div>
     </div>
     <div class="modal-add-schedule__time">
-      <st-shop-hour-picker></st-shop-hour-picker>
-      <st-button class="copy" @click="onClickCopySchedule">复制上周</st-button>
+      <div class="modal-add-schedule__time" v-if="scheduleInfo.length">
+        <div class="time-item" v-for="info in scheduleInfo" :key="info.time_type">
+          <span>{{info.time_type | filterDate}}</span> <st-time-picker class="mg-b32" v-model="info.timing" :key="info.time_type"></st-time-picker>
+        </div>
+        <st-button class="copy" @click="onClickCopySchedule">复制上周</st-button>
+      </div>
     </div>
   </st-modal>
 </template>
@@ -19,6 +23,7 @@
 import { MessageService } from '@/services/message.service'
 import { PersonalScheduleScheduleService } from '../../../pages/shop/product/course/schedule/personal.service#/schedule.service'
 export default {
+  name: 'EditShchedule',
   serviceInject() {
     return {
       messageService: MessageService,
@@ -28,7 +33,28 @@ export default {
   data() {
     return {
       show: false,
-      scheduleInfo: {}
+      scheduleInfo: [{
+        time_type: 0,
+        timing: []
+      }, {
+        time_type: 1,
+        timing: []
+      }, {
+        time_type: 2,
+        timing: []
+      }, {
+        time_type: 3,
+        timing: []
+      }, {
+        time_type: 4,
+        timing: []
+      }, {
+        time_type: 5,
+        timing: []
+      }, {
+        time_type: 6,
+        timing: []
+      }]
     }
   },
   props: {
@@ -38,6 +64,12 @@ export default {
     start: {
       type: String,
       default: ''
+    }
+  },
+  filters: {
+    filterDate(val) {
+      const weekList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+      return `${weekList[val]}`
     }
   },
   computed: {
@@ -52,92 +84,7 @@ export default {
     onOkSave() {
       let date = {
         id: 33,
-        schedule_info: [
-          {
-            timing: [
-              {
-                start_time: '10:00:00',
-                end_time: '12:00:00'
-              },
-              {
-                start_time: '13:00:00',
-                end_time: '14:00:00'
-              }
-            ]
-          },
-          {
-            timing: [
-              {
-                start_time: '10:00:00',
-                end_time: '12:00:00'
-              },
-              {
-                start_time: '13:00:00',
-                end_time: '14:00:00'
-              }
-            ]
-          },
-          {
-            timing: [
-              {
-                start_time: '10:00:00',
-                end_time: '12:00:00'
-              },
-              {
-                start_time: '13:00:00',
-                end_time: '14:00:00'
-              }
-            ]
-          },
-          {
-            timing: [
-              {
-                start_time: '10:00:00',
-                end_time: '12:00:00'
-              },
-              {
-                start_time: '13:00:00',
-                end_time: '14:00:00'
-              }
-            ]
-          },
-          {
-            timing: [
-              {
-                start_time: '10:00:00',
-                end_time: '12:00:00'
-              },
-              {
-                start_time: '13:00:00',
-                end_time: '14:00:00'
-              }
-            ]
-          },
-          {
-            timing: [
-              {
-                start_time: '10:00:00',
-                end_time: '12:00:00'
-              },
-              {
-                start_time: '13:00:00',
-                end_time: '14:00:00'
-              }
-            ]
-          },
-          {
-            timing: [
-              {
-                start_time: '10:00:00',
-                end_time: '12:00:00'
-              },
-              {
-                start_time: '13:00:00',
-                end_time: '14:00:00'
-              }
-            ]
-          }
-        ]
+        schedule_info: this.schedule_info
       }
       this.scheduleService.update(date).subscribe(res => {
         console.log('ok', res)
@@ -155,8 +102,7 @@ export default {
         end_time: this.end
       }
       this.scheduleService.getUpdateInfo(form).subscribe(res => {
-        console.log('ok', res)
-        this.scheduleInfo = res.info
+        this.scheduleInfo = res.info.coach_info
       })
     }
   },
@@ -165,6 +111,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-</style>
