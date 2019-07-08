@@ -11,7 +11,7 @@ export class ShopApi extends Api {
   update(id: string, params: ShopInput) {
     return this.http.put(`/v1/brand/shop/${id}`, { params })
   }
-  updateShop(params: ShopInput) {
+  updateShop(params: ShopEditShopInput) {
     return this.http.put(`/v1/shop`, { params })
   }
   getInfo(id: string) {
@@ -97,6 +97,28 @@ export interface WeekDay {
 export interface GetShopListInput {
   page?: number
   size?: number
+}
+export interface ShopEditShopInput {
+  /**
+   * 门店电话 ，请按用户输入顺序传，后端默认保存第一个号码为首选号码
+   */
+  shop_phones: any[]
+  /**
+   * 门店服务的ids
+   */
+  service_ids: any[]
+  /**
+   * 门店营业时间
+   */
+  business_time: WeekDay[]
+  /**
+   * 门店邮箱
+   */
+  email?: string
+  /**
+   * 门店图片
+   */
+  shop_images: ShopImages[]
 }
 export interface ShopInput {
   /**

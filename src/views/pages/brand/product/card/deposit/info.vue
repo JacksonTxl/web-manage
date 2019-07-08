@@ -42,7 +42,7 @@
             <span class="value">共{{cardInfo.can_use_shop_num}}家门店</span>
           </p>
           <st-container v-if="cardInfo.can_use_shop_num!==1">
-            <a-table
+            <st-table
               size="middle"
               rowKey="shop_id"
               :columns="shop_columns"
@@ -59,7 +59,7 @@
             <span class="value">{{cardInfo.support_sales | enumFilter('deposit_card.support_sales')}}</span>
           </p>
           <st-container v-if="cardInfo.support_sales!==1">
-            <a-table
+            <st-table
               size="middle"
               rowKey="shop_id"
               :columns="shop_columns"
@@ -75,7 +75,7 @@
             <span class="label">售卖定价：</span>
           </p>
           <st-container>
-            <a-table
+            <st-table
               size="middle"
               rowKey="card_price"
               :columns="price_gradient_columns"
@@ -91,7 +91,7 @@
               <template slot="deadline" slot-scope="text">
                 {{text.number}} {{text.type|enumFilter('deposit_card.unit')}}
               </template>
-            </a-table>
+            </st-table>
           </st-container>
         </div>
         <div :class="item('transfer')" class="mb-24">

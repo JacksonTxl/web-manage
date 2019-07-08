@@ -34,8 +34,9 @@
         </div>
       </div>
     </div>
-    <div :class="shopInfo('time')">
-
+    <div :class="shopInfo('time')" class="mg-t12">
+      <st-t3 class="mg-b16">营业时间</st-t3>
+      <st-shop-hour-picker :isInfo="true" v-model="info.business_time"></st-shop-hour-picker>
     </div>
   </div>
 </template>
@@ -69,7 +70,7 @@ export default {
   },
   data() {
     return {
-      flagList: ['', 'shop-presale', 'shop-trial', 'shop-opening', 'shop-close']
+      flagList: ['', 'shop-trial', 'shop-opening', 'shop-stop', 'shop-close', 'shop-holiday']
     }
   },
   methods: {
@@ -87,7 +88,7 @@ export default {
     },
     // 编辑
     onEdit() {
-
+      this.$router.push({ path: '/shop/setting/shop/edit' })
     },
     // 设置放假
     onSet() {

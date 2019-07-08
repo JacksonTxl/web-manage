@@ -18,7 +18,7 @@
               上课范围<st-help-tooltip id="TSCPC001" />
             </template>
             <div :class="add('course')">
-              <table>
+              <st-form-table>
                 <colgroup>
                   <col style="width:8%;">
                   <col style="width:16%;">
@@ -65,7 +65,7 @@
                     <td>{{personal_total}}</td>
                   </tr>
                 </tbody>
-              </table>
+              </st-form-table>
             </div>
           </st-form-item>
         </a-col>
@@ -305,7 +305,7 @@ export default {
         // 是否可以转让: 0 不可以 1 可以
         is_allow_transfer: 0,
         // 转让费率
-        transfer_rate: null,
+        transfer_rate: undefined,
         // 转让单位 1:百分比 2:元
         transfer_unit: 1,
         // 售卖方式
@@ -358,15 +358,15 @@ export default {
   methods: {
     init() {
       if (!this.packageInfo.is_allow_transfer) {
-        this.packageInfo.transfer_rate = null
+        this.packageInfo.transfer_rate = undefined
       }
       if (!this.packageInfo.is_team) {
-        this.packageInfo.team_times = null
-        this.packageInfo.team_unit_price = null
+        this.packageInfo.team_times = undefined
+        this.packageInfo.team_unit_price = undefined
       }
       if (!this.packageInfo.is_personal) {
-        this.packageInfo.personal_times = null
-        this.packageInfo.personal_unit_price = null
+        this.packageInfo.personal_times = undefined
+        this.packageInfo.personal_unit_price = undefined
       }
       this.form.setFieldsValue({
         'price': this.packageInfo.price,
@@ -374,15 +374,15 @@ export default {
         'end_time': moment(this.packageInfo.end_time * 1000),
         'valid_time': this.packageInfo.valid_time,
         'frozen_days': this.packageInfo.frozen_days,
-        'transfer_rate': `${this.packageInfo.transfer_rate}`
+        'transfer_rate': this.packageInfo.transfer_rate
       })
       // 课程范围
       this.packageData.is_team = this.packageInfo.is_team
       this.packageData.team_times = this.packageInfo.team_times
-      this.packageData.team_unit_price = this.packageInfo.team_unit_price
+      this.packageData.team_unit_price = +this.packageInfo.team_unit_price
       this.packageData.is_personal = this.packageInfo.is_personal
       this.packageData.personal_times = this.packageInfo.personal_times
-      this.packageData.personal_unit_price = this.packageInfo.personal_unit_price
+      this.packageData.personal_unit_price = +this.packageInfo.personal_unit_price
       // 售卖时间
       this.start_time = moment(this.packageInfo.start_time * 1000)
       this.end_time = moment(this.packageInfo.end_time * 1000)
@@ -413,13 +413,14 @@ export default {
           this.packageData.price = values.price
           this.packageData.valid_time = values.valid_time
           this.packageData.frozen_days = values.frozen_days
-          this.packageData.transfer_rate = values.transfer_rate
+          this.packageData.transfer_rate = values.transfer_rate === undefined ? undefined : values.transfer_rate
           this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
           this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
           this.packageData.album_id = this.packageInfo.album_id
+          this.packageData.team_unit_price = +this.packageData.team_unit_price
+          this.packageData.personal_unit_price = +this.packageData.personal_unit_price
           this.editPackageService.editPackage(this.packageData).subscribe(res => {
             this.$router.push({ path: '/shop/product/course/manage/package/list' })
-            console.log(res)
           })
         }
       })
@@ -464,7 +465,7 @@ export default {
     transfer(e) {
       this.packageData.is_allow_transfer = +e.target.checked
       // 重置转让费用的校验
-      this.packageData.transfer_rate = null
+      this.packageData.transfer_rate = undefined
       this.form.resetFields(['transfer_rate'])
     },
     fileChange(data) {
@@ -483,9 +484,9 @@ export default {
       }
     },
     transferUnitChange() {
-      this.packageData.transfer_rate = null
+      this.packageData.transfer_rate = undefined
       this.form.setFieldsValue({
-        'transfer_rate': null
+        'transfer_rate': undefined
       })
     },
     // start_time validatorFn

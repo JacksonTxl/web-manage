@@ -16,7 +16,7 @@
           <a-input placeholder="支持中英文、数字、不超过15个字" max="15" v-decorator="rules.staff_name"/>
         </st-form-item>
         <st-form-item label="手机号" required>
-          <a-input-group compact>
+          <a-input-group compact style="top: 0;">
             <a-select style="width: 15%;" v-model="choosed_code_id">
               <template v-for="item in codeList">
                 <a-select-option :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
@@ -50,11 +50,11 @@
           </template>
           <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.nickname"/>
         </st-form-item>
-        <st-form-item label="邮箱" required>
+        <st-form-item label="邮箱">
           <a-input placeholder="请输入邮箱" v-decorator="rules.mail"/>
         </st-form-item>
-        <st-form-item label="证件" required>
-          <a-input-group compact>
+        <st-form-item label="证件">
+          <a-input-group compact style="top: 0;">
             <a-select style="width: 25%;" @change="onSelectIdtype" v-model="choosed_id_type">
               <template v-for="(item,key) in enums.id_type.value">
                 <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
@@ -88,7 +88,7 @@
         </st-form-item>
       </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
-        <st-form-item label="部门">
+        <st-form-item label="部门" required>
           <department-select
           placeholder="请选择部门"
           style="width: 100%"
@@ -97,14 +97,14 @@
           @change="onChange">
           </department-select>
         </st-form-item>
-        <st-form-item label="工作性质" required>
+        <st-form-item label="工作性质" >
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
             <template v-for="(item,key) in enums.nature_work.value">
               <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
-        <st-form-item label="系统角色">
+        <st-form-item label="系统角色" required>
           <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id">
             <template v-for="item in roleList">
               <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
@@ -113,7 +113,7 @@
         </st-form-item>
         <st-form-item v-if="isShowLevel">
           <template slot="label">
-              教练等级<st-help-tooltip id="TBCE003" />
+            教练等级<st-help-tooltip id="TBCE003" />
           </template>
           <coach-level-select
             placeholder="请选择教练等级"
@@ -154,37 +154,19 @@
         <st-form-item label="登录账号">
           <a-input
             placeholder="6-18个字符，可使用字母、数字、下划线"
-            v-decorator="['account',
-            { rules: [{
-                required: isChoosePermission,
-                message: '请输入登录账号'
-              }],
-              initialValue: ''
-            }]"
+            v-decorator="rules.account"
           ></a-input>
         </st-form-item>
         <st-form-item label="登录密码">
           <a-input
             placeholder="6-15个字符，区分大小写"
-            v-decorator="['password',
-            { rules: [{
-                required: isChoosePermission,
-                message: '请输入登录密码'
-              }],
-              initialValue: ''
-            }]"
+            v-decorator="rules.password"
           ></a-input>
         </st-form-item>
         <st-form-item label="确认密码">
           <a-input
             placeholder="请再次填写密码"
-            v-decorator="['repeat_password',
-            { rules: [{
-                required: isChoosePermission,
-                message: '请输入确认密码'
-              }],
-              initialValue: ''
-            }]"
+            v-decorator="rules.repeat_password"
           ></a-input>
         </st-form-item>
       </a-col>
@@ -201,11 +183,12 @@
 </template>
 <script>
 import CoachLevelSelect from '@/views/biz-components/coach-level-select'
-import { RuleConfig } from '@/constants/staff/rule'
 import { UserService } from '@/services/user.service'
 import { AddService } from '../add.service'
 import ShopSelect from '@/views/biz-components/shop-select'
 import DepartmentSelect from '@/views/biz-components/department-select'
+import { RuleConfig } from '@/constants/staff/rule'
+
 export default {
   name: 'StaffDetailBasics',
   serviceInject() {
@@ -231,7 +214,7 @@ export default {
       faceList: [],
       isChoosePermission: false,
       isAdd: [],
-      addflag: true,
+      addflag: false,
       isShowLevel: false, // 是否展示教练等级
       treeExpandedKeys: [],
       value: undefined
@@ -246,20 +229,15 @@ export default {
     onSelectIdtype() {},
     getIsCoach(data) {
       console.log('watch new', data)
-      let flag = data.some(val => {
-        return val === 3 || val === 4
-      })
-      if (!flag) {
+      this.isShowLevel = data.includes(4)
+
+      if (!this.isShowLevel) {
         this.$emit('deletStep')
-        this.isShowLevel = false
-        this.addflag = true
-      } else {
-        if (!this.addflag) return
-        this.isShowLevel = data.some(val => {
-          return val === 4
-        })
-        this.$emit('addStep')
         this.addflag = false
+      } else {
+        if (this.addflag) return
+        this.$emit('addStep')
+        this.addflag = true
       }
     },
     permissionChange(e) {

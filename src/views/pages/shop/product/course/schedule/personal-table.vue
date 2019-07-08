@@ -12,7 +12,6 @@
           </st-button>
         </a-col>
         <a-col :lg="7" :offset="2">
-          {{query}}
           <date @today="getList" :start="query.start_date" @pre="getList" @next="getList"/>
         </a-col>
         <a-col :lg="7" class="schedule-button">
@@ -115,15 +114,13 @@ export default {
       currentTime: ''
     }
   },
-  mounted() {
-    this.currentTime = '2019-05-26'
-  },
   methods: {
     onClickSkipSchedule() {
       this.$router.push({ name: 'shop-product-course-schedule-personal-calendar' })
     },
-    getList(query = {}) {
-      this.$router.push({ query: { ...this.query, ...query } })
+    getList(val = {}) {
+      const query = { ...this.query, start_date: val.start_time, end_date: val.end_time }
+      this.$router.push({ query })
     },
     onPageChange() {}
   }

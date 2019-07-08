@@ -61,8 +61,7 @@ export class RuleConfig {
     return ['mail', {
       rules: [
         {
-          required: true,
-          message: '请填写邮箱',
+          message: '请填写正确格式邮箱号',
           pattern: this.pattern.EMAIL
         }
       ]
@@ -83,7 +82,6 @@ export class RuleConfig {
     return ['id_number', {
       rules: [
         {
-          required: true,
           message: '请填写正确的身份证号',
           pattern: this.pattern.ID
         }
@@ -107,19 +105,17 @@ export class RuleConfig {
 
   // 部门
   get department_id() {
-    return ['department_id']
+    return ['department_id', {
+      rules: [{ required: true, message: '请选择部门' }]
+    }]
   }
   // 工号
   get staff_num() {
-    return ['staff_num', {
-      rules: [{ required: true, message: '请填写工号' }]
-    }]
+    return ['staff_num']
   }
   // 工作性质
   get nature_work() {
-    return ['nature_work', {
-      rules: [{ required: true, message: '请选择工作性质' }]
-    }]
+    return ['nature_work']
   }
 
   // 入职时间
@@ -135,7 +131,9 @@ export class RuleConfig {
   }
   // 角色
   get role_id() {
-    return ['role_id']
+    return ['role_id', {
+      rules: [{ required: true, message: '请选择系统角色' }]
+    }]
   }
   // 系统使用权限
   get is_permission() {

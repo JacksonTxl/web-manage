@@ -22,7 +22,7 @@
           <st-info>
             <st-info-item label="课程名称">{{packageInfo.course_name}}</st-info-item>
             <st-info-item label="类型">{{packageInfo.type}}</st-info-item>
-            <st-info-item label="剩余课时">{{packageInfo.team_course_remain}}节私教课,{{packageInfo.personal_course_remain}}节团体课</st-info-item>
+            <st-info-item label="剩余课时">{{packageInfo.personal_course_remain}}节私教课,{{packageInfo.team_course_remain}}节团体课</st-info-item>
             <st-info-item label="有效期">{{moment(packageInfo.course_buy_time*1000).format('YYYY-MM-DD HH:mm')}} 至 {{moment(packageInfo.course_end_time*1000).format('YYYY-MM-DD HH:mm')}}</st-info-item>
           </st-info>
         </a-col>

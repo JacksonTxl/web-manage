@@ -60,6 +60,11 @@ export default {
         }
       })
     },
+    onSelectionChange(selectedRowKeys, selectedRows) {
+      this.selectedRowKeys = selectedRowKeys
+      this.selectedRows = selectedRows
+      this.$emit('check', this.selectedRows)
+    },
     onClickEditCourseInfo(id) {
       this.$router.push({
         name: 'brand-product-course-team-edit',
