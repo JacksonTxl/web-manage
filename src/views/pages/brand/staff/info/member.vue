@@ -3,12 +3,10 @@
     <a-row :gutter="24">
       <a-col :lg="24">
         <a-col :lg="18">
-
-          <shop-select style="width: 160px" v-model="query.shop_id" @change="onChange"></shop-select>
-
+          <shop-select style="width: 160px" v-model="query.shop_id" @change="onSingleSearch('shop_id', $event)"></shop-select>
         </a-col>
         <a-col :lg="6">
-          <st-input-search placeholder="请输入会员名姓名、手机号进行查询" @search="searchCourse"/>
+          <st-input-search placeholder="请输入会员名姓名、手机号进行查询" @search="onSingleSearch('keyword', $event)"/>
         </a-col>
       </a-col>
       <a-col :lg="24" class="mg-t16">

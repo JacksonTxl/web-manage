@@ -2,23 +2,11 @@
   <div>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
-        <a-col :lg="16">
-          <a-select
-            style="width: 160px;margin-left:12px"
-            class="mg-r8"
-            :defaultValue="-1"
-            placeholder="请选择门店"
-          >
-            <a-select-option :value="1">门店1</a-select-option>
-            <a-select-option :value="3">门店2</a-select-option>
-            <a-select-option :value="2">门店3</a-select-option>
-            <a-select-option :value="-1">全部</a-select-option>
-          </a-select>
+        <a-col :lg="18">
           <a-range-picker @change="onChooseDate" format="YYYY-MM-DD"/>
         </a-col>
-        <a-col :lg="2"></a-col>
         <a-col :lg="6">
-          <st-input-search placeholder="请输入用户姓名进行查询" @search="searchCourse"/>
+          <st-input-search placeholder="请输入用户姓名进行查询" @search="onSingleSearch('member_name', $event)"/>
         </a-col>
       </a-col>
       <a-col :lg="24" class="mg-t16">

@@ -43,7 +43,8 @@ const ROUTE_NAMES_USE_PAGE = [
 
   'shop-staff-info-member',
   'shop-staff-info-course',
-  'shop-staff-info-sold'
+  'shop-staff-info-sold',
+  'shop-staff-list'
 ]
 
 export default {
