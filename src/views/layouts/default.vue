@@ -56,10 +56,10 @@
                   <span>账号安全</span>
                 </a-menu-item>
                 <a-menu-item class="layout-default-body__options">
-                  <modal-link tag="a" :to="{ name: 'brand-switch' }">
+                  <a v-modal-link="{ name: 'brand-switch' }">
                     <st-icon type="switch"></st-icon>
                     <span>切换品牌</span>
-                  </modal-link>
+                  </a>
                 </a-menu-item>
                 <a-menu-divider/>
                 <a-menu-item  @click="onClickLogout" class="layout-default-body__options">

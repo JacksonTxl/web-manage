@@ -1,5 +1,5 @@
 <template>
-  <a-modal title="上课提成" v-model="show" :footer="null">
+  <st-modal title="上课提成" v-model="show" :footer="null">
     <a-row :gutter="8">
         <a-col :lg="12">上课节数：33节</a-col>
         <a-col :lg="12">课时费：159/节</a-col>
@@ -17,7 +17,7 @@
            <st-button type="primary"  @click="onExportList" :disabled="list.length > 0 ? false: true">批量导出</st-button>
         </a-col>
     </a-row>
-  </a-modal>
+  </st-modal>
 </template>
 
 <script>

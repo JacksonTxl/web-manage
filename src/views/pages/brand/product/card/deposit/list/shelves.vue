@@ -58,11 +58,10 @@
       </template>
       <!-- 支持消费门店 -->
       <template slot="consumption_range" slot-scope="text,record">
-        <modal-link
+        <a
           v-if="text.id === 2"
-          tag="a"
-          :to="{ name: 'card-brand-deposit-shop-table' , props:{id: record.id,type:'Consume',title: '支持消费门店'}}"
-        >{{text.name}}</modal-link>
+          v-modal-link="{ name: 'card-brand-deposit-shop-table' , props:{id: record.id,type:'Consume',title: '支持消费门店'}}"
+        >{{text.name}}</a>
         <span v-else class="use_num">{{text.name}}</span>
       </template>
       <!-- 支持售卖时间 -->

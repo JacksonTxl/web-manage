@@ -10,9 +10,8 @@
     <tbody>
       <tr v-if="auth.add">
         <td colspan="5" class="st-form-table__add">
-          <st-button type="dashed" block>
-            <modal-link tag="a" :to=" { name: 'finance-add-performance-template',on: {change: refresh}}">新增业绩模板
-            </modal-link>
+          <st-button type="dashed" block v-modal-link=" { name: 'finance-add-performance-template',on: {change: refresh}}">
+           新增业绩模板
           </st-button>
         </td>
       </tr>
@@ -25,8 +24,8 @@
               <span>{{ item.used }}</span>
             </template>
             <template v-if="item.used != 0 ">
-              <modal-link tag="a" :to=" { name: 'finance-search-staff-list-performance', props: {id: item.id}}">
-                {{ item.used }}</modal-link>
+              <a v-modal-link=" { name: 'finance-search-staff-list-performance', props: {id: item.id}}">
+                {{ item.used }}</a>
             </template>
           </td>
           <td>{{ item.created_time }}</td>

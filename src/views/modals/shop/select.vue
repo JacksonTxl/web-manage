@@ -1,5 +1,5 @@
 <template>
-  <a-modal
+  <st-modal
     title="选择场馆"
     :footer="null"
     class="modal-brand-switch"
@@ -21,7 +21,7 @@
         <st-button type="primary" @click="confirm">确定</st-button>
       </p>
     </div>
-  </a-modal>
+  </st-modal>
 </template>
 <script>
 import { Action } from 'rx-state'

@@ -2,9 +2,9 @@
   <st-panel class="page-shop-label-container">
     <div slot="title">
       <st-button type="primary" v-if="auth.add">
-        <modal-link tag="a" :to=" { name: 'label-add',on:{ change: onSearhReset }}">
+        <a v-modal-link=" { name: 'label-add',on:{ change: onSearhReset }}">
           <a-icon type="plus" class="mg-r8"/>添加标签
-        </modal-link>
+        </a>
       </st-button>
     </div>
     <div slot="actions">
