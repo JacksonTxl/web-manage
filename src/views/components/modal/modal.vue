@@ -47,7 +47,6 @@ export default {
   },
   methods: {
     close() {
-      console.log('close')
       this.$emit('change', false)
     },
     clickModal() {

@@ -28,8 +28,9 @@
           :columns="soldColums"
           :dataSource="soldInfo"
           :scroll="{ x: 1750}"
-          @change="pageChange"
+          :loading="loading.getStaffSoldInfo"
           :page="page"
+          @change="onTableChange"
         >
           <template slot="id" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goOrderDetai(record)">{{ text }}</a>
@@ -46,7 +47,10 @@
 <script>
 import { soldColums } from './columns.config'
 import { SoldService } from './sold.service'
+import tableMixin from '@/mixins/table.mixin'
+
 export default {
+  mixins: [ tableMixin ],
   serviceInject() {
     return {
       soldservice: SoldService
@@ -55,6 +59,7 @@ export default {
   rxState() {
     return {
       soldInfo: this.soldservice.soldInfo$,
+      loading: this.soldservice.loading$,
       page: this.soldservice.page$
     }
   },
@@ -112,17 +117,6 @@ export default {
         query: {
           id: this.id,
           keyword: e
-        },
-        force: true
-      })
-    },
-    // 页码
-    pageChange(page) {
-      this.$router.push({
-        query: {
-          id: this.id,
-          page: page.current_page,
-          size: page.size
         },
         force: true
       })

@@ -68,8 +68,8 @@
 
         </a-select>
         <st-button v-if="auth.add" class="mg-r8" @click="onAddStaff">添加员工</st-button>
-        <st-button v-if="auth.import" @click="onExportStaff">导入员工</st-button>
-        <st-button class="mg-r8" :disabled="selectedRowKeys.length > 0 ? false : true">
+        <st-button v-if="auth.import" class="mg-r8" @click="onExportStaff">导入员工</st-button>
+        <st-button :disabled="selectedRowKeys.length > 0 ? false : true">
           <a v-modal-link="{ name: 'shop-staff-join-department', props: {},on :{change: joinok} }" v-if="auth.join">
             批量加入部门
           </a>

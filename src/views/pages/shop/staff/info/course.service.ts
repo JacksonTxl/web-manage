@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State } from 'rx-state'
+import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { ShopStaffApi, GetStaffCourseListInput } from '@/api/v1/staff/staff'
 
@@ -7,7 +7,9 @@ import { ShopStaffApi, GetStaffCourseListInput } from '@/api/v1/staff/staff'
 export class CourseService implements RouteGuard {
     courseInfo$ = new State({})
     page$ = new State({})
+    loading$ = new State({})
     constructor(private staffApi: ShopStaffApi) {}
+    @Effect()
     getCoursesList(query: GetStaffCourseListInput) {
       return this.staffApi.getStaffCourseList(query).pipe(
         tap(res => {
@@ -18,6 +20,6 @@ export class CourseService implements RouteGuard {
     }
 
     beforeEach(to: ServiceRoute, from: ServiceRoute) {
-      return this.getCoursesList(to.query)
+      return this.getCoursesList(to.meta.query)
     }
 }

@@ -132,6 +132,7 @@ export default {
           .put({
             file: blob,
             isPrivate: true,
+            type: 'face',
             uploadProgress: e => {
               this.progress = parseInt((e.loaded / e.total) * 100)
             }

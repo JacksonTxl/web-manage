@@ -12,7 +12,8 @@ const WebpackExternalVendorPlugin = require('webpack-external-vendor-plugin')
 const IS_DEV = env !== 'production'
 
 const localApiEnvHostTarget = {
-  dev: 'https://api-saas-dev.styd.cn',
+  dev: 'http://10.10.31.194:10000',
+  // dev: 'https://api-saas-dev.styd.cn',
   test: 'https://api-saas-test.styd.cn'
 }[process.env.LOCAL_API_ENV || 'dev']
 

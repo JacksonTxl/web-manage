@@ -21,16 +21,33 @@ interface PutOptions {
    * 上传进度cb
    */
   uploadProgress?: (val: any) => any
+  /**
+   * 是否使用私有oss空间
+   */
+  isPrivate?: boolean
 }
 @Injectable()
 export class OssService extends Api {
-  typeSuffix=[{
-    type: 'image/png',
-    suffix: '.png'
-  }]
-  put({ file, type = 'image', uploadProgress = () => {} }: PutOptions) {
-    return this.getOssPolicy(type).pipe(
-      mergeMap(({ policy_info: res }:any) => {
+  TYPES = ['image', 'face']
+  typeSuffix = [
+    {
+      type: 'image/png',
+      suffix: '.png'
+    }
+  ]
+  put({
+    file,
+    type = '',
+    uploadProgress = () => {},
+    isPrivate = false
+  }: PutOptions) {
+    if (!this.TYPES.includes(type)) {
+      throw new Error(
+        `[oss.service] 上传文件必须使用业务类型 ${this.TYPES} 之一`
+      )
+    }
+    return this.getOssPolicy(type, isPrivate).pipe(
+      mergeMap(({ policy_info: res }: any) => {
         let key = this.getKey(file)
         let formData = new FormData()
         formData.append('key', `${res.dir}${key}`)
@@ -41,6 +58,7 @@ export class OssService extends Api {
         formData.append('file', file)
         let i = formData.entries()
         const sub: any = new Subject()
+        console.log(formData)
         const put$ = ajax({
           url: res.host,
           body: formData,
@@ -52,19 +70,23 @@ export class OssService extends Api {
           uploadProgress(val)
         })
         let resData = { fileKey: `${res.dir}${key}` }
-        return put$.pipe(
-          map(val => resData)
-        )
+        return put$.pipe(map(val => resData))
       })
     )
   }
-  private getOssPolicy(type:string) {
-    return this.http.get(`/upload/${type}/policy`)
+  private getOssPolicy(type: string, isPrivate: boolean) {
+    return this.http.get(`/upload/policy`, {
+      query: {
+        business: type,
+        acl: isPrivate ? 'private' : 'public-read-write'
+      }
+    })
   }
   private getKey(file: any): string {
     // 生成随机字符串
     function randomString(len: number = 32) {
-      var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_-'
+      var chars =
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_-'
       var maxPos = chars.length
       var pwd = ''
       for (let i = 0; i < len; i++) {
