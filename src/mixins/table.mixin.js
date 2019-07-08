@@ -8,6 +8,7 @@ const ROUTE_NAMES_USE_PAGE = [
   'brand-product-course-personal-list-brand',
   'brand-product-course-personal-list-shop',
   'brand-product-card-deposit-list-all',
+  'brand-product-card-deposit-list-shelves',
 
   'brand-finance-salary-template-basic',
   'brand-finance-salary-template-performance',

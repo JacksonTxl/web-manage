@@ -43,7 +43,7 @@ export class ShelvesService implements RouteGuard {
     }
     @Effect()
     setCardShelfDown(params:BrandCardShelfDownInput) {
-      return this.cardApi.setBrandCardsShelfDown(params)
+      return this.cardApi.setBrandDepositShelfDown(params)
     }
     beforeEach(to:ServiceRoute) {
       return this.init(to.meta.query)
