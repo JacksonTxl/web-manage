@@ -40,29 +40,7 @@ export default {
     return {
       form: this.$form.createForm(this),
       show: false,
-      coachId: '',
-      schedule_info: [{
-        time_type: 0,
-        timing: []
-      }, {
-        time_type: 1,
-        timing: []
-      }, {
-        time_type: 2,
-        timing: []
-      }, {
-        time_type: 3,
-        timing: []
-      }, {
-        time_type: 4,
-        timing: []
-      }, {
-        time_type: 5,
-        timing: []
-      }, {
-        time_type: 6,
-        timing: []
-      }]
+      coachId: ''
     }
   },
   filters: {

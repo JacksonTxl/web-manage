@@ -2,15 +2,7 @@
   <div class="page-shop-sale-list-shop">
     <header>
       <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
-        <div>
-          <!-- TODO: 批量转入品牌库的按钮 -->
-          <a
-            v-if="auth.transfer"
-            type="primary"
-            tag="st-button"
-            v-modal-link="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}"
-          >转入品牌私教课程库</a>
-        </div>
+        <div></div>
         <div>
           <a-select class="mg-r8"  :defaultValue="-1" style="width: 160px" v-model="query.shop_id" @change="onChange">
             <a-select-option v-for="shop in shopsOptions" :key="shop.id" :value="shop.id">{{shop.shop_name}}</a-select-option>
@@ -52,6 +44,7 @@ export default {
   data() {
     return {
       selectedRowKeys: [],
+      selectedRows: [],
       courseStatus: [{ label: '所有状态', value: -1 }, { label: '有效', value: 1 }, { label: '无效', value: 0 }]
     }
   },
@@ -59,8 +52,8 @@ export default {
     ShopSaleListTable
   },
   methods: {
-    onCheckGetCourse(selectedRowKeys) {
-      this.selectedRowKeys = selectedRowKeys
+    onCheckGetCourse(selectedRows) {
+      this.selectedRows = selectedRows
     },
     onChange() {
       this.$router.push({ query: { ...this.query, course_name: '' } })
