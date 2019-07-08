@@ -132,7 +132,7 @@ export default {
     },
     productType(type) {
       let name = ''
-      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金
+      // 1-会员卡 2-私教课 3-团体课 4-课程包 5-储值卡 6-小班课 7-手续费 8-定金 9-押金 10-储物柜
       switch (type) {
         case 1:
           name = 'member'
@@ -160,6 +160,9 @@ export default {
           break
         case 9:
           name = 'member'
+          break
+        case 10:
+          name = 'cabinet'
           break
       }
       return name

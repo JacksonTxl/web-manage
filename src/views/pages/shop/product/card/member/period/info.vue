@@ -44,7 +44,7 @@
             <span class="value">{{cardInfo.admission_range.name}}</span>
           </p>
           <st-container v-if="cardInfo.admission_range.id===2">
-            <a-table
+            <st-table
               size="middle"
               rowKey="shop_id"
               :columns="shop_columns"
@@ -61,7 +61,7 @@
             <span class="value">{{cardInfo.support_sales.name}}</span>
           </p>
           <st-container v-if="cardInfo.support_sales.id!==1">
-            <a-table
+            <st-table
               size="middle"
               rowKey="shop_id"
               :columns="shop_columns"
@@ -84,7 +84,7 @@
             <span class="label">售卖定价：</span>
           </p>
           <st-container>
-            <a-table
+            <st-table
               size="middle"
               rowKey="id"
               :columns="price_gradient_columns"
@@ -92,7 +92,7 @@
               :pagination="false"
               :scroll="{ y: 230 }"
             >
-            </a-table>
+            </st-table>
           </st-container>
         </div>
         <div class="mb-24">
@@ -120,7 +120,7 @@
             <span v-else>{{cardInfo.course_interests | enumFilter('member_card.course_interests')}}</span>
           </p>
           <st-container v-if="cardInfo.course_interests===3&&cardInfo.shelf_status!==3">
-            <a-table
+            <st-table
               size="middle"
               rowKey="id"
               :columns="courses_columns"

@@ -23,7 +23,7 @@
       <st-info>
         <st-info-item label="上课范围" class="mgb-8"></st-info-item>
         <div :class="info('course')" class="mgb-24">
-          <table>
+          <st-form-table>
             <colgroup>
               <col style="width:12%;">
               <col style="width:7%;">
@@ -161,7 +161,7 @@
                 </td>
               </tr>
             </tbody>
-          </table>
+          </st-form-table>
         </div>
         <st-info-item label="有效时间" class="mgb-24">购买后{{packageInfo.valid_time}}{{packageInfo.valid_time_unit | enumFilter('package_course.valid_time_unit')}}有效</st-info-item>
         <st-info-item label="允许冻结天数" class="mgb-24">{{packageInfo.frozen_days}}天</st-info-item>

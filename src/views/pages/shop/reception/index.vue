@@ -135,7 +135,13 @@
             </p>
             <p>
               <span class="set-info-label">储物柜</span>
-              <a-select v-model="cabinet" class="set-info-select">
+              <a-select
+              showSearch
+              placeholder="输入储物柜号搜索"
+              optionFilterProp="children"
+              v-model="cabinet"
+              :filterOption="filterOption"
+              class="set-info-select">
                 <a-select-option :value="-1">无</a-select-option>
                 <a-select-option v-for="(item) in cabinetList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
@@ -470,7 +476,6 @@ export default {
   },
   methods: {
     photoChange(list) {
-      console.log('photoChange', list)
       if (!this.selectMember) return
       this.indexService.editFace(this.selectMember, list[0])
     },
@@ -488,6 +493,10 @@ export default {
       trueArray = this.shortcutList.filter(i => this.auth[i.id] && i.version === 1)
       falseArray = this.shortcutList.filter(i => !this.auth[i.id] || i.version > 1)
       this.filterShortcutList = cloneDeep([...trueArray, ...falseArray])
+    },
+    // 储物柜下拉名称搜索
+    filterOption(input, option) {
+      return option.componentOptions.children[0].text.toLowerCase().includes(input)
     },
     // 查看详情
     onDetail(type) {

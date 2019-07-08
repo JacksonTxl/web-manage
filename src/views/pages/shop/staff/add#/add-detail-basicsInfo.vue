@@ -16,7 +16,7 @@
           <a-input placeholder="支持中英文、数字、不超过15个字" max="15" v-decorator="rules.staff_name"/>
         </st-form-item>
         <st-form-item label="手机号" required>
-          <a-input-group compact>
+          <a-input-group compact style="top: 0;">
             <a-select style="width: 80px;" v-model="choosed_code_id">
               <template v-for="item in codeList">
                 <a-select-option :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
@@ -50,11 +50,11 @@
           </template>
           <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.nickname"/>
         </st-form-item>
-        <st-form-item label="邮箱" required>
+        <st-form-item label="邮箱">
           <a-input placeholder="请输入邮箱" v-decorator="rules.mail"/>
         </st-form-item>
-        <st-form-item label="证件" required>
-          <a-input-group compact>
+        <st-form-item label="证件">
+          <a-input-group compact style="top: 0;">
             <a-select style="width: 20%;" @change="onSelectIdtype" v-model="choosed_id_type">
               <template v-for="(item,key) in enums.id_type.value">
                 <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
@@ -88,7 +88,7 @@
         </st-form-item>
       </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
-        <st-form-item label="部门">
+        <st-form-item label="部门" required>
           <a-tree-select
           showSearch
           class="mg-r8"
@@ -136,14 +136,14 @@
           </a-tree-select-node>
         </a-tree-select>
         </st-form-item>
-        <st-form-item label="工作性质" required>
+        <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
             <template v-for="(item,key) in enums.nature_work.value">
               <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
-        <st-form-item label="系统角色">
+        <st-form-item label="系统角色" required>
           <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id">
             <template v-for="item in roleList">
               <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
@@ -285,20 +285,15 @@ export default {
   methods: {
     getIsCoach(data) {
       console.log('watch new', data)
-      let flag = data.some(val => {
-        return val === 3 || val === 4
-      })
-      if (!flag) {
+      this.isShowLevel = data.includes(4)
+
+      if (!this.isShowLevel) {
         this.$emit('deletStep')
-        this.isShowLevel = false
-        this.addflag = true
-      } else {
-        if (!this.addflag) return
-        this.isShowLevel = data.some(val => {
-          return val === 4
-        })
-        this.$emit('addStep')
         this.addflag = false
+      } else {
+        if (this.addflag) return
+        this.$emit('addStep')
+        this.addflag = true
       }
     },
     permissionChange(e) {

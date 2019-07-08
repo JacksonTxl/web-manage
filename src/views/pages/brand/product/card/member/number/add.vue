@@ -56,7 +56,7 @@
                     :value="+item[0]">{{item[1]}}</a-radio>
                 </a-radio-group>
                 <div class="page-price-setting-set" :class="{'error':!priceIsOk,'brand-set': cardData.price_setting===1&&cardData.admission_range===1}" v-if="cardData.price_setting===1">
-                  <a-table
+                  <st-table
                     size="middle"
                     :columns="brand_price_columns"
                     :dataSource="rallyPriceList"
@@ -96,11 +96,11 @@
                     <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="brand_price_delete(index)">
                       删除
                     </a>
-                  </a-table>
+                  </st-table>
                   <st-button :disabled="rallyPriceList.length>3" type="dashed" class="page-price-setting-set__add" block @click="brand_price_add">+ 添加定价规格（{{rallyPriceList.length}}/4）</st-button>
                 </div>
                 <div class="page-price-setting-set" :class="{'error':!priceIsOk,'shop-set': cardData.price_setting===2&&cardData.admission_range===1}" v-if="cardData.price_setting===2">
-                  <a-table
+                  <st-table
                     size="middle"
                     :columns="shop_price_columns"
                     :dataSource="shopPriceList"
@@ -144,7 +144,7 @@
                     <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="shop_price_delete(index)">
                       删除
                     </a>
-                  </a-table>
+                  </st-table>
                   <st-button :disabled="shopPriceList.length>3" type="dashed" class="page-price-setting-set__add" block @click="shop_price_add">+ 添加定价规格（{{shopPriceList.length}}/4）</st-button>
                 </div>
               </st-form-item>

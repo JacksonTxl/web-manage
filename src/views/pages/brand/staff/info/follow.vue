@@ -3,13 +3,12 @@
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="16">
-          <shop-select style="width: 160px" class="mg-r8" v-model="query.shop_id" @change="onChange"/>
-
+          <shop-select style="width: 160px" class="mg-r8" v-model="query.shop_id" @change="onSingleSearch('shop_id', $event)"/>
           <a-range-picker @change="onChooseDate" format="YYYY-MM-DD"/>
         </a-col>
         <a-col :lg="2"></a-col>
         <a-col :lg="6">
-          <st-input-search placeholder="请输入用户姓名进行查询" @search="searchCourse"/>
+          <st-input-search placeholder="请输入用户姓名进行查询" @search="onSingleSearch('member_name', $event)"/>
         </a-col>
       </a-col>
       <a-col :lg="24" class="mg-t16">
@@ -70,9 +69,6 @@ export default {
     // this.pagination.total = this.followList.page.total_counts
   },
   methods: {
-    onChange() {
-      this.$router.push({ query: this.query })
-    },
     goMemberDetail(e) {
       console.log('跳转到用户详情', e)
     },
@@ -82,15 +78,6 @@ export default {
           id: this.id,
           follow_date_first: moment(e[0]).format('YYYY-MM-DD'),
           follow_date_last: moment(e[1]).format('YYYY-MM-DD')
-        },
-        force: true
-      })
-    },
-    searchCourse(e) {
-      this.$router.push({
-        query: {
-          id: this.id,
-          member_name: e
         },
         force: true
       })

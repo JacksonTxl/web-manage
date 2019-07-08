@@ -1,7 +1,7 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { State, Effect } from 'rx-state'
+import { forkJoin } from 'rxjs'
+import { tap } from 'rxjs/operators'
 import { RoleApi } from '@/api/v1/staff/role'
 import { ShopStaffApi } from '@/api/v1/staff/staff'
 import {
@@ -10,45 +10,27 @@ import {
   EditStaffDetailInfoQuery,
   EditStaffCoachInfoQuery } from '@/api/v1/staff'
 
-interface EditState {
-  staffInfo: Object,
-  codeList: Object,
-  roleList: object[]
-}
 @Injectable()
-export class EditService extends Store<EditState> {
-    state$: State<EditState>
-    staffInfo$: Computed<Object>
-    codeList$: Computed<Object>
-    roleList$: Computed<object>
-    constructor(protected shopStaffApi: ShopStaffApi, protected staffApi: StaffApi, private roleApi: RoleApi) {
-      super()
-      this.state$ = new State({
-        codeList: {},
-        roleList: [],
-        staffInfo: {}
-      })
-      this.roleList$ = new Computed(this.state$.pipe(pluck('codeList')))
-      this.codeList$ = new Computed(this.state$.pipe(pluck('codeList')))
-      this.staffInfo$ = new Computed(this.state$.pipe(pluck('staffInfo')))
-    }
+export class EditService implements RouteGuard {
+    staffInfo$ = new State({})
+    codeList$ = new State([])
+    roleList$ = new State([])
+    loading$ = new State({})
+    constructor(protected shopStaffApi: ShopStaffApi, protected staffApi: StaffApi, private roleApi: RoleApi) {}
     @Effect()
     // 获取手机号区域
     getCountryCodes() {
       return this.staffApi.getCountryCodes().pipe(
         tap(res => {
-          this.state$.commit(state => {
-            state.codeList = res
-          })
+          this.codeList$.commit(() => res)
         })
       )
     }
 
     getNormalList() {
       return this.roleApi.getNormalList().pipe(tap(res => {
-        this.state$.commit(state => {
-          state.roleList = res.roles
-        })
+        console.log('getNormalList', res)
+        this.roleList$.commit(() => res.roles)
       }))
     }
 
@@ -56,11 +38,14 @@ export class EditService extends Store<EditState> {
     getStaffInfo(id: string) {
       return this.shopStaffApi.editStaffInfo(id).pipe(
         tap(res => {
-          this.state$.commit(state => {
-            state.staffInfo = res.staff_info
-          })
+          this.staffInfo$.commit(() => res.staff_info)
         })
       )
+    }
+
+    init(id: string) {
+      console.log('init')
+      return forkJoin(this.getNormalList(), this.getCountryCodes(), this.getStaffInfo(id))
     }
 
     // 修改基础信息
@@ -78,10 +63,8 @@ export class EditService extends Store<EditState> {
       return this.shopStaffApi.updateCoachInfo(id, params)
     }
 
-    beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
       const { id } = to.query as any
-      this.getStaffInfo(id).subscribe(() => {
-        next()
-      })
+      return this.init(id)
     }
 }

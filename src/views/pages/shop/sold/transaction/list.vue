@@ -108,8 +108,9 @@ export default {
       }
     },
     // 打印合同
-    createdOrderPrint() {
-      console.log('打印合同')
+    createdOrderPrint(order_id) {
+      let url = `${window.location.origin}/extra/contract-preview?id=${order_id}`
+      window.open(url)
     },
     // 查看订单
     createdOrderViewOrder() {
@@ -146,7 +147,7 @@ export default {
           this.getList()
           break
         case 'Print':
-          this.createdOrderPrint()
+          this.createdOrderPrint(orderId)
           break
         case 'ViewOrder':
           this.createdOrderViewOrder()
