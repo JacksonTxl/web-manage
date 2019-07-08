@@ -2,6 +2,7 @@ import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
 import { CourseApi, TransferCoursePackageInput } from '@/api/v1/sold/course'
+import { TransactionApi } from '@/api/v1/sold/transaction'
 import { tap } from 'rxjs/operators'
 import { ContractApi } from '@/api/v1/setting/contract'
 
@@ -13,10 +14,10 @@ export class TransferService {
   packageTransferInfo$ = new State({})
   timeScope$ = new State({})
   personalCourseInfo$ = new State({})
-  constructor(private contractApi:ContractApi, private memberApi: ShopPersonalCourseApi, private courseApi:CourseApi) {}
+  constructor(private contractApi:ContractApi, private memberApi: ShopPersonalCourseApi, private courseApi:CourseApi, private transactionApi: TransactionApi) {}
   @Effect()
   getMember(member:string) {
-    return this.memberApi.getMemberList(member).pipe(tap((res:any) => {
+    return this.transactionApi.getTransactionMemeberList({ member }).pipe(tap((res:any) => {
       this.memberList$.commit(() => res.list)
     }))
   }

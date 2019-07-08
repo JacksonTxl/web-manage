@@ -174,11 +174,7 @@ export default {
         name: 'sold-course-freeze',
         props: {
           type: 'package',
-          id: record.id,
-          courseName: record.course_name,
-          courseNum: record.remain_course_num,
-          courseEndTime: moment(record.course_end_time),
-          time: `${moment(record.course_buy_time).format('YYYY-MM-DD HH:mm')} 至 ${moment(record.course_end_time).format('YYYY-MM-DD HH:mm')}`
+          id: record.id
         },
         on: {
           success: () => {

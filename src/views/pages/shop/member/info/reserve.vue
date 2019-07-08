@@ -26,10 +26,10 @@
           :page="cardPage"
         >
           <span slot="card_status" slot-scope="text,record">
-            <span v-if="record.card_status ==='有效'" class="effective"></span>
-            <span v-if="record.card_status ==='失效'" class="invalid"></span>
-            <span v-if="record.card_status === '已冻结'" class="frozen"></span>
-            {{ text }}
+            <span v-if="record.card_status.id === 1" class="effective"></span>
+            <span v-if="record.card_status.id === 2" class="invalid"></span>
+            <span v-if="record.card_status.id === 3" class="frozen"></span>
+            {{ record.card_status.name }}
           </span>
         </st-table>
       </a-col>
@@ -64,10 +64,10 @@
           :page="coursePage"
           @change="coursePageChange">
           <span slot="course_status" slot-scope="text,record">
-            <span v-if="record.course_status ==='有效'" class="effective"></span>
-            <span v-if="record.course_status ==='失效'" class="invalid"></span>
-            <span v-if="record.course_status === '已预约'" class="frozen"></span>
-            {{ text }}
+            <span v-if="record.course_status.id === 1" class="effective"></span>
+            <span v-if="record.course_status.id === 2" class="invalid"></span>
+            <span v-if="record.course_status.id === 3" class="frozen"></span>
+            {{ record.course_status.name }}
           </span>
         </st-table>
       </a-col>

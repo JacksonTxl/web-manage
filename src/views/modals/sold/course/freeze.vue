@@ -8,9 +8,9 @@
       <a-row :class="freeze('info')">
         <a-col :span="24">
           <st-info>
-            <st-info-item label="课程名称">{{courseName}}</st-info-item>
-            <st-info-item label="剩余课时">{{courseNum}}</st-info-item>
-            <st-info-item class="mgb-24" label="有效期">{{time}}</st-info-item>
+            <st-info-item label="课程名称">{{info.course_name}}</st-info-item>
+            <st-info-item label="剩余课时">{{info.remain_course_num}}</st-info-item>
+            <st-info-item class="mgb-24" label="有效期">{{info.valid_date}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -21,7 +21,7 @@
               <a-form-item class="page-a-form">
                 <a-date-picker
                   style="width: 100%;"
-                  :defaultValue="startTime"
+                  :value="moment(+info.start_time*1000)"
                   disabled
                   format="YYYY-MM-DD HH:mm"
                   placeholder="开始时间"
@@ -35,7 +35,7 @@
                   v-decorator="['endTime',{rules:[{validator:end_time_validator}]}]"
                   @change="end_time_change"
                   style="width:170px"
-                  :showTime="{defaultValue:startTime,format: 'HH:mm'}"
+                  :showTime="{defaultValue:moment(info.start_time*1000),format: 'HH:mm'}"
                   format="YYYY-MM-DD HH:mm"
                   placeholder="结束时间"
                   :showToday="false"
@@ -84,13 +84,14 @@ export default {
   rxState() {
     return {
       loading: this.freezeService.loading$,
+      info: this.freezeService.info$,
       sold: this.userService.soldEnums$
     }
   },
   bem: {
     freeze: 'modal-sold-course-freeze'
   },
-  props: ['type', 'id', 'courseName', 'courseNum', 'time', 'courseEndTime'],
+  props: ['id', 'type'],
   data() {
     return {
       show: false,
@@ -102,6 +103,7 @@ export default {
     }
   },
   created() {
+    this.freezeService.getInfo(this.id).subscribe()
   },
   methods: {
     moment,
@@ -130,7 +132,7 @@ export default {
       this.endTime = cloneDeep(data)
     },
     disabledEndDate(endValue) {
-      return endValue.valueOf() < moment().valueOf() || endValue.valueOf() > moment(this.courseEndTime).valueOf()
+      return endValue.valueOf() < moment().valueOf() || endValue.valueOf() > moment(this.info.start_time * 1000).add(this.info.frozen_time_remain, 'days').valueOf()
     },
     onFrozenChange(data) {
       this.form.resetFields(['payType'])
@@ -139,12 +141,11 @@ export default {
       this.form.validateFields((error, values) => {
         if (!error) {
           this.freezeService.freeze({
-            start_time: this.startTime.format('YYYY-MM-DD HH:mm'),
+            start_time: moment(this.info.start_time).format('YYYY-MM-DD HH:mm'),
             end_time: values.endTime.format('YYYY-MM-DD HH:mm'),
             frozen_fee: this.frozen_fee,
             frozen_pay_type: values.payType
           }, this.id, this.type).subscribe(res => {
-            console.log(2)
             this.show = false
             this.$emit('success')
           })
