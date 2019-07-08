@@ -1,5 +1,5 @@
 <template>
-  <oa-modal
+  <st-modal
     title="编辑教练等级"
     v-model="show"
     @ok="onSubmit"
@@ -21,7 +21,7 @@
         </a-row>
       </st-form>
     </div>
-  </oa-modal>
+  </st-modal>
 </template>
 <script>
 import { EditService } from './edit.service'

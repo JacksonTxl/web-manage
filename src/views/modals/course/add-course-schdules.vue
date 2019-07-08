@@ -1,11 +1,11 @@
 <template>
-  <oa-modal
+  <st-modal
     class="modal-support-course-shops"
     @ok="postTransFromBrandCourse"
     title='批量转入品牌课程库'
     v-model='show'>
     <select-shop @change="salesShopChange"></select-shop>
-  </oa-modal>
+  </st-modal>
 </template>
 <script>
 import { columnsShops } from './support-table'

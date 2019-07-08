@@ -1,5 +1,5 @@
 <template>
-  <oa-modal
+  <st-modal
     title="添加教练等级"
     v-model="show"
     @ok="onSubmit"
@@ -18,7 +18,7 @@
         </a-row>
       </st-form>
     </div>
-  </oa-modal>
+  </st-modal>
 </template>
 <script>
 import { AddService } from './add.service'

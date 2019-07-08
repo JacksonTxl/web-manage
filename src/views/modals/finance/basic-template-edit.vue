@@ -1,5 +1,5 @@
 <template>
-  <oa-modal title="编辑底薪模板" v-model="show" @ok="handleSubmit">
+  <st-modal title="编辑底薪模板" v-model="show" @ok="handleSubmit">
     <st-form :form="form" labelWidth="67px" @submit="handleSubmit">
       <a-row :gutter="8">
         <a-col :lg="24">
@@ -23,7 +23,7 @@
         </a-col>
       </a-row>
     </st-form>
-  </oa-modal>
+  </st-modal>
 </template>
 
 <script>

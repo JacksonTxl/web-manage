@@ -1,5 +1,5 @@
 <template>
-  <oa-modal
+  <st-modal
     title="添加擅长项目"
     v-model="show"
     @ok="onSubmit"
@@ -18,7 +18,7 @@
         </a-row>
       </st-form>
     </div>
-  </oa-modal>
+  </st-modal>
 </template>
 <script>
 import { AddService } from './add.service'

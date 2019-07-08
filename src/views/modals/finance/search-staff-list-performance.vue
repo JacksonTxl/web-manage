@@ -1,5 +1,5 @@
 <template>
-  <oa-modal title="查看应用员工" v-model="show" :footer="null">
+  <st-modal title="查看应用员工" v-model="show" :footer="null">
     <st-table
       :rowKey="record => record.mobile"
       :columns="columns"
@@ -7,7 +7,7 @@
       :pagination="pagination"
       @change="handleTableChange"
     />
-  </oa-modal>
+  </st-modal>
 </template>
 <script>
 import { SearchStaffListService } from './search-staff-list.service'

@@ -1,5 +1,5 @@
 <template>
-  <oa-modal :title="title" :class="map()" v-model="show" :footer="null" :width="484">
+  <st-modal :title="title" :class="map()" v-model="show" :footer="null" :width="484">
     <div :class="map('search')">
       <a-cascader
         :class="map('cascader')"
@@ -36,7 +36,7 @@
       <span v-if="!latlngIsOk||!addressIsOk" :class="map('error-info')">{{errorText}}</span>
       <st-button type="primary" @click="handleOk">提交</st-button>
     </div>
-  </oa-modal>
+  </st-modal>
 </template>
 <script>
 import { RegionService } from '../../../services/region.service'
