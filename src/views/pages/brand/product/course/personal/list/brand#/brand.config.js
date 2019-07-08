@@ -10,7 +10,9 @@ export const columns = [
   },
   {
     title: '时长（分钟）',
-    dataIndex: 'duration'
+    dataIndex: 'duration',
+    sorter: true,
+    align: 'right'
   },
   {
     title: '支持上课门店',
@@ -25,12 +27,16 @@ export const columns = [
   {
     title: '课程定价',
     dataIndex: 'sell_price',
+    sorter: true,
     scopedSlots: { customRender: 'sell_price' }
   },
   {
     title: '授课教练数',
     dataIndex: 'coaches',
+    align: 'right',
+    sorter: true,
     scopedSlots: { customRender: 'coaches' }
+
   },
   {
     title: '操作',
