@@ -12,6 +12,7 @@ export const columns = () => {
     title: '节数',
     dataIndex: 'total_times',
     align: 'right',
+    sorter: true,
     scopedSlots: {
       customRender: 'total_times'
     }
@@ -32,6 +33,7 @@ export const columns = () => {
     title: '售卖价格（元）',
     dataIndex: 'price',
     align: 'right',
+    sorter: true,
     scopedSlots: {
       customRender: 'price'
     }

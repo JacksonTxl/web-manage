@@ -85,7 +85,7 @@ export default {
         custom1: {
           text: '设置私教排期',
           click() {
-            that.$router.push({ name: 'shop-product-course-schedule-personal-table' })
+            that.$router.push({ name: 'shop-product-course-schedule-personal-table', query: that.timeRange })
           }
         },
         custom2: {
@@ -104,7 +104,7 @@ export default {
             }
             that.$set(that.header, 'right', 'timeGridWeek,timeGridDay, custom4')
             that.$nextTick().then(() => {
-              that.$router.push({ name: 'shop-product-course-schedule-personal-reserve-table', query: this.timeRange })
+              that.$router.push({ name: 'shop-product-course-schedule-personal-reserve-table', query: that.timeRange })
             })
           }
         },

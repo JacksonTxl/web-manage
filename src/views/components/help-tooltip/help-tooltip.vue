@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span class='st-help-tooltip'>
     <a-tooltip
       :placement="placement"
       v-bind="$attrs"

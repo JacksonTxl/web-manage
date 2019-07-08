@@ -1,7 +1,6 @@
 <template>
   <st-modal
     class="modal-transfer-brand-course"
-    @ok="postTransFromBrandCourse"
     :title="course.course_name + ' 批量转入品牌课程库'"
     width="888px"
     v-model='show'>
@@ -35,7 +34,8 @@
           @change="supportRange" v-model="price_setting">
           <a-radio :value="1">售卖场馆自主定价</a-radio>
           <a-radio :value="2">品牌统一定价</a-radio>
-        </a-radio-group><span>(设置为品牌定价后，将所有支持上课门店统一售价)</span>
+        </a-radio-group>
+        <span>(设置为品牌定价后，将所有支持上课门店统一售价)</span>
       </st-form-item>
       <div class="modal-transfer-brand-course__price-setting">
         <set-price v-if="price_setting === 2" @change="onChangePriceSetting"></set-price>
@@ -45,9 +45,9 @@
     <template slot="footer">
       <div>
         <a href="javascript:;" @click="onClickIsEdit">{{isEditContent}}</a>
-        <a-button key="back" @click="handleCancel">Return</a-button>
-        <a-button key="submit" type="primary" :loading="loading" @click="upgradePersonalCourseInBrand">
-          Submit
+        <a-button key="back" @click="handleCancel">取消</a-button>
+        <a-button key="submit" type="primary" @click="upgradePersonalCourseInBrand">
+          确认转入
         </a-button>
       </div>
       </template>
@@ -115,15 +115,16 @@ export default {
     supportRange(sup) {
     },
     salesShopChange(val) {
-      console.log(val)
       this.shop_ids = val
     },
     onClickIsEdit() {
       this.isEdit = !this.isEdit
       this.isEditContent = this.isEdit ? '取消修改上课门店范围及定价' : '修改上课门店范围及定价'
     },
+    handleCancel() {
+
+    },
     upgradePersonalCourseInBrand() {
-      console.log(this.shopService)
       this.shopService.upgradePersonalCourseInBrand(this.res).subscribe(() => { this.show = false })
     }
   }

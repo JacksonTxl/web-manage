@@ -113,9 +113,11 @@
           </st-form-item>
         </a-col>
       </a-row>
-      <a-row :gutter="8" type="flex" justify="center" align="middle">
-        <a-col>
-          <st-button type="primary" @click="onHandleSubmit" :loading="editLoading.edit">提交</st-button>
+      <a-row :gutter="8">
+        <a-col offset="1" :lg="22">
+          <st-form-item label=" ">
+            <st-button type="primary" @click="onHandleSubmit" :loading="editLoading.edit">提交</st-button>
+          </st-form-item>
         </a-col>
       </a-row>
     </st-form>
@@ -157,6 +159,7 @@ export default {
         district: {}
       },
       fileList: [],
+      fileListHostiry: [],
       cropperModal: {},
       // 电话校验方式 1为点击添加校验，0为点击提交校验
       phoneValidtorType: 1,
@@ -223,8 +226,9 @@ export default {
         this.shopData.service_ids.push(i.service_id)
       })
       // 店招
-      this.fileList = cloneDeep(data.shop_images)
-      this.shopData.shop_images = cloneDeep(data.shop_images)
+      this.fileListHostiry = cloneDeep(data.shop_images)
+      this.fileList = cloneDeep(data.shop_images.filter(i => i.is_cover))
+      this.shopData.shop_images = cloneDeep(data.shop_images.filter(i => i.is_cover))
       // 营业状态
       this.shopData.shop_status = data.shop_status
       // 营业时间
@@ -279,6 +283,16 @@ export default {
           this.shopData.lat = this.editMap.lat
           this.shopData.lng = this.editMap.lng
           this.shopData.email = values.email
+          // 替换店招
+          let i = 0
+          this.fileListHostiry.some((item, index) => {
+            if (item.is_cover) {
+              i = index
+            }
+          })
+          this.fileListHostiry.splice(i, 1)
+          this.fileListHostiry.unshift(...this.shopData.shop_images)
+          this.shopData.shop_images = cloneDeep(this.fileListHostiry)
           this.editService
             .edit(this.$route.meta.query.id, this.shopData)
             .subscribe(() => {
