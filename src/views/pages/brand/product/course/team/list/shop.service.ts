@@ -42,7 +42,7 @@ export class ShopService {
   }
   putCourseTeamIntoBrand(query: PutCourseTeamIntoBrandInput) {
     return this.shopTeamCourseApi.putCourseTeamIntoBrand(query).pipe(tap(res => {
-      this.msg.success({ content: '' })
+      this.msg.success({ content: '转入成功' })
     }))
   }
   init(query: any) {

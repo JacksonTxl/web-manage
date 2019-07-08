@@ -118,7 +118,8 @@ export default {
     onClickSkipSchedule() {
       this.$router.push({ name: 'shop-product-course-schedule-personal-calendar' })
     },
-    getList(query = {}) {
+    getList(val = {}) {
+      const query = { ...this.query, start_date: val.start_time, end_date: val.end_time }
       this.$router.push({ query })
     },
     onPageChange() {}
