@@ -126,7 +126,7 @@ export default {
   filters: {
     dealMaxNumber: (value) => {
       if (!value) return
-      return parseInt(value.substr(0, value.length - 1))
+      return Number(value.substr(0, value.length - 1))
     }
   },
   methods: {
