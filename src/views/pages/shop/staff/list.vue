@@ -11,7 +11,7 @@
           placeholder="请选择部门"
           allowClear
           treeDefaultExpandAll
-          @change="onChange"
+          @change="onSingleSearch('department_id', $event)"
         >
           <a-tree-select-node
             v-for="item in department"
@@ -54,7 +54,7 @@
           :defaultValue="-1"
           placeholder="请选择员工职能"
           v-model="query.identity"
-          @change="onChange">
+          @change="onSingleSearch('identity', $event)">
           <a-select-option v-for="(item, index) in staffEnums.identity.value" :key="index" :value="+index">{{item}}</a-select-option>
         </a-select>
         <a-select
@@ -63,9 +63,8 @@
           :defaultValue="-1"
           placeholder="请选择员工状态"
           v-model="query.work_status"
-          @change="onChange">
+          @change="onSingleSearch('work_status', $event)">
           <a-select-option v-for="(item, index) in staffEnums.work_status.value" :key="index" :value="+index">{{item}}</a-select-option>
-
         </a-select>
         <st-button v-if="auth.add" class="mg-r8" @click="onAddStaff">添加员工</st-button>
         <st-button v-if="auth.import" class="mg-r8" @click="onExportStaff">导入员工</st-button>
@@ -76,7 +75,7 @@
         </st-button>
       </a-col>
       <a-col :lg="7" style="text-align: right;">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 300px;" v-model="query.keywords" @search="onChange"/>
+        <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 300px;" v-model="query.keywords" @search="onSingleSearch('keywords', $event)"/>
       </a-col>
     </a-row>
     <a-row :gutter="8" class="mg-t8">
@@ -88,7 +87,7 @@
         class="page-shop-staff-table"
         rowKey="staff_id"
         :page="page"
-        @change="pageChange"
+        @change="onTableChange"
       >
         <div class="page-staff-table-name" slot="staff_name" slot-scope="text, record">
           <img class="page-staff-table-name__img mg-r8" :src="record.avatar">
@@ -146,7 +145,10 @@ import { ListService } from './list.service'
 import ChangeStaffPostion from './list#/change-staff-postion'
 import { RouteService } from '../../../../services/route.service'
 import { columns } from './list.config'
+import tableMixin from '@/mixins/table.mixin'
+
 export default {
+  mixins: [ tableMixin ],
   components: {
     ChangeStaffPostion
   },
@@ -181,9 +183,6 @@ export default {
     columns
   },
   methods: {
-    onChange() {
-      this.$router.push({ query: this.query })
-    },
     changeStaffPosition(id) {
       this.userService.getEnums().subscribe(res => {
         this.enums = res.staff
@@ -268,15 +267,6 @@ export default {
     },
     onSearch(e) {
       console.log('搜索员工', e)
-    },
-    pageChange() {
-      this.$router.push({
-        query: {
-          page: page.current,
-          size: page.pageSize
-        },
-        force: true
-      })
     }
   }
 }
