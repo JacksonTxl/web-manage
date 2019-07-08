@@ -1,5 +1,5 @@
 <template>
-  <a-modal
+  <oa-modal
     title="选择教练"
     :footer="null"
     class="modal-brand-switch"
@@ -22,7 +22,7 @@
         <st-button type="primary" class="mg-l8" @click="onConfirmSelect">确定</st-button>
       </p>
     </div>
-  </a-modal>
+  </oa-modal>
 </template>
 <script>
 import { SelectService } from './select.service'

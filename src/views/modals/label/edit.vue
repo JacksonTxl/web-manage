@@ -1,5 +1,5 @@
 <template>
-  <a-modal title="编辑标签" v-model="show" @ok="handleSubmit">
+  <oa-modal title="编辑标签" v-model="show" @ok="handleSubmit">
     <st-form :form="form" labelWidth="67px" @submit="handleSubmit">
       <a-row :gutter="8">
         <a-col :lg="24">
@@ -12,7 +12,7 @@
         </a-col>
       </a-row>
     </st-form>
-  </a-modal>
+  </oa-modal>
 </template>
 <script>
 import { EditLabelService } from './edit.service'

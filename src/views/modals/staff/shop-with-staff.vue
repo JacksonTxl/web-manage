@@ -1,5 +1,5 @@
 <template>
-  <a-modal
+  <oa-modal
     class="modal-support-course-shops"
     title='查看店详情'
     v-model='show'>
@@ -11,7 +11,7 @@
     :dataSource="shopList">
     </st-table>
     </st-container>
-  </a-modal>
+  </oa-modal>
 </template>
 <script>
 const columns = [{

@@ -1,5 +1,5 @@
 <template>
-  <a-modal title="销售提成" v-model="show" :footer="null">
+  <oa-modal title="销售提成" v-model="show" :footer="null">
     <a-row :gutter="8">
         <a-col :lg="12">销售业绩：335元</a-col>
         <a-col :lg="12">提成比例：20%</a-col>
@@ -17,7 +17,7 @@
            <st-button type="primary"  @click="onExportList" :disabled="list.length > 0 ? false: true">批量导出</st-button>
         </a-col>
     </a-row>
-  </a-modal>
+  </oa-modal>
 </template>
 
 <script>

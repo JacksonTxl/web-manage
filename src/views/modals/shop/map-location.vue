@@ -1,5 +1,5 @@
 <template>
-  <a-modal
+  <oa-modal
   title="查看门店定位"
   :class="map()"
   v-model="show"
@@ -8,7 +8,7 @@
   :width="484">
     <div :class="map('map')" class="mg-b8" id="mapcontainer"></div>
     <p :class="map('lat-lng')" class="mg-b0">({{lat}}，{{lng}})</p>
-  </a-modal>
+  </oa-modal>
 </template>
 <script>
 import { MapService } from './map.service.ts'

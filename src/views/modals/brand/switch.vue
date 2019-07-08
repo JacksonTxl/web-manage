@@ -1,5 +1,5 @@
 <template>
-  <a-modal
+  <oa-modal
     title="请选择品牌"
     width="80%"
     :footer="null"
@@ -27,7 +27,7 @@
         </a-col>
       </a-row>
     </div>
-  </a-modal>
+  </oa-modal>
 </template>
 <script>
 import { SwitchService } from './switch.service'

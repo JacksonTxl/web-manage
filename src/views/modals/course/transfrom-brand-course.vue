@@ -1,5 +1,5 @@
 <template>
-  <a-modal
+  <oa-modal
     class="modal-transfer-brand-course"
     @ok="postTransFromBrandCourse"
     :title="course.course_name + ' 批量转入品牌课程库'"
@@ -51,7 +51,7 @@
         </a-button>
       </div>
       </template>
-  </a-modal>
+  </oa-modal>
 </template>
 <script>
 import { columnsShops } from './support-table'
