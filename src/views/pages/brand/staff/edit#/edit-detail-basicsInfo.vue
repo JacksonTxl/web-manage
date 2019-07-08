@@ -16,7 +16,7 @@
           <a-input placeholder="支持中英文、数字、不超过15个字" max="15" v-decorator="rules.staff_name"/>
         </st-form-item>
         <st-form-item label="手机号" required>
-          <a-input-group compact>
+          <a-input-group compact style="top: 0;">
             <a-select style="width: 15%;" v-model="choosed_country_id">
                 <a-select-option v-for="item in codeList" :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
             </a-select>
@@ -49,11 +49,11 @@
           </template>
           <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="rules.nickname"/>
         </st-form-item>
-        <st-form-item label="邮箱" required>
+        <st-form-item label="邮箱">
           <a-input placeholder="请输入邮箱" v-decorator="rules.mail"/>
         </st-form-item>
-        <st-form-item label="证件" required>
-          <a-input-group compact>
+        <st-form-item label="证件">
+          <a-input-group compact style="top: 0;">
             <a-select style="width: 20%;" v-model="id_type" @change="onSelectIdtype">
               <template v-for="(item,key) in enums.id_type.value">
                 <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
@@ -73,7 +73,7 @@
 
     <a-row :gutter="8">
       <a-col :offset="1" :lg="10" :xs="22">
-        <st-form-item label="部门">
+        <st-form-item label="部门" required>
           <department-select
           placeholder="请选择部门"
           style="width: 100%"
@@ -82,14 +82,14 @@
           @change="onChange">
           </department-select>
         </st-form-item>
-        <st-form-item label="工作性质" required>
+        <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
             <template v-for="(item,key) in enums.nature_work.value">
               <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
-        <st-form-item label="系统角色">
+        <st-form-item label="系统角色" required>
           <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id">
             <template v-for="item in roleList">
               <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
@@ -98,7 +98,7 @@
         </st-form-item>
       </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
-        <st-form-item label="工号" >
+        <st-form-item label="工号">
           <a-input placeholder="请输入员工工号" v-decorator="rules.staff_num"></a-input>
         </st-form-item>
         <st-form-item label="入职时间">
