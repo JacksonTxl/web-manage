@@ -537,7 +537,7 @@ export default {
               return
             }
             this.getOrderPrice()
-            this.getPrice(null, null, null)
+            this.getPrice(this.selectCoupon, this.selectAdvance, +this.reduceAmount)
           })
         }
       })
