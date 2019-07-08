@@ -34,7 +34,7 @@
       </div>
     </div>
     <st-table
-      :scroll="{x:1440}"
+      :scroll="{x:1800}"
       :page='page'
       @change="onTableChange"
       :loading="loading.getList"
