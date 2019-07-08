@@ -1,6 +1,6 @@
 
 <template>
-  <a-modal
+  <st-modal
     class="st-modal-cropper"
     :title="_title"
     v-model="show"
@@ -13,7 +13,7 @@
       </div>
       <p class="st-modal-cropper-preview" id="crop_preview"></p>
     </div>
-  </a-modal>
+  </st-modal>
 </template>
 <script>
 import Cropper from 'cropperjs'

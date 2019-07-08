@@ -1,5 +1,5 @@
 <template>
-  <a-modal title="编辑场地" v-model="show" wrapClassName="modal-court-add" :footer="null">
+  <st-modal title="编辑场地" v-model="show" wrapClassName="modal-court-add" :footer="null">
     <st-form :form="form" labelWidth="68px" labelGutter="16px">
       <st-form-item label="场地名称" required>
         <a-input placeholder="请输入场地名称，不超过10个字" maxlength="10" v-decorator="formRules.areaName"/>
@@ -15,7 +15,7 @@
     <div class="ta-c">
       <st-button type="primary" @click="onSubmit">保存</st-button>
     </div>
-  </a-modal>
+  </st-modal>
 </template>
 
 <script>

@@ -670,7 +670,7 @@ export const routeMapConfig = {
   'brand-setting-mina-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户端设置'
   },
-  '-brand-marketing-plugin'(routeConfig: RouteConfig) {
+  'brand-marketing-plugin'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营销插件'
   },
   'brand-marketing-plugin-coupon-add'(routeConfig: RouteConfig) {
@@ -678,5 +678,14 @@ export const routeMapConfig = {
   },
   'brand-marketing-plugin-invitation-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '邀请有礼'
+  },
+  'brand-marketing-plugin-invitation-index-data'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '邀请有礼'
+  },
+  'brand-marketing-plugin-invitation-index-setting'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '邀请有礼'
+  },
+  'brand-marketing-plugin-crowd-index'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '精细化人群'
   }
 }

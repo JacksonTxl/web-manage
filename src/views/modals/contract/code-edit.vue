@@ -1,5 +1,5 @@
 <template>
-  <a-modal
+  <st-modal
     class="modal-contract-code-edit"
     width="676px"
     title="会员卡合同编号设置"
@@ -50,7 +50,7 @@
     <st-button :disabled="rules.length>=20" @click="onAdd" block type="dashed" class="mg-t16">
       <a-icon type="plus"></a-icon>添加
     </st-button>
-  </a-modal>
+  </st-modal>
 </template>
 <script>
 import draggable from 'vuedraggable'

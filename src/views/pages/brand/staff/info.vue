@@ -28,29 +28,15 @@
         </a-col>
         <a-col :lg="7" :offset="1" style="text-align: right;">
           <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|edit']" type="primary" @click="editStaffInfo">编辑资料</st-button>
-          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|bind_card']">
-            <a v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: info} }">绑定实体卡</a>
-          </st-button>
-          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|rebind_card']">
-            <a v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: info} }">重绑实体卡</a>
-          </st-button>
+          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|bind_card']" v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: info} }">绑定实体卡</st-button>
+          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|rebind_card']" v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: info} }">重绑实体卡</st-button>
           <a-dropdown>
             <a-menu slot="overlay" @click="handleMenuClick">
-              <a-menu-item v-if="auth['brand_shop:staff:staff|position']">
-                <a v-modal-link="{ name: 'staff-update-staff-position', props: {staff: info} }">职位变更</a>
-              </a-menu-item>
-              <a-menu-item v-if="auth['brand_shop:staff:staff|leave']">
-                <a v-modal-link="{ name: 'staff-turnover', props: {staff: info} }">离职</a>
-              </a-menu-item>
-              <a-menu-item v-if="auth['brand_shop:staff:staff|reinstate']">
-                <a v-modal-link="{ name: 'staff-reinstatement', props: {staff: info} }">复职</a>
-              </a-menu-item>
-              <a-menu-item v-if="auth['brand_shop:staff:account|save']">
-                <a v-modal-link="{ name: 'staff-re-password', props: {staff: info} }">管理登录账户</a>
-              </a-menu-item>
-              <a-menu-item v-if="auth['brand_shop:staff:staff|salary']">
-                <a v-modal-link="{ name: 'staff-salary-account-setting', props: {staff: info} }">设置薪资账户</a>
-              </a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|position']"><a v-modal-link="{ name: 'staff-update-staff-position', props: {staff: info} }">职位变更</a></a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|leave']"><a v-modal-link="{ name: 'staff-turnover', props: {staff: info} } ">离职</a></a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|reinstate']"><a v-modal-link="{ name: 'staff-reinstatement', props: {staff: info} } ">复职</a></a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:account|save']"><a v-modal-link="{ name: 'staff-re-password', props: {staff: info} }">管理登录账户</a></a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|salary']"><a v-modal-link="{ name: 'staff-salary-account-setting', props: {staff: info} }">设置薪资账户</a></a-menu-item>
             </a-menu>
             <a-button>
               更多操作

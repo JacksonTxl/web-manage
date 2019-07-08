@@ -30,10 +30,10 @@
          @change="pageChange"
       >
         <template  slot="i" slot-scope="text, record">
-          <modal-link tag="a" :to="{ name: 'finance-sale-commission',props: { record: record }}">{{ text }}</modal-link>
+          <a v-modal-link="{ name: 'finance-sale-commission',props: { record: record }}">{{ text }}</a>
         </template>
          <template  slot="o" slot-scope="text, record">
-          <modal-link tag="a" :to="{ name: 'finance-class-commission',props: { record: record }}">{{ text }}</modal-link>
+          <a v-modal-link="{ name: 'finance-class-commission',props: { record: record }}">{{ text }}</a>
         </template>
       </st-table>
     </a-row>
