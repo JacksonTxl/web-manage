@@ -32,7 +32,7 @@
           <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|rebind_card']" v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: info} }">重绑实体卡</st-button>
           <a-dropdown>
             <a-menu slot="overlay" @click="handleMenuClick">
-              <a-menu-item v-if="auth['brand_shop:staff:staff|position']"><a v-modal-link="{ name: 'staff-update-staff-position', props: {staff: info} }">职位变更</a></a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|position']"><a href="#" @click="jumpToStaffPosition">职位变更</a></a-menu-item>
               <a-menu-item v-if="auth['brand_shop:staff:staff|leave']"><a v-modal-link="{ name: 'staff-turnover', props: {staff: info} } ">离职</a></a-menu-item>
               <a-menu-item v-if="auth['brand_shop:staff:staff|reinstate']"><a v-modal-link="{ name: 'staff-reinstatement', props: {staff: info} } ">复职</a></a-menu-item>
               <a-menu-item v-if="auth['brand_shop:staff:account|save']"><a v-modal-link="{ name: 'staff-re-password', props: {staff: info} }">管理登录账户</a></a-menu-item>
@@ -126,6 +126,14 @@ export default {
   },
   methods: {
     handleMenuClick() {},
+    jumpToStaffPosition() {
+      this.$modalRouter.push({
+        name: 'staff-update-staff-position',
+        props: {
+          staff: this.info
+        }
+      })
+    },
     setIndentyList(arr, targetArr) {
       arr.forEach(key => targetArr.add(key, this[key]))
     },
