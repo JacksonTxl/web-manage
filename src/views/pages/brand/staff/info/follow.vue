@@ -17,8 +17,9 @@
           :columns="followColumns"
           :dataSource="followList"
           :scroll="{ x: 1750}"
-          @change="pageChange"
+          :loading="loading.getStaffFollow"
           :page="page"
+          @change="onTableChange"
         >
           <template slot="member_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goMemberDetai(record)">{{ text }}</a>
@@ -34,8 +35,10 @@ import { FollowService } from './follow.service'
 import { followColumns } from './columns.config'
 import ShopSelect from '@/views/biz-components/shop-select'
 import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
 
 export default {
+  mixins: [ tableMixin ],
   serviceInject() {
     return {
       followService: FollowService,
@@ -46,7 +49,8 @@ export default {
     return {
       followList: this.followService.followList$,
       page: this.followService.page$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      loading: this.followService.loading$
     }
   },
   components: {
@@ -87,16 +91,6 @@ export default {
         query: {
           id: this.id,
           member_name: e
-        },
-        force: true
-      })
-    },
-    pageChange(page) {
-      this.$router.push({
-        query: {
-          id: this.id,
-          page: page.current_page,
-          size: page.size
         },
         force: true
       })

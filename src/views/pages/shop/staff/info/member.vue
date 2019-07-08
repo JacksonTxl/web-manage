@@ -3,7 +3,7 @@
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="18">
-           <a-select
+          <a-select
             style="width: 160px;margin-left:12px"
             class="mg-r8"
             :defaultValue="-1"
@@ -16,16 +16,19 @@
           </a-select>
         </a-col>
         <a-col :lg="6">
-          <st-input-search placeholder="请输入会员名姓名、手机号进行查询" @search="searchCourse"/>
+          <st-input-search placeholder="请输入会员名姓名、手机号进行查询" @search="onSingleSearch('id',$event)"/>
         </a-col>
       </a-col>
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="memberColums"
-          :dataSource="memberInfo.list"
+          :dataSource="memberInfo"
           :scroll="{ x: 1750}"
-          @change="pageChange"
-          :page="page">
+          :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
+          :loading="loading.getStaffServiceCourses"
+          :page="page"
+          @change="onTableChange"
+        >
           <template slot="course_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">{{ text }}</a>
           </template>
@@ -47,16 +50,23 @@
 <script>
 import { memberColums } from './columns.config'
 import { MemberService } from './member.service'
+import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
+
 export default {
+  mixins: [ tableMixin ],
   serviceInject() {
     return {
-      service: MemberService
+      service: MemberService,
+      routerService: RouteService
     }
   },
   rxState() {
     return {
       memberInfo: this.service.memberInfo$,
-      page: this.service.page$
+      loading: this.service.loading$,
+      page: this.service.page$,
+      query: this.routerService.query$
     }
   },
   data() {
@@ -83,18 +93,7 @@ export default {
         },
         force: true
       })
-    },
-    pageChange(page) {
-      this.$router.push({
-        query: {
-          id: this.id,
-          page: page.current_page,
-          size: page.size
-        },
-        force: true
-      })
     }
-
   }
 }
 </script>

@@ -84,37 +84,27 @@ export default {
   },
   data() {
     return {
+      basic: {
+        label: '员工资料',
+        route: { name: 'shop-staff-info-basic', query: { id: this.query.id } }
+      },
       course: {
         label: '上课记录',
-        route: { name: 'shop-staff-info-course', query: this.query }
+        route: { name: 'shop-staff-info-course', query: { id: this.query.id } }
       },
       follow: {
         label: '跟进记录',
-        route: { name: 'shop-staff-info-follow', query: this.query }
+        route: { name: 'shop-staff-info-follow', query: { id: this.query.id } }
       },
       sold: {
         label: '售卖订单',
-        route: { name: 'shop-staff-info-sold', query: this.query }
+        route: { name: 'shop-staff-info-sold', query: { id: this.query.id } }
       },
       member: {
         label: '服务课程',
-        route: { name: 'shop-staff-info-member', query: this.query }
+        route: { name: 'shop-staff-info-member', query: { id: this.query.id } }
       },
-      tabList: [
-        {
-          label: '员工资料',
-          route: { name: 'shop-staff-info-basic', query: this.query }
-        }
-      ]
-    }
-  },
-  methods: {
-    handleMenuClick() {},
-    editStaffInfo() {
-      this.$router.push({
-        name: 'shop-staff-edit',
-        query: { id: this.info.id }
-      })
+      tabList: []
     }
   },
   created() {
@@ -122,26 +112,39 @@ export default {
     // 私教教练：上课记录、跟进记录、服务课程 、销售订单
     // 会籍销售：跟进记录、服务课程 、销售订单
     // 1,普通员工 2-会籍销售；3-团课教练；4-私人教练
-
     let { identity } = this.info
     identity = identity.map(item => item.id)
+    let tabSet = new Set()
     if (Array.isArray(identity) && identity.length) {
       identity.forEach(ele => {
-        if (identity.includes(2)) {
-          this.tabList.push(this.member, this.sold)
-        } else if (identity.includes(3)) {
-          this.tabList.push(this.course)
-        } else if (identity.includes(4)) {
-          this.tabList.push(this.course, this.member, this.sold)
+        if (ele === 1) {
+          this.setIndentyList(['basic'], tabSet)
+        } else if (ele === 2) {
+          this.setIndentyList(['basic', 'member', 'sold'], tabSet)
+        } else if (ele === 3) {
+          this.setIndentyList(['basic', 'course'], tabSet)
+        } else if (ele === 4) {
+          this.setIndentyList(['basic', 'course', 'follow', 'member', 'sold'], tabSet)
         }
       })
     }
-    console.log('identity', identity)
-    console.log('this.tabList', this.tabList)
+    this.tabList = Array.from(tabSet).map(key => this[key])
     this.$router.replace({
       name: 'shop-staff-info-basic',
-      query: this.query
+      query: { id: this.query.id }
     })
+  },
+  methods: {
+    setIndentyList(arr, targetArr) {
+      arr.forEach(key => targetArr.add(key, this[key]))
+    },
+    handleMenuClick() {},
+    editStaffInfo() {
+      this.$router.push({
+        name: 'shop-staff-edit',
+        query: { id: this.info.id }
+      })
+    }
   }
 }
 </script>

@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State } from 'rx-state'
+import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { StaffApi, GetStaffSoldInput } from '@/api/v1/staff'
 
@@ -7,7 +7,9 @@ import { StaffApi, GetStaffSoldInput } from '@/api/v1/staff'
 export class SoldService implements RouteGuard {
     soldInfo$ = new State({})
     page$ = new State({})
+    loading$ = new State({})
     constructor(private staffapi: StaffApi) {}
+    @Effect()
     getStaffSoldInfo(id: string, query: GetStaffSoldInput) {
       return this.staffapi.getStaffSold(id, query).pipe(
         tap(res => {

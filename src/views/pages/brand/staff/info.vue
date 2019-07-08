@@ -28,15 +28,29 @@
         </a-col>
         <a-col :lg="7" :offset="1" style="text-align: right;">
           <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|edit']" type="primary" @click="editStaffInfo">编辑资料</st-button>
-          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|bind_card']"><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: info} }">绑定实体卡</modal-link></st-button>
-          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|rebind_card']"><modal-link tag="a" :to="{ name: 'staff-bind-entity-card', props: {staff: info} }">重绑实体卡</modal-link></st-button>
+          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|bind_card']">
+            <a v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: info} }">绑定实体卡</a>
+          </st-button>
+          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|rebind_card']">
+            <a v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: info} }">重绑实体卡</a>
+          </st-button>
           <a-dropdown>
             <a-menu slot="overlay" @click="handleMenuClick">
-              <a-menu-item v-if="auth['brand_shop:staff:staff|position']"><modal-link tag="a" :to="{ name: 'staff-update-staff-position', props: {staff: info} }">职位变更</modal-link></a-menu-item>
-              <a-menu-item v-if="auth['brand_shop:staff:staff|leave']"><modal-link tag="a" :to="{ name: 'staff-turnover', props: {staff: info} } ">离职</modal-link></a-menu-item>
-              <a-menu-item v-if="auth['brand_shop:staff:staff|reinstate']"><modal-link tag="a" :to="{ name: 'staff-reinstatement', props: {staff: info} } ">复职</modal-link></a-menu-item>
-              <a-menu-item v-if="auth['brand_shop:staff:account|save']"><modal-link tag="a" :to="{ name: 'staff-re-password', props: {staff: info} }">管理登录账户</modal-link></a-menu-item>
-              <a-menu-item v-if="auth['brand_shop:staff:staff|salary']"><modal-link tag="a" :to="{ name: 'staff-salary-account-setting', props: {staff: info} }">设置薪资账户</modal-link></a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|position']">
+                <a v-modal-link="{ name: 'staff-update-staff-position', props: {staff: info} }">职位变更</a>
+              </a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|leave']">
+                <a v-modal-link="{ name: 'staff-turnover', props: {staff: info} }">离职</a>
+              </a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|reinstate']">
+                <a v-modal-link="{ name: 'staff-reinstatement', props: {staff: info} }">复职</a>
+              </a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:account|save']">
+                <a v-modal-link="{ name: 'staff-re-password', props: {staff: info} }">管理登录账户</a>
+              </a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|salary']">
+                <a v-modal-link="{ name: 'staff-salary-account-setting', props: {staff: info} }">设置薪资账户</a>
+              </a-menu-item>
             </a-menu>
             <a-button>
               更多操作
@@ -73,60 +87,66 @@ export default {
   },
   data() {
     return {
-      identity: [
-        {
-          label: '员工资料',
-          route: { name: 'brand-staff-info-basic', query: this.query }
-        }
-      ],
+      identity: [],
+      basic: {
+        label: '员工资料',
+        route: { name: 'brand-staff-info-basic', query: { id: this.query.id } }
+      },
       course: {
         label: '上课记录',
-        route: { name: 'brand-staff-info-course', query: this.query }
+        route: { name: 'brand-staff-info-course', query: { id: this.query.id } }
       },
-      basic: {
+      follow: {
         label: '跟进记录',
-        route: { name: 'brand-staff-info-follow', query: this.query }
+        route: { name: 'brand-staff-info-follow', query: { id: this.query.id } }
       },
       sold: {
         label: '售卖订单',
-        route: { name: 'brand-staff-info-sold', query: this.query }
+        route: { name: 'brand-staff-info-sold', query: { id: this.query.id } }
       },
       member: {
         label: '服务课程',
-        route: { name: 'brand-staff-info-member', query: this.query }
+        route: { name: 'brand-staff-info-member', query: { id: this.query.id } }
       }
     }
   },
   created() {
+    // 会籍销售：跟进记录、服务课程 、销售订单
     // 团课教练：上课记录
     // 私教教练：上课记录、跟进记录、服务课程 、销售订单
-    // 会籍销售：跟进记录、服务课程 、销售订单
 
     // 1,普通员工 2-会籍销售；3-团课教练；4-私人教练
     let { identity } = this.info
     identity = identity.map(item => item.id)
+    let indetitySet = new Set()
     if (Array.isArray(identity) && identity.length) {
       identity.forEach(ele => {
-        if (identity.includes(2)) {
-          this.identity.push(this.basic, this.member, this.sold)
-        } else if (identity.includes(3)) {
-          this.identity.push(this.course)
-        } else if (identity.includes(4)) {
-          this.identity.push(this.course, this.basic, this.member, this.sold)
+        if (ele === 1) {
+          this.setIndentyList(['basic'], indetitySet)
+        } else if (ele === 2) {
+          this.setIndentyList(['basic', 'member', 'sold'], indetitySet)
+        } else if (ele === 3) {
+          this.setIndentyList(['basic', 'course'], indetitySet)
+        } else if (ele === 4) {
+          this.setIndentyList(['basic', 'course', 'follow', 'member', 'sold'], indetitySet)
         }
       })
     }
+    this.identity = Array.from(indetitySet).map(key => this[key])
     this.$router.replace({
       name: 'brand-staff-info-basic',
-      query: this.query
+      query: { id: this.query.id }
     })
   },
   methods: {
     handleMenuClick() {},
+    setIndentyList(arr, targetArr) {
+      arr.forEach(key => targetArr.add(key, this[key]))
+    },
     editStaffInfo() {
       this.$router.push({
         name: 'brand-staff-edit',
-        query: this.query
+        query: { id: this.info.id }
       })
     }
   }

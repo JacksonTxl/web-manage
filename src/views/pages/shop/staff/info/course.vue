@@ -26,10 +26,11 @@
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="courseColums"
-          :dataSource="courseInfo.list"
+          :dataSource="courseInfo"
           :scroll="{ x: 1750}"
-          @change="pageChange"
+          :loading="loading.getCoursesList"
           :page="page"
+          @change="onTableChange"
         >
           <template slot="action" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="onSearchDetail(record)">详情</a>
@@ -46,16 +47,23 @@
 <script>
 import { courseColums } from './columns.config'
 import { CourseService } from './course.service'
+import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
+
 export default {
+  mixins: [ tableMixin ],
   serviceInject() {
     return {
-      service: CourseService
+      service: CourseService,
+      routerService: RouteService
     }
   },
   rxState() {
     return {
       courseInfo: this.service.courseInfo$,
-      page: this.service.page$
+      loading: this.service.loading$,
+      page: this.service.page$,
+      query: this.routerService.query$
     }
   },
   data() {
@@ -95,18 +103,6 @@ export default {
     // 查看详情 点击弹出预约详情弹窗，同【门店-课程排期-团体课】、【门店-课程排期-私教1v1】、【门店-课程排期-私教小团课】
     onSearchDetail(e) {
       console.log(e)
-    },
-    // 分页
-    pageChange(page) {
-      consoel.log(e)
-      this.$router.push({
-        query: {
-          id: this.id,
-          page: page.current_page,
-          size: page.size
-        },
-        force: true
-      })
     },
     // 日期选择
     onChooseDate(e) {
