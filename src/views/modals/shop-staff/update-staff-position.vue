@@ -13,31 +13,31 @@
         </a-select>
       </st-form-item>
       <st-form-item label="员工职能" required>
-        <a-select v-decorator="['identity']" mode="multiple" placeholder=""  @change="onChangeIdentity" @deselect="onDeselectIndentity">
+        <a-select v-decorator="['identity']" mode="multiple" placeholder="请选择员工职能"  @change="onChangeIdentity" @deselect="onDeselectIndentity">
           <a-select-option :value="item.id" v-for="item in identityList" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
       </st-form-item>
       <st-form-item label="教练等级">
-        <a-select v-decorator="['coach_level_id']" placeholder="">
+        <a-select v-decorator="['coach_level_id']" placeholder="请选择教练等级">
           <a-select-option  :value="item.id" v-for="item in coachLevelList$" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
       </st-form-item>
       <st-form-item label="薪资模板">
-        <a-select v-decorator="['basic_salary']" class="mg-b16" placeholder="" >
+        <a-select class="mg-b16" v-decorator="['basic_salary']" placeholder="请选择底薪模版">
           <a-select-option :value="item.id" v-for="item in salaryBasic$" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
-        <a-select v-decorator="['sale_percentage']" class="mg-b16" placeholder="">
+        <a-select class="mg-b16" v-decorator="['sale_percentage']" placeholder="请选择薪资模板">
           <a-select-option :value="item.id" v-for="item in salarySale$" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
-        <a-select v-decorator="['course_percentage']" v-show="isSalaryCourse" placeholder="">
+        <a-select v-decorator="['course_percentage']" placeholder="请选择课程模板" v-show="isSalaryCourse">
           <a-select-option :value="item.id" v-for="item in salaryCourse$" :key="item.id">
             {{item.name}}
           </a-select-option>
@@ -89,7 +89,7 @@ export default {
       return identityTag[key - 1]
     }
   },
-  wtach: {
+  watch: {
     identity(newval) {
       this.isSalaryCourse = newval.includes(3) || newval.includes(4)
     }
@@ -109,10 +109,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.form)
     this.updateStaffPositionService.init(this.staff.id).subscribe(res => {
-      console.log(this.positionInfo$)
-      // console.log(this.form.setFieldsValue)
       const {
         basic_salary,
         coach_level_id,

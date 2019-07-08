@@ -44,27 +44,24 @@
             <st-info-item label="允许转让">{{info.is_transferable | enumFilter('sold.is_transferable')}}</st-info-item>
             <st-info-item label="转让手续费" v-if="info.is_transferable !== 0">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
             <st-info-item label="入场场馆">
-              <template v-if="+info.admission_range===1">
-                {{info.shop_name}}
-              </template>
-              <template v-if="+info.admission_range===2">
-                <a @click="onShowShops">
-                  {{info.admission_range | enumFilter('sold.admission_range')}}
-                </a>
-              </template>
-              <template v-if="+info.admission_range===3">
-                {{info.admission_range | enumFilter('sold.admission_range')}}
-              </template>
+              <template v-if="info.admission_range.id < 2">{{info.admission_range.shop_name}}</template>
+              <a-popover :title="info.admission_range.shop_name" v-else >
+                <template slot="content" >
+                  <st-table :columns="admissionColumns" :dataSource="info.admission_range.shops" :pagination="false" key="id" :class="basic('popover-content')">
+                  </st-table>
+                </template>
+                <a type="primary">{{info.admission_range.id | enumFilter('sold.admission_range')}}</a>
+              </a-popover>
             </st-info-item>
             <st-info-item label="约课范围">
-              <template v-if="+info.course_interests===4">
-                <a @click="onShowCourses">
-                  {{info.course_interests | enumFilter('sold.course_interests')}}
-                </a>
-              </template>
-              <template v-else>
-                {{info.course_interests | enumFilter('sold.course_interests')}}
-              </template>
+              <template v-if="info.course_interests.id < 2">{{info.course_interests.name}}</template>
+              <a-popover :title="info.course_interests.name" v-else>
+                <template slot="content">
+                  <st-table :columns="courseColumns" :dataSource="info.course_interests.courses" :pagination="false" key="id" :class="basic('popover-content')">
+                  </st-table>
+                </template>
+                <a type="primary">{{info.course_interests.id | enumFilter('sold.course_interests')}}</a>
+              </a-popover>
             </st-info-item>
             <st-info-item label="备注" class="mg-b0">{{info.description}}</st-info-item>
           </st-info>
@@ -102,6 +99,26 @@ export default {
       query: this.routeService.query$,
       loading: this.infoService.loading$,
       auth: this.infoService.auth$
+    }
+  },
+  computed: {
+    // 门店范围
+    admissionColumns() {
+      const list = [
+        { title: '省', dataIndex: 'province_name', key: 'province_name' },
+        { title: '市', dataIndex: 'city_name', key: 'city_name' },
+        { title: '区', dataIndex: 'district_name', key: 'district_name' },
+        { title: '门店名称', dataIndex: 'shop_name', key: 'shop_name' }
+      ]
+      return list
+    },
+    // 授课范围
+    courseColumns() {
+      const list = [
+        { title: '课程类型', dataIndex: 'course_type', key: 'course_type' },
+        { title: '课程名称', dataIndex: 'name', key: 'name' }
+      ]
+      return list
     }
   },
   methods: {
@@ -307,12 +324,6 @@ export default {
           }
         }
       })
-    },
-    onShowShops() {
-      console.log('多门店')
-    },
-    onShowCourses() {
-      console.log('多课程')
     }
   }
 }

@@ -42,9 +42,9 @@
             <st-info-item label="上课范围">
               <a-popover :title="packageInfo.course_range.range_name">
                 <template slot="content">
-                  <st-table v-if="rangeType === 1" :columns="courseColumns" :dataSource="courseTabData" :pagination="false">
+                  <st-table v-if="rangeType === 1" :columns="courseColumns" :dataSource="courseTabData" :pagination="false" :class="basic('popover-content')">
                   </st-table>
-                  <st-table v-if="rangeType === 2" :columns="courseColumns" :dataSource="courseTabData" :pagination="false">
+                  <st-table v-if="rangeType === 2" :columns="courseColumns" :dataSource="courseTabData" :pagination="false" :class="basic('popover-content')">
                     <st-table
                       slot="expandedRowRender"
                       slot-scope="text, index"
@@ -55,7 +55,7 @@
                     </st-table>
 
                   </st-table>
-                  <st-table v-if="rangeType === 3" :columns="courseColumns" :dataSource="courseTabData" :pagination="false">
+                  <st-table v-if="rangeType === 3" :columns="courseColumns" :dataSource="courseTabData" :pagination="false" :class="basic('popover-content')">
                     <st-table
                       slot="expandedRowRender"
                       slot-scope="text, index"

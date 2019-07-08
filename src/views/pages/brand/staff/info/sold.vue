@@ -25,7 +25,8 @@
           :columns="soldColums"
           :dataSource="soldInfo.list"
           :scroll="{ x: 1750}"
-          @change="pageChange"
+          :loading="loading.getStaffSoldInfo"
+          @change="onTableChange"
           :page="page"
         >
           <template slot="id" slot-scope="text, record">
@@ -57,6 +58,7 @@ export default {
     return {
       soldInfo: this.soldservice.soldInfo$,
       page: this.soldservice.page$,
+      loading: this.soldservice.loading$,
       query: this.routeService.query$
     }
   },
@@ -123,17 +125,6 @@ export default {
         query: {
           id: this.id,
           keyword: e
-        },
-        force: true
-      })
-    },
-    // 页码
-    pageChange(page) {
-      this.$router.push({
-        query: {
-          id: this.id,
-          page: page.current_page,
-          size: page.size
         },
         force: true
       })

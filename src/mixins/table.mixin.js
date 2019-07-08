@@ -14,6 +14,11 @@ const ROUTE_NAMES_USE_PAGE = [
 
   'brand-setting-shop-list',
 
+  'brand-staff-info-course',
+  'brand-staff-info-follow',
+  'brand-staff-info-sold',
+  'brand-staff-info-member',
+
   /**
    * shop
    */
@@ -34,7 +39,11 @@ const ROUTE_NAMES_USE_PAGE = [
   'shop-member-label-list',
 
   'shop-finance-order-list',
-  'shop-reception-entrance'
+  'shop-reception-entrance',
+
+  'shop-staff-info-member',
+  'shop-staff-info-course',
+  'shop-staff-info-sold'
 ]
 
 export default {

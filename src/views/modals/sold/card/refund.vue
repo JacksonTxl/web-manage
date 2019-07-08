@@ -73,11 +73,7 @@
             <st-info-item class="mg-b0" label="赠送">{{refundInfo.gift_amount}}</st-info-item>
           </st-info>
         </a-col>
-        <a-col :span="24" class="mgb-36">
-          <st-info>
-            <st-info-item class="mg-b0" label="备注">{{refundInfo.description || '无'}}</st-info-item>
-          </st-info>
-        </a-col>
+
         <a-col :span="13" class="mgb-24">
           <st-info>
             <st-info-item label="订单总额">{{refundInfo.total_price}}元</st-info-item>
@@ -88,6 +84,11 @@
            <st-info>
             <st-info-item label="应收金额">{{refundInfo.should_price}}元</st-info-item>
             <st-info-item class="mg-b0" label="实收金额">{{refundInfo.pay_price}}元</st-info-item>
+          </st-info>
+        </a-col>
+        <a-col :span="24" class="mgb-36">
+          <st-info>
+            <st-info-item class="mg-b0" label="备注">{{refundInfo.description || '无'}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
