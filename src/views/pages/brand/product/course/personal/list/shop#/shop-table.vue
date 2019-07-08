@@ -4,8 +4,6 @@
       class="mg-t16"
       rowKey="course_id"
       :columns="columns"
-      :alertSelection="{onReset: onSelectionReset}"
-      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectionChange}"
       :page="page"
       :dataSource="list"
       :scroll="{ x: 1440 }"
@@ -30,6 +28,7 @@
       <div slot="action" slot-scope="action, record">
         <st-table-actions>
           <router-link class="mg-r8" v-if="record.auth['brand_shop:product:personal_course|get']" :to="{name: 'brand-product-course-personal-info', query: { id: record.course_id } }">详情</router-link>
+          <a href="javascript:;" @click="onClickTransfrom(record)">转入品牌</a>
         </st-table-actions>
       </div>
     </st-table>
@@ -69,7 +68,10 @@ export default {
     onSelectionChange(selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
-      this.$emit('check', this.selectedRowKeys)
+      this.$emit('check', this.selectedRows)
+    },
+    onClickTransfrom(course) {
+      this.$modalRouter.push({ name: 'course-transfrom-brand-course', props: { course } })
     }
   }
 }

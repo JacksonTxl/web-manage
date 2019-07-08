@@ -98,7 +98,6 @@
       <a-col :lg="8">
         <st-info>
           <st-info-item label="银行账户名称">{{ basicInfo.bank_account_name }}</st-info-item>
-          <st-info-item label="薪资模板">{{ basicInfo.salary_basic }}</st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
@@ -109,6 +108,23 @@
       <a-col :lg="8">
         <st-info>
           <st-info-item label="银行卡号">{{ basicInfo.bank_number }}</st-info-item>
+        </st-info>
+      </a-col>
+    </a-row>
+    <a-row :gutter="24">
+      <a-col :lg="8">
+        <st-info>
+          <st-info-item label="底薪模板">{{ basicInfo.salary_basic }}</st-info-item>
+        </st-info>
+      </a-col>
+      <a-col :lg="8">
+        <st-info>
+          <st-info-item label="销售提成模板">{{ basicInfo.salary_sale }}</st-info-item>
+        </st-info>
+      </a-col>
+      <a-col :lg="8">
+        <st-info>
+          <st-info-item label="上课提成模板">{{ basicInfo.salary_class }}</st-info-item>
         </st-info>
       </a-col>
     </a-row>

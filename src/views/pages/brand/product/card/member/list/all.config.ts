@@ -44,6 +44,7 @@ export const columns = () => {
       title: '售卖价格',
       dataIndex: 'price_gradient',
       align: 'right',
+      sorter: true,
       scopedSlots: { customRender: 'price_gradient' }
     },
     {

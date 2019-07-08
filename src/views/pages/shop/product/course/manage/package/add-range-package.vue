@@ -21,7 +21,7 @@
               上课范围<st-help-tooltip id="TSCPC002" />
             </template>
             <div :class="add('course')">
-              <table>
+              <st-form-table>
                 <colgroup>
                   <col style="width:5%;">
                   <col style="width:10%;">
@@ -258,7 +258,7 @@
                     </td>
                   </tr>
                 </tbody>
-              </table>
+              </st-form-table>
             </div>
           </st-form-item>
         </a-col>

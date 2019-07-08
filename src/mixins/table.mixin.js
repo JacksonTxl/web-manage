@@ -27,6 +27,7 @@ const ROUTE_NAMES_USE_PAGE = [
   'shop-product-course-manage-package-list',
   'shop-product-card-member-list-all',
   'shop-product-card-deposit-list-all',
+  'shop-product-card-deposit-list-shelves',
 
   'shop-sold-card-list-member',
   'shop-sold-card-list-deposit',
@@ -43,7 +44,8 @@ const ROUTE_NAMES_USE_PAGE = [
 
   'shop-staff-info-member',
   'shop-staff-info-course',
-  'shop-staff-info-sold'
+  'shop-staff-info-sold',
+  'shop-staff-list'
 ]
 
 export default {

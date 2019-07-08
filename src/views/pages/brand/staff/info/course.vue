@@ -3,10 +3,8 @@
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="16">
+          <shop-select class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onSingleSearch('shop_id', $event)"></shop-select>
           <a-range-picker class="mg-r8" @change="onChooseDate" format="YYYY-MM-DD"/>
-
-          <shop-select class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onChange"></shop-select>
-
           <a-select style="width: 160px;" :defaultValue="-1" placeholder="请选择预约状态"  @change="onSelectStatus">
             <a-select-option :value="-1">全部预约状态</a-select-option>
             <a-select-option :value="1">预约失败</a-select-option>
@@ -17,7 +15,7 @@
         </a-col>
         <a-col :lg="2"></a-col>
         <a-col :lg="6">
-          <st-input-search placeholder="请输入课程名称" @search="searchCourse"/>
+          <st-input-search placeholder="请输入课程名称" @search="onSingleSearch('course_name', $event)"/>
         </a-col>
       </a-col>
       <a-col :lg="24" class="mg-t16">

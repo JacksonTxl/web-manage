@@ -7,13 +7,15 @@
       <div class="tree-node__content" :style="{'padding-left': paddingLeft}" @click="getTreeNodeOnclick">
         <span class="tree-switch"  @click.stop="toggle" v-if="isFolder&&level!==0">{{ isOpen ? '-' : '+' }}</span>
         <span class="tree-switch__empty" v-else-if="level!==0"></span>
-        <div class="tree-name edit-box" v-if="item.isEdit" ><a-input placeholder="请输入部门名称" class="tree-input mg-r8" v-model="editValue"></a-input><a href="javascript:;" class="button edit mg-r8" @click="editDepartment">保存</a><span class="button edit mg-r8" @click="cancelEdit">x</span></div>
+        <div class="tree-name edit-box" v-if="item.isEdit">
+          <a-input placeholder="请输入部门名称" class="tree-input mg-r8" v-model="editValue"></a-input>
+          <a href="javascript:;" class="button edit mg-r8" @click="editDepartment">保存</a><span class="button edit mg-r8" @click="cancelEdit">x</span>
+        </div>
         <span class="tree-name" v-else>{{ item.name }}( {{item.count}} )</span>
-
         <st-more-dropdown class="tree-opreation" v-show="!item.isEdit">
           <a-menu-item v-if="auth.departmentAdd"  @click="addTreeNode">新增</a-menu-item>
           <a-menu-item  @click="editTreeNode">编辑</a-menu-item>
-          <a-menu-item  @click="deleteDepartment">删除</a-menu-item>
+          <a-menu-item  @click="deleteDepartment(item)">删除</a-menu-item>
         </st-more-dropdown>
       </div>
       <div v-if="item.isAdd" class="edit-box"><a-input  placeholder="请输入部门名称" class="tree-input  mg-r8" v-model="addValue"></a-input><a href="javascript:;" class="mg-r8" @click="addDepartment">保存</a><span class="mg-r8" @click="cancelEdit">x</span></div>
@@ -101,18 +103,26 @@ export default {
       })
     },
     deleteDepartment(item) {
-      this.$confirm({
-        title: '确认要删除',
-        content: '删除部门后，该部门下的员工会自动归属父级部门，且无法恢复，确认删除？',
-        onOk: () => {
-          return new Promise((resolve, reject) => {
-            return this.departmentService.delDepartment({ id: this.item.id }).subscribe(() => {
-              setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
-            })
-          }).catch(() => console.log('Oops errors!'))
-        },
-        onCancel() {}
-      })
+      console.log('deleteDepartment', item)
+      if (item.count > 0) {
+        this.$error({
+          title: '',
+          content: '当前部门下有员工，无法删除'
+        })
+      } else {
+        this.$confirm({
+          title: '确认要删除',
+          content: '删除部门后，该部门下的员工会自动归属父级部门，且无法恢复，确认删除？',
+          onOk: () => {
+            return new Promise((resolve, reject) => {
+              return this.departmentService.delDepartment({ id: this.item.id }).subscribe(() => {
+                setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
+              })
+            }).catch(() => console.log('Oops errors!'))
+          },
+          onCancel() {}
+        })
+      }
     },
     getTreeNodeOnclick(e) {
       this.$emit('node-item-detail', this.item)

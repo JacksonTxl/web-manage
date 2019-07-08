@@ -165,7 +165,9 @@ export default {
       return arr
     },
     onSubmit() {
-      this.updateStaffPositionService.putStaffBindPosition({ id: this.staff.id, ...this.form }).subscribe(() => {
+      let formData = this.form.getFieldsValue()
+      console.log('formData', formData)
+      this.updateStaffPositionService.putStaffBindPosition({ id: this.staff.id, ...formData }).subscribe(() => {
         this.show = false
       })
     }

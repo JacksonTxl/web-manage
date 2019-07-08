@@ -18,6 +18,12 @@
             {{item.name}}
           </a-select-option>
         </a-select>
+        <div v-if="!canDeleteIdentity" class="modal-staff-turnover__tip modal-staff-tip mg-b24">
+          <p >该员工有以下几个事项待处理，无法进行离职</p>
+          <ul>
+            <li v-for="(tip, index) in tips" :key="tip.type" class="item"><span class="count">{{index + 1}}</span> {{tip.num}}{{tip.type | unitFilter}}{{tip.name}}</li>
+          </ul>
+        </div>
       </st-form-item>
       <st-form-item label="教练等级">
         <a-select v-decorator="['coach_level_id']" placeholder="请选择教练等级">
@@ -74,7 +80,9 @@ export default {
     return {
       show: false,
       form: this.$form.createForm(this),
-      isSalaryCourse: false
+      isSalaryCourse: false,
+      canDeleteIdentity: true,
+      tips: []
     }
   },
   props: {
@@ -150,7 +158,9 @@ export default {
           this.form.setFieldsValue({
             identity
           })
-          this.msg.error({ content: '不能删除该职能' })
+          this.tips = res.list
+          this.canDeleteIdentity = false
+          // this.msg.error({ content: '不能删除该职能' })
         }
       })
     },
@@ -169,7 +179,7 @@ export default {
       this.show = false
       let formData = this.form.getFieldsValue()
       console.log(formData)
-      this.updateStaffPositionService.putStaffBindPosition({ id: this.staff.id, ...this.form }).subscribe(() => {
+      this.updateStaffPositionService.putStaffBindPosition({ id: this.staff.id, ...formData }).subscribe(() => {
         this.msg.success({
           content: '绑定实体卡成功'
         })
