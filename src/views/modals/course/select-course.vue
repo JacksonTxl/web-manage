@@ -11,7 +11,7 @@
         <st-input-search @search="getCourseList" v-model="searchData.search" :class="course('search-input')" placeholder="请输入课程名称进行查询"/>
       </div>
       <div :class="course('all-table')">
-        <table>
+        <st-form-table>
           <colgroup>
             <col style="width:26%;">
             <col style="width:22%;">
@@ -38,7 +38,7 @@
               </td>
             </tr>
           </tbody>
-        </table>
+        </st-form-table>
       </div>
       <p :class="course('count')">
         <span>共查到{{courseList.length}}条记录</span>
@@ -46,7 +46,7 @@
       </p>
       <p :class="course('selet-course-title')">已选定{{selectCourseList.length}}种课程</p>
       <div :class="course('select-table')">
-        <table>
+        <st-form-table>
           <colgroup>
             <col style="width:26%;">
             <col style="width:22%;">
@@ -73,7 +73,7 @@
               </td>
             </tr>
           </tbody>
-        </table>
+        </st-form-table>
       </div>
     </div>
   </st-modal>

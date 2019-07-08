@@ -28,7 +28,7 @@
             <a-col :lg="23">
               <st-form-item class="page-content-card-price-setting" label="价格设置" required :help="rallyPriceValidText">
                 <div class="page-price-setting-set" :class="{'page-price-setting-set-error':priceValidateStatus==='error'}">
-                  <a-table
+                  <st-table
                     size="middle"
                     :columns="priceColumns"
                     :dataSource="rallyPriceList"
@@ -68,7 +68,7 @@
                     <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="price_delete(index)">
                       删除
                     </a>
-                  </a-table>
+                  </st-table>
                   <st-button :disabled="rallyPriceList.length>3" type="dashed" class="page-price-setting-set__add" block @click="price_add">+ 添加定价规格（{{rallyPriceList.length}}/4）</st-button>
                 </div>
               </st-form-item>

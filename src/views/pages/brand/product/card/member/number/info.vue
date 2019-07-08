@@ -42,7 +42,7 @@
             <span class="value">{{cardInfo.admission_range.name}}{{cardInfo.admission_range.id>1?`（已上架${cardInfo.shelf_num}家门店/共${cardInfo.sale_num}家门店）`:''}}</span>
           </p>
           <st-container v-if="cardInfo.admission_range.id===2">
-            <a-table
+            <st-table
               size="middle"
               rowKey="shop_id"
               :columns="shop_columns"
@@ -59,7 +59,7 @@
             <span class="value">{{cardInfo.support_sales.name}}</span>
           </p>
           <st-container v-if="cardInfo.support_sales.id!==1">
-            <a-table
+            <st-table
               size="middle"
               rowKey="shop_id"
               :columns="shop_columns"
@@ -82,7 +82,7 @@
             <span class="label">售卖定价：</span>
           </p>
           <st-container>
-            <a-table
+            <st-table
               v-if="cardInfo.price_setting.id===1"
               size="middle"
               rowKey="id"
@@ -91,8 +91,8 @@
               :pagination="false"
               :scroll="{ y: 230 }"
             >
-            </a-table>
-            <a-table
+            </st-table>
+            <st-table
               v-if="cardInfo.price_setting.id===2"
               size="middle"
               rowKey="id"
@@ -101,7 +101,7 @@
               :pagination="false"
               :scroll="{ y: 230 }"
             >
-            </a-table>
+            </st-table>
           </st-container>
         </div>
         <div :class="item('transfer')" class="mb-24">
