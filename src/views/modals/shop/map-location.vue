@@ -5,7 +5,7 @@
   v-model="show"
   :footer="null"
   wrapClassName="modal-map-location"
-  :width="484">
+  width="484px">
     <div :class="map('map')" class="mg-b8" id="mapcontainer"></div>
     <p :class="map('lat-lng')" class="mg-b0">({{lat}}，{{lng}})</p>
   </st-modal>

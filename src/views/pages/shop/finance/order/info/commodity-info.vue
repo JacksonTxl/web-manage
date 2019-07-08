@@ -15,7 +15,7 @@
         <a-col :span="9">
           <st-info>
             <st-info-item label="允许转让">{{info.is_transfer_text}}</st-info-item>
-            <st-info-item label="转让手续费" v-if="info.is_transfer !== 0">{{info.total_price}}</st-info-item>
+            <st-info-item label="转让手续费" v-if="info.is_transfer !== 0">{{info.transfer_fee}}</st-info-item>
             <st-info-item label="入场范围">{{info.admission_range}}</st-info-item>
           </st-info>
         </a-col>

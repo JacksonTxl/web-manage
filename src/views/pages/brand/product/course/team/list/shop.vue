@@ -6,7 +6,7 @@
           <st-button
             v-if="auth.transfer"
             type="primary"
-            v-modal-link="{name: 'course-transfrom-brand-course', props:{courseIds: selectedRowKeys}}"
+            v-modal-link="{name: 'course-transfrom-brand-team-course', props:{courseList: selectedRows}}"
           >转入品牌团体课程库</st-button>
         </div>
         <div>
@@ -51,7 +51,7 @@ export default {
   data() {
     return {
       disable: true,
-      selectedRowKeys: [],
+      selectedRows: [],
       defaultShops: -1,
       toRoute: {},
       courseStatus: [{ label: '所有状态', value: -1 }, { label: '有效', value: '1' }, { label: '无效', value: '0' }]
@@ -61,8 +61,8 @@ export default {
     TeamTableShop
   },
   methods: {
-    onCheckGetCourse(selectedRowKeys) {
-      this.selectedRowKeys = selectedRowKeys
+    onCheckGetCourse(selectedRows) {
+      this.selectedRows = selectedRows
     },
     onDeleteCourse(record) {
       this.shopService.deleteCourse(record.id).subscribe(() => {

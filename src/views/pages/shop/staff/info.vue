@@ -37,8 +37,7 @@
                   v-modal-link="{ name: 'shop-staff-re-password', props: {staff: info} }">管理登录账号</a>
               </a-menu-item>
               <a-menu-item>
-                <a v-if="auth['brand_shop:staff:staff|position']"
-                  v-modal-link="{ name: 'shop-staff-update-staff-position', props: {staff: info} }">职位变更</a>
+                <a v-if="auth['brand_shop:staff:staff|position']" @click="jumpToStaffPosition">职位变更</a>
               </a-menu-item>
               <a-menu-item>
                 <a v-if="auth['brand_shop:staff:staff|salary']"
@@ -137,6 +136,14 @@ export default {
   methods: {
     setIndentyList(arr, targetArr) {
       arr.forEach(key => targetArr.add(key, this[key]))
+    },
+    jumpToStaffPosition() {
+      this.$modalRouter.push({
+        name: 'staff-update-staff-position',
+        props: {
+          staff: this.info
+        }
+      })
     },
     handleMenuClick() {},
     editStaffInfo() {

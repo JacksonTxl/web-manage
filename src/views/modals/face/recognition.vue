@@ -8,8 +8,7 @@
     v-model="show"
     width="484px"
     @ok="uploadUserImageToRecognition"
-    @cancel="cancel"
-  >
+    @cancel="cancel">
     <div :class="recognition()">
       <div :class="recognition('header')">
         <a-alert message="为保证人脸录入质量，请确保光线充足，以免影响识别精度。" type="warning" banner/>
@@ -132,6 +131,7 @@ export default {
           .put({
             file: blob,
             isPrivate: true,
+            type: 'face',
             uploadProgress: e => {
               this.progress = parseInt((e.loaded / e.total) * 100)
             }
