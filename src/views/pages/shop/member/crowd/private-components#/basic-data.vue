@@ -39,7 +39,6 @@ export default {
     selectionFun(item) {
       let keyData = Object.keys(this.value)
       let self = this
-      console.log(item)
       if (self.value['arrData'].indexOf(item) >= 0) {
         self.value['arrData'].splice(self.value['arrData'].indexOf(item), 1)
       } else {
