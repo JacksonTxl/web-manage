@@ -26,7 +26,8 @@
           :columns="followColumns"
           :dataSource="followList"
           :scroll="{ x: 1750}"
-          @change="pageChange"
+          :loading="loading.getStaffFollow"
+          @change="onTableChange"
           :page="page"
         >
           <template slot="member_name" slot-scope="text, record">
@@ -41,16 +42,23 @@
 <script>
 import { FollowService } from './follow.service'
 import { followColumns } from './columns.config'
+import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
+
 export default {
+  mixins: [ tableMixin ],
   serviceInject() {
     return {
-      followservice: FollowService
+      followservice: FollowService,
+      routerService: RouteService
     }
   },
   rxState() {
     return {
       followList: this.followservice.followList$,
-      page: this.followservice.page$
+      loading: this.followservice.loading$,
+      page: this.followservice.page$,
+      query: this.routerService.query$
     }
   },
   data() {
@@ -83,16 +91,6 @@ export default {
         query: {
           id: this.id,
           member_name: e
-        },
-        force: true
-      })
-    },
-    pageChange(pagination) {
-      this.$router.push({
-        query: {
-          id: this.id,
-          page: page.current_page,
-          size: page.size
         },
         force: true
       })

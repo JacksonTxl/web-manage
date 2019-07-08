@@ -43,9 +43,20 @@
 <script>
 import { columns } from './staff-table.config'
 import tableMixin from '@/mixins/table.mixin'
+import { RouteService } from '@/services/route.service'
 
 export default {
   mixins: [ tableMixin ],
+  serviceInject() {
+    return {
+      routerService: RouteService
+    }
+  },
+  rxState() {
+    return {
+      query: this.routerService.query$
+    }
+  },
   data() {
     return {
       selectedRowKeys: []
