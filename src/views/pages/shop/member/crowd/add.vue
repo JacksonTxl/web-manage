@@ -97,9 +97,9 @@ export default {
     'reg-time': regTime, // 注册时间
     'source-mode': sourceMode, // 来源方式
     'induction-time': inductionTime, // 入会时间
-    birthday: birthday, // 生日
-    sex: sex, // 性别
-    age: age, // 年龄
+    'birthday': birthday, // 生日
+    'sex': sex, // 性别
+    'age': age, // 年龄
     'affiliated-store': affiliatedStore, // 所属门店
     'available-integral': availableIntegral, // 可用积分
     'available-coupons': availableCoupons, // 可用优惠劵
@@ -243,19 +243,17 @@ export default {
     }
   },
   created() {
-    console.log(this.$route.query.id)
     if (this.$route.query.id) {
       this.getCrowdBrand(this.$route.query.id)
     }
-
     this.getFilterData()
   },
   filters: {
     componentFun(value) {
       let obj = {
-        base_sex: 'sex',
-        base_age: 'age',
-        base_birthday: 'birthday',
+        sex: 'sex',
+        age: 'age',
+        birthday: 'birthday',
         base_shop: 'affiliated-store',
         register_time: 'reg-time',
         source_channel: 'source-mode',
@@ -269,8 +267,8 @@ export default {
         deposit_remain_money: 'cardMount',
         remain_enter_times: 'admission-times',
         final_enter_time: 'lastAdmissionTime',
-        base_member_label: 'userLable',
-        base_member_level: 'base-member-level'
+        member_label: 'userLable',
+        member_level: 'base-member-level'
       }
       return obj[value]
     }

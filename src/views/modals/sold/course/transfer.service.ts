@@ -16,8 +16,8 @@ export class TransferService {
   personalCourseInfo$ = new State({})
   constructor(private contractApi:ContractApi, private memberApi: ShopPersonalCourseApi, private courseApi:CourseApi, private transactionApi: TransactionApi) {}
   @Effect()
-  getMember(member:string) {
-    return this.transactionApi.getTransactionMemeberList({ member }).pipe(tap((res:any) => {
+  getMember(member:string, type: number) {
+    return this.transactionApi.getMemberList(member, type).pipe(tap((res:any) => {
       this.memberList$.commit(() => res.list)
     }))
   }

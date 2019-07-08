@@ -350,7 +350,8 @@ export default {
         this.transferService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
       } else {
-        this.transferService.getMember(data).subscribe(res => {
+        // 等于1的时候表示可以新增会员
+        this.transferService.getMember(data, this.personalCourseInfo.can_add_member !== 1 ? 2 : 1).subscribe(res => {
           if (!res.list.length) {
             this.form.resetFields(['memberId'])
           }
