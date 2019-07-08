@@ -3,6 +3,7 @@
     <aside class="layout-default-sider">
       <div class="layout-default-sider__brand">
         <div class="layout-default-sider__logo">
+          <img width='100%' height='100%' :src="user.brand_logo | imgFilter({w:48,h:48})" alt="logo">
           <i class="layout-default-sider__certification st-icon-certified"></i>
         </div>
         <div class="layout-default-sider__name cursor-pointer" @click="switchShop">
