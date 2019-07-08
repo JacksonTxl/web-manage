@@ -1,10 +1,9 @@
-import { Injectable, Multiton } from 'vue-service-app'
+import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { CardsApi, CardSaleStopInput } from '@/api/v1/cards'
 import { tap } from 'rxjs/operators'
 
 @Injectable()
-@Multiton()
 export class StopSaleService {
     loading$ = new State({})
     info$ = new State({})
