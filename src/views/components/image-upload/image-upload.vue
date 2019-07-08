@@ -7,8 +7,8 @@
     >
       <img
         class="st-image-upload__item-img"
-        :src="item[imageUrl] || item[imageKey] | imgFilter(computedFilterOptions)"
-        :data-src="item[imageUrl] || item[imageKey] | imgFilter"
+        :src="(item[imageUrl] || item[imageKey]) | imgFilter(computedFilterOptions)"
+        :data-src="(item[imageUrl] || item[imageKey]) | imgFilter"
         :style="sizeStyle"
       >
       <slot name="item-extra" :item="item" :index="index"></slot>
@@ -223,9 +223,10 @@ export default {
     },
     processUpload(data) {
       this.isLoading = true
-      console.log()
+      // 业务
       this.oss
         .put({
+          type: 'image',
           file: data.file,
           uploadProgress: e => {
             this.progress = parseInt((e.loaded / e.total) * 100)
