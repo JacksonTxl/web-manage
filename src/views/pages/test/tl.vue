@@ -2,7 +2,7 @@
   <div>
     <st-panel app>
       <p>
-        <modal-link tag="a" :to="{ name: 'brand-switch' }">切换品牌</modal-link>
+        <a v-modal-link="{ name: 'brand-switch' }">切换品牌</a>
       </p>
       <p>
         <a href="javascript: void(0);" @click="switchShop">切换门店</a>
@@ -28,11 +28,11 @@
         <router-link class="mg-l8" to="/brand/setting/general">通用设置</router-link>
       </p>
       <p class="mg-t8">
-        <modal-link tag="a" :to="{ name:'brand-setting-team-reserve' }">团体课程预约设置</modal-link>
-        <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-personal-reserve' }">私教课课程预约设置</modal-link>
-        <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-personal-price-model' }">私教课程定价设置</modal-link>
-        <router-link class="mg-l8" tag="a" to="/brand/setting/app/pay-type">支付方式设置</router-link>
-        <modal-link class="mg-l8" tag="a" :to="{ name:'brand-setting-wechat-payment' }">微信支付设置</modal-link>
+        <a v-modal-link="{ name:'brand-setting-team-reserve' }">团体课程预约设置</a>
+        <a class="mg-l8" v-modal-link="{ name:'brand-setting-personal-reserve' }">私教课课程预约设置</a>
+        <a class="mg-l8" v-modal-link="{ name:'brand-setting-personal-price-model' }">私教课程定价设置</a>
+        <router-link class="mg-l8" to="/brand/setting/app/pay-type">支付方式设置</router-link>
+        <a class="mg-l8" v-modal-link="{ name:'brand-setting-wechat-payment' }">微信支付设置</a>
       </p>
       <p>
         <st-input-search v-model="query.keyword" @search="onSearch"/>

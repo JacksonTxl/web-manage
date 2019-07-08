@@ -16,8 +16,9 @@
           :columns="memberColums"
           :dataSource="memberInfo"
           :scroll="{ x: 1750}"
-          @change="pageChange"
+          :loading="loading.getStaffServiceCourses"
           :page="page"
+          @change="onTableChange"
         >
         <template slot="course_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">{{ text }}</a>
@@ -40,9 +41,12 @@
 <script>
 import { memberColums } from './columns.config'
 import { MemberService } from './member.service'
-import { RouteService } from '../../../../../services/route.service'
+import { RouteService } from '@/services/route.service'
 import ShopSelect from '@/views/biz-components/shop-select'
+import tableMixin from '@/mixins/table.mixin'
+
 export default {
+  mixins: [tableMixin],
   serviceInject() {
     return {
       service: MemberService,
@@ -52,8 +56,9 @@ export default {
   rxState() {
     return {
       memberInfo: this.service.memberInfo$,
-      query: this.routeService.query$,
-      page: this.service.page$
+      loading: this.service.loading$,
+      page: this.service.page$,
+      query: this.routeService.query$
     }
   },
   data() {

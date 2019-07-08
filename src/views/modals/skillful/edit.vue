@@ -1,5 +1,5 @@
 <template>
-  <a-modal
+  <st-modal
     title="编辑擅长项目"
     v-model="show"
     @ok="onSubmit"
@@ -21,7 +21,7 @@
         </a-row>
       </st-form>
     </div>
-  </a-modal>
+  </st-modal>
 </template>
 <script>
 import { EditService } from './edit.service'

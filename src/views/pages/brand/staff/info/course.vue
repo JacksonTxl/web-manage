@@ -25,8 +25,9 @@
           :columns="courseColums"
           :dataSource="courseInfo.list"
           :scroll="{ x: 1750}"
-          @change="pageChange"
+          :loading="loading.getCoursesList"
           :page="page"
+          @change="onTableChange"
         >
           <template slot="action" slot-scope="text, record">
             <st-table-actions>
@@ -47,7 +48,10 @@ import { courseColums } from './columns.config'
 import { CourseService } from './course.service'
 import { RouteService } from '../../../../../services/route.service'
 import ShopSelect from '@/views/biz-components/shop-select'
+import tableMixin from '@/mixins/table.mixin'
+
 export default {
+  mixins: [ tableMixin ],
   serviceInject() {
     return {
       service: CourseService,
@@ -58,6 +62,7 @@ export default {
     return {
       query: this.routeService.query$,
       courseInfo: this.service.courseInfo$,
+      loading: this.service.loading$,
       page: this.service.page$
     }
   },
@@ -95,17 +100,6 @@ export default {
     // 查看详情 点击弹出预约详情弹窗，同【门店-课程排期-团体课】、【门店-课程排期-私教1v1】、【门店-课程排期-私教小团课】
     onSearchDetail(e) {
       console.log(e)
-    },
-    // 分页
-    pageChange(page) {
-      this.$router.push({
-        query: {
-          id: this.id,
-          page: page.current_page,
-          size: page.size
-        },
-        force: true
-      })
     },
     // 日期选择
     onChooseDate(e) {

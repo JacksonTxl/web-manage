@@ -354,6 +354,7 @@ export default {
           this.renewalMemberService.renewal({
             contract_number: values.contractNumber,
             rule_id: this.selectSpecs,
+            valid_start_time: moment(values.startTime).format('YYYY-MM-DD HH:mm'),
             gift_amount: +this.giftAmount,
             user_coupon_id: this.selectCoupon === -1 ? undefined : +this.selectCoupon,
             advance_id: this.selectAdvance === -1 ? undefined : this.selectAdvance,
@@ -379,6 +380,7 @@ export default {
           this.renewalMemberService.renewal({
             contract_number: values.contractNumber,
             rule_id: this.selectSpecs,
+            valid_start_time: moment(values.startTime).format('YYYY-MM-DD HH:mm'),
             gift_amount: +this.giftAmount,
             user_coupon_id: this.selectCoupon === -1 ? undefined : +this.selectCoupon,
             advance_id: this.selectAdvance === -1 ? undefined : this.selectAdvance,

@@ -1,27 +1,49 @@
 // 使用page作为当前页查询参数的路由放这里
 const ROUTE_NAMES_USE_PAGE = [
-  'brand-setting-shop-list',
+  /**
+   * brand
+   */
   'brand-product-course-team-list-shop',
   'brand-product-course-team-list-brand',
   'brand-product-course-personal-list-brand',
   'brand-product-course-personal-list-shop',
+  'brand-product-card-deposit-list-all',
+
+  'brand-finance-salary-template-basic',
+  'brand-finance-salary-template-performance',
+
+  'brand-setting-shop-list',
+
+  'brand-staff-info-course',
+  'brand-staff-info-follow',
+  'brand-staff-info-sold',
+  'brand-staff-info-member',
+
+  /**
+   * shop
+   */
   'shop-product-course-manage-personal-list',
   'shop-product-course-manage-team-list',
+  'shop-product-course-manage-package-list',
+  'shop-product-card-member-list-all',
+  'shop-product-card-deposit-list-all',
+
   'shop-sold-card-list-member',
   'shop-sold-card-list-deposit',
   'shop-sold-course-list-personal',
   'shop-sold-course-list-package',
   'shop-sold-cabinet-list',
   'shop-sold-transaction-list',
+
   'shop-member-list',
   'shop-member-label-list',
-  'shop-product-course-manage-package-list',
+
   'shop-finance-order-list',
-  'brand-finance-salary-template-basic',
-  'brand-finance-salary-template-performance',
-  'shop-product-card-member-list-all',
-  'shop-product-card-deposit-list-all',
-  'shop-reception-entrance'
+  'shop-reception-entrance',
+
+  'shop-staff-info-member',
+  'shop-staff-info-course',
+  'shop-staff-info-sold'
 ]
 
 export default {

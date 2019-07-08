@@ -1,5 +1,6 @@
 import { isFn } from './utils'
 const INJECTED = '__injectedTypes'
+const MODE_MULTITON = '__injectedMultiton'
 
 class Provider {
   constructor(token, containerInstance) {
@@ -10,11 +11,12 @@ class Provider {
   toSelf() {
     const Cls = this.token
     this.toClass(Cls)
+    return this
   }
   toClass(Cls) {
     if (Cls[INJECTED]) {
       this.getValue = () => {
-        if (!this.instance) {
+        if (!this.instance || Cls[MODE_MULTITON]) {
           const injects = Cls[INJECTED].map(token =>
             this.containerInstance.get(token)
           )
@@ -27,19 +29,21 @@ class Provider {
         throw new Error(
           `[vue-service-app] detect [${
             Cls.name
-          }] has depency services but,but no @Injectable() or @Inject() decorate it`
+          }] has dependancy services but,but no @Injectable() or @Inject() decorate it`
         )
       }
       this.getValue = () => {
-        if (!this.instance) {
+        if (!this.instance || Cls[MODE_MULTITON]) {
           this.instance = new Cls()
         }
         return this.instance
       }
     }
+    return this
   }
   toValue(value) {
     this.getValue = () => value
+    return this
   }
 }
 export class InjectionToken {
@@ -95,8 +99,7 @@ export class Container {
   new(token) {
     if (isFn(token)) {
       const provider = new Provider(token, this)
-      provider.toClass(token)
-      return provider.getValue()
+      return provider.toClass(token).getValue()
     } else {
       console && console.error('[vue-service-app] Invalid provide->', token)
     }
@@ -134,6 +137,16 @@ export function Injectable() {
         }
       })
     }
+    return target
+  }
+}
+
+/**
+ * use multiton service,add Multiton meta
+ */
+export function Multiton() {
+  return function(target) {
+    target.__injectedMultiton = true
     return target
   }
 }

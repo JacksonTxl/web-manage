@@ -118,7 +118,7 @@ export default {
     goToPlugin(type) {
       const map = {
         1: 'brand-marketing-plugin-coupon-list',
-        2: 'brand-marketing-plugin-invitation-index'
+        2: 'brand-marketing-plugin-invitation-index-data'
       }
       if (map.hasOwnProperty(type)) {
         this.$router.push({

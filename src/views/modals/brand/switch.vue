@@ -1,9 +1,9 @@
 <template>
-  <a-modal
+  <st-modal
     title="请选择品牌"
     width="80%"
     :footer="null"
-    class="modal-brand-switch"
+    wrapClassName="modal-brand-switch"
     v-model="show"
   >
     <div class="brand-content">
@@ -27,7 +27,7 @@
         </a-col>
       </a-row>
     </div>
-  </a-modal>
+  </st-modal>
 </template>
 <script>
 import { SwitchService } from './switch.service'

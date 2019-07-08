@@ -1,4 +1,4 @@
-import { Container, Inject, InjectionToken, Injectable } from './di'
+import { Container, Inject, InjectionToken, Injectable, Multiton } from './di'
 import multiguard from 'vue-router-multiguard'
 import VueRouter from 'vue-router'
 import { isObject, isFn, isCtor, isString } from './utils'
@@ -22,23 +22,7 @@ class VueServiceApp {
     Vue.use(VueRouter)
     Vue.mixin({
       beforeCreate() {
-        const { serviceInject, serviceProviders } = this.$options
-        if (serviceProviders) {
-          if (!isFn(serviceProviders)) {
-            throw new Error(
-              `[vue-service-app] serviceProviders should be function but got ${typeof serviceProviders}`
-            )
-          }
-          const providers = serviceProviders.call(this)
-          if (!Array.isArray(providers)) {
-            throw new Error(
-              `[vue-service-app] serviceProviders should be function return an Array but got ${typeof providers}`
-            )
-          }
-
-          this._hasComponentServiceProviders = !!providers.length
-          this._componentSerivceProviders = providers
-        }
+        const { serviceInject } = this.$options
 
         if (serviceInject) {
           if (!isFn(serviceInject)) {
@@ -58,21 +42,9 @@ class VueServiceApp {
                 `[vue-service-app] serviceInject you just inject undefined in [${name}]`
               )
             }
-            // get service from component providers
-            if (this._hasComponentServiceProviders) {
-              this[name] = rootContainer.new(injects[name])
-              // get service from root
-            } else {
-              this[name] = rootContainer.get(injects[name])
-            }
+
+            this[name] = rootContainer.get(injects[name])
           }
-        }
-      },
-      // 组件销毁时 销毁根容器的provider实例
-      beforeDestroy() {
-        const { serviceProviders } = this.$options
-        if (serviceProviders) {
-          // todo 销毁 services
         }
       }
     })
@@ -81,6 +53,7 @@ class VueServiceApp {
     base = '/',
     mode = 'history',
     routes = [],
+    scrollBehavior = () => {},
     onError = e => {
       throw e
     },
@@ -91,7 +64,8 @@ class VueServiceApp {
     this.vueRouterOptions = {
       base,
       mode,
-      routes
+      routes,
+      scrollBehavior
     }
     this.onError = onError
     this.router = null
@@ -361,6 +335,6 @@ class VueServiceApp {
   }
 }
 
-export { ServiceRouter, Inject, InjectionToken, Injectable }
+export { ServiceRouter, Inject, InjectionToken, Injectable, Multiton }
 
 export default VueServiceApp

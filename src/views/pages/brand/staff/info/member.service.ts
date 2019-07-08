@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State } from 'rx-state'
+import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { StaffApi, GetStaffServiceCoursesInput } from '@/api/v1/staff'
 
@@ -7,7 +7,10 @@ import { StaffApi, GetStaffServiceCoursesInput } from '@/api/v1/staff'
 export class MemberService implements RouteGuard {
     memberInfo$ = new State({})
     page$ = new State({})
+    loading$ = new State({})
+
     constructor(private staffapi: StaffApi) {}
+    @Effect()
     getStaffServiceCourses(id: string, query: GetStaffServiceCoursesInput) {
       return this.staffapi.getStaffServiceCourses(id, query).pipe(
         tap(res => {
