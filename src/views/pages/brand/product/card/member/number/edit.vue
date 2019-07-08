@@ -934,7 +934,8 @@ export default {
     },
     // 转让设置的min
     transferMin() {
-      return this.cardData.unit === 1 ? 1 : 0.1
+      // return this.cardData.transfer_unit === 1 ? 1 : 0.1
+      return 0
     },
     // 转让设置的max
     transferMax() {
