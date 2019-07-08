@@ -44,10 +44,7 @@
             v-decorator="rules.image_face"
           ></st-image-upload>
         </st-form-item>
-        <st-form-item required>
-          <template slot="label">
-              昵称<st-help-tooltip id="TBCE001" />
-          </template>
+        <st-form-item label="昵称" required>
           <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.nickname"/>
         </st-form-item>
         <st-form-item label="邮箱">
@@ -129,7 +126,11 @@
           <a-input placeholder="请输入员工工号" v-decorator="rules.staff_num"></a-input>
         </st-form-item>
         <st-form-item label="入职时间">
-          <a-date-picker style="width:100%" v-decorator="rules.entry_date"/>
+          <a-date-picker
+            style="width:100%"
+            v-decorator="rules.entry_date"
+            :showTime="{ format: appConfig.DATE_FORMAT.date }"
+            :format="appConfig.DATE_FORMAT.datetime"/>
         </st-form-item>
         <st-form-item label="所属门店" required>
           <shop-select
@@ -188,12 +189,14 @@ import { AddService } from '../add.service'
 import ShopSelect from '@/views/biz-components/shop-select'
 import DepartmentSelect from '@/views/biz-components/department-select'
 import { RuleConfig } from '@/constants/staff/rule'
+import { AppConfig } from '@/constants/config'
 
 export default {
   name: 'StaffDetailBasics',
   serviceInject() {
     return {
       rules: RuleConfig,
+      appConfig: AppConfig,
       userService: UserService,
       addService: AddService
     }
