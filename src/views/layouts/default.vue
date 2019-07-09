@@ -3,7 +3,12 @@
     <aside class="layout-default-sider">
       <div class="layout-default-sider__brand">
         <div class="layout-default-sider__logo">
-          <img width='100%' height='100%' :src="user.brand_logo | imgFilter({w:48,h:48})" alt="logo">
+          <img
+            width="100%"
+            height="100%"
+            :src="user.brand_logo | imgFilter({w:48,h:48})"
+            alt="logo"
+          />
           <i class="layout-default-sider__certification st-icon-certified"></i>
         </div>
         <div class="layout-default-sider__name cursor-pointer" @click="switchShop">
@@ -12,66 +17,66 @@
         </div>
       </div>
       <div class="layout-default-sider__scrollbox" v-scrollBar>
-        <default-sider-menu @change="onSiderMenuChange"/>
+        <default-sider-menu @change="onSiderMenuChange" />
       </div>
     </aside>
     <header class="layout-default-body__header">
-        <div class="layout-default-body__location">
-          <template v-if="pageTitle">
-            <h2>{{pageTitle}}</h2>
-            <span class="layout-default-body__line"></span>
-          </template>
-          <a-breadcrumb separator="-">
-            <a-breadcrumb-item>
-              <router-link :to="homePageRoute">
-                <st-icon type="home" class="layout-default-body__icon"/>
-              </router-link>
-            </a-breadcrumb-item>
-            <a-breadcrumb-item v-for='b in breadCrumbs' :key="b.label">
-              <router-link :to='b.route' v-if="b.label && b.route.name">
-                <span class="layout-default-body__breadtext">{{b.label}}</span>
-              </router-link>
-              <span v-if="!b.route.name" class="layout-default-body__breadtext">{{b.label}}</span>
-            </a-breadcrumb-item>
-          </a-breadcrumb>
-        </div>
-        <div class="layout-default-body__personal">
-          <!-- <a-badge dot>
+      <div class="layout-default-body__location">
+        <template v-if="pageTitle">
+          <h2>{{pageTitle}}</h2>
+          <span class="layout-default-body__line"></span>
+        </template>
+        <a-breadcrumb separator="-">
+          <a-breadcrumb-item>
+            <router-link :to="homePageRoute">
+              <st-icon type="home" class="layout-default-body__icon" />
+            </router-link>
+          </a-breadcrumb-item>
+          <a-breadcrumb-item v-for="b in breadCrumbs" :key="b.label">
+            <router-link :to="b.route" v-if="b.label && b.route.name">
+              <span class="layout-default-body__breadtext">{{b.label}}</span>
+            </router-link>
+            <span v-if="!b.route.name" class="layout-default-body__breadtext">{{b.label}}</span>
+          </a-breadcrumb-item>
+        </a-breadcrumb>
+      </div>
+      <div class="layout-default-body__personal">
+        <!-- <a-badge dot>
             <st-icon type="home" class="layout-default-body__icon"/>
           </a-badge>
           <a-badge>
             <st-icon type="home" class="layout-default-body__icon"/>
-          </a-badge> -->
-          <a-dropdown :trigger="['click']" placement="bottomRight">
-            <div class="layout-default-body__avatar">
-              <img src="~@/assets/img/avatar_default.png" width="32" height="32" alt="avatar">
+        </a-badge>-->
+        <a-dropdown :trigger="['click']" placement="bottomRight">
+          <div class="layout-default-body__avatar">
+            <img src="~@/assets/img/avatar_default.png" width="32" height="32" alt="avatar" />
+          </div>
+          <div slot="overlay" class="layout-default-body__dropdown">
+            <div class="layout-default-body__username">
+              <p class="layout-default-body__name">{{user.staff_name}}</p>
+              <p class="layout-default-body__mobile">{{user.mobile}}</p>
             </div>
-            <div slot="overlay" class="layout-default-body__dropdown">
-              <div class="layout-default-body__username">
-                <p class="layout-default-body__name">{{user.staff_name}}</p>
-                <p class="layout-default-body__mobile">{{user.mobile}}</p>
-              </div>
-              <a-menu>
-                <a-menu-item class="layout-default-body__options">
+            <a-menu>
+              <!-- <a-menu-item class="layout-default-body__options">
                   <st-icon type="safety"></st-icon>
                   <span>账号安全</span>
-                </a-menu-item>
-                <a-menu-item class="layout-default-body__options">
+              </a-menu-item>-->
+              <!-- <a-menu-item class="layout-default-body__options">
                   <a v-modal-link="{ name: 'brand-switch' }">
                     <st-icon type="switch"></st-icon>
                     <span>切换品牌</span>
                   </a>
-                </a-menu-item>
-                <a-menu-divider/>
-                <a-menu-item  @click="onClickLogout" class="layout-default-body__options">
-                  <st-icon type="logout"></st-icon>
-                  <span>退出</span>
-                </a-menu-item>
-              </a-menu>
-            </div>
-          </a-dropdown>
-        </div>
-      </header>
+              </a-menu-item>-->
+              <!-- <a-menu-divider/> -->
+              <a-menu-item @click="onClickLogout" class="layout-default-body__options">
+                <st-icon type="logout"></st-icon>
+                <span>退出</span>
+              </a-menu-item>
+            </a-menu>
+          </div>
+        </a-dropdown>
+      </div>
+    </header>
     <main class="layout-default-body">
       <article class="layout-default-body__content">
         <router-view></router-view>
@@ -84,16 +89,18 @@
 <script>
 import DefaultSiderMenu from './default#sider-menu'
 import SwitchShop from '@/views/fragments/shop/switch'
-import Cookie from 'js-cookie'
 import routes from '@/router/routes'
 import { find } from 'lodash-es'
 import { LoginService } from '../pages/account/login.service'
 import { UserService } from '@/services/user.service'
+import { TokenService } from '@/services/token.service'
+
 export default {
   serviceInject() {
     return {
       loginService: LoginService,
-      userService: UserService
+      userService: UserService,
+      tokenService: TokenService
     }
   },
   rxState() {
@@ -129,9 +136,10 @@ export default {
       this.isShowSwitchShop = !this.isShowSwitchShop
     },
     onClickLogout() {
-      this.loginService.logout().subscribe(res => {
-        Cookie.set('saas-token', '')
-        location.reload()
+      this.tokenService.REMOVE_TOKEN()
+      this.$router.push({
+        name: 'account-login',
+        force: true
       })
     },
     getParentBreadCrumb() {
@@ -142,12 +150,14 @@ export default {
       if (parentRoute) {
         const name = parentRoute.name
         const title = parentRoute.meta.title
-        return [{
-          label: title,
-          route: {
-            name
+        return [
+          {
+            label: title,
+            route: {
+              name
+            }
           }
-        }]
+        ]
       } else {
         return []
       }

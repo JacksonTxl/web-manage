@@ -1,6 +1,6 @@
 <template>
   <div :class="b()" :style="chartStyle">
-    <div v-for="(item,idx) in data" :key="item.name" :class="b('item')">
+    <div v-for="(item,idx) in dv" :key="item.name" :class="b('item')">
       <div :class="b('item-before')" :style="triStyle"></div>
       <div :class="b('text')">
         <span :class="b('name')">{{item.name}}</span>
@@ -33,11 +33,17 @@ export default {
     b: 'st-funnel-vertical'
   },
   computed: {
+    dv() {
+      return this.data.map(item => {
+        item.value = +item.value
+        return item
+      })
+    },
     maxValue() {
-      return Math.max(...this.data.map(item => item.value))
+      return Math.max(...this.dv.map(item => item.value))
     },
     dataCount() {
-      return this.data.length
+      return this.dv.length
     },
     chartStyle() {
       return {
@@ -52,6 +58,9 @@ export default {
   },
   methods: {
     getPercent(v) {
+      if (!this.maxValue) {
+        return 0
+      }
       return ((v / this.maxValue) * 100).toFixed(1)
     }
   }

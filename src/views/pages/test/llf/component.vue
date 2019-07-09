@@ -1,7 +1,8 @@
 <template>
   <st-panel app>
-    <st-image-upload></st-image-upload>
+    <st-image-upload is-private></st-image-upload>
     <a v-modal-link="{name:'test-sg'}">test</a>
+
   </st-panel>
 </template>
 
@@ -11,6 +12,9 @@ export default {
     return {
       show: false
     }
+  },
+  mounted() {
+
   }
 
 }
