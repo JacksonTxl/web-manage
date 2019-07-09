@@ -9,7 +9,6 @@
             :list="fileList"
             :sizeLimit="2"
             placeholder="上传头像"
-            v-decorator="rules.image_avatar"
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="姓名" required>
@@ -41,7 +40,6 @@
             :sizeLimit="2"
             :isFaceRecognition="true"
             placeholder="上传人脸"
-            v-decorator="rules.image_face"
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="昵称" required>
@@ -128,13 +126,12 @@
         <st-form-item label="入职时间">
           <a-date-picker
             style="width:100%"
-            v-decorator="rules.entry_date"
-            :showTime="{ format: appConfig.DATE_FORMAT.date }"
-            :format="appConfig.DATE_FORMAT.datetime"/>
+            v-decorator="rules.entry_date" />
         </st-form-item>
         <st-form-item label="所属门店" required>
           <shop-select
             mode="multiple"
+            useType="form"
             placeholder="选择"
             v-decorator="rules.shop_id"/>
         </st-form-item>

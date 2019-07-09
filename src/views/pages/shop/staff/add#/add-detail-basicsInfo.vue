@@ -168,7 +168,11 @@
           <a-date-picker style="width:100%" v-decorator="rules.entry_date"/>
         </st-form-item>
         <st-form-item label="所属门店">
-          <span>门店维度下没有选择门店的权力记着加当前门店名称 0.0 </span>
+          <shop-select
+            mode="multiple"
+            useType="form"
+            placeholder="所属门店"
+            v-decorator="rules.shop_id"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -238,6 +242,8 @@ import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { AddService } from '../add.service'
 import CoachLevelSelect from '@/views/biz-components/coach-level-select'
+import ShopSelect from '@/views/biz-components/shop-select'
+
 export default {
   name: 'StaffDetailBasics',
   serviceInject() {
@@ -249,6 +255,7 @@ export default {
     }
   },
   components: {
+    ShopSelect,
     CoachLevelSelect
   },
   props: {
