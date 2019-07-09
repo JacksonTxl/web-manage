@@ -84,14 +84,16 @@
             :list="photoList"></st-image-upload>
           </div>
           <div :class="reception('set-info')" v-if="!isEntry">
-            <p>
+            <div class="set-info-item">
               <span class="set-info-label">入场凭证</span>
-              <a-select v-model="proof" class="set-info-select">
-                <a-select-option :value="-1" v-if="!entranceOptionList.length">无</a-select-option>
-                <a-select-option v-for="(item) in entranceOptionList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
-              </a-select>
-            </p>
-            <p v-if="isSelectMember">
+              <div class="set-info-select entrance-item">
+                <a-select v-model="proof" style="width:100%">
+                  <a-select-option :value="-1" v-if="!entranceOptionList.length">无</a-select-option>
+                  <a-select-option v-for="(item) in entranceOptionList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
+                </a-select>
+              </div>
+            </div>
+            <div class="set-info-item" v-if="isSelectMember">
               <span class="set-info-label">跟进销售</span>
               <template v-if="!isEditSeller">
                 <span class="set-info-value">
@@ -107,12 +109,12 @@
                 <st-button type="primary" :loading="loading.editSeller" @click="onEditSeller">确定</st-button>
                 <a class="set-info-edit-button mg-l8" @click="onEditSellerCancel">取消</a>
               </template>
-            </p>
-            <p v-else>
+            </div>
+            <div class="set-info-item" v-else>
               <span class="set-info-label">跟进销售</span>
               <span class="set-info-value">无</span>
-            </p>
-            <p v-if="isSelectMember">
+            </div>
+            <div class="set-info-item" v-if="isSelectMember">
               <span class="set-info-label">跟进教练</span>
               <template v-if="!isEditCoach">
                 <span class="set-info-value">
@@ -128,12 +130,12 @@
                 <st-button type="primary" :loading="loading.editCoach" @click="onEditCoach">确定</st-button>
                 <a class="set-info-edit-button mg-l8" @click="onEditCoachCancel">取消</a>
               </template>
-            </p>
-            <p v-else>
+            </div>
+            <div class="set-info-item" v-else>
               <span class="set-info-label">跟进教练</span>
               <span class="set-info-value">无</span>
-            </p>
-            <p>
+            </div>
+            <div class="set-info-item">
               <span class="set-info-label">储物柜</span>
               <a-select
               showSearch
@@ -145,7 +147,7 @@
                 <a-select-option :value="-1">无</a-select-option>
                 <a-select-option v-for="(item) in stCabinetList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
-            </p>
+            </div>
           </div>
           <div :class="reception('set-info')" v-else>
             <!-- <st-info>

@@ -143,6 +143,7 @@ export default {
     const add = this.auth.add
     const addBatch = this.auth.addBatch
     const copy = this.auth.copy
+    console.log(this.auth)
     if (copy) {
       this.header.left = 'add'
     }
@@ -162,10 +163,8 @@ export default {
   },
   methods: {
     datesRender(info) {
-      console.log(info)
       const start = moment(info.view.activeStart).format('YYYY-MM-DD').valueOf()
       const end = moment((moment(info.view.activeEnd).valueOf() - 24 * 3600 * 1000)).format('YYYY-MM-DD').valueOf()
-      console.log(start, end)
       this.$router.push({ query: { start_date: start, end_date: end } })
     },
     setAddButton() {

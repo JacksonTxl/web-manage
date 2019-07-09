@@ -85,13 +85,12 @@ export default {
   },
   mounted() {
     this.$nextTick().then(() => {
+      if (!this.values.length) return
       this.views = this.values.map(item => {
-        const start = +item.start_time.split(':00:00')[0]
-        const end = +item.end_time.split(':00:00')[0]
-        console.log(start, end)
+        const start = +item.start_time.split(':00')[0]
+        const end = +item.end_time.split(':00')[0]
         for (let i = 0; i < 25; i++) {
           if (i > start && i <= end) {
-            console.log('charr', i)
             this.$set(this.checkArr, i, true)
           }
         }
