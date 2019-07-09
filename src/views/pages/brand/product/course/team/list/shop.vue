@@ -3,11 +3,11 @@
     <header>
       <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
         <div>
-          <st-button
+          <!-- <st-button
             v-if="auth.transfer"
             type="primary"
             @click="onClickTransFromBrand"
-          >转入品牌团体课程库</st-button>
+          >转入品牌团体课程库</st-button> -->
         </div>
         <div>
           <a-select placeholder="请选择门店"  :defaultValue="-1" class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onChange">

@@ -21,7 +21,7 @@ export class ListService extends Store<ListState> {
         areaAdd: this.authService.can('shop:shop:shop_area|add'),
         areaEdit: this.authService.can('shop:shop:shop_area|edit'),
         areaDel: this.authService.can('shop:shop:shop_area|del'),
-        seatAdd: this.authService.can('shop:shop:area_seat|add')
+        seatSet: this.authService.can('shop:shop:area_seat|set')
       }
     })
     this.list$ = new Computed(this.state$.pipe(pluck('list')))

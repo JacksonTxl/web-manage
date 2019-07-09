@@ -24,8 +24,8 @@
       </div>
     </div>
     <div :class="h5wpr('btn-group')">
-        <st-button type="primary" @click="save(1)">保存</st-button>
-        <st-button type="primary" @click="save(2)">提交</st-button>
+        <st-button type="primary" @click="saveConfirm(1)">保存</st-button>
+        <st-button type="primary" @click="saveConfirm(2)">提交</st-button>
       </div>
   </div>
 </template>
@@ -38,6 +38,7 @@ import CoachComponent from './coach.component'
 import CourseComponent from './course.component'
 import NavComponent from './nav.component'
 import { cloneDeep } from 'lodash-es'
+import { MessageService } from '@/services/message.service'
 export default {
   name: 'H5WrapperComponent',
   components: {
@@ -54,7 +55,8 @@ export default {
   },
   serviceInject() {
     return {
-      h5WrapperService: H5WrapperService
+      h5WrapperService: H5WrapperService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -78,6 +80,17 @@ export default {
     this.getH5Info()
   },
   methods: {
+    saveConfirm(is_save) {
+      let content = ''
+      if (is_save === 1) content = '页面已修改，是否保存？'
+      if (is_save === 2) content = '点击发布将提交微信审核，在1-3个工作日后可在手机端查看，您可在完成全部配置后再发布。现在是否确认发布？'
+      this.$confirm({
+        content: content,
+        onOk: () => {
+          this.save(is_save)
+        }
+      })
+    },
     save(is_save) {
       let saveForm = {
         is_save,
@@ -87,11 +100,16 @@ export default {
         category: 2,
         content: this.actionInfo
       })
-
+      let coachInfo = this.setCoashIDs()
+      if (coachInfo.staff_id_list.length > 100) {
+        this.messageService.warning({ content: '最多可以添加100个教练' })
+        return
+      }
       saveForm.info.push({
         category: 4,
-        content: this.setCoashIDs()
+        content: coachInfo
       })
+
       saveForm.info.push({
         category: 5,
         content: this.courseInfo
@@ -113,7 +131,7 @@ export default {
       this.h5WrapperService.getH5Info({ category: 2 }).subscribe(() => { this.actionLoaded = true })
       this.h5WrapperService.getH5Info({ category: 3 }).subscribe()
       this.h5WrapperService.getH5Info({ category: 4 }).subscribe(() => {
-        let staff_id = [123]
+        let staff_id = []
         if (that.coach.content) {
           staff_id = that.coach.conent.staff_id_list
         }

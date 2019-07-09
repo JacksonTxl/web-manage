@@ -23,7 +23,7 @@
 
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
-            <a  @click="onTransaction(record)">签单</a>
+            <a v-if="record.auth['shop:product:product|order']" @click="onTransaction(record)">签单</a>
           </st-table-actions>
         </div>
       </st-table>
