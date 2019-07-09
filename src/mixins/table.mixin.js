@@ -147,10 +147,12 @@ export default {
     onTableChange(pagination, filter, sorter) {
       this.onSelectionReset()
       let sort_by, sort_order
+      let nextPage = pagination.current
       if (sorter) {
         if (sorter.field) {
           sort_by = sorter.field
           sort_order = { ascend: 'asc', descend: 'desc' }[sorter.order]
+          nextPage = 1
         }
       }
       if (!pagination) {
@@ -158,11 +160,12 @@ export default {
           `[tableMixin] pagination is not provide ${typeof pagination}`
         )
       }
+      console.log(nextPage)
       if (pagination) {
         this.$router.push({
           query: {
             ...this.query,
-            [this.currentPageField]: pagination.current,
+            [this.currentPageField]: nextPage,
             size: pagination.pageSize,
             sort_by,
             sort_order

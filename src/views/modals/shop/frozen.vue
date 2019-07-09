@@ -103,8 +103,8 @@
               v-for="(item,index) in staffList"
               :value="item.id"
               :key="index">
-                <span v-html="`${item.staff_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
-                  {{item.staff_name}}   {{item.mobile}}
+                <span v-html="`${item.staff_name} ${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
+                  {{item.staff_name}} {{item.mobile}}
                 </span>
               </a-select-option>
             </a-select>
