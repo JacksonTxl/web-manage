@@ -2,18 +2,19 @@
   <st-modal class="modal-schedule-edit" title="编辑排期" @ok="onOkSave" v-model="show">
     <div class="modal-schedule-edit__info">
       <div class="coach">
-        <span>上课教练:</span><span>{{scheduleInfo.staff_name}}</span>
+        <span>上课教练:</span><span>{{staffName}}</span>
       </div>
       <div class="time">
         {{rangeTime}}
       </div>
     </div>
+    <st-button class="copy" @click="onClickCopySchedule">复制上周</st-button>
     <div class="modal-add-schedule__time">
       <div class="modal-add-schedule__time" v-if="scheduleInfo.length">
         <div class="time-item" v-for="info in scheduleInfo" :key="info.time_type">
-          <span>{{info.time_type | filterDate}}</span> <st-time-picker class="mg-b32" v-model="info.timing" :key="info.time_type"></st-time-picker>
+          <span>{{info.schedule_date | filterDate}}</span> <st-time-picker class="mg-b32" v-model="info.timing" :key="info.time_type"></st-time-picker>
         </div>
-        <st-button class="copy" @click="onClickCopySchedule">复制上周</st-button>
+
       </div>
     </div>
   </st-modal>
@@ -33,6 +34,7 @@ export default {
   data() {
     return {
       show: false,
+      staffName: '',
       scheduleInfo: [{
         time_type: 0,
         timing: []
@@ -68,8 +70,7 @@ export default {
   },
   filters: {
     filterDate(val) {
-      const weekList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-      return `${weekList[val]}`
+      return moment(val).format('dddd').valueOf()
     }
   },
   computed: {
@@ -102,6 +103,7 @@ export default {
         end_time: this.end
       }
       this.scheduleService.getUpdateInfo(form).subscribe(res => {
+        this.staffName = res.info.staff_name
         this.scheduleInfo = res.info.coach_info
       })
     }

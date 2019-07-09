@@ -80,7 +80,7 @@
             <a href="javascript:;" @click="addReserve">添加预约</a>
           </td>
         </tr>
-        <tr v-for="(item, index) in info.reserve" :key="index">
+        <tr v-for="(item, index) in reserveList" :key="index">
           <td>{{item.member}}</td>
           <td>{{item.consume_name}}</td>
           <td>{{item.is_checkin_name}}</td>
@@ -142,6 +142,7 @@ export default {
     return {
       memberOptions: commonService.memberOptions$,
       consumeOptions: commonService.consumeOptions$,
+      reserveList: this.reserveService.reserveList$,
       auth: this.reserveService.auth$
     }
   },

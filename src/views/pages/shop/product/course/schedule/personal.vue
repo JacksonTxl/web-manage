@@ -8,7 +8,7 @@
       :firstDay="1"
       @eventPositioned='onEventPositioned'
       :plugins="calendarPlugins"
-      minTime="09:00:00"
+      minTime="00:00:00"
       :columnHeaderFormat="columnHeaderFormat"
       locale="zh-cn"
       :views="views"
