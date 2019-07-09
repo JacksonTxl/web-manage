@@ -1,31 +1,22 @@
 import { ShopStaffApi, PutStaffBrandQuitInput, RePasswordInput } from '@/api/v1/staff/staff'
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { Store } from '@/services/store'
+import { Injectable } from 'vue-service-app'
+import { State, Effect } from 'rx-state'
 
 import { tap } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
 
-interface SetState {
-  rePasswordInfo: object,
-}
 @Injectable()
-export class RePasswordService extends Store<SetState> {
-  state$: State<SetState>
-  constructor(protected staffApi: ShopStaffApi, private msg: MessageService) {
-    super()
-    this.state$ = new State({
-      rePasswordInfo: {}
-    })
-  }
+export class RePasswordService {
+  rePasswordInfo$ = new State({})
+  loading$ = new State({})
+  constructor(protected staffApi: ShopStaffApi, private msg: MessageService) {}
   /**
    *  获取修改密码信息
    */
+  @Effect()
   getRePassword(id: string) {
     return this.staffApi.getRePassword(id).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.rePasswordInfo = res.info
-      })
+      this.rePasswordInfo$.commit(() => res.info)
     }))
   }
   /**
@@ -33,6 +24,7 @@ export class RePasswordService extends Store<SetState> {
    * @param params
    * 新建账号
    */
+  @Effect()
   setAccount(params: RePasswordInput) {
     return this.staffApi.setAccount(params).pipe(tap(res => {
       this.msg.success({
