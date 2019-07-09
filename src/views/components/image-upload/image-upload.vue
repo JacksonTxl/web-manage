@@ -10,7 +10,7 @@
         :src="(item[imageUrl] || item[imageKey]) | imgFilter(computedFilterOptions)"
         :data-src="(item[imageUrl] || item[imageKey]) | imgFilter"
         :style="sizeStyle"
-      >
+      />
       <slot name="item-extra" :item="item" :index="index"></slot>
       <div class="st-image-upload__actions">
         <slot name="actions" :item="item" :index="index">
@@ -29,7 +29,7 @@
     >
       <a-spin :spinning="isLoading" :tip="progress + '%'">
         <slot>
-          <a-icon type="plus"/>
+          <a-icon type="plus" />
           <div class="st-image-upload__placeholder">{{placeholder}}</div>
         </slot>
       </a-spin>
@@ -39,10 +39,11 @@
       v-modal-link="{ name: 'face-recognition',
       props: { fileList: fileList},
       on: { change: faceDataChange}}"
-      v-show="isShowUploadBtn && isFaceRecognition">
+      v-show="isShowUploadBtn && isFaceRecognition"
+    >
       <div class="container">
         <a-spin :spinning="isLoading" :tip="progress + '%'">
-          <a-icon type="plus"/>
+          <a-icon type="plus" />
           <div class="placeholder">{{placeholder}}</div>
         </a-spin>
       </div>
@@ -138,6 +139,13 @@ export default {
       default: () => ({})
     },
     /**
+     * 是否使用oss私有空间
+     */
+    isPrivate: {
+      type: Boolean,
+      default: false
+    },
+    /**
      * 后端字段映射 image_id,image_key,image_url
      */
     props: {
@@ -226,7 +234,8 @@ export default {
       // 业务
       this.oss
         .put({
-          type: 'image',
+          business: 'image',
+          isPrivate: this.isPrivate,
           file: data.file,
           uploadProgress: e => {
             this.progress = parseInt((e.loaded / e.total) * 100)
@@ -236,7 +245,8 @@ export default {
           next: val => {
             this.fileList.push({
               [this.imageId]: 0,
-              [this.imageKey]: val.fileKey
+              [this.imageKey]: val.fileKey,
+              [this.imageUrl]: URL.createObjectURL(data.file)
             })
             this.$emit('change', this.fileList)
           },

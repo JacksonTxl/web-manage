@@ -30,7 +30,7 @@
             <st-form :form='form' :class="stopSale('form')" labelGutter="0">
                 <st-form-item label="停售原因" labelWidth="68px" class="mg-b0" required></st-form-item>
                 <st-form-item label=" " labelWidth="0px">
-                    <a-textarea @change="onReasonChange" v-model="reason" placeholder="请输入内容" :rows="4"/>
+                    <st-textarea :maxlength="300" @change="onReasonChange" v-model="reason" placeholder="请输入内容" :rows="4"/>
                 </st-form-item>
             </st-form>
         </div>

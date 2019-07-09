@@ -1,7 +1,7 @@
 <template>
   <div class="page-dashboard-plugin mg-t24">
     <a :href="href" target="_blank">
-    <div class="image mg-r16">
+    <div class="image">
       <img :src="img" alt="">
     </div>
 
