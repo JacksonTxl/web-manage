@@ -3,8 +3,8 @@ export const courseColums = () => {
   return [
     {
       title: '上课时间',
-      dataIndex: 'class_hours',
-      key: 'class_hours'
+      dataIndex: 'course_time',
+      key: 'course_time'
     }, {
       title: '上课门店',
       dataIndex: 'shop_name',
@@ -26,8 +26,8 @@ export const courseColums = () => {
       scopedSlots: { customRender: 'schedule_status' }
     }, {
       title: '预约人数',
-      dataIndex: 'reserve_num',
-      key: 'reserve_num'
+      dataIndex: 'reserved_num',
+      key: 'reserved_num'
     }, {
       title: '签到人数',
       dataIndex: 'checkin_num',
