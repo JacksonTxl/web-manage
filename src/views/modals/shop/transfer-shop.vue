@@ -16,20 +16,26 @@
           class="distribution-container"
           style="padding-left:12px;padding-right:12px;"
         >
-          <a-table
-            :rowSelection="rowSelection"
-            :pagination="false"
-            size="middle"
-            :columns="columns"
-            :dataSource="getData"
-            rowKey="id"
-          >
-            <span
-              slot="start_end"
-              slot-scope="text,record"
-              href="javascript:;"
-            >{{record.start_time}}~{{record.end_time}}</span>
-          </a-table>
+          <st-form-item required :help="selectedRowsHelp">
+            <a-table
+              :rowSelection="rowSelection"
+              :pagination="false"
+              size="middle"
+              :columns="columns"
+              :dataSource="list"
+              rowKey="id"
+            >
+              <span
+                slot="remain_amount"
+                slot-scope="text,record"
+              >{{record.remain_amount}} {{record.unit}}</span>
+              <span
+                slot="start_end"
+                slot-scope="text,record"
+              >{{record.start_time}} ~ {{record.end_time}}</span>
+            </a-table>
+          </st-form-item>
+
         </a-col>
       </a-row>
       <st-form-item label="转店至" style="margin-top:20px">
@@ -70,12 +76,11 @@
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item class="mg-l24" style="text-align:right;" labelOffset>
-            <st-button type="primary" ghost html-type="submit" @click="save">确认提交</st-button>
+            <st-button type="primary" html-type="submit" @click="save" :loading="loading.getMemberTransfer">确认提交</st-button>
           </st-form-item>
         </a-col>
       </a-row>
     </st-form>
-    {{getTransferShop}}
   </st-modal>
 </template>
 <script>
@@ -83,12 +88,14 @@ import { TransferShopService } from './transfer-shop.service'
 export default {
   serviceInject() {
     return {
-      Service: TransferShopService
+      transferShopService: TransferShopService
     }
   },
   rxState() {
     return {
-      cardsListInfo: this.Service.cardsListInfo$
+      loading: this.transferShopService.loading$,
+      info: this.transferShopService.info$,
+      list: this.transferShopService.list$
     }
   },
   name: 'transferShop',
@@ -103,12 +110,12 @@ export default {
       columns: [
         {
           title: '卡课',
-          dataIndex: 'card_name',
-          scopedSlots: { customRender: 'card_name' }
+          dataIndex: 'name'
         },
         {
           title: '剩余',
-          dataIndex: 'remain_amount'
+          dataIndex: 'remain_amount',
+          scopedSlots: { customRender: 'remain_amount' }
         },
         {
           title: '有效期',
@@ -136,7 +143,8 @@ export default {
           }
         ]
       },
-      selectedRows: []
+      selectedRows: [],
+      selectedRowsHelp: ''
     }
   },
   created() {
@@ -145,34 +153,36 @@ export default {
   methods: {
     shopId(value) {
       let self = this
-      self.Service.getMemberTransferShop(value).subscribe(state => {
+      self.transferShopService.getMemberTransferShop(value).subscribe(state => {
         self.getTransferShop = state
       })
     },
     getMemberBuy() {
-      let self = this
-      self.Service.getMemberBuy(self.record.member_id).subscribe(state => {
-        self.getData = state
-      })
-      self.Service.getMemberShop().subscribe(state => {
-        self.getDataList = state
+      this.transferShopService.getMemberBuy(this.record.member_id).subscribe()
+      this.transferShopService.getMemberShop().subscribe(state => {
+        this.getDataList = state
       })
     },
     getMemberTransfer(data) {
-      let self = this
-      self.Service.getMemberTransfer(data).subscribe(state => {
-        self.show = false
+      this.transferShopService.getMemberTransfer(data).subscribe(state => {
+        this.show = false
+        this.$emit('success')
       })
     },
     save(e) {
-      let self = this
       this.form.validateFields((err, values) => {
         if (!err) {
-          values.course_id = self.selectedRows.map(item => {
+          if (this.selectedRows.length <= 0) {
+            this.selectedRowsHelp = '请选择冻结的卡课'
+            return
+          } else {
+            this.selectedRowsHelp = ''
+          }
+          values.course_id = this.selectedRows.map(item => {
             return item.id
           })
-          values.id = self.record.member_id
-          self.getMemberTransfer(values)
+          values.id = this.record.member_id
+          this.getMemberTransfer(values)
         }
       })
     }
@@ -184,6 +194,9 @@ export default {
       return {
         onChange: (selectedRowKeys, selectedRows) => {
           self.selectedRows = selectedRows
+          if (selectedRows.length > 0) {
+            self.selectedRowsHelp = ''
+          }
         },
         getCheckboxProps: record => ({
           props: {
