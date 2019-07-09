@@ -61,6 +61,7 @@
               mode="multiple"
               placeholder="选择座位"
               style="width: 120px"
+              v-model="siteNumIds"
               @change="onChangeSiteNumList">
               <a-select-option v-for="siteNum in unUsedSeatOptions" :key="siteNum.id">{{siteNum.name}}</a-select-option>
             </a-select>
@@ -214,19 +215,20 @@ export default {
         if (val.includes(item.id)) {
           let value = item.name
           if (item.name === '无座位') value = -1
-          this.siteNumIds.push(value)
+          val.length < 3 && this.siteNumIds.push(value)
           tempArr = this.siteNumIds.filter(item => item === -1)
         }
         const arr = Array.from(new Set(this.siteNumIds)).filter(item => item !== -1)
         this.siteNumIds = [...arr, ...tempArr]
       })
-      if (val.length > 3) {
+      if (this.siteNumIds.length > 3) {
         this.siteNumIds.pop()
+        console.log(this.siteNumIds)
         this.messageService.error({
           content: `最多预约三个座位`
         })
       }
-      this.currentReservationNum = val.length
+      this.currentReservationNum = this.siteNumIds.length
     },
     onClickReserve() {
       const form = {
