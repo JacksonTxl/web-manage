@@ -18,8 +18,8 @@ export class RuleConfig {
           message: '请填写姓名'
         },
         {
-          pattern: this.pattern.CN_EN_NUM('4-15'),
-          message: '请输入4-15个字，中英文及数字'
+          pattern: this.pattern.CN_EN_NUM('1-15'),
+          message: '请输入1-15个字，中英文及数字'
         }
       ]
     }]
@@ -33,8 +33,8 @@ export class RuleConfig {
           message: '请填写昵称'
         },
         {
-          pattern: this.pattern.CN_EN_NUM('4-10'),
-          message: '请输入4-10个字，中英文及数字'
+          pattern: this.pattern.CN_EN_NUM('1-10'),
+          message: '请输入1-10个字，中英文及数字'
         }
       ]
     }]
@@ -135,6 +135,10 @@ export class RuleConfig {
       rules: [{ required: true, message: '请选择系统角色' }]
     }]
   }
+  // 部门id
+  get album_id() {
+    return ['album_id']
+  }
   // 系统使用权限
   get is_permission() {
     return ['is_permission', { initialValue: 0 }]
@@ -149,7 +153,12 @@ export class RuleConfig {
 
   // 毕业院校
   get graduated_school() {
-    return ['graduated_school']
+    return ['graduated_school', {
+      rules: [{
+        pattern: this.pattern.CN_EN_NUM('1-100'),
+        message: '请输入1-100个字，中英文及数字'
+      }]
+    }]
   }
 
   // 学历
@@ -173,7 +182,12 @@ export class RuleConfig {
 
   // 专业
   get profession() {
-    return ['profession']
+    return ['profession', {
+      rules: [{
+        pattern: this.pattern.CN_EN_NUM('1-50'),
+        message: '请输入1-50个字，中英文及数字'
+      }]
+    }]
   }
 
   // 籍贯
@@ -198,7 +212,12 @@ export class RuleConfig {
 
   // 备注
   get description() {
-    return ['description']
+    return ['description', {
+      rules: [{
+        pattern: this.pattern.CN_EN_NUM('1-300'),
+        message: '请输入1-300个字，中英文及数字'
+      }]
+    }]
   }
 
   // 从业时间

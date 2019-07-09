@@ -120,6 +120,10 @@ export class ShopStaffApi extends Api {
   getStaffInfo(id: string) {
     return this.http.get(`/v1/staff/shop/basic/${id}`)
   }
+  // 员工擅长项目
+  getStaffSpecialty() {
+    return this.http.get(`/v1/staff/specialty`)
+  }
 }
 interface CommonConfig {
     // 当前页
