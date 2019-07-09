@@ -278,9 +278,6 @@ export default {
     }
   },
   mounted() {
-    // this.form.setFieldsValue({
-    //   md: '1号门店'
-    // })
     this.regionService.getRegions().subscribe(() => {
       this.options = JSON.parse(window.localStorage.getItem('regionTree'))
     })
