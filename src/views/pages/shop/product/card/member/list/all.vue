@@ -219,7 +219,6 @@ export default {
         props: {
           id: record.id,
           cardType: record.card_type.id,
-          time: { startTime: record.start_time, endTime: record.end_time },
           cardName: record.card_name
         },
         on: {

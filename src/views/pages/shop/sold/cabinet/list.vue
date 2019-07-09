@@ -43,6 +43,7 @@
       :scroll="{x:1600}"
       rowKey="sold_cabinet_id"
       :columns="columns"
+      @change="onTableChange"
       :dataSource="list">
         <template
             slot="lease_status"

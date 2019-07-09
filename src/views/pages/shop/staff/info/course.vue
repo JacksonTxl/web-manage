@@ -24,8 +24,17 @@
           :scroll="{ x: 1750}"
           :loading="loading.getCoursesList"
           :page="page"
+          rowKey="id"
           @change="onTableChange"
         >
+          <template slot="schedule_status" slot-scope="text, record">
+            <!-- 课程状态 -->
+            {{record.schedule_status.name}}
+          </template>
+          <template slot="course_type" slot-scope="text, record">
+            <!-- 课程类型 -->
+            {{record.course_type.name}}
+          </template>
           <template slot="action" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="onSearchDetail(record)">详情</a>
           </template>

@@ -305,7 +305,8 @@ export default {
     onChangeSpecs(event) {
       this.selectedNorm = event.target.value
       this.fetchCouponList()
-      this.getPrice()
+      this.gift_amount = ''
+      this.getPrice(this.selectCoupon, this.selectAdvance, +this.reduceAmount)
       this.validEndTime = moment(this.validStartTime).add(event.target.value.valid_time, 'days').format('YYYY-MM-DD HH:mm')
     },
     // 开卡方式发生改变
