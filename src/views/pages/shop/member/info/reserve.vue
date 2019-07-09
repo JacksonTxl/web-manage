@@ -2,7 +2,7 @@
   <div>
     <st-t4>卡项</st-t4>
     <a-row :gutter="24" class="mg-t16">
-      <a-col :lg="24">
+      <a-col :lg="24" class="mg-b16">
         <a-col :lg="9">
           <a-date-picker style="width: 224px;" format="YYYY-MM-DD" placeholder="开卡日期" @change="onChooseDate" />
           <a-select style="width: 160px;margin-left:12px" placeholder="请选择" v-model="cardquery.card_type" @change="onChooseCardType">
@@ -40,7 +40,7 @@
 
     <st-t4>课程</st-t4>
     <a-row :gutter="24" class="mg-t16">
-      <a-col :lg="24">
+      <a-col :lg="24" class="mg-b16">
         <a-col :lg="9">
           <a-date-picker style="width: 224px;" placeholder="购买日期" format="YYYY-MM-DD" @change="onChooseDateCourse"/>
           <a-select style="width: 160px;margin-left:12px" v-model="coursequery.course_type" placeholder="请选择" @change="onChooseCourseType">
