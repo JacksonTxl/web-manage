@@ -1,101 +1,128 @@
 <template>
-  <div>
-    <a-row :gutter="8" v-for="(priceGradientRecord, key) in priceGradient" :key="key">
-      <a-col :lg="22" :xs="22" :offset="1">
-        <st-form>
-          <!-- 选择教练等级 如果定价方式为教练分级定价时，显示选择教练-->
-          <st-form-item label="教练等级" required v-if="priceModel === 2">
-            <select-coach-level
-              :value="priceGradientRecord.level_id"
-              @change="(val) => onLevelChange(val, key)"
-            >
-            </select-coach-level>
-          </st-form-item>
-          <!-- 单节售卖 -->
-          <!-- <st-form-item>
-            <template slot="label">
-              单节预约<st-help-tooltip id="TBCPC005" />
-            </template>
-            <a-checkbox
-              :checked="!!priceGradientRecord.single_sell"
-              @change="(val) => onSingleSellChange(val, key)"
-            >
-              支持单节课预约
-            </a-checkbox>
-            <template v-if="priceGradientRecord.single_sell">
-              <st-input-number v-model="priceGradientRecord.single_price" style="width: 100px;"/>
-              <span class="mg-l8">元/节</span>
-            </template>
-          </st-form-item> -->
-          <!-- 私教课程定价模式：教练平级定价；私教课程售卖模式：统一标价 -->
-          <st-form-item label="售卖定价" required>
-            <st-container>
-              <st-table :columns="tableColumns" :dataSource="priceGradientRecord.prices"
-                :pagination="false" :rowKey="(record, index) => index">
-                <!-- 售卖梯度 -->
-                <template slot="priceGradient" slot-scope="text, record, index">
-                  <div>
-                    <a-input-number :min="0" v-model="priceGradientRecord.prices[index].min_sale"></a-input-number>
-                    <span class="mg-l8">节及以上</span>
-                  </div>
-                </template>
-                <!-- 售卖价格范围 -->
-                <template slot="price" slot-scope="text, record, index">
-                  <div key="price">
+  <div class="set-price">
+    <div class="ta-c">
+      <st-button
+        v-if="priceModel === 2"
+        type="dashed"
+        block
+        class="mg-t8"
+        @click="addRecord"
+      >
+        添加教练等级定价
+      </st-button>
+    </div>
+    <st-container
+      v-for="(priceGradientRecord, key) in priceGradient"
+      :key="key"
+      class="mg-t24 set-price__price-container"
+    >
+      <a
+        v-if="priceGradient.length > 1"
+        href="javascript: void(0);"
+        class="set-price__del"
+        @click="delRecord(key)"
+      >
+        <st-icon type="delete" color="#3F66F6"></st-icon>
+        <span class="mg-l4 color-text-light">删除</span>
+      </a>
+      <st-form labelWidth="70px" class="mg-t8">
+        <!-- 选择教练等级 如果定价方式为教练分级定价时，显示选择教练-->
+        <st-form-item label="教练等级" required v-if="priceModel === 2">
+          <select-coach-level
+            :value="priceGradientRecord.level_id"
+            @change="(val) => onLevelChange(val, key)"
+          >
+          </select-coach-level>
+        </st-form-item>
+        <!-- 私教课程定价模式：教练平级定价；私教课程售卖模式：统一标价 -->
+        <st-form-item label="售卖定价" required class="mg-b8"></st-form-item>
+        <st-form-item class="set-price__record">
+          <st-container>
+            <st-form-table>
+              <thead>
+                <tr>
+                  <th>购买节数</th>
+                  <th>售卖价格范围</th>
+                  <th>转让手续费</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(item, index) in priceGradientRecord.prices"
+                  :key="index"
+                >
+                  <td>
+                    <div>
+                      <a-input-number
+                        :min="0"
+                        v-model="priceGradientRecord.prices[index].min_sale"
+                      />
+                      <span class="mg-l8">节及以上</span>
+                    </div>
+                  </td>
+                  <td>
                     <!-- 教练谈单模式 价格为区间 -->
                     <div v-if="saleModel === 1">
-                      <a-input-number :min="0" class="page-set-sell-price__input"
-                        v-model="priceGradientRecord.prices[index].min_sell_price"/>
+                      <a-input-number
+                        :min="0"
+                        class="page-set-sell-price__input"
+                        v-model="priceGradientRecord.prices[index].min_sell_price"
+                      />
                       <span class="page-set-sell-price__label">元/节</span>~
-                      <a-input-number :min="0" class="page-set-sell-price__input"
-                        v-model="priceGradientRecord.prices[index].max_sell_price"/>
+                      <a-input-number
+                        :min="0"
+                        class="page-set-sell-price__input"
+                        v-model="priceGradientRecord.prices[index].max_sell_price"
+                      />
                       <span class="page-set-sell-price__label">元/节</span>
                     </div>
                     <!-- 统一标价模式 价格为固定值 -->
                     <div v-if="saleModel === 2">
-                      <a-input-number :min="0"  class="page-set-sell-price__input"
-                        v-model="priceGradientRecord.prices[index].sell_price"/>
+                      <a-input-number
+                        :min="0"
+                        class="page-set-sell-price__input"
+                        v-model="priceGradientRecord.prices[index].sell_price"
+                      />
                       <span class="page-set-sell-price__label">元/节</span>
                     </div>
-                  </div>
-                </template>
-                <!-- 转让手续费 -->
-                <template slot="serviceFee" slot-scope="text, record, index">
-                  <st-input-number
-                    style="width: 110px"
-                    v-model="priceGradientRecord.prices[index].transfer_num"
-                    :float="true"
-                  >
-                    <template slot="addonAfter">
-                      <a-select :defaultValue="1"
-                        class="st-form-item-unit"
-                        v-model="priceGradientRecord.prices[index].transfer_unit"
-                      >
-                        <a-select-option
-                          v-for="(item, index) in personalCourseEnums.transfer_unit.value"
-                          :key="index"
-                          :value="+index"
+                  </td>
+                  <td>
+                    <st-input-number
+                      style="width: 110px"
+                      v-model="priceGradientRecord.prices[index].transfer_num"
+                      :float="true"
+                    >
+                      <template slot="addonAfter">
+                        <a-select
+                          :defaultValue="1"
+                          class="st-form-item-unit"
+                          v-model="priceGradientRecord.prices[index].transfer_unit"
                         >
-                          {{item}}
-                        </a-select-option>
-                      </a-select>
-                    </template>
-                  </st-input-number>
-                </template>
-                <!-- 操作 -->
-                <template slot="action" slot-scope="text, record, rowIndex">
-                  <a @click="del(key, rowIndex)" class="mg-l8">删除</a>
-                </template>
-              </st-table>
-              <st-button type="dashed" block class="mg-t8" @click="addPriceRecord(key)">添加梯度</st-button>
-            </st-container>
-          </st-form-item>
-        </st-form>
-      </a-col>
-    </a-row>
-    <div class="ta-c">
-      <st-button @click="addRecord">添加教练等级定价</st-button>
-    </div>
+                          <a-select-option
+                            v-for="(item, index) in personalCourseEnums.transfer_unit.value"
+                            :key="index"
+                            :value="+index"
+                          >
+                            {{item}}
+                          </a-select-option>
+                        </a-select>
+                      </template>
+                    </st-input-number>
+                  </td>
+                  <td>
+                    <st-table-actions>
+                      <a @click="del(key, rowIndex)" class="mg-l8">删除</a>
+                    </st-table-actions>
+                  </td>
+                </tr>
+              </tbody>
+            </st-form-table>
+            <st-button type="dashed" block class="mg-t8" @click="addPriceRecord(key)">添加梯度</st-button>
+          </st-container>
+        </st-form-item>
+      </st-form>
+    </st-container>
     <!-- <div>
       <button @click="check">check</button>
     </div> -->
@@ -106,24 +133,6 @@ import { remove } from 'lodash-es'
 import SelectCoachLevel from '@/views/fragments/coach/select-coach-level'
 import { UserService } from '@/services/user.service'
 import { SetPriceService } from './set-price.service'
-
-const tableColumns = [{
-  title: '购买节数',
-  dataIndex: 'priceGradient',
-  scopedSlots: { customRender: 'priceGradient' }
-}, {
-  title: '售卖价格范围',
-  dataIndex: 'price',
-  scopedSlots: { customRender: 'price' }
-}, {
-  title: '转让手续费',
-  dataIndex: 'serviceFee',
-  scopedSlots: { customRender: 'serviceFee' }
-}, {
-  title: '操作',
-  key: 'action',
-  scopedSlots: { customRender: 'action' }
-}]
 
 export default {
   name: 'SetPrice',
@@ -180,7 +189,6 @@ export default {
   },
   data() {
     return {
-      tableColumns,
       tableData: [],
       priceGradient: []
     }
@@ -188,9 +196,15 @@ export default {
   created() {
     // 获取定价模式
     this.getSetting()
-    this.priceGradient = this.value
+    this.initPriceGradient()
   },
   methods: {
+    initPriceGradient() {
+      this.priceGradient = this.value.length ? this.value : [{
+        level_id: -1,
+        prices: []
+      }]
+    },
     getSetting() {
       this.setPriceService.getSetting().subscribe()
     },
@@ -208,7 +222,15 @@ export default {
         single_price: '',
         prices: []
       }
-      this.priceGradient.push(newRecord)
+      this.priceGradient.unshift(newRecord)
+    },
+    delRecord(key) {
+      console.log('del', key)
+      let { priceGradient } = this
+      remove(priceGradient, (item, index) => {
+        return index === key
+      })
+      this.priceGradient = [...priceGradient]
     },
     addPriceRecord(key) {
       const newRecord = {
@@ -222,14 +244,11 @@ export default {
         this.priceGradient[key].prices = []
       }
       this.priceGradient = [...this.priceGradient]
-      this.priceGradient[key].prices.push(newRecord)
+      this.priceGradient[key].prices.unshift(newRecord)
     },
     onLevelChange(val, key) {
       this.priceGradient[key].level_id = val
     },
-    // onSingleSellChange(e, key) {
-    //   this.priceGradient[key].single_sell = +!this.priceGradient[key].single_sell
-    // },
     inputCheck() {
       const { priceGradient } = this
       let ret = true
