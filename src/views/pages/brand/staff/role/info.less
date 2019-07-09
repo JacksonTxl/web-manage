@@ -1,34 +1,47 @@
 .page-role-detail{
-  .item{
-    border-bottom: 1px solid rgba(230,233,239,1);
+  .page-role-info-item {
+    padding: 24px 0;
+    border-bottom: 1px solid #E6E9EF;
+    box-sizing: border-box;
     .label{
       width:70px;
       font-size:14px;
       font-weight:400;
-      color:rgba(37,42,46,1);
+      color: #252A2E;
       line-height:22px;
     }
     .value{
       font-size:14px;
       font-weight:400;
-      color:rgba(62,77,92,1);
+      color:#3E4D5C;
       line-height:22px;
     }
   }
-  .first{
-    padding-bottom: 24px;
-  }
   &__funrole{
+    padding: 25px 0;
     display: flex;
-    .shop-list,
-    .brand-list{
-      .role-tree{
+    .label {
+      padding-top: 12px;
+      width:70px;
+      margin-right: 24px;
+      span {
+        font-size:14px;
+        font-weight:400;
+        color: #252A2E;
+        line-height:22px;
+      }
+    }
+    .jurisdiction {
+      display: flex;
+      .brand-list {
+        margin-right: 12px;
+      }
+      .shop-list,
+      .brand-list{
+        width: 387px;
         height: 500px;
         overflow: auto;
       }
-    }
-    .content{
-      flex: 1;
     }
   }
 }

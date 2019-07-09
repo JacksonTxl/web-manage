@@ -20,8 +20,8 @@
       </div>
     </div>
     <div :class="activity('btn-group')">
-      <st-button type="primary" @click="saveConfirm(1)">保存</st-button>
-      <st-button type="primary" @click="saveConfirm(2)">提交</st-button>
+      <st-button type="primary" :loading="loading.save" @click="saveConfirm(1)">保存</st-button>
+      <st-button type="primary" :loading="loading.save" @click="saveConfirm(2)">提交</st-button>
     </div>
   </div>
 </template>
@@ -33,6 +33,7 @@ import RowContainerComponent from '@/views/pages/brand/setting/mina/components#/
 import H5Component from '@/views/pages/brand/setting/mina/components#/h5/h5.component'
 import SliderComponent from './components#/slider.component'
 import EventComponent from './components#/event.component'
+import { NotificationService } from '@/services/notification.service'
 import {
   cloneDeep
 } from 'lodash-es'
@@ -50,13 +51,15 @@ export default {
   },
   serviceInject() {
     return {
-      h5WrapperService: H5WrapperService
+      h5WrapperService: H5WrapperService,
+      notificationService: NotificationService
     }
   },
   rxState() {
     return {
       sliderInfo: this.h5WrapperService.sliderInfo$,
-      eventInfo: this.h5WrapperService.eventInfo$
+      eventInfo: this.h5WrapperService.eventInfo$,
+      loading: this.h5WrapperService.loading$
     }
   },
   data() {
@@ -93,7 +96,19 @@ export default {
         category: 3,
         content: this.eventInfo
       })
-      this.h5WrapperService.save(saveForm).subscribe()
+      this.h5WrapperService.save(saveForm).subscribe(res => {
+        if (res.is_success === 1) {
+          this.notificationService.success({
+            title: '保存成功',
+            content: '成功'
+          })
+        } else if (res.is_success === 0) {
+          this.notificationService.error({
+            title: '保存失败',
+            content: res.message
+          })
+        }
+      })
     },
     setCoashIDs() {
       let coach = cloneDeep(this.coach)
