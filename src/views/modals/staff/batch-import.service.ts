@@ -1,11 +1,9 @@
 import { Injectable } from 'vue-service-app'
 
-import {
-  StaffApi, TransferBrandInput
-} from '@/api/v1/staff'
+import { StaffApi, TransferBrandInput } from '@/api/v1/staff'
 import { MessageService } from '@/services/message.service'
 import { tap } from 'rxjs/operators'
-import { State, Effect } from 'rx-state/src'
+import { State, Effect } from 'rx-state'
 
 @Injectable()
 export class BatchImportService {
