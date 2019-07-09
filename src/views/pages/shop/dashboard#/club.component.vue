@@ -26,16 +26,16 @@
             今日
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{beMemberNum.today}}
+            {{beMemberNum.today||''}}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{revenueAmount.today}}
+            {{revenueAmount.today||''}}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{courseCheckInNum.today}}
+            {{courseCheckInNum.today||''}}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{passengerFlow.today}}
+            {{passengerFlow.today||''}}
           </a-col>
         </a-row>
         <a-row class="mg-t32 count2">
@@ -105,7 +105,7 @@
         <a-row>
           <a-col :span="14">
             <st-t3> 营收趋势</st-t3>
-            <p :class="bCount('amount')">合计：<span class="font-number">128,123</span>元</p>
+            <p :class="bCount('amount')">合计：<span class="font-number">{{revenueSummary.length?revenueSummary[7].value:''}}</span>元</p>
             <shop-revenue-line :data="revenueDaily"></shop-revenue-line>
           </a-col>
           <a-col :span="10">
@@ -186,45 +186,13 @@
       </st-panel>
     </div>
     <div :class="b('adv')" :span="6">
-      <div :class="bCount('box')">
-        <img width="280px" height="186px" src="https://file.digitaling.com/eImg/uimages/20170814/1502707757253062.jpg"
-          alt="">
-      </div>
-      <st-container class="bg-white mg-t16" type="2">
-        <st-t3 :class="b('title')">三体AIoT<span>查看更多<a-icon theme="filled" type="right-circle" /></span></st-t3>
-        <plug-in></plug-in>
-        <plug-in></plug-in>
-        <plug-in></plug-in>
-      </st-container>
-      <st-container class="book bg-white mg-t16" type="2">
-        <div class="book-img">
-          <img src="" alt="">
-        </div>
-
-        <div class="book-content  mg-l24">
-          <div class="book-content-t">2018中国健身行业数据报告</div>
-          <div class="font-number">¥499</div>
-          <st-button ghost pill type="primary" class="mg-t8">免费下载电子版</st-button>
-        </div>
-      </st-container>
-      <st-container class="link bg-white mg-t16" type="2">
-        <st-t3 class="link__phone font-number">400-962-8988</st-t3>
-        <div class="link__time">服务时间：09:00 - 18:00</div>
-        <st-hr></st-hr>
-        <div class="link__qr-code">
-          <div class="image-box">
-            <img class="image" src="#" alt="">
-          </div>
-
-          <span class="link__span">扫码关注三体官方微信公众号</span>
-        </div>
-      </st-container>
+      <sidebar-component></sidebar-component>
     </div>
   </div>
 
 </template>
 <script>
-import PlugIn from '@/views/pages/brand/dashboard#/plug-in'
+
 import FunnelVertical from '@/views/biz-components/chart/funnel-vertical'
 import ShopRevenueRing from '@/views/biz-components/stat/shop-revenue-ring'
 import ShopRevenueLine from '@/views/biz-components/stat/shop-revenue-line'
@@ -234,6 +202,7 @@ import ShopCourseBar from '@/views/biz-components/stat/shop-course-bar'
 import ShopEntryBar from '@/views/biz-components/stat/shop-entry-bar'
 import ShopEntryLine from '@/views/biz-components/stat/shop-entry-line'
 import CrowdLine from '@/views/biz-components/stat/crowd-line'
+import SidebarComponent from './sidebar.component'
 import {
   ClubComponentService
 } from './club.component.service'
@@ -298,9 +267,9 @@ export default {
       show: true
     }
   },
-  mounted() {
+  created() {
     this.getInit()
-    this.reload()
+    // this.reload()
   },
   components: {
     ShopRevenueRing,
@@ -309,11 +278,12 @@ export default {
     ShopCourseBar,
     ShopEntryBar,
     ShopEntryLine,
-    PlugIn,
     FunnelVertical,
-    ShopAddUser
+    ShopAddUser,
+    SidebarComponent
   },
   methods: {
+
     getInit() {
       this.clubComponentService.init().subscribe()
     },

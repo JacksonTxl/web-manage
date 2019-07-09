@@ -1,7 +1,7 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state/src'
 import { pluck, tap } from 'rxjs/operators'
-import { OverviewApi, Version } from '@/api/v1/stat/overview/shop'
+import { OverviewApi, Version, revenueParams } from '@/api/v1/stat/overview/shop'
 import { forkJoin } from 'rxjs'
 
 interface SetState{
@@ -58,8 +58,8 @@ export class StudioComponentService implements RouteGuard {
       })
     }))
   }
-  getRevenue() {
-    return this.overviewApi.getRevenue().pipe(tap(res => {
+  getRevenue(params: revenueParams) {
+    return this.overviewApi.getRevenue(params).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
         let lineData:any = []
@@ -91,8 +91,8 @@ export class StudioComponentService implements RouteGuard {
       })
     }))
   }
-  getCourse() {
-    return this.overviewApi.getCourse().pipe(tap(res => {
+  getCourse(params: revenueParams) {
+    return this.overviewApi.getCourse(params).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
         let lineData:any = []
@@ -115,8 +115,8 @@ export class StudioComponentService implements RouteGuard {
       })
     }))
   }
-  getInout() {
-    return this.overviewApi.getInout().pipe(tap(res => {
+  getInout(params: revenueParams) {
+    return this.overviewApi.getInout(params).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
         let lineData:any = []
@@ -172,8 +172,8 @@ export class StudioComponentService implements RouteGuard {
       })
     }))
   }
-  getBuyCourse() {
-    return this.overviewApi.getBuyCourse().pipe(tap(res => {
+  getBuyCourse(params: revenueParams) {
+    return this.overviewApi.getBuyCourse(params).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
         let lineData:any = []
@@ -189,7 +189,14 @@ export class StudioComponentService implements RouteGuard {
     }))
   }
   init() {
-    return forkJoin(this.getTop({ version: 'club' }), this.getRevenue(), this.getCourse(), this.getInout(), this.getMember({ version: 'club' }), this.getBuyCourse())
+    return forkJoin(
+      this.getTop({ version: 'club' }),
+      this.getRevenue({ recently_day: 7 }),
+      this.getCourse({ recently_day: 7 }),
+      this.getInout({ recently_day: 7 }),
+      this.getMember({ version: 'club' }),
+      this.getBuyCourse({ recently_day: 7 })
+    )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.init().subscribe(res => {

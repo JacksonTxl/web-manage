@@ -11,32 +11,32 @@ export class OverviewApi extends Api {
   /**
    * 营收
    */
-  getRevenue() {
-    return this.http.get(`/v1/stat/overview/shop/revenue`)
+  getRevenue(query: RevenueParams) {
+    return this.http.get(`/v1/stat/overview/shop/revenue`, { query })
   }
   /**
    * 课程
    */
-  getCourse() {
-    return this.http.get(`/v1/stat/overview/shop/course`)
+  getCourse(query: RevenueParams) {
+    return this.http.get(`/v1/stat/overview/shop/course`, { query })
   }
   /**
    * 入场
    */
-  getInout() {
-    return this.http.get(`/v1/stat/overview/shop/entry`)
+  getInout(query: RevenueParams) {
+    return this.http.get(`/v1/stat/overview/shop/entry`, { query })
   }
   /**
    * 新增会员
    */
-  getNewMember() {
-    return this.http.get(`/v1/stat/overview/shop/new_member`)
+  getNewMember(query: RevenueParams) {
+    return this.http.get(`/v1/stat/overview/shop/new_member`, { query })
   }
   /**
    * 购买私教
    */
-  getBuyCourse() {
-    return this.http.get(`/v1/stat/overview/shop/buy_course`)
+  getBuyCourse(query: RevenueParams) {
+    return this.http.get(`/v1/stat/overview/shop/buy_course`, { query })
   }
   /**
    *  转化
@@ -48,4 +48,10 @@ export class OverviewApi extends Api {
 
 export interface Version{
     version: string
+}
+
+export interface RevenueParams {
+  recently_day?: number,
+  start_date?:string,
+  end_date?:string
 }

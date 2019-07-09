@@ -101,7 +101,6 @@ declare module 'vue-service-app' {
   }
   export function Injectable(): any
   export function Inject(provide: any): any
-  export function Multiton(): any
   export default class VueServiceApp {
     static install: PluginFunction<never>
     constructor(config: VueServiceAppConfig)

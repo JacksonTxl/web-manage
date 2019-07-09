@@ -216,7 +216,7 @@
       <st-form-item v-if="moreIsShow" labelGutter="12px" class="mg-t18 mg-b8" labelWidth="78px" label="VIP场地通行">
         <span v-if="info.areas&&!info.areas.length">
           没有VIP场地?
-          <router-link to="../add-select">
+          <router-link :to="{path:'/shop/setting/court/list'}">
             去设置
           </router-link>
         </span>

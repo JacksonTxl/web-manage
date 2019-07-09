@@ -44,10 +44,7 @@
             v-decorator="rules.image_face"
           ></st-image-upload>
         </st-form-item>
-        <st-form-item required>
-          <template slot="label">
-            昵称<st-help-tooltip id="TSCE001" />
-          </template>
+        <st-form-item label="昵称" required>
           <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.nickname"/>
         </st-form-item>
         <st-form-item label="邮箱">
@@ -247,15 +244,8 @@ export default {
     return {
       rules: RuleConfig,
       userService: UserService,
-      addService: AddService,
-      message: MessageService
-    }
-  },
-  rxState() {
-    return {
-      codeList: this.addService.codeList$,
-      roleList: this.addService.roleList$,
-      department: this.addService.department$
+      message: MessageService,
+      addService: AddService
     }
   },
   components: {
@@ -264,6 +254,15 @@ export default {
   props: {
     enums: {
       type: Object
+    },
+    roleList: {
+      type: Array
+    },
+    codeList: {
+      type: Array
+    },
+    department: {
+      type: Array
     }
   },
   data() {

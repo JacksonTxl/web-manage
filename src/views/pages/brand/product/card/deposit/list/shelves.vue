@@ -154,7 +154,7 @@ export default {
         onOk: () => {
           return this.shelvesService.setCardShelfDown({ card_shop: params }).toPromise().then(() => {
             this.onSelectionReset()
-            this.$router.push({ force: true, query: this.query })
+            this.onSearch()
           })
         }
       })
@@ -166,7 +166,7 @@ export default {
         content: `确定下架${record.card_name}会员卡吗？`,
         onOk: () => {
           return this.shelvesService.setCardShelfDown({ card_shop: [{ card_id: record.id, shop_id: record.shop_id }] }).toPromise().then(() => {
-            this.$router.push({ force: true, query: this.query })
+            this.onSearch()
           })
         }
       })

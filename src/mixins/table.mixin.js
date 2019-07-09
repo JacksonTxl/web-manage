@@ -8,6 +8,7 @@ const ROUTE_NAMES_USE_PAGE = [
   'brand-product-course-personal-list-brand',
   'brand-product-course-personal-list-shop',
   'brand-product-card-deposit-list-all',
+  'brand-product-card-deposit-list-shelves',
 
   'brand-finance-salary-template-basic',
   'brand-finance-salary-template-performance',
@@ -27,6 +28,7 @@ const ROUTE_NAMES_USE_PAGE = [
   'shop-product-course-manage-package-list',
   'shop-product-card-member-list-all',
   'shop-product-card-deposit-list-all',
+  'shop-product-card-deposit-list-shelves',
 
   'shop-sold-card-list-member',
   'shop-sold-card-list-deposit',

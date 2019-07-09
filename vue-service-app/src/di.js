@@ -1,8 +1,7 @@
 import { isFn } from './utils'
 const INJECTED = '__injectedTypes'
-const MODE_MULTITON = '__injectedMultiton'
 
-class Provider {
+export class Provider {
   constructor(token, containerInstance) {
     this.token = token
     this.containerInstance = containerInstance
@@ -16,7 +15,7 @@ class Provider {
   toClass(Cls) {
     if (Cls[INJECTED]) {
       this.getValue = () => {
-        if (!this.instance || Cls[MODE_MULTITON]) {
+        if (!this.instance) {
           const injects = Cls[INJECTED].map(token =>
             this.containerInstance.get(token)
           )
@@ -33,7 +32,7 @@ class Provider {
         )
       }
       this.getValue = () => {
-        if (!this.instance || Cls[MODE_MULTITON]) {
+        if (!this.instance) {
           this.instance = new Cls()
         }
         return this.instance
@@ -137,16 +136,6 @@ export function Injectable() {
         }
       })
     }
-    return target
-  }
-}
-
-/**
- * use multiton service,add Multiton meta
- */
-export function Multiton() {
-  return function(target) {
-    target.__injectedMultiton = true
     return target
   }
 }
