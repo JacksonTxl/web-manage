@@ -429,13 +429,11 @@ export default {
       // 头像
       photoList: [],
       // 待办animate动画index
-      animateIndex: 9999999999
+      animateIndex: 9999999999,
+      stCabinetList: []
     }
   },
   computed: {
-    stCabinetList() {
-      return (this.selectMemberInfo.cabinet && this.selectMemberInfo.cabinet.id) ? [this.selectMemberInfo.cabinet, ...this.cabinetList] : cloneDeep(this.cabinetList)
-    },
     // 会员列表是否未搜索到
     isSearchNone() {
       return this.memberSearchText !== '' && !this.memberList.length
@@ -569,7 +567,9 @@ export default {
       this.indexService.getMemberInfo(id).subscribe(res => {
         this.selectMemberInfo = cloneDeep(res.info)
         this.indexService.getEntranceOptionList(id).subscribe()
-        this.indexService.getCabinetList(id).subscribe()
+        this.indexService.getCabinetList(id).subscribe(() => {
+          this.stCabinetList = (this.selectMemberInfo.cabinet && this.selectMemberInfo.cabinet.id) ? [this.selectMemberInfo.cabinet, ...this.cabinetList] : cloneDeep(this.cabinetList)
+        })
         this.seller = res.info.seller.id || -1
         this.coach = res.info.coach.id || -1
         this.cabinet = res.info.cabinet.id || -1
