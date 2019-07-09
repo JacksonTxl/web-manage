@@ -1,52 +1,26 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap, switchMap } from 'rxjs/operators'
-import { Store } from '@/services/store'
-import { StaffApi } from '../../../../api/v1/staff'
+import { State } from 'rx-state'
+import { tap, switchMap } from 'rxjs/operators'
 import { GetInitInfoPut, RoleInfo, RoleApi } from '@/api/v1/staff/role'
-import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 
-interface SetState {
-  info: object,
-  roleList: any[],
-  initFunRoleList: any[]
-}
 @Injectable()
-export class RoleService extends Store<SetState> {
-  state$: State<SetState>
-  info$: Computed<Object>
-  roleList$: Computed<Object>
-  auth$: Computed<object>
-  constructor(private roleApi: RoleApi, private authService: AuthService) {
-    super()
-    this.state$ = new State({
-      info: {},
-      roleList: [],
-      initFunRoleList: [],
-      auth: {
-        add: this.authService.can('brand:auth:role|add'),
-        del: this.authService.can('brand:auth:role|del'),
-        edit: this.authService.can('brand:auth:role|edit')
-      }
-    })
-    this.info$ = new Computed(this.state$.pipe(pluck('info')))
-    this.roleList$ = new Computed(this.state$.pipe(pluck('roleList')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
-  }
-  protected SET_ROLE_INFO(info: GetInitInfoPut) {
-    this.state$.commit(state => {
-      state.info = info
-    })
-  }
+export class RoleService implements RouteGuard {
+  roleList$ = new State([])
+  stat$ = new State({})
+  auth$ = new State({
+    add: this.authService.can('brand:auth:role|add'),
+    del: this.authService.can('brand:auth:role|del'),
+    edit: this.authService.can('brand:auth:role|edit')
+  })
+  constructor(private roleApi: RoleApi, private authService: AuthService) {}
   /**
      * 获取所有角色列表（角色编辑页面）
      */
   getAllList() {
     return this.roleApi.getAllList().pipe(tap(res => {
-      this.state$.commit(state => {
-        state.roleList = res.roles
-      })
+      this.roleList$.commit(() => res.roles)
+      this.stat$.commit(() => res.stat)
     }))
   }
   /**
@@ -86,10 +60,7 @@ export class RoleService extends Store<SetState> {
     }))
   }
 
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getAllList().subscribe(res => {
-      this.SET_ROLE_INFO(res)
-      next()
-    })
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    return this.getAllList()
   }
 }

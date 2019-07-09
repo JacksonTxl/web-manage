@@ -6,19 +6,24 @@ const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plug
 
 const buildConfig = require('./build.config')
 const resolve = dir => path.resolve(__dirname, dir)
-const env = process.env.NODE_ENV || 'development'
 const git = require('git-rev-sync')
 const WebpackExternalVendorPlugin = require('webpack-external-vendor-plugin')
-const IS_DEV = env !== 'production'
+
+const env = {
+  NODE_ENV: process.env.NODE_ENV || 'development',
+  LOCAL_API_ENV: process.env.LOCAL_API_ENV || 'dev'
+}
+
+const IS_DEV = env.NODE_ENV !== 'production'
 
 const localApiEnvHostTarget = {
   // dev: 'http://10.10.31.194:10000',
   dev: 'https://api-saas-dev.styd.cn',
   test: 'https://api-saas-test.styd.cn'
-}[process.env.LOCAL_API_ENV || 'dev']
+}[env.LOCAL_API_ENV]
 
 const relaseInfo = {
-  mode: env,
+  mode: env.NODE_ENV,
   git_commit: git.short(),
   git_commit_long: git.long(),
   git_message: git.message(),
@@ -148,7 +153,7 @@ module.exports = {
                 : 'ant-design-vue/dist/antd.min.js',
               'immer/dist/immer.umd.js'
             ],
-            'base': ['./antd.css']
+            base: ['./antd.css']
           }
         }
       ])
@@ -180,10 +185,11 @@ module.exports = {
       definitions[0] = Object.assign(definitions[0], {
         'process.env': {
           BASE_URL: JSON.stringify('/'),
-          NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+          NODE_ENV: JSON.stringify(env.NODE_ENV),
           GIT_COMMIT: JSON.stringify(git.short()),
           GIT_MESSAGE: JSON.stringify(git.message()),
-          GIT_DATE: JSON.stringify(git.date())
+          GIT_DATE: JSON.stringify(git.date()),
+          LOCAL_API_ENV: JSON.stringify(env.LOCAL_API_ENV)
         }
       })
       return definitions

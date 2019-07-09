@@ -34,6 +34,11 @@ export class AppConfig {
    * 应用根基路径
    */
   BASE_URL = process.env.BASE_URL
+
+  /**
+   * 本地开发api环境
+   */
+  LOCAL_API_ENV = process.env.LOCAL_API_ENV
   /**
    * 应用环境
    */

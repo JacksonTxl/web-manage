@@ -24,7 +24,7 @@ export class TransferShopService extends Store<CardsTableModelState> {
   }
 
   getMemberBuy(data: any) {
-    return this.memberApi.getMemberFreeze(data).pipe(
+    return this.memberApi.getMemberBuy(data).pipe(
       tap(res => {
         this.state$.commit(state => {
           state.list = res.list
