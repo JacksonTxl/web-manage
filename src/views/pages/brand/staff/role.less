@@ -1,8 +1,10 @@
 .page-role-list{
+  width: 266px;
+  margin-right: 12px;
   height: 810px;
   background: #fff;
   position: relative;
-  &__add{
+  &__add {
     border-top: 1px solid rgba(230,233,239,1);
     position: absolute;
     bottom: 0;
@@ -13,8 +15,14 @@
     align-items: center;
     justify-content: center;
   }
-  &__tree{
+  &__tree {
+    h4 {
+      margin-bottom: 16px;
+      padding: 0 16px;
+    }
     .item{
+      height: 36px;
+      padding: 0 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -24,9 +32,12 @@
       color: #fff;
     }
   }
+  &__search {
+    margin: 24px 24px 20px 16px;
+  }
 }
 .page-role-info{
   background: #fff;
-  padding: 24px;
+  padding: 24px 24px 0;
   height: 810px;
 }
