@@ -27,6 +27,25 @@
             <a-radio :value="2">售卖场馆自主定价</a-radio>
           </a-radio-group>
         </st-form-item>
+        <!-- 单节预约 -->
+        <st-form-item>
+          <template slot="label">
+            单节预约<st-help-tooltip id="TBCPC005" />
+          </template>
+          <a-checkbox
+            :checked="!!singleReserve"
+            @change="onSingleReserveChange"
+          >
+            支持单节课预约
+          </a-checkbox>
+          <template v-if="singleReserve">
+            <st-input-number
+              v-model="singlePrice"
+              style="width: 100px;"
+            />
+            <span class="mg-l8">元/节</span>
+          </template>
+        </st-form-item>
       </a-col>
     </a-row>
      <section v-if="isShowUnitSet">
@@ -83,7 +102,9 @@ export default {
     return {
       form: this.$form.createForm(this),
       priceSetting: 1,
-      priceGradient: []
+      priceGradient: [],
+      singleReserve: 0,
+      singlePrice: ''
     }
   },
   computed: {
@@ -112,10 +133,6 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.getData()
-        console.log('step 3 data', data)
-        // if (!this.inputCheck(priceGradient)) {
-        //   return
-        // }
         this.addService.setPrice(data).subscribe(this.onSaveSuccess)
       })
     },
@@ -145,25 +162,6 @@ export default {
     onChange(e) {
       this.priceSetting = e.target.value
     },
-    inputCheck(priceGradient) {
-      let ret = true
-      for (let i = 0; i < priceGradient.length; i++) {
-        let retIn = false
-        for (let j in priceGradient[i]) {
-          if (priceGradient[i][j] === undefined || priceGradient[i][j] === '') {
-            retIn = true
-          }
-        }
-        if (retIn) {
-          ret = false
-          this.messageService.error({
-            content: `第${i + 1}行课程定价输入有误`
-          })
-          break
-        }
-      }
-      return ret
-    },
     setFieldsValue() {
       const info = this.info
       this.form.setFieldsValue({
@@ -172,19 +170,27 @@ export default {
         sell_type: info.sell_type,
         effective_unit: info.effective_unit
       })
-      console.log('set', info.price_gradient)
       this.priceSetting = info.price_setting
+      this.singleReserve = info.single_reserve
+      this.singlePrice = info.single_price
       this.priceGradient = info.price_gradient
     },
     getData() {
       const data = this.form.getFieldsValue()
       data.course_id = +this.query.id
       data.price_gradient = this.priceGradient
+      data.single_reserve = +this.singleReserve
+      if (data.single_reserve) {
+        data.single_price = this.singlePrice
+      }
       return data
     },
     onPriceGradientChange(priceGradient) {
       console.log('price gradient changed', priceGradient)
       this.priceGradient = priceGradient
+    },
+    onSingleReserveChange() {
+      this.singleReserve = +!this.singleReserve
     }
   }
 }

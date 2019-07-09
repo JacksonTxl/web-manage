@@ -16,6 +16,9 @@ export class DataService implements RouteGuard {
   // 活动统计
   getInviteStat() {
     return this.marketingApi.getInviteStat().pipe(tap((res:any) => {
+      Object.keys(res.info).forEach((i:any) => {
+        res.info[i] = res.info[i] === null ? 0 : +res.info[i]
+      })
       this.statInfo$.commit(() => res.info)
     }))
   }

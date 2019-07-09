@@ -280,7 +280,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.push({ force: true })
           }
         }
       })

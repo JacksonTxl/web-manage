@@ -21,26 +21,20 @@
                         <a-form-item class="page-a-form">
                             <a-date-picker
                             style="width: 100%;"
-                            :disabledDate="disabledStartDate"
-                            v-decorator="['startTime',{rules:[{validator:startTimeValidator}]}]"
+                            disabled
+                            v-model="startTime"
                             format="YYYY-MM-DD"
                             placeholder="开始时间"
-                            :showToday="false"
-                            @openChange="handleStartOpenChange"
-                            @change="startTimeChange"
                             />
                         </a-form-item>
                         <span>~</span>
                         <a-form-item class="page-a-form">
                             <a-date-picker
                             :disabledDate="disabledEndDate"
-                            v-decorator="['endTime',{rules:[{validator:endTimeValidator}]}]"
+                            v-decorator="['endTime',{rules:[{required:true,message:'请选择结束售卖时间'}]}]"
                             format="YYYY-MM-DD"
                             placeholder="结束时间"
                             :showToday="false"
-                            :open="endOpen"
-                            @openChange="handleEndOpenChange"
-                            @change="endTimeChange"
                             />
                         </a-form-item>
                     </div>
@@ -73,7 +67,7 @@ export default {
       serviceTime: this.recoverSaleService.time$
     }
   },
-  props: ['id', 'cardType', 'cardName', 'time'],
+  props: ['id', 'cardType', 'cardName'],
   data() {
     return {
       form: this.$form.createForm(this),
@@ -83,74 +77,21 @@ export default {
         1: 'number-card',
         2: 'period-card'
       },
-      endOpen: false,
       startTime: null,
       endTime: null
     }
   },
   methods: {
     moment,
-    // 开始时间
-    disabledStartDate(startValue) {
-      const endValue = this.endTime
-      if (!endValue) {
-        // 结束时间未选择
-        return (startValue.valueOf() < moment().subtract(1, 'd').valueOf())
-      }
-      let start = endValue.valueOf() > moment().add(30, 'y').valueOf() ? moment(endValue).subtract(30, 'y').valueOf() : moment().subtract(1, 'd').add(1, 'ms').valueOf()
-      return (startValue.valueOf() < start || startValue.valueOf() > moment(endValue).subtract(1, 'd').valueOf())
-    },
-    handleStartOpenChange(open) {
-      if (!open) {
-        this.endOpen = true
-      }
-    },
-    startTimeChange(data) {
-      this.startTime = cloneDeep(data)
-    },
-    startTimeValidator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-                callback('请选择开始售卖时间')
-      } else {
-        // eslint-disable-next-line
-                callback()
-      }
-    },
     // 结束时间
     disabledEndDate(endValue) {
-      const startValue = this.startTime
-      if (!startValue) {
-        // 开始时间未选择
-        return (endValue.valueOf() >= moment().add(30, 'y').valueOf() || endValue.valueOf() <= moment().valueOf())
-      }
-      return (endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).add(1, 'd').valueOf() || endValue.valueOf() <= moment().add(1, 'd').valueOf())
-    },
-    handleEndOpenChange(open) {
-      this.endOpen = open
-    },
-    endTimeChange(data) {
-      this.endTime = cloneDeep(data)
-    },
-    endTimeValidator(rule, value, callback) {
-      if (!value) {
-        // eslint-disable-next-line
-                callback('请选择结束售卖时间')
-      } else {
-        if (!(value.valueOf() > this.serviceTime * 1000)) {
-          // eslint-disable-next-line
-                    callback('支持售卖时间已过')
-        } else {
-          // eslint-disable-next-line
-                    callback()
-        }
-      }
+      return endValue.valueOf() < this.serviceTime * 1000 || endValue.valueOf() > moment(this.serviceTime * 1000).add(30, 'y').valueOf()
     },
     onSubmit() {
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
           this.recoverSaleService.setRecoverSale({
-            start_time: `${values.startTime.format('YYYY-MM-DD')}`,
+            start_time: `${moment(this.serviceTime * 1000).format('YYYY-MM-DD')}`,
             end_time: `${values.endTime.format('YYYY-MM-DD')}`
           }, this.id).subscribe(() => {
             this.show = false
@@ -162,12 +103,7 @@ export default {
   },
   mounted() {
     this.recoverSaleService.getServiceTime().subscribe(() => {
-      this.startTime = cloneDeep(moment(this.time.startTime))
-      // // this.endTime = cloneDeep(moment(this.time.endTime))
-      this.form.setFieldsValue({
-        'startTime': cloneDeep(moment(this.time.startTime))
-        // 'endTime': cloneDeep(moment(this.time.endTime))
-      })
+      this.startTime = cloneDeep(moment(this.serviceTime * 1000))
     })
   }
 }

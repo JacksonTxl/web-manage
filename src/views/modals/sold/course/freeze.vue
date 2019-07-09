@@ -103,7 +103,7 @@ export default {
     }
   },
   created() {
-    this.freezeService.getInfo(this.id).subscribe()
+    this.freezeService.getInfo(this.id, this.type).subscribe()
   },
   methods: {
     moment,

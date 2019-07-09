@@ -156,7 +156,7 @@ export default {
             member_name: +values.memberName,
             mobile: +values.memberMobile,
             sale_range: this.info.sale_range.type,
-            remain_price: values.remainPrice,
+            remain_amount: values.remainPrice,
             contract_number: values.contractNumber,
             pay_channel: +values.payType
           }, this.id, this.type).subscribe(res => {

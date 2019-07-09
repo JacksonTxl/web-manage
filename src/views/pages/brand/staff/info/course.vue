@@ -21,7 +21,7 @@
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="courseColums"
-          :dataSource="courseInfo.list"
+          :dataSource="courseInfo"
           :scroll="{ x: 1750}"
           :loading="loading.getCoursesList"
           :page="page"

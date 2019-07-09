@@ -1,13 +1,13 @@
 <template>
-  <a-row :class="role()" :gutter="12">
-    <a-col :lg="4" :class="roleList()">
-      <header :class="roleList('search')" class="mg-l16 mg-t24">
-        <st-input-search placeholder="请输入部门/员工名称" style="width:226px" round="round"></st-input-search>
+  <a-row :class="role()">
+    <a-col :span="4" :class="roleList()">
+      <header :class="roleList('search')">
+        <st-input-search placeholder="请输入部门/员工名称" round="round" style="width: 226px"></st-input-search>
       </header>
       <main :class="roleList('tree')">
-        <st-t4 class="mg-t24">角色 (6/60)</st-t4>
+        <st-t4>角色 ({{stat.used}}/{{stat.total}})</st-t4>
         <ul>
-          <li class="item pd-y8 pd-x16" @click="getTreeNodeOnclick(role, $event)" v-for="(role, index) in roles" :id="role.id" :class="{'active' : index === 0}" :key="role.id">
+          <li class="item" @click="getTreeNodeOnclick(role, $event)" v-for="(role, index) in roles" :id="role.id" :class="{'active' : index === 0}" :key="role.id">
             <div><span>{{role.name}}</span><span>（{{role.cnt}}）</span></div>
             <div>
               <st-more-dropdown style="margin-left: 12px;">
@@ -30,7 +30,7 @@
         <a>添加角色</a>
       </footer>
     </a-col>
-    <a-col :lg="20"  >
+    <a-col :span="19">
       <router-view></router-view>
     </a-col>
   </a-row>
@@ -41,7 +41,8 @@ export default {
   name: 'RoleConfig',
   bem: {
     role: 'page-role',
-    roleList: 'page-role-list'
+    roleList: 'page-role-list',
+    roleView: 'page-role-view'
   },
   serviceInject() {
     return {
@@ -50,8 +51,8 @@ export default {
   },
   rxState() {
     return {
-      state: this.roleService.state$,
       roles: this.roleService.roleList$,
+      stat: this.roleService.stat$,
       auth: this.roleService.auth$
     }
   },

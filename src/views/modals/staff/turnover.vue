@@ -3,6 +3,7 @@
     @ok='onSubmit'
     :okText="!operate? '知道了':'保存'"
     size="small"
+    :confirmLoading="loading.putStaffBrandQuit"
     v-model='show'>
     <section>
       <staff-info :staff="staff"></staff-info>
@@ -32,15 +33,15 @@ export default {
   },
   rxState() {
     return {
-      conditionDeleteInfo: this.turnoverService.conditionDeleteInfo$
+      conditionDeleteInfo: this.turnoverService.conditionDeleteInfo$,
+      loading: this.turnoverService.loading$
     }
   },
   data() {
     return {
       show: false,
       checkJob: {},
-      dateString: '',
-      confirmLoading: false
+      dateString: ''
     }
   },
   props: {
@@ -72,7 +73,9 @@ export default {
       this.dateString = dateString
     },
     isTurnover() {
-      this.turnoverService.getStaffCheckJob(this.staff.id + '').subscribe()
+      this.turnoverService.getStaffCheckJob(this.staff.id + '').subscribe(() => {
+        console.log('conditionDeleteInfo', this.conditionDeleteInfo)
+      })
     },
     onSubmit() {
       this.show = false

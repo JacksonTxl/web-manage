@@ -2,6 +2,7 @@ import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { MarketingApi, SetInviteEditInput } from '@/api/v1/marketing/marketing'
 import { tap } from 'rxjs/operators'
+import { add } from 'lodash-es'
 
 @Injectable()
 export class SettingService implements RouteGuard {
@@ -15,6 +16,10 @@ export class SettingService implements RouteGuard {
       }
       this.settingInfo$.commit(() => res.info)
     }))
+  }
+  @Effect()
+  add(params:SetInviteEditInput) {
+    return this.marketingApi.setInviteAdd(params)
   }
   @Effect()
   edit(params:SetInviteEditInput) {

@@ -192,7 +192,6 @@ export default {
         name: 'card-brand-deposit-recover-sale',
         props: {
           id: record.id,
-          time: { startTime: record.start_time, endTime: record.end_time },
           cardName: record.card_name
         },
         on: {
