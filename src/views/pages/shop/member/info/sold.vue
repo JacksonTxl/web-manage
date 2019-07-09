@@ -22,18 +22,8 @@
           </div>
           <div slot="action" slot-scope="text,record" href="javascript:;">
             <st-table-actions>
-              <div v-if="record.reserve_type.id === 1">
-                <a href="javascript:;" v-if="record.auth['shop:reserve:personal_course_reserve|del']" @click="reserveStatus(record)">取消预约</a>
-                <a href="javascript:;" v-if="record.auth['shop:reserve:personal_course_reserve|checkin']" @click="isCheckin(record)">{{record.is_checkin}}</a>
-              </div>
-              <div v-else-if="record.reserve_type.id === 2">
-                <a href="javascript:;" v-if="record.auth['shop:reserve:personal_team_course_reserve|checkin']" @click="reserveStatus(record)">取消预约</a>
-                <a href="javascript:;" v-if="record.auth['shop:reserve:personal_team_course_reserve|checkin']" @click="isCheckin(record)">{{record.is_checkin}}</a>
-              </div>
-              <div v-else-if="record.reserve_type.id === 3">
-                <a href="javascript:;" v-if="record.auth['shop:reserve:team_course_reserve|del']" @click="reserveStatus(record)">取消预约</a>
-                <a href="javascript:;" v-if="record.auth['shop:reserve:team_course_reserve|checkin']" @click="isCheckin(record)">{{record.is_checkin}}</a>
-              </div>
+              <a href="javascript:;" v-if="record.auth['shop:reserve:personal_course_reserve|del']" @click="reserveStatus(record)">取消预约</a>
+              <a href="javascript:;" v-if="record.auth['shop:reserve:personal_course_reserve|checkin']" @click="isCheckin(record)">{{record.is_checkin}}</a>
             </st-table-actions>
           </div>
         </st-table>
@@ -44,7 +34,7 @@
         <st-hr></st-hr>
       </a-col>
     </a-row>
-    <!-- TODO: 暂无接口 -->
+    <!-- TODO: 暂无接口222 -->
     <st-t4>入场记录</st-t4>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
@@ -57,7 +47,9 @@
 import formDate from './sold#/form-date.vue'
 import { SoldService } from './sold.service'
 import { classrecord, admission } from './sold.config.ts'
+import tableMixin from '@/mixins/table.mixin'
 export default {
+  mixins: [tableMixin],
   serviceInject() {
     return {
       Service: SoldService

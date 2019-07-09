@@ -1,7 +1,7 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state/src'
 import { pluck, tap } from 'rxjs/operators'
-import { OverviewApi, Version, revenueParams } from '@/api/v1/stat/overview/shop'
+import { OverviewApi, Version, RevenueParams } from '@/api/v1/stat/overview/shop'
 import { forkJoin } from 'rxjs'
 
 interface SetState{
@@ -58,7 +58,7 @@ export class StudioComponentService implements RouteGuard {
       })
     }))
   }
-  getRevenue(params: revenueParams) {
+  getRevenue(params: RevenueParams) {
     return this.overviewApi.getRevenue(params).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
@@ -91,7 +91,7 @@ export class StudioComponentService implements RouteGuard {
       })
     }))
   }
-  getCourse(params: revenueParams) {
+  getCourse(params: RevenueParams) {
     return this.overviewApi.getCourse(params).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
@@ -115,7 +115,7 @@ export class StudioComponentService implements RouteGuard {
       })
     }))
   }
-  getInout(params: revenueParams) {
+  getInout(params: RevenueParams) {
     return this.overviewApi.getInout(params).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
@@ -172,7 +172,7 @@ export class StudioComponentService implements RouteGuard {
       })
     }))
   }
-  getBuyCourse(params: revenueParams) {
+  getBuyCourse(params: RevenueParams) {
     return this.overviewApi.getBuyCourse(params).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info

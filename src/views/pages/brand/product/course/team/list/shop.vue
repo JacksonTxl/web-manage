@@ -6,7 +6,7 @@
           <st-button
             v-if="auth.transfer"
             type="primary"
-            v-modal-link="{name: 'course-transfrom-brand-team-course', props:{courseList: selectedRows}}"
+            @click="onClickTransFromBrand"
           >转入品牌团体课程库</st-button>
         </div>
         <div>
@@ -68,6 +68,9 @@ export default {
       this.shopService.deleteCourse(record.id).subscribe(() => {
         this.$router.push({ force: true })
       })
+    },
+    onClickTransFromBrand() {
+      this.$modalRouter.push({ name: 'course-transfrom-brand-team-course', props: { courseList: this.selectedRows } })
     },
     onChange() {
       this.$router.push({ query: { ...this.query, course_name: '' } })

@@ -4,6 +4,7 @@ import { tap, pluck } from 'rxjs/operators'
 import { State, Computed } from 'rx-state'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
+import { MessageService } from '@/services/message.service'
 
 @Injectable()
 export class ShopService implements RouteGuard {
@@ -17,7 +18,8 @@ export class ShopService implements RouteGuard {
   auth$: Computed<object>
   constructor(
     private shopPersonalCourseApi: ShopPersonalCourseApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private msg: MessageService
   ) {
     this.state$ = new State({
       auth: {
@@ -32,7 +34,9 @@ export class ShopService implements RouteGuard {
     })
   }
   upgradePersonalCourseInBrand(res: any) {
-    return this.shopPersonalCourseApi.upgradePersonalCourseInBrand(res)
+    return this.shopPersonalCourseApi.upgradePersonalCourseInBrand(res).pipe(tap(res => {
+      this.msg.success({ content: '转入成功！！！' })
+    }))
   }
   getList(params: any) {
     return this.shopPersonalCourseApi.getCourseListInBrand(params).pipe(

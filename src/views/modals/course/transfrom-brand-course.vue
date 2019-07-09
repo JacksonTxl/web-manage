@@ -125,7 +125,10 @@ export default {
 
     },
     upgradePersonalCourseInBrand() {
-      this.shopService.upgradePersonalCourseInBrand(this.res).subscribe(() => { this.show = false })
+      this.shopService.upgradePersonalCourseInBrand(this.res).subscribe(() => {
+        this.show = false
+        this.$router.push({ force: true })
+      })
     }
   }
 }
