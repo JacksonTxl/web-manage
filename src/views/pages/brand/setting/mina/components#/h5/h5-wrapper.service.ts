@@ -16,6 +16,8 @@ import {
 import {
   State
 } from 'rx-state/src'
+import { isArray } from 'lodash-es'
+import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class H5WrapperService {
@@ -45,6 +47,7 @@ export class H5WrapperService {
   }
   getCoachInfo(params: StaffID) {
     return this.settingMinaApi.getCoachInfo(params).pipe(tap(res => {
+      res = isArray(res) ? res : []
       this.SET_H5INFO(res, 7)
     }))
   }

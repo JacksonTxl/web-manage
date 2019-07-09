@@ -1,10 +1,11 @@
 <template>
   <div :class="nav()">
+    <st-form>
     <a-row :gutter="12">
       <a-col :span="8" v-for="(li, index) in list" :key="index">
         <div :class="nav('box')">
           <st-form-item label="功能名称" labelWidth="58px" labelGutter="8px">
-            <a-input placeholder="请输入功能名称" v-model="li.name"></a-input>
+            <a-input placeholder="请输入功能名称" v-model="li.name" maxlength="4"></a-input>
           </st-form-item>
           <a-row :gutter="12" :class="nav('upload-box')">
             <a-col :span="12">
@@ -23,6 +24,7 @@
         </div>
       </a-col>
     </a-row>
+    </st-form>
   </div>
 </template>
 <script>
