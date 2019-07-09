@@ -85,7 +85,7 @@
           <td>
             <div>
               <a  class="mg-r8" href="javascript:;" @click="onClickCancel(item.reserve_id)" v-if="auth.cancel">取消预约</a>
-              <a  href="javascript:;" v-if="auth.checkIn && !item.is_checkin" @click="onClickCheckIn(item.reserve_id)">签到消费</a>
+              <a  href="javascript:;" v-if="auth.checkIn" @click="onClickCheckIn(item.reserve_id)">签到消费</a>
             </div>
           </td>
         </tr>
@@ -211,6 +211,12 @@ export default {
     },
     onChangeSiteNumList(val) {
       let tempArr = []
+      if (this.siteNumIds.length === 3) {
+        this.messageService.error({
+          content: `最多预约三个座位`
+        })
+        return
+      }
       this.unUsedSeatOptions.forEach(item => {
         if (val.includes(item.id)) {
           let value = item.name

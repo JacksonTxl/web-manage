@@ -1,7 +1,7 @@
 <template>
   <div class="time-picker" @mouseup="onMouseup" @mounseover="onMouseOver" @mousedown="onMouseDown">
     <template  v-for="i in 25">
-      <item @change="onChange"  @down="onDown"  :views="views" :isDrag="isDrag" :isEnter="isEnter" :key="i" :time="i - 1"></item>
+      <item @change="onChange"  @down="onDown" :checkArr="checkArr" :views="views" :isDrag="isDrag" :isEnter="isEnter" :key="i" :time="i - 1"></item>
     </template>
 
   </div>
@@ -21,18 +21,22 @@ export default {
       isDrag: false,
       isEnter: false,
       checkArr: [],
-      values: [],
       views: []
     }
   },
   components: {
     item
   },
+  props: {
+    values: {
+      type: Array,
+      default: () => []
+    }
+  },
   watch: {
     checkArr(n) {
-      this.values = this.rangeTime(n).values
       this.views = this.rangeTime(n).views
-      this.$emit('change', this.values)
+      this.$emit('change', this.rangeTime(n).values)
     }
   },
   methods: {
@@ -64,7 +68,6 @@ export default {
       return { values: rangeArr, views }
     },
     onMouseDown() {
-      console.log('fa onMousedown')
       this.isDrag = true
     },
     onMouseOver() {
@@ -77,12 +80,23 @@ export default {
       this.$set(this.checkArr, val.time, val.isActive)
     },
     onMouseup() {
-      console.log('fa onMouseup')
       this.isDrag = false
     }
   },
   mounted() {
     this.$nextTick().then(() => {
+      this.views = this.values.map(item => {
+        const start = +item.start_time.split(':00:00')[0]
+        const end = +item.end_time.split(':00:00')[0]
+        console.log(start, end)
+        for (let i = 0; i < 25; i++) {
+          if (i > start && i <= end) {
+            console.log('charr', i)
+            this.$set(this.checkArr, i, true)
+          }
+        }
+        return `#${start}#start---#${end}#end`
+      })
       /* jslint evil: true */
       document.onselectstart = () => 'event.returnValue=false'
     })
