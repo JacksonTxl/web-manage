@@ -48,6 +48,17 @@
                 </tr>
               </thead>
               <tbody>
+                <tr>
+                  <td colspan="4">
+                    <st-button
+                      type="dashed"
+                      block class="mg-t8"
+                      @click="addPriceRecord(key)"
+                    >
+                      添加梯度
+                    </st-button>
+                  </td>
+                </tr>
                 <tr
                   v-for="(item, index) in priceGradientRecord.prices"
                   :key="index"
@@ -118,7 +129,6 @@
                 </tr>
               </tbody>
             </st-form-table>
-            <st-button type="dashed" block class="mg-t8" @click="addPriceRecord(key)">添加梯度</st-button>
           </st-container>
         </st-form-item>
       </st-form>
@@ -244,7 +254,7 @@ export default {
         this.priceGradient[key].prices = []
       }
       this.priceGradient = [...this.priceGradient]
-      this.priceGradient[key].prices.unshift(newRecord)
+      this.priceGradient[key].prices.push(newRecord)
     },
     onLevelChange(val, key) {
       this.priceGradient[key].level_id = val
