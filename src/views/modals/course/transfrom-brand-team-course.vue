@@ -26,7 +26,8 @@
 <script>
 import { columnsShops } from './support-table'
 import SelectShop from '@/views/fragments/shop/select-shop.vue'
-import { ShopService } from '../../pages/brand/product/course/personal/list/shop.service'
+import { ShopService } from '../../pages/brand/product/course/team/list/shop.service'
+
 export default {
   name: 'TransfromBrandCourse',
   serviceInject() {
@@ -57,7 +58,7 @@ export default {
   },
   computed: {
     courseIds() {
-      return courseList.map(item => item.id)
+      return this.courseList.map(item => item.id)
     }
   },
   methods: {
@@ -73,7 +74,10 @@ export default {
         shop_setting: this.shop_setting,
         shop_ids: this.shop_ids
       }
-      this.shopService.putCourseTeamIntoBrand(form).subscribe()
+      this.shopService.putCourseTeamIntoBrand(form).subscribe(res => {
+        this.show = false
+        this.$router.push({ force: true })
+      })
     }
   }
 }
