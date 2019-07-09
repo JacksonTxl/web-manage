@@ -464,8 +464,8 @@ export class StaffApi extends Api {
     return this.http.get('/v1/staff/info')
   }
   // 验证删除职能
-  validatStaffPosition(id: Number) {
-    return this.http.get(`/v1/staff/check/position/${id}`)
+  validatStaffPosition(staff_id: Number, id: Number) {
+    return this.http.get(`/v1/staff/check/${staff_id}/position/${id}`)
   }
 }
 export interface PutStaffBindBankInput {
