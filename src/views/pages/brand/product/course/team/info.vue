@@ -36,7 +36,6 @@
         <img class="image" :src="teamCourseInfo.image.image_key | imgFilter({ w: 280, h: 158 })" alt="课程图片">
       </div>
     </div>
-    {{teamCourseInfo.support_shop_list.length}}
     <div :class="bb()" v-if="teamCourseInfo.support_shop_list.length">
       <div class="page-team-content__item mg-b24">
         <div class="title mg-b8">

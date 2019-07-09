@@ -160,7 +160,6 @@ export default {
           `[tableMixin] pagination is not provide ${typeof pagination}`
         )
       }
-      console.log(nextPage)
       if (pagination) {
         this.$router.push({
           query: {

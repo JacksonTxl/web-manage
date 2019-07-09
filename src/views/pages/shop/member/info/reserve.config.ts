@@ -23,17 +23,18 @@ export const cardItem = () => {
     {
       title: '支持入场场馆',
       dataIndex: 'use_shop_name',
-      key: 'use_shop_name'
+      key: 'use_shop_name',
+      scopedSlots: { customRender: 'use_shop_name' }
     },
     {
       title: '购买额度',
       dataIndex: 'init_amount',
-      key: 'init_amount'
+      scopedSlots: { customRender: 'init_amount' }
     },
     {
       title: '剩余额度',
       dataIndex: 'remain_amount',
-      key: 'remain_amount'
+      scopedSlots: { customRender: 'remain_amount' }
     },
     {
       title: '卡状态',

@@ -51,6 +51,7 @@
           rowKey="id"
           :scroll="{x:1800}"
           :columns="columns"
+          @change="onTableChange"
           :dataSource="list" >
             <template slot="course_status" slot-scope="text">
               {{text | enumFilter('sold.course_status')}}

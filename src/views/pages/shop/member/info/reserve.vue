@@ -29,6 +29,15 @@
             <span v-if="record.card_status.id === 3" class="frozen"></span>
             {{ record.card_status.name }}
           </span>
+          <span slot="use_shop_name" slot-scope="text,record">
+            {{ record.use_shop_name.join(',') }}
+          </span>
+          <span slot="init_amount" slot-scope="text,record">
+            {{ record.init_amount.number }}{{ record.init_amount.type }}
+          </span>
+          <span slot="remain_amount" slot-scope="text,record">
+            {{ record.remain_amount.number }}{{ record.remain_amount.type }}
+          </span>
         </st-table>
       </a-col>
     </a-row>
@@ -67,18 +76,6 @@
         </st-table>
       </a-col>
     </a-row>
-    <!--
-    <a-row :gutter="8">
-      <a-col :lg="24">
-        <st-hr></st-hr>
-      </a-col>
-    </a-row>
-    <st-t4>租赁柜</st-t4>
-    <a-row :gutter="24" class="mg-t16">
-      <a-col :lg="24">
-        <a-table :columns="leaseArk" :dataSource="data"></a-table>
-      </a-col>
-    </a-row>-->
   </div>
 </template>
 
@@ -197,7 +194,6 @@ export default {
     },
     // 课项选择类型
     onChooseCourseType(e) {
-      console.log('选择课', e)
       this.initPage(2, 1, 10)
       this.reserveService.getCourseInfo(this.id, this.assignObj(2)).subscribe((res) => {})
     },

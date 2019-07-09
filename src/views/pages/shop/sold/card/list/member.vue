@@ -433,7 +433,7 @@ export default {
     async tipCallBack(orderId, modalType, callBackType) {
       switch (callBackType) {
         case 'cancel':
-          this.onSearch()
+          this.$router.push({ force: true })
           break
         case 'Print':
           this.createdOrderPrint(orderId)
