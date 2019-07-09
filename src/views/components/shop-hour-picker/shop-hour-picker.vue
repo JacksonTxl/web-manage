@@ -40,7 +40,7 @@
                   v-for="(disabled,index) in item.week"
                   :key="index"
                 >
-                  <a-checkbox :value="index" :disabled="!disabled">{{index | filterWeekDay}}</a-checkbox>
+                  <a-checkbox :value="index" :disabled="!disabled">{{index | filterOperation}}</a-checkbox>
                 </a-checkbox-group>
               </template>
               <span @click="copyTo(item, index)">复制到</span>
@@ -127,6 +127,7 @@ export default {
         console.log('slider watch', this.slider)
         let value = this.slider.filter(item => item.value.length)
         value = value.map(item => {
+          console.log('slider watch week_day', item.week_day)
           return {
             week_day: item.week_day,
             start_time: this.timeFilter(item.value[0]),
@@ -138,12 +139,18 @@ export default {
       deep: true
     },
     weekArr(n, o) {
+      console.log('weekArr', n, o)
       if ((n.length === o.length) || !o) return
       n.length > o.length ? this.editSliderData(n, o) : this.removeSliderData(n, o)
     }
   },
   filters: {
     filterWeekDay(value) {
+      console.log('filterWeekDay', value)
+      let filterValue = --value
+      return WEEK[filterValue] && WEEK[filterValue]['label']
+    },
+    filterOperation(value) {
       return WEEK[value] && WEEK[value]['label']
     }
   },
@@ -153,7 +160,7 @@ export default {
   methods: {
     // slider是否展示
     sliderCanShow(index) {
-      return this.weekArr.indexOf(index) !== -1
+      return this.weekArr.indexOf(++index) !== -1
     },
     // 时间过滤器
     timeFilter(time) {
@@ -175,14 +182,23 @@ export default {
     // 添加slider
     editSliderData(n, o) {
       const index = difference(n, o)
-      this.slider[n[n.length - 1]].title = n[n.length - 1]
-      this.slider[n[n.length - 1]].value = [10, 24]
+      index.forEach(n => {
+        let endNum = n
+        let endIndex = --n
+        console.log(endNum, endIndex)
+        this.slider[endIndex].title = endNum
+        this.slider[endIndex].value = [10, 24]
+      })
     },
     // 删除slider
     removeSliderData(n, o) {
       const index = difference(o, n)
-      this.slider[index].value = []
-      delete this.slider[index].title
+      index.forEach(n => {
+        let endIndex = --n
+        console.log('removeSliderData', endIndex)
+        this.slider[endIndex].value = []
+        delete this.slider[endIndex].title
+      })
     },
     onChange(sliders) {
       Array.isArray(sliders) && sliders.forEach(key => {
@@ -194,31 +210,31 @@ export default {
       const week = cloneDeep(WEEK_NO_SELF)
       // WEEK_NO_SELF中对应weekArr中的值设置为true,非对应的或
       this.weekArr.forEach(item => {
-        week[item] = true
+        week[--item] = true
       })
-      week[index] = false
+      week[--index] = false
       item.week = week
       console.log('copyTo', item)
     },
     // 获取日期选择数组
     getWeekArr() {
-      console.log('getWeekArr')
       this.$nextTick().then(() => {
         this.weekArr = this.value.map(item => item.week_day)
         if (this.weekArr.length) this.getSliderInfoList()
+        console.log('getWeekArr', this.weekArr)
       })
     },
     // 获取的数据对格式进行处理
     getSliderInfoList() {
-      console.log('getSliderInfoList')
       this.value.map(item => {
-        const sliderByweekDay = this.slider[item.week_day]
+        const sliderByweekDay = this.slider[--item.week_day]
         sliderByweekDay.value = [
           item.start_time.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0,
           item.end_time.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0
         ]
         sliderByweekDay.title = item.week_day
       })
+      console.log('getSliderInfoList', this.slider)
     }
   }
 }

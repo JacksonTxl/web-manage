@@ -31,11 +31,16 @@
       <st-button
         class="mg-r8"
         type="primary"
+        v-if="!info.is_checkin || info.reserve_status !== 4"
         @click="updateReserve">
         修改预约
       </st-button>
-      <st-button class="mg-r8" @click="cancelSchedule">取消预约</st-button>
-      <st-button @click="checkInConsume" >签到消费</st-button>
+      <st-button class="mg-r8" v-if="!info.is_checkin || info.reserve_status !== 4" @click="cancelSchedule">
+        取消预约
+      </st-button>
+      <st-button @click="checkInConsume" v-if="!info.is_checkin || info.reserve_status !== 4">
+        签到消费
+      </st-button>
     </div>
   </st-modal>
 </template>
