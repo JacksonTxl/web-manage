@@ -169,6 +169,11 @@ export default {
     ShopSelect,
     DepartmentSelect
   },
+  mounted() {
+    this.$nextTick().then(() => {
+      this.setData(this.data)
+    })
+  },
   methods: {
     onChange(value) {
       console.log('选择部门', value)
@@ -235,7 +240,7 @@ export default {
         nature_work: obj.nature_work,
         role_id: obj.role_id,
         shop_id: obj.shop_id,
-        entry_date: obj.entry_date ? moment(obj.entry_date) : '',
+        entry_date: obj.entry_date ? moment(obj.entry_date) : moment(),
         mail: obj.mail
       })
 
@@ -252,11 +257,6 @@ export default {
         obj.image_face
       ]
     }
-  },
-  mounted() {
-    this.$nextTick().then(() => {
-      this.setData(this.data)
-    })
   }
 }
 </script>

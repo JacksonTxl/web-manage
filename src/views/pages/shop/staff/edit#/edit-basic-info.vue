@@ -69,25 +69,12 @@
     <a-row :gutter="8">
       <a-col :offset="1" :lg="10" :xs="22">
         <st-form-item label="部门">
-          <a-tree-select
-            showSearch
-            v-decorator="rules.album_id"
-            :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
+          <department-select
             placeholder="请选择部门"
-            allowClear
-            treeDefaultExpandAll
-            @change="onChange"
-          >
-          <a-tree-select-node v-for="item in department" :value="item.id" :title="item.name" :key="item.id">
-            <a-tree-select-node v-for="item1 in item.children" :value="item1.id" :title="item1.name" :key="item1.id">
-              <a-tree-select-node v-for="item2 in item1.children" :value="item2.id" :title="item2.name" :key="item2.id">
-                <a-tree-select-node v-for="item3 in item2.children" :value="item3.id" :title="item3.name" :key="item3.id">
-                  <a-tree-select-node v-for="item4 in item3.children" :value="item4.id" :title="item4.name" :key="item4.id" />>
-              </a-tree-select-node>
-              </a-tree-select-node>
-            </a-tree-select-node>
-          </a-tree-select-node>
-          </a-tree-select>
+            style="width: 100%"
+            useType="form"
+            v-decorator="rules.department_id">
+          </department-select>
         </st-form-item>
         <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
@@ -142,6 +129,7 @@
 <script>
 import { RuleConfig } from '@/constants/staff/rule'
 import ShopSelect from '@/views/biz-components/shop-select'
+import DepartmentSelect from '@/views/biz-components/department-select'
 import { MessageService } from '@/services/message.service'
 import { ListService } from '../list.service'
 import { AppConfig } from '@/constants/config'
@@ -158,7 +146,8 @@ export default {
     }
   },
   components: {
-    ShopSelect
+    ShopSelect,
+    DepartmentSelect
   },
   props: {
     enums: {
@@ -199,27 +188,12 @@ export default {
     onChange(value) {
       this.value = value
     },
-    // imageUploadChange(data) {
-    //   this.form.setFieldsValue({
-    //     image_avatar: {
-    //       image_url: data.image_url ? data.image_url : ''
-    //     }
-    //   })
-    // },
-    // faceChange(data) {
-    //   this.form.setFieldsValue({
-    //     image_face: {
-    //       image_url: data.image_url ? data.image_url : ''
-    //     }
-    //   })
-    // },
     goNext(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
           this.submit(values, 1)
-          // this.$emit('gonext')
         }
       })
     },
@@ -228,7 +202,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
-          this.submit(values, 0)
+          this.submit(values)
         }
       })
     },

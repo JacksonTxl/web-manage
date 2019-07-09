@@ -85,11 +85,11 @@
       <a-col :offset="1" :lg="10" :xs="22">
         <st-form-item label="部门" required>
           <department-select
-          placeholder="请选择部门"
-          style="width: 100%"
-          useType="form"
-          v-decorator="rules.department_id"
-          @change="onChange">
+            placeholder="请选择部门"
+            style="width: 100%"
+            useType="form"
+            v-decorator="rules.department_id"
+            @change="onChange">
           </department-select>
         </st-form-item>
         <st-form-item label="工作性质" >

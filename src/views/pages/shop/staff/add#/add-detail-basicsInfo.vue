@@ -86,52 +86,12 @@
       </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
         <st-form-item label="部门" required>
-          <a-tree-select
-          showSearch
-          class="mg-r8"
-          style="width: 160px"
-          :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
-          placeholder="请选择部门"
-          allowClear
-          v-decorator="rules.department_id"
-          treeDefaultExpandAll
-          @change="onChange"
-        >
-          <a-tree-select-node
-            v-for="item in department"
-            :value="item.id"
-            :title="item.name"
-            :key="item.id"
-          >
-            <a-tree-select-node
-              v-for="item1 in item.children"
-              :value="item1.id"
-              :title="item1.name"
-              :key="item1.id"
-            >
-              <a-tree-select-node
-                v-for="item2 in item1.children"
-                :value="item2.id"
-                :title="item2.name"
-                :key="item2.id"
-              >
-                <a-tree-select-node
-                  v-for="item3 in item2.children"
-                  :value="item3.id"
-                  :title="item3.name"
-                  :key="item3.id"
-                >
-                  <a-tree-select-node
-                    v-for="item4 in item3.children"
-                    :value="item4.id"
-                    :title="item4.name"
-                    :key="item4.id"
-                  />>
-                </a-tree-select-node>
-              </a-tree-select-node>
-            </a-tree-select-node>
-          </a-tree-select-node>
-        </a-tree-select>
+          <department-select
+            placeholder="请选择部门"
+            style="width: 100%"
+            useType="form"
+            v-decorator="rules.department_id">
+          </department-select>
         </st-form-item>
         <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
@@ -185,7 +145,7 @@
 
     <a-row :gutter="8">
       <a-col :offset="1" :lg="10">
-        <st-form-item label="系统权限" required>
+        <st-form-item label="系统权限">
           <a-checkbox @change="permissionChange" v-decorator="rules.is_permission">开通系统使用权限</a-checkbox>
         </st-form-item>
         <st-form-item label="登录账号">
@@ -243,6 +203,7 @@ import { MessageService } from '@/services/message.service'
 import { AddService } from '../add.service'
 import CoachLevelSelect from '@/views/biz-components/coach-level-select'
 import ShopSelect from '@/views/biz-components/shop-select'
+import DepartmentSelect from '@/views/biz-components/department-select'
 
 export default {
   name: 'StaffDetailBasics',
@@ -256,7 +217,8 @@ export default {
   },
   components: {
     ShopSelect,
-    CoachLevelSelect
+    CoachLevelSelect,
+    DepartmentSelect
   },
   props: {
     enums: {
