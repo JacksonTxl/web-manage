@@ -216,9 +216,9 @@
       <st-form-item v-if="moreIsShow" labelGutter="12px" class="mg-t18 mg-b8" labelWidth="78px" label="VIP场地通行">
         <span v-if="info.areas&&!info.areas.length">
           没有VIP场地?
-          <router-link :to="{path:'/shop/setting/court/list'}">
+          <a @click="goSet">
             去设置
-          </router-link>
+          </a>
         </span>
         <a-checkbox-group
         v-else
@@ -456,6 +456,13 @@ export default {
           week_day: +i.week_day,
           time_duration: [{ start_time: i.start_time, end_time: i.end_time }]
         })
+      })
+    },
+    // 去设置vip场地
+    goSet() {
+      this.show = false
+      this.$router.push({
+        path: '/shop/setting/court/list'
       })
     },
     onSubmit() {
