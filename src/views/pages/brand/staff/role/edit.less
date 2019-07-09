@@ -1,9 +1,19 @@
 
 .page-role-info{
   &__edit{
-    .shop-list,
-    .brand-list{
-      overflow-y: auto
+    .jurisdiction {
+      display: flex;
+      .brand-list {
+        margin-right: 12px;
+      }
+      .shop-list,
+      .brand-list{
+        width: 387px;
+        .role-tree{
+          height: 500px;
+          overflow: auto;
+        }
+      }
     }
   }
 }
