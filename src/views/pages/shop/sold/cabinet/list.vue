@@ -54,7 +54,7 @@
             <a v-if="record.auth['shop:sold:sold_cabinet|renew']" @click="onRelet(record)">续租</a>
             <a v-if="record.auth['shop:sold:sold_cabinet|export_contract']" @click="toContract(record)">查看合同</a>
             <a v-if="record.auth['shop:sold:sold_cabinet|transfer']" @click="onTransfer(record)">转让</a>
-            <a v-if="record.auth['shop:sold:sold_cabinet|refund']" @click="onRefund(record)">退款</a>
+            <a v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a>
           </st-table-actions>
         </div>
       </st-table>

@@ -4,24 +4,24 @@
     4-16位中文、英文、数字正则（不含标点符号）：{{CN_EN_NUM_REGEXP}}
     <st-form :form="form" labelWidth="100px" labelGutter="16px" class="mg-t16">
       <st-form-item label="whatever" required>
-        <a-input placeholder="4-10个字，中英文及数字" v-decorator="formRules.whatever"/>
+        <a-input placeholder="4-10个字，中英文及数字" v-decorator="rules.whatever"/>
       </st-form-item>
       <st-form-item label="MOBILE" required>
-        <a-input placeholder="手机号" v-decorator="formRules.mobile"/>
+        <a-input placeholder="手机号" v-decorator="rules.mobile"/>
       </st-form-item>
       <st-form-item label="ID" required>
-        <a-input placeholder="身份证" v-decorator="formRules.id"/>
+        <a-input placeholder="身份证" v-decorator="rules.id"/>
       </st-form-item>
       <st-form-item label="EMAIL" required>
-        <a-input placeholder="邮箱" v-decorator="formRules.email"/>
+        <a-input placeholder="邮箱" v-decorator="rules.email"/>
       </st-form-item>
       <st-form-item label="IMG" required>
-        <a-input placeholder="图片类型，例如image/jpg" v-decorator="formRules.img"/>
+        <a-input placeholder="图片类型，例如image/jpg" v-decorator="rules.img"/>
       </st-form-item>
       <st-form-item label="备注" required>
         <st-textarea
         :autosize="{ minRow: 2, maxRow: 5 }"
-        v-decorator="formRules.note"
+        v-decorator="rules.note"
         maxlength="100"
         />
       </st-form-item>
@@ -32,8 +32,9 @@
   </section>
 </template>
 <script>
-import { PatternService } from '@/services/pattern.service'
 import { MessageService } from '@/services/message.service'
+import { PatternService } from '@/services/pattern.service'
+import { rules } from './pattern.config'
 
 export default {
   serviceInject() {
@@ -45,64 +46,11 @@ export default {
   data() {
     return {
       CN_EN_NUM_REGEXP: this.pattern.CN_EN_NUM('4-16'),
-      form: this.$form.createForm(this),
-      formRules: {
-        whatever: [
-          'whatever', {
-            rules: [{
-              required: true,
-              pattern: this.pattern.CN_EN_NUM('4-10'),
-              message: '4-10个字，中英文及数字'
-            }]
-          }
-        ],
-        mobile: [
-          'mobile', {
-            rules: [{
-              required: true,
-              pattern: this.pattern.MOBILE,
-              message: '手机号格式不正确'
-            }]
-          }
-        ],
-        id: [
-          'id', {
-            rules: [{
-              required: true,
-              pattern: this.pattern.ID,
-              message: '身份证格式不正确'
-            }]
-          }
-        ],
-        email: [
-          'email', {
-            rules: [{
-              required: true,
-              pattern: this.pattern.EMAIL,
-              message: '邮箱格式不正确'
-            }]
-          }
-        ],
-        img: [
-          'img', {
-            rules: [{
-              required: true,
-              pattern: this.pattern.IMG,
-              message: '图片类型不正确'
-            }]
-          }
-        ],
-        note: [
-          'note', {
-            rules: [{
-              required: true,
-              pattern: this.pattern.CN_EN_NUM('1-100'),
-              message: '1-100个字，中英文及数字'
-            }]
-          }
-        ]
-      }
+      form: this.$form.createForm(this)
     }
+  },
+  computed: {
+    rules
   },
   methods: {
     onSubmit(e) {
