@@ -24,8 +24,8 @@
       </div>
     </div>
     <div :class="h5wpr('btn-group')">
-        <st-button type="primary" @click="saveConfirm(1)">保存</st-button>
-        <st-button type="primary" @click="saveConfirm(2)">提交</st-button>
+        <st-button type="primary" :loading="loading.saveAll" @click="saveConfirm(1)">保存</st-button>
+        <st-button type="primary" :loading="loading.saveAll" @click="saveConfirm(2)">提交</st-button>
       </div>
   </div>
 </template>
@@ -39,6 +39,7 @@ import CourseComponent from './course.component'
 import NavComponent from './nav.component'
 import { cloneDeep } from 'lodash-es'
 import { MessageService } from '@/services/message.service'
+import { NotificationService } from '@/services/notification.service'
 export default {
   name: 'H5WrapperComponent',
   components: {
@@ -56,7 +57,8 @@ export default {
   serviceInject() {
     return {
       h5WrapperService: H5WrapperService,
-      messageService: MessageService
+      messageService: MessageService,
+      notificationService: NotificationService
     }
   },
   rxState() {
@@ -65,7 +67,8 @@ export default {
       coachInfo: this.h5WrapperService.coachInfo$,
       coach: this.h5WrapperService.coach$,
       courseInfo: this.h5WrapperService.courseInfo$,
-      menuInfo: this.h5WrapperService.menuInfo$
+      menuInfo: this.h5WrapperService.menuInfo$,
+      loading: this.h5WrapperService.loading$
     }
   },
   data() {
@@ -114,8 +117,26 @@ export default {
         category: 5,
         content: this.courseInfo
       })
-      this.h5WrapperService.save(saveForm).subscribe()
-      this.h5WrapperService.saveMenu(this.menuInfo).subscribe()
+      // this.h5WrapperService.save(saveForm).subscribe()
+      // this.h5WrapperService.saveMenu(this.menuInfo).subscribe()
+      this.h5WrapperService.saveAll(this.menuInfo, saveForm).subscribe(res => {
+        if (res[0].is_success === 1 && res[1].is_success === 1) {
+          this.notificationService.success({
+            title: '保存成功',
+            content: '成功'
+          })
+        } else if (res[0].is_success === 0) {
+          this.notificationService.error({
+            title: '保存失败',
+            content: res[0].message
+          })
+        } else if (res[1].is_success === 0) {
+          this.notificationService.error({
+            title: '保存失败',
+            content: res[1].message
+          })
+        }
+      })
     },
     setCoashIDs() {
       let coach = cloneDeep(this.coach)
@@ -132,8 +153,8 @@ export default {
       this.h5WrapperService.getH5Info({ category: 3 }).subscribe()
       this.h5WrapperService.getH5Info({ category: 4 }).subscribe(() => {
         let staff_id = []
-        if (that.coach.content) {
-          staff_id = that.coach.conent.staff_id_list
+        if (that.coach) {
+          staff_id = that.coach.staff_id_list
         }
         that.h5WrapperService.getCoachInfo({ staff_id: staff_id }).subscribe(() => { that.coachLoaded = true })
       })

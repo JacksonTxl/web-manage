@@ -11,25 +11,23 @@ export const courseColums = () => {
       key: 'shop_name'
     }, {
       title: '课程类型',
-      dataIndex: 'course_category',
-      key: 'course_category'
+      dataIndex: 'course_type',
+      key: 'course_type',
+      scopedSlots: { customRender: 'course_type' }
     }, {
       title: '课程名称',
       dataIndex: 'course_name',
-      // key: 'course_name',
+      key: 'course_name',
       scopedSlots: { customRender: 'course_name' }
     }, {
-      title: '上课教练',
-      dataIndex: 'coach_name',
-      key: 'coach_name'
-    }, {
       title: '课程状态',
-      dataIndex: 'course_status',
-      key: 'course_status'
+      dataIndex: 'schedule_status',
+      key: 'schedule_status',
+      scopedSlots: { customRender: 'schedule_status' }
     }, {
       title: '预约人数',
-      dataIndex: 'reserve_num',
-      key: 'reserve_num'
+      dataIndex: 'reserved_num',
+      key: 'reserved_num'
     }, {
       title: '签到人数',
       dataIndex: 'checkin_num',

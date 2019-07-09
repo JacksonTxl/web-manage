@@ -50,7 +50,9 @@ export default {
       return moment(moment(this.startTime).valueOf() + WEEK_DAY_INIT).format('YYYY-MM-DD').valueOf()
     },
     rangeTime() {
-      return `${this.startTime} ~ ${this.endTime}`
+      let start = moment(this.startTime).format('LL').valueOf()
+      let end = moment(this.endTime).format('LL').valueOf()
+      return `${start} ~ ${end}`
     }
   },
   methods: {

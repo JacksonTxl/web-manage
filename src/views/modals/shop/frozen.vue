@@ -1,6 +1,6 @@
 <template>
   <st-modal title="冻结" @ok="save" :footer="null" v-model="show" size="small">
-    <st-form :form="form" @submit="save" labelWidth="75px">
+    <st-form :form="form" labelWidth="80px">
       <a-row :gutter="8">
         <a-col :lg="24">
           <st-info>
@@ -16,6 +16,7 @@
           class="distribution-container"
           style="padding-left:12px;padding-right:12px;"
         >
+        <st-form-item :help="selectedRowsHelp" required>
           <a-table
             :rowSelection="rowSelection"
             :pagination="false"
@@ -33,6 +34,8 @@
               slot-scope="text,record"
             >{{record.start_time}} ~ {{record.end_time}}</span>
           </a-table>
+        </st-form-item>
+
         </a-col>
       </a-row>
       <a-row :gutter="8" class="mg-t8">
@@ -40,7 +43,7 @@
           <st-form-item label="冻结日期">
             <a-range-picker
               format="YYYY-MM-DD"
-              @change="onccccChange"
+              @change="onChangeDatepicker"
               v-decorator="basicInfoRuleList.to_shop"
             />
             <br>
@@ -49,20 +52,30 @@
       </a-row>
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
-          <st-form-item label="手续费">
+           <st-form-item label="有无手续费" required>
+            <a-radio-group v-decorator="basicInfoRuleList.moneyFlag" @change="changeTransfer">
+              <a-radio :value="item.value" v-for="(item, index) in hasTransferFeeList" :key="index" >{{item.label}}</a-radio>
+            </a-radio-group>
+          </st-form-item>
+        </a-col>
+      </a-row>
+      <a-row :gutter="8" class="mg-t8" v-if="isTransferFlag">
+        <a-col :lg="24">
+          <st-form-item label="手续费" required>
             <st-input-number
               :float="true"
               placeholder="请输入转让手续费"
-              v-decorator="basicInfoRuleList.poundage"
+              v-decorator="basicInfoRuleList.payee"
             >
               <template slot="addonAfter">元</template>
             </st-input-number>
           </st-form-item>
         </a-col>
       </a-row>
-      <a-row :gutter="8" class="mg-t8">
+
+      <a-row :gutter="8" class="mg-t8" v-if="isTransferFlag">
         <a-col :lg="24">
-          <st-form-item label="支付方式">
+          <st-form-item label="支付方式" required>
             <a-select :class="basic('select')" v-decorator="basicInfoRuleList.pay_method"  placeholder="请选择支付方式">
               <a-select-option
               v-for="(item,index) in payMethodList"
@@ -72,9 +85,9 @@
           </st-form-item>
         </a-col>
       </a-row>
-      <a-row :gutter="8" class="mg-t8">
+      <a-row :gutter="8" class="mg-t8" v-if="isTransferFlag">
         <a-col :lg="24">
-          <st-form-item label="收款人员">
+          <st-form-item label="收款人员" required>
             <a-select
               showSearch
               allowClear
@@ -82,7 +95,7 @@
               :defaultActiveFirstOption="false"
               :showArrow="false"
               :filterOption="false"
-              v-decorator="basicInfoRuleList.payee"
+              v-decorator="basicInfoRuleList.sale_id"
               @search="onSearch"
               notFoundContent="无搜索结果"
             >
@@ -101,8 +114,9 @@
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item class="mg-l24" style="text-align:right;" labelOffset>
-            <st-button type="primary" ghost html-type="submit">确认提交</st-button>
+            <st-button type="primary" @click="save" :loading="loading.getMemberTransfer">确认</st-button>
           </st-form-item>
+
         </a-col>
       </a-row>
     </st-form>
@@ -122,7 +136,8 @@ export default {
     return {
       list: this.frozenService.list$,
       staffList: this.frozenService.staffList$,
-      memberEnums: this.userService.memberEnums$
+      memberEnums: this.userService.memberEnums$,
+      loading: this.userService.loading$
     }
   },
   name: 'frozen',
@@ -160,8 +175,22 @@ export default {
         frozen_start_time: ['frozen_start_time'],
         frozen_end_time: ['frozen_end_time'],
         poundage: ['poundage'],
-        pay_method: ['pay_method'],
-        payee: ['payee'],
+        pay_method: ['pay_method', {
+          rules: [
+            {
+              required: true,
+              message: '请选择支付方式'
+            }
+          ]
+        }],
+        payee: ['payee', {
+          rules: [
+            {
+              required: true,
+              message: '请输入手续费!'
+            }
+          ]
+        }],
         to_shop: [
           'to_shop',
           {
@@ -172,10 +201,34 @@ export default {
               }
             ]
           }
+        ],
+        moneyFlag: [
+          'is_handling_fee',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请选择有无手续费'
+              }
+            ]
+          }
+        ],
+        sale_id: [
+          'sale_id',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请选择收款人员'
+              }
+            ]
+          }
         ]
       },
+      isTransferFlag: false,
       selectedRows: [],
-      dateString: []
+      dateString: [],
+      selectedRowsHelp: ''
     }
   },
   created() {
@@ -202,6 +255,7 @@ export default {
     getMemberTransfer(data) {
       this.frozenService.getMemberTransfer(data).subscribe(state => {
         this.show = false
+        this.$$emit('success')
       })
     },
     save(e) {
@@ -209,6 +263,12 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           if (!err) {
+            if (this.selectedRows.length <= 0) {
+              this.selectedRowsHelp = '请选择冻结的卡课'
+              return
+            } else {
+              this.selectedRowsHelp = ''
+            }
             values.course_id = this.selectedRows.map(item => {
               return item.id
             })
@@ -222,8 +282,15 @@ export default {
         }
       })
     },
-    onccccChange(date, dateString) {
+    onChangeDatepicker(date, dateString) {
       this.dateString = dateString
+    },
+    changeTransfer(event) {
+      if (event.target.value === 0) {
+        this.isTransferFlag = false
+      } else {
+        this.isTransferFlag = true
+      }
     }
   },
   computed: {
@@ -233,6 +300,9 @@ export default {
       return {
         onChange: (selectedRowKeys, selectedRows) => {
           self.selectedRows = selectedRows
+          if (selectedRows.length > 0) {
+            self.selectedRowsHelp = ''
+          }
         },
         getCheckboxProps: record => ({
           props: {
@@ -242,10 +312,19 @@ export default {
         })
       }
     },
+    // has_transferFee
     payMethodList() {
       let list = []
       if (!this.memberEnums.pay_method) return list
       Object.entries(this.memberEnums.pay_method.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    },
+    hasTransferFeeList() {
+      let list = []
+      if (!this.memberEnums.has_transferFee) return list
+      Object.entries(this.memberEnums.has_transferFee.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
