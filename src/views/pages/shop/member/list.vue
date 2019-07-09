@@ -94,7 +94,7 @@
       <st-table
         class="mg-t24"
         :columns="columns"
-        :scroll="{x:1280}"
+        :scroll="{x:1400}"
         :alertSelection="{onReset:onSelectionReset}"
         :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
         rowKey="member_id"
