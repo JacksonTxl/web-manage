@@ -147,7 +147,7 @@
                                       <!-- 在AForm组件里用自定义指令时，需要加上v-decorator,值不能重复 -->
                                       <ul :class="basic(`personal-dropdown`)" slot="overlay" class="personal-course-coach-grade-dropdown" v-scrollBar='{stopPropagation:true}' v-decorator="[`personalCourseListCoachGrade${index}`]">
                                         <li v-for="(coachItem,coachIndex) in item.coach_level" :key="coachIndex">
-                                          {{coachItem}}
+                                          {{coachItem.setting_name}}
                                         </li>
                                       </ul>
                                     </a-dropdown>

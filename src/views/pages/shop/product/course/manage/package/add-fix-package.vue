@@ -423,7 +423,7 @@
         </a-col>
       </a-row>
       <a-row :gutter="8">
-        <a-col :lg="10" :xs="22" :offset="1">
+        <a-col :lg="22" :xs="22" :offset="1">
           <st-form-item
           validate-status="error"
           :help="imageErrorText"
@@ -436,7 +436,7 @@
               :list="fileList"
               @change="fileChange">
                 <i :class="basic('st-upload-icon')"></i>
-                <div :class="basic('st-upload-text')">上传店招</div>
+                <div :class="basic('st-upload-text')">上传封面</div>
               </st-image-upload>
               <div :class="basic('upload-describe')">
                 <p>图片格式必须为:png,bmp,jpeg,jpg,gif,建议使用png格式图片,以保存最佳效果</p>
