@@ -23,7 +23,7 @@ const appConfig = container.get(AppConfig)
  * 图片资源过滤器
  */
 export const imgFilter = (key: string, opts?: ImgFilterOptions): string => {
-  if (/x-oss-process/.test(key)) {
+  if (/x-oss-process/.test(key) || /blob/.test(key)) {
     return key
   }
   if (/^image\//.test(key)) {

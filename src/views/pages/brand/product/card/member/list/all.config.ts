@@ -7,6 +7,7 @@ export const columns = () => {
     {
       title: '会员卡名称',
       dataIndex: 'card_name',
+      width: 180,
       scopedSlots: { customRender: 'card_name' }
     },
     {
@@ -33,6 +34,7 @@ export const columns = () => {
     {
       title: '支持售卖时间',
       dataIndex: 'sell_time',
+      width: 220,
       scopedSlots: { customRender: 'sell_time' }
     },
     {
@@ -51,23 +53,27 @@ export const columns = () => {
       title: '上架门店数',
       dataIndex: 'shelf_upper',
       align: 'right',
+      width: 110,
       scopedSlots: { customRender: 'shelf_upper' }
     },
     {
       title: '下架门店数',
       dataIndex: 'shelf_lower',
       align: 'right',
+      width: 110,
       scopedSlots: { customRender: 'shelf_lower' }
     },
 
     {
       title: '发布渠道',
       dataIndex: 'publish_channel',
+      width: 90,
       scopedSlots: { customRender: 'publish_channel' }
     },
     {
       title: '售卖状态',
       dataIndex: 'sell_status',
+      width: 120,
       scopedSlots: { customRender: 'sell_status' }
     },
     {
