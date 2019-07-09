@@ -106,7 +106,9 @@ export class PersonalScheduleReserveService {
    * 取消预约
    */
   del(id: string) {
-    return this.reserveApi.del(id)
+    return this.reserveApi.del(id).pipe(tap(res => {
+      this.msg.success({ content: '取消预约成功' })
+    }))
   }
   /**
    *

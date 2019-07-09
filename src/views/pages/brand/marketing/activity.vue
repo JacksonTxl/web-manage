@@ -20,8 +20,8 @@
       </div>
     </div>
     <div :class="activity('btn-group')">
-      <st-button type="primary" @click="save(1)">保存</st-button>
-      <st-button type="primary" @click="save(2)">提交</st-button>
+      <st-button type="primary" :loading="loading.save" @click="saveConfirm(1)">保存</st-button>
+      <st-button type="primary" :loading="loading.save" @click="saveConfirm(2)">提交</st-button>
     </div>
   </div>
 </template>
@@ -33,6 +33,7 @@ import RowContainerComponent from '@/views/pages/brand/setting/mina/components#/
 import H5Component from '@/views/pages/brand/setting/mina/components#/h5/h5.component'
 import SliderComponent from './components#/slider.component'
 import EventComponent from './components#/event.component'
+import { NotificationService } from '@/services/notification.service'
 import {
   cloneDeep
 } from 'lodash-es'
@@ -50,13 +51,15 @@ export default {
   },
   serviceInject() {
     return {
-      h5WrapperService: H5WrapperService
+      h5WrapperService: H5WrapperService,
+      notificationService: NotificationService
     }
   },
   rxState() {
     return {
       sliderInfo: this.h5WrapperService.sliderInfo$,
-      eventInfo: this.h5WrapperService.eventInfo$
+      eventInfo: this.h5WrapperService.eventInfo$,
+      loading: this.h5WrapperService.loading$
     }
   },
   data() {
@@ -69,6 +72,17 @@ export default {
     this.getH5Info()
   },
   methods: {
+    saveConfirm(is_save) {
+      let content = ''
+      if (is_save === 1) content = '页面已修改，是否保存？'
+      if (is_save === 2) content = '点击发布将提交微信审核，在1-3个工作日后可在手机端查看，您可在完成全部配置后再发布。现在是否确认发布？'
+      this.$confirm({
+        content: content,
+        onOk: () => {
+          this.save(is_save)
+        }
+      })
+    },
     save(is_save) {
       let saveForm = {
         is_save,
@@ -82,7 +96,19 @@ export default {
         category: 3,
         content: this.eventInfo
       })
-      this.h5WrapperService.save(saveForm).subscribe()
+      this.h5WrapperService.save(saveForm).subscribe(res => {
+        if (res.is_success === 1) {
+          this.notificationService.success({
+            title: '保存成功',
+            content: '成功'
+          })
+        } else if (res.is_success === 0) {
+          this.notificationService.error({
+            title: '保存失败',
+            content: res.message
+          })
+        }
+      })
     },
     setCoashIDs() {
       let coach = cloneDeep(this.coach)
@@ -97,10 +123,10 @@ export default {
       this.h5WrapperService.getH5Info({ category: 1 }).subscribe(() => { this.sliderLoaded = true })
       this.h5WrapperService.getH5Info({ category: 2 }).subscribe()
       this.h5WrapperService.getH5Info({ category: 3 }).subscribe(() => { this.eventLoaded = true })
-      this.h5WrapperService.getH5Info({ category: 4 }).subscribe(() => {
-        let staff_id = [123]
-        if (that.coach.content) {
-          staff_id = that.coach.conent.staff_id_list
+      this.h5WrapperService.getH5Info({ category: 4 }).subscribe(res => {
+        let staff_id = []
+        if (res.content) {
+          staff_id = res.content.staff_id_list
         }
         that.h5WrapperService.getCoachInfo({ staff_id: staff_id }).subscribe()
       })

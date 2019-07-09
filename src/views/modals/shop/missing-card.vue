@@ -48,7 +48,7 @@
             </a-select>
           </st-form-item>
           <st-form-item label="收款人员" v-if="moneyFlag">
-             <a-select
+            <a-select
               showSearch
               allowClear
               placeholder="输入手机号或员工名称搜索"

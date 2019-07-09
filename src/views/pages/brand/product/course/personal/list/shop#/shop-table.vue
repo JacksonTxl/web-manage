@@ -28,7 +28,7 @@
       <div slot="action" slot-scope="action, record">
         <st-table-actions>
           <router-link class="mg-r8" v-if="record.auth['brand_shop:product:personal_course|get']" :to="{name: 'brand-product-course-personal-info', query: { id: record.course_id } }">详情</router-link>
-          <a href="javascript:;" @click="onClickTransfrom(record)">转入品牌</a>
+          <!-- <a href="javascript:;" @click="onClickTransfrom(record)">转入品牌</a> -->
         </st-table-actions>
       </div>
     </st-table>

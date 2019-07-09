@@ -1,11 +1,11 @@
 <template>
   <st-modal title="冻结" @ok="save" :footer="null" v-model="show" size="small">
-    <st-form :form="form" @submit="save" labelWidth="75px">
+    <st-form :form="form" labelWidth="80px">
       <a-row :gutter="8">
         <a-col :lg="24">
           <st-info>
-            <st-info-item label="姓名">孙乐乐</st-info-item>
-            <st-info-item label="手机号">12345678901</st-info-item>
+            <st-info-item label="姓名">{{record.member_name}}</st-info-item>
+            <st-info-item label="手机号">{{record.mobile}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -16,20 +16,26 @@
           class="distribution-container"
           style="padding-left:12px;padding-right:12px;"
         >
+        <st-form-item :help="selectedRowsHelp">
           <a-table
             :rowSelection="rowSelection"
             :pagination="false"
             size="middle"
             :columns="columns"
-            :dataSource="getData"
+            :dataSource="list"
             rowKey="id"
           >
             <span
+              slot="remain_amount"
+              slot-scope="text,record"
+            >{{record.remain_amount}} {{record.unit}}</span>
+            <span
               slot="start_end"
               slot-scope="text,record"
-              href="javascript:;"
-            >{{record.start_time}}~{{record.end_time}}</span>
+            >{{record.start_time}} ~ {{record.end_time}}</span>
           </a-table>
+        </st-form-item>
+
         </a-col>
       </a-row>
       <a-row :gutter="8" class="mg-t8">
@@ -37,7 +43,7 @@
           <st-form-item label="冻结日期">
             <a-range-picker
               format="YYYY-MM-DD"
-              @change="onccccChange"
+              @change="onChangeDatepicker"
               v-decorator="basicInfoRuleList.to_shop"
             />
             <br>
@@ -46,38 +52,71 @@
       </a-row>
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
-          <st-form-item label="手续费">
+           <st-form-item label="有无手续费" required>
+            <a-radio-group v-decorator="basicInfoRuleList.moneyFlag" @change="changeTransfer">
+              <a-radio :value="item.value" v-for="(item, index) in hasTransferFeeList" :key="index" >{{item.label}}</a-radio>
+            </a-radio-group>
+          </st-form-item>
+        </a-col>
+      </a-row>
+      <a-row :gutter="8" class="mg-t8" v-if="isTransferFlag">
+        <a-col :lg="24">
+          <st-form-item label="手续费" required>
             <st-input-number
               :float="true"
               placeholder="请输入转让手续费"
-              v-decorator="basicInfoRuleList.poundage"
+              v-decorator="basicInfoRuleList.payee"
             >
               <template slot="addonAfter">元</template>
             </st-input-number>
           </st-form-item>
         </a-col>
       </a-row>
-      <a-row :gutter="8" class="mg-t8">
+
+      <a-row :gutter="8" class="mg-t8" v-if="isTransferFlag">
         <a-col :lg="24">
-          <st-form-item label="支付方式">
-            <a-input v-decorator="basicInfoRuleList.pay_method"/>
-            <br>
+          <st-form-item label="支付方式" required>
+            <a-select :class="basic('select')" v-decorator="basicInfoRuleList.pay_method"  placeholder="请选择支付方式">
+              <a-select-option
+              v-for="(item,index) in payMethodList"
+              :key="index"
+              :value="item.value">{{item.label}}</a-select-option>
+            </a-select>
           </st-form-item>
         </a-col>
       </a-row>
-      <a-row :gutter="8" class="mg-t8">
+      <a-row :gutter="8" class="mg-t8" v-if="isTransferFlag">
         <a-col :lg="24">
-          <st-form-item label="收款人员">
-            <a-input v-decorator="basicInfoRuleList.payee"/>
-            <br>
+          <st-form-item label="收款人员" required>
+            <a-select
+              showSearch
+              allowClear
+              placeholder="输入手机号或员工名称搜索"
+              :defaultActiveFirstOption="false"
+              :showArrow="false"
+              :filterOption="false"
+              v-decorator="basicInfoRuleList.sale_id"
+              @search="onSearch"
+              notFoundContent="无搜索结果"
+            >
+              <a-select-option
+              v-for="(item,index) in staffList"
+              :value="item.id"
+              :key="index">
+                <span v-html="`${item.staff_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
+                  {{item.staff_name}}   {{item.mobile}}
+                </span>
+              </a-select-option>
+            </a-select>
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item class="mg-l24" style="text-align:right;" labelOffset>
-            <st-button type="primary" ghost html-type="submit">确认提交</st-button>
+            <st-button type="primary" @click="save" :loading="loading.getMemberTransfer">确认</st-button>
           </st-form-item>
+
         </a-col>
       </a-row>
     </st-form>
@@ -85,18 +124,26 @@
 </template>
 <script>
 import { FrozenService } from './frozen.service'
+import { UserService } from '@/services/user.service'
 export default {
   serviceInject() {
     return {
-      Service: FrozenService
+      frozenService: FrozenService,
+      userService: UserService
     }
   },
-  // rxState() {
-  //   return {
-  //     cardsListInfo: this.Service.cardsListInfo$
-  //   }
-  // },
+  rxState() {
+    return {
+      list: this.frozenService.list$,
+      staffList: this.frozenService.staffList$,
+      memberEnums: this.userService.memberEnums$,
+      loading: this.userService.loading$
+    }
+  },
   name: 'frozen',
+  bem: {
+    basic: 'shop-frozen'
+  },
   props: {
     record: {
       type: Object
@@ -108,12 +155,12 @@ export default {
       columns: [
         {
           title: '卡课',
-          dataIndex: 'card_name',
-          scopedSlots: { customRender: 'card_name' }
+          dataIndex: 'name'
         },
         {
           title: '剩余',
-          dataIndex: 'remain_amount'
+          dataIndex: 'remain_amount',
+          scopedSlots: { customRender: 'remain_amount' }
         },
         {
           title: '有效期',
@@ -122,15 +169,28 @@ export default {
         }
       ],
       show: false,
-      getData: [],
       basicInfoRuleList: {
         id: ['id'],
         course_id: ['course_id'],
         frozen_start_time: ['frozen_start_time'],
         frozen_end_time: ['frozen_end_time'],
         poundage: ['poundage'],
-        pay_method: ['pay_method'],
-        payee: ['payee'],
+        pay_method: ['pay_method', {
+          rules: [
+            {
+              required: true,
+              message: '请选择支付方式'
+            }
+          ]
+        }],
+        payee: ['payee', {
+          rules: [
+            {
+              required: true,
+              message: '请输入手续费!'
+            }
+          ]
+        }],
         to_shop: [
           'to_shop',
           {
@@ -141,49 +201,95 @@ export default {
               }
             ]
           }
+        ],
+        moneyFlag: [
+          'is_handling_fee',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请选择有无手续费'
+              }
+            ]
+          }
+        ],
+        sale_id: [
+          'sale_id',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请选择收款人员'
+              }
+            ]
+          }
         ]
       },
+      isTransferFlag: false,
       selectedRows: [],
-      dateString: []
+      dateString: [],
+      selectedRowsHelp: ''
     }
   },
   created() {
     this.getMemberBuy()
   },
   methods: {
+    // 搜索员工
+    onSearch(data) {
+      this.memberSearchText = data
+      if (data === '') {
+        this.frozenService.memberList$.commit(() => [])
+        this.form.resetFields(['payee'])
+      } else {
+        this.frozenService.getMemberList(data).subscribe(res => {
+          if (!res.list.length) {
+            this.form.resetFields(['payee'])
+          }
+        })
+      }
+    },
     getMemberBuy() {
-      let self = this
-      self.Service.getMemberBuy(self.record.member_id).subscribe(state => {
-        self.getData = state
-      })
+      this.frozenService.getMemberBuy(this.record.member_id).subscribe()
     },
     getMemberTransfer(data) {
-      let self = this
-      self.Service.getMemberTransfer(data).subscribe(state => {
-        self.show = false
+      this.frozenService.getMemberTransfer(data).subscribe(state => {
+        this.show = false
       })
     },
     save(e) {
-      let self = this
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
           if (!err) {
-            values.course_id = self.selectedRows.map(item => {
+            if (this.selectedRows.length <= 0) {
+              this.selectedRowsHelp = '请选择冻结的卡课'
+              return
+            } else {
+              this.selectedRowsHelp = ''
+            }
+            values.course_id = this.selectedRows.map(item => {
               return item.id
             })
-            values.id = self.record.member_id
-            values.frozen_start_time = self.dateString[0]
-            values.frozen_end_time = self.dateString[1]
+            values.id = this.record.member_id
+            values.frozen_start_time = this.dateString[0]
+            values.frozen_end_time = this.dateString[1]
             delete values.to_shop
 
-            self.getMemberTransfer(values)
+            this.getMemberTransfer(values)
           }
         }
       })
     },
-    onccccChange(date, dateString) {
+    onChangeDatepicker(date, dateString) {
       this.dateString = dateString
+    },
+    changeTransfer(event) {
+      if (event.target.value === 0) {
+        this.isTransferFlag = false
+      } else {
+        this.isTransferFlag = true
+      }
     }
   },
   computed: {
@@ -193,6 +299,9 @@ export default {
       return {
         onChange: (selectedRowKeys, selectedRows) => {
           self.selectedRows = selectedRows
+          if (selectedRows.length > 0) {
+            self.selectedRowsHelp = ''
+          }
         },
         getCheckboxProps: record => ({
           props: {
@@ -201,6 +310,23 @@ export default {
           }
         })
       }
+    },
+    // has_transferFee
+    payMethodList() {
+      let list = []
+      if (!this.memberEnums.pay_method) return list
+      Object.entries(this.memberEnums.pay_method.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    },
+    hasTransferFeeList() {
+      let list = []
+      if (!this.memberEnums.has_transferFee) return list
+      Object.entries(this.memberEnums.has_transferFee.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
     }
   },
   watch: {}

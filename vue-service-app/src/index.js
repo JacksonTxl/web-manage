@@ -44,7 +44,6 @@ class VueServiceApp {
               )
             }
           })
-          this._hasComponentServiceProviders = !!providers.length
           this._componentSerivceProviders = providers
         }
         if (serviceInject) {
@@ -66,12 +65,7 @@ class VueServiceApp {
               )
             }
 
-            if (this._hasComponentServiceProviders) {
-              this[name] = rootContainer.new(injects[name])
-              // get service from root
-            } else {
-              this[name] = rootContainer.get(injects[name])
-            }
+            this[name] = rootContainer.get(injects[name])
           }
         }
       },

@@ -1,7 +1,7 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed } from 'rx-state/src'
 import { pluck, tap } from 'rxjs/operators'
-import { OverviewApi, Version } from '@/api/v1/stat/overview/shop'
+import { OverviewApi, Version, RevenueParams } from '@/api/v1/stat/overview/shop'
 import { forkJoin } from 'rxjs'
 
 interface SetState{
@@ -31,7 +31,12 @@ export class ClubComponentService {
 
   constructor(private overviewApi: OverviewApi) {
     this.state$ = new State({
-      top: {},
+      top: {
+        revenue_amount: {},
+        course_checkin_num: {},
+        passenger_flow: {},
+        be_member_num: {}
+      },
       revenueDaily: [],
       revenueSummary: [],
       courseDaily: [],
@@ -58,8 +63,8 @@ export class ClubComponentService {
       })
     }))
   }
-  getRevenue() {
-    return this.overviewApi.getRevenue().pipe(tap(res => {
+  getRevenue(params: RevenueParams) {
+    return this.overviewApi.getRevenue(params).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
         let lineData:any = []
@@ -87,12 +92,13 @@ export class ClubComponentService {
           }
           lineData.push(chartItem)
         }
+        console.log(lineData)
         state.revenueDaily = lineData
       })
     }))
   }
-  getCourse() {
-    return this.overviewApi.getCourse().pipe(tap(res => {
+  getCourse(params: RevenueParams) {
+    return this.overviewApi.getCourse(params).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
         let lineData:any = []
@@ -117,10 +123,10 @@ export class ClubComponentService {
       })
     }))
   }
-  getInout() {
-    return this.overviewApi.getInout().pipe(tap(res => {
+  getInout(params: RevenueParams) {
+    return this.overviewApi.getInout(params).pipe(tap(res => {
       this.state$.commit(state => {
-        const data = res.info
+        const data = res
         let lineData:any = []
         for (let key in data.inout_num) {
           let chartItem = {
@@ -174,8 +180,8 @@ export class ClubComponentService {
       })
     }))
   }
-  getNewMember() {
-    return this.overviewApi.getNewMember().pipe(tap(res => {
+  getNewMember(params: RevenueParams) {
+    return this.overviewApi.getNewMember(params).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
         let lineData:any = []
@@ -191,11 +197,15 @@ export class ClubComponentService {
     }))
   }
   init() {
-    return forkJoin(this.getTop({ version: 'club' }), this.getRevenue(), this.getCourse(), this.getInout(), this.getMember({ version: 'club' }), this.getNewMember())
+    return forkJoin(
+      this.getTop({ version: 'club' }),
+      this.getRevenue({ recently_day: 7 }),
+      this.getCourse({ recently_day: 7 }),
+      this.getInout({ recently_day: 7 }),
+      this.getMember({ version: 'club' }),
+      this.getNewMember({ recently_day: 7 })
+    )
   }
-//   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-//     this.init().subscribe(res => {
-//       next()
-//     })
-//   }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  }
 }

@@ -58,7 +58,7 @@ export default {
       show: false,
       disabled: true,
       form: this.$form.createForm(this),
-      applyStartDate: moment(),
+      applyStartDate: moment().week(moment().week()).startOf('week'),
       applyEndDate: moment(),
       addTime: 0,
       copyDefaulValue: []
@@ -98,6 +98,11 @@ export default {
       }
       this.teamScheduleScheduleService.copy(form).subscribe()
     }
+  },
+  mounted() {
+    this.copyDefaulValue[0] = moment().week(moment().week() - 1).startOf('week')
+    this.copyDefaulValue[1] = moment().week(moment().week() - 1).endOf('week')
+    this.applyEndDate = moment(this.applyStartDate.valueOf() + (this.copyDefaulValue[1].valueOf() - this.copyDefaulValue[0].valueOf()))
   }
 }
 </script>

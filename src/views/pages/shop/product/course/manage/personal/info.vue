@@ -48,16 +48,15 @@
         </st-container>
       </div>
       <div class="page-personal-content__item">
-        <div class="title mg-b8"><span class="label">售价渠道:</span><span class="value">{{price_gradient}}</span></div>
+        <!-- <div class="title mg-b8"><span class="label">售价渠道:</span><span class="value">{{price_gradient}}</span></div>
         <div class="title mg-b8"><span class="label">单节有效期:</span><span class="value">{{price_gradient}}</span></div>
         <div class="title mg-b8"><span class="label">定价权限:</span><span class="value">{{price_gradient}}</span></div>
-        <div class="title mg-b8"><span class="label">单节售卖:</span><span class="value">{{price_gradient.single_price}}</span></div>
+        <div class="title mg-b8"><span class="label">单节售卖:</span><span class="value">{{price_gradient.single_price}}</span></div>-->
         <div class="title mg-b8"><span class="label">售卖定价:</span><span class="value"></span></div>
-
         <st-container>
-          <st-table :columns="priceConfigColumns" :dataSource="info.price_gradient">
-            <div slot="sale" slot-scope="sale, record">{{record.min_sale}} ~ {{record.max_sale}}</div>
-            <div slot="transfer" slot-scope="sale, record">{{record.transfer_num}} {{record.transfer_unit === 1 ? "%":"元"}}</div>
+          <st-table :columns="priceConfigColumns" :dataSource="price_gradient.prices">
+            <div slot="min_sell_price" slot-scope="min_sell_price, record">{{record.min_sale}} ~ {{record.max_sale}}</div>
+            <div slot="transfer_num" slot-scope="transfer_num, record">{{record.transfer_num}} {{record.transfer_unit === 1 ? "%":"元"}}</div>
           </st-table>
         </st-container>
       </div>

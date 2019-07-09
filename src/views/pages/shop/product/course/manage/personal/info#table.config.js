@@ -30,12 +30,13 @@ export const priceConfigColumns = [{
   dataIndex: 'level'
 }, {
   title: '售卖梯度（节）',
-  dataIndex: 'sale',
-  scopedSlots: { customRender: 'sale' }
+  dataIndex: 'min_sell_price',
+  scopedSlots: { customRender: 'min_sell_price' }
 }, {
   title: '售卖价格（元/节）',
-  dataIndex: 'price'
+  dataIndex: 'sell_price'
 }, {
   title: '转让手续费',
-  dataIndex: 'transfer'
+  dataIndex: 'transfer_num',
+  scopedSlots: { customRender: 'transfer_num' }
 }]

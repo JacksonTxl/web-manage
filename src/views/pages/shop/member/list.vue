@@ -115,7 +115,7 @@
             <a v-if="record.auth['shop:member:member|bind_card']" v-modal-link="{ name: 'shop-binding-entity-card', props:{record:record}}">绑实体卡</a>
             <a v-if="record.auth['shop:member:member|rebind_card']" v-modal-link="{ name: 'shop-missing-card', props:{record:record}}">重绑实体卡</a>
             <a v-if="record.auth['shop:member:member|transfer']" v-modal-link="{ name: 'shop-transfer-shop', props:{record:record}}">转店</a>
-            <a v-if="record.auth['shop:member:member|frozen']" v-modal-link="{ name: 'shop-frozen', props:{record:record}}">冻结用户</a>
+            <a v-if="record.auth['shop:member:member|frozen']" v-modal-link="{ name: 'shop-frozen', props:{record}}">冻结用户</a>
             <a v-if="record.auth['shop:member:member|unbind_wechat']" @click="onRemoveBind(record)">解除微信绑定</a>
           </st-table-actions>
         </div>

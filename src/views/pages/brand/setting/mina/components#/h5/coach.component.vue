@@ -1,7 +1,8 @@
 <template>
   <div :class="action()">
+    <st-form>
     <st-form-item label="模块名称">
-      <a-input placeholder="请输入模块名称" v-model="info.module_title" />
+      <a-input placeholder="请输入模块名称"  v-model="info.module_title" maxlength="10"/>
     </st-form-item>
     <st-form-item label="展示教练">
 
@@ -10,7 +11,7 @@
         <a-col :span="4" v-for="(li, index) in list" :key="li.id">
           <div :class="action('box')">
             <div :class="action('del')" @click="delCoach(index)">
-              <a><st-icon type="delete" :class="action('del-icon')"/></a>
+              <a><st-icon type="delete" color="#FF5E41" :class="action('del-icon')"/></a>
               <!-- <a-popconfirm @confirm="onDel(item.id)">
                 <template slot="title">
                   删除该场地后，该门店进行排课等功能无法选择该场地，<br/> 是否继续？
@@ -39,6 +40,7 @@
         </a-col>
       </draggable>
     </st-form-item>
+    </st-form>
   </div>
 </template>
 <script>

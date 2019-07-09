@@ -14,8 +14,10 @@ import {
   tap
 } from 'rxjs/operators'
 import {
-  State
+  State, Effect
 } from 'rx-state/src'
+import { isArray } from 'lodash-es'
+import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class H5WrapperService {
@@ -26,6 +28,7 @@ export class H5WrapperService {
   sliderInfo$ = new State([]); // 首页图片
   eventInfo$ = new State([]); // 营销活动
   menuInfo$ = new State([]); // 导航菜单
+  loading$ = new State({})
   constructor(private settingMinaApi: SettingMinaApi) {}
   SET_H5INFO(data: any, index: number) {
     index === 1 && this.sliderInfo$.commit(() => data)
@@ -45,6 +48,7 @@ export class H5WrapperService {
   }
   getCoachInfo(params: StaffID) {
     return this.settingMinaApi.getCoachInfo(params).pipe(tap(res => {
+      res = isArray(res) ? res : []
       this.SET_H5INFO(res, 7)
     }))
   }
@@ -58,7 +62,12 @@ export class H5WrapperService {
   saveMenu(params: Menus) {
     return this.settingMinaApi.saveMenu(params)
   }
+  @Effect()
   save(params: SaveForm) {
     return this.settingMinaApi.save(params)
+  }
+  @Effect()
+  saveAll(p1:Menus, p2:SaveForm) {
+    return forkJoin(this.saveMenu(p1), this.save(p2))
   }
 }
