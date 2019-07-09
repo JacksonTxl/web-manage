@@ -198,6 +198,14 @@ export class RuleConfig {
     }]
   }
   /**
+   * 是否支持单节预约
+   */
+  get singleReserve() {
+    return ['single_reserve', {
+      initialValue: 0
+    }]
+  }
+  /**
    * 单节售卖价格
    */
   get singlePrice() {

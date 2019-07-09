@@ -23,6 +23,25 @@
             <template slot="addonAfter">天</template>
           </st-input-number>
         </st-form-item>
+        <!-- 单节预约 -->
+        <st-form-item>
+          <template slot="label">
+            单节预约<st-help-tooltip id="TBCPC005" />
+          </template>
+          <a-checkbox
+            :checked="!!singleReserve"
+            @change="onSingleReserveChange"
+          >
+            支持单节课预约
+          </a-checkbox>
+          <template v-if="singleReserve">
+            <st-input-number
+              v-model="singlePrice"
+              style="width: 100px;"
+            />
+            <span class="mg-l8">元/节</span>
+          </template>
+        </st-form-item>
       </a-col>
     </a-row>
     <set-price :value="priceGradient" @change="onPriceGradientChange"/>
@@ -76,7 +95,9 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      priceGradient: []
+      priceGradient: [],
+      singleReserve: 0,
+      singlePrice: ''
     }
   },
   computed: {
@@ -158,17 +179,26 @@ export default {
         sell_type: info.sell_type,
         effective_unit: info.effective_unit
       })
+      this.singleReserve = info.single_reserve
+      this.singlePrice = info.single_price
       this.priceGradient = info.price_gradient
     },
     getData() {
       const data = this.form.getFieldsValue()
       data.course_id = +this.query.id
       data.price_gradient = this.priceGradient
+      data.single_reserve = +this.singleReserve
+      if (data.single_reserve) {
+        data.single_price = this.singlePrice
+      }
       return data
     },
     onPriceGradientChange(priceGradient) {
       console.log('price gradient changed', priceGradient)
       this.priceGradient = priceGradient
+    },
+    onSingleReserveChange() {
+      this.singleReserve = +!this.singleReserve
     }
   }
 }
