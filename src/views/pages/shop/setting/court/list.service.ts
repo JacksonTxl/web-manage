@@ -43,7 +43,7 @@ export class ListService extends Store<ListState> {
   del(id: number) {
     return this.courtApi.del(id)
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getList().subscribe(next, () => { next(false) })
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return this.getList()
   }
 }

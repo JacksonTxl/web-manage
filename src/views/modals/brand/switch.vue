@@ -1,13 +1,13 @@
 <template>
   <st-modal
     title="请选择品牌"
-    width="80%"
+    width="960px"
     :footer="null"
     wrapClassName="modal-brand-switch"
     v-model="show"
   >
     <div class="brand-content">
-      <a-row :gutter="80">
+      <a-row :gutter="24">
         <a-col :lg="8" v-for="(brand, index) in brandInfo" :key="index">
           <div class="brand-item">
             <img
