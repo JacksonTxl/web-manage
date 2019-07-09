@@ -9,7 +9,6 @@
             :list="fileList"
             :sizeLimit="2"
             placeholder="上传头像"
-            v-decorator="rules.image_avatar"
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="姓名" required>
@@ -17,10 +16,10 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact style="top: 0;">
-            <a-select style="width: 15%;" v-model="choosed_country_id">
+            <a-select v-model="choosed_country_id">
                 <a-select-option v-for="item in codeList" :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
             </a-select>
-            <a-input style="width: 85%" v-decorator="rules.phone" placeholder="请输入手机号"/>
+            <a-input style="width: 80%" v-decorator="rules.phone" placeholder="请输入手机号"/>
           </a-input-group>
         </st-form-item>
         <st-form-item label="性别" required>
@@ -40,7 +39,6 @@
             :isFaceRecognition="true"
             :sizeLimit="2"
             placeholder="上传人脸"
-            v-decorator="rules.image_face"
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="昵称" required>
@@ -51,12 +49,12 @@
         </st-form-item>
         <st-form-item label="证件">
           <a-input-group compact style="top: 0;">
-            <a-select style="width: 20%;" v-model="id_type" @change="onSelectIdtype">
+            <a-select v-model="id_type" @change="onSelectIdtype">
               <template v-for="(item,key) in enums.id_type.value">
                 <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
               </template>
             </a-select>
-            <a-input style="width: 80%" placeholder="请输入身份证号码" v-decorator="rules.idnumber"/>
+            <a-input style="width: 70%" placeholder="请输入身份证号码" v-decorator="rules.idnumber"/>
           </a-input-group>
         </st-form-item>
       </a-col>
@@ -106,7 +104,7 @@
             mode="multiple"
             useType="form"
             placeholder="请选择门店"
-            v-decorator="['shop_id']"/>
+            v-decorator="rules.shop_id"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -130,6 +128,7 @@
 import DepartmentSelect from '@/views/biz-components/department-select'
 import { RuleConfig } from '@/constants/staff/rule'
 import { EditService } from '../edit.service'
+import moment from 'moment'
 import ShopSelect from '@/views/biz-components/shop-select'
 export default {
   name: 'EditBasicInfo',
