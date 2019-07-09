@@ -20,9 +20,11 @@
         </div>
       </div>
       <div :class="h5('event')">
-        <a-col v-for="(li,index) in eventInfo" class="event-li" :key="index" :span="li.span">
-          <img :src="li.image_url | imgFilter">
-        </a-col>
+        <a-row>
+          <a-col v-for="(li,index) in eventInfo" class="event-li" :key="index" :span="li.span">
+            <img :src="li.image_url | imgFilter">
+          </a-col>
+        </a-row>
       </div>
       <div :class="h5('hr')"></div>
       <st-t3 :class="h5('coach-title')">{{coach.module_title}}</st-t3>
