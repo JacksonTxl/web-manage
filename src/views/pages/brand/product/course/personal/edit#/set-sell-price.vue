@@ -8,8 +8,15 @@
         </st-form-item>
         <!-- 售卖渠道 -->
         <st-form-item label="售卖渠道">
-          <a-checkbox-group :options="sellTypeOptions" v-decorator="ruleConfig.sellType">
-            <a-checkbox v-for="(item, index) in personalCourseEnums.sell_type.value" :key="index" :value="index">
+          <a-checkbox-group
+            :options="sellTypeOptions"
+            v-decorator="ruleConfig.sellType"
+          >
+            <a-checkbox
+              v-for="(item, index) in personalCourseEnums.sell_type.value"
+              :key="index"
+              :value="index"
+            >
               {{item}}
             </a-checkbox>
           </a-checkbox-group>
@@ -22,7 +29,10 @@
         </st-form-item>
         <!-- 定价权限 -->
         <st-form-item label="定价权限" required>
-          <a-radio-group @change="onChange" v-decorator="ruleConfig.priceSetting">
+          <a-radio-group
+            @change="onChange"
+            v-decorator="ruleConfig.priceSetting"
+          >
             <a-radio :value="1">品牌统一定价</a-radio>
             <a-radio :value="2">售卖场馆自主定价</a-radio>
           </a-radio-group>
@@ -48,13 +58,26 @@
         </st-form-item>
       </a-col>
     </a-row>
-     <section v-if="isShowUnitSet">
-      <set-price :value="priceGradient" @change="onPriceGradientChange"/>
-    </section>
+    <a-row :gutter="8">
+      <a-col :lg="22" :offset="1">
+        <st-form-item v-if="isShowUnitSet" labelFix>
+          <set-price
+            :value="priceGradient"
+            @change="onPriceGradientChange"
+          />
+        </st-form-item>
+      </a-col>
+    </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.setPrice">完成</st-button>
+          <st-button
+            type="primary"
+            @click="save"
+            :loading="loading.setPrice"
+          >
+            完成
+          </st-button>
         </st-form-item>
       </a-col>
     </a-row>

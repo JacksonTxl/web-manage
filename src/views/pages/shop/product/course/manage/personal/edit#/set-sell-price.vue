@@ -44,7 +44,17 @@
         </st-form-item>
       </a-col>
     </a-row>
-    <set-price :value="priceGradient" @change="onPriceGradientChange"/>
+    <a-row :gutter="8">
+      <a-col :lg="22" :offset="1">
+        <st-form-item labelFix>
+          <set-price
+            :value="priceGradient"
+            @change="onPriceGradientChange"
+          />
+        </st-form-item>
+      </a-col>
+    </a-row>
+
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
