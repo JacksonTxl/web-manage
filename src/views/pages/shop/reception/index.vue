@@ -55,8 +55,8 @@
             <a-select-option
             v-for="(item) in memberList"
             :key="item.id">
-              <span v-html="`${item.member_name}&nbsp;&nbsp;&nbsp;${item.mobile}`.replace(new RegExp(lastMemberSearchText,'g'),`\<span class='global-highlight-color'\>${lastMemberSearchText}\<\/span\>`)">
-                {{item.member_name}}&nbsp;&nbsp;&nbsp;{{item.mobile}}
+              <span v-html="`${item.member_name} ${item.mobile}`.replace(new RegExp(lastMemberSearchText,'g'),`\<span class='global-highlight-color'\>${lastMemberSearchText}\<\/span\>`)">
+                {{item.member_name}} {{item.mobile}}
               </span>
             </a-select-option>
           </a-select>
