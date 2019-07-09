@@ -155,7 +155,7 @@ export class CardsApi extends Api {
    *  品牌储值卡下架
    */
   setBrandDepositShelfDown(params: BrandCardShelfDownInput) {
-    return this.http.post(`/v1/cards/deposit/brand/shelf/down`, { params })
+    return this.http.put(`/v1/cards/deposit/brand/shelf/down`, { params })
   }
   /**
    *  储值卡消费门店列表

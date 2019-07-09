@@ -10,7 +10,7 @@ const tagMap = {
   'coach-team': '团课教练',
 
   'shop-trial': '试运营',
-  'shop-opening': '正式运营',
+  'shop-opening': '营业中',
   'shop-stop': '暂停营业',
   'shop-close': '已关店',
   'shop-holiday': '放假中',

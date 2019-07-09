@@ -10,7 +10,7 @@
             <!-- <p>{{summaryInfo[item.type].num}}</p> -->
           </div>
           <div v-if="auth[item.type]" :class="reception('form-block-chart')">
-            <front-simple-area :color="item.color" :data="summaryInfo[item.type].stChart"></front-simple-area>
+            <front-simple-area :color="item.color" :unit="item.unit" :data="summaryInfo[item.type].stChart"></front-simple-area>
           </div>
           <div v-else :class="reception('form-block-nonedata')"></div>
         </div>
@@ -288,6 +288,9 @@ export default {
   name: 'PageShopReception',
   bem: {
     reception: 'page-shop-reception'
+  },
+  serviceProviders() {
+    return [IndexService]
   },
   serviceInject() {
     return {

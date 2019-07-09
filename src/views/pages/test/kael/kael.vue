@@ -1,6 +1,11 @@
 <template>
   <st-panel app>
-    <st-button @click="kael">1111</st-button>
+            <st-icon type="delete" color="green"></st-icon> <br>
+    <st-tag type="shop-trial"></st-tag>
+    <st-tag type="shop-opening"></st-tag>
+    <st-tag type="shop-stop"></st-tag>
+    <st-tag type="shop-close"></st-tag>
+    <st-tag type="shop-holiday"></st-tag>
   </st-panel>
 </template>
 <script>

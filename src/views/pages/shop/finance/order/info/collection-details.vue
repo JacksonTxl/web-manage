@@ -10,7 +10,7 @@
           {{record.flow_type === 3 ? `-${text}` : text}}
       </template>
       <div slot="action" slot-scope="text, record">
-          <a v-if="record.auth['brand_shop:order:order|flow_reverse']" @click="onFlowReversal(record)">流水冲销</a>
+          <a v-if="record.auth['brand_shop:flow:income|reverse']" @click="onFlowReversal(record)">流水冲销</a>
       </div>
     </st-table>
   </section>

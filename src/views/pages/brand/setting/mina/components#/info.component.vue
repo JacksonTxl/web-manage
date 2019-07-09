@@ -35,21 +35,21 @@
       <section v-if="data.is_auth===0">
         <ul>
           <li>
-            <img src="src/assets/img/brand/markting/register.svg" />
+            <img :src="brand" />
             <p>
               <st-t4>品牌曝光</st-t4>
               基于微信生态，打造品牌形象
             </p>
           </li>
           <li>
-            <img src="src/assets/img/brand/markting/register.svg" />
+            <img :src="user" />
             <p>
               <st-t4>用户体验</st-t4>
               流畅使用过程，降低转化损耗
             </p>
           </li>
           <li>
-            <img src="src/assets/img/brand/markting/register.svg" />
+            <img :src="flow" />
             <p>
               <st-t4>流量裂变</st-t4>
               一体化营销加速，高效实现流量变现
@@ -60,18 +60,28 @@
 
     </div>
     <div class="right">
-      <img :src="data.mina_info.qrcode_url" />
+      <img :src="data.mina_info?data.mina_info.qrcode_url:''" />
       <p>三体微信小程序示例 扫码查看</p>
     </div>
   </div>
 </template>
 <script>
+import brand from '@/assets/img/brand/setting/mina/icon_brand.png'
+import user from '@/assets/img/brand/setting/mina/icon_user.png'
+import flow from '@/assets/img/brand/setting/mina/icon_flow.png'
 export default {
   bem: {
     info: 'info-component'
   },
   props: {
     data: Object
+  },
+  data() {
+    return {
+      brand: brand,
+      user: user,
+      flow: flow
+    }
   },
   filters: {
     authFilter(v) {
