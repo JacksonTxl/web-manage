@@ -3,7 +3,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="毕业院校">
-          <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="rules.graduated_school"/>
+          <a-input placeholder="支持中英文、数字,不超过100个字" v-decorator="rules.graduated_school"/>
         </st-form-item>
         <st-form-item label="学历">
           <a-select placeholder="请选择" v-decorator="rules.education">
@@ -15,7 +15,7 @@
           </a-select>
         </st-form-item>
         <st-form-item label="生日">
-          <a-date-picker style="width:100%" v-decorator="rules.birthday"/>
+          <a-date-picker style="width:100%" v-decorator="rules.birthday" />
         </st-form-item>
         <st-form-item label="婚姻状况">
           <a-select placeholder="请选择" v-decorator="rules.marry_status">
@@ -53,7 +53,7 @@
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="家庭住址">
           <a-cascader
-            :options="options"
+            :options="regions"
             :fieldNames="fieldNames"
             v-decorator="rules.provinces"
             changeOnSelect
@@ -115,14 +115,14 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      options: [],
+      regions: [],
       fieldNames: { label: 'name', value: 'id', children: 'children' }
     }
   },
   mounted() {
     this.setData(this.data)
-    this.region.regionApi.getRegions().subscribe(() => {
-      this.options = JSON.parse(window.localStorage.getItem('regionTree'))
+    this.region.regionApi.getRegions().subscribe(v => {
+      this.regions = v
     })
   },
   methods: {
@@ -130,13 +130,12 @@ export default {
       this.$emit('back', 1)
     },
     setData(obj) {
-      // console.log('detail', obj)
       this.form.setFieldsValue({
         graduated_school: obj.graduated_school,
-        graduation_time: obj.graduation_time ? moment(obj.graduation_time) : '',
+        graduation_time: obj.graduation_time ? moment(obj.graduation_time) : moment(),
         education: obj.education,
         profession: obj.profession,
-        birthday: obj.birthday ? moment(obj.birthday) : '',
+        birthday: obj.birthday ? moment(obj.birthday) : moment(),
         native_place: obj.native_place,
         marry_status: obj.marry_status,
         children_status: obj.children_status,
@@ -168,8 +167,14 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
-          this.submit(values, 0)
+          let obj = this.filterProvinces(values.provinces)
+          let newData = Object.assign(values, obj)
+          newData.birthday && (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
+          newData.graduation_time && (newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD'))
+          delete newData.provinces
+          this.$emit('detailInfoSave', {
+            data: newData
+          })
         }
       })
     },

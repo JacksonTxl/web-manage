@@ -9,7 +9,6 @@
             :list="fileList"
             :sizeLimit="2"
             placeholder="上传头像"
-            v-decorator="rules.image_avatar"
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="姓名" required>
@@ -41,7 +40,6 @@
             :sizeLimit="2"
             :isFaceRecognition="true"
             placeholder="上传人脸"
-            v-decorator="rules.image_face"
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="昵称" required>
@@ -87,11 +85,11 @@
       <a-col :offset="1" :lg="10" :xs="22">
         <st-form-item label="部门" required>
           <department-select
-          placeholder="请选择部门"
-          style="width: 100%"
-          useType="form"
-          v-decorator="rules.department_id"
-          @change="onChange">
+            placeholder="请选择部门"
+            style="width: 100%"
+            useType="form"
+            v-decorator="rules.department_id"
+            @change="onChange">
           </department-select>
         </st-form-item>
         <st-form-item label="工作性质" >
@@ -128,13 +126,12 @@
         <st-form-item label="入职时间">
           <a-date-picker
             style="width:100%"
-            v-decorator="rules.entry_date"
-            :showTime="{ format: appConfig.DATE_FORMAT.date }"
-            :format="appConfig.DATE_FORMAT.datetime"/>
+            v-decorator="rules.entry_date" />
         </st-form-item>
         <st-form-item label="所属门店" required>
           <shop-select
             mode="multiple"
+            useType="form"
             placeholder="选择"
             v-decorator="rules.shop_id"/>
         </st-form-item>
@@ -152,19 +149,19 @@
         <st-form-item label="系统权限">
           <a-checkbox @change="permissionChange" v-decorator="rules.is_permission">开通系统使用权限</a-checkbox>
         </st-form-item>
-        <st-form-item label="登录账号">
+        <st-form-item label="登录账号" v-if="isChoosePermission">
           <a-input
             placeholder="6-18个字符，可使用字母、数字、下划线"
             v-decorator="rules.account"
           ></a-input>
         </st-form-item>
-        <st-form-item label="登录密码">
+        <st-form-item label="登录密码" v-if="isChoosePermission">
           <a-input
             placeholder="6-15个字符，区分大小写"
             v-decorator="rules.password"
           ></a-input>
         </st-form-item>
-        <st-form-item label="确认密码">
+        <st-form-item label="确认密码" v-if="isChoosePermission">
           <a-input
             placeholder="请再次填写密码"
             v-decorator="rules.repeat_password"

@@ -297,7 +297,7 @@ export default {
           start_time: `${this.moment(start * 1000).format('YYYY-MM-DD')} 00:00:00`,
           end_time: `${this.moment(end * 1000).format('YYYY-MM-DD')} 23:59:59`
         }).subscribe(res => {
-          console.log(res)
+          this.onSearch()
         })
       } else {
         this.onsaleIsShow = true
