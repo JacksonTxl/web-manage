@@ -37,15 +37,15 @@
         <st-container><st-table :columns="shopColumns" :dataSource="personalCourseInfo.shops"></st-table></st-container>
       </div>
       <div class="page-personal-content__item mg-b24">
-        <div class="title mg-b8"><span class="label">上课教练:</span><span class="value">共3名教练</span></div>
+        <div class="title mg-b8"><span class="label">上课教练:</span><span class="value">共{{coaches.length}}名教练</span></div>
         <st-container> <st-table :columns="coachColumns" :dataSource="personalCourseInfo.coaches"></st-table> </st-container>
       </div>
       <div class="page-personal-content__item">
         <div class="title mg-b8"><span class="label">售价设置:</span><span class="value">{{personalCourseInfo.price_setting | enumFilter('personal_course.price_setting')}}</span></div>
-        <st-container v-if="personalCourseInfo.price_gradient.prices">
-          <st-table :columns="priceConfigColumns" :dataSource="personalCourseInfo.price_gradient">
-            <div slot="sale" slot-scope="sale, record">{{record.min_sale}} ~ {{record.max_sale}}</div>
-            <div slot="transfer" slot-scope="sale, record">{{record.transfer_num}} {{record.transfer_unit === 1 ? "%":"元"}}</div>
+        <st-container>
+          <st-table rowKey="id" :columns="priceConfigColumns" :dataSource="prices">
+            <div slot="min_sell_price" slot-scope="min_sell_price, record">{{record.min_sale}} ~ {{record.max_sale}}</div>
+            <div slot="transfer_num" slot-scope="transfer_num, record">{{record.transfer_num}} {{record.transfer_unit === 1 ? "%":"元"}}</div>
           </st-table>
 
         </st-container>
@@ -71,6 +71,11 @@ export default {
   rxState() {
     return {
       personalCourseInfo: this.infoService.personalCourseInfo$
+    }
+  },
+  computed: {
+    prices() {
+      return this.personalCourseInfo.price_gradient[0].prices
     }
   },
   data() {

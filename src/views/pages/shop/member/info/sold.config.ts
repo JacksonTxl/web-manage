@@ -31,18 +31,7 @@ export const classrecord = () => {
     },
     {
       title: '预约时间',
-      dataIndex: 'created_time',
-      sorter: (a: any, b: any) => {
-        let A = new Date(a.created_time).getTime()
-        let B = new Date(b.created_time).getTime()
-        if (A < B) {
-          return -1
-        }
-        if (A > B) {
-          return 1
-        }
-        return 0
-      }
+      dataIndex: 'reserve_time'
     },
     {
       title: '操作',
