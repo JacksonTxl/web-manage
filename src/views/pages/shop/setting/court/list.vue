@@ -45,7 +45,7 @@
             </div>
           </div>
           <div :class="bItem('footer')">
-            <router-link v-if="auth.seatAdd" :class="bItem('action')" :to="`./site?id=${item.id}`" class="st-link-secondary">设置座位</router-link>
+            <router-link v-if="auth.seatSet" :class="bItem('action')" :to="`./site?id=${item.id}`" class="st-link-secondary">设置座位</router-link>
             <div :class="bItem('divider')"></div>
             <a v-if="auth.areaEdit" :class="bItem('action')" class="st-link-secondary" @click="onUpdateCourt(item.id)">编辑</a>
           </div>

@@ -19,9 +19,9 @@ export class PersonalTeamService implements RouteGuard {
     private scheduleService: PersonalTeamScheduleScheduleService) {
     this.state$ = new State({
       auth: {
-        add: this.authService.can('shop:shedule:personal_team_course_shedule|add'),
-        addBatch: this.authService.can('shop:shedule:personal_team_course_shedule|batch_add'),
-        copy: this.authService.can('shop:shedule:personal_team_course_shedule|copy')
+        add: this.authService.can('shop:schedule:personal_team_course_schedule|add'),
+        addBatch: this.authService.can('shop:schedule:personal_team_course_schedule|batch_add'),
+        copy: this.authService.can('shop:schedule:personal_team_course_schedule|copy')
       }
     })
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
