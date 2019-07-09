@@ -4,6 +4,9 @@
       <draggable tag="a-row" :component-data="{props:{gutter:12}}" v-model="list"  :animation="200">
         <a-col :span="8" v-for="(li, index) in list" :key="index">
           <div :class="slider('box')">
+            <div :class="slider('del')" @click="delSlider(index)">
+              <st-icon type="delete" color="#FF5E41" :class="slider('del-icon')"/>
+            </div>
             <img :src="li.image_url | imgFilter">
             <div v-if="li.isDefault" :class="slider('default')">
                 默认门店头图<span>（自动匹配店招图片）</span>
@@ -17,7 +20,7 @@
             </st-form-item>
           </div>
         </a-col>
-        <a-col :span="8">
+        <a-col :span="8" v-if="list.length<5">
             <div :class="slider('box')">
           <st-image-upload @change="imageUploadChange($event)" width="100%" height="162px" :list='[]'
             :sizeLimit="2"  placeholder="添加活动图片" :numLimit="5"></st-image-upload>
@@ -85,6 +88,9 @@ export default {
           link: ''
         })
       }
+    },
+    delSlider(index) {
+      this.list.splice(index, 1)
     }
   }
 }

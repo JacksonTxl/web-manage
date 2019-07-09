@@ -15,7 +15,7 @@
             <st-image-upload @change="imageUploadChange($event,index)" width="100%" height="162px" :list='[li]' :sizeLimit="2"
               placeholder="添加活动图片" :numLimit="1"></st-image-upload>
             <st-form-item labelWidth="46px" label="标题">
-                <a-input placeholder="选填" v-model="li.module_name"></a-input>
+              <a-input placeholder="选填" v-model="li.module_name" maxlength="20"></a-input>
             </st-form-item>
             <st-form-item labelWidth="46px" label="链接">
               <a-select placeholder="请输入链接的活动" v-model="li.link">
@@ -59,7 +59,7 @@ export default {
       selected: [],
       filelist: [],
       link: '',
-      number: 0,
+      number: 1,
       span: 24
     }
   },
@@ -94,7 +94,7 @@ export default {
       let list = []
       if (num === 1) {
         list.push({
-          image_url: null,
+          image_url: '',
           title: '',
           link: '',
           span: 24
@@ -102,7 +102,7 @@ export default {
       } else if (num === 2 || num === 4) {
         for (let i = 0; i < num; i++) {
           list.push({
-            image_url: null,
+            image_url: '',
             title: '',
             link: '',
             span: 12
@@ -112,14 +112,14 @@ export default {
         for (let i = 0; i < num; i++) {
           if (i === 2) {
             list.push({
-              image_url: null,
+              image_url: '',
               title: '',
               link: '',
               span: 24
             })
           } else {
             list.push({
-              image_url: null,
+              image_url: '',
               title: '',
               link: '',
               span: 12

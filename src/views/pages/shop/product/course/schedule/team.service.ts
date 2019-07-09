@@ -17,7 +17,7 @@ export class TeamService implements RouteGuard {
       auth: {
         add: this.authService.can('shop:schedule:team_course_schedule|add'),
         addBatch: this.authService.can('shop:schedule:team_course_schedule|batch_add'),
-        copy: this.authService.can('shop:shedule:team_course_shedule|copy')
+        copy: this.authService.can('shop:schedule:team_course_schedule|copy')
       }
     })
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
