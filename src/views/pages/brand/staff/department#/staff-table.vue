@@ -8,6 +8,7 @@
     :columns="columns"
     :dataSource="staffList"
     :scroll="{ x: 1500}"
+    rowKey="id"
     @change="onChange"
     >
     <div slot="action" slot-scope="text, record">

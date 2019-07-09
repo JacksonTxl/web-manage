@@ -21,7 +21,7 @@
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="soldColums"
-          :dataSource="soldInfo.list"
+          :dataSource="soldInfo"
           :scroll="{ x: 1750}"
           :loading="loading.getStaffSoldInfo"
           @change="onTableChange"

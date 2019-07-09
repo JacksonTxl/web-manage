@@ -12,7 +12,7 @@
             </select-coach-level>
           </st-form-item>
           <!-- 单节售卖 -->
-          <st-form-item>
+          <!-- <st-form-item>
             <template slot="label">
               单节预约<st-help-tooltip id="TBCPC005" />
             </template>
@@ -26,7 +26,7 @@
               <st-input-number v-model="priceGradientRecord.single_price" style="width: 100px;"/>
               <span class="mg-l8">元/节</span>
             </template>
-          </st-form-item>
+          </st-form-item> -->
           <!-- 私教课程定价模式：教练平级定价；私教课程售卖模式：统一标价 -->
           <st-form-item label="售卖定价" required>
             <st-container>
@@ -227,9 +227,9 @@ export default {
     onLevelChange(val, key) {
       this.priceGradient[key].level_id = val
     },
-    onSingleSellChange(e, key) {
-      this.priceGradient[key].single_sell = +!this.priceGradient[key].single_sell
-    },
+    // onSingleSellChange(e, key) {
+    //   this.priceGradient[key].single_sell = +!this.priceGradient[key].single_sell
+    // },
     inputCheck() {
       const { priceGradient } = this
       let ret = true
