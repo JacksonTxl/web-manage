@@ -172,7 +172,7 @@ export default {
   }
   .g2-legend-text {
     display: inline-block;
-    width: 64px;
+    width: 80px;
   }
   .legend-right {
     display: inline-block;

@@ -1,4 +1,4 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed } from 'rx-state/src'
 import { pluck, tap } from 'rxjs/operators'
 import { OverviewApi, Version, RevenueParams } from '@/api/v1/stat/overview/shop'
@@ -13,11 +13,11 @@ interface SetState{
   inoutNum: object[],
   inoutTime: object[],
   member: object,
-  buyCourse: object[]
+  newMember: object[]
 }
 
 @Injectable()
-export class StudioComponentService implements RouteGuard {
+export class StudioComponentService {
   state$: State<SetState>
   top$: Computed<object>
   revenueDaily$: Computed<object>
@@ -27,19 +27,24 @@ export class StudioComponentService implements RouteGuard {
   inoutNum$: Computed<object>
   inoutTime$: Computed<object>
   member$: Computed<object>
-  buyCourse$: Computed<object>
+  newMember$: Computed<object>
 
   constructor(private overviewApi: OverviewApi) {
     this.state$ = new State({
-      top: {},
-      revenueDaily: {},
-      revenueSummary: {},
-      courseDaily: {},
-      courseSummary: {},
-      inoutNum: {},
-      inoutTime: {},
+      top: {
+        revenue_amount: {},
+        course_checkin_num: {},
+        passenger_flow: {},
+        be_member_num: {}
+      },
+      revenueDaily: [],
+      revenueSummary: [],
+      courseDaily: [],
+      courseSummary: [],
+      inoutNum: [],
+      inoutTime: [],
       member: {},
-      buyCourse: {}
+      newMember: []
     })
     this.top$ = new Computed(this.state$.pipe(pluck('top')))
     this.revenueDaily$ = new Computed(this.state$.pipe(pluck('revenueDaily')))
@@ -49,7 +54,7 @@ export class StudioComponentService implements RouteGuard {
     this.inoutNum$ = new Computed(this.state$.pipe(pluck('inoutNum')))
     this.inoutTime$ = new Computed(this.state$.pipe(pluck('inoutTime')))
     this.member$ = new Computed(this.state$.pipe(pluck('member')))
-    this.buyCourse$ = new Computed(this.state$.pipe(pluck('buyCourse')))
+    this.newMember$ = new Computed(this.state$.pipe(pluck('newMember')))
   }
   getTop(query: Version) {
     return this.overviewApi.getTop(query).pipe(tap(res => {
@@ -87,6 +92,7 @@ export class StudioComponentService implements RouteGuard {
           }
           lineData.push(chartItem)
         }
+        console.log(lineData)
         state.revenueDaily = lineData
       })
     }))
@@ -97,8 +103,9 @@ export class StudioComponentService implements RouteGuard {
         const data = res.info
         let lineData:any = []
         state.courseSummary = [
-          { type: '私教课', 售课数: 20, 消课数: 50 },
-          { type: '团体课', 售课数: 20, 消课数: 50 }
+          { type: '私教课', 售课数: data.summary.sale_personal_num, 消课数: data.summary.personal_checkin_num },
+          { type: '团体课', 售课数: data.summary.sale_team_num, 消课数: data.summary.team_checkin_num },
+          { type: '合计', 售课数: data.summary.sale_total_num, 消课数: data.summary.checkin_total_num }
         ]
         for (let key in data.daily.personal_reserved_num) {
           let chartItem = {
@@ -111,6 +118,7 @@ export class StudioComponentService implements RouteGuard {
           }
           lineData.push(chartItem)
         }
+        console.log(lineData)
         state.courseDaily = lineData
       })
     }))
@@ -118,7 +126,7 @@ export class StudioComponentService implements RouteGuard {
   getInout(params: RevenueParams) {
     return this.overviewApi.getInout(params).pipe(tap(res => {
       this.state$.commit(state => {
-        const data = res.info
+        const data = res
         let lineData:any = []
         for (let key in data.inout_num) {
           let chartItem = {
@@ -184,23 +192,20 @@ export class StudioComponentService implements RouteGuard {
           }
           lineData.push(chartItem)
         }
-        state.buyCourse = lineData
+        state.newMember = lineData
       })
     }))
   }
   init() {
     return forkJoin(
-      this.getTop({ version: 'club' }),
+      this.getTop({ version: 'studio' }),
       this.getRevenue({ recently_day: 7 }),
       this.getCourse({ recently_day: 7 }),
       this.getInout({ recently_day: 7 }),
-      this.getMember({ version: 'club' }),
+      this.getMember({ version: 'studio' }),
       this.getBuyCourse({ recently_day: 7 })
     )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.init().subscribe(res => {
-      next()
-    })
   }
 }
