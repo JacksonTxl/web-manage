@@ -149,19 +149,19 @@
         <st-form-item label="系统权限">
           <a-checkbox @change="permissionChange" v-decorator="rules.is_permission">开通系统使用权限</a-checkbox>
         </st-form-item>
-        <st-form-item label="登录账号">
+        <st-form-item label="登录账号" v-if="isChoosePermission">
           <a-input
             placeholder="6-18个字符，可使用字母、数字、下划线"
             v-decorator="rules.account"
           ></a-input>
         </st-form-item>
-        <st-form-item label="登录密码">
+        <st-form-item label="登录密码" v-if="isChoosePermission">
           <a-input
             placeholder="6-15个字符，区分大小写"
             v-decorator="rules.password"
           ></a-input>
         </st-form-item>
-        <st-form-item label="确认密码">
+        <st-form-item label="确认密码" v-if="isChoosePermission">
           <a-input
             placeholder="请再次填写密码"
             v-decorator="rules.repeat_password"
