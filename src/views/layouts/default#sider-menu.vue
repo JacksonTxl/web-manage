@@ -235,7 +235,7 @@ export default {
       return find(this.favorite, { id })
     },
     getPageName() {
-      return this.$route.path.replace(/\//g, '-')
+      return this.$route.name
     }
   }
 }

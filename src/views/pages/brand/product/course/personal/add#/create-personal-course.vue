@@ -34,7 +34,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="图片" >
           <div class="page-upload-container">
             <st-image-upload :list="fileList" @change="onImgChange"></st-image-upload>
@@ -54,12 +54,14 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="10" :xs="22" :offset="1">
+      <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="课程介绍">
-          <a-input type="textarea" v-decorator="ruleConfig.description"
-           :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧"
-           maxlength="500" @change="onDescriptionChange"/>
-           <div class="ta-r ">{{descriptionLength}} / 500</div>
+          <st-textarea
+            v-decorator="ruleConfig.description"
+           :autosize="{ minRows: 10, maxRows: 16 }"
+           placeholder="填写点什么吧"
+           maxlength="500"
+          />
         </st-form-item>
       </a-col>
     </a-row>
