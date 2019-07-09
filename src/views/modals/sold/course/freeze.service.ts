@@ -9,8 +9,8 @@ export class FreezeService {
   loading$ = new State({})
   constructor(private courseApi: CourseApi) {}
 
-  getInfo(id:string) {
-    return this.courseApi.getFreezeCourseInfo(id).pipe(tap((res:any) => {
+  getInfo(id:string, type: string) {
+    return this.courseApi.getFreezeCourseInfo(id, type).pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
   }

@@ -67,8 +67,8 @@ export class CourseApi extends Api {
   /**
    * 冻结售出课程包/私教课
    */
-  getFreezeCourseInfo(id:string) {
-    return this.http.get(`/v1/sold/course/package/frozen/${id}`)
+  getFreezeCourseInfo(id:string, type: string) {
+    return this.http.get(`/v1/sold/course/${type}/frozen/${id}`)
   }
   /**
    * 冻结售出课程包/私教课
