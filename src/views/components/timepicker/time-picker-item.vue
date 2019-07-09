@@ -85,6 +85,7 @@ export default {
   .time-picker-item{
     width: 100px;
     height: 24px;
+    user-select: none;
     background-color: #f5f5f5;
     transition: background-color 0.3s;
     border-right: 1px solid #eee;
@@ -102,16 +103,40 @@ export default {
     border-radius: 4px;
     font-size: 12px;
     padding: 2px;
+    transform: scale(0.8);
   }
   .start{
-    top: 26px;
-    right: -20px;
+    top: 28px;
+    right: -15px;
+    &:before{
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-bottom: 8px solid #666;
+      position: absolute;
+      top: -7px;
+      left: 24px;
+    }
   }
   .end{
     top: -26px;
-    right: -20px
+    right: -25px;
+    &:before{
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 8px solid #666;
+      position: absolute;
+      bottom: -7px;
+      left: 6px;
+    }
   }
-  .active{
+  div.active{
     background: #6b90ff;
+    border-right: 0;
   }
 </style>
