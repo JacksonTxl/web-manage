@@ -8,53 +8,87 @@
       </st-form-item>
       <template v-if="openStatus">
         <st-form-item label="成功规则">每邀请1人成功购买卡项或课程（成功支付）</st-form-item>
-        <st-form-item label="邀请人奖励" required :help="inviteeHelpText">
-          <div :class="inviation('coupon')">
-            <span class="mg-r8">可获得</span>
-            <st-input-number
-              :min="1"
-              :max="99"
-              v-model="inviteeCouponNum"
-              style="width:142px"
-            >
-              <span slot="addonAfter">张</span>
-            </st-input-number>
-            <span class="mg-l24 mg-r8">选择券</span>
-            <template v-if="!inviteeCoupon">
-              <st-button icon="anticon:plus" @click="onAddCoupon('invitee')">添加券</st-button>
-            </template>
-            <template v-else>
-              <st-coupon class="mg-r8" :name="inviteeCoupon.coupon_name" @close="onClose('invitee')"/>
-              <st-button @click="onEditCoupon('invitee')" icon="anticon:plus">重新选择</st-button>
-            </template>
-          </div>
-        </st-form-item>
-        <st-form-item label="被邀请人奖励" required :help="inviterHelpText">
-          <div :class="inviation('coupon')">
-            <span class="mg-r8">可获得</span>
-            <st-input-number
-              :min="1"
-              :max="99"
-              v-model="inviterCouponNum"
-              style="width:142px"
-            >
-              <span slot="addonAfter">张</span>
-            </st-input-number>
-            <span class="mg-l24 mg-r8">选择券</span>
-            <template v-if="!inviterCoupon">
-              <st-button icon="anticon:plus" @click="onAddCoupon('inviter')">添加券</st-button>
-            </template>
-            <template v-else>
-              <st-coupon class="mg-r8" :name="inviterCoupon.coupon_name" @close="onClose('inviter')"/>
-              <st-button @click="onEditCoupon('inviter')" icon="anticon:plus">重新选择</st-button>
-            </template>
-          </div>
-        </st-form-item>
+        <template v-if="!isOpen">
+          <st-form-item label="邀请人奖励" required :help="inviteeHelpText">
+            <div :class="inviation('coupon')">
+              <span class="mg-r8">可获得</span>
+              <st-input-number
+                :min="1"
+                :max="99"
+                v-model="inviteeCouponNum"
+                style="width:142px"
+              >
+                <span slot="addonAfter">张</span>
+              </st-input-number>
+              <span class="mg-l24 mg-r8">选择券</span>
+              <template v-if="!inviteeCoupon">
+                <st-button icon="anticon:plus" @click="onAddCoupon('invitee')">添加券</st-button>
+              </template>
+              <template v-else>
+                <st-coupon key="1" class="mg-r8" :name="inviteeCoupon.coupon_name" @close="onClose('invitee')"/>
+                <st-button @click="onEditCoupon('invitee')" icon="anticon:plus">重新选择</st-button>
+              </template>
+            </div>
+          </st-form-item>
+          <st-form-item label="被邀请人奖励" required :help="inviterHelpText">
+            <div :class="inviation('coupon')">
+              <span class="mg-r8">可获得</span>
+              <st-input-number
+                :min="1"
+                :max="99"
+                v-model="inviterCouponNum"
+                style="width:142px"
+              >
+                <span slot="addonAfter">张</span>
+              </st-input-number>
+              <span class="mg-l24 mg-r8">选择券</span>
+              <template v-if="!inviterCoupon">
+                <st-button icon="anticon:plus" @click="onAddCoupon('inviter')">添加券</st-button>
+              </template>
+              <template v-else>
+                <st-coupon key="2" class="mg-r8" :name="inviterCoupon.coupon_name" @close="onClose('inviter')"/>
+                <st-button @click="onEditCoupon('inviter')" icon="anticon:plus">重新选择</st-button>
+              </template>
+            </div>
+          </st-form-item>
+        </template>
+        <template v-else>
+          <st-form-item label="邀请人奖励" required :help="inviteeHelpText">
+            <div :class="inviation('coupon')">
+              <span class="mg-r8">可获得</span>
+              <st-input-number
+                :min="1"
+                :max="99"
+                v-model="inviteeCouponNum"
+                style="width:142px"
+              >
+                <span slot="addonAfter">张</span>
+              </st-input-number>
+              <span class="mg-l24 mg-r8">选择券</span>
+              <st-coupon class="mg-r8" :name="inviteeCoupon.coupon_name" key="3"/>
+            </div>
+          </st-form-item>
+          <st-form-item label="被邀请人奖励" required :help="inviterHelpText">
+            <div :class="inviation('coupon')">
+              <span class="mg-r8">可获得</span>
+              <st-input-number
+                :min="1"
+                :max="99"
+                v-model="inviterCouponNum"
+                style="width:142px"
+              >
+                <span slot="addonAfter">张</span>
+              </st-input-number>
+              <span class="mg-l24 mg-r8">选择券</span>
+              <st-coupon class="mg-r8" :name="inviterCoupon.coupon_name" key="3"/>
+            </div>
+          </st-form-item>
+        </template>
         <!-- <st-form-item label="邀请海报">
             <st-card-bg-radio v-model="banner"/>
         </st-form-item>-->
         <st-form-item label=" ">
-          <st-button type="primary" :loading="loading.edit" @click="onSubmit">保存</st-button>
+          <st-button type="primary" :loading="loading.edit||loading.add" @click="onSubmit">保存</st-button>
         </st-form-item>
       </template>
     </st-form>
@@ -63,6 +97,7 @@
 <script>
 import { SettingService } from './setting.service'
 import { cloneDeep } from 'lodash-es'
+import { IndexService } from '../index.service'
 export default {
   name: 'PageBrandMarketingInviationSetting',
   bem: {
@@ -70,11 +105,13 @@ export default {
   },
   serviceInject() {
     return {
-      settingService: SettingService
+      settingService: SettingService,
+      indexService: IndexService
     }
   },
   rxState() {
     return {
+      isOpen: this.indexService.isOpen$,
       loading: this.settingService.loading$,
       settingInfo: this.settingService.settingInfo$
     }
@@ -141,7 +178,7 @@ export default {
     },
     // 开关
     onOpenStatusChange(data) {
-      if (!data && this.settingInfoHistory.activity_status === 1) {
+      if (!data && this.settingInfoHistory.activity_status === 1 && this.settingInfoHistory.invitee_coupon_id) {
         this.$confirm({
           title: '提示',
           content: `一旦关闭，全部推广功能将失效，请谨慎操作。`,
@@ -152,7 +189,8 @@ export default {
             let params = { ...this.settingInfoHistory, activity_status: 2 }
             return this.settingService.edit(params).toPromise().then(() => {
               // 关闭成功
-              this.$router.push({ force: true, query: this.query })
+              this.$router.push({ path: '/brand/marketing/plugin/invitation/index/data' })
+              // this.$router.push({ force: true, query: this.query })
             })
           }
         })
@@ -201,15 +239,15 @@ export default {
       this.onValidate('invitee')
       this.onValidate('inviter')
       if (this.inviteeIsOk && this.inviterIsOk) {
-        this.settingService.edit({
+        let fn = this.isOpen ? 'edit' : 'add'
+        this.settingService[fn]({
           activity_status: this.openStatus ? 1 : 2,
           invitee_coupon_id: this.inviteeCoupon.id,
           invitee_coupon_num: +this.inviteeCouponNum,
           inviter_coupon_id: this.inviterCoupon.id,
           inviter_coupon_num: +this.inviterCouponNum
         }).subscribe(() => {
-          // 编辑成功
-          this.$router.push({ force: true, query: this.query })
+          this.$router.push({ path: '/brand/marketing/plugin/invitation/index/data' })
         })
       }
     }

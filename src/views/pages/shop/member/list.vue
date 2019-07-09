@@ -112,10 +112,20 @@
             <a v-if="record.auth['shop:member:member|edit']" @click="edit(record)">编辑</a>
             <a v-if="record.auth['shop:member:member|bind_coach']" @click="onDistributionCoach(record)">分配教练</a>
             <a v-if="record.auth['shop:member:member|bind_salesman']" @click="onDistributionSale(record)">分配销售</a>
-            <a v-if="record.auth['shop:member:member|bind_card']" v-modal-link="{ name: 'shop-binding-entity-card', props:{record:record}}">绑实体卡</a>
-            <a v-if="record.auth['shop:member:member|rebind_card']" v-modal-link="{ name: 'shop-missing-card', props:{record:record}}">重绑实体卡</a>
-            <a v-if="record.auth['shop:member:member|transfer']" v-modal-link="{ name: 'shop-transfer-shop', props:{record:record}}">转店</a>
-            <a v-if="record.auth['shop:member:member|frozen']" v-modal-link="{ name: 'shop-frozen', props:{record}}">冻结用户</a>
+            <a v-if="record.auth['shop:member:member|bind_card']" v-modal-link="{
+               name: 'shop-binding-entity-card',
+               props:{record},
+               on: {
+                 success: refeshPage
+               }
+            }">绑实体卡</a>
+            <a v-if="record.auth['shop:member:member|rebind_card']" v-modal-link="{ name: 'shop-missing-card', props:{record}}">重绑实体卡</a>
+            <a v-if="record.auth['shop:member:member|transfer']" v-modal-link="{ name: 'shop-transfer-shop', props:{record}, on: {
+                 success: refeshPage
+               } }">转店</a>
+            <a v-if="record.auth['shop:member:member|frozen']" v-modal-link="{ name: 'shop-frozen', props:{record}, on: {
+                 success: refeshPage
+               } }">冻结用户</a>
             <a v-if="record.auth['shop:member:member|unbind_wechat']" @click="onRemoveBind(record)">解除微信绑定</a>
           </st-table-actions>
         </div>
@@ -212,6 +222,9 @@ export default {
     this.setSearchData()
   },
   methods: {
+    refeshPage() {
+      this.$router.push({ force: true })
+    },
     onChangeReg(date, dateString) {
       this.querySelect = { ...this.querySelect, register_start_time: dateString[0], register_stop_time: dateString[1] }
     },

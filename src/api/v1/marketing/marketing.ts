@@ -109,6 +109,12 @@ export class MarketingApi extends Api {
     return this.http.put(`/v1/plugin/invite`, { params })
   }
   /**
+   * 邀请有礼新增
+   */
+  setInviteAdd(params:SetInviteEditInput) {
+    return this.http.post(`/v1/plugin/invite`, { params })
+  }
+  /**
    *  邀请有礼优惠券列表
    */
   getInviteCouponList(query:InviteCouponListInput) {

@@ -7,14 +7,4 @@ export class ConstApi extends Api {
   getEnum() {
     return this.http.get('/const/enum')
   }
-  /**
-   * 帮助信息 tooltip
-   */
-  getToolTip(id: GetToolTipInput) {
-    return this.http.get(`/const/tooltip/${id}`)
-  }
-}
-
-export interface GetToolTipInput {
-  id: string
 }

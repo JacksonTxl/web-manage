@@ -16,7 +16,7 @@
           class="distribution-container"
           style="padding-left:12px;padding-right:12px;"
         >
-        <st-form-item :help="selectedRowsHelp">
+        <st-form-item :help="selectedRowsHelp" required>
           <a-table
             :rowSelection="rowSelection"
             :pagination="false"
@@ -255,6 +255,7 @@ export default {
     getMemberTransfer(data) {
       this.frozenService.getMemberTransfer(data).subscribe(state => {
         this.show = false
+        this.$$emit('success')
       })
     },
     save(e) {

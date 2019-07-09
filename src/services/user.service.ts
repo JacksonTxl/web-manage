@@ -6,6 +6,7 @@ import { forkJoin, of } from 'rxjs'
 import { ConstApi } from '@/api/const'
 import { MenuApi } from '@/api/v1/common/menu'
 import { StaffApi } from '@/api/v1/staff'
+import { TooltipApi } from '@/api/v1/admin/tooltip'
 import { get } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 
@@ -14,7 +15,8 @@ interface UserState {
   brand: {}
   shop: {}
   menuData: {}
-  enums: {}
+  enums: {},
+  invalidTooltips: []
 }
 interface User {
   id?: string
@@ -67,11 +69,14 @@ export class UserService extends Store<UserState> {
   soldEnums$: Computed<ModuleEnums>
   transactionEnums$: Computed<ModuleEnums>
   couponEnums$: Computed<CouponEnums>
+  // 禁用的 tooltips
+  invalidTooltips$: Computed<any[]>
 
   constructor(
     private constApi: ConstApi,
     private menuApi: MenuApi,
     private staffApi: StaffApi,
+    private tooltipApi: TooltipApi,
     private nprogress: NProgressService
   ) {
     super()
@@ -82,7 +87,8 @@ export class UserService extends Store<UserState> {
       brand: {},
       shop: {
         name: '这里是全局数据提供的当前门店的名称'
-      }
+      },
+      invalidTooltips: []
     }
     this.state$ = new State(initialState)
     this.user$ = new Computed(this.state$.pipe(pluck('user')))
@@ -117,6 +123,8 @@ export class UserService extends Store<UserState> {
     this.crowdEnums$ = new Computed(this.enums$.pipe(pluck('crowd')))
     this.soldEnums$ = new Computed(this.enums$.pipe(pluck('sold')))
     this.couponEnums$ = new Computed(this.enums$.pipe(pluck('coupon')))
+
+    this.invalidTooltips$ = new Computed(this.state$.pipe(pluck('invalidTooltips')))
   }
   SET_USER(user: User) {
     this.state$.commit(state => {
@@ -160,6 +168,19 @@ export class UserService extends Store<UserState> {
         tap(res => {
           this.state$.commit(state => {
             state.menuData = res
+          })
+        })
+      )
+    } else {
+      return of({})
+    }
+  }
+  getInvalidTooltips() {
+    if (!Object.keys(this.invalidTooltips$.snapshot()).length) {
+      return this.tooltipApi.getInvalid().pipe(
+        tap((res: any) => {
+          this.state$.commit(state => {
+            state.invalidTooltips = res.list
           })
         })
       )
@@ -219,7 +240,12 @@ export class UserService extends Store<UserState> {
     return this.menuApi.delFavorite(id)
   }
   init(force: boolean = false) {
-    return forkJoin(this.getUser(), this.getMenus(), this.getEnums())
+    return forkJoin(
+      this.getUser(),
+      this.getMenus(),
+      this.getEnums(),
+      this.getInvalidTooltips()
+    )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init().pipe(
