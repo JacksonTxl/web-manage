@@ -45,7 +45,7 @@
           :page="page"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
           rowKey="id"
-          @change="onPageChange"
+          @change="onTableChange"
           :scroll="{x:1800}"
           :columns="columns"
           :dataSource="list" >
