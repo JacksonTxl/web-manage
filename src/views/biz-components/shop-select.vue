@@ -4,6 +4,7 @@
     allowClear
     :placeholder="placeholder||'全部门店'"
     :value="value"
+    :disabled="disabled"
     @change="onChange">
     <a-select-option :value="shop.id" v-for="shop in shopOptions" :key="shop.id">{{shop.shop_name}}</a-select-option>
   </a-select>
@@ -39,6 +40,10 @@ export default {
     },
     value: {
       type: [Number, String, Array]
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -50,6 +55,7 @@ export default {
         const defaultOption = this.useType === 'form' ? {} : { id: -1, shop_name: ' 全部' }
         this.shopOptions = [defaultOption, ...res.shops]
       })
+      console.log('getShopList', this.value)
     }
   },
   created() {

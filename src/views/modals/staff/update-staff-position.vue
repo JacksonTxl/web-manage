@@ -150,7 +150,7 @@ export default {
       this.isSalaryCourse = value.includes(3) || value.includes(4)
     },
     onDeselectIndentity(value) {
-      this.updateStaffPositionService.validatStaffPosition(value).subscribe((res) => {
+      this.updateStaffPositionService.validatStaffPosition(this.staff.id, value).subscribe((res) => {
         let operate = res.operate
         if (!operate) {
           let obj = this.identity.filter(item => item.id === value)
