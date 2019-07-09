@@ -467,6 +467,14 @@ export class StaffApi extends Api {
   validatStaffPosition(staff_id: Number, id: Number) {
     return this.http.get(`/v1/staff/check/${staff_id}/position/${id}`)
   }
+  // 批量导入员工
+  transferBrand(params: TransferBrandInput) {
+    return this.http.put(`/v1/staff/brand/transfer`, { params })
+  }
+}
+export interface TransferBrandInput {
+  ids: number[]
+  department_id: number
 }
 export interface PutStaffBindBankInput {
   id?: string | number

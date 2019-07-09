@@ -13,9 +13,30 @@
         </a-steps>
       </a-col>
     </a-row>
-    <edit-basic-info v-if="currentIndex == 0" :enums="staffEnums" :data="staffInfo" :roleList="roleList" :codeList="codeList" :department="department" @gonext="gonext"/>
-    <edit-detailed-info  @back="onBack" :isShowCoach="isShowCoach" v-else-if="currentIndex == 1" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
-    <edit-coach-info  @back="onBack" v-else-if="currentIndex == 2 && isShowCoach" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
+    <edit-basic-info
+      v-if="currentIndex == 0"
+      :enums="staffEnums"
+      :data="staffInfo"
+      :roleList="roleList"
+      :codeList="codeList"
+      :department="department"
+      @gonext="gonext"
+      @bacicInfoSave="onBasicsSave"/>
+    <edit-detailed-info
+      v-else-if="currentIndex == 1"
+      :isShowCoach="isShowCoach"
+      :enums="staffEnums"
+      :data="staffInfo"
+      @back="onBack"
+      @gonext="gonext"
+      @detailInfoSave="onDetailInfoSave"/>
+    <edit-coach-info
+      v-else-if="currentIndex == 2 && isShowCoach"
+      :enums="staffEnums"
+      :data="staffInfo"
+      @back="onBack"
+      @gonext="gonext"
+      @coachInfoSave="onCoachInfoSave"/>
   </st-panel>
 </template>
 
@@ -101,6 +122,26 @@ export default {
     if (currentIndex) this.currentIndex = Number(currentIndex)
   },
   methods: {
+    onBasicsSave(data) {
+      this.editService.updateBasicInfo(this.id, data.data).subscribe(() => {
+        this.editService.editStaffInfo()
+      })
+    },
+    onDetailInfoSave(data) {
+      this.editService.updateDetailedInfo(this.id, data.data).subscribe(() => {
+        if (!this.isShowCoach) {
+          this.$router.push({ name: 'brand-staff-department' })
+        } else {
+          this.editService.editStaffInfo()
+          this.goNext()
+        }
+      })
+    },
+    onCoachInfoSave(data) {
+      this.editService.updateCoachInfo(this.id, data.data).subscribe(() => {
+        this.$router.push({ name: 'brand-staff-department' })
+      })
+    },
     onBack(step) {
       this.currentIndex = this.currentIndex - step
     },

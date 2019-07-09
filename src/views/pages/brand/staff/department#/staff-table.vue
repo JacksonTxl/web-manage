@@ -120,6 +120,7 @@ export default {
     },
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys
+      this.$emit('selectedRow', this.selectedRowKeys)
     },
     onCLickReinstatement() {
       console.log('onCLickReinstatement')

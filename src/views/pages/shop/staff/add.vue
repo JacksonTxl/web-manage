@@ -12,7 +12,7 @@
         </a-steps>
       </a-col>
     </a-row>
-    <staff-detail-basics v-if="currentIndex == 0" :enums="staffEnums" @addStep="addCoachInfo" @deletStep="deletStep" @skiptoedit="skipToEdit"/>
+    <staff-detail-basics v-if="currentIndex == 0" :enums="staffEnums" :roleList="roleList" :codeList="codeList" :department="department" @addStep="addCoachInfo" @deletStep="deletStep" @skiptoedit="skipToEdit"/>
   </st-panel>
 </template>
 
@@ -20,17 +20,22 @@
 import StaffDetailBasics from './add#/add-detail-basicsInfo'
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
+import { AddService } from './add.service'
 export default {
   serviceInject() {
     return {
       userService: UserService,
+      addService: AddService,
       // regionService: RegionService,
       messageService: MessageService
     }
   },
   rxState() {
     return {
-      staffEnums: this.userService.staffEnums$
+      staffEnums: this.userService.staffEnums$,
+      roleList: this.addService.roleList$,
+      codeList: this.addService.codeList$,
+      department: this.addService.department$
     }
   },
   name: 'addDetail',
@@ -38,7 +43,7 @@ export default {
     StaffDetailBasics
   },
   mounted() {
-    // console.log(this.staffEnums)
+    console.log(this.staffEnums)
   },
   bem: {
     b: 'page-add-staff',

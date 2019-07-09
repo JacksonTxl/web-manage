@@ -8,6 +8,7 @@ import { AuthService } from '@/services/auth.service'
 export class InfoService implements RouteGuard {
   info$ = new State({})
   auth$ = new State([])
+  loading$ = new State({})
   constructor(private staffapi: ShopStaffApi, private authService: AuthService) {}
   @Effect()
   getInfo(id: string) {
