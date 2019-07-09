@@ -9,6 +9,14 @@
     width: 120px;
   }
 }
+  .fc-button-primary:not(:disabled):active, .fc-button-primary:not(:disabled).fc-button-active{
+    background-color: #096dd9;
+    border-color: #096dd9;
+
+  }
+.fc-button-primary:not(:disabled):active:focus, .fc-button-primary:not(:disabled).fc-button-active:focus {
+  box-shadow: 0 0 0 0.2rem rgba(51, 68, 227, 0.5);
+}
 .page-team-personal__calendar{
   .fc-bg{
     td.fc-today {
@@ -69,6 +77,16 @@
       width:90px;
       height:32px;
       border-radius:4px;
+    }
+    .fc-bacthAdd-button{
+      background:rgba(63,102,246,1);
+      width: 120px;
+      border: 0;
+    }
+    .fc-copy-button {
+      background:rgba(255,255,255,1);
+      border:1px solid rgba(205,212,223,1);
+      .c(#3E4D5C);
     }
     .fc-custom1-button{
       background:rgba(63,102,246,1);

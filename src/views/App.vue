@@ -6,6 +6,7 @@
       <div class="git is-git" @click="getCommitHead">
         <span class="git__content">{{tips[count]}}</span>
       </div>
+      <div v-if='appConfig.IS_DEV' class="api-env">API环境:{{appConfig.LOCAL_API_ENV}}</div>
     </div>
   </a-locale-provider>
 </template>

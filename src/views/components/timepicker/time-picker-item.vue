@@ -8,7 +8,7 @@
 <script>
 export default {
   name: 'item',
-  data() {
+  data(vm) {
     return {
       isActive: false,
       tempValue: false
@@ -27,6 +27,10 @@ export default {
       type: Boolean,
       default: false
     },
+    checkArr: {
+      type: Array,
+      default: () => []
+    },
     views: {
       type: Array,
       default: () => []
@@ -38,8 +42,11 @@ export default {
     }
   },
   watch: {
+    checkArr(n, o) {
+      this.isActive = n[this.time]
+    },
     isActive(n, o) {
-      this.$emit('change', { time: this.time, isActive: this.isActive })
+      this.$emit('change', { time: this.time, isActive: n })
     }
   },
   computed: {
@@ -80,6 +87,7 @@ export default {
     height: 24px;
     background-color: #f5f5f5;
     transition: background-color 0.3s;
+    border-right: 1px solid #eee;
     position: relative;
     &:first-child{
       background-color: #fff;

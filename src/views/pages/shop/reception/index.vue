@@ -143,7 +143,7 @@
               :filterOption="filterOption"
               class="set-info-select">
                 <a-select-option :value="-1">无</a-select-option>
-                <a-select-option v-for="(item) in cabinetList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
+                <a-select-option v-for="(item) in stCabinetList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
               </a-select>
             </p>
           </div>
@@ -212,7 +212,7 @@
               <template v-else>
                 <a-select v-model="cabinet" class="set-info-select mg-r8">
                   <a-select-option :value="-1">无</a-select-option>
-                  <a-select-option v-for="(item) in cabinetList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
+                  <a-select-option v-for="(item) in stCabinetList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
                 </a-select>
               <st-button type="primary" :loading="loading.editEntranceCabinet" @click="onEditCabinet">确定</st-button>
               <a class="set-info-edit-button mg-l8" @click="onEditCabinetCancel">取消</a>
@@ -433,6 +433,9 @@ export default {
     }
   },
   computed: {
+    stCabinetList() {
+      return (this.selectMemberInfo.cabinet && this.selectMemberInfo.cabinet.id) ? [this.selectMemberInfo.cabinet, ...this.cabinetList] : cloneDeep(this.cabinetList)
+    },
     // 会员列表是否未搜索到
     isSearchNone() {
       return this.memberSearchText !== '' && !this.memberList.length
@@ -688,7 +691,7 @@ export default {
         if (this.cabinet === -1) {
           this.selectMemberInfo.cabinet = {}
         } else {
-          let cabinetName = this.cabinetList.filter(i => i.id === this.cabinet)[0].name
+          let cabinetName = this.stCabinetList.filter(i => i.id === this.cabinet)[0].name
           this.selectMemberInfo.cabinet = {
             id: this.cabinet,
             name: cabinetName
