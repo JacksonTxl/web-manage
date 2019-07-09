@@ -33,6 +33,7 @@ export const columns = () => {
     {
       title: '支持售卖时间',
       dataIndex: 'sell_time',
+      width: 220,
       scopedSlots: { customRender: 'sell_time' }
     },
     {

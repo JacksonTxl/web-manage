@@ -37,7 +37,7 @@
         <st-container><st-table :columns="shopColumns" :dataSource="personalCourseInfo.shops"></st-table></st-container>
       </div>
       <div class="page-personal-content__item mg-b24">
-        <div class="title mg-b8"><span class="label">上课教练:</span><span class="value">共{{coaches.length}}名教练</span></div>
+        <div class="title mg-b8"><span class="label">上课教练:</span><span class="value">共{{personalCourseInfo.coaches.length}}名教练</span></div>
         <st-container> <st-table :columns="coachColumns" :dataSource="personalCourseInfo.coaches"></st-table> </st-container>
       </div>
       <div class="page-personal-content__item">
