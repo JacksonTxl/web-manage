@@ -176,9 +176,7 @@ export class IndexService implements RouteGuard {
       this.getWorkNoteDoneList(),
       this.getEntranceSummary())
   }
-  beforeEach(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
-    this.init().subscribe(() => {
-      next()
-    })
+  beforeEach() {
+    return this.init()
   }
 }
