@@ -162,7 +162,7 @@ export default {
           name = 'member'
           break
         case 10:
-          name = 'cabinet'
+          name = 'cabinet_order'
           break
       }
       return name
