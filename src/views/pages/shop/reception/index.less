@@ -17,7 +17,6 @@
     &-detail {
       display: flex;
       flex: 1;
-
       padding: 12px 20px;
     }
     &-number {
@@ -178,7 +177,7 @@
   }
   &__set-info {
     padding-top: 24px;
-    >p {
+    >.set-info-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -196,6 +195,9 @@
       }
       .set-info-select {
         flex: 1;
+        &.entrance-item {
+          width: calc(100% - 72px);
+        }
       }
     }
   }
