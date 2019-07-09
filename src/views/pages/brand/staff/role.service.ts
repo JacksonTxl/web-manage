@@ -9,11 +9,9 @@ export class RoleService implements RouteGuard {
   roleList$ = new State([])
   stat$ = new State({})
   auth$ = new State({
-    auth: {
-      add: this.authService.can('brand:auth:role|add'),
-      del: this.authService.can('brand:auth:role|del'),
-      edit: this.authService.can('brand:auth:role|edit')
-    }
+    add: this.authService.can('brand:auth:role|add'),
+    del: this.authService.can('brand:auth:role|del'),
+    edit: this.authService.can('brand:auth:role|edit')
   })
   constructor(private roleApi: RoleApi, private authService: AuthService) {}
   /**
