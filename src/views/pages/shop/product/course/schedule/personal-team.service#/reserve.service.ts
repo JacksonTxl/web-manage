@@ -17,6 +17,7 @@ export interface SetState {
 export class PersonalTeamScheduleReserveService {
   state$: State<SetState>
   reserveInfo$: Computed<any>
+  reserveList$: Computed<any>
   auth$: Computed<any>
   constructor(private reserveApi: PersonalTeamScheduleReserveApi, private authService: AuthService) {
     this.state$ = new State({
