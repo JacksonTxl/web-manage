@@ -2,7 +2,7 @@
   <div class="page-staff">
     <section class="page-staff-lf">
       <header class="staff-lf__search">
-        <st-input-search placeholder="请输入部门/员工名称" style="width:226px" round="round"></st-input-search>
+        <st-input-search placeholder="请输入部门/员工名称" style="width:226px" round="round" @search="onSearch"></st-input-search>
       </header>
       <main class="staff-lf__tree">
         <organization-tree></organization-tree>
@@ -15,7 +15,7 @@
       </header>
       <main class="staff-rg__table">
         <div  style="width:100%">
-          <staff-table :page="page" :loading="loading.getStaffList" @edit-staff="onEditStaff" :staffList="staffList"></staff-table>
+          <staff-table :page="page" :loading="loading.getStaffList" @edit-staff="onEditStaff" @selectedRow="selectedRow" :staffList="staffList"></staff-table>
         </div>
       </main>
     </section>
@@ -54,10 +54,20 @@ export default {
       return [{ id: -1, name: '  全部' }, ...this.shopOptions]
     }
   },
+  data() {
+    return {
+      ids: []
+    }
+  },
   methods: {
+    selectedRow(ids) {
+      console.log('selectedRow', ids)
+      this.ids = ids
+    },
     // 查询
     onSearch(e) {
       console.log('搜索条件', e)
+      this.$router.push({ name: 'brand-staff-department', query: { department_id: e } })
     },
     // 编辑
     onEditStaff(staffId) {
@@ -69,6 +79,12 @@ export default {
     },
     // 批量导入
     onbatchImport() {
+      this.$modalRouter.push({
+        name: 'staff-batch-import',
+        props: {
+          ids: this.ids
+        }
+      })
       console.log('批量导入')
     },
     // 导入员工
