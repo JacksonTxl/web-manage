@@ -7,11 +7,18 @@
         </a-select>
       </st-form-item>
     </st-form>
+    <div class="copy-button-box mg-t16">
+      <st-button class="copy-button" @click="onClickCopySchedule">复制上周</st-button>
+    </div>
     <div class="modal-add-schedule__time">
-      <div class="time-item" v-for="info in schedule_info" :key="info.time_type">
-        <span>{{info.time_type | filterDate}}</span> <st-time-picker class="mg-b32" v-model="info.timing" :key="info.time_type"></st-time-picker>
-      </div>
-      <st-button class="copy" @click="onClickCopySchedule">复制上周</st-button>
+      <a-row class="time-item mg-t48" v-for="(info, index) in schedule_info" :key="info.time_type">
+        <a-col :lg="2">
+          <span>{{index | filterDate}}</span>
+        </a-col>
+        <a-col :lg="22">
+          <st-time-picker v-model="info.timing" :key="info.time_type"></st-time-picker>
+        </a-col>
+      </a-row>
     </div>
 
   </st-modal>

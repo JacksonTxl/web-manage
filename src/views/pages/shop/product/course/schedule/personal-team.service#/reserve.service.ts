@@ -29,6 +29,7 @@ export class PersonalTeamScheduleReserveService {
     })
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
     this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
+    this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
   }
   /**
  *
@@ -56,7 +57,8 @@ export class PersonalTeamScheduleReserveService {
     return this.reserveApi.getInfo(id).pipe(tap(res => {
       this.state$.commit(state => {
         state.reserveInfo = res.info
-        state.reserveList = this.authService.filter(res, 'info.reserve').info.reserve
+        // this.authService.filter(res, 'info.reserve').info.reserve
+        state.reserveList = res.info.reserve
       })
     }))
   }

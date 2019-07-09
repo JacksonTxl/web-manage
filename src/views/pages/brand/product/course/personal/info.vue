@@ -44,7 +44,8 @@
         <div class="title mg-b8"><span class="label">售价设置:</span><span class="value">{{personalCourseInfo.price_setting | enumFilter('personal_course.price_setting')}}</span></div>
         <st-container>
           <st-table rowKey="id" :columns="priceConfigColumns" :dataSource="prices">
-            <div slot="min_sell_price" slot-scope="min_sell_price, record">{{record.min_sale}} ~ {{record.max_sale}}</div>
+            <div slot="min_sell_price" slot-scope="min_sell_price, record">{{record.min_sell_price}} ~ {{record.max_sell_price}}</div>
+            <div slot="min_sell" slot-scope="min_sell, record">{{record.min_sale}} ~ {{record.max_sale}}</div>
             <div slot="transfer_num" slot-scope="transfer_num, record">{{record.transfer_num}} {{record.transfer_unit === 1 ? "%":"元"}}</div>
           </st-table>
 
