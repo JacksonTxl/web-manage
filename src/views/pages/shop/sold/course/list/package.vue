@@ -3,7 +3,7 @@
     <st-search-panel>
         <div :class="basic('select')">
           <span style="width:90px;">课程状态：</span>
-          <st-search-radio v-model="query.course_status" :list="cardSaleStatusList"/>
+          <st-search-radio v-model="query.course_status" :list="personalCourseList"/>
         </div>
         <div :class="basic('select')">
           <span style="width:90px;">购买时间：</span>
@@ -128,10 +128,10 @@ export default {
   },
   computed: {
     columns,
-    cardSaleStatusList() {
+    personalCourseList() {
       let list = [{ value: -1, label: '全部' }]
-      if (!this.soldEnums.card_status) return list
-      Object.entries(this.soldEnums.card_status.value).forEach(o => {
+      if (!this.soldEnums.course_status) return list
+      Object.entries(this.soldEnums.course_status.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
