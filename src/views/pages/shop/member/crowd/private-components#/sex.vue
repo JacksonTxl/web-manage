@@ -3,9 +3,9 @@
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">选择性别</span>
-    <a-radio-group name="radioGroup" v-model="value.getData.base_sex">
-      <a-radio :value="1">男</a-radio>
-      <a-radio :value="2">女</a-radio>
+    <a-radio-group name="radioGroup" v-model="value.getData.base_sex" @change="onChange">
+      <a-radio :value="JSON.stringify({name: '男', value: 1})">男</a-radio>
+      <a-radio :value="JSON.stringify({name: '女', value: 2})">女</a-radio>
     </a-radio-group>
   </div>
 </template>
@@ -27,16 +27,13 @@ export default {
       titleData: {
         title: '性别',
         info: '满足一下性别属性的用户'
-      },
-      radioValue: ''
+      }
     }
   },
   methods: {
-    selectionFun(item) {
-      this.value.selectionData = item
-    },
-    onChange(date, dateString) {
-      console.log(date, dateString)
+    onChange(event) {
+      this.value.getData.base_sex = event.target.value
+      console.log(this.value.getData.base_sex)
       this.$emit('dataChangge', this.value)
     }
   },
