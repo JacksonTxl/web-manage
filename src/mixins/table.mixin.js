@@ -20,6 +20,7 @@ const ROUTE_NAMES_USE_PAGE = [
   'brand-staff-info-sold',
   'brand-staff-info-member',
 
+  'brand-marketing-plugin-coupon-list',
   /**
    * shop
    */
