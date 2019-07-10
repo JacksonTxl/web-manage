@@ -9,6 +9,9 @@
       <st-form-item label="MOBILE" required>
         <a-input placeholder="手机号" v-decorator="rules.mobile"/>
       </st-form-item>
+      <st-form-item label="TEL" required>
+        <a-input placeholder="手机号或座机号" v-decorator="rules.tel"/>
+      </st-form-item>
       <st-form-item label="ID" required>
         <a-input placeholder="身份证" v-decorator="rules.id"/>
       </st-form-item>

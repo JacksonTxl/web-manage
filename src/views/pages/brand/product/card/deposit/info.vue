@@ -39,9 +39,9 @@
           <!-- 支持入场范围 -->
           <p class="mb-8">
             <span class="label">支持消费门店：</span>
-            <span class="value">共{{cardInfo.can_use_shop_num}}家门店</span>
+            <span class="value">{{canUseShop}}</span>
           </p>
-          <st-container v-if="cardInfo.can_use_shop_num!==1">
+          <st-container v-if="cardInfo.consumption_range.id===2">
             <st-table
               size="middle"
               rowKey="shop_id"
@@ -134,6 +134,25 @@ export default {
   rxState() {
     return {
       cardInfo: this.infoService.cardInfo$
+    }
+  },
+  computed: {
+    canUseShop() {
+      let text = ''
+      switch (this.cardInfo.consumption_range.id) {
+        case 1:
+          text = this.cardInfo.consumption_range.name
+          break
+        case 2:
+          text = `共${this.cardInfo.can_use_shop_num}家门店`
+          break
+        case 3:
+          text = '全门店'
+          break
+        default:
+          text = '无'
+      }
+      return text
     }
   },
   data() {

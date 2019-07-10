@@ -117,6 +117,8 @@ export default {
           this.setIndentyList(['basic', 'course', 'follow', 'member', 'sold'], indetitySet)
         }
       })
+    } else {
+      this.setIndentyList(['basic'], indetitySet)
     }
     this.identity = Array.from(indetitySet).map(key => this[key])
     this.$router.replace({

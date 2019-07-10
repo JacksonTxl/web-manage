@@ -24,7 +24,8 @@ interface User {
 }
 interface Shop {
   id?: string
-  name?: string
+  name?: string,
+  logo?: string
 }
 interface ModuleEnums {
   [enumName: string]: {
@@ -86,7 +87,7 @@ export class UserService extends Store<UserState> {
       enums: {},
       brand: {},
       shop: {
-        name: '这里是全局数据提供的当前门店的名称'
+        name: ''
       },
       invalidTooltips: []
     }
@@ -142,6 +143,11 @@ export class UserService extends Store<UserState> {
         tap((res: any) => {
           this.state$.commit(state => {
             state.user = res.info
+            this.SET_SHOP({
+              id: res.info.shop_id,
+              name: res.info.shop_name,
+              logo: res.info.shop_logo
+            })
           })
         })
       )

@@ -14,14 +14,14 @@
       </a-col>
     </a-row>
     <edit-detail-basics-info
-      v-show="currentIndex === 0"
-      @go-next="goNext"
+      v-if="currentIndex === 0"
+      @goNext="goNext"
+      @updateStaffInfo="updateStaffInfo"
       :enums="staffEnums"
       :data="staffInfo"
-      @bacicInfoSave="onBasicsSave"
     />
     <edit-detail-detailed-info
-      v-show="currentIndex === 1"
+      v-else-if="currentIndex === 1"
       @goNext="goNext"
       @back="onBack"
       :isShowCoach="isShowCoach"
@@ -29,11 +29,11 @@
       :data="staffInfo"
       @detailInfoSave="onDetailInfoSave"/>
     <edit-detail-coach-info
-      v-if="isShowCoach"
-      v-show="currentIndex === 2"
+      v-else-if="currentIndex === 2 && isShowCoach"
       @goNext="goNext"
       :enums="staffEnums"
       :data="staffInfo"
+      :staffSpecialty="staffSpecialty"
       @coachInfoSave="onCoachInfoSave"/>
   </st-panel>
 </template>
@@ -55,7 +55,8 @@ export default {
     return {
       staffEnums: this.userService.staffEnums$,
       staffInfo: this.editService.staffInfo$,
-      codeList: this.editService.codeList$
+      codeList: this.editService.codeList$,
+      staffSpecialty: this.editService.staffSpecialty$
     }
   },
   bem: {
@@ -105,15 +106,24 @@ export default {
       ]
     }
   },
+  mounted() {
+    let { currentIndex } = this.$route.query
+    if (!this.isShowCoach) {
+      this.stepsSpan = 12
+      this.stepArr.pop()
+    }
+    if (currentIndex) this.currentIndex = Number(currentIndex)
+  },
   methods: {
-    onBasicsSave(data) {
-      this.editService.updateBasicInfo(this.id, data.data).subscribe()
+    updateStaffInfo() {
+      this.editService.editStaffInfo(this.id).subscribe()
     },
     onDetailInfoSave(data) {
       this.editService.updateDetailedInfo(this.id, data.data).subscribe(() => {
         if (!this.isShowCoach) {
           this.$router.push({ name: 'brand-staff-department' })
         } else {
+          this.updateStaffInfo()
           this.goNext()
         }
       })
@@ -133,23 +143,6 @@ export default {
     },
     changeStep(step) {
       this.currentIndex = step
-    }
-  },
-  mounted() {
-    let { currentIndex } = this.$route.query
-    if (this.isShowCoach) {
-    } else {
-      this.stepsSpan = 12
-      this.stepArr.pop()
-    }
-    if (currentIndex) {
-      this.currentIndex = currentIndex - 0
-      // if(!isShowCoach){
-      //   console.log('不展示')
-      //   this.stepArr.pop()
-      // }else{
-      //   console.log('展示')
-      // }
     }
   }
 }

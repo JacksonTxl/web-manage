@@ -89,8 +89,8 @@ export class TransactionApi extends Api {
    * 私课教练列表
    * @param level 教练级别
    */
-  getTransactionCoachList(level: number) {
-    return this.http.get(`/v1/order/transaction/personal/course/coach`, { query: { coach_level_id: level } })
+  getTransactionCoachList(level: number, id: string) {
+    return this.http.get(`/v1/order/transaction/personal/course/coach/${id}`, { query: { coach_level_id: level } })
   }
   /**
    * 私教课价格梯度

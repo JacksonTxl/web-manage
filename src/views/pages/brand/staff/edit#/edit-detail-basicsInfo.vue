@@ -1,5 +1,5 @@
 <template>
-  <st-form :form="form" @submit="save">
+  <st-form :form="form" @submit="sumbitBasicData">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工头像">
@@ -16,7 +16,7 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact style="top: 0;">
-            <a-select v-model="choosed_country_id">
+            <a-select v-decorator="rules.country_code_id">
                 <a-select-option v-for="item in codeList" :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
             </a-select>
             <a-input style="width: 80%" v-decorator="rules.phone" placeholder="请输入手机号"/>
@@ -49,7 +49,7 @@
         </st-form-item>
         <st-form-item label="证件">
           <a-input-group compact style="top: 0;">
-            <a-select v-model="id_type" @change="onSelectIdtype">
+            <a-select v-decorator="rules.idtype">
               <template v-for="(item,key) in enums.id_type.value">
                 <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
               </template>
@@ -73,8 +73,7 @@
           placeholder="请选择部门"
           style="width: 100%"
           useType="form"
-          v-model="value"
-          @change="onChange">
+          v-decorator="rules.department_id">
           </department-select>
         </st-form-item>
         <st-form-item label="工作性质">
@@ -108,28 +107,25 @@
         </st-form-item>
       </a-col>
     </a-row>
-
     <a-row :gutter="8">
       <a-col :offset="1" :lg="22">
         <st-hr></st-hr>
       </a-col>
     </a-row>
-
     <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
-          <st-button class="mg-l16" @click="goNext" type="primary">保存，继续填写</st-button>
+          <st-button class="mg-l16" @click="saveAndGoNext" type="primary">保存，继续填写</st-button>
         </st-form-item>
       </a-col>
     </a-row>
   </st-form>
 </template>
 <script>
-import DepartmentSelect from '@/views/biz-components/department-select'
 import { RuleConfig } from '@/constants/staff/rule'
 import { EditService } from '../edit.service'
-import moment from 'moment'
 import ShopSelect from '@/views/biz-components/shop-select'
+import DepartmentSelect from '@/views/biz-components/department-select'
 export default {
   name: 'EditBasicInfo',
   serviceInject() {
@@ -182,18 +178,16 @@ export default {
     onSelectIdtype(e) {
       console.log('证件选择', e)
     },
-    goNext(e) {
+    saveAndGoNext(e) {
       e.preventDefault()
-      console.log('gonext')
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
           this.submit(values, 1)
-          // this.$emit('gonext')
         }
       })
     },
-    save(e) {
+    sumbitBasicData(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
@@ -207,51 +201,34 @@ export default {
      */
     submit(data, saveOrgoNext) {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
-      data.country_code_id = this.choosed_country_id
-      data.id_type = this.id_type
       data.album_id = this.data.album_id
-      data.department_id = +this.value
-      data.image_avatar && (data.image_avatar = data.image_avatar[0])
-      data.image_face && (data.image_face = data.image_face[0])
+      data.department_id = Number(data.department_id)
+      data.image_avatar = this.fileList[0] || {}
+      data.image_face = this.faceList[0] || {}
       this.editService.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
-        this.$emit('go-next')
+        this.$emit('goNext')
+        this.$emit('updateStaffInfo')
       })
     },
     setData(obj) {
-      let image_face = []
-      let image_avatar = []
-      obj.image_face.length && (image_face = obj.image_face.map(item => {
-        item.image_key = item.image_url
-        return item
-      }))
-      obj.image_avatar.length && (image_avatar = obj.image_face.map(item => {
-        item.image_key = item.image_url
-        return item
-      }))
       this.form.setFieldsValue({
-        image_avatar,
-        image_face,
-        staff_name: obj.staff_name,
-        nickname: obj.nickname,
-        mobile: obj.mobile,
-        staff_num: obj.staff_num,
-        sex: obj.sex,
-        id_number: obj.id_number,
-        nature_work: obj.nature_work,
-        role_id: obj.role_id,
-        shop_id: obj.shop_id,
-        entry_date: obj.entry_date ? moment(obj.entry_date) : moment(),
-        mail: obj.mail
+        staff_name: obj.staff_name, // 姓名
+        nickname: obj.nickname, // 昵称
+        mobile: obj.mobile, // 手机号
+        staff_num: obj.staff_num, // 工号
+        sex: obj.sex, // 性别
+        id_number: obj.id_number, // 身份证
+        id_type: obj.id_type, // 证件类型
+        nature_work: obj.nature_work, // 工作性质
+        department_id: String(obj.department_id), // 部门
+        role_id: obj.role_id, // 角色
+        shop_id: obj.shop_id, // 所属门店
+        entry_date: obj.entry_date ? moment(obj.entry_date) : moment(), // 入职时间
+        mail: obj.mail, // 邮箱
+        country_code_id: obj.country_code_id // 手机区号
       })
-
-      this.choosed_country_id = obj.country_code_id
-      this.id_type = obj.id_type
-      this.value = obj.department_id + ''
-
       this.fileList = [
-        {
-          url: obj.image_avatar.image_url
-        }
+        obj.image_avatar
       ]
       this.faceList = [
         obj.image_face

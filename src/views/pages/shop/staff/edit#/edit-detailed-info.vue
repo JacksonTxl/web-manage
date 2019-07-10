@@ -189,6 +189,7 @@ export default {
           this.$router.push({ name: 'shop-staff-list' })
         } else {
           this.$emit('gonext')
+          this.$emit('updateStaffInfo')
         }
       })
     }

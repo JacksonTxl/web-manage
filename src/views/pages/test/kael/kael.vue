@@ -1,7 +1,8 @@
 <template>
   <st-panel app>
-    <st-coupon class="mg-r8" key="1" name="kael" @close="onClose('invitee')" />
-    <st-coupon class="mg-r8" key="2" name="kael"/>
+    <st-help-popover>
+      <span slot="content">停售原因是不想停售原因是不想停售原因是不想停售原因是不想</span>
+    </st-help-popover>
   </st-panel>
 </template>
 <script>

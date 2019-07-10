@@ -240,8 +240,16 @@
               <ul :class="reception('todoist-to-do-list')" v-scrollBar>
                 <li v-for=" (item,i) in workNoteList" :key="i" class="animated delay-f2s" :class="{'fadeOut':i===animateIndex,'mg-t12':(i+1)>2,'mg-r12':(i+1)%2!==0}">
                   <div class="to-do-main">
-                    <span class="operation-name" v-if="item.nickname">{{item.nickname.substr(0,2)}}</span>
-                    <span class="operation-name" v-else>无</span>
+                    <template v-if="item.nickname">
+                      <a-tooltip overlayClassName="st-light-tooltip" v-if="item.nickname.length>2">
+                        <template slot='title'>
+                          {{item.nickname}}
+                        </template>
+                        <span class="operation-name cursor-pointer">{{item.nickname.substr(0,2)}}</span>
+                      </a-tooltip>
+                      <span class="operation-name cursor-pointer" v-else>{{item.nickname}}</span>
+                    </template>
+                    <span class="operation-name cursor-pointer" v-else>无</span>
                     <p>
                       <span>{{item.subject}}</span>
                       <span>{{item.content}}</span>
@@ -710,7 +718,7 @@ export default {
         onOk: () => {
           return this.indexService.setWorkNote(item.id).toPromise().then(() => {
             this.animateIndex = index
-            timer(1000).subscribe(() => {
+            timer(800).subscribe(() => {
               this.animateIndex = 999999999
               this.indexService.getWorkNoteList().subscribe()
               this.indexService.getWorkNoteDoneList().subscribe()

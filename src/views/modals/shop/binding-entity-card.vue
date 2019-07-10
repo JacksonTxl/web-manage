@@ -77,7 +77,7 @@ export default {
       })
     },
     getLableList(data) {
-      this.Service.getMemberCard(self.record.member_id, data).subscribe(state => {
+      this.Service.getMemberCard(this.record.member_id, data).subscribe(state => {
         this.show = false
         this.$emit('success')
       })

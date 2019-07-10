@@ -3,17 +3,17 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="从业时间">
-          <a-date-picker style="width:100%" v-decorator="coachRules.employment_time"/>
+          <a-date-picker style="width:100%" v-decorator="rules.employment_time"/>
         </st-form-item>
         <st-form-item label="擅长的项目">
-          <a-select mode="multiple" placeholder="请选择擅长的项目" v-decorator="coachRules.specialty_id">
+          <a-select mode="multiple" placeholder="请选择擅长的项目" v-decorator="rules.specialty_id">
             <template v-for="item in staffSpecialty">
               <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
         <st-form-item label="专业认证">
-          <a-input placeholder="请输入专业证书名称" v-decorator="coachRules.certification_name">
+          <a-input placeholder="请输入专业证书名称" v-decorator="rules.certification_name" style="top: 0;">
             <div slot="addonAfter" @click="onAddProfess" class="add-profess-button">添加</div>
           </a-input>
           <div class="add-profess-card">
@@ -24,7 +24,7 @@
           </div>
         </st-form-item>
         <st-form-item label="个人经历">
-          <a-input type="textarea" :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧" v-decorator="coachRules.introduction"/>
+          <a-input type="textarea" :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧" v-decorator="rules.introduction"/>
         </st-form-item>
         </a-col>
     </a-row>
@@ -41,7 +41,7 @@
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="对外展示">
-          <a-checkbox v-decorator="coachRules.is_show" :checked="checked">展示在会员端</a-checkbox>
+          <a-checkbox v-decorator="rules.is_show">展示在会员端</a-checkbox>
         </st-form-item>
       </a-col>
     </a-row>
@@ -57,22 +57,22 @@
 </template>
 
 <script>
-import { EditService } from '../edit.service'
+import { RuleConfig } from '@/constants/staff/rule'
+
 export default {
   name: 'EditDetailCoachInfo',
   serviceInject() {
     return {
-      service: EditService
+      rules: RuleConfig
     }
   },
   props: {
     data: {
       type: Object
-    }
-  },
-  rxState() {
-    return {
-      staffSpecialty: this.service.staffSpecialty$
+    },
+    staffSpecialty: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -84,13 +84,6 @@ export default {
       fileList: [],
 
       checked: false,
-      coachRules: {
-        employment_time: ['employment_time'],
-        specialty_id: ['specialty_id'],
-        certification_name: ['certification_name'],
-        introduction: ['introduction'],
-        is_show: ['is_show']
-      },
       image_personal: []
     }
   },
