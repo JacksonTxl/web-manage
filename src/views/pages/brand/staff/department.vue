@@ -83,8 +83,17 @@ export default {
         name: 'staff-batch-import',
         props: {
           ids: this.ids
+        },
+        on: {
+          ok: res => {
+            this.$router.push({
+              query: res,
+              force: true
+            })
+          }
         }
       })
+
       console.log('批量导入')
     },
     // 导入员工

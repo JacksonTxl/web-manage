@@ -2,9 +2,12 @@
   <section class="sg-section">
     <h3>生成正则表达式</h3>
     4-16位中文、英文、数字正则（不含标点符号）：{{CN_EN_NUM_REGEXP}}
-    <st-form :form="form" labelWidth="100px" labelGutter="16px" class="mg-t16">
+    <st-form :form="form" labelWidth="150px" labelGutter="16px" class="mg-t16">
       <st-form-item label="whatever" required>
         <a-input placeholder="4-10个字，中英文及数字" v-decorator="rules.whatever"/>
+      </st-form-item>
+      <st-form-item label="CN_EN_NUM_SPACE" required>
+        <a-input placeholder="4-10个字，中英文、数字、中间空格" v-decorator="rules.name"/>
       </st-form-item>
       <st-form-item label="MOBILE" required>
         <a-input placeholder="手机号" v-decorator="rules.mobile"/>

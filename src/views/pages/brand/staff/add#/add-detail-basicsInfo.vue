@@ -16,7 +16,7 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact style="top: 0;">
-            <a-select style="width: 15%;" v-model="choosed_code_id">
+            <a-select style="width: 15%;" v-decorator="rules.country_code_id">
               <template v-for="item in codeList">
                 <a-select-option :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
               </template>
@@ -50,7 +50,7 @@
         </st-form-item>
         <st-form-item label="证件">
           <a-input-group compact style="top: 0;">
-            <a-select style="width: 25%;" @change="onSelectIdtype" v-model="choosed_id_type">
+            <a-select style="width: 25%;" v-decorator="rules.idtype">
               <template v-for="(item,key) in enums.id_type.value">
                 <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
               </template>
@@ -149,19 +149,19 @@
         <st-form-item label="系统权限">
           <a-checkbox @change="permissionChange" v-decorator="rules.is_permission">开通系统使用权限</a-checkbox>
         </st-form-item>
-        <st-form-item label="登录账号" v-if="isChoosePermission">
+        <st-form-item label="登录账号" v-if="isChoosePermission" required>
           <a-input
             placeholder="6-18个字符，可使用字母、数字、下划线"
             v-decorator="rules.account"
           ></a-input>
         </st-form-item>
-        <st-form-item label="登录密码" v-if="isChoosePermission">
+        <st-form-item label="登录密码" v-if="isChoosePermission" required>
           <a-input
             placeholder="6-15个字符，区分大小写"
             v-decorator="rules.password"
           ></a-input>
         </st-form-item>
-        <st-form-item label="确认密码" v-if="isChoosePermission">
+        <st-form-item label="确认密码" v-if="isChoosePermission" required>
           <a-input
             placeholder="请再次填写密码"
             v-decorator="rules.repeat_password"
@@ -207,8 +207,6 @@ export default {
   },
   data() {
     return {
-      choosed_code_id: 37, // 手机号地域编号
-      choosed_id_type: 1, // 选中证件类型编号
       form: this.$form.createForm(this),
       fileList: [],
       faceList: [],

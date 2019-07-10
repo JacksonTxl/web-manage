@@ -9,7 +9,6 @@ export class InfoService implements RouteGuard {
   info$ = new State({})
   auth$ = new State([])
   constructor(private staffapi: ShopStaffApi, private authService: AuthService) {}
-  @Effect()
   getInfo(id: string) {
     return this.staffapi.getStaffInfoCommonHeader(id).pipe(tap(res => {
       res = this.authService.filter(res, 'auth')

@@ -42,7 +42,7 @@ export class RuleConfig {
 
   // 手机号国籍编码
   get country_code_id() {
-    return ['country_code_id']
+    return ['country_code_id', { initialValue: 37 }]
   }
   // 手机号
   get phone() {
@@ -75,7 +75,7 @@ export class RuleConfig {
   }
   // 证件类型
   get idtype() {
-    return ['id_type']
+    return ['id_type', { initialValue: 1 }]
   }
   // 证件号
   get idnumber() {
@@ -227,5 +227,16 @@ export class RuleConfig {
   // 个人经历
   get introduction() {
     return ['introduction']
+  }
+  // 擅长的项目
+  get specialty_id() {
+    return ['specialty_id']
+  }
+  get certification_name() {
+    return ['certification_name']
+  }
+  // 对外展示
+  get is_show() {
+    return ['is_show']
   }
 }
