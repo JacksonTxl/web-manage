@@ -11,37 +11,27 @@ export interface SetState {
 }
 
 @Injectable()
-export class ListService extends Store<SetState> implements RouteGuard {
-  list$: Computed<any>;
+export class ListService implements RouteGuard {
+  list$ = new State([])
   page$ = new State({})
-  auth$: Computed<object>
-  constructor(private marketingApi: MarketingApi, private couponApi: CouponApi, private authService: AuthService) {
-    super()
-    this.state$ = new State({
-      list: [],
-      auth: {
-        add: this.authService.can('brand:activity:coupon|add')
-      }
-    })
-    this.list$ = new Computed(this.state$.pipe(pluck('list')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
-  }
+  loading$ = new State({})
+  auth$ = new State({
+    add: this.authService.can('brand:activity:coupon|add')
+  })
+  constructor(private marketingApi: MarketingApi, private couponApi: CouponApi, private authService: AuthService) {}
   @Effect()
   getList(params: CouponListParams) {
     return this.couponApi.getList(params).pipe(tap((res:any) => {
       res = this.authService.filter(res)
-      this.state$.commit(state => {
-        state.list = res.list
-      })
+      this.list$.commit(() => res.list)
       this.page$.commit(() => res.page)
     }))
   }
-  beforeEach(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
-    this.getList(to.meta.query).subscribe(() => {
-      next()
-    })
-  }
+
   stopMarketingCoupon(id: number) {
     return this.marketingApi.stopMarketingCoupon(id).pipe(tap((res:any) => {}))
+  }
+  beforeEach(to:ServiceRoute, from:ServiceRoute) {
+    return this.getList(to.meta.query)
   }
 }

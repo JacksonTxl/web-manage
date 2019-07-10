@@ -6,13 +6,8 @@
     :okText="operate? '确定':'知道了'"
     v-model='show'>
     <staff-info :staff="staff"></staff-info>
-    <section  v-if="!operate" class="mg-b16">
-      <div class="modal-staff-delete__tip modal-staff-tip">
-        <p>无法删除员工，该员工有以下几个事项待处理</p>
-        <ul>
-          <li v-for="(tip, index) in tips" :key="index" class="item"><span class="count">{{index + 1}}</span> {{tip.num}}{{tip.type|unitFilter}}{{tip.name}}, <a href="">查看详情</a></li>
-        </ul>
-      </div>
+    <section v-if="!operate" class="mg-b16">
+      <staff-modal-tips :list="list" :canNotDelete="!operate"></staff-modal-tips>
     </section>
     <section v-else>
       <div class="modal-staff-delete__sub-tip">
@@ -24,6 +19,7 @@
 <script>
 import StaffInfo from './staff-info'
 import { DeleteService } from './delete.service'
+import StaffModalTips from '@/views/biz-components/staff/staff-modal-tips'
 export default {
   name: 'DeleteStaff',
   serviceInject() {
@@ -33,7 +29,9 @@ export default {
   },
   rxState() {
     return {
-      conditionDeleteInfo: this.deleteService.conditionDeleteInfo$
+      list: this.deleteService.list$,
+      operate: this.deleteService.operate$,
+      loading: this.deleteService.loading$
     }
   },
   data() {
@@ -42,7 +40,8 @@ export default {
     }
   },
   components: {
-    StaffInfo
+    StaffInfo,
+    StaffModalTips
   },
   filters: {
     unitFilter(val) {
@@ -54,14 +53,6 @@ export default {
     staff: {
       type: Object,
       default: () => {}
-    }
-  },
-  computed: {
-    tips() {
-      return this.conditionDeleteInfo.list
-    },
-    operate() {
-      return this.conditionDeleteInfo.operate
     }
   },
   methods: {

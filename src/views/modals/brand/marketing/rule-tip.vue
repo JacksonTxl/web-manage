@@ -20,9 +20,7 @@ export default {
   props: {
     contents: {
       type: Array,
-      default: () => {
-        return ['1、客户可以凭券抵扣相同面值的现金', '2、客户可以凭券抵扣相同面值的现金', '3、客户可以凭券抵扣相同面值的现金']
-      }
+      default: () => []
     }
   },
   data() {

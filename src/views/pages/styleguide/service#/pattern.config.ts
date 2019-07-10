@@ -14,8 +14,44 @@ export const rules = (vm: any) => {
       'name', {
         rules: [{
           required: true,
-          pattern: pattern.CN_EN_NUM_SPACE('4-10'),
-          message: '4-10个字，中英文、数字、中间空格'
+          pattern: pattern.CN_EN_NUM_SPACE('1-15'),
+          message: '1-15个字，中英文、数字、中间空格'
+        }]
+      }
+    ],
+    cn: [
+      'cn', {
+        rules: [{
+          required: true,
+          pattern: pattern.CN('2-6'),
+          message: '2-6个字，中文'
+        }]
+      }
+    ],
+    en: [
+      'en', {
+        rules: [{
+          required: true,
+          pattern: pattern.EN('2-6'),
+          message: '2-6个字，英文'
+        }]
+      }
+    ],
+    cnEn: [
+      'cnEn', {
+        rules: [{
+          required: true,
+          pattern: pattern.CN_EN('2-6'),
+          message: '2-6位，中英文'
+        }]
+      }
+    ],
+    num: [
+      'num', {
+        rules: [{
+          required: true,
+          pattern: pattern.NUM('2-6'),
+          message: '2-6位，整数'
         }]
       }
     ],

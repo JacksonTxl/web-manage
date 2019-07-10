@@ -139,9 +139,10 @@ export default {
     setIndentyList(arr, targetArr) {
       arr.forEach(key => targetArr.add(key, this[key]))
     },
-    jumpToStaffPosition() {
+    jumpToStaffPosition(info) {
+      console.log(this.info)
       this.$modalRouter.push({
-        name: 'staff-update-staff-position',
+        name: 'shop-staff-update-staff-position',
         props: {
           staff: this.info
         }

@@ -18,12 +18,7 @@
             {{item.name}}
           </a-select-option>
         </a-select>
-        <div v-if="!canDeleteIdentity" class="modal-staff-turnover__tip modal-staff-tip mg-b24">
-          <p >该员工有以下几个事项待处理，无法进行离职</p>
-          <ul>
-            <li v-for="(tip, index) in tips" :key="tip.type" class="item"><span class="count">{{index + 1}}</span> {{tip.num}}{{tip.type | unitFilter}}{{tip.name}}</li>
-          </ul>
-        </div>
+        <staff-modal-tips :list="tips" :canNotDelete="!operate" v-if="!canDeleteIdentity"></staff-modal-tips>
       </st-form-item>
       <st-form-item label="教练等级">
         <a-select v-decorator="['coach_level_id']" placeholder="请选择教练等级">
@@ -34,17 +29,17 @@
       </st-form-item>
       <st-form-item label="薪资模板">
         <a-select class="mg-b16" v-decorator="['basic_salary']" placeholder="请选择底薪模版">
-          <a-select-option :value="item.id" v-for="item in salaryBasic$" :key="item.id">
+          <a-select-option :value="item.id" v-for="item in salaryBasic" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
         <a-select class="mg-b16" v-decorator="['sale_percentage']" placeholder="请选择薪资模板">
-          <a-select-option :value="item.id" v-for="item in salarySale$" :key="item.id">
+          <a-select-option :value="item.id" v-for="item in salarySale" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
         <a-select v-decorator="['course_percentage']" placeholder="请选择课程模板" v-show="isSalaryCourse">
-          <a-select-option :value="item.id" v-for="item in salaryCourse$" :key="item.id">
+          <a-select-option :value="item.id" v-for="item in salaryCourse" :key="item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
@@ -55,24 +50,26 @@
 <script>
 import { UpdateStaffPositionService } from './update-staff-position.service'
 import { UserService } from '../../../services/user.service'
-import StaffInfo from './staff-info'
 import { MessageService } from '../../../services/message.service'
+import StaffInfo from './staff-info'
+import StaffModalTips from '@/views/biz-components/staff/staff-modal-tips'
 
 export default {
   serviceInject() {
     return {
       updateStaffPositionService: UpdateStaffPositionService,
+      userService: UserService,
       msg: MessageService
     }
   },
   rxState() {
     return {
-      staffEnums$: this.updateStaffPositionService.staffEnums$,
+      staffEnums$: this.userService.staffEnums$,
       positionInfo$: this.updateStaffPositionService.positionInfo$,
       coachLevelList$: this.updateStaffPositionService.coachLevelList$,
-      salaryBasic$: this.updateStaffPositionService.salaryBasic$,
-      salarySale$: this.updateStaffPositionService.salarySale$,
-      salaryCourse$: this.updateStaffPositionService.salaryCourse$
+      salaryBasic: this.updateStaffPositionService.salaryBasic$,
+      salarySale: this.updateStaffPositionService.salarySale$,
+      salaryCourse: this.updateStaffPositionService.salaryCourse$
     }
   },
   name: 'UpdateStaffPosition',
@@ -82,7 +79,8 @@ export default {
       form: this.$form.createForm(this),
       isSalaryCourse: false,
       canDeleteIdentity: true,
-      tips: []
+      tips: [],
+      operate: false
     }
   },
   props: {
@@ -98,7 +96,8 @@ export default {
     }
   },
   components: {
-    StaffInfo
+    StaffInfo,
+    StaffModalTips
   },
   computed: {
     identityList() {
@@ -108,7 +107,7 @@ export default {
       return this.computedList('nature_work')
     },
     identity() {
-      return this.staff.identity
+      return this.staff && this.staff.identity
     }
   },
   watch: {
@@ -126,20 +125,15 @@ export default {
         nature_work,
         sale_percentage
       } = this.positionInfo$
-      console.log('positionInfo', this.positionInfo$)
+      this.onChangeIdentity(identity)
       this.$nextTick(() => {
         let obj = {
-          basic_salary,
           coach_level_id,
+          sale_percentage,
           course_percentage,
+          basic_salary,
           identity,
           nature_work
-        }
-        this.isSalaryCourse = identity.includes(3) || identity.includes(4)
-        if (this.isSalaryCourse) {
-          obj = Object.assign(obj, {
-            course_percentage
-          })
         }
         this.form.setFieldsValue(obj)
       })
@@ -159,6 +153,7 @@ export default {
             identity
           })
           this.tips = res.list
+          this.operate = res.operate
           this.canDeleteIdentity = false
           // this.msg.error({ content: '不能删除该职能' })
         }
