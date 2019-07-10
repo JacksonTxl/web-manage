@@ -53,7 +53,7 @@
             :fieldNames="fieldNames"
             v-decorator="rules.provinces"
             changeOnSelect
-            placeholder="请选择" />
+            placeholder="请填写家庭住址"/>
         </st-form-item>
         <st-form-item label="详细住址">
           <a-input placeholder="填写点什么吧" v-decorator="rules.address"/>

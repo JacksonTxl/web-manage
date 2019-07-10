@@ -16,7 +16,7 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact style="top: 0;">
-            <a-select v-decorator="rules.country_code_id">
+            <a-select style="width: 20%;" v-decorator="rules.country_code_id">
                 <a-select-option v-for="item in codeList" :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
             </a-select>
             <a-input style="width: 80%" v-decorator="rules.phone" placeholder="请输入手机号"/>
@@ -49,12 +49,12 @@
         </st-form-item>
         <st-form-item label="证件">
           <a-input-group compact style="top: 0;">
-            <a-select v-decorator="rules.idtype">
+            <a-select style="width: 20%;" v-decorator="rules.idtype">
               <template v-for="(item,key) in enums.id_type.value">
                 <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
               </template>
             </a-select>
-            <a-input style="width: 70%" placeholder="请输入身份证号码" v-decorator="rules.idnumber"/>
+            <a-input style="width: 80%" placeholder="请输入身份证号码" v-decorator="rules.idnumber"/>
           </a-input-group>
         </st-form-item>
       </a-col>
