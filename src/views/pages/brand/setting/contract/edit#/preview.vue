@@ -94,19 +94,19 @@
             <td>9600.00元</td>
           </tr>
           <tr v-if="info.contract_type === CONTRACT_TYPE.DEPOSITE">
-            <td>储值</td>
+            <td>储值11000元</td>
             <td>10000.00元</td>
             <td>400.00元</td>
             <td>9600.00元</td>
           </tr>
           <tr v-if="info.contract_type === CONTRACT_TYPE.CABINET">
-            <td>租凭柜</td>
+            <td>长租柜A01</td>
             <td>10000.00元</td>
             <td>400.00元</td>
             <td>9600.00元</td>
           </tr>
           <tr v-if="info.contract_type === CONTRACT_TYPE.MONEY">
-            <td>定金</td>
+            <td>定金200元</td>
             <td>9600.00元</td>
           </tr>
         </tbody>
