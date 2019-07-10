@@ -1,7 +1,7 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state/src'
 import { pluck, tap } from 'rxjs/operators'
-import { StatApi } from '@/api/v1/stat/brand'
+import { StatApi, RecentQuery } from '@/api/v1/stat/brand'
 import { forkJoin } from 'rxjs'
 
 interface SetState{
@@ -49,8 +49,8 @@ export class DashboardService {
       })
     }))
   }
-  getUser() {
-    return this.statApi.getUser().pipe(tap(res => {
+  getUser(query: RecentQuery) {
+    return this.statApi.getUser(query).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
         const chartData: any = []
@@ -96,8 +96,8 @@ export class DashboardService {
     }))
   }
   // 营销分析
-  getMarketing() {
-    return this.statApi.getMarketing().pipe(tap(res => {
+  getMarketing(query: RecentQuery) {
+    return this.statApi.getMarketing(query).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
         const chartData: any = []
@@ -128,11 +128,11 @@ export class DashboardService {
       })
     }))
   }
-  getUserAll() {
-    return forkJoin(this.getUser(), this.getUserFunnel())
+  getUserAll(query: RecentQuery) {
+    return forkJoin(this.getUser(query), this.getUserFunnel())
   }
-  getMarketingAll() {
-    return forkJoin(this.getMarketing(), this.getMarketingFunnel())
+  getMarketingAll(query: RecentQuery) {
+    return forkJoin(this.getMarketing(query), this.getMarketingFunnel())
   }
   getEntry() {
     return this.statApi.getEntry().pipe(tap(res => {
@@ -149,7 +149,7 @@ export class DashboardService {
   }
   init() {
     // return this.getTop()
-    return forkJoin(this.getTop(), this.getAvg(), this.getUser(), this.getUserFunnel(), this.getEntry())
+    return forkJoin(this.getTop(), this.getAvg(), this.getUserAll({ recently_day: 7 }), this.getMarketingAll({ recently_day: 7 }), this.getEntry())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.init().subscribe(res => {
