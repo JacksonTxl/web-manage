@@ -194,7 +194,7 @@ export class RuleConfig {
   get native_place() {
     return ['native_place', {
       rules: [{
-        pattern: this.pattern.CN_EN_NUM('1-20'),
+        pattern: this.pattern.CN_EN('1-20'),
         message: '请输入1-20个字，中英文'
       }]
     }]
@@ -247,8 +247,14 @@ export class RuleConfig {
   get specialty_id() {
     return ['specialty_id']
   }
+  // 专业认证
   get certification_name() {
-    return ['certification_name']
+    return ['certification_name', {
+      rules: [{
+        pattern: this.pattern.CN_EN_NUM('1-100'),
+        message: '请输入1-100个字，中英文及数字'
+      }]
+    }]
   }
   // 对外展示
   get is_show() {
