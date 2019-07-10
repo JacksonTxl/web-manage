@@ -106,7 +106,7 @@
           <a href="javascript:;" v-if="record.auth['shop:member:member|get']" @click="infoFunc(record)">{{text}}</a>
           <span v-else>{{text}}</span>
         </div>
-        <div slot="action" slot-scope="record">
+        <div slot="action" slot-scope="text, record">
           <st-table-actions>
             <a v-if="record.auth['shop:member:member|get']" @click="infoFunc(record)">详情</a>
             <a v-if="record.auth['shop:member:member|edit']" @click="edit(record)">编辑</a>
