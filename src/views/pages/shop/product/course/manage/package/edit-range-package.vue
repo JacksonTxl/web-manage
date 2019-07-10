@@ -384,7 +384,7 @@
         </a-col>
       </a-row>
       <a-row :gutter="8">
-        <a-col :lg="10" :xs="22" :offset="1">
+        <a-col :lg="22" :xs="22" :offset="1">
           <st-form-item
           validate-status="error"
           :help="imageErrorText"
@@ -397,7 +397,7 @@
               :list="fileList"
               @change="fileChange">
                 <i :class="basic('st-upload-icon')"></i>
-                <div :class="basic('st-upload-text')">上传店招</div>
+                <div :class="basic('st-upload-text')">上传封面</div>
               </st-image-upload>
               <div :class="basic('upload-describe')">
                 <p>图片格式必须为:png,bmp,jpeg,jpg,gif,建议使用png格式图片,以保存最佳效果</p>
@@ -502,7 +502,7 @@ export default {
         // 是否可以转让: 0 不可以 1 可以
         is_allow_transfer: 0,
         // 转让费率
-        transfer_rate: null,
+        transfer_rate: undefined,
         // 转让单位 1:百分比 2:元
         transfer_unit: 1,
         // 封面对象
@@ -578,7 +578,7 @@ export default {
         this.packageInfo.personal_range = []
       }
       if (!this.packageInfo.is_allow_transfer) {
-        this.packageInfo.transfer_rate = null
+        this.packageInfo.transfer_rate = undefined
       }
       this.form.setFieldsValue({
         'price': this.packageInfo.price,
@@ -586,7 +586,7 @@ export default {
         'end_time': moment(this.packageInfo.end_time * 1000),
         'valid_time': this.packageInfo.valid_time,
         'frozen_days': this.packageInfo.frozen_days,
-        'transfer_rate': `${this.packageInfo.transfer_rate}`
+        'transfer_rate': this.packageInfo.transfer_rate
       })
       // 课程范围
       this.packageData.is_team = this.packageInfo.is_team
@@ -607,13 +607,17 @@ export default {
       forEach(this.packageInfo.personal_range, o => {
         let selectCoach = filter(this.coachList, i => o.coach_level.includes(i.id))
         let total = reduce(selectCoach, (sum, i) => sum + i.coach_number, 0)
+        let coachGradeList = []
+        o.coach_level.forEach(i => {
+          coachGradeList.push(i.id)
+        })
         this.personalCourseList.push({
           courseChecked: false,
           course_category: o.course_category,
           course_id: o.course_id,
           course_name: o.course_name,
           course_type: o.course_type,
-          coachGradeList: cloneDeep(o.coach_level),
+          coachGradeList,
           coach: total
         })
         this.personalCoachTotalList[o.course_id] = this.personalCoachTotalList[o.course_id] || {}
@@ -719,7 +723,6 @@ export default {
           },
           on: {
             ok(data) {
-              console.log(data.list)
               let coachGradeList = []
               forEach(that.coachList, i => {
                 coachGradeList.push(i.id)
@@ -894,7 +897,7 @@ export default {
     transfer(e) {
       this.packageData.is_allow_transfer = +e.target.checked
       // 重置转让费用的校验
-      this.packageData.transfer_rate = null
+      this.packageData.transfer_rate = undefined
       this.form.resetFields(['transfer_rate'])
     },
     fileChange(data) {
@@ -913,9 +916,9 @@ export default {
       }
     },
     transferUnitChange() {
-      this.packageData.transfer_rate = null
+      this.packageData.transfer_rate = undefined
       this.form.setFieldsValue({
-        'transfer_rate': null
+        'transfer_rate': undefined
       })
     },
     // start_time validatorFn

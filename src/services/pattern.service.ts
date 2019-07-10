@@ -23,7 +23,7 @@ export class PatternService {
     /**
      * 中文、英文、数字、空格
      */
-    'CN_EN_NUM_SPACE': '^[A-z0-9\\u4e00-\\u9fa5][A-z0-9\\u4e00-\\u9fa5\\s]{**}[A-z0-9\\u4e00-\\u9fa5]$',
+    'CN_EN_NUM_SPACE': '^[A-z0-9\\u4e00-\\u9fa5]{1,2}$|^[A-z0-9\\u4e00-\\u9fa5][A-z0-9\\u4e00-\\u9fa5\\s]{**}[A-z0-9\\u4e00-\\u9fa5]$',
     /**
      * 包含手机号和座机号
      */

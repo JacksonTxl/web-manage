@@ -488,7 +488,7 @@ export default {
     },
     // 储物柜下拉名称搜索
     filterOption(input, option) {
-      return option.componentOptions.children[0].text.toLowerCase().includes(input)
+      return option.componentOptions.children[0].text.includes(input)
     },
     // 查看详情
     onDetail(type) {
