@@ -3,7 +3,7 @@
     <div :class="basic('left')">
       <div :class="basic('effect')">
         <header>
-          营销效果<img src="~@/assets/img/brand/marketing/tip.svg" />
+          营销效果
         </header>
         <section>
           <ul v-if="info.num">
