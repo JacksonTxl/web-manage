@@ -7,11 +7,13 @@ import { MessageService } from '@/services/message.service'
 export interface SetState {
   reserveInfo: any
   reserveList: any[]
+  infoAuth: any
 }
 @Injectable()
 export class TeamScheduleReserveService {
   state$: State<SetState>
   auth$: Computed<any>
+  infoAuth$: Computed<any>
   reserveInfo$: Computed<any>
   reserveList$: Computed<any[]>
   constructor(private reserveApi: TeamScheduleReserveApi,
@@ -24,11 +26,13 @@ export class TeamScheduleReserveService {
         checkIn: this.authService.can('shop:reserve:team_course_reserve|checkin')
       },
       reserveInfo: [],
-      reserveList: []
+      reserveList: [],
+      infoAuth: {}
     })
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
     this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
     this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
+    this.infoAuth$ = new Computed(this.state$.pipe(pluck('infoAuth')))
   }
   /**
  *
@@ -62,7 +66,8 @@ export class TeamScheduleReserveService {
     return this.reserveApi.getInfo(id).pipe(tap(res => {
       this.state$.commit(state => {
         res = this.authService.filter(res, 'list')
-        res = this.authService.filter(res, 'info')
+        res = this.authService.filter(res, 'auth')
+        state.infoAuth = res.auth
         state.reserveInfo = res.info
         state.reserveList = res.list
       })
