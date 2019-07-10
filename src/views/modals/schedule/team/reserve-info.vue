@@ -252,6 +252,9 @@ export default {
         .subscribe(() => {
           this.isAdd = true
           this.showSite = []
+          this.siteNumIds = []
+          this.consumeType = ''
+          this.memberId = ''
           this.getReserve()
         })
     },
