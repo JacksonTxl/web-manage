@@ -39,7 +39,7 @@ export class InfoService extends Store<SetState> implements RouteGuard {
         this.tabs$.commit(() => {
           const tabs = [{ label: '收款明细', route: { name: 'shop-finance-order-info-collection-details', query: { id } } },
             { label: '商品信息', route: { name: 'shop-finance-order-info-commodity-info', query: { id, type: res.info.product_type } } }]
-          if ((res.info.pay_status === 2 || res.info.pay_status === 3) && (res.info.order_status === 1 || res.info.order_status === 2)) {
+          if (res.info.order_status === 4) {
             tabs.push({ label: '退款信息', route: { name: 'shop-finance-order-info-refund-info', query: { id } } })
           }
           return tabs
