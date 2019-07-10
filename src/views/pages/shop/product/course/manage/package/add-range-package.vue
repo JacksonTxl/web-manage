@@ -42,12 +42,12 @@
                     <td class="tg-c"><a-checkbox @change="teamCheckboxChange"/></td>
                     <td class="rightline">团体课程</td>
                     <td class="pr-32 pl-56">
-                      <st-input-number v-model="packageData.team_times" :disabled="packageData.is_team===0">
+                      <st-input-number :min="1" :max="99999" v-model="packageData.team_times" :disabled="packageData.is_team===0">
                         <template slot="addonAfter">节</template>
                       </st-input-number>
                     </td>
                     <td class="pr-148">
-                      <st-input-number v-model="packageData.team_unit_price" :float="true" :disabled="packageData.is_team===0">
+                      <st-input-number :min="0" :max="999999.9" v-model="packageData.team_unit_price" :float="true" :disabled="packageData.is_team===0">
                         <template slot="addonAfter">元</template>
                       </st-input-number>
                     </td>
@@ -128,12 +128,12 @@
                     <td class="tg-c"><a-checkbox @change="personalCheckboxChange" /></td>
                     <td class="rightline">私教课程</td>
                     <td class="pr-32 pl-56">
-                      <st-input-number v-model="packageData.personal_times" :disabled="packageData.is_personal===0">
+                      <st-input-number :min="1" :max="99999" v-model="packageData.personal_times" :disabled="packageData.is_personal===0">
                         <template slot="addonAfter">节</template>
                       </st-input-number>
                     </td>
                     <td class="pr-148">
-                      <st-input-number v-model="packageData.personal_unit_price" :float="true" :disabled="packageData.is_personal===0">
+                      <st-input-number :min="0" :max="999999.9" v-model="packageData.personal_unit_price" :float="true" :disabled="packageData.is_personal===0">
                         <template slot="addonAfter">元</template>
                       </st-input-number>
                     </td>
@@ -273,7 +273,8 @@
           <st-form-item label="售卖价格" required>
             <st-input-number
               placeholder="请输入售卖价格"
-              :max="99999.9"
+              :min="0"
+              :max="999999.9"
               v-decorator="[
                 'price',
                  {rules: [{ required: true, message: '请输入售卖价格' }]}
@@ -360,7 +361,8 @@
             <div :class="basic('transfer')">
               <a-checkbox :class="basic('transfer-checkbox')" @change="transfer">支持转让</a-checkbox>
               <st-input-number
-              :max="packageData.transfer_unit===1?100:99999.9"
+              :min="0"
+              :max="packageData.transfer_unit===1?100:999999.9"
               v-decorator="[
                 'transfer_rate',
                  {rules: [{initialValue: null,required: packageData.is_allow_transfer!==0, message: '请输入转让值数值'}]}

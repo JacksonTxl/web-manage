@@ -230,8 +230,8 @@ export default {
     roleList: {
       type: Array
     },
-    codeList: {
-      type: Array
+    codeInfo: {
+      type: Object
     },
     department: {
       type: Array
@@ -250,6 +250,28 @@ export default {
       treeExpandedKeys: [],
       value: undefined
     }
+  },
+  computed: {
+    codeList() {
+      return this.codeInfo && this.codeInfo.code_list
+    },
+    default_code() {
+      return this.codeInfo && this.codeInfo.default_code
+    },
+    default_code_id() {
+      return this.codeInfo && this.codeInfo.default_code_id
+    }
+  },
+  mouted() {
+    this.$nextTick(() => {
+      console.log(this.s)
+      this.form.setFields({
+        country_code_id: {
+          key: this.default_code_id,
+          value: this.default_code
+        }
+      })
+    })
   },
   methods: {
     getIsCoach(data) {

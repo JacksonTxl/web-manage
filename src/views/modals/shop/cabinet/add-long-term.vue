@@ -11,7 +11,7 @@
         <a-input :value="areaName" disabled/>
       </st-form-item>
       <st-form-item label="首字母">
-        <a-input placeholder="请输入首字母" maxlength="1" v-decorator="ruleConfig.firstLetter"/>
+        <a-input placeholder="请输入首字母" maxlength="1" v-decorator="rules.firstLetter"/>
       </st-form-item>
       <st-form-item label="起始编号" required>
         <a-input placeholder="请输入起始编号" v-decorator="ruleConfig.startNum"/>
@@ -65,6 +65,8 @@ import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
 import { AddLongTermService as AddService } from './add-long-term.service'
 import { RuleConfig } from '@/constants/setting/cabinet-rule'
+import { PatternService } from '@/services/pattern.service'
+import { rules } from './cabinet.config'
 
 export default {
   serviceInject() {
@@ -72,7 +74,8 @@ export default {
       messageService: MessageService,
       userService: UserService,
       addService: AddService,
-      ruleConfig: RuleConfig
+      ruleConfig: RuleConfig,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -97,6 +100,9 @@ export default {
       type: String,
       default: ''
     }
+  },
+  computed: {
+    rules
   },
   methods: {
     onSubmit(e) {

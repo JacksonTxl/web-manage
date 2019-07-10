@@ -27,7 +27,6 @@ export default {
   },
   data() {
     return {
-      cccc: [],
       dateFormat: 'YYYY-MM-DD',
       timeData: {
         min: '',
@@ -37,12 +36,15 @@ export default {
         title: '生日',
         info: '选择自然日内，过生日的用户'
       },
-      radioValue: ''
+      radioValue: '',
+      radioText: ''
     }
   },
   created() {
-    console.log(this.value)
-    this.onChange([], [this.value.min, this.value.max])
+    if (this.value) {
+      this.onChange([], [this.value.min, this.value.max])
+      this.radioValue = this.value.value
+    }
   },
   methods: {
     moment,
@@ -55,6 +57,8 @@ export default {
       }
       this.value.min = this.timeData.min
       this.value.max = this.timeData.max
+      this.value.value = this.radioValue
+      this.value.name = this.radioText
       this.filterTime(dayTime)
     },
     onChange(data, str) {
@@ -63,25 +67,29 @@ export default {
         max: str[1]
       }
       if (obj.max === this.filterTime(new Date().getTime())) {
-        let flagTime = Math.round(
-          (new Date(obj.max).getTime() - new Date(obj.min).getTime()) /
-            (24 * 60 * 60 * 1000)
-        )
+        let flagTime = data[1].diff(data[0], 'days')
         if (flagTime === 7) {
           this.radioValue = 7
+          this.radioText = '近7天'
         } else if (flagTime === 30) {
           this.radioValue = 30
+          this.radioText = '近30天'
         } else if (flagTime === 90) {
           this.radioValue = 90
+          this.radioText = '近90天'
         } else {
           this.radioValue = ''
+          this.radioText = ''
         }
       } else {
         this.radioValue = ''
+        this.radioText = ''
       }
       this.timeData = obj
       this.value.min = str[0]
       this.value.max = str[1]
+      this.value.value = this.radioValue
+      this.value.name = this.radioText
     },
     filterTime(dateTime) {
       let dateTime1 = new Date(dateTime)

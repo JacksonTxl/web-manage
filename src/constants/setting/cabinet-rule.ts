@@ -7,9 +7,9 @@ export class RuleConfig {
   /**
    * 首字母
    */
-  get firstLetter() {
-    return ['first_letter']
-  }
+  // get firstLetter() {
+  //   return ['first_letter']
+  // }
   /**
    * 起始编号/单个柜子编号
    */
