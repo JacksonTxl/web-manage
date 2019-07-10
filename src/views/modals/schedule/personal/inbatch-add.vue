@@ -14,10 +14,14 @@
       </st-form-item>
     </st-form>
     <div class="modal-add-schedule__time">
-      <div class="time-item" v-for="info in schedule_info" :key="info.time_type">
-        <span>{{info.time_type | filterDate}}</span> <st-time-picker class="mg-b32" v-model="info.timing" :key="info.time_type"></st-time-picker>
-      </div>
-
+      <a-row class="time-item mg-t48" v-for="info in schedule_info" :key="info.time_type">
+        <a-col :lg="2">
+          <span>{{info.time_type | filterDate}}</span>
+        </a-col>
+        <a-col :lg="22">
+          <st-time-picker v-model="info.timing" :key="info.time_type"></st-time-picker>
+        </a-col>
+      </a-row>
     </div>
   </st-modal>
 </template>n

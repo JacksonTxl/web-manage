@@ -1,126 +1,84 @@
 <template>
   <div :class="b()" >
-    <a-row :gutter="24">
-      <a-col :class="b('content')" :span="18">
-        <a-row :gutter="16" :class="bCount()">
-          <a-col :span="6" :class="bCount('item')">
-            <div :class="bCount('box')">
-              <count-card title="今日营收额" :count="this.revenue.num" :footer="{label: '近7天日均营收额:', value: this.revenue.avg }" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
-                <template slot="title">
-                  aaa
-                </template>
-                <brand-simple-line :data="this.revenue.chart | lineFilter"></brand-simple-line>
-              </count-card>
-            </div>
-          </a-col>
-          <a-col :span="6" :class="bCount('item')">
-            <div :class="bCount('box')">
-              <count-card title="今日订单数" :count="this.order.num" :footer="{label: '近7天日均订单数:', value: this.order.avg }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
-                <brand-simple-line color="#00B4BC" unit="单" :data="this.order.chart | lineFilter"></brand-simple-line>
-              </count-card>
-            </div>
-          </a-col>
-          <a-col :span="6" :class="bCount('item')">
-            <div :class="bCount('box')">
-              <count-card  title="用户数">
-                <brand-simple-line color="#55BFA3" unit="人"  :data="this.visit.chart | lineFilter"></brand-simple-line>
-              </count-card>
-            </div>
-          </a-col>
-          <a-col :span="6" :class="bCount('item')">
-            <div :class="bCount('box')">
-              <count-card title="今日客流量" :count="this.user.num" :footer="{label: '近7天日均营收额:', value: this.user.avg }" :trend="{isUp: this.user.ratio > 0, rate: this.user.ratio }">
-                <brand-simple-bar color="#58CC99" class="mg-t40" :data="this.user | barFilter"></brand-simple-bar>
-              </count-card>
-            </div>
-          </a-col>
-        </a-row>
-        <a-row class="mg-t16 bg-white" >
-          <a-col :span="24">
-            <dashboard-tabs @change="onChangeTabs">
-              <template v-slot:user>
-                <div class="mg-t8 mg-l32 user-chart-box">
-                  <div class="funnel-vertical">
-                    <funnel-vertical  :data="userFunnel"></funnel-vertical>
-                  </div>
-                  <div class="revenue-area">
-                    <brand-revenue-area  class="user-chart-box__item" :data="userChartData"></brand-revenue-area>
-                  </div>
-                </div>
+    <div :class="b('content')" :span="18">
+      <a-row :gutter="16" :class="bCount()">
+        <a-col :span="6" :class="bCount('item')">
+          <div :class="bCount('box')">
+            <count-card title="今日营收额" :count="this.revenue.num" :footer="{label: '近7天日均营收额:', value: this.revenue.avg }" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
+              <template slot="title">
+                aaa
               </template>
-              <template v-slot:marketing>
-                <div class="mg-t8 mg-l32 user-chart-box">
-                  <div class="funnel-vertical">
-                    <funnel-vertical  :data="marketingFunnel"></funnel-vertical>
-                  </div>
-                  <div class="revenue-area">
-                    <brand-revenue-area  :fields="['浏览用户','注册用户','消费用户','办理入会']" class="user-chart-box__item" :data="marketing"></brand-revenue-area>
-                  </div>
+              <brand-simple-line :data="this.revenue.chart | lineFilter"></brand-simple-line>
+            </count-card>
+          </div>
+        </a-col>
+        <a-col :span="6" :class="bCount('item')">
+          <div :class="bCount('box')">
+            <count-card title="今日订单数" :count="this.order.num" :footer="{label: '近7天日均订单数:', value: this.order.avg }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
+              <brand-simple-line color="#00B4BC" unit="单" :data="this.order.chart | lineFilter"></brand-simple-line>
+            </count-card>
+          </div>
+        </a-col>
+        <a-col :span="6" :class="bCount('item')">
+          <div :class="bCount('box')">
+            <count-card  title="用户数">
+              <brand-simple-line color="#55BFA3" unit="人"  :data="this.visit.chart | lineFilter"></brand-simple-line>
+            </count-card>
+          </div>
+        </a-col>
+        <a-col :span="6" :class="bCount('item')">
+          <div :class="bCount('box')">
+            <count-card title="今日客流量" :count="this.user.num" :footer="{label: '近7天日均营收额:', value: this.user.avg }" :trend="{isUp: this.user.ratio > 0, rate: this.user.ratio }">
+              <brand-simple-bar color="#58CC99" class="mg-t40" :data="this.user | barFilter"></brand-simple-bar>
+            </count-card>
+          </div>
+        </a-col>
+      </a-row>
+      <a-row class="mg-t16 bg-white" >
+        <a-col :span="24">
+          <dashboard-tabs @change="onChangeTabs">
+            <template v-slot:user>
+              <div class="mg-t8 mg-l32 user-chart-box">
+                <div class="funnel-vertical">
+                  <funnel-vertical  :data="userFunnel"></funnel-vertical>
                 </div>
-              </template>
-            </dashboard-tabs>
-          </a-col>
-        </a-row>
-        <a-row :gutter="16" class="mg-t16">
-          <a-col :span="12">
-            <st-container class="bg-white" type="2">
-              <st-t3>客单价</st-t3>
-              <brand-user-avg-bar :data="avg"></brand-user-avg-bar>
+                <div class="revenue-area">
+                  <brand-revenue-area  class="user-chart-box__item" :data="userChartData"></brand-revenue-area>
+                </div>
+              </div>
+            </template>
+            <template v-slot:marketing>
+              <div class="mg-t8 mg-l32 user-chart-box">
+                <div class="funnel-vertical">
+                  <funnel-vertical  :data="marketingFunnel"></funnel-vertical>
+                </div>
+                <div class="revenue-area">
+                  <brand-revenue-area  :fields="['浏览用户','注册用户','消费用户','办理入会']" class="user-chart-box__item" :data="marketing"></brand-revenue-area>
+                </div>
+              </div>
+            </template>
+          </dashboard-tabs>
+        </a-col>
+      </a-row>
+      <a-row :gutter="16" class="mg-t16">
+        <a-col :span="12">
+          <st-container class="bg-white" type="2">
+            <st-t3 style="margin-bottom:20px">客单价</st-t3>
+            <brand-user-avg-bar :data="avg" :height="320"></brand-user-avg-bar>
 
-            </st-container>
-          </a-col>
-          <a-col :span="12">
-            <st-container class="bg-white" type="2">
-              <st-t3>用户活跃分析</st-t3>
-              <brand-user-ring :data="entry"></brand-user-ring>
-            </st-container>
-          </a-col>
-        </a-row>
-      </a-col>
-      <a-col :class="b('adv')" :span="6">
-        <st-panel app :class="bCount('box')">
-          <img width="280px" height="186px" src="https://file.digitaling.com/eImg/uimages/20170814/1502707757253062.jpg" alt="">
-        </st-panel>
-        <st-container class="bg-white mg-t16" type="2">
-          <st-t3>热门营销插件</st-t3>
-          <plug-in></plug-in>
-          <plug-in></plug-in>
-          <plug-in></plug-in>
-        </st-container>
-        <st-container class="book bg-white mg-t16" type="2">
-          <div class="book-img">
-            <img src="" alt="">
-          </div>
-
-          <div class="book-content  mg-l24">
-            <span>2018中国健身行业数据报告</span>
-            <a href="javascript:;">¥499</a>
-            <st-button ghost pill type="primary" class="mg-t8">免费下载电子版</st-button>
-          </div>
-        </st-container>
-        <st-container class="aiot bg-white mg-t16" type="2">
-          <div class="aiot__img">
-            <img src="" alt="">
-          </div>
-          <div class="aiot__content mg-l24">
-            <st-t3>多功能人脸识别一体机</st-t3>
-            <p>AI技术加持，玩转大数据</p>
-          </div>
-        </st-container>
-        <st-container class="link bg-white mg-t16" type="2">
-          <st-t3 class="link__phone">400-962-8988</st-t3>
-          <div class="link__time">服务时间：09:00 - 18:00</div>
-          <div class="link__qr-code mg-t8">
-            <div class="image-box">
-              <img class="image" src="#" alt="">
-            </div>
-
-            <span>扫码关注三体官方微信公众号</span>
-          </div>
-        </st-container>
-      </a-col>
-    </a-row>
-
+          </st-container>
+        </a-col>
+        <a-col :span="12">
+          <st-container class="bg-white" type="2">
+            <st-t3 style="margin-bottom:20px">用户活跃分析</st-t3>
+            <brand-user-ring :data="entry" :height="320"></brand-user-ring>
+          </st-container>
+        </a-col>
+      </a-row>
+    </div>
+    <div :class="b('adv')" :span="6">
+      <sidebar-component></sidebar-component>
+    </div>
   </div>
 </template>
 
@@ -132,9 +90,9 @@ import BrandUserRing from '@/views/biz-components/stat/brand-user-ring'
 import BrandUserAvgBar from '@/views/biz-components/stat/brand-user-avg-bar'
 import DashboardTabs from '@/views/pages/brand/dashboard#/tabs'
 import CountCard from '@/views/pages/brand/dashboard#/count-card'
-import PlugIn from '@/views/pages/brand/dashboard#/plug-in'
 import FunnelVertical from '@/views/biz-components/chart/funnel-vertical'
 import { DashboardService } from './dashboard.service'
+import SidebarComponent from './dashboard#/sidebar.component'
 export default {
   name: 'Dashboard',
   serviceInject() {
@@ -497,8 +455,8 @@ export default {
     BrandUserRing,
     BrandSimpleLine,
     BrandUserAvgBar,
-    PlugIn,
-    FunnelVertical
+    FunnelVertical,
+    SidebarComponent
   }
 }
 </script>

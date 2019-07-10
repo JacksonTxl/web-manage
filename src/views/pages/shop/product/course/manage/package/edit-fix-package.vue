@@ -393,10 +393,11 @@
             <div :class="basic('transfer')">
               <a-checkbox :class="basic('transfer-checkbox')" :defaultChecked="!!packageInfo.is_allow_transfer" @change="transfer">支持转让</a-checkbox>
               <st-input-number
+              :min="0"
               :max="packageData.transfer_unit===1?100:99999.9"
               v-decorator="[
                 'transfer_rate',
-                 {rules: [{initialValue: null,required: packageData.is_allow_transfer!==0, message: '请输入转让值数值'}]}
+                 {rules: [{required: !!packageData.is_allow_transfer, message: '请输入转让值数值'}]}
               ]" :disabled="packageData.is_allow_transfer===0" :float="packageData.transfer_unit===2" :class="basic('transfer-input')" style="padding-right:0;">
                 <a-select :disabled="packageData.is_allow_transfer===0" slot="addonAfter" @change="transferUnitChange" v-model="packageData.transfer_unit" style="width: 60px">
                   <a-select-option v-for="item in Object.entries(package_course.transfer_unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
@@ -420,7 +421,7 @@
         </a-col>
       </a-row>
       <a-row :gutter="8">
-        <a-col :lg="10" :xs="22" :offset="1">
+        <a-col :lg="22" :xs="22" :offset="1">
           <st-form-item
           validate-status="error"
           :help="imageErrorText"
@@ -433,7 +434,7 @@
               :list="fileList"
               @change="fileChange">
                 <i :class="basic('st-upload-icon')"></i>
-                <div :class="basic('st-upload-text')">上传店招</div>
+                <div :class="basic('st-upload-text')">上传封面</div>
               </st-image-upload>
               <div :class="basic('upload-describe')">
                 <p>图片格式必须为:png,bmp,jpeg,jpg,gif,建议使用png格式图片,以保存最佳效果</p>
@@ -530,7 +531,7 @@ export default {
         // 是否可以转让: 0 不可以 1 可以
         is_allow_transfer: 0,
         // 转让费率
-        transfer_rate: null,
+        transfer_rate: undefined,
         // 转让单位 1:百分比 2:元
         transfer_unit: 1,
         // 封面对象
@@ -637,7 +638,7 @@ export default {
         this.packageInfo.personal_range = []
       }
       if (!this.packageInfo.is_allow_transfer) {
-        this.packageInfo.transfer_rate = null
+        this.packageInfo.transfer_rate = undefined
       }
       this.form.setFieldsValue({
         'price': this.packageInfo.price,
@@ -645,7 +646,7 @@ export default {
         'end_time': moment(this.packageInfo.end_time * 1000),
         'valid_time': this.packageInfo.valid_time,
         'frozen_days': this.packageInfo.frozen_days,
-        'transfer_rate': `${this.packageInfo.transfer_rate}`
+        'transfer_rate': this.packageInfo.transfer_rate
       })
       // 课程范围
       this.packageData.is_team = this.packageInfo.is_team
@@ -665,10 +666,14 @@ export default {
       })
       this.packageData.is_personal = this.packageInfo.is_personal
       forEach(this.packageInfo.personal_range, o => {
+        let coachGradeList = []
+        o.coach_level.forEach(i => {
+          coachGradeList.push(i.id)
+        })
         this.personalCourseList.push({
           personal_times: o.personal_times,
           personal_unit_price: o.personal_unit_price,
-          coachGradeList: cloneDeep(o.coach_level),
+          coachGradeList,
           courseChecked: false,
           course_id: o.course_id,
           course_name: o.course_name,
@@ -712,8 +717,8 @@ export default {
           this.packageData.valid_time = values.valid_time
           this.packageData.frozen_days = values.frozen_days
           this.packageData.transfer_rate = values.transfer_rate
-          this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
-          this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
+          this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')}`
+          this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
           this.packageData.team_range = []
           this.teamCourseList.forEach(i => {
             this.packageData.team_range.push({

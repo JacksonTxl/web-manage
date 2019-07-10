@@ -40,7 +40,7 @@ import { RouteService } from '@/services/route.service'
 import AddCard from './date#/add-card'
 
 export default {
-  name: 'Schedule',
+  name: 'PersonalTeamSchedule',
   components: {
     FullCalendar // make the <FullCalendar> tag available
   },
@@ -73,7 +73,7 @@ export default {
         timeGridDay: { buttonText: '日' }
       },
       header: {
-        left: 'custom1, custom2',
+        left: that.header,
         center: 'prev,next,title',
         right: 'timeGridWeek,timeGridDay, custom4'
       },
@@ -84,7 +84,7 @@ export default {
         interactionPlugin // needed for dateClick
       ],
       customButtons: {
-        custom1: {
+        bacthAdd: {
           text: '批量排期',
           click() {
             that.$modalRouter.push({
@@ -97,7 +97,7 @@ export default {
             })
           }
         },
-        custom2: {
+        copy: {
           text: '复制排期',
           click() {
             that.$modalRouter.push({
@@ -143,14 +143,15 @@ export default {
     const add = this.auth.add
     const addBatch = this.auth.addBatch
     const copy = this.auth.copy
+    console.log(this.auth)
     if (copy) {
-      this.header.left = 'add'
+      this.header.left = 'copy'
     }
     if (addBatch) {
       this.header.left = 'bacthAdd'
     }
     if (copy && addBatch) {
-      this.header.left = 'bacthAdd, add'
+      this.header.left = 'bacthAdd, copy'
     }
     if (add) {
       this.setAddButton()
@@ -162,10 +163,8 @@ export default {
   },
   methods: {
     datesRender(info) {
-      console.log(info)
       const start = moment(info.view.activeStart).format('YYYY-MM-DD').valueOf()
       const end = moment((moment(info.view.activeEnd).valueOf() - 24 * 3600 * 1000)).format('YYYY-MM-DD').valueOf()
-      console.log(start, end)
       this.$router.push({ query: { start_date: start, end_date: end } })
     },
     setAddButton() {

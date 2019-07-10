@@ -1,5 +1,5 @@
 <template>
-  <div :class="b()" :style="{'margin-top':info.contract_marget + 'mm'}">
+  <div :class="b()" :style="{'margin-top':info.contract_marget + 'mm','zoom': info.contract_page+'%'}">
     <header :class="b('header')">
       <img v-if="info.is_brand_logo" :class="b('brand-logo')" src="http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/20190411/nmdNRC_cVqWSjCNg.png" alt="brand-logo">
       <h1 :class="b('title')">{{info.contract_title}}</h1>
@@ -24,12 +24,12 @@
               <span class="info-text">13900000000</span>
             </div>
           </a-col>
-          <a-col :span="8" v-if="info.is_member_card">
+          <!-- <a-col :span="8" v-if="info.is_member_card">
             <div class="info-item">
               <label class="info-label">会员卡号：</label>
               <span class="info-text">ST000001</span>
             </div>
-          </a-col>
+          </a-col> -->
           <a-col :span="8" v-if="info.is_member_sex">
             <div class="info-item">
               <label class="info-label">性别：</label>
@@ -120,12 +120,12 @@
             <span class="info-text">9600.00元</span>
           </div>
         </a-col>
-        <a-col :span="8">
+        <!-- <a-col :span="8">
           <div class="info-item">
             <label class="info-label">支付方式：</label>
             <span class="info-text">刷卡9600.00元</span>
           </div>
-        </a-col>
+        </a-col> -->
         <a-col :span="8" v-if="info.contract_type === CONTRACT_TYPE.MEMBER_CARD">
           <div class="info-item">
             <label class="info-label">开卡方式：</label>

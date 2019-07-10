@@ -1,5 +1,5 @@
 <template>
-  <div class="page-dashboard-plugin mg-t24">
+  <div class="page-dashboard-plugin">
     <a :href="href" target="_blank">
     <div class="image">
       <img :src="img" alt="">

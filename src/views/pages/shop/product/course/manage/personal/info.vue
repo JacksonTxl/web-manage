@@ -55,7 +55,8 @@
         <div class="title mg-b8"><span class="label">售卖定价:</span><span class="value"></span></div>
         <st-container>
           <st-table :columns="priceConfigColumns" :dataSource="price_gradient.prices">
-            <div slot="min_sell_price" slot-scope="min_sell_price, record">{{record.min_sale}} ~ {{record.max_sale}}</div>
+            <div slot="min_sell_price" slot-scope="min_sell_price, record">{{record.min_sell_price}} ~ {{record.max_sell_price}}</div>
+            <div slot="min_sell" slot-scope="min_sell, record">{{record.min_sale}} ~ {{record.max_sale}}</div>
             <div slot="transfer_num" slot-scope="transfer_num, record">{{record.transfer_num}} {{record.transfer_unit === 1 ? "%":"元"}}</div>
           </st-table>
         </st-container>

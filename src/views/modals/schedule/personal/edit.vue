@@ -112,10 +112,9 @@ export default {
     onOkSave() {
       let date = {
         id: this.id,
-        schedule_info: this.schedule_info
+        schedule_info: this.scheduleInfo
       }
       this.scheduleService.update(date).subscribe(res => {
-        console.log('ok', res)
         this.messageService.success({ content: '编辑成功' })
         this.show = false
       })
