@@ -49,8 +49,8 @@
         </a-col>
         <a-col :span="9">
           <st-info>
-            <st-info-item label="上课门店">{{info.valid_time}}</st-info-item>
-            <st-info-item label="时长">{{info.admission_range}}</st-info-item>
+            <st-info-item label="上课门店">{{info.admission_range}}</st-info-item>
+            <st-info-item label="时长">{{info.valid_time}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>

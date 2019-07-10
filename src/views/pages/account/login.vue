@@ -23,7 +23,6 @@
         </div>
       </section>
       <section class="rt">
-
         <div v-if="loginType === 'user' || loginType === 'mobile'" class="login-user-and-mobile">
           <ul class="page-login-tabs mg-l24 mg-b24">
             <li v-for="item in loginTypes" :key="item.key" class="page-login-tab-item pd-y8" :class="{'page-login-tab-item--active': item.key === loginType}"><span @click.stop="onClickChangeType(item.key)">{{item.name}}</span></li>

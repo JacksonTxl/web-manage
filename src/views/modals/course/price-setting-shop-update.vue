@@ -1,19 +1,19 @@
 <template>
   <st-modal
     class="modal-price-setting-shop-update"
-    :title="' 查看课程定价'"
+    :title="'设置课程定价'"
     @ok="onOk"
-    okText="去编辑"
+    okText="完成"
     width="878px"
     v-model='show'>
-    <set-price :value="priceList"></set-price>
+    <set-price :value="priceList" @change="onPriceGradientChange"></set-price>
   </st-modal>
 </template>
 
 <script>
 import SetPrice from '@/views/fragments/course/set-price'
 export default {
-  name: 'priceSettingShopUpdate',
+  name: 'PriceSettingShopUpdate',
   props: {
     priceList: {
       type: Array,
@@ -22,7 +22,8 @@ export default {
   },
   data() {
     return {
-      show: false
+      show: false,
+      priceGradient: []
     }
   },
   components: {
@@ -30,7 +31,10 @@ export default {
   },
   methods: {
     onOk() {
-      console.log('isOk')
+      // this.
+    },
+    onPriceGradientChange(val) {
+      this.priceGradient = val
     }
   }
 }

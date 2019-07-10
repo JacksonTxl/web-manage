@@ -136,6 +136,7 @@ import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
+import { MessageService } from '@/services/message.service'
 
 export default {
   name: 'ShopPackageList',
@@ -144,6 +145,7 @@ export default {
     return {
       userService: UserService,
       routeService: RouteService,
+      messageService: MessageService,
       listService: ListService
     }
   },
@@ -297,7 +299,10 @@ export default {
           start_time: `${this.moment(start * 1000).format('YYYY-MM-DD')} 00:00:00`,
           end_time: `${this.moment(end * 1000).format('YYYY-MM-DD')} 23:59:59`
         }).subscribe(res => {
-          this.onSearch()
+          this.messageService.success({
+            content: '上架成功'
+          })
+          this.$router.push({ query: { ...this.query, page: 1 }, force: true })
         })
       } else {
         this.onsaleIsShow = true
@@ -322,7 +327,10 @@ export default {
           this.onsaleIsShow = false
           this.packageId = ''
           this.packageName = ''
-          this.$router.push({ query: this.query, force: true })
+          this.messageService.success({
+            content: '上架成功'
+          })
+          this.$router.push({ query: { ...this.query, page: 1 }, force: true })
         })
       }).catch(error => {
         console.log(error)
@@ -338,7 +346,10 @@ export default {
         this.offsaleIsShow = false
         this.packageId = ''
         this.packageName = ''
-        this.$router.push({ force: true, query: this.query })
+        this.messageService.success({
+          content: '下架成功'
+        })
+        this.$router.push({ query: { ...this.query, page: 1 }, force: true })
       })
     },
     deletePackage(id, name) {
@@ -351,7 +362,7 @@ export default {
         this.deleteIsShow = false
         this.packageId = ''
         this.packageName = ''
-        this.$router.push({ force: true, query: this.query })
+        this.onSearch()
       })
     }
   }

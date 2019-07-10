@@ -97,7 +97,7 @@ export default {
     }
   },
   created() {
-    this.rules = this.codeRules
+    this.rules = this.codeRules.slice(0)
   },
   methods: {
     onAdd() {

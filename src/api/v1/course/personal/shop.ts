@@ -54,6 +54,12 @@ export class ShopPersonalCourseApi extends Api {
     return this.http.get(`/v1/course/personal/shop/edit/${id}`)
   }
   /**
+   * 获取课程定价详情
+   */
+  getCoursePriceList(id: any) {
+    return this.http.get(`/v1/course/personal/shop/price/${id}`)
+  }
+  /**
    * 会员名称检索
    */
   getMemberList(member: string) {

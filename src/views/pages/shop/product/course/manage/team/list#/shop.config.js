@@ -15,6 +15,7 @@ export const columns = [
   },
   {
     title: '时长（分钟）',
+    sorter: true,
     dataIndex: 'duration'
   },
   {
