@@ -1,6 +1,99 @@
 .page-login-mobile{
-  .w(336px);
+  // .w(336px);
+  margin-left: -24px;
+  &__phone {
+    position: relative;
+    &-input {
+      padding-left: 80px;
+    }
+    &-dropdown {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0;
+      padding: 0 12px 0 16px;
+      &::after{
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 16px;
+        .bg(#333);
+      }
+    }
+  }
+  &__captcha {
+    position: relative;
+    &-input {
+      padding-right: 98px;
+    }
+    &-button {
+      position: absolute;
+      .fz(14px);
+      .lh(24px);
+      .c(@primary-color);
+      cursor: pointer;
+      top: 50%;
+      padding: 0 14px;
+      transform: translateY(-50%);
+      right: 0;
+    }
+  }
   &__button{
     font-size: 12px;
+  }
+  &__pass{
+    .ant-form-item-children label {
+      .fz(12px);
+    }
+    .fz(12px);
+    &-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  &__login-button {
+    >span {
+      .fz(14px);
+      font-weight: 500;
+      .lh(20px);
+    }
+  }
+  &__third{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 94px;
+    .st-icon-wapper{
+      padding: 0 8px;
+    }
+    .st-icon{
+      .s(24px, 24px);
+      cursor: pointer;
+      .c(rgba(196,193,219,0.4)) !important;
+    }
+    .alipay{
+      &:hover{
+        .c(@link-color) !important;
+      }
+    }
+    .wechat{
+      &:hover{
+        .c(#1AAD19) !important;
+      }
+    }
+    .weibo{
+      &:hover{
+        .c(#ff8140) !important;
+      }
+    }
+    .qq{
+      &:hover{
+        .c(@link-color) !important;
+      }
+    }
   }
 }
