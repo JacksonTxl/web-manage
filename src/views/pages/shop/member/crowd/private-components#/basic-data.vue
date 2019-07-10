@@ -48,6 +48,8 @@ export default {
       }
     }
   },
-  mounted() {}
+  mounted() {
+    console.log(this.value)
+  }
 }
 </script>

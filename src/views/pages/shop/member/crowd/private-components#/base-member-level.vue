@@ -3,7 +3,9 @@
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">选择等级</span>
-    <a-checkbox-group :options="plainOptions" v-model="checkedList" @change="onChange"/>
+    <a-checkbox-group v-model="value.getData.member_level" >
+      <a-checkbox v-for="(item,index) in plainOptions" :value="item" :key="index">{{item.name}}</a-checkbox>
+    </a-checkbox-group>
   </div>
 </template>
 <script>
@@ -37,37 +39,25 @@ export default {
         title: '用户等级',
         info: '满足以下用户等级的用户'
       },
-      radioValue: '',
       plainOptions: [],
-      plainOptionsIndex: [],
       checkedList: []
     }
   },
   created() {
-    this.plainOptions = Object.values(this.shopMemberEnums.member_level.value)
-    this.plainOptionsIndex = Object.keys(
-      this.shopMemberEnums.member_level.value
-    )
-    this.checkedList = Object.values(
-      Object.assign({}, ...this.value.getData.base_member_level)
-    )
+    let list = []
+    if (!this.shopMemberEnums.member_level) return list
+    Object.entries(this.shopMemberEnums.member_level.value).forEach(o => {
+      list.push({ value: +o[0], name: o[1] })
+    })
+    this.plainOptions = list
+    const arr = []
+    this.value.getData.member_level.forEach(element => {
+      arr.push(list.filter(item => { return item.value === element.value })[0])
+    })
+    this.value.getData.member_level = arr
   },
   methods: {
-    selectionFun(item) {
-      this.value.selectionData = item
-    },
-    onChange(data) {
-      let arr = []
-      let arrIndex = []
-      data.forEach(item => {
-        arrIndex.push(this.plainOptions.indexOf(item))
-      })
-      data.forEach((item, index) => {
-        arr.push({ [arrIndex[index]]: item })
-      })
-      this.value.getData.base_member_level.length = 0
-      this.value.getData.base_member_level.push(...arr)
-    }
+
   },
   mounted() {}
 }
