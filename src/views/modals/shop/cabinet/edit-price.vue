@@ -26,6 +26,7 @@
             </a-select>
           </template>
         </st-input-number>
+        <div class="mg-t8"><i class="color-danger">*</i>已经售卖的储物柜不受影响</div>
       </st-form-item>
     </st-form>
   </st-modal>

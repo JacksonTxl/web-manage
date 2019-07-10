@@ -45,7 +45,11 @@
         </a-radio-group>
       </st-form-item>
       <st-form-item label="租赁价格" required>
-        <st-input-number :float="true" placeholder="请输入售卖价格" v-decorator="ruleConfig.priceNum">
+        <st-input-number
+          :float="true"
+          placeholder="请输入售卖价格"
+          v-decorator="ruleConfig.priceNum"
+        >
             <template slot="addonAfter">元/天</template>
         </st-input-number>
       </st-form-item>
