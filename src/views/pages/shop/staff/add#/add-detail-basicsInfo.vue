@@ -86,52 +86,12 @@
       </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
         <st-form-item label="部门" required>
-          <a-tree-select
-          showSearch
-          class="mg-r8"
-          style="width: 160px"
-          :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
-          placeholder="请选择部门"
-          allowClear
-          v-decorator="rules.department_id"
-          treeDefaultExpandAll
-          @change="onChange"
-        >
-          <a-tree-select-node
-            v-for="item in department"
-            :value="item.id"
-            :title="item.name"
-            :key="item.id"
-          >
-            <a-tree-select-node
-              v-for="item1 in item.children"
-              :value="item1.id"
-              :title="item1.name"
-              :key="item1.id"
-            >
-              <a-tree-select-node
-                v-for="item2 in item1.children"
-                :value="item2.id"
-                :title="item2.name"
-                :key="item2.id"
-              >
-                <a-tree-select-node
-                  v-for="item3 in item2.children"
-                  :value="item3.id"
-                  :title="item3.name"
-                  :key="item3.id"
-                >
-                  <a-tree-select-node
-                    v-for="item4 in item3.children"
-                    :value="item4.id"
-                    :title="item4.name"
-                    :key="item4.id"
-                  />>
-                </a-tree-select-node>
-              </a-tree-select-node>
-            </a-tree-select-node>
-          </a-tree-select-node>
-        </a-tree-select>
+          <department-select
+            placeholder="请选择部门"
+            style="width: 100%"
+            useType="form"
+            v-decorator="rules.department_id">
+          </department-select>
         </st-form-item>
         <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
@@ -168,7 +128,11 @@
           <a-date-picker style="width:100%" v-decorator="rules.entry_date"/>
         </st-form-item>
         <st-form-item label="所属门店">
-          <span>门店维度下没有选择门店的权力记着加当前门店名称 0.0 </span>
+          <shop-select
+            mode="multiple"
+            useType="form"
+            placeholder="所属门店"
+            v-decorator="rules.shop_id"/>
         </st-form-item>
       </a-col>
     </a-row>
@@ -181,10 +145,10 @@
 
     <a-row :gutter="8">
       <a-col :offset="1" :lg="10">
-        <st-form-item label="系统权限" required>
+        <st-form-item label="系统权限">
           <a-checkbox @change="permissionChange" v-decorator="rules.is_permission">开通系统使用权限</a-checkbox>
         </st-form-item>
-        <st-form-item label="登录账号">
+        <st-form-item label="登录账号" v-if="isChoosePermission">
           <a-input
             placeholder="6-18个字符，可使用字母、数字、下划线"
             v-decorator="['account',
@@ -196,7 +160,7 @@
             }]"
           ></a-input>
         </st-form-item>
-        <st-form-item label="登录密码">
+        <st-form-item label="登录密码" v-if="isChoosePermission">
           <a-input
             placeholder="6-15个字符，区分大小写"
             v-decorator="['password',
@@ -208,7 +172,7 @@
             }]"
           ></a-input>
         </st-form-item>
-        <st-form-item label="确认密码">
+        <st-form-item label="确认密码" v-if="isChoosePermission">
           <a-input
             placeholder="请再次填写密码"
             v-decorator="['repeat_password',
@@ -238,6 +202,9 @@ import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
 import { AddService } from '../add.service'
 import CoachLevelSelect from '@/views/biz-components/coach-level-select'
+import ShopSelect from '@/views/biz-components/shop-select'
+import DepartmentSelect from '@/views/biz-components/department-select'
+
 export default {
   name: 'StaffDetailBasics',
   serviceInject() {
@@ -249,7 +216,9 @@ export default {
     }
   },
   components: {
-    CoachLevelSelect
+    ShopSelect,
+    CoachLevelSelect,
+    DepartmentSelect
   },
   props: {
     enums: {

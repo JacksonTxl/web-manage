@@ -48,7 +48,12 @@
     <a-row :gutter="8" class="mg-t48">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="家庭住址" >
-          <a-cascader :options="options" @change="onChange" v-decorator="detailRules.provinces" changeOnSelect placeholder="请选择" />
+          <a-cascader
+            :options="regions"
+            :fieldNames="fieldNames"
+            v-decorator="detailRules.provinces"
+            changeOnSelect
+            placeholder="请选择" />
         </st-form-item>
         <st-form-item label="详细住址">
           <a-input placeholder="填写点什么吧" v-decorator="detailRules.address"/>
@@ -71,6 +76,7 @@
 </template>
 
 <script>
+import { RegionService } from '@/services/region.service'
 const xl = [
   {
     value: 0,
@@ -109,8 +115,14 @@ const xl = [
     cont: '博士'
   }
 ]
+
 export default {
   name: 'EditDetailDetailedInfo',
+  serviceInject() {
+    return {
+      region: RegionService
+    }
+  },
   props: {
     data: {
       type: Object
@@ -124,40 +136,7 @@ export default {
     return {
       form: this.$form.createForm(this),
       xl,
-      options: [
-        {
-          value: 1,
-          label: '浙江',
-          children: [
-            {
-              value: 11,
-              label: '杭州',
-              children: [
-                {
-                  value: 111,
-                  label: '西湖区'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          value: 2,
-          label: '江苏',
-          children: [
-            {
-              value: 21,
-              label: '南京',
-              children: [
-                {
-                  value: 211,
-                  label: '中华门'
-                }
-              ]
-            }
-          ]
-        }
-      ],
+      regions: [],
       detailRules: {
         // 毕业院校
         graduated_school: ['graduated_school'],
@@ -181,11 +160,17 @@ export default {
         description: ['description'],
         // 省市区
         provinces: ['provinces']
-      }
+      },
+      fieldNames: { label: 'name', value: 'id', children: 'children' }
     }
   },
   mounted() {
-    this.setData(this.data)
+    this.$nextTick(() => {
+      this.setData(this.data)
+    })
+    this.region.regionApi.getRegions().subscribe(v => {
+      this.regions = v
+    })
   },
   methods: {
     onClickBack() {
@@ -195,10 +180,10 @@ export default {
       console.log('detail', obj)
       this.form.setFieldsValue({
         graduated_school: obj.graduated_school,
-        graduation_time: obj.graduation_time ? moment(obj.graduation_time) : '',
+        graduation_time: obj.graduation_time ? moment(obj.graduation_time) : moment(),
         education: obj.education,
         profession: obj.profession,
-        birthday: obj.birthday ? moment(obj.birthday) : '',
+        birthday: obj.birthday ? moment(obj.birthday) : moment(),
         native_place: obj.native_place,
         marry_status: obj.marry_status,
         children_status: obj.children_status,

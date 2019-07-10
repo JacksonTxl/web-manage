@@ -13,6 +13,8 @@ import {
 @Injectable()
 export class EditService implements RouteGuard {
     staffInfo$ = new State({})
+    department$ = new State([])
+    staffSpecialty$ = new State({})
     codeList$ = new State([])
     roleList$ = new State([])
     loading$ = new State({})
@@ -27,11 +29,27 @@ export class EditService implements RouteGuard {
       )
     }
 
+    getStaffDepartment() {
+      return this.shopStaffApi.getStaffDepartmentList().pipe(
+        tap(res => {
+          this.department$.commit(() => res.department)
+        })
+      )
+    }
+
     getNormalList() {
       return this.roleApi.getNormalList().pipe(tap(res => {
         console.log('getNormalList', res)
         this.roleList$.commit(() => res.roles)
       }))
+    }
+    // 获取员工擅长项目
+    getStaffSpecialty() {
+      return this.shopStaffApi.getStaffSpecialty().pipe(
+        tap(res => {
+          this.staffSpecialty$.commit(() => res)
+        })
+      )
     }
 
     // 获取编辑回显
@@ -45,7 +63,7 @@ export class EditService implements RouteGuard {
 
     init(id: string) {
       console.log('init')
-      return forkJoin(this.getNormalList(), this.getCountryCodes(), this.getStaffInfo(id))
+      return forkJoin(this.getStaffSpecialty(), this.getStaffDepartment(), this.getNormalList(), this.getCountryCodes(), this.getStaffInfo(id))
     }
 
     // 修改基础信息

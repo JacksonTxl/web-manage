@@ -1,24 +1,27 @@
 .page-dashboard{
+  display: flex;
+  &__content{
+    flex:1;
+    .w(100px);
+    .ant-tabs-nav-container{
+      line-height: 24px;
+      .pd-t(17px);
+    }
+    .page-dashboard-analysis .action{
+      top: 19px;
+    }
+    .ant-tabs .ant-tabs-top-content.ant-tabs-content-animated{
+      margin-bottom: 23px;
+    }
+  }
+  &__adv{
+    flex:none;
+    .w(280px);
+    .pd(0);
+    .mg-l(24px);
+  }
   &__content,
   &__adv{
-    .link{
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      &__time{
-        font-size:12px;
-        font-weight:400;
-        color:rgba(155,172,185,1);
-        line-height:20px;
-      }
-      &__qr-code{
-        border-top: 1px solid rgba(255,255,255,0.5);
-        .image-box{
-          .s(140px, 140px);
-        }
-      }
-    }
     .user-chart-box{
       display: flex;
       .revenue-area{
@@ -28,32 +31,6 @@
         width: 282px
       }
     }
-    .book{
-      display: flex;
-      .book-img{
-        .w(62px);
-        background: red;
-      }
-      .book-content{
-        display: flex;
-        flex-direction: column;
-        .fz(12px);
-        .font-number{
-          font-size:12px;
-        }
-      }
-    }
-    .aiot{
-      display: flex;
-      .aiot__img{
-        .s(64px, 64px);
-        background: red;
-      }
-      .aiot__content{
-
-      }
-    }
-
   }
   &-count{
     &__box{
@@ -61,6 +38,4 @@
       height: 186px;
     }
   }
-
-
 }

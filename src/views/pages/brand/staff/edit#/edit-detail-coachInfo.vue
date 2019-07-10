@@ -6,19 +6,11 @@
           <a-date-picker style="width:100%" v-decorator="coachRules.employment_time"/>
         </st-form-item>
         <st-form-item label="擅长的项目">
-          <span slot="label">
-            擅长的项目&nbsp;
-            <a-tooltip placement="right" title="What do you want others to call you?">
-              <st-icon type="anticon:question-circle-o"/>
-            </a-tooltip>
-          </span>
-          <a-checkbox-group @change="onChooseSpecialty" v-decorator="coachRules.specialty_id">
-            <a-checkbox :value="1">普通员工</a-checkbox>
-            <a-checkbox :value="2">会籍销售</a-checkbox>
-            <a-checkbox :value="3">团课教练</a-checkbox>
-            <a-checkbox :value="4">私人教练</a-checkbox>
-            <a-checkbox :value="5">游泳教练</a-checkbox>
-          </a-checkbox-group>
+          <a-select mode="multiple" placeholder="请选择擅长的项目" v-decorator="coachRules.specialty_id">
+            <template v-for="item in staffSpecialty">
+              <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+            </template>
+          </a-select>
         </st-form-item>
         <st-form-item label="专业认证">
           <a-input placeholder="请输入专业证书名称" v-decorator="coachRules.certification_name">
@@ -40,14 +32,12 @@
       <a-col :lg="24" :xs="22" :offset="1">
         <st-form-item label="员工风采" class="page-image-personal">
           <st-image-upload
-            @change="imageUploadChange"
             width="100px"
             height="100px"
-            :list="fileList"
+            :list="image_personal"
             :sizeLimit="2"
             placeholder="上传照片"
             :numLimit=10
-            v-decorator="coachRules.image_personal"
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="对外展示">
@@ -67,11 +57,22 @@
 </template>
 
 <script>
+import { EditService } from '../edit.service'
 export default {
   name: 'EditDetailCoachInfo',
+  serviceInject() {
+    return {
+      service: EditService
+    }
+  },
   props: {
     data: {
       type: Object
+    }
+  },
+  rxState() {
+    return {
+      staffSpecialty: this.service.staffSpecialty$
     }
   },
   data() {
@@ -97,19 +98,16 @@ export default {
     this.setData(this.data)
   },
   methods: {
-    imageUploadChange(e) {
-      this.image_personal = e
-    },
     check(e) {
       this.checked = e.target.checked
     },
     setData(obj) {
       this.form.setFieldsValue({
-        employment_time: moment(obj.employment_time),
+        employment_time: obj.employment_time ? moment(obj.employment_time) : moment(),
         specialty_id: obj.specialty_id,
         introduction: obj.introduction
       })
-      this.fileList = obj.image_personal
+      this.image_personal = obj.image_personal
       obj.is_show ? this.checked = true : this.checked = false
       this.coachInfoData.certification_name = obj.certification_name ? obj.certification_name : []
     },

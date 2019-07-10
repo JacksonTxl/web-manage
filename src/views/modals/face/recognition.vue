@@ -9,9 +9,9 @@
     width="484px"
     @ok="uploadUserImageToRecognition"
     @cancel="cancel">
+    <a-alert slot='prepend' message="为保证人脸录入质量，请确保光线充足，以免影响识别精度。" type="warning" banner/>
     <div :class="recognition()">
       <div :class="recognition('header')">
-        <a-alert message="为保证人脸录入质量，请确保光线充足，以免影响识别精度。" type="warning" banner/>
         <div :class="recognition('space')">
           <div :class="recognition('img')">
             <img :src="userImgSrc" v-show="userImgSrc"/>

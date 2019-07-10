@@ -96,7 +96,7 @@ export class UpdateStaffPositionService extends Store<SetState> {
     }))
   }
   @Effect()
-  validatStaffPosition(id: number) {
-    return this.staffApi.validatStaffPosition(id)
+  validatStaffPosition(staff_id: number, id: number) {
+    return this.staffApi.validatStaffPosition(staff_id, id)
   }
 }

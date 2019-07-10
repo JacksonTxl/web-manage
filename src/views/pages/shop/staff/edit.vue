@@ -13,9 +13,30 @@
         </a-steps>
       </a-col>
     </a-row>
-    <edit-basic-info v-show="currentIndex == 0" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
-    <edit-detailed-info  @back="onBack" :isShowCoach="isShowCoach" v-show="currentIndex == 1" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
-    <edit-coach-info  @back="onBack" v-if="isShowCoach" v-show="currentIndex == 2" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
+    <edit-basic-info
+      v-if="currentIndex == 0"
+      :enums="staffEnums"
+      :data="staffInfo"
+      :roleList="roleList"
+      :codeList="codeList"
+      :department="department"
+      @gonext="gonext"
+      @bacicInfoSave="onBasicsSave"/>
+    <edit-detailed-info
+      v-else-if="currentIndex == 1"
+      :isShowCoach="isShowCoach"
+      :enums="staffEnums"
+      :data="staffInfo"
+      @back="onBack"
+      @gonext="gonext"
+      @detailInfoSave="onDetailInfoSave"/>
+    <edit-coach-info
+      v-else-if="currentIndex == 2 && isShowCoach"
+      :enums="staffEnums"
+      :data="staffInfo"
+      @back="onBack"
+      @gonext="gonext"
+      @coachInfoSave="onCoachInfoSave"/>
   </st-panel>
 </template>
 
@@ -28,6 +49,11 @@ import { MessageService } from '@/services/message.service'
 import { EditService } from './edit.service.ts'
 
 export default {
+  bem: {
+    b: 'page-add-staff',
+    bstep: 'page-add-staff-steps',
+    bHeader: 'default-brand-header'
+  },
   serviceInject() {
     return {
       userService: UserService,
@@ -38,62 +64,16 @@ export default {
   rxState() {
     return {
       staffEnums: this.userService.staffEnums$,
-      staffInfo: this.services.staffInfo$
+      staffInfo: this.services.staffInfo$,
+      roleList: this.services.roleList$,
+      codeList: this.services.codeList$,
+      department: this.services.department$
     }
   },
   components: {
     EditCoachInfo,
     EditDetailedInfo,
     EditBasicInfo
-  },
-  computed: {
-    isShowCoach() {
-      if (this.staffInfo.identity.length === 0) return false
-      return this.staffInfo.identity.includes(3) || this.staffInfo.identity.includes(4)
-    },
-    id() {
-      return this.staffInfo.staff_id
-    }
-  },
-  watch: {
-    isShowCoach(newVal) {
-      if (newVal) {
-        this.stepsSpan = 12
-        this.stepArr.pop()
-      }
-    }
-  },
-  created() {
-    let { currentIndex } = this.$route.query
-    if (this.isShowCoach) {
-      console.log('展示')
-    } else {
-      console.log('不展示')
-      this.stepsSpan = 12
-      this.stepArr.pop()
-    }
-    if (currentIndex) {
-      this.currentIndex = currentIndex - 0
-      // if(!isShowCoach){
-      //   console.log('不展示')
-      //   this.stepArr.pop()
-      // }else{
-      //   console.log('展示')
-      // }
-    }
-  },
-  methods: {
-    onBack(step) {
-      this.currentIndex = this.currentIndex - step
-    },
-    gonext() {
-      if (this.currentIndex < 2) {
-        this.currentIndex = this.currentIndex + 1
-      }
-    },
-    changeStep(step) {
-      this.currentIndex = step
-    }
   },
   data() {
     return {
@@ -115,10 +95,64 @@ export default {
       ]
     }
   },
-  bem: {
-    b: 'page-add-staff',
-    bstep: 'page-add-staff-steps',
-    bHeader: 'default-brand-header'
+  computed: {
+    isShowCoach() {
+      if (this.staffInfo.identity.length === 0) return false
+      return this.staffInfo.identity.includes(3) || this.staffInfo.identity.includes(4)
+    },
+    id() {
+      return this.staffInfo.staff_id
+    }
+  },
+  watch: {
+    isShowCoach(newVal) {
+      if (newVal) {
+        this.stepsSpan = 12
+        this.stepArr.pop()
+      }
+    }
+  },
+  created() {
+    let { currentIndex } = this.$route.query
+    if (!this.isShowCoach) {
+      console.log('不展示')
+      this.stepsSpan = 12
+      this.stepArr.pop()
+    }
+    if (currentIndex) this.currentIndex = Number(currentIndex)
+  },
+  methods: {
+    onBasicsSave(data) {
+      this.editService.updateBasicInfo(this.id, data.data).subscribe(() => {
+        this.editService.editStaffInfo()
+      })
+    },
+    onDetailInfoSave(data) {
+      this.editService.updateDetailedInfo(this.id, data.data).subscribe(() => {
+        if (!this.isShowCoach) {
+          this.$router.push({ name: 'brand-staff-department' })
+        } else {
+          this.editService.editStaffInfo()
+          this.goNext()
+        }
+      })
+    },
+    onCoachInfoSave(data) {
+      this.editService.updateCoachInfo(this.id, data.data).subscribe(() => {
+        this.$router.push({ name: 'brand-staff-department' })
+      })
+    },
+    onBack(step) {
+      this.currentIndex = this.currentIndex - step
+    },
+    gonext() {
+      if (this.currentIndex < 2) {
+        this.currentIndex = this.currentIndex + 1
+      }
+    },
+    changeStep(step) {
+      this.currentIndex = step
+    }
   }
 }
 </script>

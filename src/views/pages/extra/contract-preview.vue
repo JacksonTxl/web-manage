@@ -1,5 +1,5 @@
 <template>
-  <div :class="b()" :style="{'padding-top':info.contract_setting.contract_marget + 'mm'}">
+  <div :class="b()" :style="{'padding-top':info.contract_setting.contract_marget + 'mm','zoom': info.contract_setting.contract_page+'%'}">
     <header :class="b('header')">
       <img v-if="info.contract_setting.is_brand_logo" :class="b('brand-logo')" :src="info.logo_url" alt="brand-logo">
       <h1 :class="b('title')">{{info.contract_title}}</h1>
@@ -36,13 +36,15 @@
               <span class="info-text">{{info.sex}}</span>
             </div>
           </a-col>
+        </a-row>
+         <a-row :gutter="24">
           <a-col :span="8" v-if="info.contract_setting.is_member_id_card">
             <div class="info-item">
               <label class="info-label">身份证：</label>
               <span class="info-text">{{info.id_card}}</span>
             </div>
           </a-col>
-          <a-col :span="8" v-if="info.contract_setting.is_salesman_name">
+          <a-col :span="16" v-if="info.contract_setting.is_salesman_name">
             <div class="info-item">
               <label class="info-label">销售人员：</label>
               <span class="info-text">{{info.sale}}</span>

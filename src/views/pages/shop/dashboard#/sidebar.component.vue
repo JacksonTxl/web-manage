@@ -6,7 +6,7 @@
           alt="">
           </a>
       </div>
-      <st-container class="bg-white mg-t16" type="2">
+      <st-container class="bg-white mg-t16 pluginbox" type="2">
         <st-t3 :class="b('title')">三体AIoT<a target="_blank" href="http://www.styd.cn/default/product_iot">查看更多<a-icon theme="filled" type="right-circle" /></a></st-t3>
         <plug-in title="多功能人脸识别一体机" sub="AI技术加持，玩转大数据" :img="ai1" ></plug-in>
         <plug-in title="智慧前台" sub="您的健身房前台贴心管家" :img="ai2"></plug-in>

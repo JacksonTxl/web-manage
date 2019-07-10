@@ -5,7 +5,7 @@
     v-model='show'>
     <div :class="course()">
       <div :class="course('search')">
-        <a-select :class="course('search-select')" v-model="searchData.course_type" @change="onCourseTypeChange">
+        <a-select :class="course('search-select')" :getPopupContainer="trigger => trigger.parentNode" v-model="searchData.course_type" @change="onCourseTypeChange">
           <a-select-option v-for="(item,index) in courseTypeList" :key="index" :value="item.id">{{item.setting_name}}</a-select-option>
         </a-select>
         <st-input-search @search="getCourseList" v-model="searchData.search" :class="course('search-input')" placeholder="请输入课程名称进行查询"/>

@@ -147,12 +147,10 @@ export default {
     onTableChange(pagination, filter, sorter) {
       this.onSelectionReset()
       let sort_by, sort_order
-      let nextPage = pagination.current
       if (sorter) {
         if (sorter.field) {
           sort_by = sorter.field
           sort_order = { ascend: 'asc', descend: 'desc' }[sorter.order]
-          nextPage = 1
         }
       }
       if (!pagination) {
@@ -161,6 +159,10 @@ export default {
         )
       }
       if (pagination) {
+        let nextPage = pagination.current
+        if (sorter && sorter.field) {
+          nextPage = 1
+        }
         this.$router.push({
           query: {
             ...this.query,

@@ -55,14 +55,27 @@
       </a-col>
     </a-row>
 
-    <section v-if="isShowUnitSet">
-      <set-price @change="onPriceGradientChange"/>
-    </section>
+    <a-row :gutter="8">
+      <a-col :lg="22" :offset="1">
+        <st-form-item v-if="isShowUnitSet" labelFix>
+          <set-price
+            :value="priceGradient"
+            @change="onPriceGradientChange"
+          />
+        </st-form-item>
+      </a-col>
+    </a-row>
 
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.setPrice">完成</st-button>
+          <st-button
+            type="primary"
+            @click="save"
+            :loading="loading.setPrice"
+          >
+            完成
+          </st-button>
         </st-form-item>
       </a-col>
     </a-row>
