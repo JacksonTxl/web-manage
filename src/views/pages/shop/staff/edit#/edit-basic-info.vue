@@ -16,7 +16,7 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact style="top: 0;">
-            <a-select v-decorator="['country_code_id', {initialValue: form.country_code_id}]">
+            <a-select v-decorator="rules.country_code_id">
               <a-select-option v-for="item in code_list" :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
             </a-select>
             <a-input style="width: 80%" v-decorator="rules.phone" placeholder="请输入手机号"/>
@@ -120,7 +120,7 @@
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
           <st-button type="primary" ghost html-type="submit">保存</st-button>
-          <st-button class="mg-l16" @click="goNext" type="primary">继续 填写</st-button>
+          <st-button class="mg-l16" @click="goNext" type="primary">继续填写</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -212,11 +212,14 @@ export default {
     submit(data, saveOrgoNext) {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.album_id = this.data.album_id
+      data.department_id = Number(data.department_id)
       data.image_avatar = this.fileList
       data.image_face = this.faceList
       this.editservice.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
+        this.$emit('updateStaffInfo')
         if (saveOrgoNext === 1) {
           this.$emit('gonext')
+          this.$emit('updateStaffInfo')
         } else {
           this.message.success({ content: '编辑成功' })
           this.$router.go(-1)
@@ -224,10 +227,10 @@ export default {
       })
     },
     setData(obj) {
-      console.log('setData, id_type', obj.id_type)
       this.form.setFieldsValue({
         staff_name: obj.staff_name,
         nickname: obj.nickname,
+        department_id: String(obj.department_id),
         country_code_id: obj.country_code_id,
         mobile: obj.mobile,
         staff_num: obj.staff_num,
