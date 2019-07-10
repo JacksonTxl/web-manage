@@ -14,7 +14,14 @@
         <a-input placeholder="请输入首字母" maxlength="1" v-decorator="rules.firstLetter"/>
       </st-form-item>
       <st-form-item label="起始编号" required>
-        <a-input placeholder="请输入起始编号" v-decorator="ruleConfig.startNum"/>
+        <a-input-number
+          placeholder="请输入起始编号"
+          v-decorator="ruleConfig.startNum"
+          min="1"
+          max="9999"
+          precision="0"
+          class="full-width"
+        />
       </st-form-item>
       <st-form-item label="租赁价格" required>
         <st-input-number :float="true" placeholder="请输入售卖价格" v-decorator="ruleConfig.priceNum">
