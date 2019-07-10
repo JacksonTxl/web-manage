@@ -42,7 +42,7 @@ export class RuleConfig {
 
   // 手机号国籍编码
   get country_code_id() {
-    return ['country_code_id']
+    return ['country_code_id', { initialValue: 37 }]
   }
   // 手机号
   get phone() {
@@ -75,7 +75,7 @@ export class RuleConfig {
   }
   // 证件类型
   get idtype() {
-    return ['id_type']
+    return ['id_type', { initialValue: 1 }]
   }
   // 证件号
   get idnumber() {
