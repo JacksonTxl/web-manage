@@ -14,7 +14,7 @@ interface PutOptions {
    */
   file: any
   /**
-   * 上传的文件业务类型，当前可用类型为 image | face
+   * 上传的文件业务类型，当前可用类型为 image | face | file
    */
   business: string
   /**
