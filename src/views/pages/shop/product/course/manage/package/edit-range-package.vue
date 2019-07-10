@@ -607,13 +607,17 @@ export default {
       forEach(this.packageInfo.personal_range, o => {
         let selectCoach = filter(this.coachList, i => o.coach_level.includes(i.id))
         let total = reduce(selectCoach, (sum, i) => sum + i.coach_number, 0)
+        let coachGradeList = []
+        o.coach_level.forEach(i => {
+          coachGradeList.push(i.id)
+        })
         this.personalCourseList.push({
           courseChecked: false,
           course_category: o.course_category,
           course_id: o.course_id,
           course_name: o.course_name,
           course_type: o.course_type,
-          coachGradeList: cloneDeep(o.coach_level),
+          coachGradeList,
           coach: total
         })
         this.personalCoachTotalList[o.course_id] = this.personalCoachTotalList[o.course_id] || {}
@@ -719,7 +723,6 @@ export default {
           },
           on: {
             ok(data) {
-              console.log(data.list)
               let coachGradeList = []
               forEach(that.coachList, i => {
                 coachGradeList.push(i.id)
