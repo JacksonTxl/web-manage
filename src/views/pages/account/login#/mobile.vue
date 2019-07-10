@@ -1,18 +1,41 @@
 <template>
   <div :class="mobile()">
     <st-form :form="form" @submit.prevent="login" :class="mobile('form')">
-      <st-form-item >
-        <a-input placeholder="请输入手机号码"  v-decorator="['phone']"/>
+      <st-form-item :class="mobile('phone')">
+        <a-input :class="mobile('phone-input')" placeholder="请输入手机号码"  v-decorator="['phone']"/>
+        <a-dropdown :class="mobile('phone-dropdown')">
+          <span class="cursor-pointer">
+            +86 <a-icon type="down" />
+          </span>
+          <a-menu slot="overlay">
+            <a-menu-item>
+              <a href="javascript:;">+86</a>
+            </a-menu-item>
+            <a-menu-item>
+              <a href="javascript:;">+86</a>
+            </a-menu-item>
+            <a-menu-item>
+              <a href="javascript:;">+86</a>
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
       </st-form-item>
-      <st-form-item   class="mg-b0">
-        <a-input-search placeholder="请输入验证码" v-model="captcha" @search="onClickCaptcha">
-          <a-button  :class="mobile('button')" :disabled="isClick" slot="enterButton" >{{buttonText}}</a-button>
-        </a-input-search>
+      <st-form-item class="mg-b16" :class="mobile('captcha')">
+        <a-input :class="mobile('captcha-input')" placeholder="请输入验证码" v-model="captcha" @search="onClickCaptcha" />
+        <span :class="mobile('captcha-button')">{{buttonText}}</span>
       </st-form-item>
-      <st-form-item  class="mg-t24">
-        <st-button type="primary"  html-type="submit" block>登录</st-button>
+      <st-form-item  :class="mobile('pass')" class="mg-b16">
+        <div :class="mobile('pass-content')">
+          <a-checkbox>我已阅读并同意<a href="">《用户注册协议》</a></a-checkbox>
+        </div>
+      </st-form-item>
+      <st-form-item  class="mg-b0">
+        <st-button :class="mobile('login-button')" pill size="large" type="primary"  html-type="submit" block>登录</st-button>
       </st-form-item>
     </st-form>
+    <div :class="mobile('third')" class="mg-l24">
+      <div class="st-icon-wapper" v-for="item in thirdLogins" :key="item.type"><st-icon :class="item" :type="item" size="24px" /></div>
+    </div>
   </div>
 </template>
 
@@ -40,6 +63,7 @@ export default {
       time: 60,
       captcha: '',
       isClick: false,
+      thirdLogins: ['alipay', 'wechat', 'weibo', 'qq'],
       timer: ''
     }
   },
