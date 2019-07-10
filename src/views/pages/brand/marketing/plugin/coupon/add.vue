@@ -53,6 +53,7 @@
                   :disabled="isEditMode"
                   v-if="showProductRange == '2' && couponEnums.product_range"
                   :defaultValue="rangeIds"
+                  style="width: 360px"
                   @change="changeProductRange"
                   mode="multiple" placeholder="请选择类目" :class="basic('select')">
                   <a-select-option v-for="(item, index) in couponEnums.product_range['value']" :key="index" :value="index">
