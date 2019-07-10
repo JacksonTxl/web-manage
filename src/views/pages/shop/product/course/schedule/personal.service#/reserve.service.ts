@@ -10,7 +10,8 @@ export interface SetState {
   reserveInfo: any
   reserveList: any[]
   reserveTable: any[]
-  reserveUpdateInfo: any[],
+  infoAuth: any
+  reserveUpdateInfo: any[]
   reserveListTable: any[]
 }
 @Injectable()
@@ -27,6 +28,7 @@ export class PersonalScheduleReserveService {
   reserveUpdateInfo$: Computed<any>
   reserveListTable$: Computed<any>
   auth$: Computed<any>
+  infoAuth$: Computed<any>
   constructor(private reserveApi: PersonalReserveApi,
     private authService: AuthService,
     private msg: MessageService) {
@@ -37,12 +39,16 @@ export class PersonalScheduleReserveService {
         cancel: this.authService.can('shop:reserve:personal_course_reserve|del'),
         checkIn: this.authService.can('shop:reserve:personal_course_reserve|checkin')
       },
+      infoAuth: {
+
+      },
       reserveUpdateInfo: {},
       reserveInfo: [],
       reserveListTable: [],
       reserveList: [],
       reserveTable: []
     })
+    this.infoAuth$ = new Computed(this.state$.pipe(pluck('infoAuth')))
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
     this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
     this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
@@ -90,6 +96,7 @@ export class PersonalScheduleReserveService {
   getInfo(id: string) {
     return this.reserveApi.getInfo(id).pipe(tap(res => {
       this.state$.commit(state => {
+        state.infoAuth = res.auth
         state.reserveInfo = res.info
         state.reserveList = res.info.reserve
       })

@@ -104,11 +104,12 @@ export default {
     // 1,普通员工 2-会籍销售；3-团课教练；4-私人教练
     let { identity } = this.info
     identity = identity.map(item => item.id)
-    console.log('identity', identity)
     let indetitySet = new Set()
     if (Array.isArray(identity) && identity.length) {
       identity.forEach(ele => {
-        if (ele === 2) {
+        if (ele === 1) {
+          this.setIndentyList(['basic'], indetitySet)
+        } else if (ele === 2) {
           this.setIndentyList(['basic', 'member', 'sold'], indetitySet)
         } else if (ele === 3) {
           this.setIndentyList(['basic', 'course'], indetitySet)
@@ -116,8 +117,6 @@ export default {
           this.setIndentyList(['basic', 'course', 'follow', 'member', 'sold'], indetitySet)
         }
       })
-    } else {
-      this.setIndentyList(['basic'], indetitySet)
     }
     this.identity = Array.from(indetitySet).map(key => this[key])
     this.$router.replace({

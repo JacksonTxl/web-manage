@@ -17,12 +17,8 @@ export default {
     }
   },
   rxState() {
-    /**
-     * @type {UserService}
-     */
-    const user = this.userService
     return {
-      shopMemberEnums: user.shopMemberEnums$
+      shopMemberEnums: this.userService.shopMemberEnums$
     }
   },
   model: {

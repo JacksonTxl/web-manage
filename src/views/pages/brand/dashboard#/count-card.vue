@@ -46,7 +46,7 @@ export default {
       }
     },
     footer: {
-      type: String,
+      type: Object,
       default: () => {
         return {
           label: '尽日',

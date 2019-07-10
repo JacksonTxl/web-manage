@@ -126,8 +126,6 @@ export default {
           this.setIndentyList(['basic', 'course', 'follow', 'member', 'sold'], tabSet)
         }
       })
-    } else {
-      this.setIndentyList(['basic'], tabSet)
     }
     this.tabList = Array.from(tabSet).map(key => this[key])
     this.$router.replace({

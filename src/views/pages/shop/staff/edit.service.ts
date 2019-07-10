@@ -43,7 +43,7 @@ export class EditService implements RouteGuard {
         this.roleList$.commit(() => res.roles)
       }))
     }
-    // 获取员工擅长项目
+    // 获取编辑回显
     getStaffSpecialty() {
       return this.shopStaffApi.getStaffSpecialty().pipe(
         tap(res => {

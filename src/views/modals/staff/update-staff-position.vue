@@ -176,13 +176,10 @@ export default {
       return arr
     },
     onSubmit() {
-      this.show = false
       let formData = this.form.getFieldsValue()
       console.log(formData)
       this.updateStaffPositionService.putStaffBindPosition({ id: this.staff.id, ...formData }).subscribe(() => {
-        this.msg.success({
-          content: '绑定实体卡成功'
-        })
+        this.show = false
       })
     }
   }
