@@ -93,7 +93,6 @@
       </tbody>
     </st-form-table>
     <div slot="footer" class="mg-t24 ta-r">
-      {{infoAuth}}
       <st-button @click="onClickCancelCourse" v-if="infoAuth['shop:schedule:team_course_schedule|del']" class="mg-r8">
         取消课程
       </st-button>
