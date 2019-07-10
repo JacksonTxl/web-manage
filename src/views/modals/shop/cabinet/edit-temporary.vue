@@ -38,7 +38,12 @@
         </a-radio-group>
       </st-form-item>
       <st-form-item v-if="isShowReason" labelFix>
-        <a-textarea v-model="info.reason" placeholder="请输入不可用原因，如维修中"/>
+        <st-textarea
+          v-model="info.reason"
+          placeholder="请输入不可用原因，如维修中"
+          maxlength="30"
+          :autosize="{ minRows: 3 }"
+        />
       </st-form-item>
     </st-form>
   </st-modal>
@@ -109,7 +114,14 @@ export default {
       e.preventDefault()
       this.form.validateFields().then((data) => {
         data.id = this.id
-        data.reason = this.info.reason || ''
+        const reason = this.info.reason || ''
+        if (this.isShowReason && !this.pattern.CN_EN_NUM_SPACE('1-30').test(reason)) {
+          this.messageService.error({
+            content: '不可用原因格式错误'
+          })
+          return
+        }
+        data.reason = reason
         this.editService.update(data).subscribe(this.onSubmitSuccess)
       })
     },
