@@ -186,7 +186,7 @@ class VueServiceApp {
           const query = queryOptions[queryName]
           const queryType = query.type
           const queryDefaultValue = query.default
-          if (queryName in to.query) {
+          if (queryName in to.query && formatedQuery[queryName] !== undefined) {
             formatedQuery[queryName] = queryType(to.query[queryName])
           } else {
             formatedQuery[queryName] = queryDefaultValue
