@@ -71,8 +71,8 @@ export class SalePersonalCourseService {
       this.couponList$.commit(() => res.list)
     }))
   }
-  getCoachList(level: number) {
-    return this.transactionApi.getTransactionCoachList(level).pipe(tap((res: any) => {
+  getCoachList(level: number, id: string) {
+    return this.transactionApi.getTransactionCoachList(level, id).pipe(tap((res: any) => {
       this.coachList$.commit(() => res.list)
     }))
   }
