@@ -5,6 +5,10 @@ export class PatternService {
      */
     'CN_EN_NUM': '^[A-z0-9\\u4e00-\\u9fa5]{**}$',
     /**
+     * 包含手机号和座机号
+     */
+    'TEL': '^(((\\+\\d{2}-)?0\\d{2,3}-\\d{7,8})|((\\+\\d{2}-)?(\\d{2,3}-)?([1][3,4,5,7,8][0-9]\\d{8})))$',
+    /**
      * 手机号
      */
     'MOBILE': '^1[0-9]{10}$',
@@ -35,6 +39,12 @@ export class PatternService {
     }
     const lens = len.split('-')
     return new RegExp(this.PATTERN_MAP['CN_EN_NUM'].replace('**', `${lens[0]},${lens[1]}`))
+  }
+  /**
+   * 手机号与座机号
+   */
+  get TEL() {
+    return new RegExp(this.PATTERN_MAP['TEL'])
   }
   /**
    * 手机号
