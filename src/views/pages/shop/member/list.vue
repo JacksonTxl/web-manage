@@ -1,7 +1,7 @@
 
 <template>
   <div class="shop-member-list">
-    <st-panel class="mg-t16">
+    <st-panel>
       <div slot="title">
         <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onSearch" style="width: 290px;"/>
       </div>
