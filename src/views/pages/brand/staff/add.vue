@@ -69,14 +69,6 @@ export default {
         title: '教练信息',
         key: 3
       })
-    },
-    // 继续填写跳转到编辑
-    skipToEdit(data) {
-      this.submit(data)
-    },
-
-    onBasicInfoSave(form) { // 保存
-      this.submit(form, 'save')
     }
   }
 }

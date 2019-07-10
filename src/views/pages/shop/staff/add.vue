@@ -12,7 +12,13 @@
         </a-steps>
       </a-col>
     </a-row>
-    <staff-detail-basics v-if="currentIndex == 0" :enums="staffEnums" @addStep="addCoachInfo" @deletStep="deletStep" @skiptoedit="skipToEdit"/>
+    <staff-detail-basics
+      v-if="currentIndex == 0"
+      :enums="staffEnums"
+      :codeList="codeList"
+      :roleList="roleList"
+      @addStep="addCoachInfo"
+      @deletStep="deletStep" />
   </st-panel>
 </template>
 
@@ -20,17 +26,20 @@
 import StaffDetailBasics from './add#/add-detail-basicsInfo'
 import { UserService } from '@/services/user.service'
 import { MessageService } from '@/services/message.service'
+import { AddService } from './add.service'
 export default {
   serviceInject() {
     return {
       userService: UserService,
-      // regionService: RegionService,
-      messageService: MessageService
+      messageService: MessageService,
+      addService: AddService
     }
   },
   rxState() {
     return {
-      staffEnums: this.userService.staffEnums$
+      staffEnums: this.userService.staffEnums$,
+      codeList: this.addService.codeList$,
+      roleList: this.addService.roleList$
     }
   },
   name: 'addDetail',
@@ -62,9 +71,6 @@ export default {
     }
   },
   methods: {
-    skipToEdit(data) {
-      this.$router.replace({ name: 'shop-staff-edit', query: { id: data.id, currentIndex: 1 } })
-    },
     // 删除步骤轴
     deletStep(e) {
       this.stepsSpan = 12
