@@ -76,18 +76,10 @@
           </span>
           <st-button
             v-if="auth.batchAdd"
-            v-modal-link="{
-              name: `shop-cabinet-add-${type}`,
-              props: {
-                id: query.id,
-                type,
-                areaName
-              },
-              on: {
-                change: onCabinetListChange
-              }
-            }"
-           type="primary" class="mg-l8">批量添加储物柜
+            type="primary" class="mg-l8"
+            @click="openBatchAdd"
+          >
+            批量添加储物柜
           </st-button>
         </div>
       </div>
@@ -174,9 +166,7 @@ export default {
       const list = this.list
       const queryId = this.query.id
       const id = (list[0] && list[0].id) || 0
-      if (!queryId) {
-        this.queryHandler({ id })
-      }
+      this.queryHandler({ id })
     },
     addArea() {
       this.isShowAddAreaBtn = true
@@ -206,7 +196,11 @@ export default {
       if (type === 'cancel') {
         return
       }
-      this.areaService.getList().subscribe()
+      this.areaService.getList().subscribe(() => {
+        if (this.list.length <= 1) {
+          this.initQueryId()
+        }
+      })
     },
     onAreaChange(id) {
       this.queryHandler({ id })
@@ -244,6 +238,27 @@ export default {
     },
     changeOperationMode() {
       this.isOperationInBatch = !this.isOperationInBatch
+    },
+    openBatchAdd() {
+      const { id } = this.query
+      const { type, areaName } = this
+      if (!+id) {
+        this.messageService.error({
+          content: '请先添加区域'
+        })
+        return
+      }
+      this.$modalRouter.push({
+        name: `shop-cabinet-add-${type}`,
+        props: {
+          id,
+          type,
+          areaName
+        },
+        on: {
+          change: this.onCabinetListChange
+        }
+      })
     }
   }
 }
