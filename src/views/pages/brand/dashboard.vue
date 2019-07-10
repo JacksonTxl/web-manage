@@ -6,7 +6,7 @@
           <div :class="bCount('box')">
             <count-card title="今日营收额" :count="this.revenue.num" :footer="{label: '近7天日均营收额:', value: Number(this.revenue.avg||'') }" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
               <template slot="title">
-                aaa
+                <st-help-tooltip id="TBCDA001"></st-help-tooltip>
               </template>
               <brand-simple-line :data="this.revenue.chart | lineFilter"></brand-simple-line>
             </count-card>
@@ -15,21 +15,30 @@
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
             <count-card title="今日订单数" :count="this.order.num" :footer="{label: '近7天日均订单数:', value: Number(this.order.avg||'') }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
+              <template slot="title">
+                <st-help-tooltip id="TBCDA002"></st-help-tooltip>
+              </template>
               <brand-simple-line color="#00B4BC" unit="单" :data="this.order.chart | lineFilter"></brand-simple-line>
             </count-card>
           </div>
         </a-col>
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card  title="用户数">
-              <brand-simple-line color="#55BFA3" unit="人"  :data="this.visit.chart | lineFilter"></brand-simple-line>
+            <count-card  title="用户数" :count="this.user.num" :footer="{label: '近7天日转化会员率:', value: Number(this.user.ratio||'') }">
+              <template slot="title">
+                <st-help-tooltip id="TBCDA003"></st-help-tooltip>
+              </template>
+              <brand-simple-bar color="#58CC99" class="mg-t40" :data="this.user.chart | barFilter"></brand-simple-bar>
             </count-card>
           </div>
         </a-col>
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card title="今日客流量" :count="this.user.num" :footer="{label: '近7天日均营收额:', value: Number(this.user.avg||'') }" :trend="{isUp: this.user.ratio > 0, rate: this.user.ratio }">
-              <brand-simple-bar color="#58CC99" class="mg-t40" :data="this.user | barFilter"></brand-simple-bar>
+            <count-card title="今日客流量" :count="this.visit.num" :footer="{label: '近7天日均客流量:', value: Number(this.visit.avg||'') }">
+              <template slot="title">
+                <st-help-tooltip id="TBCDA004"></st-help-tooltip>
+              </template>
+              <brand-simple-line color="#55BFA3" unit="人"  :data="this.visit.chart | lineFilter"></brand-simple-line>
             </count-card>
           </div>
         </a-col>
@@ -129,7 +138,7 @@ export default {
     barFilter(val) {
       return {
         name: '会员占比',
-        percent: val.percent
+        percent: val
       }
     }
   },

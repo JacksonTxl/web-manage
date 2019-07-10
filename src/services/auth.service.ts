@@ -83,7 +83,6 @@ export class AuthService extends Store<AuthState> {
       return item
     })
     data.list = newList
-    data.auth = this.auth$.snapshot()
     return data
   }
   /**

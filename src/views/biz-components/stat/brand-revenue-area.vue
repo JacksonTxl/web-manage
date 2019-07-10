@@ -75,6 +75,7 @@ export default {
           min: 0
         },
         date: {
+          tickCount: 10,
           range: [0, 1]
         }
       })

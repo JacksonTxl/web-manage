@@ -5,7 +5,7 @@
       <st-form-item label="时间" required>
         <a-date-picker showTime format="YYYY-MM-DD HH:mm" v-decorator="[
           'start_time',
-          {rules: [{ required: true, message: 'Please input your note!' }]}
+          {rules: [{ required: true, message: '请输入日期' }]}
         ]">
           <a-icon slot="suffixIcon" type="clock-circle" />
         </a-date-picker>
@@ -13,7 +13,7 @@
       <st-form-item label="课程" required>
         <a-select v-decorator="[
           'course_id',
-          {rules: [{ required: true, message: 'Please input your note!' }]}
+          {rules: [{ required: true, message: '请选择课程' }]}
         ]">
           <a-select-option v-for="course in courseOptions" :key="course.id" :value="course.id">{{course.course_name}}</a-select-option>
         </a-select>
@@ -21,7 +21,7 @@
       <st-form-item label="教练" required>
         <a-select @change="onChange" v-decorator="[
           'coach_id',
-          // {rules: [{ required: true, message: 'Please input your note!' }]}
+          {rules: [{ required: true, message: '请选择教练' }]}
         ]">
           <a-select-option v-for="coach in coachOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
         </a-select>
@@ -33,7 +33,7 @@
         @change="onChange"
         v-decorator="[
           'court_id',
-          // {rules: [{ required: true, message: 'Please input your note!' }]}
+          {rules: [{ required: true, message: '请选择场地' }]}
         ]"/>
       </st-form-item>
       <st-form-item label="人数" required>
@@ -45,7 +45,7 @@
       <st-form-item label="课时费" required >
         <a-input-search v-decorator="[
           'course_fee',
-          {rules: [{ required: true, message: 'Please input your note!' }]}]"> <a-button slot="enterButton">元/节</a-button> </a-input-search>
+          {rules: [{ required: true, message: '请选择课时费' }]}]"> <a-button slot="enterButton">元/节</a-button> </a-input-search>
       </st-form-item>
       <a-row>
         <a-col
@@ -91,12 +91,18 @@ export default {
       form: {}
     }
   },
+  props: {
+    id: {
+      type: Number,
+      default: -1
+    }
+  },
   created() {
     this.form = this.$form.createForm(this)
     console.log(this.form)
   },
   mounted() {
-    this.teamScheduleScheduleService.getUpdateInfo('12034851274797').subscribe(res => {
+    this.teamScheduleScheduleService.getUpdateInfo(this.id).subscribe(res => {
       let { id, course_id, coach_id, course_fee, court_id, court_site_id, start_time, reserved_num, limit_num } = res.info
       start_time = moment(start_time)
       court_id = [court_id, court_site_id]
@@ -122,7 +128,7 @@ export default {
           form.court_id = form.court_id[0]
           form.course_fee = parseInt(form.course_fee)
           form.limit_num = parseInt(form.limit_num)
-          this.teamScheduleScheduleService.update(this.id, { ...form }).subscribe(() => {
+          this.teamScheduleScheduleService.update({ id: this.id, ...form }).subscribe(() => {
             this.$message('修改团课排期成功')
           })
         }
