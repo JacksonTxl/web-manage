@@ -40,6 +40,8 @@ pipeline {
       steps {
         sh 'make rsync to=saas-test'
         sh 'make release to=saas-test'
+        sh 'make rsync to=saas-dev'
+        sh 'make release to=saas-dev'
         echo "https://saas.test.styd.cn"
       }
     }
