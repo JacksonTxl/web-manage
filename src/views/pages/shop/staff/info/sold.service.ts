@@ -9,6 +9,7 @@ export class SoldService implements RouteGuard {
     soldInfo$ = new State([])
     loading$ = new State({})
     constructor(private staffApi: ShopStaffApi) {}
+
     @Effect()
     getStaffSoldInfo(id: string, query: GetStaffSoldInput) {
       return this.staffApi.getStaffSold(id, query).pipe(
