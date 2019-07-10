@@ -173,7 +173,7 @@ export default {
     initQueryId() {
       const list = this.list
       const queryId = this.query.id
-      const id = list[0].id || 0
+      const id = (list[0] && list[0].id) || 0
       if (!queryId) {
         this.queryHandler({ id })
       }
