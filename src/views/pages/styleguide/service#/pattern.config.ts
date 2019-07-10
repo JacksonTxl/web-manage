@@ -19,6 +19,15 @@ export const rules = (vm: any) => {
         }]
       }
     ],
+    tel: [
+      'tel', {
+        rules: [{
+          required: true,
+          pattern: pattern.TEL,
+          message: '手机号或座机号格式不正确'
+        }]
+      }
+    ],
     id: [
       'id', {
         rules: [{

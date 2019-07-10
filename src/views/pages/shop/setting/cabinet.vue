@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <div :class="b('nav')">
-      <st-t4 class="mg-l16">中山公园旗舰店</st-t4>
+      <st-t4 class="mg-l16">{{shop.name}}</st-t4>
       <a-tabs
         :defaultActiveKey="defaultActiveKey"
         tabPosition="left"
@@ -18,7 +18,7 @@
                 <span>{{item.area_name}}({{item.cabinet_num}})</span>
                 <st-more-dropdown>
                   <a-menu-item v-if="auth.areaEdit" @click="editArea(item.id)">编辑</a-menu-item>
-                  <a-menu-item v-if="auth.areaDel" @click="delArea(item.id)">删除</a-menu-item>
+                  <a-menu-item v-if="auth.areaDel" @click="delArea(item.id, item.cabinet_num)">删除</a-menu-item>
                 </st-more-dropdown>
               </div>
               <edit-cabinet-area
@@ -105,6 +105,7 @@
 import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import { CabinetService } from './cabinet.service'
+import { UserService } from '@/services/user.service'
 import AddCabinetArea from './cabinet#/add-area'
 import EditCabinetArea from './cabinet#/edit-area'
 import { CabinetAreaService as AreaService } from './cabinet#/area.service'
@@ -120,14 +121,16 @@ export default {
       messageService: MessageService,
       routeService: RouteService,
       cabinetService: CabinetService,
-      areaService: AreaService
+      areaService: AreaService,
+      userService: UserService
     }
   },
   rxState() {
     return {
       list: this.areaService.list$,
       query: this.routeService.query$,
-      auth: this.cabinetService.auth$
+      auth: this.cabinetService.auth$,
+      shop: this.userService.shop$
     }
   },
   data() {
@@ -181,7 +184,14 @@ export default {
     editArea(id) {
       this.editId = id
     },
-    delArea(id) {
+    delArea(id, num) {
+      if (num > 0) {
+        this.$error({
+          title: '当前区域内有配置储值柜，无法删除',
+          okText: '知道了'
+        })
+        return
+      }
       this.areaService.del(id).subscribe(this.onDelAreaSuccess)
     },
     onDelAreaSuccess() {
