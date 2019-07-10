@@ -228,4 +228,15 @@ export class RuleConfig {
   get introduction() {
     return ['introduction']
   }
+  // 擅长的项目
+  get specialty_id() {
+    return ['specialty_id']
+  }
+  get certification_name() {
+    return ['certification_name']
+  }
+  // 对外展示
+  get is_show() {
+    return ['is_show']
+  }
 }

@@ -49,7 +49,7 @@
         </st-form-item>
         <st-form-item label="证件">
           <a-input-group compact style="top: 0;">
-            <a-select v-decorator="['id_type', {initialValue: form.id_type}]">
+            <a-select v-decorator="rules.idtype">
               <template v-for="(item,key) in enums.id_type.value">
                 <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
               </template>
@@ -224,7 +224,7 @@ export default {
       })
     },
     setData(obj) {
-      console.log('setData', obj)
+      console.log('setData, id_type', obj.id_type)
       this.form.setFieldsValue({
         staff_name: obj.staff_name,
         nickname: obj.nickname,
