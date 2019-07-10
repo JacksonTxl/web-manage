@@ -7,7 +7,19 @@
         <a-input placeholder="4-10个字，中英文及数字" v-decorator="rules.whatever"/>
       </st-form-item>
       <st-form-item label="CN_EN_NUM_SPACE" required>
-        <a-input placeholder="4-10个字，中英文、数字、中间空格" v-decorator="rules.name"/>
+        <a-input placeholder="1-15个字，中英文、数字、中间空格" v-decorator="rules.name"/>
+      </st-form-item>
+      <st-form-item label="CN" required>
+        <a-input placeholder="1-15个字，中文" v-decorator="rules.cn"/>
+      </st-form-item>
+      <st-form-item label="EN" required>
+        <a-input placeholder="2-6位，英文" v-decorator="rules.en"/>
+      </st-form-item>
+      <st-form-item label="CN_EN" required>
+        <a-input placeholder="2-6位，中英文" v-decorator="rules.cnEn"/>
+      </st-form-item>
+      <st-form-item label="NUM" required>
+        <a-input placeholder="2-6位，整数" v-decorator="rules.num"/>
       </st-form-item>
       <st-form-item label="MOBILE" required>
         <a-input placeholder="手机号" v-decorator="rules.mobile"/>

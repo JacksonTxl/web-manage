@@ -12,6 +12,7 @@
 <script>
 import { MessageService } from '@/services/message.service'
 import { CabinetAreaService as AreaService } from './area.service'
+import { PatternService } from '@/services/pattern.service'
 export default {
   name: 'AddCabinetArea',
   bem: {
@@ -20,7 +21,8 @@ export default {
   serviceInject() {
     return {
       messageService: MessageService,
-      areaService: AreaService
+      areaService: AreaService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -49,7 +51,13 @@ export default {
     inputCheck() {
       if (!this.areaName.length) {
         this.messageService.error({
-          content: '请输入区域名称'
+          content: '请输入场地名称'
+        })
+        return false
+      }
+      if (!this.pattern.CN_EN_NUM_SPACE('1-15').test(this.areaName)) {
+        this.messageService.error({
+          content: '输入的场地名称格式错误，请重新输入'
         })
         return false
       }
