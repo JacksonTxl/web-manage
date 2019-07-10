@@ -61,6 +61,8 @@ export class TeamScheduleReserveService {
   getInfo(id: string) {
     return this.reserveApi.getInfo(id).pipe(tap(res => {
       this.state$.commit(state => {
+        res = this.authService.filter(res, 'list')
+        res = this.authService.filter(res, 'info')
         state.reserveInfo = res.info
         state.reserveList = res.list
       })

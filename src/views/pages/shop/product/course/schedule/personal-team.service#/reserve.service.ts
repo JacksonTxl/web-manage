@@ -25,6 +25,7 @@ export class PersonalTeamScheduleReserveService {
       auth: {
         add: this.authService.can('shop:reserve:personal_team_course_reserve|add'),
         cancel: this.authService.can('shop:reserve:personal_team_course_reserve|del'),
+        edit: this.authService.can('shop:reserve:personal_team_course_reserve|edit'),
         checkIn: this.authService.can('shop:reserve:personal_team_course_reserve|checkin')
       }
     })

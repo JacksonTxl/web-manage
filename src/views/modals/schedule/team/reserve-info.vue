@@ -1,5 +1,5 @@
 <template>
-  <st-modal class="modal-reserved" title="预约详情" @ok="save" :footer="null" width="848px" v-model="show">
+  <st-modal class="modal-reserved" title="预约详情" @ok="save"  width="848px" v-model="show">
     <a-row :gutter="24" class="modal-reserved-info">
       <a-col :lg="8">
         <st-info>
@@ -85,13 +85,21 @@
           <td>{{item.is_checkin_name}}</td>
           <td>
             <div>
-              <a  class="mg-r8" href="javascript:;" @click="onClickCancel(item.reserve_id)" v-if="auth.cancel">取消预约</a>
-              <a  href="javascript:;" v-if="auth.checkIn" @click="onClickCheckIn(item.reserve_id)">签到消费</a>
+              <a  class="mg-r8" href="javascript:;" @click="onClickCancel(item.reserve_id)" v-if="auth['shop:reserve:team_course_reserve|cancel']">取消预约</a>
+              <a  href="javascript:;" v-if="auth['shop:reserve:team_course_reserve|chckin']" @click="onClickCheckIn(item.reserve_id)">签到消费</a>
             </div>
           </td>
         </tr>
       </tbody>
     </st-form-table>
+    <div slot="footer" class="mg-t24 ta-r">
+      <st-button @click="onClickCancelCourse" v-if="1 || auth['shop:reserve:team_course_reserve|del']" class="mg-r8">
+        取消课程
+      </st-button>
+      <st-button @click="onClickEditCourse" v-if="1 || auth['shop:reserve:team_course_reserve|edit']" type="primary" >
+        修改课程
+      </st-button>
+    </div>
   </st-modal>
 </template>
 
@@ -196,6 +204,14 @@ export default {
     }
   },
   methods: {
+    onClickCancelCourse() {
+      this.$modalRouter.push({ name: 'schedule-team-cancel-course', props: { id: this.info.id } })
+      this.show = false
+    },
+    onClickEditCourse() {
+      this.$modalRouter.push({ name: 'schedule-team-edit-schedule', props: { id: this.info.id } })
+      this.show = false
+    },
     onSearch(value) {
       this.teamScheduleCommonService.getMemberList({ member_name: value }).subscribe()
     },
