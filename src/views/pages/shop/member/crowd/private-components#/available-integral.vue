@@ -42,7 +42,6 @@ export default {
       this.value.selectionData = item
     },
     onChange(date, dateString) {
-      console.log(date, dateString)
       this.$emit('dataChangge', this.value)
     }
   },

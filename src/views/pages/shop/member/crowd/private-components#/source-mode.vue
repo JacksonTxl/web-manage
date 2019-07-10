@@ -3,9 +3,9 @@
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">选择来源</span>
-    <template v-for="(tag,index) in tags">
-      <a-tooltip :key="tag" :title="tag">
-        <a-tag :key="tag" :closable="true" :afterClose="() => handleClose(tag,index)">{{tag}}</a-tag>
+    <template v-for="(tag,index) in value.getData.source_channel">
+      <a-tooltip :key="index" :title="tag.name">
+        <a-tag :key="index" :closable="true" :afterClose="() => handleClose(tag,index)">{{tag.name}}</a-tag>
       </a-tooltip>
     </template>
     <a-tag style="background: #fff; borderStyle: dashed;">
@@ -15,10 +15,10 @@
         </a>
         <a-menu slot="overlay">
           <a-menu-item
-            v-for="(item,key,index) in crowdEnums.crowd_source_channel.value"
+            v-for="(item,key,index) in sourceOptions"
             :key="index"
           >
-            <a href="javascript:;" @click="dropdownFunc(item,{[key]:item})">{{item}}</a>
+            <a @click="dropdownFunc(item,index)">{{item.name}}</a>
           </a-menu-item>
         </a-menu>
       </a-dropdown>
@@ -35,12 +35,8 @@ export default {
     }
   },
   rxState() {
-    /**
-     * @type {UserService}
-     */
-    const user = this.userService
     return {
-      crowdEnums: user.crowdEnums$
+      crowdEnums: this.userService.crowdEnums$
     }
   },
   model: {
@@ -59,42 +55,33 @@ export default {
         title: '来源方式',
         info: '选择来源方式为以下范围的用户'
       },
-      radioValue: '',
-      tags: [],
-
-      inputValue: ''
+      sourceOptions: []
     }
   },
   created() {
-    this.tags = Object.values(
-      Object.assign({}, ...this.value.getData.source_channel)
-    )
+    let list = []
+    if (!this.crowdEnums.crowd_source_channel) return list
+    Object.entries(this.crowdEnums.crowd_source_channel.value).forEach(o => {
+      list.push({ value: +o[0], name: o[1] })
+    })
+    this.sourceOptions = list
+    // this.tags = Object.values(
+    //   Object.assign({}, ...this.value.getData.source_channel)
+    // )
   },
   methods: {
-    dropdownFunc(inputValue, inputValueObj) {
-      let tags = this.tags
-      if (inputValue && tags.indexOf(inputValue) === -1) {
-        tags = [...tags, inputValue]
-      }
-      console.log(tags, inputValue, inputValueObj, this.value.getData.base_shop)
-      this.value.getData.source_channel.push(inputValueObj)
-      Object.assign(this, {
-        tags,
-        inputVisible: false,
-        inputValue: ''
-      })
+    dropdownFunc(item, index) {
+      // 需要去重
+      this.value.getData.source_channel.push(item)
     },
 
     onChange(date, dateString) {
       this.$emit('dataChangge', this.value)
     },
     handleClose(removedTag, index) {
-      const tags = this.tags.filter(tag => tag !== removedTag)
-      console.log(tags)
-      this.tags = tags
+      this.value.getData.source_channel.splice(index, 1)
       this.value.getData.source_channel.splice(index, 1)
     }
-  },
-  mounted() {}
+  }
 }
 </script>

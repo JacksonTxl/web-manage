@@ -59,9 +59,9 @@
 </template>
 <script>
 import base_info from './private-components#/basic-data'
-import sex from './private-components#/sex'
-import age from './private-components#/age'
-import birthday from './private-components#/birthday'
+import base_sex from './private-components#/base_sex'
+import base_age from './private-components#/base_age'
+import base_birthday from './private-components#/base_birthday'
 import regTime from './private-components#/reg-time'
 import affiliatedStore from './private-components#/affiliated-store'
 import availableIntegral from './private-components#/available-integral'
@@ -96,9 +96,9 @@ export default {
     'reg-time': regTime, // 注册时间
     'source-mode': sourceMode, // 来源方式
     'induction-time': inductionTime, // 入会时间
-    'birthday': birthday, // 生日
-    'sex': sex, // 性别
-    'age': age, // 年龄
+    'base_birthday': base_birthday, // 生日
+    'base_sex': base_sex, // 性别
+    'base_age': base_age, // 年龄
     'affiliated-store': affiliatedStore, // 所属门店
     'available-integral': availableIntegral, // 可用积分
     'available-coupons': availableCoupons, // 可用优惠劵
@@ -252,9 +252,9 @@ export default {
   filters: {
     componentFun(value) {
       let obj = {
-        sex: 'sex',
-        age: 'age',
-        birthday: 'birthday',
+        base_sex: 'base_sex',
+        base_age: 'base_age',
+        base_birthday: 'base_birthday',
         base_shop: 'affiliated-store',
         register_time: 'reg-time',
         source_channel: 'source-mode',
@@ -287,9 +287,11 @@ export default {
     conserve() {
       console.log(this.selectData)
       this.form.validateFields((err, values) => {
-        this.selectData.getData.crowd_name = values.basicInfoRuleList.crowd_name
         if (!err) {
           let obj = {}
+          this.selectData.arrData.map(item => {
+            obj[item] = this.selectData.getData[item]
+          })
           let [arrKey, arrValue] = [[], []]
           this.selectData.arrData.map(item => {
             obj[item] = this.selectData.getData[item]
@@ -305,39 +307,54 @@ export default {
               arrValue.push(this.selectData.getData[item])
             }
           })
+          obj.crowd_name = values.basicInfoRuleList.crowd_name
           obj.array_index = this.selectData.arrData
-          obj.crowd_name = this.selectData.getData.crowd_name
 
-          if (
-            arrKey.length === arrValue.length &&
-            arrValue.every(item => item !== '')
-          ) {
-            let flag = true
-            arrValue.map(item => {
-              if (Array.isArray(item)) {
-                if (item.length === 0) {
-                  flag = false
-                }
-              }
-            })
-            if (flag) {
-              if (this.$route.query.id) {
-                this.addService
-                  .getCrowdBrandCrowd(this.$route.query.id, obj)
-                  .subscribe(status => {
-                    this.$router.push({ name: 'shop-member-crowd-index' })
-                  })
-              } else {
-                this.addService.setCrowdBrandField(obj).subscribe(status => {
-                  this.$router.push({ name: 'shop-member-crowd-index' })
-                })
-              }
-            } else {
-              this.messageService.warning({ content: '请完整填写！' })
-            }
+          if (this.$route.query.id) {
+            this.addService
+              .getCrowdBrandCrowd(this.$route.query.id, obj)
+              .subscribe(status => {
+                this.$router.push({ name: 'shop-member-crowd-index' })
+              })
           } else {
-            this.messageService.warning({ content: '请完整填写！' })
+            this.addService.setCrowdBrandField(obj).subscribe(status => {
+              this.$router.push({ name: 'shop-member-crowd-index' })
+            })
           }
+          // let obj = {}
+
+          // obj.crowd_name = this.selectData.getData.crowd_name
+
+          // if (
+          //   arrKey.length === arrValue.length &&
+          //   arrValue.every(item => item !== '')
+          // ) {
+          //   let flag = true
+          //   arrValue.map(item => {
+          //     if (Array.isArray(item)) {
+          //       if (item.length === 0) {
+          //         flag = false
+          //       }
+          //     }
+          //   })
+          //   if (flag) {
+          //     if (this.$route.query.id) {
+          //       this.addService
+          //         .getCrowdBrandCrowd(this.$route.query.id, obj)
+          //         .subscribe(status => {
+          //           this.$router.push({ name: 'shop-member-crowd-index' })
+          //         })
+          //     } else {
+          //       this.addService.setCrowdBrandField(obj).subscribe(status => {
+          //         this.$router.push({ name: 'shop-member-crowd-index' })
+          //       })
+          //     }
+          //   } else {
+          //     this.messageService.warning({ content: '请完整填写！' })
+          //   }
+          // } else {
+          //   this.messageService.warning({ content: '请完整填写！' })
+          // }
         }
       })
     },

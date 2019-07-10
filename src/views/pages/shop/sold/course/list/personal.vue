@@ -36,16 +36,12 @@
         </div>
     </st-search-panel>
     <div :class="basic('content')">
-        <div :class="basic('content-batch')">
+        <div :class="basic('content-batch')" class="mg-b16">
             <st-button v-if="auth.export" type="primary">批量导出</st-button>
-        </div>
-        <div :class="basic('table-select-info')">
-            <st-icon type="weibo" />
-            <span class="mgl-8 mgr-16">已选 <i :class="basic('table-select-number')">{{selectedRowKeys.length}}</i> / 10 条数据</span>
-            <a href="javascript:void(0)">删除</a>
         </div>
         <div :class="basic('table')">
           <st-table
+          :alertSelection="{onReset: onClear}"
           :page="page"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
           rowKey="id"
@@ -287,6 +283,10 @@ export default {
         path: `/shop/sold/course/info/personal/info/consumption-record`,
         query: { id: record.id }
       })
+    },
+    onClear() {
+      this.selectedRowKeys = []
+      this.selectedRows = []
     }
   }
 }
