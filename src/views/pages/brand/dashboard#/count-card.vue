@@ -2,8 +2,8 @@
   <div class="page-dashboard-count-card">
     <div class="title">{{title}} <slot name="title"></slot></div>
     <div class="i-count-up-box mg-t8">
-      <i-count-up class="mg-r16 i-count-up" :endVal="count"/>
-      <div class="trend">
+      <i-count-up class="mg-r16 i-count-up font-number" :endVal="Number(count||'')"/>
+      <div v-if="trend" class="trend">
         <span >{{trend.isUp?'上升' : '下降'}}</span><span >{{trend.rate}}</span>
       </div>
     </div>
@@ -33,17 +33,11 @@ export default {
       default: '卡片标题'
     },
     count: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
     trend: {
-      type: Object,
-      default: () => {
-        return {
-          isUp: true,
-          rate: 0
-        }
-      }
+      type: Object
     },
     footer: {
       type: Object,

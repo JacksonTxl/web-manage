@@ -103,6 +103,7 @@
         {{des}}
         <st-textarea :autosize="{ minRow: 2, maxRow: 5}" v-model="des" maxlength="5"></st-textarea>
       </p>
+      shop: {{shop}}
     </st-panel>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
   </div>
@@ -119,6 +120,7 @@ import { EMPTY } from 'rxjs'
 import SwitchShop from '@/views/fragments/shop/switch'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import pic1 from '@/assets/img/avatar_default.png'
+import { UserService } from '@/services/user.service'
 
 export default {
   serviceInject() {
@@ -126,12 +128,14 @@ export default {
       themeService: ThemeService,
       messageService: MessageService,
       tlService: TlService,
-      routeService: RouteService
+      routeService: RouteService,
+      userService: UserService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      shop: this.userService.shop$
     }
   },
   components: {

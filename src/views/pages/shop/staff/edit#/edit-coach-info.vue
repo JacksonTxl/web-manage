@@ -6,17 +6,21 @@
           <a-date-picker style="width:100%" v-decorator="rules.employment_time"/>
         </st-form-item>
         <st-form-item label="擅长的项目">
-
+          <a-select mode="multiple" placeholder="请选择擅长的项目" v-decorator="rules.specialty_id">
+            <template v-for="item in staffSpecialty">
+              <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+            </template>
+          </a-select>
         </st-form-item>
         <st-form-item label="专业认证">
-          <a-input placeholder="请输入专业证书名称" v-decorator="rules.certification_name">
-            <div slot="addonAfter" @click="onAddProfess" class="add-profess-button">添加</div>
+          <a-input placeholder="请输入专业证书名称" v-decorator="rules.certification_name" style="top: 0;">
+            <div slot="addonAfter" @click="onAddProfess" class="add-profess-button" v-if="coachInfoData.certification_name.length < 10">添加</div>
           </a-input>
           <div class="add-profess-card">
-            <p v-for="(item,index) in coachInfoData.certification_name" :key="index">
-              <span>{{item.certification_name}}</span>
+            <div v-for="(item,index) in coachInfoData.certification_name" :key="index">
+              <span>{{item}}</span>
               <st-icon type="anticon:close" @click="onProfessRule(index)" style="cursor:pointer;"></st-icon>
-            </p>
+            </div>
           </div>
         </st-form-item>
         <st-form-item label="个人经历">
@@ -67,6 +71,9 @@ export default {
   },
   props: {
     data: {
+      type: Object
+    },
+    staffSpecialty: {
       type: Object
     }
   },

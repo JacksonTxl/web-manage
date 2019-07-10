@@ -26,10 +26,11 @@
       align-items: center;
       flex-wrap: wrap;
       .mg-t(8px);
-      > p {
+      > div {
+        max-width: 280px;
         display: flex;
-        display: inline-block;
         align-items: center;
+        box-sizing: border-box;
         .mg(0);
         .pd-tb(0);
         .pd-lr(8px);
@@ -42,6 +43,8 @@
         .lh(20px);
         .c(@text);
         > span {
+          display: inline-block;
+          max-width: 250px;
           margin-right: 8px;
           overflow: hidden;
           text-overflow: ellipsis;

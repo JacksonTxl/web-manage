@@ -94,7 +94,9 @@
       </tbody>
     </st-form-table>
     <div class="mg-t24 ta-r">
+      {{auth}}
       <a-popconfirm
+        v-if="auth.cancel"
         @confirm="cancelSchedule"
         okText="确认"
         cancelText="取消">
@@ -105,6 +107,7 @@
         <st-button>取消课程</st-button>
       </a-popconfirm>
       <st-button
+        v-if="auth.edit"
         class="mg-l8"
         type="primary"
         @click="updateSchedule"

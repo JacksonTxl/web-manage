@@ -34,6 +34,7 @@
       v-else-if="currentIndex == 2 && isShowCoach"
       :enums="staffEnums"
       :data="staffInfo"
+      :staffSpecialty="staffSpecialty"
       @back="onBack"
       @gonext="gonext"/>
   </st-panel>
@@ -66,7 +67,8 @@ export default {
       staffInfo: this.services.staffInfo$,
       roleList: this.services.roleList$,
       codeList: this.services.codeList$,
-      department: this.services.department$
+      department: this.services.department$,
+      staffSpecialty: this.services.staffSpecialty$
     }
   },
   components: {

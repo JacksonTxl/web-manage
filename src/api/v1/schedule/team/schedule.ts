@@ -74,7 +74,7 @@ export class TeamScheduleScheduleApi extends Api {
    * 取消团体课排期
    */
   del(id: string) {
-    return this.http.delete(`/v1/schedule/team/shop/${id}`)
+    return this.http.put(`/v1/schedule/team/shop/schedule/${id}`)
   }
 }
 /**
