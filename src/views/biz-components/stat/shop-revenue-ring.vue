@@ -10,6 +10,10 @@ import chartMixin from './mixin'
 export default {
   mixins: [chartMixin],
   props: {
+    /**
+     * @example
+     * [{name:'图例1',value:123}]
+     */
     data: {
       type: Array,
       default: () => []
