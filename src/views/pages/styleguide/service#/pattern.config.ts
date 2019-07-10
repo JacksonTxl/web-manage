@@ -1,8 +1,8 @@
 export const rules = (vm: any) => {
   const pattern = vm.pattern
   return {
-    whatever: [
-      'whatever', {
+    cnEnNum: [
+      'cnEnNum', {
         rules: [{
           required: true,
           pattern: pattern.CN_EN_NUM('4-10'),
