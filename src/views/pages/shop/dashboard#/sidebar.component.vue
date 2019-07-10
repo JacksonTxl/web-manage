@@ -8,10 +8,10 @@
       </div>
       <st-container class="bg-white mg-t16 pluginbox" type="2">
         <st-t3 :class="b('title')">三体AIoT<a target="_blank" href="http://www.styd.cn/default/product_iot">查看更多<a-icon theme="filled" type="right-circle" /></a></st-t3>
-        <plug-in title="多功能人脸识别一体机" sub="AI技术加持，玩转大数据" :img="ai1" ></plug-in>
-        <plug-in title="智慧前台" sub="您的健身房前台贴心管家" :img="ai2"></plug-in>
-        <plug-in title="智能门禁" sub="无论扫码还是刷卡，so easy" :img="ai3"></plug-in>
-        <plug-in title="智能闸机" sub="请亮出你的身份" :img="ai4"></plug-in>
+        <plug-in title="多功能人脸识别一体机" sub="AI技术加持，玩转大数据" :img="ai1" href="http://www.styd.cn/default/product_iot_face" ></plug-in>
+        <plug-in title="智慧前台" sub="您的健身房前台贴心管家" :img="ai2" href="http://www.styd.cn/default/product_iot_front_desk"></plug-in>
+        <plug-in title="智能门禁" sub="无论扫码还是刷卡，so easy" :img="ai3" href="http://www.styd.cn/default/product_iot_door_guard"></plug-in>
+        <plug-in title="智能闸机" sub="请亮出你的身份" :img="ai4" href="http://www.styd.cn/default/product_iot_gate"></plug-in>
       </st-container>
       <st-container class="book bg-white mg-t16" type="2">
         <div class="book-img">

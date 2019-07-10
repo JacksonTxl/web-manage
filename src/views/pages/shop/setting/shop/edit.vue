@@ -114,6 +114,7 @@
   </st-panel>
 </template>
 <script>
+import { PatternService } from '@/services/pattern.service'
 import { EditService } from './edit.service'
 import { RuleConfig } from '@/constants/rule'
 import { cloneDeep } from 'lodash-es'
@@ -124,6 +125,7 @@ export default {
   },
   serviceInject() {
     return {
+      pattern: PatternService,
       rules: RuleConfig,
       editService: EditService
     }
@@ -216,7 +218,7 @@ export default {
         if (
           value !== undefined &&
           value !== '' &&
-          !this.rules.mobile.test(value)
+          !this.pattern.TEL.test(value)
         ) {
           // eslint-disable-next-line
           callback('输入的门店电话格式错误，请重新输入')

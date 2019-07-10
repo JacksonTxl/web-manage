@@ -10,6 +10,15 @@ export const rules = (vm: any) => {
         }]
       }
     ],
+    name: [
+      'name', {
+        rules: [{
+          required: true,
+          pattern: pattern.CN_EN_NUM_SPACE('4-10'),
+          message: '4-10个字，中英文、数字、中间空格'
+        }]
+      }
+    ],
     mobile: [
       'mobile', {
         rules: [{
