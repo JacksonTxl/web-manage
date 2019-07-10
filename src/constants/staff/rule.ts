@@ -226,7 +226,12 @@ export class RuleConfig {
   }
   // 个人经历
   get introduction() {
-    return ['introduction']
+    return ['introduction', {
+      rules: [{
+        pattern: this.pattern.CN_EN_NUM('1-300'),
+        message: '请输入1-300个字，中英文及数字'
+      }]
+    }]
   }
   // 擅长的项目
   get specialty_id() {
