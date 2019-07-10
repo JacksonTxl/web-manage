@@ -299,10 +299,16 @@ export default {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.image_avatar = this.fileList[0]
       data.image_face = this.faceList[0]
+      console.log('submit', data)
       this.addService.addStaff(data).subscribe(res => {
-        this.$emit('skiptoedit', {
-          id: res.staff_id,
-          isShowLevel: this.isShowLevel
+        console.log('addStaff', res)
+        this.$router.push({
+          name: 'shop-staff-edit',
+          query: {
+            id: res.staff_id,
+            currentIndex: 1,
+            isShowCoach: data.identity.includes(3) || data.identity.includes(4) ? 1 : 0
+          }
         })
       })
     }

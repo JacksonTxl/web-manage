@@ -10,16 +10,19 @@ export const columns = [
   },
   {
     title: '时长（分钟）',
+    sorter: true,
     dataIndex: 'duration'
   },
   {
     title: '课程定价',
     dataIndex: 'sell_price',
+    sorter: true,
     scopedSlots: { customRender: 'sell_price' }
   },
   {
     title: '授课教练数',
     dataIndex: 'coaches',
+    sorter: true,
     scopedSlots: { customRender: 'coaches' }
   },
   {

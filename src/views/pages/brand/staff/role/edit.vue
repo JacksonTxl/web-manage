@@ -82,7 +82,7 @@
       </a-col>
     </a-row>
     <st-form-item label="    ">
-      <st-button type="primary" @click="onClickSubmit" class="mr-5">保存</st-button>
+      <st-button type="primary" @click="onClickSubmit" class="mg-r16">保存</st-button>
       <st-button>取消</st-button>
     </st-form-item>
   </st-form>

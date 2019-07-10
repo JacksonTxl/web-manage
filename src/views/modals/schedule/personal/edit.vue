@@ -13,34 +13,32 @@
         <st-button class="copy-button" @click="onClickCopySchedule">复制上周</st-button>
       </div>
 
-      <div class="modal-add-schedule__time mg-t16">
-        <div class="modal-add-schedule__time" v-if="scheduleInfo.length">
-          <st-container>
-            <a-row class="time-header">
-              <a-col :lg="3">
-                <span class="time-header__label mg-l8">时间段</span>
+      <div class="modal-schedule__time modal-add-schedule__time mg-t16" v-if="scheduleInfo.length">
+        <st-container>
+          <a-row class="time-header">
+            <a-col :lg="3">
+              <span class="time-header__label mg-l8">时间段</span>
+            </a-col>
+            <a-col :lg="21">
+              <a-col class="time-header__value" :lg="6">00:00</a-col>
+              <a-col class="time-header__value" :lg="6">06:00</a-col>
+              <a-col class="time-header__value" :lg="6">12:00</a-col>
+              <a-col :lg="6" class="time-header__value last">
+                <span>18:00</span>
+                <span class="mg-r8">24:00</span>
               </a-col>
-              <a-col :lg="21">
-                <a-col class="time-header__value" :lg="6">00:00</a-col>
-                <a-col class="time-header__value" :lg="6">06:00</a-col>
-                <a-col class="time-header__value" :lg="6">12:00</a-col>
-                <a-col :lg="6" class="time-header__value last">
-                  <span>18:00</span>
-                  <span class="mg-r8">24:00</span>
-                </a-col>
-              </a-col>
+            </a-col>
 
-            </a-row>
-            <a-row class="time-item" v-for="info in scheduleInfo" :key="info.time_type">
-              <a-col :lg="2">
-                <span>{{info.schedule_date | filterDate}}</span>
-              </a-col>
-              <a-col :lg="22">
-                <st-time-picker v-model="info.timing" :key="info.time_type"></st-time-picker>
-              </a-col>
-            </a-row>
-          </st-container>
-        </div>
+          </a-row>
+          <a-row class="time-item" v-for="info in scheduleInfo" :key="info.time_type">
+            <a-col :lg="2">
+              <span>{{info.schedule_date | filterDate}}</span>
+            </a-col>
+            <a-col :lg="22">
+              <st-time-picker v-model="info.timing" :key="info.time_type"></st-time-picker>
+            </a-col>
+          </a-row>
+        </st-container>
       </div>
     </div>
 

@@ -43,6 +43,9 @@ export class ListService implements RouteGuard {
       })
     )
   }
+  getCoursePriceList(id: any) {
+    return this.shopPersonalCourseApi.getCoursePriceList(id)
+  }
   deleteCourse(id: any) {
     return this.shopPersonalCourseApi.deleteCourse(id).pipe(tap(res => {
       this.msg.success({ content: '删除成功' })

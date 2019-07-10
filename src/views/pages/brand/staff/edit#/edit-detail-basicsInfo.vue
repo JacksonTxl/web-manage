@@ -203,6 +203,8 @@ export default {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.album_id = this.data.album_id
       data.department_id = Number(data.department_id)
+      console.log('submit', this.fileList)
+      console.log('submit', this.faceList)
       data.image_avatar = this.fileList[0] || {}
       data.image_face = this.faceList[0] || {}
       this.editService.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
@@ -227,12 +229,8 @@ export default {
         mail: obj.mail, // 邮箱
         country_code_id: obj.country_code_id // 手机区号
       })
-      this.fileList = [
-        obj.image_avatar
-      ]
-      this.faceList = [
-        obj.image_face
-      ]
+      this.fileList = Array.isArray(obj.image_avatar) ? obj.image_avatar : []
+      this.faceList = Array.isArray(obj.image_face) ? obj.image_face : []
     }
   }
 }

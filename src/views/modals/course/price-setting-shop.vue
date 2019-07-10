@@ -20,18 +20,27 @@
       {{transfer_num}}{{record.transfer_unit | enumFilter('personal_course.transfer_unit')}}
     </div>
     </st-table>
+    <div slot="footer"></div>
     </st-container>
   </st-modal>
 </template>
 <script>
 import { columnsPricesShop } from './support-table'
-import { BrandService } from '../../pages/brand/product/course/personal/list/brand.service'
+
 import { cloneDeep, uniqWith, isEqual } from 'lodash-es'
+import { ListService } from '../../pages/shop/product/course/manage/personal/list.service'
+import { EditService } from '../../pages/shop/product/course/manage/personal/edit.service'
 export default {
   name: 'CoursePrice',
   serviceInject() {
     return {
-      brandService: BrandService
+      listService: ListService,
+      editService: EditService
+    }
+  },
+  rxState() {
+    return {
+      info: this.editService.info$
     }
   },
   data() {
@@ -55,6 +64,9 @@ export default {
     }
   },
   computed: {
+    priceGradient() {
+      return this.info.price_gradient
+    },
     filterColums() {
       const columns = columnsPricesShop
       return columns.filter(item => {
@@ -64,7 +76,7 @@ export default {
   },
   methods: {
     onOk() {
-      this.$modalRouter.push({ name: 'course-price-setting-shop-update', props: { priceList: this.priceList } })
+      this.$modalRouter.push({ name: 'course-price-setting-shop-update', props: { priceList: this.priceGradient } })
     },
     onChangeShopName(val) {
       this.dataSource = val === -1 ? cloneDeep(this.prices) : this.prices.filter(item => item.shop_id === val)
@@ -96,7 +108,7 @@ export default {
       }
     },
     getShops() {
-      this.brandService.getCoursePrice(this.course.course_id).subscribe(state => {
+      this.listService.getCoursePriceList(this.course.course_id).subscribe(state => {
         console.log(state)
         this.prices = state.prices.map(item => {
           let sell_prices = state.sale_model === 2 ? item.sell_price : `${item.min_sell_price} ~ ${item.max_sell_price}元`
@@ -111,10 +123,14 @@ export default {
         this.dataSource = cloneDeep(this.prices)
         this.initOptions(state)
       })
+    },
+    getCourseEdit() {
+      this.editService.getCourseEdit(this.course.course_id).subscribe()
     }
   },
   mounted() {
     this.getShops()
+    this.getCourseEdit()
   }
 }
 </script>

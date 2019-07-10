@@ -11,13 +11,24 @@
         <a-input :value="areaName" disabled/>
       </st-form-item>
       <st-form-item label="首字母">
-        <a-input placeholder="请输入首字母" maxlength="1" v-decorator="ruleConfig.firstLetter"/>
+        <a-input placeholder="请输入首字母" maxlength="1" v-decorator="rules.firstLetter"/>
       </st-form-item>
       <st-form-item label="起始编号" required>
-        <a-input placeholder="请输入起始编号" v-decorator="ruleConfig.startNum"/>
+        <a-input-number
+          placeholder="请输入起始编号"
+          v-decorator="ruleConfig.startNum"
+          min="1"
+          max="9999"
+          precision="0"
+          class="full-width"
+        />
       </st-form-item>
       <st-form-item label="租赁价格" required>
-        <st-input-number :float="true" placeholder="请输入售卖价格" v-decorator="ruleConfig.priceNum">
+        <st-input-number
+          :float="true"
+          placeholder="请输入售卖价格"
+          v-decorator="ruleConfig.priceNum"
+        >
           <template slot="addonAfter">元/天</template>
         </st-input-number>
       </st-form-item>
@@ -51,7 +62,12 @@
         </a-radio-group>
       </st-form-item>
       <st-form-item v-if="isShowReason" labelFix>
-        <a-textarea v-model="info.reason" placeholder="请输入不可用原因，如维修中"/>
+        <st-textarea
+          v-model="info.reason"
+          placeholder="请输入不可用原因，如维修中"
+          maxlength="30"
+          :autosize="{ minRows: 3 }"
+        />
       </st-form-item>
     </st-form>
   </st-modal>
@@ -61,6 +77,8 @@ import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
 import { EditLongTermService as EditService } from './edit-long-term.service'
 import { RuleConfig } from '@/constants/setting/cabinet-rule'
+import { PatternService } from '@/services/pattern.service'
+import { rules } from './cabinet.config'
 
 export default {
   serviceInject() {
@@ -68,7 +86,8 @@ export default {
       messageService: MessageService,
       userService: UserService,
       editService: EditService,
-      ruleConfig: RuleConfig
+      ruleConfig: RuleConfig,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -98,6 +117,7 @@ export default {
     }
   },
   computed: {
+    rules,
     info() {
       return this.resData.info
     }
@@ -122,7 +142,14 @@ export default {
       e.preventDefault()
       this.form.validateFields().then((data) => {
         data.id = this.id
-        data.reason = this.info.reason || ''
+        const reason = this.info.reason || ''
+        if (this.isShowReason && !this.pattern.CN_EN_NUM_SPACE('1-30').test(reason)) {
+          this.messageService.error({
+            content: '不可用原因格式错误'
+          })
+          return
+        }
+        data.reason = reason
         data.transfer_unit = this.transferUnit
         this.editService.update(data).subscribe(this.onSubmitSuccess)
       })

@@ -121,7 +121,7 @@ export default {
   },
   methods: {
     updateStaffInfo() {
-      this.services.editStaffInfo(this.id).subscribe()
+      this.services.getStaffInfo(this.id)
     },
     onBack(step) {
       this.currentIndex = this.currentIndex - step

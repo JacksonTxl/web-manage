@@ -13,15 +13,31 @@
         </a-select>
       </st-form-item>
     </st-form>
-    <div class="modal-add-schedule__time">
-      <a-row class="time-item mg-t48" v-for="info in schedule_info" :key="info.time_type">
-        <a-col :lg="2">
-          <span>{{info.time_type | filterDate}}</span>
-        </a-col>
-        <a-col :lg="22">
-          <st-time-picker v-model="info.timing" :key="info.time_type"></st-time-picker>
-        </a-col>
-      </a-row>
+    <div class="modal-schedule__time modal-reserve-schedule__time mg-t16">
+      <st-container>
+        <a-row class="time-header">
+          <a-col :lg="3">
+            <span class="time-header__label mg-l8">时间段</span>
+          </a-col>
+          <a-col :lg="21">
+            <a-col class="time-header__value" :lg="6">00:00</a-col>
+            <a-col class="time-header__value" :lg="6">06:00</a-col>
+            <a-col class="time-header__value" :lg="6">12:00</a-col>
+            <a-col :lg="6" class="time-header__value last">
+              <span>18:00</span>
+              <span class="mg-r8">24:00</span>
+            </a-col>
+          </a-col>
+        </a-row>
+        <a-row class="time-item mg-t48" v-for="info in schedule_info" :key="info.time_type">
+          <a-col :lg="2">
+            <span>{{info.time_type | filterDate}}</span>
+          </a-col>
+          <a-col :lg="22">
+            <st-time-picker v-model="info.timing" :key="info.time_type"></st-time-picker>
+          </a-col>
+        </a-row>
+      </st-container>
     </div>
   </st-modal>
 </template>n
