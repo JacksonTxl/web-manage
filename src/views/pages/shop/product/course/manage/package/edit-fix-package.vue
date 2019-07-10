@@ -38,7 +38,7 @@
                 <tbody>
                   <tr class="bg-row-odd checkbox">
                     <td class="tg-c"><a-checkbox :defaultChecked="!!packageInfo.is_team" @change="teamCheckboxChange"/></td>
-                    <td class="rightline">团体课程</td>
+                    <td class="rightline white-nowrap">团体课程</td>
                     <td></td>
                     <td>{{teamCourseTotalObject.team_times}}节</td>
                     <td>{{teamCourseTotalObject.total}}元</td>
