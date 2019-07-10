@@ -118,8 +118,8 @@
               </st-form-item>
               <st-form-item label="每人限领" required v-if="couponType === '1'">
                 <a-radio-group
-                 :disabled="isEditMode"
-                 v-decorator="[
+                  :disabled="isEditMode"
+                  v-decorator="[
                   'is_limit',
                   {rules: [{ validator: is_limit_validator}]}]">
                   <a-radio :value="1">不限</a-radio>
@@ -231,8 +231,17 @@ export default {
         // eslint-disable-next-line
         callback('请填写优惠券面额')
       } else {
-        // eslint-disable-next-line
-        callback()
+        let value1 = value.split('.')[0]
+        let value2 = value.split('.')[1] || 0
+        let reg1 = new RegExp(/^[1-9]\d{0,3}$/)
+        let reg2 = new RegExp(/^[0-9]\d{0,1}$/)
+        if (reg1.test(value1) && reg2.test(value2)) {
+          // eslint-disable-next-line
+          callback()
+        } else {
+          // eslint-disable-next-line
+          callback('请输入正确范围的金额')
+        }
       }
     },
     // 使用门槛
