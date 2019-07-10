@@ -8,6 +8,9 @@ const typeSuffix = {
   'image/png': '.png'
 }
 
+/**
+ * http://showdoc.corp.rrr.me/web/#/9?page_id=457
+ */
 interface PutOptions {
   /**
    * 上传的文件
