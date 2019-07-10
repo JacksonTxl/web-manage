@@ -61,10 +61,10 @@ export default {
   },
   computed: {
     tips() {
-      return this.conditionDeleteInfo && this.conditionDeleteInfo.list
+      return this.conditionDeleteInfo.list
     },
     operate() {
-      return this.conditionDeleteInfo && this.conditionDeleteInfo.operate
+      return this.conditionDeleteInfo.operate
     }
   },
   methods: {
@@ -73,11 +73,14 @@ export default {
       this.dateString = dateString
     },
     isTurnover() {
-      this.turnoverService.getStaffCheckJob(this.staff.id + '').subscribe()
+      this.turnoverService.getStaffCheckJob(this.staff.id + '').subscribe(() => {
+        console.log('conditionDeleteInfo', this.conditionDeleteInfo)
+      })
     },
     onSubmit() {
       this.show = false
-      if (this.operate) {
+      if (!this.operate) {
+      } else {
         this.turnoverService.putStaffBrandQuit({ id: this.staff.id, quit_time: this.dateString }).subscribe(res => {
           this.$router.push({ force: true })
         })

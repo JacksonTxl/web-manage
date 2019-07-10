@@ -117,8 +117,8 @@
               </st-form-item>
               <st-form-item label="每人限领" required v-if="couponType === '1'">
                 <a-radio-group
-                  :disabled="isEditMode"
-                  v-decorator="[
+                 :disabled="isEditMode"
+                 v-decorator="[
                   'is_limit',
                   {rules: [{ validator: is_limit_validator}]}]">
                   <a-radio :value="1">不限</a-radio>
@@ -202,7 +202,6 @@ export default {
     } else {
       this.isEditMode = false
     }
-    console.log('couponEnums', this.couponEnums)
   },
   methods: {
     changeProductRange(event) {

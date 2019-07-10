@@ -34,10 +34,11 @@
     <div slot="price_setting" slot-scope="price_setting">
       {{price_setting | enumFilter('personal_course.price_setting')}}
     </div>
-    <div slot="sell_price" slot-scope="sell_price">
+    <div slot="sell_price" slot-scope="sell_price, record">
       <a
         href="javascript:;"
         v-if="sell_price.is_click === 1"
+        @click="onCLickCoursePrice(record)"
       >{{sell_price.course_price}}</a>
       <span v-else>{{sell_price.course_price}}</span>
     </div>
@@ -90,6 +91,9 @@ export default {
   methods: {
     onConfirmDeleteCourse(record) {
       this.$emit('delete-course', record.course_id)
+    },
+    onCLickCoursePrice(record) {
+      this.$router.push({ name: 'shop-product-course-manage-personal-edit', query: { id: record.course_id } })
     },
     onConfirmSetAvailable(record) {
       this.$emit('set-available', record)

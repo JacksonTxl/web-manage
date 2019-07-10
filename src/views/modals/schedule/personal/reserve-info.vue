@@ -31,14 +31,14 @@
       <st-button
         class="mg-r8"
         type="primary"
-        v-if="!info.is_checkin || info.reserve_status !== 4"
+        v-if="auth['shop:reserve:personal_course_reserve|edit']"
         @click="updateReserve">
         修改预约
       </st-button>
-      <st-button class="mg-r8" v-if="!info.is_checkin || info.reserve_status !== 4" @click="cancelSchedule">
+      <st-button class="mg-r8" v-if="auth['shop:reserve:personal_course_reserve|del']" @click="cancelSchedule">
         取消预约
       </st-button>
-      <st-button @click="checkInConsume" v-if="!info.is_checkin || info.reserve_status !== 4">
+      <st-button @click="checkInConsume" v-if="auth['shop:reserve:personal_course_reserve|checkin']">
         签到消费
       </st-button>
     </div>
@@ -57,7 +57,9 @@ export default {
     }
   },
   rxState() {
+    console.log(this.reserveService)
     return {
+      auth: this.reserveService.infoAuth$ || {}
     }
   },
   props: {

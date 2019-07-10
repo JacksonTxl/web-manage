@@ -6,14 +6,10 @@
           <a-date-picker style="width:100%" v-decorator="rules.employment_time"/>
         </st-form-item>
         <st-form-item label="擅长的项目">
-          <a-select mode="multiple" placeholder="请选择擅长的项目" v-decorator="rules.specialty_id">
-            <template v-for="item in staffSpecialty">
-              <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
-            </template>
-          </a-select>
+
         </st-form-item>
         <st-form-item label="专业认证">
-          <a-input placeholder="请输入专业证书名称" v-decorator="rules.certification_name" style="top: 0;">
+          <a-input placeholder="请输入专业证书名称" v-decorator="rules.certification_name">
             <div slot="addonAfter" @click="onAddProfess" class="add-profess-button">添加</div>
           </a-input>
           <div class="add-profess-card">
@@ -50,8 +46,8 @@
     <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
-          <st-button type="primary" @click="onClickBack">保存</st-button>
-          <st-button class="mg-l16" ghost type="primary" @click="goNext">保存 并继续添加新员工</st-button>
+          <st-button type="primary" ghost @click="onClickBack">保存</st-button>
+          <st-button class="mg-l16" @click="goNext" type="primary">继续 填写</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -69,11 +65,6 @@ export default {
       rules: RuleConfig,
       service: EditService,
       message: MessageService
-    }
-  },
-  rxState() {
-    return {
-      staffSpecialty: this.service.staffSpecialty$
     }
   },
   props: {
@@ -94,7 +85,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.staffSpecialty)
+    console.log(this.enums)
     this.setData(this.data)
   },
   methods: {
@@ -112,7 +103,7 @@ export default {
     },
     setData(obj) {
       this.form.setFieldsValue({
-        employment_time: obj.employment_time ? moment(obj.employment_time) : moment(),
+        employment_time: moment(obj.employment_time),
         specialty_id: obj.specialty_id,
         introduction: obj.introduction
       })
@@ -133,14 +124,7 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
-          values.employment_time = values.employment_time.format('YYYY-MM-DD')
-          values.certification_name = this.coachInfoData.certification_name
-          values.is_show = this.checked ? 1 : 0
-          values.image_personal = this.image_personal
-          console.log('Received values of form: ', values)
-          this.$emit('coachInfoSave', {
-            data: values
-          })
+          this.submit(values, 0)
         }
       })
     },

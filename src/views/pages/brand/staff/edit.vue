@@ -14,14 +14,14 @@
       </a-col>
     </a-row>
     <edit-detail-basics-info
-      v-if="currentIndex == 0"
+      v-show="currentIndex === 0"
       @go-next="goNext"
       :enums="staffEnums"
       :data="staffInfo"
       @bacicInfoSave="onBasicsSave"
     />
     <edit-detail-detailed-info
-      v-else-if="currentIndex == 1"
+      v-show="currentIndex === 1"
       @goNext="goNext"
       @back="onBack"
       :isShowCoach="isShowCoach"
@@ -29,7 +29,8 @@
       :data="staffInfo"
       @detailInfoSave="onDetailInfoSave"/>
     <edit-detail-coach-info
-      v-else-if="currentIndex == 2 && isShowCoach"
+      v-if="isShowCoach"
+      v-show="currentIndex === 2"
       @goNext="goNext"
       :enums="staffEnums"
       :data="staffInfo"
@@ -104,29 +105,15 @@ export default {
       ]
     }
   },
-  mounted() {
-    let { currentIndex } = this.$route.query
-    if (this.isShowCoach) {
-    } else {
-      this.stepsSpan = 12
-      this.stepArr.pop()
-    }
-    if (currentIndex) {
-      this.currentIndex = currentIndex - 0
-    }
-  },
   methods: {
     onBasicsSave(data) {
-      this.editService.updateBasicInfo(this.id, data.data).subscribe(() => {
-        this.editService.editStaffInfo()
-      })
+      this.editService.updateBasicInfo(this.id, data.data).subscribe()
     },
     onDetailInfoSave(data) {
       this.editService.updateDetailedInfo(this.id, data.data).subscribe(() => {
         if (!this.isShowCoach) {
           this.$router.push({ name: 'brand-staff-department' })
         } else {
-          this.editService.editStaffInfo()
           this.goNext()
         }
       })
@@ -146,6 +133,23 @@ export default {
     },
     changeStep(step) {
       this.currentIndex = step
+    }
+  },
+  mounted() {
+    let { currentIndex } = this.$route.query
+    if (this.isShowCoach) {
+    } else {
+      this.stepsSpan = 12
+      this.stepArr.pop()
+    }
+    if (currentIndex) {
+      this.currentIndex = currentIndex - 0
+      // if(!isShowCoach){
+      //   console.log('不展示')
+      //   this.stepArr.pop()
+      // }else{
+      //   console.log('展示')
+      // }
     }
   }
 }

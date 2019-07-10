@@ -4,7 +4,7 @@
       <div class="shop-member-crowd-add__left">
         <st-t2>人群定义维度</st-t2>
         <div style="padding-top:24px;coler:#9BACB9">单个人群最多可添加5个条件</div>
-        <basic-data v-model="seleteData" :flag="flag"></basic-data>
+        <basic-data v-model="selectData" :flag="flag"></basic-data>
       </div>
       <div class="shop-member-crowd-add__right">
         <st-t2>编辑人群</st-t2>
@@ -17,7 +17,7 @@
               v-decorator="[
                   'basicInfoRuleList.crowd_name',
                   {
-                    initialValue:seleteData.getData.crowd_name,
+                    initialValue:selectData.getData.crowd_name,
                     rules: [{ validator: physicalId}]}
                 ]"
             />
@@ -26,27 +26,27 @@
         <div class="shop-member-crowd-add__right-condition">
           <div>创建的人群 同时满足 以下条件</div>
 
-          <div>已选 {{seleteData.arrData.length}}/5 个条件</div>
+          <div>已选 {{selectData.arrData.length}}/5 个条件</div>
         </div>
-        <template v-for="(item,index) in seleteData.arrData">
+        <template v-for="(item,index) in selectData.arrData">
           <div
             :key="index"
             class="shop-member-crowd-add__right-condition-box"
-            v-if="seleteData.arrData.indexOf(item) >= 0"
+            v-if="selectData.arrData.indexOf(item) >= 0"
           >
             <div
               class="shop-member-crowd-add__right-condition-box-delete"
-              @click="deleteIcon(seleteData,item)"
+              @click="deleteIcon(selectData,item)"
             >
               <st-icon type="delete" style="color:#3F66F6"/>
             </div>
-            <component v-bind:is="item | componentFun" v-model="seleteData"></component>
+            <component v-bind:is="item | componentFun" v-model="selectData"></component>
           </div>
         </template>
         <div style="padding-top:32px;display: flex;justify-content: center;">
           <st-button style="margin-right:16px;width:102px">取消</st-button>
           <st-button
-            v-if="seleteData.arrData.length"
+            v-if="selectData.arrData.length"
             type="primary"
             style="margin-right:16px;width:102px"
             @click="conserve"
@@ -78,18 +78,17 @@ import inductionTime from './private-components#/induction-time.vue'
 import userLable from './private-components#/user-lable.vue'
 import baseMemberLevel from './private-components#/base-member-level.vue'
 import { AddService } from './add.service'
-import routes from '@/router/routes'
 import { MessageService } from '@/services/message.service'
 export default {
   serviceInject() {
     return {
-      aService: AddService,
+      addService: AddService,
       messageService: MessageService
     }
   },
   rxState() {
     return {
-      crowdInfo: this.aService.crowdInfo$
+      crowdInfo: this.addService.crowdInfo$
     }
   },
   components: {
@@ -114,12 +113,11 @@ export default {
     baseMemberLevel
   },
   data() {
-    let self = this
     return {
       // 状态锁
       flag: true,
 
-      seleteData: {
+      selectData: {
         // 基础资料
         base_info: {
           title: '基础资料',
@@ -160,7 +158,10 @@ export default {
         arrData: [],
         getData: {
           crowd_name: '',
-          base_sex: '',
+          base_sex: {
+            name: '',
+            value: ''
+          },
           base_age: {
             min: '',
             max: ''
@@ -169,7 +170,7 @@ export default {
             min: '',
             max: ''
           },
-          base_shop: [],
+          shop: [],
           register_time: {
             min: '',
             max: ''
@@ -221,8 +222,8 @@ export default {
             min: '',
             max: ''
           },
-          base_member_label: [],
-          base_member_level: []
+          member_label: [],
+          member_level: []
         },
         info: {}
       },
@@ -275,39 +276,37 @@ export default {
   },
   methods: {
     getCrowdBrand(id) {
-      let self = this
-
-      this.aService.getCrowdBrand(id).subscribe(status => {
-        self.seleteData.arrData = status.info.array_index
-        self.seleteData.getData.crowd_name = status.info.crowd_name
+      this.addService.getCrowdBrand(id).subscribe(status => {
+        this.selectData.arrData = status.info.array_index
+        this.selectData.getData.crowd_name = status.info.crowd_name
         status.info.array_index.map(item => {
-          self.seleteData.getData[item] = status.info[item]
+          this.selectData.getData[item] = status.info[item]
         })
       })
     },
     conserve() {
-      let self = this
+      console.log(this.selectData)
       this.form.validateFields((err, values) => {
-        self.seleteData.getData.crowd_name = values.basicInfoRuleList.crowd_name
+        this.selectData.getData.crowd_name = values.basicInfoRuleList.crowd_name
         if (!err) {
           let obj = {}
           let [arrKey, arrValue] = [[], []]
-          self.seleteData.arrData.map(item => {
-            obj[item] = self.seleteData.getData[item]
+          this.selectData.arrData.map(item => {
+            obj[item] = this.selectData.getData[item]
             if (
               Object.prototype.toString
-                .call(self.seleteData.getData[item])
+                .call(this.selectData.getData[item])
                 .slice(8, -1) === 'Object'
             ) {
-              arrKey.push(...Object.keys(self.seleteData.getData[item]))
-              arrValue.push(...Object.values(self.seleteData.getData[item]))
+              arrKey.push(...Object.keys(this.selectData.getData[item]))
+              arrValue.push(...Object.values(this.selectData.getData[item]))
             } else {
               arrKey.push(item)
-              arrValue.push(self.seleteData.getData[item])
+              arrValue.push(this.selectData.getData[item])
             }
           })
-          obj.array_index = self.seleteData.arrData
-          obj.crowd_name = self.seleteData.getData.crowd_name
+          obj.array_index = this.selectData.arrData
+          obj.crowd_name = this.selectData.getData.crowd_name
 
           if (
             arrKey.length === arrValue.length &&
@@ -322,15 +321,15 @@ export default {
               }
             })
             if (flag) {
-              if (self.$route.query.id) {
-                self.aService
-                  .getCrowdBrandCrowd(self.$route.query.id, obj)
+              if (this.$route.query.id) {
+                this.addService
+                  .getCrowdBrandCrowd(this.$route.query.id, obj)
                   .subscribe(status => {
-                    self.$router.push({ name: 'shop-member-crowd-index' })
+                    this.$router.push({ name: 'shop-member-crowd-index' })
                   })
               } else {
-                self.aService.setCrowdBrandField(obj).subscribe(status => {
-                  self.$router.push({ name: 'shop-member-crowd-index' })
+                this.addService.setCrowdBrandField(obj).subscribe(status => {
+                  this.$router.push({ name: 'shop-member-crowd-index' })
                 })
               }
             } else {
@@ -343,11 +342,10 @@ export default {
       })
     },
     getFilterData() {
-      let self = this
-      Object.keys(self.crowdInfo.info).map(item => {
-        Object.assign(self.seleteData.info, self.crowdInfo.info[item].value)
-        self.seleteData[item].value = Object.keys(
-          self.crowdInfo.info[item].value
+      Object.keys(this.crowdInfo.info).map(item => {
+        Object.assign(this.selectData.info, this.crowdInfo.info[item].value)
+        this.selectData[item].value = Object.keys(
+          this.crowdInfo.info[item].value
         )
       })
     },
@@ -390,11 +388,11 @@ export default {
   },
   mounted() {},
   watch: {
-    seleteData: {
+    selectData: {
       handler() {
-        let k = Object.keys(this.seleteData)
+        let k = Object.keys(this.selectData)
         let arr = []
-        arr.push(...this.seleteData.arrData)
+        arr.push(...this.selectData.arrData)
         if (arr.length >= 5) {
           this.flag = false
         } else {

@@ -69,13 +69,13 @@
         <st-button v-if="auth.add" class="mg-r8" @click="onAddStaff">添加员工</st-button>
         <st-button v-if="auth.import" class="mg-r8" @click="onExportStaff">导入员工</st-button>
         <st-button :disabled="selectedRowKeys.length > 0 ? false : true">
-          <a href="#" @click="onJoinDepartment" v-if="auth.join">
+          <a v-modal-link="{ name: 'shop-staff-join-department', props: {},on :{change: joinok} }" v-if="auth.join">
             批量加入部门
           </a>
         </st-button>
       </a-col>
       <a-col :lg="7" style="text-align: right;">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 300px;" v-model="query.keyword" @search="onSingleSearch('keyword', $event)"/>
+        <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 300px;" v-model="query.keywords" @search="onSingleSearch('keywords', $event)"/>
       </a-col>
     </a-row>
     <a-row :gutter="8" class="mg-t8">
@@ -85,7 +85,7 @@
         :dataSource="staffList"
         :scroll="{ x: 1500 }"
         class="page-shop-staff-table"
-        rowKey="id"
+        rowKey="staff_id"
         :page="page"
         @change="onTableChange"
       >
@@ -95,12 +95,12 @@
         </div>
         <template slot="shop" slot-scope="text,record">
           <template v-for="item in record.shop">
-            <span :key="item.id" class="mg-r8" v-if="item">{{ item.name }}</span>
+            <span :key="item.id" class="mg-r8">{{ item.name }}</span>
           </template>
         </template>
         <template slot="identity" slot-scope="text,record">
           <template v-for="item in record.identity">
-            <span :key="item.id" class="mg-r8" v-if="item">{{ item.name }}</span>
+            <span :key="item.id" class="mg-r8">{{ item.name }}</span>
           </template>
         </template>
         <template slot="sex" slot-scope="text">
@@ -215,15 +215,6 @@ export default {
     },
     onJoinDepartment(e) {
       console.log('批量加入部门')
-      this.$modalRouter.push({
-        name: 'shop-staff-batch-import',
-        props: {
-          ids: this.selectStaff
-        },
-        on: {
-          change: this.joinok
-        }
-      })
     },
     onAddStaff() {
       this.$router.push({

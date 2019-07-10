@@ -3,12 +3,11 @@
   <span>
     <a-range-picker
       @change="onChange"
-      :value="[moment(value.min), moment(value.max)]"
+      :value="value.min ? [moment(value.min), moment(value.max)] : []"
       style="margin-right:8px"
       :allowClear="true"
-      v-if="value.min"
     />
-    <a-range-picker v-else @change="onChange" style="margin-right:8px" :allowClear="true"/>
+    <!-- <a-range-picker v-else @change="onChange" style="margin-right:8px" :allowClear="true"/> -->
     <a-radio-group @change="onChangeRadio" v-model="radioValue">
       <a-radio-button :value="7">近7天</a-radio-button>
       <a-radio-button :value="30">近30天</a-radio-button>
@@ -42,8 +41,8 @@ export default {
     }
   },
   created() {
+    console.log(this.value)
     this.onChange([], [this.value.min, this.value.max])
-    console.log([this.value.min, this.value.max])
   },
   methods: {
     moment,

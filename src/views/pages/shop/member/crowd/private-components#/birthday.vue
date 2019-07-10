@@ -30,7 +30,9 @@ export default {
       }
     }
   },
-  created() {},
+  created() {
+    console.log(this.value)
+  },
   methods: {},
   mounted() {}
 }
