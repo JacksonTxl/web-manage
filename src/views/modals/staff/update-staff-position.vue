@@ -18,12 +18,7 @@
             {{item.name}}
           </a-select-option>
         </a-select>
-        <div v-if="!canDeleteIdentity" class="modal-staff-turnover__tip modal-staff-tip mg-b24">
-          <p >该员工有以下几个事项待处理，无法进行离职</p>
-          <ul>
-            <li v-for="(tip, index) in tips" :key="tip.type" class="item"><span class="count">{{index + 1}}</span> {{tip.num}}{{tip.type | unitFilter}}{{tip.name}}</li>
-          </ul>
-        </div>
+        <staff-modal-tips :list="tips" :canNotDelete="!operate" v-if="!canDeleteIdentity"></staff-modal-tips>
       </st-form-item>
       <st-form-item label="教练等级">
         <a-select v-decorator="['coach_level_id']" placeholder="请选择教练等级">
@@ -57,6 +52,8 @@ import { UpdateStaffPositionService } from './update-staff-position.service'
 import { UserService } from '../../../services/user.service'
 import { MessageService } from '../../../services/message.service'
 import StaffInfo from './staff-info'
+import StaffModalTips from '@/views/biz-components/staff/staff-modal-tips'
+
 export default {
   serviceInject() {
     return {
@@ -82,7 +79,8 @@ export default {
       form: this.$form.createForm(this),
       isSalaryCourse: false,
       canDeleteIdentity: true,
-      tips: []
+      tips: [],
+      operate: false
     }
   },
   props: {
@@ -98,7 +96,8 @@ export default {
     }
   },
   components: {
-    StaffInfo
+    StaffInfo,
+    StaffModalTips
   },
   computed: {
     identityList() {
@@ -154,6 +153,7 @@ export default {
             identity
           })
           this.tips = res.list
+          this.operate = res.operate
           this.canDeleteIdentity = false
           // this.msg.error({ content: '不能删除该职能' })
         }

@@ -18,6 +18,7 @@
             {{item.name}}
           </a-select-option>
         </a-select>
+        <staff-modal-tips :list="tips" :canNotDelete="!operate" v-if="!canDeleteIdentity"></staff-modal-tips>
       </st-form-item>
       <st-form-item label="教练等级">
         <a-select v-decorator="['coach_level_id']" placeholder="请选择教练等级">
@@ -51,6 +52,7 @@ import { UpdateStaffPositionService } from './update-staff-position.service'
 import { UserService } from '../../../services/user.service'
 import { MessageService } from '../../../services/message.service'
 import StaffInfo from './staff-info'
+import StaffModalTips from '@/views/biz-components/staff/staff-modal-tips'
 
 export default {
   serviceInject() {
@@ -75,7 +77,9 @@ export default {
     return {
       show: false,
       isSalaryCourse: false,
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      tips: [],
+      operate: false
     }
   },
   props: {
@@ -96,7 +100,8 @@ export default {
     }
   },
   components: {
-    StaffInfo
+    StaffInfo,
+    StaffModalTips
   },
   computed: {
     identityList() {
@@ -150,7 +155,9 @@ export default {
           this.form.setFieldsValue({
             identity
           })
-          this.msg.error({ content: '不能删除该职能' })
+          this.tips = res.list
+          this.operate = res.operate
+          this.canDeleteIdentity = false
         }
       })
     },

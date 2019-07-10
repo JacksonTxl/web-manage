@@ -17,12 +17,12 @@
         <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|edit']" @click="editStaff(record.id)">编辑</a>
         <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|bind_card']" v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: record} }">绑定实体卡</a>
         <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|rebind_card']" v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: record} }">重绑定实体卡</a>
-        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|position']" @click="staffPositionChange(record)">职位变更</a>
-        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|leave']" v-modal-link="{ name: 'staff-turnover', props: {staff: record} }">离职</a>
+        <a href="#" v-if="record.auth['brand_shop:staff:staff|position']" @click="staffPositionChange(record)">职位变更</a>
+        <a href="#" v-if="record.auth['brand_shop:staff:staff|leave']" @click="staffLeave(record)">离职</a>
         <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|reinstate']" v-modal-link="{ name: 'staff-reinstatement', props: {staff: record} }">复职</a>
         <a href="javascript:void()" v-if="record.auth['brand_shop:staff:account|save']" v-modal-link="{ name: 'staff-re-password', props: {staff: record} }">管理登录账号</a>
         <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|salary']" v-modal-link="{ name: 'staff-salary-account-setting', props: {staff: record} }">设置薪资账户</a>
-        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|del']" v-modal-link="{ name: 'staff-delete', props: {staff: record} }">删除</a>
+        <a href="#" v-if="record.auth['brand_shop:staff:staff|del']" v-modal-link="{ name: 'staff-delete', props: {staff: record} }">删除</a>
       </st-table-actions>
     </div>
     <div slot="work_status" slot-scope="work_status">
@@ -95,6 +95,14 @@ export default {
     }
   },
   methods: {
+    staffLeave(record) {
+      this.$modalRouter.push({
+        name: 'staff-turnover',
+        props: {
+          staff: record
+        }
+      })
+    },
     staffPositionChange(record) {
       this.$modalRouter.push({
         name: 'staff-update-staff-position',

@@ -7,15 +7,10 @@
     v-model='show'>
     <section>
       <staff-info :staff="staff"></staff-info>
-      <div v-if="!operate" class="modal-staff-turnover__tip modal-staff-tip mg-b24">
-        <p >该员工有以下几个事项待处理，无法进行离职</p>
-        <ul>
-          <li v-for="(tip, index) in tips" :key="tip.type" class="item"><span class="count">{{index + 1}}</span> {{tip.num}}{{tip.type | unitFilter}}{{tip.name}}</li>
-        </ul>
-      </div>
+      <staff-modal-tips :list="list" :canNotDelete="!operate"></staff-modal-tips>
       <st-form class="modal-staff-turnover__form" labelWidth='60px'>
         <st-form-item  labelWidth='60px' label="离职日期" class="mg-b0">
-          <a-date-picker @change="onChange" />
+          <a-date-picker @change="onDateChange"/>
         </st-form-item>
       </st-form>
     </section>
@@ -24,6 +19,8 @@
 <script>
 import StaffInfo from './staff-info'
 import { TurnoverService } from './turnover.service'
+import StaffModalTips from '@/views/biz-components/staff/staff-modal-tips'
+
 export default {
   name: 'turnover',
   serviceInject() {
@@ -33,7 +30,8 @@ export default {
   },
   rxState() {
     return {
-      conditionDeleteInfo: this.turnoverService.conditionDeleteInfo$,
+      list: this.turnoverService.list$,
+      operate: this.turnoverService.operate$,
       loading: this.turnoverService.loading$
     }
   },
@@ -51,44 +49,35 @@ export default {
     }
   },
   components: {
-    StaffInfo
+    StaffInfo,
+    StaffModalTips
   },
   filters: {
     unitFilter(val) {
-      console.log(val)
       return val === 5 ? '个' : '节'
     }
   },
-  computed: {
-    tips() {
-      return this.conditionDeleteInfo.list
-    },
-    operate() {
-      return this.conditionDeleteInfo.operate
-    }
+  mounted() {
+    this.isTurnover()
   },
   methods: {
-    onChange(id, dateString) {
-      console.log(dateString)
+    onDateChange(id, dateString) {
+      console.log('dateString', dateString)
       this.dateString = dateString
     },
     isTurnover() {
-      this.turnoverService.getStaffCheckJob(this.staff.id + '').subscribe(() => {
-        console.log('conditionDeleteInfo', this.conditionDeleteInfo)
+      this.turnoverService.getStaffCheckJob(String(this.staff.id)).subscribe(() => {
+        console.log('list', this.list)
       })
     },
     onSubmit() {
       this.show = false
-      if (!this.operate) {
-      } else {
+      if (this.operate) {
         this.turnoverService.putStaffBrandQuit({ id: this.staff.id, quit_time: this.dateString }).subscribe(res => {
           this.$router.push({ force: true })
         })
       }
     }
-  },
-  mounted() {
-    this.isTurnover()
   }
 }
 </script>
