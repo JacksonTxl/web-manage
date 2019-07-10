@@ -6,13 +6,12 @@
         <div :class="basic('add')">
           <st-button icon="add" type="primary" @click="onAddCoupon" v-if="auth.add">新增优惠券</st-button>
         </div>
-        <!-- @change="onSingleSearch('coupon_status', $event)"  -->
         <a-select
           :class="basic('select')"
           v-model="couponStatus"
           placeholder="优惠券状态"
           :allowClear="true"
-          @change="statusChange"
+          @change="onSingleSearch('coupon_status', $event)"
           style="width: 160px">
           <a-select-option
             v-for="item in productType"
@@ -168,9 +167,6 @@ export default {
     }
   },
   methods: {
-    statusChange(status) {
-      console.log('status', status)
-    },
     // 设置searchData
     setSearchData() {
       let { coupon_name, coupon_status } = this.query
