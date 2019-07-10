@@ -3,7 +3,7 @@
     <div class="page-personal-table__title pd-x24 pd-y16 schedule-table__title" slot="title">
       <a-row :gutter="8">
         <a-col :lg="8">
-          <st-button>
+          <st-button v-if="auth.add">
             <a v-modal-link="{ name: 'schedule-personal-add-reserve', props: { id: 1 } }">添加预约</a>
           </st-button>
         </a-col>
@@ -29,8 +29,8 @@
       </template>
       <div slot="action" slot-scope="text,record">
         <st-table-actions>
-          <a href="javascript:;" class="mg-r8" @click="onClickReserve(record.id)">取消预约</a>
-          <a href="javascript:;" @click="onClickCheckIn(record.id)">签到消费</a>
+          <a href="javascript:;" class="mg-r8"  v-if="record.auth['shop:reserve:personal_course_reserve|del']"  @click="onClickReserve(record.id)">取消预约</a>
+          <a href="javascript:;"  v-if="record.auth['shop:reserve:personal_course_reserve|checkin']" @click="onClickCheckIn(record.id)">签到消费</a>
         </st-table-actions>
       </div>
       </st-table>
@@ -52,11 +52,11 @@ export default {
     return {
       reserveService: PersonalScheduleReserveService,
       routeService: RouteService
-
     }
   },
   rxState() {
     return {
+      auth: this.reserveService.auth$,
       list: this.reserveService.list$,
       page: this.reserveService.page$,
       loading: this.reserveService.loading$,
