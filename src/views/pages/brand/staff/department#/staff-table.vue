@@ -17,7 +17,7 @@
         <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|edit']" @click="editStaff(record.id)">编辑</a>
         <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|bind_card']" v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: record} }">绑定实体卡</a>
         <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|rebind_card']" v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: record} }">重绑定实体卡</a>
-        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|position']" v-modal-link="{ name: 'staff-update-staff-position', props: {staff: record} }">职位变更</a>
+        <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|position']" @click="staffPositionChange(record)">职位变更</a>
         <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|leave']" v-modal-link="{ name: 'staff-turnover', props: {staff: record} }">离职</a>
         <a href="javascript:void()" v-if="record.auth['brand_shop:staff:staff|reinstate']" v-modal-link="{ name: 'staff-reinstatement', props: {staff: record} }">复职</a>
         <a href="javascript:void()" v-if="record.auth['brand_shop:staff:account|save']" v-modal-link="{ name: 'staff-re-password', props: {staff: record} }">管理登录账号</a>
@@ -95,6 +95,14 @@ export default {
     }
   },
   methods: {
+    staffPositionChange(record) {
+      this.$modalRouter.push({
+        name: 'staff-update-staff-position',
+        props: {
+          staff: record
+        }
+      })
+    },
     staffInfo(staff) {
       this.$router.push({
         name: 'brand-staff-info',

@@ -11,76 +11,40 @@ import {
 } from '@/api/v1/staff'
 import { forkJoin } from 'rxjs'
 
-interface SetState {
-  positionInfo: object,
-  staffEnums: object,
-  coachLevelList: object[],
-  salaryBasic: any[],
-  salarySale: any[]
-  salaryCourse: any[]
-}
 @Injectable()
-export class UpdateStaffPositionService extends Store<SetState> {
-  state$: State<SetState>
-  positionInfo$: Computed<object>
-  coachLevelList$: Computed<object[]>
-  staffEnums$: Computed<object>
-  salaryBasic$: Computed<any[]>
-  salarySale$: Computed<any[]>
-  salaryCourse$: Computed<any[]>
-  constructor(protected staffApi: StaffApi, private coachLevel: CoachLevelApi, private userService: UserService, private msg: MessageService) {
-    super()
-    this.state$ = new State({
-      positionInfo: {},
-      coachLevelList: [],
-      staffEnums: {},
-      salaryBasic: [],
-      salarySale: [],
-      salaryCourse: []
-    })
-    this.positionInfo$ = new Computed(this.state$.pipe(pluck('positionInfo')))
-    this.coachLevelList$ = new Computed(this.state$.pipe(pluck('coachLevelList')))
-    this.staffEnums$ = this.userService.staffEnums$
-    this.salaryBasic$ = new Computed(this.state$.pipe(pluck('salaryBasic')))
-    this.salarySale$ = new Computed(this.state$.pipe(pluck('salarySale')))
-    this.salaryCourse$ = new Computed(this.state$.pipe(pluck('salaryCourse')))
-  }
+export class UpdateStaffPositionService {
+  positionInfo$ = new State({})
+  coachLevelList$ = new State([])
+  staffEnums$ = new State([])
+  salaryBasic$ = new State([])
+  salarySale$ = new State([])
+  salaryCourse$ = new State([])
+  constructor(protected staffApi: StaffApi, private coachLevel: CoachLevelApi, private userService: UserService, private msg: MessageService) {}
   getCoachLevel() {
     return this.coachLevel.getCoachLevelListAll().pipe(tap(res => {
       console.log(res)
-      this.state$.commit(state => {
-        state.coachLevelList = res.list
-      })
+      this.coachLevelList$.commit(() => res.list)
     }))
   }
   getStaffSalaryBasic() {
     return this.staffApi.getStaffSalaryBasic().pipe(tap(res => {
-      this.state$.commit(state => {
-        state.salaryBasic = res.basic_templates
-      })
+      this.salaryBasic$.commit(() => res.basic_templates)
     }))
   }
   getStaffSalarySale() {
     return this.staffApi.getStaffSalarySale().pipe(tap(res => {
-      this.state$.commit(state => {
-        state.salarySale = res.sale_templates
-      })
+      this.salarySale$.commit(() => res.sale_templates)
     }))
   }
   getStaffSalaryCourse() {
     return this.staffApi.getStaffSalaryCourse().pipe(tap(res => {
-      this.state$.commit(state => {
-        state.salaryCourse = res.course_templates
-      })
+      this.salaryCourse$.commit(() => res.course_templates)
     }))
   }
   // 员工更改职位回显
   getStaffBrandPosition(id: string) {
     return this.staffApi.getStaffBrandPosition({ id }).pipe(tap(res => {
-      this.state$.commit(state => {
-        console.log('getStaffBrandPosition')
-        state.positionInfo = res.position
-      })
+      this.positionInfo$.commit(() => res.position)
     }))
   }
   init(id: string) {
