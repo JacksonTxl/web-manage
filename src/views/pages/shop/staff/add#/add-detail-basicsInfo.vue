@@ -135,6 +135,7 @@
             mode="multiple"
             useType="form"
             placeholder="所属门店"
+            :disabled="true"
             v-decorator="rules.shop_id"/>
         </st-form-item>
       </a-col>
@@ -218,6 +219,11 @@ export default {
       addService: AddService
     }
   },
+  rxState() {
+    return {
+      shop: this.userService.shop$
+    }
+  },
   components: {
     ShopSelect,
     CoachLevelSelect,
@@ -250,6 +256,12 @@ export default {
       treeExpandedKeys: [],
       value: undefined
     }
+  },
+  mounted() {
+    console.log(this.shop)
+    this.form.setFieldsValue({
+      shop_id: this.shop.id
+    })
   },
   methods: {
     getIsCoach(data) {

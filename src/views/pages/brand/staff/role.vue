@@ -1,6 +1,6 @@
 <template>
-  <a-row :class="role()">
-    <a-col :span="4" :class="roleList()">
+  <a-row :class="role()" type="flex" style="flex-wrap: nowrap">
+    <a-col :lg="4" :class="roleList()">
       <header :class="roleList('search')">
         <st-input-search placeholder="请输入部门/员工名称" round="round" style="width: 226px"></st-input-search>
       </header>
@@ -30,7 +30,7 @@
         <a>添加角色</a>
       </footer>
     </a-col>
-    <a-col :span="19">
+    <a-col :lg="20">
       <router-view></router-view>
     </a-col>
   </a-row>
