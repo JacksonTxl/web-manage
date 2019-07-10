@@ -192,7 +192,12 @@ export class RuleConfig {
 
   // 籍贯
   get native_place() {
-    return ['native_place']
+    return ['native_place', {
+      rules: [{
+        pattern: this.pattern.CN_EN_NUM('1-20'),
+        message: '请输入1-20个字，中英文'
+      }]
+    }]
   }
 
   // 子女状态
@@ -207,7 +212,12 @@ export class RuleConfig {
 
   // 详细住址
   get address() {
-    return ['address']
+    return ['address', {
+      rules: [{
+        pattern: this.pattern.CN_EN_NUM('1-100'),
+        message: '请输入1-100个字，中英文及数字'
+      }]
+    }]
   }
 
   // 备注
