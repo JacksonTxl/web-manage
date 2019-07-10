@@ -40,20 +40,23 @@
 <script>
 import { soldColums } from './columns.config'
 import { SoldService } from './sold.service'
+import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {
   mixins: [ tableMixin ],
   serviceInject() {
     return {
-      soldservice: SoldService
+      soldService: SoldService,
+      routerService: RouteService
     }
   },
   rxState() {
     return {
-      soldInfo: this.soldservice.soldInfo$,
-      loading: this.soldservice.loading$,
-      page: this.soldservice.page$
+      soldInfo: this.soldService.soldInfo$,
+      loading: this.soldService.loading$,
+      page: this.soldService.page$,
+      query: this.routerService.query$
     }
   },
   data() {
@@ -63,6 +66,7 @@ export default {
   },
   computed: { soldColums },
   mounted() {
+    console.log('loading', this.loading)
     this.id = this.$route.meta.query.id
   },
   methods: {

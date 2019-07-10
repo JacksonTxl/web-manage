@@ -1,16 +1,18 @@
 <template>
   <st-panel app>
-    <st-coupon class="mg-r8" key="1" name="kael" @close="onClose('invitee')" />
-    <st-coupon class="mg-r8" key="2" name="kael"/>
+    {{reason}}
+   <st-textarea :maxlength="300" @change="onReasonChange" v-model="reason" placeholder="请输入内容" :rows="4"/>
   </st-panel>
 </template>
 <script>
 export default {
   data() {
-    return {}
+    return {
+      reason: ''
+    }
   },
   methods: {
-    onClose(e) {
+    onReasonChange(e) {
       console.log(3)
     }
   }

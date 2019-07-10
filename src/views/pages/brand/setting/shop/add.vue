@@ -163,10 +163,12 @@ import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/rule'
 import { AddService } from './add.service'
 import { cloneDeep } from 'lodash-es'
+import { PatternService } from '@/services/pattern.service'
 import { MessageService } from '@/services/message.service'
 export default {
   serviceInject() {
     return {
+      pattern: PatternService,
       rules: RuleConfig,
       addService: AddService,
       userService: UserService,
@@ -319,7 +321,7 @@ export default {
         if (
           value !== undefined &&
           value !== '' &&
-          !this.rules.mobile.test(value)
+          !this.pattern.TEL.test(value)
         ) {
           // eslint-disable-next-line
           callback('输入的门店电话格式错误，请重新输入')

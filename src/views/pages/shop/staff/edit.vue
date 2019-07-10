@@ -13,9 +13,29 @@
         </a-steps>
       </a-col>
     </a-row>
-    <edit-basic-info v-if="currentIndex == 0" :enums="staffEnums" :data="staffInfo" :roleList="roleList" :codeList="codeList" :department="department" @gonext="gonext"/>
-    <edit-detailed-info  @back="onBack" :isShowCoach="isShowCoach" v-else-if="currentIndex == 1" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
-    <edit-coach-info  @back="onBack" v-else-if="currentIndex == 2 && isShowCoach" :enums="staffEnums" :data="staffInfo" @gonext="gonext"/>
+    <edit-basic-info
+      v-if="currentIndex == 0"
+      :enums="staffEnums"
+      :data="staffInfo"
+      :roleList="roleList"
+      :codeList="codeList"
+      :department="department"
+      @updateStaffInfo="updateStaffInfo"
+      @gonext="gonext"/>
+    <edit-detailed-info
+      v-else-if="currentIndex == 1"
+      :isShowCoach="isShowCoach"
+      :enums="staffEnums"
+      :data="staffInfo"
+      @updateStaffInfo="updateStaffInfo"
+      @back="onBack"
+      @gonext="gonext"/>
+    <edit-coach-info
+      v-else-if="currentIndex == 2 && isShowCoach"
+      :enums="staffEnums"
+      :data="staffInfo"
+      @back="onBack"
+      @gonext="gonext"/>
   </st-panel>
 </template>
 
@@ -94,13 +114,15 @@ export default {
   created() {
     let { currentIndex } = this.$route.query
     if (!this.isShowCoach) {
-      console.log('不展示')
       this.stepsSpan = 12
       this.stepArr.pop()
     }
     if (currentIndex) this.currentIndex = Number(currentIndex)
   },
   methods: {
+    updateStaffInfo() {
+      this.services.editStaffInfo(this.id).subscribe()
+    },
     onBack(step) {
       this.currentIndex = this.currentIndex - step
     },

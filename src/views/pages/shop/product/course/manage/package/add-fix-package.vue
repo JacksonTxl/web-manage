@@ -100,12 +100,12 @@
                                       </div>
                                       <div>{{i.course_name}}</div>
                                       <div>
-                                        <st-input-number @change="teamInputChange($event,'team_times',i.course_id)" v-model="i.team_times">
+                                        <st-input-number :min="1" :max="99999" @change="teamInputChange($event,'team_times',i.course_id)" v-model="i.team_times">
                                           <template slot="addonAfter">节</template>
                                         </st-input-number>
                                       </div>
                                       <div>
-                                        <st-input-number @change="teamInputChange($event,'team_unit_price',i.course_id)" v-model="i.team_unit_price" :float="true">
+                                        <st-input-number :min="0" :max="999999.9" @change="teamInputChange($event,'team_unit_price',i.course_id)" v-model="i.team_unit_price" :float="true">
                                           <template slot="addonAfter">元</template>
                                         </st-input-number>
                                       </div>
@@ -126,12 +126,12 @@
                               </td>
                               <td>批量操作</td>
                               <td class="pr-24">
-                                <st-input-number v-model="teamOperationObject.team_times">
+                                <st-input-number :min="1" :max="99999" v-model="teamOperationObject.team_times">
                                   <a :disabled="!+teamOperationObject.team_times" href="javascript:void(0)" slot="addonAfter" @click="times_operation_ok('team')">确定</a>
                                 </st-input-number>
                               </td>
                               <td class="pr-24">
-                                <st-input-number v-model="teamOperationObject.team_unit_price" :float="true">
+                                <st-input-number :min="0" :max="999999.9" v-model="teamOperationObject.team_unit_price" :float="true">
                                   <a :disabled="!+teamOperationObject.team_unit_price" href="javascript:void(0)" slot="addonAfter" @click="unit_price_operation_ok('team')">确定</a>
                                 </st-input-number>
                               </td>
@@ -208,12 +208,12 @@
                                       </div>
                                       <div>{{item.course_name}}</div>
                                       <div>
-                                        <st-input-number @change="personalInputChange($event,'personal_times',item.course_id)" v-model="item.personal_times">
+                                        <st-input-number :min="1" :max="99999" @change="personalInputChange($event,'personal_times',item.course_id)" v-model="item.personal_times">
                                           <template slot="addonAfter">节</template>
                                         </st-input-number>
                                       </div>
                                       <div>
-                                        <st-input-number @change="personalInputChange($event,'personal_unit_price',item.course_id)" v-model="item.personal_unit_price" :float="true">
+                                        <st-input-number :min="0" :max="999999.9" @change="personalInputChange($event,'personal_unit_price',item.course_id)" v-model="item.personal_unit_price" :float="true">
                                           <template slot="addonAfter">元</template>
                                         </st-input-number>
                                       </div>
@@ -252,12 +252,12 @@
                               </td>
                               <td>批量操作</td>
                               <td class="pr-24">
-                                <st-input-number v-model="personalOperationObject.personal_times">
+                                <st-input-number :min="1" :max="99999" v-model="personalOperationObject.personal_times">
                                   <a :disabled="!+personalOperationObject.personal_times" href="javascript:void(0)" slot="addonAfter" @click="times_operation_ok('personal')">确定</a>
                                 </st-input-number>
                               </td>
                               <td class="pr-24">
-                                <st-input-number v-model="personalOperationObject.personal_unit_price" :float="true">
+                                <st-input-number :min="0" :max="999999.9" v-model="personalOperationObject.personal_unit_price" :float="true">
                                   <a :disabled="!+personalOperationObject.personal_unit_price" href="javascript:void(0)" slot="addonAfter" @click="unit_price_operation_ok('personal')">确定</a>
                                 </st-input-number>
                               </td>
@@ -308,8 +308,9 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="售卖价格" required>
             <st-input-number
+              :min="0"
               placeholder="请输入售卖价格"
-              :max="99999.9"
+              :max="999999.9"
               v-decorator="[
                 'price',
                  {rules: [{ required: true, message: '请输入售卖价格' }]}
@@ -396,7 +397,8 @@
             <div :class="basic('transfer')">
               <a-checkbox :class="basic('transfer-checkbox')" @change="transfer">支持转让</a-checkbox>
               <st-input-number
-              :max="packageData.transfer_unit===1?100:99999.9"
+              :min="0"
+              :max="packageData.transfer_unit===1?100:999999.9"
               v-decorator="[
                 'transfer_rate',
                  {rules: [{initialValue: null,required: packageData.is_allow_transfer!==0, message: '请输入转让值数值'}]}

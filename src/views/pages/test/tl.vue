@@ -100,7 +100,8 @@
         <img :src="pic1" alt="">
       </p>
       <p>
-        <st-textarea :autosize="{ minRow: 2, maxRow: 5}"></st-textarea>
+        {{des}}
+        <st-textarea :autosize="{ minRow: 2, maxRow: 5}" v-model="des" maxlength="5"></st-textarea>
       </p>
     </st-panel>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
@@ -118,7 +119,6 @@ import { EMPTY } from 'rxjs'
 import SwitchShop from '@/views/fragments/shop/switch'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import pic1 from '@/assets/img/avatar_default.png'
-import { RuleConfig } from '@/constants/rule'
 
 export default {
   serviceInject() {
@@ -126,8 +126,7 @@ export default {
       themeService: ThemeService,
       messageService: MessageService,
       tlService: TlService,
-      routeService: RouteService,
-      ruleConfig: RuleConfig
+      routeService: RouteService
     }
   },
   rxState() {
@@ -149,11 +148,9 @@ export default {
         total_counts: 6,
         total_pages: 1
       },
-      pic1
+      pic1,
+      des: 'qq'
     }
-  },
-  created() {
-    // this.ruleConfig.generateRule('1-20'))
   },
   methods: {
     switchShop() {

@@ -183,7 +183,7 @@ export class StudioComponentService {
   getBuyCourse(params: RevenueParams) {
     return this.overviewApi.getBuyCourse(params).pipe(tap(res => {
       this.state$.commit(state => {
-        const data = res.info
+        const data = res.info.today_buy_person_course_num
         let lineData:any = []
         for (let key in data) {
           let chartItem = {

@@ -20,6 +20,7 @@ const ROUTE_NAMES_USE_PAGE = [
   'brand-staff-info-sold',
   'brand-staff-info-member',
 
+  'brand-marketing-plugin-coupon-list',
   /**
    * shop
    */
@@ -85,6 +86,9 @@ export default {
         ? 'page'
         : 'current_page'
       return _field
+    },
+    prevPage() {
+      return this.query[this.currentPageField]
     }
   },
   methods: {
@@ -94,9 +98,9 @@ export default {
       this.$router.push({
         query: {
           ...this.query,
-          [this.currentPageField]: 1,
-          force: true
-        }
+          [this.currentPageField]: 1
+        },
+        force: true
       })
     },
     /**
@@ -106,9 +110,9 @@ export default {
       this.onSelectionReset()
       this.$router.push({
         query: {
-          [this.currentPageField]: 1,
-          force: true
-        }
+          [this.currentPageField]: 1
+        },
+        force: true
       })
     },
     // 单个筛选项的即时搜索
@@ -145,34 +149,32 @@ export default {
     },
     // 表格更新
     onTableChange(pagination, filter, sorter) {
+      console.log(pagination, filter, sorter)
+
       this.onSelectionReset()
+      // 排序字段 排序顺序
       let sort_by, sort_order
-      if (sorter) {
-        if (sorter.field) {
-          sort_by = sorter.field
-          sort_order = { ascend: 'asc', descend: 'desc' }[sorter.order]
-        }
+      if (sorter && sorter.field) {
+        sort_by = sorter.field
+        sort_order = { ascend: 'asc', descend: 'desc' }[sorter.order]
       }
       if (!pagination) {
         throw new Error(
           `[tableMixin] pagination is not provide ${typeof pagination}`
         )
       }
-      if (pagination) {
-        let nextPage = pagination.current
-        if (sorter && sorter.field) {
-          nextPage = 1
+
+      const nextPage =
+        pagination.current !== this.prevPage ? pagination.current : 1
+      this.$router.push({
+        query: {
+          ...this.query,
+          [this.currentPageField]: nextPage,
+          size: pagination.pageSize,
+          sort_by,
+          sort_order
         }
-        this.$router.push({
-          query: {
-            ...this.query,
-            [this.currentPageField]: nextPage,
-            size: pagination.pageSize,
-            sort_by,
-            sort_order
-          }
-        })
-      }
+      })
     }
   }
 }

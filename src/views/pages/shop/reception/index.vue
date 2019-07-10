@@ -150,26 +150,11 @@
             </div>
           </div>
           <div :class="reception('set-info')" v-else>
-            <!-- <st-info>
-              <st-info-item label="入场凭证" v-if="selectMemberInfo.proof">{{selectMemberInfo.proof.name}}</st-info-item>
-              <st-info-item label="跟进销售" v-if="selectMemberInfo.seller">{{selectMemberInfo.seller.name || '无'}}</st-info-item>
-              <st-info-item label="跟进教练" v-if="selectMemberInfo.coach">
-                {{selectMemberInfo.coach.name || '无'}}
-              </st-info-item>
-              <st-info-item label="储物柜" v-if="!isEditCabinet">
-                <span v-if="selectMemberInfo.cabinet">{{selectMemberInfo.cabinet.name || '无'}}</span>
-                &nbsp;&nbsp;
-                <a @click="isEditCabinet=true">
-                  <st-icon type="anticon:edit"></st-icon>&nbsp;
-                  <span>编辑</span>
-                </a>
-              </st-info-item>
-            </st-info> -->
-            <p>
+            <div class="set-info-item">
               <span class="set-info-label">入场凭证</span>
               <span class="set-info-value" v-if="selectMemberInfo.proof">{{selectMemberInfo.proof.name}}</span>
-            </p>
-            <p>
+            </div>
+            <div class="set-info-item">
               <span class="set-info-label">跟进销售</span>
               <template v-if="!isEditSeller">
                 <span class="set-info-value">
@@ -185,8 +170,8 @@
                 <st-button type="primary" :loading="loading.editSeller" @click="onEditSeller">确定</st-button>
                 <a class="set-info-edit-button mg-l8" @click="onEditSellerCancel">取消</a>
               </template>
-            </p>
-            <p>
+            </div>
+            <div class="set-info-item">
               <span class="set-info-label">跟进教练</span>
               <template v-if="!isEditCoach">
                 <span class="set-info-value">
@@ -202,8 +187,8 @@
                 <st-button type="primary" :loading="loading.editCoach" @click="onEditCoach">确定</st-button>
                 <a class="set-info-edit-button mg-l8" @click="onEditCoachCancel">取消</a>
               </template>
-            </p>
-            <p>
+            </div>
+            <div class="set-info-item">
               <span class="set-info-label">储物柜</span>
               <template v-if="!isEditCabinet">
                 <span class="set-info-value">
@@ -219,16 +204,7 @@
               <st-button type="primary" :loading="loading.editEntranceCabinet" @click="onEditCabinet">确定</st-button>
               <a class="set-info-edit-button mg-l8" @click="onEditCabinetCancel">取消</a>
               </template>
-            </p>
-            <!-- <p :class="reception('cabinet-edit')" v-if="isEditCabinet">
-              <span class="set-info-edit-label">储物柜</span>
-              <a-select v-model="cabinet" class="set-info-edit-select">
-                <a-select-option :value="-1">无</a-select-option>
-                <a-select-option v-for="(item) in cabinetList" :value="item.id" :key="item.id">{{item.name}}</a-select-option>
-              </a-select>
-              <st-button type="primary" :loading="loading.editEntranceCabinet" @click="onEditCabinet">确定</st-button>
-              <a class="set-info-edit-button mg-l8" @click="onEditSellerCancel">取消</a>
-            </p> -->
+            </div>
           </div>
         </div>
       </div>
@@ -240,8 +216,16 @@
               <ul :class="reception('todoist-to-do-list')" v-scrollBar>
                 <li v-for=" (item,i) in workNoteList" :key="i" class="animated delay-f2s" :class="{'fadeOut':i===animateIndex,'mg-t12':(i+1)>2,'mg-r12':(i+1)%2!==0}">
                   <div class="to-do-main">
-                    <span class="operation-name" v-if="item.nickname">{{item.nickname.substr(0,2)}}</span>
-                    <span class="operation-name" v-else>无</span>
+                    <template v-if="item.nickname">
+                      <a-tooltip overlayClassName="st-light-tooltip" v-if="item.nickname.length>2">
+                        <template slot='title'>
+                          {{item.nickname}}
+                        </template>
+                        <span class="operation-name cursor-pointer">{{item.nickname.substr(0,2)}}</span>
+                      </a-tooltip>
+                      <span class="operation-name cursor-pointer" v-else>{{item.nickname}}</span>
+                    </template>
+                    <span class="operation-name cursor-pointer" v-else>无</span>
                     <p>
                       <span>{{item.subject}}</span>
                       <span>{{item.content}}</span>
@@ -412,6 +396,8 @@ export default {
       lastMemberSearchText: '',
       // 选择的会员
       selectMember: undefined,
+      // memberId
+      memberId: undefined,
       // 会员信息
       selectMemberInfo: {},
       // 入场凭证
@@ -446,7 +432,7 @@ export default {
     },
     // 是否确定了会员
     isSelectMember() {
-      return this.selectMemberInfo.entry_status
+      return this.selectMemberInfo.entry_status && this.memberId
     },
     // 会员名称
     memberName() {
@@ -482,8 +468,8 @@ export default {
   },
   methods: {
     photoChange(list) {
-      if (!this.selectMember) return
-      this.indexService.editFace(this.selectMember, list[0])
+      if (!this.isSelectMember) return
+      this.indexService.editFace(this.memberId, list[0])
     },
     init() {
       this.formatShortcutList()
@@ -502,7 +488,7 @@ export default {
     },
     // 储物柜下拉名称搜索
     filterOption(input, option) {
-      return option.componentOptions.children[0].text.toLowerCase().includes(input)
+      return option.componentOptions.children[0].text.includes(input)
     },
     // 查看详情
     onDetail(type) {
@@ -562,6 +548,7 @@ export default {
     // 选择了会员
     onMemberSelect(data) {
       this.selectMember = data
+      this.memberId = data
       this.getMemberInfo(data)
     },
     // 获取会员详情
@@ -596,7 +583,7 @@ export default {
     // 修改销售
     onEditSeller() {
       this.indexService.editSeller({
-        member_id: this.selectMember,
+        member_id: this.memberId,
         seller_id: this.seller === -1 ? 0 : this.seller
       }).subscribe(res => {
         this.isEditSeller = false
@@ -619,7 +606,7 @@ export default {
     // 修改教练
     onEditCoach() {
       this.indexService.editCoach({
-        member_id: +this.selectMember,
+        member_id: +this.memberId,
         coach_id: this.coach === -1 ? 0 : this.coach
       }).subscribe(res => {
         this.isEditCoach = false
@@ -658,7 +645,7 @@ export default {
       let seller_id = this.seller === -1 ? undefined : +this.seller
       let coach_id = this.coach === -1 ? undefined : +this.coach
       this.indexService.setEntrance({
-        member_id: +this.selectMember,
+        member_id: +this.memberId,
         cabinet_id,
         proof_type,
         proof_value,
@@ -671,8 +658,9 @@ export default {
     },
     // 离场
     onLeave() {
-      this.indexService.setEntranceLeave(this.selectMember).subscribe(res => {
+      this.indexService.setEntranceLeave(this.memberId).subscribe(res => {
         this.selectMember = undefined
+        this.memberId = undefined
         this.selectMemberInfo = {}
         this.proof = -1
         this.seller = -1
@@ -687,7 +675,7 @@ export default {
     onEditCabinet() {
       let cabinet_id = this.cabinet === -1 ? 0 : +this.cabinet
       this.indexService.editEntranceCabinet({
-        member_id: +this.selectMember,
+        member_id: +this.memberId,
         cabinet_id
       }).subscribe(res => {
         if (this.cabinet === -1) {
@@ -710,7 +698,7 @@ export default {
         onOk: () => {
           return this.indexService.setWorkNote(item.id).toPromise().then(() => {
             this.animateIndex = index
-            timer(1000).subscribe(() => {
+            timer(800).subscribe(() => {
               this.animateIndex = 999999999
               this.indexService.getWorkNoteList().subscribe()
               this.indexService.getWorkNoteDoneList().subscribe()

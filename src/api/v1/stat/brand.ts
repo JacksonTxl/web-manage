@@ -29,8 +29,8 @@ export class StatApi {
   /**
    * 用户分析
    */
-  getUser() {
-    return this.http.get(`/v1/stat/${this.version}/user`)
+  getUser(query: RecentQuery) {
+    return this.http.get(`/v1/stat/${this.version}/user`, { query })
   }
   /**
    * 客单价
@@ -47,8 +47,8 @@ export class StatApi {
   /**
    * 营销分析
    */
-  getMarketing() {
-    return this.http.get(`/v1/stat/${this.version}/marketing`)
+  getMarketing(query: RecentQuery) {
+    return this.http.get(`/v1/stat/${this.version}/marketing`, { query })
   }
   /**
    * 营销分析漏斗
@@ -58,3 +58,8 @@ export class StatApi {
   }
 }
 export interface GetBrandIndexInput { }
+export interface RecentQuery {
+  recently_day?: number,
+  start_date?:string,
+  end_date?:string
+}

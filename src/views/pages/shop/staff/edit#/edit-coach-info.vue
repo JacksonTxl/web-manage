@@ -28,14 +28,12 @@
       <a-col :lg="24" :xs="22" :offset="1">
         <st-form-item label="员工风采" class="page-image-personal">
           <st-image-upload
-            @change="imageUploadChange"
             width="100px"
             height="100px"
             :list="fileList"
             :sizeLimit="2"
             placeholder="上传照片"
             :numLimit=10
-            v-decorator="rules.image_personal"
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="对外展示">
@@ -79,9 +77,7 @@ export default {
         certification_name: []
       },
       fileList: [],
-
-      checked: false,
-      image_personal: []
+      checked: false
     }
   },
   mounted() {
@@ -131,8 +127,8 @@ export default {
     submit(data, saveOrgoNext) {
       data.employment_time = data.employment_time.format('YYYY-MM-DD')
       data.certification_name = this.coachInfoData.certification_name
-      data.is_show = this.checked ? 1 : 0
-      data.image_personal = this.image_personal
+      data.is_show = Number(data.is_show)
+      data.image_personal = this.fileList
 
       // 记着删 擅长的项目不知道什么鬼
       data.specialty_id = [1, 2]

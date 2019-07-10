@@ -4,7 +4,7 @@
       <a-row :gutter="16" :class="bCount()">
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card title="今日营收额" :count="this.revenue.num" :footer="{label: '近7天日均营收额:', value: this.revenue.avg }" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
+            <count-card title="今日营收额" :count="this.revenue.num" :footer="{label: '近7天日均营收额:', value: Number(this.revenue.avg||'') }" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
               <template slot="title">
                 aaa
               </template>
@@ -14,7 +14,7 @@
         </a-col>
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card title="今日订单数" :count="this.order.num" :footer="{label: '近7天日均订单数:', value: this.order.avg }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
+            <count-card title="今日订单数" :count="this.order.num" :footer="{label: '近7天日均订单数:', value: Number(this.order.avg||'') }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
               <brand-simple-line color="#00B4BC" unit="单" :data="this.order.chart | lineFilter"></brand-simple-line>
             </count-card>
           </div>
@@ -28,7 +28,7 @@
         </a-col>
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card title="今日客流量" :count="this.user.num" :footer="{label: '近7天日均营收额:', value: this.user.avg }" :trend="{isUp: this.user.ratio > 0, rate: this.user.ratio }">
+            <count-card title="今日客流量" :count="this.user.num" :footer="{label: '近7天日均营收额:', value: Number(this.user.avg||'') }" :trend="{isUp: this.user.ratio > 0, rate: this.user.ratio }">
               <brand-simple-bar color="#58CC99" class="mg-t40" :data="this.user | barFilter"></brand-simple-bar>
             </count-card>
           </div>
@@ -171,12 +171,9 @@ export default {
     }
   },
   methods: {
-    onChangeTabs(key) {
-      if (key === 'user') {
-        this.dashBoardService.getUserAll().subscribe()
-      } else {
-        this.dashBoardService.getMarketingAll().subscribe()
-      }
+    onChangeTabs(query) {
+      this.dashBoardService.getUser(query).subscribe()
+      this.dashBoardService.getMarketing(query).subscribe()
     },
     reload() {
       this.dataSimpleBar = {
@@ -457,6 +454,7 @@ export default {
     BrandUserAvgBar,
     FunnelVertical,
     SidebarComponent
+
   }
 }
 </script>

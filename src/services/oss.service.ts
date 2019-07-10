@@ -8,13 +8,16 @@ const typeSuffix = {
   'image/png': '.png'
 }
 
+/**
+ * http://showdoc.corp.rrr.me/web/#/9?page_id=457
+ */
 interface PutOptions {
   /**
    * 上传的文件
    */
   file: any
   /**
-   * 上传的文件业务类型，当前可用类型为 image | face
+   * 上传的文件业务类型，当前可用类型为 image | face | file
    */
   business: string
   /**

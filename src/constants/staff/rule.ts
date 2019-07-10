@@ -42,7 +42,7 @@ export class RuleConfig {
 
   // 手机号国籍编码
   get country_code_id() {
-    return ['country_code_id']
+    return ['country_code_id', { initialValue: 37 }]
   }
   // 手机号
   get phone() {
@@ -75,7 +75,7 @@ export class RuleConfig {
   }
   // 证件类型
   get idtype() {
-    return ['id_type']
+    return ['id_type', { initialValue: 1 }]
   }
   // 证件号
   get idnumber() {
@@ -192,7 +192,12 @@ export class RuleConfig {
 
   // 籍贯
   get native_place() {
-    return ['native_place']
+    return ['native_place', {
+      rules: [{
+        pattern: this.pattern.CN_EN('1-20'),
+        message: '请输入1-20个字，中英文'
+      }]
+    }]
   }
 
   // 子女状态
@@ -207,7 +212,12 @@ export class RuleConfig {
 
   // 详细住址
   get address() {
-    return ['address']
+    return ['address', {
+      rules: [{
+        pattern: this.pattern.CN_EN_NUM('1-100'),
+        message: '请输入1-100个字，中英文及数字'
+      }]
+    }]
   }
 
   // 备注
@@ -226,6 +236,28 @@ export class RuleConfig {
   }
   // 个人经历
   get introduction() {
-    return ['introduction']
+    return ['introduction', {
+      rules: [{
+        pattern: this.pattern.CN_EN_NUM('1-300'),
+        message: '请输入1-300个字，中英文及数字'
+      }]
+    }]
+  }
+  // 擅长的项目
+  get specialty_id() {
+    return ['specialty_id']
+  }
+  // 专业认证
+  get certification_name() {
+    return ['certification_name', {
+      rules: [{
+        pattern: this.pattern.CN_EN_NUM('1-100'),
+        message: '请输入1-100个字，中英文及数字'
+      }]
+    }]
+  }
+  // 对外展示
+  get is_show() {
+    return ['is_show']
   }
 }

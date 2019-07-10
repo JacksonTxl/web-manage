@@ -96,14 +96,7 @@
       </st-panel>
       <st-panel class="mg-t16">
         <div slot="title">
-          <div :class="b('radio-group')">
-            <a-radio-group v-model="revenueRecent">
-              <a-radio-button value="7">近7天</a-radio-button>
-              <a-radio-button value="30">近30天</a-radio-button>
-              <a-radio-button value="90">近90天</a-radio-button>
-            </a-radio-group>
-            <a-range-picker :class="[b('range'),{'active':!revenueRecent}]" @change="revenueRecentChange" />
-          </div>
+          <recent-radio-group @change="revenueRecentChange"></recent-radio-group>
         </div>
         <a-row>
           <a-col :span="14">
@@ -120,14 +113,7 @@
       </st-panel>
       <st-panel class="mg-t16">
         <div slot="title">
-          <div :class="b('radio-group')">
-            <a-radio-group defaultValue="a">
-              <a-radio-button value="a">近7天</a-radio-button>
-              <a-radio-button value="b">近30天</a-radio-button>
-              <a-radio-button value="c">近90天</a-radio-button>
-              <a-radio-button value="d">自定义</a-radio-button>
-            </a-radio-group>
-          </div>
+          <recent-radio-group @change="newMemberRecentChange"></recent-radio-group>
         </div>
         <a-row>
           <a-col :span="7">
@@ -159,14 +145,7 @@
       </st-panel>
       <st-panel class="mg-t16">
         <div slot="title">
-          <div :class="b('radio-group')">
-            <a-radio-group v-model="courseRecent">
-              <a-radio-button value="7">近7天</a-radio-button>
-              <a-radio-button value="30">近30天</a-radio-button>
-              <a-radio-button value="90">近90天</a-radio-button>
-            </a-radio-group>
-            <a-range-picker :class="[b('range'),{'active':!courseRecent}]" @change="courseRecentChange" />
-          </div>
+          <recent-radio-group @change="courseRecentChange"></recent-radio-group>
         </div>
         <a-row>
           <a-col :span="13">
@@ -181,14 +160,7 @@
       </st-panel>
       <st-panel class="mg-t16">
         <div slot="title">
-          <div :class="b('radio-group')">
-            <a-radio-group v-model="inoutRecent">
-              <a-radio-button value="7">近7天</a-radio-button>
-              <a-radio-button value="30">近30天</a-radio-button>
-              <a-radio-button value="90">近90天</a-radio-button>
-            </a-radio-group>
-            <a-range-picker :class="[b('range'),{'active':!inoutRecent}]" @change="inoutRecentChange" />
-          </div>
+          <recent-radio-group @change="inoutRecentChange"></recent-radio-group>
         </div>
         <a-row>
           <a-col :span="13">
@@ -223,6 +195,7 @@ import ShopEntryBar from '@/views/biz-components/stat/shop-entry-bar'
 import ShopEntryLine from '@/views/biz-components/stat/shop-entry-line'
 import CrowdLine from '@/views/biz-components/stat/crowd-line'
 import SidebarComponent from './sidebar.component'
+import RecentRadioGroup from './recent-radio-group'
 import {
   ClubComponentService
 } from './club.component.service'
@@ -265,17 +238,6 @@ export default {
       return this.top.be_member_num
     }
   },
-  watch: {
-    revenueRecent(newValue) {
-      newValue && this.clubComponentService.getRevenue({ recently_day: newValue }).subscribe()
-    },
-    courseRecent(newValue) {
-      newValue && this.clubComponentService.getCourse({ recently_day: newValue }).subscribe()
-    },
-    inoutRecent(newValue) {
-      newValue && this.clubComponentService.getInout({ recently_day: newValue }).subscribe()
-    }
-  },
   data() {
     return {
       topIconUser: topIconUser,
@@ -302,20 +264,21 @@ export default {
     ShopEntryLine,
     FunnelVertical,
     ShopAddUser,
-    SidebarComponent
+    SidebarComponent,
+    RecentRadioGroup
   },
   methods: {
-    inoutRecentChange(date, dateString) {
-      this.inoutRecent = false
-      this.clubComponentService.getInout({ start_date: dateString[0], end_date: dateString[1] }).subscribe()
+    inoutRecentChange(query) {
+      this.clubComponentService.getInout(query).subscribe()
     },
-    courseRecentChange(date, dateString) {
-      this.courseRecent = false
-      this.clubComponentService.getCourse({ start_date: dateString[0], end_date: dateString[1] }).subscribe()
+    courseRecentChange(query) {
+      this.clubComponentService.getCourse(query).subscribe()
     },
-    revenueRecentChange(date, dateString) {
-      this.revenueRecent = false
-      this.clubComponentService.getRevenue({ start_date: dateString[0], end_date: dateString[1] }).subscribe()
+    newMemberRecentChange(query) {
+      this.clubComponentService.getNewMember(query).subscribe()
+    },
+    revenueRecentChange(query) {
+      this.clubComponentService.getRevenue(query).subscribe()
     },
     switchMember(memberType) {
       this.memberType = memberType

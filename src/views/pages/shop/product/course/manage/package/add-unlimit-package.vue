@@ -41,12 +41,12 @@
                     <td class="tg-c"><a-checkbox @change="teamCheckboxChange"/></td>
                     <td>团体课程</td>
                     <td class="pr-32">
-                      <st-input-number :max="99999" @change="courseIsFirstInput=false" v-model="packageData.team_times" :disabled="packageData.is_team===0">
+                      <st-input-number :min="1" :max="99999" @change="courseIsFirstInput=false" v-model="packageData.team_times" :disabled="packageData.is_team===0">
                         <template slot="addonAfter">节</template>
                       </st-input-number>
                     </td>
                     <td class="pr-32">
-                      <st-input-number :max="99999.9" @change="courseIsFirstInput=false" v-model="packageData.team_unit_price" :float="true" :disabled="packageData.is_team===0">
+                      <st-input-number :min="0" :max="999999.9" @change="courseIsFirstInput=false" v-model="packageData.team_unit_price" :float="true" :disabled="packageData.is_team===0">
                         <template slot="addonAfter">元</template>
                       </st-input-number>
                     </td>
@@ -56,12 +56,12 @@
                     <td class="tg-c"><a-checkbox @change="personalCheckboxChange" /></td>
                     <td>私教课程</td>
                     <td class="pr-32">
-                      <st-input-number :max="99999" @change="courseIsFirstInput=false" v-model="packageData.personal_times" :disabled="packageData.is_personal===0">
+                      <st-input-number :min="1" :max="99999" @change="courseIsFirstInput=false" v-model="packageData.personal_times" :disabled="packageData.is_personal===0">
                         <template slot="addonAfter">节</template>
                       </st-input-number>
                     </td>
                     <td class="pr-32">
-                      <st-input-number :max="99999.9" @change="courseIsFirstInput=false" v-model="packageData.personal_unit_price" :float="true" :disabled="packageData.is_personal===0">
+                      <st-input-number :min="0" :max="999999.9" @change="courseIsFirstInput=false" v-model="packageData.personal_unit_price" :float="true" :disabled="packageData.is_personal===0">
                         <template slot="addonAfter">元</template>
                       </st-input-number>
                     </td>
@@ -83,7 +83,8 @@
           <st-form-item label="售卖价格" required>
             <st-input-number
               placeholder="请输入售卖价格"
-              :max="99999.9"
+              :min="0"
+              :max="999999.9"
               v-decorator="[
                 'price',
                  {rules: [{ required: true, message: '请输入售卖价格' }]}
@@ -170,7 +171,8 @@
             <div :class="basic('transfer')">
               <a-checkbox :class="basic('transfer-checkbox')" @change="transfer">支持转让</a-checkbox>
               <st-input-number
-              :max="packageData.transfer_unit===1?100:99999.9"
+              :min="0"
+              :max="packageData.transfer_unit===1?100:999999.9"
               v-decorator="[
                 'transfer_rate',
                  {rules: [{initialValue: null,required: packageData.is_allow_transfer!==0, message: '请输入转让值数值'}]}
@@ -197,7 +199,7 @@
         </a-col>
       </a-row>
       <a-row :gutter="8">
-        <a-col :lg="10" :xs="22" :offset="1">
+        <a-col :lg="22" :xs="22" :offset="1">
           <st-form-item
           validate-status="error"
           :help="imageErrorText"
@@ -210,7 +212,7 @@
               :list="fileList"
               @change="fileChange">
                 <i :class="basic('st-upload-icon')"></i>
-                <div :class="basic('st-upload-text')">上传店招</div>
+                <div :class="basic('st-upload-text')">上传封面</div>
               </st-image-upload>
               <div :class="basic('upload-describe')">
                 <p>图片格式必须为:png,bmp,jpeg,jpg,gif,建议使用png格式图片,以保存最佳效果</p>

@@ -13,9 +13,9 @@
               <span class="value">{{personalCourseInfo.duration}}分钟</span>
             </div>
             <div class="course-detail-item__right">
-              <span class="label">
+              <!-- <span class="label">
                 <st-icon type="price" size="16px" class="mg-r8" color="rgb(255,169,45)"></st-icon>参考定价:</span>
-                <span class="value">{{personalCourseInfo.price}}元/节</span>
+                <span class="value">{{personalCourseInfo.price}}元/节</span> -->
             </div>
           </div>
           <div class="course-detail-item__content mg-b16">
@@ -26,7 +26,7 @@
           </div>
         </div>
         <div class="page-personal-header__right">
-          <img :src="personalCourseInfo.image.image_key" alt=""/>
+          <img :src="personalCourseInfo.image.image_url | imgFilter({w:197,h:136})" alt=""/>
         </div>
     </div>
   </st-panel>
@@ -34,11 +34,11 @@
     <div class="page-personal-content">
       <div class="page-personal-content__item mg-b24">
         <div class="title mg-b8"><span class="label">上课门店:</span><span class="value">共{{personalCourseInfo.shops.length}}家门店</span></div>
-        <st-container><st-table :columns="shopColumns" :dataSource="personalCourseInfo.shops"></st-table></st-container>
+        <st-container><st-table rowKey="shop_id" :columns="shopColumns" :dataSource="personalCourseInfo.shops"></st-table></st-container>
       </div>
       <div class="page-personal-content__item mg-b24">
         <div class="title mg-b8"><span class="label">上课教练:</span><span class="value">共{{personalCourseInfo.coaches.length}}名教练</span></div>
-        <st-container> <st-table :columns="coachColumns" :dataSource="personalCourseInfo.coaches"></st-table> </st-container>
+        <st-container> <st-table rowKey="id" :columns="coachColumns" :dataSource="personalCourseInfo.coaches"></st-table> </st-container>
       </div>
       <div class="page-personal-content__item">
         <div class="title mg-b8"><span class="label">售价设置:</span><span class="value">{{personalCourseInfo.price_setting | enumFilter('personal_course.price_setting')}}</span></div>
@@ -62,10 +62,12 @@
 <script>
 import { shopColumns, coachColumns, priceConfigColumns } from './info#table.config'
 import { InfoService } from './info.service'
+import { AppConfig } from '@/constants/config'
 export default {
   name: 'PersonalInfo',
   serviceInject() {
     return {
+      config: AppConfig,
       infoService: InfoService
     }
   },

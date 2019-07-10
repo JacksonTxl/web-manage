@@ -230,13 +230,13 @@ export default {
         if (val.includes(item.id)) {
           let value = item.name
           if (item.name === '无座位') value = -1
-          this.siteNumIds.push(value)
+          this.siteNumIds.length < 3 && this.siteNumIds.push(value)
           tempArr = this.siteNumIds.filter(item => item === -1)
         }
         const arr = Array.from(new Set(this.siteNumIds)).filter(item => item !== -1)
         this.siteNumIds = [...arr, ...tempArr]
       })
-      this.currentReservationNum = this.siteNumIds.length
+      this.currentReservationNum = this.showSite.length
     },
     onClickReserve() {
       const form = {
@@ -252,7 +252,18 @@ export default {
         .subscribe(() => {
           this.isAdd = true
           this.showSite = []
+          this.siteNumIds = []
+          this.consumeType = ''
+          this.memberId = ''
           this.getReserve()
+        },
+        (err) => {
+          console.log(err)
+          this.isAdd = true
+          this.showSite = []
+          this.siteNumIds = []
+          this.consumeType = ''
+          this.memberId = ''
         })
     },
     edit(key) {

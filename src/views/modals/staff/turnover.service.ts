@@ -7,12 +7,16 @@ import { MessageService } from '@/services/message.service'
 
 @Injectable()
 export class TurnoverService {
-  conditionDeleteInfo$ = new State({})
+  list$ = new State([])
+  operate$ = new State({})
   loading$ = new State({})
   constructor(protected staffApi: StaffApi, private msg: MessageService) {}
   getStaffCheckJob(id: string) {
     return this.staffApi.getStaffCheckJob(id).pipe(tap(res => {
-      this.conditionDeleteInfo$.commit(() => res)
+      this.list$.commit(() => {
+        return res.list.filter((item:any) => item.num !== 0)
+      })
+      this.operate$.commit(() => res.operate)
     }))
   }
   @Effect()

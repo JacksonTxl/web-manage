@@ -183,7 +183,7 @@ export class ClubComponentService {
   getNewMember(params: RevenueParams) {
     return this.overviewApi.getNewMember(params).pipe(tap(res => {
       this.state$.commit(state => {
-        const data = res.info
+        const data = res.info.new_member_num
         let lineData:any = []
         for (let key in data) {
           let chartItem = {
@@ -192,6 +192,7 @@ export class ClubComponentService {
           }
           lineData.push(chartItem)
         }
+        console.log('newMember', lineData)
         state.newMember = lineData
       })
     }))
