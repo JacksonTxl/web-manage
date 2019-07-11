@@ -21,6 +21,11 @@ export class ShopStaffApi extends Api {
   getStaffDepartmentList() {
     return this.http.get(`/v1/department`)
   }
+  // 搜搜部门列表
+  searchDepartment(query: any) {
+    console.log('search', query)
+    return this.http.get(`/v1/department/search`, { query })
+  }
   /**
      * 获取员工列表
      */

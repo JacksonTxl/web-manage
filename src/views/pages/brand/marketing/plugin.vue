@@ -34,7 +34,7 @@
         <section>
           <ul>
             <li v-for="(item, index) in info.marketing" :key="index" @click="goToPlugin(item.plugin_type)">
-              <img v-if="item.plugin_type === '0'" src="~@/assets/img/brand/marketing/people.svg">
+              <img v-if="item.plugin_type === '4'" src="~@/assets/img/brand/marketing/people.svg">
               <img v-if="item.plugin_type === '1'" src="~@/assets/img/brand/marketing/coupon.svg">
               <img v-if="item.plugin_type === '2'" src="~@/assets/img/brand/marketing/invite.svg">
               <img v-if="item.plugin_type === '3'" src="~@/assets/img/brand/marketing/slyder.svg">
@@ -117,9 +117,9 @@ export default {
     // }
     goToPlugin(type) {
       const map = {
-        0: 'brand-marketing-plugin-crowd-index',
         1: 'brand-marketing-plugin-coupon-list',
-        2: 'brand-marketing-plugin-invitation-index-data'
+        2: 'brand-marketing-plugin-invitation-index-data',
+        4: 'brand-marketing-plugin-crowd-index'
       }
       if (map.hasOwnProperty(type)) {
         this.$router.push({

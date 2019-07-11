@@ -25,7 +25,7 @@ export default {
     return {
       titleData: {
         title: '性别',
-        info: '满足一下性别属性的用户'
+        info: '满足以下性别属性的用户'
       },
       optionsSex: [{
         name: '男',

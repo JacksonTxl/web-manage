@@ -8,8 +8,15 @@
         </st-form-item>
         <!-- 售卖渠道 -->
         <st-form-item label="售卖渠道">
-          <a-checkbox-group :options="sellTypeOptions" v-decorator="ruleConfig.sellType">
-            <a-checkbox v-for="(item, index) in personalCourseEnums.sell_type.value" :key="index" :value="index">
+          <a-checkbox-group
+            :options="sellTypeOptions"
+            v-decorator="ruleConfig.sellType"
+          >
+            <a-checkbox
+              v-for="(item, index) in personalCourseEnums.sell_type.value"
+              :key="index"
+              :value="index"
+            >
               {{item}}
             </a-checkbox>
           </a-checkbox-group>
@@ -138,7 +145,8 @@ export default {
       for (let i in sellType) {
         options.push({
           label: sellType[i],
-          value: +i
+          value: +i,
+          disabled: +i === 1
         })
       }
       return options

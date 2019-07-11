@@ -29,7 +29,7 @@
     >
       <a-spin :spinning="isLoading" :tip="progress + '%'">
         <slot>
-          <a-icon type="plus" />
+          <a-icon type="plus-circle" theme="filled" :style="{fontSize:'36px', color: '#9BACB9' }" />
           <div class="st-image-upload__placeholder">{{placeholder}}</div>
         </slot>
       </a-spin>

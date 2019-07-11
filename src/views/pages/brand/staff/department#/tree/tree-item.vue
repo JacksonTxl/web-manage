@@ -19,7 +19,7 @@
           <a-menu-item  @click="deleteDepartment(item)">删除</a-menu-item>
         </st-more-dropdown>
       </div>
-      <div v-if="item.isAdd" class="edit-box">
+      <div v-if="item.isAdd" class="tree-node__content">
         <a-input
           placeholder="请输入部门名称"
           class="tree-input  mg-r6"
@@ -82,7 +82,8 @@ export default {
           this.item.children.length
     },
     paddingLeft() {
-      return ((this.level - 1) * 16) + 'px'
+      if (!this.level) return 20 + 'px'
+      return ((this.level - 1) * 16) + 20 + 'px'
     }
   },
   methods: {

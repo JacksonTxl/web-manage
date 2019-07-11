@@ -42,7 +42,8 @@ export default {
   },
   created() {
     if (this.value) {
-      this.onChange([], [this.value.min, this.value.max])
+      this.timeData.min = this.value.min
+      this.timeData.max = this.value.max
       this.radioValue = this.value.value
     }
   },
@@ -58,6 +59,16 @@ export default {
       this.value.min = this.timeData.min
       this.value.max = this.timeData.max
       this.value.value = this.radioValue
+      if (this.radioValue === 7) {
+        this.radioText = '近7天'
+      } else if (this.radioValue === 30) {
+        this.radioText = '近30天'
+      } else if (this.radioValue === 90) {
+        this.radioText = '近90天'
+      } else {
+        this.radioValue = ''
+        this.radioText = ''
+      }
       this.value.name = this.radioText
       this.filterTime(dayTime)
     },
@@ -67,7 +78,7 @@ export default {
         max: str[1]
       }
       if (obj.max === this.filterTime(new Date().getTime())) {
-        let flagTime = data[1].diff(data[0], 'days')
+        let flagTime = moment(data[1]).diff(moment(data[0]), 'days')
         if (flagTime === 7) {
           this.radioValue = 7
           this.radioText = '近7天'

@@ -16,8 +16,8 @@
         <st-image-upload v-if="isEdit"
           width="90px"
           height="90px"
-          :list="[brandInfo.image]"
-          placeholder="上传品牌logo"
+          :list="imageList"
+          placeholder="上传logo"
           :cropperModal="{ title:'标题', cropper: { aspectRatio: 1/1 } }"
            @change="onImgChange"
         >
@@ -33,7 +33,12 @@
       <div>
         <div>
           <h2>
-            {{brandInfo.brand_name}}
+            <a-input
+              v-if="isEdit"
+              v-model="brandInfo.brand_name"
+              maxlength="20"
+            />
+            <span v-else>{{brandInfo.brand_name}}</span>
             <span v-if="brandInfo.is_authentic" :class="b('certify-status')">
               <i class="st-icon-certified"></i>
               <span :class="b('certify-des')">已认证</span>
@@ -83,6 +88,7 @@ import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
 import { brandLogoFilter } from '@/filters/resource.filters'
+import { PatternService } from '@/services/pattern.service'
 export default {
   bem: {
     b: 'page-setting-brand'
@@ -92,13 +98,15 @@ export default {
       brandService: BrandService,
       routeService: RouteService,
       messageService: MessageService,
-      userService: UserService
+      userService: UserService,
+      pattern: PatternService
     }
   },
   rxState() {
     const user = this.userService
     return {
-      resData: this.brandService.resData$,
+      brandInfo: this.brandService.brandInfo$,
+      systemInfo: this.brandService.systemInfo$,
       query: this.routeService.query$,
       settingEnums: user.settingEnums$,
       loading: this.brandService.loading$
@@ -106,22 +114,16 @@ export default {
   },
   data() {
     return {
-      image: {}
+      imageList: []
     }
   },
   computed: {
-    brandInfo() {
-      return this.resData.info.brand_info
-    },
-    systemInfo() {
-      return this.resData.info.system_info
-    },
     isEdit() {
       return this.query.type === 'edit'
     }
   },
   created() {
-    this.image = this.brandInfo.image
+    this.imageList = [this.brandInfo.image]
   },
   methods: {
     onEdit() {
@@ -132,19 +134,24 @@ export default {
       })
     },
     onSave() {
+      if (!this.inputCheck()) {
+        return
+      }
+      const info = this.brandInfo
       const params = {
-        album_id: this.brandInfo.album_id,
-        image: this.image,
-        description: this.brandInfo.description
+        brand_name: info.brand_name,
+        album_id: info.album_id,
+        image: this.imageList[0],
+        description: info.description
       }
       this.brandService.update(params).subscribe(() => {
         this.messageService.success({
           content: '保存成功'
         })
         this.$router.push({
-          query: {},
           force: true
         })
+        this.userService.reload()
       })
     },
     onCancel() {
@@ -153,8 +160,22 @@ export default {
       })
     },
     onImgChange(list) {
-      console.log('changed', list)
-      this.image = list[0]
+      this.imageList = list
+    },
+    inputCheck() {
+      const info = this.brandInfo
+      const brandName = info.brand_name
+      const { pattern } = this
+      if (!pattern.CN_EN_NUM_SPACE('1-20').test(brandName)) {
+        this.tip('品牌名称支持20字以内的中英文和数字')
+        return false
+      }
+      return true
+    },
+    tip(msg) {
+      this.messageService.error({
+        content: msg
+      })
     }
   }
 }

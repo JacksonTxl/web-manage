@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { UserService } from '../../../services/user.service'
+import { UserService } from '@/services/user.service'
 import { LoginService } from './login.service'
 import mobile from './login#/mobile'
 import user from './login#/user'
@@ -55,7 +55,8 @@ export default {
   name: 'Login',
   serviceInject() {
     return {
-      loginService: LoginService
+      loginService: LoginService,
+      userService: UserService
     }
   },
   data() {
@@ -89,17 +90,21 @@ export default {
       this.loginType = 'mobilefind'
     },
     onThird(type) {
-      console.log(type)
       this.loginType = type
     },
     onClickBack() {
-      console.log('sss')
       this.loginType = 'user'
     },
     onLogin(values) {
       this.loginService.loginAccount(values).subscribe(res => {
         console.log(res)
-        this.$router.push('/')
+        this.userService.reload()
+        if (res.have_phone) {
+          this.$router.push('/')
+        } else {
+          // 去绑定手机
+          this.$router.push('/')
+        }
       })
     },
     // 切换登录方式

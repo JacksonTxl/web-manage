@@ -2,11 +2,12 @@
   <st-modal
     class="modal-support-course-shops"
     :title="course.course_name + ' 查看授课教练'"
+    :footer="null"
     v-model='show'>
     <div class="modal-support-course-shops__search">
       <a-row>
         <a-col :lg="6">
-          <a-select showSearch class="mg-r8" style="width: 160px" @change="onChange">
+          <a-select showSearch v-model="coachLevel" class="mg-r8" style="width: 160px" @change="onChange">
             <a-select-option v-for="coach in coachLevelOptions" :key="coach.id" :value="coach.id">{{coach.name}}</a-select-option>
           </a-select>
         </a-col>
@@ -20,8 +21,11 @@
       <st-table
       :columns="columnsCoaches"
       :rowKey="record => record.id"
-      :pagination="{simple: true}"
+      :page="false"
       :dataSource="supportCoachTable">
+      <div slot="nature_work" slot-scope="text">
+        {{text | enumFilter('staff.nature_work')}}
+      </div>
       </st-table>
     </st-container>
   </st-modal>
@@ -29,7 +33,7 @@
 <script>
 import { columnsCoaches } from './support-table'
 import { BrandService } from '../../pages/brand/product/course/personal/list/brand.service'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, uniqBy } from 'lodash-es'
 export default {
   name: 'SupportCourseCoachesBrand',
   serviceInject() {
@@ -40,9 +44,11 @@ export default {
   data() {
     return {
       columnsCoaches,
+      coachLevel: -1,
       show: false,
       courseStatus: [{ label: '所有状态', value: -1 }, { label: '有效', value: 1 }, { label: '无效', value: 0 }],
-      coachLevelOptions: [],
+      coachLevelOptions: [{ id: -1,
+        name: '所有教练等级' }],
       supportCoachList: [],
       supportCoachTable: []
     }
@@ -76,12 +82,12 @@ export default {
       this.brandService.getCoursePersonalSupportCoaches({ course_id: this.course.course_id }).subscribe(state => {
         this.supportCoachList = cloneDeep(state.coaches)
         this.supportCoachTable = cloneDeep(state.coaches)
-        this.coachLevelOptions = state.coaches.map(item => {
+        this.coachLevelOptions = [...this.coachLevelOptions, ...uniqBy(state.coaches.map(item => {
           return {
             id: item.coach_level_id,
             name: item.level_name
           }
-        })
+        }), 'id')]
       })
     }
   },
