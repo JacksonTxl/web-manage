@@ -56,7 +56,7 @@ export default {
         forceFit: true,
         height: this.height,
         renderer: 'svg',
-        padding: [2, 2, 5, 2]
+        padding: 'auto'
       })
       const maxValue = this.dv.max('value')
       this.chart.source(this.dv, {
@@ -68,6 +68,7 @@ export default {
       this.chart.axis('value', false)
       this.chart.axis('name', {
         nice: true,
+        label: false,
         grid: {
           lineStyle: {
             stroke: '#E6E9EF',
@@ -89,9 +90,7 @@ export default {
         showTitle: false,
         useHtml: true,
         itemTpl:
-          `<li class='tooltip-item' data-index={index} style='background-color:${
-            this.color
-          };'>` +
+          `<li class='tooltip-item' data-index={index} style='background-color:${this.color};'>` +
           `<span class='g2-tooltip-value'>{value}${this.unit}</span>` +
           `</li>`
       })
