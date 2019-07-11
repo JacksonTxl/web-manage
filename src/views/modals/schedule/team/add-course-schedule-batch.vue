@@ -5,8 +5,8 @@
       <a-date-picker
         v-if="record.editable"
         showTime
-        format="YYYY-MM-DD HH:mm:ss"
-        placeholder="Select Time"
+        format="YYYY-MM-DD HH:mm"
+        placeholder="请选择时间"
         :value="text"
         @change="e => handleChange(e, record.key, 'start_time')"/>
       <template v-else>{{record.show.start_time_show}}</template>
