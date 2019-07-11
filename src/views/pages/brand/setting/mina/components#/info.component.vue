@@ -1,5 +1,5 @@
 <template>
-  <div :class="info()">
+  <div :class="info()" :loading="loading.subAudit&&loading.getInfo">
     <div class="left">
       <st-t2>
         微信小程序（基础版）
@@ -16,12 +16,12 @@
           <st-info>
             <st-info-item label="微信认证" v-if="data.mina_info.verify_type_info > 1">已认证</st-info-item>
             <st-info-item label="微信认证" v-else>未认证</st-info-item>
-            <st-info-item label="发布状态">{{data.mina_info.send_status | sendstatusFilter}}<a :class="info('a')">{{data.mina_info.send_status | authBtnFilter}}</a></st-info-item>
+            <st-info-item label="发布状态">{{data.mina_info.send_status | sendstatusFilter}}<a :class="info('a')" @click="submitAudit">{{data.mina_info.send_status | authBtnFilter}}</a></st-info-item>
           </st-info>
         </a-col>
         <a-col :lg="8">
           <st-info>
-            <st-info-item label="微信支付">已配置<a :class="info('a')">重新配置</a></st-info-item>
+            <st-info-item label="微信支付">已配置<a :class="info('a')" @click="resetMch">重新配置</a></st-info-item>
             <st-info-item label="微信授权">{{data.is_auth | authFilter}}<a :class="info('a')"
                 :href="data.auth_url">重新授权</a>
             </st-info-item>
@@ -69,12 +69,23 @@
 import brand from '@/assets/img/brand/setting/mina/icon_brand.png'
 import user from '@/assets/img/brand/setting/mina/icon_user.png'
 import flow from '@/assets/img/brand/setting/mina/icon_flow.png'
+import { IndexService } from '../index.service'
 export default {
   bem: {
     info: 'info-component'
   },
   props: {
     data: Object
+  },
+  serviceInject() {
+    return {
+      indexService: IndexService
+    }
+  },
+  rxState() {
+    return {
+      loading: this.indexService.loading$
+    }
   },
   data() {
     return {
@@ -112,6 +123,24 @@ export default {
         5: '重新提交'
       }
       return btnMap[v]
+    }
+  },
+  methods: {
+    resetMch() {
+      this.$modalRouter.push({
+        name: 'brand-setting-mina-mch',
+        on: {
+          success: () => {
+            this.$router.push({ query: this.query, force: true })
+          }
+        }
+      })
+    },
+    submitAudit() {
+      this.indexService.subAudit().subscribe(res => {
+        console.log(res)
+        this.indexService.getInfo().subscribe()
+      })
     }
   }
 }
