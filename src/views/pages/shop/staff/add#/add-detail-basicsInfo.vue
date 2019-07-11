@@ -135,6 +135,7 @@
             mode="multiple"
             useType="form"
             placeholder="所属门店"
+            :disabled="true"
             v-decorator="rules.shop_id"/>
         </st-form-item>
       </a-col>
@@ -218,6 +219,11 @@ export default {
       addService: AddService
     }
   },
+  rxState() {
+    return {
+      shop: this.userService.shop$
+    }
+  },
   components: {
     ShopSelect,
     CoachLevelSelect,
@@ -230,8 +236,8 @@ export default {
     roleList: {
       type: Array
     },
-    codeInfo: {
-      type: Object
+    codeList: {
+      type: Array
     },
     department: {
       type: Array
@@ -251,26 +257,10 @@ export default {
       value: undefined
     }
   },
-  computed: {
-    codeList() {
-      return this.codeInfo && this.codeInfo.code_list
-    },
-    default_code() {
-      return this.codeInfo && this.codeInfo.default_code
-    },
-    default_code_id() {
-      return this.codeInfo && this.codeInfo.default_code_id
-    }
-  },
-  mouted() {
-    this.$nextTick(() => {
-      console.log(this.s)
-      this.form.setFields({
-        country_code_id: {
-          key: this.default_code_id,
-          value: this.default_code
-        }
-      })
+  mounted() {
+    console.log(this.shop)
+    this.form.setFieldsValue({
+      shop_id: this.shop.id
     })
   },
   methods: {
@@ -321,10 +311,16 @@ export default {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.image_avatar = this.fileList[0]
       data.image_face = this.faceList[0]
+      console.log('submit', data)
       this.addService.addStaff(data).subscribe(res => {
-        this.$emit('skiptoedit', {
-          id: res.staff_id,
-          isShowLevel: this.isShowLevel
+        console.log('addStaff', res)
+        this.$router.push({
+          name: 'shop-staff-edit',
+          query: {
+            id: res.staff_id,
+            currentIndex: 1,
+            isShowCoach: data.identity.includes(3) || data.identity.includes(4) ? 1 : 0
+          }
         })
       })
     }

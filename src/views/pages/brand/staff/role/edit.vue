@@ -2,13 +2,13 @@
 <div class="page-role-info">
   <st-form :form="form" class="page-role-info__edit">
     <a-row class="content">
-      <a-col class="brand-list">
+      <a-col :lg="17" class="brand-list">
         <st-form-item label="角色名称">
           <a-input placeholder="请输入角色名称" v-decorator="['name', {initialValue: info.name}]"></a-input>
         </st-form-item>
       </a-col>
     </a-row>
-    <a-row class="content">
+    <a-row :lg="17" class="content">
       <a-col class="brand-list">
         <st-form-item label="角色描述">
           <a-input placeholder="请输入角色内容" v-decorator="[
@@ -17,7 +17,7 @@
         </st-form-item>
       </a-col>
     </a-row>
-    <a-row class="content">
+    <a-row :lg="18" class="content">
       <a-col class="brand-list">
         <st-form-item label="数据权限">
           <a-radio-group name="radioGroup" @change="onChangeDataRegion" v-decorator="[
@@ -82,7 +82,7 @@
       </a-col>
     </a-row>
     <st-form-item label="    ">
-      <st-button type="primary" @click="onClickSubmit" class="mr-5">保存</st-button>
+      <st-button type="primary" @click="onClickSubmit" class="mg-r16">保存</st-button>
       <st-button>取消</st-button>
     </st-form-item>
   </st-form>

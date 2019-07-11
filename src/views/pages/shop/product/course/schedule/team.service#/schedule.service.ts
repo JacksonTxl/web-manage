@@ -5,6 +5,7 @@ import { State, Effect, Computed } from 'rx-state'
 import { tap, pluck, switchMap } from 'rxjs/operators'
 import { TeamScheduleScheduleApi } from '@/api/v1/schedule/team/schedule'
 import { bindCallback } from 'rxjs'
+import { MessageService } from '@/services/message.service'
 
 export interface SetState {
   scheduleTeamCourseList: any[],
@@ -17,7 +18,8 @@ export class TeamScheduleScheduleService {
   scheduleTable$: Computed<any>
   refresh$: Computed<any>
 
-  constructor(private scheduleApi: TeamScheduleScheduleApi, private authService: AuthService) {
+  constructor(private scheduleApi: TeamScheduleScheduleApi, private authService: AuthService,
+    private msg: MessageService) {
     this.state$ = new State({
       scheduleTeamCourseList: [],
       scheduleTable: [],
@@ -123,6 +125,7 @@ export class TeamScheduleScheduleService {
    */
   del(id: string) {
     return this.scheduleApi.del(id).pipe(switchMap(state => {
+      this.msg.success({ content: '取消团体课成功' })
       return this.getList({})
     }))
   }

@@ -48,7 +48,7 @@ export default {
         forceFit: true,
         // svg阴影比较符合预期
         renderer: 'svg',
-        padding: [16, 16, 0, 16],
+        padding: [16, 16, 32, 16],
         height: this.height
       })
       this.chart.source(this.dv, {

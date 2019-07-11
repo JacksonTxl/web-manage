@@ -9,7 +9,7 @@
     :dataSource="staffList"
     :scroll="{ x: 1500}"
     rowKey="id"
-    @change="onChange"
+    @change="onTableChange"
     >
     <div slot="action" slot-scope="text, record">
       <st-table-actions>

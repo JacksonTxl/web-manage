@@ -14,13 +14,13 @@
         </st-form-item>
         <st-form-item label="专业认证">
           <a-input placeholder="请输入专业证书名称" v-decorator="rules.certification_name" style="top: 0;">
-            <div slot="addonAfter" @click="onAddProfess" class="add-profess-button">添加</div>
+            <div slot="addonAfter" @click="onAddProfess" class="add-profess-button" v-if="coachInfoData.certification_name.length < 10">添加</div>
           </a-input>
           <div class="add-profess-card">
-            <p v-for="(item,index) in coachInfoData.certification_name" :key="index">
+            <div v-for="(item,index) in coachInfoData.certification_name" :key="index">
               <span>{{item}}</span>
               <st-icon type="anticon:close" @click="onProfessRule(index)" style="cursor:pointer;"></st-icon>
-            </p>
+            </div>
           </div>
         </st-form-item>
         <st-form-item label="个人经历">

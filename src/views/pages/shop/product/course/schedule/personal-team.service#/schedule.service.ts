@@ -53,7 +53,7 @@ export class PersonalTeamScheduleScheduleService {
             groupId: JSON.stringify(item),
             id: item.id,
             start: `${item.start_date} ${item.start_time}`,
-            end: `${item.start_date} ${item.end_time}`
+            end: `2019-07-15 ${item.end_time}`
           }
         })
       })

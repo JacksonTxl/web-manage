@@ -11,6 +11,10 @@ import chartMixin from './mixin'
 export default {
   mixins: [chartMixin],
   props: {
+    /**
+     * @example
+     * [{date:'05-28',私教课:20,团体课:50,储值卡:78}]
+     */
     data: {
       type: Array,
       default: () => []

@@ -61,7 +61,7 @@ export default {
       if (!this.maxValue) {
         return 0
       }
-      return ((v / this.maxValue) * 100).toFixed(1)
+      return ((v / this.maxValue) * 100).toFixed(0)
     }
   }
 }

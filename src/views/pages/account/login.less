@@ -1,11 +1,27 @@
 .page-login-wapper {
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: center;
   .s(100vw, 100vh);
   background: #F8F8F8;
+  .page-login-ch-en {
+    position: absolute;
+    height: 72px;
+    .lh(72px);
+    top: 0;
+    right: 0;
+    >span {
+      .fz(14px);
+      .c(rgba(0,0,0,.45));
+      cursor: pointer;
+      &.active{
+        .c(rgba(0,0,0,.75));
+      }
+    }
+  }
   .page-login{
-    .s(1120px, 516px);
+    .s(960px, 516px);
     .bg(#fff);
     box-shadow:0px 0px 20px 0px rgba(196,193,219,0.2);
     border-radius:4px;
@@ -13,42 +29,23 @@
   }
   .lf{
     position: relative;
-    .w(580px);
+    .w(420px);
     .h(100%);
-    &-introduce{
+    >footer {
       position: absolute;
-      top: -14px;
+      left: 0;
       right: 0;
-      .pd-t(251px);
-      .pd-l(64px);
-      .s(506px, 546px);
-      background:linear-gradient(46deg,rgba(24,144,255,1) 0%,rgba(24,56,255,1) 100%);
-      box-shadow:0px 0px 20px 0px rgba(196,193,219,0.2);
-      border-radius:4px;
-    }
-    &-logo{
-      .mg-b(31px);
-    }
-    &-title{
-      .fz(22px);
-      .lh(1);
-      font-weight: 600;
-      .c(#fff);
-      .mg-b(16px);
-    }
-    &-sub-title{
-      .fz(14px);
-      font-weight: 400;
-      .c(rgba(255, 255, 255, .8));
-      .lh(1);
-      .mg-b(50px);
+      bottom: 0;
+      text-align: center;
     }
     &-help{
       list-style-type: none;
       display: flex;
+      align-items: center;
+      justify-content: center;
       padding-left: 0;
       .item{
-        margin-right:44px;
+        padding: 0 22px;
         a{
           .fz(12px);
           .c(rgba(255,255,255,.45));
@@ -56,6 +53,7 @@
       }
     }
     &-copyright{
+      margin-bottom: 36px;
       .fz(12px);
       font-weight: 400;
       .c(rgba(255,255,255,.45));
@@ -65,8 +63,8 @@
       position: absolute;
       top: 0;
       right: 0;
-      .s(335px, 546px);
-      background: url(https://static-s.styd.cn/201903251641/introduce.png) top center no-repeat;
+      .s(420px, 516px);
+      background: url(https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/bg-login-%402x.png) top center no-repeat;
       background-size: cover;
     }
   }
@@ -98,24 +96,25 @@ to {width:32px;}
   display: flex;
   .w(336px);
   .page-login-tab-item{
-    flex: 1;
+    + .page-login-tab-item{
+      margin-left: 48px;
+    }
     position: relative;
     .cur-p;
-    .fz(14px);
-    .c(rgba(0,0,0,0.45));
-    .lh(20px);
+    .fz(16px);
+    .c(@text-light);
+    .lh(22px);
+    padding-bottom: 12px;
 
     &--active{
-      .fz(16px);
       font-weight: 500;
-      .c(rgba(0,0,0,0.85));
-      .lh(22px);
+      .c(@title);
       &:before{
         content: '';
         .s(32px, 4px);
         animation:mymove .3s;
         display: inline-block;
-        .bg(rgba(50,91,242,1));
+        .bg(@primary-color);
         position: absolute;
         bottom: 0;
         left: 0

@@ -119,8 +119,8 @@
     <a-row :gutter="8">
       <a-col :offset="2">
         <st-form-item class="mg-l24" labelOffset>
-          <st-button type="primary" ghost html-type="submit">保存</st-button>
-          <st-button class="mg-l16" @click="goNext" type="primary">继续填写</st-button>
+          <st-button type="primary" ghost html-type="submit">提交</st-button>
+          <st-button class="mg-l16" @click="goNext" type="primary">保存,继续填写</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -216,7 +216,6 @@ export default {
       data.image_avatar = this.fileList
       data.image_face = this.faceList
       this.editservice.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
-        this.$emit('updateStaffInfo')
         if (saveOrgoNext === 1) {
           this.$emit('gonext')
           this.$emit('updateStaffInfo')
@@ -245,8 +244,8 @@ export default {
         image_face: obj.image_face,
         shop_id: obj.shop_id
       })
-      this.fileList = [obj.image_avatar]
-      this.faceList = obj.image_face
+      this.fileList = Array.isArray(obj.image_avatar) ? obj.image_avatar : []
+      this.faceList = Array.isArray(obj.image_face) ? obj.image_face : []
     }
   }
 }

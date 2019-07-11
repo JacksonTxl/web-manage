@@ -29,6 +29,7 @@
           rowKey="id"
           :columns="columns"
           @change="onTableChange"
+          :scroll="{ x: 1500 }"
           :dataSource="list">
           <template slot="is_shop_range" slot-scope="text, record">
             <a-popover placement="right">
@@ -44,19 +45,13 @@
           <template slot="draw_num" slot-scope="text, record">
             <a @click="goReceive(record)">{{text}}</a>
           </template>
-          <div slot="action" slot-scope="text,record">
+          <template slot="action" slot-scope="text,record">
             <st-table-actions>
-              <div v-if="record.auth['brand:activity:coupon|edit']" :class="basic('button')">
-                <a href="#" @click="onEdit(record)">编辑</a>
-              </div>
-              <div v-if="record.auth['brand:activity:coupon|promotion']" :class="basic('button')">
-                <a href="#" @click="onEdit(record)">推广</a>
-              </div>
-              <div v-if="record.auth['brand:activity:coupon|end']" :class="basic('button')">
-                <a href="#" @click="onStop(record)">结束</a>
-              </div>
+              <a href="#" @click="onEdit(record)" v-if="record.auth['brand:activity:coupon|edit']">编辑</a>
+              <a href="#" @click="onEdit(record)" v-if="record.auth['brand:activity:coupon|promotion']">推广</a>
+              <a href="#" @click="onStop(record)" v-if="record.auth['brand:activity:coupon|end']">结束</a>
             </st-table-actions>
-          </div>
+          </template>
         </st-table>
       </div>
     </st-panel>
@@ -154,6 +149,7 @@ export default {
           title: '操作',
           dataIndex: 'action',
           width: 140,
+          fixed: 'right',
           scopedSlots: { customRender: 'action' }
         }]
     }
@@ -179,8 +175,15 @@ export default {
     },
     // 停止优惠券模板
     onStop(record) {
-      this.listService.stopMarketingCoupon(record.id).subscribe(res => {
-        this.$router.push({ force: true })
+      this.$confirm({
+        title: '提示',
+        content: '结束后当用户进入投放该优惠券的活动时，将无法领取该优惠券。确认要结束？',
+        onOk() {
+          this.listService.stopMarketingCoupon(record.id).subscribe(res => {
+            this.$router.push({ force: true })
+          })
+        },
+        onCancel() {}
       })
     },
     // 新增优惠券活动
