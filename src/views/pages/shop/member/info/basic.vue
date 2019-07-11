@@ -15,7 +15,7 @@
           <st-info-item label="性别">{{ basicInfo.sex.name }}</st-info-item>
           <st-info-item label="民族">{{ basicInfo.nation.name }}</st-info-item>
            <st-info-item label="证件类型">{{ basicInfo.id_card_type.name }}</st-info-item>
-          <st-info-item label="收入水平">{{ basicInfo.sex.name }}</st-info-item>
+          <st-info-item label="收入水平">{{ basicInfo.income_level }}</st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
