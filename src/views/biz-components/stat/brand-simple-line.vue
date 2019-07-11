@@ -71,7 +71,7 @@ export default {
         label: false,
         grid: {
           lineStyle: {
-            stroke: '#E6E9EF',
+            stroke: '#EBEFF4',
             lineWidth: 1
           }
         },
