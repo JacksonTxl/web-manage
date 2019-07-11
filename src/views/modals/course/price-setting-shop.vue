@@ -34,13 +34,14 @@ export default {
   name: 'CoursePrice',
   serviceInject() {
     return {
-      listService: ListService,
-      editService: EditService
+      listService: ListService
     }
   },
   rxState() {
+    console.log(this.listService)
     return {
-      info: this.editService.info$
+      priceGradient: this.listService.priceGradient$,
+      dataSource: this.listService.dataSource$
     }
   },
   data() {
@@ -51,7 +52,6 @@ export default {
       defaultValue: -1,
       priceSetting: 1,
       priceModel: 1,
-      dataSource: [],
       priceList: [],
       columnsPricesShop,
       show: false
@@ -64,9 +64,6 @@ export default {
     }
   },
   computed: {
-    priceGradient() {
-      return this.info.price_gradient
-    },
     filterColums() {
       const columns = columnsPricesShop
       return columns.filter(item => {
@@ -76,7 +73,7 @@ export default {
   },
   methods: {
     onOk() {
-      this.$modalRouter.push({ name: 'course-price-setting-shop-update', props: { priceList: this.priceGradient } })
+      this.$modalRouter.push({ name: 'course-price-setting-shop-update', props: { id: this.course.course_id } })
     },
     onChangeShopName(val) {
       this.dataSource = val === -1 ? cloneDeep(this.prices) : this.prices.filter(item => item.shop_id === val)
@@ -107,30 +104,14 @@ export default {
         }), isEqual)]
       }
     },
-    getShops() {
+    getCoursePriceList() {
       this.listService.getCoursePriceList(this.course.course_id).subscribe(state => {
-        console.log(state)
-        this.prices = state.prices.map(item => {
-          let sell_prices = state.sale_model === 2 ? item.sell_price : `${item.min_sell_price} ~ ${item.max_sell_price}元`
-          let sell_range = `${item.min_sale} ~ ${item.max_sale}节`
-          return {
-            sell_prices,
-            sell_range,
-            ...item
-          }
-        })
-        this.priceList = cloneDeep(state.prices)
-        this.dataSource = cloneDeep(this.prices)
         this.initOptions(state)
       })
-    },
-    getCourseEdit() {
-      this.editService.getCourseEdit(this.course.course_id).subscribe()
     }
   },
   mounted() {
-    this.getShops()
-    this.getCourseEdit()
+    this.getCoursePriceList()
   }
 }
 </script>

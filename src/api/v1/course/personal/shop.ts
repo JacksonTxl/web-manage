@@ -60,6 +60,12 @@ export class ShopPersonalCourseApi extends Api {
     return this.http.get(`/v1/course/personal/shop/price/${id}`)
   }
   /**
+   * 设置课程定价
+   */
+  settingCoursePrice(params: any) {
+    return this.http.put(`/v1/course/personal/shop/price/edit/${params.id}`, { params: params.params })
+  }
+  /**
    * 会员名称检索
    */
   getMemberList(member: string) {

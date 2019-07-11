@@ -11,13 +11,24 @@
 </template>
 
 <script>
+import { ListService } from '../../pages/shop/product/course/manage/personal/list.service'
 import SetPrice from '@/views/fragments/course/set-price'
 export default {
   name: 'PriceSettingShopUpdate',
+  serviceInject() {
+    return {
+      listService: ListService
+    }
+  },
+  rxState() {
+    return {
+      priceList: this.listService.priceGradient$
+    }
+  },
   props: {
-    priceList: {
-      type: Array,
-      default: () => []
+    id: {
+      type: number,
+      default: -1
     }
   },
   data() {
@@ -31,7 +42,7 @@ export default {
   },
   methods: {
     onOk() {
-      // this.
+      this.listService.settingCoursePrice({ id: this.id, params: this.priceGradient }).subscribe()
     },
     onPriceGradientChange(val) {
       this.priceGradient = val

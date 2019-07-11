@@ -94,14 +94,16 @@ export default {
       this.loginType = type
     },
     onClickBack() {
-      console.log('sss')
       this.loginType = 'user'
     },
     onLogin(values) {
       this.loginService.loginAccount(values).subscribe(res => {
         console.log(res)
-        this.$router.push('/')
-        this.userService.reload()
+        if (res.have_phone) {
+          this.$router.push('/')
+        } else {
+          // 去绑定手机
+        }
       })
     },
     // 切换登录方式
