@@ -41,7 +41,7 @@ export default {
       show: false,
       coachIds: [],
       keyword: '',
-      size: 10,
+      size: 50,
       list: []
     }
   },
