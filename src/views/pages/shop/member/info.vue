@@ -13,11 +13,11 @@
                 >
                 <span class="img-describe">正式会员</span>
               </div>
-              <!-- <div class="input-face">
+              <div class="input-face">
                 <a href="javascript:;">
                   <a-icon type="plus"/>录入人脸
                 </a>
-              </div> -->
+              </div>
             </div>
 
             <div class="shop-member-info-title-pannel__info">
@@ -94,19 +94,19 @@
             </div>
             <div class="pannel-right__operation">
               <div class="pannel-right__num__box">
-                <span class="pannel-right__num">{{ info.valid_card }}</span>
+                <span class="pannel-right__num font-number">{{ info.valid_card }}</span>
                 <span class="pannel-right__num__margin">/</span>
                 <span>张</span>
                 <p>有效会员卡<st-help-tooltip id="TSXQ001" /></p>
               </div>
               <div class="pannel-right__num__box">
-                <span class="pannel-right__num">{{ info.valid_personal_class }}</span>
+                <span class="pannel-right__num font-number">{{ info.valid_personal_class }}</span>
                 <span class="pannel-right__num__margin">/</span>
                 <span>节</span>
                 <p>有效私教课<st-help-tooltip id="TSXQ002" /></p>
               </div>
               <div class="pannel-right__num__box">
-                <span class="pannel-right__num">{{ info.deposit_balance }}</span>
+                <span class="pannel-right__num font-number">{{ info.deposit_balance }}</span>
                 <span class="pannel-right__num__margin">/</span>
                 <span>元</span>
                 <p>储值卡余额<st-help-tooltip id="TSXQ003" /></p>
