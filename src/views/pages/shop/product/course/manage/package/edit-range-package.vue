@@ -31,20 +31,20 @@
                   <th></th>
                   <th class="rightline">课程类型</th>
                   <th class="pl-56">节数</th>
-                  <th>课时费</th>
-                  <th colspan="2">小计</th>
+                  <th class="pd-x16">课时费</th>
+                  <th class="pd-x16" colspan="2">小计</th>
                 </tr>
                 <tbody>
                   <tr class="bg-row-odd checkbox">
                     <td class="tg-c"><a-checkbox :defaultChecked="!!packageInfo.is_team" @change="teamCheckboxChange"/></td>
-                    <td class="rightline">团体课程</td>
+                    <td class="rightline white-nowrap">团体课程</td>
                     <td class="pr-32 pl-56">
-                      <st-input-number v-model="packageData.team_times" :disabled="packageData.is_team===0">
+                      <st-input-number style="min-width:100px" v-model="packageData.team_times" :disabled="packageData.is_team===0">
                         <template slot="addonAfter">节</template>
                       </st-input-number>
                     </td>
-                    <td class="pr-148">
-                      <st-input-number v-model="packageData.team_unit_price" :float="true" :disabled="packageData.is_team===0">
+                    <td class="pr-32">
+                      <st-input-number style="min-width:100px" v-model="packageData.team_unit_price" :float="true" :disabled="packageData.is_team===0">
                         <template slot="addonAfter">元</template>
                       </st-input-number>
                     </td>
@@ -129,7 +129,7 @@
                         <template slot="addonAfter">节</template>
                       </st-input-number>
                     </td>
-                    <td class="pr-148">
+                    <td class="pr-32">
                       <st-input-number v-model="packageData.personal_unit_price" :float="true" :disabled="packageData.is_personal===0">
                         <template slot="addonAfter">元</template>
                       </st-input-number>

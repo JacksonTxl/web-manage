@@ -75,25 +75,25 @@
                   <td>
                     <!-- 教练谈单模式 价格为区间 -->
                     <div v-if="saleModel === 1">
-                      <a-input-number
-                        :min="0"
+                      <st-input-number
                         class="page-set-sell-price__input"
                         v-model="priceGradientRecord.prices[index].min_sell_price"
+                        :float="true"
                       />
                       <span class="page-set-sell-price__label">元/节</span>~
-                      <a-input-number
-                        :min="0"
+                      <st-input-number
                         class="page-set-sell-price__input"
                         v-model="priceGradientRecord.prices[index].max_sell_price"
+                        :float="true"
                       />
                       <span class="page-set-sell-price__label">元/节</span>
                     </div>
                     <!-- 统一标价模式 价格为固定值 -->
                     <div v-if="saleModel === 2">
-                      <a-input-number
-                        :min="0"
+                      <st-input-number
                         class="page-set-sell-price__input"
                         v-model="priceGradientRecord.prices[index].sell_price"
+                        :float="true"
                       />
                       <span class="page-set-sell-price__label">元/节</span>
                     </div>
@@ -235,7 +235,6 @@ export default {
       this.priceGradient.unshift(newRecord)
     },
     delRecord(key) {
-      console.log('del', key)
       let { priceGradient } = this
       remove(priceGradient, (item, index) => {
         return index === key
@@ -268,7 +267,6 @@ export default {
         for (let j = 0; j < prices.length; j++) {
           const price = prices[j]
           for (let k in price) {
-            console.log(k)
             // if (price[k] === undefined || price[k] === '') {
             //   retIn = true
             // }
@@ -293,14 +291,14 @@ export default {
           delete price.serviceFee
           delete price.priceGradient
           delete price.price
-          if (this.saleModel === 1) {
-            // 教练谈单模式，没有固定价格
-            price.sell_price = 0
-          } else {
-            // 统一标价模式下，没有价格梯度，传0
-            price.min_sell_price = 0
-            price.max_sell_price = 0
-          }
+          // if (this.saleModel === 1) {
+          //   // 教练谈单模式，没有固定价格
+          //   price.sell_price = 0
+          // } else {
+          //   // 统一标价模式下，没有价格梯度，传0
+          //   price.min_sell_price = 0
+          //   price.max_sell_price = 0
+          // }
           if (pricesLen === 1) {
             prices[0].max_sale = DEFAULT_MAX_NUM
           }

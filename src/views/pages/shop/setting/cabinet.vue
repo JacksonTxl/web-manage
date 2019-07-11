@@ -63,16 +63,14 @@
             >
               改价
             </st-button>
-            <a-popconfirm
+            <st-button
               v-if="auth.batchDel"
-              placement="bottom"
-              @confirm="onDelCabinet()"
+              icon="delete"
+              class="mg-l8 color-warning"
+              @click="onDelCabinet"
             >
-              <template slot="title">
-                删除该区域后，其区域下的储物柜会一起删除，<br/> 删除的区域不能恢复，是否继续?
-              </template>
-              <st-button icon="delete" class="mg-l8 color-warning">删除</st-button>
-            </a-popconfirm>
+              删除
+            </st-button>
           </span>
           <st-button
             v-if="auth.batchAdd"

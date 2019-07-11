@@ -581,8 +581,8 @@ export default {
           this.packageData.valid_time = values.valid_time
           this.packageData.frozen_days = values.frozen_days
           this.packageData.transfer_rate = values.transfer_rate
-          this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
-          this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
+          this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')}`
+          this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
           this.packageData.team_range = []
           this.teamCourseList.forEach(i => {
             this.packageData.team_range.push(i.course_id)
