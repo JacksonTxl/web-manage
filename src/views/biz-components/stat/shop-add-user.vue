@@ -48,11 +48,12 @@ export default {
         forceFit: true,
         // svg阴影比较符合预期
         renderer: 'svg',
-        padding: [16, 16, 32, 16],
+        padding: [16, 16, 32, 20],
         height: this.height
       })
       this.chart.source(this.dv, {
         date: {
+          tickCount: 10,
           range: [0, 1]
         },
         value: {
@@ -67,6 +68,10 @@ export default {
           textStyle: {
             fill: '#9BACB9'
           }
+        },
+        tickLine: {
+          lineWidth: 0,
+          length: 0
         }
       })
       this.chart.axis('value', {
