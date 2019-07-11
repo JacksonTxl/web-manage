@@ -30,7 +30,7 @@
                 ></a-input>
               </st-form-item>
               <st-form-item label="面额" required>
-                <st-input-number :disabled="isEditMode" placeholder="请输入面额" :class="basic('input')" v-decorator="[
+                <st-input-number :disabled="isEditMode" style="top:0;" placeholder="请输入面额" :class="basic('input')" v-decorator="[
                   'price',
                   {rules: [{ validator: price_validator}]}]">
                   <template slot="addonAfter">元</template>
@@ -86,7 +86,7 @@
                 </a-radio-group>
               </st-form-item>
               <st-form-item  label="发放数量" required>
-                <st-input-number :class="basic('input')" placeholder="请输入数量" :min="+info.number" v-decorator="[
+                <st-input-number :class="basic('input')" style="top:0;" placeholder="请输入数量" :min="+info.number" v-decorator="[
                   'number',
                   {rules: [{ validator: number_validator}]}]">
                   <template slot="addonAfter">张</template>
@@ -256,9 +256,13 @@ export default {
     },
     // 满多少使用
     full_price_validator(rule, value, callback) {
+      let couponPirce = this.form.getFieldValue('price') || 0
       if (!value && this.form.getFieldValue('use_type') === '2') {
         // eslint-disable-next-line
         callback('请填写使用条件')
+      } else if (couponPirce > value) {
+        // eslint-disable-next-line
+        callback('满减门槛不能低于优惠券面额')
       } else {
         // eslint-disable-next-line
         callback()
