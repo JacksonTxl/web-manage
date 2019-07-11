@@ -1,60 +1,43 @@
 import { RoleApi } from '@/api/v1/staff/role'
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { pluck, tap } from 'rxjs/operators'
-import { Store } from '@/services/store'
+import { State, Effect } from 'rx-state'
+import { tap } from 'rxjs/operators'
 import { ShopStaffApi } from '@/api/v1/staff/staff'
 import { StaffApi, AddStaffBasicInfoParams } from '@/api/v1/staff'
 import { forkJoin } from 'rxjs'
 
-interface AddState {
-  // basicInfo: Object,
-  codeList: Object,
-  roleList: object[],
-  department: []
-}
 @Injectable()
-export class AddService extends Store<AddState> {
-  state$: State<AddState>
-  // basicInfo$: Computed<Object>
-  codeList$: Computed<Object>
-  roleList$: Computed<object[]>
-  department$: Computed<object[]>
-  constructor(protected shopStaffApi: ShopStaffApi, protected staffApi: StaffApi, private roleApi: RoleApi) {
-    super()
-    this.state$ = new State({
-      codeList: {},
-      roleList: [],
-      department: []
-    })
-    this.codeList$ = new Computed(this.state$.pipe(pluck('codeList')))
-    this.roleList$ = new Computed(this.state$.pipe(pluck('roleList')))
-    this.department$ = new Computed(this.state$.pipe(pluck('department')))
-  }
+export class AddService implements RouteGuard {
+  codeList$ = new State([])
+  roleList$ = new State([])
+  department$ = new State([])
+  constructor(protected shopStaffApi: ShopStaffApi, protected staffApi: StaffApi, private roleApi: RoleApi) {}
   @Effect()
   // 获取手机号区域
   getCountryCodes() {
     return this.staffApi.getCountryCodes().pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.codeList = res.code_list
+        this.codeList$.commit(() => {
+          let code_list = res.code_list
+          if (code_list.length) return code_list
+          code_list.push({
+            phone_code: res.default_code,
+            code_id: res.default_code_id
+          })
+          return code_list
         })
       })
     )
   }
   getNormalList() {
     return this.roleApi.getNormalList().pipe(tap(res => {
-      this.state$.commit(state => {
-        state.roleList = res.roles
-      })
+      this.roleList$.commit(() => res.roles)
     }))
   }
   getStaffDepartment() {
     return this.shopStaffApi.getStaffDepartmentList().pipe(
       tap(res => {
-        this.state$.commit(state => {
-          state.department = res.department
-        })
+        this.department$.commit(() => res.department)
       })
     )
   }
@@ -64,9 +47,7 @@ export class AddService extends Store<AddState> {
   init() {
     return forkJoin(this.getNormalList(), this.getCountryCodes(), this.getStaffDepartment())
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.init().subscribe(() => {
-      next()
-    })
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    return this.init()
   }
 }

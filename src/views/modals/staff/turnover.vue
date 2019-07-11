@@ -1,13 +1,14 @@
 <template>
-  <st-modal class="modal-staff-turnover" title='员工离职'
+  <st-modal title='员工离职'
     @ok='onSubmit'
     :okText="!operate? '知道了':'保存'"
     size="small"
+    wrapClassName="modal-staff-turnover"
     :confirmLoading="loading.putStaffBrandQuit"
     v-model='show'>
     <section>
       <staff-info :staff="staff"></staff-info>
-      <staff-modal-tips :list="list" :canNotDelete="!operate"></staff-modal-tips>
+      <staff-modal-tips :list="list" :canNotDelete="!operate" v-if="list && list.length" class="modal-tips"></staff-modal-tips>
       <st-form class="modal-staff-turnover__form" labelWidth='60px'>
         <st-form-item  labelWidth='60px' label="离职日期" class="mg-b0">
           <a-date-picker @change="onDateChange"/>

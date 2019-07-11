@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="冻结" @ok="save" :footer="null" v-model="show" size="small">
+  <st-modal title="冻结" :footer="null" v-model="show" size="small">
     <st-form :form="form" labelWidth="80px">
       <a-row :gutter="8">
         <a-col :lg="24">
@@ -41,10 +41,15 @@
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item label="冻结日期">
-            <a-range-picker
+            <!-- <a-range-picker
               format="YYYY-MM-DD"
               @change="onChangeDatepicker"
               v-decorator="basicInfoRuleList.to_shop"
+            /> -->
+            <a-date-picker
+              format="YYYY-MM-DD"
+              placeholder="冻结日期"
+              v-decorator="basicInfoRuleList.end_time"
             />
             <br>
           </st-form-item>
@@ -85,7 +90,7 @@
           </st-form-item>
         </a-col>
       </a-row>
-      <a-row :gutter="8" class="mg-t8" v-if="isTransferFlag">
+      <!-- <a-row :gutter="8" class="mg-t8" v-if="isTransferFlag">
         <a-col :lg="24">
           <st-form-item label="收款人员" required>
             <a-select
@@ -110,7 +115,7 @@
             </a-select>
           </st-form-item>
         </a-col>
-      </a-row>
+      </a-row> -->
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item class="mg-l24" style="text-align:right;" labelOffset>
@@ -125,6 +130,7 @@
 <script>
 import { FrozenService } from './frozen.service'
 import { UserService } from '@/services/user.service'
+import moment from 'moment'
 export default {
   serviceInject() {
     return {
@@ -172,8 +178,6 @@ export default {
       basicInfoRuleList: {
         id: ['id'],
         course_id: ['course_id'],
-        frozen_start_time: ['frozen_start_time'],
-        frozen_end_time: ['frozen_end_time'],
         poundage: ['poundage'],
         pay_method: ['pay_method', {
           rules: [
@@ -191,8 +195,8 @@ export default {
             }
           ]
         }],
-        to_shop: [
-          'to_shop',
+        end_time: [
+          'end_time',
           {
             rules: [
               {
@@ -235,6 +239,7 @@ export default {
     this.getMemberBuy()
   },
   methods: {
+    moment,
     // 搜索员工
     onSearch(data) {
       this.memberSearchText = data
@@ -269,14 +274,14 @@ export default {
             } else {
               this.selectedRowsHelp = ''
             }
-            values.course_id = this.selectedRows.map(item => {
-              return item.id
+            values.product = this.selectedRows.map(item => {
+              return {
+                product_type: item.type,
+                product_id: item.id
+              }
             })
             values.id = this.record.member_id
-            values.frozen_start_time = this.dateString[0]
-            values.frozen_end_time = this.dateString[1]
-            delete values.to_shop
-
+            values.end_time = moment(values.end_time).format('YYYY-MM-DD HH:mm')
             this.getMemberTransfer(values)
           }
         }

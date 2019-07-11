@@ -12,7 +12,16 @@
           <st-form-item label="API密钥" required>
             <a-input placeholder="请输入" v-decorator="payConfig.key" />
           </st-form-item>
+          <st-form-item label="证书">
+            <pem-upload-component @success="uploadPemSuccess"></pem-upload-component>
+            <a-input v-show="false" v-decorator="payConfig.cert_pem" />
+          </st-form-item>
+          <st-form-item label="证书秘钥" >
+            <pem-upload-component @success="uploadSecretKeySuccess"></pem-upload-component>
+            <a-input v-show="false"  v-decorator="payConfig.key_pem" />
+          </st-form-item>
           <st-form-item labelFix>
+            <st-button @click="back" :class="pay('back')">上一步</st-button>
             <st-button type="primary" @click="save">提交</st-button>
           </st-form-item>
         </st-form>
@@ -25,6 +34,7 @@
 import {
   PayConfigService
 } from './pay-config.service'
+import PemUploadComponent from './components#/pem-upload.component'
 export default {
   bem: {
     pay: 'brand-setting-mina-pay-config'
@@ -33,6 +43,9 @@ export default {
     return {
       payConfigService: PayConfigService
     }
+  },
+  components: {
+    PemUploadComponent
   },
   data() {
     return {
@@ -61,11 +74,23 @@ export default {
               message: '请填写API密钥'
             }]
           }
-        ]
+        ],
+        cert_pem: ['cert_pem'],
+        key_pem: ['key_pem']
       }
     }
   },
   methods: {
+    uploadPemSuccess(key) {
+      this.form.setFieldsValue({
+        cert_pem: key
+      })
+    },
+    uploadSecretKeySuccess(key) {
+      this.form.setFieldsValue({
+        key_pem: key
+      })
+    },
     save() {
       let self = this
       this.form.validateFields((err, values) => {
@@ -77,6 +102,9 @@ export default {
           })
         }
       })
+    },
+    back() {
+      this.$router.back()
     }
   }
 }

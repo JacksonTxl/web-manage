@@ -22,7 +22,7 @@
 
             <div class="shop-member-info-title-pannel__info">
               <st-t2>{{ info.member_name }}
-                <st-icon  :type="info.sex=== 1? 'female':'man'" :style="info.sex=== 1? 'color:#FF5E41':'color:#3F66F6'"/>
+                <st-icon  :type="info.sex=== 1? 'female':'male'" :style="info.sex=== 1? 'color:#FF5E41':'color:#3F66F6'"/>
               </st-t2>
               <div class="shop-member-info-title-pannel__info__phone">
                 <div>
@@ -80,7 +80,7 @@
                     <a v-modal-link="{ name: 'shop-transfer-shop',props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">转店</a>
                   </a-menu-item>
                   <a-menu-item key="5" v-if="auth['shop:member:member|frozen']">
-                    <a v-modal-link="{ name: 'shop-frozen'}">冻结用户</a>
+                    <a v-modal-link="{ name: 'shop-frozen', props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">冻结用户</a>
                   </a-menu-item>
                   <a-menu-item key="6" v-if="auth['shop:member:member|rebind_card']">
                     <a v-modal-link="{ name: 'shop-missing-card',props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">重绑实体卡</a>

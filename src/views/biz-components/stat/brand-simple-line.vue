@@ -56,7 +56,7 @@ export default {
         forceFit: true,
         height: this.height,
         renderer: 'svg',
-        padding: [2, 2, 0, 2]
+        padding: [2, 2, 5, 2]
       })
       const maxValue = this.dv.max('value')
       this.chart.source(this.dv, {
@@ -73,6 +73,13 @@ export default {
             stroke: '#E6E9EF',
             lineWidth: 1
           }
+        },
+        line: {
+          lineWidth: 0
+        },
+        tickLine: {
+          lineWidth: 0,
+          length: 0
         }
       })
       this.chart.scale('name', {
