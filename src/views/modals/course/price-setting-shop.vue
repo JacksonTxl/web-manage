@@ -73,6 +73,7 @@ export default {
   },
   methods: {
     onOk() {
+      this.show = false
       this.$modalRouter.push({ name: 'course-price-setting-shop-update', props: { id: this.course.course_id } })
     },
     onChangeShopName(val) {

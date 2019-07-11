@@ -98,10 +98,12 @@ export default {
     onLogin(values) {
       this.loginService.loginAccount(values).subscribe(res => {
         console.log(res)
+        this.userService.reload()
         if (res.have_phone) {
           this.$router.push('/')
         } else {
           // 去绑定手机
+          this.$router.push('/')
         }
       })
     },
