@@ -106,7 +106,7 @@ export class AuthService extends Store<AuthState> {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init().pipe(
       tap(() => {
-        this.nprogress.inc()
+        this.nprogress.next('权限服务加载完毕')
       })
     )
   }

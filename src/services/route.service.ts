@@ -1,6 +1,7 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { Computed, State } from 'rx-state'
 import { pluck } from 'rxjs/operators'
+import { NProgressService } from './nprogress.service'
 
 /**
  * 根据路由参数生成query$
@@ -9,12 +10,13 @@ import { pluck } from 'rxjs/operators'
 export class RouteService implements RouteGuard {
   query$: State<any>
   layout$: State<string>
-  constructor() {
+  constructor(private nProgressService: NProgressService) {
     this.query$ = new State({})
     this.layout$ = new State('')
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
     this.query$.commit(() => to.meta.query)
+    this.nProgressService.next('页面数据加载中...')
     next()
   }
   /**

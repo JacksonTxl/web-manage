@@ -1,5 +1,7 @@
 <template>
-  <component :is="layoutComponent" class="layout-skeleton"></component>
+  <div>
+    <component :is="layoutComponent" class="layout-skeleton"></component>
+  </div>
 </template>
 
 <script>

@@ -6,6 +6,23 @@
       <div class="inner two"></div>
       <div class="inner three"></div>
     </div>
-    <p class="slogan">“世界属于三体”</p>
+    <p class="slogan">{{text}}</p>
   </div>
 </template>
+
+<script>
+import { NProgressService } from '@/services/nprogress.service'
+export default {
+  serviceInject() {
+    return {
+      nProgressService: NProgressService
+    }
+  },
+  rxState() {
+    const { text$ } = this.nProgressService
+    return {
+      text: text$
+    }
+  }
+}
+</script>
