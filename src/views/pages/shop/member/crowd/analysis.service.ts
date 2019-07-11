@@ -20,7 +20,6 @@ export class AnalysisService extends Store<AnalysisInfoState> {
     this.analysisInfo$ = new Computed(this.state$.pipe(pluck('analysisInfo')))
   }
   SET_ANALYSIS_INFO(analysisInfo: AnalysisInfoState) {
-    console.log(analysisInfo)
     this.state$.commit(state => {
       state.analysisInfo = analysisInfo
     })

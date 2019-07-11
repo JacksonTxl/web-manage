@@ -3,9 +3,9 @@
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">选择门店</span>
-    <template v-for="(tag,index) in value.getData.shop">
+    <template v-for="(tag,index) in tags">
       <a-tooltip :key="index" :title="tag.name">
-        <a-tag :key="index" :closable="true" :afterClose="() => handleClose(tag,index)">{{tag.name}}</a-tag>
+        <a-tag :closable="true" :afterClose="() => handleClose(tag,index)">{{tag.name}}</a-tag>
       </a-tooltip>
     </template>
     <a-tag style="background: #fff; borderStyle: dashed;">
@@ -27,6 +27,7 @@
 <script>
 import { AffiliatedStoreService } from './affiliated-store.service'
 import titleInfo from './title-info.vue'
+import { cloneDeep } from 'lodash-es'
 export default {
   serviceInject() {
     return {
@@ -46,12 +47,12 @@ export default {
   data() {
     return {
       shopList: [],
+      tags: [],
       titleData: {
         title: '所属门店',
         info: '选择所属门店在以下范围内的用户'
       },
-      radioValue: '',
-      inputValue: ''
+      radioValue: ''
     }
   },
   created() {
@@ -59,20 +60,29 @@ export default {
       this.shopList = res.list.map(item => {
         return {
           name: item.shop_name,
-          value: item.id
+          value: item.shop_id
         }
       })
     })
+    if (this.value.getData.shop.length > 0) {
+      this.tags = cloneDeep(this.value.getData.shop)
+    }
   },
   methods: {
     dropdownFunc(item) {
       this.value.getData.shop.push(item)
+      this.tags.push(item)
     },
     onChange(date, dateString) {
       this.$emit('dataChangge', this.value)
     },
-    handleClose(removedTag, index) {
-      this.value.getData.shop.splice(index, 1)
+    handleClose(item, index) {
+      console.log(this.value.getData.shop)
+      this.value.getData.shop.forEach((element, i) => {
+        if (element.value === item.value) {
+          this.value.getData.shop.splice(i, 1)
+        }
+      })
     }
   },
   mounted() {}

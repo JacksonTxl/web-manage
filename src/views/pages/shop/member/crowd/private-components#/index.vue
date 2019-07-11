@@ -42,12 +42,16 @@
             tag="span"
             :to="{name:'shop-member-crowd-analysis', query:{urlid:0,id:value.new_register_member.id}}"
           >人群分析</router-link>
-
-          <span
-            v-if="auth.export"
-            class="shop-member-crowd-index-box__btn-rq"
-            @click="exportFunc(value.new_register_member.id)"
-          >导出</span>
+          <a-tooltip>
+            <template slot='title'>
+              功能暂未开放
+            </template>
+            <span
+              v-if="auth.export"
+              class="shop-member-crowd-index-box__btn-rq"
+              @click="exportFunc(value.new_register_member.id)"
+            >导出</span>
+          </a-tooltip>
         </div>
       </div>
       <div class="shop-member-crowd-index-box-title" style="margin:0 12px;">
@@ -90,12 +94,17 @@
             tag="span"
             :to="{name:'shop-member-crowd-analysis', query:{urlid:1,id:value.person_course_expiring_crowd.id}}"
           >人群分析</router-link>
+          <a-tooltip>
+            <template slot='title'>
+              功能暂未开放
+            </template>
+            <span
+              v-if="auth.export"
+              class="shop-member-crowd-index-box__btn-rq"
+              @click="exportFunc(value.person_course_expiring_crowd.id)"
+            >导出</span>
+          </a-tooltip>
 
-          <span
-            v-if="auth.export"
-            class="shop-member-crowd-index-box__btn-rq"
-            @click="exportFunc(value.person_course_expiring_crowd.id)"
-          >导出</span>
         </div>
       </div>
       <div class="shop-member-crowd-index-box-title">
@@ -138,11 +147,16 @@
             tag="span"
             :to="{name:'shop-member-crowd-analysis', query:{urlid:2,id:value.expiring_crowd.id}}"
           >人群分析</router-link>
-          <span
-            v-if="auth.export"
-            class="shop-member-crowd-index-box__btn-rq"
-            @click="exportFunc(value.expiring_crowd.id)"
-          >导出</span>
+          <a-tooltip>
+            <template slot='title'>
+              功能暂未开放
+            </template>
+            <span
+              v-if="auth.export"
+              class="shop-member-crowd-index-box__btn-rq"
+              @click="exportFunc(value.expiring_crowd.id)"
+            >导出</span>
+          </a-tooltip>
         </div>
       </div>
     </div>
@@ -183,7 +197,7 @@ export default {
       this.messageService.warning({ content: data })
     },
     exportFunc(id) {
-      this.aService.getListInfo(id).subscribe()
+      // this.aService.getListInfo(id).subscribe()
     }
   },
   mounted() {}

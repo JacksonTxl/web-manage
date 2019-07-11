@@ -33,7 +33,12 @@
       <div>
         <div>
           <h2>
-            {{brandInfo.brand_name}}
+            <a-input
+              v-if="isEdit"
+              v-model="brandInfo.brand_name"
+              maxlength="20"
+            />
+            <span v-else>{{brandInfo.brand_name}}</span>
             <span v-if="brandInfo.is_authentic" :class="b('certify-status')">
               <i class="st-icon-certified"></i>
               <span :class="b('certify-des')">已认证</span>
@@ -83,6 +88,7 @@ import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
 import { UserService } from '@/services/user.service'
 import { brandLogoFilter } from '@/filters/resource.filters'
+import { PatternService } from '@/services/pattern.service'
 export default {
   bem: {
     b: 'page-setting-brand'
@@ -92,7 +98,8 @@ export default {
       brandService: BrandService,
       routeService: RouteService,
       messageService: MessageService,
-      userService: UserService
+      userService: UserService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -132,10 +139,15 @@ export default {
       })
     },
     onSave() {
+      if (!this.inputCheck()) {
+        return
+      }
+      const info = this.brandInfo
       const params = {
-        album_id: this.brandInfo.album_id,
+        brand_name: info.brand_name,
+        album_id: info.album_id,
         image: this.image,
-        description: this.brandInfo.description
+        description: info.description
       }
       this.brandService.update(params).subscribe(() => {
         this.messageService.success({
@@ -155,6 +167,26 @@ export default {
     onImgChange(list) {
       console.log('changed', list)
       this.image = list[0]
+    },
+    inputCheck() {
+      const info = this.brandInfo
+      const brandName = info.brand_name
+      const description = info.description
+      const { pattern } = this
+      if (!pattern.CN_EN_NUM_SPACE('1-20').test(brandName)) {
+        this.tip('品牌名称支持20字以内的中英文和数字')
+        return false
+      }
+      if (!pattern.CN_EN_NUM_SPACE('1-300').test(description)) {
+        this.tip('品牌介绍支持300字以内的中英文和数字')
+        return false
+      }
+      return true
+    },
+    tip(msg) {
+      this.messageService.error({
+        content: msg
+      })
     }
   }
 }

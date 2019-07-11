@@ -26,8 +26,7 @@ export default {
       titleData: {
         title: '注册时间',
         info: '选择自然日内，注册的用户'
-      },
-      radioValue: ''
+      }
     }
   },
   methods: {
@@ -35,10 +34,10 @@ export default {
       this.value.selectionData = item
     },
     onChange(date, dateString) {
-      console.log(date, dateString)
       this.$emit('dataChangge', this.value)
     }
   },
-  mounted() {}
+  mounted() {
+  }
 }
 </script>

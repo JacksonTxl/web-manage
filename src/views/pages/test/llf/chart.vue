@@ -35,8 +35,9 @@
     </div>
 
     <div>上课分析多线图</div>
-    <div style="width:500px" class="d-ib">
-      <shop-course-line v-if="show" :data="data5"></shop-course-line>
+
+    <div style="width:550px">
+      <shop-course-facet-bar :data="dataFacet"></shop-course-facet-bar>
     </div>
     <div>售课消课柱状图</div>
     <div style="width:500px" class="d-ib">
@@ -74,10 +75,10 @@ import BrandUserAvgBar from '@/views/biz-components/stat/brand-user-avg-bar'
 
 import ShopRevenueRing from '@/views/biz-components/stat/shop-revenue-ring'
 import ShopRevenueLine from '@/views/biz-components/stat/shop-revenue-line'
-import ShopCourseLine from '@/views/biz-components/stat/shop-course-line'
 import ShopCourseBar from '@/views/biz-components/stat/shop-course-bar'
 import ShopEntryBar from '@/views/biz-components/stat/shop-entry-bar'
 import ShopEntryLine from '@/views/biz-components/stat/shop-entry-line'
+import ShopCourseFacetBar from '@/views/biz-components/stat/shop-course-facet-bar'
 import CrowdLine from '@/views/biz-components/stat/crowd-line'
 
 import FrontSimpleArea from '@/views/biz-components/stat/front-simple-area'
@@ -92,7 +93,6 @@ export default {
     BrandUserAvgBar,
     ShopRevenueRing,
     ShopRevenueLine,
-    ShopCourseLine,
     ShopCourseBar,
     ShopEntryBar,
     ShopEntryLine,
@@ -101,7 +101,8 @@ export default {
     CrowdLine,
     BrandSimpleLine,
     FrontSimpleArea,
-    BrandSimpleBar
+    BrandSimpleBar,
+    ShopCourseFacetBar
   },
   data() {
     return {
@@ -121,6 +122,7 @@ export default {
       data9: {},
       data10: [],
       data11: [],
+      dataFacet: [],
       show: true
     }
   },
@@ -148,6 +150,23 @@ export default {
         { name: '3', value: parseInt(10 * Math.random() * 10) },
         { name: '4', value: parseInt(10 * Math.random() * 10) },
         { name: '5', value: parseInt(10 * Math.random() * 10) }
+      ]
+      this.dataFacet = [
+        {
+          group: '总销课',
+          团体课: 25,
+          私教课: 16
+        },
+        {
+          group: '未销课',
+          团体课: 16,
+          私教课: 10
+        },
+        {
+          group: '已销课',
+          团体课: 12,
+          私教课: 1
+        }
       ]
       this.dataRA = [
         {

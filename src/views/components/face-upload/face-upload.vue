@@ -24,7 +24,7 @@
     >
       <div class="container">
         <a-spin :spinning="isLoading" :tip="progress + '%'">
-          <a-icon type="plus" />
+          <a-icon type="plus-circle" theme="filled" :style="{fontSize:'36px', color: '#9BACB9' }" />
           <div class="placeholder">{{placeholder}}</div>
         </a-spin>
       </div>
