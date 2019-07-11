@@ -26,6 +26,24 @@
     box-shadow:0px 0px 20px 0px rgba(196,193,219,0.2);
     border-radius:4px;
     display: flex;
+    position: relative;
+    .page-switch-login-type {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 72px;
+      height: 72px;
+      background-image: url('https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/icon-login-type-switch.png');
+      background-position: 0 -72px;
+      background-size: 144px 144px;
+      background-repeat: no-repeat;  
+      &.qrcode-login {
+        background-position-x: -72px;
+      }
+      &:hover {
+        background-position-y: 0;
+      }
+    }
   }
   .lf{
     position: relative;
