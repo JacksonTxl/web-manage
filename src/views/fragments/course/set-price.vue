@@ -290,14 +290,15 @@ export default {
           delete price.serviceFee
           delete price.priceGradient
           delete price.price
-          // if (this.saleModel === 1) {
-          //   // 教练谈单模式，没有固定价格
-          //   price.sell_price = 0
-          // } else {
-          //   // 统一标价模式下，没有价格梯度，传0
-          //   price.min_sell_price = 0
-          //   price.max_sell_price = 0
-          // }
+          if (this.saleModel === 1) {
+            // 教练谈单模式，没有固定价格
+            price.sell_price = 0
+          }
+          if (this.saleModel === 2) {
+            // 统一标价模式下，没有价格梯度，传0
+            price.min_sell_price = 0
+            price.max_sell_price = 0
+          }
           if (pricesLen === 1) {
             prices[0].max_sale = DEFAULT_MAX_NUM
           }
