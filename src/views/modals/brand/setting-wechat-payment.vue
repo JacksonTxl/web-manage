@@ -55,6 +55,9 @@ export default {
       this.show = false
     },
     save() {
+      if (!this.inputCheck()) {
+        return
+      }
       this.settingService.update({ ...this.info }).subscribe(
         () => {
           this.messageService.success({
@@ -64,6 +67,30 @@ export default {
           this.$emit('change')
         }
       )
+    },
+    inputCheck() {
+      const { info } = this
+      const name = info.wechat_account_name
+      const num = info.wechat_account_num
+      const api = info.wechat_api_key
+      if (!name.length) {
+        this.tip('请输入微信商户名称')
+        return false
+      }
+      if (!num.length) {
+        this.tip('请输入微信商户号')
+        return false
+      }
+      if (!api.length) {
+        this.tip('请输入API密钥')
+        return false
+      }
+      return true
+    },
+    tip(msg) {
+      this.messageService.error({
+        content: msg
+      })
     }
   }
 }
