@@ -1,23 +1,18 @@
 export const shopColumns = [{
   title: '省',
-  dataIndex: 'name',
-  sorter: true,
+  dataIndex: 'province_name',
   width: '20%',
   scopedSlots: { customRender: 'name' }
 }, {
   title: '市',
-  dataIndex: 'gender',
-  filters: [
-    { text: 'Male', value: 'male' },
-    { text: 'Female', value: 'female' }
-  ],
+  dataIndex: 'city_name',
   width: '20%'
 }, {
   title: '区',
-  dataIndex: 'email'
+  dataIndex: 'district_name'
 }, {
   title: '门店名称',
-  dataIndex: 'email'
+  dataIndex: 'shop_name'
 }]
 export const coachColumns = [{
   title: '教练',

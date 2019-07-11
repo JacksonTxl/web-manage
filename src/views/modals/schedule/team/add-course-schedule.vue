@@ -31,14 +31,15 @@
         :options="courtOptions"
         :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
         v-decorator="[
-          'court_id',
-          // {rules: [{ required: true, message: 'Please input your note!' }]}
+          'court_id'
         ]"/>
       </st-form-item>
       <st-form-item label="人数" required>
         <a-input-search v-decorator="[
           'limit_num',
-          {rules: [{ required: true, message: '请填写人数' }]}
+          {rules: [{ required: true, message: '请填写人数' }, {
+              validator: validateLimitNum,
+            }]}
         ]"> <a-button slot="enterButton">人</a-button> </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required >
@@ -119,6 +120,16 @@ export default {
           })
         }
       })
+    },
+    validateLimitNum(rule, value, callback) {
+      const form = this.form
+      if (value && value > 999) {
+        // eslint-disable-next-line
+        callback(`上课人数不能超过999个`)
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
     },
     onClick() {
       this.show = false

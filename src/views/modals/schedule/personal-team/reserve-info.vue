@@ -94,9 +94,8 @@
       </tbody>
     </st-form-table>
     <div class="mg-t24 ta-r">
-      {{auth}}
       <a-popconfirm
-        v-if="auth.cancel"
+        v-if="infoAuth['shop:schedule:personal_team_course_schedule|del']"
         @confirm="cancelSchedule"
         okText="确认"
         cancelText="取消">
@@ -107,7 +106,7 @@
         <st-button>取消课程</st-button>
       </a-popconfirm>
       <st-button
-        v-if="auth.edit"
+        v-if="infoAuth['shop:schedule:personal_team_course_schedule|edit']"
         class="mg-l8"
         type="primary"
         @click="updateSchedule"
@@ -146,7 +145,8 @@ export default {
       memberOptions: commonService.memberOptions$,
       consumeOptions: commonService.consumeOptions$,
       reserveList: this.reserveService.reserveList$,
-      auth: this.reserveService.auth$
+      auth: this.reserveService.auth$,
+      infoAuth: this.reserveService.infoAuth$
     }
   },
   props: {
@@ -208,7 +208,6 @@ export default {
       }).subscribe()
     },
     onChangeConsumeType(val) {
-      console.log('onChangeConsumeType', val)
       const obj = JSON.parse(val)
       this.consumeType = obj.consume_type
       this.consumeId = obj.id

@@ -184,7 +184,6 @@ export default {
           item.course_fee = parseInt(item.course_fee)
           return item
         })
-      console.log(data)
       this.teamScheduleScheduleService.curd('addScheduleInBatch', data, () => { this.show = false })
     },
     handleChange(value, key, column) {
@@ -220,7 +219,6 @@ export default {
       data.show.course_id_show = this.getOptionName(data.course_id, this.courseOptions, 'course_name')
       data.show.coach_id_show = this.getOptionName(data.coach_id, this.coachOptions, 'staff_name')
       data.show.court_site_id_show = this.getCourtSiteName(data.court_site_id, this.courtOptions)
-      console.log(data)
       return data
     },
     getOptionName(id, options, name) {
