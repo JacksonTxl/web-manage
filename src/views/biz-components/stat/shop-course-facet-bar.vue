@@ -100,8 +100,8 @@ export default {
           view
             .interval()
             .position('group*value')
-            .tooltip('group*value', (g, v) => {
-              return { name: g, value: v + '节' }
+            .tooltip('type*value', (t, v) => {
+              return { name: t, value: v + '节' }
             })
             .color('type', [color])
             .size(24)
