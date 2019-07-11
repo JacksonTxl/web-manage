@@ -134,9 +134,9 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.getData()
-        // if (!this.inputCheck(priceGradient)) {
-        //   return
-        // }
+        if (!this.inputCheck()) {
+          return
+        }
         this.addService.setPrice(data).subscribe(this.onSaveSuccess)
       })
     },
@@ -163,24 +163,16 @@ export default {
       })
       return ret
     },
-    inputCheck(priceGradient) {
-      let ret = true
-      for (let i = 0; i < priceGradient.length; i++) {
-        let retIn = false
-        for (let j in priceGradient[i]) {
-          if (priceGradient[i][j] === undefined || priceGradient[i][j] === '') {
-            retIn = true
-          }
-        }
-        if (retIn) {
-          ret = false
+    inputCheck() {
+      if (this.singleReserve) {
+        if (!this.singlePrice.length) {
           this.messageService.error({
-            content: `第${i + 1}行课程定价输入有误`
+            content: '请输入单节预约价格'
           })
-          break
+          return
         }
       }
-      return ret
+      return true
     },
     setFieldsValue() {
       const info = this.info
