@@ -31,7 +31,7 @@ interface PutOptions {
 }
 @Injectable()
 export class OssService extends Api {
-  BUSINESS_TYPES = ['image', 'face']
+  BUSINESS_TYPES = ['image', 'face', 'file']
   typeSuffix = [
     {
       type: 'image/png',
