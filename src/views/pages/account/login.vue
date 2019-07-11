@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { UserService } from '../../../services/user.service'
+import { UserService } from '@/services/user.service'
 import { LoginService } from './login.service'
 import mobile from './login#/mobile'
 import user from './login#/user'
@@ -55,7 +55,8 @@ export default {
   name: 'Login',
   serviceInject() {
     return {
-      loginService: LoginService
+      loginService: LoginService,
+      userService: UserService
     }
   },
   data() {
@@ -100,6 +101,7 @@ export default {
       this.loginService.loginAccount(values).subscribe(res => {
         console.log(res)
         this.$router.push('/')
+        this.userService.reload()
       })
     },
     // 切换登录方式
