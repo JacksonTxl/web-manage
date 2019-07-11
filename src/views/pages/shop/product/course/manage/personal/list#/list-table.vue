@@ -98,13 +98,11 @@ export default {
       this.$emit('delete-course', record.course_id)
     },
     onCLickCoursePrice(record) {
-      if (record.sell_price.course_price === '-') {
-
-      } else if (record.sell_price.course_price === '-') {
-
+      if (record.sell_price.course_price === '设置定价') {
+        this.$modalRouter.push({ name: 'course-price-setting-shop-update', props: { id: record.course_id } })
+      } else {
+        this.$modalRouter.push({ name: 'course-price-setting-shop', props: { course: record } })
       }
-      let name = 'course-price-setting-shop'
-      this.$modalRouter.push({ name: 'course-price-setting-shop', props: { course: record } })
     },
     onConfirmSetAvailable(record) {
       this.$emit('set-available', record)

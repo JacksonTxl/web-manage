@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     onOk() {
-      this.listService.settingCoursePrice({ id: this.id, params: this.priceGradient }).subscribe(res => {
+      this.listService.settingCoursePrice({ id: this.id, params: { price_gradient: this.priceGradient } }).subscribe(res => {
         this.show = false
         this.$router.push({ force: true })
       })
