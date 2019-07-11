@@ -67,7 +67,7 @@ export default {
         container: this.$el,
         forceFit: true,
         height: this.height,
-        padding: [64, 20, 40, 24],
+        padding: 'auto',
         renderer: 'svg'
       })
       this.chart.source(this.dv, {
@@ -101,7 +101,7 @@ export default {
         }
       })
       this.chart.legend({
-        position: 'top',
+        position: 'top-right',
         marker: 'circle',
         offsetY: -24,
         textStyle: {

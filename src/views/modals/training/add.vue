@@ -11,7 +11,7 @@
         <a-row>
           <a-col :xs="22">
             <st-form-item label="训练目的" required>
-              <a-input placeholder="请输入训练目的" v-decorator="formRules.setting_name" maxlength="20">
+              <a-input placeholder="请输入训练目的" v-decorator="rules.settingName" maxlength="20">
               </a-input>
             </st-form-item>
           </a-col>
@@ -23,21 +23,15 @@
 <script>
 import { AddService } from './add.service'
 import { MessageService } from '@/services/message.service'
-const formRules = {
-  setting_name: [
-    'setting_name', {
-      rules: [{
-        required: true,
-        message: '请输入训练目的'
-      }]
-    }
-  ]
-}
+import { PatternService } from '@/services/pattern.service'
+import { rules } from './training.config'
+
 export default {
   serviceInject() {
     return {
       addService: AddService,
-      messageService: MessageService
+      messageService: MessageService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -47,12 +41,14 @@ export default {
   },
   data() {
     return {
-      show: true,
-      formRules
+      show: true
     }
   },
   created() {
     this.form = this.$form.createForm(this)
+  },
+  computed: {
+    rules
   },
   methods: {
     onSubmit(e) {

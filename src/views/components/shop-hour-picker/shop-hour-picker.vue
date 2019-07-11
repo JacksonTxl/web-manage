@@ -186,8 +186,10 @@ export default {
         let endNum = n
         let endIndex = --n
         console.log(endNum, endIndex)
+        let start_time = this.value[endIndex].replace(/:00/gi, '').replace(/:30/gi, '.5') - 0
+        let end_time = this.value[endIndex].replace(/:00/gi, '').replace(/:30/gi, '.5') - 0
         this.slider[endIndex].title = endNum
-        this.slider[endIndex].value = [10, 24]
+        this.slider[endIndex].value = [start_time, end_time]
       })
     },
     // 删除slider

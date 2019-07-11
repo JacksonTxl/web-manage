@@ -2,7 +2,7 @@
   <div :class="mobile()">
     <st-form :form="form" @submit.prevent="login" :class="mobile('form')">
       <st-form-item :class="mobile('phone')">
-        <a-input :class="mobile('phone-input')" placeholder="请输入手机号码"  v-decorator="['phone']"/>
+        <a-input size="large" :class="mobile('phone-input')" placeholder="请输入手机号码"  v-decorator="['phone']"/>
         <a-dropdown :class="mobile('phone-dropdown')">
           <span class="cursor-pointer">
             +86 <a-icon type="down" />
@@ -20,11 +20,11 @@
           </a-menu>
         </a-dropdown>
       </st-form-item>
-      <st-form-item class="mg-b16" :class="mobile('captcha')">
-        <a-input :class="mobile('captcha-input')" placeholder="请输入验证码" v-model="captcha" @search="onClickCaptcha" />
+      <st-form-item class="mg-b6" :class="mobile('captcha')">
+        <a-input size="large" :class="mobile('captcha-input')" placeholder="请输入验证码" v-model="captcha" @search="onClickCaptcha" />
         <span :class="mobile('captcha-button')">{{buttonText}}</span>
       </st-form-item>
-      <st-form-item  :class="mobile('pass')" class="mg-b16">
+      <st-form-item  :class="mobile('pass')">
         <div :class="mobile('pass-content')">
           <a-checkbox>我已阅读并同意<a href="">《用户注册协议》</a></a-checkbox>
         </div>

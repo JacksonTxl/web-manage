@@ -141,13 +141,14 @@ export class UserService extends Store<UserState> {
     if (force || !Object.keys(this.user$.snapshot()).length) {
       return this.staffApi.getGlobalStaffInfo().pipe(
         tap((res: any) => {
+          const { info } = res
           this.state$.commit(state => {
-            state.user = res.info
-            this.SET_SHOP({
-              id: res.info.shop_id,
-              name: res.info.shop_name,
-              logo: res.info.shop_logo
-            })
+            state.user = info
+          })
+          this.SET_SHOP({
+            id: info.shop_id,
+            name: info.shop_name,
+            logo: info.shop_logo
           })
         })
       )
@@ -256,7 +257,7 @@ export class UserService extends Store<UserState> {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init().pipe(
       tap(() => {
-        this.nprogress.inc()
+        this.nprogress.next('用户信息加载完毕')
       })
     )
   }

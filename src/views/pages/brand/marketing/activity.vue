@@ -34,6 +34,7 @@ import H5Component from '@/views/pages/brand/setting/mina/components#/h5/h5.comp
 import SliderComponent from './components#/slider.component'
 import EventComponent from './components#/event.component'
 import { NotificationService } from '@/services/notification.service'
+import { ActivityService } from './activity.service'
 import {
   cloneDeep
 } from 'lodash-es'
@@ -52,14 +53,16 @@ export default {
   serviceInject() {
     return {
       h5WrapperService: H5WrapperService,
-      notificationService: NotificationService
+      notificationService: NotificationService,
+      activityService: ActivityService
     }
   },
   rxState() {
     return {
       sliderInfo: this.h5WrapperService.sliderInfo$,
       eventInfo: this.h5WrapperService.eventInfo$,
-      loading: this.h5WrapperService.loading$
+      loading: this.h5WrapperService.loading$,
+      actList: this.activityService.actList$
     }
   },
   data() {
@@ -70,6 +73,7 @@ export default {
   },
   created() {
     this.getH5Info()
+    this.getActList()
   },
   methods: {
     saveConfirm(is_save) {
@@ -117,6 +121,9 @@ export default {
         coach.staff_id_list.push(item.id)
       })
       return coach
+    },
+    getActList() {
+      this.activityService.getInfo().subscribe()
     },
     getH5Info() {
       let that = this

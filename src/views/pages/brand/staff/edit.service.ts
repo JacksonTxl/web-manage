@@ -24,7 +24,15 @@ export class EditService implements RouteGuard {
   getCountryCodes() {
     return this.staffApi.getCountryCodes().pipe(
       tap(res => {
-        this.codeList$.commit(() => res.code_list)
+        this.codeList$.commit(() => {
+          let code_list = res.code_list
+          if (code_list.length) return code_list
+          code_list.push({
+            phone_code: res.default_code,
+            code_id: res.default_code_id
+          })
+          return code_list
+        })
       })
     )
   }

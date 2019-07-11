@@ -1,5 +1,8 @@
 <template>
   <div class="layout-skeleton--brand">
+    <div class="mask">
+      <h1>this is blur</h1>
+    </div>
     <aside class="aside">
       <div class="h-1"></div>
       <div class="h-2"></div>
@@ -45,10 +48,10 @@
         </div>
         <div class="body__sider">
           <tile-sider-1></tile-sider-1>
-          <tile-sider-2 class='mg-t16'></tile-sider-2>
-          <tile-sider-3 class='mg-t16'></tile-sider-3>
-          <tile-sider-4 class='mg-t16'></tile-sider-4>
-          <tile-sider-5 class='mg-t16'></tile-sider-5>
+          <tile-sider-2 class="mg-t16"></tile-sider-2>
+          <tile-sider-3 class="mg-t16"></tile-sider-3>
+          <tile-sider-4 class="mg-t16"></tile-sider-4>
+          <tile-sider-5 class="mg-t16"></tile-sider-5>
         </div>
       </article>
     </main>

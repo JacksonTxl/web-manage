@@ -92,7 +92,7 @@ export class ClubComponentService {
           }
           lineData.push(chartItem)
         }
-        console.log(lineData)
+        console.log('营收趋势', lineData)
         state.revenueDaily = lineData
       })
     }))
@@ -118,7 +118,7 @@ export class ClubComponentService {
           }
           lineData.push(chartItem)
         }
-        console.log(lineData)
+        console.log('上课分析', lineData)
         state.courseDaily = lineData
       })
     }))
@@ -135,6 +135,7 @@ export class ClubComponentService {
           }
           lineData.push(chartItem)
         }
+        console.log('入场', lineData)
         state.inoutNum = lineData
         state.inoutTime = [
           {
