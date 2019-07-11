@@ -65,6 +65,7 @@ export default {
 
       this.chart.source(this.dv, {
         date: {
+          tickCount: 10,
           range: [0, 1]
         },
         value: {
@@ -77,6 +78,10 @@ export default {
           textStyle: {
             fill: '#9BACB9'
           }
+        },
+        tickLine: {
+          lineWidth: 0,
+          length: 0
         }
       })
       this.chart.axis('value', {

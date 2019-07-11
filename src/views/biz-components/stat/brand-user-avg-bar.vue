@@ -58,6 +58,10 @@ export default {
             fontSize: 12,
             fill: '#9BACB9'
           }
+        },
+        tickLine: {
+          lineWidth: 0,
+          length: 0
         }
       })
 

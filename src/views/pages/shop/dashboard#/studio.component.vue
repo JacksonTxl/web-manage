@@ -78,7 +78,7 @@
         </a-row>
         <a-row class="mg-t32 count4">
           <a-col :class="bCount('date')" :lg="4">
-            近三十日
+            近30日
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
             {{beMemberNum.nearly_thirty_days||0}}

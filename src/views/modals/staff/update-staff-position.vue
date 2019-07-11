@@ -3,8 +3,8 @@
     @ok='onSubmit'
     size="small"
     v-model='show'>
-  <staff-info :staff="staff"></staff-info>
-    <st-form labelWidth='60px' :form="form">
+    <staff-info :staff="staff"></staff-info>
+    <st-form labelWidth='70px' :form="form">
       <st-form-item label="工作性质">
         <a-select v-decorator="['nature_work']" placeholder="请选择工作性质">
           <a-select-option :value="item.id" v-for="item in natureWork" :key="item.id">
