@@ -25,7 +25,7 @@
           class="tree-input  mg-r6"
           v-model="addValue">
         </a-input>
-        <a href="javascript:;" class="mg-r8" @click.stop="addDepartment">保存</a>
+        <a href="javascript:;" class="mg-r8" @click.stop="addDepartment(item)">保存</a>
         <a-icon type="close-circle" @click.stop="cancelAdd"/>
       </div>
     </div>
@@ -39,6 +39,7 @@
         @make-folder="$emit('make-folder', $event)"
         @add-item="$emit('add-item', $event)"
         @edit-item="$emit('edit-item', $event)"
+        @update-data="$emit('update-data', $event)"
         @node-item-detail="$emit('node-item-detail', $event)"
       ></tree-item>
     </ul>
@@ -46,16 +47,20 @@
 </template>
 
 <script>
-import { DepartmentService } from '@/views/pages/brand/staff/department.service#/department.service'
+import { DepartmentService } from '@/views/pages/brand/staff/department.service'
+import { RouteService } from '@/services/route.service'
+
 export default {
   serviceInject() {
     return {
-      departmentService: DepartmentService
+      departmentService: DepartmentService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      auth: this.departmentService.auth$
+      auth: this.departmentService.auth$,
+      query: this.routeService.query$
     }
   },
   name: 'TreeItem',
@@ -106,13 +111,16 @@ export default {
       }
     },
     addDepartment(item) {
+      console.log('addDepartment', item)
+      this.cancelAdd()
       this.departmentService.addDepartment({ parent_id: this.item.id, department_name: this.addValue }).subscribe(() => {
-        console.log(this.departmentList)
+        this.$emit('update-data')
       })
     },
     editDepartment(item) {
+      this.cancelEdit()
       this.departmentService.updateDepartment({ id: this.item.id, department_name: this.editValue }).subscribe(() => {
-        console.log(this.departmentList)
+        this.$emit('update-data')
       })
     },
     deleteDepartment(item) {
@@ -130,6 +138,7 @@ export default {
             return new Promise((resolve, reject) => {
               return this.departmentService.delDepartment({ id: this.item.id }).subscribe(() => {
                 setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
+                this.$emit('update-data')
               })
             }).catch(() => console.log('Oops errors!'))
           },

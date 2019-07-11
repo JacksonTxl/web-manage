@@ -247,6 +247,7 @@ export default {
       }
       video.onloadedmetadata = function(e) {
         video.play()
+        video.style.transform = 'scaleX(-1)'
       }
     },
     error(error) {

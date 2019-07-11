@@ -6,6 +6,7 @@
       @make-folder="makeFolder"
       @add-item="addItem"
       @edit-item="editItem"
+      @update-data="updateData"
       @node-item-detail="getNodeItemDetail"
     ></tree-item>
   </ul>
@@ -65,6 +66,9 @@ export default {
     },
     deleteItem(item) {
       this.$emit('delete', item)
+    },
+    updateData() {
+      this.$emit('updateData')
     }
   },
   watch: {

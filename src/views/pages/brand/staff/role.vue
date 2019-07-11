@@ -30,7 +30,7 @@
         <a>添加角色</a>
       </footer>
     </a-col>
-    <a-col :lg="20">
+    <a-col :lg="20" :class="roleContent()">
       <router-view></router-view>
     </a-col>
   </a-row>
@@ -42,7 +42,8 @@ export default {
   bem: {
     role: 'page-role',
     roleList: 'page-role-list',
-    roleView: 'page-role-view'
+    roleView: 'page-role-view',
+    roleContent: 'page-role-content'
   },
   serviceInject() {
     return {
