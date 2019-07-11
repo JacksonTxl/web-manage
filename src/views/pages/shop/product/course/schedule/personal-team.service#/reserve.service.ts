@@ -7,11 +7,13 @@ import {
   CheckInput
 } from '@/api/v1/schedule/personal-team/reserve'
 import { AuthService } from '@/services/auth.service'
+import { MessageService } from '@/services/message.service'
 
 export interface SetState {
   reserveInfo: any
   reserveList: any[],
-  auth: {}
+  auth: object,
+  infoAuth: any
 }
 @Injectable()
 export class PersonalTeamScheduleReserveService {
@@ -19,7 +21,10 @@ export class PersonalTeamScheduleReserveService {
   reserveInfo$: Computed<any>
   reserveList$: Computed<any>
   auth$: Computed<any>
-  constructor(private reserveApi: PersonalTeamScheduleReserveApi, private authService: AuthService) {
+  infoAuth$: Computed<any>
+  constructor(private reserveApi: PersonalTeamScheduleReserveApi,
+    private authService: AuthService,
+    private msg: MessageService) {
     this.state$ = new State({
       reserveInfo: [],
       auth: {
@@ -27,11 +32,13 @@ export class PersonalTeamScheduleReserveService {
         cancel: this.authService.can('shop:reserve:personal_team_course_reserve|del'),
         edit: this.authService.can('shop:reserve:personal_team_course_reserve|edit'),
         checkIn: this.authService.can('shop:reserve:personal_team_course_reserve|checkin')
-      }
+      },
+      infoAuth: {}
     })
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
     this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
     this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
+    this.infoAuth$ = new Computed(this.state$.pipe(pluck('infoAuth')))
   }
   /**
  *
@@ -39,7 +46,9 @@ export class PersonalTeamScheduleReserveService {
  * 添加预约
  */
   add(params: AddReserveInput) {
-    return this.reserveApi.add(params)
+    return this.reserveApi.add(params).pipe(tap(res => {
+      this.msg.success({ content: '添加成功' })
+    }))
   }
   /**
    *
@@ -47,7 +56,9 @@ export class PersonalTeamScheduleReserveService {
    * 团体课签到消费
    */
   check(params: CheckInput) {
-    return this.reserveApi.check(params)
+    return this.reserveApi.check(params).pipe(tap(res => {
+      this.msg.success({ content: '签到成功' })
+    }))
   }
   /**
    *
@@ -58,8 +69,10 @@ export class PersonalTeamScheduleReserveService {
   getInfo(id: string) {
     return this.reserveApi.getInfo(id).pipe(tap(res => {
       this.state$.commit(state => {
+        res = this.authService.filter(res, 'info.reserve')
+        res = this.authService.filter(res, 'auth')
         state.reserveInfo = res.info
-        // this.authService.filter(res, 'info.reserve').info.reserve
+        state.infoAuth = res.auth
         state.reserveList = res.info.reserve
       })
     }))
@@ -68,6 +81,8 @@ export class PersonalTeamScheduleReserveService {
    * 取消预约
    */
   cancel(id: string) {
-    return this.reserveApi.cancel(id)
+    return this.reserveApi.cancel(id).pipe(tap(res => {
+      this.msg.success({ content: '取消成功' })
+    }))
   }
 }

@@ -50,6 +50,7 @@
 <script>
 import { shopColumns, coachColumns, priceConfigColumns } from './info#table.config'
 import { InfoService } from './info.service'
+import { AppConfig } from '@/constants/config'
 export default {
   bem: {
     b: 'header',
@@ -59,11 +60,11 @@ export default {
   name: 'TeamCourseInfo',
   serviceInject() {
     return {
-      infoService: InfoService
+      infoService: InfoService,
+      appConfig: AppConfig
     }
   },
   rxState() {
-    console.log('this.infoService', this.infoService)
     return {
       teamCourseInfo: this.infoService.teamCourseInfo$
     }
@@ -73,6 +74,11 @@ export default {
       return val.map(item => {
         return item.name
       }).join(' / ')
+    }
+  },
+  computed: {
+    image() {
+      return this.teamCourseInfo.image.image_key || this.appConfig.PLACEHOLDER_IMG.NODATA
     }
   },
   data() {

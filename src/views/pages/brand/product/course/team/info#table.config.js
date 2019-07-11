@@ -1,8 +1,7 @@
 export const shopColumns = [{
   title: '省',
   dataIndex: 'province_name',
-  width: '20%',
-  scopedSlots: { customRender: 'name' }
+  width: '20%'
 }, {
   title: '市',
   dataIndex: 'city_name',

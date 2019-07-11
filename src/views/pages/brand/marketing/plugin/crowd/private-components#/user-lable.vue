@@ -2,8 +2,8 @@
 <template>
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
-    <span style="margin-right:16px">选择门店</span>
-    <template v-for="(tag,index) in value.getData.shop">
+    <span style="margin-right:16px">选择标签</span>
+    <template v-for="(tag,index) in value.getData.member_label">
       <a-tooltip :key="index" :title="tag.name">
         <a-tag :key="index" :closable="true" :afterClose="() => handleClose(tag,index)">{{tag.name}}</a-tag>
       </a-tooltip>
@@ -25,12 +25,12 @@
   </div>
 </template>
 <script>
-import { AffiliatedStoreService } from './affiliated-store.service'
+import { UserLableService } from './user-lable.service'
 import titleInfo from './title-info.vue'
 export default {
   serviceInject() {
     return {
-      affiliatedStoreService: AffiliatedStoreService
+      userLableService: UserLableService
     }
   },
   model: {
@@ -47,34 +47,37 @@ export default {
     return {
       shopList: [],
       titleData: {
-        title: '所属门店',
-        info: '选择所属门店在以下范围内的用户'
-      },
-      radioValue: '',
-      inputValue: ''
+        title: '用户标签',
+        info: '选择用户标签为以下范围的用户'
+      }
     }
   },
   created() {
-    this.affiliatedStoreService.getShopList().subscribe(res => {
+    this.userLableService.getShopList().subscribe(res => {
       this.shopList = res.list.map(item => {
         return {
-          name: item.shop_name,
+          name: item.tag_name,
           value: item.id
         }
       })
+      // this.tags = Object.values(
+      //   Object.assign({}, ...this.value.getData.base_member_label)
+      // )
     })
   },
   methods: {
     dropdownFunc(item) {
-      this.value.getData.shop.push(item)
+      // if (this.value.getData.member_label.find(item) >= 0) {
+      //   return;
+      // }
+      this.value.getData.member_label.push(item)
     },
     onChange(date, dateString) {
       this.$emit('dataChangge', this.value)
     },
     handleClose(removedTag, index) {
-      this.value.getData.shop.splice(index, 1)
+      this.value.getData.member_label.splice(index, 1)
     }
-  },
-  mounted() {}
+  }
 }
 </script>

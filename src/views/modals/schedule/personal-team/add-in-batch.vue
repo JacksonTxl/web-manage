@@ -11,7 +11,7 @@
       <a-date-picker
         v-if="record.editable"
         showTime
-        format="YYYY-MM-DD HH:mm:ss"
+        format="YYYY-MM-DD HH:mm"
         placeholder="Select Time"
         :value="text"
         @change="e => handleChange(e, record.key, 'start_time')"/>

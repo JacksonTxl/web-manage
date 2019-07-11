@@ -285,7 +285,6 @@ export default {
       })
     },
     conserve() {
-      console.log(this.selectData)
       this.form.validateFields((err, values) => {
         if (!err) {
           let obj = {}

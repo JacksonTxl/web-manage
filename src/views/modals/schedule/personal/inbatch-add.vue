@@ -53,14 +53,13 @@ export default {
     return {
       commonService: PersonalScheduleCommonService,
       scheduleService: PersonalScheduleScheduleService,
-      messageService: MessageService,
       routeService: RouteService
     }
   },
   rxState() {
     return {
       coachOptions: this.commonService.coachInBatchOptions$,
-      query: this.routeService.query
+      query: this.routeService.query$
     }
   },
   data() {
@@ -118,10 +117,9 @@ export default {
       }
       this.scheduleService.addScheduleInBatch(reqdata).subscribe(() => {
         console.log('ok')
-        this.messageService.success({ content: '添加成功' })
         this.show = false
         this.$router.push({ query: {
-          size: 51,
+          size: 20,
           page: 1,
           ...this.query
         },

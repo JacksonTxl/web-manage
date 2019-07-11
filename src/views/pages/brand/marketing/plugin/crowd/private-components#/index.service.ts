@@ -26,7 +26,7 @@ export class IndexService extends Store<CrowdIndexState> {
     this.crowdIndexInfo$ = new Computed(this.state$.pipe(pluck('crowdIndexInfo')))
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
-  SET_CROWD_INDEX_INFO(crowdIndexInfo: CrowdIndexState) {
+  SET_CARDS_LIST_INFO(crowdIndexInfo: CrowdIndexState) {
     console.log(crowdIndexInfo)
     this.state$.commit(state => {
       state.crowdIndexInfo = crowdIndexInfo
@@ -35,6 +35,6 @@ export class IndexService extends Store<CrowdIndexState> {
   // 获取列表
 
   getListInfo(id: string) {
-    return this.crowdAPI.crowdBrandExport(id)
+    return this.crowdAPI.crowdShopExport(id)
   }
 }

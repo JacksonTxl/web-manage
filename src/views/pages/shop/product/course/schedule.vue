@@ -17,7 +17,7 @@
   <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-calendar' || routeName === 'shop-product-course-schedule-personal-reserve-table'">
     <a-select class="page-schedule__select" placeholder="请选择教练" @change="onChange" v-model="query.coach_id">
       <a-select-option :value="-1">全部</a-select-option>
-      <a-select-option v-for="coach in coachPersonalOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
+      <a-select-option v-for="coach in coachInBatchOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
     </a-select>
   </div>
   <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-team'
@@ -55,6 +55,7 @@ export default {
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
       courtOptions: tss.courtOptions$,
+      coachInBatchOptions: pscs.coachInBatchOptions$,
       coachPersonalOptions: pscs.coachOptions$,
       courseCoachOptions: pscs.courseCoachOptions$,
       coachPersonalTeamOptions: ptscs.coachOptions$
