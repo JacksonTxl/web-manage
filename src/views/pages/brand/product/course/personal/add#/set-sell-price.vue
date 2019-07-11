@@ -146,7 +146,7 @@ export default {
         options.push({
           label: sellType[i],
           value: +i,
-          disabled: +i === 1
+          disabled: +i === 2
         })
       }
       return options

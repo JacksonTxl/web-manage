@@ -140,7 +140,8 @@ export default {
       for (let i in sellType) {
         options.push({
           label: sellType[i],
-          value: +i
+          value: +i,
+          disabled: +i === 2
         })
       }
       return options
