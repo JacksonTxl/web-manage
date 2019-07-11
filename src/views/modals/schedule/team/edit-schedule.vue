@@ -99,7 +99,6 @@ export default {
   },
   created() {
     this.form = this.$form.createForm(this)
-    console.log(this.form)
   },
   mounted() {
     this.teamScheduleScheduleService.getUpdateInfo(this.id).subscribe(res => {
@@ -112,13 +111,6 @@ export default {
     })
   },
   methods: {
-    onClick() {
-    },
-    onChange() {
-    },
-    save() {
-
-    },
     onSubmit() {
       this.form.validateFields((err, values) => {
         if (!err) {
@@ -129,7 +121,7 @@ export default {
           form.course_fee = parseInt(form.course_fee)
           form.limit_num = parseInt(form.limit_num)
           this.teamScheduleScheduleService.update({ id: this.id, ...form }).subscribe(() => {
-            this.$message('修改团课排期成功')
+            this.show = false
           })
         }
       })
@@ -137,7 +129,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

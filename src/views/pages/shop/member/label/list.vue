@@ -21,10 +21,10 @@
 
         <div slot="action" slot-scope="record">
           <st-table-actions>
-            <router-link
+            <a
               v-if="record.auth['shop:member:tag|edit']"
-              :to="{ name: 'label-edit',props: {item : record} , on:{ change: onSearhReset }}"
-            >编辑</router-link>
+              v-modal-link="{ name: 'label-edit',props: {item : record} , on:{ change: onSearhReset }}"
+            >编辑</a>
             <a v-if="record.auth['shop:member:tag|del']" @click="onDelete(record)">删除</a>
           </st-table-actions>
         </div>

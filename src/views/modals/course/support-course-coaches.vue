@@ -9,6 +9,9 @@
       :rowKey="record => record.id"
       simple
       :dataSource="supportCoachList">
+      <div slot="nature_work" slot-scope="text">
+        {{text | enumFilter('staff.nature_work')}}
+      </div>
       </st-table>
     </st-container>
 

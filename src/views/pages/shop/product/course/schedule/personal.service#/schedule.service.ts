@@ -69,11 +69,15 @@ export class PersonalScheduleScheduleService {
    * 新增团体课排期
    */
   add(params: AddScheduleInput) {
-    return this.scheduleApi.add(params)
+    return this.scheduleApi.add(params).pipe(tap(res => {
+      this.msg.success({ content: '添加成功' })
+    }))
   }
   addScheduleInBatch(params: AddScheduleInBatchInput) {
     return this.scheduleApi.addScheduleInBatch(params).pipe(switchMap(state => {
       return this.getList({})
+    }), tap(res => {
+      this.msg.success({ content: '批量添加成功' })
     }))
   }
   /**
@@ -82,7 +86,9 @@ export class PersonalScheduleScheduleService {
    * 编辑课程排期
    */
   update(params: UpdateScheduleInput) {
-    return this.scheduleApi.update(params)
+    return this.scheduleApi.update(params).pipe(tap(res => {
+      this.msg.success({ content: '编辑成功' })
+    }))
   }
   copy(params: CopyInput) {
     return this.scheduleApi.copy(params).pipe(tap(res => {

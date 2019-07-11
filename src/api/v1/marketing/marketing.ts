@@ -1,5 +1,6 @@
 import { Api } from '../../api'
-
+import { AppConfig } from '@/constants/config'
+let appConfig = new AppConfig()
 export interface AddMarketingCouponParams {
   coupon_type: number
   coupon_name: string
@@ -130,7 +131,7 @@ export class MarketingApi extends Api {
    * 获取优惠券图片生成的token
    */
   getToken() {
-    return this.http.originalPost(`/_shs_api/user/token`)
+    return this.http.originalPost(`${appConfig.SHS_API_ENV}/user/token`)
   }
   /**
    * 获取优惠券海报信息

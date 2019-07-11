@@ -9,6 +9,7 @@ import {
   GetScheduleListQuery
 } from '@/api/v1/schedule/personal-team/schedule'
 import { AuthService } from '@/services/auth.service'
+import { MessageService } from '@/services/message.service'
 
 export interface SetState {
   courseList: any[],
@@ -23,7 +24,8 @@ export class PersonalTeamScheduleScheduleService {
   auth$: Computed<object>
   constructor(
     private scheduleApi: PersonalTeamScheduleScheduleApi,
-    private authService: AuthService
+    private authService: AuthService,
+    private msg: MessageService
   ) {
     this.state$ = new State({
       courseList: [],
@@ -90,10 +92,14 @@ export class PersonalTeamScheduleScheduleService {
    * 新增团体课排期
    */
   add(params: AddScheduleInput) {
-    return this.scheduleApi.add(params)
+    return this.scheduleApi.add(params).pipe(tap(res => {
+      this.msg.success({ content: '添加成功' })
+    }))
   }
   addScheduleInBatch(params: AddScheduleInput[]) {
-    return this.scheduleApi.addScheduleInBatch(params)
+    return this.scheduleApi.addScheduleInBatch(params).pipe(tap(res => {
+      this.msg.success({ content: '批量添加成功' })
+    }))
   }
   /**
    *
@@ -101,7 +107,9 @@ export class PersonalTeamScheduleScheduleService {
    * 复制团体课排期
    */
   copy(params: CopyScheduleInput) {
-    return this.scheduleApi.copy(params)
+    return this.scheduleApi.copy(params).pipe(tap(res => {
+      this.msg.success({ content: '复制成功' })
+    }))
   }
   /**
    *
@@ -109,7 +117,9 @@ export class PersonalTeamScheduleScheduleService {
    * 编辑课程排期
    */
   update(params: UpdateScheduleInput) {
-    return this.scheduleApi.update(params)
+    return this.scheduleApi.update(params).pipe(tap(res => {
+      this.msg.success({ content: '编辑成功' })
+    }))
   }
   /**
    *
@@ -125,6 +135,8 @@ export class PersonalTeamScheduleScheduleService {
    * 取消团体课排期
    */
   del(id: string) {
-    return this.scheduleApi.del(id)
+    return this.scheduleApi.del(id).pipe(tap(res => {
+      this.msg.success({ content: '取消成功' })
+    }))
   }
 }

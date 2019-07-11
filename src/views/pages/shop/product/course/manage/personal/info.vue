@@ -1,6 +1,6 @@
 <template>
 <div class="page-personal-course-info">
-  <st-panel class=" mg-b16">
+  <st-panel class="mg-b16">
     <div class="page-personal-header">
         <div class="page-personal-header__left mg-r24">
           <st-t3 class="mg-b16">{{info.course_name}}（{{info.category_id.name || '暂无'}}）</st-t3>
@@ -25,8 +25,8 @@
         </div>
         <div class="page-personal-header__right" v-viewer="{ url: 'data-src' }">
           <img
-            :src="info.image.image_key | imgFilter({ w: 560, h: 320 })"
-            :data-src="info.image.image_key | imgFilter({ w: 1000 })"
+            :src="image | imgFilter({ w: 560, h: 320 })"
+            :data-src="image | imgFilter({ w: 1000 })"
             :alt="info.course_name"
           />
         </div>
@@ -52,13 +52,14 @@
         <div class="title mg-b8"><span class="label">单节有效期:</span><span class="value">{{price_gradient}}</span></div>
         <div class="title mg-b8"><span class="label">定价权限:</span><span class="value">{{price_gradient}}</span></div>
         <div class="title mg-b8"><span class="label">单节售卖:</span><span class="value">{{price_gradient.single_price}}</span></div>-->
-        <div class="title mg-b8"><span class="label">售卖定价:</span><span class="value"></span></div>
+        <div class="title mg-b8"><span class="label">售卖定价:</span><span class="value">{{info.price_setting | enumFilter('personal_course.price_setting')}}</span></div>
         <st-container>
-          <st-table :columns="priceConfigColumns" :dataSource="price_gradient.prices">
+          <st-table :columns="priceConfigColumns"  :dataSource="price_gradient">
             <div slot="min_sell_price" slot-scope="min_sell_price, record">{{record.min_sell_price}} ~ {{record.max_sell_price}}</div>
             <div slot="min_sell" slot-scope="min_sell, record">{{record.min_sale}} ~ {{record.max_sale}}</div>
             <div slot="transfer_num" slot-scope="transfer_num, record">{{record.transfer_num}} {{record.transfer_unit === 1 ? "%":"元"}}</div>
           </st-table>
+
         </st-container>
       </div>
     </div>
@@ -69,11 +70,13 @@
 import { shopColumns, coachColumns, priceConfigColumns } from './info#table.config'
 import { InfoService } from './info.service'
 import { imgFilter } from '@/filters/resource.filters'
+import { AppConfig } from '@/constants/config'
 export default {
   name: 'PersonalInfo',
   serviceInject() {
     return {
-      infoService: InfoService
+      infoService: InfoService,
+      appConfig: AppConfig
     }
   },
   rxState() {
@@ -83,7 +86,16 @@ export default {
   },
   computed: {
     price_gradient() {
-      return this.info.price_gradient[0]
+      const arr = []
+      this.info.price_gradient.forEach(item => {
+        item.prices.forEach(ele => {
+          arr.push(ele)
+        })
+      })
+      return arr
+    },
+    image() {
+      return this.info.image.image_key || this.appConfig.PLACEHOLDER_IMG.NODATA
     }
   },
   data() {

@@ -21,6 +21,13 @@ interface UserState {
 interface User {
   id?: string
   name?: string
+  avatar?: string
+  mobile?: string
+}
+interface Brand {
+  id?: string
+  name?: string,
+  logo?: string
 }
 interface Shop {
   id?: string
@@ -132,22 +139,42 @@ export class UserService extends Store<UserState> {
       state.user = user
     })
   }
+  SET_BRAND(brand: Brand = {}) {
+    this.state$.commit(state => {
+      state.brand = {
+        ...state.brand,
+        ...brand
+      }
+    })
+  }
   SET_SHOP(shop: Shop = {}) {
     this.state$.commit(state => {
-      state.shop = Object.assign(state.shop, shop)
+      state.shop = {
+        ...state.shop,
+        ...shop
+      }
     })
   }
   getUser(force: boolean = false) {
     if (force || !Object.keys(this.user$.snapshot()).length) {
       return this.staffApi.getGlobalStaffInfo().pipe(
         tap((res: any) => {
-          this.state$.commit(state => {
-            state.user = res.info
-            this.SET_SHOP({
-              id: res.info.shop_id,
-              name: res.info.shop_name,
-              logo: res.info.shop_logo
-            })
+          const { info } = res
+          this.SET_BRAND({
+            id: info.brand_id,
+            name: info.brand_name,
+            logo: info.brand_logo
+          })
+          this.SET_USER({
+            id: info.staff_id,
+            name: info.staff_name,
+            avatar: info.staff_avatar,
+            mobile: info.mobile
+          })
+          this.SET_SHOP({
+            id: info.shop_id,
+            name: info.shop_name,
+            logo: info.shop_logo
           })
         })
       )

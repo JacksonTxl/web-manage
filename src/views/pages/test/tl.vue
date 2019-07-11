@@ -103,7 +103,8 @@
         {{des}}
         <st-textarea :autosize="{ minRow: 2, maxRow: 5}" v-model="des" maxlength="5"></st-textarea>
       </p>
-      shop: {{shop}}
+      <p>shop: {{shop}}</p>
+      <p>brand: {{brand}}</p>
     </st-panel>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
   </div>
@@ -135,7 +136,8 @@ export default {
   rxState() {
     return {
       query: this.routeService.query$,
-      shop: this.userService.shop$
+      shop: this.userService.shop$,
+      brand: this.userService.brand$
     }
   },
   components: {

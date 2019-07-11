@@ -24,7 +24,6 @@ export class AddService extends Store<CrowdInfoState> {
     this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
   }
   SET_CROWD_INFO(crowdInfo: CrowdInfoState) {
-    console.log(crowdInfo)
     this.state$.commit(state => {
       state.crowdInfo = crowdInfo
     })
@@ -38,8 +37,6 @@ export class AddService extends Store<CrowdInfoState> {
   getListInfo() {
     return this.crowdAPI.getCrowdBrandField().pipe(
       tap(res => {
-        console.log(res, '获取数据')
-
         this.SET_CROWD_INFO(res)
       })
     )

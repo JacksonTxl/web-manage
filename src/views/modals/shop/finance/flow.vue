@@ -134,7 +134,7 @@ export default {
       }
     },
     price_validator(rule, value, callback) {
-      if (!value || +value === 0) {
+      if (!value) {
         // eslint-disable-next-line
         callback('请输入新流水金额')
       } else {

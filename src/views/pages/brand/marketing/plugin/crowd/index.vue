@@ -5,7 +5,7 @@
       <div slot="title">
         <router-link
           tag="a"
-          :to=" { name: 'brand-markting-plugin-crowd-add'}"
+          :to=" { name: 'brand-marketing-plugin-crowd-add'}"
           v-if="crowdIndexInfo.info.list.length <= 10"
         >
           <st-button type="primary" v-if="auth.add">
@@ -14,16 +14,16 @@
         </router-link>
         <st-button v-else type="primary" @click="newCrowd('人群数量已达到上限！')">新建人群</st-button>
 
-        <span class="shop-member-crowd-index-new__crowb_num" style>新建人群数量最多10个</span>
+        <span class="shop-member-crowd-index-new__crowb_num">新建人群数量最多10个</span>
       </div>
       <st-table
         rowKey="id"
         :dataSource="crowdIndexInfo.info.list"
-        :columns="table.columns"
+        :columns="columns"
         @change="onChange"
         :pagination="false"
       >
-        <div slot="shop_name1" slot-scope="text, record">
+        <div slot="action" slot-scope="text, record">
           <a-dropdown placement="bottomRight">
             <a class="ant-dropdown-link" href="#">定向运营</a>
             <a-menu slot="overlay">
@@ -38,13 +38,20 @@
               </a-menu-item>
             </a-menu>
           </a-dropdown>
-          <st-more-dropdown class="tree-opreation">
+          <st-table-actions>
+            <a href="#" v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a>
+            <a href="#">
+              <router-link v-if="record.auth['shop:member:crowd|edit']" tag="a" :to=" { name: 'brand-marketing-plugin-crowd-add',query:{id:record.id}}">编辑</router-link>
+            </a>
+            <a href="#" v-if="record.auth['shop:member:crowd|del']" @click="deleteTreeNode(record)">删除</a>
+          </st-table-actions>
+          <!-- <st-more-dropdown class="tree-opreation">
             <a-menu-item v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a-menu-item>
             <a-menu-item>
               <router-link v-if="record.auth['shop:member:crowd|edit']" tag="a" :to=" { name: 'brand-markting-plugin-crowd-add',query:{id:record.id}}">编辑</router-link>
             </a-menu-item>
             <a-menu-item v-if="record.auth['shop:member:crowd|del']" @click="deleteTreeNode(record)">删除</a-menu-item>
-          </st-more-dropdown>
+          </st-more-dropdown> -->
         </div>
         <div
           slot="description"
@@ -66,65 +73,34 @@
 import index from './private-components#/index'
 import { IndexService } from './index.service'
 import { MessageService } from '@/services/message.service'
+import { RouteService } from '@/services/route.service'
+import tableMixin from '@/mixins/table.mixin'
+import { columns } from './index.config'
 export default {
+  mixins: [tableMixin],
   serviceInject() {
     return {
-      aService: IndexService,
-      messageService: MessageService
+      indexService: IndexService,
+      messageService: MessageService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      crowdIndexInfo: this.aService.crowdIndexInfo$,
-      auth: this.aService.auth$
+      crowdIndexInfo: this.indexService.crowdIndexInfo$,
+      auth: this.indexService.auth$,
+      query: this.routeService.query$
     }
   },
   data() {
     return {
-      table: {
-        columns: [
-          {
-            title: '人群名称',
-            dataIndex: 'crowd_name',
-            scopedSlots: { customRender: 'crowd_name' }
-          },
-          {
-            title: '人群定义',
-            width: '30%',
-            dataIndex: 'description',
-            scopedSlots: { customRender: 'description' }
-          },
-          {
-            title: '人群总数',
-            dataIndex: 'num'
-          },
-          {
-            title: '更新时间',
-            dataIndex: 'updated_time'
-          },
-          {
-            title: '操作',
-            width: '10%',
-            dataIndex: 'shop_name1',
-            scopedSlots: { customRender: 'shop_name1' }
-          }
-        ],
-        list: [
-          {
-            id: 1,
-            province_name: 1,
-            city_name:
-              '啊实打实大苏打实打实大苏打实打实大苏打士大夫十分三国杀是否啊大大啊实打实大苏打实打实大苏打实打实大苏打士大夫十分三国杀是否啊大大',
-            district_name: 1,
-            shop_name: 1,
-            shop_name1: 1
-          }
-        ]
-      }
     }
   },
   components: {
     index
+  },
+  computed: {
+    columns
   },
   methods: {
     newCrowd(data) {
@@ -140,13 +116,11 @@ export default {
       console.log(value)
     },
     refresh() {
-      this.$router.push({ query: {}, force: true })
+      this.$router.push({ force: true })
     },
     deleteTreeNode(value) {
-      console.log(value)
-      let self = this
-      this.aService.delCrowdBrandCrowd(value.id).subscribe(res => {
-        self.refresh()
+      this.indexService.delCrowdBrandCrowd(value.id).subscribe(res => {
+        this.refresh()
       })
     }
   },

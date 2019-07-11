@@ -50,7 +50,7 @@
           </li>
         </ul>
       </div>
-      <st-area-chart id="analysis" :data="chartData"/>
+      <!-- <st-area-chart id="analysis" :data="chartData"/> -->
     </st-panel>
   </div>
 </template>

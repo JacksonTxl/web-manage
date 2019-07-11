@@ -53,7 +53,7 @@
         <div class="title mg-b8"><span class="label">售卖渠道:</span><span class="value">{{personalCourseInfo.sell_type | enumFilter('personal_course.sell_type')}}</span></div>
         <div class="title mg-b8"><span class="label">单节有效期:</span><span class="value">{{personalCourseInfo.effective_unit}}</span></div>
         <div class="title mg-b8"><span class="label">定价权限:</span><span class="value">{{personalCourseInfo.price_setting | enumFilter('personal_course.price_setting')}}</span></div>
-        <div class="title mg-b8"><span class="label">单节售卖:</span><span class="value">{{personalCourseInfo.price_gradient[0].single_price}}</span></div>
+        <div class="title mg-b8"><span class="label">单节售卖:</span><span class="value">{{prices.single_price}}</span></div>
       </div>
     </div>
   </st-panel>
@@ -78,7 +78,16 @@ export default {
   },
   computed: {
     prices() {
-      return this.personalCourseInfo.price_gradient[0].prices
+      const arr = []
+      this.personalCourseInfo.price_gradient.forEach(item => {
+        item.prices.forEach(ele => {
+          arr.push(ele)
+        })
+      })
+      return arr
+    },
+    image() {
+      return this.personalCourseInfo.image.image_key || this.config.PLACEHOLDER_IMG.NODATA
     }
   },
   data() {

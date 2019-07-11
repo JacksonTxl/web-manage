@@ -60,6 +60,12 @@ export class SettingMinaApi extends Api {
   save(params: SaveForm) {
     return this.http.post('/v1/setting/mina/main_set', { params })
   }
+  /**
+   * 获取活动列表
+   */
+  getActivityList() {
+    return this.http.get('/v1/setting/mina/activity_list')
+  }
 }
 
 export interface CallbackParams {
