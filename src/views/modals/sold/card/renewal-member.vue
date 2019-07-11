@@ -3,9 +3,9 @@
   size="small"
   v-model="show"
   wrapClassName="modal-sold-deal-sale">
-  <template slot="title">
-      续卡<st-help-tooltip id="TSMC001" />
-  </template>
+    <div slot="title">
+        续卡<st-help-tooltip id="TSMC001" placement="right"/>
+    </div>
     <div :class="sale('content')">
       <st-form :form="form" labelWidth="85px">
         <div :class="sale('sale')" class="modal-sold-renewal-member-card">
@@ -247,7 +247,14 @@ export default {
   computed: {
     // 商品价格
     cardPrice() {
-      return this.info.specs ? (this.info.specs.filter(i => i.id === this.selectSpecs)[0].price) : '0'
+      if (this.info.specs) {
+        const arr = this.info.specs.filter(i => i.id === this.selectSpecs)
+        if (arr.length > 0) {
+          return arr[0].price
+        }
+        return '0'
+      }
+      return '0'
     },
     orderAmountText() {
       return this.priceInfo < 0 ? '小计不能为负' : ''

@@ -39,6 +39,7 @@
               :filterOption="false"
               v-decorator="['memberId',{rules:[{validator:member_id_validator}]}]"
               @search="onMemberSearch"
+              @select="selectMember"
               notFoundContent="无搜索结果"
             >
               <a-select-option
@@ -50,7 +51,7 @@
                 </span>
               </a-select-option>
             </a-select>
-            <p v-if="!memberList.length&&memberSearchText!==''&&+info.sale_range.type===1" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
+            <p v-if="!isSelectMember&&!memberList.length&&memberSearchText!==''&&+info.sale_range.type===1" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
           </st-form-item>
           <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required labelGutter="12px">
             <a-input v-decorator="['memberName',{rules:[{validator:member_name_validator}]}]" placeholder="请输入会员姓名"></a-input>
@@ -137,7 +138,8 @@ export default {
       // 搜索会员
       memberSearchText: '',
       searchMemberIsShow: true,
-      member_id: ''
+      member_id: '',
+      isSelectMember: false
     }
   },
   created() {
@@ -244,6 +246,7 @@ export default {
     // 搜索会员
     onMemberSearch(data) {
       this.memberSearchText = data
+      this.isSelectMember = false
       if (data === '') {
         this.transferService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
@@ -256,6 +259,12 @@ export default {
             this.form.resetFields(['memberId'])
           }
         })
+      }
+    },
+    // 选中会员的事件
+    selectMember(event) {
+      if (event) {
+        this.isSelectMember = true
       }
     },
     // time

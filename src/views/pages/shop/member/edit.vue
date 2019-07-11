@@ -7,7 +7,7 @@
             <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.member_name" />
           </st-form-item>
           <st-form-item label="性别">
-            <a-select placeholder="请选择" v-decorator="rules.sex">
+            <a-select placeholder="请选择" v-decorator="rules.sex" >
               <a-select-option v-for="(item, index) in staffEnums.sex.value" :key="index" :value="+index">{{item}}</a-select-option>
             </a-select>
           </st-form-item>
@@ -16,7 +16,7 @@
           </st-form-item>
           <st-form-item label="证件">
             <a-input-group compact>
-              <a-select style="width:20%" v-decorator="rules.id_card_type" change="chooseType">
+              <a-select style="width:20%" v-decorator="rules.id_card_type" @change="chooseType">
                 <a-select-option v-for="(item, index) in staffEnums.id_type.value" :key="index" :value="+index">{{item}}</a-select-option>
               </a-select>
               <a-input style="width: 80%" :placeholder="dateinit ? dateinit : '请输入身份证号码'" v-decorator="rules.id_card"/>
@@ -39,7 +39,7 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="国籍">
             <a-select placeholder="请选择" v-decorator="rules.country_id">
-              <a-select-option v-for="(item, index) in countryInfo" :key="index" :value="item.id">{{item.name}}</a-select-option>
+              <a-select-option v-for="(item, index) in countryInfo" :key="index" :value="+item.id">{{item.name}}</a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item label="民族">
@@ -74,19 +74,20 @@
         <a-col :lg="10" :xs="22" :offset="1">
            <st-form-item label="手机号" required>
             <a-input-group compact>
-              <a-select style="width: 15%;" v-decorator="rules.country_prefix">
+              <a-select style="width:15%" v-decorator="rules.country_prefix">
                 <a-select-option
                   :value="code.code_id"
                   v-for="code in countryList"
                   :key="code.code_id"
                 >+{{code.phone_code}}</a-select-option>
               </a-select>
-              <a-input style="width: 85%" placeholder="请输入手机号" v-decorator="rules.mobile"/>
+              <a-input style="width:85%"  placeholder="请输入手机号" v-decorator="rules.mobile"/>
             </a-input-group>
           </st-form-item>
-          <st-form-item label="微信号" >
+          <!-- 这个版本不上 -->
+          <!-- <st-form-item label="微信号" >
             <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.wechat" :disabled="true"/>
-          </st-form-item>
+          </st-form-item> -->
            <st-form-item label="详细住址" >
             <a-input placeholder="请输入详细住址" v-decorator="rules.living_address"/>
           </st-form-item>
@@ -176,7 +177,6 @@ export default {
     save(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
-        console.log(values)
         if (!err) {
           values.birthday = values.birthday
             ? values.birthday.format('YYYY-MM-DD')
@@ -193,36 +193,38 @@ export default {
       })
     },
     setEditInfo(obj) {
-      console.log('======', obj)
       this.form.setFieldsValue({
         member_name: obj.member_name,
-        sex: obj.sex - 0,
-        country_id: obj.country.id,
-        nation: obj.nation.id,
-        birthday: obj.birthday ? moment(obj.birthday) : '',
-        education_level: obj.education_level,
-        id_card_type: obj.id_card_type,
+        sex: obj.sex === 0 ? 1 : obj.sex,
+        country_id: obj.country.id === 0 ? 1 : obj.country.id,
+        nation: obj.nation.id === 0 ? 1 : obj.nation.id,
+        birthday: obj.birthday ? moment(obj.birthday) : null,
+        education_level: +obj.education_level,
+        id_card_type: obj.id_card_type === 0 ? 1 : obj.id_card_type,
         jobs: obj.jobs,
         id_card: obj.id_card,
         income_level: obj.income_level,
         married_type: obj.married_type,
         fitness_goal: obj.fitness_goal,
-        has_children: obj.has_children,
+        has_children: obj.has_children === 0 ? 1 : obj.has_children,
         fitness_level: obj.fitness_level,
         email: obj.email,
         mobile: obj.mobile,
         wechat: obj.wechat,
         cascader: [obj.province_id, obj.city_id, obj.district_id],
-        country_prefix: obj.country_prefix,
+        country_prefix: obj.country_prefix === 0 ? 1 : obj.country_prefix,
         living_address: obj.living_address
       })
       this.id = obj.id
     }
   },
   mounted() {
-    // console.log('========',this.countryInfo,this.nations)
     this.options = JSON.parse(window.localStorage.getItem('regionTree'))
-    this.setEditInfo(this.info)
+    this.editService.serviceInit(this.$route.query.id).subscribe(res => {
+      setTimeout(() => {
+        this.setEditInfo(this.info)
+      })
+    })
   }
 }
 </script>
