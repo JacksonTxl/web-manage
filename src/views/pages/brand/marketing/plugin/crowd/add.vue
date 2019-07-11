@@ -166,12 +166,16 @@ export default {
           },
           base_birthday: {
             min: '',
-            max: ''
+            max: '',
+            name: '',
+            value: ''
           },
           shop: [],
           register_time: {
             min: '',
-            max: ''
+            max: '',
+            name: '',
+            value: ''
           },
           source_channel: [],
           member_time: {
@@ -280,7 +284,6 @@ export default {
     },
     conserve() {
       this.form.validateFields((err, values) => {
-        this.selectData.getData.crowd_name = values.basicInfoRuleList.crowd_name
         if (!err) {
           let obj = {}
           this.selectData.arrData.map(item => {
@@ -370,7 +373,6 @@ export default {
         let k = Object.keys(this.selectData)
         let arr = []
         arr.push(...this.selectData.arrData)
-        console.log(arr)
         if (arr.length >= 5) {
           this.flag = false
         } else {

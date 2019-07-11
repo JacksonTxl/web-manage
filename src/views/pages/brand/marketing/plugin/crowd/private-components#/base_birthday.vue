@@ -23,7 +23,6 @@ export default {
   },
   data() {
     return {
-      cccc: [],
       titleData: {
         title: '生日',
         info: '选择自然日内，过生日的用户'
@@ -31,7 +30,6 @@ export default {
     }
   },
   created() {
-    console.log(this.value)
   },
   methods: {},
   mounted() {}
