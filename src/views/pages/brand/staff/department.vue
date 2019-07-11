@@ -34,6 +34,7 @@ import { RouteService } from '@/services/route.service'
 import { UserService } from '@/services/user.service'
 import StOrganTree from './department#/tree/tree.vue'
 import { ShopStaffApi } from '@/api/v1/staff/staff'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   name: 'Staff',
@@ -71,7 +72,7 @@ export default {
       let num = 0
       let len = this.treeList.length
       // eslint-disable-next-line
-      if (!len) this.treeList = this.departmentList
+      if (!len) this.treeList = cloneDeep(this.departmentList)
       this.treeList.forEach(department => {
         num += department.count
       })
