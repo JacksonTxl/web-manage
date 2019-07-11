@@ -17,11 +17,11 @@
             </li>
             <li>
               <p>订单总金额<img src="~@/assets/img/brand/marketing/money.svg" /></p>
-              <ICountUp :endVal="+info.num.order_amount" :options="{prefix: '￥'}"/>
+              <ICountUp :endVal="+info.num.order_amount" :options="{prefix: '<b>￥</b>'}"/>
             </li>
             <li>
               <p>营销支出金额<img src="~@/assets/img/brand/marketing/expend.svg" /></p>
-              <ICountUp :endVal="+info.num.spend_amount" :options="{prefix: '￥'}"/>
+              <ICountUp :endVal="+info.num.spend_amount" :options="{prefix: '<b>￥</b>'}"/>
             </li>
           </ul>
         </section>
@@ -34,7 +34,7 @@
         <section>
           <ul>
             <li v-for="(item, index) in info.marketing" :key="index" @click="goToPlugin(item.plugin_type)">
-              <!-- <img v-if="item.plugin_type === '0'" src="~@/assets/img/brand/marketing/people.svg"> -->
+              <img v-if="item.plugin_type === '0'" src="~@/assets/img/brand/marketing/people.svg">
               <img v-if="item.plugin_type === '1'" src="~@/assets/img/brand/marketing/coupon.svg">
               <img v-if="item.plugin_type === '2'" src="~@/assets/img/brand/marketing/invite.svg">
               <img v-if="item.plugin_type === '3'" src="~@/assets/img/brand/marketing/slyder.svg">
@@ -117,6 +117,7 @@ export default {
     // }
     goToPlugin(type) {
       const map = {
+        0: 'brand-marketing-plugin-crowd-index',
         1: 'brand-marketing-plugin-coupon-list',
         2: 'brand-marketing-plugin-invitation-index-data'
       }

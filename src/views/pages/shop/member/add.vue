@@ -35,15 +35,13 @@
         </a-col>
         <a-col :lg="10" :xs="22" :offset="3">
           <st-form-item>
-            <st-image-upload
+            <st-face-upload
               width="264px"
               height="264px"
-              :sizeLimit="2"
               :list="faceList"
-              :isFaceRecognition="true"
               placeholder="会员人脸信息"
               v-decorator="rules.faceInfo"
-            ></st-image-upload>
+            ></st-face-upload>
           </st-form-item>
         </a-col>
       </a-row>

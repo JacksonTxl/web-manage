@@ -185,9 +185,11 @@ export default {
       index.forEach(n => {
         let endNum = n
         let endIndex = --n
-        console.log(endNum, endIndex)
+        let current = this.value[endIndex]
+        let start_time = current ? current.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0 : 10
+        let end_time = current ? current.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0 : 24
         this.slider[endIndex].title = endNum
-        this.slider[endIndex].value = [10, 24]
+        this.slider[endIndex].value = [start_time, end_time]
       })
     },
     // 删除slider

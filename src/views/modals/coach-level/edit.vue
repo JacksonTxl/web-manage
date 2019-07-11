@@ -11,10 +11,10 @@
         <a-row>
           <a-col :xs="22">
             <st-form-item v-show="false">
-              <input type="hidden" v-decorator="formRules.id">
+              <input type="hidden" v-decorator="rules.id">
             </st-form-item>
             <st-form-item label="教练等级" required>
-              <a-input placeholder="请输入教练等级" v-decorator="formRules.setting_name" maxlength="20">
+              <a-input placeholder="请输入教练等级" v-decorator="rules.settingName" maxlength="20">
               </a-input>
             </st-form-item>
           </a-col>
@@ -24,24 +24,18 @@
   </st-modal>
 </template>
 <script>
+
 import { EditService } from './edit.service'
 import { MessageService } from '@/services/message.service'
-const formRules = {
-  id: ['id'],
-  setting_name: [
-    'setting_name', {
-      rules: [{
-        required: true,
-        message: '请输入教练等级'
-      }]
-    }
-  ]
-}
+import { PatternService } from '@/services/pattern.service'
+import { rules } from './coach-level.config'
+
 export default {
   serviceInject() {
     return {
       editService: EditService,
-      messageService: MessageService
+      messageService: MessageService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -61,12 +55,14 @@ export default {
   },
   data() {
     return {
-      show: true,
-      formRules
+      show: true
     }
   },
   created() {
     this.form = this.$form.createForm(this)
+  },
+  computed: {
+    rules
   },
   mounted() {
     this.$nextTick(() => {

@@ -3,7 +3,7 @@
     <a-row :class="bstep()" class="mg-b48" :gutter="8">
       <a-col offset="1" :span="stepsSpan"><Steps :value="currentIndex" :stepArr="stepArr" /></a-col>
     </a-row>
-    <StaffDetailBasics v-show="currentIndex == 0" @skiptoedit="skipToEdit" @addStep="addCoachInfo" @deletStep="deletStep"/>
+    <StaffDetailBasics v-show="currentIndex == 0" @addStep="addCoachInfo" @deletStep="deletStep"/>
   </st-panel>
 </template>
 

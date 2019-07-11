@@ -18,7 +18,7 @@
             {{item.name}}
           </a-select-option>
         </a-select>
-        <staff-modal-tips :list="tips" :canNotDelete="!operate" v-if="!canDeleteIdentity"></staff-modal-tips>
+        <staff-modal-tips :list="tips" :canNotDelete="!operate" v-if="!canDeleteIdentity && tips.length"></staff-modal-tips>
       </st-form-item>
       <st-form-item label="教练等级">
         <a-select v-decorator="['coach_level_id']" placeholder="请选择教练等级">
@@ -79,7 +79,8 @@ export default {
       isSalaryCourse: false,
       form: this.$form.createForm(this),
       tips: [],
-      operate: false
+      operate: false,
+      canDeleteIdentity: false
     }
   },
   props: {

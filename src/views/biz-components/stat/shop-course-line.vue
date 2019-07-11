@@ -146,11 +146,6 @@ export default {
   .g2-legend-list {
     user-select: none;
   }
-  .g2-legend-list-item {
-    width: 104px;
-    margin-right: 0 !important;
-    margin-bottom: 16px !important;
-  }
   .g2-legend-list-item.unChecked {
     .g2-legend-marker {
       background-color: transparent !important;

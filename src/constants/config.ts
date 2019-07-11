@@ -39,6 +39,14 @@ export class AppConfig {
    * 本地开发api环境
    */
   LOCAL_API_ENV = process.env.LOCAL_API_ENV
+
+  /**
+   * shs环境
+   */
+  get SHS_API_ENV() {
+    return 'https://shs.dev.styd.cn'
+  }
+
   /**
    * 应用环境
    */

@@ -32,14 +32,12 @@
       </a-col>
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="员工人脸">
-          <st-image-upload
+          <st-face-upload
             width="164px"
             height="164px"
             :list="faceList"
-            :sizeLimit="2"
-            :isFaceRecognition="true"
             placeholder="上传人脸"
-          ></st-image-upload>
+          ></st-face-upload>
         </st-form-item>
         <st-form-item label="昵称" required>
           <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.nickname"/>

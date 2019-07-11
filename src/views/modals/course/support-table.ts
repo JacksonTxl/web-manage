@@ -18,8 +18,9 @@ export const columnsCoaches = [{
   title: '教练等级',
   dataIndex: 'level_name'
 }, {
-  title: '支持上本课程门店数',
-  dataIndex: 'nature_work'
+  title: '工作性质',
+  dataIndex: 'nature_work',
+  scopedSlots: { customRender: 'nature_work' }
 }]
 export const columnsPrices = [{
   title: '门店',

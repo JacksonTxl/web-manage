@@ -1,5 +1,8 @@
 <template>
   <div :class="b()" >
+    <div :class="b('adv')" :span="6">
+      <sidebar-component></sidebar-component>
+    </div>
     <div :class="b('content')" :span="18">
       <a-row :gutter="16" :class="bCount()">
         <a-col :span="6" :class="bCount('item')">
@@ -43,7 +46,7 @@
           </div>
         </a-col>
       </a-row>
-      <a-row class="mg-t16 bg-white" >
+      <a-row :class="b('linebox')" class="mg-t16 bg-white">
         <a-col :span="24">
           <dashboard-tabs @change="onChangeTabs">
             <template v-slot:user>
@@ -84,9 +87,6 @@
           </st-container>
         </a-col>
       </a-row>
-    </div>
-    <div :class="b('adv')" :span="6">
-      <sidebar-component></sidebar-component>
     </div>
   </div>
 </template>

@@ -19,7 +19,7 @@
       </div>
     </div>
     <a-upload
-      v-show="isShowUploadBtn && !isFaceRecognition"
+      v-show="isShowUploadBtn"
       listType="picture-card"
       :showUploadList="false"
       :customRequest="upload"
@@ -34,20 +34,6 @@
         </slot>
       </a-spin>
     </a-upload>
-    <div
-      class="st-image-upload__face"
-      v-modal-link="{ name: 'face-recognition',
-      props: { fileList: fileList},
-      on: { change: faceDataChange}}"
-      v-show="isShowUploadBtn && isFaceRecognition"
-    >
-      <div class="container">
-        <a-spin :spinning="isLoading" :tip="progress + '%'">
-          <a-icon type="plus" />
-          <div class="placeholder">{{placeholder}}</div>
-        </a-spin>
-      </div>
-    </div>
   </div>
 </template>
 <script>
@@ -69,13 +55,6 @@ export default {
     }
   },
   props: {
-    /**
-     * 是否使用人脸识别
-     */
-    isFaceRecognition: {
-      type: Boolean,
-      default: false
-    },
     /**
      * 上传按钮的文字
      */
@@ -285,11 +264,6 @@ export default {
       return {
         isValid: true
       }
-    },
-    faceDataChange(list) {
-      console.log('faceDataChange', list)
-      this.fileList = list
-      this.$emit('change', this.fileList)
     }
   }
 }

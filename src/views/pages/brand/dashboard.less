@@ -1,8 +1,12 @@
 .page-dashboard{
-  display: flex;
+  &__linebox{
+    height: 516px;
+  }
   &__content{
-    flex:1;
-    .w(100px);
+    .page-dashboard-count{
+      height: 186px;
+    }
+    margin-right: 304px;
     .ant-tabs-nav-container{
       line-height: 24px;
       .pd-t(17px);
@@ -15,10 +19,9 @@
     }
   }
   &__adv{
-    flex:none;
+    float: right;
     .w(280px);
     .pd(0);
-    .mg-l(24px);
   }
   &__content,
   &__adv{

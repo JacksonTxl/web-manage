@@ -16,6 +16,7 @@
 </template>
 <script>
 import { PosterService } from './poster.service'
+import { AppConfig } from '@/constants/config'
 export default {
   name: 'BrandMarketingPoster',
   bem: {
@@ -23,7 +24,8 @@ export default {
   },
   serviceInject() {
     return {
-      posterService: PosterService
+      posterService: PosterService,
+      appConfig: AppConfig
     }
   },
   rxState() {
@@ -57,7 +59,7 @@ export default {
   created() {
     if (this.type === 1) {
       this.posterService.serviceInit(this.id).subscribe(() => {
-        this.url = `http://localhost:3080/saas/poster?token=${this.token}&brand_logo=${this.info.brand_logo}&brand_name=${this.info.brand_name}&price=${this.info.price}&qrcode_url=${this.info.qrcode_url}`
+        this.url = `${this.appConfig.SHS_API_ENV}/saas/poster?token=${this.token}&brand_logo=${this.info.brand_logo}&brand_name=${this.info.brand_name}&price=${this.info.price}&qrcode_url=${this.info.qrcode_url}`
       })
     } else if (this.type === 2) {
       this.activeClass = 'qrcode'

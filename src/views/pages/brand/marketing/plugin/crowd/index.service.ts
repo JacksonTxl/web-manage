@@ -26,7 +26,6 @@ export class IndexService extends Store<CrowdIndexState> {
     this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SET_CROWD_INDEX_INFO(crowdIndexInfo: CrowdIndexState) {
-    console.log(crowdIndexInfo)
     this.state$.commit(state => {
       state.crowdIndexInfo = crowdIndexInfo
     })
@@ -36,7 +35,8 @@ export class IndexService extends Store<CrowdIndexState> {
     return this.crowdAPI.getCrowdIndex().pipe(
       tap(res => {
         console.log(res, '获取数据')
-        res = this.authService.filter(res, 'info.list')
+        res = this.authService.filter(res)
+        console.log(res)
         this.SET_CROWD_INDEX_INFO(res)
       })
     )

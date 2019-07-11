@@ -12,7 +12,7 @@
           <st-info>
             <st-info-item label="退款时间">{{info.created_time}}</st-info-item>
             <st-info-item label="退款原因">{{info.refund.refund_reason}}</st-info-item>
-            <st-info-item label="退款方式">{{info.refund_time}}</st-info-item>
+            <st-info-item label="退款方式">{{info.refund.pay_channel}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="6">

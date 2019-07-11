@@ -101,7 +101,7 @@ export default {
         }
       })
       this.chart.legend({
-        position: 'top',
+        position: 'top-right',
         marker: 'circle',
         offsetY: -24,
         textStyle: {

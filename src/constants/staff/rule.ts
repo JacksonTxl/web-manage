@@ -111,7 +111,12 @@ export class RuleConfig {
   }
   // 工号
   get staff_num() {
-    return ['staff_num']
+    return ['staff_num', {
+      rules: [{
+        pattern: this.pattern.CN_EN_NUM('1-20'),
+        message: '请输入1-20个字，中英文及数字'
+      }]
+    }]
   }
   // 工作性质
   get nature_work() {

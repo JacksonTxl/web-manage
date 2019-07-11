@@ -95,6 +95,12 @@ export default {
       console.log('fileList', newList)
       this.list = this.fileList
       if (this.list.length) this.userImgSrc = this.list[0][this.imageUrl]
+    },
+    confirmLoading(v) {
+      this.$emit('loadingChange', v)
+    },
+    progress(v) {
+      this.$emit('progressChange', v)
     }
   },
   computed: {
@@ -197,7 +203,6 @@ export default {
     },
     // 开启摄像头
     openCamera() {
-      console.log(navigator.mediaDevices.getUserMedia)
       if (!navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia = function(constraints) {
           // 首先获取现存的getUserMedia(如果存在)
@@ -223,6 +228,7 @@ export default {
     },
     // 关闭摄像头
     closeCamera() {
+      console.log('关闭摄像头')
       if (!this.$refs['video'].srcObject) return
       let stream = this.$refs['video'].srcObject
       let tracks = stream.getTracks()
@@ -245,6 +251,7 @@ export default {
     },
     error(error) {
       console.log(`error message ${error}`)
+      this.openCameraError = true
     },
     dataURItoBlob(dataURI) { // 图片转成Buffer
       let byteString = atob(dataURI.split(',')[1])
@@ -256,6 +263,9 @@ export default {
       }
       return new Blob([ab], { type: mimeString })
     }
+  },
+  beforeDestroy() {
+    this.closeCamera()
   }
 }
 </script>

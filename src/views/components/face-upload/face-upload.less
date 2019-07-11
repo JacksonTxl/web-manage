@@ -1,0 +1,69 @@
+.st-face-upload {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+  &__item {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    transition: all 0.5s;
+  }
+  &__item-img,
+  &__btn {
+    display: inline-block;
+  }
+  &__item-img {
+    object-fit: cover;
+  }
+  &__list,
+  &__btn {
+    vertical-align: top;
+  }
+  &__actions {
+    position: absolute;
+    width: 100%;
+    height: 32px;
+    left: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.45);
+    text-align: right;
+    padding: 0 6px;
+  }
+  .action {
+    font-size: 12px;
+    cursor: pointer;
+    line-height: 32px;
+    padding: 0 6px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+  .ant-upload {
+    width: 100%;
+    height: 100%;
+  }
+  &__face {
+    display: table;
+    width: 164px;
+    height: 164px;
+    text-align: center;
+    vertical-align: top;
+    background-color: #fafafa;
+    border: 1px dashed #cdd4df;
+    border-radius: 4px;
+    transition: border-color .3s ease;
+    cursor: pointer;
+    &:hover {
+      border-color: #3f66f6;
+    }
+    .container {
+      display: table-cell;
+      width: 100%;
+      height: 100%;
+      padding: 8px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .placeholder {
+      line-height: 1.5;
+    }
+  }
+}
