@@ -392,10 +392,10 @@ export default {
       const endValue = this.end_time
       if (!endValue) {
         // 结束时间未选择
-        return startValue.valueOf() < moment().subtract(1, 'd').valueOf()
+        return startValue.valueOf() < moment().startOf('day').valueOf()
       }
-      let start = endValue.valueOf() > moment().add(30, 'y').valueOf() ? moment(endValue).subtract(30, 'y').valueOf() : moment().subtract(1, 'd').add(1, 'ms').valueOf()
-      return startValue.valueOf() < start || startValue.valueOf() > moment(endValue).subtract(1, 'd').valueOf()
+      let start = endValue.valueOf() > moment().add(30, 'y').valueOf() ? moment(endValue).subtract(30, 'y').valueOf() : moment().startOf('day').valueOf()
+      return startValue.valueOf() < start || startValue.valueOf() > moment(endValue).valueOf()
     },
     handleStartOpenChange(open) {
       if (!open) {
@@ -410,9 +410,9 @@ export default {
       const startValue = this.start_time
       if (!startValue) {
         // 开始时间未选择
-        return endValue.valueOf() >= moment().add(30, 'y').valueOf() || endValue.valueOf() <= moment().valueOf()
+        return endValue.valueOf() < moment().startOf('day').valueOf()
       }
-      return endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).add(1, 'd').valueOf()
+      return endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).valueOf() || endValue.valueOf() < moment().startOf('day').valueOf()
     },
     handleEndOpenChange(open) {
       this.endOpen = open

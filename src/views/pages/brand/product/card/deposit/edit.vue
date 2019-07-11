@@ -126,6 +126,8 @@
                 </span>
                 <a-form-item class="page-a-form">
                   <a-date-picker
+                    :disabled="startTimeIsDisabled"
+                    :disabledDate="disabledStartDate"
                     v-decorator="['start_time',{rules:[{validator:start_time_validator}]}]"
                     format="YYYY-MM-DD"
                     placeholder="开始时间"
@@ -329,7 +331,9 @@ export default {
       transfer_unit_is_first: true,
       // 售卖时间
       start_time: null,
-      end_time: null
+      end_time: null,
+      // 是否禁止选择开始时间,如果卡状态是可售卖，则需要禁止修改开始时间
+      startTimeIsDisabled: false
     }
   },
   beforeCreate() {
@@ -369,6 +373,7 @@ export default {
       // 支持售卖时间
       this.start_time = moment(this.cardInfo.start_time)
       this.end_time = moment(this.cardInfo.end_time)
+      this.startTimeIsDisabled = moment(this.cardInfo.start_time).valueOf() < moment().startOf('day').valueOf() && moment(this.cardInfo.end_time).valueOf() > moment().valueOf()
       // 转让设置
       this.cardData._is_transfer = !!this.cardInfo.is_transfer
       this.cardData.transfer_unit = this.cardInfo.transfer_unit
@@ -571,6 +576,15 @@ export default {
       this.cardData.sell_shop_list = cloneDeep(data)
     },
     // 售卖时间-start
+    disabledStartDate(startValue) {
+      const endValue = this.end_time
+      if (!endValue) {
+        // 结束时间未选择
+        return startValue.valueOf() < moment().startOf('day').valueOf()
+      }
+      let start = endValue.valueOf() > moment().add(30, 'y').valueOf() ? moment(endValue).subtract(30, 'y').valueOf() : moment().startOf('day').valueOf()
+      return startValue.valueOf() < start || startValue.valueOf() > moment(endValue).valueOf()
+    },
     start_time_change(data) {
       this.start_time = cloneDeep(data)
     },
@@ -590,9 +604,9 @@ export default {
       const startValue = this.start_time
       if (!startValue) {
         // 开始时间未选择
-        return endValue.valueOf() >= moment().add(30, 'y').valueOf() || endValue.valueOf() <= moment().valueOf()
+        return endValue.valueOf() < moment().startOf('day').valueOf()
       }
-      return endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).add(1, 'd').valueOf()
+      return endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).valueOf() || endValue.valueOf() < moment().startOf('day').valueOf()
     },
     // moment
     moment,
