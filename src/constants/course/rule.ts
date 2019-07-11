@@ -187,7 +187,9 @@ export class RuleConfig {
    * 售卖渠道
    */
   get sellType() {
-    return ['sell_type']
+    return ['sell_type', {
+      initialValue: [2]
+    }]
   }
   /**
    * 是否支持单节售卖

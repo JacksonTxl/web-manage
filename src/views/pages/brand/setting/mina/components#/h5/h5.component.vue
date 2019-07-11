@@ -22,7 +22,8 @@
       <div :class="h5('event')">
         <a-row>
           <a-col v-for="(li,index) in eventInfo" class="event-li" :key="index" :span="li.span">
-            <img :src="li.image_url | imgFilter">
+            <img v-if="li.image_url" :src="li.image_url | imgFilter">
+            <div v-else class="img"></div>
           </a-col>
         </a-row>
       </div>

@@ -146,7 +146,7 @@ export default {
         options.push({
           label: sellType[i],
           value: +i,
-          disabled: +i === 1
+          disabled: +i === 2
         })
       }
       return options
@@ -176,9 +176,9 @@ export default {
       e.preventDefault()
       const data = this.getData()
       this.form.validateFields().then(() => {
-        // if (!this.inputCheck(this.priceGradient)) {
-        //   return
-        // }
+        if (!this.inputCheck()) {
+          return
+        }
         this.addService.setPrice(data).subscribe(this.onSaveSuccess)
       })
     },
@@ -193,24 +193,16 @@ export default {
     onChange(e) {
       this.priceSetting = e.target.value
     },
-    inputCheck(priceGradient) {
-      let ret = true
-      for (let i = 0; i < priceGradient.length; i++) {
-        let retIn = false
-        for (let j in priceGradient[i]) {
-          if (priceGradient[i][j] === undefined || priceGradient[i][j] === '') {
-            retIn = true
-          }
-        }
-        if (retIn) {
-          ret = false
+    inputCheck() {
+      if (this.singleReserve) {
+        if (!this.singlePrice.length) {
           this.messageService.error({
-            content: `第${i + 1}行课程定价输入有误`
+            content: '请输入单节预约价格'
           })
-          break
+          return
         }
       }
-      return ret
+      return true
     },
     getData() {
       const data = this.form.getFieldsValue()
