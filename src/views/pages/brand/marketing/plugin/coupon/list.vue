@@ -48,7 +48,7 @@
           <template slot="action" slot-scope="text,record">
             <st-table-actions>
               <a href="#" @click="onEdit(record)" v-if="record.auth['brand:activity:coupon|edit']">编辑</a>
-              <a href="#" @click="onEdit(record)" v-if="record.auth['brand:activity:coupon|promotion']">推广</a>
+              <a href="#" @click="onGeneralize(record)" v-if="record.auth['brand:activity:coupon|promotion']">推广</a>
               <a href="#" @click="onStop(record)" v-if="record.auth['brand:activity:coupon|end']">结束</a>
             </st-table-actions>
           </template>
@@ -172,6 +172,34 @@ export default {
     // 编辑
     onEdit(record) {
       this.$router.push({ path: '/brand/marketing/plugin/coupon/add', query: { id: record.id } })
+    },
+    onGeneralize(record) {
+      // 分享海报
+      this.$modalRouter.push({
+        name: 'brand-marketing-poster',
+        props: {
+          id: String(record.id),
+          type: 1
+        },
+        on: {
+          success: () => {
+            console.log('success')
+          }
+        }
+      })
+      // 分享小程序
+      // this.$modalRouter.push({
+      //   name: 'brand-marketing-poster',
+      //   props: {
+      //     id: record.id,
+      //     type: 2
+      //   },
+      //   on: {
+      //     success: () => {
+      //       console.log('success')
+      //     }
+      //   }
+      // })
     },
     // 停止优惠券模板
     onStop(record) {
