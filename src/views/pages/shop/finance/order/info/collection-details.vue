@@ -44,10 +44,6 @@ const columns = [{
   dataIndex: 'operator_name',
   scopedSlots: { customRender: 'operator_name' }
 }, {
-  title: '关联订单号',
-  dataIndex: 'linked_order',
-  scopedSlots: { customRender: 'linked_order' }
-}, {
   title: '备注',
   dataIndex: 'remark',
   scopedSlots: { customRender: 'remark' }
