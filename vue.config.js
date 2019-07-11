@@ -55,6 +55,7 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
     watchContentBase: true,
+    https: true,
     proxy: {
       '/_api': {
         // target: 'http://10.10.31.181:10000',
