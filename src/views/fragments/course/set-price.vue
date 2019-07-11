@@ -1,6 +1,5 @@
 <template>
   <div class="set-price">
-    {{priceGradient}}
     <div class="ta-c">
       <st-button
         v-if="priceModel === 2"
