@@ -58,6 +58,9 @@
                 >img{
                     .s(34px,34px);
                 }
+                >p{
+                    .mg-b(0);
+                }
             }
         }
         &__hr{
@@ -69,11 +72,16 @@
         &__event{
             padding: 12px 0;
             .event-li{
-                .h(64px);
+                .h(58px);
                 padding:5px;
                 img{
                     .s(100%, 100%);
                     .bd-r(4px);
+                }
+                .img{
+                    .bd-r(4px);
+                    .bg(#F4F5F6);
+                    .s(100%,100%);
                 }
             }
         }
@@ -103,6 +111,9 @@
                 .st-title{
                     .mg-t(16px);
                     font-weight: 700;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
                 p{
                     .mg-b(3px);
