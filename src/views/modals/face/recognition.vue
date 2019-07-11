@@ -251,6 +251,7 @@ export default {
     },
     error(error) {
       console.log(`error message ${error}`)
+      this.openCameraError = true
     },
     dataURItoBlob(dataURI) { // 图片转成Buffer
       let byteString = atob(dataURI.split(',')[1])
