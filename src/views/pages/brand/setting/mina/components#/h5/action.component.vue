@@ -7,7 +7,7 @@
             :sizeLimit="2"  placeholder="上传照片" :numLimit="1"></st-image-upload>
           <div :class="action('box-title')">
             <a-input placeholder="请输入功能名称" v-model="li.title" maxlength="10"/>
-            <div>跳转：{{li.link}}</div>
+            <div>跳转：{{link[index]}}</div>
           </div>
         </div>
       </a-col>
@@ -33,28 +33,12 @@ export default {
   },
   data() {
     return {
-      list: []
+      list: [],
+      link: ['约课列表', '门店私教列表', '课程包列表', '卡项列表']
     }
   },
   mounted() {
     this.list = cloneDeep(this.actionInfo)
-    // this.list = [{
-    //   'image_url': 'https://pic1-s.styd.cn/w.jpg',
-    //   'title': '活动标题',
-    //   'link': 'plugin:activity:1287'
-    // }, {
-    //   'image_url': 'https://pic1-s.styd.cn/w.jpg',
-    //   'title': '活动标题',
-    //   'link': 'plugin:wheel_of_fortune:7893'
-    // }, {
-    //   'image_url': 'https://pic1-s.styd.cn/w.jpg',
-    //   'title': '活动标题',
-    //   'link': 'plugin:wheel_of_fortune:7893'
-    // }, {
-    //   'image_url': 'https://pic1-s.styd.cn/w.jpg',
-    //   'title': '活动标题',
-    //   'link': 'plugin:wheel_of_fortune:7893'
-    // }]
   },
   watch: {
     list: {

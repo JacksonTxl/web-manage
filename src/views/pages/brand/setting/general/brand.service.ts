@@ -5,13 +5,15 @@ import { BrandApi, UpdateInput } from '@/api/v1/setting/brand'
 
 @Injectable()
 export class BrandService implements RouteGuard {
-  resData$ = new State({})
+  brandInfo$ = new State({})
+  systemInfo$ = new State({})
   loading$ = new State({})
   constructor(private brandApi: BrandApi) {}
   getInfo() {
     return this.brandApi.getInfo().pipe(
-      tap(res => {
-        this.resData$.commit(() => res)
+      tap((res: any) => {
+        this.brandInfo$.commit(() => res.info.brand_info)
+        this.systemInfo$.commit(() => res.info.system_info)
       })
     )
   }

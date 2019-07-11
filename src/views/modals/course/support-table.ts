@@ -27,7 +27,7 @@ export const columnsPrices = [{
   dataIndex: 'shop_name'
 }, {
   title: '教练等级',
-  dataIndex: 'coach_level_name'
+  dataIndex: 'level'
 }, {
   title: '售卖梯度',
   dataIndex: 'sell_range'
@@ -39,10 +39,7 @@ export const columnsPrices = [{
   dataIndex: 'transfer_num',
   scopedSlots: { customRender: 'transfer_num' }
 }]
-export const columnsPricesShop = [{
-  title: '门店',
-  dataIndex: 'shop_name'
-}, {
+export const columnsPricesShop = [ {
   title: '教练等级',
   dataIndex: 'level'
 }, {

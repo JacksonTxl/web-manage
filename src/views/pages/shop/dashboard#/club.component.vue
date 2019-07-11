@@ -154,7 +154,8 @@
           </a-col>
           <a-col :span="10" :offset="1">
             <st-t3 style="margin-bottom:24px;">售课消课</st-t3>
-            <shop-course-bar v-if="show" :data="courseSummary"></shop-course-bar>
+            <!-- <shop-course-bar v-if="show" :data="courseSummary"></shop-course-bar> -->
+            <shop-course-facet-bar :data="courseSummary"></shop-course-facet-bar>
           </a-col>
         </a-row>
       </st-panel>
@@ -190,12 +191,12 @@ import ShopRevenueRing from '@/views/biz-components/stat/shop-revenue-ring'
 import ShopRevenueLine from '@/views/biz-components/stat/shop-revenue-line'
 import ShopCourseLine from '@/views/biz-components/stat/shop-course-line'
 import ShopAddUser from '@/views/biz-components/stat/shop-add-user'
-import ShopCourseBar from '@/views/biz-components/stat/shop-course-bar'
 import ShopEntryBar from '@/views/biz-components/stat/shop-entry-bar'
 import ShopEntryLine from '@/views/biz-components/stat/shop-entry-line'
 import CrowdLine from '@/views/biz-components/stat/crowd-line'
 import SidebarComponent from './sidebar.component'
 import RecentRadioGroup from './recent-radio-group'
+import ShopCourseFacetBar from '@/views/biz-components/stat/shop-course-facet-bar'
 import {
   ClubComponentService
 } from './club.component.service'
@@ -259,13 +260,13 @@ export default {
     ShopRevenueRing,
     ShopRevenueLine,
     ShopCourseLine,
-    ShopCourseBar,
     ShopEntryBar,
     ShopEntryLine,
     FunnelVertical,
     ShopAddUser,
     SidebarComponent,
-    RecentRadioGroup
+    RecentRadioGroup,
+    ShopCourseFacetBar
   },
   methods: {
     inoutRecentChange(query) {

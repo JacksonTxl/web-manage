@@ -17,6 +17,8 @@ export class ListService implements RouteGuard {
   page$ = new State({})
   categoryList$ = new State<any[]>([])
   shopSelectOptions$ = new State<any[]>([])
+  priceGradient$ = new State<any[]>([])
+  dataSource$ = new State<any[]>([])
   auth$ = new State({
     add: this.authService.can('brand_shop:product:personal_course|add')
   })
@@ -44,7 +46,28 @@ export class ListService implements RouteGuard {
     )
   }
   getCoursePriceList(id: any) {
-    return this.shopPersonalCourseApi.getCoursePriceList(id)
+    return this.shopPersonalCourseApi.getCoursePriceList(id).pipe(tap(res => {
+      this.priceGradient$.commit(() => res.info.price_gradient)
+    }), tap(res => {
+      let dataSource:any[] = []
+      res.info.price_gradient.forEach((ele: any) => {
+        ele.prices.forEach((item: any) => {
+          let sell_prices = res.sale_model === 2 ? item.sell_price : `${item.min_sell_price} ~ ${item.max_sell_price}元`
+          let sell_range = `${item.min_sale} ~ ${item.max_sale}节`
+          dataSource.push({
+            sell_prices,
+            sell_range,
+            ...item
+          })
+        })
+      })
+      this.dataSource$.commit(() => dataSource)
+    }))
+  }
+  settingCoursePrice(params: any) {
+    return this.shopPersonalCourseApi.settingCoursePrice(params).pipe(tap(res => {
+      this.msg.success({ content: '设置成功' })
+    }))
   }
   deleteCourse(id: any) {
     return this.shopPersonalCourseApi.deleteCourse(id).pipe(tap(res => {

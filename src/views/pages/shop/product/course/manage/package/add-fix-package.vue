@@ -537,7 +537,7 @@ export default {
         // 是否可以转让: 0 不可以 1 可以
         is_allow_transfer: 0,
         // 转让费率
-        transfer_rate: null,
+        transfer_rate: undefined,
         // 转让单位 1:百分比 2:元
         transfer_unit: 1,
         // 封面对象
@@ -999,7 +999,7 @@ export default {
     transfer(e) {
       this.packageData.is_allow_transfer = +e.target.checked
       // 重置转让费用的校验
-      this.packageData.transfer_rate = null
+      this.packageData.transfer_rate = undefined
       this.form.resetFields(['transfer_rate'])
     },
     fileChange(data) {
@@ -1018,9 +1018,9 @@ export default {
       }
     },
     transferUnitChange() {
-      this.packageData.transfer_rate = null
+      this.packageData.transfer_rate = undefined
       this.form.setFieldsValue({
-        'transfer_rate': null
+        'transfer_rate': undefined
       })
     },
     // start_time validatorFn

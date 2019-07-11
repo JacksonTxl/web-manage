@@ -11,22 +11,7 @@
             <a-textarea v-model="info.contract_title" placeholder="请输入衡量标准" maxlength="30"></a-textarea>
           </st-form-item>
           <st-form-item label="合同编号">
-            <span v-if="codeRules.length">{{codeRules.length}}位编号</span>
-            <span v-else>暂无编号位数</span>
-
-            <a class="mg-l16"
-              v-modal-link="{
-                name:'contract-code-edit',
-                props: {
-                  id:info.id,codeRules
-                },
-                on:{
-                  done: onCodeDone
-                }
-              }"
-            >
-              设置规则
-            </a>
+            <a-input v-model="info.contract_prefix" :class="bSider('prefix')" placeholder="输入合同编号前缀"></a-input>+8位随机编号
           </st-form-item>
           <st-form-item label="页面缩放" :class="bSider('form-item',{radio:true})">
             <a-radio-group @change="onPageTypeChange" v-model="info.contract_page_type">

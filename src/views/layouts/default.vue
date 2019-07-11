@@ -6,13 +6,13 @@
           <img
             width="100%"
             height="100%"
-            :src="user.brand_logo | imgFilter({w:48,h:48})"
+            :src="brand.logo | imgFilter({ w: 48, h: 48 })"
             alt="logo"
           />
           <i class="layout-default-sider__certification st-icon-certified"></i>
         </div>
         <div class="layout-default-sider__name cursor-pointer" @click="switchShop">
-          <span>{{user.shop_name || user.brand_name}}</span>
+          <span>{{shop.name || brand.name}}</span>
           <st-icon type="arrow-right"></st-icon>
         </div>
       </div>
@@ -105,7 +105,9 @@ export default {
   },
   rxState() {
     return {
-      user: this.userService.user$
+      user: this.userService.user$,
+      shop: this.userService.shop$,
+      brand: this.userService.brand$
     }
   },
   data() {

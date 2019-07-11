@@ -2,10 +2,12 @@
   <st-modal
     class="modal-support-course-shops"
     title='查看店详情'
+    :footer="null"
     v-model='show'>
     <st-container>
     <st-table
     :columns="columnsShops"
+    :page="false"
     :rowKey="record => record.shop_name"
     :dataSource="supportShopList">
     </st-table>

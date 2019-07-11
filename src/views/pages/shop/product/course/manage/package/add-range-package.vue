@@ -34,26 +34,26 @@
                   <th></th>
                   <th class="rightline">课程类型</th>
                   <th class="pl-56">节数</th>
-                  <th>课时费</th>
+                  <th class="pd-x16">课时费</th>
                   <th colspan="2">小计</th>
                 </tr>
                 <tbody>
                   <tr class="bg-row-odd checkbox">
                     <td class="tg-c"><a-checkbox @change="teamCheckboxChange"/></td>
-                    <td class="rightline">团体课程</td>
+                    <td class="rightline white-nowrap">团体课程</td>
                     <td class="pr-32 pl-56">
-                      <st-input-number :min="1" :max="99999" v-model="packageData.team_times" :disabled="packageData.is_team===0">
+                      <st-input-number  style="min-width:100px" :min="1" :max="99999" v-model="packageData.team_times" :disabled="packageData.is_team===0">
                         <template slot="addonAfter">节</template>
                       </st-input-number>
                     </td>
-                    <td class="pr-148">
-                      <st-input-number :min="0" :max="999999.9" v-model="packageData.team_unit_price" :float="true" :disabled="packageData.is_team===0">
+                    <td class="pr-32">
+                      <st-input-number  style="min-width:100px" :min="0" :max="999999.9" v-model="packageData.team_unit_price" :float="true" :disabled="packageData.is_team===0">
                         <template slot="addonAfter">元</template>
                       </st-input-number>
                     </td>
                     <td>{{team_total}}</td>
                     <td class="overflow-hidden">
-                      <a class="set-course-button"
+                      <a class="set-course-button white-nowrap"
                       @click="teamCourseListShow"
                       :disabled="!packageData.is_team"
                       :class="{'hide':!(teamCourseListIsShow&&packageData.is_team)}"
@@ -128,12 +128,12 @@
                     <td class="tg-c"><a-checkbox @change="personalCheckboxChange" /></td>
                     <td class="rightline">私教课程</td>
                     <td class="pr-32 pl-56">
-                      <st-input-number :min="1" :max="99999" v-model="packageData.personal_times" :disabled="packageData.is_personal===0">
+                      <st-input-number style="min-width:100px" :min="1" :max="99999" v-model="packageData.personal_times" :disabled="packageData.is_personal===0">
                         <template slot="addonAfter">节</template>
                       </st-input-number>
                     </td>
-                    <td class="pr-148">
-                      <st-input-number :min="0" :max="999999.9" v-model="packageData.personal_unit_price" :float="true" :disabled="packageData.is_personal===0">
+                    <td class="pr-32">
+                      <st-input-number style="min-width:100px" :min="0" :max="999999.9" v-model="packageData.personal_unit_price" :float="true" :disabled="packageData.is_personal===0">
                         <template slot="addonAfter">元</template>
                       </st-input-number>
                     </td>
@@ -331,7 +331,7 @@
               ]">
               <a-select v-model="packageData.valid_time_unit" slot="addonAfter" style="width: 60px">
                 <a-select-option
-                v-for="(item,index) in unit_list"
+                v-for="(item,index) in unitList"
                 :value="item.value"
                 :key="index" >{{item.label}}</a-select-option>
               </a-select>
@@ -368,7 +368,7 @@
                  {rules: [{initialValue: null,required: packageData.is_allow_transfer!==0, message: '请输入转让值数值'}]}
               ]" :disabled="packageData.is_allow_transfer===0" :float="packageData.transfer_unit===2" :class="basic('transfer-input')" style="padding-right:0;">
                 <a-select :disabled="packageData.is_allow_transfer===0" slot="addonAfter" @change="transferUnitChange" v-model="packageData.transfer_unit" style="width: 60px">
-                  <a-select-option v-for="item in Object.entries(package_course.transfer_unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
+                  <a-select-option v-for="item in transferUnitList" :key="item.value" :value="+item.value">{{item.label}}</a-select-option>
                 </a-select>
               </st-input-number>
             </div>
@@ -380,7 +380,7 @@
           <st-form-item label="售卖方式" required>
             <a-checkbox-group v-model="packageData.sale_mode">
               <a-checkbox
-              v-for="item in sell_type_list"
+              v-for="item in sellTypeList"
               :key="item.value"
               :disabled="item.value===2"
               :value="item.value">{{item.label}}</a-checkbox>
@@ -415,9 +415,9 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="课程包介绍">
-             <a-textarea
+             <st-textarea
                 v-model="packageData.intro"
-                maxlength="500"
+                :maxlength="500"
                 class="page-content-card-textarea"
                 placeholder="请输入课程包介绍"
                 :rows="4"/>
@@ -427,9 +427,9 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="备注">
-             <a-textarea
+             <st-textarea
                 v-model="packageData.remarks"
-                maxlength="500"
+                :maxlength="500"
                 class="page-content-card-textarea"
                 placeholder="请输入备注"
                 :rows="4"/>
@@ -449,22 +449,22 @@
 </template>
 <script>
 import moment from 'moment'
-import { UserService } from '@/services/user.service'
 import { cloneDeep, remove, every, filter, reduce, forEach } from 'lodash-es'
 import { AddRangePackageService } from './add-range-package.service'
 export default {
   name: 'ShopRangePackageAdd',
   serviceInject() {
     return {
-      userService: UserService,
       addPackageService: AddRangePackageService
     }
   },
   rxState() {
     return {
+      transferUnitList: this.addPackageService.transferUnitList$,
+      sellTypeList: this.addPackageService.sellTypeList$,
+      unitList: this.addPackageService.unitList$,
       addLoading: this.addPackageService.loading$,
-      coachList: this.addPackageService.coachList$,
-      package_course: this.userService.packageCourseEnums$
+      coachList: this.addPackageService.coachList$
     }
   },
   bem: {
@@ -477,21 +477,21 @@ export default {
         // 课程包名称
         course_name: '',
         // 售价
-        price: null,
+        price: undefined,
         // 是否支持团体课 0为不支持 1为支持
         is_team: 0,
         // 团体课总节数
-        team_times: null,
+        team_times: undefined,
         // 团体课单价
-        team_unit_price: null,
+        team_unit_price: undefined,
         // 团体课上课范围课程id
         team_range: [],
         // 是否支持私教课 0为不支持 1为支持
         is_personal: 0,
         // 私教课总节数
-        personal_times: null,
+        personal_times: undefined,
         // 私教课单价
-        personal_unit_price: null,
+        personal_unit_price: undefined,
         // 私教课上课范围课程id course_id私教课课程id coach_level私教课支持预约的教练等级
         personal_range: [],
         // 售卖开始时间
@@ -499,17 +499,17 @@ export default {
         // 售卖截止时间
         end_time: '',
         // 有效时间值
-        valid_time: null,
+        valid_time: undefined,
         // 有效时间单位 1:天 2:月 3:年
         valid_time_unit: 1,
         // 允许冻结天数
-        frozen_days: null,
+        frozen_days: undefined,
         // 售卖方式
         sale_mode: [2],
         // 是否可以转让: 0 不可以 1 可以
         is_allow_transfer: 0,
         // 转让费率
-        transfer_rate: null,
+        transfer_rate: undefined,
         // 转让单位 1:百分比 2:元
         transfer_unit: 1,
         // 封面对象
@@ -552,21 +552,7 @@ export default {
       imageIsNone: false,
       imageErrorText: '',
       fileList: [],
-      cropperModal: {},
-      unit_list: [
-        {
-          value: 1,
-          label: '天'
-        },
-        {
-          value: 2,
-          label: '月'
-        },
-        {
-          value: 3,
-          label: '年'
-        }
-      ]
+      cropperModal: {}
     }
   },
   methods: {
@@ -580,7 +566,7 @@ export default {
           this.packageData.price = values.price
           this.packageData.valid_time = values.valid_time
           this.packageData.frozen_days = values.frozen_days
-          this.packageData.transfer_rate = values.transfer_rate
+          this.packageData.transfer_rate = this.packageData.is_allow_transfer ? +values.transfer_rate : undefined
           this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')}`
           this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
           this.packageData.team_range = []
@@ -596,7 +582,6 @@ export default {
           })
           this.addPackageService.add(this.packageData).subscribe(res => {
             this.$router.push({ path: '/shop/product/course/manage/package/list' })
-            console.log(res)
           })
         }
       })
@@ -611,9 +596,9 @@ export default {
           this.packageData.price = values.price
           this.packageData.valid_time = values.valid_time
           this.packageData.frozen_days = values.frozen_days
-          this.packageData.transfer_rate = values.transfer_rate
-          this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')} 00:00:00`
-          this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')} 23:59:59`
+          this.packageData.transfer_rate = this.packageData.is_allow_transfer ? +values.transfer_rate : undefined
+          this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')}`
+          this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
           this.packageData.team_range = []
           this.teamCourseList.forEach(i => {
             this.packageData.team_range.push(i.course_id)
@@ -627,7 +612,6 @@ export default {
           })
           this.addPackageService.addAndOnsale(this.packageData).subscribe(res => {
             this.$router.push({ path: '/shop/product/course/manage/package/list' })
-            console.log(res)
           })
         }
       })
@@ -853,7 +837,7 @@ export default {
     transfer(e) {
       this.packageData.is_allow_transfer = +e.target.checked
       // 重置转让费用的校验
-      this.packageData.transfer_rate = null
+      this.packageData.transfer_rate = undefined
       this.form.resetFields(['transfer_rate'])
     },
     fileChange(data) {
@@ -872,9 +856,9 @@ export default {
       }
     },
     transferUnitChange() {
-      this.packageData.transfer_rate = null
+      this.packageData.transfer_rate = undefined
       this.form.setFieldsValue({
-        'transfer_rate': null
+        'transfer_rate': undefined
       })
     },
     // start_time validatorFn
@@ -910,32 +894,10 @@ export default {
       const endValue = this.end_time
       if (!endValue) {
         // 结束时间未选择
-        return (
-          startValue.valueOf() <
-          moment()
-            .subtract(1, 'd')
-            .valueOf()
-        )
+        return startValue.valueOf() < moment().startOf('day').valueOf()
       }
-      let start =
-        endValue.valueOf() >
-        moment()
-          .add(30, 'y')
-          .valueOf()
-          ? moment(endValue)
-            .subtract(30, 'y')
-            .valueOf()
-          : moment()
-            .subtract(1, 'd')
-            .add(1, 'ms')
-            .valueOf()
-      return (
-        startValue.valueOf() < start ||
-        startValue.valueOf() >
-          moment(endValue)
-            .subtract(1, 'd')
-            .valueOf()
-      )
+      let start = endValue.valueOf() > moment().add(30, 'y').valueOf() ? moment(endValue).subtract(30, 'y').valueOf() : moment().startOf('day').valueOf()
+      return startValue.valueOf() < start || startValue.valueOf() > moment(endValue).valueOf()
     },
     // 售卖时间-end
     end_time_change(data) {
@@ -948,23 +910,9 @@ export default {
       const startValue = this.start_time
       if (!startValue) {
         // 开始时间未选择
-        return (
-          endValue.valueOf() >=
-            moment()
-              .add(30, 'y')
-              .valueOf() || endValue.valueOf() <= moment().valueOf()
-        )
+        return endValue.valueOf() < moment().startOf('day').valueOf()
       }
-      return (
-        endValue.valueOf() >=
-          moment(startValue)
-            .add(30, 'y')
-            .valueOf() ||
-        endValue.valueOf() <
-          moment(startValue)
-            .add(1, 'd')
-            .valueOf()
-      )
+      return endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).valueOf() || endValue.valueOf() < moment().startOf('day').valueOf()
     },
     // moment
     moment
@@ -1014,21 +962,6 @@ export default {
       let teamTotal = this.packageData.is_team ? this.team_total : 0
       let personalTotal = this.packageData.is_personal ? this.personal_total : 0
       return teamTotal + personalTotal
-    },
-    // 售卖渠道
-    sell_type_list() {
-      let sell_type = cloneDeep(Object.entries(this.package_course.sale_mode.value))
-      let arr = []
-      sell_type.forEach(i => {
-        arr.push({
-          value: +i[0],
-          label: i[1]
-        })
-      })
-      if (!this.appConfig) {
-        remove(arr, i => i.value === 1)
-      }
-      return arr
     }
   }
 }

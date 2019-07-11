@@ -16,8 +16,8 @@
         <st-image-upload v-if="isEdit"
           width="90px"
           height="90px"
-          :list="[brandInfo.image]"
-          placeholder="上传品牌logo"
+          :list="imageList"
+          placeholder="上传logo"
           :cropperModal="{ title:'标题', cropper: { aspectRatio: 1/1 } }"
            @change="onImgChange"
         >
@@ -105,7 +105,8 @@ export default {
   rxState() {
     const user = this.userService
     return {
-      resData: this.brandService.resData$,
+      brandInfo: this.brandService.brandInfo$,
+      systemInfo: this.brandService.systemInfo$,
       query: this.routeService.query$,
       settingEnums: user.settingEnums$,
       loading: this.brandService.loading$
@@ -113,22 +114,16 @@ export default {
   },
   data() {
     return {
-      image: {}
+      imageList: []
     }
   },
   computed: {
-    brandInfo() {
-      return this.resData.info.brand_info
-    },
-    systemInfo() {
-      return this.resData.info.system_info
-    },
     isEdit() {
       return this.query.type === 'edit'
     }
   },
   created() {
-    this.image = this.brandInfo.image
+    this.imageList = [this.brandInfo.image]
   },
   methods: {
     onEdit() {
@@ -146,7 +141,7 @@ export default {
       const params = {
         brand_name: info.brand_name,
         album_id: info.album_id,
-        image: this.image,
+        image: this.imageList[0],
         description: info.description
       }
       this.brandService.update(params).subscribe(() => {
@@ -154,9 +149,9 @@ export default {
           content: '保存成功'
         })
         this.$router.push({
-          query: {},
           force: true
         })
+        this.userService.reload()
       })
     },
     onCancel() {
@@ -165,20 +160,14 @@ export default {
       })
     },
     onImgChange(list) {
-      console.log('changed', list)
-      this.image = list[0]
+      this.imageList = list
     },
     inputCheck() {
       const info = this.brandInfo
       const brandName = info.brand_name
-      const description = info.description
       const { pattern } = this
       if (!pattern.CN_EN_NUM_SPACE('1-20').test(brandName)) {
         this.tip('品牌名称支持20字以内的中英文和数字')
-        return false
-      }
-      if (!pattern.CN_EN_NUM_SPACE('1-300').test(description)) {
-        this.tip('品牌介绍支持300字以内的中英文和数字')
         return false
       }
       return true
