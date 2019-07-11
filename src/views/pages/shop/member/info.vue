@@ -80,7 +80,7 @@
                     <a v-modal-link="{ name: 'shop-transfer-shop',props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">转店</a>
                   </a-menu-item>
                   <a-menu-item key="5" v-if="auth['shop:member:member|frozen']">
-                    <a v-modal-link="{ name: 'shop-frozen'}">冻结用户</a>
+                    <a v-modal-link="{ name: 'shop-frozen', props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">冻结用户</a>
                   </a-menu-item>
                   <a-menu-item key="6" v-if="auth['shop:member:member|rebind_card']">
                     <a v-modal-link="{ name: 'shop-missing-card',props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">重绑实体卡</a>
