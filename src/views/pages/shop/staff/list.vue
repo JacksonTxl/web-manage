@@ -85,7 +85,7 @@
         :dataSource="staffList"
         :scroll="{ x: 1500 }"
         class="page-shop-staff-table"
-        rowKey="staff_id"
+        rowKey="id"
         :page="page"
         @change="onTableChange"
       >

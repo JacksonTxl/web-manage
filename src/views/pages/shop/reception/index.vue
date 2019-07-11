@@ -74,14 +74,13 @@
                 <st-info-item class="mg-b0" label="入场状态">{{memberEntryStatus}}</st-info-item>
               </st-info>
             </div>
-            <st-image-upload
+            <st-face-upload
             :class="reception('upload')"
             width="180px"
             height="180px"
             placeholder="上传人脸"
-            :isFaceRecognition="true"
             @change="photoChange"
-            :list="photoList"></st-image-upload>
+            :list="photoList"></st-face-upload>
           </div>
           <div :class="reception('set-info')" v-if="!isEntry">
             <div class="set-info-item">
