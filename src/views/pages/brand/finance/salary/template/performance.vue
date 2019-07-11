@@ -18,7 +18,7 @@
       <template v-for="item in list">
         <tr :key="item.id">
           <td>{{ item.template_name }}</td>
-          <td>{{ item.performance_type }}</td>
+          <td>{{ item.performance_type | enumFilter('finance.performance_type') }}</td>
           <td>
             <template v-if="item.used == 0 ">
               <span>{{ item.used }}</span>

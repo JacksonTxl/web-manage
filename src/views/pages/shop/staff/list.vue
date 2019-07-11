@@ -75,7 +75,7 @@
         </st-button>
       </a-col>
       <a-col :lg="7" style="text-align: right;">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 300px;" v-model="query.keywords" @search="onSingleSearch('keywords', $event)"/>
+        <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 300px;" v-model="query.keyword" @search="onSingleSearch('keyword', $event)"/>
       </a-col>
     </a-row>
     <a-row :gutter="8" class="mg-t8">

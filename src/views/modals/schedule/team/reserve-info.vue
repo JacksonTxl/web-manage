@@ -48,6 +48,7 @@
               slot="consume_type"
               placeholder="选择消费方式"
               style="width: 120px"
+              v-model="showConsumeType"
               @change="onChangeConsumeType">
               <a-select-opt-group v-for="consumeType in consumeOptions" :key="consumeType.id">
                 <span slot="label"><a-icon type="snippets"/>{{consumeType.name}}</span>
@@ -111,6 +112,9 @@ import { TeamScheduleCommonService } from '../../../pages/shop/product/course/sc
 import { TeamScheduleReserveService } from '../../../pages/shop/product/course/schedule/team.service#/reserve.service'
 export default {
   name: 'OrderInfo',
+  serviceProviders() {
+    return [TeamScheduleCommonService, TeamScheduleReserveService]
+  },
   serviceInject() {
     return {
       teamScheduleCommonService: TeamScheduleCommonService,
@@ -144,6 +148,7 @@ export default {
   data() {
     return {
       isAdd: true,
+      showConsumeType: '',
       memberId: '',
       showSite: [],
       consumeType: '',
@@ -227,6 +232,7 @@ export default {
     },
     onChange(value) {
       this.memberId = value
+      this.showConsumeType = ''
       this.teamScheduleCommonService.getConsumeList({ course_id: this.courseId, member_id: value }).subscribe()
     },
     onChangeConsumeType(val) {

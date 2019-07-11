@@ -163,6 +163,8 @@
                 </span>
                 <a-form-item class="page-a-form">
                   <a-date-picker
+                    :disabled="startTimeIsDisabled"
+                    :disabledDate="disabledStartDate"
                     v-decorator="['start_time',{rules:[{validator:start_time_validator}]}]"
                     format="YYYY-MM-DD"
                     placeholder="开始时间"
@@ -197,7 +199,6 @@
                   v-decorator="['cardData.num',{rules:[{validator:transfer_validator}]}]"
                   class="page-input-group"
                   :float="cardData.unit===2"
-                  @change="transfter_change"
                   :disabled="!cardData._is_transfer"
                   :min="transferMin" :max="transferMax">
                     <a-select slot="addonAfter" v-model="cardData.unit" :disabled="!cardData._is_transfer">
@@ -335,7 +336,7 @@ export default {
         // 转让单位
         unit: 2,
         // 转让手续费
-        num: 0,
+        num: undefined,
         // 售卖渠道
         sell_type: [2],
         // 卡背景
@@ -439,7 +440,9 @@ export default {
           scopedSlots: { customRender: 'operation' },
           width: 80
         }
-      ]
+      ],
+      // 是否禁止选择开始时间,如果卡状态是可售卖，则需要禁止修改开始时间
+      startTimeIsDisabled: false
     }
   },
   beforeCreate() {
@@ -504,6 +507,7 @@ export default {
       // 支持售卖时间
       this.start_time = moment(this.cardInfo.start_time * 1000)
       this.end_time = moment(this.cardInfo.end_time * 1000)
+      this.startTimeIsDisabled = this.cardInfo.start_time * 1000 < moment().startOf('day').valueOf() && this.cardInfo.end_time * 1000 > moment().valueOf()
       // 转让设置
       this.cardData._is_transfer = !!this.cardInfo.is_transfer
       this.cardData.unit = this.cardInfo.transfer_unit
@@ -576,6 +580,8 @@ export default {
           this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
           // 卡id
           this.cardData.id = +this.$route.query.id
+          // 转让
+          this.cardData.num = this.cardData._is_transfer ? +values.cardData.num : undefined
           this.editService.editCard(this.cardData).subscribe(res => {
             this.$router.push({
               name: 'brand-product-card-member-list-all'
@@ -752,6 +758,15 @@ export default {
       this.cardData.sell_shop_list = cloneDeep(data)
     },
     // 售卖时间-start
+    disabledStartDate(startValue) {
+      const endValue = this.end_time
+      if (!endValue) {
+        // 结束时间未选择
+        return startValue.valueOf() < moment().startOf('day').valueOf()
+      }
+      let start = endValue.valueOf() > moment().add(30, 'y').valueOf() ? moment(endValue).subtract(30, 'y').valueOf() : moment().startOf('day').valueOf()
+      return startValue.valueOf() < start || startValue.valueOf() > moment(endValue).valueOf()
+    },
     start_time_change(data) {
       this.start_time = cloneDeep(data)
     },
@@ -771,9 +786,9 @@ export default {
       const startValue = this.start_time
       if (!startValue) {
         // 开始时间未选择
-        return endValue.valueOf() >= moment().add(30, 'y').valueOf() || endValue.valueOf() <= moment().valueOf()
+        return endValue.valueOf() < moment().startOf('day').valueOf()
       }
-      return endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).add(1, 'd').valueOf()
+      return endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).valueOf() || endValue.valueOf() < moment().startOf('day').valueOf()
     },
     // moment
     moment,
@@ -789,9 +804,6 @@ export default {
       this.cardData._is_transfer = e.target.checked
       // 重置转让费用的校验
       this.form.resetFields(['cardData.num'])
-    },
-    transfter_change(data) {
-      this.cardData.num = data
     },
     // 价格梯度校验
     priceValidator(type) {

@@ -57,7 +57,6 @@ export default {
     }
   },
   rxState() {
-    console.log(this.reserveService)
     return {
       auth: this.reserveService.infoAuth$ || {}
     }

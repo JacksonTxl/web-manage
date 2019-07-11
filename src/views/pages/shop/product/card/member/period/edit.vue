@@ -80,6 +80,8 @@
                 </span>
                 <a-form-item class="page-a-form">
                   <a-date-picker
+                    :disabled="startTimeIsDisabled"
+                    :disabledDate="disabledStartDate"
                     v-decorator="['start_time',{rules:[{required: true,message: '请选择开始售卖时间'}]}]"
                     format="YYYY-MM-DD"
                     placeholder="开始时间"
@@ -297,7 +299,9 @@ export default {
       // 备注
       cardContents: '',
       // 是否配置了用户端
-      appConfig: false
+      appConfig: false,
+      // 是否禁止选择开始时间,如果卡状态是可售卖，则需要禁止修改开始时间
+      startTimeIsDisabled: false
     }
   },
   mounted() {
@@ -325,6 +329,7 @@ export default {
         'end_time': moment(this.cardInfo.end_time * 1000),
         'transferNum': this.cardInfo.transfer_num
       })
+      this.startTimeIsDisabled = this.cardInfo.start_time * 1000 < moment().startOf('day').valueOf() && this.cardInfo.end_time * 1000 > moment().valueOf()
       this.startTime = moment(this.cardInfo.start_time * 1000)
       this.endTime = moment(this.cardInfo.end_time * 1000)
       // 转让设置
@@ -421,6 +426,16 @@ export default {
         gift_unit: null
       })
     },
+    // 开始时间
+    disabledStartDate(startValue) {
+      const endValue = this.end_time
+      if (!endValue) {
+        // 结束时间未选择
+        return startValue.valueOf() < moment().startOf('day').valueOf()
+      }
+      let start = endValue.valueOf() > moment().add(30, 'y').valueOf() ? moment(endValue).subtract(30, 'y').valueOf() : moment().startOf('day').valueOf()
+      return startValue.valueOf() < start || startValue.valueOf() > moment(endValue).valueOf()
+    },
     handleStartOpenChange(open) {
       if (!open) {
         this.endOpen = true
@@ -431,12 +446,12 @@ export default {
     },
     // 结束时间
     disabledEndDate(endValue) {
-      const startValue = this.startTime
+      const startValue = this.start_time
       if (!startValue) {
         // 开始时间未选择
-        return endValue.valueOf() >= moment().add(30, 'y').valueOf() || endValue.valueOf() <= moment().valueOf()
+        return endValue.valueOf() < moment().startOf('day').valueOf()
       }
-      return endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).add(1, 'd').valueOf()
+      return endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).valueOf() || endValue.valueOf() < moment().startOf('day').valueOf()
     },
     handleEndOpenChange(open) {
       this.endOpen = open
