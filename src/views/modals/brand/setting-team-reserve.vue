@@ -91,7 +91,7 @@
               @change="onCheckboxChange('reserve_upper_limit.is_limit_course_num')"
             >限制用户预约
             </a-checkbox>
-            <st-input-num style="width: 66px"
+            <st-input-number style="width: 66px"
               v-model="info.reserve_upper_limit.limit_course_num"
             />
             <span class="mg-l8" >节未开课的团体课程</span>
@@ -160,17 +160,17 @@
             >开启爽约惩罚</a-checkbox>
           </div>
           <div class="mg-t8">
-            <st-input-num style="width: 66px"
+            <st-input-number style="width: 66px"
               v-model="info.miss_punishment.miss_punish_day"
             />
             <span class="mg-l8">天内，已结束的团体课程未签到的课程数超过</span>
-            <st-input-num class="mg-l8" style="width: 66px"
+            <st-input-number class="mg-l8" style="width: 66px"
               v-model="info.miss_punishment.miss_punish_number"
             />
             <span class="mg-l8">次后，</span>
           </div>
           <div class="mg-t16">
-            <st-input-num style="width: 66px"
+            <st-input-number style="width: 66px"
               v-model="info.miss_punishment.miss_punish_limit"
             />
             <span class="mg-l8">天内不可再预约团体课程，员工代预约不受此限制</span>
