@@ -40,27 +40,14 @@
             v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
-            :to="{name:'brand-markting-plugin-crowd-analysis', query:{urlid:0,id:value.new_register_member.id}}"
+            :to="{name:'shop-member-crowd-analysis', query:{urlid:0,id:value.new_register_member.id}}"
           >人群分析</router-link>
-          <span class="shop-member-crowd-index-box__btn-dx">
-            <a-dropdown>
-              <span class="ant-dropdown-link" href="#">
-                定向运营
-                <a-icon type="down"/>
-              </span>
-              <a-menu slot="overlay">
-                <a-menu-item style="width:130px" v-if="auth.export">
-                  <a href="javascript:;">导出</a>
-                </a-menu-item>
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发短信</a>
-                </a-menu-item>
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发优惠</a>
-                </a-menu-item>
-              </a-menu>
-            </a-dropdown>
-          </span>
+
+          <span
+            v-if="auth.export"
+            class="shop-member-crowd-index-box__btn-rq"
+            @click="exportFunc(value.new_register_member.id)"
+          >导出</span>
         </div>
       </div>
       <div class="shop-member-crowd-index-box-title" style="margin:0 12px;">
@@ -101,27 +88,14 @@
             v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
-            :to="{name:'brand-markting-plugin-crowd-analysis', query:{urlid:1,id:value.person_course_expiring_crowd.id}}"
+            :to="{name:'shop-member-crowd-analysis', query:{urlid:1,id:value.person_course_expiring_crowd.id}}"
           >人群分析</router-link>
-          <span class="shop-member-crowd-index-box__btn-dx">
-            <a-dropdown>
-              <span class="ant-dropdown-link" href="#">
-                定向运营
-                <a-icon type="down"/>
-              </span>
-              <a-menu slot="overlay">
-                <a-menu-item style="width:130px" v-if="auth.export">
-                  <a href="javascript:;">导出</a>
-                </a-menu-item>
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发短信</a>
-                </a-menu-item>
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发优惠</a>
-                </a-menu-item>
-              </a-menu>
-            </a-dropdown>
-          </span>
+
+          <span
+            v-if="auth.export"
+            class="shop-member-crowd-index-box__btn-rq"
+            @click="exportFunc(value.person_course_expiring_crowd.id)"
+          >导出</span>
         </div>
       </div>
       <div class="shop-member-crowd-index-box-title">
@@ -162,27 +136,13 @@
             v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
-            :to="{name:'brand-markting-plugin-crowd-analysis', query:{urlid:2,id:value.expiring_crowd.id}}"
+            :to="{name:'shop-member-crowd-analysis', query:{urlid:2,id:value.expiring_crowd.id}}"
           >人群分析</router-link>
-          <span class="shop-member-crowd-index-box__btn-dx">
-            <a-dropdown>
-              <span class="ant-dropdown-link" href="#">
-                定向运营
-                <a-icon type="down"/>
-              </span>
-              <a-menu slot="overlay">
-                <a-menu-item style="width:130px" v-if="auth.export">
-                  <a href="javascript:;">导出</a>
-                </a-menu-item>
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发短信</a>
-                </a-menu-item>
-                <a-menu-item style="width:130px">
-                  <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发优惠</a>
-                </a-menu-item>
-              </a-menu>
-            </a-dropdown>
-          </span>
+          <span
+            v-if="auth.export"
+            class="shop-member-crowd-index-box__btn-rq"
+            @click="exportFunc(value.expiring_crowd.id)"
+          >导出</span>
         </div>
       </div>
     </div>
@@ -191,11 +151,13 @@
 <script>
 import { MessageService } from '@/services/message.service'
 import { IndexService } from './index.service'
+import { CrowdAPI } from '@/api/v1/crowd'
 export default {
   serviceInject() {
     return {
-      aService: IndexService,
-      messageService: MessageService
+      messageService: MessageService,
+      crowdAPI: CrowdAPI,
+      aService: IndexService
     }
   },
   rxState() {
@@ -213,9 +175,15 @@ export default {
   data() {
     return {}
   },
+  created() {
+    console.log(this.crowdAPI.crowdShopExport())
+  },
   methods: {
     newCrowd(data) {
       this.messageService.warning({ content: data })
+    },
+    exportFunc(id) {
+      this.aService.getListInfo(id).subscribe()
     }
   },
   mounted() {}
