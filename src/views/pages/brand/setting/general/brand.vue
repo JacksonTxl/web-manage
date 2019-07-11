@@ -165,14 +165,9 @@ export default {
     inputCheck() {
       const info = this.brandInfo
       const brandName = info.brand_name
-      const description = info.description
       const { pattern } = this
       if (!pattern.CN_EN_NUM_SPACE('1-20').test(brandName)) {
         this.tip('品牌名称支持20字以内的中英文和数字')
-        return false
-      }
-      if (!pattern.CN_EN_NUM_SPACE('1-300').test(description)) {
-        this.tip('品牌介绍支持300字以内的中英文和数字')
         return false
       }
       return true
