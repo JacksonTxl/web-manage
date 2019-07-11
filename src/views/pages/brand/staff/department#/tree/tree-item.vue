@@ -9,7 +9,8 @@
         <span class="tree-switch__empty" v-else-if="level!==0"></span>
         <div class="tree-name edit-box" v-if="item.isEdit">
           <a-input placeholder="请输入部门名称" class="tree-input mg-r8" v-model="editValue"></a-input>
-          <a href="javascript:;" class="button edit mg-r8" @click="editDepartment">保存</a><span class="button edit mg-r8" @click="cancelEdit">x</span>
+          <a href="javascript:;" class="button edit mg-r8" @click="editDepartment">保存</a>
+          <span class="button edit mg-r8" @click="cancelEdit">x</span>
         </div>
         <span class="tree-name" v-else>{{ item.name }}( {{item.count}} )</span>
         <st-more-dropdown class="tree-opreation" v-show="!item.isEdit">
@@ -18,7 +19,16 @@
           <a-menu-item  @click="deleteDepartment(item)">删除</a-menu-item>
         </st-more-dropdown>
       </div>
-      <div v-if="item.isAdd" class="edit-box"><a-input  placeholder="请输入部门名称" class="tree-input  mg-r8" v-model="addValue"></a-input><a href="javascript:;" class="mg-r8" @click="addDepartment">保存</a><span class="mg-r8" @click="cancelEdit">x</span></div>
+      <div v-if="item.isAdd" class="edit-box">
+        <a-input
+          placeholder="请输入部门名称"
+          class="tree-input  mg-r6"
+          v-model="addValue">
+        </a-input>
+        <a href="javascript:;" class="mg-r8" @click="addDepartment">保存</a>
+        <!-- <span class="mg-r8" @click="cancelEdit">x</span> -->
+        <a-icon type="close-circle" @click="cancelEdit"/>
+      </div>
     </div>
     <ul class="st-tree-item" v-show="isOpen" v-if="isFolder">
       <tree-item
