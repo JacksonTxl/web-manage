@@ -4,6 +4,7 @@ import { ServiceRoute, Injectable } from 'vue-service-app'
 import { Action } from 'rx-state'
 import { EMPTY } from 'rxjs'
 import { AppConfig } from '@/constants/config'
+import { NProgressService } from './nprogress.service'
 
 /**
  * 热更新服务
@@ -12,7 +13,10 @@ import { AppConfig } from '@/constants/config'
 export class HotReleaseService {
   reloadAction$: Action<any>
 
-  constructor(private appConfig: AppConfig) {
+  constructor(
+    private appConfig: AppConfig,
+    private nProgressService: NProgressService
+  ) {
     this.reloadAction$ = new Action(data$ =>
       data$.pipe(
         throttleTime(10000),
@@ -23,6 +27,7 @@ export class HotReleaseService {
             .pipe(catchError(() => EMPTY))
         ),
         tap(({ response }) => {
+          this.nProgressService.next('版本更新服务完毕')
           if (response.git_commit !== this.appConfig.GIT_COMMIT) {
             console.log(
               '需要刷新页面',

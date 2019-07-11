@@ -256,7 +256,7 @@ export class UserService extends Store<UserState> {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init().pipe(
       tap(() => {
-        this.nprogress.inc()
+        this.nprogress.next('用户信息加载完毕')
       })
     )
   }

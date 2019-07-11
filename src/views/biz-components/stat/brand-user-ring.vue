@@ -51,7 +51,7 @@ export default {
       this.chart = new Chart({
         container: this.$el,
         forceFit: true,
-        padding: [8, 190, 8, 0],
+        padding: ['auto', 160, 'auto', 'auto'],
         height: this.height
       })
       this.chart.source(this.dv, {

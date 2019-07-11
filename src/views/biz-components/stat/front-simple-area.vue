@@ -1,5 +1,5 @@
 <template>
-  <div class="stat-brand-simple-line"></div>
+  <div class="stat-front-simple-area"></div>
 </template>
 
 <script>
@@ -52,7 +52,7 @@ export default {
         forceFit: true,
         height: this.height,
         renderer: 'svg',
-        padding: [2, 2, 0, 2]
+        padding: 'auto'
       })
 
       this.chart.source(this.dv, {
@@ -66,6 +66,7 @@ export default {
       })
       this.chart.axis('value', {
         nice: true,
+        label: false,
         grid: {
           lineStyle: {
             stroke: '#E6E9EF',
@@ -107,7 +108,7 @@ export default {
 </script>
 
 <style lang="less">
-.stat-brand-simple-line {
+.stat-front-simple-area {
   .g2-tooltip {
     padding: 0 !important;
   }

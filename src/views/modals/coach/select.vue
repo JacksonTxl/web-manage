@@ -10,11 +10,20 @@
         mode="multiple"
         style="width: 100%"
         placeholder="请输入教练昵称、姓名、手机号进行查询"
-        :defaultValue="selected"
+        :value="coachIds"
         @change="onChange"
         @search="onSearch"
+        :filterOption="false"
+        @focus="onFocus"
+        @blur="onBlur"
       >
-        <a-select-option v-for="item in list" :key="`${item.id}`" :value="item.id">{{item.nickname}}</a-select-option>
+        <a-select-option
+          v-for="item in list"
+          :key="`${item.id}`"
+          :value="item.id"
+        >
+          {{item.nickname}}
+        </a-select-option>
       </a-select>
       <p class="color-text-light mg-t8">已选择{{coachIds.length}}个教练</p>
       <p class="ta-r">
@@ -32,17 +41,13 @@ export default {
       show: false,
       coachIds: [],
       keyword: '',
-      size: 10
+      size: 50,
+      list: []
     }
   },
   serviceInject() {
     return {
       selectService: SelectService
-    }
-  },
-  rxState() {
-    return {
-      list: this.selectService.list$
     }
   },
   props: {
@@ -59,11 +64,6 @@ export default {
       }
     }
   },
-  watch: {
-    selected(val) {
-      this.coachIds = val
-    }
-  },
   created() {
     this.coachIds = this.selected
     this.search()
@@ -71,18 +71,20 @@ export default {
   methods: {
     onChange(coachIds) {
       this.coachIds = coachIds
+      this.onSearch('')
     },
     onSearch(keyword) {
-      console.log('on search')
       this.keyword = keyword
-      this.search()
+      this.search('')
     },
     search() {
       this.selectService.getCoachSelect({
         shop_ids: this.shopIds,
         size: this.size,
         keyword: this.keyword
-      }).subscribe()
+      }).subscribe(res => {
+        this.list = res.coaches
+      })
     },
     onConfirmSelect() {
       this.show = false
@@ -90,6 +92,12 @@ export default {
     },
     onCancelSelect() {
       this.show = false
+    },
+    onFocus() {
+      this.onSearch('')
+    },
+    onBlur() {
+      this.keyword = ''
     }
   }
 }

@@ -5,6 +5,8 @@
       <span class="mg-r24">English</span>
     </div>
     <div class="page-login">
+      <!-- 密码/二维码 -->
+      <i class="page-switch-login-type cursor-pointer" :class="{'qrcode-login':this.loginType==='qrcode'}" @click="switchLoginType" v-if="switchLoginTypeIsShow"></i>
       <section class="lf">
         <div class="lf-bg"></div>
         <footer>
@@ -73,6 +75,12 @@ export default {
       loading: this.loginService.loading$
     }
   },
+  computed: {
+    switchLoginTypeIsShow() {
+      let types = ['user', 'mobile', 'qrcode']
+      return types.includes(this.loginType)
+    }
+  },
   methods: {
     onClickChangeType(key) {
       this.loginType = key
@@ -93,6 +101,10 @@ export default {
         console.log(res)
         this.$router.push('/')
       })
+    },
+    // 切换登录方式
+    switchLoginType() {
+      this.loginType = this.loginType === 'qrcode' ? 'user' : 'qrcode'
     }
   }
 }

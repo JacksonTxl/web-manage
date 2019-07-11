@@ -2,12 +2,12 @@
   <div :class="[loginUser(), trunPage?'trun-page':'']">
     <st-form :form="form" @submit.prevent="login" :class="loginUser('form')" >
       <st-form-item >
-        <a-input placeholder="用户名、邮箱登录"  v-decorator="['name']"/>
+        <a-input size="large" placeholder="用户名、邮箱登录"  v-decorator="['name']"/>
       </st-form-item>
-      <st-form-item class="mg-b16">
-        <a-input type="password" placeholder="密码" v-decorator="['password']"/>
+      <st-form-item class="mg-b6">
+        <a-input size="large" type="password" placeholder="密码" v-decorator="['password']"/>
       </st-form-item>
-      <st-form-item  :class="loginUser('pass')" class="mg-b16">
+      <st-form-item  :class="loginUser('pass')">
         <div :class="loginUser('pass-content')">
           <a-checkbox>我已阅读并同意<a href="">《用户注册协议》</a></a-checkbox><a href="javascript:;" @click="onClickFindPassword">忘记密码</a>
         </div>

@@ -42,7 +42,7 @@ export default {
         forceFit: true,
         height: this.height,
         renderer: 'svg',
-        padding: [8, 0, 30, 48]
+        padding: 'auto'
       })
 
       this.chart.source(this.dv, {
@@ -51,6 +51,7 @@ export default {
           tickCount: 4
         }
       })
+      this.chart.legend(false)
 
       this.chart.axis('name', {
         label: {
