@@ -27,7 +27,7 @@ export default {
   },
   props: {
     id: {
-      type: number,
+      type: Number,
       default: -1
     }
   },

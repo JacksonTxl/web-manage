@@ -90,7 +90,6 @@ export default {
       this.loginType = 'mobilefind'
     },
     onThird(type) {
-      console.log(type)
       this.loginType = type
     },
     onClickBack() {
