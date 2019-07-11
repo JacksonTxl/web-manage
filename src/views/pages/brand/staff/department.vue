@@ -4,11 +4,16 @@
       <header class="staff-lf__search">
         <!-- <st-input-search placeholder="请输入部门/员工名称" style="width:226px" round="round" @search="onSearch"></st-input-search> -->
         <a-select showSearch allowClear placeholder="请输入部门/员工名称" style="width:226px" @search="onSearch" @change="handleChange">
+          <!-- <a-icon slot="suffixIcon" type="search" /> -->
           <a-select-option v-for="v in departmentSearchList" :key="v.id">{{v.name}}</a-select-option>
         </a-select>
       </header>
       <main class="staff-lf__tree">
-        <st-organ-tree ref="tree" :treeData="treeData" @node-click="getDepartment"></st-organ-tree>
+        <st-organ-tree
+          ref="tree"
+          :treeData="treeData"
+          @updateData="updateData"
+          @node-click="getDepartment"></st-organ-tree>
       </main>
     </section>
     <section class="page-staff-rg">
@@ -34,6 +39,7 @@ import { RouteService } from '@/services/route.service'
 import { UserService } from '@/services/user.service'
 import StOrganTree from './department#/tree/tree.vue'
 import { ShopStaffApi } from '@/api/v1/staff/staff'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   name: 'Staff',
@@ -72,12 +78,13 @@ export default {
       let len = this.treeList.length
       // eslint-disable-next-line
       if (!len) this.treeList = this.departmentList
+      console.log('treeData', this.treeList)
       this.treeList.forEach(department => {
         num += department.count
       })
       return {
         name: this.brand.name,
-        id: this.brand.id,
+        id: 0,
         count: num,
         children: this.treeList
       }
@@ -90,6 +97,11 @@ export default {
     }
   },
   methods: {
+    updateData() {
+      this.departmentService.getDepartmentList().subscribe(res => {
+        this.treeList = res.department
+      })
+    },
     getDepartment(item = 0) {
       this.query.department_id = item
       this.$router.push({ query: this.query, force: true })

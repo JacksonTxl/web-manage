@@ -158,7 +158,7 @@ export default {
       type: Array
     },
     codeList: {
-      type: Object
+      type: Array
     },
     department: {
       type: Array
