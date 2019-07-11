@@ -64,6 +64,10 @@ export default {
           textStyle: {
             fill: '#9BACB9'
           }
+        },
+        tickLine: {
+          lineWidth: 0,
+          length: 0
         }
       })
 
