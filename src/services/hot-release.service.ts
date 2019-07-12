@@ -27,6 +27,7 @@ export class HotReleaseService {
             .pipe(catchError(() => EMPTY))
         ),
         tap(({ response }) => {
+          this.nProgressService.SET_TEXT('版本更新服务完毕')
           if (response.git_commit !== this.appConfig.GIT_COMMIT) {
             console.log(
               '需要刷新页面',
@@ -46,9 +47,6 @@ export class HotReleaseService {
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
     this.nProgressService.SET_TEXT('版本更新服务开始')
     this.reloadAction$.dispatch({ tip: 'release' })
-    this.reloadAction$.subscribe(() => {
-      this.nProgressService.SET_TEXT('版本更新服务完毕')
-      next()
-    })
+    next()
   }
 }
