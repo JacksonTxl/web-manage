@@ -17,7 +17,7 @@ export class TeamScheduleScheduleService {
   scheduleTeamCourseList$: Computed<any>
   scheduleTable$: Computed<any>
   refresh$: Computed<any>
-
+  loading$ = new State({})
   constructor(private scheduleApi: TeamScheduleScheduleApi, private authService: AuthService,
     private msg: MessageService) {
     this.state$ = new State({

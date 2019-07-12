@@ -20,6 +20,9 @@ export class HotReleaseService {
     this.reloadAction$ = new Action(data$ =>
       data$.pipe(
         throttleTime(10000),
+        tap(() => {
+          this.nProgressService.SET_TEXT('版本更新服务开始')
+        }),
         // 捕获子流的错误 错误冒泡会导致父流中断
         switchMap(() =>
           ajax
@@ -45,7 +48,6 @@ export class HotReleaseService {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    this.nProgressService.SET_TEXT('版本更新服务开始')
     this.reloadAction$.dispatch({ tip: 'release' })
     next()
   }

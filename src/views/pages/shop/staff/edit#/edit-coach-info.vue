@@ -7,9 +7,9 @@
         </st-form-item>
         <st-form-item label="擅长的项目">
           <a-select mode="multiple" placeholder="请选择擅长的项目" v-decorator="rules.specialty_id">
-            <template v-for="item in staffSpecialty">
-              <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
-            </template>
+            <a-select-option :key="item.id" :value="item.id" v-for="item in staffSpecialty">
+              {{ item.specialty_name }}
+            </a-select-option>
           </a-select>
         </st-form-item>
         <st-form-item label="专业认证">
@@ -18,7 +18,7 @@
           </a-input>
           <div class="add-profess-card">
             <div v-for="(item,index) in coachInfoData.certification_name" :key="index">
-              <span>{{item}}</span>
+              <span>{{item.certification_name}}</span>
               <st-icon type="anticon:close" @click="onProfessRule(index)" style="cursor:pointer;"></st-icon>
             </div>
           </div>
@@ -50,8 +50,8 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :offset="2">
-        <st-form-item class="mg-l24" labelOffset>
+      <a-col :offset="1">
+        <st-form-item label="  ">
           <st-button type="primary" ghost @click="onClickBack">上一步</st-button>
           <st-button class="mg-l16" @click="goNext" type="primary">保存</st-button>
         </st-form-item>

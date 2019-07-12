@@ -95,7 +95,7 @@
         </div>
         <template slot="shop" slot-scope="text,record">
           <template v-for="item in record.shop">
-            <span :key="item.id" class="mg-r8">{{ item.name }}</span>
+            <span :key="item.id" class="mg-r8" v-if="item">{{ item.name }}</span>
           </template>
         </template>
         <template slot="identity" slot-scope="text,record">

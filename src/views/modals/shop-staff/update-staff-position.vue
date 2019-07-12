@@ -20,8 +20,8 @@
         </a-select>
         <staff-modal-tips :list="tips" :canNotDelete="!operate" v-if="!canDeleteIdentity && tips.length"></staff-modal-tips>
       </st-form-item>
-      <st-form-item label="教练等级">
-        <a-select v-decorator="['coach_level_id']" placeholder="请选择教练等级">
+      <st-form-item label="教练等级" :required="coach_level_required">
+        <a-select v-decorator="['coach_level_id', {rule: [{required: coach_level_required, message: '请选择教练等级'}]}]" placeholder="请选择教练等级">
           <a-select-option  :value="item.id" v-for="item in coachLevelList$" :key="item.id">
             {{item.name}}
           </a-select-option>
@@ -80,7 +80,8 @@ export default {
       form: this.$form.createForm(this),
       tips: [],
       operate: false,
-      canDeleteIdentity: false
+      canDeleteIdentity: false,
+      coach_level_required: false
     }
   },
   props: {
@@ -146,6 +147,7 @@ export default {
     },
     onChangeIdentity(value) {
       this.isSalaryCourse = value.includes(3) || value.includes(4)
+      this.coach_level_required = value.includes(4)
     },
     onDeselectIndentity(value) {
       this.updateStaffPositionService.validatStaffPosition(this.staff.id, value).subscribe((res) => {
@@ -173,11 +175,14 @@ export default {
       }
       return arr
     },
-    onSubmit() {
-      let formData = this.form.getFieldsValue()
-      console.log('formData', formData)
-      this.updateStaffPositionService.putStaffBindPosition({ id: this.staff.id, ...formData }).subscribe(() => {
-        this.show = false
+    onSubmit(e) {
+      e.preventDefault()
+      this.form.validateFields().then(() => {
+        let formData = this.form.getFieldsValue()
+        this.updateStaffPositionService.putStaffBindPosition({
+          id: this.staff.id, ...formData }).subscribe(() => {
+          this.show = false
+        })
       })
     }
   }
