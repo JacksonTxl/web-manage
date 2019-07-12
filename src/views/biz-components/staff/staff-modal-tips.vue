@@ -1,6 +1,6 @@
 <template>
   <div class="staff-modal-tips" :class="canNotDelete">
-    <p v-if="canNotDelete">无法删除员工，该员工有以下几个事项待处理</p>
+    <p v-if="canNotDelete">该员工有以下任务项未完成,无法删除此职能</p>
     <ul>
       <li v-for="(tip, index) in list" :key="index" class="item">
         <span class="count">{{index + 1}}</span> {{tip.num}}{{tip.type|unitFilter}}{{tip.name}},
