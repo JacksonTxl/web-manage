@@ -62,12 +62,9 @@ export default {
           value: item.id
         }
       })
-      if (this.value.getData.base_member_label.length > 0) {
-        this.tags = cloneDeep(this.value.getData.base_member_label)
+      if (this.value.getData.member_label.length > 0) {
+        this.tags = cloneDeep(this.value.getData.member_label)
       }
-      // this.tags = Object.values(
-      //   Object.assign({}, ...this.value.getData.base_member_label)
-      // )
     })
   },
   methods: {
