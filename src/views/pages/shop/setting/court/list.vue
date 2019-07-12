@@ -10,7 +10,7 @@
       >
         <div :class="bItem()">
           <div v-if="auth.areaDel" :class="bItem('del')">
-            <a-popconfirm @confirm="onDel(item.id)">
+            <a-popconfirm @confirm="onDel(item.id)" placement='bottom'>
               <template slot="title">
                 删除该场地后，该门店进行排课等功能无法选择该场地，<br/> 是否继续？
               </template>
