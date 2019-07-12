@@ -7,12 +7,11 @@
             <a-input :disabled="true" v-decorator="rules.md"/>
           </st-form-item> -->
           <st-form-item label="姓名" required>
-            <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.member_name"/>
+            <a-input placeholder="支持中英文,不超过15个字" v-decorator="rules.member_name"/>
           </st-form-item>
           <st-form-item label="手机号" required>
             <a-input-group compact>
               <a-select style="width: 80px;" v-decorator="rules.country_prefix">
-                <!-- <a-select-option :value="37">+86</a-select-option> -->
                 <a-select-option
                   :value="code.code_id"
                   v-for="code in countryList.code_list"
@@ -185,13 +184,15 @@ import { AddService } from './add.service'
 import { UserService } from '@/services/user.service'
 import { RegionService } from '@/services/region.service'
 import { MessageService } from '@/services/message.service'
+import { PatternService } from '@/services/pattern.service'
 export default {
   serviceInject() {
     return {
       addService: AddService,
       userService: UserService,
       regionService: RegionService,
-      messageService: MessageService
+      messageService: MessageService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -210,7 +211,7 @@ export default {
         md: ['md'],
         member_name: [
           'member_name',
-          { rules: [{ required: true, message: '请输入姓名' }] }
+          { rules: [{ required: true, message: '用户名支持1-15位中英文数字', pattern: this.pattern.CN_EN_NUM_SPACE('1-15') }] }
         ],
         country_prefix: ['country_prefix', { initialValue: 37 }],
         mobile: [
