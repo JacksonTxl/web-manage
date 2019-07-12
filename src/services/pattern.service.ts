@@ -1,4 +1,5 @@
 export class PatternService {
+  private DEFAULT_LEN: string = '1-20'
   private PATTERN_MAP: PatternMap = {
     /**
      * 中文
@@ -20,6 +21,10 @@ export class PatternService {
      * 中文、英文、数字，不含标点符号
      */
     'CN_EN_NUM': '^[A-z0-9\\u4e00-\\u9fa5]{**}$',
+    /**
+     * 英文、数字
+     */
+    'EN_NUM': '^[A-z0-9]{**}$',
     /**
      * 中文、英文、数字、空格
      */
@@ -69,41 +74,48 @@ export class PatternService {
    * 中文
    * @param len
    */
-  CN(len: string = '1-20') {
+  CN(len: string = this.DEFAULT_LEN) {
     return this.createPattern('CN', len)
   }
   /**
    * 英文
    * @param len
    */
-  EN(len: string = '1-20') {
+  EN(len: string = this.DEFAULT_LEN) {
     return this.createPattern('EN', len)
   }
   /**
    * 中文、英文
    * @param len
    */
-  CN_EN(len: string = '1-20') {
+  CN_EN(len: string = this.DEFAULT_LEN) {
     return this.createPattern('CN_EN', len)
   }
   /**
    * 数字（整数）
    * @param len
    */
-  NUM(len: string = '1-20') {
+  NUM(len: string = this.DEFAULT_LEN) {
     return this.createPattern('NUM', len)
   }
   /**
    * 中文、英文、数字，不含标点符号
    * @param len
    */
-  CN_EN_NUM(len: string = '1-20') {
+  CN_EN_NUM(len: string = this.DEFAULT_LEN) {
     return this.createPattern('CN_EN_NUM', len)
+  }
+  /**
+   * 英文、数字
+   * @param len
+   */
+  EN_NUM(len: string = this.DEFAULT_LEN) {
+    return this.createPattern('EN_NUM', len)
   }
   /**
    * 中文、英文、数字、空格（中间，非开头与结尾）
    */
-  CN_EN_NUM_SPACE(len: string = '1-20') {
+  CN_EN_NUM_SPACE(len: string = this.DEFAULT_LEN) {
     const lens = len.split('-')
     if (+lens[1] <= 2) {
       return this.createPattern('CN_EN_NUM', len)

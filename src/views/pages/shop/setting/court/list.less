@@ -8,21 +8,25 @@
     &:hover {
       box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.09);
       transition: all 0.3s;
+      .court-item__del {
+        opacity: 1;
+      }
     }
     &__del {
       .pos-a;
       .s(40px, 40px);
       right: 0;
       top: 0;
-      background:rgba(0, 0, 0, 0.2);
+      background: #fff0ed;
       border-radius: 0 0 0 6px;
       .ta-c;
       .lh(40px);
       .cur-p;
+      opacity: 0;
+      transition: all 0.3s;
     }
     &__del-icon {
-      font-size: 20px!important;
-      color: @white!important;
+      font-size: 20px !important;
     }
     &__body {
       .pd(24px 24px 16px 24px);

@@ -9,6 +9,9 @@
       <st-form-item label="CN_EN_NUM_SPACE" required>
         <a-input placeholder="1-15个字，中英文、数字、中间空格" v-decorator="rules.name"/>
       </st-form-item>
+      <st-form-item label="EN_NUM" required>
+        <a-input placeholder="4-10个字，英文及数字" v-decorator="rules.enNum"/>
+      </st-form-item>
       <st-form-item label="CN" required>
         <a-input placeholder="1-15个字，中文" v-decorator="rules.cn"/>
       </st-form-item>

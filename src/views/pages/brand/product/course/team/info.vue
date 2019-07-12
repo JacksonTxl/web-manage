@@ -13,10 +13,11 @@
             <span class="label mg-r8">时长: </span><span class="value">{{teamCourseInfo.duration}}分钟</span>
           </div>
           <div class="item">
-            <st-icon type="price" size="16px" class="mg-r8" color="rgb(255,169,45)"></st-icon>
+            <st-icon type="money" size="16px" class="mg-r8" color="rgb(255,169,45)"></st-icon>
             <span class="label  mg-r8">参考定价: </span><span class="value">{{teamCourseInfo.price}}元/节</span>
           </div>
           <div class="item">
+            <st-icon type="strength" size="16px" class="mg-r8" color="rgb(255,169,45)"></st-icon>
             <span class="label  mg-r8">课程强度: </span><span class="value"><a-rate :defaultValue="teamCourseInfo.strength_level" disabled /></span>
           </div>
         </div>
@@ -33,7 +34,7 @@
       </div>
 
       <div :class="b('right')">
-        <img class="image" :src="teamCourseInfo.image.image_key | imgFilter({ w: 280, h: 158 })" alt="课程图片">
+        <img class="image" :src="image | imgFilter({ w: 280, h: 158 })" alt="课程图片">
       </div>
     </div>
     <div :class="bb()" v-if="teamCourseInfo.support_shop_list.length">

@@ -55,11 +55,8 @@ export class EditService implements RouteGuard {
   getStaffSpecialty() {
     return this.shopStaffApi.getStaffSpecialty().pipe(
       tap(res => {
-        console.log('getStaffSpecialty')
-        this.staffSpecialty$.commit(() => {
-          if (!Array.isArray(res)) return []
-          else return res
-        })
+        console.log('getStaffSpecialty', res)
+        this.staffSpecialty$.commit(() => res)
       })
     )
   }

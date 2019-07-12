@@ -69,8 +69,8 @@
       <a-col :lg="10" :xs="22" :offset="2"></a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :offset="2">
-        <st-form-item class="mg-l24" labelOffset>
+      <a-col :offset="1">
+        <st-form-item label=" ">
           <st-button type="primary" ghost @click="onClickBack">上一步</st-button>
           <st-button class="mg-l16" @click="saveAndGoNext" type="primary">{{!isShowCoach?'保存':'保存，继续填写'}}</st-button>
         </st-form-item>

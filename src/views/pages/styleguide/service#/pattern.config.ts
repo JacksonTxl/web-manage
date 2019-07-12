@@ -19,6 +19,15 @@ export const rules = (vm: any) => {
         }]
       }
     ],
+    enNum: [
+      'EN_NUM', {
+        rules: [{
+          required: true,
+          pattern: pattern.EN_NUM('4-10'),
+          message: '4-10位，英文数字'
+        }]
+      }
+    ],
     cn: [
       'cn', {
         rules: [{

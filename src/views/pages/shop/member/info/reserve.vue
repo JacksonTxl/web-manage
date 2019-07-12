@@ -29,9 +29,9 @@
             <span v-if="record.card_status.id === 3" class="frozen"></span>
             {{ record.card_status.name }}
           </span>
-          <span slot="use_shop_name" slot-scope="text,record">
+          <!-- <span slot="use_shop_name" slot-scope="text,record">
             {{ record.use_shop_name.join(',') }}
-          </span>
+          </span> -->
           <span slot="init_amount" slot-scope="text,record">
             {{ record.init_amount.number }}{{ record.init_amount.type }}
           </span>

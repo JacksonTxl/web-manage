@@ -136,9 +136,6 @@ export class PersonalScheduleReserveService {
           }
         })
       })
-    }),
-    tap(res => {
-      res = this.authService.filter(res)
       this.list$.commit(() => res.list)
       this.page$.commit(() => res.page)
     }))
