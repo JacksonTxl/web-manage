@@ -3,7 +3,7 @@
     <section class="page-staff-lf">
       <header class="staff-lf__search">
         <!-- <st-input-search placeholder="请输入部门/员工名称" style="width:226px" round="round" @search="onSearch"></st-input-search> -->
-        <a-select showSearch allowClear placeholder="请输入部门/员工名称" style="width:226px" @search="onSearch" @change="handleChange">
+        <a-select showSearch allowClear placeholder="请输入部门名称" style="width:226px" @search="onSearch" @change="handleChange">
           <!-- <a-icon slot="suffixIcon" type="search" /> -->
           <a-select-option v-for="v in departmentSearchList" :key="v.id">{{v.name}}</a-select-option>
         </a-select>

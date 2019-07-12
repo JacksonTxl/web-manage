@@ -1,6 +1,6 @@
 <template>
   <div>
-    <shop-select style="width: 160px" v-model="query.shop_id" @change="onChange"></shop-select>
+    <shop-select class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onChange"></shop-select>
     <a-select
       class="filter-staff__item mg-r8"
       allowClear
@@ -15,6 +15,12 @@
         :key="status.id"
       >{{status.name}}</a-select-option>
     </a-select>
+    <st-input-search
+      placeholder="请输入员工名称"
+      style="width:226px"
+      round="round"
+      v-model="query.keyword"
+      @search="onChange"></st-input-search>
   </div>
 </template>
 <script>
