@@ -51,7 +51,6 @@ export default {
     }
   },
   rxState() {
-    console.log(this.teamScheduleScheduleService)
     return {
       scheduleTeamCourseList: this.teamScheduleScheduleService.scheduleTeamCourseList$,
       loading: this.teamScheduleScheduleService.loading$,
@@ -215,6 +214,7 @@ export default {
 
     },
     onEventRender(event, element) {
+      console.log('onEventRender')
       this.$nextTick().then(() => {
         event.el.querySelector('.fc-title').remove()
         event.el.querySelector('.fc-time').remove()

@@ -111,7 +111,7 @@ import { MessageService } from '@/services/message.service'
 import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
 import { TeamScheduleReserveService } from '../../../pages/shop/product/course/schedule/team.service#/reserve.service'
 export default {
-  name: 'OrderInfo',
+  name: 'ReserveInfo',
   serviceProviders() {
     return [TeamScheduleCommonService, TeamScheduleReserveService]
   },
@@ -276,6 +276,7 @@ export default {
           this.showSite = []
           this.siteNumIds = []
           this.consumeType = ''
+          this.showConsumeType = ''
           this.memberId = ''
           this.getReserve()
         },
@@ -285,6 +286,7 @@ export default {
           this.showSite = []
           this.siteNumIds = []
           this.consumeType = ''
+          this.showConsumeType = ''
           this.memberId = ''
         })
     },

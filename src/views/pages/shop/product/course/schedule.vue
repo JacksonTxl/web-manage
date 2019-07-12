@@ -14,7 +14,7 @@
       <a-select-option v-for="coach in coachOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
     </a-select>
   </div>
-  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-calendar' || routeName === 'shop-product-course-schedule-personal-reserve-table'">
+  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal' || routeName === 'shop-product-course-schedule-personal-reserve-table'">
     <a-select class="page-schedule__select" placeholder="请选择教练" @change="onChange" v-model="query.coach_id">
       <a-select-option :value="-1">全部</a-select-option>
       <a-select-option v-for="coach in coachInBatchOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
@@ -65,7 +65,7 @@ export default {
     return {
       tabs: [
         { label: '团操课', route: { name: 'shop-product-course-schedule-team' } },
-        { label: '私教课1v1', route: { name: 'shop-product-course-schedule-personal-calendar' } },
+        { label: '私教课1v1', route: { name: 'shop-product-course-schedule-personal' } },
         { label: '私教小团课', route: { name: 'shop-product-course-schedule-personal-team' } }
       ]
     }
@@ -76,9 +76,6 @@ export default {
     }
   },
   methods: {
-    onSearchCourseName() {
-      console.log('dasd')
-    },
     onChange() {
       this.$router.push({ query: this.query })
     },

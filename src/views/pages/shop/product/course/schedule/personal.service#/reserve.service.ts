@@ -23,7 +23,7 @@ export class PersonalScheduleReserveService {
   page$ = new State({})
   state$: State<SetState>
   reserveInfo$: Computed<any>
-  reserveTable$: Computed<any>
+  reserveTable$ = new State([])
   reserveList$: Computed<any>
   reserveUpdateInfo$: Computed<any>
   reserveListTable$: Computed<any>
@@ -48,7 +48,6 @@ export class PersonalScheduleReserveService {
     this.infoAuth$ = new Computed(this.state$.pipe(pluck('infoAuth')))
     this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
     this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
-    this.reserveTable$ = new Computed(this.state$.pipe(pluck('reserveTable')))
     this.reserveListTable$ = new Computed(this.state$.pipe(pluck('reserveListTable')))
     this.reserveUpdateInfo$ = new Computed(this.state$.pipe(pluck('reserveUpdateInfo')))
   }
@@ -121,8 +120,9 @@ export class PersonalScheduleReserveService {
   @Effect()
   getList(query: GetListQuery) {
     return this.reserveApi.getList(query).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.reserveTable = res.list.map((item: any) => {
+      res = this.authService.filter(res)
+      this.reserveTable$.commit(state => {
+        return res.list.map((item: any) => {
           return { // add new event data
             title: item.course_name,
             groupId: JSON.stringify(item),
@@ -132,6 +132,7 @@ export class PersonalScheduleReserveService {
           }
         })
       })
+
       this.list$.commit(() => res.list)
       this.page$.commit(() => res.page)
     }))
