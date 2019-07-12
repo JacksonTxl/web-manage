@@ -115,8 +115,8 @@
     </a-row>
 
     <a-row :gutter="8">
-      <a-col :offset="2">
-        <st-form-item class="mg-l24" labelOffset>
+      <a-col :offset="1">
+        <st-form-item label=" ">
           <st-button type="primary" ghost html-type="submit">提交</st-button>
           <st-button class="mg-l16" @click="goNext" type="primary">保存,继续填写</st-button>
         </st-form-item>

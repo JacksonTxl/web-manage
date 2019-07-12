@@ -111,9 +111,9 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :offset="2">
-        <st-form-item class="mg-l24" labelOffset>
-          <st-button class="mg-l16" @click="saveAndGoNext" type="primary">保存，继续填写</st-button>
+      <a-col :lg="10" :xs="22" :offset="1">
+        <st-form-item label=" ">
+          <st-button @click="saveAndGoNext" type="primary">保存，继续填写</st-button>
         </st-form-item>
       </a-col>
     </a-row>
