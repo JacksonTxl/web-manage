@@ -9,18 +9,15 @@ import { pluck } from 'rxjs/operators'
 @Injectable()
 export class TeamService implements RouteGuard {
   state$: State<any>
-  auth$: Computed<object>
+  auth$ = this.authService.authMap({
+    add: 'shop:schedule:team_course_schedule|add',
+    addBatch: 'shop:schedule:team_course_schedule|batch_add',
+    copy: 'shop:schedule:team_course_schedule|copy'
+  })
   constructor(private commonService: CommonService,
     private authService: AuthService,
     private scheduleService: ScheduleService) {
-    this.state$ = new State({
-      auth: {
-        add: this.authService.can('shop:schedule:team_course_schedule|add'),
-        addBatch: this.authService.can('shop:schedule:team_course_schedule|batch_add'),
-        copy: this.authService.can('shop:schedule:team_course_schedule|copy')
-      }
-    })
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
+    this.state$ = new State({})
   }
 
   initOptions() {

@@ -12,26 +12,19 @@ interface ListState {
 export class TeamService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
-  auth$: Computed<object>
+  auth$ = this.authService.authMap({
+    get: 'brand:setting:team_course_reserve_setting|get',
+    edit: 'brand:setting:team_course_reserve_setting|edit'
+  })
   constructor(
     private reserveSettingApi: TeamReserveSettingApi,
     private authService: AuthService
   ) {
     super()
     this.state$ = new State({
-      resData: {},
-      auth: {
-        /**
-         * 团课程预约设置查看与编辑
-         */
-        reserve: {
-          get: this.authService.can('brand:setting:team_course_reserve_setting|get'),
-          edit: this.authService.can('brand:setting:team_course_reserve_setting|edit')
-        }
-      }
+      resData: {}
     })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   @Effect()
   getInfo() {

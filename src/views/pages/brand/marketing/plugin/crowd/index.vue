@@ -24,12 +24,14 @@
         :pagination="false"
       >
         <div slot="action" slot-scope="text, record">
+          <st-table-actions>
           <a-dropdown placement="bottomRight">
             <a class="ant-dropdown-link" href="#">定向运营</a>
             <a-menu slot="overlay">
-              <a-menu-item style="width:130px">
+              <!-- NOTE: 导出 -->
+              <!-- <a-menu-item style="width:130px">
                 <a href="javascript:;">导出</a>
-              </a-menu-item>
+              </a-menu-item> -->
               <a-menu-item style="width:130px">
                 <a href="javascript:;" @click="newCrowd('功能正在开发中，敬请期待')">群发短信</a>
               </a-menu-item>
@@ -38,12 +40,10 @@
               </a-menu-item>
             </a-menu>
           </a-dropdown>
-          <st-table-actions>
-            <a href="#" v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a>
-            <a href="#">
-              <router-link v-if="record.auth['shop:member:crowd|edit']" tag="a" :to=" { name: 'brand-marketing-plugin-crowd-add',query:{id:record.id}}">编辑</router-link>
-            </a>
-            <a href="#" v-if="record.auth['shop:member:crowd|del']" @click="deleteTreeNode(record)">删除</a>
+            <!-- NOTE: 导出 -->
+            <!-- <a v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a> -->
+            <router-link v-if="record.auth['shop:member:crowd|edit']" tag="a" :to=" { name: 'brand-marketing-plugin-crowd-add',query:{id:record.id}}">编辑</router-link>
+            <a v-if="record.auth['shop:member:crowd|del']" @click="deleteTreeNode(record)">删除</a>
           </st-table-actions>
           <!-- <st-more-dropdown class="tree-opreation">
             <a-menu-item v-if="record.auth['shop:member:crowd|export']" @click="addTreeNode(record)">导出</a-menu-item>

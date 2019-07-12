@@ -12,24 +12,21 @@ interface ListState {
 @Injectable()
 export class CabinetService implements RouteGuard {
   state$: State<ListState>
-  auth$: Computed<any>
+  auth$ = this.authService.authMap({
+    areaAdd: 'shop:cabinet:cabinet_area|add',
+    areaEdit: 'shop:cabinet:cabinet_area|edit',
+    areaDel: 'shop:cabinet:cabinet_area|del',
+    batchAdd: 'shop:cabinet:cabinet|batch_add',
+    batchPrice: 'shop:cabinet:cabinet|price',
+    batchDel: 'shop:cabinet:cabinet|batch_del'
+  })
   constructor(
     private areaService: AreaService,
     private cabinetListService: CabinetListService,
     private cabinetApi: CabinetApi,
     private authService: AuthService
   ) {
-    this.state$ = new State({
-      auth: {
-        areaAdd: this.authService.can('shop:cabinet:cabinet_area|add'),
-        areaEdit: this.authService.can('shop:cabinet:cabinet_area|edit'),
-        areaDel: this.authService.can('shop:cabinet:cabinet_area|del'),
-        batchAdd: this.authService.can('shop:cabinet:cabinet|batch_add'),
-        batchPrice: this.authService.can('shop:cabinet:cabinet|price'),
-        batchDel: this.authService.can('shop:cabinet:cabinet|batch_del')
-      }
-    })
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
+    this.state$ = new State({})
   }
   protected init(to: ServiceRoute, next: any) {
     const query = to.meta.query

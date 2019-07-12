@@ -20,7 +20,7 @@ export const columns = () => [
   },
   {
     title: '操作',
-    width: '10%',
+    width: 170,
     dataIndex: 'action',
     scopedSlots: { customRender: 'action' }
   }

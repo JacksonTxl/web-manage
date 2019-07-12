@@ -21,7 +21,7 @@
       </div>
     </div>
     <st-table
-      :scroll="{x:1440}"
+      :scroll="{x:1600}"
       :page='page'
       @change="onTableChange"
       :loading="loading.getList"

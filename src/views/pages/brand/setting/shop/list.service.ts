@@ -11,8 +11,8 @@ export class ListService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   count$ = new State({})
-  auth$ = new State({
-    add: this.authService.can('brand_shop:shop:shop|add')
+  auth$ = this.authService.authMap({
+    add: 'brand_shop:shop:shop|add'
   })
   shopStatusList$ = this.userService
     .getOptions('shop.shop_status')

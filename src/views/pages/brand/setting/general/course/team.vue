@@ -1,11 +1,11 @@
 <template>
-  <div v-if="auth.reserve.get">
+  <div v-if="auth.get">
   <!-- 团课定价设置 -->
     <a-row>
       <a-col :span="16"><st-t2>团体课程预约设置</st-t2></a-col>
       <a-col :span="8" class="ta-r">
         <a href="javascript: void(0)"
-          v-if="auth.reserve.edit"
+          v-if="auth.edit"
           v-modal-link="{
             name:'brand-setting-team-reserve',
             on: {

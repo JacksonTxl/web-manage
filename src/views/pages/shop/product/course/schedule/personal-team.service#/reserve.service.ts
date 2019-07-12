@@ -20,22 +20,19 @@ export class PersonalTeamScheduleReserveService {
   state$: State<SetState>
   reserveInfo$: Computed<any>
   reserveList$: Computed<any>
-  auth$: Computed<any>
   infoAuth$: Computed<any>
+  auth$ = this.authService.authMap({
+    add: 'shop:reserve:personal_team_course_reserve|add',
+    cancel: 'shop:reserve:personal_team_course_reserve|del',
+    edit: 'shop:reserve:personal_team_course_reserve|edit',
+    checkIn: 'shop:reserve:personal_team_course_reserve|checkin'
+  })
   constructor(private reserveApi: PersonalTeamScheduleReserveApi,
     private authService: AuthService,
     private msg: MessageService) {
     this.state$ = new State({
-      reserveInfo: [],
-      auth: {
-        add: this.authService.can('shop:reserve:personal_team_course_reserve|add'),
-        cancel: this.authService.can('shop:reserve:personal_team_course_reserve|del'),
-        edit: this.authService.can('shop:reserve:personal_team_course_reserve|edit'),
-        checkIn: this.authService.can('shop:reserve:personal_team_course_reserve|checkin')
-      },
-      infoAuth: {}
+      reserveInfo: []
     })
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
     this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
     this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
     this.infoAuth$ = new Computed(this.state$.pipe(pluck('infoAuth')))

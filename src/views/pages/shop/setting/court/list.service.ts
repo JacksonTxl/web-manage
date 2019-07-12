@@ -12,20 +12,18 @@ interface ListState {
 export class ListService extends Store<ListState> {
   state$: State<ListState>
   list$: Computed<object[]>
-  auth$: Computed<object[]>
+  auth$ = this.authService.authMap({
+    areaAdd: 'shop:shop:shop_area|add',
+    areaEdit: 'shop:shop:shop_area|edit',
+    areaDel: 'shop:shop:shop_area|del',
+    seatSet: 'shop:shop:area_seat|set'
+  })
   constructor(protected courtApi: CourtApi, private authService: AuthService) {
     super()
     this.state$ = new State({
-      list: [],
-      auth: {
-        areaAdd: this.authService.can('shop:shop:shop_area|add'),
-        areaEdit: this.authService.can('shop:shop:shop_area|edit'),
-        areaDel: this.authService.can('shop:shop:shop_area|del'),
-        seatSet: this.authService.can('shop:shop:area_seat|set')
-      }
+      list: []
     })
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   protected SET_STATE(list: object[]) {
     this.state$.commit(state => {

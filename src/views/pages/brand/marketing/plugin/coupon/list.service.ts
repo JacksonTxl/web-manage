@@ -15,8 +15,8 @@ export class ListService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  auth$ = new State({
-    add: this.authService.can('brand:activity:coupon|add')
+  auth$ = this.authService.authMap({
+    add: 'brand:activity:coupon|add'
   })
   constructor(private marketingApi: MarketingApi, private couponApi: CouponApi, private authService: AuthService) {}
   @Effect()

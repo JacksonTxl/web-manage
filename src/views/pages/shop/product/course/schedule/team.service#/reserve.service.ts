@@ -12,24 +12,22 @@ export interface SetState {
 @Injectable()
 export class TeamScheduleReserveService {
   state$: State<SetState>
-  auth$: Computed<any>
   infoAuth$: Computed<any>
   reserveInfo$: Computed<any>
   reserveList$: Computed<any[]>
+  auth$ = this.authService.authMap({
+    add: 'shop:reserve:team_course_reserve|add',
+    cancel: 'shop:reserve:team_course_reserve|del',
+    checkIn: 'shop:reserve:team_course_reserve|checkin'
+  })
   constructor(private reserveApi: TeamScheduleReserveApi,
     private authService: AuthService,
     private msg: MessageService) {
     this.state$ = new State({
-      auth: {
-        add: this.authService.can('shop:reserve:team_course_reserve|add'),
-        cancel: this.authService.can('shop:reserve:team_course_reserve|del'),
-        checkIn: this.authService.can('shop:reserve:team_course_reserve|checkin')
-      },
       reserveInfo: [],
       reserveList: [],
       infoAuth: {}
     })
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
     this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
     this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
     this.infoAuth$ = new Computed(this.state$.pipe(pluck('infoAuth')))

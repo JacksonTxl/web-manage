@@ -9,8 +9,8 @@ export class DepositService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  auth$ = new State({
-    export: this.authService.can('shop:sold:sold_deposit_card|export')
+  auth$ = this.authService.authMap({
+    export: 'shop:sold:sold_deposit_card|export'
   })
   constructor(private cardApi: CardApi, private authService: AuthService) {}
   @Effect()

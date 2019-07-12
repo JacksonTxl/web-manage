@@ -8,8 +8,8 @@ import { AuthService } from '@/services/auth.service'
 export class CategoryService implements RouteGuard {
   resData$ = new State({})
   loading$ = new State({})
-  auth$ = new State({
-    add: this.authService.can('brand_shop:course:course_type|add')
+  auth$ = this.authService.authMap({
+    add: 'brand_shop:course:course_type|add'
   })
   constructor(
     private authService: AuthService,

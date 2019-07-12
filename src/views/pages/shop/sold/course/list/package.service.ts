@@ -9,8 +9,8 @@ export class PackageService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  auth$ = new State({
-    export: this.authService.can('shop:sold:sold_package_course|export')
+  auth$ = this.authService.authMap({
+    export: 'shop:sold:sold_package_course|export'
   })
   constructor(private courseApi: CourseApi, private authService: AuthService) {}
   getList(params: GetCourseListInput) {

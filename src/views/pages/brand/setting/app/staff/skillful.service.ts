@@ -13,20 +13,17 @@ interface ListState {
 export class SkillfulService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
-  auth$: Computed<object>
+  auth$ = this.authService.authMap({
+    add: 'brand_shop:coach:good_at|add'
+  })
   constructor(
     private skillfulApi: SkillfulApi,
     private authService: AuthService
   ) {
     super()
     this.state$ = new State({
-      resData: {},
-      auth: {
-        add: this.authService.can('brand_shop:coach:good_at|add')
-      }
-    })
+      resData: {} })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   getSkillfulList(query: GetSkillfulListInput) {
     return this.skillfulApi.getSkillfulList(query).pipe(

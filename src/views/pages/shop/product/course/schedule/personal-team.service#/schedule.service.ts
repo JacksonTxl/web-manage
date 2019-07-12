@@ -21,7 +21,11 @@ export class PersonalTeamScheduleScheduleService {
   state$: State<SetState>
   courseList$: Computed<any>
   scheduleTable$: Computed<any>
-  auth$: Computed<object>
+  auth$ = this.authService.authMap({
+    add: 'shop:schedule:personal_team_course_schedule|add',
+    addBatch: 'shop:schedule:personal_team_course_schedule|batch_add',
+    copy: 'shop:schedule:personal_team_course_schedule|copy'
+  })
   constructor(
     private scheduleApi: PersonalTeamScheduleScheduleApi,
     private authService: AuthService,
@@ -29,16 +33,10 @@ export class PersonalTeamScheduleScheduleService {
   ) {
     this.state$ = new State({
       courseList: [],
-      scheduleTable: [],
-      auth: {
-        add: this.authService.can('shop:schedule:personal_team_course_schedule|add'),
-        addBatch: this.authService.can('shop:schedule:personal_team_course_schedule|batch_add'),
-        copy: this.authService.can('shop:schedule:personal_team_course_schedule|copy')
-      }
+      scheduleTable: []
     })
     this.courseList$ = new Computed(this.state$.pipe(pluck('courseList')))
     this.scheduleTable$ = new Computed(this.state$.pipe(pluck('scheduleTable')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   /**
    *

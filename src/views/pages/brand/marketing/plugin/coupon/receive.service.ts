@@ -15,15 +15,12 @@ export class ReceiveService extends Store<SetState> implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   info$ = new State({})
-  auth$: Computed<object>
+  auth$ = this.authService.authMap({
+    export: 'brand:activity:coupon|export'
+  })
   constructor(private marketingApi: MarketingApi, private authService: AuthService) {
     super()
-    this.state$ = new State({
-      auth: {
-        export: this.authService.can('brand:activity:coupon|export')
-      }
-    })
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
+    this.state$ = new State({})
   }
   @Effect()
   getReceiveList(params: any) {
