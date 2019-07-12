@@ -5,7 +5,7 @@
     @ok="onOk"
     okText="去编辑"
     v-model='show'>
-    <div class="modal-support-course-shops__search mg-b24" v-if="prices.length">
+    <div class="modal-support-course-shops__search mg-b24" v-if="initDataSource.length">
       <a-select v-if="priceModel === 2" showSearch :defaultValue="defaultValue"  :filterOption="filterOption" optionFilterProp="children" class="mg-r8" style="width: 160px" @change="onChangeCoachLevel">
         <a-select-option v-for="item in coachLevel" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
       </a-select>
@@ -31,14 +31,13 @@ import { cloneDeep, uniqWith, isEqual } from 'lodash-es'
 import { ListService } from '../../pages/shop/product/course/manage/personal/list.service'
 import { EditService } from '../../pages/shop/product/course/manage/personal/edit.service'
 export default {
-  name: 'CoursePrice',
+  name: 'CoursePriceShop',
   serviceInject() {
     return {
       listService: ListService
     }
   },
   rxState() {
-    console.log(this.listService)
     return {
       priceGradient: this.listService.priceGradient$,
       dataSource: this.listService.dataSource$
@@ -53,6 +52,7 @@ export default {
       priceSetting: 1,
       priceModel: 1,
       priceList: [],
+      initDataSource: [],
       columnsPricesShop,
       show: false
     }
@@ -76,11 +76,8 @@ export default {
       this.show = false
       this.$modalRouter.push({ name: 'course-price-setting-shop-update', props: { id: this.course.course_id } })
     },
-    onChangeShopName(val) {
-      this.dataSource = val === -1 ? cloneDeep(this.prices) : this.prices.filter(item => item.shop_id === val)
-    },
     onChangeCoachLevel(val) {
-      this.dataSource = val === -1 ? cloneDeep(this.prices) : this.prices.filter(item => item.coach_level_id === val)
+      this.dataSource = val === -1 ? cloneDeep(this.initDataSource) : this.initDataSource.filter(item => item.coach_level_id === val)
     },
     filterOption() {
     },
@@ -89,25 +86,18 @@ export default {
       this.priceModel = state.price_model
       const prices = state.prices
       if (this.priceModel === 2) {
-        this.coachLevel = [{ id: -1, name: '所有教练等级' }, ...uniqWith(prices.map(item => {
+        this.coachLevel = [{ id: -1, name: '所有教练等级' }, ...uniqWith(this.dataSource.map(item => {
           return {
             id: item.coach_level_id,
             name: item.level || '没名字'
           }
         }), isEqual)]
       }
-      if (this.priceSetting === 2) {
-        this.shops = [{ id: -1, name: '所有门店' }, ...uniqWith(prices.map(item => {
-          return {
-            id: item.shop_id,
-            name: item.shop_name
-          }
-        }), isEqual)]
-      }
     },
     getCoursePriceList() {
       this.listService.getCoursePriceList(this.course.course_id).subscribe(state => {
-        this.initOptions(state)
+        this.initOptions(state.info)
+        this.initDataSource = cloneDeep(this.dataSource)
       })
     }
   },

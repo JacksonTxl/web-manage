@@ -52,7 +52,7 @@ export default {
         forceFit: true,
         height: this.height,
         renderer: 'svg',
-        padding: 'auto'
+        padding: [0, 0, 0, 0]
       })
 
       this.chart.source(this.dv, {
@@ -61,7 +61,7 @@ export default {
         },
         value: {
           min: 0,
-          tickCount: 3
+          tickCount: 2
         }
       })
       this.chart.axis('value', {
@@ -70,7 +70,7 @@ export default {
         grid: {
           lineStyle: {
             stroke: '#E6E9EF',
-            lineWidth: 0.5,
+            lineWidth: 2,
             lineDash: [0, 0]
           }
         }
@@ -109,6 +109,10 @@ export default {
 
 <style lang="less">
 .stat-front-simple-area {
+  position: relative;
+  >div{
+    z-index:99;
+  }
   .g2-tooltip {
     padding: 0 !important;
   }
@@ -122,6 +126,17 @@ export default {
     float: none !important;
     color: white;
     font-size: 12px;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 100%;
+    height: 1px;
+    z-index: 0;
+    background: #E6E9EF;
   }
 }
 </style>
