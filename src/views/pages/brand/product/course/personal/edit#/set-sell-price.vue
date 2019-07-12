@@ -140,7 +140,8 @@ export default {
       for (let i in sellType) {
         options.push({
           label: sellType[i],
-          value: +i
+          value: +i,
+          disabled: +i === 2
         })
       }
       return options
@@ -155,6 +156,9 @@ export default {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(() => {
+        if (!this.inputCheck()) {
+          return
+        }
         const data = this.getData()
         this.addService.setPrice(data).subscribe(this.onSaveSuccess)
       })
@@ -197,6 +201,17 @@ export default {
       this.singleReserve = info.single_reserve
       this.singlePrice = info.single_price
       this.priceGradient = info.price_gradient
+    },
+    inputCheck() {
+      if (this.singleReserve) {
+        if (!this.singlePrice.length) {
+          this.messageService.error({
+            content: '请输入单节预约价格'
+          })
+          return
+        }
+      }
+      return true
     },
     getData() {
       const data = this.form.getFieldsValue()

@@ -10,7 +10,7 @@
           <th>教练等级</th>
           <th>关联教练数</th>
           <th>关联薪资模板数</th>
-          <th>关联课程定价数</th>
+          <th v-if="isShowPricingNum">关联课程定价数</th>
           <th>创建人</th>
           <th>最后修改时间</th>
           <th>操作</th>
@@ -18,7 +18,7 @@
       </thead>
       <tbody>
         <tr v-if="auth.add">
-          <td colspan="7" class="st-form-table__add">
+          <td :colspan="isShowPricingNum ? 7: 6" class="st-form-table__add">
             <a
               v-modal-link="{
                 name: 'coach-level-add',
@@ -34,7 +34,7 @@
           <td>{{item.setting_name}}</td>
           <td>{{item.used_number}}</td>
           <td>{{item.salary_template}}</td>
-          <td>{{item.class_price}}</td>
+          <td v-if="isShowPricingNum">{{item.class_price}}</td>
           <td>{{item.operator_name}}</td>
           <td>{{item.updated_time}}</td>
           <td>
@@ -81,6 +81,11 @@ export default {
       resData: this.listService.resData$,
       query: this.routeService.query$,
       auth: this.listService.auth$
+    }
+  },
+  computed: {
+    isShowPricingNum() {
+      return this.resData.price_setting === 2
     }
   },
   methods: {

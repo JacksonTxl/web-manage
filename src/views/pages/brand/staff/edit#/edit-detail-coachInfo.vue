@@ -105,7 +105,7 @@ export default {
       this.coachInfoData.certification_name = obj.certification_name ? obj.certification_name : []
     },
     onClickBack() {
-      this.$emit('back', 2)
+      this.$emit('back', 3)
     },
     goNext() {
       this.form.validateFields((err, values) => {

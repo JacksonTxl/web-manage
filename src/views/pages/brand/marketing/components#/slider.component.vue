@@ -91,6 +91,8 @@ export default {
       if (e.length) addItem.image_url = e[0].image_key
       if (addItem.image_url) {
         this.list.push(addItem)
+        this.addItem.activity_id = ''
+        this.addItem.activity_type = ''
       }
     },
     delSlider(index) {

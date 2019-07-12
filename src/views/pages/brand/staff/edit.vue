@@ -30,7 +30,7 @@
       @detailInfoSave="onDetailInfoSave"/>
     <edit-detail-coach-info
       v-else-if="currentIndex === 2 && isShowCoach"
-      @goNext="goNext"
+      @back="onBack"
       :enums="staffEnums"
       :data="staffInfo"
       :staffSpecialty="staffSpecialty"

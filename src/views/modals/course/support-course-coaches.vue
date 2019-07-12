@@ -2,12 +2,13 @@
   <st-modal
     class="modal-support-course-shops"
     :title="course.course_name + ' 查看授课教练'"
+    :footer="null"
     v-model='show'>
     <st-container>
       <st-table
       :columns="columnsCoaches"
       :rowKey="record => record.id"
-      simple
+      :page="false"
       :dataSource="supportCoachList">
       <div slot="nature_work" slot-scope="text">
         {{text | enumFilter('staff.nature_work')}}

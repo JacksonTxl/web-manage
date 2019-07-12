@@ -1,16 +1,31 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { Effect, State } from 'rx-state'
 import { PackageApi } from '@/api/v1/course/package'
-import { tap } from 'rxjs/operators'
+import { tap, map } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
+import { UserService } from '@/services/user.service'
+import { remove } from 'lodash-es'
 
 @Injectable()
 export class EditFixPackageService implements RouteGuard {
+  // 是否配置了用户端
+  appConfig = false
+  unitList$ = this.userService.getOptions('package_course.valid_time_unit')
+  transferUnitList$ = this.userService.getOptions('package_course.transfer_unit')
+  sellTypeList$ = this.userService.getOptions('package_course.sale_mode')
+    .pipe(map(options => {
+      if (!this.appConfig) {
+        remove(options, i => i.value === 1)
+      }
+      return options
+    }))
   loading$ = new State({})
   coachList$ = new State({})
   packageInfo$ = new State({})
   id = ''
-  constructor(private packageApi: PackageApi) {}
+  constructor(
+    private userService: UserService,
+    private packageApi: PackageApi) {}
   getPackageInfo(id: string) {
     return this.packageApi.editCoursePackageInfo('fixation', id).pipe(tap((res:any) => {
       this.packageInfo$.commit(() => res.info)
@@ -28,10 +43,8 @@ export class EditFixPackageService implements RouteGuard {
   editPackage(data: any) {
     return this.packageApi.editCoursePackage(data, 'fixation', this.id)
   }
-  beforeRouteEnter(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
+  beforeEach(to:ServiceRoute) {
     this.id = to.meta.query.id
-    this.initData(to.meta.query.id).subscribe(() => {
-      next()
-    })
+    return this.initData(to.meta.query.id)
   }
 }

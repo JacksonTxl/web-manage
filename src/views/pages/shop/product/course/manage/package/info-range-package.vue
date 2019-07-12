@@ -130,7 +130,7 @@
                                 :key="item.course_id">
                                   <div class="tg-c"></div>
                                   <div>{{item.course_name}}</div>
-                                  <div>{{item.coach_level}}</div>
+                                  <div>{{item.coach_level_text}}</div>
                                 </li>
                             </ul>
                           </td>

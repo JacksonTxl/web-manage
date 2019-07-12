@@ -123,7 +123,8 @@ export default {
   },
   methods: {
     updateStaffInfo() {
-      this.services.getStaffInfo(this.id)
+      console.log('updateStaffInfo')
+      this.services.getStaffInfo(this.id).subscribe()
     },
     onBack(step) {
       this.currentIndex = this.currentIndex - step

@@ -21,8 +21,8 @@
         </a-dropdown>
       </st-form-item>
       <st-form-item class="mg-b6" :class="mobile('captcha')">
-        <a-input size="large" :class="mobile('captcha-input')" placeholder="请输入验证码" v-model="captcha" @search="onClickCaptcha" />
-        <span :class="mobile('captcha-button')">{{buttonText}}</span>
+        <a-input size="large" :class="mobile('captcha-input')" placeholder="请输入验证码" v-model="captcha" />
+        <span :class="mobile('captcha-button')" @click="onClickCaptcha">{{buttonText}}</span>
       </st-form-item>
       <st-form-item  :class="mobile('pass')">
         <div :class="mobile('pass-content')">
