@@ -23,7 +23,7 @@
         change: onSelectComplete
       }
     }">
-      <st-button type="dashed" block class="mg-t8">添加</st-button>
+      <st-button type="dashed" icon="add" block class="mg-t8">添加</st-button>
     </a>
   </div>
 </template>

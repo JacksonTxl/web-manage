@@ -294,8 +294,10 @@ export default {
     this.salePersonalCourseService.serviceInit(this.id).subscribe(result => {
       setTimeout(() => {
         this.resetOrderInfo()
-        this.form.setFieldsValue({ 'coach_level': this.info.coach_level[0].id })
-        this.minPrice = this.info.coach_level[0].min_sell
+        if (this.info.coach_level && this.info.coach_level.length > 0) {
+          this.form.setFieldsValue({ 'coach_level': this.info.coach_level[0].id })
+          this.minPrice = this.info.coach_level[0].min_sell
+        }
         let level = 0
         if (this.info.price_model === 2) {
           level = this.info.coach_level[0].id

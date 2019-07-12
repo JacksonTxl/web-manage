@@ -20,7 +20,7 @@
       <tbody>
         <tr>
           <td colspan="4" class="st-form-table__add">
-            <st-button :disabled="!canShowAddBtn" @click="onAdd" type="dashed" block>添加座位</st-button>
+            <st-button :disabled="!canShowAddBtn" @click="onAdd" type="dashed" icon="add" block>添加座位</st-button>
           </td>
         </tr>
         <tr v-if="isAdd">
