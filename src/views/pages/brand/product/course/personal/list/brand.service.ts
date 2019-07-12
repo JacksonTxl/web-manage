@@ -1,6 +1,6 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { BrandPersonalCourseApi, GetPersonalBrandCourseListInput, SetAvailableInput, CoursePersonalSupportInput } from '@/api/v1/course/personal/brand'
-import { forkJoin } from 'rxjs'
+import { forkJoin, pipe } from 'rxjs'
 import { tap, pluck } from 'rxjs/operators'
 import { State, Computed, Effect } from 'rx-state'
 import { Store } from '@/services/store'
@@ -56,10 +56,7 @@ export class BrandService implements RouteGuard {
       state.supportShopList = data.list
     })
   }
-  @Effect()
-  getCoursePrice(courseId: string) {
-    return this.personalApi.getCoursePrice(courseId)
-  }
+
   setAvailable(params: SetAvailableInput) {
     return this.personalApi.setAvailable(params)
   }
