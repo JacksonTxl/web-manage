@@ -26,7 +26,7 @@
                   change: onListChange
                 }
               }">
-              <st-button type="dashed" block :disabled="resData.total >= resData.max">添加教练等级</st-button>
+              <st-button type="dashed" icon="add" block :disabled="resData.total >= resData.max">添加教练等级</st-button>
             </a>
           </td>
         </tr>

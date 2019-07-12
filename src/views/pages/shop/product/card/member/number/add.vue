@@ -69,7 +69,7 @@
                       删除
                     </a>
                   </st-table>
-                  <st-button :disabled="rallyPriceList.length>3" type="dashed" class="page-price-setting-set__add" block @click="price_add">+ 添加定价规格（{{rallyPriceList.length}}/4）</st-button>
+                  <st-button :disabled="rallyPriceList.length>3" type="dashed" class="page-price-setting-set__add" block @click="price_add">添加定价规格（{{rallyPriceList.length}}/4）</st-button>
                 </div>
               </st-form-item>
             </a-col>

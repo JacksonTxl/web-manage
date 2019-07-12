@@ -10,7 +10,7 @@
     <tbody>
       <tr v-if="auth.add">
         <td colspan="5" class="st-form-table__add">
-          <st-button type="dashed" block v-modal-link=" { name: 'finance-add-performance-template',on: {change: refresh}}">
+          <st-button type="dashed" icon="add" block v-modal-link=" { name: 'finance-add-performance-template',on: {change: refresh}}">
            新增业绩模板
           </st-button>
         </td>

@@ -17,7 +17,7 @@
       <tbody>
         <tr>
           <td colspan="3" class="st-form-table__add">
-            <st-button type="dashed" block>添加教练等级</st-button>
+            <st-button type="dashed" icon="add" block>添加教练等级</st-button>
           </td>
         </tr>
         <tr>

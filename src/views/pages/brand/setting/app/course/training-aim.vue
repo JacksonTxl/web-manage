@@ -16,7 +16,7 @@
       <tbody>
         <tr v-if="auth.add">
           <td colspan="5" class="st-form-table__add">
-            <st-button type="dashed" block :disabled="resData.total >= resData.max"
+            <st-button type="dashed" icon="add" block :disabled="resData.total >= resData.max"
               v-modal-link="{ name: 'training-add', on: {
               change: onListChange } }"
             >添加训练目的
