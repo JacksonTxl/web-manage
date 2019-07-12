@@ -1,13 +1,6 @@
 <template>
   <div :class="shelves()">
-    <div :class="shelves('search')">
-      <st-button
-        type="primary"
-        v-if="auth.batchDown"
-        :disabled="isSelectedDisabled"
-        class="mg-b16"
-        @click="onBatchShelfDown"
-      >批量下架</st-button>
+    <div :class="shelves('search')" class="mg-b16">
       <div>
         <a-select
           style="width: 160px"
@@ -50,6 +43,12 @@
           >{{item.shop_name}}</a-select-option>
         </a-select>
       </div>
+      <st-button
+        type="primary"
+        v-if="auth.batchDown"
+        :disabled="isSelectedDisabled"
+        @click="onBatchShelfDown"
+      >批量下架</st-button>
     </div>
     <st-table
       :scroll="{x:1440}"

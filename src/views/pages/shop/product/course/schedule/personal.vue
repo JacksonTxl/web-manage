@@ -1,29 +1,26 @@
 <template>
-<div>
   <FullCalendar
-      class='page-team-personal__calendar'
-      ref="fullCalendar"
-      :defaultView="defaultView"
-      :header="header"
-      :firstDay="1"
-      @eventPositioned='onEventPositioned'
-      :plugins="calendarPlugins"
-      minTime="00:00:00"
-      :columnHeaderFormat="columnHeaderFormat"
-      locale="zh-cn"
-      :views="views"
-      maxTime="24:00:00"
-      @datesRender="datesRender"
-      :weekends="calendarWeekends"
-      :customButtons="customButtons"
-      :slotLabelFormat="slotLabelFormat"
-      eventBackgroundColor="#fff"
-      @eventClick="onEventClick"
-      @eventRender="onEventRender($event)"
-      :events="reserveList"
-      @dateClick="handleDateClick"/>
-</div>
-
+    class='page-team-personal__calendar'
+    ref="fullCalendar"
+    :defaultView="defaultView"
+    :header="header"
+    :firstDay="1"
+    @eventPositioned='onEventPositioned'
+    :plugins="calendarPlugins"
+    minTime="00:00:00"
+    :columnHeaderFormat="columnHeaderFormat"
+    locale="zh-cn"
+    :views="views"
+    maxTime="24:00:00"
+    @datesRender="datesRender"
+    :weekends="calendarWeekends"
+    :customButtons="customButtons"
+    :slotLabelFormat="slotLabelFormat"
+    eventBackgroundColor="#fff"
+    @eventClick="onEventClick"
+    @eventRender="onEventRender($event)"
+    :events="reserveTable"
+    @dateClick="handleDateClick"/>
 </template>
 
 <script>
@@ -48,9 +45,8 @@ export default {
     }
   },
   rxState() {
-    console.log(this.reserveService)
     return {
-      reserveList: this.reserveService.reserveTable$,
+      reserveTable: this.reserveService.reserveTable$,
       auth: this.reserveService.auth$
     }
   },
@@ -206,8 +202,9 @@ export default {
         })
       })
     },
-    onEventPositioned(e) {
-      console.log(e)
+    onEventPositioned(event, element) {
+      console.log(event, element)
+      this.onEventRender(event, element)
     },
     toggleWeekends() {
       this.calendarWeekends = !this.calendarWeekends // update a property

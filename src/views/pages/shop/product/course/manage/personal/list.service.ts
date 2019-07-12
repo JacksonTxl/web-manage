@@ -52,7 +52,7 @@ export class ListService implements RouteGuard {
       let dataSource:any[] = []
       res.info.price_gradient.forEach((ele: any) => {
         ele.prices.forEach((item: any) => {
-          let sell_prices = res.sale_model === 2 ? item.sell_price : `${item.min_sell_price} ~ ${item.max_sell_price}元`
+          let sell_prices = res.info.sale_model === 2 ? item.sell_price : `${item.min_sell_price} ~ ${item.max_sell_price}元`
           let sell_range = `${item.min_sale} ~ ${item.max_sale}节`
           dataSource.push({
             sell_prices,

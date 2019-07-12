@@ -4,7 +4,7 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="姓名" required>
-            <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.member_name" />
+            <a-input placeholder="支持中英文,不超过15个字" v-decorator="rules.member_name" />
           </st-form-item>
           <st-form-item label="性别">
             <a-select placeholder="请选择" v-decorator="rules.sex" >
@@ -16,10 +16,10 @@
           </st-form-item>
           <st-form-item label="证件">
             <a-input-group compact>
-              <a-select style="width:20%" v-decorator="rules.id_card_type" @change="chooseType">
+              <a-select style="width:25%" v-model="id_card_type" @change="chooseType">
                 <a-select-option v-for="(item, index) in staffEnums.id_type.value" :key="index" :value="+index">{{item}}</a-select-option>
               </a-select>
-              <a-input style="width: 80%" :placeholder="dateinit ? dateinit : '请输入身份证号码'" v-decorator="rules.id_card"/>
+              <a-input style="width: 75%" :placeholder="dateinit ? dateinit : '请输入身份证号码'" v-decorator="rules.id_card"/>
             </a-input-group>
           </st-form-item>
           <st-form-item label="婚姻状况">
@@ -74,14 +74,14 @@
         <a-col :lg="10" :xs="22" :offset="1">
            <st-form-item label="手机号" required>
             <a-input-group compact>
-              <a-select style="width:15%" v-decorator="rules.country_prefix">
+              <a-select style="width:25%" v-model="country_prefix">
                 <a-select-option
                   :value="code.code_id"
                   v-for="code in countryList"
                   :key="code.code_id"
                 >+{{code.phone_code}}</a-select-option>
               </a-select>
-              <a-input style="width:85%"  placeholder="请输入手机号" v-decorator="rules.mobile"/>
+              <a-input style="width:75%"  placeholder="请输入手机号" v-decorator="rules.mobile"/>
             </a-input-group>
           </st-form-item>
           <!-- 这个版本不上 -->
@@ -117,13 +117,15 @@ import { EditService } from './edit.service'
 import { UserService } from '@/services/user.service'
 import { RegionService } from '@/services/region.service'
 import { MessageService } from '@/services/message.service'
+import { PatternService } from '@/services/pattern.service'
 export default {
   serviceInject() {
     return {
       editService: EditService,
       userService: UserService,
       regionService: RegionService,
-      messageService: MessageService
+      messageService: MessageService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -140,7 +142,7 @@ export default {
       form: this.$form.createForm(this),
       dateinit: '',
       rules: {
-        member_name: ['member_name', { rules: [{ required: true, message: '请输入姓名' }] }],
+        member_name: ['member_name', { rules: [{ required: true, message: '用户名支持1-15位中英文数字', pattern: this.pattern.CN_EN_NUM_SPACE('1-15') }] }],
         sex: ['sex'],
         country_id: ['country_id'],
         nation: ['nation'],
@@ -148,21 +150,23 @@ export default {
         education_level: ['education_level'],
         id_card_type: ['id_card_type'],
         jobs: ['jobs'],
-        id_card: ['id_card'],
+        id_card: ['id_card', { rules: [{ message: '证件信息支持中英文输入', pattern: this.pattern.ID }] }],
         income_level: ['income_level'],
         married_type: ['married_type'],
         fitness_goal: ['fitness_goal'],
         has_children: ['has_children'],
         fitness_level: ['fitness_level'],
-        email: ['email'],
-        mobile: ['mobile', { rules: [{ required: true, message: '请输入手机号' }] }],
+        email: ['email', { rules: [{ message: '请输入正确的邮箱地址', pattern: this.pattern.EMAIL }] }],
+        mobile: ['mobile', { rules: [{ required: true, message: '请输入正确的手机号', pattern: this.pattern.MOBILE }] }],
         wechat: ['wechat'],
         cascader: ['cascader'],
         country_prefix: ['country_prefix'],
         living_address: ['living_address']
       },
       options: [],
-      fieldNames: { label: 'name', value: 'id', children: 'children' }
+      fieldNames: { label: 'name', value: 'id', children: 'children' },
+      id_card_type: '',
+      country_prefix: ''
     }
   },
   methods: {
@@ -184,6 +188,10 @@ export default {
           values.province_id = values.cascader[0] || 110000
           values.city_id = values.cascader[1] || 110100
           values.district_id = values.cascader[2] || 110101
+          // 身份前缀
+          values.id_card_type = this.id_card_type
+          // 手机前缀
+          values.country_prefix = this.country_prefix
           delete values.cascader
         }
         this.editService.updateMemberEdit(this.id, values).subscribe(res => {
@@ -215,6 +223,8 @@ export default {
         country_prefix: obj.country_prefix === 0 ? 1 : obj.country_prefix,
         living_address: obj.living_address
       })
+      this.id_card_type = obj.id_card_type === 0 ? 1 : obj.id_card_type
+      this.country_prefix = obj.country_prefix === 0 ? 1 : obj.country_prefix
       this.id = obj.id
     }
   },

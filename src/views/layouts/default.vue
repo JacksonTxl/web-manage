@@ -94,6 +94,7 @@ import { find } from 'lodash-es'
 import { LoginService } from '../pages/account/login.service'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
+import { FastEntry } from './entry#/fast-entry'
 
 export default {
   serviceInject() {
@@ -131,10 +132,6 @@ export default {
     homePageRoute() {
       return /^\/brand/.test(this.$route.path) ? '/' : '/shop/dashboard'
     }
-  },
-  components: {
-    DefaultSiderMenu,
-    SwitchShop
   },
   methods: {
     switchShop() {
@@ -198,6 +195,11 @@ export default {
     onSiderMenuChange(menuObj) {
       this.menuObj = menuObj
     }
+  },
+  components: {
+    DefaultSiderMenu,
+    SwitchShop
+    // FastEntry
   }
 }
 </script>

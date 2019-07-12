@@ -15,9 +15,8 @@ export class PersonalService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
   auth$ = this.authService.authMap({
-    priceGet: 'brand:setting:personal_course_price_setting|get',
+    priceGet: 'brand:setting:course_price_reserve_setting|tab',
     priceEdit: 'brand:setting:personal_course_price_setting|edit',
-    reserveGet: 'brand:setting:personal_course_reserve_setting|get',
     reserveEdit: 'brand:setting:personal_course_reserve_setting|edit'
   })
   constructor(
