@@ -12,15 +12,15 @@ import { routeMapConfig } from './route-map.config'
 const routes: any[] = [
   {
     path: '/',
-    redirect: '/brand/'
+    redirect: '/index'
   },
   {
     path: '/brand/',
-    redirect: '/brand/dashboard'
+    redirect: '/brand/index'
   },
   {
     path: '/shop/',
-    redirect: '/shop/dashboard'
+    redirect: '/shop/index'
   },
   {
     path: '/brand/product/card/deposit-card/shop-sale-list',
