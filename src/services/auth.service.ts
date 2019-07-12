@@ -4,7 +4,7 @@ import { tap, pluck, map } from 'rxjs/operators'
 import { Store } from './store'
 import { AuthApi } from '@/api/v1/common/auth'
 import { of, forkJoin } from 'rxjs'
-import { get, set } from 'lodash-es'
+import { get, set, forEach } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 
 interface AuthState {
@@ -101,12 +101,26 @@ export class AuthService extends Store<AuthState> {
   can(authKey: string) {
     return 1
   }
+  authMap(authMapConfig: object = {}) {
+    return new Computed(
+      this.auth$.pipe(
+        map(auth => {
+          const _authMap: any = {}
+          forEach(authMapConfig, (v, k) => {
+            _authMap[k] = v in auth
+          })
+          return _authMap
+        })
+      )
+    )
+  }
   init() {
     return forkJoin([this.getList()])
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init().pipe(
       tap(() => {
+        console.log(JSON.stringify(this.auth$.snapshot()))
         this.nprogress.SET_TEXT('用户权限数据加载完毕')
       })
     )
