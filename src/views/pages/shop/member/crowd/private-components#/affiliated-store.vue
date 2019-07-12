@@ -11,7 +11,12 @@
     <a-tag style="background: #fff; borderStyle: dashed;">
       <a-dropdown overlayClassName="affiliated-store-dropdown">
         <a class="ant-dropdown-link" href="#">
-          <a-icon type="plus"/>添加
+          <a-tooltip>
+            <template slot='title' v-if="shopList.length <= 0">
+              没有可选的标签
+            </template>
+            <a-icon type="plus"/>添加
+          </a-tooltip>
         </a>
         <a-menu slot="overlay">
           <a-menu-item v-for="(item,index) in shopList" :key="index">
@@ -51,42 +56,35 @@ export default {
         title: '所属门店',
         info: '选择所属门店在以下范围内的用户'
       },
-      radioValue: '',
-      tags: ['拉访', '拉访1'],
-      inputValue: ''
+      tags: []
     }
   },
   created() {
     this.affiliatedStoreService.getShopList().subscribe(res => {
       this.shopList = res.shop_info
-      this.tags = Object.values(
-        Object.assign({}, ...this.value.getData.base_shop)
-      )
+      if (this.value.getData.shop.length > 0) {
+        this.tags = cloneDeep(this.value.getData.shop)
+      }
     })
   },
   methods: {
-    dropdownFunc(inputValue, inputValueObj) {
-      let tags = this.tags
-      if (inputValue && tags.indexOf(inputValue) === -1) {
-        tags = [...tags, inputValue]
+    dropdownFunc(item) {
+      const arr = this.tags.filter(i => { return i.value === item.value })
+      if (arr.length > 0) {
+        return
       }
-      console.log(tags, inputValue, inputValueObj, this.value.getData.base_shop)
-      this.value.getData.base_shop.push(inputValueObj)
-      Object.assign(this, {
-        tags,
-        inputVisible: false,
-        inputValue: ''
-      })
+      this.value.getData.shop.push(item)
+      this.tags.push(item)
     },
     onChange(date, dateString) {
-      console.log(date, dateString)
       this.$emit('dataChangge', this.value)
     },
     handleClose(removedTag, index) {
-      const tags = this.tags.filter(tag => tag !== removedTag)
-      console.log(tags)
-      this.tags = tags
-      this.value.getData.base_shop.splice(index, 1)
+      this.value.getData.shop.forEach((element, i) => {
+        if (element.shop_id === item.shop_id) {
+          this.value.getData.shop.splice(i, 1)
+        }
+      })
     }
   },
   mounted() {}

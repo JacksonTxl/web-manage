@@ -72,9 +72,10 @@ export default {
   },
   methods: {
     dropdownFunc(item) {
-      // if (this.value.getData.member_label.find(item) >= 0) {
-      //   return;
-      // }
+      const arr = this.tags.filter(i => { return i.value === item.value })
+      if (arr.length > 0) {
+        return
+      }
       this.value.getData.member_label.push(item)
       this.tags.push(item)
     },
