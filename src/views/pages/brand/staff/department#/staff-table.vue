@@ -87,7 +87,6 @@ export default {
       return val.length === 0 ? '--' : `共${val.length}家门店`
     },
     identityNames(val) {
-      console.log(val)
       if (val.length === 0) return '--'
       return val.map(item => {
         return item.name
