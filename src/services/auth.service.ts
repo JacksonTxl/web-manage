@@ -3,42 +3,24 @@ import { State, Computed, log } from 'rx-state'
 import { tap, pluck, map } from 'rxjs/operators'
 import { Store } from './store'
 import { AuthApi } from '@/api/v1/common/auth'
-import { of, forkJoin } from 'rxjs'
+import { of, forkJoin, pipe } from 'rxjs'
 import { get, set, forEach } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 
-interface AuthState {
-  auth: object
-}
 interface DataState {
   list?: any[]
   [propName: string]: any
 }
 @Injectable()
-export class AuthService extends Store<AuthState> {
-  state$: State<AuthState>
-  auth$: Computed<object>
+export class AuthService {
+  auth$ = new State<Array<string>>([])
   constructor(private authApi: AuthApi, private nprogress: NProgressService) {
-    super()
     this.nprogress.SET_TEXT('用户权限数据加载中...')
-    const initialState = {
-      auth: {}
-    }
-    this.state$ = new State(initialState)
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
-  }
-  SET_AUTH(auth: object) {
-    this.state$.commit(state => {
-      state.auth = auth
-    })
   }
   getList() {
-    if (Object.keys(this.auth$.snapshot()).length) {
-      return of({})
-    }
     return this.authApi.getList().pipe(
       tap((res: any) => {
-        this.SET_AUTH(res.auth)
+        this.auth$.commit(() => res.auth || [])
       })
     )
   }
@@ -99,15 +81,20 @@ export class AuthService extends Store<AuthState> {
     return data
   }
   can(authKey: string) {
-    return 1
+    const authSnap = this.auth$.snapshot()
+    return authSnap.includes(authKey)
   }
+  /**
+   * 通过map表获取当页的全局权限点
+   * @param authMapConfig 需要的权限点对象map表
+   */
   authMap(authMapConfig: object = {}) {
     return new Computed(
       this.auth$.pipe(
-        map(auth => {
+        map(authList => {
           const _authMap: any = {}
           forEach(authMapConfig, (v, k) => {
-            _authMap[k] = v in auth
+            _authMap[k] = authList.includes(v)
           })
           return _authMap
         })
@@ -115,14 +102,17 @@ export class AuthService extends Store<AuthState> {
     )
   }
   init() {
-    return forkJoin([this.getList()])
+    if (!this.auth$.snapshot().length) {
+      return forkJoin([this.getList()]).pipe(
+        tap(() => {
+          this.nprogress.SET_TEXT('用户权限数据获取完成')
+        })
+      )
+    } else {
+      return of([])
+    }
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.init().pipe(
-      tap(() => {
-        console.log(JSON.stringify(this.auth$.snapshot()))
-        this.nprogress.SET_TEXT('用户权限数据加载完毕')
-      })
-    )
+    return this.init()
   }
 }

@@ -3,9 +3,8 @@ import { Injectable } from 'vue-service-app'
 @Injectable()
 export class ComponentService {
   auth$ = this.authService.authMap({
-    a: 'brand_shop:page:home|brand_page',
-    b: 'auth:bbe'
+    add: 'brand_shop:page:home|brand_page',
+    edit: 'auth:bbe'
   })
-  constructor(private authService: AuthService) {
-  }
+  constructor(private authService: AuthService) {}
 }
