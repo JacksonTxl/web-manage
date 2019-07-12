@@ -11,7 +11,7 @@
             >
             <div class="shop-member-crowd-index-box__info">
               <st-t4 class="shop-member-crowd-index-box__info__title">{{value[0].crowd_name}}</st-t4>
-              <div>近7天内，新注册的潜在用户</div>
+              <div>{{value[0].description}}</div>
             </div>
           </div>
           <div class="shop-member-crowd-index-box__num">
@@ -62,8 +62,8 @@
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
-              <st-t4 class="shop-member-crowd-index-box__info__title">{{value[1].yesterday_deal_numb}}</st-t4>
-              <div>未来30天内,有会员卡到期的会员</div>
+              <st-t4 class="shop-member-crowd-index-box__info__title">{{value[1].crowd_name}}</st-t4>
+              <div>{{value[1].description}}</div>
             </div>
           </div>
           <div class="shop-member-crowd-index-box__num">
@@ -116,7 +116,7 @@
             >
             <div class="shop-member-crowd-index-box__info">
               <st-t4 class="shop-member-crowd-index-box__info__title">{{value[2].crowd_name}}</st-t4>
-              <div>私教课剩余次数小于5次的会员</div>
+              <div>{{value[2].description}}</div>
             </div>
           </div>
           <div class="shop-member-crowd-index-box__num">

@@ -183,7 +183,7 @@ export default {
     event: 'dataChangge'
   },
   props: {
-    value: Object
+    value: Array
   },
   data() {
     return {}
