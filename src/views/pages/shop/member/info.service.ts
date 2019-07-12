@@ -1,7 +1,7 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap } from 'rxjs/operators'
-import { MemberApi } from '@/api/v1/member'
+import { MemberApi, EditFaceParams } from '@/api/v1/member'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
@@ -34,6 +34,11 @@ export class InfoService implements RouteGuard {
 
   getMemberLabelDelete(obj: any) {
     return this.cardsApi.getMemberLabelDelete(obj)
+  }
+
+  // 修改人脸图片
+  editFace(id: number, params: EditFaceParams) {
+    return this.cardsApi.updateUserFace(id, params)
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     const { id } = to.meta.query

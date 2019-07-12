@@ -151,37 +151,19 @@
         <st-form-item label="登录账号" v-if="isChoosePermission">
           <a-input
             placeholder="6-18个字符，可使用字母、数字、下划线"
-            v-decorator="['account',
-            { rules: [{
-                required: isChoosePermission,
-                message: '请输入登录账号'
-              }],
-              initialValue: ''
-            }]"
+            v-decorator="rules.account"
           ></a-input>
         </st-form-item>
         <st-form-item label="登录密码" v-if="isChoosePermission">
           <a-input
             placeholder="6-15个字符，区分大小写"
-            v-decorator="['password',
-            { rules: [{
-                required: isChoosePermission,
-                message: '请输入登录密码'
-              }],
-              initialValue: ''
-            }]"
+            v-decorator="rules.password"
           ></a-input>
         </st-form-item>
         <st-form-item label="确认密码" v-if="isChoosePermission">
           <a-input
             placeholder="请再次填写密码"
-            v-decorator="['repeat_password',
-            { rules: [{
-                required: isChoosePermission,
-                message: '请输入确认密码'
-              }],
-              initialValue: ''
-            }]"
+            v-decorator="rules.repeat_password"
           ></a-input>
         </st-form-item>
       </a-col>
@@ -275,11 +257,6 @@ export default {
     },
     permissionChange(e) {
       this.isChoosePermission = e.target.checked
-      this.$nextTick(() => {
-        this.form.validateFields(['account'], { force: true })
-        this.form.validateFields(['password'], { force: true })
-        this.form.validateFields(['repeat_password'], { force: true })
-      })
     },
     onChange(value) {
       console.log('选择部门', value)

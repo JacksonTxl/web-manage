@@ -59,7 +59,11 @@
           <a-input placeholder="填写点什么吧" v-decorator="rules.address"/>
         </st-form-item>
         <st-form-item label="备注">
-          <a-input type="textarea" v-decorator="rules.description" :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧"/>
+          <st-textarea
+            :maxlength="300"
+            :rows="10"
+            v-decorator="rules.description"
+            placeholder="填写点什么吧"/>
         </st-form-item>
       </a-col>
       <a-col :lg="10" :xs="22" :offset="2"></a-col>

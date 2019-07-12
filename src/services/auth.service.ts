@@ -20,6 +20,7 @@ export class AuthService extends Store<AuthState> {
   auth$: Computed<object>
   constructor(private authApi: AuthApi, private nprogress: NProgressService) {
     super()
+    this.nprogress.SET_TEXT('用户权限数据加载中...')
     const initialState = {
       auth: {}
     }
@@ -106,7 +107,7 @@ export class AuthService extends Store<AuthState> {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init().pipe(
       tap(() => {
-        this.nprogress.next('权限服务加载完毕')
+        this.nprogress.SET_TEXT('用户权限数据加载完毕')
       })
     )
   }

@@ -9,6 +9,24 @@ export class RuleConfig {
     private i18n: I18NService,
     private pattern: PatternService
   ) {}
+  // 登录账号
+  get account() {
+    return ['account', {
+      rules: [{ required: true, message: '请输入登录账户' }]
+    }]
+  }
+  // 登录密码
+  get password() {
+    return ['password', {
+      rules: [{ required: true, message: '请输入登录密码' }]
+    }]
+  }
+  // 确认密码
+  get repeat_password() {
+    return ['repeat_password', {
+      rules: [{ required: true, message: '请输入确认密码' }]
+    }]
+  }
   // 员工姓名
   get staff_name() {
     return ['staff_name', {
@@ -219,8 +237,8 @@ export class RuleConfig {
   get address() {
     return ['address', {
       rules: [{
-        pattern: this.pattern.CN_EN_NUM('1-100'),
-        message: '请输入1-100个字，中英文及数字'
+        pattern: this.pattern.CN_EN_NUM('0-100'),
+        message: '请输入0-100个字，中英文及数字'
       }]
     }]
   }
@@ -229,8 +247,8 @@ export class RuleConfig {
   get description() {
     return ['description', {
       rules: [{
-        pattern: this.pattern.CN_EN_NUM('1-300'),
-        message: '请输入1-300个字，中英文及数字'
+        pattern: this.pattern.CN_EN_NUM('0-300'),
+        message: '请输入0-300个字，中英文及数字'
       }]
     }]
   }

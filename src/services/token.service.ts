@@ -9,6 +9,7 @@ import { AppConfig } from '@/constants/config'
 import { State, Computed } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from './store'
+import { NProgressService } from './nprogress.service'
 
 interface TokenState {
   /**
@@ -20,8 +21,13 @@ interface TokenState {
 export class TokenService extends Store<TokenState> implements RouteGuard {
   state$: State<TokenState>
   token$: Computed<string>
-  constructor(private router: ServiceRouter, private appConfig: AppConfig) {
+  constructor(
+    private router: ServiceRouter,
+    private appConfig: AppConfig,
+    private nprogressService: NProgressService
+  ) {
     super()
+
     this.state$ = new State({
       token: Cookie.get(this.appConfig.TOKEN_NAME) || ''
     })
@@ -41,6 +47,7 @@ export class TokenService extends Store<TokenState> implements RouteGuard {
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
+    this.nprogressService.SET_TEXT('用户凭证获取')
     if (!this.token$.snapshot()) {
       this.router.push({
         name: 'account-login',
@@ -48,6 +55,7 @@ export class TokenService extends Store<TokenState> implements RouteGuard {
       })
       next(false)
     } else {
+      this.nprogressService.SET_TEXT('用户凭证获取完毕')
       next()
     }
   }

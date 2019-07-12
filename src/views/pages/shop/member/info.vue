@@ -14,7 +14,7 @@
                 <span class="img-describe">正式会员</span>
               </div>
               <div class="input-face">
-                <a href="javascript:;">
+                <a href="#" @click="openFaceUpload">
                   <a-icon type="plus"/>录入人脸
                 </a>
               </div>
@@ -134,16 +134,19 @@
 
 <script>
 import { InfoService } from './info.service'
+import { RouteService } from '@/services/route.service'
 export default {
   serviceInject() {
     return {
-      infoService: InfoService
+      infoService: InfoService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
       info: this.infoService.info$,
-      auth: this.infoService.auth$
+      auth: this.infoService.auth$,
+      query: this.routeService.query$
     }
   },
   name: 'list',
@@ -153,6 +156,18 @@ export default {
     }
   },
   methods: {
+    openFaceUpload() {
+      this.$modalRouter.push({
+        name: 'face-recognition',
+        on: {
+          change: res => {
+            this.infoService.editFace(this.query.id, res).subscribe(() => {
+              this.infoService.getBasicInfo(this.query.id)
+            })
+          }
+        }
+      })
+    },
     onRemoveBind() {
       let that = this
       this.$confirm({
