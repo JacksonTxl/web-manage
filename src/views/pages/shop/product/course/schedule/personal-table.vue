@@ -1,5 +1,6 @@
-<template>
-  <div class="page-personal-table schedule-table">
+
+<template class="page-personal-table schedule-table">
+  <div>
     <div class="page-personal-table__title pd-x24 pd-y16 schedule-table__title" slot="title">
       <a-row :gutter="8">
         <a-col :lg="8">
@@ -41,8 +42,14 @@
               <td width="120">
                 <a href="javascript:;">{{ item.staff_name }}</a>
               </td>
+              <!-- <td width="120">
+                <template v-for="info in item.schedule_info">
+                  {{info}}
+                  <div v-for="tim in info.timing" >{{tim}}</div>
+                </template>
+              </td> -->
               <template v-for="items in item.schedule_info">
-                <template v-if="items.timing.length > 0">
+                <template >
                   <td :key="items.id" :class="items.schedule_date == currentTime ? 'thgl': ''">
                     <a-popover placement="rightTop">
                       <template slot="content">
@@ -53,16 +60,17 @@
                       <template slot="title">
                         <span>排期</span>
                       </template>
-                      {{ items.timing[0].start_time }}~{{ items.timing[0].end_time }}
+                      {{items.timing | timingFilter}}
+                      <!-- {{ items.timing[0].start_time }}~{{ items.timing[0].end_time }} -->
                     </a-popover>
                   </td>
                 </template>
-                <template v-else>
+                <!-- <template v-else>
                   <td
                     :key="items.id"
                     :class="items.schedule_date == currentTime ? 'thgl': ''"
                   >--</td>
-                </template>
+                </template> -->
               </template>
               <td>
                 <a
@@ -100,6 +108,14 @@ export default {
     getWeek(index) {
       const weekList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
       return weekList[index]
+    },
+    timingFilter(val) {
+      console.log('timingFilter', val)
+      if (val.length) {
+        return `${val[0].start_time} ~ ${val[0].end_time}`
+      } else {
+        return '--'
+      }
     },
     getDate(date) {
       return moment(date).format('MM/DD').valueOf()

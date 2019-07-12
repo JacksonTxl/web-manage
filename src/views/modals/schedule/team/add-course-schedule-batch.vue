@@ -189,7 +189,10 @@ export default {
           item.course_fee = parseInt(item.course_fee)
           return item
         })
-      this.teamScheduleScheduleService.curd('addScheduleInBatch', data, () => { this.show = false })
+      this.teamScheduleScheduleService.addScheduleInBatch(data).subscribe(res => {
+        this.show = false
+        this.$router.push({ force: true })
+      })
     },
     handleChange(value, key, column) {
       const newData = [...this.data]
