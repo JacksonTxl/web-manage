@@ -119,8 +119,11 @@ export default {
   computed: {
     breadCrumbs() {
       const menuBreadCrumb = this.getSiderMenuBreadCrumb()
-      const parentBreadCrumb = this.getParentBreadCrumb()
-      return [...menuBreadCrumb, ...parentBreadCrumb]
+      // const parentBreadCrumb = this.getParentBreadCrumb()
+      return [
+        ...menuBreadCrumb
+        // , ...parentBreadCrumb
+      ]
     },
     pageTitle() {
       return this.$route.meta.title
