@@ -250,6 +250,9 @@ export default {
       if (!value || !value.match(this.pattern.EN_NUM)) {
         // eslint-disable-next-line
         callback('请输入合同编号')
+      } else if (!value.match(this.pattern.EN_NUM('6-20'))) {
+        // eslint-disable-next-line
+        callback('请输入正确合同编号')
       } else {
         // eslint-disable-next-line
         callback()
