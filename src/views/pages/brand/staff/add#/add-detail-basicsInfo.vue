@@ -237,11 +237,6 @@ export default {
     },
     permissionChange(e) {
       this.isChoosePermission = e.target.checked
-      this.$nextTick(() => {
-        this.form.validateFields(['account'], { force: true })
-        this.form.validateFields(['password'], { force: true })
-        this.form.validateFields(['repeat_password'], { force: true })
-      })
     },
     onChange(value) {
       console.log('选择部门', value)
@@ -251,6 +246,7 @@ export default {
     goNext(e) {
       e.preventDefault()
       this.form.validateFields((err, values) => {
+        console.log('validateFields', values)
         if (!err) {
           this.submit(values)
         }

@@ -9,6 +9,24 @@ export class RuleConfig {
     private i18n: I18NService,
     private pattern: PatternService
   ) {}
+  // 登录账号
+  get account() {
+    return ['account', {
+      rules: [{ required: true, message: '请输入登录账户' }]
+    }]
+  }
+  // 登录密码
+  get password() {
+    return ['password', {
+      rules: [{ required: true, message: '请输入登录密码' }]
+    }]
+  }
+  // 确认密码
+  get repeat_password() {
+    return ['repeat_password', {
+      rules: [{ required: true, message: '请输入确认密码' }]
+    }]
+  }
   // 员工姓名
   get staff_name() {
     return ['staff_name', {
