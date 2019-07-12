@@ -2,23 +2,25 @@
 <div class="page-role-info">
   <st-form :form="form" class="page-role-info__edit">
     <a-row class="content">
-      <a-col :lg="17" class="brand-list">
+      <a-col :lg="17">
         <st-form-item label="角色名称">
-          <a-input placeholder="请输入角色名称" v-decorator="['name', {initialValue: info.name}]"></a-input>
+          <a-input
+            placeholder="请输入角色名称"
+            v-decorator="['name', {initialValue: info.name}]"></a-input>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :lg="17" class="content">
-      <a-col class="brand-list">
+      <a-col :lg="17">
         <st-form-item label="角色描述">
-          <a-input placeholder="请输入角色内容" v-decorator="[
-              'role_description', {initialValue: info.role_description}
-            ]"></a-input>
+          <a-input
+            placeholder="请输入角色内容"
+            v-decorator="['role_description', {initialValue: info.role_description}]"></a-input>
         </st-form-item>
       </a-col>
     </a-row>
-    <a-row :lg="18" class="content">
-      <a-col class="brand-list">
+    <a-row :lg="17" class="content">
+      <a-col :lg="17">
         <st-form-item label="数据权限">
           <a-radio-group name="radioGroup" @change="onChangeDataRegion" v-decorator="[
             'data_grant', {initialValue: info.data_grant}
@@ -31,8 +33,8 @@
         </st-form-item>
       </a-col>
     </a-row>
-    <a-row class="content">
-      <a-col>
+    <a-row :lg="17" class="content">
+      <a-col :lg="17">
         <st-form-item label="功能权限">
           <div class="jurisdiction">
             <st-container  class="brand-list">

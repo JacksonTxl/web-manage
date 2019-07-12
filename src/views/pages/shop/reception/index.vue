@@ -226,12 +226,12 @@
                     </template>
                     <span class="operation-name cursor-pointer" v-else>无</span>
                     <p>
-                      <span>{{item.subject}}</span>
+                      <span class="fw-600">{{item.subject}}</span>
                       <span>{{item.content}}</span>
                     </p>
                   </div>
                   <div class="operation-time">
-                    <span>{{item.created_time}}</span>
+                    <span class="font-number">{{item.created_time}}</span>
                     <st-button class="to-do-button" @click="onSetWorkNote(item,i)">完成</st-button>
                   </div>
                 </li>

@@ -35,14 +35,12 @@
         </a-select>
       </st-form-item>
       <st-form-item label="上课教练"
-
       required>
         <a-select v-decorator="['coach_id']" placeholder="请选择上课教练" @change="onChangeCourseCoach">
           <a-select-option v-for="courseCoach in courseCoachOptions" :key="courseCoach.id" :value="courseCoach.id">{{courseCoach.name}}</a-select-option>
         </a-select>
       </st-form-item>
       <st-form-item label="预约日期" required>
-
         <a-date-picker @change="onChangeDatePick" v-decorator="['scheduling_id']" :disabledDate="disabledDate"/>
       </st-form-item>
       <st-form-item label="预约时间" required>
@@ -153,8 +151,11 @@ export default {
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
         const start = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`).format('H').valueOf()
         const end = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`).format('H').valueOf()
-        disabledHours = [...disabledHours, ...this.range(start, end)]
+        console.log(start, end)
+        disabledHours = [...disabledHours, ...this.range(start, end || 24)]
       }
+      console.log(allTime, disabledHours)
+      console.log(difference(allTime, disabledHours))
       return difference(allTime, disabledHours)
     },
     save() {

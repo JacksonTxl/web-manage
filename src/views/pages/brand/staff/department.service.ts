@@ -66,7 +66,7 @@ export class DepartmentService implements RouteGuard {
     }))
   }
   init(query: any) {
-    return forkJoin(this.getDepartmentList(), this.getStaffList(query))
+    return forkJoin(this.searchDepartment(''), this.getDepartmentList(), this.getStaffList(query))
   }
   // beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
   //   return this.getDepartmentList()
