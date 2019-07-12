@@ -165,24 +165,24 @@
           <a-row :gutter="8">
             <a-col :lg="22">
               <st-form-item class="page-content-card-introduction " label="会员卡介绍">
-                <a-textarea
+                <st-textarea
                 v-model="cardIntroduction"
                 maxlength="500"
                 class="page-content-card-textarea"
                 placeholder="请输入"
-                :rows="4"/>
+                />
               </st-form-item>
             </a-col>
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="22">
               <st-form-item class="page-content-card-contents " label="备注">
-                <a-textarea
+                <st-textarea
                 v-model="cardContents"
                 maxlength="500"
                 class="page-content-card-textarea"
                 placeholder="请输入"
-                :rows="4"/>
+                />
               </st-form-item>
             </a-col>
           </a-row>

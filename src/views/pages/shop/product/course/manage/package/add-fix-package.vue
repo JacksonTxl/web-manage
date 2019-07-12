@@ -451,24 +451,24 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="课程包介绍">
-             <a-textarea
+             <st-textarea
                 v-model="packageData.intro"
                 maxlength="500"
                 class="page-content-card-textarea"
                 placeholder="请输入课程包介绍"
-                :rows="4"/>
+                />
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="备注">
-             <a-textarea
+             <st-textarea
                 v-model="packageData.remarks"
                 maxlength="500"
                 class="page-content-card-textarea"
                 placeholder="请输入备注"
-                :rows="4"/>
+                />
           </st-form-item>
         </a-col>
       </a-row>
