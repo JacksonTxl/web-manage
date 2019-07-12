@@ -24,7 +24,11 @@
           </div>
         </st-form-item>
         <st-form-item label="个人经历">
-          <a-input type="textarea" :autosize="{ minRows: 10, maxRows: 16 }" placeholder="填写点什么吧" v-decorator="rules.introduction"/>
+          <st-textarea
+            :maxlength="300"
+            :rows="10"
+            v-decorator="rules.introduction"
+            placeholder="填写点什么吧"/>
         </st-form-item>
         </a-col>
     </a-row>
