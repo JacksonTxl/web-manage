@@ -14,7 +14,12 @@ interface ListState {
 export class PersonalService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
-  auth$: Computed<object>
+  auth$ = this.authService.authMap({
+    priceGet: 'brand:setting:personal_course_price_setting|get',
+    priceEdit: 'brand:setting:personal_course_price_setting|edit',
+    reserveGet: 'brand:setting:personal_course_reserve_setting|get',
+    reserveEdit: 'brand:setting:personal_course_reserve_setting|edit'
+  })
   constructor(
     private reserveSettingApi: PersonReserveSettingApi,
     private coursePricingApi: CoursePricingApi,
@@ -22,26 +27,9 @@ export class PersonalService extends Store<ListState> {
   ) {
     super()
     this.state$ = new State({
-      resData: {},
-      auth: {
-        /**
-         * 私教课定价查看与编辑
-         */
-        price: {
-          get: this.authService.can('brand:setting:personal_course_price_setting|get'),
-          edit: this.authService.can('brand:setting:personal_course_price_setting|edit')
-        },
-        /**
-         * 私教课程预约设置查看与编辑
-         */
-        reserve: {
-          get: this.authService.can('brand:setting:personal_course_reserve_setting|get'),
-          edit: this.authService.can('brand:setting:personal_course_reserve_setting|edit')
-        }
-      }
+      resData: {}
     })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   getPriceSettingInfo() {
     return this.coursePricingApi.getInfo()

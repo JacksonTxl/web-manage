@@ -17,7 +17,9 @@ export class ListService implements RouteGuard {
   categoryList$ = new State<any[]>([])
   shopSelectOptions$ = new State<any[]>([])
   state$: State<any>
-  auth$: Computed<object>
+  auth$ = this.authService.authMap({
+    add: 'brand_shop:product:team_course|add'
+  })
   constructor(
     private shopApi: ShopApi,
     private courseApi: CourseApi,
@@ -25,12 +27,8 @@ export class ListService implements RouteGuard {
     private authService: AuthService
   ) {
     this.state$ = new State({
-      teamCourseList: [],
-      auth: {
-        add: this.authService.can('brand_shop:product:team_course|add')
-      }
+      teamCourseList: []
     })
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
 
   getList(params: GetTeamBrandCourseListInput) {

@@ -13,7 +13,9 @@ interface SetState {
 export class CabinetListService extends Store<SetState> {
   state$: State<SetState>
   resData$: Computed<object>
-  auth$: Computed<object[]>
+  auth$ = this.authService.authMap({
+    edit: 'shop:cabinet:cabinet|edit'
+  })
   constructor(
     private temporaryCabinetApi: TemporaryCabinetApi,
     private longTermCabinetApi: LongTermCabinetApi,
@@ -21,13 +23,9 @@ export class CabinetListService extends Store<SetState> {
   ) {
     super()
     this.state$ = new State({
-      resData: {},
-      auth: {
-        edit: this.authService.can('shop:cabinet:cabinet|edit')
-      }
+      resData: {}
     })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   getList(type: string, id: number) {
     const cabinetApi = type === 'long-term' ? this.longTermCabinetApi : this.temporaryCabinetApi

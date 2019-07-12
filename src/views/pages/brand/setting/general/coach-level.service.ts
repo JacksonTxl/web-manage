@@ -12,21 +12,19 @@ interface ListState {
 export class CoachLevelService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
-  auth$: Computed<object>
+  auth$ = this.authService.authMap({
+    add: 'brand:setting:coach_level|add',
+    get: 'brand:setting:coach_level|get'
+  })
   constructor(
     private coachLevelApi: CoachLevelApi,
     private authService: AuthService
   ) {
     super()
     this.state$ = new State({
-      resData: {},
-      auth: {
-        add: this.authService.can('brand:setting:coach_level|add'),
-        get: this.authService.can('brand:setting:coach_level|get')
-      }
+      resData: {}
     })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   getCoachLevelList(query: GetCoachLevelListInput) {
     return this.coachLevelApi.getCoachLevelList(query).pipe(

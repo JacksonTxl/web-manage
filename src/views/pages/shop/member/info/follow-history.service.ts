@@ -15,19 +15,17 @@ export class FollowHistoryService extends Store<FollowHistoryInfoState> {
   state$: State<FollowHistoryInfoState>
   followHistoryInfo$: Computed<string>
   followInfo$: Computed<string>
-  auth$: Computed<Object>
+  auth$ = this.authService.authMap({
+    add: 'shop:member:member_record|add'
+  })
   constructor(private memberApi: MemberApi, private authService: AuthService) {
     super()
     this.state$ = new State({
       followHistoryInfo: {},
-      followInfo: {},
-      auth: {
-        add: this.authService.can('shop:member:member_record|add')
-      }
+      followInfo: {}
     })
     this.followHistoryInfo$ = new Computed(this.state$.pipe(pluck('followHistoryInfo')))
     this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SET_FOLLOW_HISTORY_INFO(followHistoryInfo: FollowHistoryInfoState) {
     console.log(followHistoryInfo)

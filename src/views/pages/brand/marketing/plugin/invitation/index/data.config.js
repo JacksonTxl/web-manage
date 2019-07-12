@@ -7,31 +7,37 @@ export const columnsActivity = [
   {
     title: '参与活动邀请人',
     dataIndex: 'inviter_num',
+    align: 'right',
     scopedSlots: { customRender: 'inviter_num' }
   },
   {
     title: '邀请人带来的交易额',
     dataIndex: 'inviter_revenue',
+    align: 'right',
     scopedSlots: { customRender: 'inviter_revenue' }
   },
   {
     title: '拉新注册人数',
     dataIndex: 'newbie_register_num',
+    align: 'right',
     scopedSlots: { customRender: 'newbie_register_num' }
   },
   {
     title: '拉新领券人数',
     dataIndex: 'coupon_num',
+    align: 'right',
     scopedSlots: { customRender: 'coupon_num' }
   },
   {
     title: '拉新交易人数',
     dataIndex: 'order_num',
+    align: 'right',
     scopedSlots: { customRender: 'order_num' }
   },
   {
     title: '拉新带来的交易额',
     dataIndex: 'newbie_revenue',
+    align: 'right',
     scopedSlots: { customRender: 'newbie_revenue' }
   }
 ]
@@ -59,6 +65,7 @@ export const columnsUser = [
   {
     title: '拉新带来的交易额',
     dataIndex: 'newbie_revenue',
+    align: 'right',
     scopedSlots: { customRender: 'newbie_revenue' }
   }
 ]

@@ -37,7 +37,8 @@
         </div>
         <div v-else :class="inviation('table')">
             <div :class="inviation('table-operation')" class="mg-b16">
-                <st-button :disabled="!selectedRowKeys.length" @click="onExport" type="primary">批量导出</st-button>
+              <!-- NOTE: 导出 -->
+                <!-- <st-button :disabled="!selectedRowKeys.length" @click="onExport" type="primary">批量导出</st-button> -->
                 <a-radio-group v-model="tableType" @change="onTabChange" buttonStyle="solid">
                     <a-radio-button :value="0">活动效果</a-radio-button>
                     <a-radio-button :value="1">邀请用户</a-radio-button>

@@ -9,10 +9,10 @@ export class MemberService implements RouteGuard {
   list$ = new State({})
   page$ = new State({})
   loading$ = new State({})
-  auth$ = new State({
-    export: this.authService.can('shop:sold:sold_member_card|export'),
-    gift: this.authService.can('shop:sold:sold_member_card|gift'),
-    vipRegion: this.authService.can('shop:sold:sold_member_card|vip_region')
+  auth$ = this.authService.authMap({
+    export: 'shop:sold:sold_member_card|export',
+    gift: 'shop:sold:sold_member_card|gift',
+    vipRegion: 'shop:sold:sold_member_card|vip_region'
   })
   constructor(private cardApi: CardApi, private authService: AuthService) {}
   @Effect()

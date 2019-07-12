@@ -3,6 +3,7 @@ export const columns = () => {
     {
       title: '储值卡名称',
       dataIndex: 'card_name',
+      width: 200,
       scopedSlots: { customRender: 'card_name' }
     },
     {

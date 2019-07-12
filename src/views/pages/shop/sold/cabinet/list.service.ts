@@ -9,8 +9,8 @@ export class ListService implements RouteGuard {
   list$ = new State([]);
   page$ = new State({})
   loading$ = new State({})
-  auth$ = new State({
-    export: this.authService.can('shop:sold:sold_cabinet|export')
+  auth$ = this.authService.authMap({
+    export: 'shop:sold:sold_cabinet|export'
   })
 
   constructor(private cabinetApi: CabinetApi, private authService: AuthService) {}

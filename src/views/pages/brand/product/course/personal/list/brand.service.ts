@@ -24,7 +24,9 @@ export class BrandService implements RouteGuard {
   personalCourseList$: Computed<any>
   supportShopList$: Computed<any>
   supportCoachList$: Computed<any>
-  auth$: Computed<object>
+  auth$ = this.authService.authMap({
+    add: 'brand_shop:product:personal_course|add'
+  })
   constructor(
     private personalApi: BrandPersonalCourseApi,
     private courseApi: CourseApi,
@@ -33,15 +35,11 @@ export class BrandService implements RouteGuard {
   ) {
     this.state$ = new State({
       supportShopList: [],
-      supportCoachList: [],
-      auth: {
-        add: this.authService.can('brand_shop:product:personal_course|add')
-      }
+      supportCoachList: []
     })
     this.personalCourseList$ = new Computed(this.state$.pipe(pluck('personalCourseList')))
     this.supportShopList$ = new Computed(this.state$.pipe(pluck('supportCourseList')))
     this.supportCoachList$ = new Computed(this.state$.pipe(pluck('supportCoachList')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SET_PERSONAL_COURSE_LIST(data: any) {
     this.state$.commit(state => {

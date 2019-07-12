@@ -13,19 +13,16 @@ export class ShopService {
   // 业务状态
   list$ = new State([])
   page$ = new State({})
-  auth$: Computed<object>
   state$: State<any>
+  auth$ = this.authService.authMap({
+    transfer: 'brand_shop:product:team_course|transfer'
+  })
   constructor(
     private shopTeamCourseApi: BrandTeamCourseApi,
     private authService: AuthService,
     private msg: MessageService
   ) {
-    this.state$ = new State({
-      auth: {
-        transfer: this.authService.can('brand_shop:product:team_course|transfer')
-      }
-    })
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
+    this.state$ = new State({})
   }
   @Effect()
   getList(params: GetTeamBrandCourseListInput) {

@@ -14,20 +14,18 @@ interface ListState {
 export class ListService extends Store<ListState> implements RouteGuard {
   state$: State<ListState>
   list$: Computed<any[]>
-  auth$: Computed<any[]>
+  auth$ = this.authService.authMap({
+    edit: 'brand:contract:contract_tpl|edit'
+  })
   constructor(
     private contractApi: ContractApi,
     private authService: AuthService
   ) {
     super()
     this.state$ = new State({
-      list: [],
-      auth: {
-        edit: this.authService.can('brand:contract:contract_tpl|edit')
-      }
+      list: []
     })
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SET_LIST(list: any[]) {
     this.state$.commit(state => {

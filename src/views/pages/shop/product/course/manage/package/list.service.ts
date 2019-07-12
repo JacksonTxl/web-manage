@@ -9,8 +9,8 @@ export class ListService implements RouteGuard {
   list$ = new State({})
   page$ = new State({})
   loading$ = new State({})
-  auth$ = new State({
-    add: this.authService.can('shop:product:package_course|add')
+  auth$ = this.authService.authMap({
+    add: 'shop:product:package_course|add'
   })
   constructor(
     private packageApi: PackageApi,
@@ -19,7 +19,7 @@ export class ListService implements RouteGuard {
   @Effect()
   getList(params: GetPackageListInput) {
     return this.packageApi.getList(params).pipe(tap((res:any) => {
-      this.auth$.commit(() => res.auth)
+      res = this.authService.filter(res)
       this.list$.commit(() => res.list)
       this.page$.commit(() => res.page)
     }))

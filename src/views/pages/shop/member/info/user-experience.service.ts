@@ -15,19 +15,17 @@ export class UserExperienceService extends Store<UserExprienceInfoState> {
   state$: State<UserExprienceInfoState>
   physicalListInfo$: Computed<string>
   followInfo$: Computed<string>
-  auth$: Computed<Object>
+  auth$ = this.authService.authMap({
+    add: 'shop:member:member_physical_record|add'
+  })
   constructor(private memberApi: MemberApi, private authService: AuthService) {
     super()
     this.state$ = new State({
       physicalListInfo: {},
-      followInfo: {},
-      auth: {
-        add: this.authService.can('shop:member:member_physical_record|add')
-      }
+      followInfo: {}
     })
     this.physicalListInfo$ = new Computed(this.state$.pipe(pluck('physicalListInfo')))
     this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   SET_CARDS_LIST_INFO(physicalListInfo: UserExprienceInfoState) {
     console.log(physicalListInfo)
