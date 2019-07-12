@@ -17,13 +17,14 @@ export const shopColumns = [{
 }]
 export const coachColumns = [{
   title: '教练',
-  dataIndex: 'name'
+  dataIndex: 'nickname'
 }, {
   title: '教练等级',
-  dataIndex: 'level'
+  dataIndex: 'level_name'
 }, {
   title: '在职状态',
-  dataIndex: 'nature_work'
+  dataIndex: 'nature_work',
+  scopedSlots: { customRender: 'nature_work' }
 }]
 export const priceConfigColumns = [{
   title: '价格等级',

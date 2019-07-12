@@ -276,6 +276,7 @@ export default {
           this.showSite = []
           this.siteNumIds = []
           this.consumeType = ''
+          this.showConsumeType = ''
           this.memberId = ''
           this.getReserve()
         },
@@ -285,6 +286,7 @@ export default {
           this.showSite = []
           this.siteNumIds = []
           this.consumeType = ''
+          this.showConsumeType = ''
           this.memberId = ''
         })
     },
