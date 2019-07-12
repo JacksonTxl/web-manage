@@ -10,7 +10,9 @@
       </p>
     </div>
     <div :class="basic('right')" v-viewer="{ url: 'data-src' }">
-      <img v-for="(item, index) in info.plugin_image" :key="index" :src="item|imgFilter({ w: 80, h: 142 })" :data-src="item|imgFilter({ w: 1000 })">
+      <div class="st-preview-item imgBox" v-for="(item, index) in info.plugin_image" :key="index">
+        <img :src="item|imgFilter({ w: 80, h: 142 })" :data-src="item|imgFilter({ w: 1000 })">
+      </div>
     </div>
   </div>
 </template>
