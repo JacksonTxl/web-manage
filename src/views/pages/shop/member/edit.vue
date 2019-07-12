@@ -156,7 +156,7 @@ export default {
         fitness_goal: ['fitness_goal'],
         has_children: ['has_children'],
         fitness_level: ['fitness_level'],
-        email: ['email'],
+        email: ['email', { rules: [{ message: '请输入正确的邮箱地址', pattern: this.pattern.EMAIL }] }],
         mobile: ['mobile', { rules: [{ required: true, message: '请输入正确的手机号', pattern: this.pattern.MOBILE }] }],
         wechat: ['wechat'],
         cascader: ['cascader'],

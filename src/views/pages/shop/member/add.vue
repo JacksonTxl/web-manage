@@ -242,7 +242,7 @@ export default {
         fitness_level: ['fitness_level'],
         married_type: ['married_type'],
         has_children: ['has_children'],
-        email: ['email'],
+        email: ['email', { rules: [{ message: '请输入正确的邮箱地址', pattern: this.pattern.EMAIL }] }],
         cascader: ['cascader'],
         living_address: ['living_address']
       },
