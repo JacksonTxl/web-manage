@@ -71,7 +71,7 @@ export class DepartmentService implements RouteGuard {
   // beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
   //   return this.getDepartmentList()
   // }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.init(to.query)
   }
 }
