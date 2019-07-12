@@ -70,6 +70,22 @@
         <p>
           .st-form-item-unit  定义input右侧样式
         </p>
+        <p>
+          <a-tooltip overlayClassName="st-light-tooltip">
+            <template slot='title'>
+              st-light-tooltip，用来重置tooltip样式，主要是重置为白底黑字
+            </template>
+            <span class="cursor-pointer">st-light-tooltip</span>
+          </a-tooltip>
+          <pre style="outline:1px solid pink;">
+              &lt;a-tooltip overlayClassName="<span style="color: red;">st-light-tooltip</span>"&gt;
+                &lt;template slot='title'&gt;
+                  st-light-tooltip，用来重置tooltip样式，主要是重置为白底黑字
+                &lt;/template&gt;
+                &lt;span class="cursor-pointer"&gt;st-light-tooltip&lt;/span&gt;
+              &lt;/a-tooltip&gt;
+            </pre>
+        </p>
         <st-form>
           <st-form-item>
             <a-input placeholder=".st-form-item-unit 定义input右侧样式">

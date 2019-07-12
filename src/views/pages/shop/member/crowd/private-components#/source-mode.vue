@@ -3,7 +3,7 @@
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">选择来源</span>
-    <template v-for="(tag,index) in value.getData.source_channel">
+    <template v-for="(tag,index) in tags">
       <a-tooltip :key="index" :title="tag.name">
         <a-tag :key="index" :closable="true" :afterClose="() => handleClose(tag,index)">{{tag.name}}</a-tag>
       </a-tooltip>
@@ -55,7 +55,8 @@ export default {
         title: '来源方式',
         info: '选择来源方式为以下范围的用户'
       },
-      sourceOptions: []
+      sourceOptions: [],
+      tags: []
     }
   },
   created() {
@@ -65,22 +66,29 @@ export default {
       list.push({ value: +o[0], name: o[1] })
     })
     this.sourceOptions = list
-    // this.tags = Object.values(
-    //   Object.assign({}, ...this.value.getData.source_channel)
-    // )
+    if (this.value.getData.source_channel.length > 0) {
+      this.tags = cloneDeep(this.value.getData.source_channel)
+    }
   },
   methods: {
     dropdownFunc(item, index) {
-      // 需要去重
+      const arr = this.tags.filter(i => { return i.value === item.value })
+      if (arr.length > 0) {
+        return
+      }
       this.value.getData.source_channel.push(item)
+      this.tags.push(item)
     },
 
     onChange(date, dateString) {
       this.$emit('dataChangge', this.value)
     },
     handleClose(removedTag, index) {
-      this.value.getData.source_channel.splice(index, 1)
-      this.value.getData.source_channel.splice(index, 1)
+      this.value.getData.source_channel.forEach((element, i) => {
+        if (element.value === item.value) {
+          this.value.getData.source_channel.splice(i, 1)
+        }
+      })
     }
   }
 }

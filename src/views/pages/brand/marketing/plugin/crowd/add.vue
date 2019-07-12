@@ -7,7 +7,7 @@
         <basic-data v-model="selectData" :flag="flag"></basic-data>
       </div>
       <div class="shop-member-crowd-add__right">
-        <st-t2>编辑人群</st-t2>
+        <st-t2>{{$route.query.id ? '编辑人群' : '新增人群'}}</st-t2>
         <st-form :form="form" @submit="save" style="height:72px" labelWidth="75px">
           <st-form-item label="人群名称" required>
             <a-input

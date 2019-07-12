@@ -1,6 +1,6 @@
 <template>
   <div class="shop-member-crowd-index">
-    <index v-model="crowdIndexInfo.info.important_crowd"></index>
+    <index v-model="crowdIndexInfo.info.important_crowd" v-if="crowdIndexInfo.info.important_crowd.length > 0"></index>
     <st-panel>
       <div slot="title">
         <router-link
