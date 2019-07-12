@@ -1,5 +1,10 @@
 <template>
-  <st-modal :title="title" :class="map()" v-model="show" :footer="null" :width="484">
+  <st-modal
+  :title="title"
+  v-model="show"
+  :footer="null"
+  wrapClassName="st-modal-map"
+  width="484px">
     <div :class="map('search')">
       <a-cascader
         :class="map('cascader')"

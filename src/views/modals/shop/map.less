@@ -89,6 +89,9 @@
   div[n=targetElement]~div[draggable=false]{
     display: none;
   }
+  div[n=targetElement]~div[onresize^=return]{
+    display: none;
+  }
   div[n=targetElement]~div[onpositionupdate^=return]{
     display: none;
   }
