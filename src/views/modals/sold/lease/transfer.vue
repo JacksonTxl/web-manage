@@ -219,7 +219,7 @@ export default {
       }
     },
     contract_number(rule, value, callback) {
-      if (!value || !value.match(this.pattern.EN_NUM)) {
+      if (!value) {
         // eslint-disable-next-line
         callback('请输入合同编号')
       } else if (!value.match(this.pattern.EN_NUM('6-20'))) {
