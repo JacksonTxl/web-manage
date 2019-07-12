@@ -245,12 +245,12 @@ export default {
     this.transferService.getCourseInfo(this.id, this.type).subscribe(res => {
       if (this.isPackage) {
         this.endTime = moment(this.packageTransferInfo.course_end_time * 1000)
-        this.poundage = this.packageTransferInfo.transfer_unit === 1 ? (this.packageTransferInfo.transfer_num * this.packageTransferInfo.pay_price / 100) : this.packageTransferInfo.transfer_num
+        this.poundage = this.packageTransferInfo.poundage
         this.transferService.getMemberPaymentList({ member_id: res.info.order_id, product_type: 4 }).subscribe()
       }
       if (this.isPersonal) {
         this.endTime = moment(res.info.end_time * 1000)
-        this.poundage = res.info.transfer_unit === 1 ? (res.info.transfer_num * res.info.pay_price / 100) : res.info.transfer_num
+        this.poundage = res.info.poundage
         this.transferService.getMemberPaymentList({ member_id: res.info.order_id, product_type: 2 }).subscribe()
       }
     })
