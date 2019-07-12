@@ -1,7 +1,6 @@
 <template>
   <div :class="shelves()">
-    <div :class="shelves('search')">
-      <st-button v-if="auth.batchDown" type="primary" :disabled="!selectedRowKeys.length" class="mg-b16" @click="onBatchShelfDown">批量下架</st-button>
+    <div :class="shelves('search')"  class="mg-b16">
       <div>
         <a-select
         style="width: 160px"
@@ -24,6 +23,7 @@
           <a-select-option v-for="(item,index) in shopList" :key="index" :value="item.id">{{item.shop_name}}</a-select-option>
         </a-select>
       </div>
+      <st-button v-if="auth.batchDown" type="primary" :disabled="!selectedRowKeys.length"  @click="onBatchShelfDown">批量下架</st-button>
     </div>
     <st-table
       :scroll="{x:1440}"

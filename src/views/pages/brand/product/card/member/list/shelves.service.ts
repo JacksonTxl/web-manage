@@ -57,7 +57,7 @@ export class ShelvesService implements RouteGuard {
   setCardShelfDown(params: BrandCardShelfDownInput) {
     return this.cardApi.setBrandCardsShelfDown(params)
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach(to: ServiceRoute) {
     return this.init(to.meta.query)
   }
 }
