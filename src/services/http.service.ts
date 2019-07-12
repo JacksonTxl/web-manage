@@ -156,7 +156,7 @@ export class HttpService {
       catchError((err: AjaxError) => {
         const serverResponse: StResponse = err.response
         this.notification.close('ajaxError')
-        this.nprogress.SET_TEXT(`${err.status}:${err.message}`)
+        this.nprogress.SET_TEXT(`${err.status}:${serverResponse.msg}`)
         switch (err.status) {
           case 400:
             this.notification.warn({
