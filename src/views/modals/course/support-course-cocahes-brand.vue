@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     onChange(val) {
-      if (val) {
+      if (val !== -1) {
         this.supportCoachTable = this.supportCoachList.filter(item => {
           return item.coach_level_id === val
         })
