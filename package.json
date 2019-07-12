@@ -44,6 +44,7 @@
     "jquery": "^3.4.0",
     "js-cookie": "^2.2.0",
     "nprogress": "^0.2.0",
+    "offline-js": "^0.7.19",
     "perfect-scrollbar": "^1.4.0",
     "qs": "^6.6.0",
     "rgb-hex": "^2.1.0",

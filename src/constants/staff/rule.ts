@@ -237,8 +237,8 @@ export class RuleConfig {
   get address() {
     return ['address', {
       rules: [{
-        pattern: this.pattern.CN_EN_NUM('1-100'),
-        message: '请输入1-100个字，中英文及数字'
+        pattern: this.pattern.CN_EN_NUM('0-100'),
+        message: '请输入0-100个字，中英文及数字'
       }]
     }]
   }
@@ -247,8 +247,8 @@ export class RuleConfig {
   get description() {
     return ['description', {
       rules: [{
-        pattern: this.pattern.CN_EN_NUM('1-300'),
-        message: '请输入1-300个字，中英文及数字'
+        pattern: this.pattern.CN_EN_NUM('0-300'),
+        message: '请输入0-300个字，中英文及数字'
       }]
     }]
   }
