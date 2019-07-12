@@ -11,9 +11,9 @@
             placeholder="请输入简要的待办主题"></a-input>
         </st-form-item>
         <st-form-item label="待办内容" required>
-            <a-textarea
+            <st-textarea
             v-decorator="['content',{rules:[{required: true,message:'请输入待办内容'}]}]"
-            placeholder="请输入具体的待办内容" :rows="4"/>
+            placeholder="请输入具体的待办内容"/>
         </st-form-item>
     </st-form>
     <template slot="footer">

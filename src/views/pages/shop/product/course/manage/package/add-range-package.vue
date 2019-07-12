@@ -420,7 +420,7 @@
                 :maxlength="500"
                 class="page-content-card-textarea"
                 placeholder="请输入课程包介绍"
-                :rows="4"/>
+                />
           </st-form-item>
         </a-col>
       </a-row>
@@ -432,7 +432,7 @@
                 :maxlength="500"
                 class="page-content-card-textarea"
                 placeholder="请输入备注"
-                :rows="4"/>
+                />
           </st-form-item>
         </a-col>
       </a-row>

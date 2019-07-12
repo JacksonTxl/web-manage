@@ -452,8 +452,7 @@
                 v-model="packageData.intro"
                 maxlength="500"
                 class="page-content-card-textarea"
-                placeholder="请输入课程包介绍"
-                :rows="4"/>
+                placeholder="请输入课程包介绍"/>
           </st-form-item>
         </a-col>
       </a-row>
@@ -464,8 +463,7 @@
                 v-model="packageData.remarks"
                 maxlength="500"
                 class="page-content-card-textarea"
-                placeholder="请输入备注"
-                :rows="4"/>
+                placeholder="请输入备注"/>
           </st-form-item>
         </a-col>
       </a-row>
