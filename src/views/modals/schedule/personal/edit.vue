@@ -32,7 +32,7 @@
           </a-row>
           <a-row class="time-item" v-for="info in scheduleInfo" :key="info.time_type">
             <a-col :lg="2">
-              <span>{{info.schedule_date | filterDate}}</span>
+              <span>{{info.schedule_time | filterDate}}</span>
             </a-col>
             <a-col :lg="22">
               <st-time-picker v-model="info.timing" :key="info.time_type"></st-time-picker>

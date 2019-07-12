@@ -27,13 +27,14 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
-import Vue from 'vue'
+
 import $ from 'jquery'
 import { TeamScheduleScheduleService } from './team.service#/schedule.service'
 import { TeamService } from './team.service'
@@ -50,8 +51,10 @@ export default {
     }
   },
   rxState() {
+    console.log(this.teamScheduleScheduleService)
     return {
       scheduleTeamCourseList: this.teamScheduleScheduleService.scheduleTeamCourseList$,
+      loading: this.teamScheduleScheduleService.loading$,
       auth: this.service.auth$
     }
   },

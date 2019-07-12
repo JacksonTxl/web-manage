@@ -9,11 +9,6 @@
               <st-icon type="time" color="rgb(0,199,219)" class="mg-r8" size="16px"></st-icon>
               时长:</span><span class="value">{{info.duration}}分钟</span>
             </div>
-            <div class="course-detail-item__right">
-              <span class="label">
-                <st-icon type="price" size="16px" class="mg-r8" color="rgb(255,169,45)"></st-icon>参考定价:</span>
-                <span class="value">{{info.price}}元/节</span>
-            </div>
           </div>
           <div class="course-detail-item__content mg-b16">
             {{info.description}}
