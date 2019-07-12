@@ -159,6 +159,7 @@ import { TransferService } from './transfer.service'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/rule'
 import { cloneDeep } from 'lodash-es'
+import { PatternService } from '@/services/pattern.service'
 export default {
   name: 'ModalSoldCardTransfer',
   bem: {
@@ -168,7 +169,8 @@ export default {
     return {
       rules: RuleConfig,
       userService: UserService,
-      transferService: TransferService
+      transferService: TransferService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -293,7 +295,7 @@ export default {
       }
     },
     contract_number(rule, value, callback) {
-      if (!value) {
+      if (!value || !value.match(this.pattern.EN_NUM)) {
         // eslint-disable-next-line
         callback('请输入合同编号')
       } else {
