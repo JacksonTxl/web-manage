@@ -156,11 +156,11 @@
       <a-col :lg="16">
         <st-info>
           <st-info-item label="员工风采">
-            <template v-for="item in basicInfo.image_personal">
-              <!-- <div class="st-preview-item" v-viewer="{url:'data-src'}"> -->
+            <div class="st-preview-item" v-viewer="{url:'data-src'}">
+              <template v-for="item in basicInfo.image_personal">
                 <img class="staff-style-item mg-r8" :src="item" :key="item"/>
-              <!-- </div> -->
-            </template>
+              </template>
+            </div>
           </st-info-item>
         </st-info>
       </a-col>
