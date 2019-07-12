@@ -85,7 +85,7 @@
               :filterOption="false"
               v-decorator="['memberId',{rules:[{validator:member_id_validator}]}]"
               @search="onMemberSearch"
-              @change="onMemberChange"
+              @select="selectMember"
               notFoundContent="无搜索结果"
             >
               <a-select-option
@@ -97,8 +97,8 @@
                 </span>
               </a-select-option>
             </a-select>
-            <p v-if="isPackage&&!memberList.length&&memberSearchText!==''&&packageTransferInfo.can_add_member === 1" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
-            <p v-if="isPersonal&&!memberList.length&&memberSearchText!==''&&personalCourseInfo.can_add_member === 1" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
+            <p v-if="!isSelectMember&&isPackage&&!memberList.length&&memberSearchText!==''&&packageTransferInfo.can_add_member === 1" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
+            <p v-if="!isSelectMember&&isPersonal&&!memberList.length&&memberSearchText!==''&&personalCourseInfo.can_add_member === 1" class="add-text">查无此会员，<span @click="onAddMember">添加新会员？</span></p>
           </st-form-item>
           <st-form-item v-show="!searchMemberIsShow" label="会员姓名" required labelGutter="12px">
             <a-input v-decorator="['memberName',{rules:[{validator:member_name_validator}]}]" placeholder="请输入会员姓名" ></a-input>
@@ -183,6 +183,7 @@ import { TransferService } from './transfer.service'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/rule'
 import { cloneDeep } from 'lodash-es'
+import { PatternService } from '@/services/pattern.service'
 export default {
   name: 'ModalSoldCourseTransfer',
   bem: {
@@ -192,7 +193,8 @@ export default {
     return {
       rules: RuleConfig,
       userService: UserService,
-      transferService: TransferService
+      transferService: TransferService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -235,19 +237,20 @@ export default {
         frozen_pay_type: null
       },
       endTime: moment(),
-      poundage: ''
+      poundage: '',
+      isSelectMember: false
     }
   },
   created() {
     this.transferService.getCourseInfo(this.id, this.type).subscribe(res => {
       if (this.isPackage) {
         this.endTime = moment(this.packageTransferInfo.course_end_time * 1000)
-        this.poundage = this.packageTransferInfo.transfer_unit === 1 ? (this.packageTransferInfo.transfer_num * this.packageTransferInfo.pay_price / 100) : this.packageTransferInfo.transfer_num
+        this.poundage = this.packageTransferInfo.poundage
         this.transferService.getMemberPaymentList({ member_id: res.info.order_id, product_type: 4 }).subscribe()
       }
       if (this.isPersonal) {
         this.endTime = moment(res.info.end_time * 1000)
-        this.poundage = res.info.transfer_unit === 1 ? (res.info.transfer_num * res.info.pay_price / 100) : res.info.transfer_num
+        this.poundage = res.info.poundage
         this.transferService.getMemberPaymentList({ member_id: res.info.order_id, product_type: 2 }).subscribe()
       }
     })
@@ -324,6 +327,9 @@ export default {
       if (!value) {
         // eslint-disable-next-line
         callback('请输入合同编号')
+      } else if (!value.match(this.pattern.EN_NUM('6-20'))) {
+        // eslint-disable-next-line
+        callback('请输入正确合同编号')
       } else {
         // eslint-disable-next-line
         callback()
@@ -350,6 +356,7 @@ export default {
     // 搜索会员
     onMemberSearch(data) {
       this.memberSearchText = data
+      this.isSelectMember = false
       if (data === '') {
         this.transferService.memberList$.commit(() => [])
         this.form.resetFields(['memberId'])
@@ -363,8 +370,10 @@ export default {
       }
     },
     // 选择会员
-    onMemberChange(data) {
-      console.log(data)
+    selectMember(event) {
+      if (event) {
+        this.isSelectMember = true
+      }
     },
     // time
     moment,

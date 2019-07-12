@@ -213,6 +213,7 @@ import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 import { RuleConfig } from '@/constants/rule'
+import { PatternService } from '@/services/pattern.service'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
@@ -221,7 +222,8 @@ export default {
   serviceInject() {
     return {
       salePersonalCourseService: SalePersonalCourseService,
-      rules: RuleConfig
+      rules: RuleConfig,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -394,6 +396,9 @@ export default {
       if (!value) {
         // eslint-disable-next-line
         callback('请输入合同编号')
+      } else if (!value.match(this.pattern.EN_NUM('6-20'))) {
+        // eslint-disable-next-line
+        callback('请输入正确合同编号')
       } else {
         // eslint-disable-next-line
         callback()

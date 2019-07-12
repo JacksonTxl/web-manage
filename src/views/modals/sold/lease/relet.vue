@@ -142,6 +142,7 @@ import { ReletService } from './relet.service'
 import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 import moment from 'moment'
+import { PatternService } from '@/services/pattern.service'
 
 export default {
   name: 'ModalSoldLeaseRelet',
@@ -151,7 +152,8 @@ export default {
   },
   serviceInject() {
     return {
-      reletService: ReletService
+      reletService: ReletService,
+      pattern: PatternService
     }
   },
   rxState() {
@@ -267,6 +269,9 @@ export default {
       if (!value) {
         // eslint-disable-next-line
         callback('请输入合同编号')
+      } else if (!value.match(this.pattern.EN_NUM('6-20'))) {
+        // eslint-disable-next-line
+        callback('请输入正确合同编号')
       } else {
         // eslint-disable-next-line
         callback()

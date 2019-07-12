@@ -4,7 +4,7 @@ import { tap } from 'rxjs/operators'
 import { State } from 'rx-state'
 
 @Injectable()
-export class ActivityService {
+export class ActivityService implements RouteGuard {
   actList$ = new State({});
   constructor(private settingMinaApi: SettingMinaApi) { }
   getInfo() {
@@ -13,5 +13,11 @@ export class ActivityService {
         this.actList$.commit(() => res)
       })
     )
+  }
+  init() {
+    return this.getInfo()
+  }
+  beforeRouteEnter() {
+    return this.init()
   }
 }
