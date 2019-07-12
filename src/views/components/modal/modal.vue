@@ -5,6 +5,7 @@
     v-on="$listeners"
     :wrapClassName="['st-modal',wrapClassName].join(' ')"
   >
+    <slot name='title' slot='title'></slot>
     <slot name="prepend"></slot>
     <div class="st-modal__body">
       <slot></slot>

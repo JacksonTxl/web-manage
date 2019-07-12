@@ -5,9 +5,6 @@
   width: 100%;
   overflow: hidden;
   position: relative;
-  &:hover{
-    background: rgba(24,144,255,0.1);
-  }
   .tree-input{
     .s(144px, 28px);
   }
@@ -24,10 +21,13 @@
     display: flex;
     justify-items: center;
     align-items: center;
-    padding: 7px 0;
+    padding: 7px 20px;
+  }
+  &__content:hover{
+    background: rgba(24,144,255,0.1);
   }
   .active{
-    background:rgba(24,144,255,1);
+    background:#3F66F6;
     .tree-name,
     .tree-switch{
       color: #fff

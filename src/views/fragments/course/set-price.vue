@@ -204,8 +204,9 @@ export default {
   },
   created() {
     // 获取定价模式
-    this.getSetting()
-    this.initPriceGradient()
+    this.getSetting().subscribe(() => {
+      this.initPriceGradient()
+    })
   },
   methods: {
     initPriceGradient() {
@@ -215,7 +216,7 @@ export default {
       }]
     },
     getSetting() {
-      this.setPriceService.getSetting().subscribe()
+      return this.setPriceService.getSetting()
     },
     onChange(e) {
       this.priceSetting = e.target.value
@@ -231,7 +232,7 @@ export default {
         single_price: '',
         prices: []
       }
-      this.priceGradient.unshift(newRecord)
+      this.priceGradient.push(newRecord)
     },
     delRecord(key) {
       let { priceGradient } = this

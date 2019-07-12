@@ -129,4 +129,13 @@ export class TransactionApi extends Api {
   getMemberList(member: string, type: number) {
     return this.http.get(`/v1/order/transaction/sale/range/member`, { query: { member, type } })
   }
+
+  /**
+   * 获取会员支付方式列表
+   * @param member_id 会员id
+   * @param product_type 商品类型
+   */
+  getMemberPaymentList(query: {member_id: number, product_type: number}) {
+    return this.http.get(`/v1/order/transaction/member/payment/method`, { query })
+  }
 }

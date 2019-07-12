@@ -3,8 +3,8 @@
     <div class="title">{{title}} <slot name="title"></slot></div>
     <div class="i-count-up-box mg-t8">
       <i-count-up class="mg-r16 i-count-up font-number" :endVal="Number(count||'')"/>
-      <div v-if="trend" class="trend">
-        <span >{{trend.isUp?'上升' : '下降'}}</span><span >{{trend.rate}}</span>
+      <div v-if="trend" class="trend" :class="trend.isUp?'trend-up' : 'trend-down'">
+        <img :src="trend.isUp?topIconUp : topIconDown" /><span >{{trend.rate}}</span>
       </div>
     </div>
     <div>
@@ -18,10 +18,14 @@
 </template>
 
 <script>
+import topIconUp from '@/assets/img/brand/dashboard/top_icon_up.svg'
+import topIconDown from '@/assets/img/brand/dashboard/top_icon_down.svg'
 export default {
   name: 'CountCard',
   data() {
     return {
+      topIconUp: topIconUp,
+      topIconDown: topIconDown,
       endVal: 8888,
       options: {
       }

@@ -14,6 +14,7 @@ export class TransferService {
   packageTransferInfo$ = new State({})
   timeScope$ = new State({})
   personalCourseInfo$ = new State({})
+  memberPaymentlist$ = new State({})
   constructor(private contractApi:ContractApi, private memberApi: ShopPersonalCourseApi, private courseApi:CourseApi, private transactionApi: TransactionApi) {}
   @Effect()
   getMember(member:string, type: number) {
@@ -45,5 +46,11 @@ export class TransferService {
   @Effect()
   getCodeNumber(id:string) {
     return this.contractApi.getCodeNumber(id)
+  }
+  @Effect()
+  getMemberPaymentList(query: {member_id: number, product_type: number}) {
+    return this.transactionApi.getMemberPaymentList(query).pipe(tap((res:any) => {
+      this.memberPaymentlist$.commit(() => res.list)
+    }))
   }
 }

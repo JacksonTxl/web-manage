@@ -133,7 +133,10 @@ export default {
   },
   computed: {
     canShowAddBtn() {
-      return !this.isAdd && !this.editInfo.id
+      /**
+       * 单个场地最多可以添加20个座位模板
+       */
+      return this.list.length < 20 && !this.isAdd && !this.editInfo.id
     },
     list() {
       return this.resData.list
