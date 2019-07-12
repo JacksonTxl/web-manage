@@ -4,6 +4,7 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { MemberApi } from '@/api/v1/member'
 import { UpdateMemberEdit } from '../../../../api/v1/member'
+import { forkJoin } from 'rxjs'
 
 interface EditState {
     info: Object,
@@ -69,17 +70,20 @@ export class EditService extends Store<EditState> {
     updateMemberEdit(id: string, params: UpdateMemberEdit) {
       return this.memberApi.updateMemberEdit(id, params)
     }
+    serviceInit(member_id: number) {
+      return forkJoin(this.getCountries(), this.getNations(), this.getCountryCodes(), this.getMemberEdit(member_id))
+    }
 
     beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-      console.log('to.meta', to.meta)
-      const member_id = to.meta.query.id
-      this.getCountries().subscribe(() => {})
-      this.getNations().subscribe(() => {})
-      this.getCountryCodes().subscribe(() => {})
-      this.getMemberEdit(member_id).subscribe(() => {
-        next()
-      }, () => {
-        next(false)
-      })
+      // const member_id = to.meta.query.id
+      // this.getCountries().subscribe(() => {})
+      // this.getNations().subscribe(() => {})
+      // this.getCountryCodes().subscribe(() => {})
+      // this.getMemberEdit(member_id).subscribe(() => {
+      //   next()
+      // }, () => {
+      //   next(false)
+      // })
+      next()
     }
 }

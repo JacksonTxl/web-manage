@@ -46,7 +46,7 @@
     <div :class="basic('content')">
       <div :class="basic('content-batch')" class="mg-b16">
         <st-button type="primary" class="mgr-8" v-if="auth.export">批量导出</st-button>
-        <st-button type="primary" class="mgr-8" v-if="auth.gift" :disabled="!isUnifyCard" @click="onGiving">赠送额度</st-button>
+        <st-button type="primary" class="mgr-8" v-if="auth.gift" :disabled="selectedRowKeys.length<1" @click="onGiving">赠送额度</st-button>
         <st-button type="primary" class="mgr-8" v-if="auth.vipRegion" :disabled="selectedRowKeys.length<1" @click="onAreas">变更入场vip区域</st-button>
       </div>
       <div :class="basic('table')">

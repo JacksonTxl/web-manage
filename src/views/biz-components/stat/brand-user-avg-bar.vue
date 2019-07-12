@@ -69,7 +69,7 @@ export default {
       this.chart.axis('value', {
         grid: {
           lineStyle: {
-            stroke: '#264E86',
+            stroke: '#E9E9E9',
             lineWidth: 0.5,
             lineDash: [0, 0]
           }

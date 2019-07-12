@@ -54,9 +54,9 @@
             placeholder="选择支付方式"
             :disabled="!(frozen_fee>0)">
               <a-select-option
-              v-for="(item,index) in Object.keys(sold.frozen_pay_type.value)"
+              v-for="(item,index) in memberPaymentlist"
               :key="index"
-              :value="+item">{{sold.frozen_pay_type.value[item]}}</a-select-option>
+              :value="+item.payment_type">{{item.payment_type_name}}</a-select-option>
             </a-select>
           </st-form-item>
         </div>
@@ -85,7 +85,8 @@ export default {
     return {
       loading: this.freezeService.loading$,
       info: this.freezeService.info$,
-      sold: this.userService.soldEnums$
+      sold: this.userService.soldEnums$,
+      memberPaymentlist: this.freezeService.memberPaymentlist$
     }
   },
   bem: {
@@ -103,7 +104,9 @@ export default {
     }
   },
   created() {
-    this.freezeService.getInfo(this.id, this.type).subscribe()
+    this.freezeService.getInfo(this.id, this.type).subscribe(res => {
+      this.freezeService.getMemberPaymentList({ member_id: res.info.member_id, product_type: res.info.product_type }).subscribe()
+    })
   },
   methods: {
     moment,

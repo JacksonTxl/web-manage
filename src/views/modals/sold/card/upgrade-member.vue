@@ -1,12 +1,11 @@
 <template>
   <st-modal
-  title="升级"
   size="small"
   v-model="show"
   @cancel="onCancel"
   wrapClassName="modal-sold-deal-sale">
   <template slot="title">
-      升级<st-help-tooltip id="TSMC002" />
+      升级<st-help-tooltip id="TSMC002" placement="right"/>
   </template>
     <div :class="sale('content')">
       <a-row :class="sale('info')">
