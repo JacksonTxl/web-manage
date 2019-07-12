@@ -44,11 +44,7 @@ export class HotReleaseService {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    this.nProgressService.SET_TEXT('版本更新服务开始')
-    this.reloadAction$.dispatch({ tip: 'release' })
-    this.reloadAction$.subscribe(() => {
-      this.nProgressService.SET_TEXT('版本更新服务完毕')
-      next()
-    })
+    this.reloadAction$.dispatch()
+    next()
   }
 }

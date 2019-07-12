@@ -41,6 +41,9 @@ import { UserService } from '@/services/user.service'
 
 export default {
   name: 'SwtichShopDrawer',
+  serviceProvider() {
+    return [SwitchService]
+  },
   serviceInject() {
     return {
       messageService: MessageService,
@@ -48,9 +51,13 @@ export default {
       userService: UserService
     }
   },
+  rxState() {
+    return {
+      shopList: this.switchService.shopList$
+    }
+  },
   data() {
     return {
-      shopList: [],
       visible: false
     }
   },
@@ -66,43 +73,30 @@ export default {
     }
   },
   created() {
-    this.switchService.getShopList().subscribe(res => {
-      this.shopList = res.list
-    })
+    this.switchService.getShopList().subscribe()
   },
   methods: {
     onClose() {
       this.visible = false
       this.$emit('input', false)
     },
-    onSearchShop() {},
     onSwitchShop(shop) {
       console.log('switch shop', shop.shop_id)
       const params = {
         shop_id: shop.shop_id
       }
-      this.switchService.switchShop(params).subscribe(() => {
-        this.onSwitchShopSuccess(shop)
-      })
-    },
-    onSwitchShopSuccess(shop) {
-      this.$router.push({
-        path: '/shop/dashboard'
-      })
-      this.onSwitchSuccess()
+      this.switchService.switchShop(params).subscribe(() => this.onSwitchSuccess('shop'))
     },
     switchBackToBrand() {
-      this.switchService.switchBackToBrand().subscribe(this.onSwitchBackToBrandSuccess)
+      this.switchService.switchBackToBrand().subscribe(() => this.onSwitchSuccess('brand'))
     },
-    onSwitchBackToBrandSuccess() {
-      this.$router.push({
-        path: '/'
-      })
-      this.onSwitchSuccess()
-    },
-    onSwitchSuccess() {
+    onSwitchSuccess(type) {
       this.onClose()
-      this.userService.reload()
+      this.userService.reload().subscribe(() => {
+        this.$router.push({
+          name: type
+        })
+      })
     }
   }
 }

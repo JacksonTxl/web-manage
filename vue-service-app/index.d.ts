@@ -95,6 +95,11 @@ declare module 'vue-service-app' {
       onComplete?: Function,
       onAbort?: (err: Error) => void
     ): void
+    replace(
+      location: string | MyLocation,
+      onComplete?: Function,
+      onAbort?: (err: Error) => void
+    ): void
   }
   export class InjectionToken {
     constructor(desc: string)

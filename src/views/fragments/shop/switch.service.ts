@@ -7,43 +7,31 @@ import { SwitchApi, SwitchShopInput } from '@/api/v1/account/switch'
 import { TokenService } from '@/services/token.service'
 import { UserService } from '@/services/user.service'
 
-interface SetState {
-  shopList: Array<Object>
-}
 @Injectable()
-export class SwitchService extends Store<SetState> {
-  state$: State<SetState>
-  shopList$: Computed<Object>
+export class SwitchService {
+  shopList$ = new State([])
   constructor(
     private shopApi: ShopApi,
     private switchApi: SwitchApi,
-    private tokenService: TokenService,
-    private userService: UserService
-  ) {
-    super()
-    this.state$ = new State({
-      shopList: []
-    })
-    this.shopList$ = new Computed(this.state$.pipe(pluck('shopList')))
-  }
+    private tokenService: TokenService
+  ) {}
   getShopList() {
-    return this.shopApi.getShopList()
+    return this.shopApi.getShopList().pipe(
+      tap(res => {
+        this.shopList$.commit(() => res.list)
+      })
+    )
   }
   switchShop(params: SwitchShopInput) {
     return this.switchApi.switchShop(params).pipe(
       tap(res => {
-        console.log(res)
         this.tokenService.SET_TOKEN(res.token)
-        // this.userService.SET_SHOP({
-        //   name: 'test shop'
-        // })
       })
     )
   }
   switchBackToBrand() {
     return this.switchApi.switchBackToBrand().pipe(
       tap(res => {
-        console.log(res)
         this.tokenService.SET_TOKEN(res.token)
       })
     )

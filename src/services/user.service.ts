@@ -58,6 +58,7 @@ export class UserService extends Store<UserState> {
   brand$: Computed<object>
   shop$: Computed<object>
   menuData$: Computed<object>
+  defaultRedirect$ = new State<string>('brand')
   // 枚举对象
   enums$: Computed<any>
   staffEnums$: Computed<ModuleEnums>
@@ -246,20 +247,22 @@ export class UserService extends Store<UserState> {
    * 刷新菜单
    */
   reloadMenus() {
-    this.getMenus(true).subscribe()
+    return this.getMenus(true)
   }
   /**
    * 刷新全局用户信息
    */
   reloadUser() {
-    this.getUser(true).subscribe()
+    return this.getUser(true)
   }
   /**
    * 刷新菜单、用户信息等
    */
   reload() {
-    this.reloadMenus()
-    this.reloadUser()
+    return forkJoin([
+      this.reloadMenus(),
+      this.reloadUser()
+    ])
   }
   /**
    * 添加到常用菜单
@@ -275,7 +278,7 @@ export class UserService extends Store<UserState> {
   delFavorite(id: number) {
     return this.menuApi.delFavorite(id)
   }
-  init(force: boolean = false) {
+  init() {
     return forkJoin(
       this.getUser(),
       this.getMenus(),
