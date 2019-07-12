@@ -119,7 +119,7 @@ export default {
       })
       // this.h5WrapperService.save(saveForm).subscribe()
       // this.h5WrapperService.saveMenu(this.menuInfo).subscribe()
-      this.h5WrapperService.saveAll(this.menuInfo, saveForm).subscribe(res => {
+      this.h5WrapperService.saveAll({ tabbar: this.menuInfo }, saveForm).subscribe(res => {
         if (res[0].is_success === 1 && res[1].is_success === 1) {
           this.notificationService.success({
             title: '保存成功',

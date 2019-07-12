@@ -7,6 +7,8 @@
             <div :class="slider('del')" v-if="li.is_default!==1" @click="delSlider(index)">
               <st-icon type="delete" color="#FF5E41" :class="slider('del-icon')"/>
             </div>
+            <div v-if="li.is_over===1" :class="slider('overMask')"></div>
+            <img v-if="li.is_over===1" :class="slider('over')" :src="over" />
             <img :src="li.image_url | imgFilter">
             <div v-if="li.is_default===1" :class="slider('default')">
                 默认门店头图<span>（自动匹配店招图片）</span>
@@ -38,6 +40,7 @@ import { H5WrapperService } from '@/views/pages/brand/setting/mina/components#/h
 import { cloneDeep } from 'lodash-es'
 import draggable from 'vuedraggable'
 import { ActivityService } from '../activity.service'
+import over from '@/assets/img/brand/setting/mina/over.png'
 export default {
   bem: {
     slider: 'activity-slider-component'
@@ -70,7 +73,9 @@ export default {
         activity_type: '',
         is_default: 0,
         is_over: 0
-      }
+      },
+      actFilterList: [],
+      over: over
     }
   },
   mounted() {
@@ -82,10 +87,16 @@ export default {
       handler(newVal) {
         console.log(newVal)
         this.h5WrapperService.SET_H5INFO(newVal, 1)
+        // if(newVal.length) this.filterActList(newVal)
       }
     }
   },
   methods: {
+    filterActList(list) {
+      let ids = []
+      list.forEach(item => ids.push(item.activity_id))
+      this.actFilterList = this.actList.filter(item => !ids.includes(item.id))
+    },
     imageUploadChange(e, index) {
       let addItem = Object.assign({}, this.addItem)
       if (e.length) addItem.image_url = e[0].image_key
@@ -101,6 +112,7 @@ export default {
     actSelect(item, value) {
       let selected = this.actList.filter(it => it.id === value)[0]
       item.activity_type = selected.activity_type
+      item.is_over = 0
     },
     addSelect(value) {
       let selected = this.actList.filter(it => it.id === value)[0]

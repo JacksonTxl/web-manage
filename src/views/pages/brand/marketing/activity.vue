@@ -73,7 +73,7 @@ export default {
   },
   created() {
     this.getH5Info()
-    this.getActList()
+    // this.getActList()
   },
   methods: {
     saveConfirm(is_save) {

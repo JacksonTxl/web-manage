@@ -14,7 +14,7 @@
         </a-col>
         <a-col :lg="8">
           <st-info>
-            <st-info-item label="微信认证" v-if="data.mina_info.verify_type_info > 1">已认证</st-info-item>
+            <st-info-item label="微信认证" v-if="Number(data.mina_info.verify_type_info) > -1">已认证</st-info-item>
             <st-info-item label="微信认证" v-else>未认证</st-info-item>
             <st-info-item label="发布状态">{{data.mina_info.send_status | sendstatusFilter}}<a :class="info('a')" @click="submitAudit">{{data.mina_info.send_status | authBtnFilter}}</a></st-info-item>
           </st-info>
