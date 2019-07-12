@@ -46,6 +46,12 @@
         maxlength="100"
         />
       </st-form-item>
+      <st-form-item label="CN_EN_NUM" required>
+        <a-input-group>
+          <a-input placeholder="4-10个字，中英文及数字" v-decorator="rules.cnEnNum"/>
+          <a-input placeholder="邮箱" v-decorator="rules.email"/>
+        </a-input-group>
+      </st-form-item>
     </st-form>
     <div class="ta-c">
       <st-button type="primary" @click="onSubmit">保存</st-button>

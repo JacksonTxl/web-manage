@@ -14,7 +14,7 @@ export class TrainingAimService implements RouteGuard {
   resData$ = new State({})
   loading$ = new State({})
   auth$ = this.authService.authMap({
-    add: 'brand_shop:member:training_aim|add'
+    add: 'brand_shop:course:training_aim|add'
   })
   constructor(
     private trainingApi: TrainingApi,

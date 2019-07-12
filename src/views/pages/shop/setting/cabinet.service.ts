@@ -27,6 +27,7 @@ export class CabinetService implements RouteGuard {
     private authService: AuthService
   ) {
     this.state$ = new State({})
+    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   protected init(to: ServiceRoute, next: any) {
     const query = to.meta.query
@@ -35,7 +36,6 @@ export class CabinetService implements RouteGuard {
     this.cabinetListService.getList(type, id).subscribe(next, () => {
       next(false)
     })
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   del(params: DelInput) {
     return this.cabinetApi.del(params)
