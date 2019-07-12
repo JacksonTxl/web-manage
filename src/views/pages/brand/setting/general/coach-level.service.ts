@@ -14,7 +14,7 @@ export class CoachLevelService extends Store<ListState> {
   resData$: Computed<object>
   auth$ = this.authService.authMap({
     add: 'brand:setting:coach_level|add',
-    get: 'brand:setting:coach_level|get'
+    get: 'brand:setting:coach_level|list'
   })
   constructor(
     private coachLevelApi: CoachLevelApi,

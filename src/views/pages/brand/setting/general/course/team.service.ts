@@ -13,7 +13,7 @@ export class TeamService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
   auth$ = this.authService.authMap({
-    get: 'brand:setting:team_course_reserve_setting|get',
+    get: 'brand:setting:course_price_reserve_setting|tab',
     edit: 'brand:setting:team_course_reserve_setting|edit'
   })
   constructor(
