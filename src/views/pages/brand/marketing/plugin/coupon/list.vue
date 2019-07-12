@@ -174,32 +174,36 @@ export default {
       this.$router.push({ path: '/brand/marketing/plugin/coupon/add', query: { id: record.id } })
     },
     onGeneralize(record) {
-      // 分享海报
-      this.$modalRouter.push({
-        name: 'brand-marketing-poster',
-        props: {
-          id: String(record.id),
-          type: 1
-        },
-        on: {
-          success: () => {
-            console.log('success')
+      let is_auth = record.is_auth
+      if (is_auth) {
+        // 分享海报
+        this.$modalRouter.push({
+          name: 'brand-marketing-poster',
+          props: {
+            id: String(record.id),
+            type: 1
+          },
+          on: {
+            success: () => {
+              console.log('success')
+            }
           }
-        }
-      })
-      // 分享小程序
-      // this.$modalRouter.push({
-      //   name: 'brand-marketing-poster',
-      //   props: {
-      //     id: record.id,
-      //     type: 2
-      //   },
-      //   on: {
-      //     success: () => {
-      //       console.log('success')
-      //     }
-      //   }
-      // })
+        })
+      } else {
+        // 分享小程序
+        this.$modalRouter.push({
+          name: 'brand-marketing-poster',
+          props: {
+            id: record.id,
+            type: 2
+          },
+          on: {
+            success: () => {
+              console.log('success')
+            }
+          }
+        })
+      }
     },
     // 停止优惠券模板
     onStop(record) {
