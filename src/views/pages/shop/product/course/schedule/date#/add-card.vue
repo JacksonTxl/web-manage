@@ -23,8 +23,8 @@ export default {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width:100%;
-    height:100%;
+    width:80%;
+    height:80%;
     background:rgba(247,249,252,1);
     border-radius:4px;
     border:1px dotted rgba(136,154,181,1);
