@@ -4,6 +4,7 @@
       <st-button
         v-if="priceModel === 2"
         type="dashed"
+        icon="add"
         block
         class="mg-t8"
         @click="addRecord"
@@ -52,7 +53,9 @@
                   <td colspan="4">
                     <st-button
                       type="dashed"
-                      block class="mg-t8"
+                      icon="add"
+                      block
+                      class="mg-t8"
                       @click="addPriceRecord(key)"
                     >
                       添加梯度

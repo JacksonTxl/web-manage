@@ -58,7 +58,7 @@
         </a-col>
       </a-row>
       <div>
-        <st-button block type="dashed">表单添加 type=dashed</st-button>
+        <st-button block type="dashed" icon="add">表单添加 type=dashed</st-button>
       </div>
     </div>
   </section>

@@ -29,7 +29,7 @@
     <a-row :gutter="8">
       <a-col :lg="24" v-if="auth.add">
         <a v-modal-link="{ name: 'shop-add-follow-records', on:{done: onModalTest }}">
-          <st-button block type="dashed" class="mg-t16 mg-b24">添加跟进记录</st-button>
+          <st-button block type="dashed" icon="add" class="mg-t16 mg-b24">添加跟进记录</st-button>
         </a>
       </a-col>
       <a-col :lg="24">
