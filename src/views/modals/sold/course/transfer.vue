@@ -163,9 +163,9 @@
             v-decorator="['payType',{rules:[{validator:pay_type_validator}]}]"
             placeholder="选择支付方式">
               <a-select-option
-              v-for="(item,index) in Object.keys(sold.frozen_pay_type.value)"
+              v-for="(item,index) in memberPaymentlist"
               :key="index"
-              :value="+item">{{sold.frozen_pay_type.value[item]}}</a-select-option>
+              :value="+item.payment_type">{{item.payment_type_name}}</a-select-option>
             </a-select>
           </st-form-item>
         </div>
@@ -203,6 +203,7 @@ export default {
       packageTransferInfo: this.transferService.packageTransferInfo$,
       timeScope: this.transferService.timeScope$,
       personalCourseInfo: this.transferService.personalCourseInfo$,
+      memberPaymentlist: this.transferService.memberPaymentlist$,
       sold: this.userService.soldEnums$
     }
   },
@@ -242,10 +243,12 @@ export default {
       if (this.isPackage) {
         this.endTime = moment(this.packageTransferInfo.course_end_time * 1000)
         this.poundage = this.packageTransferInfo.transfer_unit === 1 ? (this.packageTransferInfo.transfer_num * this.packageTransferInfo.pay_price / 100) : this.packageTransferInfo.transfer_num
+        this.transferService.getMemberPaymentList({ member_id: res.info.order_id, product_type: 4 }).subscribe()
       }
       if (this.isPersonal) {
         this.endTime = moment(res.info.end_time * 1000)
         this.poundage = res.info.transfer_unit === 1 ? (res.info.transfer_num * res.info.pay_price / 100) : res.info.transfer_num
+        this.transferService.getMemberPaymentList({ member_id: res.info.order_id, product_type: 2 }).subscribe()
       }
     })
   },
