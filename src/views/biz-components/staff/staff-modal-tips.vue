@@ -4,7 +4,7 @@
     <ul>
       <li v-for="(tip, index) in list" :key="index" class="item">
         <span class="count">{{index + 1}}</span> {{tip.num}}{{tip.type|unitFilter}}{{tip.name}},
-        <a href="">查看详情</a>
+        <!-- <a href="">查看详情</a> -->
       </li>
     </ul>
   </div>
