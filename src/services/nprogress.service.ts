@@ -5,6 +5,12 @@ import nProgress from 'nprogress'
 
 export class NProgressService {
   text$ = new State<string>('静态资源加载完毕')
+  constructor() {
+    // 全局抓取错误 有错误就将loading状态取消
+    window.addEventListener('error', e => {
+      nProgress.done()
+    })
+  }
   next(text: string) {
     this.text$.commit(() => text)
   }
