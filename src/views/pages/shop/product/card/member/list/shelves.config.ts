@@ -7,6 +7,7 @@ export const columns = () => {
     {
       title: '会员卡名称',
       dataIndex: 'card_name',
+      width: 200,
       scopedSlots: { customRender: 'card_name' }
     },
     {
@@ -17,7 +18,6 @@ export const columns = () => {
     {
       title: '有效期/有效次数',
       dataIndex: 'time_gradient',
-      align: 'right',
       scopedSlots: { customRender: 'time_gradient' }
     },
     {
@@ -28,12 +28,14 @@ export const columns = () => {
     {
       title: '售卖时间',
       dataIndex: 'sell_time',
+      width: 220,
       scopedSlots: { customRender: 'sell_time' }
     },
     {
       title: '售卖价格',
       dataIndex: 'price_gradient',
       align: 'right',
+      width: 150,
       scopedSlots: { customRender: 'price_gradient' }
     },
     {
