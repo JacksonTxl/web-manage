@@ -1,7 +1,6 @@
 <template>
   <st-panel app>
-    {{reason}}
-   <st-textarea :maxlength="300" @change="onReasonChange" v-model="reason" placeholder="请输入内容"/>
+    <st-shop-hour-picker v-model="timeList"></st-shop-hour-picker>
   </st-panel>
 </template>
 <script>
