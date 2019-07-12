@@ -27,13 +27,9 @@ export class TeamService implements RouteGuard {
     return forkJoin(this.commonService.getCoachList(), this.commonService.getCourseList(), this.commonService.getCourtList())
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute, next: any) {
-    this.scheduleService.getList(to.query).subscribe(() => {
-      next()
-    })
+    return this.scheduleService.getList(to.query)
   }
   beforeRouteEnter(to: ServiceRoute, form: ServiceRoute, next: any) {
-    this.initOptions().subscribe(() => {
-      next()
-    })
+    return this.initOptions()
   }
 }
