@@ -8,6 +8,7 @@ import { I18NService } from './i18n.service'
 import { TokenService } from './token.service'
 import { AppConfig } from '@/constants/config'
 import { NotificationService } from './notification.service'
+import { NProgressService } from './nprogress.service'
 
 interface MockOptions {
   status?: number
@@ -44,7 +45,8 @@ export class HttpService {
     private tokenService: TokenService,
     private router: ServiceRouter,
     private notification: NotificationService,
-    private appConfig: AppConfig
+    private appConfig: AppConfig,
+    private nprogress: NProgressService
   ) {}
   get(url: string, options: RequestOptions = {}) {
     let requestUrl = this.makeRequestUrl(url, options)
@@ -154,6 +156,7 @@ export class HttpService {
       catchError((err: AjaxError) => {
         const serverResponse: StResponse = err.response
         this.notification.close('ajaxError')
+        this.nprogress.SET_TEXT(`${err.status}:${err.message}`)
         switch (err.status) {
           case 400:
             this.notification.warn({

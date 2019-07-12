@@ -15,7 +15,7 @@ interface UserState {
   brand: {}
   shop: {}
   menuData: {}
-  enums: {},
+  enums: {}
   invalidTooltips: []
 }
 interface User {
@@ -26,12 +26,12 @@ interface User {
 }
 interface Brand {
   id?: string
-  name?: string,
+  name?: string
   logo?: string
 }
 interface Shop {
   id?: string
-  name?: string,
+  name?: string
   logo?: string
 }
 interface ModuleEnums {
@@ -88,6 +88,7 @@ export class UserService extends Store<UserState> {
     private nprogress: NProgressService
   ) {
     super()
+
     const initialState = {
       user: {},
       menuData: {},
@@ -132,7 +133,9 @@ export class UserService extends Store<UserState> {
     this.soldEnums$ = new Computed(this.enums$.pipe(pluck('sold')))
     this.couponEnums$ = new Computed(this.enums$.pipe(pluck('coupon')))
 
-    this.invalidTooltips$ = new Computed(this.state$.pipe(pluck('invalidTooltips')))
+    this.invalidTooltips$ = new Computed(
+      this.state$.pipe(pluck('invalidTooltips'))
+    )
   }
   SET_USER(user: User) {
     this.state$.commit(state => {
@@ -281,9 +284,10 @@ export class UserService extends Store<UserState> {
     )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    this.nprogress.SET_TEXT('用户数据加载中...')
     return this.init().pipe(
       tap(() => {
-        this.nprogress.next('用户信息加载完毕')
+        this.nprogress.SET_TEXT('用户信息数据获取完毕')
       })
     )
   }

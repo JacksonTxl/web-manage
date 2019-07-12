@@ -11,7 +11,7 @@ export class NProgressService {
       nProgress.done()
     })
   }
-  next(text: string) {
+  SET_TEXT(text: string) {
     this.text$.commit(() => text)
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
