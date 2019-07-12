@@ -20,23 +20,19 @@
             <st-info-item class="mg-b0" label="销售">{{info.sale_name}}</st-info-item>
           </st-info>
         </a-col>
-        <!-- <a-col :span="13" class="mgb-36">
+        <a-col :span="13" class="mgb-36">
           <st-info>
             <st-info-item label="场馆">{{info.shop_name}}</st-info-item>
-            <st-info-item class="mg-b0" label="购买">{{info.shop_name}}/{{info.rule_name}}</st-info-item>
+            <st-info-item label="购买">{{info.shop_name}}/{{info.rule_name}}</st-info-item>
+            <st-info-item class="mg-b0" label="定金抵扣">{{info.advance_amount}}</st-info-item>
           </st-info>
-        </a-col> -->
-        <!-- <a-col :span="11" class="mgb-36">
+        </a-col>
+        <a-col :span="11" class="mgb-36">
            <st-info>
             <st-info-item label="用户">{{info.member_name}}&nbsp;{{info.member_mobile}}</st-info-item>
             <st-info-item class="mg-b0" label="赠送">{{info.gift_amount}}</st-info-item>
           </st-info>
-        </a-col> -->
-        <!-- <a-col :span="24" class="mgb-36">
-          <st-info>
-            <st-info-item class="mg-b0" label="备注">{{info.description}}</st-info-item>
-          </st-info>
-        </a-col> -->
+        </a-col>
         <a-col :span="13" class="mgb-24">
           <st-info>
             <st-info-item label="订单总额">{{info.order_amount}}</st-info-item>
@@ -47,6 +43,11 @@
            <st-info>
             <st-info-item label="减免金额">{{info.reduce_amount}}</st-info-item>
             <st-info-item class="mg-b0" label="应付金额">{{info.actual_amount}}</st-info-item>
+          </st-info>
+        </a-col>
+        <a-col :span="24" class="mgb-36">
+          <st-info>
+            <st-info-item class="mg-b0" label="备注">{{info.description}}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
