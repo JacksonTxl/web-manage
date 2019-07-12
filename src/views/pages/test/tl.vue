@@ -49,7 +49,7 @@
         <tbody>
           <tr>
             <td colspan="3" style="padding: 8px 0">
-              <st-button type="dashed" block>添加梯度</st-button>
+              <st-button type="dashed" icon="add" block>添加梯度</st-button>
             </td>
           </tr>
           <tr>

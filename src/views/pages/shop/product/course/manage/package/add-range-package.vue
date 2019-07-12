@@ -78,10 +78,9 @@
                           <tbody>
                             <tr class="checkbox border-bottom">
                               <td colspan="3" class="team-course-add-buton">
-                                <a-button block type="dashed" @click="addCourse('team')">
-                                  <st-icon class="icon-12 mr-8" type="add"></st-icon>
+                                <st-button block type="dashed" icon="add" @click="addCourse('team')">
                                   添加团体课程
-                                </a-button>
+                                </st-button>
                               </td>
                             </tr>
                             <tr>
@@ -168,10 +167,9 @@
                           <tbody>
                             <tr class="checkbox border-bottom">
                               <td colspan="5" class="personal-course-add-buton">
-                                <a-button block type="dashed" @click="addCourse('personal')">
-                                  <st-icon class="icon-12 mr-8" type="add"></st-icon>
+                                <st-button block type="dashed" icon="add" @click="addCourse('personal')">
                                   添加私教课程
-                                </a-button>
+                                </st-button>
                               </td>
                             </tr>
                             <tr>

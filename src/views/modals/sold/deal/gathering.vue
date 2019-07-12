@@ -23,13 +23,13 @@
         <a-col :span="13" class="mgb-36">
           <st-info>
             <st-info-item label="场馆">{{info.shop_name}}</st-info-item>
-            <st-info-item label="购买">{{info.shop_name}}/{{info.rule_name}}</st-info-item>
-            <st-info-item class="mg-b0" label="定金抵扣">{{info.advance_amount}}</st-info-item>
+            <st-info-item label="用户">{{info.member_name}}&nbsp;{{info.member_mobile}}</st-info-item>
+            <st-info-item class="mg-b0" label="购买">{{info.rule_name}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11" class="mgb-36">
            <st-info>
-            <st-info-item label="用户">{{info.member_name}}&nbsp;{{info.member_mobile}}</st-info-item>
+            <st-info-item label="定金抵扣">{{info.advance_amount}}</st-info-item>
             <st-info-item class="mg-b0" label="赠送">{{info.gift_amount}}</st-info-item>
           </st-info>
         </a-col>

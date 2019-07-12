@@ -17,7 +17,7 @@
         <tr v-if="auth.add">
           <td colspan="5" class="st-form-table__add">
               <st-button
-                type="dashed" block :disabled="resData.total >= resData.max"
+                type="dashed" icon="add" block :disabled="resData.total >= resData.max"
                 v-modal-link="{ name: 'course-category-add', on: {change: onListChange } }"
               >
                 添加课程类型

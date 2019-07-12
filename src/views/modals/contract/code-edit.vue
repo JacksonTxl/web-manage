@@ -47,8 +47,8 @@
         </tr>
       </draggable>
     </st-form-table>
-    <st-button :disabled="rules.length>=20" @click="onAdd" block type="dashed" class="mg-t16">
-      <a-icon type="plus"></a-icon>添加
+    <st-button :disabled="rules.length>=20" @click="onAdd" block type="dashed" icon="add" class="mg-t16">
+      添加
     </st-button>
   </st-modal>
 </template>

@@ -211,7 +211,7 @@
         <a-tabs defaultActiveKey="1" class="todoist-tabs">
           <a-tab-pane tab="待办" key="1" forceRender>
             <div :class="reception('todoist-to-do')">
-              <st-button icon="anticon:plus" type="dashed" @click="onAddWorkNotes" :disabled="!auth.addTodo" class="to-do-add">添加待办</st-button>
+              <st-button type="dashed" icon="add" @click="onAddWorkNotes" :disabled="!auth.addTodo" class="to-do-add">添加待办</st-button>
               <ul :class="reception('todoist-to-do-list')" v-scrollBar>
                 <li v-for=" (item,i) in workNoteList" :key="i" class="animated delay-f2s" :class="{'fadeOut':i===animateIndex,'mg-t12':(i+1)>2,'mg-r12':(i+1)%2!==0}">
                   <div class="to-do-main">

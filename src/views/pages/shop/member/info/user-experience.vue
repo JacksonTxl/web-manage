@@ -38,9 +38,9 @@
             <tr>
               <td :colspan="tableTitle.length">
                 <a v-modal-link="{ name: 'shop-add-lateral-recording', on:{done: onModalTest }}">
-                  <a-button class="editable-add-btn" type="dashed">
-                    <a-icon type="plus"/>添加体侧记录
-                  </a-button>
+                  <st-button class="editable-add-btn" type="dashed" icon="add">
+                    添加体侧记录
+                  </st-button>
                 </a>
               </td>
             </tr>
