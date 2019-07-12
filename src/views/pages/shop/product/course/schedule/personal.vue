@@ -48,6 +48,7 @@ export default {
     }
   },
   rxState() {
+    console.log(this.reserveService)
     return {
       reserveList: this.reserveService.reserveTable$,
       auth: this.reserveService.auth$
@@ -56,7 +57,6 @@ export default {
   data() {
     const that = this
     return {
-      isTable: false,
       timeRange: {},
       columnHeaderFormat: { weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true },
       slotLabelFormat: {
@@ -156,7 +156,7 @@ export default {
       const start = moment(info.view.activeStart).format('YYYY-MM-DD').valueOf()
       const end = moment((moment(info.view.activeEnd).valueOf() - 24 * 3600 * 1000)).format('YYYY-MM-DD').valueOf()
       this.timeRange = { start_date: start, end_date: end }
-      this.$router.push({ query: this.timeRange })
+      this.$router.push({ query: { start_date: start, end_date: end } })
     },
     setAddButton() {
       this.$nextTick().then(() => {
@@ -206,19 +206,14 @@ export default {
         })
       })
     },
+    onEventPositioned(e) {
+      console.log(e)
+    },
     toggleWeekends() {
       this.calendarWeekends = !this.calendarWeekends // update a property
     },
     gotoPast() {
       let calendarApi = this.$refs.fullCalendar.getApi() // from the ref="..."
-    },
-    onEventMouseEnter(e) {
-      console.log('onEventMouseEnter', e)
-    },
-    onEventMouseLeave(e) {
-      console.log('onEventMouseLeave', e)
-    },
-    onEventPositioned() {
     },
     onEventRender(event, element) {
       this.$nextTick().then(() => {
