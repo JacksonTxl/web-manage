@@ -81,8 +81,9 @@ export class AuthService {
     return data
   }
   can(authKey: string) {
-    const authSnap = this.auth$.snapshot()
-    return authSnap.includes(authKey)
+    return 1
+    // const authSnap = this.auth$.snapshot()
+    // return authSnap.includes(authKey)
   }
   /**
    * 通过map表获取当页的全局权限点
