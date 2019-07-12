@@ -10,27 +10,27 @@
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
-              <st-t4 class="shop-member-crowd-index-box__info__title">新注册用户</st-t4>
-              <div>近7天内，新注册的潜在用户</div>
+              <st-t4 class="shop-member-crowd-index-box__info__title">{{value[0].crowd_name}}</st-t4>
+              <div>{{value[0].description}}</div>
             </div>
           </div>
           <div class="shop-member-crowd-index-box__num">
             <div class="shop-member-crowd-index-box__num-item">
               <div
                 class="shop-member-crowd-index-box__number"
-              >{{value.new_register_member.crowd_total_num}}</div>
+              >{{value[0].crowd_total_num}}</div>
               <div class="shop-member-crowd-index-box__num-describe">人群总数</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
               <div
                 class="shop-member-crowd-index-box__number"
-              >{{value.new_register_member.yesterday_admission}}</div>
+              >{{value[0].yesterday_admission}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日入场</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
               <div
                 class="shop-member-crowd-index-box__number"
-              >{{value.new_register_member.yesterday_deal_numb}}</div>
+              >{{value[0].yesterday_deal_numb}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日交易</div>
             </div>
           </div>
@@ -40,7 +40,7 @@
             v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
-            :to="{name:'shop-member-crowd-analysis', query:{urlid:0,id:value.new_register_member.id}}"
+            :to="{name:'shop-member-crowd-analysis', query:{urlid:0,id:value[0].id}}"
           >人群分析</router-link>
           <a-tooltip>
             <template slot='title'>
@@ -49,7 +49,7 @@
             <span
               v-if="auth.export"
               class="shop-member-crowd-index-box__btn-rq"
-              @click="exportFunc(value.new_register_member.id)"
+              @click="exportFunc(value[0].id)"
             >导出</span>
           </a-tooltip>
         </div>
@@ -62,27 +62,27 @@
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
-              <st-t4 class="shop-member-crowd-index-box__info__title">会员卡即将到期会员</st-t4>
-              <div>未来30天内,有会员卡到期的会员</div>
+              <st-t4 class="shop-member-crowd-index-box__info__title">{{value[1].crowd_name}}</st-t4>
+              <div>{{value[1].description}}</div>
             </div>
           </div>
           <div class="shop-member-crowd-index-box__num">
             <div class="shop-member-crowd-index-box__num-item">
               <div
                 class="shop-member-crowd-index-box__number"
-              >{{value.person_course_expiring_crowd.crowd_total_num}}</div>
+              >{{value[1].crowd_total_num}}</div>
               <div class="shop-member-crowd-index-box__num-describe">人群总数</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
               <div
                 class="shop-member-crowd-index-box__number"
-              >{{value.person_course_expiring_crowd.yesterday_admission}}</div>
+              >{{value[1].yesterday_admission}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日入场</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
               <div
                 class="shop-member-crowd-index-box__number"
-              >{{value.person_course_expiring_crowd.yesterday_deal_numb}}</div>
+              >{{value[1].yesterday_deal_numb}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日交易</div>
             </div>
           </div>
@@ -92,7 +92,7 @@
             v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
-            :to="{name:'shop-member-crowd-analysis', query:{urlid:1,id:value.person_course_expiring_crowd.id}}"
+            :to="{name:'shop-member-crowd-analysis', query:{urlid:1,id:value[1].id}}"
           >人群分析</router-link>
           <a-tooltip>
             <template slot='title'>
@@ -101,7 +101,7 @@
             <span
               v-if="auth.export"
               class="shop-member-crowd-index-box__btn-rq"
-              @click="exportFunc(value.person_course_expiring_crowd.id)"
+              @click="exportFunc(value[1].id)"
             >导出</span>
           </a-tooltip>
         </div>
@@ -114,27 +114,27 @@
               class="shop-member-crowd-index-box__img"
             >
             <div class="shop-member-crowd-index-box__info">
-              <st-t4 class="shop-member-crowd-index-box__info__title">私教课即将失效会员</st-t4>
-              <div>私教课剩余次数小于5次的会员</div>
+              <st-t4 class="shop-member-crowd-index-box__info__title">{{value[2].crowd_name}}</st-t4>
+              <div>{{value[2].description}}</div>
             </div>
           </div>
           <div class="shop-member-crowd-index-box__num">
             <div class="shop-member-crowd-index-box__num-item">
               <div
                 class="shop-member-crowd-index-box__number"
-              >{{value.expiring_crowd.crowd_total_num}}</div>
+              >{{value[2].crowd_total_num}}</div>
               <div class="shop-member-crowd-index-box__num-describe">人群总数</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
               <div
                 class="shop-member-crowd-index-box__number"
-              >{{value.expiring_crowd.yesterday_admission}}</div>
+              >{{value[2].yesterday_admission}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日入场</div>
             </div>
             <div class="shop-member-crowd-index-box__num-item">
               <div
                 class="shop-member-crowd-index-box__number"
-              >{{value.expiring_crowd.yesterday_deal_numb}}</div>
+              >{{value[2].yesterday_deal_numb}}</div>
               <div class="shop-member-crowd-index-box__num-describe">昨日交易</div>
             </div>
           </div>
@@ -144,7 +144,7 @@
             v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq"
             tag="span"
-            :to="{name:'shop-member-crowd-analysis', query:{urlid:2,id:value.expiring_crowd.id}}"
+            :to="{name:'shop-member-crowd-analysis', query:{urlid:2,id:value[2].id}}"
           >人群分析</router-link>
           <a-tooltip>
             <template slot='title'>
@@ -153,7 +153,7 @@
             <span
               v-if="auth.export"
               class="shop-member-crowd-index-box__btn-rq"
-              @click="exportFunc(value.expiring_crowd.id)"
+              @click="exportFunc(value[2].id)"
             >导出</span>
           </a-tooltip>
         </div>

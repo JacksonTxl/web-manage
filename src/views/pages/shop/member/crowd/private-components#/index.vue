@@ -104,7 +104,6 @@
               @click="exportFunc(value[1].id)"
             >导出</span>
           </a-tooltip>
-
         </div>
       </div>
       <div class="shop-member-crowd-index-box-title">
