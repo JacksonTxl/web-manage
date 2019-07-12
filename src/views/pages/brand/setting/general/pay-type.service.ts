@@ -12,15 +12,9 @@ export class PayTypeService implements RouteGuard {
   loading$ = new State({})
   info$ = new State({})
   wechatPaymentInfo$ = new State({})
-  auth$ = new State({
-    /**
-     * 查看支付配置
-     */
-    get: this.authService.can('brand:setting:payment_method|get'),
-    /**
-     * 编辑支付配置
-     */
-    edit: this.authService.can('brand:setting:payment_method|edit')
+  auth$ = this.authService.authMap({
+    get: 'brand:setting:payment_method|get',
+    edit: 'brand:setting:payment_method|edit'
   })
   constructor(
     private paymentSettingApi: PaymentSettingApi,

@@ -8,8 +8,8 @@ import { AuthService } from '@/services/auth.service'
 export class ListService implements RouteGuard {
   list$ = new State([])
   page$ = new State({});
-  auth$ = new State({
-    export: this.authService.can('brand_shop:order:order|export')
+  auth$ = this.authService.authMap({
+    export: 'brand_shop:order:order|export'
   })
   loading$ = new State({})
 

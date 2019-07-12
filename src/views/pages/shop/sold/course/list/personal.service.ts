@@ -9,12 +9,10 @@ export class PersonalService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  auth$ = new State({})
-  constructor(private courseApi: CourseApi, private authService: AuthService) {
-    this.auth$ = new State({
-      export: this.authService.can('shop:sold:sold_personal_course|export')
-    })
-  }
+  auth$ = this.authService.authMap({
+    export: 'shop:sold:sold_personal_course|export'
+  })
+  constructor(private courseApi: CourseApi, private authService: AuthService) {}
   @Effect()
   getList(params: GetCourseListInput) {
     return this.courseApi.getCourseList(params, 'personal').pipe(tap((res:any) => {

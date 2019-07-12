@@ -11,25 +11,23 @@ export class ListService implements RouteGuard {
   state$ = new State({})
   loading$ = new State({})
   memberListInfo$: Computed<string>
-  auth$: Computed<object>
   list$ = new State({})
   page$ = new State({})
+  auth$ = this.authService.authMap({
+    add: 'shop:member:member|add',
+    import: 'shop:member:member|import',
+    tag: 'shop:member:member|tag',
+    bindCoach: 'shop:member:member|bind_coach',
+    bindSalesman: 'shop:member:member|bind_salesman',
+    export: 'shop:member:member|export'
+  })
   constructor(private memberApi: MemberApi, private authService: AuthService) {
     this.state$ = new State({
-      memberListInfo: {},
-      auth: {
-        add: this.authService.can('shop:member:member|add'),
-        import: this.authService.can('shop:member:member|import'),
-        tag: this.authService.can('shop:member:member|tag'),
-        bindCoach: this.authService.can('shop:member:member|bind_coach'),
-        bindSalesman: this.authService.can('shop:member:member|bind_salesman'),
-        export: this.authService.can('shop:member:member|export')
-      }
+      memberListInfo: {}
     })
     this.memberListInfo$ = new Computed(
       this.state$.pipe(pluck('memberListInfo'))
     )
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   @Effect()
   getListInfo(paramsObj: any) {

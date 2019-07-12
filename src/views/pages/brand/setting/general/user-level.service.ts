@@ -14,7 +14,10 @@ export class UserLevelService extends Store<ListState> {
   state$: State<ListState>
   list$: Computed<object[]>
   info$: Computed<object>
-  auth$: Computed<object>
+  auth$ = this.authService.authMap({
+    get: 'brand:setting:member_level|get',
+    edit: 'brand:setting:member_level|edit'
+  })
   constructor(
     private settingMemberApi: SettingMemberApi,
     private authService: AuthService
@@ -22,15 +25,10 @@ export class UserLevelService extends Store<ListState> {
     super()
     this.state$ = new State({
       list: [],
-      info: {},
-      auth: {
-        get: this.authService.can('brand:setting:member_level|get'),
-        edit: this.authService.can('brand:setting:member_level|edit')
-      }
+      info: {}
     })
     this.list$ = new Computed(this.state$.pipe(pluck('list')))
     this.info$ = new Computed(this.state$.pipe(pluck('info')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   getList() {
     return this.settingMemberApi.getList().pipe(

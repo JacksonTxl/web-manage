@@ -13,8 +13,8 @@ import {
 export class TrainingAimService implements RouteGuard {
   resData$ = new State({})
   loading$ = new State({})
-  auth$ = new State({
-    add: this.authService.can('brand_shop:member:training_aim|add')
+  auth$ = this.authService.authMap({
+    add: 'brand_shop:member:training_aim|add'
   })
   constructor(
     private trainingApi: TrainingApi,

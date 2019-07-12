@@ -10,8 +10,8 @@ export class AllService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  auth$ = new State({
-    add: this.authService.can('brand_shop:product:member_card|add')
+  auth$ = this.authService.authMap({
+    add: 'brand_shop:product:member_card|add'
   })
   publishChannel$ = this.userService
     .getOptions('member_card.publish_channel')

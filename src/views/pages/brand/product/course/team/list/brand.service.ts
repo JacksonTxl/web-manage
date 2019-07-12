@@ -14,17 +14,14 @@ export class BrandService implements RouteGuard {
   page$ = new State({})
 
   state$: State<any>
-  auth$: Computed<object>
+  auth$ = this.authService.authMap({
+    add: 'brand_shop:product:team_course|add'
+  })
   constructor(
     private brandTeamCourseApi: BrandTeamCourseApi,
     private authService: AuthService
   ) {
-    this.state$ = new State({
-      auth: {
-        add: this.authService.can('brand_shop:product:team_course|add')
-      }
-    })
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
+    this.state$ = new State({})
   }
   deleteCourse(courseId: string) {
     return this.brandTeamCourseApi.deleteCourse(courseId)

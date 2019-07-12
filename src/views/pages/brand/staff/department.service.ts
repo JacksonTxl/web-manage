@@ -12,13 +12,13 @@ import { MessageService } from '@/services/message.service'
 export class DepartmentService implements RouteGuard {
   staffList$ = new State([])
   page$ = new State({})
-  auth$ = new State({
-    join: this.authService.can('brand_shop:staff:staff|join'),
-    add: this.authService.can('brand_shop:staff:staff|add'),
-    import: this.authService.can('brand_shop:staff:staff|import'),
-    departmentAdd: this.authService.can('brand:auth:department|add'),
-    departmentDel: this.authService.can('brand:auth:department|del'),
-    departmentEdit: this.authService.can('brand:auth:department|edit')
+  auth$ = this.authService.authMap({
+    join: 'brand_shop:staff:staff|join',
+    add: 'brand_shop:staff:staff|add',
+    import: 'brand_shop:staff:staff|import',
+    departmentAdd: 'brand:auth:department|add',
+    departmentDel: 'brand:auth:department|del',
+    departmentEdit: 'brand:auth:department|edit'
   })
   departmentList$ = new State([])
   departmentSearchList$ = new State([])

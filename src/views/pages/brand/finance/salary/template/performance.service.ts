@@ -6,9 +6,9 @@ import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class PerformanceService implements RouteGuard {
-    auth$ = new State({
-      add: this.authService.can('brand_shop:salary:commission_template|add')
-    })
+  auth$ = this.authService.authMap({
+    add: 'brand_shop:salary:commission_template|add'
+  })
     list$ = new State([])
     page$ = new State({})
     loading$ = new State({})

@@ -8,8 +8,8 @@ import { AuthService } from '@/services/auth.service'
 export class ListService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
-  auth$ = new State({
-    add: this.authService.can('shop:member:tag|add')
+  auth$ = this.authService.authMap({
+    add: 'shop:member:tag|add'
   })
   constructor(private labelApi: LabelApi, private authService: AuthService) {}
 

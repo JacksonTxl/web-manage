@@ -9,8 +9,8 @@ export class BasicService implements RouteGuard {
   list$ = new State([])
   loading$ = new State({})
   page$ = new State({})
-  auth$ = new State({
-    add: this.authService.can('brand_shop:salary:basic_template|add')
+  auth$ = this.authService.authMap({
+    add: 'brand_shop:salary:basic_template|add'
   })
   constructor(
     private cardsApi: FinanceApi,

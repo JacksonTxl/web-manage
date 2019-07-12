@@ -12,12 +12,11 @@ export class ListService implements RouteGuard {
   page$ = new State({})
   department$ = new State({})
   staffEnums$ = this.userService.staffEnums$
-  auth$ = new State({
-    join: this.authService.can('brand_shop:staff:staff|join'),
-    add: this.authService.can('brand_shop:staff:staff|add'),
-    import: this.authService.can('brand_shop:staff:staff|import')
+  auth$ = this.authService.authMap({
+    join: 'brand_shop:staff:staff|join',
+    add: 'brand_shop:staff:staff|add',
+    import: 'brand_shop:staff:staff|import'
   })
-
   constructor(
     private staffApi: ShopStaffApi,
     private userService: UserService,

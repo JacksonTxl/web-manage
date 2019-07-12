@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- 私教课程定价设置 -->
-    <section v-if="auth.price.get">
+    <section v-if="auth.priceGet">
        <a-row>
         <a-col :span="16"><st-t2>私教课程定价设置</st-t2></a-col>
         <a-col :span="8" class="ta-r">
           <a href="javascript: void(0);"
-            v-if="auth.price.edit"
+            v-if="auth.priceEdit"
             @click="onEditPricingSetting"
           >
             <st-icon type="edit"></st-icon>
@@ -32,12 +32,12 @@
     </section>
 
     <!-- 私教课程预约设置 -->
-    <section v-if="auth.reserve.get">
+    <section v-if="auth.reserveGet">
       <a-row>
         <a-col :span="16"><st-t2>私教课程预约设置</st-t2></a-col>
         <a-col :span="8" class="ta-r">
           <a href="javascript: void(0);"
-            v-if="auth.reserve.edit"
+            v-if="auth.reserveEdit"
             v-modal-link="{
               name:'brand-setting-personal-reserve',
               on: {

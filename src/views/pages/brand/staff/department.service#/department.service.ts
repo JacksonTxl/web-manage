@@ -22,20 +22,18 @@ interface GetOptionsInput {
 @Injectable()
 export class DepartmentService extends Store<SetState> {
   state$: State<SetState>
-  auth$: Computed<any>
   departmentList$: Computed<object[]>
+  auth$ = this.authService.authMap({
+    departmentAdd: 'brand:auth:department|add',
+    departmentDel: 'brand:auth:department|del',
+    departmentEdit: 'brand:auth:department|edit'
+  })
   constructor(protected staffApi: StaffApi, private msg: MessageService, private authService: AuthService) {
     super()
     this.state$ = new State({
-      departmentList: [],
-      auth: {
-        departmentAdd: this.authService.can('brand:auth:department|add'),
-        departmentDel: this.authService.can('brand:auth:department|del'),
-        departmentEdit: this.authService.can('brand:auth:department|edit')
-      }
+      departmentList: []
     })
     this.departmentList$ = new Computed(this.state$.pipe(pluck('departmentList')))
-    this.auth$ = new Computed(this.state$.pipe(pluck('auth')))
   }
   getDepartmentList() {
     return this.staffApi.getDepartmentList().pipe(tap(res => {
