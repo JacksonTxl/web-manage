@@ -11,14 +11,14 @@
           </st-form-item>
           <st-form-item label="手机号" required>
             <a-input-group compact>
-              <a-select style="width: 80px;" v-decorator="rules.country_prefix">
+              <a-select style="width:30%" v-model="country_prefix">
                 <a-select-option
                   :value="code.code_id"
                   v-for="code in countryList.code_list"
                   :key="code.code_id"
                 >+{{code.phone_code}}</a-select-option>
               </a-select>
-              <a-input style="width: calc(100% - 80px)" placeholder="请输入手机号" v-decorator="rules.mobile"/>
+              <a-input style="width:70%" placeholder="请输入手机号" v-decorator="rules.mobile"/>
             </a-input-group>
           </st-form-item>
           <st-form-item label="来源渠道">
@@ -217,7 +217,7 @@ export default {
         mobile: [
           'mobile',
           {
-            rules: [{ required: true, message: '请输入手机号' }]
+            rules: [{ required: true, message: '请输入手机号', pattern: this.pattern.MOBILE }]
           }
         ],
         // 来源渠道
@@ -234,7 +234,7 @@ export default {
         jobs: ['jobs'],
         income_level: ['income_level'],
         id_card_type: ['id_card_type'],
-        id_card: ['id_card'],
+        id_card: ['id_card', { rules: [{ message: '证件信息支持中英文输入', pattern: this.pattern.ID }] }],
 
         height: ['height'],
         weight: ['weight'],
@@ -248,7 +248,8 @@ export default {
       },
       options: [],
       fieldNames: { label: 'name', value: 'id', children: 'children' },
-      faceList: []
+      faceList: [],
+      country_prefix: 1
     }
   },
   methods: {
@@ -267,6 +268,8 @@ export default {
         res.province_id = cascader[0] || 110000
         res.city_id = cascader[1] || 110100
         res.district_id = cascader[2] || 110101
+        // 手机前缀
+        res.country_prefix = this.country_prefix
         delete res.cascader
         delete res.md
         this.addService.addUser(res).subscribe(() => {
