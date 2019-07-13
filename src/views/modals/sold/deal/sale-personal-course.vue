@@ -407,7 +407,7 @@ export default {
     buy_num(rule, value, callback) {
       let price = 0
       if (this.info.price_model === 1) { // 教练平级
-        price = this.personalPrice.sell_price
+        price = this.personalPrice.min_sell
       } else {
         price = this.minPrice
       }

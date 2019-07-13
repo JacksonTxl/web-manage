@@ -263,7 +263,8 @@ export default {
             this.$modalRouter.push({
               name: 'shop-distribution-coach',
               props: {
-                memberIds: [record.member_id]
+                memberIds: [record.member_id],
+                coachId: record.follow_coach_id
               },
               on: {
                 success: () => {
@@ -278,7 +279,8 @@ export default {
         this.$modalRouter.push({
           name: 'shop-distribution-coach',
           props: {
-            memberIds: [record.member_id]
+            memberIds: [record.member_id],
+            coachId: record.follow_coach_id
           },
           on: {
             success: () => {
@@ -298,7 +300,8 @@ export default {
             this.$modalRouter.push({
               name: 'shop-distribution-sale',
               props: {
-                memberIds: [record.member_id]
+                memberIds: [record.member_id],
+                saleId: record.follow_salesman_id
               },
               on: {
                 success: () => {
@@ -313,7 +316,8 @@ export default {
         this.$modalRouter.push({
           name: 'shop-distribution-sale',
           props: {
-            memberIds: [record.member_id]
+            memberIds: [record.member_id],
+            saleId: record.follow_salesman_id
           },
           on: {
             success: () => {
