@@ -7,9 +7,10 @@
     </div>
     <st-panel app initial :class="basic()">
       <div slot="title" :class="basic('search')">
-        <div :class="basic('add')" v-if="auth.export">
+        <!-- NOTE: 导出 -->
+        <!-- <div :class="basic('add')" v-if="auth.export">
           <st-button type="primary" @click="onAddCoupon">导出</st-button>
-        </div>
+        </div> -->
         <a-select :class="basic('select')" v-model="queryParams.couponStatus" @change="onSearch" style="width: 160px">
           <a-select-option
             v-for="(item,index) in couponStatus"

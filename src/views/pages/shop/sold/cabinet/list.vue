@@ -36,7 +36,8 @@
 
     <div :class="basic('content')">
       <div :class="basic('content-batch')">
-          <st-button v-if="auth.export"  type="primary">批量导出</st-button>
+        <!-- NOTE: 导出 -->
+          <!-- <st-button v-if="auth.export"  type="primary">批量导出</st-button> -->
       </div>
       <st-table
       :page="page"
