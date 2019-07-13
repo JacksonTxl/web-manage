@@ -24,11 +24,10 @@
           <!-- slider -->
           <div class="sliderBox">
             <st-date-slider
-              :min="min"
-              :max="max"
               :step="step"
               :disable="isInfo"
               :tipFormatter="formatter"
+              :rangeData="rangeData"
               v-model="item.value"
             ></st-date-slider>
           </div>
@@ -67,6 +66,10 @@ export default {
   },
   props: {
     value: {
+      type: Array,
+      default: () => []
+    },
+    rangeData: {
       type: Array,
       default: () => []
     },
@@ -120,7 +123,8 @@ export default {
     },
     weekSelects(n, o) {
       if (this.isInit) return
-      if ((n.length === o.length) || !o) return
+      console.log('weekSelects', n, o)
+      if (n.length === o.length) return
       n.length > o.length ? this.addSlider(n, o) : this.removeSlider(n, o)
     }
   },
@@ -136,24 +140,27 @@ export default {
     },
     // 获取的数据对格式进行处理
     getSliderInfoList() {
-      console.log('getSliderInfoList', this.value)
+      console.log('获取的数据对格式进行处理 => value', this.value)
       this.value.map(item => {
-        const sliderByweekDay = this.slider[--item.week_day]
-        sliderByweekDay.value = [
+        let week_day = cloneDeep(item.week_day)
+        let index = --week_day
+        this.slider[index].value = [
           item.start_time.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0,
           item.end_time.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0
         ]
-        sliderByweekDay.show = true
+        this.slider[index].show = true
+        console.log('sliderByweekDay end', this.slider[index].value)
       })
       this.isInit = false
-      console.log('根据value值,设置slider', this.slider)
+      console.log('根据value值,设置slider => slider', this.slider)
     },
     // 添加slider
     addSlider(n, o) {
       const index = difference(n, o)
       console.log('addSlider', index)
-      index.forEach(n => {
-        let endIndex = --n
+      index.forEach(i => {
+        let endIndex = --i
+        if (this.slider[endIndex].show) return
         this.slider[endIndex].show = true
         this.slider[endIndex].value = [10, 24]
       })
