@@ -250,6 +250,11 @@
       display: flex;
       align-items: center;
     }
+    &__top-item {
+      .h(64px);
+      .c(@text-color-secondary);
+      .lh(64px);
+    }
     &__icon {
       .fz(20px);
       .c(@white);
@@ -393,6 +398,9 @@
         > h2 {
           color: @white;
         }
+      }
+      &__top-item {
+        .c(@text-color-secondary);
       }
       &__line {
         .bg(rgba(255, 255, 255, 0.25));
