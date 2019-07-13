@@ -49,7 +49,7 @@ export class AppConfig {
    * shs环境
    */
   get SHS_API_ENV() {
-    return this.IS_PROD ? 'https://shs.styd.cn' : 'https://shs.dev.styd.cn'
+    return this.HOST_IS_PROD ? 'https://shs.styd.cn' : 'https://shs.dev.styd.cn'
   }
 
   /**
