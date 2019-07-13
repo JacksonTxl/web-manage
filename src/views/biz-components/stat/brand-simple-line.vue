@@ -109,7 +109,7 @@ export default {
         .style({
           shadowColor: this.color,
           shadowBlur: 20,
-          shadowOffsetY: 6,
+          shadowOffsetY: 4,
           opacity: 0.5
         })
         .position('name*value')

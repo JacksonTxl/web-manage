@@ -103,8 +103,8 @@
         <a-row>
           <a-col :span="14">
             <st-t3> 营收趋势</st-t3>
-            <p :class="bCount('amount')">合计：<span class="font-number">{{revenueSummary.length?revenueSummary[7].value:'--'}}</span>元</p>
-            <shop-revenue-line v-if="revenueDaily.length" :data="revenueDaily" :fields="['会员卡','私教课','团体课','储值卡','课程包','云店','其他','总营收']"></shop-revenue-line>
+            <p :class="bCount('amount')">合计：<span class="font-number">{{revenueSummary.length?revenueSummary[6].value:'--'}}</span>元</p>
+            <shop-revenue-line v-if="revenueDaily.length" :data="revenueDaily" :fields="['会员卡','私教课','团体课','课程包','云店','其他','总营收']"></shop-revenue-line>
             <img v-else :class="b('entry-course-img')" :src="inoutNumImg" />
           </a-col>
           <a-col :span="10">
@@ -160,7 +160,7 @@
         <a-row>
           <a-col :span="13">
             <st-t3 style="margin-bottom:24px;">上课分析</st-t3>
-            <shop-course-line v-if="courseDaily.length" :data="courseDaily" :colors="['#5095FC', '#6831D7', '#06DB8C','#872333','#98db23']" :fields="['团体课可预约人数','团体课签到人数','团体课预约人数','私教课签到人数','私教课预约人数']"></shop-course-line>
+            <shop-course-line v-if="courseDaily.length" :data="courseDaily"></shop-course-line>
             <img v-else :class="b('entry-course-img')" :src="inoutNumImg" />
           </a-col>
           <a-col :span="10" :offset="1">

@@ -187,7 +187,7 @@
             </a-select>
           </st-form-item>
           <st-form-item label="备注" class="mg-b0">
-            <a-textarea v-model="description" :autosize="{ minRows: 4, maxRows: 6 }" />
+            <a-textarea v-model="description" :autosize="{ minRows: 4, maxRows: 6 }" :maxlength="30"/>
           </st-form-item>
         </div>
       </st-form>
@@ -363,18 +363,18 @@ export default {
     },
     moment,
     member_id_validator(rule, value, callback) {
-      if (!value && this.searchMemberIsShow) {
+      if ((!value || value.length > 15) && this.searchMemberIsShow) {
         // eslint-disable-next-line
-        callback('请选择转让会员')
+        callback('请选择转让会员，查询条件长度15')
       } else {
         // eslint-disable-next-line
         callback()
       }
     },
     member_name_validator(rule, value, callback) {
-      if (!value && !this.searchMemberIsShow) {
+      if ((!value || !value.match(this.pattern.CN_EN_NUM_SPACE('1-15'))) && !this.searchMemberIsShow) {
         // eslint-disable-next-line
-        callback('请输入会员姓名')
+        callback('请输入会员姓名，支持格式长度1~15中英文')
       } else {
         // eslint-disable-next-line
         callback()
@@ -407,7 +407,7 @@ export default {
     buy_num(rule, value, callback) {
       let price = 0
       if (this.info.price_model === 1) { // 教练平级
-        price = this.personalPrice.sell_price
+        price = this.personalPrice.min_sell
       } else {
         price = this.minPrice
       }
@@ -540,7 +540,7 @@ export default {
             // 调用优惠券列表
             this.fetchCouponList()
             // 调用获取商品原价
-            if (this.info.sale_model === 1 && this.info.price_model === 2 && !this.form.getFieldValue('coursePrice') && this.form.getFieldValue('coursePrice') !== 0) {
+            if (this.info.sale_model === 1 && !this.form.getFieldValue('coursePrice') && this.form.getFieldValue('coursePrice') !== 0) {
               return
             }
             this.getOrderPrice()

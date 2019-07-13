@@ -37,11 +37,22 @@
 </template>
 <script>
 import { cloneDeep } from 'lodash-es'
+import { UserService } from '@/services/user.service'
 let className = ['first custom', 'second custom', 'third custom', 'fourth custom']
 export default {
   name: 'StCardBgRadio',
   bem: {
     cardRadio: 'st-card-bg-radio'
+  },
+  serviceInject() {
+    return {
+      userService: UserService
+    }
+  },
+  rxState() {
+    return {
+      memberCard: this.userService.memberCardEnums$
+    }
   },
   created() {
     this.init()
@@ -64,32 +75,33 @@ export default {
     return {
       // 截图参数对象
       cropperModal: {},
-      card_bg_list: [
-        {
-          image_id: 0,
-          image_key: 'image/default/bg-card-selection-1.png',
-          image_url:
-            'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-1.png'
-        },
-        {
-          image_id: 0,
-          image_key: 'image/default/bg-card-selection-2.png',
-          image_url:
-            'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-2.png'
-        },
-        {
-          image_id: 0,
-          image_key: 'image/default/bg-card-selection-3.png',
-          image_url:
-            'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-3.png'
-        },
-        {
-          image_id: 0,
-          image_key: 'image/default/bg-card-selection-4.png',
-          image_url:
-            'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-4.png'
-        }
-      ],
+      card_bg_list: this.memberCard.card_bg_list.value,
+      // card_bg_list: [
+      //   {
+      //     image_id: 0,
+      //     image_key: 'image/default/bg-card-selection-1.png',
+      //     image_url:
+      //       'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-1.png'
+      //   },
+      //   {
+      //     image_id: 0,
+      //     image_key: 'image/default/bg-card-selection-2.png',
+      //     image_url:
+      //       'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-2.png'
+      //   },
+      //   {
+      //     image_id: 0,
+      //     image_key: 'image/default/bg-card-selection-3.png',
+      //     image_url:
+      //       'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-3.png'
+      //   },
+      //   {
+      //     image_id: 0,
+      //     image_key: 'image/default/bg-card-selection-4.png',
+      //     image_url:
+      //       'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-4.png'
+      //   }
+      // ],
       // 备份
       list: [],
       // radioIndex
@@ -145,10 +157,26 @@ export default {
       }
     }
   },
+  mounted() {
+    this.setRadioColor()
+  },
   methods: {
     init() {
       this.list = cloneDeep(this.card_bg_list)
       this.setdata(this.value)
+    },
+    setRadioColor() {
+      let innerHTML = ''
+      this.cardBgList.forEach(i => {
+        innerHTML += `
+          .st-card-bg-radio .${i.className.split('custom')[0]} .ant-radio-inner::after {
+            background-color: ${i.color};
+          }
+        `
+      })
+      let style = document.createElement('style')
+      style.innerHTML = innerHTML
+      document.head.appendChild(style)
     },
     setdata(data) {
       this.radioIndex = data.index

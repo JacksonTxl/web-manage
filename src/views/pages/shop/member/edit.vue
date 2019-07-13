@@ -201,6 +201,7 @@ export default {
       })
     },
     setEditInfo(obj) {
+      console.log(obj)
       this.form.setFieldsValue({
         member_name: obj.member_name,
         sex: obj.sex === 0 ? 1 : obj.sex,

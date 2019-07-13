@@ -3,7 +3,7 @@
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">时间范围</span>
-    <time-day v-model="value.getData.base_birthday"></time-day>
+    <time-day v-model="value.getData.base_birthday" format="MM-DD"></time-day>
   </div>
 </template>
 <script>

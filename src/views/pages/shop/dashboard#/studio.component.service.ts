@@ -72,7 +72,6 @@ export class StudioComponentService {
           { name: '会员卡', value: data.summary.member_card_amount },
           { name: '私教课', value: data.summary.personal_course_amount },
           { name: '团体课', value: data.summary.team_course_amount },
-          { name: '储值卡', value: data.summary.deposit_card_amount },
           { name: '课程包', value: data.summary.package_course_amount },
           { name: '云店', value: data.summary.shop_amount },
           { name: '其他', value: data.summary.other_amount },
@@ -84,7 +83,6 @@ export class StudioComponentService {
             会员卡: data.daily.member_card_amount[key],
             私教课: data.daily.personal_course_amount[key],
             团体课: data.daily.team_course_amount[key],
-            储值卡: data.daily.deposit_card_amount[key],
             课程包: data.daily.package_course_amount[key],
             云店: data.daily.shop_amount[key],
             其他: data.daily.other_amount[key],
@@ -131,7 +129,7 @@ export class StudioComponentService {
             私教课签到人数: data.daily.personal_checkin_num[key],
             团体课可预约人数: data.daily.team_can_reserve_num[key],
             团体课预约人数: data.daily.team_reserved_num[key],
-            团体课签到人数: data.daily.team_checkin_num[key]
+            团体课签到人数: data.daily.team_sigin_num[key]
           }
           lineData.push(chartItem)
         }
@@ -184,14 +182,14 @@ export class StudioComponentService {
         const data = res.info
         state.member = {
           member: [
-            { name: '消费人数', value: data.member.consume_num },
-            { name: '办理入会人数', value: data.member.member_num },
-            { name: '购买私教人数', value: data.member.buy_person_course_num }
+            { name: '消费用户', value: data.member.consume_num },
+            { name: '私教消课', value: data.member.personal_course_checkin_num },
+            { name: '购买私教', value: data.member.buy_person_course_num }
           ],
           marketing: [
-            { name: '消费人数', value: data.marketing.consume_num },
-            { name: '办理入会人数', value: data.marketing.member_num },
-            { name: '购买私教人数', value: data.marketing.buy_person_course_num }
+            { name: '消费用户', value: data.marketing.consume_num },
+            { name: '私教消课', value: data.marketing.personal_course_checkin_num },
+            { name: '购买私教', value: data.marketing.buy_person_course_num }
           ]
         }
       })

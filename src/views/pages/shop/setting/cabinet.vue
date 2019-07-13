@@ -39,8 +39,8 @@
         <a-tabs :defaultActiveKey="type" class="st-route-tabs"
           @change="onCabinetTabChange"
         >
-          <a-tab-pane :tab="`临时储物柜(${currentArea.temporary_num})`" key="temporary"></a-tab-pane>
-          <a-tab-pane :tab="`长期储物柜(${currentArea.long_term_num})`" key="long-term"></a-tab-pane>
+          <a-tab-pane :tab="`临时储物柜(${currentArea.temporary_num || 0})`" key="temporary"></a-tab-pane>
+          <a-tab-pane :tab="`长期储物柜(${currentArea.long_term_num || 0})`" key="long-term"></a-tab-pane>
         </a-tabs>
         <div class="page-setting-cabinet-tab__actions">
           <st-button @click="changeOperationMode">
@@ -147,7 +147,7 @@ export default {
     currentArea() {
       const { list } = this
       const id = this.query.id
-      let currentArea
+      let currentArea = {}
       list.forEach(item => {
         if (item.id === +id) {
           currentArea = item

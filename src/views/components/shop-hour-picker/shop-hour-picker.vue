@@ -134,6 +134,7 @@ export default {
       console.log('init')
       this.weekSelects = this.value.map(item => item.week_day)
       if (this.weekSelects.length) this.getSliderInfoList()
+      else this.isInit = false
     },
     // 获取的数据对格式进行处理
     getSliderInfoList() {
