@@ -161,7 +161,8 @@ export default {
         name: 'face-recognition',
         on: {
           change: res => {
-            this.infoService.editFace(this.query.id, res).subscribe(() => {
+            let result = res[0]
+            this.infoService.editFace(this.query.id, result).subscribe(() => {
               this.infoService.getBasicInfo(this.query.id)
             })
           }
