@@ -32,14 +32,18 @@
           :scroll="{ x: 1500 }"
           :dataSource="list">
           <template slot="is_shop_range" slot-scope="text, record">
-            <a-popover placement="right">
+            <span v-if="!record.shop_list.length || record.shop_list.length ===1">
+              {{record.shop_list[0]}}
+            </span>
+            <a-popover placement="right" v-else>
               <template slot="content">
                 <p v-for="(item, index) in record.shop_list" :key="index" :value="index">{{item}}</p>
               </template>
               <template slot="title">
                 <span>可用门店</span>
               </template>
-              <a>{{text}}</a>
+              <!-- <a>{{text}}</a> -->
+              <a>可用门店</a>
             </a-popover>
           </template>
           <template slot="valid_days" slot-scope="text">
