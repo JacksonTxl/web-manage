@@ -1,23 +1,22 @@
-import { RouteGuard, Injectable, ServiceRoute, ServiceRouter } from 'vue-service-app'
+import {
+  RouteGuard,
+  Injectable,
+  ServiceRoute
+} from 'vue-service-app'
 import { UserService } from '@/services/user.service'
-import { Computed } from 'rx-state'
-import { map } from 'rxjs/operators'
 
 @Injectable()
 export class IndexService implements RouteGuard {
-  firstMenu$ = new Computed(
-    this.userService.menuData$.pipe(
-      map((menuData: any) => {
-        return menuData.menus[0]
-      })
-    )
-  )
-  constructor(private userService: UserService, private router:ServiceRouter) {}
+  constructor(private userService: UserService) {}
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     if (to.name === 'brand-index') {
-      this.router.replace({
-        name: this.firstMenu$.snapshot().url,
-        force: true
+      next({
+        name: this.userService.firstMenu$.snapshot().url,
+        query: {
+          _t: Math.random()
+            .toString(16)
+            .slice(3)
+        }
       })
     } else {
       next()
