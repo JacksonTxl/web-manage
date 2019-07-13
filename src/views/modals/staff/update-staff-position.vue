@@ -7,7 +7,7 @@
     <st-form labelWidth='70px' :form="form">
       <st-form-item label="工作性质">
         <a-select v-decorator="['nature_work']" placeholder="请选择工作性质">
-          <a-select-option :value="item.id" v-for="item in natureWork" :key="item.id">
+          <a-select-option :value="item.id" v-for="item in natureWork" :key="item.id" :disabled="!item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
@@ -29,17 +29,17 @@
       </st-form-item>
       <st-form-item label="薪资模板">
         <a-select class="mg-b16" v-decorator="['basic_salary']" placeholder="请选择底薪模版">
-          <a-select-option :value="item.id" v-for="item in salaryBasic" :key="item.id">
+          <a-select-option :value="item.id" v-for="item in salaryBasic" :key="item.id" :disabled="!item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
         <a-select class="mg-b16" v-decorator="['sale_percentage']" placeholder="请选择薪资模板">
-          <a-select-option :value="item.id" v-for="item in salarySale" :key="item.id">
+          <a-select-option :value="item.id" v-for="item in salarySale" :key="item.id" :disabled="!item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
         <a-select v-decorator="['course_percentage']" placeholder="请选择课程模板" v-show="isSalaryCourse">
-          <a-select-option :value="item.id" v-for="item in salaryCourse" :key="item.id">
+          <a-select-option :value="item.id" v-for="item in salaryCourse" :key="item.id" :disabled="!item.id">
             {{item.name}}
           </a-select-option>
         </a-select>
@@ -126,6 +126,7 @@ export default {
         nature_work,
         sale_percentage
       } = this.positionInfo$
+
       this.onChangeIdentity(identity)
       this.$nextTick(() => {
         let obj = {
@@ -141,6 +142,9 @@ export default {
     })
   },
   methods: {
+    initBasic_salary() {
+
+    },
     onChangeIdentity(value) {
       this.isSalaryCourse = value.includes(3) || value.includes(4)
       this.coach_level_required = value.includes(4)
@@ -170,7 +174,7 @@ export default {
           name: value[key]
         })
       }
-      return arr
+      return [{ id: 0, name: '请选择' }, ...arr]
     },
     onSubmit(e) {
       e.preventDefault()
