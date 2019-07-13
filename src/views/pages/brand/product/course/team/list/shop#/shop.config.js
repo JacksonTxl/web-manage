@@ -19,11 +19,13 @@ export const columns = [
   },
   {
     title: '时长（分钟）',
-    dataIndex: 'duration'
+    dataIndex: 'duration',
+    align: 'right'
   },
   {
-    title: '参考课时费',
-    dataIndex: 'price'
+    title: '参考课时费（元）',
+    dataIndex: 'price',
+    align: 'right'
   },
   {
     title: '操作',

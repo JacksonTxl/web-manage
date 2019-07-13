@@ -37,6 +37,10 @@
             <a-radio :value="2">售卖场馆自主定价</a-radio>
           </a-radio-group>
         </st-form-item>
+      </a-col>
+    </a-row>
+    <a-row :gutter="8">
+      <a-col :lg="22" :offset="1">
         <!-- 单节预约 -->
         <st-form-item>
           <template slot="label">
@@ -90,6 +94,7 @@ import { RouteService } from '@/services/route.service'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
 import SetPrice from '@/views/fragments/course/set-price'
+import { checkGradient } from '@/views/fragments/course/personal#/check-gradient'
 
 export default {
   name: 'SetSellPrice',
@@ -107,7 +112,8 @@ export default {
     return {
       loading: this.addService.loading$,
       personalCourseEnums: user.personalCourseEnums$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      brand: this.userService.brand$
     }
   },
   props: {
@@ -210,6 +216,9 @@ export default {
           })
           return
         }
+      }
+      if (!checkGradient(this.priceGradient)) {
+        return false
       }
       return true
     },

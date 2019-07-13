@@ -3,11 +3,12 @@
     :title="title"
     v-model="show"
     :footer="null"
+    wrapClassName="scroll-modal"
   >
     <st-table
-      rowKey="id"
+      rowKey="key"
       :loading="loading[`get${type}ShopList`]"
-      :dataSource="list"
+      :dataSource="stList"
       :columns="columns"
       :scroll="{ y: 230 }"
       @change="onPageChange"
@@ -29,6 +30,16 @@ export default {
       loading: this.shopTableService.loading$,
       list: this.shopTableService.list$,
       page: this.shopTableService.page$
+    }
+  },
+  computed: {
+    stList() {
+      let array = []
+      this.list.forEach(o => {
+        let key = parseInt(Math.random() * 999999).toString()
+        array.push({ ...o, key })
+      })
+      return array
     }
   },
   props: ['id', 'type', 'title'],

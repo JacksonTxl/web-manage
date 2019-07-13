@@ -19,7 +19,13 @@ interface Brand {
   id?: string
   name?: string
   logo?: string
+  /**
+   * 私教课程定价模式 1、教练统一定价 2、教练分级定价
+  */
   priceModel?: number
+  /**
+   * 私教课程售卖模式 1、教练谈单 2、统一标价
+  */
   saleModel?: number
 }
 
