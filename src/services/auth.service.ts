@@ -1,20 +1,45 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, log } from 'rx-state'
-import { tap, pluck, map } from 'rxjs/operators'
-import { Store } from './store'
+import { Injectable, ServiceRoute, ServiceRouter } from 'vue-service-app'
+import { State, Computed } from 'rx-state'
+import { tap, map } from 'rxjs/operators'
 import { AuthApi } from '@/api/v1/common/auth'
 import { of, forkJoin, pipe } from 'rxjs'
 import { get, set, forEach } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
+import { NotificationService } from './notification.service'
 
 interface DataState {
   list?: any[]
   [propName: string]: any
 }
+
+interface RedirectConfig {
+  /**
+   * 当前路由名
+   */
+  locateRouteName: string
+  /**
+   * 需要跳转的下一级路由
+   */
+  redirectRouteName: string
+  /**
+   * to ServiceRoute 对象
+   */
+  to: ServiceRoute
+  /**
+   * next 函数
+   */
+  next: any
+}
+
 @Injectable()
 export class AuthService {
   auth$ = new State<Array<string>>([])
-  constructor(private authApi: AuthApi, private nprogress: NProgressService) {
+  constructor(
+    private authApi: AuthApi,
+    private nprogress: NProgressService,
+    private router: ServiceRouter,
+    private notification: NotificationService
+  ) {
     this.nprogress.SET_TEXT('用户权限数据加载中...')
   }
   getList() {
@@ -100,6 +125,80 @@ export class AuthService {
         })
       )
     )
+  }
+  /**
+   * 获取授权的tab数据
+   * @return {Computed<{firstRoute:string,tabs:[]}>} 返回流
+   */
+  getAuthTab$(tabRouteNames: string[]) {
+    return new Computed(
+      this.auth$.pipe(
+        map(() => {
+          const authedTabs = tabRouteNames.reduce(
+            (res, routeName) => {
+              const resolvedRoute = this.router.resolve({
+                name: routeName
+              })
+              const meta = resolvedRoute.route.meta
+              if (!meta) {
+                return res.concat([])
+              }
+              if (this.can(meta.auth)) {
+                if (!meta.title) {
+                  console.error(
+                    `[auth.service] 请设置 ${routeName} 下的meta.title `
+                  )
+                }
+                return res.concat([
+                  {
+                    label: meta.title,
+                    route: {
+                      name: resolvedRoute.route.name
+                    }
+                  }
+                ])
+              }
+            },
+            [] as any
+          )
+          return {
+            firstRoute: authedTabs[0] ? authedTabs[0].route.name : '',
+            tabs: authedTabs
+          }
+        })
+      )
+    )
+  }
+  /**
+   * 负责应用内的跳转服务
+   * 包括 菜单跳转 tab跳转等
+   */
+  redirect(redirectConfig: RedirectConfig) {
+    const { redirectRouteName, locateRouteName, to, next } = redirectConfig
+    const resolveRoute = this.router.resolve({
+      name: redirectRouteName
+    })
+    if (to.name === locateRouteName) {
+      // 检测路由表有该路由
+      if (resolveRoute.route.matched.length) {
+        next({
+          name: redirectRouteName,
+          query: {
+            _t: Math.random()
+              .toString(16)
+              .slice(3)
+          }
+        })
+      } else {
+        this.notification.error({
+          title: 'REDIRECT_ERROR',
+          content: `未找到匹配路由 ${JSON.stringify(redirectRouteName)}`
+        })
+        next()
+      }
+    } else {
+      next()
+    }
   }
   init() {
     if (!this.auth$.snapshot().length) {

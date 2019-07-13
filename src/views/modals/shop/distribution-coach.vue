@@ -13,7 +13,7 @@
     <a-row :gutter="8">
       <a-col :lg="24" class="distribution-container" >
         <st-table
-          :rowSelection="{ fixed: true, columnTitle:'分配',type: 'radio',selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+          :rowSelection="{ columnTitle:'分配',type: 'radio',selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
           :columns="columns"
           :dataSource="list"
           rowKey="id"

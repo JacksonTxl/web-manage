@@ -1,6 +1,6 @@
 import { Injectable, ServiceRouter } from 'vue-service-app'
-import { State, Computed, Effect } from 'rx-state'
-import { tap } from 'rxjs/operators'
+import { State, Effect } from 'rx-state'
+import { tap, switchMap } from 'rxjs/operators'
 import { ShopApi } from '@/api/v1/shop'
 import { SwitchApi, SwitchShopInput } from '@/api/v1/account/switch'
 import { TokenService } from '@/services/token.service'
@@ -25,31 +25,27 @@ export class SwitchService {
       })
     )
   }
-  switchSuccess(type: string) {
-    forkJoin([
-      this.userService.getMenuData(),
-      this.userService.getUser()
-    ]).subscribe(() => {
-      this.router.push({
-        name: type
-      })
-    })
-  }
   @Effect()
   switchShop(params: SwitchShopInput) {
     return this.switchApi.switchShop(params).pipe(
-      tap(res => {
+      switchMap(res => {
         this.tokenService.SET_TOKEN(res.token)
-        this.switchSuccess('shop')
+        return this.userService.reload()
+      }),
+      tap(() => {
+        this.router.push({ name: 'shop' })
       })
     )
   }
   @Effect()
   switchBackToBrand() {
     return this.switchApi.switchBackToBrand().pipe(
-      tap(res => {
+      switchMap(res => {
         this.tokenService.SET_TOKEN(res.token)
-        this.switchSuccess('brand')
+        return this.userService.reload()
+      }),
+      tap(() => {
+        this.router.push({ name: 'brand' })
       })
     )
   }
