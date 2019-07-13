@@ -50,6 +50,7 @@ export class RedirectService {
    */
   redirect(redirectConfig: RedirectConfig) {
     const { redirectRouteName, locateRouteName, to, next } = redirectConfig
+    console.log(redirectRouteName)
     const resolveRoute = this.router.resolve({
       name: redirectRouteName
     })

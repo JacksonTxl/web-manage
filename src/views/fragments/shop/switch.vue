@@ -8,13 +8,13 @@
     @close="onClose"
   >
     <div class="drawer-switch-shop">
-      <!-- <section class="mg-l24 mg-r24">
+      <!-- <section class="mg-l24 mg-r24 drawer-switch-shop__header">
         <a-input-search
           placeholder="搜索门店"
           @search="onSearchShop"
         />
       </section>-->
-      <section class="mg-t24">
+      <section class="mg-t24 drawer-switch-shop__body">
         <a-spin :spinning="!!loading.switchShop">
           <ul class="drawer-shops">
             <li
