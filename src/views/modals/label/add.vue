@@ -7,7 +7,7 @@
             <a-input
               placeholder="请输标签名称"
               :max="10"
-              v-decorator="['tag_name',{rules: [{ required: true, message: '请输入标签名称' }]}]"
+              v-decorator="['tag_name',{rules: [{ required: true, message: '请输入标签名称，长度1~10中英文', pattern: pattern.CN_EN('1-10') }]}]"
             />
           </st-form-item>
         </a-col>
@@ -18,11 +18,13 @@
 <script>
 import { AddLabelService } from './add.service'
 import { MessageService } from '@/services/message.service'
+import { PatternService } from '@/services/pattern.service'
 export default {
   serviceInject() {
     return {
       service: AddLabelService,
-      message: MessageService
+      message: MessageService,
+      pattern: PatternService
     }
   },
   data() {

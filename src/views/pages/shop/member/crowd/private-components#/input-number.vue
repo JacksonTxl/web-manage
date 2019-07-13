@@ -1,7 +1,7 @@
 
 <template>
   <div style="display: inherit;">
-    <st-input-number v-model="value.min" :float="true" :min="minMax.min" style="width:130px">
+    <st-input-number v-model="value.min" :float="true" :min="minMax.min" style="width:130px" @change="onChangeMin">
       <template slot="addonAfter">{{company}}</template>
     </st-input-number>
     <div style="padding:0 10px">~</div>
@@ -47,6 +47,11 @@ export default {
     onChange(date, dateString) {
       console.log(date, dateString)
       this.$emit('dataChangge', this.value)
+    },
+    onChangeMin() {
+      if (this.value.min > this.value.max) {
+        this.value.max = this.value.min
+      }
     }
   },
   mounted() {}

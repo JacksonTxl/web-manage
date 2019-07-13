@@ -1,46 +1,27 @@
 <template>
   <div>
-    <page-route-nav title="通用设置" v-model="navs"></page-route-nav>
+    <page-route-nav title="通用设置" v-model="authTab.tabs"></page-route-nav>
   </div>
 </template>
 <script>
 import PageRouteNav from '@/views/components/page-route-nav#/nav'
+import { GeneralService } from './general.service'
 export default {
   bem: {
     b: 'page-setting'
   },
+  serviceInject() {
+    return {
+      generalService: GeneralService
+    }
+  },
+  rxState() {
+    return {
+      authTab: this.generalService.authTab$
+    }
+  },
   components: {
     PageRouteNav
-  },
-  data() {
-    return {
-      navs: [{
-        label: '品牌设置',
-        route: {
-          name: 'brand-setting-general-brand'
-        }
-      }, {
-        label: '课程定价及预约设置',
-        route: {
-          name: 'brand-setting-general-course-personal'
-        }
-      }, {
-        label: '支付设置',
-        route: {
-          name: 'brand-setting-general-pay-type'
-        }
-      }, {
-        label: '教练等级设置',
-        route: {
-          name: 'brand-setting-general-coach-level'
-        }
-      }, {
-        label: '用户等级设置',
-        route: {
-          name: 'brand-setting-general-user-level'
-        }
-      }]
-    }
   }
 }
 </script>

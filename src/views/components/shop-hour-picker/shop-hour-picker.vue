@@ -126,12 +126,14 @@ export default {
     }
   },
   mounted() {
-    this.init()
+    this.$nextTick(() => {
+      this.init()
+    })
   },
   methods: {
     // 获取日期选择数组
     init() {
-      console.log('init')
+      console.log('init', this.value)
       this.weekSelects = this.value.map(item => item.week_day)
       if (this.weekSelects.length) this.getSliderInfoList()
       else this.isInit = false

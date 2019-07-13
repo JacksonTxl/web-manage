@@ -16,6 +16,11 @@ interface RouteConfig extends ServiceRouteConfig {
      * 生命平级路由的父级路由name
      */
     parentId: string
+
+    /**
+     * 该路由是否能访问的权限key名
+     */
+    auth:string
   },
   guards:object[]
 }
@@ -433,9 +438,15 @@ export const routeMapConfig = {
   },
   'brand-setting-general-brand'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '品牌设置'
+    routeConfig.meta.auth = ''
+  },
+  'brand-setting-general-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '私教与课程设置'
+    routeConfig.meta.auth = ''
   },
   'brand-setting-general-course-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教设置'
+    routeConfig.meta.auth = 'brand_shop:flow:expenditure|tab'
   },
   'brand-setting-general-course-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课设置'
