@@ -255,45 +255,73 @@ export default {
     },
     // 分配教练
     onDistributionCoach(record) {
-      this.$confirm({
-        title: '提示信息',
-        content: '该教练已经存在跟进教练，是否确认替换？',
-        onOk: () => {
-          this.$modalRouter.push({
-            name: 'shop-distribution-coach',
-            props: {
-              memberIds: [record.member_id]
-            },
-            on: {
-              success: () => {
-                this.$router.push({ force: true })
+      if (record.follow_coach) {
+        this.$confirm({
+          title: '提示信息',
+          content: '该用户已存在跟进教练，是否确认替换？',
+          onOk: () => {
+            this.$modalRouter.push({
+              name: 'shop-distribution-coach',
+              props: {
+                memberIds: [record.member_id]
+              },
+              on: {
+                success: () => {
+                  this.$router.push({ force: true })
+                }
               }
+            })
+          },
+          onCancel() {}
+        })
+      } else {
+        this.$modalRouter.push({
+          name: 'shop-distribution-coach',
+          props: {
+            memberIds: [record.member_id]
+          },
+          on: {
+            success: () => {
+              this.$router.push({ force: true })
             }
-          })
-        },
-        onCancel() {}
-      })
+          }
+        })
+      }
     },
     // 分配销售
     onDistributionSale(record) {
-      this.$confirm({
-        title: '提示信息',
-        content: '该教练已经存在跟进销售，是否确认替换？',
-        onOk: () => {
-          this.$modalRouter.push({
-            name: 'shop-distribution-sale',
-            props: {
-              memberIds: [record.member_id]
-            },
-            on: {
-              success: () => {
-                this.$router.push({ force: true })
+      if (record.follow_salesman) {
+        this.$confirm({
+          title: '提示信息',
+          content: '该用户已存在跟进销售，是否确认替换？',
+          onOk: () => {
+            this.$modalRouter.push({
+              name: 'shop-distribution-sale',
+              props: {
+                memberIds: [record.member_id]
+              },
+              on: {
+                success: () => {
+                  this.$router.push({ force: true })
+                }
               }
+            })
+          },
+          onCancel() {}
+        })
+      } else {
+        this.$modalRouter.push({
+          name: 'shop-distribution-sale',
+          props: {
+            memberIds: [record.member_id]
+          },
+          on: {
+            success: () => {
+              this.$router.push({ force: true })
             }
-          })
-        },
-        onCancel() {}
-      })
+          }
+        })
+      }
     },
     onRemoveBind(record) {
       this.$confirm({
