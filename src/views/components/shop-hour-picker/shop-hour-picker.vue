@@ -26,8 +26,8 @@
             <st-date-slider
               :step="step"
               :disable="isInfo"
+              :rangeData="item.range"
               :tipFormatter="formatter"
-              :rangeData="rangeData"
               v-model="item.value"
             ></st-date-slider>
           </div>
@@ -66,10 +66,6 @@ export default {
   },
   props: {
     value: {
-      type: Array,
-      default: () => []
-    },
-    rangeData: {
       type: Array,
       default: () => []
     },
@@ -113,6 +109,7 @@ export default {
         value = value.map(item => {
           return {
             week_day: item.week_day,
+            range: item.range,
             start_time: this.timeFilter(item.value[0]),
             end_time: this.timeFilter(item.value[1])
           }
@@ -149,6 +146,7 @@ export default {
           item.end_time.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0
         ]
         this.slider[index].show = true
+        this.slider[index].range = cloneDeep(item.range)
         console.log('sliderByweekDay end', this.slider[index].value)
       })
       this.isInit = false

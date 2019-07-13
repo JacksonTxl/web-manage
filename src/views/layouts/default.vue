@@ -43,13 +43,18 @@
       <div class="layout-default-body__personal">
         <!-- <a-badge dot>
             <st-icon type="home" class="layout-default-body__icon"/>
-          </a-badge>
-          <a-badge>
+          </a-badge> -->
+        <a-dropdown :trigger="['click']" placement="bottomRight">
+          <div>
             <st-icon type="home" class="layout-default-body__icon"/>
-        </a-badge>-->
+          </div>
+          <div slot="overlay">
+            <fast-entry/>
+          </div>
+        </a-dropdown>
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__avatar">
-            <img src="~@/assets/img/avatar_default.png" width="32" height="32" alt="avatar" />
+            <img :src="user.avatar" width="32" height="32" alt="avatar" />
           </div>
           <div slot="overlay" class="layout-default-body__dropdown">
             <div class="layout-default-body__username">
@@ -94,7 +99,7 @@ import { find } from 'lodash-es'
 import { LoginService } from '../pages/account/login.service'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
-import { FastEntry } from './entry#/fast-entry'
+import FastEntry from './entry#/fast-entry'
 
 export default {
   serviceInject() {
@@ -198,8 +203,8 @@ export default {
   },
   components: {
     DefaultSiderMenu,
-    SwitchShop
-    // FastEntry
+    SwitchShop,
+    FastEntry
   }
 }
 </script>

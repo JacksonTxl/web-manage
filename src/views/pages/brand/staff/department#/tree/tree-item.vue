@@ -6,7 +6,7 @@
       @dblclick="makeFolder">
       <div class="tree-node__content" :style="{'padding-left': paddingLeft}" @click="getTreeNodeOnclick">
         <span class="tree-switch"  @click.stop="toggle" v-if="isFolder&&level!==0">{{ isOpen ? '-' : '+' }}</span>
-        <span class="tree-switch__empty" v-else-if="level!==0"></span>
+        <span class="tree-switch__empty" v-else-if="level!==0 && !item.isEdit"></span>
         <div class="tree-name edit-box" v-if="item.isEdit">
           <a-input placeholder="请输入部门名称" class="tree-input mg-r8" v-model="editValue"></a-input>
           <a href="javascript:;" class="button edit mg-r8" @click.stop="editDepartment">保存</a>
@@ -19,7 +19,7 @@
           <a-menu-item  @click="deleteDepartment(item)">删除</a-menu-item>
         </st-more-dropdown>
       </div>
-      <div v-if="item.isAdd" class="tree-node__content">
+      <div v-if="item.isAdd" class="tree-node__content tree-node__add">
         <a-input
           placeholder="请输入部门名称"
           class="tree-input  mg-r6"
