@@ -1,7 +1,7 @@
 <template>
   <div>
-    <section v-if="list && list.length" class="mg-t8">
-      <div v-if="isOperationInBatch">
+    <section v-if="list && list.length">
+      <div v-if="isOperationInBatch" class="mg-b12">
         <a-checkbox
           :indeterminate="indeterminate"
           :checked="checkAll"
@@ -9,7 +9,7 @@
         />
         <span>已选 <span class="color-primary">{{checkedList.length}}</span> / {{list.length}}</span>
       </div>
-      <a-checkbox-group :value="checkedList" @change="onChange" class="full-width mg-t16">
+      <a-checkbox-group :value="checkedList" @change="onChange" class="full-width">
         <a-row :gutter="16" :class="b()">
           <a-col v-for="(item, index) in list" :key="index" :md="6" :lg="4" :xl="3">
             <div :class="b('item')"
