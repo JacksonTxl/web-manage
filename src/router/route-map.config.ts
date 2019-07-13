@@ -352,7 +352,10 @@ export const routeMapConfig = {
   'brand-product-card-member-number-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '会籍卡详情'
   },
-  'brand-dashboard'(routeConfig: RouteConfig) {
+  'brand-dashboard-club'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '首页'
+  },
+  'brand-dashboard-studio'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '首页'
   },
   'brand-markting-plugin'(routeConfig: RouteConfig) {
@@ -484,7 +487,10 @@ export const routeMapConfig = {
   'brand-setting-contract-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '合同编辑'
   },
-  'shop-dashboard'(routeConfig: RouteConfig) {
+  'shop-dashboard-shop'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '概览'
+  },
+  'shop-dashboard-studio'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '概览'
   },
   'shop-reception'(routeConfig: RouteConfig) {
