@@ -90,6 +90,7 @@ import { RouteService } from '@/services/route.service'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
 import SetPrice from '@/views/fragments/course/set-price'
+import { checkGradient } from '@/views/fragments/course/personal#/check-gradient'
 
 export default {
   name: 'SetSellPrice',
@@ -210,6 +211,9 @@ export default {
           })
           return
         }
+      }
+      if (!checkGradient(this.priceGradient)) {
+        // return false
       }
       return true
     },

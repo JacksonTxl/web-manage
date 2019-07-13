@@ -15,12 +15,14 @@ export const columns = [
   },
   {
     title: '时长（分钟）',
+    align: 'right',
     sorter: true,
     dataIndex: 'duration'
   },
   {
     title: '参考课时费（元/节）',
-    dataIndex: 'price'
+    dataIndex: 'price',
+    align: 'right'
   },
   {
     title: '发布渠道',

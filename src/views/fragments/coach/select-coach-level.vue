@@ -6,7 +6,7 @@
       placeholder="请选择等级"
       :style="{ width }"
     >
-      <a-select-option :value="-1">请选择等级</a-select-option>
+      <a-select-option :value="0">请选择等级</a-select-option>
       <a-select-option :value="item.id" v-for="item in list" :key="item.id">
         {{item.setting_name}}
       </a-select-option>
@@ -25,7 +25,7 @@ export default {
   props: {
     value: {
       type: [Number, String],
-      default: -1
+      default: 0
     },
     width: {
       type: String,

@@ -8,7 +8,6 @@ export const columns = () => {
     {
       title: '联系电话',
       dataIndex: 'shop_phones',
-      align: 'right',
       scopedSlots: { customRender: 'shop_phones' }
     },
     {
@@ -19,16 +18,19 @@ export const columns = () => {
     {
       title: '运营状态',
       dataIndex: 'shop_status',
+      width: 120,
       scopedSlots: { customRender: 'shop_status' }
     },
     {
       title: '系统状态',
       dataIndex: 'is_valid',
+      width: 120,
       scopedSlots: { customRender: 'is_valid' }
     },
     {
       title: '系统使用到期时间',
       dataIndex: 'expire_time',
+      width: 220,
       scopedSlots: { customRender: 'expire_time' }
     },
     {
