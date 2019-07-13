@@ -59,12 +59,7 @@ export default {
       this.$modalRouter.push({
         name: 'brand-marketing-rule-tip',
         props: {
-          contents: [
-            '1、客户可以凭券抵扣相同面值的现金',
-            '2、每笔订单只能使用一张优惠券，不支持叠加使用',
-            '3、已领取的优惠券是不可以失效的',
-            '4、订单如果发生退款，现金券不支持退回'
-          ]
+          contents: this.info.regulation
         },
         on: {
           success: () => {

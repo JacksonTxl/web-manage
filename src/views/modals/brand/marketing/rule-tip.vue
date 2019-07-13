@@ -5,9 +5,7 @@
     @ok="handleOk"
     :footer="null"
   >
-    <ul>
-      <li v-for="(item, index) in contents" :key="index">{{item}}</li>
-    </ul>
+    <p v-html="contents"></p>
   </st-modal>
 </template>
 <script>
@@ -19,8 +17,7 @@ export default {
   },
   props: {
     contents: {
-      type: Array,
-      default: () => []
+      type: String
     }
   },
   data() {
