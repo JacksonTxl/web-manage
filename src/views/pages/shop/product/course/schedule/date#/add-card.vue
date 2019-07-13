@@ -23,8 +23,6 @@ export default {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width:80%;
-    height:80%;
     background:rgba(247,249,252,1);
     border-radius:4px;
     border:1px dotted rgba(136,154,181,1);
@@ -40,7 +38,6 @@ export default {
     }
     .text{
       font-size:14px;
-      font-family:PingFangSC-Regular;
       font-weight:400;
       color:rgba(62,77,92,1);
       line-height:22px;
