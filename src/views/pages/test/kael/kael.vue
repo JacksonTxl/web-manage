@@ -8,7 +8,7 @@
 export default {
   data() {
     return {
-      timeList: [ { 'week_day': 1, 'start_time': '10:00', 'end_time': '22:00', min: '09:00', max: '23:00' }, { 'week_day': 2, 'start_time': '10:00', 'end_time': '24:00' } ]
+      timeList: [ { 'week_day': 1, 'start_time': '10:00', 'end_time': '22:00', range: [9.5, 16] }, { 'week_day': 2, 'start_time': '10:00', 'end_time': '24:00' } ]
     }
   },
   methods: {

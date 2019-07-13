@@ -241,7 +241,7 @@ export default {
       this.imgList.push({
         image_id: data[0].image_id,
         image_key: data[0].image_key,
-        image_url: `https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/${data[0].image_key}`,
+        image_url: data[0].image_url,
         is_cover: 0
       })
       this.fileList = []
