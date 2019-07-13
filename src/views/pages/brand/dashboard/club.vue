@@ -37,7 +37,7 @@
         </a-col>
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card  title="用户数(人)" :count="this.user.num" :footer="{label: '近7天日转化会员率:', value: Number(this.user.ratio||'') }">
+            <count-card  title="用户数(人)" :count="this.user.num" :footer="{label: '近7天日转化会员率:', value: this.user.ratio }">
               <template slot="title">
                 <st-help-tooltip id="TBCDA003"></st-help-tooltip>
               </template>
@@ -76,14 +76,14 @@
         <a-col :span="12">
           <st-container class="bg-white" type="2">
             <st-t3 style="margin-bottom:20px">客单价</st-t3>
-            <brand-user-avg-bar :data="avg" :height="320"></brand-user-avg-bar>
+            <brand-user-avg-bar :data="avg" :height="302"></brand-user-avg-bar>
 
           </st-container>
         </a-col>
         <a-col :span="12">
           <st-container class="bg-white" type="2">
             <st-t3 style="margin-bottom:20px">用户活跃分析</st-t3>
-            <brand-user-ring :data="entry" :height="320"></brand-user-ring>
+            <brand-user-ring :data="entry" :height="302"></brand-user-ring>
           </st-container>
         </a-col>
       </a-row>
@@ -123,22 +123,22 @@ export default {
   },
   bem: {
     b: 'page-dashboard-club',
-    bCount: 'page-dashboard-count',
-    bAdv: 'page-dashboard-adv'
+    bCount: 'page-dashboard-club-count',
+    bAdv: 'page-dashboard-club-adv'
   },
   filters: {
     lineFilter(val) {
       return val.map((item, index) => {
         return {
           name: index,
-          value: item.num || 3
+          value: item.num
         }
       })
     },
     barFilter(val) {
       return {
         name: '会员占比',
-        percent: val
+        percent: val / 100
       }
     }
   },

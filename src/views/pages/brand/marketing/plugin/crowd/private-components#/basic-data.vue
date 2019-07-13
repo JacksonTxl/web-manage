@@ -18,7 +18,13 @@
   </div>
 </template>
 <script>
+import { MessageService } from '@/services/message.service'
 export default {
+  serviceInject() {
+    return {
+      messageService: MessageService
+    }
+  },
   model: {
     type: 'value',
     event: 'dataChangge'
@@ -44,6 +50,8 @@ export default {
       } else {
         if (this.flag) {
           self.value['arrData'].unshift(item)
+        } else {
+          this.messageService.info({ content: '已超出条件限制' })
         }
       }
     }

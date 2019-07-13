@@ -264,6 +264,7 @@ export default {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(res => {
+        console.log(res)
         const cascader = res.cascader || []
         res.province_id = cascader[0] || 110000
         res.city_id = cascader[1] || 110100

@@ -58,7 +58,8 @@ export default {
       default() {
         return []
       }
-    }
+    },
+    saleId: Number
   },
   data() {
     return {
@@ -75,8 +76,8 @@ export default {
   },
   mounted() {
     this.service.getSaleList().subscribe(res => {
-      console.log(res)
       this.list = res.list
+      this.selectedRowKeys = [this.saleId]
     })
   },
   methods: {
@@ -84,7 +85,6 @@ export default {
       console.log(e.target)
     },
     onSelectChange(e, itemData) {
-      console.log(e, itemData)
       this.selectedRowKeys = e
       this.chooseId = itemData[0].id
     },
@@ -92,11 +92,9 @@ export default {
       console.log(pagination)
     },
     onSearch(e) {
-      console.log(e)
       this.service.getSaleList({
         retrieve: e
       }).subscribe(res => {
-        console.log(res)
         this.list = res.list
       })
     },
@@ -107,6 +105,7 @@ export default {
         sales_id: this.chooseId
       }).subscribe(res => {
         this.show = false
+        this.$emit('success')
         this.messageService.success({ content: '分配成功' })
       })
     }

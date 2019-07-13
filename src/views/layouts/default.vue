@@ -46,9 +46,9 @@
           </a-badge> -->
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div>
-            <st-icon type="home" class="layout-default-body__icon"/>
+            <st-icon type="square" class="layout-default-body__icon"/>
           </div>
-          <div slot="overlay">
+          <div slot="overlay" class="layout-default-body__fast-entry">
             <fast-entry/>
           </div>
         </a-dropdown>
@@ -58,7 +58,7 @@
           </div>
           <div slot="overlay" class="layout-default-body__dropdown">
             <div class="layout-default-body__username">
-              <p class="layout-default-body__name">{{user.staff_name}}</p>
+              <p class="layout-default-body__name">{{user.name}}</p>
               <p class="layout-default-body__mobile">{{user.mobile}}</p>
             </div>
             <a-menu>

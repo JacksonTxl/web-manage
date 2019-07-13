@@ -11,7 +11,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="24" class="distribution-container" style="padding-left:12px;padding-right:12px;">
+      <a-col :lg="24" class="distribution-container" >
         <st-table
           :rowSelection="{ fixed: true, columnTitle:'分配',type: 'radio',selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
           :columns="columns"
@@ -58,7 +58,8 @@ export default {
       default() {
         return []
       }
-    }
+    },
+    coachId: Number
   },
   data() {
     return {
@@ -75,8 +76,8 @@ export default {
   },
   mounted() {
     this.service.getSaleList().subscribe(res => {
-      console.log(res)
       this.list = res.list
+      this.selectedRowKeys = [this.coachId]
     })
   },
   methods: {
@@ -84,6 +85,7 @@ export default {
       console.log(pagination)
     },
     onSelectChange(e, item) {
+      console.log(this.selectedRowKeys)
       this.selectedRowKeys = e
       this.coach_id = item[0].id
     },
@@ -105,6 +107,7 @@ export default {
         })
         .subscribe(res => {
           this.show = false
+          this.$emit('success')
           this.messageService.success({ content: '分配成功' })
         })
     }
