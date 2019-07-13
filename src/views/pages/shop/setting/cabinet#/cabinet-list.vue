@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section v-if="list && list.length">
+    <section v-if="list && list.length" class="mg-t8">
       <div v-if="isOperationInBatch">
         <a-checkbox
           :indeterminate="indeterminate"
