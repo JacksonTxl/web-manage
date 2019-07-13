@@ -3,6 +3,7 @@
   <span>
     <a-range-picker
       @change="onChange"
+      :format="format || 'YYYY-MM-DD'"
       :value="value.min ? [moment(value.min), moment(value.max)] : []"
       style="margin-right:8px"
       :allowClear="true"
@@ -23,7 +24,8 @@ export default {
     event: 'dataChangge'
   },
   props: {
-    value: Object
+    value: Object,
+    format: String
   },
   data() {
     return {

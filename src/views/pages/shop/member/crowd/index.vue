@@ -13,7 +13,7 @@
           </st-button>
         </router-link>
         <st-button v-else type="primary" @click="newCrowd('人群数量已达到上限！')">新建人群</st-button>
-        <span class="shop-member-crowd-index-new__crowb_num" style>新建人群数量最多10个</span>
+        <span class="shop-member-crowd-index-new__crowb_num">新建人群数量最多10个</span>
       </div>
       <st-table
         rowKey="id"

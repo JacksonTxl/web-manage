@@ -11,7 +11,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="24" class="distribution-container" style="padding-left:12px;padding-right:12px;">
+      <a-col :lg="24" class="distribution-container" >
         <st-table
           :rowSelection="{ fixed: true, columnTitle:'分配',type: 'radio',selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
           :columns="columns"

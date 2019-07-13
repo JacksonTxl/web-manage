@@ -189,7 +189,7 @@ export default {
     return {}
   },
   created() {
-    console.log(this.crowdAPI.crowdShopExport())
+    console.log(this.value)
   },
   methods: {
     newCrowd(data) {
