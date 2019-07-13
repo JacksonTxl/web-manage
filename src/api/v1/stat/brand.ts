@@ -17,44 +17,44 @@ export class StatApi {
   /**
    * 头部数据
    */
-  getTop() {
-    return this.http.get(`/v1/stat/${this.version}/top`)
+  getTop(version: Version) {
+    return this.http.get(`/v1/stat/${version.version}/top`)
   }
   /**
    * 入场次数
    */
-  getEntry() {
-    return this.http.get(`/v1/stat/${this.version}/entry`)
+  getEntry(version: Version) {
+    return this.http.get(`/v1/stat/${version.version}/entry`)
   }
   /**
    * 用户分析
    */
-  getUser(query: RecentQuery) {
-    return this.http.get(`/v1/stat/${this.version}/user`, { query })
+  getUser(version: Version, query: RecentQuery) {
+    return this.http.get(`/v1/stat/${version.version}/user`, { query })
   }
   /**
    * 客单价
    */
-  getAvg() {
-    return this.http.get(`/v1/stat/${this.version}/avg`)
+  getAvg(version: Version) {
+    return this.http.get(`/v1/stat/${version.version}/avg`)
   }
   /**
    * 用户分析漏斗数据
    */
-  getUserFunnel() {
-    return this.http.get(`/v1/stat/${this.version}/user/funnel`)
+  getUserFunnel(version: Version) {
+    return this.http.get(`/v1/stat/${version.version}/user/funnel`)
   }
   /**
    * 营销分析
    */
-  getMarketing(query: RecentQuery) {
-    return this.http.get(`/v1/stat/${this.version}/marketing`, { query })
+  getMarketing(version: Version, query: RecentQuery) {
+    return this.http.get(`/v1/stat/${version.version}/marketing`, { query })
   }
   /**
    * 营销分析漏斗
    */
-  getMarketingFunnel() {
-    return this.http.get(`/v1/stat/${this.version}/marketing/funnel`)
+  getMarketingFunnel(version: Version) {
+    return this.http.get(`/v1/stat/${version.version}/marketing/funnel`)
   }
 }
 export interface GetBrandIndexInput { }
@@ -62,4 +62,7 @@ export interface RecentQuery {
   recently_day?: number,
   start_date?:string,
   end_date?:string
+}
+export interface Version {
+  version: string
 }

@@ -27,18 +27,34 @@ export default {
     // 使用的字段key值数组
     fields: {
       type: Array,
-      default: () => ['私教预约人数', '私教签到人数', '团体课排课人数']
+      default: () => ['团体课可预约人数', '团体课签到人数', '团体课预约人数', '私教课签到人数', '私教课预约人数']
     },
     // 颜色数组
     colors: {
       type: Array,
-      default: () => ['#5095FC', '#6831D7', '#06DB8C']
+      default: () => ['#5095FC', '#6831D7', '#06DB8C', '#872333', '#98db23']
+    },
+    shadowColors: {
+      type: Array,
+      default: () => [
+        'rgba(80,149,252,.4)',
+        'rgba(104,49,215,.4)',
+        'rgba(6,219,140,.4)',
+        'rgba(135,35,51,.4)',
+        'rgba(152,219,35,.4)'
+      ]
     }
   },
   computed: {
     colorMap() {
       return this.fields.reduce((res, field, idx) => {
         res[field] = this.colors[idx % this.colors.length]
+        return res
+      }, {})
+    },
+    shadowColorMap() {
+      return this.fields.reduce((res, field, idx) => {
+        res[field] = this.shadowColors[idx % this.shadowColors.length]
         return res
       }, {})
     }
@@ -117,7 +133,7 @@ export default {
       this.chart
         .line()
         .style('name', {
-          shadowColor: name => this.colorMap[name],
+          shadowColor: name => this.shadowColorMap[name],
           shadowBlur: 20,
           shadowOffsetY: 4
         })

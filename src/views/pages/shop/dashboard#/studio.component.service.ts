@@ -131,7 +131,7 @@ export class StudioComponentService {
             私教课签到人数: data.daily.personal_checkin_num[key],
             团体课可预约人数: data.daily.team_can_reserve_num[key],
             团体课预约人数: data.daily.team_reserved_num[key],
-            团体课签到人数: data.daily.team_checkin_num[key]
+            团体课签到人数: data.daily.team_sigin_num[key]
           }
           lineData.push(chartItem)
         }
@@ -184,14 +184,14 @@ export class StudioComponentService {
         const data = res.info
         state.member = {
           member: [
-            { name: '消费人数', value: data.member.consume_num },
-            { name: '办理入会人数', value: data.member.member_num },
-            { name: '购买私教人数', value: data.member.buy_person_course_num }
+            { name: '消费用户', value: data.member.consume_num },
+            { name: '私教消课', value: data.member.personal_course_checkin_num },
+            { name: '购买私教', value: data.member.buy_person_course_num }
           ],
           marketing: [
-            { name: '消费人数', value: data.marketing.consume_num },
-            { name: '办理入会人数', value: data.marketing.member_num },
-            { name: '购买私教人数', value: data.marketing.buy_person_course_num }
+            { name: '消费用户', value: data.marketing.consume_num },
+            { name: '私教消课', value: data.marketing.personal_course_checkin_num },
+            { name: '购买私教', value: data.marketing.buy_person_course_num }
           ]
         }
       })

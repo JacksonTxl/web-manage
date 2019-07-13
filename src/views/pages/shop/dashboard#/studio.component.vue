@@ -160,7 +160,7 @@
         <a-row>
           <a-col :span="13">
             <st-t3 style="margin-bottom:24px;">上课分析</st-t3>
-            <shop-course-line v-if="courseDaily.length" :data="courseDaily" :colors="['#5095FC', '#6831D7', '#06DB8C','#872333','#98db23']" :fields="['团体课可预约人数','团体课签到人数','团体课预约人数','私教课签到人数','私教课预约人数']"></shop-course-line>
+            <shop-course-line v-if="courseDaily.length" :data="courseDaily"></shop-course-line>
             <img v-else :class="b('entry-course-img')" :src="inoutNumImg" />
           </a-col>
           <a-col :span="10" :offset="1">

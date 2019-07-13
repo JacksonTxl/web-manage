@@ -135,7 +135,7 @@ export class ClubComponentService {
             私教课签到人数: data.daily.personal_checkin_num[key],
             团体课可预约人数: data.daily.team_can_reserve_num[key],
             团体课预约人数: data.daily.team_reserved_num[key],
-            团体课签到人数: data.daily.team_checkin_num[key]
+            团体课签到人数: data.daily.team_sigin_num[key]
           }
           lineData.push(chartItem)
         }

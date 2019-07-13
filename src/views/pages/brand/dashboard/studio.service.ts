@@ -1,7 +1,7 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state/src'
 import { pluck, tap } from 'rxjs/operators'
-import { StatApi, RecentQuery } from '@/api/v1/stat/brand'
+import { StatApi, RecentQuery, Version } from '@/api/v1/stat/brand'
 import { forkJoin } from 'rxjs'
 
 interface SetState{
@@ -43,14 +43,14 @@ export class StudioService {
     this.marketingFunnel$ = new Computed(this.state$.pipe(pluck('marketingFunnel')))
   }
   getTop() {
-    return this.statApi.getTop().pipe(tap(res => {
+    return this.statApi.getTop({ version: 'studio' }).pipe(tap(res => {
       this.state$.commit(state => {
         state.top = res.info
       })
     }))
   }
   getUser(query: RecentQuery) {
-    return this.statApi.getUser(query).pipe(tap(res => {
+    return this.statApi.getUser({ version: 'studio' }, query).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
         const chartData: any = []
@@ -61,8 +61,8 @@ export class StudioService {
             访问用户: item.num,
             注册用户: data.register_chart[idx].num,
             消费用户: data.consume_chart[idx].num,
-            办理入会: data.member_chart[idx].num,
-            购买私教: data.personal_chart[idx].num
+            购买私教: data.personal_chart[idx].num,
+            消课人数: data.checkin_chart[idx].num
           }
           chartData.push(chartItem)
         })
@@ -71,20 +71,20 @@ export class StudioService {
     }))
   }
   getUserFunnel() {
-    return this.statApi.getUserFunnel().pipe(tap(res => {
+    return this.statApi.getUserFunnel({ version: 'studio' }).pipe(tap(res => {
       this.state$.commit(state => {
         state.userFunnel = [
           { name: '访问用户', value: res.info.visit },
           { name: '注册用户', value: res.info.register },
           { name: '消费用户', value: res.info.consume },
-          { name: '办理入会', value: res.info.member },
+          { name: '消课人数', value: res.info.checkin },
           { name: '购买私教', value: res.info.personal }]
       })
     }))
   }
   // 客单价
   getAvg() {
-    return this.statApi.getAvg().pipe(tap(res => {
+    return this.statApi.getAvg({ version: 'studio' }).pipe(tap(res => {
       this.state$.commit(state => {
         state.avg = [
           { name: '会员卡客单价', value: res.info.member_card_amount },
@@ -97,7 +97,7 @@ export class StudioService {
   }
   // 营销分析
   getMarketing(query: RecentQuery) {
-    return this.statApi.getMarketing(query).pipe(tap(res => {
+    return this.statApi.getMarketing({ version: 'studio' }, query).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
         const chartData: any = []
@@ -108,7 +108,7 @@ export class StudioService {
             浏览用户: item.num,
             注册用户: data.register_chart[idx].num,
             消费用户: data.consume_chart[idx].num,
-            办理入会: data.member_chart[idx].num
+            购买私教: data.personal_chart[idx].num
           }
           chartData.push(chartItem)
         })
@@ -118,13 +118,13 @@ export class StudioService {
   }
   // 营销分析
   getMarketingFunnel() {
-    return this.statApi.getMarketingFunnel().pipe(tap(res => {
+    return this.statApi.getMarketingFunnel({ version: 'studio' }).pipe(tap(res => {
       this.state$.commit(state => {
         state.marketingFunnel = [
           { name: '浏览用户', value: res.info.visit },
           { name: '注册用户', value: res.info.register },
           { name: '消费用户', value: res.info.consume },
-          { name: '办理入会', value: res.info.member }]
+          { name: '购买私教', value: res.info.personal }]
       })
     }))
   }
@@ -135,7 +135,7 @@ export class StudioService {
     return forkJoin(this.getMarketing(query), this.getMarketingFunnel())
   }
   getEntry() {
-    return this.statApi.getEntry().pipe(tap(res => {
+    return this.statApi.getEntry({ version: 'studio' }).pipe(tap(res => {
       this.state$.commit(state => {
         state.entry = [
           { name: '0次百分比', value: res.info.level_0_num },

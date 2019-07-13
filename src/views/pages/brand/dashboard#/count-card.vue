@@ -12,7 +12,7 @@
     </div>
     <div class="bg-gary card-footer">
       <span class="label">{{footer.label}} </span>
-      <span class="value"><i-count-up :endVal="footer.value"/></span>
+      <span class="value font-number">{{footer.value}}</span>
     </div>
   </div>
 </template>

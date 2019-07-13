@@ -93,7 +93,7 @@ export default {
         .position('date*value')
         .size(2)
         .style({
-          shadowColor: '#4169F7',
+          shadowColor: 'rgba(65,105,247,.4)',
           shadowBlur: 20,
           shadowOffsetY: 4
         })

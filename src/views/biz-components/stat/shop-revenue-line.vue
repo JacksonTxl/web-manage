@@ -49,12 +49,29 @@ export default {
         '#3F66F6',
         '#FF6466'
       ]
+    },
+    shadowColors: {
+      type: Array,
+      default: () => [
+        'rgba(70,119,249,.4)',
+        'rgba(6,219,140,.4)',
+        'rgba(0,157,255,.4)',
+        'rgba(184,241,15,.4)',
+        'rgba(63,102,246,.4)',
+        'rgba(255,100,102,.4)'
+      ]
     }
   },
   computed: {
     colorMap() {
       return this.fields.reduce((res, field, idx) => {
         res[field] = this.colors[idx % this.colors.length]
+        return res
+      }, {})
+    },
+    shadowColorMap() {
+      return this.fields.reduce((res, field, idx) => {
+        res[field] = this.shadowColors[idx % this.shadowColors.length]
         return res
       }, {})
     }
@@ -132,9 +149,9 @@ export default {
       this.chart
         .line()
         .style('name', {
-          // shadowColor: name => this.colorMap[name],
-          shadowColor: '#70b2ec',
-          shadowBlur: 30,
+          shadowColor: name => this.shadowColorMap[name],
+          // shadowColor: '#70b2ec',
+          shadowBlur: 20,
           shadowOffsetY: 4
         })
         .tooltip('name*value', (name, value) => {

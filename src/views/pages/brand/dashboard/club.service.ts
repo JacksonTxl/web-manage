@@ -1,7 +1,7 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state/src'
 import { pluck, tap } from 'rxjs/operators'
-import { StatApi, RecentQuery } from '@/api/v1/stat/brand'
+import { StatApi, RecentQuery, Version } from '@/api/v1/stat/brand'
 import { forkJoin } from 'rxjs'
 
 interface SetState{
@@ -43,14 +43,14 @@ export class ClubService {
     this.marketingFunnel$ = new Computed(this.state$.pipe(pluck('marketingFunnel')))
   }
   getTop() {
-    return this.statApi.getTop().pipe(tap(res => {
+    return this.statApi.getTop({ version: 'club' }).pipe(tap(res => {
       this.state$.commit(state => {
         state.top = res.info
       })
     }))
   }
   getUser(query: RecentQuery) {
-    return this.statApi.getUser(query).pipe(tap(res => {
+    return this.statApi.getUser({ version: 'club' }, query).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
         const chartData: any = []
@@ -71,7 +71,7 @@ export class ClubService {
     }))
   }
   getUserFunnel() {
-    return this.statApi.getUserFunnel().pipe(tap(res => {
+    return this.statApi.getUserFunnel({ version: 'club' }).pipe(tap(res => {
       this.state$.commit(state => {
         state.userFunnel = [
           { name: '访问用户', value: res.info.visit },
@@ -84,7 +84,7 @@ export class ClubService {
   }
   // 客单价
   getAvg() {
-    return this.statApi.getAvg().pipe(tap(res => {
+    return this.statApi.getAvg({ version: 'club' }).pipe(tap(res => {
       this.state$.commit(state => {
         state.avg = [
           { name: '会员卡客单价', value: res.info.member_card_amount },
@@ -97,7 +97,7 @@ export class ClubService {
   }
   // 营销分析
   getMarketing(query: RecentQuery) {
-    return this.statApi.getMarketing(query).pipe(tap(res => {
+    return this.statApi.getMarketing({ version: 'club' }, query).pipe(tap(res => {
       this.state$.commit(state => {
         const data = res.info
         const chartData: any = []
@@ -118,7 +118,7 @@ export class ClubService {
   }
   // 营销分析
   getMarketingFunnel() {
-    return this.statApi.getMarketingFunnel().pipe(tap(res => {
+    return this.statApi.getMarketingFunnel({ version: 'club' }).pipe(tap(res => {
       this.state$.commit(state => {
         state.marketingFunnel = [
           { name: '浏览用户', value: res.info.visit },
@@ -135,7 +135,7 @@ export class ClubService {
     return forkJoin(this.getMarketing(query), this.getMarketingFunnel())
   }
   getEntry() {
-    return this.statApi.getEntry().pipe(tap(res => {
+    return this.statApi.getEntry({ version: 'club' }).pipe(tap(res => {
       this.state$.commit(state => {
         state.entry = [
           { name: '0次百分比', value: res.info.level_0_num },

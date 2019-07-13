@@ -37,11 +37,11 @@
         </a-col>
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card  title="用户数(人)" :count="this.user.num" :footer="{label: '近7天日转化会员率:', value: Number(this.user.ratio||'') }">
+            <count-card  title="用户数(人)" :count="this.user.num" :footer="{label: '近7天日转化会员率:', value: this.user.ratio }">
               <template slot="title">
                 <st-help-tooltip id="TBSDA003"></st-help-tooltip>
               </template>
-              <brand-simple-bar color="#58CC99" class="mg-t40" :data="this.user.chart | barFilter"></brand-simple-bar>
+              <brand-simple-bar color="#58CC99" class="mg-t40" :data="this.user.percent | barFilter"></brand-simple-bar>
             </count-card>
           </div>
         </a-col>
@@ -79,14 +79,14 @@
         <a-col :span="12">
           <st-container class="bg-white" type="2">
             <st-t3 style="margin-bottom:20px">客单价</st-t3>
-            <brand-user-avg-bar :data="avg" :height="320"></brand-user-avg-bar>
+            <brand-user-avg-bar :data="avg" :height="302"></brand-user-avg-bar>
 
           </st-container>
         </a-col>
         <a-col :span="12">
           <st-container class="bg-white" type="2">
             <st-t3 style="margin-bottom:20px">用户活跃分析</st-t3>
-            <brand-user-ring :data="entry" :height="320"></brand-user-ring>
+            <brand-user-ring :data="entry" :height="302"></brand-user-ring>
           </st-container>
         </a-col>
       </a-row>
@@ -103,13 +103,13 @@ import BrandUserAvgBar from '@/views/biz-components/stat/brand-user-avg-bar'
 import DashboardTabs from '@/views/pages/brand/dashboard#/tabs'
 import CountCard from '@/views/pages/brand/dashboard#/count-card'
 import FunnelVertical from '@/views/biz-components/stat/brand-funnel-vertical'
-import { StudiodService } from './studio.service'
+import { StudioService } from './studio.service'
 import SidebarComponent from '../dashboard#/sidebar.component'
 export default {
   name: 'Dashboard',
   serviceInject() {
     return {
-      studioService: StudiodService
+      studioService: StudioService
     }
   },
   rxState() {
@@ -126,22 +126,22 @@ export default {
   },
   bem: {
     b: 'page-dashboard-studio',
-    bCount: 'page-dashboard-count',
-    bAdv: 'page-dashboard-adv'
+    bCount: 'page-dashboard-studio-count',
+    bAdv: 'page-dashboard-studio-adv'
   },
   filters: {
     lineFilter(val) {
       return val.map((item, index) => {
         return {
           name: index,
-          value: item.num || 3
+          value: item.num
         }
       })
     },
     barFilter(val) {
       return {
         name: '会员占比',
-        percent: val
+        percent: (val / 100)
       }
     }
   },
