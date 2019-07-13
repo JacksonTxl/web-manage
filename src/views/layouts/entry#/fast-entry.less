@@ -1,6 +1,30 @@
 .layout-fast-entry {
-  .d-n;
-  .pd(36px 44px);
+  .pd(36px);
+  .w(320px);
   .bg(@white);
+  .mg-t(-24px);
+  box-sizing: border-box;
   border-radius: 4px 4px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 12px 0 rgba(190, 151, 151, 0.15);
+  &__item {
+    .s(60px, 72px);
+    .mg(24px 0 0 34px);
+    .ta-c;
+    .fz(12px);
+    .c(@title);
+    .cur-p;
+    &:nth-child(1),
+    &:nth-child(2),
+    &:nth-child(3) {
+      .mg-t(0);
+    }
+    &:nth-child(3n+1) {
+      .mg-l(0);
+    }
+  }
+  &__item-icon {
+    .s(44px, 44px);
+  }
 }

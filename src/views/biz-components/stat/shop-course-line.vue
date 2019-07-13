@@ -140,7 +140,7 @@ export default {
         .tooltip('name*value', (name, value) => {
           return {
             name,
-            value: value || 0 + '人'
+            value: value + '人'
           }
         })
         .shape('smooth')

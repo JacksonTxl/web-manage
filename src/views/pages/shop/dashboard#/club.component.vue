@@ -103,8 +103,8 @@
         <a-row>
           <a-col :span="14">
             <st-t3> 营收趋势</st-t3>
-            <p :class="bCount('amount')">合计：<span class="font-number">{{revenueSummary.length?revenueSummary[7].value:'--'}}</span>元</p>
-            <shop-revenue-line v-if="revenueDaily.length" :data="revenueDaily" :fields="['会员卡','私教课','团体课','储值卡','课程包','云店','其他','总营收']"></shop-revenue-line>
+            <p :class="bCount('amount')">合计：<span class="font-number">{{revenueSummary.length?revenueSummary[6].value:'--'}}</span>元</p>
+            <shop-revenue-line v-if="revenueDaily.length" :data="revenueDaily" :fields="['会员卡','私教课','团体课','课程包','云店','其他','总营收']"></shop-revenue-line>
             <img v-else :class="b('entry-course-img')" :src="inoutNumImg" />
           </a-col>
           <a-col :span="10">

@@ -2,7 +2,7 @@
   <div class="page-dashboard-count-card">
     <div class="title">{{title}} <slot name="title"></slot></div>
     <div class="i-count-up-box mg-t8">
-      <i-count-up class="mg-r16 i-count-up font-number" :endVal="Number(count||'')"/>
+      <span class="mg-r16 i-count-up font-number">{{count}}</span>
       <div v-if="trend" class="trend" :class="trend.isUp?'trend-up' : 'trend-down'">
         <img :src="trend.isUp?topIconUp : topIconDown" /><span >{{trend.rate}}</span>
       </div>

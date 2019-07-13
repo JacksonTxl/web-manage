@@ -10,21 +10,66 @@ export class RuleConfig {
     private pattern: PatternService
   ) {}
   // 登录账号
+  get name() {
+    // eslint-disable-next-line
+    let reg = '/^[A-Za-z0-9\_]{6,15}$/'
+    return ['name', {
+      rules: [
+        {
+          required: true,
+          message: '请输入登录账户'
+        },
+        {
+          pattern: new RegExp(reg),
+          message: '请输入6~15个字符'
+        }
+      ]
+    }]
+  }
   get account() {
+    // eslint-disable-next-line
+    let reg = '/^[A-Za-z0-9\_]{6,15}$/'
     return ['account', {
-      rules: [{ required: true, message: '请输入登录账户' }]
+      rules: [
+        {
+          required: true,
+          message: '请输入登录账户'
+        },
+        {
+          pattern: new RegExp(reg),
+          message: '请输入6~15个字符'
+        }
+      ]
     }]
   }
   // 登录密码
   get password() {
     return ['password', {
-      rules: [{ required: true, message: '请输入登录密码' }]
+      rules: [
+        {
+          required: true,
+          message: '请输入登录密码'
+        },
+        {
+          pattern: new RegExp(/^.{6,15}$/),
+          message: '请输入6~15个字符'
+        }
+      ]
     }]
   }
   // 确认密码
   get repeat_password() {
     return ['repeat_password', {
-      rules: [{ required: true, message: '请输入确认密码' }]
+      rules: [
+        {
+          required: true,
+          message: '请再次输入登录密码'
+        },
+        {
+          pattern: new RegExp(/^.{6,15}$/),
+          message: '请输入6~15个字符'
+        }
+      ]
     }]
   }
   // 员工姓名
