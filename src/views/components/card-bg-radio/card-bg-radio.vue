@@ -76,32 +76,6 @@ export default {
       // 截图参数对象
       cropperModal: {},
       card_bg_list: this.memberCard.card_bg_list.value,
-      // card_bg_list: [
-      //   {
-      //     image_id: 0,
-      //     image_key: 'image/default/bg-card-selection-1.png',
-      //     image_url:
-      //       'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-1.png'
-      //   },
-      //   {
-      //     image_id: 0,
-      //     image_key: 'image/default/bg-card-selection-2.png',
-      //     image_url:
-      //       'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-2.png'
-      //   },
-      //   {
-      //     image_id: 0,
-      //     image_key: 'image/default/bg-card-selection-3.png',
-      //     image_url:
-      //       'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-3.png'
-      //   },
-      //   {
-      //     image_id: 0,
-      //     image_key: 'image/default/bg-card-selection-4.png',
-      //     image_url:
-      //       'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-4.png'
-      //   }
-      // ],
       // 备份
       list: [],
       // radioIndex
