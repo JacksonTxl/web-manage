@@ -214,8 +214,8 @@ export default {
       isShowLevel: false, // 是否展示教练等级
       treeExpandedKeys: [],
       value: undefined,
-      id_type: '',
-      choosed_country_id: ''
+      id_type: 1,
+      country_code_id: 37
     }
   },
   components: {

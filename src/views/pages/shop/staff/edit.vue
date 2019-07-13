@@ -17,9 +17,6 @@
       v-if="currentIndex == 0"
       :enums="staffEnums"
       :data="staffInfo"
-      :roleList="roleList"
-      :codeList="codeList"
-      :department="department"
       @updateStaffInfo="updateStaffInfo"
       @gonext="gonext"/>
     <edit-detailed-info
@@ -65,9 +62,6 @@ export default {
     return {
       staffEnums: this.userService.staffEnums$,
       staffInfo: this.services.staffInfo$,
-      roleList: this.services.roleList$,
-      codeList: this.services.codeList$,
-      department: this.services.department$,
       staffSpecialty: this.services.staffSpecialty$
     }
   },
