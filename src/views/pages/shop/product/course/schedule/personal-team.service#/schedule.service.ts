@@ -10,6 +10,7 @@ import {
 } from '@/api/v1/schedule/personal-team/schedule'
 import { AuthService } from '@/services/auth.service'
 import { MessageService } from '@/services/message.service'
+import moment from 'moment'
 
 export interface SetState {
   courseList: any[],
@@ -48,12 +49,19 @@ export class PersonalTeamScheduleScheduleService {
     return this.scheduleApi.getList(query).pipe(tap(res => {
       this.state$.commit(state => {
         state.courseList = res.list.map((item: any) => {
+          let end_date = ''
+          if (moment(`${item.start_date} ${item.start_time}`).valueOf() >= moment(`${item.start_date} ${item.end_time}`).valueOf()) {
+            item.plusOne = '+1'
+            end_date = moment(moment(`${item.start_date} ${item.start_time}`).valueOf() + 24 * 60 * 60 * 1000).format('YYYY-MM-DD').valueOf()
+          } else {
+            end_date = item.start_date
+          }
           return { // add new event data
             title: item.course_name,
             groupId: JSON.stringify(item),
             id: item.id,
             start: `${item.start_date} ${item.start_time}`,
-            end: `2019-07-15 ${item.end_time}`
+            end: `${end_date} ${item.end_time}`
           }
         })
       })
