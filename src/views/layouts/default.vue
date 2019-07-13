@@ -49,7 +49,7 @@
         </a-badge>-->
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__avatar">
-            <img src="~@/assets/img/avatar_default.png" width="32" height="32" alt="avatar" />
+            <img :src="user.avatar" width="32" height="32" alt="avatar" />
           </div>
           <div slot="overlay" class="layout-default-body__dropdown">
             <div class="layout-default-body__username">
