@@ -218,7 +218,7 @@ export default {
         const item = event.event
         const renderObj = JSON.parse(item.groupId)
         const current = moment().format('HH:mm:SS')
-        const plusOneHtml = renderObj.plusOne ? `<span class="danger-color"> +1 </span>` : ''
+        const plusOneHtml = renderObj.plusOne ? `<span class="color-danger"> +1 </span>` : ''
         let new_description = `<div class="st-schedule-content mg-l8">
                                 <div class="time"><a-icon type="clock-circle"></a-icon>${moment(item.start).format('HH:mm')} - ${moment(item.end).format('HH:mm')} ${plusOneHtml}</div>
                                 <div class="course-name">${item.title}</div>
