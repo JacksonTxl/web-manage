@@ -97,8 +97,8 @@ export default {
     },
     onLogin(values) {
       this.loginService.loginAccount(values).subscribe(res => {
-        console.log(res)
-        this.userService.reload()
+        this.userService.getMenuData()
+        this.userService.getUser()
         if (res.have_phone) {
           this.$router.push('/')
         } else {
