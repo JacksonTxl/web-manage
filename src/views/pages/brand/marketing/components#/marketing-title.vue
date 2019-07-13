@@ -5,8 +5,8 @@
       <p :class="basic('content')">{{info.introduction}}</p>
       <p :class="basic('footer')">
         <label @click="ruleDetail">规则说明</label>
-        <label @click="openTeach">使用教程</label>
-        <label @click="openCase">活动案例</label>
+        <!-- <label @click="openTeach">使用教程</label>
+        <label @click="openCase">活动案例</label> -->
       </p>
     </div>
     <div :class="basic('right')" v-viewer="{ url: 'data-src' }">
