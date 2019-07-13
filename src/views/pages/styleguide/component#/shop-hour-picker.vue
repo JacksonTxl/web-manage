@@ -15,27 +15,32 @@ export default {
         {
           week_day: 1,
           start_time: '00:00',
-          end_time: '03:00'
+          end_time: '03:00',
+          range: [10, 13]
         },
         {
           week_day: 2,
           start_time: '03:00',
-          end_time: '06:00'
+          end_time: '06:00',
+          range: [1.5, 13.5]
         },
         {
           week_day: 3,
           start_time: '09:00',
-          end_time: '12:00'
+          end_time: '12:00',
+          range: [2, 13.5]
         },
         {
           week_day: 4,
           start_time: '15:00',
-          end_time: '18:00'
+          end_time: '18:00',
+          range: [4, 13.5]
         },
         {
           week_day: 5,
           start_time: '18:00',
-          end_time: '21:00'
+          end_time: '21:00',
+          range: [5, 13.5]
         }
       ]
     }
