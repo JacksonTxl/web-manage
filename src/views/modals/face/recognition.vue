@@ -4,7 +4,7 @@
     :ok-text="okText"
     :okButtonProps="{ props: {disabled: !userImgSrc} }"
     :bodyStyle="{ padding: 0 }"
-    :confirmLoading="confirmLoading"
+    :confirmLoading="loading.getMemberCheckResult"
     v-model="show"
     width="484px"
     @ok="uploadUserImageToRecognition"
@@ -61,7 +61,7 @@ export default {
   },
   rxState() {
     return {
-      isScan: this.recognitionService.isScan$
+      loading: this.recognitionService.loading$
     }
   },
   props: {
@@ -146,7 +146,7 @@ export default {
             next: val => {
               this.confirmLoading = false
               // 图片上传后,对返回参数进行操作
-              console.log(val)
+              console.log('imageQualityTest', val)
               this.imageQualityTest(val.fileKey)
             },
             error: val => {
@@ -173,14 +173,20 @@ export default {
       }).subscribe((res) => {
         console.log('imageQualityTest', res)
         console.log('imageQualityTest', this.isScan)
-        if (this.isScan) {
+        let isScan = res.isScan
+        if (isScan) {
           let imageId = this.list.length && this.list[0][this.imageId]
-          this.list.splice(0, 1, {
-            [this.imageId]: imageId || 0,
-            [this.imageKey]: image_key
-          })
+          let current = this.list.length && this.list[0]
+          if (current) {
+            current[this.imageKey] = image_key
+          } else {
+            this.list.push({
+              [this.imageId]: 0,
+              [this.imageKey]: image_key
+            })
+          }
           this.$emit('change', this.list)
-          this.cancel()
+          this.show = flase
         } else {
           this.messageService.error({ content: `上传图片质量不佳,请重新拍照` })
           this.userImgSrc = ''
@@ -247,7 +253,7 @@ export default {
       }
       video.onloadedmetadata = function(e) {
         video.play()
-        video.style.transform = 'scaleX(-1)'
+        // video.style.transform = 'scaleX(-1)'
       }
     },
     error(error) {
