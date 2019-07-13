@@ -1,4 +1,5 @@
 import { ServiceRouteConfig } from 'vue-service-app'
+import { ClubComponentService } from '@/views/pages/shop/dashboard#/club.component.service'
 
 interface RouteConfig extends ServiceRouteConfig {
   meta: {
@@ -16,6 +17,7 @@ interface RouteConfig extends ServiceRouteConfig {
      */
     parentId: string
   },
+  guards:object[]
 }
 interface StaffEdit extends ServiceRouteConfig {
   staff_id?: number
@@ -54,6 +56,9 @@ export const routeMapConfig = {
       category_id: { type: Number, default: -1 },
       course_name: { type: String, default: '' }
     }
+  },
+  'shop-dashboard-club'(routeConfig: RouteConfig) {
+    routeConfig.guards.push(ClubComponentService)
   },
   'shop-product-course-manage-personal-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教课'
