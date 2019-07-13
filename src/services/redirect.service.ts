@@ -1,4 +1,7 @@
 import { ServiceRouter, ServiceRoute, Injectable } from 'vue-service-app'
+import { UserService } from './user.service'
+import { AuthService } from './auth.service'
+import { NotificationService } from './notification.service'
 
 interface RedirectConfig {
   /**
@@ -44,13 +47,16 @@ interface TabRedirectConfig {
  */
 @Injectable()
 export class RedirectService {
-  constructor(private router: ServiceRouter) {}
+  constructor(
+    private router: ServiceRouter,
+    private authService: AuthService,
+    private notification: NotificationService
+  ) {}
   /**
    * 菜单跳转
    */
   redirect(redirectConfig: RedirectConfig) {
     const { redirectRouteName, locateRouteName, to, next } = redirectConfig
-    console.log(redirectRouteName)
     const resolveRoute = this.router.resolve({
       name: redirectRouteName
     })
@@ -66,35 +72,14 @@ export class RedirectService {
           }
         })
       } else {
-        next({
-          name: 'error',
-          query: {
-            title: 'REDIRECT_ERROR',
-            content: `未找到匹配路由 [ ${redirectRouteName} ]`
-          }
+        this.notification.error({
+          title: 'REDIRECT_ERROR',
+          content: `未找到匹配路由 ${JSON.stringify(redirectRouteName)}`
         })
+        next()
       }
     } else {
       next()
     }
-  }
-  /**
-   * 标签页跳转
-   */
-  tabRedirect(tabRedirectConfig: TabRedirectConfig) {
-    const {
-      locateRouteName,
-      redirectTabRouteNames,
-      to,
-      next
-    } = tabRedirectConfig
-    const redirectRouteName = redirectTabRouteNames[0]
-
-    this.redirect({
-      locateRouteName,
-      redirectRouteName,
-      to,
-      next
-    })
   }
 }

@@ -8,6 +8,7 @@ import { StaffApi } from '@/api/v1/staff'
 import { TooltipApi } from '@/api/v1/admin/tooltip'
 import { get } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
+import { AuthService } from './auth.service'
 
 interface User {
   id?: string
@@ -21,11 +22,11 @@ interface Brand {
   logo?: string
   /**
    * 私教课程定价模式 1、教练统一定价 2、教练分级定价
-  */
+   */
   priceModel?: number
   /**
    * 私教课程售卖模式 1、教练谈单 2、统一标价
-  */
+   */
   saleModel?: number
 }
 
@@ -101,7 +102,8 @@ export class UserService {
     private menuApi: MenuApi,
     private staffApi: StaffApi,
     private tooltipApi: TooltipApi,
-    private nprogress: NProgressService
+    private nprogress: NProgressService,
+    private authService: AuthService
   ) {}
   SET_USER(user: User) {
     this.user$.commit(() => user)
@@ -187,6 +189,15 @@ export class UserService {
         })
       )
     )
+  }
+  /**
+   * 重载 菜单 用户 信息 权限
+   */
+  reload() {
+    return forkJoin([
+      this.getMenuData(),
+      this.getUser()
+    ])
   }
   /**
    * 添加到常用菜单
