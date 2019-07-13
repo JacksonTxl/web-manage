@@ -214,7 +214,7 @@ export default {
   methods: {
     initPriceGradient() {
       this.priceGradient = this.value.length ? this.value : [{
-        level_id: -1,
+        level_id: 0,
         prices: []
       }]
     },
@@ -230,7 +230,7 @@ export default {
     },
     addRecord() {
       const newRecord = {
-        level_id: -1,
+        level_id: 0,
         single_sell: 0,
         single_price: '',
         prices: []
