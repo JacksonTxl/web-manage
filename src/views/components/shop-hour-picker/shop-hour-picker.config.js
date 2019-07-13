@@ -1,31 +1,38 @@
 export const SLIDER = [{
   week_day: 1,
   value: [],
-  week: []
+  week: [],
+  show: false
 }, {
   week_day: 2,
   value: [],
-  week: []
+  week: [],
+  show: false
 }, {
   week_day: 3,
   value: [],
-  week: []
+  week: [],
+  show: false
 }, {
   week_day: 4,
   value: [],
-  week: []
+  week: [],
+  show: false
 }, {
   week_day: 5,
   value: [],
-  week: []
+  week: [],
+  show: false
 }, {
   week_day: 6,
   value: [],
-  week: []
+  week: [],
+  show: false
 }, {
   week_day: 7,
   value: [],
-  week: []
+  week: [],
+  show: false
 }]
 export const WEEK_NO_SELF = [false, false, false, false, false, false, false]
 export const TIMER = {

@@ -2,6 +2,7 @@
   <div :class="StDateSlider()">
     <div :class="StDateSlider('way')" ref="slider" @click="onSliderClick">
       <div :class="StDateSlider('bar')" :style="sliderBarStyle"></div>
+      <div :class="StDateSlider('range')" :style="rangeBarStyle" v-if="range"></div>
       <st-slider-button ref="firstButton" v-model="firstValue"></st-slider-button>
       <st-slider-button ref="secondButton" v-model="secondValue"></st-slider-button>
     </div>
@@ -28,7 +29,7 @@ export default {
     },
     max: {
       type: Number,
-      default: 1440
+      default: 24
     },
     step: {
       type: Number,
@@ -37,6 +38,10 @@ export default {
     disable: {
       type: Boolean,
       default: false
+    },
+    rangeData: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -61,6 +66,15 @@ export default {
     maxValue() {
       return Math.max(this.firstValue, this.secondValue)
     },
+    range() {
+      return Array.isArray(this.rangeData) && this.rangeData.length
+    },
+    rangeFirst() {
+      return this.rangeData[0]
+    },
+    rangeSecond() {
+      return this.rangeData[1]
+    },
     sliderBarSize() {
       return `${100 * (this.maxValue - this.minValue) / (this.max - this.min)}%`
     },
@@ -71,6 +85,18 @@ export default {
       return {
         left: this.sliderBarStart,
         width: this.sliderBarSize
+      }
+    },
+    rangeBarSize() {
+      return `${100 * (this.rangeSecond - this.rangeFirst) / (this.max - this.min)}%`
+    },
+    rangeBarStart() {
+      return `${100 * (this.rangeFirst) / (this.max - this.min)}%`
+    },
+    rangeBarStyle() {
+      return {
+        left: this.rangeBarStart,
+        width: this.rangeBarSize
       }
     }
   },
@@ -98,19 +124,30 @@ export default {
       this.$emit('input', [this.minValue, this.maxValue])
     },
     min() {
+      consol.log('min change')
       this.setValues()
     },
     max() {
+      consol.log('max change')
       this.setValues()
+    },
+    rangeFirst() {
+      consol.log('rangeFirst change')
+      if (this.range) this.setValues()
+    },
+    rangeSecond() {
+      consol.log('rangeSecond change')
+      if (this.range) this.setValues()
     }
   },
   mounted() {
-    if (Array.isArray(this.value)) {
+    // 确定首尾值
+    if (Array.isArray(this.value) && !this.range) {
       this.firstValue = Math.max(this.min, this.value[0])
       this.secondValue = Math.min(this.max, this.value[1])
     } else {
-      this.firstValue = this.min
-      this.secondValue = this.max
+      this.firstValue = Math.max(this.rangeFirst, this.value[0])
+      this.secondValue = Math.min(this.rangeSecond, this.value[1])
     }
     this.oldValue = [this.firstValue, this.secondValue]
     window.addEventListener('resize', this.resetSize)
@@ -126,14 +163,17 @@ export default {
       }
       const val = this.value
       if (!Array.isArray(val)) return false
-      if (val[1] < this.min) {
-        this.$emit('input', [this.min, this.min])
-      } else if (val[0] > this.max) {
-        this.$emit('input', [this.max, this.max])
-      } else if (val[0] < this.min) {
-        this.$emit('input', [this.min, val[1]])
-      } else if (val[1] > this.max) {
-        this.$emit('input', [val[0], this.max])
+      let min = this.range ? this.rangeFirst : this.min
+      let max = this.range ? this.rangeSecond : this.max
+
+      if (val[1] < min) {
+        this.$emit('input', [min, min])
+      } else if (val[0] > max) {
+        this.$emit('input', [max, max])
+      } else if (val[0] < min) {
+        this.$emit('input', [min, val[1]])
+      } else if (val[1] > max) {
+        this.$emit('input', [val[0], max])
       } else {
         this.firstValue = val[0]
         this.secondValue = val[1]
@@ -143,7 +183,8 @@ export default {
       }
     },
     setPosition(percent) {
-      const targetValue = this.min + percent * (this.max - this.min) / 100
+      let min = this.range ? this.rangeFirst : this.min
+      const targetValue = min + percent * (this.max - this.min) / 100
       let button
       if (Math.abs(this.minValue - targetValue) < Math.abs(this.maxValue - targetValue)) {
         button = this.firstValue < this.secondValue ? 'firstButton' : 'secondButton'
@@ -170,9 +211,6 @@ export default {
       this.$nextTick(() => {
         this.$emit('input', [this.minValue, this.maxValue])
       })
-    },
-    getStopStyle(position) {
-      return { 'left': position + '%' }
     }
   },
   beforeDestroy() {
