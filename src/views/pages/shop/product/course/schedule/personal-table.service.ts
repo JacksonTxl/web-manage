@@ -27,8 +27,26 @@ export class PersonalTableService extends Store<SetState> {
   getList(query: any) {
     return this.scheduleService.getList(query).pipe(
       tap(res => {
+        let schedule_info = res.schedule_time.map((item: any) => {
+          return {
+            schedule_date: item,
+            timing: []
+          }
+        })
+        const list = res.list.map((item: any) => {
+          item.schedule_info = schedule_info.map((sInfo: any) => {
+            let ele = sInfo
+            item.schedule_info.forEach((itemInfo: any) => {
+              if (sInfo.schedule_date === itemInfo.schedule_date) {
+                ele = itemInfo
+              }
+            })
+            return ele
+          })
+          return item
+        })
         this.state$.commit(state => {
-          state.scheduleList = res.list
+          state.scheduleList = list
           state.scheduleTime = res.schedule_time
         })
       })

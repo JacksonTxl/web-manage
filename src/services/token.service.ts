@@ -47,15 +47,16 @@ export class TokenService extends Store<TokenState> implements RouteGuard {
     })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    this.nprogressService.SET_TEXT('用户凭证获取')
+    this.nprogressService.SET_TEXT('用户凭证获取完毕')
     if (!this.token$.snapshot()) {
+      console.log('token redirect login')
       this.router.push({
         name: 'account-login',
         force: true
       })
       next(false)
     } else {
-      this.nprogressService.SET_TEXT('用户凭证获取完毕')
+      console.log('token next')
       next()
     }
   }

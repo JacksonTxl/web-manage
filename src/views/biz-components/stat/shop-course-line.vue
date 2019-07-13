@@ -59,7 +59,7 @@ export default {
         container: this.$el,
         forceFit: true,
         height: this.height,
-        padding: [80, 16, 32, 48],
+        padding: [80, 16, 32, 'auto'],
         renderer: 'svg'
       })
 
@@ -101,6 +101,7 @@ export default {
         position: 'top-left',
         useHtml: true,
         offsetY: -16,
+        offsetX: -22,
         textStyle: {
           fill: '#3E4D5C'
         },
@@ -117,8 +118,8 @@ export default {
         .line()
         .style('name', {
           shadowColor: name => this.colorMap[name],
-          shadowBlur: 8,
-          shadowOffsetY: 2
+          shadowBlur: 20,
+          shadowOffsetY: 4
         })
         .tooltip('name*value', (name, value) => {
           return {
@@ -155,6 +156,9 @@ export default {
       }
     }
   }
+  .g2-legend-list-item{
+    width:120px;
+  }
   .g2-legend-marker {
     box-sizing: border-box;
     border-radius: 2px !important;
@@ -166,7 +170,7 @@ export default {
       content: '';
       position: absolute;
       width: 7px;
-      height: 2px;
+      height: 5px;
       border: 1px solid white;
       border-right-color: transparent;
       border-top-color: transparent;

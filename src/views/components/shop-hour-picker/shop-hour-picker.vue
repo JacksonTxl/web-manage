@@ -1,12 +1,11 @@
 <template>
   <div class="st-shop-hour-picker" :class="{isInfo: isInfo}">
-    <st-checkbox-button-group v-model="weekArr" v-if="!isInfo" :class="ShopHourPicker('check')">
-      <template v-for="(item, index) in defaultWeekList">
-        <st-checkbox-button-item
-          :key="index"
-          :value="item.value"
-        >{{item.label}}</st-checkbox-button-item>
-      </template>
+    <st-checkbox-button-group v-model="weekSelects" v-if="!isInfo" :class="ShopHourPicker('check')">
+      <st-checkbox-button-item
+        :key="index"
+        :value="item.value"
+        v-for="(item, index) in defaultWeekList"
+      >{{item.label}}</st-checkbox-button-item>
     </st-checkbox-button-group>
     <div class="st-shop-hour-picker__content">
       <div class="st-shop-hour-picker__title">
@@ -17,20 +16,22 @@
         <div class="operate" v-if="!isInfo">操作</div>
       </div>
       <div :class="ShopHourPicker('box')" v-for="(item,index) in slider" :key="index">
-        <div :class="ShopHourPicker('slider')" v-if="sliderCanShow(index)">
+        <div :class="ShopHourPicker('slider')" v-if="item.show">
+          <!-- label -->
           <div class="label">
-            <span>{{item.title | filterWeekDay}}</span>
+            <span>{{item.week_day | filterWeekDay}}</span>
           </div>
+          <!-- slider -->
           <div class="sliderBox">
             <st-date-slider
-              :min="0"
-              :max="24"
-              :step="0.5"
+              :step="step"
               :disable="isInfo"
+              :rangeData="item.range"
               :tipFormatter="formatter"
               v-model="item.value"
             ></st-date-slider>
           </div>
+          <!-- 操作列 -->
           <div class="operation" v-if="!isInfo">
             <a-popover placement="bottomRight" trigger="click" class="slider-copy-bottom">
               <template slot="content">
@@ -47,36 +48,6 @@
             </a-popover>
           </div>
         </div>
-        <!-- <a-row type="flex" align="middle" v-if="sliderCanShow(index)" :class="ShopHourPicker('slider')">
-          <a-col :span="2" class="label">
-            <span>{{item.title | filterWeekDay}}</span>
-          </a-col>
-          <a-col :span="18">
-            <st-date-slider
-              :min="0"
-              :max="24"
-              :step="0.5"
-              :disable="isInfo"
-              :tipFormatter="formatter"
-              v-model="item.value"
-            ></st-date-slider>
-          </a-col>
-          <a-col :span="4" class="operation">
-            <a-popover placement="bottomRight" trigger="click" class="slider-copy-bottom">
-              <template slot="content">
-                <a-checkbox-group
-                  @change="onChange"
-                  class="slider-copy"
-                  v-for="(disabled,index) in item.week"
-                  :key="index"
-                >
-                  <a-checkbox :value="index" :disabled="!disabled">{{index | filterWeekDay}}</a-checkbox>
-                </a-checkbox-group>
-              </template>
-              <span @click="copyTo(item, index)">复制到</span>
-            </a-popover>
-          </a-col>
-        </a-row> -->
       </div>
     </div>
   </div>
@@ -101,35 +72,44 @@ export default {
     isInfo: {
       type: Boolean,
       default: false
+    },
+    min: {
+      type: Number,
+      default: 0
+    },
+    max: {
+      type: Number,
+      default: 24
+    },
+    step: {
+      type: Number,
+      default: 0.5
     }
   },
   data() {
     return {
       defaultWeekList: WEEK,
+      time: TIMER,
       slider: SLIDER,
       copeSlider: {}, // 复制到功能需要,为中间值
-      oldSlider: {},
-      weekArr: [],
-      timeArr: TIMER
+      weekSelects: [],
+      isInit: true
     }
   },
   computed: {
     currentTime() {
-      return this.timeArr[this.isInfo ? 'info' : 'edit']
-    },
-    colFloor() {
-      return this.isInfo ? 2 : 3
+      return this.time[this.isInfo ? 'info' : 'edit']
     }
   },
   watch: {
     slider: {
-      handler() {
-        console.log('slider watch', this.slider)
-        let value = this.slider.filter(item => item.value.length)
+      handler(n, o) {
+        console.log('slider 变化', n, o)
+        let value = this.slider.filter(item => item.show)
         value = value.map(item => {
-          console.log('slider watch week_day', item.week_day)
           return {
             week_day: item.week_day,
+            range: item.range,
             start_time: this.timeFilter(item.value[0]),
             end_time: this.timeFilter(item.value[1])
           }
@@ -138,33 +118,62 @@ export default {
       },
       deep: true
     },
-    weekArr(n, o) {
-      console.log('weekArr', n, o)
-      if ((n.length === o.length) || !o) return
-      n.length > o.length ? this.editSliderData(n, o) : this.removeSliderData(n, o)
-    }
-  },
-  filters: {
-    filterWeekDay(value) {
-      console.log('filterWeekDay', value)
-      let filterValue = --value
-      return WEEK[filterValue] && WEEK[filterValue]['label']
-    },
-    filterOperation(value) {
-      return WEEK[value] && WEEK[value]['label']
+    weekSelects(n, o) {
+      if (this.isInit) return
+      console.log('weekSelects', n, o)
+      if (n.length === o.length) return
+      n.length > o.length ? this.addSlider(n, o) : this.removeSlider(n, o)
     }
   },
   mounted() {
-    this.getWeekArr()
+    this.init()
   },
   methods: {
-    // slider是否展示
-    sliderCanShow(index) {
-      return this.weekArr.indexOf(++index) !== -1
+    // 获取日期选择数组
+    init() {
+      console.log('init')
+      this.weekSelects = this.value.map(item => item.week_day)
+      if (this.weekSelects.length) this.getSliderInfoList()
+    },
+    // 获取的数据对格式进行处理
+    getSliderInfoList() {
+      console.log('获取的数据对格式进行处理 => value', this.value)
+      this.value.map(item => {
+        let week_day = cloneDeep(item.week_day)
+        let index = --week_day
+        this.slider[index].value = [
+          item.start_time.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0,
+          item.end_time.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0
+        ]
+        this.slider[index].show = true
+        this.slider[index].range = cloneDeep(item.range)
+        console.log('sliderByweekDay end', this.slider[index].value)
+      })
+      this.isInit = false
+      console.log('根据value值,设置slider => slider', this.slider)
+    },
+    // 添加slider
+    addSlider(n, o) {
+      const index = difference(n, o)
+      console.log('addSlider', index)
+      index.forEach(i => {
+        let endIndex = --i
+        if (this.slider[endIndex].show) return
+        this.slider[endIndex].show = true
+        this.slider[endIndex].value = [10, 24]
+      })
+    },
+    // 删除slider
+    removeSlider(n, o) {
+      const index = difference(o, n)
+      index.forEach(i => {
+        let endIndex = --i
+        this.slider[endIndex].show = false
+        this.slider[endIndex].value = []
+      })
     },
     // 时间过滤器
     timeFilter(time) {
-      console.log('timeFilter', time)
       return /^\d+$/.test(time) && time > 9
         ? time + ':00'
         : /^\d+$/.test(time) && time <= 9
@@ -179,29 +188,6 @@ export default {
       const valueInt = value > 9 ? `${value}:00` : `0${value}:00`
       return value % 1 === 0 ? valueInt : valueHalf
     },
-    // 添加slider
-    editSliderData(n, o) {
-      const index = difference(n, o)
-      index.forEach(n => {
-        let endNum = n
-        let endIndex = --n
-        let current = this.value[endIndex]
-        let start_time = current ? current.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0 : 10
-        let end_time = current ? current.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0 : 24
-        this.slider[endIndex].title = endNum
-        this.slider[endIndex].value = [start_time, end_time]
-      })
-    },
-    // 删除slider
-    removeSliderData(n, o) {
-      const index = difference(o, n)
-      index.forEach(n => {
-        let endIndex = --n
-        console.log('removeSliderData', endIndex)
-        this.slider[endIndex].value = []
-        delete this.slider[endIndex].title
-      })
-    },
     onChange(sliders) {
       Array.isArray(sliders) && sliders.forEach(key => {
         if (this.slider[key]) this.slider[key].value = this.copeSlider.value
@@ -211,32 +197,21 @@ export default {
       this.copeSlider = cloneDeep(item)
       const week = cloneDeep(WEEK_NO_SELF)
       // WEEK_NO_SELF中对应weekArr中的值设置为true,非对应的或
-      this.weekArr.forEach(item => {
+      this.weekSelects.forEach(item => {
         week[--item] = true
       })
       week[--index] = false
       item.week = week
       console.log('copyTo', item)
+    }
+  },
+  filters: {
+    filterWeekDay(value) {
+      let filterValue = --value
+      return WEEK[filterValue] && WEEK[filterValue]['label']
     },
-    // 获取日期选择数组
-    getWeekArr() {
-      this.$nextTick().then(() => {
-        this.weekArr = this.value.map(item => item.week_day)
-        if (this.weekArr.length) this.getSliderInfoList()
-        console.log('getWeekArr', this.weekArr)
-      })
-    },
-    // 获取的数据对格式进行处理
-    getSliderInfoList() {
-      this.value.map(item => {
-        const sliderByweekDay = this.slider[--item.week_day]
-        sliderByweekDay.value = [
-          item.start_time.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0,
-          item.end_time.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0
-        ]
-        sliderByweekDay.title = item.week_day
-      })
-      console.log('getSliderInfoList', this.slider)
+    filterOperation(value) {
+      return WEEK[value] && WEEK[value]['label']
     }
   }
 }

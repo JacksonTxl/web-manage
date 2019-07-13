@@ -43,7 +43,7 @@
             <span class="label">支持入场门店：</span>
             <span class="value">{{cardInfo.admission_range.name}}</span>
           </p>
-          <st-container v-if="cardInfo.admission_range.id===2">
+          <st-container :class="item('scroll-container')" v-if="cardInfo.admission_range.id===2">
             <st-table
               size="middle"
               rowKey="shop_id"
@@ -60,7 +60,7 @@
             <span class="label">售卖门店：</span>
             <span class="value">{{cardInfo.support_sales.name}}</span>
           </p>
-          <st-container v-if="cardInfo.support_sales.id!==1">
+          <st-container :class="item('scroll-container')" v-if="cardInfo.support_sales.id!==1">
             <st-table
               size="middle"
               rowKey="shop_id"
@@ -83,7 +83,7 @@
           <p class="mb-8">
             <span class="label">售卖定价：</span>
           </p>
-          <st-container>
+          <st-container :class="item('scroll-container')">
             <st-table
               size="middle"
               rowKey="id"
@@ -123,7 +123,7 @@
             <span v-if="cardInfo.shelf_status===3" class="value" >无</span>
             <span v-else>{{cardInfo.course_interests | enumFilter('member_card.course_interests')}}</span>
           </p>
-          <st-container v-if="cardInfo.course_interests===3&&cardInfo.shelf_status!==3">
+          <st-container :class="item('scroll-container')" v-if="cardInfo.course_interests===3&&cardInfo.shelf_status!==3">
             <st-table
               size="middle"
               rowKey="id"

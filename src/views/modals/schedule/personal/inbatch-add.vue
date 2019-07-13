@@ -43,7 +43,6 @@
 </template>n
 
 <script>
-import { MessageService } from '@/services/message.service'
 import { PersonalScheduleScheduleService } from '../../../pages/shop/product/course/schedule/personal.service#/schedule.service'
 import { PersonalScheduleCommonService } from '../../../pages/shop/product/course/schedule/personal.service#/common.service'
 import { RouteService } from '../../../../services/route.service'

@@ -16,7 +16,7 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact style="top: 0;">
-            <a-select style="width: 20%;" v-decorator="rules.country_code_id">
+            <a-select style="width: 20%;" v-model="country_code_id">
               <a-select-option
                 v-for="item in codeList"
                 :key="item.code_id"
@@ -51,7 +51,7 @@
         </st-form-item>
         <st-form-item label="证件">
           <a-input-group compact style="top: 0;">
-            <a-select style="width: 20%;" v-decorator="rules.idtype">
+            <a-select style="width: 20%;" v-model="id_type">
               <template v-for="(item,key) in enums.id_type.value">
                 <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
               </template>
@@ -232,7 +232,9 @@ export default {
       isShowLevel: false, // 是否展示教练等级
 
       treeExpandedKeys: [],
-      value: undefined
+      value: undefined,
+      id_type: 1,
+      country_code_id: 37
     }
   },
   mounted() {
@@ -284,6 +286,8 @@ export default {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.image_avatar = this.fileList[0]
       data.image_face = this.faceList[0]
+      data.country_code_id = this.country_code_id
+      data.id_type = this.id_type
       console.log('submit', data)
       this.addService.addStaff(data).subscribe(res => {
         console.log('addStaff', res)

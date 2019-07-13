@@ -9,16 +9,18 @@
           <a-col :lg="4">
           </a-col>
           <a-col :lg="5">
-            新增用户数(人)
+            新增入会用户(人)
             <span :class="[bCount('topIcon'), 'user']"><img :src="topIconUser" /></span>
+            <st-help-tooltip id="TSNM001"></st-help-tooltip>
           </a-col>
           <a-col :lg="5">
-            营收额(万元)
+            营收额(元)
             <span :class="[bCount('topIcon'), 'money']"><img :src="topIconMoney" /></span>
           </a-col>
           <a-col :lg="5">
             总消课(节)
             <span :class="[bCount('topIcon'), 'price']"><img :src="topIconPrice" /></span>
+            <st-help-tooltip id="TSNM002"></st-help-tooltip>
           </a-col>
           <a-col :lg="5">
             客流量(人)
@@ -47,16 +49,16 @@
             昨日
           </a-col>
           <a-col :class="bCount('count')" class="font-number"  :lg="5">
-            {{beMemberNum.yesterday}}
+            {{beMemberNum.yesterday||0}}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{revenueAmount.yesterday}}
+            {{revenueAmount.yesterday||0}}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{courseCheckInNum.yesterday}}
+            {{courseCheckInNum.yesterday||0}}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{passengerFlow.yesterday}}
+            {{passengerFlow.yesterday||0}}
           </a-col>
         </a-row>
         <a-row class="mg-t32 count3">
@@ -64,16 +66,16 @@
             近7日
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{beMemberNum.nearly_seven_days}}
+            {{beMemberNum.nearly_seven_days||0}}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{revenueAmount.nearly_seven_days}}
+            {{revenueAmount.nearly_seven_days||0}}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{courseCheckInNum.nearly_seven_days}}
+            {{courseCheckInNum.nearly_seven_days||0}}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{passengerFlow.nearly_seven_days}}
+            {{passengerFlow.nearly_seven_days||0}}
           </a-col>
         </a-row>
         <a-row class="mg-t32 count4">
@@ -81,16 +83,16 @@
             近30日
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{beMemberNum.nearly_thirty_days}}
+            {{beMemberNum.nearly_thirty_days||0}}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{revenueAmount.nearly_thirty_days}}
+            {{revenueAmount.nearly_thirty_days||0}}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{courseCheckInNum.nearly_thirty_days}}
+            {{courseCheckInNum.nearly_thirty_days||0}}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{passengerFlow.nearly_thirty_days}}
+            {{passengerFlow.nearly_thirty_days||0}}
           </a-col>
         </a-row>
       </st-panel>
@@ -101,13 +103,14 @@
         <a-row>
           <a-col :span="14">
             <st-t3> 营收趋势</st-t3>
-            <p :class="bCount('amount')">合计：<span class="font-number">{{revenueSummary.length?revenueSummary[7].value:''}}</span>元</p>
-            <shop-revenue-line :data="revenueDaily" :fields="['会员卡','私教课','团体课','储值卡','课程包','云店','其他','总营收']"></shop-revenue-line>
+            <p :class="bCount('amount')">合计：<span class="font-number">{{revenueSummary.length?revenueSummary[7].value:'--'}}</span>元</p>
+            <shop-revenue-line v-if="revenueDaily.length" :data="revenueDaily" :fields="['会员卡','私教课','团体课','储值卡','课程包','云店','其他','总营收']"></shop-revenue-line>
+            <img v-else :class="b('entry-course-img')" :src="inoutNumImg" />
           </a-col>
           <a-col :span="10">
             <st-t3 style="margin-bottom:40px;">营收结构</st-t3>
-            <shop-revenue-ring :data="revenueSummary"></shop-revenue-ring>
-
+            <shop-revenue-ring v-if="revenueSummary.length" :data="revenueSummary"></shop-revenue-ring>
+            <img v-else :class="b('entry-pie-img')" :src="pieImg" />
           </a-col>
         </a-row>
       </st-panel>
@@ -120,26 +123,33 @@
             <a-dropdown>
               <a href="javascript:;">
                 <st-t3>
-                  {{memberType==='member'?'营销转化':'用户转化'}}
+                  {{memberType==='member'?'用户转化':'营销转化'}}
                   <st-icon type="dropdown" :class="b('dropdown')" color="rgba(0,0,0,.15)"></st-icon>
                 </st-t3>
               </a>
               <a-menu slot="overlay">
                 <a-menu-item>
-                  <a href="javascript:;" @click="switchMember('member')">营销转化</a>
+                  <a href="javascript:;" @click="switchMember('member')">用户转化</a>
                 </a-menu-item>
                 <a-menu-item>
-                  <a href="javascript:;" @click="switchMember('marketing')">用户转化</a>
+                  <a href="javascript:;" @click="switchMember('marketing')">营销转化</a>
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
+            <template v-if="memberType==='member'">
+              <funnel-vertical v-if="member.member.length" style="margin-top:24px;" :height="320" :data="member.member"></funnel-vertical>
+              <img v-else :class="b('entry-funnel-img')" :src="funnelImg" />
+            </template>
+            <template v-if="memberType==='marketing'">
+              <funnel-vertical v-if="member.marketing.length" style="margin-top:24px;" :height="320" :data="member.marketing"></funnel-vertical>
+              <img v-else :class="b('entry-funnel-img')" :src="funnelImg" />
+            </template>
 
-            <funnel-vertical v-if="memberType==='member'" style="margin-top:24px;" :height="320" :data="member.member"></funnel-vertical>
-            <funnel-vertical v-if="memberType==='marketing'" style="margin-top:24px;" :height="320" :data="member.marketing"></funnel-vertical>
           </a-col>
           <a-col :offset="1" :span="16">
             <st-t3 style="margin-bottom:24px;">新增入会用户</st-t3>
-            <shop-add-user :height="320" :data="newMember"></shop-add-user>
+            <shop-add-user v-if="newMember.length" :height="320" :data="newMember"></shop-add-user>
+            <img v-else :class="b('entry-newMember-img')" :src="newMemberImg" />
           </a-col>
         </a-row>
       </st-panel>
@@ -150,12 +160,13 @@
         <a-row>
           <a-col :span="13">
             <st-t3 style="margin-bottom:24px;">上课分析</st-t3>
-            <shop-course-line v-if="show" :data="courseDaily" :colors="['#5095FC', '#6831D7', '#06DB8C','#872333','#98db23']" :fields="['团体课可预约人数','团体课签到人数','团体课预约人数','私教课签到人数','私教课预约人数']"></shop-course-line>
+            <shop-course-line v-if="courseDaily.length" :data="courseDaily" :colors="['#5095FC', '#6831D7', '#06DB8C','#872333','#98db23']" :fields="['团体课可预约人数','团体课签到人数','团体课预约人数','私教课签到人数','私教课预约人数']"></shop-course-line>
+            <img v-else :class="b('entry-course-img')" :src="inoutNumImg" />
           </a-col>
           <a-col :span="10" :offset="1">
             <st-t3 style="margin-bottom:24px;">售课消课</st-t3>
-            <!-- <shop-course-bar v-if="show" :data="courseSummary"></shop-course-bar> -->
-            <shop-course-facet-bar :data="courseSummary"></shop-course-facet-bar>
+            <shop-course-facet-bar  v-if="courseSummary.length" :data="courseSummary"></shop-course-facet-bar>
+            <img v-else :class="b('entry-course-img')" :src="courseImg" />
           </a-col>
         </a-row>
       </st-panel>
@@ -166,11 +177,13 @@
         <a-row>
           <a-col :span="13">
             <st-t3 style="margin-bottom:24px;">入场人数</st-t3>
-            <shop-entry-line v-if="show" :height="190" :data="inoutNum"></shop-entry-line>
+            <shop-entry-line v-if="inoutNum.length" :height="190" :data="inoutNum"></shop-entry-line>
+            <img v-else :class="b('entry-line-img')" :src="inoutNumImg" />
           </a-col>
           <a-col :span="10" :offset="1">
             <st-t3 style="margin-bottom:24px;">入场人数横向柱状图</st-t3>
-            <shop-entry-bar v-if="show" :data="inoutTime"></shop-entry-bar>
+            <shop-entry-bar v-if="inoutTime.length" :data="inoutTime"></shop-entry-bar>
+            <img v-else :class="b('entry-line-img')" :src="inoutTimeImg" />
           </a-col>
         </a-row>
       </st-panel>
@@ -186,7 +199,7 @@ import topIconUser from '@/assets/img/shop/dashboard/top_icon_user.png'
 import topIconMoney from '@/assets/img/shop/dashboard/top_icon_money.png'
 import topIconPrice from '@/assets/img/shop/dashboard/top_icon_price.png'
 import topIconFlow from '@/assets/img/shop/dashboard/top_icon_flow.png'
-import FunnelVertical from '@/views/biz-components/chart/funnel-vertical'
+import FunnelVertical from '@/views/biz-components/stat/shop-funnel-vertical'
 import ShopRevenueRing from '@/views/biz-components/stat/shop-revenue-ring'
 import ShopRevenueLine from '@/views/biz-components/stat/shop-revenue-line'
 import ShopCourseLine from '@/views/biz-components/stat/shop-course-line'
@@ -197,6 +210,12 @@ import CrowdLine from '@/views/biz-components/stat/crowd-line'
 import SidebarComponent from './sidebar.component'
 import RecentRadioGroup from './recent-radio-group'
 import ShopCourseFacetBar from '@/views/biz-components/stat/shop-course-facet-bar'
+import inoutNumImg from '@/assets/img/shop/dashboard/inoutNum.png'
+import inoutTimeImg from '@/assets/img/shop/dashboard/inoutTime.png'
+import funnelImg from '@/assets/img/shop/dashboard/funnel.png'
+import courseImg from '@/assets/img/shop/dashboard/course.png'
+import newMemberImg from '@/assets/img/shop/dashboard/newMember.png'
+import pieImg from '@/assets/img/shop/dashboard/pie.png'
 import {
   ClubComponentService
 } from './club.component.service'
@@ -250,11 +269,16 @@ export default {
       revenueRecent: '7',
       memberType: 'member',
       gutter: 24,
-      show: true
+      inoutNumImg: inoutNumImg,
+      inoutTimeImg: inoutTimeImg,
+      funnelImg: funnelImg,
+      courseImg: courseImg,
+      newMemberImg: newMemberImg,
+      pieImg: pieImg
     }
   },
   created() {
-    this.getInit()
+    // this.getInit()
   },
   components: {
     ShopRevenueRing,

@@ -144,6 +144,7 @@ class VueServiceApp {
 
     this.router = new VueRouter(this.vueRouterOptions)
     const oriPush = this.router.push.bind(this.router)
+    const oriReplace = this.router.replace.bind(this.router)
     const self = this
     this.router.push = function(to, onComplete, onError) {
       if (isString(to)) {
@@ -152,6 +153,29 @@ class VueServiceApp {
       }
       if (!to.force) {
         oriPush(to, onComplete, onError)
+        return
+      }
+      const oriHref = this.resolve(to).href
+      to.query = to.query || {}
+      to.query._f = forceCount++
+      oriPush(
+        to,
+        () => {
+          setTimeout(() => {
+            window.history.replaceState(null, null, oriHref)
+            onComplete && onComplete()
+          })
+        },
+        onError
+      )
+    }
+    this.router.replace = function(to, onComplete, onError) {
+      if (isString(to)) {
+        oriReplace(to, onComplete, onError)
+        return
+      }
+      if (!to.force) {
+        oriReplace(to, onComplete, onError)
         return
       }
       const oriHref = this.resolve(to).href
@@ -238,6 +262,9 @@ class VueServiceApp {
               if (fn.length < 3) {
                 return (to, from, next) => {
                   const p = fn(to, from)
+                  if (!p) {
+                    console.error(`[vue-service-app] return undefined on to [${to.name}]`, fn)
+                  }
                   if (p.then) {
                     p.then(res => {
                       next(res && res.next)
@@ -315,6 +342,9 @@ class VueServiceApp {
               if (fn.length < 3) {
                 return (to, from, next) => {
                   const p = fn(to, from)
+                  if (!p) {
+                    console.error(`[vue-service-app] return undefined on to ${to.name}`, fn)
+                  }
                   if (p.then) {
                     p.then(res => {
                       next(res && res.next)

@@ -20,9 +20,6 @@ export class HotReleaseService {
     this.reloadAction$ = new Action(data$ =>
       data$.pipe(
         throttleTime(10000),
-        tap(() => {
-          this.nProgressService.SET_TEXT('版本更新服务开始')
-        }),
         // 捕获子流的错误 错误冒泡会导致父流中断
         switchMap(() =>
           ajax
@@ -30,7 +27,6 @@ export class HotReleaseService {
             .pipe(catchError(() => EMPTY))
         ),
         tap(({ response }) => {
-          this.nProgressService.SET_TEXT('版本更新服务完毕')
           if (response.git_commit !== this.appConfig.GIT_COMMIT) {
             console.log(
               '需要刷新页面',
@@ -48,7 +44,7 @@ export class HotReleaseService {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {
-    this.reloadAction$.dispatch({ tip: 'release' })
+    this.reloadAction$.dispatch()
     next()
   }
 }

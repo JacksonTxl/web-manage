@@ -42,7 +42,8 @@
         <st-button type="primary" @click="addUser()" class="shop-member-list-button" v-if="auth.add" icon='add'>
           添加用户
         </st-button>
-        <st-button class="shop-member-list-button" v-if="auth.import">导入用户</st-button>
+        <!-- NOTE: 导入 -->
+        <!-- <st-button class="shop-member-list-button" v-if="auth.import">导入用户</st-button> -->
         <st-button
           v-if="auth.tag"
           class="shop-member-list-button"
@@ -89,7 +90,8 @@
             :disabled="selectedRows.length > 0 ? false :true"
           >分配员工</st-button>
         </a-popover>
-        <st-button v-if="auth.export" :disabled='isSelectedDisabled' class="shop-member-list-button">批量导出</st-button>
+        <!-- NOTE: 导出 -->
+        <!-- <st-button v-if="auth.export" :disabled='isSelectedDisabled' class="shop-member-list-button">批量导出</st-button> -->
       </div>
       <st-table
         class="mg-t24"

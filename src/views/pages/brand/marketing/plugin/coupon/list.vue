@@ -164,12 +164,13 @@ export default {
     },
     // 停止优惠券模板
     onStop(record) {
+      let that = this
       this.$confirm({
         title: '提示',
         content: '结束后当用户进入投放该优惠券的活动时，将无法领取该优惠券。确认要结束？',
         onOk() {
-          this.listService.stopMarketingCoupon(record.id).subscribe(res => {
-            this.$router.push({ force: true })
+          that.listService.stopMarketingCoupon(record.id).subscribe(res => {
+            that.$router.push({ force: true })
           })
         },
         onCancel() {}

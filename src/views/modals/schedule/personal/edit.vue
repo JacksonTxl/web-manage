@@ -30,14 +30,17 @@
             </a-col>
 
           </a-row>
-          <a-row class="time-item" v-for="info in scheduleInfo" :key="info.time_type">
-            <a-col :lg="2">
-              <span>{{info.schedule_time | filterDate}}</span>
-            </a-col>
-            <a-col :lg="22">
-              <st-time-picker v-model="info.timing" :key="info.time_type"></st-time-picker>
-            </a-col>
-          </a-row>
+          <div v-if="isInit">
+            <a-row class="time-item" v-for="info in scheduleInfo" :key="info.schedule_time">
+              <a-col :lg="2">
+                <span>{{info.schedule_time | filterDate}}</span>
+              </a-col>
+              <a-col :lg="22">
+                <st-time-picker v-model="info.timing"></st-time-picker>
+              </a-col>
+            </a-row>
+          </div>
+
         </st-container>
       </div>
     </div>
@@ -46,40 +49,39 @@
 </template>
 
 <script>
-import { MessageService } from '@/services/message.service'
 import { PersonalScheduleScheduleService } from '../../../pages/shop/product/course/schedule/personal.service#/schedule.service'
+import { RouteService } from '../../../../services/route.service'
 export default {
   name: 'EditShchedule',
   serviceInject() {
     return {
-      messageService: MessageService,
-      scheduleService: PersonalScheduleScheduleService
+      scheduleService: PersonalScheduleScheduleService,
+      routeService: RouteService
+    }
+  },
+  rxState() {
+    return {
+      query: this.routeService.query$
     }
   },
   data() {
     return {
       show: false,
       staffName: '',
+      isInit: false,
       scheduleInfo: [{
-        time_type: 0,
         timing: []
       }, {
-        time_type: 1,
         timing: []
       }, {
-        time_type: 2,
         timing: []
       }, {
-        time_type: 3,
         timing: []
       }, {
-        time_type: 4,
         timing: []
       }, {
-        time_type: 5,
         timing: []
       }, {
-        time_type: 6,
         timing: []
       }]
     }
@@ -113,12 +115,22 @@ export default {
         schedule_info: this.scheduleInfo
       }
       this.scheduleService.update(date).subscribe(res => {
-        this.messageService.success({ content: '编辑成功' })
         this.show = false
+        this.$router.push({ query: this.query, force: true })
       })
     },
     onClickCopySchedule() {
       this.scheduleService.curd('copy', { id: this.id || 108 }, () => {})
+    },
+    initScheduleInfo() {
+      const weekOfday = moment(this.start, 'YYYY-MM-DD').format('E')
+      this.scheduleInfo = this.scheduleInfo.map((item, index) => {
+        const day = moment(this.start).add(index + 1 - weekOfday, 'days').format('YYYY-MM-DD')
+        return {
+          schedule_time: day,
+          ...item
+        }
+      })
     },
     getInfo() {
       let form = {
@@ -126,13 +138,26 @@ export default {
         start_time: this.start,
         end_time: this.end
       }
+      this.isInit = false
       this.scheduleService.getUpdateInfo(form).subscribe(res => {
         this.staffName = res.info.staff_name
-        this.scheduleInfo = res.info.coach_info
+        const scheduleInfo = this.scheduleInfo.map(item => {
+          res.info.coach_info.forEach(ele => {
+            if (ele.schedule_time === item.schedule_time) {
+              item = ele
+            } else if (!item.id) {
+              item.id = 0
+            }
+          })
+          this.isInit = true
+          return item
+        })
+        this.$set(this, 'scheduleInfo', scheduleInfo)
       })
     }
   },
   created() {
+    this.initScheduleInfo(this.start)
     this.getInfo()
   }
 }

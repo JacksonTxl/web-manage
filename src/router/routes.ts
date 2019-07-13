@@ -3,24 +3,31 @@ import { TokenService } from '@/services/token.service'
 import { NProgressService } from '@/services/nprogress.service'
 import { HotReleaseService } from '@/services/hot-release.service'
 import { UserService } from '@/services/user.service'
-import pageRoutes from './auto-generated-routes'
 import { TitleService } from '@/services/title.service'
 import { RouteService } from '@/services/route.service'
 import { AuthService } from '@/services/auth.service'
 import { routeMapConfig } from './route-map.config'
 
+import pageRoutes from './auto-generated-routes'
+
 const routes: any[] = [
   {
     path: '/',
-    redirect: '/brand/'
+    redirect: '/index'
   },
   {
-    path: '/brand/',
-    redirect: '/brand/dashboard'
+    name: 'brand',
+    path: '/brand',
+    redirect: {
+      name: 'brand-index'
+    }
   },
   {
-    path: '/shop/',
-    redirect: '/shop/dashboard'
+    name: 'shop',
+    path: '/shop',
+    redirect: {
+      name: 'shop-index'
+    }
   },
   {
     path: '/brand/product/card/deposit-card/shop-sale-list',
@@ -52,15 +59,9 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     if (!route.name) {
       route.name = ''
     }
+
     // guards 配置
-    if (route.name === 'account-login') {
-      prependGuards(route, [
-        NProgressService,
-        HotReleaseService,
-        TitleService,
-        RouteService
-      ])
-    } else if (route.name === '404') {
+    if (route.name === 'account-login' || route.name === '404') {
       prependGuards(route, [
         NProgressService,
         HotReleaseService,

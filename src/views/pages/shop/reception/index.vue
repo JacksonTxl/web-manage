@@ -468,7 +468,9 @@ export default {
   methods: {
     photoChange(list) {
       if (!this.isSelectMember) return
-      this.indexService.editFace(this.memberId, list[0])
+      this.indexService.editFace(this.memberId, list[0]).subscribe(() => {
+        this.getMemberInfo(this.memberId)
+      })
     },
     init() {
       this.formatShortcutList()

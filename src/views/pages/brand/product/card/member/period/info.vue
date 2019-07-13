@@ -41,7 +41,7 @@
             <span class="label">支持入场门店：</span>
             <span class="value">{{cardInfo.admission_range.name}}</span>
           </p>
-          <st-container v-if="cardInfo.admission_range.id===2">
+          <st-container :class="item('scroll-container')" v-if="cardInfo.admission_range.id===2">
             <st-table
               size="middle"
               rowKey="shop_id"
@@ -58,7 +58,7 @@
             <span class="label">售卖门店：</span>
             <span class="value">{{cardInfo.support_sales.name}}{{cardInfo.admission_range.id>1?`（已上架${cardInfo.shelf_num}家门店/共${cardInfo.sale_num}家门店）`:''}}</span>
           </p>
-          <st-container v-if="cardInfo.support_sales.id!==1">
+          <st-container :class="item('scroll-container')" v-if="cardInfo.support_sales.id!==1">
             <st-table
               size="middle"
               rowKey="shop_id"
@@ -81,7 +81,7 @@
           <p class="mb-8">
             <span class="label">售卖定价：</span>
           </p>
-          <st-container>
+          <st-container :class="item('scroll-container')">
             <st-table
               v-if="cardInfo.price_setting.id===1"
               size="middle"

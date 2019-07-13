@@ -41,7 +41,7 @@
             <span class="label">支持消费门店：</span>
             <span class="value">{{canUseShop}}</span>
           </p>
-          <st-container v-if="cardInfo.consumption_range.id===2">
+          <st-container :class="item('scroll-container')" v-if="cardInfo.consumption_range.id===2">
             <st-table
               size="middle"
               rowKey="shop_id"
@@ -58,7 +58,7 @@
             <span class="label">售卖门店：</span>
             <span class="value">{{cardInfo.support_sales | enumFilter('deposit_card.support_sales')}}</span>
           </p>
-          <st-container v-if="cardInfo.support_sales!==1">
+          <st-container :class="item('scroll-container')" v-if="cardInfo.support_sales!==1">
             <st-table
               size="middle"
               rowKey="shop_id"

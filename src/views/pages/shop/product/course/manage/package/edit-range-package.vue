@@ -591,12 +591,12 @@ export default {
       this.packageData.personal_times = this.packageInfo.personal_times
       this.packageData.personal_unit_price = this.packageInfo.personal_unit_price
       forEach(this.packageInfo.personal_range, o => {
-        let selectCoach = filter(this.coachList, i => o.coach_level.includes(i.id))
-        let total = reduce(selectCoach, (sum, i) => sum + i.coach_number, 0)
         let coachGradeList = []
         o.coach_level.forEach(i => {
           coachGradeList.push(i.id)
         })
+        let selectCoach = filter(this.coachList, i => coachGradeList.includes(i.id))
+        let total = reduce(selectCoach, (sum, i) => sum + i.coach_number, 0)
         this.personalCourseList.push({
           courseChecked: false,
           course_category: o.course_category,

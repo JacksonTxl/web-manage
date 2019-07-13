@@ -230,8 +230,9 @@ export default {
         const renderObj = JSON.parse(item.groupId)
         const current = moment().format('HH:mm:SS')
         const courtHtml = renderObj.court_name ? `<div class="court-name"><span class="label">场地: </span><span>${renderObj.court_name}</span></div>` : ''
+        const plusOneHtml = renderObj.plusOne ? `<span class="color-danger"> +1 </span>` : ''
         let new_description = `<div class="st-schedule-content mg-l8">
-                                <div class="time"><a-icon type="clock-circle"></a-icon>${moment(item.start).format('HH:mm')} - ${moment(item.end).format('HH:mm')}</div>
+                                <div class="time"><a-icon type="clock-circle"></a-icon>${moment(item.start).format('HH:mm')} - ${moment(item.end).format('HH:mm')} ${plusOneHtml}</div>
                                 <div class="course-name">${item.title}</div>
                                 <div class="coach-name"><span class="label">教练: </span><span>${renderObj.coach_name}</span></div>
                                 ${courtHtml}

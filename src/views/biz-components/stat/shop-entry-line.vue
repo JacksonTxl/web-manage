@@ -47,7 +47,8 @@ export default {
         forceFit: true,
         // svg阴影比较符合预期
         renderer: 'svg',
-        height: this.height
+        height: this.height,
+        padding: 'auto'
       })
       this.chart.source(this.dv, {
         date: {
@@ -92,8 +93,8 @@ export default {
         .size(2)
         .style({
           shadowColor: '#4169F7',
-          shadowBlur: 30,
-          shadowOffsetY: 6
+          shadowBlur: 20,
+          shadowOffsetY: 4
         })
         .color(this.color)
 

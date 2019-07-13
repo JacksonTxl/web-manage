@@ -42,7 +42,7 @@
       <template slot="admission_range" slot-scope="text,record">
         <a
           v-if="text.id === 2"
-          v-modal-link="{ name: 'card-brand-member-shop-table' , props:{id: record.id,type:'Sale',title:'支持入场门店'}}"
+          v-modal-link="{ name: 'card-shop-member-shop-table' , props:{id: record.id,type:'Sale',title:'支持入场门店'}}"
         >{{text.name}}</a>
         <span v-else class="use_num">{{text.name}}</span>
       </template>

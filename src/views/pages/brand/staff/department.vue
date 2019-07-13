@@ -21,7 +21,7 @@
       </header>
       <main class="staff-rg__table">
         <div  style="width:100%">
-          <staff-table :page="page" :loading="loading.getStaffList" @edit-staff="onEditStaff" @selectedRow="selectedRow" :staffList="staffList"></staff-table>
+          <staff-table ref="staffTable" :page="page" :loading="loading.getStaffList" @edit-staff="onEditStaff" @selectedRow="selectedRow" :staffList="staffList"></staff-table>
         </div>
       </main>
     </section>
@@ -151,8 +151,10 @@ export default {
         },
         on: {
           ok: res => {
+            this.updateData()
+            this.$refs.staffTable.selectedRowKeys = []
             this.$router.push({
-              query: res,
+              query: this.query,
               force: true
             })
           }

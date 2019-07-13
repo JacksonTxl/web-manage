@@ -203,7 +203,6 @@ export default {
       })
     },
     onEventPositioned(event, element) {
-      console.log(event, element)
       this.onEventRender(event, element)
     },
     toggleWeekends() {
@@ -214,13 +213,14 @@ export default {
     },
     onEventRender(event, element) {
       this.$nextTick().then(() => {
-        event.el.querySelector('.fc-title').remove()
-        event.el.querySelector('.fc-time').remove()
+        event.el.querySelector('.fc-title') && event.el.querySelector('.fc-title').remove()
+        event.el.querySelector('.fc-time') && event.el.querySelector('.fc-time').remove()
         const item = event.event
         const renderObj = JSON.parse(item.groupId)
         const current = moment().format('HH:mm:SS')
+        const plusOneHtml = renderObj.plusOne ? `<span class="color-danger"> +1 </span>` : ''
         let new_description = `<div class="st-schedule-content mg-l8">
-                                <div class="time"><a-icon type="clock-circle"></a-icon>${moment(item.start).format('HH:mm')} - ${moment(item.end).format('HH:mm')}</div>
+                                <div class="time"><a-icon type="clock-circle"></a-icon>${moment(item.start).format('HH:mm')} - ${moment(item.end).format('HH:mm')} ${plusOneHtml}</div>
                                 <div class="course-name">${item.title}</div>
                                 <div class="coach-name"><span class="label">教练: </span><span>${renderObj.coach_name}</span></div>
                               </div>`
