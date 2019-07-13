@@ -126,6 +126,9 @@ export class AuthService {
       )
     )
   }
+  tabCan(s:string) {
+    return 1
+  }
   /**
    * 获取授权的tab数据
    * @return {Computed<{firstRoute:string,tabs:[]}>} 返回流
@@ -143,7 +146,8 @@ export class AuthService {
               if (!meta) {
                 return res.concat([])
               }
-              if (this.can(meta.auth)) {
+              // TODO 暂时使用常量返回true
+              if (this.tabCan(meta.auth)) {
                 if (!meta.title) {
                   console.error(
                     `[auth.service] 请设置 ${routeName} 下的meta.title `
