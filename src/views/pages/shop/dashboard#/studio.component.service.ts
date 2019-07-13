@@ -102,10 +102,27 @@ export class StudioComponentService {
       this.state$.commit(state => {
         const data = res.info
         let lineData:any = []
+        // state.courseSummary = [
+        //   { type: '私教课', 售课数: data.summary.sale_personal_num, 消课数: data.summary.personal_checkin_num },
+        //   { type: '团体课', 售课数: data.summary.sale_team_num, 消课数: data.summary.team_checkin_num },
+        //   { type: '合计', 售课数: data.summary.sale_total_num, 消课数: data.summary.checkin_total_num }
+        // ]
         state.courseSummary = [
-          { type: '私教课', 售课数: data.summary.sale_personal_num, 消课数: data.summary.personal_checkin_num },
-          { type: '团体课', 售课数: data.summary.sale_team_num, 消课数: data.summary.team_checkin_num },
-          { type: '合计', 售课数: data.summary.sale_total_num, 消课数: data.summary.checkin_total_num }
+          {
+            group: '总售课',
+            团体课: data.summary.sale_team_num,
+            私教课: data.summary.sale_personal_num
+          },
+          {
+            group: '总销课',
+            团体课: data.summary.team_checkin_num,
+            私教课: data.summary.personal_checkin_num
+          },
+          {
+            group: '未销课',
+            团体课: data.summary.team_uncheckin_num,
+            私教课: data.summary.personal_uncheckin_num
+          }
         ]
         for (let key in data.daily.personal_reserved_num) {
           let chartItem = {

@@ -7,7 +7,7 @@
 
     <div class="text">
       <st-t3>{{title}}</st-t3>
-      <p class="detail">{{sub}}</p>
+      <p class="detail" :title="sub">{{sub}}</p>
     </div>
     </a>
   </div>

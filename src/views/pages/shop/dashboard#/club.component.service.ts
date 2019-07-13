@@ -4,6 +4,10 @@ import { pluck, tap } from 'rxjs/operators'
 import { OverviewApi, Version, RevenueParams } from '@/api/v1/stat/overview/shop'
 import { forkJoin } from 'rxjs'
 
+export interface Member {
+  member: object[],
+  marketing: object[]
+}
 interface SetState{
   top: object,
   revenueDaily: object[],
@@ -12,7 +16,7 @@ interface SetState{
   courseSummary: object[],
   inoutNum: object[],
   inoutTime: object[],
-  member: object,
+  member: Member,
   newMember: object[]
 }
 
@@ -43,7 +47,7 @@ export class ClubComponentService {
       courseSummary: [],
       inoutNum: [],
       inoutTime: [],
-      member: {},
+      member: { member: [], marketing: [] },
       newMember: []
     })
     this.top$ = new Computed(this.state$.pipe(pluck('top')))
@@ -120,8 +124,8 @@ export class ClubComponentService {
           },
           {
             group: '未销课',
-            团体课: data.summary.sale_total_num,
-            私教课: data.summary.checkin_total_num
+            团体课: data.summary.team_uncheckin_num,
+            私教课: data.summary.personal_uncheckin_num
           }
         ]
         for (let key in data.daily.personal_reserved_num) {
@@ -226,5 +230,6 @@ export class ClubComponentService {
     )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.init().subscribe(next)
   }
 }

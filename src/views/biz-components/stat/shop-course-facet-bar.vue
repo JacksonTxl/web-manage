@@ -66,7 +66,8 @@ export default {
       // 图例位置
       this.chart.legend({
         position: 'top-left',
-        marker: 'circle'
+        marker: 'circle',
+        offsetX: 5
       })
       // 图表分面 相当于两个柱状图
       this.chart.facet('mirror', {

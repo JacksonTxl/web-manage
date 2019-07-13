@@ -154,7 +154,6 @@ export default {
       countryList: [],
       id_type: '',
       choosed_country_id: '',
-      department: [],
       value: '' // 部门选择
     }
   },

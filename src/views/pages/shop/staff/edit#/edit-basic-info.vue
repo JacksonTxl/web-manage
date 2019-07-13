@@ -17,7 +17,7 @@
         <st-form-item label="手机号" required>
           <a-input-group compact style="top: 0;">
             <a-select style="width: 20%" v-model="country_code_id">
-              <a-select-option v-for="item in code_list" :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
+              <a-select-option v-for="item in codeList" :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
             </a-select>
             <a-input style="width: 80%" v-decorator="rules.phone" placeholder="请输入手机号"/>
           </a-input-group>
@@ -143,6 +143,12 @@ export default {
       message: MessageService
     }
   },
+  rxState() {
+    return {
+      roleList: this.editservice.roleList$,
+      codeList: this.editservice.codeList$
+    }
+  },
   components: {
     ShopSelect,
     DepartmentSelect
@@ -153,15 +159,6 @@ export default {
     },
     data: {
       type: Object
-    },
-    roleList: {
-      type: Array
-    },
-    codeList: {
-      type: Array
-    },
-    department: {
-      type: Array
     }
   },
   data() {
@@ -169,14 +166,9 @@ export default {
       form: this.$form.createForm(this),
       fileList: [],
       faceList: [],
-      country_code_id: '',
+      country_code_id: 37,
       id_type: '',
       value: '' // 部门选择
-    }
-  },
-  computed: {
-    code_list() {
-      return this.codeList && this.codeList['code_list']
     }
   },
   mounted() {
@@ -240,8 +232,6 @@ export default {
         role_id: obj.role_id,
         entry_date: obj.entry_date ? moment(obj.entry_date) : '',
         mail: obj.mail,
-        image_avatar: obj.image_avatar,
-        image_face: obj.image_face,
         shop_id: obj.shop_id
       })
       this.country_code_id = obj.country_code_id

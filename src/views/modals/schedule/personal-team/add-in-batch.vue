@@ -6,7 +6,12 @@
   width="1366px"
   v-model="show"
 >
-  <st-table :columns="columns" :dataSource="data" bordered>
+  <st-table rowKey="course_id" :columns="columns" :page="false" :dataSource="data" bordered>
+    <span slot="startTimeTitle" class="modal-table-title"><i class="color-danger mg-r8">*</i>日期</span>
+    <span slot="courseIdTitle" class="modal-table-title"><i class="color-danger mg-r8">*</i>课程</span>
+    <span slot="coachIdTitle" class="modal-table-title"><i class="color-danger mg-r8">*</i>上课教练</span>
+    <span slot="limitNumTitle" class="modal-table-title"><i class="color-danger mg-r8">*</i>人数</span>
+    <span slot="courseFeeTitle" class="modal-table-title"><i class="color-danger mg-r8">*</i>课时费</span>
     <template  slot="start_time" slot-scope="text, record">
       <a-date-picker
         v-if="record.editable"
@@ -90,28 +95,29 @@ import {
   PersonalTeamScheduleScheduleService as ScheduleService
 } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
 const columns = [{
-  title: '日期',
   dataIndex: 'start_time',
+  slots: { title: 'startTimeTitle' },
   scopedSlots: { customRender: 'start_time' }
 }, {
-  title: '课程',
   dataIndex: 'course_id',
+  slots: { title: 'courseIdTitle' },
   scopedSlots: { customRender: 'course_id' }
 }, {
-  title: '上课教练',
   dataIndex: 'coach_id',
+  slots: { title: 'coachIdTitle' },
   scopedSlots: { customRender: 'coach_id' }
 }, {
-  title: '人数',
   dataIndex: 'limit_num',
+  slots: { title: 'limitNumTitle' },
   scopedSlots: { customRender: 'limit_num' }
 }, {
-  title: '课时费',
   dataIndex: 'course_fee',
+  slots: { title: 'courseFeeTitle' },
   scopedSlots: { customRender: 'course_fee' }
 }, {
   title: '操作',
   dataIndex: 'operation',
+  slots: { title: 'courseFeeTitle' },
   scopedSlots: { customRender: 'operation' }
 }]
 export default {
