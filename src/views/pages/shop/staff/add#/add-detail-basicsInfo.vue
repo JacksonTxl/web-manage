@@ -157,13 +157,14 @@
         <st-form-item label="登录密码" v-if="isChoosePermission">
           <a-input
             placeholder="6-15个字符，区分大小写"
-            v-decorator="rules.password"
+            v-decorator="['password', { rules: [{validator: validatorPassword}]
+          }]"
           ></a-input>
         </st-form-item>
         <st-form-item label="确认密码" v-if="isChoosePermission">
           <a-input
             placeholder="请再次填写密码"
-            v-decorator="rules.repeat_password"
+            v-decorator="['repeat_password', { rules: [{validator: validatorPassword}] }]"
           ></a-input>
         </st-form-item>
       </a-col>
@@ -244,6 +245,30 @@ export default {
     })
   },
   methods: {
+    validatorPassword(rule, value, callback) {
+      if (value === undefined || value === '') {
+        // eslint-disable-next-line
+        callback('请输入登录密码')
+      } else if (value.length < 6 || value.length > 15) {
+        // eslint-disable-next-line
+        callback('请输入正确格式登录密码')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    validatorRePassword(rule, value, callback) {
+      if (value === undefined || value === '') {
+        // eslint-disable-next-line
+        callback('请输入登录密码')
+      } else if (value.length < 6 || value.length > 15) {
+        // eslint-disable-next-line
+        callback('请输入正确格式登录密码')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
     getIsCoach(data) {
       console.log('watch new', data)
       this.isShowLevel = data.includes(4)

@@ -256,11 +256,12 @@ export default {
     },
     // 满多少使用
     full_price_validator(rule, value, callback) {
-      let couponPirce = this.form.getFieldValue('price') || 0
-      if (!value && this.form.getFieldValue('use_type') === '2') {
+      let couponPirce = +this.form.getFieldValue('price') || 0
+      let fullPirce = +value
+      if (!fullPirce && this.form.getFieldValue('use_type') === '2') {
         // eslint-disable-next-line
         callback('请填写使用条件')
-      } else if (couponPirce > value) {
+      } else if (couponPirce >= fullPirce) {
         // eslint-disable-next-line
         callback('满减门槛不能低于优惠券面额')
       } else {

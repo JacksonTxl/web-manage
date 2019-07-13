@@ -94,7 +94,10 @@ export class RuleConfig {
   get effectiveUnit() {
     return [
       'effective_unit', {
-        rules: [],
+        rules: [{
+          required: true,
+          message: '请输入课程有效期'
+        }],
         initialValue: 7
       }
     ]

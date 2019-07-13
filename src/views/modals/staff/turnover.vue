@@ -8,7 +8,7 @@
     v-model='show'>
     <section>
       <staff-info :staff="staff"></staff-info>
-      <staff-modal-tips :list="list" :canNotDelete="!operate" v-if="list && list.length" class="modal-tips"></staff-modal-tips>
+      <staff-modal-tips :list="list"  :type="2" :canNotDelete="!operate" v-if="list && list.length" class="modal-tips"></staff-modal-tips>
       <st-form class="modal-staff-turnover__form" labelWidth='60px'>
         <st-form-item  labelWidth='60px' label="离职日期" class="mg-b0">
           <a-date-picker @change="onDateChange"/>

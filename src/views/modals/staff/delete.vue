@@ -7,7 +7,7 @@
     v-model='show'>
     <staff-info :staff="staff"></staff-info>
     <section v-if="!operate" class="mg-b16">
-      <staff-modal-tips :list="list" :canNotDelete="!operate" v-if="list && list.length"></staff-modal-tips>
+      <staff-modal-tips :list="list" :type="3" :canNotDelete="!operate" v-if="list && list.length"></staff-modal-tips>
     </section>
     <section v-else>
       <div class="modal-staff-delete__sub-tip">
