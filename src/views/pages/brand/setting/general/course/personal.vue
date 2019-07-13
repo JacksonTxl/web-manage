@@ -15,15 +15,15 @@
         </a-col>
       </a-row>
 
-      <!-- 私教课程售卖模式 -->
-      <st-t4 class="mg-t24">私教课程售卖模式</st-t4>
+      <!-- 私教课程定价设置 -->
+      <st-t4 class="mg-t24">私教课程定价设置</st-t4>
        <!-- 教练统一定价 -->
       <div class="st-des" v-if="pricingInfo.price_model === 1">教练统一定价（每一个私教课程，所授课的教练的课程售出价格一致）</div>
       <!-- 教练分级定价 -->
       <div class="st-des" v-if="pricingInfo.price_model === 2">教练分级定价（每一个私教课程，按教练等级进行差异化定价）</div>
       <st-hr></st-hr>
       <!-- 私教课程售卖模式 -->
-      <st-t4>私教课程定价设置</st-t4>
+      <st-t4>私教课程售卖模式</st-t4>
       <!-- 教练谈单模式 -->
       <div class="st-des" v-if="pricingInfo.sale_model===1">教练谈单模式（ 1.设置课程最低课时费和最高课时费 2.超过售卖价格范围时，不支持购买 3.不支持在用户端直接购买私教课 ）</div>
       <!-- 统一标价模式 -->

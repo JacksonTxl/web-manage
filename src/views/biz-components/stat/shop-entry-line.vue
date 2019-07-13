@@ -57,7 +57,6 @@ export default {
         },
         value: {
           formatter: toKFilter,
-          tickCount: 4,
           min: 0
         }
       })

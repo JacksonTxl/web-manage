@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section v-if="list && list.length">
+    <section v-if="list && list.length" class="mg-t8">
       <div v-if="isOperationInBatch">
         <a-checkbox
           :indeterminate="indeterminate"
@@ -36,7 +36,12 @@
                     }
                   }"
                 >
-                  <span v-if="editFlag === `enter-${item.id}` && auth.edit">编辑</span>
+                  <span
+                    v-if="editFlag === `enter-${item.id}` && auth.edit"
+                    :class="b('item-edit')"
+                  >
+                    编辑
+                  </span>
                 </a>
               </div>
             </div>

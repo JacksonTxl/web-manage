@@ -30,7 +30,7 @@ export default {
     }
   },
   bem: {
-    b: 'st-funnel-vertical'
+    b: 'st-shop-funnel-vertical'
   },
   computed: {
     dv() {
