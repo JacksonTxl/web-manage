@@ -261,18 +261,18 @@ export default {
     },
     moment,
     member_id_validator(rule, value, callback) {
-      if (!value && this.searchMemberIsShow) {
+      if ((!value || value.length > 15) && this.searchMemberIsShow) {
         // eslint-disable-next-line
-        callback('请选择转让会员')
+        callback('请选择转让会员，查询条件长度15')
       } else {
         // eslint-disable-next-line
         callback()
       }
     },
     member_name_validator(rule, value, callback) {
-      if (!value && !this.searchMemberIsShow) {
+      if ((!value || !value.match(this.pattern.CN_EN_NUM_SPACE('1-15'))) && !this.searchMemberIsShow) {
         // eslint-disable-next-line
-        callback('请输入会员姓名')
+        callback('请输入会员姓名，支持格式长度1~15中英文')
       } else {
         // eslint-disable-next-line
         callback()
