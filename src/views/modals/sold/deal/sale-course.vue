@@ -147,7 +147,7 @@
             </a-select>
           </st-form-item>
           <st-form-item label="备注" class="mg-b0">
-            <a-textarea v-model="description" :autosize="{ minRows: 4, maxRows: 6 }" />
+            <a-textarea v-model="description" :autosize="{ minRows: 4, maxRows: 6 }" :maxlength="30"/>
           </st-form-item>
         </div>
       </st-form>
