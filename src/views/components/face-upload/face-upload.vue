@@ -21,6 +21,7 @@
     <div
       class="st-face-upload__face"
       @click="handlerOpenFaceModal"
+      v-show="isShowFaceUpload"
     >
       <div class="container">
         <a-spin :spinning="isLoading" :tip="progress + '%'">
@@ -50,6 +51,10 @@ export default {
     }
   },
   props: {
+    numLimit: {
+      type: Number,
+      default: 1
+    },
     /**
      * 上传按钮的文字
      */
@@ -101,7 +106,8 @@ export default {
     return {
       fileList: this.list,
       isLoading: false,
-      progress: 0
+      progress: 0,
+      isShowFaceUpload: true
     }
   },
   computed: {
@@ -125,6 +131,7 @@ export default {
   },
   watch: {
     list(newList) {
+      this.isShowFaceUpload = this.fileList.length < this.numLimit
       this.fileList = this.list
     }
   },
@@ -151,6 +158,7 @@ export default {
     },
     onChange(list) {
       this.fileList = list
+      this.isShowFaceUpload = this.fileList.length < this.numLimit
       this.$emit('change', this.fileList)
     },
     processChange(processNum) {

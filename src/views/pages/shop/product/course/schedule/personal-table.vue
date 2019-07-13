@@ -42,16 +42,10 @@
               <td width="120">
                 <a href="javascript:;">{{ item.staff_name }}</a>
               </td>
-              <!-- <td width="120">
-                <template v-for="info in item.schedule_info">
-                  {{info}}
-                  <div v-for="tim in info.timing" >{{tim}}</div>
-                </template>
-              </td> -->
               <template v-for="items in item.schedule_info">
                 <template >
                   <td :key="items.id" :class="items.schedule_date == currentTime ? 'thgl': ''">
-                    <a-popover placement="rightTop">
+                    <a-popover v-if="items.timing.length" placement="rightTop">
                       <template slot="content">
                           <template v-for="timingItem in items.timing">
                               <p :key="timingItem.start_time">{{ timingItem.start_time }}~{{ timingItem.end_time }}</p>
@@ -61,16 +55,10 @@
                         <span>排期</span>
                       </template>
                       {{items.timing | timingFilter}}
-                      <!-- {{ items.timing[0].start_time }}~{{ items.timing[0].end_time }} -->
                     </a-popover>
+                    <span v-else>{{items.timing | timingFilter}}</span>
                   </td>
                 </template>
-                <!-- <template v-else>
-                  <td
-                    :key="items.id"
-                    :class="items.schedule_date == currentTime ? 'thgl': ''"
-                  >--</td>
-                </template> -->
               </template>
               <td>
                 <a
@@ -132,7 +120,7 @@ export default {
   },
   methods: {
     onClickSkipSchedule() {
-      this.$router.push({ name: 'shop-product-course-schedule-personal-calendar' })
+      this.$router.push({ name: 'shop-product-course-schedule-personal', query: this.query })
     },
     getList(val = {}) {
       const query = { ...this.query, start_date: val.start_time, end_date: val.end_time }

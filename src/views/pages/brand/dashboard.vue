@@ -7,7 +7,7 @@
       <a-row :gutter="16" :class="bCount()">
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card title="今日营收额(元)" :count="this.revenue.num" :footer="{label: '近7天日均营收额:', value: Number(this.revenue.avg||'') }" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
+            <count-card title="今日营收额(元)" :count="Number(this.revenue.num||'')" :footer="{label: '近7天日均营收额:', value: Number(this.revenue.avg||'') }" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
               <template slot="title">
                 <st-help-tooltip id="TBCDA001"></st-help-tooltip>
               </template>
@@ -17,7 +17,7 @@
         </a-col>
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card title="今日订单数(单)" :count="this.order.num" :footer="{label: '近7天日均订单数:', value: Number(this.order.avg||'') }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
+            <count-card title="今日订单数(单)" :count="Number(this.order.num||'')" :footer="{label: '近7天日均订单数:', value: Number(this.order.avg||'') }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
               <template slot="title">
                 <st-help-tooltip id="TBCDA002"></st-help-tooltip>
               </template>
@@ -37,7 +37,7 @@
         </a-col>
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card  title="用户数(人)" :count="this.user.num" :footer="{label: '近7天日转化会员率:', value: Number(this.user.ratio||'') }">
+            <count-card  title="用户数(人)" :count="Number(this.user.num||'')" :footer="{label: '近7天日转化会员率:', value: Number(this.user.ratio||'') }">
               <template slot="title">
                 <st-help-tooltip id="TBCDA003"></st-help-tooltip>
               </template>
@@ -99,7 +99,7 @@ import BrandUserRing from '@/views/biz-components/stat/brand-user-ring'
 import BrandUserAvgBar from '@/views/biz-components/stat/brand-user-avg-bar'
 import DashboardTabs from '@/views/pages/brand/dashboard#/tabs'
 import CountCard from '@/views/pages/brand/dashboard#/count-card'
-import FunnelVertical from '@/views/biz-components/chart/funnel-vertical'
+import FunnelVertical from '@/views/biz-components/stat/brand-funnel-vertical'
 import { DashboardService } from './dashboard.service'
 import SidebarComponent from './dashboard#/sidebar.component'
 export default {

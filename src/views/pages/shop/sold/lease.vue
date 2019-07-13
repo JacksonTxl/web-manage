@@ -31,7 +31,8 @@
     </st-search-panel>
     <div :class="basic('content')">
       <div :class="basic('content-batch')">
-          <st-button type="primary">批量导出</st-button>
+        <!-- NOTE: 导出 -->
+          <!-- <st-button type="primary">批量导出</st-button> -->
       </div>
       <div :class="basic('table-select-info')">
           <st-icon type="weibo" />

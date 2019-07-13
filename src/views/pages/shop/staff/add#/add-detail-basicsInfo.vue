@@ -233,8 +233,8 @@ export default {
 
       treeExpandedKeys: [],
       value: undefined,
-      id_type: '',
-      choosed_country_id: ''
+      id_type: 1,
+      country_code_id: 37
     }
   },
   mounted() {

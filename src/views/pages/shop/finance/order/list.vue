@@ -42,8 +42,9 @@
     </st-search-panel>
 
     <div :class="basic('content')">
-      <div :class="basic('content-batch')" v-if="auth.export" class="mg-b16">
-          <st-button type="primary" :disabled="isSelectedDisabled">批量导出</st-button>
+      <div :class="basic('content-batch')" class="mg-b16">
+        <!-- NOTE: 导出 -->
+          <!-- <st-button type="primary" v-if="auth.export" :disabled="isSelectedDisabled">批量导出</st-button> -->
       </div>
       <st-table
       :scroll="{x:1840}"
