@@ -540,7 +540,7 @@ export default {
             // 调用优惠券列表
             this.fetchCouponList()
             // 调用获取商品原价
-            if (this.info.sale_model === 1 && this.info.price_model === 2 && !this.form.getFieldValue('coursePrice') && this.form.getFieldValue('coursePrice') !== 0) {
+            if (this.info.sale_model === 1 && !this.form.getFieldValue('coursePrice') && this.form.getFieldValue('coursePrice') !== 0) {
               return
             }
             this.getOrderPrice()
