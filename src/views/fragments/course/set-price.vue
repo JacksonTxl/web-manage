@@ -136,46 +136,38 @@
         </st-form-item>
       </st-form>
     </st-container>
-    <!-- <div>
-      <button @click="check">check</button>
-    </div> -->
   </div>
 </template>
 <script>
 import { remove } from 'lodash-es'
 import SelectCoachLevel from '@/views/fragments/coach/select-coach-level'
 import { UserService } from '@/services/user.service'
-import { SetPriceService } from './set-price.service'
 
 export default {
   name: 'SetPrice',
   serviceInject() {
     return {
-      userService: UserService,
-      setPriceService: SetPriceService
+      userService: UserService
     }
   },
   rxState() {
     return {
-      resData: this.setPriceService.resData$,
-      personalCourseEnums: this.userService.personalCourseEnums$
+      personalCourseEnums: this.userService.personalCourseEnums$,
+      brand: this.userService.brand$
     }
-  },
-  components: {
-    SelectCoachLevel
   },
   computed: {
     /**
      *私教课程定价模式 1、教练谈单 2、统一标价
      */
     saleModel() {
-      return this.resData.sale_model
+      return this.brand.saleModel
     },
     /**
      *定价模式 1、教练统一定价 2、教练分级定价
      */
     priceModel() {
-      return this.resData.price_model
+      return this.brand.priceModel
     }
   },
   watch: {
@@ -207,19 +199,14 @@ export default {
   },
   created() {
     // 获取定价模式
-    this.getSetting().subscribe(() => {
-      this.initPriceGradient()
-    })
+    this.initPriceGradient()
   },
   methods: {
     initPriceGradient() {
       this.priceGradient = this.value.length ? this.value : [{
-        level_id: -1,
+        level_id: 0,
         prices: []
       }]
-    },
-    getSetting() {
-      return this.setPriceService.getSetting()
     },
     onChange(e) {
       this.priceSetting = e.target.value
@@ -230,7 +217,7 @@ export default {
     },
     addRecord() {
       const newRecord = {
-        level_id: -1,
+        level_id: 0,
         single_sell: 0,
         single_price: '',
         prices: []
@@ -317,11 +304,10 @@ export default {
         return item
       })
       return priceGradient
-    },
-    check() {
-      const ret = this.inputCheck()
-      console.log(ret, this.priceGradient)
     }
+  },
+  components: {
+    SelectCoachLevel
   }
 }
 </script>

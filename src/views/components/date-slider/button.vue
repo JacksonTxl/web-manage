@@ -43,6 +43,15 @@ export default {
     min() {
       return this.$parent.min
     },
+    rangeFirst() {
+      return this.$parent.rangeFirst
+    },
+    rangeSecond() {
+      return this.$parent.rangeSecond
+    },
+    range() {
+      return this.$parent.range
+    },
     step() {
       return this.$parent.step
     },

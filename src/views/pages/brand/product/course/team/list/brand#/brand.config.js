@@ -16,10 +16,12 @@ export const columns = [
   {
     title: '时长（分钟）',
     dataIndex: 'duration',
+    align: 'right',
     scopedSlots: { customRender: 'duration' }
   },
   {
-    title: '参考课时费',
+    title: '参考课时费（元）',
+    align: 'right',
     dataIndex: 'price'
   },
   {
@@ -30,7 +32,7 @@ export const columns = [
     title: '操作',
     dataIndex: 'action',
     fixed: 'right',
-    width: 180,
+    width: 160,
     scopedSlots: { customRender: 'action' }
   }
 ]
