@@ -28,17 +28,23 @@ export class UpdateStaffPositionService {
   }
   getStaffSalaryBasic() {
     return this.staffApi.getStaffSalaryBasic().pipe(tap(res => {
-      this.salaryBasic$.commit(() => res.basic_templates)
+      this.salaryBasic$.commit(() => {
+        return [{ id: 0, name: '请选择' }, ...res.basic_templates]
+      })
     }))
   }
   getStaffSalarySale() {
     return this.staffApi.getStaffSalarySale().pipe(tap(res => {
-      this.salarySale$.commit(() => res.sale_templates)
+      this.salarySale$.commit(() => {
+        return [{ id: 0, name: '请选择' }, ...res.sale_templates]
+      })
     }))
   }
   getStaffSalaryCourse() {
     return this.staffApi.getStaffSalaryCourse().pipe(tap(res => {
-      this.salaryCourse$.commit(() => res.course_templates)
+      this.salaryCourse$.commit(() => {
+        return [{ id: 0, name: '请选择' }, ...res.course_templates]
+      })
     }))
   }
   // 员工更改职位回显

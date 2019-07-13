@@ -471,6 +471,13 @@ export class StaffApi extends Api {
   transferBrand(params: TransferBrandInput) {
     return this.http.put(`/v1/staff/brand/transfer`, { params })
   }
+  // 修改开通系统权限字段
+  updatepermission(id: Number, params: PermissionInput) {
+    return this.http.put(`/v1/staff/brand/permission/${id}`, { params })
+  }
+}
+export interface PermissionInput {
+  is_permission: number
 }
 export interface TransferBrandInput {
   ids: number[]

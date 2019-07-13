@@ -1,7 +1,7 @@
 import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 
-import { StaffApi, RePasswordInput } from '@/api/v1/staff'
+import { StaffApi, RePasswordInput, PermissionInput } from '@/api/v1/staff'
 import { tap } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
 
@@ -39,6 +39,18 @@ export class RePasswordService {
    */
   rePassword(params: RePasswordInput) {
     return this.staffApi.rePassword(params).pipe(tap(res => {
+      this.msg.success({
+        content: '修改密码成功'
+      })
+    }))
+  }
+  /**
+   *
+   * @param params
+   * 设置账号权限
+   */
+  updatepermission(id: Number, params: PermissionInput) {
+    return this.staffApi.updatepermission(id, params).pipe(tap(res => {
       this.msg.success({
         content: '修改密码成功'
       })

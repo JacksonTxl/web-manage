@@ -12,7 +12,7 @@ export class RuleConfig {
   // 登录账号
   get name() {
     // eslint-disable-next-line
-    let reg = '/^[A-Za-z0-9\_]{6,15}$/'
+    let reg = new RegExp(/^[A-Za-z0-9\_]{6,15}$/)
     return ['name', {
       rules: [
         {
@@ -20,7 +20,7 @@ export class RuleConfig {
           message: '请输入登录账户'
         },
         {
-          pattern: new RegExp(reg),
+          pattern: reg,
           message: '请输入6~15个字符'
         }
       ]
