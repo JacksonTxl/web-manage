@@ -73,8 +73,8 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
         NProgressService,
         HotReleaseService,
         TokenService,
-        TitleService,
         UserService,
+        TitleService,
         AuthService,
         RouteService
       ]

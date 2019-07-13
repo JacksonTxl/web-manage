@@ -58,7 +58,7 @@ export class UserService {
   menus$ = new Computed<any[]>(this.menuData$.pipe(pluck('menus')))
   favoriteMenu$ = new Computed(this.menuData$.pipe(pluck('favorite')))
   firstMenu$ = new Computed(this.menus$.pipe(map(menus => menus[0])))
-  defaultRedirect$ = new State<string>('brand')
+  appMode$ = new State<string>('brand')
   // 枚举对象
   enums$ = new State({})
   // 禁用的 tooltips
