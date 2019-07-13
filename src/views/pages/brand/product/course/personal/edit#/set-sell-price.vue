@@ -37,6 +37,10 @@
             <a-radio :value="2">售卖场馆自主定价</a-radio>
           </a-radio-group>
         </st-form-item>
+      </a-col>
+    </a-row>
+    <a-row :gutter="8">
+      <a-col :lg="22" :offset="1">
         <!-- 单节预约 -->
         <st-form-item>
           <template slot="label">
@@ -108,7 +112,8 @@ export default {
     return {
       loading: this.addService.loading$,
       personalCourseEnums: user.personalCourseEnums$,
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      brand: this.userService.brand$
     }
   },
   props: {
@@ -213,7 +218,7 @@ export default {
         }
       }
       if (!checkGradient(this.priceGradient)) {
-        // return false
+        return false
       }
       return true
     },
