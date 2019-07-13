@@ -48,7 +48,7 @@ export default {
         forceFit: true,
         // svg阴影比较符合预期
         renderer: 'svg',
-        padding: [16, 16, 32, 20],
+        padding: [16, 16, 32, 'auto'],
         height: this.height
       })
       this.chart.source(this.dv, {
@@ -58,7 +58,6 @@ export default {
         },
         value: {
           formatter: toKFilter,
-          tickCount: 4,
           min: 0
         }
       })

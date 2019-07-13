@@ -214,6 +214,7 @@ export default {
 
     // 优惠券名称
     coupon_name_validator(rule, value, callback) {
+      console.log('coupon_name_validator')
       if (!value) {
         // eslint-disable-next-line
         callback('请填写优惠券名称')
@@ -227,12 +228,14 @@ export default {
     },
     // 面额
     price_validator(rule, value, callback) {
+      console.log('price_validator', value)
+      let price = value + ''
       if (!value) {
         // eslint-disable-next-line
         callback('请填写优惠券面额')
       } else {
-        let value1 = value.split('.')[0]
-        let value2 = value.split('.')[1] || 0
+        let value1 = price.split('.')[0]
+        let value2 = price.split('.')[1] || 0
         let reg1 = new RegExp(/^[1-9]\d{0,3}$/)
         let reg2 = new RegExp(/^[0-9]\d{0,1}$/)
         if (reg1.test(value1) && reg2.test(value2)) {
@@ -246,6 +249,7 @@ export default {
     },
     // 使用门槛
     use_type_validator(rule, value, callback) {
+      console.log('use_type_validator')
       if (!value) {
         // eslint-disable-next-line
         callback('请选择使用条件')
@@ -256,12 +260,13 @@ export default {
     },
     // 满多少使用
     full_price_validator(rule, value, callback) {
+      console.log('full_price_validator')
       let couponPirce = +this.form.getFieldValue('price') || 0
       let fullPirce = +value
       if (!fullPirce && this.form.getFieldValue('use_type') === '2') {
         // eslint-disable-next-line
         callback('请填写使用条件')
-      } else if (couponPirce >= fullPirce) {
+      } else if (this.form.getFieldValue('use_type') === '2' && (couponPirce >= fullPirce)) {
         // eslint-disable-next-line
         callback('满减门槛不能低于优惠券面额')
       } else {
@@ -271,6 +276,7 @@ export default {
     },
     // 发放数量
     number_validator(rule, value, callback) {
+      console.log('number_validator')
       if (!value) {
         // eslint-disable-next-line
         callback('请填写发放数量')
@@ -281,6 +287,7 @@ export default {
     },
     // 使用有效期
     valid_days_validator(rule, value, callback) {
+      console.log('valid_days_validator')
       if (!value) {
         // eslint-disable-next-line
         callback('请填写使用期限')
@@ -291,6 +298,7 @@ export default {
     },
     // 每人是否限领
     is_limit_validator(rule, value, callback) {
+      console.log('is_limit_validator')
       if (!value) {
         // eslint-disable-next-line
         callback('请选择是否限制领用')
@@ -301,6 +309,7 @@ export default {
     },
     // 每人限领数量 setFieldsValue
     person_limit_validator(rule, value, callback) {
+      console.log('person_limit_validator')
       if (!value && this.form.getFieldValue('is_limit') === '2') {
         // eslint-disable-next-line
         callback('请输入每人限领数量')
@@ -330,10 +339,14 @@ export default {
       })
     },
     // 保存
-    onSubmit() {
+    onSubmit(e) {
+      e.preventDefault()
+      console.log('onSubmit')
       this.form.validateFields((err, values) => {
+        console.log('validateFields', err)
         if (!err) {
           let params = {}
+          console.log('1')
           if (this.isEditMode) {
             params.id = this.$route.query.id
             params.before_number = this.info.number

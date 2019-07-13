@@ -11,8 +11,8 @@
         <st-input-number placeholder="请输入最大容纳人数，不填无限制" v-decorator="formRules.containNumber"/>
       </st-form-item>
     </st-form>
-    <div class="ta-c">
-      <st-button type="primary" @click="onSubmit">保存</st-button>
+    <div class="ta-r">
+      <st-button type="primary" :loading="loading.add" @click="onSubmit">保存</st-button>
     </div>
   </st-modal>
 </template>

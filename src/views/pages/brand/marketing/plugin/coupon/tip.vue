@@ -57,7 +57,7 @@ export default {
       this.$modalRouter.push({
         name: 'brand-marketing-poster',
         props: {
-          id: this.$route.query.id,
+          id: String(this.$route.query.id),
           type: 1
         },
         on: {

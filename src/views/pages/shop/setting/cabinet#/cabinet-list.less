@@ -7,6 +7,32 @@
     box-shadow: 0 0 10px 0 rgba(56, 62, 68, 0.1);
     border-radius: 4px;
     .mg-b(16px);
+    &::before {
+      content: '';
+      .pos-a;
+      .s(100%, 100%);
+      .pd-l(4px);
+      border: 1px solid @primary-color;
+      border-radius: 4px;
+      left: -4px;
+      top: 0;
+      opacity: 0;
+      transition: opacity .68s;
+    }
+    &:hover {
+      &::before {
+        opacity: 1;
+      }
+    }
+  }
+  &__item-edit {
+    .bg(#EBEFFF);
+    border-radius: 2px;
+    .h(22px);
+    .lh(22px);
+    .pd(0 5px);
+    .fz(14px);
+    .c(@primary-color);
   }
   &__item-num {
     .fz(16px);
@@ -19,7 +45,7 @@
   }
   &__action {
     .pos-a;
-    right: 8px;
-    bottom: 8px;
+    right: 10px;
+    bottom: 4px;
   }
 }

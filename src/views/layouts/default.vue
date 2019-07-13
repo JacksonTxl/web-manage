@@ -42,10 +42,10 @@
       </div>
       <div class="layout-default-body__personal">
         <!-- <a-badge dot>
-            <st-icon type="home" class="layout-default-body__icon"/>
-          </a-badge> -->
+          <st-icon type="home" class="layout-default-body__icon"/>
+        </a-badge> -->
         <a-dropdown :trigger="['click']" placement="bottomRight">
-          <div>
+          <div class="layout-default-body__top-item">
             <st-icon type="square" class="layout-default-body__icon"/>
           </div>
           <div slot="overlay" class="layout-default-body__fast-entry">
