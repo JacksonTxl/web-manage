@@ -13,7 +13,6 @@ export const columns = () => {
     {
       title: '有效期',
       dataIndex: 'num',
-      align: 'right',
       scopedSlots: { customRender: 'num' }
     },
     {

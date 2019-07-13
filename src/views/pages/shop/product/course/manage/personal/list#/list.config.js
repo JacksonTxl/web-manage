@@ -11,6 +11,7 @@ export const columns = [
   {
     title: '时长（分钟）',
     sorter: true,
+    align: 'right',
     dataIndex: 'duration'
   },
   {
@@ -22,6 +23,7 @@ export const columns = [
   {
     title: '授课教练数',
     dataIndex: 'coaches',
+    align: 'right',
     sorter: true,
     scopedSlots: { customRender: 'coaches' }
   },
@@ -39,7 +41,7 @@ export const columns = [
     title: '操作',
     dataIndex: 'action',
     fixed: 'right',
-    width: 180,
+    width: 160,
     scopedSlots: { customRender: 'action' }
   }
 ]

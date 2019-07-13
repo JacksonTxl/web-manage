@@ -25,7 +25,6 @@ export const columns = () => {
     {
       title: '有效期/有效次数',
       dataIndex: 'time_gradient',
-      align: 'right',
       scopedSlots: { customRender: 'time_gradient' }
     },
     {
