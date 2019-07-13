@@ -7,9 +7,9 @@
       <a-row :gutter="16" :class="bCount()">
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card title="今日营收额(元)" :count="Number(this.revenue.num||'')" :footer="{label: '近7天日均营收额:', value: Number(this.revenue.avg||'') }" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
+            <count-card title="今日营收额(元)" :count="this.revenue.num" :footer="{label: '近7天日均营收额:', value: Number(this.revenue.avg||'') }" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
               <template slot="title">
-                <st-help-tooltip id="TBCDA001"></st-help-tooltip>
+                <st-help-tooltip id="TBSDA001"></st-help-tooltip>
               </template>
               <brand-simple-line :data="this.revenue.chart | lineFilter"></brand-simple-line>
             </count-card>
@@ -17,9 +17,9 @@
         </a-col>
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card title="今日订单数(单)" :count="Number(this.order.num||'')" :footer="{label: '近7天日均订单数:', value: Number(this.order.avg||'') }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
+            <count-card title="今日订单数(单)" :count="this.order.num" :footer="{label: '近7天日均订单数:', value: Number(this.order.avg||'') }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
               <template slot="title">
-                <st-help-tooltip id="TBCDA002"></st-help-tooltip>
+                <st-help-tooltip id="TBSDA002"></st-help-tooltip>
               </template>
               <brand-simple-line color="#00B4BC" unit="单" :data="this.order.chart | lineFilter"></brand-simple-line>
             </count-card>
@@ -29,7 +29,7 @@
           <div :class="bCount('box')">
             <count-card title="今日客流量(人)" :count="this.visit.num" :footer="{label: '近7天日均客流量:', value: Number(this.visit.avg||'') }">
               <template slot="title">
-                <st-help-tooltip id="TBCDA004"></st-help-tooltip>
+                <st-help-tooltip id="TBSDA004"></st-help-tooltip>
               </template>
               <brand-simple-line color="#55BFA3" unit="人"  :data="this.visit.chart | lineFilter"></brand-simple-line>
             </count-card>
@@ -37,9 +37,9 @@
         </a-col>
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card  title="用户数(人)" :count="Number(this.user.num||'')" :footer="{label: '近7天日转化会员率:', value: Number(this.user.ratio||'') }">
+            <count-card  title="用户数(人)" :count="this.user.num" :footer="{label: '近7天日转化会员率:', value: Number(this.user.ratio||'') }">
               <template slot="title">
-                <st-help-tooltip id="TBCDA003"></st-help-tooltip>
+                <st-help-tooltip id="TBSDA003"></st-help-tooltip>
               </template>
               <brand-simple-bar color="#58CC99" class="mg-t40" :data="this.user.chart | barFilter"></brand-simple-bar>
             </count-card>
@@ -49,6 +49,9 @@
       <a-row :class="b('linebox')" class="mg-t16 bg-white">
         <a-col :span="24">
           <dashboard-tabs @change="onChangeTabs">
+            <template v-slot:userTitle>
+              <st-help-tooltip id="TBSDA005"></st-help-tooltip>
+            </template>
             <template v-slot:user>
               <div class="mg-t8 mg-l32 user-chart-box">
                 <div class="funnel-vertical">
@@ -100,29 +103,29 @@ import BrandUserAvgBar from '@/views/biz-components/stat/brand-user-avg-bar'
 import DashboardTabs from '@/views/pages/brand/dashboard#/tabs'
 import CountCard from '@/views/pages/brand/dashboard#/count-card'
 import FunnelVertical from '@/views/biz-components/stat/brand-funnel-vertical'
-import { DashboardService } from './dashboard.service'
-import SidebarComponent from './dashboard#/sidebar.component'
+import { StudiodService } from './studio.service'
+import SidebarComponent from '../dashboard#/sidebar.component'
 export default {
   name: 'Dashboard',
   serviceInject() {
     return {
-      dashBoardService: DashboardService
+      studioService: StudiodService
     }
   },
   rxState() {
-    console.log(this.dashBoardService)
+    console.log(this.studioService)
     return {
-      top: this.dashBoardService.top$,
-      userFunnel: this.dashBoardService.userFunnel$,
-      userChartData: this.dashBoardService.user$,
-      avg: this.dashBoardService.avg$,
-      entry: this.dashBoardService.entry$,
-      marketing: this.dashBoardService.marketing$,
-      marketingFunnel: this.dashBoardService.marketingFunnel$
+      top: this.studioService.top$,
+      userFunnel: this.studioService.userFunnel$,
+      userChartData: this.studioService.user$,
+      avg: this.studioService.avg$,
+      entry: this.studioService.entry$,
+      marketing: this.studioService.marketing$,
+      marketingFunnel: this.studioService.marketingFunnel$
     }
   },
   bem: {
-    b: 'page-dashboard',
+    b: 'page-dashboard-studio',
     bCount: 'page-dashboard-count',
     bAdv: 'page-dashboard-adv'
   },
@@ -181,8 +184,8 @@ export default {
   },
   methods: {
     onChangeTabs(query) {
-      this.dashBoardService.getUser(query).subscribe()
-      this.dashBoardService.getMarketing(query).subscribe()
+      this.studioService.getUser(query).subscribe()
+      this.studioService.getMarketing(query).subscribe()
     },
     reload() {
       this.dataSimpleBar = {

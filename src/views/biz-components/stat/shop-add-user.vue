@@ -94,8 +94,8 @@ export default {
         .size(2)
         .style({
           shadowColor: '#4169F7',
-          shadowBlur: 30,
-          shadowOffsetY: 6
+          shadowBlur: 20,
+          shadowOffsetY: 4
         })
         .color(this.color)
 

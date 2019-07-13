@@ -7,7 +7,7 @@
       <a-row :gutter="16" :class="bCount()">
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card title="今日营收额(元)" :count="Number(this.revenue.num||'')" :footer="{label: '近7天日均营收额:', value: Number(this.revenue.avg||'') }" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
+            <count-card title="今日营收额(元)" :count="this.revenue.num" :footer="{label: '近7天日均营收额:', value: Number(this.revenue.avg||'') }" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
               <template slot="title">
                 <st-help-tooltip id="TBCDA001"></st-help-tooltip>
               </template>
@@ -17,7 +17,7 @@
         </a-col>
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card title="今日订单数(单)" :count="Number(this.order.num||'')" :footer="{label: '近7天日均订单数:', value: Number(this.order.avg||'') }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
+            <count-card title="今日订单数(单)" :count="this.order.num" :footer="{label: '近7天日均订单数:', value: Number(this.order.avg||'') }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
               <template slot="title">
                 <st-help-tooltip id="TBCDA002"></st-help-tooltip>
               </template>
@@ -37,7 +37,7 @@
         </a-col>
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card  title="用户数(人)" :count="Number(this.user.num||'')" :footer="{label: '近7天日转化会员率:', value: Number(this.user.ratio||'') }">
+            <count-card  title="用户数(人)" :count="this.user.num" :footer="{label: '近7天日转化会员率:', value: Number(this.user.ratio||'') }">
               <template slot="title">
                 <st-help-tooltip id="TBCDA003"></st-help-tooltip>
               </template>
@@ -100,29 +100,29 @@ import BrandUserAvgBar from '@/views/biz-components/stat/brand-user-avg-bar'
 import DashboardTabs from '@/views/pages/brand/dashboard#/tabs'
 import CountCard from '@/views/pages/brand/dashboard#/count-card'
 import FunnelVertical from '@/views/biz-components/stat/brand-funnel-vertical'
-import { DashboardService } from './dashboard.service'
-import SidebarComponent from './dashboard#/sidebar.component'
+import { ClubService } from './club.service'
+import SidebarComponent from '../dashboard#/sidebar.component'
 export default {
   name: 'Dashboard',
   serviceInject() {
     return {
-      dashBoardService: DashboardService
+      clubService: ClubService
     }
   },
   rxState() {
-    console.log(this.dashBoardService)
+    console.log(this.clubService)
     return {
-      top: this.dashBoardService.top$,
-      userFunnel: this.dashBoardService.userFunnel$,
-      userChartData: this.dashBoardService.user$,
-      avg: this.dashBoardService.avg$,
-      entry: this.dashBoardService.entry$,
-      marketing: this.dashBoardService.marketing$,
-      marketingFunnel: this.dashBoardService.marketingFunnel$
+      top: this.clubService.top$,
+      userFunnel: this.clubService.userFunnel$,
+      userChartData: this.clubService.user$,
+      avg: this.clubService.avg$,
+      entry: this.clubService.entry$,
+      marketing: this.clubService.marketing$,
+      marketingFunnel: this.clubService.marketingFunnel$
     }
   },
   bem: {
-    b: 'page-dashboard',
+    b: 'page-dashboard-club',
     bCount: 'page-dashboard-count',
     bAdv: 'page-dashboard-adv'
   },
@@ -181,8 +181,8 @@ export default {
   },
   methods: {
     onChangeTabs(query) {
-      this.dashBoardService.getUser(query).subscribe()
-      this.dashBoardService.getMarketing(query).subscribe()
+      this.clubService.getUser(query).subscribe()
+      this.clubService.getMarketing(query).subscribe()
     },
     reload() {
       this.dataSimpleBar = {
