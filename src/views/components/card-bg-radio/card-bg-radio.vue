@@ -7,7 +7,7 @@
     <div :class="cardRadio('image')">
       <img
         v-if="radioIndex!==0&&cardBgList[bgIndex]"
-        :src="cardBgList[bgIndex].image_url"
+        :src="cardBgList[bgIndex].image_url | imgFilter({w:192,h:108})"
         width="192"
         height="108"
         alt="会员卡背景"
@@ -67,27 +67,27 @@ export default {
       card_bg_list: [
         {
           image_id: 0,
-          image_key: 'image/VZ0RGBwTX7FA1yKb.png',
+          image_key: 'image/default/bg-card-selection-1.png',
           image_url:
-            'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/VZ0RGBwTX7FA1yKb.png'
+            'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-1.png'
         },
         {
           image_id: 0,
-          image_key: 'image/oRoVYhYc26wVMKb9.png',
+          image_key: 'image/default/bg-card-selection-2.png',
           image_url:
-            'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/oRoVYhYc26wVMKb9.png'
+            'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-2.png'
         },
         {
           image_id: 0,
-          image_key: 'image/CHrzOBv71D5_rK1i.png',
+          image_key: 'image/default/bg-card-selection-3.png',
           image_url:
-            'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/CHrzOBv71D5_rK1i.png'
+            'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-3.png'
         },
         {
           image_id: 0,
-          image_key: 'image/pAc7WsQ0BFhFBzGK.png',
+          image_key: 'image/default/bg-card-selection-4.png',
           image_url:
-            'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/pAc7WsQ0BFhFBzGK.png'
+            'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-4.png'
         }
       ],
       // 备份
@@ -97,8 +97,8 @@ export default {
       // 选择的cardBg
       cardBg: {
         image_id: 0,
-        image_key: 'image/VZ0RGBwTX7FA1yKb.png',
-        image_url: 'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/VZ0RGBwTX7FA1yKb.png',
+        image_key: 'image/default/bg-card-selection-1.png',
+        image_url: 'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-1.png',
         index: 1
       },
       // 自定义cardBg
