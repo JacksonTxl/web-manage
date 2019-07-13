@@ -85,6 +85,7 @@ export default {
         key: 'name',
         value: 'value'
       })
+      console.log(this.dv)
     },
     initChart() {
       this.chart = new Chart({

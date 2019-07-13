@@ -1,7 +1,7 @@
 <template>
   <div :class="b()" :gutter="24">
     <div :class="bCount()" :lg="18">
-      <st-panel title="概况">
+      <st-panel :class="b('shadow')" title="概况">
         <div slot="actions">
           <!-- 最近更新时间：2019-04-02 12:38 <a :class="bCount('refresh')" href="javascript:viod(0);" @click="refresh"><st-icon type="switch"></st-icon></a> -->
         </div>
@@ -96,14 +96,14 @@
           </a-col>
         </a-row>
       </st-panel>
-      <st-panel class="mg-t16">
+      <st-panel :class="b('shadow')" class="mg-t16">
         <div slot="title">
           <recent-radio-group @change="revenueRecentChange"></recent-radio-group>
         </div>
         <a-row>
           <a-col :span="14">
             <st-t3> 营收趋势</st-t3>
-            <p :class="bCount('amount')">合计：<span class="font-number">{{revenueSummary.length?revenueSummary[6].value:'--'}}</span>元</p>
+            <p :class="bCount('amount')">合计：<span class="font-number">{{revenueSum?revenueSum:'--'}}</span>元</p>
             <shop-revenue-line v-if="revenueDaily.length" :data="revenueDaily" :fields="['会员卡','私教课','团体课','课程包','云店','其他','总营收']"></shop-revenue-line>
             <img v-else :class="b('entry-course-img')" :src="inoutNumImg" />
           </a-col>
@@ -114,7 +114,7 @@
           </a-col>
         </a-row>
       </st-panel>
-      <st-panel class="mg-t16">
+      <st-panel :class="b('shadow')" class="mg-t16">
         <div slot="title">
           <recent-radio-group @change="newMemberRecentChange"></recent-radio-group>
         </div>
@@ -153,7 +153,7 @@
           </a-col>
         </a-row>
       </st-panel>
-      <st-panel class="mg-t16">
+      <st-panel :class="b('shadow')" class="mg-t16">
         <div slot="title">
           <recent-radio-group @change="courseRecentChange"></recent-radio-group>
         </div>
@@ -170,7 +170,7 @@
           </a-col>
         </a-row>
       </st-panel>
-      <st-panel class="mg-t16">
+      <st-panel :class="b('shadow')" class="mg-t16">
         <div slot="title">
           <recent-radio-group @change="inoutRecentChange"></recent-radio-group>
         </div>
@@ -236,6 +236,7 @@ export default {
       top: this.studioComponentService.top$,
       revenueDaily: this.studioComponentService.revenueDaily$,
       revenueSummary: this.studioComponentService.revenueSummary$,
+      revenueSum: this.studioComponentService.revenueSum$,
       courseDaily: this.studioComponentService.courseDaily$,
       courseSummary: this.studioComponentService.courseSummary$,
       inoutNum: this.studioComponentService.inoutNum$,

@@ -46,12 +46,6 @@ export default {
             return row
           }
         })
-        .transform({
-          type: 'sort',
-          callback(a, b) {
-            return a.value - b.value
-          }
-        })
     },
     initChart() {
       this.chart = new Chart({
