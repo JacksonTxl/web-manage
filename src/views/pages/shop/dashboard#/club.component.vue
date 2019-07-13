@@ -8,22 +8,22 @@
         <a-row :class="bCount('title')">
           <a-col :lg="4">
           </a-col>
-          <a-col :lg="5">
+          <a-col :lg="5" style="position:relative;left:-16px;">
+            <st-help-tooltip id="TSNM001"></st-help-tooltip>
             新增入会用户(人)
             <span :class="[bCount('topIcon'), 'user']"><img :src="topIconUser" /></span>
-            <st-help-tooltip id="TSNM001"></st-help-tooltip>
           </a-col>
           <a-col :lg="5">
             营收额(元)
             <span :class="[bCount('topIcon'), 'money']"><img :src="topIconMoney" /></span>
           </a-col>
-          <a-col :lg="5">
+          <a-col :lg="5" style="position:relative;left:-16px;">
+            <st-help-tooltip id="TSNM002"></st-help-tooltip>
             总消课(节)
             <span :class="[bCount('topIcon'), 'price']"><img :src="topIconPrice" /></span>
-            <st-help-tooltip id="TSNM002"></st-help-tooltip>
           </a-col>
           <a-col :lg="5">
-            客流量(人)
+            客流量(人次)
             <span :class="[bCount('topIcon'), 'flow']"><img :src="topIconFlow" /></span>
           </a-col>
         </a-row>
