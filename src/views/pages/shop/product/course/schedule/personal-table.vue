@@ -98,7 +98,6 @@ export default {
       return weekList[index]
     },
     timingFilter(val) {
-      console.log('timingFilter', val)
       if (val.length) {
         return `${val[0].start_time} ~ ${val[0].end_time}`
       } else {
