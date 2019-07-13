@@ -6,7 +6,7 @@
           <a-date-picker style="width:100%" v-decorator="rules.employment_time"/>
         </st-form-item>
         <st-form-item label="擅长的项目">
-          <a-select mode="multiple" placeholder="请选择擅长的项目" v-decorator="rules.specialty_id">
+          <a-select mode="multiple" placeholder="请选择擅长的项目" v-decorator="rules.specialty_id" @change="onChangeSpecialtyId">
             <a-select-option :key="item.id" :value="item.id" v-for="item in staffSpecialty">
               {{ item.specialty_name }}
             </a-select-option>
@@ -94,6 +94,11 @@ export default {
     this.setData(this.data)
   },
   methods: {
+    onChangeSpecialtyId(v) {
+      if (v.length > 10) {
+        v.pop()
+      }
+    },
     check(e) {
       this.checked = e.target.checked
     },
@@ -103,8 +108,8 @@ export default {
     setData(obj) {
       this.form.setFieldsValue({
         employment_time: obj.employment_time ? moment(obj.employment_time) : moment(),
-        specialty_id: obj.specialty_id,
-        introduction: obj.introduction
+        introduction: obj.introduction,
+        specialty_id: obj.specialty_id
       })
       this.image_personal = obj.image_personal
       obj.is_show ? this.checked = true : this.checked = false

@@ -96,6 +96,11 @@ export default {
     this.setData(this.data)
   },
   methods: {
+    onChangeSpecialtyId(v) {
+      if (v.length > 10) {
+        v.pop()
+      }
+    },
     onClickBack() {
       this.$emit('back', 2)
     },
@@ -111,8 +116,8 @@ export default {
     setData(obj) {
       this.form.setFieldsValue({
         employment_time: moment(obj.employment_time),
-        specialty_id: obj.specialty_id,
-        introduction: obj.introduction
+        introduction: obj.introduction,
+        specialty_id: obj.specialty_id
       })
       this.fileList = obj.image_personal
       obj.is_show ? this.checked = true : this.checked = false
@@ -140,9 +145,6 @@ export default {
       data.certification_name = this.coachInfoData.certification_name
       data.is_show = Number(data.is_show)
       data.image_personal = this.fileList
-
-      // 记着删 擅长的项目不知道什么鬼
-      data.specialty_id = [1, 2]
       this.service.updateCoachInfo(this.data.staff_id, data).subscribe(res => {
         this.$router.push({ name: 'shop-staff-list' })
       })
