@@ -13,19 +13,25 @@
           placeholder="搜索门店"
           @search="onSearchShop"
         />
-      </section> -->
+      </section>-->
       <section class="mg-t24">
-        <ul class="drawer-shops">
-          <li class="drawer-shops__item cursor-pointer" v-for="(shop, index) in shopList" :key="index"
-            @click="onSwitchShop(shop)">
-            <img class="drawer-shops__img" :src="shop.image_url" alt="店招">
-            <div>
-              <div class="drawer-shops__name">{{shop.shop_name}}</div>
-              <div class="drawer-shops__address">{{shop.address}}</div>
-              <div class="drawer-shops__tel">123</div>
-            </div>
-          </li>
-        </ul>
+        <a-spin :spinning="!!loading.switchShop">
+          <ul class="drawer-shops">
+            <li
+              class="drawer-shops__item cursor-pointer"
+              v-for="(shop, index) in shopList"
+              :key="index"
+              @click="onSwitchShop(shop)"
+            >
+              <img class="drawer-shops__img" :src="shop.image_url" alt="店招" />
+              <div>
+                <div class="drawer-shops__name">{{shop.shop_name}}</div>
+                <div class="drawer-shops__address">{{shop.address}}</div>
+                <div class="drawer-shops__tel">123</div>
+              </div>
+            </li>
+          </ul>
+        </a-spin>
       </section>
       <section>
         <a class="drawer-switch-shop__to-brand st-link-secondary" @click="switchBackToBrand">返回品牌</a>
@@ -47,13 +53,14 @@ export default {
   serviceInject() {
     return {
       messageService: MessageService,
-      switchService: SwitchService,
-      userService: UserService
+      switchService: SwitchService
     }
   },
   rxState() {
+    const { shopList$, loading$ } = this.switchService
     return {
-      shopList: this.switchService.shopList$
+      shopList: shopList$,
+      loading: loading$
     }
   },
   data() {
@@ -85,18 +92,14 @@ export default {
       const params = {
         shop_id: shop.shop_id
       }
-      this.switchService.switchShop(params).subscribe(() => this.onSwitchSuccess('shop'))
+      this.switchService
+        .switchShop(params)
+        .subscribe(this.onClose)
     },
     switchBackToBrand() {
-      this.switchService.switchBackToBrand().subscribe(() => this.onSwitchSuccess('brand'))
-    },
-    onSwitchSuccess(type) {
-      this.onClose()
-      this.userService.reload().subscribe(() => {
-        this.$router.push({
-          name: type
-        })
-      })
+      this.switchService
+        .switchBackToBrand()
+        .subscribe(this.onClose)
     }
   }
 }

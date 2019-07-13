@@ -189,12 +189,6 @@ export class UserService {
     )
   }
   /**
-   * 刷新菜单、用户信息等
-   */
-  reload() {
-    return forkJoin([this.getMenuData(), this.getUser()])
-  }
-  /**
    * 添加到常用菜单
    * @param id
    */
