@@ -27,7 +27,7 @@ export const toKFilter = v => {
 /**
  * 千分位过滤器
  */
-export const thousandsFilter = (v, fixed = 2) => {
+export const thousandsFilter = (v, fixed = 1) => {
   const result = Number(v)
     .toFixed(fixed)
     .replace(/\B(?=(?:\d{3})+\b)/g, ',')
