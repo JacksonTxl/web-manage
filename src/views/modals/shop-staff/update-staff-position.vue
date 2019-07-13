@@ -20,7 +20,7 @@
         </a-select>
         <staff-modal-tips :list="tips" :canNotDelete="!operate" v-if="!canDeleteIdentity && tips.length"></staff-modal-tips>
       </st-form-item>
-      <st-form-item label="教练等级" :required="coach_level_required">
+      <st-form-item label="教练等级" required v-if="coach_level_required">
         <a-select v-decorator="['coach_level_id', {rule: [{required: coach_level_required, message: '请选择教练等级'}]}]" placeholder="请选择教练等级">
           <a-select-option  :value="item.id" v-for="item in coachLevelList$" :key="item.id">
             {{item.name}}
