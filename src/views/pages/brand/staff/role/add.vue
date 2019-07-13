@@ -3,7 +3,7 @@
   <st-form :form="form" class="page-role-info__add">
     <a-row class="content">
         <a-col class="brand-list" :span="17">
-          <st-form-item label="角色d名称">
+          <st-form-item label="角色名称">
             <a-input placeholder="请输入角色名称" v-decorator="['name']"></a-input>
           </st-form-item>
         </a-col>
@@ -203,6 +203,7 @@ export default {
             department_ids: this.department_ids
           }
           this.roleService.add(form).subscribe()
+          this.$router.push({ name: 'brand-staff-role' })
         }
       })
     }
