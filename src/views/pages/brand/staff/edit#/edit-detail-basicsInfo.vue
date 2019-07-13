@@ -16,7 +16,7 @@
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact style="top: 0;">
-            <a-select style="width: 20%;" v-decorator="rules.country_code_id">
+            <a-select style="width: 20%;" v-model="country_code_id">
                 <a-select-option v-for="item in codeList" :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
             </a-select>
             <a-input style="width: 80%" v-decorator="rules.phone" placeholder="请输入手机号"/>
@@ -47,7 +47,7 @@
         </st-form-item>
         <st-form-item label="证件">
           <a-input-group compact style="top: 0;">
-            <a-select style="width: 20%;" v-decorator="rules.idtype">
+            <a-select style="width: 20%;" v-model="id_type">
               <template v-for="(item,key) in enums.id_type.value">
                 <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
               </template>
@@ -152,10 +152,9 @@ export default {
       fileList: [],
       faceList: [],
       countryList: [],
-      id_type: 1,
-      choosed_country_id: 37,
+      id_type: '',
+      choosed_country_id: '',
       department: [],
-
       value: '' // 部门选择
     }
   },
@@ -201,10 +200,10 @@ export default {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.album_id = this.data.album_id
       data.department_id = Number(data.department_id)
-      console.log('submit', this.fileList)
-      console.log('submit', this.faceList)
       data.image_avatar = this.fileList[0] || {}
       data.image_face = this.faceList[0] || {}
+      data.country_code_id = this.country_code_id
+      data.id_type = this.id_type
       this.editService.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
         this.$emit('goNext')
         this.$emit('updateStaffInfo')
@@ -218,15 +217,15 @@ export default {
         staff_num: obj.staff_num, // 工号
         sex: obj.sex, // 性别
         id_number: obj.id_number, // 身份证
-        id_type: obj.id_type, // 证件类型
         nature_work: obj.nature_work, // 工作性质
         department_id: String(obj.department_id), // 部门
         role_id: obj.role_id, // 角色
         shop_id: obj.shop_id, // 所属门店
         entry_date: obj.entry_date ? moment(obj.entry_date) : moment(), // 入职时间
-        mail: obj.mail, // 邮箱
-        country_code_id: obj.country_code_id // 手机区号
+        mail: obj.mail // 邮箱
       })
+      this.country_code_id = obj.country_code_id
+      this.id_type = obj.id_type
       this.fileList = Array.isArray(obj.image_avatar) ? obj.image_avatar : []
       this.faceList = Array.isArray(obj.image_face) ? obj.image_face : []
     }
