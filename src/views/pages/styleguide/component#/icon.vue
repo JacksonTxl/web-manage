@@ -16,6 +16,7 @@
       </li>
       <li>
         <st-icon type="wechat" color="red"></st-icon>使用[color]变更颜色
+        <st-icon type='delete' color='blue'></st-icon> 删除
       </li>
       <li>
         <st-icon type="anticon:setting" color="red"></st-icon>使用[anticon:__] ant design自带的图标

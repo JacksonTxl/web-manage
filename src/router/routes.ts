@@ -17,13 +17,17 @@ const routes: any[] = [
   },
   {
     name: 'brand',
-    path: '/brand/',
-    redirect: '/brand/index'
+    path: '/brand',
+    redirect: {
+      name: 'brand-index'
+    }
   },
   {
     name: 'shop',
-    path: '/shop/',
-    redirect: '/shop/index'
+    path: '/shop',
+    redirect: {
+      name: 'shop-index'
+    }
   },
   {
     path: '/brand/product/card/deposit-card/shop-sale-list',

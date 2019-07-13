@@ -4,7 +4,7 @@ import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
 import { tap, pluck, switchMap } from 'rxjs/operators'
 import { TeamScheduleScheduleApi } from '@/api/v1/schedule/team/schedule'
-import { bindCallback } from 'rxjs'
+import moment from 'moment'
 import { MessageService } from '@/services/message.service'
 
 export interface SetState {
@@ -40,13 +40,20 @@ export class TeamScheduleScheduleService {
       res = this.authService.filter(res)
       this.state$.commit(state => {
         state.scheduleTeamCourseList = res.list.map((item: any) => {
+          let end_date = ''
+          if (moment(`${item.start_date} ${item.start_time}`).valueOf() >= moment(`${item.start_date} ${item.end_time}`).valueOf()) {
+            item.plusOne = '+1'
+            end_date = moment(moment(`${item.start_date} ${item.start_time}`).valueOf() + 24 * 60 * 60 * 1000).format('YYYY-MM-DD').valueOf()
+          } else {
+            end_date = item.start_date
+          }
           return { // add new event data
             title: item.course_name,
             groupId: JSON.stringify(item),
             id: item.id,
             auth: item.auth,
             start: `${item.start_date} ${item.start_time}`,
-            end: `${item.start_date} ${item.end_time}`
+            end: `${end_date} ${item.end_time}`
           }
         })
       })

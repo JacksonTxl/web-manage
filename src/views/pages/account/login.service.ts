@@ -21,10 +21,7 @@ export class LoginService extends Store<StaffState> {
     private msg: MessageService
   ) {
     super()
-    this.state$ = new State({
-      name: 'lee',
-      age: 33
-    })
+    this.state$ = new State({})
     this.name$ = new Computed(this.state$.pipe(pluck('name')))
   }
   @Effect()

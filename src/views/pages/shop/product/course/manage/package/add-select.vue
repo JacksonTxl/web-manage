@@ -4,7 +4,7 @@
       <div :class="add('item')" v-for="(i,index) in cardTypeList" :key="index"
         @click="jumpTo(i.url)"
       >
-        <img :src="i.bg" width="328" height="182" :alt="i.title">
+        <img :src="i.bg | imgFilter({w:328,h:182})" width="328" height="182" :alt="i.title">
         <div :class="add('text')">
           <h2 :class="add('title')">{{i.title}}</h2>
           <p :class="add('describe')">{{i.describe}}</p>
@@ -22,19 +22,19 @@ export default {
     return {
       cardTypeList: [
         {
-          bg: require('@/assets/img/bg_add_unlimit_package.png'),
+          bg: `https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-course-package-unlimit.png`,
           title: 'XX课程包（不限课程）',
           describe: '支持会员在有效次数内进入场馆并消耗次数',
           url: 'shop-product-course-manage-package-add-unlimit-package'
         },
         {
-          bg: require('@/assets/img/bg_add_range_package.png'),
+          bg: `https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-course-package-range.png`,
           title: 'XX课程包（指定范围内课程）',
           describe: '支持会员在有效次数内进入场馆并消耗次数',
           url: 'shop-product-course-manage-package-add-range-package'
         },
         {
-          bg: require('@/assets/img/bg_add_fix_package.png'),
+          bg: `https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-course-package-fix.png`,
           title: 'XX课程包（固定课程）',
           describe: '支持会员在有效次数内进入场馆并消耗次数',
           url: 'shop-product-course-manage-package-add-fix-package'
