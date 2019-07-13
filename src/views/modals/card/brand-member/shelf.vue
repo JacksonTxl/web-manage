@@ -23,6 +23,7 @@
             <a-popover
               placement="bottom"
               trigger="click"
+
               :getPopupContainer="trigger => trigger.parentNode"
               v-model="visible"
             >
