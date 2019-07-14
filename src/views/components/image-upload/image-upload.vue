@@ -14,7 +14,7 @@
       <slot name="item-extra" :item="item" :index="index"></slot>
       <div class="st-image-upload__actions">
         <slot name="actions" :item="item" :index="index">
-          <span class="action" @click="onDel(index)">删除</span>
+          <span class="action" @click="onDel(index)">重新上传</span>
         </slot>
       </div>
     </div>

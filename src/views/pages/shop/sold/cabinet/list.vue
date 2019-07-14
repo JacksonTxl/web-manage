@@ -14,19 +14,7 @@
       </div>
       <div :class="basic('select')">
         <span style="width:90px;">起租时间：</span>
-        <a-date-picker
-          format="YYYY-MM-DD"
-          placeholder="开始日期"
-          :showToday="false"
-          v-model="start_time"
-        />
-        &nbsp;~&nbsp;
-        <a-date-picker
-          format="YYYY-MM-DD"
-          placeholder="结束日期"
-          :showToday="false"
-          v-model="end_time"
-        />
+        <st-range-picker :disabledDays="180" :value="selectTime"></st-range-picker>
       </div>
       <div slot="button">
           <st-button type="primary" @click="onSearchNative" :loading="loading.getList">查询</st-button>
@@ -72,6 +60,7 @@ import { ListService } from './list.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
+import StRangePicker from '@/views/components/datetime-picker/range-picker'
 
 export default {
   name: 'PageShopSoldLease',
@@ -109,8 +98,25 @@ export default {
   },
   data() {
     return {
-      start_time: null,
-      end_time: null
+      selectTime: {
+        startTime: {
+          showTime: false,
+          disabledBegin: null,
+          placeholder: '开始日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: ($event) => { }
+        },
+        endTime: {
+          showTime: false,
+          placeholder: '结束日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: ($event) => {}
+        }
+      }
     }
   },
   mounted() {
@@ -124,16 +130,16 @@ export default {
   methods: {
     // 查询
     onSearchNative() {
-      this.query.start_time = this.start_time ? `${this.start_time.format('YYYY-MM-DD')} 00:00:00` : ''
-      this.query.end_time = this.end_time ? `${this.end_time.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.query.start_time = this.selectTime.startTime.value ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.query.end_time = this.selectTime.endTime.value ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 00:00:00` : ''
       this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      this.start_time = this.query.start_time
+      this.selectTime.startTime.value = this.query.start_time
         ? cloneDeep(moment(this.query.start_time))
         : null
-      this.end_time = this.query.end_time
+      this.selectTime.endTime.value = this.query.end_time
         ? cloneDeep(moment(this.query.end_time))
         : null
     },
