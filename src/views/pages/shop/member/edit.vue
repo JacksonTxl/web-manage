@@ -7,9 +7,13 @@
             <a-input placeholder="支持中英文,不超过15个字" v-decorator="rules.member_name" />
           </st-form-item>
           <st-form-item label="性别">
-            <a-select placeholder="请选择" v-decorator="rules.sex" >
-              <a-select-option v-for="(item, index) in staffEnums.sex.value" :key="index" :value="+index">{{item}}</a-select-option>
-            </a-select>
+            <a-radio-group v-decorator="rules.sex">
+              <a-radio
+                v-for="(item, index) in staffEnums.sex.value"
+                :key="index"
+                :value="+index"
+              >{{item}}</a-radio>
+            </a-radio-group>
           </st-form-item>
           <st-form-item label="生日" >
             <a-date-picker style="width:100%" v-decorator="rules.birthday"/>
