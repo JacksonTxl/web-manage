@@ -1,5 +1,5 @@
 <template>
-  <div class="time-picker" @mouseup="onMouseup" @mounseover="onMouseOver" @mousedown="onMouseDown">
+  <div class="time-picker" @mouseup="onMouseup" @mounseover="onMouseOver"  @mouseleave="onMounseLeave" @mousedown="onMouseDown">
     <template  v-for="i in 25">
       <item @change="onChange"  @down="onDown"  :views="views" :isDrag="isDrag" :isEnter="isEnter" :key="i" :time="i - 1"></item>
     </template>
@@ -65,6 +65,9 @@ export default {
     onDown(isEnter) {
       this.isEnter = isEnter
     },
+    onMounseLeave() {
+      console.log('onMounseLeave')
+    },
     onChange(val) {
       this.$set(this.checkArr, val.time, val.isActive)
     },
@@ -75,8 +78,10 @@ export default {
   },
   mounted() {
     this.$nextTick().then(() => {
-      /* jslint evil: true */
-      document.onselectstart = () => 'event.returnValue=false'
+      window.addEventListener('mouseup', () => {
+        console.log('onMouseupdddd')
+        this.isDrag = false
+      })
     })
   }
 }
