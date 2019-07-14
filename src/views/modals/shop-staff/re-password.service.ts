@@ -1,4 +1,4 @@
-import { ShopStaffApi, PutStaffBrandQuitInput, RePasswordInput } from '@/api/v1/staff/staff'
+import { ShopStaffApi, PutStaffBrandQuitInput, RePasswordInput, PermissionInput } from '@/api/v1/staff/staff'
 import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 
