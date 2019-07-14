@@ -28,6 +28,10 @@ interface Brand {
    * 私教课程售卖模式 1、教练谈单 2、统一标价
    */
   saleModel?: number
+  /**
+   * 品牌版本 studio 工作室 club 俱乐部
+   */
+  version?:string
 }
 
 interface Shop {
@@ -137,7 +141,8 @@ export class UserService {
           name: info.brand_name,
           logo: info.brand_logo,
           priceModel: info.price_model,
-          saleModel: info.sale_model
+          saleModel: info.sale_model,
+          version: info.brand_version
         })
         this.SET_USER({
           id: info.staff_id,
