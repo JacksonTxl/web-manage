@@ -183,7 +183,7 @@ export const routeMapConfig = {
     }
   },
   'shop-sold-course-list-package'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '课晨包'
+    routeConfig.meta.title = '课程包'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       course_status: { type: Number, default: -1 },
