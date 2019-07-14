@@ -9,7 +9,9 @@
       <p>{{message}}</p>
       <img :src="url" :class="activeClass"/>
       <div>
-        <st-button block pill type="primary" icon="download" size="large" @click="downloadPoster">{{button}}</st-button>
+        <st-button block pill type="primary" icon="download" size="large" @click="downloadPoster">
+          {{button}}
+        </st-button>
       </div>
     </div>
   </st-modal>
@@ -59,7 +61,7 @@ export default {
   created() {
     if (this.type === 1) {
       this.posterService.serviceInit(this.id).subscribe(() => {
-        this.url = `${this.appConfig.SHS_API_ENV}/saas/poster?token=${this.token}&brand_logo=${this.info.brand_logo}&brand_name=${this.info.brand_name}&price=${this.info.price}&qrcode_url=${this.info.qrcode_url}`
+        this.url = `${this.appConfig.SHS_API_ENV}/saas/poster?token=${this.token}&brand_logo=${this.info.brand_logo}&brand_name=${this.info.brand_name}&price=${this.info.price}&qrcode_url=${this.info.qrcode_url}&quality=100`
       })
     } else if (this.type === 2) {
       this.activeClass = 'qrcode'
@@ -78,6 +80,24 @@ export default {
       a.target = '_blank'
       a.download = 'poster.png'
       a.click()
+
+      // let image = new Image()
+      // // 解决跨域 Canvas 污染问题
+      // image.onload = function() {
+      //   let canvas = document.createElement("canvas");
+      //   canvas.width = image.width;
+      //   canvas.height = image.height;
+      //   let context = canvas.getContext("2d");
+      //   context.drawImage(image, 0, 0, image.width, image.height);
+      //   let url = canvas.toDataURL("image/png"); //得到图片的base64编码数据
+      //   console.log('url', url)
+      //   let a = document.createElement("a"); // 生成一个a元素
+      //   let event = new MouseEvent("click"); // 创建一个单击事件
+      //   a.download = "poster.png"; // 设置图片名称
+      //   a.href = url; // 将生成的URL设置为a.href属性
+      //   a.dispatchEvent(event); // 触发a的单击事件
+      // }
+      // image.src = this.url
     }
   }
 }

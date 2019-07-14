@@ -1,6 +1,6 @@
 <template>
 <div class="page-role-info">
-  <st-form :form="form" class="page-role-info__edit">
+  <st-form :form="form" class="page-role-info__edit" labelWidth="70px">
     <st-form-item label="角色名称">
       <a-input
         placeholder="请输入角色名称"

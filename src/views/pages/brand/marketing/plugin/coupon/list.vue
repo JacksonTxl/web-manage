@@ -160,11 +160,7 @@ export default {
       } else {
         // 未绑定小程序
         this.$modalRouter.push({
-          name: 'brand-marketing-poster',
-          props: {
-            id: record.id,
-            type: 3
-          },
+          name: 'brand-marketing-bind',
           on: {
             success: () => {
               console.log('success')
