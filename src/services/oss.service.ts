@@ -71,7 +71,11 @@ export class OssService extends Api {
         sub.subscribe((val: any) => {
           uploadProgress(val)
         })
-        let resData = { fileKey: `${res.dir}${key}` }
+        let resData = {
+          fileKey: `${res.dir}${key}`,
+          url: URL.createObjectURL(file),
+          host: res.host
+        }
         return put$.pipe(map(val => resData))
       })
     )
