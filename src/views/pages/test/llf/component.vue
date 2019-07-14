@@ -1,9 +1,12 @@
 <template>
   <st-panel app>
     <st-image-upload is-private></st-image-upload>
-    <a v-modal-link="{name:'test-sg'}">test</a>
-    <div class='test-block'>test-block</div>
-    {{auth}}
+    <form action="https://www.baidu.com/img/bd_logo1.png" enctype="multipart/form-data">
+      <button>提交</button>
+    </form>
+    <div>
+      <a href="https://www.baidu.com/img/bd_logo1.png" download="test.png" target="_blank">下载</a>
+    </div>
   </st-panel>
 </template>
 
