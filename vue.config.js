@@ -3,6 +3,7 @@ const fs = require('fs')
 const webpack = require('webpack')
 const IgnoreNotFoundExportPlugin = require('./build/ignore-not-found-plugin')
 const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin')
+const LessPluginFunction = require('less-plugin-functions')
 
 const buildConfig = require('./build.config')
 const resolve = dir => path.resolve(__dirname, dir)
@@ -41,7 +42,8 @@ module.exports = {
     extract: true,
     loaderOptions: {
       less: {
-        javascriptEnabled: true
+        javascriptEnabled: true,
+        plugins: [ new LessPluginFunction() ]
       }
     }
   },
@@ -116,7 +118,8 @@ module.exports = {
       .loader('less-loader')
       .options({
         sourceMap: false,
-        javascriptEnabled: true
+        javascriptEnabled: true,
+        plugins: [ new LessPluginFunction() ]
       })
       .end()
 

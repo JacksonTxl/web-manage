@@ -29,10 +29,12 @@
         <a-col :span="10">
           <div :class="b('item')">
             <st-t2>{{member.level_name}}</st-t2>
-            <a v-if="auth.edit && !isEdit" href="javascript: void(0);" :class="b('item-edit')" @click="onEdit">
-              <st-icon type="edit"></st-icon>
-              <span class="mg-l4 color-text-light">编辑</span>
-            </a>
+            <st-info-action
+              icon="edit"
+              text="编辑"
+              v-if="auth.edit && !isEdit"
+              @click="onEdit"
+            />
             <div>
               <img :class="b('item-icon')" src="~@/assets/img/member.png" alt="正式会员">
             </div>

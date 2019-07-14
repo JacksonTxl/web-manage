@@ -2,6 +2,7 @@
   <st-panel app>
     <st-image-upload is-private></st-image-upload>
     <a v-modal-link="{name:'test-sg'}">test</a>
+    <div class='test-block'>test-block</div>
     {{auth}}
   </st-panel>
 </template>
