@@ -132,12 +132,7 @@ export default {
           selectionData: [],
           width: 108
         },
-        discount_info: {
-          title: '优惠奖励',
-          value: ['可用积分', '可用优惠券', '累计获得积分'],
-          selectionData: [],
-          width: 108
-        },
+
         deal_info: {
           title: '交易信息',
           value: [
@@ -154,6 +149,12 @@ export default {
           value: ['入场次数', '最后一次入场时间'],
           selectionData: [],
           width: 170
+        },
+        discount_info: {
+          title: '优惠奖励',
+          value: ['可用积分', '可用优惠券', '累计获得积分'],
+          selectionData: [],
+          width: 108
         },
         arrData: [],
         getData: {

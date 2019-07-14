@@ -4,7 +4,7 @@
       <a-col :lg="24" style="padding: 0;">
         <a-input-search
           size="large"
-          placeholder="搜索会籍销售姓名，手机号，昵称"
+          placeholder="搜索会籍销售昵称"
           style="width: 100%;"
           @search="onSearch"
         />
