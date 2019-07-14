@@ -173,8 +173,8 @@ export default {
               form.scheduling_id = item.id
             }
           })
-          this.reserveService.curd('add', form, () => {
-            this.show = false
+          this.reserveService.add(form).subscribe(res => {
+            this.$router.push({ force: true })
           })
         }
       })

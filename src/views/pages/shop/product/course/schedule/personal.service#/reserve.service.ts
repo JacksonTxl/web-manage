@@ -137,16 +137,4 @@ export class PersonalScheduleReserveService {
       this.page$.commit(() => res.page)
     }))
   }
-  /**
-   *
-   * curd
-   */
-  curd(fun: any, payload: any, callback: any) {
-    const that = this as any
-    return that[fun](payload).pipe(switchMap(state => {
-      return this.getList({})
-    })).subscribe(() => {
-      callback()
-    })
-  }
 }
