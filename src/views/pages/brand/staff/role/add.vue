@@ -1,6 +1,6 @@
 <template>
 <div class="page-role-info">
-  <st-form :form="form" class="page-role-info__add" labelWidth="70px">
+  <st-form :form="form" class="page-role-info__add" labelWidth="80px">
     <st-form-item label="角色名称">
       <a-input placeholder="请输入角色名称" v-decorator="['name']"></a-input>
     </st-form-item>
@@ -65,9 +65,9 @@
         </st-container>
       </div>
     </st-form-item>
-    <st-form-item>
+    <st-form-item label=" ">
       <st-button type="primary" @click="onClickSubmit">保存</st-button>
-      <st-button class="mg-l8">取消</st-button>
+      <st-button class="mg-l8" @click="onCancel">取消</st-button>
     </st-form-item>
   </st-form>
 </div>
@@ -111,6 +111,9 @@ export default {
     }
   },
   methods: {
+    onCancel() {
+      this.$router.go(-1)
+    },
     onExpand(expandedKeys) {
       this.expandedKeys = expandedKeys
       this.autoExpandParent = false
