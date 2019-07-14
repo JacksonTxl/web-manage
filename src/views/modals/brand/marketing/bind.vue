@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       show: false,
-      title: '绑定小程序',
+      title: '小程序码',
       message: '您尚未绑定小程序',
       button: '去绑定小程序',
       activeClass: 'poster'

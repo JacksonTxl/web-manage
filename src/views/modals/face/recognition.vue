@@ -147,7 +147,7 @@ export default {
               this.confirmLoading = false
               // 图片上传后,对返回参数进行操作
               console.log('imageQualityTest', val)
-              this.imageQualityTest(val.fileKey)
+              this.imageQualityTest(val)
             },
             error: val => {
               this.confirmLoading = false
@@ -158,35 +158,32 @@ export default {
             }
           })
       })
-      let blob = this.dataURItoBlob(this.userImgSrc)
-      let formData = new FormData()
-      formData.append('file', blob)
     },
     // 取消人脸识别图片上传
     cancel() {
       this.show = false
     },
     // 图片质量检测
-    imageQualityTest(image_key) {
+    imageQualityTest(image) {
       this.recognitionService.getMemberCheckResult({
-        image_key
+        image_key: image.fileKey
       }).subscribe((res) => {
         console.log('imageQualityTest', res)
-        console.log('imageQualityTest', this.isScan)
-        let isScan = res.isScan
+        let isScan = res.is_scan
         if (isScan) {
           let imageId = this.list.length && this.list[0][this.imageId]
           let current = this.list.length && this.list[0]
           if (current) {
-            current[this.imageKey] = image_key
+            current[this.imageKey] = image.fileKey
           } else {
             this.list.push({
               [this.imageId]: 0,
-              [this.imageKey]: image_key
+              [this.imageKey]: image.fileKey,
+              [this.imageUrl]: image.url
             })
           }
           this.$emit('change', this.list)
-          this.show = flase
+          this.show = false
         } else {
           this.messageService.error({ content: `上传图片质量不佳,请重新拍照` })
           this.userImgSrc = ''

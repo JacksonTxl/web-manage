@@ -1,5 +1,5 @@
 <template>
-  <st-panel class="page-schedule-st-panel" app :tabs="authTabs">
+  <st-panel class="page-schedule-st-panel" app :tabs="tabs">
   <div slot="actions" v-if="routeName === 'shop-product-course-schedule-team' || routeName === 'shop-product-course-schedule-team-table'">
     <a-select v-model="query.course_id" placeholder="请选择课程" @change="onChange" class="page-schedule__select mg-r8">
       <a-select-option :value="-1">全部</a-select-option>
@@ -14,14 +14,14 @@
       <a-select-option v-for="coach in coachOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
     </a-select>
   </div>
-  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal' || routeName === 'shop-product-course-schedule-personal-reserve-table'">
+  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-personal' || routeName === 'shop-product-course-schedule-personal-personal-reserve-table'">
     <a-select class="page-schedule__select" placeholder="请选择教练" @change="onChange" v-model="query.coach_id">
       <a-select-option :value="-1">全部</a-select-option>
       <a-select-option v-for="coach in coachInBatchOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
     </a-select>
   </div>
-  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-team'
-  || routeName === 'shop-product-course-schedule-personal-team-table'">
+  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-team--personal-team'
+  || routeName === 'shop-product-course-schedule--personal-team-personal-team-table'">
     <a-select class="page-schedule__select" placeholder="请选择教练" @change="onChange" v-model="query.coach_id">
       <a-select-option :value="-1">全部</a-select-option>
       <a-select-option v-for="coach in coachPersonalTeamOptions" :key="coach.id" :value="coach.id">{{coach.name}}</a-select-option>

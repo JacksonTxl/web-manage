@@ -26,7 +26,7 @@
         <div class="shop-member-crowd-add__right-condition">
           <div>创建的人群 同时满足 以下条件</div>
 
-          <div>已选 {{selectData.arrData.length}}/5 个条件</div>
+          <div class="shop-member-crowd-add__right-tip">已选 {{selectData.arrData.length}}/5 个条件</div>
         </div>
         <template v-for="(item,index) in selectData.arrData">
           <div
@@ -130,12 +130,7 @@ export default {
           selectionData: [],
           width: 108
         },
-        discount_info: {
-          title: '优惠奖励',
-          value: ['可用积分', '可用优惠券', '累计获得积分'],
-          selectionData: [],
-          width: 108
-        },
+
         deal_info: {
           title: '交易信息',
           value: [
@@ -152,6 +147,12 @@ export default {
           value: ['入场次数', '最后一次入场时间'],
           selectionData: [],
           width: 170
+        },
+        discount_info: {
+          title: '优惠奖励',
+          value: ['可用积分', '可用优惠券', '累计获得积分'],
+          selectionData: [],
+          width: 108
         },
         arrData: [],
         getData: {

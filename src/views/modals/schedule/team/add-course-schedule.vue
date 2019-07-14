@@ -115,8 +115,8 @@ export default {
           form.course_fee = parseInt(form.course_fee)
           form.limit_num = parseInt(form.limit_num)
           this.teamScheduleScheduleService.add(form).subscribe(() => {
+            this.$emit('ok')
             this.show = false
-            this.$router.push({ query: this.query, force: true })
           })
         }
       })

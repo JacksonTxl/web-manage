@@ -54,32 +54,56 @@ export default {
   },
   methods: {
     sharePoster() {
-      this.$modalRouter.push({
-        name: 'brand-marketing-poster',
-        props: {
-          id: String(this.$route.query.id),
-          type: 1
-        },
-        on: {
-          success: () => {
-            console.log('success')
+      let auth = this.$route.query.isAuth
+      if (auth) {
+        this.$modalRouter.push({
+          name: 'brand-marketing-poster',
+          props: {
+            id: String(this.$route.query.id),
+            type: 1
+          },
+          on: {
+            success: () => {
+              console.log('success')
+            }
           }
-        }
-      })
+        })
+      } else {
+        this.$modalRouter.push({
+          name: 'brand-marketing-bind',
+          on: {
+            success: () => {
+              console.log('success')
+            }
+          }
+        })
+      }
     },
     shareQrcode() {
-      this.$modalRouter.push({
-        name: 'brand-marketing-poster',
-        props: {
-          id: this.$route.query.id,
-          type: 2
-        },
-        on: {
-          success: () => {
-            console.log('success')
+      let auth = this.$route.query.isAuth
+      if (auth) {
+        this.$modalRouter.push({
+          name: 'brand-marketing-poster',
+          props: {
+            id: this.$route.query.id,
+            type: 2
+          },
+          on: {
+            success: () => {
+              console.log('success')
+            }
           }
-        }
-      })
+        })
+      } else {
+        this.$modalRouter.push({
+          name: 'brand-marketing-bind',
+          on: {
+            success: () => {
+              console.log('success')
+            }
+          }
+        })
+      }
     },
     addCoupon() {
       this.$router.push({ path: '/brand/marketing/plugin/coupon/add' })

@@ -162,8 +162,9 @@ export default {
         if (!err) {
           console.log('onSubmit', values)
           const form = { id: this.staff.id, is_permission: +this.openJurisdiction, ...values }
+          console.log('hasAccountName', this.hasAccountName)
           if (!this.hasAccountName) {
-            if (values.account && values.password && values.repeat_password) {
+            if (values.name && values.password && values.repeat_password) {
               this.rePasswordService.setAccount(form).subscribe()
             } else {
               this.rePasswordService.updatepermission(this.staff.id, {

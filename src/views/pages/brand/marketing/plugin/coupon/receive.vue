@@ -11,13 +11,15 @@
         <!-- <div :class="basic('add')" v-if="auth.export">
           <st-button type="primary" @click="onAddCoupon">导出</st-button>
         </div> -->
-        <a-select :class="basic('select')" v-model="queryParams.couponStatus" @change="onSearch" style="width: 160px">
-          <a-select-option
-            v-for="(item,index) in couponStatus"
-            :key="index"
-            :value="item.value">{{item.label}}</a-select-option>
-        </a-select>
-        <a-range-picker @change="onChangeDatePicker" v-model="queryParams.date"/>
+        <div>
+          <a-select :class="basic('select')" v-model="queryParams.couponStatus" @change="onSearch" style="width: 160px">
+            <a-select-option
+              v-for="(item,index) in couponStatus"
+              :key="index"
+              :value="item.value">{{item.label}}</a-select-option>
+          </a-select>
+          <span class="mg-r8">领券时间</span><a-range-picker @change="onChangeDatePicker" v-model="queryParams.date"/>
+        </div>
         <st-input-search
           v-model="queryParams.keyword"
           @search="onSearch"
@@ -84,14 +86,14 @@ export default {
       Object.entries(this.couponEnums.coupon_status.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
-      return list
+      return [{ value: -1, label: '优惠券状态' }, ...list]
     }
   },
   data() {
     return {
       queryParams: {
         keyword: '',
-        couponStatus: '',
+        couponStatus: -1,
         date: []
       },
       columns: [
@@ -150,7 +152,7 @@ export default {
     onSearch() {
       let params = {
         id: this.query.id,
-        coupon_status: this.queryParams.couponStatus || '',
+        coupon_status: this.queryParams.couponStatus || -1,
         keyword: this.queryParams.keyword,
         start_time: this.queryParams.date[0] ? moment(this.queryParams.date[0]).format('YYYY-MM-DD HH:mm') : '',
         end_time: this.queryParams.date[1] ? moment(this.queryParams.date[1]).format('YYYY-MM-DD HH:mm') : ''
@@ -172,7 +174,7 @@ export default {
     // 设置searchData
     setSearchData() {
       this.queryParams.keyword = this.query.keyword
-      this.queryParams.couponStatus = this.query.coupon_status ? +this.query.coupon_status : ''
+      this.queryParams.couponStatus = this.query.coupon_status ? +this.query.coupon_status : -1
       if (this.query.start_time) {
         this.queryParams.date[0] = cloneDeep(moment(this.query.start_time))
       }

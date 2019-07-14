@@ -56,18 +56,20 @@
 import { PersonalScheduleCommonService as CommonService } from '../../../pages/shop/product/course/schedule/personal.service#/common.service'
 import { difference, cloneDeep } from 'lodash-es'
 import { PersonalScheduleReserveService as ReserveService } from '../../../pages/shop/product/course/schedule/personal.service#/reserve.service'
+import { RouteService } from '@/services/route.service'
 export default {
   name: 'AddReserve',
   serviceInject() {
     return {
       commonService: CommonService,
-      reserveService: ReserveService
+      reserveService: ReserveService,
+      routeService: RouteService
     }
   },
   rxState() {
-    console.log(this.commonService)
     const cs = this.commonService
     return {
+      query: this.routeService.query$,
       courseCoachOptions: cs.courseCoachOptions$ || [],
       consumeOptions: cs.consumeOptions$ || [],
       memberOptions: cs.memberOptions$ || [],
@@ -174,7 +176,8 @@ export default {
             }
           })
           this.reserveService.add(form).subscribe(res => {
-            this.$router.push({ force: true })
+            this.show = false
+            this.$router.push({ query: this.query, force: true })
           })
         }
       })

@@ -5,14 +5,14 @@
     <div style="display: flex;align-items: center;margin-bottom: 24px;">
       <span style="margin-right:16px">剩余次数</span>
       <input-number
-        v-model="value.getData.remain_enter_times.select_time"
+        v-model="value.getData.remain_enter_times.remain_times"
         :company="'次'"
         :minMax="{min:0,max:1000}"
       ></input-number>
     </div>
     <div style="display: flex;align-items: center;">
       <span style="margin-right:16px">时间范围</span>
-      <time-day v-model="value.getData.remain_enter_times.remain_times"></time-day>
+      <time-day v-model="value.getData.remain_enter_times.select_time"></time-day>
     </div>
   </div>
 </template>

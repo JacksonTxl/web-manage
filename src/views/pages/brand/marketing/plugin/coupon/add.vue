@@ -382,7 +382,7 @@ export default {
               console.log(res)
               // 新增成功
               this.$router.push({
-                path: `/brand/marketing/plugin/coupon/tip?id=${res.id}`,
+                path: `/brand/marketing/plugin/coupon/tip?id=${res.id}&isAuth=${res.is_auth}`,
                 force: true
               })
             })
