@@ -130,7 +130,7 @@ export const routeMapConfig = {
     ]
   },
   'shop-sold-course-list'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '售卡管理'
+    routeConfig.meta.title = '售课管理'
     routeConfig.meta.tabs = [
       'shop-sold-course-list-personal',
       'shop-sold-course-list-package'
