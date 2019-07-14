@@ -32,8 +32,8 @@
             </a-select>
           </st-form-item>
         </a-col>
-        <a-col :lg="10" :xs="22" :offset="3">
-          <st-form-item>
+        <a-col :lg="10" :xs="22" :offset="1">
+          <st-form-item label="用户人脸">
             <st-face-upload
               width="264px"
               height="264px"
