@@ -180,7 +180,6 @@ export default {
           return item
         })
       this.scheduleService.addScheduleInBatch(data).subscribe(this.onSubmitSuccess)
-      this.show = false
     },
     handleChange(value, key, column) {
       const newData = [...this.data]

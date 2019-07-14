@@ -19,13 +19,14 @@
       <st-table
       :columns="columns"
       rowKey="id"
-      :page="page"
+      :page="false"
       :dataSource="list"
       :scroll="{ x: 1440 }"
       :loading="loading.getList"
       @change="onTableChange">
-      <template slot="reserve_status" slot-scope="text">
-        {{text | enumFilter('reserve.reserve_status')}}
+      <template slot="reserve_status" slot-scope="text, record">
+        <span v-if="record.is_checkin">{{record.is_checkin | enumFilter('reserve.is_checkin')}}</span>
+        <span v-else>{{text | enumFilter('reserve.reserve_status')}}</span>
       </template>
       <div slot="action" slot-scope="text,record">
         <st-table-actions>
@@ -40,10 +41,10 @@
 
 <script>
 import tableMixin from '@/mixins/table.mixin'
-import date from './date#/date-component'
-import { PersonalScheduleReserveService } from './personal.service#/reserve.service'
-import { columns } from './personal-reserve-table.config'
-import { RouteService } from '../../../../../../services/route.service'
+import date from '../date#/date-component'
+import { PersonalScheduleReserveService } from '../personal.service#/reserve.service'
+import { columns } from '../personal-reserve-table.config'
+import { RouteService } from '@/services/route.service'
 
 export default {
   name: 'PersonalReservetable',

@@ -10,11 +10,18 @@
 
 <script>
 import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
+import { RouteService } from '@/services/route.service'
 export default {
   name: 'CancelCourse',
   serviceInject() {
     return {
-      teamScheduleService: TeamScheduleScheduleService
+      teamScheduleService: TeamScheduleScheduleService,
+      routeService: RouteService
+    }
+  },
+  rxState() {
+    return {
+      query: this.routeService.query$
     }
   },
   data() {
@@ -31,7 +38,7 @@ export default {
   methods: {
     save() {
       this.teamScheduleService.del(this.id).subscribe(res => {
-        this.$router.push({ force: true })
+        this.$router.push({ query: this.query, force: true })
         this.show = false
       })
     }

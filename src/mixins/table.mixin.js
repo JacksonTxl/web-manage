@@ -27,6 +27,7 @@ const ROUTE_NAMES_USE_PAGE = [
   'shop-product-course-manage-personal-list',
   'shop-product-course-manage-team-list',
   'shop-product-course-manage-package-list',
+  'shop-product-course-schedule-personal-personal-reserve-table',
   'shop-product-card-member-list-all',
   'shop-product-card-deposit-list-all',
   'shop-product-card-deposit-list-shelves',

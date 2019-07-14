@@ -98,7 +98,7 @@ export default {
       }
       this.teamScheduleScheduleService.copy(form).subscribe(res => {
         this.show = false
-        this.$router.push({ force: true })
+        this.$emit('ok')
       })
     }
   },

@@ -74,9 +74,9 @@
 </template>
 
 <script>
-import date from './date#/date-component'
+import date from '../date#/date-component'
 import { PersonalTableService } from './personal-table.service'
-import { RouteService } from '../../../../../../services/route.service'
+import { RouteService } from '@/services/route.service'
 
 export default {
   serviceInject() {

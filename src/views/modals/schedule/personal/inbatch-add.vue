@@ -118,8 +118,6 @@ export default {
         console.log('ok')
         this.show = false
         this.$router.push({ query: {
-          size: 20,
-          page: 1,
           ...this.query
         },
         force: true })
