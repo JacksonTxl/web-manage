@@ -137,7 +137,7 @@ export const routeMapConfig = {
     ]
   },
   'shop-sold-card-list-member'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '售卡管理'
+    routeConfig.meta.title = '会员卡'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       card_type: { type: Number, default: -1 },
@@ -150,7 +150,7 @@ export const routeMapConfig = {
     }
   },
   'shop-sold-card-list-deposit'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '售卡管理'
+    routeConfig.meta.title = '储值卡'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       is_valid: { type: Number, default: -1 },
