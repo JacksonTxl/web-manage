@@ -6,7 +6,7 @@ export class StudioService implements RouteGuard {
         private studioComponentService: StudioComponentService
   ) {}
 
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.studioComponentService.init().subscribe(next)
   }
 }
