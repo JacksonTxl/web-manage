@@ -38,7 +38,7 @@
           </div>
         </st-search-panel>
       </div>
-      <div class="mg-t16">
+      <div class="mg-t24 mg-b16">
         <st-button type="primary" @click="addUser()" class="shop-member-list-button" v-if="auth.add" icon='add'>
           添加用户
         </st-button>
@@ -94,7 +94,6 @@
         <!-- <st-button v-if="auth.export" :disabled='isSelectedDisabled' class="shop-member-list-button">批量导出</st-button> -->
       </div>
       <st-table
-        class="mg-t24"
         :columns="columns"
         :scroll="{x:1400}"
         :alertSelection="{onReset:onSelectionReset}"

@@ -65,7 +65,7 @@
           </st-form-item>
           <st-form-item label="退款金额" required>
             <st-input-number
-            :max="parseInt(info.actual_price)"
+            :max="+info.actual_price"
             :float="true"
             placeholder="请输入本次退款的实际金额"
             v-decorator="['refundPrice',{rules:[{validator:refund_price_validator}]}]">
