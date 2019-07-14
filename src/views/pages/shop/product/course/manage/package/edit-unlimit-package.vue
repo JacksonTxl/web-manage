@@ -365,10 +365,10 @@ export default {
       // 课程范围
       this.packageData.is_team = this.packageInfo.is_team
       this.packageData.team_times = this.packageInfo.team_times
-      this.packageData.team_unit_price = +this.packageInfo.team_unit_price
+      this.packageData.team_unit_price = this.packageInfo.team_unit_price
       this.packageData.is_personal = this.packageInfo.is_personal
       this.packageData.personal_times = this.packageInfo.personal_times
-      this.packageData.personal_unit_price = +this.packageInfo.personal_unit_price
+      this.packageData.personal_unit_price = this.packageInfo.personal_unit_price
       // 售卖时间
       this.start_time = moment(this.packageInfo.start_time * 1000)
       this.end_time = moment(this.packageInfo.end_time * 1000)
