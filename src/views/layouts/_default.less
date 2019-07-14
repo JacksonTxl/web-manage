@@ -3,6 +3,19 @@
   &.ant-layout.ant-layout-has-sider > .ant-layout-content {
     overflow-x: auto;
   }
+  &-sider__shop-top {
+    display: flex;
+    align-items: center;
+    .pd(0 16px);
+    .fz(14px);
+    .layout-default-sider__logo {
+      .s(32px, 32px);
+      .mg-r(8px);
+    }
+  }
+  &__shop-brand-name {
+    .tov-e;
+  }
   &-sider {
     position: fixed;
     .pd-t(26px);
@@ -107,17 +120,17 @@
       flex-direction: column;
       align-items: center;
       .mg-b(16px);
+      .pd-r(8px);
     }
     &__logo {
       .pos-r();
       .s(48px, 48px);
-      .bg(#101920);
-      .mg-b(20px);
       border-radius: 4px;
       border: 2px solid rgba(0, 0, 0, 0.1);
-      // img {
-      //   border-radius: 2px;
-      // }
+    }
+    &__arrow {
+      .c(@text-light);
+      font-size: 12px!important;
     }
     &__certification {
       .pos-a;
@@ -127,7 +140,10 @@
     &__name {
       display: flex;
       align-items: center;
+      justify-content: center;
+      .mg-t(20px);
       .c(#fff);
+
       > span {
         .mg-r(6px);
         .fz(16px);

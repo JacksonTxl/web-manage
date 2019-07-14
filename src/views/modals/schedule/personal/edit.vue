@@ -121,7 +121,8 @@ export default {
     },
     onClickCopySchedule() {
       this.scheduleService.copy({ id: this.id || 108 }).subscribe(res => {
-        this.$router.push({ force: true })
+        this.show = false
+        this.$router.push({ query: this.query, force: true })
       })
     },
     initScheduleInfo() {

@@ -131,7 +131,8 @@ export default {
   },
   watch: {
     list(newList) {
-      this.isShowFaceUpload = this.fileList.length < this.numLimit
+      console.log('newList')
+      this.isShowFaceUpload = this.list.length < this.numLimit
       this.fileList = this.list
     }
   },

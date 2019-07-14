@@ -109,6 +109,7 @@ export default {
       this.messageService.success({
         content: '复制成功'
       })
+      this.$emit('ok')
     }
   }
 }

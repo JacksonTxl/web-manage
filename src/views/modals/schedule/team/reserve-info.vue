@@ -105,7 +105,6 @@
 </template>
 
 <script>
-import { TeamService } from '../../../pages/shop/product/course/schedule/team.service'
 import { switchMap } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
 import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'

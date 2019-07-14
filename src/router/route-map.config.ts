@@ -13,7 +13,7 @@ interface RouteConfig extends ServiceRouteConfig {
     title: string
     name: string
     /**
-     * 生命平级路由的父级路由name
+     * 生命平级路由的父级路由nameπ
      */
     parentId: string
     /**
@@ -41,6 +41,13 @@ export const routeMapConfig = {
   styleguide(routeConfig: RouteConfig) {
     routeConfig.redirect = { name: 'styleguide-component' }
   },
+  'brand-product-course-personal-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '私教课'
+    routeConfig.meta.tabs = [
+      'brand-product-course-personal-list-brand',
+      'brand-product-course-personal-list-shop'
+    ]
+  },
   'brand-product-course-personal-list-shop'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店私教课程库'
     routeConfig.queryOptions = {
@@ -56,6 +63,13 @@ export const routeMapConfig = {
       category_id: { type: Number, default: -1 },
       course_name: { type: String, default: '' }
     }
+  },
+  'brand-product-course-team-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '团体课'
+    routeConfig.meta.tabs = [
+      'brand-product-course-team-list-brand',
+      'brand-product-course-team-list-shop'
+    ]
   },
   'brand-product-course-team-list-shop'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店团体课程库'
@@ -107,6 +121,20 @@ export const routeMapConfig = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
+  },
+  'shop-sold-card-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '售卡管理'
+    routeConfig.meta.tabs = [
+      'shop-sold-card-list-member',
+      'shop-sold-card-list-deposit'
+    ]
+  },
+  'shop-sold-course-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '售卡管理'
+    routeConfig.meta.tabs = [
+      'shop-sold-course-list-personal',
+      'shop-sold-course-list-package'
+    ]
   },
   'shop-sold-card-list-member'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '售卡管理'
@@ -270,15 +298,44 @@ export const routeMapConfig = {
       'brand-setting-general-user-level'
     ]
   },
-  'brand-setting-app-course'(routeConfig: RouteConfig) {},
+  'brand-setting-app'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '应用设置'
+    routeConfig.meta.tabs = [
+      'brand-setting-app-course',
+      'brand-setting-app-staff'
+    ]
+  },
+  'brand-setting-app-course'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '课程'
+    routeConfig.meta.tabs = [
+      'brand-setting-app-course-category',
+      'brand-setting-app-course-training-aim'
+    ]
+  },
+  'brand-setting-app-staff'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '员工'
+    routeConfig.meta.tabs = [
+      'brand-setting-app-staff-skillful'
+    ]
+  },
   'brand-setting-app-course-category'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程类型'
+    routeConfig.meta.auth = 'brand_shop:course:course_setting|tab'
   },
   'brand-setting-app-course-training-aim'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '训练目的'
+    routeConfig.meta.auth = 'brand_shop:course:course_setting|tab'
   },
   'brand-setting-app-staff-skillful'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '擅长项目'
+    routeConfig.meta.auth = 'brand_shop:staff:staff_setting|tab'
+  },
+  'shop-product-card-member-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '会员卡'
+    routeConfig.meta.tabs = [
+      'shop-product-card-member-list-shelves',
+      'shop-product-card-member-list-all'
+    ]
   },
   'shop-product-card-member-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店上架卡项'
@@ -302,6 +359,13 @@ export const routeMapConfig = {
       shelf_status: { type: Number, default: -1 }
     }
   },
+  'shop-product-card-deposit-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '储值卡'
+    routeConfig.meta.tabs = [
+      'shop-product-card-deposit-list-shelves',
+      'shop-product-card-deposit-list-all'
+    ]
+  },
   'shop-product-card-deposit-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店上架储值卡'
     routeConfig.queryOptions = {
@@ -320,6 +384,13 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 },
       page: { type: Number, default: 1 }
     }
+  },
+  'brand-product-card-deposit-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '储值卡'
+    routeConfig.meta.tabs = [
+      'brand-product-card-deposit-list-all',
+      'brand-product-card-deposit-list-shelves'
+    ]
   },
   'brand-product-card-deposit-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店上架储值卡'
@@ -340,6 +411,13 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 },
       page: { type: Number, default: 1 }
     }
+  },
+  'brand-product-card-member-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '会籍卡'
+    routeConfig.meta.tabs = [
+      'brand-product-card-member-list-all',
+      'brand-product-card-member-list-shelves'
+    ]
   },
   'brand-product-card-member-list-shelves'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店上架卡项'
@@ -454,6 +532,13 @@ export const routeMapConfig = {
   },
   'brand-finance-salary-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '薪资报表'
+  },
+  'brand-finance-salary-template'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '薪资模板'
+    routeConfig.meta.tabs = [
+      'brand-finance-salary-template-basic',
+      'brand-finance-salary-template-performance'
+    ]
   },
   'brand-finance-salary-template-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '底薪模板'
@@ -575,11 +660,32 @@ export const routeMapConfig = {
   'shop-member-crowd-analysis'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '人群分析'
   },
+  'shop-product-course-schedule'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '课程排期'
+    routeConfig.meta.tabs = [
+      'shop-product-course-schedule-team',
+      'shop-product-course-schedule-personal',
+      'shop-product-course-schedule-personal-team'
+    ]
+  },
   'shop-product-course-schedule-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课排期'
+    routeConfig.meta.tabs = [
+      'shop-product-course-schedule-team-team',
+      'shop-product-course-schedule-team-team-table'
+    ]
+    routeConfig.redirect = {
+      name: 'shop-product-course-schedule-team-team'
+    }
   },
   'shop-product-course-schedule-team-table'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课排期'
+  },
+  'shop-product-course-schedule-personal'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '私教1v1排期'
+    routeConfig.redirect = {
+      name: 'shop-product-course-schedule-personal-personal'
+    }
   },
   'shop-product-course-schedule-personal-calendar'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1排期'
@@ -589,6 +695,9 @@ export const routeMapConfig = {
   },
   'shop-product-course-schedule-personal-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教小团课排期'
+    routeConfig.redirect = {
+      name: 'shop-product-course-schedule-personal-team-personal-team'
+    }
   },
   'shop-product-course-schedule-personal-team-table'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教小团课排期'
@@ -730,6 +839,10 @@ export const routeMapConfig = {
   },
   'brand-marketing-plugin-invitation-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '邀请有礼'
+    routeConfig.meta.tabs = [
+      'brand-marketing-plugin-invitation-index-data',
+      'brand-marketing-plugin-invitation-index-setting'
+    ]
   },
   'brand-marketing-plugin-invitation-index-data'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '邀请有礼'

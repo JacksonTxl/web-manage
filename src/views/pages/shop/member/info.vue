@@ -165,7 +165,7 @@ export default {
           change: res => {
             let result = res[0]
             this.infoService.editFace(this.query.id, result).subscribe(() => {
-              this.infoService.getBasicInfo(this.query.id)
+              this.infoService.getHeaderInfo(this.query.id).subscribe()
             })
           }
         }

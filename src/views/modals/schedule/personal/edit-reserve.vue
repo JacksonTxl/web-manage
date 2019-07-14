@@ -39,12 +39,14 @@ export default {
   serviceInject() {
     return {
       commonService: CommonService,
-      reserveService: ReserveService
+      reserveService: ReserveService,
+      routeService: RouteService
     }
   },
   rxState() {
     const cs = this.commonService
     return {
+      query: this.routeService.query$,
       courseCoachOptions: cs.courseCoachOptions$ || [],
       consumeOptions: cs.consumeOptions$ || [],
       memberOptions: cs.memberOptions$ || [],
@@ -138,7 +140,10 @@ export default {
     save() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.reserveService.update({ id: this.info.id, coach_id: values.coach_id }).subscribe()
+          this.reserveService.update({ id: this.info.id, coach_id: values.coach_id }).subscribe(res => {
+            this.show = false
+            this.$router.push({ query: this.query, force: true })
+          })
         }
       })
     },

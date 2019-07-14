@@ -2,13 +2,12 @@ import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { forkJoin, timer } from 'rxjs'
 import {
   PersonalTeamScheduleScheduleService
-} from './personal-team.service#/schedule.service'
+} from '../personal-team.service#/schedule.service'
 import {
   PersonalTeamScheduleCommonService
-} from './personal-team.service#/common.service'
+} from '../personal-team.service#/common.service'
 import { AuthService } from '@/services/auth.service'
 import { State, Computed } from 'rx-state'
-import { pluck } from 'rxjs/operators'
 
 @Injectable()
 export class PersonalTeamService implements RouteGuard {

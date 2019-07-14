@@ -14,14 +14,14 @@
       <a-select-option v-for="coach in coachOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
     </a-select>
   </div>
-  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal' || routeName === 'shop-product-course-schedule-personal-reserve-table'">
+  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-personal' || routeName === 'shop-product-course-schedule-personal-personal-reserve-table'">
     <a-select class="page-schedule__select" placeholder="请选择教练" @change="onChange" v-model="query.coach_id">
       <a-select-option :value="-1">全部</a-select-option>
       <a-select-option v-for="coach in coachInBatchOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
     </a-select>
   </div>
-  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-team'
-  || routeName === 'shop-product-course-schedule-personal-team-table'">
+  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-personal-team--personal-team'
+  || routeName === 'shop-product-course-schedule--personal-team-personal-team-table'">
     <a-select class="page-schedule__select" placeholder="请选择教练" @change="onChange" v-model="query.coach_id">
       <a-select-option :value="-1">全部</a-select-option>
       <a-select-option v-for="coach in coachPersonalTeamOptions" :key="coach.id" :value="coach.id">{{coach.name}}</a-select-option>
@@ -36,10 +36,12 @@ import { TeamScheduleCommonService } from './schedule/team.service#/common.servi
 import { PersonalScheduleCommonService } from './schedule/personal.service#/common.service'
 import { RouteService } from '../../../../../services/route.service'
 import { PersonalTeamScheduleCommonService } from './schedule/personal-team.service#/common.service'
+import { ScheduleService } from './schedule.service'
 export default {
   name: 'CourseSchedule',
   serviceInject() {
     return {
+      scheduleService: ScheduleService,
       teamScheduleCommonService: TeamScheduleCommonService,
       personalScheduleCommonService: PersonalScheduleCommonService,
       personalTeamScheduleCommonService: PersonalTeamScheduleCommonService,
@@ -58,7 +60,8 @@ export default {
       coachInBatchOptions: pscs.coachInBatchOptions$,
       coachPersonalOptions: pscs.coachOptions$,
       courseCoachOptions: pscs.courseCoachOptions$,
-      coachPersonalTeamOptions: ptscs.coachOptions$
+      coachPersonalTeamOptions: ptscs.coachOptions$,
+      authTabs: this.scheduleService.authTabs$
     }
   },
   data() {

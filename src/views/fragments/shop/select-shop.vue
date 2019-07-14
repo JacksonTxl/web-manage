@@ -1,52 +1,58 @@
 <template>
   <div>
-    <st-table
-      :columns="shopTableColumns"
-      :dataSource="list"
-      :pagination="false"
-      rowKey="shop_id"
-      :scroll="{ y: 270 }"
-    >
-      <template slot="operation" slot-scope="text, record">
-      <div>
-        <a @click="delShopTableRecord(record.shop_id)">删除</a>
-      </div>
-    </template>
-    </st-table>
-    <a v-modal-link="{
-      name: 'shop-select',
-      props: {
-        checked: checkedShopIds
-      },
-      on: {
-        change: onSelectShopComplete
-      }
-    }">
-      <st-button type="dashed" icon="add" block class="mg-t8">添加</st-button>
-    </a>
+    <st-form-table>
+      <thead>
+        <tr>
+          <th>省</th>
+          <th>市</th>
+          <th>区</th>
+          <th>门店名称</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="5" class="st-form-table__add">
+            <st-button
+              type="dashed"
+              icon="add"
+              block
+              v-modal-link="{
+                name: 'shop-select',
+                props: {
+                  checked: checkedShopIds
+                },
+                on: {
+                  change: onSelectShopComplete
+                }
+              }"
+            >
+              添加门店
+            </st-button>
+          </td>
+        </tr>
+        <tr
+          v-for="(item, index) in list"
+          :key="index"
+        >
+          <td>{{item.province}}</td>
+          <td>{{item.city}}</td>
+          <td>{{item.district}}</td>
+          <td>{{item.shop_name}}</td>
+          <td>
+            <a
+              @click="delShopTableRecord(item.shop_id)"
+            >
+              删除
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </st-form-table>
   </div>
 </template>
 <script>
 import { SelectShopService } from './select-shop.service'
-import { keys } from 'lodash-es'
-
-const shopTableColumns = [{
-  title: '省',
-  dataIndex: 'province'
-}, {
-  title: '市',
-  dataIndex: 'city'
-}, {
-  title: '区',
-  dataIndex: 'district'
-}, {
-  title: '门店名称',
-  dataIndex: 'shop_name'
-}, {
-  title: '操作',
-  dataIndex: 'operation',
-  scopedSlots: { customRender: 'operation' }
-}]
 
 export default {
   name: 'SelectShop',
@@ -70,7 +76,6 @@ export default {
   },
   data() {
     return {
-      shopTableColumns,
       checkedShopIds: [],
       list: []
     }

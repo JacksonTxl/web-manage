@@ -1,49 +1,54 @@
 <template>
   <div>
-    <st-table
-      :columns="tableColumns"
-      :dataSource="list"
-      :pagination="false"
-      rowKey="id"
-      :scroll="{ y: 270 }"
-    >
-      <template slot="operation" slot-scope="text, record">
-      <div>
-        <a @click="delTableRecord(record.id)">删除</a>
-      </div>
-    </template>
-    </st-table>
-    <a v-modal-link="{
-      name: 'coach-select',
-      props: {
-        selected,
-        shopIds
-      },
-      on: {
-        change: onSelectComplete
-      }
-    }">
-      <st-button type="dashed" icon="add" block class="mg-t8">添加</st-button>
-    </a>
+    <st-form-table>
+      <thead>
+        <tr>
+          <th>教练</th>
+          <th>教练等级</th>
+          <th>工作性质</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="4" class="st-form-table__add">
+            <st-button
+              type="dashed"
+              icon="add"
+              block
+              v-modal-link="{
+                name: 'coach-select',
+                props: {
+                  selected,
+                  shopIds
+                },
+                on: {
+                  change: onSelectComplete
+                }
+              }"
+            >
+              添加教练
+            </st-button>
+          </td>
+        </tr>
+        <tr
+          v-for="(item, index) in list"
+          :key="index"
+        >
+          <td>{{item.name}}</td>
+          <td>{{item.level}}</td>
+          <td>{{item.nature_work}}</td>
+          <td>
+            <a @click="delTableRecord(item.id)">删除</a>
+          </td>
+        </tr>
+      </tbody>
+    </st-form-table>
   </div>
 </template>
 <script>
 import { SelectCoachService } from './select-coach.service'
 
-const tableColumns = [{
-  title: '教练',
-  dataIndex: 'name'
-}, {
-  title: '教练等级',
-  dataIndex: 'level'
-}, {
-  title: '工作性质',
-  dataIndex: 'nature_work'
-}, {
-  title: '操作',
-  dataIndex: 'operation',
-  scopedSlots: { customRender: 'operation' }
-}]
 export default {
   name: 'SelectCoach',
   serviceInject() {
@@ -67,7 +72,6 @@ export default {
   },
   data() {
     return {
-      tableColumns,
       selected: [],
       list: []
     }
@@ -80,7 +84,6 @@ export default {
     onSelectComplete(coachIds) {
       this.getSelectedList(coachIds)
       this.selected = coachIds
-      console.log('on select complete', coachIds)
       this.$emit('change', coachIds)
     },
     getSelectedList(coachIds = []) {

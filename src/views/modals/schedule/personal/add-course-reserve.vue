@@ -73,7 +73,8 @@ export default {
   serviceInject() {
     return {
       teamScheduleCommomService: TeamScheduleCommonService,
-      teamScheduleScheduleService: TeamScheduleScheduleService
+      teamScheduleScheduleService: TeamScheduleScheduleService,
+      routeService: RouteService
     }
   },
   rxState() {
@@ -81,7 +82,8 @@ export default {
     return {
       coachOptions: tss.coachInBatchOptions$,
       courseOptions: tss.courseOptions$,
-      courtOptions: tss.courtOptions$
+      courtOptions: tss.courtOptions$,
+      query: this.routeService.query$
     }
   },
   data() {
@@ -109,7 +111,7 @@ export default {
           form.course_fee = parseInt(form.course_fee)
           form.limit_num = parseInt(form.limit_num)
           this.teamScheduleScheduleService.add(form).subscribe(res => {
-            this.$router.push({ force: true })
+            this.$router.push({ query: this.query, force: true })
           })
         }
       })
