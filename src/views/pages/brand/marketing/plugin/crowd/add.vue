@@ -26,7 +26,7 @@
         <div class="shop-member-crowd-add__right-condition">
           <div>创建的人群 同时满足 以下条件</div>
 
-          <div>已选 {{selectData.arrData.length}}/5 个条件</div>
+          <div class="shop-member-crowd-add__right-tip">已选 {{selectData.arrData.length}}/5 个条件</div>
         </div>
         <template v-for="(item,index) in selectData.arrData">
           <div

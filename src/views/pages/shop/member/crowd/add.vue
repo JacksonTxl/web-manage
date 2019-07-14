@@ -26,7 +26,7 @@
         <div class="shop-member-crowd-add__right-condition">
           <div>创建的人群 同时满足 以下条件</div>
 
-          <div>已选 {{selectData.arrData.length}}/5 个条件</div>
+          <div class="shop-member-crowd-add__right-tip">已选 {{selectData.arrData.length}}/5 个条件</div>
         </div>
         <template v-for="(item,index) in selectData.arrData">
           <div
@@ -320,40 +320,6 @@ export default {
               this.$router.push({ name: 'shop-member-crowd-index' })
             })
           }
-          // let obj = {}
-
-          // obj.crowd_name = this.selectData.getData.crowd_name
-
-          // if (
-          //   arrKey.length === arrValue.length &&
-          //   arrValue.every(item => item !== '')
-          // ) {
-          //   let flag = true
-          //   arrValue.map(item => {
-          //     if (Array.isArray(item)) {
-          //       if (item.length === 0) {
-          //         flag = false
-          //       }
-          //     }
-          //   })
-          //   if (flag) {
-          //     if (this.$route.query.id) {
-          //       this.addService
-          //         .getCrowdBrandCrowd(this.$route.query.id, obj)
-          //         .subscribe(status => {
-          //           this.$router.push({ name: 'shop-member-crowd-index' })
-          //         })
-          //     } else {
-          //       this.addService.setCrowdBrandField(obj).subscribe(status => {
-          //         this.$router.push({ name: 'shop-member-crowd-index' })
-          //       })
-          //     }
-          //   } else {
-          //     this.messageService.warning({ content: '请完整填写！' })
-          //   }
-          // } else {
-          //   this.messageService.warning({ content: '请完整填写！' })
-          // }
         }
       })
     },
