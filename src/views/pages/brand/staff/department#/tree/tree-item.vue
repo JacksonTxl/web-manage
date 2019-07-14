@@ -4,7 +4,7 @@
       class="tree-node"
       :class="{bold: isFolder}"
       @dblclick="makeFolder">
-      <div class="tree-node__content" :style="{'padding-left': paddingLeft}" @click="getTreeNodeOnclick">
+      <div class="tree-node__content" :style="{'padding-left': paddingLeft}" @click="getTreeNodeOnclick" ref="treeNode">
         <span class="tree-switch"  @click.stop="toggle" v-if="isFolder&&level!==0">{{ isOpen ? '-' : '+' }}</span>
         <span class="tree-switch__empty" v-else-if="level!==0 && !item.isEdit"></span>
         <div class="tree-name edit-box" v-if="item.isEdit">
@@ -19,7 +19,7 @@
           <a-menu-item  @click="deleteDepartment(item)">删除</a-menu-item>
         </st-more-dropdown>
       </div>
-      <div v-if="item.isAdd" class="tree-node__content tree-node__add">
+      <div class="tree-node__content" v-if="item.isAdd">
         <a-input
           placeholder="请输入部门名称"
           class="tree-input  mg-r6"
@@ -92,18 +92,34 @@ export default {
     }
   },
   methods: {
-    editTreeNode() {
-      this.editValue = this.item.name
-      this.$emit('edit-item', this.item)
-    },
     cancelAdd() {
       this.item.isAdd = false
     },
     cancelEdit() {
       this.item.isEdit = false
     },
+    editTreeNode() {
+      console.log('editTreeNode', this.$refs.treeNode)
+      this.editValue = this.item.name
+      this.$emit('edit-item', this.item)
+      this.$nextTick().then(() => {
+        const doms = document.querySelectorAll('.tree-node__content')
+        doms.forEach(dom => {
+          dom.setAttribute('class', 'tree-node__content')
+        })
+        this.$refs.treeNode.setAttribute('class', 'tree-node__content active')
+      })
+    },
     addTreeNode() {
+      console.log('addTreeNode', this.$refs.treeNode)
       this.$emit('add-item', this.item)
+      this.$nextTick().then(() => {
+        const doms = document.querySelectorAll('.tree-node__content')
+        doms.forEach(dom => {
+          dom.setAttribute('class', 'tree-node__content')
+        })
+        this.$refs.treeNode.setAttribute('class', 'tree-node__content active')
+      })
     },
     toggle(e) {
       if (this.isFolder) {
@@ -111,20 +127,21 @@ export default {
       }
     },
     addDepartment(item) {
-      console.log('addDepartment', item)
+      console.log('addDepartment', this.$refs.treeNode, item)
       this.cancelAdd()
       this.departmentService.addDepartment({ parent_id: this.item.id, department_name: this.addValue }).subscribe(() => {
         this.$emit('update-data')
       })
     },
     editDepartment(item) {
+      console.log('editDepartment', this.$refs.treeNode, item)
       this.cancelEdit()
       this.departmentService.updateDepartment({ id: this.item.id, department_name: this.editValue }).subscribe(() => {
         this.$emit('update-data')
       })
     },
     deleteDepartment(item) {
-      console.log('deleteDepartment', item)
+      console.log('deleteDepartment', this.$refs.treeNode, item)
       if (item.count > 0) {
         this.$error({
           title: '',
@@ -147,6 +164,7 @@ export default {
       }
     },
     getTreeNodeOnclick(e) {
+      console.log('getTreeNodeOnclick', this.$refs.treeNode, this.item)
       this.$emit('node-item-detail', this.item)
       this.$nextTick().then(() => {
         const doms = document.querySelectorAll('.tree-node__content')

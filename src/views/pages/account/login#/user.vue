@@ -9,10 +9,10 @@
       </st-form-item>
       <st-form-item  :class="loginUser('pass')">
         <div :class="loginUser('pass-content')">
-          <a-checkbox>我已阅读并同意<a href="">《用户注册协议》</a></a-checkbox><a href="javascript:;" @click="onClickFindPassword">忘记密码</a>
+          <a href=""></a><a href="javascript:;" @click="onClickFindPassword">忘记密码</a>
         </div>
       </st-form-item>
-      <st-form-item  class="mg-b0">
+      <st-form-item  class="mg-b32">
         <st-button :class="loginUser('login-button')" :loading='loading.loginAccount' pill size="large" type="primary"  html-type="submit" block>登录</st-button>
       </st-form-item>
     </st-form>

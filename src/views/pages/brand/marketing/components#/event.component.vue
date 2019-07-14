@@ -13,7 +13,11 @@
         <a-col v-for="(li, index) in list" :key="index" :span="li.span">
           <div :class="event('box')">
             <st-image-upload @change="imageUploadChange($event,index)" width="100%" height="162px" :list='li.image_url?[li]:li.filelist' :sizeLimit="2"
-              placeholder="添加活动图片" :numLimit="1"></st-image-upload>
+              placeholder="添加活动图片" :numLimit="1">
+              <a-icon type="plus-circle" theme="filled" :style="{fontSize:'36px', color: '#9BACB9' }" />
+              <div class="st-image-upload__placeholder">添加活动图片</div>
+              <span :class="event('uploadtip')">大小不超过5M，建议尺寸670*120</span>
+            </st-image-upload>
             <st-form-item labelWidth="46px" label="标题">
               <a-input placeholder="选填" v-model="li.module_name" maxlength="20"></a-input>
             </st-form-item>

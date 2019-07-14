@@ -1,5 +1,4 @@
 .page-shop-dashboard-studio{
-  display: flex;
   .st-title--t3{
     font-weight: bold;
   }
@@ -7,10 +6,9 @@
     box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
   }
   &__adv{
-    flex:none;
+    float: right;
     .w(280px);
     .pd(0);
-    .mg-l(24px);
   }
   &__title{
     a{
@@ -70,7 +68,8 @@
     }
   }
     &-count{
-      flex:1;
+      // flex:1;
+      margin-right: 304px;
       &__topIcon{
         .s(18px,18px);
         display: inline-block;
@@ -135,6 +134,7 @@
         font-weight:bold;
         color:rgba(62,77,92,1);
         line-height:22px;
+        height: 22px;
       }
       .count1,
       .count2,
@@ -142,10 +142,12 @@
       .count4{
         font-weight:bold;
         color:rgba(37,42,46,1);
+        height: 28px;
       }
       .count1{
         font-size:32px;
         line-height:40px;
+        height: 40px;
       }
       .count2,
       .count3,
@@ -175,5 +177,19 @@
       .s(264px,264px);
       margin: 56px auto 0;
       display: block;
+    }
+    &__revenue-left{
+      margin-right: 395px;
+    }
+    &__revenue-right{
+      float: right;
+      width:360px;
+    }
+    &__user-left{
+      float: left;
+      width: 304px;
+    }
+    &__user-right{
+      margin-left: 340px;
     }
   }

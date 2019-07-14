@@ -29,7 +29,7 @@
       :data="staffInfo"
       @detailInfoSave="onDetailInfoSave"/>
     <edit-detail-coach-info
-      v-else-if="currentIndex === 2 && isShowCoach"
+      v-else-if="currentIndex === 2 && isPrivateCoach"
       @back="onBack"
       :enums="staffEnums"
       :data="staffInfo"
@@ -73,6 +73,10 @@ export default {
     isShowCoach() {
       if (this.staffInfo.identity.length === 0) return false
       return this.staffInfo.identity.includes(3) || this.staffInfo.identity.includes(4)
+    },
+    isPrivateCoach() {
+      if (this.staffInfo.identity.length === 0) return false
+      return this.staffInfo.identity.includes(4)
     },
     id() {
       return this.staffInfo.staff_id

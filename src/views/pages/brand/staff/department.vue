@@ -16,7 +16,7 @@
     </section>
     <section class="page-staff-rg">
       <header class="staff-rg__operation">
-        <opreation-button :auth="auth" @add-staff="onAddStaff" @batch-import="onbatchImport" @import-staff="onImportStaff"></opreation-button>
+        <opreation-button :auth="auth" :rowKeys="ids" @add-staff="onAddStaff" @batch-import="onbatchImport" @import-staff="onImportStaff"></opreation-button>
         <filter-staff></filter-staff>
       </header>
       <main class="staff-rg__table">
