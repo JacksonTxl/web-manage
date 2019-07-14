@@ -668,9 +668,6 @@ export const routeMapConfig = {
       'shop-product-course-schedule-personal-team'
     ]
   },
-  'shop-product-course-schedule-personal'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '私教课1v1'
-  },
   'shop-product-course-schedule-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课排期'
     routeConfig.meta.tabs = [

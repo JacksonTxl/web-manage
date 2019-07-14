@@ -1,11 +1,6 @@
 <template>
-<<<<<<< 1ca6daf63b2b5ce889001896df043b0584a44e36
   <st-panel class="page-schedule-st-panel" app :tabs="authTabs">
   <div slot="actions" v-if="routeName === 'shop-product-course-schedule-team' || routeName === 'shop-product-course-schedule-team-table'">
-=======
-  <st-panel class="page-schedule-st-panel" app :tabs="tabs">
-  <div slot="actions" v-if="routeName === 'shop-product-course-schedule-team-team' || routeName === 'shop-product-course-schedule-team-team-table'">
->>>>>>> personal course info
     <a-select v-model="query.course_id" placeholder="请选择课程" @change="onChange" class="page-schedule__select mg-r8">
       <a-select-option :value="-1">全部</a-select-option>
       <a-select-option v-for="course in courseOptions" :key="course.id" :value="course.id">{{course.course_name}}</a-select-option>
