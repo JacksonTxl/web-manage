@@ -93,8 +93,8 @@ export class TeamScheduleScheduleService {
     return this.scheduleApi.add(params)
   }
   addScheduleInBatch(params: AddScheduleInput[]) {
-    return this.scheduleApi.addScheduleInBatch(params).pipe(switchMap(state => {
-      return this.getList({})
+    return this.scheduleApi.addScheduleInBatch(params).pipe(tap(res => {
+      this.msg.success({ content: '批量添加成功' })
     }))
   }
   /**
@@ -103,8 +103,8 @@ export class TeamScheduleScheduleService {
    * 复制团体课排期
    */
   copy(params: CopyScheduleInput) {
-    return this.scheduleApi.copy(params).pipe(switchMap(state => {
-      return this.getList({})
+    return this.scheduleApi.copy(params).pipe(tap(res => {
+      this.msg.success({ content: '复制成功' })
     }))
   }
   /**
@@ -113,8 +113,8 @@ export class TeamScheduleScheduleService {
    * 编辑课程排期
    */
   update(params: UpdateScheduleInput) {
-    return this.scheduleApi.update(params).pipe(switchMap(state => {
-      return this.getList({})
+    return this.scheduleApi.update(params).pipe(tap(res => {
+      this.msg.success({ content: '编辑成功' })
     }))
   }
   /**
@@ -131,17 +131,8 @@ export class TeamScheduleScheduleService {
    * 取消团体课排期
    */
   del(id: string) {
-    return this.scheduleApi.del(id).pipe(switchMap(state => {
-      this.msg.success({ content: '取消团体课成功' })
-      return this.getList({})
+    return this.scheduleApi.del(id).pipe(tap(res => {
+      this.msg.success({ content: '取消成功' })
     }))
-  }
-  curd(fun: string, payload: any, callback: any) {
-    const that = this as any
-    return that[fun](payload).pipe(switchMap(state => {
-      return this.getList({})
-    })).subscribe(() => {
-      callback()
-    })
   }
 }

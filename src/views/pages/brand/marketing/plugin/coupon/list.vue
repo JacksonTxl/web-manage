@@ -51,11 +51,17 @@
           <template slot="draw_num" slot-scope="text, record">
             <a @click="goReceive(record)">{{text}}</a>
           </template>
+          <template slot="coupon_type" slot-scope="text">
+            <span>{{text | couponTypeFilter}}</span>
+          </template>
+          <template slot="put_status" slot-scope="text">
+            <span>{{text | putStatusFilter}}</span>
+          </template>
           <template slot="action" slot-scope="text,record">
             <st-table-actions>
               <a @click="onEdit(record)" v-if="record.auth['brand:activity:coupon|edit']">编辑</a>
               <a @click="onGeneralize(record)" v-if="record.auth['brand:activity:coupon|promotion']">推广</a>
-              <a @click="onStop(record)" v-if="record.auth['brand:activity:coupon|end']">结束</a>
+              <a @click="onStop(record)" v-if="record.auth['brand:activity:coupon|end'] || !(record.coupon_type === 2 && record.put_status === 2)">结束</a>
             </st-table-actions>
           </template>
         </st-table>
@@ -136,6 +142,7 @@ export default {
     },
     onGeneralize(record) {
       let is_auth = record.is_auth
+      // 绑定小程序
       if (is_auth) {
         // 分享海报
         this.$modalRouter.push({
@@ -151,13 +158,9 @@ export default {
           }
         })
       } else {
-        // 分享小程序
+        // 未绑定小程序
         this.$modalRouter.push({
-          name: 'brand-marketing-poster',
-          props: {
-            id: record.id,
-            type: 2
-          },
+          name: 'brand-marketing-bind',
           on: {
             success: () => {
               console.log('success')
@@ -186,6 +189,28 @@ export default {
     },
     goReceive(record) {
       this.$router.push({ path: '/brand/marketing/plugin/coupon/receive', query: { id: record.id } })
+    }
+  },
+  filters: {
+    couponTypeFilter(val) {
+      switch (val) {
+        case 1:
+          return '普通券'
+        case 2:
+          return '活动券'
+        default:
+          return ''
+      }
+    },
+    putStatusFilter(val) {
+      switch (val) {
+        case 1:
+          return '未投放'
+        case 2:
+          return '已投放'
+        default:
+          return ''
+      }
     }
   },
   components: {

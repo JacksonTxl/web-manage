@@ -1,29 +1,35 @@
 .page-role-detail{
+  width: 100%;
+  padding: 0 24px;
   .page-role-info-item {
+    display: flex;
     padding: 24px 0;
     border-bottom: 1px solid #E6E9EF;
     box-sizing: border-box;
     .label{
-      width:70px;
-      font-size:14px;
-      font-weight:400;
-      color: #252A2E;
-      line-height:22px;
+      vertical-align: middle;
+      line-height: 22px;
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      margin-right: 12px;
     }
     .value{
-      font-size:14px;
-      font-weight:400;
+      font-size: 14px;
+      font-weight: 400;
       color:#3E4D5C;
-      line-height:22px;
+      line-height: 22px;
     }
   }
   &__funrole{
     padding: 25px 0;
     display: flex;
     .label {
-      padding-top: 12px;
-      width:70px;
-      margin-right: 24px;
+      vertical-align: middle;
+      line-height: 22px;
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
       span {
         font-size:14px;
         font-weight:400;
@@ -32,13 +38,15 @@
       }
     }
     .jurisdiction {
+      flex: 1;
       display: flex;
+      margin-left: 12px;
       .brand-list {
         margin-right: 12px;
       }
       .shop-list,
       .brand-list{
-        width: 387px;
+        flex: 1;
         height: 500px;
         overflow-y: auto;
       }

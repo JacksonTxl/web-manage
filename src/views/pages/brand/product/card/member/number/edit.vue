@@ -57,7 +57,7 @@
                         <th>入场次数</th>
                         <th>售价</th>
                         <th>有效期</th>
-                        <th>允许冻结天数</th>
+                        <th class="white-nowrap">允许冻结天数</th>
                         <th>赠送上限</th>
                         <th>操作</th>
                       </tr>
@@ -431,80 +431,6 @@ export default {
       priceValidatorText: '',
       // 卡背景的help文本
       cardBgValidatorText: '',
-      // 品牌统一定价表格表头
-      brand_price_columns: [
-        {
-          title: '入场次数',
-          scopedSlots: { customRender: 'validity_times' },
-          dataIndex: 'validity_times'
-        },
-        {
-          title: '售价',
-          scopedSlots: { customRender: 'rally_price' },
-          dataIndex: 'rally_price'
-        },
-        {
-          title: '有效期',
-          scopedSlots: { customRender: 'time' },
-          dataIndex: 'time',
-          width: 120
-        },
-        {
-          title: '允许冻结天数',
-          scopedSlots: { customRender: 'frozen_day' },
-          dataIndex: 'frozen_day'
-        },
-        {
-          title: '赠送上限',
-          scopedSlots: { customRender: 'gift_unit' },
-          dataIndex: 'gift_unit'
-        },
-        {
-          title: '操作',
-          dataIndex: 'operation',
-          width: '10%',
-          scopedSlots: { customRender: 'operation' }
-        }
-      ],
-      // 门店自主定价表格表头
-      shop_price_columns: [
-        {
-          title: '入场次数',
-          scopedSlots: { customRender: 'validity_times' },
-          dataIndex: 'validity_times',
-          width: 120
-        },
-        {
-          title: '售价范围',
-          scopedSlots: { customRender: 'rally_price' },
-          dataIndex: 'rally_price',
-          width: 230
-        },
-        {
-          title: '有效期',
-          scopedSlots: { customRender: 'time' },
-          dataIndex: 'time',
-          width: 150
-        },
-        {
-          title: '允许冻结天数',
-          scopedSlots: { customRender: 'frozen_day' },
-          dataIndex: 'frozen_day',
-          width: 150
-        },
-        {
-          title: '赠送上限',
-          scopedSlots: { customRender: 'gift_unit' },
-          dataIndex: 'gift_unit',
-          width: 150
-        },
-        {
-          title: '操作',
-          dataIndex: 'operation',
-          scopedSlots: { customRender: 'operation' },
-          width: 80
-        }
-      ],
       // 是否禁止选择开始时间,如果卡状态是可售卖，则需要禁止修改开始时间
       startTimeIsDisabled: false
     }

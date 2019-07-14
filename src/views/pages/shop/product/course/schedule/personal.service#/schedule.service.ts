@@ -106,18 +106,4 @@ export class PersonalScheduleScheduleService {
   getUpdateInfo(id: string) {
     return this.scheduleApi.getUpdateInfo(id)
   }
-  /**
-   *
-   * @param params
-   * 取消团体课排期
-   */
-  //
-  curd(fun: string, payload: any, callback: any) {
-    const that = this as any
-    return that[fun](payload).pipe(switchMap(state => {
-      return this.getList({})
-    })).subscribe(() => {
-      callback()
-    })
-  }
 }

@@ -28,7 +28,7 @@ export class RuleConfig {
   }
   get account() {
     // eslint-disable-next-line
-    let reg = '/^[A-Za-z0-9\_]{6,15}$/'
+    let reg = new RegExp(/^[A-Za-z0-9\_]{6,15}$/)
     return ['account', {
       rules: [
         {

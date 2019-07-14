@@ -70,7 +70,7 @@
                         <th>入场次数</th>
                         <th>售价</th>
                         <th>有效期</th>
-                        <th>允许冻结天数</th>
+                        <th class="white-nowrap">允许冻结天数</th>
                         <th>赠送上限</th>
                         <th>操作</th>
                       </tr>
