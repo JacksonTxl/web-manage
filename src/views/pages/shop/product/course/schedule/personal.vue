@@ -210,7 +210,7 @@ export default {
             render(h) {
               let { clickHandler, isShow } = this
               return (
-                <GetDay onScan={this.clickHandler} date={dataDate} isGet={!(length === 1)}>
+                <GetDay onScan={this.clickHandler} title={'查看日预约'} date={dataDate} isGet={!(length === 1)}>
                 </GetDay>
               )
             }

@@ -20,12 +20,16 @@
   &__nav-item {
     .fz(12px);
     .c(@title);
-    .pd(8px 0)
+    .pd(8px 0);
+    .cur-p;
+    &.current {
+      .bg(#F0F6FF);
+    }
   }
   &__nav-item-content {
     display: flex;
     justify-content: space-between;
-    .pd(0 16px);
+    .pd(0 16px 0 20px);
     .fz(12px);
   }
   &__nav-add {

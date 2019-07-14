@@ -1,0 +1,88 @@
+// 主题A 工作室（目前为工作室，只是一个代号，不与系统版本强绑定）
+.theme-a {
+  .layout-default {
+    &-sider {
+      .bg(@versionAMenuBgColor);
+      .c(@themeAMenuColor);
+      .ant-menu-submenu-open {
+        .ant-menu-submenu-title {
+          .bg(rgba(24, 144, 255, 0.1));
+        }
+      }
+      .ant-menu-submenu-selected {
+        .ant-menu-submenu-title {
+          .c(@title);
+        }
+      }
+      .ant-menu-item-selected {
+        color: @primary-color!important;
+      }
+      .ant-menu-submenu-title {
+        .c(@text);
+        &:hover {
+          .bg(rgba(24, 144, 255, 0.1));
+        }
+      }
+      &__logo {
+        .bg(#fdfdfd);
+        border: 2px solid #8b8da0;
+      }
+      &__name {
+        .c(#000);
+      }
+      &__often {
+        &-title {
+          .c(rgba(0, 0, 0, 0.45));
+        }
+        &-list {
+          .c(rgba(0, 0, 0, 0.25));
+        }
+        &-item {
+          .c(@themeAMenuColor);
+        }
+      }
+      &__menu {
+        &.ant-menu-dark {
+          .bg(@white);
+        }
+        &.ant-menu-dark .ant-menu-sub {
+          .bg(@white);
+        }
+      }
+    }
+    &-body {
+      &__header {
+        .bg(@brand-color);
+      }
+      &__content {
+        &::after {
+          .bg(@brand-color);
+        }
+      }
+      &__location {
+        > h2 {
+          color: @white;
+        }
+      }
+      &__top-item {
+        .c(@text-color-secondary);
+      }
+      &__line {
+        .bg(rgba(255, 255, 255, 0.25));
+      }
+      &__avatar {
+        > img {
+          .bg(#ccc);
+        }
+      }
+      &__location {
+        .ant-breadcrumb-separator {
+          .c(@white);
+        }
+      }
+      &__breadtext {
+        .c(@white);
+      }
+    }
+  }
+}

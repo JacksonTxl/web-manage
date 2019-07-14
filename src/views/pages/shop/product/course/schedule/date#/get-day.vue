@@ -1,7 +1,7 @@
 <template>
   <div :class="{'get-day': isGet}">
     <span>{{dateString}} </span>
-    <a href="javascript:;" class="get-day__button" v-if="isGet" @click="onClickDaySchedule"> 查看日排期</a>
+    <a href="javascript:;" class="get-day__button" v-if="isGet" @click="onClickDaySchedule"> {{title}}</a>
   </div>
 </template>
 
@@ -16,6 +16,10 @@ export default {
     isGet: {
       type: Boolean,
       default: true
+    },
+    title: {
+      type: String,
+      default: '查看日排期'
     }
   },
   computed: {

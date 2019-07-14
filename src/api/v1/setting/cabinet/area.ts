@@ -40,8 +40,8 @@ export class CabinetAreaApi extends Api {
    * 储物柜区域拖拽排序
    * @param params
    */
-  sortByDrag(params: SortByDragInput) {
-    return this.http.put(url, { params })
+  sort(params: SortInput) {
+    return this.http.put('/v1/setting/cabinet/area_move', { params })
   }
 }
 
@@ -57,7 +57,7 @@ export interface UpdateInput extends AddInput {
    */
   id: number
 }
-export interface SortByDragInput {
+export interface SortInput {
   /**
    * 完整的储物柜区域列表
    */
