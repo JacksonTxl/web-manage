@@ -27,17 +27,16 @@
             </a-row>
           </a-col>
           <a-col :span="4" class="ta-r" v-if="auth.edit">
-            <a href="javascript: void(0)"
+            <st-info-action
+              icon="edit"
+              text="编辑"
               v-modal-link="{
                 name:'brand-setting-wechat-payment',
                 on: {
                   change: onListChange
                 }
               }"
-            >
-              <st-icon type="edit"></st-icon>
-              <span class="mg-l4 color-text-light">编辑</span>
-            </a>
+            />
           </a-col>
         </a-row>
       </st-container>

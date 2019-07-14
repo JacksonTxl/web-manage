@@ -4,7 +4,9 @@
     <a-row>
       <a-col :span="16"><st-t2>团体课程预约设置</st-t2></a-col>
       <a-col :span="8" class="ta-r">
-        <a href="javascript: void(0)"
+        <st-info-action
+          icon="edit"
+          text="编辑"
           v-if="auth.edit"
           v-modal-link="{
             name:'brand-setting-team-reserve',
@@ -12,10 +14,7 @@
               change: onChange
             }
           }"
-        >
-          <st-icon type="edit"></st-icon>
-          <span class="mg-l4 color-text-light">编辑</span>
-        </a>
+        />
       </a-col>
     </a-row>
     <!-- 预约范围 -->

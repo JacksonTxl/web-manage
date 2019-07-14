@@ -1,5 +1,5 @@
 <template>
-  <a href="javascript: void(0);" :class="b()" style="color: red">
+  <a href="javascript: void(0);" :class="b()" :style="{ color }">
     <st-icon :type="icon"></st-icon>
     <span :class="b('text')">{{text}}</span>
   </a>
@@ -18,6 +18,10 @@ export default {
     text: {
       type: String,
       default: '编辑'
+    },
+    color: {
+      type: String,
+      default: '#3F66F6'
     }
   }
 }
