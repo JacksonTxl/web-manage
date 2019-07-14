@@ -10,7 +10,7 @@
     </template>
     <a-tag style="background: #fff; borderStyle: dashed;">
       <a-dropdown overlayClassName="affiliated-store-dropdown">
-        <a class="ant-dropdown-link" href="#">
+        <a class="ant-dropdown-link">
           <a-tooltip>
             <template slot='title' v-if="shopList.length <= 0">
               没有可选的标签
