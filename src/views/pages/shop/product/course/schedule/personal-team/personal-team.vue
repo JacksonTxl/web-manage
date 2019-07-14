@@ -92,7 +92,7 @@ export default {
               name: 'schedule-personal-team-add-in-batch',
               on: {
                 ok: res => {
-                  this.onScheduleChange()
+                  that.onScheduleChange()
                 }
               }
             })
@@ -105,7 +105,7 @@ export default {
               name: 'schedule-personal-team-copy',
               on: {
                 ok: res => {
-                  this.onScheduleChange()
+                  that.onScheduleChange()
                 }
               }
             })
