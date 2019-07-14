@@ -142,7 +142,10 @@ export default {
       this.rePasswordService.getRePassword(this.staff.id).subscribe(res => {
         res = res.account
         this.openJurisdiction = !!res.is_permission
-        let form = {}
+        let form = {
+          password: res.password,
+          repeat_password: res.repeat_password
+        }
         if (this.hasAccountName) {
           form = Object.assign(form, {
             name: res.account_name
@@ -153,8 +156,6 @@ export default {
     },
     onClickRePassword() {
       this.openRepassword = true
-      this.form.setFields('password', '')
-      this.form.setFields('repeat_password', '')
     },
     onSubmit() {
       this.form.validateFields((err, values) => {
