@@ -106,7 +106,7 @@
             useType="form"
             placeholder="所属门店"
             :disabled="true"
-            v-decorator="rules.shop_id"/>
+            v-decorator="['shop_id']"/>
         </st-form-item>
       </a-col>
     </a-row>
