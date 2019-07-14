@@ -86,6 +86,7 @@
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "less-plugin-clean-css": "^1.5.1",
+    "less-plugin-functions": "^1.0.0",
     "less-plugin-glob": "^3.0.0",
     "less-plugin-npm-import": "^2.1.0",
     "lint-staged": "^8.1.5",
