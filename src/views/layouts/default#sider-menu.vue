@@ -170,6 +170,7 @@ export default {
        */
       const rulesMap = {
         home: /dashboard/,
+        setting: /brand-setting|shop-setting/,
         sold: /shop-sold/,
         course: /shop-product-course/,
         card: /shop-product-card/,

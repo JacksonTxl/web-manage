@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-default">
+  <div class="layout-default theme-b">
     <aside class="layout-default-sider">
       <div class="layout-default-sider__brand">
         <div class="layout-default-sider__logo">

@@ -89,7 +89,7 @@
     .ant-menu-item {
       display: flex;
       align-items: center;
-      padding-left: 26px !important;
+      padding-left: 24px !important;
       cursor: default;
       &.sub {
         .fz(12px);
@@ -148,10 +148,9 @@
       // overflow: auto;
     }
     &__often {
-      .pd-l(8px);
       .mg-t(8px);
       &-title {
-        .pd-l(16px);
+        .pd-l(24px);
         .fz(12px);
         .lh(20px);
         .c(rgba(255, 255, 255, 0.45));
@@ -165,6 +164,7 @@
       &-item {
         .ov-h();
         .pd-tb(8px, 8px);
+        .pd-l(2px);
         display: flex;
         align-items: center;
         &--active {
@@ -335,7 +335,7 @@
 }
 
 // 版本A 工作室（目前为工作室，只是一个代号，不与系统版本强绑定）
-.version-a {
+.theme-a {
   .layout-default {
     &-sider {
       .bg(@versionAMenuBgColor);
