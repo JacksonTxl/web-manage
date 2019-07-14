@@ -61,7 +61,7 @@ export default {
   created() {
     if (this.type === 1) {
       this.posterService.serviceInit(this.id).subscribe(() => {
-        this.url = `${this.appConfig.SHS_API_ENV}/saas/poster?token=${this.token}&brand_logo=${this.info.brand_logo}&brand_name=${this.info.brand_name}&price=${this.info.price}&qrcode_url=${this.info.qrcode_url}&quality=100`
+        this.url = `${this.appConfig.SHS_API_ENV}/saas/poster?token=${this.token}&brand_logo=${this.info.brand_logo}&brand_name=${this.info.brand_name}&price=${this.info.price}&qrcode_url=${this.info.qrcode_url}&quality=100&download=1`
       })
     } else if (this.type === 2) {
       this.activeClass = 'qrcode'

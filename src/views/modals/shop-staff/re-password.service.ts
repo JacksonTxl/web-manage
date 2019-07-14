@@ -44,4 +44,16 @@ export class RePasswordService {
       })
     }))
   }
+  /**
+   *
+   * @param params
+   * 设置账号权限
+   */
+  updatepermission(id: Number, params: PermissionInput) {
+    return this.staffApi.updatepermission(id, params).pipe(tap(res => {
+      this.msg.success({
+        content: '修改密码成功'
+      })
+    }))
+  }
 }
