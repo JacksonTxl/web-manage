@@ -139,8 +139,8 @@ export class UserService {
   SET_INVALID_TOOLTIP(tooltip: any) {
     this.invalidTooltips$.commit(() => tooltip)
   }
-  TOGGLE_FIRST_INITED() {
-    this.firstInited$.commit(s => !s)
+  SET_FIRST_INITED(inited: boolean) {
+    this.firstInited$.commit(() => inited)
   }
   getUser() {
     return this.staffApi.getGlobalStaffInfo().pipe(
@@ -232,7 +232,7 @@ export class UserService {
         this.getInvalidTooltips()
       ).pipe(
         tap(() => {
-          this.TOGGLE_FIRST_INITED()
+          this.SET_FIRST_INITED(true)
         })
       )
     } else {

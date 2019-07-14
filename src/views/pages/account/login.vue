@@ -99,7 +99,7 @@ export default {
     },
     onLogin(values) {
       this.loginService.loginAccount(values).subscribe(res => {
-        this.userService.TOGGLE_FIRST_INITED()
+        this.userService.SET_FIRST_INITED(false)
         if (res.have_phone) {
           this.$router.push('/')
         } else {
