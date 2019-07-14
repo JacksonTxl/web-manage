@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-row :gutter="24" class="mg-t16">
+    <a-row class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="18">
           <a-range-picker @change="onChooseDate" format="YYYY-MM-DD"/>

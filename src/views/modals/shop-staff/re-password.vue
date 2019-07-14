@@ -142,10 +142,7 @@ export default {
       this.rePasswordService.getRePassword(this.staff.id).subscribe(res => {
         res = res.account
         this.openJurisdiction = !!res.is_permission
-        let form = {
-          password: res.password,
-          repeat_password: res.repeat_password
-        }
+        let form = {}
         if (this.hasAccountName) {
           form = Object.assign(form, {
             name: res.account_name
@@ -156,31 +153,42 @@ export default {
     },
     onClickRePassword() {
       this.openRepassword = true
+      this.form.setFields('password', '')
+      this.form.setFields('repeat_password', '')
     },
     onSubmit() {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('onSubmit', values)
           const form = { id: this.staff.id, is_permission: +this.openJurisdiction, ...values }
+          // 未创建账号
           if (!this.hasAccountName) {
             if (values.account && values.password && values.repeat_password) {
-              this.rePasswordService.setAccount(form).subscribe()
+              this.rePasswordService.setAccount(form).subscribe(() => {
+                this.show = false
+              })
             } else {
               this.rePasswordService.updatepermission(this.staff.id, {
                 is_permission: +this.openJurisdiction
-              }).subscribe()
+              }).subscribe(() => {
+                this.show = false
+              })
             }
           } else {
+            // 填写了账号
             if (values.password && values.repeat_password) {
-              this.rePasswordService.rePassword(form).subscribe()
+              this.rePasswordService.rePassword(form).subscribe(() => {
+                this.show = false
+              })
             } else {
               this.rePasswordService.updatepermission(this.staff.id, {
                 is_permission: +this.openJurisdiction
-              }).subscribe()
+              }).subscribe(() => {
+                this.show = false
+              })
             }
           }
         }
-        this.show = false
       })
     }
   }

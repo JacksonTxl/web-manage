@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-row :gutter="24" class="mg-t16">
+    <a-row class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="16">
           <a-select style="width: 160px;margin-right:12px" :defaultValue="-1" placeholder="请选择课程状态"  @change="onSingleSearch('schedule_status', $event)">

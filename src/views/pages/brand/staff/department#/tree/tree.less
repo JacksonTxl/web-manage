@@ -16,10 +16,6 @@
       color: #1890FF;
     }
   }
-  &__add {
-    background: rgba(24,144,255,0.1);
-    padding: 4px 20px 4px 50px;
-  }
   &__content{
     display: flex;
     justify-items: center;
@@ -39,6 +35,9 @@
     .edit{
       color: #fff
     }
+  }
+  .active ~ .tree-node__content {
+    background: rgba(24,144,255,0.1);
   }
   .tree-name{
     .fz(12px);

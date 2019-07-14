@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-row :gutter="24" class="mg-t16">
+    <a-row class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="16">
           <shop-select style="width: 160px" v-model="query.shop_id" @change="onSingleSearch('shop_id', $event)"></shop-select>
