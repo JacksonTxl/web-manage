@@ -64,7 +64,12 @@ export class UserService {
           return ''
         }
         const firstMenu = menus[0]
-        return firstMenu.url
+        if (firstMenu.url) {
+          return firstMenu.url
+        }
+        if (firstMenu.children && firstMenu.children[0]) {
+          return firstMenu.children[0].url
+        }
       })
     )
   )
