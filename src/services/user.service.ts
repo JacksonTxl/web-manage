@@ -53,26 +53,12 @@ export class UserService {
   shop$ = new State<Shop>({})
   menuData$ = new State({
     favorite: [],
-    menus: []
+    menus: [],
+    first_url: ''
   })
   menus$ = new Computed<any[]>(this.menuData$.pipe(pluck('menus')))
+  firstMenuUrl$ = new Computed<string>(this.menuData$.pipe(pluck('first_url')))
   favoriteMenu$ = new Computed(this.menuData$.pipe(pluck('favorite')))
-  firstMenuUrl$ = new Computed(
-    this.menus$.pipe(
-      map(menus => {
-        if (!menus || !menus.length) {
-          return ''
-        }
-        const firstMenu = menus[0]
-        if (firstMenu.url) {
-          return firstMenu.url
-        }
-        if (firstMenu.children && firstMenu.children[0]) {
-          return firstMenu.children[0].url
-        }
-      })
-    )
-  )
   appMode$ = new State<string>('brand')
   firstInited$ = new State(false)
   // 枚举对象

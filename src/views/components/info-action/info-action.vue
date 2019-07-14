@@ -1,5 +1,10 @@
 <template>
-  <a href="javascript: void(0);" :class="b()" :style="{ color }">
+  <a
+    href="javascript: void(0);"
+    :class="b()"
+    :style="{ color }"
+    v-on="$listeners"
+  >
     <st-icon :type="icon"></st-icon>
     <span :class="b('text')">{{text}}</span>
   </a>

@@ -2,54 +2,19 @@ import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { AuthService } from '@/services/auth.service'
+import { RedirectService } from '@/services/redirect.service'
 interface SetState {
-  tabs: object[]
+
 }
 @Injectable()
 export class TemplateService extends Store<SetState> implements RouteGuard {
   state$: State<SetState>
-  tabs$: Computed<object[]>
-  constructor(
-    private authService: AuthService
-  ) {
+  authTabs$ = this.redirectService.getAuthTabs$('brand-finance-salary-template')
+  constructor(private redirectService: RedirectService) {
     super()
-    this.state$ = new State({
-      tabs: []
-    })
-    this.tabs$ = new Computed(this.state$.pipe(pluck('tabs')))
-  }
-  initTabs(fn: Function) {
-    const tabs: object[] = []
-    if (this.authService.can('todo')) {
-      tabs.push({
-        label: '底薪模板',
-        route: {
-          name: 'brand-finance-salary-template-basic'
-        }
-      })
-    }
-    if (this.authService.can('todo')) {
-      tabs.push({
-        label: '业绩模板',
-        route: {
-          name: 'brand-finance-salary-template-performance'
-        }
-      })
-    }
-    this.state$.commit(state => {
-      state.tabs = tabs
-    })
-    fn(tabs)
+    this.state$ = new State({})
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.initTabs((tabs: any) => {
-      const target = tabs[0].route
-      if (to.name === 'brand-finance-salary-template' && target) {
-        next(target)
-      } else {
-        next()
-      }
-    })
+    next()
   }
 }

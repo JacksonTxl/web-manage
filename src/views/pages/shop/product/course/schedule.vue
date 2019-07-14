@@ -1,5 +1,5 @@
 <template>
-  <st-panel class="page-schedule-st-panel" app :tabs="tabs">
+  <st-panel class="page-schedule-st-panel" app :tabs="authTabs">
   <div slot="actions" v-if="routeName === 'shop-product-course-schedule-team' || routeName === 'shop-product-course-schedule-team-table'">
     <a-select v-model="query.course_id" placeholder="请选择课程" @change="onChange" class="page-schedule__select mg-r8">
       <a-select-option :value="-1">全部</a-select-option>
@@ -36,10 +36,12 @@ import { TeamScheduleCommonService } from './schedule/team.service#/common.servi
 import { PersonalScheduleCommonService } from './schedule/personal.service#/common.service'
 import { RouteService } from '../../../../../services/route.service'
 import { PersonalTeamScheduleCommonService } from './schedule/personal-team.service#/common.service'
+import { ScheduleService } from './schedule.service'
 export default {
   name: 'CourseSchedule',
   serviceInject() {
     return {
+      scheduleService: ScheduleService,
       teamScheduleCommonService: TeamScheduleCommonService,
       personalScheduleCommonService: PersonalScheduleCommonService,
       personalTeamScheduleCommonService: PersonalTeamScheduleCommonService,
@@ -58,7 +60,8 @@ export default {
       coachInBatchOptions: pscs.coachInBatchOptions$,
       coachPersonalOptions: pscs.coachOptions$,
       courseCoachOptions: pscs.courseCoachOptions$,
-      coachPersonalTeamOptions: ptscs.coachOptions$
+      coachPersonalTeamOptions: ptscs.coachOptions$,
+      authTabs: this.scheduleService.authTabs$
     }
   },
   data() {

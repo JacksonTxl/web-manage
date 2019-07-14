@@ -1,19 +1,39 @@
 <template>
   <div class="layout-default theme-a">
     <aside class="layout-default-sider">
-      <div class="layout-default-sider__brand">
+      <!-- 门店维度下 -->
+      <div class="layout-default-sider__shop" v-if="isInShop">
+        <div class="layout-default-sider__shop-top">
+          <div class="layout-default-sider__logo">
+            <img
+              width="100%"
+              height="100%"
+              :src="shop.logo | imgFilter({ w: 48, h: 48 })"
+              alt="logo"
+            />
+            <i class="layout-default-sider__certification st-icon-certified"></i>
+          </div>
+          <div class="layout-default-sider__shop-brand-name">{{brand.name}}</div>
+        </div>
+        <div class="layout-default-sider__name cursor-pointer" @click="switchShop">
+          <span>{{shop.name}}</span>
+          <st-icon type="arrow-right" class="layout-default-sider__arrow"></st-icon>
+        </div>
+      </div>
+      <!-- 品牌维度下 -->
+      <div class="layout-default-sider__brand" v-else>
         <div class="layout-default-sider__logo">
           <img
             width="100%"
             height="100%"
-            :src="(shop.logo || brand.logo) | imgFilter({ w: 48, h: 48 })"
+            :src="brand.logo | imgFilter({ w: 48, h: 48 })"
             alt="logo"
           />
           <i class="layout-default-sider__certification st-icon-certified"></i>
         </div>
         <div class="layout-default-sider__name cursor-pointer" @click="switchShop">
-          <span>{{shop.name || brand.name}}</span>
-          <st-icon type="arrow-right"></st-icon>
+          <span>{{brand.name}}</span>
+          <st-icon type="arrow-right" class="layout-default-sider__arrow"></st-icon>
         </div>
       </div>
       <div class="layout-default-sider__scrollbox" v-scrollBar>
@@ -112,8 +132,8 @@ export default {
   rxState() {
     return {
       user: this.userService.user$,
-      shop: this.userService.shop$,
-      brand: this.userService.brand$
+      brand: this.userService.brand$,
+      shop: this.userService.shop$
     }
   },
   data() {
@@ -136,6 +156,9 @@ export default {
     },
     homePageRoute() {
       return /^\/brand/.test(this.$route.path) ? '/' : '/shop/dashboard'
+    },
+    isInShop() {
+      return this.shop.id
     }
   },
   methods: {
