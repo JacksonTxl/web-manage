@@ -1,12 +1,5 @@
 <template>
-  <st-panel
-    app
-    initial
-    :tabs="[
-      { label: '会员卡', route: { name: 'shop-sold-card-list-member' } },
-      { label: '储值卡', route: { name: 'shop-sold-card-list-deposit' } }
-    ]"
-  >
+  <st-panel app initial :tabs="authTabs">
     <div slot="actions">
       <st-input-search v-model="query.search" @search="onSearchCardName" placeholder="请输入卡名、会员姓名或手机号查找" style="width: 290px;"/>
     </div>
@@ -15,16 +8,19 @@
 </template>
 <script>
 import { RouteService } from '@/services/route.service'
+import { ListService } from './list.service'
 export default {
   name: 'PageShopSoldCard',
   serviceInject() {
     return {
-      routeService: RouteService
+      routeService: RouteService,
+      listService: ListService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$
+      query: this.routeService.query$,
+      authTabs: this.listService.authTabs$
     }
   },
   methods: {

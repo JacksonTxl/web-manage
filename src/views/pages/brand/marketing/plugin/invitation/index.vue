@@ -13,10 +13,21 @@
 </template>
 <script>
 import MarkteingPluginTitle from '../../components#/marketing-title'
+import { IndexService } from './index.service'
 export default {
   name: 'PageBrandMarketingInviation',
   bem: {
     inviation: 'page-brand-marketing-inviation'
+  },
+  serviceInject() {
+    return {
+      indexService: IndexService
+    }
+  },
+  rxState() {
+    return {
+      authTabs: this.indexService.authTabs$
+    }
   },
   components: {
     MarkteingPluginTitle
