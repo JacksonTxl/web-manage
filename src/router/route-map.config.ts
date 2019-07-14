@@ -16,13 +16,16 @@ interface RouteConfig extends ServiceRouteConfig {
      * 生命平级路由的父级路由name
      */
     parentId: string
-
     /**
-     * 该路由是否能访问的权限key名
+     * 路由对应的权限
      */
-    auth:string
-  },
-  guards:object[]
+    auth: string
+    /**
+     * 父级路由带有的tabs路由名数组
+     */
+    tabs: string[]
+  }
+  guards: object[]
 }
 interface StaffEdit extends ServiceRouteConfig {
   staff_id?: number
@@ -162,49 +165,63 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-course-info-package-info-consumption-record'(routeConfig: RouteConfig) {
+  'shop-sold-course-info-package-info-consumption-record'(
+    routeConfig: RouteConfig
+  ) {
     routeConfig.meta.title = '课程包详情'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-course-info-package-info-operation-record'(routeConfig: RouteConfig) {
+  'shop-sold-course-info-package-info-operation-record'(
+    routeConfig: RouteConfig
+  ) {
     routeConfig.meta.title = '课程包详情'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-course-info-personal-info-consumption-record'(routeConfig: RouteConfig) {
+  'shop-sold-course-info-personal-info-consumption-record'(
+    routeConfig: RouteConfig
+  ) {
     routeConfig.meta.title = '私教课详情'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-course-info-personal-info-operation-record'(routeConfig: RouteConfig) {
+  'shop-sold-course-info-personal-info-operation-record'(
+    routeConfig: RouteConfig
+  ) {
     routeConfig.meta.title = '私教课详情'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-card-info-deposit-info-consumption-record'(routeConfig: RouteConfig) {
+  'shop-sold-card-info-deposit-info-consumption-record'(
+    routeConfig: RouteConfig
+  ) {
     routeConfig.meta.title = '储值卡详情'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-card-info-deposit-info-operation-record'(routeConfig: RouteConfig) {
+  'shop-sold-card-info-deposit-info-operation-record'(
+    routeConfig: RouteConfig
+  ) {
     routeConfig.meta.title = '储值卡详情'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
   },
-  'shop-sold-card-info-member-info-consumption-record'(routeConfig: RouteConfig) {
+  'shop-sold-card-info-member-info-consumption-record'(
+    routeConfig: RouteConfig
+  ) {
     routeConfig.meta.title = '会籍卡详情'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
@@ -245,10 +262,15 @@ export const routeMapConfig = {
   },
   'brand-setting-general'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '系统设置'
+    routeConfig.meta.tabs = [
+      'brand-setting-general-brand',
+      'brand-setting-general-course',
+      'brand-setting-general-pay-type',
+      'brand-setting-general-coach-level',
+      'brand-setting-general-user-level'
+    ]
   },
-  'brand-setting-app-course'(routeConfig: RouteConfig) {
-
-  },
+  'brand-setting-app-course'(routeConfig: RouteConfig) {},
   'brand-setting-app-course-category'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程类型'
   },
@@ -446,6 +468,10 @@ export const routeMapConfig = {
   'brand-setting-general-course'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教与课程设置'
     routeConfig.meta.auth = ''
+    routeConfig.meta.tabs = [
+      'brand-setting-general-course-personal',
+      'brand-setting-general-course-team'
+    ]
   },
   'brand-setting-general-course-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教设置'
@@ -592,10 +618,14 @@ export const routeMapConfig = {
   'shop-product-course-manage-personal-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑私教课'
   },
-  'shop-product-course-manage-package-edit-unlimit-package'(routeConfig: RouteConfig) {
+  'shop-product-course-manage-package-edit-unlimit-package'(
+    routeConfig: RouteConfig
+  ) {
     routeConfig.meta.title = '编辑课程包'
   },
-  'shop-product-course-manage-package-info-unlimit-package'(routeConfig: RouteConfig) {
+  'shop-product-course-manage-package-info-unlimit-package'(
+    routeConfig: RouteConfig
+  ) {
     routeConfig.meta.title = '课程包详情'
   },
   'shop-product-card-member-number-info'(routeConfig: RouteConfig) {

@@ -15,7 +15,7 @@
       </a-col>
       <a-col :lg="8">
         <st-info>
-          <st-info-item label="上课场地">{{info.court_name}}</st-info-item>
+          <st-info-item label="上课场地">{{info.court_name}} <span v-if="info.court_site_name"> • {{info.court_site_name}}</span> </st-info-item>
           <st-info-item label="预约人数">{{info.reserved_num}}</st-info-item>
         </st-info>
       </a-col>

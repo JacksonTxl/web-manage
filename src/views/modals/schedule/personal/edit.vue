@@ -120,7 +120,9 @@ export default {
       })
     },
     onClickCopySchedule() {
-      this.scheduleService.curd('copy', { id: this.id || 108 }, () => {})
+      this.scheduleService.copy({ id: this.id || 108 }).subscribe(res => {
+        this.$router.push({ force: true })
+      })
     },
     initScheduleInfo() {
       const weekOfday = moment(this.start, 'YYYY-MM-DD').format('E')

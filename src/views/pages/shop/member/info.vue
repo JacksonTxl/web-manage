@@ -5,13 +5,12 @@
         <a-col :span="14">
           <div class="shop-member-info-title-pannel-left">
             <div class="shop-member-info-title-pannel__img">
-              <div class="img-box  st-preview-item">
+              <div class="img-box  st-preview-item" v-viewer="{ url: 'data-src' }">
                 <img
                   class="img-url"
-                  src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=234634259,4236876085&fm=27&gp=0.jpg"
-                  alt
+                  :src="info.image_face.name | imgFilter({ w: 80, h: 142 })" :data-src="info.image_face.name | imgFilter({ w: 1000 })"
                 >
-                <span class="img-describe">正式会员</span>
+                <span class="img-describe">{{info.member_level.name}}</span>
               </div>
               <div class="input-face">
                 <a href="#" @click="openFaceUpload">

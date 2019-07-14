@@ -158,6 +158,7 @@ export default {
   methods: {
     initHeader() {
       const that = this
+      let calendarApi = that.$refs.fullCalendar.getApi()
       this.$nextTick(() => {
         const dayHeaderEle = $('.fc-day-header')
         const length = $('.fc-day-header').length
@@ -177,7 +178,7 @@ export default {
                 this.isShow = false
                 this.$nextTick().then(() => {
                   $('.fc-timeGridDay-button').click()
-                  let calendarApi = that.$refs.fullCalendar.getApi()
+                  calendar.scrollToTime('24:00')
                   calendarApi.gotoDate(new Date(dataDate))
                 })
               }
@@ -185,7 +186,7 @@ export default {
             render(h) {
               let { clickHandler, isShow } = this
               return (
-                <GetDay onScan={this.clickHandler} date={dataDate} isGet={!(length === 1)}>
+                <GetDay onScan={this.clickHandler} date={dataDate} title={'查看日排期'} isGet={!(length === 1)}>
                 </GetDay>
               )
             }

@@ -88,12 +88,12 @@ export default {
   methods: {
     onClickReserve(id) {
       this.reserveService.del(id).subscribe(() => {
-        this.getList(query = {})
+        this.$router.push({ force: true })
       })
     },
     onClickCheckIn(id) {
       this.reserveService.check(id).subscribe(() => {
-        this.getList(query = {})
+        this.$router.push({ force: true })
       })
     },
     onClickSkipSchedule() {

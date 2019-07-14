@@ -48,6 +48,7 @@
 
 <script>
 import { UserService } from '@/services/user.service'
+import { AuthService } from '@/services/auth.service'
 import { LoginService } from './login.service'
 import mobile from './login#/mobile'
 import user from './login#/user'
@@ -56,7 +57,8 @@ export default {
   serviceInject() {
     return {
       loginService: LoginService,
-      userService: UserService
+      userService: UserService,
+      authService: AuthService
     }
   },
   data() {
@@ -97,7 +99,7 @@ export default {
     },
     onLogin(values) {
       this.loginService.loginAccount(values).subscribe(res => {
-        this.userService.reload()
+        this.userService.SET_FIRST_INITED(false)
         if (res.have_phone) {
           this.$router.push('/')
         } else {

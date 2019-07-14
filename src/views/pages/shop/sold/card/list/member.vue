@@ -16,26 +16,7 @@
       <div slot="more">
         <div :class="basic('select')">
           <span style="width:90px;">开卡时间：</span>
-          <a-date-picker
-            :disabledDate="disabledStartDate"
-            format="YYYY-MM-DD"
-            v-model="start_time"
-            placeholder="开始日期"
-            :showToday="false"
-            @openChange="handleStartOpenChange"
-            @change="start_time_change"
-          />
-          &nbsp;~&nbsp;
-          <a-date-picker
-            :disabledDate="disabledEndDate"
-            format="YYYY-MM-DD"
-            v-model="end_time"
-            placeholder="结束日期"
-            :showToday="false"
-            :open="endOpen"
-            @openChange="handleEndOpenChange"
-            @change="end_time_change"
-          />
+          <st-range-picker :disabledDays="180" :value="selectTime"></st-range-picker>
         </div>
       </div>
       <div slot="button">
@@ -111,6 +92,7 @@ import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './member.config'
+import StRangePicker from '@/views/components/datetime-picker/range-picker'
 
 export default {
   name: 'PageShopSoldCardMemberList',
@@ -135,6 +117,9 @@ export default {
       query: this.routeService.query$,
       auth: this.memberService.auth$
     }
+  },
+  components: {
+    StRangePicker
   },
   computed: {
     columns,
@@ -177,12 +162,29 @@ export default {
         card_status: 1,
         is_open: -1
       },
-      start_time: null,
-      end_time: null,
       // 结束时间面板是否显示
       endOpen: false,
       selectedRowKeys: [],
-      selectedRows: []
+      selectedRows: [],
+      selectTime: {
+        startTime: {
+          showTime: false,
+          disabledBegin: null,
+          placeholder: '开始日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: ($event) => { }
+        },
+        endTime: {
+          showTime: false,
+          placeholder: '结束日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: ($event) => {}
+        }
+      }
     }
   },
   mounted() {
@@ -205,58 +207,18 @@ export default {
     },
     // 查询
     onSearchNative() {
-      this.query.start_time = this.start_time ? `${this.start_time.format('YYYY-MM-DD')} 00:00:00` : ''
-      this.query.end_time = this.end_time ? `${this.end_time.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.query.start_time = this.selectTime.startTime.value ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.query.end_time = this.selectTime.endTime.value ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 00:00:00` : ''
       this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      this.start_time = this.query.start_time
+      this.selectTime.startTime.value = this.query.start_time
         ? cloneDeep(moment(this.query.start_time))
         : null
-      this.end_time = this.query.end_time
+      this.selectTime.endTime.value = this.query.end_time
         ? cloneDeep(moment(this.query.end_time))
         : null
-    },
-    // 售卖时间-start
-    start_time_change(data) {
-      this.start_time = cloneDeep(data)
-    },
-    handleStartOpenChange(open) {
-      if (!open) {
-        this.endOpen = true
-      }
-    },
-    disabledStartDate(startValue) {
-      const endValue = this.end_time
-      if (endValue) {
-        // 选择了结束时间
-        return (
-          startValue.valueOf() <
-            moment(endValue)
-              .subtract(31, 'd')
-              .valueOf() || startValue.valueOf() > moment(endValue).valueOf()
-        )
-      }
-    },
-    // 售卖时间-end
-    end_time_change(data) {
-      this.end_time = cloneDeep(data)
-    },
-    handleEndOpenChange(open) {
-      this.endOpen = open
-    },
-    disabledEndDate(endValue) {
-      const startValue = this.start_time
-      if (startValue) {
-        // 选择了开始时间
-        return (
-          endValue.valueOf() >
-            moment(startValue)
-              .add(31, 'd')
-              .valueOf() || endValue.valueOf() < moment(startValue).valueOf()
-        )
-      }
     },
     // moment
     moment,

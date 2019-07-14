@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-route-nav title="通用设置" v-model="authTab.tabs"></page-route-nav>
+    <page-route-nav title="通用设置" v-model="authTabs"></page-route-nav>
   </div>
 </template>
 <script>
@@ -17,7 +17,7 @@ export default {
   },
   rxState() {
     return {
-      authTab: this.generalService.authTab$
+      authTabs: this.generalService.authTabs$
     }
   },
   components: {
