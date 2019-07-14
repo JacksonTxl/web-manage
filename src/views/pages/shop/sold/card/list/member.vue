@@ -17,26 +17,6 @@
         <div :class="basic('select')">
           <span style="width:90px;">开卡时间：</span>
           <st-range-picker :disabledDays="180" :value="selectTime"></st-range-picker>
-          <!-- <a-date-picker
-            :disabledDate="disabledStartDate"
-            format="YYYY-MM-DD"
-            v-model="start_time"
-            placeholder="开始日期"
-            :showToday="false"
-            @openChange="handleStartOpenChange"
-            @change="start_time_change"
-          />
-          &nbsp;~&nbsp;
-          <a-date-picker
-            :disabledDate="disabledEndDate"
-            format="YYYY-MM-DD"
-            v-model="end_time"
-            placeholder="结束日期"
-            :showToday="false"
-            :open="endOpen"
-            @openChange="handleEndOpenChange"
-            @change="end_time_change"
-          /> -->
         </div>
       </div>
       <div slot="button">
@@ -182,8 +162,6 @@ export default {
         card_status: 1,
         is_open: -1
       },
-      start_time: null,
-      end_time: null,
       // 结束时间面板是否显示
       endOpen: false,
       selectedRowKeys: [],
