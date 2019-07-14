@@ -1,29 +1,32 @@
 <template>
   <div :class="b()" :gutter="24">
+    <div :class="b('adv')" :span="6">
+      <sidebar-component></sidebar-component>
+    </div>
     <div :class="bCount()" :lg="18">
-      <st-panel title="概况">
+      <st-panel :class="b('shadow')" title="概况">
         <div slot="actions">
           <!-- 最近更新时间：2019-04-02 12:38 <a :class="bCount('refresh')" href="javascript:viod(0);" @click="refresh"><st-icon type="switch"></st-icon></a> -->
         </div>
         <a-row :class="bCount('title')">
           <a-col :lg="4">
           </a-col>
-          <a-col :lg="5">
+          <a-col :lg="5" style="position:relative;left:-16px;">
+            <st-help-tooltip id="TSNM001"></st-help-tooltip>
             新增入会用户(人)
             <span :class="[bCount('topIcon'), 'user']"><img :src="topIconUser" /></span>
-            <st-help-tooltip id="TSNM001"></st-help-tooltip>
           </a-col>
           <a-col :lg="5">
             营收额(元)
             <span :class="[bCount('topIcon'), 'money']"><img :src="topIconMoney" /></span>
           </a-col>
-          <a-col :lg="5">
+          <a-col :lg="5" style="position:relative;left:-16px;">
+            <st-help-tooltip id="TSNM002"></st-help-tooltip>
             总消课(节)
             <span :class="[bCount('topIcon'), 'price']"><img :src="topIconPrice" /></span>
-            <st-help-tooltip id="TSNM002"></st-help-tooltip>
           </a-col>
           <a-col :lg="5">
-            客流量(人)
+            客流量(人次)
             <span :class="[bCount('topIcon'), 'flow']"><img :src="topIconFlow" /></span>
           </a-col>
         </a-row>
@@ -96,30 +99,31 @@
           </a-col>
         </a-row>
       </st-panel>
-      <st-panel class="mg-t16">
+      <st-panel :class="b('shadow')" class="mg-t16">
         <div slot="title">
           <recent-radio-group @change="revenueRecentChange"></recent-radio-group>
         </div>
-        <a-row>
-          <a-col :span="14">
-            <st-t3> 营收趋势</st-t3>
-            <p :class="bCount('amount')">合计：<span class="font-number">{{revenueSummary.length?revenueSummary[6].value:'--'}}</span>元</p>
-            <shop-revenue-line v-if="revenueDaily.length" :data="revenueDaily" :fields="['会员卡','私教课','团体课','课程包','云店','其他','总营收']"></shop-revenue-line>
-            <img v-else :class="b('entry-course-img')" :src="inoutNumImg" />
-          </a-col>
-          <a-col :span="10">
+        <div>
+          <div :class="b('revenue-right')">
             <st-t3 style="margin-bottom:40px;">营收结构</st-t3>
             <shop-revenue-ring v-if="revenueSummary.length" :data="revenueSummary"></shop-revenue-ring>
             <img v-else :class="b('entry-pie-img')" :src="pieImg" />
-          </a-col>
-        </a-row>
+          </div>
+          <div :class="b('revenue-left')">
+            <st-t3> 营收趋势</st-t3>
+            <p :class="bCount('amount')">合计：<span class="font-number">{{revenueSum?revenueSum:'--'}}</span>元</p>
+            <shop-revenue-line v-if="revenueDaily.length" :data="revenueDaily" :fields="['会员卡','私教课','团体课','课程包','云店','其他','总营收']"></shop-revenue-line>
+            <img v-else :class="b('entry-course-img')" :src="inoutNumImg" />
+          </div>
+
+        </div>
       </st-panel>
-      <st-panel class="mg-t16">
+      <st-panel :class="b('shadow')" class="mg-t16">
         <div slot="title">
           <recent-radio-group @change="newMemberRecentChange"></recent-radio-group>
         </div>
-        <a-row>
-          <a-col :span="7">
+        <div>
+          <div :class="b('user-left')">
             <a-dropdown>
               <a href="javascript:;">
                 <st-t3>
@@ -145,15 +149,15 @@
               <img v-else :class="b('entry-funnel-img')" :src="funnelImg" />
             </template>
 
-          </a-col>
-          <a-col :offset="1" :span="16">
+          </div>
+          <div :class="b('user-right')">
             <st-t3 style="margin-bottom:24px;">新增入会用户</st-t3>
             <shop-add-user v-if="newMember.length" :height="320" :data="newMember"></shop-add-user>
             <img v-else :class="b('entry-newMember-img')" :src="newMemberImg" />
-          </a-col>
-        </a-row>
+          </div>
+        </div>
       </st-panel>
-      <st-panel class="mg-t16">
+      <st-panel :class="b('shadow')" class="mg-t16">
         <div slot="title">
           <recent-radio-group @change="courseRecentChange"></recent-radio-group>
         </div>
@@ -170,7 +174,7 @@
           </a-col>
         </a-row>
       </st-panel>
-      <st-panel class="mg-t16">
+      <st-panel :class="b('shadow')" class="mg-t16">
         <div slot="title">
           <recent-radio-group @change="inoutRecentChange"></recent-radio-group>
         </div>
@@ -187,9 +191,6 @@
           </a-col>
         </a-row>
       </st-panel>
-    </div>
-    <div :class="b('adv')" :span="6">
-      <sidebar-component></sidebar-component>
     </div>
   </div>
 
@@ -236,6 +237,7 @@ export default {
       top: this.clubComponentService.top$,
       revenueDaily: this.clubComponentService.revenueDaily$,
       revenueSummary: this.clubComponentService.revenueSummary$,
+      revenueSum: this.clubComponentService.revenueSum$,
       courseDaily: this.clubComponentService.courseDaily$,
       courseSummary: this.clubComponentService.courseSummary$,
       inoutNum: this.clubComponentService.inoutNum$,

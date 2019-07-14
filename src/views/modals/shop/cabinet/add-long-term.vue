@@ -17,9 +17,9 @@
         <a-input-number
           placeholder="请输入起始编号"
           v-decorator="ruleConfig.startNum"
-          min="1"
-          max="9999"
-          precision="0"
+          :min="1"
+          :max="9999"
+          :precision="0"
           class="full-width"
         />
       </st-form-item>

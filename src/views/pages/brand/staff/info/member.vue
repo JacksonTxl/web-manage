@@ -1,6 +1,6 @@
 <template>
   <div class="pages-brand-staff-info-member-container">
-    <a-row :gutter="24">
+    <a-row>
       <a-col :lg="24">
         <a-col :lg="18">
           <shop-select style="width: 160px" v-model="query.shop_id" @change="onSingleSearch('shop_id', $event)"></shop-select>

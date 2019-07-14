@@ -115,21 +115,21 @@
         </template>
         <template slot="action" slot-scope="text,record">
           <st-table-actions>
-            <a href="javascript:;" v-if="record.auth['brand_shop:staff:staff|get']" @click="onSearchDetail(record)">详情</a>
+            <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|get']" @click="onSearchDetail(record)">详情</a>
             <template v-if="record.work_status.name === '在职'">
-              <a v-if="record.auth['brand_shop:staff:staff|edit']"
+              <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|edit']"
                 @click="onEdit(record)">编辑</a>
-              <a v-if="record.auth['brand_shop:staff:staff|bind_card']"
+              <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|bind_card']"
                 v-modal-link="{ name: 'shop-staff-bind-card', props: {staff: record }}">绑实体卡</a>
-              <a v-if="record.auth['brand_shop:staff:staff|rebind_card']"
+              <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|rebind_card']"
                 v-modal-link="{ name: 'shop-staff-bind-card', props: {staff: record }}">重绑实体卡</a>
-              <a v-if="record.auth['brand_shop:staff:account|save']"
+              <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:account|save']"
                 v-modal-link="{ name: 'shop-staff-re-password', props: {staff: record}}">管理登录账号</a>
-              <a v-if="record.auth['brand_shop:staff:staff|position']"
+              <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|position']"
                 v-modal-link="{ name: 'shop-staff-update-staff-position', props: {staff: record}}">职位变更</a>
-              <a v-if="record.auth['brand_shop:staff:staff|salary']"
+              <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|salary']"
                 v-modal-link="{ name: 'shop-staff-salary-account-setting', props: {staff: record}}">设置薪资账户</a>
-              <a v-if="record.auth['brand_shop:staff:staff|shop_leave']"
+              <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|shop_leave']"
                 v-modal-link="{ name: 'shop-staff-leave-current-shop', props: {staff: record}}">解除门店关系</a>
             </template>
           </st-table-actions>

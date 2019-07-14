@@ -1,6 +1,6 @@
 // 默认版本配色
 @defaultMenuBgColor: #2c3153;
-@defaultMenuColor: @white;
+@defaultMenuColor: rgba(@white, .65);
 // version-a 配色
 @versionAMenuBgColor: @white;
 @versionAMenuColor: rgba(0, 0, 0, 0.65);
@@ -58,7 +58,7 @@
       }
       .ant-menu-submenu-selected {
         .ant-menu-submenu-title {
-          .c(@white);
+          // .c(@white);
           &:before {
             .h(22px);
           }
@@ -72,7 +72,7 @@
         }
       }
       .ant-menu-submenu-title {
-        .c(@white);
+        .c(rgba(@defaultMenuColor));
         padding-left: 24px !important;
         &:before {
           .d-n;
@@ -89,7 +89,7 @@
     .ant-menu-item {
       display: flex;
       align-items: center;
-      padding-left: 26px !important;
+      padding-left: 24px !important;
       cursor: default;
       &.sub {
         .fz(12px);
@@ -148,10 +148,9 @@
       // overflow: auto;
     }
     &__often {
-      .pd-l(8px);
       .mg-t(8px);
       &-title {
-        .pd-l(16px);
+        .pd-l(24px);
         .fz(12px);
         .lh(20px);
         .c(rgba(255, 255, 255, 0.45));
@@ -165,6 +164,7 @@
       &-item {
         .ov-h();
         .pd-tb(8px, 8px);
+        .pd-l(2px);
         display: flex;
         align-items: center;
         &--active {
@@ -250,6 +250,12 @@
       display: flex;
       align-items: center;
     }
+    &__top-item {
+      .h(64px);
+      .c(@text-color-secondary);
+      .lh(64px);
+      .fz(16px);
+    }
     &__icon {
       .fz(20px);
       .c(@white);
@@ -329,7 +335,7 @@
 }
 
 // 版本A 工作室（目前为工作室，只是一个代号，不与系统版本强绑定）
-.version-a {
+.theme-a {
   .layout-default {
     &-sider {
       .bg(@versionAMenuBgColor);
@@ -393,6 +399,9 @@
         > h2 {
           color: @white;
         }
+      }
+      &__top-item {
+        .c(@text-color-secondary);
       }
       &__line {
         .bg(rgba(255, 255, 255, 0.25));

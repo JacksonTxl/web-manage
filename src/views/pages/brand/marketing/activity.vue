@@ -7,7 +7,7 @@
       <div :class="activity('right')">
         <a-tabs defaultActiveKey="1">
           <a-tab-pane tab="活动轮播图" key="1">
-            <row-container-component title="头图活动广告" subTitle="最多添加5张轮播图广告">
+            <row-container-component title="头图活动广告" subTitle="拖动图片进行排序，最多添加5张轮播图广告">
               <slider-component v-if="sliderLoaded"></slider-component>
             </row-container-component>
           </a-tab-pane>

@@ -163,12 +163,24 @@ export default {
           console.log('onSubmit', values)
           const form = { id: this.staff.id, is_permission: +this.openJurisdiction, ...values }
           if (!this.hasAccountName) {
-            this.rePasswordService.setAccount(form).subscribe()
+            if (values.account && values.password && values.repeat_password) {
+              this.rePasswordService.setAccount(form).subscribe()
+            } else {
+              this.rePasswordService.updatepermission(this.staff.id, {
+                is_permission: +this.openJurisdiction
+              }).subscribe()
+            }
           } else {
-            this.rePasswordService.rePassword(form).subscribe()
+            if (values.password && values.repeat_password) {
+              this.rePasswordService.rePassword(form).subscribe()
+            } else {
+              this.rePasswordService.updatepermission(this.staff.id, {
+                is_permission: +this.openJurisdiction
+              }).subscribe()
+            }
           }
         }
-        // this.show = false
+        this.show = false
       })
     }
   }

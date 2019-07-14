@@ -23,7 +23,11 @@
         <a-col :span="8" v-if="list.length<5">
             <div :class="slider('box')">
           <st-image-upload @change="imageUploadChange($event)" width="100%" height="162px" :list='[]'
-            :sizeLimit="2"  placeholder="添加活动图片" :numLimit="5"></st-image-upload>
+            :sizeLimit="2"  placeholder="添加活动图片" :numLimit="5">
+            <a-icon type="plus-circle" theme="filled" :style="{fontSize:'36px', color: '#9BACB9' }" />
+            <div class="st-image-upload__placeholder">添加活动图片</div>
+            <span :class="slider('uploadtip')">大小不超过5M，建议尺寸16:9</span>
+          </st-image-upload>
             <st-form-item labelWidth="46px" label="链接">
                 <a-select placeholder="请输入连接的活动" @select="addSelect" v-model="addItem.activity_id">
                   <a-select-option v-for="(act, i) in actList" :key="i" :value="act.id">{{act.activity_name}}</a-select-option>

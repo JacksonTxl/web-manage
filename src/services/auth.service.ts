@@ -1,20 +1,26 @@
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, log } from 'rx-state'
-import { tap, pluck, map } from 'rxjs/operators'
-import { Store } from './store'
+import { Injectable, ServiceRoute, ServiceRouter } from 'vue-service-app'
+import { State, Computed } from 'rx-state'
+import { tap, map } from 'rxjs/operators'
 import { AuthApi } from '@/api/v1/common/auth'
 import { of, forkJoin, pipe } from 'rxjs'
 import { get, set, forEach } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
+import { NotificationService } from './notification.service'
 
 interface DataState {
   list?: any[]
   [propName: string]: any
 }
+
 @Injectable()
 export class AuthService {
   auth$ = new State<Array<string>>([])
-  constructor(private authApi: AuthApi, private nprogress: NProgressService) {
+  constructor(
+    private authApi: AuthApi,
+    private nprogress: NProgressService,
+    private router: ServiceRouter,
+    private notification: NotificationService
+  ) {
     this.nprogress.SET_TEXT('用户权限数据加载中...')
   }
   getList() {
@@ -100,6 +106,9 @@ export class AuthService {
         })
       )
     )
+  }
+  tabCan(s: string) {
+    return 1
   }
   init() {
     if (!this.auth$.snapshot().length) {

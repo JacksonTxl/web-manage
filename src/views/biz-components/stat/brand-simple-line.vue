@@ -49,6 +49,7 @@ export default {
           return row
         }
       })
+      console.log(this.data)
     },
     initChart() {
       this.chart = new Chart({

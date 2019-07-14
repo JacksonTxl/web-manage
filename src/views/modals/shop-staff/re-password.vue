@@ -162,13 +162,34 @@ export default {
         if (!err) {
           console.log('onSubmit', values)
           const form = { id: this.staff.id, is_permission: +this.openJurisdiction, ...values }
+          // 未创建账号
           if (!this.hasAccountName) {
-            this.rePasswordService.setAccount(form).subscribe()
+            if (values.account && values.password && values.repeat_password) {
+              this.rePasswordService.setAccount(form).subscribe(() => {
+                this.show = false
+              })
+            } else {
+              this.rePasswordService.updatepermission(this.staff.id, {
+                is_permission: +this.openJurisdiction
+              }).subscribe(() => {
+                this.show = false
+              })
+            }
           } else {
-            this.rePasswordService.rePassword(form).subscribe()
+            // 填写了账号
+            if (values.password && values.repeat_password) {
+              this.rePasswordService.rePassword(form).subscribe(() => {
+                this.show = false
+              })
+            } else {
+              this.rePasswordService.updatepermission(this.staff.id, {
+                is_permission: +this.openJurisdiction
+              }).subscribe(() => {
+                this.show = false
+              })
+            }
           }
         }
-        // this.show = false
       })
     }
   }

@@ -34,6 +34,7 @@ import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 import $ from 'jquery'
 import { PersonalScheduleReserveService } from './personal.service#/reserve.service'
 import AddCard from './date#/add-card'
+import GetDay from './date#/get-day'
 export default {
   name: 'SchedulePersonalTeam',
   components: {
@@ -155,6 +156,7 @@ export default {
       this.$router.push({ query: { start_date: start, end_date: end } })
     },
     setAddButton() {
+      const that = this
       this.$nextTick().then(() => {
         const addCardEl = new Vue({
           components: {
@@ -182,7 +184,39 @@ export default {
           'line-height:' + (cellSize.heigth - 4) + 'px' // center text vertically
         ].join(';')
         let hoverHtml = '<div class="hover-button" style="' + hoverCss + '">+</div>'
-
+        const dayHeaderEle = $('.fc-day-header')
+        const length = $('.fc-day-header').length
+        dayHeaderEle.each(function() {
+          const dataDate = $(this).attr('data-date')
+          const getDayEl = new Vue({
+            data() {
+              return {
+                isShow: true
+              }
+            },
+            components: {
+              GetDay
+            },
+            methods: {
+              clickHandler(val) {
+                this.isShow = false
+                this.$nextTick().then(() => {
+                  $('.fc-timeGridDay-button').click()
+                  let calendarApi = that.$refs.fullCalendar.getApi()
+                  calendarApi.gotoDate(new Date(dataDate))
+                })
+              }
+            },
+            render(h) {
+              let { clickHandler, isShow } = this
+              return (
+                <GetDay onScan={this.clickHandler} date={dataDate} isGet={!(length === 1)}>
+                </GetDay>
+              )
+            }
+          }).$mount().$el
+          $(this).html(getDayEl)
+        })
         $('.fc-widget-content').hover(function() {
           if (!$(this).html()) {
             for (let i = 0; i < 7; i++) {

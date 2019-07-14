@@ -1,8 +1,8 @@
 <template>
   <a-tabs
-    :activeKey='currentValue'
+    :activeKey='activeRouteName'
     :tabPosition="tabPosition"
-    @change="OnChange"
+    @change="onChange"
     class="st-route-tabs"
   >
     <a-tab-pane v-for="tab in options" :tab="tab.label" :key="tab.route.name"></a-tab-pane>
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { intersection } from 'lodash-es'
 export default {
   name: 'StRouteTabs',
   props: {
@@ -34,8 +35,17 @@ export default {
     }
   },
   computed: {
-    currentValue() {
-      return this.$route.name
+    activeRouteName() {
+      const matchedRouteNames = this.$route.matched.map(item => item.name)
+      const activeRouteNames = intersection(
+        matchedRouteNames,
+        this.options.map(item => item.route.name)
+      )
+      if (activeRouteNames.length) {
+        return activeRouteNames[0]
+      } else {
+        return ''
+      }
     }
   },
   created() {
@@ -52,7 +62,7 @@ export default {
     })
   },
   methods: {
-    OnChange(key) {
+    onChange(key) {
       const { options } = this
       let query = {}
       options.forEach(tab => {

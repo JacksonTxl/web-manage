@@ -3,6 +3,16 @@ body {
   .bg(#f0f2f5);
 }
 
+html,
+body,
+#app {
+  height: 100%;
+}
+
+*::selection {
+  .bg(@primary-color);
+}
+
 ::-webkit-scrollbar {
   .w(8px);
 }
@@ -23,8 +33,8 @@ body {
 }
 
 #nprogress .bar {
-  background-color: lighten(@primary-color, 0.3);
-  box-shadow: 0 0 10px rgba(lighten(@primary-color, 0.3), 0.7);
+  background-color: #77b6ff;
+  box-shadow: 0 0 10px rgba(119,182,255,.7);
   height: 3px;
 }
 

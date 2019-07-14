@@ -8,6 +8,7 @@ interface SetState{
   top: object,
   revenueDaily: object[],
   revenueSummary: object[],
+  revenueSum: string,
   courseDaily: object[],
   courseSummary: object[],
   inoutNum: object[],
@@ -22,6 +23,7 @@ export class StudioComponentService {
   top$: Computed<object>
   revenueDaily$: Computed<object>
   revenueSummary$: Computed<object>
+  revenueSum$: Computed<string>
   courseDaily$: Computed<object>
   courseSummary$: Computed<object>
   inoutNum$: Computed<object>
@@ -39,6 +41,7 @@ export class StudioComponentService {
       },
       revenueDaily: [],
       revenueSummary: [],
+      revenueSum: '',
       courseDaily: [],
       courseSummary: [],
       inoutNum: [],
@@ -49,6 +52,7 @@ export class StudioComponentService {
     this.top$ = new Computed(this.state$.pipe(pluck('top')))
     this.revenueDaily$ = new Computed(this.state$.pipe(pluck('revenueDaily')))
     this.revenueSummary$ = new Computed(this.state$.pipe(pluck('revenueSummary')))
+    this.revenueSum$ = new Computed(this.state$.pipe(pluck('revenueSum')))
     this.courseDaily$ = new Computed(this.state$.pipe(pluck('courseDaily')))
     this.courseSummary$ = new Computed(this.state$.pipe(pluck('courseSummary')))
     this.inoutNum$ = new Computed(this.state$.pipe(pluck('inoutNum')))
@@ -74,23 +78,23 @@ export class StudioComponentService {
           { name: '团体课', value: data.summary.team_course_amount },
           { name: '课程包', value: data.summary.package_course_amount },
           { name: '云店', value: data.summary.shop_amount },
-          { name: '其他', value: data.summary.other_amount },
-          { name: '总营收', value: data.summary.total_amount }
+          { name: '其他', value: data.summary.other_amount }
         ]
+        state.revenueSum = data.summary.total_amount
         for (let key in data.daily.member_card_amount) {
           let chartItem = {
             date: key,
-            会员卡: data.daily.member_card_amount[key],
-            私教课: data.daily.personal_course_amount[key],
-            团体课: data.daily.team_course_amount[key],
-            课程包: data.daily.package_course_amount[key],
-            云店: data.daily.shop_amount[key],
-            其他: data.daily.other_amount[key],
-            总营收: data.daily.total_amount[key]
+            会员卡: Number(data.daily.member_card_amount[key]),
+            私教课: Number(data.daily.personal_course_amount[key]),
+            团体课: Number(data.daily.team_course_amount[key]),
+            课程包: Number(data.daily.package_course_amount[key]),
+            云店: Number(data.daily.shop_amount[key]),
+            其他: Number(data.daily.other_amount[key]),
+            总营收: Number(data.daily.total_amount[key])
           }
           lineData.push(chartItem)
         }
-        console.log(lineData)
+        console.log('营收', lineData)
         state.revenueDaily = lineData
       })
     }))

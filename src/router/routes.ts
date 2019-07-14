@@ -6,6 +6,7 @@ import { UserService } from '@/services/user.service'
 import { TitleService } from '@/services/title.service'
 import { RouteService } from '@/services/route.service'
 import { AuthService } from '@/services/auth.service'
+import { RedirectService } from '@/services/redirect.service'
 import { routeMapConfig } from './route-map.config'
 
 import pageRoutes from './auto-generated-routes'
@@ -73,9 +74,10 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
         NProgressService,
         HotReleaseService,
         TokenService,
-        TitleService,
         UserService,
+        TitleService,
         AuthService,
+        RedirectService,
         RouteService
       ]
       prependGuards(route, appGuards)

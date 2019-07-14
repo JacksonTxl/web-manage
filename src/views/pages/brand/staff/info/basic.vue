@@ -157,8 +157,8 @@
         <st-info>
           <st-info-item label="员工风采">
             <div class="st-preview-item" v-viewer="{url:'data-src'}">
-              <template v-for="item in basicInfo.image_personal">
-                <img class="staff-style-item mg-r8" :src="item" :key="item"/>
+              <template v-for="(item, index) in basicInfo.image_personal">
+                <img class="staff-style-item mg-r8" :src="item" :key="index"/>
               </template>
             </div>
           </st-info-item>

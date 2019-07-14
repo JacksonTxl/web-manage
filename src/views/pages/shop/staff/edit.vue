@@ -28,7 +28,7 @@
       @back="onBack"
       @gonext="gonext"/>
     <edit-coach-info
-      v-else-if="currentIndex == 2 && isShowCoach"
+      v-else-if="currentIndex == 2 && isPrivateCoach"
       :enums="staffEnums"
       :data="staffInfo"
       :staffSpecialty="staffSpecialty"
@@ -94,6 +94,10 @@ export default {
     isShowCoach() {
       if (this.staffInfo.identity.length === 0) return false
       return this.staffInfo.identity.includes(3) || this.staffInfo.identity.includes(4)
+    },
+    isPrivateCoach() {
+      if (this.staffInfo.identity.length === 0) return false
+      return this.staffInfo.identity.includes(4)
     },
     id() {
       return this.staffInfo.staff_id

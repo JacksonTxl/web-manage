@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-default">
+  <div class="layout-default theme-b">
     <aside class="layout-default-sider">
       <div class="layout-default-sider__brand">
         <div class="layout-default-sider__logo">
@@ -42,10 +42,10 @@
       </div>
       <div class="layout-default-body__personal">
         <!-- <a-badge dot>
-            <st-icon type="home" class="layout-default-body__icon"/>
-          </a-badge> -->
+          <st-icon type="home" class="layout-default-body__icon"/>
+        </a-badge> -->
         <a-dropdown :trigger="['click']" placement="bottomRight">
-          <div>
+          <div class="layout-default-body__top-item">
             <st-icon type="square" class="layout-default-body__icon"/>
           </div>
           <div slot="overlay" class="layout-default-body__fast-entry">

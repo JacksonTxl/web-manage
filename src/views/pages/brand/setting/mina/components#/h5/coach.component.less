@@ -9,9 +9,13 @@
       .ta-c();
       .h(@h);
       .pos-r;
+      cursor: move;
       &:hover {
         box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.09);
         transition: all 0.3s;
+        .coach-component__del{
+          display: block;
+        }
       }
     }
     &__nickname{
@@ -25,6 +29,7 @@
       overflow: hidden;
     }
     &__del {
+      display: none;
       .pos-a;
       .s(28px, 28px);
       right: 2px;

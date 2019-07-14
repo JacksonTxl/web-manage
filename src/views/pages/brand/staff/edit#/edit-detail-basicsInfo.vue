@@ -153,7 +153,7 @@ export default {
       faceList: [],
       countryList: [],
       id_type: '',
-      choosed_country_id: '',
+      country_code_id: '',
       value: '' // 部门选择
     }
   },

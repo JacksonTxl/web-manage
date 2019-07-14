@@ -235,6 +235,8 @@ export default {
       this.messageService.success({
         content: '删除成功'
       })
+      this.checked = []
+      this.isOperationInBatch = false
       this.onCabinetListChange()
     },
     changeOperationMode() {

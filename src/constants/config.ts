@@ -17,8 +17,7 @@ export class AppConfig {
    * easy mock 路径
    * @see https://www.easy-mock.com/project/5c77a2c8df6f65489b3c3308
    */
-  API_BASE_MOCK =
-    'https://mock.styd.cn/mock/5ca41bca1b15c5002090e2e4/v1'
+  API_BASE_MOCK = 'https://mock.styd.cn/mock/5ca41bca1b15c5002090e2e4/v1'
   /**
    * 图片基础路径
    */
@@ -41,10 +40,16 @@ export class AppConfig {
   LOCAL_API_ENV = process.env.LOCAL_API_ENV
 
   /**
+   * 是否当前的域名处于生产环境
+   */
+  get HOST_IS_PROD() {
+    return location.hostname === 'saas.styd.cn'
+  }
+  /**
    * shs环境
    */
   get SHS_API_ENV() {
-    return 'https://shs.dev.styd.cn'
+    return this.HOST_IS_PROD ? 'https://shs.styd.cn' : 'https://shs.dev.styd.cn'
   }
 
   /**
@@ -101,8 +106,11 @@ export class AppConfig {
    */
   PLACEHOLDER_IMG = {
     VERSION: '1.0.0',
-    AVATAR: 'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-avatar.png',
-    PICTURE: 'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-img.png',
-    NODATA: 'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-nodata.png'
+    AVATAR:
+      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-avatar.png',
+    PICTURE:
+      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-img.png',
+    NODATA:
+      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-nodata.png'
   }
 }
