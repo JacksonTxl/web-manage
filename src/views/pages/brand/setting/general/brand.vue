@@ -5,10 +5,11 @@
         <st-t2>品牌信息</st-t2>
       </a-col>
       <a-col v-if="!isEdit" :span="12" class="ta-r">
-        <a href="javascript: void(0);">
-          <st-icon type="edit"></st-icon>
-          <span class="mg-l4 color-text-light" @click="onEdit">编辑</span>
-        </a>
+        <st-info-action
+          icon="edit"
+          text="编辑"
+          @click="onEdit"
+        />
       </a-col>
     </a-row>
     <div class="mg-t24" :class="b()">
