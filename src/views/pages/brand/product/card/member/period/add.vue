@@ -102,7 +102,7 @@
                         </td>
                         <td>
                           <st-input-number :min="1" :max="99999" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
-                            <span slot="addonAfter">次</span>
+                            <span slot="addonAfter">天</span>
                           </st-input-number>
                         </td>
                         <td>
@@ -165,7 +165,7 @@
                         </td>
                         <td>
                           <st-input-number :min="1" :max="99999" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
-                            <span slot="addonAfter">次</span>
+                            <span slot="addonAfter">天</span>
                           </st-input-number>
                         </td>
                         <td>
