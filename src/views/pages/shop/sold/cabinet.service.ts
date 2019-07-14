@@ -1,15 +1,15 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { RedirectService } from '@/services/redirect.service'
 
 @Injectable()
 export class CabinetService implements RouteGuard {
-  constructor() {}
+  constructor(private redirectService: RedirectService) {}
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    if (to.name === 'shop-sold-cabinet') {
-      next({
-        name: 'shop-sold-cabinet-list'
-      })
-    } else {
-      next()
-    }
+    this.redirectService.redirect({
+      locateRouteName: 'shop-sold-cabinet',
+      redirectRouteName: 'shop-sold-cabinet-list',
+      to,
+      next
+    })
   }
 }

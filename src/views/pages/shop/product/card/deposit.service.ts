@@ -5,7 +5,7 @@ export class DepositService implements RouteGuard {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     if (to.name === 'shop-product-card-deposit') {
       next({
-        name: 'shop-product-card-deposit-list-shelves'
+        name: 'shop-product-card-deposit-list'
       })
     } else {
       next()
