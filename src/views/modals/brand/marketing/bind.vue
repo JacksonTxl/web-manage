@@ -6,8 +6,8 @@
     :footer="null"
   >
     <div :class="basic()">
-      <img src="~@/assets/img/icon_weapp_grey.png" :class="activeClass"/>
       <p>{{message}}</p>
+      <img src="~@/assets/img/icon_weapp_grey.png" :class="activeClass"/>
       <div>
         <st-button block pill type="primary" icon="download" size="large" @click="bindMini">
           去绑定小程序
@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       show: false,
-      title: '绑定小程序',
+      title: '小程序码',
       message: '您尚未绑定小程序',
       button: '去绑定小程序',
       activeClass: 'poster'
