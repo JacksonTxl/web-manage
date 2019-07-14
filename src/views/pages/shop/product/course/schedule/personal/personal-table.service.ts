@@ -1,5 +1,5 @@
-import { PersonalScheduleCommonService } from './personal.service#/common.service'
-import { PersonalScheduleScheduleService } from './personal.service#/schedule.service'
+import { PersonalScheduleCommonService } from '../personal.service#/common.service'
+import { PersonalScheduleScheduleService } from '../personal.service#/schedule.service'
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
@@ -55,8 +55,8 @@ export class PersonalTableService extends Store<SetState> {
   initOptions() {
     return forkJoin(this.commonService.getCoachList(), this.commonService.getCoachListInBatch())
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getList(to.query).subscribe(() => next())
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
+    return forkJoin(this.getList(to.query), this.initOptions())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     forkJoin(this.initOptions()).subscribe(() => {

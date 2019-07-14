@@ -46,17 +46,20 @@ import { MessageService } from '@/services/message.service'
 
 import { PersonalScheduleScheduleService as ScheduleService } from '../../../pages/shop/product/course/schedule/personal.service#/schedule.service'
 import { PersonalScheduleCommonService } from '../../../pages/shop/product/course/schedule/personal.service#/common.service'
+import { RouteService } from '@/services/route.service'
 export default {
   serviceInject() {
     return {
       messageService: MessageService,
       commonService: PersonalScheduleCommonService,
-      scheduleService: ScheduleService
+      scheduleService: ScheduleService,
+      routeService: RouteService
     }
   },
   rxState() {
     console.log(this.commonService)
     return {
+      query: this.routeService.query$,
       coachOptions: this.commonService.coachOptions$ || []
     }
   },
@@ -102,7 +105,7 @@ export default {
         schedule_info: this.schedule_info
       }
       this.scheduleService.add(reqdata).subscribe(() => {
-        this.messageService.success({ content: '添加成功' })
+        this.$router.push({ query: this.routeService.query$, force: true })
         this.show = false
       })
     }

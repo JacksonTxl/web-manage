@@ -116,7 +116,7 @@ export default {
           form.limit_num = parseInt(form.limit_num)
           this.teamScheduleScheduleService.add(form).subscribe(() => {
             this.show = false
-            this.$router.push({ query: this.query, force: true })
+            this.emit('ok')
           })
         }
       })

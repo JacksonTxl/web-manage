@@ -92,7 +92,6 @@
 </template>
 <script>
 import { cloneDeep } from 'lodash-es'
-import { TeamService } from '../../../pages/shop/product/course/schedule/team.service'
 import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
 import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
 const columns = [{
@@ -191,7 +190,7 @@ export default {
         })
       this.teamScheduleScheduleService.addScheduleInBatch(data).subscribe(res => {
         this.show = false
-        this.$router.push({ force: true })
+        this.$emit('ok')
       })
     },
     handleChange(value, key, column) {
