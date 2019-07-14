@@ -129,6 +129,13 @@ export class ShopStaffApi extends Api {
   getStaffSpecialty() {
     return this.http.get(`/v1/staff/specialty`)
   }
+  // 修改开通系统权限字段
+  updatepermission(id: Number, params: PermissionInput) {
+    return this.http.put(`/v1/staff/brand/permission/${id}`, { params })
+  }
+}
+export interface PermissionInput {
+  is_permission: number
 }
 interface CommonConfig {
     // 当前页
