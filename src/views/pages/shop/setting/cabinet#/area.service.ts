@@ -5,7 +5,8 @@ import { tap, pluck } from 'rxjs/operators'
 import {
   CabinetAreaApi,
   AddInput,
-  UpdateInput
+  UpdateInput,
+  SortInput
 } from '@/api/v1/setting/cabinet/area'
 
 interface SetState {
@@ -31,6 +32,9 @@ export class CabinetAreaService extends Store<SetState> {
   }
   update(params: UpdateInput) {
     return this.areaApi.update(params)
+  }
+  sort(params: SortInput) {
+    return this.areaApi.sort(params)
   }
   getList() {
     return this.areaApi.getList().pipe(

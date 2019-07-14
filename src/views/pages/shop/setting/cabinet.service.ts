@@ -31,6 +31,15 @@ export class CabinetService implements RouteGuard {
   del(params: DelInput) {
     return this.cabinetApi.del(params)
   }
+  sort(list: any[]) {
+    list = list.map((item, index) => {
+      return {
+        id: item.id,
+        sorted: index
+      }
+    })
+    return this.areaService.sort({ list })
+  }
   beforeRouteEnter(to: ServiceRoute, form: ServiceRoute, next: any) {
     const id = to.meta.query.id
     this.areaService.getList().subscribe(() => {

@@ -1,36 +1,32 @@
 <template>
   <div :class="b()">
     <div :class="b('nav')">
-      <st-t4 class="mg-l16">{{shop.name}}</st-t4>
-      <a-tabs
-        :defaultActiveKey="defaultActiveKey"
-        tabPosition="left"
-        @change="onAreaChange"
-      >
-        <!-- <draggable> -->
-          <a-tab-pane
-            v-for="item in list"
-            :key="item.id"
-            :class="b('nav-item')"
-          >
-            <div slot="tab">
-              <div :class="b('nav-item-content')">
-                <span>{{item.area_name}}({{item.cabinet_num}})</span>
-                <st-more-dropdown>
-                  <a-menu-item v-if="auth.areaEdit" @click="editArea(item.id)">编辑</a-menu-item>
-                  <a-menu-item v-if="auth.areaDel" @click="delArea(item.id, item.cabinet_num)">删除</a-menu-item>
-                </st-more-dropdown>
-              </div>
-              <edit-cabinet-area
-                v-if="item.id === editId"
-                :id="item.id"
-                :name="item.area_name"
-                @change="onAreaListChange"
-              />
+      <st-t4 class="mg-l16 mg-b16">区域<span class="st-des">（支持拖拽排序）</span></st-t4>
+      <draggable v-model="list" @change="onAreaSortChange">
+        <div
+          v-for="item in list"
+          :key="item.id"
+          class="page-setting-cabinet__nav-item"
+          @click="onAreaChange(item.id)"
+          :class="{
+            current: item.id === defaultActiveKey
+          }"
+        >
+           <div :class="b('nav-item-content')">
+              <span>{{item.area_name}}({{item.cabinet_num}})</span>
+              <st-more-dropdown>
+                <a-menu-item v-if="auth.areaEdit" @click="editArea(item.id)">编辑</a-menu-item>
+                <a-menu-item v-if="auth.areaDel" @click="delArea(item.id, item.cabinet_num)">删除</a-menu-item>
+              </st-more-dropdown>
             </div>
-          </a-tab-pane>
-        <!-- </draggable> -->
-      </a-tabs>
+            <edit-cabinet-area
+              v-if="item.id === editId"
+              :id="item.id"
+              :name="item.area_name"
+              @change="onAreaListChange"
+            />
+        </div>
+      </draggable>
       <add-cabinet-area v-if="isShowAddAreaBtn" @change="onAreaListChange"/>
       <a v-if="auth.areaAdd" :class="b('nav-add')" @click="addArea">添加区域</a>
     </div>
@@ -95,7 +91,6 @@
 import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import { CabinetService } from './cabinet.service'
-import { UserService } from '@/services/user.service'
 import AddCabinetArea from './cabinet#/add-area'
 import EditCabinetArea from './cabinet#/edit-area'
 import { CabinetAreaService as AreaService } from './cabinet#/area.service'
@@ -111,16 +106,14 @@ export default {
       messageService: MessageService,
       routeService: RouteService,
       cabinetService: CabinetService,
-      areaService: AreaService,
-      userService: UserService
+      areaService: AreaService
     }
   },
   rxState() {
     return {
       list: this.areaService.list$,
       query: this.routeService.query$,
-      auth: this.cabinetService.auth$,
-      shop: this.userService.shop$
+      auth: this.cabinetService.auth$
     }
   },
   data() {
@@ -205,6 +198,9 @@ export default {
     },
     onAreaChange(id) {
       this.queryHandler({ id })
+    },
+    onAreaSortChange(e) {
+      this.cabinetService.sort(this.list).subscribe()
     },
     onCabinetTabChange(key) {
       this.queryHandler({ type: key })

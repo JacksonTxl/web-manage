@@ -1,12 +1,12 @@
 <template>
-  <div class="layout-default theme-b">
+  <div class="layout-default theme-a">
     <aside class="layout-default-sider">
       <div class="layout-default-sider__brand">
         <div class="layout-default-sider__logo">
           <img
             width="100%"
             height="100%"
-            :src="brand.logo | imgFilter({ w: 48, h: 48 })"
+            :src="(shop.logo || brand.logo) | imgFilter({ w: 48, h: 48 })"
             alt="logo"
           />
           <i class="layout-default-sider__certification st-icon-certified"></i>
