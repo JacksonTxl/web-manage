@@ -57,7 +57,7 @@ export class UserService {
     first_url: ''
   })
   menus$ = new Computed<any[]>(this.menuData$.pipe(pluck('menus')))
-  firstMenuUrl$ = new Computed(this.menuData$.pipe(pluck('first_url')))
+  firstMenuUrl$ = new Computed<string>(this.menuData$.pipe(pluck('first_url')))
   favoriteMenu$ = new Computed(this.menuData$.pipe(pluck('favorite')))
   appMode$ = new State<string>('brand')
   firstInited$ = new State(false)
