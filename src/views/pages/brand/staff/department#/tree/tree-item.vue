@@ -16,7 +16,7 @@
         <st-more-dropdown class="tree-opreation" v-show="!item.isEdit">
           <a-menu-item v-if="auth.departmentAdd"  @click="addTreeNode">新增</a-menu-item>
           <a-menu-item  @click="editTreeNode">编辑</a-menu-item>
-          <a-menu-item  @click="deleteDepartment(item)">删除</a-menu-item>
+          <a-menu-item  @click="deleteDepartment(item)" v-if="item.id">删除</a-menu-item>
         </st-more-dropdown>
       </div>
       <div class="tree-node__content" v-if="item.isAdd">
