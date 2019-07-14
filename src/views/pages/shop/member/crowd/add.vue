@@ -132,7 +132,6 @@ export default {
           selectionData: [],
           width: 108
         },
-
         deal_info: {
           title: '交易信息',
           value: [
