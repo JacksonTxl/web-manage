@@ -43,86 +43,124 @@
                     :value="+item[0]">{{item[1]}}</a-radio>
                 </a-radio-group>
                 <div class="page-price-setting-set" :class="{'error':!priceIsOk,'brand-set': cardData.price_setting===1&&cardData.admission_range===1}" v-if="cardData.price_setting===1">
-                  <st-table
-                    size="middle"
-                    :columns="brand_price_columns"
-                    :dataSource="rallyPriceList"
-                    rowKey="key"
-                    :pagination="false"
-                  >
-                    <template slot="time" slot-scope="text, record, index">
-                      <st-input-number :min="1" :max="99999" :value="text.num" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'num'})">
-                        <a-select slot="addonAfter" :value="text.unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
-                          <a-select-option
-                          v-for="(item,index) in nuit_list"
-                          :value="item.value"
-                          :key="index" >{{item.label}}</a-select-option>
-                        </a-select>
-                      </st-input-number>
-                    </template>
-                    <template slot="rally_price" slot-scope="text, record, index">
-                        <st-input-number :float="true" :min="0" :max="999999.9" :value="text" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'rally_price'})">
-                          <span slot="addonAfter">元</span>
-                        </st-input-number>
-                    </template>
-                    <template slot="frozen_day" slot-scope="text, record, index">
-                        <st-input-number :min="1" :max="99999" :value="text" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'frozen_day'})">
-                          <span slot="addonAfter">天</span>
-                        </st-input-number>
-                    </template>
-                    <template slot="gift_unit" slot-scope="text, record, index">
-                        <st-input-number :min="1" :max="99999" :value="text" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
-                          <span slot="addonAfter">天</span>
-                        </st-input-number>
-                    </template>
-                    <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="brand_price_delete(index)">
-                      删除
-                    </a>
-                  </st-table>
-                  <st-button :disabled="rallyPriceList.length>3" type="dashed" icon="add" class="page-price-setting-set__add" block @click="brand_price_add">添加定价规格（{{rallyPriceList.length}}/4）</st-button>
+                  <st-form-table>
+                     <colgroup>
+                      <col style="width:23%;">
+                      <col style="width:23%;">
+                      <col style="width:23%;">
+                      <col style="width:23%;">
+                      <col style="width:8%;">
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th>期限</th>
+                        <th>售价</th>
+                        <th class="white-nowrap">允许冻结天数</th>
+                        <th>赠送上限</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="5" class="pd-y0 pd-x0">
+                          <st-button :disabled="rallyPriceList.length>3" type="dashed" icon="add" class="page-price-setting-set__add" block @click="brand_price_add">添加定价规格（{{rallyPriceList.length}}/4）</st-button>
+                        </td>
+                      </tr>
+                      <tr v-for="(item,index) in rallyPriceList" :key="`${index}brand`" >
+                        <td>
+                          <st-input-number :min="1" :max="99999" :value="item.time.num" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'num'})">
+                            <a-select slot="addonAfter" :value="item.time.unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})">
+                              <a-select-option
+                              v-for="(item,index) in unit_list"
+                              :value="item.value"
+                              :key="index" >{{item.label}}</a-select-option>
+                            </a-select>
+                          </st-input-number>
+                        </td>
+                        <td>
+                          <st-input-number :float="true" :min="0" :max="999999.9" :value="item.rally_price" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'rally_price'})">
+                            <span slot="addonAfter">元</span>
+                          </st-input-number>
+                        </td>
+                        <td>
+                          <st-input-number :min="1" :max="99999" :value="item.frozen_day" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'frozen_day'})">
+                            <span slot="addonAfter">天</span>
+                          </st-input-number>
+                        </td>
+                        <td>
+                          <st-input-number :min="1" :max="99999" :value="item.gift_unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
+                            <span slot="addonAfter">次</span>
+                          </st-input-number>
+                        </td>
+                        <td>
+                          <a @click="brand_price_delete(index)">删除</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </st-form-table>
                 </div>
                 <div class="page-price-setting-set" :class="{'error':!priceIsOk,'shop-set': cardData.price_setting===2&&cardData.admission_range===1}" v-if="cardData.price_setting===2">
-                  <st-table
-                    size="middle"
-                    :columns="shop_price_columns"
-                    :dataSource="shopPriceList"
-                    rowKey="key"
-                    :pagination="false"
-                  >
-                    <template slot="time" slot-scope="text, record, index">
-                      <st-input-number :min="1" :max="99999" :value="text.num" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'num'})">
-                        <a-select slot="addonAfter" :value="text.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})"  style="width: 50px">
-                          <a-select-option
-                          v-for="(item,index) in nuit_list"
-                          :value="item.value"
-                          :key="index" >{{item.label}}</a-select-option>
-                        </a-select>
-                      </st-input-number>
-                    </template>
-                    <template slot="rally_price" slot-scope="text, record, index">
-                        <st-input-number :float="true" :min="0" :max="999999.9" :value="text.min_price" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'rally_price', prop:'min_price'})" style="width:100px">
-                          <span slot="addonAfter">元</span>
-                        </st-input-number>
-                        ~
-                        <st-input-number :float="true" :min="0" :max="999999.9" :value="text.max_price" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'rally_price', prop:'max_price'})" style="width:100px">
-                          <span slot="addonAfter">元</span>
-                        </st-input-number>
-                    </template>
-                    <template slot="frozen_day" slot-scope="text, record, index">
-                        <st-input-number :min="1" :max="99999" :value="text" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'frozen_day'})">
-                          <span slot="addonAfter">天</span>
-                        </st-input-number>
-                    </template>
-                    <template slot="gift_unit" slot-scope="text, record, index">
-                        <st-input-number :min="1" :max="99999" :value="text" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
-                          <span slot="addonAfter">天</span>
-                        </st-input-number>
-                    </template>
-                    <a slot="operation" slot-scope="text, record, index" href="javascript:;" @click="shop_price_delete(index)">
-                      删除
-                    </a>
-                  </st-table>
-                  <st-button :disabled="shopPriceList.length>3" type="dashed" icon="add" class="page-price-setting-set__add" block @click="shop_price_add">添加定价规格（{{shopPriceList.length}}/4）</st-button>
+                  <st-form-table>
+                    <colgroup>
+                      <col style="width:18%;">
+                      <col style="width:36%;">
+                      <col style="width:18%;">
+                      <col style="width:18%;">
+                      <col style="width:10%;">
+                    </colgroup>
+                    <thead>
+                      <tr>
+                        <th>期限</th>
+                        <th>售价范围</th>
+                        <th class="white-nowrap">允许冻结天数</th>
+                        <th>赠送上限</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="5" class="pd-y0 pd-x0">
+                          <st-button :disabled="shopPriceList.length>3" type="dashed" icon="add" class="page-price-setting-set__add" block @click="shop_price_add">添加定价规格（{{shopPriceList.length}}/4）</st-button>
+                        </td>
+                      </tr>
+                      <tr v-for="(item,index) in shopPriceList" :key="`${index}shop`" >
+                        <td>
+                          <st-input-number style="width:100px;" :min="1" :max="99999" :value="item.time.num" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'num'})">
+                            <a-select slot="addonAfter" :value="item.time.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})">
+                              <a-select-option
+                              v-for="(item,index) in unit_list"
+                              :value="item.value"
+                              :key="index" >{{item.label}}</a-select-option>
+                            </a-select>
+                          </st-input-number>
+                        </td>
+                        <td>
+                          <st-input-number style="width:40%" :value="item.rally_price.min_price" :float="true" :min="0" :max="999999.9" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'rally_price', prop:'min_price'})">
+                            <span slot="addonAfter">元</span>
+                          </st-input-number>
+                          &nbsp;
+                          ~
+                          &nbsp;
+                          <st-input-number style="width:40%" :value="item.rally_price.max_price" :float="true" :min="0" :max="999999.9" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'rally_price', prop:'max_price'})">
+                            <span slot="addonAfter">元</span>
+                          </st-input-number>
+                        </td>
+                        <td>
+                          <st-input-number :min="1" :max="99999" :value="item.frozen_day" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'frozen_day'})">
+                            <span slot="addonAfter">天</span>
+                          </st-input-number>
+                        </td>
+                        <td>
+                          <st-input-number :min="1" :max="99999" :value="item.gift_unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
+                            <span slot="addonAfter">次</span>
+                          </st-input-number>
+                        </td>
+                        <td>
+                          <a @click="shop_price_delete(index)">删除</a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </st-form-table>
                 </div>
               </st-form-item>
             </a-col>
@@ -361,7 +399,7 @@ export default {
       // 售卖时间
       start_time: null,
       end_time: null,
-      nuit_list: [
+      unit_list: [
         {
           value: 2,
           label: '天'
@@ -379,68 +417,6 @@ export default {
       priceValidatorText: '',
       // 卡背景的help文本
       cardBgValidatorText: '',
-      // 品牌统一定价表格表头
-      brand_price_columns: [
-        {
-          title: '期限',
-          scopedSlots: { customRender: 'time' },
-          dataIndex: 'time'
-        },
-        {
-          title: '售价',
-          scopedSlots: { customRender: 'rally_price' },
-          dataIndex: 'rally_price'
-        },
-        {
-          title: '允许冻结天数',
-          scopedSlots: { customRender: 'frozen_day' },
-          dataIndex: 'frozen_day'
-        },
-        {
-          title: '赠送上限',
-          scopedSlots: { customRender: 'gift_unit' },
-          dataIndex: 'gift_unit'
-        },
-        {
-          title: '操作',
-          dataIndex: 'operation',
-          width: '10%',
-          scopedSlots: { customRender: 'operation' }
-        }
-      ],
-      // 门店自主定价表格表头
-      shop_price_columns: [
-        {
-          title: '期限',
-          scopedSlots: { customRender: 'time' },
-          dataIndex: 'time',
-          width: 120
-        },
-        {
-          title: '售价范围',
-          scopedSlots: { customRender: 'rally_price' },
-          dataIndex: 'rally_price',
-          width: 230
-        },
-        {
-          title: '允许冻结天数',
-          scopedSlots: { customRender: 'frozen_day' },
-          dataIndex: 'frozen_day',
-          width: 150
-        },
-        {
-          title: '赠送上限',
-          scopedSlots: { customRender: 'gift_unit' },
-          dataIndex: 'gift_unit',
-          width: 150
-        },
-        {
-          title: '操作',
-          dataIndex: 'operation',
-          scopedSlots: { customRender: 'operation' },
-          width: 80
-        }
-      ],
       // 是否禁止选择开始时间,如果卡状态是可售卖，则需要禁止修改开始时间
       startTimeIsDisabled: false
     }
