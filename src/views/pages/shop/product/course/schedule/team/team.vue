@@ -302,7 +302,7 @@ export default {
         },
         on: {
           ok: res => {
-            that.onScheduleChange()
+            this.onScheduleChange()
           }
         }
       })
@@ -315,7 +315,7 @@ export default {
         },
         on: {
           ok: res => {
-            that.onScheduleChange()
+            this.onScheduleChange()
           }
         }
       })
