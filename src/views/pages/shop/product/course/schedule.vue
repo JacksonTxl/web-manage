@@ -1,5 +1,6 @@
 <template>
-  <st-panel class="page-schedule-st-panel" app :tabs="tabs">
+  <st-panel class="page-schedule-st-panel" app :tabs="authTabs">
+    {{authTabs}}
   <div slot="actions" v-if="routeName === 'shop-product-course-schedule-team' || routeName === 'shop-product-course-schedule-team-table'">
     <a-select v-model="query.course_id" placeholder="请选择课程" @change="onChange" class="page-schedule__select mg-r8">
       <a-select-option :value="-1">全部</a-select-option>
