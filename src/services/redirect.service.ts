@@ -78,7 +78,7 @@ export class RedirectService {
         next({
           name: redirectRouteName,
           query: {
-            _t: Math.random()
+            _f: Math.random()
               .toString(16)
               .slice(3)
           }

@@ -10,10 +10,7 @@ import { Injectable } from 'vue-service-app'
  */
 @Injectable()
 export class StatApi {
-  private version: string
-  constructor(protected http: HttpService, protected appConfig: AppConfig) {
-    this.version = 'club'
-  }
+  constructor(protected http: HttpService, protected appConfig: AppConfig) {}
   /**
    * 头部数据
    */
