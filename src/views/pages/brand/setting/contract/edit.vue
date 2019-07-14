@@ -13,7 +13,7 @@
           <st-form-item label="合同编号">
             <a-input v-model="info.contract_prefix" :class="bSider('prefix')" placeholder="输入合同编号前缀"></a-input>+8位随机编号
           </st-form-item>
-          <st-form-item label="页面缩放" :class="bSider('form-item',{radio:true})">
+          <!-- <st-form-item label="页面缩放" :class="bSider('form-item',{radio:true})">
             <a-radio-group @change="onPageTypeChange" v-model="info.contract_page_type">
               <a-radio :value="0">默认</a-radio>
               <a-radio :value="1">缩放</a-radio>
@@ -24,7 +24,7 @@
               :min="0"
             ></a-input-number>
             <span class="mg-l4">%</span>
-          </st-form-item>
+          </st-form-item> -->
           <st-form-item :class="bSider('form-item',{radio:true})" label="首行边距">
             <a-radio-group @change="onPageMargetChange" v-model="info.contract_marget_type">
               <a-radio :value="0">默认</a-radio>

@@ -7,7 +7,7 @@
       <a-row :gutter="16" :class="bCount()">
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card title="今日营收额(元)" :count="this.revenue.num" :footer="{label: '近7天日均营收额:', value: this.revenue.avg}" :trend="{isUp: this.revenue.ratio > 0, rate: this.revenue.ratio }">
+            <count-card title="今日营收额(元)" :count="this.revenue.num" :footer="{label: '近7天日均营收额:', value: this.revenue.avg}" :trend="{isUp: this.revenue.ratio >= 0, rate: this.revenue.ratio+this.revenue.ratio_mark }">
               <template slot="title">
                 <st-help-tooltip id="TBSDA001"></st-help-tooltip>
               </template>
@@ -17,7 +17,7 @@
         </a-col>
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
-            <count-card title="今日订单数(单)" :count="this.order.num" :footer="{label: '近7天日均订单数:', value: this.order.avg }" :trend="{isUp: this.order.ratio > 0, rate: this.order.ratio }">
+            <count-card title="今日订单数(单)" :count="this.order.num" :footer="{label: '近7天日均订单数:', value: this.order.avg }" :trend="{isUp: this.order.ratio >= 0, rate: this.order.ratio+this.order.ratio_mark }">
               <template slot="title">
                 <st-help-tooltip id="TBSDA002"></st-help-tooltip>
               </template>
