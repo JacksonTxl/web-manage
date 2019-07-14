@@ -87,7 +87,6 @@
 </template>
 <script>
 import { cloneDeep } from 'lodash-es'
-import { MessageService } from '@/services/message.service'
 import {
   PersonalTeamScheduleCommonService as CommonService
 } from '@/views/pages/shop/product/course/schedule/personal-team.service#/common.service'
@@ -125,8 +124,7 @@ export default {
   serviceInject() {
     return {
       commonService: CommonService,
-      scheduleService: ScheduleService,
-      messageService: MessageService
+      scheduleService: ScheduleService
     }
   },
   rxState() {
@@ -176,8 +174,6 @@ export default {
           delete item.show
           delete item.key
           delete item.editable
-          item.court_id = item.court_site_id[0]
-          item.court_site_id = item.court_site_id[1]
           item.start_time = moment(item.start_time).format('YYYY-MM-DD HH:mm:ss').valueOf()
           item.limit_num = parseInt(item.limit_num)
           item.course_fee = parseInt(item.course_fee)
@@ -277,9 +273,6 @@ export default {
     },
     onSubmitSuccess() {
       this.show = false
-      this.messageService.success({
-        content: '添加成功'
-      })
       this.$emit('ok')
     }
   }

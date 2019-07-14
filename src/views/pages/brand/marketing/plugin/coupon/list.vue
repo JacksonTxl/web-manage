@@ -10,7 +10,6 @@
           :class="basic('select')"
           v-model="couponStatus"
           placeholder="优惠券状态"
-          :allowClear="true"
           @change="onSingleSearch('coupon_status', $event)"
           style="width: 160px">
           <a-select-option
@@ -105,13 +104,14 @@ export default {
       Object.entries(this.coupon_status.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
-      return list
+      // return list
+      return [{ value: -1, label: '全部状态' }, ...list]
     }
   },
   data() {
     return {
       couponName: '',
-      couponStatus: undefined,
+      couponStatus: -1,
       columns
     }
   },
@@ -128,7 +128,7 @@ export default {
     setSearchData() {
       let { coupon_name, coupon_status } = this.query
       this.couponName = coupon_name
-      this.couponStatus = coupon_status || undefined
+      this.couponStatus = coupon_status || -1
     },
     // 编辑
     onEdit(record) {

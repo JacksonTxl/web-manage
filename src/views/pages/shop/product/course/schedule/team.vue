@@ -12,6 +12,7 @@
       :columnHeaderFormat="columnHeaderFormat"
       locale="zh-cn"
       :views="views"
+      :nowIndicator="true"
       maxTime="24:00:00"
       @datesRender="datesRender"
       :weekends="calendarWeekends"
@@ -31,7 +32,6 @@ import Vue from 'vue'
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
-import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
 
@@ -39,6 +39,7 @@ import $ from 'jquery'
 import { TeamScheduleScheduleService } from './team.service#/schedule.service'
 import { TeamService } from './team.service'
 import AddCard from './date#/add-card'
+import GetDay from './date#/get-day'
 export default {
   name: 'Schedule',
   components: {
@@ -78,7 +79,6 @@ export default {
         right: 'timeGridWeek,timeGridDay, custom4'
       },
       calendarPlugins: [ // plugins must be defined in the JS
-        listPlugin,
         dayGridPlugin,
         timeGridPlugin,
         interactionPlugin // needed for dateClick
@@ -134,9 +134,11 @@ export default {
       if (this.auth.add) {
         this.setAddButton()
       }
+      this.initHeader()
     })
   },
   mounted() {
+    this.initHeader()
     const add = this.auth.add
     const addBatch = this.auth.addBatch
     const copy = this.auth.copy
@@ -154,12 +156,53 @@ export default {
     }
   },
   methods: {
+    initHeader() {
+      const that = this
+      let calendarApi = that.$refs.fullCalendar.getApi()
+      this.$nextTick(() => {
+        const dayHeaderEle = $('.fc-day-header')
+        const length = $('.fc-day-header').length
+        dayHeaderEle.each(function() {
+          const dataDate = $(this).attr('data-date')
+          const getDayEl = new Vue({
+            data() {
+              return {
+                isShow: true
+              }
+            },
+            components: {
+              GetDay
+            },
+            methods: {
+              clickHandler(val) {
+                this.isShow = false
+                this.$nextTick().then(() => {
+                  $('.fc-timeGridDay-button').click()
+                  calendar.scrollToTime('24:00')
+                  calendarApi.gotoDate(new Date(dataDate))
+                })
+              }
+            },
+            render(h) {
+              let { clickHandler, isShow } = this
+              return (
+                <GetDay onScan={this.clickHandler} date={dataDate} title={'查看日排期'} isGet={!(length === 1)}>
+                </GetDay>
+              )
+            }
+          }).$mount().$el
+          $(this).html(getDayEl)
+        })
+      })
+    },
     datesRender(info) {
+      console.log(info.view)
       const start = moment(info.view.activeStart).format('YYYY-MM-DD').valueOf()
       const end = moment((moment(info.view.activeEnd).valueOf() - 24 * 3600 * 1000)).format('YYYY-MM-DD').valueOf()
       this.$router.push({ query: { start_date: start, end_date: end } })
     },
     setAddButton() {
+      const that = this
       this.$nextTick().then(() => {
         const addCardEl = new Vue({
           components: {
@@ -187,7 +230,6 @@ export default {
           'line-height:' + (cellSize.heigth - 4) + 'px' // center text vertically
         ].join(';')
         let hoverHtml = '<div class="hover-button" style="' + hoverCss + '">+</div>'
-
         $('.fc-widget-content').hover(function() {
           if (!$(this).html()) {
             for (let i = 0; i < 7; i++) {
@@ -214,7 +256,6 @@ export default {
 
     },
     onEventRender(event, element) {
-      console.log('onEventRender')
       this.$nextTick().then(() => {
         event.el.querySelector('.fc-title').remove()
         event.el.querySelector('.fc-time').remove()

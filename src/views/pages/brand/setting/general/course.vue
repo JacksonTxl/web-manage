@@ -1,6 +1,6 @@
 <template>
   <st-panel
-    :tabs="authTab.tabs"
+    :tabs="authTabs"
   >
     <router-view></router-view>
   </st-panel>
@@ -16,7 +16,7 @@ export default {
   },
   rxState() {
     return {
-      authTab: this.courseService.authTab$
+      authTabs: this.courseService.authTabs$
     }
   }
 }

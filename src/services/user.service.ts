@@ -57,8 +57,24 @@ export class UserService {
   })
   menus$ = new Computed<any[]>(this.menuData$.pipe(pluck('menus')))
   favoriteMenu$ = new Computed(this.menuData$.pipe(pluck('favorite')))
-  firstMenu$ = new Computed(this.menus$.pipe(map(menus => menus[0])))
+  firstMenuUrl$ = new Computed(
+    this.menus$.pipe(
+      map(menus => {
+        if (!menus || !menus.length) {
+          return ''
+        }
+        const firstMenu = menus[0]
+        if (firstMenu.url) {
+          return firstMenu.url
+        }
+        if (firstMenu.children && firstMenu.children[0]) {
+          return firstMenu.children[0].url
+        }
+      })
+    )
+  )
   appMode$ = new State<string>('brand')
+  firstInited$ = new State(false)
   // 枚举对象
   enums$ = new State({})
   // 禁用的 tooltips
@@ -122,6 +138,9 @@ export class UserService {
   }
   SET_INVALID_TOOLTIP(tooltip: any) {
     this.invalidTooltips$.commit(() => tooltip)
+  }
+  SET_FIRST_INITED(inited: boolean) {
+    this.firstInited$.commit(() => inited)
   }
   getUser() {
     return this.staffApi.getGlobalStaffInfo().pipe(
@@ -191,15 +210,6 @@ export class UserService {
     )
   }
   /**
-   * 重载 菜单 用户 信息 权限
-   */
-  reload() {
-    return forkJoin([
-      this.getMenuData(),
-      this.getUser()
-    ])
-  }
-  /**
    * 添加到常用菜单
    * @param id
    */
@@ -213,13 +223,17 @@ export class UserService {
   delFavorite(id: number) {
     return this.menuApi.delFavorite(id)
   }
-  firstInit() {
-    if (!this.user$.snapshot().id) {
+  init() {
+    if (!this.firstInited$.snapshot()) {
       return forkJoin(
         this.getUser(),
         this.getMenuData(),
         this.getEnums(),
         this.getInvalidTooltips()
+      ).pipe(
+        tap(() => {
+          this.SET_FIRST_INITED(true)
+        })
       )
     } else {
       return of({})
@@ -227,7 +241,7 @@ export class UserService {
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     this.nprogress.SET_TEXT('用户数据加载中...')
-    return this.firstInit().pipe(
+    return this.init().pipe(
       tap(() => {
         this.nprogress.SET_TEXT('用户信息数据获取完毕')
       })

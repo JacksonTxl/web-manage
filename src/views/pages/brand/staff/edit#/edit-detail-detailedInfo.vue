@@ -3,7 +3,7 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="毕业院校" >
-          <a-input placeholder="支持中英文、数字,不超过1   0个字" v-decorator="rules.graduated_school"/>
+          <a-input placeholder="支持中英文、数字,不超过100个字" v-decorator="rules.graduated_school"/>
         </st-form-item>
         <st-form-item label="学历">
           <a-select placeholder="请选择" v-decorator="rules.education">

@@ -1,5 +1,5 @@
 <template>
-  <div class="time-picker" @mouseup="onMouseup" @mounseover="onMouseOver" @mousedown="onMouseDown">
+  <div class="st-time-picker" @mounseover="onMouseOver" @mousedown="onMouseDown">
     <template  v-for="i in 25">
       <item @change="onChange"  @down="onDown" :checkArr="checkArr" :views="views" :isDrag="isDrag" :isEnter="isEnter" :key="i" :time="i - 1"></item>
     </template>
@@ -78,12 +78,12 @@ export default {
     },
     onChange(val) {
       this.$set(this.checkArr, val.time, val.isActive)
-    },
-    onMouseup() {
-      this.isDrag = false
     }
   },
   mounted() {
+    window.addEventListener('mouseup', () => {
+      this.isDrag = false
+    })
     this.$nextTick().then(() => {
       if (!this.values.length) return
       this.views = this.values.map(item => {
@@ -96,16 +96,11 @@ export default {
         }
         return `#${start}#start---#${end}#end`
       })
-      /* jslint evil: true */
-      document.onselectstart = () => 'event.returnValue=false'
     })
   }
 }
 </script>
 
 <style lang="less" scoped>
-.time-picker{
-  display: flex
-}
 
 </style>
