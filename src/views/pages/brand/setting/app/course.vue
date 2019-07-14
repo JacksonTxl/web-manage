@@ -1,18 +1,19 @@
 <template>
-  <st-panel
-    :tabs="tabs"
-  >
+  <st-panel :tabs="authTabs">
     <router-view></router-view>
   </st-panel>
 </template>
 <script>
+import { CourseService } from './course.service'
 export default {
-  data() {
+  serviceInject() {
     return {
-      tabs: [
-        { label: '课程类型', route: { name: 'brand-setting-app-course-category' } },
-        { label: '训练目的', route: { name: 'brand-setting-app-course-training-aim' } }
-      ]
+      courseService: CourseService
+    }
+  },
+  rxState() {
+    return {
+      authTabs: this.courseService.authTabs$
     }
   }
 }

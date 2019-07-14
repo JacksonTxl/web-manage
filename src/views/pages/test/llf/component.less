@@ -1,0 +1,12 @@
+.function {
+  @designSize: 750px;
+  @baseSize: 324px;
+  .rpx(@px) {
+    return: unit((@px / @designSize * @baseSize), px);
+  }
+}
+
+
+.test-block {
+  width: rpx(136);
+}

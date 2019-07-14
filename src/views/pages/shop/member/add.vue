@@ -54,13 +54,13 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="性别">
-            <a-select placeholder="请选择" v-decorator="rules.sex">
-              <a-select-option
+            <a-radio-group v-decorator="rules.sex">
+              <a-radio
                 v-for="(item, index) in staffEnums.sex.value"
                 :key="index"
                 :value="+index"
-              >{{item}}</a-select-option>
-            </a-select>
+              >{{item}}</a-radio>
+            </a-radio-group>
           </st-form-item>
           <st-form-item label="生日">
             <a-date-picker v-decorator="rules.birthday" style="width:100%"/>
@@ -264,7 +264,6 @@ export default {
     save(e) {
       e.preventDefault()
       this.form.validateFields().then(res => {
-        console.log(res)
         const cascader = res.cascader || []
         res.province_id = cascader[0] || 110000
         res.city_id = cascader[1] || 110100

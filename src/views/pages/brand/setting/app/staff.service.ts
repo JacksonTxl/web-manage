@@ -1,10 +1,9 @@
-
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { PersonalScheduleCommonService } from './schedule/personal.service#/common.service'
 import { RedirectService } from '@/services/redirect.service'
+
 @Injectable()
-export class ScheduleService implements RouteGuard {
-  authTabs$ = this.redirectService.getAuthTabs$('shop-product-course-schedule')
+export class StaffService implements RouteGuard {
+  authTabs$ = this.redirectService.getAuthTabs$('brand-setting-app-staff')
   constructor(private redirectService: RedirectService) {}
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     next()

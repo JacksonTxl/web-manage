@@ -1,5 +1,5 @@
 <template>
-  <page-route-nav title="应用设置" v-model="tabs"></page-route-nav>
+  <page-route-nav title="应用设置" v-model="authTabs"></page-route-nav>
 </template>
 <script>
 import PageRouteNav from '@/views/components/page-route-nav#/nav'
@@ -15,7 +15,7 @@ export default {
   },
   rxState() {
     return {
-      tabs: this.appService.tabs$
+      authTabs: this.appService.authTabs$
     }
   },
   components: {

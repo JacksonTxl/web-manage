@@ -1,7 +1,5 @@
 <template>
-  <st-panel
-    :tabs="tabs"
-  >
+  <st-panel :tabs="authTabs">
     <div slot="actions"></div>
     <router-view></router-view>
   </st-panel>
@@ -16,7 +14,7 @@ export default {
   },
   rxState() {
     return {
-      tabs: this.templateService.tabs$
+      authTabs: this.templateService.authTabs$
     }
   }
 }

@@ -5,13 +5,12 @@
        <a-row>
         <a-col :span="16"><st-t2>私教课程定价设置</st-t2></a-col>
         <a-col :span="8" class="ta-r">
-          <a href="javascript: void(0);"
+          <st-info-action
+            icon="edit"
+            text="编辑"
             v-if="auth.priceEdit"
             @click="onEditPricingSetting"
-          >
-            <st-icon type="edit"></st-icon>
-            <span class="mg-l4 color-text-light">编辑</span>
-          </a>
+          />
         </a-col>
       </a-row>
 
@@ -36,7 +35,9 @@
       <a-row>
         <a-col :span="16"><st-t2>私教课程预约设置</st-t2></a-col>
         <a-col :span="8" class="ta-r">
-          <a href="javascript: void(0);"
+          <st-info-action
+            icon="edit"
+            text="编辑"
             v-if="auth.reserveEdit"
             v-modal-link="{
               name:'brand-setting-personal-reserve',
@@ -44,10 +45,7 @@
                 change: onChange
               }
             }"
-          >
-            <st-icon type="edit"></st-icon>
-            <span class="mg-l4 color-text-light">编辑</span>
-          </a>
+          />
         </a-col>
       </a-row>
       <!-- 私教课程定价模式 -->
@@ -115,6 +113,7 @@ export default {
       })
     },
     onEditPricingSetting() {
+      console.log('edit')
       const isChanged = this.pricingInfo.is_changed
       const that = this
       const msg = this.pricingInfo.changed_desc

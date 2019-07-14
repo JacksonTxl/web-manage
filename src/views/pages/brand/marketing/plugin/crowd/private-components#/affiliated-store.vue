@@ -10,7 +10,7 @@
     </template>
     <a-tag style="background: #fff; borderStyle: dashed;">
       <a-dropdown overlayClassName="affiliated-store-dropdown">
-        <a class="ant-dropdown-link" href="#">
+        <a class="ant-dropdown-link">
           <a-icon type="plus"/>添加
         </a>
         <a-menu slot="overlay">

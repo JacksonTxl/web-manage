@@ -8308,6 +8308,11 @@ less-plugin-clean-css@^1.5.1:
   dependencies:
     clean-css "^3.0.1"
 
+less-plugin-functions@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npm.taobao.org/less-plugin-functions/download/less-plugin-functions-1.0.0.tgz#c4fe10f681aae0a806daf9f412d20f013e10d247"
+  integrity sha1-xP4Q9oGq4KgG2vn0EtIPAT4Q0kc=
+
 less-plugin-glob@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npm.taobao.org/less-plugin-glob/download/less-plugin-glob-3.0.0.tgz#784d21f05fee0bb8cd4eae774643c6f60a395eec"
