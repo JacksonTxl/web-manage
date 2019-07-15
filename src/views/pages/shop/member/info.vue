@@ -8,7 +8,7 @@
               <div class="img-box  st-preview-item" v-viewer="{ url: 'data-src' }">
                 <img
                   class="img-url"
-                  :src="info.image_face.name | imgFilter({ w: 80, h: 142 })" :data-src="info.image_face.name | imgFilter({ w: 1000 })"
+                  :src="info.image_face.image_url | imgFilter({ w: 80, h: 142 })" :data-src="info.image_face.image_url | imgFilter({ w: 1000 })"
                 >
                 <span class="img-describe">{{info.member_level.name}}</span>
               </div>

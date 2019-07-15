@@ -143,7 +143,7 @@ export default {
       list: this.frozenService.list$,
       staffList: this.frozenService.staffList$,
       memberEnums: this.userService.memberEnums$,
-      loading: this.userService.loading$
+      loading: this.frozenService.loading$
     }
   },
   name: 'frozen',

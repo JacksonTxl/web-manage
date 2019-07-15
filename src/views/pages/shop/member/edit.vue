@@ -3,67 +3,62 @@
     <st-form :form="form" @submit="save" class="page-add-container">
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
+          <!-- <st-form-item label="门店">
+            <a-input :disabled="true" v-decorator="rules.md"/>
+          </st-form-item> -->
           <st-form-item label="姓名" required>
-            <a-input placeholder="支持中英文,不超过15个字" v-decorator="rules.member_name" />
+            <a-input placeholder="支持中英文,不超过15个字" v-decorator="rules.member_name"/>
           </st-form-item>
-          <st-form-item label="性别">
-            <a-radio-group v-decorator="rules.sex">
-              <a-radio
-                v-for="(item, index) in staffEnums.sex.value"
-                :key="index"
-                :value="+index"
-              >{{item}}</a-radio>
-            </a-radio-group>
-          </st-form-item>
-          <st-form-item label="生日" >
-            <a-date-picker style="width:100%" v-decorator="rules.birthday"/>
-          </st-form-item>
-          <st-form-item label="证件">
+          <st-form-item label="手机号" required>
             <a-input-group compact>
-              <a-select style="width:25%" v-model="id_card_type" @change="chooseType">
-                <a-select-option v-for="(item, index) in staffEnums.id_type.value" :key="index" :value="+index">{{item}}</a-select-option>
+              <a-select style="width:30%" v-model="country_prefix" v-if="countryList">
+                <a-select-option
+                  :value="code.code_id"
+                  v-for="code in countryList.code_list"
+                  :key="code.code_id"
+                >+{{code.phone_code}}</a-select-option>
               </a-select>
-              <a-input style="width: 75%" :placeholder="dateinit ? dateinit : '请输入身份证号码'" v-decorator="rules.id_card"/>
+              <a-input style="width:70%" placeholder="请输入手机号" v-decorator="rules.mobile"/>
             </a-input-group>
           </st-form-item>
-          <st-form-item label="婚姻状况">
-            <a-select placeholder="请选择" v-decorator="rules.married_type">
-               <a-select-option v-for="(item, index) in staffEnums.marry_status.value" :key="index" :value="+index">{{item}}</a-select-option>
+          <st-form-item label="来源类别">
+            <a-select placeholder="请选择来源类别" v-decorator="rules.register_type" @change="onChangCategory">
+              <a-select-option
+                v-for="(item, index) in memberEnums.source_category.value"
+                :key="index"
+                :value="+index"
+              >{{item}}</a-select-option>
             </a-select>
           </st-form-item>
-          <st-form-item label="子女状态">
-            <a-select placeholder="请选择" v-decorator="rules.has_children">
-             <a-select-option v-for="(item, index) in staffEnums.children_status.value" :key="index" :value="+index">{{item}}</a-select-option>
+          <st-form-item label="来源方式">
+            <a-select placeholder="请选择来源方式" v-decorator="rules.register_way">
+              <template v-if="source_category === 1">
+                <a-select-option
+                  v-for="(item, index) in memberEnums.online.value"
+                  :key="index"
+                  :value="+index"
+                >{{item}}</a-select-option>
+              </template>
+              <template v-if="source_category === 2">
+                <a-select-option
+                  v-for="(item, index) in memberEnums.offline.value"
+                  :key="index"
+                  :value="+index"
+                >{{item}}</a-select-option>
+              </template>
+
             </a-select>
-          </st-form-item>
-          <st-form-item label="健身等级" >
-             <a-rate v-decorator="rules.fitness_level" allowHalf />
           </st-form-item>
         </a-col>
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="国籍">
-            <a-select placeholder="请选择" v-decorator="rules.country_id">
-              <a-select-option v-for="(item, index) in countryInfo" :key="index" :value="+item.id">{{item.name}}</a-select-option>
-            </a-select>
-          </st-form-item>
-          <st-form-item label="民族">
-            <a-select placeholder="请选择" v-decorator="rules.nation">
-              <a-select-option v-for="(item, index) in nations" :key="index" :value="item.id">{{item.name}}</a-select-option>
-            </a-select>
-          </st-form-item>
-          <st-form-item label="学历">
-            <a-select placeholder="请选择学历" v-decorator="rules.education_level">
-               <a-select-option v-for="(item, index) in staffEnums.education.value" :key="index" :value="+index">{{item}}</a-select-option>
-            </a-select>
-          </st-form-item>
-          <st-form-item label="职业">
-            <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.jobs"/>
-          </st-form-item>
-          <st-form-item label="收入水平">
-            <a-input placeholder=""  v-decorator="rules.income_level"/>
-          </st-form-item>
-          <st-form-item label="健身目标">
-            <a-input placeholder="" v-decorator="rules.fitness_goal"/>
+          <st-form-item label="用户人脸">
+            <st-face-upload
+              width="264px"
+              height="264px"
+              :list="faceList"
+              placeholder="会员人脸信息"
+              v-decorator="rules.faceInfo"
+            ></st-face-upload>
           </st-form-item>
         </a-col>
       </a-row>
@@ -76,36 +71,122 @@
 
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-           <st-form-item label="手机号" required>
-            <a-input-group compact>
-              <a-select style="width:25%" v-model="country_prefix">
-                <a-select-option
-                  :value="code.code_id"
-                  v-for="code in countryList"
-                  :key="code.code_id"
-                >+{{code.phone_code}}</a-select-option>
-              </a-select>
-              <a-input style="width:75%"  placeholder="请输入手机号" v-decorator="rules.mobile"/>
-            </a-input-group>
+          <st-form-item label="性别">
+            <a-radio-group v-decorator="rules.sex">
+              <a-radio
+                v-for="(item, index) in staffEnums.sex.value"
+                :key="index"
+                :value="+index"
+              >{{item}}</a-radio>
+            </a-radio-group>
           </st-form-item>
-          <!-- 这个版本不上 -->
-          <!-- <st-form-item label="微信号" >
-            <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.wechat" :disabled="true"/>
-          </st-form-item> -->
-           <st-form-item label="详细住址" >
-            <a-input placeholder="请输入详细住址" v-decorator="rules.living_address"/>
+          <st-form-item label="生日">
+            <a-date-picker v-decorator="rules.birthday" style="width:100%"/>
+          </st-form-item>
+          <st-form-item label="国籍">
+            <a-select placeholder="请选择" v-decorator="rules.country_id">
+              <a-select-option
+                v-for="(item, index) in countryInfo"
+                :key="index"
+                :value="item.id"
+              >{{item.name}}</a-select-option>
+            </a-select>
+          </st-form-item>
+          <st-form-item label="民族">
+            <a-select placeholder="请选择" v-decorator="rules.nation_id">
+              <a-select-option
+                v-for="(item, index) in nations"
+                :key="index"
+                :value="item.id"
+              >{{item.name}}</a-select-option>
+            </a-select>
+          </st-form-item>
+          <st-form-item label="学历">
+            <a-select placeholder="请选择学历" v-decorator="rules.education_level">
+              <a-select-option
+                v-for="(item, index) in staffEnums.education.value"
+                :key="index"
+                :value="+index"
+              >{{item}}</a-select-option>
+            </a-select>
+          </st-form-item>
+          <st-form-item label="职业">
+            <a-input placeholder="请输入职业" v-decorator="rules.jobs"/>
+          </st-form-item>
+          <st-form-item label="收入水平">
+            <a-input placeholder="请输入收入水平" v-decorator="rules.income_level"/>
+          </st-form-item>
+          <st-form-item label="证件类型">
+            <a-select v-decorator="rules.id_card_type" placeholder="请选择" @change="chooseType">
+              <a-select-option
+                v-for="(item, index) in staffEnums.id_type.value"
+                :key="index"
+                :value="+index"
+              >{{item}}</a-select-option>
+            </a-select>
+          </st-form-item>
+          <st-form-item label="证件号">
+            <a-input :placeholder="dateinit ? dateinit : '请输入身份证号码'" v-decorator="rules.id_card"/>
           </st-form-item>
         </a-col>
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="邮箱">
-            <a-input placeholder="支持中英文、数字,不超过10个字"  v-decorator="rules.email"/>
+          <st-form-item label="身高">
+            <st-input-number v-decorator="rules.height" :float="true" placeholder="请输入身高">
+              <template slot="addonAfter">CM</template>
+            </st-input-number>
           </st-form-item>
-          <st-form-item label="家庭住址" >
-            <a-cascader :options="options" v-decorator="rules.cascader" :fieldNames="fieldNames" @change="onChange" placeholder="请选择省/市/区/县"/>
+          <st-form-item label="体重">
+            <st-input-number v-decorator="rules.weight" :float="true" placeholder="请输入体重">
+              <template slot="addonAfter">KG</template>
+            </st-input-number>
+          </st-form-item>
+          <st-form-item label="健身目标">
+            <a-input v-decorator="rules.fitness_goal" placeholder="请输入健身目标"/>
+          </st-form-item>
+          <st-form-item label="健身等级">
+            <a-rate v-decorator="rules.fitness_level" allowHalf/>
+          </st-form-item>
+          <st-form-item label="婚姻状况">
+            <a-select placeholder="请选择" v-decorator="rules.married_type">
+              <a-select-option
+                v-for="(item, index) in staffEnums.marry_status.value"
+                :key="index"
+                :value="+index"
+              >{{item}}</a-select-option>
+            </a-select>
+          </st-form-item>
+          <st-form-item label="子女状态">
+            <a-select placeholder="请选择" v-decorator="rules.has_children">
+              <a-select-option
+                v-for="(item, index) in staffEnums.children_status.value"
+                :key="index"
+                :value="+index"
+              >{{item}}</a-select-option>
+            </a-select>
+          </st-form-item>
+          <st-form-item label="邮箱">
+            <a-input placeholder="请输入邮箱" v-decorator="rules.email"/>
+          </st-form-item>
+          <st-form-item label="家庭住址">
+            <a-cascader
+              :options="options"
+              v-decorator="rules.cascader"
+              :fieldNames="fieldNames"
+              @change="onChange"
+              placeholder="请选择省/市/区/县"
+            />
+          </st-form-item>
+          <st-form-item label="详细住址">
+            <a-input placeholder="填写点什么吧" v-decorator="rules.living_address"></a-input>
           </st-form-item>
         </a-col>
       </a-row>
 
+      <a-row :gutter="8">
+        <a-col :offset="1" :lg="22">
+          <st-hr></st-hr>
+        </a-col>
+      </a-row>
       <a-row :gutter="8">
         <a-col :offset="2">
           <st-form-item class="mg-l24" labelOffset>
@@ -135,6 +216,7 @@ export default {
   rxState() {
     return {
       info: this.editService.info$,
+      memberEnums: this.userService.memberEnums$,
       staffEnums: this.userService.staffEnums$,
       countryInfo: this.editService.countryInfo$,
       nations: this.editService.nations$,
@@ -146,34 +228,58 @@ export default {
       form: this.$form.createForm(this),
       dateinit: '',
       rules: {
-        member_name: ['member_name', { rules: [{ required: true, message: '用户名支持1-15位中英文数字', pattern: this.pattern.CN_EN_NUM_SPACE('1-15') }] }],
+        md: ['md'],
+        member_name: [
+          'member_name',
+          { rules: [{ required: true, message: '用户名支持1-15位中英文数字', pattern: this.pattern.CN_EN_NUM_SPACE('1-15') }] }
+        ],
+        country_prefix: ['country_prefix', { initialValue: 37 }],
+        mobile: [
+          'mobile',
+          {
+            rules: [{ required: true, message: '请输入手机号', pattern: this.pattern.MOBILE }]
+          }
+        ],
+        // 来源渠道
+        register_type: ['register_type'],
+        // 来源方式
+        register_way: ['register_way'],
+        faceInfo: ['faceInfo'],
+
         sex: ['sex'],
-        country_id: ['country_id'],
-        nation: ['nation'],
         birthday: ['birthday'],
+        country_id: ['country_id'],
+        nation_id: ['nation_id'],
         education_level: ['education_level'],
-        id_card_type: ['id_card_type'],
         jobs: ['jobs'],
-        id_card: ['id_card', { rules: [{ message: '证件信息支持中英文输入', pattern: this.pattern.ID }] }],
         income_level: ['income_level'],
-        married_type: ['married_type'],
+        id_card_type: ['id_card_type'],
+        id_card: ['id_card', { rules: [{ message: '证件信息支持中英文输入', pattern: this.pattern.ID }] }],
+
+        height: ['height'],
+        weight: ['weight'],
         fitness_goal: ['fitness_goal'],
-        has_children: ['has_children'],
         fitness_level: ['fitness_level'],
+        married_type: ['married_type'],
+        has_children: ['has_children'],
         email: ['email', { rules: [{ message: '请输入正确的邮箱地址', pattern: this.pattern.EMAIL }] }],
-        mobile: ['mobile', { rules: [{ required: true, message: '请输入正确的手机号', pattern: this.pattern.MOBILE }] }],
-        wechat: ['wechat'],
         cascader: ['cascader'],
-        country_prefix: ['country_prefix'],
         living_address: ['living_address']
+
       },
       options: [],
       fieldNames: { label: 'name', value: 'id', children: 'children' },
       id_card_type: '',
-      country_prefix: ''
+      faceList: [],
+      country_prefix: '',
+      source_category: -1
     }
   },
   methods: {
+    // 来源方式发生改变
+    onChangCategory(event) {
+      this.source_category = event
+    },
     onChange(e) {},
     chooseType(e) {
       let { tip1, tip2 } = {
@@ -205,7 +311,6 @@ export default {
       })
     },
     setEditInfo(obj) {
-      console.log(obj)
       this.form.setFieldsValue({
         member_name: obj.member_name,
         sex: obj.sex === 0 ? 1 : obj.sex,
@@ -231,6 +336,7 @@ export default {
       this.id_card_type = obj.id_card_type === 0 ? 1 : obj.id_card_type
       this.country_prefix = obj.country_prefix === 0 ? 1 : obj.country_prefix
       this.id = obj.id
+      this.faceList = [obj.face_info]
     }
   },
   mounted() {

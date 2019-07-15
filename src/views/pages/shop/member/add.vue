@@ -21,14 +21,32 @@
               <a-input style="width:70%" placeholder="请输入手机号" v-decorator="rules.mobile"/>
             </a-input-group>
           </st-form-item>
-          <st-form-item label="来源渠道">
-            <a-select placeholder="手动录入" v-decorator="rules.register_type">
-              <a-select-option :value="1">渠道1</a-select-option>
+          <st-form-item label="来源类别">
+            <a-select placeholder="请选择来源类别" v-decorator="rules.register_type" @change="onChangCategory">
+              <a-select-option
+                v-for="(item, index) in memberEnums.source_category.value"
+                :key="index"
+                :value="+index"
+              >{{item}}</a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item label="来源方式">
-            <a-select placeholder="外出获取" v-decorator="rules.register_way">
-              <a-select-option :value="1">方式1</a-select-option>
+            <a-select placeholder="请选择来源方式" v-decorator="rules.register_way">
+              <template v-if="source_category === 1">
+                <a-select-option
+                  v-for="(item, index) in memberEnums.online.value"
+                  :key="index"
+                  :value="+index"
+                >{{item}}</a-select-option>
+              </template>
+              <template v-if="source_category === 2">
+                <a-select-option
+                  v-for="(item, index) in memberEnums.offline.value"
+                  :key="index"
+                  :value="+index"
+                >{{item}}</a-select-option>
+              </template>
+
             </a-select>
           </st-form-item>
         </a-col>
@@ -113,17 +131,17 @@
         </a-col>
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="身高">
-            <st-input-number v-decorator="rules.height" :float="true">
+            <st-input-number v-decorator="rules.height" :float="true" placeholder="请输入身高">
               <template slot="addonAfter">CM</template>
             </st-input-number>
           </st-form-item>
-          <st-form-item label="体重">
-            <st-input-number v-decorator="rules.weight" :float="true">
+          <st-form-item label="体重" >
+            <st-input-number v-decorator="rules.weight" :float="true" placeholder="请输入体重">
               <template slot="addonAfter">KG</template>
             </st-input-number>
           </st-form-item>
           <st-form-item label="健身目标">
-            <a-input placeholder v-decorator="rules.fitness_goal"/>
+            <a-input v-decorator="rules.fitness_goal" placeholder="请输入健身目标"/>
           </st-form-item>
           <st-form-item label="健身等级">
             <a-rate v-decorator="rules.fitness_level" allowHalf/>
@@ -198,6 +216,7 @@ export default {
   rxState() {
     return {
       staffEnums: this.userService.staffEnums$,
+      memberEnums: this.userService.memberEnums$,
       countryInfo: this.addService.countryInfo$,
       nations: this.addService.nations$,
       countryList: this.addService.countryList$
@@ -249,10 +268,15 @@ export default {
       options: [],
       fieldNames: { label: 'name', value: 'id', children: 'children' },
       faceList: [],
-      country_prefix: 1
+      country_prefix: 1,
+      source_category: -1
     }
   },
   methods: {
+    // 来源方式发生改变
+    onChangCategory(event) {
+      this.source_category = event
+    },
     onChange(e) {},
     chooseType(e) {
       let { tip1, tip2 } = {
