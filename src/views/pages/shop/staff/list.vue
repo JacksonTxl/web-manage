@@ -73,7 +73,7 @@
         <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onSingleSearch('keyword', $event)"/>
       </a-col>
     </a-row>
-    <a-row :gutter="8" class="mg-t8">
+    <a-row class="mg-t8">
       <st-table
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         :columns="columns"
