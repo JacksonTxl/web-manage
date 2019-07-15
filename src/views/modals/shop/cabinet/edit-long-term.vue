@@ -5,6 +5,7 @@
     v-model="show"
     @ok="onSubmit"
     @cancel="onCancel"
+    :confirmLoading="loading.update"
   >
     <st-form :form="form" labelWidth="70px">
       <st-form-item label="区域">

@@ -1,5 +1,6 @@
 import { Injectable } from 'vue-service-app'
 import { Store } from '@/services/store'
+import { Effect } from 'rx-state/src'
 import {
   CabinetPriceApi,
   UpdateInput
@@ -10,6 +11,7 @@ export class EditPriceService extends Store<any> {
   constructor(private cabinetPriceApi: CabinetPriceApi) {
     super()
   }
+  @Effect()
   updatePrice(params: UpdateInput) {
     return this.cabinetPriceApi.update(params)
   }
