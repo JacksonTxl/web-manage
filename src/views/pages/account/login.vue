@@ -1,20 +1,21 @@
 <template>
   <div class="page-login-wapper">
     <div class="page-login-ch-en">
-      <span class="mg-r24 active">中文</span>
-      <span class="mg-r24">English</span>
+      <!-- <span class="mg-r24 active">中文</span>
+      <span class="mg-r24">English</span> -->
     </div>
     <div class="page-login">
       <!-- 密码/二维码 -->
-      <i class="page-switch-login-type cursor-pointer" :class="{'qrcode-login':this.loginType==='qrcode'}" @click="switchLoginType" v-if="switchLoginTypeIsShow"></i>
+      <!-- <i class="page-switch-login-type cursor-pointer" :class="{'qrcode-login':this.loginType==='qrcode'}" @click="switchLoginType" v-if="switchLoginTypeIsShow"></i> -->
+      <i class="page-switch-login-type cursor-pointer" :class="{'qrcode-login':this.loginType==='qrcode'}"  v-if="switchLoginTypeIsShow"></i>
       <section class="lf">
         <div class="lf-bg"></div>
         <footer>
-          <ul class="lf-help mg-b8">
+          <!-- <ul class="lf-help mg-b8">
             <li class="item"><a href="">帮助</a></li>
             <li class="item"><a href="">隐私</a></li>
             <li class="item"><a href="">条款</a></li>
-          </ul>
+          </ul> -->
           <p class="lf-copyright">版权所有&nbsp;©&nbsp;三体云动&nbsp;三体云智能科技有限公司</p>
         </footer>
       </section>

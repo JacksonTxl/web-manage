@@ -8,9 +8,9 @@
             <a v-modal-link="{ name: 'schedule-personal-inbatch-add', props: { id: 1 } }"
             >批量排期</a>
           </st-button>
-          <st-button>
+          <!-- <st-button>
             <a v-modal-link="{ name: 'schedule-personal-add', props: { id: 1 } }">添加排期</a>
-          </st-button>
+          </st-button> -->
         </a-col>
         <a-col :lg="7" :offset="2">
           <date @today="getList" :start="query.start_date" @pre="getList" @next="getList"/>

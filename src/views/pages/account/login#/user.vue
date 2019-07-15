@@ -17,9 +17,9 @@
       </st-form-item>
     </st-form>
     <!-- 第三方登录 -->
-    <div :class="loginUser('third')" class="mg-l24">
+    <!-- <div :class="loginUser('third')" class="mg-l24">
       <div @click="onClickThirdChange(item)" class="st-icon-wapper" v-for="item in thirdLogins" :key="item.type"><st-icon :class="item" :type="item" size="24px" /></div>
-    </div>
+    </div> -->
   </div>
 </template>
 
