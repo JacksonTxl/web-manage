@@ -96,7 +96,9 @@ const createRoute = () => {
     const parsed = parse(page)
     const hasParent = !!pageMap[parsed.dir_dash]
     const component = _.camelCase(`--Page${`-${parsed.component}--`}`)
-    const chunkName = parsed.dir_dash ? parsed.dir_dash : parsed.entry
+    const chunkName = parsed.dir_dash
+      ? parsed.dir_dash
+      : parsed.entry.replace('.service', '')
 
     importArr.push({
       component,
