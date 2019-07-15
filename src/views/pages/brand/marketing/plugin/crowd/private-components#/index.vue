@@ -21,7 +21,7 @@
               >{{value[0].crowd_total_num}}</div>
               <div class="shop-member-crowd-index-box__num-describe">人群总数</div>
             </div>
-            <div class="shop-member-crowd-index-box__num-item">
+            <div class="shop-member-crowd-index-box__num-item-middle">
               <div
                 class="shop-member-crowd-index-box__number"
               >{{value[0].yesterday_admission}}</div>
@@ -73,7 +73,7 @@
               >{{value[1].crowd_total_num}}</div>
               <div class="shop-member-crowd-index-box__num-describe">人群总数</div>
             </div>
-            <div class="shop-member-crowd-index-box__num-item">
+            <div class="shop-member-crowd-index-box__num-item-middel">
               <div
                 class="shop-member-crowd-index-box__number"
               >{{value[1].yesterday_admission}}</div>
@@ -125,7 +125,7 @@
               >{{value[2].crowd_total_num}}</div>
               <div class="shop-member-crowd-index-box__num-describe">人群总数</div>
             </div>
-            <div class="shop-member-crowd-index-box__num-item">
+            <div class="shop-member-crowd-index-box__num-item-middel">
               <div
                 class="shop-member-crowd-index-box__number"
               >{{value[2].yesterday_admission}}</div>

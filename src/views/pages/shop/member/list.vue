@@ -59,8 +59,9 @@
         </st-button>
         <a-popover placement="bottom">
           <template slot="content">
-            <p v-if="auth.bindCoach">
-              <a href="javascript: void(0);"
+            <div v-if="auth.bindCoach" class="shop-member-list-button-div">
+              <label
+                class="shop-member-list-button-label"
                 v-modal-link="{
                   name: 'shop-distribution-coach',
                   props: {
@@ -69,10 +70,11 @@
                 }"
               >
                 分配教练
-              </a>
-            </p>
-            <p v-if="auth.bindSalesman">
-              <a href="javascript: void(0);"
+              </label>
+            </div>
+            <div v-if="auth.bindSalesman" class="shop-member-list-button-div">
+              <label
+                class="shop-member-list-button-label"
                 v-modal-link="{
                   name: 'shop-distribution-sale',
                   props: {
@@ -81,8 +83,8 @@
                 }"
               >
                 分配销售
-              </a>
-            </p>
+              </label>
+            </div>
           </template>
           <st-button
             v-if="auth.bindCoach && auth.bindSalesman"
