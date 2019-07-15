@@ -450,6 +450,7 @@ export const routeMapConfig = {
   },
   'shop-reception-entrance'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '入场管理'
+    routeConfig.meta.parentId = 'shop-reception-index'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -770,6 +771,7 @@ export const routeMapConfig = {
   },
   'shop-staff-info-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.meta.parentId = 'shop-staff-list'
   },
   'shop-staff-info-follow'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
@@ -785,6 +787,7 @@ export const routeMapConfig = {
   },
   'shop-staff-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑员工'
+    routeConfig.meta.parentId = 'shop-staff-list'
   },
   'shop-staff-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增员工'
