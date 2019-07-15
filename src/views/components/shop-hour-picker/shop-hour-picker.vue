@@ -90,7 +90,7 @@ export default {
     return {
       defaultWeekList: WEEK,
       time: TIMER,
-      slider: SLIDER,
+      slider: cloneDeep(SLIDER),
       copeSlider: {}, // 复制到功能需要,为中间值
       weekSelects: [],
       isInit: true
@@ -125,7 +125,7 @@ export default {
       n.length > o.length ? this.addSlider(n, o) : this.removeSlider(n, o)
     }
   },
-  mounted() {
+  created() {
     this.$nextTick(() => {
       this.init()
     })
@@ -216,6 +216,11 @@ export default {
     filterOperation(value) {
       return WEEK[value] && WEEK[value]['label']
     }
+  },
+  beforeDestory() {
+    this.weekSelects = []
+    this.init = true
+    console.log('beforeDestory')
   }
 }
 </script>

@@ -11,7 +11,7 @@
         </li>
         <li>
           <img src="~@/assets/img/brand/marketing/coupon/activity.png" />
-          <label>设置活动广告</label>
+          <label @click="jumpToad">设置活动广告</label>
         </li>
         <li>
           <img src="~@/assets/img/brand/marketing/coupon/mini-program.svg" />
@@ -53,8 +53,13 @@ export default {
 
   },
   methods: {
+    jumpToad() {
+      this.$router.push({
+        name: 'brand-marketing-activity'
+      })
+    },
     sharePoster() {
-      let auth = this.$route.query.isAuth
+      let auth = Number(this.$route.query.isAuth)
       if (auth) {
         this.$modalRouter.push({
           name: 'brand-marketing-poster',
@@ -80,7 +85,7 @@ export default {
       }
     },
     shareQrcode() {
-      let auth = this.$route.query.isAuth
+      let auth = Number(this.$route.query.isAuth)
       if (auth) {
         this.$modalRouter.push({
           name: 'brand-marketing-poster',

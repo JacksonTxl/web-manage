@@ -3,8 +3,13 @@
     <a-row class="mg-b48 mg-t48" :gutter="8">
       <a-col offset="1" :span="22" >
         <a-steps :current="currentIndex">
-          <a-step v-for="item in stepArr" :key="item.key" :title="item.title"
-            @click="changeStep(item.key)" class="cursor-pointer"/>
+          <a-step
+            v-for="item in stepArr"
+            :key="item.key"
+            :title="item.title"
+            @click="changeStep(item.key)"
+            class="cursor-pointer"
+          />
         </a-steps>
       </a-col>
     </a-row>

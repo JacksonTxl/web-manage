@@ -77,7 +77,7 @@
       <a-col :offset="1">
         <st-form-item label="  ">
           <st-button type="primary" class="mg-r16" ghost @click="onClickBack">上一步</st-button>
-          <st-button class="mg-l16" @click="goNext" type="primary">{{!isShowCoach?'保存':'保存，继续填写'}}</st-button>
+          <st-button class="mg-l16" @click="goNext" type="primary">{{!isPrivateCoach?'保存':'保存，继续填写'}}</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -103,7 +103,7 @@ export default {
     enums: {
       type: Object
     },
-    isShowCoach: {
+    isPrivateCoach: {
       type: Boolean,
       default: false
     },
@@ -194,7 +194,7 @@ export default {
       newData.birthday && (newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD'))
       delete newData.provinces
       this.service.updateDetailedInfo(this.data.staff_id, newData).subscribe(() => {
-        if (!this.isShowCoach) {
+        if (!this.isPrivateCoach) {
           this.$router.push({ name: 'shop-staff-list' })
         } else {
           this.$emit('gonext')

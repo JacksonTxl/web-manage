@@ -94,7 +94,7 @@ import { RouteService } from '@/services/route.service'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
 import SetPrice from '@/views/fragments/course/set-price'
-import { checkGradient } from '@/views/fragments/course/personal#/check-gradient'
+import { GradientService } from '@/views/fragments/course/personal#/gradient.service'
 
 export default {
   name: 'SetSellPrice',
@@ -104,7 +104,8 @@ export default {
       messageService: MessageService,
       userService: UserService,
       routeService: RouteService,
-      ruleConfig: RuleConfig
+      ruleConfig: RuleConfig,
+      gradientService: GradientService
     }
   },
   rxState() {
@@ -217,7 +218,7 @@ export default {
           return
         }
       }
-      if (!checkGradient(this.priceGradient)) {
+      if (!this.gradientService.check(this.priceGradient)) {
         return false
       }
       return true
@@ -233,7 +234,6 @@ export default {
       return data
     },
     onPriceGradientChange(priceGradient) {
-      console.log('price gradient changed', priceGradient)
       this.priceGradient = priceGradient
     },
     onSingleReserveChange() {

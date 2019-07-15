@@ -24,7 +24,7 @@
       v-else-if="currentIndex === 1"
       @goNext="goNext"
       @back="onBack"
-      :isShowCoach="isShowCoach"
+      :isPrivateCoach="isPrivateCoach"
       :enums="staffEnums"
       :data="staffInfo"
       @detailInfoSave="onDetailInfoSave"/>
@@ -124,7 +124,7 @@ export default {
     },
     onDetailInfoSave(data) {
       this.editService.updateDetailedInfo(this.id, data.data).subscribe(() => {
-        if (!this.isShowCoach) {
+        if (!this.isPrivateCoach) {
           this.$router.push({ name: 'brand-staff-department' })
         } else {
           this.updateStaffInfo()

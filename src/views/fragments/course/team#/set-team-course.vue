@@ -250,8 +250,8 @@ export default {
         image: info.image,
         description: info.description
       })
-      if (this.info.image) {
-        this.fileList = [this.info.image]
+      if (info.image.image_key) {
+        this.fileList = [info.image]
       }
     },
     getData() {

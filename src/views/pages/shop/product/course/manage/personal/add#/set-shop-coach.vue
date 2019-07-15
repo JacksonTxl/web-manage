@@ -23,7 +23,14 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.setShop">保存，继续设置售卖价格</st-button>
+          <st-button
+            type="primary"
+            @click="save"
+            :loading="loading.setShop"
+            :disabled="!courseId"
+          >
+            保存，继续设置售卖价格
+          </st-button>
         </st-form-item>
       </a-col>
     </a-row>

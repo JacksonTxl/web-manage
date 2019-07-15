@@ -70,7 +70,7 @@ export default {
     height: 100%;
   }
   &__value {
-    font-family: DINAlternate-Bold;
+    font-family: bebas;
     font-weight: bold;
     font-size: 14px;
     line-height: 22px;
