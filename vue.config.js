@@ -40,7 +40,7 @@ fs.writeFileSync(
 module.exports = {
   lintOnSave: false,
   css: {
-    extract: true,
+    extract: IS_PROD,
     loaderOptions: {
       less: {
         javascriptEnabled: true,

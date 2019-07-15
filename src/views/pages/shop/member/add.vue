@@ -76,7 +76,12 @@
                 v-for="(item, index) in staffEnums.sex.value"
                 :key="index"
                 :value="+index"
-              >{{item}}</a-radio>
+              >
+                {{item}}
+                <st-icon type="female" v-if="index == 1" style="color:#FF5E41"></st-icon>
+                <st-icon type="male" v-if="index == 2"  style="color:#3F66F6"></st-icon>
+              </a-radio>
+
             </a-radio-group>
           </st-form-item>
           <st-form-item label="生日">
@@ -267,7 +272,7 @@ export default {
       options: [],
       fieldNames: { label: 'name', value: 'id', children: 'children' },
       faceList: [],
-      country_prefix: 1,
+      country_prefix: 37,
       source_category: -1
     }
   },

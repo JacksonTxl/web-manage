@@ -105,6 +105,16 @@
         @change="onTableChange"
         :dataSource="list"
       >
+        <div slot="image_face" slot-scope="text,record">
+          <span class="st-preview-item" v-viewer>
+            <img
+              v-if="record.image_face"
+              :class="basic('image-face')"
+              :src="record.image_face.url"
+              :data-src="record.image_face.url"
+            />
+          </span>
+        </div>
         <div slot="member_name" slot-scope="text,record">
           <a href="javascript:;" v-if="record.auth['shop:member:member|get']" @click="infoFunc(record)">{{text}}</a>
           <span v-else>{{text}}</span>

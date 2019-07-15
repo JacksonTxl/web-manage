@@ -62,7 +62,7 @@
             <st-button
               v-if="auth.batchDel"
               icon="delete"
-              class="mg-l8 color-warning"
+              class="mg-l8 color-danger"
               @click="onDelCabinet"
             >
               删除

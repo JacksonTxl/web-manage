@@ -1,5 +1,9 @@
 export const columns = () => [
-  // { title: '人脸', dataIndex: '' },
+  {
+    title: '人脸',
+    dataIndex: 'image_face',
+    scopedSlots: { customRender: 'image_face' }
+  },
   {
     title: '姓名',
     dataIndex: 'member_name',

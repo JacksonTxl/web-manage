@@ -11,7 +11,7 @@
     .layout-default-sider__logo {
       .s(32px, 32px);
       .mg-r(8px);
-      border: 1px solid rgba(@black, .45)!important;
+      border: 1px solid rgba(@black, .1)!important;
       .ov-h;
     }
     .layout-default-sider__name {
@@ -88,7 +88,7 @@
       }
       .ant-menu-submenu-title {
         .c(rgba(@defaultMenuColor));
-        padding-left: 24px !important;
+        padding-left: 16px !important;
         &:before {
           .d-n;
         }
@@ -104,7 +104,7 @@
     .ant-menu-item {
       display: flex;
       align-items: center;
-      padding-left: 24px !important;
+      padding-left: 16px !important;
       cursor: default;
       &.sub {
         .fz(12px);
@@ -150,9 +150,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      .w(100%);
       .mg-t(20px);
       .c(#fff);
       .pd(0 16px);
+      .tov-e;
       > span {
         .mg-r(6px);
         .fz(16px);
@@ -168,7 +170,7 @@
     }
     &__often {
       &-title {
-        .pd-l(24px);
+        .pd-l(16px);
         .fz(12px);
         .lh(20px);
         .c(rgba(255, 255, 255, 0.45));
@@ -332,7 +334,7 @@
       .lh(36px);
       .fz(14px);
       .c(rgba(0, 0, 0, 0.85));
-      .pd-l(24px);
+      .pd-l(16px);
       span {
         .mg-l(8px);
       }
