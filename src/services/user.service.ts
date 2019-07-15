@@ -31,7 +31,7 @@ interface Brand {
   /**
    * 品牌版本 studio 工作室 club 俱乐部
    */
-  version?:string
+  version?: string
 }
 
 interface Shop {
@@ -63,8 +63,14 @@ export class UserService {
   menus$ = new Computed<any[]>(this.menuData$.pipe(pluck('menus')))
   firstMenuUrl$ = new Computed<string>(this.menuData$.pipe(pluck('first_url')))
   favoriteMenu$ = new Computed(this.menuData$.pipe(pluck('favorite')))
-  appMode$ = new State<string>('brand')
   firstInited$ = new State(false)
+  theme$ = new Computed(
+    this.brand$.pipe(
+      map(brand => {
+        return `theme-${brand.version}`
+      })
+    )
+  )
   // 枚举对象
   enums$ = new State({})
   // 禁用的 tooltips

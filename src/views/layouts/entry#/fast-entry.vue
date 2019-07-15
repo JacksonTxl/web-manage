@@ -4,6 +4,7 @@
       v-for="(item, index) in entries"
       :key="index"
       :class="b('item')"
+      @click="goToPage(item.url)"
     >
       <div>
         <img :src="item.icon" :alt="item.text" :class="b('item-icon')">
@@ -23,6 +24,11 @@ export default {
   data() {
     return {
       entries
+    }
+  },
+  methods: {
+    goToPage(url) {
+
     }
   }
 }

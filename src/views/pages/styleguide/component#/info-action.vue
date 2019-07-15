@@ -8,8 +8,8 @@
     <st-info-action
       icon="delete"
       text="删除"
-      color="#ff5e41"
       class="mg-l16"
+      type="2"
     />
   </section>
 </template>

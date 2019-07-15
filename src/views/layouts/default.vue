@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-default theme-a">
+  <div class="layout-default" :class='theme'>
     <aside class="layout-default-sider">
       <!-- 门店维度下 -->
       <div class="layout-default-sider__shop" v-if="isInShop">
@@ -48,7 +48,7 @@
         </template>
         <a-breadcrumb separator="-">
           <a-breadcrumb-item>
-            <router-link :to="homePageRoute">
+            <router-link to="/">
               <st-icon type="home" class="layout-default-body__icon" />
             </router-link>
           </a-breadcrumb-item>
@@ -133,7 +133,8 @@ export default {
     return {
       user: this.userService.user$,
       brand: this.userService.brand$,
-      shop: this.userService.shop$
+      shop: this.userService.shop$,
+      theme: this.userService.theme$
     }
   },
   data() {
@@ -153,9 +154,6 @@ export default {
     },
     pageTitle() {
       return this.$route.meta.title
-    },
-    homePageRoute() {
-      return /^\/brand/.test(this.$route.path) ? '/' : '/shop/dashboard'
     },
     isInShop() {
       return this.shop.id

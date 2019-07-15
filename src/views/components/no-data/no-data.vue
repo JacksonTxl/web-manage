@@ -23,7 +23,7 @@ export default {
   computed: {
     img() {
       return ({
-        '1': 'https://static-s.styd.cn/201811161629/no-data.png'
+        '1': 'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-nodata.png'
       })[this.type]
     }
   }

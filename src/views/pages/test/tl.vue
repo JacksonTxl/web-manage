@@ -119,7 +119,6 @@
 </template>
 
 <script>
-import { ThemeService } from '@/services/theme.service'
 import { TlService } from '@/views/pages/test/tl.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
@@ -134,7 +133,6 @@ import { UserService } from '@/services/user.service'
 export default {
   serviceInject() {
     return {
-      themeService: ThemeService,
       messageService: MessageService,
       tlService: TlService,
       routeService: RouteService,
