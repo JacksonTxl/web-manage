@@ -17,7 +17,15 @@
               type="dashed"
               icon="add"
               block
-              :v-modal-link="modalLink"
+              v-modal-link="{
+                name: 'shop-select',
+                props: {
+                  checked: checkedShopIds
+                },
+                on: {
+                  change: onSelectShopComplete
+                }
+              }"
             >
               添加门店
             </st-button>
@@ -47,7 +55,15 @@
               type="dashed"
               icon="add"
               block
-              :v-modal-link="modalLink"
+              v-modal-link="{
+                name: 'shop-select',
+                props: {
+                  checked: checkedShopIds
+                },
+                on: {
+                  change: onSelectShopComplete
+                }
+              }"
             >
               添加门店
             </st-button>
@@ -102,17 +118,6 @@ export default {
   computed: {
     colspanNum() {
       return this.disabled ? 4 : 5
-    },
-    modalLink() {
-      return {
-        name: 'shop-select',
-        props: {
-          checked: this.checkedShopIds
-        },
-        on: {
-          change: this.onSelectShopComplete
-        }
-      }
     }
   },
   methods: {
