@@ -87,11 +87,11 @@ export class StudioService {
     return this.statApi.getAvg({ version: 'studio' }).pipe(tap(res => {
       this.state$.commit(state => {
         state.avg = [
-          { name: '会员卡客单价', value: res.info.member_card_amount },
-          { name: '储值卡单价', value: res.info.deposit_card_amount },
-          { name: '团课客单价', value: res.info.team_course_amount },
-          { name: '私教课客单价', value: res.info.personal_course_amount },
-          { name: '课程包客单价', value: res.info.package_course_amount }]
+          { name: '会员卡', value: res.info.member_card_amount },
+          { name: '储值卡', value: res.info.deposit_card_amount },
+          { name: '团体课', value: res.info.team_course_amount },
+          { name: '私教课', value: res.info.personal_course_amount },
+          { name: '课程包', value: res.info.package_course_amount }]
       })
     }))
   }
