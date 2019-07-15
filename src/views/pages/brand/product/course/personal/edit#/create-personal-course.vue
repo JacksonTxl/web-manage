@@ -178,7 +178,9 @@ export default {
         image: info.image,
         description: info.description
       })
-      this.fileList = [this.info.image]
+      if (info.image.image_key) {
+        this.fileList = [info.image]
+      }
     },
     getData() {
       console.log('getData', this.query.id)
