@@ -10,13 +10,15 @@
         </a-radio-group>
       </st-form-item>
       <st-form-item label="活动展示">
-        <a-col v-for="(li, index) in list" :key="index" :span="li.span">
+        <div v-for="(li, index) in list" :key="index" :class="'col-'+li.span" :span="li.span">
           <div :class="event('box')">
-            <st-image-upload @change="imageUploadChange($event,index)" width="100%" height="162px" :list='li.image_url?[li]:li.filelist' :sizeLimit="2"
+            <st-image-upload @change="imageUploadChange($event,index)" width="100%" height="85px" :list='li.image_url?[li]:li.filelist' :sizeLimit="2"
               placeholder="添加活动图片" :numLimit="1">
-              <a-icon type="plus-circle" theme="filled" :style="{fontSize:'36px', color: '#9BACB9' }" />
-              <div class="st-image-upload__placeholder">添加活动图片</div>
-              <span :class="event('uploadtip')">大小不超过5M，建议尺寸670*120</span>
+              <a-icon type="plus-circle" theme="filled" :style="{fontSize:'24px',verticalAlign: 'super',marginRight:'8px', color: '#9BACB9' }" />
+              <div :class="event('uploadtip-wrap')">
+                <div class="st-image-upload__placeholder">添加活动图片</div>
+                <span :class="event('uploadtip')">{{li.span===24?'大小不超过5M，建议尺寸670*120':'建议尺寸327*120'}}</span>
+              </div>
             </st-image-upload>
             <st-form-item labelWidth="46px" label="标题">
               <a-input placeholder="选填" v-model="li.module_name" maxlength="20"></a-input>
@@ -27,7 +29,7 @@
               </a-select>
             </st-form-item>
           </div>
-        </a-col>
+        </div>
       </st-form-item>
 
     </st-form>
@@ -93,9 +95,10 @@ export default {
       item.activity_type = selected.activity_type
     },
     imageUploadChange(e, index) {
-      let url = ''
-      if (e.length) url = e[0].image_key
-      this.list[index].image_url = url
+      if (e.length) {
+        this.list[index].image_url = e[0].image_url
+        this.list[index].image_key = e[0].image_key
+      }
     },
     numberChange(e) {
       let num = e.target.value

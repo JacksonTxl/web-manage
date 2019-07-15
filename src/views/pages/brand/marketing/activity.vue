@@ -20,8 +20,8 @@
       </div>
     </div>
     <div :class="activity('btn-group')">
-      <st-button type="primary" :loading="loading.save" @click="saveConfirm(1)">保存</st-button>
-      <st-button type="primary" :loading="loading.save" @click="saveConfirm(2)">提交</st-button>
+      <st-button type="primary" :loading="loading.save" @click="saveConfirm(1)">保存并提交</st-button>
+      <!-- <st-button type="primary" :loading="loading.save" @click="saveConfirm(2)">提交</st-button> -->
     </div>
   </div>
 </template>
@@ -78,7 +78,7 @@ export default {
   methods: {
     saveConfirm(is_save) {
       let content = ''
-      if (is_save === 1) content = '页面已修改，是否保存？'
+      if (is_save === 1) content = '是否确认将当前配置信息发布到小程序？'
       if (is_save === 2) content = '点击发布将提交微信审核，在1-3个工作日后可在手机端查看，您可在完成全部配置后再发布。现在是否确认发布？'
       this.$confirm({
         content: content,

@@ -4,14 +4,18 @@
       <div :class="h5('slider')">
         <swiper :options="sliderOptions">
           <swiper-slide v-for="(li, index) in sliderInfo" :key="index">
-            <img :src="li.image_url | imgFilter">
+            <!-- <img :src="li.image_url | imgFilter"> -->
+            <div :class="h5('slider-img')" :style="{backgroundImage:'url('+li.image_url+')'}"></div>
           </swiper-slide>
         </swiper>
       </div>
       <div :class="h5('header')">
+        <img :class="h5('header-shelter')" :src="logoShelter" />
         <div class="imgBox">
+          <img :src="brand.logo" />
         </div>
-        <div class="title">IFITSTAR星健身(国贸大厦店)</div>
+        <div :class="h5('header-title')">此处显示门店名称</div>
+        <div :class="h5('header-subtitle')">此处显示门店地址</div>
       </div>
       <div :class="h5('action')">
         <div v-for="(li,index) in actionInfo" class="action-li" :key="index">
@@ -19,10 +23,15 @@
           <p>{{li.title}}</p>
         </div>
       </div>
+      <div :class="h5('notice')">
+        <img :class="h5('notice-img')" :src="noticeImg" />
+        <span :class="h5('notice-span')">公告标题或摘要信息…公告标题或摘要信息……</span>
+      </div>
       <div :class="h5('event')">
         <a-row>
           <a-col v-for="(li,index) in eventInfo" class="event-li" :key="index" :span="li.span">
-            <img v-if="li.image_url" :src="li.image_url | imgFilter">
+            <!-- <img v-if="li.image_url" :src="li.image_url | imgFilter"> -->
+            <div v-if="li.image_url" :class="h5('event-img')" :style="{backgroundImage:'url('+li.image_url+')'}"></div>
             <div v-else class="img"></div>
           </a-col>
         </a-row>
@@ -36,7 +45,7 @@
             <img class="call" :src="callcoach">
             <st-t3>{{li.nickname}}</st-t3>
             <p>{{`累计上课${li.course_num}节`}}</p>
-            <p>{{li.min_price}}</p>
+            <p><span :class="h5('coach-price')">{{li.min_price | priceFilter}}</span>{{li.min_price?'/节':''}}</p>
           </swiper-slide>
         </swiper>
       </div>
@@ -102,7 +111,10 @@ import coursepack3 from '@/assets/img/brand/setting/mina/coursepack3.png'
 import coursepack4 from '@/assets/img/brand/setting/mina/coursepack4.png'
 import callcoach from '@/assets/img/brand/setting/mina/callcoach.png'
 import phone from '@/assets/img/brand/setting/mina/phone.png'
+import noticeImg from '@/assets/img/brand/setting/mina/notice.png'
+import logo_shelter from '@/assets/img/brand/setting/mina/logo_shelter.png'
 import { AppConfig } from '@/constants/config'
+import { UserService } from '@/services/user.service'
 export default {
   bem: {
     h5: 'h5-component'
@@ -114,7 +126,8 @@ export default {
   serviceInject() {
     return {
       h5WrapperService: H5WrapperService,
-      config: AppConfig
+      config: AppConfig,
+      userService: UserService
     }
   },
   rxState() {
@@ -125,11 +138,23 @@ export default {
       courseInfo: this.h5WrapperService.courseInfo$,
       menuInfo: this.h5WrapperService.menuInfo$,
       sliderInfo: this.h5WrapperService.sliderInfo$,
-      eventInfo: this.h5WrapperService.eventInfo$
+      eventInfo: this.h5WrapperService.eventInfo$,
+      brand: this.userService.brand$
+    }
+  },
+  filters: {
+    priceFilter(val) {
+      if (val) {
+        return `￥${val}`
+      } else {
+        return '咨询定价'
+      }
     }
   },
   data() {
     return {
+      noticeImg: noticeImg,
+      logoShelter: logo_shelter,
       callcoach: callcoach,
       phone: phone,
       recommend1: [],
@@ -147,7 +172,7 @@ export default {
       },
       coachOption: {
         spaceBetween: 6,
-        slidesPerView: 2.3
+        slidesPerView: 2.4
       }
     }
   },

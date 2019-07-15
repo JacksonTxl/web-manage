@@ -1,5 +1,5 @@
 <template>
-  <div :class="b()" :style="{'padding-top':info.contract_setting.contract_marget + 'mm','zoom': info.contract_setting.contract_page+'%'}">
+  <div :class="b()" :style="{'padding-top':info.contract_setting.contract_marget + 'mm'}">
     <header :class="b('header')">
       <img v-if="info.contract_setting.is_brand_logo" :class="b('brand-logo')" :src="info.logo_url" alt="brand-logo">
       <h1 :class="b('title')">{{info.contract_title}}</h1>

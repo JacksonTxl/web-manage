@@ -28,7 +28,7 @@
         border: 2px solid #8b8da0;
       }
       &__arrrow {
-        .c(#B5B7C2);
+        .c(#b5b7c2);
       }
       &__name {
         .c(#000);
@@ -56,6 +56,13 @@
     &-body {
       &__header {
         .bg(@brand-color);
+        &:after {
+          background-image: linear-gradient(
+            180deg,
+            rgba(17, 21, 47, 0.4) 0%,
+            rgba(26, 30, 63, 0) 100%
+          );
+        }
       }
       &__content {
         &::after {

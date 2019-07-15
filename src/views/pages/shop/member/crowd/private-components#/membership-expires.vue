@@ -3,12 +3,12 @@
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">时间范围</span>
-    <time-day v-model="value.getData.member_expiring"></time-day>
+    <time-day-future v-model="value.getData.member_expiring"></time-day-future>
   </div>
 </template>
 <script>
 import titleInfo from './title-info.vue'
-import timeDay from './time-day'
+import timeDayFuture from './time-day-future'
 export default {
   model: {
     type: 'value',
@@ -19,7 +19,7 @@ export default {
   },
   components: {
     titleInfo,
-    timeDay
+    timeDayFuture
   },
   data() {
     return {
@@ -35,7 +35,6 @@ export default {
       this.value.selectionData = item
     },
     onChange(date, dateString) {
-      console.log(date, dateString)
       this.$emit('dataChangge', this.value)
     }
   },
