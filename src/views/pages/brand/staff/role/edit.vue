@@ -211,7 +211,7 @@ export default {
             department_ids: this.department_ids
           }
           this.editService.update(form).subscribe(res => {
-            this.$router.push({ name: 'brand-staff-info', query: { id: 1 } })
+            this.$router.push({ name: 'brand-staff-role-info', query: { id: this.id } })
           })
         }
       })
