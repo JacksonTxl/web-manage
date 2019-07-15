@@ -20,7 +20,7 @@
               </a-popconfirm> -->
             </div>
             <img :src="(li.head_img.image_url || config.PLACEHOLDER_IMG.AVATAR) | imgFilter">
-            <div style="-webkit-box-orient: vertical;" :class="action('nickname')">{{li.nickname}}</div>
+            <div style="-webkit-box-orient: vertical;" :class="action('nickname')" :title="li.nickname">{{li.nickname}}</div>
           </div>
         </a-col>
         <a-col :span="4">

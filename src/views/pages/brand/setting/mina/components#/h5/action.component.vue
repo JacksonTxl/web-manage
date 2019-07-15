@@ -50,9 +50,10 @@ export default {
   },
   methods: {
     imageUploadChange(e, index) {
-      let url = ''
-      if (e.length) url = e[0].image_key
-      this.list[index].image_url = url
+      if (e.length) {
+        this.list[index].image_url = e[0].image_url
+        this.list[index].image_key = e[0].image_key
+      }
     }
   }
 }
