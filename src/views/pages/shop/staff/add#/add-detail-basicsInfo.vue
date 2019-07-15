@@ -29,8 +29,8 @@
         </st-form-item>
         <st-form-item label="性别" required>
           <a-radio-group name="radioGroup" v-decorator="rules.sex">
-            <a-radio :value="1">男 <st-icon class="sex__male" style="color: #636aec" type="male"></st-icon></a-radio>
-            <a-radio :value="2">女 <st-icon calss="sex__female" style="color: #fa756c" type="female"></st-icon></a-radio>
+            <a-radio :value="2">男 <st-icon class="sex__male" style="color: #636aec" type="male"></st-icon></a-radio>
+            <a-radio :value="1">女 <st-icon calss="sex__female" style="color: #fa756c" type="female"></st-icon></a-radio>
           </a-radio-group>
         </st-form-item>
       </a-col>
