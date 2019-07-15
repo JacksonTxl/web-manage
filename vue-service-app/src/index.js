@@ -269,7 +269,7 @@ class VueServiceApp {
                     p.then(res => {
                       next(res && res.next)
                     }).catch(e => {
-                      next(false)
+                      next()
                       this.onError(e)
                     })
                   }
@@ -279,7 +279,7 @@ class VueServiceApp {
                         next(res && res.next)
                       },
                       e => {
-                        next(false)
+                        next()
                         this.onError(e)
                       }
                     )
@@ -349,7 +349,7 @@ class VueServiceApp {
                     p.then(res => {
                       next(res && res.next)
                     }).catch(e => {
-                      next(false)
+                      next()
                       this.onError(e)
                     })
                   }
@@ -359,7 +359,7 @@ class VueServiceApp {
                         next(res && res.next)
                       },
                       e => {
-                        next(false)
+                        next()
                         this.onError(e)
                       }
                     )

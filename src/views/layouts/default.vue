@@ -8,7 +8,7 @@
             <img
               width="100%"
               height="100%"
-              :src="(shop.logo || DEFAULT_LOGO) | imgFilter({ w: 128, h: 128 })"
+              :src="shop.logo| imgFilter({ w: 128, h: 128 })"
               alt="logo"
             />
             <!-- <i class="layout-default-sider__certification st-icon-certified"></i> -->
@@ -26,7 +26,7 @@
           <img
             width="100%"
             height="100%"
-            :src="(brand.logo || DEFAULT_LOGO) | imgFilter({ w: 96, h: 96 })"
+            :src="brand.logo | imgFilter({ w: 96, h: 96 })"
             alt="logo"
           />
           <!-- <i class="layout-default-sider__certification st-icon-certified"></i> -->
@@ -74,7 +74,7 @@
         </a-dropdown> -->
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__avatar">
-            <img :src="(user.avatar || DEFAULT_AVATAR) | imgFilter({ w: 64, h: 64 })" width="32" height="32" alt="avatar" />
+            <img :src="user.avatar | imgFilter({ w: 64, h: 64 })" width="32" height="32" alt="avatar" />
           </div>
           <div slot="overlay" class="layout-default-body__dropdown">
             <div class="layout-default-body__username">
@@ -120,15 +120,13 @@ import { LoginService } from '../pages/account/login.service'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
 // import FastEntry from './entry#/fast-entry'
-import { AppConfig } from '@/constants/config'
 
 export default {
   serviceInject() {
     return {
       loginService: LoginService,
       userService: UserService,
-      tokenService: TokenService,
-      appConfig: AppConfig
+      tokenService: TokenService
     }
   },
   rxState() {
@@ -142,9 +140,7 @@ export default {
   data() {
     return {
       isShowSwitchShop: false,
-      menuObj: {},
-      DEFAULT_LOGO: this.appConfig.PLACEHOLDER_IMG.LOGO,
-      DEFAULT_AVATAR: this.appConfig.PLACEHOLDER_IMG.DEFAULT_AVATAR
+      menuObj: {}
     }
   },
   computed: {
