@@ -73,11 +73,15 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="性别">
             <a-radio-group v-decorator="rules.sex">
-              <a-radio
+               <a-radio
                 v-for="(item, index) in staffEnums.sex.value"
                 :key="index"
                 :value="+index"
-              >{{item}}</a-radio>
+              >
+                {{item}}
+                <st-icon type="female" v-if="index == 1" style="color:#FF5E41"></st-icon>
+                <st-icon type="male" v-if="index == 2"  style="color:#3F66F6"></st-icon>
+              </a-radio>
             </a-radio-group>
           </st-form-item>
           <st-form-item label="生日">
