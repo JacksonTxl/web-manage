@@ -7,7 +7,7 @@
             :sizeLimit="2"  placeholder="上传照片" :numLimit="1"></st-image-upload>
           <div :class="action('box-title')">
             <a-input placeholder="请输入功能名称" v-model="li.title" maxlength="10"/>
-            <div>跳转：{{link[index]}}</div>
+            <div :class="action('link')" :title="`跳转：${link[index]}`">跳转：{{link[index]}}</div>
           </div>
         </div>
       </a-col>

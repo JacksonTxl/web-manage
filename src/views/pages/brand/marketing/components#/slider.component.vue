@@ -1,9 +1,8 @@
 <template>
   <div :class="slider()">
       <st-form >
-      <draggable tag="a-row" :component-data="{props:{gutter:12}}" v-model="list"  :animation="200">
-        <a-col :span="8" v-for="(li, index) in list" :key="index">
-          <div :class="slider('box')">
+      <draggable :component-data="{props:{gutter:12}}" v-model="list"  :animation="200">
+          <div v-for="(li, index) in list" :key="index" :class="slider('box')">
             <div :class="slider('del')" v-if="li.is_default!==1" @click="delSlider(index)">
               <st-icon type="delete" color="#FF5E41" :class="slider('del-icon')"/>
             </div>
@@ -19,10 +18,9 @@
                 </a-select>
             </st-form-item>
           </div>
-        </a-col>
-        <a-col :span="8" v-if="list.length<5">
+        <div :class="slider('addbox')" :span="8" v-if="list.length<5">
             <div :class="slider('box')">
-          <st-image-upload @change="imageUploadChange" width="100%" height="162px" :list='[]'
+          <st-image-upload @change="imageUploadChange" width="100%" height="137px" :list='[]'
             :sizeLimit="2"  placeholder="添加活动图片" :numLimit="5">
             <a-icon type="plus-circle" theme="filled" :style="{fontSize:'36px', color: '#9BACB9' }" />
             <div class="st-image-upload__placeholder">添加活动图片</div>
@@ -34,7 +32,7 @@
                 </a-select>
             </st-form-item>
             </div>
-        </a-col>
+        </div>
       </draggable>
       </st-form>
   </div>
