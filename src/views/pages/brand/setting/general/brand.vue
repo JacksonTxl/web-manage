@@ -40,10 +40,10 @@
               maxlength="20"
             />
             <span v-else>{{brandInfo.brand_name}}</span>
-            <span v-if="brandInfo.is_authentic" :class="b('certify-status')">
+            <!-- <span v-if="brandInfo.is_authentic" :class="b('certify-status')">
               <i class="st-icon-certified"></i>
               <span :class="b('certify-des')">已认证</span>
-            </span>
+            </span> -->
           </h2>
         </div>
         <div>

@@ -178,9 +178,6 @@ export default {
     },
     onSubmitSuccess() {
       this.show = false
-      this.messageService.success({
-        content: '添加成功'
-      })
       this.$emit('ok')
     }
   }

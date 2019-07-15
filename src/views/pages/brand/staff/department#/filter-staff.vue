@@ -1,10 +1,9 @@
 <template>
-  <div>
-    <shop-select class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onChange"></shop-select>
+  <div class="filter-staff">
+    <shop-select class="filter-staff__item mg-r8" v-model="query.shop_id" @change="onChange"></shop-select>
     <a-select
       class="filter-staff__item mg-r8"
       allowClear
-      style="width: 160px"
       placeholder="全部员工状态"
       v-model="query.work_status"
       @change="onChange"
@@ -16,8 +15,8 @@
       >{{status.name}}</a-select-option>
     </a-select>
     <st-input-search
-      placeholder="请输入员工名称"
-      style="width:226px"
+      class="filter-staff__item"
+      placeholder="搜索员工"
       round="round"
       v-model="query.keyword"
       @search="onChange"></st-input-search>

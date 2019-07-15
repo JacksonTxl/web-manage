@@ -34,9 +34,11 @@ interface StaffEdit extends ServiceRouteConfig {
 export const routeMapConfig = {
   '404'(routeConfig: RouteConfig) {
     routeConfig.meta.layout = 'blank'
+    routeConfig.meta.title = '页面未找到'
   },
   'account-login'(routeConfig: RouteConfig) {
     routeConfig.meta.layout = 'login'
+    routeConfig.meta.title = '登录'
   },
   styleguide(routeConfig: RouteConfig) {
     routeConfig.redirect = { name: 'styleguide-component' }
@@ -314,9 +316,7 @@ export const routeMapConfig = {
   },
   'brand-setting-app-staff'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工'
-    routeConfig.meta.tabs = [
-      'brand-setting-app-staff-skillful'
-    ]
+    routeConfig.meta.tabs = ['brand-setting-app-staff-skillful']
   },
   'brand-setting-app-course-category'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程类型'
@@ -670,22 +670,15 @@ export const routeMapConfig = {
   },
   'shop-product-course-schedule-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课排期'
-    routeConfig.meta.tabs = [
-      'shop-product-course-schedule-team-team',
-      'shop-product-course-schedule-team-team-table'
-    ]
-    routeConfig.redirect = {
-      name: 'shop-product-course-schedule-team-team'
-    }
   },
   'shop-product-course-schedule-team-table'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '团课排期'
   },
   'shop-product-course-schedule-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1排期'
-    routeConfig.redirect = {
-      name: 'shop-product-course-schedule-personal-personal'
-    }
+    // routeConfig.redirect = {
+    //   name: 'shop-product-course-schedule-personal-personal'
+    // }
   },
   'shop-product-course-schedule-personal-calendar'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1排期'
@@ -695,9 +688,9 @@ export const routeMapConfig = {
   },
   'shop-product-course-schedule-personal-team'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教小团课排期'
-    routeConfig.redirect = {
-      name: 'shop-product-course-schedule-personal-team-personal-team'
-    }
+    // routeConfig.redirect = {
+    //   name: 'shop-product-course-schedule-personal-team-personal-team'
+    // }
   },
   'shop-product-course-schedule-personal-team-table'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教小团课排期'

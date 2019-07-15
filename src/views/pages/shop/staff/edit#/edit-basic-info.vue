@@ -239,8 +239,8 @@ export default {
       })
       this.country_code_id = obj.country_code_id
       this.id_type = obj.id_type
-      this.fileList = Array.isArray(obj.image_avatar) ? obj.image_avatar : []
-      this.faceList = Array.isArray(obj.image_face) ? obj.image_face : []
+      this.fileList = Array.isArray(obj.image_avatar) ? obj.image_avatar : [obj.image_avatar]
+      this.faceList = Array.isArray(obj.image_face) ? obj.image_face : [obj.image_face]
     }
   }
 }

@@ -45,7 +45,7 @@ export const columns = () => {
       title: '操作',
       key: 'action',
       fixed: 'right',
-      width: 120,
+      width: 140,
       scopedSlots: { customRender: 'action' }
     }
   ]
