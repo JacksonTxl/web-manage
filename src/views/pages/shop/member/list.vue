@@ -223,8 +223,8 @@ export default {
     },
     sourceList() {
       let list = [{ value: -1, label: '全部' }]
-      if (!this.sourceRegisterList) return list
-      Object.entries(this.sourceRegisterList).forEach(o => {
+      if (!this.memberEnums.source_channel) return list
+      Object.entries(this.memberEnums.source_channel.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
