@@ -308,7 +308,7 @@ export default {
     getReserve() {
       const ss = this.teamScheduleReserveService
       ss.getInfo(this.id).pipe(
-        tap(state => {
+        switchMap(state => {
           this.info = state.info
           this.list = state.list
           return this.teamScheduleCommonService.getUnusedSeatList({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })
