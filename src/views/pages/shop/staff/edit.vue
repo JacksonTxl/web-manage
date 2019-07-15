@@ -21,7 +21,7 @@
       @gonext="gonext"/>
     <edit-detailed-info
       v-else-if="currentIndex == 1"
-      :isShowCoach="isShowCoach"
+      :isPrivateCoach="isPrivateCoach"
       :enums="staffEnums"
       :data="staffInfo"
       @updateStaffInfo="updateStaffInfo"
