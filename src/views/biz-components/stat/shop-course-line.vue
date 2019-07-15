@@ -117,7 +117,7 @@ export default {
         position: 'top-left',
         useHtml: true,
         offsetY: -16,
-        offsetX: -22,
+        // offsetX: -22,
         textStyle: {
           fill: '#3E4D5C'
         },
@@ -158,7 +158,7 @@ export default {
 .stat-shop-course-line {
   .g2-legend-list {
     text-align: left !important;
-    padding: 0 48px !important;
+    // padding: 0 48px !important;
   }
   .g2-legend-list {
     user-select: none;
@@ -173,7 +173,8 @@ export default {
     }
   }
   .g2-legend-list-item{
-    width:120px;
+    width: 130px;
+    margin-right: 0!important;
   }
   .g2-legend-marker {
     box-sizing: border-box;

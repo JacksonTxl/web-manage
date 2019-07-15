@@ -6,7 +6,7 @@
     </div>
 
     <div class="text">
-      <st-t3>{{title}}</st-t3>
+      <st-t4 class="t4">{{title}}</st-t4>
       <p class="detail" :title="sub">{{sub}}</p>
     </div>
     </a>

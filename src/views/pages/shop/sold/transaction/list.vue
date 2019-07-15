@@ -1,17 +1,17 @@
 <template>
   <st-panel app initial :class="basic()">
     <div slot="title" :class="sale('search')">
-      <st-input-search
-      v-model="query.product_name"
-      @search="onSearch"
-      placeholder="请输入商品名查找"
-      style="width: 290px;"/>
       <a-select :class="sale('select')" v-model="query.product_type" @change="onSearch" style="width: 160px">
         <a-select-option
         v-for="(item,index) in productType"
         :key="index"
         :value="item.value">{{item.label}}</a-select-option>
       </a-select>
+      <st-input-search
+      v-model="query.product_name"
+      @search="onSearch"
+      placeholder="请输入商品名查找"
+      style="width: 290px;"/>
     </div>
     <div :class="basic('content')">
       <st-table

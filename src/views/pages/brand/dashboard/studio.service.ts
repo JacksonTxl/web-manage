@@ -55,10 +55,10 @@ export class StudioService {
         const data = res.info
         const chartData: any = []
 
-        data.visit_chart.forEach((item: any, idx: number) => {
+        data.register_chart.forEach((item: any, idx: number) => {
           const chartItem = {
             date: item.date,
-            访问用户: item.num,
+            // 访问用户: item.num,
             注册用户: data.register_chart[idx].num,
             消费用户: data.consume_chart[idx].num,
             购买私教: data.personal_chart[idx].num,
@@ -74,7 +74,7 @@ export class StudioService {
     return this.statApi.getUserFunnel({ version: 'studio' }).pipe(tap(res => {
       this.state$.commit(state => {
         state.userFunnel = [
-          { name: '访问用户', value: res.info.visit },
+          // { name: '访问用户', value: res.info.visit },
           { name: '注册用户', value: res.info.register },
           { name: '消费用户', value: res.info.consume },
           { name: '消课人数', value: res.info.checkin },
@@ -102,10 +102,10 @@ export class StudioService {
         const data = res.info
         const chartData: any = []
 
-        data.visit_chart.forEach((item: any, idx: number) => {
+        data.register_chart.forEach((item: any, idx: number) => {
           const chartItem = {
             date: item.date,
-            浏览用户: item.num,
+            // 浏览用户: item.num,
             注册用户: data.register_chart[idx].num,
             消费用户: data.consume_chart[idx].num,
             购买私教: data.personal_chart[idx].num
@@ -121,7 +121,7 @@ export class StudioService {
     return this.statApi.getMarketingFunnel({ version: 'studio' }).pipe(tap(res => {
       this.state$.commit(state => {
         state.marketingFunnel = [
-          { name: '浏览用户', value: res.info.visit },
+          // { name: '浏览用户', value: res.info.visit },
           { name: '注册用户', value: res.info.register },
           { name: '消费用户', value: res.info.consume },
           { name: '购买私教', value: res.info.personal }]

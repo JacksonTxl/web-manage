@@ -175,7 +175,7 @@ export default {
 .st-shop-revenue-line {
   .g2-legend-list {
     text-align: left !important;
-    padding: 0 48px !important;
+    // padding: 0 48px !important;
   }
   .g2-legend-list {
     user-select: none;
@@ -183,7 +183,7 @@ export default {
   .g2-legend-list-item {
     width: 80px;
     margin-right: 0 !important;
-    margin-bottom: 16px !important;
+    margin-bottom: 13px !important;
   }
   .g2-legend-list-item.unChecked {
     .g2-legend-marker {
