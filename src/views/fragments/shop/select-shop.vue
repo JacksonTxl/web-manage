@@ -7,25 +7,17 @@
           <th>市</th>
           <th>区</th>
           <th>门店名称</th>
-          <th>操作</th>
+          <th v-if="!disabled">操作</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td colspan="5" class="st-form-table__add">
+      <tbody v-if="list.length">
+        <tr v-if="!disabled">
+          <td :colspan="colspanNum" class="st-form-table__add">
             <st-button
               type="dashed"
               icon="add"
               block
-              v-modal-link="{
-                name: 'shop-select',
-                props: {
-                  checked: checkedShopIds
-                },
-                on: {
-                  change: onSelectShopComplete
-                }
-              }"
+              :v-modal-link="modalLink"
             >
               添加门店
             </st-button>
@@ -39,12 +31,31 @@
           <td>{{item.city}}</td>
           <td>{{item.district}}</td>
           <td>{{item.shop_name}}</td>
-          <td>
+          <td v-if="!disabled">
             <a
               @click="delShopTableRecord(item.shop_id)"
             >
               删除
             </a>
+          </td>
+        </tr>
+      </tbody>
+      <tbody v-else>
+        <tr v-if="!disabled">
+          <td :colspan="colspanNum" class="st-form-table__add">
+            <st-button
+              type="dashed"
+              icon="add"
+              block
+              :v-modal-link="modalLink"
+            >
+              添加门店
+            </st-button>
+          </td>
+        </tr>
+        <tr>
+          <td :colspan="colspanNum">
+            <st-no-data/>
           </td>
         </tr>
       </tbody>
@@ -72,6 +83,10 @@ export default {
       default() {
         return []
       }
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -83,6 +98,22 @@ export default {
   created() {
     this.checkedShopIds = this.shopIds
     this.getShops(this.shopIds)
+  },
+  computed: {
+    colspanNum() {
+      return this.disabled ? 4 : 5
+    },
+    modalLink() {
+      return {
+        name: 'shop-select',
+        props: {
+          checked: this.checkedShopIds
+        },
+        on: {
+          change: this.onSelectShopComplete
+        }
+      }
+    }
   },
   methods: {
     onSelectShopComplete(shopIds) {
