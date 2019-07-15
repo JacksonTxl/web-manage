@@ -26,7 +26,7 @@ export class AnalysisService extends Store<AnalysisInfoState> {
   }
   // 获取列表
   getListInfo(id: string) {
-    return this.crowdAPI.getCrowdBrandAnalysis(id).pipe(
+    return this.crowdAPI.getCrowdShopAnalysis(id).pipe(
       tap(res => {
         this.SET_ANALYSIS_INFO(res)
       })

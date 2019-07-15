@@ -79,8 +79,8 @@
         </st-form-item>
         <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
-            <template v-for="(item,key) in enums.nature_work.value">
-              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+            <template v-for="(item,index) in nature_work_option">
+              <a-select-option :key="index" :value="item.value">{{ item.label }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
@@ -158,6 +158,16 @@ export default {
       id_type: '',
       country_code_id: '',
       value: '' // 部门选择
+    }
+  },
+  computed: {
+    nature_work_option() {
+      let list = []
+      if (!this.enums.nature_work) return list
+      Object.entries(this.enums.nature_work.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return [{ value: 0, label: '未填写' }, ...list]
     }
   },
   components: {

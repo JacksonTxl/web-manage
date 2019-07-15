@@ -4,7 +4,7 @@
       <div :class="reception('form-block-item')" v-for="(item,index) in summaryList" :key="index">
         <div :class="reception('form-block-detail')">
           <div :class="reception('form-block-number')">
-            <p>{{item.label}}（{{item.unit}}）</p>
+            <p>{{item.label}} ({{item.unit}})</p>
             <ICountUp v-if="auth[item.type]" class="number-up" :endVal="summaryInfo[item.type].num"/>
             <span v-else>- -</span>
             <!-- <p>{{summaryInfo[item.type].num}}</p> -->
@@ -229,8 +229,22 @@
                     </template>
                     <span class="operation-name cursor-pointer" v-else>无</span>
                     <p>
-                      <span class="fw-600">{{item.subject}}</span>
-                      <span>{{item.content}}</span>
+                      <span class="fw-600">
+                        <a-tooltip  placement="topLeft" overlayClassName="st-light-tooltip">
+                          <template slot='title'>
+                            {{item.subject}}
+                          </template>
+                          <span>{{item.subject}}</span>
+                        </a-tooltip>
+                      </span>
+                      <span>
+                        <a-tooltip  placement="topLeft" overlayClassName="st-light-tooltip">
+                          <template slot='title'>
+                            {{item.content}}
+                          </template>
+                          <span>{{item.content}}</span>
+                        </a-tooltip>
+                      </span>
                     </p>
                   </div>
                   <div class="operation-time">
@@ -249,12 +263,26 @@
                   <span class="operation-name" v-if="item.nickname">{{item.nickname.substr(0,2)}}</span>
                   <span class="operation-name" v-else>无</span>
                   <p>
-                    <span>{{item.subject}}</span>
-                    <span>{{item.content}}</span>
+                    <span class="fw-600">
+                      <a-tooltip  placement="topLeft" overlayClassName="st-light-tooltip">
+                        <template slot='title'>
+                          {{item.subject}}
+                        </template>
+                        <span>{{item.subject}}</span>
+                      </a-tooltip>
+                    </span>
+                    <span>
+                      <a-tooltip  placement="topLeft" overlayClassName="st-light-tooltip">
+                        <template slot='title'>
+                          {{item.content}}
+                        </template>
+                        <span>{{item.content}}</span>
+                      </a-tooltip>
+                    </span>
                   </p>
                 </div>
                 <div class="operation-time">
-                  <span>{{item.updated_time}}</span>
+                  <span class="font-number">{{item.updated_time}}</span>
                   <span class="finish-status">已完成</span>
                 </div>
               </li>

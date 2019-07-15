@@ -150,9 +150,11 @@
           </st-form-item>
         </a-col>
       </a-row>
-      <a-row :gutter="8" type="flex" justify="center" align="middle">
-        <a-col>
-          <st-button type="primary" @click="onHandleSubmit" :loading="addLoading.save">提交</st-button>
+      <a-row :gutter="8">
+        <a-col :lg="10" :xs="22" :offset="1">
+          <st-form-item label=" ">
+            <st-button type="primary" @click="onHandleSubmit" :loading="addLoading.save">提交</st-button>
+          </st-form-item>
         </a-col>
       </a-row>
     </st-form>

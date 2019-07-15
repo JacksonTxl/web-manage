@@ -1,13 +1,13 @@
 .page-shop-reception {
   &__form-block {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: space-between;
     &-item {
       display: flex;
       flex: 1;
       flex-direction: column;
-      min-width: 222.4px;
+      min-width: 174px;
       box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
       .bg(@white);
       &+&{
@@ -45,11 +45,15 @@
       width: 50%;
       min-width: 80px;
       height: 60px;
+      transition: .5s .5s all;
     }
     &-nonedata {
       position: relative;
       width: 50%;
       min-width: 80px;
+      height: 64px;
+      border-top: 1px solid @divider;
+      transition: .5s .5s all;
       &::before,&::after {
         content: '';
         position: absolute;
@@ -75,7 +79,6 @@
   }
   &__operation-list {
     display: flex;
-    min-width: 1192px;
     padding: 32px 0;
     align-items: center;
     justify-content: space-evenly;
@@ -125,7 +128,6 @@
   }
   &__member {
     flex: 495;
-    min-width: 495px;
     margin-right: 24px;
     height: 517px;
     box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
@@ -147,7 +149,6 @@
         left: 0;
       }
       &-select {
-        min-width: 376px;
         flex: 1;
         margin-right: 12px;
         .ant-select-selection {
@@ -212,7 +213,7 @@
   }
   &__todoist {
     flex: 674;
-    min-width: 674px;
+    width: 57%;
     height: 517px;
     box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
     .todoist-tabs {
@@ -242,8 +243,7 @@
         align-content: flex-start;
         height: 372px;
         >li {
-          flex: 1;
-          min-width: 307px;
+          width: 48%;
           height: 116px;
           padding: 16px;
           .bg(@white);
@@ -321,8 +321,7 @@
       flex-wrap: wrap;
       align-content: flex-start;
       >li {
-        flex: 1;
-        min-width: 307px;
+        width: 48%;
         height: 116px;
         padding: 16px;
         .bg(@white);
@@ -406,6 +405,45 @@
   }
   .fw-600 {
     font-weight: 600;
+  }
+  @media screen and (max-width:1440px){ 
+    &__form-block {
+      &-detail {
+        display: block;
+      }
+      &-number {
+        margin-bottom: 8px;
+      }
+      &-chart {
+        width: 100%;
+      }
+      &-nonedata {
+        width: 100%;
+      }
+    }
+    &__member {
+      min-width: 380px;
+    }
+    &__todoist {
+      &-to-do {
+        &-list {
+          >li { 
+            .operation-time {
+              padding-left: 0;
+            }
+          }
+        }
+      }
+      &-finish {
+        &-list {
+          >li { 
+            .operation-time {
+              padding-left: 0;
+            }
+          }
+        }
+      }
+    }
   }
 }
 

@@ -20,7 +20,7 @@
       </a-cascader>
       <div :class="map('search-input')">
         <a-dropdown :trigger="['click']" v-model="dropdownVisible">
-          <a-input-search @input="searchInput" :class="{error:!latlngIsOk}" placeholder="请输入街道、小区或商圈名称" v-model="searchText" @search="onSearch"/>
+          <a-input-search @change="onChange" @input="searchInput" :class="{error:!latlngIsOk}" placeholder="请输入街道、小区或商圈名称" v-model="searchText" @search="onSearch"/>
           <ul slot="overlay" :class="map('search-menu')" v-scrollBar='{stopPropagation:true}'>
             <li :class="map('search-faild')" v-if="!poisList.length">无结果</li>
             <template v-if="poisList.length">
@@ -297,6 +297,11 @@ export default {
       this.dropdownVisible = true
       this.searchServiceObject.setLocation(this.selectCity)
       this.searchServiceObject.search(data)
+    },
+    onChange(data) {
+      this.dropdownVisible = true
+      this.searchServiceObject.setLocation(this.selectCity)
+      this.searchServiceObject.search(data.target.value)
     },
     selectLocation(data) {
       this.dropdownVisible = false

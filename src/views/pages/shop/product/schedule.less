@@ -48,11 +48,7 @@
       .c(#9BACB9)
     }
   }
-  .fc-button-primary:not(:disabled):active, .fc-button-primary:not(:disabled).fc-button-active{
-    background-color: #096dd9;
-    border-color: #096dd9;
-
-  }
+  
   .fc-button-primary:not(:disabled):active:focus, .fc-button-primary:not(:disabled).fc-button-active:focus {
     box-shadow: 0 0 0 0.2rem rgba(51, 68, 227, 0.5);
 }
@@ -184,5 +180,17 @@
   .fc-button .fc-icon {
     vertical-align: baseline !important;
     font-size: 1.5em !important;
+  }
+  .fc-button-primary:not(:disabled):active, .fc-button-primary:not(:disabled).fc-button-active{
+    background-color: #096dd9;
+    border-color: #096dd9;
+  }
+  .fc-header-toolbar .fc-button-primary:not(:disabled).fc-button-active:focus {
+    box-shadow: 0
+  }
+  .fc-right .fc-button-primary:not(:disabled).fc-button-active {
+    background:rgba(247,249,252,1);
+    border-radius:4px 0px 0px 4px;
+    border:1px solid rgba(205,212,223,1);
   }
 }
