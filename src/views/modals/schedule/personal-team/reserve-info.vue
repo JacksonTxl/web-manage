@@ -10,20 +10,20 @@
     <a-row :gutter="24" class="modal-reserved-info">
       <a-col :lg="8">
         <st-info>
-          <st-info-item label="上课教练">{{info.coach_name}}</st-info-item>
-          <st-info-item label="上课时间">{{info.start_time}}</st-info-item>
+          <st-info-item label="上课教练">{{reserveInfo.coach_name}}</st-info-item>
+          <st-info-item label="上课时间">{{reserveInfo.start_time}}</st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
         <st-info>
-          <st-info-item label="课程名称">{{info.course_name}}</st-info-item>
-          <st-info-item label="最大人数">{{info.limit_num}}</st-info-item>
+          <st-info-item label="课程名称">{{reserveInfo.course_name}}</st-info-item>
+          <st-info-item label="最大人数">{{reserveInfo.limit_num}}</st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
         <st-info>
-          <st-info-item label="上课日期">{{info.start_date}}</st-info-item>
-          <st-info-item label="预约人数">{{info.reserved_num}}</st-info-item>
+          <st-info-item label="上课日期">{{reserveInfo.start_date}}</st-info-item>
+          <st-info-item label="预约人数">{{reserveInfo.reserved_num}}</st-info-item>
         </st-info>
       </a-col>
     </a-row>
@@ -33,7 +33,7 @@
           <th v-for="col in columns" :key="col.dataIndex">{{col.title}}</th>
         </tr>
       </thead>
-      <tbody v-if="isAdd">
+      <tbody v-if="!loading.add">
         <tr>
           <td class="st-form-table__add">
             <a-select
@@ -141,12 +141,15 @@ export default {
   },
   rxState() {
     const commonService = this.commonService
+    console.log(this.reserveService)
     return {
+      loading: this.reserveService.loading$,
       memberOptions: commonService.memberOptions$,
       consumeOptions: commonService.consumeOptions$,
       reserveList: this.reserveService.reserveList$,
+      reserveInfo: this.reserveService.reserveInfo$,
       auth: this.reserveService.auth$,
-      infoAuth: this.reserveService.infoAuth$
+      infoAuth: this.reserveService.infoAuth$ || {}
     }
   },
   props: {
@@ -154,7 +157,6 @@ export default {
   },
   data() {
     return {
-      isAdd: true,
       memberId: '',
       consumeType: '',
       consumeId: '',
@@ -185,10 +187,10 @@ export default {
   },
   computed: {
     courseId() {
-      return this.info.course_id
+      return this.reserveInfo.course_id
     },
     scheduleId() {
-      return this.info.id
+      return this.reserveInfo.id
     }
   },
   created() {
@@ -219,7 +221,6 @@ export default {
         consume_type: this.consumeType,
         consume_id: this.consumeId
       }
-      this.isAdd = false
       this.reserveService.add(form).subscribe(this.onAddReserveSuccess)
     },
     cancelReserve(id) {
@@ -259,18 +260,15 @@ export default {
       this.$modalRouter.push({
         name: 'schedule-personal-team-edit',
         props: {
-          id: this.info.id
+          id: this.reserveInfo.id
         }
       })
     },
     getReserveInfo() {
-      this.reserveService.getInfo(this.id).subscribe(res => {
-        this.info = res.info
-      })
+      this.reserveService.getInfo(this.id).subscribe()
     },
     onAddReserveSuccess() {
       this.getReserveInfo()
-      this.isAdd = true
     },
     onCancelReserveSuccess() {
       this.getReserveInfo()
