@@ -69,7 +69,7 @@
                     :key="index"
                   >{{item}}</a-radio>
                 </a-radio-group>
-                <select-shop v-if="showShopRange == '2'" @change="onSelectShop" :shopIds="shopIds"></select-shop>
+                <select-shop v-if="showShopRange == '2'" @change="onSelectShop" :shopIds="shopIds" :disabled="isEditMode"></select-shop>
               </st-form-item>
               <st-form-item label="使用条件" required>
                 <a-radio-group

@@ -475,7 +475,18 @@ export class StaffApi extends Api {
   updatepermission(id: Number, params: PermissionInput) {
     return this.http.put(`/v1/staff/brand/permission/${id}`, { params })
   }
+  /**
+   * 修改人脸
+   */
+  updateUserFace(id: number, params: EditFaceParams) {
+    return this.http.put(`/v1/staff/face/${id}`, { params })
+  }
 }
+export interface EditFaceParams{
+  image_id:number
+  image_key:string
+}
+
 export interface PermissionInput {
   is_permission: number
 }

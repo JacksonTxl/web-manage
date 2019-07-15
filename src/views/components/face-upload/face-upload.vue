@@ -130,10 +130,12 @@ export default {
     }
   },
   watch: {
-    list(newList) {
-      console.log('newList')
-      this.isShowFaceUpload = this.list.length < this.numLimit
-      this.fileList = this.list
+    list: {
+      handler(newList) {
+        this.isShowFaceUpload = this.list.length < this.numLimit
+        this.fileList = this.list
+      },
+      immediate: true
     }
   },
   methods: {
