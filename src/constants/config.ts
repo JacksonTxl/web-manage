@@ -1,5 +1,3 @@
-import { getAppEnv } from '@/utils/env.ts'
-
 export class AppConfig {
   /**
    * token名称
@@ -22,11 +20,9 @@ export class AppConfig {
    * 图片基础路径
    */
   get HOST_IMAGE() {
-    const env = getAppEnv()
-    const HOSTS: any = {
-      dev: '//styd-saas-test.oss-cn-shanghai.aliyuncs.com'
-    }
-    return HOSTS[env] || ''
+    return this.HOST_IS_PROD
+      ? '//oss-cn-shanghai-internal.aliyuncs.com'
+      : '//styd-saas-test.oss-cn-shanghai.aliyuncs.com'
   }
 
   /**
