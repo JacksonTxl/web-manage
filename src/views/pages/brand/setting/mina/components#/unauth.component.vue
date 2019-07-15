@@ -10,8 +10,8 @@
       <div :class="b('shadowbox')">
         <img src="~@/assets/img/icon_weapp_grey.png" />
         <st-t4>还没有小程序账号</st-t4>
-        <p>点击下方按钮前往微信公众平台注册（目前仅支持「企业」类型主体）；注册成功后授权给三体云动即可。<a>查看注册流程</a></p>
-        <st-button>去官方注册</st-button>
+        <p>点击下方按钮前往微信公众平台注册（目前仅支持「企业」类型主体）；注册成功后授权给三体云动即可。</p>
+        <st-button type="secondary" @click="onReg">去官方注册</st-button>
       </div>
     </st-panel>
   </div>
@@ -28,6 +28,9 @@ export default {
   methods: {
     doAuth() {
       window.location.href = this.url
+    },
+    onReg() {
+      window.location.href = 'https://mp.weixin.qq.com/'
     }
   }
 }
