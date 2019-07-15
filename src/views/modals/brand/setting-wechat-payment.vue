@@ -1,4 +1,5 @@
 <template>
+<!-- 这个文件废弃了 -->
   <st-modal
     title="微信支付配置"
     size="small"

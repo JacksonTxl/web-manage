@@ -241,23 +241,27 @@ export default {
           'line-height:' + (cellSize.heigth - 4) + 'px' // center text vertically
         ].join(';')
         let hoverHtml = '<div class="hover-button" style="' + hoverCss + '">+</div>'
+        let timer = ''
         $('.fc-widget-content').hover(function() {
-          if (!$(this).html()) {
-            for (let i = 0; i < 7; i++) {
-              $(this).append('<td class="temp-cell" style="' + tmpCellCss + '"></td>')
-            }
+          timer = setTimeout(() => {
+            if (!$(this).html()) {
+              for (let i = 0; i < 7; i++) {
+                $(this).append('<td class="temp-cell" style="' + tmpCellCss + '"></td>')
+              }
 
-            $(this).children('td').each(function() {
-              $(this).hover(function() {
-                $(this).html(htmlStr)
-              }, function() {
-                $(this).html('')
+              $(this).children('td').each(function() {
+                $(this).hover(function() {
+                  $(this).html(htmlStr)
+                }, function() {
+                  $(this).html('')
+                })
               })
-            })
-          }
+            }
+          }, 50)
         }, function() {
           $(this).children('.temp-cell').remove()
         })
+        clearTimeout(timer)
       })
     },
     toggleWeekends() {
