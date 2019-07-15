@@ -13,7 +13,7 @@
           </a-col>
           <a-col :lg="5" style="position:relative;left:-16px;">
             <st-help-tooltip id="TSNM001"></st-help-tooltip>
-            新增入会用户(人)
+            新增入会(人)
             <span :class="[bCount('topIcon'), 'user']"><img :src="topIconUser" /></span>
           </a-col>
           <a-col :lg="5">

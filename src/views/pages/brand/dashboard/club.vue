@@ -65,7 +65,7 @@
                   <funnel-vertical  :data="marketingFunnel"></funnel-vertical>
                 </div>
                 <div class="revenue-area">
-                  <brand-revenue-area  :fields="['浏览用户','注册用户','消费用户','办理入会']" class="user-chart-box__item" :data="marketing"></brand-revenue-area>
+                  <brand-revenue-area  :fields="['注册用户','消费用户','办理入会']" class="user-chart-box__item" :data="marketing"></brand-revenue-area>
                 </div>
               </div>
             </template>
