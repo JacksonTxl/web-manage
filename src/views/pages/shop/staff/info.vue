@@ -1,8 +1,8 @@
 <template>
   <div class="pages-staffdata-container">
     <st-panel class="pages-staffdata-header">
-      <a-row :gutter="8">
-        <a-col :lg="16" class="pages-staffdata-header-detail">
+      <a-row>
+        <a-col :span="15" class="pages-staffdata-header-detail">
           <div class="staff-avatar-container st-preview-item">
             <img :src="image_avatar_url">
             <div class="staff-avatar-tip">{{ info.work_status.name }}/{{ info.nature_work.name }}</div>
@@ -24,7 +24,7 @@
             </div>
           </div>
         </a-col>
-        <a-col :lg="7" :offset="1" style="text-align: right;" v-if="info.work_status.name === '在职'">
+        <a-col :span="9" style="text-align: right;" v-if="info.work_status.name === '在职'">
           <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|edit']" type="primary" @click="editStaffInfo">编辑资料</st-button>
           <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|bind_card']" v-modal-link="{ name: 'shop-staff-bind-card', props: {staff: info} }">绑实体卡</st-button>
           <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|rebind_card']" v-modal-link="{ name: 'shop-staff-bind-card', props: {staff: info} }">重绑实体卡</st-button>
