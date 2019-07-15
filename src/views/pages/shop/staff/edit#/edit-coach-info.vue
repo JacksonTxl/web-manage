@@ -116,7 +116,7 @@ export default {
     },
     setData(obj) {
       this.form.setFieldsValue({
-        employment_time: moment(obj.employment_time),
+        employment_time: moment(obj.employment_time) || undefined,
         introduction: obj.introduction,
         specialty_id: obj.specialty_id
       })

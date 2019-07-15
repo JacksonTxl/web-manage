@@ -243,7 +243,7 @@ export default {
         id_number: obj.id_number,
         nature_work: obj.nature_work,
         role_id: obj.role_id,
-        entry_date: obj.entry_date ? moment(obj.entry_date) : '',
+        entry_date: obj.entry_date ? moment(obj.entry_date) : undefined,
         mail: obj.mail,
         shop_id: obj.shop_id
       })

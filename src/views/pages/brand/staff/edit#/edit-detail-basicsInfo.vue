@@ -233,7 +233,7 @@ export default {
         department_id: String(obj.department_id), // 部门
         role_id: obj.role_id, // 角色
         shop_id: obj.shop_id, // 所属门店
-        entry_date: obj.entry_date ? moment(obj.entry_date) : moment(), // 入职时间
+        entry_date: obj.entry_date ? moment(obj.entry_date) : undefined, // 入职时间
         mail: obj.mail // 邮箱
       })
       this.country_code_id = obj.country_code_id
