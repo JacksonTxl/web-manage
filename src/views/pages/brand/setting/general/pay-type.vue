@@ -7,39 +7,20 @@
           <st-t4 class="mg-t4">{{item.name}}</st-t4>
           <div class="st-des mg-t4">{{item.content}}</div>
         </a-col>
-        <a-col :span="4" class="ta-r" v-if="auth.edit && index!==0">
-          <a-switch :checked="!!info[item.key].is_enable" @change="onSwitchChange(item.key)"/>
+        <a-col :span="4" class="ta-r">
+          <template
+            v-if="index === 0"
+          >
+            <span v-if="info[item.key].is_setting" class="color-primary">已配置</span>
+            <span v-else>未配置</span>
+          </template>
+          <a-switch
+            v-if="auth.edit && index!==0"
+            :checked="!!info[item.key].is_enable"
+            @change="onSwitchChange(item.key)"
+          />
         </a-col>
       </a-row>
-      <st-container v-if="index===0" type="2" class="bg-gray mg-t16">
-        <a-row>
-          <a-col :span="20">
-            <a-row :gutter="24">
-              <a-col :span="7">
-                微信商户名称：{{wechatInfo.wechat_account_name}}
-              </a-col>
-              <a-col :span="7">
-                微信商户号：{{wechatInfo.wechat_account_num}}
-              </a-col>
-              <a-col :span="10">
-                API密钥：{{wechatInfo.wechat_api_key}}
-              </a-col>
-            </a-row>
-          </a-col>
-          <a-col :span="4" class="ta-r" v-if="auth.edit">
-            <st-info-action
-              icon="edit"
-              text="编辑"
-              v-modal-link="{
-                name:'brand-setting-wechat-payment',
-                on: {
-                  change: onListChange
-                }
-              }"
-            />
-          </a-col>
-        </a-row>
-      </st-container>
       <st-hr></st-hr>
     </div>
   </st-panel>
@@ -89,7 +70,6 @@ export default {
     return {
       loading: payTypeService.loading$,
       info: payTypeService.info$,
-      wechatInfo: payTypeService.wechatPaymentInfo$,
       auth: payTypeService.auth$
     }
   },

@@ -7,7 +7,7 @@
         <basic-data v-model="selectData" :flag="flag"></basic-data>
       </div>
       <div class="shop-member-crowd-add__right">
-        <st-t2> {{$route.query.id ? '编辑人群' : '新增人群'}}</st-t2>
+        <st-t2 style="margin-bottom: 24px;"> {{$route.query.id ? '编辑人群' : '新增人群'}}</st-t2>
         <st-form :form="form" @submit="save" style="height:72px" labelWidth="75px">
           <st-form-item label="人群名称" required>
             <a-input
@@ -26,7 +26,7 @@
         <div class="shop-member-crowd-add__right-condition">
           <div>创建的人群 同时满足 以下条件</div>
 
-          <div class="shop-member-crowd-add__right-tip">已选 {{selectData.arrData.length}}/5 个条件</div>
+          <div class="shop-member-crowd-add__right-tip">已选 <label>{{selectData.arrData.length}}/5</label> 个条件</div>
         </div>
         <template v-for="(item,index) in selectData.arrData">
           <div
