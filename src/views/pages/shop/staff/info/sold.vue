@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-row class="mg-t16">
+    <a-row>
       <a-col :lg="24">
         <a-col :lg="18">
           <a-select style="width: 160px;" :defaultValue="-1" placeholder="请选择预约状态" @change="onSingleSearch('schedule_status', $event)">
