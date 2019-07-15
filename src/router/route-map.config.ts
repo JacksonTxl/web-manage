@@ -840,6 +840,7 @@ export const routeMapConfig = {
   },
   'brand-marketing-plugin-coupon-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增优惠券'
+    routeConfig.meta.parentId = 'brand-marketing-plugin-coupon-list'
   },
   'brand-marketing-plugin-invitation-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '邀请有礼'
@@ -856,5 +857,9 @@ export const routeMapConfig = {
   },
   'brand-marketing-plugin-crowd-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '精细化人群'
+  },
+  'brand-marketing-plugin-crowd-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新建人群'
+    routeConfig.meta.parentId = 'brand-marketing-plugin-crowd-index'
   }
 }

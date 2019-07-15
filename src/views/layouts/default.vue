@@ -146,10 +146,10 @@ export default {
   computed: {
     breadCrumbs() {
       const menuBreadCrumb = this.getSiderMenuBreadCrumb()
-      // const parentBreadCrumb = this.getParentBreadCrumb()
+      const parentBreadCrumb = this.getParentBreadCrumb()
       return [
-        ...menuBreadCrumb
-        // , ...parentBreadCrumb
+        ...menuBreadCrumb,
+        ...parentBreadCrumb
       ]
     },
     pageTitle() {
@@ -172,9 +172,13 @@ export default {
     },
     getParentBreadCrumb() {
       const parentId = this.$route.meta.parentId
-      const parentRoute = this.$router.resolve({
-        name: parentId
-      }).resolved
+      let parentRoute
+      if (parentId) {
+        parentRoute = this.$router.resolve({
+          name: parentId
+        }).resolved
+      }
+      console.log('parent', parentId, this.$route.meta.parentId)
       if (parentRoute) {
         const name = parentRoute.name
         const title = parentRoute.meta.title
