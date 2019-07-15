@@ -2,7 +2,7 @@
   <div>
     <a-row class="mg-t16">
       <a-col :lg="24">
-        <a-col :lg="16">
+        <a-col :lg="18">
           <shop-select style="width: 160px" v-model="query.shop_id" @change="onSingleSearch('shop_id', $event)"></shop-select>
           <a-select style="width: 160px;margin-left:12px" :defaultValue="-1" placeholder="请选择预约状态" @change="onSingleSearch('order_status', $event)">
             <a-select-option :value="-1">全部订单状态</a-select-option>
@@ -13,7 +13,6 @@
           </a-select>
           <a-range-picker class="mg-l8" @change="onChooseDate" format="YYYY-MM-DD"/>
         </a-col>
-        <a-col :lg="2"></a-col>
         <a-col :lg="6">
           <st-input-search placeholder="请输入会员名姓名、手机号进行查询" @search="onSingleSearch('keyword', $event)"/>
         </a-col>
