@@ -250,7 +250,7 @@ export default {
         image: info.image,
         description: info.description
       })
-      if (info.image.image_key) {
+      if (info.image && info.image.image_key) {
         this.fileList = [info.image]
       }
     },
