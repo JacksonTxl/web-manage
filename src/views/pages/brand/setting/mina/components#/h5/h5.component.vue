@@ -2,6 +2,7 @@
   <div :class="h5('scroll-wrapper')">
     <div :class="h5()">
       <div :class="h5('slider')">
+        <img :class="h5('slider-status')" :src="statusImg" />
         <swiper :options="sliderOptions">
           <swiper-slide v-for="(li, index) in sliderInfo" :key="index">
             <!-- <img :src="li.image_url | imgFilter"> -->
@@ -83,7 +84,7 @@
           <img :src="li.icon">
           <p>{{li.name}}</p>
         </div>
-        <div :class="h5('nav-home')"></div>
+        <!-- <div :class="h5('nav-home')"></div> -->
       </div>
     </div>
   </div>
@@ -114,6 +115,7 @@ import callcoach from '@/assets/img/brand/setting/mina/callcoach.png'
 import phone from '@/assets/img/brand/setting/mina/phone.png'
 import noticeImg from '@/assets/img/brand/setting/mina/notice.png'
 import logo_shelter from '@/assets/img/brand/setting/mina/logo_shelter.png'
+import statusImg from '@/assets/img/brand/setting/mina/status.png'
 import { AppConfig } from '@/constants/config'
 import { UserService } from '@/services/user.service'
 export default {
@@ -154,6 +156,7 @@ export default {
   },
   data() {
     return {
+      statusImg: statusImg,
       noticeImg: noticeImg,
       logoShelter: logo_shelter,
       callcoach: callcoach,

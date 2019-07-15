@@ -29,31 +29,6 @@
           </a-select>
         </st-form-item>
       </div>
-      <!-- <div :class="course('bdbox')">
-        <st-t3 class="mg-y32">推荐团体课</st-t3>
-        <st-form-item label="模块名称">
-          <a-input placeholder="请输入模块名称"></a-input>
-        </st-form-item>
-        <st-form-item label="展示课程">
-          <a-select placeholder="请输入展示课程">
-            <a-select-option value="2">展示门店可约天内的团体课</a-select-option>
-            <a-select-option value="3">展示门店热门团体课</a-select-option>
-          </a-select>
-        </st-form-item>
-      </div>
-      <div :class="course('bdbox')">
-        <st-t3 class="mg-y32">推荐课程包</st-t3>
-        <st-form-item label="模块名称">
-          <a-input placeholder="请输入模块名称"></a-input>
-        </st-form-item>
-        <st-form-item label="展示课程">
-          <a-select placeholder="请输入展示课程">
-            <a-select-option value="1">门店全部课程包</a-select-option>
-            <a-select-option value="2">展示门店热销课程包</a-select-option>
-            <a-select-option value="3">展示门店最新课程包</a-select-option>
-          </a-select>
-        </st-form-item>
-      </div> -->
     </st-form>
     <p>当前模块小程序端以门店课程为准，此处图片仅供参考</p>
   </div>
