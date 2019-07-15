@@ -1,15 +1,15 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { RedirectService } from '@/services/redirect.service'
 
 @Injectable()
 export class TransactionService implements RouteGuard {
-  constructor() {}
+  constructor(private redirectService: RedirectService) {}
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    if (to.name === 'shop-sold-transaction') {
-      next({
-        name: 'shop-sold-transaction-list'
-      })
-    } else {
-      next()
-    }
+    this.redirectService.redirect({
+      locateRouteName: 'shop-sold-transaction',
+      redirectRouteName: 'shop-sold-transaction-list',
+      to,
+      next
+    })
   }
 }

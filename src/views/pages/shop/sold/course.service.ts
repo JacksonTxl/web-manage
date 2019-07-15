@@ -6,7 +6,7 @@ export class CourseService implements RouteGuard {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     if (to.name === 'shop-sold-course') {
       next({
-        name: 'shop-sold-course-list-personal'
+        name: 'shop-sold-course-list'
       })
     } else {
       next()

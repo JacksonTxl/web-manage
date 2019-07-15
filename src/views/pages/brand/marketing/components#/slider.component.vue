@@ -22,7 +22,7 @@
         </a-col>
         <a-col :span="8" v-if="list.length<5">
             <div :class="slider('box')">
-          <st-image-upload @change="imageUploadChange($event)" width="100%" height="162px" :list='[]'
+          <st-image-upload @change="imageUploadChange" width="100%" height="162px" :list='[]'
             :sizeLimit="2"  placeholder="添加活动图片" :numLimit="5">
             <a-icon type="plus-circle" theme="filled" :style="{fontSize:'36px', color: '#9BACB9' }" />
             <div class="st-image-upload__placeholder">添加活动图片</div>
@@ -101,9 +101,12 @@ export default {
       list.forEach(item => ids.push(item.activity_id))
       this.actFilterList = this.actList.filter(item => !ids.includes(item.id))
     },
-    imageUploadChange(e, index) {
+    imageUploadChange(img) {
       let addItem = Object.assign({}, this.addItem)
-      if (e.length) addItem.image_url = e[0].image_key
+      if (img.length) {
+        addItem.image_key = img[0].image_key
+        addItem.image_url = img[0].image_url
+      }
       if (addItem.image_url) {
         this.list.push(addItem)
         this.addItem.activity_id = ''

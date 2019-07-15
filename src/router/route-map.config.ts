@@ -130,14 +130,14 @@ export const routeMapConfig = {
     ]
   },
   'shop-sold-course-list'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '售卡管理'
+    routeConfig.meta.title = '售课管理'
     routeConfig.meta.tabs = [
       'shop-sold-course-list-personal',
       'shop-sold-course-list-package'
     ]
   },
   'shop-sold-card-list-member'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '售卡管理'
+    routeConfig.meta.title = '会员卡'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       card_type: { type: Number, default: -1 },
@@ -150,7 +150,7 @@ export const routeMapConfig = {
     }
   },
   'shop-sold-card-list-deposit'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '售卡管理'
+    routeConfig.meta.title = '储值卡'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       is_valid: { type: Number, default: -1 },
@@ -172,7 +172,7 @@ export const routeMapConfig = {
     }
   },
   'shop-sold-course-list-personal'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '售课管理'
+    routeConfig.meta.title = '私教课'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       course_status: { type: Number, default: -1 },
@@ -183,7 +183,7 @@ export const routeMapConfig = {
     }
   },
   'shop-sold-course-list-package'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '售课管理'
+    routeConfig.meta.title = '课程包'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       course_status: { type: Number, default: -1 },

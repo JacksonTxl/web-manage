@@ -6,7 +6,7 @@ export class CardService implements RouteGuard {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     if (to.name === 'shop-sold-card') {
       next({
-        name: 'shop-sold-card-list-member'
+        name: 'shop-sold-card-list'
       })
     } else {
       next()

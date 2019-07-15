@@ -4,7 +4,7 @@
     <div class="i-count-up-box mg-t8">
       <span class="mg-r16 i-count-up font-number">{{count}}</span>
       <div v-if="trend" class="trend" :class="trend.isUp?'trend-up' : 'trend-down'">
-        <img :src="trend.isUp?topIconUp : topIconDown" /><span >{{trend.rate | rateFiler}}</span>
+        <img :src="trend.isUp?topIconUp : topIconDown" /><span >{{trend.rate}}</span>
       </div>
     </div>
     <div>
@@ -29,11 +29,6 @@ export default {
       endVal: 8888,
       options: {
       }
-    }
-  },
-  filters: {
-    rateFiler(val) {
-      return val + '%'
     }
   },
   props: {
