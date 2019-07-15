@@ -126,7 +126,7 @@
                   </td>
                   <td>
                     <st-table-actions>
-                      <a @click="del(key, rowIndex)" class="mg-l8">删除</a>
+                      <a @click="del(key, index)" class="mg-l8">删除</a>
                     </st-table-actions>
                   </td>
                 </tr>
