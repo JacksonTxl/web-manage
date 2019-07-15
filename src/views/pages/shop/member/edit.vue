@@ -275,7 +275,7 @@ export default {
       fieldNames: { label: 'name', value: 'id', children: 'children' },
       id_card_type: '',
       faceList: [],
-      country_prefix: '',
+      country_prefix: 37,
       source_category: -1
     }
   },
