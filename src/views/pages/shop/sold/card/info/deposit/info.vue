@@ -22,7 +22,7 @@
             <st-info-item label="手机号">{{info.mobile}}</st-info-item>
             <st-info-item label="订单号">{{info.order_id}}</st-info-item>
             <st-info-item label="订单状态">{{info.order_status | enumFilter('sold.order_status')}}</st-info-item>
-            <st-info-item label="当前状态" class="mg-b0">{{info.is_valid | enumFilter('sold.course_status')}}</st-info-item>
+            <st-info-item label="当前状态" class="mg-b0">{{info.is_valid | enumFilter('sold.card_status')}}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="6">
