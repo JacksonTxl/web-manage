@@ -106,37 +106,3 @@ export default {
   }
 }
 </script>
-
-<style lang="less">
-.stat-front-simple-area {
-  position: relative;
-  >div{
-    z-index:99;
-  }
-  .g2-tooltip {
-    padding: 0 !important;
-  }
-  .tooltip-item {
-    margin: 0 !important;
-    border-radius: 2px;
-    padding: 4px 6px;
-  }
-  .g2-tooltip-value {
-    margin: 0 !important;
-    float: none !important;
-    color: white;
-    font-size: 12px;
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 0;
-    width: 100%;
-    height: 1px;
-    z-index: 0;
-    background: #E6E9EF;
-  }
-}
-</style>
