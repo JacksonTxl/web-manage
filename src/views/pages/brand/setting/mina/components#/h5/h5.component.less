@@ -9,16 +9,15 @@
     .pos-r();
     .bd-r(20px);
     overflow: hidden;
-    .w(358px);
+    .w(355px);
     margin: 0 auto;
-    padding: 42px 41px 89px;
+    padding: 36px 41px 65px 38px;
     background-image: url('~@/assets/img/brand/setting/mina/phone.png');
     background-repeat: no-repeat;
-    background-size: 100%;
     
 }
 .h5-component{
-    padding: 0 rpx(40) 10px;
+    padding: 0 rpx(40) 30px;
     width: rpx(750);
     .h(510px);
     overflow-y: auto;
@@ -223,11 +222,12 @@
     &__nav{
         display: flex;
         .pos-a();
-        bottom: 68px;
-        left: 41px;
+        bottom: 39px;
+        left: 38px;
         right: 41px;
         .bg(#fff);
         .pd-t(rpx(11));
+        padding-bottom: 16px;
         z-index:1;
         border-radius: 0 0 22px 22px;
         .nav-li{
@@ -238,6 +238,14 @@
         }
         img{
             .s(rpx(44),rpx(44));
+        }
+        &-home{
+            position: absolute;
+            .s(96px,3px);
+            background-color: #000;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
         }
     }
 }
