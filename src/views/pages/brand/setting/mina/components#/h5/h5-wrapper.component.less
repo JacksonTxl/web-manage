@@ -1,16 +1,23 @@
 .brand-setting-mina-index {
   .h5-wrapper-component {
+    .fixed {
+      position: fixed;
+      top: 40px;
+    }
     &__flexbox {
       display: flex;
     }
 
     &__left {
-      .pd-tb(57px);
+      .pd-t(3px);
       .pd-lr(24px);
       .bg(#F7F9FC);
       .mg-l(-24px);
       .mg-t(-24px);
       .mg-r(17px);
+      .w(406px);
+      flex-shrink: 0;
+      min-height: 644px;
     }
 
     &__right {
@@ -22,7 +29,7 @@
       bottom: 0;
       left: 224px;
       right: 24px;
-      .bg(#fff);
+      .bg(rgba(255,255,255,.8));
       .pd(21px);
       .ta-c();
       z-index: 1;

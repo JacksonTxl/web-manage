@@ -1,7 +1,7 @@
 <template>
   <st-panel class="page-shop-staff-list" app>
-    <a-row :gutter="8">
-      <a-col :lg="17">
+    <a-row>
+      <a-col :lg="17" class="page-shop-staff-list__selectRow">
         <a-tree-select
           showSearch
           class="mg-r8"
@@ -49,7 +49,6 @@
           </a-tree-select-node>
         </a-tree-select>
         <a-select
-          style="width: 160px; "
           class="mg-r8"
           :defaultValue="-1"
           placeholder="请选择员工职能"
@@ -58,7 +57,6 @@
           <a-select-option v-for="(item, index) in staffEnums.identity.value" :key="index" :value="+index">{{item}}</a-select-option>
         </a-select>
         <a-select
-          style="width: 160px; "
           class="mg-r8"
           :defaultValue="-1"
           placeholder="请选择员工状态"
@@ -66,20 +64,16 @@
           @change="onSingleSearch('work_status', $event)">
           <a-select-option v-for="(item, index) in staffEnums.work_status.value" :key="index" :value="+index">{{item}}</a-select-option>
         </a-select>
-        <st-button v-if="auth.add" class="mg-r8" @click="onAddStaff">添加员工</st-button>
+        <st-button v-if="auth.add" class="mg-r8" icon="add" @click="onAddStaff">添加员工</st-button>
         <!-- NOTE: 导入 -->
         <!-- <st-button v-if="auth.import" class="mg-r8" @click="onExportStaff">导入员工</st-button> -->
-        <st-button :disabled="selectedRowKeys.length > 0 ? false : true">
-          <a v-modal-link="{ name: 'shop-staff-join-department', props: {},on :{change: joinok} }" v-if="auth.join">
-            批量加入部门
-          </a>
-        </st-button>
+        <st-button :disabled="selectedRowKeys.length > 0 ? false : true" icon="add" @click="onJoinDepartment" v-if="auth.join">批量加入部门</st-button>
       </a-col>
       <a-col :lg="7" style="text-align: right;">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 300px;" v-model="query.keyword" @search="onSingleSearch('keyword', $event)"/>
+        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onSingleSearch('keyword', $event)"/>
       </a-col>
     </a-row>
-    <a-row :gutter="8" class="mg-t8">
+    <a-row class="mg-t8">
       <st-table
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
         :columns="columns"
@@ -216,6 +210,13 @@ export default {
     },
     onJoinDepartment(e) {
       console.log('批量加入部门')
+      this.$modalRoute.push({
+        name: 'shop-staff-join-department',
+        props: {},
+        on: {
+          change: this.joinok
+        }
+      })
     },
     onAddStaff() {
       this.$router.push({

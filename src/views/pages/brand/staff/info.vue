@@ -4,7 +4,7 @@
       <a-row :gutter="8">
         <a-col :lg="16" class="pages-staffdata-header-detail">
           <div class="staff-avatar-container st-preview-item">
-            <img :src="info.image_face.image_url">
+            <img :src="image_avatar_url">
             <div class="staff-avatar-tip">{{ info.work_status.name }}/{{ info.nature_work.name }}</div>
           </div>
           <div class="staff-info-container">
@@ -92,6 +92,11 @@ export default {
         label: '服务课程',
         route: { name: 'brand-staff-info-member', query: { id: this.query.id } }
       }
+    }
+  },
+  computed: {
+    image_avatar_url() {
+      return (this.info && this.info.image_avatar && this.info.image_avatar.image_url) || ''
     }
   },
   created() {

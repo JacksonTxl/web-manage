@@ -57,7 +57,6 @@
               height="264px"
               :list="faceList"
               placeholder="会员人脸信息"
-              v-decorator="rules.faceInfo"
             ></st-face-upload>
           </st-form-item>
         </a-col>
@@ -294,6 +293,7 @@ export default {
         res.district_id = cascader[2] || 110101
         // 手机前缀
         res.country_prefix = this.country_prefix
+        res.image_face = this.faceList[0] || {}
         delete res.cascader
         delete res.md
         this.addService.addUser(res).subscribe(() => {

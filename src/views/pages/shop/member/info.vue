@@ -8,7 +8,7 @@
               <div class="img-box  st-preview-item" v-viewer="{ url: 'data-src' }">
                 <img
                   class="img-url"
-                  :src="info.image_face.image_url | imgFilter({ w: 80, h: 142 })" :data-src="info.image_face.image_url | imgFilter({ w: 1000 })"
+                  :src="info.image_face.image_url" :data-src="info.image_face.image_url"
                 >
                 <span class="img-describe">{{info.member_level.name}}</span>
               </div>
@@ -164,7 +164,9 @@ export default {
         on: {
           change: res => {
             let result = res[0]
-            this.infoService.editFace(this.query.id, result).subscribe(() => {
+            this.infoService.editFace(this.query.id, {
+              image_face: result
+            }).subscribe(() => {
               this.infoService.getHeaderInfo(this.query.id).subscribe()
             })
           }

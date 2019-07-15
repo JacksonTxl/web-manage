@@ -78,7 +78,8 @@ export default {
       type: Object
     },
     staffSpecialty: {
-      type: Object
+      type: Array,
+      default: () => []
     }
   },
   data() {

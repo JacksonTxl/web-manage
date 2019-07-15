@@ -16,6 +16,7 @@ const env = {
 }
 
 const IS_DEV = env.NODE_ENV !== 'production'
+const IS_PROD = env.NODE_ENV === 'production'
 
 const localApiEnvHostTarget = {
   // dev: 'http://10.10.31.194:10000',
@@ -43,7 +44,7 @@ module.exports = {
     loaderOptions: {
       less: {
         javascriptEnabled: true,
-        plugins: [ new LessPluginFunction() ]
+        plugins: [new LessPluginFunction()]
       }
     }
   },
@@ -119,7 +120,7 @@ module.exports = {
       .options({
         sourceMap: false,
         javascriptEnabled: true,
-        plugins: [ new LessPluginFunction() ]
+        plugins: [new LessPluginFunction()]
       })
       .end()
 
@@ -197,6 +198,7 @@ module.exports = {
       })
       return definitions
     })
+    config.optimization.runtimeChunk(true)
     // config.plugins.delete('progress')
     config.resolve.alias.set(
       'vue-service-app',

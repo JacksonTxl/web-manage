@@ -3,7 +3,7 @@
     <a-row class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="18">
-          <a-select style="width: 160px;margin-left:12px" :defaultValue="-1" placeholder="请选择预约状态" @change="onSingleSearch('schedule_status', $event)">
+          <a-select style="width: 160px;" :defaultValue="-1" placeholder="请选择预约状态" @change="onSingleSearch('schedule_status', $event)">
             <a-select-option :value="-1">全部订单状态</a-select-option>
             <a-select-option :value="1">预约失败</a-select-option>
             <a-select-option :value="3">候补中</a-select-option>

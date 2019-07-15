@@ -115,13 +115,11 @@ export default {
     },
     selectedKeys() {
       const selectedKey = this.findSelectedKey(this.currentSiderMenu)
-      if (selectedKey) {
-        this.$emit('change', {
-          selectedKey,
-          currentSiderMenu: this.currentSiderMenu,
-          menus: this.menus
-        })
-      }
+      this.$emit('change', {
+        selectedKey,
+        currentSiderMenu: this.currentSiderMenu,
+        menus: this.menus
+      })
       return selectedKey ? [selectedKey] : []
     }
   },

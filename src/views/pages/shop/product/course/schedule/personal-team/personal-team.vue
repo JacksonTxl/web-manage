@@ -144,7 +144,6 @@ export default {
     const add = this.auth.add
     const addBatch = this.auth.addBatch
     const copy = this.auth.copy
-    console.log(this.auth)
     if (copy) {
       this.header.left = 'copy'
     }

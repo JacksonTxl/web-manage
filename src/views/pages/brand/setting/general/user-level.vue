@@ -32,6 +32,7 @@
             <st-info-action
               icon="edit"
               text="编辑"
+              :class="b('item-edit')"
               v-if="auth.edit && !isEdit"
               @click="onEdit"
             />
