@@ -9,22 +9,22 @@
           <ul v-if="info.num">
             <li>
               <p>注册人数<img src="~@/assets/img/brand/marketing/register.svg" /></p>
-              <ICountUp :endVal="+info.num.register_num" v-if="info.num.register_num"/>
+              <ICountUp class="font-number" :endVal="+info.num.register_num" v-if="info.num.register_num"/>
               <span v-else>--</span>
             </li>
             <li>
               <p>交易人数<img src="~@/assets/img/brand/marketing/deals.svg" /></p>
-              <ICountUp :endVal="+info.num.people_num" v-if="info.num.people_num"/>
+              <ICountUp class="font-number" :endVal="+info.num.people_num" v-if="info.num.people_num"/>
               <span v-else>--</span>
             </li>
             <li>
               <p>订单总金额<img src="~@/assets/img/brand/marketing/money.svg" /></p>
-              <ICountUp :endVal="+info.num.order_amount" :options="{prefix: '<b>￥</b>'}" v-if="info.num.order_amount"/>
+              <ICountUp class="font-number" :endVal="+info.num.order_amount" :options="{prefix: '<b>￥</b>'}" v-if="info.num.order_amount"/>
               <span v-else>--</span>
             </li>
             <li>
               <p>营销支出金额<img src="~@/assets/img/brand/marketing/expend.svg" /></p>
-              <ICountUp :endVal="+info.num.spend_amount" :options="{prefix: '<b>￥</b>'}" v-if="info.num.spend_amount"/>
+              <ICountUp class="font-number" :endVal="+info.num.spend_amount" :options="{prefix: '<b>￥</b>'}" v-if="info.num.spend_amount"/>
               <span v-else>--</span>
             </li>
           </ul>
