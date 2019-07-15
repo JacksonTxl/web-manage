@@ -7,9 +7,9 @@
       <st-form-item class="mg-b6">
         <a-input size="large" type="password" placeholder="密码" v-decorator="['password']"/>
       </st-form-item>
-      <st-form-item  :class="loginUser('pass')">
+      <st-form-item  :class="loginUser('pass')" class="mg-b32">
         <div :class="loginUser('pass-content')">
-          <a href=""></a><a href="javascript:;" @click="onClickFindPassword">忘记密码</a>
+          <!-- <a href=""></a><a href="javascript:;" @click="onClickFindPassword">忘记密码</a> -->
         </div>
       </st-form-item>
       <st-form-item  class="mg-b32">

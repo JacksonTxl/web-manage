@@ -59,7 +59,6 @@
   .fc-head-container.fc-widget-header{
     .mg(14px 0 8px 0);
     font-size:12px;
-    font-family:PingFangSC-Medium;
     font-weight:500;
     color:rgba(37,42,46,1);
     line-height:20px;
@@ -164,7 +163,7 @@
   height: 1px;
 }
 .fc-time-grid .fc-event-container {
-  min-height: 40px
+  min-height: 56px
 }
 .st-panel__body {
   .fc-unthemed .fc-divider{
@@ -179,7 +178,11 @@
     height: 2px;
   }
   .fc-scroller{
-    overflow: hidden;
-    height: auto;
+    overflow: hidden !important;
+    height: auto !important;
+  }
+  .fc-button .fc-icon {
+    vertical-align: baseline !important;
+    font-size: 1.5em !important;
   }
 }
