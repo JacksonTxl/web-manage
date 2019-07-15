@@ -34,9 +34,11 @@ interface StaffEdit extends ServiceRouteConfig {
 export const routeMapConfig = {
   '404'(routeConfig: RouteConfig) {
     routeConfig.meta.layout = 'blank'
+    routeConfig.meta.title = '页面未找到'
   },
   'account-login'(routeConfig: RouteConfig) {
     routeConfig.meta.layout = 'login'
+    routeConfig.meta.title = '登录'
   },
   styleguide(routeConfig: RouteConfig) {
     routeConfig.redirect = { name: 'styleguide-component' }
@@ -314,9 +316,7 @@ export const routeMapConfig = {
   },
   'brand-setting-app-staff'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工'
-    routeConfig.meta.tabs = [
-      'brand-setting-app-staff-skillful'
-    ]
+    routeConfig.meta.tabs = ['brand-setting-app-staff-skillful']
   },
   'brand-setting-app-course-category'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '课程类型'
