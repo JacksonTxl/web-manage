@@ -215,6 +215,16 @@ export default {
           })
         }
       })
+    },
+    isParent(item, arr) {
+      if (!Array.isArray(arr)) return item
+      for (let i = 0; i < arr.length; i++) {
+        if (item === arr[i].key) {
+          return item
+        } else {
+          return this.isParent(item, arr[i].child)
+        }
+      }
     }
   },
   mounted() {
@@ -224,6 +234,16 @@ export default {
     }).map(item => {
       return item.id
     })
+    let arr = this.brandIds.map(item => {
+      return this.isParent(item, this.brands)
+    })
+    console.log('mounted', arr)
+    // this.brandIds = this.brandIds.map(item => {
+    //   let tag = this.isParent(item, this.brands)
+    //   if (tag) return ''
+    //   else return item
+    // }).filter(item => item)
+    // console.log(this.brandIds)
     this.shops = listToTree(cloneDeep(this.shopList))
     this.shopIds = this.shopList.filter(item => {
       return this.info.select_ids.includes(item.id)

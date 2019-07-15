@@ -7,7 +7,7 @@
           <span class="cursor-pointer">
             +86 <a-icon type="down" />
           </span>
-          <a-menu slot="overlay">
+          <!-- <a-menu slot="overlay">
             <a-menu-item>
               <a href="javascript:;">+86</a>
             </a-menu-item>
@@ -17,7 +17,7 @@
             <a-menu-item>
               <a href="javascript:;">+86</a>
             </a-menu-item>
-          </a-menu>
+          </a-menu> -->
         </a-dropdown>
       </st-form-item>
       <st-form-item class="mg-b6" :class="mobile('captcha')">
