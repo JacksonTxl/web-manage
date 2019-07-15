@@ -5,7 +5,7 @@
         <div :class="reception('form-block-detail')">
           <div :class="reception('form-block-number')">
             <p>{{item.label}} ({{item.unit}})</p>
-            <ICountUp v-if="auth[item.type]" class="number-up" :endVal="summaryInfo[item.type].num"/>
+            <ICountUp v-if="auth[item.type]" class="number-up font-number" :endVal="summaryInfo[item.type].num"/>
             <span v-else>- -</span>
             <!-- <p>{{summaryInfo[item.type].num}}</p> -->
           </div>
