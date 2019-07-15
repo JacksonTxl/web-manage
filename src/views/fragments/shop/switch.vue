@@ -13,6 +13,7 @@
           placeholder="搜索门店"
           v-model="keyword"
           @search="onSearch"
+          @change="onChange"
         />
       </section>
       <section class="mg-t24 drawer-switch-shop__body">
@@ -84,7 +85,7 @@ export default {
   watch: {
     value(val) {
       this.visible = val
-      this.onSearch(this.keyword)
+      this.onSearch()
     }
   },
   created() {
@@ -113,15 +114,18 @@ export default {
         .switchBackToBrand()
         .subscribe(this.onClose)
     },
-    onSearch(keyword) {
+    onSearch() {
       let { shopList } = this
       const list = []
       shopList.forEach(item => {
-        if (item.shop_name.includes(keyword)) {
+        if (item.shop_name.includes(this.keyword)) {
           list.push(item)
         }
       })
       this.list = list
+    },
+    onChange() {
+      this.onSearch(this.keyword)
     }
   }
 }
