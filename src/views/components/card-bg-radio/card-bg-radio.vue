@@ -28,7 +28,7 @@
           </p>
           <p>
             <span>2.</span>
-            <span>建议尺寸为xx像素Xxx像素， 不可大于2m</span>
+            <span>建议尺寸为750像素X422像素， 不可大于2m</span>
           </p>
         </div>
       </div>

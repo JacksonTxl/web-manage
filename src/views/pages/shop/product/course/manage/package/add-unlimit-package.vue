@@ -216,7 +216,7 @@
               </st-image-upload>
               <div :class="basic('upload-describe')">
                 <p>图片格式必须为:png,bmp,jpeg,jpg,gif,建议使用png格式图片,以保存最佳效果</p>
-                <p>建议尺寸为xx像素Xxx像素,不可大于2m</p>
+                <p>建议尺寸为750像素X422像素,不可大于2m</p>
               </div>
             </div>
           </st-form-item>
