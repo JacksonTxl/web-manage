@@ -210,7 +210,7 @@ export default {
     },
     onJoinDepartment(e) {
       console.log('批量加入部门')
-      this.$modalRoute.push({
+      this.$modalRouter.push({
         name: 'shop-staff-join-department',
         props: {},
         on: {
