@@ -64,14 +64,14 @@
         <!-- <a-badge dot>
           <st-icon type="home" class="layout-default-body__icon"/>
         </a-badge> -->
-        <a-dropdown :trigger="['click']" placement="bottomRight">
+        <!-- <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__top-item">
             <st-icon type="square" class="layout-default-body__icon"/>
           </div>
           <div slot="overlay" class="layout-default-body__fast-entry">
             <fast-entry/>
           </div>
-        </a-dropdown>
+        </a-dropdown> -->
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__avatar">
             <img :src="(user.avatar || DEFAULT_AVATAR) | imgFilter({ w: 64, h: 64 })" width="32" height="32" alt="avatar" />
@@ -119,7 +119,7 @@ import { find } from 'lodash-es'
 import { LoginService } from '../pages/account/login.service'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
-import FastEntry from './entry#/fast-entry'
+// import FastEntry from './entry#/fast-entry'
 import { AppConfig } from '@/constants/config'
 
 export default {
@@ -228,8 +228,8 @@ export default {
   },
   components: {
     DefaultSiderMenu,
-    SwitchShop,
-    FastEntry
+    SwitchShop
+    // FastEntry
   }
 }
 </script>
