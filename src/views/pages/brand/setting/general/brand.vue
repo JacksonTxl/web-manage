@@ -152,7 +152,7 @@ export default {
         this.$router.push({
           force: true
         })
-        this.userService.reload()
+        this.userService.getUser().subscribe()
       })
     },
     onCancel() {
