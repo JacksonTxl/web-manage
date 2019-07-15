@@ -70,7 +70,7 @@
         <st-button :disabled="selectedRowKeys.length > 0 ? false : true" icon="add" @click="onJoinDepartment" v-if="auth.join">批量加入部门</st-button>
       </a-col>
       <a-col :lg="7" style="text-align: right;">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onSingleSearch('keyword', $event)"/>
+        <st-input-search placeholder="搜索员工" v-model="query.keyword" @search="onSingleSearch('keyword', $event)"/>
       </a-col>
     </a-row>
     <a-row class="mg-t8">

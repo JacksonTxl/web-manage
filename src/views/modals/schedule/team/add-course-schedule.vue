@@ -84,6 +84,7 @@ export default {
   },
   rxState() {
     const tss = this.teamScheduleCommomService
+    console.log(tss)
     return {
       loading: this.teamScheduleScheduleService.loading$,
       query: this.routeService.query$,

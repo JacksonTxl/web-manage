@@ -8,19 +8,20 @@
     @close="onClose"
   >
     <div class="drawer-switch-shop">
-      <!-- <section class="mg-l24 mg-r24 drawer-switch-shop__header">
+      <section class="mg-l24 mg-r24 drawer-switch-shop__header">
         <st-input-search
           placeholder="搜索门店"
-          @search="onSearchShop"
+          v-model="keyword"
+          @search="onSearch"
         />
-      </section> -->
+      </section>
       <section class="mg-t24 drawer-switch-shop__body">
         <a-spin :spinning="!!loading.switchShop">
-          <ul class="drawer-shops">
+          <ul class="drawer-shops" v-if="list.length">
             <li
-              class="drawer-shops__item cursor-pointer"
+              class="drawer-shops__item"
               :class="{ current: currentShopId === shop.shop_id }"
-              v-for="(shop, index) in shopList"
+              v-for="(shop, index) in list"
               :key="index"
               @click="onSwitchShop(shop)"
             >
@@ -28,10 +29,11 @@
               <div>
                 <div class="drawer-shops__name">{{shop.shop_name}}</div>
                 <div class="drawer-shops__address">{{shop.address}}</div>
-                <div class="drawer-shops__tel">123</div>
+                <div class="drawer-shops__tel">{{shop.link_phone}}</div>
               </div>
             </li>
           </ul>
+          <st-no-data v-else/>
         </a-spin>
       </section>
       <section>
@@ -68,7 +70,9 @@ export default {
   },
   data() {
     return {
-      visible: false
+      visible: false,
+      keyword: '',
+      list: []
     }
   },
   props: {
@@ -80,6 +84,7 @@ export default {
   watch: {
     value(val) {
       this.visible = val
+      this.onSearch(this.keyword)
     }
   },
   created() {
@@ -96,7 +101,6 @@ export default {
       this.$emit('input', false)
     },
     onSwitchShop(shop) {
-      console.log('switch shop', shop.shop_id)
       const params = {
         shop_id: shop.shop_id
       }
@@ -108,6 +112,16 @@ export default {
       this.switchService
         .switchBackToBrand()
         .subscribe(this.onClose)
+    },
+    onSearch(keyword) {
+      let { shopList } = this
+      const list = []
+      shopList.forEach(item => {
+        if (item.shop_name.includes(keyword)) {
+          list.push(item)
+        }
+      })
+      this.list = list
     }
   }
 }

@@ -64,10 +64,8 @@ const getPageService = services => {
     let asExportedService = _.camelCase(
       `--${parsed.entry_dash.replace('.', '-')}--`
     )
-    const chunkName = _.camelCase(`--Page${`-${parsed.component}--`}`).replace(
-      'Service',
-      ''
-    )
+    const chunkName = parsed.dir_dash ? parsed.dir_dash : parsed.entry
+
     exportedService =
       exportedService[0].toUpperCase() + exportedService.slice(1)
     asExportedService =
@@ -98,15 +96,23 @@ const createRoute = () => {
     const parsed = parse(page)
     const hasParent = !!pageMap[parsed.dir_dash]
     const component = _.camelCase(`--Page${`-${parsed.component}--`}`)
-    importArr.push({ component, pagePath: page.replace('./src', '@') })
+    const chunkName = parsed.dir_dash ? parsed.dir_dash : parsed.entry
+
+    importArr.push({
+      component,
+      pagePath: page.replace('./src', '@'),
+      chunkName
+    })
 
     const routeService = serviceMap[parsed.entry_dash]
+
     const route = {
       name: parsed.entry_dash,
       parent: hasParent ? parsed.dir_dash : '',
       path: hasParent ? parsed.name : '/' + parsed.entry,
       guards: routeService ? [routeService] : [],
-      component
+      component,
+      chunkName
     }
 
     pageMap[parsed.entry_dash] = route

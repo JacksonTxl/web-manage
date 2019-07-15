@@ -111,9 +111,6 @@ import { TeamScheduleCommonService } from '../../../pages/shop/product/course/sc
 import { TeamScheduleReserveService } from '../../../pages/shop/product/course/schedule/team.service#/reserve.service'
 export default {
   name: 'ReserveInfo',
-  serviceProviders() {
-    return [TeamScheduleCommonService, TeamScheduleReserveService]
-  },
   serviceInject() {
     return {
       teamScheduleCommonService: TeamScheduleCommonService,
@@ -311,7 +308,7 @@ export default {
     getReserve() {
       const ss = this.teamScheduleReserveService
       ss.getInfo(this.id).pipe(
-        switchMap(state => {
+        tap(state => {
           this.info = state.info
           this.list = state.list
           return this.teamScheduleCommonService.getUnusedSeatList({ schedule_id: state.info.id, court_site_id: state.info.court_site_id })

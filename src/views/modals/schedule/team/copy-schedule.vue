@@ -33,6 +33,7 @@
         >
           <st-button
             type="primary"
+            :loading="loading"
             @click="onSubmit">
             确认复制
           </st-button>
@@ -49,6 +50,11 @@ export default {
   serviceInject() {
     return {
       teamScheduleScheduleService: TeamScheduleScheduleService
+    }
+  },
+  rxState() {
+    return {
+      loading: this.teamScheduleScheduleService.loading$
     }
   },
   data() {

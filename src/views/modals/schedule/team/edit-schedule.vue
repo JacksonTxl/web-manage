@@ -55,6 +55,7 @@
           <st-button class="mg-r16" @click="onClick">取消</st-button>
           <st-button
             type="primary"
+            :loading="loading"
             @click="onSubmit">
             确认
           </st-button>
@@ -79,6 +80,7 @@ export default {
   rxState() {
     const tss = this.teamScheduleCommonService
     return {
+      loading: teamScheduleScheduleService.loading$,
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
       courtOptions: tss.courtOptions$

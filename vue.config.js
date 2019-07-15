@@ -86,52 +86,6 @@ module.exports = {
     // 去除prefetch
     config.plugins.delete('prefetch')
 
-    // inline style ignore
-    config.module.rule('less').include.add(/themes/)
-    // add theme entry to extract css
-    config.module
-      .rule('less-extract')
-      .test(/\.less/)
-      .exclude.add(/themes/)
-      .end()
-      // Even create named uses (loaders)
-      .use('vue-style-loader')
-      .loader('vue-style-loader')
-      .options({
-        sourceMap: false,
-        shadowMode: false
-      })
-      .end()
-      .use('css-loader')
-      .loader('css-loader')
-      .options({
-        sourceMap: false,
-        importLoaders: 2
-      })
-      .end()
-      .use('postcss-loader')
-      .loader('postcss-loader')
-      .options({
-        sourceMap: false
-      })
-      .end()
-      .use('less-loader')
-      .loader('less-loader')
-      .options({
-        sourceMap: false,
-        javascriptEnabled: true,
-        plugins: [new LessPluginFunction()]
-      })
-      .end()
-
-    // add themes entry config
-    Object.keys(buildConfig.themeConfig).forEach(themeName => {
-      config
-        .entry(`theme-${themeName}`)
-        .add(resolve(buildConfig.themeConfig[themeName]))
-        .end()
-    })
-
     config
       .externals({
         vue: 'window.Vue',

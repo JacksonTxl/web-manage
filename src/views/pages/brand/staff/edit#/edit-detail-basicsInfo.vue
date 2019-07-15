@@ -167,7 +167,7 @@ export default {
       Object.entries(this.enums.nature_work.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
-      return [{ value: 0, label: '请选择' }, ...list]
+      return [{ value: 0, label: '未填写' }, ...list]
     }
   },
   components: {
