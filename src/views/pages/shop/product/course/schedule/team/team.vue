@@ -55,6 +55,7 @@ export default {
   },
   rxState() {
     return {
+      query: this.routeService.query$,
       scheduleTeamCourseList: this.teamScheduleScheduleService.scheduleTeamCourseList$,
       loading: this.teamScheduleScheduleService.loading$,
       auth: this.service.auth$

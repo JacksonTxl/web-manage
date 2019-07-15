@@ -56,6 +56,7 @@
           <st-button class="mg-r16" @click="onClick">批量设置</st-button>
           <st-button
             type="primary"
+            :loading="loading.add"
             @click="onSubmit">
             提交
           </st-button>
@@ -70,18 +71,21 @@ import { cloneDeep } from 'lodash-es'
 import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
 import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
 import { RouteService } from '../../../../services/route.service'
+import { TeamService } from '../../../pages/shop/product/course/schedule/team/team.service'
 export default {
   name: 'AddCourseSchedule',
   serviceInject() {
     return {
       teamScheduleCommomService: TeamScheduleCommonService,
       teamScheduleScheduleService: TeamScheduleScheduleService,
-      routeService: RouteService
+      routeService: RouteService,
+      teamService: TeamService
     }
   },
   rxState() {
     const tss = this.teamScheduleCommomService
     return {
+      loading: this.teamScheduleScheduleService.loading$,
       query: this.routeService.query$,
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
@@ -102,7 +106,13 @@ export default {
       }
     }
   },
+  created() {
+    this.initOptions().subscribe()
+  },
   methods: {
+    initOptions() {
+      return this.teamService.initOptions()
+    },
     onSubmit() {
       this.form.validateFields((err, values) => {
         if (!err) {
