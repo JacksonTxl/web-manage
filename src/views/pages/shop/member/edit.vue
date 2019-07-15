@@ -11,7 +11,7 @@
           </st-form-item>
           <st-form-item label="手机号" required>
             <a-input-group compact>
-              <a-select style="width:30%" v-model="country_prefix" v-if="countryList">
+              <a-select style="width:30%" v-model="country_prefix" v-if="countryList" placeholder="请选择">
                 <a-select-option
                   :value="code.code_id"
                   v-for="code in countryList.code_list"
@@ -313,30 +313,35 @@ export default {
     setEditInfo(obj) {
       this.form.setFieldsValue({
         member_name: obj.member_name,
-        sex: obj.sex === 0 ? 1 : obj.sex,
-        country_id: obj.country.id === 0 ? 1 : obj.country.id,
-        nation: obj.nation.id === 0 ? 1 : obj.nation.id,
+        sex: obj.sex === 0 ? '' : obj.sex,
+        country_id: +obj.country.id || undefined,
+        nation_id: +obj.nation.id || undefined,
         birthday: obj.birthday ? moment(obj.birthday) : null,
         education_level: +obj.education_level,
-        id_card_type: obj.id_card_type === 0 ? 1 : obj.id_card_type,
+        id_card_type: +obj.id_card_type || undefined,
+        height: obj.height,
+        weight: obj.weight,
         jobs: obj.jobs,
         id_card: obj.id_card,
         income_level: obj.income_level,
         married_type: obj.married_type,
         fitness_goal: obj.fitness_goal,
-        has_children: obj.has_children === 0 ? 1 : obj.has_children,
+        has_children: +obj.has_children || undefined,
+        register_type: +obj.register_type || undefined,
+        register_way: +obj.register_way || undefined,
         fitness_level: obj.fitness_level,
         email: obj.email,
         mobile: obj.mobile,
         wechat: obj.wechat,
         cascader: [obj.province_id, obj.city_id, obj.district_id],
-        country_prefix: obj.country_prefix === 0 ? 1 : obj.country_prefix,
+        country_prefix: +obj.country_prefix || undefined,
         living_address: obj.living_address
       })
-      this.id_card_type = obj.id_card_type === 0 ? 1 : obj.id_card_type
-      this.country_prefix = obj.country_prefix === 0 ? 1 : obj.country_prefix
+      this.id_card_type = +obj.id_card_type || undefined
+      this.country_prefix = +obj.country_prefix || undefined
       this.id = obj.id
       this.faceList = [obj.face_info]
+      this.source_category = +obj.register_type
     }
   },
   mounted() {
@@ -344,6 +349,7 @@ export default {
     this.editService.serviceInit(this.$route.query.id).subscribe(res => {
       setTimeout(() => {
         this.setEditInfo(this.info)
+        this.form.validateFields()
       })
     })
   }
