@@ -21,7 +21,7 @@ export class AppConfig {
    */
   get HOST_IMAGE() {
     return this.HOST_IS_PROD
-      ? '//oss-cn-shanghai-internal.aliyuncs.com'
+      ? '//styd-saas-public.oss-cn-shanghai.aliyuncs.com'
       : '//styd-saas-test.oss-cn-shanghai.aliyuncs.com'
   }
 

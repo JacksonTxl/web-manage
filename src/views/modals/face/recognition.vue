@@ -13,21 +13,23 @@
     <div :class="recognition()">
       <div :class="recognition('header')">
         <div :class="recognition('space')">
-          <div :class="recognition('img')">
-            <img :src="userImgSrc" v-show="userImgSrc"/>
-            <video ref="video" width="270" height="270" autoplay v-show="!userImgSrc"></video>
-            <canvas :class="recognition('canvas')" ref="canvas" width="270" height="270"></canvas>
-            <img
-              src="~@/assets/img/userBitmap.png"
-              alt=""
-              :class="recognition('userLinePic')"
-              v-show="openCameraError">
-            <img
-              src="~@/assets/img/userLinePic.png"
-              alt=""
-              :class="recognition('userLinePic')"
-              v-show="!openCameraError">
-          </div>
+          <a-spin :spinning="isLoading" :class="recognition('loading')">
+            <div :class="recognition('img')">
+              <img :src="userImgSrc" v-show="userImgSrc"/>
+              <video ref="video" width="270" height="270" autoplay v-show="!userImgSrc"></video>
+              <canvas :class="recognition('canvas')" ref="canvas" width="270" height="270"></canvas>
+              <img
+                src="~@/assets/img/userBitmap.png"
+                alt=""
+                :class="recognition('userLinePic')"
+                v-show="openCameraError">
+              <img
+                src="~@/assets/img/userLinePic.png"
+                alt=""
+                :class="recognition('userLinePic')"
+                v-show="!openCameraError">
+            </div>
+          </a-spin>
           <div :class="recognition('operation')">
             <st-button type="primary" @click="handlerTakePhoto">{{userImgSrc ? '重拍' : '拍照'}}</st-button>
             <div :class="recognition('tips')">
@@ -87,7 +89,8 @@ export default {
       canvasElm: null,
       userImgSrc: '',
       confirmLoading: false,
-      openCameraError: false // 开启摄像头失败
+      openCameraError: false, // 开启摄像头失败
+      isLoading: false
     }
   },
   watch: {
@@ -227,6 +230,7 @@ export default {
           height: 270
         }
       }
+      this.isLoading = true
       navigator.mediaDevices.getUserMedia(constraints).then(this.success).catch(this.error)
     },
     // 关闭摄像头
@@ -248,6 +252,11 @@ export default {
         // 避免在新的浏览器中使用它，因为它正在被弃用。
         video.src = window.URL.createObjectURL(stream)
       }
+      let that = this
+      video.oncanplay = function(e) {
+        console.log('oncanplay')
+        that.isLoading = false
+      }
       video.onloadedmetadata = function(e) {
         video.play()
         // video.style.transform = 'scaleX(-1)'
@@ -256,6 +265,7 @@ export default {
     error(error) {
       console.log(`error message ${error}`)
       this.openCameraError = true
+      this.isLoading = false
     },
     dataURItoBlob(dataURI) { // 图片转成Buffer
       let byteString = atob(dataURI.split(',')[1])

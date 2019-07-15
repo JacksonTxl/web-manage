@@ -248,30 +248,6 @@ export default {
     onLevelChange(val, key) {
       this.priceGradient[key].level_id = val
     },
-    inputCheck() {
-      const { priceGradient } = this
-      let ret = true
-      for (let i = 0; i < priceGradient.length; i++) {
-        let retIn = false
-        const prices = priceGradient[i].prices || []
-        for (let j = 0; j < prices.length; j++) {
-          const price = prices[j]
-          for (let k in price) {
-            // if (price[k] === undefined || price[k] === '') {
-            //   retIn = true
-            // }
-          }
-        }
-        if (retIn) {
-          ret = false
-          this.messageService.error({
-            content: `第${i + 1}行课程定价输入有误`
-          })
-          break
-        }
-      }
-      return ret
-    },
     priceGradientFilter(priceGradient) {
       const DEFAULT_MAX_NUM = 10000
       priceGradient.map((item, index) => {

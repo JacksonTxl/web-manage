@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-select
-      :defaultValue="value"
+      :value="value"
       @change="(val) => onChange(val)"
       placeholder="请选择等级"
       :style="{ width }"

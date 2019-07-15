@@ -59,7 +59,14 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.setPrice">完成</st-button>
+          <st-button
+            type="primary"
+            @click="save"
+            :loading="loading.setPrice"
+            :disabled="!courseId"
+          >
+            完成
+          </st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -72,6 +79,7 @@ import { UserService } from '@/services/user.service'
 import { remove } from 'lodash-es'
 import { RuleConfig } from '@/constants/course/rule'
 import SetPrice from '@/views/fragments/course/set-price'
+import { GradientService } from '@/views/fragments/course/personal#/gradient.service'
 
 export default {
   name: 'SetSellPrice',
@@ -80,7 +88,8 @@ export default {
       addService: AddService,
       messageService: MessageService,
       userService: UserService,
-      ruleConfig: RuleConfig
+      ruleConfig: RuleConfig,
+      gradientService: GradientService
     }
   },
   rxState() {
@@ -106,7 +115,6 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      priceSetting: 1,
       priceGradient: [],
       singleReserve: 0,
       singlePrice: ''
@@ -164,9 +172,6 @@ export default {
         name: 'shop-product-course-manage-personal-list'
       })
     },
-    onChange(e) {
-      this.priceSetting = e.target.value
-    },
     inputCheck() {
       if (this.singleReserve) {
         if (!this.singlePrice.length) {
@@ -175,6 +180,9 @@ export default {
           })
           return
         }
+      }
+      if (!this.gradientService.check(this.priceGradient)) {
+        return false
       }
       return true
     },

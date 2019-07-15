@@ -71,6 +71,7 @@ import { RouteService } from '@/services/route.service'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/course/rule'
 import SetPrice from '@/views/fragments/course/set-price'
+import { GradientService } from '@/views/fragments/course/personal#/gradient.service'
 
 export default {
   name: 'SetSellPrice',
@@ -80,7 +81,8 @@ export default {
       messageService: MessageService,
       userService: UserService,
       routeService: RouteService,
-      ruleConfig: RuleConfig
+      ruleConfig: RuleConfig,
+      gradientService: GradientService
     }
   },
   rxState() {
@@ -172,6 +174,9 @@ export default {
           return
         }
       }
+      if (!this.gradientService.check(this.priceGradient)) {
+        return false
+      }
       return true
     },
     setFieldsValue() {
@@ -181,7 +186,6 @@ export default {
       // }
       this.form.setFieldsValue({
         course_name: info.course_name,
-        price_setting: info.price_setting,
         sell_type: info.sell_type,
         effective_unit: info.effective_unit
       })

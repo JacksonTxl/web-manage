@@ -144,7 +144,17 @@ export default {
     },
     onClick() {
       this.show = false
-      this.$modalRouter.push({ name: 'schedule-team-add-course-schedule-batch' })
+      this.$modalRouter.push({
+        name: 'schedule-team-add-course-schedule-batch',
+        on: {
+          ok: res => {
+            this.onScheduleChange()
+          }
+        }
+      })
+    },
+    onScheduleChange() {
+      this.$router.push({ query: this.query, force: true })
     }
   }
 }
