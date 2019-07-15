@@ -11,7 +11,7 @@
               :src="shop.logo | imgFilter({ w: 48, h: 48 })"
               alt="logo"
             />
-            <i class="layout-default-sider__certification st-icon-certified"></i>
+            <!-- <i class="layout-default-sider__certification st-icon-certified"></i> -->
           </div>
           <div class="layout-default-sider__shop-brand-name">{{brand.name}}</div>
         </div>
@@ -29,7 +29,7 @@
             :src="brand.logo | imgFilter({ w: 48, h: 48 })"
             alt="logo"
           />
-          <i class="layout-default-sider__certification st-icon-certified"></i>
+          <!-- <i class="layout-default-sider__certification st-icon-certified"></i> -->
         </div>
         <div class="layout-default-sider__name cursor-pointer" @click="switchShop">
           <span>{{brand.name}}</span>
