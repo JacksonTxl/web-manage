@@ -838,6 +838,10 @@ export const routeMapConfig = {
   'brand-setting-mina-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户端设置'
   },
+  'brand-setting-mina-pay-config'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '微信支付配置'
+    routeConfig.meta.parentId = 'brand-setting-mina-index'
+  },
   'brand-marketing-plugin'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营销插件'
   },
