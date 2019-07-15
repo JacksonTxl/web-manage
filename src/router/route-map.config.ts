@@ -276,6 +276,7 @@ export const routeMapConfig = {
   },
   // 订单列表
   'shop-finance-order-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '订单管理'
     routeConfig.queryOptions = {
       keyword: { type: String, default: '' },
       status: { type: Number, default: -1 },
@@ -285,6 +286,12 @@ export const routeMapConfig = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
+  },
+  'shop-finance-order-info-collection-details'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '收款明细'
+  },
+  'shop-finance-order-info-commodity-info'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '商品信息'
   },
   'brand-product-course-personal-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增私教课'
@@ -442,6 +449,7 @@ export const routeMapConfig = {
     }
   },
   'shop-reception-entrance'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '入场管理'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -472,6 +480,9 @@ export const routeMapConfig = {
   },
   'brand-product-card-member-number-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增次卡'
+  },
+  'brand-product-card-member-period-info'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '会籍卡详情'
   },
   'brand-product-card-deposit-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '储值卡详情'
