@@ -312,8 +312,8 @@ export default {
       // this.isChoosePermission ? (data.is_permission = 1) : (data.is_permission = 0)
       data.is_permission = +this.isChoosePermission
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
-      data.image_avatar = this.fileList[0]
-      data.image_face = this.faceList[0]
+      data.image_avatar = this.fileList[0] || {}
+      data.image_face = this.faceList[0] || {}
       data.country_code_id = this.country_code_id
       data.id_type = this.id_type
       console.log('submit', data)
