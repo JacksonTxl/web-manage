@@ -24,18 +24,18 @@
         <a-input size="large" :class="mobile('captcha-input')" placeholder="请输入验证码" v-model="captcha" />
         <span :class="mobile('captcha-button')" @click="onClickCaptcha">{{buttonText}}</span>
       </st-form-item>
-      <st-form-item  :class="mobile('pass')">
+      <st-form-item  :class="mobile('pass')" class="32">
         <div :class="mobile('pass-content')">
-          <a-checkbox>我已阅读并同意<a href="">《用户注册协议》</a></a-checkbox>
+          <!-- <a-checkbox>我已阅读并同意<a href="">《用户注册协议》</a></a-checkbox> -->
         </div>
       </st-form-item>
       <st-form-item  class="mg-b0">
         <st-button :class="mobile('login-button')" pill size="large" type="primary"  html-type="submit" block>登录</st-button>
       </st-form-item>
     </st-form>
-    <div :class="mobile('third')" class="mg-l24">
+    <!-- <div :class="mobile('third')" class="mg-l24">
       <div class="st-icon-wapper" v-for="item in thirdLogins" :key="item.type"><st-icon :class="item" :type="item" size="24px" /></div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -94,7 +94,15 @@ export default {
         country_code_id: 86,
         phone
       }
-      this.loginService.loginPhone(form).subscribe()
+      this.loginService.loginPhone(form).subscribe(res => {
+        this.userService.SET_FIRST_INITED(false)
+        if (res.have_phone) {
+          this.$router.push('/')
+        } else {
+          // 去绑定手机
+          this.$router.push('/')
+        }
+      })
     }
   },
   mounted() {
