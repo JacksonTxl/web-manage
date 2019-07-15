@@ -23,7 +23,7 @@
               :key="index"
               @click="onSwitchShop(shop)"
             >
-              <img class="drawer-shops__img" :src="shop.image_url" alt="店招" />
+              <img class="drawer-shops__img" :src="(shop.image_url || DEFAULT_LOGO) | imgFilter({ w: 128, h: 128 })" alt="店招" />
               <div>
                 <div class="drawer-shops__name">{{shop.shop_name}}</div>
                 <div class="drawer-shops__address">{{shop.address}}</div>
@@ -44,6 +44,7 @@
 import { MessageService } from '@/services/message.service'
 import { SwitchService } from './switch.service'
 import { UserService } from '@/services/user.service'
+import { AppConfig } from '@/constants/config'
 
 export default {
   name: 'SwtichShopDrawer',
@@ -53,7 +54,8 @@ export default {
   serviceInject() {
     return {
       messageService: MessageService,
-      switchService: SwitchService
+      switchService: SwitchService,
+      appConfig: AppConfig
     }
   },
   rxState() {
@@ -65,7 +67,8 @@ export default {
   },
   data() {
     return {
-      visible: false
+      visible: false,
+      DEFAULT_LOGO: this.appConfig.PLACEHOLDER_IMG.LOGO
     }
   },
   props: {
