@@ -33,7 +33,7 @@
               </div>
             </li>
           </ul>
-          <st-no-data v-else/>
+          <st-no-data text="空空如也~" v-else/>
         </a-spin>
       </section>
       <section>
