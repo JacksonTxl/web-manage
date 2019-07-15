@@ -294,10 +294,10 @@ export const routeMapConfig = {
     routeConfig.meta.title = '系统设置'
     routeConfig.meta.tabs = [
       'brand-setting-general-brand',
-      'brand-setting-general-course',
-      'brand-setting-general-pay-type',
       'brand-setting-general-coach-level',
-      'brand-setting-general-user-level'
+      'brand-setting-general-user-level',
+      'brand-setting-general-course',
+      'brand-setting-general-pay-type'
     ]
   },
   'brand-setting-app'(routeConfig: RouteConfig) {
@@ -551,7 +551,7 @@ export const routeMapConfig = {
     routeConfig.meta.auth = ''
   },
   'brand-setting-general-course'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '私教与课程设置'
+    routeConfig.meta.title = '课程定价及预约设置'
     routeConfig.meta.auth = ''
     routeConfig.meta.tabs = [
       'brand-setting-general-course-personal',
@@ -569,10 +569,10 @@ export const routeMapConfig = {
     routeConfig.meta.title = '支付方式'
   },
   'brand-setting-general-coach-level'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '教练等级'
+    routeConfig.meta.title = '教练等级设置'
   },
   'brand-setting-general-user-level'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '用户等级'
+    routeConfig.meta.title = '用户等级设置'
   },
   'brand-setting-shop-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '门店设置'
