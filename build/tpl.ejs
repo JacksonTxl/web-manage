@@ -6,7 +6,7 @@ const <%- item.asService %> = () => import(/* webpackChunkName: "<%- item.chunkN
 <% }); %>
 
 <% importArr.forEach(item => { %>
-const <%- item.component%> = () => import(/* webpackChunkName: "<%- item.component%>" */ '<%- item.pagePath%>')
+const <%- item.component%> = () => import(/* webpackChunkName: "<%- item.chunkName%>" */ '<%- item.pagePath%>')
 <% }); %>
 
 // service
