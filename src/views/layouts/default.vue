@@ -8,7 +8,7 @@
             <img
               width="100%"
               height="100%"
-              :src="shop.logo | imgFilter({ w: 48, h: 48 })"
+              :src="shop.logo | imgFilter({ w: 64, h: 64 })"
               alt="logo"
             />
             <!-- <i class="layout-default-sider__certification st-icon-certified"></i> -->
@@ -26,7 +26,7 @@
           <img
             width="100%"
             height="100%"
-            :src="brand.logo | imgFilter({ w: 48, h: 48 })"
+            :src="brand.logo | imgFilter({ w: 96, h: 96 })"
             alt="logo"
           />
           <!-- <i class="layout-default-sider__certification st-icon-certified"></i> -->
