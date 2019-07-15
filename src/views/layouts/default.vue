@@ -48,7 +48,7 @@
         </template>
         <a-breadcrumb separator="-">
           <a-breadcrumb-item>
-            <router-link :to="homePageRoute">
+            <router-link to="/">
               <st-icon type="home" class="layout-default-body__icon" />
             </router-link>
           </a-breadcrumb-item>
@@ -154,9 +154,6 @@ export default {
     },
     pageTitle() {
       return this.$route.meta.title
-    },
-    homePageRoute() {
-      return /^\/brand/.test(this.$route.path) ? '/' : '/shop/dashboard'
     },
     isInShop() {
       return this.shop.id

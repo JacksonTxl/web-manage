@@ -4,9 +4,7 @@
     :style="wrapperStyle"
     ref="button"
     @mousedown="onMouseDown">
-    <div :class="sliderButton('toolTip')">
-      {{formatValue}}
-    </div>
+    <div :class="sliderButton('toolTip')">{{formatValue}}</div>
   </div>
 </template>
 

@@ -10,15 +10,15 @@
   z-index: 2;
   &__toolTip {
     position: absolute;
-    top: -30px;
-    left: -20px;
+    top: -25px;
+    left: -18px;
     color: #fff;
     background: #798AFF;
     border-radius: 2px;
-    width: 44px;
-    height: 20px;
-    line-height: 18px;
-    padding: 2px;
+    .s(40px, 16px);
+    .fz(12px);
+    line-height: 16px;
+    // padding: 2px;
     text-align: center;
     user-select:none;
     &:before {
@@ -26,12 +26,11 @@
       position: absolute;
       width: 0;
       height: 0;
-      border-left: 4px solid transparent;
-      border-right: 4px solid transparent;
+      border-left: 3px solid transparent;
+      border-right: 3px solid transparent;
       left: 50%;
-      // margin-left: -3px;
       border-top: 4px solid #798AFF;
-      top: 19px;
+      top: 16px;
     }
   }
 }

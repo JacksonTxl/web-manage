@@ -16,7 +16,7 @@
       >{{status.name}}</a-select-option>
     </a-select>
     <st-input-search
-      placeholder="请输入员工名称"
+      placeholder="搜索员工"
       style="width:226px"
       round="round"
       v-model="query.keyword"
