@@ -11,7 +11,7 @@ export class IndexService implements RouteGuard {
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     this.redirectService.redirect({
       locateRouteName: 'index',
-      redirectRouteName: this.userService.appMode$.snapshot(),
+      redirectRouteName: this.userService.firstMenuUrl$.snapshot(),
       to,
       next
     })

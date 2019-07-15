@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-default theme-a">
+  <div class="layout-default" :class='theme'>
     <aside class="layout-default-sider">
       <!-- 门店维度下 -->
       <div class="layout-default-sider__shop" v-if="isInShop">
@@ -133,7 +133,8 @@ export default {
     return {
       user: this.userService.user$,
       brand: this.userService.brand$,
-      shop: this.userService.shop$
+      shop: this.userService.shop$,
+      theme: this.userService.theme$
     }
   },
   data() {
