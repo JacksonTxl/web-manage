@@ -14,6 +14,12 @@
           .c(@title);
         }
       }
+      .ant-menu-item {
+        a:hover,
+        &:hover {
+          color: @primary-color!important;
+        }
+      }
       .ant-menu-item-selected {
         color: @primary-color!important;
       }
@@ -25,10 +31,10 @@
       }
       &__logo {
         .bg(#fdfdfd);
-        border: 2px solid #8b8da0;
+        border: 2px solid rgba(@black, .1);
       }
       &__arrrow {
-        .c(#b5b7c2);
+        .c(#9BACB9);
       }
       &__name {
         .c(#000);

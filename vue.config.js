@@ -1,11 +1,11 @@
 const path = require('path')
 const fs = require('fs')
 const webpack = require('webpack')
+const moment = require('moment')
 const IgnoreNotFoundExportPlugin = require('./build/ignore-not-found-plugin')
 const HtmlWebpackExcludeAssetsPlugin = require('html-webpack-exclude-assets-plugin')
 const LessPluginFunction = require('less-plugin-functions')
 
-const buildConfig = require('./build.config')
 const resolve = dir => path.resolve(__dirname, dir)
 const git = require('git-rev-sync')
 const WebpackExternalVendorPlugin = require('webpack-external-vendor-plugin')
@@ -30,7 +30,7 @@ const relaseInfo = {
   git_commit_long: git.long(),
   git_message: git.message(),
   git_branch: git.branch(),
-  git_date: git.date()
+  git_date: moment(git.date()).utc(true)
 }
 fs.writeFileSync(
   resolve('./public/release.json'),
@@ -40,7 +40,7 @@ fs.writeFileSync(
 module.exports = {
   lintOnSave: false,
   css: {
-    extract: true,
+    extract: IS_PROD,
     loaderOptions: {
       less: {
         javascriptEnabled: true,
@@ -122,12 +122,6 @@ module.exports = {
       .plugin('exclude-assets-plugin')
       .use(HtmlWebpackExcludeAssetsPlugin)
       .end()
-      .plugin('html')
-      .tap(args => {
-        args[0].excludeAssets = [/theme-(.+)\.css/, /theme-(.+)\.js/]
-        return args
-      })
-      .end()
 
     // ignore no export warning by ts
     config
@@ -146,7 +140,7 @@ module.exports = {
           NODE_ENV: JSON.stringify(env.NODE_ENV),
           GIT_COMMIT: JSON.stringify(git.short()),
           GIT_MESSAGE: JSON.stringify(git.message()),
-          GIT_DATE: JSON.stringify(git.date()),
+          GIT_DATE: JSON.stringify(moment(git.date()).utc(true)),
           LOCAL_API_ENV: JSON.stringify(env.LOCAL_API_ENV)
         }
       })

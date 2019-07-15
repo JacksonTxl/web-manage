@@ -83,6 +83,7 @@
           <img :src="li.icon">
           <p>{{li.name}}</p>
         </div>
+        <div :class="h5('nav-home')"></div>
       </div>
     </div>
   </div>

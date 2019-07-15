@@ -6,10 +6,10 @@
     </st-form-item>
     <st-form-item label="展示教练">
 
-      <draggable tag="a-row" :component-data="{props:{gutter:12}}" v-model="list" :animation="200">
+      <draggable :component-data="{props:{gutter:12}}" v-model="list" :animation="200">
 
-        <a-col :span="4" v-for="(li, index) in list" :key="li.id">
-          <div :class="action('box')">
+        <!-- <a-col :span="4" v-for="(li, index) in list" :key="li.id"> -->
+          <div v-for="(li, index) in list" :key="li.id" :class="action('box')">
             <div :class="action('del')" @click="delCoach(index)">
               <a><st-icon type="delete" color="#FF5E41" :class="action('del-icon')"/></a>
               <!-- <a-popconfirm @confirm="onDel(item.id)">
@@ -22,8 +22,9 @@
             <img :src="(li.head_img.image_url || config.PLACEHOLDER_IMG.AVATAR) | imgFilter">
             <div style="-webkit-box-orient: vertical;" :class="action('nickname')" :title="li.nickname">{{li.nickname}}</div>
           </div>
-        </a-col>
-        <a-col :span="4">
+        <!-- </a-col> -->
+        <!-- <a-col :span="4"> -->
+        <div :class="action('addbox')">
           <a v-modal-link="{
               name: 'coach-select',
               props: {
@@ -37,7 +38,8 @@
               + 添加教练
             </div>
           </a>
-        </a-col>
+        </div>
+        <!-- </a-col> -->
       </draggable>
     </st-form-item>
     </st-form>

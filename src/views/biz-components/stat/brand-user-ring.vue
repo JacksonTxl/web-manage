@@ -192,7 +192,7 @@ export default {
     margin-bottom: 8px;
   }
   .guide-value {
-    font-family: DINAlternate-Bold;
+    font-family: bebas;
     font-weight: bold;
     font-size: 28px;
     line-height: 36px;

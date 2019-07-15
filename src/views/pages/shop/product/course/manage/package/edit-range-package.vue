@@ -15,7 +15,7 @@
           :help="courseErrorText"
           required>
             <template slot="label">
-              上课范围<st-help-tooltip id="TSCPC002" />
+              上课范围<st-help-tooltip id="TSCPCF002" />
             </template>
             <div :class="add('course')">
               <st-form-table>
