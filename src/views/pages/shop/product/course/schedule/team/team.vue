@@ -191,7 +191,6 @@ export default {
                 this.isShow = false
                 this.$nextTick().then(() => {
                   $('.fc-timeGridDay-button').click()
-                  calendar.scrollToTime('24:00')
                   calendarApi.gotoDate(new Date(dataDate))
                 })
               }
