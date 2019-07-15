@@ -80,6 +80,7 @@
             type="primary"
             @click="save"
             :loading="loading.setPrice"
+            :disabled="!courseId"
           >
             完成
           </st-button>
@@ -95,7 +96,7 @@ import { UserService } from '@/services/user.service'
 import { remove } from 'lodash-es'
 import { RuleConfig } from '@/constants/course/rule'
 import SetPrice from '@/views/fragments/course/set-price'
-import { checkGradient } from '@/views/fragments/course/personal#/check-gradient'
+import { GradientService } from '@/views/fragments/course/personal#/gradient.service'
 
 export default {
   name: 'SetSellPrice',
@@ -104,7 +105,8 @@ export default {
       addService: AddService,
       messageService: MessageService,
       userService: UserService,
-      ruleConfig: RuleConfig
+      ruleConfig: RuleConfig,
+      gradientService: GradientService
     }
   },
   rxState() {
@@ -203,8 +205,8 @@ export default {
           return
         }
       }
-      if (!checkGradient(this.priceGradient)) {
-        // return false
+      if (!this.gradientService.check(this.priceGradient)) {
+        return false
       }
       return true
     },
