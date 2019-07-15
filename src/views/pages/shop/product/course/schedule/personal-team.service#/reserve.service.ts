@@ -21,6 +21,7 @@ export class PersonalTeamScheduleReserveService {
   reserveInfo$: Computed<any>
   reserveList$: Computed<any>
   infoAuth$: Computed<any>
+  loading$ = new State({})
   auth$ = this.authService.authMap({
     add: 'shop:reserve:personal_team_course_reserve|add',
     cancel: 'shop:reserve:personal_team_course_reserve|del',
@@ -42,6 +43,7 @@ export class PersonalTeamScheduleReserveService {
  * @param params
  * 添加预约
  */
+  @Effect()
   add(params: AddReserveInput) {
     return this.reserveApi.add(params).pipe(tap(res => {
       this.msg.success({ content: '添加成功' })
