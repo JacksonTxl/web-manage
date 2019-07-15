@@ -208,8 +208,8 @@ export default {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.album_id = this.data.album_id
       data.department_id = Number(data.department_id)
-      data.image_avatar = this.fileList
-      data.image_face = this.faceList
+      data.image_avatar = this.fileList[0] || {}
+      data.image_face = this.faceList[0] || {}
       data.country_code_id = this.country_code_id
       data.id_type = this.id_type
       this.editservice.updateBasicInfo(this.data.staff_id, data).subscribe(res => {

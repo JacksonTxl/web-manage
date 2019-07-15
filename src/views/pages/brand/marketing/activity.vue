@@ -2,7 +2,7 @@
   <div :class="activity()">
     <div :class="activity('flexbox')">
       <div :class="activity('left')">
-        <h5-component></h5-component>
+        <h5-component  id="h5" :class="{fixed: isFixed}"></h5-component>
       </div>
       <div :class="activity('right')">
         <a-tabs defaultActiveKey="1">
@@ -20,7 +20,7 @@
       </div>
     </div>
     <div :class="activity('btn-group')">
-      <st-button type="primary" :loading="loading.save" @click="saveConfirm(1)">保存并提交</st-button>
+      <st-button type="primary" :loading="loading.save" @click="saveConfirm(2)">保存并提交</st-button>
       <!-- <st-button type="primary" :loading="loading.save" @click="saveConfirm(2)">提交</st-button> -->
     </div>
   </div>
@@ -68,18 +68,36 @@ export default {
   data() {
     return {
       sliderLoaded: false,
-      eventLoaded: false
+      eventLoaded: false,
+      isFixed: false,
+      offsetTop: 0
     }
   },
   created() {
     this.getH5Info()
     // this.getActList()
   },
+  mounted() {
+    this.offsetTop = document.querySelector('#h5').offsetTop
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
   methods: {
+    handleScroll() {
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      let offsetTop = this.offsetTop
+      if (scrollTop > offsetTop) {
+        this.isFixed = true
+      } else {
+        this.isFixed = false
+      }
+    },
     saveConfirm(is_save) {
       let content = ''
       if (is_save === 1) content = '是否确认将当前配置信息发布到小程序？'
-      if (is_save === 2) content = '点击发布将提交微信审核，在1-3个工作日后可在手机端查看，您可在完成全部配置后再发布。现在是否确认发布？'
+      if (is_save === 2) content = '是否确认将当前配置信息发布到小程序？'
       this.$confirm({
         content: content,
         onOk: () => {

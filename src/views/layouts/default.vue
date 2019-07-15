@@ -8,7 +8,7 @@
             <img
               width="100%"
               height="100%"
-              :src="shop.logo | imgFilter({ w: 64, h: 64 })"
+              :src="shop.logo| imgFilter({ w: 128, h: 128 })"
               alt="logo"
             />
             <!-- <i class="layout-default-sider__certification st-icon-certified"></i> -->
@@ -64,17 +64,17 @@
         <!-- <a-badge dot>
           <st-icon type="home" class="layout-default-body__icon"/>
         </a-badge> -->
-        <a-dropdown :trigger="['click']" placement="bottomRight">
+        <!-- <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__top-item">
             <st-icon type="square" class="layout-default-body__icon"/>
           </div>
           <div slot="overlay" class="layout-default-body__fast-entry">
             <fast-entry/>
           </div>
-        </a-dropdown>
+        </a-dropdown> -->
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__avatar">
-            <img :src="user.avatar" width="32" height="32" alt="avatar" />
+            <img :src="user.avatar | imgFilter({ w: 64, h: 64 })" width="32" height="32" alt="avatar" />
           </div>
           <div slot="overlay" class="layout-default-body__dropdown">
             <div class="layout-default-body__username">
@@ -119,7 +119,7 @@ import { find } from 'lodash-es'
 import { LoginService } from '../pages/account/login.service'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
-import FastEntry from './entry#/fast-entry'
+// import FastEntry from './entry#/fast-entry'
 
 export default {
   serviceInject() {
@@ -192,7 +192,7 @@ export default {
     },
     getSiderMenuBreadCrumb() {
       const { selectedKey, currentSiderMenu } = this.menuObj
-      if (currentSiderMenu) {
+      if (selectedKey) {
         const menuBreadCrumb = []
         menuBreadCrumb.push({
           label: currentSiderMenu.name,
@@ -224,8 +224,8 @@ export default {
   },
   components: {
     DefaultSiderMenu,
-    SwitchShop,
-    FastEntry
+    SwitchShop
+    // FastEntry
   }
 }
 </script>

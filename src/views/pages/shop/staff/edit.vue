@@ -104,7 +104,7 @@ export default {
     }
   },
   watch: {
-    isShowCoach(newVal) {
+    isPrivateCoach(newVal) {
       if (newVal) {
         this.stepsSpan = 12
         this.stepArr.pop()
@@ -113,7 +113,7 @@ export default {
   },
   created() {
     let { currentIndex } = this.$route.query
-    if (!this.isShowCoach) {
+    if (!this.isPrivateCoach) {
       this.stepsSpan = 12
       this.stepArr.pop()
     }

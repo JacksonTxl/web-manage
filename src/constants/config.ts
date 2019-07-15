@@ -107,6 +107,7 @@ export class AppConfig {
     PICTURE:
       'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-img.png',
     NODATA:
-      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-nodata.png'
+      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-nodata.png',
+    LOGO: 'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/logo-default.png'
   }
 }

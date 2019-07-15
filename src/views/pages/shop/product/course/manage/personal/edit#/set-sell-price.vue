@@ -176,6 +176,9 @@ export default {
     },
     setFieldsValue() {
       const info = this.info
+      // if (info.sell_type.indexOf(2) === -1) {
+      //   info.sell_type.push(2)
+      // }
       this.form.setFieldsValue({
         course_name: info.course_name,
         price_setting: info.price_setting,
@@ -197,7 +200,6 @@ export default {
       return data
     },
     onPriceGradientChange(priceGradient) {
-      console.log('price gradient changed', priceGradient)
       this.priceGradient = priceGradient
     },
     onSingleReserveChange() {

@@ -189,7 +189,6 @@ export default {
       return data
     },
     onPriceGradientChange(priceGradient) {
-      console.log('price gradient changed', priceGradient)
       this.priceGradient = priceGradient
     },
     onSingleReserveChange() {
