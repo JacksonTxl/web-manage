@@ -16,8 +16,14 @@
     </section>
     <section class="page-staff-rg">
       <header class="staff-rg__operation">
-        <opreation-button :auth="auth" :rowKeys="ids" @add-staff="onAddStaff" @batch-import="onbatchImport" @import-staff="onImportStaff"></opreation-button>
-        <filter-staff></filter-staff>
+        <a-row type="flex" justify="space-between">
+          <a-col :span="10">
+            <opreation-button :auth="auth" :rowKeys="ids" @add-staff="onAddStaff" @batch-import="onbatchImport" @import-staff="onImportStaff"></opreation-button>
+          </a-col>
+          <a-col :span="14">
+            <filter-staff></filter-staff>
+          </a-col>
+        </a-row>
       </header>
       <main class="staff-rg__table">
         <div  style="width:100%">
