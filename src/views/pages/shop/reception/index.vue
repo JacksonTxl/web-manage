@@ -74,13 +74,16 @@
                 <st-info-item class="mg-b0" label="入场状态">{{memberEntryStatus}}</st-info-item>
               </st-info>
             </div>
+            <div class="imgPlaceholder" v-if="!isSelectMember">
+              <img src="~@/assets/img/avatar_default_contract.png" alt="">
+            </div>
             <st-face-upload
             :class="reception('upload')"
             width="180px"
             height="180px"
             placeholder="上传人脸"
             @change="photoChange"
-            :list="photoList"></st-face-upload>
+            :list="photoList" v-else></st-face-upload>
           </div>
           <div :class="reception('set-info')" v-if="!isEntry">
             <div class="set-info-item">

@@ -8,7 +8,7 @@
         <a href="javascript: void(0);" @click="switchShop">切换门店</a>
       </p>
       <select-shop @change="onSelectShop"></select-shop>
-      <select-shop @change="onSelectShop2"></select-shop>
+      <select-shop @change="onSelectShop2" disabled></select-shop>
       <p class="mg-t32">
         <router-link to="/brand/product/course/personal/add">添加品牌私教课</router-link>
         <router-link class="mg-l8" to="/shop/product/course/manage/personal/add">添加门店私教课</router-link>
