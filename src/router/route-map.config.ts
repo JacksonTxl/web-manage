@@ -604,7 +604,7 @@ export const routeMapConfig = {
   'shop-dashboard-studio'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '概览'
   },
-  'shop-reception'(routeConfig: RouteConfig) {
+  'shop-reception-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '前台'
   },
   'shop-member-list'(routeConfig: RouteConfig) {

@@ -192,7 +192,7 @@ export default {
     },
     getSiderMenuBreadCrumb() {
       const { selectedKey, currentSiderMenu } = this.menuObj
-      if (currentSiderMenu) {
+      if (selectedKey) {
         const menuBreadCrumb = []
         menuBreadCrumb.push({
           label: currentSiderMenu.name,
