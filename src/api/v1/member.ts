@@ -407,8 +407,7 @@ export class MemberApi extends Api {
   }
 }
 export interface EditFaceParams{
-  image_id:number
-  image_key:string
+  image_face:object
 }
 
 export interface FaceCheckQuery {

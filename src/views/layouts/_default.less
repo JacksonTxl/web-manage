@@ -3,18 +3,26 @@
   &.ant-layout.ant-layout-has-sider > .ant-layout-content {
     overflow-x: auto;
   }
+  &-sider__shop-brand-name {
+    .tov-e;
+  }
+  &-sider__shop {
+    .mg-b(24px);
+    .layout-default-sider__logo {
+      .s(32px, 32px);
+      .mg-r(8px);
+      border: 1px solid rgba(@black, .45)!important;
+      .ov-h;
+    }
+    .layout-default-sider__name {
+      .mg-t(12px);
+    }
+  }
   &-sider__shop-top {
     display: flex;
     align-items: center;
     .pd(0 16px);
     .fz(14px);
-    .layout-default-sider__logo {
-      .s(32px, 32px);
-      .mg-r(8px);
-    }
-  }
-  &__shop-brand-name {
-    .tov-e;
   }
   &-sider {
     position: fixed;
@@ -27,6 +35,7 @@
     .bg(@defaultMenuBgColor);
     .c(@defaultMenuColor);
     z-index: 99;
+    border-right: 1px solid #eee;
     .ant-menu {
       .c(inherit);
     }
@@ -143,12 +152,13 @@
       justify-content: center;
       .mg-t(20px);
       .c(#fff);
-
+      .pd(0 16px);
       > span {
         .mg-r(6px);
         .fz(16px);
         .lh(24px);
         font-weight: 500;
+        .tov-e;
       }
     }
     &__scrollbox {
@@ -157,7 +167,6 @@
       // overflow: auto;
     }
     &__often {
-      .mg-t(8px);
       &-title {
         .pd-l(24px);
         .fz(12px);
@@ -277,6 +286,7 @@
       .c(@text-color-secondary);
       .lh(64px);
       .fz(16px);
+      .cur-p;
     }
     &__icon {
       .fz(20px);

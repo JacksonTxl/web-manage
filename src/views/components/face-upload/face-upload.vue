@@ -7,8 +7,8 @@
     >
       <img
         class="st-face-upload__item-img"
-        :src="(item[imageUrl] || item[imageKey]) | imgFilter(computedFilterOptions)"
-        :data-src="(item[imageUrl] || item[imageKey]) | imgFilter"
+        :src="(item[imageUrl] || item[imageKey])"
+        :data-src="(item[imageUrl] || item[imageKey])"
         :style="sizeStyle"
       />
       <slot name="item-extra" :item="item" :index="index"></slot>
@@ -130,10 +130,13 @@ export default {
     }
   },
   watch: {
-    list(newList) {
-      console.log('newList')
-      this.isShowFaceUpload = this.list.length < this.numLimit
-      this.fileList = this.list
+    list: {
+      handler(newList) {
+        console.log('newList', newList)
+        this.isShowFaceUpload = this.list.length < this.numLimit
+        this.fileList = this.list
+      },
+      immediate: true
     }
   },
   methods: {

@@ -39,7 +39,7 @@ export class SwitchService {
         return this.reloadMenuAndUser()
       }),
       tap(() => {
-        this.router.push({ name: 'shop' })
+        this.router.push('/')
       })
     )
   }
@@ -51,7 +51,7 @@ export class SwitchService {
         return this.reloadMenuAndUser()
       }),
       tap(() => {
-        this.router.push({ name: 'brand' })
+        this.router.push('/')
       })
     )
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-default theme-a">
+  <div class="layout-default" :class='theme'>
     <aside class="layout-default-sider">
       <!-- 门店维度下 -->
       <div class="layout-default-sider__shop" v-if="isInShop">
@@ -8,10 +8,10 @@
             <img
               width="100%"
               height="100%"
-              :src="shop.logo | imgFilter({ w: 48, h: 48 })"
+              :src="shop.logo| imgFilter({ w: 128, h: 128 })"
               alt="logo"
             />
-            <i class="layout-default-sider__certification st-icon-certified"></i>
+            <!-- <i class="layout-default-sider__certification st-icon-certified"></i> -->
           </div>
           <div class="layout-default-sider__shop-brand-name">{{brand.name}}</div>
         </div>
@@ -26,10 +26,10 @@
           <img
             width="100%"
             height="100%"
-            :src="brand.logo | imgFilter({ w: 48, h: 48 })"
+            :src="brand.logo | imgFilter({ w: 96, h: 96 })"
             alt="logo"
           />
-          <i class="layout-default-sider__certification st-icon-certified"></i>
+          <!-- <i class="layout-default-sider__certification st-icon-certified"></i> -->
         </div>
         <div class="layout-default-sider__name cursor-pointer" @click="switchShop">
           <span>{{brand.name}}</span>
@@ -48,7 +48,7 @@
         </template>
         <a-breadcrumb separator="-">
           <a-breadcrumb-item>
-            <router-link :to="homePageRoute">
+            <router-link to="/">
               <st-icon type="home" class="layout-default-body__icon" />
             </router-link>
           </a-breadcrumb-item>
@@ -64,17 +64,17 @@
         <!-- <a-badge dot>
           <st-icon type="home" class="layout-default-body__icon"/>
         </a-badge> -->
-        <a-dropdown :trigger="['click']" placement="bottomRight">
+        <!-- <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__top-item">
             <st-icon type="square" class="layout-default-body__icon"/>
           </div>
           <div slot="overlay" class="layout-default-body__fast-entry">
             <fast-entry/>
           </div>
-        </a-dropdown>
+        </a-dropdown> -->
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__avatar">
-            <img :src="user.avatar" width="32" height="32" alt="avatar" />
+            <img :src="user.avatar | imgFilter({ w: 64, h: 64 })" width="32" height="32" alt="avatar" />
           </div>
           <div slot="overlay" class="layout-default-body__dropdown">
             <div class="layout-default-body__username">
@@ -119,7 +119,7 @@ import { find } from 'lodash-es'
 import { LoginService } from '../pages/account/login.service'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
-import FastEntry from './entry#/fast-entry'
+// import FastEntry from './entry#/fast-entry'
 
 export default {
   serviceInject() {
@@ -133,7 +133,8 @@ export default {
     return {
       user: this.userService.user$,
       brand: this.userService.brand$,
-      shop: this.userService.shop$
+      shop: this.userService.shop$,
+      theme: this.userService.theme$
     }
   },
   data() {
@@ -153,9 +154,6 @@ export default {
     },
     pageTitle() {
       return this.$route.meta.title
-    },
-    homePageRoute() {
-      return /^\/brand/.test(this.$route.path) ? '/' : '/shop/dashboard'
     },
     isInShop() {
       return this.shop.id
@@ -194,7 +192,7 @@ export default {
     },
     getSiderMenuBreadCrumb() {
       const { selectedKey, currentSiderMenu } = this.menuObj
-      if (currentSiderMenu) {
+      if (selectedKey) {
         const menuBreadCrumb = []
         menuBreadCrumb.push({
           label: currentSiderMenu.name,
@@ -226,8 +224,8 @@ export default {
   },
   components: {
     DefaultSiderMenu,
-    SwitchShop,
-    FastEntry
+    SwitchShop
+    // FastEntry
   }
 }
 </script>

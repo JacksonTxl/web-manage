@@ -54,8 +54,8 @@ export default {
       let dayTime = new Date().getTime()
       let pastTime = dayTime + this.radioValue * 24 * 60 * 60 * 1000
       this.timeData = {
-        min: this.filterTime(pastTime),
-        max: this.filterTime(dayTime)
+        min: this.filterTime(dayTime),
+        max: this.filterTime(pastTime)
       }
       this.value.min = this.timeData.min
       this.value.max = this.timeData.max

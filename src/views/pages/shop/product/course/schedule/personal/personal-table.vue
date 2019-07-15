@@ -1,6 +1,6 @@
 
-<template class="page-personal-table schedule-table">
-  <div>
+<template >
+  <div class="page-personal-table schedule-table">
     <div class="page-personal-table__title pd-x24 pd-y16 schedule-table__title" slot="title">
       <a-row :gutter="8">
         <a-col :lg="8">
@@ -8,9 +8,9 @@
             <a v-modal-link="{ name: 'schedule-personal-inbatch-add', props: { id: 1 } }"
             >批量排期</a>
           </st-button>
-          <st-button>
+          <!-- <st-button>
             <a v-modal-link="{ name: 'schedule-personal-add', props: { id: 1 } }">添加排期</a>
-          </st-button>
+          </st-button> -->
         </a-col>
         <a-col :lg="7" :offset="2">
           <date @today="getList" :start="query.start_date" @pre="getList" @next="getList"/>
@@ -39,7 +39,7 @@
         <tbody>
           <template v-for="item in scheduleList">
             <tr :key="item.staff_name">
-              <td width="120">
+              <td width="180">
                 <a href="javascript:;">{{ item.staff_name }}</a>
               </td>
               <template v-for="items in item.schedule_info">

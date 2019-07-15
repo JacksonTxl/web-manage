@@ -153,13 +153,11 @@ export default {
       })
     },
     onCourseTypeChange(category_id) {
-      console.log('change', category_id)
       this.form.setFieldsValue({
         category_id
       })
     },
     onTrainingAimChange(train_aim) {
-      console.log('change', train_aim)
       this.form.setFieldsValue({
         train_aim
       })

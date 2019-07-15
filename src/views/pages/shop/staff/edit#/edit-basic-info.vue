@@ -79,8 +79,8 @@
         </st-form-item>
         <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
-            <template v-for="(item,key) in enums.nature_work.value">
-              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+            <template v-for="(item,index) in nature_work_option">
+              <a-select-option :key="index" :value="item.value">{{ item.label }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
@@ -174,6 +174,16 @@ export default {
       value: '' // 部门选择
     }
   },
+  computed: {
+    nature_work_option() {
+      let list = []
+      if (!this.enums.nature_work) return list
+      Object.entries(this.enums.nature_work.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return [{ value: 0, label: '请选择' }, ...list]
+    }
+  },
   mounted() {
     this.$nextTick(() => {
       this.setData(this.data)
@@ -208,8 +218,8 @@ export default {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.album_id = this.data.album_id
       data.department_id = Number(data.department_id)
-      data.image_avatar = this.fileList
-      data.image_face = this.faceList
+      data.image_avatar = this.fileList[0] || {}
+      data.image_face = this.faceList[0] || {}
       data.country_code_id = this.country_code_id
       data.id_type = this.id_type
       this.editservice.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
@@ -239,8 +249,8 @@ export default {
       })
       this.country_code_id = obj.country_code_id
       this.id_type = obj.id_type
-      this.fileList = Array.isArray(obj.image_avatar) ? obj.image_avatar : []
-      this.faceList = Array.isArray(obj.image_face) ? obj.image_face : []
+      this.fileList = Array.isArray(obj.image_avatar) ? obj.image_avatar : [obj.image_avatar]
+      this.faceList = Array.isArray(obj.image_face) ? obj.image_face : [obj.image_face]
     }
   }
 }

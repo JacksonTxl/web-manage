@@ -29,8 +29,8 @@
         </st-form-item>
         <st-form-item label="性别" required>
           <a-radio-group name="radioGroup" v-decorator="rules.sex">
-            <a-radio :value="1">男 <st-icon class="sex__male" style="color: #636aec" type="male"></st-icon></a-radio>
-            <a-radio :value="2">女 <st-icon calss="sex__female" style="color: #fa756c" type="female"></st-icon></a-radio>
+            <a-radio :value="2">男 <st-icon class="sex__male" style="color: #636aec" type="male"></st-icon></a-radio>
+            <a-radio :value="1">女 <st-icon calss="sex__female" style="color: #fa756c" type="female"></st-icon></a-radio>
           </a-radio-group>
         </st-form-item>
       </a-col>
@@ -97,8 +97,9 @@
         </st-form-item>
         <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
-            <template v-for="(item,key) in enums.nature_work.value">
-              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+            <template v-for="(item,index) in nature_work_option">
+              <a-select-option :key="index"
+              :value="item.value">{{ item.label }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
@@ -241,6 +242,16 @@ export default {
       country_code_id: 37
     }
   },
+  computed: {
+    nature_work_option() {
+      let list = []
+      if (!this.enums.nature_work) return list
+      Object.entries(this.enums.nature_work.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return [{ value: 0, label: '请选择' }, ...list]
+    }
+  },
   mounted() {
     console.log(this.shop)
     this.form.setFieldsValue({
@@ -312,8 +323,8 @@ export default {
       // this.isChoosePermission ? (data.is_permission = 1) : (data.is_permission = 0)
       data.is_permission = +this.isChoosePermission
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
-      data.image_avatar = this.fileList[0]
-      data.image_face = this.faceList[0]
+      data.image_avatar = this.fileList[0] || {}
+      data.image_face = this.faceList[0] || {}
       data.country_code_id = this.country_code_id
       data.id_type = this.id_type
       console.log('submit', data)

@@ -85,7 +85,6 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(() => {
         const data = this.getData()
-        console.log('step 2 data', data)
         this.editService.setShop(data).subscribe(() => {
           this.messageService.success({
             content: '提交成功'
@@ -95,7 +94,6 @@ export default {
       })
     },
     onSelectCoachChange(coachIds) {
-      console.log('your selected', coachIds)
       this.form.setFieldsValue({
         coach_ids: coachIds
       })

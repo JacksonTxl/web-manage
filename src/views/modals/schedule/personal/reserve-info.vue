@@ -11,7 +11,10 @@
         <st-info>
           <st-info-item label="会员名称">{{info.member_name}}</st-info-item>
           <st-info-item label="上课教练">{{info.coach_name}}</st-info-item>
-          <st-info-item label="预约状态">{{info.reserve_status | enumFilter('schedule.reserve_status')}}</st-info-item>
+          <st-info-item label="预约状态">
+            <span v-if="info.is_checkin">{{info.is_checkin | enumFilter('reserve.is_checkin')}}</span>
+            <span v-else>{{info.reserve_status | enumFilter('reserve.reserve_status')}}</span>
+          </st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">

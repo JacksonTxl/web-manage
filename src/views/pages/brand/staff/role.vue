@@ -9,10 +9,10 @@
         <ul>
           <li class="item" @click="getTreeNodeOnclick(role, $event)" v-for="(role, index) in roles" :id="role.id" :class="{'active' : index === 0}" :key="role.id">
             <div><span>{{role.name}}</span><span>（{{role.cnt}}）</span></div>
-            <div>
+            <div v-if="role.is_enabled">
               <st-more-dropdown style="margin-left: 12px;">
                 <a-menu-item v-if="auth.edit" @click="onClickEditRole(role.id)">编辑</a-menu-item>
-                <a-menu-item v-if="auth.del" @click="onClickDelRole(role.id)">删除</a-menu-item>
+                <a-menu-item v-if="auth.del && !role.cnt" @click="onClickDelRole(role.id)">删除</a-menu-item>
               </st-more-dropdown>
             </div>
           </li>

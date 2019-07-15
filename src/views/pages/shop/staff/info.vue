@@ -4,9 +4,7 @@
       <a-row :gutter="8">
         <a-col :lg="16" class="pages-staffdata-header-detail">
           <div class="staff-avatar-container st-preview-item">
-            <img
-              src="//styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/20190411/nmdNRC_cVqWSjCNg.png?x-oss-process=image/resize,interlace_1,m_fill,w_208,h_208"
-            >
+            <img :src="image_avatar_url">
             <div class="staff-avatar-tip">{{ info.work_status.name }}/{{ info.nature_work.name }}</div>
           </div>
           <div class="staff-info-container">
@@ -104,6 +102,11 @@ export default {
         route: { name: 'shop-staff-info-member', query: { id: this.query.id } }
       },
       tabList: []
+    }
+  },
+  computed: {
+    image_avatar_url() {
+      return (this.info && this.info.image_avatar && this.info.image_avatar.image_url) || ''
     }
   },
   created() {

@@ -15,7 +15,7 @@
             </div>
             <st-form-item v-else labelWidth="46px" label="链接">
                 <a-select placeholder="请输入连接的活动" @select="actSelect(li,$event)" v-model="li.activity_id">
-                    <a-select-option v-for="(act, i) in actList" :key="i" :value="act.id">{{act.activity_name}}</a-select-option>
+                    <a-select-option v-for="(act, i) in actList" :key="i" :value="act.id" :disabled="filterActList(act.id)">{{act.activity_name}}</a-select-option>
                 </a-select>
             </st-form-item>
           </div>
@@ -30,7 +30,7 @@
           </st-image-upload>
             <st-form-item labelWidth="46px" label="链接">
                 <a-select placeholder="请输入连接的活动" @select="addSelect" v-model="addItem.activity_id">
-                  <a-select-option v-for="(act, i) in actList" :key="i" :value="act.id">{{act.activity_name}}</a-select-option>
+                  <a-select-option v-for="(act, i) in actList" :key="i" :value="act.id" :disabled="filterActList(act.id)">{{act.activity_name}}</a-select-option>
                 </a-select>
             </st-form-item>
             </div>
@@ -41,10 +41,11 @@
 </template>
 <script>
 import { H5WrapperService } from '@/views/pages/brand/setting/mina/components#/h5/h5-wrapper.service'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, find as _find } from 'lodash-es'
 import draggable from 'vuedraggable'
 import { ActivityService } from '../activity.service'
 import over from '@/assets/img/brand/setting/mina/over.png'
+
 export default {
   bem: {
     slider: 'activity-slider-component'
@@ -91,15 +92,12 @@ export default {
       handler(newVal) {
         console.log(newVal)
         this.h5WrapperService.SET_H5INFO(newVal, 1)
-        // if(newVal.length) this.filterActList(newVal)
       }
     }
   },
   methods: {
-    filterActList(list) {
-      let ids = []
-      list.forEach(item => ids.push(item.activity_id))
-      this.actFilterList = this.actList.filter(item => !ids.includes(item.id))
+    filterActList(id) {
+      return !!_find(this.list, o => o.activity_id === id)
     },
     imageUploadChange(img) {
       let addItem = Object.assign({}, this.addItem)

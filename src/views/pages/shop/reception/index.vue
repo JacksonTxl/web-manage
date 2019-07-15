@@ -74,13 +74,16 @@
                 <st-info-item class="mg-b0" label="入场状态">{{memberEntryStatus}}</st-info-item>
               </st-info>
             </div>
+            <div class="imgPlaceholder" v-if="!isSelectMember">
+              <img src="~@/assets/img/reception_avatar_default.png" alt="">
+            </div>
             <st-face-upload
             :class="reception('upload')"
             width="180px"
             height="180px"
             placeholder="上传人脸"
             @change="photoChange"
-            :list="photoList"></st-face-upload>
+            :list="photoList" v-else></st-face-upload>
           </div>
           <div :class="reception('set-info')" v-if="!isEntry">
             <div class="set-info-item">
@@ -495,10 +498,9 @@ export default {
   },
   methods: {
     photoChange(list) {
-      if (!this.isSelectMember) return
-      console.log('photoChange')
-      this.indexService.editFace(this.memberId, list[0]).subscribe((res) => {
-        console.log('photoChange', res)
+      this.indexService.editFace(this.memberId, {
+        image_face: list[0]
+      }).subscribe((res) => {
         this.getMemberInfo(this.memberId)
       })
     },
@@ -593,6 +595,7 @@ export default {
         this.seller = res.info.seller.id || -1
         this.coach = res.info.coach.id || -1
         this.cabinet = res.info.cabinet.id || -1
+        this.photoList = !Array.isArray(res.info.face_url) ? [res.info.face_url] : []
       })
     },
     // 添加会员

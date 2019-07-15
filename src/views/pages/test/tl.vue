@@ -8,7 +8,7 @@
         <a href="javascript: void(0);" @click="switchShop">切换门店</a>
       </p>
       <select-shop @change="onSelectShop"></select-shop>
-      <select-shop @change="onSelectShop2"></select-shop>
+      <select-shop @change="onSelectShop2" disabled></select-shop>
       <p class="mg-t32">
         <router-link to="/brand/product/course/personal/add">添加品牌私教课</router-link>
         <router-link class="mg-l8" to="/shop/product/course/manage/personal/add">添加门店私教课</router-link>
@@ -119,7 +119,6 @@
 </template>
 
 <script>
-import { ThemeService } from '@/services/theme.service'
 import { TlService } from '@/views/pages/test/tl.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
@@ -134,7 +133,6 @@ import { UserService } from '@/services/user.service'
 export default {
   serviceInject() {
     return {
-      themeService: ThemeService,
       messageService: MessageService,
       tlService: TlService,
       routeService: RouteService,

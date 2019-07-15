@@ -7,12 +7,12 @@
           <th>市</th>
           <th>区</th>
           <th>门店名称</th>
-          <th>操作</th>
+          <th v-if="!disabled">操作</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td colspan="5" class="st-form-table__add">
+        <tr v-if="!disabled">
+          <td :colspan="colspanNum" class="st-form-table__add">
             <st-button
               type="dashed"
               icon="add"
@@ -31,23 +31,33 @@
             </st-button>
           </td>
         </tr>
-        <tr
-          v-for="(item, index) in list"
-          :key="index"
-        >
-          <td>{{item.province}}</td>
-          <td>{{item.city}}</td>
-          <td>{{item.district}}</td>
-          <td>{{item.shop_name}}</td>
-          <td>
-            <a
-              @click="delShopTableRecord(item.shop_id)"
-            >
-              删除
-            </a>
-          </td>
-        </tr>
+        <template v-if="list.length">
+          <tr
+            v-for="(item, index) in list"
+            :key="index"
+          >
+            <td>{{item.province}}</td>
+            <td>{{item.city}}</td>
+            <td>{{item.district}}</td>
+            <td>{{item.shop_name}}</td>
+            <td v-if="!disabled">
+              <a
+                @click="delShopTableRecord(item.shop_id)"
+              >
+                删除
+              </a>
+            </td>
+          </tr>
+        </template>
+        <template v-else>
+          <tr>
+            <td :colspan="colspanNum">
+              <st-no-data/>
+            </td>
+          </tr>
+        </template>
       </tbody>
+
     </st-form-table>
   </div>
 </template>
@@ -72,6 +82,10 @@ export default {
       default() {
         return []
       }
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -83,6 +97,11 @@ export default {
   created() {
     this.checkedShopIds = this.shopIds
     this.getShops(this.shopIds)
+  },
+  computed: {
+    colspanNum() {
+      return this.disabled ? 4 : 5
+    }
   },
   methods: {
     onSelectShopComplete(shopIds) {

@@ -3,28 +3,28 @@
   position: relative;
   align-items: center;
   justify-content: center;
-  .s(100vw, 100vh);
-  background: #F8F8F8;
+  height: 100%;
+  background: #f8f8f8;
   .page-login-ch-en {
     position: absolute;
     height: 72px;
     .lh(72px);
     top: 0;
     right: 0;
-    >span {
+    > span {
       .fz(14px);
-      .c(rgba(0,0,0,.45));
+      .c(rgba(0, 0, 0, 0.45));
       cursor: pointer;
-      &.active{
-        .c(rgba(0,0,0,.75));
+      &.active {
+        .c(rgba(0, 0, 0, 0.75));
       }
     }
   }
-  .page-login{
+  .page-login {
     .s(960px, 516px);
     .bg(#fff);
-    box-shadow:0px 0px 20px 0px rgba(196,193,219,0.2);
-    border-radius:4px;
+    box-shadow: 0px 0px 20px 0px rgba(196, 193, 219, 0.2);
+    border-radius: 4px;
     display: flex;
     position: relative;
     .page-switch-login-type {
@@ -33,7 +33,8 @@
       right: 0;
       width: 72px;
       height: 72px;
-      background: url('https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/icon-login-type-switch.png') 0 -72px~'/'144px 144px no-repeat;
+      background: url('https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/icon-login-type-switch.png')
+        0 -72px~ '/' 144px 144px no-repeat;
       &.qrcode-login {
         background-position-x: -72px;
       }
@@ -42,48 +43,49 @@
       }
     }
   }
-  .lf{
+  .lf {
     position: relative;
     .w(420px);
     .h(100%);
-    >footer {
+    > footer {
       position: absolute;
       left: 0;
       right: 0;
       bottom: 0;
       text-align: center;
     }
-    &-help{
+    &-help {
       list-style-type: none;
       display: flex;
       align-items: center;
       justify-content: center;
       padding-left: 0;
-      .item{
+      .item {
         padding: 0 22px;
-        a{
+        a {
           .fz(12px);
-          .c(rgba(255,255,255,.45));
+          .c(rgba(255, 255, 255, 0.45));
         }
       }
     }
-    &-copyright{
+    &-copyright {
       margin-bottom: 36px;
       .fz(12px);
       font-weight: 400;
-      .c(rgba(255,255,255,.45));
+      .c(rgba(255, 255, 255, 0.45));
       .lh(20px);
     }
-    &-bg{
+    &-bg {
       position: absolute;
       top: 0;
       right: 0;
       .s(420px, 516px);
-      background: url(https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/bg-login-%402x.png) top center no-repeat;
+      background: url(https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/bg-login-%402x.png)
+        top center no-repeat;
       background-size: cover;
     }
   }
-.book {
+  .book {
     background-color: #fff;
     transform: rotateX(30deg);
   }
@@ -91,27 +93,30 @@
     /*transform-style属性指定了，该元素的子元素是（看起来）位于三维空间内，还是在该元素所在的平面内被扁平化。*/
     transform-style: preserve-3d;
   }
-  .rt{
-    display:flex;
+  .rt {
+    display: flex;
     align-items: center;
     flex-direction: column;
     flex: 1;
     .mg-t(118px);
   }
-  .st-icon{
+  .st-icon {
     color: #fff;
   }
 }
-@keyframes mymove
-{
-from {width:0px;}
-to {width:32px;}
+@keyframes mymove {
+  from {
+    width: 0px;
+  }
+  to {
+    width: 32px;
+  }
 }
-.page-login-tabs{
+.page-login-tabs {
   display: flex;
   .w(336px);
-  .page-login-tab-item{
-    + .page-login-tab-item{
+  .page-login-tab-item {
+    + .page-login-tab-item {
       margin-left: 48px;
     }
     position: relative;
@@ -121,21 +126,19 @@ to {width:32px;}
     .lh(22px);
     padding-bottom: 12px;
 
-    &--active{
+    &--active {
       font-weight: 500;
       .c(@title);
-      &:before{
+      &:before {
         content: '';
         .s(32px, 4px);
-        animation:mymove .3s;
+        animation: mymove 0.3s;
         display: inline-block;
         .bg(@primary-color);
         position: absolute;
         bottom: 0;
-        left: 0
+        left: 0;
       }
     }
   }
 }
-
-

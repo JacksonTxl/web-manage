@@ -9,21 +9,22 @@
   >
     <div class="drawer-switch-shop">
       <!-- <section class="mg-l24 mg-r24 drawer-switch-shop__header">
-        <a-input-search
+        <st-input-search
           placeholder="搜索门店"
           @search="onSearchShop"
         />
-      </section>-->
+      </section> -->
       <section class="mg-t24 drawer-switch-shop__body">
         <a-spin :spinning="!!loading.switchShop">
           <ul class="drawer-shops">
             <li
               class="drawer-shops__item cursor-pointer"
+              :class="{ current: currentShopId === shop.shop_id }"
               v-for="(shop, index) in shopList"
               :key="index"
               @click="onSwitchShop(shop)"
             >
-              <img class="drawer-shops__img" :src="shop.image_url" alt="店招" />
+              <img class="drawer-shops__img" :src="shop.image_url | imgFilter({ w: 128, h: 128 })" alt="店招" />
               <div>
                 <div class="drawer-shops__name">{{shop.shop_name}}</div>
                 <div class="drawer-shops__address">{{shop.address}}</div>
@@ -53,14 +54,16 @@ export default {
   serviceInject() {
     return {
       messageService: MessageService,
-      switchService: SwitchService
+      switchService: SwitchService,
+      userService: UserService
     }
   },
   rxState() {
     const { shopList$, loading$ } = this.switchService
     return {
       shopList: shopList$,
-      loading: loading$
+      loading: loading$,
+      shop: this.userService.shop$
     }
   },
   data() {
@@ -81,6 +84,11 @@ export default {
   },
   created() {
     this.switchService.getShopList().subscribe()
+  },
+  computed: {
+    currentShopId() {
+      return this.shop.id
+    }
   },
   methods: {
     onClose() {
