@@ -144,6 +144,12 @@ export default {
       this.form.validateFields().then((data) => {
         data.id = this.id
         const reason = this.info.reason || ''
+        if (!reason.length) {
+          this.messageService.error({
+            content: '请输入不可用原因'
+          })
+          return
+        }
         if (this.isShowReason && !this.pattern.CN_EN_NUM_SPACE('1-30').test(reason)) {
           this.messageService.error({
             content: '不可用原因格式错误'
