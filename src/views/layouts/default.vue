@@ -36,7 +36,7 @@
           <st-icon type="arrow-right" class="layout-default-sider__arrow"></st-icon>
         </div>
       </div>
-      <div class="layout-default-sider__scrollbox" v-scrollBar>
+      <div class="layout-default-sider__scrollbox" v-scrollBar @click="onClickSiderMenu">
         <default-sider-menu @change="onSiderMenuChange" />
       </div>
     </aside>
@@ -220,6 +220,12 @@ export default {
     },
     onSiderMenuChange(menuObj) {
       this.menuObj = menuObj
+    },
+    onClickSiderMenu() {
+      /**
+       * 切换路由时关闭切换门店 drawer
+       */
+      this.isShowSwitchShop = false
     }
   },
   components: {
