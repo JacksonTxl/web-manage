@@ -53,12 +53,12 @@ export default {
       list: [],
       options: {
         image_id: 'image_id',
-        image_key: 'image_key',
+        image_key: 'icon_key',
         image_url: 'icon'
       },
       options_selected: {
         image_id: 'image_id',
-        image_key: 'image_key',
+        image_key: 'selected_icon_key',
         image_url: 'selected_icon'
       }
     }
@@ -76,14 +76,16 @@ export default {
   },
   methods: {
     imageUploadChange(e, index) {
-      let url = ''
-      if (e.length) url = e[0].image_key
-      this.list[index].icon = url
+      if (e.length) {
+        this.list[index].icon_key = e[0].icon_key
+        this.list[index].icon = e[0].icon
+      }
     },
     selectedImageUploadChange(e, index) {
-      let url = ''
-      if (e.length) url = e[0].image_key
-      this.list[index].selected_icon = url
+      if (e.length) {
+        this.list[index].selected_icon_key = e[0].selected_icon_key
+        this.list[index].selected_icon = e[0].selected_icon
+      }
     }
   }
 }

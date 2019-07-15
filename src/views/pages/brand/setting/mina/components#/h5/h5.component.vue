@@ -19,7 +19,7 @@
       </div>
       <div :class="h5('action')">
         <div v-for="(li,index) in actionInfo" class="action-li" :key="index">
-          <img :src="li.image_url | imgFilter">
+          <img :src="li.image_url">
           <p>{{li.title}}</p>
         </div>
       </div>
@@ -80,7 +80,7 @@
       </div>
       <div :class="h5('nav')">
         <div v-for="(li,index) in menuInfo" class="nav-li" :key="index">
-          <img :src="li.icon | imgFilter">
+          <img :src="li.icon">
           <p>{{li.name}}</p>
         </div>
       </div>
