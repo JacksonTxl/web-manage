@@ -23,20 +23,20 @@ export default {
       cardTypeList: [
         {
           bg: require('@/assets/img/bg-course-package-unlimit.png'),
-          title: 'XX课程包（不限课程）',
-          describe: '支持会员在有效次数内进入场馆并消耗次数',
+          title: '课程包（全部课程）',
+          describe: '支持用户预约门店全部课程',
           url: 'shop-product-course-manage-package-add-unlimit-package'
         },
         {
           bg: require('@/assets/img/bg-course-package-range.png'),
-          title: 'XX课程包（指定范围内课程）',
-          describe: '支持会员在有效次数内进入场馆并消耗次数',
+          title: '课程包（限定课程）',
+          describe: '支持用户预约限定范围内的课程',
           url: 'shop-product-course-manage-package-add-range-package'
         },
         {
           bg: require('@/assets/img/bg-course-package-fix.png'),
-          title: 'XX课程包（固定课程）',
-          describe: '支持会员在有效次数内进入场馆并消耗次数',
+          title: '课程包（固定课程）',
+          describe: '仅支持用户预约固定的课程',
           url: 'shop-product-course-manage-package-add-fix-package'
         }
       ]
