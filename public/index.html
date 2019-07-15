@@ -119,10 +119,16 @@
     </div>
 
     <script>
-      window.htmlWebpackFiles = <%= JSON.stringify(htmlWebpackPlugin.files) %>
+      // 防止误操作地址栏url
+      if(location.pathname === '//'){
+        location.href = '/'
+      }
     </script>
     <script defer src="//at.alicdn.com/t/font_1106512_2dxpyuu53va.js"></script>
-    <script defer src="https://map.qq.com/api/js?v=2.exp&key=ZEGBZ-46CK6-6NCSC-M63GX-L7JGJ-XWB2D&libraries=place"></script>
+    <script
+      defer
+      src="https://map.qq.com/api/js?v=2.exp&key=ZEGBZ-46CK6-6NCSC-M63GX-L7JGJ-XWB2D&libraries=place"
+    ></script>
     <script defer>
       var _hmt = _hmt || []
       ;(function() {
