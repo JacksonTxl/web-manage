@@ -1,7 +1,7 @@
 <template>
   <div :class="b()" :style="{'margin-top':info.contract_marget + 'mm'}">
     <header :class="b('header')">
-      <img v-if="info.is_brand_logo" :class="b('brand-logo')" src="http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/20190411/nmdNRC_cVqWSjCNg.png" alt="brand-logo">
+      <img v-if="info.is_brand_logo" :class="b('brand-logo')" :src="brand.logo" alt="brand-logo">
       <h1 :class="b('title')">{{info.contract_title}}</h1>
       <h4 v-if="info.is_brand_name" :class="b('brand-name')">这里是品牌名称</h4>
       <div v-if="info.is_contract_number" :class="b('contract-code')">
@@ -191,7 +191,7 @@
 import { dateFilter } from '@/filters/date.filters'
 import { CONTRACT_TYPE } from '@/constants/contract/enums'
 import moment from 'moment'
-
+import { UserService } from '@/services/user.service'
 export default {
   props: {
     info: {
@@ -209,6 +209,16 @@ export default {
   },
   bem: {
     b: 'contract-preview'
+  },
+  serviceInject() {
+    return {
+      userService: UserService
+    }
+  },
+  rxState() {
+    return {
+      brand: this.userService.brand$
+    }
   },
   filters: { dateFilter },
   data() {
