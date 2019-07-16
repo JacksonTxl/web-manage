@@ -171,16 +171,21 @@ export default {
           .getLocation(`https://apis.map.qq.com/ws/location/v1/ip?output=jsonp&key=${this.appConfig.QQ_MAP_KEY}&callback=`)
           .subscribe(res => {
             if (res.status === 0) {
+              let code = res.result.ad_info.adcode
+              let provinceId = `${code}`.substr(0, 2) + '0000'
+              let cityId = `${code}`.substr(0, 4) + '00'
               // 定位成功
               this.selectData.province = {
-                id: ~~(res.result.ad_info.adcode / 10000) * 10000,
+                // id: ~~(res.result.ad_info.adcode / 10000) * 10000,
+                id: +provinceId,
                 name: res.result.ad_info.province
               }
               this.selectData.city = {
-                id: ~~(res.result.ad_info.adcode / 100) * 100,
+                // id: ~~(res.result.ad_info.adcode / 100) * 100,
+                id: +cityId,
                 name: res.result.ad_info.city
               }
-              this.PC = [~~(res.result.ad_info.adcode / 10000) * 10000, ~~(res.result.ad_info.adcode / 100) * 100, res.result.ad_info.adcode]
+              this.PC = [+provinceId, +cityId, res.result.ad_info.adcode]
               this.selectCity = res.result.ad_info.city
               this.locationData = cloneDeep(res.result)
             } else {
