@@ -2,7 +2,7 @@
   <st-modal
   title="业务拆分"
   size="small"
-  width="876"
+  width="800px"
   v-model="show"
   wrapClassName="modal-shop-finance-split">
     <div :class="basic('content')">
@@ -26,6 +26,7 @@
       rowKey="staff_id"
       :pagination="false"
       :columns="columns"
+      :scroll="{x:752}"
       :dataSource="info.split_items">
         <template slot="staff_name" slot-scope="text, record, index">
           <a-select
@@ -49,12 +50,13 @@
           <template v-else>{{text}}</template>
         </template>
         <div slot="action" slot-scope="text, record, index">
-          <a v-if="record.edit === 3" @click="addSaleMan(record)">协助售卖人</a>
-          <a v-if="record.edit && record.edit !== 3" @click="onSave(record, index)">确定</a>
-          <a v-if="!record.edit" @click="onEidt(record, index)">编辑</a>
-          <a-divider type="vertical"></a-divider>
-          <a v-if="record.edit === 1 || record.edit === 2" @click="onCanel(record, index)">取消</a>
-          <a v-if="!record.edit && record.staff_type !== 1" @click="onDelete(index)">删除</a>
+          <st-table-actions>
+            <a v-if="record.edit === 3" @click="addSaleMan(record)">协助售卖人</a>
+            <a v-if="record.edit && record.edit !== 3" @click="onSave(record, index)">确定</a>
+            <a v-if="!record.edit" @click="onEidt(record, index)">编辑</a>
+            <a v-if="record.edit === 1 || record.edit === 2" @click="onCanel(record, index)">取消</a>
+            <a v-if="!record.edit && record.staff_type !== 1" @click="onDelete(index)">删除</a>
+          </st-table-actions>
         </div>
       </st-table>
       <div :class="basic('descrip')">
@@ -117,6 +119,8 @@ export default {
         }, {
           title: '操作',
           dataIndex: 'action',
+          fixed: 'right',
+          width: 140,
           scopedSlots: { customRender: 'action' }
         }]
     }
