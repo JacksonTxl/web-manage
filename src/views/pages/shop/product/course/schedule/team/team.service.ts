@@ -14,6 +14,7 @@ export class TeamService implements RouteGuard {
     addBatch: 'shop:schedule:team_course_schedule|batch_add',
     copy: 'shop:schedule:team_course_schedule|copy'
   })
+
   constructor(private commonService: CommonService,
     private authService: AuthService,
     private scheduleService: ScheduleService) {
@@ -23,6 +24,7 @@ export class TeamService implements RouteGuard {
   init(query: any) {
     return forkJoin(this.commonService.getCoachList(), this.commonService.getCourseList(), this.commonService.getCourtList(), this.scheduleService.getList(to.query))
   }
+
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
     return this.init(to.query)
   }
