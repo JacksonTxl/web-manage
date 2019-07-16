@@ -1,5 +1,5 @@
 <template>
-  <st-modal :footer="null" title="编辑课程排期" @ok="save" v-model="show">
+  <st-modal :footer="null" title="编辑课程排期" v-model="show">
     <div><span>已约</span><span>{{reserved_num}}人</span></div>
     <st-form :form="form">
       <st-form-item label="时间" required>
@@ -19,7 +19,7 @@
         </a-select>
       </st-form-item>
       <st-form-item label="教练" required>
-        <a-select @change="onChange" v-decorator="[
+        <a-select  v-decorator="[
           'coach_id',
           {rules: [{ required: true, message: '请选择教练' }]}
         ]">
@@ -30,7 +30,6 @@
         <a-cascader
         :options="courtOptions"
         :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
-        @change="onChange"
         v-decorator="[
           'court_id',
           {rules: [{ required: true, message: '请选择场地' }]}
@@ -40,7 +39,7 @@
         <a-input-search v-decorator="[
           'limit_num',
           {rules: [{ required: true, message: 'Please input your note!' }]}
-        ]"  @change="onChange"> <a-button slot="enterButton">人</a-button> </a-input-search>
+        ]" > <a-button slot="enterButton">人</a-button> </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required >
         <a-input-search v-decorator="[
@@ -55,7 +54,7 @@
           <st-button class="mg-r16" @click="onClick">取消</st-button>
           <st-button
             type="primary"
-            :loading="loading"
+            :loading="loading.update"
             @click="onSubmit">
             确认
           </st-button>
@@ -67,6 +66,8 @@
 
 <script>
 import { cloneDeep } from 'lodash-es'
+
+import { TeamService } from '@/views/pages/shop/product/course/schedule/team/team.service'
 import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
 import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
 export default {
@@ -74,13 +75,14 @@ export default {
   serviceInject() {
     return {
       teamScheduleScheduleService: TeamScheduleScheduleService,
-      teamScheduleCommonService: TeamScheduleCommonService
+      teamScheduleCommonService: TeamScheduleCommonService,
+      teamService: TeamService
     }
   },
   rxState() {
     const tss = this.teamScheduleCommonService
     return {
-      loading: teamScheduleScheduleService.loading$,
+      loading: this.teamScheduleScheduleService.loading$,
       coachOptions: tss.coachOptions$,
       courseOptions: tss.courseOptions$,
       courtOptions: tss.courtOptions$
@@ -101,6 +103,7 @@ export default {
   },
   created() {
     this.form = this.$form.createForm(this)
+    this.initOptions().subscribe()
   },
   mounted() {
     this.teamScheduleScheduleService.getUpdateInfo(this.id).subscribe(res => {
@@ -113,6 +116,12 @@ export default {
     })
   },
   methods: {
+    initOptions() {
+      return this.teamService.initOptions()
+    },
+    onClick() {
+      this.show = true
+    },
     onSubmit() {
       this.form.validateFields((err, values) => {
         if (!err) {
