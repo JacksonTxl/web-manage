@@ -24,7 +24,7 @@
       </div>
     </st-container>
     <st-container class="book bg-white mg-t16" type="2">
-      <plug-in title="多功能人脸识别一体机" sub="AI技术加持，玩转大数据" :img="ai" href="http://www.styd.cn/default/product_iot_face"></plug-in>
+      <plug-in title="多功能人脸识别一体机" sub="AI技术加持，玩转大数据" :img="ai" href="https://www.styd.cn/default/product_iot_face"></plug-in>
     </st-container>
     <st-container class="link bg-white mg-t16" type="2">
       <st-t3 class="link__phone font-number">400-962-8988</st-t3>
