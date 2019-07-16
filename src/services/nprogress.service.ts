@@ -3,6 +3,9 @@ import { State } from 'rx-state'
 
 import nProgress from 'nprogress'
 
+nProgress.configure({
+  speed: 500
+})
 export class NProgressService {
   text$ = new State<string>('静态资源加载完毕')
   constructor() {
