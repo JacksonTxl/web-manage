@@ -6,6 +6,8 @@
 import { Chart } from '@antv/g2'
 import { View } from '@antv/data-set'
 import chartMixin from './mixin'
+import Vue from 'vue'
+import StHelpTooltip from '@/views/components/help-tooltip/help-tooltip'
 
 export default {
   mixins: [chartMixin],
@@ -73,7 +75,7 @@ export default {
           return (
             `<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">` +
             `<i class="g2-legend-marker" style="background-color:{color};"></i>` +
-            `<span class="g2-legend-text">${name}</span>` +
+            `<span class="g2-legend-text">${name}&nbsp;<span id='legend-{index}'></span></span>` +
             `</li>`
           )
         }
@@ -115,6 +117,8 @@ export default {
 
       this.chart.render()
 
+      this.changeData()
+
       const $s = this.$el.querySelector.bind(this.$el)
 
       this.chart.on('interval:mouseenter', e => {
@@ -142,6 +146,24 @@ export default {
           el.addEventListener('mouseenter', mouseHandler, false)
         })
       })
+    },
+    changeData() {
+      new Vue({
+        components: {
+          StHelpTooltip
+        },
+        render: h => (
+          <st-help-tooltip id="TBDAR002"></st-help-tooltip>
+        )
+      }).$mount('#legend-1')
+      new Vue({
+        components: {
+          StHelpTooltip
+        },
+        render: h => (
+          <st-help-tooltip id="TBDAR001"></st-help-tooltip>
+        )
+      }).$mount('#legend-5')
     }
   },
   beforeDestroy() {
