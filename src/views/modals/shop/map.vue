@@ -350,6 +350,16 @@ export default {
           this.mapService
             .getLocation(`https://apis.map.qq.com/ws/geocoder/v1/?location=${this.selectData.lat},${this.selectData.lng}&output=jsonp&key=${this.appConfig.QQ_MAP_KEY}&callback=`)
             .subscribe(res => {
+              let code = res.result.ad_info.adcode
+              let provinceId = `${code}`.substr(0, 2) + '0000'
+              let cityId = `${code}`.substr(0, 4) + '00'
+              // 定位成功
+              this.selectData.province.id = +provinceId
+              this.selectData.province.name = res.result.ad_info.province
+              this.selectData.city.id = +cityId
+              this.selectData.city.name = res.result.ad_info.city
+              this.selectData.district.id = +res.result.ad_info.adcode
+              this.selectData.district.name = res.result.ad_info.district
               this.selectData.district.id = +res.result.ad_info.adcode
               this.selectData.district.name = res.result.ad_info.district
               this.$emit('ok', this.selectData)
