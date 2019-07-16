@@ -31,8 +31,8 @@ export default {
       align-items: center;
       justify-content: center;
       color: #fff;
-      width:32px;
-      height:32px;
+      width:24px;
+      height:24px;
       background:rgba(205,212,223,1);
       border-radius: 100%;
     }

@@ -161,10 +161,10 @@ export default {
     setData(obj) {
       this.form.setFieldsValue({
         graduated_school: obj.graduated_school,
-        graduation_time: obj.graduation_time ? moment(obj.graduation_time) : moment(),
+        graduation_time: obj.graduation_time ? moment(obj.graduation_time) : undefined,
         education: obj.education,
         profession: obj.profession,
-        birthday: obj.birthday ? moment(obj.birthday) : moment(),
+        birthday: obj.birthday ? moment(obj.birthday) : undefined,
         native_place: obj.native_place,
         marry_status: obj.marry_status,
         children_status: obj.children_status,

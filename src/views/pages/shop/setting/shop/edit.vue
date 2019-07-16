@@ -71,7 +71,7 @@
           <st-form-item label="门店图片" class="st-preview-item" v-viewer="{ url: 'data-src' }" required>
             <ul :class="edit('img-box')">
               <li :class="edit('img')" class="mg-r12 mg-t12" v-for="(item,index) in imgList" :key="index">
-                <img :dataSrc="item.image_url|imgFilter({ w: 1000 })" :src="item.image_url | imgFilter({w:240,h:135})" width="240" height="135" alt="门店图片">
+                <img :data-src="item.image_url|imgFilter({ w: 1000 })" :src="item.image_url | imgFilter({w:240,h:135})" width="240" height="135" alt="门店图片">
                 <st-tag v-if="item.is_cover" class="shop-edit-img-tag" type="shop-sign"/>
                 <p class="shop-edit-img-button mg-b0" v-else>
                   <span class="cursor-pointer" @click="onSetCover(index)">设为店招</span>

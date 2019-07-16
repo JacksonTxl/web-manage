@@ -119,22 +119,3 @@ export default {
   }
 }
 </script>
-
-<style lang="less">
-.stat-brand-simple-line {
-  .g2-tooltip {
-    padding: 0 !important;
-  }
-  .tooltip-item {
-    margin: 0 !important;
-    border-radius: 2px;
-    padding: 4px 6px;
-  }
-  .g2-tooltip-value {
-    margin: 0 !important;
-    float: none !important;
-    color: white;
-    font-size: 12px;
-  }
-}
-</style>

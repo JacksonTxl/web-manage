@@ -64,6 +64,7 @@
               icon="delete"
               class="mg-l8 color-danger"
               @click="onDelCabinet"
+              :loading="loading.del"
             >
               删除
             </st-button>
@@ -113,7 +114,8 @@ export default {
     return {
       list: this.areaService.list$,
       query: this.routeService.query$,
-      auth: this.cabinetService.auth$
+      auth: this.cabinetService.auth$,
+      loading: this.cabinetService.loading$
     }
   },
   data() {

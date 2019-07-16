@@ -36,7 +36,7 @@
           <st-icon type="arrow-right" class="layout-default-sider__arrow"></st-icon>
         </div>
       </div>
-      <div class="layout-default-sider__scrollbox" v-scrollBar>
+      <div class="layout-default-sider__scrollbox" v-scrollBar @click="onClickSiderMenu">
         <default-sider-menu @change="onSiderMenuChange" />
       </div>
     </aside>
@@ -146,10 +146,10 @@ export default {
   computed: {
     breadCrumbs() {
       const menuBreadCrumb = this.getSiderMenuBreadCrumb()
-      // const parentBreadCrumb = this.getParentBreadCrumb()
+      const parentBreadCrumb = this.getParentBreadCrumb()
       return [
-        ...menuBreadCrumb
-        // , ...parentBreadCrumb
+        ...menuBreadCrumb,
+        ...parentBreadCrumb
       ]
     },
     pageTitle() {
@@ -172,9 +172,13 @@ export default {
     },
     getParentBreadCrumb() {
       const parentId = this.$route.meta.parentId
-      const parentRoute = this.$router.resolve({
-        name: parentId
-      }).resolved
+      let parentRoute
+      if (parentId) {
+        parentRoute = this.$router.resolve({
+          name: parentId
+        }).resolved
+      }
+      console.log('parent', parentId, this.$route.meta.parentId)
       if (parentRoute) {
         const name = parentRoute.name
         const title = parentRoute.meta.title
@@ -220,6 +224,12 @@ export default {
     },
     onSiderMenuChange(menuObj) {
       this.menuObj = menuObj
+    },
+    onClickSiderMenu() {
+      /**
+       * 切换路由时关闭切换门店 drawer
+       */
+      this.isShowSwitchShop = false
     }
   },
   components: {

@@ -276,6 +276,7 @@ export const routeMapConfig = {
   },
   // 订单列表
   'shop-finance-order-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '订单管理'
     routeConfig.queryOptions = {
       keyword: { type: String, default: '' },
       status: { type: Number, default: -1 },
@@ -285,6 +286,12 @@ export const routeMapConfig = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
+  },
+  'shop-finance-order-info-collection-details'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '收款明细'
+  },
+  'shop-finance-order-info-commodity-info'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '商品信息'
   },
   'brand-product-course-personal-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增私教课'
@@ -442,6 +449,8 @@ export const routeMapConfig = {
     }
   },
   'shop-reception-entrance'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '入场管理'
+    routeConfig.meta.parentId = 'shop-reception-index'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -472,6 +481,9 @@ export const routeMapConfig = {
   },
   'brand-product-card-member-number-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增次卡'
+  },
+  'brand-product-card-member-period-info'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '会籍卡详情'
   },
   'brand-product-card-deposit-info'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '储值卡详情'
@@ -759,6 +771,7 @@ export const routeMapConfig = {
   },
   'shop-staff-info-basic'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
+    routeConfig.meta.parentId = 'shop-staff-list'
   },
   'shop-staff-info-follow'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '员工详情'
@@ -774,6 +787,7 @@ export const routeMapConfig = {
   },
   'shop-staff-edit'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '编辑员工'
+    routeConfig.meta.parentId = 'shop-staff-list'
   },
   'shop-staff-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增员工'
@@ -824,11 +838,16 @@ export const routeMapConfig = {
   'brand-setting-mina-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '用户端设置'
   },
+  'brand-setting-mina-pay-config'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '微信支付配置'
+    routeConfig.meta.parentId = 'brand-setting-mina-index'
+  },
   'brand-marketing-plugin'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营销插件'
   },
   'brand-marketing-plugin-coupon-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新增优惠券'
+    routeConfig.meta.parentId = 'brand-marketing-plugin-coupon-list'
   },
   'brand-marketing-plugin-invitation-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '邀请有礼'
@@ -845,5 +864,9 @@ export const routeMapConfig = {
   },
   'brand-marketing-plugin-crowd-index'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '精细化人群'
+  },
+  'brand-marketing-plugin-crowd-add'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '新建人群'
+    routeConfig.meta.parentId = 'brand-marketing-plugin-crowd-index'
   }
 }

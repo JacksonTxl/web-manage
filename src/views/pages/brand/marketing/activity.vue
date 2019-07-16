@@ -1,6 +1,7 @@
 <template>
   <div :class="activity()">
-    <div :class="activity('flexbox')">
+    <p v-if="info.is_auth===0"></p>
+    <div v-if="info.is_auth===1" :class="activity('flexbox')">
       <div :class="activity('left')">
         <h5-component  id="h5" :class="{fixed: isFixed}"></h5-component>
       </div>
@@ -19,16 +20,14 @@
         </a-tabs>
       </div>
     </div>
-    <div :class="activity('btn-group')">
+    <div v-if="info.is_auth===1" :class="activity('btn-group')">
       <st-button type="primary" :loading="loading.save" @click="saveConfirm(2)">保存并提交</st-button>
       <!-- <st-button type="primary" :loading="loading.save" @click="saveConfirm(2)">提交</st-button> -->
     </div>
   </div>
 </template>
 <script>
-import {
-  H5WrapperService
-} from '@/views/pages/brand/setting/mina/components#/h5/h5-wrapper.service'
+import { H5WrapperService } from '@/views/pages/brand/setting/mina/components#/h5/h5-wrapper.service'
 import RowContainerComponent from '@/views/pages/brand/setting/mina/components#/h5/row-container.component'
 import H5Component from '@/views/pages/brand/setting/mina/components#/h5/h5.component'
 import SliderComponent from './components#/slider.component'
@@ -62,7 +61,8 @@ export default {
       sliderInfo: this.h5WrapperService.sliderInfo$,
       eventInfo: this.h5WrapperService.eventInfo$,
       loading: this.h5WrapperService.loading$,
-      actList: this.activityService.actList$
+      actList: this.activityService.actList$,
+      info: this.activityService.info$
     }
   },
   data() {
@@ -74,7 +74,23 @@ export default {
     }
   },
   created() {
-    this.getH5Info()
+    if (this.info.is_auth === 0) {
+      let that = this
+      this.$confirm({
+        title: '提示',
+        content: '请先开通小程序后使用此功能',
+        okText: '去绑定小程序',
+        cancelText: '返回',
+        onOk() {
+          that.$router.push({ path: '/brand/setting/mina/index' })
+        },
+        onCancel() {
+          that.$router.back()
+        }
+      })
+    } else {
+      this.getH5Info()
+    }
     // this.getActList()
   },
   mounted() {

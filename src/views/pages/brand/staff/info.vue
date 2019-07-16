@@ -16,7 +16,7 @@
             <div class="staff-info-cont">
               <span class="mg-r8">手机号：{{ info.mobile }}</span>
               <span class="mg-r8">工号：{{ info.staff_num }}</span>
-              <span>教练等级：{{ info.coach_level }}</span>
+              <span v-if="info.coach_level">教练等级：{{ info.coach_level }}</span>
             </div>
             <div class="staff-info-shops">
               <span># {{ info.department }} /</span>

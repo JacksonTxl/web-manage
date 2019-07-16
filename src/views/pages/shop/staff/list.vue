@@ -114,7 +114,7 @@
               <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|edit']"
                 @click="onEdit(record)">编辑</a>
               <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|bind_card']"
-                v-modal-link="{ name: 'shop-staff-bind-card', props: {staff: record }}">绑实体卡</a>
+                v-modal-link="{ name: 'shop-staff-bind-card', props: {staff: record }}">绑定实体卡</a>
               <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|rebind_card']"
                 v-modal-link="{ name: 'shop-staff-bind-card', props: {staff: record }}">重绑实体卡</a>
               <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:account|save']"
@@ -210,7 +210,7 @@ export default {
     },
     onJoinDepartment(e) {
       console.log('批量加入部门')
-      this.$modalRoute.push({
+      this.$modalRouter.push({
         name: 'shop-staff-join-department',
         props: {},
         on: {

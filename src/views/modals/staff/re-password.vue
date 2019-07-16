@@ -18,22 +18,22 @@
         </st-form-item>
         <!-- 新账号注册 -->
         <st-form-item label="登录账号" v-if="!hasAccountName && openJurisdiction" required>
-          <a-input placeholder="6～18个字符，可使用字母，数字，下划线" v-decorator="rules.name"/>
+          <a-input placeholder="6～18个字符，可使用字母，数字，下划线" v-decorator="rules.name" autocomplete="off"/>
         </st-form-item>
         <st-form-item label="登录密码" v-if="!hasAccountName && openJurisdiction" required>
           <a-input type="password" v-decorator="['password', { rules: [{validator: validatorPassword}]
-          }]" placeholder="6~15个字符，区分大小写"/>
+          }]" placeholder="6~15个字符，区分大小写" autocomplete="off"/>
         </st-form-item>
         <st-form-item label="确认密码" v-if="!hasAccountName && openJurisdiction" required>
-          <a-input type="password" v-decorator="['repeat_password', { rules: [{validator: validatorPassword}] }]" placeholder="请再次填写密码"/>
+          <a-input type="password" v-decorator="['repeat_password', { rules: [{validator: validatorPassword}] }]" placeholder="请再次填写密码" autocomplete="off"/>
         </st-form-item>
         <!-- 登录重置密码 -->
         <st-form-item label="登录密码" v-if="openRepassword" required>
           <a-input type="password" v-decorator="['password', { rules: [{validator: validatorPassword}]
-          }]" placeholder="6~15个字符，区分大小写"/>
+          }]" placeholder="6~15个字符，区分大小写" autocomplete="off"/>
         </st-form-item>
         <st-form-item label="确认密码" v-if="openRepassword" required>
-          <a-input type="password" v-decorator="['repeat_password', { rules: [{validator: validatorPassword}] }]" placeholder="请再次填写密码"/>
+          <a-input type="password" v-decorator="['repeat_password', { rules: [{validator: validatorPassword}] }]" placeholder="请再次填写密码" autocomplete="off"/>
         </st-form-item>
         <!-- 绑定账号 -->
         <st-form-item label="账号绑定" v-if="bindAccount">

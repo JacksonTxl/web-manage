@@ -5,7 +5,7 @@
         <a-input placeholder="请输入场地名称，不超过10个字" maxlength="10" v-decorator="formRules.areaName"/>
       </st-form-item>
       <st-form-item labelFix>
-        <a-checkbox v-decorator="formRules.isVip">是否VIP区域</a-checkbox>
+        <a-checkbox v-decorator="formRules.isVip">VIP区域</a-checkbox>
       </st-form-item>
       <st-form-item label="容纳人数">
         <st-input-number placeholder="请输入最大容纳人数，不填无限制" v-decorator="formRules.containNumber"/>

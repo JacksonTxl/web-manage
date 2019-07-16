@@ -61,7 +61,7 @@
     </div>
     <div>营销用于画像</div>
     <div style="width:500px" class="d-ib">
-      <marketing-persona :data="data10"></marketing-persona>
+      <marketing-personal :data="data10"></marketing-personal>
     </div>
   </st-panel>
 </template>
@@ -84,7 +84,7 @@ import CrowdLine from '@/views/biz-components/stat/crowd-line'
 import FrontSimpleArea from '@/views/biz-components/stat/front-simple-area'
 
 import MarketingDashboard from '@/views/biz-components/stat/marketing-dashboard'
-import MarketingPersona from '@/views/biz-components/stat/marketing-persona'
+import MarketingPersonal from '@/views/biz-components/stat/marketing-personal'
 
 export default {
   components: {
@@ -97,7 +97,7 @@ export default {
     ShopEntryBar,
     ShopEntryLine,
     MarketingDashboard,
-    MarketingPersona,
+    MarketingPersonal,
     CrowdLine,
     BrandSimpleLine,
     FrontSimpleArea,
