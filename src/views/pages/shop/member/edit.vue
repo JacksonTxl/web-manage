@@ -273,7 +273,7 @@ export default {
       },
       options: [],
       fieldNames: { label: 'name', value: 'id', children: 'children' },
-      id_card_type: '',
+      id_card_type: undefined,
       faceList: [],
       country_prefix: 37,
       source_category: -1
@@ -304,6 +304,8 @@ export default {
           values.district_id = values.cascader[2] || 110101
           // 身份前缀
           values.id_card_type = this.id_card_type
+          // 人脸信息
+          values.image_face = this.faceList[0] || {}
           // 手机前缀
           values.country_prefix = this.country_prefix
           delete values.cascader
@@ -317,18 +319,18 @@ export default {
     setEditInfo(obj) {
       this.form.setFieldsValue({
         member_name: obj.member_name,
-        sex: obj.sex === 0 ? '' : obj.sex,
+        sex: +obj.sex || undefined,
         country_id: +obj.country.id || undefined,
         nation_id: +obj.nation.id || undefined,
         birthday: obj.birthday ? moment(obj.birthday) : null,
-        education_level: +obj.education_level,
+        education_level: +obj.education_level || undefined,
         id_card_type: +obj.id_card_type || undefined,
         height: obj.height,
         weight: obj.weight,
         jobs: obj.jobs,
         id_card: obj.id_card,
         income_level: obj.income_level,
-        married_type: obj.married_type,
+        married_type: +obj.married_type || undefined,
         fitness_goal: obj.fitness_goal,
         has_children: +obj.has_children || undefined,
         register_type: +obj.register_type || undefined,
@@ -344,7 +346,7 @@ export default {
       this.id_card_type = +obj.id_card_type || undefined
       this.country_prefix = +obj.country_prefix || undefined
       this.id = obj.id
-      this.faceList = [obj.face_info]
+      this.faceList = [obj.image_face]
       this.source_category = +obj.register_type
     }
   },
