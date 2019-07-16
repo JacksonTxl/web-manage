@@ -257,9 +257,12 @@ export default {
                 })
               })
             }
-          }, 50)
+          }, 500)
         }, function() {
-          $(this).children('.temp-cell').remove()
+          let timer = setTimeout(() => {
+            $(this).children('.temp-cell').remove()
+          }, 300)
+          clearTimeout(timer)
         })
         clearTimeout(timer)
       })

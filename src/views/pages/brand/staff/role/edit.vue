@@ -216,39 +216,37 @@ export default {
         }
       })
     },
-    isParent(item, arr) {
-      if (!Array.isArray(arr)) return item
+    isParent(item, arr, dep) {
+      // 两种情况
+      // 第一种情况 当前节点有子节点且该节点没有匹配成功
+      // 第二种情况 当前节点没有子节点且该节点没有匹配成功
+      if (!Array.isArray(arr)) return
       for (let i = 0; i < arr.length; i++) {
-        if (item === arr[i].key) {
-          return ''
+        let current = arr[i]
+        if (item === current.key && !current.children) {
+          dep.push(item)
         } else {
-          return this.isParent(item, arr[i].child)
+          this.isParent(item, current.children, dep)
         }
       }
     }
   },
   mounted() {
     this.brands = listToTree(cloneDeep(this.brandList))
-    this.brandIds = this.brandList.filter(item => {
-      return this.info.select_ids.includes(item.id) && item.id.includes('permission')
+    this.brandList.filter(item => {
+      return this.info.select_ids.includes(item.id)
     }).map(item => {
       return item.id
+    }).map(item => {
+      return this.isParent(item, this.brands, this.brandIds)
     })
-    // let arr = this.brandIds.map(item => {
-    //   return this.isParent(item, this.brands)
-    // })
-    console.log('mounted', this.brandIds)
-    // this.brandIds = this.brandIds.map(item => {
-    //   let tag = this.isParent(item, this.brands)
-    //   if (tag) return ''
-    //   else return item
-    // }).filter(item => item)
-    // console.log(this.brandIds)
     this.shops = listToTree(cloneDeep(this.shopList))
-    this.shopIds = this.shopList.filter(item => {
+    this.shopList.filter(item => {
       return this.info.select_ids.includes(item.id) && item.id.includes('permission')
     }).map(item => {
       return item.id
+    }).map(item => {
+      return this.isParent(item, this.shops, this.shopIds)
     })
   }
 }

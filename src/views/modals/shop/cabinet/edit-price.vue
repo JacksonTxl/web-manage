@@ -5,6 +5,7 @@
     v-model="show"
     @ok="onSubmit"
     @cancel="onCancel"
+    :confirmLoading="loading.updatePrice"
   >
     <st-form :form="form" labelWidth="80px">
       <st-form-item label="价格" required>

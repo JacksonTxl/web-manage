@@ -1,5 +1,5 @@
 module.exports = {
-  head: [['link', { rel: 'icon', href: 'http://www.styd.cn/img/favicon.ico' }]],
+  head: [['link', { rel: 'icon', href: 'https://www.styd.cn/img/favicon.ico' }]],
   title: 'saas 2.0',
   description: 'this is vue-service-app descriptions',
 

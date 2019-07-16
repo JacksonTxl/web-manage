@@ -7,7 +7,7 @@
             :src="item.image_url | imgFilter({w:404,h:227})"
             :key="index"
             v-show="index===0"
-            :dataSrc="item.image_url|imgFilter({ w: 1000 })"
+            :data-src="item.image_url|imgFilter({ w: 1000 })"
             width="404"
             height="227"
             alt="店招"

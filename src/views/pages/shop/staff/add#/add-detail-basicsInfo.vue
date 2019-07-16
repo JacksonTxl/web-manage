@@ -176,7 +176,7 @@
 
     <a-row :gutter="8">
       <a-col :offset="1">
-        <st-form-item label=" ">
+        <st-form-item labelFix>
           <st-button @click="goNext" type="primary">保存，继续填写细信息</st-button>
         </st-form-item>
       </a-col>

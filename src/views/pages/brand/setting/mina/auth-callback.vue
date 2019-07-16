@@ -67,7 +67,7 @@ export default {
     },
     getResult(query) {
       this.authCallbackService.callback(query).subscribe(res => {
-        if (res.is_success === 0) {
+        if (res.is_success === 1) {
           this.msgType = 'success'
         } else {
           this.msgType = 'failure'

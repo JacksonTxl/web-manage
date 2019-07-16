@@ -6,6 +6,8 @@
 import { Chart } from '@antv/g2'
 import { View } from '@antv/data-set'
 import chartMixin from './mixin'
+import Vue from 'vue'
+import StHelpTooltip from '@/views/components/help-tooltip/help-tooltip'
 
 export default {
   mixins: [chartMixin],
@@ -73,7 +75,7 @@ export default {
           return (
             `<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">` +
             `<i class="g2-legend-marker" style="background-color:{color};"></i>` +
-            `<span class="g2-legend-text">${name}</span>` +
+            `<span class="g2-legend-text">${name}&nbsp;<span id='legend-{index}'></span></span>` +
             `</li>`
           )
         }
@@ -115,6 +117,8 @@ export default {
 
       this.chart.render()
 
+      this.changeData()
+
       const $s = this.$el.querySelector.bind(this.$el)
 
       this.chart.on('interval:mouseenter', e => {
@@ -142,6 +146,24 @@ export default {
           el.addEventListener('mouseenter', mouseHandler, false)
         })
       })
+    },
+    changeData() {
+      new Vue({
+        components: {
+          StHelpTooltip
+        },
+        render: h => (
+          <st-help-tooltip id="TBDAR002"></st-help-tooltip>
+        )
+      }).$mount('#legend-1')
+      new Vue({
+        components: {
+          StHelpTooltip
+        },
+        render: h => (
+          <st-help-tooltip id="TBDAR001"></st-help-tooltip>
+        )
+      }).$mount('#legend-5')
     }
   },
   beforeDestroy() {
@@ -151,48 +173,3 @@ export default {
   }
 }
 </script>
-
-<style lang='less'>
-.stat-shop-revenue-ring {
-  .g2-legend-list {
-    width: 160px;
-  }
-  .g2-legend-list-item {
-    margin-right: 0 !important;
-    margin-bottom: 16px !important;
-  }
-  .g2-legend-marker {
-    margin-right: 8px !important;
-  }
-  .g2-legend-text {
-    display: inline-block;
-    width: 64px;
-    color: #3e4d5c;
-  }
-
-  .guide {
-    text-align: center;
-    width: 200px;
-  }
-  .guide-title {
-    color: #252a2e;
-    margin-bottom: 8px;
-  }
-  .guide-value {
-    font-family: bebas;
-    font-weight: bold;
-    font-size: 28px;
-    line-height: 36px;
-  }
-  .guide-unit {
-    font-size: 14px;
-    line-height: 20px;
-    margin-left: 4px;
-  }
-  .guide-name {
-    font-size: 14px;
-    line-height: 22px;
-    color: #9bacb9;
-  }
-}
-</style>

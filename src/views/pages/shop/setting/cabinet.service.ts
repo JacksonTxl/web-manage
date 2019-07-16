@@ -1,4 +1,5 @@
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
+import { Effect, State } from 'rx-state/src'
 import { CabinetAreaService as AreaService } from './cabinet#/area.service'
 import { CabinetApi, DelInput } from '@/api/v1/setting/cabinet'
 import { CabinetListService } from './cabinet#/cabinet-list.service'
@@ -6,6 +7,7 @@ import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class CabinetService implements RouteGuard {
+  loading$ = new State({})
   auth$ = this.authService.authMap({
     areaAdd: 'shop:cabinet:cabinet_area|add',
     areaEdit: 'shop:cabinet:cabinet_area|edit',
@@ -28,6 +30,7 @@ export class CabinetService implements RouteGuard {
       next(false)
     })
   }
+  @Effect()
   del(params: DelInput) {
     return this.cabinetApi.del(params)
   }

@@ -3,8 +3,8 @@
     <div id="app">
       <component :is="layoutComponent"></component>
       <modal-router-view></modal-router-view>
-      <div class="git is-git" @click="getCommitHead">
-        <span class="git__content">{{tips[count]}}</span>
+      <div class="git is-git" @click="getCommitHead" :style='gitStyle'>
+        <span class="git__content">{{tip}}</span>
       </div>
       <div v-if='appConfig.IS_DEV' class="api-env">API环境:{{appConfig.LOCAL_API_ENV}}</div>
     </div>
@@ -37,20 +37,23 @@ export default {
   data() {
     return {
       count: 0,
-      tips: [
-        `${this.appConfig.GIT_COMMIT} ${this.appConfig.GIT_MESSAGE}`,
-        `Date: ${this.appConfig.GIT_DATE}`
-      ]
+      tip: `${this.appConfig.GIT_COMMIT}`
     }
   },
   methods: {
     getCommitHead() {
-      this.count = this.count ? 0 : 1
+      this.count++
     }
   },
   computed: {
     layoutComponent() {
       return layoutMap[this.layout || 'loading']
+    },
+    gitStyle() {
+      console.log(this.count)
+      return {
+        opacity: this.count > 2 ? 1 : 0
+      }
     }
   }
 }

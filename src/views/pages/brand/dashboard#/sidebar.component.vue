@@ -19,12 +19,12 @@
 
       <div class="book-content  mg-l24">
         <div class="book-content-t">2018中国健身行业数据报告</div>
-        <div class="font-number">¥499</div>
+        <div class="font-number">¥599</div>
         <st-button ghost pill type="primary" @click="download" class="mg-t8">免费下载电子版</st-button>
       </div>
     </st-container>
     <st-container class="book bg-white mg-t16" type="2">
-      <plug-in title="多功能人脸识别一体机" sub="AI技术加持，玩转大数据" :img="ai" href="http://www.styd.cn/default/product_iot_face"></plug-in>
+      <plug-in title="多功能人脸识别一体机" sub="AI技术加持，玩转大数据" :img="ai" href="https://www.styd.cn/default/product_iot_face"></plug-in>
     </st-container>
     <st-container class="link bg-white mg-t16" type="2">
       <st-t3 class="link__phone font-number">400-962-8988</st-t3>
