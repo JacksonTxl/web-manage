@@ -119,7 +119,7 @@
 
     <a-row :gutter="8">
       <a-col :offset="1">
-        <st-form-item label=" ">
+        <st-form-item labelFix>
           <st-button type="primary" ghost html-type="submit">提交</st-button>
           <st-button class="mg-l16" @click="goNext" type="primary">保存,继续填写</st-button>
         </st-form-item>
@@ -217,7 +217,6 @@ export default {
     submit(data, saveOrgoNext) {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.album_id = this.data.album_id
-      data.department_id = Number(data.department_id)
       data.image_avatar = this.fileList[0] || {}
       data.image_face = this.faceList[0] || {}
       data.country_code_id = this.country_code_id
@@ -236,7 +235,7 @@ export default {
       this.form.setFieldsValue({
         staff_name: obj.staff_name,
         nickname: obj.nickname,
-        department_id: String(obj.department_id),
+        department_id: obj.department_id || undefined,
         mobile: obj.mobile,
         staff_num: obj.staff_num,
         sex: obj.sex,

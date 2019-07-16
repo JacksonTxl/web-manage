@@ -51,7 +51,7 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :offset="1">
-        <st-form-item label="  ">
+        <st-form-item labelFix>
           <st-button type="primary" ghost @click="onClickBack">上一步</st-button>
           <st-button class="mg-l16" @click="goNext" type="primary">保存</st-button>
         </st-form-item>

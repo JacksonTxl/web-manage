@@ -115,7 +115,7 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label=" ">
+        <st-form-item labelFix>
           <st-button @click="saveAndGoNext" type="primary">保存，继续填写</st-button>
         </st-form-item>
       </a-col>
@@ -211,7 +211,6 @@ export default {
     submit(data, saveOrgoNext) {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.album_id = this.data.album_id
-      data.department_id = Number(data.department_id)
       data.image_avatar = this.fileList[0] || {}
       data.image_face = this.faceList[0] || {}
       data.country_code_id = this.country_code_id
@@ -230,7 +229,7 @@ export default {
         sex: obj.sex, // 性别
         id_number: obj.id_number, // 身份证
         nature_work: obj.nature_work, // 工作性质
-        department_id: String(obj.department_id), // 部门
+        department_id: obj.department_id || undefined, // 部门
         role_id: obj.role_id, // 角色
         shop_id: obj.shop_id, // 所属门店
         entry_date: obj.entry_date ? moment(obj.entry_date) : undefined, // 入职时间
