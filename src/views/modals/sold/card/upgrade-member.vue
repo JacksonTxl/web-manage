@@ -29,7 +29,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form :form="form" labelWidth="85px">
+      <st-form :form="form" labelWidth="88px">
         <div :class="sale('sale')">
           <st-form-item label="会员卡" required labelGutter="12px">
             <a-select
