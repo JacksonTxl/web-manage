@@ -113,6 +113,36 @@ export default {
           const color = this.colors[facetIndex]
           view.axis('value', false)
 
+          view.guide().region({
+            start: ['0%', '11.5%'], // 辅助框起始位置，值为原始数据值，支持 callback
+            end: ['100%', '21.5%'], // 辅助框结束位置，值为原始数据值，支持 callback
+            style: {
+              lineWidth: 0, // 辅助框的边框宽度
+              fill: '#E9EDF2', // 辅助框填充的颜色
+              fillOpacity: 1, // 辅助框的背景透明度
+              stroke: '#ccc' // 辅助框的边框颜色设置
+            }
+          })
+          view.guide().region({
+            start: ['0%', '45%'], // 辅助框起始位置，值为原始数据值，支持 callback
+            end: ['100%', '55%'], // 辅助框结束位置，值为原始数据值，支持 callback
+            style: {
+              lineWidth: 0, // 辅助框的边框宽度
+              fill: '#E9EDF2', // 辅助框填充的颜色
+              fillOpacity: 1, // 辅助框的背景透明度
+              stroke: '#ccc' // 辅助框的边框颜色设置
+            }
+          })
+          view.guide().region({
+            start: ['0%', '78.5%'], // 辅助框起始位置，值为原始数据值，支持 callback
+            end: ['100%', '88.5%'], // 辅助框结束位置，值为原始数据值，支持 callback
+            style: {
+              lineWidth: 0, // 辅助框的边框宽度
+              fill: '#E9EDF2', // 辅助框填充的颜色
+              fillOpacity: 1, // 辅助框的背景透明度
+              stroke: '#ccc' // 辅助框的边框颜色设置
+            }
+          })
           view
             .interval()
             .position('group*value')
