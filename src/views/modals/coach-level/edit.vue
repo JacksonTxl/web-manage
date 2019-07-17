@@ -5,6 +5,7 @@
     @ok="onSubmit"
     @cancel="onCancel"
     :confirmLoading="loading.updateCoachLevel"
+    size="small"
   >
     <div>
       <st-form :form="form">

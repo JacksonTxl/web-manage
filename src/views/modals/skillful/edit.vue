@@ -5,6 +5,7 @@
     @ok="onSubmit"
     @cancel="onCancel"
     :confirmLoading="loading.updateSkillful"
+    size="small"
   >
     <div>
       <st-form :form="form">

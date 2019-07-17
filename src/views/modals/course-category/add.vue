@@ -5,6 +5,7 @@
     @ok="onSubmit"
     @cancel="onCancel"
     :confirmLoading="loading.addCourseCategory"
+    size="small"
   >
     <div>
       <st-form :form="form">
