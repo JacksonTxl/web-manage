@@ -41,6 +41,15 @@ export class ListService extends Store<ListState> {
   del(id: number) {
     return this.courtApi.del(id)
   }
+  sort(list: any[]) {
+    list = list.map((item, index) => {
+      return {
+        id: item.id,
+        sorted: index
+      }
+    })
+    return this.courtApi.sort({ list })
+  }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.getList()
   }

@@ -1,6 +1,15 @@
 <template>
-  <st-panel app :title="`共${list.length}个场地`" :class="bPage()">
-    <draggable tag="a-row" :component-data="{props:{gutter:24}}" v-model="list"  :animation="200">
+  <st-panel app :class="bPage()">
+    <template slot="title">
+      共{{list.length}}个场地<span class="st-des">（支持拖拽排序）</span>
+    </template>
+    <draggable
+      tag="a-row"
+      :component-data="{props:{gutter:24}}"
+      v-model="list"
+      :animation="200"
+      @change="onAreaSortChange"
+    >
       <a-col
         :xl="8"
         :xxl="6"
@@ -126,6 +135,9 @@ export default {
         content: '删除成功'
       })
       this.onListChange()
+    },
+    onAreaSortChange() {
+      this.listService.sort(this.list).subscribe()
     }
   }
 }

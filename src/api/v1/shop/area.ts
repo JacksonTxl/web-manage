@@ -32,6 +32,12 @@ export class CourtApi extends Api {
   del(id: number) {
     return this.http.delete(`${url}/${id}`)
   }
+  /**
+   * 场地排序
+   */
+  sort(params: SortInput) {
+    return this.http.put('/v1/shop/area_move', { params })
+  }
 }
 export interface SetInput {
   id: number,
@@ -47,4 +53,20 @@ export interface SetInput {
    * 是否是vip场地
    */
   is_vip?: number
+}
+export interface SortListItem {
+  /**
+   * 区域 id
+   */
+  id: number
+  /**
+   * 排序
+   */
+  sorted: number
+}
+export interface SortInput {
+  /**
+   * 场地列表
+   */
+  list: SortListItem[]
 }
