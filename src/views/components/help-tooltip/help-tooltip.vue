@@ -1,7 +1,7 @@
 <template>
   <span class='st-help-tooltip'>
     <a-tooltip
-      v-if="invalidTooltips.indexOf(id) === -1"
+      v-show="invalidTooltips.indexOf(id) === -1"
       :placement="placement"
       v-bind="$attrs"
       v-on="$listeners"
