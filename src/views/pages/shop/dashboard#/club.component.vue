@@ -141,11 +141,19 @@
               </a-menu>
             </a-dropdown>
             <template v-if="memberType==='member'">
-              <funnel-vertical v-if="member.member.length" style="margin-top:24px;" :height="320" :data="member.member"></funnel-vertical>
+              <funnel-vertical v-if="member.member.length" style="margin-top:24px;" :height="320" :data="member.member">
+                <template v-slot:text="slotProps">
+                  <st-help-tooltip v-if="slotProps.index===1" id="TSNM003"></st-help-tooltip>&nbsp;
+                </template>
+              </funnel-vertical>
               <img v-else :class="b('entry-funnel-img')" :src="funnelImg" />
             </template>
             <template v-if="memberType==='marketing'">
-              <funnel-vertical v-if="member.marketing.length" style="margin-top:24px;" :height="320" :data="member.marketing"></funnel-vertical>
+              <funnel-vertical v-if="member.marketing.length" style="margin-top:24px;" :height="320" :data="member.marketing">
+                <template v-slot:text="slotProps">
+                  <st-help-tooltip v-if="slotProps.index===1" id="TSNM003"></st-help-tooltip>&nbsp;
+                </template>
+              </funnel-vertical>
               <img v-else :class="b('entry-funnel-img')" :src="funnelImg" />
             </template>
 

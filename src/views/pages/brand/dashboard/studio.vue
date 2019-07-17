@@ -79,14 +79,14 @@
         <a-col :span="12">
           <st-container class="bg-white" type="2">
             <st-t3 style="margin-bottom:20px">客单价</st-t3>
-            <brand-user-avg-bar :data="avg" :height="302"></brand-user-avg-bar>
+            <brand-user-avg-bar :data="avg" :height="295"></brand-user-avg-bar>
 
           </st-container>
         </a-col>
         <a-col :span="12">
           <st-container class="bg-white" type="2">
             <st-t3 style="margin-bottom:20px">用户活跃分析</st-t3>
-            <brand-user-ring :data="entry" :height="302"></brand-user-ring>
+            <brand-user-ring :data="entry" :height="295"></brand-user-ring>
           </st-container>
         </a-col>
       </a-row>
