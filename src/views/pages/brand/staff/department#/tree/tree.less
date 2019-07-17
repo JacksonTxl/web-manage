@@ -15,6 +15,9 @@
     .edit {
       color: #1890FF;
     }
+    .st-icon{
+      color: #CDD4DF !important;
+    }
   }
   &__content{
     display: flex;
@@ -22,29 +25,30 @@
     align-items: center;
     padding: 4px 20px;
     height: 36px;
+    margin-bottom: 1px;
   }
   &__content:hover{
-    background: rgba(24,144,255,0.1);
+    background: rgba(240,246,255,1);
   }
   .active{
-    background:#1890ff;
+    background: rgba(240,246,255,1);
     &:hover{
-      background: #1890ff;
-    }
-    .tree-name,
-    .tree-switch{
-      color: #fff
-    }
-    .edit{
-      color: #fff
+      background:rgba(240,246,255,1);
     }
   }
   .active ~ .tree-node__content {
-    background: rgba(24,144,255,0.1);
+    background:rgba(240,246,255,1);
+    .st-icon{
+      color: #CDD4DF !important;
+    }
+    .fz(12px);
+    box-sizing: border-box;
+    .edit {
+      color: #1890FF;
+    }
   }
   .tree-name{
     .fz(12px);
-    font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(0,0,0,0.85);
     line-height:17px;
@@ -55,9 +59,9 @@
     right: 12px;
     z-index: 1;
   }
-  .tree-opreation.active .st-icon{
-    color: #fff !important;
-  }
+  // .tree-opreation.active .st-icon{
+  //   color: #fff !important;
+  // }
   .tree-switch{
     .s(16px,16px);
     .mg-r(8px);
