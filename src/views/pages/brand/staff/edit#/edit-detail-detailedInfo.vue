@@ -19,7 +19,6 @@
         </st-form-item>
         <st-form-item label="婚姻状况">
           <a-select placeholder="请选择" v-decorator="rules.marry_status">
-            <a-select-option :value="0">未填写</a-select-option>
             <a-select-option :value="1">已婚</a-select-option>
             <a-select-option :value="2">未婚</a-select-option>
           </a-select>
@@ -38,10 +37,10 @@
         <st-form-item label="子女状态">
           <a-select placeholder="请选择" v-decorator="rules.children_status">
             <a-select-option
-              v-for="(item, index) in children_status_option"
-              :value="item.value"
-              :key="index"
-            >{{item.label}}</a-select-option>
+              v-for="(item, key) in enums.children_status.value"
+              :value="item"
+              :key="key"
+            >{{item}}</a-select-option>
           </a-select>
         </st-form-item>
       </a-col>
@@ -136,16 +135,6 @@ export default {
       fieldNames: { label: 'name', value: 'id', children: 'children' }
     }
   },
-  computed: {
-    children_status_option() {
-      let list = []
-      if (!this.enums.children_status) return list
-      Object.entries(this.enums.children_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return [{ value: 0, label: '未填写' }, ...list]
-    }
-  },
   mounted() {
     this.$nextTick(() => {
       this.setData(this.data)
@@ -162,12 +151,12 @@ export default {
       this.form.setFieldsValue({
         graduated_school: obj.graduated_school,
         graduation_time: obj.graduation_time ? moment(obj.graduation_time) : undefined,
-        education: obj.education,
+        education: obj.education || undefined,
         profession: obj.profession,
         birthday: obj.birthday ? moment(obj.birthday) : undefined,
         native_place: obj.native_place,
-        marry_status: obj.marry_status,
-        children_status: obj.children_status,
+        marry_status: obj.marry_status || undefined,
+        children_status: obj.children_status || undefined,
         address: obj.address,
         description: obj.description,
         provinces: [obj.province_id, obj.city_id, obj.district_id]

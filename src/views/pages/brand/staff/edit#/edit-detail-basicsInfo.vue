@@ -79,8 +79,8 @@
         </st-form-item>
         <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
-            <template v-for="(item,index) in nature_work_option">
-              <a-select-option :key="index" :value="item.value">{{ item.label }}</a-select-option>
+            <template v-for="(item,key) in enums.nature_work.value">
+              <a-select-option :key="key" :value="item">{{ item }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
@@ -228,7 +228,7 @@ export default {
         staff_num: obj.staff_num, // 工号
         sex: obj.sex, // 性别
         id_number: obj.id_number, // 身份证
-        nature_work: obj.nature_work, // 工作性质
+        nature_work: obj.nature_work || undefined, // 工作性质
         department_id: obj.department_id || undefined, // 部门
         role_id: obj.role_id, // 角色
         shop_id: obj.shop_id, // 所属门店

@@ -9,7 +9,7 @@
           <a-select placeholder="请选择" v-decorator="rules.education">
             <a-select-option
               v-for="(item, key) in enums.education.value"
-              :value="+key"
+              :value="key"
               :key="key"
             >{{item}}</a-select-option>
           </a-select>
@@ -21,7 +21,7 @@
           <a-select placeholder="请选择" v-decorator="rules.marry_status">
             <a-select-option
               v-for="(item, key) in enums.marry_status.value"
-              :value="+key"
+              :value="key"
               :key="key"
             >{{item}}</a-select-option>
           </a-select>
@@ -40,10 +40,10 @@
         <st-form-item label="子女状态">
           <a-select placeholder="请选择" v-decorator="rules.children_status">
             <a-select-option
-              v-for="(item, index) in children_status_option"
-              :value="item.value"
-              :key="index"
-            >{{item.label}}</a-select-option>
+              v-for="(item, key) in enums.children_status.value"
+              :value="key"
+              :key="key"
+            >{{item}}</a-select-option>
           </a-select>
         </st-form-item>
       </a-col>
@@ -116,16 +116,6 @@ export default {
       form: this.$form.createForm(this),
       regions: [],
       fieldNames: { label: 'name', value: 'id', children: 'children' }
-    }
-  },
-  computed: {
-    children_status_option() {
-      let list = []
-      if (!this.enums.children_status) return list
-      Object.entries(this.enums.children_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return [{ value: 0, label: '未填写' }, ...list]
     }
   },
   mounted() {
