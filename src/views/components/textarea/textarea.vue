@@ -3,7 +3,6 @@
     <a-textarea
       :class="b('content')"
       v-bind="attrs"
-      v-on="$listeners"
       v-model="content"
     >
     </a-textarea>

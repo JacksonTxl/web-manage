@@ -61,10 +61,7 @@
             <st-table-actions>
               <a @click="onEdit(record)" v-if="record.auth['brand:activity:coupon|edit']">编辑</a>
               <a @click="onGeneralize(record)" v-if="record.auth['brand:activity:coupon|promotion']">推广</a>
-              <!--  -->
-              <a @click="onStop(record)" v-if="record.auth['brand:activity:coupon|end'] && !(record.coupon_type === 2 && record.put_status === 2)">结束</a>
-              <span v-else-if="(record.coupon_type === 2 && record.put_status === 2)"></span>
-              <span v-else>已结束</span>
+              <a @click="onStop(record)" v-if="record.auth['brand:activity:coupon|end']">结束</a>
             </st-table-actions>
           </template>
         </st-table>

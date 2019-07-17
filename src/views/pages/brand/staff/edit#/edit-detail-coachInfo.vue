@@ -45,7 +45,7 @@
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="对外展示">
-          <a-checkbox v-decorator="rules.is_show">展示在会员端</a-checkbox>
+          <a-checkbox :checked="checked" @change="checkShow">展示在会员端</a-checkbox>
         </st-form-item>
       </a-col>
     </a-row>
@@ -99,7 +99,7 @@ export default {
         v.pop()
       }
     },
-    check(e) {
+    checkShow(e) {
       this.checked = e.target.checked
     },
     handleSpecialtyIdChange(e) {

@@ -105,16 +105,6 @@
                     优惠共享<st-help-tooltip id="TBYHQ002" />
                 </template>
                 <a-checkbox v-model="isShare" :disabled="isEditMode">不可与其它优惠同享</a-checkbox>
-                <a-popover
-                    trigger="hover"
-                    placement="rightBottom"
-                    arrowPointAtCenter
-                  >
-                    <div slot="content">
-                      勾选时，如果商品参与了其他营销活动，<br/>如拼图、体验价等，则优惠券不可用。
-                    </div>
-                    <a-icon class="page-content-card-time__icon" type="info-circle"></a-icon>
-                </a-popover>
               </st-form-item>
               <st-form-item label="每人限领" required v-if="couponType === '1'">
                 <a-radio-group

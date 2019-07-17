@@ -178,7 +178,6 @@ export default {
           name: parentId
         }).resolved
       }
-      console.log('parent', parentId, this.$route.meta.parentId)
       if (parentRoute) {
         const name = parentRoute.name
         const title = parentRoute.meta.title
