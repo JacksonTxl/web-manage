@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -58,7 +58,7 @@
         animation: rotate-three 1s linear infinite;
         border-top: 3px solid #efeffa;
       }
-      .layout-loading .slogan{
+      .layout-loading .slogan {
         position: absolute;
         color: white;
         font-size: 20x;
@@ -100,7 +100,7 @@
     </style>
     <title>三体云动</title>
   </head>
-  <body id="body" class="version-a">
+  <body id="body">
     <noscript>
       <strong
         >We're sorry but saas-fe doesn't work properly without JavaScript
@@ -119,10 +119,24 @@
     </div>
 
     <script>
-      window.htmlWebpackFiles = <%= JSON.stringify(htmlWebpackPlugin.files) %>
+      // 防止误操作地址栏url
+      if(location.pathname === '//'){
+        location.href = '/'
+      }
     </script>
-    <script src="//at.alicdn.com/t/font_1106512_qlsws6vyy2.js"></script>
-    <script src="https://map.qq.com/api/js?v=2.exp&key=ZEGBZ-46CK6-6NCSC-M63GX-L7JGJ-XWB2D&libraries=place"></script>
+    <script defer src="//at.alicdn.com/t/font_1106512_qlsws6vyy2.js"></script>
+    <script
+      src="https://map.qq.com/api/js?v=2.exp&key=ZEGBZ-46CK6-6NCSC-M63GX-L7JGJ-XWB2D&libraries=place"
+    ></script>
+    <script defer>
+      var _hmt = _hmt || []
+      ;(function() {
+        var hm = document.createElement('script')
+        hm.src = 'https://hm.baidu.com/hm.js?11c0b426fbd4b0e05de4ee2084df1835'
+        var s = document.getElementsByTagName('script')[0]
+        s.parentNode.insertBefore(hm, s)
+      })()
+    </script>
 
     <!-- built files will be auto injected -->
   </body>
