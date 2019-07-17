@@ -1,7 +1,7 @@
 <template>
   <span class='st-help-tooltip'>
     <a-tooltip
-      v-show="invalidTooltips.indexOf(id) === -1"
+      v-if="invalidTooltips.indexOf(id) === -1"
       :placement="placement"
       v-bind="$attrs"
       v-on="$listeners"
@@ -11,15 +11,13 @@
       <template slot="title">
         <span>{{content}}</span>
       </template>
-      <!-- <span><st-icon type="help"/></span><slot></slot> -->
-      <span><img class="st-help-tooltip-img" :src="helpIcon"/></span><slot></slot>
+      <span><st-icon type="help"/></span><slot></slot>
     </a-tooltip>
   </span>
 </template>
 <script>
 import { UserService } from '@/services/user.service'
 import { HelpTooltipService } from './help-tooltip.service'
-import helpIcon from '@/assets/img/help.png'
 export default {
   name: 'StHelpTooltip',
   serviceInject() {
@@ -46,7 +44,6 @@ export default {
   },
   data() {
     return {
-      helpIcon: helpIcon,
       content: '加载中...',
       loaded: false
     }

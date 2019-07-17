@@ -44,14 +44,14 @@ export class PersonalCommonApi extends Api {
   /**
   * 获取预约日期
   */
-  getDateList(id: string) {
+  getDateList(id: any) {
     return this.http.get(`/v1/schedule/personal/date/${id}`)
   }
   /**
   * 获取预约日期
   */
-  getTimeList(id: string) {
-    return this.http.get(`/v1/schedule/personal/time/${id}`)
+  getTimeList(query: any) {
+    return this.http.get(`/v1/schedule/personal/time/${query.id}`, { query })
   }
 }
 export interface MemberListQuery {

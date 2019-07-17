@@ -25,16 +25,27 @@
       margin-bottom: 16px;
       padding: 0 16px;
     }
+    
     .item{
       height: 36px;
       padding: 0 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      &:hover{
+        background: rgba(24,144,255,0.1);
+      }
+    }
+    .role-opreation.active .st-icon{
+      color: #fff !important;
     }
     .active{
       background:rgba(24,144,255,1);
       color: #fff;
+      &:hover{
+        background:rgba(24,144,255,1);
+        color: #fff;
+      }
     }
   }
   &__search {

@@ -93,7 +93,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.enums)
     this.setData(this.data)
   },
   methods: {
@@ -146,6 +145,7 @@ export default {
       data.certification_name = this.coachInfoData.certification_name
       data.is_show = Number(data.is_show)
       data.image_personal = this.fileList
+      data.album_id = this.data.album_id
       this.service.updateCoachInfo(this.data.staff_id, data).subscribe(res => {
         this.$router.push({ name: 'shop-staff-list' })
       })

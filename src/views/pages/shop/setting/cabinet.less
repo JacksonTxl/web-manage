@@ -27,11 +27,20 @@
   &__nav-item {
     .fz(12px);
     .c(@title);
-    .pd(8px 0);
+    .h(48px);
+    .lh(48px);
     .cur-p;
-    &.current {
-      .bg(#F0F6FF);
+    &:hover{
+      background: rgba(24,144,255,0.1);
     }
+    &.current {
+      .bg(#1890ff);
+      color: #fff;
+      .nav-opreation .st-icon{
+        color: #fff !important;
+      }
+    }
+    
   }
   &__nav-item-content {
     display: flex;

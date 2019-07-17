@@ -126,8 +126,8 @@ export class PersonalScheduleCommonService {
  * @param query
  * 获取预约日期Options
  */
-  getDateList(query: string) {
-    return this.commonApi.getDateList(query).pipe(tap(res => {
+  getDateList(id: any) {
+    return this.commonApi.getDateList(id).pipe(tap(res => {
       this.state$.commit(state => {
         state.dateOptions = res.list
       })
@@ -138,7 +138,7 @@ export class PersonalScheduleCommonService {
 * @param query
 * 获取预约时间Options
 */
-  getTimeList(query: string) {
+  getTimeList(query: any) {
     return this.commonApi.getTimeList(query).pipe(tap(res => {
       this.state$.commit(state => {
         state.timeOptions = res.info

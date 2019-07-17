@@ -13,7 +13,7 @@
           <a-icon type="close-circle" @click.stop="cancelEdit"/>
         </div>
         <span class="tree-name" v-else>{{ item.name }}( {{item.count}} )</span>
-        <st-more-dropdown class="tree-opreation" v-show="!item.isEdit">
+        <st-more-dropdown class="tree-opreation"  v-show="!item.isEdit">
           <a-menu-item v-if="auth.departmentAdd"  @click="addTreeNode">新增</a-menu-item>
           <a-menu-item  @click="editTreeNode">编辑</a-menu-item>
           <a-menu-item  @click="deleteDepartment(item)" v-if="item.id">删除</a-menu-item>
@@ -75,6 +75,7 @@ export default {
     return {
       editValue: '',
       addValue: '',
+      isActive: false,
       opreations: [{ clickName: this.addTreeNade, name: '新增' }, { clickName: this.editTreeNade, name: '编辑' }, { clickName: this.deleteTreeNade, name: '删除' }],
       placements: ['bottomLeft'],
       visible: false,
@@ -163,13 +164,18 @@ export default {
       })
     },
     getTreeNodeOnclick(e) {
-      console.log('getTreeNodeOnclick', this.$refs.treeNode, this.item)
+      this.isActive = true
       this.$emit('node-item-detail', this.item)
       this.$nextTick().then(() => {
         const doms = document.querySelectorAll('.tree-node__content')
+        const treeOpreationEle = document.querySelectorAll('.tree-node__content .tree-opreation')
+        treeOpreationEle.forEach(dom => {
+          dom.setAttribute('class', 'tree-opreation')
+        })
         doms.forEach(dom => {
           dom.setAttribute('class', 'tree-node__content')
         })
+        e.currentTarget.querySelector('.tree-opreation').setAttribute('class', 'tree-opreation active')
         e.currentTarget.setAttribute('class', 'tree-node__content active')
       })
     },

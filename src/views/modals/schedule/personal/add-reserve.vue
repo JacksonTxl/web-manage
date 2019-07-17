@@ -109,10 +109,14 @@ export default {
     },
     // 获取时期
     onChangeDatePick(val) {
-      let reserveDate = ''
+      const course_id = this.form.getFieldValue('course_id')
+      let reserveDate = {
+        id: '',
+        course_id
+      }
       this.form.setFieldsValue({ reserve_start_time: '' })
       this.dateOptions.forEach(item => {
-        val.format('YYYY-MM-DD') === item.schedule_date && (reserveDate = item.id)
+        val.format('YYYY-MM-DD') === item.schedule_date && (reserveDate.id = item.id)
       })
       this.commonService.getOptions('getTimeList', reserveDate, () => {})
     },
@@ -153,17 +157,13 @@ export default {
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
         const start = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`).format('H').valueOf()
         const end = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`).format('H').valueOf()
-        console.log(start, end)
         disabledHours = [...disabledHours, ...this.range(start, end || 24)]
       }
-      console.log(allTime, disabledHours)
-      console.log(difference(allTime, disabledHours))
       return difference(allTime, disabledHours)
     },
     save() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
           const consume = JSON.parse(values.consume_type)
           let form = cloneDeep(values)
           form.member_id = values.member_id.key
