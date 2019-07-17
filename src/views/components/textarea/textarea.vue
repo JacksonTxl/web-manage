@@ -4,6 +4,7 @@
       :class="b('content')"
       v-bind="attrs"
       v-model="content"
+      @change="onChange"
     >
     </a-textarea>
     <label :class="b('label')">{{currentLength}}/{{maxlength}}</label>
@@ -33,20 +34,21 @@ export default {
       }
     }
   },
-  watch: {
-    content(val) {
-      const { maxlength } = this
-      const content = val.substr(0, maxlength)
-      this.content = content
-      this.$emit('input', content)
-    }
-  },
   created() {
     this.content = this.$attrs.value || ''
   },
   computed: {
     currentLength() {
       return this.content.length
+    }
+  },
+  methods: {
+    onChange(e) {
+      const { maxlength } = this
+      const content = e.target.value.substr(0, maxlength)
+      this.content = content
+      this.$emit('input', content)
+      this.$emit('change', e)
     }
   }
 }

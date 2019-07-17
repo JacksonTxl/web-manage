@@ -77,6 +77,7 @@ export default {
   },
   methods: {
     onReasonChange(data) {
+      console.log('changed')
       this.reasonIsNone = data.target.value.trim() === ''
     },
     onStop() {
