@@ -1,5 +1,5 @@
 <template>
-  <st-form-table :page="page" @change="onTableChange" :loading="loading.getBasicInfo" hoverable>
+  <st-form-table :page="page" @change="onTableChange" :loading="loading.getBasicInfo">
     <thead>
       <tr>
         <template v-for="(item,index) in columsTitlelist">
