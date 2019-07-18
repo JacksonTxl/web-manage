@@ -128,7 +128,7 @@
             <span class="info-text">刷卡9600.00元</span>
           </div>
         </a-col> -->
-        <a-col :span="8" v-if="info.contract_setting.contract_type === CONTRACT_TYPE.MEMBER_CARD">
+        <a-col :span="8" v-if="info.contract_type === CONTRACT_TYPE.MEMBER_CARD">
           <div class="info-item">
             <label class="info-label">开卡方式：</label>
             <span class="info-text">{{info.open_card_type}}</span>
