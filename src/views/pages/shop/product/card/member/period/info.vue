@@ -99,7 +99,7 @@
           <!-- 售卖方式 -->
           <p class="mb-8">
             <span class="label">售卖方式：</span>
-            <span class="value" v-for="(item,index) in cardInfo.sell_type" :key="index">{{item.name}}&nbsp;&nbsp;</span>
+            <span class="value" v-for="(item,index) in cardInfo.sell_type" :key="index"><i v-if="index>0">/</i>{{item.name}}</span>
           </p>
         </div>
         <div class="mb-24">

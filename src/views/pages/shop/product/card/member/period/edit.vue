@@ -138,7 +138,7 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="20">
-              <st-form-item class="page-content-card-sell-type" label="售卖渠道" required>
+              <st-form-item class="page-content-card-sell-type" label="售卖方式" required>
                 <a-checkbox-group v-model="sellType">
                   <a-checkbox
                   v-for="item in sellTypeList"
@@ -283,7 +283,7 @@ export default {
       // 转让手续费
       transferNum: 0,
       transfer_unit_is_first: true,
-      // 售卖渠道
+      // 售卖方式
       sellType: [2],
       // 卡背景
       cardBg: {
@@ -299,7 +299,7 @@ export default {
       // 备注
       cardContents: '',
       // 是否配置了用户端
-      appConfig: false,
+      appConfig: true,
       // 是否禁止选择开始时间,如果卡状态是可售卖，则需要禁止修改开始时间
       startTimeIsDisabled: false
     }
@@ -336,7 +336,7 @@ export default {
       this.is_transfer = !!this.cardInfo.is_transfer
       this.transferUnit = this.cardInfo.transfer_unit
       this.transferNum = this.cardInfo.transfer_num
-      // 售卖渠道
+      // 售卖方式
       this.sellType = this.cardInfo.sell_type
       // 卡背景
       this.cardBg = cloneDeep(this.cardInfo.card_bg)
@@ -537,7 +537,7 @@ export default {
       })
       return text
     },
-    // 售卖渠道
+    // 售卖方式
     sellTypeList() {
       let sell_type = cloneDeep(Object.entries(this.member_card.sell_type.value))
       let arr = []
