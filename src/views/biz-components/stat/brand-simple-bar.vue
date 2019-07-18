@@ -38,7 +38,7 @@ export default {
       return _p
     },
     showPercent() {
-      return `${Math.ceil(this.percent * 100)}%`
+      return `${this.percent * 100}%`
     },
     barStyle() {
       return {
