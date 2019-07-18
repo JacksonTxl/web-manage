@@ -67,7 +67,7 @@
         <st-button v-if="auth.add" class="mg-r8" icon="add" @click="onAddStaff">添加员工</st-button>
         <!-- NOTE: 导入 -->
         <!-- <st-button v-if="auth.import" class="mg-r8" @click="onExportStaff">导入员工</st-button> -->
-        <st-button :disabled="selectedRowKeys.length > 0 ? false : true" @click="onJoinDepartment" v-if="auth.join">批量加入部门</st-button>
+        <st-button :disabled="!selectedRowKeys.length" @click="onJoinDepartment" v-if="auth.join">批量加入部门</st-button>
       </a-col>
       <a-col :lg="7" style="text-align: right;">
         <st-input-search placeholder="搜索员工" v-model="query.keyword" @search="onSingleSearch('keyword', $event)"/>

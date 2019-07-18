@@ -11,7 +11,8 @@
 export default {
   props: {
     auth: Object,
-    default: () => {}
+    default: () => {},
+    rowKeys: Array
   },
   name: 'OpreationButton',
   methods: {

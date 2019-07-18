@@ -18,7 +18,7 @@
       <header class="staff-rg__operation">
         <a-row type="flex" justify="space-between">
           <a-col :span="10">
-            <opreation-button :auth="auth" @add-staff="onAddStaff" @batch-import="onbatchImport" @import-staff="onImportStaff"></opreation-button>
+            <opreation-button :auth="auth" :rowKeys="ids" @add-staff="onAddStaff" @batch-import="onbatchImport" @import-staff="onImportStaff"></opreation-button>
           </a-col>
           <a-col :span="14">
             <filter-staff></filter-staff>

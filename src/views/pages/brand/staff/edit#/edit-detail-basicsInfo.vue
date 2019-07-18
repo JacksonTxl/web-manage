@@ -85,7 +85,7 @@
           </a-select>
         </st-form-item>
         <st-form-item label="系统角色" required>
-          <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id">
+          <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id" @change="roleChange">
             <template v-for="item in roleList">
               <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
             </template>
@@ -160,16 +160,6 @@ export default {
       value: '' // 部门选择
     }
   },
-  computed: {
-    nature_work_option() {
-      let list = []
-      if (!this.enums.nature_work) return list
-      Object.entries(this.enums.nature_work.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return [{ value: 0, label: '未填写' }, ...list]
-    }
-  },
   components: {
     ShopSelect,
     DepartmentSelect
@@ -180,6 +170,10 @@ export default {
     })
   },
   methods: {
+    roleChange(v) {
+      if (v && v.length > 10) v.pop()
+      console.log(v)
+    },
     onChange(value) {
       console.log('选择部门', value)
       this.value = value
