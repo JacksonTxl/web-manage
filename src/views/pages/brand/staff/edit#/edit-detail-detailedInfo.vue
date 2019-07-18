@@ -62,7 +62,7 @@
         <st-form-item label="备注">
           <st-textarea
             :maxlength="300"
-            v-model="descriptionVal"
+            v-decorator="rules.description"
             placeholder="填写点什么吧"/>
         </st-form-item>
       </a-col>
@@ -107,7 +107,6 @@ export default {
     return {
       form: this.$form.createForm(this),
       regions: [],
-      descriptionVal: '',
       fieldNames: { label: 'name', value: 'id', children: 'children' }
     }
   },
@@ -134,9 +133,9 @@ export default {
         marry_status: obj.marry_status || undefined,
         children_status: obj.children_status || undefined,
         address: obj.address,
+        description: obj.description,
         provinces: [obj.province_id, obj.city_id, obj.district_id]
       })
-      this.descriptionVal = obj.description
     },
     onChange(value) {
       console.log(value)
@@ -168,9 +167,6 @@ export default {
           newData.birthday && (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
           newData.graduation_time && (newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD'))
           delete newData.provinces
-          newData = Object.assign(newData, {
-            descriptionVal: obj.description
-          })
           this.$emit('detailInfoSave', {
             data: newData
           })
