@@ -17,6 +17,10 @@ export default {
     b: 'st-textarea'
   },
   props: {
+    value: {
+      type: String,
+      default: ''
+    },
     maxlength: {
       type: [String, Number],
       default: 500
@@ -34,8 +38,13 @@ export default {
       }
     }
   },
+  watch: {
+    value() {
+      this.init()
+    }
+  },
   created() {
-    this.content = this.$attrs.value || ''
+    this.init()
   },
   computed: {
     currentLength() {
@@ -43,6 +52,9 @@ export default {
     }
   },
   methods: {
+    init() {
+      this.content = this.value
+    },
     onChange(e) {
       const { maxlength } = this
       const content = e.target.value.substr(0, maxlength)
