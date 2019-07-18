@@ -36,6 +36,8 @@
           :page="page"
           :alertSelection="{onReset: onClear}"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange,
+           onSelectAll: onSelectAll,
+           onSelectInvert: onSelectInvert,
            getCheckboxProps: record => ({
               props: {
                 disabled: disabledSelect(record), // Column configuration not to be checked
@@ -196,6 +198,18 @@ export default {
     }
   },
   methods: {
+    onSelectAll(selected, selectedRows, changeRows) {
+      if (selectedRows && selectedRows.length > 0) {
+        const firstItem = selectedRows[0]
+        this.selectedRows = selectedRows.filter(item => item.card_type === firstItem.card_type)
+        this.selectedRowKeys = this.selectedRows.map(item => {
+          return item.id
+        })
+      }
+    },
+    onSelectInvert(selectedRows) {
+      console.log(selectedRows)
+    },
     disabledSelect(record) {
       if (record.card_status !== 1) {
         return true
@@ -224,6 +238,13 @@ export default {
     moment,
     // 列表选择
     onSelectChange(selectedRowKeys, selectedRows) {
+      // if (selectedRows && selectedRows.length > 0) {
+      //   const firstItem = selectedRows[0]
+      //   this.selectedRows = selectedRows.filter(item => item.card_type === firstItem.card_type)
+      //   this.selectedRowKeys = this.selectedRows.map(item => {
+      //     return item.id
+      //   })
+      // }
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
     },

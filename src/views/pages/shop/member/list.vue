@@ -10,11 +10,11 @@
         <st-search-panel>
           <div :class="basic('select')">
             <span style="width:90px;">用户级别：</span>
-            <st-search-radio label="" @change="onSearch" v-model="query.member_level" :list="memberLevel"/>
+            <st-search-radio @change="onSearch" v-model="query.member_level" :list="memberLevel"/>
           </div>
           <div :class="basic('select')">
             <span style="width:90px;">来源方式：</span>
-            <st-search-radio label="" @change="onSearch" v-model="query.register_way" :list="sourceList"/>
+            <st-search-radio :class="basic('select-radio')" @change="onSearch" v-model="query.register_way" :list="sourceList"/>
           </div>
           <div :class="basic('select')">
             <span style="width:90px;">注册时间：</span>
@@ -29,7 +29,7 @@
             </div>
             <div :class="basic('select')">
               <span style="width:90px;">员工跟进：</span>
-              <st-search-radio label="" @change="onSearch" v-model="query.is_follow" :list="isFollow"/>
+              <st-search-radio @change="onSearch" v-model="query.is_follow" :list="isFollow"/>
             </div>
           </div>
           <div slot="button">
