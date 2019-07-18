@@ -136,6 +136,7 @@ export default {
           values.certification_name = this.coachInfoData.certification_name
           values.is_show = this.checked ? 1 : 0
           values.image_personal = this.image_personal
+          values.album_id = this.data.album_id
           console.log('Received values of form: ', values)
           this.$emit('coachInfoSave', {
             data: values
