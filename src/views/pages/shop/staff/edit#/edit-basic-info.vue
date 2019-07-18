@@ -80,7 +80,7 @@
         <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
             <template v-for="(item,key) in enums.nature_work.value">
-              <a-select-option :key="key" :value="item">{{ item }}</a-select-option>
+              <a-select-option :key="key" :value="+key">{{ item }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
