@@ -105,6 +105,7 @@
       </p>
       <p>shop: {{shop}}</p>
       <p>brand: {{brand}}</p>
+      <button @click="setA">1</button>
     </st-panel>
     <st-panel
     :tabs="[
@@ -185,6 +186,9 @@ export default {
     },
     onMultiChange(val) {
       console.log('mul select changed', val)
+    },
+    setA() {
+      this.des = '1111'
     }
   }
 }
