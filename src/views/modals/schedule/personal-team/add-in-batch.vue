@@ -200,8 +200,8 @@ export default {
           delete item.key
           delete item.editable
           item.start_time = moment(item.start_time).format('YYYY-MM-DD HH:mm:ss').valueOf()
-          item.limit_num = parseInt(item.limit_num)
-          item.course_fee = parseInt(item.course_fee)
+          item.limit_num = +item.limit_num
+          item.course_fee = +item.course_fee
           return item
         })
       this.scheduleService.addScheduleInBatch(data).subscribe(this.onSubmitSuccess)

@@ -42,10 +42,10 @@
         ]"> <a-button slot="enterButton">人</a-button> </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required >
-        <a-input-search v-decorator="[
+        <st-input-number  :float="true" v-decorator="[
           'course_fee',
           {rules: [{ required: true, message: 'Please input your note!' }]}]"
-        > <a-button slot="enterButton">元/节</a-button> </a-input-search>
+        > <span slot="addonAfter">元/节</span> </st-input-number>
       </st-form-item>
       <a-row>
         <a-col

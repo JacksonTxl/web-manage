@@ -50,7 +50,7 @@
   }
   
   .fc-button-primary:not(:disabled):active:focus, .fc-button-primary:not(:disabled).fc-button-active:focus {
-    box-shadow: 0 0 0 0.2rem rgba(51, 68, 227, 0.5);
+    box-shadow: 0 0 0 0 rgba(51, 68, 227, 0.5);
 }
   .fc-head-container.fc-widget-header{
     .mg(14px 0 8px 0);
@@ -108,14 +108,15 @@
   .fc-right{
     .pd-r(24px);
     .fc-button-primary{
-      .bg(#fff);
+      background:rgba(255,255,255,1);
+      border:1px solid rgba(205,212,223,1);
+      font-size:14px;
+      font-weight:400;
       color:rgba(155,172,185,1);
-      border:1px solid rgba(205,212,223,1);
+      line-height:22px;
     }
-    .fc-button-primary:not(:disabled).fc-button-active{
-      .bg(#CDD4DF);
-      border:1px solid rgba(205,212,223,1);
-      .c(#252A2E);
+    .fc-timeGridDay-button{
+      border-radius:0px 4px 4px 0px;
     }
   }
   .fc-center{
@@ -162,6 +163,9 @@
   min-height: 56px
 }
 .st-panel__body {
+  .fc-unthemed th, .fc-unthemed td, .fc-unthemed thead, .fc-unthemed tbody, .fc-unthemed .fc-divider, .fc-unthemed .fc-row, .fc-unthemed .fc-content, .fc-unthemed .fc-popover, .fc-unthemed .fc-list-view, .fc-unthemed .fc-list-heading td {
+    border-color: #e6e9ef;
+  }
   .page-team-personal__calendar{
     .fc-unthemed .fc-divider{
       background: #fff
@@ -180,11 +184,35 @@
     }
     .fc-button .fc-icon {
       vertical-align: baseline !important;
-      font-size: 1.5em !important;
+      font-size: 18px !important;
     }
     .fc-header-toolbar .fc-right  .fc-button-primary:not(:disabled).fc-button-active:focus {
       box-shadow: 0 0 0 0  rgba(51, 68, 227, 0.5);
     }
+    .fc-button:focus {
+      outline: 0;
+      box-shadow: 0 0 0 0 rgba(44, 62, 80, 0.25);
+    }
+    .fc-header-toolbar .fc-left{
+      .fc-button-primary:not(:disabled):active, .fc-button-primary:not(:disabled).fc-button-active {
+        color: #fff;
+        background-color: rgba(63,102,246,1);
+        border-color: rgba(63,102,246,1);
+      }
+    }
+    .fc-header-toolbar .fc-right,
+    .fc-header-toolbar .fc-center{
+      .fc-button-primary:not(:disabled):active, .fc-button-primary:not(:disabled).fc-button-active {
+        background:rgba(247,249,252,1);
+        border-radius:4px 0px 0px 4px;
+        border:1px solid rgba(205,212,223,1);
+        font-size:14px;
+        font-weight:500;
+        color:rgba(37,42,46,1);
+        line-height:22px;
+      }
+    }
+    
   }
   
 }
