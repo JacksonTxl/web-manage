@@ -31,14 +31,13 @@
         :options="courtOptions"
         :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
         v-decorator="[
-          'court_id',
-          {rules: [{ required: true, message: '请选择场地' }]}
+          'court_id'
         ]"/>
       </st-form-item>
       <st-form-item label="人数" required>
         <a-input-search v-decorator="[
           'limit_num',
-          {rules: [{ required: true, message: 'Please input your note!' }]}
+          {rules: [{ required: true, message: '请输入人数' }]}
         ]" > <a-button slot="enterButton">人</a-button> </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required >
@@ -129,8 +128,8 @@ export default {
           form.start_time = form.start_time.format('YYYY-MM-DD HH:mm')
           form.court_site_id = form.court_id[1]
           form.court_id = form.court_id[0]
-          form.course_fee = parseInt(form.course_fee)
-          form.limit_num = parseInt(form.limit_num)
+          form.course_fee = +form.course_fee
+          form.limit_num = +form.limit_num
           this.teamScheduleScheduleService.update({ id: this.id, ...form }).subscribe(() => {
             this.$emit('ok')
             this.show = false

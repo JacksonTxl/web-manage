@@ -108,8 +108,8 @@ export default {
           form.start_time = form.start_time.format('YYYY-MM-DD HH:mm')
           form.court_site_id = form.court_id[1]
           form.court_id = form.court_id[0]
-          form.course_fee = parseInt(form.course_fee)
-          form.limit_num = parseInt(form.limit_num)
+          form.course_fee = +form.course_fee
+          form.limit_num = +form.limit_num
           this.teamScheduleScheduleService.add(form).subscribe(res => {
             this.$router.push({ query: this.query, force: true })
           })

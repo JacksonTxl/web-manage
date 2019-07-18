@@ -36,15 +36,13 @@
         </a-select>
       </st-form-item>
       <st-form-item label="人数" required>
-        <st-input-number v-decorator="formRules.limitNum">
-
-          <a-button slot="addonAfter">人</a-button>
-        </st-input-number>
+        <a-input-search v-decorator="formRules.limitNum">
+          <a-button slot="enterButton">人</a-button>
+        </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required >
-        <st-input-number :float="true" v-decorator="formRules.courseFee">
-          <span slot="addonAfter">元/节</span>
-        </st-input-number>
+        <a-input-search v-decorator="formRules.courseFee"
+        > <a-button slot="enterButton">元/节</a-button> </a-input-search>
       </st-form-item>
       <div class="ta-r">
         <st-button @click="addInBatch">批量设置</st-button>
@@ -164,6 +162,8 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           const data = this.dataFilter(values)
+          data.course_fee = +data.course_fee
+          data.limit_num = +data.limit_num
           this.scheduleService.add(data).subscribe(this.onSubmitSuccess)
         }
       })

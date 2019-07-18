@@ -50,7 +50,7 @@
 
 <script>
 import { PersonalScheduleScheduleService } from '../../../pages/shop/product/course/schedule/personal.service#/schedule.service'
-import { RouteService } from '../../../../services/route.service'
+import { RouteService } from '@/services/route.service'
 export default {
   name: 'EditShchedule',
   serviceInject() {
