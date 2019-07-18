@@ -8,7 +8,7 @@ import { remove } from 'lodash-es'
 @Injectable()
 export class AddUnlimitPackageService {
   // 是否配置了用户端
-  appConfig = false
+  appConfig = true
   loading$ = new State({})
   unitList$ = this.userService.getOptions('package_course.valid_time_unit')
   transferUnitList$ = this.userService.getOptions('package_course.transfer_unit')

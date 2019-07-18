@@ -84,10 +84,10 @@
           </st-container>
         </div>
         <div class="mb-24">
-          <!-- 售卖渠道 -->
+          <!-- 售卖方式 -->
           <p class="mb-8">
-            <span class="label">售卖渠道：</span>
-            <span class="value" v-for="(item,index) in cardInfo.sell_type" :key="index">{{item | enumFilter('deposit_card.sell_type')}}&nbsp;&nbsp;</span>
+            <span class="label">售卖方式：</span>
+            <span class="value" v-for="(item,index) in cardInfo.sell_type" :key="index"><i v-if="index>0">/</i>{{item | enumFilter('deposit_card.sell_type')}}</span>
           </p>
         </div>
         <div :class="item('price_gradient')" class="mb-24">

@@ -144,7 +144,7 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="20">
-              <st-form-item class="page-content-card-sell-type" label="售卖渠道" required>
+              <st-form-item class="page-content-card-sell-type" label="售卖方式" required>
                 <a-checkbox-group v-model="sellType">
                   <a-checkbox
                   v-for="item in sellTypeList"
@@ -287,7 +287,7 @@ export default {
       transferUnit: 2,
       // 转让手续费
       transferNum: 0,
-      // 售卖渠道
+      // 售卖方式
       sellType: [2],
       // 卡背景
       cardBg: {
@@ -303,7 +303,7 @@ export default {
       // 备注
       cardContents: '',
       // 是否配置了用户端
-      appConfig: false
+      appConfig: true
     }
   },
   methods: {
@@ -495,7 +495,7 @@ export default {
       })
       return text
     },
-    // 售卖渠道
+    // 售卖方式
     sellTypeList() {
       let sell_type = cloneDeep(Object.entries(this.member_card.sell_type.value))
       let arr = []
