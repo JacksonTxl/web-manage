@@ -128,7 +128,7 @@ export class PersonalScheduleReserveService {
             groupId: JSON.stringify(item),
             id: item.id,
             start: `${item.start_date} ${item.start_time}`,
-            end: `${item.start_date} ${item.end_time}`
+            end: `${item.end_date} ${item.end_time}`
           }
         })
       })
