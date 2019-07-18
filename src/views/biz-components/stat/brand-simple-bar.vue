@@ -15,7 +15,7 @@ export default {
      * @example
      * {
      *  name:'会员占比’,
-     * percent:0.6
+     * percent:60
      * }
      */
     data: {
@@ -32,13 +32,13 @@ export default {
       if (_p < 0) {
         _p = 0
       }
-      if (_p > 1) {
-        _p = 1
+      if (_p > 100) {
+        _p = 100
       }
       return _p
     },
     showPercent() {
-      return `${this.percent * 100}%`
+      return `${this.percent}%`
     },
     barStyle() {
       return {
@@ -47,10 +47,10 @@ export default {
     },
     tooltipStyle() {
       let _x = '50%'
-      if (this.percent < 0.2) {
+      if (this.percent < 20) {
         _x = '100%'
       }
-      if (this.percent > 0.8) {
+      if (this.percent > 80) {
         _x = '0%'
       }
       return {
