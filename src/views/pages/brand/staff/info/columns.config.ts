@@ -108,16 +108,16 @@ export const soldColums = () => {
       key: 'member_name'
     }, {
       title: '手机号',
-      dataIndex: 'mobile',
-      key: 'mobile'
+      dataIndex: 'member_mobile',
+      key: 'member_mobile'
     }, {
       title: '下单时间',
-      dataIndex: 'order_time',
-      key: 'order_time'
+      dataIndex: 'created_time',
+      key: 'created_time'
     }, {
       title: '完成时间',
-      dataIndex: 'finish_time',
-      key: 'finish_time'
+      dataIndex: 'pay_finished_time',
+      key: 'pay_finished_time'
     }
   ]
 }
