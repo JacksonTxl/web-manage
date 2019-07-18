@@ -263,6 +263,7 @@ export default {
     return {
       addLoading: this.editService.loading$,
       cardInfo: this.editService.cardInfo$,
+      memberCard: this.userService.memberCardEnums$,
       deposit_card: user.depositCardEnums$
     }
   },
@@ -306,7 +307,7 @@ export default {
         // 卡背景
         bg_image: {
           image_id: 0,
-          image_key: 'image/VZ0RGBwTX7FA1yKb.png',
+          image_key: this.memberCard.card_bg_list.value[0].image_key,
           image_url: '',
           index: 1
         },
