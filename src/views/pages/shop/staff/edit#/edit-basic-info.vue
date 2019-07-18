@@ -25,7 +25,7 @@
         <st-form-item label="性别" required>
           <a-select placeholder="请选择" v-decorator="rules.sex">
             <template v-for="(item,key) in enums.sex.value">
-              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+              <a-select-option :key="key" :value="+key">{{ item }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
@@ -52,7 +52,7 @@
           <a-input-group compact style="top: 0;">
             <a-select style="width: 20%" v-model="id_type">
               <template v-for="(item,key) in enums.id_type.value">
-                <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+                <a-select-option :key="key" :value="+key">{{ item }}</a-select-option>
               </template>
             </a-select>
             <a-input style="width: 80%" placeholder="请输入身份证号码" v-decorator="rules.idnumber"/>
@@ -211,6 +211,7 @@ export default {
       data.image_face = this.faceList[0] || {}
       data.country_code_id = this.country_code_id
       data.id_type = this.id_type
+      data.department_id = +data.department_id
       this.editservice.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
         if (saveOrgoNext === 1) {
           this.$emit('gonext')
@@ -225,7 +226,7 @@ export default {
       this.form.setFieldsValue({
         staff_name: obj.staff_name,
         nickname: obj.nickname,
-        department_id: obj.department_id || undefined,
+        department_id: String(obj.department_id) || undefined,
         mobile: obj.mobile,
         staff_num: obj.staff_num,
         sex: obj.sex,

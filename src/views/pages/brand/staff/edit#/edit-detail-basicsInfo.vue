@@ -79,9 +79,8 @@
         </st-form-item>
         <st-form-item label="工作性质" >
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
-            <template v-for="(item,index) in nature_work_option">
-              <a-select-option :key="index"
-              :value="item.value">{{ item.label }}</a-select-option>
+            <template v-for="(item,key) in enums.nature_work.value">
+              <a-select-option :key="key" :value="+key">{{ item }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
@@ -216,6 +215,7 @@ export default {
       data.image_face = this.faceList[0] || {}
       data.country_code_id = this.country_code_id
       data.id_type = this.id_type
+      data.department_id = +data.department_id
       this.editService.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
         this.$emit('goNext')
         this.$emit('updateStaffInfo')
@@ -230,7 +230,7 @@ export default {
         sex: obj.sex, // 性别
         id_number: obj.id_number, // 身份证
         nature_work: obj.nature_work || undefined, // 工作性质
-        department_id: obj.department_id || undefined, // 部门
+        department_id: String(obj.department_id) || undefined, // 部门
         role_id: obj.role_id, // 角色
         shop_id: obj.shop_id, // 所属门店
         entry_date: obj.entry_date ? moment(obj.entry_date) : undefined, // 入职时间

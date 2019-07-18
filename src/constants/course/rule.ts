@@ -187,7 +187,7 @@ export class RuleConfig {
     return ['calories']
   }
   /**
-   * 售卖渠道
+   * 售卖方式
    */
   get sellType() {
     return ['sell_type', {

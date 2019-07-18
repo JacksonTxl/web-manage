@@ -38,7 +38,7 @@
           <a-select placeholder="请选择" v-decorator="rules.children_status">
             <a-select-option
               v-for="(item, key) in enums.children_status.value"
-              :value="item"
+              :value="+key"
               :key="key"
             >{{item}}</a-select-option>
           </a-select>
@@ -62,8 +62,7 @@
         <st-form-item label="备注">
           <st-textarea
             :maxlength="300"
-            :rows="10"
-            v-decorator="rules.description"
+            v-model="descriptionVal"
             placeholder="填写点什么吧"/>
         </st-form-item>
       </a-col>
@@ -108,30 +107,7 @@ export default {
     return {
       form: this.$form.createForm(this),
       regions: [],
-      detailRules: {
-        // 毕业院校
-        graduated_school: ['graduated_school'],
-        // 毕业时间
-        graduation_time: ['graduation_time'],
-        // 学历
-        education: ['education'],
-        // 专业
-        profession: ['profession'],
-        // 生日
-        birthday: ['birthday'],
-        // 籍贯
-        native_place: ['native_place'],
-        // 婚姻状态
-        marry_status: ['marry_status'],
-        // 有无子女
-        children_status: ['children_status'],
-        // 详细地址
-        address: ['address'],
-        // 描述
-        description: ['description'],
-        // 省市区
-        provinces: ['provinces']
-      },
+      descriptionVal: '',
       fieldNames: { label: 'name', value: 'id', children: 'children' }
     }
   },
@@ -158,9 +134,9 @@ export default {
         marry_status: obj.marry_status || undefined,
         children_status: obj.children_status || undefined,
         address: obj.address,
-        description: obj.description,
         provinces: [obj.province_id, obj.city_id, obj.district_id]
       })
+      this.descriptionVal = obj.description
     },
     onChange(value) {
       console.log(value)
@@ -186,11 +162,15 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
+          console.log('values')
           let obj = this.filterProvinces(values.provinces)
           let newData = Object.assign(values, obj)
           newData.birthday && (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
           newData.graduation_time && (newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD'))
           delete newData.provinces
+          newData = Object.assign(newData, {
+            descriptionVal: obj.description
+          })
           this.$emit('detailInfoSave', {
             data: newData
           })

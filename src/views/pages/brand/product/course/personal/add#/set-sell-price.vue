@@ -6,8 +6,8 @@
         <st-form-item label="课程名称">
           <a-input placeholder="课程名称" disabled v-decorator="ruleConfig.courseName"/>
         </st-form-item>
-        <!-- 售卖渠道 -->
-        <st-form-item label="售卖渠道">
+        <!-- 售卖方式 -->
+        <st-form-item label="售卖方式">
           <a-checkbox-group
             :options="sellTypeOptions"
             v-decorator="ruleConfig.sellType"

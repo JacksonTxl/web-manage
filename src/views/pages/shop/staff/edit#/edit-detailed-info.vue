@@ -9,7 +9,7 @@
           <a-select placeholder="请选择" v-decorator="rules.education">
             <a-select-option
               v-for="(item, key) in enums.education.value"
-              :value="key"
+              :value="+key"
               :key="key"
             >{{item}}</a-select-option>
           </a-select>
@@ -21,7 +21,7 @@
           <a-select placeholder="请选择" v-decorator="rules.marry_status">
             <a-select-option
               v-for="(item, key) in enums.marry_status.value"
-              :value="key"
+              :value="+key"
               :key="key"
             >{{item}}</a-select-option>
           </a-select>
@@ -41,7 +41,7 @@
           <a-select placeholder="请选择" v-decorator="rules.children_status">
             <a-select-option
               v-for="(item, key) in enums.children_status.value"
-              :value="key"
+              :value="+key"
               :key="key"
             >{{item}}</a-select-option>
           </a-select>
@@ -132,12 +132,12 @@ export default {
       this.form.setFieldsValue({
         graduated_school: obj.graduated_school,
         graduation_time: obj.graduation_time ? moment(obj.graduation_time) : undefined,
-        education: obj.education,
+        education: obj.education || undefined,
         profession: obj.profession,
         birthday: obj.birthday ? moment(obj.birthday) : undefined,
         native_place: obj.native_place,
-        marry_status: obj.marry_status,
-        children_status: obj.children_status,
+        marry_status: obj.marry_status || undefined,
+        children_status: obj.children_status || undefined,
         address: obj.address,
         description: obj.description,
         provinces: [obj.province_id, obj.city_id, obj.district_id]
