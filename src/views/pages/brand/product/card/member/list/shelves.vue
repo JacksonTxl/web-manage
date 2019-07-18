@@ -185,8 +185,8 @@ export default {
             .setCardShelfDown({ card_shop: params })
             .toPromise()
             .then(() => {
-              this.onClear()
-              this.$router.push({ force: true, query: this.query })
+              this.onSelectionReset()
+              this.$router.push({ force: true, query: { ...this.query, current_page: 1 } })
             })
         }
       })
@@ -203,7 +203,7 @@ export default {
             })
             .toPromise()
             .then(() => {
-              this.$router.push({ force: true, query: this.query })
+              this.$router.push({ force: true, query: { ...this.query, current_page: 1 } })
             })
         }
       })
