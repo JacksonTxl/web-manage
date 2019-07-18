@@ -299,9 +299,9 @@ export default {
           values.birthday = values.birthday
             ? values.birthday.format('YYYY-MM-DD')
             : ''
-          values.province_id = values.cascader[0] || 110000
-          values.city_id = values.cascader[1] || 110100
-          values.district_id = values.cascader[2] || 110101
+          values.province_id = values.cascader[0]
+          values.city_id = values.cascader[1]
+          values.district_id = values.cascader[2]
           // 身份前缀
           values.id_card_type = this.id_card_type
           // 人脸信息
@@ -317,6 +317,16 @@ export default {
       })
     },
     setEditInfo(obj) {
+      const cascader = []
+      if (obj.province_id) {
+        cascader.push(cascader)
+      }
+      if (obj.city_id) {
+        cascader.push(cascader)
+      }
+      if (obj.district_id) {
+        cascader.push(cascader)
+      }
       this.form.setFieldsValue({
         member_name: obj.member_name,
         sex: +obj.sex || undefined,
@@ -339,7 +349,7 @@ export default {
         email: obj.email,
         mobile: obj.mobile,
         wechat: obj.wechat,
-        cascader: [obj.province_id, obj.city_id, obj.district_id],
+        cascader: cascader,
         country_prefix: +obj.country_prefix || undefined,
         living_address: obj.living_address
       })
