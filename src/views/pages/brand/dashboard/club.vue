@@ -41,7 +41,7 @@
               <template slot="title">
                 <st-help-tooltip id="TBCDA003"></st-help-tooltip>
               </template>
-              <brand-simple-bar color="#58CC99" class="mg-t40" :data="this.user.chart | barFilter"></brand-simple-bar>
+              <brand-simple-bar color="#58CC99" class="mg-t40" :data="this.user.percent | barFilter"></brand-simple-bar>
             </count-card>
           </div>
         </a-col>
