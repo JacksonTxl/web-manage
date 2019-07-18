@@ -141,7 +141,7 @@ export default {
     barFilter(val) {
       return {
         name: '会员占比',
-        percent: (val / 100)
+        percent: val
       }
     }
   },
