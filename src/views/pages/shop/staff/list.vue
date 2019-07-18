@@ -67,7 +67,7 @@
         <st-button v-if="auth.add" class="mg-r8" icon="add" @click="onAddStaff">添加员工</st-button>
         <!-- NOTE: 导入 -->
         <!-- <st-button v-if="auth.import" class="mg-r8" @click="onExportStaff">导入员工</st-button> -->
-        <st-button :disabled="selectedRowKeys.length > 0 ? false : true" icon="add" @click="onJoinDepartment" v-if="auth.join">批量加入部门</st-button>
+        <st-button :disabled="selectedRowKeys.length > 0 ? false : true" @click="onJoinDepartment" v-if="auth.join">批量加入部门</st-button>
       </a-col>
       <a-col :lg="7" style="text-align: right;">
         <st-input-search placeholder="搜索员工" v-model="query.keyword" @search="onSingleSearch('keyword', $event)"/>
@@ -75,7 +75,7 @@
     </a-row>
     <a-row class="mg-t8">
       <st-table
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectionChange}"
         :columns="columns"
         :dataSource="staffList"
         :scroll="{ x: 1500 }"
@@ -167,8 +167,6 @@ export default {
   data() {
     return {
       visible: false,
-      selectedRowKeys: [],
-      selectStaff: [],
       value: '',
       enums: {},
       modaldata: {}
@@ -193,26 +191,15 @@ export default {
       this.value = e + ''
     },
     joinok() {
-      this.selectedRowKeys = []
-      this.selectStaff = []
-      this.$router.push({
-        query: {},
-        force: true
-      })
-    },
-    onSelectChange(selectedRowKeys, selectedRows) {
-      this.selectedRowKeys = selectedRowKeys
-      this.selectStaff = selectedRows.map(item => {
-        return item.staff_id
-      })
-
-      console.log('选中的行', this.selectStaff)
+      this.onSearhReset()
     },
     onJoinDepartment(e) {
       console.log('批量加入部门')
       this.$modalRouter.push({
-        name: 'shop-staff-join-department',
-        props: {},
+        name: 'shop-staff-batch-import',
+        props: {
+          ids: this.selectedRowKeys
+        },
         on: {
           change: this.joinok
         }
