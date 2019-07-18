@@ -84,7 +84,6 @@ export default {
   },
   rxState() {
     const tss = this.teamScheduleCommomService
-    console.log(tss)
     return {
       loading: this.teamScheduleScheduleService.loading$,
       query: this.routeService.query$,
@@ -112,7 +111,7 @@ export default {
   },
   methods: {
     initOptions() {
-      return this.teamService.initOptions()
+      return this.teamService.init()
     },
     onSubmit() {
       this.form.validateFields((err, values) => {
@@ -123,8 +122,8 @@ export default {
             form.court_site_id = form.court_id[1]
             form.court_id = form.court_id[0]
           }
-          form.course_fee = parseInt(form.course_fee)
-          form.limit_num = parseInt(form.limit_num)
+          form.course_fee = +form.course_fee
+          form.limit_num = +form.limit_num
           this.teamScheduleScheduleService.add(form).subscribe(() => {
             this.$emit('ok')
             this.show = false

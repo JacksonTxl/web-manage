@@ -83,8 +83,8 @@ export default {
       // 选择的cardBg
       cardBg: {
         image_id: 0,
-        image_key: 'image/default/bg-card-selection-1.png',
-        image_url: 'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-card-selection-1.png',
+        image_key: this.memberCard.card_bg_list.value[0].image_key,
+        image_url: this.memberCard.card_bg_list.value[0].image_url,
         index: 1
       },
       // 自定义cardBg

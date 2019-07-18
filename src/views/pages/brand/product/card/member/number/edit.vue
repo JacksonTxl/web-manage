@@ -1,7 +1,7 @@
 <template>
   <st-panel app class="page-brand-basic-card page-brand-edit-number-card" initial>
     <div class="page-brand-basic-card-body">
-      <!-- <div class="page-preview">实时预览{{member_card}}</div> -->
+      <!-- <div class="page-preview">实时预览{{memberCard}}</div> -->
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
@@ -19,7 +19,7 @@
                   @change="admission_range"
                   v-decorator="['cardData.admission_range',{initialValue:1,rules:[{validator:admission_shop_list_validator}]}]">
                   <a-radio
-                    v-for="item in Object.entries(member_card.admission_range.value)"
+                    v-for="item in Object.entries(memberCard.admission_range.value)"
                     :key="+item[0]"
                     :value="+item[0]">{{item[1]}}</a-radio>
                 </a-radio-group>
@@ -38,7 +38,7 @@
                   v-show="cardData.admission_range===1"
                   v-decorator="['cardData.price_setting',{initialValue:1,rules:[{validator:price_gradient_list_validator}]}]">
                   <a-radio
-                    v-for="item in Object.entries(member_card.price_setting.value)"
+                    v-for="item in Object.entries(memberCard.price_setting.value)"
                     :key="+item[0]"
                     :value="+item[0]">{{item[1]}}</a-radio>
                 </a-radio-group>
@@ -254,7 +254,7 @@
                   :disabled="!cardData._is_transfer"
                   :min="transferMin" :max="transferMax">
                     <a-select slot="addonAfter" v-model="cardData.unit" :disabled="!cardData._is_transfer">
-                      <a-select-option v-for="item in Object.entries(member_card.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
+                      <a-select-option v-for="item in Object.entries(memberCard.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
                     </a-select>
                   </st-input-number>
                   <!-- <a-input-group compact class="page-input-group">
@@ -263,7 +263,7 @@
                     @change="transfter_change"
                     :disabled="!cardData._is_transfer"/>
                     <a-select v-model="cardData.unit" defaultValue="2" :disabled="!cardData._is_transfer">
-                      <a-select-option v-for="item in Object.entries(member_card.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
+                      <a-select-option v-for="item in Object.entries(memberCard.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
                     </a-select>
                   </a-input-group> -->
                 </div>
@@ -346,7 +346,7 @@ export default {
     return {
       addLoading: this.editService.loading$,
       cardInfo: this.editService.cardInfo$,
-      member_card: this.userService.memberCardEnums$
+      memberCard: this.userService.memberCardEnums$
     }
   },
   bem: {
@@ -394,7 +394,7 @@ export default {
         // 卡背景
         card_bg: {
           image_id: 0,
-          image_key: 'image/VZ0RGBwTX7FA1yKb.png',
+          image_key: this.memberCard.card_bg_list.value[0].image_key,
           image_url: '',
           index: 1
         },
@@ -856,14 +856,14 @@ export default {
   computed: {
     // 支持售卖门店
     support_sales_list() {
-      let arr = cloneDeep(Object.entries(this.member_card.support_sales.value))
+      let arr = cloneDeep(Object.entries(this.memberCard.support_sales.value))
       let index = this.cardData.admission_range === 2 ? 999 : 2
       arr.splice(index, 1)
       return arr
     },
     // 售卖方式
     sell_type_list() {
-      let sell_type = cloneDeep(Object.entries(this.member_card.sell_type.value))
+      let sell_type = cloneDeep(Object.entries(this.memberCard.sell_type.value))
       let arr = []
       sell_type.forEach(i => {
         arr.push({

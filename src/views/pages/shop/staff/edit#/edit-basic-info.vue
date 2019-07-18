@@ -85,7 +85,7 @@
           </a-select>
         </st-form-item>
         <st-form-item label="系统角色" required>
-          <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id">
+          <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id" @change="roleChange">
             <template v-for="item in roleList">
               <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
             </template>
@@ -180,6 +180,10 @@ export default {
     })
   },
   methods: {
+    roleChange(v) {
+      console.log(v)
+      if (v && v.length > 10) v.pop()
+    },
     onChange(value) {
       this.value = value
     },
@@ -226,7 +230,7 @@ export default {
       this.form.setFieldsValue({
         staff_name: obj.staff_name,
         nickname: obj.nickname,
-        department_id: String(obj.department_id) || undefined,
+        department_id: String(obj.department_id),
         mobile: obj.mobile,
         staff_num: obj.staff_num,
         sex: obj.sex,

@@ -117,7 +117,7 @@ export default {
   },
   methods: {
     initOptions() {
-      return this.teamService.initOptions()
+      return this.teamService.init()
     },
     onClick() {
       this.show = true

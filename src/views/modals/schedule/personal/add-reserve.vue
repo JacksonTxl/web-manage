@@ -41,11 +41,11 @@
         </a-select>
       </st-form-item>
       <st-form-item label="预约日期" required>
-        <a-date-picker @change="onChangeDatePick" v-decorator="['scheduling_id']" :disabledDate="disabledDate"/>
+        <a-date-picker @change="onChangeDatePick" v-decorator="['scheduling_id', {initialValue: undefined}]" :disabledDate="disabledDate"/>
       </st-form-item>
       <st-form-item label="预约时间" required>
 
-        <a-time-picker format="HH:mm" v-decorator="['reserve_start_time']" :disabledMinutes="disabledMinutes" :disabledHours="disabledHours" />
+        <a-time-picker format="HH:mm" v-decorator="['reserve_start_time', {initialValue: undefined}]" :disabledMinutes="disabledMinutes" :disabledHours="disabledHours" />
       </st-form-item>
     </st-form>
 
@@ -126,7 +126,7 @@ export default {
     },
     range(start, end) {
       const result = []
-      for (let i = start; i < end; i++) {
+      for (let i = start; i <= end; i++) {
         result.push(i)
       }
       return result
@@ -144,10 +144,14 @@ export default {
         const endHour = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`).format('HH').valueOf()
         const start = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`).format('mm').valueOf()
         const end = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`).format('mm').valueOf()
-        if (selectedHour === startHour) {
-          return difference(allTime, this.range(start, 60))
-        } else if (selectedHour === endHour) {
-          return difference(allTime, this.range(0, end))
+        if (startHour === endHour) {
+          return difference(allTime, this.range(start, end))
+        } else {
+          if (selectedHour === startHour) {
+            return difference(allTime, this.range(start, 60))
+          } else if (selectedHour === endHour) {
+            return difference(allTime, this.range(0, end))
+          }
         }
       }
     },
