@@ -93,6 +93,7 @@ import {
 import {
   PersonalTeamScheduleScheduleService as ScheduleService
 } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
+import { MessageService } from '@/services/message.service'
 const columns = [{
   dataIndex: 'start_time',
   slots: { title: 'startTimeTitle' },
@@ -124,7 +125,8 @@ export default {
   serviceInject() {
     return {
       commonService: CommonService,
-      scheduleService: ScheduleService
+      scheduleService: ScheduleService,
+      msg: MessageService
     }
   },
   rxState() {
@@ -164,6 +166,29 @@ export default {
     }
   },
   methods: {
+    validateForm(form) {
+      if (!form.start_time) {
+        this.msg.error({ content: '排期开始时间不能为空' })
+        return false
+      }
+      if (!form.course_id) {
+        this.msg.error({ content: '请选择课程' })
+        return false
+      }
+      if (!form.coach_id) {
+        this.msg.error({ content: '请选择课程教练' })
+        return false
+      }
+      if (!form.limit_num) {
+        this.msg.error({ content: '请输入上课人数' })
+        return false
+      }
+      if (!form.course_fee) {
+        this.msg.error({ content: '请输入课时费' })
+        return false
+      }
+      return true
+    },
     onOkSaveForm() {
       let data = cloneDeep(this.data)
       data = data
@@ -175,8 +200,8 @@ export default {
           delete item.key
           delete item.editable
           item.start_time = moment(item.start_time).format('YYYY-MM-DD HH:mm:ss').valueOf()
-          item.limit_num = parseInt(item.limit_num)
-          item.course_fee = parseInt(item.course_fee)
+          item.limit_num = +item.limit_num
+          item.course_fee = +item.course_fee
           return item
         })
       this.scheduleService.addScheduleInBatch(data).subscribe(this.onSubmitSuccess)
@@ -231,6 +256,9 @@ export default {
     save(key) {
       let newData = [...this.data]
       const target = newData.filter(item => key === item.key)[0]
+      if (!this.validateForm(target)) {
+        return ''
+      }
       if (key === 0 && target) {
         delete target.editable
         delete newData[0].editable

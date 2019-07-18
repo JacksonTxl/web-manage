@@ -1,5 +1,10 @@
 <template>
-  <st-modal title="新增底薪模板" v-model="show" @ok="handleSubmit">
+  <st-modal
+    title="新增底薪模板"
+    v-model="show"
+    @ok="handleSubmit"
+    size="small"
+  >
     <st-form :form="form" labelWidth="67px" @submit="handleSubmit">
       <a-row :gutter="8">
         <a-col :lg="24">

@@ -41,11 +41,11 @@
         </a-select>
       </st-form-item>
       <st-form-item label="预约日期" required>
-        <a-date-picker @change="onChangeDatePick" v-decorator="['scheduling_id']" :disabledDate="disabledDate"/>
+        <a-date-picker @change="onChangeDatePick" v-decorator="['scheduling_id', {initialValue: undefined}]" :disabledDate="disabledDate"/>
       </st-form-item>
       <st-form-item label="预约时间" required>
 
-        <a-time-picker format="HH:mm" v-decorator="['reserve_start_time']" :disabledMinutes="disabledMinutes" :disabledHours="disabledHours" />
+        <a-time-picker format="HH:mm" v-decorator="['reserve_start_time', {initialValue: undefined}]" :disabledMinutes="disabledMinutes" :disabledHours="disabledHours" />
       </st-form-item>
     </st-form>
 
@@ -109,10 +109,14 @@ export default {
     },
     // 获取时期
     onChangeDatePick(val) {
-      let reserveDate = ''
+      const course_id = this.form.getFieldValue('course_id')
+      let reserveDate = {
+        id: '',
+        course_id
+      }
       this.form.setFieldsValue({ reserve_start_time: '' })
       this.dateOptions.forEach(item => {
-        val.format('YYYY-MM-DD') === item.schedule_date && (reserveDate = item.id)
+        val.format('YYYY-MM-DD') === item.schedule_date && (reserveDate.id = item.id)
       })
       this.commonService.getOptions('getTimeList', reserveDate, () => {})
     },
@@ -122,7 +126,7 @@ export default {
     },
     range(start, end) {
       const result = []
-      for (let i = start; i < end; i++) {
+      for (let i = start; i <= end; i++) {
         result.push(i)
       }
       return result
@@ -140,10 +144,14 @@ export default {
         const endHour = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`).format('HH').valueOf()
         const start = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`).format('mm').valueOf()
         const end = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`).format('mm').valueOf()
-        if (selectedHour === startHour) {
-          return difference(allTime, this.range(start, 60))
-        } else if (selectedHour === endHour) {
-          return difference(allTime, this.range(0, end))
+        if (startHour === endHour) {
+          return difference(allTime, this.range(start, end))
+        } else {
+          if (selectedHour === startHour) {
+            return difference(allTime, this.range(start, 60))
+          } else if (selectedHour === endHour) {
+            return difference(allTime, this.range(0, end))
+          }
         }
       }
     },
@@ -153,17 +161,13 @@ export default {
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
         const start = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`).format('H').valueOf()
         const end = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`).format('H').valueOf()
-        console.log(start, end)
         disabledHours = [...disabledHours, ...this.range(start, end || 24)]
       }
-      console.log(allTime, disabledHours)
-      console.log(difference(allTime, disabledHours))
       return difference(allTime, disabledHours)
     },
     save() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
           const consume = JSON.parse(values.consume_type)
           let form = cloneDeep(values)
           form.member_id = values.member_id.key

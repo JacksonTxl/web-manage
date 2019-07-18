@@ -293,9 +293,9 @@ export default {
       e.preventDefault()
       this.form.validateFields().then(res => {
         const cascader = res.cascader || []
-        res.province_id = cascader[0] || 110000
-        res.city_id = cascader[1] || 110100
-        res.district_id = cascader[2] || 110101
+        // res.province_id = cascader[0] || 110000
+        // res.city_id = cascader[1] || 110100
+        // res.district_id = cascader[2] || 110101
         // 手机前缀
         res.country_prefix = this.country_prefix
         res.image_face = this.faceList[0] || {}

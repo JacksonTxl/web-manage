@@ -5,6 +5,7 @@
     @ok="onSubmit"
     @cancel="onCancel"
     :confirmLoading="loading.addTrainingAim"
+    size="small"
   >
     <div>
       <st-form :form="form">

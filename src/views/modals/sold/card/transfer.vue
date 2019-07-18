@@ -57,7 +57,7 @@
         </a-col>
       </a-row>
       <st-hr marginTop="0" marginBottom="0" />
-      <st-form :form="form" labelWidth="85px" enctype="multipart/form-data">
+      <st-form :form="form" labelWidth="88px" enctype="multipart/form-data">
         <div :class="transfer('transfer')">
           <st-form-item v-show="searchMemberIsShow" label="转让会员" required labelGutter="12px">
             <a-select

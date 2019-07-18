@@ -25,16 +25,23 @@
       margin-bottom: 16px;
       padding: 0 16px;
     }
+    
     .item{
       height: 36px;
       padding: 0 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 1px;
+      &:hover{
+        background: rgba(240,246,255,1);
+      }
     }
     .active{
-      background:rgba(24,144,255,1);
-      color: #fff;
+      background: rgba(240,246,255,1);
+      &:hover{
+        background: rgba(240,246,255,1);
+      }
     }
   }
   &__search {

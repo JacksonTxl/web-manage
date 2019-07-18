@@ -60,6 +60,7 @@ export default {
         department_id: this.department_id
       }).subscribe((res) => {
         this.show = false
+        this.$emit('change')
       })
     },
     traverseTree(tree) {

@@ -7,7 +7,7 @@
     @cancel="onCancel"
     :confirmLoading="loading.add"
   >
-    <st-form :form="form" labelWidth="85px">
+    <st-form :form="form" labelWidth="88px">
       <st-form-item label="区域">
         <a-input :value="areaName" disabled/>
       </st-form-item>

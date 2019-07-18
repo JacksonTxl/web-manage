@@ -7,7 +7,7 @@
         续卡<st-help-tooltip id="TSMC001" placement="right"/>
     </div>
     <div :class="sale('content')">
-      <st-form :form="form" labelWidth="85px">
+      <st-form :form="form" labelWidth="88px">
         <div :class="sale('sale')" class="modal-sold-renewal-member-card">
           <st-form-item labelGutter="12px" label="续卡会员" class="mg-b16">{{info.member_name}}</st-form-item>
           <st-form-item labelGutter="12px" label="卡名" class="mg-b16">{{info.card_name}}</st-form-item>

@@ -3,6 +3,7 @@
     <div v-for="(item,idx) in dv" :key="item.name" :class="b('item')">
       <div :class="b('item-before')" :style="triStyle"></div>
       <div :class="b('text')">
+        <slot name="text" :index="idx"></slot>
         <span :class="b('name')">{{item.name}}</span>
         <span :class="b('value')">{{item.value}}</span>
       </div>

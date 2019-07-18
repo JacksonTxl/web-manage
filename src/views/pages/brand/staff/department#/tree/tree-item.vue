@@ -10,10 +10,13 @@
         <div class="tree-name edit-box" v-if="item.isEdit">
           <a-input placeholder="请输入部门名称" class="tree-input mg-r8" v-model="editValue"></a-input>
           <a href="javascript:;" class="button edit mg-r8" @click.stop="editDepartment">保存</a>
-          <a-icon type="close-circle" @click.stop="cancelEdit"/>
+          <span @click.stop="cancelEdit">
+            <st-icon type="close" />
+          </span>
+
         </div>
         <span class="tree-name" v-else>{{ item.name }}( {{item.count}} )</span>
-        <st-more-dropdown class="tree-opreation" v-show="!item.isEdit">
+        <st-more-dropdown class="tree-opreation"  v-show="!item.isEdit">
           <a-menu-item v-if="auth.departmentAdd"  @click="addTreeNode">新增</a-menu-item>
           <a-menu-item  @click="editTreeNode">编辑</a-menu-item>
           <a-menu-item  @click="deleteDepartment(item)" v-if="item.id">删除</a-menu-item>
@@ -26,7 +29,10 @@
           v-model="addValue">
         </a-input>
         <a href="javascript:;" class="mg-r8" @click.stop="addDepartment(item)">保存</a>
-        <a-icon type="close-circle" @click.stop="cancelAdd"/>
+        <span @click.stop="cancelAdd">
+          <st-icon type="close" />
+        </span>
+
       </div>
     </div>
     <ul class="st-tree-item" v-show="isOpen" v-if="isFolder">
@@ -75,6 +81,7 @@ export default {
     return {
       editValue: '',
       addValue: '',
+      isActive: false,
       opreations: [{ clickName: this.addTreeNade, name: '新增' }, { clickName: this.editTreeNade, name: '编辑' }, { clickName: this.deleteTreeNade, name: '删除' }],
       placements: ['bottomLeft'],
       visible: false,
@@ -142,35 +149,39 @@ export default {
     },
     deleteDepartment(item) {
       console.log('deleteDepartment', this.$refs.treeNode, item)
+      let content = ''
       if (item.count > 0) {
-        this.$error({
-          title: '',
-          content: '当前部门下有员工，无法删除'
-        })
+        content = '删除部门后，该部门下的员工会自动归属父级部门，确认删除？'
       } else {
-        this.$confirm({
-          title: '确认要删除',
-          content: '删除部门后，该部门下的员工会自动归属父级部门，且无法恢复，确认删除？',
-          onOk: () => {
-            return new Promise((resolve, reject) => {
-              return this.departmentService.delDepartment({ id: this.item.id }).subscribe(() => {
-                setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
-                this.$emit('update-data')
-              })
-            }).catch(() => console.log('Oops errors!'))
-          },
-          onCancel() {}
-        })
+        content = '删除部门后,部门无法恢复，确认删除？'
       }
+      this.$confirm({
+        title: '确认要删除',
+        content: content,
+        onOk: () => {
+          return new Promise((resolve, reject) => {
+            return this.departmentService.delDepartment({ id: this.item.id }).subscribe(() => {
+              setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
+              this.$emit('update-data')
+            })
+          }).catch(() => console.log('Oops errors!'))
+        },
+        onCancel() {}
+      })
     },
     getTreeNodeOnclick(e) {
-      console.log('getTreeNodeOnclick', this.$refs.treeNode, this.item)
+      this.isActive = true
       this.$emit('node-item-detail', this.item)
       this.$nextTick().then(() => {
         const doms = document.querySelectorAll('.tree-node__content')
+        const treeOpreationEle = document.querySelectorAll('.tree-node__content .tree-opreation')
+        treeOpreationEle.forEach(dom => {
+          dom.setAttribute('class', 'tree-opreation')
+        })
         doms.forEach(dom => {
           dom.setAttribute('class', 'tree-node__content')
         })
+        e.currentTarget.querySelector('.tree-opreation').setAttribute('class', 'tree-opreation active')
         e.currentTarget.setAttribute('class', 'tree-node__content active')
       })
     },

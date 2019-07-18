@@ -25,7 +25,7 @@
         <st-form-item label="性别" required>
           <a-select placeholder="请选择" v-decorator="rules.sex">
             <template v-for="(item,key) in enums.sex.value">
-              <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+              <a-select-option :key="key" :value="+key">{{ item }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
@@ -52,7 +52,7 @@
           <a-input-group compact style="top: 0;">
             <a-select style="width: 20%" v-model="id_type">
               <template v-for="(item,key) in enums.id_type.value">
-                <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+                <a-select-option :key="key" :value="+key">{{ item }}</a-select-option>
               </template>
             </a-select>
             <a-input style="width: 80%" placeholder="请输入身份证号码" v-decorator="rules.idnumber"/>
@@ -79,13 +79,13 @@
         </st-form-item>
         <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
-            <template v-for="(item,index) in nature_work_option">
-              <a-select-option :key="index" :value="item.value">{{ item.label }}</a-select-option>
+            <template v-for="(item,key) in enums.nature_work.value">
+              <a-select-option :key="key" :value="+key">{{ item }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
         <st-form-item label="系统角色" required>
-          <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id">
+          <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id" @change="roleChange">
             <template v-for="item in roleList">
               <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
             </template>
@@ -119,7 +119,7 @@
 
     <a-row :gutter="8">
       <a-col :offset="1">
-        <st-form-item label=" ">
+        <st-form-item labelFix>
           <st-button type="primary" ghost html-type="submit">提交</st-button>
           <st-button class="mg-l16" @click="goNext" type="primary">保存,继续填写</st-button>
         </st-form-item>
@@ -174,22 +174,16 @@ export default {
       value: '' // 部门选择
     }
   },
-  computed: {
-    nature_work_option() {
-      let list = []
-      if (!this.enums.nature_work) return list
-      Object.entries(this.enums.nature_work.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return [{ value: 0, label: '未填写' }, ...list]
-    }
-  },
   mounted() {
     this.$nextTick(() => {
       this.setData(this.data)
     })
   },
   methods: {
+    roleChange(v) {
+      console.log(v)
+      if (v && v.length > 10) v.pop()
+    },
     onChange(value) {
       this.value = value
     },
@@ -217,11 +211,11 @@ export default {
     submit(data, saveOrgoNext) {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.album_id = this.data.album_id
-      data.department_id = Number(data.department_id)
       data.image_avatar = this.fileList[0] || {}
       data.image_face = this.faceList[0] || {}
       data.country_code_id = this.country_code_id
       data.id_type = this.id_type
+      data.department_id = +data.department_id
       this.editservice.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
         if (saveOrgoNext === 1) {
           this.$emit('gonext')
@@ -241,7 +235,7 @@ export default {
         staff_num: obj.staff_num,
         sex: obj.sex,
         id_number: obj.id_number,
-        nature_work: obj.nature_work,
+        nature_work: obj.nature_work || undefined,
         role_id: obj.role_id,
         entry_date: obj.entry_date ? moment(obj.entry_date) : undefined,
         mail: obj.mail,

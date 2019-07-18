@@ -120,6 +120,7 @@
               query: { id: record.id }
             }"
           >详情</router-link>
+          <a v-if="record.auth['brand_shop:product:member_card|del']" @click="onDelete(record)">删除</a>
           <a v-if="record.auth['brand_shop:product:member_card|down']" @click="onShelfDown(record)">下架</a>
           <a v-if="record.auth['brand_shop:product:member_card|edit']" @click="onEdit(record)">编辑</a>
           <a v-if="record.auth['brand_shop:product:member_card|up']" @click="onShelf(record)">上架</a>
@@ -173,9 +174,6 @@ export default {
     columns
   },
   methods: {
-    onPageChange(data) {
-      this.$router.push({ query: { ...this.query, current_page: data.current, size: data.pageSize }, force: true })
-    },
     // 编辑
     onEdit(record) {
       this.$router.push({
@@ -192,7 +190,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ query: this.query, force: true })
+            this.$router.push({ force: true, query: { ...this.query, current_page: 1 } })
           }
         }
       })
@@ -208,7 +206,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ query: this.query, force: true })
+            this.$router.push({ force: true, query: { ...this.query, current_page: 1 } })
           }
         }
       })
@@ -224,7 +222,7 @@ export default {
         },
         on: {
           success: () => {
-            this.$router.push({ query: this.query, force: true })
+            this.$router.push({ force: true, query: { ...this.query, current_page: 1 } })
           }
         }
       })
@@ -236,7 +234,7 @@ export default {
         content: `确认删除${record.card_name}会员卡？`,
         onOk: () => {
           return this.allService.deleteCard(record.id).toPromise().then(() => {
-            this.$router.push({ force: true, query: this.query })
+            this.$router.push({ force: true, query: { ...this.query, current_page: 1 } })
           })
         }
       })

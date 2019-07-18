@@ -545,7 +545,7 @@ export default {
       end_time: null,
       endOpen: false,
       // 是否配置了用户端
-      appConfig: false,
+      appConfig: true,
       // 是否未传了封面
       imageIsNone: false,
       imageErrorText: '',

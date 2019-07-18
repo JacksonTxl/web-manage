@@ -3,8 +3,8 @@
     <a-textarea
       :class="b('content')"
       v-bind="attrs"
-      v-on="$listeners"
       v-model="content"
+      @change="onChange"
     >
     </a-textarea>
     <label :class="b('label')">{{currentLength}}/{{maxlength}}</label>
@@ -17,6 +17,10 @@ export default {
     b: 'st-textarea'
   },
   props: {
+    value: {
+      type: String,
+      default: ''
+    },
     maxlength: {
       type: [String, Number],
       default: 500
@@ -35,19 +39,28 @@ export default {
     }
   },
   watch: {
-    content(val) {
-      const { maxlength } = this
-      const content = val.substr(0, maxlength)
-      this.content = content
-      this.$emit('input', content)
+    value() {
+      this.init()
     }
   },
   created() {
-    this.content = this.$attrs.value || ''
+    this.init()
   },
   computed: {
     currentLength() {
       return this.content.length
+    }
+  },
+  methods: {
+    init() {
+      this.content = this.value
+    },
+    onChange(e) {
+      const { maxlength } = this
+      const content = e.target.value.substr(0, maxlength)
+      this.content = content
+      this.$emit('input', content)
+      this.$emit('change', e)
     }
   }
 }

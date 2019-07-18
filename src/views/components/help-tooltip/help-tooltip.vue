@@ -6,6 +6,7 @@
       v-bind="$attrs"
       v-on="$listeners"
       @mouseenter="onMouseEnter"
+      :mouseEnterDelay="0.3"
     >
       <template slot="title">
         <span>{{content}}</span>

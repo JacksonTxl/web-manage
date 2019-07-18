@@ -77,8 +77,8 @@ export class StudioService {
           // { name: '访问用户', value: res.info.visit },
           { name: '注册用户', value: res.info.register },
           { name: '消费用户', value: res.info.consume },
-          { name: '消课人数', value: res.info.checkin },
-          { name: '购买私教', value: res.info.personal }]
+          { name: '购买私教', value: res.info.personal },
+          { name: '消课人数', value: res.info.checkin }]
       })
     }))
   }

@@ -45,13 +45,13 @@
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="对外展示">
-          <a-checkbox v-decorator="rules.is_show" :checked="checked" @change="check">展示在会员端</a-checkbox>
+          <a-checkbox v-decorator="rules.is_show" :checked="checked" @change="checkShow">展示在会员端</a-checkbox>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :offset="1">
-        <st-form-item label="  ">
+        <st-form-item labelFix>
           <st-button type="primary" ghost @click="onClickBack">上一步</st-button>
           <st-button class="mg-l16" @click="goNext" type="primary">保存</st-button>
         </st-form-item>
@@ -93,7 +93,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.enums)
     this.setData(this.data)
   },
   methods: {
@@ -108,7 +107,7 @@ export default {
     imageUploadChange(e) {
       this.image_personal = e
     },
-    check(e) {
+    checkShow(e) {
       this.checked = e.target.checked
     },
     onChooseSpecialty(e) {
@@ -146,6 +145,7 @@ export default {
       data.certification_name = this.coachInfoData.certification_name
       data.is_show = Number(data.is_show)
       data.image_personal = this.fileList
+      data.album_id = this.data.album_id
       this.service.updateCoachInfo(this.data.staff_id, data).subscribe(res => {
         this.$router.push({ name: 'shop-staff-list' })
       })

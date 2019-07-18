@@ -73,7 +73,7 @@
         </tbody>
       </st-form-table>
       <st-hr marginTop="0" marginBottom="0" />
-      <st-form :form="form" labelWidth="85px">
+      <st-form :form="form" labelWidth="88px">
         <div :class="transfer('transfer')">
           <st-form-item v-show="searchMemberIsShow" label="转让会员" required labelGutter="12px">
             <a-select

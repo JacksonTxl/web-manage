@@ -1,7 +1,7 @@
 <template>
   <st-panel app class="page-shop-basic-card page-shop-add-number-card" initial>
     <div class="page-shop-basic-card-body">
-      <!-- <div class="page-preview">实时预览{{member_card}}</div> -->
+      <!-- <div class="page-preview">实时预览{{memberCard}}</div> -->
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
@@ -151,7 +151,7 @@
                   :disabled="!is_transfer"
                   :min="transferMin" :max="transferMax">
                     <a-select slot="addonAfter" v-model="transferUnit" :disabled="!is_transfer">
-                      <a-select-option v-for="item in Object.entries(member_card.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
+                      <a-select-option v-for="item in Object.entries(memberCard.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
                     </a-select>
                   </st-input-number>
                   <!-- <a-input-group compact class="page-input-group">
@@ -160,7 +160,7 @@
                     @change="transfter_change"
                     :disabled="!is_transfer"/>
                     <a-select v-model="transferUnit" defaultValue="2" :disabled="!is_transfer">
-                      <a-select-option v-for="item in Object.entries(member_card.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
+                      <a-select-option v-for="item in Object.entries(memberCard.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
                     </a-select>
                   </a-input-group> -->
                 </div>
@@ -169,7 +169,7 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="20">
-              <st-form-item class="page-content-card-sell-type" label="售卖渠道" required>
+              <st-form-item class="page-content-card-sell-type" label="售卖方式" required>
                 <a-checkbox-group v-model="sellType">
                   <a-checkbox
                   v-for="item in sellTypeList"
@@ -242,7 +242,7 @@ export default {
     return {
       addLoading: this.addService.loading$,
       shopName: this.userService.shop$,
-      member_card: this.userService.memberCardEnums$
+      memberCard: this.userService.memberCardEnums$
     }
   },
   bem: {
@@ -284,12 +284,12 @@ export default {
       transferUnit: 2,
       // 转让手续费
       transferNum: 0,
-      // 售卖渠道
+      // 售卖方式
       sellType: [2],
       // 卡背景
       cardBg: {
         image_id: 0,
-        image_key: 'image/VZ0RGBwTX7FA1yKb.png',
+        image_key: this.memberCard.card_bg_list.value[0].image_key,
         image_url: '',
         index: 1
       },
@@ -300,7 +300,7 @@ export default {
       // 备注
       cardContents: '',
       // 是否配置了用户端
-      appConfig: false
+      appConfig: true
     }
   },
   methods: {
@@ -494,9 +494,9 @@ export default {
       })
       return text
     },
-    // 售卖渠道
+    // 售卖方式
     sellTypeList() {
-      let sell_type = cloneDeep(Object.entries(this.member_card.sell_type.value))
+      let sell_type = cloneDeep(Object.entries(this.memberCard.sell_type.value))
       let arr = []
       sell_type.forEach(i => {
         arr.push({

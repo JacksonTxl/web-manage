@@ -75,9 +75,9 @@
                     <a v-modal-link="{ name: 'shop-distribution-ales',props: { memberIds: [id] } }">更改跟进销售</a>
                   </a-menu-item>
                   <a-menu-item key="3" v-if="auth['shop:member:member|unbind_wechat']" @click="onRemoveBind">解除微信绑定</a-menu-item>
-                  <a-menu-item key="4" v-if="auth['shop:member:member|transfer']">
+                  <!-- <a-menu-item key="4" v-if="auth['shop:member:member|transfer']">
                     <a v-modal-link="{ name: 'shop-transfer-shop',props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">转店</a>
-                  </a-menu-item>
+                  </a-menu-item> -->
                   <a-menu-item key="5" v-if="auth['shop:member:member|frozen']">
                     <a v-modal-link="{ name: 'shop-frozen', props: {record: {member_id:$route.query.id, member_name: info.member_name, mobile: info.mobile}}}">冻结用户</a>
                   </a-menu-item>
@@ -206,7 +206,6 @@ export default {
     }
   },
   mounted() {
-    console.log('=========', this.info)
     this.id = this.$route.query.id
   }
 }

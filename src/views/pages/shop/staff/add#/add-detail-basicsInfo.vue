@@ -56,7 +56,7 @@
           <a-input-group compact style="top: 0;">
             <a-select style="width: 20%;" v-model="id_type">
               <template v-for="(item,key) in enums.id_type.value">
-                <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+                <a-select-option :key="key" :value="+key">{{ item }}</a-select-option>
               </template>
             </a-select>
             <a-input style="width: 80%" placeholder="请输入身份证号码" v-decorator="rules.idnumber"/>
@@ -97,9 +97,10 @@
         </st-form-item>
         <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
-            <template v-for="(item,index) in nature_work_option">
-              <a-select-option :key="index"
-              :value="item.value">{{ item.label }}</a-select-option>
+            <template v-for="(item,key) in enums.nature_work.value">
+              <a-select-option
+                :key="key"
+                :value="+key">{{ item }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
@@ -176,7 +177,7 @@
 
     <a-row :gutter="8">
       <a-col :offset="1">
-        <st-form-item label=" ">
+        <st-form-item labelFix>
           <st-button @click="goNext" type="primary">保存，继续填写细信息</st-button>
         </st-form-item>
       </a-col>
@@ -240,16 +241,6 @@ export default {
       value: undefined,
       id_type: 1,
       country_code_id: 37
-    }
-  },
-  computed: {
-    nature_work_option() {
-      let list = []
-      if (!this.enums.nature_work) return list
-      Object.entries(this.enums.nature_work.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return [{ value: 0, label: '未填写' }, ...list]
     }
   },
   mounted() {

@@ -7,11 +7,11 @@
           </a>
       </div>
       <st-container :class="sidebar('shadow')" class="bg-white mg-t16 pluginbox" type="2">
-        <st-t3 :class="b('title')">三体AIoT<a target="_blank" href="http://www.styd.cn/default/product_iot">查看更多<a-icon theme="filled" type="right-circle" /></a></st-t3>
-        <plug-in title="多功能人脸识别一体机" sub="AI技术加持，玩转大数据" :img="ai1" href="http://www.styd.cn/default/product_iot_face" ></plug-in>
-        <plug-in title="智慧前台" sub="您的健身房前台贴心管家" :img="ai2" href="http://www.styd.cn/default/product_iot_front_desk"></plug-in>
-        <plug-in title="智能门禁" sub="无论扫码还是刷卡，so easy" :img="ai3" href="http://www.styd.cn/default/product_iot_door_guard"></plug-in>
-        <plug-in title="智能闸机" sub="请亮出你的身份" :img="ai4" href="http://www.styd.cn/default/product_iot_gate"></plug-in>
+        <st-t3 :class="b('title')">三体AIoT<a target="_blank" href="https://www.styd.cn/default/product_iot">查看更多<a-icon theme="filled" type="right-circle" /></a></st-t3>
+        <plug-in title="多功能人脸识别一体机" sub="AI技术加持，玩转大数据" :img="ai1" href="https://www.styd.cn/default/product_iot_face" ></plug-in>
+        <plug-in title="智慧前台" sub="您的健身房前台贴心管家" :img="ai2" href="https://www.styd.cn/default/product_iot_front_desk"></plug-in>
+        <plug-in title="智能门禁" sub="无论扫码还是刷卡，so easy" :img="ai3" href="https://www.styd.cn/default/product_iot_door_guard"></plug-in>
+        <plug-in title="智能闸机" sub="请亮出你的身份" :img="ai4" href="https://www.styd.cn/default/product_iot_gate"></plug-in>
       </st-container>
       <st-container :class="sidebar('shadow')" class="book bg-white mg-t16" type="2">
         <div class="book-img">
@@ -20,7 +20,7 @@
 
         <div class="book-content  mg-l24">
           <div class="book-content-t">2018中国健身行业数据报告</div>
-          <div class="font-number">¥499</div>
+          <div class="font-number">¥599</div>
           <st-button ghost pill type="primary" @click="download" class="mg-t8">免费下载电子版</st-button>
         </div>
       </st-container>

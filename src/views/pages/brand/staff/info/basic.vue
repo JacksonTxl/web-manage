@@ -77,14 +77,14 @@
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="8">
         <st-info>
-          <st-info-item label="在职状态">{{ basicInfo.work_status }}</st-info-item>
-          <st-info-item label="入职时间">{{ basicInfo.entry_date }}</st-info-item>
+          <st-info-item label="在职状态">{{ basicInfo.work_status | workStatusFilter}}</st-info-item>
+          <st-info-item label="入职时间" v-if="basicInfo.work_status === 1">{{ basicInfo.entry_date }}</st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
         <st-info>
           <st-info-item label="工作性质">{{ basicInfo.nature_work }}</st-info-item>
-          <st-info-item label="离职时间">{{ basicInfo.leave_date }}</st-info-item>
+          <st-info-item label="离职时间" v-if="basicInfo.work_status === 2">{{ basicInfo.leave_date }}</st-info-item>
         </st-info>
       </a-col>
     </a-row>
@@ -193,6 +193,23 @@ export default {
   },
   mounted() {
     console.log('=======', this.basicInfo)
+  },
+  filters: {
+    workStatusFilter(val) {
+      let ret = ''
+      switch (val) {
+        case 0:
+          ret = '未填写'
+          break
+        case 1:
+          ret = '在职'
+          break
+        case 2:
+          ret = '离职'
+          break
+      }
+      return ret
+    }
   }
 }
 </script>

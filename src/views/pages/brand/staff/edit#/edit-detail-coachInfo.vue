@@ -45,13 +45,13 @@
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="对外展示">
-          <a-checkbox v-decorator="rules.is_show">展示在会员端</a-checkbox>
+          <a-checkbox :checked="checked" @change="checkShow">展示在会员端</a-checkbox>
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :offset="1">
-        <st-form-item label=" ">
+        <st-form-item labelFix>
           <st-button type="primary" class="mg-r16" ghost @click="onClickBack">上一步</st-button>
           <st-button type="primary" @click="save">保存</st-button>
         </st-form-item>
@@ -99,7 +99,7 @@ export default {
         v.pop()
       }
     },
-    check(e) {
+    checkShow(e) {
       this.checked = e.target.checked
     },
     handleSpecialtyIdChange(e) {
@@ -136,6 +136,7 @@ export default {
           values.certification_name = this.coachInfoData.certification_name
           values.is_show = this.checked ? 1 : 0
           values.image_personal = this.image_personal
+          values.album_id = this.data.album_id
           console.log('Received values of form: ', values)
           this.$emit('coachInfoSave', {
             data: values

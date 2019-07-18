@@ -39,7 +39,7 @@
                 v-if="item.auth['brand_shop:course:training_aim|del']"
                 :title="`删除后不可进行恢复，${item.used_number ? '已标记的课程将删除此训练目的，' : ''}确定删除此训练目的？`"
                 @confirm="onDelete(item.id)">
-                <a class="mg-l8">删除</a>
+                <a>删除</a>
               </a-popconfirm>
             </st-table-actions>
           </td>

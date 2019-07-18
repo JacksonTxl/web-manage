@@ -19,7 +19,6 @@
         </st-form-item>
         <st-form-item label="婚姻状况">
           <a-select placeholder="请选择" v-decorator="rules.marry_status">
-            <a-select-option :value="0">未填写</a-select-option>
             <a-select-option :value="1">已婚</a-select-option>
             <a-select-option :value="2">未婚</a-select-option>
           </a-select>
@@ -38,10 +37,10 @@
         <st-form-item label="子女状态">
           <a-select placeholder="请选择" v-decorator="rules.children_status">
             <a-select-option
-              v-for="(item, index) in children_status_option"
-              :value="item.value"
-              :key="index"
-            >{{item.label}}</a-select-option>
+              v-for="(item, key) in enums.children_status.value"
+              :value="+key"
+              :key="key"
+            >{{item}}</a-select-option>
           </a-select>
         </st-form-item>
       </a-col>
@@ -63,7 +62,6 @@
         <st-form-item label="备注">
           <st-textarea
             :maxlength="300"
-            :rows="10"
             v-decorator="rules.description"
             placeholder="填写点什么吧"/>
         </st-form-item>
@@ -72,7 +70,7 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :offset="1">
-        <st-form-item label=" ">
+        <st-form-item labelFix>
           <st-button type="primary" ghost @click="onClickBack">上一步</st-button>
           <st-button class="mg-l16" @click="saveAndGoNext" type="primary">{{!isPrivateCoach?'保存':'保存，继续填写'}}</st-button>
         </st-form-item>
@@ -109,41 +107,7 @@ export default {
     return {
       form: this.$form.createForm(this),
       regions: [],
-      detailRules: {
-        // 毕业院校
-        graduated_school: ['graduated_school'],
-        // 毕业时间
-        graduation_time: ['graduation_time'],
-        // 学历
-        education: ['education'],
-        // 专业
-        profession: ['profession'],
-        // 生日
-        birthday: ['birthday'],
-        // 籍贯
-        native_place: ['native_place'],
-        // 婚姻状态
-        marry_status: ['marry_status'],
-        // 有无子女
-        children_status: ['children_status'],
-        // 详细地址
-        address: ['address'],
-        // 描述
-        description: ['description'],
-        // 省市区
-        provinces: ['provinces']
-      },
       fieldNames: { label: 'name', value: 'id', children: 'children' }
-    }
-  },
-  computed: {
-    children_status_option() {
-      let list = []
-      if (!this.enums.children_status) return list
-      Object.entries(this.enums.children_status.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return [{ value: 0, label: '未填写' }, ...list]
     }
   },
   mounted() {
@@ -162,12 +126,12 @@ export default {
       this.form.setFieldsValue({
         graduated_school: obj.graduated_school,
         graduation_time: obj.graduation_time ? moment(obj.graduation_time) : undefined,
-        education: obj.education,
+        education: obj.education || undefined,
         profession: obj.profession,
         birthday: obj.birthday ? moment(obj.birthday) : undefined,
         native_place: obj.native_place,
-        marry_status: obj.marry_status,
-        children_status: obj.children_status,
+        marry_status: obj.marry_status || undefined,
+        children_status: obj.children_status || undefined,
         address: obj.address,
         description: obj.description,
         provinces: [obj.province_id, obj.city_id, obj.district_id]
@@ -197,6 +161,7 @@ export default {
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
+          console.log('values')
           let obj = this.filterProvinces(values.provinces)
           let newData = Object.assign(values, obj)
           newData.birthday && (newData.birthday = newData.birthday.format('YYYY-MM-DD'))

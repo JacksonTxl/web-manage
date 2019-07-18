@@ -2,7 +2,7 @@
   <st-modal title="重绑实体卡" v-model="show" size="small">
     <section>
       <section>
-        <st-form :form="form" @submit="save" labelWidth="85px">
+        <st-form :form="form" @submit="save" labelWidth="88px">
           <st-info>
             <st-info-item label="姓名">{{record.member_name}}</st-info-item>
             <st-info-item label="手机号">{{record.mobile}}</st-info-item>

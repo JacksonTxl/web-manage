@@ -24,6 +24,7 @@ export default {
         } else {
           this.initDv()
           this.chart.changeData(this.dv)
+          this.changeData && this.changeData() // 自定义的changeData
         }
       }
     }

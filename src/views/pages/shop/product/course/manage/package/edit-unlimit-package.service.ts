@@ -8,7 +8,7 @@ import { remove } from 'lodash-es'
 @Injectable()
 export class EditUnlimitPackageService implements RouteGuard {
   // 是否配置了用户端
-  appConfig = false
+  appConfig = true
   unitList$ = this.userService.getOptions('package_course.valid_time_unit')
   transferUnitList$ = this.userService.getOptions('package_course.transfer_unit')
   sellTypeList$ = this.userService.getOptions('package_course.sale_mode')

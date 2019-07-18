@@ -22,7 +22,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-form labelWidth="85px" :form="form">
+      <st-form labelWidth="88px" :form="form">
         <div :class="relet('relet')">
           <st-form-item label="租赁会员" class="mgb-18">{{info.member_name}}</st-form-item>
           <st-form-item label="租赁柜号" required>

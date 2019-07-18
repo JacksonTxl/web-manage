@@ -2,14 +2,19 @@
   <st-modal title="编辑场地" v-model="show" wrapClassName="modal-court-add" :footer="null">
     <st-form :form="form" labelWidth="68px" labelGutter="16px">
       <st-form-item label="场地名称" required>
-        <a-input placeholder="请输入场地名称，不超过10个字" maxlength="10" v-decorator="formRules.areaName"/>
+        <a-input placeholder="请输入场地名称，不超过10个字" maxlength="10" v-decorator="rules.areaName"/>
       </st-form-item>
       <st-form-item labelFix>
         <a-checkbox :checked="!!info.is_vip" @change="onIsVipChange">VIP区域
         </a-checkbox>
       </st-form-item>
       <st-form-item label="容纳人数">
-        <st-input-number placeholder="请输入最大容纳人数，不填无限制" v-decorator="formRules.containNumber"/>
+        <st-input-number
+          placeholder="请输入最大容纳人数，1-999"
+          :min="1"
+          :max="999"
+          v-decorator="rules.containNumber"
+        />
       </st-form-item>
     </st-form>
     <div class="ta-r">
@@ -22,6 +27,8 @@
 import { EditService } from './edit.service'
 import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'
+import { rules } from './court.config'
+
 export default {
   serviceInject() {
     return {
@@ -44,25 +51,15 @@ export default {
   },
   data() {
     return {
-      show: false,
-      formRules: {
-        areaName: [
-          'area_name', {
-            rules: [{
-              required: true,
-              pattern: this.pattern.CN_EN_NUM('1-10'),
-              message: '支持输入中英文、数字,不超过10个字'
-            }]
-          }
-        ],
-        containNumber: ['contain_number'],
-        isVip: ['is_vip']
-      }
+      show: false
     }
   },
   created() {
     this.form = this.$form.createForm(this)
     this.editService.getInfo(this.id).subscribe(this.setFieldsValue)
+  },
+  computed: {
+    rules
   },
   methods: {
     setFieldsValue() {

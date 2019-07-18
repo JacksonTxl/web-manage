@@ -96,6 +96,46 @@ export default {
         }
       })
 
+      this.chart.guide().arc({
+        start: ['19%', '50%'],
+        end: ['81%', '50%'],
+        style: {
+          lineWidth: 0,
+          fill: '#E9EDF2',
+          fillOpacity: 1,
+          stroke: '#ccc'
+        }
+      })
+      this.chart.guide().arc({
+        start: ['81%', '50%'],
+        end: ['19%', '50%'],
+        style: {
+          lineWidth: 0,
+          fill: '#E9EDF2',
+          fillOpacity: 1,
+          stroke: '#ccc'
+        }
+      })
+      this.chart.guide().arc({
+        start: ['30%', '50%'],
+        end: ['70%', '50%'],
+        style: {
+          lineWidth: 0,
+          fill: '#fff',
+          fillOpacity: 1,
+          stroke: '#ccc'
+        }
+      })
+      this.chart.guide().arc({
+        start: ['70%', '50%'],
+        end: ['30%', '50%'],
+        style: {
+          lineWidth: 0,
+          fill: '#fff',
+          fillOpacity: 1,
+          stroke: '#ccc'
+        }
+      })
       this.chart.tooltip({
         showTitle: false
       })

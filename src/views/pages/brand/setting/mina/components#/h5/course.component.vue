@@ -17,8 +17,8 @@
         </st-form-item>
         <st-form-item label="展示课程" v-if="li.course_type === 2">
           <a-select placeholder="请输入展示课程"  v-model="li.data_source">
-            <a-select-option :value="2">展示门店可约天内的团体课</a-select-option>
-            <a-select-option :value="3">展示门店热门团体课</a-select-option>
+            <a-select-option :value="1">展示门店可约天内的团体课</a-select-option>
+            <a-select-option :value="2">展示门店热门团体课</a-select-option>
           </a-select>
         </st-form-item>
         <st-form-item label="展示课程" v-if="li.course_type === 3">

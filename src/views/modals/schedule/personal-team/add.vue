@@ -162,6 +162,8 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           const data = this.dataFilter(values)
+          data.course_fee = +data.course_fee
+          data.limit_num = +data.limit_num
           this.scheduleService.add(data).subscribe(this.onSubmitSuccess)
         }
       })

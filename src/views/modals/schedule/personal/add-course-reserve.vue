@@ -42,10 +42,10 @@
         ]"> <a-button slot="enterButton">人</a-button> </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required >
-        <a-input-search v-decorator="[
+        <st-input-number  :float="true" v-decorator="[
           'course_fee',
           {rules: [{ required: true, message: 'Please input your note!' }]}]"
-        > <a-button slot="enterButton">元/节</a-button> </a-input-search>
+        > <span slot="addonAfter">元/节</span> </st-input-number>
       </st-form-item>
       <a-row>
         <a-col
@@ -108,8 +108,8 @@ export default {
           form.start_time = form.start_time.format('YYYY-MM-DD HH:mm')
           form.court_site_id = form.court_id[1]
           form.court_id = form.court_id[0]
-          form.course_fee = parseInt(form.course_fee)
-          form.limit_num = parseInt(form.limit_num)
+          form.course_fee = +form.course_fee
+          form.limit_num = +form.limit_num
           this.teamScheduleScheduleService.add(form).subscribe(res => {
             this.$router.push({ query: this.query, force: true })
           })

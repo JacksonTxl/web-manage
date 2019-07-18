@@ -6,6 +6,8 @@
 import { Chart } from '@antv/g2'
 import { View } from '@antv/data-set'
 import chartMixin from './mixin'
+import Vue from 'vue'
+import StHelpTooltip from '@/views/components/help-tooltip/help-tooltip'
 
 export default {
   mixins: [chartMixin],
@@ -73,7 +75,7 @@ export default {
           return (
             `<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">` +
             `<i class="g2-legend-marker" style="background-color:{color};"></i>` +
-            `<span class="g2-legend-text">${name}</span>` +
+            `<span class="g2-legend-text">${name}&nbsp;<span id='legend-{index}'></span></span>` +
             `</li>`
           )
         }
@@ -90,6 +92,46 @@ export default {
             `<div class='guide-name'>总营收</div>` +
             `</div>`
           )
+        }
+      })
+      this.chart.guide().arc({
+        start: ['3%', '50%'],
+        end: ['97%', '50%'],
+        style: {
+          lineWidth: 0,
+          fill: '#E9EDF2',
+          fillOpacity: 1,
+          stroke: '#ccc'
+        }
+      })
+      this.chart.guide().arc({
+        start: ['97%', '50%'],
+        end: ['3%', '50%'],
+        style: {
+          lineWidth: 0,
+          fill: '#E9EDF2',
+          fillOpacity: 1,
+          stroke: '#ccc'
+        }
+      })
+      this.chart.guide().arc({
+        start: ['19%', '50%'],
+        end: ['81%', '50%'],
+        style: {
+          lineWidth: 0,
+          fill: '#fff',
+          fillOpacity: 1,
+          stroke: '#ccc'
+        }
+      })
+      this.chart.guide().arc({
+        start: ['81%', '50%'],
+        end: ['19%', '50%'],
+        style: {
+          lineWidth: 0,
+          fill: '#fff',
+          fillOpacity: 1,
+          stroke: '#ccc'
         }
       })
 
@@ -114,6 +156,8 @@ export default {
         })
 
       this.chart.render()
+
+      this.changeData()
 
       const $s = this.$el.querySelector.bind(this.$el)
 
@@ -142,6 +186,24 @@ export default {
           el.addEventListener('mouseenter', mouseHandler, false)
         })
       })
+    },
+    changeData() {
+      new Vue({
+        components: {
+          StHelpTooltip
+        },
+        render: h => (
+          <st-help-tooltip id="TBDAR002"></st-help-tooltip>
+        )
+      }).$mount('#legend-1')
+      new Vue({
+        components: {
+          StHelpTooltip
+        },
+        render: h => (
+          <st-help-tooltip id="TBDAR001"></st-help-tooltip>
+        )
+      }).$mount('#legend-5')
     }
   },
   beforeDestroy() {

@@ -25,7 +25,7 @@ export const entries = [{
 {
   icon: icon5,
   text: '智能硬件',
-  url: 'http://www.styd.cn/default/product_iot'
+  url: 'https://www.styd.cn/default/product_iot'
 }
 // , {
 //   icon: icon6,

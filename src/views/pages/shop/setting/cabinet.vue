@@ -12,19 +12,19 @@
             current: item.id === defaultActiveKey
           }"
         >
-           <div :class="b('nav-item-content')">
-              <span>{{item.area_name}}({{item.cabinet_num}})</span>
-              <st-more-dropdown>
-                <a-menu-item v-if="auth.areaEdit" @click="editArea(item.id)">编辑</a-menu-item>
-                <a-menu-item v-if="auth.areaDel" @click="delArea(item.id, item.cabinet_num)">删除</a-menu-item>
-              </st-more-dropdown>
-            </div>
-            <edit-cabinet-area
-              v-if="item.id === editId"
-              :id="item.id"
-              :name="item.area_name"
-              @change="onAreaListChange"
-            />
+          <div :class="b('nav-item-content')">
+            <span>{{item.area_name}}({{item.cabinet_num}})</span>
+            <st-more-dropdown class="nav-opreation">
+              <a-menu-item v-if="auth.areaEdit" @click="editArea(item.id)">编辑</a-menu-item>
+              <a-menu-item v-if="auth.areaDel" @click="delArea(item.id, item.cabinet_num)">删除</a-menu-item>
+            </st-more-dropdown>
+          </div>
+          <edit-cabinet-area
+            v-if="item.id === editId"
+            :id="item.id"
+            :name="item.area_name"
+            @change="onAreaListChange"
+          />
         </div>
       </draggable>
       <add-cabinet-area v-if="isShowAddAreaBtn" @change="onAreaListChange"/>
@@ -120,6 +120,7 @@ export default {
   },
   data() {
     return {
+      isActive: '',
       editId: 0,
       isShowAddAreaBtn: false,
       checked: [],

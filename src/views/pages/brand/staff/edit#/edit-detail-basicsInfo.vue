@@ -77,15 +77,15 @@
           v-decorator="rules.department_id">
           </department-select>
         </st-form-item>
-        <st-form-item label="工作性质">
+        <st-form-item label="工作性质" >
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
-            <template v-for="(item,index) in nature_work_option">
-              <a-select-option :key="index" :value="item.value">{{ item.label }}</a-select-option>
+            <template v-for="(item,key) in enums.nature_work.value">
+              <a-select-option :key="key" :value="+key">{{ item }}</a-select-option>
             </template>
           </a-select>
         </st-form-item>
         <st-form-item label="系统角色" required>
-          <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id">
+          <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id" @change="roleChange">
             <template v-for="item in roleList">
               <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
             </template>
@@ -115,7 +115,7 @@
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label=" ">
+        <st-form-item labelFix>
           <st-button @click="saveAndGoNext" type="primary">保存，继续填写</st-button>
         </st-form-item>
       </a-col>
@@ -160,16 +160,6 @@ export default {
       value: '' // 部门选择
     }
   },
-  computed: {
-    nature_work_option() {
-      let list = []
-      if (!this.enums.nature_work) return list
-      Object.entries(this.enums.nature_work.value).forEach(o => {
-        list.push({ value: +o[0], label: o[1] })
-      })
-      return [{ value: 0, label: '未填写' }, ...list]
-    }
-  },
   components: {
     ShopSelect,
     DepartmentSelect
@@ -180,6 +170,10 @@ export default {
     })
   },
   methods: {
+    roleChange(v) {
+      if (v && v.length > 10) v.pop()
+      console.log(v)
+    },
     onChange(value) {
       console.log('选择部门', value)
       this.value = value
@@ -211,11 +205,11 @@ export default {
     submit(data, saveOrgoNext) {
       data.entry_date = moment(data.entry_date).format('YYYY-MM-DD')
       data.album_id = this.data.album_id
-      data.department_id = Number(data.department_id)
       data.image_avatar = this.fileList[0] || {}
       data.image_face = this.faceList[0] || {}
       data.country_code_id = this.country_code_id
       data.id_type = this.id_type
+      data.department_id = +data.department_id
       this.editService.updateBasicInfo(this.data.staff_id, data).subscribe(res => {
         this.$emit('goNext')
         this.$emit('updateStaffInfo')
@@ -229,8 +223,8 @@ export default {
         staff_num: obj.staff_num, // 工号
         sex: obj.sex, // 性别
         id_number: obj.id_number, // 身份证
-        nature_work: obj.nature_work, // 工作性质
-        department_id: String(obj.department_id), // 部门
+        nature_work: obj.nature_work || undefined, // 工作性质
+        department_id: String(obj.department_id) || undefined, // 部门
         role_id: obj.role_id, // 角色
         shop_id: obj.shop_id, // 所属门店
         entry_date: obj.entry_date ? moment(obj.entry_date) : undefined, // 入职时间
