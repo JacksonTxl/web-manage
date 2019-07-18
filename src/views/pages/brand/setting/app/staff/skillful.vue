@@ -40,7 +40,7 @@
                 v-if="item.auth['brand_shop:coach:good_at|del']"
                 :title="`删除后不可进行恢复，${item.used_number ? '已标记的员工将删除此擅长项目，' : ''}确定删除此擅长项目？`"
                 @confirm="onDelete(item.id)">
-                <a class="mg-l8">删除</a>
+                <a>删除</a>
               </a-popconfirm>
             </st-table-actions>
           </td>
