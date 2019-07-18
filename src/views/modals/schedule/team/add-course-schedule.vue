@@ -43,10 +43,10 @@
         ]"> <a-button slot="enterButton">人</a-button> </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required >
-        <st-input-number v-decorator="[
+        <a-input-search v-decorator="[
           'course_fee',
           {rules: [{ required: true, message: '请输入课时费' }]}]"
-        > <a-button slot="enterButton">元/节</a-button> </st-input-number>
+        > <a-button slot="enterButton">元/节</a-button> </a-input-search>
       </st-form-item>
       <a-row>
         <a-col
@@ -84,7 +84,6 @@ export default {
   },
   rxState() {
     const tss = this.teamScheduleCommomService
-    console.log(tss)
     return {
       loading: this.teamScheduleScheduleService.loading$,
       query: this.routeService.query$,
@@ -112,7 +111,7 @@ export default {
   },
   methods: {
     initOptions() {
-      return this.teamService.initOptions()
+      return this.teamService.init()
     },
     onSubmit() {
       this.form.validateFields((err, values) => {
