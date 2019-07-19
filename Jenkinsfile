@@ -8,27 +8,33 @@ pipeline {
         sh 'tree -du -L 4'
       }
     }
-    stage('to=saas-dev') {
+    stage('to=saas-test') {
       when {
-        expression { BRANCH_NAME ==~ /(feat|dev).*/}
+        expression { BRANCH_NAME ==~ /test/}
       }
       steps {
         sh 'make build'
+
+        sh 'make rsync to=saas-test'
+        sh 'make release to=saas-test'
+
         sh 'make rsync to=saas-dev'
         sh 'make release to=saas-dev'
-        echo "https://saas.dev.styd.cn"
       }
     }
     stage('to=saas-test') {
       when {
-        expression { BRANCH_NAME ==~ /(test).*/}
+        expression { BRANCH_NAME ==~ /(feat|fix|dev).*/}
       }
       steps {
         sh 'make build'
-        sh 'make rsync to=saas-test'
-        sh 'make release to=saas-test'
+        sh 'make rsync-branch to=saas-test'
+        sh 'make release-branch to=saas-test'
+
         sh 'make rsync to=saas-dev'
+        sh 'make rsync-branch to=saas-dev'
         sh 'make release to=saas-dev'
+        sh 'make release-branch to=saas-dev'
         echo "https://saas.test.styd.cn"
       }
     }

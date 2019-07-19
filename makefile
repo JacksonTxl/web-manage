@@ -42,6 +42,11 @@ rsync:
 	ssh $(to) -t "mkdir -p $(CONTENT_PATH)/$(NAME)"
 	rsync -auz --exclude=.git $(PWD)/ $(to):$(CONTENT_PATH)/$(NAME)
 
+# 同步文件到分支目录
+# @example :: make rsync to=app-dev2
+rsync-branch:
+	ssh $(to) -t "mkdir -p $(CONTENT_PATH)/$(NAME)_branches/$(BRANCH)"
+	rsync -auz --exclude=.git $(PWD)/ $(to):$(CONTENT_PATH)/$(NAME)_branches/$(BRANCH)
 
 # 切换软连接
 # @params {to} 推送服务器主机名
@@ -49,6 +54,11 @@ rsync:
 release:
 	ssh $(to) -t "mkdir -p $(HTDOCS_PATH)"
 	ssh $(to) -t "ln -sfTv $(CONTENT_PATH)/$(NAME) $(HTDOCS_PATH)/$(NAME)"
+
+# 切换项目分支软链接
+release-branch:
+	ssh $(to) -t "mkdir -p $(HTDOCS_PATH)/$(NAME)_branches"
+	ssh $(to) -t "ln -sfTv $(CONTENT_PATH)/$(NAME)_branches/$(BRANCH) $(HTDOCS_PATH)/$(NAME)_branches/$(BRANCH)"
 
 clean1:
 	sudo docker run -i --rm \
