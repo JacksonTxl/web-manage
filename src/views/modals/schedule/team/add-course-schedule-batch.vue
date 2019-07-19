@@ -9,7 +9,7 @@
     <template  slot="start_time" slot-scope="text, record">
       <a-date-picker
         v-if="record.editable"
-        showTime
+        :showTime="{ format: 'HH:mm' }"
         format="YYYY-MM-DD HH:mm"
         placeholder="请选择时间"
         :value="text"
