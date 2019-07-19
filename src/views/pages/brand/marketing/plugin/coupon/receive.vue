@@ -13,10 +13,14 @@
         </div> -->
         <div>
           <a-select :class="basic('select')" v-model="queryParams.couponStatus" @change="onSearch" style="width: 160px">
-            <a-select-option
+            <a-select-option :value="-1">优惠券状态</a-select-option>
+            <a-select-option :value="1">未使用</a-select-option>
+            <a-select-option :value="2">已使用</a-select-option>
+            <a-select-option :value="3">已过期</a-select-option>
+            <!-- <a-select-option
               v-for="(item,index) in couponStatus"
               :key="index"
-              :value="item.value">{{item.label}}</a-select-option>
+              :value="item.value">{{item.label}}</a-select-option> -->
           </a-select>
           <span class="mg-r8">领券时间</span><a-range-picker @change="onChangeDatePicker" v-model="queryParams.date"/>
         </div>

@@ -2,7 +2,7 @@
   <a-row :class="role()">
     <a-col :span="5" :class="roleList()">
       <header :class="roleList('search')">
-        <st-input-search placeholder="请输入部门/员工名称" round="round"></st-input-search>
+        <!-- <st-input-search placeholder="请输入部门/员工名称" round="round"></st-input-search> -->
       </header>
       <main :class="roleList('tree')">
         <st-t4>角色 ({{stat.used}}/{{stat.total}})</st-t4>
