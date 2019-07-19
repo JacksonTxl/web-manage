@@ -8,26 +8,12 @@ pipeline {
         sh 'tree -du -L 4'
       }
     }
-    stage('Build') {
-      steps {
-        sh 'make build'
-      }
-    }
-    stage('Info-Builded') {
-      steps {
-        sh 'tree -du -L 3 -I node_modules'
-      }
-    }
-    stage('Archive') {
-      steps {
-        archiveArtifacts artifacts: 'dist/**/*.*', fingerprint: true
-      }
-    }
     stage('to=saas-dev') {
       when {
         expression { BRANCH_NAME ==~ /(feat|dev).*/}
       }
       steps {
+        sh 'make build'
         sh 'make rsync to=saas-dev'
         sh 'make release to=saas-dev'
         echo "https://saas.dev.styd.cn"
@@ -38,6 +24,7 @@ pipeline {
         expression { BRANCH_NAME ==~ /(test).*/}
       }
       steps {
+        sh 'make build'
         sh 'make rsync to=saas-test'
         sh 'make release to=saas-test'
         sh 'make rsync to=saas-dev'
