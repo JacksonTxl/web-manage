@@ -70,7 +70,7 @@
       <!-- 支持售卖门店 -->
       <template slot="support_sales" slot-scope="text,record">
         <a
-          v-if="text.id === 2"
+          v-if="text.id === 2 && record.publish_channel.id !== 2"
           v-modal-link="{ name: 'card-shop-member-shop-table' , props:{id: record.id,type:'Consume',title: '支持售卖门店'}}"
         >{{text.name}}</a>
         <span v-else class="use_num">{{text.name}}</span>

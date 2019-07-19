@@ -260,7 +260,15 @@
             <ul :class="reception('todoist-finish-list')" v-scrollBar>
               <li v-for=" (item,i) in workNoteDoneList" :key="i" :class="{'mg-t12':(i+1)>2,'mg-r12':(i+1)%2!==0}">
                 <div class="finish-main">
-                  <span class="operation-name" v-if="item.nickname">{{item.nickname.substr(0,2)}}</span>
+                  <template v-if="item.nickname">
+                    <a-tooltip overlayClassName="st-light-tooltip" v-if="item.nickname.length>2">
+                      <template slot='title'>
+                        {{item.nickname}}
+                      </template>
+                      <span class="operation-name cursor-pointer">{{item.nickname.substr(0,2)}}</span>
+                    </a-tooltip>
+                    <span class="operation-name cursor-pointer" v-else>{{item.nickname}}</span>
+                  </template>
                   <span class="operation-name" v-else>无</span>
                   <p>
                     <span class="fw-600">

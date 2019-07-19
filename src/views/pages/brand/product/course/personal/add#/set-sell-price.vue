@@ -54,6 +54,7 @@
           <template v-if="singleReserve">
             <st-input-number
               v-model="singlePrice"
+              :float="true"
               style="width: 100px;"
             />
             <span class="mg-l8">元/节</span>
