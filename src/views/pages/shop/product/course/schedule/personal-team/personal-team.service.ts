@@ -30,14 +30,10 @@ export class PersonalTeamService implements RouteGuard {
       commonService.getCourseList()
     )
   }
-  beforeEach(to: ServiceRoute, form: ServiceRoute, next: any) {
-    this.scheduleService.getList(to.meta.query).subscribe(() => {
-      next()
-    })
+  beforeEach(to: ServiceRoute, form: ServiceRoute) {
+    return this.scheduleService.getList(to.meta.query)
   }
-  beforeRouteEnter(to: ServiceRoute, form: ServiceRoute, next: any) {
-    this.initOptions().subscribe(() => {
-      next()
-    })
+  beforeRouteEnter(to: ServiceRoute, form: ServiceRoute) {
+    return this.initOptions()
   }
 }

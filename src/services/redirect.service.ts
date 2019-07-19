@@ -19,6 +19,8 @@ interface RedirectConfig {
    * 需要跳转的下一级路由
    */
   redirectRouteName: string
+
+  redirectRouteQuery?: any
   /**
    * to ServiceRoute 对象
    */
@@ -60,7 +62,7 @@ export class RedirectService {
    * 包括 菜单跳转 tab跳转等
    */
   redirect(redirectConfig: RedirectConfig) {
-    const { redirectRouteName, locateRouteName, to, next } = redirectConfig
+    const { redirectRouteName, locateRouteName, to, next, redirectRouteQuery } = redirectConfig
     const resolveRoute = this.router.resolve({
       name: redirectRouteName
     })
@@ -78,6 +80,7 @@ export class RedirectService {
         next({
           name: redirectRouteName,
           query: {
+            ...redirectRouteQuery || {},
             _f: Math.random()
               .toString(16)
               .slice(3)
