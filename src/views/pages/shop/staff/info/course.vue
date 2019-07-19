@@ -35,12 +35,12 @@
             <!-- 课程类型 -->
             {{record.course_type.name}}
           </template>
-          <!-- <template slot="action" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="onSearchDetail(record)">详情</a>
-          </template> -->
-          <!-- <template slot="course_name" slot-scope="text, record">
+          <template slot="course_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">{{ text }}</a>
-          </template> -->
+          </template>
+          <template slot="action" slot-scope="text, record">
+            <a href="javascript:;" class="mg-r8" @click="onSearchDetail(record)">详情</a>
+          </template>
         </st-table>
       </a-col>
     </a-row>
@@ -83,33 +83,25 @@ export default {
       console.log('跳转到课程详情', e)
       let course_type = e.course_type
       let course_id = e.course_id
-      let routeMap = {
-        1: {
-          name: 'shop-product-course-team-info',
+      if (course_type === 1 || course_type === 2) {
+        this.$router.push({
+          name: 'shop-product-course-manage-team-info',
+          query: {
+            courseId: course_id
+          }
+        })
+      } else {
+        this.$router.push({
+          name: 'shop-product-course-manage-personal-info',
           query: {
             id: course_id
           }
-        },
-        2: {
-          name: 'shop-product-course-personal-info',
-          query: {
-            id: course_id
-          }
-        },
-        3: {
-          name: 'shop-product-course-personal-team-info',
-          query: {
-            id: course_id
-          }
-        }
+        })
       }
-      this.$router.push(routeMap[course_type])
     },
     // 查看详情 点击弹出预约详情弹窗，同【门店-课程排期-团体课】、【门店-课程排期-私教1v1】、【门店-课程排期-私教小团课】
     onSearchDetail(e) {
-      console.log('查看详情', e)
       let course_type = e.course_type.id
-      console.log(course_type, typeof course_type)
       switch (course_type) {
         case 1:
           this.$modalRouter.push({
@@ -128,7 +120,7 @@ export default {
           this.$modalRouter.push({
             name: 'schedule-personal-reserve-info',
             props: {
-              id: e.id
+              id: String(e.id)
             },
             on: {
               ok: res => {

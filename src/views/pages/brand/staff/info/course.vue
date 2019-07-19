@@ -36,15 +36,14 @@
             <!-- 课程类型 -->
             {{record.course_type.name}}
           </template>
-          <!-- <template slot="course_name" slot-scope="text, record">
+          <template slot="course_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">{{ text }}</a>
-          </template> -->
+          </template>
           <!-- <template slot="action" slot-scope="text, record">
             <st-table-actions>
               <a href="javascript:;" class="mg-r8" @click="onSearchDetail(record)">详情</a>
             </st-table-actions>
-          </template>
-          -->
+          </template> -->
         </st-table>
       </a-col>
     </a-row>
@@ -90,30 +89,23 @@ export default {
   },
   methods: {
     goCourseDetai(e) {
-      console.log('跳转到课程详情', e)
       let course_type = e.course_type.id
       let course_id = e.course_id
-      let routeMap = {
-        1: {
-          name: 'brand-product-course-team-info',
-          query: {
-            id: course_id
-          }
-        },
-        2: {
+      if (course_type === 1 || course_type === 2) {
+        this.$router.push({
           name: 'brand-product-course-personal-info',
           query: {
             id: course_id
           }
-        },
-        3: {
-          name: 'brand-product-course-personal-team-info',
+        })
+      } else {
+        this.$router.push({
+          name: 'brand-product-course-team-info',
           query: {
-            id: course_id
+            courseId: course_id
           }
-        }
+        })
       }
-      this.$router.push(routeMap[course_type])
     },
     // 查看详情 点击弹出预约详情弹窗，同【门店-课程排期-团体课】、【门店-课程排期-私教1v1】、【门店-课程排期-私教小团课】
     onSearchDetail(e) {
