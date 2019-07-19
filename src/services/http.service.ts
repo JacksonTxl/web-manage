@@ -141,7 +141,6 @@ export class HttpService {
             userResponse.status === 200 &&
             userResponse.response[filed] === undefined
           ) {
-            console.log(userResponse)
             console.error(
               `[httpService] response field [${filed}] not found in Api[${
                 userResponse.request.url
