@@ -13,6 +13,7 @@ NGINX_CONF_PATH = /application/nginx/conf
 # 使用的docker镜像
 DOCKER_IMAGE = hub.styd.cn/node:sr-8.12.0
 
+
 connect:
 	docker run -it --rm \
 	--dns=101.132.119.70 \
@@ -45,8 +46,8 @@ rsync:
 # 同步文件到分支目录
 # @example :: make rsync to=app-dev2
 rsync-branch:
-	ssh $(to) -t "mkdir -p $(CONTENT_PATH)/$(NAME)_branches/$(BRANCH)"
-	rsync -auz --exclude=.git $(PWD)/ $(to):$(CONTENT_PATH)/$(NAME)_branches/$(BRANCH)
+	ssh $(to) -t "mkdir -p $(CONTENT_PATH)/$(NAME)_branches/$(GIT_BRANCH)"
+	rsync -auz --exclude=.git $(PWD)/ $(to):$(CONTENT_PATH)/$(NAME)_branches/$(GIT_BRANCH)
 
 # 切换软连接
 # @params {to} 推送服务器主机名
@@ -58,7 +59,7 @@ release:
 # 切换项目分支软链接
 release-branch:
 	ssh $(to) -t "mkdir -p $(HTDOCS_PATH)/$(NAME)_branches"
-	ssh $(to) -t "ln -sfTv $(CONTENT_PATH)/$(NAME)_branches/$(BRANCH) $(HTDOCS_PATH)/$(NAME)_branches/$(BRANCH)"
+	ssh $(to) -t "ln -sfTv $(CONTENT_PATH)/$(NAME)_branches/$(GIT_BRANCH) $(HTDOCS_PATH)/$(NAME)_branches/$(GIT_BRANCH)"
 
 clean1:
 	sudo docker run -i --rm \
