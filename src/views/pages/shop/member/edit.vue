@@ -328,6 +328,7 @@ export default {
           values.country_prefix = this.country_prefix
           values.height = values.height || undefined
           values.weight = values.weight || undefined
+          values.album_id = this.info.album_id // 这个给后端快捷找到相册使用，前端不需要处理使用
           delete values.cascader
         }
         this.editService.updateMemberEdit(this.id, values).subscribe(res => {

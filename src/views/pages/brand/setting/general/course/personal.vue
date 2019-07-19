@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="min-height: 70vh">
     <!-- 私教课程定价设置 -->
     <section v-if="auth.priceGet">
        <a-row>
@@ -30,8 +30,9 @@
       <st-hr></st-hr>
     </section>
 
+    <!-- 这个地方按照产品需求先隐藏 -->
     <!-- 私教课程预约设置 -->
-    <section>
+    <section v-if="false">
       <a-row>
         <a-col :span="16"><st-t2>私教课程预约设置</st-t2></a-col>
         <a-col :span="8" class="ta-r">

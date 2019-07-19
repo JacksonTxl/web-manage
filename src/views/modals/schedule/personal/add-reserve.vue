@@ -151,7 +151,7 @@ export default {
             return difference(allTime, this.range(start, 60))
           } else if (+selectedHour === endHour) {
             return difference(allTime, this.range(0, end))
-          } else if (+selectedHour > startHour || endHour > +selectedHour) {
+          } else if (+selectedHour > startHour && endHour > +selectedHour) {
             return difference(allTime, this.range(0, 60))
           }
         }
@@ -200,7 +200,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-
-</style>
