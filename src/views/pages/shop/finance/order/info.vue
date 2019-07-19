@@ -2,10 +2,10 @@
   <section :class="basic()">
     <st-panel title="订单详情">
       <div slot="actions">
-        <st-button class="mgr-8" v-if="auth['brand_shop:order:order|refund']&&!(info.order_source === 2 &&info.pay_status ===1)" @click="onRefund" type="primary">退款</st-button>
-        <st-button class="mgr-8" v-if="auth['brand_shop:order:order|pay']&&!(info.order_source === 2 &&info.pay_status ===1)" @click="createdOrderPay" type="primary">收款</st-button>
-        <st-button class="mgr-8" v-if="auth['brand_shop:order:order|cancel']&&!(info.order_source === 2 &&info.pay_status ===1)" @click="onCancel" type="primary">取消</st-button>
-        <st-button class="mgr-8" v-if="auth['brand_shop:order:order|split']&&!(info.order_source === 2 &&info.pay_status ===1)" @click="onSplit" type="primary">业务拆分</st-button>
+        <st-button class="mgr-8" v-if="auth['brand_shop:order:order|refund']" @click="onRefund" type="primary">退款</st-button>
+        <st-button class="mgr-8" v-if="auth['brand_shop:order:order|pay']" @click="createdOrderPay" type="primary">收款</st-button>
+        <st-button class="mgr-8" v-if="auth['brand_shop:order:order|cancel']" @click="onCancel" type="primary">取消</st-button>
+        <st-button class="mgr-8" v-if="auth['brand_shop:order:order|split']" @click="onSplit" type="primary">业务拆分</st-button>
       </div>
       <a-row :gutter="24">
         <a-col :span="9">

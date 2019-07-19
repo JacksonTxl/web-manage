@@ -63,11 +63,11 @@
         </template>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
-            <a v-if="record.auth['brand_shop:order:order|pay'] &&!(record.order_source === 2 &&record.pay_status ===1) " @click="onGathering(record)">收款</a>
-            <a v-if="record.auth['brand_shop:order:order|cancel'] &&!(record.order_source === 2 &&record.pay_status ===1) " @click="onCancel(record)">取消</a>
+            <a v-if="record.auth['brand_shop:order:order|pay']" @click="onGathering(record)">收款</a>
+            <a v-if="record.auth['brand_shop:order:order|cancel']" @click="onCancel(record)">取消</a>
             <a v-if="record.auth['brand_shop:order:order|get']" @click="onOrderInfo(record)">详情</a>
-            <a v-if="record.auth['brand_shop:order:order|refund'] &&!(record.order_source === 2 &&record.pay_status ===1) " @click="onRefund(record)">退款</a>
-            <a v-if="record.auth['brand_shop:order:order|split'] &&!(record.order_source === 2 &&record.pay_status ===1) " @click="onSplit(record)">业务拆分</a>
+            <a v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a>
+            <a v-if="record.auth['brand_shop:order:order|split']" @click="onSplit(record)">业务拆分</a>
           </st-table-actions>
         </div>
       </st-table>
