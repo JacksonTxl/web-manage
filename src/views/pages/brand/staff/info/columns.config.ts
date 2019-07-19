@@ -32,12 +32,13 @@ export const courseColums = () => {
       title: '签到人数',
       dataIndex: 'checkin_num',
       key: 'checkin_num'
-    }, {
-      title: '操作',
-      fixed: 'right',
-      width: 200,
-      scopedSlots: { customRender: 'action' }
     }
+    // , {
+    //   title: '操作',
+    //   fixed: 'right',
+    //   width: 200,
+    //   scopedSlots: { customRender: 'action' }
+    // }
   ]
 }
 
@@ -91,33 +92,33 @@ export const soldColums = () => {
       key: 'product_name'
     }, {
       title: '商品类型',
-      dataIndex: 'product_type',
-      key: 'product_type',
-      scopedSlots: { customRender: 'product_type' }
+      dataIndex: 'product_type_name',
+      key: 'product_type_name',
+      scopedSlots: { customRender: 'product_type_name' }
     }, {
       title: '订单状态',
-      dataIndex: 'order_status',
-      key: 'order_status'
+      dataIndex: 'order_status_name',
+      key: 'order_status_name'
     }, {
       title: '支付状态',
-      dataIndex: 'pay_status',
-      key: 'pay_status'
+      dataIndex: 'pay_status_name',
+      key: 'pay_status_name'
     }, {
       title: '用户姓名',
       dataIndex: 'member_name',
       key: 'member_name'
     }, {
       title: '手机号',
-      dataIndex: 'mobile',
-      key: 'mobile'
+      dataIndex: 'member_mobile',
+      key: 'member_mobile'
     }, {
       title: '下单时间',
-      dataIndex: 'order_time',
-      key: 'order_time'
+      dataIndex: 'created_time',
+      key: 'created_time'
     }, {
       title: '完成时间',
-      dataIndex: 'finish_time',
-      key: 'finish_time'
+      dataIndex: 'pay_finished_time',
+      key: 'pay_finished_time'
     }
   ]
 }

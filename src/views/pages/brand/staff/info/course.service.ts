@@ -26,8 +26,7 @@ export class CourseService implements RouteGuard {
     }
 
     beforeEach(to: ServiceRoute, from: ServiceRoute) {
-      const { id } = to.meta.query
-      return this.getCoursesList(id, {
-      })
+      const { id, ...query } = to.meta.query
+      return this.getCoursesList(id, query)
     }
 }

@@ -117,11 +117,10 @@ export default {
     let { identity } = this.info
     identity = identity.map(item => item.id)
     let tabSet = new Set()
+    this.setIndentyList(['basic'], tabSet)
     if (Array.isArray(identity) && identity.length) {
       identity.forEach(ele => {
-        if (ele === 1) {
-          this.setIndentyList(['basic'], tabSet)
-        } else if (ele === 2) {
+        if (ele === 2) {
           this.setIndentyList(['basic', 'member', 'sold'], tabSet)
         } else if (ele === 3) {
           this.setIndentyList(['basic', 'course'], tabSet)
@@ -129,14 +128,8 @@ export default {
           this.setIndentyList(['basic', 'course', 'follow', 'member', 'sold'], tabSet)
         }
       })
-    } else {
-      this.setIndentyList(['basic'], tabSet)
     }
     this.tabList = Array.from(tabSet).map(key => this[key])
-    this.$router.replace({
-      name: 'shop-staff-info-basic',
-      query: { id: this.query.id }
-    })
   },
   methods: {
     setIndentyList(arr, targetArr) {

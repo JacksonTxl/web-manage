@@ -4,12 +4,13 @@
       <a-col :lg="24">
         <a-col :lg="18">
           <shop-select style="width: 160px" v-model="query.shop_id" @change="onSingleSearch('shop_id', $event)"></shop-select>
-          <a-select style="width: 160px;margin-left:12px" :defaultValue="-1" placeholder="请选择预约状态" @change="onSingleSearch('order_status', $event)">
+          <a-select style="width: 160px;margin-left:12px" :defaultValue="-1" placeholder="请选择订单状态" @change="onSingleSearch('order_status', $event)">
             <a-select-option :value="-1">全部订单状态</a-select-option>
-            <a-select-option :value="1">预约失败</a-select-option>
-            <a-select-option :value="3">候补中</a-select-option>
-            <a-select-option :value="2">预约成功</a-select-option>
-            <a-select-option :value="4">取消预约</a-select-option>
+            <a-select-option :value="1">未完成</a-select-option>
+            <a-select-option :value="2">已完成</a-select-option>
+            <a-select-option :value="3">已取消</a-select-option>
+            <a-select-option :value="2">已退款</a-select-option>
+            <a-select-option :value="4">部分退款</a-select-option>
           </a-select>
           <a-range-picker class="mg-l8" @change="onChooseDate" format="YYYY-MM-DD"/>
         </a-col>
@@ -21,16 +22,14 @@
         <st-table
           :columns="soldColums"
           :dataSource="soldInfo"
-          :scroll="{ x: 1750}"
+          :scroll="{ x: 1300}"
           :loading="loading.getStaffSoldInfo"
           @change="onTableChange"
           :page="page"
         >
-          <template slot="id" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="goOrderDetai(record)">{{ text }}</a>
-          </template>
-          <template slot="product_type" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="goCommodityDetai(record)">{{ text }}</a>
+          <template slot="product_type_name" slot-scope="text, record">
+            <a href="javascript:;" class="mg-r8" @click="goCommodityDetai(record)" v-if="canJump(record)">{{ text }}</a>
+            <span v-else>{{ text }}</span>
           </template>
         </st-table>
       </a-col>
@@ -75,13 +74,43 @@ export default {
     this.id = this.$route.meta.query.id
   },
   methods: {
-    // 订单编号：点击跳转至订单详情页
-    goOrderDetai(e) {
-      console.log('跳转到订单详情页', e)
+    canJump(e) {
+      let arr = [1, 2, 3, 5]
+      let product_type = e.product_type
+      return arr.includes(product_type)
     },
     // 商品名称+规格名：点击跳转至商品详情页
     goCommodityDetai(e) {
       console.log('跳转到商品详情页', e)
+      let product_type = e.product_type
+      let product_id = e.product_id
+      let routeMap = {
+        1: { // 会籍卡
+          name: 'brand-product-card-member-period-info',
+          query: {
+            id: product_id
+          }
+        },
+        2: { // 私教
+          name: 'brand-product-course-personal-info',
+          query: {
+            id: product_id
+          }
+        },
+        3: { // 团教
+          name: 'brand-product-course-team-info',
+          query: {
+            courseId: product_id
+          }
+        },
+        5: { // 储值卡
+          name: 'brand-product-card-deposit-info',
+          query: {
+            id: product_id
+          }
+        }
+      }
+      this.$router.push(routeMap[product_type])
     },
     onChooseDate(e) {
       console.log('选择到的日期', e)

@@ -219,7 +219,7 @@ export default {
         return ele.id
       })
       this.$router.push({
-        name: 'shop-staff-info',
+        name: 'shop-staff-info-basic',
         query: {
           id: e.id
         }
