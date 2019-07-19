@@ -19,7 +19,7 @@
               <span v-if="info.coach_level">教练等级：{{ info.coach_level }}</span>
             </div>
             <div class="staff-info-shops">
-              <span>所在部门: {{ info.department }}</span>
+              <span class="mg-r8">所在部门: {{ info.department }}</span>
               <span>所在门店: {{ info.shop_num }}家门店</span>
             </div>
           </div>
@@ -121,11 +121,11 @@ export default {
     if (Array.isArray(identity) && identity.length) {
       identity.forEach(ele => {
         if (ele === 2) {
-          this.setIndentyList(['basic', 'member', 'sold'], tabSet)
+          this.setIndentyList(['member', 'sold'], tabSet)
         } else if (ele === 3) {
-          this.setIndentyList(['basic', 'course'], tabSet)
+          this.setIndentyList(['course'], tabSet)
         } else if (ele === 4) {
-          this.setIndentyList(['basic', 'course', 'follow', 'member', 'sold'], tabSet)
+          this.setIndentyList(['course', 'follow', 'member', 'sold'], tabSet)
         }
       })
     }

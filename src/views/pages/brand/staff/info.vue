@@ -112,11 +112,11 @@ export default {
     if (Array.isArray(identity) && identity.length) {
       identity.forEach(ele => {
         if (ele === 2) {
-          this.setIndentyList(['basic', 'member', 'sold'], indetitySet)
+          this.setIndentyList(['member', 'sold'], indetitySet)
         } else if (ele === 3) {
-          this.setIndentyList(['basic', 'course'], indetitySet)
+          this.setIndentyList(['course'], indetitySet)
         } else if (ele === 4) {
-          this.setIndentyList(['basic', 'course', 'follow', 'member', 'sold'], indetitySet)
+          this.setIndentyList(['course', 'follow', 'member', 'sold'], indetitySet)
         }
       })
     }
