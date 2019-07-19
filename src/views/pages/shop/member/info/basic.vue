@@ -55,7 +55,11 @@
         <st-info>
           <st-info-item
             label="家庭住址"
-          >{{ basicInfo.province_name }}/{{ basicInfo.city_name }}/{{ basicInfo.district_name }}</st-info-item>
+          >
+            <label v-if="basicInfo.province_name">
+              {{ basicInfo.province_name }}/{{ basicInfo.city_name }}/{{ basicInfo.district_name }}
+            </label>
+          </st-info-item>
         </st-info>
       </a-col>
     </a-row>

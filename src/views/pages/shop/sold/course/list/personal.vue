@@ -20,10 +20,13 @@
             <!-- <st-button v-if="auth.export" type="primary">批量导出</st-button> -->
         </div>
         <div :class="basic('table')">
-          <st-table
+        <!--
+          NOTE: 本期不做，先去掉选择框
           :alertSelection="{onReset: onClear}"
-          :page="page"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
+        -->
+          <st-table
+          :page="page"
           rowKey="id"
           :scroll="{x:1800}"
           :columns="columns"

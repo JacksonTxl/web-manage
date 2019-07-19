@@ -15,7 +15,7 @@
         <st-table
           :columns="followColumns"
           :dataSource="followList"
-          :scroll="{ x: 1750}"
+          :scroll="{ x: 1000}"
           :loading="loading.getStaffFollow"
           :page="page"
           @change="onTableChange"
@@ -71,6 +71,13 @@ export default {
   methods: {
     goMemberDetail(e) {
       console.log('跳转到用户详情', e)
+      let member_id = e.member_id
+      this.$router.push({
+        name: 'brand-staff-info-basic',
+        query: {
+          id: e.member_id
+        }
+      })
     },
     onChooseDate(e) {
       this.$router.push({

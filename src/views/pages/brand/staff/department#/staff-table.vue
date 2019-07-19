@@ -115,7 +115,7 @@ export default {
     },
     staffInfo(staff) {
       this.$router.push({
-        name: 'brand-staff-info',
+        name: 'brand-staff-info-basic',
         query: {
           id: staff.id
         }

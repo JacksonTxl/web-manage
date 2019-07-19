@@ -11,7 +11,9 @@
       <a-col :lg="8">
         <st-info>
           <st-info-item label="上课教练">{{reserveInfo.coach_name}}</st-info-item>
+
           <st-info-item label="上课时间">{{reserveInfo.start_time}}</st-info-item>
+          <st-info-item label="课时费">{{reserveInfo.course_fee}}</st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
@@ -141,7 +143,6 @@ export default {
   },
   rxState() {
     const commonService = this.commonService
-    console.log(this.reserveService)
     return {
       loading: this.reserveService.loading$,
       memberOptions: commonService.memberOptions$,

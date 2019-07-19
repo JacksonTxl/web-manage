@@ -21,7 +21,7 @@
         <st-table
           :columns="courseColums"
           :dataSource="courseInfo"
-          :scroll="{ x: 1750}"
+          :scroll="{ x: 1000}"
           :loading="loading.getCoursesList"
           :page="page"
           rowKey="id"
@@ -35,11 +35,11 @@
             <!-- 课程类型 -->
             {{record.course_type.name}}
           </template>
-          <template slot="action" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="onSearchDetail(record)">详情</a>
-          </template>
           <template slot="course_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">{{ text }}</a>
+          </template>
+          <template slot="action" slot-scope="text, record">
+            <a href="javascript:;" class="mg-r8" @click="onSearchDetail(record)">详情</a>
           </template>
         </st-table>
       </a-col>
@@ -81,31 +81,68 @@ export default {
   methods: {
     goCourseDetai(e) {
       console.log('跳转到课程详情', e)
-    },
-    // 选择课程状态
-    onSelectStatus(e) {
-      this.$router.push({
-        query: {
-          id: this.id,
-          shop_id: e
-        },
-        force: true
-      })
-    },
-    // 选择门店
-    onSelectShop(e) {
-      console.log('门店', e)
-      this.$router.push({
-        query: {
-          id: this.id,
-          shop_id: e
-        },
-        force: true
-      })
+      let course_type = e.course_type
+      let course_id = e.course_id
+      if (course_type === 1 || course_type === 2) {
+        this.$router.push({
+          name: 'shop-product-course-manage-team-info',
+          query: {
+            courseId: course_id
+          }
+        })
+      } else {
+        this.$router.push({
+          name: 'shop-product-course-manage-personal-info',
+          query: {
+            id: course_id
+          }
+        })
+      }
     },
     // 查看详情 点击弹出预约详情弹窗，同【门店-课程排期-团体课】、【门店-课程排期-私教1v1】、【门店-课程排期-私教小团课】
     onSearchDetail(e) {
-      console.log(e)
+      let course_type = e.course_type.id
+      switch (course_type) {
+        case 1:
+          this.$modalRouter.push({
+            name: 'schedule-team-reserve-info',
+            props: {
+              id: e.id
+            },
+            on: {
+              ok: res => {
+                console.log(res)
+              }
+            }
+          })
+          break
+        case 2:
+          this.$modalRouter.push({
+            name: 'schedule-personal-reserve-info',
+            props: {
+              id: String(e.id)
+            },
+            on: {
+              ok: res => {
+                console.log(res)
+              }
+            }
+          })
+          break
+        case 3:
+          this.$modalRouter.push({
+            name: 'schedule-personal-team-reserve-info',
+            props: {
+              id: e.id
+            },
+            on: {
+              ok: res => {
+                console.log(res)
+              }
+            }
+          })
+          break
+      }
     },
     // 日期选择
     onChooseDate(e) {
@@ -115,17 +152,6 @@ export default {
           id: this.id,
           start_time_first: moment(e[0]).format('YYYY-MM-DD'),
           start_time_last: moment(e[1]).format('YYYY-MM-DD')
-        },
-        force: true
-      })
-    },
-    // 查询
-    searchCourse(e) {
-      console.log('查询课程名称', e)
-      this.$router.push({
-        query: {
-          id: this.id,
-          course_name: e
         },
         force: true
       })

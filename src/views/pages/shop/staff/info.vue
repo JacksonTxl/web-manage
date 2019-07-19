@@ -19,7 +19,7 @@
               <span v-if="info.coach_level">教练等级：{{ info.coach_level }}</span>
             </div>
             <div class="staff-info-shops">
-              <span>所在部门: {{ info.department }}</span>
+              <span class="mg-r8">所在部门: {{ info.department }}</span>
               <span>所在门店: {{ info.shop_num }}家门店</span>
             </div>
           </div>
@@ -117,26 +117,19 @@ export default {
     let { identity } = this.info
     identity = identity.map(item => item.id)
     let tabSet = new Set()
+    this.setIndentyList(['basic'], tabSet)
     if (Array.isArray(identity) && identity.length) {
       identity.forEach(ele => {
-        if (ele === 1) {
-          this.setIndentyList(['basic'], tabSet)
-        } else if (ele === 2) {
-          this.setIndentyList(['basic', 'member', 'sold'], tabSet)
+        if (ele === 2) {
+          this.setIndentyList(['member', 'sold'], tabSet)
         } else if (ele === 3) {
-          this.setIndentyList(['basic', 'course'], tabSet)
+          this.setIndentyList(['course'], tabSet)
         } else if (ele === 4) {
-          this.setIndentyList(['basic', 'course', 'follow', 'member', 'sold'], tabSet)
+          this.setIndentyList(['course', 'follow', 'member', 'sold'], tabSet)
         }
       })
-    } else {
-      this.setIndentyList(['basic'], tabSet)
     }
     this.tabList = Array.from(tabSet).map(key => this[key])
-    this.$router.replace({
-      name: 'shop-staff-info-basic',
-      query: { id: this.query.id }
-    })
   },
   methods: {
     setIndentyList(arr, targetArr) {

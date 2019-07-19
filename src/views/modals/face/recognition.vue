@@ -32,10 +32,10 @@
           </a-spin>
           <div :class="recognition('operation')">
             <st-button type="primary" @click="handlerTakePhoto">{{userImgSrc ? '重拍' : '拍照'}}</st-button>
-            <div :class="recognition('tips')">
+            <!-- <div :class="recognition('tips')">
               <div>若录入遇到问题</div>
               <a href="" :class="recognition('question')">请点击此处</a>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>

@@ -40,9 +40,7 @@ export class ReceiveService extends Store<SetState> implements RouteGuard {
   // serviceInit(id: number) {
   //   return forkJoin(this.getInfo(id), this.getReceiveList(id))
   // }
-  beforeEach(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
-    this.getReceiveList(to.meta.query).subscribe(() => {
-      next()
-    })
+  beforeEach(to:ServiceRoute, from:ServiceRoute) {
+    return this.getReceiveList(to.meta.query)
   }
 }

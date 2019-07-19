@@ -10,7 +10,7 @@
         <st-table
           :columns="memberColums"
           :dataSource="memberInfo"
-          :scroll="{ x: 1750}"
+          :scroll="{ x: 1300}"
           :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
           :loading="loading.getStaffServiceCourses"
           :page="page"
@@ -68,9 +68,25 @@ export default {
   methods: {
     goCourseDetai(e) {
       console.log('跳转到课程详情', e)
+      let course_type = e.course_type
+      let course_id = e.course_id
+
+      this.$router.push({
+        name: 'shop-product-course-manage-personal-info',
+        query: {
+          id: course_id
+        }
+      })
     },
     goMemberDetai(e) {
       console.log('跳转到用户详情', e)
+      let member_id = e.member_id
+      this.$router.push({
+        name: 'shop-member-info-basic',
+        query: {
+          id: e.member_id
+        }
+      })
     },
     searchCourse(e) {
       this.$router.push({

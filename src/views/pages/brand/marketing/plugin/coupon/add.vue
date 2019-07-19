@@ -112,9 +112,9 @@
                   v-decorator="[
                   'is_limit',
                   {rules: [{ validator: is_limit_validator}]}]">
-                  <a-radio :value="1">不限</a-radio>
+                  <a-radio :value="0">不限</a-radio>
                   <a-form-item :class="basic('wrap-input')">
-                    <a-radio :value="2" >每人限领
+                    <a-radio :value="1">每人限领
                         <st-input-number :disabled="isEditMode" :class="basic('radio-input')" v-decorator="[
                         'person_limit',
                         {rules: [{ validator: person_limit_validator}]}]"></st-input-number>
@@ -288,8 +288,8 @@ export default {
     },
     // 每人是否限领
     is_limit_validator(rule, value, callback) {
-      console.log('is_limit_validator')
-      if (!value) {
+      let is_limit = this.form.getFieldValue('is_limit')
+      if (is_limit !== 0 && is_limit !== 1) {
         // eslint-disable-next-line
         callback('请选择是否限制领用')
       } else {
@@ -300,7 +300,7 @@ export default {
     // 每人限领数量 setFieldsValue
     person_limit_validator(rule, value, callback) {
       console.log('person_limit_validator')
-      if (!value && this.form.getFieldValue('is_limit') === '2') {
+      if (!value && this.form.getFieldValue('is_limit') === 1) {
         // eslint-disable-next-line
         callback('请输入每人限领数量')
       } else {
@@ -356,7 +356,7 @@ export default {
               valid_days: values.valid_days,
               is_share: this.isShare ? 1 : 0,
               is_limit: values.is_limit,
-              person_limit: values.person_limit
+              person_limit: values.person_limit || undefined
             }
           }
           if (this.isEditMode) {

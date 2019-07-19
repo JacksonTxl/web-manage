@@ -28,21 +28,19 @@
       <div :class="basic('content-batch')" class="mg-b16">
         <!-- NOTE: 导出 -->
         <!-- <st-button type="primary" class="mgr-8" v-if="auth.export">批量导出</st-button> -->
-        <st-button type="primary" class="mgr-8" v-if="auth.gift" :disabled="selectedRowKeys.length<1" @click="onGiving">赠送额度</st-button>
-        <st-button type="primary" class="mgr-8" v-if="auth.vipRegion" :disabled="selectedRowKeys.length<1" @click="onAreas">变更入场vip区域</st-button>
+        <st-button type="primary" class="mgr-8" v-if="auth.gift" :disabled="selectedRowKeys.length<1 || diffSelectedRows.length > 0" @click="onGiving">赠送额度</st-button>
+        <st-button type="primary" class="mgr-8" v-if="auth.vipRegion" :disabled="selectedRowKeys.length<1 || diffSelectedRows.length > 0" @click="onAreas">变更入场vip区域</st-button>
       </div>
       <div :class="basic('table')">
         <st-table
           :page="page"
           :alertSelection="{onReset: onClear}"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange,
-           onSelectAll: onSelectAll,
-           onSelectInvert: onSelectInvert,
-           getCheckboxProps: record => ({
-              props: {
-                disabled: disabledSelect(record), // Column configuration not to be checked
-              }
-           })}"
+          getCheckboxProps: record => ({
+            props: {
+              disabled: disabledSelect(record), // Column configuration not to be checked
+            }
+          })}"
           rowKey="id"
           @change="onTableChange"
           :columns="columns"
@@ -168,6 +166,7 @@ export default {
       endOpen: false,
       selectedRowKeys: [],
       selectedRows: [],
+      diffSelectedRows: [],
       selectTime: {
         startTime: {
           showTime: false,
@@ -198,26 +197,10 @@ export default {
     }
   },
   methods: {
-    onSelectAll(selected, selectedRows, changeRows) {
-      if (selectedRows && selectedRows.length > 0) {
-        const firstItem = selectedRows[0]
-        this.selectedRows = selectedRows.filter(item => item.card_type === firstItem.card_type)
-        this.selectedRowKeys = this.selectedRows.map(item => {
-          return item.id
-        })
-      }
-    },
-    onSelectInvert(selectedRows) {
-      console.log(selectedRows)
-    },
     disabledSelect(record) {
       if (record.card_status !== 1) {
         return true
       }
-      if (!this.selectedRows || this.selectedRows.length <= 0) {
-        return false
-      }
-      return record.card_type !== this.selectedRows[0]['card_type']
     },
     // 查询
     onSearchNative() {
@@ -238,13 +221,10 @@ export default {
     moment,
     // 列表选择
     onSelectChange(selectedRowKeys, selectedRows) {
-      // if (selectedRows && selectedRows.length > 0) {
-      //   const firstItem = selectedRows[0]
-      //   this.selectedRows = selectedRows.filter(item => item.card_type === firstItem.card_type)
-      //   this.selectedRowKeys = this.selectedRows.map(item => {
-      //     return item.id
-      //   })
-      // }
+      if (selectedRows && selectedRows.length > 0) {
+        const firstItem = selectedRows[0]
+        this.diffSelectedRows = selectedRows.filter(item => item.card_type !== firstItem.card_type)
+      }
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
     },
