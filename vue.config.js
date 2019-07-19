@@ -139,6 +139,7 @@ module.exports = {
           BASE_URL: JSON.stringify('/'),
           NODE_ENV: JSON.stringify(env.NODE_ENV),
           GIT_COMMIT: JSON.stringify(git.short()),
+          GIT_BRANCH: JSON.stringify(git.branch()),
           GIT_MESSAGE: JSON.stringify(git.message()),
           GIT_DATE: JSON.stringify(moment(git.date()).utc(true)),
           LOCAL_API_ENV: JSON.stringify(env.LOCAL_API_ENV)

@@ -3,10 +3,10 @@
     <div id="app">
       <component :is="layoutComponent"></component>
       <modal-router-view></modal-router-view>
-      <div class="git is-git" @click="getCommitHead" :style='gitStyle'>
+      <div class="git is-git" @click="getCommitHead" :style="gitStyle">
         <span class="git__content">{{tip}}</span>
       </div>
-      <div v-if='appConfig.IS_DEV' class="api-env">API环境:{{appConfig.LOCAL_API_ENV}}</div>
+      <div v-if="appConfig.IS_DEV" class="api-env">{{gitTip}}</div>
     </div>
   </a-locale-provider>
 </template>
@@ -37,7 +37,7 @@ export default {
   data() {
     return {
       count: 0,
-      tip: `${this.appConfig.GIT_COMMIT}`
+      tip: `${this.appConfig.GIT_BRANCH} ${this.appConfig.GIT_COMMIT}`
     }
   },
   methods: {

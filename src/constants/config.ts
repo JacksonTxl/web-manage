@@ -58,6 +58,7 @@ export class AppConfig {
    * 应用git相关信息 通过 vue.config.js中注入
    */
   GIT_COMMIT = process.env.GIT_COMMIT
+  GIT_BRANCH = process.env.GIT_BRANCH
   GIT_MESSAGE = process.env.GIT_MESSAGE
   GIT_DATE = process.env.GIT_DATE
   /**
