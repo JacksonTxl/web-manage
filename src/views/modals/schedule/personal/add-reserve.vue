@@ -160,8 +160,12 @@ export default {
       const allTime = this.range(0, 24)
       for (let i = 0; i < this.timeOptions.timing.length; i++) {
         const start = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`).format('H').valueOf()
-        const end = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`).format('H').valueOf()
-        disabledHours = [...disabledHours, ...this.range(start, end || 24)]
+        let end = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`).format('H').valueOf()
+        console.log(end)
+        if (!end && this.timeOptions.timing[i].end_time.includes('24')) {
+          end = 24
+        }
+        disabledHours = [...disabledHours, ...this.range(start, end)]
       }
       return difference(allTime, disabledHours)
     },
