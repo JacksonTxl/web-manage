@@ -35,9 +35,9 @@
             <!-- 课程类型 -->
             {{record.course_type.name}}
           </template>
-          <template slot="action" slot-scope="text, record">
+          <!-- <template slot="action" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="onSearchDetail(record)">详情</a>
-          </template>
+          </template> -->
           <!-- <template slot="course_name" slot-scope="text, record">
             <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">{{ text }}</a>
           </template> -->

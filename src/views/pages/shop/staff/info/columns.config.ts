@@ -32,12 +32,13 @@ export const courseColums = () => {
       title: '签到人数',
       dataIndex: 'checkin_num',
       key: 'checkin_num'
-    }, {
-      title: '操作',
-      fixed: 'right',
-      width: 200,
-      scopedSlots: { customRender: 'action' }
     }
+    // , {
+    //   title: '操作',
+    //   fixed: 'right',
+    //   width: 200,
+    //   scopedSlots: { customRender: 'action' }
+    // }
   ]
 }
 
