@@ -57,6 +57,8 @@
           <p class="mb-8">
             <span class="label">售卖门店：</span>
             <span class="value">{{cardInfo.support_sales | enumFilter('deposit_card.support_sales')}}</span>
+            <span>(已上架{{cardInfo.can_use_shop_num}}家门店</span>
+            <span>/共{{cardInfo.total_shop_num}}家门店)</span>
           </p>
           <st-container :class="item('scroll-container')" v-if="cardInfo.support_sales!==1">
             <st-table
