@@ -8,7 +8,7 @@ pipeline {
         sh 'tree -du -L 4'
       }
     }
-    stage('to=saas-test') {
+    stage('branch-test') {
       when {
         expression { BRANCH_NAME ==~ /test/}
       }
@@ -22,7 +22,7 @@ pipeline {
         sh 'make release to=saas-dev'
       }
     }
-    stage('to=saas-test') {
+    stage('branch-other') {
       when {
         expression { BRANCH_NAME ==~ /(feat|fix|dev).*/}
       }
