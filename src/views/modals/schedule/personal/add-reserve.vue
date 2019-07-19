@@ -144,7 +144,6 @@ export default {
         const endHour = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`).format('H').valueOf()
         const start = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`).format('mm').valueOf()
         const end = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`).format('mm').valueOf()
-
         if (startHour === endHour) {
           return difference(allTime, this.range(start, end))
         } else {
@@ -152,6 +151,8 @@ export default {
             return difference(allTime, this.range(start, 60))
           } else if (+selectedHour === endHour) {
             return difference(allTime, this.range(0, end))
+          } else if (+selectedHour > startHour || endHour > +selectedHour) {
+            return difference(allTime, this.range(0, 60))
           }
         }
       }
