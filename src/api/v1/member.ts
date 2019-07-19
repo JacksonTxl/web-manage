@@ -276,8 +276,13 @@ export class MemberApi extends Api {
    *员工详情—预约上课v1/member/reserve/员工id
    */
   getMemberReserve(id: string, query: any) {
-    console.log(query)
     return this.http.get(`/v1/member/reserves/${id}`, { query })
+  }
+  /*
+   *员工详情—预约上课出入场记录
+   */
+  getMemberEntrance(id: string) {
+    return this.http.get(`/v1/member/entrance/${id}`)
   }
   /**
    * 卡消费

@@ -5,7 +5,6 @@
       <div slot="title">
         <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onSearch" style="width: 290px;"/>
       </div>
-
       <div slot="prepend">
         <st-search-panel>
           <div :class="basic('select')">
