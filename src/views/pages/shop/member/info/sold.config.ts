@@ -2,7 +2,8 @@ export const classrecord = () => {
   return [
     {
       title: '课程类型',
-      dataIndex: 'reserve_type'
+      dataIndex: 'reserve_type',
+      scopedSlots: { customRender: 'reserve_type' }
     },
     {
       title: '课程名称',
@@ -46,33 +47,18 @@ export const admission = () => {
   return [
     {
       title: '入场门店',
-      dataIndex: 'age',
-      key: 'age'
-    },
-    {
-      title: '会员卡',
-      dataIndex: 'age1',
-      key: 'age1'
+      dataIndex: 'shop_name',
+      key: 'shop_name'
     },
     {
       title: '入场时间',
-      dataIndex: 'age2',
-      key: 'age2'
-    },
-    {
-      title: '扣除次数',
-      dataIndex: 'age3',
-      key: 'age3'
+      dataIndex: 'entrance_time',
+      key: 'entrance_time'
     },
     {
       title: '离场时间',
-      dataIndex: 'age4',
-      key: 'age4'
-    },
-    {
-      title: '临时储物柜',
-      dataIndex: 'age5',
-      key: 'age5'
+      dataIndex: 'leave_time',
+      key: 'leave_time'
     }
   ]
 }

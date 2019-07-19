@@ -19,11 +19,14 @@
           <!-- NOTE: 导出 -->
             <!-- <st-button v-if="auth.export" type="primary">批量导出</st-button> -->
         </div>
+        <!--
+          NOTE: 本期不做，先去掉选择框
+          :alertSelection="{onReset: onClear}"
+          :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
+         -->
         <div :class="basic('table')">
           <st-table
-          :alertSelection="{onReset: onClear}"
           :page="page"
-          :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
           rowKey="id"
           @change="onTableChange"
           :scroll="{x:1800}"

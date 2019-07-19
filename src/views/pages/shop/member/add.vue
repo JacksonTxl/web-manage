@@ -259,8 +259,8 @@ export default {
         id_card_type: ['id_card_type'],
         id_card: ['id_card', { rules: [{ message: '证件信息支持中英文输入', pattern: this.pattern.ID }] }],
 
-        height: ['height'],
-        weight: ['weight'],
+        height: ['height', { rules: [{ validator: this.height_validator }] }],
+        weight: ['weight', { rules: [{ validator: this.weight_validator }] }],
         fitness_goal: ['fitness_goal'],
         fitness_level: ['fitness_level'],
         married_type: ['married_type'],
@@ -277,6 +277,24 @@ export default {
     }
   },
   methods: {
+    height_validator(rule, value, callback) {
+      if (value && (+value < 20 || +value > 250)) {
+        // eslint-disable-next-line
+        callback('请输入正确身高，范围20~250cm')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
+    weight_validator(rule, value, callback) {
+      if (value && (+value < 10 || +value > 200)) {
+        // eslint-disable-next-line
+        callback('请输入正确体重，范围10~200kg')
+      } else {
+        // eslint-disable-next-line
+        callback()
+      }
+    },
     // 来源方式发生改变
     onChangCategory(event) {
       this.source_category = event
@@ -299,6 +317,8 @@ export default {
         // 手机前缀
         res.country_prefix = this.country_prefix
         res.image_face = this.faceList[0] || {}
+        res.height = res.height || undefined
+        res.weight = res.weight || undefined
         delete res.cascader
         delete res.md
         this.addService.addUser(res).subscribe(() => {

@@ -9,7 +9,7 @@
           :columns="classrecord"
           :dataSource="soldListInfo"
           @change="onTableChange"
-          :soldPage="soldPage"
+          :page="soldPage"
         >
           <div slot="reserve_type" slot-scope="text,record">
             {{record.name}}
@@ -34,11 +34,17 @@
         <st-hr></st-hr>
       </a-col>
     </a-row>
-    <!-- TODO: 暂无接口222 -->
+
     <st-t4>入场记录</st-t4>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
-        <st-table :columns="admission"></st-table>
+        <st-table
+          :columns="admission"
+          rowKey="id"
+          :dataSource="entranceList"
+          @change="onTableChange"
+          :page="entrancePage"
+        ></st-table>
       </a-col>
     </a-row>
   </div>
@@ -52,14 +58,16 @@ export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      Service: SoldService
+      soldService: SoldService
     }
   },
   rxState() {
     return {
-      soldListInfo: this.Service.soldListInfo$,
-      soldPage: this.Service.soldPage$,
-      auth: this.Service.auth$
+      soldListInfo: this.soldService.soldListInfo$,
+      soldPage: this.soldService.soldPage$,
+      entranceList: this.soldService.entranceList$,
+      entrancePage: this.soldService.entrancePage$,
+      auth: this.soldService.auth$
     }
   },
   computed: {
@@ -95,7 +103,7 @@ export default {
   },
   created() {
     let self = this
-    // this.Service.init(self.$route.query.id, self.form).subscribe()
+    // this.soldService.init(self.$route.query.id, self.form).subscribe()
   },
   methods: {
     /* 取消预约 */
@@ -113,8 +121,8 @@ export default {
             reserve_id: record.id
           }
           console.log(record, getdata)
-          self.Service.getMemberCancel(getdata).subscribe(res => {
-            self.Service.init(self.$route.query.id, self.form).subscribe()
+          self.soldService.getMemberCancel(getdata).subscribe(res => {
+            self.soldService.init(self.$route.query.id, self.form).subscribe()
           })
         },
         onCancel() {}
@@ -133,8 +141,8 @@ export default {
             reserve_id: record.id
           }
           console.log(record, getdata)
-          self.Service.getMemberSign(getdata).subscribe(res => {
-            self.Service.init(self.$route.query.id, self.form).subscribe()
+          self.soldService.getMemberSign(getdata).subscribe(res => {
+            self.soldService.init(self.$route.query.id, self.form).subscribe()
           })
         },
         onCancel() {}
@@ -153,7 +161,7 @@ export default {
     form: {
       handler() {
         let self = this
-        this.Service.init(self.$route.query.id, self.form).subscribe()
+        this.soldService.init(self.$route.query.id, self.form).subscribe()
       },
       deep: true
     },

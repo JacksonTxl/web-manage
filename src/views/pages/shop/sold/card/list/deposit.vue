@@ -40,10 +40,13 @@
         <!-- <st-button type="primary" class="mgr-8" v-if="auth.export">批量导出</st-button> -->
       </div>
       <div :class="basic('table')">
-        <st-table
-          :page="page"
+        <!--
+          NOTE: 本期没有按钮不做
           :alertSelection="{onReset: onClear}"
           :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
+         -->
+        <st-table
+          :page="page"
           rowKey="id"
           @change="onTableChange"
           :columns="columns"
