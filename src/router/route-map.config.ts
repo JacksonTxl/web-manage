@@ -566,8 +566,8 @@ export const routeMapConfig = {
     routeConfig.meta.title = '课程定价及预约设置'
     routeConfig.meta.auth = ''
     routeConfig.meta.tabs = [
-      'brand-setting-general-course-personal',
-      'brand-setting-general-course-team'
+      'brand-setting-general-course-personal'
+      // ,'brand-setting-general-course-team'
     ]
   },
   'brand-setting-general-course-personal'(routeConfig: RouteConfig) {
