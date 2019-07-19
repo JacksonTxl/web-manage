@@ -208,6 +208,7 @@ export default {
       })
     },
     datesRender(info) {
+      console.log('datesRender')
       const start = moment(info.view.activeStart).format('YYYY-MM-DD').valueOf()
       const end = moment((moment(info.view.activeEnd).valueOf() - 24 * 3600 * 1000)).format('YYYY-MM-DD').valueOf()
       this.$router.push({ query: { start_date: start, end_date: end } })
