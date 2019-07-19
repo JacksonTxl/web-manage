@@ -10,8 +10,8 @@ export class CourseService implements RouteGuard {
     loading$ = new State({})
     constructor(private staffApi: ShopStaffApi) {}
     @Effect()
-    getCoursesList(query: GetStaffCourseListInput) {
-      return this.staffApi.getStaffCourseList(query).pipe(
+    getCoursesList(id: string, query: GetStaffCourseListInput) {
+      return this.staffApi.getStaffCourseList(id, query).pipe(
         tap(res => {
           this.courseInfo$.commit(() => res.list)
           this.page$.commit(() => res.page)
@@ -20,6 +20,7 @@ export class CourseService implements RouteGuard {
     }
 
     beforeEach(to: ServiceRoute, from: ServiceRoute) {
-      return this.getCoursesList(to.meta.query)
+      const { id, ...query } = to.meta.query
+      return this.getCoursesList(id, query)
     }
 }

@@ -112,9 +112,9 @@
                   v-decorator="[
                   'is_limit',
                   {rules: [{ validator: is_limit_validator}]}]">
-                  <a-radio :value="1">不限</a-radio>
+                  <a-radio :value="0">不限</a-radio>
                   <a-form-item :class="basic('wrap-input')">
-                    <a-radio :value="2" >每人限领
+                    <a-radio :value="1">每人限领
                         <st-input-number :disabled="isEditMode" :class="basic('radio-input')" v-decorator="[
                         'person_limit',
                         {rules: [{ validator: person_limit_validator}]}]"></st-input-number>
@@ -356,7 +356,7 @@ export default {
               valid_days: values.valid_days,
               is_share: this.isShare ? 1 : 0,
               is_limit: values.is_limit,
-              person_limit: values.person_limit
+              person_limit: values.person_limit || undefined
             }
           }
           if (this.isEditMode) {

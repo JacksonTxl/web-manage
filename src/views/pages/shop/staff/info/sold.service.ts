@@ -15,7 +15,7 @@ export class SoldService implements RouteGuard {
       return this.staffApi.getStaffSold(id, query).pipe(
         tap(res => {
           this.page$.commit(() => res.page)
-          this.soldInfo$.commit(() => res.soldInfo)
+          this.soldInfo$.commit(() => res.list)
         })
       )
     }

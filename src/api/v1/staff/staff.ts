@@ -106,8 +106,8 @@ export class ShopStaffApi extends Api {
     return this.http.get(`/v1/staff/shop/common/${id}`)
   }
   // 员工详情上课记录
-  getStaffCourseList(query: GetStaffCourseListInput) {
-    return this.http.get(`/v1/staff/shop/courses_record/${query.id}`, { query })
+  getStaffCourseList(id: string, query: GetStaffCourseListInput) {
+    return this.http.get(`/v1/staff/shop/courses_record/${id}`, { query })
   }
   // 员工详情跟进记录
   getStaffFollow(query: GetStaffFollowInput) {
@@ -205,7 +205,6 @@ export interface PutStaffBrandRestartInput {
   restart_time: string
 }
 export interface GetStaffCourseListInput {
-  id?: string
   /**
    * 门店id
    */

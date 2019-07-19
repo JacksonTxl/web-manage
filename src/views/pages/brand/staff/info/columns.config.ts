@@ -32,12 +32,13 @@ export const courseColums = () => {
       title: '签到人数',
       dataIndex: 'checkin_num',
       key: 'checkin_num'
-    }, {
-      title: '操作',
-      fixed: 'right',
-      width: 200,
-      scopedSlots: { customRender: 'action' }
     }
+    // , {
+    //   title: '操作',
+    //   fixed: 'right',
+    //   width: 200,
+    //   scopedSlots: { customRender: 'action' }
+    // }
   ]
 }
 
@@ -91,17 +92,17 @@ export const soldColums = () => {
       key: 'product_name'
     }, {
       title: '商品类型',
-      dataIndex: 'product_type',
-      key: 'product_type',
-      scopedSlots: { customRender: 'product_type' }
+      dataIndex: 'product_type_name',
+      key: 'product_type_name',
+      scopedSlots: { customRender: 'product_type_name' }
     }, {
       title: '订单状态',
-      dataIndex: 'order_status',
-      key: 'order_status'
+      dataIndex: 'order_status_name',
+      key: 'order_status_name'
     }, {
       title: '支付状态',
-      dataIndex: 'pay_status',
-      key: 'pay_status'
+      dataIndex: 'pay_status_name',
+      key: 'pay_status_name'
     }, {
       title: '用户姓名',
       dataIndex: 'member_name',

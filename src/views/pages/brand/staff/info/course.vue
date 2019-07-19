@@ -5,7 +5,7 @@
         <a-col :lg="16">
           <shop-select class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onSingleSearch('shop_id', $event)"></shop-select>
           <a-range-picker class="mg-r8" @change="onChooseDate" format="YYYY-MM-DD"/>
-          <a-select style="width: 160px;" :defaultValue="-1" placeholder="请选择预约状态"  @change="onSelectStatus">
+          <a-select style="width: 160px;" :defaultValue="-1" placeholder="请选择预约状态"  @change="onSingleSearch('schedule_status', $event)">
             <a-select-option :value="-1">全部预约状态</a-select-option>
             <a-select-option :value="1">预约失败</a-select-option>
             <a-select-option :value="3">候补中</a-select-option>
@@ -22,9 +22,10 @@
         <st-table
           :columns="courseColums"
           :dataSource="courseInfo"
-          :scroll="{ x: 1750}"
+          :scroll="{ x: 1000}"
           :loading="loading.getCoursesList"
           :page="page"
+          rowKeys="id"
           @change="onTableChange"
         >
           <template slot="schedule_status" slot-scope="text, record">
@@ -35,14 +36,15 @@
             <!-- 课程类型 -->
             {{record.course_type.name}}
           </template>
-          <template slot="action" slot-scope="text, record">
+          <!-- <template slot="course_name" slot-scope="text, record">
+            <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">{{ text }}</a>
+          </template> -->
+          <!-- <template slot="action" slot-scope="text, record">
             <st-table-actions>
               <a href="javascript:;" class="mg-r8" @click="onSearchDetail(record)">详情</a>
             </st-table-actions>
           </template>
-          <template slot="course_name" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">{{ text }}</a>
-          </template>
+          -->
         </st-table>
       </a-col>
     </a-row>
@@ -89,23 +91,76 @@ export default {
   methods: {
     goCourseDetai(e) {
       console.log('跳转到课程详情', e)
-    },
-    onChange() {
-      this.$router.push({ query: this.query })
-    },
-    // 选择课程状态
-    onSelectStatus(e) {
-      this.$router.push({
-        query: {
-          id: this.id,
-          shop_id: e
+      let course_type = e.course_type.id
+      let course_id = e.course_id
+      let routeMap = {
+        1: {
+          name: 'brand-product-course-team-info',
+          query: {
+            id: course_id
+          }
         },
-        force: true
-      })
+        2: {
+          name: 'brand-product-course-personal-info',
+          query: {
+            id: course_id
+          }
+        },
+        3: {
+          name: 'brand-product-course-personal-team-info',
+          query: {
+            id: course_id
+          }
+        }
+      }
+      this.$router.push(routeMap[course_type])
     },
     // 查看详情 点击弹出预约详情弹窗，同【门店-课程排期-团体课】、【门店-课程排期-私教1v1】、【门店-课程排期-私教小团课】
     onSearchDetail(e) {
       console.log(e)
+      let course_type = e.course_type.id
+      let id = e.id
+      switch (course_type) {
+        case 1:
+          this.$modalRouter.push({
+            name: 'schedule-team-reserve-info',
+            props: {
+              id
+            },
+            on: {
+              ok: res => {
+                console.log(res)
+              }
+            }
+          })
+          break
+        case 2:
+          this.$modalRouter.push({
+            name: 'schedule-personal-team-reserve-info',
+            props: {
+              id
+            },
+            on: {
+              ok: res => {
+                console.log(res)
+              }
+            }
+          })
+          break
+        case 3:
+          this.$modalRouter.push({
+            name: 'schedule-personal-reserve-info',
+            props: {
+              id
+            },
+            on: {
+              ok: res => {
+                console.log(res)
+              }
+            }
+          })
+          break
+      }
     },
     // 日期选择
     onChooseDate(e) {
@@ -115,17 +170,6 @@ export default {
           id: this.id,
           start_time_first: moment(e[0]).format('YYYY-MM-DD'),
           start_time_last: moment(e[1]).format('YYYY-MM-DD')
-        },
-        force: true
-      })
-    },
-    // 查询
-    searchCourse(e) {
-      console.log('查询课程名称', e)
-      this.$router.push({
-        query: {
-          id: this.id,
-          course_name: e
         },
         force: true
       })

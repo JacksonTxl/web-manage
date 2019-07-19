@@ -14,7 +14,7 @@ export class FollowService implements RouteGuard {
       return this.staffApi.getStaffFollow(query).pipe(
         tap(res => {
           this.page$.commit(() => res.page)
-          this.followList$.commit(() => res.followList)
+          this.followList$.commit(() => res.list)
         })
       )
     }
