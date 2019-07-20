@@ -139,7 +139,7 @@ export class RedirectService {
           if (!meta) {
             return res.concat([])
           }
-          // TODO 暂时使用常量返回true
+          // TODO: 暂时使用常量返回true
           if (this.authService.tabCan(meta.auth)) {
             if (!meta.title) {
               console.error(
