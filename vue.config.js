@@ -20,7 +20,6 @@ const IS_DEV = env.NODE_ENV !== 'production'
 const IS_PROD = env.NODE_ENV === 'production'
 
 const localApiEnvHostTarget = {
-  // dev: 'http://10.10.31.194:10000',
   dev: 'https://api-saas-dev.styd.cn',
   test: 'https://api-saas-test.styd.cn'
 }[env.LOCAL_API_ENV]
@@ -61,20 +60,10 @@ module.exports = {
     watchContentBase: true,
     proxy: {
       '/_api': {
-        // target: 'http://10.10.31.181:10000',
         target: localApiEnvHostTarget,
-        // target: 'http://10.10.31.166:80',
         changeOrigin: true,
         pathRewrite: {
           '^/_api/': '/'
-        }
-      },
-      '/_shs_api': {
-        target: 'http://localhost:3080',
-        // target: 'https://api-saas-test.styd.cn',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/_shs_api/': '/'
         }
       }
     },
