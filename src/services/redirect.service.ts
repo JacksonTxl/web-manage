@@ -83,7 +83,8 @@ export class RedirectService {
       redirectRouteQuery
     } = redirectConfig
     const resolveRoute = this.router.resolve({
-      name: redirectRouteName
+      name: redirectRouteName,
+      query: redirectRouteQuery
     })
     // 跳转路径为空
     if (!redirectRouteName) {

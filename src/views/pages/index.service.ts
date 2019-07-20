@@ -12,6 +12,11 @@ export class IndexService implements RouteGuard {
     this.redirectService.redirect({
       locateRouteName: 'index',
       redirectRouteName: this.userService.firstMenuUrl$.snapshot(),
+      redirectRouteQuery: {
+        _f: Math.random()
+          .toString(16)
+          .slice(3)
+      },
       to,
       from,
       next
