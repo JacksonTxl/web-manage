@@ -13,6 +13,7 @@ export class IndexService implements RouteGuard {
       locateRouteName: 'index',
       redirectRouteName: this.userService.firstMenuUrl$.snapshot(),
       to,
+      from,
       next
     })
   }

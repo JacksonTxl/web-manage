@@ -12,7 +12,8 @@ const WebpackExternalVendorPlugin = require('webpack-external-vendor-plugin')
 
 const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
-  LOCAL_API_ENV: process.env.LOCAL_API_ENV || 'dev'
+  LOCAL_API_ENV: process.env.LOCAL_API_ENV || 'dev',
+  PAGE_ENV: process.env.PAGE_ENV || ''
 }
 
 const IS_DEV = env.NODE_ENV !== 'production'
@@ -142,7 +143,8 @@ module.exports = {
           GIT_BRANCH: JSON.stringify(git.branch()),
           GIT_MESSAGE: JSON.stringify(git.message()),
           GIT_DATE: JSON.stringify(moment(git.date()).utc(true)),
-          LOCAL_API_ENV: JSON.stringify(env.LOCAL_API_ENV)
+          LOCAL_API_ENV: JSON.stringify(env.LOCAL_API_ENV),
+          PAGE_ENV: JSON.stringify(env.PAGE_ENV)
         }
       })
       return definitions

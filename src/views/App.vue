@@ -6,7 +6,10 @@
       <div class="git is-git" @click="getCommitHead" :style="gitStyle">
         <span class="git__content">{{tip}}</span>
       </div>
-      <div v-if="appConfig.IS_DEV" class="api-env">API环境:{{appConfig.LOCAL_API_ENV}}</div>
+      <div
+        v-if="appConfig.IS_DEV"
+        class="app-env"
+      >API环境:{{appConfig.LOCAL_API_ENV}} 页面模式:{{appConfig.PAGE_ENV}}</div>
     </div>
   </a-locale-provider>
 </template>

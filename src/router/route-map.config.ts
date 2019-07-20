@@ -17,7 +17,7 @@ interface RouteConfig extends ServiceRouteConfig {
      */
     parentId: string
     /**
-     * 路由对应的权限
+     * 路由对应的权限key名
      */
     auth: string
     /**

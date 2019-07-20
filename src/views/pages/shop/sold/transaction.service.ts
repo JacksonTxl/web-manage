@@ -9,6 +9,7 @@ export class TransactionService implements RouteGuard {
       locateRouteName: 'shop-sold-transaction',
       redirectRouteName: 'shop-sold-transaction-list',
       to,
+      from,
       next
     })
   }
