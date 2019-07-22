@@ -22,7 +22,7 @@
               :key="index"
               :value="item.value">{{item.label}}</a-select-option> -->
           </a-select>
-          <span class="mg-r8">领券时间</span><a-range-picker @change="onChangeDatePicker" v-model="queryParams.date"/>
+          <span class="mg-r8" style="font-weight: normal">领券时间</span><a-range-picker @change="onChangeDatePicker" v-model="queryParams.date"/>
         </div>
         <st-input-search
           v-model="queryParams.keyword"
