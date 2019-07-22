@@ -12,7 +12,7 @@
           :page="soldPage"
         >
           <div slot="reserve_type" slot-scope="text,record">
-            {{record.name}}
+            {{record.reserve_type.name}}
           </div>
           <div slot="is_checkin" slot-scope="text">
             <div>
@@ -53,12 +53,14 @@
 import formDate from './sold#/form-date.vue'
 import { SoldService } from './sold.service'
 import { classrecord, admission } from './sold.config.ts'
+import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 export default {
   mixins: [tableMixin],
   serviceInject() {
     return {
-      soldService: SoldService
+      soldService: SoldService,
+      routeService: RouteService
     }
   },
   rxState() {
@@ -67,7 +69,8 @@ export default {
       soldPage: this.soldService.soldPage$,
       entranceList: this.soldService.entranceList$,
       entrancePage: this.soldService.entrancePage$,
-      auth: this.soldService.auth$
+      auth: this.soldService.auth$,
+      query: this.routeService.query$
     }
   },
   computed: {
