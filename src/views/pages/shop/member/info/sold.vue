@@ -14,9 +14,9 @@
           <div slot="reserve_type" slot-scope="text,record">
             {{record.reserve_type.name}}
           </div>
-          <div slot="is_checkin" slot-scope="text">
+          <div slot="is_checkin" slot-scope="text,record">
             <div>
-              <span :class="text|isCheckin" v-if="text === '未签到'"></span>
+              <span :class="record|isCheckin" v-if="record.mina_checkin_status === 0"></span>
               {{text}}
             </div>
           </div>
@@ -86,9 +86,9 @@ export default {
   },
   filters: {
     isCheckin(value) {
-      if (value === '未签到') {
+      if (value.mina_checkin_status === 0) {
         return 'member-info-sold__is_checkin_no'
-      } else if (value === '已签到') {
+      } else if (value.mina_checkin_status === 1) {
         return 'member-info-sold__is_checkin_yes'
       } else {
         return ''
