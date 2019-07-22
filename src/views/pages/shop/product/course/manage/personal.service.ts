@@ -8,6 +8,7 @@ export class PersonalService implements RouteGuard {
       locateRouteName: 'shop-product-course-manage-personal',
       redirectRouteName: 'shop-product-course-manage-personal-list',
       next,
+      from,
       to
     })
   }

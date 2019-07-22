@@ -9,6 +9,7 @@ export class CabinetService implements RouteGuard {
       locateRouteName: 'shop-sold-cabinet',
       redirectRouteName: 'shop-sold-cabinet-list',
       to,
+      from,
       next
     })
   }

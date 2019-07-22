@@ -15,6 +15,7 @@ export class PersonalTeamService implements RouteGuard {
       redirectRouteName: 'shop-product-course-schedule-personal-team-personal-team',
       redirectRouteQuery,
       next,
+      from,
       to
     })
   }
