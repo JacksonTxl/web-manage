@@ -17,14 +17,12 @@
           </div>
           <div :class="basic('select')">
             <span style="width:90px;">注册时间：</span>
-            <a-range-picker :defaultValue="defaultRegValue" v-model="register_time" @change="onChangeReg">
-            </a-range-picker>
+            <st-range-picker :disabledDays="180" :value="selectTime"></st-range-picker>
           </div>
           <div slot="more">
             <div :class="basic('select')">
               <span style="width:90px;">入会时间：</span>
-              <a-range-picker :defaultValue="defaultBeMemberValue" v-model="enter_time" @change="onChangeBeMember">
-              </a-range-picker>
+              <st-range-picker :disabledDays="180" :value="selectMemberTime"></st-range-picker>
             </div>
             <div :class="basic('select')">
               <span style="width:90px;">员工跟进：</span>
@@ -153,6 +151,7 @@ import { ListService } from './list.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
+import StRangePicker from '@/views/components/datetime-picker/range-picker'
 
 export default {
   name: 'memberList',
@@ -182,16 +181,51 @@ export default {
   },
   data() {
     return {
-      dateFormat: 'YYYY/MM/DD',
+      dateFormat: 'YYYY-MM-DD',
       expand: false,
       sourceRegisterList: [],
       consumption: [],
-      querySelect: {},
-      register_time: [],
-      enter_time: [],
       selectDataList: [],
       selectedRowKeys: [],
-      selectedRows: []
+      selectedRows: [],
+      selectTime: {
+        startTime: {
+          showTime: false,
+          disabledBegin: null,
+          placeholder: '开始日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: ($event) => { }
+        },
+        endTime: {
+          showTime: false,
+          placeholder: '结束日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: ($event) => {}
+        }
+      },
+      selectMemberTime: {
+        startTime: {
+          showTime: false,
+          disabledBegin: null,
+          placeholder: '开始日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: ($event) => { }
+        },
+        endTime: {
+          showTime: false,
+          placeholder: '结束日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: ($event) => {}
+        }
+      }
     }
   },
   computed: {
@@ -213,7 +247,7 @@ export default {
       return list
     },
     defaultRegValue() {
-      if (!this.query.register_start_time) return null
+      if (!this.query.register_start_time) return []
       return [moment(this.query.register_start_time, this.dateFormat), moment(this.query.register_stop_time, this.dateFormat)]
     },
     defaultBeMemberValue() {
@@ -233,15 +267,17 @@ export default {
     this.sourceRegisters()
     this.setSearchData()
   },
+  watch: {
+    query(newVal) {
+      this.setSearchData()
+    }
+  },
+  components: {
+    StRangePicker
+  },
   methods: {
     refeshPage() {
       this.$router.push({ force: true })
-    },
-    onChangeReg(date, dateString) {
-      this.querySelect = { ...this.querySelect, register_start_time: dateString[0], register_stop_time: dateString[1] }
-    },
-    onChangeBeMember(date, dateString) {
-      this.querySelect = { ...this.querySelect, be_member_start_time: dateString[0], be_member_stop_time: dateString[1] }
     },
     sourceRegisters() {
       this.listService.getMemberSourceRegisters().subscribe(status => {
@@ -250,20 +286,26 @@ export default {
     },
     // 查询
     onSearchNative() {
-      this.$router.push({ force: true, query: { ...this.querySelect } })
+      this.query.register_start_time = this.selectTime.startTime.value ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}` : ''
+      this.query.register_stop_time = this.selectTime.endTime.value ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}` : ''
+      this.query.be_member_start_time = this.selectMemberTime.startTime.value ? `${this.selectMemberTime.startTime.value.format('YYYY-MM-DD')}` : ''
+      this.query.be_member_stop_time = this.selectMemberTime.endTime.value ? `${this.selectMemberTime.endTime.value.format('YYYY-MM-DD')}` : ''
+      this.onSearch()
     },
     // 设置searchData
     setSearchData() {
-      if (!this.query.register_start_time || !this.query.register_stop_time) {
-        this.register_time = []
-      } else {
-        this.register_time = [moment(this.query.register_start_time), cloneDeep(moment(this.query.register_stop_time))]
-      }
-      if (!this.query.register_start_time || !this.query.register_stop_time) {
-        this.enter_time = []
-      } else {
-        this.enter_time = [moment(this.query.be_member_start_time), cloneDeep(moment(this.query.be_member_start_time))]
-      }
+      this.selectTime.startTime.value = this.query.register_start_time
+        ? cloneDeep(moment(this.query.register_start_time))
+        : null
+      this.selectTime.endTime.value = this.query.register_stop_time
+        ? cloneDeep(moment(this.query.register_stop_time))
+        : null
+      this.selectMemberTime.startTime.value = this.query.be_member_start_time
+        ? cloneDeep(moment(this.query.be_member_start_time))
+        : null
+      this.selectMemberTime.endTime.value = this.query.be_member_stop_time
+        ? cloneDeep(moment(this.query.be_member_stop_time))
+        : null
     },
     // 分配教练
     onDistributionCoach(record) {
@@ -372,10 +414,6 @@ export default {
       this.$refs.stSeleter.handleResetItem()
       this.consumption = []
       this.$router.push({ query: {} })
-    },
-    MembershipTime(date, dateString) {
-      this.form.be_member_start_time = dateString[0]
-      this.form.be_member_stop_time = dateString[1]
     },
     toggle() {
       this.expand = !this.expand
