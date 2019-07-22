@@ -9,7 +9,6 @@
             <a-select-option :value="2">已完成</a-select-option>
             <a-select-option :value="3">已取消</a-select-option>
             <a-select-option :value="4">已退款</a-select-option>
-            <a-select-option :value="5">部分退款</a-select-option>
           </a-select>
           <a-range-picker class="mg-l8" @change="onChooseDate" format="YYYY-MM-DD"/>
         </a-col>
