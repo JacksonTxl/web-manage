@@ -13,7 +13,7 @@
           <a-range-picker class="mg-l8" @change="onChooseDate" format="YYYY-MM-DD"/>
         </a-col>
         <a-col :lg="6">
-          <st-input-search placeholder="请输入会员名姓名、手机号进行查询" @search="onSingleSearch('keyword', $event)"/>
+          <st-input-search placeholder="请输入姓名、手机号进行查询" @search="onSingleSearch('keyword', $event)"/>
         </a-col>
       </a-col>
       <a-col :lg="24" class="mg-t16">
