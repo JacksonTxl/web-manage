@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State } from 'rx-state'
+import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { ShopStaffApi, GetListQuery } from '@/api/v1/staff/staff'
 import { UserService } from '@/services/user.service'
@@ -12,6 +12,7 @@ export class ListService implements RouteGuard {
   page$ = new State({})
   department$ = new State({})
   staffEnums$ = this.userService.staffEnums$
+  loading$ = new State({})
   auth$ = this.authService.authMap({
     join: 'brand_shop:staff:staff|join',
     add: 'brand_shop:staff:staff|add',
@@ -22,7 +23,7 @@ export class ListService implements RouteGuard {
     private userService: UserService,
     private authService: AuthService
   ) {}
-
+  @Effect()
   getStaffList(query: GetListQuery) {
     return this.staffApi.getList(query).pipe(
       tap((res: any) => {

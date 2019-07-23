@@ -76,6 +76,7 @@
     <a-row class="mg-t8">
       <st-table
         :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectionChange}"
+        :loading="loading.getStaffList"
         :columns="columns"
         :dataSource="staffList"
         :scroll="{ x: 1500 }"
@@ -159,6 +160,7 @@ export default {
       query: this.routeService.query$,
       staffList: this.service.staffList$,
       page: this.service.page$,
+      loading: this.service.loading$,
       department: this.service.department$,
       staffEnums: this.service.staffEnums$,
       auth: this.service.auth$
