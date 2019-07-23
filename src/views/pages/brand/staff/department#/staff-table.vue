@@ -1,7 +1,7 @@
 <template>
   <st-table
     class="page-staff-table"
-    :loading="loading.getStaffList"
+    :loading="loading"
     :alertSelection="{onReset: onSelectionReset}"
     :rowSelection="{selectedRowKeys, onChange: onSelectionChange}"
     :page="page"
