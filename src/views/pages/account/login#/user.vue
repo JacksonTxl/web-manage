@@ -4,16 +4,29 @@
       <st-form-item >
         <a-input size="large" placeholder="用户名、邮箱登录"  v-decorator="['name']"/>
       </st-form-item>
-      <st-form-item class="mg-b6">
+      <st-form-item>
         <a-input size="large" type="password" placeholder="密码" v-decorator="['password']"/>
       </st-form-item>
-      <st-form-item  :class="loginUser('pass')" class="mg-b32">
-        <div :class="loginUser('pass-content')">
-          <!-- <a href=""></a><a href="javascript:;" @click="onClickFindPassword">忘记密码</a> -->
-        </div>
+      <st-form-item class="mg-b6">
+        <no-captcha/>
+      </st-form-item>
+      <st-form-item  :class="loginUser('pass')" class="mg-b16">
+        <!-- <div :class="loginUser('pass-content')">
+          <a href=""></a><a href="javascript:;" @click="onClickFindPassword">忘记密码</a>
+        </div> -->
       </st-form-item>
       <st-form-item  class="mg-b32">
-        <st-button :class="loginUser('login-button')" :loading='loading.loginAccount' pill size="large" type="primary"  html-type="submit" block>登录</st-button>
+        <st-button
+          :class="loginUser('login-button')"
+          :loading='loading.loginAccount'
+          pill
+          block
+          size="large"
+          type="primary"
+          html-type="submit"
+        >
+          登录
+        </st-button>
       </st-form-item>
     </st-form>
     <!-- 第三方登录 -->
@@ -25,6 +38,7 @@
 
 <script>
 import { LoginService } from '../login.service'
+import NoCaptcha from './no-captcha'
 
 export default {
   bem: {
@@ -62,6 +76,9 @@ export default {
     onClickThirdChange(key) {
       this.$emit('third', key)
     }
+  },
+  components: {
+    NoCaptcha
   }
 }
 </script>
