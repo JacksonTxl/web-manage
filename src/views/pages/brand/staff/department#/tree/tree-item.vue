@@ -149,25 +149,26 @@ export default {
     },
     deleteDepartment(item) {
       console.log('deleteDepartment', this.$refs.treeNode, item)
-      let content = ''
       if (item.count > 0) {
-        content = '删除部门后，该部门下的员工会自动归属父级部门，确认删除？'
+        this.$error({
+          title: '',
+          content: '当前部门下有员工，无法删除'
+        })
       } else {
-        content = '删除部门后,部门无法恢复，确认删除？'
+        this.$confirm({
+          title: '确认要删除',
+          content: '删除部门后,部门无法恢复，确认删除？',
+          onOk: () => {
+            return new Promise((resolve, reject) => {
+              return this.departmentService.delDepartment({ id: this.item.id }).subscribe(() => {
+                setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
+                this.$emit('update-data')
+              })
+            }).catch(() => console.log('Oops errors!'))
+          },
+          onCancel() {}
+        })
       }
-      this.$confirm({
-        title: '确认要删除',
-        content: content,
-        onOk: () => {
-          return new Promise((resolve, reject) => {
-            return this.departmentService.delDepartment({ id: this.item.id }).subscribe(() => {
-              setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
-              this.$emit('update-data')
-            })
-          }).catch(() => console.log('Oops errors!'))
-        },
-        onCancel() {}
-      })
     },
     getTreeNodeOnclick(e) {
       this.isActive = true
