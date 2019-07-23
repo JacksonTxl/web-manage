@@ -461,7 +461,7 @@ export default {
       this.saleMemberCardService.currentPriceAction$.dispatch({
         product_id: this.id,
         product_type: this.info.contract_type,
-        coupon_id: coupon || undefined,
+        coupon_id: coupon ? coupon.id : undefined,
         advance_id: advance || undefined,
         reduce_amount: reduce || undefined,
         specs_id: this.selectedNorm.id
