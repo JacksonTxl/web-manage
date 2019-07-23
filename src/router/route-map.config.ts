@@ -868,5 +868,16 @@ export const routeMapConfig = {
   'brand-marketing-plugin-crowd-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新建人群'
     routeConfig.meta.parentId = 'brand-marketing-plugin-crowd-index'
+  },
+  'brand-setting-msg-sms'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '短信列表'
+    routeConfig.queryOptions = {
+      search: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      send_status: { type: Number },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' }
+    }
   }
 }
