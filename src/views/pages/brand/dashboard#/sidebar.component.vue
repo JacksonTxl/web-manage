@@ -1,7 +1,7 @@
 <template>
   <div :class="sidebar()">
     <div>
-      <a href="http://mp.weixin.qq.com/mp/homepage?__biz=MzI5NjA5MTU0NA==&hid=6&sn=fc366fb9920c736c4804ef7040becdad&scene=18#wechat_redirect"
+      <a href="https://mp.weixin.qq.com/s/bvAniLXAEuswEfehHVJ7bw"
         target="_blank">
         <img width="280px" height="186px" :src="pic" alt="">
       </a>
