@@ -48,8 +48,9 @@ export class NoCaptchaService {
         window.console && console.log(data.sig)
         this.data$.commit(() => ({
           token: nc_token,
-          sessionid: data.csessionid,
-          sig: data.sig
+          session_id: data.csessionid,
+          sig: data.sig,
+          scene: NC_Opt.scene
         }))
       }
     }

@@ -20,16 +20,16 @@
           </a-menu> -->
         </a-dropdown>
       </st-form-item>
-      <st-form-item :class="mobile('captcha')">
+      <st-form-item>
+        <no-captcha id="no-captcha-2"/>
+      </st-form-item>
+      <st-form-item :class="mobile('captcha')" class="mg-b16">
         <a-input size="large" :class="mobile('captcha-input')" placeholder="请输入验证码" v-model="captcha" />
         <span :class="mobile('captcha-button')" @click="onClickCaptcha">{{buttonText}}</span>
       </st-form-item>
-      <st-form-item class="mg-b6">
-        <no-captcha id="no-captcha-2"/>
-      </st-form-item>
-      <st-form-item  :class="mobile('pass')" class="mg-b16">
+      <st-form-item :class="mobile('pass')" class="mg-b16">
         <div :class="mobile('pass-content')">
-          <!-- <a-checkbox>我已阅读并同意<a href="">《用户注册协议》</a></a-checkbox> -->
+          <a-checkbox>我已阅读并同意<a href="./agreement" target="_blank">《用户注册协议》</a></a-checkbox>
         </div>
       </st-form-item>
       <st-form-item  class="mg-b0">

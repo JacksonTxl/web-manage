@@ -7,14 +7,14 @@
       <st-form-item>
         <a-input size="large" type="password" placeholder="密码" v-decorator="['password']"/>
       </st-form-item>
-      <st-form-item class="mg-b6">
+      <st-form-item v-if="isShowNoCaptcha">
         <no-captcha/>
       </st-form-item>
-      <st-form-item  :class="loginUser('pass')" class="mg-b16">
-        <!-- <div :class="loginUser('pass-content')">
-          <a href=""></a><a href="javascript:;" @click="onClickFindPassword">忘记密码</a>
-        </div> -->
-      </st-form-item>
+      <!-- <st-form-item  :class="loginUser('pass')" class="mg-b16">
+        <div :class="loginUser('pass-content')">
+          <a href="javascript:;" @click="onClickFindPassword">忘记密码</a>
+        </div>
+      </st-form-item> -->
       <st-form-item  class="mg-b32">
         <st-button
           :class="loginUser('login-button')"
@@ -59,13 +59,19 @@ export default {
     return {
       form: this.$form.createForm(this),
       thirdLogins: ['alipay', 'wechat', 'weibo', 'qq'],
-      trunPage: false
+      trunPage: false,
+      isShowNoCaptcha: false
     }
   },
   methods: {
     login() {
       this.form.validateFields((err, values) => {
         if (!err) {
+          const isShowNoCaptcha = this.getSafetyStrategy()
+          if (isShowNoCaptcha) {
+            this.isShowNoCaptcha = true
+            return
+          }
           this.$emit('login', values)
         }
       })
@@ -75,6 +81,9 @@ export default {
     },
     onClickThirdChange(key) {
       this.$emit('third', key)
+    },
+    getSafetyStrategy() {
+      return true
     }
   },
   components: {
