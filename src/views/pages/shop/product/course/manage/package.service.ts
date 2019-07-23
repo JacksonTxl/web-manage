@@ -8,6 +8,7 @@ export class PackageService implements RouteGuard {
       locateRouteName: 'shop-product-course-manage-package',
       redirectRouteName: 'shop-product-course-manage-package-list',
       to,
+      from,
       next
     })
   }

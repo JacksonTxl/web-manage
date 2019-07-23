@@ -9,6 +9,7 @@ import { AuthService } from './auth.service'
 import { State, Computed } from 'rx-state/src'
 import { map, pluck, first } from 'rxjs/operators'
 import { NotificationService } from './notification.service'
+import { NProgressService } from './nprogress.service'
 
 interface RedirectConfig {
   /**
@@ -20,11 +21,21 @@ interface RedirectConfig {
    */
   redirectRouteName: string
 
-  redirectRouteQuery?: any
+  /**
+   * 需要跳转路由的query
+   *
+   */
+  redirectRouteQuery?: {
+    [key: string]: any
+  }
   /**
    * to ServiceRoute 对象
    */
   to: ServiceRoute
+  /**
+   * from 路由跳转的from对象
+   */
+  from: ServiceRoute
   /**
    * next 函数
    */
@@ -40,7 +51,8 @@ export class RedirectService {
   constructor(
     private authService: AuthService,
     private router: ServiceRouter,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private nprogress: NProgressService
   ) {}
   getAuthTabs$(routeName: string) {
     return new Computed(
@@ -62,36 +74,50 @@ export class RedirectService {
    * 包括 菜单跳转 tab跳转等
    */
   redirect(redirectConfig: RedirectConfig) {
-    const { redirectRouteName, locateRouteName, to, next, redirectRouteQuery } = redirectConfig
+    const {
+      redirectRouteName,
+      locateRouteName,
+      to,
+      from,
+      next,
+      redirectRouteQuery
+    } = redirectConfig
     const resolveRoute = this.router.resolve({
-      name: redirectRouteName
+      name: redirectRouteName,
+      query: redirectRouteQuery
     })
     // 跳转路径为空
     if (!redirectRouteName) {
-      this.notification.error({
-        title: 'REDIRECT_ERROR',
-        content: `未找到匹配路由 ${JSON.stringify(redirectRouteName)}`
+      this.nprogress.done()
+      return next({
+        name: 'error',
+        query: {
+          name: 'WRONG_REDIRECT_ROUTE_NAME',
+          message: `页面不存在 ${JSON.stringify(redirectRouteName)}`
+        }
       })
-      return next()
     }
+    // 目标路由为父亲路由时才跳转
     if (to.name === locateRouteName) {
-      // 检测路由表有该路由
+      // 检测路由表是否有匹配路由
       if (resolveRoute.route.matched.length) {
+        const targetFullpath = resolveRoute.href
+        // 来源路由和目标路径相同 不需要再跳转了 直接中断导航 并中断进度显示即可
+        if (from.fullPath === targetFullpath) {
+          next(false)
+          this.nprogress.done()
+        } else {
+          next(targetFullpath)
+        }
+      } else {
+        this.nprogress.done()
         next({
-          name: redirectRouteName,
+          name: 'error',
           query: {
-            ...redirectRouteQuery || {},
-            _f: Math.random()
-              .toString(16)
-              .slice(3)
+            name: 'REDIRECT_MATCH_ZERO',
+            message: `未找到匹配路由 ${JSON.stringify(redirectRouteName)}`
           }
         })
-      } else {
-        this.notification.error({
-          title: 'REDIRECT_ERROR',
-          content: `未找到匹配路由 ${JSON.stringify(redirectRouteName)}`
-        })
-        next()
       }
     } else {
       next()
@@ -113,7 +139,7 @@ export class RedirectService {
           if (!meta) {
             return res.concat([])
           }
-          // TODO 暂时使用常量返回true
+          // TODO: 暂时使用常量返回true
           if (this.authService.tabCan(meta.auth)) {
             if (!meta.title) {
               console.error(
@@ -144,17 +170,20 @@ export class RedirectService {
     const myAuthedTabs = this.authedTabMap$.snapshot()[to.name]
 
     if (!myAuthedTabs.length) {
-      this.notification.error({
-        title: 'REDIRECT_ERROR',
-        content: `路由下没有tab可跳转 ${to.name}`
+      return next({
+        name: 'error',
+        query: {
+          name: 'NO_TAB_CAN_REDIRECT',
+          content: `路由下没有tab可跳转 ${to.name}`
+        }
       })
-      return next()
     }
 
     const firstRouteName = myAuthedTabs[0] ? myAuthedTabs[0].route.name : ''
     this.redirect({
       locateRouteName: to.name,
       redirectRouteName: firstRouteName,
+      from,
       to,
       next
     })

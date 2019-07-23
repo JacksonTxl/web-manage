@@ -17,20 +17,6 @@ const routes: any[] = [
     redirect: '/index'
   },
   {
-    name: 'brand',
-    path: '/brand',
-    redirect: {
-      name: 'brand-index'
-    }
-  },
-  {
-    name: 'shop',
-    path: '/shop',
-    redirect: {
-      name: 'shop-index'
-    }
-  },
-  {
     path: '/brand/product/card/deposit-card/shop-sale-list',
     redirect: '/brand/product/card/deposit-card/shop-sale-list/brand'
   },
@@ -62,7 +48,12 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     }
 
     // guards 配置
-    if (route.name === 'account-login' || route.name === '404' || route.name.startsWith('test')) {
+    if (
+      route.name === 'account-login' ||
+      route.name === '404' ||
+      route.name.startsWith('test') ||
+      route.name.startsWith('styleguide')
+    ) {
       prependGuards(route, [
         NProgressService,
         HotReleaseService,
