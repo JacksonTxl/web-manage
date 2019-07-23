@@ -187,13 +187,13 @@ export class StudioComponentService {
         state.member = {
           member: [
             { name: '消费用户', value: data.member.consume_num },
-            { name: '私教消课', value: data.member.personal_course_checkin_num },
-            { name: '购买私教', value: data.member.buy_person_course_num }
+            { name: '购买私教', value: data.member.buy_person_course_num },
+            { name: '私教消课', value: data.member.personal_course_checkin_num }
           ],
           marketing: [
             { name: '消费用户', value: data.marketing.consume_num },
-            { name: '私教消课', value: data.marketing.personal_course_checkin_num },
-            { name: '购买私教', value: data.marketing.buy_person_course_num }
+            { name: '购买私教', value: data.marketing.buy_person_course_num },
+            { name: '私教消课', value: data.marketing.personal_course_checkin_num }
           ]
         }
       })
