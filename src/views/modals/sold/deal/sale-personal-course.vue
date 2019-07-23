@@ -564,7 +564,7 @@ export default {
         product_type: this.info.contract_type,
         product_num: this.form.getFieldValue('buyNum'),
         specs_id: this.form.getFieldValue('coach_level'),
-        coupon_id: coupon,
+        coupon_id: coupon ? coupon.id : undefined,
         advance_id: advanceId,
         reduce_amount: reduce,
         special_amount: +special_amount || 0

@@ -385,7 +385,7 @@ export default {
       this.saleCourseService.currentPriceAction$.dispatch({
         product_id: this.id,
         product_type: this.info.contract_type,
-        coupon_id: coupon || undefined,
+        coupon_id: coupon ? coupon.id : undefined,
         advance_id: advance || undefined,
         reduce_amount: reduce || undefined
       })
