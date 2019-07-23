@@ -1,5 +1,26 @@
 <template>
   <st-panel app :class="basic()" initial>
+    <div :class="basic('left')">
+      <h5-container>
+        <template v-slot:title>我的优惠券</template>
+        <div :class="basic('left-coupon')">
+          <div :class="basic('left-coupon-top')">
+            <div :class="basic('left-coupon-top-left')">
+              <span :class="basic('left-coupon-top-left-number')">{{form.getFieldValue('price')}}</span>元<br/>
+              {{form.getFieldValue('use_type')===1 ? '无门槛使用' : ''}}
+              {{form.getFieldValue('use_type')===2 ? `满${form.getFieldValue('full_price')||''}元使用` : ''}}
+            </div>
+            <div :class="basic('left-coupon-top-right')">
+              有效期：{{getValidDay(form.getFieldValue('valid_days'))}}<br/>
+              可用类目：{{getRange().join('、')}}
+            </div>
+          </div>
+          <div :class="basic('left-coupon-bottom')">
+            可用门店：{{shopNames}}
+          </div>
+        </div>
+      </h5-container>
+    </div>
     <div :class="basic('body')">
       <div>
         <st-form :form="form" labelWidth="118px">
@@ -142,6 +163,7 @@ import moment from 'moment'
 import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
 import SelectShop from '@/views/fragments/shop/select-shop'
+import H5Container from '@/views/biz-components/h5/h5-container'
 export default {
   name: 'BrandMarketingPluginCouponAdd',
   serviceInject() {
@@ -179,8 +201,8 @@ export default {
       // 已经选择的类目ids
       rangeIds: [],
       // 已经选择的门店ids
-      shopIds: []
-
+      shopIds: [],
+      shopNames: ''
     }
   },
   created() {
@@ -195,6 +217,19 @@ export default {
     }
   },
   methods: {
+    getValidDay(days) {
+      return moment().add(days - 1, 'd').format('YYYY年MM月DD日 23:59')
+    },
+    getRange() {
+      if (this.isEditMode) {
+        return this.rangeIds
+      } else {
+        let ranges = this.rangeIds.map((item) => {
+          return this.couponEnums.product_range.value[item]
+        })
+        return ranges
+      }
+    },
     changeProductRange(event) {
       this.rangeIds = event
     },
@@ -387,13 +422,20 @@ export default {
 
   },
   watch: {
-
+    shopIds(val) {
+      if (val && val.length) {
+        this.addService.getShopBasic({ shop_ids: val }).subscribe(res => {
+          this.shopNames = res.map(({ shop_name }) => shop_name).join('/')
+        })
+      }
+    }
   },
   computed: {
 
   },
   components: {
-    SelectShop
+    SelectShop,
+    H5Container
   }
 }
 </script>
