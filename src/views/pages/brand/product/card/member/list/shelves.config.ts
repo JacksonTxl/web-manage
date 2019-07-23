@@ -28,7 +28,7 @@ export const columns = () => {
       scopedSlots: { customRender: 'time_gradient' }
     },
     {
-      title: '支持入场范围',
+      title: '支持入场门店',
       dataIndex: 'admission_range',
       scopedSlots: { customRender: 'admission_range' }
     },
