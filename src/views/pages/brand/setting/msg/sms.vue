@@ -1,17 +1,25 @@
 <template>
   <div class="sms">
-    <div class="sms__head">
-      <st-input-search @search="onSearchKeyWords" v-model="query.search" placeholder="请输入姓名或手机号查找"></st-input-search>
+    <div slot="title">
+      <st-input-search
+        @search="onSearchKeyWords"
+        v-model="query.search"
+        class="mg-b24"
+        style="width: 290px;"
+        placeholder="请输入姓名或手机号查找"
+      ></st-input-search>
+    </div>
+    <div slot="prepend" class="mg-b24">
       <st-search-panel>
-        <div >
+        <div :class="bSelect()">
           <span style="width:90px;">通知对象:</span>
           <st-search-radio v-model="query.send_status" :list="orderStatusList" />
         </div>
-        <div >
+        <div :class="bSelect()">
           <span style="width:90px;">发送状态：</span>
           <st-search-radio v-model="query.send_status" :list="payStatusList" />
         </div>
-        <div >
+        <div :class="bSelect()">
           <span style="width:90px;">发送时间：</span>
           <a-date-picker
             format="YYYY-MM-DD"
@@ -34,38 +42,30 @@
         </div>
       </st-search-panel>
     </div>
-    <st-form-table class="mg-t8">
-      <thead>
-        <tr>
-          <th>发送时间</th>
-          <th>状态</th>
-          <th>通知对象</th>
-          <th>短信模板</th>
-          <th>姓名</th>
-          <th>手机号</th>
-          <th>内容</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in resData.list" :key="index">
-          <td>{{item.created_time}}</td>
-          <td>{{item.send_status}}</td>
-          <td>通知对象</td>
-          <td>短信模版</td>
-          <td>{{item.updated_time}}</td>
-          <td>{{item.member_name}}</td>
-          <td>{{item.mobile}}</td>
-          <td>{{item.content}}</td>
-        </tr>
-      </tbody>
-    </st-form-table>
+
+    <st-table
+      :page="page"
+      @change="onTableChange"
+      :loading="loading.getList"
+      :columns="columns"
+      :dataSource="resData.list"
+      rowKey="id"
+    ></st-table>
   </div>
 </template>
 <script>
 import { RouteService } from '@/services/route.service'
-
 import { SmsService } from './sms.service'
+import { columns } from './sms.config.ts'
+import tableMixin from '@/mixins/table.mixin'
+const pageName = 'sms'
+
 export default {
+  mixins: [tableMixin],
+  bem: {
+    bPage: pageName,
+    bSelect: `${pageName}-select`
+  },
   serviceInject() {
     return {
       routeService: RouteService,
@@ -75,8 +75,13 @@ export default {
   rxState() {
     return {
       query: this.routeService.query$,
-      authTabs: this.SmsService.authTabs$
+      authTabs: this.SmsService.authTabs$,
+      loading: this.SmsService.loading$,
+      page: this.SmsService.page$
     }
+  },
+  computed: {
+    columns
   },
   data() {
     return {
@@ -86,7 +91,9 @@ export default {
             created_time: '12212'
           }
         ]
-      }
+      },
+      orderStatusList: [],
+      payStatusList: []
     }
   },
   methods: {
@@ -98,7 +105,9 @@ export default {
         this.query.search,
         { keyword: true }
       )
-    }
+    },
+    startdatePickerChange() {},
+    enddatePickerChange() {}
   }
 }
 </script>

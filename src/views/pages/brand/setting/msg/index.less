@@ -1,0 +1,34 @@
+.index {
+  &-head {
+    padding: 0 0 24px 0;
+
+    &__item {
+      display: flex;
+      justify-content: space-between;
+
+      &-block {
+        display: flex;
+        justify-content: space-between;
+
+        &-column {
+          display: flex;
+          flex-direction: column;
+          .w(80px);
+          .mg-r(48px);
+
+          &-text {
+            .c(#7F93A3);
+          }
+
+          &-num {
+            margin: 12px 0;
+            .lh(36px);
+            .c(@title);
+            .fz(28px);
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+}
