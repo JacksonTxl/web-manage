@@ -14,16 +14,20 @@
           <div slot="reserve_type" slot-scope="text,record">
             {{record.reserve_type.name}}
           </div>
-          <div slot="is_checkin" slot-scope="text">
+          <div slot="is_checkin" slot-scope="text,record">
             <div>
-              <span :class="text|isCheckin" v-if="text === '未签到'"></span>
+              <span :class="record|isCheckin" v-if="record.mina_checkin_status === 0"></span>
               {{text}}
             </div>
           </div>
-          <div slot="action" slot-scope="text,record" href="javascript:;">
+          <div slot="action" slot-scope="text,record">
             <st-table-actions>
-              <a href="javascript:;" v-if="record.auth['shop:reserve:personal_course_reserve|del']" @click="reserveStatus(record)">取消预约</a>
-              <a href="javascript:;" v-if="record.auth['shop:reserve:personal_course_reserve|checkin']" @click="isCheckin(record)">{{record.is_checkin}}</a>
+              <a v-if="record.auth['shop:reserve:personal_course_reserve|del'] && record.reserve_type.id === 1" @click="reserveStatus(record)">取消预约</a>
+              <a v-if="record.auth['shop:reserve:personal_course_reserve|checkin'] && record.reserve_type.id === 1" @click="isCheckin(record)">{{record.is_checkin}}</a>
+              <a v-if="record.auth['shop:reserve:personal_team_course_reserve|del'] && record.reserve_type.id === 2" @click="reserveStatus(record)">取消预约</a>
+              <a v-if="record.auth['shop:reserve:personal_team_course_reserve|checkin'] && record.reserve_type.id === 2" @click="isCheckin(record)">{{record.is_checkin}}</a>
+              <a v-if="record.auth['shop:reserve:team_course_reserve|del'] && record.reserve_type.id === 3" @click="reserveStatus(record)">取消预约</a>
+              <a v-if="record.auth['shop:reserve:team_course_reserve|checkin'] && record.reserve_type.id === 3" @click="isCheckin(record)">{{record.is_checkin}}</a>
             </st-table-actions>
           </div>
         </st-table>
@@ -82,9 +86,9 @@ export default {
   },
   filters: {
     isCheckin(value) {
-      if (value === '未签到') {
+      if (value.mina_checkin_status === 0) {
         return 'member-info-sold__is_checkin_no'
-      } else if (value === '已签到') {
+      } else if (value.mina_checkin_status === 1) {
         return 'member-info-sold__is_checkin_yes'
       } else {
         return ''
@@ -123,7 +127,6 @@ export default {
             reserve_type: record.reserve_type.id,
             reserve_id: record.id
           }
-          console.log(record, getdata)
           self.soldService.getMemberCancel(getdata).subscribe(res => {
             self.soldService.init(self.$route.query.id, self.form).subscribe()
           })
@@ -153,11 +156,6 @@ export default {
     },
     handleChange(value) {
       console.log(`selected ${value}`)
-    },
-    onTableChange(page, filters, sorter) {
-      console.log(pagination, filters, sorter)
-      this.form.page = page.current_page
-      this.form.size = page.size
     }
   },
   watch: {
@@ -167,16 +165,8 @@ export default {
         this.soldService.init(self.$route.query.id, self.form).subscribe()
       },
       deep: true
-    },
-    soldListInfo: {
-      handler() {
-        let self = this
-        self.pagination.pageSize = self.soldListInfo.page.current_page
-        self.pagination.total = self.soldListInfo.page.total_counts
-        self.pagination.pageSize = self.soldListInfo.page.size
-      },
-      deep: true
     }
+
   }
 }
 </script>
