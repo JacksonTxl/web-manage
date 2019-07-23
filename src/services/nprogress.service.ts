@@ -26,4 +26,7 @@ export class NProgressService {
   afterEach(to: ServiceRoute, from: ServiceRoute) {
     nProgress.done()
   }
+  done() {
+    nProgress.done()
+  }
 }

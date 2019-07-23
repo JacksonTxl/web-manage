@@ -3,10 +3,19 @@
     <div id="app">
       <component :is="layoutComponent"></component>
       <modal-router-view></modal-router-view>
-      <div class="git is-git" @click="getCommitHead" :style='gitStyle'>
+      <div class="git is-git" @click="getCommitHead" :style="gitStyle">
         <span class="git__content">{{tip}}</span>
       </div>
-      <div v-if='appConfig.IS_DEV' class="api-env">API环境:{{appConfig.LOCAL_API_ENV}}</div>
+      <!-- 本地开发下 -->
+      <div v-if="appConfig.IS_DEV" class="app-env">
+        <span>API:{{appConfig.LOCAL_API_ENV}} 页面:{{appConfig.PAGE_ENV}}</span>
+      </div>
+
+      <!-- 非生产域名下 -->
+      <div v-if="appConfig.IS_PROD && !appConfig.HOST_IS_PROD" class="app-env">
+        分支:{{appConfig.GIT_BRANCH}}
+        <a href="/_branch">切换</a>
+      </div>
     </div>
   </a-locale-provider>
 </template>
@@ -50,7 +59,6 @@ export default {
       return layoutMap[this.layout || 'loading']
     },
     gitStyle() {
-      console.log(this.count)
       return {
         opacity: this.count > 2 ? 1 : 0
       }

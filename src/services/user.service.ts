@@ -76,7 +76,7 @@ export class UserService {
   // 禁用的 tooltips
   invalidTooltips$ = new State([])
 
-  // TODO 枚举 后面要删
+  // TODO: 枚举 后面要删
   staffEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('staff')))
   accountEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('account')))
   depositCardEnums$ = new Computed<ModuleEnums>(

@@ -1,17 +1,17 @@
 <template>
   <st-panel app>
-    <a-alert :message='title' type='error' :description="content"></a-alert>
+    <a-alert v-if="name" :message="name" type="error" :description="message"></a-alert>
   </st-panel>
 </template>
 
 <script>
 export default {
   computed: {
-    title() {
-      return this.$route.query.title
+    name() {
+      return this.$route.query.name
     },
-    content() {
-      return this.$route.query.content
+    message() {
+      return this.$route.query.message
     }
   }
 }

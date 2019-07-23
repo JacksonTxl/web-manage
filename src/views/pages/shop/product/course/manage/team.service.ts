@@ -8,6 +8,7 @@ export class TeamService implements RouteGuard {
       locateRouteName: 'shop-product-course-manage-team',
       redirectRouteName: 'shop-product-course-manage-team-list',
       to,
+      from,
       next
     })
   }

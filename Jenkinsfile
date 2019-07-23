@@ -8,40 +8,45 @@ pipeline {
         sh 'tree -du -L 4'
       }
     }
-    stage('Build') {
+<<<<<<< HEAD
+    stage('to=saas-dev') {
+=======
+    stage('branch-test') {
+>>>>>>> test
+      when {
+        expression { BRANCH_NAME ==~ /test/}
+      }
       steps {
         sh 'make build'
-      }
-    }
-    stage('Info-Builded') {
-      steps {
-        sh 'tree -du -L 3 -I node_modules'
-      }
-    }
-    stage('Archive') {
-      steps {
-        archiveArtifacts artifacts: 'dist/**/*.*', fingerprint: true
-      }
-    }
-    stage('to=saas-dev') {
-      when {
-        expression { BRANCH_NAME ==~ /(feat|dev).*/}
-      }
-      steps {
-        sh 'make rsync to=saas-dev'
-        sh 'make release to=saas-dev'
-        echo "https://saas.dev.styd.cn"
-      }
-    }
-    stage('to=saas-test') {
-      when {
-        expression { BRANCH_NAME ==~ /(test).*/}
-      }
-      steps {
+<<<<<<< HEAD
+=======
+
         sh 'make rsync to=saas-test'
         sh 'make release to=saas-test'
+
+>>>>>>> test
         sh 'make rsync to=saas-dev'
         sh 'make release to=saas-dev'
+      }
+    }
+    stage('branch-other') {
+      when {
+        expression { BRANCH_NAME ==~ /(feat|fix|dev).*/}
+      }
+      steps {
+        sh 'make build'
+<<<<<<< HEAD
+        sh 'make rsync to=saas-test'
+        sh 'make release to=saas-test'
+=======
+        sh 'make rsync-branch to=saas-test'
+        sh 'make release-branch to=saas-test'
+
+>>>>>>> test
+        sh 'make rsync to=saas-dev'
+        sh 'make rsync-branch to=saas-dev'
+        sh 'make release to=saas-dev'
+        sh 'make release-branch to=saas-dev'
         echo "https://saas.test.styd.cn"
       }
     }
