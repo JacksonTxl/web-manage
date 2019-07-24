@@ -1,5 +1,5 @@
 <template>
-  <div class="pay">
+  <div :class="bPage()">
     <div slot="title">
       <st-input-search
         @search="onSearchKeyWords"
@@ -58,7 +58,7 @@ import { RouteService } from '@/services/route.service'
 import { PayService } from './pay.service'
 import { columns } from './pay.config.ts'
 import tableMixin from '@/mixins/table.mixin'
-const pageName = 'pay'
+const pageName = 'page-setting-sms-pay'
 
 export default {
   mixins: [tableMixin],

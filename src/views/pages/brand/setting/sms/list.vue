@@ -1,22 +1,20 @@
 <template>
   <div :class="bPage()">
-    <div :class="bHead()">
-      <div :class="bHead('item')">
-        <div :class="bHead('item-block')">
-          <div :class="bHead('item-block-column')">
-            <span :class="bHead('item-block-column-text')">剩余短信(条)</span>
-            <span :class="bHead('item-block-column-num')">1212</span>
-            <st-button type="primary">去充值</st-button>
-          </div>
-          <div :class="bHead('item-block-column')">
-            <span :class="bHead('item-block-column-text')">已发送(条)</span>
-            <span :class="bHead('item-block-column-num')">1212</span>
-          </div>
+    <div :class="bCount()">
+      <div :class="bCount('preview')">
+        <div :class="bCount('specify')">
+          <span :class="bCount('text')">剩余短信(条)</span>
+          <span :class="bCount('num')">1212</span>
+          <st-button type="primary">去充值</st-button>
         </div>
-        <div :class="bHead('item-block')">
-          <span>短信签名</span>
-          <span class="color-primary mg-l8">去设置</span>
+        <div :class="bCount('specify')">
+          <span :class="bCount('text')">已发送(条)</span>
+          <span :class="bCount('num')">1212</span>
         </div>
+      </div>
+      <div :class="bCount('setting')">
+        <span>短信签名</span>
+        <span class="color-primary mg-l8">去设置</span>
       </div>
     </div>
     <st-table
@@ -35,13 +33,13 @@ import { ListService } from './list.service'
 import { columns } from './list.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 
-const pageName = 'list'
+const pageName = 'page-setting-sms-list'
 export default {
   mixins: [tableMixin],
-  name: 'Index',
+  name: 'SmsList',
   bem: {
     bPage: pageName,
-    bHead: `${pageName}-head`
+    bCount: `${pageName}-count`
   },
   serviceInject() {
     return {

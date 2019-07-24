@@ -2,7 +2,7 @@
   <div :class="bPage()">
     <div :class="bItem()">
       <st-t3 class="mg-b16">通知会员信息</st-t3>
-      <table :class="bItem('table')">
+      <st-form-table :class="bItem('table')">
         <thead :class="bItem('table-head')">
           <tr :class="bItem('table-tr')">
             <th class="th" v-for="(item,index) in ths" :key="index">{{item.title}}</th>
@@ -12,14 +12,14 @@
           <tr :class="bItem('table-tr')">
             <td class="td">预约成功通知</td>
             <td colspan="4">
-              <item>
+              <NoticeItem>
                 <span slot="rule">预约成功后发送</span>
                 <span slot="role">会员</span>
-              </item>
+              </NoticeItem>
             </td>
           </tr>
         </tbody>
-      </table>
+      </st-form-table>
     </div>
     <div :class="bItem()" class="mg-t24">
       <st-t3 class="mg-b16">通知门店信息</st-t3>
@@ -33,10 +33,10 @@
           <tr :class="bItem('table-tr')">
             <td class="td">会员预约通知</td>
             <td colspan="4">
-              <item>
+              <NoticeItem>
                 <span slot="rule">会员预约成功后即时发送</span>
                 <span slot="role">门店</span>
-              </item>
+              </NoticeItem>
             </td>
           </tr>
         </tbody>
@@ -49,8 +49,8 @@ import { RouteService } from '@/services/route.service'
 
 import { NoticeService } from './notice.service'
 import { ths } from './notice.config'
-import item from './notice#/item'
-const pageName = 'notice'
+import NoticeItem from './notice#/item'
+const pageName = 'page-setting-sms-notice'
 
 export default {
   bem: {
@@ -78,7 +78,7 @@ export default {
     onSearch() {}
   },
   components: {
-    item
+    NoticeItem
   }
 }
 </script>
