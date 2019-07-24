@@ -1,28 +1,24 @@
 <template>
   <div class="date-container">
-    <a-button
+    <st-button
       class="mg-r8"
-      style="width: 32px; display:inline-flex;align-items: center; justify-content: center;"
       @click="onClickPre"
     >
       <a-icon type="left"/>
-    </a-button>
+    </st-button>
 
-    <span class="text-cont">{{rangeTime}}</span>
+    <span class="text-content">{{rangeTime}}</span>
 
-    <a-button
+    <st-button
     class="mg-r8  mg-l8"
-    style="width: 32px; display:inline-flex;align-items: center; justify-content: center;"
+
     @click="onClickNext">
       <a-icon type="right"/>
-    </a-button>
-    <a-button style="width: 32px; display:inline-flex;align-items: center; justify-content: center;" @click="onClickToday">今</a-button>
+    </st-button>
+    <a-button @click="onClickToday">今</a-button>
   </div>
 </template>
 <script>
-const ADD_WEEK_DAY = 24 * 3600 * 7 * 1000
-const MINUS_WEEK_DAY = 24 * 3600 * 7 * 1000
-const WEEK_DAY_INIT = 24 * 3600 * 6 * 1000
 export default {
   name: 'date',
   data(vm) {
@@ -33,7 +29,7 @@ export default {
   props: {
     start: {
       type: String,
-      default: moment().format('YYYY-MM-DD').valueOf()
+      default: moment().format('YYYY-MM-DD')
     },
     end: {
       type: String,
@@ -47,21 +43,21 @@ export default {
   },
   computed: {
     endTime() {
-      return moment(moment(this.startTime).valueOf() + WEEK_DAY_INIT).format('YYYY-MM-DD').valueOf()
+      return moment(this.startTime).add(6, 'days').format('YYYY-MM-DD')
     },
     rangeTime() {
-      let start = moment(this.startTime).format('LL').valueOf()
-      let end = moment(this.endTime).format('LL').valueOf()
+      let start = moment(this.startTime).format('LL')
+      let end = moment(this.endTime).format('LL')
       return `${start} ~ ${end}`
     }
   },
   methods: {
     onClickPre() {
-      this.startTime = moment(moment(this.startTime).valueOf() - MINUS_WEEK_DAY).format('YYYY-MM-DD').valueOf()
+      this.startTime = moment(this.startTime).subtract(7, 'days').format('YYYY-MM-DD')
       this.$emit('pre', { start_time: this.startTime, end_time: this.endTime })
     },
     onClickNext() {
-      this.startTime = moment(moment(this.startTime).valueOf() + ADD_WEEK_DAY).format('YYYY-MM-DD').valueOf()
+      this.startTime = moment(this.startTime).add(7, 'days').format('YYYY-MM-DD')
       this.$emit('next', { start_time: this.startTime, end_time: this.endTime })
     },
     onClickToday() {

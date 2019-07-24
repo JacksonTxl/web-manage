@@ -1,6 +1,6 @@
 .schedule-calendar{
   position: relative;
-  .sc-toolbar{
+  &__toolbar{
     width:100%;
     height:64px;
     background:rgba(255,255,255,1);
@@ -12,30 +12,25 @@
     top: 0;
     left: 0;
   }
-  .sc-content{
+  &__content{
     padding: 0 16px;
     background: #fff;
     display: flex;
     .pd-t(64px);
-    .time-collection{
-      opacity: 0;
-      .pd-t(40px);
-      flex: none;
-      width: 74px;
-      .time{
-        text-align: right;
-        .pd-r(16px);
-        color: #9BACB9;
-        border-top: 1px solid #fff;
-        margin: 0 0 -1px -1px;
-        .h(82px);
+    .content{
+      &__time-collection{
+        opacity: 0;
+        .pd-t(40px);
+        flex: none;
+        width: 74px;
+      }
+      &__day-group{
+        flex: 1
       }
     }
+    
     .item.active {
       background: #f6f7fa;
-    }
-    .date-group{
-      flex: 1
     }
     .con-item {
       position: absolute;
@@ -157,7 +152,7 @@
       .item-group-day .con-item{
         width: 13.8%
       }
-    .date-group{
+    .content__day-group{
       display: flex;
       .time-group{
         width: 100%;
@@ -192,7 +187,7 @@
         margin-left: 60%;
       }
     }
-    .item{
+    .day{
       display: flex;
       position: relative;
       flex: 1;
