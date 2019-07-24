@@ -3,7 +3,7 @@
     <a-row>
       <a-col :lg="24">
         <a-col :lg="18">
-          <a-select style="width: 160px;" :defaultValue="-1" placeholder="请选择订单状态" @change="onSingleSearch('schedule_status', $event)">
+          <a-select style="width: 160px;" :defaultValue="-1" placeholder="请选择订单状态" @change="onSingleSearch('order_status', $event)">
             <a-select-option :value="-1">全部订单状态</a-select-option>
             <a-select-option :value="1">未完成</a-select-option>
             <a-select-option :value="2">已完成</a-select-option>
