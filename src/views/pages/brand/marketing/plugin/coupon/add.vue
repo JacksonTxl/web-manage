@@ -250,16 +250,22 @@ export default {
     },
     // 满多少使用
     full_price_validator(rule, value, callback) {
-      console.log('full_price_validator')
+      let use_type = this.form.getFieldValue('use_type')
       let couponPirce = +this.form.getFieldValue('price') || 0
+      console.log('full_price_validator', typeof use_type, couponPirce)
       let fullPirce = +value
-      if (!fullPirce && this.form.getFieldValue('use_type') === '2') {
-        // eslint-disable-next-line
-        callback('请填写使用条件')
-      } else if (this.form.getFieldValue('use_type') === '2' && (couponPirce >= fullPirce)) {
-        // eslint-disable-next-line
-        callback('满减门槛不能低于优惠券面额')
+      if (use_type === 2) {
+        if (!fullPirce) {
+          // 满减券,如未填写优惠券价格
+          // eslint-disable-next-line
+          callback('请填写使用条件')
+        } else if (couponPirce >= fullPirce) {
+          // 优惠券金额大于满减门槛
+          // eslint-disable-next-line
+          callback('满减门槛不能低于优惠券面额')
+        }
       } else {
+        // 无门槛
         // eslint-disable-next-line
         callback()
       }
