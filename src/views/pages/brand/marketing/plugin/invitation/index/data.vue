@@ -61,7 +61,7 @@
             @change="onInviteePageChange"
             :columns="columnsUser"
             :dataSource="stInviteeList"
-            :pagination="{current:inviteePage.page,total:inviteePage.total_counts,pageSize:inviteePage.size}"
+            :pagination="{current:inviteePage.current_page,total:inviteePage.total_counts,pageSize:inviteePage.size}"
             rowKey="key"
             />
         </div>
@@ -152,6 +152,8 @@ export default {
       }).subscribe()
     },
     onInviteePageChange(data) {
+      console.log(data)
+      console.log(this.dataService)
       this.onClear()
       this.dataService.getInviteInvitee({
         page: data.current,

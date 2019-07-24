@@ -1,17 +1,17 @@
 <template>
-  <st-modal
-    :title="title"
-    v-model="show"
-    width="400px"
-    :footer="null"
-  >
+  <st-modal :title="title" v-model="show" width="400px" :footer="null">
     <div :class="basic()">
       <p>{{message}}</p>
-      <img :src="url" :class="activeClass"/>
+      <img :src="url" :class="activeClass" />
       <div>
-        <st-button block pill type="primary" icon="download" size="large" @click="downloadPoster">
-          {{button}}
-        </st-button>
+        <st-button
+          block
+          pill
+          type="primary"
+          icon="download"
+          size="large"
+          @click="downloadPoster"
+        >{{button}}</st-button>
       </div>
     </div>
   </st-modal>
@@ -19,6 +19,7 @@
 <script>
 import { PosterService } from './poster.service'
 import { AppConfig } from '@/constants/config'
+import { OssService } from '@/services/oss.service'
 export default {
   name: 'BrandMarketingPoster',
   bem: {
@@ -27,7 +28,8 @@ export default {
   serviceInject() {
     return {
       posterService: PosterService,
-      appConfig: AppConfig
+      appConfig: AppConfig,
+      oss: OssService
     }
   },
   rxState() {
@@ -53,7 +55,8 @@ export default {
       show: false,
       url: '',
       title: '分享海报',
-      message: '复制和下载二维码，推广至微信朋友圈、微博等，或打印活动海报，张贴至门店，吸引顾客参与活动。',
+      message:
+        '复制和下载二维码，推广至微信朋友圈、微博等，或打印活动海报，张贴至门店，吸引顾客参与活动。',
       button: '下载海报',
       activeClass: 'poster'
     }
@@ -61,12 +64,13 @@ export default {
   created() {
     if (this.type === 1) {
       this.posterService.serviceInit(this.id).subscribe(() => {
-        this.url = `${this.appConfig.SHS_API_ENV}/saas/poster?token=${this.token}&brand_logo=${this.info.brand_logo}&brand_name=${this.info.brand_name}&price=${this.info.price}&qrcode_url=${this.info.qrcode_url}&download=1`
+        this.uploadImage()
       })
     } else if (this.type === 2) {
       this.activeClass = 'qrcode'
       this.title = '小程序码'
-      this.message = '将小程序码贴在宣城刊物、店内等任何地方，用户用手机扫一扫后，即可参与活动转化下单。'
+      this.message =
+        '将小程序码贴在宣城刊物、店内等任何地方，用户用手机扫一扫后，即可参与活动转化下单。'
       this.button = '下载小程序码'
       this.posterService.getQrcode().subscribe(res => {
         this.url = res.qrcode
@@ -98,6 +102,36 @@ export default {
       //   a.dispatchEvent(event); // 触发a的单击事件
       // }
       // image.src = this.url
+    },
+    uploadImage() {
+      this.oss
+        .put({
+          business: 'image',
+          isPrivate: false,
+          file: this.convertBase64UrlToBlob(this.info.qrcode_url),
+          uploadProgress: e => {
+            console.log(parseInt((e.loaded / e.total) * 100))
+          }
+        })
+        .subscribe({
+          next: val => {
+            this.url = `${this.appConfig.SHS_API_ENV}/saas/poster?token=${this.token}&brand_logo=${this.info.brand_logo}&brand_name=${this.info.brand_name}&price=${this.info.price}&qrcode_url=${val.host}/${val.fileKey}&download=1`
+          },
+          error: val => {
+
+          },
+          complete: () => {
+          }
+        })
+    },
+    convertBase64UrlToBlob(urlData) {
+      const bytes = window.atob(urlData.split(',')[1])
+      const ab = new ArrayBuffer(bytes.length)
+      const ia = new Uint8Array(ab)
+      for (let i = 0; i < bytes.length; i++) {
+        ia[i] = bytes.charCodeAt(i)
+      }
+      return new Blob([ab], { type: 'image/png' })
     }
   }
 }
