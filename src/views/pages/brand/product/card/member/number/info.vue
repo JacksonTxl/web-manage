@@ -5,7 +5,7 @@
         <h5-container>
           <template v-slot:title>购卡</template>
           <template v-slot:default>
-            <h5-component :data="cardInfo" :cardType="1"></h5-component>
+            <member-card :data="cardInfo" :cardType="1"></member-card>
           </template>
         </h5-container>
       </div>
@@ -138,7 +138,7 @@
 </template>
 <script>
 import { InfoService } from './info.service'
-import H5Component from '../period/component/h5.component'
+import MemberCard from '@/views/biz-components/h5/pages/member-card'
 import H5Container from '@/views/biz-components/h5/h5-container'
 export default {
   name: 'BrandNumberCardInfo',
@@ -146,7 +146,7 @@ export default {
     item: 'brand-card'
   },
   components: {
-    H5Component,
+    MemberCard,
     H5Container
   },
   serviceInject() {

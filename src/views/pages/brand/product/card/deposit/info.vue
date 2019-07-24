@@ -5,7 +5,7 @@
         <h5-container>
           <template v-slot:title>购卡</template>
           <template v-slot:default>
-            <h5-component :data="cardInfo" :cardType="2"></h5-component>
+            <member-card :data="cardInfo" :cardType="2"></member-card>
           </template>
         </h5-container>
       </div>
@@ -129,14 +129,14 @@
 </template>
 <script>
 import { InfoService } from './info.service'
-import H5Component from '../member/period/component/h5.component'
+import MemberCard from '@/views/biz-components/h5/pages/member-card'
 import H5Container from '@/views/biz-components/h5/h5-container'
 export default {
   bem: {
     item: 'brand-card'
   },
   components: {
-    H5Component,
+    MemberCard,
     H5Container
   },
   serviceInject() {

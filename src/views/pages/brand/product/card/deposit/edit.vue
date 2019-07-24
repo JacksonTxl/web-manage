@@ -1,7 +1,14 @@
 <template>
   <st-panel app class="page-brand-basic-card page-brand-edit-deposit-card" initial>
     <div class="page-brand-basic-card-body">
-      <!-- <div class="page-preview">实时预览{{deposit_card}}</div> -->
+      <div class="page-preview">
+        <h5-container>
+          <template v-slot:title>购卡</template>
+          <template v-slot:default>
+            <member-card :data="h5CardInfo" :cardType="2"></member-card>
+          </template>
+        </h5-container>
+      </div>
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
@@ -20,7 +27,9 @@
                   {rules: [{ validator: card_price_validator}]}
                 ]"
                   style="width: 360px"
-                  placeholder="请输入储值金额">
+                  placeholder="请输入储值金额"
+                  @change="syncDepositPrice"
+                >
                   <span slot="addonAfter">元</span>
                 </st-input-number>
               </st-form-item>
@@ -48,7 +57,9 @@
                   {rules: [{ validator: num_validator}]}
                 ]"
                   style="width: 360px"
-                  placeholder="请输入期限">
+                  placeholder="请输入期限"
+                  @change="syncDeadlineNum"
+                >
                   <a-select v-model="cardData.unit" slot="addonAfter" style="width: 50px">
                     <a-select-option
                     v-for="(item,index) in Object.entries(deposit_card.unit.value)"
@@ -63,7 +74,8 @@
             <a-col :lg="22">
               <st-form-item label="支持消费类目" required>
                 <a-checkbox-group
-                v-decorator="['cardData.card_consumer_id',{rules:[{validator:card_consumer_validator}]}]">
+                v-decorator="['cardData.card_consumer_id',{rules:[{validator:card_consumer_validator}]}]"
+                @change="syncConsumer">
                   <a-checkbox
                   v-for="item in Object.entries(deposit_card.consumer_type.value)"
                   :key="+item[0]"
@@ -247,12 +259,16 @@ import { cloneDeep, remove } from 'lodash-es'
 import { EditService } from './edit.service'
 import { AppConfig } from '@/constants/config'
 import { MessageService } from '@/services/message.service'
+import MemberCard from '@/views/biz-components/h5/pages/member-card'
+import H5Container from '@/views/biz-components/h5/h5-container'
+import h5mixin from '../member/period/h5mixin'
 export default {
   name: 'BrandDepositCardEdit',
+  mixins: [h5mixin],
   serviceInject() {
     return {
       rules: RuleConfig,
-      editService: EditService,
+      addService: EditService,
       userService: UserService,
       appConfig: AppConfig,
       messageService: MessageService
@@ -261,9 +277,9 @@ export default {
   rxState() {
     const user = this.userService
     return {
-      addLoading: this.editService.loading$,
-      cardInfo: this.editService.cardInfo$,
-      memberCard: this.userService.memberCardEnums$,
+      addLoading: this.addService.loading$,
+      cardInfo: this.addService.cardInfo$,
+      member_card: this.userService.memberCardEnums$,
       deposit_card: user.depositCardEnums$
     }
   },
@@ -271,11 +287,14 @@ export default {
     b: 'st-help-popover'
   },
   components: {
-    SelectShop
+    SelectShop,
+    MemberCard,
+    H5Container
   },
   data() {
     return {
       // cardData
+      cardType: 2,
       cardData: {
         // 卡id
         card_id: null,
@@ -307,7 +326,7 @@ export default {
         // 卡背景
         bg_image: {
           image_id: 0,
-          image_key: this.memberCard.card_bg_list.value[0].image_key,
+          image_key: this.member_card.card_bg_list.value[0].image_key,
           image_url: '',
           index: 1
         },
@@ -387,6 +406,8 @@ export default {
       this.cardData.card_contents = this.cardInfo.card_contents
       // 卡备注
       this.cardData.description = this.cardInfo.description
+      this.initH5CardInfo()
+      this.syncAdmissionShop()
     },
     // 保存
     onHandleSubmit(e) {
@@ -426,7 +447,7 @@ export default {
           this.cardData.end_time = moment(this.end_time).format(dateFormat)
           // 卡id
           this.cardData.card_id = +this.$route.query.id
-          this.editService.editCard(this.cardData).subscribe(this.onSubmitSuccess)
+          this.addService.editCard(this.cardData).subscribe(this.onSubmitSuccess)
         }
       })
     },
@@ -558,6 +579,7 @@ export default {
     // 增加入场门店
     admission_range_change(data) {
       this.cardData.consumer_shop_list = cloneDeep(data)
+      this.syncAdmissionShop()
     },
     // 入场门店支持方式change
     consumption_range(data) {
@@ -567,6 +589,7 @@ export default {
         'cardData.support_sales': 1
       })
       this.cardData.support_sales = 1
+      this.syncAdmission()
     },
     // 支持售卖门店change
     support_range(data) {

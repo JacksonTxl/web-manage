@@ -5,7 +5,7 @@
         <h5-container>
           <template v-slot:title>购卡</template>
           <template v-slot:default>
-            <h5-component :data="cardData" :cardType="0"></h5-component>
+            <member-card :data="h5CardInfo" :cardType="0"></member-card>
           </template>
         </h5-container>
       </div>
@@ -22,6 +22,7 @@
                   maxlength="30"
                   style="width: 360px"
                   placeholder="请输入期限卡名称"
+                  @change="syncName"
                 ></a-input>
               </st-form-item>
             </a-col>
@@ -98,17 +99,17 @@
                           </st-input-number>
                         </td>
                         <td>
-                          <st-input-number :float="true" :min="0" :max="999999.9" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'rally_price'})">
+                          <st-input-number :float="true" :min="0" :value="item.rally_price" :max="999999.9" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'rally_price'})">
                             <span slot="addonAfter">元</span>
                           </st-input-number>
                         </td>
                         <td>
-                          <st-input-number :min="1" :max="99999" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'frozen_day'})">
+                          <st-input-number :min="1" :max="99999" :value="item.frozen_day" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'frozen_day'})">
                             <span slot="addonAfter">天</span>
                           </st-input-number>
                         </td>
                         <td>
-                          <st-input-number :min="1" :max="99999" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
+                          <st-input-number :min="1" :max="99999" :value="item.gift_unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
                             <span slot="addonAfter">天</span>
                           </st-input-number>
                         </td>
@@ -155,23 +156,23 @@
                           </st-input-number>
                         </td>
                         <td>
-                          <st-input-number style="width:40%" :float="true" :min="0" :max="999999.9" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'rally_price', prop:'min_price'})">
+                          <st-input-number style="width:40%" :float="true" :value="item.rally_price.min_price" :min="0" :max="999999.9" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'rally_price', prop:'min_price'})">
                             <span slot="addonAfter">元</span>
                           </st-input-number>
                           &nbsp;
                           ~
                           &nbsp;
-                          <st-input-number style="width:40%" :float="true" :min="0" :max="999999.9" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'rally_price', prop:'max_price'})">
+                          <st-input-number style="width:40%" :float="true" :min="0" :value="item.rally_price.max_price" :max="999999.9" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'rally_price', prop:'max_price'})">
                             <span slot="addonAfter">元</span>
                           </st-input-number>
                         </td>
                         <td>
-                          <st-input-number :min="1" :max="99999" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'frozen_day'})">
+                          <st-input-number :min="1" :max="99999" :value="item.frozen_day" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'frozen_day'})">
                             <span slot="addonAfter">天</span>
                           </st-input-number>
                         </td>
                         <td>
-                          <st-input-number :min="1" :max="99999" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
+                          <st-input-number :min="1" :max="99999" :value="item.gift_unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
                             <span slot="addonAfter">天</span>
                           </st-input-number>
                         </td>
@@ -325,10 +326,12 @@ import { RuleConfig } from '@/constants/rule'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
-import H5Component from './component/h5.component'
+import MemberCard from '@/views/biz-components/h5/pages/member-card'
 import H5Container from '@/views/biz-components/h5/h5-container'
+import h5mixin from './h5mixin'
 export default {
   name: 'BrandPeriodCardAdd',
+  mixins: [h5mixin],
   serviceInject() {
     return {
       rules: RuleConfig,
@@ -347,12 +350,13 @@ export default {
   },
   components: {
     SelectShop,
-    H5Component,
+    MemberCard,
     H5Container
   },
   data() {
     return {
       // cardData
+      cardType: 0,
       cardData: {
         // 会员卡类型1-次卡 2-期限卡
         card_type: 2,
@@ -386,8 +390,8 @@ export default {
         // 卡背景
         card_bg: {
           image_id: 0,
-          image_key: 'image/VZ0RGBwTX7FA1yKb.png',
-          image_url: '',
+          image_key: this.member_card.card_bg_list.value[0].image_key,
+          image_url: this.member_card.card_bg_list.value[0].image_url,
           index: 1
         },
         // 是否配置了用户端
@@ -646,6 +650,7 @@ export default {
     // 增加入场门店
     admission_range_change(data) {
       this.cardData.admission_shop_list = cloneDeep(data)
+      this.syncAdmissionShop()
     },
     // 入场门店支持方式change
     admission_range(data) {
@@ -665,6 +670,7 @@ export default {
       this.rallyPriceList = []
       this.shopPriceList = []
       this.priceValidatorText = ''
+      this.syncAdmission()
     },
     // 价格设置方式change
     price_range(data) {

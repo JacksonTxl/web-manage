@@ -1,7 +1,14 @@
 <template>
   <st-panel app class="page-shop-basic-card page-shop-add-number-card" initial>
     <div class="page-shop-basic-card-body">
-      <!-- <div class="page-preview">实时预览{{memberCard}}</div> -->
+      <div class="page-preview">
+        <h5-container>
+          <template v-slot:title>购卡</template>
+          <template v-slot:default>
+            <member-card :data="h5CardInfo" :cardType="1"></member-card>
+          </template>
+        </h5-container>
+      </div>
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
@@ -15,6 +22,7 @@
                   maxlength="30"
                   style="width: 360px"
                   placeholder="请输入次卡名称"
+                  @change="syncName"
                 ></a-input>
               </st-form-item>
             </a-col>
@@ -151,7 +159,7 @@
                   :disabled="!is_transfer"
                   :min="transferMin" :max="transferMax">
                     <a-select slot="addonAfter" v-model="transferUnit" :disabled="!is_transfer">
-                      <a-select-option v-for="item in Object.entries(memberCard.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
+                      <a-select-option v-for="item in Object.entries(member_card.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
                     </a-select>
                   </st-input-number>
                   <!-- <a-input-group compact class="page-input-group">
@@ -160,7 +168,7 @@
                     @change="transfter_change"
                     :disabled="!is_transfer"/>
                     <a-select v-model="transferUnit" defaultValue="2" :disabled="!is_transfer">
-                      <a-select-option v-for="item in Object.entries(memberCard.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
+                      <a-select-option v-for="item in Object.entries(member_card.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
                     </a-select>
                   </a-input-group> -->
                 </div>
@@ -229,8 +237,16 @@ import moment from 'moment'
 import { RuleConfig } from '@/constants/rule'
 import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
+import MemberCard from '@/views/biz-components/h5/pages/member-card'
+import H5Container from '@/views/biz-components/h5/h5-container'
+import h5mixin from '../period/h5mixin'
 export default {
   name: 'PageShopNumberCardAdd',
+  mixins: [h5mixin],
+  components: {
+    MemberCard,
+    H5Container
+  },
   serviceInject() {
     return {
       rules: RuleConfig,
@@ -242,7 +258,7 @@ export default {
     return {
       addLoading: this.addService.loading$,
       shopName: this.userService.shop$,
-      memberCard: this.userService.memberCardEnums$
+      member_card: this.userService.memberCardEnums$
     }
   },
   bem: {
@@ -250,6 +266,7 @@ export default {
   },
   data() {
     return {
+      cardType: 1,
       form: this.$form.createForm(this),
       // 结束时间面板是否显示
       endOpen: false,
@@ -289,7 +306,7 @@ export default {
       // 卡背景
       cardBg: {
         image_id: 0,
-        image_key: this.memberCard.card_bg_list.value[0].image_key,
+        image_key: this.member_card.card_bg_list.value[0].image_key,
         image_url: '',
         index: 1
       },
@@ -496,7 +513,7 @@ export default {
     },
     // 售卖方式
     sellTypeList() {
-      let sell_type = cloneDeep(Object.entries(this.memberCard.sell_type.value))
+      let sell_type = cloneDeep(Object.entries(this.member_card.sell_type.value))
       let arr = []
       sell_type.forEach(i => {
         arr.push({

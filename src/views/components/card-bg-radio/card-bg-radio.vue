@@ -176,7 +176,7 @@ export default {
         this.customCardBg = {
           image_id: fileList[0].image_id,
           image_key: fileList[0].image_key,
-          image_url: '',
+          image_url: fileList[0].image_url,
           index: 0
         }
       } else {
