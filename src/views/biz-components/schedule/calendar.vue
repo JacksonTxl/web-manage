@@ -2,7 +2,6 @@
   <div class="schedule-calendar">
     <div class="sc-toolbar pd-x24">
       <div class="left">
-        <st-button>批量排期</st-button>
         <slot name="toolbar-left"></slot>
       </div>
       <div class="center">
@@ -10,45 +9,16 @@
       </div>
       <div class="right">
         <slot name="toolbar-right"></slot>
-        <st-button @click="onClickGetWeek">周</st-button>
-        <st-button @click="onClickGetCurrent" class="mg-r32">日</st-button>
-        <st-button>排期表格</st-button>
+        <a-button-group>
+          <st-button @click="onClickGetWeek">周</st-button>
+          <st-button @click="onClickGetCurrent" class="mg-r32">日</st-button>
+        </a-button-group>
+        <st-button>三</st-button>
       </div>
     </div>
     <div class="sc-content">
       <div class="time-collection">
-        <ul>
-          <li class="date"></li>
-          <li class="time">00:00</li>
-          <li class="time">01:00</li>
-          <li class="time">02:00</li>
-          <li class="time">03:00</li>
-          <li class="time">04:00</li>
-          <li class="time">05:00</li>
-          <li class="time">06:00</li>
-          <li class="time">07:00</li>
-          <li class="time">08:00</li>
-          <li class="time">09:00</li>
-          <li class="time">10:00</li>
-          <li class="time">11:00</li>
-          <li class="time">12:00</li>
-          <li class="time">13:00</li>
-          <li class="time">14:00</li>
-          <li class="time">15:00</li>
-          <li class="time">16:00</li>
-          <li class="time">17:00</li>
-          <li class="time">18:00</li>
-          <li class="time">19:00</li>
-          <li class="time">20:00</li>
-          <li class="time">21:00</li>
-          <li class="time">22:00</li>
-          <li class="time">23:00</li>
-        </ul>
       </div>
-
-      <!-- <div class="card-content">
-        <card v-for="card in cardList" :cardItem="card" :key='card.id'></card>
-      </div> -->
 
       <ul class="date-group" v-if="weeks.length === 1">
         <li class="item" :class="item | currentDay" v-for="(item, index) in weeks" :key="item.week">
@@ -57,17 +27,18 @@
             <li class="date">
               <span class="date-text-day">{{item | dateString}}</span>
             </li>
+
             <unit :class="{'first-unit': index===0, 'unit-day': weeks.length === 1}" v-for="i in 24" :key="i" :date="item" :time="i" @change="onChangeGetDate">
               <div class="day-layout">
                 <div class="time">{{i | timeStr}}</div>
                 <div class="add-button-day-group">
                   <div class="add-button-day-box" v-for="j in 7" :key="j">
-                    <add-button title="添加预约"  class="unit-add-day"></add-button>
+                    <add-button :title="addTitle"  class="unit-add-day"></add-button>
                   </div>
                 </div>
-
               </div>
             </unit>
+
           </ul>
 
           <section
@@ -94,6 +65,7 @@
           </section>
         </li>
       </ul>
+
       <ul class="date-group" v-else>
         <li class="item" :class="item | currentDay" v-for="(item, index) in weeks" :key="item.week">
 
@@ -108,9 +80,9 @@
             <unit :class="{'first-unit': index===0}" v-for="i in 24" :key="i" :date="item" :time="i" @change="onChangeGetDate">
               <div v-if="index===0">
                 <div class="time">{{i | timeStr}}</div>
-                <add-button title="添加预约" class="unit-add"></add-button>
+                <add-button :title="addTitle" class="unit-add"></add-button>
               </div>
-              <add-button v-else title="添加预约" class="unit-add"></add-button>
+              <add-button v-else :title="addTitle" class="unit-add"></add-button>
             </unit>
           </ul>
 
@@ -136,10 +108,10 @@
                 </div>
               </div>
           </section>
+
         </li>
       </ul>
     </div>
-
   </div>
 </template>
 
@@ -189,6 +161,12 @@ export default {
         'end_time': '19:40',
         'end_date': '2019-07-22',
         'auth': { 'shop:reserve:personal_course_reserve|del': 1, 'shop:reserve:personal_course_reserve|checkin': 1 } }, { 'id': 107532677349589, 'coach_name': '丝绒', 'member_id': 56635117076730, 'member_name': '汤汤测试用户617', 'course_name': '丝绒私教课测试', 'consume_name': '不限课程的课程包', 'reserve_status': 3, 'is_checkin': 0, 'start_date': '2019-07-24', 'start_time': '01:58', 'end_time': '02:38', 'end_date': '2019-07-24', 'auth': { 'shop:reserve:personal_course_reserve|del': 1, 'shop:reserve:personal_course_reserve|checkin': 1 } }, { 'id': 107532677349592, 'coach_name': '丝绒', 'member_id': 56635117076730, 'member_name': '汤汤测试用户617', 'course_name': '丝绒私教课测试', 'consume_name': '不限课程的课程包', 'reserve_status': 3, 'is_checkin': 0, 'start_date': '2019-07-24', 'start_time': '04:58', 'end_time': '05:38', 'end_date': '2019-07-24', 'auth': { 'shop:reserve:personal_course_reserve|del': 1, 'shop:reserve:personal_course_reserve|checkin': 1 } }, { 'id': 107532677349593, 'coach_name': '丝绒', 'member_id': 56635117076730, 'member_name': '汤汤测试用户617', 'course_name': '丝绒私教课测试', 'consume_name': '不限课程的课程包', 'reserve_status': 3, 'is_checkin': 0, 'start_date': '2019-07-24', 'start_time': '02:38', 'end_time': '03:18', 'end_date': '2019-07-24', 'auth': { 'shop:reserve:personal_course_reserve|del': 1, 'shop:reserve:personal_course_reserve|checkin': 1 } }]
+    }
+  },
+  props: {
+    addTitle: {
+      type: String,
+      default: '添加课程排期'
     }
   },
   computed: {
