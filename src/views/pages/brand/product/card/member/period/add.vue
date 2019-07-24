@@ -1,7 +1,14 @@
 <template>
   <st-panel app class="page-brand-basic-card page-brand-add-period-card" initial>
     <div class="page-brand-basic-card-body">
-      <!-- <div class="page-preview">实时预览{{member_card}}</div> -->
+      <div class="page-preview">
+        <h5-container>
+          <template v-slot:title>购卡</template>
+          <template v-slot:default>
+            <h5-component :data="cardData" :cardType="0"></h5-component>
+          </template>
+        </h5-container>
+      </div>
       <div class="page-content">
         <st-form :form="form" labelWidth="117px">
           <a-row :gutter="8" class="page-content-card-line__row">
@@ -318,6 +325,8 @@ import { RuleConfig } from '@/constants/rule'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
+import H5Component from './component/h5.component'
+import H5Container from '@/views/biz-components/h5/h5-container'
 export default {
   name: 'BrandPeriodCardAdd',
   serviceInject() {
@@ -337,7 +346,9 @@ export default {
     b: 'st-help-popover'
   },
   components: {
-    SelectShop
+    SelectShop,
+    H5Component,
+    H5Container
   },
   data() {
     return {
@@ -414,9 +425,73 @@ export default {
     }
   },
   beforeCreate() {
+    let that = this
     this.form = this.$form.createForm(this)
+    // this.form = this.$form.createForm(this,{
+    //   onFieldsChange (_, values) {
+    //     debugger
+    //     console.log(values);
+    //     let formValues = _.getFieldsValue()
+    //     that.transformCardData(formValues)
+    //   }
+    // })
   },
   methods: {
+    transformCardData(values) {
+      // 入场门店
+      if (this.cardData.admission_range !== 2) {
+        // 不是多门店
+        this.cardData.admission_shop_list = []
+      }
+      if (this.cardData.support_sales !== 2) {
+        this.cardData.sell_shop_list = []
+      }
+      // 售卖门店
+      if (this.cardData.admission_range === 2 && this.cardData.support_sales === 3) {
+        // 多门店 && 支持入场门店
+        this.cardData.sell_shop_list = cloneDeep(this.cardData.admission_shop_list)
+      }
+      // 价格梯度
+      let p = []
+      switch (this.cardData.price_setting) {
+        case 1:
+          // 品牌统一定价
+          this.rallyPriceList.forEach(i => {
+            p.push({
+              unit: +i.time.unit,
+              num: +i.time.num,
+              rally_price: +i.rally_price,
+              frozen_day: +i.frozen_day,
+              gift_unit: +i.gift_unit
+            })
+          })
+          break
+        case 2:
+          // 门店自主定价
+          this.shopPriceList.forEach(i => {
+            p.push({
+              unit: +i.time.unit,
+              num: +i.time.num,
+              min_price: +i.rally_price.min_price,
+              max_price: +i.rally_price.max_price,
+              frozen_day: +i.frozen_day,
+              gift_unit: +i.gift_unit
+            })
+          })
+          break
+      }
+      this.cardData.card_name = values.cardData.card_name
+      this.cardData.price_gradient = cloneDeep(p)
+      // 时间
+      if (this.start_time) {
+        this.cardData.start_time = `${this.start_time.format('YYYY-MM-DD')}`
+      }
+      if (this.end_time) {
+        this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
+      }
+      // 转让
+      this.cardData.num = this.cardData._is_transfer ? +values.cardData.num : undefined
+    },
     // 保存
     onHandleSubmit(e) {
       e.preventDefault()
@@ -425,6 +500,7 @@ export default {
       // 校验卡背景
       this.cardBgValidator()
       this.form.validateFieldsAndScroll((err, values) => {
+        console.log(values)
         if (!err && this.priceIsOk && this.cardBgIsOk) {
           // 入场门店
           if (this.cardData.admission_range !== 2) {

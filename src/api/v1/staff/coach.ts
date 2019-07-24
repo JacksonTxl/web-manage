@@ -15,6 +15,12 @@ export class CoachApi extends Api {
   getCoachList() {
     return this.http.get('/v1/staff/coach')
   }
+  /**
+   * 用户端设置教练选择
+   */
+  getCoachRecommend(params: GetSelectCoachInput) {
+    return this.http.get('/v1/staff/coach/recommend', { params })
+  }
 }
 
 export interface GetSelectCoachInput {
