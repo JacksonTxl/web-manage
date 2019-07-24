@@ -86,7 +86,7 @@
                 </a-radio-group>
               </st-form-item>
               <st-form-item  label="发放数量" required>
-                <st-input-number :class="basic('input')" style="top:0;" placeholder="请输入数量" :min="+info.number" v-decorator="[
+                <st-input-number :class="basic('input')" style="top:0;" placeholder="请输入数量" :min="isEditMode?+info.number:0" v-decorator="[
                   'number',
                   {rules: [{ validator: number_validator}]}]">
                   <template slot="addonAfter">张</template>
