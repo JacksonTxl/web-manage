@@ -17,6 +17,7 @@ export const columns = [
   {
     title: '课程定价',
     dataIndex: 'sell_price',
+    align: 'right',
     sorter: true,
     scopedSlots: { customRender: 'sell_price' }
   },
