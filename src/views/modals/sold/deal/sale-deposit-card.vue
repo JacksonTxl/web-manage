@@ -337,10 +337,12 @@ export default {
     // 计算实付金额
     getPrice(advance, reduce) {
       let advanceId = advance === -1 ? '' : advance
+      const memberId = this.form.getFieldValue('memberId')
       this.saleDepositCardService.priceAction$.dispatch({
         product_id: this.id,
         product_type: this.info.contract_type,
         advance_id: advanceId,
+        member_id: memberId || undefined,
         reduce_amount: reduce
       })
     },

@@ -36,6 +36,11 @@ export class AppConfig {
   LOCAL_API_ENV = process.env.LOCAL_API_ENV
 
   /**
+   * 当前开发使用的页面模式 brand | shop
+   */
+  PAGE_ENV = process.env.PAGE_ENV
+
+  /**
    * 是否当前的域名处于生产环境
    */
   get HOST_IS_PROD() {
@@ -58,6 +63,7 @@ export class AppConfig {
    * 应用git相关信息 通过 vue.config.js中注入
    */
   GIT_COMMIT = process.env.GIT_COMMIT
+  GIT_BRANCH = process.env.GIT_BRANCH
   GIT_MESSAGE = process.env.GIT_MESSAGE
   GIT_DATE = process.env.GIT_DATE
   /**
@@ -108,6 +114,7 @@ export class AppConfig {
       'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-img.png',
     NODATA:
       'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-nodata.png',
-    LOGO: 'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/logo-default.png'
+    LOGO:
+      'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/logo-default.png'
   }
 }

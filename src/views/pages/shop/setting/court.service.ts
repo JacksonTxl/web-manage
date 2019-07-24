@@ -8,6 +8,7 @@ export class CourtService implements RouteGuard {
       locateRouteName: 'shop-setting-court',
       redirectRouteName: 'shop-setting-court-list',
       next,
+      from,
       to
     })
   }

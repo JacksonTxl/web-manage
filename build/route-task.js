@@ -4,20 +4,19 @@ const _ = require('lodash')
 const chalk = require('chalk')
 const log = console.log
 
-const PAGES_PATH = [
-  './src/views/pages/**/*.vue'
-  // './src/views/pages/*.vue',
-  // './src/views/pages/account/**/*.vue',
-  // './src/views/pages/test/**/*.vue'
-]
-const SERVICES_PATH = [
-  './src/views/pages/**/*.service.ts'
-  // './src/views/pages/*.service.ts',
-  // './src/views/pages/account/**/*.service.ts',
-  // './src/views/pages/test/**/*.service.ts'
-]
+const PAGES_PATH = ['./src/views/pages/**/*.vue']
+const SERVICES_PATH = ['./src/views/pages/**/*.service.ts']
 const MODEL_PATH = './build/tpl.ejs'
 const ROUTES_PATH = './src/router/auto-generated-routes.ts'
+
+if (process.env.PAGE_ENV === 'brand') {
+  PAGES_PATH.push('!./src/views/pages/shop/**/*.vue')
+  SERVICES_PATH.push('!./src/views/pages/shop/**/*.service.ts')
+}
+if (process.env.PAGE_ENV === 'shop') {
+  PAGES_PATH.push('!./src/views/pages/brand/**/*.vue')
+  SERVICES_PATH.push('!./src/views/pages/brand/**/*.service.ts')
+}
 
 const tplInit = ({ importServiceArray, importArr, pageRoutes }) => {
   const tpl = fse.readFileSync(MODEL_PATH).toString()

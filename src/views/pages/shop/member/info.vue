@@ -28,8 +28,8 @@
                   手机号：
                   <span>{{ info.mobile}}</span>
                 </div>
-                <div class="line"></div>
-                <div>
+                <div class="line" v-if="info.member_level.id !== 1"></div>
+                <div v-if="info.member_level.id !== 1">
                   首次成为会员时间：
                   <span>{{ info.be_member_time }}</span>
                 </div>

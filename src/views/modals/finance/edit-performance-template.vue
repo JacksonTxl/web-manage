@@ -45,8 +45,10 @@
           <st-form-item label="默认提成" required>
             <st-input-number
               :float="true"
+              :min="0"
+              :max="performance_mode === 1 ? 100 : 999999"
               placeholder="请输入默认提成"
-              v-decorator="['performance_num',{initialValue: this.infodata.performance_num,rules: [{ required: true, message: '请输入默认提成' }]}]"
+              v-decorator="['performance_num',{initialValue: this.infodata.performance_num,rules: [{ validator: performanceValidate }]}]"
             >
               <template v-if="performance_type == 1 || performance_type == 2">
                 <template v-if="performance_mode == 1">
@@ -100,10 +102,10 @@
                 <tbody>
                   <tr v-if="data.length < 5">
                     <td>
-                      <a-input placeholder="请输入月销售额" v-model="gradients.range_min"/>
+                      <st-input-number :float="true" :min="0" :max="999.9" placeholder="请输入月销售额" v-model="gradients.range_min"/>
                     </td>
                     <td>
-                      <a-input placeholder="请输入提成" v-model="gradients.royalty_num"/>
+                      <st-input-number :float="true" :min="0" :max="100" placeholder="请输入提成" v-model="gradients.royalty_num"/>
                     </td>
                     <td>
                       <a href="javascript:;" @click="addGradients">添加梯度({{ data.length }}/5)</a>
@@ -207,6 +209,28 @@ export default {
     })
   },
   methods: {
+    performanceValidate(rule, value, callback) {
+      let performance_mode = this.form.getFieldValue('performance_mode')
+      console.log('performance_mode', performance_mode)
+      if (!value) {
+        // eslint-disable-next-line
+        callback('请输入默认提成')
+      }
+      if (performance_mode === 1) {
+        if (value > 100 || value < 0) {
+          // eslint-disable-next-line
+          callback('请输入大于0且小于等于100的值')
+        }
+      }
+      if (performance_mode === 2) {
+        if (value > 999999) {
+          // eslint-disable-next-line
+          callback('请输入大于0且小于等于999999的值')
+        }
+      }
+      // eslint-disable-next-line
+      callback()
+    },
     selectType(e) {
       console.log(e)
       this.performance_type = e

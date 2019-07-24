@@ -144,7 +144,7 @@ export default {
         const endHour = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`).format('H').valueOf()
         const start = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].start_time}`).format('mm').valueOf()
         const end = +moment(`${this.timeOptions.schedule_date} ${this.timeOptions.timing[i].end_time}`).format('mm').valueOf()
-        if (startHour === endHour) {
+        if (+selectedHour === startHour && +selectedHour === endHour) {
           return difference(allTime, this.range(start, end))
         } else {
           if (+selectedHour === startHour) {

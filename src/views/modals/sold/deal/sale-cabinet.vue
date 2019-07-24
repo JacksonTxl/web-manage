@@ -475,11 +475,13 @@ export default {
     },
     // 获取当前价钱
     getPrice(advance, reduce) {
+      const memberId = this.form.getFieldValue('memberId')
       this.saleCabinetService.currentPriceAction$.dispatch({
         product_id: this.cabinetId,
         product_type: this.info.contract_type,
         product_num: this.days,
         advance_id: advance || undefined,
+        member_id: memberId || undefined,
         reduce_amount: reduce || undefined
       })
     },

@@ -10,25 +10,12 @@ import { RedirectService } from '@/services/redirect.service'
 import { routeMapConfig } from './route-map.config'
 
 import pageRoutes from './auto-generated-routes'
+import { TrackService } from '@/services/track.service'
 
 const routes: any[] = [
   {
     path: '/',
     redirect: '/index'
-  },
-  {
-    name: 'brand',
-    path: '/brand',
-    redirect: {
-      name: 'brand-index'
-    }
-  },
-  {
-    name: 'shop',
-    path: '/shop',
-    redirect: {
-      name: 'shop-index'
-    }
   },
   {
     path: '/brand/product/card/deposit-card/shop-sale-list',
@@ -62,10 +49,16 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     }
 
     // guards 配置
-    if (route.name === 'account-login' || route.name === '404' || route.name.startsWith('test')) {
+    if (
+      route.name === 'account-login' ||
+      route.name === '404' ||
+      route.name.startsWith('test') ||
+      route.name.startsWith('styleguide')
+    ) {
       prependGuards(route, [
         NProgressService,
         HotReleaseService,
+        TrackService,
         TitleService,
         RouteService
       ])
@@ -73,6 +66,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       const appGuards: any[] = [
         NProgressService,
         HotReleaseService,
+        TrackService,
         TokenService,
         UserService,
         TitleService,

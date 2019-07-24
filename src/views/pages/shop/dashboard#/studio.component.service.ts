@@ -111,19 +111,19 @@ export class StudioComponentService {
         // ]
         state.courseSummary = [
           {
-            group: '总售课',
-            团体课: data.summary.sale_team_num,
-            私教课: data.summary.sale_personal_num
+            group: '未消课',
+            团体课: data.summary.team_uncheckin_num,
+            私教课: data.summary.personal_uncheckin_num
           },
           {
-            group: '总销课',
+            group: '总消课',
             团体课: data.summary.team_checkin_num,
             私教课: data.summary.personal_checkin_num
           },
           {
-            group: '未销课',
-            团体课: data.summary.team_uncheckin_num,
-            私教课: data.summary.personal_uncheckin_num
+            group: '总售课',
+            团体课: data.summary.sale_team_num,
+            私教课: data.summary.sale_personal_num
           }
         ]
         for (let key in data.daily.personal_reserved_num) {
@@ -187,13 +187,13 @@ export class StudioComponentService {
         state.member = {
           member: [
             { name: '消费用户', value: data.member.consume_num },
-            { name: '私教消课', value: data.member.personal_course_checkin_num },
-            { name: '购买私教', value: data.member.buy_person_course_num }
+            { name: '购买私教', value: data.member.buy_person_course_num },
+            { name: '私教消课', value: data.member.personal_course_checkin_num }
           ],
           marketing: [
             { name: '消费用户', value: data.marketing.consume_num },
-            { name: '私教消课', value: data.marketing.personal_course_checkin_num },
-            { name: '购买私教', value: data.marketing.buy_person_course_num }
+            { name: '购买私教', value: data.marketing.buy_person_course_num },
+            { name: '私教消课', value: data.marketing.personal_course_checkin_num }
           ]
         }
       })

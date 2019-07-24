@@ -9,6 +9,7 @@ export class LabelService implements RouteGuard {
       locateRouteName: 'shop-member-label',
       redirectRouteName: 'shop-member-label-list',
       to,
+      from,
       next
     })
   }
