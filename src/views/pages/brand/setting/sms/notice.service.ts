@@ -7,9 +7,9 @@ import { RedirectService } from '@/services/redirect.service'
 interface SetState {
 }
 @Injectable()
-export class IndexService extends Store<SetState> implements RouteGuard {
+export class NoticeService extends Store<SetState> implements RouteGuard {
   state$: State<SetState>
-  authTabs$ = this.redirectService.getAuthTabs$('brand-setting-msg-index')
+  authTabs$ = this.redirectService.getAuthTabs$('brand-setting-sms-notice')
   constructor(
     private authService: AuthService,
     private redirectService: RedirectService

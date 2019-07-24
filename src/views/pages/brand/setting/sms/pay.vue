@@ -1,5 +1,5 @@
 <template>
-  <div class="sms">
+  <div class="pay">
     <div slot="title">
       <st-input-search
         @search="onSearchKeyWords"
@@ -55,10 +55,10 @@
 </template>
 <script>
 import { RouteService } from '@/services/route.service'
-import { SmsService } from './sms.service'
-import { columns } from './sms.config.ts'
+import { PayService } from './pay.service'
+import { columns } from './pay.config.ts'
 import tableMixin from '@/mixins/table.mixin'
-const pageName = 'sms'
+const pageName = 'pay'
 
 export default {
   mixins: [tableMixin],
@@ -69,15 +69,15 @@ export default {
   serviceInject() {
     return {
       routeService: RouteService,
-      SmsService: SmsService
+      PayService: PayService
     }
   },
   rxState() {
     return {
       query: this.routeService.query$,
-      authTabs: this.SmsService.authTabs$,
-      loading: this.SmsService.loading$,
-      page: this.SmsService.page$
+      authTabs: this.PayService.authTabs$,
+      loading: this.PayService.loading$,
+      page: this.PayService.page$
     }
   },
   computed: {

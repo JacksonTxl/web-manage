@@ -31,11 +31,11 @@
 </template>
 <script>
 import { RouteService } from '@/services/route.service'
-import { IndexService } from './index.service'
-import { columns } from './index.config.ts'
+import { ListService } from './list.service'
+import { columns } from './list.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 
-const pageName = 'index'
+const pageName = 'list'
 export default {
   mixins: [tableMixin],
   name: 'Index',
@@ -46,14 +46,14 @@ export default {
   serviceInject() {
     return {
       routeService: RouteService,
-      IndexService: IndexService
+      ListService: ListService
     }
   },
   rxState() {
     return {
       query: this.routeService.query$,
-      loading: this.IndexService.loading$,
-      page: this.IndexService.page$
+      loading: this.ListService.loading$,
+      page: this.ListService.page$
     }
   },
   data() {
