@@ -1,70 +1,86 @@
 <template>
   <div :class="b()" >
     <div :class="b('content')" :span="24">
-      <a-row>
-        <brand-shop></brand-shop>
-      </a-row>
-      <a-row :class="b('linebox')" class="bg-white">
-        <a-col :span="24">
-          <dashboard-tabs @change="onChangeTabs">
-            <template v-slot:userTitle>
-              <st-help-tooltip id="TBSDA005"></st-help-tooltip>
-            </template>
-            <template v-slot:user>
-              <div class="mg-t8 mg-l32 user-chart-box">
-                <div class="funnel-vertical">
-                  <funnel-vertical  :data="userFunnel"></funnel-vertical>
-                </div>
-                <div class="revenue-area">
-                  <brand-revenue-area :fields="['注册用户','消费用户','购买私教','消课人数']" class="user-chart-box__item" :data="userChartData"></brand-revenue-area>
-                </div>
-              </div>
-            </template>
-            <template v-slot:marketing>
-              <div class="mg-t8 mg-l32 user-chart-box">
-                <div class="funnel-vertical">
-                  <funnel-vertical  :data="marketingFunnel"></funnel-vertical>
-                </div>
-                <div class="revenue-area">
-                  <brand-revenue-area  :fields="['注册用户','消费用户','购买私教']" class="user-chart-box__item" :data="marketing"></brand-revenue-area>
-                </div>
-              </div>
-            </template>
-          </dashboard-tabs>
-        </a-col>
-      </a-row>
-      <a-row :gutter="16" class="mg-t16">
-        <a-col :span="12">
-          <st-container class="bg-white" type="2">
-            <st-t3 style="margin-bottom:20px">客单价</st-t3>
-            <brand-user-avg-bar :data="avg" :height="295"></brand-user-avg-bar>
+      <div :class="b('section')">
+        <a-row>
+          <a-col :span="4">
+            营收概览
+          </a-col>
+          <a-col :span="20" :class="b('text-right')">
+            <brand-shop ></brand-shop>
+            <recent-radio-group  @change="recentChange"></recent-radio-group>
+          </a-col>
+        </a-row>
+        <a-row>
+          <a-col :span="12">
+            <brand-statistics-revenue-line :data="data1"></brand-statistics-revenue-line>
+          </a-col>
+          <a-col :span="12">
+            <brand-statistics-revenue-ring :data="data3"></brand-statistics-revenue-ring>
+          </a-col>
+        </a-row>
+      </div>
 
-          </st-container>
-        </a-col>
-        <a-col :span="12">
-          <st-container class="bg-white" type="2">
-            <st-t3 style="margin-bottom:20px">用户活跃分析</st-t3>
-            <brand-user-ring :data="entry" :height="295"></brand-user-ring>
-          </st-container>
+      <div :class="b('line')"></div>
+      <a-row>
+        <a-col :span="8">
+          <brand-shop ></brand-shop>
         </a-col>
       </a-row>
+      <a-row>
+        <div>
+          <swiper :options="sliderOptions">
+            <swiper-slide v-for="(item, index) in sliderList" :key="index">
+              <div style="width: 500px;height:100px">123</div>
+            </swiper-slide>
+          </swiper>
+        </div>
+      </a-row>
+      <a-row>
+        <div class="mg-t24 mg-b16">
+          <a-col :span="8">
+            <st-button type="primary" class="shop-member-list-button" v-if="auth.add" icon='add'>
+              批量导出
+            </st-button>
+          </a-col>
+          <a-col :span="16" :class="b('text-right')">
+            <recent-radio-group  @change="recentChange"></recent-radio-group>
+          </a-col>
+        </div>
+      </a-row>
+      <st-table
+        :columns="columns"
+        :scroll="{x:1400}"
+        :alertSelection="{onReset:onSelectionReset}"
+        :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
+        rowKey="member_id"
+        :page="page"
+        @change="onTableChange"
+        :dataSource="list"
+      >
+      </st-table>
     </div>
   </div>
 </template>
 
 <script>
-import BrandRevenueArea from '@/views/biz-components/stat/brand-revenue-area'
-import BrandUserRing from '@/views/biz-components/stat/brand-user-ring'
-import BrandUserAvgBar from '@/views/biz-components/stat/brand-user-avg-bar'
-import DashboardTabs from '@/views/pages/brand/dashboard#/tabs'
-import FunnelVertical from '@/views/biz-components/stat/brand-funnel-vertical'
+import BrandShop from './stat#/brand-shop'
+import RecentRadioGroup from '@/views/pages/shop/dashboard#/recent-radio-group'
+import BrandStatisticsRevenueLine from '@/views/biz-components/stat/brand-stat-revenue-line'
+import BrandStatisticsRevenueRing from '@/views/biz-components/stat/brand-stat-revenue-ring'
+
+import { RouteService } from '@/services/route.service'
 import { RevenueService } from './revenue.service'
-import BrandShop from '../statistics#/brand-shop'
+import tableMixin from '@/mixins/table.mixin'
+import { columns } from './revenue.config'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
 export default {
-  name: 'BrandStatisticsInfoRevenue',
+  name: 'BrandStatInfoRevenue',
+  mixins: [tableMixin],
   serviceInject() {
     return {
-      revenueService: RevenueService
+      revenueService: RevenueService,
+      routeService: RouteService
     }
   },
   rxState() {
@@ -75,13 +91,15 @@ export default {
       avg: this.revenueService.avg$,
       entry: this.revenueService.entry$,
       marketing: this.revenueService.marketing$,
-      marketingFunnel: this.revenueService.marketingFunnel$
+      marketingFunnel: this.revenueService.marketingFunnel$,
+      query: this.routeService.query$,
+      list: this.revenueService.list$,
+      page: this.revenueService.page$,
+      auth: this.revenueService.auth$
     }
   },
   bem: {
-    b: 'page-dashboard-studio',
-    bCount: 'page-dashboard-studio-count',
-    bAdv: 'page-dashboard-studio-adv'
+    b: 'page-brand-stat-revenue'
   },
   filters: {
     lineFilter(val) {
@@ -101,6 +119,35 @@ export default {
   },
   data() {
     return {
+      sliderOptions: {
+        autoplay: false,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        }
+      },
+      sliderList: [{
+        label: '今日营收',
+        value: '8233000'
+      }, {
+        label: '会员卡',
+        value: '8233000'
+      }, {
+        label: '私教课',
+        value: '8233000'
+      }, {
+        label: '团体课',
+        value: '8233000'
+      }, {
+        label: '储值卡',
+        value: '8233000'
+      }, {
+        label: '课程包',
+        value: '8233000'
+      }, {
+        label: '课程包验收',
+        value: '8233000'
+      }],
       gutter: 24,
       dataFV: [],
       dataRA: [],
@@ -109,9 +156,76 @@ export default {
       dataSimpleLine3: [],
       dataSimpleArea: [],
       dataSimpleBar: {},
-      data1: [],
+      data1: [{
+        date: '05/27',
+        私教课: 25618,
+        团体课: 6985,
+        储值卡: 25456,
+        课程包: 12554,
+        会员卡: 11564,
+        云店: 12544,
+        定金: 1125,
+        押金: 4568,
+        其它: 456
+      },
+      {
+        date: '05/28',
+        私教课: 2568,
+        团体课: 6985,
+        储值卡: 2546,
+        课程包: 12541,
+        会员卡: 11564,
+        云店: 12254,
+        定金: 12125,
+        押金: 4568,
+        其它: 456
+      },
+      {
+        date: '05/29',
+        私教课: 25068,
+        团体课: 69815,
+        储值卡: 2546,
+        课程包: 12524,
+        会员卡: 11564,
+        云店: 12154,
+        定金: 12151,
+        押金: 45168,
+        其它: 45126
+      },
+      {
+        date: '05/30',
+        私教课: 25681,
+        团体课: 69851,
+        储值卡: 2546,
+        课程包: 1254,
+        会员卡: 11564,
+        云店: 1254,
+        定金: 125,
+        押金: 4568,
+        其它: 456
+      },
+      {
+        date: '05/31',
+        私教课: 25681,
+        团体课: 69851,
+        储值卡: 2546,
+        课程包: 1254,
+        会员卡: 11564,
+        云店: 1254,
+        定金: 125,
+        押金: 4568,
+        其它: 456
+      }],
       data2: [],
-      data3: [],
+      data3: [
+        { name: '会员卡', value: 2500 },
+        { name: '私教课', value: 2000 },
+        { name: '团体课', value: 1000 },
+        { name: '储值卡', value: 2311.26 },
+        { name: '定金', value: 200 },
+        { name: '押金', value: 200 },
+        { name: '其他', value: 200 }
+      ],
       data4: [],
       data5: [],
       data6: [],
@@ -123,6 +237,7 @@ export default {
     }
   },
   computed: {
+    columns,
     order() {
       return this.top.order
     },
@@ -140,6 +255,9 @@ export default {
     onChangeTabs(query) {
       this.revenueService.getUser(query).subscribe()
       this.revenueService.getMarketing(query).subscribe()
+    },
+    recentChange(event) {
+      console.log(event)
     },
     reload() {
       this.dataSimpleBar = {
@@ -411,12 +529,12 @@ export default {
     }
   },
   components: {
-    DashboardTabs,
-    BrandRevenueArea,
-    BrandUserRing,
-    BrandUserAvgBar,
-    FunnelVertical,
-    BrandShop
+    BrandShop,
+    RecentRadioGroup,
+    BrandStatisticsRevenueLine,
+    BrandStatisticsRevenueRing,
+    swiper,
+    swiperSlide
   }
 }
 </script>

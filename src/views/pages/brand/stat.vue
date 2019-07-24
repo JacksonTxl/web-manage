@@ -2,7 +2,7 @@
   <div :class="b()" >
      <st-panel
         :tabs="[
-          { label: '营收', route: { name: 'brand-statistics-info-revenue',query:{id:$route.query.id} } },
+          { label: '营收', route: { name: 'brand-stat-revenue',query:{id:$route.query.id} } },
           { label: '订单', route: { name: 'shop-member-info-follow-history',query:{id:$route.query.id} }},
           { label: '用户', route: { name: 'shop-member-info-sold',query:{id:$route.query.id} } },
           { label: '课程', route: { name: 'shop-member-info-reserve',query:{id:$route.query.id} } },
@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: 'BrandStatisticsInfo',
+  name: 'BrandStatInfo',
   serviceInject() {
     return {
     }
@@ -26,7 +26,7 @@ export default {
     }
   },
   bem: {
-    b: 'page-brand-statistics'
+    b: 'page-brand-stat'
   },
   data() {
     return {

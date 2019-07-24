@@ -3,6 +3,7 @@ import { State, Computed } from 'rx-state/src'
 import { pluck, tap } from 'rxjs/operators'
 import { StatApi, RecentQuery, Version } from '@/api/v1/stat/brand'
 import { forkJoin } from 'rxjs'
+import { AuthService } from '@/services/auth.service'
 
 interface SetState{
   top: object,
@@ -24,7 +25,18 @@ export class RevenueService {
   entry$: Computed<object[]>
   marketing$: Computed<object[]>
   marketingFunnel$: Computed<object[]>
-  constructor(private statApi: StatApi) {
+  list$: Computed<object[]>
+  page$: Computed<object>
+
+  auth$ = this.authService.authMap({
+    add: 'shop:member:member|add',
+    import: 'shop:member:member|import',
+    tag: 'shop:member:member|tag',
+    bindCoach: 'shop:member:member|bind_coach',
+    bindSalesman: 'shop:member:member|bind_salesman',
+    export: 'shop:member:member|export'
+  })
+  constructor(private statApi: StatApi, private authService: AuthService) {
     this.state$ = new State({
       top: {},
       userFunnel: [],
@@ -32,7 +44,9 @@ export class RevenueService {
       avg: [],
       entry: [],
       marketing: [],
-      marketingFunnel: []
+      marketingFunnel: [],
+      list: [],
+      page: {}
     })
     this.top$ = new Computed(this.state$.pipe(pluck('top')))
     this.userFunnel$ = new Computed(this.state$.pipe(pluck('userFunnel')))
@@ -41,6 +55,8 @@ export class RevenueService {
     this.entry$ = new Computed(this.state$.pipe(pluck('entry')))
     this.marketing$ = new Computed(this.state$.pipe(pluck('marketing')))
     this.marketingFunnel$ = new Computed(this.state$.pipe(pluck('marketingFunnel')))
+    this.list$ = new Computed(this.state$.pipe(pluck('list')))
+    this.page$ = new Computed(this.state$.pipe(pluck('page')))
   }
   getTop() {
     return this.statApi.getTop({ version: 'studio' }).pipe(tap(res => {
