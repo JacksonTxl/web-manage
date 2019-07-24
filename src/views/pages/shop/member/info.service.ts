@@ -9,8 +9,11 @@ export class InfoService implements RouteGuard {
   info$ = new State({})
   basicInfo$ = new State({})
   auth$ = new State({})
-
-  constructor(private cardsApi: MemberApi, private authService: AuthService) {}
+  authCommon$ = this.authService.authMap({
+    add: 'shop:member:tag|add',
+    face: 'brand_shop:iot:face|edit'
+  })
+  constructor(private cardsApi: MemberApi, private authService: AuthService) { }
   getHeaderInfo(id: string) {
     return this.cardsApi.getHeaderInfo(id).pipe(
       tap(res => {

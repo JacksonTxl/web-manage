@@ -24,12 +24,12 @@
         <a-select-option v-for="item in lableList" :value="item.id" :key="item.id">{{item.tag_name}}</a-select-option>
       </a-select>
     </section>
-    <section>
+    <!-- <section> -->
       <!-- <footer class="footer">
         <a-button class="cancel" @click="show=false">取消</a-button>
         <a-button type="danger">确认停售</a-button>
       </footer>-->
-    </section>
+    <!-- </section> -->
   </st-modal>
 </template>
 <script>

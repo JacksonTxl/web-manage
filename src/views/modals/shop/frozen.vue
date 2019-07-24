@@ -69,7 +69,7 @@
           <st-form-item label="手续费" required>
             <st-input-number
               :float="true"
-              placeholder="请输入转让手续费"
+              placeholder="请输入手续费"
               v-decorator="basicInfoRuleList.payee"
             >
               <template slot="addonAfter">元</template>

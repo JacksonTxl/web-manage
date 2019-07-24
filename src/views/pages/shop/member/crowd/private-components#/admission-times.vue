@@ -37,7 +37,7 @@ export default {
     return {
       titleData: {
         title: '入场次数',
-        info: '会员卡剩余次数在以下范围的用户'
+        info: '近期入场次数在以下范围的用户'
       },
       inputnumber2: '',
       inputnumber1: '',

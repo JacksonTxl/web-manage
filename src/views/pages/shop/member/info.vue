@@ -12,7 +12,7 @@
                 >
                 <span class="img-describe">{{info.member_level.name}}</span>
               </div>
-              <div class="input-face">
+              <div class="input-face" v-if="authCommon.face">
                 <a href="#" @click="openFaceUpload">
                   <a-icon type="plus"/>录入人脸
                 </a>
@@ -45,8 +45,11 @@
                     >{{ tag.name }}</a-tag>
                   </a-tooltip>
                 </template>
-                <a v-modal-link="{ name: 'shop-add-lable',props:{selectedRowData:[{id:$route.query.id}]}, on:{done: onModalTest }}">
-                  <a-tag v-if="auth['shop:member:tag|add']" style="background: #fff; borderStyle: dashed;">
+                <a v-modal-link="{ name: 'shop-add-lable',props:{
+                  memberIds:[{id:$route.query.id}]},
+                  on:{done: onModalTest }
+                }">
+                  <a-tag v-if="authCommon.add" style="background: #fff; borderStyle: dashed;">
                     <a-icon type="plus" style="margin-right: 8px;"/>标签
                   </a-tag>
                 </a>
@@ -148,6 +151,7 @@ export default {
     return {
       info: this.infoService.info$,
       auth: this.infoService.auth$,
+      authCommon: this.infoService.authCommon$,
       query: this.routeService.query$
     }
   },
