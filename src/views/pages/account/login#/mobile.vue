@@ -2,7 +2,7 @@
   <div :class="mobile()">
     <st-form :form="form" @submit.prevent="login" :class="mobile('form')">
       <st-form-item :class="mobile('phone')">
-        <a-input size="large" :class="mobile('phone-input')" placeholder="请输入手机号码"  v-decorator="['phone']"/>
+        <a-input size="large" :class="mobile('phone-input')" placeholder="请输入手机号码"  v-decorator="rules.phone"/>
         <a-dropdown :class="mobile('phone-dropdown')">
           <span class="cursor-pointer">
             +86 <a-icon type="down" />
@@ -21,17 +21,17 @@
         </a-dropdown>
       </st-form-item>
       <st-form-item>
-        <no-captcha id="no-captcha-2"/>
+        <!-- <no-captcha id="no-captcha-2"/> -->
       </st-form-item>
       <st-form-item :class="mobile('captcha')" class="mg-b16">
-        <a-input size="large" :class="mobile('captcha-input')" placeholder="请输入验证码" v-model="captcha" />
+        <a-input size="large" :class="mobile('captcha-input')" placeholder="请输入验证码" v-decorator="rules.captcha" />
         <span :class="mobile('captcha-button')" @click="onClickCaptcha">{{buttonText}}</span>
       </st-form-item>
-      <st-form-item :class="mobile('pass')" class="mg-b16">
+      <!-- <st-form-item :class="mobile('pass')" class="mg-b16">
         <div :class="mobile('pass-content')">
           <a-checkbox>我已阅读并同意<a href="./agreement" target="_blank">《用户注册协议》</a></a-checkbox>
         </div>
-      </st-form-item>
+      </st-form-item> -->
       <st-form-item  class="mg-b0">
         <st-button :class="mobile('login-button')" pill size="large" type="primary"  html-type="submit" block>登录</st-button>
       </st-form-item>
@@ -44,12 +44,15 @@
 
 <script>
 import { LoginService } from '../login.service'
+import { rules } from './mobile.config'
+import { PatternService } from '@/services/pattern.service'
 import NoCaptcha from './no-captcha'
 export default {
   name: 'LoginMobile',
   serviceInject() {
     return {
-      loginService: LoginService
+      loginService: LoginService,
+      pattern: PatternService
     }
   },
   bem: {
@@ -72,39 +75,57 @@ export default {
     }
   },
   computed: {
+    rules,
     buttonText() {
       return this.isClick ? `${this.time}s后获取验证码` : `获取验证码`
     }
   },
   methods: {
     onClickCaptcha() {
-      const that = this
-      this.isClick = true
-      const phone = this.form.getFieldValue('phone')
-      this.loginService.getCaptcha({ phone, country_code_id: 86 }).subscribe()
+      if (this.isClick) {
+        return
+      }
+      this.form.validateFields(['phone'], (err, values) => {
+        if (!err) {
+          this.isClick = true
+          const { phone } = values
+          const params = {
+            phone,
+            country_code_id: 86
+          }
+          this.getCaptcha(params)
+          this.setTimer()
+        }
+      })
+    },
+    getCaptcha(params) {
+      this.loginService.getCaptcha(params).subscribe()
+    },
+    setTimer() {
+      clearInterval(this.timer)
       this.timer = setInterval(() => {
-        if (!that.time) {
+        if (this.time <= 1) {
           this.isClick = false
           this.time = 60
-          clearInterval(that.timer)
+          clearInterval(this.timer)
         }
-        that.time = that.time - 1
+        this.time = --this.time
       }, 1000)
     },
     login() {
-      const phone = this.form.getFieldValue('phone')
-      const form = {
-        captcha: this.captcha,
-        country_code_id: 86,
-        phone
-      }
-      this.loginService.loginPhone(form).subscribe(res => {
-        this.userService.SET_FIRST_INITED(false)
-        if (res.have_phone) {
-          this.$router.push('/')
-        } else {
-          // 去绑定手机
-          this.$router.push('/')
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          values.country_code_id = 86
+          this.loginService.loginPhone(form).subscribe(res => {
+            this.userService.SET_FIRST_INITED(false)
+            if (res.have_phone) {
+              this.$router.push('/')
+            } else {
+              // 去绑定手机
+              // 这是什么操作？？？
+              this.$router.push('/')
+            }
+          })
         }
       })
     }
@@ -113,7 +134,7 @@ export default {
     this.loginService.getCaptcha({})
   },
   components: {
-    NoCaptcha
+    // NoCaptcha
   }
 }
 </script>

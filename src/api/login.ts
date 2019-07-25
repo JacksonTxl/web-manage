@@ -22,6 +22,12 @@ export class LoginApi extends Api {
   getCaptcha(params: LoginPhoneInput) {
     return this.http.post('/login/captcha/phone', { params })
   }
+  /**
+   * 阿里云无痕验证码
+   */
+  traceCode(params: TraceCodeInput) {
+    return this.http.post('/login/trace/code', { params })
+  }
 }
 
 export interface LoginAccountInput {
@@ -48,4 +54,10 @@ export interface LoginPhoneInput {
    * 动态验证码
    */
   captcha: string
+}
+export interface TraceCodeInput {
+  /**
+   * 必填参数，由前端 getNVCVal 方法获得的值
+   */
+  nvc_val: string
 }

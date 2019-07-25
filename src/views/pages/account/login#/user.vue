@@ -2,12 +2,12 @@
   <div :class="[loginUser(), trunPage?'trun-page':'']">
     <st-form :form="form" @submit.prevent="login" :class="loginUser('form')" >
       <st-form-item >
-        <a-input size="large" placeholder="用户名、邮箱登录"  v-decorator="['name']"/>
+        <a-input size="large" placeholder="用户名、邮箱登录"  v-decorator="rules.name"/>
       </st-form-item>
       <st-form-item>
-        <a-input size="large" type="password" placeholder="密码" v-decorator="['password']"/>
+        <a-input size="large" type="password" placeholder="密码" v-decorator="rules.password"/>
       </st-form-item>
-      <st-form-item v-if="isShowNoCaptcha">
+      <st-form-item class="mg-b0">
         <no-captcha/>
       </st-form-item>
       <!-- <st-form-item  :class="loginUser('pass')" class="mg-b16">
@@ -38,7 +38,9 @@
 
 <script>
 import { LoginService } from '../login.service'
+import { rules } from './user.config'
 import NoCaptcha from './no-captcha'
+import { NoCaptchaService } from '@/services/no-captcha.service'
 
 export default {
   bem: {
@@ -47,7 +49,8 @@ export default {
   name: 'LoginUser',
   serviceInject() {
     return {
-      loginService: LoginService
+      loginService: LoginService,
+      noCaptchaService: NoCaptchaService
     }
   },
   rxState() {
@@ -59,19 +62,26 @@ export default {
     return {
       form: this.$form.createForm(this),
       thirdLogins: ['alipay', 'wechat', 'weibo', 'qq'],
-      trunPage: false,
-      isShowNoCaptcha: false
+      trunPage: false
     }
+  },
+  computed: {
+    rules
   },
   methods: {
     login() {
+      nvcReset()
+      const params = {
+        nvc_val: getNVCVal()
+      }
+      console.log('params', params)
+      // this.noCaptchaService.callCaptcha(400)
+      // getNC()
+      this.loginService.traceCode(params).subscribe(res => {
+        this.noCaptchaService.callCaptcha(res.code)
+      })
       this.form.validateFields((err, values) => {
         if (!err) {
-          const isShowNoCaptcha = this.getSafetyStrategy()
-          if (isShowNoCaptcha) {
-            this.isShowNoCaptcha = true
-            return
-          }
           this.$emit('login', values)
         }
       })
@@ -81,9 +91,6 @@ export default {
     },
     onClickThirdChange(key) {
       this.$emit('third', key)
-    },
-    getSafetyStrategy() {
-      return true
     }
   },
   components: {

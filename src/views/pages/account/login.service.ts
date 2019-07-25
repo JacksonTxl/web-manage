@@ -1,10 +1,9 @@
 import { MessageService } from '@/services/message.service'
-import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed, Effect, Action } from 'rx-state'
+import { Injectable } from 'vue-service-app'
+import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { ManageApi, ManagePhoneInput } from '@/api/v1/account/manage'
-import { LoginApi, LoginAccountInput, LoginPhoneInput } from '@/api/login'
+import { LoginApi, LoginAccountInput, LoginPhoneInput, TraceCodeInput } from '@/api/login'
 import { TokenService } from '@/services/token.service'
 
 interface StaffState {
@@ -46,5 +45,8 @@ export class LoginService extends Store<StaffState> {
   }
   getCaptcha(params: any) {
     return this.loginApi.getCaptcha(params)
+  }
+  traceCode(params: TraceCodeInput) {
+    return this.loginApi.traceCode(params)
   }
 }
