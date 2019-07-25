@@ -9,6 +9,7 @@ import { TooltipApi } from '@/api/v1/admin/tooltip'
 import { get } from 'lodash-es'
 import { NProgressService } from './nprogress.service'
 import { AuthService } from './auth.service'
+import { ShopApi } from '@/api/v1/shop'
 
 interface User {
   id?: string
@@ -52,9 +53,12 @@ interface ModuleEnums {
  */
 @Injectable()
 export class UserService {
+  firstInited$ = new State(false)
+
   user$ = new State<User>({})
   brand$ = new State<Brand>({})
   shop$ = new State<Shop>({})
+  shopList$ = new State<any[]>([])
   menuData$ = new State({
     favorite: [],
     menus: [],
@@ -63,7 +67,6 @@ export class UserService {
   menus$ = new Computed<any[]>(this.menuData$.pipe(pluck('menus')))
   firstMenuUrl$ = new Computed<string>(this.menuData$.pipe(pluck('first_url')))
   favoriteMenu$ = new Computed(this.menuData$.pipe(pluck('favorite')))
-  firstInited$ = new State(false)
   theme$ = new Computed(
     this.brand$.pipe(
       map(brand => {
@@ -115,6 +118,7 @@ export class UserService {
     private staffApi: StaffApi,
     private tooltipApi: TooltipApi,
     private nprogress: NProgressService,
+    private shopApi: ShopApi,
     private authService: AuthService
   ) {}
   SET_USER(user: User) {
@@ -137,6 +141,9 @@ export class UserService {
   }
   SET_FIRST_INITED(inited: boolean) {
     this.firstInited$.commit(() => inited)
+  }
+  SET_SHOP_LIST(list: object[]) {
+    this.shopList$.commit(() => list)
   }
   getUser() {
     return this.staffApi.getGlobalStaffInfo().pipe(
@@ -185,6 +192,13 @@ export class UserService {
       })
     )
   }
+  getShopList() {
+    return this.shopApi.getShopList().pipe(
+      tap(res => {
+        this.SET_SHOP_LIST(res.list)
+      })
+    )
+  }
   /**
    * 通过key名获取下拉选项
    */
@@ -226,7 +240,8 @@ export class UserService {
         this.getUser(),
         this.getMenuData(),
         this.getEnums(),
-        this.getInvalidTooltips()
+        this.getInvalidTooltips(),
+        this.getShopList()
       ).pipe(
         tap(() => {
           this.SET_FIRST_INITED(true)

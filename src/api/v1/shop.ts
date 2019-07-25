@@ -26,10 +26,13 @@ export class ShopApi extends Api {
   getServiceList() {
     return this.http.get(`/v1/shop/service`)
   }
+  /**
+   * 获取所有门店列表
+   */
   getShopList(query: GetShopListInput = {}) {
     query = Object.assign(
       {
-        size: 99
+        size: 999
       },
       query
     )
