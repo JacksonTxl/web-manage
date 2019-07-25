@@ -4,25 +4,36 @@
       <div :class="bCount('preview')">
         <div :class="bCount('specify')">
           <span :class="bCount('text')">剩余短信(条)</span>
-          <span :class="bCount('num')">1212</span>
-          <st-button type="primary">去充值</st-button>
+          <span :class="bCount('num')">{{info.sms_total}}</span>
+          <st-button
+            type="primary"
+            v-modal-link="{
+                name: 'brand-setting-sms-pay',
+                on: {
+                  change: onSelectShopComplete
+                }
+              }"
+          >去充值</st-button>
         </div>
         <div :class="bCount('specify')">
           <span :class="bCount('text')">已发送(条)</span>
-          <span :class="bCount('num')">1212</span>
+          <span :class="bCount('num')">{{info.sms_sended}}</span>
         </div>
       </div>
       <div :class="bCount('setting')">
-        <span>短信签名</span>
-        <span class="color-primary mg-l8">去设置</span>
+        <div>[短信签名]</div>
+        <a-input class="mg-t8 mg-b8" :value="info.sms_sign" placeholder="请设置短信签名" />
+        <div class="ta-r">
+          <span class="mg-r8 color-primary">取消</span>
+          <span class="color-primary">保存</span>
+        </div>
       </div>
     </div>
     <st-table
       :page="page"
       @change="onTableChange"
-      :loading="loading.getInfo"
       :columns="columns"
-      :dataSource="resData.list"
+      :dataSource="info.list"
       rowKey="id"
     ></st-table>
   </div>
@@ -50,8 +61,8 @@ export default {
   rxState() {
     return {
       query: this.routeService.query$,
-      loading: this.PayService.loading$,
-      page: this.PayService.page$
+      page: this.PayService.page$,
+      info: this.PayService.info$
     }
   },
   data() {
@@ -69,7 +80,8 @@ export default {
     columns
   },
   methods: {
-    getInfo() {}
+    getInfo() {},
+    onSelectShopComplete() {}
   }
 }
 </script>

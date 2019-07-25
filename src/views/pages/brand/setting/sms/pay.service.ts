@@ -4,19 +4,27 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { AuthService } from '@/services/auth.service'
 import { RedirectService } from '@/services/redirect.service'
-interface SetState {
-}
+import { PayApi } from '@/api/v1/setting/sms/pay'
+interface SetState {}
 @Injectable()
 export class PayService extends Store<SetState> implements RouteGuard {
   state$: State<SetState>
-  constructor(
-    private authService: AuthService,
-    private redirectService: RedirectService
-  ) {
+  info$ = new State([])
+  page$ = new State([])
+  constructor(private PayApi: PayApi) {
     super()
     this.state$ = new State({})
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    next()
+  @Effect()
+  getSmsPayInfo() {
+    return this.PayApi.getSmsPayInfo().pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
+        this.page$.commit(() => res.info.page)
+      })
+    )
+  }
+  beforeEach(to: ServiceRoute) {
+    return this.getSmsPayInfo()
   }
 }

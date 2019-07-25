@@ -879,6 +879,7 @@ export const routeMapConfig = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       send_status: { type: Number },
+      notify_type: { type: Number },
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' }
     }

@@ -13,11 +13,11 @@
       <st-search-panel>
         <div :class="bSelect()">
           <span style="width:90px;">通知对象:</span>
-          <st-search-radio v-model="query.send_status" :list="orderStatusList" />
+          <st-search-radio v-model="query.notify_type" :list="notifyType" />
         </div>
         <div :class="bSelect()">
           <span style="width:90px;">发送状态：</span>
-          <st-search-radio v-model="query.send_status" :list="payStatusList" />
+          <st-search-radio v-model="query.send_status" :list="sendStatus" />
         </div>
         <div :class="bSelect()">
           <span style="width:90px;">发送时间：</span>
@@ -46,17 +46,22 @@
     <st-table
       :page="page"
       @change="onTableChange"
-
       :columns="columns"
-      :dataSource="resData.list"
+      :dataSource="list"
       rowKey="id"
-    ></st-table>
+    >
+      <template slot="send_status" slot-scope="text,record">{{record.send_status.name}}</template>
+      <template slot="notify_type" slot-scope="text,record">{{record.notify_type.name}}</template>
+      <template slot="notify_sub_type" slot-scope="text,record">{{record.notify_sub_type.name}}</template>
+    </st-table>
   </div>
 </template>
 <script>
 import { RouteService } from '@/services/route.service'
 import { ListService } from './list.service'
 import { columns } from './list.config.ts'
+import { UserService } from '@/services/user.service'
+
 import tableMixin from '@/mixins/table.mixin'
 const pageName = 'page-setting-sms-list'
 
@@ -69,19 +74,38 @@ export default {
   serviceInject() {
     return {
       routeService: RouteService,
-      ListService: ListService
+      ListService: ListService,
+      userService: UserService
     }
   },
   rxState() {
+    const user = this.userService
     return {
       query: this.routeService.query$,
-      authTabs: this.ListService.authTabs$,
       loading: this.ListService.loading$,
-      page: this.ListService.page$
+      page: this.ListService.page$,
+      list: this.ListService.list$,
+      settingEnums: user.settingEnums$
     }
   },
   computed: {
-    columns
+    columns,
+    notifyType() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.settingEnums.notify_type) return list
+      Object.entries(this.settingEnums.notify_type.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    },
+    sendStatus() {
+      let list = [{ value: -1, label: '全部' }]
+      if (!this.settingEnums.send_status) return list
+      Object.entries(this.settingEnums.send_status.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    }
   },
   data() {
     return {
@@ -95,6 +119,9 @@ export default {
       orderStatusList: [],
       payStatusList: []
     }
+  },
+  created() {
+    this.onSearch()
   },
   methods: {
     getList() {},

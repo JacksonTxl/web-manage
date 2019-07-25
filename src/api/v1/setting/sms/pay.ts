@@ -1,21 +1,20 @@
 import { Api } from '@/api/api'
 
 export class PayApi extends Api {
-  getInfo() {
-    return this.http.get(url)
+  getSmsPayInfo() {
+    return this.http.get('/v1/setting/sms/pay')
   }
-  update(params: UpdateInput) {
-    return this.http.put(url, { params })
+  // 短信购买详情
+  getSmsPayDetail() {
+    return this.http.get('/v1/setting/sms/pay/detail')
+  }
+  postSmsPay(params: PostSmsPayQuery) {
+    return this.http.post('/v1/setting/sms/pay', { params })
   }
 }
 
-export interface UpdateInput {
-    /**
-     * 品牌LOGO
-     */
-    logo_image: string
-    /**
-     * 品牌描述
-     */
-    description: string
-  }
+export interface PostSmsPayQuery {
+  sms_num: string
+  pay_price: string
+  pay_channel: number
+}

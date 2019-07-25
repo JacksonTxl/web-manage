@@ -1,33 +1,28 @@
 export const columns = () => {
   return [
     {
-      title: '发送时间',
-      dataIndex: 'updated_time',
-      width: 180
+      title: '订单号',
+      dataIndex: 'id'
     },
     {
-      title: '状态',
-      dataIndex: 'send_status'
+      title: '购买短信数量',
+      dataIndex: 'sms_num'
     },
     {
-      title: '通知对象',
-      dataIndex: 'name'
+      title: '金额',
+      dataIndex: 'pay_price'
     },
     {
-      title: '短信模板',
-      dataIndex: 'content'
+      title: '支付方式',
+      dataIndex: 'pay_channel'
     },
     {
-      title: '姓名',
-      dataIndex: 'user_name'
+      title: '购买人',
+      dataIndex: 'user'
     },
     {
-      title: '手机号',
-      dataIndex: 'mobile'
-    },
-    {
-      title: '内容',
-      dataIndex: 'content'
+      title: '购买时间',
+      dataIndex: 'pay_finished_time'
     }
   ]
 }

@@ -4,19 +4,27 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { AuthService } from '@/services/auth.service'
 import { RedirectService } from '@/services/redirect.service'
-interface SetState {
-}
+import { SmsApi, SmsListQuery } from '@/api/v1/setting/sms/sms'
+interface SetState {}
 @Injectable()
 export class ListService extends Store<SetState> implements RouteGuard {
   state$: State<SetState>
-  constructor(
-    private authService: AuthService,
-    private redirectService: RedirectService
-  ) {
+  list$ = new State([])
+  page$ = new State([])
+  constructor(private SmsApi: SmsApi) {
     super()
     this.state$ = new State({})
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    next()
+  @Effect()
+  getSmsList(query: SmsListQuery) {
+    return this.SmsApi.getSmsList(query).pipe(
+      tap((res: any) => {
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
+  }
+  beforeEach(to:ServiceRoute) {
+    return this.getSmsList(to.meta.query)
   }
 }
