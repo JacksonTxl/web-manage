@@ -7,10 +7,10 @@
           <st-info-item label="手机号">{{record.mobile}}</st-info-item>
         </st-info>
         <st-form-item label="实体卡号" required>
-          <a-input placeholder="输入实体卡号" v-decorator="basicInfoRuleList.rfid"/>
+          <a-input placeholder="输入实体卡号" v-decorator="basicInfoRuleList.card_num"/>
         </st-form-item>
         <st-form-item label="物理ID" required>
-          <a-input placeholder="请将实体卡置于读卡器上" v-decorator="basicInfoRuleList.card_num"/>
+          <a-input placeholder="请将实体卡置于读卡器上" v-decorator="basicInfoRuleList.rfid"/>
         </st-form-item>
       </st-form>
     </section>
