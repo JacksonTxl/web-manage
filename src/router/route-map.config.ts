@@ -882,5 +882,28 @@ export const routeMapConfig = {
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' }
     }
+  },
+  'shop-stat-index'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '报表'
+  },
+  'shop-stat-revenue'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '营收报表'
+    routeConfig.queryOptions = {
+      day: { type: Number },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
+  },
+  'shop-stat-order'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '订单报表'
+    routeConfig.queryOptions = {
+      day: { type: Number },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
   }
 }

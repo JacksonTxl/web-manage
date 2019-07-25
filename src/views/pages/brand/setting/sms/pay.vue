@@ -1,52 +1,26 @@
 <template>
   <div :class="bPage()">
-    <div slot="title">
-      <st-input-search
-        @search="onSearchKeyWords"
-        v-model="query.search"
-        class="mg-b24"
-        style="width: 290px;"
-        placeholder="请输入姓名或手机号查找"
-      ></st-input-search>
+    <div :class="bCount()">
+      <div :class="bCount('preview')">
+        <div :class="bCount('specify')">
+          <span :class="bCount('text')">剩余短信(条)</span>
+          <span :class="bCount('num')">1212</span>
+          <st-button type="primary">去充值</st-button>
+        </div>
+        <div :class="bCount('specify')">
+          <span :class="bCount('text')">已发送(条)</span>
+          <span :class="bCount('num')">1212</span>
+        </div>
+      </div>
+      <div :class="bCount('setting')">
+        <span>短信签名</span>
+        <span class="color-primary mg-l8">去设置</span>
+      </div>
     </div>
-    <div slot="prepend" class="mg-b24">
-      <st-search-panel>
-        <div :class="bSelect()">
-          <span style="width:90px;">通知对象:</span>
-          <st-search-radio v-model="query.send_status" :list="orderStatusList" />
-        </div>
-        <div :class="bSelect()">
-          <span style="width:90px;">发送状态：</span>
-          <st-search-radio v-model="query.send_status" :list="payStatusList" />
-        </div>
-        <div :class="bSelect()">
-          <span style="width:90px;">发送时间：</span>
-          <a-date-picker
-            format="YYYY-MM-DD"
-            placeholder="开始日期"
-            :showToday="false"
-            v-model="query.start_time"
-            @change="startdatePickerChange"
-          />&nbsp;~&nbsp;
-          <a-date-picker
-            format="YYYY-MM-DD"
-            placeholder="结束日期"
-            :showToday="false"
-            v-model="query.end_time"
-            @change="enddatePickerChange"
-          />
-        </div>
-        <div slot="button">
-          <st-button type="primary" @click="onSearch">查询</st-button>
-          <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
-        </div>
-      </st-search-panel>
-    </div>
-
     <st-table
       :page="page"
       @change="onTableChange"
-      :loading="loading.getList"
+      :loading="loading.getInfo"
       :columns="columns"
       :dataSource="resData.list"
       rowKey="id"
@@ -58,13 +32,14 @@ import { RouteService } from '@/services/route.service'
 import { PayService } from './pay.service'
 import { columns } from './pay.config.ts'
 import tableMixin from '@/mixins/table.mixin'
-const pageName = 'page-setting-sms-pay'
 
+const pageName = 'page-setting-sms-pay'
 export default {
   mixins: [tableMixin],
+  name: 'SmsPay',
   bem: {
     bPage: pageName,
-    bSelect: `${pageName}-select`
+    bCount: `${pageName}-count`
   },
   serviceInject() {
     return {
@@ -75,39 +50,26 @@ export default {
   rxState() {
     return {
       query: this.routeService.query$,
-      authTabs: this.PayService.authTabs$,
       loading: this.PayService.loading$,
       page: this.PayService.page$
     }
-  },
-  computed: {
-    columns
   },
   data() {
     return {
       resData: {
         list: [
           {
-            created_time: '12212'
+            id: '11'
           }
         ]
-      },
-      orderStatusList: [],
-      payStatusList: []
+      }
     }
   },
+  computed: {
+    columns
+  },
   methods: {
-    getList() {},
-    onSearchKeyWords() {
-      this.$events.emit(
-        `${this.$route.name}:onSingleSearch`,
-        'search',
-        this.query.search,
-        { keyword: true }
-      )
-    },
-    startdatePickerChange() {},
-    enddatePickerChange() {}
+    getInfo() {}
   }
 }
 </script>

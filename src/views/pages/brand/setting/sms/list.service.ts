@@ -9,7 +9,6 @@ interface SetState {
 @Injectable()
 export class ListService extends Store<SetState> implements RouteGuard {
   state$: State<SetState>
-  authTabs$ = this.redirectService.getAuthTabs$('brand-setting-sms-list')
   constructor(
     private authService: AuthService,
     private redirectService: RedirectService
