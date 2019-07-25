@@ -89,9 +89,16 @@ export default {
       return {
         name: this.brand.name,
         id: 0,
-        count: num,
+        count: this.departmentCount,
         children: this.treeList
       }
+    },
+    departmentCount() {
+      let num = 0
+      this.departmentList.forEach(department => {
+        num += department.count
+      })
+      return num
     }
   },
   data() {
