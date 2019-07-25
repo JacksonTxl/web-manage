@@ -1,29 +1,23 @@
 export const columns = () => [
+  { title: '日期', dataIndex: 'stat_date' },
   {
-    title: '总营收(元)',
-    dataIndex: 'image_face',
-    scopedSlots: { customRender: 'image_face' }
+    title: '总营收额(元)',
+    dataIndex: 'total_amount'
   },
   {
-    title: '私教课(元)',
-    dataIndex: 'member_name',
-    scopedSlots: { customRender: 'member_name' }
+    title: '会员卡营收(元)',
+    dataIndex: 'member_card_amount'
+    // scopedSlots: { customRender: 'image_face' }
   },
-  { title: '团体课(元)', dataIndex: 'mobile' },
   {
-    title: '储值卡(元)',
-    dataIndex: 'member_level',
-    scopedSlots: { customRender: 'member_level' }
+    title: '私教课营收(元)',
+    dataIndex: 'personal_course_amount'
   },
-  { title: '课程包(元)', dataIndex: 'follow_salesman' },
-  { title: '定金(元)', dataIndex: 'follow_coach' },
-  { title: '押金(元)', dataIndex: 'register_time' },
-  { title: '云店(元)', dataIndex: 'be_member_time' },
-  { title: '其他(元)', align: 'right', dataIndex: 'sum_consumption' }
-  // {
-  //   title: '操作',
-  //   fixed: 'right',
-  //   width: 170,
-  //   scopedSlots: { customRender: 'action' }
-  // }
+  { title: '团体课营收(元)', dataIndex: 'team_course_amount' },
+  {
+    title: '课程包营收(元)',
+    dataIndex: 'package_course_amount'
+  },
+  { title: '云店营收(元)', dataIndex: 'shop_amount' },
+  { title: '其他营收(元)', dataIndex: 'other_amount' }
 ]

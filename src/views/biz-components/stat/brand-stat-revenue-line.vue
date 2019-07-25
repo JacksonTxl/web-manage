@@ -91,7 +91,7 @@ export default {
         container: this.$el,
         forceFit: true,
         height: this.height,
-        padding: [8, 16, 100, 'auto'],
+        padding: [8, 80, 'auto', 'auto'],
         renderer: 'svg'
       })
 
