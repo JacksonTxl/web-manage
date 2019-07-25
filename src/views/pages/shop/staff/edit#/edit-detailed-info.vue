@@ -1,9 +1,9 @@
 <template>
-  <st-form :form="form" @submit="save" class="page-edit-container">
+  <st-form :form="form" @submit.prevent="save" class="page-edit-container">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="毕业院校">
-          <a-input placeholder="支持中英文、数字,不超过100个字" v-decorator="rules.graduated_school"/>
+          <a-input placeholder="支持中英文、数字,不超过100个字" v-decorator="rules.graduated_school" />
         </st-form-item>
         <st-form-item label="学历">
           <a-select placeholder="请选择" v-decorator="rules.education">
@@ -29,13 +29,13 @@
       </a-col>
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="毕业时间">
-          <a-date-picker style="width:100%" v-decorator="rules.graduation_time"/>
+          <a-date-picker style="width:100%" v-decorator="rules.graduation_time" />
         </st-form-item>
         <st-form-item label="专业">
-          <a-input placeholder="请输入专业名称" v-decorator="rules.profession"/>
+          <a-input placeholder="请输入专业名称" v-decorator="rules.profession" />
         </st-form-item>
         <st-form-item label="籍贯">
-          <a-input placeholder="请输入籍贯" v-decorator="rules.native_place"/>
+          <a-input placeholder="请输入籍贯" v-decorator="rules.native_place" />
         </st-form-item>
         <st-form-item label="子女状态">
           <a-select placeholder="请选择" v-decorator="rules.children_status">
@@ -61,14 +61,15 @@
           />
         </st-form-item>
         <st-form-item label="详细住址">
-          <a-input placeholder="填写点什么吧" v-decorator="rules.address"/>
+          <a-input placeholder="填写点什么吧" v-decorator="rules.address" />
         </st-form-item>
         <st-form-item label="备注">
           <st-textarea
             :maxlength="300"
             :rows="10"
             v-decorator="rules.description"
-            placeholder="填写点什么吧"/>
+            placeholder="填写点什么吧"
+          />
         </st-form-item>
       </a-col>
       <a-col :lg="10" :xs="22" :offset="2"></a-col>
@@ -77,7 +78,11 @@
       <a-col :offset="1">
         <st-form-item labelFix>
           <st-button type="primary" class="mg-r16" ghost @click="onClickBack">上一步</st-button>
-          <st-button class="mg-l16" @click="goNext" type="primary">{{!isPrivateCoach?'保存':'保存，继续填写'}}</st-button>
+          <st-button
+            class="mg-l16"
+            @click="goNext"
+            type="primary"
+          >{{!isPrivateCoach?'保存':'保存，继续填写'}}</st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -89,6 +94,7 @@ import { RuleConfig } from '@/constants/staff/rule'
 import { RegionService } from '@/services/region.service'
 import { EditService } from '../edit.service'
 import { MessageService } from '@/services/message.service'
+import { get } from 'lodash-es'
 export default {
   name: 'EditDetailedInfo',
   serviceInject() {
@@ -131,7 +137,9 @@ export default {
     setData(obj) {
       this.form.setFieldsValue({
         graduated_school: obj.graduated_school,
-        graduation_time: obj.graduation_time ? moment(obj.graduation_time) : undefined,
+        graduation_time: obj.graduation_time
+          ? moment(obj.graduation_time)
+          : undefined,
         education: obj.education || undefined,
         profession: obj.profession,
         birthday: obj.birthday ? moment(obj.birthday) : undefined,
@@ -152,24 +160,17 @@ export default {
         }
       })
     },
-    // 坑爹的是后端还要城市名遍历了这么多次
-    filterProvinces(arr) {
-      if (arr.length) {
-        return {
-          province_id: arr[0],
-          city_id: arr[1],
-          district_id: arr[2]
-        }
-      }
-    },
     save(e) {
-      e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
           let obj = this.filterProvinces(values.provinces)
           let newData = Object.assign(values, obj)
-          newData.birthday && (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
-          newData.graduation_time && (newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD'))
+          newData.birthday &&
+            (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
+          newData.graduation_time &&
+            (newData.graduation_time = newData.graduation_time.format(
+              'YYYY-MM-DD'
+            ))
           delete newData.provinces
           this.$emit('detailInfoSave', {
             data: newData
@@ -178,12 +179,15 @@ export default {
       })
     },
     submit(data, saveOrgoNext) {
-      let obj = this.filterProvinces(data.provinces)
-      let newData = Object.assign(data, obj)
-      newData.birthday && (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
-      newData.birthday && (newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD'))
-      delete newData.provinces
-      this.service.updateDetailedInfo(this.data.staff_id, newData).subscribe(() => {
+      data.province_id = get(data, 'provinces.0')
+      data.city_id = get(data, 'provinces.1')
+      data.district_id = get(data, 'provinces.2')
+      data.birthday &&
+        (data.birthday = data.birthday.format('YYYY-MM-DD'))
+      data.birthday &&
+        (data.graduation_time = data.graduation_time.format('YYYY-MM-DD'))
+
+      this.service.updateDetailedInfo(this.data.staff_id, data).subscribe(() => {
         if (!this.isPrivateCoach) {
           this.$router.push({ name: 'shop-staff-list' })
         } else {

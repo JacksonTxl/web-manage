@@ -1,27 +1,27 @@
 <template>
-  <div class="schedule-calendar">
-    <div class="sc-toolbar pd-x24">
-      <div class="left">
+  <div :class="bSchedule()">
+    <div :class="bSchedule('toolbar')" class="pd-x24">
+      <div :class="bToolbar(left)">
         <slot name="toolbar-left"></slot>
       </div>
-      <div class="center">
+      <div :class="bToolbar('center')">
         <DateComponent @pre="oChangeDate" @next="oChangeDate" @today="oChangeDate"></DateComponent>
       </div>
-      <div class="right">
+      <div :class="bToolbar('right')">
         <slot name="toolbar-right"></slot>
         <a-button-group>
           <st-button @click="onClickGetWeek">周</st-button>
-          <st-button @click="onClickGetCurrent" class="mg-r32">日</st-button>
+          <st-button @click="onClickGetCurrent">日</st-button>
         </a-button-group>
-        <st-button>三</st-button>
+        <st-button  class="mg-l32"><st-icon type="list"></st-icon></st-button>
       </div>
     </div>
-    <div class="sc-content">
-      <div class="time-collection">
+    <div :class="bSchedule('content')">
+      <div :class="bContent('time-collection')">
       </div>
 
-      <ul class="date-group" v-if="weeks.length === 1">
-        <li class="item" :class="item | currentDay" v-for="(item, index) in weeks" :key="item.week">
+      <ul :class="bContent('day-group')" v-if="weeks.length === 1">
+        <li class="day" :class="item | currentDay" v-for="(item, index) in weeks" :key="item.week">
 
           <ul class="time-group">
             <li class="date">
@@ -42,7 +42,7 @@
           </ul>
 
           <section
-            v-for="group in myMatrix(item.week)"
+            v-for="group in getMatrix(item.week)"
             :key='group.id'
             :class="['item-group-day','item-group',`item-group--has-${group.length}`]">
             <div
@@ -66,8 +66,8 @@
         </li>
       </ul>
 
-      <ul class="date-group" v-else>
-        <li class="item" :class="item | currentDay" v-for="(item, index) in weeks" :key="item.week">
+      <ul :class="bContent('day-group')" v-else>
+        <li class="day" :class="item | currentDay" v-for="(item, index) in weeks" :key="item.week">
 
           <ul class="time-group">
             <li class="date">
@@ -87,7 +87,7 @@
           </ul>
 
           <section
-            v-for="group in myMatrix(item.week)"
+            v-for="group in getMatrix(item.week)"
             :key='group.id'
             :class="['item-group',`item-group--has-${group.length}`]">
             <div
@@ -132,6 +132,11 @@ const toTen = time => {
 }
 export default {
   name: 'ScheduleCalendar',
+  bem: {
+    bSchedule: 'schedule-calendar',
+    bToolbar: 'toolbar',
+    bContent: 'content'
+  },
   data() {
     return {
       start: moment(),
@@ -183,8 +188,8 @@ export default {
       return date === current ? 'active' : ''
     },
     barClass(item) {
-      const date = moment(`${item.start_date} ${item.start_time}`).valueOf()
-      const current = moment().valueOf()
+      const date = moment(`${item.start_date} ${item.start_time}`)
+      const current = moment()
       if (date > current) {
         return 'after'
       } else if (date === current) {
@@ -222,7 +227,7 @@ export default {
         this.weeks.push({ week: i, date: this.start })
       }
     },
-    myMatrix(n) {
+    getMatrix(n) {
       let weekOfday = moment(this.start).format('E')
       let date = moment(this.start).subtract(weekOfday - n, 'days').format('YYYY-MM-DD')
       const sortedList = this.cardList
@@ -267,7 +272,6 @@ export default {
 
         timeMatrix[groupIndex] = group
       })
-
       return timeMatrix
     },
     itemStyle(item) {
