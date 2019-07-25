@@ -3,62 +3,76 @@
     <div :class="b('content')" :span="24">
       <div :class="b('section')">
         <a-row>
-          <a-col :span="4">
+          <a-col :span="4" :class="b('title')">
             营收概览
           </a-col>
-          <a-col :span="20" :class="b('text-right')">
-            <brand-shop ></brand-shop>
+          <a-col :span="20" :class="b('actions')">
+            <brand-shop style="flex: 1;margin-right: 12px;text-align: right;"></brand-shop>
             <recent-radio-group  @change="recentChange"></recent-radio-group>
           </a-col>
         </a-row>
-        <a-row>
-          <a-col :span="12">
+        <a-row style="margin-top: 38px;">
+          <a-col :span="15">
             <brand-statistics-revenue-line :data="data1"></brand-statistics-revenue-line>
           </a-col>
-          <a-col :span="12">
+          <a-col :span="9">
             <brand-statistics-revenue-ring :data="data3"></brand-statistics-revenue-ring>
           </a-col>
         </a-row>
       </div>
-
-      <div :class="b('line')"></div>
-      <a-row>
-        <a-col :span="8">
-          <brand-shop ></brand-shop>
-        </a-col>
-      </a-row>
-      <a-row>
-        <div>
-          <swiper :options="sliderOptions">
-            <swiper-slide v-for="(item, index) in sliderList" :key="index">
-              <div style="width: 500px;height:100px">123</div>
-            </swiper-slide>
-          </swiper>
-        </div>
-      </a-row>
-      <a-row>
-        <div class="mg-t24 mg-b16">
-          <a-col :span="8">
+      <div :class="b('section')">
+        <a-row>
+          <a-col :span="4" :class="b('title')">
+            当日营收
+          </a-col>
+          <a-col :span="20" :class="b('actions')">
+            <brand-shop style="flex: 1;margin-right: 12px;text-align: right;"></brand-shop>
+            <span :class="b('actions-span')">最近更新时间：2019-07-25 09:58</span>
+          </a-col>
+        </a-row>
+        <a-row :class="b('income-row')">
+          <div :class="b('income-detail')">
+            <swiper :options="sliderOptions">
+              <swiper-slide v-for="(item, index) in sliderList" :key="index">
+                <div :class="b('income')">
+                  <p :class="b('income-label')">{{item.label}}</p>
+                  <p :class="b('income-value')">{{item.value}}</p>
+                </div>
+              </swiper-slide>
+            </swiper>
+            <div class="swiper-button-prev" slot="button-prev">
+              <st-icon type="arrow-left" class="arrow-left"/>
+            </div>
+            <div class="swiper-button-next" slot="button-next">
+              <st-icon type="arrow-right1" class="arrow-right1"/>
+            </div>
+          </div>
+        </a-row>
+      </div>
+      <div :class="b('section')" >
+        <div class="mg-b16" :class="b('table')">
+          <a-col :class="b('table-button')">
             <st-button type="primary" class="shop-member-list-button" v-if="auth.add" icon='add'>
               批量导出
             </st-button>
           </a-col>
-          <a-col :span="16" :class="b('text-right')">
+          <a-col>
             <recent-radio-group  @change="recentChange"></recent-radio-group>
           </a-col>
         </div>
-      </a-row>
-      <st-table
-        :columns="columns"
-        :scroll="{x:1400}"
-        :alertSelection="{onReset:onSelectionReset}"
-        :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
-        rowKey="member_id"
-        :page="page"
-        @change="onTableChange"
-        :dataSource="list"
-      >
-      </st-table>
+        <st-table
+          :columns="columns"
+          :scroll="{x:1400}"
+          :alertSelection="{onReset:onSelectionReset}"
+          :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
+          rowKey="member_id"
+          :page="page"
+          @change="onTableChange"
+          :dataSource="list"
+        >
+        </st-table>
+      </div>
+
     </div>
   </div>
 </template>
@@ -69,29 +83,26 @@ import RecentRadioGroup from '@/views/pages/shop/dashboard#/recent-radio-group'
 import BrandStatisticsRevenueLine from '@/views/biz-components/stat/brand-stat-revenue-line'
 import BrandStatisticsRevenueRing from '@/views/biz-components/stat/brand-stat-revenue-ring'
 
+import { UserService } from '@/services/user.service'
 import { RouteService } from '@/services/route.service'
 import { RevenueService } from './revenue.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './revenue.config'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
 export default {
   name: 'BrandStatInfoRevenue',
   mixins: [tableMixin],
   serviceInject() {
     return {
       revenueService: RevenueService,
-      routeService: RouteService
+      routeService: RouteService,
+      userService: UserService
     }
   },
   rxState() {
     return {
-      top: this.revenueService.top$,
-      userFunnel: this.revenueService.userFunnel$,
-      userChartData: this.revenueService.user$,
-      avg: this.revenueService.avg$,
-      entry: this.revenueService.entry$,
-      marketing: this.revenueService.marketing$,
-      marketingFunnel: this.revenueService.marketingFunnel$,
+      shopList: this.userService.shopList$,
       query: this.routeService.query$,
       list: this.revenueService.list$,
       page: this.revenueService.page$,
@@ -122,9 +133,12 @@ export default {
       sliderOptions: {
         autoplay: false,
         navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev'
-        }
+          nextEl: '.swiper-button-prev',
+          prevEl: '.swiper-button-next'
+        },
+        slidesPerView: 6,
+        centeredSlides: false,
+        normalizeSlideIndex: false
       },
       sliderList: [{
         label: '今日营收',
@@ -235,6 +249,9 @@ export default {
       data10: [],
       data11: []
     }
+  },
+  created() {
+    this.getChart()
   },
   computed: {
     columns,
@@ -526,6 +543,9 @@ export default {
           上课人数: 680 * Math.random() * 100
         }
       ]
+    },
+    getChart() {
+      this.revenueService.getChart().subscribe()
     }
   },
   components: {
