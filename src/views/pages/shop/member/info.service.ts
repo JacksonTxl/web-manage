@@ -10,7 +10,7 @@ export class InfoService implements RouteGuard {
   basicInfo$ = new State({})
   auth$ = new State({})
   authCommon$ = this.authService.authMap({
-    add: 'shop:member:tag|add',
+    add: 'shop:member:member|tag',
     face: 'brand_shop:iot:face|edit'
   })
   constructor(private cardsApi: MemberApi, private authService: AuthService) { }
