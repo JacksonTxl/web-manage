@@ -25,10 +25,7 @@ export class NoCaptchaService {
         // data为getNVCVal()的值，此函数为二次验证滑动或者刮刮卡通过后的回调函数
         // data跟业务请求一起上传，由后端请求AnalyzeNvc接口，接口会返回100或者900
       },
-      trans: {
-        "key1": "code0",
-        "nvcCode":400
-      },
+      trans: { nvcCode: 200 },
       language: "cn",
       //滑动验证长度配置
       // customWidth: 300,
@@ -59,6 +56,7 @@ export class NoCaptchaService {
     }
   }
   callCaptcha(code: number) {
+    console.log('call captcha', code)
     switch (code) {
       case 400:
         //唤醒滑动验证
@@ -81,8 +79,15 @@ export class NoCaptchaService {
         //唤醒刮刮卡
         // @ts-ignore
         getSC()
+        break
       default:
+        // @ts-ignore
+        nvcReset()
         break;
     }
+  }
+  resetNVC() {
+    // @ts-ignore
+    nvcReset()
   }
 }
