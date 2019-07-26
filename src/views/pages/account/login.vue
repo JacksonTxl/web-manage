@@ -102,10 +102,10 @@ export default {
     onClickBack() {
       this.loginType = 'user'
     },
-    onLogin(values) {
+    onLogin(params) {
       console.log('get', getNVCVal())
-      values.nvc_val = this.nvcVal || getNVCVal()
-      this.loginService.loginAccount(values).subscribe(res => {
+      params.nvc_val = this.nvcVal || getNVCVal()
+      this.loginService.loginAccount(params).subscribe(res => {
         const code = +res.code
         if ([400, 600].includes(code)) {
           this.noCaptchaService.callCaptcha(code)
@@ -119,7 +119,7 @@ export default {
           // 去绑定手机
           this.$router.push('/')
         }
-      })
+      }, this.noCaptchaService.resetNVC)
     },
     // 切换登录方式
     switchLoginType() {

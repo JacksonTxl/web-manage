@@ -27,7 +27,7 @@
       <!-- <st-form-item class="mg-b0">
         <no-captcha id="no-captcha-2"/>
       </st-form-item> -->
-      <st-form-item :class="mobile('captcha')" class="mg-b16">
+      <st-form-item :class="mobile('captcha')">
         <a-input size="large" :class="mobile('captcha-input')" placeholder="请输入验证码" v-decorator="rules.captcha" />
         <span :class="mobile('captcha-button')" @click="onClickCaptcha">{{buttonText}}</span>
       </st-form-item>
@@ -50,12 +50,20 @@
 import { LoginService } from '../login.service'
 import { rules } from './mobile.config'
 import { PatternService } from '@/services/pattern.service'
+import { NoCaptchaService } from '@/services/no-captcha.service'
+
 export default {
   name: 'LoginMobile',
   serviceInject() {
     return {
       loginService: LoginService,
-      pattern: PatternService
+      pattern: PatternService,
+      noCaptchaService: NoCaptchaService
+    }
+  },
+  rxState() {
+    return {
+      nvcVal: this.noCaptchaService.nvcVal$
     }
   },
   bem: {
@@ -90,19 +98,26 @@ export default {
       }
       this.form.validateFields(['phone'], (err, values) => {
         if (!err) {
-          this.isClick = true
           const { phone } = values
           const params = {
             phone,
             country_code_id: 86
           }
           this.getCaptcha(params)
-          this.setTimer()
         }
       })
     },
     getCaptcha(params) {
-      this.loginService.getCaptcha(params).subscribe()
+      params.nvc_val = this.nvcVal || getNVCVal()
+      this.loginService.getCaptcha(params).subscribe(res => {
+        const code = +res.code
+        if ([400, 600].includes(code)) {
+          this.noCaptchaService.callCaptcha(code)
+        } else {
+          this.isClick = true
+          this.setTimer()
+        }
+      }, this.noCaptchaService.resetNVC)
     },
     setTimer() {
       clearInterval(this.timer)
@@ -116,11 +131,11 @@ export default {
       }, 1000)
     },
     login() {
-      getNC()
       this.form.validateFields((err, values) => {
         if (!err) {
-          values.country_code_id = 86
-          this.loginService.loginPhone(form).subscribe(res => {
+          const params = values
+          params.country_code_id = 86
+          this.loginService.loginPhone(params).subscribe(res => {
             this.userService.SET_FIRST_INITED(false)
             if (res.have_phone) {
               this.$router.push('/')
