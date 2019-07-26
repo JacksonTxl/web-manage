@@ -68,6 +68,9 @@
 import { CoachLevelService } from './coach-level.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
+import CoachLevelEdit from '@/views/biz-modals/coach-level/edit.vue'
+import CoachLevelAdd from '@/views/biz-modals/coach-level/add.vue'
+
 export default {
   serviceInject() {
     return {
@@ -82,6 +85,10 @@ export default {
       query: this.routeService.query$,
       auth: this.listService.auth$
     }
+  },
+  modals: {
+    CoachLevelAdd,
+    CoachLevelEdit
   },
   computed: {
     isShowPricingNum() {

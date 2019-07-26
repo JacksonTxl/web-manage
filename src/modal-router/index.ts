@@ -3,10 +3,9 @@ import Vue from 'vue'
 import VueModalRouter from 'vue-modal-router'
 import routes from './routes'
 
-Vue.use(VueModalRouter)
-
-export const modalRouter = new VueModalRouter({
+Vue.use(VueModalRouter, {
   model: 'show',
-  delay: 300,
-  routes
+  delay: 300
 })
+
+export const modalRouter = new VueModalRouter(routes)

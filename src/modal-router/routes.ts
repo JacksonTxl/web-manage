@@ -4,7 +4,7 @@ const modalContext = require.context('@/views/modals', true, /\.vue$/)
 
 const modalKeys = modalContext.keys()
 
-const routes: any = []
+const routes: any = {}
 modalKeys.forEach(keyPath => {
   const file = modalContext(keyPath)
   const component = file.default || file
@@ -12,10 +12,7 @@ modalKeys.forEach(keyPath => {
   if (/(#)/.test(parsed.entry)) {
     return
   }
-  routes.push({
-    name: parsed.entry_dash,
-    component
-  })
+  routes[parsed.entry_dash] = component
 })
 
 export default routes
