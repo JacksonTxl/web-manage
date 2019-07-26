@@ -24,7 +24,7 @@ pipeline {
     }
     stage('branch-other') {
       when {
-        expression { BRANCH_NAME ==~ /(feat|fix|dev).*/}
+        expression { BRANCH_NAME ==~ /(feat|fix|dev|master).*/}
       }
       steps {
         sh 'make build'
