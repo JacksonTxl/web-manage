@@ -69,8 +69,8 @@
           @change="coursePageChange">
           <span slot="course_status" slot-scope="text,record">
             <span v-if="record.course_status.id === 1" class="effective"></span>
-            <span v-if="record.course_status.id === 2" class="invalid"></span>
-            <span v-if="record.course_status.id === 3" class="frozen"></span>
+            <span v-if="record.course_status.id === 3" class="invalid"></span>
+            <span v-if="record.course_status.id === 2" class="frozen"></span>
             {{ record.course_status.name }}
           </span>
         </st-table>

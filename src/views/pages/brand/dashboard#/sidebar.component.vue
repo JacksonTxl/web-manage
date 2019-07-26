@@ -1,7 +1,7 @@
 <template>
   <div :class="sidebar()">
     <div>
-      <a href="https://mp.weixin.qq.com/s/bvAniLXAEuswEfehHVJ7bw"
+      <a href="http://mp.weixin.qq.com/s?__biz=MzI5NjA5MTU0NA==&mid=503084258&idx=1&sn=a62f1b146d1f5a204035ebdb08eff864&chksm=74417e154336f703e6907f35bb38dca49066ae6912bcd19ab555fb968b2a8a4eb55c4c720ee9#rd"
         target="_blank">
         <img width="280px" height="186px" :src="pic" alt="">
       </a>

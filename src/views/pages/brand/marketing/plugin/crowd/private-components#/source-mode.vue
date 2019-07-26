@@ -28,6 +28,7 @@
 <script>
 import { UserService } from '@/services/user.service'
 import titleInfo from './title-info.vue'
+import { cloneDeep } from 'lodash-es'
 export default {
   serviceInject() {
     return {
@@ -65,22 +66,29 @@ export default {
       list.push({ value: +o[0], name: o[1] })
     })
     this.sourceOptions = list
-    // this.tags = Object.values(
-    //   Object.assign({}, ...this.value.getData.source_channel)
-    // )
+    if (this.value.getData.source_channel.length > 0) {
+      this.tags = cloneDeep(this.value.getData.source_channel)
+    }
   },
   methods: {
     dropdownFunc(item, index) {
-      // 需要去重
+      const arr = this.tags.filter(i => { return i.value === item.value })
+      if (arr.length > 0) {
+        return
+      }
       this.value.getData.source_channel.push(item)
+      this.tags.push(item)
     },
 
     onChange(date, dateString) {
       this.$emit('dataChangge', this.value)
     },
     handleClose(removedTag, index) {
-      this.value.getData.source_channel.splice(index, 1)
-      this.value.getData.source_channel.splice(index, 1)
+      this.value.getData.source_channel.forEach((element, i) => {
+        if (element.value === item.value) {
+          this.value.getData.source_channel.splice(i, 1)
+        }
+      })
     }
   }
 }

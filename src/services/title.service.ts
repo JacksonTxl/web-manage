@@ -28,8 +28,11 @@ export class TitleService implements RouteGuard {
       document.title = documentTitle
     })
   }
+  SET_TITLE(title: string) {
+    this.title$.commit(() => title)
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.title$.commit(() => to.meta.title)
+    this.SET_TITLE(to.meta.title)
     next()
   }
 }
