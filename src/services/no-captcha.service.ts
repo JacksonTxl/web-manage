@@ -12,20 +12,15 @@ export class NoCaptchaService {
       ...this.DEFAULT_OPTS,
       ...opts
     }
+    //无痕配置 && 滑动验证、刮刮卡、问答验证码通用配置
     // @ts-ignore
     window.NVC_Opt = {
-      //无痕配置 && 滑动验证、刮刮卡、问答验证码通用配置
-      appkey: 'FFFF0N0N00000000807F',
-      scene: 'nvc_login',
+      // @ts-ignore
+      ...window.NVC_Opt,
+      renderTo: opts.renderTo,
       isH5: false,
       popUp: false,
-      renderTo: opts.renderTo,
-      nvcCallback: function(data: any) {
-        console.log('data', data)
-        // data为getNVCVal()的值，此函数为二次验证滑动或者刮刮卡通过后的回调函数
-        // data跟业务请求一起上传，由后端请求AnalyzeNvc接口，接口会返回100或者900
-      },
-      trans: { nvcCode: 200 },
+      // trans: { nvcCode: 200 },
       language: "cn",
       //滑动验证长度配置
       // customWidth: 300,
@@ -52,6 +47,11 @@ export class NoCaptchaService {
           _ggk_net_err: ['网络实在不给力<br/>请', "javascript:noCaptcha.reset()", '再来一次', '或', "http://survey.taobao.com/survey/QgzQDdDd?token=%TOKEN", '反馈问题'],
           _ggk_too_fast: ['您刮得太快啦<br/>请', "javascript:noCaptcha.reset()", '再来一次', '或', "http://survey.taobao.com/survey/QgzQDdDd?token=%TOKEN", '反馈问题']
         }
+      },
+      nvcCallback: function(data: any) {
+        console.log('data', data)
+        // data为getNVCVal()的值，此函数为二次验证滑动或者刮刮卡通过后的回调函数
+        // data跟业务请求一起上传，由后端请求AnalyzeNvc接口，接口会返回100或者900
       }
     }
   }

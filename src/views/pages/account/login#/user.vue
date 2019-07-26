@@ -70,7 +70,6 @@ export default {
   },
   methods: {
     login() {
-      // nvcReset()
       const params = {
         nvc_val: getNVCVal()
       }
@@ -78,18 +77,16 @@ export default {
       // getNC()
       this.loginService.traceCode(params).subscribe(
         res => {
-          this.noCaptchaService.callCaptcha(res.code)
+          this.form.validateFields((err, values) => {
+            if (!err) {
+              this.$emit('login', values)
+            }
+          })
         },
-        () => {
-          this.noCaptchaService.resetNVC()
+        (res) => {
+          this.noCaptchaService.callCaptcha(res.code)
         }
       )
-      // return
-      // this.form.validateFields((err, values) => {
-      //   if (!err) {
-      //     this.$emit('login', values)
-      //   }
-      // })
     },
     onClickFindPassword() {
       this.$emit('findps')

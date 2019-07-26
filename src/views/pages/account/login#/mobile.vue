@@ -20,8 +20,8 @@
           </a-menu> -->
         </a-dropdown>
       </st-form-item>
-      <st-form-item>
-        <!-- <no-captcha id="no-captcha-2"/> -->
+      <st-form-item class="mg-b0">
+        <no-captcha id="no-captcha-2"/>
       </st-form-item>
       <st-form-item :class="mobile('captcha')" class="mg-b16">
         <a-input size="large" :class="mobile('captcha-input')" placeholder="请输入验证码" v-decorator="rules.captcha" />
