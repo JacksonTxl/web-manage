@@ -2,7 +2,6 @@ import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { RedirectService } from '@/services/redirect.service'
 import moment from 'moment'
 @Injectable()
-
 export class TeamService implements RouteGuard {
   constructor(private redirectService: RedirectService) {}
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
