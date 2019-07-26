@@ -182,7 +182,7 @@ import moment from 'moment'
 import { TransferService } from './transfer.service'
 import { UserService } from '@/services/user.service'
 import { RuleConfig } from '@/constants/rule'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, get } from 'lodash-es'
 import { PatternService } from '@/services/pattern.service'
 export default {
   name: 'ModalSoldCourseTransfer',
@@ -246,12 +246,12 @@ export default {
       if (this.isPackage) {
         this.endTime = moment(this.packageTransferInfo.course_end_time * 1000)
         this.poundage = this.packageTransferInfo.poundage
-        this.transferService.getMemberPaymentList({ member_id: res.info.order_id, product_type: 4 }).subscribe()
+        this.transferService.getMemberPaymentList({ member_id: get(res, 'info.transfer_info.member_id'), product_type: 4 }).subscribe()
       }
       if (this.isPersonal) {
         this.endTime = moment(res.info.end_time * 1000)
         this.poundage = res.info.poundage
-        this.transferService.getMemberPaymentList({ member_id: res.info.order_id, product_type: 2 }).subscribe()
+        this.transferService.getMemberPaymentList({ member_id: get(res, 'info.member_id'), product_type: 2 }).subscribe()
       }
     })
   },
