@@ -1,9 +1,9 @@
 <template>
   <div :class="b()" >
-     <st-panel
+    <st-panel
         :tabs="[
-          { label: '营收', route: { name: 'brand-stat-revenue',query:{id:$route.query.id} } },
-          { label: '订单', route: { name: 'shop-member-info-follow-history',query:{id:$route.query.id} }},
+          { label: '营收', route: { name: 'brand-stat-revenue' } },
+          { label: '订单', route: { name: 'brand-stat-order' }},
           { label: '用户', route: { name: 'shop-member-info-sold',query:{id:$route.query.id} } },
           { label: '课程', route: { name: 'shop-member-info-reserve',query:{id:$route.query.id} } },
           { label: '营销', route: { name: 'shop-member-info-sales-interests' ,query:{id:$route.query.id}} },

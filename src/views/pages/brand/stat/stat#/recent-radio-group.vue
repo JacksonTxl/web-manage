@@ -50,6 +50,8 @@ export default {
     }
     if (this.value.day) {
       this.recent = this.value.day
+    } else {
+      this.recent = 7
     }
   },
   methods: {
