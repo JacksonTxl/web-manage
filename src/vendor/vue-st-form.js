@@ -18,7 +18,7 @@ export default {
                 form.validateFieldsAndScroll(options, (errs, values) => {
                   try {
                     if (errs) {
-                      resolve(errs)
+                      reject(errs)
                     } else {
                       resolve(values)
                     }
