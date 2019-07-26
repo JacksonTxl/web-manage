@@ -22,7 +22,10 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators({
       name: {
-        rules: [{ validator: this.nameValidator }],
+        rules: [
+          { validator: this.nameValidator, transform: val => val.trim() }
+        ],
+
         initialValue: '123'
       },
       age: {
@@ -39,7 +42,6 @@ export default {
   methods: {
     onSubmit() {
       this.form.validate().then(values => {
-        '.'.join(',')
         console.log(values)
       })
     },
