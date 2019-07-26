@@ -88,9 +88,6 @@ export default {
       this.onSearch()
     }
   },
-  created() {
-    this.switchService.getShopList().subscribe()
-  },
   computed: {
     currentShopId() {
       return this.shop.id

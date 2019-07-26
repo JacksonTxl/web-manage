@@ -1,7 +1,12 @@
 <template>
   <div :class="bPage()">
     <div :class="bPage('count')"></div>
-    <recent-radio-group @change="recentChange"></recent-radio-group>
+    <a-row class="mg-b16">
+      <a-col :span="4">
+        <st-button type="primary" class="shop-member-list-button">批量导出</st-button>
+      </a-col>
+      <recent-radio-group class="ta-r" @change="recentChange"></recent-radio-group>
+    </a-row>
     <st-table
       :page="page"
       @change="onTableChange"

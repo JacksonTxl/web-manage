@@ -21,7 +21,7 @@
       </div>
       <span class="total-num">{{item.num.value}}{{item.num.name}}</span>
     </div>
-    <div :class="bPage('payway')" >
+    <div :class="bPage('payway')">
       <div
         :class="bPage('payway-item')"
         class="mg-r8"
@@ -59,13 +59,16 @@ export default {
       query: {
         sms_num: 0,
         pay_price: '',
-        pay_channel: 0
+        pay_channel: 1
       }
     }
   },
   created() {
     this.SmsPayService.getSmsPayDetail().subscribe(res => {
       this.info = res
+      this.query.sms_num = this.info.price_setting[0].num.value
+      this.query.pay_price = this.info.price_setting[0].pay_price.value
+      this.query.pay_channel = this.info.publish_channel[0].value
     })
   },
   methods: {
@@ -73,7 +76,8 @@ export default {
       this.show = false
     },
     save() {
-      this.SmsPayService.postSmsPay({ ...this.query }).subscribe(res => {})
+      this.$emit('change', this.query)
+      this.show = false
     },
     getCurPayInfo(para, index) {
       this.curIndex = index

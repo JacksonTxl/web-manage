@@ -884,7 +884,7 @@ export const routeMapConfig = {
       end_time: { type: String, default: '' }
     }
   },
-  'shop-stat-index'(routeConfig: RouteConfig) {
+  'shop-stat'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '报表'
   },
   'shop-stat-revenue'(routeConfig: RouteConfig) {
@@ -902,7 +902,16 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       day: { type: Number },
       page: { type: Number, default: 1 },
-      size: { type: Number, default: 20 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'brand-stat-revenue'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '营收统计'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: -1 },
+      page: { type: Number, default: -1 },
+      size: { type: Number, default: -1 },
+      day: { type: Number, default: 0 },
       start_date: { type: String, default: '' },
       end_date: { type: String, default: '' }
     }

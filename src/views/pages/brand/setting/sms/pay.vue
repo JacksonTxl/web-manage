@@ -10,7 +10,7 @@
             v-modal-link="{
                 name: 'brand-setting-sms-pay',
                 on: {
-                  change: onSelectShopComplete
+                  change: postSmsPay
                 }
               }"
           >去充值</st-button>
@@ -20,14 +20,7 @@
           <span :class="bCount('num')">{{info.sms_sended}}</span>
         </div>
       </div>
-      <div :class="bCount('setting')">
-        <div>[短信签名]</div>
-        <a-input class="mg-t8 mg-b8" :value="info.sms_sign" placeholder="请设置短信签名" />
-        <div class="ta-r">
-          <span class="mg-r8 color-primary">取消</span>
-          <span class="color-primary">保存</span>
-        </div>
-      </div>
+      <SmsSign :signVal="info.sms" @SmsSign="getSmsSign"></SmsSign>
     </div>
     <st-table
       :page="page"
@@ -43,7 +36,7 @@ import { RouteService } from '@/services/route.service'
 import { PayService } from './pay.service'
 import { columns } from './pay.config.ts'
 import tableMixin from '@/mixins/table.mixin'
-
+import SmsSign from './pay#/sign'
 const pageName = 'page-setting-sms-pay'
 export default {
   mixins: [tableMixin],
@@ -67,21 +60,37 @@ export default {
   },
   data() {
     return {
-      resData: {
-        list: [
-          {
-            id: '11'
-          }
-        ]
-      }
+      isShowSmsSetting: true
     }
   },
   computed: {
     columns
   },
+  components: {
+    SmsSign
+  },
+  created() {},
   methods: {
-    getInfo() {},
-    onSelectShopComplete() {}
+    // 获取首页信息
+    getSmsPayInfo() {
+      return this.PayService.getSmsPayInfo().subscribe()
+    },
+    onSelectShopComplete() {},
+    // 短信签名
+    postSmsSign(para) {
+      this.PayService.postSmsSign({ sign: para }).subscribe(res => {
+        this.getSmsPayInfo()
+      })
+    },
+    getSmsSign(para) {
+      this.postSmsSign(para)
+    },
+    // 短信购买
+    postSmsPay(para) {
+      return this.PayService.postSmsPay({ ...para }).subscribe(res => {
+        this.getSmsPayInfo()
+      })
+    }
   }
 }
 </script>
