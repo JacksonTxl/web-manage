@@ -26,7 +26,7 @@
         <!-- <a-col :span="4"> -->
         <div :class="action('addbox')">
           <a v-modal-link="{
-              name: 'coach-select',
+              name: 'coach-recommend',
               props: {
                 selected
               },

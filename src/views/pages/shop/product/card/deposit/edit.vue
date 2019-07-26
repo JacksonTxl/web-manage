@@ -233,7 +233,8 @@ export default {
       addLoading: this.editService.loading$,
       shopName: this.userService.shop$,
       cardInfo: this.editService.cardInfo$,
-      deposit_card: user.depositCardEnums$
+      deposit_card: user.depositCardEnums$,
+      member_card: this.userService.memberCardEnums$
     }
   },
   bem: {
@@ -265,7 +266,7 @@ export default {
         // 卡背景
         bg_image: {
           image_id: 0,
-          image_key: 'image/VZ0RGBwTX7FA1yKb.png',
+          image_key: this.member_card.card_bg_list.value[0].image_key,
           image_url: '',
           index: 1
         },

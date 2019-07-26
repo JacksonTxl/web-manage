@@ -165,6 +165,7 @@
 </template>
 <script>
 import { UserService } from '@/services/user.service'
+import { TitleService } from '@/services/title.service'
 import moment from 'moment'
 import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
@@ -174,7 +175,8 @@ export default {
   serviceInject() {
     return {
       addService: AddService,
-      userService: UserService
+      userService: UserService,
+      titleService: TitleService
     }
   },
   rxState() {
@@ -231,8 +233,10 @@ export default {
         this.setFieldsValue()
         this.isEditMode = true
       })
+      this.titleService.SET_TITLE('编辑优惠券')
     } else {
       this.isEditMode = false
+      this.titleService.SET_TITLE('新增优惠券')
     }
   },
   methods: {
@@ -282,6 +286,9 @@ export default {
         if (!value) {
           return '请填写使用条件'
         }
+        if (+value <= 0) {
+          return '满减门槛不能小于0'
+        }
         if (couponPirce > +value) {
           return '满减门槛不能低于优惠券面额'
         }
@@ -313,6 +320,9 @@ export default {
         if (!value) {
           return '请输入每人限领数量'
         }
+        if (+value <= 0) {
+          return '每人限领数量不能小于0'
+        }
       }
     },
     setFieldsValue() {
@@ -328,18 +338,17 @@ export default {
         coupon_name: this.info.coupon_name,
         price: +this.info.price,
         use_type: this.info.use_type,
-        full_price: this.info.full_price,
+        full_price: this.info.full_price || '',
         number: this.info.number,
         valid_days: this.info.valid_days,
         is_limit: this.info.is_limit,
-        person_limit: this.info.person_limit
+        person_limit: this.info.person_limit || ''
       })
     },
     // 保存
     onSubmit() {
       this.form.validate().then(values => {
         let params = {}
-        console.log('1')
         if (this.isEditMode) {
           params.id = this.$route.query.id
           params.before_number = this.info.number
@@ -364,7 +373,6 @@ export default {
         }
         if (this.isEditMode) {
           this.addService.editMarketingCoupon(params).subscribe(res => {
-            console.log('edit success')
             // 编辑成功
             this.$router.push({
               path: '/brand/marketing/plugin/coupon/list',
@@ -373,7 +381,6 @@ export default {
           })
         } else {
           this.addService.addMarketingCoupon(params).subscribe(res => {
-            console.log('add success')
             // 新增成功
             this.$router.push({
               path: `/brand/marketing/plugin/coupon/list`,
