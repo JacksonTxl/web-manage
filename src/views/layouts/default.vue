@@ -42,8 +42,8 @@
     </aside>
     <header class="layout-default-body__header">
       <div class="layout-default-body__location">
-        <template v-if="pageTitle">
-          <h2>{{pageTitle}}</h2>
+        <template v-if="title">
+          <h2>{{title}}</h2>
           <span class="layout-default-body__line"></span>
         </template>
         <a-breadcrumb separator="-">
@@ -119,6 +119,7 @@ import { find } from 'lodash-es'
 import { LoginService } from '../pages/account/login.service'
 import { UserService } from '@/services/user.service'
 import { TokenService } from '@/services/token.service'
+import { TitleService } from '@/services/title.service'
 // import FastEntry from './entry#/fast-entry'
 
 export default {
@@ -126,7 +127,8 @@ export default {
     return {
       loginService: LoginService,
       userService: UserService,
-      tokenService: TokenService
+      tokenService: TokenService,
+      titleService: TitleService
     }
   },
   rxState() {
@@ -134,7 +136,8 @@ export default {
       user: this.userService.user$,
       brand: this.userService.brand$,
       shop: this.userService.shop$,
-      theme: this.userService.theme$
+      theme: this.userService.theme$,
+      title: this.titleService.title$
     }
   },
   data() {
@@ -151,9 +154,6 @@ export default {
         ...menuBreadCrumb,
         ...parentBreadCrumb
       ]
-    },
-    pageTitle() {
-      return this.$route.meta.title
     },
     isInShop() {
       return this.shop.id
