@@ -1,16 +1,14 @@
 <template>
   <div>
-
-    <time-picker></time-picker>
-    <div class="zlx" @mouseleave="onMouseLeave"></div>
+    <calendar></calendar>
   </div>
 </template>
 
 <script>
-import TimePicker from '@/views/pages/test/zlx/timepicker#/index'
+import Calendar from '@/views/biz-components/schedule/calendar'
 export default {
   components: {
-    TimePicker
+    Calendar
   },
   methods: {
     onMouseLeave() {

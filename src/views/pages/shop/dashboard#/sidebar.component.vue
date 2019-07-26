@@ -1,7 +1,7 @@
 <template>
     <div :class="sidebar()">
       <div :class="sidebar('shadow')">
-        <a href="http://mp.weixin.qq.com/mp/homepage?__biz=MzI5NjA5MTU0NA==&hid=6&sn=fc366fb9920c736c4804ef7040becdad&scene=18#wechat_redirect" target="_blank">
+        <a href="https://mp.weixin.qq.com/s/bvAniLXAEuswEfehHVJ7bw" target="_blank">
         <img width="280px" height="186px" :src="pic"
           alt="">
           </a>
@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     download() {
-      window.open('https://pan.baidu.com/s/1HEmRnPxghuooXs8J0QWLWQ', '_blank')
+      window.open('https://www.styd.cn/m/378564/training/info/1008082?act=preview&is_shared=1', '_blank')
     }
   }
 }

@@ -2,9 +2,9 @@
   <div class="page-staff">
     <section class="page-staff-lf">
       <header class="staff-lf__search">
-        <!-- <a-select showSearch allowClear placeholder="请输入部门名称" style="width:226px" @search="handleDepartmentSearch" @change="handleDepartmentSearchChange">
+        <a-select allowClear placeholder="请选择部门" style="width:226px" @search="handleDepartmentSearch" @change="handleDepartmentSearchChange">
           <a-select-option v-for="v in departmentSearchList" :key="v.id">{{v.name}}</a-select-option>
-        </a-select> -->
+        </a-select>
       </header>
       <main class="staff-lf__tree">
         <st-organ-tree
@@ -89,9 +89,16 @@ export default {
       return {
         name: this.brand.name,
         id: 0,
-        count: num,
+        count: this.departmentCount,
         children: this.treeList
       }
+    },
+    departmentCount() {
+      let num = 0
+      this.departmentList.forEach(department => {
+        num += department.count
+      })
+      return num
     }
   },
   data() {

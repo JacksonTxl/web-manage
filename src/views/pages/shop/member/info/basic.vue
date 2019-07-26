@@ -59,6 +59,7 @@
             <label v-if="basicInfo.province_name">
               {{ basicInfo.province_name }}/{{ basicInfo.city_name }}/{{ basicInfo.district_name }}
             </label>
+            {{ basicInfo.living_address }}
           </st-info-item>
         </st-info>
       </a-col>

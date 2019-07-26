@@ -11,11 +11,13 @@ export const columns = [
   {
     title: '课程名称',
     dataIndex: 'course_name',
+    width: 200,
     scopedSlots: { customRender: 'course_name' }
   },
   {
     title: '时长（分钟）',
     sorter: true,
+    width: 130,
     align: 'right',
     dataIndex: 'duration'
   },

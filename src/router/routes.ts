@@ -10,6 +10,7 @@ import { RedirectService } from '@/services/redirect.service'
 import { routeMapConfig } from './route-map.config'
 
 import pageRoutes from './auto-generated-routes'
+import { TrackService } from '@/services/track.service'
 
 const routes: any[] = [
   {
@@ -57,6 +58,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       prependGuards(route, [
         NProgressService,
         HotReleaseService,
+        TrackService,
         TitleService,
         RouteService
       ])
@@ -64,6 +66,7 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       const appGuards: any[] = [
         NProgressService,
         HotReleaseService,
+        TrackService,
         TokenService,
         UserService,
         TitleService,

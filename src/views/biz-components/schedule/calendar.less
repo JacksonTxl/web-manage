@@ -1,0 +1,283 @@
+.schedule-calendar{
+  position: relative;
+  &__toolbar{
+    width:100%;
+    height:64px;
+    background:rgba(255,255,255,1);
+    box-shadow: 0px 10px 20px 0px rgba(196, 193, 219, 0.4);
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  &__content{
+    padding: 0 16px;
+    background: #fff;
+    display: flex;
+    .pd-t(64px);
+    .content{
+      &__time-collection{
+        opacity: 0;
+        .pd-t(40px);
+        flex: none;
+        width: 74px;
+      }
+      &__day-group{
+        flex: 1
+      }
+    }
+    
+    .item.active {
+      background: #f6f7fa;
+    }
+    .con-item {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      border-radius: 2px;
+      box-shadow: 0px 0px 10px 0px rgba(56, 62, 68, 0.1);
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      cursor: pointer;
+    }
+    .con-item {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        border-radius: 2px;
+        box-shadow: 0px 0px 10px 0px rgba(56, 62, 68, 0.1);
+        background: rgba(255, 255, 255, 0.9);
+        display: flex;
+        cursor: pointer;
+      }
+      .con-item .bar {
+        width: 2px;
+        background: blue;
+      }
+      .con-item {
+        .bar.before {
+          background: #DDDDDD;
+        }
+        .bar.current {
+          background: #FF805B;
+        }
+        .bar.after {
+          background: #3AA0FF;
+        }
+      }
+      .con-item .content {
+        padding: 8px;
+        flex: 1;
+        overflow: hidden;
+      }
+      .con-item:hover .item__extra {
+        opacity: 1;
+        visibility: initial;
+      }
+      .item__extra {
+        position: absolute;
+        opacity: 0;
+        visibility: hidden;
+        left: 100%;
+        top: 0;
+        width: 200px;
+        height: 150px;
+        transition: all 0.3s;
+        background: white;
+        z-index: 2;
+        overflow: hidden;
+        margin-left: 4px;
+        box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.15);
+      }
+      .item__extra:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: blue;
+      }
+      .course__name {
+        font-size: 12px;
+        line-height: 20px;
+        color: #252a2e;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .course__coach {
+        color: #9bacb9;
+        font-size: 12px;
+        line-height: 20px;
+      }
+
+      .cell:hover .add {
+        opacity: 1;
+        cursor: pointer;
+      }
+      .item-group--has-2 .con-item:nth-child(1) {
+        margin-right: 16px;
+      }
+      .item-group--has-2 .con-item:nth-child(2) {
+        margin-left: 40%;
+      }
+
+      .item-group--has-3 .con-item:nth-child(1) {
+        margin-right: 16px;
+      }
+      .item-group--has-3 .con-item:nth-child(2) {
+        margin-left: 40%;
+      }
+      .item-group--has-3 .con-item:nth-child(3) {
+        margin-left: 50%;
+      }
+
+      .item-group--has-4 .con-item:nth-child(1) {
+        margin-right: 16px;
+      }
+      .item-group--has-4 .con-item:nth-child(2) {
+        margin-left: 40%;
+      }
+      .item-group--has-4 .con-item:nth-child(3) {
+        margin-left: 50%;
+      }
+      .item-group--has-4 .con-item:nth-child(4) {
+        margin-left: 60%;
+      }
+      .item-group-day .con-item{
+        width: 13.8%
+      }
+    .content__day-group{
+      display: flex;
+      .time-group{
+        width: 100%;
+      }
+      .item-group-day.item-group--has-2 .con-item:nth-child(1) {
+        margin-right: 16px;
+      }
+      .item-group-day.item-group--has-2 .con-item:nth-child(2) {
+        margin-left: 13.8%;
+      }
+
+      .item-group-day.item-group--has-3 .con-item:nth-child(1) {
+        margin-right: 16px;
+      }
+      .item-group-day.item-group--has-3 .con-item:nth-child(2) {
+        margin-left: 40%;
+      }
+      .item-group-day.item-group--has-3 .con-item:nth-child(3) {
+        margin-left: 50%;
+      }
+
+      .item-group-day.item-group--has-4 .con-item:nth-child(1) {
+        margin-right: 16px;
+      }
+      .item-group-day.item-group--has-4 .con-item:nth-child(2) {
+        margin-left: 40%;
+      }
+      .item-group-day.item-group--has-4 .con-item:nth-child(3) {
+        margin-left: 50%;
+      }
+      .item-group-day.item-group--has-4 .con-item:nth-child(4) {
+        margin-left: 60%;
+      }
+    }
+    .day{
+      display: flex;
+      position: relative;
+      flex: 1;
+      .date{
+        height: 40px;
+        text-align: center;
+        .lh(40px);
+        font-size:12px;
+        font-weight:500;
+        color:rgba(37,42,46,1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .date-button{
+          display: none;
+          width:136px;
+          height:28px;
+          background:rgba(255,255,255,1);
+          border-radius:4px;
+          border:1px solid rgba(205,212,223,1);
+          .lh(28px);
+        }
+        .date-text{
+          display: block;
+        }
+      }
+      .date:hover{
+        .date-text{
+          display: none;
+        }
+        .date-button{
+          display: block;
+        }
+      }
+      
+      // .unit,
+      // .time{
+      //   .h(82px);
+      // }
+      
+      .unit{
+        border: 1px solid rgba(0,0,0,0.05);
+        margin: 0 0 -1px -1px;
+        padding-top: 50%;
+        position: relative;
+        .unit-add{
+          .s(100%, 100%);
+          position: absolute;
+          top: 0;
+          left: 0;
+          display: none;
+        }
+      }
+      .unit.first-unit.unit-day{
+        padding-top: 0;
+      }
+      .add-button-day-group{
+        display: flex;
+        .add-button-day-box{
+          position: relative;
+          flex: 1;
+          padding-top: 7.3%;
+          .unit-add-day{
+            display: none;
+            position: absolute;
+            top:0;
+            left:0;
+            width: 100%;
+          }
+          &:hover{
+            .unit-add-day{
+              display: flex;
+            }
+          }
+        }
+      }
+      .first-unit:nth-child(n){
+        position: relative;
+        .time{
+          position: absolute;
+          top: 0;
+          left: -56px;
+          color: #9BACB9;
+        }
+      }
+      .unit:hover{
+        .unit-add{
+          display: flex;
+        }
+      }
+    }
+  }
+}

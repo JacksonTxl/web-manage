@@ -1,7 +1,8 @@
 
 <template>
   <div style="display: inherit;">
-    <st-input-number v-model="value.min" :float="true" :min="minMax.min" style="width:130px" @change="onChangeMin">
+    <st-input-number v-model="value.min" :float="true" :min="minMax.min" style="width:130px" >
+      <!-- @change="onChangeMin" -->
       <template slot="addonAfter">{{company}}</template>
     </st-input-number>
     <div style="padding:0 10px">~</div>

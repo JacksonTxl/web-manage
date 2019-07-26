@@ -458,10 +458,12 @@ export default {
     },
     // 计算实付金额
     getPrice(coupon, advance, reduce) {
+      const memberId = this.form.getFieldValue('memberId')
       this.saleMemberCardService.currentPriceAction$.dispatch({
         product_id: this.id,
         product_type: this.info.contract_type,
-        coupon_id: coupon || undefined,
+        coupon_id: coupon ? coupon.id : undefined,
+        member_id: memberId || undefined,
         advance_id: advance || undefined,
         reduce_amount: reduce || undefined,
         specs_id: this.selectedNorm.id

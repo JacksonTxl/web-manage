@@ -30,7 +30,7 @@
             <td>{{item.course_name}}</td>
             <td>{{item.course_num_remain}}</td>
             <td>
-              <st-form-item class="" labelWidth="0" labelGutter="0">
+              <st-form-item labelWidth="0" labelGutter="0">
                 <st-input-number v-decorator="[`num-${index}`,{rules: [{
                   required: true,
                   message: '请输入课时',
@@ -110,6 +110,7 @@ export default {
           this.courseList.forEach(i => {
             courseInfo.push({
               id: i.id,
+              product_type: i.product_type,
               course_num_remain: i.courseNum
             })
           })
