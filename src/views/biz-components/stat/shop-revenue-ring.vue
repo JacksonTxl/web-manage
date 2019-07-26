@@ -20,6 +20,10 @@ export default {
       type: Array,
       default: () => []
     },
+    sum: {
+      type: [Number, String],
+      default: () => ''
+    },
     height: {
       type: Number,
       default: 280
@@ -83,7 +87,7 @@ export default {
       this.chart.guide().html({
         position: ['50%', '50%'],
         html: () => {
-          const sum = this.dv.sum('value')
+          const sum = this.sum
           return (
             `<div class='guide'>` +
             `<div class='guide-title'><span class='guide-value'>${sum}</span><span class='guide-unit'>${
