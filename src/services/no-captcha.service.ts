@@ -17,7 +17,7 @@ export class NoCaptchaService {
       //滑动验证长度配置
       // customWidth: 300,
       //刮刮卡配置项
-      // width: 300,
+      width: 336,
       height: 100,
       elements: [
         '//img.alicdn.com/tfs/TB17cwllsLJ8KJjy0FnXXcFDpXa-50-74.png',
