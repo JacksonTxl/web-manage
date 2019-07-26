@@ -21,8 +21,12 @@
         </a-dropdown>
       </st-form-item>
       <st-form-item class="mg-b0">
-        <no-captcha id="no-captcha-2"/>
+        <!-- 验证浮层 -->
+        <div id="no-captcha"></div>
       </st-form-item>
+      <!-- <st-form-item class="mg-b0">
+        <no-captcha id="no-captcha-2"/>
+      </st-form-item> -->
       <st-form-item :class="mobile('captcha')" class="mg-b16">
         <a-input size="large" :class="mobile('captcha-input')" placeholder="请输入验证码" v-decorator="rules.captcha" />
         <span :class="mobile('captcha-button')" @click="onClickCaptcha">{{buttonText}}</span>
@@ -46,7 +50,6 @@
 import { LoginService } from '../login.service'
 import { rules } from './mobile.config'
 import { PatternService } from '@/services/pattern.service'
-import NoCaptcha from './no-captcha'
 export default {
   name: 'LoginMobile',
   serviceInject() {
@@ -113,6 +116,7 @@ export default {
       }, 1000)
     },
     login() {
+      getNC()
       this.form.validateFields((err, values) => {
         if (!err) {
           values.country_code_id = 86
@@ -132,9 +136,6 @@ export default {
   },
   mounted() {
     this.loginService.getCaptcha({})
-  },
-  components: {
-    // NoCaptcha
   }
 }
 </script>

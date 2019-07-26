@@ -8,7 +8,8 @@
         <a-input size="large" type="password" placeholder="密码" v-decorator="rules.password"/>
       </st-form-item>
       <st-form-item class="mg-b0">
-        <no-captcha/>
+        <!-- 验证浮层 -->
+        <div id="no-captcha"></div>
       </st-form-item>
       <!-- <st-form-item  :class="loginUser('pass')" class="mg-b16">
         <div :class="loginUser('pass-content')">
@@ -39,8 +40,6 @@
 <script>
 import { LoginService } from '../login.service'
 import { rules } from './user.config'
-import NoCaptcha from './no-captcha'
-import { NoCaptchaService } from '@/services/no-captcha.service'
 
 export default {
   bem: {
@@ -49,8 +48,7 @@ export default {
   name: 'LoginUser',
   serviceInject() {
     return {
-      loginService: LoginService,
-      noCaptchaService: NoCaptchaService
+      loginService: LoginService
     }
   },
   rxState() {
@@ -70,23 +68,29 @@ export default {
   },
   methods: {
     login() {
-      const params = {
-        nvc_val: getNVCVal()
-      }
-      console.log('nvc_val', params.nvc_val)
-      // getNC()
-      this.loginService.traceCode(params).subscribe(
-        res => {
-          this.form.validateFields((err, values) => {
-            if (!err) {
-              this.$emit('login', values)
-            }
-          })
-        },
-        (res) => {
-          this.noCaptchaService.callCaptcha(res.code)
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          this.$emit('login', values)
         }
-      )
+      })
+      // return
+      // const params = {
+      //   nvc_val: getNVCVal()
+      // }
+      // console.log('nvc_val', params.nvc_val)
+      // // getNC()
+      // this.loginService.traceCode(params).subscribe(
+      //   res => {
+      //     this.form.validateFields((err, values) => {
+      //       if (!err) {
+      //         this.$emit('login', values)
+      //       }
+      //     })
+      //   },
+      //   (res) => {
+      //     this.noCaptchaService.callCaptcha(res.code)
+      //   }
+      // )
     },
     onClickFindPassword() {
       this.$emit('findps')
@@ -94,9 +98,6 @@ export default {
     onClickThirdChange(key) {
       this.$emit('third', key)
     }
-  },
-  components: {
-    NoCaptcha
   }
 }
 </script>

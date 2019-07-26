@@ -1,10 +1,11 @@
 import { MessageService } from '@/services/message.service'
-import { Injectable } from 'vue-service-app'
+import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { LoginApi, LoginAccountInput, LoginPhoneInput, TraceCodeInput } from '@/api/login'
+import { LoginApi, LoginAccountInput, LoginPhoneInput } from '@/api/login'
 import { TokenService } from '@/services/token.service'
+import { NoCaptchaService } from '@/services/no-captcha.service'
 
 interface StaffState {
   name: string
@@ -14,14 +15,17 @@ interface StaffState {
 export class LoginService extends Store<StaffState> {
   state$: State<StaffState>
   name$: Computed<string>
+  nvcVal$ = new State('')
   constructor(
     private loginApi: LoginApi,
     private tokenService: TokenService,
-    private msg: MessageService
+    private msg: MessageService,
+    private noCaptchaService: NoCaptchaService
   ) {
     super()
     this.state$ = new State({})
     this.name$ = new Computed(this.state$.pipe(pluck('name')))
+    this.nvcVal$ = this.noCaptchaService.nvcVal$
   }
   @Effect()
   loginAccount(data: LoginAccountInput) {
@@ -46,7 +50,8 @@ export class LoginService extends Store<StaffState> {
   getCaptcha(params: any) {
     return this.loginApi.getCaptcha(params)
   }
-  traceCode(params: TraceCodeInput) {
-    return this.loginApi.traceCode(params)
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.noCaptchaService.init()
+    next()
   }
 }

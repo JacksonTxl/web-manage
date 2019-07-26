@@ -24,8 +24,8 @@
           <ul class="page-login-tabs mg-b24">
             <li v-for="item in loginTypes" :key="item.key" class="page-login-tab-item" :class="{'page-login-tab-item--active': item.key === loginType}"><span @click.stop="onClickChangeType(item.key)">{{item.name}}</span></li>
           </ul>
-          <login-user @findps="onFindPassword" @third="onThird" @login="onLogin" v-show="loginType==='user'"></login-user>
-          <login-mobile v-show="loginType==='mobile'"></login-mobile>
+          <login-user @findps="onFindPassword" @third="onThird" @login="onLogin" v-if="loginType==='user'"></login-user>
+          <login-mobile v-if="loginType==='mobile'"></login-mobile>
         </div>
 
         <div v-if="loginType === 'mobilefind' || loginType === 'emailfind'" class="login-user-and-mobile">
@@ -53,13 +53,16 @@ import { AuthService } from '@/services/auth.service'
 import { LoginService } from './login.service'
 import mobile from './login#/mobile'
 import user from './login#/user'
+import { NoCaptchaService } from '@/services/no-captcha.service'
+
 export default {
   name: 'Login',
   serviceInject() {
     return {
       loginService: LoginService,
       userService: UserService,
-      authService: AuthService
+      authService: AuthService,
+      noCaptchaService: NoCaptchaService
     }
   },
   data() {
@@ -76,7 +79,8 @@ export default {
   },
   rxState() {
     return {
-      loading: this.loginService.loading$
+      loading: this.loginService.loading$,
+      nvcVal: this.noCaptchaService.nvcVal$
     }
   },
   computed: {
@@ -99,7 +103,15 @@ export default {
       this.loginType = 'user'
     },
     onLogin(values) {
+      console.log('get', getNVCVal())
+      values.nvc_val = this.nvcVal || getNVCVal()
       this.loginService.loginAccount(values).subscribe(res => {
+        const code = +res.code
+        if ([400, 600].includes(code)) {
+          this.noCaptchaService.callCaptcha(code)
+          return
+        }
+        this.noCaptchaService.resetNVC()
         this.userService.SET_FIRST_INITED(false)
         if (res.have_phone) {
           this.$router.push('/')
