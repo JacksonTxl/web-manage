@@ -12,29 +12,39 @@
     <div slot="prepend" class="mg-b24">
       <st-search-panel>
         <div :class="bSelect()">
-          <span style="width:90px;">通知对象:</span>
-          <st-search-radio v-model="query.notify_type" :list="notifyType" />
-        </div>
-        <div :class="bSelect()">
-          <span style="width:90px;">发送状态：</span>
-          <st-search-radio v-model="query.send_status" :list="sendStatus" />
-        </div>
-        <div :class="bSelect()">
-          <span style="width:90px;">发送时间：</span>
-          <a-date-picker
-            format="YYYY-MM-DD"
-            placeholder="开始日期"
-            :showToday="false"
-            v-model="query.start_time"
-            @change="startdatePickerChange"
-          />&nbsp;~&nbsp;
-          <a-date-picker
-            format="YYYY-MM-DD"
-            placeholder="结束日期"
-            :showToday="false"
-            v-model="query.end_time"
-            @change="enddatePickerChange"
+          <span :class="bSelect('label')">通知对象:</span>
+          <st-search-radio
+            :class="bSelect('val')"
+            v-model="query.notify_type"
+            :list="notifyType"
           />
+        </div>
+        <div :class="bSelect()">
+          <span :class="bSelect('label')">发送状态：</span>
+          <st-search-radio
+            :class="bSelect('val')"
+            v-model="query.send_status"
+            :list="sendStatus"
+          />
+        </div>
+        <div :class="bSelect()">
+          <span :class="bSelect('label')">发送时间：</span>
+          <div :class="bSelect('val')">
+            <a-date-picker
+              format="YYYY-MM-DD"
+              placeholder="开始日期"
+              :showToday="false"
+              v-model="query.start_time"
+              @change="startdatePickerChange"
+            />&nbsp;~&nbsp;
+            <a-date-picker
+              format="YYYY-MM-DD"
+              placeholder="结束日期"
+              :showToday="false"
+              v-model="query.end_time"
+              @change="enddatePickerChange"
+            />
+          </div>
         </div>
         <div slot="button">
           <st-button type="primary" @click="onSearch">查询</st-button>

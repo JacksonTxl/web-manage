@@ -69,7 +69,9 @@ export default {
   components: {
     SmsSign
   },
-  created() {},
+  created() {
+    this.onSearch()
+  },
   methods: {
     // 获取首页信息
     getSmsPayInfo() {

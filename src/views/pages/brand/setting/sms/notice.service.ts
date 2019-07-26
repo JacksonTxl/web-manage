@@ -4,20 +4,26 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { AuthService } from '@/services/auth.service'
 import { RedirectService } from '@/services/redirect.service'
-interface SetState {
-}
+import { NoticeApi } from '@/api/v1/setting/sms/notice'
+interface SetState {}
 @Injectable()
 export class NoticeService extends Store<SetState> implements RouteGuard {
-  state$: State<SetState>
+  list$ = new State([])
   authTabs$ = this.redirectService.getAuthTabs$('brand-setting-sms-notice')
   constructor(
-    private authService: AuthService,
+    private NoticeApi: NoticeApi,
     private redirectService: RedirectService
   ) {
     super()
-    this.state$ = new State({})
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    next()
+  getNoticeList() {
+    return this.NoticeApi.getNoticeList().pipe(
+      tap((res: any) => {
+        this.list$.commit(() => res.list)
+      })
+    )
+  }
+  beforeEach(to: ServiceRoute) {
+    return this.getNoticeList()
   }
 }

@@ -884,6 +884,13 @@ export const routeMapConfig = {
       end_time: { type: String, default: '' }
     }
   },
+  'brand-setting-sms-pay'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '短信列表'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
   'shop-stat'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '报表'
   },

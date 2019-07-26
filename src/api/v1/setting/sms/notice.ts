@@ -1,17 +1,13 @@
 import { Api } from '@/api/api'
 
-export class PayApi extends Api {
+export class NoticeApi extends Api {
   // 通知模版列表
-  getNoticeList(query: {}) {
-    return this.http.get('v1/setting/notice', {
-      query: {
-        ...query
-      }
-    })
+  getNoticeList() {
+    return this.http.get('/v1/setting/sms/notice')
   }
   // 通知模版编辑
   putNotice(params: PutNoticeParams) {
-    return this.http.put('v1/setting/notice', { params })
+    return this.http.put('/v1/setting/sms/notice', { params })
   }
 }
 

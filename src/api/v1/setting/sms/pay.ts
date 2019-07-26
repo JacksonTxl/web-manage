@@ -1,8 +1,8 @@
 import { Api } from '@/api/api'
 
 export class PayApi extends Api {
-  getSmsPayInfo() {
-    return this.http.get('/v1/setting/sms/pay')
+  getSmsPayInfo(query: GetSmsPayInfoQuery) {
+    return this.http.get('/v1/setting/sms/pay', { query })
   }
   // 短信购买详情
   getSmsPayDetail() {
@@ -24,4 +24,8 @@ export interface PostSmsPayParams {
 
 export interface PostSmsSignParams {
   sign: string
+}
+export interface GetSmsPayInfoQuery {
+  page: number
+  size: number
 }
