@@ -19,22 +19,27 @@
 <script>
 export default {
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators({
+      name: {
+        rules: [{ validator: this.nameValidator }],
+        initialValue: '123'
+      },
+      age: {
+        rules: [{ validator: this.ageValidator }],
+        initialValue: '6'
+      }
+    })
+
     return {
-      form: this.$stForm.create(),
-      decorators: this.$stForm.createDecorators({
-        name: {
-          validator: this.nameValidator
-        },
-        age: {
-          validator: this.ageValidator
-        }
-      })
+      form,
+      decorators
     }
   },
-
   methods: {
     onSubmit() {
       this.form.validate().then(values => {
+        '.'.join(',')
         console.log(values)
       })
     },
@@ -42,13 +47,9 @@ export default {
       if (!value) {
         return '请输入名称'
       }
-      console.log(rule, value, values)
     },
     ageValidator(rule, value, values) {
-      if (!value) {
-        return '请输入年龄'
-      }
-      console.log(rule, value, values)
+      return Promise.resolve()
     }
   }
 }

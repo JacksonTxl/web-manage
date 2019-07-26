@@ -1,4 +1,4 @@
-import { isPlainObject, isString } from 'lodash-es'
+import { isPlainObject, isString, isArray, cloneDeep } from 'lodash-es'
 
 export default {
   install(Vue) {
@@ -28,68 +28,78 @@ export default {
                 })
               })
             }
-            return form
-          },
-          createDecorators: options => {
-            if (!isPlainObject(options)) {
-              throw new Error(
-                `[vue-st-form]#createDecorators shoud pass an object but got ${typeof options}`
-              )
-            }
-            const _decorators = {}
-            Object.keys(options).forEach(key => {
-              const opt = options[key]
-              if (opt.rules) {
+            form.decorators = function(options) {
+              if (!isPlainObject(options)) {
                 throw new Error(
-                  '[vue-st-form]#createDecorators dont support [rules],just use validator instead'
+                  `[vue-st-form]#createDecorators shoud pass an object but got ${typeof options}`
                 )
               }
-              const decoOpt = opt
-              if (opt.validator) {
-                decoOpt.rules = [
-                  {
-                    validator: function(rule, value, callback) {
-                      // 添加try  catch 以抓取运行时错误
-                      try {
-                        const res = opt.validator(rule, value)
-                        //  如果验证返回undefined 或者true 算通过
-                        if (res === undefined || res === true) {
-                          return callback()
-                        }
-                        // 验证不通过
-                        if (res === false) {
-                          return callback(opt.message || `${key}字段验证未通过`)
-                        }
-                        if (isString(res)) {
-                          return callback(res)
-                        }
+              const _decorators = {}
 
-                        if (res instanceof Promise) {
-                          return res.then(
-                            () => {
-                              callback()
-                            },
-                            rejectRes => {
-                              callback(rejectRes)
-                            }
-                          )
-                        }
-
-                        // 其它所有情况算作通过
-                        return callback()
-                      } catch (e) {
-                        console.error(e)
-                      }
-                    }
+              const makeAntValidator = (fn, key) => (rule, value, callback) => {
+                // 添加try  catch 以抓取运行时错误
+                try {
+                  const res = fn(rule, value, form.getFieldsValue())
+                  //  如果验证返回undefined 或者true 算通过
+                  if (res === undefined || res === true) {
+                    return callback()
                   }
-                ]
+                  // 验证不通过
+                  if (res === false) {
+                    return callback(rule.message || `${key}字段验证未通过`)
+                  }
+                  if (isString(res)) {
+                    return callback(res)
+                  }
+
+                  if (res instanceof Promise) {
+                    return res.then(
+                      () => {
+                        callback()
+                      },
+                      rejectErr => {
+                        // console.error(rejectErr)
+                        callback(rejectErr.message)
+                      }
+                    )
+                  }
+
+                  // 其它所有情况算作通过
+                  return callback()
+                } catch (e) {
+                  console.error(e)
+                }
               }
-              _decorators[key] = [key, decoOpt]
-            })
+              Object.keys(options).forEach(key => {
+                const opt = options[key]
+                let decoOpt = opt
 
-            console.log(_decorators)
+                if (opt.rules) {
+                  if (!isArray(opt.rules)) {
+                    throw new Error(
+                      `[vue-st-form] ${key} rules should be Array`
+                    )
+                  }
+                  decoOpt.rules = cloneDeep(opt.rules)
+                  opt.rules.forEach(rule => {
+                    if (rule.validator) {
+                      rule.validator = makeAntValidator(
+                        rule.validator,
+                        key,
+                        rule
+                      )
+                    }
+                  })
+                }
 
-            return _decorators
+                _decorators[key] = [key, decoOpt]
+              })
+
+              console.log(_decorators)
+
+              return _decorators
+            }
+            return form
           }
         }
       }
