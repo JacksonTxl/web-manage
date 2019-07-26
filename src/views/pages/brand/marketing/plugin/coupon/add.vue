@@ -21,10 +21,7 @@
               <st-form-item label="优惠券名称" required>
                 <a-input
                   :disabled="isEditMode"
-                  v-decorator="[
-                  'coupon_name',
-                  {rules: [{ validator: coupon_name_validator }]}
-                  ]"
+                  v-decorator="decorators.coupon_name"
                   maxlength="10"
                   placeholder="请输入优惠券名称"
                   :class="basic('input')"
@@ -39,9 +36,7 @@
                   style="top:0;"
                   placeholder="请输入面额"
                   :class="basic('input')"
-                  v-decorator="[
-                  'price',
-                  {rules: [{ validator: price_validator}]}]"
+                  v-decorator="decorators.price"
                 >
                   <template slot="addonAfter">元</template>
                 </st-input-number>
@@ -94,9 +89,7 @@
               <st-form-item label="使用条件" required>
                 <a-radio-group
                   :disabled="isEditMode"
-                  v-decorator="[
-                  'use_type',
-                  {rules: [{ validator: use_type_validator}]}]"
+                  v-decorator="decorators.use_type"
                 >
                   <a-radio :value="1">无门槛使用</a-radio>
                   <a-form-item :class="basic('wrap-input')">
@@ -105,9 +98,7 @@
                       <st-input-number
                         :class="basic('radio-input')"
                         :disabled="isEditMode"
-                        v-decorator="[
-                    'full_price',
-                    {rules: [{ validator: full_price_validator}]}]"
+                        v-decorator="decorators.full_price"
                       ></st-input-number>元使用
                     </a-radio>
                   </a-form-item>
@@ -119,9 +110,7 @@
                   style="top:0;"
                   placeholder="请输入数量"
                   :min="isEditMode?+info.number:0"
-                  v-decorator="[
-                  'number',
-                  {rules: [{ validator: number_validator}]}]"
+                  v-decorator="decorators.number"
                 >
                   <template slot="addonAfter">张</template>
                 </st-input-number>
@@ -132,9 +121,7 @@
                 <st-input-number
                   :disabled="isEditMode"
                   :class="basic('radio-input')"
-                  v-decorator="[
-                  'valid_days',
-                  {rules: [{ validator: valid_days_validator}]}]"
+                  v-decorator="decorators.valid_days"
                 ></st-input-number>天内有效
               </st-form-item>
               <st-form-item>
@@ -147,9 +134,7 @@
               <st-form-item label="每人限领" required v-if="couponType === '1'">
                 <a-radio-group
                   :disabled="isEditMode"
-                  v-decorator="[
-                  'is_limit',
-                  {rules: [{ validator: is_limit_validator}]}]"
+                  v-decorator="decorators.is_limit"
                 >
                   <a-radio :value="0">不限</a-radio>
                   <a-form-item :class="basic('wrap-input')">
@@ -158,9 +143,7 @@
                       <st-input-number
                         :disabled="isEditMode"
                         :class="basic('radio-input')"
-                        v-decorator="[
-                          'person_limit',
-                            {rules: [{ validator: person_limit_validator}]}]"
+                        v-decorator="decorators.person_limit"
                       ></st-input-number>次
                     </a-radio>
                   </a-form-item>
@@ -171,7 +154,7 @@
           <a-row :gutter="8">
             <a-col :lg="20">
               <st-form-item class="page-content-card-submit" label=" ">
-                <st-button :loading="addService.loading" type="primary" @click="onSubmit">保 存</st-button>
+                <st-button :loading="loading.addMarketingCoupon || loading.editMarketingCoupon" type="primary" @click="onSubmit">保 存</st-button>
               </st-form-item>
             </a-col>
           </a-row>
@@ -205,9 +188,24 @@ export default {
     basic: 'brand-marketing-coupon-add'
   },
   data() {
+    const form = this.$stForm.create()
+    const decorators = form.decorators({
+      coupon_name: {
+        rules: [{ validator: this.coupon_name_validator }]
+      },
+      price: { rules: [{ validator: this.price_validator }] },
+      use_type: { rules: [{ validator: this.use_type_validator }] },
+      full_price: { rules: [{ validator: this.full_price_validator }] },
+      number: { rules: [{ validator: this.number_validator }] },
+      valid_days: { rules: [{ validator: this.valid_days_validator }] },
+      is_limit: { rules: [{ validator: this.is_limit_validator }] },
+      person_limit: { rules: [{ validator: this.person_limit_validator }] }
+    })
     return {
+      form,
+      decorators,
       isEditMode: false,
-      form: this.$form.createForm(this),
+      // form: this.$form.createForm(this),
       // 优惠类型
       couponType: '1',
       // 优惠范围
@@ -246,156 +244,75 @@ export default {
     },
 
     // 优惠券名称
-    coupon_name_validator(rule, value, callback) {
-      try {
-        console.log('coupon_name_validator')
-        if (!value) {
-          // eslint-disable-next-line
-          callback('请填写优惠券名称')
-        } else if (value.length > 10) {
-          // eslint-disable-next-line
-          callback('优惠券名称长度不能超过10，请重新输入')
-        } else {
-          // eslint-disable-next-line
-          callback()
-        }
-      } catch (e) {
-        console.error(e)
+    coupon_name_validator(rule, value, values) {
+      if (!value) {
+        return '请填写优惠券名称'
+      }
+      if (value.length > 10) {
+        return '优惠券名称长度不能超过10，请重新输入'
       }
     },
     // 面额
-    price_validator(rule, value, callback) {
-      try {
-        console.log('price_validator', value)
-        let price = value + ''
-        if (!value) {
-          // eslint-disable-next-line
-          callback('请填写优惠券面额')
-        } else {
-          let value1 = price.split('.')[0]
-          let value2 = price.split('.')[1] || 0
-          let reg1 = new RegExp(/^[1-9]\d{0,3}$/)
-          let reg2 = new RegExp(/^[0-9]\d{0,1}$/)
-          if (reg1.test(value1) && reg2.test(value2)) {
-            // eslint-disable-next-line
-            callback()
-          } else {
-            // eslint-disable-next-line
-            callback('请输入正确范围的金额')
-          }
-        }
-      } catch (e) {
-        console.error(e)
+    price_validator(rule, value, values) {
+      let price = value + ''
+      if (!value) {
+        return '请填写优惠券面额'
+      }
+      let value1 = price.split('.')[0]
+      let value2 = price.split('.')[1] || 0
+      let reg1 = new RegExp(/^[1-9]\d{0,3}$/)
+      let reg2 = new RegExp(/^[0-9]\d{0,1}$/)
+
+      if (!(reg1.test(value1) && reg2.test(value2))) {
+        return '请输入正确范围的金额'
       }
     },
     // 使用门槛
-    use_type_validator(rule, value, callback) {
-      try {
-        console.log('use_type', value)
-        if (!value) {
-          // eslint-disable-next-line
-          callback('请选择使用条件')
-        } else {
-          // eslint-disable-next-line
-          callback()
-        }
-      } catch (e) {
-        console.error(e)
+    use_type_validator(rule, value, values) {
+      if (!value) {
+        return '请选择使用条件'
       }
     },
     // 满多少使用
-    full_price_validator(rule, value, callback) {
-      try {
-        let use_type = +this.form.getFieldValue('use_type')
-        let couponPirce = +this.form.getFieldValue('price') || 0
-        console.log(
-          'full_price_validator',
-          'value',
-          value,
-          'use_type',
-          use_type,
-          'couponPrice',
-          couponPirce
-        )
-        if (use_type === 2) {
-          if (!value) {
-            const msg = '请填写使用条件'
-            callback(msg)
-          } else {
-            if (couponPirce > +value) {
-              const msg = '满减门槛不能低于优惠券面额'
-              return callback(msg)
-            } else {
-              callback()
-            }
-          }
-        } else {
-          callback()
+    full_price_validator(rule, value, values) {
+      let use_type = +values.use_type
+      let couponPirce = +values.price || 0
+
+      if (use_type === 2) {
+        if (!value) {
+          return '请填写使用条件'
         }
-      } catch (e) {
-        console.error(e)
+        if (couponPirce > +value) {
+          return '满减门槛不能低于优惠券面额'
+        }
       }
     },
     // 发放数量
-    number_validator(rule, value, callback) {
-      try {
-        console.log('number_validator', value)
-        if (!value) {
-          // eslint-disable-next-line
-          callback('请填写发放数量')
-        } else {
-          // eslint-disable-next-line
-          callback()
-        }
-      } catch (e) {
-        console.error(e)
+    number_validator(rule, value, values) {
+      if (!value) {
+        return '请填写发放数量'
       }
     },
     // 使用有效期
-    valid_days_validator(rule, value, callback) {
-      try {
-        console.log('valid_days_validator', value)
-        if (!value) {
-          // eslint-disable-next-line
-          callback('请填写使用期限')
-        } else {
-          // eslint-disable-next-line
-          callback()
-        }
-      } catch (e) {
-        console.error(e)
+    valid_days_validator(rule, value, values) {
+      if (!value) {
+        return '请填写使用期限'
       }
     },
     // 每人是否限领
-    is_limit_validator(rule, value, callback) {
-      try {
-        let is_limit = this.form.getFieldValue('is_limit')
-        console.log('is_limit_validator', is_limit)
-        if (is_limit !== 0 && is_limit !== 1) {
-          // eslint-disable-next-line
-          callback('请选择是否限制领用')
-        } else {
-          // eslint-disable-next-line
-          callback()
-        }
-      } catch (e) {
-        console.error(e)
+    is_limit_validator(rule, value, values) {
+      let is_limit = values.is_limit
+      if (is_limit !== 0 && is_limit !== 1) {
+        return '请选择是否限制领用'
       }
     },
     // 每人限领数量 setFieldsValue
-    person_limit_validator(rule, value, callback) {
-      try {
-        const is_limit = this.form.getFieldValue('is_limit')
-        console.log('person_limit_validator', value, is_limit)
-        if (!value && is_limit === 1) {
-          // eslint-disable-next-line
-          callback('请输入每人限领数量')
-        } else {
-          // eslint-disable-next-line
-          callback()
+    person_limit_validator(rule, value, values) {
+      let is_limit = values.is_limit
+      if (is_limit === 1) {
+        if (!value) {
+          return '请输入每人限领数量'
         }
-      } catch (e) {
-        console.error(e)
       }
     },
     setFieldsValue() {
@@ -419,76 +336,52 @@ export default {
       })
     },
     // 保存
-    onSubmit(e) {
-      e.preventDefault()
-      console.log(this.form.getFieldsValue())
-
-      console.log('onSubmit')
-      this.form.validateFieldsAndScroll(
-        {
-          force: true,
-          scroll: {
-            offsetTop: 80
-          }
-        },
-        (err, values) => {
-          console.warn('validateFields', err)
-          if (err) {
-            return
-          }
-          try {
-            let params = {}
-            console.log('1')
-            if (this.isEditMode) {
-              params.id = this.$route.query.id
-              params.before_number = this.info.number
-              params.after_number = values.number
-            } else {
-              params = {
-                coupon_type: this.couponType,
-                coupon_name: values.coupon_name,
-                price: values.price,
-                is_product_range: this.showProductRange,
-                range_ids: this.rangeIds,
-                is_shop_range: this.showShopRange,
-                shop_ids: this.shopIds,
-                use_type: values.use_type,
-                full_price: values.full_price,
-                number: values.number,
-                valid_days: values.valid_days,
-                is_share: this.isShare ? 1 : 0,
-                is_limit: values.is_limit,
-                person_limit: values.person_limit || undefined
-              }
-            }
-            if (this.isEditMode) {
-              this.addService.editMarketingCoupon(params).subscribe(res => {
-                // 编辑成功
-                this.$router.push({
-                  path: '/brand/marketing/plugin/coupon/list',
-                  force: true
-                })
-              })
-            } else {
-              this.addService.addMarketingCoupon(params).subscribe(res => {
-                console.log(res)
-                // 新增成功
-                // this.$router.push({
-                //   path: `/brand/marketing/plugin/coupon/tip?id=${res.id}&isAuth=${res.is_auth}`,
-                //   force: true
-                // })
-                console.log('新增')
-                // this.$router.push({
-                //   path: `/brand/marketing/plugin/coupon/list`,
-                //   force: true
-                // })
-              })
-            }
-          } catch (e) {
-            console.error(e)
+    onSubmit() {
+      this.form.validate().then(values => {
+        let params = {}
+        console.log('1')
+        if (this.isEditMode) {
+          params.id = this.$route.query.id
+          params.before_number = this.info.number
+          params.after_number = values.number
+        } else {
+          params = {
+            coupon_type: this.couponType,
+            coupon_name: values.coupon_name,
+            price: values.price,
+            is_product_range: this.showProductRange,
+            range_ids: this.rangeIds,
+            is_shop_range: this.showShopRange,
+            shop_ids: this.shopIds,
+            use_type: values.use_type,
+            full_price: values.full_price,
+            number: values.number,
+            valid_days: values.valid_days,
+            is_share: this.isShare ? 1 : 0,
+            is_limit: values.is_limit,
+            person_limit: values.person_limit || undefined
           }
         }
-      )
+        if (this.isEditMode) {
+          this.addService.editMarketingCoupon(params).subscribe(res => {
+            console.log('edit success')
+            // 编辑成功
+            this.$router.push({
+              path: '/brand/marketing/plugin/coupon/list',
+              force: true
+            })
+          })
+        } else {
+          this.addService.addMarketingCoupon(params).subscribe(res => {
+            console.log('add success')
+            // 新增成功
+            this.$router.push({
+              path: `/brand/marketing/plugin/coupon/list`,
+              force: true
+            })
+          })
+        }
+      })
     }
   },
   watch: {},
