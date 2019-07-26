@@ -25,18 +25,21 @@ export default {
         rules: [
           { validator: this.nameValidator, transform: val => val.trim() }
         ],
-
-        initialValue: '123'
+        initialValue: '出事名称'
       },
       age: {
         rules: [{ validator: this.ageValidator }],
-        initialValue: '6'
+        initialValue: 21
       }
     })
 
     return {
       form,
-      decorators
+      decorators,
+      info: {
+        name: '初始名称',
+        age: 28
+      }
     }
   },
   methods: {
@@ -51,7 +54,12 @@ export default {
       }
     },
     ageValidator(rule, value, values) {
-      return Promise.resolve()
+      if (!value) {
+        return '输入年龄'
+      }
+      if (value < 18) {
+        return '要大于18'
+      }
     }
   }
 }

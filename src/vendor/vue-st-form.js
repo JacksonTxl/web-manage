@@ -7,6 +7,7 @@ export default {
         this.$stForm = {
           create: () => {
             const form = this.$form.createForm(this)
+
             form.validate = function(options) {
               return new Promise((resolve, reject) => {
                 options = options || {
@@ -95,7 +96,7 @@ export default {
                 _decorators[key] = [key, decoOpt]
               })
 
-              console.log(_decorators)
+              console.log('[vue-st-form] decorators', _decorators)
 
               return _decorators
             }
