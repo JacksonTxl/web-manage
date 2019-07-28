@@ -15,7 +15,7 @@
     "dev:test:brand": "cross-env LOCAL_API_ENV=test BABEL_ENV=development PAGE_ENV=brand gulp dev",
     "dev:test:shop": "cross-env LOCAL_API_ENV=test BABEL_ENV=development PAGE_ENV=shop gulp dev",
     "serve": "vue-cli-service serve",
-    "build": "gulp build && vue-cli-service build --report",
+    "build": "cross-env NODE_ENV=production gulp build && vue-cli-service build --report",
     "ci": "npm run init && npm run build",
     "push:rx": "git subtree push git@gitlab.styd.cn:fe/packages/rx-state.git --prefix=rx-state master",
     "push:vsa": "git subtree push git@gitlab.styd.cn:fe/packages/vue-service-app.git --prefix=vue-service-app master"

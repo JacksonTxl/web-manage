@@ -18,6 +18,11 @@ if (process.env.PAGE_ENV === 'shop') {
   SERVICES_PATH.push('!./src/views/pages/brand/**/*.service.ts')
 }
 
+if (process.env.NODE_ENV === 'production') {
+  PAGES_PATH.push('!./src/views/pages/test/**/*.vue')
+  SERVICES_PATH.push('!./src/views/pages/test/**/*.service.ts')
+}
+
 const tplInit = ({ importServiceArray, importArr, pageRoutes }) => {
   const tpl = fse.readFileSync(MODEL_PATH).toString()
   const compiled = _.template(tpl)
