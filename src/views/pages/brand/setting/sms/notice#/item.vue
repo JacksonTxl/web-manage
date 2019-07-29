@@ -5,21 +5,30 @@
       <div :class="bComponent('text')">{{info.notify_time.name}}</div>
       <div :class="bComponent('text')">{{info.notify_type.name}}</div>
       <div :class="bComponent('text')">
-        <st-switch v-model="info.notify_mode.mini_programs.value"></st-switch>
+        <st-switch v-model="params.notify_mode.sms"></st-switch>
       </div>
       <div :class="bComponent('text')" v-if="info.notify_type.value===1">
         <!-- v-model="info.notify_mode.mini_programs.value" -->
-        <st-switch @change="onChange" ></st-switch>
-        <span class="color-primary mg-l12" v-show="info.notify_mode.mini_programs.value">预览</span>
+        <st-switch v-model="params.notify_mode.mini_programs"></st-switch>
+        <span
+          class="color-primary mg-l12"
+          v-show="params.notify_mode.mini_programs"
+          type="primary"
+          v-modal-link="{
+                name: 'brand-setting-sms-notice',
+                props:{
+                  img:info.img_url
+                }
+              }"
+        >预览</span>
       </div>
-      <!-- <div :class="bComponent('text')" v-if="info.notify_type.value===2">
-        <st-switch v-model="info.notify_mode.app.value"></st-switch>
-        <span class="color-primary mg-l12" v-show="info.notify_mode.app.value">预览</span>
-      </div>-->
-      <div v-show="info.notify_mode.sms.value">
+      <div :class="bComponent('text')" v-if="info.notify_type.value===2">
+        <st-switch v-model="params.notify_mode.app"></st-switch>
+      </div>
+      <div v-show="params.notify_mode.sms">
         <div :class="bComponent('column')" class="shadow" v-show="!isShowEdit">
           <div style="width:75%" :class="bComponent('text')" v-if="info.preview">
-            <span>短信预览</span>
+            <span>预览内容</span>
             <span class="mg-l24">{{info.preview}}</span>
           </div>
           <div style="width:75%" :class="bComponent('text')" v-if="info.receiver_description">
@@ -44,19 +53,17 @@
                 class="mg-l24"
                 :class="bComponent('column-input')"
                 v-model="params.msg_preffix"
-                :defaultValue="info.msg_preffix"
                 placeholder="请输入"
               ></a-input>
               <span>{{info.content}}</span>
               <a-input
                 :class="bComponent('column-input')"
                 v-model="params.msg_suffix"
-                :defaultValue="info.msg_suffix"
                 placeholder="请输入"
               ></a-input>
             </div>
-            <!-- v-if="info.course_type_description" -->
-            <div>
+
+            <div v-if="info.course_type_description">
               <span>课程类型</span>
               <a-radio-group v-model="params.course_type" class="mg-b16 mg-l24">
                 <a-radio
@@ -66,8 +73,8 @@
                 >{{item.label}}</a-radio>
               </a-radio-group>
             </div>
-            <!-- v-if="info.receiver_description" -->
-            <div>
+
+            <div v-if="info.receiver_description">
               <span>接收人员</span>
               <a-checkbox-group v-model="params.receiver" class="mg-b16 mg-l24">
                 <a-checkbox
@@ -78,13 +85,15 @@
               </a-checkbox-group>
               <a-checkbox v-model="isShowPhone">自定义</a-checkbox>
               <a-input
+                style="width:44%"
+                class="mg-b16"
                 v-show="isShowPhone"
                 v-model="params.custom_phone"
                 placeholder="请输入手机号码，多个用逗号分隔"
               />
             </div>
-            <!-- v-if="info.order_type_description" -->
-            <div>
+
+            <div v-if="info.order_type_description">
               <span>订单类型</span>
               <a-checkbox-group v-model="params.order_type" class="mg-b16 mg-l24">
                 <a-checkbox
@@ -150,9 +159,7 @@ export default {
   props: {
     info: {
       type: Object,
-      default: () => {
-
-      }
+      default: () => {}
     }
   },
   computed: {
@@ -181,7 +188,18 @@ export default {
       return list
     }
   },
-  created() {},
+  created() {
+    this.params.order_type = this.info.order_type
+    this.params.course_type = this.info.course_type
+    this.params.receiver = this.info.receiver
+    this.params.msg_preffix = this.info.msg_preffix
+    this.params.msg_suffix = this.info.msg_suffix
+    this.params.notify_mode = {
+      sms: this.info.notify_mode.sms && this.info.notify_mode.sms.value,
+      app: this.info.notify_mode.app && this.info.notify_mode.app.value,
+      mini_programs: this.info.notify_mode.mini_programs && this.info.notify_mode.mini_programs.value
+    }
+  },
   methods: {
     showEdit() {
       this.isShowEdit = 1
@@ -192,24 +210,22 @@ export default {
     save() {
       const para = Object.assign({}, this.params, {
         id: this.info.id,
-        custom_phone: this.params.custom_phone.split(','),
-        notify_mode: {
-          sms: this.info.notify_mode.sms.value,
-          app: this.info.notify_mode.app.value,
-          mini_programs: this.info.notify_mode.mini_programs.value
-        }
+        custom_phone: this.params.custom_phone.length > 0 ? this.params.custom_phone.split(',') : []
       })
       this.$emit('editInfo', para)
-    },
-    onChange(para) {
-      this.test = para
-      console.log(para)
     }
   },
   watch: {
-    isShowPhone(oldVal, newVal) {
-      this.params.receiver = []
-    }
+    // isShowPhone(oldVal, newVal) {
+    //   if (oldVal) {
+    //     this.params.receiver = []
+    //   }
+    // },
+    // ['params.receiver'](oldVal, newVal) {
+    //   if (oldVal.length > 0) {
+    //     this.isShowPhone = false
+    //   }
+    // }
   }
 }
 </script>
