@@ -51,9 +51,11 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
     // guards 配置
     if (
       route.name === 'account-login' ||
+      route.name === 'account-agreement' ||
       route.name === '404' ||
       route.name.startsWith('test') ||
       route.name.startsWith('styleguide')
+
     ) {
       prependGuards(route, [
         NProgressService,

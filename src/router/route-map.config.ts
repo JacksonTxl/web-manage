@@ -40,6 +40,10 @@ export const routeMapConfig = {
     routeConfig.meta.layout = 'login'
     routeConfig.meta.title = '登录'
   },
+  'account-agreement'(routeConfig: RouteConfig) {
+    routeConfig.meta.layout = 'blank'
+    routeConfig.meta.title = '三体云动服务协议'
+  },
   styleguide(routeConfig: RouteConfig) {
     routeConfig.redirect = { name: 'styleguide-component' }
   },
