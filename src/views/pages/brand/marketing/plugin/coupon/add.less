@@ -1,5 +1,54 @@
 .brand-marketing-coupon-add{
+  .ant-spin-nested-loading,.ant-spin-container,.st-panel__body{
+    .h(100%);
+  }
+  .st-panel__body{
+    display: flex;
+  }
+  &__left{
+    .w(350px);
+    .h(100%);
+    min-height: 644px;
+    .bg(#F7F9FC);
+    &-coupon{
+      box-shadow:0px 2px 20px 0px rgba(223,225,231,0.5);
+      border-radius:rpx(8);
+      background:rgba(255,255,255,1);
+      margin: rpx(40);
+      &-top{
+        display: flex;
+        .h(rpx(167));
+        .bg(rgba(255,80,90,1));
+        .fz(rpx(22));
+        .lh(rpx(32));
+        .c(#fff);
+        border-radius:rpx(8) rpx(8) 0 0;
+        &-left{
+          .w(rpx(220));
+          border-right: 1px dashed rgba(255,255,255,.59);
+          .ta-c();
+          .pd-t(rpx(36));
+          &-number{
+            .fz(rpx(56));
+            .lh(rpx(63));
+          }
+        }
+        &-right{
+          flex:1;
+          .pd-t(rpx(46));
+          .pd-lr(rpx(32));
+        }
+      }
+      &-bottom{
+        .lh(rpx(38));
+        .fz(rpx(24));
+        padding:rpx(25) rpx(16);
+        color:rgba(153,153,153,1);
+      }
+    }
+  }
   &__body{
+    flex:1;
     padding: 36px 0 0 0;
   }
   &__line{

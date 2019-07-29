@@ -1,7 +1,14 @@
 <template>
   <st-panel app class="page-shop-basic-card page-shop-edit-deposit-card" initial>
     <div class="page-shop-basic-card-body">
-      <!-- <div class="page-preview">实时预览{{deposit_card}}</div> -->
+      <div class="page-preview">
+        <h5-container>
+          <template v-slot:title>购卡</template>
+          <template v-slot:default>
+            <member-card :data="h5CardInfo" :cardType="2"></member-card>
+          </template>
+        </h5-container>
+      </div>
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
@@ -20,7 +27,8 @@
                   {rules: [{ validator: card_price_validator}]}
                 ]"
                   style="width: 360px"
-                  placeholder="请输入储值金额">
+                  placeholder="请输入储值金额"
+                  @change="syncDepositPrice">
                   <span slot="addonAfter">元</span>
                 </st-input-number>
               </st-form-item>
@@ -48,7 +56,8 @@
                   {rules: [{ validator: num_validator}]}
                 ]"
                   style="width: 360px"
-                  placeholder="请输入期限">
+                  placeholder="请输入期限"
+                  @change="syncDeadlineNum">
                   <a-select v-model="cardData.unit" slot="addonAfter" style="width: 50px">
                     <a-select-option
                     v-for="(item,index) in Object.entries(deposit_card.unit.value)"
@@ -63,7 +72,8 @@
             <a-col :lg="22">
               <st-form-item label="支持消费类目" required>
                 <a-checkbox-group
-                v-decorator="['cardData.card_consumer_id',{rules:[{validator:card_consumer_validator}]}]">
+                v-decorator="['cardData.card_consumer_id',{rules:[{validator:card_consumer_validator}]}]"
+                @change="syncConsumer">
                   <a-checkbox
                   v-for="item in Object.entries(deposit_card.consumer_type.value)"
                   :key="+item[0]"
@@ -218,23 +228,31 @@ import moment from 'moment'
 import { RuleConfig } from '@/constants/rule'
 import { cloneDeep, remove } from 'lodash-es'
 import { EditService } from './edit.service'
+import MemberCard from '@/views/biz-components/h5/pages/member-card'
+import H5Container from '@/views/biz-components/h5/h5-container'
+import h5mixin from '@/views/pages/brand/product/card/member/period/h5mixin'
 export default {
   name: 'PageShopDepositCardEdit',
+  mixins: [h5mixin],
+  components: {
+    MemberCard,
+    H5Container
+  },
   serviceInject() {
     return {
       rules: RuleConfig,
-      editService: EditService,
+      addService: EditService,
       userService: UserService
     }
   },
   rxState() {
     const user = this.userService
     return {
-      addLoading: this.editService.loading$,
+      addLoading: this.addService.loading$,
       shopName: this.userService.shop$,
-      cardInfo: this.editService.cardInfo$,
-      deposit_card: user.depositCardEnums$,
-      member_card: this.userService.memberCardEnums$
+      cardInfo: this.addService.cardInfo$,
+      member_card: this.userService.memberCardEnums$,
+      deposit_card: user.depositCardEnums$
     }
   },
   bem: {
@@ -243,6 +261,7 @@ export default {
   data() {
     return {
       // cardData
+      cardType: 2,
       cardData: {
         // 卡id
         card_id: null,
@@ -299,6 +318,7 @@ export default {
   },
   mounted() {
     this.init()
+    this.h5CardInfo.consumption_range = { id: 1, name: this.shopName.name }
   },
   methods: {
     init() {
@@ -336,6 +356,7 @@ export default {
       this.cardData.card_contents = this.cardInfo.card_contents
       // 卡备注
       this.cardData.description = this.cardInfo.description
+      this.initH5CardInfo()
     },
     // 保存
     onHandleSubmit(e) {
@@ -358,7 +379,7 @@ export default {
           this.cardData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
           // 卡id
           this.cardData.card_id = +this.$route.query.id
-          this.editService.editCard(this.cardData).subscribe(res => {
+          this.addService.editCard(this.cardData).subscribe(res => {
             this.$router.push({
               name: 'shop-product-card-deposit-list-all'
             })

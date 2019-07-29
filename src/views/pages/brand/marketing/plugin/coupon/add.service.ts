@@ -1,13 +1,14 @@
-import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
+import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { MarketingApi, AddMarketingCouponParams, EditMarketingCouponParams } from '@/api/v1/marketing/marketing'
-import { tap } from 'rxjs/operators'
+import { tap, pluck } from 'rxjs/operators'
+import { ShopApi, GetShopBasicInput } from '@/api/v1/shop'
 
 @Injectable()
 export class AddService {
   loading$ = new State({})
   info$ = new State({})
-  constructor(private marketingApi: MarketingApi) {}
+  constructor(private marketingApi: MarketingApi, private shopApi: ShopApi) {}
 
   // 新增营销优惠券
   @Effect()
@@ -24,5 +25,10 @@ export class AddService {
     return this.marketingApi.getInfo(id).pipe(tap((res:any) => {
       this.info$.commit(() => res.info)
     }))
+  }
+  getShopBasic(params: GetShopBasicInput) {
+    return this.shopApi.getShopBasic(params).pipe(
+      pluck('shops')
+    )
   }
 }

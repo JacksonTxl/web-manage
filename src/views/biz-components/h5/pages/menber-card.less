@@ -1,0 +1,123 @@
+.brand-card-h5{
+  &__card{
+    background-color:rgba(165,147,122,1);
+    background-image: url('~@/assets/img/brand/card/card_bg.png');
+    background-size: rpx(650) rpx(622);
+    background-repeat: no-repeat;
+    background-position: bottom left;
+    .h(rpx(656));
+    position: relative;
+    .pd-l(rpx(40));
+    &__img-corner{
+      background-image: url('~@/assets/img/brand/card/card_corner.png');
+      background-size: 100%;
+      .s(rpx(150),rpx(137));
+      .pos-a();
+      left: rpx(39);
+      top: rpx(344);
+    }
+    &__img{
+      .s(rpx(670),rpx(376));
+      margin-top: rpx(105);
+      .bd-r(rpx(12));
+    }
+    &__name{
+      .lh(rpx(45));
+      .fz(rpx(32));
+      font-weight: bold;
+      .c(#fff);
+      .mg-t(rpx(33));
+    }
+    &__sub{
+      .fz(rpx(28));
+      .lh(rpx(40));
+      .c(rgba(153,153,153,1));
+      .mg-t(rpx(16));
+    }
+  }
+
+  &__select{
+    .mg-b(rpx(20));
+    .pd(rpx(40));
+    .bg(#fff);
+    &__title{
+      .lh(rpx(36));
+      .fz(rpx(32));
+      .c(rgba(34,34,34,1));
+      font-weight: bold;
+      .mg-b(rpx(24));
+    }
+    &__list{
+      display:  flex;
+    }
+    &__li{
+      // flex:1;
+      .w(rpx(160));
+      .mg-l(rpx(10));
+      .ta-c();
+      box-shadow:0px 8px 16px 0px rgba(0,0,0,0.1);
+      .bd-r(rpx(12));
+      .h(rpx(120));
+      &:first-child{
+        .mg-l(0);
+        background:linear-gradient(135deg,rgba(99,87,77,1) 0%,rgba(36,33,36,1) 100%);
+        .brand-card-h5__select__li__price,.brand-card-h5__select__li__month{
+          color: #fff;
+        }
+      }
+      &__price{
+        .c(rgba(34,34,34,1));
+        .fz(rpx(28));
+        .lh(rpx(37));
+        font-weight: bold;
+        .mg-t(rpx(24));
+        .tov-e;
+        .pd-lr(rpx(10));
+        &_only{
+          .mg-t(rpx(40));
+        }
+      }
+      &__month{
+        .c(rgba(34,34,34,1));
+        .fz(rpx(24));
+        .lh(rpx(33));
+      }
+    }
+  }
+
+  &__other{
+    padding: rpx(40) rpx(40) 0;
+    .bg(#fff);
+    &__top{
+      display: flex;
+      &__title{
+        flex:1;
+        .lh(rpx(40));
+        .fz(rpx(28));
+        font-weight: bold;
+        .c(rgba(34,34,34,1));
+      }
+      &__right{
+        flex:1;
+        text-align: right;
+        color: rgba(63,102,246,1);
+        .lh(rpx(40));
+        .fz(rpx(28));
+      }
+      &__icon{
+        display: inline-block;
+        vertical-align: rpx(4);
+        .s(rpx(12),rpx(12));
+        .bd-r(50%);
+        .mg-r(rpx(8));
+        border: rpx(4) solid rgba(63,102,246,1);
+      }
+    }
+    &__item{
+      .lh(rpx(38));
+      .fz(rpx(24));
+      .c(rgba(102,102,102,1));
+      .mg-t(rpx(24));
+    }
+  }
+}

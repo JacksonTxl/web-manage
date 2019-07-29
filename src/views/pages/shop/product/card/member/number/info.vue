@@ -1,7 +1,14 @@
 <template>
   <st-panel app class="page-shop-card-info page-shop-number-card-info" initial>
     <div class="page-shop-card-info-body">
-      <!-- <div class="page-preview">实时预览{{cardInfo}}</div> -->
+      <div class="page-preview">
+        <h5-container>
+          <template v-slot:title>购卡</template>
+          <template v-slot:default>
+            <member-card :data="cardInfo" :cardType="1"></member-card>
+          </template>
+        </h5-container>
+      </div>
       <div class="page-content">
         <div :class="item('card_name')" class="mb-24">
           <!-- 卡名称 -->
@@ -193,10 +200,16 @@
 </template>
 <script>
 import { InfoService } from './info.service'
+import MemberCard from '@/views/biz-components/h5/pages/member-card'
+import H5Container from '@/views/biz-components/h5/h5-container'
 export default {
   name: 'PageShopPeriodCardInfo',
   bem: {
     item: 'shop-card'
+  },
+  components: {
+    MemberCard,
+    H5Container
   },
   serviceInject() {
     return {
