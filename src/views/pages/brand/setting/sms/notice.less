@@ -3,16 +3,24 @@
     &__table {
       .w(100%);
 
+      &-title {
+        background: rgba(247, 249, 252, 1);
+      }
+
+      &-th {
+        display: inline-block;
+        .w(20%);
+        .fz(14px);
+        padding: 16px 24px;
+
+      }
+
+      .th:first-child {
+        .w(150px);
+      }
+
       &-tr {
-
-        line-height: 54px;
         border-bottom: 1px solid @divider;
-
-        .th {
-          display: inline-block;
-          .w(20%);
-          background: rgba(247, 249, 252, 1);
-        }
       }
     }
   }

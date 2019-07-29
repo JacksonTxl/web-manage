@@ -3,8 +3,12 @@
     <div :class="bItem()">
       <st-t3 class="mg-b16">通知会员信息</st-t3>
       <div :class="bItem('table')">
-        <div :class="bItem('table-tr')">
-          <div class="th" v-for="(item,index) in thsMember" :key="index">{{item.title}}</div>
+        <div :class="bItem('table-title')">
+          <div
+            :class="bItem('table-th')"
+            v-for="(item,index) in thsMember"
+            :key="index"
+          >{{item.title}}</div>
         </div>
         <div :class="bItem('table-tr')" v-for="(item,index) in memberList" :key="index">
           <NoticeItem :info="item"></NoticeItem>
@@ -14,8 +18,12 @@
     <div :class="bItem()" class="mg-t24">
       <st-t3 class="mg-b16">通知门店信息</st-t3>
       <div :class="bItem('table')">
-        <div :class="bItem('table-tr')">
-          <div class="th" v-for="(item,index) in thsShop" :key="index">{{item.title}}</div>
+        <div :class="bItem('table-title')">
+          <div
+            :class="bItem('table-th')"
+            v-for="(item,index) in thsShop"
+            :key="index"
+          >{{item.title}}</div>
         </div>
         <div :class="bItem('table-tr')" v-for="(item,index) in shopList" :key="index">
           <NoticeItem :info="item"></NoticeItem>

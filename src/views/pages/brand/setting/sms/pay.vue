@@ -20,7 +20,7 @@
           <span :class="bCount('num')">{{info.sms_sended}}</span>
         </div>
       </div>
-      <SmsSign :signVal="info.sms" @SmsSign="getSmsSign"></SmsSign>
+      <SmsSign :signVal="info.sms_sign" @SmsSign="getSmsSign"></SmsSign>
     </div>
     <st-table
       :page="page"
