@@ -53,7 +53,8 @@ export class OssService extends Api {
       mergeMap(({ policy_info: res }: any) => {
         let key = this.getKey(file)
         let formData = new FormData()
-        formData.append('key', `${res.dir}${key}`)
+        const fileKey = `${res.dir}${key}`
+        formData.append('key', fileKey)
         formData.append('policy', res.policy)
         formData.append('OSSAccessKeyId', res.accessid)
         formData.append('success_action_status', '200')
@@ -72,9 +73,8 @@ export class OssService extends Api {
           uploadProgress(val)
         })
         let resData = {
-          fileKey: `${res.dir}${key}`,
-          url: URL.createObjectURL(file),
-          host: res.host
+          fileKey,
+          url: isPrivate ? URL.createObjectURL(file) : res.host + '/' + fileKey
         }
         return put$.pipe(map(val => resData))
       })
@@ -88,24 +88,15 @@ export class OssService extends Api {
       }
     })
   }
-  private getKey(file: any): string {
-    // 生成随机字符串
-    function randomString(len: number = 32) {
-      var chars =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_-'
-      var maxPos = chars.length
-      var pwd = ''
-      for (let i = 0; i < len; i++) {
-        pwd += chars.charAt(Math.floor(Math.random() * maxPos))
-      }
-      return pwd
+  private getKey(file: File): string {
+    const suffix = '.' + file.type.split('/')[1]
+
+    let fileName = ''
+    // 去除特殊字符
+    if (file.name) {
+      fileName = file.name.replace(/[?\s%<>&#\\:]/g, '').replace(suffix, '')
     }
-    let s = ''
-    this.typeSuffix.forEach(i => {
-      if (i.type === file.type) {
-        s = i.suffix
-      }
-    })
-    return `${randomString(16)}${s}`
+
+    return `${fileName}${Date.now()}${suffix}`
   }
 }

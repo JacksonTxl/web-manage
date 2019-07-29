@@ -225,7 +225,7 @@ export default {
             this.fileList.push({
               [this.imageId]: 0,
               [this.imageKey]: val.fileKey,
-              [this.imageUrl]: URL.createObjectURL(data.file)
+              [this.imageUrl]: val.url
             })
             this.$emit('change', this.fileList)
           },
