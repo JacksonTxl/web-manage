@@ -139,7 +139,6 @@ export default {
     const user = this.userService
     return {
       loading: this.courseService.loading$,
-      personalCourseEnums: user.personalCourseEnums$,
       query: this.routeService.query$
     }
   },
