@@ -880,7 +880,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '短信列表'
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       send_status: { type: Number },
       notify_type: { type: Number },
@@ -889,11 +889,14 @@ export const routeMapConfig = {
     }
   },
   'brand-setting-sms-pay'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '短信列表'
+    routeConfig.meta.title = '短信充值'
     routeConfig.queryOptions = {
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
+  },
+  'brand-setting-sms-notice'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '通知模版'
   },
   'shop-stat'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '报表'
@@ -902,7 +905,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '营收报表'
     routeConfig.queryOptions = {
       day: { type: Number },
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       start_date: { type: String, default: '' },
       end_date: { type: String, default: '' }
@@ -912,7 +915,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '订单报表'
     routeConfig.queryOptions = {
       day: { type: Number },
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 }
     }
   },

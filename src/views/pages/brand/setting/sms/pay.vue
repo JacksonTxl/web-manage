@@ -48,14 +48,14 @@ export default {
   serviceInject() {
     return {
       routeService: RouteService,
-      PayService: PayService
+      payService: PayService
     }
   },
   rxState() {
     return {
       query: this.routeService.query$,
-      page: this.PayService.page$,
-      info: this.PayService.info$
+      page: this.payService.page$,
+      info: this.payService.info$
     }
   },
   data() {
@@ -75,12 +75,12 @@ export default {
   methods: {
     // 获取首页信息
     getSmsPayInfo() {
-      return this.PayService.getSmsPayInfo().subscribe()
+      return this.payService.getSmsPayInfo().subscribe()
     },
     onSelectShopComplete() {},
     // 短信签名
     postSmsSign(para) {
-      this.PayService.postSmsSign({ sign: para }).subscribe(res => {
+      return this.payService.postSmsSign({ sign: para }).subscribe(res => {
         this.getSmsPayInfo()
       })
     },
@@ -89,7 +89,7 @@ export default {
     },
     // 短信购买
     postSmsPay(para) {
-      return this.PayService.postSmsPay({ ...para }).subscribe(res => {
+      return this.payService.postSmsPay({ ...para }).subscribe(res => {
         this.getSmsPayInfo()
       })
     }

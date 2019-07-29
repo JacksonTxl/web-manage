@@ -10,7 +10,7 @@
   >
     <div
       class="modal-sms-pay-setting__count"
-      :class="curIndex === index?'modal-sms-pay-setting__count--active':''"
+      :class="curCount === index?'modal-sms-pay-setting__count--active':''"
       v-for="(item,index) in info.price_setting"
       :key="index"
       @click="getCurPayInfo(item,index)"
@@ -23,13 +23,15 @@
     </div>
     <div :class="bPage('payway')">
       <div
-        :class="bPage('payway-item')"
-        class="mg-r8"
+        class="mg-r8 modal-sms-pay-setting__payway-item"
+        :class="curChannel === index?'modal-sms-pay-setting__payway-item--active':''"
         v-for="(item,index) in info.publish_channel"
         :key="index"
-        @click="getCurPayWay(item)"
+        @click="getCurPayWay(item,index)"
       >
-        <span>{{item.name}}</span>
+        <st-icon type="alipay" size="22px" v-if="item.value === 1" color="#009FE8"></st-icon>
+        <st-icon type="wechat" size="22px" v-if="item.value === 2" color="#46BB36"></st-icon>
+        <span class="mg-l16">{{item.name}}</span>
       </div>
     </div>
   </st-modal>
@@ -54,7 +56,8 @@ export default {
   data() {
     return {
       show: false,
-      curIndex: 0,
+      curCount: 0,
+      curChannel: 0,
       info: {},
       query: {
         sms_num: 0,
@@ -80,11 +83,12 @@ export default {
       this.show = false
     },
     getCurPayInfo(para, index) {
-      this.curIndex = index
+      this.curCount = index
       this.query.sms_num = para.num.value
       this.query.pay_price = para.pay_price.value
     },
-    getCurPayWay(para) {
+    getCurPayWay(para, index) {
+      this.curChannel = index
       this.query.pay_channel = para.value
     }
   }

@@ -4,7 +4,7 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { AuthService } from '@/services/auth.service'
 import { RedirectService } from '@/services/redirect.service'
-import { NoticeApi } from '@/api/v1/setting/sms/notice'
+import { NoticeApi, PutNoticeParams } from '@/api/v1/setting/sms/notice'
 interface SetState {}
 @Injectable()
 export class NoticeService extends Store<SetState> implements RouteGuard {
@@ -22,6 +22,9 @@ export class NoticeService extends Store<SetState> implements RouteGuard {
         this.list$.commit(() => res.list)
       })
     )
+  }
+  putNotice(params:PutNoticeParams) {
+    return this.NoticeApi.putNotice(params).pipe(tap((res: any) => {}))
   }
   beforeEach(to: ServiceRoute) {
     return this.getNoticeList()

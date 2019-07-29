@@ -7,7 +7,7 @@ export class NoticeApi extends Api {
   }
   // 通知模版编辑
   putNotice(params: PutNoticeParams) {
-    return this.http.put('/v1/setting/sms/notice', { params })
+    return this.http.put(`/v1/setting/sms/notice/${params.id}`, { params })
   }
 }
 

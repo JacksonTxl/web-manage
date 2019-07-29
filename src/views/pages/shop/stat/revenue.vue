@@ -1,20 +1,16 @@
 <template>
   <div :class="bPage()">
     <div :class="bPage('count')">
-      <a-row>
-        <a-col :span="4" :class="bPage('title')">当日营收</a-col>
-        <a-col :span="20" :class="bPage('actions')">
-          <span :class="bPage('actions-span')">最近更新时间：{{todayInfo.time}}</span>
-        </a-col>
-      </a-row>
+      <div :class="bPage('actions')">
+        最近更新时间：<span :class="bPage('actions-span')">{{todayInfo.time}}</span>
+        <span @click="refresh">
+          <st-icon type="switch"></st-icon>
+        </span>
+      </div>
       <a-row :class="bPage('income-row')">
         <div :class="bPage('income-detail')">
           <swiper :options="sliderOptions">
-            <swiper-slide
-
-              v-for="(item, index) in todayInfo.res"
-              :key="index"
-            >
+            <swiper-slide v-for="(item, index) in todayInfo.res" :key="index">
               <div :class="bPage('income')">
                 <p :class="bPage('income-label')">{{item.label}}</p>
                 <p :class="bPage('income-value')">{{item.value}}</p>
@@ -56,6 +52,7 @@ import tableMixin from '@/mixins/table.mixin'
 import { columns } from './revenue.config.ts'
 import RecentRadioGroup from '@/views/pages/shop/dashboard#/recent-radio-group'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import 'swiper/dist/css/swiper.css'
 export default {
   mixins: [tableMixin],
   bem: {
@@ -64,16 +61,16 @@ export default {
   serviceInject() {
     return {
       routeService: RouteService,
-      RevenueService: RevenueService
+      revenueService: RevenueService
     }
   },
   rxState() {
     return {
       query: this.routeService.query$,
-      loading: this.RevenueService.loading$,
-      list: this.RevenueService.list$,
-      page: this.RevenueService.page$,
-      todayInfo: this.RevenueService.todayInfo$
+      loading: this.revenueService.loading$,
+      list: this.revenueService.list$,
+      page: this.revenueService.page$,
+      todayInfo: this.revenueService.todayInfo$
       // auth: this.revenueService.auth$
     }
   },
@@ -97,19 +94,21 @@ export default {
   components: { RecentRadioGroup, swiper, swiperSlide },
   created() {
     this.getRevenueShopToday()
-    console.log(this.todayInfo)
   },
   methods: {
     getList() {},
     recentChange(query) {
-      this.RevenueService.getRevenueShopList(query).subscribe()
-    },
-    onChangeTodayShop(event) {
-      this.chartTodayShop = event
-      this.getRevenueShopToday()
+      this.$router.push({
+        query: {
+          ...query
+        }
+      })
     },
     getRevenueShopToday() {
-      return this.RevenueService.getRevenueShopToday().subscribe()
+      return this.revenueService.getRevenueShopToday().subscribe()
+    },
+    refresh() {
+      this.getRevenueShopToday()
     }
   }
 }

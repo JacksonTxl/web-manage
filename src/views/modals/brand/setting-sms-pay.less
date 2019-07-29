@@ -21,10 +21,18 @@
     display: flex;
     justify-content: space-between;
     &-item {
+      .w(246px);
       .mg-r(8px);
+      .mg-t(23px);
       .h(40px);
+      padding: 10px 16px;
       display: flex;
       align-items: center;
+      height:40px;
+      border:1px solid rgba(230,233,239,1);
+      &--active {
+        border: 1px solid @primary-color;
+      }
     }
 
   }
