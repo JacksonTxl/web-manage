@@ -12,7 +12,7 @@
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8">
-            <a-col :lg="16">
+            <a-col :lg="22">
               <st-form-item class="page-content-card-line" label="储值卡名称" required>
                 <a-input
                   v-decorator="[
@@ -28,7 +28,7 @@
             </a-col>
           </a-row>
           <a-row :gutter="8" class="page-content-card-line__row">
-            <a-col :lg="16">
+            <a-col :lg="22">
               <st-form-item label="储值金额" required>
                 <st-input-number :float="true" :min="1" :max="9999999.9" v-decorator="[
                   'cardData.card_price',
