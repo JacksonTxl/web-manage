@@ -40,7 +40,7 @@
             v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq shop-member-crowd-index-box__btn-rq-line"
             tag="span"
-            :to="{name:'shop-member-crowd-analysis', query:{urlid:0,id:value[0].id}}"
+            :to="{name:'brand-marketing-plugin-crowd-analysis', query:{urlid:0,id:value[0].id}}"
           >人群分析</router-link>
           <a-tooltip>
             <template slot='title'>
@@ -92,7 +92,7 @@
             v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq shop-member-crowd-index-box__btn-rq-line"
             tag="span"
-            :to="{name:'shop-member-crowd-analysis', query:{urlid:1,id:value[1].id}}"
+            :to="{name:'brand-marketing-plugin-crowd-analysis', query:{urlid:1,id:value[1].id}}"
           >人群分析</router-link>
           <a-tooltip>
             <template slot='title'>
@@ -144,7 +144,7 @@
             v-if="auth.analyst"
             class="shop-member-crowd-index-box__btn-rq shop-member-crowd-index-box__btn-rq-line"
             tag="span"
-            :to="{name:'shop-member-crowd-analysis', query:{urlid:2,id:value[2].id}}"
+            :to="{name:'brand-marketing-plugin-crowd-analysis', query:{urlid:2,id:value[2].id}}"
           >人群分析</router-link>
           <a-tooltip>
             <template slot='title'>
