@@ -51,7 +51,7 @@ export default {
       this.chart = new Chart({
         container: this.$el,
         forceFit: true,
-        padding: ['auto', 160, 'auto', 'auto'],
+        padding: ['auto', 140, 'auto', 'auto'],
         height: this.height
       })
       this.chart.source(this.dv, {
@@ -97,8 +97,20 @@ export default {
       })
 
       this.chart.guide().arc({
-        start: ['19%', '50%'],
-        end: ['81%', '50%'],
+        start: (xScales, yScales) => {
+          if (this.dv.sum('value') === 0) {
+            this.hoverable = false
+            return ['19%', '50%']
+          }
+          return []
+        },
+        end: (xScales, yScales) => {
+          if (this.dv.sum('value') === 0) {
+            this.hoverable = false
+            return ['81%', '50%']
+          }
+          return []
+        },
         style: {
           lineWidth: 0,
           fill: '#E9EDF2',
@@ -107,8 +119,20 @@ export default {
         }
       })
       this.chart.guide().arc({
-        start: ['81%', '50%'],
-        end: ['19%', '50%'],
+        start: (xScales, yScales) => {
+          if (this.dv.sum('value') === 0) {
+            this.hoverable = false
+            return ['81%', '50%']
+          }
+          return []
+        },
+        end: (xScales, yScales) => {
+          if (this.dv.sum('value') === 0) {
+            this.hoverable = false
+            return ['19%', '50%']
+          }
+          return []
+        },
         style: {
           lineWidth: 0,
           fill: '#E9EDF2',
