@@ -12,7 +12,7 @@
       <div class="page-content">
         <st-form :form="form" labelWidth="117px">
           <a-row :gutter="8" class="page-content-card-line__row">
-            <a-col :lg="16">
+            <a-col :lg="22">
               <st-form-item class="page-content-card-line" label="期限卡名称" required>
                 <a-input
                   v-decorator="[
@@ -439,6 +439,9 @@ export default {
     //     that.transformCardData(formValues)
     //   }
     // })
+  },
+  mounted() {
+    this.syncAdmission()
   },
   methods: {
     transformCardData(values) {
