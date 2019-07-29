@@ -868,5 +868,27 @@ export const routeMapConfig = {
   'brand-marketing-plugin-crowd-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新建人群'
     routeConfig.meta.parentId = 'brand-marketing-plugin-crowd-index'
+  },
+  'brand-stat-revenue'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '营收统计'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: 0 },
+      page: { type: Number, default: -1 },
+      size: { type: Number, default: -1 },
+      day: { type: Number, default: 0 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
+  },
+  'brand-stat-order'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '订单统计'
+    routeConfig.queryOptions = {
+      shop: { type: Number, default: 0 },
+      page: { type: Number, default: -1 },
+      size: { type: Number, default: -1 },
+      day: { type: Number, default: 0 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
   }
 }
