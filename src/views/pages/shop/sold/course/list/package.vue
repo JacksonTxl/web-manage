@@ -41,18 +41,15 @@
             <template slot="course_buy_time" slot-scope="text">
               {{moment(text).format('YYYY-MM-DD HH:mm')}}
             </template>
-            <div slot="action" slot-scope="text,record">
+            <st-table-actions slot="action" slot-scope="text,record">
               <a v-if="record.auth['shop:sold:sold_package_course|get']" @click="onDetail(record)">详情</a>
-              <a-divider type="vertical"></a-divider>
-              <st-more-dropdown class="mgl-16">
-                <a-menu-item v-if="record.auth['shop:sold:sold_package_course|course_num']" @click="onSurplus(record)">修改剩余课时</a-menu-item>
-                <a-menu-item v-if="record.auth['shop:sold:sold_package_course|frozen']" @click="onFreeze(record)">冻结</a-menu-item>
-                <a-menu-item v-if="record.auth['shop:sold:sold_package_course|unfrozen']" @click="onUnfreeze(record)">取消冻结</a-menu-item>
-                <a-menu-item v-if="record.auth['shop:sold:sold_package_course|transfer']" @click="onTransfer(record)">转让</a-menu-item>
-                <a-menu-item v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a-menu-item>
-                <a-menu-item v-if="record.auth['shop:sold:sold_package_course|export_contract']"  @click="toContract(record)">查看合同</a-menu-item>
-              </st-more-dropdown>
-            </div>
+              <a v-if="record.auth['shop:sold:sold_package_course|course_num']" @click="onSurplus(record)">修改剩余课时</a>
+              <a v-if="record.auth['shop:sold:sold_package_course|frozen']" @click="onFreeze(record)">冻结</a>
+              <a v-if="record.auth['shop:sold:sold_package_course|unfrozen']" @click="onUnfreeze(record)">取消冻结</a>
+              <a v-if="record.auth['shop:sold:sold_package_course|transfer']" @click="onTransfer(record)">转让</a>
+              <a v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a>
+              <a v-if="record.auth['shop:sold:sold_package_course|export_contract']"  @click="toContract(record)">查看合同</a>
+            </st-table-actions>
           </st-table>
         </div>
     </div>
