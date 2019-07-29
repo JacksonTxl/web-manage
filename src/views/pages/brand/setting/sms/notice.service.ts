@@ -1,0 +1,29 @@
+import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
+import { State, Computed, Effect } from 'rx-state'
+import { pluck, tap } from 'rxjs/operators'
+import { Store } from '@/services/store'
+import { AuthService } from '@/services/auth.service'
+import { RedirectService } from '@/services/redirect.service'
+import { NoticeApi } from '@/api/v1/setting/sms/notice'
+interface SetState {}
+@Injectable()
+export class NoticeService extends Store<SetState> implements RouteGuard {
+  list$ = new State([])
+  authTabs$ = this.redirectService.getAuthTabs$('brand-setting-sms-notice')
+  constructor(
+    private NoticeApi: NoticeApi,
+    private redirectService: RedirectService
+  ) {
+    super()
+  }
+  getNoticeList() {
+    return this.NoticeApi.getNoticeList().pipe(
+      tap((res: any) => {
+        this.list$.commit(() => res.list)
+      })
+    )
+  }
+  beforeEach(to: ServiceRoute) {
+    return this.getNoticeList()
+  }
+}

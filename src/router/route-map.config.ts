@@ -869,6 +869,49 @@ export const routeMapConfig = {
     routeConfig.meta.title = '新建人群'
     routeConfig.meta.parentId = 'brand-marketing-plugin-crowd-index'
   },
+  'brand-setting-sms'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '消息通知设置'
+  },
+  'brand-setting-sms-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '短信列表'
+    routeConfig.queryOptions = {
+      search: { type: String, default: '' },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      send_status: { type: Number },
+      notify_type: { type: Number },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' }
+    }
+  },
+  'brand-setting-sms-pay'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '短信列表'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-stat'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '报表'
+  },
+  'shop-stat-revenue'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '营收报表'
+    routeConfig.queryOptions = {
+      day: { type: Number },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
+  },
+  'shop-stat-order'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '订单报表'
+    routeConfig.queryOptions = {
+      day: { type: Number },
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
   'brand-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收统计'
     routeConfig.queryOptions = {
