@@ -6,7 +6,6 @@ import { TitleService } from '@/services/title.service'
 
 @Injectable()
 export class AddService implements RouteGuard {
-  isEditMode$ = new State({})
   loading$ = new State({})
   info$ = new State({})
 
@@ -30,9 +29,7 @@ export class AddService implements RouteGuard {
   }
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.isEditMode$.commit(() => false)
     if (to.meta.query.id) {
-      this.isEditMode$.commit(() => true)
       this.titleService.SET_TITLE('编辑优惠券')
     } else {
       this.titleService.SET_TITLE('新增优惠券')
