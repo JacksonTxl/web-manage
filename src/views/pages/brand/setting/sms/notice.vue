@@ -11,7 +11,7 @@
           >{{item.title}}</div>
         </div>
         <div :class="bItem('table-tr')" v-for="(item,index) in memberList" :key="index">
-          <NoticeItem :info="item"></NoticeItem>
+          <NoticeItem @editInfo="save" :info="item"></NoticeItem>
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
           >{{item.title}}</div>
         </div>
         <div :class="bItem('table-tr')" v-for="(item,index) in shopList" :key="index">
-          <NoticeItem :info="item"></NoticeItem>
+          <NoticeItem @editInfo="save" :info="item"></NoticeItem>
         </div>
       </div>
     </div>
@@ -48,13 +48,13 @@ export default {
   serviceInject() {
     return {
       routeService: RouteService,
-      NoticeService: NoticeService
+      noticeService: NoticeService
     }
   },
   rxState() {
     return {
       query: this.routeService.query$,
-      list: this.NoticeService.list$
+      list: this.noticeService.list$
     }
   },
   data() {
@@ -72,8 +72,19 @@ export default {
       ({ notify_type }) => notify_type.value === 2
     )
   },
-  metdods: {
-    onSearch() {}
+  methods: {
+    onSearch() {},
+    save(para) {
+      this.putNotice(para)
+    },
+    getNoticeList() {
+      return this.noticeService.getNoticeList().subscribe()
+    },
+    putNotice(para) {
+      return this.noticeService.putNotice({ ...para }).subscribe(res => {
+        this.getNoticeList()
+      })
+    }
   },
   components: {
     NoticeItem
