@@ -233,10 +233,8 @@ export default {
         this.setFieldsValue()
         this.isEditMode = true
       })
-      this.titleService.SET_TITLE('编辑优惠券')
     } else {
       this.isEditMode = false
-      this.titleService.SET_TITLE('新增优惠券')
     }
   },
   methods: {
