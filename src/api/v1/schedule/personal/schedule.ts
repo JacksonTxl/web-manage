@@ -19,6 +19,9 @@ export class PersonalScheduleApi extends Api {
   copy(params: CopyInput) {
     return this.http.put(`/v1/schedule/personal/copy/${params.id}`)
   }
+  delInBatch(params: any) {
+    return this.http.post(`/v1/schedule/personal/batch/delete`, { params })
+  }
   addScheduleInBatch(params: AddScheduleInBatchInput) {
     return this.http.post(`/v1/schedule/personal/batch`, { params })
   }

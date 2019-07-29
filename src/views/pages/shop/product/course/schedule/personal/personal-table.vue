@@ -11,6 +11,9 @@
           <!-- <st-button>
             <a v-modal-link="{ name: 'schedule-personal-add', props: { id: 1 } }">添加排期</a>
           </st-button> -->
+          <st-button>
+            <a  herf="javascript:;" @click="onClickDeleteInBatchSchedule">批量删除</a>
+          </st-button>
         </a-col>
         <a-col :lg="7" :offset="2">
           <date @today="getList" :start="query.start_date" @pre="getList" @next="getList"/>
@@ -21,67 +24,57 @@
       </a-row>
     </div>
     <a-row class="mg-t8 mg-r24 mg-l24">
-      <st-form-table :page="page" @change="onPageChange" hoverable>
-        <thead>
-          <tr>
-            <th>教练名称</th>
-            <template v-for="(item,index) in scheduleTime">
-              <th :key="index" :class="item == currentTime ? 'thgl': ''">
-                <div class="schedule-table__header">
-                  <span class="mg-r8">{{ item | getDate }}</span>
-                  <span >{{ index | getWeek }}</span>
-                </div>
-              </th>
-            </template>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <template v-for="item in scheduleList">
-            <tr :key="item.staff_name">
-              <td width="180">
-                <a href="javascript:;">{{ item.staff_name }}</a>
-              </td>
-              <template v-for="items in item.schedule_info">
-                <template >
-                  <td :key="items.id" :class="items.schedule_date == currentTime ? 'thgl': ''">
-                    <a-popover v-if="items.timing.length" placement="rightTop">
-                      <template slot="content">
-                          <template v-for="timingItem in items.timing">
-                              <p :key="timingItem.start_time">{{ timingItem.start_time }}~{{ timingItem.end_time }}</p>
-                          </template>
-                      </template>
-                      <template slot="title">
-                        <span>排期</span>
-                      </template>
-                      {{items.timing | timingFilter}}
-                    </a-popover>
-                    <span v-else>{{items.timing | timingFilter}}</span>
-                  </td>
+        <st-table
+        :columns="scheduleColumns"
+        rowKey="staff_id"
+        :alertSelection="{onReset: onClear}"
+        :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange}"
+        :page="false"
+        @change="onTableChange"
+        :dataSource="scheduleList"
+        :scroll="{ x: 1440 }">
+        <a href="javascript:;" slot="staff_name" slot-scope="text">{{text}}</a>
+        <template v-for="item in scheduleTime" :slot="item" slot-scope="text">
+          <a-popover :key="item" v-if="text.timing.length" placement="rightTop">
+            <template slot="content">
+                <template v-for="timingItem in text.timing">
+                    <p :key="timingItem.start_time">{{ timingItem.start_time }}~{{ timingItem.end_time }}</p>
                 </template>
-              </template>
-              <td>
-                <a
-                  v-modal-link="{ name: 'schedule-personal-edit', props: { id: item.staff_id, start: scheduleTime[0] } }"
-                >编辑</a>
-              </td>
-            </tr>
-          </template>
-        </tbody>
-      </st-form-table>
+            </template>
+            <template slot="title">
+              <span>排期</span>
+            </template>
+            {{text.timing | timingFilter}}
+          </a-popover>
+          <span :key="item" v-else>{{text.timing | timingFilter}}</span>
+        </template>
+        <div  slot="action" slot-scope="text, record">
+          <a
+          class="mg-r8"
+            v-modal-link="{ name: 'schedule-personal-edit', props: { id: record.staff_id, start: scheduleTime[0] } }"
+          >编辑</a>
+          <a  href="javascript:;" @click="onClickDeleteSchedule(record.schedule_info)">删除</a>
+        </div>
+        </st-table>
+
     </a-row>
   </div>
 </template>
 
 <script>
 import date from '../date#/date-component'
+import tableMixin from '@/mixins/table.mixin'
 import { PersonalTableService } from './personal-table.service'
 import { RouteService } from '@/services/route.service'
+import { PersonalScheduleScheduleService } from '../personal.service#/schedule.service'
 
 export default {
+  name: 'PersonalTable',
+  mixins: [tableMixin],
   serviceInject() {
     return {
       tableService: PersonalTableService,
+      scheduleService: PersonalScheduleScheduleService,
       routeService: RouteService
     }
   },
@@ -89,6 +82,7 @@ export default {
     return {
       query: this.routeService.query$,
       scheduleTime: this.tableService.scheduleTime$,
+      scheduleColumns: this.tableService.scheduleColumns$,
       scheduleList: this.tableService.scheduleList$
     }
   },
@@ -114,18 +108,54 @@ export default {
   data() {
     return {
       page: {},
-      currentTime: ''
+      currentTime: '',
+      selectedRowKeys: [],
+      selectedRows: [],
+      diffSelectedRows: []
     }
   },
   methods: {
     onClickSkipSchedule() {
       this.$router.push({ name: 'shop-product-course-schedule-personal', query: this.query })
     },
+    onClickDeleteSchedule(scheduleInfo) {
+      const ids = scheduleInfo.map(item => {
+        return item.id
+      })
+      this.scheduleService.delInBatch(ids).subscribe(res => {
+        this.$router.push({ query: this.query, force: true })
+      })
+    },
+    onClickDeleteInBatchSchedule() {
+      let ids = []
+      this.selectedRows.forEach(item => {
+        ids = [...ids, ...item.schedule_info.map(ele => {
+          return ele.id
+        })]
+      })
+      this.scheduleService.delInBatch(ids).subscribe(res => {
+        this.$router.push({ query: this.query, force: true })
+      })
+    },
+    onSelectChange(selectedRowKeys, selectedRows) {
+      if (selectedRows && selectedRows.length > 0) {
+        const firstItem = selectedRows[0]
+        this.diffSelectedRows = selectedRows.filter(item => item.card_type !== firstItem.card_type)
+      }
+      this.selectedRowKeys = selectedRowKeys
+      this.selectedRows = selectedRows
+    },
+    onClear() {
+      this.selectedRowKeys = []
+      this.selectedRows = []
+    },
     getList(val = {}) {
       const query = { ...this.query, start_date: val.start_time, end_date: val.end_time }
       this.$router.push({ query })
     },
-    onPageChange() {}
+    onTableChange() {
+
+    }
   }
 }
 </script>
