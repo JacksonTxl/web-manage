@@ -21,6 +21,7 @@ export default {
     this.noCaptchaService.init({
       renderTo: `#${this.id}`
     })
+    this.noCaptchaService.resetNVC()
   }
 }
 </script>

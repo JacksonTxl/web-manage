@@ -55,6 +55,7 @@ export class NoCaptchaService {
   callCaptcha(code: number) {
     switch (code) {
       case 400:
+      case 600:
         //唤醒滑动验证
         // @ts-ignore
         getNC()
@@ -70,11 +71,11 @@ export class NoCaptchaService {
             _nvc_nc.reset()
           })
         break;
-      case 600:
-        //唤醒刮刮卡
-        // @ts-ignore
-        getSC()
-        break
+      // case 600:
+      //   //唤醒刮刮卡
+      //   // @ts-ignore
+      //   getSC()
+      //   break
       default:
         // @ts-ignore
         nvcReset()
