@@ -12,7 +12,7 @@
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
-            <a-col :lg="16">
+            <a-col :lg="22">
               <p class="page-content-card__card__name">
                 <st-tag type="deposit-card"/>
                 <span>{{cardInfo.card_name}}</span>
@@ -20,7 +20,7 @@
             </a-col>
           </a-row>
           <a-row :gutter="8">
-            <a-col :lg="16">
+            <a-col :lg="22">
               <st-form-item label="储值金额" required>
                 <st-input-number :float="true" :min="1" :max="9999999.9" v-decorator="[
                   'cardData.card_price',

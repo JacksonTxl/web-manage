@@ -84,7 +84,7 @@ export default {
   serviceInject() {
     return {
       routeService: RouteService,
-      ListService: ListService,
+      listService: ListService,
       userService: UserService
     }
   },
@@ -92,9 +92,9 @@ export default {
     const user = this.userService
     return {
       query: this.routeService.query$,
-      loading: this.ListService.loading$,
-      page: this.ListService.page$,
-      list: this.ListService.list$,
+      loading: this.listService.loading$,
+      page: this.listService.page$,
+      list: this.listService.list$,
       settingEnums: user.settingEnums$
     }
   },

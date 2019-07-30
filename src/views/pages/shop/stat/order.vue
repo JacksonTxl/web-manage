@@ -32,15 +32,15 @@ export default {
   serviceInject() {
     return {
       routeService: RouteService,
-      OrderService: OrderService
+      orderService: OrderService
     }
   },
   rxState() {
     return {
       query: this.routeService.query$,
-      loading: this.OrderService.loading$,
-      list: this.OrderService.list$,
-      page: this.OrderService.page$
+      loading: this.orderService.loading$,
+      list: this.orderService.list$,
+      page: this.orderService.page$
     }
   },
   data() {
@@ -56,7 +56,7 @@ export default {
   methods: {
     getList() {},
     recentChange(query) {
-      this.OrderService.getOrderShopList(query).subscribe()
+      this.orderService.getOrderShopList(query).subscribe()
     }
   }
 }

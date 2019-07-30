@@ -12,7 +12,7 @@
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
-            <a-col :lg="16">
+            <a-col :lg="22">
               <p class="page-content-card__card__name">
                 <st-tag type="period-card"/>
                 <span>{{cardInfo.card_name}}</span>

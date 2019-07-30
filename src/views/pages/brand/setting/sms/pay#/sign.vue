@@ -43,6 +43,7 @@ export default {
   methods: {
     saveSign() {
       this.$emit('SmsSign', this.newSignVal)
+      this.newSignVal = ''
     }
   }
 }

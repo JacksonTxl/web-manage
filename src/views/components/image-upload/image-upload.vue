@@ -241,7 +241,7 @@ export default {
               [this.imageId]: 0,
               [this.imageKey]: val.fileKey,
               [this.imageHost]: val.host,
-              [this.imageUrl]: URL.createObjectURL(data.file)
+              [this.imageUrl]: val.url
             })
             this.$emit('change', this.fileList)
           },
