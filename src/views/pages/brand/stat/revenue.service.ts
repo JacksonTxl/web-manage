@@ -90,7 +90,7 @@ export class RevenueService {
       }]
       const obj = {
         data: arr,
-        time: data.update_time
+        time: data.updated_time
       }
       this.dataToday$.commit(() => obj)
     }))

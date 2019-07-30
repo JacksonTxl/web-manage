@@ -43,7 +43,7 @@ import { cloneDeep } from 'lodash-es'
 import { UserService } from '@/services/user.service'
 let className = ['first custom', 'second custom', 'third custom', 'fourth custom']
 export default {
-  name: 'StCardBgRadio',
+  name: 'StInvitationBgRadio',
   bem: {
     cardRadio: 'st-card-bg-radio'
   },

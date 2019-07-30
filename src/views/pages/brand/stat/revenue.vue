@@ -10,14 +10,10 @@
           <recent-radio-group  @change="onChangeChartDays"></recent-radio-group>
         </a-col>
       </a-row>
-      <a-row style="margin-top: 38px;">
-        <a-col :span="15">
-          <brand-statistics-revenue-line :data="dataLine"></brand-statistics-revenue-line>
-        </a-col>
-        <a-col :span="9">
-          <brand-statistics-revenue-ring :data="dataRing"></brand-statistics-revenue-ring>
-        </a-col>
-      </a-row>
+      <div style="margin-top: 38px;display: flex">
+          <brand-statistics-revenue-line :data="dataLine" style="width: calc(100% - 365px);height: 285px;"></brand-statistics-revenue-line>
+          <brand-statistics-revenue-ring :data="dataRing" style="width: 365px;"></brand-statistics-revenue-ring>
+      </div>
     </div>
     <div :class="b('section')">
       <a-row>

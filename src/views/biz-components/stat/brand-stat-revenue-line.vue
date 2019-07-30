@@ -85,13 +85,20 @@ export default {
         key: 'name',
         value: 'value'
       })
+        .transform({
+          type: 'map',
+          callback: (row) => {
+            row.value = +row.value
+            return row
+          }
+        })
     },
     initChart() {
       this.chart = new Chart({
         container: this.$el,
         forceFit: true,
         height: this.height,
-        padding: [8, 80, 'auto', 'auto'],
+        padding: [8, 160, 'auto', 'auto'],
         renderer: 'svg'
       })
 
@@ -102,7 +109,8 @@ export default {
         },
         value: {
           tickCount: 5,
-          formatter: toKFilter
+          formatter: toKFilter,
+          sync: true
         }
       })
       this.chart.axis('date', {

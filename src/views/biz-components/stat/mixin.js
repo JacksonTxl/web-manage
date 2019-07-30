@@ -16,18 +16,33 @@ export default {
     }
   },
   watch: {
-    data(newData) {
-      if (newData.length) {
-        if (!this.chart) {
-          this.initDv()
-          this.initChart()
-        } else {
-          this.initDv()
-          this.chart.changeData(this.dv)
-          this.changeData && this.changeData() // 自定义的changeData
+    data: {
+      deep: true,
+      handler(newData) {
+        if (newData.length) {
+          if (!this.chart) {
+            this.initDv()
+            this.initChart()
+          } else {
+            this.initDv()
+            this.chart.changeData(this.dv)
+            this.changeData && this.changeData() // 自定义的changeData
+          }
         }
       }
     }
+    // data(newData) {
+    //   if (newData.length) {
+    //     if (!this.chart) {
+    //       this.initDv()
+    //       this.initChart()
+    //     } else {
+    //       this.initDv()
+    //       this.chart.changeData(this.dv)
+    //       this.changeData && this.changeData() // 自定义的changeData
+    //     }
+    //   }
+    // }
   },
   beforeDestroy() {
     if (this.chart) {
