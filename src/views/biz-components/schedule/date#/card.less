@@ -1,5 +1,24 @@
 .schedule-card{
-  border-left: 1px solid #eee;
-  background: #e13;
-  position: absolute;
+    &__content{
+      .time{
+        font-size:12px;
+        font-weight:400;
+        color:rgba(155,172,185,1);
+        line-height:20px;
+      }
+    }
+    &__bar{
+      width: 2px;
+      background: blue;
+        
+    }
+    &__bar.before {
+      background: #DDDDDD;
+    }
+    &__bar.current {
+      background: #FF805B;
+    }
+    &__bar.after {
+      background: #3AA0FF;
+    }
 }

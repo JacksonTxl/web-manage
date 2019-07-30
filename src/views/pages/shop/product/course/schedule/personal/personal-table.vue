@@ -5,18 +5,17 @@
       <a-row :gutter="8">
         <a-col :lg="8">
           <st-button class="mg-r8" type="primary">
-            <a v-modal-link="{ name: 'schedule-personal-inbatch-add', props: { id: 1 } }"
-            >批量排期</a>
+            <a v-modal-link="{ name: 'schedule-personal-inbatch-add', props: { id: 1 } }">批量排期</a>
           </st-button>
           <!-- <st-button>
             <a v-modal-link="{ name: 'schedule-personal-add', props: { id: 1 } }">添加排期</a>
-          </st-button> -->
+          </st-button>-->
         </a-col>
         <a-col :lg="7" :offset="2">
-          <date @today="getList" :start="query.start_date" @pre="getList" @next="getList"/>
+          <date @today="getList" :start="query.start_date" @pre="getList" @next="getList" />
         </a-col>
         <a-col :lg="7" class="schedule-button">
-          <st-button  @click="onClickSkipSchedule"><st-icon type="calendar"></st-icon></st-button>
+          <st-button @click="onClickSkipSchedule">私教预约表</st-button>
         </a-col>
       </a-row>
     </div>
@@ -29,7 +28,7 @@
               <th :key="index" :class="item == currentTime ? 'thgl': ''">
                 <div class="schedule-table__header">
                   <span class="mg-r8">{{ item | getDate }}</span>
-                  <span >{{ index | getWeek }}</span>
+                  <span>{{ index | getWeek }}</span>
                 </div>
               </th>
             </template>
@@ -43,13 +42,15 @@
                 <a href="javascript:;">{{ item.staff_name }}</a>
               </td>
               <template v-for="items in item.schedule_info">
-                <template >
+                <template>
                   <td :key="items.id" :class="items.schedule_date == currentTime ? 'thgl': ''">
                     <a-popover v-if="items.timing.length" placement="rightTop">
                       <template slot="content">
-                          <template v-for="timingItem in items.timing">
-                              <p :key="timingItem.start_time">{{ timingItem.start_time }}~{{ timingItem.end_time }}</p>
-                          </template>
+                        <template v-for="timingItem in items.timing">
+                          <p
+                            :key="timingItem.start_time"
+                          >{{ timingItem.start_time }}~{{ timingItem.end_time }}</p>
+                        </template>
                       </template>
                       <template slot="title">
                         <span>排期</span>
@@ -105,7 +106,9 @@ export default {
       }
     },
     getDate(date) {
-      return moment(date).format('MM/DD').valueOf()
+      return moment(date)
+        .format('MM/DD')
+        .valueOf()
     }
   },
   components: {
@@ -119,10 +122,17 @@ export default {
   },
   methods: {
     onClickSkipSchedule() {
-      this.$router.push({ name: 'shop-product-course-schedule-personal', query: this.query })
+      this.$router.push({
+        name: 'shop-product-course-schedule-personal-table',
+        query: this.query
+      })
     },
     getList(val = {}) {
-      const query = { ...this.query, start_date: val.start_time, end_date: val.end_time }
+      const query = {
+        ...this.query,
+        start_date: val.start_time,
+        end_date: val.end_time
+      }
       this.$router.push({ query })
     },
     onPageChange() {}

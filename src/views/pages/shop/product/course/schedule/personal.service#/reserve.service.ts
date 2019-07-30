@@ -122,15 +122,7 @@ export class PersonalScheduleReserveService {
     return this.reserveApi.getList(query).pipe(tap(res => {
       res = this.authService.filter(res)
       this.reserveTable$.commit(state => {
-        return res.list.map((item: any) => {
-          return { // add new event data
-            title: item.course_name,
-            groupId: JSON.stringify(item),
-            id: item.id,
-            start: `${item.start_date} ${item.start_time}`,
-            end: `${item.end_date} ${item.end_time}`
-          }
-        })
+        return res.list
       })
 
       this.list$.commit(() => res.list)
