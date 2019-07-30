@@ -25,7 +25,7 @@
             </st-form-item>
             <st-form-item labelWidth="46px" label="链接">
               <a-select placeholder="请输入链接的活动" @select="actSelect(li,$event)" v-model="li.activity_id">
-                <a-select-option v-for="(act, i) in actList" :key="i" :value="act.id">{{act.activity_name}}</a-select-option>
+                <a-select-option v-for="(act, i) in actList" :disabled="act.isover" :key="i" :value="act.id">{{act.activity_name}}</a-select-option>
               </a-select>
             </st-form-item>
           </div>
@@ -56,13 +56,14 @@ export default {
   rxState() {
     return {
       eventInfo: this.h5WrapperService.eventInfo$,
-      actList: this.activityService.actList$
+      activityList: this.activityService.actList$
     }
   },
   data() {
     return {
       info: {},
       list: [],
+      actList: [],
       selected: [],
       filelist: [],
       link: '',
@@ -74,6 +75,17 @@ export default {
     if (this.eventInfo.length) {
       this.number = this.eventInfo.length
       this.list = cloneDeep(this.eventInfo)
+      this.actList = cloneDeep(this.activityList)
+      this.list.forEach(item => {
+        if (!this.actList.some(act => act.id === item.activity_id)) {
+          this.actList.push({
+            activity_name: item.activity_name,
+            activity_type: item.activity_type,
+            id: item.activity_id,
+            isover: true
+          })
+        }
+      })
     } else {
       this.number = 0
     }
@@ -93,6 +105,7 @@ export default {
     actSelect(item, value) {
       let selected = this.actList.filter(it => it.id === value)[0]
       item.activity_type = selected.activity_type
+      item.activity_name = selected.activity_name
     },
     imageUploadChange(e, index) {
       if (e.length) {
