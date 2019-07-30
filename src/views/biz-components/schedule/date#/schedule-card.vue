@@ -7,7 +7,7 @@
     >
       <div
         class="con-item"
-        :class="[`item-${i}`]"
+        :class="[`item-${i}`, `${mbarClass(item)}`]"
         v-for="(item,i) in group"
         :key="i"
         @click="onClick(item)"
@@ -19,7 +19,20 @@
           <st-t3 class="course__name">{{ item.course_name }}</st-t3>
           <p class="course__coach">教练：{{ item.coach_name }}</p>
         </div>
-        <div class="item__extra">{{ item.course_name }}</div>
+        <div class="item__extra" :class="item | barClass">
+          <div :class="bCard('content')">
+            <span class="time">{{item.start_time}}-{{item.end_time}}</span>
+            <st-t3 class="course__name">{{ item.course_name }}</st-t3>
+            <p class="course__item">
+              <span class="label">教练：</span>
+              <span class="value">{{ item.coach_name }}</span>
+            </p>
+            <p class="course__item">
+              <span class="label">场地：</span>
+              <span class="value">{{ item.court_name }}</span>
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   </div>
@@ -70,8 +83,18 @@ export default {
     }
   },
   methods: {
+    mbarClass(item) {
+      const date = moment(`${item.start_date} ${item.start_time}`)
+      const current = moment()
+      if (date > current) {
+        return 'after'
+      } else if (date === current) {
+        return 'current'
+      } else if (date < current) {
+        return 'before'
+      }
+    },
     onClick(val) {
-      console.log('val', val)
       this.$emit('detail', val)
     },
     getMatrix(n) {

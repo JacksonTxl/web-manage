@@ -48,7 +48,13 @@
               </div>
             </schedule-unit>
           </ul>
-          <schedule-card @detail="onDetail" :cardList="cardList" :week="item.week" :start="start"></schedule-card>
+          <schedule-card
+            :class="bSchedule('card--day')"
+            @detail="onDetail"
+            :cardList="cardList"
+            :week="item.week"
+            :start="start"
+          ></schedule-card>
         </li>
       </ul>
 

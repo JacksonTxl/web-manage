@@ -43,7 +43,6 @@ export default {
   },
   methods: {
     onClick() {
-      console.log('onClick')
       this.$emit('change', this.cDate)
     }
   }

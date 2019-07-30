@@ -1,10 +1,25 @@
 .schedule-card{
     &__content{
+      .pd-l(8px);
       .time{
         font-size:12px;
         font-weight:400;
         color:rgba(155,172,185,1);
         line-height:20px;
+      }
+      .course-coach{
+        font-size:12px;
+        font-weight:400;
+        color:rgba(155,172,185,1);
+        line-height:20px;
+      }
+    }
+    .item__extra{
+      .pd(16px);
+      .course__item {
+        color: #9bacb9;
+        font-size: 12px;
+        line-height: 20px;
       }
     }
     &__bar{
@@ -19,6 +34,38 @@
       background: #FF805B;
     }
     &__bar.after {
+      background: #3AA0FF;
+    }
+    .con-item:hover{
+      background:rgba(255,255,255,0.9);
+      box-shadow:0px 0px 10px 0px rgba(56,62,68,0.2);
+      border-radius:2px;
+    }
+    .con-item.before:hover {
+      border:1px solid #DDDDDD;
+    }
+    .con-item.current:hover{
+      border:1px solid #FF805B;
+    }
+    .con-item.after:hover{
+      border:1px solid #3AA0FF;
+    }
+    .item__extra:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: blue;
+    }
+    .item__extra.before:before {
+      background: #DDDDDD;
+    }
+    .item__extra.current:before {
+      background: #FF805B;
+    }
+    .item__extra.after:before {
       background: #3AA0FF;
     }
 }
