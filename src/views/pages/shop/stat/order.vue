@@ -54,7 +54,6 @@ export default {
   components: { RecentRadioGroup },
   methods: {
     recentChange(searchFieldsValue) {
-      console.log(searchFieldsValue)
       this.onMultiSearch(searchFieldsValue)
     }
   }
