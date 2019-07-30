@@ -10,6 +10,7 @@ interface SetState {}
 export class OrderService extends Store<SetState> implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
+  // loading$ = new State({})
   authTabs$ = this.redirectService.getAuthTabs$('shop-stat-revenue')
   constructor(
     private StatApi: StatApi,

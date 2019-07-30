@@ -2,7 +2,8 @@
   <div :class="bPage()">
     <div :class="bPage('count')">
       <div :class="bPage('actions')">
-        最近更新时间：<span :class="bPage('actions-span')">{{todayInfo.time}}</span>
+        最近更新时间：
+        <span :class="bPage('actions-span')">{{todayInfo.time}}</span>
         <span @click="refresh">
           <st-icon type="switch"></st-icon>
         </span>
@@ -28,14 +29,14 @@
     </div>
     <a-row class="mg-b16">
       <a-col :span="4">
-        <st-button type="primary" class="shop-member-list-button">批量导出</st-button>
+        <!-- <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
       </a-col>
       <recent-radio-group class="ta-r" @change="recentChange"></recent-radio-group>
     </a-row>
     <st-table
       :page="page"
       @change="onTableChange"
-      :loading="loading.getList"
+      :loading="loading.getRevenueShopList"
       :columns="columns"
       :dataSource="list"
       :alertSelection="{onReset:onSelectionReset}"
@@ -98,11 +99,7 @@ export default {
   methods: {
     getList() {},
     recentChange(query) {
-      this.$router.push({
-        query: {
-          ...query
-        }
-      })
+      this.onSearch({ ...query })
     },
     getRevenueShopToday() {
       return this.revenueService.getRevenueShopToday().subscribe()

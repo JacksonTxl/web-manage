@@ -26,6 +26,7 @@
       :page="page"
       @change="onTableChange"
       :columns="columns"
+      :loading="loading.getSmsPayInfo"
       :dataSource="info.list"
       rowKey="id"
     ></st-table>
@@ -55,7 +56,8 @@ export default {
     return {
       query: this.routeService.query$,
       page: this.payService.page$,
-      info: this.payService.info$
+      info: this.payService.info$,
+      loading: this.payService.loading$
     }
   },
   data() {
@@ -69,9 +71,7 @@ export default {
   components: {
     SmsSign
   },
-  created() {
-    this.onSearch()
-  },
+  created() {},
   methods: {
     // 获取首页信息
     getSmsPayInfo() {

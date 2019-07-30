@@ -10,11 +10,8 @@ interface SetState {}
 export class RevenueService extends Store<SetState> implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
+  // loading$ = new State({})
   todayInfo$ = new State([])
-  // auth$ = this.AuthService.authMap({
-  //   add: 'shop:member:member|add',
-  //   export: 'shop:member:member|export'
-  // })
   authTabs$ = this.redirectService.getAuthTabs$('shop-stat-revenue')
   constructor(
     private StatApi: StatApi,
@@ -23,6 +20,7 @@ export class RevenueService extends Store<SetState> implements RouteGuard {
     super()
     this.state$ = new State({})
   }
+  @Effect()
   getRevenueShopList(query: RevenueShopListQuery) {
     return this.StatApi.getRevenueShopList(query).pipe(
       tap((res: any) => {

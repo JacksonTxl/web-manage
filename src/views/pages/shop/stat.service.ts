@@ -4,12 +4,11 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { AuthService } from '@/services/auth.service'
 import { RedirectService } from '@/services/redirect.service'
-interface SetState {
-}
+interface SetState {}
 @Injectable()
 export class StatService extends Store<SetState> implements RouteGuard {
   state$: State<SetState>
-  //   authTabs$ = this.redirectService.getAuthTabs$('shop-stat')
+  authTabs$ = this.redirectService.getAuthTabs$('shop-stat')
   constructor(
     private authService: AuthService,
     private redirectService: RedirectService

@@ -4,8 +4,7 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { AuthService } from '@/services/auth.service'
 import { RedirectService } from '@/services/redirect.service'
-interface SetState {
-}
+interface SetState {}
 @Injectable()
 export class SmsService extends Store<SetState> implements RouteGuard {
   state$: State<SetState>

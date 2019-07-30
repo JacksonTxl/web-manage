@@ -1,12 +1,37 @@
 <template>
   <st-panel
     app
-    :tabs="[
-          { label: '短信列表', route: { name: 'brand-setting-sms-list' }},
-          { label: '通知模版', route: { name: 'brand-setting-sms-notice' }},
-          { label: '短信充值', route: { name: 'brand-setting-sms-pay' }},
-        ]"
+    :tabs="authTabs"
   >
     <router-view></router-view>
   </st-panel>
 </template>
+<script>
+import { SmsService } from './sms.service'
+export default {
+  name: 'BrandSettingSms',
+  serviceInject() {
+    return {
+      smsService: SmsService
+    }
+  },
+  rxState() {
+    return {
+      authTabs: this.smsService.authTabs$
+    }
+  },
+  data() {
+    return {
+
+    }
+  },
+  computed: {
+
+  },
+  methods: {
+
+  },
+  components: {
+  }
+}
+</script>
