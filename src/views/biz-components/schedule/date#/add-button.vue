@@ -34,7 +34,7 @@ export default {
         .subtract(weekOfday - this.date.week, 'days')
         .format('YYYY-MM-DD')
       if (this.time < 9) {
-        tempTime = `0${this.time}:00`
+        tempTime = `0${this.time - 1}:00`
       } else {
         tempTime = `${this.time}:00`
       }
