@@ -10,7 +10,7 @@
         </a-radio-group>
       </st-form-item>
       <st-form-item label="活动展示">
-        <div v-for="(li, index) in list" :key="index" :class="['col-'+li.span, {'clear-float': index===2}]" :span="li.span">
+        <div v-for="(li, index) in list" :key="index" :class="['col-'+li.span, {'clear-float': index===2}]" >
           <div :class="event('box')">
             <st-image-upload @change="imageUploadChange($event,index)" width="100%" height="85px" :list='li.image_url?[li]:li.filelist' :sizeLimit="2"
               placeholder="添加活动图片" :numLimit="1">
