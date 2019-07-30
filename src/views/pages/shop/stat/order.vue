@@ -22,7 +22,7 @@ import PageRouteNav from '@/views/components/page-route-nav#/nav'
 import { OrderService } from './order.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './revenue.config.ts'
+import { columns } from './order.config.ts'
 import RecentRadioGroup from '@/views/pages/shop/dashboard#/recent-radio-group'
 export default {
   mixins: [tableMixin],
