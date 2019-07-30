@@ -82,6 +82,7 @@ export default {
     },
     putNotice(para) {
       return this.noticeService.putNotice({ ...para }).subscribe(res => {
+        this.$message.success('编辑成功')
         this.getNoticeList()
       })
     }
