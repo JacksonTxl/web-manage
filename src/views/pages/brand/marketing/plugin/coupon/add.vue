@@ -111,6 +111,7 @@
                 <a-radio-group
                   :disabled="isEditMode"
                   v-decorator="decorators.use_type"
+                  @change="userTypeChange"
                 >
                   <a-radio :value="1">无门槛使用</a-radio>
                   <a-form-item :class="basic('wrap-input')">
@@ -261,6 +262,9 @@ export default {
     }
   },
   methods: {
+    userTypeChange(e) {
+      this.form.resetFields(['full_price'])
+    },
     getValidDay(days) {
       return moment().add(days - 1, 'd').format('YYYY年MM月DD日 23:59')
     },

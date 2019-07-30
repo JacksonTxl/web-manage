@@ -98,8 +98,8 @@ export default {
   },
   methods: {
     getList() {},
-    recentChange(query) {
-      this.onSearch({ ...query })
+    recentChange(searchFieldsValue) {
+      this.onMultiSearch(searchFieldsValue)
     },
     getRevenueShopToday() {
       return this.revenueService.getRevenueShopToday().subscribe()

@@ -96,32 +96,30 @@ export default {
   },
   methods: {
     // 筛选搜索
-    onSearch(searchFieldsValue) {
+    onSearch() {
       this.onSelectionReset()
-
-      if (!searchFieldsValue) {
-        this.$router.push({
-          query: {
-            ...this.query,
-            [this.currentPageField]: 1
-          },
-          force: true
-        })
-      } else {
-        if (!isPlainObject(searchFieldsValue)) {
-          throw new Error(
-            `[tableMixin] should provide searchFieldsValue is object but got ${typeof searchFieldsValue}`
-          )
-        }
-        this.$router.push({
-          query: {
-            ...this.query,
-            ...searchFieldsValue,
-            [this.currentPageField]: 1
-          },
-          force: true
-        })
+      this.$router.push({
+        query: {
+          ...this.query,
+          [this.currentPageField]: 1
+        },
+        force: true
+      })
+    },
+    onMultiSearch(searchFieldsValue = {}) {
+      if (!isPlainObject(searchFieldsValue)) {
+        throw new Error(
+          `[tableMixin] should provide searchFieldsValue is object but got ${typeof searchFieldsValue}`
+        )
       }
+      this.$router.push({
+        query: {
+          ...this.query,
+          ...searchFieldsValue,
+          [this.currentPageField]: 1
+        },
+        force: true
+      })
     },
     /**
      * 筛选重置

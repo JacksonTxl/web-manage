@@ -2,7 +2,7 @@
   <div :class="bPage()">
     <div slot="title">
       <st-input-search
-        @search="onSearchKeyWords"
+        @search="onSingleSearch('search',$event,true)"
         v-model="query.search"
         class="mg-b24"
         style="width: 290px;"
