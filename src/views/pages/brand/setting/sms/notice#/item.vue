@@ -26,27 +26,30 @@
         <st-switch v-model="params.notify_mode.app"></st-switch>
       </div>
       <div v-show="params.notify_mode.sms">
-        <div :class="bComponent('column')" class="shadow" v-show="!isShowEdit">
-          <div style="width:75%" :class="bComponent('text')" v-if="info.preview">
+        <div class="shadow"></div>
+        <div :class="bComponent('column')" v-show="!isShowEdit">
+          <div class="width75" :class="bComponent('text')" v-if="info.preview">
             <span>预览内容</span>
             <span class="mg-l24">{{info.preview}}</span>
           </div>
-          <div style="width:75%" :class="bComponent('text')" v-if="info.receiver_description">
+          <div class="width75" :class="bComponent('text')" v-if="info.receiver_description">
             <span>接受人员</span>
             <span class="mg-l24">{{info.receiver_description}}</span>
           </div>
-          <div style="width:75%" :class="bComponent('text')" v-if="info.course_type_description">
+          <div class="width75" :class="bComponent('text')" v-if="info.course_type_description">
             <span>课程类型</span>
             <span class="mg-l24">{{info.course_type_description}}</span>
           </div>
-          <div style="width:75%" :class="bComponent('text')" v-if="info.order_type_description">
+          <div class="width75" :class="bComponent('text')" v-if="info.order_type_description">
             <span>订单类型</span>
             <span class="mg-l24">{{info.order_type_description}}</span>
           </div>
-          <span class="color-primary" :class="bComponent('text')" @click="showEdit">编辑</span>
+          <div :class="bComponent('text')">
+            <span class="color-primary" @click="showEdit">编辑</span>
+          </div>
         </div>
-        <div :class="bComponent('column')" class="shadow" v-show="isShowEdit">
-          <div style="width:75%" :class="bComponent('text')">
+        <div :class="bComponent('column')" v-show="isShowEdit">
+          <div class="width75" :class="bComponent('text')">
             <div class="mg-b16" v-if="info.preview">
               <span clas="mg-r24">发送内容</span>
               <a-input
@@ -103,6 +106,28 @@
                 >{{item.label}}</a-checkbox>
               </a-checkbox-group>
             </div>
+            <div v-if="info.notify_time.name">
+              <div v-if="info.notify_sub_type.value===4">
+                课程开始前
+                <a-select v-model="params.notify_time" style="width:100px">
+                  <a-select-option
+                    v-for="(item,index) in notifyHour"
+                    :key="index"
+                    :value="item.value"
+                  >{{item.label}}</a-select-option>
+                </a-select>发送
+              </div>
+              <div v-else>
+                <span>发送规则</span>
+                <a-radio-group v-model="params.notify_time" class="mg-b16 mg-l24">
+                  <a-radio
+                    v-for="(item,index) in notifyRule"
+                    :key="index"
+                    :value="item.value"
+                  >{{item.label}}</a-radio>
+                </a-radio-group>
+              </div>
+            </div>
           </div>
           <div :class="bComponent('text')">
             <span class="color-primary mg-r12" @click="cancel">取消</span>
@@ -148,6 +173,7 @@ export default {
         course_type: '',
         order_type: [],
         receiver: [],
+        notify_time: '',
         notify_mode: {
           sms: 0,
           app: 0,
@@ -186,6 +212,22 @@ export default {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
+    },
+    notifyRule() {
+      let list = []
+      if (!this.settingEnums.notify_rule) return list
+      Object.entries(this.settingEnums.notify_rule.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
+    },
+    notifyHour() {
+      let list = []
+      if (!this.settingEnums.notify_time_hour) return list
+      Object.entries(this.settingEnums.notify_time_hour.value).forEach(o => {
+        list.push({ value: +o[0], label: o[1] })
+      })
+      return list
     }
   },
   created() {
@@ -197,7 +239,9 @@ export default {
     this.params.notify_mode = {
       sms: this.info.notify_mode.sms && this.info.notify_mode.sms.value,
       app: this.info.notify_mode.app && this.info.notify_mode.app.value,
-      mini_programs: this.info.notify_mode.mini_programs && this.info.notify_mode.mini_programs.value
+      mini_programs:
+        this.info.notify_mode.mini_programs &&
+        this.info.notify_mode.mini_programs.value
     }
   },
   methods: {
@@ -210,7 +254,10 @@ export default {
     save() {
       const para = Object.assign({}, this.params, {
         id: this.info.id,
-        custom_phone: this.params.custom_phone.length > 0 ? this.params.custom_phone.split(',') : []
+        custom_phone:
+          this.params.custom_phone.length > 0
+            ? this.params.custom_phone.split(',')
+            : []
       })
       this.$emit('editInfo', para)
       this.isShowEdit = 0
