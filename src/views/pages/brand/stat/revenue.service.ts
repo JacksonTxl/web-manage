@@ -15,8 +15,7 @@ export class RevenueService {
   page$ = new State({})
 
   auth$ = this.authService.authMap({
-    add: 'shop:member:member|add',
-    export: 'shop:member:member|export'
+    export: 'brand_shop:stat:revenue_reports|batch_export'
   })
   constructor(private revenueApi: RevenueApi, private authService: AuthService) {
 

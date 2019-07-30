@@ -30,14 +30,16 @@
         :loading="loading.getList"
         :columns="columns"
         :scroll="{x:1800}"
-        :alertSelection="{onReset:onSelectionReset}"
-        :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
+
         rowKey="member_id"
         :page="page"
         @change="onTableChange"
         :dataSource="list"
       >
       </st-table>
+      <!-- NOTE 本期不做，隐藏复选框 TODO -->
+       <!-- :alertSelection="{onReset:onSelectionReset}"
+        :rowSelection="{selectedRowKeys,onChange:onSelectionChange}" -->
     </div>
   </div>
 </template>

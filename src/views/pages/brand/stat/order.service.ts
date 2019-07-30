@@ -13,8 +13,7 @@ export class OrderService {
   loading$ = new State({})
 
   auth$ = this.authService.authMap({
-    add: 'shop:member:member|add',
-    export: 'shop:member:member|export'
+    export: 'brand_shop:stat:order_reports|batch_export'
   })
   constructor(private orderApi: OrderApi, private authService: AuthService) {
 
