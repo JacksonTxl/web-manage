@@ -27,6 +27,7 @@
         </a-col>
       </a-row>
       <st-table
+        :loading="loading.getList"
         :columns="columns"
         :scroll="{x:1800}"
         :alertSelection="{onReset:onSelectionReset}"
@@ -65,7 +66,8 @@ export default {
       list: this.orderService.list$,
       page: this.orderService.page$,
       auth: this.orderService.auth$,
-      chartData: this.orderService.chartData$
+      chartData: this.orderService.chartData$,
+      loading: this.orderService.loading$
 
     }
   },

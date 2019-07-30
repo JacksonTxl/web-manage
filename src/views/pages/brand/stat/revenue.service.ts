@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed } from 'rx-state/src'
+import { State, Computed, Effect } from 'rx-state/src'
 import { pluck, tap } from 'rxjs/operators'
 import { RevenueApi, RevenueChartParams, RevenueDataParams } from '@/api/v1/stat/revenue'
 import { forkJoin } from 'rxjs'
@@ -7,6 +7,7 @@ import { AuthService } from '@/services/auth.service'
 
 @Injectable()
 export class RevenueService {
+  loading$ = new State({})
   dataToday$ = new State({})
   dataLine$ = new State<object[]>([])
   dataRing$ = new State<any[]>([])
@@ -55,6 +56,7 @@ export class RevenueService {
     }))
   }
   // 列表
+  @Effect()
   getList(query: RevenueDataParams) {
     return this.revenueApi.getData(query).pipe(tap(res => {
       this.list$.commit(() => res.list)

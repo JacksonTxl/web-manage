@@ -35,6 +35,7 @@ export interface SetInviteEditInput {
   invitee_coupon_num:number
   inviter_coupon_id:number
   inviter_coupon_num:number
+  invite_poster: object
 }
 export class MarketingApi extends Api {
   /**

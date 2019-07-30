@@ -34,12 +34,23 @@
         </slot>
       </a-spin>
     </a-upload>
+    <!-- <viewer :images="fileList"
+      @inited="inited"
+      class="viewer" ref="viewer"
+    >
+      <template slot-scope="scope">
+        <img v-for="(item, index) in scope.images" :src="item.image_key" :key="index" v-show="false"/>
+        这是测试文件名称{{fileList}}
+      </template>
+    </viewer> -->
   </div>
 </template>
 <script>
 import { OssService } from '@/services/oss.service'
 import { AppConfig } from '@/constants/config'
 import { MessageService } from '@/services/message.service'
+import 'viewerjs/dist/viewer.css'
+import Viewer from 'v-viewer/src/component.vue'
 
 const defaultSize = {
   w: '182px',
@@ -132,7 +143,8 @@ export default {
       default: () => ({
         image_id: 'image_id',
         image_key: 'image_key',
-        image_url: 'image_url'
+        image_url: 'image_url',
+        image_host: 'image_host'
       })
     }
   },
@@ -153,6 +165,9 @@ export default {
     },
     imageUrl() {
       return this.props.image_url
+    },
+    imageHost() {
+      return this.props.image_host
     },
     isShowUploadBtn() {
       return this.fileList.length < this.numLimit
@@ -225,6 +240,7 @@ export default {
             this.fileList.push({
               [this.imageId]: 0,
               [this.imageKey]: val.fileKey,
+              [this.imageHost]: val.host,
               [this.imageUrl]: val.url
             })
             this.$emit('change', this.fileList)
@@ -265,6 +281,9 @@ export default {
         isValid: true
       }
     }
+  },
+  components: {
+    // Viewer
   }
 }
 </script>
