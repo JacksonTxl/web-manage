@@ -1,0 +1,125 @@
+.brand-card-h5{
+  &__card{
+    background-color:rgba(165,147,122,1);
+    background-image: url('~@/assets/img/brand/card/card_bg.png');
+    background-size: 650px 622px;
+    background-repeat: no-repeat;
+    background-position: bottom left;
+    .h(656px);
+    position: relative;
+    .pd-l(40px);
+    &__img-corner{
+      background-image: url('~@/assets/img/brand/card/card_corner.png');
+      background-size: 100%;
+      .s(150px,137px);
+      .pos-a();
+      left: 39px;
+      top: 344px;
+      z-index: 1;
+    }
+    &__img{
+      .s(670px,376px);
+      margin-top: 105px;
+      .bd-r(12px);
+      transform: perspective(1px);
+    }
+    &__name{
+      .lh(45px);
+      .fz(32px);
+      font-weight: bold;
+      .c(#fff);
+      .mg-t(33px);
+    }
+    &__sub{
+      .fz(28px);
+      .lh(40px);
+      .c(rgba(153,153,153,1));
+      .mg-t(16px);
+    }
+  }
+
+  &__select{
+    .mg-b(20px);
+    .pd(40px);
+    .bg(#fff);
+    &__title{
+      .lh(36px);
+      .fz(32px);
+      .c(rgba(34,34,34,1));
+      font-weight: bold;
+      .mg-b(24px);
+    }
+    &__list{
+      display:  flex;
+    }
+    &__li{
+      // flex:1;
+      .w(160px);
+      .mg-l(10px);
+      .ta-c();
+      box-shadow:0px 8px 16px 0px rgba(0,0,0,0.1);
+      .bd-r(12px);
+      .h(120px);
+      &:first-child{
+        .mg-l(0);
+        background:linear-gradient(135deg,rgba(99,87,77,1) 0%,rgba(36,33,36,1) 100%);
+        .brand-card-h5__select__li__price,.brand-card-h5__select__li__month{
+          color: #fff;
+        }
+      }
+      &__price{
+        .c(rgba(34,34,34,1));
+        .fz(28px);
+        .lh(37px);
+        font-weight: bold;
+        .mg-t(24px);
+        .tov-e;
+        .pd-lr(10px);
+        &_only{
+          .mg-t(40px);
+        }
+      }
+      &__month{
+        .c(rgba(34,34,34,1));
+        .fz(24px);
+        .lh(33px);
+      }
+    }
+  }
+
+  &__other{
+    padding: 40px 40px 0;
+    .bg(#fff);
+    &__top{
+      display: flex;
+      &__title{
+        flex:1;
+        .lh(40px);
+        .fz(28px);
+        font-weight: bold;
+        .c(rgba(34,34,34,1));
+      }
+      &__right{
+        flex:1;
+        text-align: right;
+        color: rgba(63,102,246,1);
+        .lh(40px);
+        .fz(28px);
+      }
+      &__icon{
+        display: inline-block;
+        vertical-align: 4px;
+        .s(12px,12px);
+        .bd-r(50%);
+        .mg-r(8px);
+        border: 4px solid rgba(63,102,246,1);
+      }
+    }
+    &__item{
+      .lh(38px);
+      .fz(24px);
+      .c(rgba(102,102,102,1));
+      .mg-t(24px);
+    }
+  }
+}

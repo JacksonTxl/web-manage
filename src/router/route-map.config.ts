@@ -40,6 +40,10 @@ export const routeMapConfig = {
     routeConfig.meta.layout = 'login'
     routeConfig.meta.title = '登录'
   },
+  'account-agreement'(routeConfig: RouteConfig) {
+    routeConfig.meta.layout = 'blank'
+    routeConfig.meta.title = '三体云动服务协议'
+  },
   styleguide(routeConfig: RouteConfig) {
     routeConfig.redirect = { name: 'styleguide-component' }
   },
@@ -868,5 +872,89 @@ export const routeMapConfig = {
   'brand-marketing-plugin-crowd-add'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '新建人群'
     routeConfig.meta.parentId = 'brand-marketing-plugin-crowd-index'
+  },
+  'brand-setting-sms'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '消息通知设置'
+    routeConfig.meta.tabs = [
+      'brand-setting-sms-list',
+      'brand-setting-sms-notice',
+      'brand-setting-sms-pay'
+    ]
+  },
+  'brand-setting-sms-list'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '短信列表'
+    routeConfig.queryOptions = {
+      search: { type: String, default: '' },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      send_status: { type: Number },
+      notify_type: { type: Number },
+      start_time: { type: String, default: '' },
+      end_time: { type: String, default: '' }
+    }
+  },
+  'brand-setting-sms-pay'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '短信充值'
+    routeConfig.queryOptions = {
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'brand-setting-sms-notice'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '通知模版'
+  },
+  'shop-stat'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '数据统计'
+    routeConfig.meta.tabs = [
+      'shop-stat-revenue',
+      'shop-stat-order'
+    ]
+  },
+  'shop-stat-revenue'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '营收报表'
+    routeConfig.queryOptions = {
+      day: { type: Number },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
+  },
+  'shop-stat-order'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '订单报表'
+    routeConfig.queryOptions = {
+      day: { type: Number },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'brand-stat'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '数据统计'
+    routeConfig.meta.tabs = [
+      'brand-stat-revenue',
+      'brand-stat-order'
+    ]
+  },
+  'brand-stat-revenue'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '营收统计'
+    routeConfig.queryOptions = {
+      shop_id: { type: Number, default: 0 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      day: { type: Number, default: 0 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
+  },
+  'brand-stat-order'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '订单统计'
+    routeConfig.queryOptions = {
+      shop: { type: Number, default: 0 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      day: { type: Number, default: 0 },
+      start_date: { type: String, default: '' },
+      end_date: { type: String, default: '' }
+    }
   }
 }

@@ -385,7 +385,7 @@ export default {
       this.$confirm({
         title: '提示信息',
         content: '确认解绑选中的会员关系？',
-        onOk() {
+        onOk: () => {
           this.listService.removeWechatBind(record.member_id).subscribe(() => {
             this.$router.push({ force: true })
           })

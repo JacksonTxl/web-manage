@@ -1,11 +1,18 @@
 <template>
   <st-panel app class="page-brand-basic-card page-brand-edit-number-card" initial>
     <div class="page-brand-basic-card-body">
-      <!-- <div class="page-preview">实时预览{{member_card}}</div> -->
+      <div class="page-preview">
+        <h5-container>
+          <template v-slot:title>购卡</template>
+          <template v-slot:default>
+            <member-card :data="h5CardInfo" :cardType="1"></member-card>
+          </template>
+        </h5-container>
+      </div>
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
-            <a-col :lg="16">
+            <a-col :lg="22">
               <p class="page-content-card__card__name">
                 <st-tag type="number-card"/>
                 <span>{{cardInfo.card_name}}</span>
@@ -333,19 +340,23 @@ import { RuleConfig } from '@/constants/rule'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { cloneDeep, remove } from 'lodash-es'
 import { EditService } from './edit.service'
+import MemberCard from '@/views/biz-components/h5/pages/member-card'
+import H5Container from '@/views/biz-components/h5/h5-container'
+import h5mixin from '../period/h5mixin'
 export default {
   name: 'BrandNumberCardEdit',
+  mixins: [h5mixin],
   serviceInject() {
     return {
       rules: RuleConfig,
-      editService: EditService,
+      addService: EditService,
       userService: UserService
     }
   },
   rxState() {
     return {
-      addLoading: this.editService.loading$,
-      cardInfo: this.editService.cardInfo$,
+      addLoading: this.addService.loading$,
+      cardInfo: this.addService.cardInfo$,
       member_card: this.userService.memberCardEnums$
     }
   },
@@ -353,11 +364,14 @@ export default {
     b: 'st-help-popover'
   },
   components: {
-    SelectShop
+    SelectShop,
+    MemberCard,
+    H5Container
   },
   data() {
     return {
       // cardData
+      cardType: 1,
       cardData: {
         // 卡id
         id: null,
@@ -512,6 +526,7 @@ export default {
       this.cardData.card_introduction = this.cardInfo.card_introduction
       // 卡备注
       this.cardData.card_contents = this.cardInfo.card_contents
+      this.initH5CardInfo()
     },
     // 保存
     onHandleSubmit(e) {
@@ -576,7 +591,7 @@ export default {
           this.cardData.id = +this.$route.query.id
           // 转让
           this.cardData.num = this.cardData._is_transfer ? +values.cardData.num : undefined
-          this.editService.editCard(this.cardData).subscribe(res => {
+          this.addService.editCard(this.cardData).subscribe(res => {
             this.$router.push({
               name: 'brand-product-card-member-list-all'
             })
@@ -671,6 +686,7 @@ export default {
     // 增加入场门店
     admission_range_change(data) {
       this.cardData.admission_shop_list = cloneDeep(data)
+      this.syncAdmissionShop()
     },
     // 入场门店支持方式change
     admission_range(data) {
@@ -683,6 +699,7 @@ export default {
       this.cardData.support_sales = 1
       this.cardData.price_setting = 1
       this.priceValidatorText = ''
+      this.syncAdmission()
     },
     // 价格设置方式change
     price_range(data) {

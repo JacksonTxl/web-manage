@@ -1,3 +1,5 @@
+import { isPlainObject } from 'lodash-es'
+
 // 使用page作为当前页查询参数的路由放这里
 const ROUTE_NAMES_USE_PAGE = [
   /**
@@ -94,15 +96,32 @@ export default {
   },
   methods: {
     // 筛选搜索
-    onSearch() {
+    onSearch(searchFieldsValue) {
       this.onSelectionReset()
-      this.$router.push({
-        query: {
-          ...this.query,
-          [this.currentPageField]: 1
-        },
-        force: true
-      })
+
+      if (!searchFieldsValue) {
+        this.$router.push({
+          query: {
+            ...this.query,
+            [this.currentPageField]: 1
+          },
+          force: true
+        })
+      } else {
+        if (!isPlainObject(searchFieldsValue)) {
+          throw new Error(
+            `[tableMixin] should provide searchFieldsValue is object but got ${typeof searchFieldsValue}`
+          )
+        }
+        this.$router.push({
+          query: {
+            ...this.query,
+            ...searchFieldsValue,
+            [this.currentPageField]: 1
+          },
+          force: true
+        })
+      }
     },
     /**
      * 筛选重置

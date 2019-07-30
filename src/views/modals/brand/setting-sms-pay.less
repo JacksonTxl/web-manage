@@ -1,0 +1,56 @@
+.modal-sms-pay-setting {
+  &__count {
+    display: inline-block;
+    .w(119px);
+    .h(100px);
+    .mg-r(6px);
+    .pd(8px);
+    border: 1px solid rgba(230, 233, 239, 1);
+    .ta-c;
+
+    &--active {
+      border: 1px solid @primary-color;
+    }
+  }
+
+  &__count:last-child {
+    .mg-r(0)
+  }
+
+  &__payway {
+    display: flex;
+    justify-content: space-between;
+    &-item {
+      .w(246px);
+      .mg-r(8px);
+      .mg-t(23px);
+      .h(40px);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      height:40px;
+      border:1px solid rgba(230,233,239,1);
+      &--active {
+        border: 1px solid @primary-color;
+      }
+    }
+
+  }
+
+  &__specify {
+    border-bottom: 1px solid rgba(230, 233, 239, 1);
+  }
+
+  &__total-money {
+    display: block;
+    .fz(16px);
+    font-weight: bold;
+  }
+
+  &__single-price {
+    display: inline-block;
+    .mg-t(8px);
+    .mg-b(8px);
+    .c(#9BACB9)
+  }
+}

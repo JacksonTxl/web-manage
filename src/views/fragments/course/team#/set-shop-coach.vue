@@ -133,12 +133,13 @@ export default {
     },
     setFieldsValue() {
       const info = this.info
+      const shopSetting = info.shop_setting || 1
       this.form.setFieldsValue({
         course_name: info.course_name,
-        shop_setting: info.shop_setting,
+        shop_setting: shopSetting,
         coach_ids: info.coach_ids
       })
-      this.shopSetting = info.shop_setting
+      this.shopSetting = shopSetting
       this.shopIds = info.shop_ids
       this.courseId = info.course_id
     },

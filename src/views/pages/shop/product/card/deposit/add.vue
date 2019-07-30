@@ -1,11 +1,18 @@
 <template>
   <st-panel app class="page-shop-basic-card page-shop-add-deposit-card" initial>
     <div class="page-shop-basic-card-body">
-      <!-- <div class="page-preview">实时预览{{deposit_card}}</div> -->
+      <div class="page-preview">
+        <h5-container>
+          <template v-slot:title>购卡</template>
+          <template v-slot:default>
+            <member-card :data="h5CardInfo" :cardType="2"></member-card>
+          </template>
+        </h5-container>
+      </div>
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8">
-            <a-col :lg="16">
+            <a-col :lg="22">
               <st-form-item class="page-content-card-line" label="储值卡名称" required>
                 <a-input
                   v-decorator="[
@@ -15,19 +22,21 @@
                   maxlength="30"
                   style="width: 360px"
                   placeholder="请输入储值卡名称"
+                  @change="syncName"
                 ></a-input>
               </st-form-item>
             </a-col>
           </a-row>
           <a-row :gutter="8" class="page-content-card-line__row">
-            <a-col :lg="16">
+            <a-col :lg="22">
               <st-form-item label="储值金额" required>
                 <st-input-number :float="true" :min="1" :max="9999999.9" v-decorator="[
                   'cardData.card_price',
                   {rules: [{ validator: card_price_validator}]}
                 ]"
                   style="width: 360px"
-                  placeholder="请输入储值金额">
+                  placeholder="请输入储值金额"
+                  @change="syncDepositPrice">
                   <span slot="addonAfter">元</span>
                 </st-input-number>
               </st-form-item>
@@ -55,7 +64,8 @@
                   {rules: [{ validator: num_validator}]}
                 ]"
                   style="width: 360px"
-                  placeholder="请输入期限">
+                  placeholder="请输入期限"
+                  @change="syncDeadlineNum">
                   <a-select v-model="cardData.unit" slot="addonAfter" style="width: 50px">
                     <a-select-option
                     v-for="(item,index) in Object.entries(deposit_card.unit.value)"
@@ -70,7 +80,8 @@
             <a-col :lg="22">
               <st-form-item label="支持消费类目" required>
                 <a-checkbox-group
-                v-decorator="['cardData.card_consumer_id',{rules:[{validator:card_consumer_validator}]}]">
+                v-decorator="['cardData.card_consumer_id',{rules:[{validator:card_consumer_validator}]}]"
+                @change="syncConsumer">
                   <a-checkbox
                   v-for="item in Object.entries(deposit_card.consumer_type.value)"
                   :key="+item[0]"
@@ -223,7 +234,15 @@ import moment from 'moment'
 import { RuleConfig } from '@/constants/rule'
 import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
+import MemberCard from '@/views/biz-components/h5/pages/member-card'
+import H5Container from '@/views/biz-components/h5/h5-container'
+import h5mixin from '@/views/pages/brand/product/card/member/period/h5mixin'
 export default {
+  mixins: [h5mixin],
+  components: {
+    MemberCard,
+    H5Container
+  },
   serviceInject() {
     return {
       rules: RuleConfig,
@@ -235,8 +254,8 @@ export default {
     return {
       addLoading: this.addService.loading$,
       shopName: this.userService.shop$,
-      deposit_card: this.userService.depositCardEnums$,
-      member_card: this.userService.memberCardEnums$
+      member_card: this.userService.memberCardEnums$,
+      deposit_card: this.userService.depositCardEnums$
     }
   },
   bem: {
@@ -245,6 +264,7 @@ export default {
   data() {
     return {
       // cardData
+      cardType: 2,
       cardData: {
         // 储值卡名称
         card_name: '',
@@ -293,6 +313,10 @@ export default {
       end_time: null,
       form: this.$form.createForm(this)
     }
+  },
+  mounted() {
+    this.syncAdmission()
+    this.h5CardInfo.consumption_range = { id: 1, name: this.shopName.name }
   },
   methods: {
     // 保存

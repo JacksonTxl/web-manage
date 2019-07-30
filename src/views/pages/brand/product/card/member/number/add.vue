@@ -1,11 +1,18 @@
 <template>
   <st-panel app class="page-brand-basic-card page-brand-add-number-card" initial>
     <div class="page-brand-basic-card-body">
-      <!-- <div class="page-preview">实时预览{{member_card}}</div> -->
+      <div class="page-preview">
+        <h5-container>
+          <template v-slot:title>购卡</template>
+          <template v-slot:default>
+            <member-card :data="h5CardInfo" :cardType="1"></member-card>
+          </template>
+        </h5-container>
+      </div>
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
-            <a-col :lg="16">
+            <a-col :lg="22">
               <st-form-item class="page-content-card-line" label="次卡名称" required>
                 <a-input
                   v-decorator="[
@@ -15,6 +22,7 @@
                   maxlength="30"
                   style="width: 360px"
                   placeholder="请输入次卡名称"
+                  @change="syncName"
                 ></a-input>
               </st-form-item>
             </a-col>
@@ -35,7 +43,7 @@
                 </a-radio-group>
                 <div class="page-admission-range-shop" v-if="cardData.admission_range===2">
                   <p class="page-admission-range-shop__describe">设置支持此会员卡出入场馆范围</p>
-                  <select-shop @change="admission_range_change"></select-shop>
+                  <select-shop :shopIds="cardData.admission_shop_list" @change="admission_range_change"></select-shop>
                 </div>
               </st-form-item>
             </a-col>
@@ -332,8 +340,12 @@ import { RuleConfig } from '@/constants/rule'
 import SelectShop from '@/views/fragments/shop/select-shop'
 import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
+import MemberCard from '@/views/biz-components/h5/pages/member-card'
+import H5Container from '@/views/biz-components/h5/h5-container'
+import h5mixin from '../period/h5mixin'
 export default {
   name: 'BrandNumberCardAdd',
+  mixins: [h5mixin],
   serviceInject() {
     return {
       rules: RuleConfig,
@@ -351,11 +363,14 @@ export default {
     b: 'st-help-popover'
   },
   components: {
-    SelectShop
+    SelectShop,
+    MemberCard,
+    H5Container
   },
   data() {
     return {
       // cardData
+      cardType: 1,
       cardData: {
         // 会员卡类型1-次卡 2-期限卡
         card_type: 1,
@@ -430,6 +445,9 @@ export default {
   },
   beforeCreate() {
     this.form = this.$form.createForm(this)
+  },
+  mounted() {
+    this.syncAdmission()
   },
   methods: {
     // 保存
@@ -585,6 +603,7 @@ export default {
     // 增加入场门店
     admission_range_change(data) {
       this.cardData.admission_shop_list = cloneDeep(data)
+      this.syncAdmissionShop()
     },
     // 入场门店支持方式change
     admission_range(data) {
@@ -599,6 +618,7 @@ export default {
       this.rallyPriceList = []
       this.shopPriceList = []
       this.priceValidatorText = ''
+      this.syncAdmission()
     },
     // 价格设置方式change
     price_range(data) {

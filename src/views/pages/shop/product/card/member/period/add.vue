@@ -1,11 +1,18 @@
 <template>
   <st-panel app class="page-shop-basic-card page-shop-add-period-card" initial>
     <div class="page-shop-basic-card-body">
-      <!-- <div class="page-preview">实时预览{{member_card}}</div> -->
+      <div class="page-preview">
+        <h5-container>
+          <template v-slot:title>购卡</template>
+          <template v-slot:default>
+            <member-card :data="h5CardInfo" :cardType="0"></member-card>
+          </template>
+        </h5-container>
+      </div>
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
-            <a-col :lg="16">
+            <a-col :lg="22">
               <st-form-item class="page-content-card-line" label="期限卡名称" required>
                 <a-input
                   v-decorator="[
@@ -15,6 +22,7 @@
                   maxlength="30"
                   style="width: 360px"
                   placeholder="请输入期限卡名称"
+                  @change="syncName"
                 ></a-input>
               </st-form-item>
             </a-col>
@@ -204,8 +212,16 @@ import moment from 'moment'
 import { RuleConfig } from '@/constants/rule'
 import { cloneDeep, remove } from 'lodash-es'
 import { AddService } from './add.service'
+import MemberCard from '@/views/biz-components/h5/pages/member-card'
+import H5Container from '@/views/biz-components/h5/h5-container'
+import h5mixin from './h5mixin'
 export default {
   name: 'PageShopPeriodCardAdd',
+  mixins: [h5mixin],
+  components: {
+    MemberCard,
+    H5Container
+  },
   serviceInject() {
     return {
       rules: RuleConfig,
@@ -225,6 +241,7 @@ export default {
   },
   data() {
     return {
+      cardType: 0,
       form: this.$form.createForm(this),
       // 结束时间面板是否显示
       endOpen: false,
@@ -293,7 +310,7 @@ export default {
       cardBg: {
         image_id: 0,
         image_key: this.member_card.card_bg_list.value[0].image_key,
-        image_url: '',
+        image_url: this.member_card.card_bg_list.value[0].image_url,
         index: 1
       },
       // 卡背景的help文本

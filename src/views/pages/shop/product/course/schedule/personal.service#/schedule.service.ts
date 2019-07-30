@@ -93,6 +93,11 @@ export class PersonalScheduleScheduleService {
       this.msg.success({ content: '编辑成功' })
     }))
   }
+  delInBatch(ids: any) {
+    return this.scheduleApi.delInBatch({ schedule_ids: ids }).pipe(tap(res => {
+      this.msg.success({ content: '删除成功' })
+    }))
+  }
   copy(params: CopyInput) {
     return this.scheduleApi.copy(params).pipe(tap(res => {
       this.msg.success({ content: '复制成功' })

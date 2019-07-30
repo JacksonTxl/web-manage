@@ -1,11 +1,18 @@
 <template>
   <st-panel app class="page-shop-basic-card page-shop-edit-number-card" initial>
     <div class="page-shop-basic-card-body">
-      <!-- <div class="page-preview">实时预览{{member_card}}</div> -->
+      <div class="page-preview">
+        <h5-container>
+          <template v-slot:title>购卡</template>
+          <template v-slot:default>
+            <member-card :data="h5CardInfo" :cardType="1"></member-card>
+          </template>
+        </h5-container>
+      </div>
       <div class="page-content">
         <st-form :form="form" labelWidth="118px">
           <a-row :gutter="8" class="page-content-card-line__row">
-            <a-col :lg="16">
+            <a-col :lg="22">
               <p class="page-content-card__card__name">
                 <st-tag type="number-card"/>
                 <span>{{cardInfo.card_name}}</span>
@@ -223,8 +230,16 @@ import moment from 'moment'
 import { RuleConfig } from '@/constants/rule'
 import { cloneDeep, remove } from 'lodash-es'
 import { EditService } from './edit.service'
+import MemberCard from '@/views/biz-components/h5/pages/member-card'
+import H5Container from '@/views/biz-components/h5/h5-container'
+import h5mixin from '../period/h5mixin'
 export default {
   name: 'PageShopNumberCardAdd',
+  mixins: [h5mixin],
+  components: {
+    MemberCard,
+    H5Container
+  },
   serviceInject() {
     return {
       rules: RuleConfig,
@@ -245,6 +260,7 @@ export default {
   },
   data() {
     return {
+      cardType: 1,
       form: this.$form.createForm(this),
       // 结束时间面板是否显示
       endOpen: false,
@@ -342,6 +358,7 @@ export default {
       this.cardIntroduction = this.cardInfo.card_introduction
       // 卡备注
       this.cardContents = this.cardInfo.card_contents
+      this.initH5CardInfo()
     },
     // 保存
     onHandleSubmit(e) {

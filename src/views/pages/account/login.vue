@@ -24,8 +24,8 @@
           <ul class="page-login-tabs mg-b24">
             <li v-for="item in loginTypes" :key="item.key" class="page-login-tab-item" :class="{'page-login-tab-item--active': item.key === loginType}"><span @click.stop="onClickChangeType(item.key)">{{item.name}}</span></li>
           </ul>
-          <login-user @findps="onFindPassword" @third="onThird" @login="onLogin" v-show="loginType==='user'"></login-user>
-          <login-mobile v-show="loginType==='mobile'"></login-mobile>
+          <login-user @findps="onFindPassword" @third="onThird" @login="onLogin" v-if="loginType==='user'"></login-user>
+          <login-mobile v-if="loginType==='mobile'"></login-mobile>
         </div>
 
         <div v-if="loginType === 'mobilefind' || loginType === 'emailfind'" class="login-user-and-mobile">
@@ -53,13 +53,16 @@ import { AuthService } from '@/services/auth.service'
 import { LoginService } from './login.service'
 import mobile from './login#/mobile'
 import user from './login#/user'
+import { NoCaptchaService } from '@/services/no-captcha.service'
+
 export default {
   name: 'Login',
   serviceInject() {
     return {
       loginService: LoginService,
       userService: UserService,
-      authService: AuthService
+      authService: AuthService,
+      noCaptchaService: NoCaptchaService
     }
   },
   data() {
@@ -98,8 +101,14 @@ export default {
     onClickBack() {
       this.loginType = 'user'
     },
-    onLogin(values) {
-      this.loginService.loginAccount(values).subscribe(res => {
+    onLogin(params) {
+      params.nvc_val = getNVCVal()
+      this.loginService.loginAccount(params).subscribe(res => {
+        const code = +res.code
+        if (this.noCaptchaService.testIsNeedCallCaptcha(code)) {
+          this.noCaptchaService.callCaptcha(code)
+          return
+        }
         this.userService.SET_FIRST_INITED(false)
         if (res.have_phone) {
           this.$router.push('/')
@@ -107,7 +116,7 @@ export default {
           // 去绑定手机
           this.$router.push('/')
         }
-      })
+      }, this.noCaptchaService.resetNVC)
     },
     // 切换登录方式
     switchLoginType() {
