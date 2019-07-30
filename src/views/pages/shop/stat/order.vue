@@ -53,8 +53,9 @@ export default {
   },
   components: { RecentRadioGroup },
   methods: {
-    recentChange(query) {
-      this.onSearch({ ...query })
+    recentChange(searchFieldsValue) {
+      console.log(searchFieldsValue)
+      this.onMultiSearch(searchFieldsValue)
     }
   }
 }
