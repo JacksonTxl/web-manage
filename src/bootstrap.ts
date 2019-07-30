@@ -12,12 +12,12 @@ const { router } = new VueServiceApp({
   onError(e) {
     nProgress.done()
     throw e
-  },
-  scrollBehavior: () => {
-    return {
-      y: 0
-    }
   }
+  // scrollBehavior: () => {
+  //   return {
+  //     y: 0
+  //   }
+  // }
 })
 
 export { router }
