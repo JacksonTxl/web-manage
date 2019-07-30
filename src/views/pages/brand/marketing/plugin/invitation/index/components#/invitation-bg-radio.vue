@@ -20,6 +20,7 @@
         width="192px"
         height="108px"
         :cropperModal="cropperModal"
+        :maskOptions="maskOptions"
         :list="fileList"
         :sizeLimit="2"
         placeholder="上传照片"></st-image-upload>
@@ -81,6 +82,12 @@ export default {
         cropper: {
           aspectRatio: 3 / 5
         }
+      },
+      maskOptions: {
+        flag: true,
+        width: 750,
+        height: 1334,
+        maskUrl: 'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-invitation-4.png'
       },
       invite_poster: this.pluginEnums.invite_poster.value,
       // 备份

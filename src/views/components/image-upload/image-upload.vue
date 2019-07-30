@@ -34,15 +34,7 @@
         </slot>
       </a-spin>
     </a-upload>
-    <!-- <viewer :images="fileList"
-      @inited="inited"
-      class="viewer" ref="viewer"
-    >
-      <template slot-scope="scope">
-        <img v-for="(item, index) in scope.images" :src="item.image_key" :key="index" v-show="false"/>
-        这是测试文件名称{{fileList}}
-      </template>
-    </viewer> -->
+    <canvas id="myCanvas" :width="maskOptions.width" :height="maskOptions.height" v-show="false"></canvas>
   </div>
 </template>
 <script>
@@ -136,6 +128,22 @@ export default {
       default: false
     },
     /**
+     * 预览时是否需要加上蒙版 蒙版和上传的图片一样大小
+     * flag 是否需要加上蒙版
+     * width 图片绘制宽度
+     * height 图片绘制高度
+     * maskUrl 蒙版的url
+     */
+    maskOptions: {
+      type: Object,
+      default: () => ({
+        flag: false,
+        width: 750,
+        height: 1334,
+        maskUrl: 'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-invitation-4.png'
+      })
+    },
+    /**
      * 后端字段映射 image_id,image_key,image_url
      */
     props: {
@@ -191,8 +199,16 @@ export default {
     }
   },
   watch: {
-    list(newList) {
-      this.fileList = this.list
+    list: {
+      deep: true,
+      handler(newList) {
+        this.fileList = this.list
+        if (this.maskOptions.flag && this.fileList.length > 0) {
+          this.drawMaskImage(this.fileList[0][this.imageUrl]).then((resSrc) => {
+            this.fileList[0][this.imageUrl] = resSrc
+          })
+        }
+      }
     }
   },
   methods: {
@@ -237,13 +253,25 @@ export default {
         })
         .subscribe({
           next: val => {
-            this.fileList.push({
-              [this.imageId]: 0,
-              [this.imageKey]: val.fileKey,
-              [this.imageHost]: val.host,
-              [this.imageUrl]: val.url
-            })
-            this.$emit('change', this.fileList)
+            if (this.maskOptions.flag) {
+              this.drawMaskImage(val.url).then((resSrc) => {
+                this.fileList.push({
+                  [this.imageId]: 0,
+                  [this.imageKey]: val.fileKey,
+                  [this.imageHost]: val.host,
+                  [this.imageUrl]: resSrc
+                })
+                this.$emit('change', this.fileList)
+              })
+            } else {
+              this.fileList.push({
+                [this.imageId]: 0,
+                [this.imageKey]: val.fileKey,
+                [this.imageHost]: val.host,
+                [this.imageUrl]: val.url
+              })
+              this.$emit('change', this.fileList)
+            }
           },
           error: val => {
             this.messageService.error({ content: `Error ${val.message}` })
@@ -280,6 +308,39 @@ export default {
       return {
         isValid: true
       }
+    },
+    drawMaskImage(userImgSrc) {
+      return Promise((res, rej) => {
+        const myCanvas = document.getElementById('myCanvas')
+        const ctx = myCanvas.getContext('2d')
+        ctx.globalCompositeOperation = 'source-over'
+        const logo_img = new Image()
+        logo_img.setAttribute('crossOrigin', 'anonymous')
+        logo_img.src = this.maskOptions.maskUrl
+        const user_img = new Image()
+        user_img.setAttribute('crossOrigin', 'anonymous')
+        user_img.src = userImgSrc
+        const promise1 = new Promise((resolve, reject) => {
+          logo_img.onload = () => {
+            resolve()
+          }
+        })
+        const promise2 = new Promise((resolve, reject) => {
+          user_img.onload = () => {
+            resolve()
+          }
+        })
+        Promise.all([promise1, promise2]).then(result => {
+          ctx.clearRect(0, 0, myCanvas.width, myCanvas.height)
+          ctx.drawImage(user_img, 0, 0, this.maskOptions.width, this.maskOptions.height)
+          ctx.drawImage(logo_img, 0, 0, this.maskOptions.width, this.maskOptions.height)
+          ctx.stroke()
+          myCanvas.toBlob(function(blob) {
+            const objectURL = URL.createObjectURL(blob)
+            res(objectURL)
+          })
+        })
+      })
     }
   },
   components: {

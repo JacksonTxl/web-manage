@@ -88,7 +88,7 @@
             <!-- <st-card-bg-radio v-model="banner"/> -->
             <st-invitation-bg-radio v-model="invite_poster"/>
         </st-form-item>
-        <st-form-item label=" ">
+        <st-form-item>
           <st-button type="primary" :loading="loading.edit||loading.add" @click="onSubmit">保存</st-button>
         </st-form-item>
       </template>
@@ -99,7 +99,7 @@
 import { SettingService } from './setting.service'
 import { cloneDeep } from 'lodash-es'
 import { IndexService } from '../index.service'
-import StInvitationBgRadio from '@/views/components/invitation-bg-radio/invitation-bg-radio'
+import StInvitationBgRadio from './components#/invitation-bg-radio'
 export default {
   name: 'PageBrandMarketingInviationSetting',
   bem: {

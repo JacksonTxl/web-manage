@@ -11,9 +11,9 @@
     <!-- </st-form> -->
 
     <!-- canvas绘制双图层图片 -->
-    <canvas id="myCanvas" width="200" height="200"></canvas>
-    {{src}}
+    <canvas id="myCanvas" width="750" height="1334" v-show="false"></canvas>
     <st-button @click="drawImage">点击绘制</st-button>
+    <st-button @click="getImage">生成图片</st-button>
   </st-panel>
 </template>
 <script>
@@ -48,17 +48,25 @@ export default {
       const ctx = myCanvas.getContext('2d')
       ctx.globalCompositeOperation = 'source-over'
       const logo_img = new Image()
-      logo_img.src = 'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/10000/2019-07-30/1564457894729.png'
+      logo_img.setAttribute('crossOrigin', 'anonymous')
+      logo_img.src = 'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/10000/2019-07-30/1564473066094.png'
       const user_img = new Image()
+      user_img.setAttribute('crossOrigin', 'anonymous')
       user_img.src = 'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/10000/2019-07-30/1564458803780.png'
       user_img.onload = () => {
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height)
-        ctx.drawImage(user_img, 0, 0, 200, 200)
-        // ctx.drawImage(logo_img, 0, 0)
+        ctx.drawImage(user_img, 0, 0, 750, 1334)
+        ctx.drawImage(logo_img, 0, 0, 750, 1334)
         ctx.stroke()
-        this.src = myCanvas.toDataURL()
-        console.log()
       }
+    },
+    getImage() {
+      const myCanvas = document.getElementById('myCanvas')
+      const ctx = myCanvas.getContext('2d')
+      myCanvas.toBlob(function(blob) {
+        const objectURL = URL.createObjectURL(blob)
+        console.log(objectURL)
+      })
     }
   },
   components: {
