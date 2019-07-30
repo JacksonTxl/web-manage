@@ -109,6 +109,7 @@ export default {
           this.noCaptchaService.callCaptcha(code)
           return
         }
+        this.noCaptchaService.resetNVC()
         this.userService.SET_FIRST_INITED(false)
         if (res.have_phone) {
           this.$router.push('/')
