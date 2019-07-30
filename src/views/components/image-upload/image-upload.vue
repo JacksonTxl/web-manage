@@ -310,26 +310,26 @@ export default {
       }
     },
     drawMaskImage(userImgSrc) {
-      return Promise((res, rej) => {
-        const myCanvas = document.getElementById('myCanvas')
-        const ctx = myCanvas.getContext('2d')
-        ctx.globalCompositeOperation = 'source-over'
-        const logo_img = new Image()
-        logo_img.setAttribute('crossOrigin', 'anonymous')
-        logo_img.src = this.maskOptions.maskUrl
-        const user_img = new Image()
-        user_img.setAttribute('crossOrigin', 'anonymous')
-        user_img.src = userImgSrc
-        const promise1 = new Promise((resolve, reject) => {
-          logo_img.onload = () => {
-            resolve()
-          }
-        })
-        const promise2 = new Promise((resolve, reject) => {
-          user_img.onload = () => {
-            resolve()
-          }
-        })
+      const myCanvas = document.getElementById('myCanvas')
+      const ctx = myCanvas.getContext('2d')
+      ctx.globalCompositeOperation = 'source-over'
+      const logo_img = new Image()
+      logo_img.setAttribute('crossOrigin', 'anonymous')
+      logo_img.src = this.maskOptions.maskUrl
+      const user_img = new Image()
+      user_img.setAttribute('crossOrigin', 'anonymous')
+      user_img.src = userImgSrc
+      const promise1 = new Promise((resolve, reject) => {
+        logo_img.onload = () => {
+          resolve()
+        }
+      })
+      const promise2 = new Promise((resolve, reject) => {
+        user_img.onload = () => {
+          resolve()
+        }
+      })
+      return new Promise((resolve, reject) => {
         Promise.all([promise1, promise2]).then(result => {
           ctx.clearRect(0, 0, myCanvas.width, myCanvas.height)
           ctx.drawImage(user_img, 0, 0, this.maskOptions.width, this.maskOptions.height)
@@ -337,7 +337,7 @@ export default {
           ctx.stroke()
           myCanvas.toBlob(function(blob) {
             const objectURL = URL.createObjectURL(blob)
-            res(objectURL)
+            resolve(objectURL)
           })
         })
       })
