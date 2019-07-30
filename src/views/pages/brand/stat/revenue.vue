@@ -61,6 +61,7 @@
         </a-col>
       </a-row>
       <st-table
+        :loading="loading.getList"
         :columns="columns"
         :scroll="{x:1400}"
         :alertSelection="{onReset:onSelectionReset}"
@@ -104,7 +105,8 @@ export default {
       auth: this.revenueService.auth$,
       dataRing: this.revenueService.dataRing$,
       dataLine: this.revenueService.dataLine$,
-      dataToday: this.revenueService.dataToday$
+      dataToday: this.revenueService.dataToday$,
+      loading: this.revenueService.loading$
 
     }
   },

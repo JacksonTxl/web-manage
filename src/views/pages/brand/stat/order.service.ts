@@ -1,5 +1,5 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed } from 'rx-state/src'
+import { State, Computed, Effect } from 'rx-state/src'
 import { pluck, tap } from 'rxjs/operators'
 import { OrderApi, OrderChartParams, OrderDataParams } from '@/api/v1/stat/order'
 import { forkJoin } from 'rxjs'
@@ -10,6 +10,7 @@ export class OrderService {
   chartData$ = new State<object[]>([])
   list$ = new State([])
   page$ = new State({})
+  loading$ = new State({})
 
   auth$ = this.authService.authMap({
     add: 'shop:member:member|add',
@@ -34,6 +35,7 @@ export class OrderService {
     }))
   }
   // 列表
+  @Effect()
   getList(query: OrderDataParams) {
     return this.orderApi.getData(query).pipe(tap(res => {
       this.list$.commit(() => res.list)
