@@ -8,8 +8,7 @@
         <a-input size="large" type="password" placeholder="密码" v-decorator="rules.password"/>
       </st-form-item>
       <st-form-item class="mg-b0">
-        <!-- 验证浮层 -->
-        <div id="no-captcha"></div>
+        <no-captcha></no-captcha>
       </st-form-item>
       <!-- <st-form-item  :class="loginUser('pass')" class="mg-b16">
         <div :class="loginUser('pass-content')">
@@ -40,12 +39,16 @@
 <script>
 import { LoginService } from '../login.service'
 import { rules } from './user.config'
+import NoCaptcha from './no-captcha'
 
 export default {
   bem: {
     loginUser: 'page-login-user'
   },
   name: 'LoginUser',
+  components: {
+    NoCaptcha
+  },
   serviceInject() {
     return {
       loginService: LoginService

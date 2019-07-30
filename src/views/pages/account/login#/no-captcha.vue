@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" class="nc-container"></div>
+  <div :id="id"></div>
 </template>
 
 <script>
@@ -11,21 +11,10 @@ export default {
       noCaptchaService: NoCaptchaService
     }
   },
-  rxState() {
-    return {
-      ncData: this.noCaptchaService.data$
-    }
-  },
   props: {
     id: {
       type: String,
       default: 'no-captcha'
-    }
-  },
-  watch: {
-    ncData(val) {
-      console.log('ncData', val)
-      this.$emit('change', val)
     }
   },
   mounted() {

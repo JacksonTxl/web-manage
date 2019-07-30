@@ -21,8 +21,7 @@
         </a-dropdown>
       </st-form-item>
       <st-form-item class="mg-b0">
-        <!-- 验证浮层 -->
-        <div id="no-captcha"></div>
+        <no-captcha></no-captcha>
       </st-form-item>
       <!-- <st-form-item class="mg-b0">
         <no-captcha id="no-captcha-2"/>
@@ -51,6 +50,7 @@ import { LoginService } from '../login.service'
 import { rules } from './mobile.config'
 import { PatternService } from '@/services/pattern.service'
 import { NoCaptchaService } from '@/services/no-captcha.service'
+import NoCaptcha from './no-captcha'
 
 export default {
   name: 'LoginMobile',
@@ -61,13 +61,11 @@ export default {
       noCaptchaService: NoCaptchaService
     }
   },
-  rxState() {
-    return {
-      nvcVal: this.noCaptchaService.nvcVal$
-    }
-  },
   bem: {
     mobile: 'page-login-mobile'
+  },
+  components: {
+    NoCaptcha
   },
   props: {
     loading: {
@@ -108,10 +106,10 @@ export default {
       })
     },
     getCaptcha(params) {
-      params.nvc_val = this.nvcVal || getNVCVal()
+      params.nvc_val = getNVCVal()
       this.loginService.getCaptcha(params).subscribe(res => {
         const code = +res.code
-        if ([400, 600].includes(code)) {
+        if (this.noCaptchaService.testIsNeedCallCaptcha(code)) {
           this.noCaptchaService.callCaptcha(code)
         } else {
           this.isClick = true
