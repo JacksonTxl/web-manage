@@ -919,6 +919,13 @@ export const routeMapConfig = {
       size: { type: Number, default: 20 }
     }
   },
+  'brand-stat'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '数据统计'
+    routeConfig.meta.tabs = [
+      'brand-stat-revenue',
+      'brand-stat-order'
+    ]
+  },
   'brand-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收统计'
     routeConfig.queryOptions = {
