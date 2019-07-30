@@ -930,7 +930,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '营收统计'
     routeConfig.queryOptions = {
       shop_id: { type: Number, default: 0 },
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       day: { type: Number, default: 0 },
       start_date: { type: String, default: '' },
@@ -941,7 +941,7 @@ export const routeMapConfig = {
     routeConfig.meta.title = '订单统计'
     routeConfig.queryOptions = {
       shop: { type: Number, default: 0 },
-      page: { type: Number, default: 1 },
+      current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
       day: { type: Number, default: 0 },
       start_date: { type: String, default: '' },

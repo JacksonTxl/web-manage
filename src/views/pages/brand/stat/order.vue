@@ -30,7 +30,6 @@
         :loading="loading.getList"
         :columns="columns"
         :scroll="{x:1800}"
-
         rowKey="member_id"
         :page="page"
         @change="onTableChange"
