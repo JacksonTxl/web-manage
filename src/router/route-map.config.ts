@@ -887,8 +887,8 @@ export const routeMapConfig = {
       search: { type: String, default: '' },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
-      send_status: { type: Number },
-      notify_type: { type: Number },
+      send_status: { type: Number, default: -1 },
+      notify_type: { type: Number, default: -1 },
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' }
     }
