@@ -79,8 +79,7 @@ export default {
   },
   rxState() {
     return {
-      loading: this.loginService.loading$,
-      nvcVal: this.noCaptchaService.nvcVal$
+      loading: this.loginService.loading$
     }
   },
   computed: {
@@ -103,14 +102,13 @@ export default {
       this.loginType = 'user'
     },
     onLogin(params) {
-      params.nvc_val = this.nvcVal || getNVCVal()
+      params.nvc_val = getNVCVal()
       this.loginService.loginAccount(params).subscribe(res => {
         const code = +res.code
-        if ([400, 600].includes(code)) {
+        if (this.noCaptchaService.testIsNeedCallCaptcha(code)) {
           this.noCaptchaService.callCaptcha(code)
           return
         }
-        this.noCaptchaService.resetNVC()
         this.userService.SET_FIRST_INITED(false)
         if (res.have_phone) {
           this.$router.push('/')

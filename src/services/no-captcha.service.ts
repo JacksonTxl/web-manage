@@ -1,8 +1,6 @@
 import { Injectable } from 'vue-service-app'
-import { State } from 'rx-state'
 @Injectable()
 export class NoCaptchaService {
-  nvcVal$ = new State('')
   constructor() {}
   init(opts: any = {}) {
     //无痕配置 && 滑动验证、刮刮卡、问答验证码通用配置
@@ -39,13 +37,20 @@ export class NoCaptchaService {
           _ggk_net_err: ['网络实在不给力<br/>请', "javascript:noCaptcha.reset()", '再来一次', '或', "http://survey.taobao.com/survey/QgzQDdDd?token=%TOKEN", '反馈问题'],
           _ggk_too_fast: ['您刮得太快啦<br/>请', "javascript:noCaptcha.reset()", '再来一次', '或', "http://survey.taobao.com/survey/QgzQDdDd?token=%TOKEN", '反馈问题']
         }
-      },
-      nvcCallback: (data: any) => {
-        this.nvcVal$.commit(() => data)
-        // data为getNVCVal()的值，此函数为二次验证滑动或者刮刮卡通过后的回调函数
-        // data跟业务请求一起上传，由后端请求AnalyzeNvc接口，接口会返回100或者900
       }
+      // ,
+      // nvcCallback: (data: any) => {
+      //   // data为getNVCVal()的值，此函数为二次验证滑动或者刮刮卡通过后的回调函数
+      //   // data跟业务请求一起上传，由后端请求AnalyzeNvc接口，接口会返回100或者900
+      // }
     }
+  }
+  /**
+   * 判断是否需要唤起验证码
+   * @param code 400 滑动验证 600 刮刮卡验证
+   */
+  testIsNeedCallCaptcha(code: number) {
+    return [400, 600].includes(code)
   }
   callCaptcha(code: number) {
     switch (code) {
@@ -79,6 +84,5 @@ export class NoCaptchaService {
   resetNVC() {
     // @ts-ignore
     nvcReset()
-    this.nvcVal$.commit(() => '')
   }
 }
