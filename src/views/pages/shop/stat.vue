@@ -9,7 +9,7 @@
 <script>
 import { StatService } from './stat.service'
 export default {
-  name: 'ShopStatInfo',
+  name: 'ShopStat',
   serviceInject() {
     return {
       statService: StatService

@@ -13,19 +13,11 @@
       <st-search-panel>
         <div :class="bSelect()">
           <span :class="bSelect('label')">通知对象:</span>
-          <st-search-radio
-            :class="bSelect('val')"
-            v-model="query.notify_type"
-            :list="notifyType"
-          />
+          <st-search-radio :class="bSelect('val')" v-model="query.notify_type" :list="notifyType" />
         </div>
         <div :class="bSelect()">
           <span :class="bSelect('label')">发送状态：</span>
-          <st-search-radio
-            :class="bSelect('val')"
-            v-model="query.send_status"
-            :list="sendStatus"
-          />
+          <st-search-radio :class="bSelect('val')" v-model="query.send_status" :list="sendStatus" />
         </div>
         <div :class="bSelect()">
           <span :class="bSelect('label')">发送时间：</span>
@@ -34,20 +26,19 @@
               format="YYYY-MM-DD"
               placeholder="开始日期"
               :showToday="false"
-              v-model="query.start_time"
+              v-model="start_date"
               @change="startdatePickerChange"
             />&nbsp;~&nbsp;
             <a-date-picker
               format="YYYY-MM-DD"
               placeholder="结束日期"
               :showToday="false"
-              v-model="query.end_time"
               @change="enddatePickerChange"
             />
           </div>
         </div>
         <div slot="button">
-          <st-button type="primary" @click="onSearch">查询</st-button>
+          <st-button type="primary" @click="onSearchList">查询</st-button>
           <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
         </div>
       </st-search-panel>
@@ -55,6 +46,7 @@
 
     <st-table
       :page="page"
+      :loading="loading.getSmsList"
       @change="onTableChange"
       :columns="columns"
       :dataSource="list"
@@ -127,12 +119,12 @@ export default {
         ]
       },
       orderStatusList: [],
-      payStatusList: []
+      payStatusList: [],
+      start_date: null,
+      end_date: null
     }
   },
-  created() {
-
-  },
+  created() {},
   methods: {
     getList() {},
     onSearchKeyWords() {
@@ -143,8 +135,15 @@ export default {
         { keyword: true }
       )
     },
-    startdatePickerChange() {},
-    enddatePickerChange() {}
+    onSearchList() {
+      this.onSearch({ ...this.query })
+    },
+    startdatePickerChange(date, dateString) {
+      this.query.start_time = dateString
+    },
+    enddatePickerChange(date, dateString) {
+      this.query.end_time = dateString
+    }
   }
 }
 </script>
