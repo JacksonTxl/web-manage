@@ -19,7 +19,7 @@
                 <a><st-icon type="delete" :class="action('del-icon')"/></a>
               </a-popconfirm> -->
             </div>
-            <img :src="(li.head_img.image_url || config.PLACEHOLDER_IMG.AVATAR) | imgFilter">
+            <img :src="(li.head_img.image_url || config.PLACEHOLDER_IMG.AVATAR) | imgFilter({w:160,h:160})">
             <div style="-webkit-box-orient: vertical;" :class="action('nickname')" :title="li.nickname">{{li.nickname}}</div>
           </div>
         <!-- </a-col> -->

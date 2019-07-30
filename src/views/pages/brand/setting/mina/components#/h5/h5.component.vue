@@ -6,21 +6,21 @@
         <swiper :options="sliderOptions">
           <swiper-slide v-for="(li, index) in sliderInfo" :key="index">
             <!-- <img :src="li.image_url | imgFilter"> -->
-            <div :class="h5('slider-img')" :style="{backgroundImage:'url('+li.image_url+')'}"></div>
+            <div :class="h5('slider-img')" :style="{backgroundImage:'url(' + imageFilter(li.image_url,{w:552,h:310}) +')'}"></div>
           </swiper-slide>
         </swiper>
       </div>
       <div :class="h5('header')">
         <img :class="h5('header-shelter')" :src="logoShelter" />
         <div class="imgBox">
-          <img :src="brand.logo" />
+          <img :src="brand.logo | imgFilter({w:74,h:74})" />
         </div>
         <div :class="h5('header-title')">此处显示门店名称</div>
         <div :class="h5('header-subtitle')">此处显示门店地址</div>
       </div>
       <div :class="h5('action')">
         <div v-for="(li,index) in actionInfo" class="action-li" :key="index">
-          <img :src="li.image_url">
+          <img :src="li.image_url | imgFilter({w:56 ,h: 56})">
           <p>{{li.title}}</p>
         </div>
       </div>
@@ -32,7 +32,7 @@
         <a-row>
           <a-col v-for="(li,index) in eventInfo" class="event-li" :key="index" :span="li.span">
             <!-- <img v-if="li.image_url" :src="li.image_url | imgFilter"> -->
-            <div v-if="li.image_url" :class="h5('event-img')" :style="{backgroundImage:'url('+li.image_url+')'}"></div>
+            <div v-if="li.image_url" :class="h5('event-img')" :style="{backgroundImage:'url('+imageFilter(li.image_url,{h:88})+')'}"></div>
             <div v-else class="img"></div>
           </a-col>
         </a-row>
@@ -42,7 +42,7 @@
       <div :class="h5('coach')">
         <swiper :options="coachOption"  class="coach-li">
           <swiper-slide v-for="(li, index) in coachInfo" :key="index">
-            <img class="via" :src="(li.head_img.image_url|| config.PLACEHOLDER_IMG.AVATAR) | imgFilter">
+            <img class="via" :src="(li.head_img.image_url|| config.PLACEHOLDER_IMG.AVATAR) | imgFilter({w:206,h:206})">
             <img class="call" :src="callcoach">
             <st-t3>{{li.nickname}}</st-t3>
             <p>{{`累计上课${li.course_num}节`}}</p>
@@ -81,7 +81,7 @@
       </div>
       <div :class="h5('nav')">
         <div v-for="(li,index) in menuInfo" class="nav-li" :key="index">
-          <img :src="li.icon">
+          <img :src="li.icon | imgFilter({w:32,h:32})">
           <p>{{li.name}}</p>
         </div>
         <!-- <div :class="h5('nav-home')"></div> -->
@@ -118,6 +118,7 @@ import logo_shelter from '@/assets/img/brand/setting/mina/logo_shelter.png'
 import statusImg from '@/assets/img/brand/setting/mina/status.png'
 import { AppConfig } from '@/constants/config'
 import { UserService } from '@/services/user.service'
+import { imgFilter } from '@/filters/resource.filters'
 export default {
   bem: {
     h5: 'h5-component'
@@ -184,6 +185,11 @@ export default {
     this.recommend1 = [course1, course2, course3, course4, course5, course6, course7, course8]
     this.recommend2 = this.recommend1.slice(0).reverse()
     this.recommend3 = [coursepack1, coursepack2, coursepack3, coursepack4]
+  },
+  methods: {
+    imageFilter(key, opts) {
+      return imgFilter(key, opts)
+    }
   }
 }
 

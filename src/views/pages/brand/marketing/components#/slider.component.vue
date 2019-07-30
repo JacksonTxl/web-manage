@@ -8,7 +8,7 @@
             </div>
             <div v-if="li.is_over===1" :class="slider('overMask')"></div>
             <img v-if="li.is_over===1" :class="slider('over')" :src="over" />
-            <img style="object-fit: cover;" :src="li.image_url">
+            <img style="object-fit: cover;" :src="li.image_url | imgFilter({w:482,h:274})">
             <div v-if="li.is_default===1" :class="slider('default')">
                 默认门店头图<span>（自动匹配店招图片）</span>
             </div>
