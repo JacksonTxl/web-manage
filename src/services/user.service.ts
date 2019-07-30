@@ -108,6 +108,7 @@ export class UserService {
   crowdEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('crowd')))
   soldEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('sold')))
   couponEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('coupon')))
+  pluginEnums$ = new Computed<ModuleEnums>(this.enums$.pipe(pluck('plugin')))
   transactionEnums$ = new Computed<ModuleEnums>(
     this.enums$.pipe(pluck('transaction'))
   )
