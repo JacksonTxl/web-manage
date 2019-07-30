@@ -70,7 +70,7 @@ export default {
     SmsSign
   },
   created() {
-    this.onSearch()
+
   },
   methods: {
     // 获取首页信息

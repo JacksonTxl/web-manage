@@ -875,6 +875,11 @@ export const routeMapConfig = {
   },
   'brand-setting-sms'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '消息通知设置'
+    routeConfig.meta.tabs = [
+      'brand-setting-sms-list',
+      'brand-setting-sms-notice',
+      'brand-setting-sms-pay'
+    ]
   },
   'brand-setting-sms-list'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '短信列表'
@@ -899,7 +904,11 @@ export const routeMapConfig = {
     routeConfig.meta.title = '通知模版'
   },
   'shop-stat'(routeConfig: RouteConfig) {
-    routeConfig.meta.title = '报表'
+    routeConfig.meta.title = '数据统计'
+    routeConfig.meta.tabs = [
+      'shop-stat-revenue',
+      'shop-stat-order'
+    ]
   },
   'shop-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收报表'

@@ -131,7 +131,7 @@ export default {
     }
   },
   created() {
-    this.onSearch()
+
   },
   methods: {
     getList() {},
