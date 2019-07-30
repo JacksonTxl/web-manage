@@ -97,6 +97,8 @@ export class OssService extends Api {
       fileName = file.name.replace(/[?\s%<>&#\\:]/g, '').replace(suffix, '')
     }
 
-    return `${fileName}${Date.now()}${suffix}`
+    return `${fileName}___${Math.random()
+      .toString(16)
+      .slice(3)}___${suffix}`
   }
 }
