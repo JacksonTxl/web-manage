@@ -84,9 +84,10 @@
             </div>
           </st-form-item>
         </template>
-        <!-- <st-form-item label="邀请海报">
-            <st-card-bg-radio v-model="banner"/>
-        </st-form-item>-->
+        <st-form-item label="邀请海报">
+            <!-- <st-card-bg-radio v-model="banner"/> -->
+            <st-invitation-bg-radio v-model="invite_poster"/>
+        </st-form-item>
         <st-form-item label=" ">
           <st-button type="primary" :loading="loading.edit||loading.add" @click="onSubmit">保存</st-button>
         </st-form-item>
@@ -98,6 +99,7 @@
 import { SettingService } from './setting.service'
 import { cloneDeep } from 'lodash-es'
 import { IndexService } from '../index.service'
+import StInvitationBgRadio from '@/views/components/invitation-bg-radio/invitation-bg-radio'
 export default {
   name: 'PageBrandMarketingInviationSetting',
   bem: {
@@ -130,14 +132,14 @@ export default {
       // 被邀请人
       inviterCoupon: null,
       inviterHelpText: '',
-      inviterCouponNum: undefined
-      //   邀请海报
-      //   banner: {
-      //     image_id: 0,
-      //     image_key: 'image/VZ0RGBwTX7FA1yKb.png',
-      //     image_url: '',
-      //     index: 1
-      //   },
+      inviterCouponNum: undefined,
+      // 邀请海报
+      invite_poster: {
+        image_id: 0,
+        image_key: 'image/VZ0RGBwTX7FA1yKb.png',
+        image_url: '',
+        index: 1
+      }
     }
   },
   computed: {
@@ -174,6 +176,7 @@ export default {
           coupon_name: this.settingInfo.inviter_coupon_name
         }
         this.inviterCouponNum = this.settingInfo.inviter_coupon_num
+        this.invite_poster = this.settingInfo.invite_poster
       }
     },
     // 开关
@@ -242,10 +245,13 @@ export default {
         let fn = this.isOpen ? 'edit' : 'add'
         this.settingService[fn]({
           activity_status: this.openStatus ? 1 : 2,
+          // 邀请人
+          inviter_coupon_id: this.inviterCoupon.id,
+          inviter_coupon_num: +this.inviterCouponNum,
+          // 被邀请人
           invitee_coupon_id: this.inviteeCoupon.id,
           invitee_coupon_num: +this.inviteeCouponNum,
-          inviter_coupon_id: this.inviterCoupon.id,
-          inviter_coupon_num: +this.inviterCouponNum
+          invite_poster: this.invite_poster
         }).subscribe(() => {
           this.$router.push({ path: '/brand/marketing/plugin/invitation/index/data' })
         })
@@ -254,6 +260,9 @@ export default {
   },
   mounted() {
     this.init()
+  },
+  components: {
+    StInvitationBgRadio
   }
 }
 </script>

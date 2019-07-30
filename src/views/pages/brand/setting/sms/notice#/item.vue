@@ -213,6 +213,7 @@ export default {
         custom_phone: this.params.custom_phone.length > 0 ? this.params.custom_phone.split(',') : []
       })
       this.$emit('editInfo', para)
+      this.isShowEdit = 0
     }
   },
   watch: {
