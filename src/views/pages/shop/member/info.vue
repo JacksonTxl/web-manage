@@ -46,7 +46,7 @@
                   </a-tooltip>
                 </template>
                 <a v-modal-link="{ name: 'shop-add-lable',props:{
-                  memberIds:[{id:$route.query.id}]},
+                  memberIds:[$route.query.id]},
                   on:{done: onModalTest }
                 }">
                   <a-tag v-if="authCommon.add" style="background: #fff; borderStyle: dashed;">
