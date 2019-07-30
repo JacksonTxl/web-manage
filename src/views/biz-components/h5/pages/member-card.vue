@@ -2,7 +2,7 @@
   <div :class="h5()">
     <div :class="card()">
       <div :class="card('img-corner')"></div>
-      <img :class="card('img')" :src="data.card_bg.image_url" alt="">
+      <img :class="card('img')" :src="data.card_bg.image_url | imgFilter({w: 494,h: 278})" alt="">
       <div :class="card('name')">{{data.card_name}}</div>
       <div :class="card('sub')" v-if="cardType === 0">在可用期限内不限次数，畅快健身</div>
       <div :class="card('sub')" v-if="cardType === 1">在可用期限内按次扣费，灵活实惠</div>
