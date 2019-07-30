@@ -41,7 +41,6 @@ export class NoCaptchaService {
         }
       },
       nvcCallback: (data: any) => {
-        console.log('data', data)
         this.nvcVal$.commit(() => data)
         // data为getNVCVal()的值，此函数为二次验证滑动或者刮刮卡通过后的回调函数
         // data跟业务请求一起上传，由后端请求AnalyzeNvc接口，接口会返回100或者900
@@ -49,14 +48,12 @@ export class NoCaptchaService {
     }
   }
   callCaptcha(code: number) {
-    console.log('call captcha', code)
     switch (code) {
       case 400:
         //唤醒滑动验证
         // @ts-ignore
         getNC()
           .then(function(data: any) {
-            console.log('data', data)
             // @ts-ignore
             _nvc_nc.upLang('cn', {
               _startTEXT: "请按住滑块，拖动到最右边",

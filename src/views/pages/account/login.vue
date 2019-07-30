@@ -103,7 +103,6 @@ export default {
       this.loginType = 'user'
     },
     onLogin(params) {
-      console.log('get', getNVCVal())
       params.nvc_val = this.nvcVal || getNVCVal()
       this.loginService.loginAccount(params).subscribe(res => {
         const code = +res.code
