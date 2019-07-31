@@ -126,7 +126,7 @@
                   :getPopupContainer="trigger => trigger.parentNode"
                   :trigger="['click']">
                   <div :class="sale('discounts-promotion')">
-                    <span>{{couponList.length}}张可用优惠券</span>
+                    <span>{{couponList.length || 0}}张可用优惠券</span>
                     <a-icon type="right" />
                   </div>
                   <a-radio-group v-model="selectCoupon" @change="onSelectCouponChange" :class="sale('dropdown')" slot="overlay">
