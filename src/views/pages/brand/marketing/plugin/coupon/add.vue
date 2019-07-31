@@ -266,7 +266,7 @@ export default {
       this.form.resetFields(['full_price'])
     },
     getValidDay(days) {
-      return moment().add(days - 1, 'd').format('YYYY年MM月DD日 23:59')
+      return moment().add(days, 'd').format('YYYY年MM月DD日 23:59')
     },
     getRange() {
       if (this.isEditMode) {

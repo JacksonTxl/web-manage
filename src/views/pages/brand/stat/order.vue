@@ -76,9 +76,7 @@ export default {
     b: 'page-brand-stat-order'
   },
   watch: {
-    // query(newVal) {
-    //   this.onSearch()
-    // }
+
   },
   data() {
     return {

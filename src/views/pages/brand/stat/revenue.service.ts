@@ -47,6 +47,7 @@ export class RevenueService {
         { name: '私教课', value: data.personal_course.total_amount },
         { name: '团体课', value: data.team_course.total_amount },
         { name: '储值卡', value: data.deposit_card.total_amount },
+        { name: '课程包', value: data.package_course.total_amount },
         { name: '定金', value: data.advance_fee.total_amount },
         { name: '押金', value: data.cash_pledge.total_amount },
         { name: '其他', value: data.other.total_amount }]

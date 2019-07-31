@@ -3,7 +3,7 @@
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <div style="display: flex;align-items: center;margin-bottom: 24px;">
-      <span style="margin-right:16px">剩余次数</span>
+      <span style="margin-right:16px">入场次数</span>
       <input-number
         v-model="value.getData.remain_enter_times.remain_times"
         :company="'次'"
