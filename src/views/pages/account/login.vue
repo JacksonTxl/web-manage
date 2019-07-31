@@ -118,10 +118,7 @@ export default {
           // 去绑定手机
           this.$router.push('/')
         }
-      }, err => {
-        this.noCaptchaService.resetNVC()
-        throw err
-      })
+      }, this.noCaptchaService.resetNVC)
     },
     // 切换登录方式
     switchLoginType() {
