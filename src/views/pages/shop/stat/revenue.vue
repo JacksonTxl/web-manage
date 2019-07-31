@@ -80,8 +80,8 @@ export default {
       sliderOptions: {
         autoplay: false,
         navigation: {
-          nextEl: '.swiper-button-prev',
-          prevEl: '.swiper-button-next'
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
         },
         slidesPerView: 6,
         centeredSlides: false,
