@@ -9,8 +9,8 @@ import { AuthService } from '@/services/auth.service'
 export class RevenueService {
   loading$ = new State({})
   dataToday$ = new State({})
-  dataLine$ = new State<object[]>([])
-  dataRing$ = new State<any[]>([])
+  dataLine$ = new State([])
+  dataRing$ = new State([])
   list$ = new State([])
   page$ = new State({})
 
@@ -68,7 +68,7 @@ export class RevenueService {
     }))
   }
   // 获取今日实时数据
-  getDataToady(shopId: number) {
+  getDataToday(shopId: number) {
     return this.revenueApi.getDataToady(shopId).pipe(tap(res => {
       const data = res.info
       const arr = [{
@@ -101,9 +101,6 @@ export class RevenueService {
     }))
   }
 
-  // init() {
-  //   return forkJoin(this.getTop(), this.getAvg(), this.getUserAll({ recently_day: 7 }), this.getMarketingAll({ recently_day: 7 }), this.getEntry())
-  // }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.getList(to.meta.query)
   }
