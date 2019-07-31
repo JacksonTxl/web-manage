@@ -27,12 +27,14 @@
         </div>
       </a-row>
     </div>
-    <a-row class="mg-b16">
-      <a-col :span="4">
+    <div class="mg-b16" :class="bPage('count-action')">
+      <span>
         <!-- <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
-      </a-col>
-      <st-recent-radio-group class="ta-r" @change="recentChange"></st-recent-radio-group>
-    </a-row>
+      </span>
+      <span>
+        <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
+      </span>
+    </div>
     <st-table
       :page="page"
       @change="onTableChange"
