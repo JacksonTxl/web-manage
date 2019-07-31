@@ -346,6 +346,7 @@ export default {
       this.reduceAmount = 0
       this.selectAdvance = ''
       this.selectCoupon = ''
+      this.couponList.commit(() => [])
     },
     fetchCouponList() {
       const member_id = this.form.getFieldValue('memberId')
