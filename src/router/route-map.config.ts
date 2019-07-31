@@ -941,7 +941,7 @@ export const routeMapConfig = {
       shop_id: { type: Number, default: 0 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
-      day: { type: Number, default: 0 },
+      day: { type: Number, default: 7 },
       start_date: { type: String, default: '' },
       end_date: { type: String, default: '' }
     }
@@ -952,7 +952,7 @@ export const routeMapConfig = {
       shop: { type: Number, default: 0 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
-      day: { type: Number, default: 0 },
+      day: { type: Number, default: 7 },
       start_date: { type: String, default: '' },
       end_date: { type: String, default: '' }
     }
