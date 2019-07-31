@@ -5,7 +5,7 @@ import { Store } from '@/services/store'
 import { SmsApi, SmsListQuery } from '@/api/v1/setting/sms/sms'
 interface SetState {}
 @Injectable()
-export class ListService extends Store<SetState> implements RouteGuard {
+export class ListService extends Store<SetState> {
   state$: State<SetState>
   list$ = new State([])
   page$ = new State([])
