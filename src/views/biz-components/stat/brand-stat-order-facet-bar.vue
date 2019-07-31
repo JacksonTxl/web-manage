@@ -25,6 +25,7 @@ export default {
     colors: {
       type: Array,
       default: () => ['#3F66F6', '#06DB8C']
+      // default: () => ['l(270) 0:#3F66F6 1:#3F66F6', 'l(270) 0:#06DB8C 1:#3F66F6']
     },
     height: {
       type: Number,
@@ -184,6 +185,7 @@ export default {
               stroke: '#ccc' // 辅助框的边框颜色设置
             }
           })
+
           view
             .interval()
             .position('group*value')

@@ -3,7 +3,7 @@
   <div class="shop-member-list">
     <st-panel>
       <div slot="title">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onKeywordsSearch('keyword',$event)" style="width: 290px;"/>
+        <st-input-search placeholder="输入用户姓名、手机号" v-model="query.keyword" @search="onKeywordsSearch('keyword',$event)" style="width: 290px;"/>
       </div>
       <div slot="prepend">
         <st-search-panel>

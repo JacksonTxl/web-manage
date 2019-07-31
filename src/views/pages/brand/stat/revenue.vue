@@ -143,7 +143,7 @@ export default {
   },
   created() {
     this.getChart()
-    this.getDataToady()
+    this.getDataToday()
   },
   computed: {
     columns
@@ -161,7 +161,7 @@ export default {
     },
     onChangeTodayShop(event) {
       this.chartTodayShop = event
-      this.getDataToady()
+      this.getDataToday()
     },
     onChangeDataShop(event) {
       this.query.shop_id = event
@@ -173,8 +173,8 @@ export default {
       this.query.end_date = event.end_date || undefined
       this.onSearch()
     },
-    getDataToady() {
-      this.revenueService.getDataToady(this.chartTodayShop).subscribe()
+    getDataToday() {
+      this.revenueService.getDataToday(this.chartTodayShop).subscribe()
     },
     getChart() {
       this.revenueService.getChart(this.chartParam).subscribe()
