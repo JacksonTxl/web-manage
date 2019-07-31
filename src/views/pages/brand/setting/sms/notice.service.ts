@@ -2,7 +2,6 @@ import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { AuthService } from '@/services/auth.service'
 import { RedirectService } from '@/services/redirect.service'
 import { NoticeApi, PutNoticeParams } from '@/api/v1/setting/sms/notice'
 interface SetState {}

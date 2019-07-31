@@ -2,7 +2,7 @@
   <div :class="bPage()">
     <div slot="title">
       <st-input-search
-        @search="onSingleSearch('search',$event,true)"
+        @search="onSingleSearch('search',query.search,{keyword:true})"
         v-model="query.search"
         class="mg-b24"
         style="width: 290px;"
@@ -126,15 +126,6 @@ export default {
   },
   created() {},
   methods: {
-    getList() {},
-    onSearchKeyWords() {
-      this.$events.emit(
-        `${this.$route.name}:onSingleSearch`,
-        'search',
-        this.query.search,
-        { keyword: true }
-      )
-    },
     onSearchList() {
       this.onSearch({ ...this.query })
     },
