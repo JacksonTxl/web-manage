@@ -1,131 +1,96 @@
 import { Injectable, ServiceRoute } from 'vue-service-app'
-import { State, Computed } from 'rx-state/src'
-import { pluck, tap } from 'rxjs/operators'
-import { StatApi, RecentQuery, Version } from '@/api/v1/stat/brand'
+import { State } from 'rx-state/src'
+import { tap } from 'rxjs/operators'
+import { StatApi, RecentQuery } from '@/api/v1/stat/brand'
 import { forkJoin } from 'rxjs'
-
-interface SetState{
-  top: object,
-  userFunnel: object[],
-  user: object[],
-  avg: object[],
-  entry: object[],
-  marketing: object[],
-  marketingFunnel: object[]
-}
 
 @Injectable()
 export class StudioService {
-  state$: State<SetState>
-  top$: Computed<object>
-  userFunnel$: Computed<object>
-  user$: Computed<object[]>
-  avg$: Computed<object[]>
-  entry$: Computed<object[]>
-  marketing$: Computed<object[]>
-  marketingFunnel$: Computed<object[]>
-  constructor(private statApi: StatApi) {
-    this.state$ = new State({
-      top: {},
-      userFunnel: [],
-      user: [],
-      avg: [],
-      entry: [],
-      marketing: [],
-      marketingFunnel: []
-    })
-    this.top$ = new Computed(this.state$.pipe(pluck('top')))
-    this.userFunnel$ = new Computed(this.state$.pipe(pluck('userFunnel')))
-    this.user$ = new Computed(this.state$.pipe(pluck('user')))
-    this.avg$ = new Computed(this.state$.pipe(pluck('avg')))
-    this.entry$ = new Computed(this.state$.pipe(pluck('entry')))
-    this.marketing$ = new Computed(this.state$.pipe(pluck('marketing')))
-    this.marketingFunnel$ = new Computed(this.state$.pipe(pluck('marketingFunnel')))
-  }
+  top$ = new State({})
+  userFunnel$ = new State([])
+  user$ = new State([])
+  avg$ = new State([])
+  entry$ = new State([])
+  marketing$ = new State([])
+  marketingFunnel$ = new State([])
+  constructor(private statApi: StatApi) {}
   getTop() {
     return this.statApi.getTop({ version: 'studio' }).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.top = res.info
-      })
+      this.top$.commit(() => res.info)
     }))
   }
   getUser(query: RecentQuery) {
     return this.statApi.getUser({ version: 'studio' }, query).pipe(tap(res => {
-      this.state$.commit(state => {
-        const data = res.info
-        const chartData: any = []
+      const data = res.info
+      const chartData: any = []
 
-        data.register_chart.forEach((item: any, idx: number) => {
-          const chartItem = {
-            date: item.date,
-            // 访问用户: item.num,
-            注册用户: data.register_chart[idx].num,
-            消费用户: data.consume_chart[idx].num,
-            购买私教: data.personal_chart[idx].num,
-            消课人数: data.checkin_chart[idx].num
-          }
-          chartData.push(chartItem)
-        })
-        state.user = chartData
+      data.register_chart.forEach((item: any, idx: number) => {
+        const chartItem = {
+          date: item.date,
+          注册用户: data.register_chart[idx].num,
+          消费用户: data.consume_chart[idx].num,
+          购买私教: data.personal_chart[idx].num,
+          消课人数: data.checkin_chart[idx].num
+        }
+        chartData.push(chartItem)
       })
+      this.user$.commit(() => chartData)
     }))
   }
   getUserFunnel() {
     return this.statApi.getUserFunnel({ version: 'studio' }).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.userFunnel = [
-          // { name: '访问用户', value: res.info.visit },
+      this.userFunnel$.commit(() =>
+        [
           { name: '注册用户', value: res.info.register },
           { name: '消费用户', value: res.info.consume },
           { name: '购买私教', value: res.info.personal },
-          { name: '消课人数', value: res.info.checkin }]
-      })
+          { name: '消课人数', value: res.info.checkin }
+        ]
+      )
     }))
   }
   // 客单价
   getAvg() {
     return this.statApi.getAvg({ version: 'studio' }).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.avg = [
+      this.avg$.commit(() =>
+        [
           { name: '会员卡', value: res.info.member_card_amount },
           { name: '储值卡', value: res.info.deposit_card_amount },
           { name: '团体课', value: res.info.team_course_amount },
           { name: '私教课', value: res.info.personal_course_amount },
-          { name: '课程包', value: res.info.package_course_amount }]
-      })
+          { name: '课程包', value: res.info.package_course_amount }
+        ]
+      )
     }))
   }
   // 营销分析
   getMarketing(query: RecentQuery) {
     return this.statApi.getMarketing({ version: 'studio' }, query).pipe(tap(res => {
-      this.state$.commit(state => {
-        const data = res.info
-        const chartData: any = []
+      const data = res.info
+      const chartData: any = []
 
-        data.register_chart.forEach((item: any, idx: number) => {
-          const chartItem = {
-            date: item.date,
-            // 浏览用户: item.num,
-            注册用户: data.register_chart[idx].num,
-            消费用户: data.consume_chart[idx].num,
-            购买私教: data.personal_chart[idx].num
-          }
-          chartData.push(chartItem)
-        })
-        state.marketing = chartData
+      data.register_chart.forEach((item: any, idx: number) => {
+        const chartItem = {
+          date: item.date,
+          注册用户: data.register_chart[idx].num,
+          消费用户: data.consume_chart[idx].num,
+          购买私教: data.personal_chart[idx].num
+        }
+        chartData.push(chartItem)
       })
+      this.marketing$.commit(() => chartData)
     }))
   }
   // 营销分析
   getMarketingFunnel() {
     return this.statApi.getMarketingFunnel({ version: 'studio' }).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.marketingFunnel = [
-          // { name: '浏览用户', value: res.info.visit },
+      this.marketingFunnel$.commit(() =>
+        [
           { name: '注册用户', value: res.info.register },
           { name: '消费用户', value: res.info.consume },
-          { name: '购买私教', value: res.info.personal }]
-      })
+          { name: '购买私教', value: res.info.personal }
+        ]
+      )
     }))
   }
   getUserAll(query: RecentQuery) {
@@ -136,19 +101,19 @@ export class StudioService {
   }
   getEntry() {
     return this.statApi.getEntry({ version: 'studio' }).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.entry = [
+      this.entry$.commit(() =>
+        [
           { name: '0次百分比', value: res.info.level_0_num },
           { name: '1-3次人数', value: res.info.level_1_num },
           { name: '4-5次人数', value: res.info.level_2_num },
           { name: '6-10次人数', value: res.info.level_3_num },
           { name: '11-15次人数', value: res.info.level_4_num },
-          { name: '16+次人数', value: res.info.level_5_num }]
-      })
+          { name: '16+次人数', value: res.info.level_5_num }
+        ]
+      )
     }))
   }
   init() {
-    // return this.getTop()
     return forkJoin(this.getTop(), this.getAvg(), this.getUserAll({ recently_day: 7 }), this.getMarketingAll({ recently_day: 7 }), this.getEntry())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {

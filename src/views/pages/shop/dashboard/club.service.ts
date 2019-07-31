@@ -5,7 +5,7 @@ import { OverviewApi, Version, RevenueParams } from '@/api/v1/stat/overview/shop
 import { forkJoin } from 'rxjs'
 
 @Injectable()
-export class StudioService implements RouteGuard {
+export class ClubService implements RouteGuard {
   top$ = new State({
     revenue_amount: {},
     course_checkin_num: {},
@@ -19,7 +19,7 @@ export class StudioService implements RouteGuard {
   courseSummary$ = new State([])
   inoutNum$ = new State([])
   inoutTime$ = new State([])
-  member$ = new State({})
+  member$ = new State({ member: [], marketing: [] })
   newMember$ = new State([])
 
   constructor(private overviewApi: OverviewApi) {}
@@ -56,7 +56,7 @@ export class StudioService implements RouteGuard {
         }
         lineData.push(chartItem)
       }
-      console.log('营收', lineData)
+      console.log('营收趋势', lineData)
       this.revenueDaily$.commit(() => lineData)
     }))
   }
@@ -72,19 +72,19 @@ export class StudioService implements RouteGuard {
       this.courseSummary$.commit(() =>
         [
           {
-            group: '未消课',
-            团体课: data.summary.team_uncheckin_num,
-            私教课: data.summary.personal_uncheckin_num
+            group: '总售课',
+            团体课: data.summary.sale_team_num,
+            私教课: data.summary.sale_personal_num
           },
           {
-            group: '总消课',
+            group: '总销课',
             团体课: data.summary.team_checkin_num,
             私教课: data.summary.personal_checkin_num
           },
           {
-            group: '总售课',
-            团体课: data.summary.sale_team_num,
-            私教课: data.summary.sale_personal_num
+            group: '未销课',
+            团体课: data.summary.team_uncheckin_num,
+            私教课: data.summary.personal_uncheckin_num
           }
         ]
       )
@@ -99,7 +99,7 @@ export class StudioService implements RouteGuard {
         }
         lineData.push(chartItem)
       }
-      console.log(lineData)
+      console.log('上课分析', lineData)
       this.courseDaily$.commit(() => lineData)
     }))
   }
@@ -114,6 +114,7 @@ export class StudioService implements RouteGuard {
         }
         lineData.push(chartItem)
       }
+      console.log('入场', lineData)
       this.inoutNum$.commit(() => lineData)
       this.inoutTime$.commit(() =>
         [
@@ -147,22 +148,22 @@ export class StudioService implements RouteGuard {
       this.member$.commit(() => {
         return {
           member: [
-            { name: '消费用户', value: data.member.consume_num },
-            { name: '购买私教', value: data.member.buy_person_course_num },
-            { name: '私教消课', value: data.member.personal_course_checkin_num }
+            { name: '消费人数', value: data.member.consume_num },
+            { name: '办理入会人数', value: data.member.member_num },
+            { name: '购买私教人数', value: data.member.buy_person_course_num }
           ],
           marketing: [
-            { name: '消费用户', value: data.marketing.consume_num },
-            { name: '购买私教', value: data.marketing.buy_person_course_num },
-            { name: '私教消课', value: data.marketing.personal_course_checkin_num }
+            { name: '消费人数', value: data.marketing.consume_num },
+            { name: '办理入会人数', value: data.marketing.member_num },
+            { name: '购买私教人数', value: data.marketing.buy_person_course_num }
           ]
         }
       })
     }))
   }
-  getBuyCourse(params: RevenueParams) {
-    return this.overviewApi.getBuyCourse(params).pipe(tap(res => {
-      const data = res.info.today_buy_person_course_num
+  getNewMember(params: RevenueParams) {
+    return this.overviewApi.getNewMember(params).pipe(tap(res => {
+      const data = res.info.new_member_num
       let lineData:any = []
       for (let key in data) {
         let chartItem = {
@@ -171,17 +172,18 @@ export class StudioService implements RouteGuard {
         }
         lineData.push(chartItem)
       }
+      console.log('newMember', lineData)
       this.newMember$.commit(() => lineData)
     }))
   }
   init() {
     return forkJoin(
-      this.getTop({ version: 'studio' }),
+      this.getTop({ version: 'club' }),
       this.getRevenue({ recently_day: 7 }),
       this.getCourse({ recently_day: 7 }),
       this.getInout({ recently_day: 7 }),
-      this.getMember({ version: 'studio' }),
-      this.getBuyCourse({ recently_day: 7 })
+      this.getMember({ version: 'club' }),
+      this.getNewMember({ recently_day: 7 })
     )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {

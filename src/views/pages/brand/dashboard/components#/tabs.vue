@@ -7,22 +7,18 @@
   </a-tabs>
   <div class="action">
     <div class="mg-r16">
-      <recent-radio-group @change="recentChange"></recent-radio-group>
+      <st-recent-radio-group @change="recentChange"></st-recent-radio-group>
     </div>
   </div>
 </div>
 </template>
 <script>
-import RecentRadioGroup from '@/views/pages/shop/dashboard#/recent-radio-group'
 export default {
   name: 'DashboardTabs',
   data() {
     return {
       key: 'user'
     }
-  },
-  components: {
-    RecentRadioGroup
   },
   methods: {
     recentChange(query) {

@@ -31,7 +31,7 @@
       <a-col :span="4">
         <!-- <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
       </a-col>
-      <recent-radio-group class="ta-r" @change="recentChange"></recent-radio-group>
+      <st-recent-radio-group class="ta-r" @change="recentChange"></st-recent-radio-group>
     </a-row>
     <st-table
       :page="page"
@@ -51,7 +51,6 @@ import { RevenueService } from './revenue.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './revenue.config.ts'
-import RecentRadioGroup from '@/views/pages/shop/dashboard#/recent-radio-group'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 export default {
@@ -92,7 +91,7 @@ export default {
   computed: {
     columns
   },
-  components: { RecentRadioGroup, swiper, swiperSlide },
+  components: { swiper, swiperSlide },
   created() {
     console.log(this.todayInfo)
     this.getRevenueShopToday()
