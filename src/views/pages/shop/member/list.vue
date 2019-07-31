@@ -3,17 +3,17 @@
   <div class="shop-member-list">
     <st-panel>
       <div slot="title">
-        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onSearch" style="width: 290px;"/>
+        <st-input-search placeholder="可输入姓名、手机号、卡号" v-model="query.keyword" @search="onKeywordsSearch('keyword',$event)" style="width: 290px;"/>
       </div>
       <div slot="prepend">
         <st-search-panel>
           <div :class="basic('select')">
             <span style="width:90px;">用户级别：</span>
-            <st-search-radio @change="onSearch" v-model="query.member_level" :list="memberLevel"/>
+            <st-search-radio v-model="query.member_level" :list="memberLevel"/>
           </div>
           <div :class="basic('select')">
             <span style="width:90px;">来源方式：</span>
-            <st-search-radio :class="basic('select-radio')" @change="onSearch" v-model="query.register_way" :list="sourceList"/>
+            <st-search-radio :class="basic('select-radio')" v-model="query.register_way" :list="sourceList"/>
           </div>
           <div :class="basic('select')">
             <span style="width:90px;">注册时间：</span>
@@ -26,7 +26,7 @@
             </div>
             <div :class="basic('select')">
               <span style="width:90px;">员工跟进：</span>
-              <st-search-radio @change="onSearch" v-model="query.is_follow" :list="isFollow"/>
+              <st-search-radio v-model="query.is_follow" :list="isFollow"/>
             </div>
           </div>
           <div slot="button">
@@ -322,7 +322,7 @@ export default {
               },
               on: {
                 success: () => {
-                  this.$router.push({ force: true })
+                  this.$router.reload()
                 }
               }
             })
@@ -338,7 +338,7 @@ export default {
           },
           on: {
             success: () => {
-              this.$router.push({ force: true })
+              this.$router.reload()
             }
           }
         })
@@ -359,7 +359,7 @@ export default {
               },
               on: {
                 success: () => {
-                  this.$router.push({ force: true })
+                  this.$router.reload()
                 }
               }
             })
@@ -375,7 +375,7 @@ export default {
           },
           on: {
             success: () => {
-              this.$router.push({ force: true })
+              this.$router.reload()
             }
           }
         })
@@ -387,7 +387,7 @@ export default {
         content: '确认解绑选中的会员关系？',
         onOk: () => {
           this.listService.removeWechatBind(record.member_id).subscribe(() => {
-            this.$router.push({ force: true })
+            this.$router.reload()
           })
         },
         onCancel() {}

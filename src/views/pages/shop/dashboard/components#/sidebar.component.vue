@@ -39,7 +39,7 @@
     </div>
 </template>
 <script>
-import PlugIn from '@/views/pages/brand/dashboard#/plug-in'
+import PlugIn from '@/views/biz-components/dashboard/plug-in'
 import pic from '@/assets/img/shop/dashboard/pic.png'
 import book from '@/assets/img/shop/dashboard/book.png'
 import ai1 from '@/assets/img/shop/dashboard/ai1.png'

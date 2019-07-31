@@ -2,12 +2,10 @@ import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { AuthService } from '@/services/auth.service'
-import { RedirectService } from '@/services/redirect.service'
 import { SmsApi, SmsListQuery } from '@/api/v1/setting/sms/sms'
 interface SetState {}
 @Injectable()
-export class ListService extends Store<SetState> implements RouteGuard {
+export class ListService extends Store<SetState> {
   state$: State<SetState>
   list$ = new State([])
   page$ = new State([])
@@ -24,7 +22,7 @@ export class ListService extends Store<SetState> implements RouteGuard {
       })
     )
   }
-  beforeEach(to:ServiceRoute) {
-    return this.getSmsList(to.meta.query)
+  beforeEach(to:ServiceRoute, from:ServiceRoute, next: any) {
+    next()
   }
 }

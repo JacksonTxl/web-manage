@@ -100,11 +100,11 @@ import BrandSimpleBar from '@/views/biz-components/stat/brand-simple-bar'
 import BrandRevenueArea from '@/views/biz-components/stat/brand-revenue-area'
 import BrandUserRing from '@/views/biz-components/stat/brand-user-ring'
 import BrandUserAvgBar from '@/views/biz-components/stat/brand-user-avg-bar'
-import DashboardTabs from '@/views/pages/brand/dashboard#/tabs'
-import CountCard from '@/views/pages/brand/dashboard#/count-card'
+import DashboardTabs from './components#/tabs'
+import CountCard from './components#/count-card'
 import FunnelVertical from '@/views/biz-components/stat/brand-funnel-vertical'
 import { StudioService } from './studio.service'
-import SidebarComponent from '../dashboard#/sidebar.component'
+import SidebarComponent from './components#/sidebar.component'
 export default {
   name: 'Dashboard',
   serviceInject() {

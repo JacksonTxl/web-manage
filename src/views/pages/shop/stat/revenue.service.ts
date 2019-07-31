@@ -35,7 +35,7 @@ export class RevenueService extends Store<SetState> implements RouteGuard {
         let data = res.info
         const arr = [
           {
-            label: '总营收(元)',
+            label: '今日总营收(元)',
             value: data.total_amount || 0
           },
           {
