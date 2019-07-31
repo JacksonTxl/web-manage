@@ -16,7 +16,7 @@ export class SalePersonalCourseService {
   orderAmountPrice$ = new State('0')
   memberList$ = new State({})
   saleList$ = new State({})
-  couponList$ = new State({})
+  couponList$ = new State([])
   coachList$ = new State({})
   personalPrice$ = new State({})
 
