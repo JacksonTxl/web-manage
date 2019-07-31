@@ -23,6 +23,6 @@ export class ListService extends Store<SetState> {
     )
   }
   beforeEach(to:ServiceRoute, from:ServiceRoute, next: any) {
-    next()
+    return this.getSmsList(to.meta.query)
   }
 }

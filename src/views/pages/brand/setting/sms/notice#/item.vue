@@ -8,7 +8,6 @@
         <st-switch @change="save" v-model="params.notify_mode.sms"></st-switch>
       </div>
       <div :class="bComponent('text')" v-if="info.notify_type.value===1">
-        <!-- v-model="info.notify_mode.mini_programs.value" -->
         <st-switch @change="save" v-model="params.notify_mode.mini_programs"></st-switch>
         <span
           class="color-primary mg-l12"
