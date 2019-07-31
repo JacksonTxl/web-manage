@@ -185,6 +185,6 @@ export class StudioService implements RouteGuard {
     )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.init().subscribe(next)
+    return this.init()
   }
 }

@@ -205,6 +205,9 @@ export default {
   bem: {
     sale: 'modal-sold-deal-sale'
   },
+  serviceProviders() {
+    return [SaleMemberCardService]
+  },
   serviceInject() {
     return {
       saleMemberCardService: SaleMemberCardService,
@@ -320,10 +323,10 @@ export default {
       }
       this.fetchCouponList()
     },
-    fetchCouponList() {
+    fetchCouponList(memberId) {
       if (this.selectedNorm && this.selectedPayment) {
         const params = {
-          member_id: this.form.getFieldValue('memberId'),
+          member_id: memberId || this.form.getFieldValue('memberId'),
           card_id: this.info.id,
           specs_id: this.selectedNorm.id
         }
@@ -409,6 +412,7 @@ export default {
         this.saleMemberCardService.getAdvanceList(data).subscribe(res => {
           this.advanceList = cloneDeep(res.list)
         })
+        this.fetchCouponList(data)
       }
     },
     onSelectAdvance() {

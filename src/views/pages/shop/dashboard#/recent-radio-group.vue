@@ -9,6 +9,7 @@
     </div>
 </template>
 <script>
+// TODO: 后期需删除
 export default {
   name: 'RecentRadioGroup',
   bem: {

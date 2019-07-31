@@ -1,12 +1,12 @@
 import Cookie from 'js-cookie'
 
 export default {
-  install(Vue, { namespaces = [] } = {}) {
+  install(Vue) {
     const sgMixin = {
       mounted() {
         if (
           this.$options._componentTag &&
-          namespaces.includes(this.$options._componentTag.split('-')[0]) &&
+          this.$options._componentTag.split('-')[0] !== 'a' &&
           (location.search.includes('sg') || Cookie.get('sg')) &&
           process.env.NODE_ENV === 'development'
         ) {
