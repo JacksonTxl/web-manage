@@ -22,4 +22,7 @@ export class ListService extends Store<SetState> implements RouteGuard {
       })
     )
   }
+  beforeEach(to:ServiceRoute, from:ServiceRoute, next: any) {
+    next()
+  }
 }

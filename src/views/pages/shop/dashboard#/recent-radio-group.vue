@@ -5,7 +5,7 @@
             <a-radio-button value="30">近30天</a-radio-button>
             <a-radio-button value="90">近90天</a-radio-button>
         </a-radio-group>
-        <a-range-picker :class="[b('range'),{'active':!recent}]" @change="recentChange"   v-bind="$attrs" :disabledDate="disabledDate"/>
+        <a-range-picker class="ta-l" :class="[b('range'),{'active':!recent}]" @change="recentChange"   v-bind="$attrs" :disabledDate="disabledDate"/>
     </div>
 </template>
 <script>
