@@ -5,11 +5,11 @@
       <div :class="bComponent('text')">{{info.notify_time.name}}</div>
       <div :class="bComponent('text')">{{info.notify_type.name}}</div>
       <div :class="bComponent('text')">
-        <st-switch v-model="params.notify_mode.sms"></st-switch>
+        <st-switch @change="save" v-model="params.notify_mode.sms"></st-switch>
       </div>
       <div :class="bComponent('text')" v-if="info.notify_type.value===1">
         <!-- v-model="info.notify_mode.mini_programs.value" -->
-        <st-switch v-model="params.notify_mode.mini_programs"></st-switch>
+        <st-switch  @change="save" v-model="params.notify_mode.mini_programs"></st-switch>
         <span
           class="color-primary mg-l12"
           v-show="params.notify_mode.mini_programs"
@@ -23,7 +23,7 @@
         >预览</span>
       </div>
       <div :class="bComponent('text')" v-if="info.notify_type.value===2">
-        <st-switch v-model="params.notify_mode.app"></st-switch>
+        <st-switch  @change="save" v-model="params.notify_mode.app"></st-switch>
       </div>
       <div v-show="params.notify_mode.sms">
         <div class="shadow"></div>
@@ -64,6 +64,10 @@
                 v-model="params.msg_suffix"
                 placeholder="请输入"
               ></a-input>
+            </div>
+             <div class="mg-b16" v-if="info.preview">
+              <span clas="mg-r24">预览内容</span>
+              <span class="mg-l24">{{info.preview}}</span>
             </div>
 
             <div v-if="info.course_type_description">
