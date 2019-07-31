@@ -39,10 +39,16 @@
               <a-anchor-link href="#table" title="table 数据表格"></a-anchor-link>
               <a-anchor-link href="#form-table" title="form-table 纯样式表格"></a-anchor-link>
               <a-anchor-link href="#shop-hour-picker" title="shop-hour-picker 门店时间"></a-anchor-link>
-              <a-anchor-link href="#pagination" title="pagination 分页"/>
-              <a-anchor-link href="#page-route-nav" title="page route nav页面导航"/>
-              <a-anchor-link href="#textarea" title="textarea"/>
-              <a-anchor-link href="#hour-picker" title="hourpicker 多时间段选择"/>
+              <a-anchor-link href="#pagination" title="pagination 分页" />
+              <a-anchor-link href="#page-route-nav" title="page route nav页面导航" />
+              <a-anchor-link href="#textarea" title="textarea" />
+              <a-anchor-link href="#hour-picker" title="hourpicker 多时间段选择" />
+            </a-anchor>
+          </li>
+          <li>
+            <router-link to="/styleguide/biz-component">业务组件biz-components</router-link>
+            <a-anchor :offsetTop="112" v-if="$route.name==='styleguide-biz-component'">
+              <a-anchor-link href="#title" title="title 标题"></a-anchor-link>
             </a-anchor>
           </li>
           <li>

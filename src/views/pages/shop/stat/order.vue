@@ -5,7 +5,7 @@
       <a-col :span="4">
         <!-- <st-button type="primary" class="shop-member-list-button">批量导出</st-button> -->
       </a-col>
-      <recent-radio-group class="ta-r" @change="recentChange"></recent-radio-group>
+      <st-recent-radio-group class="ta-r" @change="recentChange"></st-recent-radio-group>
     </a-row>
     <st-table
       :page="page"
@@ -23,7 +23,6 @@ import { OrderService } from './order.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './order.config.ts'
-import RecentRadioGroup from '@/views/pages/shop/dashboard#/recent-radio-group'
 export default {
   mixins: [tableMixin],
   bem: {
@@ -51,7 +50,6 @@ export default {
   computed: {
     columns
   },
-  components: { RecentRadioGroup },
   methods: {
     recentChange(searchFieldsValue) {
       this.onMultiSearch(searchFieldsValue)
