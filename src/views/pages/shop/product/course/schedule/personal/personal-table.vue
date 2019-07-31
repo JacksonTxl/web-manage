@@ -119,7 +119,9 @@ export default {
       this.$router.push({ name: 'shop-product-course-schedule-personal', query: this.query })
     },
     onClickDeleteSchedule(scheduleInfo) {
-      const ids = scheduleInfo.map(item => {
+      const ids = scheduleInfo.filter(item => {
+        return item.id
+      }).map(item => {
         return item.id
       })
       this.scheduleService.delInBatch(ids).subscribe(res => {
@@ -129,7 +131,9 @@ export default {
     onClickDeleteInBatchSchedule() {
       let ids = []
       this.selectedRows.forEach(item => {
-        ids = [...ids, ...item.schedule_info.map(ele => {
+        ids = [...ids, ...item.schedule_info.filter(ele => {
+          return ele.id
+        }).map(ele => {
           return ele.id
         })]
       })
