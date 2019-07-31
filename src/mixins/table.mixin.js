@@ -95,7 +95,9 @@ export default {
     }
   },
   methods: {
-    // 筛选搜索
+    /**
+     * 筛选搜索 使用当前的query参数，只是页数到第一页  只做路由跳转 获取数据的行为在 beforeRouteUpdate 或 beforeEach中定义
+     */
     onSearch() {
       this.onSelectionReset()
       this.$router.push({
@@ -106,6 +108,9 @@ export default {
         force: true
       })
     },
+    /**
+     * 多个字段下的搜索
+     */
     onMultiSearch(searchFieldsValue = {}) {
       if (!isPlainObject(searchFieldsValue)) {
         throw new Error(
@@ -128,30 +133,36 @@ export default {
       this.onSelectionReset()
       this.$router.push({
         query: {
+          [this.currentPageField]: 1,
+          size: this.query.size
+        },
+        force: true
+      })
+    },
+    /**
+     * 单个筛选项的即时搜索
+     */
+    onSingleSearch(key, data) {
+      this.onSelectionReset()
+      this.$router.push({
+        query: {
+          ...this.query,
+          ...{ [key]: data },
           [this.currentPageField]: 1
         },
         force: true
       })
     },
-    // 单个筛选项的即时搜索
-    // 所有的查询都将页码到第一页
-    // keyword 为true时只单独查询该字段
-    onSingleSearch(key, data, { keyword = false } = {}) {
+    /**
+     * 关键词的即时搜索
+     */
+    onKeywordsSearch(key, data) {
       this.onSelectionReset()
-      let query
-      if (!keyword) {
-        query = {
-          ...this.query,
-          [this.currentPageField]: 1,
-          ...{ [key]: data }
-        }
-      } else {
-        query = {
-          [key]: data
-        }
-      }
       this.$router.push({
-        query,
+        query: {
+          [key]: data,
+          size: this.query.size
+        },
         force: true
       })
     },

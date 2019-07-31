@@ -145,7 +145,7 @@ class VueServiceApp {
     this.router = new VueRouter(this.vueRouterOptions)
     const oriPush = this.router.push.bind(this.router)
     const oriReplace = this.router.replace.bind(this.router)
-    const self = this
+
     this.router.push = function(to, onComplete, onError) {
       if (isString(to)) {
         oriPush(to, onComplete, onError)
@@ -191,6 +191,9 @@ class VueServiceApp {
         },
         onError
       )
+    }
+    this.router.reload = function(onComplete, onError) {
+      this.replace({ path: location.pathname + location.search, force: true }, onComplete, onError)
     }
     rootContainer.useProvider({
       provide: ServiceRouter,
@@ -263,7 +266,10 @@ class VueServiceApp {
                 return (to, from, next) => {
                   const p = fn(to, from)
                   if (!p) {
-                    console.error(`[vue-service-app] return undefined on to [${to.name}]`, fn)
+                    console.error(
+                      `[vue-service-app] return undefined on to [${to.name}]`,
+                      fn
+                    )
                   }
                   if (p.then) {
                     p.then(res => {
@@ -343,7 +349,10 @@ class VueServiceApp {
                 return (to, from, next) => {
                   const p = fn(to, from)
                   if (!p) {
-                    console.error(`[vue-service-app] return undefined on to ${to.name}`, fn)
+                    console.error(
+                      `[vue-service-app] return undefined on to ${to.name}`,
+                      fn
+                    )
                   }
                   if (p.then) {
                     p.then(res => {
