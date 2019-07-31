@@ -154,6 +154,9 @@ export default {
   bem: {
     sale: 'modal-sold-deal-sale'
   },
+  serviceProviders() {
+    return [SaleDepositCardService]
+  },
   serviceInject() {
     return {
       rules: RuleConfig,

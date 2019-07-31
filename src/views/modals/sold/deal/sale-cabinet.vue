@@ -195,6 +195,9 @@ export default {
   bem: {
     sale: 'modal-sold-deal-sale'
   },
+  serviceProviders() {
+    return [SaleCabinetService]
+  },
   serviceInject() {
     return {
       saleCabinetService: SaleCabinetService,

@@ -11,7 +11,7 @@ export class SaleCourseService {
   info$ = new State({})
   memberList$ = new State({})
   saleList$ = new State({})
-  couponList$ = new State({})
+  couponList$ = new State([])
   currentPriceAction$: Action<any>
   currentPrice$ = new State('0')
   constructor(private contractApi: ContractApi, private transactionApi: TransactionApi) {

@@ -97,6 +97,9 @@ export default {
   bem: {
     gathering: 'modal-sold-deal-gathering'
   },
+  serviceProviders() {
+    return [GatheringService]
+  },
   serviceInject() {
     return {
       gatheringService: GatheringService

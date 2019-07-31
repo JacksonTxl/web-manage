@@ -126,7 +126,7 @@
                   :getPopupContainer="trigger => trigger.parentNode"
                   :trigger="['click']">
                   <div :class="sale('discounts-promotion')">
-                    <span>{{couponList.length || 0}}张可用优惠券</span>
+                    <span>{{couponList.length}}张可用优惠券</span>
                     <a-icon type="right" />
                   </div>
                   <a-radio-group v-model="selectCoupon" @change="onSelectCouponChange" :class="sale('dropdown')" slot="overlay">
@@ -219,6 +219,9 @@ export default {
   bem: {
     sale: 'modal-sold-deal-sale'
   },
+  serviceProviders() {
+    return [SalePersonalCourseService]
+  },
   serviceInject() {
     return {
       salePersonalCourseService: SalePersonalCourseService,
@@ -295,7 +298,7 @@ export default {
   mounted() {
     this.salePersonalCourseService.serviceInit(this.id).subscribe(result => {
       setTimeout(() => {
-        this.resetOrderInfo()
+        // this.resetOrderInfo()
         if (this.info.coach_level && this.info.coach_level.length > 0) {
           this.form.setFieldsValue({ 'coach_level': this.info.coach_level[0].id })
           this.minPrice = this.info.coach_level[0].min_sell
@@ -346,6 +349,7 @@ export default {
       this.reduceAmount = 0
       this.selectAdvance = ''
       this.selectCoupon = ''
+      this.couponList.commit(() => [])
     },
     fetchCouponList() {
       const member_id = this.form.getFieldValue('memberId')

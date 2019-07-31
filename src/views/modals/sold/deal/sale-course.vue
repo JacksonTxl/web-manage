@@ -179,6 +179,9 @@ export default {
   bem: {
     sale: 'modal-sold-deal-sale'
   },
+  serviceProviders() {
+    return [SaleCourseService]
+  },
   serviceInject() {
     return {
       saleCourseService: SaleCourseService,
