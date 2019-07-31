@@ -23,12 +23,12 @@ export class OrderService {
     return this.orderApi.getChart(query).pipe(tap(res => {
       const data = res.info
       const arr = [
-        { group: '会员卡', 成单数量: data.member_card.num, 客单价: data.member_card.avg },
-        { group: '私教课', 成单数量: data.personal_course.num, 客单价: data.personal_course.avg },
-        { group: '团体课', 成单数量: data.team_course.num, 客单价: data.team_course.avg },
-        { group: '储值卡', 成单数量: data.deposit_card.num, 客单价: data.deposit_card.avg },
+        { group: '云店', 成单数量: data.shop.num, 客单价: data.shop.avg },
         { group: '课程包', 成单数量: data.package_course.num, 客单价: data.package_course.avg },
-        { group: '云店', 成单数量: data.shop.num, 客单价: data.shop.avg }
+        { group: '储值卡', 成单数量: data.deposit_card.num, 客单价: data.deposit_card.avg },
+        { group: '团体课', 成单数量: data.team_course.num, 客单价: data.team_course.avg },
+        { group: '私教课', 成单数量: data.personal_course.num, 客单价: data.personal_course.avg },
+        { group: '会员卡', 成单数量: data.member_card.num, 客单价: data.member_card.avg }
       ]
       this.chartData$.commit(() => arr)
     }))

@@ -110,7 +110,6 @@ export default {
     }
   },
   rxState() {
-    console.log(this.clubService)
     return {
       top: this.clubService.top$,
       userFunnel: this.clubService.userFunnel$,

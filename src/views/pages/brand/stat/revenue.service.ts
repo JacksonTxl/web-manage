@@ -30,15 +30,17 @@ export class RevenueService {
       data.advance_fee.items.forEach((item: any, idx: number) => {
         const chartItem = {
           date: item.date,
+          会员卡: data.member_card.items[idx].amount,
           私教课: data.personal_course.items[idx].amount,
           团体课: data.team_course.items[idx].amount,
           储值卡: data.deposit_card.items[idx].amount,
           课程包: data.package_course.items[idx].amount,
-          会员卡: data.member_card.items[idx].amount,
           云店: data.shop.items[idx].amount,
-          定金: data.advance_fee.items[idx].amount,
-          押金: data.cash_pledge.items[idx].amount,
           其它: data.other.items[idx].amount
+
+          // 定金: data.advance_fee.items[idx].amount,
+          // 押金: data.cash_pledge.items[idx].amount,
+
         }
         chartData.push(chartItem)
       })
@@ -48,9 +50,11 @@ export class RevenueService {
         { name: '团体课', value: data.team_course.total_amount },
         { name: '储值卡', value: data.deposit_card.total_amount },
         { name: '课程包', value: data.package_course.total_amount },
-        { name: '定金', value: data.advance_fee.total_amount },
-        { name: '押金', value: data.cash_pledge.total_amount },
-        { name: '其他', value: data.other.total_amount }]
+        { name: '云店', value: data.shop.total_amount },
+
+        // { name: '定金', value: data.advance_fee.total_amount },
+        // { name: '押金', value: data.cash_pledge.total_amount },
+        { name: '其它', value: data.other.total_amount }]
       this.dataRing$.commit(() => chartRing)
       this.dataLine$.commit(() => chartData)
     }))
