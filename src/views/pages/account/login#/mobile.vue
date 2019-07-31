@@ -115,7 +115,10 @@ export default {
           this.isClick = true
           this.setTimer()
         }
-      }, this.noCaptchaService.resetNVC)
+      }, err => {
+        this.noCaptchaService.resetNVC()
+        throw err
+      })
     },
     setTimer() {
       clearInterval(this.timer)

@@ -54,6 +54,7 @@ import { LoginService } from './login.service'
 import mobile from './login#/mobile'
 import user from './login#/user'
 import { NoCaptchaService } from '@/services/no-captcha.service'
+import { throwError } from 'rxjs'
 
 export default {
   name: 'Login',
@@ -117,7 +118,10 @@ export default {
           // 去绑定手机
           this.$router.push('/')
         }
-      }, this.noCaptchaService.resetNVC)
+      }, err => {
+        this.noCaptchaService.resetNVC()
+        throw err
+      })
     },
     // 切换登录方式
     switchLoginType() {
