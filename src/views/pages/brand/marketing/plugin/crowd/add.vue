@@ -307,7 +307,12 @@ export default {
           })
           obj.crowd_name = values.basicInfoRuleList.crowd_name
           obj.array_index = this.selectData.arrData
-
+          if (obj.remain_enter_times && (!obj.remain_enter_times.remain_times.min || !obj.remain_enter_times.select_time.min)) {
+            this.messageService.error({
+              content: '入场次数和时间范围必填!'
+            })
+            return
+          }
           if (this.$route.query.id) {
             this.addService
               .getCrowdBrandCrowd(this.$route.query.id, obj)
