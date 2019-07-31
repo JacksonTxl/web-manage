@@ -11,7 +11,7 @@
           >{{item.title}}</div>
         </div>
         <div :class="bItem('table-tr')" v-for="(item,index) in memberList" :key="index">
-          <NoticeItem @editInfo="save" :info="item"></NoticeItem>
+          <notice-item @editInfo="save" :info="item"></notice-item>
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
           >{{item.title}}</div>
         </div>
         <div :class="bItem('table-tr')" v-for="(item,index) in shopList" :key="index">
-          <NoticeItem @editInfo="save" :info="item"></NoticeItem>
+          <notice-item @editInfo="save" :info="item"></notice-item>
         </div>
       </div>
     </div>
