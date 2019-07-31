@@ -16,7 +16,6 @@ export class NProgressService {
   }
   SET_TEXT(text: string) {
     this.text$.commit(() => text)
-    nProgress.inc(0.1)
     console.log('[nprogress]', text)
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: Function) {

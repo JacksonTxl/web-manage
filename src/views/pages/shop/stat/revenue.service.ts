@@ -32,39 +32,40 @@ export class RevenueService extends Store<SetState> implements RouteGuard {
   getRevenueShopToday(query: any) {
     return this.StatApi.getRevenueShopToday(query).pipe(
       tap((res: any) => {
+        let data = res.info
         const arr = [
           {
             label: '总营收(元)',
-            value: res.total_amount || 0
+            value: data.total_amount || 0
           },
           {
             label: '会员卡营收(元)',
-            value: res.member_card_amount || 0
+            value: data.member_card_amount || 0
           },
           {
             label: '私教课营收(元)',
-            value: res.personal_course_amount || 0
+            value: data.personal_course_amount || 0
           },
           {
             label: '团体课营收(元)',
-            value: res.team_course_amount || 0
+            value: data.team_course_amount || 0
           },
           {
             label: '课程包营收(元)',
-            value: res.package_course_amount || 0
+            value: data.package_course_amount || 0
           },
           {
             label: '云店营收(元)',
-            value: res.shop_amount || 0
+            value: data.shop_amount || 0
           },
           {
             label: '其它营收(元)',
-            value: res.other_amount || 0
+            value: data.other_amount || 0
           }
         ]
         const obj = {
-          res: arr,
-          time: res.update_time
+          time: data.updated_time,
+          res: arr
         }
         this.todayInfo$.commit(() => obj)
       })

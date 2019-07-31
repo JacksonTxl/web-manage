@@ -3,7 +3,7 @@
     <div :class="bPage('count')">
       <div :class="bPage('actions')">
         最近更新时间：
-        <span :class="bPage('actions-span')">{{todayInfo.time}}</span>
+        <span :class="bPage('actions-span')" class="mg-r8">{{todayInfo.time}}</span>
         <span @click="refresh">
           <st-icon type="switch"></st-icon>
         </span>
@@ -94,6 +94,7 @@ export default {
   },
   components: { RecentRadioGroup, swiper, swiperSlide },
   created() {
+    console.log(this.todayInfo)
     this.getRevenueShopToday()
   },
   methods: {

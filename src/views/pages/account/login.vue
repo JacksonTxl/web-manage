@@ -54,6 +54,7 @@ import { LoginService } from './login.service'
 import mobile from './login#/mobile'
 import user from './login#/user'
 import { NoCaptchaService } from '@/services/no-captcha.service'
+import { throwError } from 'rxjs'
 
 export default {
   name: 'Login',
