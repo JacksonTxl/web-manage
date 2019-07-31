@@ -5,7 +5,6 @@ import { Store } from '@/services/store'
 import {
   PayApi,
   PostSmsSignParams,
-  PostSmsPayParams,
   GetSmsPayInfoQuery
 } from '@/api/v1/setting/sms/pay'
 interface SetState {}
@@ -30,9 +29,7 @@ export class PayService extends Store<SetState> implements RouteGuard {
   postSmsSign(params: PostSmsSignParams) {
     return this.PayApi.postSmsSign(params).pipe(tap((res: any) => {}))
   }
-  postSmsPay(params: PostSmsPayParams) {
-    return this.PayApi.postSmsPay(params)
-  }
+
   beforeEach(to: ServiceRoute) {
     return this.getSmsPayInfo(to.meta.query)
   }

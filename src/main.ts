@@ -36,9 +36,7 @@ Vue.use(Viewer)
 Vue.use(VueBemHelper)
 Vue.use(VueEvents)
 Vue.use(VueStForm)
-Vue.use(VueStyleguide, {
-  namespaces: ['st']
-})
+Vue.use(VueStyleguide)
 
 Vue.component(ICountUp.name, ICountUp)
 

@@ -86,13 +86,9 @@ export default {
     },
     getSmsSign(para) {
       this.postSmsSign(para)
-    },
-    // 短信购买
-    postSmsPay(para) {
-      return this.payService.postSmsPay({ ...para }).subscribe(res => {
-        this.getSmsPayInfo()
-      })
     }
+    // 短信购买
+
   }
 }
 </script>
