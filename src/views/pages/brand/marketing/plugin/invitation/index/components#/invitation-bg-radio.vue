@@ -59,7 +59,7 @@ let className = [
 export default {
   name: 'StInvitationBgRadio',
   bem: {
-    cardRadio: 'st-card-bg-radio'
+    cardRadio: 'invitation-bg-radio'
   },
   serviceInject() {
     return {

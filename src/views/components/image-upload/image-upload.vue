@@ -42,6 +42,7 @@
     </a-upload>
     <canvas
       id="myCanvas"
+      v-if="maskOptions"
       :width="maskOptions.width"
       :height="maskOptions.height"
       v-show="false"
@@ -148,7 +149,6 @@ export default {
     maskOptions: {
       type: Object
       // default: () => ({
-      //   flag: false,
       //   width: 750,
       //   height: 1334,
       //   maskUrl: 'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-invitation-4.png'
@@ -214,6 +214,11 @@ export default {
       return Object.assign({ w, h }, this.filterOptions)
     }
   },
+  // watch: {
+  //   list(newList) {
+  //     this.fileList = this.list
+  //   }
+  // },
   mounted() {
     this.fileList = new Array(...this.list)
     if (this.maskOptions && this.fileList.length > 0) {
@@ -369,9 +374,6 @@ export default {
         })
       })
     }
-  },
-  components: {
-    // Viewer
   }
 }
 </script>
