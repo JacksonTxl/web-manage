@@ -19,8 +19,11 @@
         </st-form-item>
         <st-form-item label="婚姻状况">
           <a-select placeholder="请选择" v-decorator="rules.marry_status">
-            <a-select-option :value="1">已婚</a-select-option>
-            <a-select-option :value="2">未婚</a-select-option>
+            <a-select-option
+              v-for="(item, key) in enums.marry_status.value"
+              :value="+key"
+              :key="key"
+            >{{item}}</a-select-option>
           </a-select>
         </st-form-item>
       </a-col>
