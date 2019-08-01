@@ -1,8 +1,6 @@
 <template>
-  <div :class="b()" >
-    <st-panel
-        :tabs="authTabs"
-    >
+  <div :class="b()">
+    <st-panel :tabs="authTabs">
       <router-view></router-view>
     </st-panel>
   </div>
@@ -26,17 +24,10 @@ export default {
     b: 'page-brand-stat'
   },
   data() {
-    return {
-
-    }
+    return {}
   },
-  computed: {
-
-  },
-  methods: {
-
-  },
-  components: {
-  }
+  computed: {},
+  methods: {},
+  components: {}
 }
 </script>

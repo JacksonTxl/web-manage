@@ -2,6 +2,7 @@
 module.exports = {
   singleQuote: true,
   semi: false,
+  htmlWhitespaceSensitivity: 'ignore',
   overides: [
     {
       files: '*.d.ts',
