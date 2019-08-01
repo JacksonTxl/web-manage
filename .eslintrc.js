@@ -3,7 +3,7 @@ module.exports = {
   env: {
     node: true
   },
-  extends: ['plugin:vue/essential', '@vue/standard', '@vue/typescript'],
+  extends: ['plugin:vue/essential', 'prettier', '@vue/typescript'],
   plugins: ['prettier'],
   rules: {
     'space-before-function-paren': [2, 'never'],
