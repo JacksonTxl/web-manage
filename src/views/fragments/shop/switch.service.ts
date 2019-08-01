@@ -16,18 +16,12 @@ export class SwitchService {
     private userService: UserService,
     private router: ServiceRouter
   ) {}
-  reloadMenuAndUser() {
-    return forkJoin([
-      this.userService.getMenuData(),
-      this.userService.getUser()
-    ])
-  }
   @Effect()
   switchShop(params: SwitchShopInput) {
     return this.switchApi.switchShop(params).pipe(
       switchMap(res => {
         this.tokenService.SET_TOKEN(res.token)
-        return this.reloadMenuAndUser()
+        return this.userService.reloadDataWhenAfterSwitchShop()
       }),
       tap(() => {
         this.router.push('/')
@@ -39,7 +33,7 @@ export class SwitchService {
     return this.switchApi.switchBackToBrand().pipe(
       switchMap(res => {
         this.tokenService.SET_TOKEN(res.token)
-        return this.reloadMenuAndUser()
+        return this.userService.reloadDataWhenAfterSwitchShop()
       }),
       tap(() => {
         this.router.push('/')
