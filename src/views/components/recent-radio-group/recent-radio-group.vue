@@ -19,7 +19,7 @@ import moment from 'moment'
 export default {
   name: 'StRecentRadioGroup',
   bem: {
-    b: 'st-recent-radio-goup'
+    b: 'st-recent-radio-group'
   },
   props: {
     value: {

@@ -7,7 +7,7 @@
         </a-col>
         <a-col :span="20" :class="b('actions')">
           <brand-shop @change="onChangeChartShop" style="flex: 1;margin-right: 12px;text-align: right;"></brand-shop>
-          <recent-radio-group  @change="onChangeChartDays"></recent-radio-group>
+          <st-recent-radio-group  @change="onChangeChartDays"></st-recent-radio-group>
         </a-col>
       </a-row>
       <a-row style="margin-top: 34px;">
@@ -17,13 +17,14 @@
     <div :class="b('section')" >
       <a-row class="mg-b16" >
         <a-col :span="4" :class="b('title')">
-          <st-button type="primary" class="shop-member-list-button" v-if="auth.export">
+          <!-- TODO: 本期不实现 -->
+          <!-- <st-button type="primary" class="shop-member-list-button" v-if="auth.export">
             批量导出
-          </st-button>
+          </st-button> -->
         </a-col>
         <a-col :span="20" :class="b('actions')">
           <brand-shop style="flex: 1;margin-right: 12px;text-align: right;" @change="onChangeDataShop"></brand-shop>
-          <recent-radio-group  @change="onChangeDataDays" :value="query"></recent-radio-group>
+          <st-recent-radio-group  @change="onChangeDataDays" :value="query"></st-recent-radio-group>
         </a-col>
       </a-row>
       <st-table
@@ -44,10 +45,8 @@
 </template>
 
 <script>
-import BrandShop from './stat#/brand-shop'
-import RecentRadioGroup from './stat#/recent-radio-group'
+import BrandShop from './components#/brand-shop'
 import BrandStatOrderFacetBar from '@/views/biz-components/stat/brand-stat-order-facet-bar'
-
 import { RouteService } from '@/services/route.service'
 import { OrderService } from './order.service'
 import tableMixin from '@/mixins/table.mixin'
@@ -125,7 +124,6 @@ export default {
   },
   components: {
     BrandShop,
-    RecentRadioGroup,
     BrandStatOrderFacetBar
   }
 }

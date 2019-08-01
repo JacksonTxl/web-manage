@@ -192,7 +192,9 @@ export default {
             .tooltip('type*value', (t, v) => {
               return { name: t, value: v }
             })
-            .color('type', [color])
+            .color('type', (value) => {
+              return color
+            })
             .size(24)
             .opacity(1)
             .label('value', val => {
@@ -227,7 +229,8 @@ export default {
           StHelpTooltip
         },
         render: h => (
-          <st-help-tooltip id="TBDAO001"></st-help-tooltip>
+          // <st-icon type="help" class="test1"/>
+          <st-help-tooltip id="TBDAO001" ></st-help-tooltip>
         )
       }).$mount('#legend-0')
       new Vue({
@@ -235,7 +238,7 @@ export default {
           StHelpTooltip
         },
         render: h => (
-          <st-help-tooltip id="TBDAO002"></st-help-tooltip>
+          <st-help-tooltip id="TBDAO002" ></st-help-tooltip>
         )
       }).$mount('#legend-1')
     }

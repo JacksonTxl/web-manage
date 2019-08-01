@@ -7,7 +7,7 @@
         </a-col>
         <a-col :span="20" :class="b('actions')">
           <brand-shop @change="onChangeChartShop" style="flex: 1;margin-right: 12px;text-align: right;"></brand-shop>
-          <recent-radio-group  @change="onChangeChartDays"></recent-radio-group>
+          <st-recent-radio-group  @change="onChangeChartDays"></st-recent-radio-group>
         </a-col>
       </a-row>
       <div style="margin-top: 38px;display: flex">
@@ -47,13 +47,15 @@
     <div :class="b('section')" >
       <a-row class="mg-b16" >
         <a-col :span="4" :class="b('title')">
-          <st-button type="primary" class="shop-member-list-button" v-if="auth.export">
+          <!-- TODO: 本期不实现 -->
+          <!-- <st-button type="primary" class="shop-member-list-button" v-if="auth.export">
             批量导出
-          </st-button>
+          </st-button> -->
         </a-col>
         <a-col :span="20" :class="b('actions')">
           <brand-shop style="flex: 1;margin-right: 12px;text-align: right;" @change="onChangeDataShop"></brand-shop>
-          <recent-radio-group  @change="onChangeDataDays" :value="query"></recent-radio-group>
+          <st-recent-radio-group  @change="onChangeDataDays" :value="query"></st-recent-radio-group>
+          <!-- <recent-radio-group  @change="onChangeDataDays" :value="query"></recent-radio-group> -->
         </a-col>
       </a-row>
       <st-table
@@ -66,7 +68,7 @@
         :dataSource="list"
       >
       </st-table>
-       <!-- NOTE 本期不做，隐藏复选框 TODO -->
+       <!-- NOTE 本期不做，隐藏复选框 TODO: -->
        <!-- :alertSelection="{onReset:onSelectionReset}"
         :rowSelection="{selectedRowKeys,onChange:onSelectionChange}" -->
     </div>
@@ -74,11 +76,9 @@
 </template>
 
 <script>
-import BrandShop from './stat#/brand-shop'
-import RecentRadioGroup from './stat#/recent-radio-group'
+import BrandShop from './components#/brand-shop'
 import BrandStatisticsRevenueLine from '@/views/biz-components/stat/brand-stat-revenue-line'
 import BrandStatisticsRevenueRing from '@/views/biz-components/stat/brand-stat-revenue-ring'
-
 import { RouteService } from '@/services/route.service'
 import { RevenueService } from './revenue.service'
 import tableMixin from '@/mixins/table.mixin'
@@ -109,11 +109,6 @@ export default {
   },
   bem: {
     b: 'page-brand-stat-revenue'
-  },
-  watch: {
-    // query(newVal) {
-    //   this.onSearch()
-    // }
   },
   data() {
     return {
@@ -182,7 +177,6 @@ export default {
   },
   components: {
     BrandShop,
-    RecentRadioGroup,
     BrandStatisticsRevenueLine,
     BrandStatisticsRevenueRing,
     swiper,

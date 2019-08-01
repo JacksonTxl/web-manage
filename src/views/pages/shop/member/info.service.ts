@@ -43,7 +43,7 @@ export class InfoService implements RouteGuard {
   editFace(id: number, params: EditFaceParams) {
     return this.cardsApi.updateUserFace(id, params)
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     const { id } = to.meta.query
     return this.getHeaderInfo(id)
   }
