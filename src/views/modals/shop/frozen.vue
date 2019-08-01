@@ -4,8 +4,8 @@
       <a-row :gutter="8">
         <a-col :lg="24">
           <st-info>
-            <st-info-item label="姓名">{{record.member_name}}</st-info-item>
-            <st-info-item label="手机号">{{record.mobile}}</st-info-item>
+            <st-info-item label="姓名">{{ record.member_name }}</st-info-item>
+            <st-info-item label="手机号">{{ record.mobile }}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -16,26 +16,23 @@
           class="distribution-container"
           style="padding-left:12px;padding-right:12px;"
         >
-        <st-form-item :help="selectedRowsHelp" required>
-          <a-table
-            :rowSelection="rowSelection"
-            :pagination="false"
-            size="middle"
-            :columns="columns"
-            :dataSource="list"
-            rowKey="id"
-          >
-            <span
-              slot="remain_amount"
-              slot-scope="text,record"
-            >{{record.remain_amount}} {{record.unit}}</span>
-            <span
-              slot="start_end"
-              slot-scope="text,record"
-            >{{record.start_time}} ~ {{record.end_time}}</span>
-          </a-table>
-        </st-form-item>
-
+          <st-form-item :help="selectedRowsHelp" required>
+            <a-table
+              :rowSelection="rowSelection"
+              :pagination="false"
+              size="middle"
+              :columns="columns"
+              :dataSource="list"
+              rowKey="id"
+            >
+              <span slot="remain_amount" slot-scope="text, record">
+                {{ record.remain_amount }} {{ record.unit }}
+              </span>
+              <span slot="start_end" slot-scope="text, record">
+                {{ record.start_time }} ~ {{ record.end_time }}
+              </span>
+            </a-table>
+          </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8" class="mg-t8">
@@ -51,15 +48,24 @@
               placeholder="冻结日期"
               v-decorator="basicInfoRuleList.end_time"
             />
-            <br>
+            <br />
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
-           <st-form-item label="有无手续费" required>
-            <a-radio-group v-decorator="basicInfoRuleList.moneyFlag" @change="changeTransfer">
-              <a-radio :value="item.value" v-for="(item, index) in hasTransferFeeList" :key="index" >{{item.label}}</a-radio>
+          <st-form-item label="有无手续费" required>
+            <a-radio-group
+              v-decorator="basicInfoRuleList.moneyFlag"
+              @change="changeTransfer"
+            >
+              <a-radio
+                :value="item.value"
+                v-for="(item, index) in hasTransferFeeList"
+                :key="index"
+              >
+                {{ item.label }}
+              </a-radio>
             </a-radio-group>
           </st-form-item>
         </a-col>
@@ -70,9 +76,11 @@
             <st-input-number
               :float="true"
               placeholder="请输入手续费"
-              v-decorator="basicInfoRuleList.payee"
+              v-decorator="basicInfoRuleList.pay_fee"
             >
-              <template slot="addonAfter">元</template>
+              <template slot="addonAfter">
+                元
+              </template>
             </st-input-number>
           </st-form-item>
         </a-col>
@@ -81,11 +89,18 @@
       <a-row :gutter="8" class="mg-t8" v-if="isTransferFlag">
         <a-col :lg="24">
           <st-form-item label="支付方式" required>
-            <a-select :class="basic('select')" v-decorator="basicInfoRuleList.pay_method"  placeholder="请选择支付方式">
+            <a-select
+              :class="basic('select')"
+              v-decorator="basicInfoRuleList.pay_method"
+              placeholder="请选择支付方式"
+            >
               <a-select-option
-              v-for="(item,index) in payMethodList"
-              :key="index"
-              :value="item.value">{{item.label}}</a-select-option>
+                v-for="(item, index) in payMethodList"
+                :key="index"
+                :value="item.value"
+              >
+                {{ item.label }}
+              </a-select-option>
             </a-select>
           </st-form-item>
         </a-col>
@@ -119,9 +134,14 @@
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item class="mg-l24" style="text-align:right;" labelOffset>
-            <st-button type="primary" @click="save" :loading="loading.getMemberTransfer">确认</st-button>
+            <st-button
+              type="primary"
+              @click="save"
+              :loading="loading.getMemberTransfer"
+            >
+              确认
+            </st-button>
           </st-form-item>
-
         </a-col>
       </a-row>
     </st-form>
@@ -179,22 +199,28 @@ export default {
         id: ['id'],
         course_id: ['course_id'],
         poundage: ['poundage'],
-        pay_method: ['pay_method', {
-          rules: [
-            {
-              required: true,
-              message: '请选择支付方式'
-            }
-          ]
-        }],
-        payee: ['payee', {
-          rules: [
-            {
-              required: true,
-              message: '请输入手续费!'
-            }
-          ]
-        }],
+        pay_method: [
+          'pay_method',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请选择支付方式'
+              }
+            ]
+          }
+        ],
+        pay_fee: [
+          'pay_fee',
+          {
+            rules: [
+              {
+                required: true,
+                message: '请输入手续费!'
+              }
+            ]
+          }
+        ],
         end_time: [
           'end_time',
           {
@@ -245,11 +271,11 @@ export default {
       this.memberSearchText = data
       if (data === '') {
         this.frozenService.memberList$.commit(() => [])
-        this.form.resetFields(['payee'])
+        this.form.resetFields(['pay_fee'])
       } else {
         this.frozenService.getMemberList(data).subscribe(res => {
           if (!res.list.length) {
-            this.form.resetFields(['payee'])
+            this.form.resetFields(['pay_fee'])
           }
         })
       }
@@ -260,7 +286,7 @@ export default {
     getMemberTransfer(data) {
       this.frozenService.getMemberTransfer(data).subscribe(state => {
         this.show = false
-        this.$$emit('success')
+        this.$emit('success')
       })
     },
     save(e) {
