@@ -146,7 +146,7 @@ export class UserService {
   SET_SHOP_LIST(list: object[]) {
     this.shopList$.commit(() => list)
   }
-  getUser() {
+  private getUser() {
     return this.staffApi.getGlobalStaffInfo().pipe(
       tap((res: any) => {
         const { info } = res
@@ -172,28 +172,28 @@ export class UserService {
       })
     )
   }
-  getEnums() {
+  private getEnums() {
     return this.constApi.getEnum().pipe(
       tap(res => {
         this.SET_ENUMS(res)
       })
     )
   }
-  getMenuData() {
+  private getMenuData() {
     return this.menuApi.getList().pipe(
       tap(res => {
         this.SET_MENU_DATA(res)
       })
     )
   }
-  getInvalidTooltips() {
+  private getInvalidTooltips() {
     return this.tooltipApi.getInvalid().pipe(
       tap((res: any) => {
         this.SET_INVALID_TOOLTIP(res.list)
       })
     )
   }
-  getShopList() {
+  private getShopList() {
     return this.shopApi.getShopList().pipe(
       tap(res => {
         this.SET_SHOP_LIST(res.list)
@@ -203,7 +203,9 @@ export class UserService {
   /**
    * 通过key名获取下拉选项
    */
-  getOptions$(key: string): Computed<{ label: string; value: number }[]> {
+  public getOptions$(
+    key: string
+  ): Computed<{ label: string; value: number }[]> {
     return new Computed(
       this.enums$.pipe(
         map(enums => {
@@ -225,17 +227,17 @@ export class UserService {
    * 添加到常用菜单
    * @param id
    */
-  addFavorite(id: number) {
+  public addFavorite(id: number) {
     return this.menuApi.addFavorite(id)
   }
   /**
    * 删除常用菜单
    * @param id
    */
-  delFavorite(id: number) {
+  public delFavorite(id: number) {
     return this.menuApi.delFavorite(id)
   }
-  init() {
+  private init() {
     if (!this.firstInited$.snapshot()) {
       return forkJoin(
         this.getUser(),
