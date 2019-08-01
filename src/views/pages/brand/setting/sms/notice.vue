@@ -11,7 +11,7 @@
           >{{item.title}}</div>
         </div>
         <div :class="bItem('table-tr')" v-for="(item,index) in memberList" :key="index">
-          <NoticeItem @editInfo="save" :info="item"></NoticeItem>
+          <notice-item @editInfo="save" :info="item"></notice-item>
         </div>
       </div>
     </div>
@@ -26,7 +26,7 @@
           >{{item.title}}</div>
         </div>
         <div :class="bItem('table-tr')" v-for="(item,index) in shopList" :key="index">
-          <NoticeItem @editInfo="save" :info="item"></NoticeItem>
+          <notice-item @editInfo="save" :info="item"></notice-item>
         </div>
       </div>
     </div>
@@ -58,19 +58,17 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      memberList: [],
+      shopList: []
+    }
   },
   computed: {
     thsMember,
     thsShop
   },
   created() {
-    this.memberList = this.list.filter(
-      ({ notify_type }) => notify_type.value === 1
-    )
-    this.shopList = this.list.filter(
-      ({ notify_type }) => notify_type.value === 2
-    )
+    this.getNoticeList()
   },
   methods: {
     onSearch() {},
@@ -78,7 +76,14 @@ export default {
       this.putNotice(para)
     },
     getNoticeList() {
-      return this.noticeService.getNoticeList().subscribe()
+      return this.noticeService.getNoticeList().subscribe(res => {
+        this.memberList = this.list.filter(
+          ({ notify_type }) => notify_type.value === 1
+        )
+        this.shopList = this.list.filter(
+          ({ notify_type }) => notify_type.value === 2
+        )
+      })
     },
     putNotice(para) {
       return this.noticeService.putNotice({ ...para }).subscribe(res => {

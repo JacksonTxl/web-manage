@@ -8,10 +8,7 @@
           <st-button
             type="primary"
             v-modal-link="{
-                name: 'brand-setting-sms-pay',
-                on: {
-                  change: postSmsPay
-                }
+                name: 'brand-setting-sms-pay'
               }"
           >去充值</st-button>
         </div>
