@@ -186,7 +186,7 @@ export class ClubService implements RouteGuard {
       this.getNewMember({ recently_day: 7 })
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init()
   }
 }
