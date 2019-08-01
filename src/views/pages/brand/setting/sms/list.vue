@@ -34,8 +34,8 @@
               placeholder="结束日期"
               :showToday="false"
               @change="enddatePickerChange"
-            /> -->
-             <st-range-picker :value="selectTime"></st-range-picker>
+            />-->
+            <st-range-picker :value="selectTime"></st-range-picker>
           </div>
         </div>
         <div slot="button">
@@ -110,6 +110,14 @@ export default {
       return list
     }
   },
+  mounted() {
+    this.setSearchData()
+  },
+  watch: {
+    query(newVal) {
+      this.setSearchData()
+    }
+  },
   data() {
     return {
       selectTime: {
@@ -120,7 +128,7 @@ export default {
           disabled: false,
           value: null,
           format: 'YYYY-MM-DD',
-          change: ($event) => { }
+          change: $event => {}
         },
         endTime: {
           showTime: false,
@@ -128,7 +136,7 @@ export default {
           disabled: false,
           value: null,
           format: 'YYYY-MM-DD',
-          change: ($event) => {}
+          change: $event => {}
         }
       },
       orderStatusList: [],
@@ -140,16 +148,21 @@ export default {
   created() {},
   methods: {
     onSearchList() {
-      this.query.start_time = this.selectTime.startTime.value ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}` : ''
-      this.query.end_time = this.selectTime.endTime.value ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}` : ''
+      this.query.start_time = this.selectTime.startTime.value
+        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
+        : ''
+      this.query.end_time = this.selectTime.endTime.value
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
+        : ''
       this.onSearch({ ...this.query })
     },
-
-    startdatePickerChange(date, dateString) {
-      this.query.start_time = dateString
-    },
-    enddatePickerChange(date, dateString) {
-      this.query.end_time = dateString
+    setSearchData() {
+      this.selectTime.startTime.value = this.query.start_time
+        ? cloneDeep(moment(this.query.start_time))
+        : null
+      this.selectTime.endTime.value = this.query.end_time
+        ? cloneDeep(moment(this.query.end_time))
+        : null
     }
   }
 }
