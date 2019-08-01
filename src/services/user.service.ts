@@ -200,6 +200,9 @@ export class UserService {
       })
     )
   }
+  public reloadDataWhenAfterSwitchShop() {
+    return forkJoin([this.getMenuData(), this.getUser()])
+  }
   /**
    * 通过key名获取下拉选项
    */
