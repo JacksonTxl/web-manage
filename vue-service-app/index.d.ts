@@ -100,6 +100,7 @@ declare module 'vue-service-app' {
       onComplete?: Function,
       onAbort?: (err: Error) => void
     ): void
+    reload(): void
   }
   export class InjectionToken {
     constructor(desc: string)

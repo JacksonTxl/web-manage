@@ -1,5 +1,6 @@
 import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
 import { RedirectService } from '@/services/redirect.service'
+import { of } from 'rxjs'
 
 @Injectable()
 export class StatService implements RouteGuard {

@@ -199,7 +199,6 @@ export default {
       this.selectedKeys = selectedKey ? [selectedKey] : []
     },
     onClickMenuItem(menu) {
-      console.log(menu)
       this.$router.push({
         name: menu.url
       })

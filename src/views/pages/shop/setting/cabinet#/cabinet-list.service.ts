@@ -13,7 +13,7 @@ interface SetState {
 export class CabinetListService extends Store<SetState> {
   state$: State<SetState>
   resData$: Computed<object>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     edit: 'shop:cabinet:cabinet|edit'
   })
   constructor(

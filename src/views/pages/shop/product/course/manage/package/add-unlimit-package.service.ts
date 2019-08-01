@@ -10,9 +10,9 @@ export class AddUnlimitPackageService {
   // 是否配置了用户端
   appConfig = true
   loading$ = new State({})
-  unitList$ = this.userService.getOptions('package_course.valid_time_unit')
-  transferUnitList$ = this.userService.getOptions('package_course.transfer_unit')
-  sellTypeList$ = this.userService.getOptions('package_course.sale_mode')
+  unitList$ = this.userService.getOptions$('package_course.valid_time_unit')
+  transferUnitList$ = this.userService.getOptions$('package_course.transfer_unit')
+  sellTypeList$ = this.userService.getOptions$('package_course.sale_mode')
     .pipe(map(options => {
       if (!this.appConfig) {
         remove(options, i => i.value === 1)

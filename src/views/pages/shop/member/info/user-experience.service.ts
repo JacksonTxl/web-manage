@@ -15,7 +15,7 @@ export class UserExperienceService extends Store<UserExprienceInfoState> {
   state$: State<UserExprienceInfoState>
   physicalListInfo$: Computed<string>
   followInfo$: Computed<string>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'shop:member:member_physical_record|add'
   })
   constructor(private memberApi: MemberApi, private authService: AuthService) {

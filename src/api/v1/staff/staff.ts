@@ -23,7 +23,6 @@ export class ShopStaffApi extends Api {
   }
   // 搜搜部门列表
   searchDepartment(query: any) {
-    console.log('search', query)
     return this.http.get(`/v1/department/search`, { query })
   }
   /**

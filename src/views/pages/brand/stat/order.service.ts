@@ -12,7 +12,7 @@ export class OrderService {
   page$ = new State({})
   loading$ = new State({})
 
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     export: 'brand_shop:stat:order_reports|batch_export'
   })
   constructor(private orderApi: OrderApi, private authService: AuthService) {

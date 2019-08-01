@@ -10,12 +10,12 @@ export class EntranceService implements RouteGuard {
   loading$ = new State({})
   list$ = new State([])
   page$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     checkout: 'shop:front_end:check_in_out|checkout',
     batchCheckout: 'shop:front_end:check_in_out|batch_checkout'
   })
   entryTypeList$ = this.userService
-    .getOptions('front.visit_type')
+    .getOptions$('front.visit_type')
     .pipe(map(options => [{ value: -1, label: '全部类型' }].concat(options)))
 
   constructor(

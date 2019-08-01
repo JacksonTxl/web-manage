@@ -18,7 +18,7 @@ export class IndexService implements RouteGuard {
   coachList$ = new State([])
   entranceOptionList$ = new State([])
   cabinetList$ = new State([])
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     today_order: 'shop:front_end:module|today_order',
     today_reserve: 'shop:front_end:module|today_reserve',
     today_team_course: 'shop:front_end:module|today_team_course',

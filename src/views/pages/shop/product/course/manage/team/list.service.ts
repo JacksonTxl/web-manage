@@ -17,7 +17,7 @@ export class ListService implements RouteGuard {
   categoryList$ = new State<any[]>([])
   shopSelectOptions$ = new State<any[]>([])
   state$: State<any>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'brand_shop:product:team_course|add'
   })
   constructor(

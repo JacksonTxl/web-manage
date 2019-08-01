@@ -24,7 +24,7 @@ export class BrandService implements RouteGuard {
   personalCourseList$: Computed<any>
   supportShopList$: Computed<any>
   supportCoachList$: Computed<any>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'brand_shop:product:personal_course|add'
   })
   constructor(

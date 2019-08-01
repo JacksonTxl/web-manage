@@ -12,7 +12,7 @@ import { MessageService } from '@/services/message.service'
 export class DepartmentService implements RouteGuard {
   staffList$ = new State([])
   page$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     join: 'brand_shop:staff:staff|join',
     add: 'brand_shop:staff:staff|add',
     import: 'brand_shop:staff:staff|import',

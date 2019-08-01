@@ -14,7 +14,7 @@ export class ShopService {
   list$ = new State([])
   page$ = new State({})
   state$: State<any>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     transfer: 'brand_shop:product:team_course|transfer'
   })
   constructor(

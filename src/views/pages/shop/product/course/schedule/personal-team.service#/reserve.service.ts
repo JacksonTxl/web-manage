@@ -22,7 +22,7 @@ export class PersonalTeamScheduleReserveService {
   reserveList$: Computed<any>
   infoAuth$: Computed<any>
   loading$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'shop:reserve:personal_team_course_reserve|add',
     cancel: 'shop:reserve:personal_team_course_reserve|del',
     edit: 'shop:reserve:personal_team_course_reserve|edit',

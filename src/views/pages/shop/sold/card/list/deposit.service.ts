@@ -9,7 +9,7 @@ export class DepositService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     export: 'shop:sold:sold_deposit_card|export'
   })
   constructor(private cardApi: CardApi, private authService: AuthService) {}

@@ -12,7 +12,7 @@ interface ListState {
 export class CoachLevelService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'brand:setting:coach_level|add',
     get: 'brand:setting:coach_level|list'
   })

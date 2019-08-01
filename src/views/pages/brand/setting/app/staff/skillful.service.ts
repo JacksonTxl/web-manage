@@ -13,7 +13,7 @@ interface ListState {
 export class SkillfulService extends Store<ListState> {
   state$: State<ListState>
   resData$: Computed<object>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'brand_shop:coach:good_at|add'
   })
   constructor(

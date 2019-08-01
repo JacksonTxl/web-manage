@@ -14,7 +14,7 @@ interface ListState {
 export class ListService extends Store<ListState> implements RouteGuard {
   state$: State<ListState>
   list$: Computed<any[]>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     edit: 'brand:contract:contract_tpl|edit'
   })
   constructor(

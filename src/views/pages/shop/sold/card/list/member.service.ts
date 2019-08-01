@@ -9,7 +9,7 @@ export class MemberService implements RouteGuard {
   list$ = new State({})
   page$ = new State({})
   loading$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     export: 'shop:sold:sold_member_card|export',
     gift: 'shop:sold:sold_member_card|gift',
     vipRegion: 'shop:sold:sold_member_card|vip_region'

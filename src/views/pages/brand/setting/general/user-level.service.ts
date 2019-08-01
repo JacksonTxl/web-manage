@@ -14,7 +14,7 @@ export class UserLevelService extends Store<ListState> {
   state$: State<ListState>
   list$: Computed<object[]>
   info$: Computed<object>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     get: 'brand:setting:member_level|get',
     edit: 'brand:setting:member_level|edit'
   })

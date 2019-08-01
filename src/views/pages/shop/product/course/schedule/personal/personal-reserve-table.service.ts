@@ -6,7 +6,7 @@ import { State, Computed } from 'rx-state'
 @Injectable()
 export class PersonalReserveTableService implements RouteGuard {
   state$: State<any>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'shop:schedule:personal_course_schedule|add',
     addBatch: 'shop:schedule:personal_course_schedule|batch_add',
     copy: 'shop:schedule:personal_course_schedule|copy'

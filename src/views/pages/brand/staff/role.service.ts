@@ -8,7 +8,7 @@ import { AuthService } from '@/services/auth.service'
 export class RoleService implements RouteGuard {
   roleList$ = new State([])
   stat$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'brand:auth:role|add',
     del: 'brand:auth:role|del',
     edit: 'brand:auth:role|edit'

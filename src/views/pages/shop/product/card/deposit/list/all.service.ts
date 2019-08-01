@@ -10,14 +10,14 @@ export class AllService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'brand_shop:product:deposit_card|add'
   })
   publishChannel$ = this.userService
-    .getOptions('deposit_card.publish_channel')
+    .getOptions$('deposit_card.publish_channel')
     .pipe(map(options => [{ value: -1, label: '所有渠道' }].concat(options)))
   sellStatus$ = this.userService
-    .getOptions('deposit_card.sell_status')
+    .getOptions$('deposit_card.sell_status')
     .pipe(map(options => [{ value: -1, label: '所有售卖状态' }].concat(options)))
 
   constructor(

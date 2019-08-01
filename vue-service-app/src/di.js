@@ -44,6 +44,9 @@ export class Provider {
     this.getValue = () => value
     return this
   }
+  destroy() {
+    this.instance = null
+  }
 }
 export class InjectionToken {
   constructor(name) {
@@ -106,8 +109,12 @@ export class Container {
   /**
    * 删除已实例化的供应商
    */
-  destroy(provide) {
-    this._providers.delete(provide)
+  destroy(token) {
+    const provider = this._providers.get(token)
+    if (provider) {
+      provider.destroy()
+    }
+    this._providers.delete(token)
     return this
   }
 }

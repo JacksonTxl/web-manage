@@ -9,7 +9,7 @@ import { pluck } from 'rxjs/operators'
 @Injectable()
 export class TeamService implements RouteGuard {
   state$: State<any>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'shop:schedule:team_course_schedule|add',
     addBatch: 'shop:schedule:team_course_schedule|batch_add',
     copy: 'shop:schedule:team_course_schedule|copy'

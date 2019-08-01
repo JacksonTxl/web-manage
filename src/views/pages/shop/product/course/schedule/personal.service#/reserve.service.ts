@@ -28,7 +28,7 @@ export class PersonalScheduleReserveService {
   reserveUpdateInfo$: Computed<any>
   reserveListTable$: Computed<any>
   infoAuth$: Computed<any>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     edit: 'shop:reserve:personal_course_reserve|edit',
     add: 'shop:reserve:personal_course_reserve|add',
     cancel: 'shop:reserve:personal_course_reserve|del',

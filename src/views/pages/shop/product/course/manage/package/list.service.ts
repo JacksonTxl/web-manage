@@ -9,7 +9,7 @@ export class ListService implements RouteGuard {
   list$ = new State({})
   page$ = new State({})
   loading$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'shop:product:package_course|add'
   })
   constructor(

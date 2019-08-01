@@ -10,9 +10,9 @@ import { remove } from 'lodash-es'
 export class EditFixPackageService implements RouteGuard {
   // 是否配置了用户端
   appConfig = true
-  unitList$ = this.userService.getOptions('package_course.valid_time_unit')
-  transferUnitList$ = this.userService.getOptions('package_course.transfer_unit')
-  sellTypeList$ = this.userService.getOptions('package_course.sale_mode')
+  unitList$ = this.userService.getOptions$('package_course.valid_time_unit')
+  transferUnitList$ = this.userService.getOptions$('package_course.transfer_unit')
+  sellTypeList$ = this.userService.getOptions$('package_course.sale_mode')
     .pipe(map(options => {
       if (!this.appConfig) {
         remove(options, i => i.value === 1)

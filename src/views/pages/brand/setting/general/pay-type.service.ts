@@ -8,7 +8,7 @@ import { PaymentSettingApi, UpdateInput } from '@/api/v1/setting/payments'
 export class PayTypeService implements RouteGuard {
   loading$ = new State({})
   info$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     get: 'brand:setting:payment_method|get',
     edit: 'brand:setting:payment_method|edit'
   })

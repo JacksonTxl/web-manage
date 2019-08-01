@@ -13,7 +13,7 @@ export class ListService implements RouteGuard {
   memberListInfo$: Computed<string>
   list$ = new State({})
   page$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'shop:member:member|add',
     import: 'shop:member:member|import',
     tag: 'shop:member:member|tag',

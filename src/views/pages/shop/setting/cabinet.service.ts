@@ -8,7 +8,7 @@ import { AuthService } from '@/services/auth.service'
 @Injectable()
 export class CabinetService implements RouteGuard {
   loading$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     areaAdd: 'shop:cabinet:cabinet_area|add',
     areaEdit: 'shop:cabinet:cabinet_area|edit',
     areaDel: 'shop:cabinet:cabinet_area|del',

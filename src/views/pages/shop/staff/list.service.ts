@@ -13,7 +13,7 @@ export class ListService implements RouteGuard {
   department$ = new State({})
   staffEnums$ = this.userService.staffEnums$
   loading$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     join: 'brand_shop:staff:staff|join',
     add: 'brand_shop:staff:staff|add',
     import: 'brand_shop:staff:staff|import'

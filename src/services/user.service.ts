@@ -203,7 +203,7 @@ export class UserService {
   /**
    * 通过key名获取下拉选项
    */
-  getOptions(key: string): Computed<{ label: string; value: number }[]> {
+  getOptions$(key: string): Computed<{ label: string; value: number }[]> {
     return new Computed(
       this.enums$.pipe(
         map(enums => {

@@ -13,7 +13,7 @@ interface CrowdIndexState {
 export class IndexService extends Store<CrowdIndexState> {
   state$: State<CrowdIndexState>
   crowdIndexInfo$: Computed<string>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'shop:member:crowd|add'
   })
   constructor(private crowdAPI: CrowdAPI, private authService: AuthService) {

@@ -68,12 +68,6 @@ export default {
         '[tableMixin] 需要订阅routeService.query$ 到this.query以生效'
       )
     }
-
-    console.log(
-      `use [tableMixin] $route.name -> ${
-        this.$route.name
-      } currentPageField -> ${this.currentPageField}`
-    )
   },
   computed: {
     // 多选是否至少勾选一项
@@ -178,8 +172,6 @@ export default {
     },
     // 表格更新
     onTableChange(pagination, filter, sorter) {
-      console.log(pagination, filter, sorter)
-
       this.onSelectionReset()
       // 排序字段 排序顺序
       let sort_by, sort_order

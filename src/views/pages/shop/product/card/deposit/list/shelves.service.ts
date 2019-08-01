@@ -11,7 +11,7 @@ export class ShelvesService implements RouteGuard {
     page$ = new State({})
     loading$ = new State({})
     publishChannel$ = this.userService
-      .getOptions('deposit_card.publish_channel')
+      .getOptions$('deposit_card.publish_channel')
       .pipe(map(options => [{ value: -1, label: '所有渠道' }].concat(options)))
 
     constructor(

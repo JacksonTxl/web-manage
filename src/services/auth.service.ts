@@ -94,7 +94,7 @@ export class AuthService {
    * 通过map表获取当页的全局权限点
    * @param authMapConfig 需要的权限点对象map表
    */
-  authMap(authMapConfig: object = {}) {
+  authMap$(authMapConfig: object = {}) {
     return new Computed(
       this.auth$.pipe(
         map(authList => {

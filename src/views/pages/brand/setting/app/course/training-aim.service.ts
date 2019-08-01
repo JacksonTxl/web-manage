@@ -13,7 +13,7 @@ import {
 export class TrainingAimService implements RouteGuard {
   resData$ = new State({})
   loading$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'brand_shop:course:training_aim|add'
   })
   constructor(

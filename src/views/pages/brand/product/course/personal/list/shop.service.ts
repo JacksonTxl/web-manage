@@ -16,7 +16,7 @@ export class ShopService implements RouteGuard {
   page$ = new State({})
   dataSource$ = new State([])
   state$: State<any>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     transfer: 'brand_shop:product:personal_course|transfer'
   })
   constructor(

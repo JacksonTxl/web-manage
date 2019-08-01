@@ -9,7 +9,7 @@ export class PackageService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     export: 'shop:sold:sold_package_course|export'
   })
   constructor(private courseApi: CourseApi, private authService: AuthService) {}

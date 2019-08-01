@@ -15,7 +15,7 @@ export class TeamScheduleReserveService {
   infoAuth$: Computed<any>
   reserveInfo$: Computed<any>
   reserveList$: Computed<any[]>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'shop:reserve:team_course_reserve|add',
     cancel: 'shop:reserve:team_course_reserve|del',
     checkIn: 'shop:reserve:team_course_reserve|checkin'

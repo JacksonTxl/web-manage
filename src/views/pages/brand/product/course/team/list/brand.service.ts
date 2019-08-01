@@ -14,7 +14,7 @@ export class BrandService implements RouteGuard {
   page$ = new State({})
 
   state$: State<any>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'brand_shop:product:team_course|add'
   })
   constructor(

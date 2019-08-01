@@ -15,7 +15,7 @@ export class ReceiveService extends Store<SetState> implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   info$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     export: 'brand:activity:coupon|export'
   })
   constructor(private marketingApi: MarketingApi, private authService: AuthService) {

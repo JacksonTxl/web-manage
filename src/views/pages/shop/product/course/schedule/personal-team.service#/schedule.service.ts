@@ -22,7 +22,7 @@ export class PersonalTeamScheduleScheduleService {
   state$: State<SetState>
   courseList$: Computed<any>
   scheduleTable$: Computed<any>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'shop:schedule:personal_team_course_schedule|add',
     addBatch: 'shop:schedule:personal_team_course_schedule|batch_add',
     copy: 'shop:schedule:personal_team_course_schedule|copy'

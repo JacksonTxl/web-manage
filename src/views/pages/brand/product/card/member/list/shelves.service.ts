@@ -17,14 +17,14 @@ export class ShelvesService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     batchDown: 'brand_shop:product:member_card|batch_down'
   })
   publishChannel$ = this.userService
-    .getOptions('member_card.publish_channel')
+    .getOptions$('member_card.publish_channel')
     .pipe(map(options => [{ value: -1, label: '所有渠道' }].concat(options)))
   cardType$ = this.userService
-    .getOptions('member_card.card_type')
+    .getOptions$('member_card.card_type')
     .pipe(map(options => [{ value: -1, label: '所有类型' }].concat(options)))
 
   constructor(

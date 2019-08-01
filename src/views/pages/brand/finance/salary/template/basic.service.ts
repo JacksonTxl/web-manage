@@ -9,7 +9,7 @@ export class BasicService implements RouteGuard {
   list$ = new State([])
   loading$ = new State({})
   page$ = new State({})
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     add: 'brand_shop:salary:basic_template|add'
   })
   constructor(

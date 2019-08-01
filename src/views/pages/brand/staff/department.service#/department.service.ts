@@ -23,7 +23,7 @@ interface GetOptionsInput {
 export class DepartmentService extends Store<SetState> {
   state$: State<SetState>
   departmentList$: Computed<object[]>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     departmentAdd: 'brand:auth:department|add',
     departmentDel: 'brand:auth:department|del',
     departmentEdit: 'brand:auth:department|edit'

@@ -12,7 +12,7 @@ interface ListState {
 export class ListService extends Store<ListState> {
   state$: State<ListState>
   list$: Computed<object[]>
-  auth$ = this.authService.authMap({
+  auth$ = this.authService.authMap$({
     areaAdd: 'shop:shop:shop_area|add',
     areaEdit: 'shop:shop:shop_area|edit',
     areaDel: 'shop:shop:shop_area|del',
