@@ -5,25 +5,14 @@
       <a-input placeholder="请输入模块名称"  v-model="info.module_title" maxlength="10"/>
     </st-form-item>
     <st-form-item label="展示教练">
-
       <draggable :component-data="{props:{gutter:12}}" v-model="list" :animation="200">
-
-        <!-- <a-col :span="4" v-for="(li, index) in list" :key="li.id"> -->
           <div v-for="(li, index) in list" :key="li.id" :class="action('box')">
             <div :class="action('del')" @click="delCoach(index)">
               <a><st-icon type="delete" color="#FF5E41" :class="action('del-icon')"/></a>
-              <!-- <a-popconfirm @confirm="onDel(item.id)">
-                <template slot="title">
-                  删除该场地后，该门店进行排课等功能无法选择该场地，<br/> 是否继续？
-                </template>
-                <a><st-icon type="delete" :class="action('del-icon')"/></a>
-              </a-popconfirm> -->
             </div>
             <img :src="(li.head_img.image_url || config.PLACEHOLDER_IMG.AVATAR) | imgFilter({w:160,h:160})">
             <div style="-webkit-box-orient: vertical;" :class="action('nickname')" :title="li.nickname">{{li.nickname}}</div>
           </div>
-        <!-- </a-col> -->
-        <!-- <a-col :span="4"> -->
         <div :class="action('addbox')">
           <a v-modal-link="{
               name: 'coach-recommend',
@@ -39,7 +28,6 @@
             </div>
           </a>
         </div>
-        <!-- </a-col> -->
       </draggable>
     </st-form-item>
     </st-form>

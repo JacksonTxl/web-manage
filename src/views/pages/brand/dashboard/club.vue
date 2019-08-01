@@ -55,7 +55,7 @@
                   <funnel-vertical  :data="userFunnel"></funnel-vertical>
                 </div>
                 <div class="revenue-area">
-                  <brand-revenue-area  class="user-chart-box__item" :data="userChartData"></brand-revenue-area>
+                  <brand-revenue-area  :fields="['注册用户','消费用户','办理入会','购买私教']" class="user-chart-box__item" :data="userChartData"></brand-revenue-area>
                 </div>
               </div>
             </template>
@@ -65,7 +65,7 @@
                   <funnel-vertical  :data="marketingFunnel"></funnel-vertical>
                 </div>
                 <div class="revenue-area">
-                  <brand-revenue-area  :fields="['注册用户','消费用户','办理入会']" class="user-chart-box__item" :data="marketing"></brand-revenue-area>
+                  <brand-revenue-area :fields="['注册用户','消费用户','办理入会']" class="user-chart-box__item" :data="marketing"></brand-revenue-area>
                 </div>
               </div>
             </template>
