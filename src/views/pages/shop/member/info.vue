@@ -72,10 +72,10 @@
               <a-dropdown>
                 <a-menu slot="overlay">
                   <a-menu-item key="1" v-if="auth['shop:member:member|bind_coach']">
-                    <a v-modal-link="{ name: 'shop-distribution-coach',props: { memberIds: [id] } }">更改跟进教练</a>
+                    <a v-modal-link="{ name: 'shop-distribution-coach',props: { memberIds: [$route.query.id] } }">更改跟进教练</a>
                   </a-menu-item>
                   <a-menu-item key="2" v-if="auth['shop:member:member|bind_salesman']">
-                    <a v-modal-link="{ name: 'shop-distribution-ales',props: { memberIds: [id] } }">更改跟进销售</a>
+                    <a v-modal-link="{ name: 'shop-distribution-sale',props: { memberIds: [$route.query.id] } }">更改跟进销售</a>
                   </a-menu-item>
                   <a-menu-item key="3" v-if="auth['shop:member:member|unbind_wechat']" @click="onRemoveBind">解除微信绑定</a-menu-item>
                   <!-- <a-menu-item key="4" v-if="auth['shop:member:member|transfer']">

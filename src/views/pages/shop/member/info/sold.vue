@@ -23,11 +23,11 @@
           <div slot="action" slot-scope="text,record">
             <st-table-actions>
               <a v-if="record.auth['shop:reserve:personal_course_reserve|del'] && record.reserve_type.id === 1" @click="reserveStatus(record)">取消预约</a>
-              <a v-if="record.auth['shop:reserve:personal_course_reserve|checkin'] && record.reserve_type.id === 1" @click="isCheckin(record)">{{record.is_checkin}}</a>
+              <a v-if="record.auth['shop:reserve:personal_course_reserve|checkin'] && record.reserve_type.id === 1" @click="isCheckin(record)">签到</a>
               <a v-if="record.auth['shop:reserve:personal_team_course_reserve|del'] && record.reserve_type.id === 2" @click="reserveStatus(record)">取消预约</a>
-              <a v-if="record.auth['shop:reserve:personal_team_course_reserve|checkin'] && record.reserve_type.id === 2" @click="isCheckin(record)">{{record.is_checkin}}</a>
+              <a v-if="record.auth['shop:reserve:personal_team_course_reserve|checkin'] && record.reserve_type.id === 2" @click="isCheckin(record)">签到</a>
               <a v-if="record.auth['shop:reserve:team_course_reserve|del'] && record.reserve_type.id === 3" @click="reserveStatus(record)">取消预约</a>
-              <a v-if="record.auth['shop:reserve:team_course_reserve|checkin'] && record.reserve_type.id === 3" @click="isCheckin(record)">{{record.is_checkin}}</a>
+              <a v-if="record.auth['shop:reserve:team_course_reserve|checkin'] && record.reserve_type.id === 3" @click="isCheckin(record)">签到</a>
             </st-table-actions>
           </div>
         </st-table>
