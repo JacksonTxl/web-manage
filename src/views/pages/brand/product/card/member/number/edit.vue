@@ -5,7 +5,7 @@
         <h5-container>
           <template v-slot:title>购卡</template>
           <template v-slot:default>
-            <member-card :data="h5CardInfo" :cardType="1"></member-card>
+            <member-card :data="h5CardInfo" :cardType="MEMBER_CARD.NUMBER_CARD"></member-card>
           </template>
         </h5-container>
       </div>
@@ -343,6 +343,7 @@ import { EditService } from './edit.service'
 import MemberCard from '@/views/biz-components/h5/pages/member-card'
 import H5Container from '@/views/biz-components/h5/h5-container'
 import h5mixin from '../period/h5mixin'
+import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
 export default {
   name: 'BrandNumberCardEdit',
   mixins: [h5mixin],
@@ -371,7 +372,8 @@ export default {
   data() {
     return {
       // cardData
-      cardType: 1,
+      cardType: MEMBER_CARD.NUMBER_CARD,
+      MEMBER_CARD: MEMBER_CARD,
       cardData: {
         // 卡id
         id: null,

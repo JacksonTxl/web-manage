@@ -5,7 +5,7 @@
         <h5-container>
           <template v-slot:title>购卡</template>
           <template v-slot:default>
-            <member-card :data="cardInfo" :cardType="0"></member-card>
+            <member-card :data="cardInfo" :cardType="MEMBER_CARD.PERIOD_CARD"></member-card>
           </template>
         </h5-container>
       </div>
@@ -198,6 +198,7 @@
 import { InfoService } from './info.service'
 import MemberCard from '@/views/biz-components/h5/pages/member-card'
 import H5Container from '@/views/biz-components/h5/h5-container'
+import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
 export default {
   name: 'PageShopPeriodCardInfo',
   bem: {
@@ -220,6 +221,7 @@ export default {
   data() {
     return {
       // week
+      MEMBER_CARD: MEMBER_CARD,
       weekList: ['', '周一', '周二', '周三', '周四', '周五', '周六', '周日'],
       // 门店表头
       shop_columns: [

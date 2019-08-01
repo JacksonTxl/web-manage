@@ -2,12 +2,12 @@
   <div :class="h5()">
     <div :class="h5('nav')"><slot name="title">标题</slot></div>
     <div :class="h5('content')">
-      <div v-if="isAuth === 0" :class="h5('content-deny')">
+      <slot v-if="isAuth&&!loading.getInfo"></slot>
+      <div v-if="!isAuth&&!loading.getInfo" :class="h5('content-deny')">
         您还没配置用户端<br/>
         不支持实时预览<br/>
         <st-button :class="h5('content-deny-button')" type="primary">去配置</st-button>
       </div>
-      <slot v-if="isAuth === 1"></slot>
     </div>
   </div>
 </template>
@@ -27,9 +27,14 @@ export default {
       H5ContainerService: H5ContainerService
     }
   },
+  rxState() {
+    return {
+      loading: this.H5ContainerService.loading$
+    }
+  },
   data() {
     return {
-      isAuth: -1
+      isAuth: 0
     }
   },
   mounted() {

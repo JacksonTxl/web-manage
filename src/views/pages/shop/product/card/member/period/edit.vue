@@ -5,7 +5,7 @@
         <h5-container>
           <template v-slot:title>购卡</template>
           <template v-slot:default>
-            <member-card :data="h5CardInfo" :cardType="0"></member-card>
+            <member-card :data="h5CardInfo" :cardType="MEMBER_CARD.PERIOD_CARD"></member-card>
           </template>
         </h5-container>
       </div>
@@ -208,6 +208,7 @@ import { EditService } from './edit.service'
 import MemberCard from '@/views/biz-components/h5/pages/member-card'
 import H5Container from '@/views/biz-components/h5/h5-container'
 import h5mixin from './h5mixin'
+import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
 export default {
   name: 'PageShopPeriodCardAdd',
   mixins: [h5mixin],
@@ -235,7 +236,8 @@ export default {
   },
   data() {
     return {
-      cardType: 0,
+      cardType: MEMBER_CARD.PERIOD_CARD,
+      MEMBER_CARD: MEMBER_CARD,
       form: this.$form.createForm(this),
       // 结束时间面板是否显示
       endOpen: false,

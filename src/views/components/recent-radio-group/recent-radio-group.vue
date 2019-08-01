@@ -42,7 +42,7 @@ export default {
   watch: {
     recent(newValue) {
       if (newValue && newValue !== 0) {
-        this.$emit('change', { recently_day: newValue })
+        this.$emit('change', { recently_day: newValue, start_date: undefined, end_date: undefined })
         this.dateRange = []
       }
     }
@@ -64,7 +64,7 @@ export default {
     moment,
     recentChange(date, dateString) {
       this.recent = false
-      this.$emit('change', { start_date: dateString[0], end_date: dateString[1] })
+      this.$emit('change', { start_date: dateString[0], end_date: dateString[1], recently_day: undefined })
     },
     disabledDate(current) {
       if (this.$attrs.disabledDate) {

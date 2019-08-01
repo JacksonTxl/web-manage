@@ -5,7 +5,7 @@
         <h5-container>
           <template v-slot:title>购卡</template>
           <template v-slot:default>
-            <member-card :data="h5CardInfo" :cardType="0"></member-card>
+            <member-card :data="h5CardInfo" :cardType="MEMBER_CARD.PERIOD_CARD"></member-card>
           </template>
         </h5-container>
       </div>
@@ -329,6 +329,7 @@ import { AddService } from './add.service'
 import MemberCard from '@/views/biz-components/h5/pages/member-card'
 import H5Container from '@/views/biz-components/h5/h5-container'
 import h5mixin from './h5mixin'
+import { MEMBER_CARD } from '@/views/biz-components/h5/pages/member-card.config'
 export default {
   name: 'BrandPeriodCardAdd',
   mixins: [h5mixin],
@@ -356,7 +357,8 @@ export default {
   data() {
     return {
       // cardData
-      cardType: 0,
+      cardType: MEMBER_CARD.PERIOD_CARD,
+      MEMBER_CARD: MEMBER_CARD,
       cardData: {
         // 会员卡类型1-次卡 2-期限卡
         card_type: 2,
