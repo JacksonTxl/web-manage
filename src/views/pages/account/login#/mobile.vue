@@ -2,10 +2,16 @@
   <div :class="mobile()">
     <st-form :form="form" @submit.prevent="login" :class="mobile('form')">
       <st-form-item :class="mobile('phone')">
-        <a-input size="large" :class="mobile('phone-input')" placeholder="请输入手机号码"  v-decorator="rules.phone"/>
+        <a-input
+          size="large"
+          :class="mobile('phone-input')"
+          placeholder="请输入手机号码"
+          v-decorator="rules.phone"
+        />
         <a-dropdown :class="mobile('phone-dropdown')">
           <span class="cursor-pointer">
-            +86 <a-icon type="down" />
+            +86
+            <a-icon type="down" />
           </span>
           <!-- <a-menu slot="overlay">
             <a-menu-item>
@@ -27,16 +33,32 @@
         <no-captcha id="no-captcha-2"/>
       </st-form-item> -->
       <st-form-item :class="mobile('captcha')">
-        <a-input size="large" :class="mobile('captcha-input')" placeholder="请输入验证码" v-decorator="rules.captcha" />
-        <span :class="mobile('captcha-button')" @click="onClickCaptcha">{{buttonText}}</span>
+        <a-input
+          size="large"
+          :class="mobile('captcha-input')"
+          placeholder="请输入验证码"
+          v-decorator="rules.captcha"
+        />
+        <span :class="mobile('captcha-button')" @click="onClickCaptcha">
+          {{ buttonText }}
+        </span>
       </st-form-item>
       <!-- <st-form-item :class="mobile('pass')" class="mg-b16">
         <div :class="mobile('pass-content')">
           <a-checkbox>我已阅读并同意<a href="./agreement" target="_blank">《用户注册协议》</a></a-checkbox>
         </div>
       </st-form-item> -->
-      <st-form-item  class="mg-b0">
-        <st-button :class="mobile('login-button')" pill size="large" type="primary"  html-type="submit" block>登录</st-button>
+      <st-form-item class="mg-b0">
+        <st-button
+          :class="mobile('login-button')"
+          pill
+          size="large"
+          type="primary"
+          html-type="submit"
+          block
+        >
+          登录
+        </st-button>
       </st-form-item>
     </st-form>
     <!-- <div :class="mobile('third')" class="mg-l24">
@@ -108,14 +130,17 @@ export default {
     getCaptcha(params) {
       params.nvc_val = getNVCVal()
       this.loginService.getCaptcha(params).subscribe(res => {
-        const code = +res.code
-        if (this.noCaptchaService.testIsNeedCallCaptcha(code)) {
-          this.noCaptchaService.callCaptcha(code)
-        } else {
-          this.isClick = true
-          this.setTimer()
-        }
-      }, this.noCaptchaService.resetNVC)
+        this.isClick = true
+        this.setTimer()
+      }, this.loginErrorHandler)
+    },
+    loginErrorHandler(err) {
+      const code = err.response.code
+      if (this.noCaptchaService.testIsNeedCallCaptcha(code)) {
+        this.noCaptchaService.callCaptcha(code)
+        return
+      }
+      this.noCaptchaService.resetNVC()
     },
     setTimer() {
       clearInterval(this.timer)

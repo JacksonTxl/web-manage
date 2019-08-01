@@ -1,11 +1,13 @@
 import { Api } from './api'
+import { of } from 'rxjs'
 
 export class LoginApi extends Api {
   /**
    * 账户密码登录
    */
   loginAccount(params: LoginAccountInput) {
-    return this.http.post('/login/account', { params })
+    const ignoreCodes = [60154, 60155]
+    return this.http.post('/login/account', { params, ignoreCodes })
   }
   /**
    * 手机登录API

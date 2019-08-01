@@ -36,6 +36,10 @@ interface RequestOptions {
    * 自定义header头
    */
   headers?: Object
+  /**
+   * 忽略一些不需要提示错误信息的code
+   */
+  ignoreCodes?: any[]
 }
 
 @Injectable()
@@ -53,7 +57,7 @@ export class HttpService {
     const get$ = ajax
       .get(requestUrl, this.appHeaders)
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
-      .pipe(this.ajaxErrorHandler.bind(this))
+      .pipe(this.ajaxErrorHandler(options))
       .pipe(this.ajaxResponseHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return get$
@@ -79,7 +83,7 @@ export class HttpService {
     const post$ = ajax
       .post(requestUrl, options.params, this.appHeadersWithContentType)
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
-      .pipe(this.ajaxErrorHandler.bind(this))
+      .pipe(this.ajaxErrorHandler(options))
       .pipe(this.ajaxResponseHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return post$
@@ -89,7 +93,7 @@ export class HttpService {
     const put$ = ajax
       .put(requestUrl, options.params, this.appHeadersWithContentType)
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
-      .pipe(this.ajaxErrorHandler.bind(this))
+      .pipe(this.ajaxErrorHandler(options))
       .pipe(this.ajaxResponseHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return put$
@@ -99,7 +103,7 @@ export class HttpService {
     const delete$ = ajax
       .delete(requestUrl, this.appHeaders)
       .pipe(timeout(this.appConfig.HTTP_TIMEOUT))
-      .pipe(this.ajaxErrorHandler.bind(this))
+      .pipe(this.ajaxErrorHandler(options))
       .pipe(this.ajaxResponseHandler.bind(this))
       .pipe(pluck('response', 'data'))
     return delete$
@@ -151,59 +155,64 @@ export class HttpService {
       })
     )
   }
-  private ajaxErrorHandler(source$: Observable<any>) {
-    return source$.pipe(
-      catchError((err: AjaxError) => {
-        const serverResponse: StResponse = err.response
-        this.notification.close('ajaxError')
-        this.nprogress.SET_TEXT(`${err.message}`)
-        switch (err.status) {
-          case 400:
-            this.notification.warn({
-              title: this.i18n.translate('app.http.400'),
-              key: 'ajaxError',
-              content: serverResponse.msg
-            })
-            break
-          case 401:
-            this.notification.warn({
-              title: this.i18n.translate('app.http.401'),
-              key: 'ajaxError',
-              content: serverResponse.msg
-            })
-            this.router.push({ name: 'account-login' })
-            break
-          case 403:
-            this.notification.warn({
-              title: this.i18n.translate('app.http.403'),
-              key: 'ajaxError',
-              content: serverResponse.msg
-            })
-            break
-          case 404:
-            this.notification.error({
-              title: this.i18n.translate('app.http.404'),
-              key: 'ajaxError',
-              content: err.message
-            })
-            break
-          case 500:
-            this.notification.error({
-              title: this.i18n.translate('app.http.500'),
-              key: 'ajaxError',
-              content: err.message
-            })
-            break
-          default:
-            this.notification.error({
-              title: this.i18n.translate('app.http.other'),
-              key: 'ajaxError',
-              content: err.message
-            })
-            break
-        }
-        throw err
-      })
-    )
+  private ajaxErrorHandler(options: RequestOptions) {
+    const ignoreCodes = options.ignoreCodes || []
+    return (source$: Observable<any>) =>
+      source$.pipe(
+        catchError((err: AjaxError) => {
+          const serverResponse: StResponse = err.response
+          this.notification.close('ajaxError')
+          this.nprogress.SET_TEXT(`${err.message}`)
+          switch (err.status) {
+            case 400:
+              if (ignoreCodes.includes(serverResponse.code)) {
+                break
+              }
+              this.notification.warn({
+                title: this.i18n.translate('app.http.400'),
+                key: 'ajaxError',
+                content: serverResponse.msg
+              })
+              break
+            case 401:
+              this.notification.warn({
+                title: this.i18n.translate('app.http.401'),
+                key: 'ajaxError',
+                content: serverResponse.msg
+              })
+              this.router.push({ name: 'account-login' })
+              break
+            case 403:
+              this.notification.warn({
+                title: this.i18n.translate('app.http.403'),
+                key: 'ajaxError',
+                content: serverResponse.msg
+              })
+              break
+            case 404:
+              this.notification.error({
+                title: this.i18n.translate('app.http.404'),
+                key: 'ajaxError',
+                content: err.message
+              })
+              break
+            case 500:
+              this.notification.error({
+                title: this.i18n.translate('app.http.500'),
+                key: 'ajaxError',
+                content: err.message
+              })
+              break
+            default:
+              this.notification.error({
+                title: this.i18n.translate('app.http.other'),
+                key: 'ajaxError',
+                content: err.message
+              })
+              break
+          }
+          throw err
+        })
+      )
   }
 }

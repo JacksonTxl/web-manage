@@ -7,7 +7,11 @@
     <div class="page-login">
       <!-- 密码/二维码 -->
       <!-- <i class="page-switch-login-type cursor-pointer" :class="{'qrcode-login':this.loginType==='qrcode'}" @click="switchLoginType" v-if="switchLoginTypeIsShow"></i> -->
-      <i class="page-switch-login-type cursor-pointer" :class="{'qrcode-login':this.loginType==='qrcode'}"  v-if="switchLoginTypeIsShow"></i>
+      <i
+        class="page-switch-login-type cursor-pointer"
+        :class="{ 'qrcode-login': this.loginType === 'qrcode' }"
+        v-if="switchLoginTypeIsShow"
+      ></i>
       <section class="lf">
         <div class="lf-bg"></div>
         <footer>
@@ -16,24 +20,55 @@
             <li class="item"><a href="">隐私</a></li>
             <li class="item"><a href="">条款</a></li>
           </ul> -->
-          <p class="lf-copyright">版权所有&nbsp;©&nbsp;三体云动&nbsp;三体云智能科技有限公司</p>
+          <p class="lf-copyright">
+            版权所有&nbsp;©&nbsp;三体云动&nbsp;三体云智能科技有限公司
+          </p>
         </footer>
       </section>
       <section class="rt">
-        <div v-if="loginType === 'user' || loginType === 'mobile'" class="login-user-and-mobile">
+        <div
+          v-if="loginType === 'user' || loginType === 'mobile'"
+          class="login-user-and-mobile"
+        >
           <ul class="page-login-tabs mg-b24">
-            <li v-for="item in loginTypes" :key="item.key" class="page-login-tab-item" :class="{'page-login-tab-item--active': item.key === loginType}"><span @click.stop="onClickChangeType(item.key)">{{item.name}}</span></li>
+            <li
+              v-for="item in loginTypes"
+              :key="item.key"
+              class="page-login-tab-item"
+              :class="{ 'page-login-tab-item--active': item.key === loginType }"
+            >
+              <span @click.stop="onClickChangeType(item.key)">
+                {{ item.name }}
+              </span>
+            </li>
           </ul>
-          <login-user @findps="onFindPassword" @third="onThird" @login="onLogin" v-if="loginType==='user'"></login-user>
-          <login-mobile v-if="loginType==='mobile'"></login-mobile>
+          <login-user
+            @findps="onFindPassword"
+            @third="onThird"
+            @login="onLogin"
+            v-if="loginType === 'user'"
+          ></login-user>
+          <login-mobile v-if="loginType === 'mobile'"></login-mobile>
         </div>
 
-        <div v-if="loginType === 'mobilefind' || loginType === 'emailfind'" class="login-user-and-mobile">
+        <div
+          v-if="loginType === 'mobilefind' || loginType === 'emailfind'"
+          class="login-user-and-mobile"
+        >
           <ul class="page-login-tabs mg-b24">
-            <li v-for="item in findPasswordTypes" :key="item.key" class="page-login-tab-item" :class="{'page-login-tab-item--active': item.key === loginType}"><span @click.stop="onClickChangeType(item.key)">{{item.name}}</span></li>
+            <li
+              v-for="item in findPasswordTypes"
+              :key="item.key"
+              class="page-login-tab-item"
+              :class="{ 'page-login-tab-item--active': item.key === loginType }"
+            >
+              <span @click.stop="onClickChangeType(item.key)">
+                {{ item.name }}
+              </span>
+            </li>
           </ul>
-          <login-mobile v-show="loginType==='mobilefind'"></login-mobile>
-          <div v-show="loginType==='emailfind'">邮件找回表单</div>
+          <login-mobile v-show="loginType === 'mobilefind'"></login-mobile>
+          <div v-show="loginType === 'emailfind'">邮件找回表单</div>
           <a-button @click="onClickBack">返回</a-button>
         </div>
         <!-- <div v-else-if="loginType==='weibo' || loginType==='qq' || loginType==='alipay' || loginType==='wechat'" class="page-login-wechat">
@@ -69,9 +104,20 @@ export default {
   data() {
     return {
       loginType: 'user',
-      typeNames: { weibo: '微博登录', qq: 'qq登录', alipay: '支付宝登录', wechat: '微信登录' },
-      findPasswordTypes: [{ key: 'mobilefind', name: '手机找回' }, { key: 'emailfind', name: '邮件找回' }],
-      loginTypes: [{ key: 'user', name: '用户密码登录' }, { key: 'mobile', name: '手机动态密码登录' }]
+      typeNames: {
+        weibo: '微博登录',
+        qq: 'qq登录',
+        alipay: '支付宝登录',
+        wechat: '微信登录'
+      },
+      findPasswordTypes: [
+        { key: 'mobilefind', name: '手机找回' },
+        { key: 'emailfind', name: '邮件找回' }
+      ],
+      loginTypes: [
+        { key: 'user', name: '用户密码登录' },
+        { key: 'mobile', name: '手机动态密码登录' }
+      ]
     }
   },
   components: {
@@ -105,11 +151,6 @@ export default {
     onLogin(params) {
       params.nvc_val = getNVCVal()
       this.loginService.loginAccount(params).subscribe(res => {
-        const code = +res.code
-        if (this.noCaptchaService.testIsNeedCallCaptcha(code)) {
-          this.noCaptchaService.callCaptcha(code)
-          return
-        }
         this.noCaptchaService.resetNVC()
         this.userService.SET_FIRST_INITED(false)
         if (res.have_phone) {
@@ -118,7 +159,15 @@ export default {
           // 去绑定手机
           this.$router.push('/')
         }
-      }, this.noCaptchaService.resetNVC)
+      }, this.loginErrorHandler)
+    },
+    loginErrorHandler(err) {
+      const code = err.response.code
+      if (this.noCaptchaService.testIsNeedCallCaptcha(code)) {
+        this.noCaptchaService.callCaptcha(code)
+        return
+      }
+      this.noCaptchaService.resetNVC()
     },
     // 切换登录方式
     switchLoginType() {

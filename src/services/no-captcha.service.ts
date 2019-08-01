@@ -47,15 +47,17 @@ export class NoCaptchaService {
   }
   /**
    * 判断是否需要唤起验证码
+   * 60154 对应 400
+   * 60155 对应 600
    * @param code 400 滑动验证 600 刮刮卡验证
    */
   testIsNeedCallCaptcha(code: number) {
-    return [400, 600].includes(code)
+    return [60154, 60155].includes(code)
   }
   callCaptcha(code: number) {
     switch (code) {
-      case 400:
-      case 600:
+      case 60154:
+      case 60155:
         //唤醒滑动验证
         // @ts-ignore
         getNC()
@@ -71,7 +73,7 @@ export class NoCaptchaService {
             _nvc_nc.reset()
           })
         break;
-      // case 600:
+      // case 60155:
       //   //唤醒刮刮卡
       //   // @ts-ignore
       //   getSC()
