@@ -1,6 +1,6 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { State, Computed } from 'rx-state/src'
-import { pluck, tap } from 'rxjs/operators'
+import { State } from 'rx-state/src'
+import { tap } from 'rxjs/operators'
 import { OverviewApi, Version, RevenueParams } from '@/api/v1/stat/overview/shop'
 import { forkJoin } from 'rxjs'
 
@@ -186,7 +186,7 @@ export class ClubService implements RouteGuard {
       this.getNewMember({ recently_day: 7 })
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init()
   }
 }

@@ -184,7 +184,7 @@ export class StudioService implements RouteGuard {
       this.getBuyCourse({ recently_day: 7 })
     )
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init()
   }
 }
