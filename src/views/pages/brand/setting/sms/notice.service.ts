@@ -6,7 +6,7 @@ import { RedirectService } from '@/services/redirect.service'
 import { NoticeApi, PutNoticeParams } from '@/api/v1/setting/sms/notice'
 interface SetState {}
 @Injectable()
-export class NoticeService extends Store<SetState> implements RouteGuard {
+export class NoticeService extends Store<SetState> {
   list$ = new State([])
   authTabs$ = this.redirectService.getAuthTabs$('brand-setting-sms-notice')
   constructor(
@@ -24,8 +24,5 @@ export class NoticeService extends Store<SetState> implements RouteGuard {
   }
   putNotice(params:PutNoticeParams) {
     return this.NoticeApi.putNotice(params).pipe(tap((res: any) => {}))
-  }
-  beforeEach(to: ServiceRoute) {
-    return this.getNoticeList()
   }
 }

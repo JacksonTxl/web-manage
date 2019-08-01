@@ -22,7 +22,7 @@
         <div :class="bSelect()">
           <span :class="bSelect('label')">发送时间：</span>
           <div :class="bSelect('val')">
-            <a-date-picker
+            <!-- <a-date-picker
               format="YYYY-MM-DD"
               placeholder="开始日期"
               :showToday="false"
@@ -34,7 +34,8 @@
               placeholder="结束日期"
               :showToday="false"
               @change="enddatePickerChange"
-            />
+            /> -->
+             <st-range-picker :value="selectTime"></st-range-picker>
           </div>
         </div>
         <div slot="button">
@@ -111,12 +112,24 @@ export default {
   },
   data() {
     return {
-      resData: {
-        list: [
-          {
-            created_time: '12212'
-          }
-        ]
+      selectTime: {
+        startTime: {
+          showTime: false,
+          disabledBegin: null,
+          placeholder: '开始日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: ($event) => { }
+        },
+        endTime: {
+          showTime: false,
+          placeholder: '结束日期',
+          disabled: false,
+          value: null,
+          format: 'YYYY-MM-DD',
+          change: ($event) => {}
+        }
       },
       orderStatusList: [],
       payStatusList: [],
@@ -127,8 +140,11 @@ export default {
   created() {},
   methods: {
     onSearchList() {
+      this.query.start_time = this.selectTime.startTime.value ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}` : ''
+      this.query.end_time = this.selectTime.endTime.value ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}` : ''
       this.onSearch({ ...this.query })
     },
+
     startdatePickerChange(date, dateString) {
       this.query.start_time = dateString
     },
