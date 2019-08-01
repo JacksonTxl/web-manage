@@ -1,8 +1,8 @@
 <template>
   <div :class="basic()">
     <div :class="basic('left')">
-      <p :class="basic('title')">{{info.plugin_name}}</p>
-      <p :class="basic('content')">{{info.introduction}}</p>
+      <p :class="basic('title')">{{ info.plugin_name }}</p>
+      <p :class="basic('content')">{{ info.introduction }}</p>
       <p :class="basic('footer')">
         <label @click="ruleDetail">规则说明</label>
         <!-- <label @click="openTeach">使用教程</label>
@@ -10,8 +10,15 @@
       </p>
     </div>
     <div :class="basic('right')" v-viewer="{ url: 'data-src' }">
-      <div class="st-preview-item imgBox" v-for="(item, index) in info.plugin_image" :key="index">
-        <img :src="item|imgFilter({ w: 80, h: 142 })" :data-src="item|imgFilter({ w: 1000 })">
+      <div
+        class="st-preview-item imgBox"
+        v-for="(item, index) in info.plugin_image"
+        :key="index"
+      >
+        <img
+          :src="item | imgFilter({ w: 80, h: 142 })"
+          :data-src="item | imgFilter({ w: 1000 })"
+        />
       </div>
     </div>
   </div>

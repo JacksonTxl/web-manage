@@ -7,7 +7,9 @@
     >
       <img
         class="st-image-upload__item-img"
-        :src="(item[imageUrl] || item[imageKey]) | imgFilter(computedFilterOptions)"
+        :src="
+          (item[imageUrl] || item[imageKey]) | imgFilter(computedFilterOptions)
+        "
         :data-src="(item[imageUrl] || item[imageKey]) | imgFilter"
         :style="sizeStyle"
       />
@@ -29,12 +31,21 @@
     >
       <a-spin :spinning="isLoading" :tip="progress + '%'">
         <slot>
-          <a-icon type="plus-circle" theme="filled" :style="{fontSize:'36px', color: '#9BACB9' }" />
-          <div class="st-image-upload__placeholder">{{placeholder}}</div>
+          <a-icon
+            type="plus-circle"
+            theme="filled"
+            :style="{ fontSize: '36px', color: '#9BACB9' }"
+          />
+          <div class="st-image-upload__placeholder">{{ placeholder }}</div>
         </slot>
       </a-spin>
     </a-upload>
-    <canvas id="myCanvas" :width="maskOptions.width" :height="maskOptions.height" v-show="false"></canvas>
+    <canvas
+      id="myCanvas"
+      :width="maskOptions.width"
+      :height="maskOptions.height"
+      v-show="false"
+    ></canvas>
   </div>
 </template>
 <script>
@@ -135,13 +146,13 @@ export default {
      * maskUrl 蒙版的url
      */
     maskOptions: {
-      type: Object,
-      default: () => ({
-        flag: false,
-        width: 750,
-        height: 1334,
-        maskUrl: 'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-invitation-4.png'
-      })
+      type: Object
+      // default: () => ({
+      //   flag: false,
+      //   width: 750,
+      //   height: 1334,
+      //   maskUrl: 'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-invitation-4.png'
+      // })
     },
     /**
      * 后端字段映射 image_id,image_key,image_url
@@ -158,10 +169,15 @@ export default {
   },
   data() {
     return {
-      fileList: this.list,
+      fileList: [],
       isLoading: false,
-
-      progress: 0
+      progress: 0,
+      defaultMaskOptions: {
+        width: 750,
+        height: 1334,
+        maskUrl:
+          'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/default/bg-invitation-4.png'
+      }
     }
   },
   computed: {
@@ -198,17 +214,16 @@ export default {
       return Object.assign({ w, h }, this.filterOptions)
     }
   },
-  watch: {
-    list: {
-      deep: true,
-      handler(newList) {
-        this.fileList = this.list
-        if (this.maskOptions.flag && this.fileList.length > 0) {
-          this.drawMaskImage(this.fileList[0][this.imageUrl]).then((resSrc) => {
-            this.fileList[0][this.imageUrl] = resSrc
-          })
-        }
-      }
+  mounted() {
+    this.fileList = new Array(...this.list)
+    if (this.maskOptions && this.fileList.length > 0) {
+      this.maskOptions = Object.assign(
+        this.maskOptions,
+        this.defaultMaskOptions
+      )
+      this.drawMaskImage(this.fileList[0][this.imageUrl]).then(resSrc => {
+        this.fileList[0][this.imageUrl] = resSrc
+      })
     }
   },
   methods: {
@@ -253,8 +268,8 @@ export default {
         })
         .subscribe({
           next: val => {
-            if (this.maskOptions.flag) {
-              this.drawMaskImage(val.url).then((resSrc) => {
+            if (this.maskOptions) {
+              this.drawMaskImage(val.url).then(resSrc => {
                 this.fileList.push({
                   [this.imageId]: 0,
                   [this.imageKey]: val.fileKey,
@@ -332,8 +347,20 @@ export default {
       return new Promise((resolve, reject) => {
         Promise.all([promise1, promise2]).then(result => {
           ctx.clearRect(0, 0, myCanvas.width, myCanvas.height)
-          ctx.drawImage(user_img, 0, 0, this.maskOptions.width, this.maskOptions.height)
-          ctx.drawImage(logo_img, 0, 0, this.maskOptions.width, this.maskOptions.height)
+          ctx.drawImage(
+            user_img,
+            0,
+            0,
+            this.maskOptions.width,
+            this.maskOptions.height
+          )
+          ctx.drawImage(
+            logo_img,
+            0,
+            0,
+            this.maskOptions.width,
+            this.maskOptions.height
+          )
           ctx.stroke()
           myCanvas.toBlob(function(blob) {
             const objectURL = URL.createObjectURL(blob)

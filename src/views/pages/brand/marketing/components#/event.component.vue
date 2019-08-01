@@ -2,46 +2,82 @@
   <div :class="event()">
     <st-form>
       <st-form-item label="推广活动数">
-          <a-radio-group @change="numberChange" v-model="number">
-            <a-radio :value="1">1</a-radio>
-            <a-radio :value="2">2</a-radio>
-            <a-radio :value="3">3</a-radio>
-            <a-radio :value="4">4</a-radio>
+        <a-radio-group @change="numberChange" v-model="number">
+          <a-radio :value="1">1</a-radio>
+          <a-radio :value="2">2</a-radio>
+          <a-radio :value="3">3</a-radio>
+          <a-radio :value="4">4</a-radio>
         </a-radio-group>
       </st-form-item>
       <st-form-item label="活动展示">
-        <div v-for="(li, index) in list" :key="index" :class="['col-'+li.span, {'clear-float': index===2}]" >
+        <div
+          v-for="(li, index) in list"
+          :key="index"
+          :class="['col-' + li.span, { 'clear-float': index === 2 }]"
+        >
           <div :class="event('box')">
-            <st-image-upload @change="imageUploadChange($event,index)" width="100%" height="85px" :list='li.image_url?[li]:li.filelist' :sizeLimit="2"
-              placeholder="添加活动图片" :numLimit="1">
-              <a-icon type="plus-circle" theme="filled" :style="{fontSize:'24px',verticalAlign: 'super',marginRight:'8px', color: '#9BACB9' }" />
+            <st-image-upload
+              @change="imageUploadChange($event, index)"
+              width="100%"
+              height="85px"
+              :list="li.image_url ? [li] : li.filelist"
+              :sizeLimit="2"
+              placeholder="添加活动图片"
+              :numLimit="1"
+            >
+              <a-icon
+                type="plus-circle"
+                theme="filled"
+                :style="{
+                  fontSize: '24px',
+                  verticalAlign: 'super',
+                  marginRight: '8px',
+                  color: '#9BACB9'
+                }"
+              />
               <div :class="event('uploadtip-wrap')">
                 <div class="st-image-upload__placeholder">添加活动图片</div>
-                <span :class="event('uploadtip')">{{li.span===24?'大小不超过5M，建议尺寸670*120':'建议尺寸327*120'}}</span>
+                <span :class="event('uploadtip')">
+                  {{
+                    li.span === 24
+                      ? '大小不超过5M，建议尺寸670*120'
+                      : '建议尺寸327*120'
+                  }}
+                </span>
               </div>
             </st-image-upload>
             <st-form-item labelWidth="46px" label="标题">
-              <a-input placeholder="选填" v-model="li.module_name" maxlength="20"></a-input>
+              <a-input
+                placeholder="选填"
+                v-model="li.module_name"
+                maxlength="20"
+              ></a-input>
             </st-form-item>
             <st-form-item labelWidth="46px" label="链接">
-              <a-select placeholder="请输入链接的活动" @select="actSelect(li,$event)" v-model="li.activity_id">
-                <a-select-option v-for="(act, i) in actList" :disabled="act.isover" :key="i" :value="act.id">{{act.activity_name}}</a-select-option>
+              <a-select
+                placeholder="请输入链接的活动"
+                @select="actSelect(li, $event)"
+                v-model="li.activity_id"
+              >
+                <a-select-option
+                  v-for="(act, i) in actList"
+                  :disabled="act.isover"
+                  :key="i"
+                  :value="act.id"
+                >
+                  {{ act.activity_name }}
+                </a-select-option>
               </a-select>
             </st-form-item>
           </div>
         </div>
       </st-form-item>
-
     </st-form>
   </div>
 </template>
 <script>
-import {
-  H5WrapperService
-} from '@/views/pages/brand/setting/mina/components#/h5/h5-wrapper.service'
-import {
-  cloneDeep
-} from 'lodash-es'
+import { H5WrapperService } from '@/views/pages/brand/setting/mina/components#/h5/h5-wrapper.service'
+import { cloneDeep } from 'lodash-es'
 import { ActivityService } from '../activity.service'
 export default {
   bem: {
@@ -98,9 +134,7 @@ export default {
       }
     }
   },
-  created() {
-
-  },
+  created() {},
   methods: {
     actSelect(item, value) {
       let selected = this.actList.filter(it => it.id === value)[0]
@@ -155,5 +189,4 @@ export default {
     }
   }
 }
-
 </script>

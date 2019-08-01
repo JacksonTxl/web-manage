@@ -2,12 +2,16 @@
   <div :class="inviation()">
     <st-form :form="form" labelWidth="94px">
       <st-form-item label="功能开关" required>
-        <a-switch v-model="openStatus" @change="onOpenStatusChange"/>
-        <span class="mg-l12 mg-r12">{{openStatus?'已':'未'}}开启</span>
-        <span v-if="!openStatus">（一旦开启，将会在用户端展示，如需关闭，请谨慎操作。）</span>
+        <a-switch v-model="openStatus" @change="onOpenStatusChange" />
+        <span class="mg-l12 mg-r12">{{ openStatus ? '已' : '未' }}开启</span>
+        <span v-if="!openStatus">
+          （一旦开启，将会在用户端展示，如需关闭，请谨慎操作。）
+        </span>
       </st-form-item>
       <template v-if="openStatus">
-        <st-form-item label="成功规则">每邀请1人成功购买卡项或课程（成功支付）</st-form-item>
+        <st-form-item label="成功规则">
+          每邀请1人成功购买卡项或课程（成功支付）
+        </st-form-item>
         <template v-if="!isOpen">
           <st-form-item label="邀请人奖励" required :help="inviteeHelpText">
             <div :class="inviation('coupon')">
@@ -22,11 +26,20 @@
               </st-input-number>
               <span class="mg-l24 mg-r8">选择券</span>
               <template v-if="!inviteeCoupon">
-                <st-button icon="anticon:plus" @click="onAddCoupon('invitee')">添加券</st-button>
+                <st-button icon="anticon:plus" @click="onAddCoupon('invitee')">
+                  添加券
+                </st-button>
               </template>
               <template v-else>
-                <st-coupon key="1" class="mg-r8" :name="inviteeCoupon.coupon_name" @close="onClose('invitee')"/>
-                <st-button @click="onEditCoupon('invitee')" icon="anticon:plus">重新选择</st-button>
+                <st-coupon
+                  key="1"
+                  class="mg-r8"
+                  :name="inviteeCoupon.coupon_name"
+                  @close="onClose('invitee')"
+                />
+                <st-button @click="onEditCoupon('invitee')" icon="anticon:plus">
+                  重新选择
+                </st-button>
               </template>
             </div>
           </st-form-item>
@@ -43,11 +56,20 @@
               </st-input-number>
               <span class="mg-l24 mg-r8">选择券</span>
               <template v-if="!inviterCoupon">
-                <st-button icon="anticon:plus" @click="onAddCoupon('inviter')">添加券</st-button>
+                <st-button icon="anticon:plus" @click="onAddCoupon('inviter')">
+                  添加券
+                </st-button>
               </template>
               <template v-else>
-                <st-coupon key="2" class="mg-r8" :name="inviterCoupon.coupon_name" @close="onClose('inviter')"/>
-                <st-button @click="onEditCoupon('inviter')" icon="anticon:plus">重新选择</st-button>
+                <st-coupon
+                  key="2"
+                  class="mg-r8"
+                  :name="inviterCoupon.coupon_name"
+                  @close="onClose('inviter')"
+                />
+                <st-button @click="onEditCoupon('inviter')" icon="anticon:plus">
+                  重新选择
+                </st-button>
               </template>
             </div>
           </st-form-item>
@@ -65,7 +87,11 @@
                 <span slot="addonAfter">张</span>
               </st-input-number>
               <span class="mg-l24 mg-r8">选择券</span>
-              <st-coupon class="mg-r8" :name="inviteeCoupon.coupon_name" key="3"/>
+              <st-coupon
+                class="mg-r8"
+                :name="inviteeCoupon.coupon_name"
+                key="3"
+              />
             </div>
           </st-form-item>
           <st-form-item label="被邀请人奖励" required :help="inviterHelpText">
@@ -80,16 +106,26 @@
                 <span slot="addonAfter">张</span>
               </st-input-number>
               <span class="mg-l24 mg-r8">选择券</span>
-              <st-coupon class="mg-r8" :name="inviterCoupon.coupon_name" key="3"/>
+              <st-coupon
+                class="mg-r8"
+                :name="inviterCoupon.coupon_name"
+                key="3"
+              />
             </div>
           </st-form-item>
         </template>
         <st-form-item label="邀请海报">
-            <!-- <st-card-bg-radio v-model="banner"/> -->
-            <st-invitation-bg-radio v-model="invite_poster"/>
+          <!-- <st-card-bg-radio v-model="banner"/> -->
+          <st-invitation-bg-radio v-model="invite_poster" />
         </st-form-item>
         <st-form-item>
-          <st-button type="primary" :loading="loading.edit||loading.add" @click="onSubmit">保存</st-button>
+          <st-button
+            type="primary"
+            :loading="loading.edit || loading.add"
+            @click="onSubmit"
+          >
+            保存
+          </st-button>
         </st-form-item>
       </template>
     </st-form>
@@ -181,7 +217,11 @@ export default {
     },
     // 开关
     onOpenStatusChange(data) {
-      if (!data && this.settingInfoHistory.activity_status === 1 && this.settingInfoHistory.invitee_coupon_id) {
+      if (
+        !data &&
+        this.settingInfoHistory.activity_status === 1 &&
+        this.settingInfoHistory.invitee_coupon_id
+      ) {
         this.$confirm({
           title: '提示',
           content: `一旦关闭，全部推广功能将失效，请谨慎操作。`,
@@ -190,11 +230,16 @@ export default {
           },
           onOk: () => {
             let params = { ...this.settingInfoHistory, activity_status: 2 }
-            return this.settingService.edit(params).toPromise().then(() => {
-              // 关闭成功
-              this.$router.push({ path: '/brand/marketing/plugin/invitation/index/data' })
-              // this.$router.push({ force: true, query: this.query })
-            })
+            return this.settingService
+              .edit(params)
+              .toPromise()
+              .then(() => {
+                // 关闭成功
+                this.$router.push({
+                  path: '/brand/marketing/plugin/invitation/index/data'
+                })
+                // this.$router.push({ force: true, query: this.query })
+              })
           }
         })
       }
@@ -253,7 +298,9 @@ export default {
           invitee_coupon_num: +this.inviteeCouponNum,
           invite_poster: this.invite_poster
         }).subscribe(() => {
-          this.$router.push({ path: '/brand/marketing/plugin/invitation/index/data' })
+          this.$router.push({
+            path: '/brand/marketing/plugin/invitation/index/data'
+          })
         })
       }
     }
