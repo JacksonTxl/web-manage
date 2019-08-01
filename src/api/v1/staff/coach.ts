@@ -18,8 +18,8 @@ export class CoachApi extends Api {
   /**
    * 用户端设置教练选择
    */
-  getCoachRecommend(params: GetSelectCoachInput) {
-    return this.http.post('/v1/staff/coach/recommend', { params })
+  getCoachRecommend(query: GetSelectCoachInput) {
+    return this.http.get('/v1/staff/coach/recommend', { query })
   }
 }
 

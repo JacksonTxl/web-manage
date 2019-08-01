@@ -47,8 +47,7 @@ export default {
 
       this.chart.source(this.dv, {
         value: {
-          formatter: toKFilter,
-          tickCount: 4
+          formatter: toKFilter
         }
       })
       this.chart.legend(false)
