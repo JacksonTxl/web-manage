@@ -1,13 +1,30 @@
 {
   "emmet.triggerExpansionOnTab": true,
-  "eslint.validate": ["javascript", "javascriptreact", "vue", "typescript"],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "vue",
+    "typescript",
+    "json"
+  ],
   "eslint.alwaysShowStatus": true,
   "editor.quickSuggestions": {
     "strings": true
   },
   "editor.renderWhitespace": "all",
   "todohighlight.isEnable": true,
-
+  "todohighlight.keywords": [
+    {
+      "text": "NOTE:",
+      "color": "#fff",
+      "backgroundColor": "#3ead69"
+    },
+    {
+      "text": "FIXME:",
+      "color": "#fff",
+      "backgroundColor": "#ed5565"
+    }
+  ],
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
