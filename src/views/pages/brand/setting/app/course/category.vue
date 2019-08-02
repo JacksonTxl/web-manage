@@ -69,6 +69,8 @@
 import { CategoryService } from './category.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
+import CourseCategoryAdd from '@/views/biz-modals/course-category/add'
+import CourseCategoryEdit from '@/views/biz-modals/course-category/edit'
 export default {
   serviceInject() {
     return {
@@ -84,6 +86,10 @@ export default {
       query: this.routeService.query$,
       auth: this.listService.auth$
     }
+  },
+  modals: {
+    CourseCategoryAdd,
+    CourseCategoryEdit
   },
   methods: {
     onDelete(id) {

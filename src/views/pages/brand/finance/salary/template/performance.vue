@@ -90,6 +90,10 @@ import { PerformanceService } from './performance.service'
 import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
+import FinanceAddPerformanceTemplate from '@/views/biz-modals/finance/add-performance-template'
+import FinanceEditPerformanceTemplate from '@/views/biz-modals/finance/edit-performance-template'
+import FinancePerformanceInfo from '@/views/biz-modals/finance/performance-info'
+import FinanceSearchStaffListPerformance from '@/views/biz-modals/finance/search-staff-list-performance'
 export default {
   mixins: [tableMixin],
   serviceInject() {
@@ -107,6 +111,12 @@ export default {
       page: this.basicService.page$,
       loading: this.basicService.loading$
     }
+  },
+  modals: {
+    FinanceAddPerformanceTemplate,
+    FinanceEditPerformanceTemplate,
+    FinancePerformanceInfo,
+    FinanceSearchStaffListPerformance
   },
   data() {
     return {

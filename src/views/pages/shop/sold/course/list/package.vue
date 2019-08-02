@@ -108,12 +108,21 @@ import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './package.config'
 import StRangePicker from '@/views/components/datetime-picker/range-picker'
-
+import SoldCourseFreeze from '@/views/biz-modals/sold/course/freeze'
+import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
+import SoldCourseSurplus from '@/views/biz-modals/sold/course/surplus'
+import SoldCourseTransfer from '@/views/biz-modals/sold/course/transfer'
 export default {
   name: 'PageShopSoldCoursePackageList',
   mixins: [tableMixin],
   bem: {
     basic: 'page-shop-sold'
+  },
+  modals: {
+    SoldCourseFreeze,
+    SoldCourseRefund,
+    SoldCourseSurplus,
+    SoldCourseTransfer
   },
   serviceInject() {
     return {

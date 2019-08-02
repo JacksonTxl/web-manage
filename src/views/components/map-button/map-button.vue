@@ -11,11 +11,15 @@
   </div>
 </template>
 <script>
+import ShopMap from '@/views/biz-modals/shop/map'
 export default {
   bem: {
     mapButton: 'st-map-button'
   },
   name: 'StMapButton',
+  modals: {
+    ShopMap
+  },
   props: {
     addText: {
       type: String,

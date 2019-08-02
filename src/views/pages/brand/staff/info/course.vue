@@ -75,9 +75,16 @@ import { CourseService } from './course.service'
 import { RouteService } from '../../../../../services/route.service'
 import ShopSelect from '@/views/biz-components/shop-select'
 import tableMixin from '@/mixins/table.mixin'
-
+import SchedulePersonalReserveInfo from '@/views/biz-modals/schedule/personal/reserve-info'
+import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
+import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
 export default {
   mixins: [tableMixin],
+  modals: {
+    SchedulePersonalReserveInfo,
+    SchedulePersonalTeamReserveInfo,
+    ScheduleTeamReserveInfo
+  },
   serviceInject() {
     return {
       service: CourseService,

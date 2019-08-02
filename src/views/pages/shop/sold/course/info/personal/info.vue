@@ -161,10 +161,22 @@
 import { InfoService } from './info.service'
 import moment from 'moment'
 import { RouteService } from '@/services/route.service'
+import SoldCourseCoach from '@/views/biz-modals/sold/course/coach'
+import SoldCourseFreeze from '@/views/biz-modals/sold/course/freeze'
+import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
+import SoldCourseSurplusPersonal from '@/views/biz-modals/sold/course/surplus-personal'
+import SoldCourseTransfer from '@/views/biz-modals/sold/course/transfer'
 export default {
   name: 'PageShopSoldCoursePersonalInfo',
   bem: {
     basic: 'page-shop-sold-info'
+  },
+  modals: {
+    SoldCourseCoach,
+    SoldCourseFreeze,
+    SoldCourseRefund,
+    SoldCourseSurplusPersonal,
+    SoldCourseTransfer
   },
   serviceInject() {
     return {

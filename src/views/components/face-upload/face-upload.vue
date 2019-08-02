@@ -40,7 +40,7 @@
 import { OssService } from '@/services/oss.service'
 import { AppConfig } from '@/constants/config'
 import { MessageService } from '@/services/message.service'
-
+import FaceRecognition from '@/views/biz-modals/face/recognition'
 const defaultSize = {
   w: '182px',
   h: '114px'
@@ -53,6 +53,9 @@ export default {
       appConfig: AppConfig,
       messageService: MessageService
     }
+  },
+  modals: {
+    FaceRecognition
   },
   props: {
     numLimit: {

@@ -36,10 +36,16 @@ import $ from 'jquery'
 import { PersonalScheduleReserveService } from '../personal.service#/reserve.service'
 import AddCard from '../date#/add-card'
 import GetDay from '../date#/get-day'
+import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
+import SchedulePersonalReserveInfo from '@/views/biz-modals/schedule/personal/reserve-info'
 export default {
   name: 'SchedulePersonalTeam',
   components: {
     FullCalendar // make the <FullCalendar> tag available
+  },
+  modals: {
+    SchedulePersonalAddReserve,
+    SchedulePersonalReserveInfo
   },
   serviceInject() {
     return {

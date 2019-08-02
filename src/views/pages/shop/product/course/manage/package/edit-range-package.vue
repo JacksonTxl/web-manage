@@ -732,6 +732,7 @@
 import moment from 'moment'
 import { cloneDeep, remove, every, filter, reduce, forEach } from 'lodash-es'
 import { EditRangePackageService } from './edit-range-package.service'
+import CourseSelectCourse from '@/views/biz-modals/course/select-course'
 export default {
   name: 'ShopRangePackageEdit',
   serviceInject() {
@@ -748,6 +749,9 @@ export default {
       coachList: this.editPackageService.coachList$,
       packageInfo: this.editPackageService.packageInfo$
     }
+  },
+  modals: {
+    CourseSelectCourse
   },
   bem: {
     add: 'page-shop-add-range-package',

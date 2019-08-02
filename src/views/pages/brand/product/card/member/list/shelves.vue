@@ -149,7 +149,7 @@ import { ShelvesService } from './shelves.service'
 import { RouteService } from '@/services/route.service'
 import { columns, CARD_TYPE } from './shelves.config.ts'
 import tableMixin from '@/mixins/table.mixin'
-
+import CardBrandMemberShopTable from '@/views/biz-modals/card/brand-member/shop-table'
 export default {
   mixins: [tableMixin],
   bem: {
@@ -163,6 +163,9 @@ export default {
     ) {
       this.onSingleSearch(key, data, options)
     }
+  },
+  modals: {
+    CardBrandMemberShopTable
   },
   serviceInject() {
     return {

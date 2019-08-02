@@ -136,10 +136,14 @@ import { SettingService } from './setting.service'
 import { cloneDeep } from 'lodash-es'
 import { IndexService } from '../index.service'
 import StInvitationBgRadio from './components#/invitation-bg-radio'
+import MarketingAddCoupon from '@/views/biz-modals/marketing/add-coupon'
 export default {
   name: 'PageBrandMarketingInviationSetting',
   bem: {
     inviation: 'page-brand-marketing-inviation-setting'
+  },
+  modals: {
+    MarketingAddCoupon
   },
   serviceInject() {
     return {

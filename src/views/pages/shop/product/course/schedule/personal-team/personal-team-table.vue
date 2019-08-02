@@ -103,8 +103,18 @@
 import date from '../date#/date-component'
 import { PersonalTeamScheduleScheduleService } from '../personal-team.service#/schedule.service'
 import { RouteService } from '@/services/route.service'
+import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
+import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'
+import ScheduleTeamAddCourseSchedule from '@/views/biz-modals/schedule/team/add-course-schedule'
+import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 export default {
   name: 'SchedulePersonalTeamTable',
+  modals: {
+    SchedulePersonalTeamReserveInfo,
+    ScheduleTeamAddCourseScheduleBatch,
+    ScheduleTeamAddCourseSchedule,
+    ScheduleTeamCopySchedule
+  },
   serviceInject() {
     return {
       scheduleService: PersonalTeamScheduleScheduleService,

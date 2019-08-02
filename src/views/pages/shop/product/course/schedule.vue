@@ -112,8 +112,12 @@ import { PersonalScheduleCommonService } from './schedule/personal.service#/comm
 import { RouteService } from '../../../../../services/route.service'
 import { PersonalTeamScheduleCommonService } from './schedule/personal-team.service#/common.service'
 import { ScheduleService } from './schedule.service'
+import ScheduleTeamEditSchedule from '@/views/biz-modals/schedule/team/edit-schedule'
 export default {
   name: 'CourseSchedule',
+  modals: {
+    ScheduleTeamEditSchedule
+  },
   serviceInject() {
     return {
       scheduleService: ScheduleService,

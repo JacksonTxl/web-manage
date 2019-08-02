@@ -108,12 +108,24 @@ import { ListService } from './list.service'
 import { RouteService } from '@/services/route.service'
 import { columns } from './list.config'
 import tableMixin from '@/mixins/table.mixin'
+import ShopFinanceCancel from '@/views/biz-modals/shop/finance/cancel'
+import ShopFinanceRefund from '@/views/biz-modals/shop/finance/refund'
+import ShopFinanceSplit from '@/views/biz-modals/shop/finance/split'
+import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+import SoldLeaseTransfer from '@/views/biz-modals/sold/lease/transfer'
 export default {
   name: 'PageShopFinanceOrder',
   bem: {
     basic: 'page-shop-finance'
   },
   mixins: [tableMixin],
+  modals: {
+    ShopFinanceCancel,
+    ShopFinanceRefund,
+    ShopFinanceSplit,
+    SoldDealGathering,
+    SoldLeaseTransfer
+  },
   serviceInject() {
     return {
       userService: UserService,

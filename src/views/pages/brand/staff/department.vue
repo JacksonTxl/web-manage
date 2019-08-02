@@ -66,9 +66,12 @@ import { UserService } from '@/services/user.service'
 import StOrganTree from './department#/tree/tree.vue'
 import { ShopStaffApi } from '@/api/v1/staff/staff'
 import { cloneDeep } from 'lodash-es'
-
+import StaffBatchImport from '@/views/biz-modals/staff/batch-import'
 export default {
   name: 'Staff',
+  modals: {
+    StaffBatchImport
+  },
   serviceInject() {
     return {
       departmentService: DepartmentService,

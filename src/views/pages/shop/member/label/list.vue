@@ -54,10 +54,15 @@ import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config.ts'
-
+import LabelAdd from '@/views/biz-modals/label/add'
+import LabelEdit from '@/views/biz-modals/label/edit'
 export default {
   name: 'ShopMemberLabelList',
   mixins: [tableMixin],
+  modals: {
+    LabelAdd,
+    LabelEdit
+  },
   serviceInject() {
     return {
       listService: ListService,

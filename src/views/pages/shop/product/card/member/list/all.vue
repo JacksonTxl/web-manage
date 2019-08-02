@@ -204,6 +204,10 @@ import { columns, CARD_TYPE } from './all.config.ts'
 import { AllService } from './all.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
+import CardShopMemberRecoverSale from '@/views/biz-modals/card/shop-member/recover-sale'
+import CardShopMemberShelf from '@/views/biz-modals/card/shop-member/shelf'
+import CardShopMemberShopTable from '@/views/biz-modals/card/shop-member/shop-table'
+import CardShopMemberStopSale from '@/views/biz-modals/card/shop-member/stop-sale'
 export default {
   mixins: [tableMixin],
   name: 'PageShopProductMemberAll',
@@ -214,6 +218,12 @@ export default {
     'shop-product-card-member-list-all:onSingleSearch'(key, data, options) {
       this.onSingleSearch(key, data, options)
     }
+  },
+  modals: {
+    CardShopMemberRecoverSale,
+    CardShopMemberShelf,
+    CardShopMemberShopTable,
+    CardShopMemberStopSale
   },
   serviceInject() {
     return {

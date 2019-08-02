@@ -78,8 +78,8 @@
 </template>
 <script>
 import G2 from '@antv/g2'
-
 import { UserExperienceService } from './user-experience.service'
+import ShopAddLateralRecording from '@/views/biz-modals/shop/add-lateral-recording'
 const defaultOptions = {
   /**
    * 指定图表的高度，单位为 'px
@@ -101,6 +101,9 @@ const defaultOptions = {
   areaColor: 'l(90) 0:rgba(63, 102, 246, .2) 1:rgba(0, 202, 255, 0)'
 }
 export default {
+  modals: {
+    ShopAddLateralRecording
+  },
   serviceInject() {
     return {
       aService: UserExperienceService

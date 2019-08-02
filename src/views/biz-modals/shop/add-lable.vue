@@ -49,11 +49,15 @@
 </template>
 <script>
 import { AddLableService } from './add-lable.service'
+import ShopNewLable from '@/views/biz-modals/shop/new-lable'
 export default {
   serviceInject() {
     return {
       Service: AddLableService
     }
+  },
+  modals: {
+    ShopNewLable
   },
   components: {
     VNodes: {

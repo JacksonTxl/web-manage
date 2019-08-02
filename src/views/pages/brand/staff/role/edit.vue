@@ -106,6 +106,7 @@
 import { EditService } from './edit.service'
 import { listToTree } from '@/utils/list-to-tree.js'
 import { cloneDeep } from 'lodash-es'
+import RoleDepartment from '@/views/biz-modals/role/department'
 const getParentKey = (key, tree) => {
   let parentKey
   for (let i = 0; i < tree.length; i++) {
@@ -122,6 +123,9 @@ const getParentKey = (key, tree) => {
 }
 export default {
   name: 'EditRole',
+  modals: {
+    RoleDepartment
+  },
   serviceInject() {
     return {
       editService: EditService

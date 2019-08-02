@@ -128,9 +128,22 @@
 <script>
 import { InfoService } from './info.service'
 import { RouteService } from '@/services/route.service'
-
+import ShopStaffBindCard from '@/views/biz-modals/shop-staff/bind-card'
+import ShopStaffLeaveCurrentShop from '@/views/biz-modals/shop-staff/leave-current-shop'
+import ShopStaffRePassword from '@/views/biz-modals/shop-staff/re-password'
+import ShopStaffSalaryAccountSetting from '@/views/biz-modals/shop-staff/salary-account-setting'
+import ShopStaffUpdateStaffPosition from '@/views/biz-modals/shop-staff/update-staff-position'
+import StaffUpdateStaffPosition from '@/views/biz-modals/staff/update-staff-position'
 import { forEach } from 'lodash-es'
 export default {
+  modals: {
+    ShopStaffBindCard,
+    ShopStaffLeaveCurrentShop,
+    ShopStaffRePassword,
+    ShopStaffSalaryAccountSetting,
+    ShopStaffUpdateStaffPosition,
+    StaffUpdateStaffPosition
+  },
   serviceInject() {
     return {
       infoService: InfoService,

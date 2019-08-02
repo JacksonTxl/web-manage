@@ -160,8 +160,12 @@ import { MessageService } from '@/services/message.service'
 import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/common.service'
 import { PersonalTeamScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/reserve.service'
 import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
+import SchedulePersonalTeamEdit from '@/views/biz-modals/schedule/personal-team/edit'
 export default {
   name: 'OrderInfo',
+  modals: {
+    SchedulePersonalTeamEdit
+  },
   serviceInject() {
     return {
       commonService: CommonService,

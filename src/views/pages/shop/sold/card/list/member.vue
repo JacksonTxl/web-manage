@@ -175,12 +175,33 @@ import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './member.config'
 import StRangePicker from '@/views/components/datetime-picker/range-picker'
-
+import SoldCardArea from '@/views/biz-modals/sold/card/area'
+import SoldCardFreeze from '@/views/biz-modals/sold/card/freeze'
+import SoldCardGiving from '@/views/biz-modals/sold/card/giving'
+import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
+import SoldCardRenewalMember from '@/views/biz-modals/sold/card/renewal-member'
+import SoldCardSetTime from '@/views/biz-modals/sold/card/set-time'
+import SoldCardTransfer from '@/views/biz-modals/sold/card/transfer'
+import SoldCardUpgradeMember from '@/views/biz-modals/sold/card/upgrade-member'
+import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
+import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
 export default {
   name: 'PageShopSoldCardMemberList',
   mixins: [tableMixin],
   bem: {
     basic: 'page-shop-sold'
+  },
+  modals: {
+    SoldCardArea,
+    SoldCardFreeze,
+    SoldCardGiving,
+    SoldCardRefund,
+    SoldCardRenewalMember,
+    SoldCardSetTime,
+    SoldCardTransfer,
+    SoldCardUpgradeMember,
+    SoldDealGatheringTip,
+    SoldDealGathering
   },
   serviceInject() {
     return {

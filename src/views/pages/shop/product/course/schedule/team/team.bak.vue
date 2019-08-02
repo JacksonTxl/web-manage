@@ -41,10 +41,20 @@ import { TeamService } from './team.service'
 import AddCard from '../date#/add-card'
 import GetDay from '../date#/get-day'
 import { RouteService } from '@/services/route.service'
+import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'
+import ScheduleTeamAddCourseSchedule from '@/views/biz-modals/schedule/team/add-course-schedule'
+import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
+import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
 export default {
   name: 'Schedule',
   components: {
     FullCalendar
+  },
+  modals: {
+    ScheduleTeamAddCourseScheduleBatch,
+    ScheduleTeamAddCourseSchedule,
+    ScheduleTeamCopySchedule,
+    ScheduleTeamReserveInfo
   },
   serviceInject() {
     return {

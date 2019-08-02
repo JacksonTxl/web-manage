@@ -555,10 +555,16 @@ import { cloneDeep } from 'lodash-es'
 import moment from 'moment'
 import { timer } from 'rxjs'
 import FrontSimpleArea from '@/views/biz-components/stat/front-simple-area'
+import FrontAddMember from '@/views/biz-modals/front/add-member'
+import FrontAddWorkNote from '@/views/biz-modals/front/add-work-note'
 export default {
   name: 'PageShopReception',
   bem: {
     reception: 'page-shop-reception'
+  },
+  modals: {
+    FrontAddMember,
+    FrontAddWorkNote
   },
   serviceProviders() {
     return [IndexService]
