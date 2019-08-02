@@ -18,7 +18,7 @@
           class="tree-switch__empty"
           v-else-if="level !== 0 && !item.isEdit"
         ></span>
-        <div class="tree-name edit-box" v-if="item.isEdit">
+        <div class="tree-name edit-box" @click.stop="" v-if="item.isEdit">
           <a-input
             placeholder="请输入部门名称"
             class="tree-input mg-r8"
@@ -48,7 +48,7 @@
           </a-menu-item>
         </st-more-dropdown>
       </div>
-      <div class="tree-node__content" v-if="item.isAdd">
+      <div class="tree-node__content" @click.stop="" v-if="item.isAdd">
         <a-input
           placeholder="请输入部门名称"
           class="tree-input  mg-r6"
