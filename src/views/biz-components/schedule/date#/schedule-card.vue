@@ -102,6 +102,7 @@ export default {
       let date = moment(this.start)
         .subtract(weekOfday - n, 'days')
         .format('YYYY-MM-DD')
+      n === 0 && (date = this.start)
       const sortedList = this.cardList
         .filter(item => item.start_date === date)
         .map(item => {
