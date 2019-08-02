@@ -58,7 +58,7 @@ export default {
     onDetail(info) {
       console.log(info)
       this.$modalRouter.push({
-        name: 'schedule-personal-team-reserve-info',
+        name: 'schedule-personal-reserve-info',
         props: {
           id: info.id
         },
@@ -73,25 +73,14 @@ export default {
     onClickSettingSchdule() {
       this.$router.push({
         name: 'shop-product-course-schedule-personal-personal-table',
-        query: { ...this.$route.query }
-      })
-    },
-    // 复制排期
-    onClickCopySchedule() {
-      this.$modalRouter.push({
-        name: 'schedule-personal-team-copy',
-        on: {
-          ok: res => {
-            this.onScheduleChange()
-          }
-        }
+        query: this.query
       })
     },
     // 进入表格模式
     onGetTable() {
       this.$router.push({
         name: 'shop-product-course-schedule-personal-personal-reserve-table',
-        query: { ...this.$route.query }
+        query: this.query
       })
     },
     // 刷新页面

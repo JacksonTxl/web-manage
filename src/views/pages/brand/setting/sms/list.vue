@@ -43,7 +43,10 @@
               :showToday="false"
               @change="enddatePickerChange"
             />-->
-            <st-range-picker :value="selectTime"></st-range-picker>
+            <st-range-picker
+              :disabledDays="180"
+              :value="selectTime"
+            ></st-range-picker>
           </div>
         </div>
         <div slot="button">

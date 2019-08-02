@@ -7,7 +7,7 @@
     <st-form :form="form">
       <st-form-item label="时间" required>
         <a-date-picker
-          showTime
+          :showTime="{ format: 'HH:mm' }"
           placeholder="请选择时间"
           format="YYYY-MM-DD HH:mm"
           v-decorator="[

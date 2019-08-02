@@ -24,16 +24,19 @@
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { TeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/team.service#/schedule.service'
+import { RouteService } from '@/services/route.service'
 export default {
   name: 'TeamSchedule',
   serviceInject() {
     return {
-      teamSchduleService: TeamScheduleScheduleService
+      teamSchduleService: TeamScheduleScheduleService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      cardList: this.teamSchduleService.scheduleTeamCourseList$
+      cardList: this.teamSchduleService.scheduleTeamCourseList$,
+      query: this.routeService.query$
     }
   },
   components: {
@@ -56,7 +59,12 @@ export default {
       console.log(date)
       this.$modalRouter.push({
         name: 'schedule-team-add-course-schedule',
-        props: { time: date }
+        props: { time: date },
+        on: {
+          ok: res => {
+            this.onScheduleChange()
+          }
+        }
       })
     },
     // 查看详情
@@ -100,7 +108,7 @@ export default {
     onGetTable() {
       this.$router.push({
         name: 'shop-product-course-schedule-team-team-table',
-        query: { ...this.$route.query }
+        query: this.query
       })
     },
     // 刷新页面

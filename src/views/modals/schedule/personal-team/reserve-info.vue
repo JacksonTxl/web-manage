@@ -160,6 +160,7 @@ import { MessageService } from '@/services/message.service'
 import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/common.service'
 import { PersonalTeamScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/reserve.service'
 import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
+import { RouteService } from '../../../../services/route.service'
 export default {
   name: 'OrderInfo',
   serviceInject() {
@@ -167,6 +168,7 @@ export default {
       commonService: CommonService,
       reserveService: ReserveService,
       scheduleService: ScheduleService,
+      routeService: RouteService,
       messageService: MessageService
     }
   },
@@ -179,6 +181,7 @@ export default {
       reserveList: this.reserveService.reserveList$,
       reserveInfo: this.reserveService.reserveInfo$,
       auth: this.reserveService.auth$,
+      query: this.routeService.query$,
       infoAuth: this.reserveService.infoAuth$ || {}
     }
   },
@@ -316,6 +319,7 @@ export default {
       this.getReserveInfo()
     },
     onDelScheduleScuccess() {
+      this.$router.push({ query: this.query, force: true })
       this.show = false
     }
   }

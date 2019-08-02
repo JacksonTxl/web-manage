@@ -109,7 +109,6 @@
           <a-input
             v-if="record.editable"
             style="margin: -5px 0;width:80px;"
-            placeholder="请输入课时费"
             :value="text"
             @change="
               e => handleChange(e.target.value, record.key, 'course_fee')
