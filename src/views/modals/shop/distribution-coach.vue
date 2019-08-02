@@ -118,6 +118,8 @@ export default {
         })
     }
   },
-  watch: {}
+  created() {
+    this.coach_id = this.coachId
+  }
 }
 </script>
