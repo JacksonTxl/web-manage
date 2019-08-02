@@ -9,7 +9,6 @@ export class PersonalTeamTableService implements RouteGuard {
     private commonService: CommonService,
     private scheduleService: ScheduleService
   ) {}
-
   initOptions() {
     return forkJoin(
       this.commonService.getCoachList(),
