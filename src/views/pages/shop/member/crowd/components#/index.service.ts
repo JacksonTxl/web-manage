@@ -19,6 +19,7 @@ export class IndexService extends Store<CrowdIndexState> {
   })
   constructor(private crowdAPI: CrowdAPI, private authService: AuthService) {
     super()
+
     this.state$ = new State({
       crowdIndexInfo: {}
     })

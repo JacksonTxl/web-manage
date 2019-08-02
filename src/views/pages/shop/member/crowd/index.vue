@@ -78,7 +78,7 @@
   </div>
 </template>
 <script>
-import index from './private-components#/index'
+import index from './components#/index'
 import { IndexService } from './index.service'
 import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
