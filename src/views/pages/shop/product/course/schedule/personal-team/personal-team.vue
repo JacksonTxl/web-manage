@@ -24,16 +24,19 @@
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { PersonalTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
+import { RouteService } from '../../../../../../../services/route.service'
 export default {
   name: 'TeamSchedule',
   serviceInject() {
     return {
-      PersonalTeamSchduleService: PersonalTeamScheduleScheduleService
+      PersonalTeamSchduleService: PersonalTeamScheduleScheduleService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      cardList: this.PersonalTeamSchduleService.courseList$
+      cardList: this.PersonalTeamSchduleService.courseList$,
+      query: this.routeService.query$
     }
   },
   components: {
