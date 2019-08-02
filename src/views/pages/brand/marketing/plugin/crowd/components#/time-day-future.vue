@@ -6,6 +6,7 @@
       :value="value.min ? [moment(value.min), moment(value.max)] : []"
       style="margin-right:8px"
       :allowClear="true"
+      :disabledDate="disabledDate"
     />
     <a-radio-group @change="onChangeRadio" v-model="radioValue">
       <a-radio-button :value="7">未来7天</a-radio-button>
@@ -53,7 +54,7 @@ export default {
       let dayTime = new Date().getTime()
       let pastTime = dayTime + this.radioValue * 24 * 60 * 60 * 1000
       this.timeData = {
-        min: this.filterTime(dayTime),
+        min: this.filterTime(dayTime + 24 * 60 * 60 * 1000),
         max: this.filterTime(pastTime)
       }
       this.value.min = this.timeData.min
@@ -70,15 +71,19 @@ export default {
         this.radioText = ''
       }
       this.value.name = this.radioText
-      this.filterTime(dayTime)
     },
     onChange(data, str) {
       let obj = {
         min: str[0],
         max: str[1]
       }
-      if (obj.max === this.filterTime(new Date().getTime())) {
-        let flagTime = moment(data[1]).diff(moment(data[0]), 'days')
+      if (
+        moment(obj.min).format('YYYY-MM-DD') ===
+        moment()
+          .add(1, 'd')
+          .format('YYYY-MM-DD')
+      ) {
+        let flagTime = moment(data[1]).diff(moment(data[0]), 'days') + 1
         if (flagTime === 7) {
           this.radioValue = 7
           this.radioText = '未来7天'
@@ -110,6 +115,14 @@ export default {
       Month = Month > 9 ? Month : '0' + Month
       Dates = Dates > 9 ? Dates : '0' + Dates
       return `${Year}-${Month}-${Dates}`
+    },
+    disabledDate(endDate) {
+      return (
+        endDate.format('YYYY-MM-DD') <
+        moment()
+          // .subtract(1, 'd')
+          .format('YYYY-MM-DD')
+      )
     }
   },
   mounted() {}

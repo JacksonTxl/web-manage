@@ -156,7 +156,7 @@ export default {
         if (res.have_phone) {
           this.$router.push('/')
         } else {
-          // 去绑定手机
+          /** TODO: 绑定手机需求*/
           this.$router.push('/')
         }
       }, this.loginErrorHandler)
