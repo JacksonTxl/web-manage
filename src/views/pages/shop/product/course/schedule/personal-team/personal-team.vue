@@ -55,7 +55,12 @@ export default {
     onAddSchedule(date) {
       this.$modalRouter.push({
         name: 'schedule-personal-team-add',
-        props: { time: date }
+        props: { time: date },
+        on: {
+          ok: res => {
+            this.onScheduleChange()
+          }
+        }
       })
     },
     onMouseLeave() {
