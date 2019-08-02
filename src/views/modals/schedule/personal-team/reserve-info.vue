@@ -302,7 +302,7 @@ export default {
       this.$modalRouter.push({
         name: 'schedule-personal-team-edit',
         props: {
-          id: this.reserveInfo.id
+          info: this.reserveInfo
         }
       })
     },

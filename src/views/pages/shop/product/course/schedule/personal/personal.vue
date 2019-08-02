@@ -21,16 +21,19 @@
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { PersonalTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
 import { PersonalScheduleReserveService } from '../personal.service#/reserve.service'
+import { RouteService } from '../../../../../../../services/route.service'
 export default {
   name: 'TeamSchedule',
   serviceInject() {
     return {
-      personalScheduleReserveService: PersonalScheduleReserveService
+      personalScheduleReserveService: PersonalScheduleReserveService,
+      routeService: RouteService
     }
   },
   rxState() {
     return {
-      cardList: this.personalScheduleReserveService.reserveTable$
+      cardList: this.personalScheduleReserveService.reserveTable$,
+      query: this.routeService.query$
     }
   },
   components: {
@@ -78,6 +81,7 @@ export default {
     },
     // 进入表格模式
     onGetTable() {
+      debugger
       this.$router.push({
         name: 'shop-product-course-schedule-personal-personal-reserve-table',
         query: this.query

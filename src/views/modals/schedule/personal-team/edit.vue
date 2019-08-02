@@ -148,9 +148,14 @@ export default {
     }
   },
   props: {
-    id: {
-      type: Number,
-      default: 0
+    info: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  computed: {
+    id() {
+      return this.info.id
     }
   },
   created() {
