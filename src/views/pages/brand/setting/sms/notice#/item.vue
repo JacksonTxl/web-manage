@@ -110,7 +110,7 @@
                   {{ item.label }}
                 </a-checkbox>
               </a-checkbox-group>
-              <a-checkbox v-model="isShowPhone">自定义</a-checkbox>
+              <!-- <a-checkbox v-model="isShowPhone">自定义</a-checkbox> -->
               <a-input
                 style="width:44%"
                 class="mg-b16"
@@ -242,8 +242,8 @@ export default {
     },
     receiver() {
       let list = []
-      if (!this.settingEnums.receiver_type) return list
-      Object.entries(this.settingEnums.receiver_type.value).forEach(o => {
+      if (!this.settingEnums.receiver_web) return list
+      Object.entries(this.settingEnums.receiver_web.value).forEach(o => {
         list.push({ value: +o[0], label: o[1] })
       })
       return list
@@ -307,16 +307,13 @@ export default {
     }
   },
   watch: {
-    // isShowPhone(oldVal, newVal) {
-    //   if (oldVal) {
-    //     this.params.receiver = []
-    //   }
-    // },
-    // ['params.receiver'](oldVal, newVal) {
-    //   if (oldVal.length > 0) {
-    //     this.isShowPhone = false
-    //   }
-    // }
+    'params.receiver'(oldVal, newVal) {
+      if (oldVal.indexOf(4) > -1) {
+        this.isShowPhone = true
+      } else {
+        this.isShowPhone = false
+      }
+    }
   }
 }
 </script>
