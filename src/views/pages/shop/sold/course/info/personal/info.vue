@@ -31,7 +31,11 @@
         >
           修改教练
         </st-button>
-        <a-dropdown>
+        <a-dropdown v-if="showMore">
+          <a-button>
+            更多操作
+            <a-icon type="down" />
+          </a-button>
           <a-menu slot="overlay">
             <a-menu-item
               v-if="auth['shop:sold:sold_personal_course|course_num']"
@@ -52,10 +56,6 @@
               退款
             </a-menu-item>
           </a-menu>
-          <a-button>
-            更多操作
-            <a-icon type="down" />
-          </a-button>
         </a-dropdown>
       </div>
       <a-row :gutter="24">
@@ -177,6 +177,15 @@ export default {
       personalInfo: this.infoService.personalInfo$,
       query: this.routeService.query$,
       auth: this.infoService.auth$
+    }
+  },
+  computed: {
+    showMore() {
+      return (
+        this.auth['shop:sold:sold_personal_course|course_num'] &&
+        this.auth['shop:sold:sold_personal_course|transfer'] &&
+        this.auth['brand_shop:order:order|refund']
+      )
     }
   },
   methods: {
