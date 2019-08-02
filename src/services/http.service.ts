@@ -169,14 +169,14 @@ export class HttpService {
                 break
               }
               this.notification.warn({
-                title: this.i18n.translate('app.http.400'),
+                title: this.i18n.t('app.http.400'),
                 key: 'ajaxError',
                 content: serverResponse.msg
               })
               break
             case 401:
               this.notification.warn({
-                title: this.i18n.translate('app.http.401'),
+                title: this.i18n.t('app.http.401'),
                 key: 'ajaxError',
                 content: serverResponse.msg
               })
@@ -184,28 +184,28 @@ export class HttpService {
               break
             case 403:
               this.notification.warn({
-                title: this.i18n.translate('app.http.403'),
+                title: this.i18n.t('app.http.403'),
                 key: 'ajaxError',
                 content: serverResponse.msg
               })
               break
             case 404:
               this.notification.error({
-                title: this.i18n.translate('app.http.404'),
+                title: this.i18n.t('app.http.404'),
                 key: 'ajaxError',
                 content: err.message
               })
               break
             case 500:
               this.notification.error({
-                title: this.i18n.translate('app.http.500'),
+                title: this.i18n.t('app.http.500'),
                 key: 'ajaxError',
                 content: err.message
               })
               break
             default:
               this.notification.error({
-                title: this.i18n.translate('app.http.other'),
+                title: this.i18n.t('app.http.other'),
                 key: 'ajaxError',
                 content: err.message
               })
