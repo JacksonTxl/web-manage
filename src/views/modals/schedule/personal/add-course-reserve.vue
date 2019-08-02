@@ -95,6 +95,7 @@
 
 <script>
 import { cloneDeep } from 'lodash-es'
+import { RouteService } from '@/services/route.service'
 import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/schedule/team.service#/schedule.service'
 import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
 export default {
