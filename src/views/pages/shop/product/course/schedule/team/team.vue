@@ -59,7 +59,12 @@ export default {
       console.log(date)
       this.$modalRouter.push({
         name: 'schedule-team-add-course-schedule',
-        props: { time: date }
+        props: { time: date },
+        on: {
+          ok: res => {
+            this.onScheduleChange()
+          }
+        }
       })
     },
     // 查看详情

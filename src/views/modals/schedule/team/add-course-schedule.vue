@@ -187,6 +187,7 @@ export default {
       })
     },
     onScheduleChange() {
+      debugger
       this.$router.push({ query: this.query, force: true })
     }
   }
