@@ -41,7 +41,7 @@ export default {
       let weekOfday = moment(n).format('E')
       this.startTime = moment(n)
         .subtract(weekOfday - 1, 'days')
-        .format('YYYY/MM/DD')
+        .format('YYYY-MM-DD')
     }
   },
   computed: {
