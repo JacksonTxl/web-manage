@@ -6,6 +6,7 @@
       :value="value.min ? [moment(value.min), moment(value.max)] : []"
       style="margin-right:8px"
       :allowClear="true"
+      :disabledDate="disabledDate"
     />
     <!-- <a-range-picker v-else @change="onChange" style="margin-right:8px" :allowClear="true"/> -->
     <a-radio-group @change="onChangeRadio" v-model="radioValue">
@@ -24,7 +25,11 @@ export default {
   },
   props: {
     value: Object,
-    format: String
+    format: String,
+    disabledDateFlag: {
+      type: Boolean,
+      default: () => true
+    }
   },
   data() {
     return {
@@ -55,7 +60,7 @@ export default {
       let pastTime = dayTime - this.radioValue * 24 * 60 * 60 * 1000
       this.timeData = {
         min: this.filterTime(pastTime),
-        max: this.filterTime(dayTime)
+        max: this.filterTime(dayTime - 24 * 60 * 60 * 1000)
       }
       this.value.min = this.timeData.min
       this.value.max = this.timeData.max
@@ -71,15 +76,19 @@ export default {
         this.radioText = ''
       }
       this.value.name = this.radioText
-      this.filterTime(dayTime)
     },
     onChange(data, str) {
       let obj = {
         min: str[0],
         max: str[1]
       }
-      if (obj.max === this.filterTime(new Date().getTime())) {
-        let flagTime = moment(data[1]).diff(moment(data[0]), 'days')
+      if (
+        moment(obj.max).format('YYYY-MM-DD') ===
+        moment()
+          .subtract(1, 'd')
+          .format('YYYY-MM-DD')
+      ) {
+        let flagTime = moment(data[1]).diff(moment(data[0]), 'days') + 1
         if (flagTime === 7) {
           this.radioValue = 7
           this.radioText = '近7天'
@@ -111,6 +120,17 @@ export default {
       Month = Month > 9 ? Month : '0' + Month
       Dates = Dates > 9 ? Dates : '0' + Dates
       return `${Year}-${Month}-${Dates}`
+    },
+    disabledDate(endDate) {
+      if (this.disabledDateFlag) {
+        return (
+          endDate.format('YYYY-MM-DD') >
+          moment()
+            .subtract(1, 'd')
+            .format('YYYY-MM-DD')
+        )
+      }
+      return false
     }
   },
   mounted() {}

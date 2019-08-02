@@ -1,3 +1,4 @@
+import { TitleService } from '@/services/title.service'
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect, Action } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
@@ -14,7 +15,7 @@ export class AddService extends Store<CrowdInfoState> {
   state$: State<CrowdInfoState>
   crowdInfo$: Computed<string>
   followInfo$: Computed<string>
-  constructor(private crowdAPI: CrowdAPI) {
+  constructor(private crowdAPI: CrowdAPI, private titleService: TitleService) {
     super()
     this.state$ = new State({
       crowdInfo: {},
@@ -56,7 +57,12 @@ export class AddService extends Store<CrowdInfoState> {
   init() {
     return forkJoin(this.getListInfo())
   }
-  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
+    if (to.meta.query.id) {
+      this.titleService.SET_TITLE('编辑人群')
+    } else {
+      this.titleService.SET_TITLE('新增人群')
+    }
     this.init().subscribe(() => next())
   }
 }
