@@ -36,7 +36,7 @@ export default {
       if (this.time < 9) {
         tempTime = `0${this.time - 1}:00`
       } else {
-        tempTime = `${this.time}:00`
+        tempTime = `${this.time - 1}:00`
       }
       return moment(`${tempDate} ${tempTime}`)
     }

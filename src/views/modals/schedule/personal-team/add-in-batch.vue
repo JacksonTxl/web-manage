@@ -132,6 +132,7 @@ import { cloneDeep } from 'lodash-es'
 import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/common.service'
 import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
 import { MessageService } from '@/services/message.service'
+import { RouteService } from '../../../../services/route.service'
 const columns = [
   {
     dataIndex: 'start_time',
@@ -171,6 +172,7 @@ export default {
     return {
       commonService: CommonService,
       scheduleService: ScheduleService,
+      routeService: RouteService,
       msg: MessageService
     }
   },

@@ -28,8 +28,14 @@
               <st-t2>
                 {{ info.member_name }}
                 <st-icon
-                  :type="info.sex === 1 ? 'female' : 'male'"
-                  :style="info.sex === 1 ? 'color:#FF5E41' : 'color:#3F66F6'"
+                  v-if="info.sex === 1"
+                  :type="'female'"
+                  :style="'color:#FF5E41'"
+                />
+                <st-icon
+                  v-if="info.sex === 2"
+                  :type="'male'"
+                  :style="'color:#3F66F6'"
                 />
               </st-t2>
               <div class="shop-member-info-title-pannel__info__phone">

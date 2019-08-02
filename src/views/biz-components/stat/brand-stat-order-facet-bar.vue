@@ -84,7 +84,7 @@ export default {
           return (
             `<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">` +
             `<i class="g2-legend-marker" style="background-color:{color};"></i>` +
-            `<span class="g2-legend-text">${name}&nbsp;<span id='legend-${idx}'></span></span>` +
+            `<span class="g2-legend-text">${name}&nbsp;<span id='legend-${idx}' class="test test1"></span></span>` +
             `</li>`
           )
         }
@@ -226,10 +226,7 @@ export default {
         components: {
           StHelpTooltip
         },
-        render: h => (
-          // <st-icon type="help" class="test1"/>
-          <st-help-tooltip id="TBDAO001" />
-        )
+        render: h => <st-help-tooltip id="TBDAO001" />
       }).$mount('#legend-0')
       new Vue({
         components: {

@@ -4,7 +4,7 @@
       <st-form-item label="时间" required>
         <a-date-picker
           placeholder="请选择时间"
-          showTime
+          :showTime="{ format: 'HH:mm' }"
           format="YYYY-MM-DD HH:mm"
           v-decorator="[
             'start_time',
@@ -187,6 +187,7 @@ export default {
       })
     },
     onScheduleChange() {
+      debugger
       this.$router.push({ query: this.query, force: true })
     }
   }

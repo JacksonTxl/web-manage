@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      recent: '7',
+      recent: 7,
       dateRange: []
     }
   },
