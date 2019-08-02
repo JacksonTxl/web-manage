@@ -11,6 +11,7 @@
     </div>
     <st-table
       :page="page"
+      :scroll="{ x: 1800 }"
       @change="onTableChange"
       :loading="loading.getOrderShopList"
       :columns="columns"

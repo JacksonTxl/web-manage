@@ -2,6 +2,7 @@ export const columns = () => {
   return [
     {
       title: '日期',
+      width: '150px',
       dataIndex: 'stat_date'
     },
     {
