@@ -17,12 +17,13 @@
             </a>
           </st-button>
           <!-- <st-button>
-            <a
-              v-modal-link="{ name: 'schedule-personal-add', props: { id: 1 } }"
-            >
-              添加排期
+            <a v-modal-link="{ name: 'schedule-personal-add', props: { id: 1 } }">添加排期</a>
+          </st-button>-->
+          <st-button>
+            <a herf="javascript:;" @click="onClickDeleteInBatchSchedule">
+              批量删除
             </a>
-          </st-button> -->
+          </st-button>
         </a-col>
         <a-col :lg="7" :offset="2">
           <date
@@ -33,75 +34,64 @@
           />
         </a-col>
         <a-col :lg="7" class="schedule-button">
-          <st-button @click="onClickSkipSchedule">私教预约表</st-button>
+          <st-button @click="onClickSkipSchedule">
+            <st-icon type="calendar"></st-icon>
+          </st-button>
         </a-col>
       </a-row>
     </div>
     <a-row class="mg-t8 mg-r24 mg-l24">
-      <st-form-table :page="page" @change="onPageChange" hoverable>
-        <thead>
-          <tr>
-            <th>教练名称</th>
-            <template v-for="(item, index) in scheduleTime">
-              <th :key="index" :class="item == currentTime ? 'thgl' : ''">
-                <div class="schedule-table__header">
-                  <span class="mg-r8">{{ item | getDate }}</span>
-                  <span>{{ index | getWeek }}</span>
-                </div>
-              </th>
-            </template>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <template v-for="item in scheduleList">
-            <tr :key="item.staff_name">
-              <td width="180">
-                <a href="javascript:;">{{ item.staff_name }}</a>
-              </td>
-              <template v-for="items in item.schedule_info">
-                <td
-                  :key="items.id"
-                  :class="items.schedule_date == currentTime ? 'thgl' : ''"
-                >
-                  <a-popover v-if="items.timing.length" placement="rightTop">
-                    <template slot="content">
-                      <template v-for="timingItem in items.timing">
-                        <p :key="timingItem.start_time">
-                          {{ timingItem.start_time }}~{{ timingItem.end_time }}
-                        </p>
-                      </template>
-                    </template>
-                    <template slot="title">
-                      <span>排期</span>
-                    </template>
-                    {{ items.timing | timingFilter }}
-                  </a-popover>
-                  <span v-else>{{ items.timing | timingFilter }}</span>
-                </td>
+      <st-table
+        :columns="scheduleColumns"
+        rowKey="staff_id"
+        :alertSelection="{ onReset: onSelectionReset }"
+        :rowSelection="{
+          selectedRowKeys: selectedRowKeys,
+          fixed: true,
+          onChange: onSelectChange
+        }"
+        :page="false"
+        @change="onTableChange"
+        :dataSource="scheduleList"
+        :scroll="{ x: 1440 }"
+      >
+        <a href="javascript:;" slot="staff_name" slot-scope="text">
+          {{ text }}
+        </a>
+        <template v-for="item in scheduleTime" :slot="item" slot-scope="text">
+          <a-popover :key="item" v-if="text.timing.length" placement="rightTop">
+            <template slot="content">
+              <template v-for="timingItem in text.timing">
+                <p :key="timingItem.start_time">
+                  {{ timingItem.start_time }}~{{ timingItem.end_time }}
+                </p>
               </template>
-            </tr>
-          </template>
-
-          <div slot="action" slot-scope="text, record">
-            <a
-              class="mg-r8"
-              v-modal-link="{
-                name: 'schedule-personal-edit',
-                props: { id: record.staff_id, start: scheduleTime[0] }
-              }"
-            >
-              编辑
-            </a>
-            <a
-              href="javascript:;"
-              @click="onClickDeleteSchedule(record.schedule_info)"
-            >
-              删除
-            </a>
-          </div>
-        </tbody>
-      </st-form-table>
+            </template>
+            <template slot="title">
+              <span>排期</span>
+            </template>
+            {{ text.timing | timingFilter }}
+          </a-popover>
+          <span :key="item" v-else>{{ text.timing | timingFilter }}</span>
+        </template>
+        <div slot="action" slot-scope="text, record">
+          <a
+            class="mg-r8"
+            v-modal-link="{
+              name: 'schedule-personal-edit',
+              props: { id: record.staff_id, start: scheduleTime[0] }
+            }"
+          >
+            编辑
+          </a>
+          <a
+            href="javascript:;"
+            @click="onClickDeleteSchedule(record.schedule_info)"
+          >
+            删除
+          </a>
+        </div>
+      </st-table>
     </a-row>
   </div>
 </template>
