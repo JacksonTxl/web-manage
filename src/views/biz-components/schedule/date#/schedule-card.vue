@@ -148,7 +148,7 @@ export default {
     },
     itemStyle(item) {
       return {
-        top: `${(item.start / 24) * 100}% `,
+        top: `calc(${(item.start / 24) * 100}% + 40px)`,
         height: `${((item.end - item.start) / 24) * 100}%`
       }
     }
