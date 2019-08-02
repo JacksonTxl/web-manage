@@ -23,7 +23,9 @@ export default {
     cDate() {
       let tempTime = ''
       let weekOfday = moment(this.date.date).format('E')
-      let tempDate = moment(this.date.date).subtract(weekOfday - this.date.week, 'days').format('YYYY-MM-DD')
+      let tempDate = moment(this.date.date)
+        .subtract(weekOfday - this.date.week, 'days')
+        .format('YYYY-MM-DD')
       if (this.time < 9) {
         tempTime = `0${this.time}:00`
       } else {

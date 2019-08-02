@@ -2,14 +2,22 @@
   <st-modal :footer="null" title="编辑课程排期" v-model="show">
     <div>
       <span>已约</span>
+<<<<<<< HEAD
       {{info.reserved_num}}
+=======
+>>>>>>> feat_schedule_0729
       <span>{{reserved_num}}人</span>
     </div>
     <st-form :form="form">
       <st-form-item label="时间" required>
         <a-date-picker
+<<<<<<< HEAD
           :showTime="{ format: 'HH:mm' }"
           :disabled="info.reserved_num"
+=======
+          showTime
+          placeholder="请选择时间"
+>>>>>>> feat_schedule_0729
           format="YYYY-MM-DD HH:mm"
           v-decorator="[
           'start_time',
@@ -21,7 +29,11 @@
       </st-form-item>
       <st-form-item label="课程" required>
         <a-select
+<<<<<<< HEAD
           :disabled="info.reserved_num"
+=======
+          placeholder="请选择课程"
+>>>>>>> feat_schedule_0729
           v-decorator="[
           'course_id',
           {rules: [{ required: true, message: '请选择课程' }]}
@@ -36,6 +48,10 @@
       </st-form-item>
       <st-form-item label="教练" required>
         <a-select
+<<<<<<< HEAD
+=======
+          placeholder="请选择教练"
+>>>>>>> feat_schedule_0729
           v-decorator="[
           'coach_id',
           {rules: [{ required: true, message: '请选择教练' }]}
@@ -50,7 +66,11 @@
       </st-form-item>
       <st-form-item label="场地">
         <a-cascader
+<<<<<<< HEAD
           :disabled="info.reserved_num > 0"
+=======
+          placeholder="请选择场地"
+>>>>>>> feat_schedule_0729
           :options="courtOptions"
           :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
           v-decorator="[
@@ -60,7 +80,11 @@
       </st-form-item>
       <st-form-item label="人数" required>
         <a-input-search
+<<<<<<< HEAD
           :disabled="info.reserved_num"
+=======
+          placeholder="请输入人数"
+>>>>>>> feat_schedule_0729
           v-decorator="[
           'limit_num',
           {rules: [{ required: true, message: '请输入人数' }]}
@@ -71,7 +95,11 @@
       </st-form-item>
       <st-form-item label="课时费" required>
         <a-input-search
+<<<<<<< HEAD
           :disabled="info.reserved_num"
+=======
+          placeholder="请输入课时费"
+>>>>>>> feat_schedule_0729
           v-decorator="[
           'course_fee',
           {rules: [{ required: true, message: '请选择课时费' }]}]"

@@ -10,29 +10,43 @@
     <a-row :gutter="24" class="modal-reserved-info">
       <a-col :lg="8">
         <st-info>
-          <st-info-item label="上课教练">{{reserveInfo.coach_name}}</st-info-item>
+          <st-info-item label="上课教练">
+            {{ reserveInfo.coach_name }}
+          </st-info-item>
 
-          <st-info-item label="上课时间">{{reserveInfo.start_time}}</st-info-item>
-          <st-info-item label="课时费">{{reserveInfo.course_fee}}</st-info-item>
+          <st-info-item label="上课时间">
+            {{ reserveInfo.start_time }}
+          </st-info-item>
+          <st-info-item label="课时费">
+            {{ reserveInfo.course_fee }}
+          </st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
         <st-info>
-          <st-info-item label="课程名称">{{reserveInfo.course_name}}</st-info-item>
-          <st-info-item label="最大人数">{{reserveInfo.limit_num}}</st-info-item>
+          <st-info-item label="课程名称">
+            {{ reserveInfo.course_name }}
+          </st-info-item>
+          <st-info-item label="最大人数">
+            {{ reserveInfo.limit_num }}
+          </st-info-item>
         </st-info>
       </a-col>
       <a-col :lg="8">
         <st-info>
-          <st-info-item label="上课日期">{{reserveInfo.start_date}}</st-info-item>
-          <st-info-item label="预约人数">{{reserveInfo.reserved_num}}</st-info-item>
+          <st-info-item label="上课日期">
+            {{ reserveInfo.start_date }}
+          </st-info-item>
+          <st-info-item label="预约人数">
+            {{ reserveInfo.reserved_num }}
+          </st-info-item>
         </st-info>
       </a-col>
     </a-row>
     <st-form-table hoverable>
       <thead>
         <tr>
-          <th v-for="col in columns" :key="col.dataIndex">{{col.title}}</th>
+          <th v-for="col in columns" :key="col.dataIndex">{{ col.title }}</th>
         </tr>
       </thead>
       <tbody v-if="!loading.add">
@@ -48,12 +62,10 @@
               :filterOption="false"
               @search="onSearch"
               @change="onChange"
-              :notFoundContent="null">
-              <a-select-option
-                v-for="member in memberOptions"
-                :key="member.id"
-              >
-                {{member.member_name}}
+              :notFoundContent="null"
+            >
+              <a-select-option v-for="member in memberOptions" :key="member.id">
+                {{ member.member_name }}
               </a-select-option>
             </a-select>
           </td>
@@ -62,17 +74,22 @@
               slot="consume_type"
               placeholder="选择消费方式"
               style="width: 120px"
-              @change="onChangeConsumeType">
+              @change="onChangeConsumeType"
+            >
               <a-select-opt-group
                 v-for="consumeType in consumeOptions"
-                :key="consumeType.id">
-                <span slot="label"><a-icon type="snippets"/>{{consumeType.name}}</span>
+                :key="consumeType.id"
+              >
+                <span slot="label">
+                  <a-icon type="snippets" />
+                  {{ consumeType.name }}
+                </span>
                 <a-select-option
                   v-for="consume in consumeType.children"
                   :value="JSON.stringify(consume)"
                   :key="consume.id"
                 >
-                  {{consume.name}}
+                  {{ consume.name }}
                 </a-select-option>
               </a-select-opt-group>
             </a-select>
@@ -83,13 +100,30 @@
           </td>
         </tr>
         <tr v-for="(item, index) in reserveList" :key="index">
-          <td>{{item.member}}</td>
-          <td>{{item.consume_name}}</td>
-          <td>{{item.is_checkin_name}}</td>
+          <td>{{ item.member }}</td>
+          <td>{{ item.consume_name }}</td>
+          <td>{{ item.is_checkin_name }}</td>
           <td>
             <div>
-              <a   class="mg-r8" href="javascript:;" @click="cancelReserve(item.id)" v-if="item.auth['shop:reserve:personal_team_course_reserve|checkin']">取消预约</a>
-              <a  href="javascript:;" @click="check(item.id)"  v-if="item.auth['shop:reserve:personal_team_course_reserve|del']">签到消费</a>
+              <a
+                class="mg-r8"
+                href="javascript:;"
+                @click="cancelReserve(item.id)"
+                v-if="
+                  item.auth['shop:reserve:personal_team_course_reserve|checkin']
+                "
+              >
+                取消预约
+              </a>
+              <a
+                href="javascript:;"
+                @click="check(item.id)"
+                v-if="
+                  item.auth['shop:reserve:personal_team_course_reserve|del']
+                "
+              >
+                签到消费
+              </a>
             </div>
           </td>
         </tr>
@@ -100,7 +134,8 @@
         v-if="infoAuth['shop:schedule:personal_team_course_schedule|del']"
         @confirm="cancelSchedule"
         okText="确认"
-        cancelText="取消">
+        cancelText="取消"
+      >
         <div slot="title">
           是否取消课程？
           <div class="color-danger">将发送消息通知已报名用户并发起自动退款</div>
@@ -122,15 +157,9 @@
 <script>
 import { switchMap } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
-import {
-  PersonalTeamScheduleCommonService as CommonService
-} from '@/views/pages/shop/product/course/schedule/personal-team.service#/common.service'
-import {
-  PersonalTeamScheduleReserveService as ReserveService
-} from '@/views/pages/shop/product/course/schedule/personal-team.service#/reserve.service'
-import {
-  PersonalTeamScheduleScheduleService as ScheduleService
-} from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
+import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/common.service'
+import { PersonalTeamScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/reserve.service'
+import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
 export default {
   name: 'OrderInfo',
   serviceInject() {
@@ -154,7 +183,7 @@ export default {
     }
   },
   props: {
-    id: String
+    id: Number
   },
   data() {
     return {
@@ -163,24 +192,29 @@ export default {
       consumeId: '',
       consumeTypeId: '',
       siteNumIds: [],
-      columns: [{
-        title: '会员姓名',
-        dataIndex: 'member',
-        width: '20%',
-        scopedSlots: { customRender: 'member' }
-      }, {
-        title: '消费方式',
-        dataIndex: 'consume_type',
-        scopedSlots: { customRender: 'consume_type' }
-      }, {
-        title: '签到状态',
-        dataIndex: 'is_checkin',
-        width: '20%'
-      }, {
-        title: '操作',
-        dataIndex: 'action',
-        scopedSlots: { customRender: 'action' }
-      }],
+      columns: [
+        {
+          title: '会员姓名',
+          dataIndex: 'member',
+          width: '20%',
+          scopedSlots: { customRender: 'member' }
+        },
+        {
+          title: '消费方式',
+          dataIndex: 'consume_type',
+          scopedSlots: { customRender: 'consume_type' }
+        },
+        {
+          title: '签到状态',
+          dataIndex: 'is_checkin',
+          width: '20%'
+        },
+        {
+          title: '操作',
+          dataIndex: 'action',
+          scopedSlots: { customRender: 'action' }
+        }
+      ],
       dataSource: [],
       show: false,
       info: {}
@@ -199,16 +233,20 @@ export default {
   },
   methods: {
     onSearch(value) {
-      this.commonService.getMemberList({
-        member_name: value
-      }).subscribe()
+      this.commonService
+        .getMemberList({
+          member_name: value
+        })
+        .subscribe()
     },
     onChange(value) {
       this.memberId = value
-      this.commonService.getConsumeList({
-        course_id: this.courseId,
-        member_id: value
-      }).subscribe()
+      this.commonService
+        .getConsumeList({
+          course_id: this.courseId,
+          member_id: value
+        })
+        .subscribe()
     },
     onChangeConsumeType(val) {
       const obj = JSON.parse(val)

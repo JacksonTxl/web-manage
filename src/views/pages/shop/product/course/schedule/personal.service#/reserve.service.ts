@@ -3,7 +3,11 @@ import { UpdateInput } from './../../../../../../../api/v1/schedule/personal/res
 import { Injectable } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
 import { tap, pluck, switchMap } from 'rxjs/operators'
-import { PersonalReserveApi, AddInput, GetListQuery } from '@/api/v1/schedule/personal/reserve'
+import {
+  PersonalReserveApi,
+  AddInput,
+  GetListQuery
+} from '@/api/v1/schedule/personal/reserve'
 import { AuthService } from '@/services/auth.service'
 import { MessageService } from '@/services/message.service'
 export interface SetState {
@@ -34,9 +38,11 @@ export class PersonalScheduleReserveService {
     cancel: 'shop:reserve:personal_course_reserve|del',
     checkIn: 'shop:reserve:personal_course_reserve|checkin'
   })
-  constructor(private reserveApi: PersonalReserveApi,
+  constructor(
+    private reserveApi: PersonalReserveApi,
     private authService: AuthService,
-    private msg: MessageService) {
+    private msg: MessageService
+  ) {
     this.state$ = new State({
       infoAuth: {},
       reserveUpdateInfo: {},
@@ -48,20 +54,26 @@ export class PersonalScheduleReserveService {
     this.infoAuth$ = new Computed(this.state$.pipe(pluck('infoAuth')))
     this.reserveList$ = new Computed(this.state$.pipe(pluck('reserveList')))
     this.reserveInfo$ = new Computed(this.state$.pipe(pluck('reserveInfo')))
-    this.reserveListTable$ = new Computed(this.state$.pipe(pluck('reserveListTable')))
-    this.reserveUpdateInfo$ = new Computed(this.state$.pipe(pluck('reserveUpdateInfo')))
+    this.reserveListTable$ = new Computed(
+      this.state$.pipe(pluck('reserveListTable'))
+    )
+    this.reserveUpdateInfo$ = new Computed(
+      this.state$.pipe(pluck('reserveUpdateInfo'))
+    )
   }
   /**
- *
- * @param params
- * 添加预约
- */
+   *
+   * @param params
+   * 添加预约
+   */
   add(params: AddInput) {
-    return this.reserveApi.add(params).pipe(tap(res => {
-      this.msg.success({
-        content: '添加预约成功！！！'
+    return this.reserveApi.add(params).pipe(
+      tap(res => {
+        this.msg.success({
+          content: '添加预约成功！！！'
+        })
       })
-    }))
+    )
   }
   /**
    *
@@ -69,18 +81,22 @@ export class PersonalScheduleReserveService {
    * 团体课签到消费
    */
   check(id: string) {
-    return this.reserveApi.check(id).pipe(tap(res => {
-      this.msg.success({
-        content: '签到成功'
+    return this.reserveApi.check(id).pipe(
+      tap(res => {
+        this.msg.success({
+          content: '签到成功'
+        })
       })
-    }))
+    )
   }
   update(update: UpdateInput) {
-    return this.reserveApi.update(update).pipe(tap(res => {
-      this.msg.success({
-        content: '更新预约成功'
+    return this.reserveApi.update(update).pipe(
+      tap(res => {
+        this.msg.success({
+          content: '更新预约成功'
+        })
       })
-    }))
+    )
   }
   /**
    *
@@ -89,28 +105,34 @@ export class PersonalScheduleReserveService {
    */
   @Effect()
   getInfo(id: string) {
-    return this.reserveApi.getInfo(id).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.infoAuth = res.auth
-        state.reserveInfo = res.info
-        state.reserveList = res.info.reserve
+    return this.reserveApi.getInfo(id).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.infoAuth = res.auth
+          state.reserveInfo = res.info
+          state.reserveList = res.info.reserve
+        })
       })
-    }))
+    )
   }
   getUpdateInfo(id: any) {
-    return this.reserveApi.getUpdateInfo(id).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.reserveUpdateInfo = res.info
+    return this.reserveApi.getUpdateInfo(id).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.reserveUpdateInfo = res.info
+        })
       })
-    }))
+    )
   }
   /**
    * 取消预约
    */
   del(id: string) {
-    return this.reserveApi.del(id).pipe(tap(res => {
-      this.msg.success({ content: '取消预约成功' })
-    }))
+    return this.reserveApi.del(id).pipe(
+      tap(res => {
+        this.msg.success({ content: '取消预约成功' })
+      })
+    )
   }
   /**
    *
@@ -119,22 +141,16 @@ export class PersonalScheduleReserveService {
    */
   @Effect()
   getList(query: GetListQuery) {
-    return this.reserveApi.getList(query).pipe(tap(res => {
-      res = this.authService.filter(res)
-      this.reserveTable$.commit(state => {
-        return res.list.map((item: any) => {
-          return { // add new event data
-            title: item.course_name,
-            groupId: JSON.stringify(item),
-            id: item.id,
-            start: `${item.start_date} ${item.start_time}`,
-            end: `${item.end_date} ${item.end_time}`
-          }
+    return this.reserveApi.getList(query).pipe(
+      tap(res => {
+        res = this.authService.filter(res)
+        this.reserveTable$.commit(state => {
+          return res.list
         })
-      })
 
-      this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-    }))
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
   }
 }

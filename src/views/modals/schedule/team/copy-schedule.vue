@@ -9,19 +9,29 @@
         </a-radio-group>
       </st-form-item>
       <st-form-item label="复制排期" required>
-        <a-range-picker v-model="copyDefaulValue" :disabled="disabled" @change="onChangeCopyTime" />
+        <a-range-picker
+          v-model="copyDefaulValue"
+          :disabled="disabled"
+          @change="onChangeCopyTime"
+        />
       </st-form-item>
       <st-form-item required>
         <template slot="label">
           应用排期
           <st-help-tooltip id="TSGC001" />
         </template>
-        <a-date-picker v-model="applyStartDate" @change="onChangeApplyStartDate" />~
+        <a-date-picker
+          v-model="applyStartDate"
+          @change="onChangeApplyStartDate"
+        />
+        ~
         <a-date-picker v-model="applyEndDate" disabled />
       </st-form-item>
       <a-row>
         <a-col :span="24" :style="{ textAlign: 'right' }">
-          <st-button type="primary" :loading="loading.copy" @click="onSubmit">确认复制</st-button>
+          <st-button type="primary" :loading="loading.copy" @click="onSubmit">
+            确认复制
+          </st-button>
         </a-col>
       </a-row>
     </st-form>
@@ -104,6 +114,7 @@ export default {
             this.copyDefaulValue[0].valueOf())
       )
     },
+    save() {},
     onSubmit() {
       const form = {
         copy_start_time: this.copyDefaulValue[0].format('YYYY-MM-DD'),

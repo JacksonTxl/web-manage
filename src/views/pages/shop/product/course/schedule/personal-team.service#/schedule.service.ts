@@ -13,8 +13,8 @@ import { MessageService } from '@/services/message.service'
 import moment from 'moment'
 
 export interface SetState {
-  courseList: any[],
-  scheduleTable: any[],
+  courseList: any[]
+  scheduleTable: any[]
   auth$: object
 }
 @Injectable()
@@ -46,26 +46,13 @@ export class PersonalTeamScheduleScheduleService {
    */
   @Effect()
   getList(query: GetScheduleListQuery) {
-    return this.scheduleApi.getList(query).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.courseList = res.list.map((item: any) => {
-          let end_date = ''
-          if (moment(`${item.start_date} ${item.start_time}`).valueOf() >= moment(`${item.start_date} ${item.end_time}`).valueOf()) {
-            item.plusOne = '+1'
-            end_date = moment(moment(`${item.start_date} ${item.start_time}`).valueOf() + 24 * 60 * 60 * 1000).format('YYYY-MM-DD').valueOf()
-          } else {
-            end_date = item.start_date
-          }
-          return { // add new event data
-            title: item.course_name,
-            groupId: JSON.stringify(item),
-            id: item.id,
-            start: `${item.start_date} ${item.start_time}`,
-            end: `${end_date} ${item.end_time}`
-          }
+    return this.scheduleApi.getList(query).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.courseList = res.list
         })
       })
-    }))
+    )
   }
   /**
    *
@@ -74,23 +61,27 @@ export class PersonalTeamScheduleScheduleService {
    */
   @Effect()
   getTable(query: any) {
-    return this.scheduleApi.getTable(query).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.scheduleTable = []
-        const dateList = Array.from(new Set(res.list.map((item: any) => item.start_date)))
-        dateList.forEach((ele: any) => {
-          let temp: any[] = []
-          let daySchedule: any = { date: ele, data: [] }
-          res.list.forEach((item: any) => {
-            if (item.start_date === ele) {
-              temp.push(item)
-            }
+    return this.scheduleApi.getTable(query).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.scheduleTable = []
+          const dateList = Array.from(
+            new Set(res.list.map((item: any) => item.start_date))
+          )
+          dateList.forEach((ele: any) => {
+            let temp: any[] = []
+            let daySchedule: any = { date: ele, data: [] }
+            res.list.forEach((item: any) => {
+              if (item.start_date === ele) {
+                temp.push(item)
+              }
+            })
+            daySchedule.data = temp
+            state.scheduleTable.push(daySchedule)
           })
-          daySchedule.data = temp
-          state.scheduleTable.push(daySchedule)
         })
       })
-    }))
+    )
   }
   /**
    *
@@ -98,14 +89,18 @@ export class PersonalTeamScheduleScheduleService {
    * 新增团体课排期
    */
   add(params: AddScheduleInput) {
-    return this.scheduleApi.add(params).pipe(tap(res => {
-      this.msg.success({ content: '添加成功' })
-    }))
+    return this.scheduleApi.add(params).pipe(
+      tap(res => {
+        this.msg.success({ content: '添加成功' })
+      })
+    )
   }
   addScheduleInBatch(params: AddScheduleInput[]) {
-    return this.scheduleApi.addScheduleInBatch(params).pipe(tap(res => {
-      this.msg.success({ content: '批量添加成功' })
-    }))
+    return this.scheduleApi.addScheduleInBatch(params).pipe(
+      tap(res => {
+        this.msg.success({ content: '批量添加成功' })
+      })
+    )
   }
   /**
    *
@@ -113,9 +108,11 @@ export class PersonalTeamScheduleScheduleService {
    * 复制团体课排期
    */
   copy(params: CopyScheduleInput) {
-    return this.scheduleApi.copy(params).pipe(tap(res => {
-      this.msg.success({ content: '复制成功' })
-    }))
+    return this.scheduleApi.copy(params).pipe(
+      tap(res => {
+        this.msg.success({ content: '复制成功' })
+      })
+    )
   }
   /**
    *
@@ -123,9 +120,11 @@ export class PersonalTeamScheduleScheduleService {
    * 编辑课程排期
    */
   update(params: UpdateScheduleInput) {
-    return this.scheduleApi.update(params).pipe(tap(res => {
-      this.msg.success({ content: '编辑成功' })
-    }))
+    return this.scheduleApi.update(params).pipe(
+      tap(res => {
+        this.msg.success({ content: '编辑成功' })
+      })
+    )
   }
   /**
    *
@@ -141,8 +140,10 @@ export class PersonalTeamScheduleScheduleService {
    * 取消团体课排期
    */
   del(id: string) {
-    return this.scheduleApi.del(id).pipe(tap(res => {
-      this.msg.success({ content: '取消成功' })
-    }))
+    return this.scheduleApi.del(id).pipe(
+      tap(res => {
+        this.msg.success({ content: '取消成功' })
+      })
+    )
   }
 }
