@@ -11,13 +11,10 @@
       <template slot="title">
         <span>{{ content }}</span>
       </template>
-      <span><st-icon type="help" /></span>
-      <!-- <span>
-        <img
-          src="https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/10000/2019-08-01/___d2fbb11a5556___.png"
-        />
-        >
-      </span> -->
+      <!-- <span><st-icon type="help" /></span> -->
+      <span class="st-help-tooltip-img">
+        <img height="14" width="14" src="~@/assets/img/tooltip-help.png" />
+      </span>
       <slot></slot>
     </a-tooltip>
   </span>
