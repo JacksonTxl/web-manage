@@ -13,7 +13,7 @@ pipeline {
         sh 'tree -du -L 4'
       }
     }
-    state('Build') {
+    stage('Build') {
       steps {
         sh 'make build'
       }
