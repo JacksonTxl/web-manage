@@ -34,7 +34,7 @@ export default {
     let weekOfday = moment(this.start).format('E')
     this.startTime = moment(this.start)
       .subtract(weekOfday - 1, 'days')
-      .format('YYYY/MM/DD')
+      .format('YYYY-MM-DD')
   },
   watch: {
     start(n, o) {
@@ -45,35 +45,54 @@ export default {
     }
   },
   computed: {
+    isDay() {
+      const start = this.$route.query.start_date
+      const end = this.$route.query.end_date
+      return start === end
+    },
     endTime() {
-      return moment(this.startTime)
-        .add(6, 'days')
-        .format('YYYY-MM-DD')
+      return this.isDay
+        ? moment(this.startTime).format('YYYY-MM-DD')
+        : moment(this.startTime)
+            .add(6, 'days')
+            .format('YYYY-MM-DD')
     },
     rangeTime() {
       let start = moment(this.startTime).format('LL')
       let end = moment(this.endTime).format('LL')
-      return `${start} ~ ${end}`
+      return this.isDay
+        ? moment(this.$route.query.start_date).format('LL')
+        : `${start} ~ ${end}`
     }
   },
   methods: {
     onClickPre() {
-      this.startTime = moment(this.startTime)
-        .subtract(7, 'days')
-        .format('YYYY-MM-DD')
+      this.startTime = this.isDay
+        ? moment(this.$route.query.start_date)
+            .subtract(1, 'days')
+            .format('YYYY-MM-DD')
+        : moment(this.startTime)
+            .subtract(7, 'days')
+            .format('YYYY-MM-DD')
       this.$emit('pre', { start_date: this.startTime, end_date: this.endTime })
     },
     onClickNext() {
-      this.startTime = moment(this.startTime)
-        .add(7, 'days')
-        .format('YYYY-MM-DD')
+      this.startTime = this.isDay
+        ? moment(this.$route.query.start_date)
+            .add(1, 'days')
+            .format('YYYY-MM-DD')
+        : moment(this.startTime)
+            .add(7, 'days')
+            .format('YYYY-MM-DD')
       this.$emit('next', { start_date: this.startTime, end_date: this.endTime })
     },
     onClickToday() {
       let weekOfday = moment().format('E') // 计算今天是这周第几天
-      this.startTime = moment()
-        .subtract(weekOfday - 1, 'days')
-        .format('YYYY-MM-DD') // 周一日期
+      this.startTime = this.isDay
+        ? moment(this.$route.query.start_date).format('YYYY-MM-DD')
+        : moment()
+            .subtract(weekOfday - 1, 'days')
+            .format('YYYY-MM-DD') // 周一日期
       this.$emit('today', {
         start_date: this.startTime,
         end_date: this.endTime

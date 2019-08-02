@@ -58,7 +58,7 @@ export default {
     onDetail(info) {
       console.log(info)
       this.$modalRouter.push({
-        name: 'schedule-personal-team-reserve-info',
+        name: 'schedule-personal-reserve-info',
         props: {
           id: info.id
         },

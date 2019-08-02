@@ -33,6 +33,9 @@
           v-for="(item, index) in weeks"
           :key="item.week"
         >
+          <div class="current-bar" :style="itemStyle">
+            <span class="current-time-text">{{ currentTime }}</span>
+          </div>
           <ul class="time-group">
             <li class="date">
               <span class="date-text-day">{{ item | dateString }}</span>
@@ -163,7 +166,29 @@ export default {
       default: () => []
     }
   },
-  computed: {},
+  computed: {
+    isDay() {
+      const start = this.$route.query.start_date
+      const end = this.$route.query.end_date
+      return start === end
+    },
+    currentTime() {
+      return moment().format('HH:mm')
+    },
+    itemStyle() {
+      const hour = +moment().format('HH')
+      const minute = +moment().format('mm')
+      return {
+        top: `calc(${(hour / 24) * 100}% + 16px + ${(minute / (60 * 24)) *
+          100}%)`
+      }
+    }
+  },
+  watch: {
+    $route(newValue, oldValue) {
+      this.getWeeks()
+    }
+  },
   filters: {
     timeStr(val) {
       const time = val - 1
@@ -179,12 +204,16 @@ export default {
     },
     dateString(val) {
       let weekOfday = moment(val.date).format('E')
-      let week = moment(val.date)
-        .subtract(weekOfday - val.week, 'days')
-        .format('ddd')
-      let date = moment(val.date)
-        .subtract(weekOfday - val.week, 'days')
-        .format('DD')
+      let week = !val.week
+        ? moment(val.date).format('ddd')
+        : moment(val.date)
+            .subtract(weekOfday - val.week, 'days')
+            .format('ddd')
+      let date = !val.week
+        ? moment(val.date).format('DD')
+        : moment(val.date)
+            .subtract(weekOfday - val.week, 'days')
+            .format('DD')
       return `${date} ${week}`
     }
   },
@@ -194,15 +223,24 @@ export default {
     },
     oChangeDate(date) {
       this.start = date.start_date
-      this.getWeeks()
-      this.$router.push({ query: { ...date } })
+      this.$router.push({ query: { ...date }, force: true })
     },
     onClickGetTable() {
-      console.log('get-table')
       this.$emit('get-table')
     },
     onClickGetDay(item) {
       this.weeks = [item]
+      const date = this.isDay
+        ? item.date
+        : moment(item.date)
+            .add(item.week - 1, 'days')
+            .format('YYYY-MM-DD')
+      this.$router.push({
+        query: {
+          start_date: date,
+          end_date: date
+        }
+      })
     },
     onDetail(info) {
       this.$emit('detail', info)
@@ -217,15 +255,22 @@ export default {
         return date === current
       })
     },
-    getWeeks() {
-      this.weeks = []
-      for (let i = 1; i < 8; i++) {
-        this.weeks.push({ week: i, date: this.start })
+    getWeeks(val) {
+      if (val !== 'week' && this.isDay) {
+        this.weeks = []
+        this.weeks.push({ week: 0, date: this.$route.query.start_date })
+        return
+      }
+      if (val === 'week') {
+        this.weeks = []
+        for (let i = 1; i < 8; i++) {
+          this.weeks.push({ week: i, date: this.start })
+        }
       }
     },
 
     onClickGetWeek() {
-      this.getWeeks()
+      this.getWeeks('week')
     },
     onChangeGetDate(date) {
       this.$emit('add', date)
@@ -233,7 +278,7 @@ export default {
   },
   created() {
     this.start = this.startDate
-    this.getWeeks()
+    this.getWeeks('week')
   },
   components: {
     DateComponent,
