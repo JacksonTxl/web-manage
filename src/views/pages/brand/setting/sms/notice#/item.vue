@@ -36,6 +36,9 @@
             <span class="color-title">预览内容</span>
             <span class="mg-l24">{{ info.preview }}</span>
           </div>
+          <div :class="bComponent('text')">
+            <span class="color-primary" @click="showEdit">编辑</span>
+          </div>
           <div
             class="width75"
             :class="bComponent('text')"
@@ -59,9 +62,6 @@
           >
             <span class="color-title">订单类型</span>
             <span class="mg-l24">{{ info.order_type_description }}</span>
-          </div>
-          <div :class="bComponent('text')">
-            <span class="color-primary" @click="showEdit">编辑</span>
           </div>
         </div>
         <div :class="bComponent('column')" v-show="isShowEdit">
