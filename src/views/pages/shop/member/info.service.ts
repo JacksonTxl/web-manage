@@ -13,7 +13,7 @@ export class InfoService implements RouteGuard {
     add: 'shop:member:member|tag',
     face: 'brand_shop:iot:face|edit'
   })
-  constructor(private cardsApi: MemberApi, private authService: AuthService) { }
+  constructor(private cardsApi: MemberApi, private authService: AuthService) {}
   getHeaderInfo(id: string) {
     return this.cardsApi.getHeaderInfo(id).pipe(
       tap(res => {

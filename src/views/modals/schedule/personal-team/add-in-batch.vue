@@ -1,125 +1,170 @@
 <template>
-<st-modal
-  class="modal-reserved"
-  title="批量新增课程排期"
-  @ok="onOkSaveForm"
-  width="1366px"
-  v-model="show"
->
-  <st-table rowKey="course_id" :columns="columns" :page="false" :dataSource="data" bordered>
-    <span slot="startTimeTitle" class="modal-table-title"><i class="color-danger mg-r8">*</i>日期</span>
-    <span slot="courseIdTitle" class="modal-table-title"><i class="color-danger mg-r8">*</i>课程</span>
-    <span slot="coachIdTitle" class="modal-table-title"><i class="color-danger mg-r8">*</i>上课教练</span>
-    <span slot="limitNumTitle" class="modal-table-title"><i class="color-danger mg-r8">*</i>人数</span>
-    <span slot="courseFeeTitle" class="modal-table-title"><i class="color-danger mg-r8">*</i>课时费</span>
-    <template  slot="start_time" slot-scope="text, record">
-      <a-date-picker
-        v-if="record.editable"
-        :showTime="{ format: 'HH:mm' }"
-        format="YYYY-MM-DD HH:mm"
-        placeholder="Select Time"
-        :value="text"
-        @change="e => handleChange(e, record.key, 'start_time')"/>
-      <template v-else>{{record.show.start_time_show}}</template>
-    </template>
-
-    <template  slot="course_id" slot-scope="text, record">
-      <a-select
-        v-if="record.editable"
-        placeholder="请选择课程"
-        style="width: 180px"
-        :value="text"
-        @change="e => handleChange(e, record.key, 'course_id')">
-        <a-select-option v-for="course in courseOptions" :key="course.id">{{course.name}}</a-select-option>
-      </a-select>
-      <template v-else>{{record.show.course_id_show}}</template>
-    </template>
-
-    <template  slot="coach_id" slot-scope="text, record">
-      <a-select
-        v-if="record.editable"
-        placeholder="请选择教练"
-        :value="text"
-        style="width: 180px"
-        @change="e => handleChange(e, record.key, 'coach_id')">
-        <a-select-option v-for="coach in courseCoachOptions" :key="coach.id">{{coach.name}}</a-select-option>
-      </a-select>
-      <template v-else>{{record.show.coach_id_show}}</template>
-    </template>
-
-    <template slot="limit_num" slot-scope="text, record">
-      <div>
-        <a-input
+  <st-modal
+    class="modal-reserved"
+    title="批量新增课程排期"
+    @ok="onOkSaveForm"
+    width="1366px"
+    v-model="show"
+  >
+    <st-table
+      rowKey="course_id"
+      :columns="columns"
+      :page="false"
+      :dataSource="data"
+      bordered
+    >
+      <span slot="startTimeTitle" class="modal-table-title">
+        <i class="color-danger mg-r8">*</i>
+        日期
+      </span>
+      <span slot="courseIdTitle" class="modal-table-title">
+        <i class="color-danger mg-r8">*</i>
+        课程
+      </span>
+      <span slot="coachIdTitle" class="modal-table-title">
+        <i class="color-danger mg-r8">*</i>
+        上课教练
+      </span>
+      <span slot="limitNumTitle" class="modal-table-title">
+        <i class="color-danger mg-r8">*</i>
+        人数
+      </span>
+      <span slot="courseFeeTitle" class="modal-table-title">
+        <i class="color-danger mg-r8">*</i>
+        课时费
+      </span>
+      <template slot="start_time" slot-scope="text, record">
+        <a-date-picker
           v-if="record.editable"
-          style="margin: -5px 0;width:100px;"
+          :showTime="{ format: 'HH:mm' }"
+          format="YYYY-MM-DD HH:mm"
+          placeholder="Select Time"
           :value="text"
-          @change="e => handleChange(e.target.value, record.key, 'limit_num')">
-            <span  slot="suffix">人</span>
-        </a-input>
-        <template v-else>{{text}}</template>
-      </div>
-    </template>
-    <template  slot="course_fee" slot-scope="text, record">
-      <div >
-        <a-input
+          @change="e => handleChange(e, record.key, 'start_time')"
+        />
+        <template v-else>
+          {{ record.show.start_time_show }}
+        </template>
+      </template>
+
+      <template slot="course_id" slot-scope="text, record">
+        <a-select
           v-if="record.editable"
-          style="margin: -5px 0;width:100px;"
+          placeholder="请选择课程"
+          style="width: 180px"
           :value="text"
-          @change="e => handleChange(e.target.value, record.key, 'course_fee')">
-            <span  slot="suffix" >元/节</span>
-        </a-input>
-        <template v-else>{{text}}</template>
-      </div>
-    </template>
-    <template slot="operation" slot-scope="text, record">
-      <div class='editable-row-operations'>
-        <span v-if="record.editable">
-          <a @click="() => save(record.key)">保存</a>
-        </span>
-        <span v-else>
-          <a @click="() => edit(record.key)">编辑</a>
-          <a @click="() => deleteData(record.key)">删除</a>
-        </span>
-      </div>
-    </template>
-  </st-table>
-</st-modal>
+          @change="e => handleChange(e, record.key, 'course_id')"
+        >
+          <a-select-option v-for="course in courseOptions" :key="course.id">
+            {{ course.name }}
+          </a-select-option>
+        </a-select>
+        <template v-else>
+          {{ record.show.course_id_show }}
+        </template>
+      </template>
+
+      <template slot="coach_id" slot-scope="text, record">
+        <a-select
+          v-if="record.editable"
+          placeholder="请选择教练"
+          :value="text"
+          style="width: 180px"
+          @change="e => handleChange(e, record.key, 'coach_id')"
+        >
+          <a-select-option v-for="coach in courseCoachOptions" :key="coach.id">
+            {{ coach.name }}
+          </a-select-option>
+        </a-select>
+        <template v-else>
+          {{ record.show.coach_id_show }}
+        </template>
+      </template>
+
+      <template slot="limit_num" slot-scope="text, record">
+        <div>
+          <a-input
+            v-if="record.editable"
+            style="margin: -5px 0;width:100px;"
+            :value="text"
+            @change="e => handleChange(e.target.value, record.key, 'limit_num')"
+          >
+            <span slot="suffix">人</span>
+          </a-input>
+          <template v-else>
+            {{ text }}
+          </template>
+        </div>
+      </template>
+      <template slot="course_fee" slot-scope="text, record">
+        <div>
+          <a-input
+            v-if="record.editable"
+            style="margin: -5px 0;width:100px;"
+            :value="text"
+            @change="
+              e => handleChange(e.target.value, record.key, 'course_fee')
+            "
+          >
+            <span slot="suffix">元/节</span>
+          </a-input>
+          <template v-else>
+            {{ text }}
+          </template>
+        </div>
+      </template>
+      <template slot="operation" slot-scope="text, record">
+        <div class="editable-row-operations">
+          <span v-if="record.editable">
+            <a @click="() => save(record.key)">保存</a>
+          </span>
+          <span v-else>
+            <a @click="() => edit(record.key)">编辑</a>
+            <a @click="() => deleteData(record.key)">删除</a>
+          </span>
+        </div>
+      </template>
+    </st-table>
+  </st-modal>
 </template>
 <script>
 import { cloneDeep } from 'lodash-es'
-import {
-  PersonalTeamScheduleCommonService as CommonService
-} from '@/views/pages/shop/product/course/schedule/personal-team.service#/common.service'
-import {
-  PersonalTeamScheduleScheduleService as ScheduleService
-} from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
+import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/common.service'
+import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
 import { MessageService } from '@/services/message.service'
-const columns = [{
-  dataIndex: 'start_time',
-  slots: { title: 'startTimeTitle' },
-  scopedSlots: { customRender: 'start_time' }
-}, {
-  dataIndex: 'course_id',
-  slots: { title: 'courseIdTitle' },
-  scopedSlots: { customRender: 'course_id' }
-}, {
-  dataIndex: 'coach_id',
-  slots: { title: 'coachIdTitle' },
-  scopedSlots: { customRender: 'coach_id' }
-}, {
-  dataIndex: 'limit_num',
-  slots: { title: 'limitNumTitle' },
-  scopedSlots: { customRender: 'limit_num' }
-}, {
-  dataIndex: 'course_fee',
-  slots: { title: 'courseFeeTitle' },
-  scopedSlots: { customRender: 'course_fee' }
-}, {
-  title: '操作',
-  dataIndex: 'operation',
-  slots: { title: 'courseFeeTitle' },
-  scopedSlots: { customRender: 'operation' }
-}]
+const columns = [
+  {
+    dataIndex: 'start_time',
+    slots: { title: 'startTimeTitle' },
+    scopedSlots: { customRender: 'start_time' }
+  },
+  {
+    dataIndex: 'course_id',
+    slots: { title: 'courseIdTitle' },
+    scopedSlots: { customRender: 'course_id' }
+  },
+  {
+    dataIndex: 'coach_id',
+    slots: { title: 'coachIdTitle' },
+    scopedSlots: { customRender: 'coach_id' }
+  },
+  {
+    dataIndex: 'limit_num',
+    slots: { title: 'limitNumTitle' },
+    scopedSlots: { customRender: 'limit_num' }
+  },
+  {
+    dataIndex: 'course_fee',
+    slots: { title: 'courseFeeTitle' },
+    scopedSlots: { customRender: 'course_fee' }
+  },
+  {
+    title: '操作',
+    dataIndex: 'operation',
+    slots: { title: 'courseFeeTitle' },
+    scopedSlots: { customRender: 'operation' }
+  }
+]
 export default {
   name: 'AddCourseScheduleBatch',
   serviceInject() {
@@ -199,12 +244,16 @@ export default {
           delete item.show
           delete item.key
           delete item.editable
-          item.start_time = moment(item.start_time).format('YYYY-MM-DD HH:mm:ss').valueOf()
+          item.start_time = moment(item.start_time)
+            .format('YYYY-MM-DD HH:mm:ss')
+            .valueOf()
           item.limit_num = +item.limit_num
           item.course_fee = +item.course_fee
           return item
         })
-      this.scheduleService.addScheduleInBatch(data).subscribe(this.onSubmitSuccess)
+      this.scheduleService
+        .addScheduleInBatch(data)
+        .subscribe(this.onSubmitSuccess)
     },
     handleChange(value, key, column) {
       const newData = [...this.data]
@@ -239,9 +288,19 @@ export default {
     getShowTableData(data) {
       data.key = Math.random()
       data.show = {}
-      data.show.start_time_show = moment(data.start_time).format('YYYY-MM-DD HH:mm')
-      data.show.course_id_show = this.getOptionName(data.course_id, this.courseOptions, 'name')
-      data.show.coach_id_show = this.getOptionName(data.coach_id, this.courseCoachOptions, 'name')
+      data.show.start_time_show = moment(data.start_time).format(
+        'YYYY-MM-DD HH:mm'
+      )
+      data.show.course_id_show = this.getOptionName(
+        data.course_id,
+        this.courseOptions,
+        'name'
+      )
+      data.show.coach_id_show = this.getOptionName(
+        data.coach_id,
+        this.courseCoachOptions,
+        'name'
+      )
       return data
     },
     getOptionName(id, options, name) {
@@ -293,7 +352,10 @@ export default {
       const newData = [...this.data]
       const target = newData.filter(item => key === item.key)[0]
       if (target) {
-        Object.assign(target, this.cacheData.filter(item => key === item.key)[0])
+        Object.assign(
+          target,
+          this.cacheData.filter(item => key === item.key)[0]
+        )
         delete target.editable
         this.data = newData
       }

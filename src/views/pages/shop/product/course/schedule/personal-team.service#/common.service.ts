@@ -8,10 +8,10 @@ import {
 } from '@/api/v1/schedule/personal-team/common'
 
 export interface SetState {
-  courseOptions: any[],
-  coachOptions: any[],
-  memberOptions: any[],
-  consumeOptions: any[],
+  courseOptions: any[]
+  coachOptions: any[]
+  memberOptions: any[]
+  consumeOptions: any[]
   courseCoachOptions: any[]
 }
 @Injectable()
@@ -29,11 +29,15 @@ export class PersonalTeamScheduleCommonService {
       memberOptions: [],
       consumeOptions: []
     })
-    this.consumeOptions$ = new Computed(this.state$.pipe(pluck('consumeOptions')))
+    this.consumeOptions$ = new Computed(
+      this.state$.pipe(pluck('consumeOptions'))
+    )
     this.courseOptions$ = new Computed(this.state$.pipe(pluck('courseOptions')))
     this.coachOptions$ = new Computed(this.state$.pipe(pluck('coachOptions')))
     this.memberOptions$ = new Computed(this.state$.pipe(pluck('memberOptions')))
-    this.courseCoachOptions$ = new Computed(this.state$.pipe(pluck('courseCoachOptions')))
+    this.courseCoachOptions$ = new Computed(
+      this.state$.pipe(pluck('courseCoachOptions'))
+    )
   }
   /**
    *
@@ -64,11 +68,13 @@ export class PersonalTeamScheduleCommonService {
     )
   }
   getCourseCoachList(id: any) {
-    return this.commonApi.getCourseCoachList(id).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.courseCoachOptions = res.list
+    return this.commonApi.getCourseCoachList(id).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.courseCoachOptions = res.list
+        })
       })
-    }))
+    )
   }
   /**
    *
@@ -76,11 +82,13 @@ export class PersonalTeamScheduleCommonService {
    * 获取会员Options
    */
   getCoachList() {
-    return this.commonApi.getCoachList().pipe(tap(res => {
-      this.state$.commit(state => {
-        state.coachOptions = res.list
+    return this.commonApi.getCoachList().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.coachOptions = res.list
+        })
       })
-    }))
+    )
   }
   /**
    *
@@ -99,6 +107,7 @@ export class PersonalTeamScheduleCommonService {
             return ele
           })
         })
-      }))
+      })
+    )
   }
 }

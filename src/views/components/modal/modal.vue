@@ -3,9 +3,9 @@
     v-bind="$attrs"
     :width="computedWidth"
     v-on="$listeners"
-    :wrapClassName="['st-modal',wrapClassName].join(' ')"
+    :wrapClassName="['st-modal', wrapClassName].join(' ')"
   >
-    <slot name='title' slot='title'></slot>
+    <slot name="title" slot="title"></slot>
     <slot name="prepend"></slot>
     <div class="st-modal__body">
       <slot></slot>

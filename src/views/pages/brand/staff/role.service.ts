@@ -15,23 +15,25 @@ export class RoleService implements RouteGuard {
   })
   constructor(private roleApi: RoleApi, private authService: AuthService) {}
   /**
-     * 获取所有角色列表（角色编辑页面）
-     */
+   * 获取所有角色列表（角色编辑页面）
+   */
   getAllList() {
-    return this.roleApi.getAllList().pipe(tap(res => {
-      this.roleList$.commit(() => res.roles)
-      this.stat$.commit(() => res.stat)
-    }))
+    return this.roleApi.getAllList().pipe(
+      tap(res => {
+        this.roleList$.commit(() => res.roles)
+        this.stat$.commit(() => res.stat)
+      })
+    )
   }
   /**
-     * 获取所有角色列表（角色编辑页面）
-     */
+   * 获取所有角色列表（角色编辑页面）
+   */
   getInitInfo(query: GetInitInfoPut) {
     return this.roleApi.getInitInfo(query)
   }
   /**
-     * 获取角色初始化菜单权限树
-     */
+   * 获取角色初始化菜单权限树
+   */
   getInfo(query: GetInitInfoPut) {
     return this.roleApi.getInfo(query)
   }
@@ -39,25 +41,31 @@ export class RoleService implements RouteGuard {
    * 添加角色
    */
   add(params: RoleInfo) {
-    return this.roleApi.add(params).pipe(switchMap(state => {
-      return this.getAllList()
-    }))
+    return this.roleApi.add(params).pipe(
+      switchMap(state => {
+        return this.getAllList()
+      })
+    )
   }
   /**
    * 删除角色
    */
   del(params: GetInitInfoPut) {
-    return this.roleApi.del(params).pipe(switchMap(state => {
-      return this.getAllList()
-    }))
+    return this.roleApi.del(params).pipe(
+      switchMap(state => {
+        return this.getAllList()
+      })
+    )
   }
   /**
    * 编辑角色
    */
   update(params: RoleInfo) {
-    return this.roleApi.update(params).pipe(switchMap(state => {
-      return this.getAllList()
-    }))
+    return this.roleApi.update(params).pipe(
+      switchMap(state => {
+        return this.getAllList()
+      })
+    )
   }
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {

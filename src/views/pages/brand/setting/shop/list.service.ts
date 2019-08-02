@@ -16,24 +16,30 @@ export class ListService implements RouteGuard {
   })
   shopStatusList$ = this.userService
     .getOptions$('shop.shop_status')
-    .pipe(map(options => [{ value: -1, label: '全部运营状态' }].concat(options)))
+    .pipe(
+      map(options => [{ value: -1, label: '全部运营状态' }].concat(options))
+    )
   isValidList$ = this.userService
     .getOptions$('shop.is_valid')
-    .pipe(map(options => [{ value: -1, label: '全部系统状态' }].concat(options)))
+    .pipe(
+      map(options => [{ value: -1, label: '全部系统状态' }].concat(options))
+    )
   constructor(
     private shopApi: ShopApi,
     private userService: UserService,
     private authService: AuthService
   ) {}
   @Effect()
-  getList(query:GetListInput) {
-    return this.shopApi.getList(query).pipe(tap((res:any) => {
-      this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-      this.count$.commit(() => res.brand_shop_count)
-    }))
+  getList(query: GetListInput) {
+    return this.shopApi.getList(query).pipe(
+      tap((res: any) => {
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+        this.count$.commit(() => res.brand_shop_count)
+      })
+    )
   }
-  beforeEach(to:ServiceRoute) {
+  beforeEach(to: ServiceRoute) {
     return this.getList(to.meta.query)
   }
 }

@@ -1,7 +1,13 @@
 <template>
-  <div class="st-time-picker-item" @mousedown="onMounseDown" @mousemove="mouseMove" @mouseUp="onMouseUp" :class="{'active': isActive}">
-    <span v-if="start" class="start">{{time | filterTime}}</span>
-    <span v-if="end"  class="end">{{time | filterTime}}</span>
+  <div
+    class="st-time-picker-item"
+    @mousedown="onMounseDown"
+    @mousemove="mouseMove"
+    @mouseUp="onMouseUp"
+    :class="{ active: isActive }"
+  >
+    <span v-if="start" class="start">{{ time | filterTime }}</span>
+    <span v-if="end" class="end">{{ time | filterTime }}</span>
   </div>
 </template>
 
@@ -53,14 +59,16 @@ export default {
     start() {
       let val = false
       this.views.forEach(ele => {
-        ele.includes('#' + this.time + '#start') && (val = ele.includes('#' + this.time + '#start'))
+        ele.includes('#' + this.time + '#start') &&
+          (val = ele.includes('#' + this.time + '#start'))
       })
       return val
     },
     end() {
       let val = false
       this.views.forEach(ele => {
-        ele.includes('--#' + this.time + '#end') && (val = ele.includes('--#' + this.time + '#end'))
+        ele.includes('--#' + this.time + '#end') &&
+          (val = ele.includes('--#' + this.time + '#end'))
       })
       return val
     }
@@ -81,6 +89,4 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-
-</style>
+<style lang="less" scoped></style>

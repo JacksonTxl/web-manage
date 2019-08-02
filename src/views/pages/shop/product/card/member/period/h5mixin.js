@@ -32,13 +32,13 @@ export default {
     }
   },
   watch: {
-    'cardIntroduction'(val) {
+    cardIntroduction(val) {
       this.h5CardInfo.card_introduction = val
     },
-    'cardContents'(val) {
+    cardContents(val) {
       this.h5CardInfo.card_contents = val
     },
-    'cardBg'(val) {
+    cardBg(val) {
       this.h5CardInfo.card_bg = val
     },
     'cardData.price_setting'(val) {
@@ -82,7 +82,8 @@ export default {
     syncName(e) {
       this.h5CardInfo.card_name = e.target.value
     },
-    syncPrice(values) { // 会员卡金额
+    syncPrice(values) {
+      // 会员卡金额
       let p = []
       // 品牌统一定价
       if (this.cardType === 0) {

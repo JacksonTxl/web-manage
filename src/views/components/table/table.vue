@@ -9,7 +9,9 @@ export default {
     },
     alertSelection: {
       type: Object,
-      default: () => { return {} }
+      default: () => {
+        return {}
+      }
     }
   },
   methods: {
@@ -30,7 +32,7 @@ export default {
           showSizeChanger: true
         },
         locale: {
-          emptyText: <st-no-data/>
+          emptyText: <st-no-data />
         }
       },
       this.$attrs
@@ -52,39 +54,57 @@ export default {
     for (let k in this.$slots) {
       renderChildren.push(h('template', { slot: k }, this.$slots[k]))
     }
-    const ce = this.alertSelection.onReset ? h('div', { class: 'st-table-wapper' }, [
-      h('a-alert', {
-        class: 'st-table-alert mg-b8',
-        props: { type: 'info', showIcon: true },
-        scopedSlots: {
-          message: props => h('div', { class: 'st-table-alert__content' }, ['已选 ', h('span', { class: 'st-table-alert__count' }, this.$attrs.rowSelection.selectedRowKeys.length || 0), ' 条数据', h('a', { class: 'mg-l24 st-table-alert__reload',
-            on: {
-              click: this.onCLick
-            } }, '清空')])
-        }
-      }),
-      h(
-        'a-table',
-        {
-          class: 'st-table',
-          props,
-          on: this.$listeners,
-          scopedSlots: this.$scopedSlots,
-          slot: this.$slots
-        },
-        renderChildren
-      )]
-    ) : h(
-      'a-table',
-      {
-        class: 'st-table',
-        props,
-        on: this.$listeners,
-        scopedSlots: this.$scopedSlots,
-        slot: this.$slots
-      },
-      renderChildren
-    )
+    const ce = this.alertSelection.onReset
+      ? h('div', { class: 'st-table-wapper' }, [
+          h('a-alert', {
+            class: 'st-table-alert mg-b8',
+            props: { type: 'info', showIcon: true },
+            scopedSlots: {
+              message: props =>
+                h('div', { class: 'st-table-alert__content' }, [
+                  '已选 ',
+                  h(
+                    'span',
+                    { class: 'st-table-alert__count' },
+                    this.$attrs.rowSelection.selectedRowKeys.length || 0
+                  ),
+                  ' 条数据',
+                  h(
+                    'a',
+                    {
+                      class: 'mg-l24 st-table-alert__reload',
+                      on: {
+                        click: this.onCLick
+                      }
+                    },
+                    '清空'
+                  )
+                ])
+            }
+          }),
+          h(
+            'a-table',
+            {
+              class: 'st-table',
+              props,
+              on: this.$listeners,
+              scopedSlots: this.$scopedSlots,
+              slot: this.$slots
+            },
+            renderChildren
+          )
+        ])
+      : h(
+          'a-table',
+          {
+            class: 'st-table',
+            props,
+            on: this.$listeners,
+            scopedSlots: this.$scopedSlots,
+            slot: this.$slots
+          },
+          renderChildren
+        )
     return ce
   }
 }

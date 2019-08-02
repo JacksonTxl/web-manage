@@ -1,42 +1,68 @@
-
 <template>
   <div class="shop-member-list">
     <st-panel>
       <div slot="title">
-        <st-input-search placeholder="输入用户姓名、手机号" v-model="query.keyword" @search="onKeywordsSearch('keyword',$event)" style="width: 290px;"/>
+        <st-input-search
+          placeholder="输入用户姓名、手机号"
+          v-model="query.keyword"
+          @search="onKeywordsSearch('keyword', $event)"
+          style="width: 290px;"
+        />
       </div>
       <div slot="prepend">
         <st-search-panel>
           <div :class="basic('select')">
             <span style="width:90px;">用户级别：</span>
-            <st-search-radio v-model="query.member_level" :list="memberLevel"/>
+            <st-search-radio v-model="query.member_level" :list="memberLevel" />
           </div>
           <div :class="basic('select')">
             <span style="width:90px;">来源方式：</span>
-            <st-search-radio :class="basic('select-radio')" v-model="query.register_way" :list="sourceList"/>
+            <st-search-radio
+              :class="basic('select-radio')"
+              v-model="query.register_way"
+              :list="sourceList"
+            />
           </div>
           <div :class="basic('select')">
             <span style="width:90px;">注册时间：</span>
-            <st-range-picker :disabledDays="180" :value="selectTime"></st-range-picker>
+            <st-range-picker
+              :disabledDays="180"
+              :value="selectTime"
+            ></st-range-picker>
           </div>
           <div slot="more">
             <div :class="basic('select')">
               <span style="width:90px;">入会时间：</span>
-              <st-range-picker :disabledDays="180" :value="selectMemberTime"></st-range-picker>
+              <st-range-picker
+                :disabledDays="180"
+                :value="selectMemberTime"
+              ></st-range-picker>
             </div>
             <div :class="basic('select')">
               <span style="width:90px;">员工跟进：</span>
-              <st-search-radio v-model="query.is_follow" :list="isFollow"/>
+              <st-search-radio v-model="query.is_follow" :list="isFollow" />
             </div>
           </div>
           <div slot="button">
-            <st-button type="primary" @click="onSearchNative" :loading="loading.getListInfo">查询</st-button>
+            <st-button
+              type="primary"
+              @click="onSearchNative"
+              :loading="loading.getListInfo"
+            >
+              查询
+            </st-button>
             <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
           </div>
         </st-search-panel>
       </div>
       <div class="mg-t24 mg-b16">
-        <st-button type="primary" @click="addUser()" class="shop-member-list-button" v-if="auth.add" icon='add'>
+        <st-button
+          type="primary"
+          @click="addUser()"
+          class="shop-member-list-button"
+          v-if="auth.add"
+          icon="add"
+        >
           添加用户
         </st-button>
         <!-- NOTE: 导入 -->
@@ -86,23 +112,25 @@
           <st-button
             v-if="auth.bindCoach && auth.bindSalesman"
             class="shop-member-list-button"
-            :disabled="selectedRows.length > 0 ? false :true"
-          >分配员工</st-button>
+            :disabled="selectedRows.length > 0 ? false : true"
+          >
+            分配员工
+          </st-button>
         </a-popover>
         <!-- NOTE: 导出 -->
         <!-- <st-button v-if="auth.export" :disabled='isSelectedDisabled' class="shop-member-list-button">批量导出</st-button> -->
       </div>
       <st-table
         :columns="columns"
-        :scroll="{x:1400}"
-        :alertSelection="{onReset:onSelectionReset}"
-        :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
+        :scroll="{ x: 1400 }"
+        :alertSelection="{ onReset: onSelectionReset }"
+        :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }"
         rowKey="member_id"
         :page="page"
         @change="onTableChange"
         :dataSource="list"
       >
-        <div slot="image_face" slot-scope="text,record">
+        <div slot="image_face" slot-scope="text, record">
           <span class="st-preview-item" v-viewer>
             <img
               v-if="record.image_face"
@@ -112,31 +140,81 @@
             />
           </span>
         </div>
-        <div slot="member_name" slot-scope="text,record">
-          <a href="javascript:;" v-if="record.auth['shop:member:member|get']" @click="infoFunc(record)">{{text}}</a>
-          <span v-else>{{text}}</span>
+        <div slot="member_name" slot-scope="text, record">
+          <a
+            href="javascript:;"
+            v-if="record.auth['shop:member:member|get']"
+            @click="infoFunc(record)"
+          >
+            {{ text }}
+          </a>
+          <span v-else>{{ text }}</span>
         </div>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
-            <a v-if="record.auth['shop:member:member|get']" @click="infoFunc(record)">详情</a>
-            <a v-if="record.auth['shop:member:member|edit']" @click="edit(record)">编辑</a>
-            <a v-if="record.auth['shop:member:member|bind_coach']" @click="onDistributionCoach(record)">分配教练</a>
-            <a v-if="record.auth['shop:member:member|bind_salesman']" @click="onDistributionSale(record)">分配销售</a>
-            <a v-if="record.auth['shop:member:member|bind_card']" v-modal-link="{
-               name: 'shop-binding-entity-card',
-               props:{record},
-               on: {
-                 success: refeshPage
-               }
-            }">绑实体卡</a>
-            <a v-if="record.auth['shop:member:member|rebind_card']" v-modal-link="{ name: 'shop-missing-card', props:{record}}">重绑实体卡</a>
+            <a
+              v-if="record.auth['shop:member:member|get']"
+              @click="infoFunc(record)"
+            >
+              详情
+            </a>
+            <a
+              v-if="record.auth['shop:member:member|edit']"
+              @click="edit(record)"
+            >
+              编辑
+            </a>
+            <a
+              v-if="record.auth['shop:member:member|bind_coach']"
+              @click="onDistributionCoach(record)"
+            >
+              分配教练
+            </a>
+            <a
+              v-if="record.auth['shop:member:member|bind_salesman']"
+              @click="onDistributionSale(record)"
+            >
+              分配销售
+            </a>
+            <a
+              v-if="record.auth['shop:member:member|bind_card']"
+              v-modal-link="{
+                name: 'shop-binding-entity-card',
+                props: { record },
+                on: {
+                  success: refeshPage
+                }
+              }"
+            >
+              绑实体卡
+            </a>
+            <a
+              v-if="record.auth['shop:member:member|rebind_card']"
+              v-modal-link="{ name: 'shop-missing-card', props: { record } }"
+            >
+              重绑实体卡
+            </a>
             <!-- <a v-if="record.auth['shop:member:member|transfer']" v-modal-link="{ name: 'shop-transfer-shop', props:{record}, on: {
                  success: refeshPage
                } }">转店</a> -->
-            <a v-if="record.auth['shop:member:member|frozen']" v-modal-link="{ name: 'shop-frozen', props:{record}, on: {
-                 success: refeshPage
-               } }">冻结用户</a>
-            <a v-if="record.auth['shop:member:member|unbind_wechat']" @click="onRemoveBind(record)">解除微信绑定</a>
+            <a
+              v-if="record.auth['shop:member:member|frozen']"
+              v-modal-link="{
+                name: 'shop-frozen',
+                props: { record },
+                on: {
+                  success: refeshPage
+                }
+              }"
+            >
+              冻结用户
+            </a>
+            <a
+              v-if="record.auth['shop:member:member|unbind_wechat']"
+              @click="onRemoveBind(record)"
+            >
+              解除微信绑定
+            </a>
           </st-table-actions>
         </div>
       </st-table>
@@ -196,7 +274,7 @@ export default {
           disabled: false,
           value: null,
           format: 'YYYY-MM-DD',
-          change: ($event) => { }
+          change: $event => {}
         },
         endTime: {
           showTime: false,
@@ -204,7 +282,7 @@ export default {
           disabled: false,
           value: null,
           format: 'YYYY-MM-DD',
-          change: ($event) => {}
+          change: $event => {}
         }
       },
       selectMemberTime: {
@@ -215,7 +293,7 @@ export default {
           disabled: false,
           value: null,
           format: 'YYYY-MM-DD',
-          change: ($event) => { }
+          change: $event => {}
         },
         endTime: {
           showTime: false,
@@ -223,7 +301,7 @@ export default {
           disabled: false,
           value: null,
           format: 'YYYY-MM-DD',
-          change: ($event) => {}
+          change: $event => {}
         }
       }
     }
@@ -248,11 +326,17 @@ export default {
     },
     defaultRegValue() {
       if (!this.query.register_start_time) return []
-      return [moment(this.query.register_start_time, this.dateFormat), moment(this.query.register_stop_time, this.dateFormat)]
+      return [
+        moment(this.query.register_start_time, this.dateFormat),
+        moment(this.query.register_stop_time, this.dateFormat)
+      ]
     },
     defaultBeMemberValue() {
       if (!this.query.be_member_start_time) return null
-      return [moment(this.query.be_member_start_time, this.dateFormat), moment(this.query.be_member_stop_time, this.dateFormat)]
+      return [
+        moment(this.query.be_member_start_time, this.dateFormat),
+        moment(this.query.be_member_stop_time, this.dateFormat)
+      ]
     },
     sourceList() {
       let list = [{ value: -1, label: '全部' }]
@@ -286,10 +370,18 @@ export default {
     },
     // 查询
     onSearchNative() {
-      this.query.register_start_time = this.selectTime.startTime.value ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}` : ''
-      this.query.register_stop_time = this.selectTime.endTime.value ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}` : ''
-      this.query.be_member_start_time = this.selectMemberTime.startTime.value ? `${this.selectMemberTime.startTime.value.format('YYYY-MM-DD')}` : ''
-      this.query.be_member_stop_time = this.selectMemberTime.endTime.value ? `${this.selectMemberTime.endTime.value.format('YYYY-MM-DD')}` : ''
+      this.query.register_start_time = this.selectTime.startTime.value
+        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')}`
+        : ''
+      this.query.register_stop_time = this.selectTime.endTime.value
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')}`
+        : ''
+      this.query.be_member_start_time = this.selectMemberTime.startTime.value
+        ? `${this.selectMemberTime.startTime.value.format('YYYY-MM-DD')}`
+        : ''
+      this.query.be_member_stop_time = this.selectMemberTime.endTime.value
+        ? `${this.selectMemberTime.endTime.value.format('YYYY-MM-DD')}`
+        : ''
       this.onSearch()
     },
     // 设置searchData
@@ -394,7 +486,10 @@ export default {
       })
     },
     edit(record) {
-      this.$router.push({ name: 'shop-member-edit', query: { id: record.member_id } })
+      this.$router.push({
+        name: 'shop-member-edit',
+        query: { id: record.member_id }
+      })
     },
     addUser() {
       this.$router.push({ name: 'shop-member-add' })

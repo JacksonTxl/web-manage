@@ -192,17 +192,13 @@ export default {
         components: {
           StHelpTooltip
         },
-        render: h => (
-          <st-help-tooltip id="TBDAR002"></st-help-tooltip>
-        )
+        render: h => <st-help-tooltip id="TBDAR002" />
       }).$mount('#legend-1')
       new Vue({
         components: {
           StHelpTooltip
         },
-        render: h => (
-          <st-help-tooltip id="TBDAR001"></st-help-tooltip>
-        )
+        render: h => <st-help-tooltip id="TBDAR001" />
       }).$mount('#legend-5')
     }
   },

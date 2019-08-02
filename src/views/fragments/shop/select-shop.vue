@@ -32,18 +32,13 @@
           </td>
         </tr>
         <template v-if="list.length">
-          <tr
-            v-for="(item, index) in list"
-            :key="index"
-          >
-            <td>{{item.province}}</td>
-            <td>{{item.city}}</td>
-            <td>{{item.district}}</td>
-            <td>{{item.shop_name}}</td>
+          <tr v-for="(item, index) in list" :key="index">
+            <td>{{ item.province }}</td>
+            <td>{{ item.city }}</td>
+            <td>{{ item.district }}</td>
+            <td>{{ item.shop_name }}</td>
             <td v-if="!disabled">
-              <a
-                @click="delShopTableRecord(item.shop_id)"
-              >
+              <a @click="delShopTableRecord(item.shop_id)">
                 删除
               </a>
             </td>
@@ -52,12 +47,11 @@
         <template v-else>
           <tr>
             <td :colspan="colspanNum">
-              <st-no-data/>
+              <st-no-data />
             </td>
           </tr>
         </template>
       </tbody>
-
     </st-form-table>
   </div>
 </template>
@@ -113,11 +107,13 @@ export default {
       if (!shopIds.length) {
         return
       }
-      this.selectService.getShopBasic({
-        shop_ids: shopIds
-      }).subscribe(res => {
-        this.list = res.shops
-      })
+      this.selectService
+        .getShopBasic({
+          shop_ids: shopIds
+        })
+        .subscribe(res => {
+          this.list = res.shops
+        })
     },
     delShopTableRecord(shopId) {
       const { list, checkedShopIds } = this

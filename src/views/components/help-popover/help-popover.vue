@@ -5,7 +5,7 @@
     :overlayClassName="b()"
     v-bind="$attrs"
     v-on="$listeners"
-    :overlayStyle="{maxWidth}"
+    :overlayStyle="{ maxWidth }"
   >
     <div :class="b('title')" slot="title">
       <slot name="title"></slot>

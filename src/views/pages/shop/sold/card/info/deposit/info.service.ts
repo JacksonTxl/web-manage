@@ -11,14 +11,16 @@ export class InfoService implements RouteGuard {
   auth$ = new State({})
   cardId = ''
   constructor(private cardApi: CardApi, private authService: AuthService) {}
-  getInfo(id:string, type: string) {
-    return this.cardApi.getCardInfo(id, type).pipe(tap((res:any) => {
-      res = this.authService.filter(res, 'auth')
-      this.info$.commit(() => res.info)
-      this.auth$.commit(() => res.auth)
-    }))
+  getInfo(id: string, type: string) {
+    return this.cardApi.getCardInfo(id, type).pipe(
+      tap((res: any) => {
+        res = this.authService.filter(res, 'auth')
+        this.info$.commit(() => res.info)
+        this.auth$.commit(() => res.auth)
+      })
+    )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next: ()=>{}) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
     this.cardId = to.meta.query.id
     this.getInfo(to.meta.query.id, 'deposit').subscribe(() => {
       next()

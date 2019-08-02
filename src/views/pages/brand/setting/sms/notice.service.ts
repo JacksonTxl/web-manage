@@ -22,7 +22,7 @@ export class NoticeService extends Store<SetState> {
       })
     )
   }
-  putNotice(params:PutNoticeParams) {
+  putNotice(params: PutNoticeParams) {
     return this.NoticeApi.putNotice(params).pipe(tap((res: any) => {}))
   }
 }

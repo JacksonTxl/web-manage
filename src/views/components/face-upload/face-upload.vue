@@ -7,8 +7,8 @@
     >
       <img
         class="st-face-upload__item-img"
-        :src="(item[imageUrl] || item[imageKey])"
-        :data-src="(item[imageUrl] || item[imageKey])"
+        :src="item[imageUrl] || item[imageKey]"
+        :data-src="item[imageUrl] || item[imageKey]"
         :style="sizeStyle"
       />
       <slot name="item-extra" :item="item" :index="index"></slot>
@@ -25,8 +25,12 @@
     >
       <div class="container">
         <a-spin :spinning="isLoading" :tip="progress + '%'">
-          <a-icon type="plus-circle" theme="filled" :style="{fontSize:'36px', color: '#9BACB9' }" />
-          <div class="placeholder">{{placeholder}}</div>
+          <a-icon
+            type="plus-circle"
+            theme="filled"
+            :style="{ fontSize: '36px', color: '#9BACB9' }"
+          />
+          <div class="placeholder">{{ placeholder }}</div>
         </a-spin>
       </div>
     </div>

@@ -1,5 +1,13 @@
 <template>
-  <a-input :placeholder="placeholder" type="text" :value="number" @change="numberChange" @blur="numberBlur" :disabled="disabled" maxlength="12">
+  <a-input
+    :placeholder="placeholder"
+    type="text"
+    :value="number"
+    @change="numberChange"
+    @blur="numberBlur"
+    :disabled="disabled"
+    maxlength="12"
+  >
     <template slot="addonAfter">
       <slot name="addonAfter"></slot>
     </template>
@@ -103,7 +111,11 @@ export default {
     },
     numberChange(e) {
       // 控制不能输入非数字
-      if (!this.rules.number.test(e.target.value) && e.target.value !== '' && e.target.value !== '.') {
+      if (
+        !this.rules.number.test(e.target.value) &&
+        e.target.value !== '' &&
+        e.target.value !== '.'
+      ) {
         return
       }
       this.number = `${e.target.value}`

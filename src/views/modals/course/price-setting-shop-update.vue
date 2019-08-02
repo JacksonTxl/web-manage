@@ -5,7 +5,8 @@
     @ok="onOk"
     okText="完成"
     width="878px"
-    v-model='show'>
+    v-model="show"
+  >
     <set-price :value="priceList" @change="onPriceGradientChange"></set-price>
   </st-modal>
 </template>
@@ -42,10 +43,15 @@ export default {
   },
   methods: {
     onOk() {
-      this.listService.settingCoursePrice({ id: this.id, params: { price_gradient: this.priceGradient } }).subscribe(res => {
-        this.show = false
-        this.$router.push({ force: true })
-      })
+      this.listService
+        .settingCoursePrice({
+          id: this.id,
+          params: { price_gradient: this.priceGradient }
+        })
+        .subscribe(res => {
+          this.show = false
+          this.$router.push({ force: true })
+        })
     },
     onPriceGradientChange(val) {
       this.priceGradient = val

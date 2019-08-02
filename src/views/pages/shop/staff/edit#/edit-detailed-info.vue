@@ -3,7 +3,10 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="毕业院校">
-          <a-input placeholder="支持中英文、数字,不超过100个字" v-decorator="rules.graduated_school" />
+          <a-input
+            placeholder="支持中英文、数字,不超过100个字"
+            v-decorator="rules.graduated_school"
+          />
         </st-form-item>
         <st-form-item label="学历">
           <a-select placeholder="请选择" v-decorator="rules.education">
@@ -11,7 +14,9 @@
               v-for="(item, key) in enums.education.value"
               :value="+key"
               :key="key"
-            >{{item}}</a-select-option>
+            >
+              {{ item }}
+            </a-select-option>
           </a-select>
         </st-form-item>
         <st-form-item label="生日">
@@ -23,16 +28,24 @@
               v-for="(item, key) in enums.marry_status.value"
               :value="+key"
               :key="key"
-            >{{item}}</a-select-option>
+            >
+              {{ item }}
+            </a-select-option>
           </a-select>
         </st-form-item>
       </a-col>
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="毕业时间">
-          <a-date-picker style="width:100%" v-decorator="rules.graduation_time" />
+          <a-date-picker
+            style="width:100%"
+            v-decorator="rules.graduation_time"
+          />
         </st-form-item>
         <st-form-item label="专业">
-          <a-input placeholder="请输入专业名称" v-decorator="rules.profession" />
+          <a-input
+            placeholder="请输入专业名称"
+            v-decorator="rules.profession"
+          />
         </st-form-item>
         <st-form-item label="籍贯">
           <a-input placeholder="请输入籍贯" v-decorator="rules.native_place" />
@@ -43,7 +56,9 @@
               v-for="(item, key) in enums.children_status.value"
               :value="+key"
               :key="key"
-            >{{item}}</a-select-option>
+            >
+              {{ item }}
+            </a-select-option>
           </a-select>
         </st-form-item>
       </a-col>
@@ -77,12 +92,12 @@
     <a-row :gutter="8">
       <a-col :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" class="mg-r16" ghost @click="onClickBack">上一步</st-button>
-          <st-button
-            class="mg-l16"
-            @click="goNext"
-            type="primary"
-          >{{!isPrivateCoach?'保存':'保存，继续填写'}}</st-button>
+          <st-button type="primary" class="mg-r16" ghost @click="onClickBack">
+            上一步
+          </st-button>
+          <st-button class="mg-l16" @click="goNext" type="primary">
+            {{ !isPrivateCoach ? '保存' : '保存，继续填写' }}
+          </st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -182,23 +197,23 @@ export default {
       data.province_id = get(data, 'provinces.0')
       data.city_id = get(data, 'provinces.1')
       data.district_id = get(data, 'provinces.2')
-      data.birthday &&
-        (data.birthday = data.birthday.format('YYYY-MM-DD'))
+      data.birthday && (data.birthday = data.birthday.format('YYYY-MM-DD'))
       data.birthday &&
         (data.graduation_time = data.graduation_time.format('YYYY-MM-DD'))
 
-      this.service.updateDetailedInfo(this.data.staff_id, data).subscribe(() => {
-        if (!this.isPrivateCoach) {
-          this.$router.push({ name: 'shop-staff-list' })
-        } else {
-          this.$emit('gonext')
-          this.$emit('updateStaffInfo')
-        }
-      })
+      this.service
+        .updateDetailedInfo(this.data.staff_id, data)
+        .subscribe(() => {
+          if (!this.isPrivateCoach) {
+            this.$router.push({ name: 'shop-staff-list' })
+          } else {
+            this.$emit('gonext')
+            this.$emit('updateStaffInfo')
+          }
+        })
     }
   }
 }
 </script>
 
-<style>
-</style>
+<style></style>

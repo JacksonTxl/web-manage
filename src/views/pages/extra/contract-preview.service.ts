@@ -5,9 +5,9 @@ import { State } from 'rx-state'
 
 @Injectable()
 export class ContractPreviewService {
-  info$ = new State({});
-  constructor(private contractApi: ContractApi) { }
-  getInfo(id:ID) {
+  info$ = new State({})
+  constructor(private contractApi: ContractApi) {}
+  getInfo(id: ID) {
     return this.contractApi.getInfo(id).pipe(
       tap(res => {
         this.info$.commit(() => res)

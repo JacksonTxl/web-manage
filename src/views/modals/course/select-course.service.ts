@@ -7,7 +7,7 @@ import { PackageApi, GetCourseInput } from '@/api/v1/course/package'
 export class SelectCourseService {
   courseTypeList$ = new State({})
   loading$ = new State({})
-  constructor(private courseApi: CourseApi, private packageApi:PackageApi) {}
+  constructor(private courseApi: CourseApi, private packageApi: PackageApi) {}
   @Effect()
   getCourseList(params: GetCourseInput) {
     return this.packageApi.getCourseList(params)

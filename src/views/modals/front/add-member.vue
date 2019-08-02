@@ -1,24 +1,32 @@
 <template>
   <st-modal
-  title="添加用户"
-  v-model="show"
-  width="484px"
-  wrapClassName="modal-front-add-member">
+    title="添加用户"
+    v-model="show"
+    width="484px"
+    wrapClassName="modal-front-add-member"
+  >
     <st-form :form="form" labelWidth="66px">
-        <st-form-item label="用户姓名" required>
-            <a-input
-            v-decorator="['name',{rules:[{required: true,message:'请输入用户姓名'}]}]"
-            placeholder="请输入用户姓名"></a-input>
-        </st-form-item>
-        <st-form-item label="手机号" required>
-            <a-input
-            v-decorator="['mobile',{rules:[{validator:mobile_validator}]}]"
-            placeholder="请输入手机号"></a-input>
-        </st-form-item>
+      <st-form-item label="用户姓名" required>
+        <a-input
+          v-decorator="[
+            'name',
+            { rules: [{ required: true, message: '请输入用户姓名' }] }
+          ]"
+          placeholder="请输入用户姓名"
+        ></a-input>
+      </st-form-item>
+      <st-form-item label="手机号" required>
+        <a-input
+          v-decorator="['mobile', { rules: [{ validator: mobile_validator }] }]"
+          placeholder="请输入手机号"
+        ></a-input>
+      </st-form-item>
     </st-form>
     <template slot="footer">
-      <st-button @click="show=false">取消</st-button>
-      <st-button @click="onSubmit" :loading="loading.addMember" type="primary">确定</st-button>
+      <st-button @click="show = false">取消</st-button>
+      <st-button @click="onSubmit" :loading="loading.addMember" type="primary">
+        确定
+      </st-button>
     </template>
   </st-modal>
 </template>
@@ -63,13 +71,18 @@ export default {
     onSubmit() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.addMemberService.addMember({
-            member_name: values.name,
-            mobile: values.mobile
-          }).subscribe(res => {
-            this.show = false
-            this.$emit('success', { id: res.info.member_id, name: values.name })
-          })
+          this.addMemberService
+            .addMember({
+              member_name: values.name,
+              mobile: values.mobile
+            })
+            .subscribe(res => {
+              this.show = false
+              this.$emit('success', {
+                id: res.info.member_id,
+                name: values.name
+              })
+            })
         }
       })
     }

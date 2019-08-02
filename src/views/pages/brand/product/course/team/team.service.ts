@@ -3,17 +3,23 @@ import { State, Computed, Effect } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
 
-import { TeamApi, GetTeamCourseDetailQuery, GetTrainPurposeQuery, GetTeamCourseTypeQuery } from '@/api/v1/course/team'
+import {
+  TeamApi,
+  GetTeamCourseDetailQuery,
+  GetTrainPurposeQuery,
+  GetTeamCourseTypeQuery
+} from '@/api/v1/course/team'
 
-interface SetState { // 注解formData类型
-    formData : Object
+interface SetState {
+  // 注解formData类型
+  formData: Object
 }
 @Injectable()
 export class TeamService extends Store<SetState> {
   state$: State<SetState>
   formData$: Computed<Object>
 
-  constructor(protected teamApi : TeamApi) {
+  constructor(protected teamApi: TeamApi) {
     super() // bind this
 
     this.state$ = new State({

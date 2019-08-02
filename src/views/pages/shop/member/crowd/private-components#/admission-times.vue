@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
@@ -7,12 +6,14 @@
       <input-number
         v-model="value.getData.remain_enter_times.remain_times"
         :company="'次'"
-        :minMax="{min:0,max:1000}"
+        :minMax="{ min: 0, max: 1000 }"
       ></input-number>
     </div>
     <div style="display: flex;align-items: center;">
       <span style="margin-right:16px">时间范围</span>
-      <time-day v-model="value.getData.remain_enter_times.select_time"></time-day>
+      <time-day
+        v-model="value.getData.remain_enter_times.select_time"
+      ></time-day>
     </div>
   </div>
 </template>

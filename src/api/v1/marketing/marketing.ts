@@ -17,24 +17,24 @@ export interface AddMarketingCouponParams {
   person_limit: number
 }
 export interface GetInviteTableInput {
-  page:number
-  size:number
+  page: number
+  size: number
 }
 
 export interface EditMarketingCouponParams {
-  id: number;
-  before_number: number;
-  after_number: number;
+  id: number
+  before_number: number
+  after_number: number
 }
 export interface InviteCouponListInput {
-  coupon_name?:string
+  coupon_name?: string
 }
 export interface SetInviteEditInput {
-  activity_status:number
-  invitee_coupon_id:number
-  invitee_coupon_num:number
-  inviter_coupon_id:number
-  inviter_coupon_num:number
+  activity_status: number
+  invitee_coupon_id: number
+  invitee_coupon_num: number
+  inviter_coupon_id: number
+  inviter_coupon_num: number
   invite_poster: object
 }
 export class MarketingApi extends Api {
@@ -89,13 +89,13 @@ export class MarketingApi extends Api {
   /**
    * 邀请有礼活动效果数据
    */
-  getInviteReport(query:GetInviteTableInput) {
+  getInviteReport(query: GetInviteTableInput) {
     return this.http.get(`/v1/plugin/invite/report`, { query })
   }
   /**
    * 邀请有礼邀请数据
    */
-  getInviteInvitee(query:GetInviteTableInput) {
+  getInviteInvitee(query: GetInviteTableInput) {
     return this.http.get(`/v1/plugin/invite/invitee`, { query })
   }
   /**
@@ -107,19 +107,19 @@ export class MarketingApi extends Api {
   /**
    * 邀请有礼编辑
    */
-  setInviteEdit(params:SetInviteEditInput) {
+  setInviteEdit(params: SetInviteEditInput) {
     return this.http.put(`/v1/plugin/invite`, { params })
   }
   /**
    * 邀请有礼新增
    */
-  setInviteAdd(params:SetInviteEditInput) {
+  setInviteAdd(params: SetInviteEditInput) {
     return this.http.post(`/v1/plugin/invite`, { params })
   }
   /**
    *  邀请有礼优惠券列表
    */
-  getInviteCouponList(query:InviteCouponListInput) {
+  getInviteCouponList(query: InviteCouponListInput) {
     return this.http.get(`/v1/plugin/coupon/activity`, { query })
   }
   /**

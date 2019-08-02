@@ -1,5 +1,10 @@
 <template>
-  <st-modal :title="`给选中的${memberIds.length}个人添加标签`" @ok="save" v-model="show" width="328px">
+  <st-modal
+    :title="`给选中的${memberIds.length}个人添加标签`"
+    @ok="save"
+    v-model="show"
+    width="328px"
+  >
     <section>
       <a-select
         v-model="selectLable"
@@ -10,22 +15,32 @@
         @change="changeFunc"
       >
         <div slot="dropdownRender" slot-scope="menu">
-          <v-nodes :vnodes="menu"/>
-          <a-divider style="margin: 4px 0;"/>
+          <v-nodes :vnodes="menu" />
+          <a-divider style="margin: 4px 0;" />
           <div style="padding: 8px; cursor: pointer;" @click="addLable">
             <a
-              v-modal-link=" { name: 'shop-new-lable',on:{done: onModalTest }}"
+              v-modal-link="{
+                name: 'shop-new-lable',
+                on: { done: onModalTest }
+              }"
               @click="addLable"
             >
-              <a-icon type="plus"/>标签
+              <a-icon type="plus" />
+              标签
             </a>
           </div>
         </div>
-        <a-select-option v-for="item in lableList" :value="item.id" :key="item.id">{{item.tag_name}}</a-select-option>
+        <a-select-option
+          v-for="item in lableList"
+          :value="item.id"
+          :key="item.id"
+        >
+          {{ item.tag_name }}
+        </a-select-option>
       </a-select>
     </section>
     <!-- <section> -->
-      <!-- <footer class="footer">
+    <!-- <footer class="footer">
         <a-button class="cancel" @click="show=false">取消</a-button>
         <a-button type="danger">确认停售</a-button>
       </footer>-->

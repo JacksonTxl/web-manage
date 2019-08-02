@@ -1,25 +1,25 @@
 .item {
   cursor: pointer;
 }
-.tree-node{
+.tree-node {
   width: 100%;
   overflow: hidden;
   position: relative;
-  .tree-input{
+  .tree-input {
     .s(144px, 28px);
   }
-  .edit-box{
+  .edit-box {
     text-align: right;
     .fz(12px);
     box-sizing: border-box;
     .edit {
-      color: #1890FF;
+      color: #1890ff;
     }
-    .st-icon{
-      color: #CDD4DF !important;
+    .st-icon {
+      color: #cdd4df !important;
     }
   }
-  &__content{
+  &__content {
     display: flex;
     justify-items: center;
     align-items: center;
@@ -27,52 +27,52 @@
     height: 36px;
     margin-bottom: 1px;
   }
-  &__content:hover{
-    background: rgba(240,246,255,1);
+  &__content:hover {
+    background: rgba(240, 246, 255, 1);
   }
-  .active{
-    background: rgba(240,246,255,1);
-    &:hover{
-      background:rgba(240,246,255,1);
+  .active {
+    background: rgba(240, 246, 255, 1);
+    &:hover {
+      background: rgba(240, 246, 255, 1);
     }
   }
   .active ~ .tree-node__content {
-    background:rgba(240,246,255,1);
-    .st-icon{
-      color: #CDD4DF !important;
+    background: rgba(240, 246, 255, 1);
+    .st-icon {
+      color: #cdd4df !important;
     }
     .fz(12px);
     box-sizing: border-box;
     .edit {
-      color: #1890FF;
+      color: #1890ff;
     }
   }
-  .tree-name{
+  .tree-name {
     .fz(12px);
-    font-weight:400;
-    color:rgba(0,0,0,0.85);
-    line-height:17px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 17px;
   }
-  .tree-opreation{
+  .tree-opreation {
     position: absolute;
-    top:8px;
+    top: 8px;
     right: 12px;
     z-index: 1;
   }
   // .tree-opreation.active .st-icon{
   //   color: #fff !important;
   // }
-  .tree-switch{
-    .s(16px,16px);
+  .tree-switch {
+    .s(16px, 16px);
     .mg-r(8px);
     .lh(16px);
     font-size: 18px;
     .ta-c;
     display: block;
-    background:rgba(0,0,0,0.05);
-    color: rgba(0,0,0,0.25);
-    &__empty{
-      .s(16px,16px);
+    background: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.25);
+    &__empty {
+      .s(16px, 16px);
       display: block;
       .mg-r(8px);
     }

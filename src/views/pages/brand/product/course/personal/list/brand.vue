@@ -1,16 +1,35 @@
 <template>
   <div class="page-shop-sale-list-brand">
     <header>
-      <div class="page-shop-sale-list-brand__opreation page-shop-sale-list__opreation">
+      <div
+        class="page-shop-sale-list-brand__opreation page-shop-sale-list__opreation"
+      >
         <st-button
           icon="add"
           type="primary"
           v-if="auth.add"
           @click="addPersonalCourse"
-        >新增私教课程</st-button>
+        >
+          新增私教课程
+        </st-button>
         <div>
-          <a-select showSearch :defaultValue="defaultValue" v-model="query.category_id" :filterOption="filterOption" optionFilterProp="children" class="mg-r8" style="width: 160px" @change="onChange">
-            <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
+          <a-select
+            showSearch
+            :defaultValue="defaultValue"
+            v-model="query.category_id"
+            :filterOption="filterOption"
+            optionFilterProp="children"
+            class="mg-r8"
+            style="width: 160px"
+            @change="onChange"
+          >
+            <a-select-option
+              v-for="category in categoryList"
+              :key="category.id"
+              :value="category.id"
+            >
+              {{ category.setting_name }}
+            </a-select-option>
           </a-select>
         </div>
       </div>
@@ -38,7 +57,11 @@ export default {
   data() {
     return {
       defaultValue: -1,
-      courseStatus: [{ label: '所有状态', value: -1 }, { label: '有效', value: 1 }, { label: '无效', value: 0 }]
+      courseStatus: [
+        { label: '所有状态', value: -1 },
+        { label: '有效', value: 1 },
+        { label: '无效', value: 0 }
+      ]
     }
   },
   rxState() {
@@ -60,12 +83,18 @@ export default {
     },
     onSetAvailable(record) {
       const available = record.is_available.id === 1 ? 0 : 1
-      this.brandService.setAvailable({ course_id: record.course_id, available }).subscribe(() => {
-        this.$router.push({ query: this.query, force: true })
-      })
+      this.brandService
+        .setAvailable({ course_id: record.course_id, available })
+        .subscribe(() => {
+          this.$router.push({ query: this.query, force: true })
+        })
     },
     filterOption(input, option) {
-      return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      return (
+        option.componentOptions.children[0].text
+          .toLowerCase()
+          .indexOf(input.toLowerCase()) >= 0
+      )
     },
     onChange() {
       this.$router.push({ query: { ...this.query, course_name: '' } })

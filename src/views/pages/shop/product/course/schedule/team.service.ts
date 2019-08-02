@@ -6,8 +6,12 @@ export class TeamService implements RouteGuard {
   constructor(private redirectService: RedirectService) {}
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     let weekOfday: any = moment().format('E')
-    let start_date: string = moment().subtract(weekOfday - 1, 'days').format('YYYY-MM-DD')
-    let end_date: string = moment().add(7 - weekOfday, 'days').format('YYYY-MM-DD')
+    let start_date: string = moment()
+      .subtract(weekOfday - 1, 'days')
+      .format('YYYY-MM-DD')
+    let end_date: string = moment()
+      .add(7 - weekOfday, 'days')
+      .format('YYYY-MM-DD')
 
     const redirectRouteQuery: any = { start_date, end_date }
     this.redirectService.redirect({

@@ -1,30 +1,32 @@
 <template>
   <st-panel app :class="basic()" class="page-shop-add-unlimit-package">
-    <st-form :form='form' labelWidth="96px">
+    <st-form :form="form" labelWidth="96px">
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="课程包名称" required>
-            {{packageInfo.course_name}}
+            {{ packageInfo.course_name }}
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="18" :xs="22" :offset="1">
           <st-form-item
-          :class="{'st-has-error': !courseIsFirstInput&&courseIsNone}"
-          :help="courseErrorText"
-          required>
+            :class="{ 'st-has-error': !courseIsFirstInput && courseIsNone }"
+            :help="courseErrorText"
+            required
+          >
             <template slot="label">
-              上课范围<st-help-tooltip id="TSCPCF001" />
+              上课范围
+              <st-help-tooltip id="TSCPCF001" />
             </template>
             <div :class="add('course')">
               <st-form-table>
                 <colgroup>
-                  <col style="width:8%;">
-                  <col style="width:16%;">
-                  <col style="width:27%;">
-                  <col style="width:28%;">
-                  <col style="width:21%;">
+                  <col style="width:8%;" />
+                  <col style="width:16%;" />
+                  <col style="width:27%;" />
+                  <col style="width:28%;" />
+                  <col style="width:21%;" />
                 </colgroup>
                 <tr class="bg-thead table-header">
                   <th></th>
@@ -35,34 +37,78 @@
                 </tr>
                 <tbody>
                   <tr class="bg-row-team">
-                    <td class="tg-c"><a-checkbox :defaultChecked="!!packageInfo.is_team" @change="teamCheckboxChange"/></td>
+                    <td class="tg-c">
+                      <a-checkbox
+                        :defaultChecked="!!packageInfo.is_team"
+                        @change="teamCheckboxChange"
+                      />
+                    </td>
                     <td>团体课程</td>
                     <td class="pr-32">
-                      <st-input-number :min="1" :max="99999" @change="courseIsFirstInput=false" v-model="packageData.team_times" :disabled="packageData.is_team===0">
-                        <template slot="addonAfter">节</template>
+                      <st-input-number
+                        :min="1"
+                        :max="99999"
+                        @change="courseIsFirstInput = false"
+                        v-model="packageData.team_times"
+                        :disabled="packageData.is_team === 0"
+                      >
+                        <template slot="addonAfter">
+                          节
+                        </template>
                       </st-input-number>
                     </td>
                     <td class="pr-32">
-                      <st-input-number :min="0" :max="99999.9" @change="courseIsFirstInput=false" v-model="packageData.team_unit_price" :float="true" :disabled="packageData.is_team===0">
-                        <template slot="addonAfter">元</template>
+                      <st-input-number
+                        :min="0"
+                        :max="99999.9"
+                        @change="courseIsFirstInput = false"
+                        v-model="packageData.team_unit_price"
+                        :float="true"
+                        :disabled="packageData.is_team === 0"
+                      >
+                        <template slot="addonAfter">
+                          元
+                        </template>
                       </st-input-number>
                     </td>
-                    <td>{{team_total}}</td>
+                    <td>{{ team_total }}</td>
                   </tr>
                   <tr class="bg-row-personal">
-                    <td class="tg-c"><a-checkbox :defaultChecked="!!packageInfo.is_personal" @change="personalCheckboxChange" /></td>
+                    <td class="tg-c">
+                      <a-checkbox
+                        :defaultChecked="!!packageInfo.is_personal"
+                        @change="personalCheckboxChange"
+                      />
+                    </td>
                     <td>私教课程</td>
                     <td class="pr-32">
-                      <st-input-number :min="1" :max="99999" @change="courseIsFirstInput=false" v-model="packageData.personal_times" :disabled="packageData.is_personal===0">
-                        <template slot="addonAfter">节</template>
+                      <st-input-number
+                        :min="1"
+                        :max="99999"
+                        @change="courseIsFirstInput = false"
+                        v-model="packageData.personal_times"
+                        :disabled="packageData.is_personal === 0"
+                      >
+                        <template slot="addonAfter">
+                          节
+                        </template>
                       </st-input-number>
                     </td>
                     <td class="pr-32">
-                      <st-input-number :min="0" :max="99999.9" @change="courseIsFirstInput=false" v-model="packageData.personal_unit_price" :float="true" :disabled="packageData.is_personal===0">
-                        <template slot="addonAfter">元</template>
+                      <st-input-number
+                        :min="0"
+                        :max="99999.9"
+                        @change="courseIsFirstInput = false"
+                        v-model="packageData.personal_unit_price"
+                        :float="true"
+                        :disabled="packageData.is_personal === 0"
+                      >
+                        <template slot="addonAfter">
+                          元
+                        </template>
                       </st-input-number>
                     </td>
-                    <td>{{personal_total}}</td>
+                    <td>{{ personal_total }}</td>
                   </tr>
                 </tbody>
               </st-form-table>
@@ -72,7 +118,7 @@
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
-          <st-form-item label="总价">{{all_total}}元</st-form-item>
+          <st-form-item label="总价">{{ all_total }}元</st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
@@ -84,10 +130,13 @@
               :max="99999.9"
               v-decorator="[
                 'price',
-                 {rules: [{ required: true, message: '请输入售卖价格' }]}
+                { rules: [{ required: true, message: '请输入售卖价格' }] }
               ]"
-              :float="true">
-              <template slot="addonAfter">元</template>
+              :float="true"
+            >
+              <template slot="addonAfter">
+                元
+              </template>
             </st-input-number>
           </st-form-item>
         </a-col>
@@ -100,7 +149,10 @@
                 <a-date-picker
                   style="width: 100%;"
                   :disabledDate="disabledStartDate"
-                  v-decorator="['start_time',{rules:[{validator:start_time_validator}]}]"
+                  v-decorator="[
+                    'start_time',
+                    { rules: [{ validator: start_time_validator }] }
+                  ]"
                   format="YYYY-MM-DD"
                   placeholder="开始时间"
                   :showToday="false"
@@ -112,7 +164,10 @@
               <a-form-item class="page-a-form">
                 <a-date-picker
                   :disabledDate="disabledEndDate"
-                  v-decorator="['end_time',{rules:[{validator:end_time_validator}]}]"
+                  v-decorator="[
+                    'end_time',
+                    { rules: [{ validator: end_time_validator }] }
+                  ]"
                   format="YYYY-MM-DD"
                   placeholder="结束时间"
                   :showToday="false"
@@ -134,13 +189,24 @@
               :max="99999"
               v-decorator="[
                 'valid_time',
-                 {initialValue: null,rules: [{ required: true, message: '请输入有效时间' }]}
-              ]">
-              <a-select v-model="packageData.valid_time_unit" slot="addonAfter" style="width: 60px">
+                {
+                  initialValue: null,
+                  rules: [{ required: true, message: '请输入有效时间' }]
+                }
+              ]"
+            >
+              <a-select
+                v-model="packageData.valid_time_unit"
+                slot="addonAfter"
+                style="width: 60px"
+              >
                 <a-select-option
-                v-for="(item,index) in unitList"
-                :value="item.value"
-                :key="index" >{{item.label}}</a-select-option>
+                  v-for="(item, index) in unitList"
+                  :value="item.value"
+                  :key="index"
+                >
+                  {{ item.label }}
+                </a-select-option>
               </a-select>
             </st-input-number>
           </st-form-item>
@@ -155,9 +221,15 @@
               :max="99999"
               v-decorator="[
                 'frozen_days',
-                 {initialValue: null,rules: [{ required: true, message: '请输入允许冻结天数' }]}
-              ]">
-              <template slot="addonAfter">天</template>
+                {
+                  initialValue: null,
+                  rules: [{ required: true, message: '请输入允许冻结天数' }]
+                }
+              ]"
+            >
+              <template slot="addonAfter">
+                天
+              </template>
             </st-input-number>
           </st-form-item>
         </a-col>
@@ -166,16 +238,47 @@
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="转让设置">
             <div :class="basic('transfer')">
-              <a-checkbox :class="basic('transfer-checkbox')" :defaultChecked="!!packageInfo.is_allow_transfer" @change="transfer">支持转让</a-checkbox>
+              <a-checkbox
+                :class="basic('transfer-checkbox')"
+                :defaultChecked="!!packageInfo.is_allow_transfer"
+                @change="transfer"
+              >
+                支持转让
+              </a-checkbox>
               <st-input-number
-              :min="0"
-              :max="packageData.transfer_unit===1?100:99999.9"
-              v-decorator="[
-                'transfer_rate',
-                 {rules: [{initialValue: null,required: packageData.is_allow_transfer!==0, message: '请输入转让值数值'}]}
-              ]" :disabled="packageData.is_allow_transfer===0" :float="packageData.transfer_unit===2" :class="basic('transfer-input')" style="padding-right:0;">
-                <a-select :disabled="packageData.is_allow_transfer===0" slot="addonAfter" @change="transferUnitChange" v-model="packageData.transfer_unit" style="width: 60px">
-                  <a-select-option v-for="item in transferUnitList" :key="item.value" :value="+item.value">{{item.label}}</a-select-option>
+                :min="0"
+                :max="packageData.transfer_unit === 1 ? 100 : 99999.9"
+                v-decorator="[
+                  'transfer_rate',
+                  {
+                    rules: [
+                      {
+                        initialValue: null,
+                        required: packageData.is_allow_transfer !== 0,
+                        message: '请输入转让值数值'
+                      }
+                    ]
+                  }
+                ]"
+                :disabled="packageData.is_allow_transfer === 0"
+                :float="packageData.transfer_unit === 2"
+                :class="basic('transfer-input')"
+                style="padding-right:0;"
+              >
+                <a-select
+                  :disabled="packageData.is_allow_transfer === 0"
+                  slot="addonAfter"
+                  @change="transferUnitChange"
+                  v-model="packageData.transfer_unit"
+                  style="width: 60px"
+                >
+                  <a-select-option
+                    v-for="item in transferUnitList"
+                    :key="item.value"
+                    :value="+item.value"
+                  >
+                    {{ item.label }}
+                  </a-select-option>
                 </a-select>
               </st-input-number>
             </div>
@@ -187,10 +290,13 @@
           <st-form-item label="售卖方式" required>
             <a-checkbox-group v-model="packageData.sale_mode">
               <a-checkbox
-              v-for="item in sellTypeList"
-              :key="item.value"
-              :disabled="item.value===2"
-              :value="item.value">{{item.label}}</a-checkbox>
+                v-for="item in sellTypeList"
+                :key="item.value"
+                :disabled="item.value === 2"
+                :value="item.value"
+              >
+                {{ item.label }}
+              </a-checkbox>
             </a-checkbox-group>
           </st-form-item>
         </a-col>
@@ -198,21 +304,26 @@
       <a-row :gutter="8">
         <a-col :lg="22" :xs="22" :offset="1">
           <st-form-item
-          validate-status="error"
-          :help="imageErrorText"
-          label="封面" required>
+            validate-status="error"
+            :help="imageErrorText"
+            label="封面"
+            required
+          >
             <div :class="basic('upload')">
               <st-image-upload
-              :class="basic('st-upload')"
-              :cropperModal="cropperModal"
-              :sizeLimit="5"
-              :list="fileList"
-              @change="fileChange">
+                :class="basic('st-upload')"
+                :cropperModal="cropperModal"
+                :sizeLimit="5"
+                :list="fileList"
+                @change="fileChange"
+              >
                 <i :class="basic('st-upload-icon')"></i>
                 <div :class="basic('st-upload-text')">上传封面</div>
               </st-image-upload>
               <div :class="basic('upload-describe')">
-                <p>图片格式必须为:png,bmp,jpeg,jpg,gif,建议使用png格式图片,以保存最佳效果</p>
+                <p>
+                  图片格式必须为:png,bmp,jpeg,jpg,gif,建议使用png格式图片,以保存最佳效果
+                </p>
                 <p>建议尺寸为750像素X422像素,不可大于2m</p>
               </div>
             </div>
@@ -222,31 +333,38 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="课程包介绍">
-             <st-textarea
-                v-model="packageData.intro"
-                :maxlength="500"
-                class="page-content-card-textarea"
-                placeholder="请输入课程包介绍"
-                />
+            <st-textarea
+              v-model="packageData.intro"
+              :maxlength="500"
+              class="page-content-card-textarea"
+              placeholder="请输入课程包介绍"
+            />
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="备注">
-             <st-textarea
-                v-model="packageData.remarks"
-                :maxlength="500"
-                class="page-content-card-textarea"
-                placeholder="请输入备注"
-                />
+            <st-textarea
+              v-model="packageData.remarks"
+              :maxlength="500"
+              class="page-content-card-textarea"
+              placeholder="请输入备注"
+            />
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label=" ">
-          <st-button type="primary" class="mr-8" @click="save" :loading="editLoading.editPackage">保存</st-button>
+            <st-button
+              type="primary"
+              class="mr-8"
+              @click="save"
+              :loading="editLoading.editPackage"
+            >
+              保存
+            </st-button>
           </st-form-item>
         </a-col>
       </a-row>
@@ -355,12 +473,12 @@ export default {
         this.packageInfo.personal_unit_price = undefined
       }
       this.form.setFieldsValue({
-        'price': this.packageInfo.price,
-        'start_time': moment(this.packageInfo.start_time * 1000),
-        'end_time': moment(this.packageInfo.end_time * 1000),
-        'valid_time': this.packageInfo.valid_time,
-        'frozen_days': this.packageInfo.frozen_days,
-        'transfer_rate': this.packageInfo.transfer_rate
+        price: this.packageInfo.price,
+        start_time: moment(this.packageInfo.start_time * 1000),
+        end_time: moment(this.packageInfo.end_time * 1000),
+        valid_time: this.packageInfo.valid_time,
+        frozen_days: this.packageInfo.frozen_days,
+        transfer_rate: this.packageInfo.transfer_rate
       })
       // 课程范围
       this.packageData.is_team = this.packageInfo.is_team
@@ -399,15 +517,24 @@ export default {
           this.packageData.price = values.price
           this.packageData.valid_time = values.valid_time
           this.packageData.frozen_days = values.frozen_days
-          this.packageData.transfer_rate = this.packageData.is_allow_transfer ? +values.transfer_rate : undefined
-          this.packageData.start_time = `${this.start_time.format('YYYY-MM-DD')}`
+          this.packageData.transfer_rate = this.packageData.is_allow_transfer
+            ? +values.transfer_rate
+            : undefined
+          this.packageData.start_time = `${this.start_time.format(
+            'YYYY-MM-DD'
+          )}`
           this.packageData.end_time = `${this.end_time.format('YYYY-MM-DD')}`
           this.packageData.album_id = this.packageInfo.album_id
           this.packageData.team_unit_price = +this.packageData.team_unit_price
-          this.packageData.personal_unit_price = +this.packageData.personal_unit_price
-          this.editPackageService.editPackage(this.packageData).subscribe(res => {
-            this.$router.push({ path: '/shop/product/course/manage/package/list' })
-          })
+          this.packageData.personal_unit_price = +this.packageData
+            .personal_unit_price
+          this.editPackageService
+            .editPackage(this.packageData)
+            .subscribe(res => {
+              this.$router.push({
+                path: '/shop/product/course/manage/package/list'
+              })
+            })
         }
       })
     },
@@ -415,8 +542,14 @@ export default {
     course_validator() {
       this.courseIsFirstInput = false
       let teamIsOk = this.packageData.is_team ? !!this.team_total : true
-      let personalIsOk = this.packageData.is_personal ? !!this.personal_total : true
-      if (teamIsOk && personalIsOk && !(!this.packageData.is_team && !this.packageData.is_personal)) {
+      let personalIsOk = this.packageData.is_personal
+        ? !!this.personal_total
+        : true
+      if (
+        teamIsOk &&
+        personalIsOk &&
+        !(!this.packageData.is_team && !this.packageData.is_personal)
+      ) {
         // 校验通过
         this.courseIsNone = false
         this.courseErrorText = ''
@@ -472,7 +605,7 @@ export default {
     transferUnitChange() {
       this.packageData.transfer_rate = undefined
       this.form.setFieldsValue({
-        'transfer_rate': undefined
+        transfer_rate: undefined
       })
     },
     // start_time validatorFn
@@ -508,10 +641,28 @@ export default {
       const endValue = this.end_time
       if (!endValue) {
         // 结束时间未选择
-        return startValue.valueOf() < moment().startOf('day').valueOf()
+        return (
+          startValue.valueOf() <
+          moment()
+            .startOf('day')
+            .valueOf()
+        )
       }
-      let start = endValue.valueOf() > moment().add(30, 'y').valueOf() ? moment(endValue).subtract(30, 'y').valueOf() : moment().startOf('day').valueOf()
-      return startValue.valueOf() < start || startValue.valueOf() > moment(endValue).valueOf()
+      let start =
+        endValue.valueOf() >
+        moment()
+          .add(30, 'y')
+          .valueOf()
+          ? moment(endValue)
+              .subtract(30, 'y')
+              .valueOf()
+          : moment()
+              .startOf('day')
+              .valueOf()
+      return (
+        startValue.valueOf() < start ||
+        startValue.valueOf() > moment(endValue).valueOf()
+      )
     },
     // 售卖时间-end
     end_time_change(data) {
@@ -524,9 +675,24 @@ export default {
       const startValue = this.start_time
       if (!startValue) {
         // 开始时间未选择
-        return endValue.valueOf() < moment().startOf('day').valueOf()
+        return (
+          endValue.valueOf() <
+          moment()
+            .startOf('day')
+            .valueOf()
+        )
       }
-      return endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).valueOf() || endValue.valueOf() < moment().startOf('day').valueOf()
+      return (
+        endValue.valueOf() >=
+          moment(startValue)
+            .add(30, 'y')
+            .valueOf() ||
+        endValue.valueOf() < moment(startValue).valueOf() ||
+        endValue.valueOf() <
+          moment()
+            .startOf('day')
+            .valueOf()
+      )
     },
     // moment
     moment
@@ -535,15 +701,26 @@ export default {
     // 团课小计
     team_total() {
       if (+this.packageData.team_times && +this.packageData.team_unit_price) {
-        return this.packageData.team_times * (this.packageData.team_unit_price * 10) / 10
+        return (
+          (this.packageData.team_times *
+            (this.packageData.team_unit_price * 10)) /
+          10
+        )
       } else {
         return 0
       }
     },
     // 私教小计
     personal_total() {
-      if (+this.packageData.personal_times && +this.packageData.personal_unit_price) {
-        return this.packageData.personal_times * (this.packageData.personal_unit_price * 10) / 10
+      if (
+        +this.packageData.personal_times &&
+        +this.packageData.personal_unit_price
+      ) {
+        return (
+          (this.packageData.personal_times *
+            (this.packageData.personal_unit_price * 10)) /
+          10
+        )
       } else {
         return 0
       }

@@ -5,42 +5,42 @@ export interface AddWorkNotesInput {
   content: string
 }
 export interface GetMemberListInput {
-  keyword?:string
+  keyword?: string
 }
 export interface GetEntranceListInput {
-  entry_type?:number
-  keyword?:string
-  page:number
-  size:number
+  entry_type?: number
+  keyword?: string
+  page: number
+  size: number
 }
 export interface SetEntranceLeaveBatchInput {
   ids: Array<number>
 }
 export interface SetEntranceInput {
-  member_id:number
-  cabinet_id?:number
-  proof_type:number
-  proof_value:number
-  seller_id?:number
-  coach_id?:number
+  member_id: number
+  cabinet_id?: number
+  proof_type: number
+  proof_value: number
+  seller_id?: number
+  coach_id?: number
 }
-export interface EditEntranceCabinetInput{
-  id:number
-  cabinet_id:number
+export interface EditEntranceCabinetInput {
+  id: number
+  cabinet_id: number
 }
-export interface EditSellerInput{
-  member_id:number
-  seller_id:number
+export interface EditSellerInput {
+  member_id: number
+  seller_id: number
 }
-export interface EditCoachInput{
-  member_id:number
-  coach_id:number
+export interface EditCoachInput {
+  member_id: number
+  coach_id: number
 }
 export class FrontApi extends Api {
   /**
    * 新增待办
    */
-  addWorkNotes(params:AddWorkNotesInput) {
+  addWorkNotes(params: AddWorkNotesInput) {
     return this.http.post(`/v1/front/notes`, { params })
   }
   /**
@@ -52,7 +52,7 @@ export class FrontApi extends Api {
   /**
    *  完成待办
    */
-  setWorkNote(id:string) {
+  setWorkNote(id: string) {
     return this.http.put(`/v1/front/notes/${id}`)
   }
   /**
@@ -64,25 +64,25 @@ export class FrontApi extends Api {
   /**
    * 搜索会员
    */
-  getMemberList(query:GetMemberListInput) {
+  getMemberList(query: GetMemberListInput) {
     return this.http.get(`/v1/member/options`, { query })
   }
   /**
    * 入场管理列表
    */
-  getEntranceList(query:GetEntranceListInput) {
+  getEntranceList(query: GetEntranceListInput) {
     return this.http.get(`/v1/front/entrance`, { query })
   }
   /**
    * 单个离场
    */
-  setEntranceLeave(id:string) {
+  setEntranceLeave(id: string) {
     return this.http.delete(`/v1/front/entrance/leave/${id}`)
   }
   /**
    * 批量离场
    */
-  setEntranceLeaveBatch(params:SetEntranceLeaveBatchInput) {
+  setEntranceLeaveBatch(params: SetEntranceLeaveBatchInput) {
     return this.http.post(`/v1/front/entrance/batch`, { params })
   }
   /**
@@ -106,43 +106,43 @@ export class FrontApi extends Api {
   /**
    * 前台会员详情
    */
-  getMemberInfo(id:string) {
+  getMemberInfo(id: string) {
     return this.http.get(`/v1/front/entrance/member/${id}`)
   }
   /**
    *  入场凭证列表
    */
-  getEntranceOptionList(id:string) {
+  getEntranceOptionList(id: string) {
     return this.http.get(`/v1/front/entrance/options/${id}`)
   }
   /**
    *  储物柜列表
    */
-  getCabinetList(id:string) {
+  getCabinetList(id: string) {
     return this.http.get(`/v1/front/cabinet/options/${id}`)
   }
   /**
    *  会员入场
    */
-  setEntrance(params:SetEntranceInput) {
+  setEntrance(params: SetEntranceInput) {
     return this.http.post(`/v1/front/entrance`, { params })
   }
   /**
    *  修改入场会员的储物柜
    */
-  editEntranceCabinet(params:EditEntranceCabinetInput) {
+  editEntranceCabinet(params: EditEntranceCabinetInput) {
     return this.http.put(`/v1/front/entrance/cabinet`, { params })
   }
   /**
    *  关联跟进销售
    */
-  editSeller(params:EditSellerInput) {
+  editSeller(params: EditSellerInput) {
     return this.http.put(`/v1/front/entrance/seller`, { params })
   }
   /**
    *  关联跟进销售
    */
-  editCoach(params:EditCoachInput) {
+  editCoach(params: EditCoachInput) {
     return this.http.put(`/v1/front/entrance/coach`, { params })
   }
 }

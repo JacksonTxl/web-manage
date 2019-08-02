@@ -1,25 +1,43 @@
-
-<template >
+<template>
   <div class="page-personal-table schedule-table">
-    <div class="page-personal-table__title pd-x24 pd-y16 schedule-table__title" slot="title">
+    <div
+      class="page-personal-table__title pd-x24 pd-y16 schedule-table__title"
+      slot="title"
+    >
       <a-row :gutter="8">
         <a-col :lg="8">
           <st-button class="mg-r8" type="primary">
-            <a v-modal-link="{ name: 'schedule-personal-inbatch-add', props: { id: 1 } }">批量排期</a>
+            <a
+              v-modal-link="{
+                name: 'schedule-personal-inbatch-add',
+                props: { id: 1 }
+              }"
+            >
+              批量排期
+            </a>
           </st-button>
-          <!-- <st-button>
-            <a v-modal-link="{ name: 'schedule-personal-add', props: { id: 1 } }">添加排期</a>
-          </st-button>-->
+          <st-button>
+            <a
+              v-modal-link="{ name: 'schedule-personal-add', props: { id: 1 } }"
+            >
+              添加排期
+            </a>
+          </st-button>
         </a-col>
         <a-col :lg="7" :offset="2">
-          <date @today="getList" :start="query.start_date" @pre="getList" @next="getList" />
+          <date
+            @today="getList"
+            :start="query.start_date"
+            @pre="getList"
+            @next="getList"
+          />
         </a-col>
         <a-col :lg="7" class="schedule-button">
           <st-button @click="onClickSkipSchedule">私教预约表</st-button>
         </a-col>
       </a-row>
     </div>
-    <a-row class="mg-t8 mg-r24 mg-l24">
+    <!-- <a-row class="mg-t8 mg-r24 mg-l24">
       <st-form-table :page="page" @change="onPageChange" hoverable>
         <thead>
           <tr>
@@ -77,7 +95,7 @@
           <a href="javascript:;" @click="onClickDeleteSchedule(record.schedule_info)">删除</a>
         </div>
       </st-table>
-    </a-row>
+    </a-row> -->
   </div>
 </template>
 

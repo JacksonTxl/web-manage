@@ -1,13 +1,23 @@
 <template>
   <div>
     <st-form-item label="有效时间" labelGutter="12px">
+      <div v-if="emitData.open_type === 1">
+        {{ moment(systemTime).format('YYYY-MM-DD HH:mm:ss') }} 至
+        {{
+          moment(filterTime(cardInfo, emitData, systemTime)).format(
+            'YYYY-MM-DD HH:mm:ss'
+          )
+        }}
+      </div>
+      <div v-if="emitData.open_type === 2">
+        {{ cardInfo.open_type[0].automatic_num }}天内未开卡，则{{
+          cardInfo.open_type[0].automatic_num
+        }}+1天0:00自动开卡
+      </div>
       <div
-        v-if="emitData.open_type === 1"
-      >{{moment(systemTime).format('YYYY-MM-DD HH:mm:ss')}} 至 {{moment(filterTime(cardInfo,emitData,systemTime)).format('YYYY-MM-DD HH:mm:ss')}}</div>
-      <div
-        v-if="emitData.open_type === 2"
-      >{{cardInfo.open_type[0].automatic_num}}天内未开卡，则{{cardInfo.open_type[0].automatic_num}}+1天0:00自动开卡</div>
-      <div v-if="emitData.open_type === 3" style="display: flex;justify-content: space-between;">
+        v-if="emitData.open_type === 3"
+        style="display: flex;justify-content: space-between;"
+      >
         <a-date-picker
           showTime
           format="YYYY-MM-DD HH:mm:ss"
@@ -16,9 +26,13 @@
           @ok="onOk"
         />
         <div v-if="flag">至</div>
-        <div
-          v-if="flag"
-        >{{moment(filterTime(cardInfo,emitData,selectTime)).format('YYYY-MM-DD HH:mm:ss')}}</div>
+        <div v-if="flag">
+          {{
+            moment(filterTime(cardInfo, emitData, selectTime)).format(
+              'YYYY-MM-DD HH:mm:ss'
+            )
+          }}
+        </div>
       </div>
     </st-form-item>
   </div>

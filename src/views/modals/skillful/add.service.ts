@@ -3,8 +3,7 @@ import { Effect } from 'rx-state'
 import { Store } from '@/services/store'
 import { SkillfulApi, AddSkillfulInput } from '@/api/v1/setting/skillful'
 
-interface AddState {
-}
+interface AddState {}
 @Injectable()
 export class AddService extends Store<AddState> {
   constructor(protected skillfulApi: SkillfulApi) {

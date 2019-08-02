@@ -1,55 +1,56 @@
 .page-brand-marketing-inviation-data {
-    &__acount {
-        padding: 32px;
-        border: 1px solid @border-color;
-        .bg(@white);
-        &-title {
-            margin-bottom: 16px;
-            .lh(22px);
-            .fz(14px);
-            .c(@text-light);
-        }
-        .number-up {
-            .fz(32px);
-            .lh(40px);
-            font-weight: bold;
-            .c(@title);
-        }
+  &__acount {
+    padding: 32px;
+    border: 1px solid @border-color;
+    .bg(@white);
+    &-title {
+      margin-bottom: 16px;
+      .lh(22px);
+      .fz(14px);
+      .c(@text-light);
     }
-    &__data-none {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 32px 0 76px;
-        > p{
-            margin: 35px 0 24px;
-            .c(@text-light);
-            .fz(14px);
-            .lh(22px);
-        }
+    .number-up {
+      .fz(32px);
+      .lh(40px);
+      font-weight: bold;
+      .c(@title);
     }
-    &__table {
-        padding-top: 24px;
-        &-operation {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            .ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled){
-                .bg(@bg-gray);
-                border-color: @border-color;
-                .c(@title);
-            }
-            .ant-radio-button-wrapper {
-                .c(@text-light);
-            }
-            .ant-radio-button-wrapper-checked {
-                box-shadow: none;
-            }
-            .ant-radio-button-wrapper-checked::before {
-                .bg(@border-color) !important;
-                opacity: 1;
-            }
-        }
+  }
+  &__data-none {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 0 76px;
+    > p {
+      margin: 35px 0 24px;
+      .c(@text-light);
+      .fz(14px);
+      .lh(22px);
     }
+  }
+  &__table {
+    padding-top: 24px;
+    &-operation {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .ant-radio-group-solid
+        .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+        .bg(@bg-gray);
+        border-color: @border-color;
+        .c(@title);
+      }
+      .ant-radio-button-wrapper {
+        .c(@text-light);
+      }
+      .ant-radio-button-wrapper-checked {
+        box-shadow: none;
+      }
+      .ant-radio-button-wrapper-checked::before {
+        .bg(@border-color) !important;
+        opacity: 1;
+      }
+    }
+  }
 }

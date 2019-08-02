@@ -2,32 +2,62 @@
   <st-panel app :class="listClass()">
     <div slot="title">
       <st-input-search
-      @search="onSingleSearch('course_name',$event,true)"
-      v-model="query.course_name"
-      placeholder="课程包名称"
-      style="width: 290px;"/>
+        @search="onSingleSearch('course_name', $event, true)"
+        v-model="query.course_name"
+        placeholder="课程包名称"
+        style="width: 290px;"
+      />
     </div>
     <div :class="listClass('operation')">
       <router-link to="./add-select">
-        <st-button type="primary" v-if="auth.add" @click="onAddPackage" icon="add">新增门店课程包</st-button>
+        <st-button
+          type="primary"
+          v-if="auth.add"
+          @click="onAddPackage"
+          icon="add"
+        >
+          新增门店课程包
+        </st-button>
       </router-link>
       <div :class="listClass('select-group')">
-        <a-select v-model="query.package_type" @change="onSingleSearch('package_type',$event)" :class="listClass('select')" style="width: 160px">
+        <a-select
+          v-model="query.package_type"
+          @change="onSingleSearch('package_type', $event)"
+          :class="listClass('select')"
+          style="width: 160px"
+        >
           <a-select-option :value="-1">全部分类</a-select-option>
           <a-select-option
-          v-for="(item,index) in Object.entries(package_course.package_type.value)"
-          :key="index"  :value="+item[0]">{{item[1]}}</a-select-option>
+            v-for="(item, index) in Object.entries(
+              package_course.package_type.value
+            )"
+            :key="index"
+            :value="+item[0]"
+          >
+            {{ item[1] }}
+          </a-select-option>
         </a-select>
-        <a-select v-model="query.shelf_status" @change="onSingleSearch('shelf_status',$event)" :class="listClass('select')" style="width: 160px">
+        <a-select
+          v-model="query.shelf_status"
+          @change="onSingleSearch('shelf_status', $event)"
+          :class="listClass('select')"
+          style="width: 160px"
+        >
           <a-select-option :value="-1">全部状态</a-select-option>
           <a-select-option
-          v-for="(item,index) in Object.entries(package_course.shelf_status.value)"
-          :key="index"  :value="+item[0]">{{item[1]}}</a-select-option>
+            v-for="(item, index) in Object.entries(
+              package_course.shelf_status.value
+            )"
+            :key="index"
+            :value="+item[0]"
+          >
+            {{ item[1] }}
+          </a-select-option>
         </a-select>
       </div>
     </div>
     <st-table
-      :scroll="{x:1240}"
+      :scroll="{ x: 1240 }"
       :page="page"
       :columns="columns"
       @change="onTableChange"
@@ -36,33 +66,80 @@
       :loading="loading.getList"
     >
       <template slot="package_type" slot-scope="text">
-        {{text | enumFilter('package_course.package_type')}}
+        {{ text | enumFilter('package_course.package_type') }}
       </template>
-      <template slot="valid_time" slot-scope="text,record">
-        {{text}} {{record.valid_time_unit | enumFilter('package_course.valid_time_unit')}}
+      <template slot="valid_time" slot-scope="text, record">
+        {{ text }}
+        {{
+          record.valid_time_unit | enumFilter('package_course.valid_time_unit')
+        }}
       </template>
-      <template slot="shelf_status" slot-scope="text,record">
-        {{text | enumFilter('package_course.shelf_status')}}
-        <a-tooltip placement="top" v-if="record.shelf_status===1&&Date.now()<record.start_time*1000">
+      <template slot="shelf_status" slot-scope="text, record">
+        {{ text | enumFilter('package_course.shelf_status') }}
+        <a-tooltip
+          placement="top"
+          v-if="
+            record.shelf_status === 1 && Date.now() < record.start_time * 1000
+          "
+        >
           <template slot="title">
             <span>暂未开始售卖</span>
           </template>
-          <span><st-icon type="help"/></span>
+          <span><st-icon type="help" /></span>
         </a-tooltip>
-        <a-tooltip placement="top" v-if="record.shelf_status===1&&Date.now()>record.end_time*1000">
+        <a-tooltip
+          placement="top"
+          v-if="
+            record.shelf_status === 1 && Date.now() > record.end_time * 1000
+          "
+        >
           <template slot="title">
             <span>支持售卖到期</span>
           </template>
-          <span><st-icon type="help"/></span>
+          <span><st-icon type="help" /></span>
         </a-tooltip>
       </template>
-      <div slot="action" slot-scope="text,record">
+      <div slot="action" slot-scope="text, record">
         <st-table-actions>
-        <a v-if="record.auth['shop:product:package_course|edit']" @click="onEdit(record.package_course_id,record.package_type)">编辑</a>
-        <a v-if="record.auth['shop:product:package_course|get']" @click="onDetail(record.package_course_id,record.package_type)">详情</a>
-        <a v-if="record.auth['shop:product:package_course|up']" @click="onsalePackage(record.package_course_id,record.course_name,record.start_time,record.end_time)">上架</a>
-        <a v-if="record.auth['shop:product:package_course|down']" @click="offsalePackage(record.package_course_id,record.course_name)">下架</a>
-        <a v-if="record.auth['shop:product:package_course|del']" @click="deletePackage(record.package_course_id,record.course_name)">删除</a>
+          <a
+            v-if="record.auth['shop:product:package_course|edit']"
+            @click="onEdit(record.package_course_id, record.package_type)"
+          >
+            编辑
+          </a>
+          <a
+            v-if="record.auth['shop:product:package_course|get']"
+            @click="onDetail(record.package_course_id, record.package_type)"
+          >
+            详情
+          </a>
+          <a
+            v-if="record.auth['shop:product:package_course|up']"
+            @click="
+              onsalePackage(
+                record.package_course_id,
+                record.course_name,
+                record.start_time,
+                record.end_time
+              )
+            "
+          >
+            上架
+          </a>
+          <a
+            v-if="record.auth['shop:product:package_course|down']"
+            @click="
+              offsalePackage(record.package_course_id, record.course_name)
+            "
+          >
+            下架
+          </a>
+          <a
+            v-if="record.auth['shop:product:package_course|del']"
+            @click="deletePackage(record.package_course_id, record.course_name)"
+          >
+            删除
+          </a>
         </st-table-actions>
       </div>
     </st-table>
@@ -72,39 +149,46 @@
       @ok="onOnsale"
       :confirmLoading="loading.onsalePackage"
       wrapClassName="modal-shop-product-course-package"
-      v-model='onsaleIsShow'>
-        <st-form :form="form" labelWidth="96px">
-          <st-form-item label="课程包名称">{{`aaaa`}}</st-form-item>
-          <st-form-item label="支持售卖时间" class="mg-b0" required>
-            <div :class="listClass('saletime')">
-              <a-form-item class="page-a-form">
-                <a-date-picker
-                  style="width: 100%;"
-                  :disabledDate="disabledStartDate"
-                  v-decorator="['start_time',{rules:[{validator:start_time_validator}]}]"
-                  format="YYYY-MM-DD"
-                  placeholder="开始时间"
-                  :showToday="false"
-                  @openChange="handleStartOpenChange"
-                  @change="start_time_change"
-                />
-              </a-form-item>
-              <span>~</span>
-              <a-form-item class="page-a-form">
-                <a-date-picker
-                  :disabledDate="disabledEndDate"
-                  v-decorator="['end_time',{rules:[{validator:end_time_validator}]}]"
-                  format="YYYY-MM-DD"
-                  placeholder="结束时间"
-                  :showToday="false"
-                  :open="endOpen"
-                  @openChange="handleEndOpenChange"
-                  @change="end_time_change"
-                />
-              </a-form-item>
-            </div>
-          </st-form-item>
-        </st-form>
+      v-model="onsaleIsShow"
+    >
+      <st-form :form="form" labelWidth="96px">
+        <st-form-item label="课程包名称">{{ `aaaa` }}</st-form-item>
+        <st-form-item label="支持售卖时间" class="mg-b0" required>
+          <div :class="listClass('saletime')">
+            <a-form-item class="page-a-form">
+              <a-date-picker
+                style="width: 100%;"
+                :disabledDate="disabledStartDate"
+                v-decorator="[
+                  'start_time',
+                  { rules: [{ validator: start_time_validator }] }
+                ]"
+                format="YYYY-MM-DD"
+                placeholder="开始时间"
+                :showToday="false"
+                @openChange="handleStartOpenChange"
+                @change="start_time_change"
+              />
+            </a-form-item>
+            <span>~</span>
+            <a-form-item class="page-a-form">
+              <a-date-picker
+                :disabledDate="disabledEndDate"
+                v-decorator="[
+                  'end_time',
+                  { rules: [{ validator: end_time_validator }] }
+                ]"
+                format="YYYY-MM-DD"
+                placeholder="结束时间"
+                :showToday="false"
+                :open="endOpen"
+                @openChange="handleEndOpenChange"
+                @change="end_time_change"
+              />
+            </a-form-item>
+          </div>
+        </st-form-item>
+      </st-form>
     </st-modal>
     <st-modal
       title="下架课程包"
@@ -113,8 +197,9 @@
       @ok="onOffsale"
       wrapClassName="modal-shop-product-course-package"
       :confirmLoading="loading.offsalePackage"
-      v-model='offsaleIsShow'>
-      确认下架{{packageName}}？
+      v-model="offsaleIsShow"
+    >
+      确认下架{{ packageName }}？
     </st-modal>
     <st-modal
       title="删除课程包"
@@ -123,8 +208,9 @@
       wrapClassName="modal-shop-product-course-package"
       @ok="onDelete"
       :confirmLoading="loading.deletePackage"
-      v-model='deleteIsShow'>
-      删除后不影响已购买的用户，一旦删除则无法恢复，确认删除{{packageName}}？
+      v-model="deleteIsShow"
+    >
+      删除后不影响已购买的用户，一旦删除则无法恢复，确认删除{{ packageName }}？
     </st-modal>
   </st-panel>
 </template>
@@ -140,7 +226,7 @@ import { MessageService } from '@/services/message.service'
 
 export default {
   name: 'ShopPackageList',
-  mixins: [ tableMixin ],
+  mixins: [tableMixin],
   serviceInject() {
     return {
       userService: UserService,
@@ -185,7 +271,14 @@ export default {
       if (!value) {
         // eslint-disable-next-line
         callback('请选择开始售卖时间')
-      } else if (value.valueOf() < moment(moment().format().replace(/\d{2}:\d{2}:\d{2}/, '00:00:00')).valueOf()) {
+      } else if (
+        value.valueOf() <
+        moment(
+          moment()
+            .format()
+            .replace(/\d{2}:\d{2}:\d{2}/, '00:00:00')
+        ).valueOf()
+      ) {
         // eslint-disable-next-line
         callback('支持售卖时间已过，请重新设置')
       } else {
@@ -198,7 +291,14 @@ export default {
       if (!value) {
         // eslint-disable-next-line
         callback('请选择结束售卖时间')
-      } else if (value.valueOf() < moment(moment().format().replace(/\d{2}:\d{2}:\d{2}/, '23:59:59')).valueOf()) {
+      } else if (
+        value.valueOf() <
+        moment(
+          moment()
+            .format()
+            .replace(/\d{2}:\d{2}:\d{2}/, '23:59:59')
+        ).valueOf()
+      ) {
         // eslint-disable-next-line
         callback('支持售卖时间已过，请重新设置')
       } else {
@@ -232,12 +332,12 @@ export default {
           .add(30, 'y')
           .valueOf()
           ? moment(endValue)
-            .subtract(30, 'y')
-            .valueOf()
+              .subtract(30, 'y')
+              .valueOf()
           : moment()
-            .subtract(1, 'd')
-            .add(1, 'ms')
-            .valueOf()
+              .subtract(1, 'd')
+              .add(1, 'ms')
+              .valueOf()
       return (
         startValue.valueOf() < start ||
         startValue.valueOf() >
@@ -282,59 +382,85 @@ export default {
     },
     onEdit(id, type) {
       this.$router.push({
-        path: `/shop/product/course/manage/package/edit-${this.type[type]}-package`,
+        path: `/shop/product/course/manage/package/edit-${
+          this.type[type]
+        }-package`,
         query: { id }
       })
     },
     onDetail(id, type) {
       this.$router.push({
-        path: `/shop/product/course/manage/package/info-${this.type[type]}-package`,
+        path: `/shop/product/course/manage/package/info-${
+          this.type[type]
+        }-package`,
         query: { id }
       })
     },
     onsalePackage(id, name, start, end) {
-      if (end * 1000 >= moment(moment().format().replace(/\d{2}:\d{2}:\d{2}/, '23:59:59')).valueOf()) {
-        this.listService.onsalePackage({
-          id,
-          start_time: `${this.moment(start * 1000).format('YYYY-MM-DD')} 00:00:00`,
-          end_time: `${this.moment(end * 1000).format('YYYY-MM-DD')} 23:59:59`
-        }).subscribe(res => {
-          this.messageService.success({
-            content: '上架成功'
+      if (
+        end * 1000 >=
+        moment(
+          moment()
+            .format()
+            .replace(/\d{2}:\d{2}:\d{2}/, '23:59:59')
+        ).valueOf()
+      ) {
+        this.listService
+          .onsalePackage({
+            id,
+            start_time: `${this.moment(start * 1000).format(
+              'YYYY-MM-DD'
+            )} 00:00:00`,
+            end_time: `${this.moment(end * 1000).format('YYYY-MM-DD')} 23:59:59`
           })
-          this.$router.push({ query: { ...this.query, page: 1 }, force: true })
-        })
+          .subscribe(res => {
+            this.messageService.success({
+              content: '上架成功'
+            })
+            this.$router.push({
+              query: { ...this.query, page: 1 },
+              force: true
+            })
+          })
       } else {
         this.onsaleIsShow = true
         this.packageId = id
         this.packageName = name
         this.$nextTick().then(res => {
           this.form.setFieldsValue({
-            'start_time': moment(start * 1000),
-            'end_time': moment(end * 1000)
+            start_time: moment(start * 1000),
+            end_time: moment(end * 1000)
           })
           this.form.validateFields(['start_time', 'end_time'])
         })
       }
     },
     onOnsale() {
-      this.form.validateFields(['start_time', 'end_time']).then(res => {
-        this.listService.onsalePackage({
-          id: this.packageId,
-          start_time: `${res.start_time.format('YYYY-MM-DD')} 00:00:00`,
-          end_time: `${res.end_time.format('YYYY-MM-DD')} 23:59:59`
-        }).subscribe(res => {
-          this.onsaleIsShow = false
-          this.packageId = ''
-          this.packageName = ''
-          this.messageService.success({
-            content: '上架成功'
-          })
-          this.$router.push({ query: { ...this.query, page: 1 }, force: true })
+      this.form
+        .validateFields(['start_time', 'end_time'])
+        .then(res => {
+          this.listService
+            .onsalePackage({
+              id: this.packageId,
+              start_time: `${res.start_time.format('YYYY-MM-DD')} 00:00:00`,
+              end_time: `${res.end_time.format('YYYY-MM-DD')} 23:59:59`
+            })
+            .subscribe(res => {
+              this.onsaleIsShow = false
+              this.packageId = ''
+              this.packageName = ''
+              this.messageService.success({
+                content: '上架成功'
+              })
+              this.$router.push({
+                query: { ...this.query, page: 1 },
+                force: true
+              })
+            })
         })
-      }).catch(error => {
-        console.log(error)
-      })
+        .catch(error => {
+          console.log(error)
+        })
     },
     offsalePackage(id, name) {
       this.offsaleIsShow = true

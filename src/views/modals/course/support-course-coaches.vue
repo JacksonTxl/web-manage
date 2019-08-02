@@ -3,19 +3,20 @@
     class="modal-support-course-shops"
     :title="course.course_name + ' 查看授课教练'"
     :footer="null"
-    v-model='show'>
+    v-model="show"
+  >
     <st-container>
       <st-table
-      :columns="columnsCoaches"
-      :rowKey="record => record.id"
-      :page="false"
-      :dataSource="supportCoachList">
-      <div slot="nature_work" slot-scope="text">
-        {{text | enumFilter('staff.nature_work')}}
-      </div>
+        :columns="columnsCoaches"
+        :rowKey="record => record.id"
+        :page="false"
+        :dataSource="supportCoachList"
+      >
+        <div slot="nature_work" slot-scope="text">
+          {{ text | enumFilter('staff.nature_work') }}
+        </div>
       </st-table>
     </st-container>
-
   </st-modal>
 </template>
 <script>
@@ -43,9 +44,11 @@ export default {
   },
   methods: {
     getShops() {
-      this.brandService.getCoursePersonalSupportCoaches({ course_id: this.course.course_id }).subscribe(state => {
-        this.supportCoachList = state.coaches
-      })
+      this.brandService
+        .getCoursePersonalSupportCoaches({ course_id: this.course.course_id })
+        .subscribe(state => {
+          this.supportCoachList = state.coaches
+        })
     }
   },
   mounted() {

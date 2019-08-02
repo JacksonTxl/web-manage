@@ -2,8 +2,16 @@
   <div class="page-staff">
     <section class="page-staff-lf">
       <header class="staff-lf__search">
-        <a-select allowClear placeholder="请选择部门" style="width:226px" @search="handleDepartmentSearch" @change="handleDepartmentSearchChange">
-          <a-select-option v-for="v in departmentSearchList" :key="v.id">{{v.name}}</a-select-option>
+        <a-select
+          allowClear
+          placeholder="请选择部门"
+          style="width:226px"
+          @search="handleDepartmentSearch"
+          @change="handleDepartmentSearchChange"
+        >
+          <a-select-option v-for="v in departmentSearchList" :key="v.id">
+            {{ v.name }}
+          </a-select-option>
         </a-select>
       </header>
       <main class="staff-lf__tree">
@@ -11,14 +19,21 @@
           ref="tree"
           :treeData="treeData"
           @updateData="updateData"
-          @node-click="getDepartment"></st-organ-tree>
+          @node-click="getDepartment"
+        ></st-organ-tree>
       </main>
     </section>
     <section class="page-staff-rg">
       <header class="staff-rg__operation">
         <a-row type="flex" justify="space-between">
           <a-col :span="10">
-            <opreation-button :auth="auth" :rowKeys="ids" @add-staff="onAddStaff" @batch-import="onbatchImport" @import-staff="onImportStaff"></opreation-button>
+            <opreation-button
+              :auth="auth"
+              :rowKeys="ids"
+              @add-staff="onAddStaff"
+              @batch-import="onbatchImport"
+              @import-staff="onImportStaff"
+            ></opreation-button>
           </a-col>
           <a-col :span="14">
             <filter-staff></filter-staff>
@@ -26,8 +41,15 @@
         </a-row>
       </header>
       <main class="staff-rg__table">
-        <div  style="width:100%">
-          <staff-table ref="staffTable" :page="page" :loading="loading.getStaffList" @edit-staff="onEditStaff" @selectedRow="selectedRow" :staffList="staffList"></staff-table>
+        <div style="width:100%">
+          <staff-table
+            ref="staffTable"
+            :page="page"
+            :loading="loading.getStaffList"
+            @edit-staff="onEditStaff"
+            @selectedRow="selectedRow"
+            :staffList="staffList"
+          ></staff-table>
         </div>
       </main>
     </section>

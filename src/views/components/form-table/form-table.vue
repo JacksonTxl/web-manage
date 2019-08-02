@@ -1,13 +1,13 @@
 <template>
   <a-spin :spinning="loading">
-    <table :class="b({striped,hoverable})">
+    <table :class="b({ striped, hoverable })">
       <slot></slot>
     </table>
     <div v-if="isNoData">
-      <st-no-data/>
+      <st-no-data />
       <st-hr></st-hr>
     </div>
-    <st-pagination v-if="page.total_counts" :page="page" @change="onChange"/>
+    <st-pagination v-if="page.total_counts" :page="page" @change="onChange" />
   </a-spin>
 </template>
 

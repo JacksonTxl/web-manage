@@ -1,10 +1,11 @@
 <template>
   <st-modal
-  :title="title"
-  v-model="show"
-  :footer="null"
-  wrapClassName="st-modal-map"
-  width="484px">
+    :title="title"
+    v-model="show"
+    :footer="null"
+    wrapClassName="st-modal-map"
+    width="484px"
+  >
     <div :class="map('search')">
       <a-cascader
         :class="map('cascader')"
@@ -14,19 +15,42 @@
         @change="cascaderChange"
       >
         <a href="javascript:void(0)" :class="map('cascader__btn')">
-          {{selectCity}}
+          {{ selectCity }}
           <st-icon type="down" size="12px" :class="map('icon')"></st-icon>
         </a>
       </a-cascader>
       <div :class="map('search-input')">
         <a-dropdown :trigger="['click']" v-model="dropdownVisible">
-          <a-input-search @change="onChange" @input="searchInput" :class="{error:!latlngIsOk}" placeholder="请输入街道、小区或商圈名称" v-model="searchText" @search="onSearch"/>
-          <ul slot="overlay" :class="map('search-menu')" v-scrollBar='{stopPropagation:true}'>
+          <a-input-search
+            @change="onChange"
+            @input="searchInput"
+            :class="{ error: !latlngIsOk }"
+            placeholder="请输入街道、小区或商圈名称"
+            v-model="searchText"
+            @search="onSearch"
+          />
+          <ul
+            slot="overlay"
+            :class="map('search-menu')"
+            v-scrollBar="{ stopPropagation: true }"
+          >
             <li :class="map('search-faild')" v-if="!poisList.length">无结果</li>
             <template v-if="poisList.length">
-              <li @click="selectLocation(item)" :class="map('search-item')" v-for="(item,index) in poisList" :key="index">
-                <p :class="map('search-title')">{{item.name}}</p>
-                <span :class="map('search-describe')" v-if="item.location">{{item.location.detail.detail.split(',').reverse().join('')}}</span>
+              <li
+                @click="selectLocation(item)"
+                :class="map('search-item')"
+                v-for="(item, index) in poisList"
+                :key="index"
+              >
+                <p :class="map('search-title')">{{ item.name }}</p>
+                <span :class="map('search-describe')" v-if="item.location">
+                  {{
+                    item.location.detail.detail
+                      .split(',')
+                      .reverse()
+                      .join('')
+                  }}
+                </span>
               </li>
             </template>
           </ul>
@@ -35,10 +59,17 @@
     </div>
     <div :class="map('map')" id="mapcontainer"></div>
     <div :class="map('address')">
-      <a-textarea :class="{error:!addressIsOk}" placeholder="详细地址，例：16号楼5层502" v-model="st_address" :rows="3"/>
+      <a-textarea
+        :class="{ error: !addressIsOk }"
+        placeholder="详细地址，例：16号楼5层502"
+        v-model="st_address"
+        :rows="3"
+      />
     </div>
     <div :class="map('button')">
-      <span v-if="!latlngIsOk||!addressIsOk" :class="map('error-info')">{{errorText}}</span>
+      <span v-if="!latlngIsOk || !addressIsOk" :class="map('error-info')">
+        {{ errorText }}
+      </span>
       <st-button type="primary" @click="handleOk">提交</st-button>
     </div>
   </st-modal>
@@ -168,7 +199,11 @@ export default {
       this.st_district = cloneDeep(this.district)
       if (this.isAdd) {
         this.mapService
-          .getLocation(`https://apis.map.qq.com/ws/location/v1/ip?output=jsonp&key=${this.appConfig.QQ_MAP_KEY}&callback=`)
+          .getLocation(
+            `https://apis.map.qq.com/ws/location/v1/ip?output=jsonp&key=${
+              this.appConfig.QQ_MAP_KEY
+            }&callback=`
+          )
           .subscribe(res => {
             if (res.status === 0) {
               let code = res.result.ad_info.adcode
@@ -237,8 +272,12 @@ export default {
     },
     // 省市change
     cascaderChange(data) {
-      let province = cloneDeep(this.regions[findIndex(this.regions, o => o.id === data[0])])
-      let city = cloneDeep(province.children[findIndex(province.children, o => o.id === data[1])])
+      let province = cloneDeep(
+        this.regions[findIndex(this.regions, o => o.id === data[0])]
+      )
+      let city = cloneDeep(
+        province.children[findIndex(province.children, o => o.id === data[1])]
+      )
       this.selectData.province = {
         id: data[0],
         name: province.name
@@ -256,12 +295,18 @@ export default {
     },
     // 实例化地图
     initMap() {
-      let center = new qq.maps.LatLng(this.locationData.location.lat, this.locationData.location.lng)
-      this.mapObject = new qq.maps.Map(document.getElementById('mapcontainer'), {
-        center,
-        zoom: 13,
-        disableDefaultUI: true
-      })
+      let center = new qq.maps.LatLng(
+        this.locationData.location.lat,
+        this.locationData.location.lng
+      )
+      this.mapObject = new qq.maps.Map(
+        document.getElementById('mapcontainer'),
+        {
+          center,
+          zoom: 13,
+          disableDefaultUI: true
+        }
+      )
       this.resetMap(center)
     },
     // 实例化检索服务
@@ -322,7 +367,13 @@ export default {
       let anchor = new qq.maps.Point(8, 16)
       let size = new qq.maps.Size(16, 16)
       let origin = new qq.maps.Point(0, 0)
-      let icon = new qq.maps.MarkerImage(require('@/assets/img/map_location.png'), size, origin, anchor, size)
+      let icon = new qq.maps.MarkerImage(
+        require('@/assets/img/map_location.png'),
+        size,
+        origin,
+        anchor,
+        size
+      )
       this.markerObject && this.markerObject.setMap(null)
       this.markerObject = new qq.maps.Marker({
         position,
@@ -348,7 +399,13 @@ export default {
           this.errorText = '请输入详细地址!'
         } else {
           this.mapService
-            .getLocation(`https://apis.map.qq.com/ws/geocoder/v1/?location=${this.selectData.lat},${this.selectData.lng}&output=jsonp&key=${this.appConfig.QQ_MAP_KEY}&callback=`)
+            .getLocation(
+              `https://apis.map.qq.com/ws/geocoder/v1/?location=${
+                this.selectData.lat
+              },${this.selectData.lng}&output=jsonp&key=${
+                this.appConfig.QQ_MAP_KEY
+              }&callback=`
+            )
             .subscribe(res => {
               let code = res.result.ad_info.adcode
               let provinceId = `${code}`.substr(0, 2) + '0000'

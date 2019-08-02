@@ -1,7 +1,10 @@
 <template>
   <div class="st-info-item">
-    <div class="st-info-item__label" :style="{ width: computedLabelWidth }"
-      :class="{'st-info-item__label--light': isWeakenLabel}">
+    <div
+      class="st-info-item__label"
+      :style="{ width: computedLabelWidth }"
+      :class="{ 'st-info-item__label--light': isWeakenLabel }"
+    >
       {{ label }}：
     </div>
     <div

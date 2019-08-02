@@ -84,10 +84,7 @@ export class EditService extends Store<EditState> implements RouteGuard {
   }
   @Effect()
   init() {
-    return forkJoin(
-      this.getInfo(),
-      this.getConstitutionInfo()
-    )
+    return forkJoin(this.getInfo(), this.getConstitutionInfo())
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.init()

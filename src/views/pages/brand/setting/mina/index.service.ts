@@ -7,7 +7,7 @@ import { State, Effect } from 'rx-state'
 export class IndexService {
   info$ = new State({})
   loading$ = new State({})
-  constructor(private settingMinaApi: SettingMinaApi) { }
+  constructor(private settingMinaApi: SettingMinaApi) {}
   @Effect()
   getInfo() {
     return this.settingMinaApi.getInfo().pipe(

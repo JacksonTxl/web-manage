@@ -1,35 +1,35 @@
 import { Api } from '../../api'
 
 export interface OrderParams {
-  keyword: string;
-  status: number;
-  type: number;
-  start_date: string;
-  end_date: string;
-  size: number;
-  page: number;
+  keyword: string
+  status: number
+  type: number
+  start_date: string
+  end_date: string
+  size: number
+  page: number
 }
 
 export interface RefundParams {
-  order_sub_id: number;
-  refund_money: number;
-  reason: number;
-  pay_channel: string;
-  description: string;
+  order_sub_id: number
+  refund_money: number
+  reason: number
+  pay_channel: string
+  description: string
 }
 
 export interface SplitParams {
-  order_id: number;
-  description: string;
-  split_data: [];
+  order_id: number
+  description: string
+  split_data: []
 }
 
 export interface FlowParams {
-  flow_id: number;
-  reason: string;
-  price: string;
-  pay_channel: number;
-  flow_time: string;
+  flow_id: number
+  reason: string
+  price: string
+  pay_channel: number
+  flow_time: string
 }
 
 export class OrderApi extends Api {
@@ -61,7 +61,7 @@ export class OrderApi extends Api {
   /**
    * 退款
    */
-  orderRefund(params:RefundParams) {
+  orderRefund(params: RefundParams) {
     return this.http.post(`/v1/finance/order/refund`, { params: { ...params } })
   }
   /**
@@ -104,6 +104,8 @@ export class OrderApi extends Api {
    * 流水冲销
    */
   orderFlow(params: FlowParams) {
-    return this.http.post(`/v1/finance/flow/reversal`, { params: { ...params } })
+    return this.http.post(`/v1/finance/flow/reversal`, {
+      params: { ...params }
+    })
   }
 }

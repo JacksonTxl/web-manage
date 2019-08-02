@@ -10,14 +10,13 @@ export class AddService implements RouteGuard {
   serviceList$ = new State([])
   loading$ = new State({})
   unusedShops$ = new State([])
-  constructor(
-    private shopApi: ShopApi,
-    private brandApi: BrandApi
-  ) {}
+  constructor(private shopApi: ShopApi, private brandApi: BrandApi) {}
   getServiceList() {
-    return this.shopApi.getServiceList().pipe(tap((res:any) => {
-      this.serviceList$.commit(() => res.services)
-    }))
+    return this.shopApi.getServiceList().pipe(
+      tap((res: any) => {
+        this.serviceList$.commit(() => res.services)
+      })
+    )
   }
   getUnusedShops() {
     return this.brandApi.getUnusedShops().pipe(
@@ -31,10 +30,7 @@ export class AddService implements RouteGuard {
     return this.shopApi.add(data)
   }
   init() {
-    return forkJoin(
-      this.getServiceList(),
-      this.getUnusedShops()
-    )
+    return forkJoin(this.getServiceList(), this.getUnusedShops())
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init()

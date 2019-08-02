@@ -1,11 +1,20 @@
 <template>
-  <div :class="[loginUser(), trunPage?'trun-page':'']">
-    <st-form :form="form" @submit.prevent="login" :class="loginUser('form')" >
-      <st-form-item >
-        <a-input size="large" placeholder="用户名、邮箱登录"  v-decorator="rules.name"/>
+  <div :class="[loginUser(), trunPage ? 'trun-page' : '']">
+    <st-form :form="form" @submit.prevent="login" :class="loginUser('form')">
+      <st-form-item>
+        <a-input
+          size="large"
+          placeholder="用户名、邮箱登录"
+          v-decorator="rules.name"
+        />
       </st-form-item>
       <st-form-item>
-        <a-input size="large" type="password" placeholder="密码" v-decorator="rules.password"/>
+        <a-input
+          size="large"
+          type="password"
+          placeholder="密码"
+          v-decorator="rules.password"
+        />
       </st-form-item>
       <st-form-item class="mg-b0">
         <no-captcha></no-captcha>
@@ -15,10 +24,10 @@
           <a href="javascript:;" @click="onClickFindPassword">忘记密码</a>
         </div>
       </st-form-item> -->
-      <st-form-item  class="mg-b32">
+      <st-form-item class="mg-b32">
         <st-button
           :class="loginUser('login-button')"
-          :loading='loading.loginAccount'
+          :loading="loading.loginAccount"
           pill
           block
           size="large"

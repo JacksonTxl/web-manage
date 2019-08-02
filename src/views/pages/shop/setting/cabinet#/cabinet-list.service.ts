@@ -28,7 +28,8 @@ export class CabinetListService extends Store<SetState> {
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
   }
   getList(type: string, id: number) {
-    const cabinetApi = type === 'long-term' ? this.longTermCabinetApi : this.temporaryCabinetApi
+    const cabinetApi =
+      type === 'long-term' ? this.longTermCabinetApi : this.temporaryCabinetApi
     return cabinetApi.getList(id).pipe(
       tap(res => {
         this.state$.commit(state => {

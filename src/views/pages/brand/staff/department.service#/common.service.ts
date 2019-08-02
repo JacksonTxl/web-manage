@@ -5,17 +5,15 @@ import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 
-import {
-  StaffApi, PutStaffBrandQuitInput
-} from '@/api/v1/staff'
+import { StaffApi, PutStaffBrandQuitInput } from '@/api/v1/staff'
 import { forkJoin } from 'rxjs'
 
 interface SetState {
-  shopOptions: object[],
+  shopOptions: object[]
 }
 interface GetOptionsInput {
-  func: any,
-  payload?: any,
+  func: any
+  payload?: any
   callback?: any
 }
 @Injectable()
@@ -30,14 +28,16 @@ export class CommonService extends Store<SetState> {
     this.shopOptions$ = new Computed(this.state$.pipe(pluck('shopOptions')))
   }
   /**
-    * 获取门店列表 options
-    */
+   * 获取门店列表 options
+   */
   private getShopList() {
-    return this.staffApi.getShopList().pipe(tap(res => {
-      this.state$.commit(state => {
-        state.shopOptions = res.shops
+    return this.staffApi.getShopList().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.shopOptions = res.shops
+        })
       })
-    }))
+    )
   }
   /**
    *

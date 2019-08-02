@@ -1,3 +1,1 @@
-export class Kael {
-
-}
+export class Kael {}

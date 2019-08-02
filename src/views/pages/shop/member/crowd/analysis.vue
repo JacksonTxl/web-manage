@@ -7,12 +7,14 @@
             :src="imgUrl[$route.query.urlid]"
             alt
             class="shop-member-crowd-analysis-title__left-img"
-          >
+          />
           <div class="shop-member-crowd-analysis-title__left-info">
-            <st-t3
-              class="shop-member-crowd-analysis-title__info-title"
-            >{{analysisInfo.info.crowd_name}}</st-t3>
-            <st-t4 class="shop-member-crowd-analysis-title__info">{{analysisInfo.info.description}}</st-t4>
+            <st-t3 class="shop-member-crowd-analysis-title__info-title">
+              {{ analysisInfo.info.crowd_name }}
+            </st-t3>
+            <st-t4 class="shop-member-crowd-analysis-title__info">
+              {{ analysisInfo.info.description }}
+            </st-t4>
           </div>
         </div>
         <div class="shop-member-crowd-analysis-title__right">
@@ -20,7 +22,9 @@
             人群
             <st-help-tooltip id="TSRQ001" />
           </st-t4>
-          <div class="shop-member-crowd-analysis-title__right-num">{{analysisInfo.info.num}}</div>
+          <div class="shop-member-crowd-analysis-title__right-num">
+            {{ analysisInfo.info.num }}
+          </div>
         </div>
       </div>
       <div class="shop-member-crowd-analysis-content">
@@ -28,25 +32,43 @@
           <st-t3>新注册用户</st-t3>
           <st-t4
             class="shop-member-crowd-analysis-title__info shop-member-crowd-analysis-content__info-h2"
-          >近7天内，新注册的潜在用户</st-t4>
+          >
+            近7天内，新注册的潜在用户
+          </st-t4>
         </div>
         <ul class="card-items">
           <li
-            v-for="(item,index) in cardItem"
+            v-for="(item, index) in cardItem"
             :key="index"
-            :style="{'borderTopColor':item.color}"
-            :class="index === 0 ? 'card-items-start card-items-li': index === cardItem.length-1 ? 'card-items-end card-items-li':'card-items-li'"
+            :style="{ borderTopColor: item.color }"
+            :class="
+              index === 0
+                ? 'card-items-start card-items-li'
+                : index === cardItem.length - 1
+                ? 'card-items-end card-items-li'
+                : 'card-items-li'
+            "
           >
             <div class="card-items-box">
-              <st-t4 class="shop-member-crowd-analysis-title__info">{{item.title}}</st-t4>
-              <st-help-tooltip v-if="index === 0" id="TSRQ002"/>
-              <st-help-tooltip v-if="index === 1" id="TSRQ003"/>
-              <st-help-tooltip v-if="index === 2" id="TSRQ004"/>
-              <st-help-tooltip v-if="index === 3" id="TSRQ005"/>
+              <st-t4 class="shop-member-crowd-analysis-title__info">
+                {{ item.title }}
+              </st-t4>
+              <st-help-tooltip v-if="index === 0" id="TSRQ002" />
+              <st-help-tooltip v-if="index === 1" id="TSRQ003" />
+              <st-help-tooltip v-if="index === 2" id="TSRQ004" />
+              <st-help-tooltip v-if="index === 3" id="TSRQ005" />
             </div>
-            <div
-              class="shop-member-crowd-analysis-title__right-num"
-            >{{index === 0? analysisInfo.info.entrance_num:index ===1 ?analysisInfo.info.coupon_num :index ===2? analysisInfo.info.trade_num: analysisInfo.info.course_num}}</div>
+            <div class="shop-member-crowd-analysis-title__right-num">
+              {{
+                index === 0
+                  ? analysisInfo.info.entrance_num
+                  : index === 1
+                  ? analysisInfo.info.coupon_num
+                  : index === 2
+                  ? analysisInfo.info.trade_num
+                  : analysisInfo.info.course_num
+              }}
+            </div>
           </li>
         </ul>
       </div>

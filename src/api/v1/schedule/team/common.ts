@@ -1,4 +1,3 @@
-
 import { Api } from '@/api/api'
 /**
  *
@@ -10,18 +9,18 @@ import { Api } from '@/api/api'
  */
 export class TeamScheduleCommonApi extends Api {
   /**
-  *
-  * @param id
-  * 团体课排期可使用座位列表
-  */
+   *
+   * @param id
+   * 团体课排期可使用座位列表
+   */
   getUnusedSeatList(query: UnUsedSeatQuery) {
     return this.http.get(`/v1/schedule/team/shop/unused_seat`, { query })
   }
   /**
-  *
-  * @param query
-  * 获取消费方式列表
-  */
+   *
+   * @param query
+   * 获取消费方式列表
+   */
   getConsumeList(query: GetScheduleConsumeInput) {
     return this.http.get('/v1/schedule/team/shop/consume', { query })
   }
@@ -61,7 +60,7 @@ export interface UnUsedSeatQuery {
 }
 
 export interface ConsumeQuery {
-  course_id: number,
+  course_id: number
   member_id: number
 }
 
@@ -76,6 +75,6 @@ export interface GetMemberInput {
  * 获取用户消费方式request
  */
 export interface GetScheduleConsumeInput {
-  course_id: number,
+  course_id: number
   member_id: number
 }

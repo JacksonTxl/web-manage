@@ -1,4 +1,3 @@
-
 <template>
   <div class="st-checkbox-facility-group">
     <slot></slot>

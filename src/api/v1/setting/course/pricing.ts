@@ -22,19 +22,19 @@ export interface UpdateInput {
   /**
    * 售卖模式: 1 教练谈单 2 统一标价
    */
-  sale_model: number,
+  sale_model: number
   /**
    * 定价模式: 1 教练统一定价 2 教练分级定价
    */
-  price_model: number,
+  price_model: number
   /**
    * 最低价下调百分比
    */
-  min_price_percent: number,
+  min_price_percent: number
   /**
    * 最高价上调百分比
    */
-  max_price_percent: number,
+  max_price_percent: number
   /**
    * 标准价设置：0 最低价 1 最高价
    */

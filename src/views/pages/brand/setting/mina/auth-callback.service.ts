@@ -5,7 +5,7 @@ import { State } from 'rx-state'
 
 @Injectable()
 export class AuthCallbackService {
-  constructor(private settingMinaApi: SettingMinaApi) { }
+  constructor(private settingMinaApi: SettingMinaApi) {}
   callback(params: CallbackParams) {
     return this.settingMinaApi.callback(params)
   }

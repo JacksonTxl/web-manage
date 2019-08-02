@@ -9,10 +9,14 @@
   >
     <st-form :form="form" labelWidth="70px">
       <st-form-item label="区域">
-        <a-input :value="areaName" disabled/>
+        <a-input :value="areaName" disabled />
       </st-form-item>
       <st-form-item label="首字母">
-        <a-input placeholder="请输入首字母" maxlength="1" v-decorator="rules.firstLetter"/>
+        <a-input
+          placeholder="请输入首字母"
+          maxlength="1"
+          v-decorator="rules.firstLetter"
+        />
       </st-form-item>
       <st-form-item label="起始编号" required>
         <a-input-number
@@ -30,19 +34,26 @@
           placeholder="请输入售卖价格"
           v-decorator="ruleConfig.priceNum"
         >
-          <template slot="addonAfter">元/天</template>
+          <template slot="addonAfter">
+            元/天
+          </template>
         </st-input-number>
       </st-form-item>
       <st-form-item label="转让手续费">
-        <st-input-number :float="true" placeholder="请输入转让手续费" v-decorator="ruleConfig.transferNum">
+        <st-input-number
+          :float="true"
+          placeholder="请输入转让手续费"
+          v-decorator="ruleConfig.transferNum"
+        >
           <template slot="addonAfter">
             <a-select v-model="transferUnit">
               <a-select-option
-                v-for="(item, index) in settingEnums.cabinet.transfer_unit.value"
+                v-for="(item, index) in settingEnums.cabinet.transfer_unit
+                  .value"
                 :key="index"
                 :value="+index"
               >
-                {{item}}
+                {{ item }}
               </a-select-option>
             </a-select>
           </template>
@@ -58,7 +69,7 @@
             :key="index"
             :value="+index"
           >
-            {{item}}
+            {{ item }}
           </a-radio>
         </a-radio-group>
       </st-form-item>
@@ -141,7 +152,7 @@ export default {
     },
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then((data) => {
+      this.form.validateFields().then(data => {
         data.id = this.id
         const reason = this.info.reason || ''
         if (!reason.length) {
@@ -150,7 +161,10 @@ export default {
           })
           return
         }
-        if (this.isShowReason && !this.pattern.CN_EN_NUM_SPACE('1-30').test(reason)) {
+        if (
+          this.isShowReason &&
+          !this.pattern.CN_EN_NUM_SPACE('1-30').test(reason)
+        ) {
           this.messageService.error({
             content: '不可用原因格式错误'
           })

@@ -38,7 +38,6 @@ export const columns = [
     align: 'right',
     sorter: true,
     scopedSlots: { customRender: 'coaches' }
-
   },
   {
     title: '操作',

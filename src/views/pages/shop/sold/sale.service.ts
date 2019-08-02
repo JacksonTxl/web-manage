@@ -8,14 +8,15 @@ export class SaleService implements RouteGuard {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
-  constructor(private leaseApi: CourseApi, private transactionApi: TransactionApi) {}
-  addAdvance(params:any) {
+  constructor(
+    private leaseApi: CourseApi,
+    private transactionApi: TransactionApi
+  ) {}
+  addAdvance(params: any) {
     return this.transactionApi.setAdvance(params)
   }
-  getList() {
-
-  }
-  beforeEach(to:ServiceRoute, from: ServiceRoute, next: ()=>{}) {
+  getList() {}
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
     next()
   }
 }

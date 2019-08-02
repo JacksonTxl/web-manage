@@ -80,15 +80,16 @@ export default {
     initDv() {
       this.dv = new View()
       this.dv.source(this.data)
-      this.dv.transform({
-        type: 'fold',
-        fields: this.fields,
-        key: 'name',
-        value: 'value'
-      })
+      this.dv
+        .transform({
+          type: 'fold',
+          fields: this.fields,
+          key: 'name',
+          value: 'value'
+        })
         .transform({
           type: 'map',
-          callback: (row) => {
+          callback: row => {
             row.value = +row.value
             return row
           }

@@ -14,13 +14,15 @@ export class PackageService implements RouteGuard {
   })
   constructor(private courseApi: CourseApi, private authService: AuthService) {}
   getList(params: GetCourseListInput) {
-    return this.courseApi.getCourseList(params, 'package').pipe(tap((res:any) => {
-      res = this.authService.filter(res)
-      this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-    }))
+    return this.courseApi.getCourseList(params, 'package').pipe(
+      tap((res: any) => {
+        res = this.authService.filter(res)
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
   }
-  unFreeze(id:string) {
+  unFreeze(id: string) {
     return this.courseApi.unFreezeCourse(id, 'package')
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {

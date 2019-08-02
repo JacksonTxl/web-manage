@@ -3,7 +3,11 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="课程名称">
-          <a-input placeholder="课程名称" disabled v-decorator="ruleConfig.courseName"/>
+          <a-input
+            placeholder="课程名称"
+            disabled
+            v-decorator="ruleConfig.courseName"
+          />
         </st-form-item>
       </a-col>
     </a-row>
@@ -11,15 +15,24 @@
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item required>
           <template slot="label">
-              上课门店<st-help-tooltip id="TBCPC001" />
+            上课门店
+            <st-help-tooltip id="TBCPC001" />
           </template>
-          <a-radio-group @change="onChange" v-decorator="ruleConfig.shopSetting">
-            <a-radio v-for="(item, index) in personalCourseEnums.shop_setting.value" :key="index"
-              :value="index">{{item}}</a-radio>
+          <a-radio-group
+            @change="onChange"
+            v-decorator="ruleConfig.shopSetting"
+          >
+            <a-radio
+              v-for="(item, index) in personalCourseEnums.shop_setting.value"
+              :key="index"
+              :value="index"
+            >
+              {{ item }}
+            </a-radio>
           </a-radio-group>
           <div class="page-shop-coach-container-shop mg-t8" v-if="isShow">
             <select-shop @change="onSelectShopChange"></select-shop>
-            <input type="hidden" v-decorator="ruleConfig.shopIds">
+            <input type="hidden" v-decorator="ruleConfig.shopIds" />
           </div>
         </st-form-item>
       </a-col>
@@ -28,11 +41,15 @@
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item>
           <template slot="label">
-              上课教练<st-help-tooltip id="TBCPC002" />
+            上课教练
+            <st-help-tooltip id="TBCPC002" />
           </template>
           <div class="page-shop-coach-container-coach">
-            <input type="hidden" v-decorator="ruleConfig.coachIds">
-            <select-coach :shopIds="shopIds" @change="onSelectCoachChange"></select-coach>
+            <input type="hidden" v-decorator="ruleConfig.coachIds" />
+            <select-coach
+              :shopIds="shopIds"
+              @change="onSelectCoachChange"
+            ></select-coach>
           </div>
         </st-form-item>
       </a-col>
@@ -127,7 +144,7 @@ export default {
       })
     },
     onChange(e) {
-      this.isShow = (e.target.value === '2')
+      this.isShow = e.target.value === '2'
       this.shopIds = []
     },
     onSelectShopChange(shopIds) {

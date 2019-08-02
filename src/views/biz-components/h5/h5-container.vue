@@ -2,11 +2,15 @@
   <div :class="h5()">
     <div :class="h5('nav')"><slot name="title">标题</slot></div>
     <div :class="h5('content')">
-      <slot v-if="isAuth&&!loading.getInfo"></slot>
-      <div v-if="!isAuth&&!loading.getInfo" :class="h5('content-deny')">
-        您还没配置用户端<br/>
-        不支持实时预览<br/>
-        <st-button :class="h5('content-deny-button')" type="primary">去配置</st-button>
+      <slot v-if="isAuth && !loading.getInfo"></slot>
+      <div v-if="!isAuth && !loading.getInfo" :class="h5('content-deny')">
+        您还没配置用户端
+        <br />
+        不支持实时预览
+        <br />
+        <st-button :class="h5('content-deny-button')" type="primary">
+          去配置
+        </st-button>
       </div>
     </div>
   </div>
@@ -18,9 +22,7 @@ export default {
     h5: 'st-h5-container'
   },
   serviceProviders() {
-    return [
-      H5ContainerService
-    ]
+    return [H5ContainerService]
   },
   serviceInject() {
     return {
@@ -47,6 +49,5 @@ export default {
       })
     }
   }
-
 }
 </script>

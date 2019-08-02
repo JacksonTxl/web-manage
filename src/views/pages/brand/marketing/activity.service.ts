@@ -6,9 +6,9 @@ import { State } from 'rx-state'
 
 @Injectable()
 export class ActivityService implements RouteGuard {
-  actList$ = new State({});
+  actList$ = new State({})
   info$ = new State({})
-  constructor(private settingMinaApi: SettingMinaApi) { }
+  constructor(private settingMinaApi: SettingMinaApi) {}
   getInfo() {
     return this.settingMinaApi.getInfo().pipe(
       tap(res => {
@@ -24,10 +24,7 @@ export class ActivityService implements RouteGuard {
     )
   }
   init() {
-    return forkJoin(
-      this.getInfo(),
-      this.getActList()
-    )
+    return forkJoin(this.getInfo(), this.getActList())
   }
   beforeRouteEnter() {
     return this.init()

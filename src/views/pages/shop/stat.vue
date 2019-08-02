@@ -1,8 +1,5 @@
 <template>
-  <st-panel
-    app
-     :tabs="authTabs"
-  >
+  <st-panel app :tabs="authTabs">
     <router-view></router-view>
   </st-panel>
 </template>
@@ -21,17 +18,10 @@ export default {
     }
   },
   data() {
-    return {
-
-    }
+    return {}
   },
-  computed: {
-
-  },
-  methods: {
-
-  },
-  components: {
-  }
+  computed: {},
+  methods: {},
+  components: {}
 }
 </script>

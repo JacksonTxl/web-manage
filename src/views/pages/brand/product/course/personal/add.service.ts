@@ -7,9 +7,7 @@ import {
   SetShopInput,
   SetPriceInput
 } from '@/api/v1/course/personal/brand'
-import {
-  PersonalCourseApi
-} from '@/api/v1/course/personal'
+import { PersonalCourseApi } from '@/api/v1/course/personal'
 interface AddState {}
 @Injectable()
 export class AddService extends Store<AddState> {

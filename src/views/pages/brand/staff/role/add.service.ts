@@ -6,8 +6,8 @@ import { GetInitInfoPut, RoleInfo, RoleApi } from '@/api/v1/staff/role'
 import { RoleService } from '../role.service'
 import { forkJoin } from 'rxjs'
 interface SetState {
-  info: object,
-  brandList: any[],
+  info: object
+  brandList: any[]
   shopList: any[]
 }
 @Injectable()
@@ -34,21 +34,25 @@ export class AddService extends Store<SetState> {
   }
   gitInitInfo() {
     // 如果是添加角色 初始化角色Id 是 0
-    return this.roleService.getInitInfo({ role_id: 0 }).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.brandList = res.brand_list
-        state.shopList = res.shop_list
+    return this.roleService.getInitInfo({ role_id: 0 }).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.brandList = res.brand_list
+          state.shopList = res.shop_list
+        })
       })
-    }))
+    )
   }
   /**
-     * 获取所有角色详情
-     */
+   * 获取所有角色详情
+   */
   @Effect()
   getInfo(query: GetInitInfoPut) {
-    return this.roleService.getInfo(query).pipe(tap(res => {
-      this.SET_ROLE_INFO(res.role)
-    }))
+    return this.roleService.getInfo(query).pipe(
+      tap(res => {
+        this.SET_ROLE_INFO(res.role)
+      })
+    )
   }
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {

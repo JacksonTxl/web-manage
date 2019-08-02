@@ -11,17 +11,19 @@ export class InfoService implements RouteGuard {
   loading$ = new State({})
   auth$ = new State({})
   constructor(private courseApi: CourseApi, private authService: AuthService) {}
-  getPackageInfo(id:string, type:string) {
-    return this.courseApi.getCourseInfo(id, type).pipe(tap((res:any) => {
-      res = this.authService.filter(res, 'auth')
-      this.personalInfo$.commit(() => res.info)
-      this.auth$.commit(() => res.auth)
-    }))
+  getPackageInfo(id: string, type: string) {
+    return this.courseApi.getCourseInfo(id, type).pipe(
+      tap((res: any) => {
+        res = this.authService.filter(res, 'auth')
+        this.personalInfo$.commit(() => res.info)
+        this.auth$.commit(() => res.auth)
+      })
+    )
   }
-  unFreeze(id:string) {
+  unFreeze(id: string) {
     return this.courseApi.unFreezeCourse(id, 'personal')
   }
-  beforeEach(to: ServiceRoute, from:ServiceRoute, next: ()=>{}) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
     this.id = to.meta.query.id
     this.getPackageInfo(to.meta.query.id, 'personal').subscribe(() => {
       next()

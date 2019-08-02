@@ -13,7 +13,7 @@
           <a-radio-button value="basal_metabolism">基础代谢率</a-radio-button>
         </a-radio-group>
         <div id="mountNode"></div>
-        <st-area-chart id="mountNode" :data="g2"/>
+        <st-area-chart id="mountNode" :data="g2" />
       </a-col>
     </a-row>
     <a-row :gutter="8">
@@ -24,37 +24,51 @@
     <st-t4>体测记录</st-t4>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
-        <st-form-table hoverable :page="physicalListInfo.page" @change="onPageChange">
+        <st-form-table
+          hoverable
+          :page="physicalListInfo.page"
+          @change="onPageChange"
+        >
           <thead>
             <tr>
               <th
-                v-for="(item,index) in tableTitle"
+                v-for="(item, index) in tableTitle"
                 :key="index"
-                :style="{'width':item.width}"
-              >{{item.title}}</th>
+                :style="{ width: item.width }"
+              >
+                {{ item.title }}
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td :colspan="tableTitle.length">
-                <a v-modal-link="{ name: 'shop-add-lateral-recording', on:{done: onModalTest }}">
+                <a
+                  v-modal-link="{
+                    name: 'shop-add-lateral-recording',
+                    on: { done: onModalTest }
+                  }"
+                >
                   <st-button class="editable-add-btn" type="dashed" icon="add">
                     添加体侧记录
                   </st-button>
                 </a>
               </td>
             </tr>
-            <tr v-for="(item,index) in physicalListInfo.physical_list" :key="index">
-              <td>{{item.test_time}}</td>
-              <td>{{item.height}}</td>
-              <td>{{item.weight}}</td>
-              <td>{{item.body_fat_rate}}</td>
-              <td>{{item.basal_metabolism}}</td>
-              <td>{{item.fat_content}}</td>
-              <td>{{item.skeletal_muscle_content}}</td>
-              <td>{{item.bust}}</td>
-              <td>{{item.waistline}}</td>
-              <td>{{item.hipline}}</td>
+            <tr
+              v-for="(item, index) in physicalListInfo.physical_list"
+              :key="index"
+            >
+              <td>{{ item.test_time }}</td>
+              <td>{{ item.height }}</td>
+              <td>{{ item.weight }}</td>
+              <td>{{ item.body_fat_rate }}</td>
+              <td>{{ item.basal_metabolism }}</td>
+              <td>{{ item.fat_content }}</td>
+              <td>{{ item.skeletal_muscle_content }}</td>
+              <td>{{ item.bust }}</td>
+              <td>{{ item.waistline }}</td>
+              <td>{{ item.hipline }}</td>
             </tr>
           </tbody>
         </st-form-table>

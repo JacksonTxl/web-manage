@@ -2,10 +2,10 @@ import { Api } from '@/api/api'
 const url = '/v1/setting/cabinet/temporary'
 
 export class TemporaryCabinetApi extends Api {
-/**
- * 新增临时储物柜
- * @param params
- */
+  /**
+   * 新增临时储物柜
+   * @param params
+   */
   add(params: AddInput) {
     return this.http.post(url, { params })
   }
@@ -38,9 +38,7 @@ export class TemporaryCabinetApi extends Api {
   }
 }
 
-export interface AddInput {
-
-}
+export interface AddInput {}
 export interface UpdateInput extends AddInput {
   id: number
 }

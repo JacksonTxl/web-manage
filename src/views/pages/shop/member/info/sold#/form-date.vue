@@ -2,13 +2,23 @@
   <div>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
-        <a-date-picker style="width: 160px" format="YYYY-MM-DD" @change="courseName"/>
+        <a-date-picker
+          style="width: 160px"
+          format="YYYY-MM-DD"
+          @change="courseName"
+        />
         <a-select
           style="width: 160px;margin-left:12px"
           placeholder="课程类型"
           v-model="value.reserve_type"
         >
-          <a-select-option v-for="(item,key,index) in reserveEnums.reserve_type.value" :value="key" :key="index">{{item}}</a-select-option>
+          <a-select-option
+            v-for="(item, key, index) in reserveEnums.reserve_type.value"
+            :value="key"
+            :key="index"
+          >
+            {{ item }}
+          </a-select-option>
         </a-select>
         <a-select
           style="width: 160px;margin-left:12px"
@@ -16,7 +26,13 @@
           v-model="value.reserve_status"
         >
           <a-select-option value="-1">全部预约状态</a-select-option>
-          <a-select-option v-for="(item,key,index) in reserveEnums.reserve_status.value" :value="key" :key="index">{{item}}</a-select-option>
+          <a-select-option
+            v-for="(item, key, index) in reserveEnums.reserve_status.value"
+            :value="key"
+            :key="index"
+          >
+            {{ item }}
+          </a-select-option>
         </a-select>
         <a-select
           style="width: 160px;margin-left:12px"
@@ -25,7 +41,13 @@
         >
           <a-select-option value="-1">全部签到状态</a-select-option>
 
-          <a-select-option v-for="(item,key,index) in reserveEnums.is_checkin.value" :value="key" :key="index">{{item}}</a-select-option>
+          <a-select-option
+            v-for="(item, key, index) in reserveEnums.is_checkin.value"
+            :value="key"
+            :key="index"
+          >
+            {{ item }}
+          </a-select-option>
         </a-select>
         <st-input-search
           placeholder="请输入课程名称"

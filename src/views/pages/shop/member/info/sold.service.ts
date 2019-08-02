@@ -38,7 +38,10 @@ export class SoldService implements RouteGuard {
     return this.memberApi.getMemberSign(params)
   }
   init(id: string, params: any) {
-    return forkJoin(this.getMemberReserve(id, params), this.getMemberEntrance(id))
+    return forkJoin(
+      this.getMemberReserve(id, params),
+      this.getMemberEntrance(id)
+    )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init(to.meta.query.id, {

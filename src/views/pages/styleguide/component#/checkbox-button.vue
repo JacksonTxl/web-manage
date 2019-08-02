@@ -10,7 +10,7 @@
       <st-checkbox-button-item value="6">周六</st-checkbox-button-item>
       <st-checkbox-button-item value="7">周日</st-checkbox-button-item>
     </st-checkbox-button-group>
-    {{model}}
+    {{ model }}
   </section>
 </template>
 

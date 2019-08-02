@@ -25,7 +25,7 @@ export interface UpdateInput {
    * 用户等级条件id
    */
   condition: number[]
-   /**
+  /**
    * 用户等级权益id
    */
   rights: number[]

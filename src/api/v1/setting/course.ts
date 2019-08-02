@@ -6,9 +6,12 @@ export class CourseApi extends Api {
    */
   getCourseCategoryList(query: GetCourseCategoryListInput = {}) {
     return this.http.get(url, {
-      query: Object.assign({
-        size: 100
-      }, query)
+      query: Object.assign(
+        {
+          size: 100
+        },
+        query
+      )
     })
   }
   /**
@@ -32,7 +35,7 @@ export class CourseApi extends Api {
 }
 
 export interface GetCourseCategoryListInput {
-  page?: number,
+  page?: number
   size?: number
 }
 

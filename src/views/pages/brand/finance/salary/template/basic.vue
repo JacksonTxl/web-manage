@@ -1,8 +1,12 @@
 <template>
-  <st-form-table :page="page" @change="onTableChange" :loading="loading.getBasicInfo">
+  <st-form-table
+    :page="page"
+    @change="onTableChange"
+    :loading="loading.getBasicInfo"
+  >
     <thead>
       <tr>
-        <template v-for="(item,index) in columsTitlelist">
+        <template v-for="(item, index) in columsTitlelist">
           <th :key="index">{{ item }}</th>
         </template>
       </tr>
@@ -10,7 +14,14 @@
     <tbody>
       <tr v-if="auth.add">
         <td colspan="5" class="st-form-table__add">
-          <st-button type="dashed" block v-modal-link=" { name: 'finance-add-template',on: {change: refresh}}">
+          <st-button
+            type="dashed"
+            block
+            v-modal-link="{
+              name: 'finance-add-template',
+              on: { change: refresh }
+            }"
+          >
             新增底薪模板
           </st-button>
         </td>
@@ -20,19 +31,40 @@
           <td>{{ item.template_name }}</td>
           <td>{{ item.salary }}</td>
           <td>
-            <template v-if="item.used == 0 ">
+            <template v-if="item.used == 0">
               <span>{{ item.used }}</span>
             </template>
-            <template v-if="item.used != 0 ">
-              <a v-modal-link=" { name: 'search-staff-list-salary', props: {id: item.id}}">{{ item.used }}
+            <template v-if="item.used != 0">
+              <a
+                v-modal-link="{
+                  name: 'search-staff-list-salary',
+                  props: { id: item.id }
+                }"
+              >
+                {{ item.used }}
               </a>
             </template>
           </td>
           <td>{{ item.created_time }}</td>
           <td>
             <st-table-actions>
-              <a v-if="item.auth['brand_shop:salary:basic_template|edit']" v-modal-link=" { name: 'finance-basic-template-edit', props: {item: item},on: {change: refresh}}">编辑</a>
-              <a href="javascript:;" v-if="item.auth['brand_shop:salary:basic_template|del']" @click="onDelete(item.id)">删除</a>
+              <a
+                v-if="item.auth['brand_shop:salary:basic_template|edit']"
+                v-modal-link="{
+                  name: 'finance-basic-template-edit',
+                  props: { item: item },
+                  on: { change: refresh }
+                }"
+              >
+                编辑
+              </a>
+              <a
+                href="javascript:;"
+                v-if="item.auth['brand_shop:salary:basic_template|del']"
+                @click="onDelete(item.id)"
+              >
+                删除
+              </a>
             </st-table-actions>
           </td>
         </tr>
@@ -112,5 +144,4 @@ export default {
     }
   }
 }
-
 </script>

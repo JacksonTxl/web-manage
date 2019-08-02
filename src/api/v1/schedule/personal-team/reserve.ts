@@ -1,4 +1,3 @@
-
 import { Api } from '@/api/api'
 
 /**
@@ -11,10 +10,10 @@ import { Api } from '@/api/api'
  */
 export class PersonalTeamScheduleReserveApi extends Api {
   /**
- *
- * @param params
- * 添加预约
- */
+   *
+   * @param params
+   * 添加预约
+   */
   add(params: AddReserveInput) {
     return this.http.post('/v1/schedule/personal_team/shop/reserve', { params })
   }
@@ -24,7 +23,9 @@ export class PersonalTeamScheduleReserveApi extends Api {
    * 私教小团课签到消费
    */
   check(params: CheckInput) {
-    return this.http.put(`/v1/schedule/personal_team/shop/check/${params.id}`, { params })
+    return this.http.put(`/v1/schedule/personal_team/shop/check/${params.id}`, {
+      params
+    })
   }
   /**
    *
@@ -42,13 +43,13 @@ export class PersonalTeamScheduleReserveApi extends Api {
   }
 }
 export interface AddReserveInput {
-  schedule_id: number,
-  member_id: number,
-  seat: any[],
-  consume_type: number,
+  schedule_id: number
+  member_id: number
+  seat: any[]
+  consume_type: number
   consume_id: number
 }
 export interface CheckInput {
-  id: number,
+  id: number
   checkin_method: number
 }

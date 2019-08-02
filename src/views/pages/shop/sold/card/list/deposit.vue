@@ -3,11 +3,14 @@
     <st-search-panel>
       <div :class="basic('select')">
         <span style="width:90px;">储值卡状态：</span>
-        <st-search-radio v-model="query.is_valid" :list="cardSaleStatusList"/>
+        <st-search-radio v-model="query.is_valid" :list="cardSaleStatusList" />
       </div>
       <div :class="basic('select')">
         <span style="width:90px;">购买时间：</span>
-        <st-range-picker :disabledDays="180" :value="selectTime"></st-range-picker>
+        <st-range-picker
+          :disabledDays="180"
+          :value="selectTime"
+        ></st-range-picker>
         <!-- <a-date-picker
           :disabledDate="disabledStartDate"
           format="YYYY-MM-DD"
@@ -30,7 +33,13 @@
         /> -->
       </div>
       <div slot="button">
-        <st-button type="primary" @click="onSearchNative" :loading="loading.getList">查询</st-button>
+        <st-button
+          type="primary"
+          @click="onSearchNative"
+          :loading="loading.getList"
+        >
+          查询
+        </st-button>
         <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
       </div>
     </st-search-panel>
@@ -51,23 +60,45 @@
           @change="onTableChange"
           :columns="columns"
           :dataSource="list"
-          :scroll="{x:1800}"
+          :scroll="{ x: 1800 }"
         >
-          <template slot="is_valid" slot-scope="text">{{text | enumFilter('sold.is_valid')}}</template>
-          <template
-            slot="end_time"
-            slot-scope="text"
-          >{{text}}</template>
-          <template
-            slot="buy_time"
-            slot-scope="text"
-          >{{text}}</template>
-          <div slot="action" slot-scope="text,record">
+          <template slot="is_valid" slot-scope="text">
+            {{ text | enumFilter('sold.is_valid') }}
+          </template>
+          <template slot="end_time" slot-scope="text">
+            {{ text }}
+          </template>
+          <template slot="buy_time" slot-scope="text">
+            {{ text }}
+          </template>
+          <div slot="action" slot-scope="text, record">
             <st-table-actions>
-              <a v-if="record.auth['shop:sold:sold_deposit_card|get']" @click="onDetail(record)">详情</a>
-              <a v-if="record.auth['shop:sold:sold_deposit_card|export_contract']"  @click="toContract(record)">查看合同</a>
-              <a v-if="record.auth['shop:sold:sold_deposit_card|transfer']" @click="onTransfer(record)">转让</a>
-              <a v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a>
+              <a
+                v-if="record.auth['shop:sold:sold_deposit_card|get']"
+                @click="onDetail(record)"
+              >
+                详情
+              </a>
+              <a
+                v-if="
+                  record.auth['shop:sold:sold_deposit_card|export_contract']
+                "
+                @click="toContract(record)"
+              >
+                查看合同
+              </a>
+              <a
+                v-if="record.auth['shop:sold:sold_deposit_card|transfer']"
+                @click="onTransfer(record)"
+              >
+                转让
+              </a>
+              <a
+                v-if="record.auth['brand_shop:order:order|refund']"
+                @click="onRefund(record)"
+              >
+                退款
+              </a>
             </st-table-actions>
           </div>
         </st-table>
@@ -136,7 +167,7 @@ export default {
           disabled: false,
           value: null,
           format: 'YYYY-MM-DD',
-          change: ($event) => { }
+          change: $event => {}
         },
         endTime: {
           showTime: false,
@@ -144,7 +175,7 @@ export default {
           disabled: false,
           value: null,
           format: 'YYYY-MM-DD',
-          change: ($event) => {}
+          change: $event => {}
         }
       }
     }
@@ -163,7 +194,9 @@ export default {
   methods: {
     // 跳转合同
     toContract(record) {
-      let url = `${window.location.origin}/extra/contract-preview?id=${record.order_id}`
+      let url = `${window.location.origin}/extra/contract-preview?id=${
+        record.order_id
+      }`
       window.open(url)
     },
     // 转让
@@ -205,8 +238,12 @@ export default {
     },
     // 查询
     onSearchNative() {
-      this.query.start_time = this.selectTime.startTime.value ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00` : ''
-      this.query.end_time = this.selectTime.endTime.value ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.query.start_time = this.selectTime.startTime.value
+        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
+        : ''
+      this.query.end_time = this.selectTime.endTime.value
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 00:00:00`
+        : ''
       this.onSearch()
     },
     // 设置searchData

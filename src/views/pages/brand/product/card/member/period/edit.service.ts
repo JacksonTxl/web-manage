@@ -9,21 +9,21 @@ export class EditService implements RouteGuard {
   cardInfo$ = new State({})
   loading$ = new State({})
   constructor(private cardsApi: CardsApi, private shopApi: ShopApi) {}
-  getCardInfo(id:string) {
-    return this.cardsApi.getCardInfoBack(id, 'brand').pipe(tap((res:any) => {
-      this.cardInfo$.commit(() => res.info)
-    }))
+  getCardInfo(id: string) {
+    return this.cardsApi.getCardInfoBack(id, 'brand').pipe(
+      tap((res: any) => {
+        this.cardInfo$.commit(() => res.info)
+      })
+    )
   }
   getShopBasic(params: GetShopBasicInput) {
-    return this.shopApi.getShopBasic(params).pipe(
-      pluck('shops')
-    )
+    return this.shopApi.getShopBasic(params).pipe(pluck('shops'))
   }
   @Effect()
   editCard(data: CardsInput) {
     return this.cardsApi.editCard(data, 'brand')
   }
-  beforeRouteEnter(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
     this.getCardInfo(to.meta.query.id).subscribe(() => {
       next()
     })

@@ -9,10 +9,12 @@ export class RefundService {
   loading$ = new State({})
   constructor(private cardApi: CardApi) {}
   @Effect()
-  getRefundInfo(id:string, type:string) {
-    return this.cardApi.getCardRefundInfo(id, type).pipe(tap((res:any) => {
-      this.refundInfo$.commit(() => res.info)
-    }))
+  getRefundInfo(id: string, type: string) {
+    return this.cardApi.getCardRefundInfo(id, type).pipe(
+      tap((res: any) => {
+        this.refundInfo$.commit(() => res.info)
+      })
+    )
   }
   @Effect()
   refund(params: RefundCardInput, id: string, type: string) {

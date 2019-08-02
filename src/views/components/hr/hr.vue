@@ -1,5 +1,8 @@
 <template>
-  <hr :style="{marginTop: marginTop,marginBottom: marginBottom}" class="st-hr" />
+  <hr
+    :style="{ marginTop: marginTop, marginBottom: marginBottom }"
+    class="st-hr"
+  />
 </template>
 
 <script>

@@ -5,9 +5,12 @@
     <h5>暂无type,目前只有这一种样式，后续根据需求加</h5>
     <section style="border: 1px solid #ccc;">
       <st-panel>
-        <st-coupon name="卡尔券" @close="onClose"/>&nbsp;&nbsp;
-        <st-coupon name="新人券" @close="onClose"/>&nbsp;&nbsp;
-        <st-coupon name="VIP券" @close="onClose"/>&nbsp;&nbsp;
+        <st-coupon name="卡尔券" @close="onClose" />
+        &nbsp;&nbsp;
+        <st-coupon name="新人券" @close="onClose" />
+        &nbsp;&nbsp;
+        <st-coupon name="VIP券" @close="onClose" />
+        &nbsp;&nbsp;
       </st-panel>
     </section>
   </section>

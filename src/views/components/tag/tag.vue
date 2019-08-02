@@ -1,5 +1,5 @@
-    <template>
-  <div class="st-tag" :class="['st-tag--'+type]">{{labelText}}</div>
+<template>
+  <div class="st-tag" :class="['st-tag--' + type]">{{ labelText }}</div>
 </template>
 
 <script>

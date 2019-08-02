@@ -8,13 +8,18 @@ import { AuthService } from '@/services/auth.service'
 export class InfoService implements RouteGuard {
   info$ = new State({})
   auth$ = new State([])
-  constructor(private staffapi: ShopStaffApi, private authService: AuthService) {}
+  constructor(
+    private staffapi: ShopStaffApi,
+    private authService: AuthService
+  ) {}
   getInfo(id: string) {
-    return this.staffapi.getStaffInfoCommonHeader(id).pipe(tap(res => {
-      res = this.authService.filter(res, 'auth')
-      this.info$.commit(() => res.common_info)
-      this.auth$.commit(() => res.auth)
-    }))
+    return this.staffapi.getStaffInfoCommonHeader(id).pipe(
+      tap(res => {
+        res = this.authService.filter(res, 'auth')
+        this.info$.commit(() => res.common_info)
+        this.auth$.commit(() => res.auth)
+      })
+    )
   }
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {

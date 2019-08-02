@@ -12,11 +12,14 @@
         <a-row>
           <a-col :xs="22">
             <st-form-item v-show="false">
-              <input type="hidden" v-decorator="rules.id">
+              <input type="hidden" v-decorator="rules.id" />
             </st-form-item>
             <st-form-item label="课程类型" required>
-              <a-input placeholder="请输入课程类型名称" v-decorator="rules.settingName" maxlength="20">
-              </a-input>
+              <a-input
+                placeholder="请输入课程类型名称"
+                v-decorator="rules.settingName"
+                maxlength="20"
+              ></a-input>
             </st-form-item>
           </a-col>
         </a-row>
@@ -25,7 +28,6 @@
   </st-modal>
 </template>
 <script>
-
 import { EditService } from './edit.service'
 import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'

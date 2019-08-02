@@ -34,10 +34,12 @@ export class FrozenService extends Store<CardsTableModelState> {
     )
   }
   @Effect()
-  getMemberList(key_word:string) {
-    return this.memberApi.getSearchMemberList({ key_word }).pipe(tap((res:any) => {
-      this.staffList$.commit(() => res.list)
-    }))
+  getMemberList(key_word: string) {
+    return this.memberApi.getSearchMemberList({ key_word }).pipe(
+      tap((res: any) => {
+        this.staffList$.commit(() => res.list)
+      })
+    )
   }
   getMemberTransfer(data: any) {
     return this.memberApi.getAddMemberFreeze(data)

@@ -7,7 +7,7 @@ export class SurplusService {
   loading$ = new State({})
   constructor(private courseApi: CourseApi) {}
   @Effect()
-  edit(params: EditCoursePersonalRemainInput, id:string) {
+  edit(params: EditCoursePersonalRemainInput, id: string) {
     return this.courseApi.editCoursePersonalRemain(params, id)
   }
 }

@@ -1,19 +1,27 @@
-
 <template>
   <div style="display: inherit;">
-    <st-input-number v-model="value.min" :float="true" :min="minMax.min" style="width:130px" >
+    <st-input-number
+      v-model="value.min"
+      :float="true"
+      :min="minMax.min"
+      style="width:130px"
+    >
       <!-- @change="onChangeMin" -->
-      <template slot="addonAfter">{{company}}</template>
+      <template slot="addonAfter">
+        {{ company }}
+      </template>
     </st-input-number>
     <div style="padding:0 10px">~</div>
     <st-input-number
       v-model="value.max"
       :float="true"
-      :min="value.min ?(value.min -0):1 "
+      :min="value.min ? value.min - 0 : 1"
       :max="minMax.max"
       style="width:130px"
     >
-      <template slot="addonAfter">{{company}}</template>
+      <template slot="addonAfter">
+        {{ company }}
+      </template>
     </st-input-number>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <st-panel app initial >
+  <st-panel app initial>
     <div :class="basic()">
       <img src="~@/assets/img/brand/marketing/coupon/success.svg" />
       <p :class="basic('success')">活动新建成功</p>
@@ -33,25 +33,17 @@ export default {
     basic: 'page-brand-plugin-coupon-tip'
   },
   serviceInject() {
-    return {
-    }
+    return {}
   },
   rxState() {
-    return {
-    }
+    return {}
   },
-  computed: {
-
-  },
+  computed: {},
   data() {
-    return {
-    }
+    return {}
   },
-  mounted() {
-  },
-  watch: {
-
-  },
+  mounted() {},
+  watch: {},
   methods: {
     jumpToad() {
       this.$router.push({
@@ -116,9 +108,7 @@ export default {
     backCoupon() {
       this.$router.push({ path: '/brand/marketing/plugin/coupon/list' })
     }
-
   },
-  components: {
-  }
+  components: {}
 }
 </script>

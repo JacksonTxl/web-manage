@@ -3,28 +3,45 @@
     <a-row :gutter="8">
       <a-col :lg="24">
         <st-info>
-          <st-info-item label="模板名称">{{ infodata.template_name }}</st-info-item>
-          <st-info-item label="业绩类型">{{ infodata.performance_type.name }}</st-info-item>
-          <st-info-item
-            label="提成模式"
-            v-if="infodata.performance_mode.name"
-          >{{ infodata.performance_mode.name }}</st-info-item>
-          <template v-if="infodata.performance_type.id == 1 || infodata.performance_type.id == 2">
+          <st-info-item label="模板名称">
+            {{ infodata.template_name }}
+          </st-info-item>
+          <st-info-item label="业绩类型">
+            {{ infodata.performance_type.name }}
+          </st-info-item>
+          <st-info-item label="提成模式" v-if="infodata.performance_mode.name">
+            {{ infodata.performance_mode.name }}
+          </st-info-item>
+          <template
+            v-if="
+              infodata.performance_type.id == 1 ||
+                infodata.performance_type.id == 2
+            "
+          >
             <template v-if="infodata.performance_mode.id == 1">
-              <st-info-item label="默认提成">{{ infodata.performance_num }}%</st-info-item>
+              <st-info-item label="默认提成">
+                {{ infodata.performance_num }}%
+              </st-info-item>
             </template>
             <template v-if="infodata.performance_mode.id == 2">
-              <st-info-item label="默认提成">{{ infodata.performance_num }}元</st-info-item>
+              <st-info-item label="默认提成">
+                {{ infodata.performance_num }}元
+              </st-info-item>
             </template>
           </template>
           <template v-if="infodata.performance_type.id == 3">
-            <st-info-item label="默认提成">{{ infodata.performance_num }}元/节</st-info-item>
+            <st-info-item label="默认提成">
+              {{ infodata.performance_num }}元/节
+            </st-info-item>
           </template>
           <st-info-item label="梯度提成">
             <div
               style="padding:12px; box-size: border-box; border-radius:4px;border:1px solid rgba(205,212,223,1);"
             >
-              <st-form-table hoverable :isEmpty="infodata.gradients.length === 0">
+              <st-form-table
+                hoverable
+                :isEmpty="infodata.gradients.length === 0"
+              >
                 <thead>
                   <tr>
                     <template v-if="infodata.performance_type.id == 1">

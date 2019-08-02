@@ -6,7 +6,7 @@ export class CourtApi extends Api {
    * 获取场地列表
    */
   getList() {
-    return this.http.get(url, { })
+    return this.http.get(url, {})
   }
   /**
    * 添加场地
@@ -40,7 +40,7 @@ export class CourtApi extends Api {
   }
 }
 export interface SetInput {
-  id: number,
+  id: number
   /**
    * 场地名称
    */

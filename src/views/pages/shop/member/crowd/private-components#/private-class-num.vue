@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
@@ -7,7 +6,7 @@
       <input-number
         v-model="value.getData.personal_course_remain_times"
         :company="'次'"
-        :minMax="{min:0,max:1000}"
+        :minMax="{ min: 0, max: 1000 }"
       ></input-number>
     </div>
   </div>

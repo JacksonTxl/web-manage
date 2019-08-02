@@ -7,7 +7,9 @@
     :confirmLoading="loading.updateCode"
     @ok="onOk"
   >
-    <p>配置合同编码生成规则，最多可以添加20位长度的合同编码，直接在表格中拖动行排序</p>
+    <p>
+      配置合同编码生成规则，最多可以添加20位长度的合同编码，直接在表格中拖动行排序
+    </p>
     <st-form-table>
       <thead>
         <tr>
@@ -16,20 +18,36 @@
           <th width="140px">操作</th>
         </tr>
       </thead>
-      <draggable tag='tbody' v-model='rules' :animation="200">
-        <tr v-for="(rule,index) in rules" :key="rule.sn_rule + rule._value + index">
-          <td>{{index+1}}</td>
+      <draggable tag="tbody" v-model="rules" :animation="200">
+        <tr
+          v-for="(rule, index) in rules"
+          :key="rule.sn_rule + rule._value + index"
+        >
+          <td>{{ index + 1 }}</td>
           <td>
-            <a-radio-group @change="rule._value = 'RANDOM'" v-model="rule.sn_rule">
-              <a-radio :value="SN_RULE.LETTER">{{SN_RULE.LETTER | enumFilter('setting.sn_rule')}}</a-radio>
-              <a-radio :value="SN_RULE.NUMBER">{{SN_RULE.NUMBER | enumFilter('setting.sn_rule')}}</a-radio>
+            <a-radio-group
+              @change="rule._value = 'RANDOM'"
+              v-model="rule.sn_rule"
+            >
+              <a-radio :value="SN_RULE.LETTER">
+                {{ SN_RULE.LETTER | enumFilter('setting.sn_rule') }}
+              </a-radio>
+              <a-radio :value="SN_RULE.NUMBER">
+                {{ SN_RULE.NUMBER | enumFilter('setting.sn_rule') }}
+              </a-radio>
               <a-select
                 v-if="rule.sn_rule === SN_RULE.LETTER"
                 style="width:140px"
                 v-model="rule._value"
               >
                 <a-select-option value="RANDOM">随机生成字母</a-select-option>
-                <a-select-option v-for="letter in letters" :key="letter" :value="letter">{{letter}}</a-select-option>
+                <a-select-option
+                  v-for="letter in letters"
+                  :key="letter"
+                  :value="letter"
+                >
+                  {{ letter }}
+                </a-select-option>
               </a-select>
               <a-select
                 v-if="rule.sn_rule === SN_RULE.NUMBER"
@@ -37,7 +55,9 @@
                 v-model="rule._value"
               >
                 <a-select-option value="RANDOM">随机生成数字</a-select-option>
-                <a-select-option v-for="n in numbers" :key="n" :value="n">{{n}}</a-select-option>
+                <a-select-option v-for="n in numbers" :key="n" :value="n">
+                  {{ n }}
+                </a-select-option>
               </a-select>
             </a-radio-group>
           </td>
@@ -47,7 +67,14 @@
         </tr>
       </draggable>
     </st-form-table>
-    <st-button :disabled="rules.length>=20" @click="onAdd" block type="dashed" icon="add" class="mg-t16">
+    <st-button
+      :disabled="rules.length >= 20"
+      @click="onAdd"
+      block
+      type="dashed"
+      icon="add"
+      class="mg-t16"
+    >
       添加
     </st-button>
   </st-modal>

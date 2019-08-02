@@ -1,5 +1,10 @@
 <template>
-  <st-modal title="订单收款" size="small" v-model="show" wrapClassName="modal-sold-course-transfer">
+  <st-modal
+    title="订单收款"
+    size="small"
+    v-model="show"
+    wrapClassName="modal-sold-course-transfer"
+  >
     <div :class="transfer('content')">
       <a-row :class="transfer('info')">
         <a-col :span="13">
@@ -15,7 +20,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-hr marginTop="0" marginBottom="20"/>
+      <st-hr marginTop="0" marginBottom="20" />
       <a-row :class="transfer('info')">
         <a-col :span="13">
           <st-info>
@@ -31,10 +36,13 @@
           </st-info>
         </a-col>
         <a-col :span="11">
-          <div>备注：</div>Click the blue Preview button on the top toolbar to open this page up in your browser. Then click the button below to let us know of your experience using this library and how we can improve it.
+          <div>备注：</div>
+          Click the blue Preview button on the top toolbar to open this page up
+          in your browser. Then click the button below to let us know of your
+          experience using this library and how we can improve it.
         </a-col>
       </a-row>
-      <st-hr marginTop="0" marginBottom="0"/>
+      <st-hr marginTop="0" marginBottom="0" />
       <st-form labelWidth="118px">
         <st-form-item label="已收金额/未收金额">0元 / 70元</st-form-item>
       </st-form>
@@ -46,11 +54,16 @@
             placeholder="请输入支付金额"
             v-decorator="basicInfoRuleList.name"
           >
-            <template slot="addonAfter">元</template>
+            <template slot="addonAfter">
+              元
+            </template>
           </st-input-number>
         </st-form-item>
         <st-form-item label="支付方式" required labelGutter="12px">
-          <a-select placeholder="请选择支付方式" v-decorator="basicInfoRuleList.test_time">
+          <a-select
+            placeholder="请选择支付方式"
+            v-decorator="basicInfoRuleList.test_time"
+          >
             <a-select-option value="jack">Jack</a-select-option>
             <a-select-option value="lucy">Lucy</a-select-option>
           </a-select>

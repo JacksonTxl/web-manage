@@ -22,13 +22,15 @@
           :key="`${item.id}`"
           :value="item.id"
         >
-          {{item.nickname}}
+          {{ item.nickname }}
         </a-select-option>
       </a-select>
-      <p class="color-text-light mg-t8">已选择{{coachIds.length}}个教练</p>
+      <p class="color-text-light mg-t8">已选择{{ coachIds.length }}个教练</p>
       <p class="ta-r">
         <st-button @click="onCancelSelect">取消</st-button>
-        <st-button type="primary" class="mg-l8" @click="onConfirmSelect">确定</st-button>
+        <st-button type="primary" class="mg-l8" @click="onConfirmSelect">
+          确定
+        </st-button>
       </p>
     </div>
   </st-modal>
@@ -72,12 +74,14 @@ export default {
       this.search('')
     },
     search() {
-      this.selectService.getCoachSelect({
-        size: this.size,
-        keyword: this.keyword
-      }).subscribe(res => {
-        this.list = res.coaches
-      })
+      this.selectService
+        .getCoachSelect({
+          size: this.size,
+          keyword: this.keyword
+        })
+        .subscribe(res => {
+          this.list = res.coaches
+        })
     },
     onConfirmSelect() {
       this.show = false

@@ -12,12 +12,9 @@ export class BasicService implements RouteGuard {
   auth$ = this.authService.authMap$({
     add: 'brand_shop:salary:basic_template|add'
   })
-  constructor(
-    private cardsApi: FinanceApi,
-    private authService: AuthService
-  ) {}
+  constructor(private cardsApi: FinanceApi, private authService: AuthService) {}
   @Effect()
-  getBasicInfo(query:SalaryBasicQuery) {
+  getBasicInfo(query: SalaryBasicQuery) {
     return this.cardsApi.getSalaryBasicList(query).pipe(
       tap(res => {
         res = this.authService.filter(res)

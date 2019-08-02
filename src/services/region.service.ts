@@ -27,8 +27,8 @@ export class RegionService extends Store<any> {
     return this.regionApi.getRegions().pipe(
       map(data$ => {
         if (data$) {
-          data$.forEach((i:any) => {
-            i.children.forEach((inner:any) => {
+          data$.forEach((i: any) => {
+            i.children.forEach((inner: any) => {
               delete inner.children
             })
           })

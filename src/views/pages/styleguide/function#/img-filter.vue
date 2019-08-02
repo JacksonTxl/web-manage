@@ -6,7 +6,7 @@
 
     <p>图片过滤器示例</p>
     <p>
-      <img :src="demoImgKey | imgFilter({ w: 320, h: 180 })" alt>
+      <img :src="demoImgKey | imgFilter({ w: 320, h: 180 })" alt />
     </p>
   </section>
 </template>

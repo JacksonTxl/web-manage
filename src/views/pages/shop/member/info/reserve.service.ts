@@ -1,7 +1,11 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap } from 'rxjs/operators'
-import { MemberApi, CardConsumptionQuery, CourseConsuptionQuery } from '@/api/v1/member'
+import {
+  MemberApi,
+  CardConsumptionQuery,
+  CourseConsuptionQuery
+} from '@/api/v1/member'
 import { forkJoin } from 'rxjs'
 
 @Injectable()
@@ -31,8 +35,15 @@ export class ReserveService implements RouteGuard {
     )
   }
 
-  init(id: string, cardQuery: CardConsumptionQuery, courseQuery: CourseConsuptionQuery) {
-    return forkJoin(this.getCardInfo(id, cardQuery), this.getCourseInfo(id, courseQuery))
+  init(
+    id: string,
+    cardQuery: CardConsumptionQuery,
+    courseQuery: CourseConsuptionQuery
+  ) {
+    return forkJoin(
+      this.getCardInfo(id, cardQuery),
+      this.getCourseInfo(id, courseQuery)
+    )
   }
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {

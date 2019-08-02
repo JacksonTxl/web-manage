@@ -1,12 +1,12 @@
 <template>
   <a-button
     class="st-checkbox-button-item"
-    :class="{select: stSelect}"
+    :class="{ select: stSelect }"
     @click="check"
     :disabled="stDisabled"
   >
-    {{stLabelComputed}}
-    <slot v-if="stLabelComputed===''"></slot>
+    {{ stLabelComputed }}
+    <slot v-if="stLabelComputed === ''"></slot>
   </a-button>
 </template>
 <script>

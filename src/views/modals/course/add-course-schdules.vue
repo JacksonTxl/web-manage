@@ -2,8 +2,9 @@
   <st-modal
     class="modal-support-course-shops"
     @ok="postTransFromBrandCourse"
-    title='批量转入品牌课程库'
-    v-model='show'>
+    title="批量转入品牌课程库"
+    v-model="show"
+  >
     <select-shop @change="salesShopChange"></select-shop>
   </st-modal>
 </template>
@@ -34,9 +35,7 @@ export default {
     SelectShop
   },
   methods: {
-    salesShopChange() {
-
-    },
+    salesShopChange() {},
     postTransFromBrandCourse() {
       const params = {
         course_id: [1, 2, 3],

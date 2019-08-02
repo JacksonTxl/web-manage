@@ -2,15 +2,24 @@
   <section class="sg-section">
     <h3>
       cropperjs
-      <a target="_blank" href="https://github.com/fengyuanchen/cropperjs">github</a>
-      <a class="mg-l16" href="https://fengyuanchen.github.io/cropperjs/" target="_blank">演示</a>
+      <a target="_blank" href="https://github.com/fengyuanchen/cropperjs">
+        github
+      </a>
+      <a
+        class="mg-l16"
+        href="https://fengyuanchen.github.io/cropperjs/"
+        target="_blank"
+      >
+        演示
+      </a>
     </h3>
     <a-row>
       <a-col :span="8">
         <a-row>
           <a-upload :beforeUpload="beforeUpload" :showUploadList="false">
             <a-button>
-              <a-icon type="upload"/>Select File
+              <a-icon type="upload" />
+              Select File
             </a-button>
           </a-upload>
         </a-row>
@@ -20,7 +29,7 @@
               id="image"
               hidden
               src="http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg"
-            >
+            />
           </a-col>
           <a-col :span="8">
             <p class="st-crop__preview mg-l16" id="crop_preview"></p>

@@ -6,7 +6,7 @@
     </h3>
     <!-- 更多时间列表请查看editor#.vue -->
     <st-editor @paste="onPaste" v-model="content"></st-editor>
-    {{content}}
+    {{ content }}
   </section>
 </template>
 

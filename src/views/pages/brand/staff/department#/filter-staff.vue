@@ -1,6 +1,10 @@
 <template>
   <div class="filter-staff">
-    <shop-select class="filter-staff__item mg-r8" v-model="query.shop_id" @change="onChange"></shop-select>
+    <shop-select
+      class="filter-staff__item mg-r8"
+      v-model="query.shop_id"
+      @change="onChange"
+    ></shop-select>
     <a-select
       class="filter-staff__item mg-r8"
       allowClear
@@ -12,14 +16,17 @@
         v-for="status in workStatus"
         :value="status.id"
         :key="status.id"
-      >{{status.name}}</a-select-option>
+      >
+        {{ status.name }}
+      </a-select-option>
     </a-select>
     <st-input-search
       class="filter-staff__item"
       placeholder="搜索员工"
       round="round"
       v-model="query.keyword"
-      @search="onChange"></st-input-search>
+      @search="onChange"
+    ></st-input-search>
   </div>
 </template>
 <script>
@@ -49,8 +56,7 @@ export default {
     }
   },
   data() {
-    return {
-    }
+    return {}
   },
   methods: {
     computedList(key) {

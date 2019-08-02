@@ -15,17 +15,20 @@ export default {
   },
   data() {
     return {
-      navs: [{
-        label: '课程',
-        route: {
-          name: 'brand-setting-app-course-category'
+      navs: [
+        {
+          label: '课程',
+          route: {
+            name: 'brand-setting-app-course-category'
+          }
+        },
+        {
+          label: '员工',
+          route: {
+            name: 'brand-setting-app-staff-skillful'
+          }
         }
-      }, {
-        label: '员工',
-        route: {
-          name: 'brand-setting-app-staff-skillful'
-        }
-      }]
+      ]
     }
   }
 }

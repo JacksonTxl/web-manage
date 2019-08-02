@@ -11,12 +11,14 @@ export class CoachService {
   constructor(private coachApi: CoachApi, private courseApi: CourseApi) {}
   @Effect()
   getCoachList() {
-    return this.coachApi.getCoachList().pipe(tap((res:any) => {
-      this.coachList$.commit(() => res.list)
-    }))
+    return this.coachApi.getCoachList().pipe(
+      tap((res: any) => {
+        this.coachList$.commit(() => res.list)
+      })
+    )
   }
   @Effect()
-  edit(params: EditCoursePersonalCoachInput, id:string) {
+  edit(params: EditCoursePersonalCoachInput, id: string) {
     return this.courseApi.editCoursePersonalCoach(params, id)
   }
 }

@@ -10,13 +10,15 @@ export class OperationRecordService implements RouteGuard {
   loading$ = new State({})
   constructor(private cardApi: CardApi) {}
   @Effect()
-  getList(id:string, type:string) {
-    return this.cardApi.getCardsOperationInfo(id, type).pipe(tap((res:any) => {
-      this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-    }))
+  getList(id: string, type: string) {
+    return this.cardApi.getCardsOperationInfo(id, type).pipe(
+      tap((res: any) => {
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next:()=>{}) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
     this.getList(to.meta.query.id, 'deposit').subscribe(() => {
       next()
     })

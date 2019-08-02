@@ -6,18 +6,34 @@
           <div :class="bItem('body')">
             <div :class="bItem('body-lt')">
               <st-initials-tag
-                :value="item.contract_title.indexOf('储物柜') > -1 ? '柜' : item.contract_title"
+                :value="
+                  item.contract_title.indexOf('储物柜') > -1
+                    ? '柜'
+                    : item.contract_title
+                "
               />
             </div>
             <div :class="bItem('body-rt')">
               <div :class="bItem('title-box')">
-                <st-t3 :class="bItem('title')">{{item.contract_title}}</st-t3>
-                <div :class="bItem('status',{success:isInitial(item),warning:!isInitial(item)})">
-                  <a-badge :status="isInitial(item)?'success':'warning'"></a-badge>
-                  {{item.is_initialize_status | enumFilter('setting.is_initialize_status')}}
+                <st-t3 :class="bItem('title')">{{ item.contract_title }}</st-t3>
+                <div
+                  :class="
+                    bItem('status', {
+                      success: isInitial(item),
+                      warning: !isInitial(item)
+                    })
+                  "
+                >
+                  <a-badge
+                    :status="isInitial(item) ? 'success' : 'warning'"
+                  ></a-badge>
+                  {{
+                    item.is_initialize_status
+                      | enumFilter('setting.is_initialize_status')
+                  }}
                 </div>
               </div>
-              <p :class="bItem('desc')">{{item.contract_describe}}</p>
+              <p :class="bItem('desc')">{{ item.contract_describe }}</p>
             </div>
           </div>
           <div :class="bItem('footer')">
@@ -27,17 +43,21 @@
               <router-link
                 v-if="auth.edit"
                 :class="bItem('action')"
-                :to="{path:'./edit',query:{id:item.id}}"
+                :to="{ path: './edit', query: { id: item.id } }"
                 class="st-link-secondary"
-              >编辑</router-link>
+              >
+                编辑
+              </router-link>
             </template>
             <template v-else>
-            <router-link
-              v-if="auth.edit"
-              :class="bItem('action')"
-              :to="{path:'./edit',query:{id:item.id}}"
-              class="st-link-secondary"
-            >去设置</router-link>
+              <router-link
+                v-if="auth.edit"
+                :class="bItem('action')"
+                :to="{ path: './edit', query: { id: item.id } }"
+                class="st-link-secondary"
+              >
+                去设置
+              </router-link>
             </template>
           </div>
         </div>

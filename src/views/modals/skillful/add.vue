@@ -16,8 +16,7 @@
                 placeholder="请输入擅长项目"
                 v-decorator="rules.settingName"
                 maxlength="20"
-              >
-              </a-input>
+              ></a-input>
             </st-form-item>
           </a-col>
         </a-row>
@@ -26,7 +25,6 @@
   </st-modal>
 </template>
 <script>
-
 import { AddService } from './add.service'
 import { MessageService } from '@/services/message.service'
 import { PatternService } from '@/services/pattern.service'

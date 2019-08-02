@@ -13,10 +13,8 @@
           :treeData="treeData"
           @check="onCheck"
         />
-
       </st-container>
-      <p class="color-text-light mg-t8">
-        已选择{{checedNum}}家场馆</p>
+      <p class="color-text-light mg-t8">已选择{{ checedNum }}家场馆</p>
       <p class="ta-r">
         <st-button type="primary" @click="confirm">确定</st-button>
       </p>
@@ -67,10 +65,12 @@ export default {
     initCheckedKeys() {
       const shopIds = this.checked
       this.shopIds = shopIds
-      this.checkedKeys = shopIds.map(item => JSON.stringify({
-        isLeaf: true,
-        key: item
-      }))
+      this.checkedKeys = shopIds.map(item =>
+        JSON.stringify({
+          isLeaf: true,
+          key: item
+        })
+      )
     },
     onCheck(checkedKeys) {
       this.checkedKeys = checkedKeys

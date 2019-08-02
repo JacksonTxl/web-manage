@@ -1,7 +1,6 @@
 <template>
   <!-- 订单概览分面柱状图 -->
-  <div class="brand-stat-facet-bar">
-  </div>
+  <div class="brand-stat-facet-bar"></div>
 </template>
 
 <script>
@@ -62,9 +61,7 @@ export default {
         components: {
           StHelpTooltip
         },
-        render: h => (
-          <st-help-tooltip></st-help-tooltip>
-        )
+        render: h => <st-help-tooltip />
       }).$mount().$el
       this.chart = new Chart({
         container: this.$el,
@@ -86,8 +83,8 @@ export default {
           }
           return (
             `<li class="g2-legend-list-item item-{index} {checked}" data-color="{originColor}" data-value="{originValue}">` +
-              `<i class="g2-legend-marker" style="background-color:{color};"></i>` +
-              `<span class="g2-legend-text">${name}&nbsp;<span id='legend-${idx}'></span></span>` +
+            `<i class="g2-legend-marker" style="background-color:{color};"></i>` +
+            `<span class="g2-legend-text">${name}&nbsp;<span id='legend-${idx}'></span></span>` +
             `</li>`
           )
         }
@@ -109,7 +106,8 @@ export default {
                 fill: '#3E4D5C',
                 fontSize: 12
               },
-              htmlTemplate: (text, item, index) => { // 增加tooltipEl.outerHTML，防止mounted未完成导致的空白闪烁
+              htmlTemplate: (text, item, index) => {
+                // 增加tooltipEl.outerHTML，防止mounted未完成导致的空白闪烁
                 return `<span style="width:70px;display:block;">${text}</span>`
               }
             },
@@ -192,7 +190,7 @@ export default {
             .tooltip('type*value', (t, v) => {
               return { name: t, value: v }
             })
-            .color('type', (value) => {
+            .color('type', value => {
               return color
             })
             .size(24)
@@ -230,16 +228,14 @@ export default {
         },
         render: h => (
           // <st-icon type="help" class="test1"/>
-          <st-help-tooltip id="TBDAO001" ></st-help-tooltip>
+          <st-help-tooltip id="TBDAO001" />
         )
       }).$mount('#legend-0')
       new Vue({
         components: {
           StHelpTooltip
         },
-        render: h => (
-          <st-help-tooltip id="TBDAO002" ></st-help-tooltip>
-        )
+        render: h => <st-help-tooltip id="TBDAO002" />
       }).$mount('#legend-1')
     }
   }

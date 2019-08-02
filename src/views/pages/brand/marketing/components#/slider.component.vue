@@ -1,40 +1,91 @@
 <template>
   <div :class="slider()">
-      <st-form >
-      <draggable :component-data="{props:{gutter:12}}" v-model="list"  :animation="200">
-          <div v-for="(li, index) in list" :key="index" :class="slider('box')">
-            <div :class="slider('del')" v-if="li.is_default!==1" @click="delSlider(index)">
-              <st-icon type="delete" color="#FF5E41" :class="slider('del-icon')"/>
-            </div>
-            <div v-if="li.is_over===1" :class="slider('overMask')"></div>
-            <img v-if="li.is_over===1" :class="slider('over')" :src="over" />
-            <img style="object-fit: cover;" :src="li.image_url | imgFilter({w:482,h:274})">
-            <div v-if="li.is_default===1" :class="slider('default')">
-                默认门店头图<span>（自动匹配店招图片）</span>
-            </div>
-            <st-form-item v-else labelWidth="46px" label="链接">
-                <a-select placeholder="请输入连接的活动" @select="actSelect(li,$event)" v-model="li.activity_id">
-                    <a-select-option v-for="(act, i) in actList" :key="i" :value="act.id" :disabled="filterActList(act.id)">{{act.activity_name}}</a-select-option>
-                </a-select>
+    <st-form>
+      <draggable
+        :component-data="{ props: { gutter: 12 } }"
+        v-model="list"
+        :animation="200"
+      >
+        <div v-for="(li, index) in list" :key="index" :class="slider('box')">
+          <div
+            :class="slider('del')"
+            v-if="li.is_default !== 1"
+            @click="delSlider(index)"
+          >
+            <st-icon
+              type="delete"
+              color="#FF5E41"
+              :class="slider('del-icon')"
+            />
+          </div>
+          <div v-if="li.is_over === 1" :class="slider('overMask')"></div>
+          <img v-if="li.is_over === 1" :class="slider('over')" :src="over" />
+          <img
+            style="object-fit: cover;"
+            :src="li.image_url | imgFilter({ w: 482, h: 274 })"
+          />
+          <div v-if="li.is_default === 1" :class="slider('default')">
+            默认门店头图
+            <span>（自动匹配店招图片）</span>
+          </div>
+          <st-form-item v-else labelWidth="46px" label="链接">
+            <a-select
+              placeholder="请输入连接的活动"
+              @select="actSelect(li, $event)"
+              v-model="li.activity_id"
+            >
+              <a-select-option
+                v-for="(act, i) in actList"
+                :key="i"
+                :value="act.id"
+                :disabled="filterActList(act.id)"
+              >
+                {{ act.activity_name }}
+              </a-select-option>
+            </a-select>
+          </st-form-item>
+        </div>
+        <div :class="slider('addbox')" :span="8" v-if="list.length < 5">
+          <div :class="slider('box')">
+            <st-image-upload
+              @change="imageUploadChange"
+              width="100%"
+              height="137px"
+              :list="[]"
+              :sizeLimit="2"
+              placeholder="添加活动图片"
+              :numLimit="5"
+            >
+              <a-icon
+                type="plus-circle"
+                theme="filled"
+                :style="{ fontSize: '36px', color: '#9BACB9' }"
+              />
+              <div class="st-image-upload__placeholder">添加活动图片</div>
+              <span :class="slider('uploadtip')">
+                大小不超过5M，建议尺寸16:9
+              </span>
+            </st-image-upload>
+            <st-form-item labelWidth="46px" label="链接">
+              <a-select
+                placeholder="请输入连接的活动"
+                @select="addSelect"
+                v-model="addItem.activity_id"
+              >
+                <a-select-option
+                  v-for="(act, i) in actList"
+                  :key="i"
+                  :value="act.id"
+                  :disabled="filterActList(act.id)"
+                >
+                  {{ act.activity_name }}
+                </a-select-option>
+              </a-select>
             </st-form-item>
           </div>
-        <div :class="slider('addbox')" :span="8" v-if="list.length<5">
-            <div :class="slider('box')">
-          <st-image-upload @change="imageUploadChange" width="100%" height="137px" :list='[]'
-            :sizeLimit="2"  placeholder="添加活动图片" :numLimit="5">
-            <a-icon type="plus-circle" theme="filled" :style="{fontSize:'36px', color: '#9BACB9' }" />
-            <div class="st-image-upload__placeholder">添加活动图片</div>
-            <span :class="slider('uploadtip')">大小不超过5M，建议尺寸16:9</span>
-          </st-image-upload>
-            <st-form-item labelWidth="46px" label="链接">
-                <a-select placeholder="请输入连接的活动" @select="addSelect" v-model="addItem.activity_id">
-                  <a-select-option v-for="(act, i) in actList" :key="i" :value="act.id" :disabled="filterActList(act.id)">{{act.activity_name}}</a-select-option>
-                </a-select>
-            </st-form-item>
-            </div>
         </div>
       </draggable>
-      </st-form>
+    </st-form>
   </div>
 </template>
 <script>
@@ -123,5 +174,4 @@ export default {
     }
   }
 }
-
 </script>

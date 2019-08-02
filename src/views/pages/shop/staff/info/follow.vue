@@ -3,23 +3,28 @@
     <a-row class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="18">
-          <a-range-picker @change="onChooseDate" format="YYYY-MM-DD"/>
+          <a-range-picker @change="onChooseDate" format="YYYY-MM-DD" />
         </a-col>
         <a-col :lg="6">
-          <st-input-search placeholder="请输入用户姓名进行查询" @search="onSingleSearch('member_name', $event)"/>
+          <st-input-search
+            placeholder="请输入用户姓名进行查询"
+            @search="onSingleSearch('member_name', $event)"
+          />
         </a-col>
       </a-col>
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="followColumns"
           :dataSource="followList"
-          :scroll="{ x: 1300}"
+          :scroll="{ x: 1300 }"
           :loading="loading.getStaffFollow"
           @change="onTableChange"
           :page="page"
         >
           <template slot="member_name" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="goMemberDetai(record)">{{ text }}</a>
+            <a href="javascript:;" class="mg-r8" @click="goMemberDetai(record)">
+              {{ text }}
+            </a>
           </template>
         </st-table>
       </a-col>
@@ -34,7 +39,7 @@ import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {
-  mixins: [ tableMixin ],
+  mixins: [tableMixin],
   serviceInject() {
     return {
       followservice: FollowService,
@@ -93,5 +98,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

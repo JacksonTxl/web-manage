@@ -2,11 +2,11 @@
   <div
     class="st-checkbox-facility-item"
     @click="check"
-    :class="{select: stSelect,disabled: stDisabled}"
+    :class="{ select: stSelect, disabled: stDisabled }"
   >
     <div class="st-checkbox-facility-item-icon">
       <st-icon :type="stIconComputed" size="24px"></st-icon>
-      <p class="st-checkbox-facility-item-label">{{stLabelComputed}}</p>
+      <p class="st-checkbox-facility-item-label">{{ stLabelComputed }}</p>
     </div>
   </div>
 </template>

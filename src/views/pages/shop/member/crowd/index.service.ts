@@ -21,7 +21,9 @@ export class IndexService extends Store<CrowdIndexState> implements RouteGuard {
     this.state$ = new State({
       crowdIndexInfo: {}
     })
-    this.crowdIndexInfo$ = new Computed(this.state$.pipe(pluck('crowdIndexInfo')))
+    this.crowdIndexInfo$ = new Computed(
+      this.state$.pipe(pluck('crowdIndexInfo'))
+    )
   }
 
   // 获取列表

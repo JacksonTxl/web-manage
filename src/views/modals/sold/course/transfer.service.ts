@@ -15,42 +15,57 @@ export class TransferService {
   timeScope$ = new State({})
   personalCourseInfo$ = new State({})
   memberPaymentlist$ = new State({})
-  constructor(private contractApi:ContractApi, private memberApi: ShopPersonalCourseApi, private courseApi:CourseApi, private transactionApi: TransactionApi) {}
+  constructor(
+    private contractApi: ContractApi,
+    private memberApi: ShopPersonalCourseApi,
+    private courseApi: CourseApi,
+    private transactionApi: TransactionApi
+  ) {}
   @Effect()
-  getMember(member:string, type: number) {
-    return this.transactionApi.getMemberList(member, type).pipe(tap((res:any) => {
-      this.memberList$.commit(() => res.list)
-    }))
+  getMember(member: string, type: number) {
+    return this.transactionApi.getMemberList(member, type).pipe(
+      tap((res: any) => {
+        this.memberList$.commit(() => res.list)
+      })
+    )
   }
   @Effect()
-  getCourseInfo(id:string, type:string) {
-    return this.courseApi.getCourseTransferInfo(id, type).pipe(tap((res:any) => {
-      if (type === 'package') {
-        this.packageCourseInfo$.commit(() => res.info.course_info)
-        this.packageTransferInfo$.commit(() => res.info.transfer_info)
-        this.timeScope$.commit(() => {
-          return res.info.transfer_info.course_end_time * 1000 - Date.now()
-        })
-      } else if (type === 'personal') {
-        this.personalCourseInfo$.commit(() => res.info)
-        this.timeScope$.commit(() => {
-          return res.info.end_time * 1000 - Date.now()
-        })
-      }
-    }))
+  getCourseInfo(id: string, type: string) {
+    return this.courseApi.getCourseTransferInfo(id, type).pipe(
+      tap((res: any) => {
+        if (type === 'package') {
+          this.packageCourseInfo$.commit(() => res.info.course_info)
+          this.packageTransferInfo$.commit(() => res.info.transfer_info)
+          this.timeScope$.commit(() => {
+            return res.info.transfer_info.course_end_time * 1000 - Date.now()
+          })
+        } else if (type === 'personal') {
+          this.personalCourseInfo$.commit(() => res.info)
+          this.timeScope$.commit(() => {
+            return res.info.end_time * 1000 - Date.now()
+          })
+        }
+      })
+    )
   }
   @Effect()
-  editCourseTransfer(params:TransferCoursePackageInput, id:string, type:string) {
+  editCourseTransfer(
+    params: TransferCoursePackageInput,
+    id: string,
+    type: string
+  ) {
     return this.courseApi.editCourseTransfer(params, id, type)
   }
   @Effect()
-  getCodeNumber(id:string) {
+  getCodeNumber(id: string) {
     return this.contractApi.getCodeNumber(id)
   }
   @Effect()
-  getMemberPaymentList(query: {member_id: number, product_type: number}) {
-    return this.transactionApi.getMemberPaymentList(query).pipe(tap((res:any) => {
-      this.memberPaymentlist$.commit(() => res.list)
-    }))
+  getMemberPaymentList(query: { member_id: number; product_type: number }) {
+    return this.transactionApi.getMemberPaymentList(query).pipe(
+      tap((res: any) => {
+        this.memberPaymentlist$.commit(() => res.list)
+      })
+    )
   }
 }

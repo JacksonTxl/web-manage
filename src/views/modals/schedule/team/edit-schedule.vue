@@ -2,107 +2,82 @@
   <st-modal :footer="null" title="编辑课程排期" v-model="show">
     <div>
       <span>已约</span>
-<<<<<<< HEAD
-      {{info.reserved_num}}
-=======
->>>>>>> feat_schedule_0729
-      <span>{{reserved_num}}人</span>
+      <span>{{ reserved_num }}人</span>
     </div>
     <st-form :form="form">
       <st-form-item label="时间" required>
         <a-date-picker
-<<<<<<< HEAD
-          :showTime="{ format: 'HH:mm' }"
-          :disabled="info.reserved_num"
-=======
           showTime
           placeholder="请选择时间"
->>>>>>> feat_schedule_0729
           format="YYYY-MM-DD HH:mm"
           v-decorator="[
-          'start_time',
-          {rules: [{ required: true, message: '请输入日期' }]}
-        ]"
+            'start_time',
+            { rules: [{ required: true, message: '请输入日期' }] }
+          ]"
         >
           <a-icon slot="suffixIcon" type="clock-circle" />
         </a-date-picker>
       </st-form-item>
       <st-form-item label="课程" required>
         <a-select
-<<<<<<< HEAD
-          :disabled="info.reserved_num"
-=======
           placeholder="请选择课程"
->>>>>>> feat_schedule_0729
           v-decorator="[
-          'course_id',
-          {rules: [{ required: true, message: '请选择课程' }]}
-        ]"
+            'course_id',
+            { rules: [{ required: true, message: '请选择课程' }] }
+          ]"
         >
           <a-select-option
             v-for="course in courseOptions"
             :key="course.id"
             :value="course.id"
-          >{{course.course_name}}</a-select-option>
+          >
+            {{ course.course_name }}
+          </a-select-option>
         </a-select>
       </st-form-item>
       <st-form-item label="教练" required>
         <a-select
-<<<<<<< HEAD
-=======
           placeholder="请选择教练"
->>>>>>> feat_schedule_0729
           v-decorator="[
-          'coach_id',
-          {rules: [{ required: true, message: '请选择教练' }]}
-        ]"
+            'coach_id',
+            { rules: [{ required: true, message: '请选择教练' }] }
+          ]"
         >
           <a-select-option
             v-for="coach in coachOptions"
             :key="coach.id"
             :value="coach.id"
-          >{{coach.staff_name}}</a-select-option>
+          >
+            {{ coach.staff_name }}
+          </a-select-option>
         </a-select>
       </st-form-item>
       <st-form-item label="场地">
         <a-cascader
-<<<<<<< HEAD
-          :disabled="info.reserved_num > 0"
-=======
           placeholder="请选择场地"
->>>>>>> feat_schedule_0729
           :options="courtOptions"
           :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
-          v-decorator="[
-          'court_id'
-        ]"
+          v-decorator="['court_id']"
         />
       </st-form-item>
       <st-form-item label="人数" required>
         <a-input-search
-<<<<<<< HEAD
-          :disabled="info.reserved_num"
-=======
           placeholder="请输入人数"
->>>>>>> feat_schedule_0729
           v-decorator="[
-          'limit_num',
-          {rules: [{ required: true, message: '请输入人数' }]}
-        ]"
+            'limit_num',
+            { rules: [{ required: true, message: '请输入人数' }] }
+          ]"
         >
           <a-button slot="enterButton">人</a-button>
         </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required>
         <a-input-search
-<<<<<<< HEAD
-          :disabled="info.reserved_num"
-=======
           placeholder="请输入课时费"
->>>>>>> feat_schedule_0729
           v-decorator="[
-          'course_fee',
-          {rules: [{ required: true, message: '请选择课时费' }]}]"
+            'course_fee',
+            { rules: [{ required: true, message: '请选择课时费' }] }
+          ]"
         >
           <a-button slot="enterButton">元/节</a-button>
         </a-input-search>
@@ -110,7 +85,9 @@
       <a-row>
         <a-col :span="24" :style="{ textAlign: 'right' }">
           <st-button class="mg-r16" @click="onClick">取消</st-button>
-          <st-button type="primary" :loading="loading.update" @click="onSubmit">确认</st-button>
+          <st-button type="primary" :loading="loading.update" @click="onSubmit">
+            确认
+          </st-button>
         </a-col>
       </a-row>
     </st-form>

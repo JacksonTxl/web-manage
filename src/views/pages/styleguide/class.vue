@@ -12,7 +12,9 @@
         <div class="sg-box sg-box--title" v-bg>@title 标题</div>
         <div class="sg-box sg-box--text" v-bg>@text 文字</div>
         <div class="sg-box sg-box--text-light" v-bg>@text-light 淡色文字</div>
-        <div class="sg-box sg-box--divider color-title" v-bg>@divider 分割线</div>
+        <div class="sg-box sg-box--divider color-title" v-bg>
+          @divider 分割线
+        </div>
       </st-container>
     </section>
 
@@ -45,7 +47,10 @@
         <span class="st-des mg-l16">.st-des</span>
         <div class="sg-box bordered color-title">.bordered</div>
         <st-container type="2" class="bg-gray">bg-gray</st-container>
-        <div class="st-des mg-t8">st-des 这里是一段描述文案这里是一段描述文案这里是一段描述文案这里是一段描述文案</div>
+        <div class="st-des mg-t8">
+          st-des
+          这里是一段描述文案这里是一段描述文案这里是一段描述文案这里是一段描述文案
+        </div>
       </st-container>
     </section>
 
@@ -62,29 +67,34 @@
           <span class="cursor-pointer">cursor-pointer</span>
         </p>
         <p>
-          <span class="full-width" style="background: #ccc">.full-width(this is a inline element)</span>
+          <span class="full-width" style="background: #ccc">
+            .full-width(this is a inline element)
+          </span>
         </p>
         <p>
-          <span class="tablefix" href="#">.tablefix 修复ant-design表格组件的样式问题，放置于a-table父级容器即可</span>
+          <span class="tablefix" href="#">
+            .tablefix
+            修复ant-design表格组件的样式问题，放置于a-table父级容器即可
+          </span>
         </p>
         <p>
-          .st-form-item-unit  定义input右侧样式
+          .st-form-item-unit 定义input右侧样式
         </p>
         <p>
           <a-tooltip overlayClassName="st-light-tooltip">
-            <template slot='title'>
+            <template slot="title">
               st-light-tooltip，用来重置tooltip样式，主要是重置为白底黑字
             </template>
             <span class="cursor-pointer">st-light-tooltip</span>
           </a-tooltip>
-          <pre style="outline:1px solid pink;">
+          <!-- <pre style="outline:1px solid pink;">
               &lt;a-tooltip overlayClassName="<span style="color: red;">st-light-tooltip</span>"&gt;
                 &lt;template slot='title'&gt;
                   st-light-tooltip，用来重置tooltip样式，主要是重置为白底黑字
                 &lt;/template&gt;
                 &lt;span class="cursor-pointer"&gt;st-light-tooltip&lt;/span&gt;
               &lt;/a-tooltip&gt;
-            </pre>
+            </pre> -->
         </p>
         <st-form>
           <st-form-item>
@@ -100,15 +110,23 @@
       <h4>components 组件型全局类样式 命名空间为.st</h4>
       <st-container type="1">
         <p>
-          <a class="st-link-secondary" href="#">.st-link-secondary 次级链接效果</a>
+          <a class="st-link-secondary" href="#">
+            .st-link-secondary 次级链接效果
+          </a>
         </p>
         <p>
           .st-preview-item 悬浮放大效果
           <span class="st-preview-item" v-viewer>
             <img
-              :src="'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg' | imgFilter({ w: 100, h: 56 })"
-              :data-src="'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg' | imgFilter({ w: 1000 })"
-            >
+              :src="
+                'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg'
+                  | imgFilter({ w: 100, h: 56 })
+              "
+              :data-src="
+                'http://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/IUt_vXTl8zaWGwlO.jpg'
+                  | imgFilter({ w: 1000 })
+              "
+            />
           </span>
         </p>
       </st-container>

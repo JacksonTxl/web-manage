@@ -4,8 +4,8 @@
       <section>
         <st-form :form="form" @submit="save" labelWidth="88px">
           <st-info>
-            <st-info-item label="姓名">{{record.member_name}}</st-info-item>
-            <st-info-item label="手机号">{{record.mobile}}</st-info-item>
+            <st-info-item label="姓名">{{ record.member_name }}</st-info-item>
+            <st-info-item label="手机号">{{ record.mobile }}</st-info-item>
           </st-info>
 
           <div
@@ -13,19 +13,32 @@
           >
             <st-form :form="form" @submit="save" labelWidth="125px">
               <st-info>
-                <st-info-item label="当前绑定的实体卡号">{{getData.card_num}}</st-info-item>
-                <st-info-item label="当前物理ID">{{getData.rfid}}</st-info-item>
+                <st-info-item label="当前绑定的实体卡号">
+                  {{ getData.card_num }}
+                </st-info-item>
+                <st-info-item label="当前物理ID">
+                  {{ getData.rfid }}
+                </st-info-item>
               </st-info>
             </st-form>
           </div>
           <st-form-item label="实体卡号" required>
-            <a-input placeholder="输入实体卡号" v-decorator="basicInfoRuleList.card_num"/>
+            <a-input
+              placeholder="输入实体卡号"
+              v-decorator="basicInfoRuleList.card_num"
+            />
           </st-form-item>
           <st-form-item label="物理ID" required>
-            <a-input placeholder="请将实体卡置于读卡器上" v-decorator="basicInfoRuleList.rfid"/>
+            <a-input
+              placeholder="请将实体卡置于读卡器上"
+              v-decorator="basicInfoRuleList.rfid"
+            />
           </st-form-item>
           <st-form-item label="有无手续费" required>
-            <a-radio-group v-decorator="basicInfoRuleList.moneyFlag" @change="radioChangeGroup">
+            <a-radio-group
+              v-decorator="basicInfoRuleList.moneyFlag"
+              @change="radioChangeGroup"
+            >
               <a-radio value="a">有手续费</a-radio>
               <a-radio value="b">无手续费</a-radio>
             </a-radio-group>
@@ -36,15 +49,24 @@
               placeholder="请输入需要收取的手续费金额"
               v-decorator="basicInfoRuleList.poundage"
             >
-              <template slot="addonAfter">元</template>
+              <template slot="addonAfter">
+                元
+              </template>
             </st-input-number>
           </st-form-item>
           <st-form-item label="支付方式" v-if="moneyFlag">
-            <a-select :class="basic('select')" v-decorator="basicInfoRuleList.pay_method"  placeholder="请选择支付方式">
+            <a-select
+              :class="basic('select')"
+              v-decorator="basicInfoRuleList.pay_method"
+              placeholder="请选择支付方式"
+            >
               <a-select-option
-              v-for="(item,index) in payMethodList"
-              :key="index"
-              :value="item.value">{{item.label}}</a-select-option>
+                v-for="(item, index) in payMethodList"
+                :key="index"
+                :value="item.value"
+              >
+                {{ item.label }}
+              </a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item label="收款人员" v-if="moneyFlag">
@@ -60,11 +82,19 @@
               notFoundContent="无搜索结果"
             >
               <a-select-option
-              v-for="(item,index) in staffList"
-              :value="item.id"
-              :key="index">
-                <span v-html="`${item.staff_name} ${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)">
-                  {{item.staff_name}} {{item.mobile}}
+                v-for="(item, index) in staffList"
+                :value="item.id"
+                :key="index"
+              >
+                <span
+                  v-html="
+                    `${item.staff_name} ${item.mobile}`.replace(
+                      new RegExp(memberSearchText, 'g'),
+                      `\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`
+                    )
+                  "
+                >
+                  {{ item.staff_name }} {{ item.mobile }}
                 </span>
               </a-select-option>
             </a-select>
@@ -73,7 +103,13 @@
       </section>
     </section>
     <template slot="footer">
-      <st-button type="primary" @click="save" :loading="loading.getMemberPhysicalBind">确认</st-button>
+      <st-button
+        type="primary"
+        @click="save"
+        :loading="loading.getMemberPhysicalBind"
+      >
+        确认
+      </st-button>
     </template>
   </st-modal>
 </template>
@@ -230,17 +266,19 @@ export default {
       }
     },
     getMemberPhysical() {
-      this.missingService.getMemberPhysical(this.record.member_id).subscribe(state => {
-        this.getData = state.info
-      })
+      this.missingService
+        .getMemberPhysical(this.record.member_id)
+        .subscribe(state => {
+          this.getData = state.info
+        })
     },
     getMemberPhysicalBind(data) {
-      this.missingService.getMemberPhysicalBind(this.record.member_id, data).subscribe(
-        state => {
+      this.missingService
+        .getMemberPhysicalBind(this.record.member_id, data)
+        .subscribe(state => {
           this.show = false
           this.$router.push({ force: true, query: this.$router.query })
-        }
-      )
+        })
     },
     radioChangeGroup(value) {
       if (value.target.value === 'a') {

@@ -5,8 +5,7 @@ import { of } from 'rxjs'
 @Injectable()
 export class StatService implements RouteGuard {
   authTabs$ = this.redirectService.getAuthTabs$('brand-stat')
-  constructor(private redirectService: RedirectService) {
-  }
+  constructor(private redirectService: RedirectService) {}
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     next()
   }

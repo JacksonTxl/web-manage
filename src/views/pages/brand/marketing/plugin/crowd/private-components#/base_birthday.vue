@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
@@ -29,8 +28,7 @@ export default {
       }
     }
   },
-  created() {
-  },
+  created() {},
   methods: {},
   mounted() {}
 }

@@ -1,13 +1,19 @@
 <template>
-  <section  class="sg-section">
+  <section class="sg-section">
     <h4>st-panel</h4>
     <!-- st-panel start -->
     <section class="mg-t16 sg-app-content">
-      <st-panel title="只有一个标题">这是内容 请将内容放到st-panel__body中</st-panel>
-      <st-panel class="mg-t16" title="带有操作区域带有操作区域带有操作区域带有操作区域">
+      <st-panel title="只有一个标题">
+        这是内容 请将内容放到st-panel__body中
+      </st-panel>
+      <st-panel
+        class="mg-t16"
+        title="带有操作区域带有操作区域带有操作区域带有操作区域"
+      >
         <div slot="actions">
           <st-button type="primary">操作</st-button>
-        </div>这是内容
+        </div>
+        这是内容
       </st-panel>
     </section>
     <section class="mg-t16 sg-app-content">
@@ -18,7 +24,10 @@
     <section class="mg-t16 sg-app-content">
       <st-panel>
         <div slot="title">
-          <st-input-search placeholder="可输入姓名、手机号、卡号" style="width: 290px;"/>
+          <st-input-search
+            placeholder="可输入姓名、手机号、卡号"
+            style="width: 290px;"
+          />
         </div>
         <div slot="actions">
           <st-button type="primary">操作</st-button>
@@ -26,7 +35,10 @@
         <div slot="prepend">
           <div style="background: #F7F9FC; padding: 24px">
             <div>prepend</div>
-            <div>这里可以通过 slot name="prepend" 的方式，传入筛选项等内容，统称为 prepend</div>
+            <div>
+              这里可以通过 slot name="prepend" 的方式，传入筛选项等内容，统称为
+              prepend
+            </div>
           </div>
         </div>
         content
@@ -54,16 +66,23 @@
       <st-panel title="hello" loading>
         <div slot="actions">
           <st-button type="primary">操作</st-button>
-        </div>这是一个内容
+        </div>
+        这是一个内容
       </st-panel>
     </section>
     <p class="mg-t16">st-search-panel</p>
-    <p>展开收起的的部分通过slot='more'传入。右下角按钮通过slot='button'传入，如果不传则默认是'查询（event=search）'和'重置(event=reset)'</p>
+    <p>
+      展开收起的的部分通过slot='more'传入。右下角按钮通过slot='button'传入，如果不传则默认是'查询（event=search）'和'重置(event=reset)'
+    </p>
     <section>
       <st-search-panel>
         <div style="display: flex;align-items: center;margin:16px 0;">
           <span style="width:70px;">条件1：</span>
-          <st-search-radio v-model="searchRadio" @change="onSearchRadioChange" :list="searchRadioList" />
+          <st-search-radio
+            v-model="searchRadio"
+            @change="onSearchRadioChange"
+            :list="searchRadioList"
+          />
         </div>
         <div style="display: flex;align-items: center;margin:16px 0;">
           <span style="width:70px;">条件2：</span>
@@ -106,16 +125,20 @@ export default {
   data() {
     return {
       searchRadio: 1,
-      searchRadioList: [{
-        value: 1,
-        label: '在呢'
-      }, {
-        value: 2,
-        label: '好吧'
-      }, {
-        value: 3,
-        label: '睡觉'
-      }]
+      searchRadioList: [
+        {
+          value: 1,
+          label: '在呢'
+        },
+        {
+          value: 2,
+          label: '好吧'
+        },
+        {
+          value: 3,
+          label: '睡觉'
+        }
+      ]
     }
   },
   methods: {

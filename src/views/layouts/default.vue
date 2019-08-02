@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-default" :class='theme'>
+  <div class="layout-default" :class="theme">
     <aside class="layout-default-sider">
       <!-- 门店维度下 -->
       <div class="layout-default-sider__shop" v-if="isInShop">
@@ -8,16 +8,24 @@
             <img
               width="100%"
               height="100%"
-              :src="shop.logo| imgFilter({ w: 128, h: 128 })"
+              :src="shop.logo | imgFilter({ w: 128, h: 128 })"
               alt="logo"
             />
             <!-- <i class="layout-default-sider__certification st-icon-certified"></i> -->
           </div>
-          <div class="layout-default-sider__shop-brand-name">{{brand.name}}</div>
+          <div class="layout-default-sider__shop-brand-name">
+            {{ brand.name }}
+          </div>
         </div>
-        <div class="layout-default-sider__name cursor-pointer" @click="switchShop">
-          <span>{{shop.name}}</span>
-          <st-icon type="arrow-right" class="layout-default-sider__arrow"></st-icon>
+        <div
+          class="layout-default-sider__name cursor-pointer"
+          @click="switchShop"
+        >
+          <span>{{ shop.name }}</span>
+          <st-icon
+            type="arrow-right"
+            class="layout-default-sider__arrow"
+          ></st-icon>
         </div>
       </div>
       <!-- 品牌维度下 -->
@@ -31,19 +39,29 @@
           />
           <!-- <i class="layout-default-sider__certification st-icon-certified"></i> -->
         </div>
-        <div class="layout-default-sider__name cursor-pointer" @click="switchShop">
-          <span>{{brand.name}}</span>
-          <st-icon type="arrow-right" class="layout-default-sider__arrow"></st-icon>
+        <div
+          class="layout-default-sider__name cursor-pointer"
+          @click="switchShop"
+        >
+          <span>{{ brand.name }}</span>
+          <st-icon
+            type="arrow-right"
+            class="layout-default-sider__arrow"
+          ></st-icon>
         </div>
       </div>
-      <div class="layout-default-sider__scrollbox" v-scrollBar @click="onClickSiderMenu">
+      <div
+        class="layout-default-sider__scrollbox"
+        v-scrollBar
+        @click="onClickSiderMenu"
+      >
         <default-sider-menu @change="onSiderMenuChange" />
       </div>
     </aside>
     <header class="layout-default-body__header">
       <div class="layout-default-body__location">
         <template v-if="title">
-          <h2>{{title}}</h2>
+          <h2>{{ title }}</h2>
           <span class="layout-default-body__line"></span>
         </template>
         <a-breadcrumb separator="-">
@@ -54,9 +72,11 @@
           </a-breadcrumb-item>
           <a-breadcrumb-item v-for="b in breadCrumbs" :key="b.label">
             <router-link :to="b.route" v-if="b.label && b.route.name">
-              <span class="layout-default-body__breadtext">{{b.label}}</span>
+              <span class="layout-default-body__breadtext">{{ b.label }}</span>
             </router-link>
-            <span v-if="!b.route.name" class="layout-default-body__breadtext">{{b.label}}</span>
+            <span v-if="!b.route.name" class="layout-default-body__breadtext">
+              {{ b.label }}
+            </span>
           </a-breadcrumb-item>
         </a-breadcrumb>
       </div>
@@ -74,12 +94,17 @@
         </a-dropdown> -->
         <a-dropdown :trigger="['click']" placement="bottomRight">
           <div class="layout-default-body__avatar">
-            <img :src="user.avatar | imgFilter({ w: 64, h: 64 })" width="32" height="32" alt="avatar" />
+            <img
+              :src="user.avatar | imgFilter({ w: 64, h: 64 })"
+              width="32"
+              height="32"
+              alt="avatar"
+            />
           </div>
           <div slot="overlay" class="layout-default-body__dropdown">
             <div class="layout-default-body__username">
-              <p class="layout-default-body__name">{{user.name}}</p>
-              <p class="layout-default-body__mobile">{{user.mobile}}</p>
+              <p class="layout-default-body__name">{{ user.name }}</p>
+              <p class="layout-default-body__mobile">{{ user.mobile }}</p>
             </div>
             <a-menu>
               <!-- <a-menu-item class="layout-default-body__options">
@@ -93,7 +118,10 @@
                   </a>
               </a-menu-item>-->
               <!-- <a-menu-divider/> -->
-              <a-menu-item @click="onClickLogout" class="layout-default-body__options">
+              <a-menu-item
+                @click="onClickLogout"
+                class="layout-default-body__options"
+              >
                 <st-icon type="logout"></st-icon>
                 <span>退出</span>
               </a-menu-item>
@@ -106,7 +134,9 @@
       <article class="layout-default-body__content">
         <router-view></router-view>
       </article>
-      <footer class="layout-default-body__footer">Copyright &#169; 2019 三体云智能科技有限公司</footer>
+      <footer class="layout-default-body__footer">
+        Copyright &#169; 2019 三体云智能科技有限公司
+      </footer>
     </main>
     <switch-shop v-model="isShowSwitchShop"></switch-shop>
   </div>
@@ -150,10 +180,7 @@ export default {
     breadCrumbs() {
       const menuBreadCrumb = this.getSiderMenuBreadCrumb()
       const parentBreadCrumb = this.getParentBreadCrumb()
-      return [
-        ...menuBreadCrumb,
-        ...parentBreadCrumb
-      ]
+      return [...menuBreadCrumb, ...parentBreadCrumb]
     },
     isInShop() {
       return this.shop.id

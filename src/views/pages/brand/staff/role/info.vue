@@ -3,20 +3,20 @@
     <div class="page-role-info">
       <a-row class="page-role-detail">
         <a-col class="page-role-info-item">
-          <span class='label'>角色名称: </span>
-          <span class='value'>{{info.name}}</span>
+          <span class="label">角色名称:</span>
+          <span class="value">{{ info.name }}</span>
         </a-col>
         <a-col class="page-role-info-item">
-          <span class='label'>角色描述: </span>
-          <span class='value'>{{info.role_description}}</span>
+          <span class="label">角色描述:</span>
+          <span class="value">{{ info.role_description }}</span>
         </a-col>
         <a-col class="page-role-info-item">
-          <span class='label'>数据权限: </span>
-          <span class='value'>{{dataGrant}}</span>
+          <span class="label">数据权限:</span>
+          <span class="value">{{ dataGrant }}</span>
         </a-col>
         <a-col class="page-role-detail__funrole">
           <div class="label">
-            <span>功能权限: </span>
+            <span>功能权限:</span>
           </div>
           <div class="jurisdiction">
             <st-container class="brand-list">

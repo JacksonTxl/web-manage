@@ -1,12 +1,19 @@
 <template>
   <div class="stat-shop-entry-bar">
-    <div class="stat-shop-entry-bar__item" v-for="item in data" :key="item.name">
-      <label class="stat-shop-entry-bar__name">{{item.name}}</label>
+    <div
+      class="stat-shop-entry-bar__item"
+      v-for="item in data"
+      :key="item.name"
+    >
+      <label class="stat-shop-entry-bar__name">{{ item.name }}</label>
       <div class="stat-shop-entry-bar__bar">
         <div class="stat-shop-entry-bar__progress">
-          <div class="stat-shop-entry-bar__progress-inner" :style="progressStyle(item)"></div>
+          <div
+            class="stat-shop-entry-bar__progress-inner"
+            :style="progressStyle(item)"
+          ></div>
         </div>
-        <div class="stat-shop-entry-bar__value">{{item.value}}</div>
+        <div class="stat-shop-entry-bar__value">{{ item.value }}</div>
       </div>
     </div>
   </div>

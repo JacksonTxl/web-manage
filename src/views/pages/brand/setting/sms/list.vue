@@ -2,7 +2,7 @@
   <div :class="bPage()">
     <div slot="title">
       <st-input-search
-        @search="onSingleSearch('search',query.search,{keyword:true})"
+        @search="onSingleSearch('search', query.search, { keyword: true })"
         v-model="query.search"
         class="mg-b24"
         style="width: 290px;"
@@ -13,11 +13,19 @@
       <st-search-panel>
         <div :class="bSelect()">
           <span :class="bSelect('label')">通知对象:</span>
-          <st-search-radio :class="bSelect('val')" v-model="query.notify_type" :list="notifyType" />
+          <st-search-radio
+            :class="bSelect('val')"
+            v-model="query.notify_type"
+            :list="notifyType"
+          />
         </div>
         <div :class="bSelect()">
           <span :class="bSelect('label')">发送状态：</span>
-          <st-search-radio :class="bSelect('val')" v-model="query.send_status" :list="sendStatus" />
+          <st-search-radio
+            :class="bSelect('val')"
+            v-model="query.send_status"
+            :list="sendStatus"
+          />
         </div>
         <div :class="bSelect()">
           <span :class="bSelect('label')">发送时间：</span>
@@ -53,9 +61,15 @@
       :dataSource="list"
       rowKey="id"
     >
-      <template slot="send_status" slot-scope="text,record">{{record.send_status.name}}</template>
-      <template slot="notify_type" slot-scope="text,record">{{record.notify_type.name}}</template>
-      <template slot="notify_sub_type" slot-scope="text,record">{{record.notify_sub_type.name}}</template>
+      <template slot="send_status" slot-scope="text, record">
+        {{ record.send_status.name }}
+      </template>
+      <template slot="notify_type" slot-scope="text, record">
+        {{ record.notify_type.name }}
+      </template>
+      <template slot="notify_sub_type" slot-scope="text, record">
+        {{ record.notify_sub_type.name }}
+      </template>
     </st-table>
   </div>
 </template>

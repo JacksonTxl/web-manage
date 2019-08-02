@@ -1,54 +1,53 @@
 .brand-marketing-activity {
-    padding: 24px 24px 0;
+  padding: 24px 24px 0;
+  height: 100%;
+  .bg(#fff);
+  box-shadow: 0px 1px 10px 1px rgba(0, 0, 0, 0.05);
+  .fixed {
+    position: fixed !important;
+    top: 40px;
+  }
+  &__flexbox {
+    display: flex;
     height: 100%;
-    .bg(#fff);
-    box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
-    .fixed {
-      position: fixed!important;
-      top: 40px;
-    }
-    &__flexbox {
-      display: flex;
-      height: 100%;
-    }
-    &__left {
-      // .pd-t(3px);
-      // .pd-lr(24px);
-      .bg(#F7F9FC);
-      .mg-l(-24px);
-      .mg-t(-24px);
-      .mg-r(17px);
-      .w(350px);
-      flex-shrink: 0;
-      min-height: 644px;
-      .h5-component__scroll-wrapper{
-        position: absolute;
-      }
-    }
-
-    &__right {
-      flex: 1;
-    }
-
-    &__btn-group {
-      .pos-f();
-      bottom: 0;
-      left: 224px;
-      right: 24px;
-      .bg(rgba(255,255,255,.8));
-      .pd(21px);
-      .ta-c();
-      box-shadow:0px 1px 10px 1px rgba(0,0,0,0.05);
-      z-index: 1;
-      .ant-btn {
-        .mg-lr(6px);
-      }
-    }
-    .row-container-component{
-      border-bottom: none;
-    }
-    .ant-tabs-nav .ant-tabs-tab{
-      padding: 12px 0px;
+  }
+  &__left {
+    // .pd-t(3px);
+    // .pd-lr(24px);
+    .bg(#f7f9fc);
+    .mg-l(-24px);
+    .mg-t(-24px);
+    .mg-r(17px);
+    .w(350px);
+    flex-shrink: 0;
+    min-height: 644px;
+    .h5-component__scroll-wrapper {
+      position: absolute;
     }
   }
-  
+
+  &__right {
+    flex: 1;
+  }
+
+  &__btn-group {
+    .pos-f();
+    bottom: 0;
+    left: 224px;
+    right: 24px;
+    .bg(rgba(255, 255, 255, 0.8));
+    .pd(21px);
+    .ta-c();
+    box-shadow: 0px 1px 10px 1px rgba(0, 0, 0, 0.05);
+    z-index: 1;
+    .ant-btn {
+      .mg-lr(6px);
+    }
+  }
+  .row-container-component {
+    border-bottom: none;
+  }
+  .ant-tabs-nav .ant-tabs-tab {
+    padding: 12px 0px;
+  }
+}

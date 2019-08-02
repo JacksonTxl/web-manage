@@ -16,7 +16,10 @@ export class PersonalTableService {
   scheduleList$ = new State([])
   scheduleColumns$ = new State([])
   scheduleTime$ = new State([])
-  constructor(private scheduleService: PersonalScheduleScheduleService, private commonService: PersonalScheduleCommonService) {}
+  constructor(
+    private scheduleService: PersonalScheduleScheduleService,
+    private commonService: PersonalScheduleCommonService
+  ) {}
   getList(query: any) {
     return this.scheduleService.getList(query).pipe(
       tap(res => {
@@ -54,23 +57,30 @@ export class PersonalTableService {
           return item
         })
         let scheduleColumns = res.schedule_time.map((item: any) => {
-          let title = `${moment(item).format('MM-DD')} ${moment(item).format('ddd')}`
+          let title = `${moment(item).format('MM-DD')} ${moment(item).format(
+            'ddd'
+          )}`
           return {
             title: title,
             dataIndex: item,
             scopedSlots: {
-              customRender: item }
+              customRender: item
+            }
           }
         })
-        scheduleColumns = [{
-          title: '教练名称',
-          dataIndex: 'staff_name',
-          scopedSlots: { customRender: 'staff_name' } },
-        ...scheduleColumns, {
-          title: '操作',
-          dataIndex: 'action',
-          scopedSlots: { customRender: 'action' }
-        }]
+        scheduleColumns = [
+          {
+            title: '教练名称',
+            dataIndex: 'staff_name',
+            scopedSlots: { customRender: 'staff_name' }
+          },
+          ...scheduleColumns,
+          {
+            title: '操作',
+            dataIndex: 'action',
+            scopedSlots: { customRender: 'action' }
+          }
+        ]
         this.scheduleList$.commit(() => list)
         this.scheduleColumns$.commit(() => scheduleColumns)
         this.scheduleTime$.commit(() => res.schedule_time)
@@ -78,7 +88,10 @@ export class PersonalTableService {
     )
   }
   initOptions() {
-    return forkJoin(this.commonService.getCoachList(), this.commonService.getCoachListInBatch())
+    return forkJoin(
+      this.commonService.getCoachList(),
+      this.commonService.getCoachListInBatch()
+    )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return forkJoin(this.getList(to.query), this.initOptions())

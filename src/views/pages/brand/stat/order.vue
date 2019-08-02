@@ -1,21 +1,28 @@
 <template>
-  <div :class="b()" >
+  <div :class="b()">
     <div :class="b('section')">
       <a-row>
         <a-col :span="4" :class="b('title')">
           订单概览
         </a-col>
         <a-col :span="20" :class="b('actions')">
-          <brand-shop @change="onChangeChartShop" style="flex: 1;margin-right: 12px;text-align: right;"></brand-shop>
-          <st-recent-radio-group  @change="onChangeChartDays"></st-recent-radio-group>
+          <brand-shop
+            @change="onChangeChartShop"
+            style="flex: 1;margin-right: 12px;text-align: right;"
+          ></brand-shop>
+          <st-recent-radio-group
+            @change="onChangeChartDays"
+          ></st-recent-radio-group>
         </a-col>
       </a-row>
       <a-row style="margin-top: 34px;">
-        <brand-stat-order-facet-bar :data="chartData"></brand-stat-order-facet-bar>
+        <brand-stat-order-facet-bar
+          :data="chartData"
+        ></brand-stat-order-facet-bar>
       </a-row>
     </div>
-    <div :class="b('section')" >
-      <a-row class="mg-b16" >
+    <div :class="b('section')">
+      <a-row class="mg-b16">
         <a-col :span="4" :class="b('title')">
           <!-- TODO: 本期不实现 -->
           <!-- <st-button type="primary" class="shop-member-list-button" v-if="auth.export">
@@ -23,22 +30,27 @@
           </st-button> -->
         </a-col>
         <a-col :span="20" :class="b('actions')">
-          <brand-shop style="flex: 1;margin-right: 12px;text-align: right;" @change="onChangeDataShop"></brand-shop>
-          <st-recent-radio-group  @change="onChangeDataDays" :value="query"></st-recent-radio-group>
+          <brand-shop
+            style="flex: 1;margin-right: 12px;text-align: right;"
+            @change="onChangeDataShop"
+          ></brand-shop>
+          <st-recent-radio-group
+            @change="onChangeDataDays"
+            :value="query"
+          ></st-recent-radio-group>
         </a-col>
       </a-row>
       <st-table
         :loading="loading.getList"
         :columns="columns"
-        :scroll="{x:1800}"
+        :scroll="{ x: 1800 }"
         rowKey="member_id"
         :page="page"
         @change="onTableChange"
         :dataSource="list"
-      >
-      </st-table>
+      ></st-table>
       <!-- NOTE 本期不做，隐藏复选框 TODO -->
-       <!-- :alertSelection="{onReset:onSelectionReset}"
+      <!-- :alertSelection="{onReset:onSelectionReset}"
         :rowSelection="{selectedRowKeys,onChange:onSelectionChange}" -->
     </div>
   </div>
@@ -68,15 +80,12 @@ export default {
       auth: this.orderService.auth$,
       chartData: this.orderService.chartData$,
       loading: this.orderService.loading$
-
     }
   },
   bem: {
     b: 'page-brand-stat-order'
   },
-  watch: {
-
-  },
+  watch: {},
   data() {
     return {
       chartParam: {

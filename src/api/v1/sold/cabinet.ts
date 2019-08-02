@@ -1,28 +1,28 @@
 import { Api } from '../../api'
 
 export interface LeaseParams {
-  search: string;
-  lease_status: number;
-  start_time: string;
-  end_time: string;
-  size: number;
-  page: number;
+  search: string
+  lease_status: number
+  start_time: string
+  end_time: string
+  size: number
+  page: number
 }
 
 export interface RefundParams {
-  sold_id: number;
-  product_type: number;
-  refund_price: number;
-  refund_reason: string;
-  refund_channel: number;
-  description: string;
+  sold_id: number
+  product_type: number
+  refund_price: number
+  refund_reason: string
+  refund_channel: number
+  description: string
 }
 
 export class CabinetApi extends Api {
   /**
    * 储物柜联动列表
    */
-  getCabinetList(id:string|number) {
+  getCabinetList(id: string | number) {
     return this.http.get(`/v1/sold/cabinet/${id}`)
   }
   /**
@@ -41,7 +41,7 @@ export class CabinetApi extends Api {
   /**
    * 续租、转让、退款 创建订单
    */
-  setTransaction(params:any, type:string, id: number) {
+  setTransaction(params: any, type: string, id: number) {
     if (!type) {
       return this.http.put(`/v1/sold/cabinet/${id}`, { params })
     }

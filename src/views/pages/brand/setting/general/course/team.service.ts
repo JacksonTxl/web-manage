@@ -37,6 +37,8 @@ export class TeamService extends Store<ListState> {
     )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getInfo().subscribe(next, () => { next(false) })
+    this.getInfo().subscribe(next, () => {
+      next(false)
+    })
   }
 }

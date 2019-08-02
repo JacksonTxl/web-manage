@@ -3,10 +3,10 @@ import { map, pluck } from 'rxjs/operators'
 
 const mock = {}
 export interface GetTeamBrandCourseListInput {
-  category_id?: number,
-  course_name?: string,
-  page?: number,
-  size?: number,
+  category_id?: number
+  course_name?: string
+  page?: number
+  size?: number
   is_available?: number
 }
 
@@ -79,21 +79,11 @@ export class TeamApi extends Api {
 export interface PutTeamCourseInput {
   course_id: string
 }
-export interface PostTeamCourseInput {
+export interface PostTeamCourseInput {}
+export interface GetTeamCourseTypeQuery {}
 
-}
-export interface GetTeamCourseTypeQuery{
+export interface GetTrainPurposeQuery {}
 
-}
+export interface GetTeamCourseDetailQuery {}
 
-export interface GetTrainPurposeQuery{
-
-}
-
-export interface GetTeamCourseDetailQuery{
-
-}
-
-export interface SubmitChangeQuery{
-
-}
+export interface SubmitChangeQuery {}

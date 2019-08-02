@@ -8,7 +8,7 @@ export class LeaseService implements RouteGuard {
   page$ = new State({})
   loading$ = new State({})
   constructor(private leaseApi: CourseApi) {}
-  beforeEach(to:ServiceRoute, from: ServiceRoute, next: ()=>{}) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
     next()
   }
 }

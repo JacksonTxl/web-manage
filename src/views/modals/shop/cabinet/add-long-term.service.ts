@@ -1,6 +1,9 @@
 import { Injectable } from 'vue-service-app'
 import { Store } from '@/services/store'
-import { LongTermCabinetApi, AddInput } from '@/api/v1/setting/cabinet/long-term'
+import {
+  LongTermCabinetApi,
+  AddInput
+} from '@/api/v1/setting/cabinet/long-term'
 import { Effect } from 'rx-state'
 
 @Injectable()

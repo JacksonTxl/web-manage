@@ -89,13 +89,15 @@ export default {
           }
         }
         this.h5CardInfo.price = price
-        cardInfo.card_consumer_id && this.syncConsumer(cardInfo.card_consumer_id)
+        cardInfo.card_consumer_id &&
+          this.syncConsumer(cardInfo.card_consumer_id)
       }
     },
     syncName(e) {
       this.h5CardInfo.card_name = e.target.value
     },
-    syncDeadlineNum(value) { // 储值卡金额
+    syncDeadlineNum(value) {
+      // 储值卡金额
       let cardData = this.form.getFieldsValue().cardData
       let price = {
         card_price: cardData.card_price || '',
@@ -106,7 +108,8 @@ export default {
       }
       this.h5CardInfo.price = price
     },
-    syncDepositPrice(value) { // 储值卡金额
+    syncDepositPrice(value) {
+      // 储值卡金额
       let cardData = this.form.getFieldsValue().cardData
       let price = {
         card_price: value,
@@ -117,7 +120,8 @@ export default {
       }
       this.h5CardInfo.price = price
     },
-    syncPrice(values) { // 会员卡金额
+    syncPrice(values) {
+      // 会员卡金额
       let p = []
       switch (this.cardData.price_setting) {
         case 1:
@@ -144,14 +148,16 @@ export default {
             this.shopPriceList.forEach(i => {
               p.push({
                 validity_period: +i.time.num + unitEnum[i.time.unit],
-                sale_price: `${+i.rally_price.min_price}元~${+i.rally_price.max_price}元`
+                sale_price: `${+i.rally_price.min_price}元~${+i.rally_price
+                  .max_price}元`
               })
             })
           } else if (this.cardType === 1) {
             this.shopPriceList.forEach(i => {
               p.push({
                 validity_times: `${+i.validity_times}次`,
-                sale_price: `${+i.rally_price.min_price}元~${+i.rally_price.max_price}元`
+                sale_price: `${+i.rally_price.min_price}元~${+i.rally_price
+                  .max_price}元`
               })
             })
           }

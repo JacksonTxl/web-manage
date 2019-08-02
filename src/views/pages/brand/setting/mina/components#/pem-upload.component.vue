@@ -1,17 +1,13 @@
 <template>
-    <div :class="pem()">
-    <a-upload
-    name="file"
-      :showUploadList="false"
-      :customRequest="upload"
-    >
+  <div :class="pem()">
+    <a-upload name="file" :showUploadList="false" :customRequest="upload">
       <st-button size="small">
-        <a-icon :type="loading ? 'loading' : 'upload'"/>
+        <a-icon :type="loading ? 'loading' : 'upload'" />
         上传文件
       </st-button>
     </a-upload>
-    <span v-if="key" :class="pem('name')">{{name}}</span>
-    </div>
+    <span v-if="key" :class="pem('name')">{{ name }}</span>
+  </div>
 </template>
 <script>
 import { OssService } from '@/services/oss.service'

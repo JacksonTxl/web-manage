@@ -1,20 +1,29 @@
 <template>
   <st-modal title="添加用户" :footer="null" v-model="show">
-    <st-form :form="form" @submit="save" class="page-add-container" labelWidth="56px">
+    <st-form
+      :form="form"
+      @submit="save"
+      class="page-add-container"
+      labelWidth="56px"
+    >
       <a-row :gutter="36">
         <a-col :lg="12">
           <st-form-item label="门店">
             <a-input placeholder />
           </st-form-item>
           <st-form-item label="姓名" required>
-            <a-input placeholder v-decorator="rules.member_name"/>
+            <a-input placeholder v-decorator="rules.member_name" />
           </st-form-item>
           <st-form-item label="手机号" required>
             <a-input-group compact>
               <a-select style="width: 35%;" :defaultValue="1">
                 <a-select-option :value="1">+86</a-select-option>
               </a-select>
-              <a-input style="width: 65%" v-decorator="rules.mobile" placeholder="请输入手机号" />
+              <a-input
+                style="width: 65%"
+                v-decorator="rules.mobile"
+                placeholder="请输入手机号"
+              />
             </a-input-group>
           </st-form-item>
           <st-form-item label="来源渠道">
@@ -44,25 +53,31 @@
       <a-row :gutter="36" v-if="isShow">
         <a-col :lg="12">
           <st-form-item label="性别">
-            <a-select placeholder="选择性别"  v-decorator="rules.sex" >
+            <a-select placeholder="选择性别" v-decorator="rules.sex">
               <a-select-option :value="1">男</a-select-option>
               <a-select-option :value="2">女</a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item label="职业">
-            <a-input placeholder v-decorator="rules.jobs"/>
+            <a-input placeholder v-decorator="rules.jobs" />
           </st-form-item>
           <st-form-item label="收入水平">
-            <a-input placeholder="输入收入水平" v-decorator="rules.income_level"/>
+            <a-input
+              placeholder="输入收入水平"
+              v-decorator="rules.income_level"
+            />
           </st-form-item>
           <st-form-item label="证件类型">
-            <a-select placeholder="选择证件类型" v-decorator="rules.id_card_type">
+            <a-select
+              placeholder="选择证件类型"
+              v-decorator="rules.id_card_type"
+            >
               <a-select-option :value="1">身份证</a-select-option>
               <a-select-option :value="2">护照</a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item label="证件号">
-            <a-input placeholder="输入证件号" v-decorator="rules.id_card"/>
+            <a-input placeholder="输入证件号" v-decorator="rules.id_card" />
           </st-form-item>
         </a-col>
         <a-col :lg="12">
@@ -72,19 +87,19 @@
             </a-input>
           </st-form-item>
           <st-form-item label="体重">
-            <a-input placeholder >
+            <a-input placeholder>
               <div slot="addonAfter" class="st-form-item-unit">KG</div>
             </a-input>
           </st-form-item>
           <st-form-item label="健身目标">
-            <a-input placeholder="输入健身目标"  />
+            <a-input placeholder="输入健身目标" />
           </st-form-item>
           <st-form-item label="健身等级">
             <a-input placeholder="输入健身等级" />
           </st-form-item>
         </a-col>
       </a-row>
-      <a-row >
+      <a-row>
         <a-col :lg="24">
           <st-hr></st-hr>
         </a-col>
@@ -94,7 +109,7 @@
         <a-col :lg="11">
           <st-form-item class="mg-l24" style="margin-bottom: 0;" labelOffset>
             <span class="mg-r24 more" @click="onShowMore">更多信息</span>
-            <st-button  class="mg-r8" type="primary" >取消</st-button>
+            <st-button class="mg-r8" type="primary">取消</st-button>
             <st-button type="primary" ghost html-type="submit">提交</st-button>
           </st-form-item>
         </a-col>

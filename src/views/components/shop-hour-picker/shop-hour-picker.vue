@@ -1,25 +1,37 @@
 <template>
-  <div class="st-shop-hour-picker" :class="{isInfo: isInfo}">
-    <st-checkbox-button-group v-model="weekSelects" v-if="!isInfo" :class="ShopHourPicker('check')">
+  <div class="st-shop-hour-picker" :class="{ isInfo: isInfo }">
+    <st-checkbox-button-group
+      v-model="weekSelects"
+      v-if="!isInfo"
+      :class="ShopHourPicker('check')"
+    >
       <st-checkbox-button-item
         :key="index"
         :value="item.value"
         v-for="(item, index) in defaultWeekList"
-      >{{item.label}}</st-checkbox-button-item>
+      >
+        {{ item.label }}
+      </st-checkbox-button-item>
     </st-checkbox-button-group>
     <div class="st-shop-hour-picker__content">
       <div class="st-shop-hour-picker__title">
         <div class="label">时间段</div>
-        <div class="timeBox" :class="{isInfo: isInfo, isNotInfo: !isInfo}">
-          <div class="time" v-for="(time, index) in currentTime" :key="index">{{time}}</div>
+        <div class="timeBox" :class="{ isInfo: isInfo, isNotInfo: !isInfo }">
+          <div class="time" v-for="(time, index) in currentTime" :key="index">
+            {{ time }}
+          </div>
         </div>
         <div class="operate" v-if="!isInfo">操作</div>
       </div>
-      <div :class="ShopHourPicker('box')" v-for="(item,index) in slider" :key="index">
+      <div
+        :class="ShopHourPicker('box')"
+        v-for="(item, index) in slider"
+        :key="index"
+      >
         <div :class="ShopHourPicker('slider')" v-if="item.show">
           <!-- label -->
           <div class="label">
-            <span>{{item.week_day | filterWeekDay}}</span>
+            <span>{{ item.week_day | filterWeekDay }}</span>
           </div>
           <!-- slider -->
           <div class="sliderBox">
@@ -33,15 +45,21 @@
           </div>
           <!-- 操作列 -->
           <div class="operation" v-if="!isInfo">
-            <a-popover placement="bottomRight" trigger="click" class="slider-copy-bottom">
+            <a-popover
+              placement="bottomRight"
+              trigger="click"
+              class="slider-copy-bottom"
+            >
               <template slot="content">
                 <a-checkbox-group
                   @change="onChange"
                   class="slider-copy"
-                  v-for="(disabled,index) in item.week"
+                  v-for="(disabled, index) in item.week"
                   :key="index"
                 >
-                  <a-checkbox :value="index" :disabled="!disabled">{{index | filterOperation}}</a-checkbox>
+                  <a-checkbox :value="index" :disabled="!disabled">
+                    {{ index | filterOperation }}
+                  </a-checkbox>
                 </a-checkbox-group>
               </template>
               <span @click="copyTo(item, index)">复制到</span>
@@ -180,21 +198,23 @@ export default {
       return /^\d+$/.test(time) && time > 9
         ? time + ':00'
         : /^\d+$/.test(time) && time <= 9
-          ? '0' + time + ':00'
-          : !/^\d+$/.test(time) && time <= 9
-            ? '0' + (time + '').replace(/.5/gi, ':30')
-            : (time + '').replace(/.5/gi, ':30') + ''
+        ? '0' + time + ':00'
+        : !/^\d+$/.test(time) && time <= 9
+        ? '0' + (time + '').replace(/.5/gi, ':30')
+        : (time + '').replace(/.5/gi, ':30') + ''
     },
     // tooltip格式处理
     formatter(value) {
-      const valueHalf = value > 9 ? `${parseInt(value)}:30` : `0${parseInt(value)}:30`
+      const valueHalf =
+        value > 9 ? `${parseInt(value)}:30` : `0${parseInt(value)}:30`
       const valueInt = value > 9 ? `${value}:00` : `0${value}:00`
       return value % 1 === 0 ? valueInt : valueHalf
     },
     onChange(sliders) {
-      Array.isArray(sliders) && sliders.forEach(key => {
-        if (this.slider[key]) this.slider[key].value = this.copeSlider.value
-      })
+      Array.isArray(sliders) &&
+        sliders.forEach(key => {
+          if (this.slider[key]) this.slider[key].value = this.copeSlider.value
+        })
     },
     copyTo(item, index) {
       this.copeSlider = cloneDeep(item)

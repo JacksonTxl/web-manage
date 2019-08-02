@@ -12,7 +12,11 @@
       :columns="columns"
       :scroll="{ y: 230 }"
       @change="onPageChange"
-      :pagination="{current:page.current_page,total:page.total_counts,pageSize:page.size}"
+      :pagination="{
+        current: page.current_page,
+        total: page.total_counts,
+        pageSize: page.size
+      }"
     />
   </st-modal>
 </template>
@@ -79,7 +83,10 @@ export default {
   },
   methods: {
     getList(query) {
-      this.shopTableService[`get${this.type}ShopList`](query, this.id).subscribe()
+      this.shopTableService[`get${this.type}ShopList`](
+        query,
+        this.id
+      ).subscribe()
     },
     onPageChange(data) {
       this.getList({

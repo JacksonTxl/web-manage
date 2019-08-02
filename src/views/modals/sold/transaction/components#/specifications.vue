@@ -2,10 +2,12 @@
   <st-form-item label="规格" class="mgb-12">
     <a-radio-group v-decorator="value.test_time" @change="onChange">
       <a-radio
-        v-for="(item,index) in cardInfo.price"
+        v-for="(item, index) in cardInfo.price"
         :key="index"
         :value="index"
-      >{{item.num}}{{item.unit | unitType}}/{{item.rally_price}}元</a-radio>
+      >
+        {{ item.num }}{{ item.unit | unitType }}/{{ item.rally_price }}元
+      </a-radio>
     </a-radio-group>
   </st-form-item>
 </template>

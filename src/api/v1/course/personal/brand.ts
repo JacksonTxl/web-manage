@@ -31,20 +31,28 @@ export class BrandPersonalCourseApi extends Api {
    * 编辑品牌私教课
    */
   updateCourse(params: SetCourseInput) {
-    return this.http.put(`/v1/course/personal/brand/${params.course_id}`, { params })
+    return this.http.put(`/v1/course/personal/brand/${params.course_id}`, {
+      params
+    })
   }
   /**
    * 设置上课门店
    */
   setShop(params: SetShopInput) {
-    return this.http.put(`/v1/course/personal/brand/set_shop/${params.course_id}`, { params })
+    return this.http.put(
+      `/v1/course/personal/brand/set_shop/${params.course_id}`,
+      { params }
+    )
   }
 
   /**
    * 设置售卖价格
    */
   setPrice(params: SetPriceInput) {
-    return this.http.put(`/v1/course/personal/brand/set_price/${params.course_id}`, { params })
+    return this.http.put(
+      `/v1/course/personal/brand/set_price/${params.course_id}`,
+      { params }
+    )
   }
   /**
    * 编辑品牌私教课回显详情
@@ -56,7 +64,10 @@ export class BrandPersonalCourseApi extends Api {
    * 品牌私教课设置有效无效
    */
   setAvailable(params: SetAvailableInput) {
-    return this.http.put(`/v1/course/personal/brand/available/${params.course_id}`, { params })
+    return this.http.put(
+      `/v1/course/personal/brand/available/${params.course_id}`,
+      { params }
+    )
   }
   /**
    * 品牌私教课删除
@@ -83,25 +94,24 @@ export class BrandPersonalCourseApi extends Api {
     return this.http.get('/v1/course/personal/setting')
   }
 }
-export interface CoursePersonalSupportInput{
-  course_id: number,
-  shop_id?: number,
-  page: number,
-  size: number,
+export interface CoursePersonalSupportInput {
+  course_id: number
+  shop_id?: number
+  page: number
+  size: number
   is_Pagination?: number
 }
 export interface GetPersonalBrandCourseListInput {
-  category_id?: number,
-  course_name?: string,
-  page?: number,
+  category_id?: number
+  course_name?: string
+  page?: number
   size?: number
 }
 export interface SetAvailableInput {
-  course_id: string,
+  course_id: string
   available: number
 }
-export interface SetPersonalCourseInput {
-}
+export interface SetPersonalCourseInput {}
 export interface SetCourseInput {
   /**
    * 课程id
@@ -118,19 +128,19 @@ export interface SetCourseInput {
   /**
    * 训练目的
    */
-  train_aim: any[],
+  train_aim: any[]
   /**
    * 课程时长
    */
-  duration: number,
+  duration: number
   /**
    * 参考价格
    */
-  price?: number,
+  price?: number
   /**
    * 图片id
    */
-  image_id?: number,
+  image_id?: number
   /**
    * 课程介绍
    */
@@ -141,15 +151,15 @@ export interface SetShopInput {
   /**
    * 课程id
    */
-  course_id: number,
+  course_id: number
   /**
    * 上课门店 1为全店 2为指定门店
    */
-  shop_setting: number,
+  shop_setting: number
   /**
    * 门店ID shop_setting为1时空
    */
-  shop_id: any[],
+  shop_id: any[]
   /**
    * 教练ID
    */
@@ -165,11 +175,11 @@ export interface SetPriceInput {
   /**
    * 课程id
    */
-  course_id: number,
+  course_id: number
   /**
    * 售卖价格 1为统一售价 2为门店售价
    */
-  price_setting: number,
+  price_setting: number
   /**
    * 价格梯度price_setting等于1时必填
    */

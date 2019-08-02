@@ -2,73 +2,99 @@
   <div :class="shelves()">
     <div :class="shelves('search')">
       <a-select
-      style="width: 160px"
-      class="mg-r8"
-      v-model="query.card_type"
-      @change="onSingleSearch('card_type',$event)"
+        style="width: 160px"
+        class="mg-r8"
+        v-model="query.card_type"
+        @change="onSingleSearch('card_type', $event)"
       >
-        <a-select-option v-for="(item,index) in cardType" :key="index" :value="item.value">{{item.label}}</a-select-option>
+        <a-select-option
+          v-for="(item, index) in cardType"
+          :key="index"
+          :value="item.value"
+        >
+          {{ item.label }}
+        </a-select-option>
       </a-select>
       <a-select
-      style="width: 160px"
-      v-model="query.publish_channel"
-      @change="onSingleSearch('publish_channel',$event)"
+        style="width: 160px"
+        v-model="query.publish_channel"
+        @change="onSingleSearch('publish_channel', $event)"
       >
-        <a-select-option v-for="(item,index) in publishChannel" :key="index" :value="item.value">{{item.label}}</a-select-option>
+        <a-select-option
+          v-for="(item, index) in publishChannel"
+          :key="index"
+          :value="item.value"
+        >
+          {{ item.label }}
+        </a-select-option>
       </a-select>
     </div>
     <st-table
-      :scroll="{x:1440}"
-      :page='page'
-      @change='onTableChange'
+      :scroll="{ x: 1440 }"
+      :page="page"
+      @change="onTableChange"
       :loading="loading.getList"
       :columns="columns"
       :dataSource="list"
       rowKey="id"
-      >
+    >
       <!-- 会员卡名称 -->
       <template slot="card_name" slot-scope="text">
-        {{text}}
+        {{ text }}
       </template>
       <!-- 类型 -->
       <template slot="card_type" slot-scope="text">
-        {{text.name}}
+        {{ text.name }}
       </template>
       <!-- 有效期/有效次数 -->
       <template slot="time_gradient" slot-scope="text">
-        {{text}}
+        {{ text }}
       </template>
       <!-- 支持入场门店 -->
-      <template slot="admission_range" slot-scope="text,record">
+      <template slot="admission_range" slot-scope="text, record">
         <a
           v-if="text.id === 2"
-          v-modal-link="{ name: 'card-shop-member-shop-table' , props:{id: record.id,type:'Sale',title:'支持入场门店'}}"
-        >{{text.name}}</a>
-        <span v-else class="use_num">{{text.name}}</span>
+          v-modal-link="{
+            name: 'card-shop-member-shop-table',
+            props: { id: record.id, type: 'Sale', title: '支持入场门店' }
+          }"
+        >
+          {{ text.name }}
+        </a>
+        <span v-else class="use_num">{{ text.name }}</span>
       </template>
       <!-- 售卖时间 -->
       <template slot="sell_time" slot-scope="text, record">
-        {{record.start_time}}&nbsp;~&nbsp;{{record.end_time}}
+        {{ record.start_time }}&nbsp;~&nbsp;{{ record.end_time }}
       </template>
       <!-- 售卖价格 -->
       <template slot="price_gradient" slot-scope="text">
-        {{`${text[0]}${text[1]?'&nbsp;~&nbsp;'+text[1]:''}`}}
+        {{ `${text[0]}${text[1] ? '&nbsp;~&nbsp;' + text[1] : ''}` }}
       </template>
       <!-- 发布渠道 -->
       <template slot="publish_channel" slot-scope="text">
-        {{text.name}}
+        {{ text.name }}
       </template>
       <!-- 操作 -->
-      <div slot="action" slot-scope="text,record">
+      <div slot="action" slot-scope="text, record">
         <st-table-actions>
           <router-link
             v-if="record.auth['brand_shop:product:member_card|get']"
             :to="{
-              path: `/shop/product/card/member/${CARD_TYPE[record.card_type.id]}/info`,
+              path: `/shop/product/card/member/${
+                CARD_TYPE[record.card_type.id]
+              }/info`,
               query: { id: record.id }
             }"
-          >详情</router-link>
-          <a v-if="record.auth['brand_shop:product:member_card|down']" @click="onShelfDown(record)">下架</a>
+          >
+            详情
+          </router-link>
+          <a
+            v-if="record.auth['brand_shop:product:member_card|down']"
+            @click="onShelfDown(record)"
+          >
+            下架
+          </a>
         </st-table-actions>
       </div>
     </st-table>
@@ -80,7 +106,7 @@ import { RouteService } from '@/services/route.service'
 import { columns, CARD_TYPE } from './shelves.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 export default {
-  mixins: [ tableMixin ],
+  mixins: [tableMixin],
   name: 'PageShopProductMemberShelves',
   bem: {
     shelves: 'page-shop-product-member-list-shelves'
@@ -121,9 +147,12 @@ export default {
         title: '下架会员卡',
         content: `确定下架${record.card_name}会员卡吗？`,
         onOk: () => {
-          return this.shelvesService.setCardShelfDown(record.id).toPromise().then(() => {
-            this.$router.push({ force: true, query: this.query })
-          })
+          return this.shelvesService
+            .setCardShelfDown(record.id)
+            .toPromise()
+            .then(() => {
+              this.$router.push({ force: true, query: this.query })
+            })
         }
       })
     }

@@ -11,10 +11,14 @@ export class PersonalScheduleApi extends Api {
     return this.http.post('/v1/schedule/personal/schedule', { params })
   }
   getUpdateInfo(query: any) {
-    return this.http.get(`/v1/schedule/personal/coach/info/${query.id}`, { query })
+    return this.http.get(`/v1/schedule/personal/coach/info/${query.id}`, {
+      query
+    })
   }
   update(params: UpdateScheduleInput) {
-    return this.http.put(`/v1/schedule/personal/schedule/${params.id}`, { params })
+    return this.http.put(`/v1/schedule/personal/schedule/${params.id}`, {
+      params
+    })
   }
   copy(params: CopyInput) {
     return this.http.put(`/v1/schedule/personal/copy/${params.id}`)
@@ -26,15 +30,15 @@ export class PersonalScheduleApi extends Api {
     return this.http.post(`/v1/schedule/personal/batch`, { params })
   }
 }
-export interface AddScheduleInBatchInput{
+export interface AddScheduleInBatchInput {
   id: number // 教练ID
   schedule_start_time: string // 应用开始时间
   schedule_end_time: string // 应用开始时间
   schedule_info: Info
 }
 
-interface Info{
-  time_type: number,
+interface Info {
+  time_type: number
   timing: PersonalScheduleListQuery[]
 }
 
@@ -42,7 +46,7 @@ export interface CopyInput {
   id: number
 }
 export interface UpdateScheduleInput {
-  id: number,
+  id: number
   schedule_info: ScheduleInfo
 }
 interface ScheduleInfo {
@@ -79,7 +83,7 @@ export interface AddInput {
   course_id: number
   /**
    * 教练id
-  */
+   */
   coach_id: number
   /**
    * 开始时间
@@ -94,8 +98,8 @@ export interface AddInput {
    */
   course_fee: number
 }
-export interface PersonalScheduleListQuery{
-  start_time?: string,
+export interface PersonalScheduleListQuery {
+  start_time?: string
   end_time?: string
 }
 export interface AddScheduleInput {

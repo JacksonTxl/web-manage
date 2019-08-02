@@ -1,11 +1,21 @@
 <template>
-  <st-modal title="编辑场地" v-model="show" wrapClassName="modal-court-add" :footer="null">
+  <st-modal
+    title="编辑场地"
+    v-model="show"
+    wrapClassName="modal-court-add"
+    :footer="null"
+  >
     <st-form :form="form" labelWidth="68px" labelGutter="16px">
       <st-form-item label="场地名称" required>
-        <a-input placeholder="请输入场地名称，不超过10个字" maxlength="10" v-decorator="rules.areaName"/>
+        <a-input
+          placeholder="请输入场地名称，不超过10个字"
+          maxlength="10"
+          v-decorator="rules.areaName"
+        />
       </st-form-item>
       <st-form-item labelFix>
-        <a-checkbox :checked="!!info.is_vip" @change="onIsVipChange">VIP区域
+        <a-checkbox :checked="!!info.is_vip" @change="onIsVipChange">
+          VIP区域
         </a-checkbox>
       </st-form-item>
       <st-form-item label="容纳人数">
@@ -18,7 +28,9 @@
       </st-form-item>
     </st-form>
     <div class="ta-r">
-      <st-button type="primary" :loading="loading.update" @click="onSubmit">保存</st-button>
+      <st-button type="primary" :loading="loading.update" @click="onSubmit">
+        保存
+      </st-button>
     </div>
   </st-modal>
 </template>

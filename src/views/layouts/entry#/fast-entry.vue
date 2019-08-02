@@ -7,9 +7,9 @@
       @click="goToPage(item.url)"
     >
       <div>
-        <img :src="item.icon" :alt="item.text" :class="b('item-icon')">
+        <img :src="item.icon" :alt="item.text" :class="b('item-icon')" />
       </div>
-      <div :class="b('item-text')">{{item.text}}</div>
+      <div :class="b('item-text')">{{ item.text }}</div>
     </li>
   </ul>
 </template>
@@ -27,9 +27,7 @@ export default {
     }
   },
   methods: {
-    goToPage(url) {
-
-    }
+    goToPage(url) {}
   }
 }
 </script>

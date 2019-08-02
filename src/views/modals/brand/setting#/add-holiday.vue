@@ -3,9 +3,9 @@
     <st-form :form="form" labelWidth="100px">
       <a-row>
         <a-col :xs="22">
-          <div>{{shopName}}</div>
+          <div>{{ shopName }}</div>
           <st-form-item v-show="false">
-            <input type="hidden" v-decorator="formRules.shopId">
+            <input type="hidden" v-decorator="formRules.shopId" />
           </st-form-item>
           <st-form-item label="放假开始时间" required class="mg-t16">
             <a-date-picker
@@ -18,7 +18,7 @@
             />
           </st-form-item>
           <st-form-item label="放假结束时间" required class="mg-t16">
-              <a-date-picker
+            <a-date-picker
               v-decorator="formRules.endTime"
               :showTime="{ format: appConfig.DATE_FORMAT.time }"
               :format="appConfig.DATE_FORMAT.datetime"
@@ -28,7 +28,9 @@
             />
           </st-form-item>
           <st-form-item labelFix class="mg-b0">
-            <st-button type="primary" :loading="loading.set" @click="onSubmit">确认设置放假时间</st-button>
+            <st-button type="primary" :loading="loading.set" @click="onSubmit">
+              确认设置放假时间
+            </st-button>
           </st-form-item>
         </a-col>
       </a-row>
@@ -43,19 +45,25 @@ import moment from 'moment'
 const formRules = {
   shopId: ['shop_id'],
   startTime: [
-    'start_time', {
-      rules: [{
-        required: true,
-        message: '请输入放假开始时间'
-      }]
+    'start_time',
+    {
+      rules: [
+        {
+          required: true,
+          message: '请输入放假开始时间'
+        }
+      ]
     }
   ],
   endTime: [
-    'end_time', {
-      rules: [{
-        required: true,
-        message: '请输入放假结束时间'
-      }]
+    'end_time',
+    {
+      rules: [
+        {
+          required: true,
+          message: '请输入放假结束时间'
+        }
+      ]
     }
   ]
 }
@@ -109,8 +117,12 @@ export default {
     },
     getData() {
       const data = this.form.getFieldsValue()
-      data.start_time = moment(data.start_time).format(this.appConfig.DATE_FORMAT.datetime)
-      data.end_time = moment(data.end_time).format(this.appConfig.DATE_FORMAT.datetime)
+      data.start_time = moment(data.start_time).format(
+        this.appConfig.DATE_FORMAT.datetime
+      )
+      data.end_time = moment(data.end_time).format(
+        this.appConfig.DATE_FORMAT.datetime
+      )
       return data
     },
     onSubmitSuccess() {

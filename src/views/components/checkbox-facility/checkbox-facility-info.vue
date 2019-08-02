@@ -1,8 +1,15 @@
 <template>
-  <ul class="st-checkbox-facility-info" >
-    <li class="st-checkbox-facility-info-item" :class="{selected: item.selected}" v-for="(item,index) in serviceList" :key="index">
+  <ul class="st-checkbox-facility-info">
+    <li
+      class="st-checkbox-facility-info-item"
+      :class="{ selected: item.selected }"
+      v-for="(item, index) in serviceList"
+      :key="index"
+    >
       <st-icon :type="serviceIconList[item.service_id]" size="24px"></st-icon>
-      <p class="st-checkbox-facility-info-label mg-t8">{{item.service_name}}</p>
+      <p class="st-checkbox-facility-info-label mg-t8">
+        {{ item.service_name }}
+      </p>
     </li>
   </ul>
 </template>

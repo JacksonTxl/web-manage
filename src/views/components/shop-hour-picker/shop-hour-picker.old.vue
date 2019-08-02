@@ -2,13 +2,10 @@
   <div>
     <st-checkbox-button-group v-model="weekArr">
       <template v-for="(item, index) in defaultWeekList">
-        <st-checkbox-button-item
-          :key="index"
-          :value="index"
-          v-if="index"
-        >{{item}}</st-checkbox-button-item>
+        <st-checkbox-button-item :key="index" :value="index" v-if="index">
+          {{ item }}
+        </st-checkbox-button-item>
       </template>
-
     </st-checkbox-button-group>
     <div class="shop-hour-picker shop-hour-picker-box">
       <a-row class="shop-hour-picker__title-box">
@@ -18,23 +15,39 @@
             <li class="shop-hour-picker__title-box-time-comment">00:00</li>
             <li
               class="shop-hour-picker__title-box-time-06 shop-hour-picker__title-box-time-comment"
-            >06:00</li>
+            >
+              06:00
+            </li>
             <li
               class="shop-hour-picker__title-box-time-12 shop-hour-picker__title-box-time-comment"
-            >12:00</li>
+            >
+              12:00
+            </li>
             <li
               class="shop-hour-picker__title-box-time-18 shop-hour-picker__title-box-time-comment"
-            >18:00</li>
+            >
+              18:00
+            </li>
             <li
               class="shop-hour-picker__title-box-time-24 shop-hour-picker__title-box-time-comment"
-            >24:00</li>
+            >
+              24:00
+            </li>
           </ul>
         </a-col>
-        <a-col :span="4" class="shop-hour-picker__title-box-operate">操作</a-col>
+        <a-col :span="4" class="shop-hour-picker__title-box-operate">
+          操作
+        </a-col>
       </a-row>
-      <a-row :gutter="8" v-for="(item,index) in slider" v-show="isShowDay(index)" :key="index" class="slider">
+      <a-row
+        :gutter="8"
+        v-for="(item, index) in slider"
+        v-show="isShowDay(index)"
+        :key="index"
+        class="slider"
+      >
         <a-col :span="2">
-          <span class="slider__title">{{item.title | filterWeekDay}}</span>
+          <span class="slider__title">{{ item.title | filterWeekDay }}</span>
         </a-col>
         <a-col :span="18">
           <a-slider
@@ -48,15 +61,21 @@
           />
         </a-col>
         <a-col :span="4">
-          <a-popover placement="bottomRight" trigger="click" class="slider-copy-bottom">
+          <a-popover
+            placement="bottomRight"
+            trigger="click"
+            class="slider-copy-bottom"
+          >
             <template slot="content">
               <a-checkbox-group
                 @change="onChange"
                 class="slider-copy"
-                v-for=" (disabled,index) in item.week"
+                v-for="(disabled, index) in item.week"
                 :key="index"
               >
-                <a-checkbox :value="index" :disabled="!disabled">{{index | filterWeekDay}}</a-checkbox>
+                <a-checkbox :value="index" :disabled="!disabled">
+                  {{ index | filterWeekDay }}
+                </a-checkbox>
               </a-checkbox-group>
             </template>
             <span @click="copyTo(item, index)">复制到</span>
@@ -127,10 +146,10 @@ export default {
       return /^\d+$/.test(time) && time > 9
         ? time + ':00'
         : /^\d+$/.test(time) && time <= 9
-          ? '0' + time + ':00'
-          : !/^\d+$/.test(time) && time <= 9
-            ? '0' + (time + '').replace(/.5/gi, ':30')
-            : (time + '').replace(/.5/gi, ':30') + ''
+        ? '0' + time + ':00'
+        : !/^\d+$/.test(time) && time <= 9
+        ? '0' + (time + '').replace(/.5/gi, ':30')
+        : (time + '').replace(/.5/gi, ':30') + ''
     },
     addSlide(n, o) {
       const index = difference(n, o)
@@ -154,7 +173,8 @@ export default {
     },
     // tooltip格式处理
     formatter(value) {
-      const valueHalf = value > 9 ? `${parseInt(value)}:30` : `0${parseInt(value)}:30`
+      const valueHalf =
+        value > 9 ? `${parseInt(value)}:30` : `0${parseInt(value)}:30`
       const valueInt = value > 9 ? `${value}:00` : `0${value}:00`
       return value % 1 === 0 ? valueInt : valueHalf
     },
@@ -173,7 +193,7 @@ export default {
     },
     // 获取的数据对格式进行处理
     getSliderInfoList() {
-      this.value.map((item) => {
+      this.value.map(item => {
         const sliderByweekDay = this.slider[item.week_day]
         sliderByweekDay.value = [
           item.start_time.replace(/:00/gi, '').replace(/:30/gi, '.5') - 0,

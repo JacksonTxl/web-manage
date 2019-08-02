@@ -1,7 +1,11 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
 import { State, Computed, Effect } from 'rx-state'
-import { BrandTeamCourseApi, GetTeamBrandCourseListInput, PutCourseTeamIntoBrandInput } from '@/api/v1/course/team/brand'
+import {
+  BrandTeamCourseApi,
+  GetTeamBrandCourseListInput,
+  PutCourseTeamIntoBrandInput
+} from '@/api/v1/course/team/brand'
 import { AuthService } from '@/services/auth.service'
 import { forkJoin } from 'rxjs'
 import { MessageService } from '@/services/message.service'
@@ -38,9 +42,11 @@ export class ShopService {
     return this.shopTeamCourseApi.deleteCourse(courseId)
   }
   putCourseTeamIntoBrand(query: PutCourseTeamIntoBrandInput) {
-    return this.shopTeamCourseApi.putCourseTeamIntoBrand(query).pipe(tap(res => {
-      this.msg.success({ content: '转入成功' })
-    }))
+    return this.shopTeamCourseApi.putCourseTeamIntoBrand(query).pipe(
+      tap(res => {
+        this.msg.success({ content: '转入成功' })
+      })
+    )
   }
   init(query: any) {
     return forkJoin(this.getList(query))

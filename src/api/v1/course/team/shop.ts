@@ -52,19 +52,19 @@ export interface AddInput {
   /**
    * 训练目的
    */
-  train_aim: any[],
+  train_aim: any[]
   /**
    * 课程时长
    */
-  duration: number,
+  duration: number
   /**
    * 参考价格
    */
-  price?: number,
+  price?: number
   /**
    * 图片id
    */
-  image_id?: number,
+  image_id?: number
   /**
    * 课程介绍
    */
@@ -87,15 +87,15 @@ export interface GetUpdateInfoInput {
 }
 
 export interface PutCourseTeamIntoBrandInput {
-  course_id: number,
-  shop_setting: number,
-  shop_ids: any[],
+  course_id: number
+  shop_setting: number
+  shop_ids: any[]
   coach_ids?: any[]
 }
 export interface GetTeamBrandCourseListInput {
-  category_id?: number,
-  course_name?: string,
-  page?: number,
-  size?: number,
+  category_id?: number
+  course_name?: string
+  page?: number
+  size?: number
   is_available?: number
 }

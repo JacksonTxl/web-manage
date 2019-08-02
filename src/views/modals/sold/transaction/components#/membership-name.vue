@@ -1,6 +1,10 @@
 <template>
   <div>
-    <st-form-item v-show="searchMemberIsShow" label="购买会员" labelGutter="12px">
+    <st-form-item
+      v-show="searchMemberIsShow"
+      label="购买会员"
+      labelGutter="12px"
+    >
       <a-select
         showSearch
         allowClear
@@ -13,21 +17,40 @@
         notFoundContent="无搜索结果"
         v-decorator="value.name"
       >
-        <a-select-option v-for="(item,index) in memberList" :value="item.member_id" :key="index">
+        <a-select-option
+          v-for="(item, index) in memberList"
+          :value="item.member_id"
+          :key="index"
+        >
           <span
-            v-html="`${item.member_name} ${item.mobile}`.replace(new RegExp(memberSearchText,'g'),`\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`)"
-          >{{item.member_name}} {{item.mobile}}</span>
+            v-html="
+              `${item.member_name} ${item.mobile}`.replace(
+                new RegExp(memberSearchText, 'g'),
+                `\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`
+              )
+            "
+          >
+            {{ item.member_name }} {{ item.mobile }}
+          </span>
         </a-select-option>
       </a-select>
-      <p v-if="!memberList.length&&memberSearchText!==''" class="add-text">
+      <p v-if="!memberList.length && memberSearchText !== ''" class="add-text">
         查无此会员，
         <span @click="onAddMember">添加新会员？</span>
       </p>
     </st-form-item>
-    <st-form-item v-show="!searchMemberIsShow" label="购买会员" labelGutter="12px">
+    <st-form-item
+      v-show="!searchMemberIsShow"
+      label="购买会员"
+      labelGutter="12px"
+    >
       <a-input placeholder="请输入会员姓名"></a-input>
     </st-form-item>
-    <st-form-item v-show="!searchMemberIsShow" label="手机号" labelGutter="12px">
+    <st-form-item
+      v-show="!searchMemberIsShow"
+      label="手机号"
+      labelGutter="12px"
+    >
       <a-input placeholder="请输入手机号"></a-input>
       <p class="add-text">
         <span @click="onCancelMember">取消添加</span>

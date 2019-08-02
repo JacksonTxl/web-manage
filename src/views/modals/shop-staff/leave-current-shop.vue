@@ -10,7 +10,9 @@
     <template v-if="operate === 1">
       <a-row :gutter="8" class="mg-t16">
         <a-col :lg="24">
-          <p class="model-leave-store-container_tip">确认此员工不在{{'门店名称'}}进行相关工作</p>
+          <p class="model-leave-store-container_tip">
+            确认此员工不在{{ '门店名称' }}进行相关工作
+          </p>
         </a-col>
         <a-row :gutter="8" class="mg-t16">
           <a-col :lg="24" style="text-align: right;">
@@ -24,9 +26,14 @@
       <a-row :gutter="8" class="mg-t16" v-if="list.length !== 0">
         <a-col :lg="24">
           <div class="model-leave-store-container_info">
-            <div class="model-leave-store-container_same mg-b8">该员工在本门店还有未完成的事项，无法解除</div>
+            <div class="model-leave-store-container_same mg-b8">
+              该员工在本门店还有未完成的事项，无法解除
+            </div>
             <template v-for="item in list">
-              <div :key="item.type" class="model-leave-store-container_same mg-b8">
+              <div
+                :key="item.type"
+                class="model-leave-store-container_same mg-b8"
+              >
                 {{ item.num }}节未完成{{ item.name }}，
                 <!-- <a href="javascript:;">查看详情</a> -->
               </div>

@@ -3,7 +3,7 @@ import { Injectable } from 'vue-service-app'
 
 @Injectable()
 export class RuleConfig {
-  constructor(private i18n: I18NService) { }
+  constructor(private i18n: I18NService) {}
   /**
    * 课程 id
    */
@@ -15,14 +15,18 @@ export class RuleConfig {
    */
   get courseName() {
     return [
-      'course_name', {
-        rules: [{
-          required: true,
-          message: '请输入课程名称'
-        }, {
-          min: 4,
-          message: '支持输入4~30个字的课程名称'
-        }]
+      'course_name',
+      {
+        rules: [
+          {
+            required: true,
+            message: '请输入课程名称'
+          },
+          {
+            min: 4,
+            message: '支持输入4~30个字的课程名称'
+          }
+        ]
       }
     ]
   }
@@ -31,11 +35,14 @@ export class RuleConfig {
    */
   get categoryId() {
     return [
-      'category_id', {
-        rules: [{
-          required: true,
-          message: '请选择课程类型'
-        }]
+      'category_id',
+      {
+        rules: [
+          {
+            required: true,
+            message: '请选择课程类型'
+          }
+        ]
       }
     ]
   }
@@ -44,11 +51,14 @@ export class RuleConfig {
    */
   get trainAim() {
     return [
-      'train_aim', {
-        rules: [{
-          required: true,
-          message: '请选择训练目的'
-        }]
+      'train_aim',
+      {
+        rules: [
+          {
+            required: true,
+            message: '请选择训练目的'
+          }
+        ]
       }
     ]
   }
@@ -57,11 +67,14 @@ export class RuleConfig {
    */
   get duration() {
     return [
-      'duration', {
-        rules: [{
-          required: true,
-          message: '请输入课程时长'
-        }]
+      'duration',
+      {
+        rules: [
+          {
+            required: true,
+            message: '请输入课程时长'
+          }
+        ]
       }
     ]
   }
@@ -70,11 +83,14 @@ export class RuleConfig {
    */
   get isOnlineSale() {
     return [
-      'is_online_sale', {
-        rules: [{
-          required: true,
-          message: '请选择是否支持在线购买'
-        }]
+      'is_online_sale',
+      {
+        rules: [
+          {
+            required: true,
+            message: '请选择是否支持在线购买'
+          }
+        ]
       }
     ]
   }
@@ -83,7 +99,8 @@ export class RuleConfig {
    */
   get price() {
     return [
-      'price', {
+      'price',
+      {
         rules: []
       }
     ]
@@ -93,11 +110,14 @@ export class RuleConfig {
    */
   get effectiveUnit() {
     return [
-      'effective_unit', {
-        rules: [{
-          required: true,
-          message: '请输入课程有效期'
-        }],
+      'effective_unit',
+      {
+        rules: [
+          {
+            required: true,
+            message: '请输入课程有效期'
+          }
+        ],
         initialValue: 7
       }
     ]
@@ -112,16 +132,20 @@ export class RuleConfig {
    * 课程描述
    */
   get description() {
-    return ['description', {
-      initialValue: ''
-    }]
+    return [
+      'description',
+      {
+        initialValue: ''
+      }
+    ]
   }
   /**
    * 上课门店类型（全店/指定门店）
    */
   get shopSetting() {
     return [
-      'shop_setting', {
+      'shop_setting',
+      {
         initialValue: '1'
       }
     ]
@@ -131,20 +155,24 @@ export class RuleConfig {
    */
   get shopIds() {
     return [
-      'shop_ids', {
-        rules: [{
-          required: true,
-          message: '请选择上课门店'
-        }]
+      'shop_ids',
+      {
+        rules: [
+          {
+            required: true,
+            message: '请选择上课门店'
+          }
+        ]
       }
     ]
   }
   /**
- * 上课教练 教练ids
- */
+   * 上课教练 教练ids
+   */
   get coachIds() {
     return [
-      'coach_ids', {
+      'coach_ids',
+      {
         rules: []
       }
     ]
@@ -154,7 +182,8 @@ export class RuleConfig {
    */
   get priceSetting() {
     return [
-      'price_setting', {
+      'price_setting',
+      {
         initialValue: 1
       }
     ]
@@ -164,7 +193,8 @@ export class RuleConfig {
    */
   get priceGradient() {
     return [
-      'price_gradient', {
+      'price_gradient',
+      {
         rules: []
       }
     ]
@@ -173,12 +203,17 @@ export class RuleConfig {
    * 训练强度
    */
   get strengthLevel() {
-    return ['strength_level', {
-      rules: [{
-        required: true,
-        message: '请选择训练强度'
-      }]
-    }]
+    return [
+      'strength_level',
+      {
+        rules: [
+          {
+            required: true,
+            message: '请选择训练强度'
+          }
+        ]
+      }
+    ]
   }
   /**
    * 卡路里
@@ -190,32 +225,44 @@ export class RuleConfig {
    * 售卖方式
    */
   get sellType() {
-    return ['sell_type', {
-      initialValue: [2]
-    }]
+    return [
+      'sell_type',
+      {
+        initialValue: [2]
+      }
+    ]
   }
   /**
    * 是否支持单节售卖
    */
   get singleSell() {
-    return ['single_sell', {
-      initialValue: 0
-    }]
+    return [
+      'single_sell',
+      {
+        initialValue: 0
+      }
+    ]
   }
   /**
    * 是否支持单节预约
    */
   get singleReserve() {
-    return ['single_reserve', {
-      initialValue: 0
-    }]
+    return [
+      'single_reserve',
+      {
+        initialValue: 0
+      }
+    ]
   }
   /**
    * 单节售卖价格
    */
   get singlePrice() {
-    return ['single_price', {
-      initialValue: ''
-    }]
+    return [
+      'single_price',
+      {
+        initialValue: ''
+      }
+    ]
   }
 }

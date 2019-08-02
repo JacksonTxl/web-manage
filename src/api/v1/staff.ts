@@ -6,279 +6,279 @@ import { Api } from '../api'
  *
  */
 export interface Params {
-    /**
-     * 员工状态
-     */
-    staff_status?: string
-    /**
-     * 员工工号 姓名 手机号
-     */
-    keyword?: string
-    /**
-     * 第几页
-     */
-    page?: string
-      /**
-       * 每页显示数
-       */
-    limit?: string
-  }
-export interface SaveData {
-    /**
-     * 姓名
-     */
-    staff_name : string;
-    /**
-     * 昵称
-     */
-    nickname : string;
-    /**
-     * 国家编码id，例如中国的id是37 就手机号前边的那个
-     */
-    country_code_id : string;
-    /**
-     * 手机号
-     */
-    mobile : string;
-    /**
-     * 工号
-     */
-    staff_num : string;
-    /**
-     * 性别
-     */
-    sex : string;
-    /**
-     * 证件类型 1-身份证 2-护照
-     */
-    id_type? : string;
-    /**
-     * 证件类型
-     */
-    id_number : string;
-    /**
-     * 员工头像
-     */
-    image_avatar? : string;
-    /**
-     * 员工人脸
-     */
-    image_face? : string;
-    /**
-     * 部门id
-     */
-    department_id : string;
-    /**
-     * 职务
-     */
-    working_post : string;
-    /**
-     * 身份
-     */
-    identity? : Array<number>;
-    /**
-     * 教练等级
-     */
-    coach_level_id? : string;
-    /**
-     * 工作性质
-     */
-    nature_work : string;
-    /**
-     * 入职时间
-     */
-    entry_date? : string;
-    /**
-     * 角色id
-     */
-    role_id: Array<number>;
-    /**
-     * 门店id
-     */
-    shop_id: Array<number>;
-    /**
-     * 系统使用权限
-     */
-    is_permission? : string;
-    /**
-     * 登陆账号
-     */
-    account? : string;
-    /**
-     * 登陆密码
-     */
-    password? : string;
-    /**
-     * 确认密码
-     */
-    repeat_password? : string;
+  /**
+   * 员工状态
+   */
+  staff_status?: string
+  /**
+   * 员工工号 姓名 手机号
+   */
+  keyword?: string
+  /**
+   * 第几页
+   */
+  page?: string
+  /**
+   * 每页显示数
+   */
+  limit?: string
 }
-export interface EditStaffBasicInfoQuery{
+export interface SaveData {
   /**
-   * 员工id
+   * 姓名
    */
-  staff_id: number;
+  staff_name: string
   /**
-   * 相册id
+   * 昵称
    */
-  album_id: number;
+  nickname: string
   /**
-   * 员工头像
+   * 国家编码id，例如中国的id是37 就手机号前边的那个
    */
-  image_avatar?: object;
-  /**
-   * 员工人脸
-   */
-  image_face? : object;
-  /**
-   * 员工姓名
-   */
-  staff_name: string;
-  /**
-   * 员工昵称
-   */
-  nickname: string;
-  /**
-   * 国家编码id
-   */
-  country_code_id: number;
+  country_code_id: string
   /**
    * 手机号
    */
-  mobile: string;
+  mobile: string
   /**
-   * 员工工号
+   * 工号
    */
-  staff_num: string;
+  staff_num: string
   /**
-   * 员工性别
+   * 性别
    */
-  sex: number;
+  sex: string
+  /**
+   * 证件类型 1-身份证 2-护照
+   */
+  id_type?: string
   /**
    * 证件类型
    */
-  id_type? : number;
+  id_number: string
   /**
-   * 证件号码
+   * 员工头像
    */
-  id_number : number;
+  image_avatar?: string
+  /**
+   * 员工人脸
+   */
+  image_face?: string
   /**
    * 部门id
    */
-  department_id: number;
+  department_id: string
+  /**
+   * 职务
+   */
+  working_post: string
+  /**
+   * 身份
+   */
+  identity?: Array<number>
+  /**
+   * 教练等级
+   */
+  coach_level_id?: string
   /**
    * 工作性质
    */
-  nature_work: number;
+  nature_work: string
   /**
    * 入职时间
    */
-  entry_date? : string;
+  entry_date?: string
   /**
-   * 角色Id
+   * 角色id
    */
-  role_id : number[];
+  role_id: Array<number>
   /**
    * 门店id
    */
-  shop_id : number[];
+  shop_id: Array<number>
+  /**
+   * 系统使用权限
+   */
+  is_permission?: string
+  /**
+   * 登陆账号
+   */
+  account?: string
+  /**
+   * 登陆密码
+   */
+  password?: string
+  /**
+   * 确认密码
+   */
+  repeat_password?: string
 }
-export interface EditStaffDetailInfoQuery{
+export interface EditStaffBasicInfoQuery {
+  /**
+   * 员工id
+   */
+  staff_id: number
+  /**
+   * 相册id
+   */
+  album_id: number
+  /**
+   * 员工头像
+   */
+  image_avatar?: object
+  /**
+   * 员工人脸
+   */
+  image_face?: object
+  /**
+   * 员工姓名
+   */
+  staff_name: string
+  /**
+   * 员工昵称
+   */
+  nickname: string
+  /**
+   * 国家编码id
+   */
+  country_code_id: number
+  /**
+   * 手机号
+   */
+  mobile: string
+  /**
+   * 员工工号
+   */
+  staff_num: string
+  /**
+   * 员工性别
+   */
+  sex: number
+  /**
+   * 证件类型
+   */
+  id_type?: number
+  /**
+   * 证件号码
+   */
+  id_number: number
+  /**
+   * 部门id
+   */
+  department_id: number
+  /**
+   * 工作性质
+   */
+  nature_work: number
+  /**
+   * 入职时间
+   */
+  entry_date?: string
+  /**
+   * 角色Id
+   */
+  role_id: number[]
+  /**
+   * 门店id
+   */
+  shop_id: number[]
+}
+export interface EditStaffDetailInfoQuery {
   /**
    * 毕业院校
    */
-  graduated_school? : string;
+  graduated_school?: string
   /**
    * 毕业时间
    */
-  graduation_time? : string;
+  graduation_time?: string
   /**
    * 学历
    */
-  education? : number;
+  education?: number
   /**
    * 专业
    */
-  profession? : number;
+  profession?: number
   /**
    * 生日
    */
-  birthday? : string;
+  birthday?: string
   /**
    * 籍贯
    */
-  native_place? : string;
+  native_place?: string
   /**
    * 婚姻状态
    */
-  marry_status? : number;
+  marry_status?: number
   /**
    * 有无子女
    */
-  children_status? : number;
+  children_status?: number
   /**
    * 详细地址
    */
-  address? : string;
+  address?: string
   /**
    * 描述
    */
-  description? : string;
+  description?: string
   /**
    * 省id
    */
-  province_id? : number;
+  province_id?: number
   /**
    * 省名字
    */
-  province_name? : string;
+  province_name?: string
   /**
    * 市Id
    */
-  city_id? : number;
+  city_id?: number
   /**
    * 市名
    */
-  city_name? : string;
+  city_name?: string
   /**
    * 区id
    */
-  district_id? : number;
-   /**
+  district_id?: number
+  /**
    * 区名
    */
-  district_name? : string;
+  district_name?: string
 }
-export interface EditStaffCoachInfoQuery{
+export interface EditStaffCoachInfoQuery {
   /**
    * 从业时间
    */
-  employment_time? : string;
+  employment_time?: string
   /**
    * 擅长的项目
    */
-  specialty_id? : number[];
+  specialty_id?: number[]
   /**
    * 专业认证
    */
-  certification_name? : string[];
+  certification_name?: string[]
   /**
    * 个人简介
    */
-  introduction? : string;
+  introduction?: string
   /**
    * 是否展示在会员端
    */
-  is_show: number;
+  is_show: number
   /**
    * 员工风采
    */
-  image_personal: any[];
+  image_personal: any[]
 }
 export interface RePasswordInput {
-  id?: string,
-  name: string,
-  password: string,
+  id?: string
+  name: string
+  password: string
   password_repeat: string
 }
 export interface PutStaffBindPositionInput {
@@ -298,7 +298,7 @@ export interface AddDepartmentInput {
   parent_id: number
   department_name: string
 }
-export interface DelDepartmentInput{
+export interface DelDepartmentInput {
   id: string | number
   check_result: number
 }
@@ -321,7 +321,7 @@ export class StaffApi extends Api {
 
   /**
    * 获取门店
-    */
+   */
   getShopList() {
     return this.http.get('/v1/shop/all')
   }
@@ -427,8 +427,8 @@ export class StaffApi extends Api {
   // /v1/staff/salary/sale
   // /v1/staff/salary/class
   /**
- * 编辑员工回显
- */
+   * 编辑员工回显
+   */
   editStaffInfo(id: string) {
     return this.http.get(`/v1/staff/brand/review/${id}`)
   }
@@ -482,9 +482,9 @@ export class StaffApi extends Api {
     return this.http.put(`/v1/staff/face/${id}`, { params })
   }
 }
-export interface EditFaceParams{
-  image_id:number
-  image_key:string
+export interface EditFaceParams {
+  image_id: number
+  image_key: string
 }
 
 export interface PermissionInput {
@@ -514,175 +514,175 @@ export interface PutStaffBindPhysicalInput {
   physical_number?: string
 }
 // 品牌
-export interface GetStaffCourseListInput{
+export interface GetStaffCourseListInput {
   /**
    * 门店id
    */
-  shop_id? : number;
+  shop_id?: number
   /**
    * 上课状态
    */
-  course_status? : number;
+  course_status?: number
   /**
    * 开始上课日期
    */
-  start_time_first? : string;
+  start_time_first?: string
   /**
    * 结束上课日期
    */
-  start_time_last? : string;
+  start_time_last?: string
   /**
    * 搜索课程名称
    */
-  course_name? : string;
+  course_name?: string
 }
-export interface GetStaffServiceCoursesInput{
+export interface GetStaffServiceCoursesInput {
   /**
    * 门店id
    */
-  shop_id? : number;
+  shop_id?: number
   /**
    * 搜索关键字
    */
-  keyword? : string;
+  keyword?: string
 
-  page? : number;
-  size? : number;
+  page?: number
+  size?: number
 }
-export interface GetStaffSoldInput{
+export interface GetStaffSoldInput {
   /**
    * 门店id
    */
-  shop_id? : number;
+  shop_id?: number
   /**
    * 订单状态
    */
-  order_status? : number;
+  order_status?: number
   /**
    * 开始下单时间
    */
-  order_time_first? : string;
+  order_time_first?: string
   /**
    * 结束下单时间
    */
-  order_time_last? : string;
+  order_time_last?: string
   /**
    * 搜索关键字
    */
-  keyword? : string;
+  keyword?: string
 
-  page? : number;
-  size? : number;
+  page?: number
+  size?: number
 }
-export interface GetStaffFollowInput{
-  id?: string | number;
+export interface GetStaffFollowInput {
+  id?: string | number
   /**
    * 搜索开始时间
    */
-  follow_date_first? : string;
+  follow_date_first?: string
   /**
    * 搜索结束时间
    */
-  follow_date_last? : string;
+  follow_date_last?: string
   /**
    * 搜索用户时间
    */
-  member_name? : string;
+  member_name?: string
 
-  page? : number;
-  size? : number;
+  page?: number
+  size?: number
 }
-export interface AddStaffBasicInfoParams{
+export interface AddStaffBasicInfoParams {
   /**
    * 员工
    */
-  staff_name : string;
+  staff_name: string
   /**
    * 昵称
    */
-  nickname : string;
+  nickname: string
   /**
    * 国家编码
    */
-  country_code_id : number;
+  country_code_id: number
   /**
    * 手机号
    */
-  mobile : string;
+  mobile: string
   /**
    * 邮箱
    */
-  mail? : string;
+  mail?: string
   /**
    * 性别
    */
-  sex : number;
+  sex: number
   /**
    * 工号
    */
-  staff_num : string;
+  staff_num: string
   /**
    * 证件类型
    */
-  id_type? : number;
+  id_type?: number
   /**
    * 证件号码
    */
-  id_number : number;
+  id_number: number
   /**
    * 部门Id
    */
-  department_id : number;
+  department_id: number
   /**
    * 员工头像
    */
-  image_avatar? : object;
+  image_avatar?: object
   /**
    * 员工人脸
    */
-  image_face? : object;
+  image_face?: object
   /**
    * 职务
    */
-  working_post : string;
+  working_post: string
   /**
    * 身份
    */
-  identity? : number[];
+  identity?: number[]
   /**
    * 教练等级Id
    */
-  coach_level_id? : number;
+  coach_level_id?: number
   /**
    * 工作性质
    */
-  nature_work? : number;
+  nature_work?: number
   /**
    * 入职时间
    */
-  entry_date? : string;
+  entry_date?: string
   /**
    * 角色id
    */
-  role_id : number[];
+  role_id: number[]
   /**
    * 门店id
    */
-  shop_id : number[];
+  shop_id: number[]
   /**
    * 系统使用权限
    */
-  is_permission : number;
+  is_permission: number
   /**
    * 登陆账号
    */
-  account? : string;
+  account?: string
   /**
    * 登陆密码
    */
-  password? : string;
+  password?: string
   /**
-  * 确认密码
-  */
-  repeat_password? : string;
+   * 确认密码
+   */
+  repeat_password?: string
 }

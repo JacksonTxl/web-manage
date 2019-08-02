@@ -24,7 +24,9 @@ export class FollowHistoryService extends Store<FollowHistoryInfoState> {
       followHistoryInfo: {},
       followInfo: {}
     })
-    this.followHistoryInfo$ = new Computed(this.state$.pipe(pluck('followHistoryInfo')))
+    this.followHistoryInfo$ = new Computed(
+      this.state$.pipe(pluck('followHistoryInfo'))
+    )
     this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
   }
   SET_FOLLOW_HISTORY_INFO(followHistoryInfo: FollowHistoryInfoState) {

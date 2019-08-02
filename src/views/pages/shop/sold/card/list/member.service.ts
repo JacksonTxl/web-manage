@@ -17,14 +17,16 @@ export class MemberService implements RouteGuard {
   constructor(private cardApi: CardApi, private authService: AuthService) {}
   @Effect()
   getList(params: GetMemberListInput) {
-    return this.cardApi.getMemberList(params, 'member').pipe(tap((res:any) => {
-      res = this.authService.filter(res)
-      this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-    }))
+    return this.cardApi.getMemberList(params, 'member').pipe(
+      tap((res: any) => {
+        res = this.authService.filter(res)
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
   }
   @Effect()
-  unFreeze(id:string) {
+  unFreeze(id: string) {
     return this.cardApi.unFreezeCard(id, 'member')
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {

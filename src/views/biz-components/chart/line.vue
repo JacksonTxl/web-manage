@@ -22,10 +22,15 @@ export default {
         }
       })
       chart.line().position([x, y])
-      chart.point().position([x, y]).size(4).shape('circle').style({
-        stroke: '#fff',
-        lineWidth: 1
-      })
+      chart
+        .point()
+        .position([x, y])
+        .size(4)
+        .shape('circle')
+        .style({
+          stroke: '#fff',
+          lineWidth: 1
+        })
       chart.render()
     }
   }

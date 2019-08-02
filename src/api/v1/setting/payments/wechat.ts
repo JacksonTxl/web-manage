@@ -16,6 +16,4 @@ export class WechatPaymentSettingApi extends Api {
   }
 }
 
-export interface UpdateInput {
-
-}
+export interface UpdateInput {}

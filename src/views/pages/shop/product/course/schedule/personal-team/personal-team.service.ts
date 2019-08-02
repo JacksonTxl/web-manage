@@ -1,11 +1,7 @@
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { forkJoin, timer } from 'rxjs'
-import {
-  PersonalTeamScheduleScheduleService
-} from '../personal-team.service#/schedule.service'
-import {
-  PersonalTeamScheduleCommonService
-} from '../personal-team.service#/common.service'
+import { PersonalTeamScheduleScheduleService } from '../personal-team.service#/schedule.service'
+import { PersonalTeamScheduleCommonService } from '../personal-team.service#/common.service'
 import { AuthService } from '@/services/auth.service'
 import { State, Computed } from 'rx-state'
 
@@ -17,18 +13,17 @@ export class PersonalTeamService implements RouteGuard {
     addBatch: 'shop:schedule:personal_team_course_schedule|batch_add',
     copy: 'shop:schedule:personal_team_course_schedule|copy'
   })
-  constructor(private commonService: PersonalTeamScheduleCommonService,
+  constructor(
+    private commonService: PersonalTeamScheduleCommonService,
     private authService: AuthService,
-    private scheduleService: PersonalTeamScheduleScheduleService) {
+    private scheduleService: PersonalTeamScheduleScheduleService
+  ) {
     this.state$ = new State({})
   }
 
   initOptions() {
     const commonService = this.commonService
-    return forkJoin(
-      commonService.getCoachList(),
-      commonService.getCourseList()
-    )
+    return forkJoin(commonService.getCoachList(), commonService.getCourseList())
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
     return this.scheduleService.getList(to.meta.query)

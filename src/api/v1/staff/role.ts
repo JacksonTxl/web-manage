@@ -14,20 +14,20 @@ export class RoleApi extends Api {
     return this.http.get(`/v1/common/role/normal`)
   }
   /**
-     * 获取所有角色列表（角色编辑页面）
-     */
+   * 获取所有角色列表（角色编辑页面）
+   */
   getAllList() {
     return this.http.get(`/v1/common/role/all`)
   }
   /**
-     * 获取角色初始化菜单权限树
-     */
+   * 获取角色初始化菜单权限树
+   */
   getInitInfo(query: GetInitInfoPut) {
     return this.http.get(`/v1/common/role/init`, { query })
   }
   /**
-     * 获取所有角色列表（角色编辑页面）
-     */
+   * 获取所有角色列表（角色编辑页面）
+   */
   getInfo(query: GetInitInfoPut) {
     return this.http.get(`/v1/common/role/setting/${query.role_id}`)
   }
@@ -57,11 +57,11 @@ export interface GetInitInfoPut {
    */
   role_id?: Number | String
 }
-export interface RoleInfo{
+export interface RoleInfo {
   id?: number
-  name: string,
-  dole_description: string,
-  data_grant: number,
-  select_ids: any[],
+  name: string
+  dole_description: string
+  data_grant: number
+  select_ids: any[]
   department_ids: any[]
 }

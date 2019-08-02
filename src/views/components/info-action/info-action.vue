@@ -6,7 +6,7 @@
     v-on="$listeners"
   >
     <st-icon :type="icon"></st-icon>
-    <span :class="b('text')">{{text}}</span>
+    <span :class="b('text')">{{ text }}</span>
   </a>
 </template>
 <script>

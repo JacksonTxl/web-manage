@@ -9,13 +9,15 @@ export class RefundService {
   loading$ = new State({})
   constructor(private courseApi: CourseApi) {}
   @Effect()
-  getPackageInfo(id:string, type:string) {
-    return this.courseApi.getCourseRefundInfo(id, type).pipe(tap((res:any) => {
-      this.packageInfo$.commit(() => res.info)
-    }))
+  getPackageInfo(id: string, type: string) {
+    return this.courseApi.getCourseRefundInfo(id, type).pipe(
+      tap((res: any) => {
+        this.packageInfo$.commit(() => res.info)
+      })
+    )
   }
   @Effect()
-  refund(params: RefundCourseInput, id:string, type:string) {
+  refund(params: RefundCourseInput, id: string, type: string) {
     return this.courseApi.editCourseRefund(params, id, type)
   }
 }

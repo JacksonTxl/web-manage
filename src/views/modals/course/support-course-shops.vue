@@ -1,16 +1,17 @@
 <template>
   <st-modal
     class="modal-support-course-shops"
-    title='查看店详情'
+    title="查看店详情"
     :footer="null"
-    v-model='show'>
+    v-model="show"
+  >
     <st-container>
-    <st-table
-    :columns="columnsShops"
-    :page="false"
-    :rowKey="record => record.shop_name"
-    :dataSource="supportShopList">
-    </st-table>
+      <st-table
+        :columns="columnsShops"
+        :page="false"
+        :rowKey="record => record.shop_name"
+        :dataSource="supportShopList"
+      ></st-table>
     </st-container>
   </st-modal>
 </template>
@@ -39,9 +40,11 @@ export default {
   },
   methods: {
     getShops() {
-      this.brandService.getCoursePersonalSupportShops({ course_id: this.courseId }).subscribe(state => {
-        this.supportShopList = state.shops
-      })
+      this.brandService
+        .getCoursePersonalSupportShops({ course_id: this.courseId })
+        .subscribe(state => {
+          this.supportShopList = state.shops
+        })
     }
   },
   mounted() {

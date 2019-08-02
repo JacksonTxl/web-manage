@@ -24,11 +24,11 @@ export class PersonalReserveApi extends Api {
   }
 }
 export interface GetListQuery {
-  coach_id?: number,
-  start_time?: string,
-  end_time?: string,
+  coach_id?: number
+  start_time?: string
+  end_time?: string
 }
-export interface UpdateInput{
+export interface UpdateInput {
   id: number
   coach_id: number
 }
@@ -61,16 +61,16 @@ export interface AddInput {
   course_id: number
   /**
    * 教练id
-  */
+   */
   coach_id: number
   /**
    * 员工id
    */
-  member_id: number,
+  member_id: number
   /**
    * 消费类目 1 储值卡 2 课程包 3 私教课
    */
-  consume_type: number,
+  consume_type: number
   /**
    * 消费方式id
    */

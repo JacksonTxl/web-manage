@@ -9,10 +9,14 @@
   >
     <st-form :form="form" labelWidth="70px">
       <st-form-item label="区域">
-        <a-input :value="areaName" disabled/>
+        <a-input :value="areaName" disabled />
       </st-form-item>
       <st-form-item label="首字母">
-        <a-input placeholder="请输入首字母" maxlength="1" v-decorator="rules.firstLetter"/>
+        <a-input
+          placeholder="请输入首字母"
+          maxlength="1"
+          v-decorator="rules.firstLetter"
+        />
       </st-form-item>
       <st-form-item label="起始编号" required>
         <a-input-number
@@ -34,7 +38,7 @@
             :key="index"
             :value="+index"
           >
-            {{item}}
+            {{ item }}
           </a-radio>
         </a-radio-group>
       </st-form-item>
@@ -113,7 +117,7 @@ export default {
     },
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then((data) => {
+      this.form.validateFields().then(data => {
         data.id = this.id
         const reason = this.info.reason || ''
         if (!reason.length) {
@@ -122,7 +126,10 @@ export default {
           })
           return
         }
-        if (this.isShowReason && !this.pattern.CN_EN_NUM_SPACE('1-30').test(reason)) {
+        if (
+          this.isShowReason &&
+          !this.pattern.CN_EN_NUM_SPACE('1-30').test(reason)
+        ) {
           this.messageService.error({
             content: '不可用原因格式错误'
           })

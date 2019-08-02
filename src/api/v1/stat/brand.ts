@@ -54,11 +54,11 @@ export class StatApi {
     return this.http.get(`/v1/stat/${version.version}/marketing/funnel`)
   }
 }
-export interface GetBrandIndexInput { }
+export interface GetBrandIndexInput {}
 export interface RecentQuery {
-  recently_day?: number,
-  start_date?:string,
-  end_date?:string
+  recently_day?: number
+  start_date?: string
+  end_date?: string
 }
 export interface Version {
   version: string

@@ -1,6 +1,6 @@
 <template>
   <st-panel app>
-    <set-team-course :info="info"/>
+    <set-team-course :info="info" />
   </st-panel>
 </template>
 <script>

@@ -2,12 +2,12 @@
   <svg
     v-if="!isAntIcon"
     class="st-icon"
-    :style="{'font-size': size, 'color': color}"
+    :style="{ 'font-size': size, color: color }"
     aria-hidden="true"
   >
     <use :xlink:href="linkHref"></use>
   </svg>
-  <a-icon v-else v-on="$listeners" :type="antType"/>
+  <a-icon v-else v-on="$listeners" :type="antType" />
 </template>
 
 <script>

@@ -1,7 +1,9 @@
 <template>
   <div class="page-shop-sale-list-shop">
     <header>
-      <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
+      <div
+        class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation"
+      >
         <div>
           <!-- <st-button
             v-if="auth.transfer"
@@ -10,17 +12,46 @@
           >转入品牌团体课程库</st-button> -->
         </div>
         <div>
-          <a-select placeholder="请选择门店"  :defaultValue="-1" class="mg-r8" style="width: 160px" v-model="query.shop_id" @change="onChange">
-            <a-select-option v-for="shop in shopsOptions" :key="shop.id" :value="shop.id">{{shop.shop_name}}</a-select-option>
+          <a-select
+            placeholder="请选择门店"
+            :defaultValue="-1"
+            class="mg-r8"
+            style="width: 160px"
+            v-model="query.shop_id"
+            @change="onChange"
+          >
+            <a-select-option
+              v-for="shop in shopsOptions"
+              :key="shop.id"
+              :value="shop.id"
+            >
+              {{ shop.shop_name }}
+            </a-select-option>
           </a-select>
-          <a-select class="mg-r8"  :defaultValue="-1" placeholder="课程类型" v-model="query.category_id" style="width: 160px" @change="onChange">
-            <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
+          <a-select
+            class="mg-r8"
+            :defaultValue="-1"
+            placeholder="课程类型"
+            v-model="query.category_id"
+            style="width: 160px"
+            @change="onChange"
+          >
+            <a-select-option
+              v-for="category in categoryList"
+              :key="category.id"
+              :value="category.id"
+            >
+              {{ category.setting_name }}
+            </a-select-option>
           </a-select>
         </div>
       </div>
     </header>
     <main class="page-shop-sale-list-shop__table mg-t8">
-      <team-table-shop @check="onCheckGetCourse" @delete-course="onDeleteCourse" ></team-table-shop>
+      <team-table-shop
+        @check="onCheckGetCourse"
+        @delete-course="onDeleteCourse"
+      ></team-table-shop>
     </main>
   </div>
 </template>
@@ -54,7 +85,11 @@ export default {
       selectedRows: [],
       defaultShops: -1,
       toRoute: {},
-      courseStatus: [{ label: '所有状态', value: -1 }, { label: '有效', value: '1' }, { label: '无效', value: '0' }]
+      courseStatus: [
+        { label: '所有状态', value: -1 },
+        { label: '有效', value: '1' },
+        { label: '无效', value: '0' }
+      ]
     }
   },
   components: {
@@ -70,7 +105,10 @@ export default {
       })
     },
     onClickTransFromBrand() {
-      this.$modalRouter.push({ name: 'course-transfrom-brand-team-course', props: { courseList: this.selectedRows } })
+      this.$modalRouter.push({
+        name: 'course-transfrom-brand-team-course',
+        props: { courseList: this.selectedRows }
+      })
     },
     onChange() {
       this.$router.push({ query: { ...this.query, course_name: '' } })
@@ -79,6 +117,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

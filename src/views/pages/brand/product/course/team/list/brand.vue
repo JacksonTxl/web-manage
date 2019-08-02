@@ -1,18 +1,33 @@
 <template>
   <div class="page-shop-sale-list-brand">
     <header>
-      <div class="page-shop-sale-list-brand__opreation page-shop-sale-list__opreation">
+      <div
+        class="page-shop-sale-list-brand__opreation page-shop-sale-list__opreation"
+      >
         <st-button
           icon="add"
           type="primary"
           v-if="auth.add"
           @click="addPersonalCourse"
-        >新增团体课</st-button>
+        >
+          新增团体课
+        </st-button>
         <div>
-          <a-select :defaultValue="-1" v-model="query.category_id" class="mg-r16" style="width: 160px" @change="onChange">
-            <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
+          <a-select
+            :defaultValue="-1"
+            v-model="query.category_id"
+            class="mg-r16"
+            style="width: 160px"
+            @change="onChange"
+          >
+            <a-select-option
+              v-for="category in categoryList"
+              :key="category.id"
+              :value="category.id"
+            >
+              {{ category.setting_name }}
+            </a-select-option>
           </a-select>
-
         </div>
       </div>
     </header>
@@ -44,8 +59,7 @@ export default {
     }
   },
   data() {
-    return {
-    }
+    return {}
   },
   components: {
     TeamTable

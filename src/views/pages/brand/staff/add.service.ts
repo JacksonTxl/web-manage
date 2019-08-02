@@ -11,7 +11,11 @@ export class AddService implements RouteGuard {
   codeList$ = new State([])
   roleList$ = new State([])
   department$ = new State([])
-  constructor(protected shopStaffApi: ShopStaffApi, protected staffApi: StaffApi, private roleApi: RoleApi) {}
+  constructor(
+    protected shopStaffApi: ShopStaffApi,
+    protected staffApi: StaffApi,
+    private roleApi: RoleApi
+  ) {}
   @Effect()
   // 获取手机号区域
   getCountryCodes() {
@@ -30,9 +34,11 @@ export class AddService implements RouteGuard {
     )
   }
   getNormalList() {
-    return this.roleApi.getNormalList().pipe(tap(res => {
-      this.roleList$.commit(() => res.roles)
-    }))
+    return this.roleApi.getNormalList().pipe(
+      tap(res => {
+        this.roleList$.commit(() => res.roles)
+      })
+    )
   }
   getStaffDepartment() {
     return this.shopStaffApi.getStaffDepartmentList().pipe(
@@ -45,7 +51,11 @@ export class AddService implements RouteGuard {
     return this.staffApi.addStaffBasicInfo(params)
   }
   init() {
-    return forkJoin(this.getNormalList(), this.getCountryCodes(), this.getStaffDepartment())
+    return forkJoin(
+      this.getNormalList(),
+      this.getCountryCodes(),
+      this.getStaffDepartment()
+    )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     return this.init()

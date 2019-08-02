@@ -26,19 +26,28 @@
               :key="index"
               @click="onSwitchShop(shop)"
             >
-              <img class="drawer-shops__img" :src="shop.image_url | imgFilter({ w: 128, h: 128 })" alt="店招" />
+              <img
+                class="drawer-shops__img"
+                :src="shop.image_url | imgFilter({ w: 128, h: 128 })"
+                alt="店招"
+              />
               <div>
-                <div class="drawer-shops__name">{{shop.shop_name}}</div>
-                <div class="drawer-shops__address">{{shop.address}}</div>
-                <div class="drawer-shops__tel">{{shop.link_phone}}</div>
+                <div class="drawer-shops__name">{{ shop.shop_name }}</div>
+                <div class="drawer-shops__address">{{ shop.address }}</div>
+                <div class="drawer-shops__tel">{{ shop.link_phone }}</div>
               </div>
             </li>
           </ul>
-          <st-no-data text="空空如也~" v-else/>
+          <st-no-data text="空空如也~" v-else />
         </a-spin>
       </section>
       <section>
-        <a class="drawer-switch-shop__to-brand st-link-secondary" @click="switchBackToBrand">返回品牌</a>
+        <a
+          class="drawer-switch-shop__to-brand st-link-secondary"
+          @click="switchBackToBrand"
+        >
+          返回品牌
+        </a>
       </section>
     </div>
   </a-drawer>
@@ -102,14 +111,10 @@ export default {
       const params = {
         shop_id: shop.shop_id
       }
-      this.switchService
-        .switchShop(params)
-        .subscribe(this.onClose)
+      this.switchService.switchShop(params).subscribe(this.onClose)
     },
     switchBackToBrand() {
-      this.switchService
-        .switchBackToBrand()
-        .subscribe(this.onClose)
+      this.switchService.switchBackToBrand().subscribe(this.onClose)
     },
     onSearch() {
       let { shopList } = this

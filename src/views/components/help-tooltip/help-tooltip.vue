@@ -1,5 +1,5 @@
 <template>
-  <span class='st-help-tooltip'>
+  <span class="st-help-tooltip">
     <a-tooltip
       v-if="invalidTooltips.indexOf(id) === -1"
       :placement="placement"
@@ -9,9 +9,10 @@
       :mouseEnterDelay="0.3"
     >
       <template slot="title">
-        <span>{{content}}</span>
+        <span>{{ content }}</span>
       </template>
-      <span><st-icon type="help"/></span><slot></slot>
+      <span><st-icon type="help" /></span>
+      <slot></slot>
     </a-tooltip>
   </span>
 </template>

@@ -2,7 +2,13 @@ import { DepartmentService as DepService } from './department.service#/departmen
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap, switchMap } from 'rxjs/operators'
-import { StaffApi, Params, UpdateDepartmentInput, DelDepartmentInput, AddDepartmentInput } from '@/api/v1/staff'
+import {
+  StaffApi,
+  Params,
+  UpdateDepartmentInput,
+  DelDepartmentInput,
+  AddDepartmentInput
+} from '@/api/v1/staff'
 import { ShopStaffApi } from '@/api/v1/staff/staff'
 import { AuthService } from '@/services/auth.service'
 import { forkJoin } from 'rxjs'
@@ -23,50 +29,74 @@ export class DepartmentService implements RouteGuard {
   departmentList$ = new State([])
   departmentSearchList$ = new State([])
   loading$ = new State({})
-  constructor(private staffApi: StaffApi, private msg: MessageService, private shopStaffApi: ShopStaffApi, private depService: DepService, private authService: AuthService) {}
+  constructor(
+    private staffApi: StaffApi,
+    private msg: MessageService,
+    private shopStaffApi: ShopStaffApi,
+    private depService: DepService,
+    private authService: AuthService
+  ) {}
   @Effect()
   getStaffList(data: Params) {
-    return this.staffApi.getStaffBrandList(data).pipe(tap(res => {
-      this.authService.filter(res)
-      this.staffList$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-    }))
+    return this.staffApi.getStaffBrandList(data).pipe(
+      tap(res => {
+        this.authService.filter(res)
+        this.staffList$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
   }
   getDepartmentList() {
-    return this.depService.getDepartmentList().pipe(tap(res => {
-      this.departmentList$.commit(() => res.department)
-    }))
+    return this.depService.getDepartmentList().pipe(
+      tap(res => {
+        this.departmentList$.commit(() => res.department)
+      })
+    )
   }
   addDepartment(params: AddDepartmentInput) {
-    return this.staffApi.addDepartment(params).pipe(tap(res => {
-      this.msg.success({
-        content: '添加成功！！！'
+    return this.staffApi.addDepartment(params).pipe(
+      tap(res => {
+        this.msg.success({
+          content: '添加成功！！！'
+        })
       })
-    }))
+    )
   }
   updateDepartment(params: UpdateDepartmentInput) {
-    return this.staffApi.updateDepartment(params).pipe(tap(res => {
-      this.msg.success({
-        content: '修改成功！！！'
+    return this.staffApi.updateDepartment(params).pipe(
+      tap(res => {
+        this.msg.success({
+          content: '修改成功！！！'
+        })
       })
-    }))
+    )
   }
   delDepartment(params: DelDepartmentInput) {
-    return this.staffApi.delDepartment(params).pipe(tap(res => {
-      this.msg.success({
-        content: '部门已删除'
+    return this.staffApi.delDepartment(params).pipe(
+      tap(res => {
+        this.msg.success({
+          content: '部门已删除'
+        })
       })
-    }))
+    )
   }
   searchDepartment(keyword: string) {
-    return this.shopStaffApi.searchDepartment({
-      keyword: keyword
-    }).pipe(tap(res => {
-      this.departmentSearchList$.commit(() => res.department)
-    }))
+    return this.shopStaffApi
+      .searchDepartment({
+        keyword: keyword
+      })
+      .pipe(
+        tap(res => {
+          this.departmentSearchList$.commit(() => res.department)
+        })
+      )
   }
   init(query: any) {
-    return forkJoin(this.searchDepartment(''), this.getDepartmentList(), this.getStaffList(query))
+    return forkJoin(
+      this.searchDepartment(''),
+      this.getDepartmentList(),
+      this.getStaffList(query)
+    )
   }
   // beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
   //   return this.getDepartmentList()

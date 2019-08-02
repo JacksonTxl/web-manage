@@ -2,7 +2,9 @@
   <div class="stat-brand-simple-bar">
     <div class="stat-brand-simple-bar__inner" :style="barStyle">
       <div class="stat-brand-simple-bar__tooltip" :style="tooltipStyle">
-        <span class="stat-brand-simple-bar__tooltip-value">{{data.name}}{{showPercent}}</span>
+        <span class="stat-brand-simple-bar__tooltip-value">
+          {{ data.name }}{{ showPercent }}
+        </span>
       </div>
     </div>
   </div>

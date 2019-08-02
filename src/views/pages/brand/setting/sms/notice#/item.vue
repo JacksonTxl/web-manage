@@ -1,27 +1,32 @@
 <template>
   <div :class="bComponent()">
-    <div :class="bComponent('title')">{{info.title}}</div>
+    <div :class="bComponent('title')">{{ info.title }}</div>
     <div :class="bComponent('content')">
-      <div :class="bComponent('text')">{{info.notify_time.name}}</div>
-      <div :class="bComponent('text')">{{info.notify_type.name}}</div>
+      <div :class="bComponent('text')">{{ info.notify_time.name }}</div>
+      <div :class="bComponent('text')">{{ info.notify_type.name }}</div>
       <div :class="bComponent('text')">
         <st-switch @change="save" v-model="params.notify_mode.sms"></st-switch>
       </div>
-      <div :class="bComponent('text')" v-if="info.notify_type.value===1">
-        <st-switch @change="save" v-model="params.notify_mode.mini_programs"></st-switch>
+      <div :class="bComponent('text')" v-if="info.notify_type.value === 1">
+        <st-switch
+          @change="save"
+          v-model="params.notify_mode.mini_programs"
+        ></st-switch>
         <span
           class="color-primary mg-l12"
           v-show="params.notify_mode.mini_programs"
           type="primary"
           v-modal-link="{
-                name: 'brand-setting-sms-notice',
-                props:{
-                  img:info.img_url
-                }
-              }"
-        >预览</span>
+            name: 'brand-setting-sms-notice',
+            props: {
+              img: info.img_url
+            }
+          }"
+        >
+          预览
+        </span>
       </div>
-      <div :class="bComponent('text')" v-if="info.notify_type.value===2">
+      <div :class="bComponent('text')" v-if="info.notify_type.value === 2">
         <st-switch @change="save" v-model="params.notify_mode.app"></st-switch>
       </div>
       <div v-show="params.notify_mode.sms">
@@ -29,19 +34,31 @@
         <div :class="bComponent('column')" v-show="!isShowEdit">
           <div class="width75" :class="bComponent('text')" v-if="info.preview">
             <span class="color-title">预览内容</span>
-            <span class="mg-l24">{{info.preview}}</span>
+            <span class="mg-l24">{{ info.preview }}</span>
           </div>
-          <div class="width75" :class="bComponent('text')" v-if="info.receiver_description">
+          <div
+            class="width75"
+            :class="bComponent('text')"
+            v-if="info.receiver_description"
+          >
             <span class="color-title">接受人员</span>
-            <span class="mg-l24">{{info.receiver_description}}</span>
+            <span class="mg-l24">{{ info.receiver_description }}</span>
           </div>
-          <div class="width75" :class="bComponent('text')" v-if="info.course_type_description">
+          <div
+            class="width75"
+            :class="bComponent('text')"
+            v-if="info.course_type_description"
+          >
             <span class="color-title">课程类型</span>
-            <span class="mg-l24">{{info.course_type_description}}</span>
+            <span class="mg-l24">{{ info.course_type_description }}</span>
           </div>
-          <div class="width75" :class="bComponent('text')" v-if="info.order_type_description">
+          <div
+            class="width75"
+            :class="bComponent('text')"
+            v-if="info.order_type_description"
+          >
             <span class="color-title">订单类型</span>
-            <span class="mg-l24">{{info.order_type_description}}</span>
+            <span class="mg-l24">{{ info.order_type_description }}</span>
           </div>
           <div :class="bComponent('text')">
             <span class="color-primary" @click="showEdit">编辑</span>
@@ -57,7 +74,7 @@
                 v-model="params.msg_preffix"
                 placeholder="请输入"
               ></a-input>
-              <span>{{info.content}}</span>
+              <span>{{ info.content }}</span>
               <a-input
                 :class="bComponent('column-input')"
                 v-model="params.msg_suffix"
@@ -66,17 +83,19 @@
             </div>
             <div class="mg-b16" v-if="info.preview">
               <span class="mg-r24 color-title">预览内容</span>
-              <span>{{info.preview}}</span>
+              <span>{{ info.preview }}</span>
             </div>
 
             <div v-if="info.course_type_description">
               <span class="color-title">课程类型</span>
               <a-radio-group v-model="params.course_type" class="mg-b16 mg-l24">
                 <a-radio
-                  v-for="(item,index) in courseType"
+                  v-for="(item, index) in courseType"
                   :key="index"
                   :value="item.value"
-                >{{item.label}}</a-radio>
+                >
+                  {{ item.label }}
+                </a-radio>
               </a-radio-group>
             </div>
 
@@ -87,7 +106,9 @@
                   v-for="(item, index) in receiver"
                   :key="index"
                   :value="item.value"
-                >{{item.label}}</a-checkbox>
+                >
+                  {{ item.label }}
+                </a-checkbox>
               </a-checkbox-group>
               <a-checkbox v-model="isShowPhone">自定义</a-checkbox>
               <a-input
@@ -101,37 +122,53 @@
 
             <div v-if="info.order_type_description">
               <span class="color-title">订单类型</span>
-              <a-checkbox-group v-model="params.order_type" class="mg-b16 mg-l24">
+              <a-checkbox-group
+                v-model="params.order_type"
+                class="mg-b16 mg-l24"
+              >
                 <a-checkbox
-                  v-for="(item,index) in orderType"
+                  v-for="(item, index) in orderType"
                   :key="index"
                   :value="item.value"
-                >{{item.label}}</a-checkbox>
+                >
+                  {{ item.label }}
+                </a-checkbox>
               </a-checkbox-group>
             </div>
             <div>
               <span class="color-title mg-r24">发送规则</span>
-              <span v-if="info.notify_time.value===0">{{info.notify_time.name}}</span>
-              <span v-if="info.notify_time.value>0&&info.notify_time.value<3600">
+              <span v-if="info.notify_time.value === 0">
+                {{ info.notify_time.name }}
+              </span>
+              <span
+                v-if="
+                  info.notify_time.value > 0 && info.notify_time.value < 3600
+                "
+              >
                 课程开始前
                 <a-select v-model="params.notify_time" style="width:100px">
                   <a-select-option
-                    v-for="(item,index) in notifyHour"
+                    v-for="(item, index) in notifyHour"
                     :key="index"
                     :value="item.value"
-                  >{{item.label}}</a-select-option>
-                </a-select>发送
+                  >
+                    {{ item.label }}
+                  </a-select-option>
+                </a-select>
+                发送
               </span>
               <a-radio-group
-                v-if="info.notify_time.value>3600"
+                v-if="info.notify_time.value > 3600"
                 v-model="params.notify_time"
                 class="mg-b16"
               >
                 <a-radio
-                  v-for="(item,index) in notifyRule"
+                  v-for="(item, index) in notifyRule"
                   :key="index"
                   :value="item.value"
-                >{{item.label}}</a-radio>
+                >
+                  {{ item.label }}
+                </a-radio>
               </a-radio-group>
             </div>
           </div>

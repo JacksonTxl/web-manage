@@ -3,7 +3,7 @@ import { Observable } from 'rxjs'
 
 @Injectable()
 export class MapService {
-  getLocation(url:string) {
+  getLocation(url: string) {
     let index = 0
     let o$ = new Observable(observer => {
       index++

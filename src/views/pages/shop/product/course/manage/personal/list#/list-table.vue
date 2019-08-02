@@ -7,35 +7,50 @@
     :dataSource="list"
     :scroll="{ x: 1440 }"
     :loading="loading.getList"
-    @change="onTableChange">
-
+    @change="onTableChange"
+  >
     <div slot="shops" slot-scope="shops, record">
       <a
         v-if="record.shop_setting === 2"
-      v-modal-link="{ name: 'course-support-course-shops', props: { courseId: record.course_id} }"
-      >共{{shops}}家门店</a>
-      <span
-        v-else
-      >{{record.shop_setting | enumFilter('personal_course.shop_setting')}}</span>
+        v-modal-link="{
+          name: 'course-support-course-shops',
+          props: { courseId: record.course_id }
+        }"
+      >
+        共{{ shops }}家门店
+      </a>
+      <span v-else>
+        {{ record.shop_setting | enumFilter('personal_course.shop_setting') }}
+      </span>
     </div>
 
     <div slot="coaches" slot-scope="coaches, record">
       <a
-      v-modal-link="{ name: 'course-support-course-coaches', props: { course: record } }"
-      >{{coaches}}</a>
+        v-modal-link="{
+          name: 'course-support-course-coaches',
+          props: { course: record }
+        }"
+      >
+        {{ coaches }}
+      </a>
     </div>
 
     <div slot="course_name" slot-scope="course_name, record">
       <router-link
         v-if="record.auth['brand_shop:product:personal_course|get']"
         class="mg-r8"
-        :to="{ name: 'shop-product-course-manage-personal-info', query: { id: record.course_id } }"
-      >{{course_name}}</router-link>
+        :to="{
+          name: 'shop-product-course-manage-personal-info',
+          query: { id: record.course_id }
+        }"
+      >
+        {{ course_name }}
+      </router-link>
       <span v-else></span>
-    </div >
+    </div>
 
     <div slot="price_setting" slot-scope="price_setting">
-      {{price_setting | enumFilter('personal_course.price_setting')}}
+      {{ price_setting | enumFilter('personal_course.price_setting') }}
     </div>
 
     <div slot="sell_price" slot-scope="sell_price, record">
@@ -43,26 +58,54 @@
         href="javascript:;"
         v-if="sell_price.is_click === 1"
         @click="onCLickCoursePrice(record)"
-      >{{sell_price.course_price}}</a>
-      <span
-        v-else>{{sell_price.course_price}}</span>
+      >
+        {{ sell_price.course_price }}
+      </a>
+      <span v-else>{{ sell_price.course_price }}</span>
     </div>
     <div slot="is_available" slot-scope="is_available">
-        <span><a-badge :status="is_available === 1?'success':'error'" />{{is_available | enumFilter('personal_course.is_available')}}</span>
+      <span>
+        <a-badge :status="is_available === 1 ? 'success' : 'error'" />
+        {{ is_available | enumFilter('personal_course.is_available') }}
+      </span>
     </div>
     <div slot="action" slot-scope="text, record">
       <st-table-actions>
-        <router-link class="mg-r8" v-if="record.auth['brand_shop:product:personal_course|get']" :to="{ name: 'shop-product-course-manage-personal-info', query: { id: record.course_id } }">详情</router-link>
-        <router-link v-if="record.auth['brand_shop:product:personal_course|edit']" :to="{ name: 'shop-product-course-manage-personal-edit', query: { id: record.course_id } }">编辑</router-link>
-        <a href="javascript:;" v-if="record.auth['brand_shop:product:personal_course|del']">
-          <a-popconfirm  :title="'一旦删除则无法恢复，确认删除'+record.course_name+'？'" @confirm="onConfirmDeleteCourse(record)" okText="确定" cancelText="取消">
-              删除
+        <router-link
+          class="mg-r8"
+          v-if="record.auth['brand_shop:product:personal_course|get']"
+          :to="{
+            name: 'shop-product-course-manage-personal-info',
+            query: { id: record.course_id }
+          }"
+        >
+          详情
+        </router-link>
+        <router-link
+          v-if="record.auth['brand_shop:product:personal_course|edit']"
+          :to="{
+            name: 'shop-product-course-manage-personal-edit',
+            query: { id: record.course_id }
+          }"
+        >
+          编辑
+        </router-link>
+        <a
+          href="javascript:;"
+          v-if="record.auth['brand_shop:product:personal_course|del']"
+        >
+          <a-popconfirm
+            :title="'一旦删除则无法恢复，确认删除' + record.course_name + '？'"
+            @confirm="onConfirmDeleteCourse(record)"
+            okText="确定"
+            cancelText="取消"
+          >
+            删除
           </a-popconfirm>
         </a>
       </st-table-actions>
     </div>
   </st-table>
-
 </template>
 
 <script>
@@ -99,9 +142,15 @@ export default {
     },
     onCLickCoursePrice(record) {
       if (record.sell_price.course_price === '设置定价') {
-        this.$modalRouter.push({ name: 'course-price-setting-shop-update', props: { id: record.course_id } })
+        this.$modalRouter.push({
+          name: 'course-price-setting-shop-update',
+          props: { id: record.course_id }
+        })
       } else {
-        this.$modalRouter.push({ name: 'course-price-setting-shop', props: { course: record } })
+        this.$modalRouter.push({
+          name: 'course-price-setting-shop',
+          props: { course: record }
+        })
       }
     },
     onConfirmSetAvailable(record) {

@@ -1,29 +1,39 @@
-
 <template>
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">选择门店</span>
-    <template v-for="(tag,index) in tags">
+    <template v-for="(tag, index) in tags">
       <a-tooltip :key="tag" :title="tag">
-        <a-tag :key="tag" :closable="true" :afterClose="() => handleClose(tag,index)">{{tag}}</a-tag>
+        <a-tag
+          :key="tag"
+          :closable="true"
+          :afterClose="() => handleClose(tag, index)"
+        >
+          {{ tag }}
+        </a-tag>
       </a-tooltip>
     </template>
     <a-tag style="background: #fff; borderStyle: dashed;">
       <a-dropdown overlayClassName="affiliated-store-dropdown">
         <a class="ant-dropdown-link">
           <a-tooltip>
-            <template slot='title' v-if="shopList.length <= 0">
+            <template slot="title" v-if="shopList.length <= 0">
               没有可选的标签
             </template>
-            <a-icon type="plus"/>添加
+            <a-icon type="plus" />
+            添加
           </a-tooltip>
         </a>
         <a-menu slot="overlay">
-          <a-menu-item v-for="(item,index) in shopList" :key="index">
+          <a-menu-item v-for="(item, index) in shopList" :key="index">
             <a
               href="javascript:;"
-              @click="dropdownFunc(item.shop_name,{[item.shop_id]:item.shop_name})"
-            >{{item.shop_name}}</a>
+              @click="
+                dropdownFunc(item.shop_name, { [item.shop_id]: item.shop_name })
+              "
+            >
+              {{ item.shop_name }}
+            </a>
           </a-menu-item>
         </a-menu>
       </a-dropdown>
@@ -69,7 +79,9 @@ export default {
   },
   methods: {
     dropdownFunc(item) {
-      const arr = this.tags.filter(i => { return i.value === item.value })
+      const arr = this.tags.filter(i => {
+        return i.value === item.value
+      })
       if (arr.length > 0) {
         return
       }

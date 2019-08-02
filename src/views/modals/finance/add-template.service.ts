@@ -3,8 +3,7 @@ import { FinanceApi, AddTemplateParams } from '@/api/v1/finance'
 
 @Injectable()
 export class AddTemplateService {
-  constructor(private MemberApi: FinanceApi) {
-  }
+  constructor(private MemberApi: FinanceApi) {}
   addTemplate(params: AddTemplateParams) {
     return this.MemberApi.addTemplate(params)
   }

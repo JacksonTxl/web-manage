@@ -1,13 +1,7 @@
 <template>
-  <a-checkbox-group
-    v-model="checked"
-    @change="onChange"
-  >
-    <a-checkbox
-      v-for="(item, index) in value"
-      :key="index"
-      :value="item.id">
-      {{item.rights_name}}
+  <a-checkbox-group v-model="checked" @change="onChange">
+    <a-checkbox v-for="(item, index) in value" :key="index" :value="item.id">
+      {{ item.rights_name }}
     </a-checkbox>
   </a-checkbox-group>
 </template>

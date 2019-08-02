@@ -42,23 +42,31 @@
         <a-col :span="6">
           <!-- start -->
           <div style="width:172px;" class="mg-t16">
-            <st-button block pill type="primary" icon="wechat" size="large">添加门店</st-button>
+            <st-button block pill type="primary" icon="wechat" size="large">
+              添加门店
+            </st-button>
           </div>
           <!-- end -->
         </a-col>
         <a-col :span="8">
           <!-- start -->
           <div style="width:336px;" class="mg-t16">
-            <st-button disabled block pill type="primary" size="large">下一步</st-button>
+            <st-button disabled block pill type="primary" size="large">
+              下一步
+            </st-button>
           </div>
           <!-- end -->
         </a-col>
         <a-col :span="4">
-          <st-button style="width:84px" size="medium" pill ghost type="primary">绑定</st-button>
+          <st-button style="width:84px" size="medium" pill ghost type="primary">
+            绑定
+          </st-button>
         </a-col>
       </a-row>
       <div>
-        <st-button block type="dashed" icon="add">表单添加 type=dashed</st-button>
+        <st-button block type="dashed" icon="add">
+          表单添加 type=dashed
+        </st-button>
       </div>
     </div>
   </section>

@@ -1,6 +1,10 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { FrontApi, GetEntranceListInput, SetEntranceLeaveBatchInput } from '@/api/v1/front'
+import {
+  FrontApi,
+  GetEntranceListInput,
+  SetEntranceLeaveBatchInput
+} from '@/api/v1/front'
 import { tap, map } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
 import { UserService } from '@/services/user.service'
@@ -21,23 +25,26 @@ export class EntranceService implements RouteGuard {
   constructor(
     private userService: UserService,
     private authService: AuthService,
-    private frontApi: FrontApi) {}
+    private frontApi: FrontApi
+  ) {}
   @Effect()
-  getList(query:GetEntranceListInput) {
-    return this.frontApi.getEntranceList(query).pipe(tap((res:any) => {
-      this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-    }))
+  getList(query: GetEntranceListInput) {
+    return this.frontApi.getEntranceList(query).pipe(
+      tap((res: any) => {
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
   }
   // 单个离场
-  setEntranceLeave(id:string) {
+  setEntranceLeave(id: string) {
     return this.frontApi.setEntranceLeave(id)
   }
   // 批量离场
-  setEntranceLeaveBatch(params:SetEntranceLeaveBatchInput) {
+  setEntranceLeaveBatch(params: SetEntranceLeaveBatchInput) {
     return this.frontApi.setEntranceLeaveBatch(params)
   }
-  beforeEach(to:ServiceRoute) {
+  beforeEach(to: ServiceRoute) {
     return this.getList(to.meta.query)
   }
 }

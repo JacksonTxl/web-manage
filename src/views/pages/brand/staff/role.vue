@@ -5,14 +5,35 @@
         <!-- <st-input-search placeholder="请输入部门/员工名称" round="round"></st-input-search> -->
       </header>
       <main :class="roleList('tree')">
-        <st-t4>角色 ({{stat.used}}/{{stat.total}})</st-t4>
+        <st-t4>角色 ({{ stat.used }}/{{ stat.total }})</st-t4>
         <ul>
-          <li class="item" @click="getTreeNodeOnclick(role, $event)" v-for="(role, index) in roles" :id="role.id" :class="{'active' : index === 0}" :key="role.id">
-            <div><span>{{role.name}}</span><span>（{{role.cnt}}）</span></div>
+          <li
+            class="item"
+            @click="getTreeNodeOnclick(role, $event)"
+            v-for="(role, index) in roles"
+            :id="role.id"
+            :class="{ active: index === 0 }"
+            :key="role.id"
+          >
+            <div>
+              <span>{{ role.name }}</span>
+              <span>（{{ role.cnt }}）</span>
+            </div>
             <div v-if="role.is_enabled">
-              <st-more-dropdown class="role-opreation" :class="{'active' : index === 0}" style="margin-left: 12px;">
-                <a-menu-item v-if="auth.edit" @click="onClickEditRole(role.id)">编辑</a-menu-item>
-                <a-menu-item v-if="auth.del && !role.cnt" @click="onClickDelRole(role.id)">删除</a-menu-item>
+              <st-more-dropdown
+                class="role-opreation"
+                :class="{ active: index === 0 }"
+                style="margin-left: 12px;"
+              >
+                <a-menu-item v-if="auth.edit" @click="onClickEditRole(role.id)">
+                  编辑
+                </a-menu-item>
+                <a-menu-item
+                  v-if="auth.del && !role.cnt"
+                  @click="onClickDelRole(role.id)"
+                >
+                  删除
+                </a-menu-item>
               </st-more-dropdown>
             </div>
           </li>
@@ -64,7 +85,10 @@ export default {
   },
   methods: {
     onClickEditRole(id) {
-      this.$router.push({ name: 'brand-staff-role-edit', query: { roleId: id } })
+      this.$router.push({
+        name: 'brand-staff-role-edit',
+        query: { roleId: id }
+      })
     },
     onCLickAddRole() {
       this.$router.push({ name: 'brand-staff-role-add' })
@@ -75,21 +99,31 @@ export default {
     getTreeNodeOnclick(role, e) {
       this.$nextTick().then(() => {
         const doms = document.querySelectorAll('.page-role-list__tree .item')
-        const roleOpreation = document.querySelectorAll('.page-role-list__tree .item .role-opreation')
+        const roleOpreation = document.querySelectorAll(
+          '.page-role-list__tree .item .role-opreation'
+        )
         roleOpreation.forEach(dom => {
           dom.setAttribute('class', 'role-opreation')
         })
         doms.forEach(dom => {
           dom.setAttribute('class', 'item pd-y8  pd-x16')
         })
-        e.currentTarget.querySelector('.role-opreation').setAttribute('class', 'role-opreation active')
+        e.currentTarget
+          .querySelector('.role-opreation')
+          .setAttribute('class', 'role-opreation active')
         e.currentTarget.setAttribute('class', 'item active pd-y8  pd-x16')
       })
-      this.$router.push({ name: 'brand-staff-role-info', query: { id: role.id } })
+      this.$router.push({
+        name: 'brand-staff-role-info',
+        query: { id: role.id }
+      })
     }
   },
   mounted() {
-    this.$router.push({ name: 'brand-staff-role-info', query: { id: this.roles[0].id } })
+    this.$router.push({
+      name: 'brand-staff-role-info',
+      query: { id: this.roles[0].id }
+    })
   }
 }
 </script>

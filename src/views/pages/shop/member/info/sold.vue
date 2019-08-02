@@ -11,23 +11,76 @@
           @change="onTableChange"
           :page="soldPage"
         >
-          <div slot="reserve_type" slot-scope="text,record">
-            {{record.reserve_type.name}}
+          <div slot="reserve_type" slot-scope="text, record">
+            {{ record.reserve_type.name }}
           </div>
-          <div slot="is_checkin" slot-scope="text,record">
+          <div slot="is_checkin" slot-scope="text, record">
             <div>
-              <span :class="record|isCheckin" v-if="record.mina_checkin_status === 0"></span>
-              {{text}}
+              <span
+                :class="record | isCheckin"
+                v-if="record.mina_checkin_status === 0"
+              ></span>
+              {{ text }}
             </div>
           </div>
-          <div slot="action" slot-scope="text,record">
+          <div slot="action" slot-scope="text, record">
             <st-table-actions>
-              <a v-if="record.auth['shop:reserve:personal_course_reserve|del'] && record.reserve_type.id === 1" @click="reserveStatus(record)">取消预约</a>
-              <a v-if="record.auth['shop:reserve:personal_course_reserve|checkin'] && record.reserve_type.id === 1" @click="isCheckin(record)">签到</a>
-              <a v-if="record.auth['shop:reserve:personal_team_course_reserve|del'] && record.reserve_type.id === 2" @click="reserveStatus(record)">取消预约</a>
-              <a v-if="record.auth['shop:reserve:personal_team_course_reserve|checkin'] && record.reserve_type.id === 2" @click="isCheckin(record)">签到</a>
-              <a v-if="record.auth['shop:reserve:team_course_reserve|del'] && record.reserve_type.id === 3" @click="reserveStatus(record)">取消预约</a>
-              <a v-if="record.auth['shop:reserve:team_course_reserve|checkin'] && record.reserve_type.id === 3" @click="isCheckin(record)">签到</a>
+              <a
+                v-if="
+                  record.auth['shop:reserve:personal_course_reserve|del'] &&
+                    record.reserve_type.id === 1
+                "
+                @click="reserveStatus(record)"
+              >
+                取消预约
+              </a>
+              <a
+                v-if="
+                  record.auth['shop:reserve:personal_course_reserve|checkin'] &&
+                    record.reserve_type.id === 1
+                "
+                @click="isCheckin(record)"
+              >
+                签到
+              </a>
+              <a
+                v-if="
+                  record.auth[
+                    'shop:reserve:personal_team_course_reserve|del'
+                  ] && record.reserve_type.id === 2
+                "
+                @click="reserveStatus(record)"
+              >
+                取消预约
+              </a>
+              <a
+                v-if="
+                  record.auth[
+                    'shop:reserve:personal_team_course_reserve|checkin'
+                  ] && record.reserve_type.id === 2
+                "
+                @click="isCheckin(record)"
+              >
+                签到
+              </a>
+              <a
+                v-if="
+                  record.auth['shop:reserve:team_course_reserve|del'] &&
+                    record.reserve_type.id === 3
+                "
+                @click="reserveStatus(record)"
+              >
+                取消预约
+              </a>
+              <a
+                v-if="
+                  record.auth['shop:reserve:team_course_reserve|checkin'] &&
+                    record.reserve_type.id === 3
+                "
+                @click="isCheckin(record)"
+              >
+                签到
+              </a>
             </st-table-actions>
           </div>
         </st-table>
@@ -166,7 +219,6 @@ export default {
       },
       deep: true
     }
-
   }
 }
 </script>

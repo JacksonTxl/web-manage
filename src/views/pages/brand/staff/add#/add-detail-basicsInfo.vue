@@ -12,22 +12,46 @@
           ></st-image-upload>
         </st-form-item>
         <st-form-item label="姓名" required>
-          <a-input placeholder="支持中英文、数字、不超过15个字" max="15" v-decorator="rules.staff_name"/>
+          <a-input
+            placeholder="支持中英文、数字、不超过15个字"
+            max="15"
+            v-decorator="rules.staff_name"
+          />
         </st-form-item>
         <st-form-item label="手机号" required>
           <a-input-group compact style="top: 0;">
             <a-select style="width: 20%;" v-model="country_code_id">
               <template v-for="item in codeList">
-                <a-select-option :key="item.code_id" :value="item.code_id">+{{ item.phone_code }}</a-select-option>
+                <a-select-option :key="item.code_id" :value="item.code_id">
+                  +{{ item.phone_code }}
+                </a-select-option>
               </template>
             </a-select>
-            <a-input style="width: 80%" v-decorator="rules.phone" placeholder="请输入手机号"/>
+            <a-input
+              style="width: 80%"
+              v-decorator="rules.phone"
+              placeholder="请输入手机号"
+            />
           </a-input-group>
         </st-form-item>
         <st-form-item label="性别" required>
           <a-radio-group name="radioGroup" v-decorator="rules.sex">
-            <a-radio :value="2">男 <st-icon class="sex__male" style="color: #636aec" type="male"></st-icon></a-radio>
-            <a-radio :value="1">女 <st-icon calss="sex__female" style="color: #fa756c" type="female"></st-icon></a-radio>
+            <a-radio :value="2">
+              男
+              <st-icon
+                class="sex__male"
+                style="color: #636aec"
+                type="male"
+              ></st-icon>
+            </a-radio>
+            <a-radio :value="1">
+              女
+              <st-icon
+                calss="sex__female"
+                style="color: #fa756c"
+                type="female"
+              ></st-icon>
+            </a-radio>
           </a-radio-group>
         </st-form-item>
       </a-col>
@@ -42,21 +66,31 @@
         </st-form-item>
         <st-form-item required>
           <template slot="label">
-            昵称<st-help-tooltip id="TBEE001"/>
+            昵称
+            <st-help-tooltip id="TBEE001" />
           </template>
-          <a-input placeholder="支持中英文、数字,不超过10个字" v-decorator="rules.nickname"/>
+          <a-input
+            placeholder="支持中英文、数字,不超过10个字"
+            v-decorator="rules.nickname"
+          />
         </st-form-item>
         <st-form-item label="邮箱">
-          <a-input placeholder="请输入邮箱" v-decorator="rules.mail"/>
+          <a-input placeholder="请输入邮箱" v-decorator="rules.mail" />
         </st-form-item>
         <st-form-item label="证件">
           <a-input-group compact style="top: 0;">
             <a-select style="width: 20%;" v-model="id_type">
-              <template v-for="(item,key) in enums.id_type.value">
-                <a-select-option :key="item" :value="+key">{{ item }}</a-select-option>
+              <template v-for="(item, key) in enums.id_type.value">
+                <a-select-option :key="item" :value="+key">
+                  {{ item }}
+                </a-select-option>
               </template>
             </a-select>
-            <a-input style="width: 80%" placeholder="请输入身份证号码" v-decorator="rules.idnumber"/>
+            <a-input
+              style="width: 80%"
+              placeholder="请输入身份证号码"
+              v-decorator="rules.idnumber"
+            />
           </a-input-group>
         </st-form-item>
       </a-col>
@@ -72,14 +106,17 @@
       <a-col :offset="1" :lg="23">
         <st-form-item required>
           <template slot="label">
-              员工职能<st-help-tooltip id="TBCE002" />
+            员工职能
+            <st-help-tooltip id="TBCE002" />
           </template>
           <a-checkbox-group v-decorator="rules.identity" @change="getIsCoach">
             <a-checkbox
               v-for="(item, key) in enums.identity.value"
               :key="key"
               :value="+key"
-            >{{item}}</a-checkbox>
+            >
+              {{ item }}
+            </a-checkbox>
           </a-checkbox-group>
         </st-form-item>
       </a-col>
@@ -90,53 +127,62 @@
             style="width: 100%"
             useType="form"
             v-decorator="rules.department_id"
-            @change="onChange">
-          </department-select>
+            @change="onChange"
+          ></department-select>
         </st-form-item>
-        <st-form-item label="工作性质" >
+        <st-form-item label="工作性质">
           <a-select placeholder="请选择" v-decorator="rules.nature_work">
-            <template v-for="(item,key) in enums.nature_work.value">
-              <a-select-option
-                :key="key"
-                :value="+key">{{ item }}</a-select-option>
+            <template v-for="(item, key) in enums.nature_work.value">
+              <a-select-option :key="key" :value="+key">
+                {{ item }}
+              </a-select-option>
             </template>
           </a-select>
         </st-form-item>
         <st-form-item label="系统角色" required>
-          <a-select mode="multiple" placeholder="请选择" v-decorator="rules.role_id">
+          <a-select
+            mode="multiple"
+            placeholder="请选择"
+            v-decorator="rules.role_id"
+          >
             <template v-for="item in roleList">
-              <a-select-option :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+              <a-select-option :key="item.id" :value="item.id">
+                {{ item.name }}
+              </a-select-option>
             </template>
           </a-select>
         </st-form-item>
         <st-form-item v-if="isShowLevel">
           <template slot="label">
-            教练等级<st-help-tooltip id="TBCE003" />
+            教练等级
+            <st-help-tooltip id="TBCE003" />
           </template>
           <coach-level-select
             placeholder="请选择教练等级"
             style="width: 100%"
             useType="form"
             v-decorator="rules.coach_levelRule"
-            @change="onChange">
-          </coach-level-select>
+            @change="onChange"
+          ></coach-level-select>
         </st-form-item>
       </a-col>
       <a-col :offset="1" :lg="10" :xs="22">
         <st-form-item label="工号">
-          <a-input placeholder="请输入员工工号" v-decorator="rules.staff_num"></a-input>
+          <a-input
+            placeholder="请输入员工工号"
+            v-decorator="rules.staff_num"
+          ></a-input>
         </st-form-item>
         <st-form-item label="入职时间">
-          <a-date-picker
-            style="width:100%"
-            v-decorator="rules.entry_date" />
+          <a-date-picker style="width:100%" v-decorator="rules.entry_date" />
         </st-form-item>
         <st-form-item label="所属门店" required>
           <shop-select
             mode="multiple"
             useType="form"
             placeholder="选择"
-            v-decorator="rules.shop_id"/>
+            v-decorator="rules.shop_id"
+          />
         </st-form-item>
       </a-col>
     </a-row>
@@ -150,7 +196,12 @@
     <a-row :gutter="8">
       <a-col :offset="1" :lg="10">
         <st-form-item label="系统权限">
-          <a-checkbox @change="permissionChange" v-decorator="rules.is_permission">开通系统使用权限</a-checkbox>
+          <a-checkbox
+            @change="permissionChange"
+            v-decorator="rules.is_permission"
+          >
+            开通系统使用权限
+          </a-checkbox>
         </st-form-item>
         <st-form-item label="登录账号" v-if="isChoosePermission" required>
           <a-input
@@ -176,7 +227,9 @@
     <a-row :gutter="8">
       <a-col :offset="1">
         <st-form-item labelFix>
-          <st-button @click="goNext" type="primary">保存，继续填写细信息</st-button>
+          <st-button @click="goNext" type="primary">
+            保存，继续填写细信息
+          </st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -275,7 +328,8 @@ export default {
           query: {
             id: res.staff_id,
             currentIndex: 1,
-            isShowCoach: data.identity.includes(3) || data.identity.includes(4) ? 1 : 0
+            isShowCoach:
+              data.identity.includes(3) || data.identity.includes(4) ? 1 : 0
           }
         })
       })

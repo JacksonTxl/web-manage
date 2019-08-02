@@ -27,8 +27,7 @@ import moment from 'moment'
 export default {
   name: 'StRangePicker',
   serviceInject() {
-    return {
-    }
+    return {}
   },
   props: {
     disabledDays: {
@@ -46,9 +45,7 @@ export default {
             disabled: false,
             value: null,
             format: 'YYYY-MM-DD',
-            change: ($event) => {
-
-            }
+            change: $event => {}
           },
           endTime: {
             showTime: false,
@@ -56,14 +53,11 @@ export default {
             disabled: false,
             value: null,
             format: 'YYYY-MM-DD',
-            change: ($event) => {
-
-            }
+            change: $event => {}
           }
         }
         return obj
       }
-
     }
   },
   data() {
@@ -73,20 +67,18 @@ export default {
       endOpen: false
     }
   },
-  mounted() {
-  },
-  computed: {
-
-  },
-  watch: {
-
-  },
+  mounted() {},
+  computed: {},
+  watch: {},
   methods: {
     moment,
     disabledStartDate(startValue) {
       const endValue = this.value.endTime.value
       if (this.value.startTime.disabledBegin) {
-        return startValue.valueOf() < moment(this.value.startTime.disabledBegin).valueOf()
+        return (
+          startValue.valueOf() <
+          moment(this.value.startTime.disabledBegin).valueOf()
+        )
       }
       if (!startValue || !endValue) {
         return false
@@ -100,7 +92,12 @@ export default {
         return false
       }
       if (+this.disabledDays > 0) {
-        return moment(startValue).add(+this.disabledDays, 'days').valueOf() < endValue.valueOf() || moment(startValue).valueOf() > endValue.valueOf()
+        return (
+          moment(startValue)
+            .add(+this.disabledDays, 'days')
+            .valueOf() < endValue.valueOf() ||
+          moment(startValue).valueOf() > endValue.valueOf()
+        )
       }
       return moment(startValue).valueOf() < endValue.valueOf()
     },
@@ -112,7 +109,6 @@ export default {
     handleEndOpenChange(open) {
       this.endOpen = open
     }
-
   }
 }
 </script>

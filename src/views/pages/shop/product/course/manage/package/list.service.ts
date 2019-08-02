@@ -1,6 +1,10 @@
 import { Injectable, RouteGuard, ServiceRoute } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
-import { PackageApi, GetPackageListInput, OnsalePackageInput } from '@/api/v1/course/package'
+import {
+  PackageApi,
+  GetPackageListInput,
+  OnsalePackageInput
+} from '@/api/v1/course/package'
 import { tap } from 'rxjs/operators'
 import { AuthService } from '@/services/auth.service'
 
@@ -18,28 +22,30 @@ export class ListService implements RouteGuard {
   ) {}
   @Effect()
   getList(params: GetPackageListInput) {
-    return this.packageApi.getList(params).pipe(tap((res:any) => {
-      res = this.authService.filter(res)
-      this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-    }))
+    return this.packageApi.getList(params).pipe(
+      tap((res: any) => {
+        res = this.authService.filter(res)
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
   }
   @Effect()
-  offsalePackage(id:string) {
+  offsalePackage(id: string) {
     return this.packageApi.offsaleCoursePackage(id)
   }
   @Effect()
-  deletePackage(id:string) {
+  deletePackage(id: string) {
     return this.packageApi.deleteCoursePackage(id)
   }
   @Effect()
-  onsalePackage(params:OnsalePackageInput) {
+  onsalePackage(params: OnsalePackageInput) {
     return this.packageApi.onsaleCoursePackage(params)
   }
   init(params: GetPackageListInput) {
     return this.getList(params)
   }
-  beforeEach(to:ServiceRoute, from:ServiceRoute) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.init(to.meta.query)
   }
 }

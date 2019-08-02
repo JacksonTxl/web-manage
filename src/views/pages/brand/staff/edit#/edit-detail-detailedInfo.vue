@@ -2,8 +2,11 @@
   <st-form :form="form" class="page-edit-container">
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="毕业院校" >
-          <a-input placeholder="支持中英文、数字,不超过100个字" v-decorator="rules.graduated_school"/>
+        <st-form-item label="毕业院校">
+          <a-input
+            placeholder="支持中英文、数字,不超过100个字"
+            v-decorator="rules.graduated_school"
+          />
         </st-form-item>
         <st-form-item label="学历">
           <a-select placeholder="请选择" v-decorator="rules.education">
@@ -11,11 +14,13 @@
               v-for="(item, key) in enums.education.value"
               :value="+key"
               :key="key"
-            >{{item}}</a-select-option>
+            >
+              {{ item }}
+            </a-select-option>
           </a-select>
         </st-form-item>
         <st-form-item label="生日">
-          <a-date-picker style="width:100%" v-decorator="rules.birthday"/>
+          <a-date-picker style="width:100%" v-decorator="rules.birthday" />
         </st-form-item>
         <st-form-item label="婚姻状况">
           <a-select placeholder="请选择" v-decorator="rules.marry_status">
@@ -23,19 +28,27 @@
               v-for="(item, key) in enums.marry_status.value"
               :value="+key"
               :key="key"
-            >{{item}}</a-select-option>
+            >
+              {{ item }}
+            </a-select-option>
           </a-select>
         </st-form-item>
       </a-col>
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item label="毕业时间">
-          <a-date-picker style="width:100%" v-decorator="rules.graduation_time"/>
+          <a-date-picker
+            style="width:100%"
+            v-decorator="rules.graduation_time"
+          />
         </st-form-item>
         <st-form-item label="专业">
-          <a-input placeholder="请输入专业名称" v-decorator="rules.profession"/>
+          <a-input
+            placeholder="请输入专业名称"
+            v-decorator="rules.profession"
+          />
         </st-form-item>
         <st-form-item label="籍贯">
-          <a-input placeholder="请输入籍贯" v-decorator="rules.native_place"/>
+          <a-input placeholder="请输入籍贯" v-decorator="rules.native_place" />
         </st-form-item>
         <st-form-item label="子女状态">
           <a-select placeholder="请选择" v-decorator="rules.children_status">
@@ -43,7 +56,9 @@
               v-for="(item, key) in enums.children_status.value"
               :value="+key"
               :key="key"
-            >{{item}}</a-select-option>
+            >
+              {{ item }}
+            </a-select-option>
           </a-select>
         </st-form-item>
       </a-col>
@@ -51,22 +66,24 @@
 
     <a-row :gutter="8" class="mg-t48">
       <a-col :lg="10" :xs="22" :offset="1">
-        <st-form-item label="家庭住址" >
+        <st-form-item label="家庭住址">
           <a-cascader
             :options="regions"
             :fieldNames="fieldNames"
             v-decorator="rules.provinces"
             changeOnSelect
-            placeholder="请填写家庭住址"/>
+            placeholder="请填写家庭住址"
+          />
         </st-form-item>
         <st-form-item label="详细住址">
-          <a-input placeholder="填写点什么吧" v-decorator="rules.address"/>
+          <a-input placeholder="填写点什么吧" v-decorator="rules.address" />
         </st-form-item>
         <st-form-item label="备注">
           <st-textarea
             :maxlength="300"
             v-decorator="rules.description"
-            placeholder="填写点什么吧"/>
+            placeholder="填写点什么吧"
+          />
         </st-form-item>
       </a-col>
       <a-col :lg="10" :xs="22" :offset="2"></a-col>
@@ -74,8 +91,12 @@
     <a-row :gutter="8">
       <a-col :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" ghost @click="onClickBack">上一步</st-button>
-          <st-button class="mg-l16" @click="saveAndGoNext" type="primary">{{!isPrivateCoach?'保存':'保存，继续填写'}}</st-button>
+          <st-button type="primary" ghost @click="onClickBack">
+            上一步
+          </st-button>
+          <st-button class="mg-l16" @click="saveAndGoNext" type="primary">
+            {{ !isPrivateCoach ? '保存' : '保存，继续填写' }}
+          </st-button>
         </st-form-item>
       </a-col>
     </a-row>
@@ -128,7 +149,9 @@ export default {
     setData(obj) {
       this.form.setFieldsValue({
         graduated_school: obj.graduated_school,
-        graduation_time: obj.graduation_time ? moment(obj.graduation_time) : undefined,
+        graduation_time: obj.graduation_time
+          ? moment(obj.graduation_time)
+          : undefined,
         education: obj.education || undefined,
         profession: obj.profession,
         birthday: obj.birthday ? moment(obj.birthday) : undefined,
@@ -167,8 +190,12 @@ export default {
           console.log('values')
           let obj = this.filterProvinces(values.provinces)
           let newData = Object.assign(values, obj)
-          newData.birthday && (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
-          newData.graduation_time && (newData.graduation_time = newData.graduation_time.format('YYYY-MM-DD'))
+          newData.birthday &&
+            (newData.birthday = newData.birthday.format('YYYY-MM-DD'))
+          newData.graduation_time &&
+            (newData.graduation_time = newData.graduation_time.format(
+              'YYYY-MM-DD'
+            ))
           delete newData.provinces
           this.$emit('detailInfoSave', {
             data: newData

@@ -3,17 +3,23 @@
     <div class="modal-schedule-edit">
       <div class="modal-schedule-edit__info">
         <div class="coach">
-          <span>上课教练:</span><span>{{staffName}}</span>
+          <span>上课教练:</span>
+          <span>{{ staffName }}</span>
         </div>
         <div class="time">
-          {{rangeTime}}
+          {{ rangeTime }}
         </div>
       </div>
       <div class="copy-button-box mg-t16">
-        <st-button class="copy-button" @click="onClickCopySchedule">复制上周</st-button>
+        <st-button class="copy-button" @click="onClickCopySchedule">
+          复制上周
+        </st-button>
       </div>
 
-      <div class="modal-schedule__time modal-add-schedule__time mg-t16" v-if="scheduleInfo.length">
+      <div
+        class="modal-schedule__time modal-add-schedule__time mg-t16"
+        v-if="scheduleInfo.length"
+      >
         <st-container>
           <a-row class="time-header">
             <a-col :lg="3">
@@ -28,23 +34,24 @@
                 <span class="mg-r8">24:00</span>
               </a-col>
             </a-col>
-
           </a-row>
           <div v-if="isInit">
-            <a-row class="time-item" v-for="info in scheduleInfo" :key="info.schedule_time">
+            <a-row
+              class="time-item"
+              v-for="info in scheduleInfo"
+              :key="info.schedule_time"
+            >
               <a-col :lg="2">
-                <span>{{info.schedule_time | filterDate}}</span>
+                <span>{{ info.schedule_time | filterDate }}</span>
               </a-col>
               <a-col :lg="22">
                 <st-time-picker v-model="info.timing"></st-time-picker>
               </a-col>
             </a-row>
           </div>
-
         </st-container>
       </div>
     </div>
-
   </st-modal>
 </template>
 
@@ -69,21 +76,29 @@ export default {
       show: false,
       staffName: '',
       isInit: false,
-      scheduleInfo: [{
-        timing: []
-      }, {
-        timing: []
-      }, {
-        timing: []
-      }, {
-        timing: []
-      }, {
-        timing: []
-      }, {
-        timing: []
-      }, {
-        timing: []
-      }]
+      scheduleInfo: [
+        {
+          timing: []
+        },
+        {
+          timing: []
+        },
+        {
+          timing: []
+        },
+        {
+          timing: []
+        },
+        {
+          timing: []
+        },
+        {
+          timing: []
+        },
+        {
+          timing: []
+        }
+      ]
     }
   },
   props: {
@@ -97,12 +112,16 @@ export default {
   },
   filters: {
     filterDate(val) {
-      return moment(val).format('dddd').valueOf()
+      return moment(val)
+        .format('dddd')
+        .valueOf()
     }
   },
   computed: {
     end() {
-      return moment(moment(this.start).valueOf() + 24 * 6 * 3600 * 1000).format('YYYY-MM-DD').valueOf()
+      return moment(moment(this.start).valueOf() + 24 * 6 * 3600 * 1000)
+        .format('YYYY-MM-DD')
+        .valueOf()
     },
     rangeTime() {
       return `${this.start} ~ ${this.end}`
@@ -128,7 +147,9 @@ export default {
     initScheduleInfo() {
       const weekOfday = moment(this.start, 'YYYY-MM-DD').format('E')
       this.scheduleInfo = this.scheduleInfo.map((item, index) => {
-        const day = moment(this.start).add(index + 1 - weekOfday, 'days').format('YYYY-MM-DD')
+        const day = moment(this.start)
+          .add(index + 1 - weekOfday, 'days')
+          .format('YYYY-MM-DD')
         return {
           schedule_time: day,
           ...item

@@ -11,10 +11,7 @@ export class CategoryService implements RouteGuard {
   auth$ = this.authService.authMap$({
     add: 'brand_shop:course:course_type|add'
   })
-  constructor(
-    private authService: AuthService,
-    private courseApi: CourseApi
-  ) {}
+  constructor(private authService: AuthService, private courseApi: CourseApi) {}
   @Effect()
   getCourseCategoryList() {
     return this.courseApi.getCourseCategoryList().pipe(

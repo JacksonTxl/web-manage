@@ -1,12 +1,12 @@
 .page-brand-basic-card {
   height: 100%;
   .ant-spin-nested-loading {
+    height: 100%;
+    .ant-spin-container {
       height: 100%;
-      .ant-spin-container {
-          height: 100%;
-      }
+    }
   }
-  .mt-4{
+  .mt-4 {
     margin-top: 4px;
   }
   .page-a-form {
@@ -15,7 +15,7 @@
       padding-left: 0;
     }
   }
-  .st-panel__body{
+  .st-panel__body {
     height: 100%;
   }
   &-body {
@@ -27,7 +27,7 @@
       // flex-basis: 354px;
       width: 354px;
       border-right: 1px solid #e9e9e9;
-      .st-h5-container{
+      .st-h5-container {
         position: fixed;
       }
     }
@@ -50,16 +50,16 @@
           margin-top: 8px;
           border: 1px solid #d9d9d9;
           border-radius: 4px;
-          &__describe{
+          &__describe {
             font-size: 14px;
             .lh(20px);
-            .c(rgba(0,0,0,.25));
+            .c(rgba(0, 0, 0, 0.25));
             .mg-tb(12px);
           }
           &::after {
             content: '';
             position: absolute;
-            .s(10px,10px);
+            .s(10px, 10px);
             transform: rotate(45deg);
             top: -6px;
             left: 130px;
@@ -91,13 +91,13 @@
           }
           &.brand-set {
             &::after {
-              .s(10px,10px);
+              .s(10px, 10px);
               left: 30px;
             }
           }
           &.shop-set {
             &::after {
-              .s(10px,10px);
+              .s(10px, 10px);
               left: 180px;
             }
           }
@@ -111,19 +111,19 @@
           margin-top: 8px;
           border: 1px solid #d9d9d9;
           border-radius: 4px;
-          &__describe{
+          &__describe {
             font-size: 14px;
             .lh(20px);
-            .c(rgba(0,0,0,.25));
+            .c(rgba(0, 0, 0, 0.25));
             .mg-tb(12px);
           }
-          &__add{
+          &__add {
             .mg-tb(8px);
           }
           &::after {
             content: '';
             position: absolute;
-            .s(10px,10px);
+            .s(10px, 10px);
             transform: rotate(45deg);
             top: -6px;
             left: 130px;
@@ -137,7 +137,7 @@
         }
       }
       &-card-time {
-        &__icon{
+        &__icon {
           .cur-p;
         }
       }
@@ -154,18 +154,18 @@
           }
         }
       }
-      &-card-bg{
+      &-card-bg {
         .page-card-bg {
           display: flex;
           align-items: center;
           &-default {
-            .s(192px,108px);
+            .s(192px, 108px);
             .bg(#ccc);
             border-radius: 4px;
             margin-right: 10px;
           }
           &-upload {
-            .s(192px,108px);
+            .s(192px, 108px);
             .bg(#d9d9d9);
             border-radius: 4px;
           }
@@ -181,12 +181,12 @@
 .page-brand-card-info {
   height: 100%;
   .ant-spin-nested-loading {
+    height: 100%;
+    .ant-spin-container {
       height: 100%;
-      .ant-spin-container {
-          height: 100%;
-      }
+    }
   }
-  .st-panel__body{
+  .st-panel__body {
     height: 100%;
   }
   p {
@@ -217,7 +217,7 @@
       // flex-basis: 354px;
       width: 354px;
       border-right: 1px solid #e9e9e9;
-      .st-h5-container{
+      .st-h5-container {
         position: fixed;
       }
     }
@@ -236,31 +236,30 @@
           .fz(14px);
           .lh(22px);
           .c(@title);
-          .brand-card__sellstop{
+          .brand-card__sellstop {
             .c(@error-color);
           }
-          .brand-card__selling{
+          .brand-card__selling {
             .c(@success-color);
           }
         }
         &__name {
           margin-bottom: 16px;
-          >span:nth-of-type(1){
-            .mg-lr(8px,16px);
+          > span:nth-of-type(1) {
+            .mg-lr(8px, 16px);
             .fz(16px);
             .lh(24px);
           }
-          >span::nth-of-type(2){
-            .c(#1CAF3A);
+          > span::nth-of-type(2) {
+            .c(#1caf3a);
           }
         }
         &__time {
-          >span:nth-of-type(2){
+          > span:nth-of-type(2) {
             .c(@text);
           }
         }
         &__support_sales {
-          
         }
       }
     }

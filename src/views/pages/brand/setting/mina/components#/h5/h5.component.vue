@@ -6,83 +6,122 @@
         <swiper :options="sliderOptions">
           <swiper-slide v-for="(li, index) in sliderInfo" :key="index">
             <!-- <img :src="li.image_url | imgFilter"> -->
-            <div :class="h5('slider-img')" :style="{backgroundImage:'url(' + imageFilter(li.image_url,{w:552,h:310}) +')'}"></div>
+            <div
+              :class="h5('slider-img')"
+              :style="{
+                backgroundImage:
+                  'url(' + imageFilter(li.image_url, { w: 552, h: 310 }) + ')'
+              }"
+            ></div>
           </swiper-slide>
         </swiper>
       </div>
       <div :class="h5('header')">
         <img :class="h5('header-shelter')" :src="logoShelter" />
         <div class="imgBox">
-          <img :src="brand.logo | imgFilter({w:74,h:74})" />
+          <img :src="brand.logo | imgFilter({ w: 74, h: 74 })" />
         </div>
         <div :class="h5('header-title')">此处显示门店名称</div>
         <div :class="h5('header-subtitle')">此处显示门店地址</div>
       </div>
       <div :class="h5('action')">
-        <div v-for="(li,index) in actionInfo" class="action-li" :key="index">
-          <img :src="li.image_url | imgFilter({w:56 ,h: 56})">
-          <p>{{li.title}}</p>
+        <div v-for="(li, index) in actionInfo" class="action-li" :key="index">
+          <img :src="li.image_url | imgFilter({ w: 56, h: 56 })" />
+          <p>{{ li.title }}</p>
         </div>
       </div>
       <div :class="h5('notice')">
         <img :class="h5('notice-img')" :src="noticeImg" />
-        <span :class="h5('notice-span')">公告标题或摘要信息…公告标题或摘要信息……</span>
+        <span :class="h5('notice-span')">
+          公告标题或摘要信息…公告标题或摘要信息……
+        </span>
       </div>
       <div :class="h5('event')">
         <a-row>
-          <a-col v-for="(li,index) in eventInfo" class="event-li" :key="index" :span="li.span">
+          <a-col
+            v-for="(li, index) in eventInfo"
+            class="event-li"
+            :key="index"
+            :span="li.span"
+          >
             <!-- <img v-if="li.image_url" :src="li.image_url | imgFilter"> -->
-            <div v-if="li.image_url" :class="h5('event-img')" :style="{backgroundImage:'url('+imageFilter(li.image_url,{h:88})+')'}"></div>
+            <div
+              v-if="li.image_url"
+              :class="h5('event-img')"
+              :style="{
+                backgroundImage:
+                  'url(' + imageFilter(li.image_url, { h: 88 }) + ')'
+              }"
+            ></div>
             <div v-else class="img"></div>
           </a-col>
         </a-row>
       </div>
       <div :class="h5('hr')"></div>
-      <st-t3 :class="h5('coach-title')">{{coach.module_title}}</st-t3>
+      <st-t3 :class="h5('coach-title')">{{ coach.module_title }}</st-t3>
       <div :class="h5('coach')">
-        <swiper :options="coachOption"  class="coach-li">
+        <swiper :options="coachOption" class="coach-li">
           <swiper-slide v-for="(li, index) in coachInfo" :key="index">
-            <img class="via" :src="(li.head_img.image_url|| config.PLACEHOLDER_IMG.AVATAR) | imgFilter({w:206,h:206})">
-            <img class="call" :src="callcoach">
-            <st-t3>{{li.nickname}}</st-t3>
-            <p>{{`累计上课${li.course_num}节`}}</p>
-            <p><span :class="h5('coach-price')">{{li.min_price | priceFilter}}</span>{{li.min_price?'/节':''}}</p>
+            <img
+              class="via"
+              :src="
+                (li.head_img.image_url || config.PLACEHOLDER_IMG.AVATAR)
+                  | imgFilter({ w: 206, h: 206 })
+              "
+            />
+            <img class="call" :src="callcoach" />
+            <st-t3>{{ li.nickname }}</st-t3>
+            <p>{{ `累计上课${li.course_num}节` }}</p>
+            <p>
+              <span :class="h5('coach-price')">
+                {{ li.min_price | priceFilter }}
+              </span>
+              {{ li.min_price ? '/节' : '' }}
+            </p>
           </swiper-slide>
         </swiper>
       </div>
-      <div :class="[h5('course'), h5('course'+li.course_type)]" v-for="(li, index) in courseInfo" :key="index">
+      <div
+        :class="[h5('course'), h5('course' + li.course_type)]"
+        v-for="(li, index) in courseInfo"
+        :key="index"
+      >
         <div :class="h5('hr')"></div>
-        <st-t3>{{li.module_name}}</st-t3>
+        <st-t3>{{ li.module_name }}</st-t3>
         <!-- <div v-if="li.course_type === 1"> -->
-          <div v-if="index === 0">
+        <div v-if="index === 0">
           <p>私人教练全程陪伴，健身事半功倍！</p>
           <swiper :options="swiperOption">
             <swiper-slide v-for="(li, index) in recommend1" :key="index">
-              <img :src="li">
+              <img :src="li" />
             </swiper-slide>
           </swiper>
         </div>
         <!-- <div v-if="li.course_type === 2"> -->
-          <div v-if="index === 1">
+        <div v-if="index === 1">
           <p>全身塑形，体能训练，小白也能练出迷人曲线！</p>
           <swiper :options="swiperOption">
             <swiper-slide v-for="(li, index) in recommend2" :key="index">
-              <img :src="li">
+              <img :src="li" />
             </swiper-slide>
           </swiper>
         </div>
         <!-- <div v-if="li.course_type === 3"> -->
-          <div v-if="index === 2">
+        <div v-if="index === 2">
           <p>包含多节私教课程和团体课，打包买更优惠！</p>
-            <div :class="h5('imgbox')" v-for="(li, index) in recommend3" :key="index">
-              <img :src="li">
-            </div>
+          <div
+            :class="h5('imgbox')"
+            v-for="(li, index) in recommend3"
+            :key="index"
+          >
+            <img :src="li" />
+          </div>
         </div>
       </div>
       <div :class="h5('nav')">
-        <div v-for="(li,index) in menuInfo" class="nav-li" :key="index">
-          <img :src="li.icon | imgFilter({w:32,h:32})">
-          <p>{{li.name}}</p>
+        <div v-for="(li, index) in menuInfo" class="nav-li" :key="index">
+          <img :src="li.icon | imgFilter({ w: 32, h: 32 })" />
+          <p>{{ li.name }}</p>
         </div>
         <!-- <div :class="h5('nav-home')"></div> -->
       </div>
@@ -91,14 +130,9 @@
 </template>
 
 <script>
-import {
-  H5WrapperService
-} from './h5-wrapper.service'
+import { H5WrapperService } from './h5-wrapper.service'
 import 'swiper/dist/css/swiper.css'
-import {
-  swiper,
-  swiperSlide
-} from 'vue-awesome-swiper'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import course1 from '@/assets/img/brand/setting/mina/course1.png'
 import course2 from '@/assets/img/brand/setting/mina/course2.png'
 import course3 from '@/assets/img/brand/setting/mina/course3.png'
@@ -182,7 +216,16 @@ export default {
     }
   },
   created() {
-    this.recommend1 = [course1, course2, course3, course4, course5, course6, course7, course8]
+    this.recommend1 = [
+      course1,
+      course2,
+      course3,
+      course4,
+      course5,
+      course6,
+      course7,
+      course8
+    ]
     this.recommend2 = this.recommend1.slice(0).reverse()
     this.recommend3 = [coursepack1, coursepack2, coursepack3, coursepack4]
   },
@@ -192,5 +235,4 @@ export default {
     }
   }
 }
-
 </script>

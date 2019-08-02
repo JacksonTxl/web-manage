@@ -6,9 +6,9 @@
           <st-form-item label="门店名称" required>
             <a-input
               v-decorator="[
-              'shop_name',
-              {rules: [{ validator: shop_name_validator}]}
-            ]"
+                'shop_name',
+                { rules: [{ validator: shop_name_validator }] }
+              ]"
               maxlength="20"
               placeholder="支持中英文、数字,不超过20个字"
             ></a-input>
@@ -20,22 +20,31 @@
           <st-form-item label="门店电话" required>
             <a-input
               v-decorator="[
-              'shop_phone',
-              { validateTrigger: 'blur',rules: [{validator: shop_phone_validator}]}
-            ]"
+                'shop_phone',
+                {
+                  validateTrigger: 'blur',
+                  rules: [{ validator: shop_phone_validator }]
+                }
+              ]"
               placeholder="请输入门店电话"
             >
               <div
                 slot="addonAfter"
                 @click="onValidtorPhone"
                 class="page-add-shop-mobile-button"
-                :class="{disabled:phoneAddDisabled}"
-              >添加</div>
+                :class="{ disabled: phoneAddDisabled }"
+              >
+                添加
+              </div>
             </a-input>
             <div class="page-add-shop-mobile">
-              <p v-for="(item,index) in shopData.shop_phones" :key="index">
-                <span>{{item}}</span>
-                <st-icon type="anticon:close" @click="onRemovePhone(index)" style="cursor:pointer;"></st-icon>
+              <p v-for="(item, index) in shopData.shop_phones" :key="index">
+                <span>{{ item }}</span>
+                <st-icon
+                  type="anticon:close"
+                  @click="onRemovePhone(index)"
+                  style="cursor:pointer;"
+                ></st-icon>
               </p>
             </div>
           </st-form-item>
@@ -44,18 +53,19 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item
-          validateStatus="error"
-          :help="shopMapValidateText"
-          label="门店地址"
-          required>
+            validateStatus="error"
+            :help="shopMapValidateText"
+            label="门店地址"
+            required
+          >
             <st-map-button
-            :lat="addMap.lat"
-            :lng="addMap.lng"
-            :address="addMap.address"
-            :province="addMap.province"
-            :city="addMap.city"
-            :district="addMap.district"
-            @select="addMapChange"
+              :lat="addMap.lat"
+              :lng="addMap.lng"
+              :address="addMap.address"
+              :province="addMap.province"
+              :city="addMap.city"
+              :district="addMap.district"
+              @select="addMapChange"
             ></st-map-button>
           </st-form-item>
         </a-col>
@@ -65,13 +75,16 @@
           <st-form-item label="邮箱">
             <a-input
               v-decorator="[
-              'email',
-              {
-                rules: [{
-                  type: 'email', message: '输入的邮箱格式错误，请重新输入!',
-                }]
-              }
-            ]"
+                'email',
+                {
+                  rules: [
+                    {
+                      type: 'email',
+                      message: '输入的邮箱格式错误，请重新输入!'
+                    }
+                  ]
+                }
+              ]"
               placeholder="请输入门店邮箱"
             ></a-input>
           </st-form-item>
@@ -95,15 +108,21 @@
       </a-row>
       <a-row :gutter="8">
         <a-col offset="1" :lg="23">
-          <st-form-item label="店招" required validateStatus="error" :help="shopCoverImageValidateText">
+          <st-form-item
+            label="店招"
+            required
+            validateStatus="error"
+            :help="shopCoverImageValidateText"
+          >
             <st-image-upload
-            :cropperModal="cropperModal"
-            :sizeLimit="5"
-            :list="fileList"
-            @change="fileChange"
-            width="240px"
-            height="135px">
-              <a-icon type="plus"/>
+              :cropperModal="cropperModal"
+              :sizeLimit="5"
+              :list="fileList"
+              @change="fileChange"
+              width="240px"
+              height="135px"
+            >
+              <a-icon type="plus" />
               <div class="page-upload-text">上传店招</div>
               <div class="page-upload-text">大小不超过5M，建议尺寸16:9</div>
             </st-image-upload>
@@ -114,13 +133,17 @@
         <a-col offset="1" :lg="23">
           <st-form-item>
             <template slot="label">
-              营业状态<st-help-tooltip id="TBCS001" />
+              营业状态
+              <st-help-tooltip id="TBCS001" />
             </template>
             <a-radio-group v-model="shopData.shop_status">
               <a-radio
                 v-for="item in Object.entries(shop.shop_status_add.value)"
                 :key="+item[0]"
-                :value="+item[0]">{{item[1]}}</a-radio>
+                :value="+item[0]"
+              >
+                {{ item[1] }}
+              </a-radio>
             </a-radio-group>
           </st-form-item>
         </a-col>
@@ -128,23 +151,28 @@
       <a-row :gutter="8">
         <a-col offset="1" :lg="22">
           <st-form-item label="营业时间">
-            <st-shop-hour-picker v-model="shopData.business_time"></st-shop-hour-picker>
+            <st-shop-hour-picker
+              v-model="shopData.business_time"
+            ></st-shop-hour-picker>
           </st-form-item>
         </a-col>
       </a-row>
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label="到期时间" required>
-            <a-select placeholder="请选择到期时间" v-decorator="[
-              'buy_shop_id',
-              { rules: [{ required: true, message: '请选择到期时间' }]}
-            ]">
+            <a-select
+              placeholder="请选择到期时间"
+              v-decorator="[
+                'buy_shop_id',
+                { rules: [{ required: true, message: '请选择到期时间' }] }
+              ]"
+            >
               <a-select-option
                 v-for="(item, index) in unusedShops"
                 :key="index"
                 :value="item.buy_shop_id"
               >
-                {{item.expire_time}}
+                {{ item.expire_time }}
               </a-select-option>
             </a-select>
           </st-form-item>
@@ -153,7 +181,13 @@
       <a-row :gutter="8">
         <a-col :lg="10" :xs="22" :offset="1">
           <st-form-item label=" ">
-            <st-button type="primary" @click="onHandleSubmit" :loading="addLoading.save">提交</st-button>
+            <st-button
+              type="primary"
+              @click="onHandleSubmit"
+              :loading="addLoading.save"
+            >
+              提交
+            </st-button>
           </st-form-item>
         </a-col>
       </a-row>
@@ -343,7 +377,9 @@ export default {
     },
     // 校验店招是否已上传
     shopCoverImageValidator() {
-      this.shopCoverImageValidateText = this.shopData.shop_cover_image ? '' : '请上传店招'
+      this.shopCoverImageValidateText = this.shopData.shop_cover_image
+        ? ''
+        : '请上传店招'
     },
     // 校验地址
     shopMapValidator() {

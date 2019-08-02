@@ -1,12 +1,17 @@
 <template>
-  <div :class="b()" :style="{'margin-top':info.contract_marget + 'mm'}">
+  <div :class="b()" :style="{ 'margin-top': info.contract_marget + 'mm' }">
     <header :class="b('header')">
-      <img v-if="info.is_brand_logo" :class="b('brand-logo')" :src="brand.logo" alt="brand-logo">
-      <h1 :class="b('title')">{{info.contract_title}}</h1>
+      <img
+        v-if="info.is_brand_logo"
+        :class="b('brand-logo')"
+        :src="brand.logo"
+        alt="brand-logo"
+      />
+      <h1 :class="b('title')">{{ info.contract_title }}</h1>
       <h4 v-if="info.is_brand_name" :class="b('brand-name')">这里是品牌名称</h4>
       <div v-if="info.is_contract_number" :class="b('contract-code')">
         <label class="info-label">合同编号：</label>
-        <span class="info-text">{{codeDemo || '暂无'}}</span>
+        <span class="info-text">{{ codeDemo || '暂无' }}</span>
       </div>
     </header>
     <section :class="b('basic')">
@@ -57,7 +62,7 @@
         </a-row>
       </div>
       <div v-if="info.is_member_pic" :class="b('avatar')">
-        <img src="~@/assets/img/avatar_default_contract.png" alt="avatar">
+        <img src="~@/assets/img/avatar_default_contract.png" alt="avatar" />
       </div>
     </section>
     <section :class="b('product')">
@@ -126,7 +131,10 @@
             <span class="info-text">刷卡9600.00元</span>
           </div>
         </a-col> -->
-        <a-col :span="8" v-if="info.contract_type === CONTRACT_TYPE.MEMBER_CARD">
+        <a-col
+          :span="8"
+          v-if="info.contract_type === CONTRACT_TYPE.MEMBER_CARD"
+        >
           <div class="info-item">
             <label class="info-label">开卡方式：</label>
             <span class="info-text">购买即开卡</span>
@@ -141,19 +149,23 @@
         <a-col :span="24">
           <div class="info-item">
             <label class="info-label">合同有效期：</label>
-            <span class="info-text">{{today | dateFilter('YYYY年M月D日') }}至2022年1月1日</span>
+            <span class="info-text">
+              {{ today | dateFilter('YYYY年M月D日') }}至2022年1月1日
+            </span>
           </div>
         </a-col>
-        <a-col :span="24" v-if='info.is_comment'>
+        <a-col :span="24" v-if="info.is_comment">
           <div class="info-item">
             <label class="info-label">备注：</label>
-            <span class="info-text">展示订单的备注信息，以便了解当下订单的具体情况</span>
+            <span class="info-text">
+              展示订单的备注信息，以便了解当下订单的具体情况
+            </span>
           </div>
         </a-col>
         <a-col :span="24" v-if="info.is_law_content">
           <div class="info-item">
             <label class="info-label">合同章程：</label>
-            <pre class="info-text">{{lawContent}}</pre>
+            <pre class="info-text">{{ lawContent }}</pre>
           </div>
         </a-col>
       </a-row>

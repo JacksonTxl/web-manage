@@ -18,11 +18,11 @@ export interface UpdateInput {
   /**
    * 自增id
    */
-  id: number,
+  id: number
   /**
    * 状态:0-禁用 1-启用
    */
-  is_enable: number,
+  is_enable: number
   /**
    * 支付类型 1-微信在线 2-微信线下 3-支付宝线下 4-pos机线下刷卡 5-银行转账 6-现金 7-其他
    */

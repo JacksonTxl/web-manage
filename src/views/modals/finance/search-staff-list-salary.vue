@@ -63,7 +63,7 @@ export default {
       this.getList(current, pageSize)
     },
     getList(page = 1, size = 20) {
-      this.service.getSalaryUsedList(this.id, { page, size }).subscribe((res) => {
+      this.service.getSalaryUsedList(this.id, { page, size }).subscribe(res => {
         //   console.log('====',res)
         this.data = res.list.list
         this.pagination.current = res.list.page.current_page

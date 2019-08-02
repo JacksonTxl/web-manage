@@ -3,7 +3,10 @@ import { TeamApi } from './../../../../../../api/v1/course/team'
 import { GetTeamBrandCourseListInput } from '@/api/v1/course/team'
 import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
-import { BrandPersonalCourseApi, GetPersonalBrandInfoInput } from '@/api/v1/course/personal/brand'
+import {
+  BrandPersonalCourseApi,
+  GetPersonalBrandInfoInput
+} from '@/api/v1/course/personal/brand'
 export interface PersonalCourseInfo {
   personalCourseInfo: any
 }
@@ -15,7 +18,9 @@ export class InfoService implements RouteGuard {
     this.state$ = new State({
       personalCourseInfo: {}
     })
-    this.personalCourseInfo$ = new Computed(this.state$.pipe(pluck('personalCourseInfo')))
+    this.personalCourseInfo$ = new Computed(
+      this.state$.pipe(pluck('personalCourseInfo'))
+    )
   }
   SET_TEAM_COURSE_INFO(data: any) {
     this.state$.commit(state => {
@@ -23,9 +28,11 @@ export class InfoService implements RouteGuard {
     })
   }
   getPersonalBrandInfo(query: GetPersonalBrandInfoInput) {
-    return this.brandPersonalCourseApi.getPersonalBrandInfo(query).pipe(tap(res => {
-      this.SET_TEAM_COURSE_INFO(res)
-    }))
+    return this.brandPersonalCourseApi.getPersonalBrandInfo(query).pipe(
+      tap(res => {
+        this.SET_TEAM_COURSE_INFO(res)
+      })
+    )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     const course_id = to.query.id as string

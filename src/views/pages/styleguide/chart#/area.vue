@@ -2,11 +2,15 @@
   <section class="sg-section">
     <h4>面积图</h4>
     <div class="mg-t24">
-      <st-area-chart id="areaChartDemo" :data="chartData"/>
+      <st-area-chart id="areaChartDemo" :data="chartData" />
     </div>
     <button @click="reRender">重绘</button>
     <div class="mg-t24">
-      <st-area-chart id="areaChartDemo2" :data="chartData2" :options="options2"/>
+      <st-area-chart
+        id="areaChartDemo2"
+        :data="chartData2"
+        :options="options2"
+      />
     </div>
   </section>
 </template>

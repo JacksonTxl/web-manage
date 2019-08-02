@@ -4,7 +4,10 @@ import { RouteGuard, ServiceRoute, Injectable } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { tap, map, pluck } from 'rxjs/operators'
 import { forkJoin } from 'rxjs'
-import { ShopTeamCourseApi, GetTeamBrandCourseListInput } from '@/api/v1/course/team/shop'
+import {
+  ShopTeamCourseApi,
+  GetTeamBrandCourseListInput
+} from '@/api/v1/course/team/shop'
 import { AuthService } from '@/services/auth.service'
 
 @Injectable()
@@ -44,12 +47,16 @@ export class ListService implements RouteGuard {
     return this.courseApi.getCourseCategoryList({}).pipe(
       map(res => {
         const list = res.list
-        return [{ id: -1, setting_name: '所有课程类型' }, ...list.map((item: any) => {
-          const { id, setting_name } = item
-          return {
-            id, setting_name
-          }
-        })]
+        return [
+          { id: -1, setting_name: '所有课程类型' },
+          ...list.map((item: any) => {
+            const { id, setting_name } = item
+            return {
+              id,
+              setting_name
+            }
+          })
+        ]
       }),
       tap(state => {
         this.categoryList$.commit(() => state)
@@ -57,19 +64,24 @@ export class ListService implements RouteGuard {
     )
   }
   getShopList() {
-    return this.shopApi.getShopList().pipe(map(res => {
-      const shopInfo = res.list
-      return [{ shop_id: -1, shop_name: '所有门店' }, ...shopInfo.map((item: any) => {
-        const { shop_id, shop_name } = item
-        return {
-          shop_id,
-          shop_name
-        }
-      })]
-    }),
-    tap(state => {
-      this.shopSelectOptions$.commit(() => state)
-    }))
+    return this.shopApi.getShopList().pipe(
+      map(res => {
+        const shopInfo = res.list
+        return [
+          { shop_id: -1, shop_name: '所有门店' },
+          ...shopInfo.map((item: any) => {
+            const { shop_id, shop_name } = item
+            return {
+              shop_id,
+              shop_name
+            }
+          })
+        ]
+      }),
+      tap(state => {
+        this.shopSelectOptions$.commit(() => state)
+      })
+    )
   }
   initOptions() {
     return forkJoin(this.getShopList(), this.getCategoryList())
@@ -84,19 +96,21 @@ export class ListService implements RouteGuard {
     return this.init({ ...to.query })
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-    return this.initOptions().pipe(map(res => {
-      const target = {
-        name: 'brand-product-course-team-list-brand'
-      }
-      if (to.name === 'brand-product-course-team-list' && target) {
-        return {
-          next: target
+    return this.initOptions().pipe(
+      map(res => {
+        const target = {
+          name: 'brand-product-course-team-list-brand'
         }
-      } else {
-        return {
-          next: true
+        if (to.name === 'brand-product-course-team-list' && target) {
+          return {
+            next: target
+          }
+        } else {
+          return {
+            next: true
+          }
         }
-      }
-    }))
+      })
+    )
   }
 }

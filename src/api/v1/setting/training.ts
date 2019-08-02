@@ -7,9 +7,12 @@ export class TrainingApi extends Api {
    */
   getTrainingAimList(query: GetTrainingAimListInput = {}) {
     return this.http.get(url, {
-      query: Object.assign({
-        size: 100
-      }, query)
+      query: Object.assign(
+        {
+          size: 100
+        },
+        query
+      )
     })
   }
   /**
@@ -33,7 +36,7 @@ export class TrainingApi extends Api {
 }
 
 export interface GetTrainingAimListInput {
-  page?: number,
+  page?: number
   size?: number
 }
 export interface AddTrainingAimInput {

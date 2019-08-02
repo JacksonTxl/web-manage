@@ -9,8 +9,13 @@
   >
     <st-form :form="form" labelWidth="80px">
       <st-form-item label="价格" required>
-        <st-input-number placeholder="请输入售卖价格" v-decorator="ruleConfig.priceNum">
-          <template slot="addonAfter">元/天</template>
+        <st-input-number
+          placeholder="请输入售卖价格"
+          v-decorator="ruleConfig.priceNum"
+        >
+          <template slot="addonAfter">
+            元/天
+          </template>
         </st-input-number>
       </st-form-item>
       <st-form-item label="转让手续费">
@@ -18,16 +23,20 @@
           <template slot="addonAfter">
             <a-select v-model="transferUnit">
               <a-select-option
-                v-for="(item, index) in settingEnums.cabinet.transfer_unit.value"
+                v-for="(item, index) in settingEnums.cabinet.transfer_unit
+                  .value"
                 :key="index"
                 :value="+index"
               >
-                {{item}}
+                {{ item }}
               </a-select-option>
             </a-select>
           </template>
         </st-input-number>
-        <div class="mg-t8"><i class="color-danger">*</i>已经售卖的储物柜不受影响</div>
+        <div class="mg-t8">
+          <i class="color-danger">*</i>
+          已经售卖的储物柜不受影响
+        </div>
       </st-form-item>
     </st-form>
   </st-modal>
@@ -71,7 +80,7 @@ export default {
   methods: {
     onSubmit(e) {
       e.preventDefault()
-      this.form.validateFields().then((data) => {
+      this.form.validateFields().then(data => {
         data.ids = this.ids
         data.transfer_unit = this.transferUnit
         this.editService.updatePrice(data).subscribe(this.onSubmitSuccess)

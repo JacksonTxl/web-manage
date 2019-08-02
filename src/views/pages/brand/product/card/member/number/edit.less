@@ -2,7 +2,7 @@
   .page-content-card__card__name {
     margin: 32px 0;
     .fz(16px);
-    >span {
+    > span {
       margin-left: 8px;
     }
   }
@@ -10,22 +10,24 @@
     left: 100px;
   }
   .page-support-sales-shop.page-lot-shop::after {
-      left: 128px;
+    left: 128px;
   }
   .page-price-setting-set.brand-set::after {
-      left: 20px;
+    left: 20px;
   }
   .page-price-setting-set.shop-set::after {
-      left: 130px;
+    left: 130px;
   }
   .page-price-setting-set {
-      &.error,&.error::after {
-          border-color: @error-color;
-      }
+    &.error,
+    &.error::after {
+      border-color: @error-color;
+    }
   }
-  .page-content-card-price-setting,.page-content-card-bg{
-      .ant-form-explain {
-          .c(@error-color);
-      }
+  .page-content-card-price-setting,
+  .page-content-card-bg {
+    .ant-form-explain {
+      .c(@error-color);
+    }
   }
 }

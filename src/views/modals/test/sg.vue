@@ -1,7 +1,7 @@
 <template>
   <st-modal title="modal-sg" v-model="show" @ok="onOk">
     this is test modal
-    {{a}}
+    {{ a }}
   </st-modal>
 </template>
 

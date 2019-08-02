@@ -1,10 +1,5 @@
 <template>
-  <st-modal
-    title="门店放假设置"
-    v-model="show"
-    :footer="null"
-    size="small"
-  >
+  <st-modal title="门店放假设置" v-model="show" :footer="null" size="small">
     <div>
       <edit-holiday
         v-if="isHoliday"

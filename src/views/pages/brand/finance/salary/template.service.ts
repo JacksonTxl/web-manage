@@ -3,9 +3,7 @@ import { State, Computed } from 'rx-state'
 import { pluck } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { RedirectService } from '@/services/redirect.service'
-interface SetState {
-
-}
+interface SetState {}
 @Injectable()
 export class TemplateService extends Store<SetState> implements RouteGuard {
   state$: State<SetState>

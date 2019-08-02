@@ -4,7 +4,11 @@ import { CardApi, RenewalCardInput } from '@/api/v1/sold/cards'
 import { tap, debounceTime, switchMap, catchError } from 'rxjs/operators'
 import { forkJoin, EMPTY } from 'rxjs'
 import { ContractApi } from '@/api/v1/setting/contract'
-import { TransactionApi, MemberCouponParams, TransactionPriceInput } from '@/api/v1/sold/transaction'
+import {
+  TransactionApi,
+  MemberCouponParams,
+  TransactionPriceInput
+} from '@/api/v1/sold/transaction'
 
 @Injectable()
 export class RenewalMemberService {
@@ -15,65 +19,77 @@ export class RenewalMemberService {
   saleList$ = new State([])
   priceAction$: Action<any>
   priceInfo$ = new State('0')
-  constructor(private contractApi: ContractApi,
+  constructor(
+    private contractApi: ContractApi,
     private transactionApi: TransactionApi,
-    private cardApi: CardApi) {
+    private cardApi: CardApi
+  ) {
     this.priceAction$ = new Action(data$ => {
       return data$.pipe(
         debounceTime(200),
-        switchMap((params:TransactionPriceInput) => this.getPrice(params).pipe(catchError(() => EMPTY))),
+        switchMap((params: TransactionPriceInput) =>
+          this.getPrice(params).pipe(catchError(() => EMPTY))
+        ),
         tap(res => {
           this.priceInfo$.commit(() => res.info.price)
         })
       )
     })
   }
-  getInfo(id:string) {
-    return this.cardApi.getCardRenewalInfo(id).pipe(tap((res:any) => {
-      this.info$.commit(() => res.info)
-    }))
+  getInfo(id: string) {
+    return this.cardApi.getCardRenewalInfo(id).pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
+      })
+    )
   }
   getSaleList() {
-    return this.transactionApi.getTransactionSaleList().pipe(tap((res:any) => {
-      this.saleList$.commit(() => res.list)
-    }))
+    return this.transactionApi.getTransactionSaleList().pipe(
+      tap((res: any) => {
+        this.saleList$.commit(() => res.list)
+      })
+    )
   }
   @Effect()
-  serviceInit(id:string) {
+  serviceInit(id: string) {
     return forkJoin(this.getInfo(id), this.getSaleList())
   }
   @Effect()
-  getCodeNumber(type:string) {
+  getCodeNumber(type: string) {
     return this.contractApi.getCodeNumber(type)
   }
   @Effect()
-  getCouponList(query:MemberCouponParams) {
-    return this.transactionApi.getTransactionCouponList(query, 'member').pipe(tap((res:any) => {
-      this.couponList$.commit(() => res.list)
-    }))
+  getCouponList(query: MemberCouponParams) {
+    return this.transactionApi.getTransactionCouponList(query, 'member').pipe(
+      tap((res: any) => {
+        this.couponList$.commit(() => res.list)
+      })
+    )
   }
   resetCouponList() {
     this.couponList$.commit(() => [])
   }
   @Effect()
-  getAdvanceList(id:string|number) {
-    return this.transactionApi.getTransactionAdvanceList(id).pipe(tap((res:any) => {
-      this.advanceList$.commit(() => res.list)
-    }))
+  getAdvanceList(id: string | number) {
+    return this.transactionApi.getTransactionAdvanceList(id).pipe(
+      tap((res: any) => {
+        this.advanceList$.commit(() => res.list)
+      })
+    )
   }
   resetAdvanceList() {
     this.advanceList$.commit(() => [])
   }
   @Effect()
-  getPrice(params:TransactionPriceInput) {
+  getPrice(params: TransactionPriceInput) {
     return this.transactionApi.getTransactionSoldPrice(params)
   }
   @Effect()
-  renewal(params:RenewalCardInput, id:string) {
+  renewal(params: RenewalCardInput, id: string) {
     return this.cardApi.setCardRenewal(params, id)
   }
   @Effect()
-  renewalPay(params:RenewalCardInput, id:string) {
+  renewalPay(params: RenewalCardInput, id: string) {
     return this.cardApi.setCardRenewal(params, id)
   }
 }

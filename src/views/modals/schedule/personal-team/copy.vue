@@ -16,15 +16,22 @@
       </st-form-item>
       <st-form-item label="复制排期" required>
         <a-range-picker
-        v-model="copyDefaulValue"
-        :disabled="disabled"
-        @change="onChangeCopyTime" />
+          v-model="copyDefaulValue"
+          :disabled="disabled"
+          @change="onChangeCopyTime"
+        />
       </st-form-item>
       <st-form-item required>
         <template slot="label">
-            应用排期<st-help-tooltip id="TSGC001" />
+          应用排期
+          <st-help-tooltip id="TSGC001" />
         </template>
-        <a-date-picker v-model="applyStartDate" @change="onChangeApplyStartDate"/> ~ <a-date-picker v-model="applyEndDate"  disabled />
+        <a-date-picker
+          v-model="applyStartDate"
+          @change="onChangeApplyStartDate"
+        />
+        ~
+        <a-date-picker v-model="applyEndDate" disabled />
       </st-form-item>
       <div class="ta-r">
         <st-button type="primary" @click="onSubmit">确认复制</st-button>
@@ -35,9 +42,7 @@
 
 <script>
 import { MessageService } from '@/services/message.service'
-import {
-  PersonalTeamScheduleScheduleService as ScheduleService
-} from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
+import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
 export default {
   name: 'CopySchedule',
   serviceInject() {
@@ -70,17 +75,31 @@ export default {
       switch (type) {
         case 'month':
           this.disabled = true
-          this.copyDefaulValue[0] = moment().month(moment().month() - 1).startOf('month')
-          this.copyDefaulValue[1] = moment().month(moment().month() - 1).endOf('month')
-          this.applyEndDate = moment(this.applyStartDate.valueOf() +
-          (this.copyDefaulValue[1].valueOf() - this.copyDefaulValue[0].valueOf()))
+          this.copyDefaulValue[0] = moment()
+            .month(moment().month() - 1)
+            .startOf('month')
+          this.copyDefaulValue[1] = moment()
+            .month(moment().month() - 1)
+            .endOf('month')
+          this.applyEndDate = moment(
+            this.applyStartDate.valueOf() +
+              (this.copyDefaulValue[1].valueOf() -
+                this.copyDefaulValue[0].valueOf())
+          )
           break
         case 'week':
           this.disabled = true
-          this.copyDefaulValue[0] = moment().week(moment().week() - 1).startOf('week')
-          this.copyDefaulValue[1] = moment().week(moment().week() - 1).endOf('week')
-          this.applyEndDate = moment(this.applyStartDate.valueOf() +
-          (this.copyDefaulValue[1].valueOf() - this.copyDefaulValue[0].valueOf()))
+          this.copyDefaulValue[0] = moment()
+            .week(moment().week() - 1)
+            .startOf('week')
+          this.copyDefaulValue[1] = moment()
+            .week(moment().week() - 1)
+            .endOf('week')
+          this.applyEndDate = moment(
+            this.applyStartDate.valueOf() +
+              (this.copyDefaulValue[1].valueOf() -
+                this.copyDefaulValue[0].valueOf())
+          )
           break
         case 'custom':
         default:
@@ -89,10 +108,18 @@ export default {
       }
     },
     onChangeCopyTime(val) {
-      this.applyEndDate = moment(this.applyStartDate.valueOf() + (this.copyDefaulValue[1].valueOf() - this.copyDefaulValue[0].valueOf()))
+      this.applyEndDate = moment(
+        this.applyStartDate.valueOf() +
+          (this.copyDefaulValue[1].valueOf() -
+            this.copyDefaulValue[0].valueOf())
+      )
     },
     onChangeApplyStartDate(val) {
-      this.applyEndDate = moment(val.valueOf() + (this.copyDefaulValue[1].valueOf() - this.copyDefaulValue[0].valueOf()))
+      this.applyEndDate = moment(
+        val.valueOf() +
+          (this.copyDefaulValue[1].valueOf() -
+            this.copyDefaulValue[0].valueOf())
+      )
     },
     onSubmit() {
       const form = {

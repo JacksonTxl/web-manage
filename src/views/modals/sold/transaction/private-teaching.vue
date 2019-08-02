@@ -1,5 +1,10 @@
 <template>
-  <st-modal title="签单" size="small" v-model="show" wrapClassName="modal-sold-course-transfer">
+  <st-modal
+    title="签单"
+    size="small"
+    v-model="show"
+    wrapClassName="modal-sold-course-transfer"
+  >
     <div :class="transfer('content')">
       <a-row :class="transfer('info')">
         <a-col :span="13">
@@ -16,7 +21,7 @@
           </st-info>
         </a-col>
       </a-row>
-      <st-hr marginTop="0" marginBottom="0"/>
+      <st-hr marginTop="0" marginBottom="0" />
       <st-form :form="form" @ok="save" labelWidth="68px">
         <div :class="transfer('transfer')">
           <!--购买会员  -->
@@ -56,7 +61,7 @@
           <!-- 租赁时间 -->
           <!-- <renewalTime v-model="basicInfoRuleList"></renewalTime> -->
           <component
-            v-for="(item,index) in arrComponents[type]"
+            v-for="(item, index) in arrComponents[type]"
             v-bind:is="item"
             :key="index"
             v-model="basicInfoRuleList"
@@ -64,7 +69,7 @@
             :flag="type === 0 || type === 1 ? true : false"
           ></component>
           <!-- 分割线 -->
-          <st-hr marginTop="0" marginBottom="20"/>
+          <st-hr marginTop="0" marginBottom="20" />
           <!-- 销售人员 -->
           <salesman v-model="basicInfoRuleList"></salesman>
           <!-- 备注 -->

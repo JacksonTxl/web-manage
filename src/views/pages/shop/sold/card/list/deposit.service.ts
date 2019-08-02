@@ -15,11 +15,13 @@ export class DepositService implements RouteGuard {
   constructor(private cardApi: CardApi, private authService: AuthService) {}
   @Effect()
   getList(params: GetMemberListInput) {
-    return this.cardApi.getMemberList(params, 'deposit').pipe(tap((res:any) => {
-      res = this.authService.filter(res)
-      this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-    }))
+    return this.cardApi.getMemberList(params, 'deposit').pipe(
+      tap((res: any) => {
+        res = this.authService.filter(res)
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.getList(to.meta.query)

@@ -5,18 +5,24 @@
       style="width: 32px; display:inline-flex;align-items: center; justify-content: center;"
       @click="onClickPre"
     >
-      <a-icon type="left"/>
+      <a-icon type="left" />
     </a-button>
 
-    <span class="text-cont">{{rangeTime}}</span>
+    <span class="text-cont">{{ rangeTime }}</span>
 
     <a-button
-    class="mg-r8  mg-l8"
-    style="width: 32px; display:inline-flex;align-items: center; justify-content: center;"
-    @click="onClickNext">
-      <a-icon type="right"/>
+      class="mg-r8  mg-l8"
+      style="width: 32px; display:inline-flex;align-items: center; justify-content: center;"
+      @click="onClickNext"
+    >
+      <a-icon type="right" />
     </a-button>
-    <a-button style="width: 32px; display:inline-flex;align-items: center; justify-content: center;" @click="onClickToday">今</a-button>
+    <a-button
+      style="width: 32px; display:inline-flex;align-items: center; justify-content: center;"
+      @click="onClickToday"
+    >
+      今
+    </a-button>
   </div>
 </template>
 <script>
@@ -47,27 +53,42 @@ export default {
   },
   computed: {
     endTime() {
-      return moment(moment(this.startTime).valueOf() + WEEK_DAY_INIT).format('YYYY-MM-DD').valueOf()
+      return moment(moment(this.startTime).valueOf() + WEEK_DAY_INIT)
+        .format('YYYY-MM-DD')
+        .valueOf()
     },
     rangeTime() {
-      let start = moment(this.startTime).format('LL').valueOf()
-      let end = moment(this.endTime).format('LL').valueOf()
+      let start = moment(this.startTime)
+        .format('LL')
+        .valueOf()
+      let end = moment(this.endTime)
+        .format('LL')
+        .valueOf()
       return `${start} ~ ${end}`
     }
   },
   methods: {
     onClickPre() {
-      this.startTime = moment(moment(this.startTime).valueOf() - MINUS_WEEK_DAY).format('YYYY-MM-DD').valueOf()
+      this.startTime = moment(moment(this.startTime).valueOf() - MINUS_WEEK_DAY)
+        .format('YYYY-MM-DD')
+        .valueOf()
       this.$emit('pre', { start_time: this.startTime, end_time: this.endTime })
     },
     onClickNext() {
-      this.startTime = moment(moment(this.startTime).valueOf() + ADD_WEEK_DAY).format('YYYY-MM-DD').valueOf()
+      this.startTime = moment(moment(this.startTime).valueOf() + ADD_WEEK_DAY)
+        .format('YYYY-MM-DD')
+        .valueOf()
       this.$emit('next', { start_time: this.startTime, end_time: this.endTime })
     },
     onClickToday() {
-      let weekOfday = moment().format('E')// 计算今天是这周第几天
-      this.startTime = moment().subtract(weekOfday - 1, 'days').format('YYYY-MM-DD')// 周一日期
-      this.$emit('today', { start_time: this.startTime, end_time: this.endTime })
+      let weekOfday = moment().format('E') // 计算今天是这周第几天
+      this.startTime = moment()
+        .subtract(weekOfday - 1, 'days')
+        .format('YYYY-MM-DD') // 周一日期
+      this.$emit('today', {
+        start_time: this.startTime,
+        end_time: this.endTime
+      })
     }
   }
 }

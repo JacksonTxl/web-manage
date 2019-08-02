@@ -2,13 +2,19 @@
   <st-panel class="page-shop-label-container">
     <div slot="title">
       <st-button type="primary" v-if="auth.add">
-        <a v-modal-link=" { name: 'label-add',on:{ change: onSearhReset }}">
-          <a-icon type="plus" class="mg-r8"/>添加标签
+        <a v-modal-link="{ name: 'label-add', on: { change: onSearhReset } }">
+          <a-icon type="plus" class="mg-r8" />
+          添加标签
         </a>
       </st-button>
     </div>
     <div slot="actions">
-      <st-input-search v-model="query.tag_name" placeholder="请输入标签名" style="width: 290px;" @search="onSearch"/>
+      <st-input-search
+        v-model="query.tag_name"
+        placeholder="请输入标签名"
+        style="width: 290px;"
+        @search="onSearch"
+      />
     </div>
     <a-row :gutter="8" class="mg-t8">
       <st-table
@@ -18,14 +24,24 @@
         @change="onTableChange"
         rowKey="id"
       >
-
         <div slot="action" slot-scope="record">
           <st-table-actions>
             <a
               v-if="record.auth['shop:member:tag|edit']"
-              v-modal-link="{ name: 'label-edit',props: {item : record} , on:{ change: onSearhReset }}"
-            >编辑</a>
-            <a v-if="record.auth['shop:member:tag|del']" @click="onDelete(record)">删除</a>
+              v-modal-link="{
+                name: 'label-edit',
+                props: { item: record },
+                on: { change: onSearhReset }
+              }"
+            >
+              编辑
+            </a>
+            <a
+              v-if="record.auth['shop:member:tag|del']"
+              @click="onDelete(record)"
+            >
+              删除
+            </a>
           </st-table-actions>
         </div>
       </st-table>
@@ -62,8 +78,7 @@ export default {
       tag_name: ''
     }
   },
-  mounted() {
-  },
+  mounted() {},
   computed: {
     columns
   },

@@ -2,10 +2,12 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { SkillfulApi, GetSkillfulListInput, DeleteSkillfulInput } from '@/api/v1/setting/skillful'
 import {
-  AuthService
-} from '@/services/auth.service'
+  SkillfulApi,
+  GetSkillfulListInput,
+  DeleteSkillfulInput
+} from '@/api/v1/setting/skillful'
+import { AuthService } from '@/services/auth.service'
 interface ListState {
   resData: object
 }
@@ -22,7 +24,8 @@ export class SkillfulService extends Store<ListState> {
   ) {
     super()
     this.state$ = new State({
-      resData: {} })
+      resData: {}
+    })
     this.resData$ = new Computed(this.state$.pipe(pluck('resData')))
   }
   getSkillfulList(query: GetSkillfulListInput) {
@@ -42,10 +45,13 @@ export class SkillfulService extends Store<ListState> {
     })
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getSkillfulList({ page: to.meta.query.page, size: 100 }).subscribe(() => {
-      next()
-    }, () => {
-      next(false)
-    })
+    this.getSkillfulList({ page: to.meta.query.page, size: 100 }).subscribe(
+      () => {
+        next()
+      },
+      () => {
+        next(false)
+      }
+    )
   }
 }

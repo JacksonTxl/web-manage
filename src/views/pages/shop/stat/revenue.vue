@@ -3,7 +3,9 @@
     <div :class="bPage('count')">
       <div :class="bPage('actions')">
         最近更新时间：
-        <span :class="bPage('actions-span')" class="mg-r8">{{todayInfo.time}}</span>
+        <span :class="bPage('actions-span')" class="mg-r8">
+          {{ todayInfo.time }}
+        </span>
         <span @click="refresh">
           <st-icon type="switch"></st-icon>
         </span>
@@ -13,8 +15,8 @@
           <swiper :options="sliderOptions">
             <swiper-slide v-for="(item, index) in todayInfo.res" :key="index">
               <div :class="bPage('income')">
-                <p :class="bPage('income-label')">{{item.label}}</p>
-                <p :class="bPage('income-value')">{{item.value}}</p>
+                <p :class="bPage('income-label')">{{ item.label }}</p>
+                <p :class="bPage('income-value')">{{ item.value }}</p>
               </div>
             </swiper-slide>
           </swiper>
@@ -41,8 +43,8 @@
       :loading="loading.getRevenueShopList"
       :columns="columns"
       :dataSource="list"
-      :alertSelection="{onReset:onSelectionReset}"
-      :rowSelection="{selectedRowKeys,onChange:onSelectionChange}"
+      :alertSelection="{ onReset: onSelectionReset }"
+      :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }"
       rowKey="id"
     ></st-table>
   </div>

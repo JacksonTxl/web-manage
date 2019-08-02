@@ -5,16 +5,18 @@ import { tap } from 'rxjs/operators'
 
 @Injectable()
 export class StopSaleService {
-    loading$ = new State({})
-    info$ = new State({})
-    constructor(private cardApi: CardsApi) {}
-    getStopSaleInfo(id:string) {
-      return this.cardApi.getCardSaleStopInfo(id, 'shop', 'deposit').pipe(tap((res:any) => {
+  loading$ = new State({})
+  info$ = new State({})
+  constructor(private cardApi: CardsApi) {}
+  getStopSaleInfo(id: string) {
+    return this.cardApi.getCardSaleStopInfo(id, 'shop', 'deposit').pipe(
+      tap((res: any) => {
         this.info$.commit(() => res.info)
-      }))
-    }
-    @Effect()
-    setStopSale(params:CardSaleStopInput, id:string) {
-      return this.cardApi.setCardsSaleStop(params, id, 'shop', 'deposit')
-    }
+      })
+    )
+  }
+  @Effect()
+  setStopSale(params: CardSaleStopInput, id: string) {
+    return this.cardApi.setCardsSaleStop(params, id, 'shop', 'deposit')
+  }
 }

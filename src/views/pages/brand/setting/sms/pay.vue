@@ -4,17 +4,19 @@
       <div :class="bCount('preview')">
         <div :class="bCount('specify')">
           <span :class="bCount('text')">剩余短信(条)</span>
-          <span :class="bCount('num')">{{info.sms_total}}</span>
+          <span :class="bCount('num')">{{ info.sms_total }}</span>
           <st-button
             type="primary"
             v-modal-link="{
-                name: 'brand-setting-sms-pay'
-              }"
-          >去充值</st-button>
+              name: 'brand-setting-sms-pay'
+            }"
+          >
+            去充值
+          </st-button>
         </div>
         <div :class="bCount('specify')">
           <span :class="bCount('text')">已发送(条)</span>
-          <span :class="bCount('num')">{{info.sms_sended}}</span>
+          <span :class="bCount('num')">{{ info.sms_sended }}</span>
         </div>
       </div>
       <SmsSign :signVal="info.sms_sign" @SmsSign="getSmsSign"></SmsSign>
@@ -85,7 +87,6 @@ export default {
       this.postSmsSign(para)
     }
     // 短信购买
-
   }
 }
 </script>

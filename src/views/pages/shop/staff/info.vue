@@ -4,19 +4,29 @@
       <a-row>
         <a-col :span="15" class="pages-staffdata-header-detail">
           <div class="staff-avatar-container st-preview-item">
-            <img :src="image_avatar_url">
-            <div class="staff-avatar-tip">{{ info.work_status.name }}/{{ info.nature_work.name }}</div>
+            <img :src="image_avatar_url" />
+            <div class="staff-avatar-tip">
+              {{ info.work_status.name }}/{{ info.nature_work.name }}
+            </div>
           </div>
           <div class="staff-info-container">
             <div class="staff-info-name">
               {{ info.staff_name }}（{{ info.nickname }}）
-              <st-icon v-if="info.sex === 1" type="female" style="color:#FF5E41;"></st-icon>
+              <st-icon
+                v-if="info.sex === 1"
+                type="female"
+                style="color:#FF5E41;"
+              ></st-icon>
               <st-icon type="male" v-if="info.sex === 2"></st-icon>
             </div>
             <div class="staff-info-cont">
               <span class="mg-r8">手机号：{{ info.mobile }}</span>
-              <span class="mg-r8" v-if="info.staff_num">工号：{{ info.staff_num }}</span>
-              <span v-if="info.coach_level">教练等级：{{ info.coach_level }}</span>
+              <span class="mg-r8" v-if="info.staff_num">
+                工号：{{ info.staff_num }}
+              </span>
+              <span v-if="info.coach_level">
+                教练等级：{{ info.coach_level }}
+              </span>
             </div>
             <div class="staff-info-shops">
               <span class="mg-r8">所在部门: {{ info.department }}</span>
@@ -24,31 +34,86 @@
             </div>
           </div>
         </a-col>
-        <a-col :span="9" style="text-align: right;" v-if="info.work_status.name === '在职'">
-          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|edit']" type="primary" @click="editStaffInfo">编辑资料</st-button>
-          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|bind_card']" v-modal-link="{ name: 'shop-staff-bind-card', props: {staff: info} }">绑实体卡</st-button>
-          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|rebind_card']" v-modal-link="{ name: 'shop-staff-bind-card', props: {staff: info} }">重绑实体卡</st-button>
+        <a-col
+          :span="9"
+          style="text-align: right;"
+          v-if="info.work_status.name === '在职'"
+        >
+          <st-button
+            class="mg-r8"
+            v-if="auth['brand_shop:staff:staff|edit']"
+            type="primary"
+            @click="editStaffInfo"
+          >
+            编辑资料
+          </st-button>
+          <st-button
+            class="mg-r8"
+            v-if="auth['brand_shop:staff:staff|bind_card']"
+            v-modal-link="{
+              name: 'shop-staff-bind-card',
+              props: { staff: info }
+            }"
+          >
+            绑实体卡
+          </st-button>
+          <st-button
+            class="mg-r8"
+            v-if="auth['brand_shop:staff:staff|rebind_card']"
+            v-modal-link="{
+              name: 'shop-staff-bind-card',
+              props: { staff: info }
+            }"
+          >
+            重绑实体卡
+          </st-button>
           <a-dropdown>
             <a-menu slot="overlay" @click="handleMenuClick">
               <a-menu-item>
-                <a v-if="auth['brand_shop:staff:account|save']"
-                  v-modal-link="{ name: 'shop-staff-re-password', props: {staff: info} }">管理登录账号</a>
+                <a
+                  v-if="auth['brand_shop:staff:account|save']"
+                  v-modal-link="{
+                    name: 'shop-staff-re-password',
+                    props: { staff: info }
+                  }"
+                >
+                  管理登录账号
+                </a>
               </a-menu-item>
               <a-menu-item>
-                <a v-if="auth['brand_shop:staff:staff|position']" @click="jumpToStaffPosition">职位变更</a>
+                <a
+                  v-if="auth['brand_shop:staff:staff|position']"
+                  @click="jumpToStaffPosition"
+                >
+                  职位变更
+                </a>
               </a-menu-item>
               <a-menu-item>
-                <a v-if="auth['brand_shop:staff:staff|salary']"
-                  v-modal-link="{ name: 'shop-staff-salary-account-setting', props: {staff: info} }">设置薪资账户</a>
+                <a
+                  v-if="auth['brand_shop:staff:staff|salary']"
+                  v-modal-link="{
+                    name: 'shop-staff-salary-account-setting',
+                    props: { staff: info }
+                  }"
+                >
+                  设置薪资账户
+                </a>
               </a-menu-item>
               <a-menu-item>
-                <a v-if="auth['brand_shop:staff:staff|shop_leave']"
-                  v-modal-link="{ name: 'shop-staff-leave-current-shop', props: {staff: info} }">解除门店关系</a>
+                <a
+                  v-if="auth['brand_shop:staff:staff|shop_leave']"
+                  v-modal-link="{
+                    name: 'shop-staff-leave-current-shop',
+                    props: { staff: info }
+                  }"
+                >
+                  解除门店关系
+                </a>
               </a-menu-item>
             </a-menu>
             <a-button>
               更多操作
-              <a-icon type="down"/>
+              <a-icon type="down" />
             </a-button>
           </a-dropdown>
         </a-col>
@@ -106,7 +171,12 @@ export default {
   },
   computed: {
     image_avatar_url() {
-      return (this.info && this.info.image_avatar && this.info.image_avatar.image_url) || ''
+      return (
+        (this.info &&
+          this.info.image_avatar &&
+          this.info.image_avatar.image_url) ||
+        ''
+      )
     }
   },
   created() {

@@ -13,12 +13,16 @@
             <a-input placeholder="请输入" v-decorator="payConfig.key" />
           </st-form-item>
           <st-form-item label="证书">
-            <pem-upload-component @success="uploadPemSuccess"></pem-upload-component>
+            <pem-upload-component
+              @success="uploadPemSuccess"
+            ></pem-upload-component>
             <a-input v-show="false" v-decorator="payConfig.cert_pem" />
           </st-form-item>
-          <st-form-item label="证书秘钥" >
-            <pem-upload-component @success="uploadSecretKeySuccess"></pem-upload-component>
-            <a-input v-show="false"  v-decorator="payConfig.key_pem" />
+          <st-form-item label="证书秘钥">
+            <pem-upload-component
+              @success="uploadSecretKeySuccess"
+            ></pem-upload-component>
+            <a-input v-show="false" v-decorator="payConfig.key_pem" />
           </st-form-item>
           <st-form-item labelFix>
             <st-button @click="back" :class="pay('back')">上一步</st-button>
@@ -31,9 +35,7 @@
 </template>
 
 <script>
-import {
-  PayConfigService
-} from './pay-config.service'
+import { PayConfigService } from './pay-config.service'
 import PemUploadComponent from './components#/pem-upload.component'
 export default {
   bem: {
@@ -51,28 +53,37 @@ export default {
     return {
       form: this.$form.createForm(this),
       payConfig: {
-        mch_name: ['mch_name',
+        mch_name: [
+          'mch_name',
           {
-            rules: [{
-              required: true,
-              message: '请填写商户名称'
-            }]
+            rules: [
+              {
+                required: true,
+                message: '请填写商户名称'
+              }
+            ]
           }
         ],
-        mch_id: ['mch_id',
+        mch_id: [
+          'mch_id',
           {
-            rules: [{
-              required: true,
-              message: '请填写微信商户号'
-            }]
+            rules: [
+              {
+                required: true,
+                message: '请填写微信商户号'
+              }
+            ]
           }
         ],
-        key: ['key',
+        key: [
+          'key',
           {
-            rules: [{
-              required: true,
-              message: '请填写API密钥'
-            }]
+            rules: [
+              {
+                required: true,
+                message: '请填写API密钥'
+              }
+            ]
           }
         ],
         cert_pem: ['cert_pem'],
@@ -108,5 +119,4 @@ export default {
     }
   }
 }
-
 </script>

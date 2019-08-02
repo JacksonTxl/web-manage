@@ -1,13 +1,13 @@
 <template>
   <div>
-    <a-select :defaultValue="value" placeholder="请选择课程类型" @change="change">
+    <a-select
+      :defaultValue="value"
+      placeholder="请选择课程类型"
+      @change="change"
+    >
       <a-select-option :value="-1">请选择课程类型</a-select-option>
-      <a-select-option
-        :value="item.id"
-        v-for="item in list"
-        :key="item.id"
-      >
-        {{item.setting_name}}
+      <a-select-option :value="item.id" v-for="item in list" :key="item.id">
+        {{ item.setting_name }}
       </a-select-option>
     </a-select>
   </div>

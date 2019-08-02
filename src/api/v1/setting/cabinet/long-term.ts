@@ -2,10 +2,10 @@ import { Api } from '@/api/api'
 const url = '/v1/setting/cabinet/long-term'
 
 export class LongTermCabinetApi extends Api {
-/**
- * 新增长期储物柜
- * @param params
- */
+  /**
+   * 新增长期储物柜
+   * @param params
+   */
   add(params: AddInput) {
     return this.http.post(url, { params })
   }
@@ -38,9 +38,7 @@ export class LongTermCabinetApi extends Api {
   }
 }
 
-export interface AddInput {
-
-}
+export interface AddInput {}
 export interface UpdateInput extends AddInput {
   id: number
 }

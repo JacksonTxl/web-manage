@@ -91,7 +91,9 @@ export default {
         showTitle: false,
         useHtml: true,
         itemTpl:
-          `<li class='tooltip-item' data-index={index} style='background-color:${this.color};'>` +
+          `<li class='tooltip-item' data-index={index} style='background-color:${
+            this.color
+          };'>` +
           `<span class='g2-tooltip-value'>{value}${this.unit}</span>` +
           `</li>`
       })

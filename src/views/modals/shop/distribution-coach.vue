@@ -11,9 +11,14 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="24" class="distribution-container" >
+      <a-col :lg="24" class="distribution-container">
         <st-table
-          :rowSelection="{ columnTitle:'分配',type: 'radio',selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+          :rowSelection="{
+            columnTitle: '分配',
+            type: 'radio',
+            selectedRowKeys: selectedRowKeys,
+            onChange: onSelectChange
+          }"
           :columns="columns"
           :dataSource="list"
           rowKey="id"
@@ -21,7 +26,8 @@
           :pagination="false"
         >
           <template slot="custom_title">
-            私教消课数（近30天）<st-help-tooltip id="TSYHFP002" />
+            私教消课数（近30天）
+            <st-help-tooltip id="TSYHFP002" />
           </template>
         </st-table>
       </a-col>

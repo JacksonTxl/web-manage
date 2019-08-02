@@ -11,14 +11,18 @@ export class InfoService implements RouteGuard {
   loading$ = new State({})
   constructor(private shopApi: ShopApi) {}
   getInfo() {
-    return this.shopApi.getShopSettingInfo().pipe(tap((res:any) => {
-      this.info$.commit(() => res.info)
-    }))
+    return this.shopApi.getShopSettingInfo().pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
+      })
+    )
   }
   getServiceList() {
-    return this.shopApi.getServiceList().pipe(tap((res:any) => {
-      this.serviceList$.commit(() => res.services)
-    }))
+    return this.shopApi.getServiceList().pipe(
+      tap((res: any) => {
+        this.serviceList$.commit(() => res.services)
+      })
+    )
   }
   init() {
     return forkJoin(this.getInfo(), this.getServiceList())

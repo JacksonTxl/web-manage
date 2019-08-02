@@ -6,26 +6,29 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 
 import {
-  StaffApi, PutStaffBrandQuitInput, PutStaffBrandRestartInput
+  StaffApi,
+  PutStaffBrandQuitInput,
+  PutStaffBrandRestartInput
 } from '@/api/v1/staff'
 import { forkJoin } from 'rxjs'
 import { MessageService } from '@/services/message.service'
 
 interface SetState {
-  positionInfo: object,
-  staffEnums: object,
+  positionInfo: object
+  staffEnums: object
   coachLevelList: object[]
   conditionDeleteInfo: object
 }
 @Injectable()
 export class ReinstatementService {
-  constructor(protected staffApi: StaffApi, private msg: MessageService) {
-  }
+  constructor(protected staffApi: StaffApi, private msg: MessageService) {}
   putStaffBrandRestart(params: PutStaffBrandRestartInput) {
-    return this.staffApi.putStaffBrandRestart(params).pipe(tap(res => {
-      this.msg.success({
-        content: '员工复职成功'
+    return this.staffApi.putStaffBrandRestart(params).pipe(
+      tap(res => {
+        this.msg.success({
+          content: '员工复职成功'
+        })
       })
-    }))
+    )
   }
 }

@@ -19,7 +19,9 @@ export class JoinDepartmentService extends Store<SetState> {
     this.state$ = new State({
       departmentList: {}
     })
-    this.departmentList$ = new Computed(this.state$.pipe(pluck('departmentList')))
+    this.departmentList$ = new Computed(
+      this.state$.pipe(pluck('departmentList'))
+    )
   }
   getStaffDepartment() {
     return this.staffApi.getStaffDepartmentList().pipe(

@@ -25,7 +25,7 @@
         <th>操作</th>
       </tr>
       <tr style="height:80px" v-show="isShowDay(n)" v-for="n in 7" :key="n">
-        <td>{{n | dayFilter}}</td>
+        <td>{{ n | dayFilter }}</td>
         <td colspan="5">
           <a-slider range :defaultValue="[20, 50]"></a-slider>
         </td>
@@ -34,46 +34,60 @@
             <div slot="content">
               <a-checkbox-group v-model="selectedDaysCheckbox">
                 <a-checkbox
-                  @change="onCopyDayChange(1,n)"
+                  @change="onCopyDayChange(1, n)"
                   :value="1"
-                  :disabled="isDisabledCopyDay(1,n)"
-                >周一</a-checkbox>
-                <br>
+                  :disabled="isDisabledCopyDay(1, n)"
+                >
+                  周一
+                </a-checkbox>
+                <br />
                 <a-checkbox
-                  @change="onCopyDayChange(2,n)"
+                  @change="onCopyDayChange(2, n)"
                   :value="2"
-                  :disabled="isDisabledCopyDay(2,n)"
-                >周二</a-checkbox>
-                <br>
+                  :disabled="isDisabledCopyDay(2, n)"
+                >
+                  周二
+                </a-checkbox>
+                <br />
                 <a-checkbox
-                  @change="onCopyDayChange(3,n)"
+                  @change="onCopyDayChange(3, n)"
                   :value="3"
-                  :disabled="isDisabledCopyDay(3,n)"
-                >周三</a-checkbox>
-                <br>
+                  :disabled="isDisabledCopyDay(3, n)"
+                >
+                  周三
+                </a-checkbox>
+                <br />
                 <a-checkbox
-                  @change="onCopyDayChange(4,n)"
+                  @change="onCopyDayChange(4, n)"
                   :value="4"
-                  :disabled="isDisabledCopyDay(4,n)"
-                >周四</a-checkbox>
-                <br>
+                  :disabled="isDisabledCopyDay(4, n)"
+                >
+                  周四
+                </a-checkbox>
+                <br />
                 <a-checkbox
-                  @change="onCopyDayChange(5,n)"
+                  @change="onCopyDayChange(5, n)"
                   :value="5"
-                  :disabled="isDisabledCopyDay(5,n)"
-                >周五</a-checkbox>
-                <br>
+                  :disabled="isDisabledCopyDay(5, n)"
+                >
+                  周五
+                </a-checkbox>
+                <br />
                 <a-checkbox
-                  @change="onCopyDayChange(6,n)"
+                  @change="onCopyDayChange(6, n)"
                   :value="6"
-                  :disabled="isDisabledCopyDay(6,n)"
-                >周六</a-checkbox>
-                <br>
+                  :disabled="isDisabledCopyDay(6, n)"
+                >
+                  周六
+                </a-checkbox>
+                <br />
                 <a-checkbox
-                  @change="onCopyDayChange(7,n)"
+                  @change="onCopyDayChange(7, n)"
                   :value="7"
-                  :disabled="isDisabledCopyDay(7,n)"
-                >周日</a-checkbox>
+                  :disabled="isDisabledCopyDay(7, n)"
+                >
+                  周日
+                </a-checkbox>
               </a-checkbox-group>
             </div>
             <a href="javascript:;">复制到</a>

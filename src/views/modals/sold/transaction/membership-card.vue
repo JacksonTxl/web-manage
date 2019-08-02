@@ -1,32 +1,59 @@
 <template>
-  <st-modal title="会员卡签单" size="small" v-model="show" wrapClassName="modal-sold-course-transfer">
+  <st-modal
+    title="会员卡签单"
+    size="small"
+    v-model="show"
+    wrapClassName="modal-sold-course-transfer"
+  >
     <div :class="transfer('content')">
       <a-row :class="transfer('info')">
         <a-col :span="13">
           <st-info>
-            <st-info-item label="商品名称">{{cardInfo.card_name}}</st-info-item>
-            <st-info-item label="商品类型">{{cardInfo.card_type ===1 ? '次卡':'期限卡'}}</st-info-item>
+            <st-info-item label="商品名称">
+              {{ cardInfo.card_name }}
+            </st-info-item>
+            <st-info-item label="商品类型">
+              {{ cardInfo.card_type === 1 ? '次卡' : '期限卡' }}
+            </st-info-item>
             <st-info-item
-              :label="cardInfo.card_type === 1 ? '有效次数':'有效时间'"
-            >{{emitData.price.num}}{{cardInfo.card_type === 1 ? '次':'天'}}</st-info-item>
-            <st-info-item
-              label="优惠赠送"
-            >{{emitData.price.gift_unit}}{{cardInfo.card_type ===1 ? '次':'天'}}</st-info-item>
-            <st-info-item label="开卡方式">{{cardInfo.open_type | openType}}</st-info-item>
-            <st-info-item label="约课权益">{{cardInfo.course_interests |courseInterests}}</st-info-item>
+              :label="cardInfo.card_type === 1 ? '有效次数' : '有效时间'"
+            >
+              {{ emitData.price.num
+              }}{{ cardInfo.card_type === 1 ? '次' : '天' }}
+            </st-info-item>
+            <st-info-item label="优惠赠送">
+              {{ emitData.price.gift_unit
+              }}{{ cardInfo.card_type === 1 ? '次' : '天' }}
+            </st-info-item>
+            <st-info-item label="开卡方式">
+              {{ cardInfo.open_type | openType }}
+            </st-info-item>
+            <st-info-item label="约课权益">
+              {{ cardInfo.course_interests | courseInterests }}
+            </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
           <st-info>
-            <st-info-item label="允许转让">{{cardInfo.is_transfer ? '支持':'不支持'}}</st-info-item>
-            <st-info-item label="转让手续费">{{cardInfo.num}}{{cardInfo.unit === 1 ? '%' :'元'}}</st-info-item>
-            <st-info-item label="线上购买">{{cardInfo.is_online ? '支持':'不支持' }}</st-info-item>
-            <st-info-item label="售卖群体">{{cardInfo.sale_range}}</st-info-item>
-            <st-info-item label="入场场馆">{{cardInfo.admission_range}}</st-info-item>
+            <st-info-item label="允许转让">
+              {{ cardInfo.is_transfer ? '支持' : '不支持' }}
+            </st-info-item>
+            <st-info-item label="转让手续费">
+              {{ cardInfo.num }}{{ cardInfo.unit === 1 ? '%' : '元' }}
+            </st-info-item>
+            <st-info-item label="线上购买">
+              {{ cardInfo.is_online ? '支持' : '不支持' }}
+            </st-info-item>
+            <st-info-item label="售卖群体">
+              {{ cardInfo.sale_range }}
+            </st-info-item>
+            <st-info-item label="入场场馆">
+              {{ cardInfo.admission_range }}
+            </st-info-item>
           </st-info>
         </a-col>
       </a-row>
-      <st-hr marginTop="0" marginBottom="0"/>
+      <st-hr marginTop="0" marginBottom="0" />
       <st-form :form="form" @ok="save" labelWidth="68px">
         <div :class="transfer('transfer')">
           <!--购买会员  -->
@@ -67,7 +94,7 @@
           <!-- <renewalTime v-model="basicInfoRuleList"></renewalTime> -->
 
           <component
-            v-for="(item,index) in arrComponents"
+            v-for="(item, index) in arrComponents"
             v-bind:is="item"
             :key="index"
             v-model="basicInfoRuleList"
@@ -76,20 +103,40 @@
             :cardInfo="cardInfo"
             :emitData="emitData"
           ></component>
-          <st-form-item label="小计" class="global-form-item-text" labelGutter="12px">
+          <st-form-item
+            label="小计"
+            class="global-form-item-text"
+            labelGutter="12px"
+          >
             <div>
               <span
                 style="color:#f00"
-                v-if="!(emitData.price.rally_price - emitData.coupon.price - emitData.advance.price - emitData.waiverAmount - 0 > 0)"
-              >请正确填写内容！</span>
+                v-if="
+                  !(
+                    emitData.price.rally_price -
+                      emitData.coupon.price -
+                      emitData.advance.price -
+                      emitData.waiverAmount -
+                      0 >
+                    0
+                  )
+                "
+              >
+                请正确填写内容！
+              </span>
               <span v-else>
-                {{emitData.price.rally_price - emitData.coupon.price - emitData.advance.price - emitData.waiverAmount}}
+                {{
+                  emitData.price.rally_price -
+                    emitData.coupon.price -
+                    emitData.advance.price -
+                    emitData.waiverAmount
+                }}
                 元
               </span>
             </div>
           </st-form-item>
           <!-- 分割线 -->
-          <st-hr marginTop="0" marginBottom="20"/>
+          <st-hr marginTop="0" marginBottom="20" />
           <!-- 销售人员 -->
           <salesman v-model="basicInfoRuleList"></salesman>
           <!-- 备注 -->
@@ -109,7 +156,7 @@
         </div>
       </div>
     </template>
-    <pre>{{emitData}}</pre>
+    <pre>{{ emitData }}</pre>
   </st-modal>
 </template>
 

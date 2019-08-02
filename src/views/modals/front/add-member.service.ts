@@ -4,10 +4,10 @@ import { MemberApi, AddUserParams } from '@/api/v1/member'
 
 @Injectable()
 export class AddMemberService {
-    loading$ = new State({})
-    constructor(private memberApi:MemberApi) {}
-    @Effect()
-    addMember(params:AddUserParams) {
-      return this.memberApi.addUser(params)
-    }
+  loading$ = new State({})
+  constructor(private memberApi: MemberApi) {}
+  @Effect()
+  addMember(params: AddUserParams) {
+    return this.memberApi.addUser(params)
+  }
 }

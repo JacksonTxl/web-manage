@@ -55,7 +55,6 @@ const walkRoutes = (routes: ServiceRouteConfig[]) => {
       route.name === '404' ||
       route.name.startsWith('test') ||
       route.name.startsWith('styleguide')
-
     ) {
       prependGuards(route, [
         NProgressService,

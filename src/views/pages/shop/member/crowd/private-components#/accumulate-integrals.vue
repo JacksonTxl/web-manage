@@ -1,10 +1,13 @@
-
 <template>
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <div style="display: flex;align-items: center;">
       <span style="margin-right:16px">积分范围</span>
-      <input-number v-model="value.getData.sum_scores" :company="'个'" :minMax="{min:0,max:1000}"></input-number>
+      <input-number
+        v-model="value.getData.sum_scores"
+        :company="'个'"
+        :minMax="{ min: 0, max: 1000 }"
+      ></input-number>
     </div>
   </div>
 </template>

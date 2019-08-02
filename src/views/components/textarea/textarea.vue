@@ -5,9 +5,8 @@
       v-bind="attrs"
       v-model="content"
       @change="onChange"
-    >
-    </a-textarea>
-    <label :class="b('label')">{{currentLength}}/{{maxlength}}</label>
+    ></a-textarea>
+    <label :class="b('label')">{{ currentLength }}/{{ maxlength }}</label>
   </div>
 </template>
 <script>

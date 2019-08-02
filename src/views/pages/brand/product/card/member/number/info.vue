@@ -1,11 +1,20 @@
 <template>
-  <st-panel app class="page-brand-card-info page-brand-period-card-info" initial>
+  <st-panel
+    app
+    class="page-brand-card-info page-brand-period-card-info"
+    initial
+  >
     <div class="page-brand-card-info-body">
       <div class="page-preview">
         <h5-container>
-          <template v-slot:title>购卡</template>
+          <template v-slot:title>
+            购卡
+          </template>
           <template v-slot:default>
-            <member-card :data="cardInfo" :cardType="MEMBER_CARD.NUMBER_CARD"></member-card>
+            <member-card
+              :data="cardInfo"
+              :cardType="MEMBER_CARD.NUMBER_CARD"
+            ></member-card>
           </template>
         </h5-container>
       </div>
@@ -13,24 +22,31 @@
         <div :class="item('card_name')" class="mb-24">
           <!-- 卡名称 -->
           <img
-          :class="item('card_bg')"
-          :src="cardInfo.card_bg.image_url | imgFilter({w:192,h:108})"
-          width="192"
-          height="108"
-          alt="">
+            :class="item('card_bg')"
+            :src="cardInfo.card_bg.image_url | imgFilter({ w: 192, h: 108 })"
+            width="192"
+            height="108"
+            alt=""
+          />
           <div :class="item('name_time')">
             <p :class="item('name')">
-              <st-tag type="number-card"/>
-              <span>{{cardInfo.card_name}}</span>
-              <span :class="{'brand-card__selling':cardInfo.sell_status.id===1,'brand-card__sellstop':cardInfo.sell_status.id===2}">{{cardInfo.sell_status.name}}
+              <st-tag type="number-card" />
+              <span>{{ cardInfo.card_name }}</span>
+              <span
+                :class="{
+                  'brand-card__selling': cardInfo.sell_status.id === 1,
+                  'brand-card__sellstop': cardInfo.sell_status.id === 2
+                }"
+              >
+                {{ cardInfo.sell_status.name }}
                 <a-popover
-                  v-if="cardInfo.sell_status.id===2"
+                  v-if="cardInfo.sell_status.id === 2"
                   trigger="hover"
                   placement="bottomRight"
                   arrowPointAtCenter
                 >
                   <div slot="content">
-                    {{cardInfo.sell_status.addition}}
+                    {{ cardInfo.sell_status.addition }}
                   </div>
                   <a-icon type="info-circle"></a-icon>
                 </a-popover>
@@ -38,7 +54,9 @@
             </p>
             <p :class="item('time')">
               <span class="label">售卖时间：</span>
-              <span class="value">{{cardInfo.start_time}} ~ {{cardInfo.end_time}}</span>
+              <span class="value">
+                {{ cardInfo.start_time }} ~ {{ cardInfo.end_time }}
+              </span>
             </p>
           </div>
         </div>
@@ -46,9 +64,12 @@
           <!-- 支持入场范围 -->
           <p class="mb-8">
             <span class="label">支持入场门店：</span>
-            <span class="value">{{cardInfo.admission_range.name}}</span>
+            <span class="value">{{ cardInfo.admission_range.name }}</span>
           </p>
-          <st-container :class="item('scroll-container')" v-if="cardInfo.admission_range.id===2">
+          <st-container
+            :class="item('scroll-container')"
+            v-if="cardInfo.admission_range.id === 2"
+          >
             <st-table
               size="middle"
               rowKey="shop_id"
@@ -63,9 +84,21 @@
           <!-- 售卖门店 -->
           <p class="mb-8">
             <span class="label">售卖门店：</span>
-            <span class="value">{{cardInfo.support_sales.name}}{{cardInfo.admission_range.id>1?`（已上架${cardInfo.shelf_num}家门店/共${cardInfo.sale_num}家门店）`:''}}</span>
+            <span class="value">
+              {{ cardInfo.support_sales.name
+              }}{{
+                cardInfo.admission_range.id > 1
+                  ? `（已上架${cardInfo.shelf_num}家门店/共${
+                      cardInfo.sale_num
+                    }家门店）`
+                  : ''
+              }}
+            </span>
           </p>
-          <st-container :class="item('scroll-container')" v-if="cardInfo.support_sales.id!==1">
+          <st-container
+            :class="item('scroll-container')"
+            v-if="cardInfo.support_sales.id !== 1"
+          >
             <st-table
               size="middle"
               rowKey="shop_id"
@@ -80,7 +113,7 @@
           <!-- 定价方式 -->
           <p class="mb-8">
             <span class="label">定价方式：</span>
-            <span class="value">{{cardInfo.price_setting.name}}</span>
+            <span class="value">{{ cardInfo.price_setting.name }}</span>
           </p>
         </div>
         <div :class="item('price_gradient')" class="mb-24">
@@ -90,32 +123,30 @@
           </p>
           <st-container :class="item('scroll-container')">
             <st-table
-              v-if="cardInfo.price_setting.id===1"
+              v-if="cardInfo.price_setting.id === 1"
               size="middle"
               rowKey="id"
               :columns="price_gradient_columns.brand"
               :dataSource="cardInfo.price_gradient"
               :pagination="false"
               :scroll="{ y: 230 }"
-            >
-            </st-table>
+            ></st-table>
             <st-table
-              v-if="cardInfo.price_setting.id===2"
+              v-if="cardInfo.price_setting.id === 2"
               size="middle"
               rowKey="id"
               :columns="price_gradient_columns.shop"
               :dataSource="cardInfo.price_gradient"
               :pagination="false"
               :scroll="{ y: 230 }"
-            >
-            </st-table>
+            ></st-table>
           </st-container>
         </div>
         <div :class="item('transfer')" class="mb-24">
           <!-- 转让设置 -->
           <p class="mb-8">
             <span class="label">转让设置：</span>
-            <span class="value">{{cardInfo.is_transfer.name}}</span>
+            <span class="value">{{ cardInfo.is_transfer.name }}</span>
           </p>
         </div>
         <div :class="item('card_introduction')" class="mb-24">
@@ -123,14 +154,14 @@
           <p class="mb-8">
             <span class="label">会员卡说明：</span>
           </p>
-          <st-container>{{cardInfo.card_introduction}}</st-container>
+          <st-container>{{ cardInfo.card_introduction }}</st-container>
         </div>
         <div :class="item('card_contents')" class="mb-24">
           <!-- 备注 -->
           <p class="mb-8">
             <span class="label">备注：</span>
           </p>
-          <st-container>{{cardInfo.card_contents}}</st-container>
+          <st-container>{{ cardInfo.card_contents }}</st-container>
         </div>
       </div>
     </div>

@@ -21,8 +21,9 @@
               @click="onClickItem"
               class="brand-item__btn"
               type="primary"
-              >进入品牌</st-button
             >
+              进入品牌
+            </st-button>
           </div>
         </a-col>
       </a-row>

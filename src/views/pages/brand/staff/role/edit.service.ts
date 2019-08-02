@@ -7,8 +7,8 @@ import { RoleService } from '../role.service'
 import { forkJoin } from 'rxjs'
 import { MessageService } from '@/services/message.service'
 interface SetState {
-  info: object,
-  brandList: any[],
+  info: object
+  brandList: any[]
   shopList: any[]
 }
 @Injectable()
@@ -34,26 +34,32 @@ export class EditService extends Store<SetState> {
     })
   }
   update(params: RoleInfo) {
-    return this.roleService.update(params).pipe(tap(res => {
-      this.msg.success({ content: '更新成功' })
-    }))
+    return this.roleService.update(params).pipe(
+      tap(res => {
+        this.msg.success({ content: '更新成功' })
+      })
+    )
   }
   gitInitInfo(query: GetInitInfoPut) {
-    return this.roleService.getInitInfo(query).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.brandList = res.brand_list
-        state.shopList = res.shop_list
+    return this.roleService.getInitInfo(query).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.brandList = res.brand_list
+          state.shopList = res.shop_list
+        })
       })
-    }))
+    )
   }
   /**
-     * 获取所有角色详情
-     */
+   * 获取所有角色详情
+   */
   @Effect()
   getInfo(query: GetInitInfoPut) {
-    return this.roleService.getInfo(query).pipe(tap(res => {
-      this.SET_ROLE_INFO(res.role)
-    }))
+    return this.roleService.getInfo(query).pipe(
+      tap(res => {
+        this.SET_ROLE_INFO(res.role)
+      })
+    )
   }
   getInit(query: GetInitInfoPut) {
     return forkJoin(this.getInfo(query), this.gitInitInfo(query))

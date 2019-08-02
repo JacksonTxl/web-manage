@@ -69,7 +69,9 @@ export default {
         /**
          * 找到对应 type 的默认配置，例如 chartConfig.defaultLineConfig
          */
-        chartConfig[`default${type.replace(/^[a-z]/, i => i.toUpperCase())}Options`],
+        chartConfig[
+          `default${type.replace(/^[a-z]/, i => i.toUpperCase())}Options`
+        ],
         this.options
       )
     }

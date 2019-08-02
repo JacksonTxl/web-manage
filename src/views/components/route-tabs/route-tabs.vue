@@ -1,11 +1,15 @@
 <template>
   <a-tabs
-    :activeKey='activeRouteName'
+    :activeKey="activeRouteName"
     :tabPosition="tabPosition"
     @change="onChange"
     class="st-route-tabs"
   >
-    <a-tab-pane v-for="tab in options" :tab="tab.label" :key="tab.route.name"></a-tab-pane>
+    <a-tab-pane
+      v-for="tab in options"
+      :tab="tab.label"
+      :key="tab.route.name"
+    ></a-tab-pane>
     <slot name="actions" slot="tabBarExtraContent"></slot>
   </a-tabs>
 </template>
@@ -77,5 +81,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -69,23 +69,23 @@ export class SettingMinaApi extends Api {
 }
 
 export interface CallbackParams {
-  auth_code: string,
+  auth_code: string
   expires_in: number
 }
 export interface PayConfigForm {
-  mch_name: string,
-  mch_id: string,
+  mch_name: string
+  mch_id: string
   key: string
 }
 export interface H5Query {
   category: number
 }
 export interface SaveForm {
-  is_save: number, // 1保存，2发布
+  is_save: number // 1保存，2发布
   content: []
 }
 export interface StaffID {
-  staff_id: number[],
+  staff_id: number[]
 }
 export interface Menus {
   tabbar: []

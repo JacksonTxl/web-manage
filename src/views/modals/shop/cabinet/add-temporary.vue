@@ -9,10 +9,14 @@
   >
     <st-form :form="form" labelWidth="88px">
       <st-form-item label="区域">
-        <a-input :value="areaName" disabled/>
+        <a-input :value="areaName" disabled />
       </st-form-item>
       <st-form-item label="首字母">
-        <a-input placeholder="请输入首字母"  maxlength="1" v-decorator="rules.firstLetter"/>
+        <a-input
+          placeholder="请输入首字母"
+          maxlength="1"
+          v-decorator="rules.firstLetter"
+        />
       </st-form-item>
       <st-form-item label="起始编号" required>
         <a-input-number
@@ -26,22 +30,23 @@
       </st-form-item>
       <st-form-item label="柜子数量" required>
         <st-input-number placeholder="请输入数量" v-decorator="ruleConfig.num">
-          <template slot="addonAfter">个</template>
+          <template slot="addonAfter">
+            个
+          </template>
         </st-input-number>
       </st-form-item>
       <st-form-item required>
         <template slot="label">
-          递增方式<st-help-tooltip id="TSCL001" />
+          递增方式
+          <st-help-tooltip id="TSCL001" />
         </template>
-        <a-radio-group
-          v-decorator="ruleConfig.sortType"
-        >
+        <a-radio-group v-decorator="ruleConfig.sortType">
           <a-radio
             v-for="(item, index) in settingEnums.cabinet.sort_type.value"
             :key="index"
             :value="index"
           >
-            {{item}}
+            {{ item }}
           </a-radio>
         </a-radio-group>
       </st-form-item>
@@ -95,7 +100,7 @@ export default {
     onSubmit(e) {
       console.log(11)
       e.preventDefault()
-      this.form.validateFields().then((data) => {
+      this.form.validateFields().then(data => {
         data.cabinet_area_id = this.id
         this.addService.add(data).subscribe(this.onSubmitSuccess)
       })

@@ -9,27 +9,26 @@ export class EditService implements RouteGuard {
   loading$ = new State({})
   info$ = new State({})
   serviceList$ = new State([])
-  auth$ = new State({
-
-  })
-  constructor(
-    private shopApi: ShopApi
-
-  ) {}
+  auth$ = new State({})
+  constructor(private shopApi: ShopApi) {}
   @Effect()
   getInfo() {
-    return this.shopApi.getShopSettingInfo().pipe(tap((res:any) => {
-      this.info$.commit(() => res.info)
-    }))
+    return this.shopApi.getShopSettingInfo().pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
+      })
+    )
   }
   @Effect()
   getServiceList() {
-    return this.shopApi.getServiceList().pipe(tap((res:any) => {
-      this.serviceList$.commit(() => res.services)
-    }))
+    return this.shopApi.getServiceList().pipe(
+      tap((res: any) => {
+        this.serviceList$.commit(() => res.services)
+      })
+    )
   }
   @Effect()
-  edit(params:ShopEditShopInput) {
+  edit(params: ShopEditShopInput) {
     return this.shopApi.updateShop(params)
   }
   init() {

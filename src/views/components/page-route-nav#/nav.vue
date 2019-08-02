@@ -3,14 +3,13 @@
     <div :class="b('navs')">
       <div>
         <div :class="b('title')">
-          <st-t2>{{title}}</st-t2>
+          <st-t2>{{ title }}</st-t2>
         </div>
         <st-route-tabs
           v-if="value"
           :options="value"
           tabPosition="right"
-        >
-        </st-route-tabs>
+        ></st-route-tabs>
       </div>
     </div>
     <div :class="b('content')">

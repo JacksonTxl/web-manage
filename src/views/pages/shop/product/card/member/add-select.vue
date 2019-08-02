@@ -1,12 +1,12 @@
 <template>
   <st-panel app class="page-shop-add-select">
     <div class="page-shop-add-select-content">
-      <router-link :to="i.url" v-for="(i,index) in cardTypeList" :key="index">
+      <router-link :to="i.url" v-for="(i, index) in cardTypeList" :key="index">
         <div class="page-shop-add-select-item">
-          <img :src="i.bg" width="328" height="182" :alt="i.title">
+          <img :src="i.bg" width="328" height="182" :alt="i.title" />
           <div class="page-shop-add-select-text">
-            <h2 class="page-shop-add-select-title">{{i.title}}</h2>
-            <p class="page-shop-add-select-describe">{{i.describe}}</p>
+            <h2 class="page-shop-add-select-title">{{ i.title }}</h2>
+            <p class="page-shop-add-select-describe">{{ i.describe }}</p>
           </div>
         </div>
       </router-link>

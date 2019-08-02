@@ -12,8 +12,11 @@
         <a-row>
           <a-col :xs="22">
             <st-form-item label="训练目的" required>
-              <a-input placeholder="请输入训练目的" v-decorator="rules.settingName" maxlength="20">
-              </a-input>
+              <a-input
+                placeholder="请输入训练目的"
+                v-decorator="rules.settingName"
+                maxlength="20"
+              ></a-input>
             </st-form-item>
           </a-col>
         </a-row>

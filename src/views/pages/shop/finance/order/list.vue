@@ -2,19 +2,20 @@
   <st-panel app initial :class="basic()">
     <div slot="title">
       <st-input-search
-      placeholder="请输入会员姓名或手机号查找"
-      v-model="query.keyword"
-      @search="onSingleSearch('keyword',$event,true)"
-      style="width: 290px;"/>
+        placeholder="请输入会员姓名或手机号查找"
+        v-model="query.keyword"
+        @search="onSingleSearch('keyword', $event, true)"
+        style="width: 290px;"
+      />
     </div>
     <st-search-panel>
       <div :class="basic('select')">
         <span style="width:90px;">订单状态：</span>
-        <st-search-radio v-model="query.status" :list="orderStatusList"/>
+        <st-search-radio v-model="query.status" :list="orderStatusList" />
       </div>
       <div :class="basic('select')">
         <span style="width:90px;">支付状态：</span>
-        <st-search-radio v-model="query.type" :list="payStatusList"/>
+        <st-search-radio v-model="query.type" :list="payStatusList" />
       </div>
       <div :class="basic('select')">
         <span style="width:90px;">创建时间：</span>
@@ -32,42 +33,66 @@
           :showToday="false"
           v-model="end_date"
           @change="enddatePickerChange"
-
         />
       </div>
       <div slot="button">
-          <st-button type="primary" @click="onSearch">查询</st-button>
-          <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
+        <st-button type="primary" @click="onSearch">查询</st-button>
+        <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
       </div>
     </st-search-panel>
 
     <div :class="basic('content')">
       <div :class="basic('content-batch')" class="mg-b16">
         <!-- NOTE: 导出 -->
-          <!-- <st-button type="primary" v-if="auth.export" :disabled="isSelectedDisabled">批量导出</st-button> -->
+        <!-- <st-button type="primary" v-if="auth.export" :disabled="isSelectedDisabled">批量导出</st-button> -->
       </div>
       <st-table
-      :scroll="{x:1840}"
-      rowKey="id"
-      :columns="columns"
-      :page="page"
-      @change="onTableChange"
-      :dataSource="list"
-      :loading="loading.getList"
+        :scroll="{ x: 1840 }"
+        rowKey="id"
+        :columns="columns"
+        :page="page"
+        @change="onTableChange"
+        :dataSource="list"
+        :loading="loading.getList"
       >
         <template slot="order_status" slot-scope="text">
-          {{text | enumFilter('finance.order_status')}}
+          {{ text | enumFilter('finance.order_status') }}
         </template>
         <template slot="pay_status" slot-scope="text">
-          {{text | enumFilter('finance.pay_status')}}
+          {{ text | enumFilter('finance.pay_status') }}
         </template>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
-            <a v-if="record.auth['brand_shop:order:order|pay']" @click="onGathering(record)">收款</a>
-            <a v-if="record.auth['brand_shop:order:order|cancel']" @click="onCancel(record)">取消</a>
-            <a v-if="record.auth['brand_shop:order:order|get']" @click="onOrderInfo(record)">详情</a>
-            <a v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a>
-            <a v-if="record.auth['brand_shop:order:order|split']" @click="onSplit(record)">业务拆分</a>
+            <a
+              v-if="record.auth['brand_shop:order:order|pay']"
+              @click="onGathering(record)"
+            >
+              收款
+            </a>
+            <a
+              v-if="record.auth['brand_shop:order:order|cancel']"
+              @click="onCancel(record)"
+            >
+              取消
+            </a>
+            <a
+              v-if="record.auth['brand_shop:order:order|get']"
+              @click="onOrderInfo(record)"
+            >
+              详情
+            </a>
+            <a
+              v-if="record.auth['brand_shop:order:order|refund']"
+              @click="onRefund(record)"
+            >
+              退款
+            </a>
+            <a
+              v-if="record.auth['brand_shop:order:order|split']"
+              @click="onSplit(record)"
+            >
+              业务拆分
+            </a>
           </st-table-actions>
         </div>
       </st-table>
@@ -88,7 +113,7 @@ export default {
   bem: {
     basic: 'page-shop-finance'
   },
-  mixins: [ tableMixin ],
+  mixins: [tableMixin],
   serviceInject() {
     return {
       userService: UserService,
@@ -177,7 +202,7 @@ export default {
           id: record.id
         },
         on: {
-          success: (result) => {
+          success: result => {
             console.log('取消订单!')
             this.$router.push({ force: true, query: this.query })
           }
@@ -192,7 +217,7 @@ export default {
           id: record.id
         },
         on: {
-          success: (result) => {
+          success: result => {
             console.log('转让成功!')
             this.$router.push({ force: true, query: this.query })
           }
@@ -207,7 +232,7 @@ export default {
           id: record.id
         },
         on: {
-          success: (result) => {
+          success: result => {
             console.log('退款成功!')
             this.$router.push({ force: true, query: this.query })
           }
@@ -222,7 +247,7 @@ export default {
           id: record.id
         },
         on: {
-          success: (result) => {
+          success: result => {
             console.log('业绩拆分成功!')
             this.$router.push({ force: true, query: this.query })
           }

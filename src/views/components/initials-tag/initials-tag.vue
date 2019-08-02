@@ -1,5 +1,5 @@
 <template>
-  <span class="st-initials-tag">{{value | initialsFilter}}</span>
+  <span class="st-initials-tag">{{ value | initialsFilter }}</span>
 </template>
 <script>
 export default {

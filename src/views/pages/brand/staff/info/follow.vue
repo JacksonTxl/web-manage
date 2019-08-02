@@ -3,25 +3,35 @@
     <a-row class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="16">
-          <shop-select style="width: 160px" class="mg-r8" v-model="query.shop_id" @change="onSingleSearch('shop_id', $event)"/>
-          <a-range-picker @change="onChooseDate" format="YYYY-MM-DD"/>
+          <shop-select
+            style="width: 160px"
+            class="mg-r8"
+            v-model="query.shop_id"
+            @change="onSingleSearch('shop_id', $event)"
+          />
+          <a-range-picker @change="onChooseDate" format="YYYY-MM-DD" />
         </a-col>
         <a-col :lg="2"></a-col>
         <a-col :lg="6">
-          <st-input-search placeholder="请输入用户姓名进行查询" @search="onSingleSearch('member_name', $event)"/>
+          <st-input-search
+            placeholder="请输入用户姓名进行查询"
+            @search="onSingleSearch('member_name', $event)"
+          />
         </a-col>
       </a-col>
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="followColumns"
           :dataSource="followList"
-          :scroll="{ x: 1000}"
+          :scroll="{ x: 1000 }"
           :loading="loading.getStaffFollow"
           :page="page"
           @change="onTableChange"
         >
           <template slot="member_name" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="goMemberDetai(record)">{{ text }}</a>
+            <a href="javascript:;" class="mg-r8" @click="goMemberDetai(record)">
+              {{ text }}
+            </a>
           </template>
         </st-table>
       </a-col>
@@ -37,7 +47,7 @@ import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {
-  mixins: [ tableMixin ],
+  mixins: [tableMixin],
   serviceInject() {
     return {
       followService: FollowService,
@@ -93,5 +103,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

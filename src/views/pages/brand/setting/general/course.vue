@@ -1,7 +1,5 @@
 <template>
-  <st-panel
-    :tabs="authTabs"
-  >
+  <st-panel :tabs="authTabs">
     <router-view></router-view>
   </st-panel>
 </template>

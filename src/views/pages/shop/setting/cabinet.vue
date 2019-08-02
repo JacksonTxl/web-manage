@@ -1,7 +1,10 @@
 <template>
   <div :class="b()">
     <div :class="b('nav')">
-      <st-t4 class="mg-l16 mg-b16">区域<span class="st-des">（支持拖拽排序）</span></st-t4>
+      <st-t4 class="mg-l16 mg-b16">
+        区域
+        <span class="st-des">（支持拖拽排序）</span>
+      </st-t4>
       <draggable v-model="list" @change="onAreaSortChange">
         <div
           v-for="item in list"
@@ -13,10 +16,17 @@
           }"
         >
           <div :class="b('nav-item-content')">
-            <span>{{item.area_name}}({{item.cabinet_num}})</span>
+            <span>{{ item.area_name }}({{ item.cabinet_num }})</span>
             <st-more-dropdown class="nav-opreation">
-              <a-menu-item v-if="auth.areaEdit" @click="editArea(item.id)">编辑</a-menu-item>
-              <a-menu-item v-if="auth.areaDel" @click="delArea(item.id, item.cabinet_num)">删除</a-menu-item>
+              <a-menu-item v-if="auth.areaEdit" @click="editArea(item.id)">
+                编辑
+              </a-menu-item>
+              <a-menu-item
+                v-if="auth.areaDel"
+                @click="delArea(item.id, item.cabinet_num)"
+              >
+                删除
+              </a-menu-item>
             </st-more-dropdown>
           </div>
           <edit-cabinet-area
@@ -27,20 +37,28 @@
           />
         </div>
       </draggable>
-      <add-cabinet-area v-if="isShowAddAreaBtn" @change="onAreaListChange"/>
+      <add-cabinet-area v-if="isShowAddAreaBtn" @change="onAreaListChange" />
       <a v-if="auth.areaAdd" :class="b('nav-add')" @click="addArea">添加区域</a>
     </div>
     <st-panel :class="b('content')">
       <div slot="prepend" class="page-setting-cabinet-tab">
-        <a-tabs :defaultActiveKey="type" class="st-route-tabs"
+        <a-tabs
+          :defaultActiveKey="type"
+          class="st-route-tabs"
           @change="onCabinetTabChange"
         >
-          <a-tab-pane :tab="`临时储物柜(${currentArea.temporary_num || 0})`" key="temporary"></a-tab-pane>
-          <a-tab-pane :tab="`长期储物柜(${currentArea.long_term_num || 0})`" key="long-term"></a-tab-pane>
+          <a-tab-pane
+            :tab="`临时储物柜(${currentArea.temporary_num || 0})`"
+            key="temporary"
+          ></a-tab-pane>
+          <a-tab-pane
+            :tab="`长期储物柜(${currentArea.long_term_num || 0})`"
+            key="long-term"
+          ></a-tab-pane>
         </a-tabs>
         <div class="page-setting-cabinet-tab__actions">
           <st-button @click="changeOperationMode">
-            {{isOperationInBatch ? '完成': '批量管理' }}
+            {{ isOperationInBatch ? '完成' : '批量管理' }}
           </st-button>
           <span v-if="checked.length && isOperationInBatch">
             <st-button
@@ -48,14 +66,14 @@
               icon="edit"
               class="mg-l8"
               v-modal-link="{
-              name: 'shop-cabinet-edit-price',
-              props: {
-                ids: this.checked
-              },
-              on: {
-                change: onCabinetListChange
-              }
-            }"
+                name: 'shop-cabinet-edit-price',
+                props: {
+                  ids: this.checked
+                },
+                on: {
+                  change: onCabinetListChange
+                }
+              }"
             >
               改价
             </st-button>
@@ -71,7 +89,8 @@
           </span>
           <st-button
             v-if="auth.batchAdd"
-            type="primary" class="mg-l8"
+            type="primary"
+            class="mg-l8"
             @click="openBatchAdd"
           >
             批量添加储物柜
@@ -226,9 +245,11 @@ export default {
       this.checked = checked
     },
     onDelCabinet() {
-      this.cabinetService.del({
-        ids: this.checked
-      }).subscribe(this.onDelCabinetSuccess)
+      this.cabinetService
+        .del({
+          ids: this.checked
+        })
+        .subscribe(this.onDelCabinetSuccess)
     },
     onDelCabinetSuccess() {
       this.messageService.success({

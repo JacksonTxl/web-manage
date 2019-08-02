@@ -1,9 +1,21 @@
 <template>
-  <div class="st-time-picker" @mounseover="onMouseOver" @mousedown="onMouseDown">
-    <template  v-for="i in 25">
-      <item @change="onChange"  @down="onDown" :checkArr="checkArr" :views="views" :isDrag="isDrag" :isEnter="isEnter" :key="i" :time="i - 1"></item>
+  <div
+    class="st-time-picker"
+    @mounseover="onMouseOver"
+    @mousedown="onMouseDown"
+  >
+    <template v-for="i in 25">
+      <item
+        @change="onChange"
+        @down="onDown"
+        :checkArr="checkArr"
+        :views="views"
+        :isDrag="isDrag"
+        :isEnter="isEnter"
+        :key="i"
+        :time="i - 1"
+      ></item>
     </template>
-
   </div>
 </template>
 
@@ -59,7 +71,10 @@ export default {
           end = i
         }
         if (!ca[i] && start !== -1 && end) {
-          rangeArr.push({ start_time: `${this.formatTime(start)}`, end_time: `${this.formatTime(end)}` })
+          rangeArr.push({
+            start_time: `${this.formatTime(start)}`,
+            end_time: `${this.formatTime(end)}`
+          })
           const view = `#${start}#start---#${end}#end`
           views.push(view)
           start = -1
@@ -101,6 +116,4 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-
-</style>
+<style lang="less" scoped></style>

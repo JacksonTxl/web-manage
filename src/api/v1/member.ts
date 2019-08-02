@@ -411,8 +411,8 @@ export class MemberApi extends Api {
     return this.http.put(`/v1/member/face/${id}`, { params })
   }
 }
-export interface EditFaceParams{
-  image_face:object
+export interface EditFaceParams {
+  image_face: object
 }
 
 export interface FaceCheckQuery {

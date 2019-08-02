@@ -1,22 +1,28 @@
 <template>
   <st-modal
-  title="修改剩余课时"
-  size="small"
-  v-model="show"
-  wrapClassName="modal-sold-package-surplus">
-    <st-form :form='form'>
+    title="修改剩余课时"
+    size="small"
+    v-model="show"
+    wrapClassName="modal-sold-package-surplus"
+  >
+    <st-form :form="form">
       <div :class="surplus('content')">
         <st-info :class="surplus('info')">
-          <st-info-item label="课程名称">{{courseData.courseName}}</st-info-item>
-          <st-info-item label="有效期">{{courseData.time}}</st-info-item>
+          <st-info-item label="课程名称">
+            {{ courseData.courseName }}
+          </st-info-item>
+          <st-info-item label="有效期">{{ courseData.time }}</st-info-item>
         </st-info>
-        <st-form-table :class="surplus('table')" :loading="loading.getPackageEditInfo">
+        <st-form-table
+          :class="surplus('table')"
+          :loading="loading.getPackageEditInfo"
+        >
           <colgroup>
-            <col style="width:3%;">
-            <col style="width:31.5%;">
-            <col style="width:19.5%;">
-            <col style="width:42%;">
-            <col style="width:4.5%;">
+            <col style="width:3%;" />
+            <col style="width:31.5%;" />
+            <col style="width:19.5%;" />
+            <col style="width:42%;" />
+            <col style="width:4.5%;" />
           </colgroup>
           <tr class="table-header">
             <th></th>
@@ -25,28 +31,52 @@
             <th>修改课时</th>
             <th></th>
           </tr>
-          <tr class="table-item" v-for="(item,index) in courseList" :key="index">
+          <tr
+            class="table-item"
+            v-for="(item, index) in courseList"
+            :key="index"
+          >
             <td></td>
-            <td>{{item.course_name}}</td>
-            <td>{{item.course_num_remain}}</td>
+            <td>{{ item.course_name }}</td>
+            <td>{{ item.course_num_remain }}</td>
             <td>
               <st-form-item labelWidth="0" labelGutter="0">
-                <st-input-number v-decorator="[`num-${index}`,{rules: [{
-                  required: true,
-                  message: '请输入课时',
-                }]}]" :min="0" :max="999" placeholder="输入修改后的课时" />
+                <st-input-number
+                  v-decorator="[
+                    `num-${index}`,
+                    {
+                      rules: [
+                        {
+                          required: true,
+                          message: '请输入课时'
+                        }
+                      ]
+                    }
+                  ]"
+                  :min="0"
+                  :max="999"
+                  placeholder="输入修改后的课时"
+                />
               </st-form-item>
             </td>
             <td></td>
           </tr>
         </st-form-table>
+
         <st-info :class="surplus('remarks')">
-          <st-info-item class="mg-b0" label="备注"><a-textarea v-model="remarks" :autosize="{ minRows: 4, maxRows: 6 }" /></st-info-item>
+          <st-info-item class="mg-b0" label="备注">
+            <a-textarea
+              v-model="remarks"
+              :autosize="{ minRows: 4, maxRows: 6 }"
+            />
+          </st-info-item>
         </st-info>
       </div>
-  </st-form>
+    </st-form>
     <template slot="footer">
-      <st-button @click="onSubmit" :loading="loading.edit" type="primary">确认提交</st-button>
+      <st-button @click="onSubmit" :loading="loading.edit" type="primary">
+        确认提交
+      </st-button>
     </template>
   </st-modal>
 </template>
@@ -96,9 +126,11 @@ export default {
   },
   methods: {
     getEditInfo() {
-      this.surplusService.getPackageEditInfo(this.courseData.id).subscribe(res => {
-        this.courseList = cloneDeep(res.list)
-      })
+      this.surplusService
+        .getPackageEditInfo(this.courseData.id)
+        .subscribe(res => {
+          this.courseList = cloneDeep(res.list)
+        })
     },
     onSubmit() {
       this.form.validateFields((error, values) => {
@@ -114,10 +146,15 @@ export default {
               course_num_remain: i.courseNum
             })
           })
-          this.surplusService.edit({ course_info: courseInfo, description: this.remarks }, this.courseData.id).subscribe(res => {
-            this.$emit('success')
-            this.show = false
-          })
+          this.surplusService
+            .edit(
+              { course_info: courseInfo, description: this.remarks },
+              this.courseData.id
+            )
+            .subscribe(res => {
+              this.$emit('success')
+              this.show = false
+            })
         }
       })
     }

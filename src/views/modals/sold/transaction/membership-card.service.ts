@@ -1,4 +1,3 @@
-
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 import { tap } from 'rxjs/operators'
@@ -7,7 +6,7 @@ import { TransactionApi } from '@/api/v1/sold/transaction'
 @Injectable()
 export class MembershipCardService {
   indexList$ = new State({})
-  constructor(private transactionApi: TransactionApi) { }
+  constructor(private transactionApi: TransactionApi) {}
   @Effect()
   /* 会员卡详情 */
   getOrderTransactionMemberCard(id: any) {

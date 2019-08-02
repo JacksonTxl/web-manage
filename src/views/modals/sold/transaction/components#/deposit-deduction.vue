@@ -1,15 +1,23 @@
 <template>
-  <st-form-item label="定金抵扣" class="global-form-item-text" labelGutter="12px">
+  <st-form-item
+    label="定金抵扣"
+    class="global-form-item-text"
+    labelGutter="12px"
+  >
     <div style="display: flex; justify-content: space-between;">
-      <span>{{indexAdvance.price}}元</span>
+      <span>{{ indexAdvance.price }}元</span>
       <a-dropdown>
         <a class="ant-dropdown-link" href="#">
           定金选择
-          <a-icon type="right"/>
+          <a-icon type="right" />
         </a>
         <a-menu slot="overlay">
-          <a-menu-item v-for="(item,index) in advance" :key="index" @click="couponClick(item)">
-            <a href="javascript:;">{{item.price}}</a>
+          <a-menu-item
+            v-for="(item, index) in advance"
+            :key="index"
+            @click="couponClick(item)"
+          >
+            <a href="javascript:;">{{ item.price }}</a>
           </a-menu-item>
         </a-menu>
       </a-dropdown>

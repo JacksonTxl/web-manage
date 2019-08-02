@@ -1,7 +1,7 @@
 import { Api } from '@/api/api'
 import { stringify } from 'qs'
 export interface Consume {
-  id: number,
+  id: number
   consume_type: number
 }
 export class PersonalCommonApi extends Api {
@@ -30,26 +30,26 @@ export class PersonalCommonApi extends Api {
     return this.http.get('/v1/schedule/personal/coach', { query })
   }
   /**
-  * 获取门店排期上课私教列表
-  */
+   * 获取门店排期上课私教列表
+   */
   getCourseCoachList(id: any) {
     return this.http.get(`/v1/schedule/personal/coach/${id}`)
   }
   /**
-  * 获取消费方式
-  */
+   * 获取消费方式
+   */
   getConsumeList(id: string) {
     return this.http.get(`/v1/schedule/personal/consume/${id}`)
   }
   /**
-  * 获取预约日期
-  */
+   * 获取预约日期
+   */
   getDateList(id: any) {
     return this.http.get(`/v1/schedule/personal/date/${id}`)
   }
   /**
-  * 获取预约日期
-  */
+   * 获取预约日期
+   */
   getTimeList(query: any) {
     return this.http.get(`/v1/schedule/personal/time/${query.id}`, { query })
   }
@@ -58,7 +58,7 @@ export interface MemberListQuery {
   member: String
 }
 export interface CoachListQuery {
-  start_time: string,
+  start_time: string
   end_time: string
 }
 export interface GetScheduleListInput {
@@ -90,7 +90,7 @@ export interface AddInput {
   course_id: number
   /**
    * 教练id
-  */
+   */
   coach_id: number
   /**
    * 开始时间

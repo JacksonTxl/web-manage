@@ -1,10 +1,11 @@
 <template>
   <st-modal
-  title="交易签单"
-  size="small"
-  v-model="show"
-  wrapClassName="modal-sold-deal-sale"
-  @ok="onOk">
+    title="交易签单"
+    size="small"
+    v-model="show"
+    wrapClassName="modal-sold-deal-sale"
+    @ok="onOk"
+  >
     <div :class="sale('content')">
       <a-row :class="sale('info')">
         <a-col :span="13">
@@ -17,7 +18,7 @@
           </st-info>
         </a-col>
         <a-col :span="11">
-           <st-info>
+          <st-info>
             <st-info-item label="允许转让">允许</st-info-item>
             <st-info-item label="转让手续费">5%</st-info-item>
             <st-info-item label="线上购买">60分钟</st-info-item>
@@ -49,7 +50,9 @@
               <st-button class="create-button">确定</st-button>
             </div>
           </st-form-item>
-          <st-form-item label="到期时间" class="mgb-18">2020/06/23 14:46</st-form-item>
+          <st-form-item label="到期时间" class="mgb-18">
+            2020/06/23 14:46
+          </st-form-item>
           <st-form-item label="合同编号" required>
             <div :class="sale('contract')">
               <a-input placeholder="请输入合同编号"></a-input>
@@ -64,7 +67,9 @@
           </st-form-item>
           <st-form-item label="购买赠送" class="mgb-18">
             <st-input-number placeholder="请输入赠送的上课节数XX">
-              <template slot="addonAfter">节</template>
+              <template slot="addonAfter">
+                节
+              </template>
             </st-input-number>
           </st-form-item>
           <st-form-item class="mgb-12" label="商品价格">120元</st-form-item>
@@ -135,30 +140,40 @@ export default {
   data() {
     return {
       show: false,
-      options: [{
-        value: '1',
-        label: '女更区域',
-        children: [{
-          value: '11',
-          label: 'A001'
-        }, {
-          value: '12',
-          label: 'A002'
-        }]
-      }, {
-        value: '2',
-        label: '男更区域',
-        children: [{
-          value: '21',
-          label: 'B001'
-        }, {
-          value: '22',
-          label: 'B002'
-        }, {
-          value: '23',
-          label: 'B003'
-        }]
-      }]
+      options: [
+        {
+          value: '1',
+          label: '女更区域',
+          children: [
+            {
+              value: '11',
+              label: 'A001'
+            },
+            {
+              value: '12',
+              label: 'A002'
+            }
+          ]
+        },
+        {
+          value: '2',
+          label: '男更区域',
+          children: [
+            {
+              value: '21',
+              label: 'B001'
+            },
+            {
+              value: '22',
+              label: 'B002'
+            },
+            {
+              value: '23',
+              label: 'B003'
+            }
+          ]
+        }
+      ]
     }
   },
   methods: {

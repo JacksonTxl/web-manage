@@ -11,19 +11,30 @@
       </a-col>
     </a-row>
     <a-row :gutter="8">
-      <a-col :lg="24" class="distribution-container" style="padding-left:12px;padding-right:12px;">
-          <st-table
-            :rowSelection="{ fixed: true, columnTitle:'分配',type: 'radio',selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-            :columns="columns"
-            :dataSource="list"
-            rowKey="id"
-            @change="handleTableChange"
-            :pagination="false"
-            >
-            <template slot="custom_title">
-              签单率（近30天）<st-help-tooltip id="TSYHFP001" />
-            </template>
-          </st-table>
+      <a-col
+        :lg="24"
+        class="distribution-container"
+        style="padding-left:12px;padding-right:12px;"
+      >
+        <st-table
+          :rowSelection="{
+            fixed: true,
+            columnTitle: '分配',
+            type: 'radio',
+            selectedRowKeys: selectedRowKeys,
+            onChange: onSelectChange
+          }"
+          :columns="columns"
+          :dataSource="list"
+          rowKey="id"
+          @change="handleTableChange"
+          :pagination="false"
+        >
+          <template slot="custom_title">
+            签单率（近30天）
+            <st-help-tooltip id="TSYHFP001" />
+          </template>
+        </st-table>
       </a-col>
     </a-row>
   </st-modal>
@@ -92,22 +103,26 @@ export default {
       console.log(pagination)
     },
     onSearch(e) {
-      this.service.getSaleList({
-        retrieve: e
-      }).subscribe(res => {
-        this.list = res.list
-      })
+      this.service
+        .getSaleList({
+          retrieve: e
+        })
+        .subscribe(res => {
+          this.list = res.list
+        })
     },
     save() {
       console.log('sale', this.chooseId)
-      this.service.addSale({
-        member_ids: this.memberIds,
-        sales_id: this.chooseId
-      }).subscribe(res => {
-        this.show = false
-        this.$emit('success')
-        this.messageService.success({ content: '分配成功' })
-      })
+      this.service
+        .addSale({
+          member_ids: this.memberIds,
+          sales_id: this.chooseId
+        })
+        .subscribe(res => {
+          this.show = false
+          this.$emit('success')
+          this.messageService.success({ content: '分配成功' })
+        })
     }
   },
   watch: {}

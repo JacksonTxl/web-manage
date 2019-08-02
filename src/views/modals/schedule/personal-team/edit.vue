@@ -13,12 +13,17 @@
         </a-date-picker>
       </st-form-item>
       <st-form-item label="课程" required>
-        <a-select v-decorator="formRules.courseId" :disabled="info.reserved_num">
+        <a-select
+          v-decorator="formRules.courseId"
+          :disabled="info.reserved_num"
+        >
           <a-select-option
             v-for="course in courseOptions"
             :key="course.id"
             :value="course.id"
-          >{{course.name}}</a-select-option>
+          >
+            {{ course.name }}
+          </a-select-option>
         </a-select>
       </st-form-item>
       <st-form-item label="教练" required>
@@ -27,22 +32,32 @@
             v-for="coach in coachOptions"
             :key="coach.id"
             :value="coach.id"
-          >{{coach.name}}</a-select-option>
+          >
+            {{ coach.name }}
+          </a-select-option>
         </a-select>
       </st-form-item>
       <st-form-item label="人数" required>
-        <a-input-search :disabled="info.reserved_num" v-decorator="formRules.limitNum">
+        <a-input-search
+          :disabled="info.reserved_num"
+          v-decorator="formRules.limitNum"
+        >
           <a-button slot="enterButton">人</a-button>
         </a-input-search>
       </st-form-item>
       <st-form-item label="课时费" required>
-        <a-input-search :disabled="info.reserved_num" v-decorator="formRules.courseFee">
+        <a-input-search
+          :disabled="info.reserved_num"
+          v-decorator="formRules.courseFee"
+        >
           <a-button slot="enterButton">元/节</a-button>
         </a-input-search>
       </st-form-item>
       <div class="ta-r">
         <st-button @click="cancel">取消</st-button>
-        <st-button class="mg-l8" type="primary" @click="onSubmit">确认</st-button>
+        <st-button class="mg-l8" type="primary" @click="onSubmit">
+          确认
+        </st-button>
       </div>
     </st-form>
   </st-modal>

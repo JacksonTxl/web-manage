@@ -1,11 +1,20 @@
 <template>
-  <st-panel app class="page-brand-basic-card page-brand-edit-number-card" initial>
+  <st-panel
+    app
+    class="page-brand-basic-card page-brand-edit-number-card"
+    initial
+  >
     <div class="page-brand-basic-card-body">
       <div class="page-preview">
         <h5-container>
-          <template v-slot:title>购卡</template>
+          <template v-slot:title>
+            购卡
+          </template>
           <template v-slot:default>
-            <member-card :data="h5CardInfo" :cardType="MEMBER_CARD.NUMBER_CARD"></member-card>
+            <member-card
+              :data="h5CardInfo"
+              :cardType="MEMBER_CARD.NUMBER_CARD"
+            ></member-card>
           </template>
         </h5-container>
       </div>
@@ -14,50 +23,100 @@
           <a-row :gutter="8" class="page-content-card-line__row">
             <a-col :lg="22">
               <p class="page-content-card__card__name">
-                <st-tag type="number-card"/>
-                <span>{{cardInfo.card_name}}</span>
+                <st-tag type="number-card" />
+                <span>{{ cardInfo.card_name }}</span>
               </p>
             </a-col>
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="23">
-              <st-form-item class="page-content-card-admission-range mt-4" label="支持入场门店" required>
+              <st-form-item
+                class="page-content-card-admission-range mt-4"
+                label="支持入场门店"
+                required
+              >
                 <a-radio-group
                   @change="admission_range"
-                  v-decorator="['cardData.admission_range',{initialValue:1,rules:[{validator:admission_shop_list_validator}]}]">
+                  v-decorator="[
+                    'cardData.admission_range',
+                    {
+                      initialValue: 1,
+                      rules: [{ validator: admission_shop_list_validator }]
+                    }
+                  ]"
+                >
                   <a-radio
-                    v-for="item in Object.entries(member_card.admission_range.value)"
+                    v-for="item in Object.entries(
+                      member_card.admission_range.value
+                    )"
                     :key="+item[0]"
-                    :value="+item[0]">{{item[1]}}</a-radio>
+                    :value="+item[0]"
+                  >
+                    {{ item[1] }}
+                  </a-radio>
                 </a-radio-group>
-                <div class="page-admission-range-shop" v-if="cardData.admission_range===2">
-                  <p class="page-admission-range-shop__describe">设置支持此会员卡出入场馆范围</p>
-                  <select-shop :shopIds="cardData.admission_shop_list" @change="admission_range_change"></select-shop>
+                <div
+                  class="page-admission-range-shop"
+                  v-if="cardData.admission_range === 2"
+                >
+                  <p class="page-admission-range-shop__describe">
+                    设置支持此会员卡出入场馆范围
+                  </p>
+                  <select-shop
+                    :shopIds="cardData.admission_shop_list"
+                    @change="admission_range_change"
+                  ></select-shop>
                 </div>
               </st-form-item>
             </a-col>
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="23">
-              <st-form-item class="page-content-card-price-setting mt-4" label="价格设置" required :help="priceValidatorText">
+              <st-form-item
+                class="page-content-card-price-setting mt-4"
+                label="价格设置"
+                required
+                :help="priceValidatorText"
+              >
                 <a-radio-group
                   @change="price_range"
-                  v-show="cardData.admission_range===1"
-                  v-decorator="['cardData.price_setting',{initialValue:1,rules:[{validator:price_gradient_list_validator}]}]">
+                  v-show="cardData.admission_range === 1"
+                  v-decorator="[
+                    'cardData.price_setting',
+                    {
+                      initialValue: 1,
+                      rules: [{ validator: price_gradient_list_validator }]
+                    }
+                  ]"
+                >
                   <a-radio
-                    v-for="item in Object.entries(member_card.price_setting.value)"
+                    v-for="item in Object.entries(
+                      member_card.price_setting.value
+                    )"
                     :key="+item[0]"
-                    :value="+item[0]">{{item[1]}}</a-radio>
+                    :value="+item[0]"
+                  >
+                    {{ item[1] }}
+                  </a-radio>
                 </a-radio-group>
-                <div class="page-price-setting-set" :class="{'error':!priceIsOk,'brand-set': cardData.price_setting===1&&cardData.admission_range===1}" v-if="cardData.price_setting===1">
+                <div
+                  class="page-price-setting-set"
+                  :class="{
+                    error: !priceIsOk,
+                    'brand-set':
+                      cardData.price_setting === 1 &&
+                      cardData.admission_range === 1
+                  }"
+                  v-if="cardData.price_setting === 1"
+                >
                   <st-form-table>
-                     <colgroup>
-                      <col style="width:18%;">
-                      <col style="width:18%;">
-                      <col style="width:18%;">
-                      <col style="width:18%;">
-                      <col style="width:18%;">
-                      <col style="width:10%;">
+                    <colgroup>
+                      <col style="width:18%;" />
+                      <col style="width:18%;" />
+                      <col style="width:18%;" />
+                      <col style="width:18%;" />
+                      <col style="width:18%;" />
+                      <col style="width:10%;" />
                     </colgroup>
                     <thead>
                       <tr>
@@ -72,37 +131,126 @@
                     <tbody>
                       <tr>
                         <td colspan="6" class="pd-y0 pd-x0">
-                          <st-button :disabled="rallyPriceList.length>3" type="dashed" icon="add" class="page-price-setting-set__add" block @click="brand_price_add">添加定价规格（{{rallyPriceList.length}}/4）</st-button>
+                          <st-button
+                            :disabled="rallyPriceList.length > 3"
+                            type="dashed"
+                            icon="add"
+                            class="page-price-setting-set__add"
+                            block
+                            @click="brand_price_add"
+                          >
+                            添加定价规格（{{ rallyPriceList.length }}/4）
+                          </st-button>
                         </td>
                       </tr>
-                      <tr v-for="(item,index) in rallyPriceList" :key="`${index}brand`" >
+                      <tr
+                        v-for="(item, index) in rallyPriceList"
+                        :key="`${index}brand`"
+                      >
                         <td>
-                          <st-input-number :min="1" :max="99999" :value="item.validity_times" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'validity_times'})">
+                          <st-input-number
+                            :min="1"
+                            :max="99999"
+                            :value="item.validity_times"
+                            @change="
+                              e =>
+                                brandPriceSettingHandleChange({
+                                  value: e,
+                                  key: index,
+                                  col: 'validity_times'
+                                })
+                            "
+                          >
                             <span slot="addonAfter">次</span>
                           </st-input-number>
                         </td>
                         <td>
-                          <st-input-number :float="true" :min="0" :max="999999.9" :value="item.rally_price" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'rally_price'})">
+                          <st-input-number
+                            :float="true"
+                            :min="0"
+                            :max="999999.9"
+                            :value="item.rally_price"
+                            @change="
+                              e =>
+                                brandPriceSettingHandleChange({
+                                  value: e,
+                                  key: index,
+                                  col: 'rally_price'
+                                })
+                            "
+                          >
                             <span slot="addonAfter">元</span>
                           </st-input-number>
                         </td>
                         <td>
-                          <st-input-number :min="1" :max="99999" :value="item.time.num" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'num'})">
-                            <a-select slot="addonAfter" :value="item.time.unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})">
+                          <st-input-number
+                            :min="1"
+                            :max="99999"
+                            :value="item.time.num"
+                            @change="
+                              e =>
+                                brandPriceSettingHandleChange({
+                                  value: e,
+                                  key: index,
+                                  col: 'time',
+                                  prop: 'num'
+                                })
+                            "
+                          >
+                            <a-select
+                              slot="addonAfter"
+                              :value="item.time.unit"
+                              @change="
+                                e =>
+                                  brandPriceSettingHandleChange({
+                                    value: e,
+                                    key: index,
+                                    col: 'time',
+                                    prop: 'unit'
+                                  })
+                              "
+                            >
                               <a-select-option
-                              v-for="(item,index) in unit_list"
-                              :value="item.value"
-                              :key="index" >{{item.label}}</a-select-option>
+                                v-for="(item, index) in unit_list"
+                                :value="item.value"
+                                :key="index"
+                              >
+                                {{ item.label }}
+                              </a-select-option>
                             </a-select>
                           </st-input-number>
                         </td>
                         <td>
-                          <st-input-number :min="1" :max="99999" :value="item.frozen_day" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'frozen_day'})">
+                          <st-input-number
+                            :min="1"
+                            :max="99999"
+                            :value="item.frozen_day"
+                            @change="
+                              e =>
+                                brandPriceSettingHandleChange({
+                                  value: e,
+                                  key: index,
+                                  col: 'frozen_day'
+                                })
+                            "
+                          >
                             <span slot="addonAfter">天</span>
                           </st-input-number>
                         </td>
                         <td>
-                          <st-input-number :min="1" :max="99999" :value="item.gift_unit" @change="e => brandPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
+                          <st-input-number
+                            :min="1"
+                            :max="99999"
+                            :value="item.gift_unit"
+                            @change="
+                              e =>
+                                brandPriceSettingHandleChange({
+                                  value: e,
+                                  key: index,
+                                  col: 'gift_unit'
+                                })
+                            "
+                          >
                             <span slot="addonAfter">次</span>
                           </st-input-number>
                         </td>
@@ -113,15 +261,24 @@
                     </tbody>
                   </st-form-table>
                 </div>
-                <div class="page-price-setting-set" :class="{'error':!priceIsOk,'shop-set': cardData.price_setting===2&&cardData.admission_range===1}" v-if="cardData.price_setting===2">
+                <div
+                  class="page-price-setting-set"
+                  :class="{
+                    error: !priceIsOk,
+                    'shop-set':
+                      cardData.price_setting === 2 &&
+                      cardData.admission_range === 1
+                  }"
+                  v-if="cardData.price_setting === 2"
+                >
                   <st-form-table>
                     <colgroup>
-                      <col style="width:15%;">
-                      <col style="width:30%;">
-                      <col style="width:15%;">
-                      <col style="width:15%;">
-                      <col style="width:15%;">
-                      <col style="width:10%;">
+                      <col style="width:15%;" />
+                      <col style="width:30%;" />
+                      <col style="width:15%;" />
+                      <col style="width:15%;" />
+                      <col style="width:15%;" />
+                      <col style="width:10%;" />
                     </colgroup>
                     <thead>
                       <tr>
@@ -136,43 +293,148 @@
                     <tbody>
                       <tr>
                         <td colspan="6" class="pd-y0 pd-x0">
-                          <st-button :disabled="shopPriceList.length>3" type="dashed" icon="add" class="page-price-setting-set__add" block @click="shop_price_add">添加定价规格（{{shopPriceList.length}}/4）</st-button>
+                          <st-button
+                            :disabled="shopPriceList.length > 3"
+                            type="dashed"
+                            icon="add"
+                            class="page-price-setting-set__add"
+                            block
+                            @click="shop_price_add"
+                          >
+                            添加定价规格（{{ shopPriceList.length }}/4）
+                          </st-button>
                         </td>
                       </tr>
-                      <tr v-for="(item,index) in shopPriceList" :key="`${index}shop`" >
+                      <tr
+                        v-for="(item, index) in shopPriceList"
+                        :key="`${index}shop`"
+                      >
                         <td>
-                          <st-input-number :min="1" :max="99999" :value="item.validity_times" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'validity_times'})">
+                          <st-input-number
+                            :min="1"
+                            :max="99999"
+                            :value="item.validity_times"
+                            @change="
+                              e =>
+                                shopPriceSettingHandleChange({
+                                  value: e,
+                                  key: index,
+                                  col: 'validity_times'
+                                })
+                            "
+                          >
                             <span slot="addonAfter">次</span>
                           </st-input-number>
                         </td>
                         <td>
-                          <st-input-number style="width:40%" :float="true" :min="0" :max="999999.9" :value="item.rally_price.min_price" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'rally_price', prop:'min_price'})">
+                          <st-input-number
+                            style="width:40%"
+                            :float="true"
+                            :min="0"
+                            :max="999999.9"
+                            :value="item.rally_price.min_price"
+                            @change="
+                              e =>
+                                shopPriceSettingHandleChange({
+                                  value: e,
+                                  key: index,
+                                  col: 'rally_price',
+                                  prop: 'min_price'
+                                })
+                            "
+                          >
                             <span slot="addonAfter">元</span>
                           </st-input-number>
-                          &nbsp;
-                          ~
-                          &nbsp;
-                          <st-input-number style="width:40%" :float="true" :min="0" :max="999999.9" :value="item.rally_price.max_price" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'rally_price', prop:'max_price'})">
+                          &nbsp; ~ &nbsp;
+                          <st-input-number
+                            style="width:40%"
+                            :float="true"
+                            :min="0"
+                            :max="999999.9"
+                            :value="item.rally_price.max_price"
+                            @change="
+                              e =>
+                                shopPriceSettingHandleChange({
+                                  value: e,
+                                  key: index,
+                                  col: 'rally_price',
+                                  prop: 'max_price'
+                                })
+                            "
+                          >
                             <span slot="addonAfter">元</span>
                           </st-input-number>
                         </td>
                         <td>
-                          <st-input-number style="width:100px;" :min="1" :max="99999" :value="item.time.num" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'num'})">
-                            <a-select slot="addonAfter" :value="item.time.unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'time', prop:'unit'})">
+                          <st-input-number
+                            style="width:100px;"
+                            :min="1"
+                            :max="99999"
+                            :value="item.time.num"
+                            @change="
+                              e =>
+                                shopPriceSettingHandleChange({
+                                  value: e,
+                                  key: index,
+                                  col: 'time',
+                                  prop: 'num'
+                                })
+                            "
+                          >
+                            <a-select
+                              slot="addonAfter"
+                              :value="item.time.unit"
+                              @change="
+                                e =>
+                                  shopPriceSettingHandleChange({
+                                    value: e,
+                                    key: index,
+                                    col: 'time',
+                                    prop: 'unit'
+                                  })
+                              "
+                            >
                               <a-select-option
-                              v-for="(item,index) in unit_list"
-                              :value="item.value"
-                              :key="index" >{{item.label}}</a-select-option>
+                                v-for="(item, index) in unit_list"
+                                :value="item.value"
+                                :key="index"
+                              >
+                                {{ item.label }}
+                              </a-select-option>
                             </a-select>
                           </st-input-number>
                         </td>
                         <td>
-                          <st-input-number :min="1" :max="99999" :value="item.frozen_day" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'frozen_day'})">
+                          <st-input-number
+                            :min="1"
+                            :max="99999"
+                            :value="item.frozen_day"
+                            @change="
+                              e =>
+                                shopPriceSettingHandleChange({
+                                  value: e,
+                                  key: index,
+                                  col: 'frozen_day'
+                                })
+                            "
+                          >
                             <span slot="addonAfter">天</span>
                           </st-input-number>
                         </td>
                         <td>
-                          <st-input-number :min="1" :max="99999" :value="item.gift_unit" @change="e => shopPriceSettingHandleChange({value:e, key:index,col:'gift_unit'})">
+                          <st-input-number
+                            :min="1"
+                            :max="99999"
+                            :value="item.gift_unit"
+                            @change="
+                              e =>
+                                shopPriceSettingHandleChange({
+                                  value: e,
+                                  key: index,
+                                  col: 'gift_unit'
+                                })
+                            "
+                          >
                             <span slot="addonAfter">次</span>
                           </st-input-number>
                         </td>
@@ -188,18 +450,42 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="23">
-              <st-form-item class="page-content-card-support-sales mt-4" label="支持售卖门店" required>
+              <st-form-item
+                class="page-content-card-support-sales mt-4"
+                label="支持售卖门店"
+                required
+              >
                 <a-radio-group
                   @change="support_range"
-                  v-decorator="['cardData.support_sales',{validateTrigger: 'blur',initialValue:1,rules:[{validator:support_sales_list_validator}]}]">
+                  v-decorator="[
+                    'cardData.support_sales',
+                    {
+                      validateTrigger: 'blur',
+                      initialValue: 1,
+                      rules: [{ validator: support_sales_list_validator }]
+                    }
+                  ]"
+                >
                   <a-radio
                     v-for="item in support_sales_list"
                     :key="+item[0]"
-                    :value="+item[0]">{{item[1]}}</a-radio>
+                    :value="+item[0]"
+                  >
+                    {{ item[1] }}
+                  </a-radio>
                 </a-radio-group>
-                <div class="page-support-sales-shop" :class="{'page-lot-shop':cardData.admission_range===2}" v-if="cardData.support_sales===2">
-                  <p class="page-support-sales-shop__describe">设置支持此会员卡售卖场馆范围</p>
-                  <select-shop :shopIds="cardData.sell_shop_list" @change="sales_shop_change"></select-shop>
+                <div
+                  class="page-support-sales-shop"
+                  :class="{ 'page-lot-shop': cardData.admission_range === 2 }"
+                  v-if="cardData.support_sales === 2"
+                >
+                  <p class="page-support-sales-shop__describe">
+                    设置支持此会员卡售卖场馆范围
+                  </p>
+                  <select-shop
+                    :shopIds="cardData.sell_shop_list"
+                    @change="sales_shop_change"
+                  ></select-shop>
                 </div>
               </st-form-item>
             </a-col>
@@ -217,14 +503,20 @@
                     <div slot="content">
                       设置此会员卡可售卖的时间范围
                     </div>
-                    <a-icon class="page-content-card-time__icon" type="info-circle"></a-icon>
+                    <a-icon
+                      class="page-content-card-time__icon"
+                      type="info-circle"
+                    ></a-icon>
                   </a-popover>
                 </span>
                 <a-form-item class="page-a-form">
                   <a-date-picker
                     :disabled="startTimeIsDisabled"
                     :disabledDate="disabledStartDate"
-                    v-decorator="['start_time',{rules:[{validator:start_time_validator}]}]"
+                    v-decorator="[
+                      'start_time',
+                      { rules: [{ validator: start_time_validator }] }
+                    ]"
                     format="YYYY-MM-DD"
                     placeholder="开始时间"
                     :showToday="false"
@@ -236,7 +528,10 @@
                 <a-form-item class="page-a-form">
                   <a-date-picker
                     :disabledDate="disabledEndDate"
-                    v-decorator="['end_time',{rules:[{validator:end_time_validator}]}]"
+                    v-decorator="[
+                      'end_time',
+                      { rules: [{ validator: end_time_validator }] }
+                    ]"
                     format="YYYY-MM-DD"
                     placeholder="结束时间"
                     :showToday="false"
@@ -252,16 +547,37 @@
             <a-col :lg="20">
               <st-form-item class="page-content-card-transfer" label="转让设置">
                 <div class="page-content-card-transfer-body">
-                  <a-checkbox class="page-checkbox" :checked="cardData._is_transfer" @change="transfer">支持转让</a-checkbox>
+                  <a-checkbox
+                    class="page-checkbox"
+                    :checked="cardData._is_transfer"
+                    @change="transfer"
+                  >
+                    支持转让
+                  </a-checkbox>
                   <st-input-number
-                  style="width:200px"
-                  v-decorator="['cardData.num',{rules:[{validator:transfer_validator}]}]"
-                  class="page-input-group"
-                  :float="cardData.unit===2"
-                  :disabled="!cardData._is_transfer"
-                  :min="transferMin" :max="transferMax">
-                    <a-select slot="addonAfter" v-model="cardData.unit" :disabled="!cardData._is_transfer">
-                      <a-select-option v-for="item in Object.entries(member_card.unit.value)" :key="+item[0]" :value="+item[0]">{{item[1]}}</a-select-option>
+                    style="width:200px"
+                    v-decorator="[
+                      'cardData.num',
+                      { rules: [{ validator: transfer_validator }] }
+                    ]"
+                    class="page-input-group"
+                    :float="cardData.unit === 2"
+                    :disabled="!cardData._is_transfer"
+                    :min="transferMin"
+                    :max="transferMax"
+                  >
+                    <a-select
+                      slot="addonAfter"
+                      v-model="cardData.unit"
+                      :disabled="!cardData._is_transfer"
+                    >
+                      <a-select-option
+                        v-for="item in Object.entries(member_card.unit.value)"
+                        :key="+item[0]"
+                        :value="+item[0]"
+                      >
+                        {{ item[1] }}
+                      </a-select-option>
                     </a-select>
                   </st-input-number>
                   <!-- <a-input-group compact class="page-input-group">
@@ -279,44 +595,65 @@
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="20">
-              <st-form-item class="page-content-card-sell-type" label="售卖方式" required>
+              <st-form-item
+                class="page-content-card-sell-type"
+                label="售卖方式"
+                required
+              >
                 <a-checkbox-group v-model="cardData.sell_type">
                   <a-checkbox
-                  v-for="item in sell_type_list"
-                  :key="item.value"
-                  :disabled="item.value===2"
-                  :value="item.value">{{item.label}}</a-checkbox>
+                    v-for="item in sell_type_list"
+                    :key="item.value"
+                    :disabled="item.value === 2"
+                    :value="item.value"
+                  >
+                    {{ item.label }}
+                  </a-checkbox>
                 </a-checkbox-group>
               </st-form-item>
             </a-col>
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="20">
-              <st-form-item class="page-content-card-bg" label="卡背景" required :help="cardBgValidatorText">
-                <st-card-bg-radio @change="onCardBgChange" v-model="cardData.card_bg" />
-              </st-form-item>
-            </a-col>
-          </a-row>
-          <a-row :gutter="8">
-            <a-col :lg="22">
-              <st-form-item class="page-content-card-introduction mt-4" label="会员卡介绍">
-                <st-textarea
-                v-model="cardData.card_introduction"
-                maxlength="500"
-                class="page-content-card-textarea"
-                placeholder="请输入"
+              <st-form-item
+                class="page-content-card-bg"
+                label="卡背景"
+                required
+                :help="cardBgValidatorText"
+              >
+                <st-card-bg-radio
+                  @change="onCardBgChange"
+                  v-model="cardData.card_bg"
                 />
               </st-form-item>
             </a-col>
           </a-row>
           <a-row :gutter="8">
             <a-col :lg="22">
-              <st-form-item class="page-content-card-contents mt-4" label="备注">
+              <st-form-item
+                class="page-content-card-introduction mt-4"
+                label="会员卡介绍"
+              >
                 <st-textarea
-                v-model="cardData.card_contents"
-                maxlength="500"
-                class="page-content-card-textarea"
-                placeholder="请输入"
+                  v-model="cardData.card_introduction"
+                  maxlength="500"
+                  class="page-content-card-textarea"
+                  placeholder="请输入"
+                />
+              </st-form-item>
+            </a-col>
+          </a-row>
+          <a-row :gutter="8">
+            <a-col :lg="22">
+              <st-form-item
+                class="page-content-card-contents mt-4"
+                label="备注"
+              >
+                <st-textarea
+                  v-model="cardData.card_contents"
+                  maxlength="500"
+                  class="page-content-card-textarea"
+                  placeholder="请输入"
                 />
               </st-form-item>
             </a-col>
@@ -324,7 +661,13 @@
           <a-row :gutter="8">
             <a-col :lg="20">
               <st-form-item class="page-content-card-submit" label=" ">
-                <st-button :loading="addLoading.editCard" type="primary" @click="onHandleSubmit">保 存</st-button>
+                <st-button
+                  :loading="addLoading.editCard"
+                  type="primary"
+                  @click="onHandleSubmit"
+                >
+                  保 存
+                </st-button>
               </st-form-item>
             </a-col>
           </a-row>
@@ -464,8 +807,8 @@ export default {
         'cardData.admission_range': this.cardInfo.admission_range,
         'cardData.price_setting': this.cardInfo.price_setting,
         'cardData.support_sales': this.cardInfo.support_sales,
-        'start_time': moment(this.cardInfo.start_time * 1000),
-        'end_time': moment(this.cardInfo.end_time * 1000),
+        start_time: moment(this.cardInfo.start_time * 1000),
+        end_time: moment(this.cardInfo.end_time * 1000),
         'cardData.num': this.cardInfo.transfer_num
       })
       // 入场门店
@@ -511,11 +854,18 @@ export default {
       }
       // 支持售卖门店
       this.cardData.support_sales = this.cardInfo.support_sales
-      this.cardData.sell_shop_list = this.cardData.support_sales === 2 ? cloneDeep(this.cardInfo.sell_shop_list) : []
+      this.cardData.sell_shop_list =
+        this.cardData.support_sales === 2
+          ? cloneDeep(this.cardInfo.sell_shop_list)
+          : []
       // 支持售卖时间
       this.start_time = moment(this.cardInfo.start_time * 1000)
       this.end_time = moment(this.cardInfo.end_time * 1000)
-      this.startTimeIsDisabled = this.cardInfo.start_time * 1000 < moment().startOf('day').valueOf() && this.cardInfo.end_time * 1000 > moment().valueOf()
+      this.startTimeIsDisabled =
+        this.cardInfo.start_time * 1000 <
+          moment()
+            .startOf('day')
+            .valueOf() && this.cardInfo.end_time * 1000 > moment().valueOf()
       // 转让设置
       this.cardData._is_transfer = !!this.cardInfo.is_transfer
       this.cardData.unit = this.cardInfo.transfer_unit
@@ -550,9 +900,14 @@ export default {
             this.cardData.sell_shop_list = []
           }
           // 售卖门店
-          if (this.cardData.admission_range === 2 && this.cardData.support_sales === 3) {
+          if (
+            this.cardData.admission_range === 2 &&
+            this.cardData.support_sales === 3
+          ) {
             // 多门店 && 支持入场门店
-            this.cardData.sell_shop_list = cloneDeep(this.cardData.admission_shop_list)
+            this.cardData.sell_shop_list = cloneDeep(
+              this.cardData.admission_shop_list
+            )
           }
           // 价格梯度
           let p = []
@@ -592,7 +947,9 @@ export default {
           // 卡id
           this.cardData.id = +this.$route.query.id
           // 转让
-          this.cardData.num = this.cardData._is_transfer ? +values.cardData.num : undefined
+          this.cardData.num = this.cardData._is_transfer
+            ? +values.cardData.num
+            : undefined
           this.addService.editCard(this.cardData).subscribe(res => {
             this.$router.push({
               name: 'brand-product-card-member-list-all'
@@ -777,10 +1134,28 @@ export default {
       const endValue = this.end_time
       if (!endValue) {
         // 结束时间未选择
-        return startValue.valueOf() < moment().startOf('day').valueOf()
+        return (
+          startValue.valueOf() <
+          moment()
+            .startOf('day')
+            .valueOf()
+        )
       }
-      let start = endValue.valueOf() > moment().add(30, 'y').valueOf() ? moment(endValue).subtract(30, 'y').valueOf() : moment().startOf('day').valueOf()
-      return startValue.valueOf() < start || startValue.valueOf() > moment(endValue).valueOf()
+      let start =
+        endValue.valueOf() >
+        moment()
+          .add(30, 'y')
+          .valueOf()
+          ? moment(endValue)
+              .subtract(30, 'y')
+              .valueOf()
+          : moment()
+              .startOf('day')
+              .valueOf()
+      return (
+        startValue.valueOf() < start ||
+        startValue.valueOf() > moment(endValue).valueOf()
+      )
     },
     start_time_change(data) {
       this.start_time = cloneDeep(data)
@@ -801,9 +1176,24 @@ export default {
       const startValue = this.start_time
       if (!startValue) {
         // 开始时间未选择
-        return endValue.valueOf() < moment().startOf('day').valueOf()
+        return (
+          endValue.valueOf() <
+          moment()
+            .startOf('day')
+            .valueOf()
+        )
       }
-      return endValue.valueOf() >= moment(startValue).add(30, 'y').valueOf() || endValue.valueOf() < moment(startValue).valueOf() || endValue.valueOf() < moment().startOf('day').valueOf()
+      return (
+        endValue.valueOf() >=
+          moment(startValue)
+            .add(30, 'y')
+            .valueOf() ||
+        endValue.valueOf() < moment(startValue).valueOf() ||
+        endValue.valueOf() <
+          moment()
+            .startOf('day')
+            .valueOf()
+      )
     },
     // moment
     moment,
@@ -822,8 +1212,11 @@ export default {
     },
     // 价格梯度校验
     priceValidator(type) {
-      let fnName = type === 1 ? 'brandPriceValidataArray' : 'shopPriceValidataArray'
-      let validata = this[fnName].length ? this[fnName].every(i => this.rules.number.test(i.split('-')[1])) : false
+      let fnName =
+        type === 1 ? 'brandPriceValidataArray' : 'shopPriceValidataArray'
+      let validata = this[fnName].length
+        ? this[fnName].every(i => this.rules.number.test(i.split('-')[1]))
+        : false
       this.priceValidatorText = validata ? '' : '请输入正确的价格'
     },
     onCardBgChange(e) {
@@ -882,7 +1275,9 @@ export default {
     },
     // 售卖方式
     sell_type_list() {
-      let sell_type = cloneDeep(Object.entries(this.member_card.sell_type.value))
+      let sell_type = cloneDeep(
+        Object.entries(this.member_card.sell_type.value)
+      )
       let arr = []
       sell_type.forEach(i => {
         arr.push({
@@ -914,7 +1309,10 @@ export default {
           if (o === 'time') {
             value = [`time-${i.time.num}`]
           } else if (o === 'rally_price') {
-            value = [`min_price-${i.rally_price.min_price}`, `max_price-${i.rally_price.max_price}`]
+            value = [
+              `min_price-${i.rally_price.min_price}`,
+              `max_price-${i.rally_price.max_price}`
+            ]
           } else {
             value = [`${o}-${i[o]}`]
           }

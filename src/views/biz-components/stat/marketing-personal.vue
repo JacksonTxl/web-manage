@@ -1,15 +1,17 @@
 <template>
-  <div class="stat-marketing-persona" :style="{height}">
+  <div class="stat-marketing-persona" :style="{ height }">
     <!-- 用户画像 -->
-    <img class="stat-marketing-persona__avatar" :src="src" alt="avatar">
+    <img class="stat-marketing-persona__avatar" :src="src" alt="avatar" />
     <div class="stat-marketing-persona__area">
       <div
         class="stat-marketing-persona__tag-box"
-        v-for="(item,idx) in data"
+        v-for="(item, idx) in data"
         :key="item.name"
         :style="tagBoxStyle(idx)"
       >
-        <span class="stat-marketing-persona__tag" :style="tagStyle(idx)">{{item.name}}</span>
+        <span class="stat-marketing-persona__tag" :style="tagStyle(idx)">
+          {{ item.name }}
+        </span>
       </div>
     </div>
   </div>
@@ -59,6 +61,4 @@ export default {
 }
 </script>
 
-<style lang='less'>
-
-</style>
+<style lang="less"></style>

@@ -1,13 +1,20 @@
 <template>
-  <st-modal class="modal-staff-delete"
-    title='删除员工'
-    @ok='onSubmit'
+  <st-modal
+    class="modal-staff-delete"
+    title="删除员工"
+    @ok="onSubmit"
     size="small"
-    :okText="operate? '确定':'知道了'"
-    v-model='show'>
+    :okText="operate ? '确定' : '知道了'"
+    v-model="show"
+  >
     <staff-info :staff="staff"></staff-info>
     <section v-if="!operate" class="mg-b16">
-      <staff-modal-tips :list="list" :type="3" :canNotDelete="!operate" v-if="list && list.length"></staff-modal-tips>
+      <staff-modal-tips
+        :list="list"
+        :type="3"
+        :canNotDelete="!operate"
+        v-if="list && list.length"
+      ></staff-modal-tips>
     </section>
     <section v-else>
       <div class="modal-staff-delete__sub-tip">
@@ -59,9 +66,11 @@ export default {
     onSubmit() {
       if (!this.operate) {
       } else {
-        this.deleteService.deleteStaffBrandInfo(this.staff.id + '').subscribe(res => {
-          this.$router.push({ force: true })
-        })
+        this.deleteService
+          .deleteStaffBrandInfo(this.staff.id + '')
+          .subscribe(res => {
+            this.$router.push({ force: true })
+          })
       }
       this.show = false
     },

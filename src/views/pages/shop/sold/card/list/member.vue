@@ -3,24 +3,36 @@
     <st-search-panel>
       <div :class="basic('select')" class="mgt-24">
         <span style="width:90px;">会员卡类型：</span>
-        <st-search-radio v-model="query.card_type" :list="cardTypeList"/>
+        <st-search-radio v-model="query.card_type" :list="cardTypeList" />
       </div>
       <div :class="basic('select')">
         <span style="width:90px;">会员卡状态：</span>
-        <st-search-radio v-model="query.card_status" :list="cardSaleStatusList"/>
+        <st-search-radio
+          v-model="query.card_status"
+          :list="cardSaleStatusList"
+        />
       </div>
       <div :class="basic('select')">
         <span style="width:90px;">开卡状态：</span>
-        <st-search-radio v-model="query.is_open" :list="cardOpenStatusList"/>
+        <st-search-radio v-model="query.is_open" :list="cardOpenStatusList" />
       </div>
       <div slot="more">
         <div :class="basic('select')">
           <span style="width:90px;">开卡时间：</span>
-          <st-range-picker :disabledDays="180" :value="selectTime"></st-range-picker>
+          <st-range-picker
+            :disabledDays="180"
+            :value="selectTime"
+          ></st-range-picker>
         </div>
       </div>
       <div slot="button">
-        <st-button type="primary" @click="onSearchNative" :loading="loading.getList">查询</st-button>
+        <st-button
+          type="primary"
+          @click="onSearchNative"
+          :loading="loading.getList"
+        >
+          查询
+        </st-button>
         <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
       </div>
     </st-search-panel>
@@ -28,55 +40,125 @@
       <div :class="basic('content-batch')" class="mg-b16">
         <!-- NOTE: 导出 -->
         <!-- <st-button type="primary" class="mgr-8" v-if="auth.export">批量导出</st-button> -->
-        <st-button type="primary" class="mgr-8" v-if="auth.gift" :disabled="selectedRowKeys.length<1 || diffSelectedRows.length > 0" @click="onGiving">赠送额度</st-button>
-        <st-button type="primary" class="mgr-8" v-if="auth.vipRegion" :disabled="selectedRowKeys.length<1 || diffSelectedRows.length > 0" @click="onAreas">变更入场vip区域</st-button>
+        <st-button
+          type="primary"
+          class="mgr-8"
+          v-if="auth.gift"
+          :disabled="selectedRowKeys.length < 1 || diffSelectedRows.length > 0"
+          @click="onGiving"
+        >
+          赠送额度
+        </st-button>
+        <st-button
+          type="primary"
+          class="mgr-8"
+          v-if="auth.vipRegion"
+          :disabled="selectedRowKeys.length < 1 || diffSelectedRows.length > 0"
+          @click="onAreas"
+        >
+          变更入场vip区域
+        </st-button>
       </div>
       <div :class="basic('table')">
         <st-table
           :page="page"
-          :alertSelection="{onReset: onClear}"
-          :rowSelection="{selectedRowKeys: selectedRowKeys,fixed:true, onChange: onSelectChange,
-          getCheckboxProps: record => ({
-            props: {
-              disabled: disabledSelect(record), // Column configuration not to be checked
-            }
-          })}"
+          :alertSelection="{ onReset: onClear }"
+          :rowSelection="{
+            selectedRowKeys: selectedRowKeys,
+            fixed: true,
+            onChange: onSelectChange,
+            getCheckboxProps: record => ({
+              props: {
+                disabled: disabledSelect(record) // Column configuration not to be checked
+              }
+            })
+          }"
           rowKey="id"
           @change="onTableChange"
           :columns="columns"
           :dataSource="list"
-          :scroll="{x:1800}"
+          :scroll="{ x: 1800 }"
         >
-          <template
-            slot="remain_amount"
-            slot-scope="text,record"
-          >{{text}}{{record.unit | enumFilter('sold.unit')}}</template>
-          <template
-            slot="init_amount"
-            slot-scope="text,record"
-          >{{text}}{{record.unit | enumFilter('sold.unit')}}</template>
-          <template slot="card_status" slot-scope="text">{{text | enumFilter('sold.card_status')}}</template>
-          <template
-            slot="end_time"
-            slot-scope="text"
-          >{{text}}</template>
-          <template slot="is_open" slot-scope="text">{{text | enumFilter('sold.is_open')}}</template>
-          <template
-            slot="start_time"
-            slot-scope="text"
-          >{{text}}</template>
+          <template slot="remain_amount" slot-scope="text, record">
+            {{ text }}{{ record.unit | enumFilter('sold.unit') }}
+          </template>
+          <template slot="init_amount" slot-scope="text, record">
+            {{ text }}{{ record.unit | enumFilter('sold.unit') }}
+          </template>
+          <template slot="card_status" slot-scope="text">
+            {{ text | enumFilter('sold.card_status') }}
+          </template>
+          <template slot="end_time" slot-scope="text">
+            {{ text }}
+          </template>
+          <template slot="is_open" slot-scope="text">
+            {{ text | enumFilter('sold.is_open') }}
+          </template>
+          <template slot="start_time" slot-scope="text">
+            {{ text }}
+          </template>
           <div slot="action" slot-scope="text, record">
             <st-table-actions>
-              <a v-if="record.auth['shop:sold:sold_member_card|get']" @click="onDetail(record)">详情</a>
-              <a v-if="record.auth['shop:sold:sold_member_card|upgrade']" @click="onUpgrade(record)">升级</a>
-              <a v-if="record.auth['shop:sold:sold_member_card|renew']" @click="onRenewal(record)">续卡</a>
-              <a v-if="record.auth['shop:sold:sold_member_card|vaild_time']" @click="onSetTime(record)">修改有效时间</a>
-              <a v-if="record.auth['shop:sold:sold_member_card|frozen']" @click="onFreeze(record)">冻结</a>
-              <a v-if="record.auth['shop:sold:sold_member_card|unfrozen']" @click="onUnfreeze(record)">取消冻结</a>
-              <a v-if="record.auth['shop:sold:sold_member_card|transfer']" @click="onTransfer(record)">转让</a>
-              <a v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a>
-              <a v-if="record.auth['shop:sold:sold_member_card|export_contract']" @click="toContract(record)">查看合同</a>
-              <a v-if="record.auth['shop:sold:sold_member_card|vip_region']" @click="onArea(record)">修改入场vip区域</a>
+              <a
+                v-if="record.auth['shop:sold:sold_member_card|get']"
+                @click="onDetail(record)"
+              >
+                详情
+              </a>
+              <a
+                v-if="record.auth['shop:sold:sold_member_card|upgrade']"
+                @click="onUpgrade(record)"
+              >
+                升级
+              </a>
+              <a
+                v-if="record.auth['shop:sold:sold_member_card|renew']"
+                @click="onRenewal(record)"
+              >
+                续卡
+              </a>
+              <a
+                v-if="record.auth['shop:sold:sold_member_card|vaild_time']"
+                @click="onSetTime(record)"
+              >
+                修改有效时间
+              </a>
+              <a
+                v-if="record.auth['shop:sold:sold_member_card|frozen']"
+                @click="onFreeze(record)"
+              >
+                冻结
+              </a>
+              <a
+                v-if="record.auth['shop:sold:sold_member_card|unfrozen']"
+                @click="onUnfreeze(record)"
+              >
+                取消冻结
+              </a>
+              <a
+                v-if="record.auth['shop:sold:sold_member_card|transfer']"
+                @click="onTransfer(record)"
+              >
+                转让
+              </a>
+              <a
+                v-if="record.auth['brand_shop:order:order|refund']"
+                @click="onRefund(record)"
+              >
+                退款
+              </a>
+              <a
+                v-if="record.auth['shop:sold:sold_member_card|export_contract']"
+                @click="toContract(record)"
+              >
+                查看合同
+              </a>
+              <a
+                v-if="record.auth['shop:sold:sold_member_card|vip_region']"
+                @click="onArea(record)"
+              >
+                修改入场vip区域
+              </a>
             </st-table-actions>
           </div>
         </st-table>
@@ -152,7 +234,12 @@ export default {
     },
     // 列表选择的卡是否一致
     isUnifyCard() {
-      return this.selectedRows.length > 0 && this.selectedRows.every(o => o.card_type === this.selectedRows[0].card_type)
+      return (
+        this.selectedRows.length > 0 &&
+        this.selectedRows.every(
+          o => o.card_type === this.selectedRows[0].card_type
+        )
+      )
     }
   },
   data() {
@@ -175,7 +262,7 @@ export default {
           disabled: false,
           value: null,
           format: 'YYYY-MM-DD',
-          change: ($event) => { }
+          change: $event => {}
         },
         endTime: {
           showTime: false,
@@ -183,7 +270,7 @@ export default {
           disabled: false,
           value: null,
           format: 'YYYY-MM-DD',
-          change: ($event) => {}
+          change: $event => {}
         }
       }
     }
@@ -204,8 +291,12 @@ export default {
     },
     // 查询
     onSearchNative() {
-      this.query.start_time = this.selectTime.startTime.value ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00` : ''
-      this.query.end_time = this.selectTime.endTime.value ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.query.start_time = this.selectTime.startTime.value
+        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
+        : ''
+      this.query.end_time = this.selectTime.endTime.value
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 00:00:00`
+        : ''
       this.onSearch()
     },
     // 设置searchData
@@ -223,7 +314,9 @@ export default {
     onSelectChange(selectedRowKeys, selectedRows) {
       if (selectedRows && selectedRows.length > 0) {
         const firstItem = selectedRows[0]
-        this.diffSelectedRows = selectedRows.filter(item => item.card_type !== firstItem.card_type)
+        this.diffSelectedRows = selectedRows.filter(
+          item => item.card_type !== firstItem.card_type
+        )
       }
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
@@ -256,9 +349,12 @@ export default {
         content: '是否取消冻结？',
         maskClosable: true,
         onOk: () => {
-          return this.memberService.unFreeze(record.id).toPromise().then(() => {
-            this.$router.push({ force: true, query: this.query })
-          })
+          return this.memberService
+            .unFreeze(record.id)
+            .toPromise()
+            .then(() => {
+              this.$router.push({ force: true, query: this.query })
+            })
         }
       })
     },
@@ -279,7 +375,9 @@ export default {
     },
     // 跳转合同
     toContract(record) {
-      let url = `${window.location.origin}/extra/contract-preview?id=${record.order_id}`
+      let url = `${window.location.origin}/extra/contract-preview?id=${
+        record.order_id
+      }`
       window.open(url)
     },
     // 转让
@@ -375,7 +473,10 @@ export default {
           this.onSearch()
           break
         case 'pay':
-          this.createdGatheringTip({ message: '收款成功', order_id: orderId }).then(res => {
+          this.createdGatheringTip({
+            message: '收款成功',
+            order_id: orderId
+          }).then(res => {
             this.tipCallBack(orderId, modalType, res.type)
           })
           break
@@ -406,15 +507,19 @@ export default {
           this.createdOrderViewOrder()
           break
         case 'Pay':
-          this.createdOrderPay({ order_id: orderId, type: modalType }).then(res => {
-            this.payCallBack(orderId, modalType, res.type)
-          })
+          this.createdOrderPay({ order_id: orderId, type: modalType }).then(
+            res => {
+              this.payCallBack(orderId, modalType, res.type)
+            }
+          )
           break
       }
     },
     // 打印合同
     createdOrderPrint(order_id) {
-      let url = `${window.location.origin}/extra/contract-preview?id=${order_id}`
+      let url = `${
+        window.location.origin
+      }/extra/contract-preview?id=${order_id}`
       window.open(url)
     },
     // 查看订单

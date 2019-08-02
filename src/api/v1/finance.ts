@@ -2,8 +2,8 @@ import { Api } from '../api'
 
 export class FinanceApi extends Api {
   /**
-     * 【品牌】底薪模板列表
-     */
+   * 【品牌】底薪模板列表
+   */
   getSalaryBasicList(query: SalaryBasicQuery) {
     return this.http.get(`/v1/finance/salary/basic`, { query })
   }
@@ -67,52 +67,54 @@ export class FinanceApi extends Api {
   /**
    * 业绩模板查看应用员工
    */
-  getSearchStaffListPerformance(id:any, query: SalaryBasicQuery) {
-    return this.http.get(`/v1/finance/salary/performance/staff/${id}`, { query })
+  getSearchStaffListPerformance(id: any, query: SalaryBasicQuery) {
+    return this.http.get(`/v1/finance/salary/performance/staff/${id}`, {
+      query
+    })
   }
 
   /**
    * 底薪模板查看应用员工
    */
-  getSearchStaffListSalary(id:any, query: SalaryBasicQuery) {
+  getSearchStaffListSalary(id: any, query: SalaryBasicQuery) {
     return this.http.get(`/v1/finance/salary/basic/staff/${id}`, { query })
   }
 }
-export interface AddPerformanceParams{
+export interface AddPerformanceParams {
   /**
    * 模板名称
    */
-  template_name: string;
+  template_name: string
   /**
    * 业绩类型
    */
-  performance_type: number;
+  performance_type: number
   /**
    * 提成模式
    */
-  performance_mode: number;
+  performance_mode: number
   /**
    * 默认提成
    */
-  performance_num: number;
+  performance_num: number
   /**
    * 梯度提成
    */
-  gradients: any;
+  gradients: any
 }
-export interface AddTemplateParams{
+export interface AddTemplateParams {
   // 模板名称
-  template_name: string;
+  template_name: string
   // 底薪
   salary: number
 }
-export interface SalaryBasicQuery{
-    /**
-     * 页码
-     */
-    page? : number;
-    /**
-     * 每页数量
-     */
-    size? : number;
+export interface SalaryBasicQuery {
+  /**
+   * 页码
+   */
+  page?: number
+  /**
+   * 每页数量
+   */
+  size?: number
 }

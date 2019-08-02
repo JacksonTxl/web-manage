@@ -1,4 +1,3 @@
-
 import { Api } from '@/api/api'
 /**
  *
@@ -66,7 +65,9 @@ export class PersonalTeamScheduleScheduleApi extends Api {
    * 编辑课程排期
    */
   update(params: UpdateScheduleInput) {
-    return this.http.put(`/v1/schedule/personal_team/shop/${params.id}`, { params })
+    return this.http.put(`/v1/schedule/personal_team/shop/${params.id}`, {
+      params
+    })
   }
   /**
    *
@@ -132,7 +133,7 @@ export interface AddScheduleInput {
  * 新增私教小团课程排期request数据
  */
 export interface UpdateScheduleInput {
-  id: number,
+  id: number
   course_id: number // 课程ID
   court_id: number // 场地id
   court_site_id: number // 座位模版Id
@@ -144,7 +145,7 @@ export interface UpdateScheduleInput {
 /**
  * 复制私教小团课排期数据
  */
-export interface CopyScheduleInput{
+export interface CopyScheduleInput {
   copy_start_time: string // 复制开始时间
   copy_end_time: string // 复制结束时间
   apply_start_time: string // 应用开始时间

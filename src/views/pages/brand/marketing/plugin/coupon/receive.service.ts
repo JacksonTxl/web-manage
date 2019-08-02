@@ -7,8 +7,7 @@ import { AuthService } from '@/services/auth.service'
 import { forkJoin } from 'rxjs'
 import { Store } from '@/services/store'
 
-export interface SetState {
-}
+export interface SetState {}
 
 @Injectable()
 export class ReceiveService extends Store<SetState> implements RouteGuard {
@@ -18,18 +17,23 @@ export class ReceiveService extends Store<SetState> implements RouteGuard {
   auth$ = this.authService.authMap$({
     export: 'brand:activity:coupon|export'
   })
-  constructor(private marketingApi: MarketingApi, private authService: AuthService) {
+  constructor(
+    private marketingApi: MarketingApi,
+    private authService: AuthService
+  ) {
     super()
     this.state$ = new State({})
   }
   @Effect()
   getReceiveList(params: any) {
-    return this.marketingApi.getReceiveList(params).pipe(tap((res:any) => {
-      // res = this.authService.filter(res)
-      this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-      this.info$.commit(() => res.info)
-    }))
+    return this.marketingApi.getReceiveList(params).pipe(
+      tap((res: any) => {
+        // res = this.authService.filter(res)
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+        this.info$.commit(() => res.info)
+      })
+    )
   }
   // 获取优惠券详情
   // getInfo(id: number) {
@@ -40,7 +44,7 @@ export class ReceiveService extends Store<SetState> implements RouteGuard {
   // serviceInit(id: number) {
   //   return forkJoin(this.getInfo(id), this.getReceiveList(id))
   // }
-  beforeEach(to:ServiceRoute, from:ServiceRoute) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.getReceiveList(to.meta.query)
   }
 }

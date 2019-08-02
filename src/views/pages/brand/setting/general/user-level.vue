@@ -6,20 +6,24 @@
         <!-- 潜在会员 -->
         <a-col :span="7">
           <div :class="b('item')">
-            <st-t2>{{potential.level_name}}</st-t2>
+            <st-t2>{{ potential.level_name }}</st-t2>
             <div>
-              <img :class="b('item-icon')" src="~@/assets/img/member_potential.png" alt="潜在会员">
+              <img
+                :class="b('item-icon')"
+                src="~@/assets/img/member_potential.png"
+                alt="潜在会员"
+              />
             </div>
             <div :class="b('sub-title')">条件</div>
             <ul>
-              <li
-                v-if="potential.condition.length"
-                :class="b('list-item')"
-              >
-                <i class="icon-member-checked icon-member-checked--potential"></i>
-                <span v-for="(item, index) in potential.condition"
-                :key="index">
-                  {{item.condition_name | textFilter(potential.condition, index)}}
+              <li v-if="potential.condition.length" :class="b('list-item')">
+                <i
+                  class="icon-member-checked icon-member-checked--potential"
+                ></i>
+                <span v-for="(item, index) in potential.condition" :key="index">
+                  {{
+                    item.condition_name | textFilter(potential.condition, index)
+                  }}
                 </span>
               </li>
             </ul>
@@ -28,7 +32,7 @@
         <!-- 正式会员 -->
         <a-col :span="10">
           <div :class="b('item')">
-            <st-t2>{{member.level_name}}</st-t2>
+            <st-t2>{{ member.level_name }}</st-t2>
             <st-info-action
               icon="edit"
               text="编辑"
@@ -37,27 +41,37 @@
               @click="onEdit"
             />
             <div>
-              <img :class="b('item-icon')" src="~@/assets/img/member.png" alt="正式会员">
+              <img
+                :class="b('item-icon')"
+                src="~@/assets/img/member.png"
+                alt="正式会员"
+              />
             </div>
-            <div :class="b('sub-title')">条件<st-help-tooltip id="TBYHDJ001" /></div>
+            <div :class="b('sub-title')">
+              条件
+              <st-help-tooltip id="TBYHDJ001" />
+            </div>
             <select-condition
               v-if="isEdit && info.condition"
               v-model="info.condition.list"
               @change="onConditionChange"
             />
             <ul v-else>
-              <li
-                v-if="member.condition.length"
-                :class="b('list-item')"
-              >
-                <i class="icon-member-checked icon-member-checked--potential"></i>
-                <span v-for="(item, index) in member.condition"
-                :key="index">
-                  {{item.condition_name | textFilter(member.condition, index)}}
+              <li v-if="member.condition.length" :class="b('list-item')">
+                <i
+                  class="icon-member-checked icon-member-checked--potential"
+                ></i>
+                <span v-for="(item, index) in member.condition" :key="index">
+                  {{
+                    item.condition_name | textFilter(member.condition, index)
+                  }}
                 </span>
               </li>
             </ul>
-            <div class="mg-t24" :class="b('sub-title')">特权类目<st-help-tooltip id="TBYHDJ002" /></div>
+            <div class="mg-t24" :class="b('sub-title')">
+              特权类目
+              <st-help-tooltip id="TBYHDJ002" />
+            </div>
             <select-rights
               v-if="isEdit && info.rights"
               v-model="info.rights.list"
@@ -66,9 +80,8 @@
             <ul v-else>
               <li :class="b('list-item')" v-if="member.rights.length">
                 <i class="icon-member-checked"></i>
-                <span v-for="(item, index) in member.rights"
-                :key="index">
-                  {{item.rights_name | textFilter(member.rights, index)}}
+                <span v-for="(item, index) in member.rights" :key="index">
+                  {{ item.rights_name | textFilter(member.rights, index) }}
                 </span>
               </li>
               <li v-else class="st-des mg-t8">暂无特权类目～</li>
@@ -78,19 +91,22 @@
         <!-- 流失会员 -->
         <a-col :span="7">
           <div :class="b('item')">
-            <st-t2>{{lost.level_name}}</st-t2>
+            <st-t2>{{ lost.level_name }}</st-t2>
             <div>
-              <img :class="b('item-icon')" src="~@/assets/img/member_lost.png" alt="流失会员">
+              <img
+                :class="b('item-icon')"
+                src="~@/assets/img/member_lost.png"
+                alt="流失会员"
+              />
             </div>
             <div :class="b('sub-title')">条件</div>
             <ul>
-              <li v-if="lost.condition.length"
-                :class="b('list-item')"
-              >
-                <i class="icon-member-checked icon-member-checked--potential"></i>
-                <span v-for="(item, index) in lost.condition"
-                :key="index">
-                  {{item.condition_name | textFilter(lost.condition, index)}}
+              <li v-if="lost.condition.length" :class="b('list-item')">
+                <i
+                  class="icon-member-checked icon-member-checked--potential"
+                ></i>
+                <span v-for="(item, index) in lost.condition" :key="index">
+                  {{ item.condition_name | textFilter(lost.condition, index) }}
                 </span>
               </li>
             </ul>
@@ -98,7 +114,9 @@
         </a-col>
       </a-row>
       <div class="ta-c mg-t24" v-if="isEdit">
-        <st-button type="primary" @click="onSave" :loading="loading.update">保存</st-button>
+        <st-button type="primary" @click="onSave" :loading="loading.update">
+          保存
+        </st-button>
       </div>
     </div>
   </st-panel>

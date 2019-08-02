@@ -11,19 +11,31 @@
           <st-form-item label="模板名称" required>
             <a-input
               placeholder="请输模板名称"
-              v-decorator="['template_name',{rules: [{ required: true, message: '请输入模板名称' ,max:15}]}]"
+              v-decorator="[
+                'template_name',
+                {
+                  rules: [
+                    { required: true, message: '请输入模板名称', max: 15 }
+                  ]
+                }
+              ]"
             />
           </st-form-item>
         </a-col>
         <a-col :lg="24">
           <st-form-item label="业绩类型" required>
             <a-select
-              v-decorator="['performance_type',{rules: [{ required: true, message: '请选择业绩类型' }]}]"
+              v-decorator="[
+                'performance_type',
+                { rules: [{ required: true, message: '请选择业绩类型' }] }
+              ]"
               placeholder="请选择"
               @change="selectType"
             >
-              <template v-for="(item,key) in finance.performance_type.value">
-                <a-select-option :key="key" :value="+key">{{ item }}</a-select-option>
+              <template v-for="(item, key) in finance.performance_type.value">
+                <a-select-option :key="key" :value="+key">
+                  {{ item }}
+                </a-select-option>
               </template>
             </a-select>
           </st-form-item>
@@ -32,9 +44,15 @@
           <st-form-item label="提成模式" required>
             <a-radio-group
               @change="onChooseRadio"
-              v-decorator="['performance_mode',{initialValue: 1,rules: [{ required: true, message: '请选择提成模式' }]}]"
+              v-decorator="[
+                'performance_mode',
+                {
+                  initialValue: 1,
+                  rules: [{ required: true, message: '请选择提成模式' }]
+                }
+              ]"
             >
-              <template v-for="(item,key) in finance.performance_mode.value">
+              <template v-for="(item, key) in finance.performance_mode.value">
                 <a-radio :key="item" :value="+key">{{ item }}</a-radio>
               </template>
             </a-radio-group>
@@ -42,29 +60,43 @@
         </a-col>
         <a-col :lg="24">
           <st-form-item required>
-            <template slot="label" v-if="performance_type == 1 || performance_type == 2">
-                默认提成<st-help-tooltip id="TBPT001" />
+            <template
+              slot="label"
+              v-if="performance_type == 1 || performance_type == 2"
+            >
+              默认提成
+              <st-help-tooltip id="TBPT001" />
             </template>
             <template slot="label" v-if="performance_type == 3">
-                默认课时费<st-help-tooltip id="TBPT001" />
+              默认课时费
+              <st-help-tooltip id="TBPT001" />
             </template>
             <st-input-number
               :float="true"
               :min="0"
               :max="performance_mode === 1 ? 100 : 999999"
               placeholder="请输入默认提成"
-              v-decorator="['performance_num',{rules: [{ validator: performanceValidate }]}]"
+              v-decorator="[
+                'performance_num',
+                { rules: [{ validator: performanceValidate }] }
+              ]"
             >
               <template v-if="performance_type == 1 || performance_type == 2">
                 <template v-if="performance_mode == 1">
-                  <template slot="addonAfter">%</template>
+                  <template slot="addonAfter">
+                    %
+                  </template>
                 </template>
                 <template v-if="performance_mode == 2">
-                  <template slot="addonAfter">元</template>
+                  <template slot="addonAfter">
+                    元
+                  </template>
                 </template>
               </template>
               <template v-if="performance_type == 3">
-                <template slot="addonAfter">元/节</template>
+                <template slot="addonAfter">
+                  元/节
+                </template>
               </template>
             </st-input-number>
           </st-form-item>
@@ -107,24 +139,38 @@
                 <tbody>
                   <tr v-if="data.length < 5">
                     <td>
-                      <st-input-number :float="true" :min="0" :max="999.9" placeholder="请输入月销售额" v-model="gradients.range_min"/>
+                      <st-input-number
+                        :float="true"
+                        :min="0"
+                        :max="999.9"
+                        placeholder="请输入月销售额"
+                        v-model="gradients.range_min"
+                      />
                     </td>
                     <td>
-                      <st-input-number :float="true" :min="0" :max="100" placeholder="请输入提成" v-model="gradients.royalty_num"/>
+                      <st-input-number
+                        :float="true"
+                        :min="0"
+                        :max="100"
+                        placeholder="请输入提成"
+                        v-model="gradients.royalty_num"
+                      />
                     </td>
                     <td>
-                      <a href="javascript:;" @click="addGradients">添加梯度({{ data.length }}/5)</a>
+                      <a href="javascript:;" @click="addGradients">
+                        添加梯度({{ data.length }}/5)
+                      </a>
                     </td>
                   </tr>
 
-                  <template v-for="(item,index) in data">
+                  <template v-for="(item, index) in data">
                     <tr :key="index">
                       <template v-if="item.isEdit">
                         <td>
-                          <a-input v-model="item.range_min"/>
+                          <a-input v-model="item.range_min" />
                         </td>
                         <td>
-                          <a-input v-model="item.royalty_num"/>
+                          <a-input v-model="item.royalty_num" />
                         </td>
                       </template>
                       <template v-else>
@@ -133,14 +179,28 @@
                       </template>
                       <td>
                         <template v-if="item.isEdit">
-                          <a href="javascript:;" @click="submitEdit(index)">提交</a>
+                          <a href="javascript:;" @click="submitEdit(index)">
+                            提交
+                          </a>
                           <a-divider type="vertical"></a-divider>
-                          <a href="javascript:;" @click="cancelEdit(index)">取消</a>
+                          <a href="javascript:;" @click="cancelEdit(index)">
+                            取消
+                          </a>
                         </template>
                         <template v-else>
-                          <a href="javascript:;" @click="editPerformanceNum(index)">编辑</a>
+                          <a
+                            href="javascript:;"
+                            @click="editPerformanceNum(index)"
+                          >
+                            编辑
+                          </a>
                           <a-divider type="vertical"></a-divider>
-                          <a href="javascript:;" @click="deletePerformanceNum(index)">删除</a>
+                          <a
+                            href="javascript:;"
+                            @click="deletePerformanceNum(index)"
+                          >
+                            删除
+                          </a>
                         </template>
                       </td>
                     </tr>

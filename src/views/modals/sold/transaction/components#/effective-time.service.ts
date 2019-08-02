@@ -7,7 +7,7 @@ import { TransactionApi } from '@/api/v1/sold/transaction'
 export class EffectiveTimeService {
   freezeInfo$ = new State({})
   loading$ = new State({})
-  constructor(private transactionApi: TransactionApi) { }
+  constructor(private transactionApi: TransactionApi) {}
   getTime() {
     console.log(11)
     // return this.transactionApi.getTime()

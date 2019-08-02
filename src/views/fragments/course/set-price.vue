@@ -31,9 +31,8 @@
         <st-form-item label="教练等级" required v-if="priceModel === 2">
           <select-coach-level
             :value="priceGradientRecord.level_id"
-            @change="(val) => onLevelChange(val, key)"
-          >
-          </select-coach-level>
+            @change="val => onLevelChange(val, key)"
+          ></select-coach-level>
         </st-form-item>
         <!-- 私教课程定价模式：教练平级定价；私教课程售卖模式：统一标价 -->
         <st-form-item label="售卖定价" required class="mg-b8"></st-form-item>
@@ -80,13 +79,18 @@
                     <div v-if="saleModel === 1">
                       <st-input-number
                         class="page-set-sell-price__input"
-                        v-model="priceGradientRecord.prices[index].min_sell_price"
+                        v-model="
+                          priceGradientRecord.prices[index].min_sell_price
+                        "
                         :float="true"
                       />
-                      <span class="page-set-sell-price__label">元/节</span>~
+                      <span class="page-set-sell-price__label">元/节</span>
+                      ~
                       <st-input-number
                         class="page-set-sell-price__input"
-                        v-model="priceGradientRecord.prices[index].max_sell_price"
+                        v-model="
+                          priceGradientRecord.prices[index].max_sell_price
+                        "
                         :float="true"
                       />
                       <span class="page-set-sell-price__label">元/节</span>
@@ -111,14 +115,17 @@
                         <a-select
                           :defaultValue="1"
                           class="st-form-item-unit"
-                          v-model="priceGradientRecord.prices[index].transfer_unit"
+                          v-model="
+                            priceGradientRecord.prices[index].transfer_unit
+                          "
                         >
                           <a-select-option
-                            v-for="(item, index) in personalCourseEnums.transfer_unit.value"
+                            v-for="(item, index) in personalCourseEnums
+                              .transfer_unit.value"
                             :key="index"
                             :value="+index"
                           >
-                            {{item}}
+                            {{ item }}
                           </a-select-option>
                         </a-select>
                       </template>
@@ -203,10 +210,14 @@ export default {
   },
   methods: {
     initPriceGradient() {
-      this.priceGradient = this.value.length ? this.value : [{
-        level_id: 0,
-        prices: []
-      }]
+      this.priceGradient = this.value.length
+        ? this.value
+        : [
+            {
+              level_id: 0,
+              prices: []
+            }
+          ]
     },
     onChange(e) {
       this.priceSetting = e.target.value

@@ -6,12 +6,12 @@
     :footer="null"
     @cancel="onCancel"
     wrapClassName="modal-sold-deal-gathering-tip"
-    >
+  >
     <div :class="gatheringTip('content')">
-      <st-icon type="success" class="img"/>
-      <p >{{message}}</p>
-      <st-button type="primary" @click="print" >打印合同</st-button>
-      <st-button @click="viewOrder" >查看订单</st-button>
+      <st-icon type="success" class="img" />
+      <p>{{ message }}</p>
+      <st-button type="primary" @click="print">打印合同</st-button>
+      <st-button @click="viewOrder">查看订单</st-button>
       <st-button @click="goPay" v-if="needPay">去支付</st-button>
     </div>
   </st-modal>
@@ -24,12 +24,10 @@ export default {
     gatheringTip: 'modal-sold-deal-gathering-tip'
   },
   serviceInject() {
-    return {
-    }
+    return {}
   },
   rxState() {
-    return {
-    }
+    return {}
   },
   data() {
     return {
@@ -43,8 +41,7 @@ export default {
     message: String,
     needPay: Boolean // true 需要支付按钮 false 不需要
   },
-  created() {
-  },
+  created() {},
   methods: {
     print() {
       this.show = false

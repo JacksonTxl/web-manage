@@ -2,49 +2,87 @@
   <st-panel app initial :class="basic()">
     <div slot="title">
       <st-input-search
-      placeholder="请输入租赁柜名、会员姓名或手机号查找"
-      v-model="query.search"
-      @search="onSearchNative"
-      style="width: 290px;"/>
+        placeholder="请输入租赁柜名、会员姓名或手机号查找"
+        v-model="query.search"
+        @search="onSearchNative"
+        style="width: 290px;"
+      />
     </div>
     <st-search-panel>
       <div :class="basic('select')">
         <span style="width:90px;">租赁状态：</span>
-        <st-search-radio v-model="query.lease_status" :list="leaseList"/>
+        <st-search-radio v-model="query.lease_status" :list="leaseList" />
       </div>
       <div :class="basic('select')">
         <span style="width:90px;">起租时间：</span>
-        <st-range-picker :disabledDays="180" :value="selectTime"></st-range-picker>
+        <st-range-picker
+          :disabledDays="180"
+          :value="selectTime"
+        ></st-range-picker>
       </div>
       <div slot="button">
-          <st-button type="primary" @click="onSearchNative" :loading="loading.getList">查询</st-button>
-          <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
+        <st-button
+          type="primary"
+          @click="onSearchNative"
+          :loading="loading.getList"
+        >
+          查询
+        </st-button>
+        <st-button class="mgl-8" @click="onSearhReset">重置</st-button>
       </div>
     </st-search-panel>
 
     <div :class="basic('content')">
       <div :class="basic('content-batch')">
         <!-- NOTE: 导出 -->
-          <!-- <st-button v-if="auth.export"  type="primary">批量导出</st-button> -->
+        <!-- <st-button v-if="auth.export"  type="primary">批量导出</st-button> -->
       </div>
       <st-table
-      :page="page"
-      :scroll="{x:1600}"
-      rowKey="sold_cabinet_id"
-      :columns="columns"
-      @change="onTableChange"
-      :dataSource="list">
-        <template
-            slot="lease_status"
-            slot-scope="record">
-          <a-badge :status="record.id === 1?'success':record.id === 2?'error':'warning'" :text="record.name" />
+        :page="page"
+        :scroll="{ x: 1600 }"
+        rowKey="sold_cabinet_id"
+        :columns="columns"
+        @change="onTableChange"
+        :dataSource="list"
+      >
+        <template slot="lease_status" slot-scope="record">
+          <a-badge
+            :status="
+              record.id === 1
+                ? 'success'
+                : record.id === 2
+                ? 'error'
+                : 'warning'
+            "
+            :text="record.name"
+          />
         </template>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
-            <a v-if="record.auth['shop:sold:sold_cabinet|renew']" @click="onRelet(record)">续租</a>
-            <a v-if="record.auth['shop:sold:sold_cabinet|export_contract']" @click="toContract(record)">查看合同</a>
-            <a v-if="record.auth['shop:sold:sold_cabinet|transfer']" @click="onTransfer(record)">转让</a>
-            <a v-if="record.auth['brand_shop:order:order|refund']" @click="onRefund(record)">退款</a>
+            <a
+              v-if="record.auth['shop:sold:sold_cabinet|renew']"
+              @click="onRelet(record)"
+            >
+              续租
+            </a>
+            <a
+              v-if="record.auth['shop:sold:sold_cabinet|export_contract']"
+              @click="toContract(record)"
+            >
+              查看合同
+            </a>
+            <a
+              v-if="record.auth['shop:sold:sold_cabinet|transfer']"
+              @click="onTransfer(record)"
+            >
+              转让
+            </a>
+            <a
+              v-if="record.auth['brand_shop:order:order|refund']"
+              @click="onRefund(record)"
+            >
+              退款
+            </a>
           </st-table-actions>
         </div>
       </st-table>
@@ -106,7 +144,7 @@ export default {
           disabled: false,
           value: null,
           format: 'YYYY-MM-DD',
-          change: ($event) => { }
+          change: $event => {}
         },
         endTime: {
           showTime: false,
@@ -114,7 +152,7 @@ export default {
           disabled: false,
           value: null,
           format: 'YYYY-MM-DD',
-          change: ($event) => {}
+          change: $event => {}
         }
       }
     }
@@ -130,8 +168,12 @@ export default {
   methods: {
     // 查询
     onSearchNative() {
-      this.query.start_time = this.selectTime.startTime.value ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00` : ''
-      this.query.end_time = this.selectTime.endTime.value ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 00:00:00` : ''
+      this.query.start_time = this.selectTime.startTime.value
+        ? `${this.selectTime.startTime.value.format('YYYY-MM-DD')} 00:00:00`
+        : ''
+      this.query.end_time = this.selectTime.endTime.value
+        ? `${this.selectTime.endTime.value.format('YYYY-MM-DD')} 00:00:00`
+        : ''
       this.onSearch()
     },
     // 设置searchData
@@ -145,7 +187,9 @@ export default {
     },
     // 跳转合同
     toContract(record) {
-      let url = `${window.location.origin}/extra/contract-preview?id=${record.order_id}`
+      let url = `${window.location.origin}/extra/contract-preview?id=${
+        record.order_id
+      }`
       window.open(url)
     },
     // 续租
@@ -156,7 +200,7 @@ export default {
           id: record.id
         },
         on: {
-          success: (result) => {
+          success: result => {
             if (result.type === 'create') {
               // 创建订单成功
               this.$modalRouter.push({
@@ -169,7 +213,10 @@ export default {
                 },
                 on: {
                   success: () => {
-                    this.$router.push({ force: true, query: this.$router.query })
+                    this.$router.push({
+                      force: true,
+                      query: this.$router.query
+                    })
                   }
                 }
               })
@@ -192,7 +239,10 @@ export default {
                       },
                       on: {
                         success: () => {
-                          this.$router.push({ force: true, query: this.$router.query })
+                          this.$router.push({
+                            force: true,
+                            query: this.$router.query
+                          })
                         }
                       }
                     })
@@ -212,7 +262,7 @@ export default {
           id: record.id
         },
         on: {
-          success: (result) => {
+          success: result => {
             this.$router.push({ force: true, query: this.$router.query })
           }
         }
@@ -226,7 +276,7 @@ export default {
           id: record.id
         },
         on: {
-          success: (result) => {
+          success: result => {
             this.$router.push({ force: true, query: this.$router.query })
           }
         }

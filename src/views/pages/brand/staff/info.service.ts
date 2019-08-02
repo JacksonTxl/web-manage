@@ -6,7 +6,7 @@ import { StaffApi } from '../../../../api/v1/staff'
 import { forkJoin } from 'rxjs'
 import { AuthService } from '@/services/auth.service'
 
-interface SetState{
+interface SetState {
   info: object
   auth: object
 }
@@ -25,11 +25,13 @@ export class InfoService extends Store<SetState> {
   }
   @Effect()
   getInfo(id: string) {
-    return this.staffApi.getStaffInfoCommonHeader(id).pipe(tap(res => {
-      res = this.authService.filter(res, 'auth')
-      this.SET_STAFF_BRAND(res.common_info)
-      this.SET_STAFF_AUTH(res.auth)
-    }))
+    return this.staffApi.getStaffInfoCommonHeader(id).pipe(
+      tap(res => {
+        res = this.authService.filter(res, 'auth')
+        this.SET_STAFF_BRAND(res.common_info)
+        this.SET_STAFF_AUTH(res.auth)
+      })
+    )
   }
   protected SET_STAFF_BRAND(data: SetState) {
     this.state$.commit(state => {

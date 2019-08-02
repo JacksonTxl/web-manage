@@ -5,19 +5,19 @@ import { StaffApi } from '@/api/v1/staff'
 
 @Injectable()
 export class BasicService implements RouteGuard {
-    basicInfo$ = new State({})
-    constructor(private staffApi: StaffApi) {}
-    getBasicInfo(id: string) {
-      return this.staffApi.getStaffInfo(id).pipe(
-        tap(res => {
-          this.basicInfo$.commit(() => res.common_info)
-        })
-      )
-    }
+  basicInfo$ = new State({})
+  constructor(private staffApi: StaffApi) {}
+  getBasicInfo(id: string) {
+    return this.staffApi.getStaffInfo(id).pipe(
+      tap(res => {
+        this.basicInfo$.commit(() => res.common_info)
+      })
+    )
+  }
 
-    beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
-      const { id } = to.meta.query
-      console.log('basic service')
-      return this.getBasicInfo(id)
-    }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
+    const { id } = to.meta.query
+    console.log('basic service')
+    return this.getBasicInfo(id)
+  }
 }

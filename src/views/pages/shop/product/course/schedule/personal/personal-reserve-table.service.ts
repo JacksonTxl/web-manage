@@ -11,9 +11,11 @@ export class PersonalReserveTableService implements RouteGuard {
     addBatch: 'shop:schedule:personal_course_schedule|batch_add',
     copy: 'shop:schedule:personal_course_schedule|copy'
   })
-  constructor(private commonService: CommonService,
+  constructor(
+    private commonService: CommonService,
     private authService: AuthService,
-    private reserveService: PersonalScheduleReserveService) {
+    private reserveService: PersonalScheduleReserveService
+  ) {
     this.state$ = new State({})
   }
 

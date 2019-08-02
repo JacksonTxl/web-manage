@@ -18,7 +18,11 @@ export class EditService implements RouteGuard {
   roleList$ = new State([])
   staffSpecialty$ = new State([])
   loading$ = new State({})
-  constructor(protected staffApi: StaffApi, protected shopStaffApi: ShopStaffApi, private roleApi: RoleApi) {}
+  constructor(
+    protected staffApi: StaffApi,
+    protected shopStaffApi: ShopStaffApi,
+    private roleApi: RoleApi
+  ) {}
   @Effect()
   // 获取手机号区域
   getCountryCodes() {
@@ -37,9 +41,11 @@ export class EditService implements RouteGuard {
     )
   }
   getNormalList() {
-    return this.roleApi.getNormalList().pipe(tap(res => {
-      this.roleList$.commit(() => res.roles)
-    }))
+    return this.roleApi.getNormalList().pipe(
+      tap(res => {
+        this.roleList$.commit(() => res.roles)
+      })
+    )
   }
 
   // 获取编辑回显
@@ -78,6 +84,11 @@ export class EditService implements RouteGuard {
 
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     const { id } = to.query as any
-    return forkJoin(this.getStaffSpecialty(), this.getNormalList(), this.getCountryCodes(), this.editStaffInfo(id))
+    return forkJoin(
+      this.getStaffSpecialty(),
+      this.getNormalList(),
+      this.getCountryCodes(),
+      this.editStaffInfo(id)
+    )
   }
 }

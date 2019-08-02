@@ -26,7 +26,9 @@
         <a-row :gutter="24">
           <a-col :lg="16">
             <st-info>
-              <st-info-item label="文案比较长">这里文案如果比较长的话，占16/24栅格，后面8个栅格空着。这里文案如果比较长的话，占16/24栅格，后面8个栅格空着。这里文案如果比较长的话，占16/24栅格，后面8个栅格空着。这里文案如果比较长的话，占16/24栅格，后面8个栅格空着</st-info-item>
+              <st-info-item label="文案比较长">
+                这里文案如果比较长的话，占16/24栅格，后面8个栅格空着。这里文案如果比较长的话，占16/24栅格，后面8个栅格空着。这里文案如果比较长的话，占16/24栅格，后面8个栅格空着。这里文案如果比较长的话，占16/24栅格，后面8个栅格空着
+              </st-info-item>
             </st-info>
           </a-col>
         </a-row>
@@ -41,7 +43,9 @@
             <st-info labelWidth="136px" labelGutter="16px">
               <st-info-item label="会员卡名称">万晋健身房年卡</st-info-item>
               <st-info-item label="所属会员">会员名称</st-info-item>
-              <st-info-item label="允许转让" label-gutter="80px">允许</st-info-item>
+              <st-info-item label="允许转让" label-gutter="80px">
+                允许
+              </st-info-item>
               <st-info-item label="类型">会员期限卡</st-info-item>
               <st-info-item label="手机号">13345667788</st-info-item>
               <st-info-item label="转让手续费">5%</st-info-item>
@@ -63,7 +67,9 @@
           <a-col :lg="12">
             <st-info :isWeakenLabel="true">
               <st-info-item label="当前系统版本">俱乐部（单店版）</st-info-item>
-              <st-info-item label="首次开通时间">2019-04-11 17:39:25</st-info-item>
+              <st-info-item label="首次开通时间">
+                2019-04-11 17:39:25
+              </st-info-item>
             </st-info>
           </a-col>
           <a-col :lg="12">

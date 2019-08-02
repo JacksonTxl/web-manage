@@ -4,8 +4,8 @@
       <a-row :gutter="8">
         <a-col :lg="24">
           <st-info>
-            <st-info-item label="姓名">{{record.member_name}}</st-info-item>
-            <st-info-item label="手机号">{{record.mobile}}</st-info-item>
+            <st-info-item label="姓名">{{ record.member_name }}</st-info-item>
+            <st-info-item label="手机号">{{ record.mobile }}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -25,26 +25,29 @@
               :dataSource="list"
               rowKey="id"
             >
-              <span
-                slot="remain_amount"
-                slot-scope="text,record"
-              >{{record.remain_amount}} {{record.unit}}</span>
-              <span
-                slot="start_end"
-                slot-scope="text,record"
-              >{{record.start_time}} ~ {{record.end_time}}</span>
+              <span slot="remain_amount" slot-scope="text, record">
+                {{ record.remain_amount }} {{ record.unit }}
+              </span>
+              <span slot="start_end" slot-scope="text, record">
+                {{ record.start_time }} ~ {{ record.end_time }}
+              </span>
             </a-table>
           </st-form-item>
-
         </a-col>
       </a-row>
       <st-form-item label="转店至" style="margin-top:20px">
-        <a-select placeholder="请选择门店" v-decorator="basicInfoRuleList.to_shop" @change="shopId">
+        <a-select
+          placeholder="请选择门店"
+          v-decorator="basicInfoRuleList.to_shop"
+          @change="shopId"
+        >
           <a-select-option
             v-for="item in getDataList.list"
             :key="item.id"
             :value="item.id"
-          >{{item.shop_name}}</a-select-option>
+          >
+            {{ item.shop_name }}
+          </a-select-option>
         </a-select>
       </st-form-item>
       <a-row :gutter="8" class="mg-t8">
@@ -55,7 +58,9 @@
               placeholder="请输入转让手续费"
               v-decorator="basicInfoRuleList.poundage"
             >
-              <template slot="addonAfter">元</template>
+              <template slot="addonAfter">
+                元
+              </template>
             </st-input-number>
           </st-form-item>
         </a-col>
@@ -63,12 +68,17 @@
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item label="手续费归属">
-            <a-select placeholder="请选择手续费归属" v-decorator="basicInfoRuleList.attribution">
+            <a-select
+              placeholder="请选择手续费归属"
+              v-decorator="basicInfoRuleList.attribution"
+            >
               <a-select-option
                 v-for="item in getTransferShop.list"
                 :key="item.id"
                 :value="item.id"
-              >{{item.shop_name}}</a-select-option>
+              >
+                {{ item.shop_name }}
+              </a-select-option>
             </a-select>
           </st-form-item>
         </a-col>
@@ -76,7 +86,14 @@
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item class="mg-l24" style="text-align:right;" labelOffset>
-            <st-button type="primary" html-type="submit" @click="save" :loading="loading.getMemberTransfer">确认提交</st-button>
+            <st-button
+              type="primary"
+              html-type="submit"
+              @click="save"
+              :loading="loading.getMemberTransfer"
+            >
+              确认提交
+            </st-button>
           </st-form-item>
         </a-col>
       </a-row>

@@ -2,13 +2,25 @@
   <div class="member-info-sales-interests">
     <div class="member-info-sales-interests-item">
       <st-t2 class="member-info-sales-interests-item__padding">优惠劵</st-t2>
-      <st-t4 class="member-info-sales-interests-item__padding">可用优惠劵:{{ couponCount.can_use }}</st-t4>
-      <st-t4 class="member-info-sales-interests-item__padding">已使用优惠劵:{{ couponCount.used }}</st-t4>
-      <st-t4 class="member-info-sales-interests-item__padding">过期优惠券:{{ couponCount.expire }}</st-t4>
+      <st-t4 class="member-info-sales-interests-item__padding">
+        可用优惠劵:{{ couponCount.can_use }}
+      </st-t4>
+      <st-t4 class="member-info-sales-interests-item__padding">
+        已使用优惠劵:{{ couponCount.used }}
+      </st-t4>
+      <st-t4 class="member-info-sales-interests-item__padding">
+        过期优惠券:{{ couponCount.expire }}
+      </st-t4>
     </div>
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24">
-        <st-table rowKey="" :dataSource="couponList" :columns="coupon" :page="page" @change="onPageChange"></st-table>
+        <st-table
+          rowKey=""
+          :dataSource="couponList"
+          :columns="coupon"
+          :page="page"
+          @change="onPageChange"
+        ></st-table>
       </a-col>
     </a-row>
     <!-- <a-row :gutter="8">
@@ -58,11 +70,13 @@ export default {
   },
   methods: {
     onPageChange(e) {
-      this.$router.push({ query: {
-        id: this.$route.query.id,
-        size: e.size,
-        page: e.current_page
-      } })
+      this.$router.push({
+        query: {
+          id: this.$route.query.id,
+          size: e.size,
+          page: e.current_page
+        }
+      })
     }
   },
   mounted() {

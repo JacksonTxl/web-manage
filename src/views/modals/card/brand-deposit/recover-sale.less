@@ -1,55 +1,55 @@
 .modal-card-brand-recover-sale {
-    &__warn-text {
-        display: flex;
-        align-items: flex-start;
-        padding: 8px 16px;
-        border-radius: 4px;
-        .bg(@table-bg-color-row-2);
-        >p{
-            margin: 0 0 0 8px;
-            .fz(14px);
-            .lh(22px);
-            .c(@text);
-        }
+  &__warn-text {
+    display: flex;
+    align-items: flex-start;
+    padding: 8px 16px;
+    border-radius: 4px;
+    .bg(@table-bg-color-row-2);
+    > p {
+      margin: 0 0 0 8px;
+      .fz(14px);
+      .lh(22px);
+      .c(@text);
     }
-    &__icon {
-        .c(@primary-color);
-        color: red;
-        .fz(14px);
-        .lh(22px);
-        flex: none;
+  }
+  &__icon {
+    .c(@primary-color);
+    color: red;
+    .fz(14px);
+    .lh(22px);
+    flex: none;
+  }
+  &__card-name {
+    display: flex;
+    align-items: center;
+  }
+  &__form {
+    .ant-form-item-control-wrapper {
+      padding-left: 16px;
     }
-    &__card-name {
-        display: flex;
-        align-items: center;
+  }
+  &__saletime {
+    display: flex;
+    align-items: center;
+    > span {
+      flex: none;
+      height: 32px;
+      margin: 0 8px 24px;
     }
-    &__form {
-        .ant-form-item-control-wrapper {
-            padding-left: 16px;
-        }
+    .page-a-form {
+      flex: auto;
+      .ant-form-item-control-wrapper {
+        padding-left: 0;
+      }
+      .ant-calendar-picker {
+        width: 100%;
+      }
     }
-    &__saletime{
-        display: flex;
-        align-items: center;
-        >span{
-            flex: none;
-            height: 32px;
-            margin: 0 8px 24px;
-        }
-        .page-a-form {
-            flex: auto;
-            .ant-form-item-control-wrapper {
-                padding-left: 0;
-            }
-            .ant-calendar-picker {
-                width: 100%;
-            }
-        }
-    }
-    .ant-modal-footer {
-        padding: 0 24px 24px;
-    }
-    .ant-modal-body {
-        padding-bottom: 0;
-    }
+  }
+  .ant-modal-footer {
+    padding: 0 24px 24px;
+  }
+  .ant-modal-body {
+    padding-bottom: 0;
+  }
 }

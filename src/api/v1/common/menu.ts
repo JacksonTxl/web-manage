@@ -11,7 +11,7 @@ export class MenuApi extends Api {
   /**
    * 标记为常用菜单
    * @param id
-  */
+   */
   addFavorite(id: number) {
     return this.http.post(`${url}/favorite/${id}`)
   }

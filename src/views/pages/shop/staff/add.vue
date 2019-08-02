@@ -18,7 +18,8 @@
       :codeList="codeList"
       :roleList="roleList"
       @addStep="addCoachInfo"
-      @deletStep="deletStep" />
+      @deletStep="deletStep"
+    />
   </st-panel>
 </template>
 

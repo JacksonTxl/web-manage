@@ -1,8 +1,19 @@
 <template>
   <div :class="basic()">
-    <a-select defaultValue="0" style="width: 106px" @change="handleChange" class="mg-l8">
+    <a-select
+      defaultValue="0"
+      style="width: 106px"
+      @change="handleChange"
+      class="mg-l8"
+    >
       <a-select-option value="0">全部门店</a-select-option>
-      <a-select-option v-for="(item, index) in shopList" :value="item.shop_id" :key="index">{{item.shop_name}}</a-select-option>
+      <a-select-option
+        v-for="(item, index) in shopList"
+        :value="item.shop_id"
+        :key="index"
+      >
+        {{ item.shop_name }}
+      </a-select-option>
     </a-select>
   </div>
 </template>
@@ -33,7 +44,6 @@ export default {
       this.$emit('change', event)
     }
   },
-  components: {
-  }
+  components: {}
 }
 </script>

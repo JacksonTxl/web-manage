@@ -61,9 +61,7 @@ export default {
         components: {
           StHelpTooltip
         },
-        render: h => (
-          <st-help-tooltip></st-help-tooltip>
-        )
+        render: h => <st-help-tooltip />
       }).$mount().$el
       this.chart = new Chart({
         container: this.$el,
@@ -97,8 +95,11 @@ export default {
                 fill: '#3E4D5C',
                 fontSize: 12
               },
-              htmlTemplate: (text, item, index) => { // 增加tooltipEl.outerHTML，防止mounted未完成导致的空白闪烁
-                return `<span style="width:70px;display:block;">${text}&nbsp;<span id="axis-${index}">${tooltipEl.outerHTML}</span></span>`
+              htmlTemplate: (text, item, index) => {
+                // 增加tooltipEl.outerHTML，防止mounted未完成导致的空白闪烁
+                return `<span style="width:70px;display:block;">${text}&nbsp;<span id="axis-${index}">${
+                  tooltipEl.outerHTML
+                }</span></span>`
               }
             },
             tickLine: {
@@ -184,25 +185,19 @@ export default {
           components: {
             StHelpTooltip
           },
-          render: h => (
-            <st-help-tooltip id="TBDAC001"></st-help-tooltip>
-          )
+          render: h => <st-help-tooltip id="TBDAC001" />
         }).$mount('#axis-0')
         new Vue({
           components: {
             StHelpTooltip
           },
-          render: h => (
-            <st-help-tooltip id="TBDAC002"></st-help-tooltip>
-          )
+          render: h => <st-help-tooltip id="TBDAC002" />
         }).$mount('#axis-1')
         new Vue({
           components: {
             StHelpTooltip
           },
-          render: h => (
-            <st-help-tooltip id="TBDAC003"></st-help-tooltip>
-          )
+          render: h => <st-help-tooltip id="TBDAC003" />
         }).$mount('#axis-2')
       }
     }

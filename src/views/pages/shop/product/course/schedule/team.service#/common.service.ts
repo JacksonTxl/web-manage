@@ -1,16 +1,20 @@
-import { TeamScheduleCommonApi, UnUsedSeatQuery, ConsumeQuery } from '@/api/v1/schedule/team/common'
+import {
+  TeamScheduleCommonApi,
+  UnUsedSeatQuery,
+  ConsumeQuery
+} from '@/api/v1/schedule/team/common'
 import { Injectable } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { tap, pluck } from 'rxjs/operators'
 import { MessageService } from '@/services/message.service'
 
 export interface SetState {
-  courseOptions: any[],
-  coachOptions: any[],
-  memberOptions: any[],
-  courtOptions: any[],
-  unUsedSeatOptions: any[],
-  unUsedSeatCourtOptions: any[],
+  courseOptions: any[]
+  coachOptions: any[]
+  memberOptions: any[]
+  courtOptions: any[]
+  unUsedSeatOptions: any[]
+  unUsedSeatCourtOptions: any[]
   consumeOptions: any[]
 }
 @Injectable()
@@ -24,7 +28,10 @@ export class TeamScheduleCommonService {
   unUsedSeatCourtOptions$: Computed<any[]>
   consumeOptions$: Computed<any[]>
 
-  constructor(private commonApi: TeamScheduleCommonApi, private msg: MessageService) {
+  constructor(
+    private commonApi: TeamScheduleCommonApi,
+    private msg: MessageService
+  ) {
     this.state$ = new State({
       courseOptions: [],
       coachOptions: [],
@@ -34,9 +41,15 @@ export class TeamScheduleCommonService {
       consumeOptions: [],
       courtOptions: []
     })
-    this.consumeOptions$ = new Computed(this.state$.pipe(pluck('consumeOptions')))
-    this.unUsedSeatOptions$ = new Computed(this.state$.pipe(pluck('unUsedSeatOptions')))
-    this.unUsedSeatCourtOptions$ = new Computed(this.state$.pipe(pluck('unUsedSeatCourtOptions')))
+    this.consumeOptions$ = new Computed(
+      this.state$.pipe(pluck('consumeOptions'))
+    )
+    this.unUsedSeatOptions$ = new Computed(
+      this.state$.pipe(pluck('unUsedSeatOptions'))
+    )
+    this.unUsedSeatCourtOptions$ = new Computed(
+      this.state$.pipe(pluck('unUsedSeatCourtOptions'))
+    )
     this.courseOptions$ = new Computed(this.state$.pipe(pluck('courseOptions')))
     this.coachOptions$ = new Computed(this.state$.pipe(pluck('coachOptions')))
     this.memberOptions$ = new Computed(this.state$.pipe(pluck('memberOptions')))
@@ -48,11 +61,13 @@ export class TeamScheduleCommonService {
    * 获取会员Options
    */
   getMemberList(query: any) {
-    return this.commonApi.getMemberList(query).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.memberOptions = res.list
+    return this.commonApi.getMemberList(query).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.memberOptions = res.list
+        })
       })
-    }))
+    )
   }
   /**
    *
@@ -60,11 +75,13 @@ export class TeamScheduleCommonService {
    * 获取场地座位Options
    */
   getUnusedSeat(query: UnUsedSeatQuery) {
-    return this.commonApi.getUnusedSeat(query).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.unUsedSeatCourtOptions = res.list
+    return this.commonApi.getUnusedSeat(query).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.unUsedSeatCourtOptions = res.list
+        })
       })
-    }))
+    )
   }
   /**
    *
@@ -72,11 +89,13 @@ export class TeamScheduleCommonService {
    * 获取课程Options
    */
   getCourseList() {
-    return this.commonApi.getCourseList().pipe(tap(res => {
-      this.state$.commit(state => {
-        state.courseOptions = res.list
+    return this.commonApi.getCourseList().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.courseOptions = res.list
+        })
       })
-    }))
+    )
   }
   /**
    *
@@ -84,23 +103,27 @@ export class TeamScheduleCommonService {
    * 获取教练Options
    */
   getCoachList() {
-    return this.commonApi.getCoachList().pipe(tap(res => {
-      this.state$.commit(state => {
-        state.coachOptions = res.list
+    return this.commonApi.getCoachList().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.coachOptions = res.list
+        })
       })
-    }))
+    )
   }
   /**
-  *
-  * @param query
-  * 获取场地Options
-  */
+   *
+   * @param query
+   * 获取场地Options
+   */
   getCourtList() {
-    return this.commonApi.getCourtList().pipe(tap(res => {
-      this.state$.commit(state => {
-        state.courtOptions = res.list
+    return this.commonApi.getCourtList().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.courtOptions = res.list
+        })
       })
-    }))
+    )
   }
   /**
    *
@@ -108,14 +131,16 @@ export class TeamScheduleCommonService {
    * 获取座位Options
    */
   getUnusedSeatList(query: UnUsedSeatQuery) {
-    return this.commonApi.getUnusedSeatList(query).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.unUsedSeatOptions = res.list.map((item: any, index: any) => {
-          if (item === -1) item = '无座位'
-          return { id: index, name: item }
+    return this.commonApi.getUnusedSeatList(query).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.unUsedSeatOptions = res.list.map((item: any, index: any) => {
+            if (item === -1) item = '无座位'
+            return { id: index, name: item }
+          })
         })
       })
-    }))
+    )
   }
   /**
    *
@@ -134,6 +159,7 @@ export class TeamScheduleCommonService {
             return ele
           })
         })
-      }))
+      })
+    )
   }
 }

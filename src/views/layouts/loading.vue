@@ -6,7 +6,7 @@
       <div class="inner two"></div>
       <div class="inner three"></div>
     </div>
-    <p class="slogan">{{text}}</p>
+    <p class="slogan">{{ text }}</p>
   </div>
 </template>
 

@@ -19,7 +19,7 @@
       margin-left: 12px;
     }
   }
-  &__search-input{
+  &__search-input {
     position: relative;
     flex: auto;
     margin-left: 24px;
@@ -27,14 +27,14 @@
       border-color: @error-color;
     }
   }
-  &__search-menu{
+  &__search-menu {
     width: 100%;
     max-height: 227px;
     position: absolute;
     padding: 8px 0;
     z-index: 9999;
     border-radius: 4px;
-    box-shadow:0px 2px 8px 0px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
     background: @white;
     border: none;
   }
@@ -47,8 +47,8 @@
   &__search-item {
     padding: 10px;
     cursor: pointer;
-    &:hover{
-      .bg(#EBEFFF);
+    &:hover {
+      .bg(#ebefff);
     }
   }
   &__search-title {
@@ -72,7 +72,7 @@
       border-color: @error-color;
     }
   }
-  &__error-info{
+  &__error-info {
     position: absolute;
     top: 0;
     left: 0;
@@ -83,13 +83,13 @@
     margin-top: 24px;
     text-align: right;
   }
-  div[n=targetElement]~div[draggable=false]{
+  div[n='targetElement'] ~ div[draggable='false'] {
     display: none;
   }
-  div[n=targetElement]~div[onresize^=return]{
+  div[n='targetElement'] ~ div[onresize^='return'] {
     display: none;
   }
-  div[n=targetElement]~div[onpositionupdate^=return]{
+  div[n='targetElement'] ~ div[onpositionupdate^='return'] {
     display: none;
   }
 }

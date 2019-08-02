@@ -1,5 +1,5 @@
 <template>
-<!-- 这个文件废弃了 -->
+  <!-- 这个文件废弃了 -->
   <st-modal
     title="微信支付配置"
     size="small"
@@ -11,13 +11,22 @@
   >
     <st-form labelWidth="100px">
       <st-form-item label="微信商户名称" required>
-        <a-input placeholder="请输入微信商户名称" v-model="info.wechat_account_name"></a-input>
+        <a-input
+          placeholder="请输入微信商户名称"
+          v-model="info.wechat_account_name"
+        ></a-input>
       </st-form-item>
       <st-form-item label="微信商户号" required>
-        <a-input placeholder="请输入微信商户号" v-model="info.wechat_account_num"></a-input>
+        <a-input
+          placeholder="请输入微信商户号"
+          v-model="info.wechat_account_num"
+        ></a-input>
       </st-form-item>
       <st-form-item label="API密钥" required>
-        <a-input placeholder="请输入API密钥" v-model="info.wechat_api_key"></a-input>
+        <a-input
+          placeholder="请输入API密钥"
+          v-model="info.wechat_api_key"
+        ></a-input>
         <div><a href="#" class="st-des mg-t16">如何配置微信支付?</a></div>
       </st-form-item>
     </st-form>
@@ -59,15 +68,13 @@ export default {
       if (!this.inputCheck()) {
         return
       }
-      this.settingService.update({ ...this.info }).subscribe(
-        () => {
-          this.messageService.success({
-            content: '提交成功'
-          })
-          this.show = false
-          this.$emit('change')
-        }
-      )
+      this.settingService.update({ ...this.info }).subscribe(() => {
+        this.messageService.success({
+          content: '提交成功'
+        })
+        this.show = false
+        this.$emit('change')
+      })
     },
     inputCheck() {
       const { info } = this

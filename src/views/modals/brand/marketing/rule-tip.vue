@@ -1,10 +1,5 @@
 <template>
-  <st-modal
-    title="规则说明"
-    v-model="show"
-    @ok="handleOk"
-    :footer="null"
-  >
+  <st-modal title="规则说明" v-model="show" @ok="handleOk" :footer="null">
     <p v-html="contents"></p>
   </st-modal>
 </template>
@@ -12,8 +7,7 @@
 export default {
   name: 'BrandMarketingRuleTip',
   serviceInject() {
-    return {
-    }
+    return {}
   },
   props: {
     contents: {
@@ -25,8 +19,7 @@ export default {
       show: false
     }
   },
-  created() {
-  },
+  created() {},
   methods: {
     handleOk() {
       this.show = false

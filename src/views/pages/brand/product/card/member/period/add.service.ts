@@ -12,8 +12,6 @@ export class AddService {
     return this.cardsApi.addCard(data, 'brand')
   }
   getShopBasic(params: GetShopBasicInput) {
-    return this.shopApi.getShopBasic(params).pipe(
-      pluck('shops')
-    )
+    return this.shopApi.getShopBasic(params).pipe(pluck('shops'))
   }
 }

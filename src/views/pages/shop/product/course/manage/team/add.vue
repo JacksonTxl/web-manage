@@ -1,6 +1,6 @@
 <template>
   <st-panel app>
-    <set-team-course from="shop"/>
+    <set-team-course from="shop" />
   </st-panel>
 </template>
 <script>

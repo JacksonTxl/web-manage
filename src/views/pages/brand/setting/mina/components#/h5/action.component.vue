@@ -3,11 +3,24 @@
     <a-row :gutter="12">
       <a-col :span="6" v-for="(li, index) in list" :key="index">
         <div :class="action('box')">
-          <st-image-upload @change="imageUploadChange($event,index)" width="72px" height="72px" :list="[li]"
-            :sizeLimit="2"  placeholder="上传照片" :numLimit="1"></st-image-upload>
+          <st-image-upload
+            @change="imageUploadChange($event, index)"
+            width="72px"
+            height="72px"
+            :list="[li]"
+            :sizeLimit="2"
+            placeholder="上传照片"
+            :numLimit="1"
+          ></st-image-upload>
           <div :class="action('box-title')">
-            <a-input placeholder="请输入功能名称" v-model="li.title" maxlength="10"/>
-            <div :class="action('link')" :title="`跳转：${link[index]}`">跳转：{{link[index]}}</div>
+            <a-input
+              placeholder="请输入功能名称"
+              v-model="li.title"
+              maxlength="10"
+            />
+            <div :class="action('link')" :title="`跳转：${link[index]}`">
+              跳转：{{ link[index] }}
+            </div>
           </div>
         </div>
       </a-col>
@@ -57,5 +70,4 @@ export default {
     }
   }
 }
-
 </script>

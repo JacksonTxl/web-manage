@@ -8,68 +8,75 @@
           :key="index"
           class="layout-default-sider__often-item"
         >
-          <st-icon
-            type="star"
-            @click.native="delFavorite(item.id)"
-          />
-          <router-link :to="{ name: item.url }" class="layout-default-sider__favorite-title">
-            {{item.name}}
+          <st-icon type="star" @click.native="delFavorite(item.id)" />
+          <router-link
+            :to="{ name: item.url }"
+            class="layout-default-sider__favorite-title"
+          >
+            {{ item.name }}
           </router-link>
         </li>
       </ul>
     </div>
     <a-menu
-        class="layout-default-sider__menu"
-        :openKeys="openKeys"
-        :selectedKeys="selectedKeys"
-        @openChange="onOpenChange"
-        mode="inline"
-      >
-        <template v-for="menu in menus">
-          <a-sub-menu
-            v-if="isHasSubmenu(menu)"
-            :key="menu.id"
+      class="layout-default-sider__menu"
+      :openKeys="openKeys"
+      :selectedKeys="selectedKeys"
+      @openChange="onOpenChange"
+      mode="inline"
+    >
+      <template v-for="menu in menus">
+        <a-sub-menu v-if="isHasSubmenu(menu)" :key="menu.id">
+          <span slot="title">
+            <st-icon :type="menu.icon" />
+            <span>{{ menu.name }}</span>
+            <st-icon
+              class="layout-default-sider__menu-arrow open"
+              type="add"
+              size="8px"
+            />
+            <st-icon
+              class="layout-default-sider__menu-arrow fold-up"
+              type="minus"
+              size="8px"
+            />
+          </span>
+          <a-menu-item
+            v-for="subMenu in menu.children"
+            :key="subMenu.id"
+            class="layout-default-sider__menu-item sub"
           >
-            <span slot="title">
-              <st-icon :type="menu.icon"/>
-              <span>{{menu.name}}</span>
-              <st-icon class="layout-default-sider__menu-arrow open" type="add" size="8px"/>
-              <st-icon class="layout-default-sider__menu-arrow fold-up" type="minus" size="8px"/>
-            </span>
-            <a-menu-item
-              v-for="subMenu in menu.children"
-              :key="subMenu.id"
-              class="layout-default-sider__menu-item sub"
+            <st-icon
+              v-if="isfavorite(subMenu.id)"
+              type="star"
+              size="8px"
+              class="layout-default-sider__menu-star active"
+              @click.native="delFavorite(subMenu.id)"
+            />
+            <st-icon
+              v-else
+              type="star-line"
+              size="8px"
+              class="layout-default-sider__menu-star"
+              @click.native="addFavorite(subMenu.id, subMenu)"
+            />
+            <span
+              @click="onClickMenuItem(subMenu)"
+              class="layout-default-sider__menu-title"
             >
-              <st-icon
-                v-if="isfavorite(subMenu.id)"
-                type="star"
-                size="8px"
-                class="layout-default-sider__menu-star active"
-                @click.native="delFavorite(subMenu.id)"
-              />
-              <st-icon
-                v-else
-                type="star-line"
-                size="8px"
-                class="layout-default-sider__menu-star"
-                @click.native="addFavorite(subMenu.id, subMenu)"
-              />
-              <span
-                @click="onClickMenuItem(subMenu)"
-                class="layout-default-sider__menu-title"
-              >
-                {{subMenu.name}}
-              </span>
-            </a-menu-item>
+              {{ subMenu.name }}
+            </span>
+          </a-menu-item>
         </a-sub-menu>
         <a-menu-item v-else :key="menu.id">
           <router-link
             :to="{ name: menu.url }"
-            :class="{ 'ant-menu-item-selected':  menu.id === currentSiderMenu.id }"
+            :class="{
+              'ant-menu-item-selected': menu.id === currentSiderMenu.id
+            }"
           >
-            <st-icon :type="menu.icon"/>
-            <span>{{menu.name}}</span>
+            <st-icon :type="menu.icon" />
+            <span>{{ menu.name }}</span>
           </router-link>
         </a-menu-item>
       </template>
@@ -136,12 +143,12 @@ export default {
       this.setOpenKeys()
     },
     isHasSubmenu(menu) {
-      return (
-        menu.children && menu.children.length
-      )
+      return menu.children && menu.children.length
     },
     onOpenChange(openKeys) {
-      const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
+      const latestOpenKey = openKeys.find(
+        key => this.openKeys.indexOf(key) === -1
+      )
       if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
         this.openKeys = openKeys
       } else {
@@ -183,7 +190,7 @@ export default {
     },
     findSelectedKey() {
       let selectedKey
-      (this.currentSiderMenu.children || []).forEach(item => {
+      ;(this.currentSiderMenu.children || []).forEach(item => {
         if (item.url && this.getPageName().indexOf(item.url) !== -1) {
           selectedKey = item.id
         }

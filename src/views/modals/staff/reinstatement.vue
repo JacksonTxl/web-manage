@@ -1,15 +1,16 @@
 <template>
   <st-modal
     class="modal-turnover"
-    title='员工复职'
-    @ok='onSubmit'
+    title="员工复职"
+    @ok="onSubmit"
     okText="保存"
     size="small"
-    v-model='show'>
+    v-model="show"
+  >
     <staff-info :staff="staff"></staff-info>
     <section>
-      <st-form labelWidth='60px'>
-        <st-form-item  labelWidth='60px' label="复职日期">
+      <st-form labelWidth="60px">
+        <st-form-item labelWidth="60px" label="复职日期">
           <a-date-picker @change="onChange" />
         </st-form-item>
       </st-form>
@@ -46,9 +47,14 @@ export default {
       this.restartTime = dateString
     },
     onSubmit() {
-      this.reinstatementService.putStaffBrandRestart({ id: this.staff.id, restart_time: this.restartTime }).subscribe(res => {
-        this.$router.push({ force: true })
-      })
+      this.reinstatementService
+        .putStaffBrandRestart({
+          id: this.staff.id,
+          restart_time: this.restartTime
+        })
+        .subscribe(res => {
+          this.$router.push({ force: true })
+        })
       this.show = false
     }
   }

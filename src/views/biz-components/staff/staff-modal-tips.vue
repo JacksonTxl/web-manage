@@ -1,9 +1,10 @@
 <template>
   <div class="staff-modal-tips" :class="canNotDelete">
-    <p v-if="canNotDelete">该员工有以下任务项未完成,无法{{suffix}}</p>
+    <p v-if="canNotDelete">该员工有以下任务项未完成,无法{{ suffix }}</p>
     <ul>
       <li v-for="(tip, index) in list" :key="index" class="item">
-        <span class="count">{{index + 1}}</span> {{tip.num}}{{tip.type|unitFilter}}{{tip.name}},
+        <span class="count">{{ index + 1 }}</span>
+        {{ tip.num }}{{ tip.type | unitFilter }}{{ tip.name }},
         <!-- <a href="">查看详情</a> -->
       </li>
     </ul>

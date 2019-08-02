@@ -21,25 +21,30 @@ export class AllService implements RouteGuard {
     .pipe(map(options => [{ value: -1, label: '所有类型' }].concat(options)))
   sellStatus$ = this.userService
     .getOptions$('member_card.sell_status')
-    .pipe(map(options => [{ value: -1, label: '所有售卖状态' }].concat(options)))
+    .pipe(
+      map(options => [{ value: -1, label: '所有售卖状态' }].concat(options))
+    )
 
   constructor(
     private cardsApi: CardsApi,
     private userService: UserService,
-    private authService: AuthService) {}
+    private authService: AuthService
+  ) {}
   @Effect()
-  getList(query:CardListInput) {
-    return this.cardsApi.getCardList(query, 'brand', 'member').pipe(tap((res:any) => {
-      res = this.authService.filter(res)
-      this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-    }))
+  getList(query: CardListInput) {
+    return this.cardsApi.getCardList(query, 'brand', 'member').pipe(
+      tap((res: any) => {
+        res = this.authService.filter(res)
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
   }
   @Effect()
-  deleteCard(id:string) {
+  deleteCard(id: string) {
     return this.cardsApi.setCardsDelete(id, 'brand', 'member')
   }
-  beforeEach(to:ServiceRoute) {
+  beforeEach(to: ServiceRoute) {
     return this.getList(to.meta.query)
   }
 }

@@ -6,7 +6,7 @@ import { SettingMemberApi, UpdateInput } from '@/api/v1/setting/member'
 import { AuthService } from '@/services/auth.service'
 
 interface ListState {
-  list: object[],
+  list: object[]
   info: object
 }
 @Injectable()
@@ -79,16 +79,19 @@ export class UserLevelService extends Store<ListState> {
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
     const { type } = to.meta.query
-    this.getList().subscribe(() => {
-      if (type === 'edit') {
-        this.getInfo().subscribe(next, () => {
-          next(false)
-        })
-      } else {
-        next()
+    this.getList().subscribe(
+      () => {
+        if (type === 'edit') {
+          this.getInfo().subscribe(next, () => {
+            next(false)
+          })
+        } else {
+          next()
+        }
+      },
+      () => {
+        next(false)
       }
-    }, () => {
-      next(false)
-    })
+    )
   }
 }

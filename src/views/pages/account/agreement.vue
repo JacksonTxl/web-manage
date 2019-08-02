@@ -4,7 +4,7 @@
   </div>
 </template>
 <style lang="less" scoped>
-  .page-agreement {
-    padding: 15px;
-  }
+.page-agreement {
+  padding: 15px;
+}
 </style>

@@ -1,10 +1,15 @@
-
 <template>
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">选择等级</span>
-    <a-checkbox-group v-model="value.getData.member_level" >
-      <a-checkbox v-for="(item,index) in plainOptions" :value="item" :key="index">{{item.name}}</a-checkbox>
+    <a-checkbox-group v-model="value.getData.member_level">
+      <a-checkbox
+        v-for="(item, index) in plainOptions"
+        :value="item"
+        :key="index"
+      >
+        {{ item.name }}
+      </a-checkbox>
     </a-checkbox-group>
   </div>
 </template>
@@ -52,13 +57,15 @@ export default {
     this.plainOptions = list
     const arr = []
     this.value.getData.member_level.forEach(element => {
-      arr.push(list.filter(item => { return item.value === element.value })[0])
+      arr.push(
+        list.filter(item => {
+          return item.value === element.value
+        })[0]
+      )
     })
     this.value.getData.member_level = arr
   },
-  methods: {
-
-  },
+  methods: {},
   mounted() {}
 }
 </script>

@@ -2,68 +2,159 @@
   <section :class="basic()">
     <st-panel title="会员卡详情">
       <div slot="actions">
-        <st-button v-if="auth['shop:sold:sold_member_card|export_contract']" type="primary" class="mgr-8"  @click="toContract">查看合同</st-button>
-        <st-button v-if="auth['shop:sold:sold_member_card|frozen']" class="mgr-8" @click="onFreeze">冻结</st-button>
-        <st-button v-if="auth['shop:sold:sold_member_card|renew']" class="mgr-8" @click="onRenewal">续卡</st-button>
+        <st-button
+          v-if="auth['shop:sold:sold_member_card|export_contract']"
+          type="primary"
+          class="mgr-8"
+          @click="toContract"
+        >
+          查看合同
+        </st-button>
+        <st-button
+          v-if="auth['shop:sold:sold_member_card|frozen']"
+          class="mgr-8"
+          @click="onFreeze"
+        >
+          冻结
+        </st-button>
+        <st-button
+          v-if="auth['shop:sold:sold_member_card|renew']"
+          class="mgr-8"
+          @click="onRenewal"
+        >
+          续卡
+        </st-button>
         <a-dropdown>
-            <a-menu slot="overlay">
-              <a-menu-item v-if="auth['shop:sold:sold_member_card|upgrade']" @click="onUpgrade">升级</a-menu-item>
-              <a-menu-item v-if="auth['shop:sold:sold_member_card|transfer']" @click="onTransfer">转让</a-menu-item>
-              <a-menu-item v-if="auth['brand_shop:order:order|refund']" @click="onRefund">退款</a-menu-item>
-              <a-menu-item v-if="auth['shop:sold:sold_member_card|unfrozen']" @click="onUnfreeze">取消冻结</a-menu-item>
-              <a-menu-item v-if="auth['shop:sold:sold_member_card|vaild_time']" @click="onSetTime">修改有效时间</a-menu-item>
-              <a-menu-item v-if="auth['shop:sold:sold_member_card|vip_region']" @click="onArea">修改入场vip区域</a-menu-item>
-            </a-menu>
-            <a-button>
-              更多操作
-              <a-icon type="down"/>
-            </a-button>
-          </a-dropdown>
+          <a-menu slot="overlay">
+            <a-menu-item
+              v-if="auth['shop:sold:sold_member_card|upgrade']"
+              @click="onUpgrade"
+            >
+              升级
+            </a-menu-item>
+            <a-menu-item
+              v-if="auth['shop:sold:sold_member_card|transfer']"
+              @click="onTransfer"
+            >
+              转让
+            </a-menu-item>
+            <a-menu-item
+              v-if="auth['brand_shop:order:order|refund']"
+              @click="onRefund"
+            >
+              退款
+            </a-menu-item>
+            <a-menu-item
+              v-if="auth['shop:sold:sold_member_card|unfrozen']"
+              @click="onUnfreeze"
+            >
+              取消冻结
+            </a-menu-item>
+            <a-menu-item
+              v-if="auth['shop:sold:sold_member_card|vaild_time']"
+              @click="onSetTime"
+            >
+              修改有效时间
+            </a-menu-item>
+            <a-menu-item
+              v-if="auth['shop:sold:sold_member_card|vip_region']"
+              @click="onArea"
+            >
+              修改入场vip区域
+            </a-menu-item>
+          </a-menu>
+          <a-button>
+            更多操作
+            <a-icon type="down" />
+          </a-button>
+        </a-dropdown>
       </div>
       <a-row :gutter="24">
         <a-col :span="9">
           <st-info>
-            <st-info-item label="卡名">{{info.card_name}}</st-info-item>
-            <st-info-item label="类型">{{info.card_type | enumFilter('sold.card_type')}}</st-info-item>
-            <st-info-item label="初始额度">{{info.init_amount}}</st-info-item>
-            <st-info-item label="剩余额度">{{info.remain_amount}}</st-info-item>
-            <st-info-item label="有效期" class="mg-b0">{{info.start_time}} 至  {{info.end_time}}</st-info-item>
+            <st-info-item label="卡名">{{ info.card_name }}</st-info-item>
+            <st-info-item label="类型">
+              {{ info.card_type | enumFilter('sold.card_type') }}
+            </st-info-item>
+            <st-info-item label="初始额度">{{ info.init_amount }}</st-info-item>
+            <st-info-item label="剩余额度">
+              {{ info.remain_amount }}
+            </st-info-item>
+            <st-info-item label="有效期" class="mg-b0">
+              {{ info.start_time }} 至 {{ info.end_time }}
+            </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="9">
           <st-info>
-            <st-info-item label="所属会员">{{info.member_name}}</st-info-item>
-            <st-info-item label="手机号">{{info.mobile}}</st-info-item>
-            <st-info-item label="订单号">{{info.order_id}}</st-info-item>
-            <st-info-item label="订单状态">{{info.order_status | enumFilter('sold.order_status')}}</st-info-item>
-            <st-info-item label="当前状态" class="mg-b0">{{info.card_status | enumFilter('sold.card_status')}}</st-info-item>
+            <st-info-item label="所属会员">{{ info.member_name }}</st-info-item>
+            <st-info-item label="手机号">{{ info.mobile }}</st-info-item>
+            <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
+            <st-info-item label="订单状态">
+              {{ info.order_status | enumFilter('sold.order_status') }}
+            </st-info-item>
+            <st-info-item label="当前状态" class="mg-b0">
+              {{ info.card_status | enumFilter('sold.card_status') }}
+            </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="6">
           <st-info>
-            <st-info-item label="允许转让">{{info.is_transferable | enumFilter('sold.is_transferable')}}</st-info-item>
-            <st-info-item label="转让手续费" v-if="info.is_transferable !== 0">{{info.transfer_num}}{{info.transfer_unit | enumFilter('package_course.transfer_unit')}}</st-info-item>
+            <st-info-item label="允许转让">
+              {{ info.is_transferable | enumFilter('sold.is_transferable') }}
+            </st-info-item>
+            <st-info-item label="转让手续费" v-if="info.is_transferable !== 0">
+              {{ info.transfer_num
+              }}{{
+                info.transfer_unit | enumFilter('package_course.transfer_unit')
+              }}
+            </st-info-item>
             <st-info-item label="入场场馆">
-              <template v-if="info.admission_range.id < 2">{{info.admission_range.shop_name}}</template>
-              <a-popover :title="info.admission_range.shop_name" v-else >
-                <template slot="content" >
-                  <st-table :columns="admissionColumns" :dataSource="info.admission_range.shops" :pagination="false" key="id" :class="basic('popover-content')">
-                  </st-table>
+              <template v-if="info.admission_range.id < 2">
+                {{ info.admission_range.shop_name }}
+              </template>
+              <a-popover :title="info.admission_range.shop_name" v-else>
+                <template slot="content">
+                  <st-table
+                    :columns="admissionColumns"
+                    :dataSource="info.admission_range.shops"
+                    :pagination="false"
+                    key="id"
+                    :class="basic('popover-content')"
+                  ></st-table>
                 </template>
-                <a type="primary">{{info.admission_range.id | enumFilter('sold.admission_range')}}</a>
+                <a type="primary">
+                  {{
+                    info.admission_range.id | enumFilter('sold.admission_range')
+                  }}
+                </a>
               </a-popover>
             </st-info-item>
             <st-info-item label="约课范围">
-              <template v-if="info.course_interests.id < 2">{{info.course_interests.name}}</template>
+              <template v-if="info.course_interests.id < 2">
+                {{ info.course_interests.name }}
+              </template>
               <a-popover :title="info.course_interests.name" v-else>
                 <template slot="content">
-                  <st-table :columns="courseColumns" :dataSource="info.course_interests.courses" :pagination="false" key="id" :class="basic('popover-content')">
-                  </st-table>
+                  <st-table
+                    :columns="courseColumns"
+                    :dataSource="info.course_interests.courses"
+                    :pagination="false"
+                    key="id"
+                    :class="basic('popover-content')"
+                  ></st-table>
                 </template>
-                <a type="primary">{{info.course_interests.id | enumFilter('sold.course_interests')}}</a>
+                <a type="primary">
+                  {{
+                    info.course_interests.id
+                      | enumFilter('sold.course_interests')
+                  }}
+                </a>
               </a-popover>
             </st-info-item>
-            <st-info-item label="备注" class="mg-b0">{{info.description}}</st-info-item>
+            <st-info-item label="备注" class="mg-b0">
+              {{ info.description }}
+            </st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -142,7 +233,10 @@ export default {
           this.onSearch()
           break
         case 'pay':
-          this.createdGatheringTip({ message: '收款成功', order_id: orderId }).then(res => {
+          this.createdGatheringTip({
+            message: '收款成功',
+            order_id: orderId
+          }).then(res => {
             this.tipCallBack(orderId, modalType, res.type)
           })
           break
@@ -173,15 +267,19 @@ export default {
           this.createdOrderViewOrder()
           break
         case 'Pay':
-          this.createdOrderPay({ order_id: orderId, type: modalType }).then(res => {
-            this.payCallBack(orderId, modalType, res.type)
-          })
+          this.createdOrderPay({ order_id: orderId, type: modalType }).then(
+            res => {
+              this.payCallBack(orderId, modalType, res.type)
+            }
+          )
           break
       }
     },
     // 打印合同
     createdOrderPrint(order_id) {
-      let url = `${window.location.origin}/extra/contract-preview?id=${order_id}`
+      let url = `${
+        window.location.origin
+      }/extra/contract-preview?id=${order_id}`
       window.open(url)
     },
     // 查看订单
@@ -191,7 +289,9 @@ export default {
     // 跳转合同
     toContract() {
       let record = this.info
-      let url = `${window.location.origin}/extra/contract-preview?id=${record.order_id}`
+      let url = `${window.location.origin}/extra/contract-preview?id=${
+        record.order_id
+      }`
       window.open(url)
     },
     // 冻结
@@ -215,9 +315,12 @@ export default {
         content: '是否取消冻结？',
         maskClosable: true,
         onOk: () => {
-          return this.infoService.unFreeze(this.infoService.id).toPromise().then(() => {
-            this.$router.push({ force: true, query: this.query })
-          })
+          return this.infoService
+            .unFreeze(this.infoService.id)
+            .toPromise()
+            .then(() => {
+              this.$router.push({ force: true, query: this.query })
+            })
         }
       })
     },

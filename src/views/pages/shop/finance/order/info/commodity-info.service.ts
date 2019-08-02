@@ -10,12 +10,14 @@ export class CommodityInfoService implements RouteGuard {
   loading$ = new State({})
   constructor(private orderApi: OrderApi) {}
   @Effect()
-  getCommodityInfo(id:string) {
-    return this.orderApi.getCommodityInfo(id).pipe(tap((res:any) => {
-      this.info$.commit(() => res.info)
-    }))
+  getCommodityInfo(id: string) {
+    return this.orderApi.getCommodityInfo(id).pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
+      })
+    )
   }
-  beforeEach(to: ServiceRoute, from: ServiceRoute, next:()=>{}) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
     this.product_type$.commit(() => to.meta.query.type)
     this.getCommodityInfo(to.meta.query.id).subscribe(() => {
       next()

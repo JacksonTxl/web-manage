@@ -24,7 +24,9 @@ export class UserExperienceService extends Store<UserExprienceInfoState> {
       physicalListInfo: {},
       followInfo: {}
     })
-    this.physicalListInfo$ = new Computed(this.state$.pipe(pluck('physicalListInfo')))
+    this.physicalListInfo$ = new Computed(
+      this.state$.pipe(pluck('physicalListInfo'))
+    )
     this.followInfo$ = new Computed(this.state$.pipe(pluck('followInfo')))
   }
   SET_CARDS_LIST_INFO(physicalListInfo: UserExprienceInfoState) {

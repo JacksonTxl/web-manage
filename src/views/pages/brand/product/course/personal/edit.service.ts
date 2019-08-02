@@ -47,10 +47,13 @@ export class EditService extends Store<EditState> {
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     const course_id = to.meta.query.id || to.query.courseId
-    this.getCourseEdit({ course_id }).subscribe(() => {
-      next()
-    }, () => {
-      next(false)
-    })
+    this.getCourseEdit({ course_id }).subscribe(
+      () => {
+        next()
+      },
+      () => {
+        next(false)
+      }
+    )
   }
 }

@@ -2,7 +2,7 @@
   <st-panel app>
     <div class="kael-map">
       <div>
-        <input id="keyword" type="textbox" value="酒店">
+        <input id="keyword" type="textbox" value="酒店" />
         <a-button type="primary" @click="searchKeyword">搜索1111</a-button>
       </div>
       <div style="width:603px;height:300px" id="container"></div>
@@ -24,7 +24,7 @@ export default {
   methods: {
     init() {
       let that = this
-      var center = new qq.maps.LatLng(31.230350, 121.473720)
+      var center = new qq.maps.LatLng(31.23035, 121.47372)
       var map = new qq.maps.Map(document.getElementById('container'), {
         center: center,
         zoom: 13

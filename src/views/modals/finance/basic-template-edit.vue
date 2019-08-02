@@ -1,17 +1,18 @@
 <template>
-  <st-modal
-    title="编辑底薪模板"
-    v-model="show"
-    @ok="handleSubmit"
-    size="small"
-  >
+  <st-modal title="编辑底薪模板" v-model="show" @ok="handleSubmit" size="small">
     <st-form :form="form" labelWidth="67px" @submit="handleSubmit">
       <a-row :gutter="8">
         <a-col :lg="24">
           <st-form-item label="模板名称" required>
             <a-input
               placeholder="请输模板名称"
-              v-decorator="['template_name',{initialValue: item.template_name,rules: [{ required: true, message: '请输入模板名称' }]}]"
+              v-decorator="[
+                'template_name',
+                {
+                  initialValue: item.template_name,
+                  rules: [{ required: true, message: '请输入模板名称' }]
+                }
+              ]"
             />
           </st-form-item>
         </a-col>
@@ -20,9 +21,17 @@
             <st-input-number
               :float="true"
               placeholder="请输入月底薪"
-              v-decorator="['salary',{initialValue: item.salary, rules: [{ required: true, message: '请输入月底薪' }]}]"
+              v-decorator="[
+                'salary',
+                {
+                  initialValue: item.salary,
+                  rules: [{ required: true, message: '请输入月底薪' }]
+                }
+              ]"
             >
-              <template slot="addonAfter">元</template>
+              <template slot="addonAfter">
+                元
+              </template>
             </st-input-number>
           </st-form-item>
         </a-col>

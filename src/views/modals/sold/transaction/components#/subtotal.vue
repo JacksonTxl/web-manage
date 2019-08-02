@@ -1,5 +1,7 @@
 <template>
-  <st-form-item label="小计" class="global-form-item-text" labelGutter="12px">120元</st-form-item>
+  <st-form-item label="小计" class="global-form-item-text" labelGutter="12px">
+    120元
+  </st-form-item>
 </template>
 
 <script>

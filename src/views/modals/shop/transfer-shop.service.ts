@@ -5,7 +5,7 @@ import { Store } from '@/services/store'
 import { MemberApi } from '@/api/v1/member'
 
 interface CardsTableModelState {
-  lableInfo: any,
+  lableInfo: any
   list: []
 }
 @Injectable()

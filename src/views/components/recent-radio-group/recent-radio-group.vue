@@ -1,17 +1,17 @@
 <template>
   <div :class="b()">
-      <a-radio-group v-model="recent">
-          <a-radio-button :value="7">近7天</a-radio-button>
-          <a-radio-button :value="30">近30天</a-radio-button>
-          <a-radio-button :value="90">近90天</a-radio-button>
-      </a-radio-group>
-      <a-range-picker
-        :class="[b('range'),{'active':!recent}]"
-        @change="recentChange"
-        v-model="dateRange"
-        v-bind="$attrs"
-        :disabledDate="disabledDate"
-      />
+    <a-radio-group v-model="recent">
+      <a-radio-button :value="7">近7天</a-radio-button>
+      <a-radio-button :value="30">近30天</a-radio-button>
+      <a-radio-button :value="90">近90天</a-radio-button>
+    </a-radio-group>
+    <a-range-picker
+      :class="[b('range'), { active: !recent }]"
+      @change="recentChange"
+      v-model="dateRange"
+      v-bind="$attrs"
+      :disabledDate="disabledDate"
+    />
   </div>
 </template>
 <script>
@@ -42,7 +42,11 @@ export default {
   watch: {
     recent(newValue) {
       if (newValue && newValue !== 0) {
-        this.$emit('change', { recently_day: newValue, start_date: undefined, end_date: undefined })
+        this.$emit('change', {
+          recently_day: newValue,
+          start_date: undefined,
+          end_date: undefined
+        })
         this.dateRange = []
       }
     }
@@ -50,7 +54,10 @@ export default {
   mounted() {
     if (this.value.start_date && this.value.end_date) {
       this.recent = false
-      this.dateRange = [moment(this.value.start_date), moment(this.value.end_date)]
+      this.dateRange = [
+        moment(this.value.start_date),
+        moment(this.value.end_date)
+      ]
     } else {
       this.dateRange = []
     }
@@ -64,7 +71,11 @@ export default {
     moment,
     recentChange(date, dateString) {
       this.recent = false
-      this.$emit('change', { start_date: dateString[0], end_date: dateString[1], recently_day: undefined })
+      this.$emit('change', {
+        start_date: dateString[0],
+        end_date: dateString[1],
+        recently_day: undefined
+      })
     },
     disabledDate(current) {
       if (this.$attrs.disabledDate) {

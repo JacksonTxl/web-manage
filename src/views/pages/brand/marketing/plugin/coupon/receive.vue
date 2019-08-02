@@ -1,9 +1,9 @@
 <template>
   <div>
     <div :class="basic('receive-info')">
-      <p :class="basic('receive-title')">{{info.coupon_name}}</p>
-      <p :class="basic('receive-tip')">{{info.use_regulation}}</p>
-      <label>{{info.use_time}}</label>
+      <p :class="basic('receive-title')">{{ info.coupon_name }}</p>
+      <p :class="basic('receive-tip')">{{ info.use_regulation }}</p>
+      <label>{{ info.use_time }}</label>
     </div>
     <st-panel app initial :class="basic()">
       <div slot="title" :class="basic('search')">
@@ -12,7 +12,12 @@
           <st-button type="primary" @click="onAddCoupon">导出</st-button>
         </div> -->
         <div>
-          <a-select :class="basic('select')" v-model="queryParams.couponStatus" @change="onSearch" style="width: 160px">
+          <a-select
+            :class="basic('select')"
+            v-model="queryParams.couponStatus"
+            @change="onSearch"
+            style="width: 160px"
+          >
             <a-select-option :value="-1">优惠券状态</a-select-option>
             <a-select-option :value="1">未使用</a-select-option>
             <a-select-option :value="2">已使用</a-select-option>
@@ -22,21 +27,31 @@
               :key="index"
               :value="item.value">{{item.label}}</a-select-option> -->
           </a-select>
-          <span class="mg-r8" style="font-weight: normal">领券时间</span><a-range-picker @change="onChangeDatePicker" v-model="queryParams.date"/>
+          <span class="mg-r8" style="font-weight: normal">领券时间</span>
+          <a-range-picker
+            @change="onChangeDatePicker"
+            v-model="queryParams.date"
+          />
         </div>
         <st-input-search
           v-model="queryParams.keyword"
           @search="onSearch"
           placeholder="请输入手机号、姓名"
-          style="width: 290px;margin-left: 16px"/>
+          style="width: 290px;margin-left: 16px"
+        />
       </div>
       <div :class="basic('content')">
         <st-table
-        :pagination="{current:query.page,total:page.total_counts,pageSize:query.size}"
-        rowKey="id"
-        :columns="columns"
-        @change="onPageChange"
-        :dataSource="list">
+          :pagination="{
+            current: query.page,
+            total: page.total_counts,
+            pageSize: query.size
+          }"
+          rowKey="id"
+          :columns="columns"
+          @change="onPageChange"
+          :dataSource="list"
+        >
           <!-- <template slot="is_shop_range" slot-scope="text, record">
             <a-popover placement="right">
               <template slot="content">
@@ -105,35 +120,43 @@ export default {
           title: '用户名称',
           dataIndex: 'member_name',
           scopedSlots: { customRender: 'member_name' }
-        }, {
+        },
+        {
           title: '手机号',
           dataIndex: 'mobile',
           scopedSlots: { customRender: 'mobile' }
-        }, {
+        },
+        {
           title: '领券时间',
           dataIndex: 'created_time',
           scopedSlots: { customRender: 'created_time' }
-        }, {
+        },
+        {
           title: '用券时间',
           dataIndex: 'use_time',
           scopedSlots: { customRender: 'use_time' }
-        }, {
+        },
+        {
           title: '优惠券状态',
           dataIndex: 'coupon_status',
           scopedSlots: { customRender: 'coupon_status' }
-        }, {
+        },
+        {
           title: '剩余有效天数',
           dataIndex: 'valid_days',
           scopedSlots: { customRender: 'valid_days' }
-        }, {
+        },
+        {
           title: '使用门店',
           dataIndex: 'shop_name',
           scopedSlots: { customRender: 'shop_name' }
-        }, {
+        },
+        {
           title: '订单金额',
           dataIndex: 'order_price',
           scopedSlots: { customRender: 'order_price' }
-        }]
+        }
+      ]
     }
   },
   mounted() {
@@ -150,7 +173,10 @@ export default {
       this.onSearch()
     },
     onPageChange(data) {
-      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize }, force: true })
+      this.$router.push({
+        query: { ...this.query, page: data.current, size: data.pageSize },
+        force: true
+      })
     },
     // 查询
     onSearch() {
@@ -158,8 +184,12 @@ export default {
         id: this.query.id,
         coupon_status: this.queryParams.couponStatus || -1,
         keyword: this.queryParams.keyword,
-        start_time: this.queryParams.date[0] ? moment(this.queryParams.date[0]).format('YYYY-MM-DD HH:mm') : '',
-        end_time: this.queryParams.date[1] ? moment(this.queryParams.date[1]).format('YYYY-MM-DD HH:mm') : ''
+        start_time: this.queryParams.date[0]
+          ? moment(this.queryParams.date[0]).format('YYYY-MM-DD HH:mm')
+          : '',
+        end_time: this.queryParams.date[1]
+          ? moment(this.queryParams.date[1]).format('YYYY-MM-DD HH:mm')
+          : ''
       }
       this.$router.push({ query: { ...this.query, ...params } })
     },
@@ -178,7 +208,9 @@ export default {
     // 设置searchData
     setSearchData() {
       this.queryParams.keyword = this.query.keyword
-      this.queryParams.couponStatus = this.query.coupon_status ? +this.query.coupon_status : -1
+      this.queryParams.couponStatus = this.query.coupon_status
+        ? +this.query.coupon_status
+        : -1
       if (this.query.start_time) {
         this.queryParams.date[0] = cloneDeep(moment(this.query.start_time))
       }
@@ -188,7 +220,10 @@ export default {
     },
     // 编辑
     onEdit(record) {
-      this.$router.push({ path: '/brand/marketing/plugin/coupon/add', query: { id: record.id } })
+      this.$router.push({
+        path: '/brand/marketing/plugin/coupon/add',
+        query: { id: record.id }
+      })
     },
     // 停止优惠券模板
     onStop(record) {
@@ -201,7 +236,6 @@ export default {
       this.$router.push({ path: '/brand/marketing/plugin/coupon/add' })
     }
   },
-  components: {
-  }
+  components: {}
 }
 </script>

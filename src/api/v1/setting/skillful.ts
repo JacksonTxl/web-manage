@@ -29,7 +29,7 @@ export class SkillfulApi extends Api {
 }
 
 export interface GetSkillfulListInput {
-  page?: number,
+  page?: number
   size?: number
 }
 export interface AddSkillfulInput {

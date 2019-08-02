@@ -3,7 +3,11 @@
     <a-row :gutter="8">
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item label="课程名称">
-          <a-input placeholder="课程名称" disabled v-decorator="ruleConfig.courseName"/>
+          <a-input
+            placeholder="课程名称"
+            disabled
+            v-decorator="ruleConfig.courseName"
+          />
         </st-form-item>
       </a-col>
     </a-row>
@@ -11,10 +15,11 @@
       <a-col :lg="22" :xs="22" :offset="1">
         <st-form-item>
           <template slot="label">
-            上课教练<st-help-tooltip id="TSCPC001" />
+            上课教练
+            <st-help-tooltip id="TSCPC001" />
           </template>
           <div class="page-shop-coach-container-coach">
-            <input type="hidden" v-decorator="ruleConfig.coachIds">
+            <input type="hidden" v-decorator="ruleConfig.coachIds" />
             <select-coach
               :shopIds="info.shop_ids"
               :coachIds="info.coach_ids"
@@ -27,7 +32,9 @@
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button type="primary" @click="save" :loading="loading.setShop">保存，继续设置售卖价格</st-button>
+          <st-button type="primary" @click="save" :loading="loading.setShop">
+            保存，继续设置售卖价格
+          </st-button>
         </st-form-item>
       </a-col>
     </a-row>

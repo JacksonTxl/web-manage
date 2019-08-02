@@ -18,7 +18,8 @@
       :enums="staffEnums"
       :data="staffInfo"
       @updateStaffInfo="updateStaffInfo"
-      @gonext="gonext"/>
+      @gonext="gonext"
+    />
     <edit-detailed-info
       v-else-if="currentIndex == 1"
       :isPrivateCoach="isPrivateCoach"
@@ -26,14 +27,16 @@
       :data="staffInfo"
       @updateStaffInfo="updateStaffInfo"
       @back="onBack"
-      @gonext="gonext"/>
+      @gonext="gonext"
+    />
     <edit-coach-info
       v-else-if="currentIndex == 2 && isPrivateCoach"
       :enums="staffEnums"
       :data="staffInfo"
       :staffSpecialty="staffSpecialty"
       @back="onBack"
-      @gonext="gonext"/>
+      @gonext="gonext"
+    />
   </st-panel>
 </template>
 
@@ -93,7 +96,10 @@ export default {
   computed: {
     isShowCoach() {
       if (this.staffInfo.identity.length === 0) return false
-      return this.staffInfo.identity.includes(3) || this.staffInfo.identity.includes(4)
+      return (
+        this.staffInfo.identity.includes(3) ||
+        this.staffInfo.identity.includes(4)
+      )
     },
     isPrivateCoach() {
       if (this.staffInfo.identity.length === 0) return false

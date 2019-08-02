@@ -1,12 +1,13 @@
 <template>
   <a-cascader
-  :fieldNames="{label:'name',value:'id',children:'children'}"
-  :options="regions"
-  :showSearch="{filterRegionsName}"
-  :defaultValue="value"
-  v-model="model"
-  @change="onChange"
-  :placeholder="placeholder"/>
+    :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
+    :options="regions"
+    :showSearch="{ filterRegionsName }"
+    :defaultValue="value"
+    v-model="model"
+    @change="onChange"
+    :placeholder="placeholder"
+  />
 </template>
 
 <script>
@@ -63,7 +64,7 @@ export default {
     },
     filterRegionsName(inputValue, path) {
       if (!isSearch) return
-      return (path.some(option => (option.name).indexOf(inputValue) > -1))
+      return path.some(option => option.name.indexOf(inputValue) > -1)
     },
     onChange(value) {
       this.$emit('input', value)

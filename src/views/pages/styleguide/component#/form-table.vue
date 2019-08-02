@@ -3,8 +3,7 @@
     <h3>st-form-table</h3>
     <p>纯样式table 适用于表单场景的表格和内联编辑的场景</p>
     <p>
-      [hoverable] 添加鼠标hover样式
-      [loading] 加载状态
+      [hoverable] 添加鼠标hover样式 [loading] 加载状态
     </p>
     <st-form-table :page="page" @change="onPageChange" hoverable>
       <thead>
@@ -53,7 +52,10 @@
         </tr>
       </tbody>
     </st-form-table>
-    <st-form-table :page="{ current_page: 1, size: 20, total_counts: 0, total_pages: 0 }" class="mg-t16">
+    <st-form-table
+      :page="{ current_page: 1, size: 20, total_counts: 0, total_pages: 0 }"
+      class="mg-t16"
+    >
       <thead>
         <tr>
           <th>表格无数据演示1，通过page对象判断</th>
@@ -61,8 +63,7 @@
           <th>标题3</th>
         </tr>
       </thead>
-      <tbody>
-      </tbody>
+      <tbody></tbody>
     </st-form-table>
     <st-form-table :isEmpty="true" class="mg-t16">
       <thead>
@@ -72,8 +73,7 @@
           <th>标题3</th>
         </tr>
       </thead>
-      <tbody>
-      </tbody>
+      <tbody></tbody>
     </st-form-table>
   </section>
 </template>

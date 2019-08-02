@@ -53,29 +53,58 @@
           :defaultValue="-1"
           placeholder="请选择员工职能"
           v-model="query.identity"
-          @change="onSingleSearch('identity', $event)">
-          <a-select-option v-for="(item, index) in staffEnums.identity.value" :key="index" :value="+index">{{item}}</a-select-option>
+          @change="onSingleSearch('identity', $event)"
+        >
+          <a-select-option
+            v-for="(item, index) in staffEnums.identity.value"
+            :key="index"
+            :value="+index"
+          >
+            {{ item }}
+          </a-select-option>
         </a-select>
         <a-select
           class="mg-r8"
           :defaultValue="-1"
           placeholder="请选择员工状态"
           v-model="query.work_status"
-          @change="onSingleSearch('work_status', $event)">
-          <a-select-option v-for="(item, index) in staffEnums.work_status.value" :key="index" :value="+index">{{item}}</a-select-option>
+          @change="onSingleSearch('work_status', $event)"
+        >
+          <a-select-option
+            v-for="(item, index) in staffEnums.work_status.value"
+            :key="index"
+            :value="+index"
+          >
+            {{ item }}
+          </a-select-option>
         </a-select>
-        <st-button v-if="auth.add" class="mg-r8" icon="add" @click="onAddStaff">添加员工</st-button>
+        <st-button v-if="auth.add" class="mg-r8" icon="add" @click="onAddStaff">
+          添加员工
+        </st-button>
         <!-- NOTE: 导入 -->
         <!-- <st-button v-if="auth.import" class="mg-r8" @click="onExportStaff">导入员工</st-button> -->
-        <st-button :disabled="!selectedRowKeys.length" @click="onJoinDepartment" v-if="auth.join">批量加入部门</st-button>
+        <st-button
+          :disabled="!selectedRowKeys.length"
+          @click="onJoinDepartment"
+          v-if="auth.join"
+        >
+          批量加入部门
+        </st-button>
       </a-col>
       <a-col :lg="7" style="text-align: right;">
-        <st-input-search placeholder="搜索员工" v-model="query.keyword" @search="onSingleSearch('keyword', $event)"/>
+        <st-input-search
+          placeholder="搜索员工"
+          v-model="query.keyword"
+          @search="onSingleSearch('keyword', $event)"
+        />
       </a-col>
     </a-row>
     <a-row class="mg-t8">
       <st-table
-        :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectionChange}"
+        :rowSelection="{
+          selectedRowKeys: selectedRowKeys,
+          onChange: onSelectionChange
+        }"
         :loading="loading.getStaffList"
         :columns="columns"
         :dataSource="staffList"
@@ -85,16 +114,22 @@
         :page="page"
         @change="onTableChange"
       >
-        <div class="page-staff-table-name" slot="staff_name" slot-scope="text, record">
-          <img class="page-staff-table-name__img mg-r8" :src="record.avatar">
-          <span class="name">{{text}}</span>
+        <div
+          class="page-staff-table-name"
+          slot="staff_name"
+          slot-scope="text, record"
+        >
+          <img class="page-staff-table-name__img mg-r8" :src="record.avatar" />
+          <span class="name">{{ text }}</span>
         </div>
-        <template slot="shop" slot-scope="text,record">
+        <template slot="shop" slot-scope="text, record">
           <template v-for="item in record.shop">
-            <span :key="item.id" class="mg-r8" v-if="item">{{ item.name }}</span>
+            <span :key="item.id" class="mg-r8" v-if="item">
+              {{ item.name }}
+            </span>
           </template>
         </template>
-        <template slot="identity" slot-scope="text,record">
+        <template slot="identity" slot-scope="text, record">
           <template v-for="item in record.identity">
             <span :key="item.id" class="mg-r8">{{ item.name }}</span>
           </template>
@@ -104,34 +139,93 @@
         </template>
         <template slot="work_status" slot-scope="text">
           <div class="page-staff-list-work_status">
-            <a-badge :status="text.name === '在职' ? 'success' : 'error'"/>
+            <a-badge :status="text.name === '在职' ? 'success' : 'error'" />
             {{ text.name }}
           </div>
         </template>
-        <template slot="action" slot-scope="text,record">
+        <template slot="action" slot-scope="text, record">
           <st-table-actions>
-            <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|get']" @click="onSearchDetail(record)">详情</a>
+            <a
+              href="javascript: void(0)"
+              v-if="record.auth['brand_shop:staff:staff|get']"
+              @click="onSearchDetail(record)"
+            >
+              详情
+            </a>
             <template v-if="record.work_status.name === '在职'">
-              <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|edit']"
-                @click="onEdit(record)">编辑</a>
-              <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|bind_card']"
-                v-modal-link="{ name: 'shop-staff-bind-card', props: {staff: record }}">绑定实体卡</a>
-              <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|rebind_card']"
-                v-modal-link="{ name: 'shop-staff-bind-card', props: {staff: record }}">重绑实体卡</a>
-              <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:account|save']"
-                v-modal-link="{ name: 'shop-staff-re-password', props: {staff: record}}">管理登录账号</a>
-              <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|position']"
-                v-modal-link="{ name: 'shop-staff-update-staff-position', props: {staff: record}}">职位变更</a>
-              <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|salary']"
-                v-modal-link="{ name: 'shop-staff-salary-account-setting', props: {staff: record}}">设置薪资账户</a>
-              <a href="javascript: void(0)" v-if="record.auth['brand_shop:staff:staff|shop_leave']"
-                v-modal-link="{ name: 'shop-staff-leave-current-shop', props: {staff: record}}">解除门店关系</a>
+              <a
+                href="javascript: void(0)"
+                v-if="record.auth['brand_shop:staff:staff|edit']"
+                @click="onEdit(record)"
+              >
+                编辑
+              </a>
+              <a
+                href="javascript: void(0)"
+                v-if="record.auth['brand_shop:staff:staff|bind_card']"
+                v-modal-link="{
+                  name: 'shop-staff-bind-card',
+                  props: { staff: record }
+                }"
+              >
+                绑定实体卡
+              </a>
+              <a
+                href="javascript: void(0)"
+                v-if="record.auth['brand_shop:staff:staff|rebind_card']"
+                v-modal-link="{
+                  name: 'shop-staff-bind-card',
+                  props: { staff: record }
+                }"
+              >
+                重绑实体卡
+              </a>
+              <a
+                href="javascript: void(0)"
+                v-if="record.auth['brand_shop:staff:account|save']"
+                v-modal-link="{
+                  name: 'shop-staff-re-password',
+                  props: { staff: record }
+                }"
+              >
+                管理登录账号
+              </a>
+              <a
+                href="javascript: void(0)"
+                v-if="record.auth['brand_shop:staff:staff|position']"
+                v-modal-link="{
+                  name: 'shop-staff-update-staff-position',
+                  props: { staff: record }
+                }"
+              >
+                职位变更
+              </a>
+              <a
+                href="javascript: void(0)"
+                v-if="record.auth['brand_shop:staff:staff|salary']"
+                v-modal-link="{
+                  name: 'shop-staff-salary-account-setting',
+                  props: { staff: record }
+                }"
+              >
+                设置薪资账户
+              </a>
+              <a
+                href="javascript: void(0)"
+                v-if="record.auth['brand_shop:staff:staff|shop_leave']"
+                v-modal-link="{
+                  name: 'shop-staff-leave-current-shop',
+                  props: { staff: record }
+                }"
+              >
+                解除门店关系
+              </a>
             </template>
           </st-table-actions>
         </template>
       </st-table>
     </a-row>
-    <change-staff-postion :show="visible" :enums="enums" :data="modaldata"/>
+    <change-staff-postion :show="visible" :enums="enums" :data="modaldata" />
   </st-panel>
 </template>
 
@@ -144,7 +238,7 @@ import { columns } from './list.config'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {
-  mixins: [ tableMixin ],
+  mixins: [tableMixin],
   components: {
     ChangeStaffPostion
   },

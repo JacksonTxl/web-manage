@@ -3,7 +3,12 @@
     <a-row>
       <a-col :lg="24">
         <a-col :lg="18">
-          <a-select style="width: 160px;" :defaultValue="-1" placeholder="请选择订单状态" @change="onSingleSearch('order_status', $event)">
+          <a-select
+            style="width: 160px;"
+            :defaultValue="-1"
+            placeholder="请选择订单状态"
+            @change="onSingleSearch('order_status', $event)"
+          >
             <a-select-option :value="-1">全部订单状态</a-select-option>
             <a-select-option :value="1">未完成</a-select-option>
             <a-select-option :value="2">已完成</a-select-option>
@@ -11,26 +16,42 @@
             <a-select-option :value="4">已退款</a-select-option>
             <a-select-option :value="5">处理中</a-select-option>
           </a-select>
-          <a-range-picker class="mg-l8" @change="onChooseDate" format="YYYY-MM-DD"/>
+          <a-range-picker
+            class="mg-l8"
+            @change="onChooseDate"
+            format="YYYY-MM-DD"
+          />
         </a-col>
         <a-col :lg="6">
-          <st-input-search placeholder="请输入姓名、手机号进行查询" @search="onSingleSearch('keyword', $event)"/>
+          <st-input-search
+            placeholder="请输入姓名、手机号进行查询"
+            @search="onSingleSearch('keyword', $event)"
+          />
         </a-col>
       </a-col>
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="soldColums"
           :dataSource="soldInfo"
-          :scroll="{ x: 1300}"
+          :scroll="{ x: 1300 }"
           :loading="loading.getStaffSoldInfo"
           :page="page"
           @change="onTableChange"
         >
           <template slot="id" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="goOrderDetai(record)">{{ text }}</a>
+            <a href="javascript:;" class="mg-r8" @click="goOrderDetai(record)">
+              {{ text }}
+            </a>
           </template>
           <template slot="product_type_name" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="goCommodityDetai(record)" v-if="canJump(record)">{{ text }}</a>
+            <a
+              href="javascript:;"
+              class="mg-r8"
+              @click="goCommodityDetai(record)"
+              v-if="canJump(record)"
+            >
+              {{ text }}
+            </a>
             <span v-else>{{ text }}</span>
           </template>
         </st-table>
@@ -46,7 +67,7 @@ import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {
-  mixins: [ tableMixin ],
+  mixins: [tableMixin],
   serviceInject() {
     return {
       soldService: SoldService,
@@ -94,31 +115,36 @@ export default {
       let product_type = e.product_type
       let product_id = e.product_id
       let routeMap = {
-        1: { // 会籍卡
+        1: {
+          // 会籍卡
           name: 'shop-product-card-member-period-info',
           query: {
             id: product_id
           }
         },
-        2: { // 私教
+        2: {
+          // 私教
           name: 'shop-product-course-manage-personal-info',
           query: {
             id: product_id
           }
         },
-        3: { // 团教
+        3: {
+          // 团教
           name: 'brand-product-course-manage-team-info',
           query: {
             courseId: product_id
           }
         },
-        4: { // 课程包
+        4: {
+          // 课程包
           name: 'shop-product-course-manage-package-info-unlimit-package',
           query: {
             id: product_id
           }
         },
-        5: { // 储值卡
+        5: {
+          // 储值卡
           name: 'shop-product-card-deposit-info',
           query: {
             id: product_id

@@ -1,9 +1,15 @@
 <template>
   <st-panel app>
     <a-row :class="bstep()" class="mg-b48" :gutter="8">
-      <a-col offset="1" :span="stepsSpan"><Steps :value="currentIndex" :stepArr="stepArr" /></a-col>
+      <a-col offset="1" :span="stepsSpan">
+        <Steps :value="currentIndex" :stepArr="stepArr" />
+      </a-col>
     </a-row>
-    <StaffDetailBasics v-show="currentIndex == 0" @addStep="addCoachInfo" @deletStep="deletStep"/>
+    <StaffDetailBasics
+      v-show="currentIndex == 0"
+      @addStep="addCoachInfo"
+      @deletStep="deletStep"
+    />
   </st-panel>
 </template>
 
@@ -56,7 +62,7 @@ export default {
     // 删除步骤轴
     deletStep(e) {
       this.stepsSpan = 12
-      let index = this.stepArr.findIndex((ele) => {
+      let index = this.stepArr.findIndex(ele => {
         return ele.title === '教练信息'
       })
       if (index === -1) return

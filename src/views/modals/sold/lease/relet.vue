@@ -1,38 +1,51 @@
 <template>
   <st-modal
-  title="续租"
-  size="small"
-  v-model="show"
-  wrapClassName="modal-sold-lease-relet"
-  @ok="onOk">
+    title="续租"
+    size="small"
+    v-model="show"
+    wrapClassName="modal-sold-lease-relet"
+    @ok="onOk"
+  >
     <div :class="relet('content')">
       <a-row :class="relet('info')">
         <a-col :span="13">
           <st-info>
-            <st-info-item label="商品名称">{{info.product_name}}</st-info-item>
-            <st-info-item label="商品类型">{{info.product_type}}</st-info-item>
-            <st-info-item class="mgb-24" label="租赁计费">{{info.price}}</st-info-item>
+            <st-info-item label="商品名称">
+              {{ info.product_name }}
+            </st-info-item>
+            <st-info-item label="商品类型">
+              {{ info.product_type }}
+            </st-info-item>
+            <st-info-item class="mgb-24" label="租赁计费">
+              {{ info.price }}
+            </st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
-           <st-info>
-            <st-info-item label="售卖群体" v-if="info.sale_range">{{info.sale_range.name}}</st-info-item>
-            <st-info-item label="允许转让">{{info.is_transfer}}</st-info-item>
-            <st-info-item class="mgb-24" label="转让手续费">{{info.transfer}}</st-info-item>
+          <st-info>
+            <st-info-item label="售卖群体" v-if="info.sale_range">
+              {{ info.sale_range.name }}
+            </st-info-item>
+            <st-info-item label="允许转让">{{ info.is_transfer }}</st-info-item>
+            <st-info-item class="mgb-24" label="转让手续费">
+              {{ info.transfer }}
+            </st-info-item>
           </st-info>
         </a-col>
       </a-row>
       <st-form labelWidth="88px" :form="form">
         <div :class="relet('relet')">
-          <st-form-item label="租赁会员" class="mgb-18">{{info.member_name}}</st-form-item>
+          <st-form-item label="租赁会员" class="mgb-18">
+            {{ info.member_name }}
+          </st-form-item>
           <st-form-item label="租赁柜号" required>
-            {{info.serial_num}}
+            {{ info.serial_num }}
             <!-- <a-cascader :options="options" placeholder="选择XXX" /> -->
           </st-form-item>
           <st-form-item label="续租时间" required>
             <div :class="relet('time')">
               <a-form-item class="page-a-form mg-b0">
-                {{info.start_time}}
+                {{ info.start_time }}
               </a-form-item>
               <span>~</span>
               <a-form-item class="page-a-form mg-b0">
@@ -42,53 +55,87 @@
                   :showToday="false"
                   showTime
                   :disabledDate="disabledStartDate"
-                  v-decorator="['end_time',{rules:[{validator:end_time}]}]"
+                  v-decorator="[
+                    'end_time',
+                    { rules: [{ validator: end_time }] }
+                  ]"
                   @change="end_time_change"
                 />
               </a-form-item>
             </div>
           </st-form-item>
           <st-form-item label="租赁天数" required>
-            <st-input-number placeholder="请输入天数"  :min="1" :max="999"
+            <st-input-number
+              placeholder="请输入天数"
+              :min="1"
+              :max="999"
               @change="changeLeaseNum"
-              v-decorator="['lease_num',{rules:[{validator:lease_num}]}]">
-              <template slot="addonAfter">天</template>
+              v-decorator="['lease_num', { rules: [{ validator: lease_num }] }]"
+            >
+              <template slot="addonAfter">
+                天
+              </template>
             </st-input-number>
           </st-form-item>
           <st-form-item class="mgb-18" required>
             <template slot="label">
-                合同编号<st-help-tooltip id="TSSD001" />
+              合同编号
+              <st-help-tooltip id="TSSD001" />
             </template>
             <div :class="relet('contract')">
               <a-input
-              v-decorator="['contract_number',{rules:[{validator:contract_number}]}]"
-              placeholder="请输入合同编号"></a-input>
-              <st-button class="create-button" @click="onCodeNumber" :loading="loading.getCodeNumber">自动生成</st-button>
+                v-decorator="[
+                  'contract_number',
+                  { rules: [{ validator: contract_number }] }
+                ]"
+                placeholder="请输入合同编号"
+              ></a-input>
+              <st-button
+                class="create-button"
+                @click="onCodeNumber"
+                :loading="loading.getCodeNumber"
+              >
+                自动生成
+              </st-button>
             </div>
           </st-form-item>
-          <st-form-item class="mgb-18" label="租赁费用">{{orderAmountPrice}}元</st-form-item>
+          <st-form-item class="mgb-18" label="租赁费用">
+            {{ orderAmountPrice }}元
+          </st-form-item>
           <st-form-item :class="sale('discounts')" label="定金抵扣">
             <div>
               <div :class="sale('discounts-total')">
-                <span>{{advanceText}}</span>
+                <span>{{ advanceText }}</span>
                 <a-dropdown
                   v-model="advanceDropdownVisible"
-                  :disabled="advanceList.length===0"
-                  :class="sale({disabled:advanceList.length===0})"
+                  :disabled="advanceList.length === 0"
+                  :class="sale({ disabled: advanceList.length === 0 })"
                   placement="bottomRight"
                   :getPopupContainer="trigger => trigger.parentNode"
-                  :trigger="['click']">
+                  :trigger="['click']"
+                >
                   <div :class="sale('discounts-promotion')">
                     <span>定金选择</span>
                     <a-icon type="right" />
                   </div>
-                  <a-radio-group v-model="selectAdvance" @change="onSelectAdvanceChange" :class="sale('dropdown')" slot="overlay">
+                  <a-radio-group
+                    v-model="selectAdvance"
+                    @change="onSelectAdvanceChange"
+                    :class="sale('dropdown')"
+                    slot="overlay"
+                  >
                     <a-menu>
                       <a-menu-item @click="onSelectAdvance">
                         <a-radio :value="-1">不使用</a-radio>
                       </a-menu-item>
-                      <a-menu-item @click="onSelectAdvance" :key="index" v-for="(item,index) in advanceList">
-                        <a-radio :value="item.id">定金 {{item.price}}</a-radio>
+                      <a-menu-item
+                        @click="onSelectAdvance"
+                        :key="index"
+                        v-for="(item, index) in advanceList"
+                      >
+                        <a-radio :value="item.id">
+                          定金 {{ item.price }}
+                        </a-radio>
                       </a-menu-item>
                     </a-menu>
                   </a-radio-group>
@@ -98,26 +145,35 @@
           </st-form-item>
           <st-form-item label="减免金额" class="mgb-18">
             <st-input-number placeholder="请输入金额" v-model="reduceAmount">
-              <template slot="addonAfter">元</template>
+              <template slot="addonAfter">
+                元
+              </template>
             </st-input-number>
           </st-form-item>
           <st-form-item class="mg-b0" label="小计" :help="orderAmountText">
-            <span class="total">{{currentPrice}}元</span>
+            <span class="total">{{ currentPrice }}元</span>
           </st-form-item>
         </div>
         <div :class="relet('remarks')">
           <st-form-item label="销售人员" required>
             <a-select
-            v-decorator="['saleName',{rules:[{validator:sale_name}]}]"
-            placeholder="选择签单的工作人员">
+              v-decorator="['saleName', { rules: [{ validator: sale_name }] }]"
+              placeholder="选择签单的工作人员"
+            >
               <a-select-option
-              v-for="(item,index) in saleList"
-              :key="index"
-              :value="item.id">{{item.staff_name}}</a-select-option>
+                v-for="(item, index) in saleList"
+                :key="index"
+                :value="item.id"
+              >
+                {{ item.staff_name }}
+              </a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item label="备注" class="mg-b0">
-            <a-textarea :autosize="{ minRows: 4, maxRows: 6 }" v-model="description"/>
+            <a-textarea
+              :autosize="{ minRows: 4, maxRows: 6 }"
+              v-model="description"
+            />
           </st-form-item>
         </div>
       </st-form>
@@ -125,12 +181,23 @@
     <template slot="footer">
       <div :class="relet('footer')">
         <div class="price">
-          <span>{{currentPrice}}元</span>
-          <span>订单总额：{{orderAmountPrice}}元</span>
+          <span>{{ currentPrice }}元</span>
+          <span>订单总额：{{ orderAmountPrice }}元</span>
         </div>
         <div class="button">
-          <st-button @click="onCreateOrder" :loading="loading.setTransactionOrder">创建订单</st-button>
-          <st-button type="primary" @click="onPay" :loading="loading.setTransactionPay">立即支付</st-button>
+          <st-button
+            @click="onCreateOrder"
+            :loading="loading.setTransactionOrder"
+          >
+            创建订单
+          </st-button>
+          <st-button
+            type="primary"
+            @click="onPay"
+            :loading="loading.setTransactionPay"
+          >
+            立即支付
+          </st-button>
         </div>
       </div>
     </template>
@@ -211,7 +278,7 @@ export default {
     },
     changeLeaseNum(event) {
       this.form.setFieldsValue({
-        'end_time': moment(this.info.start_time).add(event, 'days')
+        end_time: moment(this.info.start_time).add(event, 'days')
       })
       this.getOrderPrice()
       this.getPrice()
@@ -229,16 +296,19 @@ export default {
     onSelectAdvanceChange(data) {
       this.advanceText = `未选择定金`
       if (data.target.value !== -1) {
-        let price = this.advanceList.filter(o => o.id === data.target.value)[0].price
+        let price = this.advanceList.filter(o => o.id === data.target.value)[0]
+          .price
         this.advanceText = `${price}元`
       }
     },
     onCodeNumber() {
-      this.reletService.getCodeNumber(this.info.contract_type).subscribe(res => {
-        this.form.setFieldsValue({
-          contract_number: res.info.code
+      this.reletService
+        .getCodeNumber(this.info.contract_type)
+        .subscribe(res => {
+          this.form.setFieldsValue({
+            contract_number: res.info.code
+          })
         })
-      })
     },
     // 计算实付金额
     getPrice(advance, reduce) {
@@ -315,50 +385,60 @@ export default {
     onCreateOrder() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.reletService.setTransactionOrder({
-            'id': this.id,
-            'start_time': this.info.start_time,
-            'end_time': moment(values.end_time).format('YYYY-MM-DD HH:mm'),
-            'contract_number': values.contract_number,
-            'advance_id': this.selectAdvance === -1 ? '' : this.selectAdvance,
-            'reduce_amount': this.reduceAmount || 0,
-            'description': this.description,
-            'order_amount': this.currentPrice,
-            'lease_days': values.lease_num,
-            'sale_id': values.saleName,
-            'member_id': this.info.member_id
-          }, this.id).subscribe((result) => {
-            this.$emit('success', {
-              type: 'create',
-              order_id: result.info.order_id
+          this.reletService
+            .setTransactionOrder(
+              {
+                id: this.id,
+                start_time: this.info.start_time,
+                end_time: moment(values.end_time).format('YYYY-MM-DD HH:mm'),
+                contract_number: values.contract_number,
+                advance_id: this.selectAdvance === -1 ? '' : this.selectAdvance,
+                reduce_amount: this.reduceAmount || 0,
+                description: this.description,
+                order_amount: this.currentPrice,
+                lease_days: values.lease_num,
+                sale_id: values.saleName,
+                member_id: this.info.member_id
+              },
+              this.id
+            )
+            .subscribe(result => {
+              this.$emit('success', {
+                type: 'create',
+                order_id: result.info.order_id
+              })
+              this.show = false
             })
-            this.show = false
-          })
         }
       })
     },
     onPay() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.reletService.setTransactionPay({
-            'id': this.id,
-            'start_time': this.info.start_time,
-            'end_time': moment(values.end_time).format('YYYY-MM-DD HH:mm'),
-            'contract_number': values.contract_number,
-            'advance_id': this.selectAdvance === -1 ? '' : this.selectAdvance,
-            'reduce_amount': this.reduceAmount || 0,
-            'description': this.description,
-            'order_amount': this.currentPrice,
-            'lease_days': values.lease_num,
-            'sale_id': values.saleName,
-            'member_id': this.info.member_id
-          }, this.id).subscribe((result) => {
-            this.$emit('success', {
-              type: 'createPay',
-              order_id: result.info.order_id
+          this.reletService
+            .setTransactionPay(
+              {
+                id: this.id,
+                start_time: this.info.start_time,
+                end_time: moment(values.end_time).format('YYYY-MM-DD HH:mm'),
+                contract_number: values.contract_number,
+                advance_id: this.selectAdvance === -1 ? '' : this.selectAdvance,
+                reduce_amount: this.reduceAmount || 0,
+                description: this.description,
+                order_amount: this.currentPrice,
+                lease_days: values.lease_num,
+                sale_id: values.saleName,
+                member_id: this.info.member_id
+              },
+              this.id
+            )
+            .subscribe(result => {
+              this.$emit('success', {
+                type: 'createPay',
+                order_id: result.info.order_id
+              })
+              this.show = false
             })
-            this.show = false
-          })
         }
       })
     }

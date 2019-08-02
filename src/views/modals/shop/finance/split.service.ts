@@ -10,15 +10,19 @@ export class SplitService {
   loading$ = new State({})
   saleList$ = new State([])
   constructor(private orderApi: OrderApi) {}
-  getDetail(id:string) {
-    return this.orderApi.getSplitDetail(id).pipe(tap((res:any) => {
-      this.info$.commit(() => res.info)
-    }))
+  getDetail(id: string) {
+    return this.orderApi.getSplitDetail(id).pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
+      })
+    )
   }
   getSaleList() {
-    return this.orderApi.getSaleList().pipe(tap((res:any) => {
-      this.saleList$.commit(() => res.list)
-    }))
+    return this.orderApi.getSaleList().pipe(
+      tap((res: any) => {
+        this.saleList$.commit(() => res.list)
+      })
+    )
   }
   @Effect()
   split(params: SplitParams) {
@@ -26,7 +30,7 @@ export class SplitService {
   }
 
   @Effect()
-  serviceInit(id:string) {
+  serviceInit(id: string) {
     return forkJoin(this.getDetail(id), this.getSaleList())
   }
 }

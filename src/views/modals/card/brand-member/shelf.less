@@ -1,4 +1,4 @@
-.modal-card-batch-shelves{
+.modal-card-batch-shelves {
   &__info {
     display: flex;
   }
@@ -21,12 +21,12 @@
       .fz(16px);
       .c(@title);
     }
-    &-cards>span {
+    &-cards > span {
       .c(@primary-color);
       cursor: pointer;
     }
   }
-  &__card-list-title{
+  &__card-list-title {
     display: inline-block;
     height: 40px;
     line-height: 40px;
@@ -46,7 +46,7 @@
     }
     th {
       padding: 16px 0;
-      &:nth-of-type(1){
+      &:nth-of-type(1) {
         padding: 0;
       }
     }
@@ -54,7 +54,7 @@
       height: 64px;
       padding-left: 0 !important;
       padding-right: 0 !important;
-      &:nth-of-type(1){
+      &:nth-of-type(1) {
         padding: 0;
       }
     }
@@ -87,7 +87,7 @@
     &::after {
       content: '';
       position: absolute;
-      .s(10px,10px);
+      .s(10px, 10px);
       transform: rotate(45deg);
       top: -6px;
       left: 123px;
@@ -95,15 +95,16 @@
       border-top: 1px solid #d9d9d9;
       .bg(#fff);
     }
-    .tx-c{
+    .tx-c {
       text-align: center;
     }
-    >table{
+    > table {
       width: 100%;
-      th,td {
+      th,
+      td {
         padding: 16px 0;
       }
-      tr:not(.head){
+      tr:not(.head) {
         border-bottom: 1px solid @divider;
       }
       .add-button:not(.head) {
@@ -124,7 +125,8 @@
     }
     .bg(@table-bg-color-row-2);
   }
-  &__show-more,&__hide-more {
+  &__show-more,
+  &__hide-more {
     .c(@primary-color);
     cursor: pointer;
   }
@@ -136,8 +138,8 @@
     border: 1px solid @divider;
     border-radius: 4px;
     .bg(@white);
-    &-search .ant-input{
-      .bg(#CDD4DF);
+    &-search .ant-input {
+      .bg(#cdd4df);
       border-radius: 20px;
       .c(@text-light);
     }

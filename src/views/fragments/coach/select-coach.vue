@@ -31,13 +31,10 @@
             </st-button>
           </td>
         </tr>
-        <tr
-          v-for="(item, index) in list"
-          :key="index"
-        >
-          <td>{{item.name}}</td>
-          <td>{{item.level}}</td>
-          <td>{{item.nature_work}}</td>
+        <tr v-for="(item, index) in list" :key="index">
+          <td>{{ item.name }}</td>
+          <td>{{ item.level }}</td>
+          <td>{{ item.nature_work }}</td>
           <td>
             <a @click="delTableRecord(item.id)">删除</a>
           </td>
@@ -88,11 +85,13 @@ export default {
     },
     getSelectedList(coachIds = []) {
       if (coachIds.length) {
-        this.selectCoachService.getCoachBasic({
-          coach_ids: coachIds
-        }).subscribe(res => {
-          this.list = res.coaches
-        })
+        this.selectCoachService
+          .getCoachBasic({
+            coach_ids: coachIds
+          })
+          .subscribe(res => {
+            this.list = res.coaches
+          })
       }
     },
     delTableRecord(id) {

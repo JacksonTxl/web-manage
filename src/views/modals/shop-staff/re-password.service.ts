@@ -1,4 +1,9 @@
-import { ShopStaffApi, PutStaffBrandQuitInput, RePasswordInput, PermissionInput } from '@/api/v1/staff/staff'
+import {
+  ShopStaffApi,
+  PutStaffBrandQuitInput,
+  RePasswordInput,
+  PermissionInput
+} from '@/api/v1/staff/staff'
 import { Injectable } from 'vue-service-app'
 import { State, Effect } from 'rx-state'
 
@@ -15,9 +20,11 @@ export class RePasswordService {
    */
   @Effect()
   getRePassword(id: string) {
-    return this.staffApi.getRePassword(id).pipe(tap(res => {
-      this.rePasswordInfo$.commit(() => res.info)
-    }))
+    return this.staffApi.getRePassword(id).pipe(
+      tap(res => {
+        this.rePasswordInfo$.commit(() => res.info)
+      })
+    )
   }
   /**
    *
@@ -26,11 +33,13 @@ export class RePasswordService {
    */
   @Effect()
   setAccount(params: RePasswordInput) {
-    return this.staffApi.setAccount(params).pipe(tap(res => {
-      this.msg.success({
-        content: '创建账号成功'
+    return this.staffApi.setAccount(params).pipe(
+      tap(res => {
+        this.msg.success({
+          content: '创建账号成功'
+        })
       })
-    }))
+    )
   }
   /**
    *
@@ -38,11 +47,13 @@ export class RePasswordService {
    * 充值密码
    */
   rePassword(params: RePasswordInput) {
-    return this.staffApi.rePassword(params).pipe(tap(res => {
-      this.msg.success({
-        content: '修改密码成功'
+    return this.staffApi.rePassword(params).pipe(
+      tap(res => {
+        this.msg.success({
+          content: '修改密码成功'
+        })
       })
-    }))
+    )
   }
   /**
    *
@@ -50,10 +61,12 @@ export class RePasswordService {
    * 设置账号权限
    */
   updatepermission(id: Number, params: PermissionInput) {
-    return this.staffApi.updatepermission(id, params).pipe(tap(res => {
-      this.msg.success({
-        content: '修改密码成功'
+    return this.staffApi.updatepermission(id, params).pipe(
+      tap(res => {
+        this.msg.success({
+          content: '修改密码成功'
+        })
       })
-    }))
+    )
   }
 }

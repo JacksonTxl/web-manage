@@ -4,19 +4,23 @@
     title="批量转入品牌课程库"
     @ok="save"
     width="888px"
-    v-model='show'>
-    <span>{{courseList | filterCourseName}}</span>
+    v-model="show"
+  >
+    <span>{{ courseList | filterCourseName }}</span>
     <st-form>
-      <st-form-item  label="支持上课门店" required>
-        <a-radio-group
-          @change="supportRange" v-model="shop_setting">
+      <st-form-item label="支持上课门店" required>
+        <a-radio-group @change="supportRange" v-model="shop_setting">
           <a-radio :value="1">全部门店</a-radio>
           <a-radio :value="2">指定门店</a-radio>
-        </a-radio-group><span>(设置支持上这些课程的门店)</span>
+        </a-radio-group>
+        <span>(设置支持上这些课程的门店)</span>
       </st-form-item>
-      <st-form-item  class="modal-transfer-brand-course__form-item-emtry" labelWidth="1px" label=" ">
-        <st-container  v-if="shop_setting===2">
-
+      <st-form-item
+        class="modal-transfer-brand-course__form-item-emtry"
+        labelWidth="1px"
+        label=" "
+      >
+        <st-container v-if="shop_setting === 2">
           <select-shop @change="onChangeShopSetting"></select-shop>
         </st-container>
       </st-form-item>
@@ -62,8 +66,7 @@ export default {
     }
   },
   methods: {
-    supportRange() {
-    },
+    supportRange() {},
     onChangeShopSetting(val) {
       console.log(val)
       this.shop_ids = val

@@ -1,10 +1,5 @@
 <template>
-  <st-modal
-    title="新增标签"
-    v-model="show"
-    @ok="handleSubmit"
-    size="small"
-  >
+  <st-modal title="新增标签" v-model="show" @ok="handleSubmit" size="small">
     <st-form :form="form" labelWidth="67px" @submit="handleSubmit">
       <a-row :gutter="8">
         <a-col :lg="24">
@@ -12,7 +7,18 @@
             <a-input
               placeholder="请输标签名称"
               :max="10"
-              v-decorator="['tag_name',{rules: [{ required: true, message: '请输入标签名称，长度1~10中英文', pattern: pattern.CN_EN('1-10') }]}]"
+              v-decorator="[
+                'tag_name',
+                {
+                  rules: [
+                    {
+                      required: true,
+                      message: '请输入标签名称，长度1~10中英文',
+                      pattern: pattern.CN_EN('1-10')
+                    }
+                  ]
+                }
+              ]"
             />
           </st-form-item>
         </a-col>

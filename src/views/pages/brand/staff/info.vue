@@ -4,18 +4,27 @@
       <a-row>
         <a-col :span="15" class="pages-staffdata-header-detail">
           <div class="staff-avatar-container st-preview-item">
-            <img :src="image_avatar_url">
-            <div class="staff-avatar-tip">{{ info.work_status.name }}/{{ info.nature_work.name }}</div>
+            <img :src="image_avatar_url" />
+            <div class="staff-avatar-tip">
+              {{ info.work_status.name }}/{{ info.nature_work.name }}
+            </div>
           </div>
           <div class="staff-info-container">
             <div class="staff-info-name">
               {{ info.staff_name }}（{{ info.nickname }}）
-              <st-icon  :type="info.sex=== 1? 'female':'male'" :style="info.sex=== 1? 'color:#FF5E41':'color:#3F66F6'"/>
+              <st-icon
+                :type="info.sex === 1 ? 'female' : 'male'"
+                :style="info.sex === 1 ? 'color:#FF5E41' : 'color:#3F66F6'"
+              />
             </div>
             <div class="staff-info-cont">
               <span class="mg-r8">手机号：{{ info.mobile }}</span>
-              <span class="mg-r8" v-if="info.staff_num">工号：{{ info.staff_num }}</span>
-              <span v-if="info.coach_level">教练等级：{{ info.coach_level }}</span>
+              <span class="mg-r8" v-if="info.staff_num">
+                工号：{{ info.staff_num }}
+              </span>
+              <span v-if="info.coach_level">
+                教练等级：{{ info.coach_level }}
+              </span>
             </div>
             <div class="staff-info-shops">
               <span class="mg-r8">所在部门: {{ info.department }}</span>
@@ -24,20 +33,83 @@
           </div>
         </a-col>
         <a-col :span="9" style="text-align: right;">
-          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|edit']" type="primary" @click="editStaffInfo">编辑资料</st-button>
-          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|bind_card']" v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: info} }">绑定实体卡</st-button>
-          <st-button class="mg-r8" v-if="auth['brand_shop:staff:staff|rebind_card']" v-modal-link="{ name: 'staff-bind-entity-card', props: {staff: info} }">重绑实体卡</st-button>
+          <st-button
+            class="mg-r8"
+            v-if="auth['brand_shop:staff:staff|edit']"
+            type="primary"
+            @click="editStaffInfo"
+          >
+            编辑资料
+          </st-button>
+          <st-button
+            class="mg-r8"
+            v-if="auth['brand_shop:staff:staff|bind_card']"
+            v-modal-link="{
+              name: 'staff-bind-entity-card',
+              props: { staff: info }
+            }"
+          >
+            绑定实体卡
+          </st-button>
+          <st-button
+            class="mg-r8"
+            v-if="auth['brand_shop:staff:staff|rebind_card']"
+            v-modal-link="{
+              name: 'staff-bind-entity-card',
+              props: { staff: info }
+            }"
+          >
+            重绑实体卡
+          </st-button>
           <a-dropdown>
             <a-menu slot="overlay" @click="handleMenuClick">
-              <a-menu-item v-if="auth['brand_shop:staff:staff|position']"><a href="#" @click="jumpToStaffPosition">职位变更</a></a-menu-item>
-              <a-menu-item v-if="auth['brand_shop:staff:staff|leave']"><a v-modal-link="{ name: 'staff-turnover', props: {staff: info} } ">离职</a></a-menu-item>
-              <a-menu-item v-if="auth['brand_shop:staff:staff|reinstate']"><a v-modal-link="{ name: 'staff-reinstatement', props: {staff: info} } ">复职</a></a-menu-item>
-              <a-menu-item v-if="auth['brand_shop:staff:account|save']"><a v-modal-link="{ name: 'staff-re-password', props: {staff: info} }">管理登录账户</a></a-menu-item>
-              <a-menu-item v-if="auth['brand_shop:staff:staff|salary']"><a v-modal-link="{ name: 'staff-salary-account-setting', props: {staff: info} }">设置薪资账户</a></a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|position']">
+                <a href="#" @click="jumpToStaffPosition">职位变更</a>
+              </a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|leave']">
+                <a
+                  v-modal-link="{
+                    name: 'staff-turnover',
+                    props: { staff: info }
+                  }"
+                >
+                  离职
+                </a>
+              </a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|reinstate']">
+                <a
+                  v-modal-link="{
+                    name: 'staff-reinstatement',
+                    props: { staff: info }
+                  }"
+                >
+                  复职
+                </a>
+              </a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:account|save']">
+                <a
+                  v-modal-link="{
+                    name: 'staff-re-password',
+                    props: { staff: info }
+                  }"
+                >
+                  管理登录账户
+                </a>
+              </a-menu-item>
+              <a-menu-item v-if="auth['brand_shop:staff:staff|salary']">
+                <a
+                  v-modal-link="{
+                    name: 'staff-salary-account-setting',
+                    props: { staff: info }
+                  }"
+                >
+                  设置薪资账户
+                </a>
+              </a-menu-item>
             </a-menu>
             <a-button>
               更多操作
-              <a-icon type="down"/>
+              <a-icon type="down" />
             </a-button>
           </a-dropdown>
         </a-col>
@@ -95,7 +167,12 @@ export default {
   },
   computed: {
     image_avatar_url() {
-      return (this.info && this.info.image_avatar && this.info.image_avatar.image_url) || ''
+      return (
+        (this.info &&
+          this.info.image_avatar &&
+          this.info.image_avatar.image_url) ||
+        ''
+      )
     }
   },
   created() {
@@ -115,7 +192,10 @@ export default {
         } else if (ele === 3) {
           this.setIndentyList(['course'], indetitySet)
         } else if (ele === 4) {
-          this.setIndentyList(['course', 'follow', 'member', 'sold'], indetitySet)
+          this.setIndentyList(
+            ['course', 'follow', 'member', 'sold'],
+            indetitySet
+          )
         }
       })
     }

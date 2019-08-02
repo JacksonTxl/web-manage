@@ -7,83 +7,88 @@ import { UpdateMemberEdit } from '../../../../api/v1/member'
 import { forkJoin } from 'rxjs'
 
 interface EditState {
-    info: Object,
-    countryInfo: Object,
-    nations: Object,
-    countryList: Object
+  info: Object
+  countryInfo: Object
+  nations: Object
+  countryList: Object
 }
 @Injectable()
 export class EditService extends Store<EditState> {
-    state$: State<EditState>
-    info$: Computed<Object>
-    countryInfo$: Computed<Object>
-    nations$: Computed<Object>
-    countryList$: Computed<Object>
-    constructor(protected memberApi: MemberApi) {
-      super()
-      this.state$ = new State({
-        info: {},
-        countryInfo: []
+  state$: State<EditState>
+  info$: Computed<Object>
+  countryInfo$: Computed<Object>
+  nations$: Computed<Object>
+  countryList$: Computed<Object>
+  constructor(protected memberApi: MemberApi) {
+    super()
+    this.state$ = new State({
+      info: {},
+      countryInfo: []
+    })
+    this.info$ = new Computed(this.state$.pipe(pluck('info')))
+    this.countryInfo$ = new Computed(this.state$.pipe(pluck('countryInfo')))
+    this.nations$ = new Computed(this.state$.pipe(pluck('nations')))
+    this.countryList$ = new Computed(this.state$.pipe(pluck('countryList')))
+  }
+  getMemberEdit(id: number) {
+    return this.memberApi.getMemberEdit(id).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.info = res.info
+        })
       })
-      this.info$ = new Computed(this.state$.pipe(pluck('info')))
-      this.countryInfo$ = new Computed(this.state$.pipe(pluck('countryInfo')))
-      this.nations$ = new Computed(this.state$.pipe(pluck('nations')))
-      this.countryList$ = new Computed(this.state$.pipe(pluck('countryList')))
-    }
-    getMemberEdit(id: number) {
-      return this.memberApi.getMemberEdit(id).pipe(
-        tap(res => {
-          this.state$.commit(state => {
-            state.info = res.info
-          })
+    )
+  }
+  @Effect()
+  getCountries() {
+    return this.memberApi.getCountries().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.countryInfo = res.country_info
         })
-      )
-    }
-    @Effect()
-    getCountries() {
-      return this.memberApi.getCountries().pipe(
-        tap(res => {
-          this.state$.commit(state => {
-            state.countryInfo = res.country_info
-          })
+      })
+    )
+  }
+  getCountryCodes() {
+    return this.memberApi.getCountryCodes().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.countryList = res
         })
-      )
-    }
-    getCountryCodes() {
-      return this.memberApi.getCountryCodes().pipe(
-        tap(res => {
-          this.state$.commit(state => {
-            state.countryList = res
-          })
+      })
+    )
+  }
+  getNations() {
+    return this.memberApi.getNations().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.nations = res.nation_info
         })
-      )
-    }
-    getNations() {
-      return this.memberApi.getNations().pipe(
-        tap(res => {
-          this.state$.commit(state => {
-            state.nations = res.nation_info
-          })
-        })
-      )
-    }
-    updateMemberEdit(id: string, params: UpdateMemberEdit) {
-      return this.memberApi.updateMemberEdit(id, params)
-    }
-    serviceInit(member_id: number) {
-      return forkJoin(this.getCountries(), this.getNations(), this.getCountryCodes(), this.getMemberEdit(member_id))
-    }
+      })
+    )
+  }
+  updateMemberEdit(id: string, params: UpdateMemberEdit) {
+    return this.memberApi.updateMemberEdit(id, params)
+  }
+  serviceInit(member_id: number) {
+    return forkJoin(
+      this.getCountries(),
+      this.getNations(),
+      this.getCountryCodes(),
+      this.getMemberEdit(member_id)
+    )
+  }
 
-    beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-      // const member_id = to.meta.query.id
-      // this.getCountries().subscribe(() => {})
-      // this.getNations().subscribe(() => {})
-      // this.getCountryCodes().subscribe(() => {})
-      // this.getMemberEdit(member_id).subscribe(() => {
-      //   next()
-      // }, () => {
-      //   next(false)
-      // })
-      next()
-    }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    // const member_id = to.meta.query.id
+    // this.getCountries().subscribe(() => {})
+    // this.getNations().subscribe(() => {})
+    // this.getCountryCodes().subscribe(() => {})
+    // this.getMemberEdit(member_id).subscribe(() => {
+    //   next()
+    // }, () => {
+    //   next(false)
+    // })
+    next()
+  }
 }

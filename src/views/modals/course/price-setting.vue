@@ -4,25 +4,56 @@
     :title="course.course_name + ' 查看课程定价'"
     @ok="onOk"
     okText="去编辑"
-    v-model='show'>
+    v-model="show"
+  >
     <div class="modal-support-course-shops__search mg-b24">
-      <a-select v-if="priceSetting===2" showSearch :defaultValue="defaultValue"  :filterOption="filterOption" optionFilterProp="children" class="mg-r8" style="width: 160px" @change="onChangeShopName">
-        <a-select-option v-for="shop in shops" :key="shop.id" :value="shop.id">{{shop.name}}</a-select-option>
+      <a-select
+        v-if="priceSetting === 2"
+        showSearch
+        :defaultValue="defaultValue"
+        :filterOption="filterOption"
+        optionFilterProp="children"
+        class="mg-r8"
+        style="width: 160px"
+        @change="onChangeShopName"
+      >
+        <a-select-option v-for="shop in shops" :key="shop.id" :value="shop.id">
+          {{ shop.name }}
+        </a-select-option>
       </a-select>
-      <a-select v-if="priceModel===2" showSearch :defaultValue="defaultValue"  :filterOption="filterOption" optionFilterProp="children" class="mg-r8" style="width: 160px" @change="onChangeCoachLevel">
-        <a-select-option v-for="item in coachLevel" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
+      <a-select
+        v-if="priceModel === 2"
+        showSearch
+        :defaultValue="defaultValue"
+        :filterOption="filterOption"
+        optionFilterProp="children"
+        class="mg-r8"
+        style="width: 160px"
+        @change="onChangeCoachLevel"
+      >
+        <a-select-option
+          v-for="item in coachLevel"
+          :key="item.id"
+          :value="item.id"
+        >
+          {{ item.name }}
+        </a-select-option>
       </a-select>
     </div>
     <st-container>
-    <st-table
-    :columns="filterColums"
-    :rowKey="record => record.id"
-    :pagination="null"
-    :dataSource="dataSource">
-    <div slot="transfer_num" slot-scope="transfer_num, record">
-      {{transfer_num}}{{record.transfer_unit | enumFilter('personal_course.transfer_unit')}}
-    </div>
-    </st-table>
+      <st-table
+        :columns="filterColums"
+        :rowKey="record => record.id"
+        :pagination="null"
+        :dataSource="dataSource"
+      >
+        <div slot="transfer_num" slot-scope="transfer_num, record">
+          {{ transfer_num
+          }}{{
+            record.transfer_unit | enumFilter('personal_course.transfer_unit')
+          }}
+        </div>
+      </st-table>
     </st-container>
     <div slot="footer"></div>
   </st-modal>
@@ -66,40 +97,58 @@ export default {
     filterColums() {
       const columns = columnsPrices
       return columns.filter(item => {
-        return !((this.priceSetting === 1 && item.dataIndex === 'shop_name') || (this.priceModel === 1 && item.dataIndex === 'coach_level_name'))
+        return !(
+          (this.priceSetting === 1 && item.dataIndex === 'shop_name') ||
+          (this.priceModel === 1 && item.dataIndex === 'coach_level_name')
+        )
       })
     }
   },
   methods: {
-    onOk() {
-
-    },
+    onOk() {},
     onChangeShopName(val) {
-      this.dataSource = val === -1 ? cloneDeep(this.initDataSource) : this.initDataSource.filter(item => item.shop_id === val)
+      this.dataSource =
+        val === -1
+          ? cloneDeep(this.initDataSource)
+          : this.initDataSource.filter(item => item.shop_id === val)
     },
     onChangeCoachLevel(val) {
-      this.dataSource = val === -1 ? cloneDeep(this.initDataSource) : this.initDataSource.filter(item => item.coach_level_id === val)
+      this.dataSource =
+        val === -1
+          ? cloneDeep(this.initDataSource)
+          : this.initDataSource.filter(item => item.coach_level_id === val)
     },
-    filterOption() {
-    },
+    filterOption() {},
     initOptions(state) {
       this.priceSetting = state.price_setting
       this.priceModel = state.price_model
       if (this.priceModel === 2) {
-        this.coachLevel = [{ id: -1, name: '所有教练等级' }, ...uniqWith(this.dataSource.map(item => {
-          return {
-            id: item.coach_level_id,
-            name: item.level || '没名字'
-          }
-        }), isEqual)]
+        this.coachLevel = [
+          { id: -1, name: '所有教练等级' },
+          ...uniqWith(
+            this.dataSource.map(item => {
+              return {
+                id: item.coach_level_id,
+                name: item.level || '没名字'
+              }
+            }),
+            isEqual
+          )
+        ]
       }
       if (this.priceSetting === 2) {
-        this.shops = [{ id: -1, name: '所有门店' }, ...uniqWith(this.dataSource.map(item => {
-          return {
-            id: item.shop_id,
-            name: item.shop_name
-          }
-        }), isEqual)]
+        this.shops = [
+          { id: -1, name: '所有门店' },
+          ...uniqWith(
+            this.dataSource.map(item => {
+              return {
+                id: item.shop_id,
+                name: item.shop_name
+              }
+            }),
+            isEqual
+          )
+        ]
       }
     },
     getCoursePrice() {

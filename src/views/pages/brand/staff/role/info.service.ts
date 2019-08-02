@@ -6,8 +6,8 @@ import { GetInitInfoPut, RoleInfo, RoleApi } from '@/api/v1/staff/role'
 import { RoleService } from '../role.service'
 import { forkJoin } from 'rxjs'
 interface SetState {
-  info: any,
-  brandList: any[],
+  info: any
+  brandList: any[]
   shopList: any[]
 }
 @Injectable()
@@ -33,36 +33,44 @@ export class InfoService extends Store<SetState> {
     })
   }
   gitInitInfo(query: GetInitInfoPut, select_ids: any) {
-    return this.roleService.getInitInfo(query).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.brandList = res.brand_list.filter((item: any) => {
-          return select_ids.includes(item.id)
-        }).map((item: any) => {
-          item.title = item.name
-          item.key = item.id
-          return item
-        })
-        state.shopList = res.shop_list.filter((item: any) => {
-          return select_ids.includes(item.id)
-        }).map((item: any) => {
-          item.title = item.name
-          item.key = item.id
-          return item
+    return this.roleService.getInitInfo(query).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.brandList = res.brand_list
+            .filter((item: any) => {
+              return select_ids.includes(item.id)
+            })
+            .map((item: any) => {
+              item.title = item.name
+              item.key = item.id
+              return item
+            })
+          state.shopList = res.shop_list
+            .filter((item: any) => {
+              return select_ids.includes(item.id)
+            })
+            .map((item: any) => {
+              item.title = item.name
+              item.key = item.id
+              return item
+            })
         })
       })
-    }))
+    )
   }
   /**
-     * 获取所有角色详情
-     */
+   * 获取所有角色详情
+   */
   @Effect()
   getInfo(query: GetInitInfoPut) {
-    return this.roleService.getInfo(query).pipe(tap(res => {
-      this.SET_ROLE_INFO(res.role)
-    }),
-    switchMap(res => {
-      return this.gitInitInfo(query, res.role.select_ids)
-    }))
+    return this.roleService.getInfo(query).pipe(
+      tap(res => {
+        this.SET_ROLE_INFO(res.role)
+      }),
+      switchMap(res => {
+        return this.gitInitInfo(query, res.role.select_ids)
+      })
+    )
   }
 
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {

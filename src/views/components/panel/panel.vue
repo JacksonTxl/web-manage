@@ -1,18 +1,24 @@
 <template>
   <div
-    :class="['st-panel',{
-        'st-panel--app':app,
-        'st-panel--tabs':tabs,
-        'st-panel--initial':initial
-    }]"
+    :class="[
+      'st-panel',
+      {
+        'st-panel--app': app,
+        'st-panel--tabs': tabs,
+        'st-panel--initial': initial
+      }
+    ]"
   >
-    <div v-if="tabs || title || $slots.actions || $slots.title" class="st-panel__header">
+    <div
+      v-if="tabs || title || $slots.actions || $slots.title"
+      class="st-panel__header"
+    >
       <st-route-tabs v-if="tabs" @change="onChange" :options="tabs">
         <slot name="actions" slot="actions"></slot>
       </st-route-tabs>
       <template v-else>
         <div class="st-panel__title">
-          <slot name="title">{{title}}</slot>
+          <slot name="title">{{ title }}</slot>
         </div>
         <div class="st-panel__actions">
           <slot name="actions"></slot>

@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
@@ -37,7 +36,6 @@ export default {
       this.$emit('dataChangge', this.value)
     }
   },
-  mounted() {
-  }
+  mounted() {}
 }
 </script>

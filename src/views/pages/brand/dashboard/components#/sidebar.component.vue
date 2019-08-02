@@ -1,30 +1,53 @@
 <template>
   <div :class="sidebar()">
     <div>
-      <a href="https://mp.weixin.qq.com/s/bvAniLXAEuswEfehHVJ7bw"
-        target="_blank">
-        <img width="280px" height="186px" :src="pic" alt="">
+      <a
+        href="https://mp.weixin.qq.com/s/bvAniLXAEuswEfehHVJ7bw"
+        target="_blank"
+      >
+        <img width="280px" height="186px" :src="pic" alt="" />
       </a>
     </div>
     <st-container class="bg-white mg-t16 pluginbox" type="2">
       <st-t3 :class="b('title')">热门营销插件</st-t3>
-      <plug-in title="优惠券" sub="优惠抵扣购课费用" :img="coupon" href="/brand/marketing/plugin/coupon/list"></plug-in>
-      <plug-in title="邀请有礼" sub="有偿激励员工推广" :img="invite" href="/brand/marketing/plugin/invitation/index/data"></plug-in>
-      <plug-in title="幸运大转盘" sub="有偿激励员工推广" :img="slyder"></plug-in>
+      <plug-in
+        title="优惠券"
+        sub="优惠抵扣购课费用"
+        :img="coupon"
+        href="/brand/marketing/plugin/coupon/list"
+      ></plug-in>
+      <plug-in
+        title="邀请有礼"
+        sub="有偿激励员工推广"
+        :img="invite"
+        href="/brand/marketing/plugin/invitation/index/data"
+      ></plug-in>
+      <plug-in
+        title="幸运大转盘"
+        sub="有偿激励员工推广"
+        :img="slyder"
+      ></plug-in>
     </st-container>
     <st-container class="book bg-white mg-t16" type="2">
       <div class="book-img">
-        <img :src="book" alt="">
+        <img :src="book" alt="" />
       </div>
 
       <div class="book-content  mg-l24">
         <div class="book-content-t">2018中国健身行业数据报告</div>
         <div class="font-number">¥599</div>
-        <st-button ghost pill type="primary" @click="download" class="mg-t8">免费下载电子版</st-button>
+        <st-button ghost pill type="primary" @click="download" class="mg-t8">
+          免费下载电子版
+        </st-button>
       </div>
     </st-container>
     <st-container class="book bg-white mg-t16" type="2">
-      <plug-in title="多功能人脸识别一体机" sub="AI技术加持，玩转大数据" :img="ai" href="https://www.styd.cn/default/product_iot_face"></plug-in>
+      <plug-in
+        title="多功能人脸识别一体机"
+        sub="AI技术加持，玩转大数据"
+        :img="ai"
+        href="https://www.styd.cn/default/product_iot_face"
+      ></plug-in>
     </st-container>
     <st-container class="link bg-white mg-t16" type="2">
       <st-t3 class="link__phone font-number">400-962-8988</st-t3>
@@ -32,7 +55,7 @@
       <st-hr></st-hr>
       <div class="link__qr-code">
         <div class="image-box">
-          <img class="image" :src="qrcode" alt="">
+          <img class="image" :src="qrcode" alt="" />
         </div>
 
         <span class="link__span">扫码关注三体官方微信公众号</span>
@@ -71,9 +94,11 @@ export default {
   },
   methods: {
     download() {
-      window.open('https://www.styd.cn/m/378564/training/info/1008082?act=preview&is_shared=1', '_blank')
+      window.open(
+        'https://www.styd.cn/m/378564/training/info/1008082?act=preview&is_shared=1',
+        '_blank'
+      )
     }
   }
 }
-
 </script>

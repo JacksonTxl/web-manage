@@ -2,7 +2,11 @@ import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
-import { CoachLevelApi, GetCoachLevelListInput, DeleteCoachLevelInput } from '@/api/v1/setting/coach/level'
+import {
+  CoachLevelApi,
+  GetCoachLevelListInput,
+  DeleteCoachLevelInput
+} from '@/api/v1/setting/coach/level'
 import { AuthService } from '@/services/auth.service'
 
 interface ListState {
@@ -43,10 +47,13 @@ export class CoachLevelService extends Store<ListState> {
     })
   }
   beforeEach(to: ServiceRoute, from: ServiceRoute, next: any) {
-    this.getCoachLevelList({ page: to.meta.query.page, size: 20 }).subscribe(() => {
-      next()
-    }, () => {
-      next(false)
-    })
+    this.getCoachLevelList({ page: to.meta.query.page, size: 20 }).subscribe(
+      () => {
+        next()
+      },
+      () => {
+        next(false)
+      }
+    )
   }
 }

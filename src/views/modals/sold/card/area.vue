@@ -1,25 +1,31 @@
 <template>
   <st-modal
-  title="入场vip区域设置"
-  size="small"
-  v-model="show"
-  wrapClassName="modal-sold-card-area">
+    title="入场vip区域设置"
+    size="small"
+    v-model="show"
+    wrapClassName="modal-sold-card-area"
+  >
     <div :class="area('content')">
       <st-form labelWidth="75px">
         <div :class="area('area')">
           <st-form-item label="入场vip区域" class="mg-b0">
             <a-checkbox-group v-model="cardVip">
-                <a-checkbox
-                v-for="(item,index) in vips"
+              <a-checkbox
+                v-for="(item, index) in vips"
                 :key="index"
-                :value="+item.id">{{item.area_name}}</a-checkbox>
-              </a-checkbox-group>
+                :value="+item.id"
+              >
+                {{ item.area_name }}
+              </a-checkbox>
+            </a-checkbox-group>
           </st-form-item>
         </div>
       </st-form>
     </div>
     <template slot="footer">
-      <st-button @click="onSubmit" :loading="loading.setCardVip" type="primary">确认提交</st-button>
+      <st-button @click="onSubmit" :loading="loading.setCardVip" type="primary">
+        确认提交
+      </st-button>
     </template>
   </st-modal>
 </template>
@@ -56,13 +62,15 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.areaService.setCardVip({
-        id: this.id,
-        vip_id: this.cardVip
-      }).subscribe(res => {
-        this.show = false
-        this.$emit('success')
-      })
+      this.areaService
+        .setCardVip({
+          id: this.id,
+          vip_id: this.cardVip
+        })
+        .subscribe(res => {
+          this.show = false
+          this.$emit('success')
+        })
     }
   },
   data() {

@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <a-pagination
@@ -13,7 +12,7 @@
       v-if="value.total"
     >
       <template slot="buildOptionText" slot-scope="props">
-        <span>{{props.value}}条/页</span>
+        <span>{{ props.value }}条/页</span>
       </template>
     </a-pagination>
   </div>

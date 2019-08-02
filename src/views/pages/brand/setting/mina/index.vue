@@ -2,7 +2,10 @@
   <div :class="basic()">
     <info-component :data="info"></info-component>
     <div :class="basic('content')">
-      <un-auth-component v-if="info.is_auth===0" :url="info.auth_url"></un-auth-component>
+      <un-auth-component
+        v-if="info.is_auth === 0"
+        :url="info.auth_url"
+      ></un-auth-component>
       <h5-wrapper-component v-else></h5-wrapper-component>
     </div>
   </div>
@@ -36,8 +39,7 @@ export default {
     this.getInfo()
   },
   data() {
-    return {
-    }
+    return {}
   },
 
   methods: {

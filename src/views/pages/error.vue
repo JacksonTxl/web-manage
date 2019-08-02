@@ -1,6 +1,11 @@
 <template>
   <st-panel app>
-    <a-alert v-if="name" :message="name" type="error" :description="message"></a-alert>
+    <a-alert
+      v-if="name"
+      :message="name"
+      type="error"
+      :description="message"
+    ></a-alert>
   </st-panel>
 </template>
 

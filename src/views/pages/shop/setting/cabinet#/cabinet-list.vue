@@ -7,22 +7,36 @@
           :checked="checkAll"
           @change="onCheckAllChange"
         />
-        <span>已选 <span class="color-primary">{{checkedList.length}}</span> / {{list.length}}</span>
+        <span>
+          已选
+          <span class="color-primary">{{ checkedList.length }}</span>
+          / {{ list.length }}
+        </span>
       </div>
-      <a-checkbox-group :value="checkedList" @change="onChange" class="full-width">
+      <a-checkbox-group
+        :value="checkedList"
+        @change="onChange"
+        class="full-width"
+      >
         <a-row :gutter="16" :class="b()">
-          <a-col v-for="(item, index) in list" :key="index" :md="6" :lg="4" :xl="3">
-            <div :class="b('item')"
+          <a-col
+            v-for="(item, index) in list"
+            :key="index"
+            :md="6"
+            :lg="4"
+            :xl="3"
+          >
+            <div
+              :class="b('item')"
               @mouseenter="mouseEventHander('enter', item.id)"
               @mouseleave="mouseEventHander('leave', item.id)"
             >
-              <div :class="b('item-num')">{{item.serial_num}}</div>
-              <div v-if="item.price_num" :class="b('item-price')">¥{{item.price_num}}/天</div>
+              <div :class="b('item-num')">{{ item.serial_num }}</div>
+              <div v-if="item.price_num" :class="b('item-price')">
+                ¥{{ item.price_num }}/天
+              </div>
               <div :class="b('action')">
-                <a-checkbox
-                  v-if="isOperationInBatch"
-                  :value="item.id"
-                />
+                <a-checkbox v-if="isOperationInBatch" :value="item.id" />
                 <a
                   v-else
                   v-modal-link="{
@@ -50,7 +64,7 @@
       </a-checkbox-group>
     </section>
     <section v-else>
-      <st-no-data text="暂无储物柜～"/>
+      <st-no-data text="暂无储物柜～" />
     </section>
   </div>
 </template>
@@ -118,7 +132,8 @@ export default {
     onChange(checkedList) {
       const { plainOptions } = this
       this.checkedList = checkedList
-      this.indeterminate = !!checkedList.length && (checkedList.length < plainOptions.length)
+      this.indeterminate =
+        !!checkedList.length && checkedList.length < plainOptions.length
       this.checkAll = checkedList.length === plainOptions.length
       this.$emit('selectChange', checkedList)
     },

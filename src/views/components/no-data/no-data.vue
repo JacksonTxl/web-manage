@@ -1,10 +1,7 @@
 <template>
   <div class="mg-y24 ta-c">
-    <img
-      width="150"
-      :src="img"
-    />
-    <p class="mg-t16">{{text}}</p>
+    <img width="150" :src="img" />
+    <p class="mg-t16">{{ text }}</p>
   </div>
 </template>
 <script>
@@ -22,9 +19,10 @@ export default {
   },
   computed: {
     img() {
-      return ({
-        '1': 'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-nodata.png'
-      })[this.type]
+      return {
+        '1':
+          'https://styd-frontend.oss-cn-shanghai.aliyuncs.com/images/placeholder-nodata.png'
+      }[this.type]
     }
   }
 }

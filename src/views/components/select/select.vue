@@ -1,14 +1,13 @@
 <template>
   <div :class="select()">
-    <a-select
-     v-bind="$attrs"
-     v-on="$listeners"
-     @change="onChange">
+    <a-select v-bind="$attrs" v-on="$listeners" @change="onChange">
       <a-select-option
         v-for="(item, index) in list"
         :key="index"
         :value="item.value"
-      >{{item.label}}</a-select-option>
+      >
+        {{ item.label }}
+      </a-select-option>
     </a-select>
   </div>
 </template>
@@ -32,8 +31,7 @@ export default {
   //     this.radioChecked = newVal
   //   }
   // },
-  created() {
-  },
+  created() {},
   methods: {
     onChange(data) {
       console.log(data)

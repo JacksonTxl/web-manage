@@ -1,4 +1,3 @@
-
 import { Api } from '@/api/api'
 /**
  *
@@ -10,10 +9,10 @@ import { Api } from '@/api/api'
  */
 export class PersonalTeamScheduleCommonApi extends Api {
   /**
-  *
-  * @param query
-  * 获取消费方式列表
-  */
+   *
+   * @param query
+   * 获取消费方式列表
+   */
   getConsumeList(query: GetScheduleConsumeInput) {
     return this.http.get('/v1/schedule/personal_team/shop/consume', { query })
   }
@@ -43,7 +42,7 @@ export class PersonalTeamScheduleCommonApi extends Api {
 }
 
 export interface ConsumeQuery {
-  course_id: number,
+  course_id: number
   member_id: number
 }
 
@@ -58,6 +57,6 @@ export interface GetMemberInput {
  * 获取用户消费方式request
  */
 export interface GetScheduleConsumeInput {
-  course_id: number,
+  course_id: number
   member_id: number
 }

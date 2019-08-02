@@ -1,15 +1,15 @@
 import { Api } from '../../api'
 
 export interface GetMemberListInput {
-  search?: string,
-  is_valid?: number,
-  card_type?: number,
-  card_status?: number,
-  is_open?: number,
-  start_time?: string,
-  end_time?: string,
-  size?: number,
-  page?: number,
+  search?: string
+  is_valid?: number
+  card_type?: number
+  card_status?: number
+  is_open?: number
+  start_time?: string
+  end_time?: string
+  size?: number
+  page?: number
 }
 export interface TransferCardInput {
   transferee_member_id?: number
@@ -22,40 +22,40 @@ export interface TransferCardInput {
 }
 
 export interface RefundCardInput {
-  refund_price:number
-  refund_reason:number
-  refund_channel:number
-  description?:string
+  refund_price: number
+  refund_reason: number
+  refund_channel: number
+  description?: string
 }
 export interface FreezeCardInput {
-  end_time:string
-  poundage?:number
-  pay_method?:number
+  end_time: string
+  poundage?: number
+  pay_method?: number
 }
 export interface CardVipInput {
-  id: Array<number|string>
-  vip_id: Array<number|string>
+  id: Array<number | string>
+  vip_id: Array<number | string>
 }
 export interface CardSettingTimeInput {
-  time:string
-  description?:string
+  time: string
+  description?: string
 }
 export interface CardGiveInput {
-  sold_card_ids:Array<number|string>
-  gift_quota:number
-  description?:string
+  sold_card_ids: Array<number | string>
+  gift_quota: number
+  description?: string
 }
 export interface RenewalCardInput {
-  contract_number:string
-  rule_id:number
-  gift_amount?:number
-  user_coupon_id?:number|string
-  advance_id?:string
-  reduce_price?:number
-  description?:string
-  staff_sale_id:number
-  contract_type:number
-  discounts_price?:number
+  contract_number: string
+  rule_id: number
+  gift_amount?: number
+  user_coupon_id?: number | string
+  advance_id?: string
+  reduce_price?: number
+  description?: string
+  staff_sale_id: number
+  contract_type: number
+  discounts_price?: number
 }
 export class CardApi extends Api {
   /**
@@ -65,15 +65,15 @@ export class CardApi extends Api {
     return this.http.get(`/v1/sold/cards/${type}`, { query: params })
   }
   /**
-  * 售出 储值卡 转让回显
-  */
+   * 售出 储值卡 转让回显
+   */
   getCardTransferInfo(id: string, type: string) {
     return this.http.get(`/v1/sold/cards/${type}/transfer/info/${id}`)
   }
   /*
-  * 售出 储值卡 转让
-  */
-  editCardTransfer(params:TransferCardInput, id:string, type:string) {
+   * 售出 储值卡 转让
+   */
+  editCardTransfer(params: TransferCardInput, id: string, type: string) {
     return this.http.put(`/v1/sold/cards/${type}/transfer/${id}`, { params })
   }
   /**
@@ -83,17 +83,19 @@ export class CardApi extends Api {
     return this.http.get(`/v1/sold/cards/${type}/refund/info/${id}`)
   }
   /*
-  * 售出 储值卡 退款
-  */
-  editCardRefund(params:RefundCardInput, id:string, type:string) {
+   * 售出 储值卡 退款
+   */
+  editCardRefund(params: RefundCardInput, id: string, type: string) {
     return this.http.put(`/v1/sold/cards/${type}/refund/${id}`, { params })
   }
   /*
-  * 售出 储值卡/会员卡 详情
-  */
-  getCardInfo(id:string, type:string) {
-    return this.http.get(`/v1/sold/cards/${type}/${type === 'member' ? 'info' : 'detail'}/${id}`)
-  //  return this.http.get(`/v1/sold/cards/${type}/detail/${id}`)
+   * 售出 储值卡/会员卡 详情
+   */
+  getCardInfo(id: string, type: string) {
+    return this.http.get(
+      `/v1/sold/cards/${type}/${type === 'member' ? 'info' : 'detail'}/${id}`
+    )
+    //  return this.http.get(`/v1/sold/cards/${type}/detail/${id}`)
   }
   /**
    * 售出 会员卡 冻结回显
@@ -110,19 +112,19 @@ export class CardApi extends Api {
   /**
    * 取消冻结售出 会员卡/储值卡
    */
-  unFreezeCard(id:string, type:string) {
+  unFreezeCard(id: string, type: string) {
     return this.http.put(`/v1/sold/cards/${type}/cancel/freeze/${id}`)
   }
   /**
    * 售出 会员卡/储值卡 详情消费记录
    */
-  getCardsConsumeInfo(id:string, type:string) {
+  getCardsConsumeInfo(id: string, type: string) {
     return this.http.get(`/v1/sold/cards/${type}/consume/record/${id}`)
   }
   /**
    * 售出 会员卡/储值卡 详情操作日志
    */
-  getCardsOperationInfo(id:string, type:string) {
+  getCardsOperationInfo(id: string, type: string) {
     return this.http.get(`/v1/sold/cards/${type}/operation/log/${id}`)
   }
   /**
@@ -140,55 +142,57 @@ export class CardApi extends Api {
   /**
    * 售出 会员卡 vip区域
    */
-  getCardVipArea(id:string) {
+  getCardVipArea(id: string) {
     return this.http.get(`/v1/sold/cards/member/vip/info/${id}`)
   }
   /**
    * 售出 会员卡修改vip区域
    */
-  setCardVipArea(params:CardVipInput) {
+  setCardVipArea(params: CardVipInput) {
     return this.http.put(`/v1/sold/cards/member/vip`, { params })
   }
   /**
    * 售出 会员卡 设置有效日期
    */
-  setCardSettingTime(params:CardSettingTimeInput, id:string) {
+  setCardSettingTime(params: CardSettingTimeInput, id: string) {
     return this.http.put(`/v1/sold/cards/member/setting/${id}`, { params })
   }
   /**
    * 售出 会员卡 批量赠送
    */
-  setCardGive(params:CardGiveInput) {
+  setCardGive(params: CardGiveInput) {
     return this.http.put(`/v1/sold/cards/member/give`, { params })
   }
   /**
    * 售出 会员卡 续卡回显
    */
-  getCardRenewalInfo(id:string) {
+  getCardRenewalInfo(id: string) {
     return this.http.get(`/v1/sold/cards/member/renewal/info/${id}`)
   }
   /**
    * 售出 会员卡 续卡
    */
-  setCardRenewal(params:RenewalCardInput, id:string) {
+  setCardRenewal(params: RenewalCardInput, id: string) {
     return this.http.put(`/v1/sold/cards/member/renewal/${id}`, { params })
   }
   /**
    * 售出 会员卡 升级回显
    */
-  getCardUpgradeInfo(id:string) {
+  getCardUpgradeInfo(id: string) {
     return this.http.get(`/v1/sold/cards/member/upgrade/info/${id}`)
   }
   /**
    * 售出 会员卡 升级
    */
-  setCardUpgrade(params:any, id:string) {
+  setCardUpgrade(params: any, id: string) {
     return this.http.put(`/v1/sold/cards/member/upgrade/${id}`, { params })
   }
   /**
    * 门店可售卖的会员卡列表
    */
-  getCardUpgradeList(card_name_search?:string) {
-    return this.http.get(`/v1/sold/cards/shop/saled_card`, { query: { card_name_search } })
+  getCardUpgradeList(card_name_search?: string) {
+    return this.http.get(`/v1/sold/cards/shop/saled_card`, {
+      query: { card_name_search }
+    })
   }
 }

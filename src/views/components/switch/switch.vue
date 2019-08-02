@@ -22,17 +22,13 @@ export default {
       },
       this.$attrs
     )
-    const listeners = merge(
-
-      this.$listeners,
-      {
-        change: newChecked => {
-          const newVal = newChecked ? 1 : 0
-          this.$emit('input', newVal)
-          this.$emit('change', newVal)
-        }
+    const listeners = merge(this.$listeners, {
+      change: newChecked => {
+        const newVal = newChecked ? 1 : 0
+        this.$emit('input', newVal)
+        this.$emit('change', newVal)
       }
-    )
+    })
     return h(
       'a-switch',
       {

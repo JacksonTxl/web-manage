@@ -2,10 +2,10 @@ import { Api } from '@/api/api'
 const url = '/v1/setting/cabinet/area'
 
 export class CabinetAreaApi extends Api {
-/**
- * 新增区域
- * @param params
- */
+  /**
+   * 新增区域
+   * @param params
+   */
   add(params: AddInput) {
     return this.http.post(url, { params })
   }

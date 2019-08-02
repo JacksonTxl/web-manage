@@ -44,6 +44,9 @@ export class ListService implements RouteGuard {
 
   beforeEach(to: ServiceRoute, from: ServiceRoute) {
     let { page = 1, size = 20 } = to.meta.query
-    return forkJoin(this.getStaffDepartment(), this.getStaffList({ page, size, ...to.query }))
+    return forkJoin(
+      this.getStaffDepartment(),
+      this.getStaffList({ page, size, ...to.query })
+    )
   }
 }

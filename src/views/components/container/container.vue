@@ -1,6 +1,6 @@
 <template>
   <div :class="`st-container--type-${type}`">
-    <slot/>
+    <slot />
   </div>
 </template>
 <script>

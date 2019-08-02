@@ -3,13 +3,23 @@
     <st-form>
       <st-form-item required>
         <template slot="label">
-          应用日期<st-help-tooltip id="TSPT001" />
+          应用日期
+          <st-help-tooltip id="TSPT001" />
         </template>
-        <a-range-picker @change="onChangeRangePicker" :disabledDate="disabledDate"></a-range-picker>
+        <a-range-picker
+          @change="onChangeRangePicker"
+          :disabledDate="disabledDate"
+        ></a-range-picker>
       </st-form-item>
       <st-form-item labelWidth="42px" label="教练：" required>
         <a-select placeholder="请选择教练" v-model="coachId">
-          <a-select-option v-for="coach in coachOptions" :key="coach.id" :value="coach.id">{{coach.staff_name}}</a-select-option>
+          <a-select-option
+            v-for="coach in coachOptions"
+            :key="coach.id"
+            :value="coach.id"
+          >
+            {{ coach.staff_name }}
+          </a-select-option>
         </a-select>
       </st-form-item>
     </st-form>
@@ -29,18 +39,26 @@
             </a-col>
           </a-col>
         </a-row>
-        <a-row class="time-item mg-t48" v-for="info in schedule_info" :key="info.time_type">
+        <a-row
+          class="time-item mg-t48"
+          v-for="info in schedule_info"
+          :key="info.time_type"
+        >
           <a-col :lg="2">
-            <span>{{info.time_type | filterDate}}</span>
+            <span>{{ info.time_type | filterDate }}</span>
           </a-col>
           <a-col :lg="22">
-            <st-time-picker v-model="info.timing" :key="info.time_type"></st-time-picker>
+            <st-time-picker
+              v-model="info.timing"
+              :key="info.time_type"
+            ></st-time-picker>
           </a-col>
         </a-row>
       </st-container>
     </div>
   </st-modal>
-</template>n
+</template>
+n
 
 <script>
 import { PersonalScheduleScheduleService } from '../../../pages/shop/product/course/schedule/personal.service#/schedule.service'
@@ -67,28 +85,36 @@ export default {
       coachId: '',
       start: '',
       end: '',
-      schedule_info: [{
-        time_type: 1,
-        timing: []
-      }, {
-        time_type: 2,
-        timing: []
-      }, {
-        time_type: 3,
-        timing: []
-      }, {
-        time_type: 4,
-        timing: []
-      }, {
-        time_type: 5,
-        timing: []
-      }, {
-        time_type: 6,
-        timing: []
-      }, {
-        time_type: 0,
-        timing: []
-      }]
+      schedule_info: [
+        {
+          time_type: 1,
+          timing: []
+        },
+        {
+          time_type: 2,
+          timing: []
+        },
+        {
+          time_type: 3,
+          timing: []
+        },
+        {
+          time_type: 4,
+          timing: []
+        },
+        {
+          time_type: 5,
+          timing: []
+        },
+        {
+          time_type: 6,
+          timing: []
+        },
+        {
+          time_type: 0,
+          timing: []
+        }
+      ]
     }
   },
   filters: {
@@ -101,7 +127,10 @@ export default {
     disabledDate(currentDate) {
       // 往前推30天时间不可选 往后推60天不可选
       const current = moment().valueOf()
-      return currentDate.valueOf() < (current - 24 * 3600 * 30 * 1000) || (current + 24 * 3600 * 60 * 1000) < currentDate.valueOf()
+      return (
+        currentDate.valueOf() < current - 24 * 3600 * 30 * 1000 ||
+        current + 24 * 3600 * 60 * 1000 < currentDate.valueOf()
+      )
     },
     onChangeRangePicker(val) {
       this.start = val[0].format('YYYY-MM-DD').valueOf()
@@ -117,15 +146,16 @@ export default {
       this.scheduleService.addScheduleInBatch(reqdata).subscribe(() => {
         console.log('ok')
         this.show = false
-        this.$router.push({ query: {
-          ...this.query
-        },
-        force: true })
+        this.$router.push({
+          query: {
+            ...this.query
+          },
+          force: true
+        })
       })
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

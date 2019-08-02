@@ -1,10 +1,17 @@
 <template>
   <div class="stat-marketing-dashboard">
     <div class="stat-marketing-dashboard__placeholder">
-      <div class="stat-marketing-dashboard__name">{{data.name}}</div>
-      <div class="stat-marketing-dashboard__percent">{{(percent * 100).toFixed(2)}}%</div>
+      <div class="stat-marketing-dashboard__name">{{ data.name }}</div>
+      <div class="stat-marketing-dashboard__percent">
+        {{ (percent * 100).toFixed(2) }}%
+      </div>
     </div>
-    <svg :width="width" :height="width" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+    <svg
+      :width="width"
+      :height="width"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 100 100"
+    >
       <defs>
         <linearGradient id="cursor-color" x1="0" y1="0" x2="100%" y2="0">
           <stop offset="0" stop-color="#3F66F6"></stop>
@@ -130,7 +137,7 @@ export default {
 }
 </script>
 
-<style lang='less'>
+<style lang="less">
 .stat-marketing-dashboard {
   display: inline-block;
   position: relative;

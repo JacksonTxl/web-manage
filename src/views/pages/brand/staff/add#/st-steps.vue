@@ -1,7 +1,12 @@
 <template>
-    <a-steps :current="value">
-        <a-step  v-for="(item,index) in stepArr" :title="item.title" :key="item.key" @click="skip(index)"/>
-    </a-steps>
+  <a-steps :current="value">
+    <a-step
+      v-for="(item, index) in stepArr"
+      :title="item.title"
+      :key="item.key"
+      @click="skip(index)"
+    />
+  </a-steps>
 </template>
 <script>
 export default {

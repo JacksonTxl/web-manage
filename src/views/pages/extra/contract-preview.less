@@ -10,33 +10,39 @@
     min-width: initial;
     min-height: 29.5cm;
     box-sizing: border-box;
-    box-shadow: 0 0 1in -10px rgba(0, 0, 0, .5);
+    box-shadow: 0 0 1in -10px rgba(0, 0, 0, 0.5);
   }
 }
 @media print {
-    * {
-      text-shadow: none !important;
-      background: 0 0 !important;
-      box-shadow: none !important
-    }
-    .print {
-      padding: 0
-    }
-    .print body {
-      width: 100%;
-      margin: 0;
-      padding: 0 1cm;
-      // font-size: 9pt;
-      // zoom:50%;
-    }
-    h1, h2, h3, h4, h5, h6, img {
-      page-break-after: avoid;
-      page-break-inside: avoid
-    }
-    table {
-      page-break-inside: avoid
-    }
+  * {
+    text-shadow: none !important;
+    background: 0 0 !important;
+    box-shadow: none !important;
   }
+  .print {
+    padding: 0;
+  }
+  .print body {
+    width: 100%;
+    margin: 0;
+    padding: 0 1cm;
+    // font-size: 9pt;
+    // zoom:50%;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  img {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+  table {
+    page-break-inside: avoid;
+  }
+}
 
 .extra-contract-preview {
   .pd-lr(8px);
@@ -51,7 +57,7 @@
     .fz(14px);
     // .lh(22px);
     .mg-b(8px);
-    .c(#252A2E);
+    .c(#252a2e);
   }
 
   .info-text {
@@ -60,7 +66,7 @@
     // .lh(22px);
     .mg-b(8px);
     overflow: hidden;
-    .c(#3E4D5C);
+    .c(#3e4d5c);
   }
 
   &__header {
@@ -89,7 +95,7 @@
     .mg-b(8px);
     .ta-c;
     font-weight: 400;
-    .c(rgba(0,0,0,.45));
+    .c(rgba(0, 0, 0, 0.45));
   }
 
   &__contract-code {
@@ -120,17 +126,18 @@
     .w(90px);
     .h(120px);
     .mg-t(-6px);
-    img{
-        .s(100%,100%);
+    img {
+      .s(100%, 100%);
     }
   }
   &__product {
-    .st-form-table{
-        border-top: 1px solid #e8e8e8;
-        border-left: 1px solid #e8e8e8;
+    .st-form-table {
+      border-top: 1px solid #e8e8e8;
+      border-left: 1px solid #e8e8e8;
     }
-    .st-form-table thead > tr > th, .st-form-table tbody > tr > td{
-        border-right: 1px solid #e8e8e8;
+    .st-form-table thead > tr > th,
+    .st-form-table tbody > tr > td {
+      border-right: 1px solid #e8e8e8;
     }
   }
   &__advanced {
@@ -141,4 +148,3 @@
     .mg-t(56px);
   }
 }
-

@@ -1,7 +1,14 @@
 <template>
-  <div :class="{'get-day': isGet}">
-    <span>{{dateString}} </span>
-    <a href="javascript:;" class="get-day__button" v-if="isGet" @click="onClickDaySchedule"> {{title}}</a>
+  <div :class="{ 'get-day': isGet }">
+    <span>{{ dateString }}</span>
+    <a
+      href="javascript:;"
+      class="get-day__button"
+      v-if="isGet"
+      @click="onClickDaySchedule"
+    >
+      {{ title }}
+    </a>
   </div>
 </template>
 
@@ -24,8 +31,12 @@ export default {
   },
   computed: {
     dateString() {
-      const d = moment(this.date).format('MM/DD').valueOf()
-      const weekDay = moment(this.date).format('ddd').valueOf()
+      const d = moment(this.date)
+        .format('MM/DD')
+        .valueOf()
+      const weekDay = moment(this.date)
+        .format('ddd')
+        .valueOf()
       return `${d}${weekDay}`
     }
   },

@@ -3,25 +3,33 @@
     <a-row class="mg-t16">
       <a-col :lg="24">
         <a-col :lg="16">
-          <a-select style="width: 160px;margin-right:12px" :defaultValue="-1" placeholder="请选择课程状态"  @change="onSingleSearch('schedule_status', $event)">
+          <a-select
+            style="width: 160px;margin-right:12px"
+            :defaultValue="-1"
+            placeholder="请选择课程状态"
+            @change="onSingleSearch('schedule_status', $event)"
+          >
             <a-select-option :value="-1">全部预约状态</a-select-option>
             <a-select-option :value="1">预约失败</a-select-option>
             <a-select-option :value="3">候补中</a-select-option>
             <a-select-option :value="2">预约成功</a-select-option>
             <a-select-option :value="4">取消预约</a-select-option>
           </a-select>
-          <a-range-picker @change="onChooseDate" format="YYYY-MM-DD"/>
+          <a-range-picker @change="onChooseDate" format="YYYY-MM-DD" />
         </a-col>
         <a-col :lg="2"></a-col>
         <a-col :lg="6">
-          <st-input-search placeholder="请输入课程名称" @search="onSingleSearch('course_name', $event)"/>
+          <st-input-search
+            placeholder="请输入课程名称"
+            @search="onSingleSearch('course_name', $event)"
+          />
         </a-col>
       </a-col>
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="courseColums"
           :dataSource="courseInfo"
-          :scroll="{ x: 1000}"
+          :scroll="{ x: 1000 }"
           :loading="loading.getCoursesList"
           :page="page"
           rowKey="id"
@@ -29,17 +37,25 @@
         >
           <template slot="schedule_status" slot-scope="text, record">
             <!-- 课程状态 -->
-            {{record.schedule_status.name}}
+            {{ record.schedule_status.name }}
           </template>
           <template slot="course_type" slot-scope="text, record">
             <!-- 课程类型 -->
-            {{record.course_type.name}}
+            {{ record.course_type.name }}
           </template>
           <template slot="course_name" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">{{ text }}</a>
+            <a href="javascript:;" class="mg-r8" @click="goCourseDetai(record)">
+              {{ text }}
+            </a>
           </template>
           <template slot="action" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="onSearchDetail(record)">详情</a>
+            <a
+              href="javascript:;"
+              class="mg-r8"
+              @click="onSearchDetail(record)"
+            >
+              详情
+            </a>
           </template>
         </st-table>
       </a-col>
@@ -54,7 +70,7 @@ import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 
 export default {
-  mixins: [ tableMixin ],
+  mixins: [tableMixin],
   serviceInject() {
     return {
       service: CourseService,

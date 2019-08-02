@@ -1,23 +1,23 @@
 <template>
-<div>
-  <a-cascader
-  :fieldNames="{label:'name',value:'id',children:'children'}"
-  :options="COptions"
-  :showSearch="{filterRegionsName}"
-  :defaultValue="value"
-  v-model="model"
-  @change="onChange"
-  :placeholder="placeholder"/>
-</div>
-
+  <div>
+    <a-cascader
+      :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
+      :options="COptions"
+      :showSearch="{ filterRegionsName }"
+      :defaultValue="value"
+      v-model="model"
+      @change="onChange"
+      :placeholder="placeholder"
+    />
+  </div>
 </template>
 
 <script>
 import { RegionService } from '../../../services/region.service'
-const parseStringData = (data) => {
+const parseStringData = data => {
   return data.map(item => item.toString())
 }
-const parseIntData = (data) => {
+const parseIntData = data => {
   return data.map(item => parseInt(item))
 }
 export default {
@@ -94,7 +94,7 @@ export default {
     },
     filterRegionsName(inputValue, path) {
       if (!isSearch) return
-      return (path.some(option => (option.name).indexOf(inputValue) > -1))
+      return path.some(option => option.name.indexOf(inputValue) > -1)
     },
     onChange(value) {
       this.$emit('change', value)

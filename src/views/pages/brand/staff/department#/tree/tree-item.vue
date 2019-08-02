@@ -1,43 +1,70 @@
 <template>
   <li>
-    <div
-      class="tree-node"
-      :class="{bold: isFolder}"
-      @dblclick="makeFolder">
-      <div class="tree-node__content" :style="{'padding-left': paddingLeft}" @click="getTreeNodeOnclick" ref="treeNode">
-        <span class="tree-switch"  @click.stop="toggle" v-if="isFolder&&level!==0">{{ isOpen ? '-' : '+' }}</span>
-        <span class="tree-switch__empty" v-else-if="level!==0 && !item.isEdit"></span>
+    <div class="tree-node" :class="{ bold: isFolder }" @dblclick="makeFolder">
+      <div
+        class="tree-node__content"
+        :style="{ 'padding-left': paddingLeft }"
+        @click="getTreeNodeOnclick"
+        ref="treeNode"
+      >
+        <span
+          class="tree-switch"
+          @click.stop="toggle"
+          v-if="isFolder && level !== 0"
+        >
+          {{ isOpen ? '-' : '+' }}
+        </span>
+        <span
+          class="tree-switch__empty"
+          v-else-if="level !== 0 && !item.isEdit"
+        ></span>
         <div class="tree-name edit-box" v-if="item.isEdit">
-          <a-input placeholder="请输入部门名称" class="tree-input mg-r8" v-model="editValue"></a-input>
-          <a href="javascript:;" class="button edit mg-r8" @click.stop="editDepartment">保存</a>
+          <a-input
+            placeholder="请输入部门名称"
+            class="tree-input mg-r8"
+            v-model="editValue"
+          ></a-input>
+          <a
+            href="javascript:;"
+            class="button edit mg-r8"
+            @click.stop="editDepartment"
+          >
+            保存
+          </a>
           <span @click.stop="cancelEdit">
             <st-icon type="close" />
           </span>
-
         </div>
-        <span class="tree-name" v-else>{{ item.name }}( {{item.count}} )</span>
-        <st-more-dropdown class="tree-opreation"  v-show="!item.isEdit">
-          <a-menu-item v-if="auth.departmentAdd"  @click="addTreeNode">新增</a-menu-item>
-          <a-menu-item  @click="editTreeNode">编辑</a-menu-item>
-          <a-menu-item  @click="deleteDepartment(item)" v-if="item.id">删除</a-menu-item>
+        <span class="tree-name" v-else>
+          {{ item.name }}( {{ item.count }} )
+        </span>
+        <st-more-dropdown class="tree-opreation" v-show="!item.isEdit">
+          <a-menu-item v-if="auth.departmentAdd" @click="addTreeNode">
+            新增
+          </a-menu-item>
+          <a-menu-item @click="editTreeNode">编辑</a-menu-item>
+          <a-menu-item @click="deleteDepartment(item)" v-if="item.id">
+            删除
+          </a-menu-item>
         </st-more-dropdown>
       </div>
       <div class="tree-node__content" v-if="item.isAdd">
         <a-input
           placeholder="请输入部门名称"
           class="tree-input  mg-r6"
-          v-model="addValue">
-        </a-input>
-        <a href="javascript:;" class="mg-r8" @click.stop="addDepartment(item)">保存</a>
+          v-model="addValue"
+        ></a-input>
+        <a href="javascript:;" class="mg-r8" @click.stop="addDepartment(item)">
+          保存
+        </a>
         <span @click.stop="cancelAdd">
           <st-icon type="close" />
         </span>
-
       </div>
     </div>
     <ul class="st-tree-item" v-show="isOpen" v-if="isFolder">
       <tree-item
-        :level='level+1'
+        :level="level + 1"
         class="item"
         v-for="(child, index) in item.children"
         :key="index"
@@ -82,7 +109,11 @@ export default {
       editValue: '',
       addValue: '',
       isActive: false,
-      opreations: [{ clickName: this.addTreeNade, name: '新增' }, { clickName: this.editTreeNade, name: '编辑' }, { clickName: this.deleteTreeNade, name: '删除' }],
+      opreations: [
+        { clickName: this.addTreeNade, name: '新增' },
+        { clickName: this.editTreeNade, name: '编辑' },
+        { clickName: this.deleteTreeNade, name: '删除' }
+      ],
       placements: ['bottomLeft'],
       visible: false,
       isOpen: false
@@ -90,12 +121,11 @@ export default {
   },
   computed: {
     isFolder: function() {
-      return this.item.children &&
-          this.item.children.length
+      return this.item.children && this.item.children.length
     },
     paddingLeft() {
       if (!this.level) return 20 + 'px'
-      return ((this.level - 1) * 16) + 20 + 'px'
+      return (this.level - 1) * 16 + 20 + 'px'
     }
   },
   methods: {
@@ -136,16 +166,23 @@ export default {
     addDepartment(item) {
       console.log('addDepartment', this.$refs.treeNode, item)
       this.cancelAdd()
-      this.departmentService.addDepartment({ parent_id: this.item.id, department_name: this.addValue }).subscribe(() => {
-        this.$emit('update-data')
-      })
+      this.departmentService
+        .addDepartment({
+          parent_id: this.item.id,
+          department_name: this.addValue
+        })
+        .subscribe(() => {
+          this.$emit('update-data')
+        })
     },
     editDepartment(item) {
       console.log('editDepartment', this.$refs.treeNode, item)
       this.cancelEdit()
-      this.departmentService.updateDepartment({ id: this.item.id, department_name: this.editValue }).subscribe(() => {
-        this.$emit('update-data')
-      })
+      this.departmentService
+        .updateDepartment({ id: this.item.id, department_name: this.editValue })
+        .subscribe(() => {
+          this.$emit('update-data')
+        })
     },
     deleteDepartment(item) {
       console.log('deleteDepartment', this.$refs.treeNode, item)
@@ -160,10 +197,12 @@ export default {
           content: '删除部门后,部门无法恢复，确认删除？',
           onOk: () => {
             return new Promise((resolve, reject) => {
-              return this.departmentService.delDepartment({ id: this.item.id }).subscribe(() => {
-                setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
-                this.$emit('update-data')
-              })
+              return this.departmentService
+                .delDepartment({ id: this.item.id })
+                .subscribe(() => {
+                  setTimeout(Math.random() > 0.5 ? resolve : reject, 1000)
+                  this.$emit('update-data')
+                })
             }).catch(() => console.log('Oops errors!'))
           },
           onCancel() {}
@@ -175,14 +214,18 @@ export default {
       this.$emit('node-item-detail', this.item)
       this.$nextTick().then(() => {
         const doms = document.querySelectorAll('.tree-node__content')
-        const treeOpreationEle = document.querySelectorAll('.tree-node__content .tree-opreation')
+        const treeOpreationEle = document.querySelectorAll(
+          '.tree-node__content .tree-opreation'
+        )
         treeOpreationEle.forEach(dom => {
           dom.setAttribute('class', 'tree-opreation')
         })
         doms.forEach(dom => {
           dom.setAttribute('class', 'tree-node__content')
         })
-        e.currentTarget.querySelector('.tree-opreation').setAttribute('class', 'tree-opreation active')
+        e.currentTarget
+          .querySelector('.tree-opreation')
+          .setAttribute('class', 'tree-opreation active')
         e.currentTarget.setAttribute('class', 'tree-node__content active')
       })
     },

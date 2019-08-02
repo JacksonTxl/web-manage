@@ -2,11 +2,11 @@
   <div :class="mapButton()" @click="map">
     <div :class="mapButton('add')" v-if="isAdd">
       <st-icon type="location" size="32px" :class="mapButton('icon')"></st-icon>
-      <p>{{addText}}</p>
+      <p>{{ addText }}</p>
     </div>
     <div :class="mapButton('update')" v-else>
-      <p>{{`${province.name} ${city.name} ${district.name}`}}</p>
-      <p>{{address}}</p>
+      <p>{{ `${province.name} ${city.name} ${district.name}` }}</p>
+      <p>{{ address }}</p>
     </div>
   </div>
 </template>

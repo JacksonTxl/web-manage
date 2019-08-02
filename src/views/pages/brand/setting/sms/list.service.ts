@@ -3,7 +3,7 @@ import { State, Computed, Effect } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 import { SmsApi, SmsListQuery } from '@/api/v1/setting/sms/sms'
-interface SetState { }
+interface SetState {}
 @Injectable()
 export class ListService extends Store<SetState> {
   state$: State<SetState>

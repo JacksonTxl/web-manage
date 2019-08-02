@@ -1,6 +1,5 @@
 <template>
-  <st-panel
-    app>
+  <st-panel app>
     <div slot="title">
       <st-input-search
         placeholder="团课名称"
@@ -11,11 +10,29 @@
     </div>
     <a-row>
       <a-col :span="8">
-        <st-button v-if="auth.add" type="primary" icon="add" @click="onClickAddCourse">新增门店团体课程</st-button>
+        <st-button
+          v-if="auth.add"
+          type="primary"
+          icon="add"
+          @click="onClickAddCourse"
+        >
+          新增门店团体课程
+        </st-button>
       </a-col>
       <a-col :span="16" class="ta-r">
-        <a-select class="mg-r8" v-model="query.category_id" style="width: 160px" @change="onChange">
-          <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
+        <a-select
+          class="mg-r8"
+          v-model="query.category_id"
+          style="width: 160px"
+          @change="onChange"
+        >
+          <a-select-option
+            v-for="category in categoryList"
+            :key="category.id"
+            :value="category.id"
+          >
+            {{ category.setting_name }}
+          </a-select-option>
         </a-select>
       </a-col>
     </a-row>

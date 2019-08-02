@@ -1,31 +1,37 @@
 <template>
   <st-modal
-  size="small"
-  v-model="show"
-  @cancel="onCancel"
-  wrapClassName="modal-sold-deal-sale">
-  <template slot="title">
-      升级<st-help-tooltip id="TSMC002" placement="right"/>
-  </template>
+    size="small"
+    v-model="show"
+    @cancel="onCancel"
+    wrapClassName="modal-sold-deal-sale"
+  >
+    <template slot="title">
+      升级
+      <st-help-tooltip id="TSMC002" placement="right" />
+    </template>
     <div :class="sale('content')">
       <a-row :class="sale('info')">
         <a-col :span="13">
           <st-info>
-            <st-info-item label="卡名">{{info.card_name}}</st-info-item>
-            <st-info-item label="当前额度">{{info.remain_amount}}</st-info-item>
-            <st-info-item label="初始额度">{{info.init_amount}}</st-info-item>
-            <st-info-item label="优惠赠送">{{info.gift_amount}}</st-info-item>
-            <st-info-item label="实付金额">{{info.pay_price}}</st-info-item>
-            <st-info-item label="到期日期">{{info.end_time}}</st-info-item>
+            <st-info-item label="卡名">{{ info.card_name }}</st-info-item>
+            <st-info-item label="当前额度">
+              {{ info.remain_amount }}
+            </st-info-item>
+            <st-info-item label="初始额度">{{ info.init_amount }}</st-info-item>
+            <st-info-item label="优惠赠送">{{ info.gift_amount }}</st-info-item>
+            <st-info-item label="实付金额">{{ info.pay_price }}</st-info-item>
+            <st-info-item label="到期日期">{{ info.end_time }}</st-info-item>
           </st-info>
         </a-col>
         <a-col :span="11">
-           <st-info>
-            <st-info-item label="会员姓名">{{info.member_name}}</st-info-item>
-            <st-info-item label="手机号">{{info.mobile}}</st-info-item>
-            <st-info-item label="订单号">{{info.order_id}}</st-info-item>
-            <st-info-item label="订单状态">{{info.order_status}}</st-info-item>
-            <st-info-item label="销售人员">{{info.staff_name}}</st-info-item>
+          <st-info>
+            <st-info-item label="会员姓名">{{ info.member_name }}</st-info-item>
+            <st-info-item label="手机号">{{ info.mobile }}</st-info-item>
+            <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
+            <st-info-item label="订单状态">
+              {{ info.order_status }}
+            </st-info-item>
+            <st-info-item label="销售人员">{{ info.staff_name }}</st-info-item>
           </st-info>
         </a-col>
       </a-row>
@@ -40,107 +46,213 @@
               :showArrow="false"
               :filterOption="false"
               @change="onSelectCardChange"
-              v-decorator="['memberCardId',{rules:[{required:true,message:'请选择会员卡'}]}]"
+              v-decorator="[
+                'memberCardId',
+                { rules: [{ required: true, message: '请选择会员卡' }] }
+              ]"
               @search="onCardSearch"
               notFoundContent="无搜索结果"
             >
               <a-select-option
-              v-for="(item,index) in cardList"
-              :value="+item.id"
-              :key="index">
-                {{item.card_name}}
+                v-for="(item, index) in cardList"
+                :value="+item.id"
+                :key="index"
+              >
+                {{ item.card_name }}
               </a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item labelGutter="12px" label="规格" class="mg-b16" required>
-            <template v-if="selectCardIsNone">无</template>
+            <template v-if="selectCardIsNone">
+              无
+            </template>
             <a-radio-group v-else v-model="selectSpecs" @change="onSpecsChange">
-              <a-radio v-for="(item, index) in upgradeCardInfo.specs" :value="item.id" :key="index">{{item.specs_name}}/{{item.price}}元</a-radio>
+              <a-radio
+                v-for="(item, index) in upgradeCardInfo.specs"
+                :value="item.id"
+                :key="index"
+              >
+                {{ item.specs_name }}/{{ item.price }}元
+              </a-radio>
             </a-radio-group>
           </st-form-item>
           <st-form-item labelGutter="12px" label="开卡方式" required>
-            <template v-if="selectCardIsNone">无</template>
-            <a-radio-group v-else v-model="selectOpenType" @change="onOpenTypeChange">
-              <a-radio v-for="(item, index) in upgradeCardInfo.open_type" :value="item.id" :key="index">{{item.open_type}}</a-radio>
+            <template v-if="selectCardIsNone">
+              无
+            </template>
+            <a-radio-group
+              v-else
+              v-model="selectOpenType"
+              @change="onOpenTypeChange"
+            >
+              <a-radio
+                v-for="(item, index) in upgradeCardInfo.open_type"
+                :value="item.id"
+                :key="index"
+              >
+                {{ item.open_type }}
+              </a-radio>
             </a-radio-group>
           </st-form-item>
-          <st-form-item labelGutter="12px" label="有效时间" :class="{'mg-b0':!selectCardIsNone&&+selectOpenType===3}" :required="!selectCardIsNone&&+selectOpenType===3">
-            <template v-if="selectCardIsNone">无</template>
-            <template v-if="!selectCardIsNone&&+selectOpenType===1&&upgradeCardInfo.server_time">
-              {{moment(upgradeCardInfo.server_time*1000).format('YYYY-MM-DD HH:mm')}}&nbsp;至&nbsp;{{moment(upgradeCardInfo.server_time*1000).add(selectSpecsItem.valid_time,'d').format('YYYY-MM-DD HH:mm')}}
+          <st-form-item
+            labelGutter="12px"
+            label="有效时间"
+            :class="{ 'mg-b0': !selectCardIsNone && +selectOpenType === 3 }"
+            :required="!selectCardIsNone && +selectOpenType === 3"
+          >
+            <template v-if="selectCardIsNone">
+              无
             </template>
-            <template v-if="!selectCardIsNone&&+selectOpenType===2">
-              {{upgradeCardInfo.open_type.filter(i=>+i.id===2)[0].automatic_num}}天内未开卡，则{{upgradeCardInfo.open_type.filter(i=>+i.id===2)[0].automatic_num + 1}}天0：00自动开卡
+            <template
+              v-if="
+                !selectCardIsNone &&
+                  +selectOpenType === 1 &&
+                  upgradeCardInfo.server_time
+              "
+            >
+              {{
+                moment(upgradeCardInfo.server_time * 1000).format(
+                  'YYYY-MM-DD HH:mm'
+                )
+              }}&nbsp;至&nbsp;{{
+                moment(upgradeCardInfo.server_time * 1000)
+                  .add(selectSpecsItem.valid_time, 'd')
+                  .format('YYYY-MM-DD HH:mm')
+              }}
             </template>
-            <div :class="sale('time')" v-if="!selectCardIsNone&&+selectOpenType===3">
+            <template v-if="!selectCardIsNone && +selectOpenType === 2">
+              {{
+                upgradeCardInfo.open_type.filter(i => +i.id === 2)[0]
+                  .automatic_num
+              }}天内未开卡，则{{
+                upgradeCardInfo.open_type.filter(i => +i.id === 2)[0]
+                  .automatic_num + 1
+              }}天0：00自动开卡
+            </template>
+            <div
+              :class="sale('time')"
+              v-if="!selectCardIsNone && +selectOpenType === 3"
+            >
               <a-form-item class="page-a-form">
                 <a-date-picker
                   :disabledDate="disabledStartDate"
-                  v-decorator="['startTime',{rules:[{required:true,message:'请选择开始时间'}]}]"
+                  v-decorator="[
+                    'startTime',
+                    { rules: [{ required: true, message: '请选择开始时间' }] }
+                  ]"
                   @change="onStartTimeChange"
                   style="width: 188px;"
                   format="YYYY-MM-DD HH:mm"
-                  :showTime="{format: 'HH:mm'}"
+                  :showTime="{ format: 'HH:mm' }"
                   placeholder="开始时间"
                   :allowClear="false"
                   :showToday="false"
                 />
               </a-form-item>
-              <span style="width:158px;">&nbsp;&nbsp;至&nbsp;&nbsp;{{endTime}}</span>
+              <span style="width:158px;">
+                &nbsp;&nbsp;至&nbsp;&nbsp;{{ endTime }}
+              </span>
             </div>
           </st-form-item>
           <st-form-item labelGutter="12px" label="购买赠送">
-            <st-input-number :disabled="selectCardIsNone" v-model="giftAmount" :max="+selectSpecsItem.gift_max" :placeholder="`请输入赠送的${selectCardItem.card_type!==1?'天数':'次数'}`">
-              <span slot="addonAfter">{{selectCardItem.card_type!==1?'天':'次'}}</span>
+            <st-input-number
+              :disabled="selectCardIsNone"
+              v-model="giftAmount"
+              :max="+selectSpecsItem.gift_max"
+              :placeholder="
+                `请输入赠送的${
+                  selectCardItem.card_type !== 1 ? '天数' : '次数'
+                }`
+              "
+            >
+              <span slot="addonAfter">
+                {{ selectCardItem.card_type !== 1 ? '天' : '次' }}
+              </span>
             </st-input-number>
           </st-form-item>
           <st-form-item labelGutter="12px" required>
             <template slot="label">
-                合同编号<st-help-tooltip id="TSSD001" />
+              合同编号
+              <st-help-tooltip id="TSSD001" />
             </template>
             <div :class="sale('contract')">
               <a-input
-              v-decorator="['contractNumber',{rules:[{required:true,message:'请输入合同编号'}]}]"
-              placeholder="请输入合同编号"></a-input>
-              <st-button class="create-button" @click="onCodeNumber" :loading="loading.getCodeNumber">自动生成</st-button>
+                v-decorator="[
+                  'contractNumber',
+                  { rules: [{ required: true, message: '请输入合同编号' }] }
+                ]"
+                placeholder="请输入合同编号"
+              ></a-input>
+              <st-button
+                class="create-button"
+                @click="onCodeNumber"
+                :loading="loading.getCodeNumber"
+              >
+                自动生成
+              </st-button>
             </div>
           </st-form-item>
-          <st-form-item labelGutter="12px" class="mgb-12" label="商品价格">{{cardPrice}}元</st-form-item>
+          <st-form-item labelGutter="12px" class="mgb-12" label="商品价格">
+            {{ cardPrice }}元
+          </st-form-item>
           <st-form-item labelGutter="12px" required>
             <template slot="label">
-                原卡抵扣<st-help-tooltip id="TSMC003" />
+              原卡抵扣
+              <st-help-tooltip id="TSMC003" />
             </template>
             <st-input-number
-            @change="onSurplusPriceChange"
-            v-decorator="['surplusPrice',{rules:[{required:true,message:'请输入原卡抵扣'}]}]"
-            :float="true"
-            :max="+info.pay_price"
-            placeholder="请输入原卡可以抵扣的剩余价值金额">
+              @change="onSurplusPriceChange"
+              v-decorator="[
+                'surplusPrice',
+                { rules: [{ required: true, message: '请输入原卡抵扣' }] }
+              ]"
+              :float="true"
+              :max="+info.pay_price"
+              placeholder="请输入原卡可以抵扣的剩余价值金额"
+            >
               <span slot="addonAfter">元</span>
             </st-input-number>
           </st-form-item>
-          <st-form-item labelGutter="12px" :class="sale('discounts')" label="优惠金额">
+          <st-form-item
+            labelGutter="12px"
+            :class="sale('discounts')"
+            label="优惠金额"
+          >
             <div>
               <div :class="sale('discounts-total')">
-                <span>{{couponText}}</span>
+                <span>{{ couponText }}</span>
                 <a-dropdown
-                v-model="couponDropdownVisible"
-                :disabled="couponList.length===0"
-                :class="sale({disabled:couponList.length===0})"
-                placement="bottomRight"
-                :getPopupContainer="trigger => trigger.parentNode"
-                :trigger="['click']">
+                  v-model="couponDropdownVisible"
+                  :disabled="couponList.length === 0"
+                  :class="sale({ disabled: couponList.length === 0 })"
+                  placement="bottomRight"
+                  :getPopupContainer="trigger => trigger.parentNode"
+                  :trigger="['click']"
+                >
                   <div :class="sale('discounts-promotion')">
-                    <span>{{couponList.length===0?'无优惠券':'优惠券选择'}}</span>
+                    <span>
+                      {{ couponList.length === 0 ? '无优惠券' : '优惠券选择' }}
+                    </span>
                     <a-icon type="right" />
                   </div>
-                  <a-radio-group v-model="selectCoupon" @change="onSelectCouponChange" :class="sale('dropdown')" slot="overlay">
+                  <a-radio-group
+                    v-model="selectCoupon"
+                    @change="onSelectCouponChange"
+                    :class="sale('dropdown')"
+                    slot="overlay"
+                  >
                     <a-menu>
                       <a-menu-item @click="onSelectCoupon">
                         <a-radio :value="-1">不使用</a-radio>
                       </a-menu-item>
-                      <a-menu-item @click="onSelectCoupon" :key="index" v-for="(item,index) in couponList">
-                        <a-radio :value="item.id">{{item.name}} {{item.price}}</a-radio>
+                      <a-menu-item
+                        @click="onSelectCoupon"
+                        :key="index"
+                        v-for="(item, index) in couponList"
+                      >
+                        <a-radio :value="item.id">
+                          {{ item.name }} {{ item.price }}
+                        </a-radio>
                       </a-menu-item>
                     </a-menu>
                   </a-radio-group>
@@ -148,28 +260,46 @@
               </div>
             </div>
           </st-form-item>
-          <st-form-item labelGutter="12px" :class="sale('discounts')" label="定金抵扣">
+          <st-form-item
+            labelGutter="12px"
+            :class="sale('discounts')"
+            label="定金抵扣"
+          >
             <div>
               <div :class="sale('discounts-total')">
-                <span>{{advanceText}}</span>
+                <span>{{ advanceText }}</span>
                 <a-dropdown
-                v-model="advanceDropdownVisible"
-                :disabled="advanceList.length===0"
-                :class="sale({disabled:advanceList.length===0})"
-                placement="bottomRight"
-                :getPopupContainer="trigger => trigger.parentNode"
-                :trigger="['click']">
+                  v-model="advanceDropdownVisible"
+                  :disabled="advanceList.length === 0"
+                  :class="sale({ disabled: advanceList.length === 0 })"
+                  placement="bottomRight"
+                  :getPopupContainer="trigger => trigger.parentNode"
+                  :trigger="['click']"
+                >
                   <div :class="sale('discounts-promotion')">
-                    <span>{{advanceList.length===0?'无定金':'定金选择'}}</span>
+                    <span>
+                      {{ advanceList.length === 0 ? '无定金' : '定金选择' }}
+                    </span>
                     <a-icon type="right" />
                   </div>
-                  <a-radio-group v-model="selectAdvance" @change="onSelectAdvanceChange" :class="sale('dropdown')" slot="overlay">
+                  <a-radio-group
+                    v-model="selectAdvance"
+                    @change="onSelectAdvanceChange"
+                    :class="sale('dropdown')"
+                    slot="overlay"
+                  >
                     <a-menu>
                       <a-menu-item @click="onSelectAdvance">
                         <a-radio :value="-1">不使用</a-radio>
                       </a-menu-item>
-                      <a-menu-item @click="onSelectAdvance" :key="index" v-for="(item,index) in advanceList">
-                        <a-radio :value="item.id">定金 {{item.price}}</a-radio>
+                      <a-menu-item
+                        @click="onSelectAdvance"
+                        :key="index"
+                        v-for="(item, index) in advanceList"
+                      >
+                        <a-radio :value="item.id">
+                          定金 {{ item.price }}
+                        </a-radio>
                       </a-menu-item>
                     </a-menu>
                   </a-radio-group>
@@ -178,27 +308,47 @@
             </div>
           </st-form-item>
           <st-form-item labelGutter="12px" label="减免金额">
-            <st-input-number v-model="reduceAmount" :float="true" placeholder="请输入">
+            <st-input-number
+              v-model="reduceAmount"
+              :float="true"
+              placeholder="请输入"
+            >
               <span slot="addonAfter">元</span>
             </st-input-number>
           </st-form-item>
-          <st-form-item labelGutter="12px" validateStatus="error" :help="orderAmountText" class="mg-b0" label="小计">
-            <span class="total">{{priceInfo}}元</span>
+          <st-form-item
+            labelGutter="12px"
+            validateStatus="error"
+            :help="orderAmountText"
+            class="mg-b0"
+            label="小计"
+          >
+            <span class="total">{{ priceInfo }}元</span>
           </st-form-item>
         </div>
         <div :class="sale('remarks')">
           <st-form-item labelGutter="12px" label="销售人员" required>
             <a-select
-            v-decorator="['saleName',{rules:[{required:true,message:'请选择销售人员'}]}]"
-            placeholder="选择签单的工作人员">
+              v-decorator="[
+                'saleName',
+                { rules: [{ required: true, message: '请选择销售人员' }] }
+              ]"
+              placeholder="选择签单的工作人员"
+            >
               <a-select-option
-              v-for="(item,index) in saleList"
-              :key="index"
-              :value="item.id">{{item.staff_name}}</a-select-option>
+                v-for="(item, index) in saleList"
+                :key="index"
+                :value="item.id"
+              >
+                {{ item.staff_name }}
+              </a-select-option>
             </a-select>
           </st-form-item>
           <st-form-item labelGutter="12px" label="备注" class="mg-b0">
-            <a-textarea v-model="description" :autosize="{ minRows: 4, maxRows: 6 }" />
+            <a-textarea
+              v-model="description"
+              :autosize="{ minRows: 4, maxRows: 6 }"
+            />
           </st-form-item>
         </div>
       </st-form>
@@ -206,12 +356,20 @@
     <template slot="footer">
       <div :class="sale('footer')">
         <div class="price">
-          <span>{{priceInfo}}元</span>
-          <span>订单总额：{{cardPrice}}元</span>
+          <span>{{ priceInfo }}元</span>
+          <span>订单总额：{{ cardPrice }}元</span>
         </div>
         <div class="button">
-          <st-button @click="onCreateOrder" :loading="loading.upgrade">创建订单</st-button>
-          <st-button @click="onPay" :loading="loading.upgradePay" type="primary">立即支付</st-button>
+          <st-button @click="onCreateOrder" :loading="loading.upgrade">
+            创建订单
+          </st-button>
+          <st-button
+            @click="onPay"
+            :loading="loading.upgradePay"
+            type="primary"
+          >
+            立即支付
+          </st-button>
         </div>
       </div>
     </template>
@@ -335,7 +493,9 @@ export default {
   created() {
     this.upgradeMemberService.serviceInit(this.id).subscribe(res => {
       // 获取定金
-      this.upgradeMemberService.getAdvanceList(res[0].info.member_id).subscribe()
+      this.upgradeMemberService
+        .getAdvanceList(res[0].info.member_id)
+        .subscribe()
     })
   },
   methods: {
@@ -377,7 +537,9 @@ export default {
     onSelectCardChange(data) {
       if (data) {
         // 选择了卡
-        this.selectCardItem = cloneDeep(this.cardList.filter(i => i.id === data)[0])
+        this.selectCardItem = cloneDeep(
+          this.cardList.filter(i => i.id === data)[0]
+        )
         // 获取选择的卡的详情
         this.getUpgradeCardInfo(data)
       } else {
@@ -415,8 +577,12 @@ export default {
     },
     // 规格
     onSpecsChange(data) {
-      this.selectSpecsItem = cloneDeep(this.upgradeCardInfo.specs.filter(i => i.id === data.target.value)[0])
-      this.cardPrice = this.upgradeCardInfo.specs.filter(i => i.id === data.target.value)[0].price
+      this.selectSpecsItem = cloneDeep(
+        this.upgradeCardInfo.specs.filter(i => i.id === data.target.value)[0]
+      )
+      this.cardPrice = this.upgradeCardInfo.specs.filter(
+        i => i.id === data.target.value
+      )[0].price
       // 重置选择的开始时间
       this.form.resetFields(['startTime'])
       this.endTime = '-'
@@ -439,11 +605,13 @@ export default {
     },
     // 合同
     onCodeNumber() {
-      this.upgradeMemberService.getCodeNumber(`${this.info.contract_type}`).subscribe(res => {
-        this.form.setFieldsValue({
-          contractNumber: res.info.code
+      this.upgradeMemberService
+        .getCodeNumber(`${this.info.contract_type}`)
+        .subscribe(res => {
+          this.form.setFieldsValue({
+            contractNumber: res.info.code
+          })
         })
-      })
     },
     // 原卡折扣
     onSurplusPriceChange(data) {
@@ -456,7 +624,8 @@ export default {
         this.couponText = '未选择优惠券'
         return
       }
-      let price = this.couponList.filter(o => o.id === data.target.value)[0].price
+      let price = this.couponList.filter(o => o.id === data.target.value)[0]
+        .price
       this.couponAmount = price
       this.couponText = `${price}元`
     },
@@ -478,7 +647,8 @@ export default {
         this.advanceText = '未选择定金'
         return
       }
-      let price = this.advanceList.filter(o => o.id === data.target.value)[0].price
+      let price = this.advanceList.filter(o => o.id === data.target.value)[0]
+        .price
       this.advanceAmount = price
       this.advanceText = `${price}元`
     },
@@ -500,52 +670,66 @@ export default {
     onCreateOrder() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.upgradeMemberService.upgrade({
-            product_id: +values.memberCardId,
-            contract_number: values.contractNumber,
-            rule_id: +this.selectSpecs,
-            surplus_price: +values.surplusPrice,
-            valid_start_time: moment(values.startTime).format('YYYY-MM-DD HH:mm'),
-            open_card_type: +this.selectOpenType,
-            user_coupon_id: this.selectCoupon,
-            advance_id: this.selectAdvance,
-            reduce_price: +this.reduceAmount,
-            description: this.description,
-            staff_sale_id: +values.saleName,
-            gift_amount: +this.giftAmount
-          }, this.id).subscribe(res => {
-            this.show = false
-            this.$emit('success', {
-              type: 'create',
-              orderId: res.info.order_id
+          this.upgradeMemberService
+            .upgrade(
+              {
+                product_id: +values.memberCardId,
+                contract_number: values.contractNumber,
+                rule_id: +this.selectSpecs,
+                surplus_price: +values.surplusPrice,
+                valid_start_time: moment(values.startTime).format(
+                  'YYYY-MM-DD HH:mm'
+                ),
+                open_card_type: +this.selectOpenType,
+                user_coupon_id: this.selectCoupon,
+                advance_id: this.selectAdvance,
+                reduce_price: +this.reduceAmount,
+                description: this.description,
+                staff_sale_id: +values.saleName,
+                gift_amount: +this.giftAmount
+              },
+              this.id
+            )
+            .subscribe(res => {
+              this.show = false
+              this.$emit('success', {
+                type: 'create',
+                orderId: res.info.order_id
+              })
             })
-          })
         }
       })
     },
     onPay() {
       this.form.validateFields((error, values) => {
         if (!error) {
-          this.upgradeMemberService.upgrade({
-            product_id: +values.memberCardId,
-            contract_number: values.contractNumber,
-            rule_id: +this.selectSpecs,
-            surplus_price: +values.surplusPrice,
-            valid_start_time: moment(values.startTime).format('YYYY-MM-DD HH:mm'),
-            open_card_type: +this.selectOpenType,
-            user_coupon_id: this.selectCoupon,
-            advance_id: this.selectAdvance,
-            reduce_price: +this.reduceAmount,
-            description: this.description,
-            staff_sale_id: +values.saleName,
-            gift_amount: +this.giftAmount
-          }, this.id).subscribe(res => {
-            this.show = false
-            this.$emit('success', {
-              type: 'createPay',
-              orderId: res.info.order_id
+          this.upgradeMemberService
+            .upgrade(
+              {
+                product_id: +values.memberCardId,
+                contract_number: values.contractNumber,
+                rule_id: +this.selectSpecs,
+                surplus_price: +values.surplusPrice,
+                valid_start_time: moment(values.startTime).format(
+                  'YYYY-MM-DD HH:mm'
+                ),
+                open_card_type: +this.selectOpenType,
+                user_coupon_id: this.selectCoupon,
+                advance_id: this.selectAdvance,
+                reduce_price: +this.reduceAmount,
+                description: this.description,
+                staff_sale_id: +values.saleName,
+                gift_amount: +this.giftAmount
+              },
+              this.id
+            )
+            .subscribe(res => {
+              this.show = false
+              this.$emit('success', {
+                type: 'createPay',
+                orderId: res.info.order_id
+              })
             })
-          })
         }
       })
     },

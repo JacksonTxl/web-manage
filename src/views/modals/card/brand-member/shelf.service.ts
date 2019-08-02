@@ -14,27 +14,31 @@ export class ShelfService {
     this.courseListAction$ = new Action(data$ => {
       return data$.pipe(
         debounceTime(200),
-        switchMap((query:CourseTeamShelfListInput) => this.getCourseList(query).pipe(catchError(() => EMPTY))),
+        switchMap((query: CourseTeamShelfListInput) =>
+          this.getCourseList(query).pipe(catchError(() => EMPTY))
+        ),
         tap(res => {
           this.courseList$.commit(() => res.list)
         })
       )
     })
   }
-  getInfo(id:string) {
-    return this.cardApi.getCardShelfInfo(id, 'brand', 'member').pipe(tap((res:any) => {
-      this.info$.commit(() => res.info)
-    }))
+  getInfo(id: string) {
+    return this.cardApi.getCardShelfInfo(id, 'brand', 'member').pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
+      })
+    )
   }
   @Effect()
-  getCourseList(query:CourseTeamShelfListInput) {
+  getCourseList(query: CourseTeamShelfListInput) {
     return this.cardApi.getCourseTeamShelfList(query, 'brand')
   }
   resetCourseList() {
     this.courseList$.commit(() => [])
   }
   @Effect()
-  shelfCard(params:any, id:string) {
+  shelfCard(params: any, id: string) {
     return this.cardApi.setCardShelf(params, id, 'brand', 'member')
   }
 }

@@ -40,7 +40,7 @@ export class CoachLevelApi extends Api {
 }
 
 export interface GetCoachLevelListInput {
-  page?: number,
+  page?: number
   size?: number
 }
 export interface AddCoachLevelInput {

@@ -1,8 +1,5 @@
 <template>
-  <st-modal
-    v-model="show"
-    title="test"
-  >
+  <st-modal v-model="show" title="test">
     <st-form :form="form">
       <st-form-item label="name" required>
         <a-input
@@ -11,10 +8,7 @@
         />
       </st-form-item>
       <st-form-item label="age" required>
-        <a-input
-          placeholder="age"
-          v-decorator="['age']"
-        />
+        <a-input placeholder="age" v-decorator="['age']" />
       </st-form-item>
     </st-form>
   </st-modal>

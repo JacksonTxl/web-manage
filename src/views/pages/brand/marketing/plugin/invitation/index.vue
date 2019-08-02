@@ -1,11 +1,17 @@
 <template>
   <div :class="inviation()">
-    <MarkteingPluginTitle :type="2"/>
+    <MarkteingPluginTitle :type="2" />
     <st-panel
       :tabs="[
-            { label: '数据', route: { name: 'brand-marketing-plugin-invitation-index-data' } },
-            { label: '设置', route: { name: 'brand-marketing-plugin-invitation-index-setting' } }
-            ]"
+        {
+          label: '数据',
+          route: { name: 'brand-marketing-plugin-invitation-index-data' }
+        },
+        {
+          label: '设置',
+          route: { name: 'brand-marketing-plugin-invitation-index-setting' }
+        }
+      ]"
     >
       <router-view></router-view>
     </st-panel>

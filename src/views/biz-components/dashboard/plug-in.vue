@@ -1,14 +1,14 @@
 <template>
   <div class="page-dashboard-plugin">
     <a :href="href" target="_blank">
-    <div class="image">
-      <img :src="img" alt="">
-    </div>
+      <div class="image">
+        <img :src="img" alt="" />
+      </div>
 
-    <div class="text">
-      <st-t4 class="t4">{{title}}</st-t4>
-      <p class="detail" :title="sub">{{sub}}</p>
-    </div>
+      <div class="text">
+        <st-t4 class="t4">{{ title }}</st-t4>
+        <p class="detail" :title="sub">{{ sub }}</p>
+      </div>
     </a>
   </div>
 </template>
@@ -27,7 +27,8 @@ export default {
     },
     img: {
       type: String,
-      default: 'https://file.digitaling.com/eImg/uimages/20170814/1502707757253062.jpg'
+      default:
+        'https://file.digitaling.com/eImg/uimages/20170814/1502707757253062.jpg'
     },
     href: {
       type: String,

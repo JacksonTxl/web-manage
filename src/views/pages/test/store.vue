@@ -1,6 +1,10 @@
 <template>
   <div class="pages-test-store container-basis">
-    <st-shop-hour-picker v-model="business_time" type="shop-hour-picker" @change="sliderCange"></st-shop-hour-picker>
+    <st-shop-hour-picker
+      v-model="business_time"
+      type="shop-hour-picker"
+      @change="sliderCange"
+    ></st-shop-hour-picker>
   </div>
 </template>
 

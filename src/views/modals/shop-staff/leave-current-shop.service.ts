@@ -5,7 +5,7 @@ import { MessageService } from '@/services/message.service'
 import { State, Computed } from 'rx-state'
 
 export interface SetState {
-  list: object[],
+  list: object[]
   operate: number
 }
 
@@ -24,16 +24,20 @@ export class LeaveStoreService {
     this.operate$ = new Computed(this.state$.pipe(pluck('operate')))
   }
   getInfo(id: string) {
-    return this.api.getLeaveStoreInfo(id).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.list = res.list
-        state.operate = res.operate
+    return this.api.getLeaveStoreInfo(id).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.list = res.list
+          state.operate = res.operate
+        })
       })
-    }))
+    )
   }
   leaveStore(id: string) {
-    return this.api.leaveStore(id).pipe(tap(res => {
-      this.message.success({ content: '解除门店关系成功' })
-    }))
+    return this.api.leaveStore(id).pipe(
+      tap(res => {
+        this.message.success({ content: '解除门店关系成功' })
+      })
+    )
   }
 }

@@ -1,7 +1,10 @@
 <template>
   <div>
     <h2>Component 组件类</h2>
-    <p>组件具体的使用方式还是需要查看@/views/components/*.vue 对应文件查看最新的api，这里只是列举常用选项</p>
+    <p>
+      组件具体的使用方式还是需要查看@/views/components/*.vue
+      对应文件查看最新的api，这里只是列举常用选项
+    </p>
     <title-demo id="title"></title-demo>
     <button-demo id="button"></button-demo>
     <input-number-demo id="input-number"></input-number-demo>
@@ -23,15 +26,15 @@
     <image-upload-demo id="image-upload"></image-upload-demo>
     <info-demo id="info"></info-demo>
     <form-demo id="form"></form-demo>
-    <table-actions-demo id='table-actions'></table-actions-demo>
+    <table-actions-demo id="table-actions"></table-actions-demo>
     <table-demo id="table"></table-demo>
     <form-table-demo id="form-table"></form-table-demo>
     <shop-hour-picker-demo id="shop-hour-picker"></shop-hour-picker-demo>
-    <pagination-demo id="pagination"/>
-    <page-route-nav-demo id="page-route-nav"/>
-    <textarea-demo id="textarea"/>
-    <hour-picker-demo id="hour-picker"/>
-    <info-action-demo id="info-action"/>
+    <pagination-demo id="pagination" />
+    <page-route-nav-demo id="page-route-nav" />
+    <textarea-demo id="textarea" />
+    <hour-picker-demo id="hour-picker" />
+    <info-action-demo id="info-action" />
   </div>
 </template>
 

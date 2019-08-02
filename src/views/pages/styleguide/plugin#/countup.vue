@@ -2,10 +2,12 @@
   <section class="sg-section">
     <h3>
       vue-countup-v2
-      <a href="https://github.com/xlsdg/vue-countup-v2" targe="_blank">github</a>
+      <a href="https://github.com/xlsdg/vue-countup-v2" targe="_blank">
+        github
+      </a>
     </h3>
     <div class="iCountUp">
-      <ICountUp :endVal="endVal" :options="options" @ready="onReady"/>
+      <ICountUp :endVal="endVal" :options="options" @ready="onReady" />
     </div>
   </section>
 </template>

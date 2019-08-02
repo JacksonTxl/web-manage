@@ -7,63 +7,63 @@ import { StaffApi } from '../../../../api/v1/staff'
 import { AddUserParams } from '../../../../api/v1/member'
 
 interface AddState {
-    countryInfo: Object,
-    nations: Object,
-    countryList: Object
+  countryInfo: Object
+  nations: Object
+  countryList: Object
 }
 @Injectable()
 export class AddService extends Store<AddState> {
-    state$: State<AddState>
-    countryInfo$: Computed<Object>
-    nations$: Computed<Object>
-    countryList$: Computed<Object>
-    constructor(protected memberApi: MemberApi, protected staffApi: StaffApi) {
-      super()
-      this.state$ = new State({
-        info: {},
-        countryInfo: [],
-        countryList: []
+  state$: State<AddState>
+  countryInfo$: Computed<Object>
+  nations$: Computed<Object>
+  countryList$: Computed<Object>
+  constructor(protected memberApi: MemberApi, protected staffApi: StaffApi) {
+    super()
+    this.state$ = new State({
+      info: {},
+      countryInfo: [],
+      countryList: []
+    })
+    this.countryInfo$ = new Computed(this.state$.pipe(pluck('countryInfo')))
+    this.nations$ = new Computed(this.state$.pipe(pluck('nations')))
+    this.countryList$ = new Computed(this.state$.pipe(pluck('countryList')))
+  }
+
+  getCountryCodes() {
+    return this.staffApi.getCountryCodes().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.countryList = res
+        })
       })
-      this.countryInfo$ = new Computed(this.state$.pipe(pluck('countryInfo')))
-      this.nations$ = new Computed(this.state$.pipe(pluck('nations')))
-      this.countryList$ = new Computed(this.state$.pipe(pluck('countryList')))
-    }
+    )
+  }
+  getCountries() {
+    return this.memberApi.getCountries().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.countryInfo = res.country_info
+        })
+      })
+    )
+  }
+  getNations() {
+    return this.memberApi.getNations().pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.nations = res.nation_info
+        })
+      })
+    )
+  }
 
-    getCountryCodes() {
-      return this.staffApi.getCountryCodes().pipe(
-        tap(res => {
-          this.state$.commit(state => {
-            state.countryList = res
-          })
-        })
-      )
-    }
-    getCountries() {
-      return this.memberApi.getCountries().pipe(
-        tap(res => {
-          this.state$.commit(state => {
-            state.countryInfo = res.country_info
-          })
-        })
-      )
-    }
-    getNations() {
-      return this.memberApi.getNations().pipe(
-        tap(res => {
-          this.state$.commit(state => {
-            state.nations = res.nation_info
-          })
-        })
-      )
-    }
-
-    addUser(params: AddUserParams) {
-      return this.memberApi.addUser(params)
-    }
-    beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
-      this.getCountries().subscribe(() => { })
-      this.getNations().subscribe(() => { })
-      this.getCountryCodes().subscribe(() => {})
-      next()
-    }
+  addUser(params: AddUserParams) {
+    return this.memberApi.addUser(params)
+  }
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
+    this.getCountries().subscribe(() => {})
+    this.getNations().subscribe(() => {})
+    this.getCountryCodes().subscribe(() => {})
+    next()
+  }
 }

@@ -901,10 +901,7 @@ export const routeMapConfig = {
   },
   'shop-stat'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '数据统计'
-    routeConfig.meta.tabs = [
-      'shop-stat-revenue',
-      'shop-stat-order'
-    ]
+    routeConfig.meta.tabs = ['shop-stat-revenue', 'shop-stat-order']
   },
   'shop-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收报表'
@@ -926,10 +923,7 @@ export const routeMapConfig = {
   },
   'brand-stat'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '数据统计'
-    routeConfig.meta.tabs = [
-      'brand-stat-revenue',
-      'brand-stat-order'
-    ]
+    routeConfig.meta.tabs = ['brand-stat-revenue', 'brand-stat-order']
   },
   'brand-stat-revenue'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '营收统计'

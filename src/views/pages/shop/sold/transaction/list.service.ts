@@ -10,16 +10,21 @@ export class ListService implements RouteGuard {
   page$ = new State({})
   loading$ = new State({})
   auth$ = new State({})
-  constructor(private transactionApi: TransactionApi, private authService: AuthService) {}
+  constructor(
+    private transactionApi: TransactionApi,
+    private authService: AuthService
+  ) {}
   @Effect()
   getList(params: TransactionListInput) {
-    return this.transactionApi.getTransactionList(params).pipe(tap((res:any) => {
-      res = this.authService.filter(res)
-      this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-    }))
+    return this.transactionApi.getTransactionList(params).pipe(
+      tap((res: any) => {
+        res = this.authService.filter(res)
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
   }
-  beforeEach(to:ServiceRoute, from:ServiceRoute) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.getList(to.meta.query)
   }
 }

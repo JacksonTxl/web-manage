@@ -7,12 +7,14 @@ import { tap } from 'rxjs/operators'
 export class InfoService implements RouteGuard {
   cardInfo$ = new State({})
   constructor(private cardsApi: CardsApi) {}
-  getCardInfo(id:string) {
-    return this.cardsApi.getCardInfo(id, 'brand').pipe(tap((res:any) => {
-      this.cardInfo$.commit(() => res.info)
-    }))
+  getCardInfo(id: string) {
+    return this.cardsApi.getCardInfo(id, 'brand').pipe(
+      tap((res: any) => {
+        this.cardInfo$.commit(() => res.info)
+      })
+    )
   }
-  beforeRouteEnter(to:ServiceRoute, from:ServiceRoute, next:()=>{}) {
+  beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: () => {}) {
     this.getCardInfo(to.meta.query.id).subscribe(() => {
       next()
     })

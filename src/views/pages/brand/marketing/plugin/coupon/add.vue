@@ -2,21 +2,32 @@
   <st-panel app :class="basic()" initial>
     <div :class="basic('left')">
       <h5-container>
-        <template v-slot:title>我的优惠券</template>
+        <template v-slot:title>
+          我的优惠券
+        </template>
         <div :class="basic('left-coupon')">
           <div :class="basic('left-coupon-top')">
             <div :class="basic('left-coupon-top-left')">
-              <span :class="basic('left-coupon-top-left-number')">{{form.getFieldValue('price')}}</span>元<br/>
-              {{form.getFieldValue('use_type')===1 ? '无门槛使用' : ''}}
-              {{form.getFieldValue('use_type')===2 ? `满${form.getFieldValue('full_price')||''}元使用` : ''}}
+              <span :class="basic('left-coupon-top-left-number')">
+                {{ form.getFieldValue('price') }}
+              </span>
+              元
+              <br />
+              {{ form.getFieldValue('use_type') === 1 ? '无门槛使用' : '' }}
+              {{
+                form.getFieldValue('use_type') === 2
+                  ? `满${form.getFieldValue('full_price') || ''}元使用`
+                  : ''
+              }}
             </div>
             <div :class="basic('left-coupon-top-right')">
-              有效期：{{getValidDay(form.getFieldValue('valid_days'))}}<br/>
-              可用类目：{{getRange().join('、')}}
+              有效期：{{ getValidDay(form.getFieldValue('valid_days')) }}
+              <br />
+              可用类目：{{ getRange().join('、') }}
             </div>
           </div>
           <div :class="basic('left-coupon-bottom')">
-            可用门店：{{shopNames}}
+            可用门店：{{ shopNames }}
           </div>
         </div>
       </h5-container>
@@ -36,7 +47,9 @@
                     v-for="(item, index) in couponEnums.coupon_type.value"
                     :value="index"
                     :key="index"
-                  >{{item}}</a-radio-button>
+                  >
+                    {{ item }}
+                  </a-radio-button>
                 </a-radio-group>
               </st-form-item>
               <st-form-item label="优惠券名称" required>
@@ -59,7 +72,9 @@
                   :class="basic('input')"
                   v-decorator="decorators.price"
                 >
-                  <template slot="addonAfter">元</template>
+                  <template slot="addonAfter">
+                    元
+                  </template>
                 </st-input-number>
               </st-form-item>
             </a-col>
@@ -67,13 +82,22 @@
           <a-divider :class="basic('line')"></a-divider>
           <a-row :gutter="8">
             <a-col :lg="23">
-              <st-form-item label="优惠范围" required v-if="couponEnums.is_product_range">
-                <a-radio-group v-model="showProductRange" :disabled="isEditMode">
+              <st-form-item
+                label="优惠范围"
+                required
+                v-if="couponEnums.is_product_range"
+              >
+                <a-radio-group
+                  v-model="showProductRange"
+                  :disabled="isEditMode"
+                >
                   <a-radio
                     v-for="(item, index) in couponEnums.is_product_range.value"
                     :value="index"
                     :key="index"
-                  >{{item}}</a-radio>
+                  >
+                    {{ item }}
+                  </a-radio>
                 </a-radio-group>
                 <a-select
                   :disabled="isEditMode"
@@ -89,7 +113,9 @@
                     v-for="(item, index) in couponEnums.product_range['value']"
                     :key="index"
                     :value="index"
-                  >{{item}}</a-select-option>
+                  >
+                    {{ item }}
+                  </a-select-option>
                 </a-select>
               </st-form-item>
               <st-form-item label="可用门店" required>
@@ -98,7 +124,9 @@
                     v-for="(item, index) in couponEnums.is_shop_range.value"
                     :value="index"
                     :key="index"
-                  >{{item}}</a-radio>
+                  >
+                    {{ item }}
+                  </a-radio>
                 </a-radio-group>
                 <select-shop
                   v-if="showShopRange == '2'"
@@ -121,7 +149,8 @@
                         :class="basic('radio-input')"
                         :disabled="isEditMode"
                         v-decorator="decorators.full_price"
-                      ></st-input-number>元使用
+                      ></st-input-number>
+                      元使用
                     </a-radio>
                   </a-form-item>
                 </a-radio-group>
@@ -131,10 +160,12 @@
                   :class="basic('input')"
                   style="top:0;"
                   placeholder="请输入数量"
-                  :min="isEditMode?+info.number:0"
+                  :min="isEditMode ? +info.number : 0"
                   v-decorator="decorators.number"
                 >
-                  <template slot="addonAfter">张</template>
+                  <template slot="addonAfter">
+                    张
+                  </template>
                 </st-input-number>
                 <label :class="basic('tip')">保存后只可增加不可减少</label>
               </st-form-item>
@@ -144,14 +175,17 @@
                   :disabled="isEditMode"
                   :class="basic('radio-input')"
                   v-decorator="decorators.valid_days"
-                ></st-input-number>天内有效
+                ></st-input-number>
+                天内有效
               </st-form-item>
               <st-form-item>
                 <template slot="label">
                   优惠共享
                   <st-help-tooltip id="TBYHQ002" />
                 </template>
-                <a-checkbox v-model="isShare" :disabled="isEditMode">不可与其它优惠同享</a-checkbox>
+                <a-checkbox v-model="isShare" :disabled="isEditMode">
+                  不可与其它优惠同享
+                </a-checkbox>
               </st-form-item>
               <st-form-item label="每人限领" required v-if="couponType === '1'">
                 <a-radio-group
@@ -166,7 +200,8 @@
                         :disabled="isEditMode"
                         :class="basic('radio-input')"
                         v-decorator="decorators.person_limit"
-                      ></st-input-number>次
+                      ></st-input-number>
+                      次
                     </a-radio>
                   </a-form-item>
                 </a-radio-group>
@@ -176,7 +211,15 @@
           <a-row :gutter="8">
             <a-col :lg="20">
               <st-form-item class="page-content-card-submit" label=" ">
-                <st-button :loading="loading.addMarketingCoupon || loading.editMarketingCoupon" type="primary" @click="onSubmit">保 存</st-button>
+                <st-button
+                  :loading="
+                    loading.addMarketingCoupon || loading.editMarketingCoupon
+                  "
+                  type="primary"
+                  @click="onSubmit"
+                >
+                  保 存
+                </st-button>
               </st-form-item>
             </a-col>
           </a-row>
@@ -266,13 +309,15 @@ export default {
       this.form.resetFields(['full_price'])
     },
     getValidDay(days) {
-      return moment().add(days, 'd').format('YYYY年MM月DD日 23:59')
+      return moment()
+        .add(days, 'd')
+        .format('YYYY年MM月DD日 23:59')
     },
     getRange() {
       if (this.isEditMode) {
         return this.rangeIds
       } else {
-        let ranges = this.rangeIds.map((item) => {
+        let ranges = this.rangeIds.map(item => {
           return this.couponEnums.product_range.value[item]
         })
         return ranges
@@ -438,9 +483,7 @@ export default {
       }
     }
   },
-  computed: {
-
-  },
+  computed: {},
   components: {
     SelectShop,
     H5Container

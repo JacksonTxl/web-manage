@@ -14,7 +14,9 @@ export class InfoService implements RouteGuard {
     this.state$ = new State({
       teamCourseInfo: {}
     })
-    this.teamCourseInfo$ = new Computed(this.state$.pipe(pluck('teamCourseInfo')))
+    this.teamCourseInfo$ = new Computed(
+      this.state$.pipe(pluck('teamCourseInfo'))
+    )
   }
   SET_TEAM_COURSE_INFO(data: any) {
     this.state$.commit(state => {
@@ -22,9 +24,11 @@ export class InfoService implements RouteGuard {
     })
   }
   getTeamCourseInfo(courseId: string) {
-    return this.brandTeamCourseApi.getTeamCourseInfo(courseId).pipe(tap(res => {
-      this.SET_TEAM_COURSE_INFO(res)
-    }))
+    return this.brandTeamCourseApi.getTeamCourseInfo(courseId).pipe(
+      tap(res => {
+        this.SET_TEAM_COURSE_INFO(res)
+      })
+    )
   }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute, next: any) {
     const courseId = to.query.courseId as string

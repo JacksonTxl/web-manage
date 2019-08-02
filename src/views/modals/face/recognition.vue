@@ -2,36 +2,57 @@
   <st-modal
     :title="title"
     :ok-text="okText"
-    :okButtonProps="{ props: {disabled: !userImgSrc} }"
+    :okButtonProps="{ props: { disabled: !userImgSrc } }"
     :bodyStyle="{ padding: 0 }"
     :confirmLoading="loading.getMemberCheckResult"
     v-model="show"
     width="484px"
     @ok="uploadUserImageToRecognition"
-    @cancel="cancel">
-    <a-alert slot='prepend' message="为保证人脸录入质量，请确保光线充足，以免影响识别精度。" type="warning" banner/>
+    @cancel="cancel"
+  >
+    <a-alert
+      slot="prepend"
+      message="为保证人脸录入质量，请确保光线充足，以免影响识别精度。"
+      type="warning"
+      banner
+    />
     <div :class="recognition()">
       <div :class="recognition('header')">
         <div :class="recognition('space')">
           <a-spin :spinning="isLoading" :class="recognition('loading')">
             <div :class="recognition('img')">
-              <img :src="userImgSrc" v-show="userImgSrc"/>
-              <video ref="video" width="270" height="270" autoplay v-show="!userImgSrc"></video>
-              <canvas :class="recognition('canvas')" ref="canvas" width="270" height="270"></canvas>
+              <img :src="userImgSrc" v-show="userImgSrc" />
+              <video
+                ref="video"
+                width="270"
+                height="270"
+                autoplay
+                v-show="!userImgSrc"
+              ></video>
+              <canvas
+                :class="recognition('canvas')"
+                ref="canvas"
+                width="270"
+                height="270"
+              ></canvas>
               <img
                 src="~@/assets/img/userBitmap.png"
                 alt=""
                 :class="recognition('userLinePic')"
-                v-show="openCameraError">
+                v-show="openCameraError"
+              />
               <img
                 src="~@/assets/img/userLinePic.png"
                 alt=""
                 :class="recognition('userLinePic')"
-                v-show="!openCameraError">
+                v-show="!openCameraError"
+              />
             </div>
           </a-spin>
           <div :class="recognition('operation')">
-            <st-button type="primary" @click="handlerTakePhoto">{{userImgSrc ? '重拍' : '拍照'}}</st-button>
+            <st-button type="primary" @click="handlerTakePhoto">
+              {{ userImgSrc ? '重拍' : '拍照' }}
+            </st-button>
             <!-- <div :class="recognition('tips')">
               <div>若录入遇到问题</div>
               <a href="" :class="recognition('question')">请点击此处</a>
@@ -51,7 +72,7 @@ import { RecognitionService } from './recognition.service'
 
 export default {
   bem: {
-    'recognition': 'st-face-recognition'
+    recognition: 'st-face-recognition'
   },
   serviceInject() {
     return {
@@ -119,7 +140,12 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      if (navigator.mediaDevices.getUserMedia || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia) {
+      if (
+        navigator.mediaDevices.getUserMedia ||
+        navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia
+      ) {
         // 调用用户媒体设备, 访问摄像头
         this.openCamera()
         this.canvasElm = this.$refs.canvas
@@ -134,7 +160,7 @@ export default {
     // 人脸识别图片上传
     uploadUserImageToRecognition() {
       let canvas = this.canvasElm
-      canvas.toBlob((blob) => {
+      canvas.toBlob(blob => {
         this.confirmLoading = true
         this.oss
           .put({
@@ -168,30 +194,34 @@ export default {
     },
     // 图片质量检测
     imageQualityTest(image) {
-      this.recognitionService.getMemberCheckResult({
-        image_key: image.fileKey
-      }).subscribe((res) => {
-        console.log('imageQualityTest', res)
-        let isScan = res.is_scan
-        if (isScan) {
-          let imageId = this.list.length && this.list[0][this.imageId]
-          let current = this.list.length && this.list[0]
-          if (current) {
-            current[this.imageKey] = image.fileKey
+      this.recognitionService
+        .getMemberCheckResult({
+          image_key: image.fileKey
+        })
+        .subscribe(res => {
+          console.log('imageQualityTest', res)
+          let isScan = res.is_scan
+          if (isScan) {
+            let imageId = this.list.length && this.list[0][this.imageId]
+            let current = this.list.length && this.list[0]
+            if (current) {
+              current[this.imageKey] = image.fileKey
+            } else {
+              this.list.push({
+                [this.imageId]: 0,
+                [this.imageKey]: image.fileKey,
+                [this.imageUrl]: image.url
+              })
+            }
+            this.$emit('change', this.list)
+            this.show = false
           } else {
-            this.list.push({
-              [this.imageId]: 0,
-              [this.imageKey]: image.fileKey,
-              [this.imageUrl]: image.url
+            this.messageService.error({
+              content: `上传图片质量不佳,请重新拍照`
             })
+            this.userImgSrc = ''
           }
-          this.$emit('change', this.list)
-          this.show = false
-        } else {
-          this.messageService.error({ content: `上传图片质量不佳,请重新拍照` })
-          this.userImgSrc = ''
-        }
-      })
+        })
     },
     // 拍照
     handlerTakePhoto(index = 0) {
@@ -212,11 +242,16 @@ export default {
       if (!navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia = function(constraints) {
           // 首先获取现存的getUserMedia(如果存在)
-          let getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.getUserMedia
+          let getUserMedia =
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.getUserMedia
           // 有些浏览器不支持，会返回错误信息
           // 保持接口一致
           if (!getUserMedia) {
-            return Promise.reject(new Error('getUserMedia is not implemented in this browser'))
+            return Promise.reject(
+              new Error('getUserMedia is not implemented in this browser')
+            )
           }
           // 否则，使用Promise将调用包装到旧的navigator.getUserMedia
           return new Promise(function(resolve, reject) {
@@ -231,7 +266,10 @@ export default {
         }
       }
       this.isLoading = true
-      navigator.mediaDevices.getUserMedia(constraints).then(this.success).catch(this.error)
+      navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then(this.success)
+        .catch(this.error)
     },
     // 关闭摄像头
     closeCamera() {
@@ -267,9 +305,13 @@ export default {
       this.openCameraError = true
       this.isLoading = false
     },
-    dataURItoBlob(dataURI) { // 图片转成Buffer
+    dataURItoBlob(dataURI) {
+      // 图片转成Buffer
       let byteString = atob(dataURI.split(',')[1])
-      let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+      let mimeString = dataURI
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0]
       let ab = new ArrayBuffer(byteString.length)
       let ia = new Uint8Array(ab)
       for (let i = 0; i < byteString.length; i++) {

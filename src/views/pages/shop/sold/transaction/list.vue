@@ -1,29 +1,43 @@
 <template>
   <st-panel app initial :class="basic()">
     <div slot="title" :class="sale('search')">
-      <a-select :class="sale('select')" v-model="query.product_type" @change="onSearch" style="width: 160px">
+      <a-select
+        :class="sale('select')"
+        v-model="query.product_type"
+        @change="onSearch"
+        style="width: 160px"
+      >
         <a-select-option
-        v-for="(item,index) in productType"
-        :key="index"
-        :value="item.value">{{item.label}}</a-select-option>
+          v-for="(item, index) in productType"
+          :key="index"
+          :value="item.value"
+        >
+          {{ item.label }}
+        </a-select-option>
       </a-select>
       <st-input-search
-      v-model="query.product_name"
-      @search="onSearch"
-      placeholder="请输入商品名查找"
-      style="width: 290px;"/>
+        v-model="query.product_name"
+        @search="onSearch"
+        placeholder="请输入商品名查找"
+        style="width: 290px;"
+      />
     </div>
     <div :class="basic('content')">
       <st-table
-      :page="page"
-      rowKey="id"
-      :columns="columns"
-      @change="onTableChange"
-      :dataSource="list">
-
+        :page="page"
+        rowKey="id"
+        :columns="columns"
+        @change="onTableChange"
+        :dataSource="list"
+      >
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
-            <a v-if="record.auth['shop:product:product|order']" @click="onTransaction(record)">签单</a>
+            <a
+              v-if="record.auth['shop:product:product|order']"
+              @click="onTransaction(record)"
+            >
+              签单
+            </a>
           </st-table-actions>
         </div>
       </st-table>
@@ -73,15 +87,17 @@ export default {
     }
   },
   data() {
-    return {
-    }
+    return {}
   },
   methods: {
     getList() {
       this.$router.push({ query: this.query, force: true })
     },
     onPageChange(data) {
-      this.$router.push({ query: { ...this.query, page: data.current, size: data.pageSize }, force: true })
+      this.$router.push({
+        query: { ...this.query, page: data.current, size: data.pageSize },
+        force: true
+      })
     },
     // 详情
     onDetail(record) {
@@ -109,7 +125,9 @@ export default {
     },
     // 打印合同
     createdOrderPrint(order_id) {
-      let url = `${window.location.origin}/extra/contract-preview?id=${order_id}`
+      let url = `${
+        window.location.origin
+      }/extra/contract-preview?id=${order_id}`
       window.open(url)
     },
     // 查看订单
@@ -153,9 +171,11 @@ export default {
           this.createdOrderViewOrder()
           break
         case 'Pay':
-          this.createdOrderPay({ order_id: orderId, type: modalType }).then(res => {
-            this.payCallBack(orderId, modalType, res.type)
-          })
+          this.createdOrderPay({ order_id: orderId, type: modalType }).then(
+            res => {
+              this.payCallBack(orderId, modalType, res.type)
+            }
+          )
           break
       }
     },
@@ -166,7 +186,10 @@ export default {
           this.getList()
           break
         case 'pay':
-          this.createdGatheringTip({ message: '收款成功', order_id: orderId }).then(res => {
+          this.createdGatheringTip({
+            message: '收款成功',
+            order_id: orderId
+          }).then(res => {
             this.tipCallBack(orderId, modalType, res.type)
           })
           break
@@ -203,7 +226,7 @@ export default {
           id: `${record.id}`
         },
         on: {
-          success: (result) => {
+          success: result => {
             this.saleCallBack(result, 'member')
           }
         }
@@ -217,7 +240,7 @@ export default {
           id: `${record.id}`
         },
         on: {
-          success: (result) => {
+          success: result => {
             this.saleCallBack(result, 'deposit')
           }
         }
@@ -233,7 +256,7 @@ export default {
           areaId: `${record.id}`
         },
         on: {
-          success: (result) => {
+          success: result => {
             this.saleCallBack(result, 'cabinet_order')
           }
         }
@@ -247,7 +270,7 @@ export default {
           id: `${record.id}`
         },
         on: {
-          success: (result) => {
+          success: result => {
             this.saleCallBack(result, 'package')
           }
         }
@@ -261,7 +284,7 @@ export default {
           id: `${record.id}`
         },
         on: {
-          success: (result) => {
+          success: result => {
             this.saleCallBack(result, 'personal')
           }
         }
@@ -269,14 +292,16 @@ export default {
     },
 
     onAdvance() {
-      this.listService.addAdvance({
-        member_id: 20554589995205,
-        sale_id: 29338200768663,
-        pay_price: `${Date.now() % 10}`,
-        pay_channel: 1,
-        contract_number: 'C62',
-        description: '11'
-      }).subscribe()
+      this.listService
+        .addAdvance({
+          member_id: 20554589995205,
+          sale_id: 29338200768663,
+          pay_price: `${Date.now() % 10}`,
+          pay_channel: 1,
+          contract_number: 'C62',
+          description: '11'
+        })
+        .subscribe()
     }
   }
 }

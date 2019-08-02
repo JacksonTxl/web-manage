@@ -4,14 +4,34 @@
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24" class="mg-b16">
         <a-col :lg="9">
-          <a-date-picker style="width: 224px;" format="YYYY-MM-DD" placeholder="开卡日期" @change="onChooseDate" />
-          <a-select style="width: 160px;margin-left:12px" placeholder="请选择" v-model="cardquery.card_type" @change="onChooseCardType">
-            <a-select-option v-for="(item, index) in cardConsumeList" :value="item.value" :key="index">{{item.label}}</a-select-option>
+          <a-date-picker
+            style="width: 224px;"
+            format="YYYY-MM-DD"
+            placeholder="开卡日期"
+            @change="onChooseDate"
+          />
+          <a-select
+            style="width: 160px;margin-left:12px"
+            placeholder="请选择"
+            v-model="cardquery.card_type"
+            @change="onChooseCardType"
+          >
+            <a-select-option
+              v-for="(item, index) in cardConsumeList"
+              :value="item.value"
+              :key="index"
+            >
+              {{ item.label }}
+            </a-select-option>
           </a-select>
         </a-col>
         <a-col :lg="6"></a-col>
         <a-col :lg="9">
-          <st-input-search v-model="cardquery.keyword" placeholder="请输入会员卡名称" @search="searchMemberCard"/>
+          <st-input-search
+            v-model="cardquery.keyword"
+            placeholder="请输入会员卡名称"
+            @search="searchMemberCard"
+          />
         </a-col>
       </a-col>
       <a-col :lg="24">
@@ -19,11 +39,11 @@
           rowKey=""
           :columns="cardItem"
           :dataSource="cardsListInfo"
-          :scroll="{ x: 1750}"
+          :scroll="{ x: 1750 }"
           @change="cardPageChange"
           :page="cardPage"
         >
-          <span slot="card_status" slot-scope="text,record">
+          <span slot="card_status" slot-scope="text, record">
             <span v-if="record.card_status.id === 1" class="effective"></span>
             <span v-if="record.card_status.id === 2" class="invalid"></span>
             <span v-if="record.card_status.id === 3" class="frozen"></span>
@@ -32,10 +52,10 @@
           <!-- <span slot="use_shop_name" slot-scope="text,record">
             {{ record.use_shop_name.join(',') }}
           </span> -->
-          <span slot="init_amount" slot-scope="text,record">
+          <span slot="init_amount" slot-scope="text, record">
             {{ record.init_amount.number }}{{ record.init_amount.type }}
           </span>
-          <span slot="remain_amount" slot-scope="text,record">
+          <span slot="remain_amount" slot-scope="text, record">
             {{ record.remain_amount.number }}{{ record.remain_amount.type }}
           </span>
         </st-table>
@@ -51,14 +71,33 @@
     <a-row :gutter="24" class="mg-t16">
       <a-col :lg="24" class="mg-b16">
         <a-col :lg="9">
-          <a-date-picker style="width: 224px;" placeholder="购买日期" format="YYYY-MM-DD" @change="onChooseDateCourse"/>
-          <a-select style="width: 160px;margin-left:12px" v-model="coursequery.course_type" placeholder="请选择" @change="onChooseCourseType">
-            <a-select-option v-for="(item, index) in courseConsumeList" :value="item.value" :key="index">{{item.label}}</a-select-option>
+          <a-date-picker
+            style="width: 224px;"
+            placeholder="购买日期"
+            format="YYYY-MM-DD"
+            @change="onChooseDateCourse"
+          />
+          <a-select
+            style="width: 160px;margin-left:12px"
+            v-model="coursequery.course_type"
+            placeholder="请选择"
+            @change="onChooseCourseType"
+          >
+            <a-select-option
+              v-for="(item, index) in courseConsumeList"
+              :value="item.value"
+              :key="index"
+            >
+              {{ item.label }}
+            </a-select-option>
           </a-select>
         </a-col>
         <a-col :lg="6"></a-col>
         <a-col :lg="9">
-          <st-input-search placeholder="请输入课程名称" @search="searchCourseName"/>
+          <st-input-search
+            placeholder="请输入课程名称"
+            @search="searchCourseName"
+          />
         </a-col>
       </a-col>
       <a-col :lg="24">
@@ -66,8 +105,9 @@
           :columns="course"
           :dataSource="courseListInfo"
           :page="coursePage"
-          @change="coursePageChange">
-          <span slot="course_status" slot-scope="text,record">
+          @change="coursePageChange"
+        >
+          <span slot="course_status" slot-scope="text, record">
             <span v-if="record.course_status.id === 1" class="effective"></span>
             <span v-if="record.course_status.id === 3" class="invalid"></span>
             <span v-if="record.course_status.id === 2" class="frozen"></span>
@@ -165,48 +205,62 @@ export default {
       console.log('======', date, str)
       this.initPage(1, 1, 10)
       this.cardquery.start_time = str
-      this.reserveService.getCardInfo(this.id, this.assignObj(1)).subscribe((res) => {
-
-      })
+      this.reserveService
+        .getCardInfo(this.id, this.assignObj(1))
+        .subscribe(res => {})
     },
     // 选择卡类型
     onChooseCardType(e) {
       console.log('选择卡', e)
       this.initPage(1, 1, 10)
-      this.reserveService.getCardInfo(this.id, this.assignObj(1)).subscribe((res) => {})
+      this.reserveService
+        .getCardInfo(this.id, this.assignObj(1))
+        .subscribe(res => {})
     },
     // 卡分页
     cardPageChange(e) {
       this.initPage(1, e.current, e.pageSize)
-      this.reserveService.getCardInfo(this.id, this.assignObj(1)).subscribe((res) => {})
+      this.reserveService
+        .getCardInfo(this.id, this.assignObj(1))
+        .subscribe(res => {})
     },
     // 卡查询
     searchMemberCard(e) {
       this.initPage(1, 1, 10)
       this.cardquery.keyword = e
-      this.reserveService.getCardInfo(this.id, this.assignObj(1)).subscribe((res) => {})
+      this.reserveService
+        .getCardInfo(this.id, this.assignObj(1))
+        .subscribe(res => {})
     },
     // 课项选择时间
     onChooseDateCourse(date, str) {
       this.initPage(2, 1, 10)
       this.coursequery.buy_time = str
-      this.reserveService.getCourseInfo(this.id, this.assignObj(2)).subscribe((res) => {})
+      this.reserveService
+        .getCourseInfo(this.id, this.assignObj(2))
+        .subscribe(res => {})
     },
     // 课项选择类型
     onChooseCourseType(e) {
       this.initPage(2, 1, 10)
-      this.reserveService.getCourseInfo(this.id, this.assignObj(2)).subscribe((res) => {})
+      this.reserveService
+        .getCourseInfo(this.id, this.assignObj(2))
+        .subscribe(res => {})
     },
     // 课查询
     searchCourseName(e) {
       this.initPage(2, 1, 10)
       this.coursequery.keyword = e
-      this.reserveService.getCardInfo(this.id, this.assignObj(2)).subscribe((res) => {})
+      this.reserveService
+        .getCardInfo(this.id, this.assignObj(2))
+        .subscribe(res => {})
     },
     // 课分页
     coursePageChange(e) {
       this.initPage(2, e.current, e.pageSize)
-      this.reserveService.getCardInfo(this.id, this.assignObj(2)).subscribe((res) => {})
+      this.reserveService
+        .getCardInfo(this.id, this.assignObj(2))
+        .subscribe(res => {})
     }
   },
   mounted() {

@@ -9,13 +9,15 @@ export class SetTimeService {
   loading$ = new State({})
   constructor(private cardApi: CardApi) {}
   @Effect()
-  getInfo(id:string) {
-    return this.cardApi.getCardSettimeInfo(id).pipe(tap((res:any) => {
-      this.info$.commit(() => res.info)
-    }))
+  getInfo(id: string) {
+    return this.cardApi.getCardSettimeInfo(id).pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
+      })
+    )
   }
   @Effect()
-  setTime(params:CardSettingTimeInput, id:string) {
+  setTime(params: CardSettingTimeInput, id: string) {
     return this.cardApi.setCardSettingTime(params, id)
   }
 }

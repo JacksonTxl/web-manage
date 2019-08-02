@@ -27,11 +27,11 @@ export interface GetSelectCoachInput {
   /**
    * 搜索关键字
    */
-  keyword: string,
+  keyword: string
   /**
    * 分页size
    */
-  size: number,
+  size: number
   /**
    * 门店id集合
    */

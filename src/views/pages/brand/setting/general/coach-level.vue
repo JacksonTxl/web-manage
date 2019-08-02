@@ -2,7 +2,7 @@
   <st-panel app v-if="auth.get">
     <st-t2>教练等级</st-t2>
     <div class="mg-t24 st-des">
-      已添加{{resData.total}}个，支持添加{{resData.max}}个
+      已添加{{ resData.total }}个，支持添加{{ resData.max }}个
     </div>
     <st-form-table class="mg-t8">
       <thead>
@@ -18,28 +18,37 @@
       </thead>
       <tbody>
         <tr v-if="auth.add">
-          <td :colspan="isShowPricingNum ? 7: 6" class="st-form-table__add">
+          <td :colspan="isShowPricingNum ? 7 : 6" class="st-form-table__add">
             <a
               v-modal-link="{
                 name: 'coach-level-add',
                 on: {
                   change: onListChange
                 }
-              }">
-              <st-button type="dashed" icon="add" block :disabled="resData.total >= resData.max">添加教练等级</st-button>
+              }"
+            >
+              <st-button
+                type="dashed"
+                icon="add"
+                block
+                :disabled="resData.total >= resData.max"
+              >
+                添加教练等级
+              </st-button>
             </a>
           </td>
         </tr>
         <tr v-for="(item, index) in resData.list" :key="index">
-          <td>{{item.setting_name}}</td>
-          <td>{{item.used_number}}</td>
-          <td>{{item.salary_template}}</td>
-          <td v-if="isShowPricingNum">{{item.class_price}}</td>
-          <td>{{item.operator_name}}</td>
-          <td>{{item.updated_time}}</td>
+          <td>{{ item.setting_name }}</td>
+          <td>{{ item.used_number }}</td>
+          <td>{{ item.salary_template }}</td>
+          <td v-if="isShowPricingNum">{{ item.class_price }}</td>
+          <td>{{ item.operator_name }}</td>
+          <td>{{ item.updated_time }}</td>
           <td>
             <st-table-actions>
-              <a v-if="item.auth['brand:setting:coach_level|edit']"
+              <a
+                v-if="item.auth['brand:setting:coach_level|edit']"
                 v-modal-link="{
                   name: 'coach-level-edit',
                   props: {
@@ -49,12 +58,18 @@
                   on: {
                     change: onListChange
                   }
-                }">
+                }"
+              >
                 编辑
               </a>
               <a-popconfirm
-                :title="`删除后不可进行恢复，${item.used_number ? '已标记的员工将删除此教练等级，' : ''}确定删除此教练等级？`"
-                @confirm="onDelete(item.id)">
+                :title="
+                  `删除后不可进行恢复，${
+                    item.used_number ? '已标记的员工将删除此教练等级，' : ''
+                  }确定删除此教练等级？`
+                "
+                @confirm="onDelete(item.id)"
+              >
                 <a v-if="item.auth['brand:setting:coach_level|del']">删除</a>
               </a-popconfirm>
             </st-table-actions>

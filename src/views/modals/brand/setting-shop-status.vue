@@ -11,9 +11,9 @@
       <st-form :form="form">
         <a-row>
           <a-col :xs="22">
-            <div>{{shopName}}</div>
+            <div>{{ shopName }}</div>
             <st-form-item v-show="false">
-              <input type="hidden" v-decorator="formRules.id">
+              <input type="hidden" v-decorator="formRules.id" />
             </st-form-item>
             <st-form-item label="运营状态" required class="mg-t16">
               <a-select v-decorator="formRules.shopStatus" style="width: 240px">
@@ -22,7 +22,7 @@
                   :key="index"
                   :value="+index"
                 >
-                  {{item}}
+                  {{ item }}
                 </a-select-option>
               </a-select>
             </st-form-item>
@@ -39,11 +39,14 @@ import { MessageService } from '@/services/message.service'
 const formRules = {
   id: ['id'],
   shopStatus: [
-    'shop_status', {
-      rules: [{
-        required: true,
-        message: '请选择运营状态'
-      }]
+    'shop_status',
+    {
+      rules: [
+        {
+          required: true,
+          message: '请选择运营状态'
+        }
+      ]
     }
   ]
 }
@@ -111,7 +114,8 @@ export default {
         if (data.shop_status === 3) {
           this.$confirm({
             title: '',
-            content: '门店暂停营业后，门店会员无法正常约课、上课、入离场；同时此门店不支持交易开单，请谨慎操作',
+            content:
+              '门店暂停营业后，门店会员无法正常约课、上课、入离场；同时此门店不支持交易开单，请谨慎操作',
             onOk: () => {
               this.doSubmit(data)
             }

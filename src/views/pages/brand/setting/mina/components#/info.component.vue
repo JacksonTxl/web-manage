@@ -1,38 +1,58 @@
 <template>
-  <div :class="info()" :loading="loading.subAudit&&loading.getInfo">
+  <div :class="info()" :loading="loading.subAudit && loading.getInfo">
     <div class="left">
       <st-t2>
         微信小程序（基础版）
-        <span v-if="data.is_auth===1" class="bg-gray color-text-light">发布时间：{{data.mina_info.send_date}}</span>
+        <span v-if="data.is_auth === 1" class="bg-gray color-text-light">
+          发布时间：{{ data.mina_info.send_date }}
+        </span>
       </st-t2>
-      <a-row v-if="data.is_auth===1" :gutter="24" class="mg-t16">
+      <a-row v-if="data.is_auth === 1" :gutter="24" class="mg-t16">
         <a-col :lg="8">
           <st-info>
-            <st-info-item label="小程序名称">{{data.mina_info.name}}</st-info-item>
-            <st-info-item label="系统版本">{{data.mina_info.version}}</st-info-item>
+            <st-info-item label="小程序名称">
+              {{ data.mina_info.name }}
+            </st-info-item>
+            <st-info-item label="系统版本">
+              {{ data.mina_info.version }}
+            </st-info-item>
           </st-info>
         </a-col>
         <a-col :lg="8">
           <st-info>
-            <st-info-item label="微信认证" v-if="Number(data.mina_info.verify_type_info) > -1">已认证</st-info-item>
+            <st-info-item
+              label="微信认证"
+              v-if="Number(data.mina_info.verify_type_info) > -1"
+            >
+              已认证
+            </st-info-item>
             <st-info-item label="微信认证" v-else>未认证</st-info-item>
-            <st-info-item label="发布状态">{{data.mina_info.send_status | sendstatusFilter}}<a :class="info('a')" @click="submitAudit">{{data.mina_info.send_status | authBtnFilter}}</a></st-info-item>
+            <st-info-item label="发布状态">
+              {{ data.mina_info.send_status | sendstatusFilter }}
+              <a :class="info('a')" @click="submitAudit">
+                {{ data.mina_info.send_status | authBtnFilter }}
+              </a>
+            </st-info-item>
           </st-info>
         </a-col>
         <a-col :lg="8">
           <st-info>
-            <st-info-item label="微信支付">已配置<a :class="info('a')" @click="resetMch">重新配置</a></st-info-item>
-            <st-info-item label="微信授权">{{data.is_auth | authFilter}}<a :class="info('a')"
-                :href="data.auth_url">重新授权</a>
+            <st-info-item label="微信支付">
+              已配置
+              <a :class="info('a')" @click="resetMch">重新配置</a>
+            </st-info-item>
+            <st-info-item label="微信授权">
+              {{ data.is_auth | authFilter }}
+              <a :class="info('a')" :href="data.auth_url">重新授权</a>
             </st-info-item>
           </st-info>
         </a-col>
       </a-row>
 
-      <p v-if="data.is_auth===0">
+      <p v-if="data.is_auth === 0">
         三体微信小程序为您提供了运营场馆用户的一套完整解决方案，精心打造场馆展示、卡课购买、会员体系、课程预约、营销推广、训练数据等功能模块，助力开拓微信渠道，实现新老客户运营。
       </p>
-      <section v-if="data.is_auth===0">
+      <section v-if="data.is_auth === 0">
         <ul>
           <li>
             <img :src="brand" />
@@ -57,10 +77,9 @@
           </li>
         </ul>
       </section>
-
     </div>
     <div class="right">
-      <img :src="data.mina_info?data.mina_info.qrcode_url:''" />
+      <img :src="data.mina_info ? data.mina_info.qrcode_url : ''" />
       <p>三体微信小程序示例 扫码查看</p>
     </div>
   </div>
@@ -144,5 +163,4 @@ export default {
     }
   }
 }
-
 </script>

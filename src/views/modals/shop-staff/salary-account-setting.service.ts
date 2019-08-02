@@ -4,7 +4,9 @@ import { pluck, tap } from 'rxjs/operators'
 import { Store } from '@/services/store'
 
 import {
-  ShopStaffApi, PutStaffBrandQuitInput, PutStaffBindBankInput
+  ShopStaffApi,
+  PutStaffBrandQuitInput,
+  PutStaffBindBankInput
 } from '@/api/v1/staff/staff'
 
 import { forkJoin } from 'rxjs'
@@ -25,17 +27,21 @@ export class SalaryAccountSettingService extends Store<SetState> {
     this.accountInfo$ = new Computed(this.state$.pipe(pluck('accountInfo')))
   }
   getBankInfo(id: string) {
-    return this.staffApi.getBankInfo(id).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.accountInfo = res.bank
+    return this.staffApi.getBankInfo(id).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.accountInfo = res.bank
+        })
       })
-    }))
+    )
   }
   putStaffBindBank(params: PutStaffBindBankInput) {
-    return this.staffApi.putStaffBindBank(params).pipe(tap(res => {
-      this.msg.success({
-        content: '员工银行账户设置成功'
+    return this.staffApi.putStaffBindBank(params).pipe(
+      tap(res => {
+        this.msg.success({
+          content: '员工银行账户设置成功'
+        })
       })
-    }))
+    )
   }
 }

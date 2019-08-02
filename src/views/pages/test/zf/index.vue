@@ -1,5 +1,5 @@
 <template>
-  <st-panel >
+  <st-panel>
     <!-- <st-range-picker :disabledDays="180"></st-range-picker> -->
     <!-- <st-form :form="form" @submit="save">
       <st-form-item>
@@ -23,15 +23,16 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
-      list: [{
-        label: 'test1',
-        value: 1
-      }],
+      list: [
+        {
+          label: 'test1',
+          value: 1
+        }
+      ],
       rules: {
         country_prefix: ['country_prefix']
       },
       src: ''
-
     }
   },
   methods: {
@@ -49,10 +50,12 @@ export default {
       ctx.globalCompositeOperation = 'source-over'
       const logo_img = new Image()
       logo_img.setAttribute('crossOrigin', 'anonymous')
-      logo_img.src = 'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/10000/2019-07-30/1564473066094.png'
+      logo_img.src =
+        'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/10000/2019-07-30/1564473066094.png'
       const user_img = new Image()
       user_img.setAttribute('crossOrigin', 'anonymous')
-      user_img.src = 'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/10000/2019-07-30/1564458803780.png'
+      user_img.src =
+        'https://styd-saas-test.oss-cn-shanghai.aliyuncs.com/image/10000/2019-07-30/1564458803780.png'
       user_img.onload = () => {
         ctx.clearRect(0, 0, myCanvas.width, myCanvas.height)
         ctx.drawImage(user_img, 0, 0, 750, 1334)

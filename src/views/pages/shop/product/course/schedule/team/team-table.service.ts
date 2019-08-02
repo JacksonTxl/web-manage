@@ -5,11 +5,17 @@ import { TeamScheduleCommonService as CommonService } from '../team.service#/com
 
 @Injectable()
 export class TeamTableService implements RouteGuard {
-  constructor(private commonService: CommonService,
-    private scheduleService: ScheduleService) { }
+  constructor(
+    private commonService: CommonService,
+    private scheduleService: ScheduleService
+  ) {}
 
   initOptions() {
-    return forkJoin(this.commonService.getCoachList(), this.commonService.getCourseList(), this.commonService.getCourtList())
+    return forkJoin(
+      this.commonService.getCoachList(),
+      this.commonService.getCourseList(),
+      this.commonService.getCourtList()
+    )
   }
   beforeEach(to: ServiceRoute, form: ServiceRoute) {
     return forkJoin(this.initOptions(), this.scheduleService.getTable(to.query))

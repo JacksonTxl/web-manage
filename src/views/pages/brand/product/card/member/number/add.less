@@ -1,28 +1,30 @@
 .page-brand-add-number-card.page-brand-basic-card {
-    .page-admission-range-shop::after {
-        left: 100px;
+  .page-admission-range-shop::after {
+    left: 100px;
+  }
+  .page-support-sales-shop.page-lot-shop::after {
+    left: 128px;
+  }
+  .page-price-setting-set.brand-set {
+    &::after {
+      left: 25px;
     }
-    .page-support-sales-shop.page-lot-shop::after {
-        left: 128px;
+  }
+  .page-price-setting-set.shop-set {
+    &::after {
+      left: 130px;
     }
-    .page-price-setting-set.brand-set{
-        &::after {
-            left: 25px;
-        }
+  }
+  .page-price-setting-set {
+    &.error,
+    &.error::after {
+      border-color: @error-color;
     }
-    .page-price-setting-set.shop-set{
-        &::after {
-            left: 130px;
-        }
+  }
+  .page-content-card-price-setting,
+  .page-content-card-bg {
+    .ant-form-explain {
+      .c(@error-color);
     }
-    .page-price-setting-set {
-        &.error,&.error::after {
-            border-color: @error-color;
-        }
-    }
-    .page-content-card-price-setting,.page-content-card-bg{
-        .ant-form-explain {
-            .c(@error-color);
-        }
-    }
+  }
 }

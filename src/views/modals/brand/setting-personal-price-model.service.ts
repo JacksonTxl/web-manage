@@ -1,10 +1,7 @@
 import { Injectable } from 'vue-service-app'
 import { Effect } from 'rx-state'
 import { Store } from '@/services/store'
-import {
-  CoursePricingApi,
-  UpdateInput
-} from '@/api/v1/setting/course/pricing'
+import { CoursePricingApi, UpdateInput } from '@/api/v1/setting/course/pricing'
 
 @Injectable()
 export class CoursePriceModelSettingService extends Store<any> {

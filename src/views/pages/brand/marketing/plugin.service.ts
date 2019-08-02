@@ -5,8 +5,8 @@ import { State } from 'rx-state'
 
 @Injectable()
 export class PluginService {
-  info$ = new State({});
-  constructor(private marketingApi: MarketingApi) { }
+  info$ = new State({})
+  constructor(private marketingApi: MarketingApi) {}
   getInfo() {
     return this.marketingApi.getMarktingInfo().pipe(
       tap(res => {

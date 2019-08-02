@@ -1,6 +1,11 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { ShopPersonalCourseApi } from '@/api/v1/course/personal/shop'
-import { BrandPersonalCourseApi, GetPersonalBrandCourseListInput, SetAvailableInput, CoursePersonalSupportInput } from '@/api/v1/course/personal/brand'
+import {
+  BrandPersonalCourseApi,
+  GetPersonalBrandCourseListInput,
+  SetAvailableInput,
+  CoursePersonalSupportInput
+} from '@/api/v1/course/personal/brand'
 import { tap, pluck } from 'rxjs/operators'
 import { State, Computed, Effect } from 'rx-state'
 import { forkJoin } from 'rxjs'
@@ -33,27 +38,34 @@ export class ShopService implements RouteGuard {
     })
   }
   upgradePersonalCourseInBrand(res: any) {
-    return this.shopPersonalCourseApi.upgradePersonalCourseInBrand(res).pipe(tap(res => {
-      this.msg.success({ content: '转入成功！！！' })
-    }))
+    return this.shopPersonalCourseApi.upgradePersonalCourseInBrand(res).pipe(
+      tap(res => {
+        this.msg.success({ content: '转入成功！！！' })
+      })
+    )
   }
   @Effect()
   getCoursePrice(courseId: string) {
-    return this.brandPersonalCourseApi.getCoursePrice(courseId).pipe(tap(res => {
-      let dataSource: any[] = []
-      res.info.price_gradient.forEach((ele: any) => {
-        ele.prices.forEach((item: any) => {
-          let sell_prices = res.info.sale_model === 2 ? item.sell_price : `${item.min_sell_price} ~ ${item.max_sell_price}元`
-          let sell_range = `${item.min_sale} ~ ${item.max_sale}节`
-          dataSource.push({
-            sell_prices,
-            sell_range,
-            ...item
+    return this.brandPersonalCourseApi.getCoursePrice(courseId).pipe(
+      tap(res => {
+        let dataSource: any[] = []
+        res.info.price_gradient.forEach((ele: any) => {
+          ele.prices.forEach((item: any) => {
+            let sell_prices =
+              res.info.sale_model === 2
+                ? item.sell_price
+                : `${item.min_sell_price} ~ ${item.max_sell_price}元`
+            let sell_range = `${item.min_sale} ~ ${item.max_sale}节`
+            dataSource.push({
+              sell_prices,
+              sell_range,
+              ...item
+            })
           })
         })
+        this.dataSource$.commit(() => dataSource)
       })
-      this.dataSource$.commit(() => dataSource)
-    }))
+    )
   }
   getList(params: any) {
     return this.shopPersonalCourseApi.getCourseListInBrand(params).pipe(

@@ -15,17 +15,21 @@ export class ShopTableService {
   })
   constructor(private cardApi: CardsApi) {}
   @Effect()
-  getConsumeShopList(query:ListPageInput, id:string) {
-    return this.cardApi.getCardsDepositConsumeShop(query, id).pipe(tap((res:any) => {
-      this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-    }))
+  getConsumeShopList(query: ListPageInput, id: string) {
+    return this.cardApi.getCardsDepositConsumeShop(query, id).pipe(
+      tap((res: any) => {
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
   }
   @Effect()
-  getSaleShopList(query:ListPageInput, id:string) {
-    return this.cardApi.getCardsDepositSaleShop(query, id).pipe(tap((res:any) => {
-      this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-    }))
+  getSaleShopList(query: ListPageInput, id: string) {
+    return this.cardApi.getCardsDepositSaleShop(query, id).pipe(
+      tap((res: any) => {
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
   }
 }

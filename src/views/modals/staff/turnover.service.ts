@@ -12,19 +12,23 @@ export class TurnoverService {
   loading$ = new State({})
   constructor(protected staffApi: StaffApi, private msg: MessageService) {}
   getStaffCheckJob(id: string) {
-    return this.staffApi.getStaffCheckJob(id).pipe(tap(res => {
-      this.list$.commit(() => {
-        return res.list.filter((item:any) => item.num !== 0)
+    return this.staffApi.getStaffCheckJob(id).pipe(
+      tap(res => {
+        this.list$.commit(() => {
+          return res.list.filter((item: any) => item.num !== 0)
+        })
+        this.operate$.commit(() => res.operate)
       })
-      this.operate$.commit(() => res.operate)
-    }))
+    )
   }
   @Effect()
   putStaffBrandQuit(params: PutStaffBrandQuitInput) {
-    return this.staffApi.putStaffBrandQuit(params).pipe(tap(res => {
-      this.msg.success({
-        content: '员工已离职'
+    return this.staffApi.putStaffBrandQuit(params).pipe(
+      tap(res => {
+        this.msg.success({
+          content: '员工已离职'
+        })
       })
-    }))
+    )
   }
 }

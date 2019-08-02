@@ -1,16 +1,25 @@
 <template>
   <st-panel app>
     <a-row class="mg-b48 mg-t48" :gutter="8">
-      <a-col offset="1" :span="22" >
+      <a-col offset="1" :span="22">
         <a-steps :current="currentIndex">
-          <a-step v-for="item in stepArr" :key="item.key" :title="item.title"
-            @click="changeStep(item.key)" class="cursor-pointer"/>
+          <a-step
+            v-for="item in stepArr"
+            :key="item.key"
+            :title="item.title"
+            @click="changeStep(item.key)"
+            class="cursor-pointer"
+          />
         </a-steps>
       </a-col>
     </a-row>
-    <create-personal-course v-show="currentIndex === 0" :info="info" @goNext="goNext"/>
-    <set-shop-coach v-show="currentIndex === 1" :info="info" @goNext="goNext"/>
-    <set-sell-price v-show="currentIndex === 2" :info="info" @goNext="goNext"/>
+    <create-personal-course
+      v-show="currentIndex === 0"
+      :info="info"
+      @goNext="goNext"
+    />
+    <set-shop-coach v-show="currentIndex === 1" :info="info" @goNext="goNext" />
+    <set-sell-price v-show="currentIndex === 2" :info="info" @goNext="goNext" />
   </st-panel>
 </template>
 <script>
@@ -37,16 +46,20 @@ export default {
   data() {
     return {
       currentIndex: 0,
-      stepArr: [{
-        title: '编辑私教课',
-        key: 0
-      }, {
-        title: '设置上课教练',
-        key: 1
-      }, {
-        title: '设置售卖价格',
-        key: 2
-      }]
+      stepArr: [
+        {
+          title: '编辑私教课',
+          key: 0
+        },
+        {
+          title: '设置上课教练',
+          key: 1
+        },
+        {
+          title: '设置售卖价格',
+          key: 2
+        }
+      ]
     }
   },
   methods: {

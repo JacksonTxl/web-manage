@@ -1,4 +1,3 @@
-
 import { Api } from '@/api/api'
 
 /**
@@ -11,10 +10,10 @@ import { Api } from '@/api/api'
  */
 export class TeamScheduleReserveApi extends Api {
   /**
- *
- * @param params
- * 添加预约
- */
+   *
+   * @param params
+   * 添加预约
+   */
   add(params: AddReserveInput) {
     return this.http.post('/v1/schedule/team/shop/reserve', { params })
   }
@@ -42,13 +41,13 @@ export class TeamScheduleReserveApi extends Api {
   }
 }
 export interface AddReserveInput {
-  schedule_id: number,
-  member_id: number,
-  seat: any[],
-  consume_type: number,
+  schedule_id: number
+  member_id: number
+  seat: any[]
+  consume_type: number
   consume_id: number
 }
 export interface CheckInput {
-  id: number,
+  id: number
   checkin_method: number
 }

@@ -14,19 +14,23 @@ export class EditService implements RouteGuard {
     return this.shopApi.brandUpdate(id, data)
   }
   getServiceList() {
-    return this.shopApi.getServiceList().pipe(tap((res:any) => {
-      this.serviceList$.commit(() => res.services)
-    }))
+    return this.shopApi.getServiceList().pipe(
+      tap((res: any) => {
+        this.serviceList$.commit(() => res.services)
+      })
+    )
   }
-  getShopInfo(id:string) {
-    return this.shopApi.getInfo(id).pipe(tap((res:any) => {
-      this.shopInfo$.commit(() => res.info)
-    }))
+  getShopInfo(id: string) {
+    return this.shopApi.getInfo(id).pipe(
+      tap((res: any) => {
+        this.shopInfo$.commit(() => res.info)
+      })
+    )
   }
-  init(id:string) {
+  init(id: string) {
     return forkJoin(this.getShopInfo(id), this.getServiceList())
   }
-  beforeEach(to:ServiceRoute) {
+  beforeEach(to: ServiceRoute) {
     return this.init(to.meta.query.id)
   }
 }

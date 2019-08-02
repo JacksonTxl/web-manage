@@ -1,35 +1,62 @@
 <template>
   <div :class="action()">
     <st-form>
-    <st-form-item label="模块名称">
-      <a-input placeholder="请输入模块名称"  v-model="info.module_title" maxlength="10"/>
-    </st-form-item>
-    <st-form-item label="展示教练">
-      <draggable :component-data="{props:{gutter:12}}" v-model="list" :animation="200">
+      <st-form-item label="模块名称">
+        <a-input
+          placeholder="请输入模块名称"
+          v-model="info.module_title"
+          maxlength="10"
+        />
+      </st-form-item>
+      <st-form-item label="展示教练">
+        <draggable
+          :component-data="{ props: { gutter: 12 } }"
+          v-model="list"
+          :animation="200"
+        >
           <div v-for="(li, index) in list" :key="li.id" :class="action('box')">
             <div :class="action('del')" @click="delCoach(index)">
-              <a><st-icon type="delete" color="#FF5E41" :class="action('del-icon')"/></a>
+              <a>
+                <st-icon
+                  type="delete"
+                  color="#FF5E41"
+                  :class="action('del-icon')"
+                />
+              </a>
             </div>
-            <img :src="(li.head_img.image_url || config.PLACEHOLDER_IMG.AVATAR) | imgFilter({w:160,h:160})">
-            <div style="-webkit-box-orient: vertical;" :class="action('nickname')" :title="li.nickname">{{li.nickname}}</div>
+            <img
+              :src="
+                (li.head_img.image_url || config.PLACEHOLDER_IMG.AVATAR)
+                  | imgFilter({ w: 160, h: 160 })
+              "
+            />
+            <div
+              style="-webkit-box-orient: vertical;"
+              :class="action('nickname')"
+              :title="li.nickname"
+            >
+              {{ li.nickname }}
+            </div>
           </div>
-        <div :class="action('addbox')">
-          <a v-modal-link="{
-              name: 'coach-recommend',
-              props: {
-                selected
-              },
-              on: {
-                change: onSelectComplete
-              }
-            }">
-            <div :class="action('addbox')" class="color-text">
-              + 添加教练
-            </div>
-          </a>
-        </div>
-      </draggable>
-    </st-form-item>
+          <div :class="action('addbox')">
+            <a
+              v-modal-link="{
+                name: 'coach-recommend',
+                props: {
+                  selected
+                },
+                on: {
+                  change: onSelectComplete
+                }
+              }"
+            >
+              <div :class="action('addbox')" class="color-text">
+                + 添加教练
+              </div>
+            </a>
+          </div>
+        </draggable>
+      </st-form-item>
     </st-form>
   </div>
 </template>
@@ -89,9 +116,11 @@ export default {
       let that = this
       this.selected = coachIds
       this.info.staff_id_list = coachIds
-      this.h5WrapperService.getCoachInfo({ staff_id: coachIds }).subscribe(res => {
-        that.list = cloneDeep(that.coachInfo)
-      })
+      this.h5WrapperService
+        .getCoachInfo({ staff_id: coachIds })
+        .subscribe(res => {
+          that.list = cloneDeep(that.coachInfo)
+        })
       console.log('on select complete', coachIds)
     },
     sortSelected() {
@@ -106,5 +135,4 @@ export default {
     }
   }
 }
-
 </script>

@@ -6,7 +6,7 @@
           <span style="line-height: 32px;">标签名称</span>
         </a-col>
         <a-col :span="18">
-          <a-input v-model="inputLable"/>
+          <a-input v-model="inputLable" />
         </a-col>
       </a-row>
     </section>
@@ -21,9 +21,7 @@ export default {
       Service: NewLableService
     }
   },
-  components: {
-
-  },
+  components: {},
   name: 'newLable',
   props: {
     selectedRowData: {

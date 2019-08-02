@@ -13,20 +13,26 @@ export class ListService implements RouteGuard {
   auth$ = this.authService.authMap$({
     add: 'brand:activity:coupon|add'
   })
-  constructor(private marketingApi: MarketingApi, private couponApi: CouponApi, private authService: AuthService) {}
+  constructor(
+    private marketingApi: MarketingApi,
+    private couponApi: CouponApi,
+    private authService: AuthService
+  ) {}
   @Effect()
   getList(params: CouponListParams) {
-    return this.couponApi.getList(params).pipe(tap((res:any) => {
-      res = this.authService.filter(res)
-      this.list$.commit(() => res.list)
-      this.page$.commit(() => res.page)
-    }))
+    return this.couponApi.getList(params).pipe(
+      tap((res: any) => {
+        res = this.authService.filter(res)
+        this.list$.commit(() => res.list)
+        this.page$.commit(() => res.page)
+      })
+    )
   }
 
   stopMarketingCoupon(id: number) {
-    return this.marketingApi.stopMarketingCoupon(id).pipe(tap((res:any) => {}))
+    return this.marketingApi.stopMarketingCoupon(id).pipe(tap((res: any) => {}))
   }
-  beforeEach(to:ServiceRoute, from:ServiceRoute) {
+  beforeEach(to: ServiceRoute, from: ServiceRoute) {
     return this.getList(to.meta.query)
   }
 }

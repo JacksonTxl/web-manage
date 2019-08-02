@@ -1,4 +1,3 @@
-
 <template>
   <st-modal
     class="st-modal-cropper"
@@ -9,7 +8,7 @@
   >
     <div class="st-modal-cropper-content">
       <div class="st-modal-cropper-image">
-        <img :src="_imageUrl" id="modal_cropper_image" hidden alt>
+        <img :src="_imageUrl" id="modal_cropper_image" hidden alt />
       </div>
       <p class="st-modal-cropper-preview" id="crop_preview"></p>
     </div>

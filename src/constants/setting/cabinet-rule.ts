@@ -3,7 +3,7 @@ import { Injectable } from 'vue-service-app'
 
 @Injectable()
 export class RuleConfig {
-  constructor(private i18n: I18NService) { }
+  constructor(private i18n: I18NService) {}
   /**
    * 首字母
    */
@@ -15,11 +15,14 @@ export class RuleConfig {
    */
   get startNum() {
     return [
-      'start_num', {
-        rules: [{
-          required: true,
-          message: '请输入起始编号'
-        }]
+      'start_num',
+      {
+        rules: [
+          {
+            required: true,
+            message: '请输入起始编号'
+          }
+        ]
       }
     ]
   }
@@ -28,11 +31,14 @@ export class RuleConfig {
    */
   get num() {
     return [
-      'num', {
-        rules: [{
-          required: true,
-          message: '请输入柜子数量'
-        }]
+      'num',
+      {
+        rules: [
+          {
+            required: true,
+            message: '请输入柜子数量'
+          }
+        ]
       }
     ]
   }
@@ -41,11 +47,14 @@ export class RuleConfig {
    */
   get sortType() {
     return [
-      'sort_type', {
-        rules: [{
-          required: true,
-          message: '请输入递增方式'
-        }]
+      'sort_type',
+      {
+        rules: [
+          {
+            required: true,
+            message: '请输入递增方式'
+          }
+        ]
       }
     ]
   }
@@ -54,11 +63,14 @@ export class RuleConfig {
    */
   get priceNum() {
     return [
-      'price_num', {
-        rules: [{
-          required: true,
-          message: '请输入售卖价格'
-        }]
+      'price_num',
+      {
+        rules: [
+          {
+            required: true,
+            message: '请输入售卖价格'
+          }
+        ]
       }
     ]
   }
@@ -73,17 +85,23 @@ export class RuleConfig {
    */
   get useStatus() {
     return [
-      'use_status', {
-        rules: [{
-          required: true,
-          message: '请选择可用状态'
-        }]
+      'use_status',
+      {
+        rules: [
+          {
+            required: true,
+            message: '请选择可用状态'
+          }
+        ]
       }
     ]
   }
   get reason() {
-    return ['reason', {
-      initialValue: ''
-    }]
+    return [
+      'reason',
+      {
+        initialValue: ''
+      }
+    ]
   }
 }

@@ -1,9 +1,22 @@
 <template>
-  <div class="time-picker" @mouseup="onMouseup" @mounseover="onMouseOver"  @mouseleave="onMounseLeave" @mousedown="onMouseDown">
-    <template  v-for="i in 25">
-      <item @change="onChange"  @down="onDown"  :views="views" :isDrag="isDrag" :isEnter="isEnter" :key="i" :time="i - 1"></item>
+  <div
+    class="time-picker"
+    @mouseup="onMouseup"
+    @mounseover="onMouseOver"
+    @mouseleave="onMounseLeave"
+    @mousedown="onMouseDown"
+  >
+    <template v-for="i in 25">
+      <item
+        @change="onChange"
+        @down="onDown"
+        :views="views"
+        :isDrag="isDrag"
+        :isEnter="isEnter"
+        :key="i"
+        :time="i - 1"
+      ></item>
     </template>
-
   </div>
 </template>
 
@@ -88,8 +101,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.time-picker{
-  display: flex
+.time-picker {
+  display: flex;
 }
-
 </style>

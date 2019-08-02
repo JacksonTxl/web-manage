@@ -1,57 +1,112 @@
 <template>
-  <st-modal class="modal-staff-delete"
-    title='管理登录账号'
-    @ok='onSubmit'
+  <st-modal
+    class="modal-staff-delete"
+    title="管理登录账号"
+    @ok="onSubmit"
     size="small"
-    :confirmLoading="openRepassword ? loading.getRePassword : loading.setAccount"
-    v-model='show'>
+    :confirmLoading="
+      openRepassword ? loading.getRePassword : loading.setAccount
+    "
+    v-model="show"
+  >
     <staff-info :staff="staff"></staff-info>
     <div>
       <st-form :form="form">
         <st-form-item label="系统权限">
-          <a-checkbox :checked="openJurisdiction" @change.stop="changePermission">开通系统使用权限</a-checkbox>
+          <a-checkbox
+            :checked="openJurisdiction"
+            @change.stop="changePermission"
+          >
+            开通系统使用权限
+          </a-checkbox>
         </st-form-item>
         <!-- 账号重置 -->
         <st-form-item label="登录账号" v-if="hasAccountName">
-          <span>{{rePasswordInfo.account_name}}</span>
-          <span style="color: #1890FF" @click="onClickRePassword">重置密码</span>
+          <span>{{ rePasswordInfo.account_name }}</span>
+          <span style="color: #1890FF" @click="onClickRePassword">
+            重置密码
+          </span>
         </st-form-item>
         <!-- 新账号注册 -->
-        <st-form-item label="登录账号" v-if="!hasAccountName && openJurisdiction" required>
-          <a-input autocomplete='off' placeholder="6～18个字符，可使用字母，数字，下划线" v-decorator="rules.name"/>
+        <st-form-item
+          label="登录账号"
+          v-if="!hasAccountName && openJurisdiction"
+          required
+        >
+          <a-input
+            autocomplete="off"
+            placeholder="6～18个字符，可使用字母，数字，下划线"
+            v-decorator="rules.name"
+          />
         </st-form-item>
-        <st-form-item label="登录密码" v-if="!hasAccountName && openJurisdiction" required>
-          <a-input  type="password" autocomplete='off' v-decorator="['password', { rules: [{validator: validatorPassword}]
-          }]" placeholder="6~15个字符，区分大小写"/>
+        <st-form-item
+          label="登录密码"
+          v-if="!hasAccountName && openJurisdiction"
+          required
+        >
+          <a-input
+            type="password"
+            autocomplete="off"
+            v-decorator="[
+              'password',
+              { rules: [{ validator: validatorPassword }] }
+            ]"
+            placeholder="6~15个字符，区分大小写"
+          />
         </st-form-item>
-        <st-form-item label="确认密码" v-if="!hasAccountName && openJurisdiction" required>
-          <a-input type="password" autocomplete='off' v-decorator="['repeat_password', { rules: [{validator: validatorPassword}] }]" placeholder="请再次填写密码"/>
+        <st-form-item
+          label="确认密码"
+          v-if="!hasAccountName && openJurisdiction"
+          required
+        >
+          <a-input
+            type="password"
+            autocomplete="off"
+            v-decorator="[
+              'repeat_password',
+              { rules: [{ validator: validatorPassword }] }
+            ]"
+            placeholder="请再次填写密码"
+          />
         </st-form-item>
         <!-- 登录重置密码 -->
         <st-form-item label="登录密码" v-if="openRepassword" required>
-          <a-input type="password" v-decorator="['password', { rules: [{validator: validatorPassword}]
-          }]" placeholder="6~15个字符，区分大小写"/>
+          <a-input
+            type="password"
+            v-decorator="[
+              'password',
+              { rules: [{ validator: validatorPassword }] }
+            ]"
+            placeholder="6~15个字符，区分大小写"
+          />
         </st-form-item>
         <st-form-item label="确认密码" v-if="openRepassword" required>
-          <a-input type="password" v-decorator="['repeat_password', { rules: [{validator: validatorPassword}] }]" placeholder="请再次填写密码"/>
+          <a-input
+            type="password"
+            v-decorator="[
+              'repeat_password',
+              { rules: [{ validator: validatorPassword }] }
+            ]"
+            placeholder="请再次填写密码"
+          />
         </st-form-item>
         <!-- 绑定账号 -->
         <st-form-item label="账号绑定" v-if="bindAccount">
           <div v-if="rePasswordInfo.wechat">
             <span>绑定微信号</span>
-            <span>{{rePasswordInfo.wechat}}</span>
+            <span>{{ rePasswordInfo.wechat }}</span>
           </div>
           <div v-if="rePasswordInfo.mail">
             <span>绑定邮箱</span>
-            <span>{{rePasswordInfo.mail}}</span>
+            <span>{{ rePasswordInfo.mail }}</span>
           </div>
           <div v-if="rePasswordInfo.phone">
             <span>绑定手机</span>
-            <span>{{rePasswordInfo.phone}}</span>
+            <span>{{ rePasswordInfo.phone }}</span>
           </div>
           <div v-if="rePasswordInfo.QQ">
             <span>绑定qq</span>
-            <span>{{rePasswordInfo.QQ}}</span>
+            <span>{{ rePasswordInfo.QQ }}</span>
           </div>
         </st-form-item>
       </st-form>
@@ -103,7 +158,13 @@ export default {
       return this.rePasswordInfo.account_name
     },
     bindAccount() {
-      return this.rePasswordInfo && (this.rePasswordInfo.wechat && this.rePasswordInfo.mail && this.rePasswordInfo.phone && this.rePasswordInfo.QQ)
+      return (
+        this.rePasswordInfo &&
+        (this.rePasswordInfo.wechat &&
+          this.rePasswordInfo.mail &&
+          this.rePasswordInfo.phone &&
+          this.rePasswordInfo.QQ)
+      )
     }
   },
   mounted() {
@@ -161,7 +222,11 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('onSubmit', values)
-          const form = { id: this.staff.id, is_permission: +this.openJurisdiction, ...values }
+          const form = {
+            id: this.staff.id,
+            is_permission: +this.openJurisdiction,
+            ...values
+          }
           // 未创建账号
           console.log('hasAccountName', this.hasAccountName)
           if (!this.hasAccountName) {
@@ -170,11 +235,13 @@ export default {
                 this.show = false
               })
             } else {
-              this.rePasswordService.updatepermission(this.staff.id, {
-                is_permission: +this.openJurisdiction
-              }).subscribe(() => {
-                this.show = false
-              })
+              this.rePasswordService
+                .updatepermission(this.staff.id, {
+                  is_permission: +this.openJurisdiction
+                })
+                .subscribe(() => {
+                  this.show = false
+                })
             }
           } else {
             // 填写了账号
@@ -183,11 +250,13 @@ export default {
                 this.show = false
               })
             } else {
-              this.rePasswordService.updatepermission(this.staff.id, {
-                is_permission: +this.openJurisdiction
-              }).subscribe(() => {
-                this.show = false
-              })
+              this.rePasswordService
+                .updatepermission(this.staff.id, {
+                  is_permission: +this.openJurisdiction
+                })
+                .subscribe(() => {
+                  this.show = false
+                })
             }
           }
         }

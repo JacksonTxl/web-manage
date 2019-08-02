@@ -12,12 +12,18 @@ export class TransferService {
   courseInfo$ = new State({})
   transferInfo$ = new State({})
   timeScope$ = new State({})
-  constructor(private contractApi: ContractApi, private memberApi: ShopPersonalCourseApi, private courseApi: CourseApi) { }
+  constructor(
+    private contractApi: ContractApi,
+    private memberApi: ShopPersonalCourseApi,
+    private courseApi: CourseApi
+  ) {}
   @Effect()
   getMember(member: string) {
-    return this.memberApi.getMemberList(member).pipe(tap((res: any) => {
-      this.memberList$.commit(() => res.list)
-    }))
+    return this.memberApi.getMemberList(member).pipe(
+      tap((res: any) => {
+        this.memberList$.commit(() => res.list)
+      })
+    )
   }
   @Effect()
   getCourseInfo(id: string) {

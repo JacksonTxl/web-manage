@@ -1,11 +1,12 @@
 <template>
   <section class="sg-section">
     <h3>oss.service</h3>
-    <p>上传成功返回的KEY: {{key}}</p>
+    <p>上传成功返回的KEY: {{ key }}</p>
     <p>
       调用put方法，传入参数为{file[,type[,uploadProgress]]},file是文件对象（必传），type是文件类型（选用）
-      <br>
-      目前只有image类型默认image，uploadProgress是上传进度回调（选用）。成功回调next返回对象{fileKey: key}，上传成功返回，把key传给后台。失败回调error。
+      <br />
+      目前只有image类型默认image，uploadProgress是上传进度回调（选用）。成功回调next返回对象{fileKey:
+      key}，上传成功返回，把key传给后台。失败回调error。
     </p>
     <a-upload
       listType="picture-card"
@@ -13,9 +14,15 @@
       :showUploadList="false"
       :customRequest="upload"
     >
-      <img v-if="imageUrl" :src="imageUrl" width="128" height="auto" alt="avatar">
+      <img
+        v-if="imageUrl"
+        :src="imageUrl"
+        width="128"
+        height="auto"
+        alt="avatar"
+      />
       <div v-else>
-        <a-icon :type="loading ? 'loading' : 'plus'"/>
+        <a-icon :type="loading ? 'loading' : 'plus'" />
         <div class="ant-upload-text">Upload</div>
       </div>
     </a-upload>

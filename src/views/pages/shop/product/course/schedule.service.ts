@@ -1,4 +1,3 @@
-
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { RedirectService } from '@/services/redirect.service'
 @Injectable()

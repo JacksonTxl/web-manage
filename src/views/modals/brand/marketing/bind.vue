@@ -1,15 +1,17 @@
 <template>
-  <st-modal
-    :title="title"
-    v-model="show"
-    width="400px"
-    :footer="null"
-  >
+  <st-modal :title="title" v-model="show" width="400px" :footer="null">
     <div :class="basic()">
-      <img src="~@/assets/img/icon_weapp_grey.png" :class="activeClass"/>
-      <p>{{message}}</p>
+      <img src="~@/assets/img/icon_weapp_grey.png" :class="activeClass" />
+      <p>{{ message }}</p>
       <div>
-        <st-button block pill type="primary" icon="download" size="large" @click="bindMini">
+        <st-button
+          block
+          pill
+          type="primary"
+          icon="download"
+          size="large"
+          @click="bindMini"
+        >
           去绑定小程序
         </st-button>
       </div>

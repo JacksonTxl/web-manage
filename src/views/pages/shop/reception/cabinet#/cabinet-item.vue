@@ -1,21 +1,23 @@
 <template>
   <div :class="`${b()} ${b()}--${value.status}`">
-    <div :class="`${b('num')} ${b('num')}--${value.status}`">{{value.num}}</div>
+    <div :class="`${b('num')} ${b('num')}--${value.status}`">
+      {{ value.num }}
+    </div>
     <div v-if="!unavailable">
-      <div :class="b('name')">{{value.name}}</div>
-      <div :class="b('date')" class="mg-t8">{{value.date}}</div>
-      <div :class="b('time')">{{value.time}}</div>
+      <div :class="b('name')">{{ value.name }}</div>
+      <div :class="b('date')" class="mg-t8">{{ value.date }}</div>
+      <div :class="b('time')">{{ value.time }}</div>
     </div>
     <div v-else>
       <div :class="b('des')">柜门损坏</div>
     </div>
     <div :class="`${b('status')} ${b('status')}--${value.status}`">
-      <st-tag v-if="available" type="cabinet-available"/>
-      <st-tag v-if="inuse"  type="cabinet-inuse"/>
+      <st-tag v-if="available" type="cabinet-available" />
+      <st-tag v-if="inuse" type="cabinet-inuse" />
       <span v-if="unavailable">不可用</span>
     </div>
     <div v-if="!unavailable" :class="b('price')">
-      {{value.price}}
+      {{ value.price }}
     </div>
   </div>
 </template>

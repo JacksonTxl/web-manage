@@ -6,11 +6,17 @@
         <div :class="bItem('table-title')">
           <div
             :class="bItem('table-th')"
-            v-for="(item,index) in thsMember"
+            v-for="(item, index) in thsMember"
             :key="index"
-          >{{item.title}}</div>
+          >
+            {{ item.title }}
+          </div>
         </div>
-        <div :class="bItem('table-tr')" v-for="(item,index) in memberList" :key="index">
+        <div
+          :class="bItem('table-tr')"
+          v-for="(item, index) in memberList"
+          :key="index"
+        >
           <notice-item @editInfo="save" :info="item"></notice-item>
         </div>
       </div>
@@ -21,11 +27,17 @@
         <div :class="bItem('table-title')">
           <div
             :class="bItem('table-th')"
-            v-for="(item,index) in thsShop"
+            v-for="(item, index) in thsShop"
             :key="index"
-          >{{item.title}}</div>
+          >
+            {{ item.title }}
+          </div>
         </div>
-        <div :class="bItem('table-tr')" v-for="(item,index) in shopList" :key="index">
+        <div
+          :class="bItem('table-tr')"
+          v-for="(item, index) in shopList"
+          :key="index"
+        >
           <notice-item @editInfo="save" :info="item"></notice-item>
         </div>
       </div>

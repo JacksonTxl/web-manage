@@ -7,11 +7,13 @@ import { tap } from 'rxjs/operators'
 export class EditService implements RouteGuard {
   cardInfo$ = new State({})
   loading$ = new State({})
-  constructor(private cardsApi: CardsApi) { }
+  constructor(private cardsApi: CardsApi) {}
   getCardInfo(id: string) {
-    return this.cardsApi.getCardDepositInfoBackBrand(id).pipe(tap((res: any) => {
-      this.cardInfo$.commit(() => res.info)
-    }))
+    return this.cardsApi.getCardDepositInfoBackBrand(id).pipe(
+      tap((res: any) => {
+        this.cardInfo$.commit(() => res.info)
+      })
+    )
   }
   @Effect()
   editCard(data: CardsInput) {

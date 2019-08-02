@@ -1,5 +1,5 @@
 <template>
-  <div class='page-team'>
+  <div class="page-team">
     <router-view></router-view>
   </div>
 </template>

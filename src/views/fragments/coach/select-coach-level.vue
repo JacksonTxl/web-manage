@@ -2,13 +2,13 @@
   <div>
     <a-select
       :value="value"
-      @change="(val) => onChange(val)"
+      @change="val => onChange(val)"
       placeholder="请选择等级"
       :style="{ width }"
     >
       <a-select-option :value="0">请选择等级</a-select-option>
       <a-select-option :value="item.id" v-for="item in list" :key="item.id">
-        {{item.setting_name}}
+        {{ item.setting_name }}
       </a-select-option>
     </a-select>
   </div>

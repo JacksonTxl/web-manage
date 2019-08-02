@@ -3,31 +3,54 @@
     <a-row>
       <a-col :lg="24">
         <a-col :lg="18">
-          <shop-select style="width: 160px" v-model="query.shop_id" @change="onSingleSearch('shop_id', $event)"></shop-select>
-          <a-select style="width: 160px;margin-left:12px" :defaultValue="-1" placeholder="请选择订单状态" @change="onSingleSearch('order_status', $event)">
+          <shop-select
+            style="width: 160px"
+            v-model="query.shop_id"
+            @change="onSingleSearch('shop_id', $event)"
+          ></shop-select>
+          <a-select
+            style="width: 160px;margin-left:12px"
+            :defaultValue="-1"
+            placeholder="请选择订单状态"
+            @change="onSingleSearch('order_status', $event)"
+          >
             <a-select-option :value="-1">全部订单状态</a-select-option>
             <a-select-option :value="1">未完成</a-select-option>
             <a-select-option :value="2">已完成</a-select-option>
             <a-select-option :value="3">已取消</a-select-option>
             <a-select-option :value="4">已退款</a-select-option>
           </a-select>
-          <a-range-picker class="mg-l8" @change="onChooseDate" format="YYYY-MM-DD"/>
+          <a-range-picker
+            class="mg-l8"
+            @change="onChooseDate"
+            format="YYYY-MM-DD"
+          />
         </a-col>
         <a-col :lg="6">
-          <st-input-search placeholder="请输入会员名姓名、手机号进行查询" @search="onSingleSearch('keyword', $event)"/>
+          <st-input-search
+            placeholder="请输入会员名姓名、手机号进行查询"
+            @search="onSingleSearch('keyword', $event)"
+          />
         </a-col>
       </a-col>
       <a-col :lg="24" class="mg-t16">
         <st-table
           :columns="soldColums"
           :dataSource="soldInfo"
-          :scroll="{ x: 1300}"
+          :scroll="{ x: 1300 }"
           :loading="loading.getStaffSoldInfo"
           @change="onTableChange"
           :page="page"
         >
           <template slot="product_type_name" slot-scope="text, record">
-            <a href="javascript:;" class="mg-r8" @click="goCommodityDetai(record)" v-if="canJump(record)">{{ text }}</a>
+            <a
+              href="javascript:;"
+              class="mg-r8"
+              @click="goCommodityDetai(record)"
+              v-if="canJump(record)"
+            >
+              {{ text }}
+            </a>
             <span v-else>{{ text }}</span>
           </template>
         </st-table>
@@ -84,25 +107,29 @@ export default {
       let product_type = e.product_type
       let product_id = e.product_id
       let routeMap = {
-        1: { // 会籍卡
+        1: {
+          // 会籍卡
           name: 'brand-product-card-member-period-info',
           query: {
             id: product_id
           }
         },
-        2: { // 私教
+        2: {
+          // 私教
           name: 'brand-product-course-personal-info',
           query: {
             id: product_id
           }
         },
-        3: { // 团教
+        3: {
+          // 团教
           name: 'brand-product-course-team-info',
           query: {
             courseId: product_id
           }
         },
-        5: { // 储值卡
+        5: {
+          // 储值卡
           name: 'brand-product-card-deposit-info',
           query: {
             id: product_id

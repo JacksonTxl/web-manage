@@ -2,10 +2,17 @@
   <a-select
     :mode="mode"
     allowClear
-    :placeholder="placeholder||'全部'"
+    :placeholder="placeholder || '全部'"
     :value="value"
-    @change="onChange">
-    <a-select-option :value="coachLevel.id" v-for="coachLevel in coachLevelOptions" :key="coachLevel.id">{{coachLevel.name}}</a-select-option>
+    @change="onChange"
+  >
+    <a-select-option
+      :value="coachLevel.id"
+      v-for="coachLevel in coachLevelOptions"
+      :key="coachLevel.id"
+    >
+      {{ coachLevel.name }}
+    </a-select-option>
   </a-select>
 </template>
 
@@ -47,7 +54,8 @@ export default {
     },
     getShopList() {
       this.coachLevelApi.getCoachLevelListAll().subscribe(res => {
-        const defaultOption = this.useType === 'form' ? {} : { id: -1, name: ' 全部' }
+        const defaultOption =
+          this.useType === 'form' ? {} : { id: -1, name: ' 全部' }
         this.coachLevelOptions = [defaultOption, ...res.list]
       })
     }

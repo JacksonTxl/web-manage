@@ -46,12 +46,12 @@ export class OverviewApi extends Api {
   }
 }
 
-export interface Version{
-    version: string
+export interface Version {
+  version: string
 }
 
 export interface RevenueParams {
-  recently_day?: number,
-  start_date?:string,
-  end_date?:string
+  recently_day?: number
+  start_date?: string
+  end_date?: string
 }

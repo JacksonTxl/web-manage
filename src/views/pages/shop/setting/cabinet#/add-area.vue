@@ -1,10 +1,14 @@
 <template>
   <div :class="b()">
-    <a-input :class="b('input')" v-model="areaName" placeholder="输入区域名称，不超过15个字"/>
+    <a-input
+      :class="b('input')"
+      v-model="areaName"
+      placeholder="输入区域名称，不超过15个字"
+    />
     <span :class="b('action')">
       <a @click="onSumbit" :loading="loading.add">保存</a>
       <a @click="cancel">
-        <st-icon type="close" class="mg-l8" :class="b('close')"/>
+        <st-icon type="close" class="mg-l8" :class="b('close')" />
       </a>
     </span>
   </div>

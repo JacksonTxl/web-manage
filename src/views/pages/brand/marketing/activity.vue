@@ -1,27 +1,35 @@
 <template>
   <div :class="activity()">
-    <p v-if="info.is_auth===0"></p>
-    <div v-if="info.is_auth===1" :class="activity('flexbox')">
+    <p v-if="info.is_auth === 0"></p>
+    <div v-if="info.is_auth === 1" :class="activity('flexbox')">
       <div :class="activity('left')">
-        <h5-component  id="h5" :class="{fixed: isFixed}"></h5-component>
+        <h5-component id="h5" :class="{ fixed: isFixed }"></h5-component>
       </div>
       <div :class="activity('right')">
         <a-tabs defaultActiveKey="1">
           <a-tab-pane tab="活动轮播图" key="1">
-            <row-container-component title="头图活动广告" subTitle="拖动图片进行排序，最多添加5张轮播图广告">
+            <row-container-component
+              title="头图活动广告"
+              subTitle="拖动图片进行排序，最多添加5张轮播图广告"
+            >
               <slider-component v-if="sliderLoaded"></slider-component>
             </row-container-component>
           </a-tab-pane>
           <a-tab-pane tab="营销位活动" key="2" forceRender>
-            <row-container-component title="营销活动推广设置" subTitle="推广活动数量会对图片尺寸有不同要求">
+            <row-container-component
+              title="营销活动推广设置"
+              subTitle="推广活动数量会对图片尺寸有不同要求"
+            >
               <event-component v-if="eventLoaded"></event-component>
             </row-container-component>
           </a-tab-pane>
         </a-tabs>
       </div>
     </div>
-    <div v-if="info.is_auth===1" :class="activity('btn-group')">
-      <st-button type="primary" :loading="loading.save" @click="saveConfirm(2)">保存并提交</st-button>
+    <div v-if="info.is_auth === 1" :class="activity('btn-group')">
+      <st-button type="primary" :loading="loading.save" @click="saveConfirm(2)">
+        保存并提交
+      </st-button>
       <!-- <st-button type="primary" :loading="loading.save" @click="saveConfirm(2)">提交</st-button> -->
     </div>
   </div>
@@ -34,9 +42,7 @@ import SliderComponent from './components#/slider.component'
 import EventComponent from './components#/event.component'
 import { NotificationService } from '@/services/notification.service'
 import { ActivityService } from './activity.service'
-import {
-  cloneDeep
-} from 'lodash-es'
+import { cloneDeep } from 'lodash-es'
 export default {
   name: 'H5WrapperComponent',
   components: {
@@ -102,7 +108,10 @@ export default {
   },
   methods: {
     handleScroll() {
-      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      let scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop
       let offsetTop = this.offsetTop
       if (scrollTop > offsetTop) {
         this.isFixed = true
@@ -161,9 +170,13 @@ export default {
     },
     getH5Info() {
       let that = this
-      this.h5WrapperService.getH5Info({ category: 1 }).subscribe(() => { this.sliderLoaded = true })
+      this.h5WrapperService.getH5Info({ category: 1 }).subscribe(() => {
+        this.sliderLoaded = true
+      })
       this.h5WrapperService.getH5Info({ category: 2 }).subscribe()
-      this.h5WrapperService.getH5Info({ category: 3 }).subscribe(() => { this.eventLoaded = true })
+      this.h5WrapperService.getH5Info({ category: 3 }).subscribe(() => {
+        this.eventLoaded = true
+      })
       this.h5WrapperService.getH5Info({ category: 4 }).subscribe(res => {
         let staff_id = []
         if (res.content) {
@@ -176,5 +189,4 @@ export default {
     }
   }
 }
-
 </script>

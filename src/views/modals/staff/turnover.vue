@@ -1,17 +1,25 @@
 <template>
-  <st-modal title='员工离职'
-    @ok='onSubmit'
-    :okText="!operate? '知道了':'保存'"
+  <st-modal
+    title="员工离职"
+    @ok="onSubmit"
+    :okText="!operate ? '知道了' : '保存'"
     size="small"
     wrapClassName="modal-staff-turnover"
     :confirmLoading="loading.putStaffBrandQuit"
-    v-model='show'>
+    v-model="show"
+  >
     <section>
       <staff-info :staff="staff"></staff-info>
-      <staff-modal-tips :list="list"  :type="2" :canNotDelete="!operate" v-if="list && list.length" class="modal-tips"></staff-modal-tips>
-      <st-form class="modal-staff-turnover__form" labelWidth='60px'>
-        <st-form-item  labelWidth='60px' label="离职日期" class="mg-b0">
-          <a-date-picker @change="onDateChange"/>
+      <staff-modal-tips
+        :list="list"
+        :type="2"
+        :canNotDelete="!operate"
+        v-if="list && list.length"
+        class="modal-tips"
+      ></staff-modal-tips>
+      <st-form class="modal-staff-turnover__form" labelWidth="60px">
+        <st-form-item labelWidth="60px" label="离职日期" class="mg-b0">
+          <a-date-picker @change="onDateChange" />
         </st-form-item>
       </st-form>
     </section>
@@ -67,16 +75,20 @@ export default {
       this.dateString = dateString
     },
     isTurnover() {
-      this.turnoverService.getStaffCheckJob(String(this.staff.id)).subscribe(() => {
-        console.log('list', this.list)
-      })
+      this.turnoverService
+        .getStaffCheckJob(String(this.staff.id))
+        .subscribe(() => {
+          console.log('list', this.list)
+        })
     },
     onSubmit() {
       this.show = false
       if (this.operate) {
-        this.turnoverService.putStaffBrandQuit({ id: this.staff.id, quit_time: this.dateString }).subscribe(res => {
-          this.$router.push({ force: true })
-        })
+        this.turnoverService
+          .putStaffBrandQuit({ id: this.staff.id, quit_time: this.dateString })
+          .subscribe(res => {
+            this.$router.push({ force: true })
+          })
       }
     }
   }

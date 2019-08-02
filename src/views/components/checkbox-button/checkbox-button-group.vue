@@ -1,4 +1,3 @@
-
 <template>
   <a-button-group class="st-checkbox-button-group">
     <slot></slot>

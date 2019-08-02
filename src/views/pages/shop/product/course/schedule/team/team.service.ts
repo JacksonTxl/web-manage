@@ -15,14 +15,21 @@ export class TeamService implements RouteGuard {
     copy: 'shop:schedule:team_course_schedule|copy'
   })
 
-  constructor(private commonService: CommonService,
+  constructor(
+    private commonService: CommonService,
     private authService: AuthService,
-    private scheduleService: ScheduleService) {
+    private scheduleService: ScheduleService
+  ) {
     this.state$ = new State({})
   }
 
   init(query: any) {
-    return forkJoin(this.commonService.getCoachList(), this.commonService.getCourseList(), this.commonService.getCourtList(), this.scheduleService.getList(query))
+    return forkJoin(
+      this.commonService.getCoachList(),
+      this.commonService.getCourseList(),
+      this.commonService.getCourtList(),
+      this.scheduleService.getList(query)
+    )
   }
 
   beforeEach(to: ServiceRoute, form: ServiceRoute) {

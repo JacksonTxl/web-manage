@@ -1,7 +1,10 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
 import { tap, pluck } from 'rxjs/operators'
 import { State, Computed, Effect } from 'rx-state'
-import { BrandTeamCourseApi, GetTeamBrandCourseListInput } from '@/api/v1/course/team/brand'
+import {
+  BrandTeamCourseApi,
+  GetTeamBrandCourseListInput
+} from '@/api/v1/course/team/brand'
 import { AuthService } from '@/services/auth.service'
 import { forkJoin } from 'rxjs'
 

@@ -1,15 +1,14 @@
 <template>
   <st-modal
-    title='选择所属部门'
-    @ok='save'
+    title="选择所属部门"
+    @ok="save"
     :confirmLoading="loading.transferBrand"
     size="small"
-    v-model='show'>
-    <a-tree
-      @select="onSelect"
-      :treeData="departmentOptions">
-      <template slot="title" slot-scope="{title}">
-        title: {{title}}
+    v-model="show"
+  >
+    <a-tree @select="onSelect" :treeData="departmentOptions">
+      <template slot="title" slot-scope="{ title }">
+        title: {{ title }}
       </template>
     </a-tree>
   </st-modal>
@@ -55,20 +54,29 @@ export default {
     save(e) {
       e.preventDefault()
       console.log('department_id', this.keys)
-      this.batchImportService.transferBrand({
-        ids: this.ids,
-        department_id: this.department_id
-      }).subscribe((res) => {
-        this.show = false
-        this.$emit('ok', {
+      this.batchImportService
+        .transferBrand({
+          ids: this.ids,
           department_id: this.department_id
         })
-      })
+        .subscribe(res => {
+          this.show = false
+          this.$emit('ok', {
+            department_id: this.department_id
+          })
+        })
     },
     traverseTree(tree) {
       // 将ID转化为String UI组件需要
       return tree.map(item => {
-        return item.children ? { name: item.name, children: this.traverseTree(item.children), id: item.id + '', count: item.count } : item
+        return item.children
+          ? {
+              name: item.name,
+              children: this.traverseTree(item.children),
+              id: item.id + '',
+              count: item.count
+            }
+          : item
       })
     },
     getDepartmentList() {

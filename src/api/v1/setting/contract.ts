@@ -51,7 +51,7 @@ export class ContractApi extends Api {
   /**
    * 合同编号自动生成
    */
-  getCodeNumber(id:string) {
+  getCodeNumber(id: string) {
     return this.http.get(`/v1/setting/contract/codenumber/${id}`)
   }
 }

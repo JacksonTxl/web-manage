@@ -31,7 +31,8 @@
               </st-form-item>
               <st-form-item label="支持入场范围">
                 <a href>
-                  <st-icon type="anticon:plus"></st-icon>添加门店
+                  <st-icon type="anticon:plus"></st-icon>
+                  添加门店
                 </a>
               </st-form-item>
 
@@ -51,8 +52,11 @@
               </st-form-item>
               <st-t3 class="mg-y32">表单校验</st-t3>
               <st-form-item label="课程名称" required>
-                <a-input placeholder="支持输入4~30个字的课程名称" maxlength="30"
-                  v-decorator="ruleConfig.courseName"/>
+                <a-input
+                  placeholder="支持输入4~30个字的课程名称"
+                  maxlength="30"
+                  v-decorator="ruleConfig.courseName"
+                />
               </st-form-item>
               <st-form-item labelFix>
                 <st-button type="primary" @click="save">保存</st-button>
@@ -64,14 +68,19 @@
     </section>
 
     <section class="mg-t16">
-      <p>row的gutter固定为8 col的lg=10 分割线使用 st-hr 分割线上下margin为32px</p>
+      <p>
+        row的gutter固定为8 col的lg=10 分割线使用 st-hr 分割线上下margin为32px
+      </p>
       <div class="sg-app-content">
         <st-panel>
           <st-form>
             <a-row :gutter="8">
               <a-col :lg="10" :xs="22" :offset="1">
                 <st-form-item label="员工头像">
-                  <a-upload style="width:164px;display:inline-block;height:164px;" type="drag">
+                  <a-upload
+                    style="width:164px;display:inline-block;height:164px;"
+                    type="drag"
+                  >
                     <st-icon type="anticon:plus"></st-icon>
                   </a-upload>
                 </st-form-item>
@@ -92,7 +101,10 @@
               </a-col>
               <a-col :lg="10" :xs="22" :offset="1">
                 <st-form-item label="员工头像">
-                  <a-upload style="width:164px;display:inline-block;height:164px;" type="drag">
+                  <a-upload
+                    style="width:164px;display:inline-block;height:164px;"
+                    type="drag"
+                  >
                     <st-icon type="anticon:plus"></st-icon>
                   </a-upload>
                 </st-form-item>
@@ -117,7 +129,9 @@
                     <div slot="addonAfter" class="st-form-item-unit">元/节</div>
                   </a-input>
                 </st-form-item>
-                <st-form-item class="mg-b0" label="注意" required>在最后一行st-form-item 添加.mg-b0 修正</st-form-item>
+                <st-form-item class="mg-b0" label="注意" required>
+                  在最后一行st-form-item 添加.mg-b0 修正
+                </st-form-item>
               </a-col>
             </a-row>
             <a-row :gutter="8">
@@ -128,7 +142,9 @@
             <a-row :gutter="8">
               <a-col :offset="1">
                 <st-form-item labelFix>
-                  <st-button type="primary" ghost>保存 使用labelFix修正margin-left</st-button>
+                  <st-button type="primary" ghost>
+                    保存 使用labelFix修正margin-left
+                  </st-button>
                   <st-button class="mg-l16" type="primary">继续 填写</st-button>
                 </st-form-item>
               </a-col>

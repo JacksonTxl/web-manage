@@ -3,8 +3,9 @@
     :class="sliderButton()"
     :style="wrapperStyle"
     ref="button"
-    @mousedown="onMouseDown">
-    <div :class="sliderButton('toolTip')">{{formatValue}}</div>
+    @mousedown="onMouseDown"
+  >
+    <div :class="sliderButton('toolTip')">{{ formatValue }}</div>
   </div>
 </template>
 
@@ -60,7 +61,7 @@ export default {
       return this.$parent.disable
     },
     currentPosition() {
-      return `${(this.value - this.min) / (this.max - this.min) * 100}%`
+      return `${((this.value - this.min) / (this.max - this.min)) * 100}%`
     },
     enableFormat() {
       // tipFormatter
@@ -68,7 +69,10 @@ export default {
     },
     formatValue() {
       // 格式化后的tips数据
-      return (this.enableFormat && this.$parent.tipFormatter(this.value)) || this.value
+      return (
+        (this.enableFormat && this.$parent.tipFormatter(this.value)) ||
+        this.value
+      )
     }
   },
   watch: {
@@ -79,7 +83,9 @@ export default {
   mounted() {},
   methods: {
     onMouseDown(event) {
-      if (this.disable) { event.preventDefault() }
+      if (this.disable) {
+        event.preventDefault()
+      }
       this.onDragStart(event)
       window.addEventListener('mousemove', this.onDragging)
       window.addEventListener('mouseup', this.onDragEnd)
@@ -91,7 +97,7 @@ export default {
         this.$parent.resetSize()
         let diff = 0
         this.currentX = event.clientX
-        diff = (this.currentX - this.startX) / this.$parent.sliderSize * 100
+        diff = ((this.currentX - this.startX) / this.$parent.sliderSize) * 100
         this.newPosition = this.startPosition + diff
         this.setPosition(this.newPosition)
       }
@@ -127,7 +133,8 @@ export default {
       }
       const lengthPerStep = 100 / ((this.max - this.min) / this.step)
       const steps = Math.round(newPosition / lengthPerStep)
-      let value = steps * lengthPerStep * (this.max - this.min) * 0.01 + this.min
+      let value =
+        steps * lengthPerStep * (this.max - this.min) * 0.01 + this.min
       value = parseFloat(value.toFixed(this.precision))
       this.$emit('input', value)
       if (!this.dragging && this.value !== this.oldValue) {
@@ -141,5 +148,4 @@ export default {
     window.removeEventListener('contextmenu', this.onDragEnd)
   }
 }
-
 </script>

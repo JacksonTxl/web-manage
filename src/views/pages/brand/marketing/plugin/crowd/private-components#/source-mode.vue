@@ -1,24 +1,27 @@
-
 <template>
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">选择来源</span>
-    <template v-for="(tag,index) in value.getData.source_channel">
+    <template v-for="(tag, index) in value.getData.source_channel">
       <a-tooltip :key="index" :title="tag.name">
-        <a-tag :key="index" :closable="true" :afterClose="() => handleClose(tag,index)">{{tag.name}}</a-tag>
+        <a-tag
+          :key="index"
+          :closable="true"
+          :afterClose="() => handleClose(tag, index)"
+        >
+          {{ tag.name }}
+        </a-tag>
       </a-tooltip>
     </template>
     <a-tag style="background: #fff; borderStyle: dashed;">
       <a-dropdown>
         <a class="ant-dropdown-link">
-          <a-icon type="plus"/>添加
+          <a-icon type="plus" />
+          添加
         </a>
         <a-menu slot="overlay">
-          <a-menu-item
-            v-for="(item,key,index) in sourceOptions"
-            :key="index"
-          >
-            <a @click="dropdownFunc(item,index)">{{item.name}}</a>
+          <a-menu-item v-for="(item, key, index) in sourceOptions" :key="index">
+            <a @click="dropdownFunc(item, index)">{{ item.name }}</a>
           </a-menu-item>
         </a-menu>
       </a-dropdown>
@@ -72,7 +75,9 @@ export default {
   },
   methods: {
     dropdownFunc(item, index) {
-      const arr = this.tags.filter(i => { return i.value === item.value })
+      const arr = this.tags.filter(i => {
+        return i.value === item.value
+      })
       if (arr.length > 0) {
         return
       }

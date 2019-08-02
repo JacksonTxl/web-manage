@@ -1,22 +1,26 @@
-
 import { Injectable } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { tap, pluck, switchMap, debounceTime } from 'rxjs/operators'
-import { PersonalCommonApi, CoachListQuery, MemberListQuery, Consume } from '@/api/v1/schedule/personal/common'
+import {
+  PersonalCommonApi,
+  CoachListQuery,
+  MemberListQuery,
+  Consume
+} from '@/api/v1/schedule/personal/common'
 
 export interface SetState {
-  courseOptions: any[],
-  coachOptions: any[],
-  memberOptions: any[],
-  courtOptions: any[],
-  consumeOptions: any[],
-  courseCoachOptions: any[],
-  timeOptions: any[],
-  dateOptions: any[],
+  courseOptions: any[]
+  coachOptions: any[]
+  memberOptions: any[]
+  courtOptions: any[]
+  consumeOptions: any[]
+  courseCoachOptions: any[]
+  timeOptions: any[]
+  dateOptions: any[]
   coachInBatchOptions: any[]
 }
-export interface Staff{
-  id: number,
+export interface Staff {
+  id: number
   staff_name: String
 }
 @Injectable()
@@ -41,14 +45,20 @@ export class PersonalScheduleCommonService {
       timeOptions: [],
       dateOptions: []
     })
-    this.consumeOptions$ = new Computed(this.state$.pipe(pluck('consumeOptions')))
+    this.consumeOptions$ = new Computed(
+      this.state$.pipe(pluck('consumeOptions'))
+    )
     this.courseOptions$ = new Computed(this.state$.pipe(pluck('courseOptions')))
     this.coachOptions$ = new Computed(this.state$.pipe(pluck('coachOptions')))
     this.memberOptions$ = new Computed(this.state$.pipe(pluck('memberOptions')))
-    this.courseCoachOptions$ = new Computed(this.state$.pipe(pluck('courseCoachOptions')))
+    this.courseCoachOptions$ = new Computed(
+      this.state$.pipe(pluck('courseCoachOptions'))
+    )
     this.dateOptions$ = new Computed(this.state$.pipe(pluck('dateOptions')))
     this.timeOptions$ = new Computed(this.state$.pipe(pluck('timeOptions')))
-    this.coachInBatchOptions$ = new Computed(this.state$.pipe(pluck('coachInBatchOptions')))
+    this.coachInBatchOptions$ = new Computed(
+      this.state$.pipe(pluck('coachInBatchOptions'))
+    )
   }
   /**
    *
@@ -62,14 +72,17 @@ export class PersonalScheduleCommonService {
         this.state$.commit(state => {
           state.memberOptions = res.list
         })
-      }))
+      })
+    )
   }
   getCourseCoachList(id: any) {
-    return this.commonApi.getCourseCoachList(id).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.courseCoachOptions = res.list
+    return this.commonApi.getCourseCoachList(id).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.courseCoachOptions = res.list
+        })
       })
-    }))
+    )
   }
   /**
    *
@@ -77,11 +90,13 @@ export class PersonalScheduleCommonService {
    * 获取课程Options
    */
   getCourseList(params: Consume) {
-    return this.commonApi.getCourseList(params).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.courseOptions = res.list
+    return this.commonApi.getCourseList(params).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.courseOptions = res.list
+        })
       })
-    }))
+    )
   }
   /**
    *
@@ -89,18 +104,22 @@ export class PersonalScheduleCommonService {
    * 获取教练Options
    */
   getCoachList() {
-    return this.commonApi.getCoachList({ is_batch: 0 }).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.coachOptions = res.list
+    return this.commonApi.getCoachList({ is_batch: 0 }).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.coachOptions = res.list
+        })
       })
-    }))
+    )
   }
   getCoachListInBatch() {
-    return this.commonApi.getCoachListInBatch({ is_batch: 1 }).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.coachInBatchOptions = res.list
+    return this.commonApi.getCoachListInBatch({ is_batch: 1 }).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.coachInBatchOptions = res.list
+        })
       })
-    }))
+    )
   }
   /**
    *
@@ -119,31 +138,36 @@ export class PersonalScheduleCommonService {
             return ele
           })
         })
-      }))
+      })
+    )
   }
   /**
- *
- * @param query
- * 获取预约日期Options
- */
+   *
+   * @param query
+   * 获取预约日期Options
+   */
   getDateList(id: any) {
-    return this.commonApi.getDateList(id).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.dateOptions = res.list
+    return this.commonApi.getDateList(id).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.dateOptions = res.list
+        })
       })
-    }))
+    )
   }
   /**
-*
-* @param query
-* 获取预约时间Options
-*/
+   *
+   * @param query
+   * 获取预约时间Options
+   */
   getTimeList(query: any) {
-    return this.commonApi.getTimeList(query).pipe(tap(res => {
-      this.state$.commit(state => {
-        state.timeOptions = res.info
+    return this.commonApi.getTimeList(query).pipe(
+      tap(res => {
+        this.state$.commit(state => {
+          state.timeOptions = res.info
+        })
       })
-    }))
+    )
   }
   /**
    *

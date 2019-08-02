@@ -8,7 +8,7 @@
       >
         <div v-for="(item, index) in value" :key="index">
           <a-checkbox :value="item.id">
-            {{item.condition_name}}
+            {{ item.condition_name }}
           </a-checkbox>
         </div>
       </a-checkbox-group>

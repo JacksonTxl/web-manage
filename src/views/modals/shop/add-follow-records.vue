@@ -6,7 +6,7 @@
           <st-form-item label="跟进记录">
             <a-textarea
               placeholder="填写跟进方式"
-              :autosize="{ minRows:3, maxRows: 6 }"
+              :autosize="{ minRows: 3, maxRows: 6 }"
               v-decorator="basicInfoRuleList.follow_content"
             />
           </st-form-item>
@@ -15,7 +15,10 @@
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item label="跟进方式">
-            <a-select placeholder="请选择跟进方式" v-decorator="basicInfoRuleList.follow_way">
+            <a-select
+              placeholder="请选择跟进方式"
+              v-decorator="basicInfoRuleList.follow_way"
+            >
               <a-select-option :value="1">电话</a-select-option>
               <a-select-option :value="2">微信</a-select-option>
               <a-select-option :value="3">客户到访</a-select-option>
@@ -27,7 +30,10 @@
       <a-row :gutter="8" class="mg-t8">
         <a-col :lg="24">
           <st-form-item label="跟进状态">
-            <a-select placeholder="请选择跟进状态" v-decorator="basicInfoRuleList.follow_status">
+            <a-select
+              placeholder="请选择跟进状态"
+              v-decorator="basicInfoRuleList.follow_status"
+            >
               <a-select-option :value="1">已电话</a-select-option>
               <a-select-option :value="2">已邀约</a-select-option>
               <a-select-option :value="3">邀约成功</a-select-option>

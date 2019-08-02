@@ -10,8 +10,10 @@ export class MarketingTitleService {
   constructor(private marketingApi: MarketingApi) {}
   @Effect()
   getPluginInfo(type: number) {
-    return this.marketingApi.getPluginInfo(type).pipe(tap((res:any) => {
-      this.info$.commit(() => res.info)
-    }))
+    return this.marketingApi.getPluginInfo(type).pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
+      })
+    )
   }
 }

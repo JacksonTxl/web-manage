@@ -1,7 +1,11 @@
 <template>
   <st-panel app :tabs="authTabs">
     <div slot="actions">
-      <st-input-search placeholder="输入团体课名称" v-model="query.course_name" @search="onSearchCourseName"></st-input-search>
+      <st-input-search
+        placeholder="输入团体课名称"
+        v-model="query.course_name"
+        @search="onSearchCourseName"
+      ></st-input-search>
     </div>
     <router-view></router-view>
   </st-panel>

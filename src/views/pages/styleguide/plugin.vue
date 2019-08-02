@@ -2,11 +2,11 @@
   <div>
     <h2>Plugin 插件</h2>
     <!-- 图片预览 -->
-    <viewer-demo/>
+    <viewer-demo />
     <!-- 数字动画 -->
-    <countup-demo/>
+    <countup-demo />
     <!-- 图片裁剪 -->
-    <cropper-demo/>
+    <cropper-demo />
     <editor-demo />
   </div>
 </template>

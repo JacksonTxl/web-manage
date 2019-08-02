@@ -5,7 +5,9 @@
         v-for="item in weekList"
         :key="item.value"
         :value="item.value"
-      >{{item.label}}</st-checkbox-button-item>
+      >
+        {{ item.label }}
+      </st-checkbox-button-item>
     </st-checkbox-button-group>
     <div class="shop-hour-picker shop-hour-picker-box">
       <a-row class="shop-hour-picker__title-box">
@@ -15,24 +17,40 @@
             <li class="shop-hour-picker__title-box-time-comment">00:00</li>
             <li
               class="shop-hour-picker__title-box-time-06 shop-hour-picker__title-box-time-comment"
-            >06:00</li>
+            >
+              06:00
+            </li>
             <li
               class="shop-hour-picker__title-box-time-12 shop-hour-picker__title-box-time-comment"
-            >12:00</li>
+            >
+              12:00
+            </li>
             <li
               class="shop-hour-picker__title-box-time-18 shop-hour-picker__title-box-time-comment"
-            >18:00</li>
+            >
+              18:00
+            </li>
             <li
               class="shop-hour-picker__title-box-time-24 shop-hour-picker__title-box-time-comment"
-            >24:00</li>
+            >
+              24:00
+            </li>
           </ul>
         </a-col>
-        <a-col :span="4" class="shop-hour-picker__title-box-operate">操作</a-col>
+        <a-col :span="4" class="shop-hour-picker__title-box-operate">
+          操作
+        </a-col>
       </a-row>
-      <div class="slider" v-for="(item,index) in setSlider.infoList" :key="index">
+      <div
+        class="slider"
+        v-for="(item, index) in setSlider.infoList"
+        :key="index"
+      >
         <a-row>
           <a-col :span="2">
-            <span class="slider__title">{{setSlider.infoList[index].title - 1 | filterWeekDay}}</span>
+            <span class="slider__title">
+              {{ (setSlider.infoList[index].title - 1) | filterWeekDay }}
+            </span>
           </a-col>
           <a-col :span="18">
             <a-slider
@@ -44,20 +62,26 @@
               :tipFormatter="formatter"
               :tooltipVisible="true"
               @change="sliderFunc"
-              @afterChange="onAfterChange(item,index)"
+              @afterChange="onAfterChange(item, index)"
               v-model="setSlider.infoList[index].value"
             />
           </a-col>
           <a-col :span="4">
-            <a-popover placement="bottomRight" trigger="click" class="slider-copy-bottom">
+            <a-popover
+              placement="bottomRight"
+              trigger="click"
+              class="slider-copy-bottom"
+            >
               <template slot="content">
                 <a-checkbox-group
                   @change="onChange"
                   class="slider-copy"
-                  v-for=" (weekInfo,index) in item.week"
+                  v-for="(weekInfo, index) in item.week"
                   :key="index"
                 >
-                  <a-checkbox :value="index" :disabled="!weekInfo">{{index}}</a-checkbox>
+                  <a-checkbox :value="index" :disabled="!weekInfo">
+                    {{ index }}
+                  </a-checkbox>
                 </a-checkbox-group>
               </template>
               <span @click="copyTo(index)">复制到</span>
@@ -112,7 +136,15 @@ export default {
   },
   filters: {
     filterWeekDay(value) {
-      const defaultWeekList = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+      const defaultWeekList = [
+        '周一',
+        '周二',
+        '周三',
+        '周四',
+        '周五',
+        '周六',
+        '周日'
+      ]
       return defaultWeekList[value]
     }
   },
@@ -150,7 +182,7 @@ export default {
       let weekArr = []
       let getSlider = cloneDeep(getSliderData)
       let filterSlider = []
-      weekArr = getSlider.business_time.map((item) => {
+      weekArr = getSlider.business_time.map(item => {
         console.log(item)
         filterSlider.push({
           title: item.week_day,
@@ -254,10 +286,10 @@ export default {
       return /^\d+$/.test(item.value[index]) && item.value[index] > 9
         ? item.value[index] + ':00'
         : /^\d+$/.test(item.value[index]) && item.value[index] <= 9
-          ? '0' + item.value[index] + ':00'
-          : !/^\d+$/.test(item.value[index]) && item.value[index] <= 9
-            ? '0' + (item.value[index] + '').replace(/.5/gi, ':30')
-            : (item.value[index] + '').replace(/.5/gi, ':30') + ''
+        ? '0' + item.value[index] + ':00'
+        : !/^\d+$/.test(item.value[index]) && item.value[index] <= 9
+        ? '0' + (item.value[index] + '').replace(/.5/gi, ':30')
+        : (item.value[index] + '').replace(/.5/gi, ':30') + ''
     },
     getArrDifference(arr1, arr2) {
       return arr1.concat(arr2).filter(function(v, i, arr) {

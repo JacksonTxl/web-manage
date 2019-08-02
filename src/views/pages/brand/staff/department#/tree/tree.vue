@@ -10,7 +10,6 @@
       @node-item-detail="getNodeItemDetail"
     ></tree-item>
   </ul>
-
 </template>
 
 <script>
@@ -53,15 +52,31 @@ export default {
         item[opString] = item.name === node.name
         // item.count && (this.count = this.count + item.count)
         const obj = { [opString]: item.name === node.name }
-        return item.children ? { ...obj, name: item.name, children: this.traverseTree(node, item.children, opString), id: item.id, count: item.count } : item
+        return item.children
+          ? {
+              ...obj,
+              name: item.name,
+              children: this.traverseTree(node, item.children, opString),
+              id: item.id,
+              count: item.count
+            }
+          : item
       })
     },
     addItem(item) {
-      this.treeDataSelf = this.traverseTree(item, [cloneDeep(this.treeData)], 'isAdd')[0]
+      this.treeDataSelf = this.traverseTree(
+        item,
+        [cloneDeep(this.treeData)],
+        'isAdd'
+      )[0]
       this.$emit('add-item', item)
     },
     editItem(item) {
-      this.treeDataSelf = this.traverseTree(item, [cloneDeep(this.treeData)], 'isEdit')[0]
+      this.treeDataSelf = this.traverseTree(
+        item,
+        [cloneDeep(this.treeData)],
+        'isEdit'
+      )[0]
       this.$emit('edit-item', item)
     },
     deleteItem(item) {

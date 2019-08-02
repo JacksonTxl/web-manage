@@ -1,49 +1,48 @@
-.modal-sold-lease-transfer{
-  &__content{
-    .mgb-18{
+.modal-sold-lease-transfer {
+  &__content {
+    .mgb-18 {
       margin-bottom: 18px;
     }
-    .mgb-24{
+    .mgb-24 {
       margin-bottom: 24px;
     }
   }
-  &__info{
-    &:not('.personal'){
+  &__info {
+    &:not('.personal') {
       border-bottom: 1px solid @divider;
     }
   }
-  &__table{
+  &__table {
     width: 100%;
     margin-bottom: 32px;
-    .table-header{
+    .table-header {
       height: 64px;
       .bg(@table-bg-color-thead-second);
-      
     }
-    .table-item{
+    .table-item {
       .lh(24px);
       border-bottom: 1px solid @divider;
-      &:nth-child(even){
+      &:nth-child(even) {
         .bg(@table-bg-color-row-2);
       }
     }
   }
-  &__transfer{
+  &__transfer {
     padding: 24px 0 0;
-    .add-text{
+    .add-text {
       margin: 4px 0 0;
       .fz(12px);
       .lh(22px);
-      >span{
+      > span {
         .c(@link-color);
         cursor: pointer;
       }
     }
   }
-  &__time{
+  &__time {
     display: flex;
     align-items: center;
-    >span{
+    > span {
       flex: none;
       height: 32px;
       margin: 0 4px 24px;
@@ -58,19 +57,19 @@
       }
     }
   }
-  &__contract{
+  &__contract {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    .create-button{
+    .create-button {
       flex: none;
       margin-left: 8px;
     }
   }
-  .ant-modal-body{
+  .ant-modal-body {
     padding-bottom: 0;
   }
-  .ant-modal-footer{
+  .ant-modal-footer {
     padding: 24px;
   }
 }

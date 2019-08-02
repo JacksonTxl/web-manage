@@ -11,23 +11,30 @@ interface CardsTableModelState {
 }
 @Injectable()
 export class MissingCaedService extends Store<CardsTableModelState> {
-  paymentMethodList$ = new State({});
+  paymentMethodList$ = new State({})
   staffList$ = new State([])
   // loading$ = new State({});
-  constructor(private memberApi: MemberApi, private transactionApi: TransactionApi) {
+  constructor(
+    private memberApi: MemberApi,
+    private transactionApi: TransactionApi
+  ) {
     super()
   }
   @Effect()
-  getMemberList(key_word:string) {
-    return this.memberApi.getSearchMemberList({ key_word }).pipe(tap((res:any) => {
-      this.staffList$.commit(() => res.list)
-    }))
+  getMemberList(key_word: string) {
+    return this.memberApi.getSearchMemberList({ key_word }).pipe(
+      tap((res: any) => {
+        this.staffList$.commit(() => res.list)
+      })
+    )
   }
   @Effect()
   getPaymentMethodList(order_id: number) {
-    return this.transactionApi.getPaymentMethodList(order_id).pipe(tap((res:any) => {
-      this.paymentMethodList$.commit(() => res.list)
-    }))
+    return this.transactionApi.getPaymentMethodList(order_id).pipe(
+      tap((res: any) => {
+        this.paymentMethodList$.commit(() => res.list)
+      })
+    )
   }
   getMemberPhysical(data: any) {
     return this.memberApi.getMemberPhysical(data)

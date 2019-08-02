@@ -7,28 +7,33 @@ import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class PosterService {
-  token$ = new State({});
-  info$ = new State({});
-  loading$ = new State({});
-  qrcode$ = new State({});
-  constructor(protected marketingApi: MarketingApi) {
-  }
+  token$ = new State({})
+  info$ = new State({})
+  loading$ = new State({})
+  qrcode$ = new State({})
+  constructor(protected marketingApi: MarketingApi) {}
   getToken() {
-    return this.marketingApi.getToken().pipe(tap((res: any) => {
-      this.token$.commit(() => res.response.data.token)
-    }))
+    return this.marketingApi.getToken().pipe(
+      tap((res: any) => {
+        this.token$.commit(() => res.response.data.token)
+      })
+    )
   }
   getPosterInfo(id: number) {
-    return this.marketingApi.getPosterInfo(id).pipe(tap((res: any) => {
-      this.info$.commit(() => res.info)
-    }))
+    return this.marketingApi.getPosterInfo(id).pipe(
+      tap((res: any) => {
+        this.info$.commit(() => res.info)
+      })
+    )
   }
   serviceInit(id: number) {
     return forkJoin(this.getPosterInfo(id), this.getToken())
   }
   getQrcode() {
-    return this.marketingApi.getQrcode().pipe(tap((res: any) => {
-      this.qrcode$.commit(() => res.qrcode)
-    }))
+    return this.marketingApi.getQrcode().pipe(
+      tap((res: any) => {
+        this.qrcode$.commit(() => res.qrcode)
+      })
+    )
   }
 }

@@ -1,30 +1,39 @@
 <template>
   <div :class="cardRadio()">
     <a-radio-group v-model="radioIndex">
-      <a-radio v-for="(i,index) in cardBgList" :class="i.className" :key="index" :value="i.index"></a-radio>
+      <a-radio
+        v-for="(i, index) in cardBgList"
+        :class="i.className"
+        :key="index"
+        :value="i.index"
+      ></a-radio>
       <a-radio :value="0">自定义背景</a-radio>
     </a-radio-group>
     <div :class="cardRadio('image')">
       <img
-        v-if="radioIndex!==0&&cardBgList[bgIndex]"
-        :src="cardBgList[bgIndex].image_url | imgFilter({w:192,h:108})"
+        v-if="radioIndex !== 0 && cardBgList[bgIndex]"
+        :src="cardBgList[bgIndex].image_url | imgFilter({ w: 192, h: 108 })"
         width="192"
         height="108"
         alt="会员卡背景"
-      >
+      />
       <div v-else :class="cardRadio('upload')">
         <st-image-upload
-        @change="imageUploadChange"
-        width="192px"
-        height="108px"
-        :cropperModal="cropperModal"
-        :list="fileList"
-        :sizeLimit="2"
-        placeholder="上传照片"></st-image-upload>
+          @change="imageUploadChange"
+          width="192px"
+          height="108px"
+          :cropperModal="cropperModal"
+          :list="fileList"
+          :sizeLimit="2"
+          placeholder="上传照片"
+        ></st-image-upload>
         <div :class="cardRadio('describe')">
           <p>
             <span>1.</span>
-            <span>图片格式必须为：png,bmp,jpeg,jpg,gif,建议使用png格 式图片，以保存最佳效果</span>
+            <span>
+              图片格式必须为：png,bmp,jpeg,jpg,gif,建议使用png格
+              式图片，以保存最佳效果
+            </span>
           </p>
           <p>
             <span>2.</span>
@@ -38,7 +47,12 @@
 <script>
 import { cloneDeep } from 'lodash-es'
 import { UserService } from '@/services/user.service'
-let className = ['first custom', 'second custom', 'third custom', 'fourth custom']
+let className = [
+  'first custom',
+  'second custom',
+  'third custom',
+  'fourth custom'
+]
 export default {
   name: 'StCardBgRadio',
   bem: {
@@ -143,7 +157,9 @@ export default {
       let innerHTML = ''
       this.cardBgList.forEach(i => {
         innerHTML += `
-          .st-card-bg-radio .${i.className.split('custom')[0]} .ant-radio-inner::after {
+          .st-card-bg-radio .${
+            i.className.split('custom')[0]
+          } .ant-radio-inner::after {
             background-color: ${i.color};
           }
         `

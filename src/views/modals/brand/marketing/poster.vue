@@ -1,7 +1,7 @@
 <template>
   <st-modal :title="title" v-model="show" width="400px" :footer="null">
     <div :class="basic()">
-      <p>{{message}}</p>
+      <p>{{ message }}</p>
       <img :src="url" :class="activeClass" />
       <div>
         <st-button
@@ -11,7 +11,9 @@
           icon="download"
           size="large"
           @click="downloadPoster"
-        >{{button}}</st-button>
+        >
+          {{ button }}
+        </st-button>
       </div>
     </div>
   </st-modal>
@@ -115,13 +117,16 @@ export default {
         })
         .subscribe({
           next: val => {
-            this.url = `${this.appConfig.SHS_API_ENV}/saas/poster?token=${this.token}&brand_logo=${this.info.brand_logo}&brand_name=${this.info.brand_name}&price=${this.info.price}&qrcode_url=${val.host}/${val.fileKey}&download=1`
+            this.url = `${this.appConfig.SHS_API_ENV}/saas/poster?token=${
+              this.token
+            }&brand_logo=${this.info.brand_logo}&brand_name=${
+              this.info.brand_name
+            }&price=${this.info.price}&qrcode_url=${val.host}/${
+              val.fileKey
+            }&download=1`
           },
-          error: val => {
-
-          },
-          complete: () => {
-          }
+          error: val => {},
+          complete: () => {}
         })
     },
     convertBase64UrlToBlob(urlData) {

@@ -1,5 +1,10 @@
 import { Api } from '../../api'
-import { AddStaffBasicInfoParams, EditStaffBasicInfoQuery, EditStaffDetailInfoQuery, EditStaffCoachInfoQuery } from '../staff'
+import {
+  AddStaffBasicInfoParams,
+  EditStaffBasicInfoQuery,
+  EditStaffDetailInfoQuery,
+  EditStaffCoachInfoQuery
+} from '../staff'
 // 门店维度下的员工
 export class ShopStaffApi extends Api {
   /**  */
@@ -26,8 +31,8 @@ export class ShopStaffApi extends Api {
     return this.http.get(`/v1/department/search`, { query })
   }
   /**
-     * 获取员工列表
-     */
+   * 获取员工列表
+   */
   getList(query: GetListQuery) {
     return this.http.get(`/v1/staff/shop`, { query })
   }
@@ -55,7 +60,7 @@ export class ShopStaffApi extends Api {
   /**
    * 编辑员工回显
    */
-  editStaffInfo(id:string) {
+  editStaffInfo(id: string) {
     return this.http.get(`/v1/staff/shop/review/${id}`)
   }
 
@@ -71,7 +76,7 @@ export class ShopStaffApi extends Api {
   /**
    * 修改员工详细信息
    */
-  updateStaffDetailedInfo(id: string, params : EditStaffDetailInfoQuery) {
+  updateStaffDetailedInfo(id: string, params: EditStaffDetailInfoQuery) {
     return this.http.put(`/v1/staff/shop/detail/${id}`, { params })
   }
   /**
@@ -137,57 +142,56 @@ export interface PermissionInput {
   is_permission: number
 }
 interface CommonConfig {
-    // 当前页
-    page? : number;
-    // 每页条数
-    size? : number;
+  // 当前页
+  page?: number
+  // 每页条数
+  size?: number
 }
-export interface BindBankParams{
+export interface BindBankParams {
   /**
    * 姓名
    */
-  account_name : number;
+  account_name: number
   /**
    * 卡号
    */
-  card_number: number;
+  card_number: number
   /**
    * 银行名称
    */
-  bank_name: string;
-
+  bank_name: string
 }
 export interface GetStaffFollowInput {
   id?: string
   /**
    * 搜索开始时间
    */
-  follow_date_first?: string;
+  follow_date_first?: string
   /**
    * 搜索结束时间
    */
-  follow_date_last?: string;
+  follow_date_last?: string
   /**
    * 搜索用户时间
    */
-  member_name?: string;
+  member_name?: string
 
-  page?: number;
-  size?: number;
+  page?: number
+  size?: number
 }
 export interface GetStaffServiceCoursesInput {
   id: string
   /**
    * 门店id
    */
-  shop_id?: number;
+  shop_id?: number
   /**
    * 搜索关键字
    */
-  keyword?: string;
+  keyword?: string
 
-  page?: number;
-  size?: number;
+  page?: number
+  size?: number
 }
 export interface PutStaffBrandQuitInput {
   id: string | number
@@ -207,44 +211,43 @@ export interface GetStaffCourseListInput {
   /**
    * 门店id
    */
-  shop_id?: number;
+  shop_id?: number
   /**
    * 上课状态
    */
-  course_status?: number;
+  course_status?: number
   /**
    * 开始上课日期
    */
-  start_time_first?: string;
+  start_time_first?: string
   /**
    * 结束上课日期
    */
-  start_time_last?: string;
+  start_time_last?: string
   /**
    * 搜索课程名称
    */
-  course_name?: string;
+  course_name?: string
 }
 export interface PutStaffBindPhysicalInput {
   id?: string
   card_number?: string
   physical_number?: string
 }
-export interface GetListQuery extends CommonConfig{
-    /**
-     * 门店id
-     */
-    shop_id? : number;
-    /**
-     * 员工状态
-     */
-    work_status? : number;
-
+export interface GetListQuery extends CommonConfig {
+  /**
+   * 门店id
+   */
+  shop_id?: number
+  /**
+   * 员工状态
+   */
+  work_status?: number
 }
 export interface RePasswordInput {
-  id?: string,
-  name: string,
-  password: string,
+  id?: string
+  name: string
+  password: string
   password_repeat: string
 }
 
@@ -252,24 +255,24 @@ export interface GetStaffSoldInput {
   /**
    * 门店id
    */
-  shop_id?: number;
+  shop_id?: number
   /**
    * 订单状态
    */
-  order_status?: number;
+  order_status?: number
   /**
    * 开始下单时间
    */
-  order_time_first?: string;
+  order_time_first?: string
   /**
    * 结束下单时间
    */
-  order_time_last?: string;
+  order_time_last?: string
   /**
    * 搜索关键字
    */
-  keyword?: string;
+  keyword?: string
 
-  page?: number;
-  size?: number;
+  page?: number
+  size?: number
 }

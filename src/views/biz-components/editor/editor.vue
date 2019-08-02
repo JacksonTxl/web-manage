@@ -91,8 +91,11 @@ export default {
     }
   },
   mounted() {
-    this.importService.load(['tinymce/5.0.3/tinymce.min.js'])
-      .then(() => this.importService.load(['tinymce/5.0.3/themes/silver/theme.min.js']))
+    this.importService
+      .load(['tinymce/5.0.3/tinymce.min.js'])
+      .then(() =>
+        this.importService.load(['tinymce/5.0.3/themes/silver/theme.min.js'])
+      )
       .then(() => {
         const ctx = this
         window.tinyMCE.init({

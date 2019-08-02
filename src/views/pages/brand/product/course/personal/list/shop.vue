@@ -1,14 +1,40 @@
 <template>
   <div class="page-shop-sale-list-shop">
     <header>
-      <div class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation">
+      <div
+        class="page-shop-sale-list-shop__opreation page-shop-sale-list__opreation"
+      >
         <div></div>
         <div>
-          <a-select class="mg-r8"  :defaultValue="-1" style="width: 160px" v-model="query.shop_id" @change="onChange">
-            <a-select-option v-for="shop in shopsOptions" :key="shop.id" :value="shop.id">{{shop.shop_name}}</a-select-option>
+          <a-select
+            class="mg-r8"
+            :defaultValue="-1"
+            style="width: 160px"
+            v-model="query.shop_id"
+            @change="onChange"
+          >
+            <a-select-option
+              v-for="shop in shopsOptions"
+              :key="shop.id"
+              :value="shop.id"
+            >
+              {{ shop.shop_name }}
+            </a-select-option>
           </a-select>
-          <a-select class="mg-r8"  :defaultValue="-1" v-model="query.category_id" style="width: 160px" @change="onChange">
-            <a-select-option v-for="category in categoryList" :key="category.id" :value="category.id">{{category.setting_name}}</a-select-option>
+          <a-select
+            class="mg-r8"
+            :defaultValue="-1"
+            v-model="query.category_id"
+            style="width: 160px"
+            @change="onChange"
+          >
+            <a-select-option
+              v-for="category in categoryList"
+              :key="category.id"
+              :value="category.id"
+            >
+              {{ category.setting_name }}
+            </a-select-option>
           </a-select>
         </div>
       </div>
@@ -45,7 +71,11 @@ export default {
     return {
       selectedRowKeys: [],
       selectedRows: [],
-      courseStatus: [{ label: '所有状态', value: -1 }, { label: '有效', value: 1 }, { label: '无效', value: 0 }]
+      courseStatus: [
+        { label: '所有状态', value: -1 },
+        { label: '有效', value: 1 },
+        { label: '无效', value: 0 }
+      ]
     }
   },
   components: {

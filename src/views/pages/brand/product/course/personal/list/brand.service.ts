@@ -1,5 +1,10 @@
 import { Injectable, ServiceRoute, RouteGuard } from 'vue-service-app'
-import { BrandPersonalCourseApi, GetPersonalBrandCourseListInput, SetAvailableInput, CoursePersonalSupportInput } from '@/api/v1/course/personal/brand'
+import {
+  BrandPersonalCourseApi,
+  GetPersonalBrandCourseListInput,
+  SetAvailableInput,
+  CoursePersonalSupportInput
+} from '@/api/v1/course/personal/brand'
 import { forkJoin, pipe } from 'rxjs'
 import { tap, pluck } from 'rxjs/operators'
 import { State, Computed, Effect } from 'rx-state'
@@ -9,8 +14,8 @@ import { ShopApi } from '@/api/v1/shop'
 import { AuthService } from '@/services/auth.service'
 
 export interface SetState {
-  personalCourseList: any[],
-  supportShopList: any[],
+  personalCourseList: any[]
+  supportShopList: any[]
   supportCoachList: any[]
 }
 @Injectable()
@@ -37,9 +42,15 @@ export class BrandService implements RouteGuard {
       supportShopList: [],
       supportCoachList: []
     })
-    this.personalCourseList$ = new Computed(this.state$.pipe(pluck('personalCourseList')))
-    this.supportShopList$ = new Computed(this.state$.pipe(pluck('supportCourseList')))
-    this.supportCoachList$ = new Computed(this.state$.pipe(pluck('supportCoachList')))
+    this.personalCourseList$ = new Computed(
+      this.state$.pipe(pluck('personalCourseList'))
+    )
+    this.supportShopList$ = new Computed(
+      this.state$.pipe(pluck('supportCourseList'))
+    )
+    this.supportCoachList$ = new Computed(
+      this.state$.pipe(pluck('supportCoachList'))
+    )
   }
   SET_PERSONAL_COURSE_LIST(data: any) {
     this.state$.commit(state => {
@@ -64,14 +75,18 @@ export class BrandService implements RouteGuard {
     return this.personalApi.deleteCourse(courseId)
   }
   getCoursePersonalSupportShops(query: CoursePersonalSupportInput) {
-    return this.personalApi.getCoursePersonalSupportShops(query).pipe(tap(res => {
-      this.SET_SUPPORT_SHOP_LIST(res)
-    }))
+    return this.personalApi.getCoursePersonalSupportShops(query).pipe(
+      tap(res => {
+        this.SET_SUPPORT_SHOP_LIST(res)
+      })
+    )
   }
   getCoursePersonalSupportCoaches(query: CoursePersonalSupportInput) {
-    return this.personalApi.getCoursePersonalSupportCoaches(query).pipe(tap(res => {
-      this.SET_SUPPORT_COACH_LIST(res)
-    }))
+    return this.personalApi.getCoursePersonalSupportCoaches(query).pipe(
+      tap(res => {
+        this.SET_SUPPORT_COACH_LIST(res)
+      })
+    )
   }
   @Effect()
   getList(params: GetPersonalBrandCourseListInput) {

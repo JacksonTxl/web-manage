@@ -3,32 +3,46 @@
     <div class="shop-member-crowd-add__box">
       <div class="shop-member-crowd-add__left">
         <st-t2>人群定义维度</st-t2>
-        <div style="padding-top:24px;coler:#9BACB9">单个人群最多可添加5个条件</div>
+        <div style="padding-top:24px;coler:#9BACB9">
+          单个人群最多可添加5个条件
+        </div>
         <basic-data v-model="selectData" :flag="flag"></basic-data>
       </div>
       <div class="shop-member-crowd-add__right">
-        <st-t2 style="margin-bottom: 24px;"> {{$route.query.id ? '编辑人群' : '新增人群'}}</st-t2>
-        <st-form :form="form" @submit="save" style="height:72px" labelWidth="75px">
+        <st-t2 style="margin-bottom: 24px;">
+          {{ $route.query.id ? '编辑人群' : '新增人群' }}
+        </st-t2>
+        <st-form
+          :form="form"
+          @submit="save"
+          style="height:72px"
+          labelWidth="75px"
+        >
           <st-form-item label="人群名称" required>
             <a-input
               style="width:404px"
               placeholder="不超过20字，且不包含“/”"
               maxlength="20"
               v-decorator="[
-                  'basicInfoRuleList.crowd_name',
-                  {
-                    initialValue:selectData.getData.crowd_name,
-                    rules: [{ validator: physicalId}]}
-                ]"
+                'basicInfoRuleList.crowd_name',
+                {
+                  initialValue: selectData.getData.crowd_name,
+                  rules: [{ validator: physicalId }]
+                }
+              ]"
             />
           </st-form-item>
         </st-form>
         <div class="shop-member-crowd-add__right-condition">
           <div>创建的人群 同时满足 以下条件</div>
 
-          <div class="shop-member-crowd-add__right-tip">已选 <label>{{selectData.arrData.length}}/5</label> 个条件</div>
+          <div class="shop-member-crowd-add__right-tip">
+            已选
+            <label>{{ selectData.arrData.length }}/5</label>
+            个条件
+          </div>
         </div>
-        <template v-for="(item,index) in selectData.arrData">
+        <template v-for="(item, index) in selectData.arrData">
           <div
             :key="index"
             class="shop-member-crowd-add__right-condition-box"
@@ -36,11 +50,17 @@
           >
             <div
               class="shop-member-crowd-add__right-condition-box-delete"
-              @click="deleteIcon(selectData,item)"
+              @click="deleteIcon(selectData, item)"
             >
-              <st-icon type="delete" style="color:rgb(255, 94, 65);cursor: pointer"/>
+              <st-icon
+                type="delete"
+                style="color:rgb(255, 94, 65);cursor: pointer"
+              />
             </div>
-            <component v-bind:is="item | componentFun" v-model="selectData"></component>
+            <component
+              v-bind:is="item | componentFun"
+              v-model="selectData"
+            ></component>
           </div>
         </template>
         <div style="padding-top:32px;display: flex;justify-content: center;">
@@ -50,8 +70,17 @@
             type="primary"
             style="margin-right:16px;width:102px"
             @click="conserve"
-          >保存</st-button>
-          <st-button v-else disabled type="primary" style="margin-right:16px;width:102px">保存</st-button>
+          >
+            保存
+          </st-button>
+          <st-button
+            v-else
+            disabled
+            type="primary"
+            style="margin-right:16px;width:102px"
+          >
+            保存
+          </st-button>
         </div>
       </div>
     </div>
@@ -96,9 +125,9 @@ export default {
     'reg-time': regTime, // 注册时间
     'source-mode': sourceMode, // 来源方式
     'induction-time': inductionTime, // 入会时间
-    'base_birthday': base_birthday, // 生日
-    'base_sex': base_sex, // 性别
-    'base_age': base_age, // 年龄
+    base_birthday: base_birthday, // 生日
+    base_sex: base_sex, // 性别
+    base_age: base_age, // 年龄
     'affiliated-store': affiliatedStore, // 所属门店
     'available-integral': availableIntegral, // 可用积分
     'available-coupons': availableCoupons, // 可用优惠劵
@@ -308,7 +337,11 @@ export default {
           })
           obj.crowd_name = values.basicInfoRuleList.crowd_name
           obj.array_index = this.selectData.arrData
-          if (obj.remain_enter_times && (!obj.remain_enter_times.remain_times.min || !obj.remain_enter_times.select_time.min)) {
+          if (
+            obj.remain_enter_times &&
+            (!obj.remain_enter_times.remain_times.min ||
+              !obj.remain_enter_times.select_time.min)
+          ) {
             this.messageService.error({
               content: '入场次数和时间范围必填!'
             })

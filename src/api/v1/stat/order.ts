@@ -16,17 +16,17 @@ export class OrderApi extends Api {
 }
 
 export interface OrderChartParams {
-  shop?: number,
-  day?: number,
-  start_date?:string,
-  end_date?:string
+  shop?: number
+  day?: number
+  start_date?: string
+  end_date?: string
 }
 
 export interface OrderDataParams {
-  shop?: number,
-  page?: number,
-  size?: number,
-  day?: number,
-  start_date?:string,
-  end_date?:string
+  shop?: number
+  page?: number
+  size?: number
+  day?: number
+  start_date?: string
+  end_date?: string
 }

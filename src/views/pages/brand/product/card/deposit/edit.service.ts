@@ -8,16 +8,16 @@ import { ShopApi, GetShopBasicInput } from '@/api/v1/shop'
 export class EditService implements RouteGuard {
   cardInfo$ = new State({})
   loading$ = new State({})
-  constructor(private cardsApi: CardsApi, private shopApi: ShopApi) { }
+  constructor(private cardsApi: CardsApi, private shopApi: ShopApi) {}
   getCardInfo(id: string) {
-    return this.cardsApi.getCardDepositInfoBackBrand(id).pipe(tap((res: any) => {
-      this.cardInfo$.commit(() => res.info)
-    }))
+    return this.cardsApi.getCardDepositInfoBackBrand(id).pipe(
+      tap((res: any) => {
+        this.cardInfo$.commit(() => res.info)
+      })
+    )
   }
   getShopBasic(params: GetShopBasicInput) {
-    return this.shopApi.getShopBasic(params).pipe(
-      pluck('shops')
-    )
+    return this.shopApi.getShopBasic(params).pipe(pluck('shops'))
   }
   @Effect()
   editCard(data: CardsInput) {

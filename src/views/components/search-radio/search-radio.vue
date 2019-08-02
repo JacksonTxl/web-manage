@@ -1,12 +1,12 @@
 <template>
   <div :class="radio()">
     <a-radio-group :value="radioChecked" @change="onChange">
-        <a-radio v-for="(item,index) in list" :key="index" :value="item.value">
-          <span :class="radio('label')">
-            <span class="text">{{item.label}}</span>
-          </span>
-        </a-radio>
-      </a-radio-group>
+      <a-radio v-for="(item, index) in list" :key="index" :value="item.value">
+        <span :class="radio('label')">
+          <span class="text">{{ item.label }}</span>
+        </span>
+      </a-radio>
+    </a-radio-group>
   </div>
 </template>
 <script>

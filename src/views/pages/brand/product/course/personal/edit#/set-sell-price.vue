@@ -4,7 +4,11 @@
       <a-col :lg="10" :offset="1">
         <!-- 课程名称 -->
         <st-form-item label="课程名称">
-          <a-input placeholder="课程名称" disabled v-decorator="ruleConfig.courseName"/>
+          <a-input
+            placeholder="课程名称"
+            disabled
+            v-decorator="ruleConfig.courseName"
+          />
         </st-form-item>
         <!-- 售卖方式 -->
         <st-form-item label="售卖方式">
@@ -17,14 +21,16 @@
               :key="index"
               :value="index"
             >
-              {{item}}
+              {{ item }}
             </a-checkbox>
           </a-checkbox-group>
         </st-form-item>
         <!-- 课程有效期 -->
         <st-form-item label="课有效期">
           <st-input-number v-decorator="ruleConfig.effectiveUnit">
-            <template slot="addonAfter">天</template>
+            <template slot="addonAfter">
+              天
+            </template>
           </st-input-number>
         </st-form-item>
         <!-- 定价权限 -->
@@ -44,7 +50,8 @@
         <!-- 单节预约 -->
         <st-form-item>
           <template slot="label">
-            单节预约<st-help-tooltip id="TBCPC005" />
+            单节预约
+            <st-help-tooltip id="TBCPC005" />
           </template>
           <a-checkbox
             :checked="!!singleReserve"
@@ -66,21 +73,14 @@
     <a-row :gutter="8">
       <a-col :lg="22" :offset="1">
         <st-form-item v-if="isShowUnitSet" labelFix>
-          <set-price
-            :value="priceGradient"
-            @change="onPriceGradientChange"
-          />
+          <set-price :value="priceGradient" @change="onPriceGradientChange" />
         </st-form-item>
       </a-col>
     </a-row>
     <a-row :gutter="8">
       <a-col :lg="10" :xs="22" :offset="1">
         <st-form-item labelFix>
-          <st-button
-            type="primary"
-            @click="save"
-            :loading="loading.setPrice"
-          >
+          <st-button type="primary" @click="save" :loading="loading.setPrice">
             完成
           </st-button>
         </st-form-item>

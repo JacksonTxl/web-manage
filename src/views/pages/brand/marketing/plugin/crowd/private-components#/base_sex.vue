@@ -1,10 +1,15 @@
-
 <template>
   <div>
     <title-info v-model="titleData" style="margin-bottom:44px"></title-info>
     <span style="margin-right:16px">选择性别</span>
-    <a-radio-group name="radioGroup" v-model="value.getData.base_sex" @change="onChange">
-      <a-radio :value="item" v-for="(item, index) in sexOptions" :key="index">{{item.name}}</a-radio>
+    <a-radio-group
+      name="radioGroup"
+      v-model="value.getData.base_sex"
+      @change="onChange"
+    >
+      <a-radio :value="item" v-for="(item, index) in sexOptions" :key="index">
+        {{ item.name }}
+      </a-radio>
     </a-radio-group>
   </div>
 </template>
@@ -58,7 +63,9 @@ export default {
   },
   mounted() {
     if (this.value.getData.base_sex) {
-      this.value.getData.base_sex = this.sexOptions.filter(item => { return this.value.getData.base_sex.value === item.value })[0]
+      this.value.getData.base_sex = this.sexOptions.filter(item => {
+        return this.value.getData.base_sex.value === item.value
+      })[0]
     }
   }
 }
