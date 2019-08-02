@@ -45,7 +45,6 @@
           required
         >
           <a-input
-            type="password"
             autocomplete="off"
             v-decorator="[
               'password',
@@ -60,7 +59,6 @@
           required
         >
           <a-input
-            type="password"
             autocomplete="off"
             v-decorator="[
               'repeat_password',
@@ -72,7 +70,6 @@
         <!-- 登录重置密码 -->
         <st-form-item label="登录密码" v-if="openRepassword" required>
           <a-input
-            type="password"
             v-decorator="[
               'password',
               { rules: [{ validator: validatorPassword }] }
@@ -82,7 +79,6 @@
         </st-form-item>
         <st-form-item label="确认密码" v-if="openRepassword" required>
           <a-input
-            type="password"
             v-decorator="[
               'repeat_password',
               { rules: [{ validator: validatorPassword }] }
