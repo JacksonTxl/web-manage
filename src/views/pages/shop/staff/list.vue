@@ -236,9 +236,24 @@ import ChangeStaffPostion from './list#/change-staff-postion'
 import { RouteService } from '../../../../services/route.service'
 import { columns } from './list.config'
 import tableMixin from '@/mixins/table.mixin'
-
+import ShopStaffBatchImport from '@/views/biz-modals/shop-staff/batch-import'
+import ShopStaffBindCard from '@/views/biz-modals/shop-staff/bind-card'
+import ShopStaffLeaveCurrentShop from '@/views/biz-modals/shop-staff/leave-current-shop'
+import ShopStaffRePassword from '@/views/biz-modals/shop-staff/re-password'
+import ShopStaffSalaryAccountSetting from '@/views/biz-modals/shop-staff/salary-account-setting'
+import ShopStaffUpdateStaffPosition from '@/views/biz-modals/shop-staff/update-staff-position'
+import StaffUpdateStaffPosition from '@/views/biz-modals/staff/update-staff-position'
 export default {
   mixins: [tableMixin],
+  modals: {
+    ShopStaffBatchImport,
+    ShopStaffBindCard,
+    ShopStaffLeaveCurrentShop,
+    ShopStaffRePassword,
+    ShopStaffSalaryAccountSetting,
+    ShopStaffUpdateStaffPosition,
+    StaffUpdateStaffPosition
+  },
   components: {
     ChangeStaffPostion
   },

@@ -1,30 +1,27 @@
 <template>
-  <div class="page-team-personal">
-    <FullCalendar
-      class="page-team-personal__calendar"
-      ref="fullCalendar"
-      :defaultView="defaultView"
-      :header="header"
-      :firstDay="1"
-      @eventPositioned="onEventPositioned"
-      :plugins="calendarPlugins"
-      minTime="00:00:00"
-      :columnHeaderFormat="columnHeaderFormat"
-      locale="zh-cn"
-      :views="views"
-      :nowIndicator="true"
-      maxTime="24:00:00"
-      @datesRender="datesRender"
-      :weekends="calendarWeekends"
-      :customButtons="customButtons"
-      :slotLabelFormat="slotLabelFormat"
-      eventBackgroundColor="#fff"
-      @eventClick="onEventClick"
-      @eventRender="onEventRender($event)"
-      :events="scheduleTeamCourseList"
-      @dateClick="handleDateClick"
-    />
-  </div>
+  <FullCalendar
+    class="page-team-personal__calendar"
+    ref="fullCalendar"
+    :defaultView="defaultView"
+    :header="header"
+    :firstDay="1"
+    @eventPositioned="onEventPositioned"
+    :plugins="calendarPlugins"
+    minTime="00:00:00"
+    :columnHeaderFormat="columnHeaderFormat"
+    locale="zh-cn"
+    :views="views"
+    maxTime="24:00:00"
+    @datesRender="datesRender"
+    :weekends="calendarWeekends"
+    :customButtons="customButtons"
+    :slotLabelFormat="slotLabelFormat"
+    eventBackgroundColor="#fff"
+    @eventClick="onEventClick"
+    @eventRender="onEventRender($event)"
+    :events="reserveTable"
+    @dateClick="handleDateClick"
+  />
 </template>
 
 <script>
@@ -32,39 +29,39 @@ import Vue from 'vue'
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
+import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import zhCnLocale from '@fullcalendar/core/locales/zh-cn'
-
 import $ from 'jquery'
-import { TeamScheduleScheduleService } from '../team.service#/schedule.service'
-import { TeamService } from './team.service'
+import { PersonalScheduleReserveService } from '../personal.service#/reserve.service'
 import AddCard from '../date#/add-card'
 import GetDay from '../date#/get-day'
-import { RouteService } from '@/services/route.service'
+import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
+import SchedulePersonalReserveInfo from '@/views/biz-modals/schedule/personal/reserve-info'
 export default {
-  name: 'Schedule',
+  name: 'SchedulePersonalTeam',
   components: {
-    FullCalendar
+    FullCalendar // make the <FullCalendar> tag available
+  },
+  modals: {
+    SchedulePersonalAddReserve,
+    SchedulePersonalReserveInfo
   },
   serviceInject() {
     return {
-      teamScheduleScheduleService: TeamScheduleScheduleService,
-      service: TeamService,
-      routeService: RouteService
+      reserveService: PersonalScheduleReserveService
     }
   },
   rxState() {
     return {
-      query: this.routeService.query$,
-      scheduleTeamCourseList: this.teamScheduleScheduleService
-        .scheduleTeamCourseList$,
-      loading: this.teamScheduleScheduleService.loading$,
-      auth: this.service.auth$
+      reserveTable: this.reserveService.reserveTable$,
+      auth: this.reserveService.auth$
     }
   },
   data() {
     const that = this
     return {
+      timeRange: {},
       columnHeaderFormat: {
         weekday: 'short',
         month: 'numeric',
@@ -83,45 +80,35 @@ export default {
         timeGridDay: { buttonText: '日' }
       },
       header: {
-        left: 'bacthAdd, copy',
+        left: 'custom1',
         center: 'prev,next,title',
         right: 'timeGridWeek,timeGridDay, custom4'
       },
       calendarPlugins: [
         // plugins must be defined in the JS
+        listPlugin,
         dayGridPlugin,
         timeGridPlugin,
         interactionPlugin // needed for dateClick
       ],
       customButtons: {
-        bacthAdd: {
-          text: '批量排期',
+        custom1: {
+          text: '设置私教排期',
           click() {
-            that.$modalRouter.push({
-              name: 'schedule-team-add-course-schedule-batch',
-              on: {
-                ok: res => {
-                  that.onScheduleChange()
-                }
-              }
+            that.$router.push({
+              name: 'shop-product-course-schedule-personal-personal-table',
+              query: that.timeRange
             })
           }
         },
-        copy: {
+        custom2: {
           text: '复制排期',
-          click() {
-            that.$modalRouter.push({
-              name: 'schedule-team-copy-schedule',
-              on: {
-                ok: res => {
-                  that.onScheduleChange()
-                }
-              }
-            })
+          click: function() {
+            alert('clicked custom button 2!')
           }
         },
         custom3: {
-          text: '日历',
+          text: '三',
           click: () => {
             that.defaultView = 'timeGridWeek'
             that.views = {
@@ -130,7 +117,11 @@ export default {
             }
             that.$set(that.header, 'right', 'timeGridWeek,timeGridDay, custom4')
             that.$nextTick().then(() => {
-              $('.fc-timeGridWeek-button').click()
+              that.$router.push({
+                name:
+                  'shop-product-course-schedule-personal-personal-reserve-table',
+                query: that.timeRange
+              })
             })
           }
         },
@@ -145,8 +136,9 @@ export default {
             that.$set(that.header, 'right', 'listWeek,listDay, custom4')
             that.$nextTick().then(() => {
               that.$router.push({
-                name: 'shop-product-course-schedule-team-team-table',
-                query: { ...that.$route.query }
+                name:
+                  'shop-product-course-schedule-personal-personal-reserve-table',
+                query: that.timeRange
               })
             })
           }
@@ -161,72 +153,27 @@ export default {
       if (this.auth.add) {
         this.setAddButton()
       }
-      this.initHeader()
     })
   },
   mounted() {
-    this.initHeader()
     const add = this.auth.add
     const addBatch = this.auth.addBatch
     const copy = this.auth.copy
     if (copy) {
-      this.header.left = 'copy'
+      this.header.left = 'add'
     }
     if (addBatch) {
       this.header.left = 'bacthAdd'
     }
     if (copy && addBatch) {
-      this.header.left = 'bacthAdd, copy'
+      this.header.left = 'bacthAdd, add'
     }
     if (add) {
       this.setAddButton()
     }
   },
   methods: {
-    initHeader() {
-      const that = this
-      this.$nextTick(() => {
-        let calendarApi = that.$refs.fullCalendar.getApi()
-        const dayHeaderEle = $('.fc-day-header')
-        const length = $('.fc-day-header').length
-        dayHeaderEle.each(function() {
-          const dataDate = $(this).attr('data-date')
-          const getDayEl = new Vue({
-            data() {
-              return {
-                isShow: true
-              }
-            },
-            components: {
-              GetDay
-            },
-            methods: {
-              clickHandler(val) {
-                this.isShow = false
-                this.$nextTick().then(() => {
-                  $('.fc-timeGridDay-button').click()
-                  calendarApi.gotoDate(new Date(dataDate))
-                })
-              }
-            },
-            render(h) {
-              let { clickHandler, isShow } = this
-              return (
-                <GetDay
-                  onScan={this.clickHandler}
-                  date={dataDate}
-                  title={'查看日排期'}
-                  isGet={!(length === 1)}
-                />
-              )
-            }
-          }).$mount().$el
-          $(this).html(getDayEl)
-        })
-      })
-    },
     datesRender(info) {
-      console.log('datesRender')
       const start = moment(info.view.activeStart)
         .format('YYYY-MM-DD')
         .valueOf()
@@ -235,6 +182,7 @@ export default {
       )
         .format('YYYY-MM-DD')
         .valueOf()
+      this.timeRange = { start_date: start, end_date: end }
       this.$router.push({ query: { start_date: start, end_date: end } })
     },
     setAddButton() {
@@ -244,7 +192,7 @@ export default {
           components: {
             AddCard
           },
-          render: h => <add-card title="添加课程排期" />
+          render: h => <add-card title="添加预约" />
         }).$mount().$el
         const htmlStr = addCardEl.outerHTML
         let cellSize = {
@@ -264,62 +212,94 @@ export default {
         ].join(';')
         let hoverHtml =
           '<div class="hover-button" style="' + hoverCss + '">+</div>'
-        let timer = ''
+        const dayHeaderEle = $('.fc-day-header')
+        const length = $('.fc-day-header').length
+        dayHeaderEle.each(function() {
+          const dataDate = $(this).attr('data-date')
+          const getDayEl = new Vue({
+            data() {
+              return {
+                isShow: true
+              }
+            },
+            components: {
+              GetDay
+            },
+            methods: {
+              clickHandler(val) {
+                this.isShow = false
+                this.$nextTick().then(() => {
+                  $('.fc-timeGridDay-button').click()
+                  let calendarApi = that.$refs.fullCalendar.getApi()
+                  calendarApi.gotoDate(new Date(dataDate))
+                })
+              }
+            },
+            render(h) {
+              let { clickHandler, isShow } = this
+              return (
+                <GetDay
+                  onScan={this.clickHandler}
+                  title={'查看日预约'}
+                  date={dataDate}
+                  isGet={!(length === 1)}
+                />
+              )
+            }
+          }).$mount().$el
+          $(this).html(getDayEl)
+        })
         $('.fc-widget-content').hover(
           function() {
-            timer = setTimeout(() => {
-              if (!$(this).html()) {
-                for (let i = 0; i < 7; i++) {
-                  $(this).append(
-                    '<td class="temp-cell" style="' + tmpCellCss + '"></td>'
-                  )
-                }
-
-                $(this)
-                  .children('td')
-                  .each(function() {
-                    $(this).hover(
-                      function() {
-                        $(this).html(htmlStr)
-                      },
-                      function() {
-                        $(this).html('')
-                      }
-                    )
-                  })
+            if (!$(this).html()) {
+              for (let i = 0; i < 7; i++) {
+                $(this).append(
+                  '<td class="temp-cell" style="' + tmpCellCss + '"></td>'
+                )
               }
-            }, 500)
+
+              $(this)
+                .children('td')
+                .each(function() {
+                  $(this).hover(
+                    function() {
+                      $(this).html(htmlStr)
+                    },
+                    function() {
+                      $(this).html('')
+                    }
+                  )
+                })
+            }
           },
           function() {
-            let timer = setTimeout(() => {
-              $(this)
-                .children('.temp-cell')
-                .remove()
-            }, 300)
-            clearTimeout(timer)
+            $(this)
+              .children('.temp-cell')
+              .remove()
           }
         )
-        clearTimeout(timer)
       })
+    },
+    onEventPositioned(event, element) {
+      this.onEventRender(event, element)
     },
     toggleWeekends() {
       this.calendarWeekends = !this.calendarWeekends // update a property
     },
-    onEventPositioned() {},
+    gotoPast() {
+      let calendarApi = this.$refs.fullCalendar.getApi() // from the ref="..."
+    },
     onEventRender(event, element) {
       this.$nextTick().then(() => {
-        event.el.querySelector('.fc-title').remove()
-        event.el.querySelector('.fc-time').remove()
+        event.el.querySelector('.fc-title') &&
+          event.el.querySelector('.fc-title').remove()
+        event.el.querySelector('.fc-time') &&
+          event.el.querySelector('.fc-time').remove()
         const item = event.event
         const renderObj = JSON.parse(item.groupId)
         const current = moment().format('HH:mm:SS')
         const plusOneHtml = renderObj.plusOne
           ? `<span class="color-danger"> +1 </span>`
-          : ''
-        const courtHtml = renderObj.court_name
-          ? `<div class="court-name"><span class="label">场地: </span><span>${
-              renderObj.court_name
-            }</span></div>`
           : ''
         let new_description = `<div class="st-schedule-content mg-l8">
                                 <div class="time"><a-icon type="clock-circle"></a-icon>${moment(
@@ -331,7 +311,6 @@ export default {
                                 <div class="coach-name"><span class="label">教练: </span><span>${
                                   renderObj.coach_name
                                 }</span></div>
-                                ${courtHtml}
                               </div>`
         let color = ''
         if (moment(item.end) < moment()) {
@@ -352,32 +331,38 @@ export default {
     },
     onEventClick(event) {
       this.$modalRouter.push({
-        name: 'schedule-team-reserve-info',
+        name: 'schedule-personal-reserve-info',
         props: {
           id: event.event.id
         },
         on: {
           ok: res => {
-            this.onScheduleChange()
+            this.calendarEvents.push({
+              title: 'New Event',
+              start: arg.date,
+              allDay: arg.allDay
+            })
           }
         }
       })
     },
     handleDateClick(arg) {
+      if (!this.auth.add) return
       this.$modalRouter.push({
-        name: 'schedule-team-add-course-schedule',
+        name: 'schedule-personal-add-reserve',
         props: {
           time: moment(arg.date)
         },
         on: {
           ok: res => {
-            this.onScheduleChange()
+            this.calendarEvents.push({
+              title: 'New Event',
+              start: arg.date,
+              allDay: arg.allDay
+            })
           }
         }
       })
-    },
-    onScheduleChange() {
-      this.$router.push({ query: this.query, force: true })
     }
   }
 }

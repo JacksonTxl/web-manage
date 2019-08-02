@@ -268,6 +268,13 @@
 <script>
 import { InfoService } from './info.service'
 import { RouteService } from '@/services/route.service'
+import FaceRecognition from '@/views/biz-modals/face/recognition'
+import ShopAddLable from '@/views/biz-modals/shop/add-lable'
+import ShopBindingEntityCard from '@/views/biz-modals/shop/binding-entity-card'
+import ShopDistributionCoach from '@/views/biz-modals/shop/distribution-coach'
+import ShopDistributionSale from '@/views/biz-modals/shop/distribution-sale'
+import ShopFrozen from '@/views/biz-modals/shop/frozen'
+import ShopMissingCard from '@/views/biz-modals/shop/missing-card'
 export default {
   serviceInject() {
     return {
@@ -282,6 +289,15 @@ export default {
       authCommon: this.infoService.authCommon$,
       query: this.routeService.query$
     }
+  },
+  modals: {
+    FaceRecognition,
+    ShopAddLable,
+    ShopBindingEntityCard,
+    ShopDistributionCoach,
+    ShopDistributionSale,
+    ShopFrozen,
+    ShopMissingCard
   },
   name: 'list',
   data() {

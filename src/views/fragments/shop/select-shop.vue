@@ -57,9 +57,12 @@
 </template>
 <script>
 import { SelectShopService } from './select-shop.service'
-
+import ShopSelect from '@/views/biz-modals/shop/select'
 export default {
   name: 'SelectShop',
+  modals: {
+    ShopSelect
+  },
   serviceInject() {
     return {
       selectService: SelectShopService

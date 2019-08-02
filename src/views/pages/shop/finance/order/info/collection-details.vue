@@ -25,6 +25,7 @@
 import moment from 'moment'
 import { CollectionDetailsService } from './collection-details.service'
 import { RouteService } from '@/services/route.service'
+import ShopFinanceFlow from '@/views/biz-modals/shop/finance/flow'
 const columns = [
   {
     title: '流水号',
@@ -71,6 +72,9 @@ export default {
   name: 'PageShopFinanceOrderInfoCollectionDetails',
   bem: {
     basic: 'page-shop-finance'
+  },
+  modals: {
+    ShopFinanceFlow
   },
   serviceInject() {
     return {

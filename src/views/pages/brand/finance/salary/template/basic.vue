@@ -77,8 +77,14 @@ import { BasicService } from './basic.service'
 import { MessageService } from '@/services/message.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
+import FinanceAddTemplate from '@/views/biz-modals/finance/add-template'
+import FinanceBasicTemplateEdit from '@/views/biz-modals/finance/basic-template-edit'
 export default {
   mixins: [tableMixin],
+  modals: {
+    FinanceAddTemplate,
+    FinanceBasicTemplateEdit
+  },
   serviceInject() {
     return {
       basicService: BasicService,

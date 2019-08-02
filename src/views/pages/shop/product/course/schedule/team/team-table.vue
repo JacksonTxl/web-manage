@@ -104,8 +104,18 @@
 import date from '../date#/date-component'
 import { TeamScheduleScheduleService } from '../team.service#/schedule.service'
 import { RouteService } from '@/services/route.service'
+import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'
+import ScheduleTeamAddCourseSchedule from '@/views/biz-modals/schedule/team/add-course-schedule'
+import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
+import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
 export default {
   name: 'ScheduleTeamTable',
+  modals: {
+    ScheduleTeamAddCourseScheduleBatch,
+    ScheduleTeamAddCourseSchedule,
+    ScheduleTeamCopySchedule,
+    ScheduleTeamReserveInfo
+  },
   serviceInject() {
     return {
       teamScheduleScheduleService: TeamScheduleScheduleService,

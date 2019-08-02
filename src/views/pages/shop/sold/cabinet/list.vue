@@ -99,12 +99,23 @@ import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
 import StRangePicker from '@/views/components/datetime-picker/range-picker'
-
+import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
+import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
+import SoldLeaseRefund from '@/views/biz-modals/sold/lease/refund'
+import SoldLeaseRelet from '@/views/biz-modals/sold/lease/relet'
+import SoldLeaseTransfer from '@/views/biz-modals/sold/lease/transfer'
 export default {
   name: 'PageShopSoldLease',
   mixins: [tableMixin],
   bem: {
     basic: 'page-shop-sold'
+  },
+  modals: {
+    SoldDealGatheringTip,
+    SoldDealGathering,
+    SoldLeaseRefund,
+    SoldLeaseRelet,
+    SoldLeaseTransfer
   },
   serviceInject() {
     return {

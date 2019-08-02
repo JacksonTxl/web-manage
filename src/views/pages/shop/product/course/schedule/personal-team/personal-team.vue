@@ -24,9 +24,19 @@
 <script>
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { PersonalTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
-import { RouteService } from '../../../../../../../services/route.service'
+import { RouteService } from '@/services/route.service'
+import SchedulePersonalTeamAddInBatch from '@/views/biz-modals/schedule/personal-team/add-in-batch'
+import SchedulePersonalTeamAdd from '@/views/biz-modals/schedule/personal-team/add'
+import SchedulePersonalTeamCopy from '@/views/biz-modals/schedule/personal-team/copy'
+import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
 export default {
   name: 'TeamSchedule',
+  modals: {
+    SchedulePersonalTeamAddInBatch,
+    SchedulePersonalTeamAdd,
+    SchedulePersonalTeamCopy,
+    SchedulePersonalTeamReserveInfo
+  },
   serviceInject() {
     return {
       PersonalTeamSchduleService: PersonalTeamScheduleScheduleService,

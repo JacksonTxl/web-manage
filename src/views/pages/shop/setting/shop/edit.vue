@@ -161,10 +161,14 @@ import { PatternService } from '@/services/pattern.service'
 import { EditService } from './edit.service'
 import { RuleConfig } from '@/constants/rule'
 import { cloneDeep } from 'lodash-es'
+import ShopMapLocation from '@/views/biz-modals/shop/map-location'
 export default {
   name: 'PageShopSettingShopEdit',
   bem: {
     edit: 'page-shop-setting-shop-edit'
+  },
+  modals: {
+    ShopMapLocation
   },
   serviceInject() {
     return {

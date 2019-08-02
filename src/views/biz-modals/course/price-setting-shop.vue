@@ -53,6 +53,7 @@ import { columnsPricesShop } from './support-table'
 import { cloneDeep, uniqWith, isEqual } from 'lodash-es'
 import { ListService } from '../../pages/shop/product/course/manage/personal/list.service'
 import { EditService } from '../../pages/shop/product/course/manage/personal/edit.service'
+import CoursePriceSettingShopUpdate from '@/views/biz-modals/course/price-setting-shop-update'
 export default {
   name: 'CoursePriceShop',
   serviceInject() {
@@ -65,6 +66,9 @@ export default {
       priceGradient: this.listService.priceGradient$,
       dataSource: this.listService.dataSource$
     }
+  },
+  modals: {
+    CoursePriceSettingShopUpdate
   },
   data() {
     return {

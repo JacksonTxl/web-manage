@@ -170,6 +170,9 @@ import { AllService } from './all.service'
 import { RouteService } from '@/services/route.service'
 import { columns } from './all.config.ts'
 import tableMixin from '@/mixins/table.mixin'
+import CardShopDepositRecoverSale from '@/views/biz-modals/card/shop-deposit/recover-sale'
+import CardShopDepositShopTable from '@/views/biz-modals/card/shop-deposit/shop-table'
+import CardShopDepositStopSale from '@/views/biz-modals/card/shop-deposit/stop-sale'
 export default {
   mixins: [tableMixin],
   name: 'PageShopProductDepositAll',
@@ -180,6 +183,11 @@ export default {
     'shop-product-card-deposit-list-all:onSingleSearch'(key, data, options) {
       this.onSingleSearch(key, data, options)
     }
+  },
+  modals: {
+    CardShopDepositRecoverSale,
+    CardShopDepositShopTable,
+    CardShopDepositStopSale
   },
   serviceInject() {
     return {

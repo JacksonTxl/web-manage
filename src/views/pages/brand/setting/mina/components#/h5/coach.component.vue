@@ -65,12 +65,16 @@ import { H5WrapperService } from './h5-wrapper.service'
 import { cloneDeep } from 'lodash-es'
 import draggable from 'vuedraggable'
 import { AppConfig } from '@/constants/config'
+import CoachRecommend from '@/views/biz-modals/coach/recommend'
 export default {
   bem: {
     action: 'coach-component'
   },
   components: {
     draggable
+  },
+  modals: {
+    CoachRecommend
   },
   serviceInject() {
     return {

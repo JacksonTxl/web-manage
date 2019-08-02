@@ -173,10 +173,30 @@
 import { InfoService } from './info.service'
 import { RouteService } from '@/services/route.service'
 import moment from 'moment'
+import SoldCardArea from '@/views/biz-modals/sold/card/area'
+import SoldCardFreeze from '@/views/biz-modals/sold/card/freeze'
+import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
+import SoldCardRenewalMember from '@/views/biz-modals/sold/card/renewal-member'
+import SoldCardSetTime from '@/views/biz-modals/sold/card/set-time'
+import SoldCardTransfer from '@/views/biz-modals/sold/card/transfer'
+import SoldCardUpgradeMember from '@/views/biz-modals/sold/card/upgrade-member'
+import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
+import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
 export default {
   name: 'PageShopSoldCardMemberInfo',
   bem: {
     basic: 'page-shop-sold-info'
+  },
+  modals: {
+    SoldCardArea,
+    SoldCardFreeze,
+    SoldCardRefund,
+    SoldCardRenewalMember,
+    SoldCardSetTime,
+    SoldCardTransfer,
+    SoldCardUpgradeMember,
+    SoldDealGatheringTip,
+    SoldDealGathering
   },
   serviceInject() {
     return {

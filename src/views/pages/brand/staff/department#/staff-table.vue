@@ -126,9 +126,26 @@
 import { columns } from './staff-table.config'
 import tableMixin from '@/mixins/table.mixin'
 import { RouteService } from '@/services/route.service'
-
+import StaffBindEntityCard from '@/views/biz-modals/staff/bind-entity-card'
+import StaffDelete from '@/views/biz-modals/staff/delete'
+import StaffRePassword from '@/views/biz-modals/staff/re-password'
+import StaffReinstatement from '@/views/biz-modals/staff/reinstatement'
+import StaffSalaryAccountSetting from '@/views/biz-modals/staff/salary-account-setting'
+import StaffShopWithStaff from '@/views/biz-modals/staff/shop-with-staff'
+import StaffTurnover from '@/views/biz-modals/staff/turnover'
+import StaffUpdateStaffPosition from '@/views/biz-modals/staff/update-staff-position'
 export default {
   mixins: [tableMixin],
+  modals: {
+    StaffBindEntityCard,
+    StaffDelete,
+    StaffRePassword,
+    StaffReinstatement,
+    StaffSalaryAccountSetting,
+    StaffShopWithStaff,
+    StaffTurnover,
+    StaffUpdateStaffPosition
+  },
   serviceInject() {
     return {
       routerService: RouteService

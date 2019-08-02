@@ -37,6 +37,7 @@ import { PayService } from './pay.service'
 import { columns } from './pay.config.ts'
 import tableMixin from '@/mixins/table.mixin'
 import SmsSign from './pay#/sign'
+import BrandSettingSmsPay from '@/views/biz-modals/brand/setting-sms-pay'
 const pageName = 'page-setting-sms-pay'
 export default {
   mixins: [tableMixin],
@@ -58,6 +59,9 @@ export default {
       info: this.payService.info$,
       loading: this.payService.loading$
     }
+  },
+  modals: {
+    BrandSettingSmsPay
   },
   data() {
     return {

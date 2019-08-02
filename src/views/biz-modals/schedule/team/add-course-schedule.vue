@@ -106,8 +106,12 @@ import { TeamScheduleScheduleService } from '../../../pages/shop/product/course/
 import { TeamScheduleCommonService } from '../../../pages/shop/product/course/schedule/team.service#/common.service'
 import { RouteService } from '../../../../services/route.service'
 import { TeamService } from '../../../pages/shop/product/course/schedule/team/team.service'
+import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'
 export default {
   name: 'AddCourseSchedule',
+  modals: {
+    ScheduleTeamAddCourseScheduleBatch
+  },
   serviceInject() {
     return {
       teamScheduleCommomService: TeamScheduleCommonService,

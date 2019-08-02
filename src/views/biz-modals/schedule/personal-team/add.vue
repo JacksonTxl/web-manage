@@ -60,6 +60,7 @@
 import { MessageService } from '@/services/message.service'
 import { PersonalTeamScheduleScheduleService as ScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
 import { PersonalTeamScheduleCommonService as CommonService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/common.service'
+import SchedulePersonalTeamAddInBatch from '@/views/biz-modals/schedule/personal-team/add-in-batch'
 const formRules = {
   startTime: [
     'start_time',
@@ -119,6 +120,9 @@ const formRules = {
 }
 export default {
   name: 'AddCourseSchedule',
+  modals: {
+    SchedulePersonalTeamAddInBatch
+  },
   serviceInject() {
     return {
       messageService: MessageService,

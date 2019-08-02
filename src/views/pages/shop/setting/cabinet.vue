@@ -115,11 +115,13 @@ import AddCabinetArea from './cabinet#/add-area'
 import EditCabinetArea from './cabinet#/edit-area'
 import { CabinetAreaService as AreaService } from './cabinet#/area.service'
 import CabinetList from './cabinet#/cabinet-list'
-// import Draggable from 'vuedraggable'
-
+import ShopCabinetEditPrice from '@/views/biz-modals/shop/cabinet/edit-price'
 export default {
   bem: {
     b: 'page-setting-cabinet'
+  },
+  modals: {
+    ShopCabinetEditPrice
   },
   serviceInject() {
     return {

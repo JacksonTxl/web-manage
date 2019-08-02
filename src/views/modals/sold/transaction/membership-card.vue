@@ -214,7 +214,6 @@ export default {
       membershipCardService: MembershipCardService
     }
   },
-
   components: {
     specifications,
     membershipName,

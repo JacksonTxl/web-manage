@@ -69,7 +69,13 @@
 import { SkillfulService } from './skillful.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
+import SkillfulAdd from '@/views/biz-modals/skillful/add'
+import SkillfulEdit from '@/views/biz-modals/skillful/edit'
 export default {
+  modals: {
+    SkillfulAdd,
+    SkillfulEdit
+  },
   serviceInject() {
     return {
       listService: SkillfulService,

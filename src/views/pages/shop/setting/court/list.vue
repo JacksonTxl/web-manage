@@ -90,6 +90,8 @@
 import draggable from 'vuedraggable'
 import { MessageService } from '@/services/message.service'
 import { ListService } from './list.service'
+import CourtAdd from '@/views/biz-modals/court/add'
+import CourtEdit from '@/views/biz-modals/court/edit'
 export default {
   serviceInject() {
     return {
@@ -102,6 +104,10 @@ export default {
       list: this.listService.list$,
       auth: this.listService.auth$
     }
+  },
+  modals: {
+    CourtAdd,
+    CourtEdit
   },
   components: {
     draggable

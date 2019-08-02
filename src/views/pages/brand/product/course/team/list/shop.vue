@@ -61,7 +61,7 @@ import TeamTableShop from './shop#/shop-table'
 import { ShopService } from './shop.service'
 import { ListService } from '../list.service'
 import { RouteService } from '@/services/route.service'
-
+import CourseTransfromBrandTeamCourse from '@/views/biz-modals/course/transfrom-brand-team-course'
 export default {
   name: 'DDDTeamCourseList',
   serviceInject() {
@@ -78,6 +78,9 @@ export default {
       query: this.routeService.query$,
       auth: this.shopService.auth$
     }
+  },
+  modals: {
+    CourseTransfromBrandTeamCourse
   },
   data() {
     return {

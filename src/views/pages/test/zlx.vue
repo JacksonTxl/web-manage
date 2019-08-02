@@ -19,8 +19,14 @@
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { ZlxService } from './zlx.service'
 import { TeamScheduleScheduleService } from '../shop/product/course/schedule/team.service#/schedule.service'
+import ScheduleTeamAddCourseScheduleBatch from '@/views/biz-modals/schedule/team/add-course-schedule-batch'
+import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 export default {
   name: 'zlx',
+  modals: {
+    ScheduleTeamAddCourseScheduleBatch,
+    ScheduleTeamCopySchedule
+  },
   serviceInject() {
     return {
       zlxService: ZlxService,

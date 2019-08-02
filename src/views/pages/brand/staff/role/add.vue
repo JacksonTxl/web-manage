@@ -99,8 +99,12 @@ import { listToTree } from '@/utils/list-to-tree.js'
 import { RoleService } from '../role.service'
 import { cloneDeep } from 'lodash-es'
 import { AddService } from './add.service'
+import RoleDepartment from '@/views/biz-modals/role/department'
 export default {
   name: 'AddRole',
+  modals: {
+    RoleDepartment
+  },
   serviceInject() {
     return {
       roleService: RoleService,

@@ -49,10 +49,14 @@
 <script>
 import { InfoService } from './info.service'
 import { cloneDeep } from 'lodash-es'
+import ShopMapLocation from '@/views/biz-modals/shop/map-location'
 export default {
   name: 'PageBrandSettingShopInfo',
   bem: {
     shopInfo: 'page-brand-setting-shop-info'
+  },
+  modals: {
+    ShopMapLocation
   },
   serviceInject() {
     return {

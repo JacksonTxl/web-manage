@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import BrandMarketingBind from '@/views/biz-modals/brand/marketing/bind'
+import BrandMarketingPoster from '@/views/biz-modals/brand/marketing/poster'
 export default {
   name: 'PageBrandMarketingPluginCouponTip',
   bem: {
@@ -37,6 +39,10 @@ export default {
   },
   rxState() {
     return {}
+  },
+  modals: {
+    BrandMarketingBind,
+    BrandMarketingPoster
   },
   computed: {},
   data() {

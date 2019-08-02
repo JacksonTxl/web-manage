@@ -21,7 +21,10 @@
 import Calendar from '@/views/biz-components/schedule/calendar'
 import { PersonalTeamScheduleScheduleService } from '@/views/pages/shop/product/course/schedule/personal-team.service#/schedule.service'
 import { PersonalScheduleReserveService } from '../personal.service#/reserve.service'
-import { RouteService } from '../../../../../../../services/route.service'
+import { RouteService } from '@/services/route.service'
+import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
+import SchedulePersonalTeamCopy from '@/views/biz-modals/schedule/personal-team/copy'
+import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
 export default {
   name: 'TeamSchedule',
   serviceInject() {
@@ -35,6 +38,11 @@ export default {
       cardList: this.personalScheduleReserveService.reserveTable$,
       query: this.routeService.query$
     }
+  },
+  modals: {
+    SchedulePersonalAddReserve,
+    SchedulePersonalTeamCopy,
+    SchedulePersonalTeamReserveInfo
   },
   components: {
     Calendar

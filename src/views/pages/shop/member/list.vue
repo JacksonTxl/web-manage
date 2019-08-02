@@ -230,12 +230,25 @@ import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
 import StRangePicker from '@/views/components/datetime-picker/range-picker'
-
+import ShopAddLable from '@/views/biz-modals/shop/add-lable'
+import ShopBindingEntityCard from '@/views/biz-modals/shop/binding-entity-card'
+import ShopDistributionCoach from '@/views/biz-modals/shop/distribution-coach'
+import ShopDistributionSale from '@/views/biz-modals/shop/distribution-sale'
+import ShopFrozen from '@/views/biz-modals/shop/frozen'
+import ShopMissingCard from '@/views/biz-modals/shop/missing-card'
 export default {
   name: 'memberList',
   mixins: [tableMixin],
   bem: {
     basic: 'page-shop-finance'
+  },
+  modals: {
+    ShopAddLable,
+    ShopBindingEntityCard,
+    ShopDistributionCoach,
+    ShopDistributionSale,
+    ShopFrozen,
+    ShopMissingCard
   },
   serviceInject() {
     return {

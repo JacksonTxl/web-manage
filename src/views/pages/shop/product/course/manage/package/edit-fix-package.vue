@@ -872,6 +872,7 @@
 import moment from 'moment'
 import { cloneDeep, remove, every, filter, reduce, forEach } from 'lodash-es'
 import { EditFixPackageService } from './edit-fix-package.service'
+import CourseSelectCourse from '@/views/biz-modals/course/select-course'
 export default {
   name: 'ShopFixPackageEdit',
   serviceInject() {
@@ -888,6 +889,9 @@ export default {
       coachList: this.editPackageService.coachList$,
       packageInfo: this.editPackageService.packageInfo$
     }
+  },
+  modals: {
+    CourseSelectCourse
   },
   bem: {
     add: 'page-shop-add-fix-package',

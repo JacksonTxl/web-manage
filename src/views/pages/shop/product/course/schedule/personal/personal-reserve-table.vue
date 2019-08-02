@@ -78,10 +78,13 @@ import date from '../date#/date-component'
 import { PersonalScheduleReserveService } from '../personal.service#/reserve.service'
 import { columns } from '../personal-reserve-table.config'
 import { RouteService } from '@/services/route.service'
-
+import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add-reserve'
 export default {
   name: 'PersonalReservetable',
   mixins: [tableMixin],
+  modals: {
+    SchedulePersonalAddReserve
+  },
   serviceInject() {
     return {
       reserveService: PersonalScheduleReserveService,

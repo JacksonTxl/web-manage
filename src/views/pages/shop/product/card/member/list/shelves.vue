@@ -105,6 +105,7 @@ import { ShelvesService } from './shelves.service'
 import { RouteService } from '@/services/route.service'
 import { columns, CARD_TYPE } from './shelves.config.ts'
 import tableMixin from '@/mixins/table.mixin'
+import CardShopMemberShopTable from '@/views/biz-modals/card/shop-member/shop-table'
 export default {
   mixins: [tableMixin],
   name: 'PageShopProductMemberShelves',
@@ -115,6 +116,9 @@ export default {
     'shop-product-card-member-list-shelves:onSingleSearch'(key, data, options) {
       this.onSingleSearch(key, data, options)
     }
+  },
+  modals: {
+    CardShopMemberShopTable
   },
   serviceInject() {
     return {

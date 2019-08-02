@@ -113,10 +113,19 @@ import tableMixin from '@/mixins/table.mixin'
 import { columns } from './list.config'
 import { ListService } from '../list.service'
 import { RouteService } from '../../../../../../../../services/route.service'
-
+import CoursePriceSettingShopUpdate from '@/views/biz-modals/course/price-setting-shop-update'
+import CoursePriceSettingShop from '@/views/biz-modals/course/price-setting-shop'
+import CourseSupportCourseCoaches from '@/views/biz-modals/course/support-course-coaches'
+import CourseSupportCourseShops from '@/views/biz-modals/course/support-course-shops'
 export default {
   name: 'ShopSaleListTable',
   mixins: [tableMixin],
+  modals: {
+    CoursePriceSettingShopUpdate,
+    CoursePriceSettingShop,
+    CourseSupportCourseCoaches,
+    CourseSupportCourseShops
+  },
   data() {
     return {
       columns

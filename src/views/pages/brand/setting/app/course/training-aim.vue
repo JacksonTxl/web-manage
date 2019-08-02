@@ -71,7 +71,13 @@
 import { TrainingAimService } from './training-aim.service'
 import { RouteService } from '@/services/route.service'
 import { MessageService } from '@/services/message.service'
+import TrainingAdd from '@/views/biz-modals/training/add'
+import TrainingEdit from '@/views/biz-modals/training/edit'
 export default {
+  modals: {
+    TrainingAdd,
+    TrainingEdit
+  },
   serviceInject() {
     return {
       listService: TrainingAimService,

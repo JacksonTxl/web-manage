@@ -88,6 +88,7 @@ import { ShelvesService } from './shelves.service'
 import { RouteService } from '@/services/route.service'
 import tableMixin from '@/mixins/table.mixin'
 import { columns } from './shelves.config.ts'
+import CardShopDepositShopTable from '@/views/biz-modals/card/shop-deposit/shop-table'
 export default {
   mixins: [tableMixin],
   name: 'PageShopProductDepositShelves',
@@ -102,6 +103,9 @@ export default {
     ) {
       this.onSingleSearch(key, data, options)
     }
+  },
+  modals: {
+    CardShopDepositShopTable
   },
   serviceInject() {
     return {
