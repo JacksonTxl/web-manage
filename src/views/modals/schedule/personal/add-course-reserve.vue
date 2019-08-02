@@ -4,7 +4,7 @@
       <st-form-item label="时间" required>
         <a-date-picker
           style="width: 100%"
-          showTime
+          :showTime="{ format: 'HH:mm' }"
           format="YYYY-MM-DD HH:mm"
           v-decorator="[
             'start_time',
