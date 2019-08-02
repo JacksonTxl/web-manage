@@ -117,6 +117,10 @@
     "pre-commit": "lint-staged"
   },
   "lint-staged": {
+    "*.less":[
+      "stylelint",
+      "git add"
+    ],
     "*.js": [
       "npm run lint",
       "git add"
