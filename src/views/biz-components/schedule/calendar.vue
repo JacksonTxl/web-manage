@@ -224,6 +224,7 @@ export default {
     oChangeDate(date) {
       this.start = date.start_date
       this.$router.push({ query: { ...date }, force: true })
+      this.getWeeks('week')
     },
     onClickGetTable() {
       this.$emit('get-table')
