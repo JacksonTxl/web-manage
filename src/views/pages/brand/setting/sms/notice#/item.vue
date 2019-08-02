@@ -69,6 +69,7 @@
             <div class="mg-b16" v-if="info.preview">
               <span class="mg-r24 color-title">发送内容</span>
               <a-input
+                v-if="info.notify_type.value === 1"
                 class="mg-l24"
                 :class="bComponent('column-input')"
                 v-model="params.msg_preffix"
@@ -76,6 +77,7 @@
               ></a-input>
               <span>{{ info.content }}</span>
               <a-input
+                v-if="info.notify_type.value === 1"
                 :class="bComponent('column-input')"
                 v-model="params.msg_suffix"
                 placeholder="请输入"
