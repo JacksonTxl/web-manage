@@ -214,11 +214,11 @@ export default {
       return Object.assign({ w, h }, this.filterOptions)
     }
   },
-  // watch: {
-  //   list(newList) {
-  //     this.fileList = this.list
-  //   }
-  // },
+  watch: {
+    list(newList) {
+      this.fileList = this.list
+    }
+  },
   mounted() {
     this.fileList = new Array(...this.list)
     if (this.maskOptions && this.fileList.length > 0) {
