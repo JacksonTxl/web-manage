@@ -13,6 +13,11 @@ pipeline {
         sh 'tree -du -L 4'
       }
     }
+    state('Build') {
+      steps {
+        sh 'make build'
+      }
+    }
     stage('to=dev') {
       steps {
         sh 'make rsync to=saas-dev'
