@@ -203,15 +203,15 @@ export default {
       if (this.settingInfo.invitee_coupon_id) {
         // 开启过，需要回显
         this.inviteeCoupon = {
-          id: this.settingInfo.invitee_coupon_id,
-          coupon_name: this.settingInfo.invitee_coupon_name
-        }
-        this.inviteeCouponNum = this.settingInfo.invitee_coupon_num
-        this.inviterCoupon = {
           id: this.settingInfo.inviter_coupon_id,
           coupon_name: this.settingInfo.inviter_coupon_name
         }
-        this.inviterCouponNum = this.settingInfo.inviter_coupon_num
+        this.inviteeCouponNum = this.settingInfo.inviter_coupon_num
+        this.inviterCoupon = {
+          id: this.settingInfo.invitee_coupon_id,
+          coupon_name: this.settingInfo.invitee_coupon_name
+        }
+        this.inviterCouponNum = this.settingInfo.invitee_coupon_num
         this.invite_poster = this.settingInfo.invite_poster
       }
     },
@@ -291,11 +291,11 @@ export default {
         this.settingService[fn]({
           activity_status: this.openStatus ? 1 : 2,
           // 邀请人
-          inviter_coupon_id: this.inviterCoupon.id,
-          inviter_coupon_num: +this.inviterCouponNum,
+          inviter_coupon_id: this.inviteeCoupon.id,
+          inviter_coupon_num: +this.inviteeCouponNum,
           // 被邀请人
-          invitee_coupon_id: this.inviteeCoupon.id,
-          invitee_coupon_num: +this.inviteeCouponNum,
+          invitee_coupon_id: this.inviterCoupon.id,
+          invitee_coupon_num: +this.inviterCouponNum,
           invite_poster: this.invite_poster
         }).subscribe(() => {
           this.$router.push({

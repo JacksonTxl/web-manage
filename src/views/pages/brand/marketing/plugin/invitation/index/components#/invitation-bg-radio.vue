@@ -171,7 +171,7 @@ export default {
       let innerHTML = ''
       this.cardBgList.forEach(i => {
         innerHTML += `
-          .st-card-bg-radio .${i.className.split('custom')[0]}
+          .invitation-bg-radio .${i.className.split('custom')[0]}
           .ant-radio-inner::after {
             background-color: ${i.color};
           }
