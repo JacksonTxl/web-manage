@@ -5,8 +5,8 @@ import {
   AddScheduleInBatchInput,
   AddScheduleInput,
   CopyInput
-} from './../../../../../../../api/v1/schedule/personal/schedule'
-import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
+} from '@/api/v1/schedule/personal/schedule'
+import { Injectable } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
 import { tap, pluck, switchMap } from 'rxjs/operators'
 import { PersonalScheduleApi } from '@/api/v1/schedule/personal/schedule'

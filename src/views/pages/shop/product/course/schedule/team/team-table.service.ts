@@ -1,7 +1,7 @@
-import { TeamScheduleScheduleService as ScheduleService } from '../team.service#/schedule.service'
+import { TeamScheduleScheduleService as ScheduleService } from './service#/schedule.service'
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { forkJoin, timer } from 'rxjs'
-import { TeamScheduleCommonService as CommonService } from '../team.service#/common.service'
+import { TeamScheduleCommonService as CommonService } from './service#/common.service'
 
 @Injectable()
 export class TeamTableService implements RouteGuard {
