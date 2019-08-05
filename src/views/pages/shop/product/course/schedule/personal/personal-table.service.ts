@@ -1,5 +1,5 @@
-import { PersonalScheduleCommonService } from '../personal.service#/common.service'
-import { PersonalScheduleScheduleService } from '../personal.service#/schedule.service'
+import { PersonalScheduleCommonService } from './service#/common.service'
+import { PersonalScheduleScheduleService } from './service#/schedule.service'
 import { Injectable, ServiceRoute } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
 import { pluck, tap } from 'rxjs/operators'

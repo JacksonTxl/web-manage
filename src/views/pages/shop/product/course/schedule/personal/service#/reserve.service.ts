@@ -1,8 +1,8 @@
-import { UpdateInput } from './../../../../../../../api/v1/schedule/personal/reserve'
+import { UpdateInput } from '@/api/v1/schedule/personal/reserve'
 
 import { Injectable } from 'vue-service-app'
 import { State, Effect, Computed } from 'rx-state'
-import { tap, pluck, switchMap } from 'rxjs/operators'
+import { tap, pluck } from 'rxjs/operators'
 import {
   PersonalReserveApi,
   AddInput,

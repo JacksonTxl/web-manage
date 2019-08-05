@@ -10,7 +10,6 @@ import {
 } from '@/api/v1/schedule/personal-team/schedule'
 import { AuthService } from '@/services/auth.service'
 import { MessageService } from '@/services/message.service'
-import moment from 'moment'
 
 export interface SetState {
   courseList: any[]

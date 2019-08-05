@@ -1,7 +1,7 @@
 import { RouteGuard, Injectable, ServiceRoute } from 'vue-service-app'
 import { forkJoin, timer } from 'rxjs'
-import { PersonalScheduleCommonService as CommonService } from '../personal.service#/common.service'
-import { PersonalScheduleReserveService } from '../personal.service#/reserve.service'
+import { PersonalScheduleCommonService as CommonService } from './service#/common.service'
+import { PersonalScheduleReserveService } from './service#/reserve.service'
 import { AuthService } from '@/services/auth.service'
 import { State, Computed } from 'rx-state'
 @Injectable()

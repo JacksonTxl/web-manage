@@ -1,9 +1,8 @@
 import { Injectable } from 'vue-service-app'
 import { State, Computed } from 'rx-state'
-import { tap, pluck, switchMap, debounceTime } from 'rxjs/operators'
+import { tap, pluck, debounceTime } from 'rxjs/operators'
 import {
   PersonalCommonApi,
-  CoachListQuery,
   MemberListQuery,
   Consume
 } from '@/api/v1/schedule/personal/common'

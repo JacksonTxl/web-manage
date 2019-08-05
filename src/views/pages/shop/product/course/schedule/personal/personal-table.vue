@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import date from '../date#/date-component'
+import date from '../components#/date-component'
 import tableMixin from '@/mixins/table.mixin'
 import { PersonalTableService } from './personal-table.service'
 import { RouteService } from '@/services/route.service'
