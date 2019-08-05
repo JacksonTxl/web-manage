@@ -12,12 +12,15 @@ const { router } = new VueServiceApp({
   onError(e) {
     nProgress.done()
     throw e
+  },
+  scrollBehavior: (to: any) => {
+    if (to.name.includes('brand-stat')) {
+      return
+    }
+    return {
+      y: 0
+    }
   }
-  // scrollBehavior: () => {
-  //   return {
-  //     y: 0
-  //   }
-  // }
 })
 
 export { router }
